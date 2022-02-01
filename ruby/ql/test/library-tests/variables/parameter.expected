@@ -1,0 +1,50 @@
+parameterVariable
+| nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:15:23:15:23 | a |
+| nested_scopes.rb:16:26:16:26 | x | nested_scopes.rb:16:26:16:26 | x |
+| nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:16:29:16:29 | a |
+| nested_scopes.rb:18:26:18:26 | x | nested_scopes.rb:18:26:18:26 | x |
+| nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a |
+| parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x |
+| parameters.rb:1:18:1:18 | y | parameters.rb:1:18:1:18 | y |
+| parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client |
+| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas |
+| parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map |
+| parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key |
+| parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value |
+| parameters.rb:21:16:21:21 | &block | parameters.rb:21:17:21:21 | block |
+| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name |
+| parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size |
+| parameters.rb:30:15:30:19 | first | parameters.rb:30:15:30:19 | first |
+| parameters.rb:30:24:30:29 | middle | parameters.rb:30:24:30:29 | middle |
+| parameters.rb:30:36:30:39 | last | parameters.rb:30:36:30:39 | last |
+| parameters.rb:35:11:35:11 | a | parameters.rb:35:11:35:11 | a |
+| parameters.rb:40:12:40:12 | d | parameters.rb:40:12:40:12 | d |
+| parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ |
+| parameters.rb:49:12:49:16 | (..., ...) | parameters.rb:49:13:49:13 | a |
+| parameters.rb:49:12:49:16 | (..., ...) | parameters.rb:49:15:49:15 | b |
+| parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y |
+| parameters.rb:59:19:59:27 | (..., ...) | parameters.rb:59:20:59:20 | a |
+| parameters.rb:59:19:59:27 | (..., ...) | parameters.rb:59:23:59:23 | b |
+| parameters.rb:59:19:59:27 | (..., ...) | parameters.rb:59:25:59:25 | c |
+| parameters.rb:59:22:59:26 | (..., ...) | parameters.rb:59:23:59:23 | b |
+| parameters.rb:59:22:59:26 | (..., ...) | parameters.rb:59:25:59:25 | c |
+| scopes.rb:2:14:2:14 | x | scopes.rb:2:14:2:14 | x |
+| scopes.rb:9:14:9:14 | x | scopes.rb:9:14:9:14 | x |
+| ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b |
+| ssa.rb:18:8:18:8 | x | ssa.rb:18:8:18:8 | x |
+| ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements |
+| ssa.rb:26:3:28:5 | __synth__0__1 | ssa.rb:26:3:28:5 | __synth__0__1 |
+| ssa.rb:33:20:33:20 | x | ssa.rb:33:20:33:20 | x |
+| ssa.rb:44:8:44:8 | b | ssa.rb:44:8:44:8 | b |
+| ssa.rb:49:9:49:9 | x | ssa.rb:49:9:49:9 | x |
+| ssa.rb:53:8:53:10 | foo | ssa.rb:53:8:53:10 | foo |
+| ssa.rb:64:8:64:8 | a | ssa.rb:64:8:64:8 | a |
+| ssa.rb:66:15:66:15 | a | ssa.rb:66:15:66:15 | a |
+parameterNoVariable
+| parameters.rb:45:22:45:22 | _ |
+parameterVariableNoAccess
+| nested_scopes.rb:16:26:16:26 | x | nested_scopes.rb:16:26:16:26 | x |
+| nested_scopes.rb:18:26:18:26 | x | nested_scopes.rb:18:26:18:26 | x |
+| scopes.rb:2:14:2:14 | x | scopes.rb:2:14:2:14 | x |
+| scopes.rb:9:14:9:14 | x | scopes.rb:9:14:9:14 | x |
+| ssa.rb:49:9:49:9 | x | ssa.rb:49:9:49:9 | x |

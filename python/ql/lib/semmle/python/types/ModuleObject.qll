@@ -43,11 +43,11 @@ abstract class ModuleObject extends Object {
   pragma[inline]
   final Object attr(string name) { result = this.getAttribute(name) }
 
-  predicate hasAttribute(string name) { theModule().hasAttribute(name) }
+  predicate hasAttribute(string name) { this.theModule().hasAttribute(name) }
 
   predicate attributeRefersTo(string name, Object obj, ControlFlowNode origin) {
     exists(ObjectInternal val, CfgOrigin valorig |
-      theModule().(ModuleObjectInternal).attribute(name, val, valorig) and
+      this.theModule().(ModuleObjectInternal).attribute(name, val, valorig) and
       obj = val.getSource() and
       origin = valorig.toCfgNode()
     )
@@ -55,7 +55,7 @@ abstract class ModuleObject extends Object {
 
   predicate attributeRefersTo(string name, Object obj, ClassObject cls, ControlFlowNode origin) {
     exists(ObjectInternal val, CfgOrigin valorig |
-      theModule().(ModuleObjectInternal).attribute(name, val, valorig) and
+      this.theModule().(ModuleObjectInternal).attribute(name, val, valorig) and
       obj = val.getSource() and
       cls = val.getClass().getSource() and
       origin = valorig.toCfgNode()
@@ -72,7 +72,7 @@ abstract class ModuleObject extends Object {
    * Whether this module "exports" `name`. That is, whether using `import *` on this module
    * will result in `name` being added to the namespace.
    */
-  predicate exports(string name) { theModule().exports(name) }
+  predicate exports(string name) { this.theModule().exports(name) }
 
   /**
    * Whether the complete set of names "exported" by this module can be accurately determined
@@ -92,7 +92,7 @@ abstract class ModuleObject extends Object {
    * Whether this module is imported by 'import name'. For example on a linux system,
    * the module 'posixpath' is imported as 'os.path' or as 'posixpath'
    */
-  predicate importedAs(string name) { PointsToInternal::module_imported_as(theModule(), name) }
+  predicate importedAs(string name) { PointsToInternal::module_imported_as(this.theModule(), name) }
 
   ModuleObject getAnImportedModule() {
     result.importedAs(this.getModule().getAnImportedModuleName())
@@ -181,7 +181,7 @@ class PackageObject extends ModuleObject {
 
   override Object getAttribute(string name) {
     exists(ObjectInternal val |
-      theModule().(PackageObjectInternal).attribute(name, val, _) and
+      this.theModule().(PackageObjectInternal).attribute(name, val, _) and
       result = val.getSource()
     )
   }

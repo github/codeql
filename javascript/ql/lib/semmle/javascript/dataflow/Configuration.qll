@@ -493,6 +493,7 @@ private predicate barrierGuardBlocksEdge(
  *
  * This predicate exists to get a better join-order for the `barrierGuardBlocksEdge` predicate above.
  */
+pragma[noinline]
 private BasicBlock getADominatedBasicBlock(BarrierGuardNode guard, ConditionGuardNode cond) {
   barrierGuardIsRelevant(guard) and
   guard.getEnclosingExpr() = cond.getTest() and
@@ -938,18 +939,21 @@ private predicate basicFlowStepNoBarrier(
  * This predicate is field insensitive (it does not distinguish between `x` and `x.p`)
  * and hence should only be used for purposes of approximation.
  */
-pragma[inline]
+pragma[noinline]
 private predicate exploratoryFlowStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
 ) {
-  basicFlowStepNoBarrier(pred, succ, _, cfg) or
-  exploratoryLoadStep(pred, succ, cfg) or
-  isAdditionalLoadStoreStep(pred, succ, _, _, cfg) or
-  // the following three disjuncts taken together over-approximate flow through
-  // higher-order calls
-  exploratoryCallbackStep(pred, succ) or
-  succ = pred.(DataFlow::FunctionNode).getAParameter() or
-  exploratoryBoundInvokeStep(pred, succ)
+  isRelevantForward(pred, cfg) and
+  (
+    basicFlowStepNoBarrier(pred, succ, _, cfg) or
+    exploratoryLoadStep(pred, succ, cfg) or
+    isAdditionalLoadStoreStep(pred, succ, _, _, cfg) or
+    // the following three disjuncts taken together over-approximate flow through
+    // higher-order calls
+    exploratoryCallbackStep(pred, succ) or
+    succ = pred.(DataFlow::FunctionNode).getAParameter() or
+    exploratoryBoundInvokeStep(pred, succ)
+  )
 }
 
 /**
@@ -996,6 +1000,7 @@ private predicate exploratoryLoadStep(
  *
  * This private predicate is only used in `exploratoryLoadStep`, and exists as a separate predicate to give the compiler a hint about join-ordering.
  */
+pragma[noinline]
 private string getAForwardRelevantLoadProperty(DataFlow::Configuration cfg) {
   exists(DataFlow::Node previous | isRelevantForward(previous, cfg) |
     basicStoreStep(previous, _, result) or
@@ -1022,6 +1027,7 @@ private string getAPropertyUsedInLoadStore(DataFlow::Configuration cfg) {
  * Holds if there exists a store-step from `pred` to `succ` under configuration `cfg`,
  * and somewhere in the program there exists a load-step that could possibly read the stored value.
  */
+pragma[noinline]
 private predicate exploratoryForwardStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
 ) {
@@ -1055,6 +1061,7 @@ private predicate exploratoryBackwardStoreStep(
  *
  * This private predicate is only used in `exploratoryBackwardStoreStep`, and exists as a separate predicate to give the compiler a hint about join-ordering.
  */
+pragma[noinline]
 private string getABackwardsRelevantStoreProperty(DataFlow::Configuration cfg) {
   exists(DataFlow::Node mid | isRelevant(mid, cfg) |
     basicLoadStep(mid, _, result) or
@@ -1072,8 +1079,10 @@ private string getABackwardsRelevantStoreProperty(DataFlow::Configuration cfg) {
 private predicate isRelevantForward(DataFlow::Node nd, DataFlow::Configuration cfg) {
   isSource(nd, cfg, _) and isLive()
   or
-  exists(DataFlow::Node mid | isRelevantForward(mid, cfg) |
-    exploratoryFlowStep(mid, nd, cfg) or
+  exists(DataFlow::Node mid |
+    exploratoryFlowStep(mid, nd, cfg)
+    or
+    isRelevantForward(mid, cfg) and
     exploratoryForwardStoreStep(mid, nd, cfg)
   )
 }
@@ -1095,11 +1104,10 @@ private predicate isRelevant(DataFlow::Node nd, DataFlow::Configuration cfg) {
 private predicate isRelevantBackStep(
   DataFlow::Node mid, DataFlow::Node nd, DataFlow::Configuration cfg
 ) {
+  exploratoryFlowStep(nd, mid, cfg)
+  or
   isRelevantForward(nd, cfg) and
-  (
-    exploratoryFlowStep(nd, mid, cfg) or
-    exploratoryBackwardStoreStep(nd, mid, cfg)
-  )
+  exploratoryBackwardStoreStep(nd, mid, cfg)
 }
 
 /**
@@ -1142,7 +1150,8 @@ private predicate reachableFromInput(
   DataFlow::Configuration cfg, PathSummary summary
 ) {
   callInputStep(f, invk, input, nd, cfg) and
-  summary = PathSummary::level()
+  summary = PathSummary::level() and
+  not cfg.isLabeledBarrier(nd, summary.getEndLabel())
   or
   exists(DataFlow::Node mid, PathSummary oldSummary |
     reachableFromInput(f, invk, input, mid, cfg, oldSummary) and
@@ -1269,23 +1278,30 @@ private predicate parameterPropRead(
   DataFlow::Node arg, string prop, DataFlow::Node succ, DataFlow::Configuration cfg,
   PathSummary summary
 ) {
-  exists(Function f, DataFlow::Node read, DataFlow::Node invk |
+  exists(Function f, DataFlow::Node read, DataFlow::Node invk, DataFlow::Node parm |
+    reachesReturn(f, read, cfg, summary) and
+    parameterPropReadStep(parm, read, prop, cfg, arg, invk, f, succ)
+  )
+}
+
+// all the non-recursive parts of parameterPropRead outlined into a precomputed predicate
+pragma[noinline]
+private predicate parameterPropReadStep(
+  DataFlow::SourceNode parm, DataFlow::Node read, string prop, DataFlow::Configuration cfg,
+  DataFlow::Node arg, DataFlow::Node invk, Function f, DataFlow::Node succ
+) {
+  (
     not f.isAsyncOrGenerator() and invk = succ
     or
     // load from an immediately awaited function call
     f.isAsync() and
     invk = getAwaitOperand(succ)
-  |
-    exists(DataFlow::SourceNode parm |
-      callInputStep(f, invk, arg, parm, cfg) and
-      (
-        reachesReturn(f, read, cfg, summary) and
-        read = parm.getAPropertyRead(prop)
-        or
-        reachesReturn(f, read, cfg, summary) and
-        exists(DataFlow::Node use | parm.flowsTo(use) | isAdditionalLoadStep(use, read, prop, cfg))
-      )
-    )
+  ) and
+  callInputStep(f, invk, arg, parm, cfg) and
+  (
+    read = parm.getAPropertyRead(prop)
+    or
+    exists(DataFlow::Node use | parm.flowsTo(use) | isAdditionalLoadStep(use, read, prop, cfg))
   )
 }
 
@@ -1672,6 +1688,7 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg, PathSum
  *
  * This predicate has been outlined from `onPath` to give the optimizer a hint about join-ordering.
  */
+pragma[noinline]
 private predicate onPathStep(
   DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary, PathSummary stepSummary,
   DataFlow::Node mid

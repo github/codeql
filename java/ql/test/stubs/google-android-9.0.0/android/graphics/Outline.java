@@ -21,6 +21,7 @@ public class Outline
     public void setEmpty(){}
     public void setOval(Rect p0){}
     public void setOval(int p0, int p1, int p2, int p3){}
+    public void setPath(Path p0){}
     public void setRect(Rect p0){}
     public void setRect(int p0, int p1, int p2, int p3){}
     public void setRoundRect(Rect p0, float p1){}

@@ -15,12 +15,7 @@ class CherryPyRequest extends TaintKind {
   }
 
   override TaintKind getTaintOfMethodResult(string name) {
-    (
-      name = "getHeader" or
-      name = "getCookie" or
-      name = "getUser" or
-      name = "getPassword"
-    ) and
+    name in ["getHeader", "getCookie", "getUser", "getPassword"] and
     result instanceof ExternalStringKind
   }
 }

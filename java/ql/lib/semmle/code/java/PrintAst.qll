@@ -665,7 +665,7 @@ final class GenericTypeNode extends PrintAstNode, TGenericTypeNode {
   override Location getLocation() { none() }
 
   override ElementNode getChild(int childIndex) {
-    result.getElement().(TypeVariable) = ty.getTypeParameter(childIndex)
+    result.getElement() = ty.getTypeParameter(childIndex)
   }
 
   /**
@@ -686,7 +686,7 @@ final class GenericCallableNode extends PrintAstNode, TGenericCallableNode {
   override string toString() { result = "(Generic Parameters)" }
 
   override ElementNode getChild(int childIndex) {
-    result.getElement().(TypeVariable) = c.getTypeParameter(childIndex)
+    result.getElement() = c.getTypeParameter(childIndex)
   }
 
   /**

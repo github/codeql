@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>An exported Android component that obtains a user-provided Intent and uses it to launch another component
+        can be exploited to obtain access to private, unexported components of the same app or to launch other apps' components
+        on behalf of the victim app.</p>
+    </overview>
+    <recommendation>
+        <p>Do not export components that start other components from a user-provided Intent. 
+        They can be made private by setting the <code>android:exported</code> property to <code>false</code> in the app's Android Manifest.</p>
+        <p>If this is not possible, restrict either which apps can send Intents to the affected component, or which components can be started from it.</p>
+    </recommendation>
+    <example>
+        <p>The following snippet contains three examples.
+        In the first example, an arbitrary component can be started from the externally provided <code>forward_intent</code> Intent.
+        In the second example, the destination component of the Intent is first checked to make sure it is safe.
+        In the third example, the component that created the Intent is first checked to make sure it comes from a trusted origin.</p>
+        <sample src="AndroidIntentRedirectionSample.java" />
+    </example>
+    <references>
+        <li>
+            Google:
+            <a href="https://support.google.com/faqs/answer/9267555?hl=en">Remediation for Intent Redirection Vulnerability</a>.
+        </li>
+        <li>
+            OWASP Mobile Security Testing Guide:
+            <a href="https://mobile-security.gitbook.io/mobile-security-testing-guide/android-testing-guide/0x05a-platform-overview#intents">Intents</a>.
+        </li>
+        <li>
+            Android Developers:
+            <a href="https://developer.android.com/guide/topics/manifest/activity-element#exported">The android:exported attribute</a>.
+        </li>
+    </references>
+</qhelp>

@@ -39,11 +39,7 @@ module TypeConfusionThroughParameterTampering {
   private class StringArrayAmbiguousMethodCall extends Sink {
     StringArrayAmbiguousMethodCall() {
       exists(string name, DataFlow::MethodCallNode mc |
-        name = "concat" or
-        name = "includes" or
-        name = "indexOf" or
-        name = "lastIndexOf" or
-        name = "slice"
+        name = ["concat", "includes", "indexOf", "lastIndexOf", "slice"]
       |
         mc.calls(this, name) and
         // ignore patterns that are innocent in practice

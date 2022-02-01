@@ -89,7 +89,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
       origin = CfgOrigin::fromCfgNode(forigin)
     )
     or
-    procedureReturnsNone(callee, obj, origin)
+    this.procedureReturnsNone(callee, obj, origin)
   }
 
   private predicate procedureReturnsNone(
@@ -382,7 +382,7 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
 /**
  * Class representing bound-methods.
  * Note that built-in methods, such as `[].append` are also represented as bound-methods.
- * Although built-in methods and bound-methods are distinct classes in CPython, their behaviour
+ * Although built-in methods and bound-methods are distinct classes in CPython, their behavior
  * is the same and we treat them identically.
  */
 class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {

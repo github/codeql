@@ -78,5 +78,5 @@ private predicate tracking_step(ControlFlowNode src, ControlFlowNode dest) {
   or
   tracked_call_step(src, dest)
   or
-  dest.refersTo(src.(Object))
+  dest.refersTo(src)
 }

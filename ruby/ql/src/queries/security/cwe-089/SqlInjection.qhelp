@@ -1,0 +1,64 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If a database query (such as a SQL or NoSQL query) is built from
+user-provided data without sufficient sanitization, a malicious user
+may be able to run malicious database queries.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Most database connector libraries offer a way of safely embedding
+untrusted data into a query by means of query parameters or
+prepared statements.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following Rails example, an <code>ActionController</code> class
+has a <code>text_bio</code> method to handle requests to fetch a biography
+for a specified user.
+</p>
+
+<p>
+The user is specified using a parameter, <code>user_name</code> provided by
+the client. This value is accessible using the <code>params</code> method.
+</p>
+
+<p>
+The method illustrates three different ways to construct and execute an SQL
+query to find the user by name.
+</p>
+
+<p>
+In the first case, the parameter <code>user_name</code> is inserted into an
+SQL fragment using string interpolation. The parameter is user-supplied and
+is not sanitized. An attacker could use this to construct SQL queries that
+were not intended to be executed here.
+</p>
+
+<p>
+The second case uses string concatenation and is vulnerable in the same way
+that the first case is.
+</p>
+
+<p>
+In the third case, the name is passed in a hash instead.
+<code>ActiveRecord</code> will construct a parameterized SQL query that is not
+vulnerable to SQL injection attacks.
+</p>
+
+<sample src="examples/SqlInjection.rb" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection</a>.</li>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">SQL Injection Prevention Cheat Sheet</a>.</li>
+</references>
+</qhelp>

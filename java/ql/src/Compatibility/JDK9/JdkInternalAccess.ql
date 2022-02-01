@@ -59,7 +59,7 @@ abstract class JdkInternalAccess extends Element {
 class JdkInternalTypeAccess extends JdkInternalAccess, TypeAccess {
   JdkInternalTypeAccess() { jdkInternalApi(this.getType().(RefType).getPackage().getName()) }
 
-  override string getAccessedApi() { result = getType().(RefType).getQualifiedName() }
+  override string getAccessedApi() { result = this.getType().(RefType).getQualifiedName() }
 
   override string getReplacement() {
     exists(RefType t | this.getType() = t |
@@ -111,16 +111,11 @@ predicate jdkPackage(Package p) {
     p.getName() = pkgName or
     p.getName().prefix(pkgName.length() + 1) = pkgName + "."
   |
-    pkgName = "com.sun" or
-    pkgName = "sun" or
-    pkgName = "java" or
-    pkgName = "javax" or
-    pkgName = "com.oracle.net" or
-    pkgName = "genstubs" or
-    pkgName = "jdk" or
-    pkgName = "build.tools" or
-    pkgName = "org.omg.CORBA" or
-    pkgName = "org.ietf.jgss"
+    pkgName =
+      [
+        "com.sun", "sun", "java", "javax", "com.oracle.net", "genstubs", "jdk", "build.tools",
+        "org.omg.CORBA", "org.ietf.jgss"
+      ]
   )
 }
 

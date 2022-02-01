@@ -46,12 +46,12 @@ abstract class NPMDependency extends Dependency {
   abstract Import getAnImport();
 
   override predicate info(string id, string v) {
-    id = getNPMPackageName() and
-    v = getVersion()
+    id = this.getNPMPackageName() and
+    v = this.getVersion()
   }
 
   override Locatable getAUse(string kind) {
-    exists(Import i | i = getAnImport() |
+    exists(Import i | i = this.getAnImport() |
       kind = "import" and result = i
       or
       kind = "use" and result = getATargetVariable(i).getAnAccess()
@@ -95,16 +95,16 @@ class BundledNPMDependency extends NPMDependency {
   private NPMPackage getPackage() { this = result.getAModule() }
 
   /** Gets the `package.json` of the package to which this module belongs. */
-  private PackageJSON getPackageJSON() { result = getPackage().getPackageJSON() }
+  private PackageJSON getPackageJSON() { result = this.getPackage().getPackageJSON() }
 
-  override string getNPMPackageName() { result = getPackageJSON().getPackageName() }
+  override string getNPMPackageName() { result = this.getPackageJSON().getPackageName() }
 
-  override string getVersion() { result = getPackageJSON().getVersion() }
+  override string getVersion() { result = this.getPackageJSON().getVersion() }
 
   override Import getAnImport() {
     this = result.getImportedModule() and
     // ignore intra-package imports; they do not induce dependencies
-    not result.getEnclosingModule() = getPackage().getAModule()
+    not result.getEnclosingModule() = this.getPackage().getAModule()
   }
 }
 
@@ -136,15 +136,15 @@ class ExternalNPMDependency extends NPMDependency {
   }
 
   override string getVersion() {
-    result = getVersionNumber()
+    result = this.getVersionNumber()
     or
     // if no version is specified or could not be parsed, report version `unknown`
-    not exists(getVersionNumber()) and
+    not exists(this.getVersionNumber()) and
     result = "unknown"
   }
 
   override Import getAnImport() {
-    exists(int depth | depth = importsDependency(result, getDeclaringPackage(), this) |
+    exists(int depth | depth = importsDependency(result, this.getDeclaringPackage(), this) |
       // restrict to those results for which this is the closest matching dependency
       depth = min(importsDependency(result, _, _))
     )
@@ -201,7 +201,7 @@ abstract class ScriptDependency extends Dependency {
     kind = "import" and
     result = this.getFile().(HTML::HtmlFile).getATopLevel()
     or
-    kind = "use" and result = getAnApiUse()
+    kind = "use" and result = this.getAnApiUse()
   }
 }
 

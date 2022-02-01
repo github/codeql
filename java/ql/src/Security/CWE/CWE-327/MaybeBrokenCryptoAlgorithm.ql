@@ -8,6 +8,7 @@
  * @id java/potentially-weak-cryptographic-algorithm
  * @tags security
  *       external/cwe/cwe-327
+ *       external/cwe/cwe-328
  */
 
 import java
@@ -18,14 +19,14 @@ import semmle.code.java.dispatch.VirtualDispatch
 import PathGraph
 
 private class ShortStringLiteral extends StringLiteral {
-  ShortStringLiteral() { getRepresentedString().length() < 100 }
+  ShortStringLiteral() { this.getValue().length() < 100 }
 }
 
 class InsecureAlgoLiteral extends ShortStringLiteral {
   InsecureAlgoLiteral() {
     // Algorithm identifiers should be at least two characters.
-    getRepresentedString().length() > 1 and
-    exists(string s | s = getRepresentedString() |
+    this.getValue().length() > 1 and
+    exists(string s | s = this.getValue() |
       not s.regexpMatch(getSecureAlgorithmRegex()) and
       // Exclude results covered by another query.
       not s.regexpMatch(getInsecureAlgorithmRegex())
@@ -72,4 +73,4 @@ where
   conf.hasFlowPath(source, sink)
 select c, source, sink,
   "Cryptographic algorithm $@ may not be secure, consider using a different algorithm.", s,
-  s.getRepresentedString()
+  s.getValue()

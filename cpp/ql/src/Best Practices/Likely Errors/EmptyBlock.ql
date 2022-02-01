@@ -81,9 +81,8 @@ class BlockOrNonChild extends Element {
 predicate emptyBlockContainsNonchild(BlockStmt b) {
   emptyBlock(_, b) and
   exists(BlockOrNonChild c, AffectedFile file |
-    c.(BlockOrNonChild).getStartRankIn(file) = 1 + b.(BlockOrNonChild).getStartRankIn(file) and
-    c.(BlockOrNonChild).getNonContiguousEndRankIn(file) <
-      b.(BlockOrNonChild).getNonContiguousEndRankIn(file)
+    c.getStartRankIn(file) = 1 + b.(BlockOrNonChild).getStartRankIn(file) and
+    c.getNonContiguousEndRankIn(file) < b.(BlockOrNonChild).getNonContiguousEndRankIn(file)
   )
 }
 

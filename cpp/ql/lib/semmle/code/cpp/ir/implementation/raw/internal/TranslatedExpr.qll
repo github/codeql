@@ -1032,7 +1032,7 @@ abstract class TranslatedConversion extends TranslatedNonConstantExpr {
 
   final override TranslatedElement getChild(int id) { id = 0 and result = this.getOperand() }
 
-  final TranslatedExpr getOperand() { result = getTranslatedExpr(expr.(Conversion).getExpr()) }
+  final TranslatedExpr getOperand() { result = getTranslatedExpr(expr.getExpr()) }
 }
 
 /**
@@ -1305,9 +1305,9 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
   }
 
   override Opcode getOpcode() {
-    result = binaryArithmeticOpcode(expr.(BinaryArithmeticOperation)) or
-    result = binaryBitwiseOpcode(expr.(BinaryBitwiseOperation)) or
-    result = comparisonOpcode(expr.(ComparisonOperation))
+    result = binaryArithmeticOpcode(expr) or
+    result = binaryBitwiseOpcode(expr) or
+    result = comparisonOpcode(expr)
   }
 
   override int getInstructionElementSize(InstructionTag tag) {

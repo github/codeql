@@ -57,10 +57,10 @@ namespace System
     // Generated from `System.AccessViolationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class AccessViolationException : System.SystemException
     {
-        public AccessViolationException(string message, System.Exception innerException) => throw null;
-        public AccessViolationException(string message) => throw null;
         public AccessViolationException() => throw null;
         protected AccessViolationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public AccessViolationException(string message) => throw null;
+        public AccessViolationException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.Action` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -117,32 +117,32 @@ namespace System
     // Generated from `System.Activator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class Activator
     {
-        public static object CreateInstance(System.Type type, params object[] args) => throw null;
+        public static object CreateInstance(System.Type type) => throw null;
+        public static object CreateInstance(System.Type type, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, object[] args, System.Globalization.CultureInfo culture) => throw null;
+        public static object CreateInstance(System.Type type, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, object[] args, System.Globalization.CultureInfo culture, object[] activationAttributes) => throw null;
         public static object CreateInstance(System.Type type, object[] args, object[] activationAttributes) => throw null;
         public static object CreateInstance(System.Type type, bool nonPublic) => throw null;
-        public static object CreateInstance(System.Type type, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, object[] args, System.Globalization.CultureInfo culture, object[] activationAttributes) => throw null;
-        public static object CreateInstance(System.Type type, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, object[] args, System.Globalization.CultureInfo culture) => throw null;
-        public static object CreateInstance(System.Type type) => throw null;
-        public static T CreateInstance<T>() => throw null;
+        public static object CreateInstance(System.Type type, params object[] args) => throw null;
+        public static System.Runtime.Remoting.ObjectHandle CreateInstance(string assemblyName, string typeName) => throw null;
         public static System.Runtime.Remoting.ObjectHandle CreateInstance(string assemblyName, string typeName, object[] activationAttributes) => throw null;
         public static System.Runtime.Remoting.ObjectHandle CreateInstance(string assemblyName, string typeName, bool ignoreCase, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, object[] args, System.Globalization.CultureInfo culture, object[] activationAttributes) => throw null;
-        public static System.Runtime.Remoting.ObjectHandle CreateInstance(string assemblyName, string typeName) => throw null;
+        public static T CreateInstance<T>() => throw null;
+        public static System.Runtime.Remoting.ObjectHandle CreateInstanceFrom(string assemblyFile, string typeName) => throw null;
         public static System.Runtime.Remoting.ObjectHandle CreateInstanceFrom(string assemblyFile, string typeName, object[] activationAttributes) => throw null;
         public static System.Runtime.Remoting.ObjectHandle CreateInstanceFrom(string assemblyFile, string typeName, bool ignoreCase, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, object[] args, System.Globalization.CultureInfo culture, object[] activationAttributes) => throw null;
-        public static System.Runtime.Remoting.ObjectHandle CreateInstanceFrom(string assemblyFile, string typeName) => throw null;
     }
 
     // Generated from `System.AggregateException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class AggregateException : System.Exception
     {
-        public AggregateException(string message, params System.Exception[] innerExceptions) => throw null;
+        public AggregateException() => throw null;
+        public AggregateException(System.Collections.Generic.IEnumerable<System.Exception> innerExceptions) => throw null;
+        protected AggregateException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public AggregateException(params System.Exception[] innerExceptions) => throw null;
+        public AggregateException(string message) => throw null;
         public AggregateException(string message, System.Exception innerException) => throw null;
         public AggregateException(string message, System.Collections.Generic.IEnumerable<System.Exception> innerExceptions) => throw null;
-        public AggregateException(string message) => throw null;
-        public AggregateException(params System.Exception[] innerExceptions) => throw null;
-        public AggregateException(System.Collections.Generic.IEnumerable<System.Exception> innerExceptions) => throw null;
-        public AggregateException() => throw null;
-        protected AggregateException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public AggregateException(string message, params System.Exception[] innerExceptions) => throw null;
         public System.AggregateException Flatten() => throw null;
         public override System.Exception GetBaseException() => throw null;
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -173,27 +173,27 @@ namespace System
         public void ClearPrivatePath() => throw null;
         public void ClearShadowCopyPath() => throw null;
         public static System.AppDomain CreateDomain(string friendlyName) => throw null;
+        public System.Runtime.Remoting.ObjectHandle CreateInstance(string assemblyName, string typeName) => throw null;
         public System.Runtime.Remoting.ObjectHandle CreateInstance(string assemblyName, string typeName, object[] activationAttributes) => throw null;
         public System.Runtime.Remoting.ObjectHandle CreateInstance(string assemblyName, string typeName, bool ignoreCase, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, object[] args, System.Globalization.CultureInfo culture, object[] activationAttributes) => throw null;
-        public System.Runtime.Remoting.ObjectHandle CreateInstance(string assemblyName, string typeName) => throw null;
+        public object CreateInstanceAndUnwrap(string assemblyName, string typeName) => throw null;
         public object CreateInstanceAndUnwrap(string assemblyName, string typeName, object[] activationAttributes) => throw null;
         public object CreateInstanceAndUnwrap(string assemblyName, string typeName, bool ignoreCase, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, object[] args, System.Globalization.CultureInfo culture, object[] activationAttributes) => throw null;
-        public object CreateInstanceAndUnwrap(string assemblyName, string typeName) => throw null;
+        public System.Runtime.Remoting.ObjectHandle CreateInstanceFrom(string assemblyFile, string typeName) => throw null;
         public System.Runtime.Remoting.ObjectHandle CreateInstanceFrom(string assemblyFile, string typeName, object[] activationAttributes) => throw null;
         public System.Runtime.Remoting.ObjectHandle CreateInstanceFrom(string assemblyFile, string typeName, bool ignoreCase, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, object[] args, System.Globalization.CultureInfo culture, object[] activationAttributes) => throw null;
-        public System.Runtime.Remoting.ObjectHandle CreateInstanceFrom(string assemblyFile, string typeName) => throw null;
+        public object CreateInstanceFromAndUnwrap(string assemblyFile, string typeName) => throw null;
         public object CreateInstanceFromAndUnwrap(string assemblyFile, string typeName, object[] activationAttributes) => throw null;
         public object CreateInstanceFromAndUnwrap(string assemblyFile, string typeName, bool ignoreCase, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, object[] args, System.Globalization.CultureInfo culture, object[] activationAttributes) => throw null;
-        public object CreateInstanceFromAndUnwrap(string assemblyFile, string typeName) => throw null;
         public static System.AppDomain CurrentDomain { get => throw null; }
         public event System.EventHandler DomainUnload;
         public string DynamicDirectory { get => throw null; }
-        public int ExecuteAssembly(string assemblyFile, string[] args, System.Byte[] hashValue, System.Configuration.Assemblies.AssemblyHashAlgorithm hashAlgorithm) => throw null;
-        public int ExecuteAssembly(string assemblyFile, string[] args) => throw null;
         public int ExecuteAssembly(string assemblyFile) => throw null;
-        public int ExecuteAssemblyByName(string assemblyName, params string[] args) => throw null;
-        public int ExecuteAssemblyByName(string assemblyName) => throw null;
+        public int ExecuteAssembly(string assemblyFile, string[] args) => throw null;
+        public int ExecuteAssembly(string assemblyFile, string[] args, System.Byte[] hashValue, System.Configuration.Assemblies.AssemblyHashAlgorithm hashAlgorithm) => throw null;
         public int ExecuteAssemblyByName(System.Reflection.AssemblyName assemblyName, params string[] args) => throw null;
+        public int ExecuteAssemblyByName(string assemblyName) => throw null;
+        public int ExecuteAssemblyByName(string assemblyName, params string[] args) => throw null;
         public event System.EventHandler<System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs> FirstChanceException;
         public string FriendlyName { get => throw null; }
         public System.Reflection.Assembly[] GetAssemblies() => throw null;
@@ -205,10 +205,10 @@ namespace System
         public bool IsFinalizingForUnload() => throw null;
         public bool IsFullyTrusted { get => throw null; }
         public bool IsHomogenous { get => throw null; }
-        public System.Reflection.Assembly Load(string assemblyString) => throw null;
         public System.Reflection.Assembly Load(System.Reflection.AssemblyName assemblyRef) => throw null;
-        public System.Reflection.Assembly Load(System.Byte[] rawAssembly, System.Byte[] rawSymbolStore) => throw null;
         public System.Reflection.Assembly Load(System.Byte[] rawAssembly) => throw null;
+        public System.Reflection.Assembly Load(System.Byte[] rawAssembly, System.Byte[] rawSymbolStore) => throw null;
+        public System.Reflection.Assembly Load(string assemblyString) => throw null;
         public static bool MonitoringIsEnabled { get => throw null; set => throw null; }
         public System.Int64 MonitoringSurvivedMemorySize { get => throw null; }
         public static System.Int64 MonitoringSurvivedProcessMemorySize { get => throw null; }
@@ -245,19 +245,19 @@ namespace System
     // Generated from `System.AppDomainUnloadedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class AppDomainUnloadedException : System.SystemException
     {
-        public AppDomainUnloadedException(string message, System.Exception innerException) => throw null;
-        public AppDomainUnloadedException(string message) => throw null;
         public AppDomainUnloadedException() => throw null;
         protected AppDomainUnloadedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public AppDomainUnloadedException(string message) => throw null;
+        public AppDomainUnloadedException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.ApplicationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ApplicationException : System.Exception
     {
-        public ApplicationException(string message, System.Exception innerException) => throw null;
-        public ApplicationException(string message) => throw null;
         public ApplicationException() => throw null;
         protected ApplicationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public ApplicationException(string message) => throw null;
+        public ApplicationException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.ApplicationId` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -278,14 +278,14 @@ namespace System
     // Generated from `System.ArgIterator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ArgIterator
     {
-        unsafe public ArgIterator(System.RuntimeArgumentHandle arglist, void* ptr) => throw null;
-        public ArgIterator(System.RuntimeArgumentHandle arglist) => throw null;
         // Stub generator skipped constructor 
+        public ArgIterator(System.RuntimeArgumentHandle arglist) => throw null;
+        unsafe public ArgIterator(System.RuntimeArgumentHandle arglist, void* ptr) => throw null;
         public void End() => throw null;
         public override bool Equals(object o) => throw null;
         public override int GetHashCode() => throw null;
-        public System.TypedReference GetNextArg(System.RuntimeTypeHandle rth) => throw null;
         public System.TypedReference GetNextArg() => throw null;
+        public System.TypedReference GetNextArg(System.RuntimeTypeHandle rth) => throw null;
         public System.RuntimeTypeHandle GetNextArgType() => throw null;
         public int GetRemainingCount() => throw null;
     }
@@ -293,12 +293,12 @@ namespace System
     // Generated from `System.ArgumentException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ArgumentException : System.SystemException
     {
-        public ArgumentException(string message, string paramName, System.Exception innerException) => throw null;
-        public ArgumentException(string message, string paramName) => throw null;
-        public ArgumentException(string message, System.Exception innerException) => throw null;
-        public ArgumentException(string message) => throw null;
         public ArgumentException() => throw null;
         protected ArgumentException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public ArgumentException(string message) => throw null;
+        public ArgumentException(string message, System.Exception innerException) => throw null;
+        public ArgumentException(string message, string paramName) => throw null;
+        public ArgumentException(string message, string paramName, System.Exception innerException) => throw null;
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         public override string Message { get => throw null; }
         public virtual string ParamName { get => throw null; }
@@ -307,23 +307,23 @@ namespace System
     // Generated from `System.ArgumentNullException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ArgumentNullException : System.ArgumentException
     {
-        public ArgumentNullException(string paramName, string message) => throw null;
-        public ArgumentNullException(string paramName) => throw null;
-        public ArgumentNullException(string message, System.Exception innerException) => throw null;
         public ArgumentNullException() => throw null;
         protected ArgumentNullException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public ArgumentNullException(string paramName) => throw null;
+        public ArgumentNullException(string message, System.Exception innerException) => throw null;
+        public ArgumentNullException(string paramName, string message) => throw null;
     }
 
     // Generated from `System.ArgumentOutOfRangeException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ArgumentOutOfRangeException : System.ArgumentException
     {
         public virtual object ActualValue { get => throw null; }
-        public ArgumentOutOfRangeException(string paramName, string message) => throw null;
-        public ArgumentOutOfRangeException(string paramName, object actualValue, string message) => throw null;
-        public ArgumentOutOfRangeException(string paramName) => throw null;
-        public ArgumentOutOfRangeException(string message, System.Exception innerException) => throw null;
         public ArgumentOutOfRangeException() => throw null;
         protected ArgumentOutOfRangeException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public ArgumentOutOfRangeException(string paramName) => throw null;
+        public ArgumentOutOfRangeException(string message, System.Exception innerException) => throw null;
+        public ArgumentOutOfRangeException(string paramName, object actualValue, string message) => throw null;
+        public ArgumentOutOfRangeException(string paramName, string message) => throw null;
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         public override string Message { get => throw null; }
     }
@@ -331,25 +331,25 @@ namespace System
     // Generated from `System.ArithmeticException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ArithmeticException : System.SystemException
     {
-        public ArithmeticException(string message, System.Exception innerException) => throw null;
-        public ArithmeticException(string message) => throw null;
         public ArithmeticException() => throw null;
         protected ArithmeticException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public ArithmeticException(string message) => throw null;
+        public ArithmeticException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.Array` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public abstract class Array : System.ICloneable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable, System.Collections.IList, System.Collections.IEnumerable, System.Collections.ICollection
+    public abstract class Array : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.ICloneable
     {
         int System.Collections.IList.Add(object value) => throw null;
         public static System.Collections.ObjectModel.ReadOnlyCollection<T> AsReadOnly<T>(T[] array) => throw null;
-        public static int BinarySearch<T>(T[] array, int index, int length, T value, System.Collections.Generic.IComparer<T> comparer) => throw null;
-        public static int BinarySearch<T>(T[] array, int index, int length, T value) => throw null;
-        public static int BinarySearch<T>(T[] array, T value, System.Collections.Generic.IComparer<T> comparer) => throw null;
-        public static int BinarySearch<T>(T[] array, T value) => throw null;
-        public static int BinarySearch(System.Array array, object value, System.Collections.IComparer comparer) => throw null;
-        public static int BinarySearch(System.Array array, object value) => throw null;
-        public static int BinarySearch(System.Array array, int index, int length, object value, System.Collections.IComparer comparer) => throw null;
         public static int BinarySearch(System.Array array, int index, int length, object value) => throw null;
+        public static int BinarySearch(System.Array array, int index, int length, object value, System.Collections.IComparer comparer) => throw null;
+        public static int BinarySearch(System.Array array, object value) => throw null;
+        public static int BinarySearch(System.Array array, object value, System.Collections.IComparer comparer) => throw null;
+        public static int BinarySearch<T>(T[] array, T value) => throw null;
+        public static int BinarySearch<T>(T[] array, T value, System.Collections.Generic.IComparer<T> comparer) => throw null;
+        public static int BinarySearch<T>(T[] array, int index, int length, T value) => throw null;
+        public static int BinarySearch<T>(T[] array, int index, int length, T value, System.Collections.Generic.IComparer<T> comparer) => throw null;
         void System.Collections.IList.Clear() => throw null;
         public static void Clear(System.Array array, int index, int length) => throw null;
         public object Clone() => throw null;
@@ -357,33 +357,33 @@ namespace System
         public static void ConstrainedCopy(System.Array sourceArray, int sourceIndex, System.Array destinationArray, int destinationIndex, int length) => throw null;
         bool System.Collections.IList.Contains(object value) => throw null;
         public static TOutput[] ConvertAll<TInput, TOutput>(TInput[] array, System.Converter<TInput, TOutput> converter) => throw null;
-        public static void Copy(System.Array sourceArray, int sourceIndex, System.Array destinationArray, int destinationIndex, int length) => throw null;
-        public static void Copy(System.Array sourceArray, System.Int64 sourceIndex, System.Array destinationArray, System.Int64 destinationIndex, System.Int64 length) => throw null;
         public static void Copy(System.Array sourceArray, System.Array destinationArray, int length) => throw null;
         public static void Copy(System.Array sourceArray, System.Array destinationArray, System.Int64 length) => throw null;
+        public static void Copy(System.Array sourceArray, int sourceIndex, System.Array destinationArray, int destinationIndex, int length) => throw null;
+        public static void Copy(System.Array sourceArray, System.Int64 sourceIndex, System.Array destinationArray, System.Int64 destinationIndex, System.Int64 length) => throw null;
         public void CopyTo(System.Array array, int index) => throw null;
         public void CopyTo(System.Array array, System.Int64 index) => throw null;
         int System.Collections.ICollection.Count { get => throw null; }
+        public static System.Array CreateInstance(System.Type elementType, int[] lengths, int[] lowerBounds) => throw null;
+        public static System.Array CreateInstance(System.Type elementType, int length) => throw null;
+        public static System.Array CreateInstance(System.Type elementType, int length1, int length2) => throw null;
+        public static System.Array CreateInstance(System.Type elementType, int length1, int length2, int length3) => throw null;
         public static System.Array CreateInstance(System.Type elementType, params int[] lengths) => throw null;
         public static System.Array CreateInstance(System.Type elementType, params System.Int64[] lengths) => throw null;
-        public static System.Array CreateInstance(System.Type elementType, int[] lengths, int[] lowerBounds) => throw null;
-        public static System.Array CreateInstance(System.Type elementType, int length1, int length2, int length3) => throw null;
-        public static System.Array CreateInstance(System.Type elementType, int length1, int length2) => throw null;
-        public static System.Array CreateInstance(System.Type elementType, int length) => throw null;
         public static T[] Empty<T>() => throw null;
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public static bool Exists<T>(T[] array, System.Predicate<T> match) => throw null;
-        public static void Fill<T>(T[] array, T value, int startIndex, int count) => throw null;
         public static void Fill<T>(T[] array, T value) => throw null;
+        public static void Fill<T>(T[] array, T value, int startIndex, int count) => throw null;
         public static T Find<T>(T[] array, System.Predicate<T> match) => throw null;
         public static T[] FindAll<T>(T[] array, System.Predicate<T> match) => throw null;
-        public static int FindIndex<T>(T[] array, int startIndex, int count, System.Predicate<T> match) => throw null;
-        public static int FindIndex<T>(T[] array, int startIndex, System.Predicate<T> match) => throw null;
         public static int FindIndex<T>(T[] array, System.Predicate<T> match) => throw null;
+        public static int FindIndex<T>(T[] array, int startIndex, System.Predicate<T> match) => throw null;
+        public static int FindIndex<T>(T[] array, int startIndex, int count, System.Predicate<T> match) => throw null;
         public static T FindLast<T>(T[] array, System.Predicate<T> match) => throw null;
-        public static int FindLastIndex<T>(T[] array, int startIndex, int count, System.Predicate<T> match) => throw null;
-        public static int FindLastIndex<T>(T[] array, int startIndex, System.Predicate<T> match) => throw null;
         public static int FindLastIndex<T>(T[] array, System.Predicate<T> match) => throw null;
+        public static int FindLastIndex<T>(T[] array, int startIndex, System.Predicate<T> match) => throw null;
+        public static int FindLastIndex<T>(T[] array, int startIndex, int count, System.Predicate<T> match) => throw null;
         public static void ForEach<T>(T[] array, System.Action<T> action) => throw null;
         public System.Collections.IEnumerator GetEnumerator() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
@@ -391,91 +391,77 @@ namespace System
         public System.Int64 GetLongLength(int dimension) => throw null;
         public int GetLowerBound(int dimension) => throw null;
         public int GetUpperBound(int dimension) => throw null;
+        public object GetValue(int index) => throw null;
+        public object GetValue(int index1, int index2) => throw null;
+        public object GetValue(int index1, int index2, int index3) => throw null;
+        public object GetValue(System.Int64 index) => throw null;
+        public object GetValue(System.Int64 index1, System.Int64 index2) => throw null;
+        public object GetValue(System.Int64 index1, System.Int64 index2, System.Int64 index3) => throw null;
         public object GetValue(params int[] indices) => throw null;
         public object GetValue(params System.Int64[] indices) => throw null;
-        public object GetValue(int index1, int index2, int index3) => throw null;
-        public object GetValue(int index1, int index2) => throw null;
-        public object GetValue(int index) => throw null;
-        public object GetValue(System.Int64 index1, System.Int64 index2, System.Int64 index3) => throw null;
-        public object GetValue(System.Int64 index1, System.Int64 index2) => throw null;
-        public object GetValue(System.Int64 index) => throw null;
-        public static int IndexOf<T>(T[] array, T value, int startIndex, int count) => throw null;
-        public static int IndexOf<T>(T[] array, T value, int startIndex) => throw null;
-        public static int IndexOf<T>(T[] array, T value) => throw null;
-        public static int IndexOf(System.Array array, object value, int startIndex, int count) => throw null;
-        public static int IndexOf(System.Array array, object value, int startIndex) => throw null;
         public static int IndexOf(System.Array array, object value) => throw null;
+        public static int IndexOf(System.Array array, object value, int startIndex) => throw null;
+        public static int IndexOf(System.Array array, object value, int startIndex, int count) => throw null;
         int System.Collections.IList.IndexOf(object value) => throw null;
+        public static int IndexOf<T>(T[] array, T value) => throw null;
+        public static int IndexOf<T>(T[] array, T value, int startIndex) => throw null;
+        public static int IndexOf<T>(T[] array, T value, int startIndex, int count) => throw null;
         public void Initialize() => throw null;
         void System.Collections.IList.Insert(int index, object value) => throw null;
         public bool IsFixedSize { get => throw null; }
         public bool IsReadOnly { get => throw null; }
         public bool IsSynchronized { get => throw null; }
         object System.Collections.IList.this[int index] { get => throw null; set => throw null; }
-        public static int LastIndexOf<T>(T[] array, T value, int startIndex, int count) => throw null;
-        public static int LastIndexOf<T>(T[] array, T value, int startIndex) => throw null;
-        public static int LastIndexOf<T>(T[] array, T value) => throw null;
-        public static int LastIndexOf(System.Array array, object value, int startIndex, int count) => throw null;
-        public static int LastIndexOf(System.Array array, object value, int startIndex) => throw null;
         public static int LastIndexOf(System.Array array, object value) => throw null;
+        public static int LastIndexOf(System.Array array, object value, int startIndex) => throw null;
+        public static int LastIndexOf(System.Array array, object value, int startIndex, int count) => throw null;
+        public static int LastIndexOf<T>(T[] array, T value) => throw null;
+        public static int LastIndexOf<T>(T[] array, T value, int startIndex) => throw null;
+        public static int LastIndexOf<T>(T[] array, T value, int startIndex, int count) => throw null;
         public int Length { get => throw null; }
         public System.Int64 LongLength { get => throw null; }
         public int Rank { get => throw null; }
         void System.Collections.IList.Remove(object value) => throw null;
         void System.Collections.IList.RemoveAt(int index) => throw null;
         public static void Resize<T>(ref T[] array, int newSize) => throw null;
-        public static void Reverse<T>(T[] array, int index, int length) => throw null;
-        public static void Reverse<T>(T[] array) => throw null;
-        public static void Reverse(System.Array array, int index, int length) => throw null;
         public static void Reverse(System.Array array) => throw null;
+        public static void Reverse(System.Array array, int index, int length) => throw null;
+        public static void Reverse<T>(T[] array) => throw null;
+        public static void Reverse<T>(T[] array, int index, int length) => throw null;
+        public void SetValue(object value, int index) => throw null;
+        public void SetValue(object value, int index1, int index2) => throw null;
+        public void SetValue(object value, int index1, int index2, int index3) => throw null;
+        public void SetValue(object value, System.Int64 index) => throw null;
+        public void SetValue(object value, System.Int64 index1, System.Int64 index2) => throw null;
+        public void SetValue(object value, System.Int64 index1, System.Int64 index2, System.Int64 index3) => throw null;
         public void SetValue(object value, params int[] indices) => throw null;
         public void SetValue(object value, params System.Int64[] indices) => throw null;
-        public void SetValue(object value, int index1, int index2, int index3) => throw null;
-        public void SetValue(object value, int index1, int index2) => throw null;
-        public void SetValue(object value, int index) => throw null;
-        public void SetValue(object value, System.Int64 index1, System.Int64 index2, System.Int64 index3) => throw null;
-        public void SetValue(object value, System.Int64 index1, System.Int64 index2) => throw null;
-        public void SetValue(object value, System.Int64 index) => throw null;
-        public static void Sort<TKey, TValue>(TKey[] keys, TValue[] items, int index, int length, System.Collections.Generic.IComparer<TKey> comparer) => throw null;
-        public static void Sort<TKey, TValue>(TKey[] keys, TValue[] items, int index, int length) => throw null;
-        public static void Sort<TKey, TValue>(TKey[] keys, TValue[] items, System.Collections.Generic.IComparer<TKey> comparer) => throw null;
-        public static void Sort<TKey, TValue>(TKey[] keys, TValue[] items) => throw null;
-        public static void Sort<T>(T[] array, int index, int length, System.Collections.Generic.IComparer<T> comparer) => throw null;
-        public static void Sort<T>(T[] array, int index, int length) => throw null;
+        public static void Sort(System.Array array) => throw null;
+        public static void Sort(System.Array keys, System.Array items) => throw null;
+        public static void Sort(System.Array keys, System.Array items, System.Collections.IComparer comparer) => throw null;
+        public static void Sort(System.Array keys, System.Array items, int index, int length) => throw null;
+        public static void Sort(System.Array keys, System.Array items, int index, int length, System.Collections.IComparer comparer) => throw null;
+        public static void Sort(System.Array array, System.Collections.IComparer comparer) => throw null;
+        public static void Sort(System.Array array, int index, int length) => throw null;
+        public static void Sort(System.Array array, int index, int length, System.Collections.IComparer comparer) => throw null;
+        public static void Sort<T>(T[] array) => throw null;
         public static void Sort<T>(T[] array, System.Comparison<T> comparison) => throw null;
         public static void Sort<T>(T[] array, System.Collections.Generic.IComparer<T> comparer) => throw null;
-        public static void Sort<T>(T[] array) => throw null;
-        public static void Sort(System.Array keys, System.Array items, int index, int length, System.Collections.IComparer comparer) => throw null;
-        public static void Sort(System.Array keys, System.Array items, int index, int length) => throw null;
-        public static void Sort(System.Array keys, System.Array items, System.Collections.IComparer comparer) => throw null;
-        public static void Sort(System.Array keys, System.Array items) => throw null;
-        public static void Sort(System.Array array, int index, int length, System.Collections.IComparer comparer) => throw null;
-        public static void Sort(System.Array array, int index, int length) => throw null;
-        public static void Sort(System.Array array, System.Collections.IComparer comparer) => throw null;
-        public static void Sort(System.Array array) => throw null;
+        public static void Sort<T>(T[] array, int index, int length) => throw null;
+        public static void Sort<T>(T[] array, int index, int length, System.Collections.Generic.IComparer<T> comparer) => throw null;
+        public static void Sort<TKey, TValue>(TKey[] keys, TValue[] items) => throw null;
+        public static void Sort<TKey, TValue>(TKey[] keys, TValue[] items, System.Collections.Generic.IComparer<TKey> comparer) => throw null;
+        public static void Sort<TKey, TValue>(TKey[] keys, TValue[] items, int index, int length) => throw null;
+        public static void Sort<TKey, TValue>(TKey[] keys, TValue[] items, int index, int length, System.Collections.Generic.IComparer<TKey> comparer) => throw null;
         public object SyncRoot { get => throw null; }
         public static bool TrueForAll<T>(T[] array, System.Predicate<T> match) => throw null;
     }
 
     // Generated from `System.ArraySegment<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct ArraySegment<T> : System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IList<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.ICollection<T>
+    public struct ArraySegment<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>, System.Collections.IEnumerable
     {
-        public static bool operator !=(System.ArraySegment<T> a, System.ArraySegment<T> b) => throw null;
-        public static bool operator ==(System.ArraySegment<T> a, System.ArraySegment<T> b) => throw null;
-        void System.Collections.Generic.ICollection<T>.Add(T item) => throw null;
-        public T[] Array { get => throw null; }
-        public ArraySegment(T[] array, int offset, int count) => throw null;
-        public ArraySegment(T[] array) => throw null;
-        // Stub generator skipped constructor 
-        void System.Collections.Generic.ICollection<T>.Clear() => throw null;
-        bool System.Collections.Generic.ICollection<T>.Contains(T item) => throw null;
-        public void CopyTo(T[] destination, int destinationIndex) => throw null;
-        public void CopyTo(T[] destination) => throw null;
-        public void CopyTo(System.ArraySegment<T> destination) => throw null;
-        public int Count { get => throw null; }
-        public static System.ArraySegment<T> Empty { get => throw null; }
         // Generated from `System.ArraySegment<>+Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<T>
+        public struct Enumerator : System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator, System.IDisposable
         {
             public T Current { get => throw null; }
             object System.Collections.IEnumerator.Current { get => throw null; }
@@ -486,23 +472,37 @@ namespace System
         }
 
 
-        public override bool Equals(object obj) => throw null;
+        public static bool operator !=(System.ArraySegment<T> a, System.ArraySegment<T> b) => throw null;
+        public static bool operator ==(System.ArraySegment<T> a, System.ArraySegment<T> b) => throw null;
+        void System.Collections.Generic.ICollection<T>.Add(T item) => throw null;
+        public T[] Array { get => throw null; }
+        // Stub generator skipped constructor 
+        public ArraySegment(T[] array) => throw null;
+        public ArraySegment(T[] array, int offset, int count) => throw null;
+        void System.Collections.Generic.ICollection<T>.Clear() => throw null;
+        bool System.Collections.Generic.ICollection<T>.Contains(T item) => throw null;
+        public void CopyTo(System.ArraySegment<T> destination) => throw null;
+        public void CopyTo(T[] destination) => throw null;
+        public void CopyTo(T[] destination, int destinationIndex) => throw null;
+        public int Count { get => throw null; }
+        public static System.ArraySegment<T> Empty { get => throw null; }
         public bool Equals(System.ArraySegment<T> obj) => throw null;
+        public override bool Equals(object obj) => throw null;
         public System.ArraySegment<T>.Enumerator GetEnumerator() => throw null;
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
         System.Collections.Generic.IEnumerator<T> System.Collections.Generic.IEnumerable<T>.GetEnumerator() => throw null;
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.Generic.IList<T>.IndexOf(T item) => throw null;
         void System.Collections.Generic.IList<T>.Insert(int index, T item) => throw null;
         bool System.Collections.Generic.ICollection<T>.IsReadOnly { get => throw null; }
         public T this[int index] { get => throw null; set => throw null; }
-        T System.Collections.Generic.IReadOnlyList<T>.this[int index] { get => throw null; }
         T System.Collections.Generic.IList<T>.this[int index] { get => throw null; set => throw null; }
+        T System.Collections.Generic.IReadOnlyList<T>.this[int index] { get => throw null; }
         public int Offset { get => throw null; }
         bool System.Collections.Generic.ICollection<T>.Remove(T item) => throw null;
         void System.Collections.Generic.IList<T>.RemoveAt(int index) => throw null;
-        public System.ArraySegment<T> Slice(int index, int count) => throw null;
         public System.ArraySegment<T> Slice(int index) => throw null;
+        public System.ArraySegment<T> Slice(int index, int count) => throw null;
         public T[] ToArray() => throw null;
         public static implicit operator System.ArraySegment<T>(T[] array) => throw null;
     }
@@ -510,10 +510,10 @@ namespace System
     // Generated from `System.ArrayTypeMismatchException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ArrayTypeMismatchException : System.SystemException
     {
-        public ArrayTypeMismatchException(string message, System.Exception innerException) => throw null;
-        public ArrayTypeMismatchException(string message) => throw null;
         public ArrayTypeMismatchException() => throw null;
         protected ArrayTypeMismatchException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public ArrayTypeMismatchException(string message) => throw null;
+        public ArrayTypeMismatchException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.AssemblyLoadEventArgs` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -534,40 +534,40 @@ namespace System
     {
         protected Attribute() => throw null;
         public override bool Equals(object obj) => throw null;
-        public static System.Attribute GetCustomAttribute(System.Reflection.ParameterInfo element, System.Type attributeType, bool inherit) => throw null;
-        public static System.Attribute GetCustomAttribute(System.Reflection.ParameterInfo element, System.Type attributeType) => throw null;
-        public static System.Attribute GetCustomAttribute(System.Reflection.Module element, System.Type attributeType, bool inherit) => throw null;
-        public static System.Attribute GetCustomAttribute(System.Reflection.Module element, System.Type attributeType) => throw null;
-        public static System.Attribute GetCustomAttribute(System.Reflection.MemberInfo element, System.Type attributeType, bool inherit) => throw null;
-        public static System.Attribute GetCustomAttribute(System.Reflection.MemberInfo element, System.Type attributeType) => throw null;
-        public static System.Attribute GetCustomAttribute(System.Reflection.Assembly element, System.Type attributeType, bool inherit) => throw null;
         public static System.Attribute GetCustomAttribute(System.Reflection.Assembly element, System.Type attributeType) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.ParameterInfo element, bool inherit) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.ParameterInfo element, System.Type attributeType, bool inherit) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.ParameterInfo element, System.Type attributeType) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.ParameterInfo element) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.Module element, bool inherit) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.Module element, System.Type attributeType, bool inherit) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.Module element, System.Type attributeType) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.Module element) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element, bool inherit) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element, System.Type type, bool inherit) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element, System.Type type) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.Assembly element, bool inherit) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.Assembly element, System.Type attributeType, bool inherit) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.Assembly element, System.Type attributeType) => throw null;
+        public static System.Attribute GetCustomAttribute(System.Reflection.Assembly element, System.Type attributeType, bool inherit) => throw null;
+        public static System.Attribute GetCustomAttribute(System.Reflection.MemberInfo element, System.Type attributeType) => throw null;
+        public static System.Attribute GetCustomAttribute(System.Reflection.MemberInfo element, System.Type attributeType, bool inherit) => throw null;
+        public static System.Attribute GetCustomAttribute(System.Reflection.Module element, System.Type attributeType) => throw null;
+        public static System.Attribute GetCustomAttribute(System.Reflection.Module element, System.Type attributeType, bool inherit) => throw null;
+        public static System.Attribute GetCustomAttribute(System.Reflection.ParameterInfo element, System.Type attributeType) => throw null;
+        public static System.Attribute GetCustomAttribute(System.Reflection.ParameterInfo element, System.Type attributeType, bool inherit) => throw null;
         public static System.Attribute[] GetCustomAttributes(System.Reflection.Assembly element) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.Assembly element, System.Type attributeType) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.Assembly element, System.Type attributeType, bool inherit) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.Assembly element, bool inherit) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element, System.Type type) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element, System.Type type, bool inherit) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element, bool inherit) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.Module element) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.Module element, System.Type attributeType) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.Module element, System.Type attributeType, bool inherit) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.Module element, bool inherit) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.ParameterInfo element) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.ParameterInfo element, System.Type attributeType) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.ParameterInfo element, System.Type attributeType, bool inherit) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.ParameterInfo element, bool inherit) => throw null;
         public override int GetHashCode() => throw null;
         public virtual bool IsDefaultAttribute() => throw null;
-        public static bool IsDefined(System.Reflection.ParameterInfo element, System.Type attributeType, bool inherit) => throw null;
-        public static bool IsDefined(System.Reflection.ParameterInfo element, System.Type attributeType) => throw null;
-        public static bool IsDefined(System.Reflection.Module element, System.Type attributeType, bool inherit) => throw null;
-        public static bool IsDefined(System.Reflection.Module element, System.Type attributeType) => throw null;
-        public static bool IsDefined(System.Reflection.MemberInfo element, System.Type attributeType, bool inherit) => throw null;
-        public static bool IsDefined(System.Reflection.MemberInfo element, System.Type attributeType) => throw null;
-        public static bool IsDefined(System.Reflection.Assembly element, System.Type attributeType, bool inherit) => throw null;
         public static bool IsDefined(System.Reflection.Assembly element, System.Type attributeType) => throw null;
+        public static bool IsDefined(System.Reflection.Assembly element, System.Type attributeType, bool inherit) => throw null;
+        public static bool IsDefined(System.Reflection.MemberInfo element, System.Type attributeType) => throw null;
+        public static bool IsDefined(System.Reflection.MemberInfo element, System.Type attributeType, bool inherit) => throw null;
+        public static bool IsDefined(System.Reflection.Module element, System.Type attributeType) => throw null;
+        public static bool IsDefined(System.Reflection.Module element, System.Type attributeType, bool inherit) => throw null;
+        public static bool IsDefined(System.Reflection.ParameterInfo element, System.Type attributeType) => throw null;
+        public static bool IsDefined(System.Reflection.ParameterInfo element, System.Type attributeType, bool inherit) => throw null;
         public virtual bool Match(object obj) => throw null;
         public virtual object TypeId { get => throw null; }
     }
@@ -606,12 +606,12 @@ namespace System
     // Generated from `System.BadImageFormatException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class BadImageFormatException : System.SystemException
     {
-        public BadImageFormatException(string message, string fileName, System.Exception inner) => throw null;
-        public BadImageFormatException(string message, string fileName) => throw null;
-        public BadImageFormatException(string message, System.Exception inner) => throw null;
-        public BadImageFormatException(string message) => throw null;
         public BadImageFormatException() => throw null;
         protected BadImageFormatException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public BadImageFormatException(string message) => throw null;
+        public BadImageFormatException(string message, System.Exception inner) => throw null;
+        public BadImageFormatException(string message, string fileName) => throw null;
+        public BadImageFormatException(string message, string fileName, System.Exception inner) => throw null;
         public string FileName { get => throw null; }
         public string FusionLog { get => throw null; }
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -631,68 +631,68 @@ namespace System
     public static class BitConverter
     {
         public static System.Int64 DoubleToInt64Bits(double value) => throw null;
-        public static System.Byte[] GetBytes(int value) => throw null;
-        public static System.Byte[] GetBytes(float value) => throw null;
-        public static System.Byte[] GetBytes(double value) => throw null;
         public static System.Byte[] GetBytes(bool value) => throw null;
-        public static System.Byte[] GetBytes(System.UInt64 value) => throw null;
-        public static System.Byte[] GetBytes(System.UInt32 value) => throw null;
-        public static System.Byte[] GetBytes(System.UInt16 value) => throw null;
+        public static System.Byte[] GetBytes(System.Char value) => throw null;
+        public static System.Byte[] GetBytes(double value) => throw null;
+        public static System.Byte[] GetBytes(float value) => throw null;
+        public static System.Byte[] GetBytes(int value) => throw null;
         public static System.Byte[] GetBytes(System.Int64 value) => throw null;
         public static System.Byte[] GetBytes(System.Int16 value) => throw null;
-        public static System.Byte[] GetBytes(System.Char value) => throw null;
+        public static System.Byte[] GetBytes(System.UInt32 value) => throw null;
+        public static System.Byte[] GetBytes(System.UInt64 value) => throw null;
+        public static System.Byte[] GetBytes(System.UInt16 value) => throw null;
         public static float Int32BitsToSingle(int value) => throw null;
         public static double Int64BitsToDouble(System.Int64 value) => throw null;
         public static bool IsLittleEndian;
         public static int SingleToInt32Bits(float value) => throw null;
-        public static bool ToBoolean(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static bool ToBoolean(System.Byte[] value, int startIndex) => throw null;
-        public static System.Char ToChar(System.ReadOnlySpan<System.Byte> value) => throw null;
+        public static bool ToBoolean(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static System.Char ToChar(System.Byte[] value, int startIndex) => throw null;
-        public static double ToDouble(System.ReadOnlySpan<System.Byte> value) => throw null;
+        public static System.Char ToChar(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static double ToDouble(System.Byte[] value, int startIndex) => throw null;
-        public static System.Int16 ToInt16(System.ReadOnlySpan<System.Byte> value) => throw null;
+        public static double ToDouble(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static System.Int16 ToInt16(System.Byte[] value, int startIndex) => throw null;
-        public static int ToInt32(System.ReadOnlySpan<System.Byte> value) => throw null;
+        public static System.Int16 ToInt16(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static int ToInt32(System.Byte[] value, int startIndex) => throw null;
-        public static System.Int64 ToInt64(System.ReadOnlySpan<System.Byte> value) => throw null;
+        public static int ToInt32(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static System.Int64 ToInt64(System.Byte[] value, int startIndex) => throw null;
-        public static float ToSingle(System.ReadOnlySpan<System.Byte> value) => throw null;
+        public static System.Int64 ToInt64(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static float ToSingle(System.Byte[] value, int startIndex) => throw null;
-        public static string ToString(System.Byte[] value, int startIndex, int length) => throw null;
-        public static string ToString(System.Byte[] value, int startIndex) => throw null;
+        public static float ToSingle(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static string ToString(System.Byte[] value) => throw null;
-        public static System.UInt16 ToUInt16(System.ReadOnlySpan<System.Byte> value) => throw null;
+        public static string ToString(System.Byte[] value, int startIndex) => throw null;
+        public static string ToString(System.Byte[] value, int startIndex, int length) => throw null;
         public static System.UInt16 ToUInt16(System.Byte[] value, int startIndex) => throw null;
-        public static System.UInt32 ToUInt32(System.ReadOnlySpan<System.Byte> value) => throw null;
+        public static System.UInt16 ToUInt16(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static System.UInt32 ToUInt32(System.Byte[] value, int startIndex) => throw null;
-        public static System.UInt64 ToUInt64(System.ReadOnlySpan<System.Byte> value) => throw null;
+        public static System.UInt32 ToUInt32(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static System.UInt64 ToUInt64(System.Byte[] value, int startIndex) => throw null;
-        public static bool TryWriteBytes(System.Span<System.Byte> destination, int value) => throw null;
-        public static bool TryWriteBytes(System.Span<System.Byte> destination, float value) => throw null;
-        public static bool TryWriteBytes(System.Span<System.Byte> destination, double value) => throw null;
+        public static System.UInt64 ToUInt64(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static bool TryWriteBytes(System.Span<System.Byte> destination, bool value) => throw null;
-        public static bool TryWriteBytes(System.Span<System.Byte> destination, System.UInt64 value) => throw null;
-        public static bool TryWriteBytes(System.Span<System.Byte> destination, System.UInt32 value) => throw null;
-        public static bool TryWriteBytes(System.Span<System.Byte> destination, System.UInt16 value) => throw null;
+        public static bool TryWriteBytes(System.Span<System.Byte> destination, System.Char value) => throw null;
+        public static bool TryWriteBytes(System.Span<System.Byte> destination, double value) => throw null;
+        public static bool TryWriteBytes(System.Span<System.Byte> destination, float value) => throw null;
+        public static bool TryWriteBytes(System.Span<System.Byte> destination, int value) => throw null;
         public static bool TryWriteBytes(System.Span<System.Byte> destination, System.Int64 value) => throw null;
         public static bool TryWriteBytes(System.Span<System.Byte> destination, System.Int16 value) => throw null;
-        public static bool TryWriteBytes(System.Span<System.Byte> destination, System.Char value) => throw null;
+        public static bool TryWriteBytes(System.Span<System.Byte> destination, System.UInt32 value) => throw null;
+        public static bool TryWriteBytes(System.Span<System.Byte> destination, System.UInt64 value) => throw null;
+        public static bool TryWriteBytes(System.Span<System.Byte> destination, System.UInt16 value) => throw null;
     }
 
     // Generated from `System.Boolean` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Boolean : System.IEquatable<bool>, System.IConvertible, System.IComparable<bool>, System.IComparable
+    public struct Boolean : System.IComparable, System.IComparable<bool>, System.IConvertible, System.IEquatable<bool>
     {
         // Stub generator skipped constructor 
-        public int CompareTo(object obj) => throw null;
         public int CompareTo(bool value) => throw null;
-        public override bool Equals(object obj) => throw null;
+        public int CompareTo(object obj) => throw null;
         public bool Equals(bool obj) => throw null;
+        public override bool Equals(object obj) => throw null;
         public static string FalseString;
         public override int GetHashCode() => throw null;
         public System.TypeCode GetTypeCode() => throw null;
-        public static bool Parse(string value) => throw null;
         public static bool Parse(System.ReadOnlySpan<System.Char> value) => throw null;
+        public static bool Parse(string value) => throw null;
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
         System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
         System.Char System.IConvertible.ToChar(System.IFormatProvider provider) => throw null;
@@ -704,16 +704,16 @@ namespace System
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
         public static string TrueString;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten) => throw null;
-        public static bool TryParse(string value, out bool result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> value, out bool result) => throw null;
+        public static bool TryParse(string value, out bool result) => throw null;
     }
 
     // Generated from `System.Buffer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -722,28 +722,28 @@ namespace System
         public static void BlockCopy(System.Array src, int srcOffset, System.Array dst, int dstOffset, int count) => throw null;
         public static int ByteLength(System.Array array) => throw null;
         public static System.Byte GetByte(System.Array array, int index) => throw null;
-        unsafe public static void MemoryCopy(void* source, void* destination, System.UInt64 destinationSizeInBytes, System.UInt64 sourceBytesToCopy) => throw null;
         unsafe public static void MemoryCopy(void* source, void* destination, System.Int64 destinationSizeInBytes, System.Int64 sourceBytesToCopy) => throw null;
+        unsafe public static void MemoryCopy(void* source, void* destination, System.UInt64 destinationSizeInBytes, System.UInt64 sourceBytesToCopy) => throw null;
         public static void SetByte(System.Array array, int index, System.Byte value) => throw null;
     }
 
     // Generated from `System.Byte` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Byte : System.IFormattable, System.IEquatable<System.Byte>, System.IConvertible, System.IComparable<System.Byte>, System.IComparable
+    public struct Byte : System.IComparable, System.IComparable<System.Byte>, System.IConvertible, System.IEquatable<System.Byte>, System.IFormattable
     {
         // Stub generator skipped constructor 
-        public int CompareTo(object value) => throw null;
         public int CompareTo(System.Byte value) => throw null;
-        public override bool Equals(object obj) => throw null;
+        public int CompareTo(object value) => throw null;
         public bool Equals(System.Byte obj) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         public System.TypeCode GetTypeCode() => throw null;
         public const System.Byte MaxValue = default;
         public const System.Byte MinValue = default;
-        public static System.Byte Parse(string s, System.IFormatProvider provider) => throw null;
-        public static System.Byte Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
-        public static System.Byte Parse(string s, System.Globalization.NumberStyles style) => throw null;
-        public static System.Byte Parse(string s) => throw null;
         public static System.Byte Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static System.Byte Parse(string s) => throw null;
+        public static System.Byte Parse(string s, System.IFormatProvider provider) => throw null;
+        public static System.Byte Parse(string s, System.Globalization.NumberStyles style) => throw null;
+        public static System.Byte Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
         System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
         System.Char System.IConvertible.ToChar(System.IFormatProvider provider) => throw null;
@@ -755,19 +755,19 @@ namespace System
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string s, out System.Byte result) => throw null;
-        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Byte result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Byte result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Byte result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Byte result) => throw null;
+        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Byte result) => throw null;
+        public static bool TryParse(string s, out System.Byte result) => throw null;
     }
 
     // Generated from `System.CLSCompliantAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -780,59 +780,59 @@ namespace System
     // Generated from `System.CannotUnloadAppDomainException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class CannotUnloadAppDomainException : System.SystemException
     {
-        public CannotUnloadAppDomainException(string message, System.Exception innerException) => throw null;
-        public CannotUnloadAppDomainException(string message) => throw null;
         public CannotUnloadAppDomainException() => throw null;
         protected CannotUnloadAppDomainException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public CannotUnloadAppDomainException(string message) => throw null;
+        public CannotUnloadAppDomainException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.Char` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Char : System.IEquatable<System.Char>, System.IConvertible, System.IComparable<System.Char>, System.IComparable
+    public struct Char : System.IComparable, System.IComparable<System.Char>, System.IConvertible, System.IEquatable<System.Char>
     {
         // Stub generator skipped constructor 
-        public int CompareTo(object value) => throw null;
         public int CompareTo(System.Char value) => throw null;
+        public int CompareTo(object value) => throw null;
         public static string ConvertFromUtf32(int utf32) => throw null;
-        public static int ConvertToUtf32(string s, int index) => throw null;
         public static int ConvertToUtf32(System.Char highSurrogate, System.Char lowSurrogate) => throw null;
-        public override bool Equals(object obj) => throw null;
+        public static int ConvertToUtf32(string s, int index) => throw null;
         public bool Equals(System.Char obj) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
-        public static double GetNumericValue(string s, int index) => throw null;
         public static double GetNumericValue(System.Char c) => throw null;
+        public static double GetNumericValue(string s, int index) => throw null;
         public System.TypeCode GetTypeCode() => throw null;
-        public static System.Globalization.UnicodeCategory GetUnicodeCategory(string s, int index) => throw null;
         public static System.Globalization.UnicodeCategory GetUnicodeCategory(System.Char c) => throw null;
-        public static bool IsControl(string s, int index) => throw null;
+        public static System.Globalization.UnicodeCategory GetUnicodeCategory(string s, int index) => throw null;
         public static bool IsControl(System.Char c) => throw null;
-        public static bool IsDigit(string s, int index) => throw null;
+        public static bool IsControl(string s, int index) => throw null;
         public static bool IsDigit(System.Char c) => throw null;
-        public static bool IsHighSurrogate(string s, int index) => throw null;
+        public static bool IsDigit(string s, int index) => throw null;
         public static bool IsHighSurrogate(System.Char c) => throw null;
-        public static bool IsLetter(string s, int index) => throw null;
+        public static bool IsHighSurrogate(string s, int index) => throw null;
         public static bool IsLetter(System.Char c) => throw null;
-        public static bool IsLetterOrDigit(string s, int index) => throw null;
+        public static bool IsLetter(string s, int index) => throw null;
         public static bool IsLetterOrDigit(System.Char c) => throw null;
-        public static bool IsLowSurrogate(string s, int index) => throw null;
+        public static bool IsLetterOrDigit(string s, int index) => throw null;
         public static bool IsLowSurrogate(System.Char c) => throw null;
-        public static bool IsLower(string s, int index) => throw null;
+        public static bool IsLowSurrogate(string s, int index) => throw null;
         public static bool IsLower(System.Char c) => throw null;
-        public static bool IsNumber(string s, int index) => throw null;
+        public static bool IsLower(string s, int index) => throw null;
         public static bool IsNumber(System.Char c) => throw null;
-        public static bool IsPunctuation(string s, int index) => throw null;
+        public static bool IsNumber(string s, int index) => throw null;
         public static bool IsPunctuation(System.Char c) => throw null;
-        public static bool IsSeparator(string s, int index) => throw null;
+        public static bool IsPunctuation(string s, int index) => throw null;
         public static bool IsSeparator(System.Char c) => throw null;
-        public static bool IsSurrogate(string s, int index) => throw null;
+        public static bool IsSeparator(string s, int index) => throw null;
         public static bool IsSurrogate(System.Char c) => throw null;
-        public static bool IsSurrogatePair(string s, int index) => throw null;
+        public static bool IsSurrogate(string s, int index) => throw null;
         public static bool IsSurrogatePair(System.Char highSurrogate, System.Char lowSurrogate) => throw null;
-        public static bool IsSymbol(string s, int index) => throw null;
+        public static bool IsSurrogatePair(string s, int index) => throw null;
         public static bool IsSymbol(System.Char c) => throw null;
-        public static bool IsUpper(string s, int index) => throw null;
+        public static bool IsSymbol(string s, int index) => throw null;
         public static bool IsUpper(System.Char c) => throw null;
-        public static bool IsWhiteSpace(string s, int index) => throw null;
+        public static bool IsUpper(string s, int index) => throw null;
         public static bool IsWhiteSpace(System.Char c) => throw null;
+        public static bool IsWhiteSpace(string s, int index) => throw null;
         public const System.Char MaxValue = default;
         public const System.Char MinValue = default;
         public static System.Char Parse(string s) => throw null;
@@ -845,26 +845,26 @@ namespace System
         System.Int16 System.IConvertible.ToInt16(System.IFormatProvider provider) => throw null;
         int System.IConvertible.ToInt32(System.IFormatProvider provider) => throw null;
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
-        public static System.Char ToLower(System.Char c, System.Globalization.CultureInfo culture) => throw null;
         public static System.Char ToLower(System.Char c) => throw null;
+        public static System.Char ToLower(System.Char c, System.Globalization.CultureInfo culture) => throw null;
         public static System.Char ToLowerInvariant(System.Char c) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
+        public override string ToString() => throw null;
         public string ToString(System.IFormatProvider provider) => throw null;
         public static string ToString(System.Char c) => throw null;
-        public override string ToString() => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
-        public static System.Char ToUpper(System.Char c, System.Globalization.CultureInfo culture) => throw null;
         public static System.Char ToUpper(System.Char c) => throw null;
+        public static System.Char ToUpper(System.Char c, System.Globalization.CultureInfo culture) => throw null;
         public static System.Char ToUpperInvariant(System.Char c) => throw null;
         public static bool TryParse(string s, out System.Char result) => throw null;
     }
 
     // Generated from `System.CharEnumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class CharEnumerator : System.IDisposable, System.ICloneable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<System.Char>
+    public class CharEnumerator : System.Collections.Generic.IEnumerator<System.Char>, System.Collections.IEnumerator, System.ICloneable, System.IDisposable
     {
         public object Clone() => throw null;
         public System.Char Current { get => throw null; }
@@ -886,10 +886,10 @@ namespace System
     // Generated from `System.ContextMarshalException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ContextMarshalException : System.SystemException
     {
-        public ContextMarshalException(string message, System.Exception inner) => throw null;
-        public ContextMarshalException(string message) => throw null;
         public ContextMarshalException() => throw null;
         protected ContextMarshalException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public ContextMarshalException(string message) => throw null;
+        public ContextMarshalException(string message, System.Exception inner) => throw null;
     }
 
     // Generated from `System.ContextStaticAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -901,323 +901,323 @@ namespace System
     // Generated from `System.Convert` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class Convert
     {
-        public static object ChangeType(object value, System.TypeCode typeCode, System.IFormatProvider provider) => throw null;
-        public static object ChangeType(object value, System.TypeCode typeCode) => throw null;
-        public static object ChangeType(object value, System.Type conversionType, System.IFormatProvider provider) => throw null;
         public static object ChangeType(object value, System.Type conversionType) => throw null;
+        public static object ChangeType(object value, System.Type conversionType, System.IFormatProvider provider) => throw null;
+        public static object ChangeType(object value, System.TypeCode typeCode) => throw null;
+        public static object ChangeType(object value, System.TypeCode typeCode, System.IFormatProvider provider) => throw null;
         public static object DBNull;
         public static System.Byte[] FromBase64CharArray(System.Char[] inArray, int offset, int length) => throw null;
         public static System.Byte[] FromBase64String(string s) => throw null;
-        public static System.Byte[] FromHexString(string s) => throw null;
         public static System.Byte[] FromHexString(System.ReadOnlySpan<System.Char> chars) => throw null;
+        public static System.Byte[] FromHexString(string s) => throw null;
         public static System.TypeCode GetTypeCode(object value) => throw null;
         public static bool IsDBNull(object value) => throw null;
-        public static int ToBase64CharArray(System.Byte[] inArray, int offsetIn, int length, System.Char[] outArray, int offsetOut, System.Base64FormattingOptions options) => throw null;
         public static int ToBase64CharArray(System.Byte[] inArray, int offsetIn, int length, System.Char[] outArray, int offsetOut) => throw null;
-        public static string ToBase64String(System.ReadOnlySpan<System.Byte> bytes, System.Base64FormattingOptions options = default(System.Base64FormattingOptions)) => throw null;
-        public static string ToBase64String(System.Byte[] inArray, int offset, int length, System.Base64FormattingOptions options) => throw null;
-        public static string ToBase64String(System.Byte[] inArray, int offset, int length) => throw null;
-        public static string ToBase64String(System.Byte[] inArray, System.Base64FormattingOptions options) => throw null;
+        public static int ToBase64CharArray(System.Byte[] inArray, int offsetIn, int length, System.Char[] outArray, int offsetOut, System.Base64FormattingOptions options) => throw null;
         public static string ToBase64String(System.Byte[] inArray) => throw null;
-        public static bool ToBoolean(string value, System.IFormatProvider provider) => throw null;
-        public static bool ToBoolean(string value) => throw null;
-        public static bool ToBoolean(object value, System.IFormatProvider provider) => throw null;
-        public static bool ToBoolean(object value) => throw null;
-        public static bool ToBoolean(int value) => throw null;
-        public static bool ToBoolean(float value) => throw null;
-        public static bool ToBoolean(double value) => throw null;
-        public static bool ToBoolean(bool value) => throw null;
-        public static bool ToBoolean(System.UInt64 value) => throw null;
-        public static bool ToBoolean(System.UInt32 value) => throw null;
-        public static bool ToBoolean(System.UInt16 value) => throw null;
-        public static bool ToBoolean(System.SByte value) => throw null;
-        public static bool ToBoolean(System.Int64 value) => throw null;
-        public static bool ToBoolean(System.Int16 value) => throw null;
-        public static bool ToBoolean(System.Decimal value) => throw null;
+        public static string ToBase64String(System.Byte[] inArray, System.Base64FormattingOptions options) => throw null;
+        public static string ToBase64String(System.Byte[] inArray, int offset, int length) => throw null;
+        public static string ToBase64String(System.Byte[] inArray, int offset, int length, System.Base64FormattingOptions options) => throw null;
+        public static string ToBase64String(System.ReadOnlySpan<System.Byte> bytes, System.Base64FormattingOptions options = default(System.Base64FormattingOptions)) => throw null;
         public static bool ToBoolean(System.DateTime value) => throw null;
-        public static bool ToBoolean(System.Char value) => throw null;
+        public static bool ToBoolean(bool value) => throw null;
         public static bool ToBoolean(System.Byte value) => throw null;
-        public static System.Byte ToByte(string value, int fromBase) => throw null;
-        public static System.Byte ToByte(string value, System.IFormatProvider provider) => throw null;
-        public static System.Byte ToByte(string value) => throw null;
-        public static System.Byte ToByte(object value, System.IFormatProvider provider) => throw null;
-        public static System.Byte ToByte(object value) => throw null;
-        public static System.Byte ToByte(int value) => throw null;
-        public static System.Byte ToByte(float value) => throw null;
-        public static System.Byte ToByte(double value) => throw null;
-        public static System.Byte ToByte(bool value) => throw null;
-        public static System.Byte ToByte(System.UInt64 value) => throw null;
-        public static System.Byte ToByte(System.UInt32 value) => throw null;
-        public static System.Byte ToByte(System.UInt16 value) => throw null;
-        public static System.Byte ToByte(System.SByte value) => throw null;
-        public static System.Byte ToByte(System.Int64 value) => throw null;
-        public static System.Byte ToByte(System.Int16 value) => throw null;
-        public static System.Byte ToByte(System.Decimal value) => throw null;
+        public static bool ToBoolean(System.Char value) => throw null;
+        public static bool ToBoolean(System.Decimal value) => throw null;
+        public static bool ToBoolean(double value) => throw null;
+        public static bool ToBoolean(float value) => throw null;
+        public static bool ToBoolean(int value) => throw null;
+        public static bool ToBoolean(System.Int64 value) => throw null;
+        public static bool ToBoolean(object value) => throw null;
+        public static bool ToBoolean(object value, System.IFormatProvider provider) => throw null;
+        public static bool ToBoolean(System.SByte value) => throw null;
+        public static bool ToBoolean(System.Int16 value) => throw null;
+        public static bool ToBoolean(string value) => throw null;
+        public static bool ToBoolean(string value, System.IFormatProvider provider) => throw null;
+        public static bool ToBoolean(System.UInt32 value) => throw null;
+        public static bool ToBoolean(System.UInt64 value) => throw null;
+        public static bool ToBoolean(System.UInt16 value) => throw null;
         public static System.Byte ToByte(System.DateTime value) => throw null;
-        public static System.Byte ToByte(System.Char value) => throw null;
+        public static System.Byte ToByte(bool value) => throw null;
         public static System.Byte ToByte(System.Byte value) => throw null;
-        public static System.Char ToChar(string value, System.IFormatProvider provider) => throw null;
-        public static System.Char ToChar(string value) => throw null;
-        public static System.Char ToChar(object value, System.IFormatProvider provider) => throw null;
-        public static System.Char ToChar(object value) => throw null;
-        public static System.Char ToChar(int value) => throw null;
-        public static System.Char ToChar(float value) => throw null;
-        public static System.Char ToChar(double value) => throw null;
-        public static System.Char ToChar(bool value) => throw null;
-        public static System.Char ToChar(System.UInt64 value) => throw null;
-        public static System.Char ToChar(System.UInt32 value) => throw null;
-        public static System.Char ToChar(System.UInt16 value) => throw null;
-        public static System.Char ToChar(System.SByte value) => throw null;
-        public static System.Char ToChar(System.Int64 value) => throw null;
-        public static System.Char ToChar(System.Int16 value) => throw null;
-        public static System.Char ToChar(System.Decimal value) => throw null;
+        public static System.Byte ToByte(System.Char value) => throw null;
+        public static System.Byte ToByte(System.Decimal value) => throw null;
+        public static System.Byte ToByte(double value) => throw null;
+        public static System.Byte ToByte(float value) => throw null;
+        public static System.Byte ToByte(int value) => throw null;
+        public static System.Byte ToByte(System.Int64 value) => throw null;
+        public static System.Byte ToByte(object value) => throw null;
+        public static System.Byte ToByte(object value, System.IFormatProvider provider) => throw null;
+        public static System.Byte ToByte(System.SByte value) => throw null;
+        public static System.Byte ToByte(System.Int16 value) => throw null;
+        public static System.Byte ToByte(string value) => throw null;
+        public static System.Byte ToByte(string value, System.IFormatProvider provider) => throw null;
+        public static System.Byte ToByte(string value, int fromBase) => throw null;
+        public static System.Byte ToByte(System.UInt32 value) => throw null;
+        public static System.Byte ToByte(System.UInt64 value) => throw null;
+        public static System.Byte ToByte(System.UInt16 value) => throw null;
         public static System.Char ToChar(System.DateTime value) => throw null;
-        public static System.Char ToChar(System.Char value) => throw null;
+        public static System.Char ToChar(bool value) => throw null;
         public static System.Char ToChar(System.Byte value) => throw null;
-        public static System.DateTime ToDateTime(string value, System.IFormatProvider provider) => throw null;
-        public static System.DateTime ToDateTime(string value) => throw null;
-        public static System.DateTime ToDateTime(object value, System.IFormatProvider provider) => throw null;
-        public static System.DateTime ToDateTime(object value) => throw null;
-        public static System.DateTime ToDateTime(int value) => throw null;
-        public static System.DateTime ToDateTime(float value) => throw null;
-        public static System.DateTime ToDateTime(double value) => throw null;
-        public static System.DateTime ToDateTime(bool value) => throw null;
-        public static System.DateTime ToDateTime(System.UInt64 value) => throw null;
-        public static System.DateTime ToDateTime(System.UInt32 value) => throw null;
-        public static System.DateTime ToDateTime(System.UInt16 value) => throw null;
-        public static System.DateTime ToDateTime(System.SByte value) => throw null;
-        public static System.DateTime ToDateTime(System.Int64 value) => throw null;
-        public static System.DateTime ToDateTime(System.Int16 value) => throw null;
-        public static System.DateTime ToDateTime(System.Decimal value) => throw null;
+        public static System.Char ToChar(System.Char value) => throw null;
+        public static System.Char ToChar(System.Decimal value) => throw null;
+        public static System.Char ToChar(double value) => throw null;
+        public static System.Char ToChar(float value) => throw null;
+        public static System.Char ToChar(int value) => throw null;
+        public static System.Char ToChar(System.Int64 value) => throw null;
+        public static System.Char ToChar(object value) => throw null;
+        public static System.Char ToChar(object value, System.IFormatProvider provider) => throw null;
+        public static System.Char ToChar(System.SByte value) => throw null;
+        public static System.Char ToChar(System.Int16 value) => throw null;
+        public static System.Char ToChar(string value) => throw null;
+        public static System.Char ToChar(string value, System.IFormatProvider provider) => throw null;
+        public static System.Char ToChar(System.UInt32 value) => throw null;
+        public static System.Char ToChar(System.UInt64 value) => throw null;
+        public static System.Char ToChar(System.UInt16 value) => throw null;
         public static System.DateTime ToDateTime(System.DateTime value) => throw null;
-        public static System.DateTime ToDateTime(System.Char value) => throw null;
+        public static System.DateTime ToDateTime(bool value) => throw null;
         public static System.DateTime ToDateTime(System.Byte value) => throw null;
-        public static System.Decimal ToDecimal(string value, System.IFormatProvider provider) => throw null;
-        public static System.Decimal ToDecimal(string value) => throw null;
-        public static System.Decimal ToDecimal(object value, System.IFormatProvider provider) => throw null;
-        public static System.Decimal ToDecimal(object value) => throw null;
-        public static System.Decimal ToDecimal(int value) => throw null;
-        public static System.Decimal ToDecimal(float value) => throw null;
-        public static System.Decimal ToDecimal(double value) => throw null;
-        public static System.Decimal ToDecimal(bool value) => throw null;
-        public static System.Decimal ToDecimal(System.UInt64 value) => throw null;
-        public static System.Decimal ToDecimal(System.UInt32 value) => throw null;
-        public static System.Decimal ToDecimal(System.UInt16 value) => throw null;
-        public static System.Decimal ToDecimal(System.SByte value) => throw null;
-        public static System.Decimal ToDecimal(System.Int64 value) => throw null;
-        public static System.Decimal ToDecimal(System.Int16 value) => throw null;
-        public static System.Decimal ToDecimal(System.Decimal value) => throw null;
+        public static System.DateTime ToDateTime(System.Char value) => throw null;
+        public static System.DateTime ToDateTime(System.Decimal value) => throw null;
+        public static System.DateTime ToDateTime(double value) => throw null;
+        public static System.DateTime ToDateTime(float value) => throw null;
+        public static System.DateTime ToDateTime(int value) => throw null;
+        public static System.DateTime ToDateTime(System.Int64 value) => throw null;
+        public static System.DateTime ToDateTime(object value) => throw null;
+        public static System.DateTime ToDateTime(object value, System.IFormatProvider provider) => throw null;
+        public static System.DateTime ToDateTime(System.SByte value) => throw null;
+        public static System.DateTime ToDateTime(System.Int16 value) => throw null;
+        public static System.DateTime ToDateTime(string value) => throw null;
+        public static System.DateTime ToDateTime(string value, System.IFormatProvider provider) => throw null;
+        public static System.DateTime ToDateTime(System.UInt32 value) => throw null;
+        public static System.DateTime ToDateTime(System.UInt64 value) => throw null;
+        public static System.DateTime ToDateTime(System.UInt16 value) => throw null;
         public static System.Decimal ToDecimal(System.DateTime value) => throw null;
-        public static System.Decimal ToDecimal(System.Char value) => throw null;
+        public static System.Decimal ToDecimal(bool value) => throw null;
         public static System.Decimal ToDecimal(System.Byte value) => throw null;
-        public static double ToDouble(string value, System.IFormatProvider provider) => throw null;
-        public static double ToDouble(string value) => throw null;
-        public static double ToDouble(object value, System.IFormatProvider provider) => throw null;
-        public static double ToDouble(object value) => throw null;
-        public static double ToDouble(int value) => throw null;
-        public static double ToDouble(float value) => throw null;
-        public static double ToDouble(double value) => throw null;
-        public static double ToDouble(bool value) => throw null;
-        public static double ToDouble(System.UInt64 value) => throw null;
-        public static double ToDouble(System.UInt32 value) => throw null;
-        public static double ToDouble(System.UInt16 value) => throw null;
-        public static double ToDouble(System.SByte value) => throw null;
-        public static double ToDouble(System.Int64 value) => throw null;
-        public static double ToDouble(System.Int16 value) => throw null;
-        public static double ToDouble(System.Decimal value) => throw null;
+        public static System.Decimal ToDecimal(System.Char value) => throw null;
+        public static System.Decimal ToDecimal(System.Decimal value) => throw null;
+        public static System.Decimal ToDecimal(double value) => throw null;
+        public static System.Decimal ToDecimal(float value) => throw null;
+        public static System.Decimal ToDecimal(int value) => throw null;
+        public static System.Decimal ToDecimal(System.Int64 value) => throw null;
+        public static System.Decimal ToDecimal(object value) => throw null;
+        public static System.Decimal ToDecimal(object value, System.IFormatProvider provider) => throw null;
+        public static System.Decimal ToDecimal(System.SByte value) => throw null;
+        public static System.Decimal ToDecimal(System.Int16 value) => throw null;
+        public static System.Decimal ToDecimal(string value) => throw null;
+        public static System.Decimal ToDecimal(string value, System.IFormatProvider provider) => throw null;
+        public static System.Decimal ToDecimal(System.UInt32 value) => throw null;
+        public static System.Decimal ToDecimal(System.UInt64 value) => throw null;
+        public static System.Decimal ToDecimal(System.UInt16 value) => throw null;
         public static double ToDouble(System.DateTime value) => throw null;
-        public static double ToDouble(System.Char value) => throw null;
+        public static double ToDouble(bool value) => throw null;
         public static double ToDouble(System.Byte value) => throw null;
-        public static string ToHexString(System.ReadOnlySpan<System.Byte> bytes) => throw null;
-        public static string ToHexString(System.Byte[] inArray, int offset, int length) => throw null;
+        public static double ToDouble(System.Char value) => throw null;
+        public static double ToDouble(System.Decimal value) => throw null;
+        public static double ToDouble(double value) => throw null;
+        public static double ToDouble(float value) => throw null;
+        public static double ToDouble(int value) => throw null;
+        public static double ToDouble(System.Int64 value) => throw null;
+        public static double ToDouble(object value) => throw null;
+        public static double ToDouble(object value, System.IFormatProvider provider) => throw null;
+        public static double ToDouble(System.SByte value) => throw null;
+        public static double ToDouble(System.Int16 value) => throw null;
+        public static double ToDouble(string value) => throw null;
+        public static double ToDouble(string value, System.IFormatProvider provider) => throw null;
+        public static double ToDouble(System.UInt32 value) => throw null;
+        public static double ToDouble(System.UInt64 value) => throw null;
+        public static double ToDouble(System.UInt16 value) => throw null;
         public static string ToHexString(System.Byte[] inArray) => throw null;
-        public static System.Int16 ToInt16(string value, int fromBase) => throw null;
-        public static System.Int16 ToInt16(string value, System.IFormatProvider provider) => throw null;
-        public static System.Int16 ToInt16(string value) => throw null;
-        public static System.Int16 ToInt16(object value, System.IFormatProvider provider) => throw null;
-        public static System.Int16 ToInt16(object value) => throw null;
-        public static System.Int16 ToInt16(int value) => throw null;
-        public static System.Int16 ToInt16(float value) => throw null;
-        public static System.Int16 ToInt16(double value) => throw null;
-        public static System.Int16 ToInt16(bool value) => throw null;
-        public static System.Int16 ToInt16(System.UInt64 value) => throw null;
-        public static System.Int16 ToInt16(System.UInt32 value) => throw null;
-        public static System.Int16 ToInt16(System.UInt16 value) => throw null;
-        public static System.Int16 ToInt16(System.SByte value) => throw null;
-        public static System.Int16 ToInt16(System.Int64 value) => throw null;
-        public static System.Int16 ToInt16(System.Int16 value) => throw null;
-        public static System.Int16 ToInt16(System.Decimal value) => throw null;
+        public static string ToHexString(System.Byte[] inArray, int offset, int length) => throw null;
+        public static string ToHexString(System.ReadOnlySpan<System.Byte> bytes) => throw null;
         public static System.Int16 ToInt16(System.DateTime value) => throw null;
-        public static System.Int16 ToInt16(System.Char value) => throw null;
+        public static System.Int16 ToInt16(bool value) => throw null;
         public static System.Int16 ToInt16(System.Byte value) => throw null;
-        public static int ToInt32(string value, int fromBase) => throw null;
-        public static int ToInt32(string value, System.IFormatProvider provider) => throw null;
-        public static int ToInt32(string value) => throw null;
-        public static int ToInt32(object value, System.IFormatProvider provider) => throw null;
-        public static int ToInt32(object value) => throw null;
-        public static int ToInt32(int value) => throw null;
-        public static int ToInt32(float value) => throw null;
-        public static int ToInt32(double value) => throw null;
-        public static int ToInt32(bool value) => throw null;
-        public static int ToInt32(System.UInt64 value) => throw null;
-        public static int ToInt32(System.UInt32 value) => throw null;
-        public static int ToInt32(System.UInt16 value) => throw null;
-        public static int ToInt32(System.SByte value) => throw null;
-        public static int ToInt32(System.Int64 value) => throw null;
-        public static int ToInt32(System.Int16 value) => throw null;
-        public static int ToInt32(System.Decimal value) => throw null;
+        public static System.Int16 ToInt16(System.Char value) => throw null;
+        public static System.Int16 ToInt16(System.Decimal value) => throw null;
+        public static System.Int16 ToInt16(double value) => throw null;
+        public static System.Int16 ToInt16(float value) => throw null;
+        public static System.Int16 ToInt16(int value) => throw null;
+        public static System.Int16 ToInt16(System.Int64 value) => throw null;
+        public static System.Int16 ToInt16(object value) => throw null;
+        public static System.Int16 ToInt16(object value, System.IFormatProvider provider) => throw null;
+        public static System.Int16 ToInt16(System.SByte value) => throw null;
+        public static System.Int16 ToInt16(System.Int16 value) => throw null;
+        public static System.Int16 ToInt16(string value) => throw null;
+        public static System.Int16 ToInt16(string value, System.IFormatProvider provider) => throw null;
+        public static System.Int16 ToInt16(string value, int fromBase) => throw null;
+        public static System.Int16 ToInt16(System.UInt32 value) => throw null;
+        public static System.Int16 ToInt16(System.UInt64 value) => throw null;
+        public static System.Int16 ToInt16(System.UInt16 value) => throw null;
         public static int ToInt32(System.DateTime value) => throw null;
-        public static int ToInt32(System.Char value) => throw null;
+        public static int ToInt32(bool value) => throw null;
         public static int ToInt32(System.Byte value) => throw null;
-        public static System.Int64 ToInt64(string value, int fromBase) => throw null;
-        public static System.Int64 ToInt64(string value, System.IFormatProvider provider) => throw null;
-        public static System.Int64 ToInt64(string value) => throw null;
-        public static System.Int64 ToInt64(object value, System.IFormatProvider provider) => throw null;
-        public static System.Int64 ToInt64(object value) => throw null;
-        public static System.Int64 ToInt64(int value) => throw null;
-        public static System.Int64 ToInt64(float value) => throw null;
-        public static System.Int64 ToInt64(double value) => throw null;
-        public static System.Int64 ToInt64(bool value) => throw null;
-        public static System.Int64 ToInt64(System.UInt64 value) => throw null;
-        public static System.Int64 ToInt64(System.UInt32 value) => throw null;
-        public static System.Int64 ToInt64(System.UInt16 value) => throw null;
-        public static System.Int64 ToInt64(System.SByte value) => throw null;
-        public static System.Int64 ToInt64(System.Int64 value) => throw null;
-        public static System.Int64 ToInt64(System.Int16 value) => throw null;
-        public static System.Int64 ToInt64(System.Decimal value) => throw null;
+        public static int ToInt32(System.Char value) => throw null;
+        public static int ToInt32(System.Decimal value) => throw null;
+        public static int ToInt32(double value) => throw null;
+        public static int ToInt32(float value) => throw null;
+        public static int ToInt32(int value) => throw null;
+        public static int ToInt32(System.Int64 value) => throw null;
+        public static int ToInt32(object value) => throw null;
+        public static int ToInt32(object value, System.IFormatProvider provider) => throw null;
+        public static int ToInt32(System.SByte value) => throw null;
+        public static int ToInt32(System.Int16 value) => throw null;
+        public static int ToInt32(string value) => throw null;
+        public static int ToInt32(string value, System.IFormatProvider provider) => throw null;
+        public static int ToInt32(string value, int fromBase) => throw null;
+        public static int ToInt32(System.UInt32 value) => throw null;
+        public static int ToInt32(System.UInt64 value) => throw null;
+        public static int ToInt32(System.UInt16 value) => throw null;
         public static System.Int64 ToInt64(System.DateTime value) => throw null;
-        public static System.Int64 ToInt64(System.Char value) => throw null;
+        public static System.Int64 ToInt64(bool value) => throw null;
         public static System.Int64 ToInt64(System.Byte value) => throw null;
-        public static System.SByte ToSByte(string value, int fromBase) => throw null;
-        public static System.SByte ToSByte(string value, System.IFormatProvider provider) => throw null;
-        public static System.SByte ToSByte(string value) => throw null;
-        public static System.SByte ToSByte(object value, System.IFormatProvider provider) => throw null;
-        public static System.SByte ToSByte(object value) => throw null;
-        public static System.SByte ToSByte(int value) => throw null;
-        public static System.SByte ToSByte(float value) => throw null;
-        public static System.SByte ToSByte(double value) => throw null;
-        public static System.SByte ToSByte(bool value) => throw null;
-        public static System.SByte ToSByte(System.UInt64 value) => throw null;
-        public static System.SByte ToSByte(System.UInt32 value) => throw null;
-        public static System.SByte ToSByte(System.UInt16 value) => throw null;
-        public static System.SByte ToSByte(System.SByte value) => throw null;
-        public static System.SByte ToSByte(System.Int64 value) => throw null;
-        public static System.SByte ToSByte(System.Int16 value) => throw null;
-        public static System.SByte ToSByte(System.Decimal value) => throw null;
+        public static System.Int64 ToInt64(System.Char value) => throw null;
+        public static System.Int64 ToInt64(System.Decimal value) => throw null;
+        public static System.Int64 ToInt64(double value) => throw null;
+        public static System.Int64 ToInt64(float value) => throw null;
+        public static System.Int64 ToInt64(int value) => throw null;
+        public static System.Int64 ToInt64(System.Int64 value) => throw null;
+        public static System.Int64 ToInt64(object value) => throw null;
+        public static System.Int64 ToInt64(object value, System.IFormatProvider provider) => throw null;
+        public static System.Int64 ToInt64(System.SByte value) => throw null;
+        public static System.Int64 ToInt64(System.Int16 value) => throw null;
+        public static System.Int64 ToInt64(string value) => throw null;
+        public static System.Int64 ToInt64(string value, System.IFormatProvider provider) => throw null;
+        public static System.Int64 ToInt64(string value, int fromBase) => throw null;
+        public static System.Int64 ToInt64(System.UInt32 value) => throw null;
+        public static System.Int64 ToInt64(System.UInt64 value) => throw null;
+        public static System.Int64 ToInt64(System.UInt16 value) => throw null;
         public static System.SByte ToSByte(System.DateTime value) => throw null;
-        public static System.SByte ToSByte(System.Char value) => throw null;
+        public static System.SByte ToSByte(bool value) => throw null;
         public static System.SByte ToSByte(System.Byte value) => throw null;
-        public static float ToSingle(string value, System.IFormatProvider provider) => throw null;
-        public static float ToSingle(string value) => throw null;
-        public static float ToSingle(object value, System.IFormatProvider provider) => throw null;
-        public static float ToSingle(object value) => throw null;
-        public static float ToSingle(int value) => throw null;
-        public static float ToSingle(float value) => throw null;
-        public static float ToSingle(double value) => throw null;
-        public static float ToSingle(bool value) => throw null;
-        public static float ToSingle(System.UInt64 value) => throw null;
-        public static float ToSingle(System.UInt32 value) => throw null;
-        public static float ToSingle(System.UInt16 value) => throw null;
-        public static float ToSingle(System.SByte value) => throw null;
-        public static float ToSingle(System.Int64 value) => throw null;
-        public static float ToSingle(System.Int16 value) => throw null;
-        public static float ToSingle(System.Decimal value) => throw null;
+        public static System.SByte ToSByte(System.Char value) => throw null;
+        public static System.SByte ToSByte(System.Decimal value) => throw null;
+        public static System.SByte ToSByte(double value) => throw null;
+        public static System.SByte ToSByte(float value) => throw null;
+        public static System.SByte ToSByte(int value) => throw null;
+        public static System.SByte ToSByte(System.Int64 value) => throw null;
+        public static System.SByte ToSByte(object value) => throw null;
+        public static System.SByte ToSByte(object value, System.IFormatProvider provider) => throw null;
+        public static System.SByte ToSByte(System.SByte value) => throw null;
+        public static System.SByte ToSByte(System.Int16 value) => throw null;
+        public static System.SByte ToSByte(string value) => throw null;
+        public static System.SByte ToSByte(string value, System.IFormatProvider provider) => throw null;
+        public static System.SByte ToSByte(string value, int fromBase) => throw null;
+        public static System.SByte ToSByte(System.UInt32 value) => throw null;
+        public static System.SByte ToSByte(System.UInt64 value) => throw null;
+        public static System.SByte ToSByte(System.UInt16 value) => throw null;
         public static float ToSingle(System.DateTime value) => throw null;
-        public static float ToSingle(System.Char value) => throw null;
+        public static float ToSingle(bool value) => throw null;
         public static float ToSingle(System.Byte value) => throw null;
-        public static string ToString(string value, System.IFormatProvider provider) => throw null;
-        public static string ToString(string value) => throw null;
-        public static string ToString(object value, System.IFormatProvider provider) => throw null;
-        public static string ToString(object value) => throw null;
-        public static string ToString(int value, int toBase) => throw null;
-        public static string ToString(int value, System.IFormatProvider provider) => throw null;
-        public static string ToString(int value) => throw null;
-        public static string ToString(float value, System.IFormatProvider provider) => throw null;
-        public static string ToString(float value) => throw null;
-        public static string ToString(double value, System.IFormatProvider provider) => throw null;
-        public static string ToString(double value) => throw null;
-        public static string ToString(bool value, System.IFormatProvider provider) => throw null;
-        public static string ToString(bool value) => throw null;
-        public static string ToString(System.UInt64 value, System.IFormatProvider provider) => throw null;
-        public static string ToString(System.UInt64 value) => throw null;
-        public static string ToString(System.UInt32 value, System.IFormatProvider provider) => throw null;
-        public static string ToString(System.UInt32 value) => throw null;
-        public static string ToString(System.UInt16 value, System.IFormatProvider provider) => throw null;
-        public static string ToString(System.UInt16 value) => throw null;
-        public static string ToString(System.SByte value, System.IFormatProvider provider) => throw null;
-        public static string ToString(System.SByte value) => throw null;
-        public static string ToString(System.Int64 value, int toBase) => throw null;
-        public static string ToString(System.Int64 value, System.IFormatProvider provider) => throw null;
-        public static string ToString(System.Int64 value) => throw null;
-        public static string ToString(System.Int16 value, int toBase) => throw null;
-        public static string ToString(System.Int16 value, System.IFormatProvider provider) => throw null;
-        public static string ToString(System.Int16 value) => throw null;
-        public static string ToString(System.Decimal value, System.IFormatProvider provider) => throw null;
-        public static string ToString(System.Decimal value) => throw null;
-        public static string ToString(System.DateTime value, System.IFormatProvider provider) => throw null;
+        public static float ToSingle(System.Char value) => throw null;
+        public static float ToSingle(System.Decimal value) => throw null;
+        public static float ToSingle(double value) => throw null;
+        public static float ToSingle(float value) => throw null;
+        public static float ToSingle(int value) => throw null;
+        public static float ToSingle(System.Int64 value) => throw null;
+        public static float ToSingle(object value) => throw null;
+        public static float ToSingle(object value, System.IFormatProvider provider) => throw null;
+        public static float ToSingle(System.SByte value) => throw null;
+        public static float ToSingle(System.Int16 value) => throw null;
+        public static float ToSingle(string value) => throw null;
+        public static float ToSingle(string value, System.IFormatProvider provider) => throw null;
+        public static float ToSingle(System.UInt32 value) => throw null;
+        public static float ToSingle(System.UInt64 value) => throw null;
+        public static float ToSingle(System.UInt16 value) => throw null;
         public static string ToString(System.DateTime value) => throw null;
-        public static string ToString(System.Char value, System.IFormatProvider provider) => throw null;
-        public static string ToString(System.Char value) => throw null;
-        public static string ToString(System.Byte value, int toBase) => throw null;
-        public static string ToString(System.Byte value, System.IFormatProvider provider) => throw null;
+        public static string ToString(System.DateTime value, System.IFormatProvider provider) => throw null;
+        public static string ToString(bool value) => throw null;
+        public static string ToString(bool value, System.IFormatProvider provider) => throw null;
         public static string ToString(System.Byte value) => throw null;
-        public static System.UInt16 ToUInt16(string value, int fromBase) => throw null;
-        public static System.UInt16 ToUInt16(string value, System.IFormatProvider provider) => throw null;
-        public static System.UInt16 ToUInt16(string value) => throw null;
-        public static System.UInt16 ToUInt16(object value, System.IFormatProvider provider) => throw null;
-        public static System.UInt16 ToUInt16(object value) => throw null;
-        public static System.UInt16 ToUInt16(int value) => throw null;
-        public static System.UInt16 ToUInt16(float value) => throw null;
-        public static System.UInt16 ToUInt16(double value) => throw null;
-        public static System.UInt16 ToUInt16(bool value) => throw null;
-        public static System.UInt16 ToUInt16(System.UInt64 value) => throw null;
-        public static System.UInt16 ToUInt16(System.UInt32 value) => throw null;
-        public static System.UInt16 ToUInt16(System.UInt16 value) => throw null;
-        public static System.UInt16 ToUInt16(System.SByte value) => throw null;
-        public static System.UInt16 ToUInt16(System.Int64 value) => throw null;
-        public static System.UInt16 ToUInt16(System.Int16 value) => throw null;
-        public static System.UInt16 ToUInt16(System.Decimal value) => throw null;
+        public static string ToString(System.Byte value, System.IFormatProvider provider) => throw null;
+        public static string ToString(System.Byte value, int toBase) => throw null;
+        public static string ToString(System.Char value) => throw null;
+        public static string ToString(System.Char value, System.IFormatProvider provider) => throw null;
+        public static string ToString(System.Decimal value) => throw null;
+        public static string ToString(System.Decimal value, System.IFormatProvider provider) => throw null;
+        public static string ToString(double value) => throw null;
+        public static string ToString(double value, System.IFormatProvider provider) => throw null;
+        public static string ToString(float value) => throw null;
+        public static string ToString(float value, System.IFormatProvider provider) => throw null;
+        public static string ToString(int value) => throw null;
+        public static string ToString(int value, System.IFormatProvider provider) => throw null;
+        public static string ToString(int value, int toBase) => throw null;
+        public static string ToString(System.Int64 value) => throw null;
+        public static string ToString(System.Int64 value, System.IFormatProvider provider) => throw null;
+        public static string ToString(System.Int64 value, int toBase) => throw null;
+        public static string ToString(object value) => throw null;
+        public static string ToString(object value, System.IFormatProvider provider) => throw null;
+        public static string ToString(System.SByte value) => throw null;
+        public static string ToString(System.SByte value, System.IFormatProvider provider) => throw null;
+        public static string ToString(System.Int16 value) => throw null;
+        public static string ToString(System.Int16 value, System.IFormatProvider provider) => throw null;
+        public static string ToString(System.Int16 value, int toBase) => throw null;
+        public static string ToString(string value) => throw null;
+        public static string ToString(string value, System.IFormatProvider provider) => throw null;
+        public static string ToString(System.UInt32 value) => throw null;
+        public static string ToString(System.UInt32 value, System.IFormatProvider provider) => throw null;
+        public static string ToString(System.UInt64 value) => throw null;
+        public static string ToString(System.UInt64 value, System.IFormatProvider provider) => throw null;
+        public static string ToString(System.UInt16 value) => throw null;
+        public static string ToString(System.UInt16 value, System.IFormatProvider provider) => throw null;
         public static System.UInt16 ToUInt16(System.DateTime value) => throw null;
-        public static System.UInt16 ToUInt16(System.Char value) => throw null;
+        public static System.UInt16 ToUInt16(bool value) => throw null;
         public static System.UInt16 ToUInt16(System.Byte value) => throw null;
-        public static System.UInt32 ToUInt32(string value, int fromBase) => throw null;
-        public static System.UInt32 ToUInt32(string value, System.IFormatProvider provider) => throw null;
-        public static System.UInt32 ToUInt32(string value) => throw null;
-        public static System.UInt32 ToUInt32(object value, System.IFormatProvider provider) => throw null;
-        public static System.UInt32 ToUInt32(object value) => throw null;
-        public static System.UInt32 ToUInt32(int value) => throw null;
-        public static System.UInt32 ToUInt32(float value) => throw null;
-        public static System.UInt32 ToUInt32(double value) => throw null;
-        public static System.UInt32 ToUInt32(bool value) => throw null;
-        public static System.UInt32 ToUInt32(System.UInt64 value) => throw null;
-        public static System.UInt32 ToUInt32(System.UInt32 value) => throw null;
-        public static System.UInt32 ToUInt32(System.UInt16 value) => throw null;
-        public static System.UInt32 ToUInt32(System.SByte value) => throw null;
-        public static System.UInt32 ToUInt32(System.Int64 value) => throw null;
-        public static System.UInt32 ToUInt32(System.Int16 value) => throw null;
-        public static System.UInt32 ToUInt32(System.Decimal value) => throw null;
+        public static System.UInt16 ToUInt16(System.Char value) => throw null;
+        public static System.UInt16 ToUInt16(System.Decimal value) => throw null;
+        public static System.UInt16 ToUInt16(double value) => throw null;
+        public static System.UInt16 ToUInt16(float value) => throw null;
+        public static System.UInt16 ToUInt16(int value) => throw null;
+        public static System.UInt16 ToUInt16(System.Int64 value) => throw null;
+        public static System.UInt16 ToUInt16(object value) => throw null;
+        public static System.UInt16 ToUInt16(object value, System.IFormatProvider provider) => throw null;
+        public static System.UInt16 ToUInt16(System.SByte value) => throw null;
+        public static System.UInt16 ToUInt16(System.Int16 value) => throw null;
+        public static System.UInt16 ToUInt16(string value) => throw null;
+        public static System.UInt16 ToUInt16(string value, System.IFormatProvider provider) => throw null;
+        public static System.UInt16 ToUInt16(string value, int fromBase) => throw null;
+        public static System.UInt16 ToUInt16(System.UInt32 value) => throw null;
+        public static System.UInt16 ToUInt16(System.UInt64 value) => throw null;
+        public static System.UInt16 ToUInt16(System.UInt16 value) => throw null;
         public static System.UInt32 ToUInt32(System.DateTime value) => throw null;
-        public static System.UInt32 ToUInt32(System.Char value) => throw null;
+        public static System.UInt32 ToUInt32(bool value) => throw null;
         public static System.UInt32 ToUInt32(System.Byte value) => throw null;
-        public static System.UInt64 ToUInt64(string value, int fromBase) => throw null;
-        public static System.UInt64 ToUInt64(string value, System.IFormatProvider provider) => throw null;
-        public static System.UInt64 ToUInt64(string value) => throw null;
-        public static System.UInt64 ToUInt64(object value, System.IFormatProvider provider) => throw null;
-        public static System.UInt64 ToUInt64(object value) => throw null;
-        public static System.UInt64 ToUInt64(int value) => throw null;
-        public static System.UInt64 ToUInt64(float value) => throw null;
-        public static System.UInt64 ToUInt64(double value) => throw null;
-        public static System.UInt64 ToUInt64(bool value) => throw null;
-        public static System.UInt64 ToUInt64(System.UInt64 value) => throw null;
-        public static System.UInt64 ToUInt64(System.UInt32 value) => throw null;
-        public static System.UInt64 ToUInt64(System.UInt16 value) => throw null;
-        public static System.UInt64 ToUInt64(System.SByte value) => throw null;
-        public static System.UInt64 ToUInt64(System.Int64 value) => throw null;
-        public static System.UInt64 ToUInt64(System.Int16 value) => throw null;
-        public static System.UInt64 ToUInt64(System.Decimal value) => throw null;
+        public static System.UInt32 ToUInt32(System.Char value) => throw null;
+        public static System.UInt32 ToUInt32(System.Decimal value) => throw null;
+        public static System.UInt32 ToUInt32(double value) => throw null;
+        public static System.UInt32 ToUInt32(float value) => throw null;
+        public static System.UInt32 ToUInt32(int value) => throw null;
+        public static System.UInt32 ToUInt32(System.Int64 value) => throw null;
+        public static System.UInt32 ToUInt32(object value) => throw null;
+        public static System.UInt32 ToUInt32(object value, System.IFormatProvider provider) => throw null;
+        public static System.UInt32 ToUInt32(System.SByte value) => throw null;
+        public static System.UInt32 ToUInt32(System.Int16 value) => throw null;
+        public static System.UInt32 ToUInt32(string value) => throw null;
+        public static System.UInt32 ToUInt32(string value, System.IFormatProvider provider) => throw null;
+        public static System.UInt32 ToUInt32(string value, int fromBase) => throw null;
+        public static System.UInt32 ToUInt32(System.UInt32 value) => throw null;
+        public static System.UInt32 ToUInt32(System.UInt64 value) => throw null;
+        public static System.UInt32 ToUInt32(System.UInt16 value) => throw null;
         public static System.UInt64 ToUInt64(System.DateTime value) => throw null;
-        public static System.UInt64 ToUInt64(System.Char value) => throw null;
+        public static System.UInt64 ToUInt64(bool value) => throw null;
         public static System.UInt64 ToUInt64(System.Byte value) => throw null;
+        public static System.UInt64 ToUInt64(System.Char value) => throw null;
+        public static System.UInt64 ToUInt64(System.Decimal value) => throw null;
+        public static System.UInt64 ToUInt64(double value) => throw null;
+        public static System.UInt64 ToUInt64(float value) => throw null;
+        public static System.UInt64 ToUInt64(int value) => throw null;
+        public static System.UInt64 ToUInt64(System.Int64 value) => throw null;
+        public static System.UInt64 ToUInt64(object value) => throw null;
+        public static System.UInt64 ToUInt64(object value, System.IFormatProvider provider) => throw null;
+        public static System.UInt64 ToUInt64(System.SByte value) => throw null;
+        public static System.UInt64 ToUInt64(System.Int16 value) => throw null;
+        public static System.UInt64 ToUInt64(string value) => throw null;
+        public static System.UInt64 ToUInt64(string value, System.IFormatProvider provider) => throw null;
+        public static System.UInt64 ToUInt64(string value, int fromBase) => throw null;
+        public static System.UInt64 ToUInt64(System.UInt32 value) => throw null;
+        public static System.UInt64 ToUInt64(System.UInt64 value) => throw null;
+        public static System.UInt64 ToUInt64(System.UInt16 value) => throw null;
         public static bool TryFromBase64Chars(System.ReadOnlySpan<System.Char> chars, System.Span<System.Byte> bytes, out int bytesWritten) => throw null;
         public static bool TryFromBase64String(string s, System.Span<System.Byte> bytes, out int bytesWritten) => throw null;
         public static bool TryToBase64Chars(System.ReadOnlySpan<System.Byte> bytes, System.Span<System.Char> chars, out int charsWritten, System.Base64FormattingOptions options = default(System.Base64FormattingOptions)) => throw null;
@@ -1227,7 +1227,7 @@ namespace System
     public delegate TOutput Converter<TInput, TOutput>(TInput input);
 
     // Generated from `System.DBNull` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class DBNull : System.Runtime.Serialization.ISerializable, System.IConvertible
+    public class DBNull : System.IConvertible, System.Runtime.Serialization.ISerializable
     {
         public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         public System.TypeCode GetTypeCode() => throw null;
@@ -1242,8 +1242,8 @@ namespace System
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
@@ -1252,7 +1252,7 @@ namespace System
     }
 
     // Generated from `System.DateTime` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct DateTime : System.Runtime.Serialization.ISerializable, System.IFormattable, System.IEquatable<System.DateTime>, System.IConvertible, System.IComparable<System.DateTime>, System.IComparable
+    public struct DateTime : System.IComparable, System.IComparable<System.DateTime>, System.IConvertible, System.IEquatable<System.DateTime>, System.IFormattable, System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.DateTime d1, System.DateTime d2) => throw null;
         public static System.DateTime operator +(System.DateTime d, System.TimeSpan t) => throw null;
@@ -1273,36 +1273,36 @@ namespace System
         public System.DateTime AddTicks(System.Int64 value) => throw null;
         public System.DateTime AddYears(int value) => throw null;
         public static int Compare(System.DateTime t1, System.DateTime t2) => throw null;
-        public int CompareTo(object value) => throw null;
         public int CompareTo(System.DateTime value) => throw null;
+        public int CompareTo(object value) => throw null;
         public System.DateTime Date { get => throw null; }
-        public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, System.Globalization.Calendar calendar, System.DateTimeKind kind) => throw null;
-        public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, System.Globalization.Calendar calendar) => throw null;
-        public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, System.DateTimeKind kind) => throw null;
-        public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond) => throw null;
+        // Stub generator skipped constructor 
+        public DateTime(int year, int month, int day) => throw null;
+        public DateTime(int year, int month, int day, System.Globalization.Calendar calendar) => throw null;
+        public DateTime(int year, int month, int day, int hour, int minute, int second) => throw null;
         public DateTime(int year, int month, int day, int hour, int minute, int second, System.Globalization.Calendar calendar) => throw null;
         public DateTime(int year, int month, int day, int hour, int minute, int second, System.DateTimeKind kind) => throw null;
-        public DateTime(int year, int month, int day, int hour, int minute, int second) => throw null;
-        public DateTime(int year, int month, int day, System.Globalization.Calendar calendar) => throw null;
-        public DateTime(int year, int month, int day) => throw null;
-        public DateTime(System.Int64 ticks, System.DateTimeKind kind) => throw null;
+        public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond) => throw null;
+        public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, System.Globalization.Calendar calendar) => throw null;
+        public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, System.Globalization.Calendar calendar, System.DateTimeKind kind) => throw null;
+        public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, System.DateTimeKind kind) => throw null;
         public DateTime(System.Int64 ticks) => throw null;
-        // Stub generator skipped constructor 
+        public DateTime(System.Int64 ticks, System.DateTimeKind kind) => throw null;
         public int Day { get => throw null; }
         public System.DayOfWeek DayOfWeek { get => throw null; }
         public int DayOfYear { get => throw null; }
         public static int DaysInMonth(int year, int month) => throw null;
+        public bool Equals(System.DateTime value) => throw null;
         public static bool Equals(System.DateTime t1, System.DateTime t2) => throw null;
         public override bool Equals(object value) => throw null;
-        public bool Equals(System.DateTime value) => throw null;
         public static System.DateTime FromBinary(System.Int64 dateData) => throw null;
         public static System.DateTime FromFileTime(System.Int64 fileTime) => throw null;
         public static System.DateTime FromFileTimeUtc(System.Int64 fileTime) => throw null;
         public static System.DateTime FromOADate(double d) => throw null;
-        public string[] GetDateTimeFormats(System.IFormatProvider provider) => throw null;
-        public string[] GetDateTimeFormats(System.Char format, System.IFormatProvider provider) => throw null;
-        public string[] GetDateTimeFormats(System.Char format) => throw null;
         public string[] GetDateTimeFormats() => throw null;
+        public string[] GetDateTimeFormats(System.IFormatProvider provider) => throw null;
+        public string[] GetDateTimeFormats(System.Char format) => throw null;
+        public string[] GetDateTimeFormats(System.Char format, System.IFormatProvider provider) => throw null;
         public override int GetHashCode() => throw null;
         void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         public System.TypeCode GetTypeCode() => throw null;
@@ -1316,15 +1316,15 @@ namespace System
         public int Minute { get => throw null; }
         public int Month { get => throw null; }
         public static System.DateTime Now { get => throw null; }
-        public static System.DateTime Parse(string s, System.IFormatProvider provider, System.Globalization.DateTimeStyles styles) => throw null;
-        public static System.DateTime Parse(string s, System.IFormatProvider provider) => throw null;
-        public static System.DateTime Parse(string s) => throw null;
         public static System.DateTime Parse(System.ReadOnlySpan<System.Char> s, System.IFormatProvider provider = default(System.IFormatProvider), System.Globalization.DateTimeStyles styles = default(System.Globalization.DateTimeStyles)) => throw null;
-        public static System.DateTime ParseExact(string s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style) => throw null;
-        public static System.DateTime ParseExact(string s, string format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style) => throw null;
-        public static System.DateTime ParseExact(string s, string format, System.IFormatProvider provider) => throw null;
-        public static System.DateTime ParseExact(System.ReadOnlySpan<System.Char> s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.DateTime Parse(string s) => throw null;
+        public static System.DateTime Parse(string s, System.IFormatProvider provider) => throw null;
+        public static System.DateTime Parse(string s, System.IFormatProvider provider, System.Globalization.DateTimeStyles styles) => throw null;
         public static System.DateTime ParseExact(System.ReadOnlySpan<System.Char> s, System.ReadOnlySpan<System.Char> format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.DateTime ParseExact(System.ReadOnlySpan<System.Char> s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.DateTime ParseExact(string s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style) => throw null;
+        public static System.DateTime ParseExact(string s, string format, System.IFormatProvider provider) => throw null;
+        public static System.DateTime ParseExact(string s, string format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style) => throw null;
         public int Second { get => throw null; }
         public static System.DateTime SpecifyKind(System.DateTime value, System.DateTimeKind kind) => throw null;
         public System.TimeSpan Subtract(System.DateTime value) => throw null;
@@ -1351,10 +1351,10 @@ namespace System
         public string ToShortDateString() => throw null;
         public string ToShortTimeString() => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
@@ -1362,14 +1362,14 @@ namespace System
         public System.DateTime ToUniversalTime() => throw null;
         public static System.DateTime Today { get => throw null; }
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string s, out System.DateTime result) => throw null;
-        public static bool TryParse(string s, System.IFormatProvider provider, System.Globalization.DateTimeStyles styles, out System.DateTime result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.DateTime result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.IFormatProvider provider, System.Globalization.DateTimeStyles styles, out System.DateTime result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.DateTime result) => throw null;
+        public static bool TryParse(string s, System.IFormatProvider provider, System.Globalization.DateTimeStyles styles, out System.DateTime result) => throw null;
+        public static bool TryParse(string s, out System.DateTime result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> s, System.ReadOnlySpan<System.Char> format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateTime result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateTime result) => throw null;
         public static bool TryParseExact(string s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateTime result) => throw null;
         public static bool TryParseExact(string s, string format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateTime result) => throw null;
-        public static bool TryParseExact(System.ReadOnlySpan<System.Char> s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateTime result) => throw null;
-        public static bool TryParseExact(System.ReadOnlySpan<System.Char> s, System.ReadOnlySpan<System.Char> format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateTime result) => throw null;
         public static System.DateTime UnixEpoch;
         public static System.DateTime UtcNow { get => throw null; }
         public int Year { get => throw null; }
@@ -1384,7 +1384,7 @@ namespace System
     }
 
     // Generated from `System.DateTimeOffset` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct DateTimeOffset : System.Runtime.Serialization.ISerializable, System.Runtime.Serialization.IDeserializationCallback, System.IFormattable, System.IEquatable<System.DateTimeOffset>, System.IComparable<System.DateTimeOffset>, System.IComparable
+    public struct DateTimeOffset : System.IComparable, System.IComparable<System.DateTimeOffset>, System.IEquatable<System.DateTimeOffset>, System.IFormattable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.DateTimeOffset left, System.DateTimeOffset right) => throw null;
         public static System.DateTimeOffset operator +(System.DateTimeOffset dateTimeOffset, System.TimeSpan timeSpan) => throw null;
@@ -1409,19 +1409,19 @@ namespace System
         int System.IComparable.CompareTo(object obj) => throw null;
         public System.DateTime Date { get => throw null; }
         public System.DateTime DateTime { get => throw null; }
-        public DateTimeOffset(int year, int month, int day, int hour, int minute, int second, int millisecond, System.TimeSpan offset) => throw null;
-        public DateTimeOffset(int year, int month, int day, int hour, int minute, int second, int millisecond, System.Globalization.Calendar calendar, System.TimeSpan offset) => throw null;
-        public DateTimeOffset(int year, int month, int day, int hour, int minute, int second, System.TimeSpan offset) => throw null;
-        public DateTimeOffset(System.Int64 ticks, System.TimeSpan offset) => throw null;
-        public DateTimeOffset(System.DateTime dateTime, System.TimeSpan offset) => throw null;
-        public DateTimeOffset(System.DateTime dateTime) => throw null;
         // Stub generator skipped constructor 
+        public DateTimeOffset(System.DateTime dateTime) => throw null;
+        public DateTimeOffset(System.DateTime dateTime, System.TimeSpan offset) => throw null;
+        public DateTimeOffset(int year, int month, int day, int hour, int minute, int second, System.TimeSpan offset) => throw null;
+        public DateTimeOffset(int year, int month, int day, int hour, int minute, int second, int millisecond, System.Globalization.Calendar calendar, System.TimeSpan offset) => throw null;
+        public DateTimeOffset(int year, int month, int day, int hour, int minute, int second, int millisecond, System.TimeSpan offset) => throw null;
+        public DateTimeOffset(System.Int64 ticks, System.TimeSpan offset) => throw null;
         public int Day { get => throw null; }
         public System.DayOfWeek DayOfWeek { get => throw null; }
         public int DayOfYear { get => throw null; }
+        public bool Equals(System.DateTimeOffset other) => throw null;
         public static bool Equals(System.DateTimeOffset first, System.DateTimeOffset second) => throw null;
         public override bool Equals(object obj) => throw null;
-        public bool Equals(System.DateTimeOffset other) => throw null;
         public bool EqualsExact(System.DateTimeOffset other) => throw null;
         public static System.DateTimeOffset FromFileTime(System.Int64 fileTime) => throw null;
         public static System.DateTimeOffset FromUnixTimeMilliseconds(System.Int64 milliseconds) => throw null;
@@ -1438,15 +1438,15 @@ namespace System
         public static System.DateTimeOffset Now { get => throw null; }
         public System.TimeSpan Offset { get => throw null; }
         void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) => throw null;
-        public static System.DateTimeOffset Parse(string input, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles) => throw null;
-        public static System.DateTimeOffset Parse(string input, System.IFormatProvider formatProvider) => throw null;
-        public static System.DateTimeOffset Parse(string input) => throw null;
         public static System.DateTimeOffset Parse(System.ReadOnlySpan<System.Char> input, System.IFormatProvider formatProvider = default(System.IFormatProvider), System.Globalization.DateTimeStyles styles = default(System.Globalization.DateTimeStyles)) => throw null;
-        public static System.DateTimeOffset ParseExact(string input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles) => throw null;
-        public static System.DateTimeOffset ParseExact(string input, string format, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles) => throw null;
-        public static System.DateTimeOffset ParseExact(string input, string format, System.IFormatProvider formatProvider) => throw null;
-        public static System.DateTimeOffset ParseExact(System.ReadOnlySpan<System.Char> input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.DateTimeOffset Parse(string input) => throw null;
+        public static System.DateTimeOffset Parse(string input, System.IFormatProvider formatProvider) => throw null;
+        public static System.DateTimeOffset Parse(string input, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles) => throw null;
         public static System.DateTimeOffset ParseExact(System.ReadOnlySpan<System.Char> input, System.ReadOnlySpan<System.Char> format, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.DateTimeOffset ParseExact(System.ReadOnlySpan<System.Char> input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.DateTimeOffset ParseExact(string input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles) => throw null;
+        public static System.DateTimeOffset ParseExact(string input, string format, System.IFormatProvider formatProvider) => throw null;
+        public static System.DateTimeOffset ParseExact(string input, string format, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles) => throw null;
         public int Second { get => throw null; }
         public System.TimeSpan Subtract(System.DateTimeOffset value) => throw null;
         public System.DateTimeOffset Subtract(System.TimeSpan value) => throw null;
@@ -1455,22 +1455,22 @@ namespace System
         public System.Int64 ToFileTime() => throw null;
         public System.DateTimeOffset ToLocalTime() => throw null;
         public System.DateTimeOffset ToOffset(System.TimeSpan offset) => throw null;
-        public string ToString(string format, System.IFormatProvider formatProvider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider formatProvider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider formatProvider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider formatProvider) => throw null;
         public System.DateTimeOffset ToUniversalTime() => throw null;
         public System.Int64 ToUnixTimeMilliseconds() => throw null;
         public System.Int64 ToUnixTimeSeconds() => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider formatProvider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string input, out System.DateTimeOffset result) => throw null;
-        public static bool TryParse(string input, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles, out System.DateTimeOffset result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> input, out System.DateTimeOffset result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> input, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles, out System.DateTimeOffset result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> input, out System.DateTimeOffset result) => throw null;
+        public static bool TryParse(string input, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles, out System.DateTimeOffset result) => throw null;
+        public static bool TryParse(string input, out System.DateTimeOffset result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> input, System.ReadOnlySpan<System.Char> format, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles, out System.DateTimeOffset result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles, out System.DateTimeOffset result) => throw null;
         public static bool TryParseExact(string input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles, out System.DateTimeOffset result) => throw null;
         public static bool TryParseExact(string input, string format, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles, out System.DateTimeOffset result) => throw null;
-        public static bool TryParseExact(System.ReadOnlySpan<System.Char> input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles, out System.DateTimeOffset result) => throw null;
-        public static bool TryParseExact(System.ReadOnlySpan<System.Char> input, System.ReadOnlySpan<System.Char> format, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles, out System.DateTimeOffset result) => throw null;
         public static System.DateTimeOffset UnixEpoch;
         public System.DateTime UtcDateTime { get => throw null; }
         public static System.DateTimeOffset UtcNow { get => throw null; }
@@ -1492,16 +1492,16 @@ namespace System
     }
 
     // Generated from `System.Decimal` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Decimal : System.Runtime.Serialization.ISerializable, System.Runtime.Serialization.IDeserializationCallback, System.IFormattable, System.IEquatable<System.Decimal>, System.IConvertible, System.IComparable<System.Decimal>, System.IComparable
+    public struct Decimal : System.IComparable, System.IComparable<System.Decimal>, System.IConvertible, System.IEquatable<System.Decimal>, System.IFormattable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.Decimal d1, System.Decimal d2) => throw null;
         public static System.Decimal operator %(System.Decimal d1, System.Decimal d2) => throw null;
         public static System.Decimal operator *(System.Decimal d1, System.Decimal d2) => throw null;
-        public static System.Decimal operator +(System.Decimal d1, System.Decimal d2) => throw null;
         public static System.Decimal operator +(System.Decimal d) => throw null;
+        public static System.Decimal operator +(System.Decimal d1, System.Decimal d2) => throw null;
         public static System.Decimal operator ++(System.Decimal d) => throw null;
-        public static System.Decimal operator -(System.Decimal d1, System.Decimal d2) => throw null;
         public static System.Decimal operator -(System.Decimal d) => throw null;
+        public static System.Decimal operator -(System.Decimal d1, System.Decimal d2) => throw null;
         public static System.Decimal operator --(System.Decimal d) => throw null;
         public static System.Decimal operator /(System.Decimal d1, System.Decimal d2) => throw null;
         public static bool operator <(System.Decimal d1, System.Decimal d2) => throw null;
@@ -1512,22 +1512,22 @@ namespace System
         public static System.Decimal Add(System.Decimal d1, System.Decimal d2) => throw null;
         public static System.Decimal Ceiling(System.Decimal d) => throw null;
         public static int Compare(System.Decimal d1, System.Decimal d2) => throw null;
-        public int CompareTo(object value) => throw null;
         public int CompareTo(System.Decimal value) => throw null;
+        public int CompareTo(object value) => throw null;
+        // Stub generator skipped constructor 
         public Decimal(int[] bits) => throw null;
+        public Decimal(System.ReadOnlySpan<int> bits) => throw null;
+        public Decimal(double value) => throw null;
+        public Decimal(float value) => throw null;
         public Decimal(int value) => throw null;
         public Decimal(int lo, int mid, int hi, bool isNegative, System.Byte scale) => throw null;
-        public Decimal(float value) => throw null;
-        public Decimal(double value) => throw null;
-        public Decimal(System.UInt64 value) => throw null;
-        public Decimal(System.UInt32 value) => throw null;
-        public Decimal(System.ReadOnlySpan<int> bits) => throw null;
         public Decimal(System.Int64 value) => throw null;
-        // Stub generator skipped constructor 
+        public Decimal(System.UInt32 value) => throw null;
+        public Decimal(System.UInt64 value) => throw null;
         public static System.Decimal Divide(System.Decimal d1, System.Decimal d2) => throw null;
+        public bool Equals(System.Decimal value) => throw null;
         public static bool Equals(System.Decimal d1, System.Decimal d2) => throw null;
         public override bool Equals(object value) => throw null;
-        public bool Equals(System.Decimal value) => throw null;
         public static System.Decimal Floor(System.Decimal d) => throw null;
         public static System.Decimal FromOACurrency(System.Int64 cy) => throw null;
         public static int[] GetBits(System.Decimal d) => throw null;
@@ -1542,100 +1542,100 @@ namespace System
         public static System.Decimal Negate(System.Decimal d) => throw null;
         void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) => throw null;
         public const System.Decimal One = default;
-        public static System.Decimal Parse(string s, System.IFormatProvider provider) => throw null;
-        public static System.Decimal Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
-        public static System.Decimal Parse(string s, System.Globalization.NumberStyles style) => throw null;
-        public static System.Decimal Parse(string s) => throw null;
         public static System.Decimal Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static System.Decimal Parse(string s) => throw null;
+        public static System.Decimal Parse(string s, System.IFormatProvider provider) => throw null;
+        public static System.Decimal Parse(string s, System.Globalization.NumberStyles style) => throw null;
+        public static System.Decimal Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
         public static System.Decimal Remainder(System.Decimal d1, System.Decimal d2) => throw null;
-        public static System.Decimal Round(System.Decimal d, int decimals, System.MidpointRounding mode) => throw null;
-        public static System.Decimal Round(System.Decimal d, int decimals) => throw null;
-        public static System.Decimal Round(System.Decimal d, System.MidpointRounding mode) => throw null;
         public static System.Decimal Round(System.Decimal d) => throw null;
+        public static System.Decimal Round(System.Decimal d, System.MidpointRounding mode) => throw null;
+        public static System.Decimal Round(System.Decimal d, int decimals) => throw null;
+        public static System.Decimal Round(System.Decimal d, int decimals, System.MidpointRounding mode) => throw null;
         public static System.Decimal Subtract(System.Decimal d1, System.Decimal d2) => throw null;
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
-        public static System.Byte ToByte(System.Decimal value) => throw null;
         System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
+        public static System.Byte ToByte(System.Decimal value) => throw null;
         System.Char System.IConvertible.ToChar(System.IFormatProvider provider) => throw null;
         System.DateTime System.IConvertible.ToDateTime(System.IFormatProvider provider) => throw null;
         System.Decimal System.IConvertible.ToDecimal(System.IFormatProvider provider) => throw null;
-        public static double ToDouble(System.Decimal d) => throw null;
         double System.IConvertible.ToDouble(System.IFormatProvider provider) => throw null;
-        public static System.Int16 ToInt16(System.Decimal value) => throw null;
+        public static double ToDouble(System.Decimal d) => throw null;
         System.Int16 System.IConvertible.ToInt16(System.IFormatProvider provider) => throw null;
-        public static int ToInt32(System.Decimal d) => throw null;
+        public static System.Int16 ToInt16(System.Decimal value) => throw null;
         int System.IConvertible.ToInt32(System.IFormatProvider provider) => throw null;
-        public static System.Int64 ToInt64(System.Decimal d) => throw null;
+        public static int ToInt32(System.Decimal d) => throw null;
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
+        public static System.Int64 ToInt64(System.Decimal d) => throw null;
         public static System.Int64 ToOACurrency(System.Decimal value) => throw null;
-        public static System.SByte ToSByte(System.Decimal value) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
-        public static float ToSingle(System.Decimal d) => throw null;
+        public static System.SByte ToSByte(System.Decimal value) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
+        public static float ToSingle(System.Decimal d) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
-        public static System.UInt16 ToUInt16(System.Decimal value) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
-        public static System.UInt32 ToUInt32(System.Decimal d) => throw null;
+        public static System.UInt16 ToUInt16(System.Decimal value) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
-        public static System.UInt64 ToUInt64(System.Decimal d) => throw null;
+        public static System.UInt32 ToUInt32(System.Decimal d) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
+        public static System.UInt64 ToUInt64(System.Decimal d) => throw null;
         public static System.Decimal Truncate(System.Decimal d) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
         public static bool TryGetBits(System.Decimal d, System.Span<int> destination, out int valuesWritten) => throw null;
-        public static bool TryParse(string s, out System.Decimal result) => throw null;
-        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Decimal result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Decimal result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Decimal result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Decimal result) => throw null;
+        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Decimal result) => throw null;
+        public static bool TryParse(string s, out System.Decimal result) => throw null;
         public const System.Decimal Zero = default;
-        public static explicit operator int(System.Decimal value) => throw null;
-        public static explicit operator float(System.Decimal value) => throw null;
-        public static explicit operator double(System.Decimal value) => throw null;
-        public static explicit operator System.UInt64(System.Decimal value) => throw null;
-        public static explicit operator System.UInt32(System.Decimal value) => throw null;
-        public static explicit operator System.UInt16(System.Decimal value) => throw null;
-        public static explicit operator System.SByte(System.Decimal value) => throw null;
-        public static explicit operator System.Int64(System.Decimal value) => throw null;
-        public static explicit operator System.Int16(System.Decimal value) => throw null;
-        public static explicit operator System.Decimal(float value) => throw null;
-        public static explicit operator System.Decimal(double value) => throw null;
-        public static explicit operator System.Char(System.Decimal value) => throw null;
         public static explicit operator System.Byte(System.Decimal value) => throw null;
-        public static implicit operator System.Decimal(int value) => throw null;
-        public static implicit operator System.Decimal(System.UInt64 value) => throw null;
-        public static implicit operator System.Decimal(System.UInt32 value) => throw null;
-        public static implicit operator System.Decimal(System.UInt16 value) => throw null;
-        public static implicit operator System.Decimal(System.SByte value) => throw null;
-        public static implicit operator System.Decimal(System.Int64 value) => throw null;
-        public static implicit operator System.Decimal(System.Int16 value) => throw null;
-        public static implicit operator System.Decimal(System.Char value) => throw null;
+        public static explicit operator System.Char(System.Decimal value) => throw null;
+        public static explicit operator System.Int16(System.Decimal value) => throw null;
+        public static explicit operator System.Int64(System.Decimal value) => throw null;
+        public static explicit operator System.SByte(System.Decimal value) => throw null;
+        public static explicit operator System.UInt16(System.Decimal value) => throw null;
+        public static explicit operator System.UInt32(System.Decimal value) => throw null;
+        public static explicit operator System.UInt64(System.Decimal value) => throw null;
+        public static explicit operator double(System.Decimal value) => throw null;
+        public static explicit operator float(System.Decimal value) => throw null;
+        public static explicit operator int(System.Decimal value) => throw null;
+        public static explicit operator System.Decimal(double value) => throw null;
+        public static explicit operator System.Decimal(float value) => throw null;
         public static implicit operator System.Decimal(System.Byte value) => throw null;
+        public static implicit operator System.Decimal(System.Char value) => throw null;
+        public static implicit operator System.Decimal(int value) => throw null;
+        public static implicit operator System.Decimal(System.Int64 value) => throw null;
+        public static implicit operator System.Decimal(System.SByte value) => throw null;
+        public static implicit operator System.Decimal(System.Int16 value) => throw null;
+        public static implicit operator System.Decimal(System.UInt32 value) => throw null;
+        public static implicit operator System.Decimal(System.UInt64 value) => throw null;
+        public static implicit operator System.Decimal(System.UInt16 value) => throw null;
     }
 
     // Generated from `System.Delegate` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public abstract class Delegate : System.Runtime.Serialization.ISerializable, System.ICloneable
+    public abstract class Delegate : System.ICloneable, System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.Delegate d1, System.Delegate d2) => throw null;
         public static bool operator ==(System.Delegate d1, System.Delegate d2) => throw null;
         public virtual object Clone() => throw null;
-        public static System.Delegate Combine(params System.Delegate[] delegates) => throw null;
         public static System.Delegate Combine(System.Delegate a, System.Delegate b) => throw null;
+        public static System.Delegate Combine(params System.Delegate[] delegates) => throw null;
         protected virtual System.Delegate CombineImpl(System.Delegate d) => throw null;
-        public static System.Delegate CreateDelegate(System.Type type, object target, string method, bool ignoreCase, bool throwOnBindFailure) => throw null;
-        public static System.Delegate CreateDelegate(System.Type type, object target, string method, bool ignoreCase) => throw null;
-        public static System.Delegate CreateDelegate(System.Type type, object target, string method) => throw null;
-        public static System.Delegate CreateDelegate(System.Type type, object firstArgument, System.Reflection.MethodInfo method, bool throwOnBindFailure) => throw null;
-        public static System.Delegate CreateDelegate(System.Type type, object firstArgument, System.Reflection.MethodInfo method) => throw null;
-        public static System.Delegate CreateDelegate(System.Type type, System.Type target, string method, bool ignoreCase, bool throwOnBindFailure) => throw null;
-        public static System.Delegate CreateDelegate(System.Type type, System.Type target, string method, bool ignoreCase) => throw null;
-        public static System.Delegate CreateDelegate(System.Type type, System.Type target, string method) => throw null;
-        public static System.Delegate CreateDelegate(System.Type type, System.Reflection.MethodInfo method, bool throwOnBindFailure) => throw null;
         public static System.Delegate CreateDelegate(System.Type type, System.Reflection.MethodInfo method) => throw null;
-        protected Delegate(object target, string method) => throw null;
+        public static System.Delegate CreateDelegate(System.Type type, System.Reflection.MethodInfo method, bool throwOnBindFailure) => throw null;
+        public static System.Delegate CreateDelegate(System.Type type, System.Type target, string method) => throw null;
+        public static System.Delegate CreateDelegate(System.Type type, System.Type target, string method, bool ignoreCase) => throw null;
+        public static System.Delegate CreateDelegate(System.Type type, System.Type target, string method, bool ignoreCase, bool throwOnBindFailure) => throw null;
+        public static System.Delegate CreateDelegate(System.Type type, object firstArgument, System.Reflection.MethodInfo method) => throw null;
+        public static System.Delegate CreateDelegate(System.Type type, object firstArgument, System.Reflection.MethodInfo method, bool throwOnBindFailure) => throw null;
+        public static System.Delegate CreateDelegate(System.Type type, object target, string method) => throw null;
+        public static System.Delegate CreateDelegate(System.Type type, object target, string method, bool ignoreCase) => throw null;
+        public static System.Delegate CreateDelegate(System.Type type, object target, string method, bool ignoreCase, bool throwOnBindFailure) => throw null;
         protected Delegate(System.Type target, string method) => throw null;
+        protected Delegate(object target, string method) => throw null;
         public object DynamicInvoke(params object[] args) => throw null;
         protected virtual object DynamicInvokeImpl(object[] args) => throw null;
         public override bool Equals(object obj) => throw null;
@@ -1653,14 +1653,14 @@ namespace System
     // Generated from `System.DivideByZeroException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class DivideByZeroException : System.ArithmeticException
     {
-        public DivideByZeroException(string message, System.Exception innerException) => throw null;
-        public DivideByZeroException(string message) => throw null;
         public DivideByZeroException() => throw null;
         protected DivideByZeroException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public DivideByZeroException(string message) => throw null;
+        public DivideByZeroException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.Double` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Double : System.IFormattable, System.IEquatable<double>, System.IConvertible, System.IComparable<double>, System.IComparable
+    public struct Double : System.IComparable, System.IComparable<double>, System.IConvertible, System.IEquatable<double>, System.IFormattable
     {
         public static bool operator !=(double left, double right) => throw null;
         public static bool operator <(double left, double right) => throw null;
@@ -1668,12 +1668,12 @@ namespace System
         public static bool operator ==(double left, double right) => throw null;
         public static bool operator >(double left, double right) => throw null;
         public static bool operator >=(double left, double right) => throw null;
-        public int CompareTo(object value) => throw null;
         public int CompareTo(double value) => throw null;
+        public int CompareTo(object value) => throw null;
         // Stub generator skipped constructor 
         public const double Epsilon = default;
-        public override bool Equals(object obj) => throw null;
         public bool Equals(double obj) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         public System.TypeCode GetTypeCode() => throw null;
         public static bool IsFinite(double d) => throw null;
@@ -1688,11 +1688,11 @@ namespace System
         public const double MinValue = default;
         public const double NaN = default;
         public const double NegativeInfinity = default;
-        public static double Parse(string s, System.IFormatProvider provider) => throw null;
-        public static double Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
-        public static double Parse(string s, System.Globalization.NumberStyles style) => throw null;
-        public static double Parse(string s) => throw null;
         public static double Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static double Parse(string s) => throw null;
+        public static double Parse(string s, System.IFormatProvider provider) => throw null;
+        public static double Parse(string s, System.Globalization.NumberStyles style) => throw null;
+        public static double Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
         public const double PositiveInfinity = default;
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
         System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
@@ -1705,63 +1705,63 @@ namespace System
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string s, out double result) => throw null;
-        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out double result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out double result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out double result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out double result) => throw null;
+        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out double result) => throw null;
+        public static bool TryParse(string s, out double result) => throw null;
     }
 
     // Generated from `System.DuplicateWaitObjectException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class DuplicateWaitObjectException : System.ArgumentException
     {
-        public DuplicateWaitObjectException(string parameterName, string message) => throw null;
-        public DuplicateWaitObjectException(string parameterName) => throw null;
-        public DuplicateWaitObjectException(string message, System.Exception innerException) => throw null;
         public DuplicateWaitObjectException() => throw null;
         protected DuplicateWaitObjectException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public DuplicateWaitObjectException(string parameterName) => throw null;
+        public DuplicateWaitObjectException(string message, System.Exception innerException) => throw null;
+        public DuplicateWaitObjectException(string parameterName, string message) => throw null;
     }
 
     // Generated from `System.EntryPointNotFoundException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class EntryPointNotFoundException : System.TypeLoadException
     {
-        public EntryPointNotFoundException(string message, System.Exception inner) => throw null;
-        public EntryPointNotFoundException(string message) => throw null;
         public EntryPointNotFoundException() => throw null;
         protected EntryPointNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public EntryPointNotFoundException(string message) => throw null;
+        public EntryPointNotFoundException(string message, System.Exception inner) => throw null;
     }
 
     // Generated from `System.Enum` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public abstract class Enum : System.IFormattable, System.IConvertible, System.IComparable
+    public abstract class Enum : System.IComparable, System.IConvertible, System.IFormattable
     {
         public int CompareTo(object target) => throw null;
         protected Enum() => throw null;
         public override bool Equals(object obj) => throw null;
         public static string Format(System.Type enumType, object value, string format) => throw null;
         public override int GetHashCode() => throw null;
-        public static string GetName<TEnum>(TEnum value) where TEnum : System.Enum => throw null;
         public static string GetName(System.Type enumType, object value) => throw null;
-        public static string[] GetNames<TEnum>() where TEnum : System.Enum => throw null;
+        public static string GetName<TEnum>(TEnum value) where TEnum : System.Enum => throw null;
         public static string[] GetNames(System.Type enumType) => throw null;
+        public static string[] GetNames<TEnum>() where TEnum : System.Enum => throw null;
         public System.TypeCode GetTypeCode() => throw null;
         public static System.Type GetUnderlyingType(System.Type enumType) => throw null;
-        public static TEnum[] GetValues<TEnum>() where TEnum : System.Enum => throw null;
         public static System.Array GetValues(System.Type enumType) => throw null;
+        public static TEnum[] GetValues<TEnum>() where TEnum : System.Enum => throw null;
         public bool HasFlag(System.Enum flag) => throw null;
-        public static bool IsDefined<TEnum>(TEnum value) where TEnum : System.Enum => throw null;
         public static bool IsDefined(System.Type enumType, object value) => throw null;
-        public static object Parse(System.Type enumType, string value, bool ignoreCase) => throw null;
+        public static bool IsDefined<TEnum>(TEnum value) where TEnum : System.Enum => throw null;
         public static object Parse(System.Type enumType, string value) => throw null;
-        public static TEnum Parse<TEnum>(string value, bool ignoreCase) where TEnum : struct => throw null;
+        public static object Parse(System.Type enumType, string value, bool ignoreCase) => throw null;
         public static TEnum Parse<TEnum>(string value) where TEnum : struct => throw null;
+        public static TEnum Parse<TEnum>(string value, bool ignoreCase) where TEnum : struct => throw null;
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
         System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
         System.Char System.IConvertible.ToChar(System.IFormatProvider provider) => throw null;
@@ -1771,60 +1771,34 @@ namespace System
         System.Int16 System.IConvertible.ToInt16(System.IFormatProvider provider) => throw null;
         int System.IConvertible.ToInt32(System.IFormatProvider provider) => throw null;
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
-        public static object ToObject(System.Type enumType, object value) => throw null;
-        public static object ToObject(System.Type enumType, int value) => throw null;
-        public static object ToObject(System.Type enumType, System.UInt64 value) => throw null;
-        public static object ToObject(System.Type enumType, System.UInt32 value) => throw null;
-        public static object ToObject(System.Type enumType, System.UInt16 value) => throw null;
-        public static object ToObject(System.Type enumType, System.SByte value) => throw null;
-        public static object ToObject(System.Type enumType, System.Int64 value) => throw null;
-        public static object ToObject(System.Type enumType, System.Int16 value) => throw null;
         public static object ToObject(System.Type enumType, System.Byte value) => throw null;
+        public static object ToObject(System.Type enumType, int value) => throw null;
+        public static object ToObject(System.Type enumType, System.Int64 value) => throw null;
+        public static object ToObject(System.Type enumType, object value) => throw null;
+        public static object ToObject(System.Type enumType, System.SByte value) => throw null;
+        public static object ToObject(System.Type enumType, System.Int16 value) => throw null;
+        public static object ToObject(System.Type enumType, System.UInt32 value) => throw null;
+        public static object ToObject(System.Type enumType, System.UInt64 value) => throw null;
+        public static object ToObject(System.Type enumType, System.UInt16 value) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
-        public static bool TryParse<TEnum>(string value, out TEnum result) where TEnum : struct => throw null;
-        public static bool TryParse<TEnum>(string value, bool ignoreCase, out TEnum result) where TEnum : struct => throw null;
-        public static bool TryParse(System.Type enumType, string value, out object result) => throw null;
         public static bool TryParse(System.Type enumType, string value, bool ignoreCase, out object result) => throw null;
+        public static bool TryParse(System.Type enumType, string value, out object result) => throw null;
+        public static bool TryParse<TEnum>(string value, bool ignoreCase, out TEnum result) where TEnum : struct => throw null;
+        public static bool TryParse<TEnum>(string value, out TEnum result) where TEnum : struct => throw null;
     }
 
     // Generated from `System.Environment` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class Environment
     {
-        public static string CommandLine { get => throw null; }
-        public static string CurrentDirectory { get => throw null; set => throw null; }
-        public static int CurrentManagedThreadId { get => throw null; }
-        public static void Exit(int exitCode) => throw null;
-        public static int ExitCode { get => throw null; set => throw null; }
-        public static string ExpandEnvironmentVariables(string name) => throw null;
-        public static void FailFast(string message, System.Exception exception) => throw null;
-        public static void FailFast(string message) => throw null;
-        public static string[] GetCommandLineArgs() => throw null;
-        public static string GetEnvironmentVariable(string variable, System.EnvironmentVariableTarget target) => throw null;
-        public static string GetEnvironmentVariable(string variable) => throw null;
-        public static System.Collections.IDictionary GetEnvironmentVariables(System.EnvironmentVariableTarget target) => throw null;
-        public static System.Collections.IDictionary GetEnvironmentVariables() => throw null;
-        public static string GetFolderPath(System.Environment.SpecialFolder folder, System.Environment.SpecialFolderOption option) => throw null;
-        public static string GetFolderPath(System.Environment.SpecialFolder folder) => throw null;
-        public static string[] GetLogicalDrives() => throw null;
-        public static bool HasShutdownStarted { get => throw null; }
-        public static bool Is64BitOperatingSystem { get => throw null; }
-        public static bool Is64BitProcess { get => throw null; }
-        public static string MachineName { get => throw null; }
-        public static string NewLine { get => throw null; }
-        public static System.OperatingSystem OSVersion { get => throw null; }
-        public static int ProcessId { get => throw null; }
-        public static int ProcessorCount { get => throw null; }
-        public static void SetEnvironmentVariable(string variable, string value, System.EnvironmentVariableTarget target) => throw null;
-        public static void SetEnvironmentVariable(string variable, string value) => throw null;
         // Generated from `System.Environment+SpecialFolder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum SpecialFolder
         {
@@ -1887,6 +1861,32 @@ namespace System
         }
 
 
+        public static string CommandLine { get => throw null; }
+        public static string CurrentDirectory { get => throw null; set => throw null; }
+        public static int CurrentManagedThreadId { get => throw null; }
+        public static void Exit(int exitCode) => throw null;
+        public static int ExitCode { get => throw null; set => throw null; }
+        public static string ExpandEnvironmentVariables(string name) => throw null;
+        public static void FailFast(string message) => throw null;
+        public static void FailFast(string message, System.Exception exception) => throw null;
+        public static string[] GetCommandLineArgs() => throw null;
+        public static string GetEnvironmentVariable(string variable) => throw null;
+        public static string GetEnvironmentVariable(string variable, System.EnvironmentVariableTarget target) => throw null;
+        public static System.Collections.IDictionary GetEnvironmentVariables() => throw null;
+        public static System.Collections.IDictionary GetEnvironmentVariables(System.EnvironmentVariableTarget target) => throw null;
+        public static string GetFolderPath(System.Environment.SpecialFolder folder) => throw null;
+        public static string GetFolderPath(System.Environment.SpecialFolder folder, System.Environment.SpecialFolderOption option) => throw null;
+        public static string[] GetLogicalDrives() => throw null;
+        public static bool HasShutdownStarted { get => throw null; }
+        public static bool Is64BitOperatingSystem { get => throw null; }
+        public static bool Is64BitProcess { get => throw null; }
+        public static string MachineName { get => throw null; }
+        public static string NewLine { get => throw null; }
+        public static System.OperatingSystem OSVersion { get => throw null; }
+        public static int ProcessId { get => throw null; }
+        public static int ProcessorCount { get => throw null; }
+        public static void SetEnvironmentVariable(string variable, string value) => throw null;
+        public static void SetEnvironmentVariable(string variable, string value, System.EnvironmentVariableTarget target) => throw null;
         public static string StackTrace { get => throw null; }
         public static string SystemDirectory { get => throw null; }
         public static int SystemPageSize { get => throw null; }
@@ -1924,10 +1924,10 @@ namespace System
     public class Exception : System.Runtime.Serialization.ISerializable
     {
         public virtual System.Collections.IDictionary Data { get => throw null; }
-        public Exception(string message, System.Exception innerException) => throw null;
-        public Exception(string message) => throw null;
         public Exception() => throw null;
         protected Exception(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public Exception(string message) => throw null;
+        public Exception(string message, System.Exception innerException) => throw null;
         public virtual System.Exception GetBaseException() => throw null;
         public virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         public System.Type GetType() => throw null;
@@ -1945,18 +1945,18 @@ namespace System
     // Generated from `System.ExecutionEngineException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ExecutionEngineException : System.SystemException
     {
-        public ExecutionEngineException(string message, System.Exception innerException) => throw null;
-        public ExecutionEngineException(string message) => throw null;
         public ExecutionEngineException() => throw null;
+        public ExecutionEngineException(string message) => throw null;
+        public ExecutionEngineException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.FieldAccessException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class FieldAccessException : System.MemberAccessException
     {
-        public FieldAccessException(string message, System.Exception inner) => throw null;
-        public FieldAccessException(string message) => throw null;
         public FieldAccessException() => throw null;
         protected FieldAccessException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public FieldAccessException(string message) => throw null;
+        public FieldAccessException(string message, System.Exception inner) => throw null;
     }
 
     // Generated from `System.FileStyleUriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1974,10 +1974,10 @@ namespace System
     // Generated from `System.FormatException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class FormatException : System.SystemException
     {
-        public FormatException(string message, System.Exception innerException) => throw null;
-        public FormatException(string message) => throw null;
         public FormatException() => throw null;
         protected FormatException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public FormatException(string message) => throw null;
+        public FormatException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.FormattableString` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1990,9 +1990,9 @@ namespace System
         public abstract object GetArgument(int index);
         public abstract object[] GetArguments();
         public static string Invariant(System.FormattableString formattable) => throw null;
-        string System.IFormattable.ToString(string ignored, System.IFormatProvider formatProvider) => throw null;
         public override string ToString() => throw null;
         public abstract string ToString(System.IFormatProvider formatProvider);
+        string System.IFormattable.ToString(string ignored, System.IFormatProvider formatProvider) => throw null;
     }
 
     // Generated from `System.FtpStyleUriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2059,18 +2059,18 @@ namespace System
         public static T[] AllocateArray<T>(int length, bool pinned = default(bool)) => throw null;
         public static T[] AllocateUninitializedArray<T>(int length, bool pinned = default(bool)) => throw null;
         public static void CancelFullGCNotification() => throw null;
-        public static void Collect(int generation, System.GCCollectionMode mode, bool blocking, bool compacting) => throw null;
-        public static void Collect(int generation, System.GCCollectionMode mode, bool blocking) => throw null;
-        public static void Collect(int generation, System.GCCollectionMode mode) => throw null;
-        public static void Collect(int generation) => throw null;
         public static void Collect() => throw null;
+        public static void Collect(int generation) => throw null;
+        public static void Collect(int generation, System.GCCollectionMode mode) => throw null;
+        public static void Collect(int generation, System.GCCollectionMode mode, bool blocking) => throw null;
+        public static void Collect(int generation, System.GCCollectionMode mode, bool blocking, bool compacting) => throw null;
         public static int CollectionCount(int generation) => throw null;
         public static void EndNoGCRegion() => throw null;
         public static System.Int64 GetAllocatedBytesForCurrentThread() => throw null;
-        public static System.GCMemoryInfo GetGCMemoryInfo(System.GCKind kind) => throw null;
         public static System.GCMemoryInfo GetGCMemoryInfo() => throw null;
-        public static int GetGeneration(object obj) => throw null;
+        public static System.GCMemoryInfo GetGCMemoryInfo(System.GCKind kind) => throw null;
         public static int GetGeneration(System.WeakReference wo) => throw null;
+        public static int GetGeneration(object obj) => throw null;
         public static System.Int64 GetTotalAllocatedBytes(bool precise = default(bool)) => throw null;
         public static System.Int64 GetTotalMemory(bool forceFullCollection) => throw null;
         public static void KeepAlive(object obj) => throw null;
@@ -2079,14 +2079,14 @@ namespace System
         public static void RegisterForFullGCNotification(int maxGenerationThreshold, int largeObjectHeapThreshold) => throw null;
         public static void RemoveMemoryPressure(System.Int64 bytesAllocated) => throw null;
         public static void SuppressFinalize(object obj) => throw null;
-        public static bool TryStartNoGCRegion(System.Int64 totalSize, bool disallowFullBlockingGC) => throw null;
-        public static bool TryStartNoGCRegion(System.Int64 totalSize, System.Int64 lohSize, bool disallowFullBlockingGC) => throw null;
-        public static bool TryStartNoGCRegion(System.Int64 totalSize, System.Int64 lohSize) => throw null;
         public static bool TryStartNoGCRegion(System.Int64 totalSize) => throw null;
-        public static System.GCNotificationStatus WaitForFullGCApproach(int millisecondsTimeout) => throw null;
+        public static bool TryStartNoGCRegion(System.Int64 totalSize, bool disallowFullBlockingGC) => throw null;
+        public static bool TryStartNoGCRegion(System.Int64 totalSize, System.Int64 lohSize) => throw null;
+        public static bool TryStartNoGCRegion(System.Int64 totalSize, System.Int64 lohSize, bool disallowFullBlockingGC) => throw null;
         public static System.GCNotificationStatus WaitForFullGCApproach() => throw null;
-        public static System.GCNotificationStatus WaitForFullGCComplete(int millisecondsTimeout) => throw null;
+        public static System.GCNotificationStatus WaitForFullGCApproach(int millisecondsTimeout) => throw null;
         public static System.GCNotificationStatus WaitForFullGCComplete() => throw null;
+        public static System.GCNotificationStatus WaitForFullGCComplete(int millisecondsTimeout) => throw null;
         public static void WaitForPendingFinalizers() => throw null;
     }
 
@@ -2180,42 +2180,42 @@ namespace System
     }
 
     // Generated from `System.Guid` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Guid : System.IFormattable, System.IEquatable<System.Guid>, System.IComparable<System.Guid>, System.IComparable
+    public struct Guid : System.IComparable, System.IComparable<System.Guid>, System.IEquatable<System.Guid>, System.IFormattable
     {
         public static bool operator !=(System.Guid a, System.Guid b) => throw null;
         public static bool operator ==(System.Guid a, System.Guid b) => throw null;
-        public int CompareTo(object value) => throw null;
         public int CompareTo(System.Guid value) => throw null;
+        public int CompareTo(object value) => throw null;
         public static System.Guid Empty;
-        public override bool Equals(object o) => throw null;
         public bool Equals(System.Guid g) => throw null;
+        public override bool Equals(object o) => throw null;
         public override int GetHashCode() => throw null;
-        public Guid(string g) => throw null;
+        // Stub generator skipped constructor 
+        public Guid(System.Byte[] b) => throw null;
+        public Guid(System.ReadOnlySpan<System.Byte> b) => throw null;
         public Guid(int a, System.Int16 b, System.Int16 c, System.Byte[] d) => throw null;
         public Guid(int a, System.Int16 b, System.Int16 c, System.Byte d, System.Byte e, System.Byte f, System.Byte g, System.Byte h, System.Byte i, System.Byte j, System.Byte k) => throw null;
+        public Guid(string g) => throw null;
         public Guid(System.UInt32 a, System.UInt16 b, System.UInt16 c, System.Byte d, System.Byte e, System.Byte f, System.Byte g, System.Byte h, System.Byte i, System.Byte j, System.Byte k) => throw null;
-        public Guid(System.ReadOnlySpan<System.Byte> b) => throw null;
-        public Guid(System.Byte[] b) => throw null;
-        // Stub generator skipped constructor 
         public static System.Guid NewGuid() => throw null;
-        public static System.Guid Parse(string input) => throw null;
         public static System.Guid Parse(System.ReadOnlySpan<System.Char> input) => throw null;
-        public static System.Guid ParseExact(string input, string format) => throw null;
+        public static System.Guid Parse(string input) => throw null;
         public static System.Guid ParseExact(System.ReadOnlySpan<System.Char> input, System.ReadOnlySpan<System.Char> format) => throw null;
+        public static System.Guid ParseExact(string input, string format) => throw null;
         public System.Byte[] ToByteArray() => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
         public override string ToString() => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>)) => throw null;
-        public static bool TryParse(string input, out System.Guid result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> input, out System.Guid result) => throw null;
-        public static bool TryParseExact(string input, string format, out System.Guid result) => throw null;
+        public static bool TryParse(string input, out System.Guid result) => throw null;
         public static bool TryParseExact(System.ReadOnlySpan<System.Char> input, System.ReadOnlySpan<System.Char> format, out System.Guid result) => throw null;
+        public static bool TryParseExact(string input, string format, out System.Guid result) => throw null;
         public bool TryWriteBytes(System.Span<System.Byte> destination) => throw null;
     }
 
     // Generated from `System.Half` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Half : System.IFormattable, System.IEquatable<System.Half>, System.IComparable<System.Half>, System.IComparable
+    public struct Half : System.IComparable, System.IComparable<System.Half>, System.IEquatable<System.Half>, System.IFormattable
     {
         public static bool operator !=(System.Half left, System.Half right) => throw null;
         public static bool operator <(System.Half left, System.Half right) => throw null;
@@ -2223,11 +2223,11 @@ namespace System
         public static bool operator ==(System.Half left, System.Half right) => throw null;
         public static bool operator >(System.Half left, System.Half right) => throw null;
         public static bool operator >=(System.Half left, System.Half right) => throw null;
-        public int CompareTo(object obj) => throw null;
         public int CompareTo(System.Half other) => throw null;
+        public int CompareTo(object obj) => throw null;
         public static System.Half Epsilon { get => throw null; }
-        public override bool Equals(object obj) => throw null;
         public bool Equals(System.Half other) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         // Stub generator skipped constructor 
         public static bool IsFinite(System.Half value) => throw null;
@@ -2242,40 +2242,40 @@ namespace System
         public static System.Half MinValue { get => throw null; }
         public static System.Half NaN { get => throw null; }
         public static System.Half NegativeInfinity { get => throw null; }
+        public static System.Half Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static System.Half Parse(string s) => throw null;
         public static System.Half Parse(string s, System.IFormatProvider provider) => throw null;
         public static System.Half Parse(string s, System.Globalization.NumberStyles style) => throw null;
         public static System.Half Parse(string s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
-        public static System.Half Parse(string s) => throw null;
-        public static System.Half Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
         public static System.Half PositiveInfinity { get => throw null; }
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string s, out System.Half result) => throw null;
-        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Half result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Half result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Half result) => throw null;
-        public static explicit operator float(System.Half value) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Half result) => throw null;
+        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Half result) => throw null;
+        public static bool TryParse(string s, out System.Half result) => throw null;
         public static explicit operator double(System.Half value) => throw null;
-        public static explicit operator System.Half(float value) => throw null;
+        public static explicit operator float(System.Half value) => throw null;
         public static explicit operator System.Half(double value) => throw null;
+        public static explicit operator System.Half(float value) => throw null;
     }
 
     // Generated from `System.HashCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct HashCode
     {
-        public void Add<T>(T value, System.Collections.Generic.IEqualityComparer<T> comparer) => throw null;
         public void Add<T>(T value) => throw null;
-        public static int Combine<T1>(T1 value1) => throw null;
-        public static int Combine<T1, T2>(T1 value1, T2 value2) => throw null;
-        public static int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3) => throw null;
-        public static int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4) => throw null;
-        public static int Combine<T1, T2, T3, T4, T5>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5) => throw null;
-        public static int Combine<T1, T2, T3, T4, T5, T6>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6) => throw null;
-        public static int Combine<T1, T2, T3, T4, T5, T6, T7>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7) => throw null;
+        public void Add<T>(T value, System.Collections.Generic.IEqualityComparer<T> comparer) => throw null;
         public static int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8) => throw null;
+        public static int Combine<T1, T2, T3, T4, T5, T6, T7>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7) => throw null;
+        public static int Combine<T1, T2, T3, T4, T5, T6>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6) => throw null;
+        public static int Combine<T1, T2, T3, T4, T5>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5) => throw null;
+        public static int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4) => throw null;
+        public static int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3) => throw null;
+        public static int Combine<T1, T2>(T1 value1, T2 value2) => throw null;
+        public static int Combine<T1>(T1 value1) => throw null;
         public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         // Stub generator skipped constructor 
@@ -2397,14 +2397,14 @@ namespace System
     public struct Index : System.IEquatable<System.Index>
     {
         public static System.Index End { get => throw null; }
-        public override bool Equals(object value) => throw null;
         public bool Equals(System.Index other) => throw null;
+        public override bool Equals(object value) => throw null;
         public static System.Index FromEnd(int value) => throw null;
         public static System.Index FromStart(int value) => throw null;
         public override int GetHashCode() => throw null;
         public int GetOffset(int length) => throw null;
-        public Index(int value, bool fromEnd = default(bool)) => throw null;
         // Stub generator skipped constructor 
+        public Index(int value, bool fromEnd = default(bool)) => throw null;
         public bool IsFromEnd { get => throw null; }
         public static System.Index Start { get => throw null; }
         public override string ToString() => throw null;
@@ -2415,29 +2415,29 @@ namespace System
     // Generated from `System.IndexOutOfRangeException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class IndexOutOfRangeException : System.SystemException
     {
-        public IndexOutOfRangeException(string message, System.Exception innerException) => throw null;
-        public IndexOutOfRangeException(string message) => throw null;
         public IndexOutOfRangeException() => throw null;
+        public IndexOutOfRangeException(string message) => throw null;
+        public IndexOutOfRangeException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.InsufficientExecutionStackException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class InsufficientExecutionStackException : System.SystemException
     {
-        public InsufficientExecutionStackException(string message, System.Exception innerException) => throw null;
-        public InsufficientExecutionStackException(string message) => throw null;
         public InsufficientExecutionStackException() => throw null;
+        public InsufficientExecutionStackException(string message) => throw null;
+        public InsufficientExecutionStackException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.InsufficientMemoryException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class InsufficientMemoryException : System.OutOfMemoryException
     {
-        public InsufficientMemoryException(string message, System.Exception innerException) => throw null;
-        public InsufficientMemoryException(string message) => throw null;
         public InsufficientMemoryException() => throw null;
+        public InsufficientMemoryException(string message) => throw null;
+        public InsufficientMemoryException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.Int16` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Int16 : System.IFormattable, System.IEquatable<System.Int16>, System.IConvertible, System.IComparable<System.Int16>, System.IComparable
+    public struct Int16 : System.IComparable, System.IComparable<System.Int16>, System.IConvertible, System.IEquatable<System.Int16>, System.IFormattable
     {
         public int CompareTo(object value) => throw null;
         public int CompareTo(System.Int16 value) => throw null;
@@ -2448,11 +2448,11 @@ namespace System
         // Stub generator skipped constructor 
         public const System.Int16 MaxValue = default;
         public const System.Int16 MinValue = default;
-        public static System.Int16 Parse(string s, System.IFormatProvider provider) => throw null;
-        public static System.Int16 Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
-        public static System.Int16 Parse(string s, System.Globalization.NumberStyles style) => throw null;
-        public static System.Int16 Parse(string s) => throw null;
         public static System.Int16 Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static System.Int16 Parse(string s) => throw null;
+        public static System.Int16 Parse(string s, System.IFormatProvider provider) => throw null;
+        public static System.Int16 Parse(string s, System.Globalization.NumberStyles style) => throw null;
+        public static System.Int16 Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
         System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
         System.Char System.IConvertible.ToChar(System.IFormatProvider provider) => throw null;
@@ -2464,38 +2464,38 @@ namespace System
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string s, out System.Int16 result) => throw null;
-        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Int16 result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Int16 result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Int16 result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Int16 result) => throw null;
+        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Int16 result) => throw null;
+        public static bool TryParse(string s, out System.Int16 result) => throw null;
     }
 
     // Generated from `System.Int32` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Int32 : System.IFormattable, System.IEquatable<int>, System.IConvertible, System.IComparable<int>, System.IComparable
+    public struct Int32 : System.IComparable, System.IComparable<int>, System.IConvertible, System.IEquatable<int>, System.IFormattable
     {
-        public int CompareTo(object value) => throw null;
         public int CompareTo(int value) => throw null;
-        public override bool Equals(object obj) => throw null;
+        public int CompareTo(object value) => throw null;
         public bool Equals(int obj) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         public System.TypeCode GetTypeCode() => throw null;
         // Stub generator skipped constructor 
         public const int MaxValue = default;
         public const int MinValue = default;
-        public static int Parse(string s, System.IFormatProvider provider) => throw null;
-        public static int Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
-        public static int Parse(string s, System.Globalization.NumberStyles style) => throw null;
-        public static int Parse(string s) => throw null;
         public static int Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static int Parse(string s) => throw null;
+        public static int Parse(string s, System.IFormatProvider provider) => throw null;
+        public static int Parse(string s, System.Globalization.NumberStyles style) => throw null;
+        public static int Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
         System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
         System.Char System.IConvertible.ToChar(System.IFormatProvider provider) => throw null;
@@ -2507,38 +2507,38 @@ namespace System
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string s, out int result) => throw null;
-        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out int result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out int result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out int result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out int result) => throw null;
+        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out int result) => throw null;
+        public static bool TryParse(string s, out int result) => throw null;
     }
 
     // Generated from `System.Int64` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Int64 : System.IFormattable, System.IEquatable<System.Int64>, System.IConvertible, System.IComparable<System.Int64>, System.IComparable
+    public struct Int64 : System.IComparable, System.IComparable<System.Int64>, System.IConvertible, System.IEquatable<System.Int64>, System.IFormattable
     {
-        public int CompareTo(object value) => throw null;
         public int CompareTo(System.Int64 value) => throw null;
-        public override bool Equals(object obj) => throw null;
+        public int CompareTo(object value) => throw null;
         public bool Equals(System.Int64 obj) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         public System.TypeCode GetTypeCode() => throw null;
         // Stub generator skipped constructor 
         public const System.Int64 MaxValue = default;
         public const System.Int64 MinValue = default;
-        public static System.Int64 Parse(string s, System.IFormatProvider provider) => throw null;
-        public static System.Int64 Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
-        public static System.Int64 Parse(string s, System.Globalization.NumberStyles style) => throw null;
-        public static System.Int64 Parse(string s) => throw null;
         public static System.Int64 Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static System.Int64 Parse(string s) => throw null;
+        public static System.Int64 Parse(string s, System.IFormatProvider provider) => throw null;
+        public static System.Int64 Parse(string s, System.Globalization.NumberStyles style) => throw null;
+        public static System.Int64 Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
         System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
         System.Char System.IConvertible.ToChar(System.IFormatProvider provider) => throw null;
@@ -2550,110 +2550,110 @@ namespace System
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string s, out System.Int64 result) => throw null;
-        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Int64 result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Int64 result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Int64 result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Int64 result) => throw null;
+        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Int64 result) => throw null;
+        public static bool TryParse(string s, out System.Int64 result) => throw null;
     }
 
     // Generated from `System.IntPtr` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct IntPtr : System.Runtime.Serialization.ISerializable, System.IFormattable, System.IEquatable<System.IntPtr>, System.IComparable<System.IntPtr>, System.IComparable
+    public struct IntPtr : System.IComparable, System.IComparable<System.IntPtr>, System.IEquatable<System.IntPtr>, System.IFormattable, System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.IntPtr value1, System.IntPtr value2) => throw null;
         public static System.IntPtr operator +(System.IntPtr pointer, int offset) => throw null;
         public static System.IntPtr operator -(System.IntPtr pointer, int offset) => throw null;
         public static bool operator ==(System.IntPtr value1, System.IntPtr value2) => throw null;
         public static System.IntPtr Add(System.IntPtr pointer, int offset) => throw null;
-        public int CompareTo(object value) => throw null;
         public int CompareTo(System.IntPtr value) => throw null;
-        public override bool Equals(object obj) => throw null;
+        public int CompareTo(object value) => throw null;
         public bool Equals(System.IntPtr other) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        // Stub generator skipped constructor 
         unsafe public IntPtr(void* value) => throw null;
         public IntPtr(int value) => throw null;
         public IntPtr(System.Int64 value) => throw null;
-        // Stub generator skipped constructor 
         public static System.IntPtr MaxValue { get => throw null; }
         public static System.IntPtr MinValue { get => throw null; }
-        public static System.IntPtr Parse(string s, System.IFormatProvider provider) => throw null;
-        public static System.IntPtr Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
-        public static System.IntPtr Parse(string s, System.Globalization.NumberStyles style) => throw null;
         public static System.IntPtr Parse(string s) => throw null;
+        public static System.IntPtr Parse(string s, System.IFormatProvider provider) => throw null;
+        public static System.IntPtr Parse(string s, System.Globalization.NumberStyles style) => throw null;
+        public static System.IntPtr Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
         public static int Size { get => throw null; }
         public static System.IntPtr Subtract(System.IntPtr pointer, int offset) => throw null;
         public int ToInt32() => throw null;
         public System.Int64 ToInt64() => throw null;
         unsafe public void* ToPointer() => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
-        public static bool TryParse(string s, out System.IntPtr result) => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.IntPtr result) => throw null;
+        public static bool TryParse(string s, out System.IntPtr result) => throw null;
         public static System.IntPtr Zero;
+        public static explicit operator System.Int64(System.IntPtr value) => throw null;
+        public static explicit operator int(System.IntPtr value) => throw null;
         unsafe public static explicit operator void*(System.IntPtr value) => throw null;
         unsafe public static explicit operator System.IntPtr(void* value) => throw null;
-        public static explicit operator int(System.IntPtr value) => throw null;
         public static explicit operator System.IntPtr(int value) => throw null;
         public static explicit operator System.IntPtr(System.Int64 value) => throw null;
-        public static explicit operator System.Int64(System.IntPtr value) => throw null;
     }
 
     // Generated from `System.InvalidCastException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class InvalidCastException : System.SystemException
     {
-        public InvalidCastException(string message, int errorCode) => throw null;
-        public InvalidCastException(string message, System.Exception innerException) => throw null;
-        public InvalidCastException(string message) => throw null;
         public InvalidCastException() => throw null;
         protected InvalidCastException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public InvalidCastException(string message) => throw null;
+        public InvalidCastException(string message, System.Exception innerException) => throw null;
+        public InvalidCastException(string message, int errorCode) => throw null;
     }
 
     // Generated from `System.InvalidOperationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class InvalidOperationException : System.SystemException
     {
-        public InvalidOperationException(string message, System.Exception innerException) => throw null;
-        public InvalidOperationException(string message) => throw null;
         public InvalidOperationException() => throw null;
         protected InvalidOperationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public InvalidOperationException(string message) => throw null;
+        public InvalidOperationException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.InvalidProgramException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class InvalidProgramException : System.SystemException
     {
-        public InvalidProgramException(string message, System.Exception inner) => throw null;
-        public InvalidProgramException(string message) => throw null;
         public InvalidProgramException() => throw null;
+        public InvalidProgramException(string message) => throw null;
+        public InvalidProgramException(string message, System.Exception inner) => throw null;
     }
 
     // Generated from `System.InvalidTimeZoneException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class InvalidTimeZoneException : System.Exception
     {
-        public InvalidTimeZoneException(string message, System.Exception innerException) => throw null;
-        public InvalidTimeZoneException(string message) => throw null;
         public InvalidTimeZoneException() => throw null;
         protected InvalidTimeZoneException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public InvalidTimeZoneException(string message) => throw null;
+        public InvalidTimeZoneException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.Lazy<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Lazy<T, TMetadata> : System.Lazy<T>
     {
-        public Lazy(TMetadata metadata, bool isThreadSafe) => throw null;
-        public Lazy(TMetadata metadata, System.Threading.LazyThreadSafetyMode mode) => throw null;
-        public Lazy(TMetadata metadata) => throw null;
-        public Lazy(System.Func<T> valueFactory, TMetadata metadata, bool isThreadSafe) => throw null;
-        public Lazy(System.Func<T> valueFactory, TMetadata metadata, System.Threading.LazyThreadSafetyMode mode) => throw null;
         public Lazy(System.Func<T> valueFactory, TMetadata metadata) => throw null;
+        public Lazy(System.Func<T> valueFactory, TMetadata metadata, System.Threading.LazyThreadSafetyMode mode) => throw null;
+        public Lazy(System.Func<T> valueFactory, TMetadata metadata, bool isThreadSafe) => throw null;
+        public Lazy(TMetadata metadata) => throw null;
+        public Lazy(TMetadata metadata, System.Threading.LazyThreadSafetyMode mode) => throw null;
+        public Lazy(TMetadata metadata, bool isThreadSafe) => throw null;
         public TMetadata Metadata { get => throw null; }
     }
 
@@ -2661,13 +2661,13 @@ namespace System
     public class Lazy<T>
     {
         public bool IsValueCreated { get => throw null; }
-        public Lazy(bool isThreadSafe) => throw null;
-        public Lazy(T value) => throw null;
-        public Lazy(System.Threading.LazyThreadSafetyMode mode) => throw null;
-        public Lazy(System.Func<T> valueFactory, bool isThreadSafe) => throw null;
-        public Lazy(System.Func<T> valueFactory, System.Threading.LazyThreadSafetyMode mode) => throw null;
-        public Lazy(System.Func<T> valueFactory) => throw null;
         public Lazy() => throw null;
+        public Lazy(System.Func<T> valueFactory) => throw null;
+        public Lazy(System.Func<T> valueFactory, System.Threading.LazyThreadSafetyMode mode) => throw null;
+        public Lazy(System.Func<T> valueFactory, bool isThreadSafe) => throw null;
+        public Lazy(System.Threading.LazyThreadSafetyMode mode) => throw null;
+        public Lazy(T value) => throw null;
+        public Lazy(bool isThreadSafe) => throw null;
         public override string ToString() => throw null;
         public T Value { get => throw null; }
     }
@@ -2715,13 +2715,13 @@ namespace System
     // Generated from `System.Math` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class Math
     {
-        public static int Abs(int value) => throw null;
-        public static float Abs(float value) => throw null;
-        public static double Abs(double value) => throw null;
-        public static System.SByte Abs(System.SByte value) => throw null;
-        public static System.Int64 Abs(System.Int64 value) => throw null;
-        public static System.Int16 Abs(System.Int16 value) => throw null;
         public static System.Decimal Abs(System.Decimal value) => throw null;
+        public static double Abs(double value) => throw null;
+        public static float Abs(float value) => throw null;
+        public static int Abs(int value) => throw null;
+        public static System.Int64 Abs(System.Int64 value) => throw null;
+        public static System.SByte Abs(System.SByte value) => throw null;
+        public static System.Int16 Abs(System.Int16 value) => throw null;
         public static double Acos(double d) => throw null;
         public static double Acosh(double d) => throw null;
         public static double Asin(double d) => throw null;
@@ -2729,25 +2729,25 @@ namespace System
         public static double Atan(double d) => throw null;
         public static double Atan2(double y, double x) => throw null;
         public static double Atanh(double d) => throw null;
-        public static System.UInt64 BigMul(System.UInt64 a, System.UInt64 b, out System.UInt64 low) => throw null;
         public static System.Int64 BigMul(int a, int b) => throw null;
         public static System.Int64 BigMul(System.Int64 a, System.Int64 b, out System.Int64 low) => throw null;
+        public static System.UInt64 BigMul(System.UInt64 a, System.UInt64 b, out System.UInt64 low) => throw null;
         public static double BitDecrement(double x) => throw null;
         public static double BitIncrement(double x) => throw null;
         public static double Cbrt(double d) => throw null;
-        public static double Ceiling(double a) => throw null;
         public static System.Decimal Ceiling(System.Decimal d) => throw null;
-        public static int Clamp(int value, int min, int max) => throw null;
-        public static float Clamp(float value, float min, float max) => throw null;
-        public static double Clamp(double value, double min, double max) => throw null;
-        public static System.UInt64 Clamp(System.UInt64 value, System.UInt64 min, System.UInt64 max) => throw null;
-        public static System.UInt32 Clamp(System.UInt32 value, System.UInt32 min, System.UInt32 max) => throw null;
-        public static System.UInt16 Clamp(System.UInt16 value, System.UInt16 min, System.UInt16 max) => throw null;
-        public static System.SByte Clamp(System.SByte value, System.SByte min, System.SByte max) => throw null;
-        public static System.Int64 Clamp(System.Int64 value, System.Int64 min, System.Int64 max) => throw null;
-        public static System.Int16 Clamp(System.Int16 value, System.Int16 min, System.Int16 max) => throw null;
-        public static System.Decimal Clamp(System.Decimal value, System.Decimal min, System.Decimal max) => throw null;
+        public static double Ceiling(double a) => throw null;
         public static System.Byte Clamp(System.Byte value, System.Byte min, System.Byte max) => throw null;
+        public static System.Decimal Clamp(System.Decimal value, System.Decimal min, System.Decimal max) => throw null;
+        public static double Clamp(double value, double min, double max) => throw null;
+        public static float Clamp(float value, float min, float max) => throw null;
+        public static int Clamp(int value, int min, int max) => throw null;
+        public static System.Int64 Clamp(System.Int64 value, System.Int64 min, System.Int64 max) => throw null;
+        public static System.SByte Clamp(System.SByte value, System.SByte min, System.SByte max) => throw null;
+        public static System.Int16 Clamp(System.Int16 value, System.Int16 min, System.Int16 max) => throw null;
+        public static System.UInt32 Clamp(System.UInt32 value, System.UInt32 min, System.UInt32 max) => throw null;
+        public static System.UInt64 Clamp(System.UInt64 value, System.UInt64 min, System.UInt64 max) => throw null;
+        public static System.UInt16 Clamp(System.UInt16 value, System.UInt16 min, System.UInt16 max) => throw null;
         public static double CopySign(double x, double y) => throw null;
         public static double Cos(double d) => throw null;
         public static double Cosh(double value) => throw null;
@@ -2755,8 +2755,8 @@ namespace System
         public static System.Int64 DivRem(System.Int64 a, System.Int64 b, out System.Int64 result) => throw null;
         public const double E = default;
         public static double Exp(double d) => throw null;
-        public static double Floor(double d) => throw null;
         public static System.Decimal Floor(System.Decimal d) => throw null;
+        public static double Floor(double d) => throw null;
         public static double FusedMultiplyAdd(double x, double y, double z) => throw null;
         public static double IEEERemainder(double x, double y) => throw null;
         public static int ILogB(double x) => throw null;
@@ -2764,56 +2764,56 @@ namespace System
         public static double Log(double a, double newBase) => throw null;
         public static double Log10(double d) => throw null;
         public static double Log2(double x) => throw null;
-        public static int Max(int val1, int val2) => throw null;
-        public static float Max(float val1, float val2) => throw null;
-        public static double Max(double val1, double val2) => throw null;
-        public static System.UInt64 Max(System.UInt64 val1, System.UInt64 val2) => throw null;
-        public static System.UInt32 Max(System.UInt32 val1, System.UInt32 val2) => throw null;
-        public static System.UInt16 Max(System.UInt16 val1, System.UInt16 val2) => throw null;
-        public static System.SByte Max(System.SByte val1, System.SByte val2) => throw null;
-        public static System.Int64 Max(System.Int64 val1, System.Int64 val2) => throw null;
-        public static System.Int16 Max(System.Int16 val1, System.Int16 val2) => throw null;
-        public static System.Decimal Max(System.Decimal val1, System.Decimal val2) => throw null;
         public static System.Byte Max(System.Byte val1, System.Byte val2) => throw null;
+        public static System.Decimal Max(System.Decimal val1, System.Decimal val2) => throw null;
+        public static double Max(double val1, double val2) => throw null;
+        public static float Max(float val1, float val2) => throw null;
+        public static int Max(int val1, int val2) => throw null;
+        public static System.Int64 Max(System.Int64 val1, System.Int64 val2) => throw null;
+        public static System.SByte Max(System.SByte val1, System.SByte val2) => throw null;
+        public static System.Int16 Max(System.Int16 val1, System.Int16 val2) => throw null;
+        public static System.UInt32 Max(System.UInt32 val1, System.UInt32 val2) => throw null;
+        public static System.UInt64 Max(System.UInt64 val1, System.UInt64 val2) => throw null;
+        public static System.UInt16 Max(System.UInt16 val1, System.UInt16 val2) => throw null;
         public static double MaxMagnitude(double x, double y) => throw null;
-        public static int Min(int val1, int val2) => throw null;
-        public static float Min(float val1, float val2) => throw null;
-        public static double Min(double val1, double val2) => throw null;
-        public static System.UInt64 Min(System.UInt64 val1, System.UInt64 val2) => throw null;
-        public static System.UInt32 Min(System.UInt32 val1, System.UInt32 val2) => throw null;
-        public static System.UInt16 Min(System.UInt16 val1, System.UInt16 val2) => throw null;
-        public static System.SByte Min(System.SByte val1, System.SByte val2) => throw null;
-        public static System.Int64 Min(System.Int64 val1, System.Int64 val2) => throw null;
-        public static System.Int16 Min(System.Int16 val1, System.Int16 val2) => throw null;
-        public static System.Decimal Min(System.Decimal val1, System.Decimal val2) => throw null;
         public static System.Byte Min(System.Byte val1, System.Byte val2) => throw null;
+        public static System.Decimal Min(System.Decimal val1, System.Decimal val2) => throw null;
+        public static double Min(double val1, double val2) => throw null;
+        public static float Min(float val1, float val2) => throw null;
+        public static int Min(int val1, int val2) => throw null;
+        public static System.Int64 Min(System.Int64 val1, System.Int64 val2) => throw null;
+        public static System.SByte Min(System.SByte val1, System.SByte val2) => throw null;
+        public static System.Int16 Min(System.Int16 val1, System.Int16 val2) => throw null;
+        public static System.UInt32 Min(System.UInt32 val1, System.UInt32 val2) => throw null;
+        public static System.UInt64 Min(System.UInt64 val1, System.UInt64 val2) => throw null;
+        public static System.UInt16 Min(System.UInt16 val1, System.UInt16 val2) => throw null;
         public static double MinMagnitude(double x, double y) => throw null;
         public const double PI = default;
         public static double Pow(double x, double y) => throw null;
-        public static double Round(double value, int digits, System.MidpointRounding mode) => throw null;
-        public static double Round(double value, int digits) => throw null;
-        public static double Round(double value, System.MidpointRounding mode) => throw null;
-        public static double Round(double a) => throw null;
-        public static System.Decimal Round(System.Decimal d, int decimals, System.MidpointRounding mode) => throw null;
-        public static System.Decimal Round(System.Decimal d, int decimals) => throw null;
-        public static System.Decimal Round(System.Decimal d, System.MidpointRounding mode) => throw null;
         public static System.Decimal Round(System.Decimal d) => throw null;
+        public static System.Decimal Round(System.Decimal d, System.MidpointRounding mode) => throw null;
+        public static System.Decimal Round(System.Decimal d, int decimals) => throw null;
+        public static System.Decimal Round(System.Decimal d, int decimals, System.MidpointRounding mode) => throw null;
+        public static double Round(double a) => throw null;
+        public static double Round(double value, System.MidpointRounding mode) => throw null;
+        public static double Round(double value, int digits) => throw null;
+        public static double Round(double value, int digits, System.MidpointRounding mode) => throw null;
         public static double ScaleB(double x, int n) => throw null;
-        public static int Sign(int value) => throw null;
-        public static int Sign(float value) => throw null;
-        public static int Sign(double value) => throw null;
-        public static int Sign(System.SByte value) => throw null;
-        public static int Sign(System.Int64 value) => throw null;
-        public static int Sign(System.Int16 value) => throw null;
         public static int Sign(System.Decimal value) => throw null;
+        public static int Sign(double value) => throw null;
+        public static int Sign(float value) => throw null;
+        public static int Sign(int value) => throw null;
+        public static int Sign(System.Int64 value) => throw null;
+        public static int Sign(System.SByte value) => throw null;
+        public static int Sign(System.Int16 value) => throw null;
         public static double Sin(double a) => throw null;
         public static double Sinh(double value) => throw null;
         public static double Sqrt(double d) => throw null;
         public static double Tan(double a) => throw null;
         public static double Tanh(double value) => throw null;
         public const double Tau = default;
-        public static double Truncate(double d) => throw null;
         public static System.Decimal Truncate(System.Decimal d) => throw null;
+        public static double Truncate(double d) => throw null;
     }
 
     // Generated from `System.MathF` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2840,8 +2840,8 @@ namespace System
         public static float FusedMultiplyAdd(float x, float y, float z) => throw null;
         public static float IEEERemainder(float x, float y) => throw null;
         public static int ILogB(float x) => throw null;
-        public static float Log(float x, float y) => throw null;
         public static float Log(float x) => throw null;
+        public static float Log(float x, float y) => throw null;
         public static float Log10(float x) => throw null;
         public static float Log2(float x) => throw null;
         public static float Max(float x, float y) => throw null;
@@ -2850,10 +2850,10 @@ namespace System
         public static float MinMagnitude(float x, float y) => throw null;
         public const float PI = default;
         public static float Pow(float x, float y) => throw null;
-        public static float Round(float x, int digits, System.MidpointRounding mode) => throw null;
-        public static float Round(float x, int digits) => throw null;
-        public static float Round(float x, System.MidpointRounding mode) => throw null;
         public static float Round(float x) => throw null;
+        public static float Round(float x, System.MidpointRounding mode) => throw null;
+        public static float Round(float x, int digits) => throw null;
+        public static float Round(float x, int digits, System.MidpointRounding mode) => throw null;
         public static float ScaleB(float x, int n) => throw null;
         public static int Sign(float x) => throw null;
         public static float Sin(float x) => throw null;
@@ -2868,10 +2868,10 @@ namespace System
     // Generated from `System.MemberAccessException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class MemberAccessException : System.SystemException
     {
-        public MemberAccessException(string message, System.Exception inner) => throw null;
-        public MemberAccessException(string message) => throw null;
         public MemberAccessException() => throw null;
         protected MemberAccessException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public MemberAccessException(string message) => throw null;
+        public MemberAccessException(string message, System.Exception inner) => throw null;
     }
 
     // Generated from `System.Memory<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2879,33 +2879,33 @@ namespace System
     {
         public void CopyTo(System.Memory<T> destination) => throw null;
         public static System.Memory<T> Empty { get => throw null; }
-        public override bool Equals(object obj) => throw null;
         public bool Equals(System.Memory<T> other) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         public bool IsEmpty { get => throw null; }
         public int Length { get => throw null; }
-        public Memory(T[] array, int start, int length) => throw null;
-        public Memory(T[] array) => throw null;
         // Stub generator skipped constructor 
+        public Memory(T[] array) => throw null;
+        public Memory(T[] array, int start, int length) => throw null;
         public System.Buffers.MemoryHandle Pin() => throw null;
-        public System.Memory<T> Slice(int start, int length) => throw null;
         public System.Memory<T> Slice(int start) => throw null;
+        public System.Memory<T> Slice(int start, int length) => throw null;
         public System.Span<T> Span { get => throw null; }
         public T[] ToArray() => throw null;
         public override string ToString() => throw null;
         public bool TryCopyTo(System.Memory<T> destination) => throw null;
+        public static implicit operator System.Memory<T>(System.ArraySegment<T> segment) => throw null;
         public static implicit operator System.ReadOnlyMemory<T>(System.Memory<T> memory) => throw null;
         public static implicit operator System.Memory<T>(T[] array) => throw null;
-        public static implicit operator System.Memory<T>(System.ArraySegment<T> segment) => throw null;
     }
 
     // Generated from `System.MethodAccessException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class MethodAccessException : System.MemberAccessException
     {
-        public MethodAccessException(string message, System.Exception inner) => throw null;
-        public MethodAccessException(string message) => throw null;
         public MethodAccessException() => throw null;
         protected MethodAccessException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public MethodAccessException(string message) => throw null;
+        public MethodAccessException(string message, System.Exception inner) => throw null;
     }
 
     // Generated from `System.MidpointRounding` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2922,11 +2922,11 @@ namespace System
     public class MissingFieldException : System.MissingMemberException, System.Runtime.Serialization.ISerializable
     {
         public override string Message { get => throw null; }
-        public MissingFieldException(string message, System.Exception inner) => throw null;
-        public MissingFieldException(string message) => throw null;
-        public MissingFieldException(string className, string fieldName) => throw null;
         public MissingFieldException() => throw null;
         protected MissingFieldException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public MissingFieldException(string message) => throw null;
+        public MissingFieldException(string message, System.Exception inner) => throw null;
+        public MissingFieldException(string className, string fieldName) => throw null;
     }
 
     // Generated from `System.MissingMemberException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2936,11 +2936,11 @@ namespace System
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         protected string MemberName;
         public override string Message { get => throw null; }
-        public MissingMemberException(string message, System.Exception inner) => throw null;
-        public MissingMemberException(string message) => throw null;
-        public MissingMemberException(string className, string memberName) => throw null;
         public MissingMemberException() => throw null;
         protected MissingMemberException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public MissingMemberException(string message) => throw null;
+        public MissingMemberException(string message, System.Exception inner) => throw null;
+        public MissingMemberException(string className, string memberName) => throw null;
         protected System.Byte[] Signature;
     }
 
@@ -2948,11 +2948,11 @@ namespace System
     public class MissingMethodException : System.MissingMemberException
     {
         public override string Message { get => throw null; }
-        public MissingMethodException(string message, System.Exception inner) => throw null;
-        public MissingMethodException(string message) => throw null;
-        public MissingMethodException(string className, string methodName) => throw null;
         public MissingMethodException() => throw null;
         protected MissingMethodException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public MissingMethodException(string message) => throw null;
+        public MissingMethodException(string message, System.Exception inner) => throw null;
+        public MissingMethodException(string className, string methodName) => throw null;
     }
 
     // Generated from `System.ModuleHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2961,20 +2961,20 @@ namespace System
         public static bool operator !=(System.ModuleHandle left, System.ModuleHandle right) => throw null;
         public static bool operator ==(System.ModuleHandle left, System.ModuleHandle right) => throw null;
         public static System.ModuleHandle EmptyHandle;
-        public override bool Equals(object obj) => throw null;
         public bool Equals(System.ModuleHandle handle) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         public System.RuntimeFieldHandle GetRuntimeFieldHandleFromMetadataToken(int fieldToken) => throw null;
         public System.RuntimeMethodHandle GetRuntimeMethodHandleFromMetadataToken(int methodToken) => throw null;
         public System.RuntimeTypeHandle GetRuntimeTypeHandleFromMetadataToken(int typeToken) => throw null;
         public int MDStreamVersion { get => throw null; }
         // Stub generator skipped constructor 
-        public System.RuntimeFieldHandle ResolveFieldHandle(int fieldToken, System.RuntimeTypeHandle[] typeInstantiationContext, System.RuntimeTypeHandle[] methodInstantiationContext) => throw null;
         public System.RuntimeFieldHandle ResolveFieldHandle(int fieldToken) => throw null;
-        public System.RuntimeMethodHandle ResolveMethodHandle(int methodToken, System.RuntimeTypeHandle[] typeInstantiationContext, System.RuntimeTypeHandle[] methodInstantiationContext) => throw null;
+        public System.RuntimeFieldHandle ResolveFieldHandle(int fieldToken, System.RuntimeTypeHandle[] typeInstantiationContext, System.RuntimeTypeHandle[] methodInstantiationContext) => throw null;
         public System.RuntimeMethodHandle ResolveMethodHandle(int methodToken) => throw null;
-        public System.RuntimeTypeHandle ResolveTypeHandle(int typeToken, System.RuntimeTypeHandle[] typeInstantiationContext, System.RuntimeTypeHandle[] methodInstantiationContext) => throw null;
+        public System.RuntimeMethodHandle ResolveMethodHandle(int methodToken, System.RuntimeTypeHandle[] typeInstantiationContext, System.RuntimeTypeHandle[] methodInstantiationContext) => throw null;
         public System.RuntimeTypeHandle ResolveTypeHandle(int typeToken) => throw null;
+        public System.RuntimeTypeHandle ResolveTypeHandle(int typeToken, System.RuntimeTypeHandle[] typeInstantiationContext, System.RuntimeTypeHandle[] methodInstantiationContext) => throw null;
     }
 
     // Generated from `System.MulticastDelegate` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2988,17 +2988,17 @@ namespace System
         public override System.Delegate[] GetInvocationList() => throw null;
         protected override System.Reflection.MethodInfo GetMethodImpl() => throw null;
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
-        protected MulticastDelegate(object target, string method) : base(default(System.Type), default(string)) => throw null;
         protected MulticastDelegate(System.Type target, string method) : base(default(System.Type), default(string)) => throw null;
+        protected MulticastDelegate(object target, string method) : base(default(System.Type), default(string)) => throw null;
         protected override System.Delegate RemoveImpl(System.Delegate value) => throw null;
     }
 
     // Generated from `System.MulticastNotSupportedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class MulticastNotSupportedException : System.SystemException
     {
-        public MulticastNotSupportedException(string message, System.Exception inner) => throw null;
-        public MulticastNotSupportedException(string message) => throw null;
         public MulticastNotSupportedException() => throw null;
+        public MulticastNotSupportedException(string message) => throw null;
+        public MulticastNotSupportedException(string message, System.Exception inner) => throw null;
     }
 
     // Generated from `System.NetPipeStyleUriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3029,41 +3029,41 @@ namespace System
     public class NotFiniteNumberException : System.ArithmeticException
     {
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
-        public NotFiniteNumberException(string message, double offendingNumber, System.Exception innerException) => throw null;
-        public NotFiniteNumberException(string message, double offendingNumber) => throw null;
-        public NotFiniteNumberException(string message, System.Exception innerException) => throw null;
-        public NotFiniteNumberException(string message) => throw null;
-        public NotFiniteNumberException(double offendingNumber) => throw null;
         public NotFiniteNumberException() => throw null;
         protected NotFiniteNumberException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public NotFiniteNumberException(double offendingNumber) => throw null;
+        public NotFiniteNumberException(string message) => throw null;
+        public NotFiniteNumberException(string message, System.Exception innerException) => throw null;
+        public NotFiniteNumberException(string message, double offendingNumber) => throw null;
+        public NotFiniteNumberException(string message, double offendingNumber, System.Exception innerException) => throw null;
         public double OffendingNumber { get => throw null; }
     }
 
     // Generated from `System.NotImplementedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class NotImplementedException : System.SystemException
     {
-        public NotImplementedException(string message, System.Exception inner) => throw null;
-        public NotImplementedException(string message) => throw null;
         public NotImplementedException() => throw null;
         protected NotImplementedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public NotImplementedException(string message) => throw null;
+        public NotImplementedException(string message, System.Exception inner) => throw null;
     }
 
     // Generated from `System.NotSupportedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class NotSupportedException : System.SystemException
     {
-        public NotSupportedException(string message, System.Exception innerException) => throw null;
-        public NotSupportedException(string message) => throw null;
         public NotSupportedException() => throw null;
         protected NotSupportedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public NotSupportedException(string message) => throw null;
+        public NotSupportedException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.NullReferenceException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class NullReferenceException : System.SystemException
     {
-        public NullReferenceException(string message, System.Exception innerException) => throw null;
-        public NullReferenceException(string message) => throw null;
         public NullReferenceException() => throw null;
         protected NullReferenceException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public NullReferenceException(string message) => throw null;
+        public NullReferenceException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.Nullable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3079,11 +3079,11 @@ namespace System
     {
         public override bool Equals(object other) => throw null;
         public override int GetHashCode() => throw null;
-        public T GetValueOrDefault(T defaultValue) => throw null;
         public T GetValueOrDefault() => throw null;
+        public T GetValueOrDefault(T defaultValue) => throw null;
         public bool HasValue { get => throw null; }
-        public Nullable(T value) => throw null;
         // Stub generator skipped constructor 
+        public Nullable(T value) => throw null;
         public override string ToString() => throw null;
         public T Value { get => throw null; }
         public static explicit operator T(System.Nullable<T> value) => throw null;
@@ -3109,10 +3109,10 @@ namespace System
     {
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         public override string Message { get => throw null; }
-        public ObjectDisposedException(string objectName, string message) => throw null;
+        protected ObjectDisposedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         public ObjectDisposedException(string objectName) => throw null;
         public ObjectDisposedException(string message, System.Exception innerException) => throw null;
-        protected ObjectDisposedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public ObjectDisposedException(string objectName, string message) => throw null;
         public string ObjectName { get => throw null; }
     }
 
@@ -3122,14 +3122,14 @@ namespace System
         public string DiagnosticId { get => throw null; set => throw null; }
         public bool IsError { get => throw null; }
         public string Message { get => throw null; }
-        public ObsoleteAttribute(string message, bool error) => throw null;
-        public ObsoleteAttribute(string message) => throw null;
         public ObsoleteAttribute() => throw null;
+        public ObsoleteAttribute(string message) => throw null;
+        public ObsoleteAttribute(string message, bool error) => throw null;
         public string UrlFormat { get => throw null; set => throw null; }
     }
 
     // Generated from `System.OperatingSystem` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class OperatingSystem : System.Runtime.Serialization.ISerializable, System.ICloneable
+    public class OperatingSystem : System.ICloneable, System.Runtime.Serialization.ISerializable
     {
         public object Clone() => throw null;
         public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -3163,31 +3163,31 @@ namespace System
     public class OperationCanceledException : System.SystemException
     {
         public System.Threading.CancellationToken CancellationToken { get => throw null; }
-        public OperationCanceledException(string message, System.Threading.CancellationToken token) => throw null;
-        public OperationCanceledException(string message, System.Exception innerException, System.Threading.CancellationToken token) => throw null;
-        public OperationCanceledException(string message, System.Exception innerException) => throw null;
-        public OperationCanceledException(string message) => throw null;
-        public OperationCanceledException(System.Threading.CancellationToken token) => throw null;
         public OperationCanceledException() => throw null;
+        public OperationCanceledException(System.Threading.CancellationToken token) => throw null;
         protected OperationCanceledException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public OperationCanceledException(string message) => throw null;
+        public OperationCanceledException(string message, System.Threading.CancellationToken token) => throw null;
+        public OperationCanceledException(string message, System.Exception innerException) => throw null;
+        public OperationCanceledException(string message, System.Exception innerException, System.Threading.CancellationToken token) => throw null;
     }
 
     // Generated from `System.OutOfMemoryException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class OutOfMemoryException : System.SystemException
     {
-        public OutOfMemoryException(string message, System.Exception innerException) => throw null;
-        public OutOfMemoryException(string message) => throw null;
         public OutOfMemoryException() => throw null;
         protected OutOfMemoryException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public OutOfMemoryException(string message) => throw null;
+        public OutOfMemoryException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.OverflowException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class OverflowException : System.ArithmeticException
     {
-        public OverflowException(string message, System.Exception innerException) => throw null;
-        public OverflowException(string message) => throw null;
         public OverflowException() => throw null;
         protected OverflowException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public OverflowException(string message) => throw null;
+        public OverflowException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.ParamArrayAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3212,10 +3212,10 @@ namespace System
     // Generated from `System.PlatformNotSupportedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class PlatformNotSupportedException : System.NotSupportedException
     {
-        public PlatformNotSupportedException(string message, System.Exception inner) => throw null;
-        public PlatformNotSupportedException(string message) => throw null;
         public PlatformNotSupportedException() => throw null;
         protected PlatformNotSupportedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public PlatformNotSupportedException(string message) => throw null;
+        public PlatformNotSupportedException(string message, System.Exception inner) => throw null;
     }
 
     // Generated from `System.Predicate<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3225,8 +3225,8 @@ namespace System
     public class Progress<T> : System.IProgress<T>
     {
         protected virtual void OnReport(T value) => throw null;
-        public Progress(System.Action<T> handler) => throw null;
         public Progress() => throw null;
+        public Progress(System.Action<T> handler) => throw null;
         public event System.EventHandler<T> ProgressChanged;
         void System.IProgress<T>.Report(T value) => throw null;
     }
@@ -3234,14 +3234,14 @@ namespace System
     // Generated from `System.Random` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Random
     {
-        public virtual int Next(int minValue, int maxValue) => throw null;
-        public virtual int Next(int maxValue) => throw null;
         public virtual int Next() => throw null;
-        public virtual void NextBytes(System.Span<System.Byte> buffer) => throw null;
+        public virtual int Next(int maxValue) => throw null;
+        public virtual int Next(int minValue, int maxValue) => throw null;
         public virtual void NextBytes(System.Byte[] buffer) => throw null;
+        public virtual void NextBytes(System.Span<System.Byte> buffer) => throw null;
         public virtual double NextDouble() => throw null;
-        public Random(int Seed) => throw null;
         public Random() => throw null;
+        public Random(int Seed) => throw null;
         protected virtual double Sample() => throw null;
     }
 
@@ -3251,12 +3251,12 @@ namespace System
         public static System.Range All { get => throw null; }
         public System.Index End { get => throw null; }
         public static System.Range EndAt(System.Index end) => throw null;
-        public override bool Equals(object value) => throw null;
         public bool Equals(System.Range other) => throw null;
+        public override bool Equals(object value) => throw null;
         public override int GetHashCode() => throw null;
         public (int, int) GetOffsetAndLength(int length) => throw null;
-        public Range(System.Index start, System.Index end) => throw null;
         // Stub generator skipped constructor 
+        public Range(System.Index start, System.Index end) => throw null;
         public System.Index Start { get => throw null; }
         public static System.Range StartAt(System.Index start) => throw null;
         public override string ToString() => throw null;
@@ -3265,10 +3265,10 @@ namespace System
     // Generated from `System.RankException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class RankException : System.SystemException
     {
-        public RankException(string message, System.Exception innerException) => throw null;
-        public RankException(string message) => throw null;
         public RankException() => throw null;
         protected RankException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public RankException(string message) => throw null;
+        public RankException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.ReadOnlyMemory<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3276,32 +3276,28 @@ namespace System
     {
         public void CopyTo(System.Memory<T> destination) => throw null;
         public static System.ReadOnlyMemory<T> Empty { get => throw null; }
-        public override bool Equals(object obj) => throw null;
         public bool Equals(System.ReadOnlyMemory<T> other) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         public bool IsEmpty { get => throw null; }
         public int Length { get => throw null; }
         public System.Buffers.MemoryHandle Pin() => throw null;
-        public ReadOnlyMemory(T[] array, int start, int length) => throw null;
-        public ReadOnlyMemory(T[] array) => throw null;
         // Stub generator skipped constructor 
-        public System.ReadOnlyMemory<T> Slice(int start, int length) => throw null;
+        public ReadOnlyMemory(T[] array) => throw null;
+        public ReadOnlyMemory(T[] array, int start, int length) => throw null;
         public System.ReadOnlyMemory<T> Slice(int start) => throw null;
+        public System.ReadOnlyMemory<T> Slice(int start, int length) => throw null;
         public System.ReadOnlySpan<T> Span { get => throw null; }
         public T[] ToArray() => throw null;
         public override string ToString() => throw null;
         public bool TryCopyTo(System.Memory<T> destination) => throw null;
-        public static implicit operator System.ReadOnlyMemory<T>(T[] array) => throw null;
         public static implicit operator System.ReadOnlyMemory<T>(System.ArraySegment<T> segment) => throw null;
+        public static implicit operator System.ReadOnlyMemory<T>(T[] array) => throw null;
     }
 
     // Generated from `System.ReadOnlySpan<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ReadOnlySpan<T>
     {
-        public static bool operator !=(System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right) => throw null;
-        public static bool operator ==(System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right) => throw null;
-        public void CopyTo(System.Span<T> destination) => throw null;
-        public static System.ReadOnlySpan<T> Empty { get => throw null; }
         // Generated from `System.ReadOnlySpan<>+Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Enumerator
         {
@@ -3311,6 +3307,10 @@ namespace System
         }
 
 
+        public static bool operator !=(System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right) => throw null;
+        public static bool operator ==(System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right) => throw null;
+        public void CopyTo(System.Span<T> destination) => throw null;
+        public static System.ReadOnlySpan<T> Empty { get => throw null; }
         public override bool Equals(object obj) => throw null;
         public System.ReadOnlySpan<T>.Enumerator GetEnumerator() => throw null;
         public override int GetHashCode() => throw null;
@@ -3318,17 +3318,17 @@ namespace System
         public bool IsEmpty { get => throw null; }
         public T this[int index] { get => throw null; }
         public int Length { get => throw null; }
-        unsafe public ReadOnlySpan(void* pointer, int length) => throw null;
-        public ReadOnlySpan(T[] array, int start, int length) => throw null;
-        public ReadOnlySpan(T[] array) => throw null;
         // Stub generator skipped constructor 
-        public System.ReadOnlySpan<T> Slice(int start, int length) => throw null;
+        public ReadOnlySpan(T[] array) => throw null;
+        public ReadOnlySpan(T[] array, int start, int length) => throw null;
+        unsafe public ReadOnlySpan(void* pointer, int length) => throw null;
         public System.ReadOnlySpan<T> Slice(int start) => throw null;
+        public System.ReadOnlySpan<T> Slice(int start, int length) => throw null;
         public T[] ToArray() => throw null;
         public override string ToString() => throw null;
         public bool TryCopyTo(System.Span<T> destination) => throw null;
-        public static implicit operator System.ReadOnlySpan<T>(T[] array) => throw null;
         public static implicit operator System.ReadOnlySpan<T>(System.ArraySegment<T> segment) => throw null;
+        public static implicit operator System.ReadOnlySpan<T>(T[] array) => throw null;
     }
 
     // Generated from `System.ResolveEventArgs` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3336,8 +3336,8 @@ namespace System
     {
         public string Name { get => throw null; }
         public System.Reflection.Assembly RequestingAssembly { get => throw null; }
-        public ResolveEventArgs(string name, System.Reflection.Assembly requestingAssembly) => throw null;
         public ResolveEventArgs(string name) => throw null;
+        public ResolveEventArgs(string name, System.Reflection.Assembly requestingAssembly) => throw null;
     }
 
     // Generated from `System.ResolveEventHandler` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3354,8 +3354,8 @@ namespace System
     {
         public static bool operator !=(System.RuntimeFieldHandle left, System.RuntimeFieldHandle right) => throw null;
         public static bool operator ==(System.RuntimeFieldHandle left, System.RuntimeFieldHandle right) => throw null;
-        public override bool Equals(object obj) => throw null;
         public bool Equals(System.RuntimeFieldHandle handle) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         // Stub generator skipped constructor 
@@ -3367,8 +3367,8 @@ namespace System
     {
         public static bool operator !=(System.RuntimeMethodHandle left, System.RuntimeMethodHandle right) => throw null;
         public static bool operator ==(System.RuntimeMethodHandle left, System.RuntimeMethodHandle right) => throw null;
-        public override bool Equals(object obj) => throw null;
         public bool Equals(System.RuntimeMethodHandle handle) => throw null;
+        public override bool Equals(object obj) => throw null;
         public System.IntPtr GetFunctionPointer() => throw null;
         public override int GetHashCode() => throw null;
         public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -3379,12 +3379,12 @@ namespace System
     // Generated from `System.RuntimeTypeHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct RuntimeTypeHandle : System.Runtime.Serialization.ISerializable
     {
-        public static bool operator !=(object left, System.RuntimeTypeHandle right) => throw null;
         public static bool operator !=(System.RuntimeTypeHandle left, object right) => throw null;
-        public static bool operator ==(object left, System.RuntimeTypeHandle right) => throw null;
+        public static bool operator !=(object left, System.RuntimeTypeHandle right) => throw null;
         public static bool operator ==(System.RuntimeTypeHandle left, object right) => throw null;
-        public override bool Equals(object obj) => throw null;
+        public static bool operator ==(object left, System.RuntimeTypeHandle right) => throw null;
         public bool Equals(System.RuntimeTypeHandle handle) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         public System.ModuleHandle GetModuleHandle() => throw null;
         public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -3393,7 +3393,7 @@ namespace System
     }
 
     // Generated from `System.SByte` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct SByte : System.IFormattable, System.IEquatable<System.SByte>, System.IConvertible, System.IComparable<System.SByte>, System.IComparable
+    public struct SByte : System.IComparable, System.IComparable<System.SByte>, System.IConvertible, System.IEquatable<System.SByte>, System.IFormattable
     {
         public int CompareTo(object obj) => throw null;
         public int CompareTo(System.SByte value) => throw null;
@@ -3403,11 +3403,11 @@ namespace System
         public System.TypeCode GetTypeCode() => throw null;
         public const System.SByte MaxValue = default;
         public const System.SByte MinValue = default;
-        public static System.SByte Parse(string s, System.IFormatProvider provider) => throw null;
-        public static System.SByte Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
-        public static System.SByte Parse(string s, System.Globalization.NumberStyles style) => throw null;
-        public static System.SByte Parse(string s) => throw null;
         public static System.SByte Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static System.SByte Parse(string s) => throw null;
+        public static System.SByte Parse(string s, System.IFormatProvider provider) => throw null;
+        public static System.SByte Parse(string s, System.Globalization.NumberStyles style) => throw null;
+        public static System.SByte Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
         // Stub generator skipped constructor 
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
         System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
@@ -3420,19 +3420,19 @@ namespace System
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string s, out System.SByte result) => throw null;
-        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.SByte result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.SByte result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.SByte result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.SByte result) => throw null;
+        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.SByte result) => throw null;
+        public static bool TryParse(string s, out System.SByte result) => throw null;
     }
 
     // Generated from `System.STAThreadAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3448,7 +3448,7 @@ namespace System
     }
 
     // Generated from `System.Single` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Single : System.IFormattable, System.IEquatable<float>, System.IConvertible, System.IComparable<float>, System.IComparable
+    public struct Single : System.IComparable, System.IComparable<float>, System.IConvertible, System.IEquatable<float>, System.IFormattable
     {
         public static bool operator !=(float left, float right) => throw null;
         public static bool operator <(float left, float right) => throw null;
@@ -3456,11 +3456,11 @@ namespace System
         public static bool operator ==(float left, float right) => throw null;
         public static bool operator >(float left, float right) => throw null;
         public static bool operator >=(float left, float right) => throw null;
-        public int CompareTo(object value) => throw null;
         public int CompareTo(float value) => throw null;
+        public int CompareTo(object value) => throw null;
         public const float Epsilon = default;
-        public override bool Equals(object obj) => throw null;
         public bool Equals(float obj) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         public System.TypeCode GetTypeCode() => throw null;
         public static bool IsFinite(float f) => throw null;
@@ -3475,11 +3475,11 @@ namespace System
         public const float MinValue = default;
         public const float NaN = default;
         public const float NegativeInfinity = default;
-        public static float Parse(string s, System.IFormatProvider provider) => throw null;
-        public static float Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
-        public static float Parse(string s, System.Globalization.NumberStyles style) => throw null;
-        public static float Parse(string s) => throw null;
         public static float Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static float Parse(string s) => throw null;
+        public static float Parse(string s, System.IFormatProvider provider) => throw null;
+        public static float Parse(string s, System.Globalization.NumberStyles style) => throw null;
+        public static float Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
         public const float PositiveInfinity = default;
         // Stub generator skipped constructor 
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
@@ -3493,29 +3493,24 @@ namespace System
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string s, out float result) => throw null;
-        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out float result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out float result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out float result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out float result) => throw null;
+        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out float result) => throw null;
+        public static bool TryParse(string s, out float result) => throw null;
     }
 
     // Generated from `System.Span<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct Span<T>
     {
-        public static bool operator !=(System.Span<T> left, System.Span<T> right) => throw null;
-        public static bool operator ==(System.Span<T> left, System.Span<T> right) => throw null;
-        public void Clear() => throw null;
-        public void CopyTo(System.Span<T> destination) => throw null;
-        public static System.Span<T> Empty { get => throw null; }
         // Generated from `System.Span<>+Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Enumerator
         {
@@ -3525,6 +3520,11 @@ namespace System
         }
 
 
+        public static bool operator !=(System.Span<T> left, System.Span<T> right) => throw null;
+        public static bool operator ==(System.Span<T> left, System.Span<T> right) => throw null;
+        public void Clear() => throw null;
+        public void CopyTo(System.Span<T> destination) => throw null;
+        public static System.Span<T> Empty { get => throw null; }
         public override bool Equals(object obj) => throw null;
         public void Fill(T value) => throw null;
         public System.Span<T>.Enumerator GetEnumerator() => throw null;
@@ -3533,221 +3533,221 @@ namespace System
         public bool IsEmpty { get => throw null; }
         public T this[int index] { get => throw null; }
         public int Length { get => throw null; }
-        public System.Span<T> Slice(int start, int length) => throw null;
         public System.Span<T> Slice(int start) => throw null;
-        unsafe public Span(void* pointer, int length) => throw null;
-        public Span(T[] array, int start, int length) => throw null;
-        public Span(T[] array) => throw null;
+        public System.Span<T> Slice(int start, int length) => throw null;
         // Stub generator skipped constructor 
+        public Span(T[] array) => throw null;
+        public Span(T[] array, int start, int length) => throw null;
+        unsafe public Span(void* pointer, int length) => throw null;
         public T[] ToArray() => throw null;
         public override string ToString() => throw null;
         public bool TryCopyTo(System.Span<T> destination) => throw null;
-        public static implicit operator System.Span<T>(T[] array) => throw null;
         public static implicit operator System.Span<T>(System.ArraySegment<T> segment) => throw null;
         public static implicit operator System.ReadOnlySpan<T>(System.Span<T> span) => throw null;
+        public static implicit operator System.Span<T>(T[] array) => throw null;
     }
 
     // Generated from `System.StackOverflowException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class StackOverflowException : System.SystemException
     {
-        public StackOverflowException(string message, System.Exception innerException) => throw null;
-        public StackOverflowException(string message) => throw null;
         public StackOverflowException() => throw null;
+        public StackOverflowException(string message) => throw null;
+        public StackOverflowException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.String` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class String : System.IEquatable<string>, System.IConvertible, System.IComparable<string>, System.IComparable, System.ICloneable, System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<System.Char>
+    public class String : System.Collections.Generic.IEnumerable<System.Char>, System.Collections.IEnumerable, System.ICloneable, System.IComparable, System.IComparable<string>, System.IConvertible, System.IEquatable<string>
     {
         public static bool operator !=(string a, string b) => throw null;
         public static bool operator ==(string a, string b) => throw null;
         [System.Runtime.CompilerServices.IndexerName("Chars")]
         public System.Char this[int index] { get => throw null; }
         public object Clone() => throw null;
-        public static int Compare(string strA, string strB, bool ignoreCase, System.Globalization.CultureInfo culture) => throw null;
-        public static int Compare(string strA, string strB, bool ignoreCase) => throw null;
-        public static int Compare(string strA, string strB, System.StringComparison comparisonType) => throw null;
-        public static int Compare(string strA, string strB, System.Globalization.CultureInfo culture, System.Globalization.CompareOptions options) => throw null;
-        public static int Compare(string strA, string strB) => throw null;
-        public static int Compare(string strA, int indexA, string strB, int indexB, int length, bool ignoreCase, System.Globalization.CultureInfo culture) => throw null;
-        public static int Compare(string strA, int indexA, string strB, int indexB, int length, bool ignoreCase) => throw null;
-        public static int Compare(string strA, int indexA, string strB, int indexB, int length, System.StringComparison comparisonType) => throw null;
-        public static int Compare(string strA, int indexA, string strB, int indexB, int length, System.Globalization.CultureInfo culture, System.Globalization.CompareOptions options) => throw null;
         public static int Compare(string strA, int indexA, string strB, int indexB, int length) => throw null;
-        public static int CompareOrdinal(string strA, string strB) => throw null;
+        public static int Compare(string strA, int indexA, string strB, int indexB, int length, System.Globalization.CultureInfo culture, System.Globalization.CompareOptions options) => throw null;
+        public static int Compare(string strA, int indexA, string strB, int indexB, int length, System.StringComparison comparisonType) => throw null;
+        public static int Compare(string strA, int indexA, string strB, int indexB, int length, bool ignoreCase) => throw null;
+        public static int Compare(string strA, int indexA, string strB, int indexB, int length, bool ignoreCase, System.Globalization.CultureInfo culture) => throw null;
+        public static int Compare(string strA, string strB) => throw null;
+        public static int Compare(string strA, string strB, System.Globalization.CultureInfo culture, System.Globalization.CompareOptions options) => throw null;
+        public static int Compare(string strA, string strB, System.StringComparison comparisonType) => throw null;
+        public static int Compare(string strA, string strB, bool ignoreCase) => throw null;
+        public static int Compare(string strA, string strB, bool ignoreCase, System.Globalization.CultureInfo culture) => throw null;
         public static int CompareOrdinal(string strA, int indexA, string strB, int indexB, int length) => throw null;
-        public int CompareTo(string strB) => throw null;
+        public static int CompareOrdinal(string strA, string strB) => throw null;
         public int CompareTo(object value) => throw null;
-        public static string Concat<T>(System.Collections.Generic.IEnumerable<T> values) => throw null;
-        public static string Concat(string str0, string str1, string str2, string str3) => throw null;
-        public static string Concat(string str0, string str1, string str2) => throw null;
-        public static string Concat(string str0, string str1) => throw null;
-        public static string Concat(params string[] values) => throw null;
-        public static string Concat(params object[] args) => throw null;
-        public static string Concat(object arg0, object arg1, object arg2) => throw null;
-        public static string Concat(object arg0, object arg1) => throw null;
-        public static string Concat(object arg0) => throw null;
-        public static string Concat(System.ReadOnlySpan<System.Char> str0, System.ReadOnlySpan<System.Char> str1, System.ReadOnlySpan<System.Char> str2, System.ReadOnlySpan<System.Char> str3) => throw null;
-        public static string Concat(System.ReadOnlySpan<System.Char> str0, System.ReadOnlySpan<System.Char> str1, System.ReadOnlySpan<System.Char> str2) => throw null;
-        public static string Concat(System.ReadOnlySpan<System.Char> str0, System.ReadOnlySpan<System.Char> str1) => throw null;
+        public int CompareTo(string strB) => throw null;
         public static string Concat(System.Collections.Generic.IEnumerable<string> values) => throw null;
-        public bool Contains(string value, System.StringComparison comparisonType) => throw null;
-        public bool Contains(string value) => throw null;
-        public bool Contains(System.Char value, System.StringComparison comparisonType) => throw null;
+        public static string Concat(System.ReadOnlySpan<System.Char> str0, System.ReadOnlySpan<System.Char> str1) => throw null;
+        public static string Concat(System.ReadOnlySpan<System.Char> str0, System.ReadOnlySpan<System.Char> str1, System.ReadOnlySpan<System.Char> str2) => throw null;
+        public static string Concat(System.ReadOnlySpan<System.Char> str0, System.ReadOnlySpan<System.Char> str1, System.ReadOnlySpan<System.Char> str2, System.ReadOnlySpan<System.Char> str3) => throw null;
+        public static string Concat(object arg0) => throw null;
+        public static string Concat(object arg0, object arg1) => throw null;
+        public static string Concat(object arg0, object arg1, object arg2) => throw null;
+        public static string Concat(params object[] args) => throw null;
+        public static string Concat(params string[] values) => throw null;
+        public static string Concat(string str0, string str1) => throw null;
+        public static string Concat(string str0, string str1, string str2) => throw null;
+        public static string Concat(string str0, string str1, string str2, string str3) => throw null;
+        public static string Concat<T>(System.Collections.Generic.IEnumerable<T> values) => throw null;
         public bool Contains(System.Char value) => throw null;
+        public bool Contains(System.Char value, System.StringComparison comparisonType) => throw null;
+        public bool Contains(string value) => throw null;
+        public bool Contains(string value, System.StringComparison comparisonType) => throw null;
         public static string Copy(string str) => throw null;
         public void CopyTo(int sourceIndex, System.Char[] destination, int destinationIndex, int count) => throw null;
         public static string Create<TState>(int length, TState state, System.Buffers.SpanAction<System.Char, TState> action) => throw null;
         public static string Empty;
-        public bool EndsWith(string value, bool ignoreCase, System.Globalization.CultureInfo culture) => throw null;
-        public bool EndsWith(string value, System.StringComparison comparisonType) => throw null;
-        public bool EndsWith(string value) => throw null;
         public bool EndsWith(System.Char value) => throw null;
+        public bool EndsWith(string value) => throw null;
+        public bool EndsWith(string value, System.StringComparison comparisonType) => throw null;
+        public bool EndsWith(string value, bool ignoreCase, System.Globalization.CultureInfo culture) => throw null;
         public System.Text.StringRuneEnumerator EnumerateRunes() => throw null;
-        public static bool Equals(string a, string b, System.StringComparison comparisonType) => throw null;
-        public static bool Equals(string a, string b) => throw null;
         public override bool Equals(object obj) => throw null;
-        public bool Equals(string value, System.StringComparison comparisonType) => throw null;
         public bool Equals(string value) => throw null;
-        public static string Format(string format, params object[] args) => throw null;
-        public static string Format(string format, object arg0, object arg1, object arg2) => throw null;
-        public static string Format(string format, object arg0, object arg1) => throw null;
-        public static string Format(string format, object arg0) => throw null;
-        public static string Format(System.IFormatProvider provider, string format, params object[] args) => throw null;
-        public static string Format(System.IFormatProvider provider, string format, object arg0, object arg1, object arg2) => throw null;
-        public static string Format(System.IFormatProvider provider, string format, object arg0, object arg1) => throw null;
+        public bool Equals(string value, System.StringComparison comparisonType) => throw null;
+        public static bool Equals(string a, string b) => throw null;
+        public static bool Equals(string a, string b, System.StringComparison comparisonType) => throw null;
         public static string Format(System.IFormatProvider provider, string format, object arg0) => throw null;
+        public static string Format(System.IFormatProvider provider, string format, object arg0, object arg1) => throw null;
+        public static string Format(System.IFormatProvider provider, string format, object arg0, object arg1, object arg2) => throw null;
+        public static string Format(System.IFormatProvider provider, string format, params object[] args) => throw null;
+        public static string Format(string format, object arg0) => throw null;
+        public static string Format(string format, object arg0, object arg1) => throw null;
+        public static string Format(string format, object arg0, object arg1, object arg2) => throw null;
+        public static string Format(string format, params object[] args) => throw null;
         public System.CharEnumerator GetEnumerator() => throw null;
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
         System.Collections.Generic.IEnumerator<System.Char> System.Collections.Generic.IEnumerable<System.Char>.GetEnumerator() => throw null;
-        public static int GetHashCode(System.ReadOnlySpan<System.Char> value, System.StringComparison comparisonType) => throw null;
-        public static int GetHashCode(System.ReadOnlySpan<System.Char> value) => throw null;
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
         public override int GetHashCode() => throw null;
+        public static int GetHashCode(System.ReadOnlySpan<System.Char> value) => throw null;
+        public static int GetHashCode(System.ReadOnlySpan<System.Char> value, System.StringComparison comparisonType) => throw null;
         public int GetHashCode(System.StringComparison comparisonType) => throw null;
         public System.Char GetPinnableReference() => throw null;
         public System.TypeCode GetTypeCode() => throw null;
-        public int IndexOf(string value, int startIndex, int count, System.StringComparison comparisonType) => throw null;
-        public int IndexOf(string value, int startIndex, int count) => throw null;
-        public int IndexOf(string value, int startIndex, System.StringComparison comparisonType) => throw null;
-        public int IndexOf(string value, int startIndex) => throw null;
-        public int IndexOf(string value, System.StringComparison comparisonType) => throw null;
-        public int IndexOf(string value) => throw null;
-        public int IndexOf(System.Char value, int startIndex, int count) => throw null;
-        public int IndexOf(System.Char value, int startIndex) => throw null;
-        public int IndexOf(System.Char value, System.StringComparison comparisonType) => throw null;
         public int IndexOf(System.Char value) => throw null;
-        public int IndexOfAny(System.Char[] anyOf, int startIndex, int count) => throw null;
-        public int IndexOfAny(System.Char[] anyOf, int startIndex) => throw null;
+        public int IndexOf(System.Char value, System.StringComparison comparisonType) => throw null;
+        public int IndexOf(System.Char value, int startIndex) => throw null;
+        public int IndexOf(System.Char value, int startIndex, int count) => throw null;
+        public int IndexOf(string value) => throw null;
+        public int IndexOf(string value, System.StringComparison comparisonType) => throw null;
+        public int IndexOf(string value, int startIndex) => throw null;
+        public int IndexOf(string value, int startIndex, System.StringComparison comparisonType) => throw null;
+        public int IndexOf(string value, int startIndex, int count) => throw null;
+        public int IndexOf(string value, int startIndex, int count, System.StringComparison comparisonType) => throw null;
         public int IndexOfAny(System.Char[] anyOf) => throw null;
+        public int IndexOfAny(System.Char[] anyOf, int startIndex) => throw null;
+        public int IndexOfAny(System.Char[] anyOf, int startIndex, int count) => throw null;
         public string Insert(int startIndex, string value) => throw null;
         public static string Intern(string str) => throw null;
         public static string IsInterned(string str) => throw null;
-        public bool IsNormalized(System.Text.NormalizationForm normalizationForm) => throw null;
         public bool IsNormalized() => throw null;
+        public bool IsNormalized(System.Text.NormalizationForm normalizationForm) => throw null;
         public static bool IsNullOrEmpty(string value) => throw null;
         public static bool IsNullOrWhiteSpace(string value) => throw null;
-        public static string Join<T>(string separator, System.Collections.Generic.IEnumerable<T> values) => throw null;
-        public static string Join<T>(System.Char separator, System.Collections.Generic.IEnumerable<T> values) => throw null;
-        public static string Join(string separator, string[] value, int startIndex, int count) => throw null;
-        public static string Join(string separator, params string[] value) => throw null;
-        public static string Join(string separator, params object[] values) => throw null;
-        public static string Join(string separator, System.Collections.Generic.IEnumerable<string> values) => throw null;
         public static string Join(System.Char separator, string[] value, int startIndex, int count) => throw null;
-        public static string Join(System.Char separator, params string[] value) => throw null;
         public static string Join(System.Char separator, params object[] values) => throw null;
-        public int LastIndexOf(string value, int startIndex, int count, System.StringComparison comparisonType) => throw null;
-        public int LastIndexOf(string value, int startIndex, int count) => throw null;
-        public int LastIndexOf(string value, int startIndex, System.StringComparison comparisonType) => throw null;
-        public int LastIndexOf(string value, int startIndex) => throw null;
-        public int LastIndexOf(string value, System.StringComparison comparisonType) => throw null;
-        public int LastIndexOf(string value) => throw null;
-        public int LastIndexOf(System.Char value, int startIndex, int count) => throw null;
-        public int LastIndexOf(System.Char value, int startIndex) => throw null;
+        public static string Join(System.Char separator, params string[] value) => throw null;
+        public static string Join(string separator, System.Collections.Generic.IEnumerable<string> values) => throw null;
+        public static string Join(string separator, string[] value, int startIndex, int count) => throw null;
+        public static string Join(string separator, params object[] values) => throw null;
+        public static string Join(string separator, params string[] value) => throw null;
+        public static string Join<T>(System.Char separator, System.Collections.Generic.IEnumerable<T> values) => throw null;
+        public static string Join<T>(string separator, System.Collections.Generic.IEnumerable<T> values) => throw null;
         public int LastIndexOf(System.Char value) => throw null;
-        public int LastIndexOfAny(System.Char[] anyOf, int startIndex, int count) => throw null;
-        public int LastIndexOfAny(System.Char[] anyOf, int startIndex) => throw null;
+        public int LastIndexOf(System.Char value, int startIndex) => throw null;
+        public int LastIndexOf(System.Char value, int startIndex, int count) => throw null;
+        public int LastIndexOf(string value) => throw null;
+        public int LastIndexOf(string value, System.StringComparison comparisonType) => throw null;
+        public int LastIndexOf(string value, int startIndex) => throw null;
+        public int LastIndexOf(string value, int startIndex, System.StringComparison comparisonType) => throw null;
+        public int LastIndexOf(string value, int startIndex, int count) => throw null;
+        public int LastIndexOf(string value, int startIndex, int count, System.StringComparison comparisonType) => throw null;
         public int LastIndexOfAny(System.Char[] anyOf) => throw null;
+        public int LastIndexOfAny(System.Char[] anyOf, int startIndex) => throw null;
+        public int LastIndexOfAny(System.Char[] anyOf, int startIndex, int count) => throw null;
         public int Length { get => throw null; }
-        public string Normalize(System.Text.NormalizationForm normalizationForm) => throw null;
         public string Normalize() => throw null;
-        public string PadLeft(int totalWidth, System.Char paddingChar) => throw null;
+        public string Normalize(System.Text.NormalizationForm normalizationForm) => throw null;
         public string PadLeft(int totalWidth) => throw null;
-        public string PadRight(int totalWidth, System.Char paddingChar) => throw null;
+        public string PadLeft(int totalWidth, System.Char paddingChar) => throw null;
         public string PadRight(int totalWidth) => throw null;
-        public string Remove(int startIndex, int count) => throw null;
+        public string PadRight(int totalWidth, System.Char paddingChar) => throw null;
         public string Remove(int startIndex) => throw null;
-        public string Replace(string oldValue, string newValue, bool ignoreCase, System.Globalization.CultureInfo culture) => throw null;
-        public string Replace(string oldValue, string newValue, System.StringComparison comparisonType) => throw null;
-        public string Replace(string oldValue, string newValue) => throw null;
+        public string Remove(int startIndex, int count) => throw null;
         public string Replace(System.Char oldChar, System.Char newChar) => throw null;
-        public string[] Split(string[] separator, int count, System.StringSplitOptions options) => throw null;
-        public string[] Split(string[] separator, System.StringSplitOptions options) => throw null;
-        public string[] Split(string separator, int count, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
-        public string[] Split(string separator, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
-        public string[] Split(params System.Char[] separator) => throw null;
-        public string[] Split(System.Char[] separator, int count, System.StringSplitOptions options) => throw null;
-        public string[] Split(System.Char[] separator, int count) => throw null;
+        public string Replace(string oldValue, string newValue) => throw null;
+        public string Replace(string oldValue, string newValue, System.StringComparison comparisonType) => throw null;
+        public string Replace(string oldValue, string newValue, bool ignoreCase, System.Globalization.CultureInfo culture) => throw null;
         public string[] Split(System.Char[] separator, System.StringSplitOptions options) => throw null;
-        public string[] Split(System.Char separator, int count, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
+        public string[] Split(System.Char[] separator, int count) => throw null;
+        public string[] Split(System.Char[] separator, int count, System.StringSplitOptions options) => throw null;
+        public string[] Split(string[] separator, System.StringSplitOptions options) => throw null;
+        public string[] Split(string[] separator, int count, System.StringSplitOptions options) => throw null;
         public string[] Split(System.Char separator, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
-        public bool StartsWith(string value, bool ignoreCase, System.Globalization.CultureInfo culture) => throw null;
-        public bool StartsWith(string value, System.StringComparison comparisonType) => throw null;
-        public bool StartsWith(string value) => throw null;
+        public string[] Split(System.Char separator, int count, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
+        public string[] Split(params System.Char[] separator) => throw null;
+        public string[] Split(string separator, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
+        public string[] Split(string separator, int count, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
         public bool StartsWith(System.Char value) => throw null;
-        unsafe public String(System.SByte* value, int startIndex, int length, System.Text.Encoding enc) => throw null;
-        unsafe public String(System.SByte* value, int startIndex, int length) => throw null;
-        unsafe public String(System.SByte* value) => throw null;
-        unsafe public String(System.Char* value, int startIndex, int length) => throw null;
-        unsafe public String(System.Char* value) => throw null;
-        public String(System.ReadOnlySpan<System.Char> value) => throw null;
-        public String(System.Char[] value, int startIndex, int length) => throw null;
+        public bool StartsWith(string value) => throw null;
+        public bool StartsWith(string value, System.StringComparison comparisonType) => throw null;
+        public bool StartsWith(string value, bool ignoreCase, System.Globalization.CultureInfo culture) => throw null;
         public String(System.Char[] value) => throw null;
+        public String(System.Char[] value, int startIndex, int length) => throw null;
+        public String(System.ReadOnlySpan<System.Char> value) => throw null;
+        unsafe public String(System.Char* value) => throw null;
+        unsafe public String(System.Char* value, int startIndex, int length) => throw null;
         public String(System.Char c, int count) => throw null;
-        public string Substring(int startIndex, int length) => throw null;
+        unsafe public String(System.SByte* value) => throw null;
+        unsafe public String(System.SByte* value, int startIndex, int length) => throw null;
+        unsafe public String(System.SByte* value, int startIndex, int length, System.Text.Encoding enc) => throw null;
         public string Substring(int startIndex) => throw null;
+        public string Substring(int startIndex, int length) => throw null;
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
         System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
         System.Char System.IConvertible.ToChar(System.IFormatProvider provider) => throw null;
-        public System.Char[] ToCharArray(int startIndex, int length) => throw null;
         public System.Char[] ToCharArray() => throw null;
+        public System.Char[] ToCharArray(int startIndex, int length) => throw null;
         System.DateTime System.IConvertible.ToDateTime(System.IFormatProvider provider) => throw null;
         System.Decimal System.IConvertible.ToDecimal(System.IFormatProvider provider) => throw null;
         double System.IConvertible.ToDouble(System.IFormatProvider provider) => throw null;
         System.Int16 System.IConvertible.ToInt16(System.IFormatProvider provider) => throw null;
         int System.IConvertible.ToInt32(System.IFormatProvider provider) => throw null;
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
-        public string ToLower(System.Globalization.CultureInfo culture) => throw null;
         public string ToLower() => throw null;
+        public string ToLower(System.Globalization.CultureInfo culture) => throw null;
         public string ToLowerInvariant() => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
-        public string ToUpper(System.Globalization.CultureInfo culture) => throw null;
         public string ToUpper() => throw null;
+        public string ToUpper(System.Globalization.CultureInfo culture) => throw null;
         public string ToUpperInvariant() => throw null;
-        public string Trim(params System.Char[] trimChars) => throw null;
-        public string Trim(System.Char trimChar) => throw null;
         public string Trim() => throw null;
-        public string TrimEnd(params System.Char[] trimChars) => throw null;
-        public string TrimEnd(System.Char trimChar) => throw null;
+        public string Trim(System.Char trimChar) => throw null;
+        public string Trim(params System.Char[] trimChars) => throw null;
         public string TrimEnd() => throw null;
-        public string TrimStart(params System.Char[] trimChars) => throw null;
-        public string TrimStart(System.Char trimChar) => throw null;
+        public string TrimEnd(System.Char trimChar) => throw null;
+        public string TrimEnd(params System.Char[] trimChars) => throw null;
         public string TrimStart() => throw null;
+        public string TrimStart(System.Char trimChar) => throw null;
+        public string TrimStart(params System.Char[] trimChars) => throw null;
         public static implicit operator System.ReadOnlySpan<System.Char>(string value) => throw null;
     }
 
     // Generated from `System.StringComparer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public abstract class StringComparer : System.Collections.IEqualityComparer, System.Collections.IComparer, System.Collections.Generic.IEqualityComparer<string>, System.Collections.Generic.IComparer<string>
+    public abstract class StringComparer : System.Collections.Generic.IComparer<string>, System.Collections.Generic.IEqualityComparer<string>, System.Collections.IComparer, System.Collections.IEqualityComparer
     {
         public int Compare(object x, object y) => throw null;
         public abstract int Compare(string x, string y);
-        public static System.StringComparer Create(System.Globalization.CultureInfo culture, bool ignoreCase) => throw null;
         public static System.StringComparer Create(System.Globalization.CultureInfo culture, System.Globalization.CompareOptions options) => throw null;
+        public static System.StringComparer Create(System.Globalization.CultureInfo culture, bool ignoreCase) => throw null;
         public static System.StringComparer CurrentCulture { get => throw null; }
         public static System.StringComparer CurrentCultureIgnoreCase { get => throw null; }
         public bool Equals(object x, object y) => throw null;
@@ -3776,10 +3776,10 @@ namespace System
     // Generated from `System.StringNormalizationExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class StringNormalizationExtensions
     {
-        public static bool IsNormalized(this string strInput, System.Text.NormalizationForm normalizationForm) => throw null;
         public static bool IsNormalized(this string strInput) => throw null;
-        public static string Normalize(this string strInput, System.Text.NormalizationForm normalizationForm) => throw null;
+        public static bool IsNormalized(this string strInput, System.Text.NormalizationForm normalizationForm) => throw null;
         public static string Normalize(this string strInput) => throw null;
+        public static string Normalize(this string strInput, System.Text.NormalizationForm normalizationForm) => throw null;
     }
 
     // Generated from `System.StringSplitOptions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3794,10 +3794,10 @@ namespace System
     // Generated from `System.SystemException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class SystemException : System.Exception
     {
-        public SystemException(string message, System.Exception innerException) => throw null;
-        public SystemException(string message) => throw null;
         public SystemException() => throw null;
         protected SystemException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public SystemException(string message) => throw null;
+        public SystemException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.ThreadStaticAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3807,15 +3807,15 @@ namespace System
     }
 
     // Generated from `System.TimeSpan` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct TimeSpan : System.IFormattable, System.IEquatable<System.TimeSpan>, System.IComparable<System.TimeSpan>, System.IComparable
+    public struct TimeSpan : System.IComparable, System.IComparable<System.TimeSpan>, System.IEquatable<System.TimeSpan>, System.IFormattable
     {
         public static bool operator !=(System.TimeSpan t1, System.TimeSpan t2) => throw null;
-        public static System.TimeSpan operator *(double factor, System.TimeSpan timeSpan) => throw null;
         public static System.TimeSpan operator *(System.TimeSpan timeSpan, double factor) => throw null;
-        public static System.TimeSpan operator +(System.TimeSpan t1, System.TimeSpan t2) => throw null;
+        public static System.TimeSpan operator *(double factor, System.TimeSpan timeSpan) => throw null;
         public static System.TimeSpan operator +(System.TimeSpan t) => throw null;
-        public static System.TimeSpan operator -(System.TimeSpan t1, System.TimeSpan t2) => throw null;
+        public static System.TimeSpan operator +(System.TimeSpan t1, System.TimeSpan t2) => throw null;
         public static System.TimeSpan operator -(System.TimeSpan t) => throw null;
+        public static System.TimeSpan operator -(System.TimeSpan t1, System.TimeSpan t2) => throw null;
         public static double operator /(System.TimeSpan t1, System.TimeSpan t2) => throw null;
         public static System.TimeSpan operator /(System.TimeSpan timeSpan, double divisor) => throw null;
         public static bool operator <(System.TimeSpan t1, System.TimeSpan t2) => throw null;
@@ -3825,15 +3825,15 @@ namespace System
         public static bool operator >=(System.TimeSpan t1, System.TimeSpan t2) => throw null;
         public System.TimeSpan Add(System.TimeSpan ts) => throw null;
         public static int Compare(System.TimeSpan t1, System.TimeSpan t2) => throw null;
-        public int CompareTo(object value) => throw null;
         public int CompareTo(System.TimeSpan value) => throw null;
+        public int CompareTo(object value) => throw null;
         public int Days { get => throw null; }
         public double Divide(System.TimeSpan ts) => throw null;
         public System.TimeSpan Divide(double divisor) => throw null;
         public System.TimeSpan Duration() => throw null;
+        public bool Equals(System.TimeSpan obj) => throw null;
         public static bool Equals(System.TimeSpan t1, System.TimeSpan t2) => throw null;
         public override bool Equals(object value) => throw null;
-        public bool Equals(System.TimeSpan obj) => throw null;
         public static System.TimeSpan FromDays(double value) => throw null;
         public static System.TimeSpan FromHours(double value) => throw null;
         public static System.TimeSpan FromMilliseconds(double value) => throw null;
@@ -3848,15 +3848,15 @@ namespace System
         public int Minutes { get => throw null; }
         public System.TimeSpan Multiply(double factor) => throw null;
         public System.TimeSpan Negate() => throw null;
+        public static System.TimeSpan Parse(System.ReadOnlySpan<System.Char> input, System.IFormatProvider formatProvider = default(System.IFormatProvider)) => throw null;
         public static System.TimeSpan Parse(string s) => throw null;
         public static System.TimeSpan Parse(string input, System.IFormatProvider formatProvider) => throw null;
-        public static System.TimeSpan Parse(System.ReadOnlySpan<System.Char> input, System.IFormatProvider formatProvider = default(System.IFormatProvider)) => throw null;
-        public static System.TimeSpan ParseExact(string input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles) => throw null;
-        public static System.TimeSpan ParseExact(string input, string[] formats, System.IFormatProvider formatProvider) => throw null;
-        public static System.TimeSpan ParseExact(string input, string format, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles) => throw null;
-        public static System.TimeSpan ParseExact(string input, string format, System.IFormatProvider formatProvider) => throw null;
-        public static System.TimeSpan ParseExact(System.ReadOnlySpan<System.Char> input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles = default(System.Globalization.TimeSpanStyles)) => throw null;
         public static System.TimeSpan ParseExact(System.ReadOnlySpan<System.Char> input, System.ReadOnlySpan<System.Char> format, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles = default(System.Globalization.TimeSpanStyles)) => throw null;
+        public static System.TimeSpan ParseExact(System.ReadOnlySpan<System.Char> input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles = default(System.Globalization.TimeSpanStyles)) => throw null;
+        public static System.TimeSpan ParseExact(string input, string[] formats, System.IFormatProvider formatProvider) => throw null;
+        public static System.TimeSpan ParseExact(string input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles) => throw null;
+        public static System.TimeSpan ParseExact(string input, string format, System.IFormatProvider formatProvider) => throw null;
+        public static System.TimeSpan ParseExact(string input, string format, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles) => throw null;
         public int Seconds { get => throw null; }
         public System.TimeSpan Subtract(System.TimeSpan ts) => throw null;
         public System.Int64 Ticks { get => throw null; }
@@ -3865,32 +3865,32 @@ namespace System
         public const System.Int64 TicksPerMillisecond = default;
         public const System.Int64 TicksPerMinute = default;
         public const System.Int64 TicksPerSecond = default;
-        public TimeSpan(int hours, int minutes, int seconds) => throw null;
-        public TimeSpan(int days, int hours, int minutes, int seconds, int milliseconds) => throw null;
-        public TimeSpan(int days, int hours, int minutes, int seconds) => throw null;
-        public TimeSpan(System.Int64 ticks) => throw null;
         // Stub generator skipped constructor 
-        public string ToString(string format, System.IFormatProvider formatProvider) => throw null;
-        public string ToString(string format) => throw null;
+        public TimeSpan(int hours, int minutes, int seconds) => throw null;
+        public TimeSpan(int days, int hours, int minutes, int seconds) => throw null;
+        public TimeSpan(int days, int hours, int minutes, int seconds, int milliseconds) => throw null;
+        public TimeSpan(System.Int64 ticks) => throw null;
         public override string ToString() => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider formatProvider) => throw null;
         public double TotalDays { get => throw null; }
         public double TotalHours { get => throw null; }
         public double TotalMilliseconds { get => throw null; }
         public double TotalMinutes { get => throw null; }
         public double TotalSeconds { get => throw null; }
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider formatProvider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string s, out System.TimeSpan result) => throw null;
-        public static bool TryParse(string input, System.IFormatProvider formatProvider, out System.TimeSpan result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.TimeSpan result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> input, System.IFormatProvider formatProvider, out System.TimeSpan result) => throw null;
-        public static bool TryParseExact(string input, string[] formats, System.IFormatProvider formatProvider, out System.TimeSpan result) => throw null;
-        public static bool TryParseExact(string input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles, out System.TimeSpan result) => throw null;
-        public static bool TryParseExact(string input, string format, System.IFormatProvider formatProvider, out System.TimeSpan result) => throw null;
-        public static bool TryParseExact(string input, string format, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles, out System.TimeSpan result) => throw null;
-        public static bool TryParseExact(System.ReadOnlySpan<System.Char> input, string[] formats, System.IFormatProvider formatProvider, out System.TimeSpan result) => throw null;
-        public static bool TryParseExact(System.ReadOnlySpan<System.Char> input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles, out System.TimeSpan result) => throw null;
-        public static bool TryParseExact(System.ReadOnlySpan<System.Char> input, System.ReadOnlySpan<System.Char> format, System.IFormatProvider formatProvider, out System.TimeSpan result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.TimeSpan result) => throw null;
+        public static bool TryParse(string input, System.IFormatProvider formatProvider, out System.TimeSpan result) => throw null;
+        public static bool TryParse(string s, out System.TimeSpan result) => throw null;
         public static bool TryParseExact(System.ReadOnlySpan<System.Char> input, System.ReadOnlySpan<System.Char> format, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles, out System.TimeSpan result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> input, System.ReadOnlySpan<System.Char> format, System.IFormatProvider formatProvider, out System.TimeSpan result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles, out System.TimeSpan result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> input, string[] formats, System.IFormatProvider formatProvider, out System.TimeSpan result) => throw null;
+        public static bool TryParseExact(string input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles, out System.TimeSpan result) => throw null;
+        public static bool TryParseExact(string input, string[] formats, System.IFormatProvider formatProvider, out System.TimeSpan result) => throw null;
+        public static bool TryParseExact(string input, string format, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles, out System.TimeSpan result) => throw null;
+        public static bool TryParseExact(string input, string format, System.IFormatProvider formatProvider, out System.TimeSpan result) => throw null;
         public static System.TimeSpan Zero;
     }
 
@@ -3910,10 +3910,10 @@ namespace System
     }
 
     // Generated from `System.TimeZoneInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class TimeZoneInfo : System.Runtime.Serialization.ISerializable, System.Runtime.Serialization.IDeserializationCallback, System.IEquatable<System.TimeZoneInfo>
+    public class TimeZoneInfo : System.IEquatable<System.TimeZoneInfo>, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
     {
         // Generated from `System.TimeZoneInfo+AdjustmentRule` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class AdjustmentRule : System.Runtime.Serialization.ISerializable, System.Runtime.Serialization.IDeserializationCallback, System.IEquatable<System.TimeZoneInfo.AdjustmentRule>
+        public class AdjustmentRule : System.IEquatable<System.TimeZoneInfo.AdjustmentRule>, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
         {
             public static System.TimeZoneInfo.AdjustmentRule CreateAdjustmentRule(System.DateTime dateStart, System.DateTime dateEnd, System.TimeSpan daylightDelta, System.TimeZoneInfo.TransitionTime daylightTransitionStart, System.TimeZoneInfo.TransitionTime daylightTransitionEnd) => throw null;
             public System.DateTime DateEnd { get => throw null; }
@@ -3928,49 +3928,8 @@ namespace System
         }
 
 
-        public System.TimeSpan BaseUtcOffset { get => throw null; }
-        public static void ClearCachedData() => throw null;
-        public static System.DateTimeOffset ConvertTime(System.DateTimeOffset dateTimeOffset, System.TimeZoneInfo destinationTimeZone) => throw null;
-        public static System.DateTime ConvertTime(System.DateTime dateTime, System.TimeZoneInfo sourceTimeZone, System.TimeZoneInfo destinationTimeZone) => throw null;
-        public static System.DateTime ConvertTime(System.DateTime dateTime, System.TimeZoneInfo destinationTimeZone) => throw null;
-        public static System.DateTimeOffset ConvertTimeBySystemTimeZoneId(System.DateTimeOffset dateTimeOffset, string destinationTimeZoneId) => throw null;
-        public static System.DateTime ConvertTimeBySystemTimeZoneId(System.DateTime dateTime, string sourceTimeZoneId, string destinationTimeZoneId) => throw null;
-        public static System.DateTime ConvertTimeBySystemTimeZoneId(System.DateTime dateTime, string destinationTimeZoneId) => throw null;
-        public static System.DateTime ConvertTimeFromUtc(System.DateTime dateTime, System.TimeZoneInfo destinationTimeZone) => throw null;
-        public static System.DateTime ConvertTimeToUtc(System.DateTime dateTime, System.TimeZoneInfo sourceTimeZone) => throw null;
-        public static System.DateTime ConvertTimeToUtc(System.DateTime dateTime) => throw null;
-        public static System.TimeZoneInfo CreateCustomTimeZone(string id, System.TimeSpan baseUtcOffset, string displayName, string standardDisplayName, string daylightDisplayName, System.TimeZoneInfo.AdjustmentRule[] adjustmentRules, bool disableDaylightSavingTime) => throw null;
-        public static System.TimeZoneInfo CreateCustomTimeZone(string id, System.TimeSpan baseUtcOffset, string displayName, string standardDisplayName, string daylightDisplayName, System.TimeZoneInfo.AdjustmentRule[] adjustmentRules) => throw null;
-        public static System.TimeZoneInfo CreateCustomTimeZone(string id, System.TimeSpan baseUtcOffset, string displayName, string standardDisplayName) => throw null;
-        public string DaylightName { get => throw null; }
-        public string DisplayName { get => throw null; }
-        public override bool Equals(object obj) => throw null;
-        public bool Equals(System.TimeZoneInfo other) => throw null;
-        public static System.TimeZoneInfo FindSystemTimeZoneById(string id) => throw null;
-        public static System.TimeZoneInfo FromSerializedString(string source) => throw null;
-        public System.TimeZoneInfo.AdjustmentRule[] GetAdjustmentRules() => throw null;
-        public System.TimeSpan[] GetAmbiguousTimeOffsets(System.DateTimeOffset dateTimeOffset) => throw null;
-        public System.TimeSpan[] GetAmbiguousTimeOffsets(System.DateTime dateTime) => throw null;
-        public override int GetHashCode() => throw null;
-        void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
-        public static System.Collections.ObjectModel.ReadOnlyCollection<System.TimeZoneInfo> GetSystemTimeZones() => throw null;
-        public System.TimeSpan GetUtcOffset(System.DateTimeOffset dateTimeOffset) => throw null;
-        public System.TimeSpan GetUtcOffset(System.DateTime dateTime) => throw null;
-        public bool HasSameRules(System.TimeZoneInfo other) => throw null;
-        public string Id { get => throw null; }
-        public bool IsAmbiguousTime(System.DateTimeOffset dateTimeOffset) => throw null;
-        public bool IsAmbiguousTime(System.DateTime dateTime) => throw null;
-        public bool IsDaylightSavingTime(System.DateTimeOffset dateTimeOffset) => throw null;
-        public bool IsDaylightSavingTime(System.DateTime dateTime) => throw null;
-        public bool IsInvalidTime(System.DateTime dateTime) => throw null;
-        public static System.TimeZoneInfo Local { get => throw null; }
-        void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) => throw null;
-        public string StandardName { get => throw null; }
-        public bool SupportsDaylightSavingTime { get => throw null; }
-        public string ToSerializedString() => throw null;
-        public override string ToString() => throw null;
         // Generated from `System.TimeZoneInfo+TransitionTime` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public struct TransitionTime : System.Runtime.Serialization.ISerializable, System.Runtime.Serialization.IDeserializationCallback, System.IEquatable<System.TimeZoneInfo.TransitionTime>
+        public struct TransitionTime : System.IEquatable<System.TimeZoneInfo.TransitionTime>, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
         {
             public static bool operator !=(System.TimeZoneInfo.TransitionTime t1, System.TimeZoneInfo.TransitionTime t2) => throw null;
             public static bool operator ==(System.TimeZoneInfo.TransitionTime t1, System.TimeZoneInfo.TransitionTime t2) => throw null;
@@ -3978,8 +3937,8 @@ namespace System
             public static System.TimeZoneInfo.TransitionTime CreateFloatingDateRule(System.DateTime timeOfDay, int month, int week, System.DayOfWeek dayOfWeek) => throw null;
             public int Day { get => throw null; }
             public System.DayOfWeek DayOfWeek { get => throw null; }
-            public override bool Equals(object obj) => throw null;
             public bool Equals(System.TimeZoneInfo.TransitionTime other) => throw null;
+            public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public bool IsFixedDateRule { get => throw null; }
@@ -3991,42 +3950,83 @@ namespace System
         }
 
 
+        public System.TimeSpan BaseUtcOffset { get => throw null; }
+        public static void ClearCachedData() => throw null;
+        public static System.DateTime ConvertTime(System.DateTime dateTime, System.TimeZoneInfo destinationTimeZone) => throw null;
+        public static System.DateTime ConvertTime(System.DateTime dateTime, System.TimeZoneInfo sourceTimeZone, System.TimeZoneInfo destinationTimeZone) => throw null;
+        public static System.DateTimeOffset ConvertTime(System.DateTimeOffset dateTimeOffset, System.TimeZoneInfo destinationTimeZone) => throw null;
+        public static System.DateTime ConvertTimeBySystemTimeZoneId(System.DateTime dateTime, string destinationTimeZoneId) => throw null;
+        public static System.DateTime ConvertTimeBySystemTimeZoneId(System.DateTime dateTime, string sourceTimeZoneId, string destinationTimeZoneId) => throw null;
+        public static System.DateTimeOffset ConvertTimeBySystemTimeZoneId(System.DateTimeOffset dateTimeOffset, string destinationTimeZoneId) => throw null;
+        public static System.DateTime ConvertTimeFromUtc(System.DateTime dateTime, System.TimeZoneInfo destinationTimeZone) => throw null;
+        public static System.DateTime ConvertTimeToUtc(System.DateTime dateTime) => throw null;
+        public static System.DateTime ConvertTimeToUtc(System.DateTime dateTime, System.TimeZoneInfo sourceTimeZone) => throw null;
+        public static System.TimeZoneInfo CreateCustomTimeZone(string id, System.TimeSpan baseUtcOffset, string displayName, string standardDisplayName) => throw null;
+        public static System.TimeZoneInfo CreateCustomTimeZone(string id, System.TimeSpan baseUtcOffset, string displayName, string standardDisplayName, string daylightDisplayName, System.TimeZoneInfo.AdjustmentRule[] adjustmentRules) => throw null;
+        public static System.TimeZoneInfo CreateCustomTimeZone(string id, System.TimeSpan baseUtcOffset, string displayName, string standardDisplayName, string daylightDisplayName, System.TimeZoneInfo.AdjustmentRule[] adjustmentRules, bool disableDaylightSavingTime) => throw null;
+        public string DaylightName { get => throw null; }
+        public string DisplayName { get => throw null; }
+        public bool Equals(System.TimeZoneInfo other) => throw null;
+        public override bool Equals(object obj) => throw null;
+        public static System.TimeZoneInfo FindSystemTimeZoneById(string id) => throw null;
+        public static System.TimeZoneInfo FromSerializedString(string source) => throw null;
+        public System.TimeZoneInfo.AdjustmentRule[] GetAdjustmentRules() => throw null;
+        public System.TimeSpan[] GetAmbiguousTimeOffsets(System.DateTime dateTime) => throw null;
+        public System.TimeSpan[] GetAmbiguousTimeOffsets(System.DateTimeOffset dateTimeOffset) => throw null;
+        public override int GetHashCode() => throw null;
+        void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public static System.Collections.ObjectModel.ReadOnlyCollection<System.TimeZoneInfo> GetSystemTimeZones() => throw null;
+        public System.TimeSpan GetUtcOffset(System.DateTime dateTime) => throw null;
+        public System.TimeSpan GetUtcOffset(System.DateTimeOffset dateTimeOffset) => throw null;
+        public bool HasSameRules(System.TimeZoneInfo other) => throw null;
+        public string Id { get => throw null; }
+        public bool IsAmbiguousTime(System.DateTime dateTime) => throw null;
+        public bool IsAmbiguousTime(System.DateTimeOffset dateTimeOffset) => throw null;
+        public bool IsDaylightSavingTime(System.DateTime dateTime) => throw null;
+        public bool IsDaylightSavingTime(System.DateTimeOffset dateTimeOffset) => throw null;
+        public bool IsInvalidTime(System.DateTime dateTime) => throw null;
+        public static System.TimeZoneInfo Local { get => throw null; }
+        void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) => throw null;
+        public string StandardName { get => throw null; }
+        public bool SupportsDaylightSavingTime { get => throw null; }
+        public string ToSerializedString() => throw null;
+        public override string ToString() => throw null;
         public static System.TimeZoneInfo Utc { get => throw null; }
     }
 
     // Generated from `System.TimeZoneNotFoundException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class TimeZoneNotFoundException : System.Exception
     {
-        public TimeZoneNotFoundException(string message, System.Exception innerException) => throw null;
-        public TimeZoneNotFoundException(string message) => throw null;
         public TimeZoneNotFoundException() => throw null;
         protected TimeZoneNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public TimeZoneNotFoundException(string message) => throw null;
+        public TimeZoneNotFoundException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.TimeoutException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class TimeoutException : System.SystemException
     {
-        public TimeoutException(string message, System.Exception innerException) => throw null;
-        public TimeoutException(string message) => throw null;
         public TimeoutException() => throw null;
         protected TimeoutException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public TimeoutException(string message) => throw null;
+        public TimeoutException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.Tuple` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class Tuple
     {
-        public static System.Tuple<T1> Create<T1>(T1 item1) => throw null;
-        public static System.Tuple<T1, T2> Create<T1, T2>(T1 item1, T2 item2) => throw null;
-        public static System.Tuple<T1, T2, T3> Create<T1, T2, T3>(T1 item1, T2 item2, T3 item3) => throw null;
-        public static System.Tuple<T1, T2, T3, T4> Create<T1, T2, T3, T4>(T1 item1, T2 item2, T3 item3, T4 item4) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5> Create<T1, T2, T3, T4, T5>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6> Create<T1, T2, T3, T4, T5, T6>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7> Create<T1, T2, T3, T4, T5, T6, T7>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7) => throw null;
         public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8>> Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7> Create<T1, T2, T3, T4, T5, T6, T7>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6> Create<T1, T2, T3, T4, T5, T6>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5> Create<T1, T2, T3, T4, T5>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5) => throw null;
+        public static System.Tuple<T1, T2, T3, T4> Create<T1, T2, T3, T4>(T1 item1, T2 item2, T3 item3, T4 item4) => throw null;
+        public static System.Tuple<T1, T2, T3> Create<T1, T2, T3>(T1 item1, T2 item2, T3 item3) => throw null;
+        public static System.Tuple<T1, T2> Create<T1, T2>(T1 item1, T2 item2) => throw null;
+        public static System.Tuple<T1> Create<T1>(T1 item1) => throw null;
     }
 
     // Generated from `System.Tuple<,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class Tuple<T1, T2, T3, T4, T5, T6, T7, TRest> : System.Runtime.CompilerServices.ITuple, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public class Tuple<T1, T2, T3, T4, T5, T6, T7, TRest> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
@@ -4034,7 +4034,6 @@ namespace System
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1 { get => throw null; }
         public T2 Item2 { get => throw null; }
         public T3 Item3 { get => throw null; }
@@ -4042,6 +4041,7 @@ namespace System
         public T5 Item5 { get => throw null; }
         public T6 Item6 { get => throw null; }
         public T7 Item7 { get => throw null; }
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public TRest Rest { get => throw null; }
         public override string ToString() => throw null;
@@ -4049,7 +4049,7 @@ namespace System
     }
 
     // Generated from `System.Tuple<,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class Tuple<T1, T2, T3, T4, T5, T6, T7> : System.Runtime.CompilerServices.ITuple, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public class Tuple<T1, T2, T3, T4, T5, T6, T7> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
@@ -4057,7 +4057,6 @@ namespace System
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1 { get => throw null; }
         public T2 Item2 { get => throw null; }
         public T3 Item3 { get => throw null; }
@@ -4065,13 +4064,14 @@ namespace System
         public T5 Item5 { get => throw null; }
         public T6 Item6 { get => throw null; }
         public T7 Item7 { get => throw null; }
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
         public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7) => throw null;
     }
 
     // Generated from `System.Tuple<,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class Tuple<T1, T2, T3, T4, T5, T6> : System.Runtime.CompilerServices.ITuple, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public class Tuple<T1, T2, T3, T4, T5, T6> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
@@ -4079,20 +4079,20 @@ namespace System
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1 { get => throw null; }
         public T2 Item2 { get => throw null; }
         public T3 Item3 { get => throw null; }
         public T4 Item4 { get => throw null; }
         public T5 Item5 { get => throw null; }
         public T6 Item6 { get => throw null; }
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
         public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6) => throw null;
     }
 
     // Generated from `System.Tuple<,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class Tuple<T1, T2, T3, T4, T5> : System.Runtime.CompilerServices.ITuple, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public class Tuple<T1, T2, T3, T4, T5> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
@@ -4100,19 +4100,19 @@ namespace System
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1 { get => throw null; }
         public T2 Item2 { get => throw null; }
         public T3 Item3 { get => throw null; }
         public T4 Item4 { get => throw null; }
         public T5 Item5 { get => throw null; }
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
         public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5) => throw null;
     }
 
     // Generated from `System.Tuple<,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class Tuple<T1, T2, T3, T4> : System.Runtime.CompilerServices.ITuple, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public class Tuple<T1, T2, T3, T4> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
@@ -4120,18 +4120,18 @@ namespace System
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1 { get => throw null; }
         public T2 Item2 { get => throw null; }
         public T3 Item3 { get => throw null; }
         public T4 Item4 { get => throw null; }
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
         public Tuple(T1 item1, T2 item2, T3 item3, T4 item4) => throw null;
     }
 
     // Generated from `System.Tuple<,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class Tuple<T1, T2, T3> : System.Runtime.CompilerServices.ITuple, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public class Tuple<T1, T2, T3> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
@@ -4139,17 +4139,17 @@ namespace System
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1 { get => throw null; }
         public T2 Item2 { get => throw null; }
         public T3 Item3 { get => throw null; }
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
         public Tuple(T1 item1, T2 item2, T3 item3) => throw null;
     }
 
     // Generated from `System.Tuple<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class Tuple<T1, T2> : System.Runtime.CompilerServices.ITuple, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public class Tuple<T1, T2> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
@@ -4157,16 +4157,16 @@ namespace System
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1 { get => throw null; }
         public T2 Item2 { get => throw null; }
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
         public Tuple(T1 item1, T2 item2) => throw null;
     }
 
     // Generated from `System.Tuple<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class Tuple<T1> : System.Runtime.CompilerServices.ITuple, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public class Tuple<T1> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
@@ -4174,8 +4174,8 @@ namespace System
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1 { get => throw null; }
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
         public Tuple(T1 item1) => throw null;
@@ -4184,49 +4184,48 @@ namespace System
     // Generated from `System.TupleExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class TupleExtensions
     {
-        public static void Deconstruct<T1>(this System.Tuple<T1> value, out T1 item1) => throw null;
-        public static void Deconstruct<T1, T2>(this System.Tuple<T1, T2> value, out T1 item1, out T2 item2) => throw null;
-        public static void Deconstruct<T1, T2, T3>(this System.Tuple<T1, T2, T3> value, out T1 item1, out T2 item2, out T3 item3) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4>(this System.Tuple<T1, T2, T3, T4> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5>(this System.Tuple<T1, T2, T3, T4, T5> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6>(this System.Tuple<T1, T2, T3, T4, T5, T6> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15, out T16 item16) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15, out T16 item16, out T17 item17) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15, out T16 item16, out T17 item17, out T18 item18) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15, out T16 item16, out T17 item17, out T18 item18, out T19 item19) => throw null;
-        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19, T20>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15, out T16 item16, out T17 item17, out T18 item18, out T19 item19, out T20 item20) => throw null;
         public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19, T20, T21>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15, out T16 item16, out T17 item17, out T18 item18, out T19 item19, out T20 item20, out T21 item21) => throw null;
-        public static System.Tuple<T1> ToTuple<T1>(this System.ValueTuple<T1> value) => throw null;
-        public static System.Tuple<T1, T2> ToTuple<T1, T2>(this (T1, T2) value) => throw null;
-        public static System.Tuple<T1, T2, T3> ToTuple<T1, T2, T3>(this (T1, T2, T3) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4> ToTuple<T1, T2, T3, T4>(this (T1, T2, T3, T4) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5> ToTuple<T1, T2, T3, T4, T5>(this (T1, T2, T3, T4, T5) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6> ToTuple<T1, T2, T3, T4, T5, T6>(this (T1, T2, T3, T4, T5, T6) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7> ToTuple<T1, T2, T3, T4, T5, T6, T7>(this (T1, T2, T3, T4, T5, T6, T7) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8>(this (T1, T2, T3, T4, T5, T6, T7, T8) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15>>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16>>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17>>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18>>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19>>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19) value) => throw null;
-        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19, T20>>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20) value) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19, T20>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15, out T16 item16, out T17 item17, out T18 item18, out T19 item19, out T20 item20) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15, out T16 item16, out T17 item17, out T18 item18, out T19 item19) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15, out T16 item16, out T17 item17, out T18 item18) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15, out T16 item16, out T17 item17) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15, out T16 item16) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5, T6>(this System.Tuple<T1, T2, T3, T4, T5, T6> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4, T5>(this System.Tuple<T1, T2, T3, T4, T5> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5) => throw null;
+        public static void Deconstruct<T1, T2, T3, T4>(this System.Tuple<T1, T2, T3, T4> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4) => throw null;
+        public static void Deconstruct<T1, T2, T3>(this System.Tuple<T1, T2, T3> value, out T1 item1, out T2 item2, out T3 item3) => throw null;
+        public static void Deconstruct<T1, T2>(this System.Tuple<T1, T2> value, out T1 item1, out T2 item2) => throw null;
+        public static void Deconstruct<T1>(this System.Tuple<T1> value, out T1 item1) => throw null;
         public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19, T20, T21>>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21) value) => throw null;
-        public static System.ValueTuple<T1> ToValueTuple<T1>(this System.Tuple<T1> value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19, T20>>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19>>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18>>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17>>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16>>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15>>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this (T1, T2, T3, T4, T5, T6, T7, T8, T9) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8>> ToTuple<T1, T2, T3, T4, T5, T6, T7, T8>(this (T1, T2, T3, T4, T5, T6, T7, T8) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6, T7> ToTuple<T1, T2, T3, T4, T5, T6, T7>(this (T1, T2, T3, T4, T5, T6, T7) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5, T6> ToTuple<T1, T2, T3, T4, T5, T6>(this (T1, T2, T3, T4, T5, T6) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4, T5> ToTuple<T1, T2, T3, T4, T5>(this (T1, T2, T3, T4, T5) value) => throw null;
+        public static System.Tuple<T1, T2, T3, T4> ToTuple<T1, T2, T3, T4>(this (T1, T2, T3, T4) value) => throw null;
+        public static System.Tuple<T1, T2, T3> ToTuple<T1, T2, T3>(this (T1, T2, T3) value) => throw null;
+        public static System.Tuple<T1, T2> ToTuple<T1, T2>(this (T1, T2) value) => throw null;
+        public static System.Tuple<T1> ToTuple<T1>(this System.ValueTuple<T1> value) => throw null;
         public static (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21) ToValueTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19, T20, T21>>> value) => throw null;
         public static (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20) ToValueTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19, T20>>> value) => throw null;
         public static (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19) ToValueTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19>>> value) => throw null;
@@ -4247,6 +4246,7 @@ namespace System
         public static (T1, T2, T3, T4) ToValueTuple<T1, T2, T3, T4>(this System.Tuple<T1, T2, T3, T4> value) => throw null;
         public static (T1, T2, T3) ToValueTuple<T1, T2, T3>(this System.Tuple<T1, T2, T3> value) => throw null;
         public static (T1, T2) ToValueTuple<T1, T2>(this System.Tuple<T1, T2> value) => throw null;
+        public static System.ValueTuple<T1> ToValueTuple<T1>(this System.Tuple<T1> value) => throw null;
     }
 
     // Generated from `System.Type` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -4278,91 +4278,91 @@ namespace System
         public virtual System.Type[] GenericTypeArguments { get => throw null; }
         public virtual int GetArrayRank() => throw null;
         protected abstract System.Reflection.TypeAttributes GetAttributeFlagsImpl();
-        public System.Reflection.ConstructorInfo GetConstructor(System.Type[] types) => throw null;
-        public System.Reflection.ConstructorInfo GetConstructor(System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
         public System.Reflection.ConstructorInfo GetConstructor(System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
+        public System.Reflection.ConstructorInfo GetConstructor(System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
+        public System.Reflection.ConstructorInfo GetConstructor(System.Type[] types) => throw null;
         protected abstract System.Reflection.ConstructorInfo GetConstructorImpl(System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers);
-        public abstract System.Reflection.ConstructorInfo[] GetConstructors(System.Reflection.BindingFlags bindingAttr);
         public System.Reflection.ConstructorInfo[] GetConstructors() => throw null;
+        public abstract System.Reflection.ConstructorInfo[] GetConstructors(System.Reflection.BindingFlags bindingAttr);
         public virtual System.Reflection.MemberInfo[] GetDefaultMembers() => throw null;
         public abstract System.Type GetElementType();
         public virtual string GetEnumName(object value) => throw null;
         public virtual string[] GetEnumNames() => throw null;
         public virtual System.Type GetEnumUnderlyingType() => throw null;
         public virtual System.Array GetEnumValues() => throw null;
-        public abstract System.Reflection.EventInfo GetEvent(string name, System.Reflection.BindingFlags bindingAttr);
         public System.Reflection.EventInfo GetEvent(string name) => throw null;
+        public abstract System.Reflection.EventInfo GetEvent(string name, System.Reflection.BindingFlags bindingAttr);
         public virtual System.Reflection.EventInfo[] GetEvents() => throw null;
         public abstract System.Reflection.EventInfo[] GetEvents(System.Reflection.BindingFlags bindingAttr);
-        public abstract System.Reflection.FieldInfo GetField(string name, System.Reflection.BindingFlags bindingAttr);
         public System.Reflection.FieldInfo GetField(string name) => throw null;
-        public abstract System.Reflection.FieldInfo[] GetFields(System.Reflection.BindingFlags bindingAttr);
+        public abstract System.Reflection.FieldInfo GetField(string name, System.Reflection.BindingFlags bindingAttr);
         public System.Reflection.FieldInfo[] GetFields() => throw null;
+        public abstract System.Reflection.FieldInfo[] GetFields(System.Reflection.BindingFlags bindingAttr);
         public virtual System.Type[] GetGenericArguments() => throw null;
         public virtual System.Type[] GetGenericParameterConstraints() => throw null;
         public virtual System.Type GetGenericTypeDefinition() => throw null;
         public override int GetHashCode() => throw null;
-        public abstract System.Type GetInterface(string name, bool ignoreCase);
         public System.Type GetInterface(string name) => throw null;
+        public abstract System.Type GetInterface(string name, bool ignoreCase);
         public virtual System.Reflection.InterfaceMapping GetInterfaceMap(System.Type interfaceType) => throw null;
         public abstract System.Type[] GetInterfaces();
-        public virtual System.Reflection.MemberInfo[] GetMember(string name, System.Reflection.MemberTypes type, System.Reflection.BindingFlags bindingAttr) => throw null;
-        public virtual System.Reflection.MemberInfo[] GetMember(string name, System.Reflection.BindingFlags bindingAttr) => throw null;
         public System.Reflection.MemberInfo[] GetMember(string name) => throw null;
-        public abstract System.Reflection.MemberInfo[] GetMembers(System.Reflection.BindingFlags bindingAttr);
+        public virtual System.Reflection.MemberInfo[] GetMember(string name, System.Reflection.BindingFlags bindingAttr) => throw null;
+        public virtual System.Reflection.MemberInfo[] GetMember(string name, System.Reflection.MemberTypes type, System.Reflection.BindingFlags bindingAttr) => throw null;
         public System.Reflection.MemberInfo[] GetMembers() => throw null;
-        public System.Reflection.MethodInfo GetMethod(string name, int genericParameterCount, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
-        public System.Reflection.MethodInfo GetMethod(string name, int genericParameterCount, System.Type[] types) => throw null;
-        public System.Reflection.MethodInfo GetMethod(string name, int genericParameterCount, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
-        public System.Reflection.MethodInfo GetMethod(string name, int genericParameterCount, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
-        public System.Reflection.MethodInfo GetMethod(string name, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
-        public System.Reflection.MethodInfo GetMethod(string name, System.Type[] types) => throw null;
-        public System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
-        public System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
-        public System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr) => throw null;
+        public abstract System.Reflection.MemberInfo[] GetMembers(System.Reflection.BindingFlags bindingAttr);
         public System.Reflection.MethodInfo GetMethod(string name) => throw null;
-        protected virtual System.Reflection.MethodInfo GetMethodImpl(string name, int genericParameterCount, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
+        public System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr) => throw null;
+        public System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
+        public System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
+        public System.Reflection.MethodInfo GetMethod(string name, System.Type[] types) => throw null;
+        public System.Reflection.MethodInfo GetMethod(string name, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
+        public System.Reflection.MethodInfo GetMethod(string name, int genericParameterCount, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
+        public System.Reflection.MethodInfo GetMethod(string name, int genericParameterCount, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
+        public System.Reflection.MethodInfo GetMethod(string name, int genericParameterCount, System.Type[] types) => throw null;
+        public System.Reflection.MethodInfo GetMethod(string name, int genericParameterCount, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
         protected abstract System.Reflection.MethodInfo GetMethodImpl(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers);
-        public abstract System.Reflection.MethodInfo[] GetMethods(System.Reflection.BindingFlags bindingAttr);
+        protected virtual System.Reflection.MethodInfo GetMethodImpl(string name, int genericParameterCount, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
         public System.Reflection.MethodInfo[] GetMethods() => throw null;
-        public abstract System.Type GetNestedType(string name, System.Reflection.BindingFlags bindingAttr);
+        public abstract System.Reflection.MethodInfo[] GetMethods(System.Reflection.BindingFlags bindingAttr);
         public System.Type GetNestedType(string name) => throw null;
-        public abstract System.Type[] GetNestedTypes(System.Reflection.BindingFlags bindingAttr);
+        public abstract System.Type GetNestedType(string name, System.Reflection.BindingFlags bindingAttr);
         public System.Type[] GetNestedTypes() => throw null;
-        public abstract System.Reflection.PropertyInfo[] GetProperties(System.Reflection.BindingFlags bindingAttr);
+        public abstract System.Type[] GetNestedTypes(System.Reflection.BindingFlags bindingAttr);
         public System.Reflection.PropertyInfo[] GetProperties() => throw null;
-        public System.Reflection.PropertyInfo GetProperty(string name, System.Type[] types) => throw null;
-        public System.Reflection.PropertyInfo GetProperty(string name, System.Type returnType, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
-        public System.Reflection.PropertyInfo GetProperty(string name, System.Type returnType, System.Type[] types) => throw null;
-        public System.Reflection.PropertyInfo GetProperty(string name, System.Type returnType) => throw null;
-        public System.Reflection.PropertyInfo GetProperty(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type returnType, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
-        public System.Reflection.PropertyInfo GetProperty(string name, System.Reflection.BindingFlags bindingAttr) => throw null;
+        public abstract System.Reflection.PropertyInfo[] GetProperties(System.Reflection.BindingFlags bindingAttr);
         public System.Reflection.PropertyInfo GetProperty(string name) => throw null;
+        public System.Reflection.PropertyInfo GetProperty(string name, System.Reflection.BindingFlags bindingAttr) => throw null;
+        public System.Reflection.PropertyInfo GetProperty(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type returnType, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
+        public System.Reflection.PropertyInfo GetProperty(string name, System.Type returnType) => throw null;
+        public System.Reflection.PropertyInfo GetProperty(string name, System.Type returnType, System.Type[] types) => throw null;
+        public System.Reflection.PropertyInfo GetProperty(string name, System.Type returnType, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
+        public System.Reflection.PropertyInfo GetProperty(string name, System.Type[] types) => throw null;
         protected abstract System.Reflection.PropertyInfo GetPropertyImpl(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type returnType, System.Type[] types, System.Reflection.ParameterModifier[] modifiers);
-        public static System.Type GetType(string typeName, bool throwOnError, bool ignoreCase) => throw null;
-        public static System.Type GetType(string typeName, bool throwOnError) => throw null;
-        public static System.Type GetType(string typeName, System.Func<System.Reflection.AssemblyName, System.Reflection.Assembly> assemblyResolver, System.Func<System.Reflection.Assembly, string, bool, System.Type> typeResolver, bool throwOnError, bool ignoreCase) => throw null;
-        public static System.Type GetType(string typeName, System.Func<System.Reflection.AssemblyName, System.Reflection.Assembly> assemblyResolver, System.Func<System.Reflection.Assembly, string, bool, System.Type> typeResolver, bool throwOnError) => throw null;
-        public static System.Type GetType(string typeName, System.Func<System.Reflection.AssemblyName, System.Reflection.Assembly> assemblyResolver, System.Func<System.Reflection.Assembly, string, bool, System.Type> typeResolver) => throw null;
-        public static System.Type GetType(string typeName) => throw null;
         public System.Type GetType() => throw null;
+        public static System.Type GetType(string typeName) => throw null;
+        public static System.Type GetType(string typeName, System.Func<System.Reflection.AssemblyName, System.Reflection.Assembly> assemblyResolver, System.Func<System.Reflection.Assembly, string, bool, System.Type> typeResolver) => throw null;
+        public static System.Type GetType(string typeName, System.Func<System.Reflection.AssemblyName, System.Reflection.Assembly> assemblyResolver, System.Func<System.Reflection.Assembly, string, bool, System.Type> typeResolver, bool throwOnError) => throw null;
+        public static System.Type GetType(string typeName, System.Func<System.Reflection.AssemblyName, System.Reflection.Assembly> assemblyResolver, System.Func<System.Reflection.Assembly, string, bool, System.Type> typeResolver, bool throwOnError, bool ignoreCase) => throw null;
+        public static System.Type GetType(string typeName, bool throwOnError) => throw null;
+        public static System.Type GetType(string typeName, bool throwOnError, bool ignoreCase) => throw null;
         public static System.Type[] GetTypeArray(object[] args) => throw null;
         public static System.TypeCode GetTypeCode(System.Type type) => throw null;
         protected virtual System.TypeCode GetTypeCodeImpl() => throw null;
-        public static System.Type GetTypeFromCLSID(System.Guid clsid, string server, bool throwOnError) => throw null;
-        public static System.Type GetTypeFromCLSID(System.Guid clsid, string server) => throw null;
-        public static System.Type GetTypeFromCLSID(System.Guid clsid, bool throwOnError) => throw null;
         public static System.Type GetTypeFromCLSID(System.Guid clsid) => throw null;
+        public static System.Type GetTypeFromCLSID(System.Guid clsid, bool throwOnError) => throw null;
+        public static System.Type GetTypeFromCLSID(System.Guid clsid, string server) => throw null;
+        public static System.Type GetTypeFromCLSID(System.Guid clsid, string server, bool throwOnError) => throw null;
         public static System.Type GetTypeFromHandle(System.RuntimeTypeHandle handle) => throw null;
-        public static System.Type GetTypeFromProgID(string progID, string server, bool throwOnError) => throw null;
-        public static System.Type GetTypeFromProgID(string progID, string server) => throw null;
-        public static System.Type GetTypeFromProgID(string progID, bool throwOnError) => throw null;
         public static System.Type GetTypeFromProgID(string progID) => throw null;
+        public static System.Type GetTypeFromProgID(string progID, bool throwOnError) => throw null;
+        public static System.Type GetTypeFromProgID(string progID, string server) => throw null;
+        public static System.Type GetTypeFromProgID(string progID, string server, bool throwOnError) => throw null;
         public static System.RuntimeTypeHandle GetTypeHandle(object o) => throw null;
         public bool HasElementType { get => throw null; }
         protected abstract bool HasElementTypeImpl();
-        public object InvokeMember(string name, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object target, object[] args, System.Globalization.CultureInfo culture) => throw null;
         public object InvokeMember(string name, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object target, object[] args) => throw null;
+        public object InvokeMember(string name, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object target, object[] args, System.Globalization.CultureInfo culture) => throw null;
         public abstract object InvokeMember(string name, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object target, object[] args, System.Reflection.ParameterModifier[] modifiers, System.Globalization.CultureInfo culture, string[] namedParameters);
         public bool IsAbstract { get => throw null; }
         public bool IsAnsiClass { get => throw null; }
@@ -4424,8 +4424,8 @@ namespace System
         protected virtual bool IsValueTypeImpl() => throw null;
         public virtual bool IsVariableBoundArray { get => throw null; }
         public bool IsVisible { get => throw null; }
-        public virtual System.Type MakeArrayType(int rank) => throw null;
         public virtual System.Type MakeArrayType() => throw null;
+        public virtual System.Type MakeArrayType(int rank) => throw null;
         public virtual System.Type MakeByRefType() => throw null;
         public static System.Type MakeGenericMethodParameter(int position) => throw null;
         public static System.Type MakeGenericSignatureType(System.Type genericTypeDefinition, params System.Type[] typeArguments) => throw null;
@@ -4448,10 +4448,10 @@ namespace System
     // Generated from `System.TypeAccessException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class TypeAccessException : System.TypeLoadException
     {
-        public TypeAccessException(string message, System.Exception inner) => throw null;
-        public TypeAccessException(string message) => throw null;
         public TypeAccessException() => throw null;
         protected TypeAccessException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public TypeAccessException(string message) => throw null;
+        public TypeAccessException(string message, System.Exception inner) => throw null;
     }
 
     // Generated from `System.TypeCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -4490,20 +4490,20 @@ namespace System
     {
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         public override string Message { get => throw null; }
-        public TypeLoadException(string message, System.Exception inner) => throw null;
-        public TypeLoadException(string message) => throw null;
         public TypeLoadException() => throw null;
         protected TypeLoadException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public TypeLoadException(string message) => throw null;
+        public TypeLoadException(string message, System.Exception inner) => throw null;
         public string TypeName { get => throw null; }
     }
 
     // Generated from `System.TypeUnloadedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class TypeUnloadedException : System.SystemException
     {
-        public TypeUnloadedException(string message, System.Exception innerException) => throw null;
-        public TypeUnloadedException(string message) => throw null;
         public TypeUnloadedException() => throw null;
         protected TypeUnloadedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public TypeUnloadedException(string message) => throw null;
+        public TypeUnloadedException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.TypedReference` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -4520,7 +4520,7 @@ namespace System
     }
 
     // Generated from `System.UInt16` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct UInt16 : System.IFormattable, System.IEquatable<System.UInt16>, System.IConvertible, System.IComparable<System.UInt16>, System.IComparable
+    public struct UInt16 : System.IComparable, System.IComparable<System.UInt16>, System.IConvertible, System.IEquatable<System.UInt16>, System.IFormattable
     {
         public int CompareTo(object value) => throw null;
         public int CompareTo(System.UInt16 value) => throw null;
@@ -4530,11 +4530,11 @@ namespace System
         public System.TypeCode GetTypeCode() => throw null;
         public const System.UInt16 MaxValue = default;
         public const System.UInt16 MinValue = default;
-        public static System.UInt16 Parse(string s, System.IFormatProvider provider) => throw null;
-        public static System.UInt16 Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
-        public static System.UInt16 Parse(string s, System.Globalization.NumberStyles style) => throw null;
-        public static System.UInt16 Parse(string s) => throw null;
         public static System.UInt16 Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static System.UInt16 Parse(string s) => throw null;
+        public static System.UInt16 Parse(string s, System.IFormatProvider provider) => throw null;
+        public static System.UInt16 Parse(string s, System.Globalization.NumberStyles style) => throw null;
+        public static System.UInt16 Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
         System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
         System.Char System.IConvertible.ToChar(System.IFormatProvider provider) => throw null;
@@ -4546,24 +4546,24 @@ namespace System
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string s, out System.UInt16 result) => throw null;
-        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.UInt16 result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.UInt16 result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.UInt16 result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.UInt16 result) => throw null;
+        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.UInt16 result) => throw null;
+        public static bool TryParse(string s, out System.UInt16 result) => throw null;
         // Stub generator skipped constructor 
     }
 
     // Generated from `System.UInt32` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct UInt32 : System.IFormattable, System.IEquatable<System.UInt32>, System.IConvertible, System.IComparable<System.UInt32>, System.IComparable
+    public struct UInt32 : System.IComparable, System.IComparable<System.UInt32>, System.IConvertible, System.IEquatable<System.UInt32>, System.IFormattable
     {
         public int CompareTo(object value) => throw null;
         public int CompareTo(System.UInt32 value) => throw null;
@@ -4573,11 +4573,11 @@ namespace System
         public System.TypeCode GetTypeCode() => throw null;
         public const System.UInt32 MaxValue = default;
         public const System.UInt32 MinValue = default;
-        public static System.UInt32 Parse(string s, System.IFormatProvider provider) => throw null;
-        public static System.UInt32 Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
-        public static System.UInt32 Parse(string s, System.Globalization.NumberStyles style) => throw null;
-        public static System.UInt32 Parse(string s) => throw null;
         public static System.UInt32 Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static System.UInt32 Parse(string s) => throw null;
+        public static System.UInt32 Parse(string s, System.IFormatProvider provider) => throw null;
+        public static System.UInt32 Parse(string s, System.Globalization.NumberStyles style) => throw null;
+        public static System.UInt32 Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
         System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
         System.Char System.IConvertible.ToChar(System.IFormatProvider provider) => throw null;
@@ -4589,24 +4589,24 @@ namespace System
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string s, out System.UInt32 result) => throw null;
-        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.UInt32 result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.UInt32 result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.UInt32 result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.UInt32 result) => throw null;
+        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.UInt32 result) => throw null;
+        public static bool TryParse(string s, out System.UInt32 result) => throw null;
         // Stub generator skipped constructor 
     }
 
     // Generated from `System.UInt64` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct UInt64 : System.IFormattable, System.IEquatable<System.UInt64>, System.IConvertible, System.IComparable<System.UInt64>, System.IComparable
+    public struct UInt64 : System.IComparable, System.IComparable<System.UInt64>, System.IConvertible, System.IEquatable<System.UInt64>, System.IFormattable
     {
         public int CompareTo(object value) => throw null;
         public int CompareTo(System.UInt64 value) => throw null;
@@ -4616,11 +4616,11 @@ namespace System
         public System.TypeCode GetTypeCode() => throw null;
         public const System.UInt64 MaxValue = default;
         public const System.UInt64 MinValue = default;
-        public static System.UInt64 Parse(string s, System.IFormatProvider provider) => throw null;
-        public static System.UInt64 Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
-        public static System.UInt64 Parse(string s, System.Globalization.NumberStyles style) => throw null;
-        public static System.UInt64 Parse(string s) => throw null;
         public static System.UInt64 Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static System.UInt64 Parse(string s) => throw null;
+        public static System.UInt64 Parse(string s, System.IFormatProvider provider) => throw null;
+        public static System.UInt64 Parse(string s, System.Globalization.NumberStyles style) => throw null;
+        public static System.UInt64 Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
         System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
         System.Char System.IConvertible.ToChar(System.IFormatProvider provider) => throw null;
@@ -4632,73 +4632,73 @@ namespace System
         System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
         System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
         float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
-        public static bool TryParse(string s, out System.UInt64 result) => throw null;
-        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.UInt64 result) => throw null;
-        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.UInt64 result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.UInt64 result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.UInt64 result) => throw null;
+        public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.UInt64 result) => throw null;
+        public static bool TryParse(string s, out System.UInt64 result) => throw null;
         // Stub generator skipped constructor 
     }
 
     // Generated from `System.UIntPtr` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct UIntPtr : System.Runtime.Serialization.ISerializable, System.IFormattable, System.IEquatable<System.UIntPtr>, System.IComparable<System.UIntPtr>, System.IComparable
+    public struct UIntPtr : System.IComparable, System.IComparable<System.UIntPtr>, System.IEquatable<System.UIntPtr>, System.IFormattable, System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.UIntPtr value1, System.UIntPtr value2) => throw null;
         public static System.UIntPtr operator +(System.UIntPtr pointer, int offset) => throw null;
         public static System.UIntPtr operator -(System.UIntPtr pointer, int offset) => throw null;
         public static bool operator ==(System.UIntPtr value1, System.UIntPtr value2) => throw null;
         public static System.UIntPtr Add(System.UIntPtr pointer, int offset) => throw null;
-        public int CompareTo(object value) => throw null;
         public int CompareTo(System.UIntPtr value) => throw null;
-        public override bool Equals(object obj) => throw null;
+        public int CompareTo(object value) => throw null;
         public bool Equals(System.UIntPtr other) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         public static System.UIntPtr MaxValue { get => throw null; }
         public static System.UIntPtr MinValue { get => throw null; }
-        public static System.UIntPtr Parse(string s, System.IFormatProvider provider) => throw null;
-        public static System.UIntPtr Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
-        public static System.UIntPtr Parse(string s, System.Globalization.NumberStyles style) => throw null;
         public static System.UIntPtr Parse(string s) => throw null;
+        public static System.UIntPtr Parse(string s, System.IFormatProvider provider) => throw null;
+        public static System.UIntPtr Parse(string s, System.Globalization.NumberStyles style) => throw null;
+        public static System.UIntPtr Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
         public static int Size { get => throw null; }
         public static System.UIntPtr Subtract(System.UIntPtr pointer, int offset) => throw null;
         unsafe public void* ToPointer() => throw null;
-        public string ToString(string format, System.IFormatProvider provider) => throw null;
-        public string ToString(string format) => throw null;
-        public string ToString(System.IFormatProvider provider) => throw null;
         public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
         public System.UInt32 ToUInt32() => throw null;
         public System.UInt64 ToUInt64() => throw null;
-        public static bool TryParse(string s, out System.UIntPtr result) => throw null;
         public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.UIntPtr result) => throw null;
-        unsafe public UIntPtr(void* value) => throw null;
-        public UIntPtr(System.UInt64 value) => throw null;
-        public UIntPtr(System.UInt32 value) => throw null;
+        public static bool TryParse(string s, out System.UIntPtr result) => throw null;
         // Stub generator skipped constructor 
+        unsafe public UIntPtr(void* value) => throw null;
+        public UIntPtr(System.UInt32 value) => throw null;
+        public UIntPtr(System.UInt64 value) => throw null;
         public static System.UIntPtr Zero;
+        public static explicit operator System.UInt32(System.UIntPtr value) => throw null;
+        public static explicit operator System.UInt64(System.UIntPtr value) => throw null;
         unsafe public static explicit operator void*(System.UIntPtr value) => throw null;
         unsafe public static explicit operator System.UIntPtr(void* value) => throw null;
-        public static explicit operator System.UIntPtr(System.UInt64 value) => throw null;
         public static explicit operator System.UIntPtr(System.UInt32 value) => throw null;
-        public static explicit operator System.UInt64(System.UIntPtr value) => throw null;
-        public static explicit operator System.UInt32(System.UIntPtr value) => throw null;
+        public static explicit operator System.UIntPtr(System.UInt64 value) => throw null;
     }
 
     // Generated from `System.UnauthorizedAccessException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class UnauthorizedAccessException : System.SystemException
     {
-        public UnauthorizedAccessException(string message, System.Exception inner) => throw null;
-        public UnauthorizedAccessException(string message) => throw null;
         public UnauthorizedAccessException() => throw null;
         protected UnauthorizedAccessException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public UnauthorizedAccessException(string message) => throw null;
+        public UnauthorizedAccessException(string message, System.Exception inner) => throw null;
     }
 
     // Generated from `System.UnhandledExceptionEventArgs` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -4736,8 +4736,8 @@ namespace System
         public string GetComponents(System.UriComponents components, System.UriFormat format) => throw null;
         public override int GetHashCode() => throw null;
         public string GetLeftPart(System.UriPartial part) => throw null;
-        void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
         protected void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+        void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
         public static string HexEscape(System.Char character) => throw null;
         public static System.Char HexUnescape(string pattern, ref int index) => throw null;
         public string Host { get => throw null; }
@@ -4768,18 +4768,18 @@ namespace System
         public static string SchemeDelimiter;
         public string[] Segments { get => throw null; }
         public override string ToString() => throw null;
-        public static bool TryCreate(string uriString, System.UriKind uriKind, out System.Uri result) => throw null;
-        public static bool TryCreate(System.Uri baseUri, string relativeUri, out System.Uri result) => throw null;
         public static bool TryCreate(System.Uri baseUri, System.Uri relativeUri, out System.Uri result) => throw null;
+        public static bool TryCreate(System.Uri baseUri, string relativeUri, out System.Uri result) => throw null;
+        public static bool TryCreate(string uriString, System.UriKind uriKind, out System.Uri result) => throw null;
         protected virtual string Unescape(string path) => throw null;
         public static string UnescapeDataString(string stringToUnescape) => throw null;
-        public Uri(string uriString, bool dontEscape) => throw null;
-        public Uri(string uriString, System.UriKind uriKind) => throw null;
-        public Uri(string uriString) => throw null;
-        public Uri(System.Uri baseUri, string relativeUri, bool dontEscape) => throw null;
-        public Uri(System.Uri baseUri, string relativeUri) => throw null;
-        public Uri(System.Uri baseUri, System.Uri relativeUri) => throw null;
         protected Uri(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+        public Uri(System.Uri baseUri, System.Uri relativeUri) => throw null;
+        public Uri(System.Uri baseUri, string relativeUri) => throw null;
+        public Uri(System.Uri baseUri, string relativeUri, bool dontEscape) => throw null;
+        public Uri(string uriString) => throw null;
+        public Uri(string uriString, System.UriKind uriKind) => throw null;
+        public Uri(string uriString, bool dontEscape) => throw null;
         public static string UriSchemeFile;
         public static string UriSchemeFtp;
         public static string UriSchemeGopher;
@@ -4808,13 +4808,13 @@ namespace System
         public string Scheme { get => throw null; set => throw null; }
         public override string ToString() => throw null;
         public System.Uri Uri { get => throw null; }
+        public UriBuilder() => throw null;
+        public UriBuilder(System.Uri uri) => throw null;
         public UriBuilder(string uri) => throw null;
         public UriBuilder(string schemeName, string hostName) => throw null;
         public UriBuilder(string scheme, string host, int portNumber) => throw null;
         public UriBuilder(string scheme, string host, int port, string pathValue) => throw null;
         public UriBuilder(string scheme, string host, int port, string path, string extraValue) => throw null;
-        public UriBuilder(System.Uri uri) => throw null;
-        public UriBuilder() => throw null;
         public string UserName { get => throw null; set => throw null; }
     }
 
@@ -4853,10 +4853,10 @@ namespace System
     public class UriFormatException : System.FormatException, System.Runtime.Serialization.ISerializable
     {
         void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
-        public UriFormatException(string textString, System.Exception e) => throw null;
-        public UriFormatException(string textString) => throw null;
         public UriFormatException() => throw null;
         protected UriFormatException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+        public UriFormatException(string textString) => throw null;
+        public UriFormatException(string textString, System.Exception e) => throw null;
     }
 
     // Generated from `System.UriHostNameType` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -4902,12 +4902,11 @@ namespace System
     }
 
     // Generated from `System.ValueTuple` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct ValueTuple : System.Runtime.CompilerServices.ITuple, System.IEquatable<System.ValueTuple>, System.IComparable<System.ValueTuple>, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public struct ValueTuple : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<System.ValueTuple>, System.IEquatable<System.ValueTuple>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo(System.ValueTuple other) => throw null;
         int System.IComparable.CompareTo(object other) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
-        public static System.ValueTuple<T1> Create<T1>(T1 item1) => throw null;
         public static System.ValueTuple Create() => throw null;
         public static (T1, T2, T3, T4, T5, T6, T7, T8) Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8) => throw null;
         public static (T1, T2, T3, T4, T5, T6, T7) Create<T1, T2, T3, T4, T5, T6, T7>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7) => throw null;
@@ -4916,8 +4915,9 @@ namespace System
         public static (T1, T2, T3, T4) Create<T1, T2, T3, T4>(T1 item1, T2 item2, T3 item3, T4 item4) => throw null;
         public static (T1, T2, T3) Create<T1, T2, T3>(T1 item1, T2 item2, T3 item3) => throw null;
         public static (T1, T2) Create<T1, T2>(T1 item1, T2 item2) => throw null;
-        public override bool Equals(object obj) => throw null;
+        public static System.ValueTuple<T1> Create<T1>(T1 item1) => throw null;
         public bool Equals(System.ValueTuple other) => throw null;
+        public override bool Equals(object obj) => throw null;
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
@@ -4928,17 +4928,16 @@ namespace System
     }
 
     // Generated from `System.ValueTuple<,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest> : System.Runtime.CompilerServices.ITuple, System.IEquatable<System.ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest>>, System.IComparable<System.ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest>>, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable where TRest : struct
+    public struct ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<System.ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest>>, System.IEquatable<System.ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest>>, System.Runtime.CompilerServices.ITuple where TRest : struct
     {
         public int CompareTo(System.ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest> other) => throw null;
         int System.IComparable.CompareTo(object other) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
-        public override bool Equals(object obj) => throw null;
         public bool Equals(System.ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest> other) => throw null;
+        public override bool Equals(object obj) => throw null;
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1;
         public T2 Item2;
         public T3 Item3;
@@ -4946,25 +4945,25 @@ namespace System
         public T5 Item5;
         public T6 Item6;
         public T7 Item7;
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public TRest Rest;
         public override string ToString() => throw null;
-        public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, TRest rest) => throw null;
         // Stub generator skipped constructor 
+        public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, TRest rest) => throw null;
     }
 
     // Generated from `System.ValueTuple<,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct ValueTuple<T1, T2, T3, T4, T5, T6, T7> : System.Runtime.CompilerServices.ITuple, System.IEquatable<(T1, T2, T3, T4, T5, T6, T7)>, System.IComparable<(T1, T2, T3, T4, T5, T6, T7)>, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public struct ValueTuple<T1, T2, T3, T4, T5, T6, T7> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<(T1, T2, T3, T4, T5, T6, T7)>, System.IEquatable<(T1, T2, T3, T4, T5, T6, T7)>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo((T1, T2, T3, T4, T5, T6, T7) other) => throw null;
         int System.IComparable.CompareTo(object other) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
-        public override bool Equals(object obj) => throw null;
         public bool Equals((T1, T2, T3, T4, T5, T6, T7) other) => throw null;
+        public override bool Equals(object obj) => throw null;
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1;
         public T2 Item2;
         public T3 Item3;
@@ -4972,139 +4971,140 @@ namespace System
         public T5 Item5;
         public T6 Item6;
         public T7 Item7;
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
-        public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7) => throw null;
         // Stub generator skipped constructor 
+        public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7) => throw null;
     }
 
     // Generated from `System.ValueTuple<,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct ValueTuple<T1, T2, T3, T4, T5, T6> : System.Runtime.CompilerServices.ITuple, System.IEquatable<(T1, T2, T3, T4, T5, T6)>, System.IComparable<(T1, T2, T3, T4, T5, T6)>, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public struct ValueTuple<T1, T2, T3, T4, T5, T6> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<(T1, T2, T3, T4, T5, T6)>, System.IEquatable<(T1, T2, T3, T4, T5, T6)>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo((T1, T2, T3, T4, T5, T6) other) => throw null;
         int System.IComparable.CompareTo(object other) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
-        public override bool Equals(object obj) => throw null;
         public bool Equals((T1, T2, T3, T4, T5, T6) other) => throw null;
+        public override bool Equals(object obj) => throw null;
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1;
         public T2 Item2;
         public T3 Item3;
         public T4 Item4;
         public T5 Item5;
         public T6 Item6;
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
-        public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6) => throw null;
         // Stub generator skipped constructor 
+        public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6) => throw null;
     }
 
     // Generated from `System.ValueTuple<,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct ValueTuple<T1, T2, T3, T4, T5> : System.Runtime.CompilerServices.ITuple, System.IEquatable<(T1, T2, T3, T4, T5)>, System.IComparable<(T1, T2, T3, T4, T5)>, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public struct ValueTuple<T1, T2, T3, T4, T5> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<(T1, T2, T3, T4, T5)>, System.IEquatable<(T1, T2, T3, T4, T5)>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo((T1, T2, T3, T4, T5) other) => throw null;
         int System.IComparable.CompareTo(object other) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
-        public override bool Equals(object obj) => throw null;
         public bool Equals((T1, T2, T3, T4, T5) other) => throw null;
+        public override bool Equals(object obj) => throw null;
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1;
         public T2 Item2;
         public T3 Item3;
         public T4 Item4;
         public T5 Item5;
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
-        public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5) => throw null;
         // Stub generator skipped constructor 
+        public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5) => throw null;
     }
 
     // Generated from `System.ValueTuple<,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct ValueTuple<T1, T2, T3, T4> : System.Runtime.CompilerServices.ITuple, System.IEquatable<(T1, T2, T3, T4)>, System.IComparable<(T1, T2, T3, T4)>, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public struct ValueTuple<T1, T2, T3, T4> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<(T1, T2, T3, T4)>, System.IEquatable<(T1, T2, T3, T4)>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo((T1, T2, T3, T4) other) => throw null;
         int System.IComparable.CompareTo(object other) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
-        public override bool Equals(object obj) => throw null;
         public bool Equals((T1, T2, T3, T4) other) => throw null;
+        public override bool Equals(object obj) => throw null;
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1;
         public T2 Item2;
         public T3 Item3;
         public T4 Item4;
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
-        public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4) => throw null;
         // Stub generator skipped constructor 
+        public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4) => throw null;
     }
 
     // Generated from `System.ValueTuple<,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct ValueTuple<T1, T2, T3> : System.Runtime.CompilerServices.ITuple, System.IEquatable<(T1, T2, T3)>, System.IComparable<(T1, T2, T3)>, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public struct ValueTuple<T1, T2, T3> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<(T1, T2, T3)>, System.IEquatable<(T1, T2, T3)>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo((T1, T2, T3) other) => throw null;
         int System.IComparable.CompareTo(object other) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
-        public override bool Equals(object obj) => throw null;
         public bool Equals((T1, T2, T3) other) => throw null;
+        public override bool Equals(object obj) => throw null;
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1;
         public T2 Item2;
         public T3 Item3;
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
-        public ValueTuple(T1 item1, T2 item2, T3 item3) => throw null;
         // Stub generator skipped constructor 
+        public ValueTuple(T1 item1, T2 item2, T3 item3) => throw null;
     }
 
     // Generated from `System.ValueTuple<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct ValueTuple<T1, T2> : System.Runtime.CompilerServices.ITuple, System.IEquatable<(T1, T2)>, System.IComparable<(T1, T2)>, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public struct ValueTuple<T1, T2> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<(T1, T2)>, System.IEquatable<(T1, T2)>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo((T1, T2) other) => throw null;
         int System.IComparable.CompareTo(object other) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
-        public override bool Equals(object obj) => throw null;
         public bool Equals((T1, T2) other) => throw null;
+        public override bool Equals(object obj) => throw null;
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1;
         public T2 Item2;
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
-        public ValueTuple(T1 item1, T2 item2) => throw null;
         // Stub generator skipped constructor 
+        public ValueTuple(T1 item1, T2 item2) => throw null;
     }
 
     // Generated from `System.ValueTuple<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct ValueTuple<T1> : System.Runtime.CompilerServices.ITuple, System.IEquatable<System.ValueTuple<T1>>, System.IComparable<System.ValueTuple<T1>>, System.IComparable, System.Collections.IStructuralEquatable, System.Collections.IStructuralComparable
+    public struct ValueTuple<T1> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<System.ValueTuple<T1>>, System.IEquatable<System.ValueTuple<T1>>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo(System.ValueTuple<T1> other) => throw null;
         int System.IComparable.CompareTo(object other) => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
-        public override bool Equals(object obj) => throw null;
         public bool Equals(System.ValueTuple<T1> other) => throw null;
+        public override bool Equals(object obj) => throw null;
         bool System.Collections.IStructuralEquatable.Equals(object other, System.Collections.IEqualityComparer comparer) => throw null;
         public override int GetHashCode() => throw null;
         int System.Collections.IStructuralEquatable.GetHashCode(System.Collections.IEqualityComparer comparer) => throw null;
-        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         public T1 Item1;
+        object System.Runtime.CompilerServices.ITuple.this[int index] { get => throw null; }
         int System.Runtime.CompilerServices.ITuple.Length { get => throw null; }
         public override string ToString() => throw null;
-        public ValueTuple(T1 item1) => throw null;
         // Stub generator skipped constructor 
+        public ValueTuple(T1 item1) => throw null;
     }
 
     // Generated from `System.ValueType` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -5117,7 +5117,7 @@ namespace System
     }
 
     // Generated from `System.Version` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class Version : System.IEquatable<System.Version>, System.IComparable<System.Version>, System.IComparable, System.ICloneable
+    public class Version : System.ICloneable, System.IComparable, System.IComparable<System.Version>, System.IEquatable<System.Version>
     {
         public static bool operator !=(System.Version v1, System.Version v2) => throw null;
         public static bool operator <(System.Version v1, System.Version v2) => throw null;
@@ -5127,29 +5127,29 @@ namespace System
         public static bool operator >=(System.Version v1, System.Version v2) => throw null;
         public int Build { get => throw null; }
         public object Clone() => throw null;
-        public int CompareTo(object version) => throw null;
         public int CompareTo(System.Version value) => throw null;
-        public override bool Equals(object obj) => throw null;
+        public int CompareTo(object version) => throw null;
         public bool Equals(System.Version obj) => throw null;
+        public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
         public int Major { get => throw null; }
         public System.Int16 MajorRevision { get => throw null; }
         public int Minor { get => throw null; }
         public System.Int16 MinorRevision { get => throw null; }
-        public static System.Version Parse(string input) => throw null;
         public static System.Version Parse(System.ReadOnlySpan<System.Char> input) => throw null;
+        public static System.Version Parse(string input) => throw null;
         public int Revision { get => throw null; }
-        public string ToString(int fieldCount) => throw null;
         public override string ToString() => throw null;
-        public bool TryFormat(System.Span<System.Char> destination, out int charsWritten) => throw null;
+        public string ToString(int fieldCount) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, int fieldCount, out int charsWritten) => throw null;
-        public static bool TryParse(string input, out System.Version result) => throw null;
+        public bool TryFormat(System.Span<System.Char> destination, out int charsWritten) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> input, out System.Version result) => throw null;
-        public Version(string version) => throw null;
-        public Version(int major, int minor, int build, int revision) => throw null;
-        public Version(int major, int minor, int build) => throw null;
-        public Version(int major, int minor) => throw null;
+        public static bool TryParse(string input, out System.Version result) => throw null;
         public Version() => throw null;
+        public Version(int major, int minor) => throw null;
+        public Version(int major, int minor, int build) => throw null;
+        public Version(int major, int minor, int build, int revision) => throw null;
+        public Version(string version) => throw null;
     }
 
     // Generated from `System.Void` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -5164,9 +5164,9 @@ namespace System
         public virtual bool IsAlive { get => throw null; }
         public virtual object Target { get => throw null; set => throw null; }
         public virtual bool TrackResurrection { get => throw null; }
-        public WeakReference(object target, bool trackResurrection) => throw null;
-        public WeakReference(object target) => throw null;
         protected WeakReference(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public WeakReference(object target) => throw null;
+        public WeakReference(object target, bool trackResurrection) => throw null;
         // ERR: Stub generator didn't handle member: ~WeakReference
     }
 
@@ -5176,8 +5176,8 @@ namespace System
         public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         public void SetTarget(T target) => throw null;
         public bool TryGetTarget(out T target) => throw null;
-        public WeakReference(T target, bool trackResurrection) => throw null;
         public WeakReference(T target) => throw null;
+        public WeakReference(T target, bool trackResurrection) => throw null;
         // ERR: Stub generator didn't handle member: ~WeakReference
     }
 
@@ -5187,8 +5187,8 @@ namespace System
         public abstract class ArrayPool<T>
         {
             protected ArrayPool() => throw null;
-            public static System.Buffers.ArrayPool<T> Create(int maxArrayLength, int maxArraysPerBucket) => throw null;
             public static System.Buffers.ArrayPool<T> Create() => throw null;
+            public static System.Buffers.ArrayPool<T> Create(int maxArrayLength, int maxArraysPerBucket) => throw null;
             public abstract T[] Rent(int minimumLength);
             public abstract void Return(T[] array, bool clearArray = default(bool));
             public static System.Buffers.ArrayPool<T> Shared { get => throw null; }
@@ -5211,16 +5211,16 @@ namespace System
         public struct MemoryHandle : System.IDisposable
         {
             public void Dispose() => throw null;
-            unsafe public MemoryHandle(void* pointer, System.Runtime.InteropServices.GCHandle handle = default(System.Runtime.InteropServices.GCHandle), System.Buffers.IPinnable pinnable = default(System.Buffers.IPinnable)) => throw null;
             // Stub generator skipped constructor 
+            unsafe public MemoryHandle(void* pointer, System.Runtime.InteropServices.GCHandle handle = default(System.Runtime.InteropServices.GCHandle), System.Buffers.IPinnable pinnable = default(System.Buffers.IPinnable)) => throw null;
             unsafe public void* Pointer { get => throw null; }
         }
 
         // Generated from `System.Buffers.MemoryManager<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public abstract class MemoryManager<T> : System.IDisposable, System.Buffers.IPinnable, System.Buffers.IMemoryOwner<T>
+        public abstract class MemoryManager<T> : System.Buffers.IMemoryOwner<T>, System.Buffers.IPinnable, System.IDisposable
         {
-            protected System.Memory<T> CreateMemory(int start, int length) => throw null;
             protected System.Memory<T> CreateMemory(int length) => throw null;
+            protected System.Memory<T> CreateMemory(int start, int length) => throw null;
             void System.IDisposable.Dispose() => throw null;
             protected abstract void Dispose(bool disposing);
             public abstract System.Span<T> GetSpan();
@@ -5267,39 +5267,39 @@ namespace System
                 public override System.Text.Encoding Encoding { get => throw null; }
                 public override void Flush() => throw null;
                 public int Indent { get => throw null; set => throw null; }
-                public IndentedTextWriter(System.IO.TextWriter writer, string tabString) => throw null;
                 public IndentedTextWriter(System.IO.TextWriter writer) => throw null;
+                public IndentedTextWriter(System.IO.TextWriter writer, string tabString) => throw null;
                 public System.IO.TextWriter InnerWriter { get => throw null; }
                 public override string NewLine { get => throw null; set => throw null; }
                 protected virtual void OutputTabs() => throw null;
-                public override void Write(string s) => throw null;
-                public override void Write(string format, params object[] arg) => throw null;
-                public override void Write(string format, object arg0, object arg1) => throw null;
-                public override void Write(string format, object arg0) => throw null;
-                public override void Write(object value) => throw null;
-                public override void Write(int value) => throw null;
-                public override void Write(float value) => throw null;
-                public override void Write(double value) => throw null;
-                public override void Write(bool value) => throw null;
-                public override void Write(System.Int64 value) => throw null;
-                public override void Write(System.Char[] buffer, int index, int count) => throw null;
                 public override void Write(System.Char[] buffer) => throw null;
+                public override void Write(System.Char[] buffer, int index, int count) => throw null;
+                public override void Write(bool value) => throw null;
                 public override void Write(System.Char value) => throw null;
-                public override void WriteLine(string s) => throw null;
-                public override void WriteLine(string format, params object[] arg) => throw null;
-                public override void WriteLine(string format, object arg0, object arg1) => throw null;
-                public override void WriteLine(string format, object arg0) => throw null;
-                public override void WriteLine(object value) => throw null;
-                public override void WriteLine(int value) => throw null;
-                public override void WriteLine(float value) => throw null;
-                public override void WriteLine(double value) => throw null;
-                public override void WriteLine(bool value) => throw null;
-                public override void WriteLine(System.UInt32 value) => throw null;
-                public override void WriteLine(System.Int64 value) => throw null;
-                public override void WriteLine(System.Char[] buffer, int index, int count) => throw null;
-                public override void WriteLine(System.Char[] buffer) => throw null;
-                public override void WriteLine(System.Char value) => throw null;
+                public override void Write(double value) => throw null;
+                public override void Write(float value) => throw null;
+                public override void Write(int value) => throw null;
+                public override void Write(System.Int64 value) => throw null;
+                public override void Write(object value) => throw null;
+                public override void Write(string s) => throw null;
+                public override void Write(string format, object arg0) => throw null;
+                public override void Write(string format, object arg0, object arg1) => throw null;
+                public override void Write(string format, params object[] arg) => throw null;
                 public override void WriteLine() => throw null;
+                public override void WriteLine(System.Char[] buffer) => throw null;
+                public override void WriteLine(System.Char[] buffer, int index, int count) => throw null;
+                public override void WriteLine(bool value) => throw null;
+                public override void WriteLine(System.Char value) => throw null;
+                public override void WriteLine(double value) => throw null;
+                public override void WriteLine(float value) => throw null;
+                public override void WriteLine(int value) => throw null;
+                public override void WriteLine(System.Int64 value) => throw null;
+                public override void WriteLine(object value) => throw null;
+                public override void WriteLine(string s) => throw null;
+                public override void WriteLine(string format, object arg0) => throw null;
+                public override void WriteLine(string format, object arg0, object arg1) => throw null;
+                public override void WriteLine(string format, params object[] arg) => throw null;
+                public override void WriteLine(System.UInt32 value) => throw null;
                 public void WriteLineNoTabs(string s) => throw null;
             }
 
@@ -5308,64 +5308,64 @@ namespace System
     namespace Collections
     {
         // Generated from `System.Collections.ArrayList` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class ArrayList : System.ICloneable, System.Collections.IList, System.Collections.IEnumerable, System.Collections.ICollection
+        public class ArrayList : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ICloneable
         {
             public static System.Collections.ArrayList Adapter(System.Collections.IList list) => throw null;
             public virtual int Add(object value) => throw null;
             public virtual void AddRange(System.Collections.ICollection c) => throw null;
-            public ArrayList(int capacity) => throw null;
-            public ArrayList(System.Collections.ICollection c) => throw null;
             public ArrayList() => throw null;
-            public virtual int BinarySearch(object value, System.Collections.IComparer comparer) => throw null;
-            public virtual int BinarySearch(object value) => throw null;
+            public ArrayList(System.Collections.ICollection c) => throw null;
+            public ArrayList(int capacity) => throw null;
             public virtual int BinarySearch(int index, int count, object value, System.Collections.IComparer comparer) => throw null;
+            public virtual int BinarySearch(object value) => throw null;
+            public virtual int BinarySearch(object value, System.Collections.IComparer comparer) => throw null;
             public virtual int Capacity { get => throw null; set => throw null; }
             public virtual void Clear() => throw null;
             public virtual object Clone() => throw null;
             public virtual bool Contains(object item) => throw null;
-            public virtual void CopyTo(int index, System.Array array, int arrayIndex, int count) => throw null;
-            public virtual void CopyTo(System.Array array, int arrayIndex) => throw null;
             public virtual void CopyTo(System.Array array) => throw null;
+            public virtual void CopyTo(System.Array array, int arrayIndex) => throw null;
+            public virtual void CopyTo(int index, System.Array array, int arrayIndex, int count) => throw null;
             public virtual int Count { get => throw null; }
-            public static System.Collections.IList FixedSize(System.Collections.IList list) => throw null;
             public static System.Collections.ArrayList FixedSize(System.Collections.ArrayList list) => throw null;
-            public virtual System.Collections.IEnumerator GetEnumerator(int index, int count) => throw null;
+            public static System.Collections.IList FixedSize(System.Collections.IList list) => throw null;
             public virtual System.Collections.IEnumerator GetEnumerator() => throw null;
+            public virtual System.Collections.IEnumerator GetEnumerator(int index, int count) => throw null;
             public virtual System.Collections.ArrayList GetRange(int index, int count) => throw null;
-            public virtual int IndexOf(object value, int startIndex, int count) => throw null;
-            public virtual int IndexOf(object value, int startIndex) => throw null;
             public virtual int IndexOf(object value) => throw null;
+            public virtual int IndexOf(object value, int startIndex) => throw null;
+            public virtual int IndexOf(object value, int startIndex, int count) => throw null;
             public virtual void Insert(int index, object value) => throw null;
             public virtual void InsertRange(int index, System.Collections.ICollection c) => throw null;
             public virtual bool IsFixedSize { get => throw null; }
             public virtual bool IsReadOnly { get => throw null; }
             public virtual bool IsSynchronized { get => throw null; }
             public virtual object this[int index] { get => throw null; set => throw null; }
-            public virtual int LastIndexOf(object value, int startIndex, int count) => throw null;
-            public virtual int LastIndexOf(object value, int startIndex) => throw null;
             public virtual int LastIndexOf(object value) => throw null;
-            public static System.Collections.IList ReadOnly(System.Collections.IList list) => throw null;
+            public virtual int LastIndexOf(object value, int startIndex) => throw null;
+            public virtual int LastIndexOf(object value, int startIndex, int count) => throw null;
             public static System.Collections.ArrayList ReadOnly(System.Collections.ArrayList list) => throw null;
+            public static System.Collections.IList ReadOnly(System.Collections.IList list) => throw null;
             public virtual void Remove(object obj) => throw null;
             public virtual void RemoveAt(int index) => throw null;
             public virtual void RemoveRange(int index, int count) => throw null;
             public static System.Collections.ArrayList Repeat(object value, int count) => throw null;
-            public virtual void Reverse(int index, int count) => throw null;
             public virtual void Reverse() => throw null;
+            public virtual void Reverse(int index, int count) => throw null;
             public virtual void SetRange(int index, System.Collections.ICollection c) => throw null;
-            public virtual void Sort(int index, int count, System.Collections.IComparer comparer) => throw null;
-            public virtual void Sort(System.Collections.IComparer comparer) => throw null;
             public virtual void Sort() => throw null;
+            public virtual void Sort(System.Collections.IComparer comparer) => throw null;
+            public virtual void Sort(int index, int count, System.Collections.IComparer comparer) => throw null;
             public virtual object SyncRoot { get => throw null; }
-            public static System.Collections.IList Synchronized(System.Collections.IList list) => throw null;
             public static System.Collections.ArrayList Synchronized(System.Collections.ArrayList list) => throw null;
+            public static System.Collections.IList Synchronized(System.Collections.IList list) => throw null;
             public virtual object[] ToArray() => throw null;
             public virtual System.Array ToArray(System.Type type) => throw null;
             public virtual void TrimToSize() => throw null;
         }
 
         // Generated from `System.Collections.Comparer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class Comparer : System.Runtime.Serialization.ISerializable, System.Collections.IComparer
+        public class Comparer : System.Collections.IComparer, System.Runtime.Serialization.ISerializable
         {
             public int Compare(object a, object b) => throw null;
             public Comparer(System.Globalization.CultureInfo culture) => throw null;
@@ -5378,14 +5378,14 @@ namespace System
         public struct DictionaryEntry
         {
             public void Deconstruct(out object key, out object value) => throw null;
-            public DictionaryEntry(object key, object value) => throw null;
             // Stub generator skipped constructor 
+            public DictionaryEntry(object key, object value) => throw null;
             public object Key { get => throw null; set => throw null; }
             public object Value { get => throw null; set => throw null; }
         }
 
         // Generated from `System.Collections.Hashtable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class Hashtable : System.Runtime.Serialization.ISerializable, System.Runtime.Serialization.IDeserializationCallback, System.ICloneable, System.Collections.IEnumerable, System.Collections.IDictionary, System.Collections.ICollection
+        public class Hashtable : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable, System.ICloneable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
         {
             public virtual void Add(object key, object value) => throw null;
             public virtual void Clear() => throw null;
@@ -5400,22 +5400,22 @@ namespace System
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             protected virtual int GetHash(object key) => throw null;
             public virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
-            public Hashtable(int capacity, float loadFactor, System.Collections.IHashCodeProvider hcp, System.Collections.IComparer comparer) => throw null;
-            public Hashtable(int capacity, float loadFactor, System.Collections.IEqualityComparer equalityComparer) => throw null;
-            public Hashtable(int capacity, float loadFactor) => throw null;
-            public Hashtable(int capacity, System.Collections.IHashCodeProvider hcp, System.Collections.IComparer comparer) => throw null;
-            public Hashtable(int capacity, System.Collections.IEqualityComparer equalityComparer) => throw null;
-            public Hashtable(int capacity) => throw null;
-            public Hashtable(System.Collections.IHashCodeProvider hcp, System.Collections.IComparer comparer) => throw null;
-            public Hashtable(System.Collections.IEqualityComparer equalityComparer) => throw null;
-            public Hashtable(System.Collections.IDictionary d, float loadFactor, System.Collections.IHashCodeProvider hcp, System.Collections.IComparer comparer) => throw null;
-            public Hashtable(System.Collections.IDictionary d, float loadFactor, System.Collections.IEqualityComparer equalityComparer) => throw null;
-            public Hashtable(System.Collections.IDictionary d, float loadFactor) => throw null;
-            public Hashtable(System.Collections.IDictionary d, System.Collections.IHashCodeProvider hcp, System.Collections.IComparer comparer) => throw null;
-            public Hashtable(System.Collections.IDictionary d, System.Collections.IEqualityComparer equalityComparer) => throw null;
-            public Hashtable(System.Collections.IDictionary d) => throw null;
             public Hashtable() => throw null;
+            public Hashtable(System.Collections.IDictionary d) => throw null;
+            public Hashtable(System.Collections.IDictionary d, System.Collections.IEqualityComparer equalityComparer) => throw null;
+            public Hashtable(System.Collections.IDictionary d, System.Collections.IHashCodeProvider hcp, System.Collections.IComparer comparer) => throw null;
+            public Hashtable(System.Collections.IDictionary d, float loadFactor) => throw null;
+            public Hashtable(System.Collections.IDictionary d, float loadFactor, System.Collections.IEqualityComparer equalityComparer) => throw null;
+            public Hashtable(System.Collections.IDictionary d, float loadFactor, System.Collections.IHashCodeProvider hcp, System.Collections.IComparer comparer) => throw null;
+            public Hashtable(System.Collections.IEqualityComparer equalityComparer) => throw null;
+            public Hashtable(System.Collections.IHashCodeProvider hcp, System.Collections.IComparer comparer) => throw null;
             protected Hashtable(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public Hashtable(int capacity) => throw null;
+            public Hashtable(int capacity, System.Collections.IEqualityComparer equalityComparer) => throw null;
+            public Hashtable(int capacity, System.Collections.IHashCodeProvider hcp, System.Collections.IComparer comparer) => throw null;
+            public Hashtable(int capacity, float loadFactor) => throw null;
+            public Hashtable(int capacity, float loadFactor, System.Collections.IEqualityComparer equalityComparer) => throw null;
+            public Hashtable(int capacity, float loadFactor, System.Collections.IHashCodeProvider hcp, System.Collections.IComparer comparer) => throw null;
             public virtual bool IsFixedSize { get => throw null; }
             public virtual bool IsReadOnly { get => throw null; }
             public virtual bool IsSynchronized { get => throw null; }
@@ -5447,7 +5447,7 @@ namespace System
         }
 
         // Generated from `System.Collections.IDictionary` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public interface IDictionary : System.Collections.IEnumerable, System.Collections.ICollection
+        public interface IDictionary : System.Collections.ICollection, System.Collections.IEnumerable
         {
             void Add(object key, object value);
             void Clear();
@@ -5497,7 +5497,7 @@ namespace System
         }
 
         // Generated from `System.Collections.IList` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public interface IList : System.Collections.IEnumerable, System.Collections.ICollection
+        public interface IList : System.Collections.ICollection, System.Collections.IEnumerable
         {
             int Add(object value);
             void Clear();
@@ -5540,7 +5540,7 @@ namespace System
             }
 
             // Generated from `System.Collections.Generic.ICollection<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public interface ICollection<T> : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<T>
+            public interface ICollection<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
             {
                 void Add(T item);
                 void Clear();
@@ -5558,7 +5558,7 @@ namespace System
             }
 
             // Generated from `System.Collections.Generic.IDictionary<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public interface IDictionary<TKey, TValue> : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>
+            public interface IDictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable
             {
                 void Add(TKey key, TValue value);
                 bool ContainsKey(TKey key);
@@ -5576,7 +5576,7 @@ namespace System
             }
 
             // Generated from `System.Collections.Generic.IEnumerator<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public interface IEnumerator<T> : System.IDisposable, System.Collections.IEnumerator
+            public interface IEnumerator<T> : System.Collections.IEnumerator, System.IDisposable
             {
                 T Current { get; }
             }
@@ -5589,7 +5589,7 @@ namespace System
             }
 
             // Generated from `System.Collections.Generic.IList<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public interface IList<T> : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.ICollection<T>
+            public interface IList<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
             {
                 int IndexOf(T item);
                 void Insert(int index, T item);
@@ -5598,13 +5598,13 @@ namespace System
             }
 
             // Generated from `System.Collections.Generic.IReadOnlyCollection<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public interface IReadOnlyCollection<T> : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<T>
+            public interface IReadOnlyCollection<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
             {
                 int Count { get; }
             }
 
             // Generated from `System.Collections.Generic.IReadOnlyDictionary<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public interface IReadOnlyDictionary<TKey, TValue> : System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>
+            public interface IReadOnlyDictionary<TKey, TValue> : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable
             {
                 bool ContainsKey(TKey key);
                 TValue this[TKey key] { get; }
@@ -5614,13 +5614,13 @@ namespace System
             }
 
             // Generated from `System.Collections.Generic.IReadOnlyList<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public interface IReadOnlyList<T> : System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IEnumerable<T>
+            public interface IReadOnlyList<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.IEnumerable
             {
                 T this[int index] { get; }
             }
 
             // Generated from `System.Collections.Generic.IReadOnlySet<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public interface IReadOnlySet<T> : System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IEnumerable<T>
+            public interface IReadOnlySet<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.IEnumerable
             {
                 bool Contains(T item);
                 bool IsProperSubsetOf(System.Collections.Generic.IEnumerable<T> other);
@@ -5632,7 +5632,7 @@ namespace System
             }
 
             // Generated from `System.Collections.Generic.ISet<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public interface ISet<T> : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.ICollection<T>
+            public interface ISet<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
             {
                 bool Add(T item);
                 void ExceptWith(System.Collections.Generic.IEnumerable<T> other);
@@ -5650,10 +5650,10 @@ namespace System
             // Generated from `System.Collections.Generic.KeyNotFoundException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class KeyNotFoundException : System.SystemException
             {
-                public KeyNotFoundException(string message, System.Exception innerException) => throw null;
-                public KeyNotFoundException(string message) => throw null;
                 public KeyNotFoundException() => throw null;
                 protected KeyNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public KeyNotFoundException(string message) => throw null;
+                public KeyNotFoundException(string message, System.Exception innerException) => throw null;
             }
 
             // Generated from `System.Collections.Generic.KeyValuePair` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -5667,8 +5667,8 @@ namespace System
             {
                 public void Deconstruct(out TKey key, out TValue value) => throw null;
                 public TKey Key { get => throw null; }
-                public KeyValuePair(TKey key, TValue value) => throw null;
                 // Stub generator skipped constructor 
+                public KeyValuePair(TKey key, TValue value) => throw null;
                 public override string ToString() => throw null;
                 public TValue Value { get => throw null; }
             }
@@ -5677,14 +5677,14 @@ namespace System
         namespace ObjectModel
         {
             // Generated from `System.Collections.ObjectModel.Collection<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class Collection<T> : System.Collections.IList, System.Collections.IEnumerable, System.Collections.ICollection, System.Collections.Generic.IReadOnlyList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IList<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.ICollection<T>
+            public class Collection<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
             {
                 public void Add(T item) => throw null;
                 int System.Collections.IList.Add(object value) => throw null;
                 public void Clear() => throw null;
                 protected virtual void ClearItems() => throw null;
-                public Collection(System.Collections.Generic.IList<T> list) => throw null;
                 public Collection() => throw null;
+                public Collection(System.Collections.Generic.IList<T> list) => throw null;
                 public bool Contains(T item) => throw null;
                 bool System.Collections.IList.Contains(object value) => throw null;
                 void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
@@ -5694,18 +5694,18 @@ namespace System
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                 public int IndexOf(T item) => throw null;
                 int System.Collections.IList.IndexOf(object value) => throw null;
-                void System.Collections.IList.Insert(int index, object value) => throw null;
                 public void Insert(int index, T item) => throw null;
+                void System.Collections.IList.Insert(int index, object value) => throw null;
                 protected virtual void InsertItem(int index, T item) => throw null;
                 bool System.Collections.IList.IsFixedSize { get => throw null; }
-                bool System.Collections.IList.IsReadOnly { get => throw null; }
                 bool System.Collections.Generic.ICollection<T>.IsReadOnly { get => throw null; }
+                bool System.Collections.IList.IsReadOnly { get => throw null; }
                 bool System.Collections.ICollection.IsSynchronized { get => throw null; }
                 public T this[int index] { get => throw null; set => throw null; }
                 object System.Collections.IList.this[int index] { get => throw null; set => throw null; }
                 protected System.Collections.Generic.IList<T> Items { get => throw null; }
-                void System.Collections.IList.Remove(object value) => throw null;
                 public bool Remove(T item) => throw null;
+                void System.Collections.IList.Remove(object value) => throw null;
                 public void RemoveAt(int index) => throw null;
                 protected virtual void RemoveItem(int index) => throw null;
                 protected virtual void SetItem(int index, T item) => throw null;
@@ -5713,12 +5713,12 @@ namespace System
             }
 
             // Generated from `System.Collections.ObjectModel.ReadOnlyCollection<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class ReadOnlyCollection<T> : System.Collections.IList, System.Collections.IEnumerable, System.Collections.ICollection, System.Collections.Generic.IReadOnlyList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IList<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.ICollection<T>
+            public class ReadOnlyCollection<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
             {
                 void System.Collections.Generic.ICollection<T>.Add(T value) => throw null;
                 int System.Collections.IList.Add(object value) => throw null;
-                void System.Collections.IList.Clear() => throw null;
                 void System.Collections.Generic.ICollection<T>.Clear() => throw null;
+                void System.Collections.IList.Clear() => throw null;
                 public bool Contains(T value) => throw null;
                 bool System.Collections.IList.Contains(object value) => throw null;
                 void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
@@ -5728,21 +5728,21 @@ namespace System
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                 public int IndexOf(T value) => throw null;
                 int System.Collections.IList.IndexOf(object value) => throw null;
-                void System.Collections.IList.Insert(int index, object value) => throw null;
                 void System.Collections.Generic.IList<T>.Insert(int index, T value) => throw null;
+                void System.Collections.IList.Insert(int index, object value) => throw null;
                 bool System.Collections.IList.IsFixedSize { get => throw null; }
-                bool System.Collections.IList.IsReadOnly { get => throw null; }
                 bool System.Collections.Generic.ICollection<T>.IsReadOnly { get => throw null; }
+                bool System.Collections.IList.IsReadOnly { get => throw null; }
                 bool System.Collections.ICollection.IsSynchronized { get => throw null; }
                 public T this[int index] { get => throw null; }
-                object System.Collections.IList.this[int index] { get => throw null; set => throw null; }
                 T System.Collections.Generic.IList<T>.this[int index] { get => throw null; set => throw null; }
+                object System.Collections.IList.this[int index] { get => throw null; set => throw null; }
                 protected System.Collections.Generic.IList<T> Items { get => throw null; }
                 public ReadOnlyCollection(System.Collections.Generic.IList<T> list) => throw null;
-                void System.Collections.IList.Remove(object value) => throw null;
                 bool System.Collections.Generic.ICollection<T>.Remove(T value) => throw null;
-                void System.Collections.IList.RemoveAt(int index) => throw null;
+                void System.Collections.IList.Remove(object value) => throw null;
                 void System.Collections.Generic.IList<T>.RemoveAt(int index) => throw null;
+                void System.Collections.IList.RemoveAt(int index) => throw null;
                 object System.Collections.ICollection.SyncRoot { get => throw null; }
             }
 
@@ -5753,21 +5753,21 @@ namespace System
         // Generated from `System.ComponentModel.DefaultValueAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DefaultValueAttribute : System.Attribute
         {
-            public DefaultValueAttribute(string value) => throw null;
-            public DefaultValueAttribute(object value) => throw null;
-            public DefaultValueAttribute(int value) => throw null;
-            public DefaultValueAttribute(float value) => throw null;
-            public DefaultValueAttribute(double value) => throw null;
-            public DefaultValueAttribute(bool value) => throw null;
-            public DefaultValueAttribute(System.UInt64 value) => throw null;
-            public DefaultValueAttribute(System.UInt32 value) => throw null;
-            public DefaultValueAttribute(System.UInt16 value) => throw null;
             public DefaultValueAttribute(System.Type type, string value) => throw null;
-            public DefaultValueAttribute(System.SByte value) => throw null;
-            public DefaultValueAttribute(System.Int64 value) => throw null;
-            public DefaultValueAttribute(System.Int16 value) => throw null;
-            public DefaultValueAttribute(System.Char value) => throw null;
+            public DefaultValueAttribute(bool value) => throw null;
             public DefaultValueAttribute(System.Byte value) => throw null;
+            public DefaultValueAttribute(System.Char value) => throw null;
+            public DefaultValueAttribute(double value) => throw null;
+            public DefaultValueAttribute(float value) => throw null;
+            public DefaultValueAttribute(int value) => throw null;
+            public DefaultValueAttribute(System.Int64 value) => throw null;
+            public DefaultValueAttribute(object value) => throw null;
+            public DefaultValueAttribute(System.SByte value) => throw null;
+            public DefaultValueAttribute(System.Int16 value) => throw null;
+            public DefaultValueAttribute(string value) => throw null;
+            public DefaultValueAttribute(System.UInt32 value) => throw null;
+            public DefaultValueAttribute(System.UInt64 value) => throw null;
+            public DefaultValueAttribute(System.UInt16 value) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             protected void SetValue(object value) => throw null;
@@ -5777,8 +5777,8 @@ namespace System
         // Generated from `System.ComponentModel.EditorBrowsableAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EditorBrowsableAttribute : System.Attribute
         {
-            public EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState state) => throw null;
             public EditorBrowsableAttribute() => throw null;
+            public EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState state) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public System.ComponentModel.EditorBrowsableState State { get => throw null; }
@@ -5830,14 +5830,14 @@ namespace System
         // Generated from `System.Diagnostics.Debug` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Debug
         {
-            public static void Assert(bool condition, string message, string detailMessageFormat, params object[] args) => throw null;
-            public static void Assert(bool condition, string message, string detailMessage) => throw null;
-            public static void Assert(bool condition, string message) => throw null;
             public static void Assert(bool condition) => throw null;
+            public static void Assert(bool condition, string message) => throw null;
+            public static void Assert(bool condition, string message, string detailMessage) => throw null;
+            public static void Assert(bool condition, string message, string detailMessageFormat, params object[] args) => throw null;
             public static bool AutoFlush { get => throw null; set => throw null; }
             public static void Close() => throw null;
-            public static void Fail(string message, string detailMessage) => throw null;
             public static void Fail(string message) => throw null;
+            public static void Fail(string message, string detailMessage) => throw null;
             public static void Flush() => throw null;
             public static void Indent() => throw null;
             public static int IndentLevel { get => throw null; set => throw null; }
@@ -5845,31 +5845,28 @@ namespace System
             public static void Print(string message) => throw null;
             public static void Print(string format, params object[] args) => throw null;
             public static void Unindent() => throw null;
-            public static void Write(string message, string category) => throw null;
-            public static void Write(string message) => throw null;
-            public static void Write(object value, string category) => throw null;
             public static void Write(object value) => throw null;
-            public static void WriteIf(bool condition, string message, string category) => throw null;
-            public static void WriteIf(bool condition, string message) => throw null;
-            public static void WriteIf(bool condition, object value, string category) => throw null;
+            public static void Write(object value, string category) => throw null;
+            public static void Write(string message) => throw null;
+            public static void Write(string message, string category) => throw null;
             public static void WriteIf(bool condition, object value) => throw null;
-            public static void WriteLine(string message, string category) => throw null;
+            public static void WriteIf(bool condition, object value, string category) => throw null;
+            public static void WriteIf(bool condition, string message) => throw null;
+            public static void WriteIf(bool condition, string message, string category) => throw null;
+            public static void WriteLine(object value) => throw null;
+            public static void WriteLine(object value, string category) => throw null;
             public static void WriteLine(string message) => throw null;
             public static void WriteLine(string format, params object[] args) => throw null;
-            public static void WriteLine(object value, string category) => throw null;
-            public static void WriteLine(object value) => throw null;
-            public static void WriteLineIf(bool condition, string message, string category) => throw null;
-            public static void WriteLineIf(bool condition, string message) => throw null;
-            public static void WriteLineIf(bool condition, object value, string category) => throw null;
+            public static void WriteLine(string message, string category) => throw null;
             public static void WriteLineIf(bool condition, object value) => throw null;
+            public static void WriteLineIf(bool condition, object value, string category) => throw null;
+            public static void WriteLineIf(bool condition, string message) => throw null;
+            public static void WriteLineIf(bool condition, string message, string category) => throw null;
         }
 
         // Generated from `System.Diagnostics.DebuggableAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DebuggableAttribute : System.Attribute
         {
-            public DebuggableAttribute(bool isJITTrackingEnabled, bool isJITOptimizerDisabled) => throw null;
-            public DebuggableAttribute(System.Diagnostics.DebuggableAttribute.DebuggingModes modes) => throw null;
-            public System.Diagnostics.DebuggableAttribute.DebuggingModes DebuggingFlags { get => throw null; }
             // Generated from `System.Diagnostics.DebuggableAttribute+DebuggingModes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum DebuggingModes
@@ -5882,6 +5879,9 @@ namespace System
             }
 
 
+            public DebuggableAttribute(System.Diagnostics.DebuggableAttribute.DebuggingModes modes) => throw null;
+            public DebuggableAttribute(bool isJITTrackingEnabled, bool isJITOptimizerDisabled) => throw null;
+            public System.Diagnostics.DebuggableAttribute.DebuggingModes DebuggingFlags { get => throw null; }
             public bool IsJITOptimizerDisabled { get => throw null; }
             public bool IsJITTrackingEnabled { get => throw null; }
         }
@@ -5951,8 +5951,8 @@ namespace System
         // Generated from `System.Diagnostics.DebuggerTypeProxyAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DebuggerTypeProxyAttribute : System.Attribute
         {
-            public DebuggerTypeProxyAttribute(string typeName) => throw null;
             public DebuggerTypeProxyAttribute(System.Type type) => throw null;
+            public DebuggerTypeProxyAttribute(string typeName) => throw null;
             public string ProxyTypeName { get => throw null; }
             public System.Type Target { get => throw null; set => throw null; }
             public string TargetTypeName { get => throw null; set => throw null; }
@@ -5961,12 +5961,12 @@ namespace System
         // Generated from `System.Diagnostics.DebuggerVisualizerAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DebuggerVisualizerAttribute : System.Attribute
         {
-            public DebuggerVisualizerAttribute(string visualizerTypeName, string visualizerObjectSourceTypeName) => throw null;
-            public DebuggerVisualizerAttribute(string visualizerTypeName, System.Type visualizerObjectSource) => throw null;
-            public DebuggerVisualizerAttribute(string visualizerTypeName) => throw null;
-            public DebuggerVisualizerAttribute(System.Type visualizer, string visualizerObjectSourceTypeName) => throw null;
-            public DebuggerVisualizerAttribute(System.Type visualizer, System.Type visualizerObjectSource) => throw null;
             public DebuggerVisualizerAttribute(System.Type visualizer) => throw null;
+            public DebuggerVisualizerAttribute(System.Type visualizer, System.Type visualizerObjectSource) => throw null;
+            public DebuggerVisualizerAttribute(System.Type visualizer, string visualizerObjectSourceTypeName) => throw null;
+            public DebuggerVisualizerAttribute(string visualizerTypeName) => throw null;
+            public DebuggerVisualizerAttribute(string visualizerTypeName, System.Type visualizerObjectSource) => throw null;
+            public DebuggerVisualizerAttribute(string visualizerTypeName, string visualizerObjectSourceTypeName) => throw null;
             public string Description { get => throw null; set => throw null; }
             public System.Type Target { get => throw null; set => throw null; }
             public string TargetTypeName { get => throw null; set => throw null; }
@@ -5994,25 +5994,25 @@ namespace System
 
         namespace CodeAnalysis
         {
-            // Generated from `System.Diagnostics.CodeAnalysis.AllowNullAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.IO.Pipelines, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.AllowNullAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class AllowNullAttribute : System.Attribute
             {
                 public AllowNullAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.DisallowNullAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.IO.Pipelines, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.DisallowNullAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class DisallowNullAttribute : System.Attribute
             {
                 public DisallowNullAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.IO.Pipelines, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class DoesNotReturnAttribute : System.Attribute
             {
                 public DoesNotReturnAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.IO.Pipelines, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class DoesNotReturnIfAttribute : System.Attribute
             {
                 public DoesNotReturnIfAttribute(bool parameterValue) => throw null;
@@ -6024,18 +6024,18 @@ namespace System
             {
                 public string AssemblyName { get => throw null; }
                 public string Condition { get => throw null; set => throw null; }
-                public DynamicDependencyAttribute(string memberSignature, string typeName, string assemblyName) => throw null;
-                public DynamicDependencyAttribute(string memberSignature, System.Type type) => throw null;
-                public DynamicDependencyAttribute(string memberSignature) => throw null;
-                public DynamicDependencyAttribute(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes memberTypes, string typeName, string assemblyName) => throw null;
                 public DynamicDependencyAttribute(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes memberTypes, System.Type type) => throw null;
+                public DynamicDependencyAttribute(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes memberTypes, string typeName, string assemblyName) => throw null;
+                public DynamicDependencyAttribute(string memberSignature) => throw null;
+                public DynamicDependencyAttribute(string memberSignature, System.Type type) => throw null;
+                public DynamicDependencyAttribute(string memberSignature, string typeName, string assemblyName) => throw null;
                 public string MemberSignature { get => throw null; }
                 public System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes MemberTypes { get => throw null; }
                 public System.Type Type { get => throw null; }
                 public string TypeName { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Hosting.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Logging.Console, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum DynamicallyAccessedMemberTypes
             {
@@ -6056,8 +6056,8 @@ namespace System
                 PublicProperties,
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Hosting.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Logging.Console, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public partial class DynamicallyAccessedMembersAttribute : System.Attribute
+            // Generated from `System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class DynamicallyAccessedMembersAttribute : System.Attribute
             {
                 public DynamicallyAccessedMembersAttribute(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes memberTypes) => throw null;
                 public System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes MemberTypes { get => throw null; }
@@ -6070,50 +6070,50 @@ namespace System
                 public string Justification { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.MaybeNullAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.IO.Pipelines, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.MaybeNullAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class MaybeNullAttribute : System.Attribute
             {
                 public MaybeNullAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.IO.Pipelines, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class MaybeNullWhenAttribute : System.Attribute
             {
                 public MaybeNullWhenAttribute(bool returnValue) => throw null;
                 public bool ReturnValue { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.MemberNotNullAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.IO.Pipelines, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.MemberNotNullAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class MemberNotNullAttribute : System.Attribute
             {
-                public MemberNotNullAttribute(string member) => throw null;
                 public MemberNotNullAttribute(params string[] members) => throw null;
+                public MemberNotNullAttribute(string member) => throw null;
                 public string[] Members { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.IO.Pipelines, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class MemberNotNullWhenAttribute : System.Attribute
             {
-                public MemberNotNullWhenAttribute(bool returnValue, string member) => throw null;
                 public MemberNotNullWhenAttribute(bool returnValue, params string[] members) => throw null;
+                public MemberNotNullWhenAttribute(bool returnValue, string member) => throw null;
                 public string[] Members { get => throw null; }
                 public bool ReturnValue { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.NotNullAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.IO.Pipelines, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.NotNullAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class NotNullAttribute : System.Attribute
             {
                 public NotNullAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.IO.Pipelines, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class NotNullIfNotNullAttribute : System.Attribute
             {
                 public NotNullIfNotNullAttribute(string parameterName) => throw null;
                 public string ParameterName { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.NotNullWhenAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.IO.Pipelines, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.NotNullWhenAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class NotNullWhenAttribute : System.Attribute
             {
                 public NotNullWhenAttribute(bool returnValue) => throw null;
@@ -6182,8 +6182,8 @@ namespace System
             public abstract int GetDaysInYear(int year, int era);
             public abstract int GetEra(System.DateTime time);
             public virtual int GetHour(System.DateTime time) => throw null;
-            public virtual int GetLeapMonth(int year, int era) => throw null;
             public virtual int GetLeapMonth(int year) => throw null;
+            public virtual int GetLeapMonth(int year, int era) => throw null;
             public virtual double GetMilliseconds(System.DateTime time) => throw null;
             public virtual int GetMinute(System.DateTime time) => throw null;
             public abstract int GetMonth(System.DateTime time);
@@ -6228,15 +6228,15 @@ namespace System
         // Generated from `System.Globalization.CharUnicodeInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class CharUnicodeInfo
         {
-            public static int GetDecimalDigitValue(string s, int index) => throw null;
             public static int GetDecimalDigitValue(System.Char ch) => throw null;
-            public static int GetDigitValue(string s, int index) => throw null;
+            public static int GetDecimalDigitValue(string s, int index) => throw null;
             public static int GetDigitValue(System.Char ch) => throw null;
-            public static double GetNumericValue(string s, int index) => throw null;
+            public static int GetDigitValue(string s, int index) => throw null;
             public static double GetNumericValue(System.Char ch) => throw null;
-            public static System.Globalization.UnicodeCategory GetUnicodeCategory(string s, int index) => throw null;
-            public static System.Globalization.UnicodeCategory GetUnicodeCategory(int codePoint) => throw null;
+            public static double GetNumericValue(string s, int index) => throw null;
             public static System.Globalization.UnicodeCategory GetUnicodeCategory(System.Char ch) => throw null;
+            public static System.Globalization.UnicodeCategory GetUnicodeCategory(int codePoint) => throw null;
+            public static System.Globalization.UnicodeCategory GetUnicodeCategory(string s, int index) => throw null;
         }
 
         // Generated from `System.Globalization.ChineseLunisolarCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -6254,68 +6254,68 @@ namespace System
         // Generated from `System.Globalization.CompareInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CompareInfo : System.Runtime.Serialization.IDeserializationCallback
         {
-            public int Compare(string string1, string string2, System.Globalization.CompareOptions options) => throw null;
-            public int Compare(string string1, string string2) => throw null;
-            public int Compare(string string1, int offset1, string string2, int offset2, System.Globalization.CompareOptions options) => throw null;
-            public int Compare(string string1, int offset1, string string2, int offset2) => throw null;
-            public int Compare(string string1, int offset1, int length1, string string2, int offset2, int length2, System.Globalization.CompareOptions options) => throw null;
-            public int Compare(string string1, int offset1, int length1, string string2, int offset2, int length2) => throw null;
             public int Compare(System.ReadOnlySpan<System.Char> string1, System.ReadOnlySpan<System.Char> string2, System.Globalization.CompareOptions options = default(System.Globalization.CompareOptions)) => throw null;
+            public int Compare(string string1, int offset1, int length1, string string2, int offset2, int length2) => throw null;
+            public int Compare(string string1, int offset1, int length1, string string2, int offset2, int length2, System.Globalization.CompareOptions options) => throw null;
+            public int Compare(string string1, int offset1, string string2, int offset2) => throw null;
+            public int Compare(string string1, int offset1, string string2, int offset2, System.Globalization.CompareOptions options) => throw null;
+            public int Compare(string string1, string string2) => throw null;
+            public int Compare(string string1, string string2, System.Globalization.CompareOptions options) => throw null;
             public override bool Equals(object value) => throw null;
-            public static System.Globalization.CompareInfo GetCompareInfo(string name, System.Reflection.Assembly assembly) => throw null;
-            public static System.Globalization.CompareInfo GetCompareInfo(string name) => throw null;
-            public static System.Globalization.CompareInfo GetCompareInfo(int culture, System.Reflection.Assembly assembly) => throw null;
             public static System.Globalization.CompareInfo GetCompareInfo(int culture) => throw null;
+            public static System.Globalization.CompareInfo GetCompareInfo(int culture, System.Reflection.Assembly assembly) => throw null;
+            public static System.Globalization.CompareInfo GetCompareInfo(string name) => throw null;
+            public static System.Globalization.CompareInfo GetCompareInfo(string name, System.Reflection.Assembly assembly) => throw null;
             public override int GetHashCode() => throw null;
-            public int GetHashCode(string source, System.Globalization.CompareOptions options) => throw null;
             public int GetHashCode(System.ReadOnlySpan<System.Char> source, System.Globalization.CompareOptions options) => throw null;
+            public int GetHashCode(string source, System.Globalization.CompareOptions options) => throw null;
             public int GetSortKey(System.ReadOnlySpan<System.Char> source, System.Span<System.Byte> destination, System.Globalization.CompareOptions options = default(System.Globalization.CompareOptions)) => throw null;
-            public System.Globalization.SortKey GetSortKey(string source, System.Globalization.CompareOptions options) => throw null;
             public System.Globalization.SortKey GetSortKey(string source) => throw null;
+            public System.Globalization.SortKey GetSortKey(string source, System.Globalization.CompareOptions options) => throw null;
             public int GetSortKeyLength(System.ReadOnlySpan<System.Char> source, System.Globalization.CompareOptions options = default(System.Globalization.CompareOptions)) => throw null;
-            public int IndexOf(string source, string value, int startIndex, int count, System.Globalization.CompareOptions options) => throw null;
-            public int IndexOf(string source, string value, int startIndex, int count) => throw null;
-            public int IndexOf(string source, string value, int startIndex, System.Globalization.CompareOptions options) => throw null;
-            public int IndexOf(string source, string value, int startIndex) => throw null;
-            public int IndexOf(string source, string value, System.Globalization.CompareOptions options) => throw null;
-            public int IndexOf(string source, string value) => throw null;
-            public int IndexOf(string source, System.Char value, int startIndex, int count, System.Globalization.CompareOptions options) => throw null;
-            public int IndexOf(string source, System.Char value, int startIndex, int count) => throw null;
-            public int IndexOf(string source, System.Char value, int startIndex, System.Globalization.CompareOptions options) => throw null;
-            public int IndexOf(string source, System.Char value, int startIndex) => throw null;
-            public int IndexOf(string source, System.Char value, System.Globalization.CompareOptions options) => throw null;
-            public int IndexOf(string source, System.Char value) => throw null;
-            public int IndexOf(System.ReadOnlySpan<System.Char> source, System.Text.Rune value, System.Globalization.CompareOptions options = default(System.Globalization.CompareOptions)) => throw null;
-            public int IndexOf(System.ReadOnlySpan<System.Char> source, System.ReadOnlySpan<System.Char> value, System.Globalization.CompareOptions options, out int matchLength) => throw null;
             public int IndexOf(System.ReadOnlySpan<System.Char> source, System.ReadOnlySpan<System.Char> value, System.Globalization.CompareOptions options = default(System.Globalization.CompareOptions)) => throw null;
-            public bool IsPrefix(string source, string prefix, System.Globalization.CompareOptions options) => throw null;
-            public bool IsPrefix(string source, string prefix) => throw null;
-            public bool IsPrefix(System.ReadOnlySpan<System.Char> source, System.ReadOnlySpan<System.Char> prefix, System.Globalization.CompareOptions options, out int matchLength) => throw null;
+            public int IndexOf(System.ReadOnlySpan<System.Char> source, System.ReadOnlySpan<System.Char> value, System.Globalization.CompareOptions options, out int matchLength) => throw null;
+            public int IndexOf(System.ReadOnlySpan<System.Char> source, System.Text.Rune value, System.Globalization.CompareOptions options = default(System.Globalization.CompareOptions)) => throw null;
+            public int IndexOf(string source, System.Char value) => throw null;
+            public int IndexOf(string source, System.Char value, System.Globalization.CompareOptions options) => throw null;
+            public int IndexOf(string source, System.Char value, int startIndex) => throw null;
+            public int IndexOf(string source, System.Char value, int startIndex, System.Globalization.CompareOptions options) => throw null;
+            public int IndexOf(string source, System.Char value, int startIndex, int count) => throw null;
+            public int IndexOf(string source, System.Char value, int startIndex, int count, System.Globalization.CompareOptions options) => throw null;
+            public int IndexOf(string source, string value) => throw null;
+            public int IndexOf(string source, string value, System.Globalization.CompareOptions options) => throw null;
+            public int IndexOf(string source, string value, int startIndex) => throw null;
+            public int IndexOf(string source, string value, int startIndex, System.Globalization.CompareOptions options) => throw null;
+            public int IndexOf(string source, string value, int startIndex, int count) => throw null;
+            public int IndexOf(string source, string value, int startIndex, int count, System.Globalization.CompareOptions options) => throw null;
             public bool IsPrefix(System.ReadOnlySpan<System.Char> source, System.ReadOnlySpan<System.Char> prefix, System.Globalization.CompareOptions options = default(System.Globalization.CompareOptions)) => throw null;
-            public static bool IsSortable(string text) => throw null;
-            public static bool IsSortable(System.Text.Rune value) => throw null;
+            public bool IsPrefix(System.ReadOnlySpan<System.Char> source, System.ReadOnlySpan<System.Char> prefix, System.Globalization.CompareOptions options, out int matchLength) => throw null;
+            public bool IsPrefix(string source, string prefix) => throw null;
+            public bool IsPrefix(string source, string prefix, System.Globalization.CompareOptions options) => throw null;
             public static bool IsSortable(System.ReadOnlySpan<System.Char> text) => throw null;
+            public static bool IsSortable(System.Text.Rune value) => throw null;
             public static bool IsSortable(System.Char ch) => throw null;
-            public bool IsSuffix(string source, string suffix, System.Globalization.CompareOptions options) => throw null;
-            public bool IsSuffix(string source, string suffix) => throw null;
-            public bool IsSuffix(System.ReadOnlySpan<System.Char> source, System.ReadOnlySpan<System.Char> suffix, System.Globalization.CompareOptions options, out int matchLength) => throw null;
+            public static bool IsSortable(string text) => throw null;
             public bool IsSuffix(System.ReadOnlySpan<System.Char> source, System.ReadOnlySpan<System.Char> suffix, System.Globalization.CompareOptions options = default(System.Globalization.CompareOptions)) => throw null;
+            public bool IsSuffix(System.ReadOnlySpan<System.Char> source, System.ReadOnlySpan<System.Char> suffix, System.Globalization.CompareOptions options, out int matchLength) => throw null;
+            public bool IsSuffix(string source, string suffix) => throw null;
+            public bool IsSuffix(string source, string suffix, System.Globalization.CompareOptions options) => throw null;
             public int LCID { get => throw null; }
-            public int LastIndexOf(string source, string value, int startIndex, int count, System.Globalization.CompareOptions options) => throw null;
-            public int LastIndexOf(string source, string value, int startIndex, int count) => throw null;
-            public int LastIndexOf(string source, string value, int startIndex, System.Globalization.CompareOptions options) => throw null;
-            public int LastIndexOf(string source, string value, int startIndex) => throw null;
-            public int LastIndexOf(string source, string value, System.Globalization.CompareOptions options) => throw null;
-            public int LastIndexOf(string source, string value) => throw null;
-            public int LastIndexOf(string source, System.Char value, int startIndex, int count, System.Globalization.CompareOptions options) => throw null;
-            public int LastIndexOf(string source, System.Char value, int startIndex, int count) => throw null;
-            public int LastIndexOf(string source, System.Char value, int startIndex, System.Globalization.CompareOptions options) => throw null;
-            public int LastIndexOf(string source, System.Char value, int startIndex) => throw null;
-            public int LastIndexOf(string source, System.Char value, System.Globalization.CompareOptions options) => throw null;
-            public int LastIndexOf(string source, System.Char value) => throw null;
-            public int LastIndexOf(System.ReadOnlySpan<System.Char> source, System.Text.Rune value, System.Globalization.CompareOptions options = default(System.Globalization.CompareOptions)) => throw null;
-            public int LastIndexOf(System.ReadOnlySpan<System.Char> source, System.ReadOnlySpan<System.Char> value, System.Globalization.CompareOptions options, out int matchLength) => throw null;
             public int LastIndexOf(System.ReadOnlySpan<System.Char> source, System.ReadOnlySpan<System.Char> value, System.Globalization.CompareOptions options = default(System.Globalization.CompareOptions)) => throw null;
+            public int LastIndexOf(System.ReadOnlySpan<System.Char> source, System.ReadOnlySpan<System.Char> value, System.Globalization.CompareOptions options, out int matchLength) => throw null;
+            public int LastIndexOf(System.ReadOnlySpan<System.Char> source, System.Text.Rune value, System.Globalization.CompareOptions options = default(System.Globalization.CompareOptions)) => throw null;
+            public int LastIndexOf(string source, System.Char value) => throw null;
+            public int LastIndexOf(string source, System.Char value, System.Globalization.CompareOptions options) => throw null;
+            public int LastIndexOf(string source, System.Char value, int startIndex) => throw null;
+            public int LastIndexOf(string source, System.Char value, int startIndex, System.Globalization.CompareOptions options) => throw null;
+            public int LastIndexOf(string source, System.Char value, int startIndex, int count) => throw null;
+            public int LastIndexOf(string source, System.Char value, int startIndex, int count, System.Globalization.CompareOptions options) => throw null;
+            public int LastIndexOf(string source, string value) => throw null;
+            public int LastIndexOf(string source, string value, System.Globalization.CompareOptions options) => throw null;
+            public int LastIndexOf(string source, string value, int startIndex) => throw null;
+            public int LastIndexOf(string source, string value, int startIndex, System.Globalization.CompareOptions options) => throw null;
+            public int LastIndexOf(string source, string value, int startIndex, int count) => throw null;
+            public int LastIndexOf(string source, string value, int startIndex, int count, System.Globalization.CompareOptions options) => throw null;
             public string Name { get => throw null; }
             void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) => throw null;
             public override string ToString() => throw null;
@@ -6338,17 +6338,17 @@ namespace System
         }
 
         // Generated from `System.Globalization.CultureInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class CultureInfo : System.IFormatProvider, System.ICloneable
+        public class CultureInfo : System.ICloneable, System.IFormatProvider
         {
             public virtual System.Globalization.Calendar Calendar { get => throw null; }
             public void ClearCachedData() => throw null;
             public virtual object Clone() => throw null;
             public virtual System.Globalization.CompareInfo CompareInfo { get => throw null; }
             public static System.Globalization.CultureInfo CreateSpecificCulture(string name) => throw null;
-            public CultureInfo(string name, bool useUserOverride) => throw null;
-            public CultureInfo(string name) => throw null;
-            public CultureInfo(int culture, bool useUserOverride) => throw null;
             public CultureInfo(int culture) => throw null;
+            public CultureInfo(int culture, bool useUserOverride) => throw null;
+            public CultureInfo(string name) => throw null;
+            public CultureInfo(string name, bool useUserOverride) => throw null;
             public System.Globalization.CultureTypes CultureTypes { get => throw null; }
             public static System.Globalization.CultureInfo CurrentCulture { get => throw null; set => throw null; }
             public static System.Globalization.CultureInfo CurrentUICulture { get => throw null; set => throw null; }
@@ -6359,10 +6359,10 @@ namespace System
             public virtual string EnglishName { get => throw null; }
             public override bool Equals(object value) => throw null;
             public System.Globalization.CultureInfo GetConsoleFallbackUICulture() => throw null;
-            public static System.Globalization.CultureInfo GetCultureInfo(string name, string altName) => throw null;
-            public static System.Globalization.CultureInfo GetCultureInfo(string name, bool predefinedOnly) => throw null;
-            public static System.Globalization.CultureInfo GetCultureInfo(string name) => throw null;
             public static System.Globalization.CultureInfo GetCultureInfo(int culture) => throw null;
+            public static System.Globalization.CultureInfo GetCultureInfo(string name) => throw null;
+            public static System.Globalization.CultureInfo GetCultureInfo(string name, bool predefinedOnly) => throw null;
+            public static System.Globalization.CultureInfo GetCultureInfo(string name, string altName) => throw null;
             public static System.Globalization.CultureInfo GetCultureInfoByIetfLanguageTag(string name) => throw null;
             public static System.Globalization.CultureInfo[] GetCultures(System.Globalization.CultureTypes types) => throw null;
             public virtual object GetFormat(System.Type formatType) => throw null;
@@ -6391,15 +6391,15 @@ namespace System
         // Generated from `System.Globalization.CultureNotFoundException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CultureNotFoundException : System.ArgumentException
         {
-            public CultureNotFoundException(string paramName, string message) => throw null;
-            public CultureNotFoundException(string paramName, string invalidCultureName, string message) => throw null;
-            public CultureNotFoundException(string paramName, int invalidCultureId, string message) => throw null;
-            public CultureNotFoundException(string message, string invalidCultureName, System.Exception innerException) => throw null;
-            public CultureNotFoundException(string message, int invalidCultureId, System.Exception innerException) => throw null;
-            public CultureNotFoundException(string message, System.Exception innerException) => throw null;
-            public CultureNotFoundException(string message) => throw null;
             public CultureNotFoundException() => throw null;
             protected CultureNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public CultureNotFoundException(string message) => throw null;
+            public CultureNotFoundException(string message, System.Exception innerException) => throw null;
+            public CultureNotFoundException(string message, int invalidCultureId, System.Exception innerException) => throw null;
+            public CultureNotFoundException(string paramName, int invalidCultureId, string message) => throw null;
+            public CultureNotFoundException(string paramName, string message) => throw null;
+            public CultureNotFoundException(string message, string invalidCultureName, System.Exception innerException) => throw null;
+            public CultureNotFoundException(string paramName, string invalidCultureName, string message) => throw null;
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public virtual int? InvalidCultureId { get => throw null; }
             public virtual string InvalidCultureName { get => throw null; }
@@ -6421,7 +6421,7 @@ namespace System
         }
 
         // Generated from `System.Globalization.DateTimeFormatInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class DateTimeFormatInfo : System.IFormatProvider, System.ICloneable
+        public class DateTimeFormatInfo : System.ICloneable, System.IFormatProvider
         {
             public string AMDesignator { get => throw null; set => throw null; }
             public string[] AbbreviatedDayNames { get => throw null; set => throw null; }
@@ -6439,8 +6439,8 @@ namespace System
             public string GetAbbreviatedDayName(System.DayOfWeek dayofweek) => throw null;
             public string GetAbbreviatedEraName(int era) => throw null;
             public string GetAbbreviatedMonthName(int month) => throw null;
-            public string[] GetAllDateTimePatterns(System.Char format) => throw null;
             public string[] GetAllDateTimePatterns() => throw null;
+            public string[] GetAllDateTimePatterns(System.Char format) => throw null;
             public string GetDayName(System.DayOfWeek dayofweek) => throw null;
             public int GetEra(string eraName) => throw null;
             public string GetEraName(int era) => throw null;
@@ -6554,8 +6554,8 @@ namespace System
             public override int GetMonth(System.DateTime time) => throw null;
             public override int GetMonthsInYear(int year, int era) => throw null;
             public override int GetYear(System.DateTime time) => throw null;
-            public GregorianCalendar(System.Globalization.GregorianCalendarTypes type) => throw null;
             public GregorianCalendar() => throw null;
+            public GregorianCalendar(System.Globalization.GregorianCalendarTypes type) => throw null;
             public override bool IsLeapDay(int year, int month, int day, int era) => throw null;
             public override bool IsLeapMonth(int year, int month, int era) => throw null;
             public override bool IsLeapYear(int year, int era) => throw null;
@@ -6653,13 +6653,13 @@ namespace System
         {
             public bool AllowUnassigned { get => throw null; set => throw null; }
             public override bool Equals(object obj) => throw null;
-            public string GetAscii(string unicode, int index, int count) => throw null;
-            public string GetAscii(string unicode, int index) => throw null;
             public string GetAscii(string unicode) => throw null;
+            public string GetAscii(string unicode, int index) => throw null;
+            public string GetAscii(string unicode, int index, int count) => throw null;
             public override int GetHashCode() => throw null;
-            public string GetUnicode(string ascii, int index, int count) => throw null;
-            public string GetUnicode(string ascii, int index) => throw null;
             public string GetUnicode(string ascii) => throw null;
+            public string GetUnicode(string ascii, int index) => throw null;
+            public string GetUnicode(string ascii, int index, int count) => throw null;
             public IdnMapping() => throw null;
             public bool UseStd3AsciiRules { get => throw null; set => throw null; }
         }
@@ -6777,7 +6777,7 @@ namespace System
         }
 
         // Generated from `System.Globalization.NumberFormatInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class NumberFormatInfo : System.IFormatProvider, System.ICloneable
+        public class NumberFormatInfo : System.ICloneable, System.IFormatProvider
         {
             public object Clone() => throw null;
             public int CurrencyDecimalDigits { get => throw null; set => throw null; }
@@ -6884,8 +6884,8 @@ namespace System
             public virtual bool IsMetric { get => throw null; }
             public virtual string Name { get => throw null; }
             public virtual string NativeName { get => throw null; }
-            public RegionInfo(string name) => throw null;
             public RegionInfo(int culture) => throw null;
+            public RegionInfo(string name) => throw null;
             public virtual string ThreeLetterISORegionName { get => throw null; }
             public virtual string ThreeLetterWindowsRegionName { get => throw null; }
             public override string ToString() => throw null;
@@ -6908,8 +6908,8 @@ namespace System
         {
             public static bool operator !=(System.Globalization.SortVersion left, System.Globalization.SortVersion right) => throw null;
             public static bool operator ==(System.Globalization.SortVersion left, System.Globalization.SortVersion right) => throw null;
-            public override bool Equals(object obj) => throw null;
             public bool Equals(System.Globalization.SortVersion other) => throw null;
+            public override bool Equals(object obj) => throw null;
             public int FullVersion { get => throw null; }
             public override int GetHashCode() => throw null;
             public System.Guid SortId { get => throw null; }
@@ -6921,17 +6921,17 @@ namespace System
         {
             public override bool Equals(object value) => throw null;
             public override int GetHashCode() => throw null;
-            public static string GetNextTextElement(string str, int index) => throw null;
             public static string GetNextTextElement(string str) => throw null;
-            public static System.Globalization.TextElementEnumerator GetTextElementEnumerator(string str, int index) => throw null;
+            public static string GetNextTextElement(string str, int index) => throw null;
             public static System.Globalization.TextElementEnumerator GetTextElementEnumerator(string str) => throw null;
+            public static System.Globalization.TextElementEnumerator GetTextElementEnumerator(string str, int index) => throw null;
             public int LengthInTextElements { get => throw null; }
             public static int[] ParseCombiningCharacters(string str) => throw null;
             public string String { get => throw null; set => throw null; }
-            public StringInfo(string value) => throw null;
             public StringInfo() => throw null;
-            public string SubstringByTextElements(int startingTextElement, int lengthInTextElements) => throw null;
+            public StringInfo(string value) => throw null;
             public string SubstringByTextElements(int startingTextElement) => throw null;
+            public string SubstringByTextElements(int startingTextElement, int lengthInTextElements) => throw null;
         }
 
         // Generated from `System.Globalization.TaiwanCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -6985,7 +6985,7 @@ namespace System
         }
 
         // Generated from `System.Globalization.TextInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class TextInfo : System.Runtime.Serialization.IDeserializationCallback, System.ICloneable
+        public class TextInfo : System.ICloneable, System.Runtime.Serialization.IDeserializationCallback
         {
             public int ANSICodePage { get => throw null; }
             public object Clone() => throw null;
@@ -7001,12 +7001,12 @@ namespace System
             public int OEMCodePage { get => throw null; }
             void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) => throw null;
             public static System.Globalization.TextInfo ReadOnly(System.Globalization.TextInfo textInfo) => throw null;
-            public string ToLower(string str) => throw null;
             public System.Char ToLower(System.Char c) => throw null;
+            public string ToLower(string str) => throw null;
             public override string ToString() => throw null;
             public string ToTitleCase(string str) => throw null;
-            public string ToUpper(string str) => throw null;
             public System.Char ToUpper(System.Char c) => throw null;
+            public string ToUpper(string str) => throw null;
         }
 
         // Generated from `System.Globalization.ThaiBuddhistCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7119,19 +7119,19 @@ namespace System
         public class BinaryReader : System.IDisposable
         {
             public virtual System.IO.Stream BaseStream { get => throw null; }
-            public BinaryReader(System.IO.Stream input, System.Text.Encoding encoding, bool leaveOpen) => throw null;
-            public BinaryReader(System.IO.Stream input, System.Text.Encoding encoding) => throw null;
             public BinaryReader(System.IO.Stream input) => throw null;
+            public BinaryReader(System.IO.Stream input, System.Text.Encoding encoding) => throw null;
+            public BinaryReader(System.IO.Stream input, System.Text.Encoding encoding, bool leaveOpen) => throw null;
             public virtual void Close() => throw null;
             public void Dispose() => throw null;
             protected virtual void Dispose(bool disposing) => throw null;
             protected virtual void FillBuffer(int numBytes) => throw null;
             public virtual int PeekChar() => throw null;
-            public virtual int Read(System.Span<System.Char> buffer) => throw null;
-            public virtual int Read(System.Span<System.Byte> buffer) => throw null;
-            public virtual int Read(System.Char[] buffer, int index, int count) => throw null;
-            public virtual int Read(System.Byte[] buffer, int index, int count) => throw null;
             public virtual int Read() => throw null;
+            public virtual int Read(System.Byte[] buffer, int index, int count) => throw null;
+            public virtual int Read(System.Char[] buffer, int index, int count) => throw null;
+            public virtual int Read(System.Span<System.Byte> buffer) => throw null;
+            public virtual int Read(System.Span<System.Char> buffer) => throw null;
             public int Read7BitEncodedInt() => throw null;
             public System.Int64 Read7BitEncodedInt64() => throw null;
             public virtual bool ReadBoolean() => throw null;
@@ -7153,13 +7153,13 @@ namespace System
         }
 
         // Generated from `System.IO.BinaryWriter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class BinaryWriter : System.IDisposable, System.IAsyncDisposable
+        public class BinaryWriter : System.IAsyncDisposable, System.IDisposable
         {
             public virtual System.IO.Stream BaseStream { get => throw null; }
-            public BinaryWriter(System.IO.Stream output, System.Text.Encoding encoding, bool leaveOpen) => throw null;
-            public BinaryWriter(System.IO.Stream output, System.Text.Encoding encoding) => throw null;
-            public BinaryWriter(System.IO.Stream output) => throw null;
             protected BinaryWriter() => throw null;
+            public BinaryWriter(System.IO.Stream output) => throw null;
+            public BinaryWriter(System.IO.Stream output, System.Text.Encoding encoding) => throw null;
+            public BinaryWriter(System.IO.Stream output, System.Text.Encoding encoding, bool leaveOpen) => throw null;
             public virtual void Close() => throw null;
             public void Dispose() => throw null;
             protected virtual void Dispose(bool disposing) => throw null;
@@ -7168,26 +7168,26 @@ namespace System
             public static System.IO.BinaryWriter Null;
             protected System.IO.Stream OutStream;
             public virtual System.Int64 Seek(int offset, System.IO.SeekOrigin origin) => throw null;
-            public virtual void Write(string value) => throw null;
-            public virtual void Write(int value) => throw null;
-            public virtual void Write(float value) => throw null;
-            public virtual void Write(double value) => throw null;
-            public virtual void Write(bool value) => throw null;
-            public virtual void Write(System.UInt64 value) => throw null;
-            public virtual void Write(System.UInt32 value) => throw null;
-            public virtual void Write(System.UInt16 value) => throw null;
-            public virtual void Write(System.SByte value) => throw null;
-            public virtual void Write(System.ReadOnlySpan<System.Char> chars) => throw null;
-            public virtual void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
-            public virtual void Write(System.Int64 value) => throw null;
-            public virtual void Write(System.Int16 value) => throw null;
-            public virtual void Write(System.Decimal value) => throw null;
-            public virtual void Write(System.Char[] chars, int index, int count) => throw null;
-            public virtual void Write(System.Char[] chars) => throw null;
-            public virtual void Write(System.Char ch) => throw null;
-            public virtual void Write(System.Byte[] buffer, int index, int count) => throw null;
             public virtual void Write(System.Byte[] buffer) => throw null;
+            public virtual void Write(System.Byte[] buffer, int index, int count) => throw null;
+            public virtual void Write(System.Char[] chars) => throw null;
+            public virtual void Write(System.Char[] chars, int index, int count) => throw null;
+            public virtual void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
+            public virtual void Write(System.ReadOnlySpan<System.Char> chars) => throw null;
+            public virtual void Write(bool value) => throw null;
             public virtual void Write(System.Byte value) => throw null;
+            public virtual void Write(System.Char ch) => throw null;
+            public virtual void Write(System.Decimal value) => throw null;
+            public virtual void Write(double value) => throw null;
+            public virtual void Write(float value) => throw null;
+            public virtual void Write(int value) => throw null;
+            public virtual void Write(System.Int64 value) => throw null;
+            public virtual void Write(System.SByte value) => throw null;
+            public virtual void Write(System.Int16 value) => throw null;
+            public virtual void Write(string value) => throw null;
+            public virtual void Write(System.UInt32 value) => throw null;
+            public virtual void Write(System.UInt64 value) => throw null;
+            public virtual void Write(System.UInt16 value) => throw null;
             public void Write7BitEncodedInt(int value) => throw null;
             public void Write7BitEncodedInt64(System.Int64 value) => throw null;
         }
@@ -7198,8 +7198,8 @@ namespace System
             public override System.IAsyncResult BeginRead(System.Byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
             public override System.IAsyncResult BeginWrite(System.Byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
             public int BufferSize { get => throw null; }
-            public BufferedStream(System.IO.Stream stream, int bufferSize) => throw null;
             public BufferedStream(System.IO.Stream stream) => throw null;
+            public BufferedStream(System.IO.Stream stream, int bufferSize) => throw null;
             public override bool CanRead { get => throw null; }
             public override bool CanSeek { get => throw null; }
             public override bool CanWrite { get => throw null; }
@@ -7213,37 +7213,37 @@ namespace System
             public override System.Threading.Tasks.Task FlushAsync(System.Threading.CancellationToken cancellationToken) => throw null;
             public override System.Int64 Length { get => throw null; }
             public override System.Int64 Position { get => throw null; set => throw null; }
-            public override int Read(System.Span<System.Byte> destination) => throw null;
             public override int Read(System.Byte[] array, int offset, int count) => throw null;
-            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override int Read(System.Span<System.Byte> destination) => throw null;
             public override System.Threading.Tasks.Task<int> ReadAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override int ReadByte() => throw null;
             public override System.Int64 Seek(System.Int64 offset, System.IO.SeekOrigin origin) => throw null;
             public override void SetLength(System.Int64 value) => throw null;
             public System.IO.Stream UnderlyingStream { get => throw null; }
-            public override void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
             public override void Write(System.Byte[] array, int offset, int count) => throw null;
-            public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
             public override System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+            public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override void WriteByte(System.Byte value) => throw null;
         }
 
         // Generated from `System.IO.DirectoryNotFoundException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DirectoryNotFoundException : System.IO.IOException
         {
-            public DirectoryNotFoundException(string message, System.Exception innerException) => throw null;
-            public DirectoryNotFoundException(string message) => throw null;
             public DirectoryNotFoundException() => throw null;
             protected DirectoryNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public DirectoryNotFoundException(string message) => throw null;
+            public DirectoryNotFoundException(string message, System.Exception innerException) => throw null;
         }
 
         // Generated from `System.IO.EndOfStreamException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EndOfStreamException : System.IO.IOException
         {
-            public EndOfStreamException(string message, System.Exception innerException) => throw null;
-            public EndOfStreamException(string message) => throw null;
             public EndOfStreamException() => throw null;
             protected EndOfStreamException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public EndOfStreamException(string message) => throw null;
+            public EndOfStreamException(string message, System.Exception innerException) => throw null;
         }
 
         // Generated from `System.IO.FileAccess` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7280,12 +7280,12 @@ namespace System
         // Generated from `System.IO.FileLoadException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class FileLoadException : System.IO.IOException
         {
-            public FileLoadException(string message, string fileName, System.Exception inner) => throw null;
-            public FileLoadException(string message, string fileName) => throw null;
-            public FileLoadException(string message, System.Exception inner) => throw null;
-            public FileLoadException(string message) => throw null;
             public FileLoadException() => throw null;
             protected FileLoadException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public FileLoadException(string message) => throw null;
+            public FileLoadException(string message, System.Exception inner) => throw null;
+            public FileLoadException(string message, string fileName) => throw null;
+            public FileLoadException(string message, string fileName, System.Exception inner) => throw null;
             public string FileName { get => throw null; }
             public string FusionLog { get => throw null; }
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -7308,12 +7308,12 @@ namespace System
         public class FileNotFoundException : System.IO.IOException
         {
             public string FileName { get => throw null; }
-            public FileNotFoundException(string message, string fileName, System.Exception innerException) => throw null;
-            public FileNotFoundException(string message, string fileName) => throw null;
-            public FileNotFoundException(string message, System.Exception innerException) => throw null;
-            public FileNotFoundException(string message) => throw null;
             public FileNotFoundException() => throw null;
             protected FileNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public FileNotFoundException(string message) => throw null;
+            public FileNotFoundException(string message, System.Exception innerException) => throw null;
+            public FileNotFoundException(string message, string fileName) => throw null;
+            public FileNotFoundException(string message, string fileName, System.Exception innerException) => throw null;
             public string FusionLog { get => throw null; }
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public override string Message { get => throw null; }
@@ -7358,21 +7358,21 @@ namespace System
             public override System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
             public override int EndRead(System.IAsyncResult asyncResult) => throw null;
             public override void EndWrite(System.IAsyncResult asyncResult) => throw null;
-            public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize, bool useAsync) => throw null;
-            public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize, System.IO.FileOptions options) => throw null;
-            public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize) => throw null;
-            public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share) => throw null;
-            public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access) => throw null;
-            public FileStream(string path, System.IO.FileMode mode) => throw null;
-            public FileStream(System.IntPtr handle, System.IO.FileAccess access, bool ownsHandle, int bufferSize, bool isAsync) => throw null;
-            public FileStream(System.IntPtr handle, System.IO.FileAccess access, bool ownsHandle, int bufferSize) => throw null;
-            public FileStream(System.IntPtr handle, System.IO.FileAccess access, bool ownsHandle) => throw null;
             public FileStream(System.IntPtr handle, System.IO.FileAccess access) => throw null;
-            public FileStream(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.IO.FileAccess access, int bufferSize, bool isAsync) => throw null;
-            public FileStream(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.IO.FileAccess access, int bufferSize) => throw null;
+            public FileStream(System.IntPtr handle, System.IO.FileAccess access, bool ownsHandle) => throw null;
+            public FileStream(System.IntPtr handle, System.IO.FileAccess access, bool ownsHandle, int bufferSize) => throw null;
+            public FileStream(System.IntPtr handle, System.IO.FileAccess access, bool ownsHandle, int bufferSize, bool isAsync) => throw null;
             public FileStream(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.IO.FileAccess access) => throw null;
-            public virtual void Flush(bool flushToDisk) => throw null;
+            public FileStream(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.IO.FileAccess access, int bufferSize) => throw null;
+            public FileStream(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.IO.FileAccess access, int bufferSize, bool isAsync) => throw null;
+            public FileStream(string path, System.IO.FileMode mode) => throw null;
+            public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access) => throw null;
+            public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share) => throw null;
+            public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize) => throw null;
+            public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize, System.IO.FileOptions options) => throw null;
+            public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize, bool useAsync) => throw null;
             public override void Flush() => throw null;
+            public virtual void Flush(bool flushToDisk) => throw null;
             public override System.Threading.Tasks.Task FlushAsync(System.Threading.CancellationToken cancellationToken) => throw null;
             public virtual System.IntPtr Handle { get => throw null; }
             public virtual bool IsAsync { get => throw null; }
@@ -7380,19 +7380,19 @@ namespace System
             public virtual void Lock(System.Int64 position, System.Int64 length) => throw null;
             public virtual string Name { get => throw null; }
             public override System.Int64 Position { get => throw null; set => throw null; }
-            public override int Read(System.Span<System.Byte> buffer) => throw null;
             public override int Read(System.Byte[] array, int offset, int count) => throw null;
-            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override int Read(System.Span<System.Byte> buffer) => throw null;
             public override System.Threading.Tasks.Task<int> ReadAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override int ReadByte() => throw null;
             public virtual Microsoft.Win32.SafeHandles.SafeFileHandle SafeFileHandle { get => throw null; }
             public override System.Int64 Seek(System.Int64 offset, System.IO.SeekOrigin origin) => throw null;
             public override void SetLength(System.Int64 value) => throw null;
             public virtual void Unlock(System.Int64 position, System.Int64 length) => throw null;
-            public override void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
             public override void Write(System.Byte[] array, int offset, int count) => throw null;
-            public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
             public override System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+            public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override void WriteByte(System.Byte value) => throw null;
             // ERR: Stub generator didn't handle member: ~FileStream
         }
@@ -7407,19 +7407,19 @@ namespace System
         // Generated from `System.IO.IOException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class IOException : System.SystemException
         {
-            public IOException(string message, int hresult) => throw null;
-            public IOException(string message, System.Exception innerException) => throw null;
-            public IOException(string message) => throw null;
             public IOException() => throw null;
             protected IOException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public IOException(string message) => throw null;
+            public IOException(string message, System.Exception innerException) => throw null;
+            public IOException(string message, int hresult) => throw null;
         }
 
         // Generated from `System.IO.InvalidDataException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InvalidDataException : System.SystemException
         {
-            public InvalidDataException(string message, System.Exception innerException) => throw null;
-            public InvalidDataException(string message) => throw null;
             public InvalidDataException() => throw null;
+            public InvalidDataException(string message) => throw null;
+            public InvalidDataException(string message, System.Exception innerException) => throw null;
         }
 
         // Generated from `System.IO.MemoryStream` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7440,27 +7440,27 @@ namespace System
             public override System.Threading.Tasks.Task FlushAsync(System.Threading.CancellationToken cancellationToken) => throw null;
             public virtual System.Byte[] GetBuffer() => throw null;
             public override System.Int64 Length { get => throw null; }
-            public MemoryStream(int capacity) => throw null;
-            public MemoryStream(System.Byte[] buffer, int index, int count, bool writable, bool publiclyVisible) => throw null;
-            public MemoryStream(System.Byte[] buffer, int index, int count, bool writable) => throw null;
-            public MemoryStream(System.Byte[] buffer, int index, int count) => throw null;
-            public MemoryStream(System.Byte[] buffer, bool writable) => throw null;
-            public MemoryStream(System.Byte[] buffer) => throw null;
             public MemoryStream() => throw null;
+            public MemoryStream(System.Byte[] buffer) => throw null;
+            public MemoryStream(System.Byte[] buffer, bool writable) => throw null;
+            public MemoryStream(System.Byte[] buffer, int index, int count) => throw null;
+            public MemoryStream(System.Byte[] buffer, int index, int count, bool writable) => throw null;
+            public MemoryStream(System.Byte[] buffer, int index, int count, bool writable, bool publiclyVisible) => throw null;
+            public MemoryStream(int capacity) => throw null;
             public override System.Int64 Position { get => throw null; set => throw null; }
-            public override int Read(System.Span<System.Byte> destination) => throw null;
             public override int Read(System.Byte[] buffer, int offset, int count) => throw null;
-            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override int Read(System.Span<System.Byte> destination) => throw null;
             public override System.Threading.Tasks.Task<int> ReadAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override int ReadByte() => throw null;
             public override System.Int64 Seek(System.Int64 offset, System.IO.SeekOrigin loc) => throw null;
             public override void SetLength(System.Int64 value) => throw null;
             public virtual System.Byte[] ToArray() => throw null;
             public virtual bool TryGetBuffer(out System.ArraySegment<System.Byte> buffer) => throw null;
-            public override void Write(System.ReadOnlySpan<System.Byte> source) => throw null;
             public override void Write(System.Byte[] buffer, int offset, int count) => throw null;
-            public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override void Write(System.ReadOnlySpan<System.Byte> source) => throw null;
             public override System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+            public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override void WriteByte(System.Byte value) => throw null;
             public virtual void WriteTo(System.IO.Stream stream) => throw null;
         }
@@ -7470,60 +7470,60 @@ namespace System
         {
             public static System.Char AltDirectorySeparatorChar;
             public static string ChangeExtension(string path, string extension) => throw null;
-            public static string Combine(string path1, string path2, string path3, string path4) => throw null;
-            public static string Combine(string path1, string path2, string path3) => throw null;
-            public static string Combine(string path1, string path2) => throw null;
             public static string Combine(params string[] paths) => throw null;
+            public static string Combine(string path1, string path2) => throw null;
+            public static string Combine(string path1, string path2, string path3) => throw null;
+            public static string Combine(string path1, string path2, string path3, string path4) => throw null;
             public static System.Char DirectorySeparatorChar;
-            public static bool EndsInDirectorySeparator(string path) => throw null;
             public static bool EndsInDirectorySeparator(System.ReadOnlySpan<System.Char> path) => throw null;
-            public static string GetDirectoryName(string path) => throw null;
+            public static bool EndsInDirectorySeparator(string path) => throw null;
             public static System.ReadOnlySpan<System.Char> GetDirectoryName(System.ReadOnlySpan<System.Char> path) => throw null;
-            public static string GetExtension(string path) => throw null;
+            public static string GetDirectoryName(string path) => throw null;
             public static System.ReadOnlySpan<System.Char> GetExtension(System.ReadOnlySpan<System.Char> path) => throw null;
-            public static string GetFileName(string path) => throw null;
+            public static string GetExtension(string path) => throw null;
             public static System.ReadOnlySpan<System.Char> GetFileName(System.ReadOnlySpan<System.Char> path) => throw null;
-            public static string GetFileNameWithoutExtension(string path) => throw null;
+            public static string GetFileName(string path) => throw null;
             public static System.ReadOnlySpan<System.Char> GetFileNameWithoutExtension(System.ReadOnlySpan<System.Char> path) => throw null;
-            public static string GetFullPath(string path, string basePath) => throw null;
+            public static string GetFileNameWithoutExtension(string path) => throw null;
             public static string GetFullPath(string path) => throw null;
+            public static string GetFullPath(string path, string basePath) => throw null;
             public static System.Char[] GetInvalidFileNameChars() => throw null;
             public static System.Char[] GetInvalidPathChars() => throw null;
-            public static string GetPathRoot(string path) => throw null;
             public static System.ReadOnlySpan<System.Char> GetPathRoot(System.ReadOnlySpan<System.Char> path) => throw null;
+            public static string GetPathRoot(string path) => throw null;
             public static string GetRandomFileName() => throw null;
             public static string GetRelativePath(string relativeTo, string path) => throw null;
             public static string GetTempFileName() => throw null;
             public static string GetTempPath() => throw null;
-            public static bool HasExtension(string path) => throw null;
             public static bool HasExtension(System.ReadOnlySpan<System.Char> path) => throw null;
+            public static bool HasExtension(string path) => throw null;
             public static System.Char[] InvalidPathChars;
-            public static bool IsPathFullyQualified(string path) => throw null;
             public static bool IsPathFullyQualified(System.ReadOnlySpan<System.Char> path) => throw null;
-            public static bool IsPathRooted(string path) => throw null;
+            public static bool IsPathFullyQualified(string path) => throw null;
             public static bool IsPathRooted(System.ReadOnlySpan<System.Char> path) => throw null;
-            public static string Join(string path1, string path2, string path3, string path4) => throw null;
-            public static string Join(string path1, string path2, string path3) => throw null;
-            public static string Join(string path1, string path2) => throw null;
-            public static string Join(params string[] paths) => throw null;
-            public static string Join(System.ReadOnlySpan<System.Char> path1, System.ReadOnlySpan<System.Char> path2, System.ReadOnlySpan<System.Char> path3, System.ReadOnlySpan<System.Char> path4) => throw null;
-            public static string Join(System.ReadOnlySpan<System.Char> path1, System.ReadOnlySpan<System.Char> path2, System.ReadOnlySpan<System.Char> path3) => throw null;
+            public static bool IsPathRooted(string path) => throw null;
             public static string Join(System.ReadOnlySpan<System.Char> path1, System.ReadOnlySpan<System.Char> path2) => throw null;
+            public static string Join(System.ReadOnlySpan<System.Char> path1, System.ReadOnlySpan<System.Char> path2, System.ReadOnlySpan<System.Char> path3) => throw null;
+            public static string Join(System.ReadOnlySpan<System.Char> path1, System.ReadOnlySpan<System.Char> path2, System.ReadOnlySpan<System.Char> path3, System.ReadOnlySpan<System.Char> path4) => throw null;
+            public static string Join(params string[] paths) => throw null;
+            public static string Join(string path1, string path2) => throw null;
+            public static string Join(string path1, string path2, string path3) => throw null;
+            public static string Join(string path1, string path2, string path3, string path4) => throw null;
             public static System.Char PathSeparator;
-            public static string TrimEndingDirectorySeparator(string path) => throw null;
             public static System.ReadOnlySpan<System.Char> TrimEndingDirectorySeparator(System.ReadOnlySpan<System.Char> path) => throw null;
-            public static bool TryJoin(System.ReadOnlySpan<System.Char> path1, System.ReadOnlySpan<System.Char> path2, System.Span<System.Char> destination, out int charsWritten) => throw null;
+            public static string TrimEndingDirectorySeparator(string path) => throw null;
             public static bool TryJoin(System.ReadOnlySpan<System.Char> path1, System.ReadOnlySpan<System.Char> path2, System.ReadOnlySpan<System.Char> path3, System.Span<System.Char> destination, out int charsWritten) => throw null;
+            public static bool TryJoin(System.ReadOnlySpan<System.Char> path1, System.ReadOnlySpan<System.Char> path2, System.Span<System.Char> destination, out int charsWritten) => throw null;
             public static System.Char VolumeSeparatorChar;
         }
 
         // Generated from `System.IO.PathTooLongException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class PathTooLongException : System.IO.IOException
         {
-            public PathTooLongException(string message, System.Exception innerException) => throw null;
-            public PathTooLongException(string message) => throw null;
             public PathTooLongException() => throw null;
             protected PathTooLongException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public PathTooLongException(string message) => throw null;
+            public PathTooLongException(string message, System.Exception innerException) => throw null;
         }
 
         // Generated from `System.IO.SeekOrigin` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7535,7 +7535,7 @@ namespace System
         }
 
         // Generated from `System.IO.Stream` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public abstract class Stream : System.MarshalByRefObject, System.IDisposable, System.IAsyncDisposable
+        public abstract class Stream : System.MarshalByRefObject, System.IAsyncDisposable, System.IDisposable
         {
             public virtual System.IAsyncResult BeginRead(System.Byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
             public virtual System.IAsyncResult BeginWrite(System.Byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
@@ -7546,10 +7546,10 @@ namespace System
             public virtual void Close() => throw null;
             public void CopyTo(System.IO.Stream destination) => throw null;
             public virtual void CopyTo(System.IO.Stream destination, int bufferSize) => throw null;
-            public virtual System.Threading.Tasks.Task CopyToAsync(System.IO.Stream destination, int bufferSize, System.Threading.CancellationToken cancellationToken) => throw null;
-            public System.Threading.Tasks.Task CopyToAsync(System.IO.Stream destination, int bufferSize) => throw null;
-            public System.Threading.Tasks.Task CopyToAsync(System.IO.Stream destination, System.Threading.CancellationToken cancellationToken) => throw null;
             public System.Threading.Tasks.Task CopyToAsync(System.IO.Stream destination) => throw null;
+            public System.Threading.Tasks.Task CopyToAsync(System.IO.Stream destination, System.Threading.CancellationToken cancellationToken) => throw null;
+            public System.Threading.Tasks.Task CopyToAsync(System.IO.Stream destination, int bufferSize) => throw null;
+            public virtual System.Threading.Tasks.Task CopyToAsync(System.IO.Stream destination, int bufferSize, System.Threading.CancellationToken cancellationToken) => throw null;
             protected virtual System.Threading.WaitHandle CreateWaitHandle() => throw null;
             public void Dispose() => throw null;
             protected virtual void Dispose(bool disposing) => throw null;
@@ -7557,28 +7557,28 @@ namespace System
             public virtual int EndRead(System.IAsyncResult asyncResult) => throw null;
             public virtual void EndWrite(System.IAsyncResult asyncResult) => throw null;
             public abstract void Flush();
-            public virtual System.Threading.Tasks.Task FlushAsync(System.Threading.CancellationToken cancellationToken) => throw null;
             public System.Threading.Tasks.Task FlushAsync() => throw null;
+            public virtual System.Threading.Tasks.Task FlushAsync(System.Threading.CancellationToken cancellationToken) => throw null;
             public abstract System.Int64 Length { get; }
             public static System.IO.Stream Null;
             protected virtual void ObjectInvariant() => throw null;
             public abstract System.Int64 Position { get; set; }
-            public virtual int Read(System.Span<System.Byte> buffer) => throw null;
             public abstract int Read(System.Byte[] buffer, int offset, int count);
-            public virtual System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task<int> ReadAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+            public virtual int Read(System.Span<System.Byte> buffer) => throw null;
             public System.Threading.Tasks.Task<int> ReadAsync(System.Byte[] buffer, int offset, int count) => throw null;
+            public virtual System.Threading.Tasks.Task<int> ReadAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+            public virtual System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public virtual int ReadByte() => throw null;
             public virtual int ReadTimeout { get => throw null; set => throw null; }
             public abstract System.Int64 Seek(System.Int64 offset, System.IO.SeekOrigin origin);
             public abstract void SetLength(System.Int64 value);
             protected Stream() => throw null;
             public static System.IO.Stream Synchronized(System.IO.Stream stream) => throw null;
-            public virtual void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
             public abstract void Write(System.Byte[] buffer, int offset, int count);
-            public virtual System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+            public virtual void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
             public System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count) => throw null;
+            public virtual System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+            public virtual System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public virtual void WriteByte(System.Byte value) => throw null;
             public virtual int WriteTimeout { get => throw null; set => throw null; }
         }
@@ -7594,30 +7594,30 @@ namespace System
             public bool EndOfStream { get => throw null; }
             public static System.IO.StreamReader Null;
             public override int Peek() => throw null;
-            public override int Read(System.Span<System.Char> buffer) => throw null;
-            public override int Read(System.Char[] buffer, int index, int count) => throw null;
             public override int Read() => throw null;
-            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override int Read(System.Char[] buffer, int index, int count) => throw null;
+            public override int Read(System.Span<System.Char> buffer) => throw null;
             public override System.Threading.Tasks.Task<int> ReadAsync(System.Char[] buffer, int index, int count) => throw null;
-            public override int ReadBlock(System.Span<System.Char> buffer) => throw null;
+            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override int ReadBlock(System.Char[] buffer, int index, int count) => throw null;
-            public override System.Threading.Tasks.ValueTask<int> ReadBlockAsync(System.Memory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override int ReadBlock(System.Span<System.Char> buffer) => throw null;
             public override System.Threading.Tasks.Task<int> ReadBlockAsync(System.Char[] buffer, int index, int count) => throw null;
+            public override System.Threading.Tasks.ValueTask<int> ReadBlockAsync(System.Memory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override string ReadLine() => throw null;
             public override System.Threading.Tasks.Task<string> ReadLineAsync() => throw null;
             public override string ReadToEnd() => throw null;
             public override System.Threading.Tasks.Task<string> ReadToEndAsync() => throw null;
-            public StreamReader(string path, bool detectEncodingFromByteOrderMarks) => throw null;
-            public StreamReader(string path, System.Text.Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize) => throw null;
-            public StreamReader(string path, System.Text.Encoding encoding, bool detectEncodingFromByteOrderMarks) => throw null;
-            public StreamReader(string path, System.Text.Encoding encoding) => throw null;
-            public StreamReader(string path) => throw null;
-            public StreamReader(System.IO.Stream stream, bool detectEncodingFromByteOrderMarks) => throw null;
-            public StreamReader(System.IO.Stream stream, System.Text.Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize) => throw null;
-            public StreamReader(System.IO.Stream stream, System.Text.Encoding encoding, bool detectEncodingFromByteOrderMarks) => throw null;
-            public StreamReader(System.IO.Stream stream, System.Text.Encoding encoding) => throw null;
-            public StreamReader(System.IO.Stream stream, System.Text.Encoding encoding = default(System.Text.Encoding), bool detectEncodingFromByteOrderMarks = default(bool), int bufferSize = default(int), bool leaveOpen = default(bool)) => throw null;
             public StreamReader(System.IO.Stream stream) => throw null;
+            public StreamReader(System.IO.Stream stream, System.Text.Encoding encoding) => throw null;
+            public StreamReader(System.IO.Stream stream, System.Text.Encoding encoding, bool detectEncodingFromByteOrderMarks) => throw null;
+            public StreamReader(System.IO.Stream stream, System.Text.Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize) => throw null;
+            public StreamReader(System.IO.Stream stream, System.Text.Encoding encoding = default(System.Text.Encoding), bool detectEncodingFromByteOrderMarks = default(bool), int bufferSize = default(int), bool leaveOpen = default(bool)) => throw null;
+            public StreamReader(System.IO.Stream stream, bool detectEncodingFromByteOrderMarks) => throw null;
+            public StreamReader(string path) => throw null;
+            public StreamReader(string path, System.Text.Encoding encoding) => throw null;
+            public StreamReader(string path, System.Text.Encoding encoding, bool detectEncodingFromByteOrderMarks) => throw null;
+            public StreamReader(string path, System.Text.Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize) => throw null;
+            public StreamReader(string path, bool detectEncodingFromByteOrderMarks) => throw null;
         }
 
         // Generated from `System.IO.StreamWriter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7632,38 +7632,38 @@ namespace System
             public override void Flush() => throw null;
             public override System.Threading.Tasks.Task FlushAsync() => throw null;
             public static System.IO.StreamWriter Null;
-            public StreamWriter(string path, bool append, System.Text.Encoding encoding, int bufferSize) => throw null;
-            public StreamWriter(string path, bool append, System.Text.Encoding encoding) => throw null;
-            public StreamWriter(string path, bool append) => throw null;
-            public StreamWriter(string path) => throw null;
-            public StreamWriter(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize) => throw null;
-            public StreamWriter(System.IO.Stream stream, System.Text.Encoding encoding) => throw null;
-            public StreamWriter(System.IO.Stream stream, System.Text.Encoding encoding = default(System.Text.Encoding), int bufferSize = default(int), bool leaveOpen = default(bool)) => throw null;
             public StreamWriter(System.IO.Stream stream) => throw null;
-            public override void Write(string value) => throw null;
-            public override void Write(string format, params object[] arg) => throw null;
-            public override void Write(string format, object arg0, object arg1, object arg2) => throw null;
-            public override void Write(string format, object arg0, object arg1) => throw null;
-            public override void Write(string format, object arg0) => throw null;
-            public override void Write(System.ReadOnlySpan<System.Char> buffer) => throw null;
-            public override void Write(System.Char[] buffer, int index, int count) => throw null;
+            public StreamWriter(System.IO.Stream stream, System.Text.Encoding encoding) => throw null;
+            public StreamWriter(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize) => throw null;
+            public StreamWriter(System.IO.Stream stream, System.Text.Encoding encoding = default(System.Text.Encoding), int bufferSize = default(int), bool leaveOpen = default(bool)) => throw null;
+            public StreamWriter(string path) => throw null;
+            public StreamWriter(string path, bool append) => throw null;
+            public StreamWriter(string path, bool append, System.Text.Encoding encoding) => throw null;
+            public StreamWriter(string path, bool append, System.Text.Encoding encoding, int bufferSize) => throw null;
             public override void Write(System.Char[] buffer) => throw null;
+            public override void Write(System.Char[] buffer, int index, int count) => throw null;
+            public override void Write(System.ReadOnlySpan<System.Char> buffer) => throw null;
             public override void Write(System.Char value) => throw null;
-            public override System.Threading.Tasks.Task WriteAsync(string value) => throw null;
-            public override System.Threading.Tasks.Task WriteAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override void Write(string value) => throw null;
+            public override void Write(string format, object arg0) => throw null;
+            public override void Write(string format, object arg0, object arg1) => throw null;
+            public override void Write(string format, object arg0, object arg1, object arg2) => throw null;
+            public override void Write(string format, params object[] arg) => throw null;
             public override System.Threading.Tasks.Task WriteAsync(System.Char[] buffer, int index, int count) => throw null;
+            public override System.Threading.Tasks.Task WriteAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override System.Threading.Tasks.Task WriteAsync(System.Char value) => throw null;
-            public override void WriteLine(string value) => throw null;
-            public override void WriteLine(string format, params object[] arg) => throw null;
-            public override void WriteLine(string format, object arg0, object arg1, object arg2) => throw null;
-            public override void WriteLine(string format, object arg0, object arg1) => throw null;
-            public override void WriteLine(string format, object arg0) => throw null;
+            public override System.Threading.Tasks.Task WriteAsync(string value) => throw null;
             public override void WriteLine(System.ReadOnlySpan<System.Char> buffer) => throw null;
-            public override System.Threading.Tasks.Task WriteLineAsync(string value) => throw null;
-            public override System.Threading.Tasks.Task WriteLineAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteLineAsync(System.Char[] buffer, int index, int count) => throw null;
-            public override System.Threading.Tasks.Task WriteLineAsync(System.Char value) => throw null;
+            public override void WriteLine(string value) => throw null;
+            public override void WriteLine(string format, object arg0) => throw null;
+            public override void WriteLine(string format, object arg0, object arg1) => throw null;
+            public override void WriteLine(string format, object arg0, object arg1, object arg2) => throw null;
+            public override void WriteLine(string format, params object[] arg) => throw null;
             public override System.Threading.Tasks.Task WriteLineAsync() => throw null;
+            public override System.Threading.Tasks.Task WriteLineAsync(System.Char[] buffer, int index, int count) => throw null;
+            public override System.Threading.Tasks.Task WriteLineAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteLineAsync(System.Char value) => throw null;
+            public override System.Threading.Tasks.Task WriteLineAsync(string value) => throw null;
         }
 
         // Generated from `System.IO.StringReader` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7672,14 +7672,14 @@ namespace System
             public override void Close() => throw null;
             protected override void Dispose(bool disposing) => throw null;
             public override int Peek() => throw null;
-            public override int Read(System.Span<System.Char> buffer) => throw null;
-            public override int Read(System.Char[] buffer, int index, int count) => throw null;
             public override int Read() => throw null;
-            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override int Read(System.Char[] buffer, int index, int count) => throw null;
+            public override int Read(System.Span<System.Char> buffer) => throw null;
             public override System.Threading.Tasks.Task<int> ReadAsync(System.Char[] buffer, int index, int count) => throw null;
+            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override int ReadBlock(System.Span<System.Char> buffer) => throw null;
-            public override System.Threading.Tasks.ValueTask<int> ReadBlockAsync(System.Memory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override System.Threading.Tasks.Task<int> ReadBlockAsync(System.Char[] buffer, int index, int count) => throw null;
+            public override System.Threading.Tasks.ValueTask<int> ReadBlockAsync(System.Memory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override string ReadLine() => throw null;
             public override System.Threading.Tasks.Task<string> ReadLineAsync() => throw null;
             public override string ReadToEnd() => throw null;
@@ -7695,28 +7695,28 @@ namespace System
             public override System.Text.Encoding Encoding { get => throw null; }
             public override System.Threading.Tasks.Task FlushAsync() => throw null;
             public virtual System.Text.StringBuilder GetStringBuilder() => throw null;
-            public StringWriter(System.Text.StringBuilder sb, System.IFormatProvider formatProvider) => throw null;
-            public StringWriter(System.Text.StringBuilder sb) => throw null;
-            public StringWriter(System.IFormatProvider formatProvider) => throw null;
             public StringWriter() => throw null;
+            public StringWriter(System.IFormatProvider formatProvider) => throw null;
+            public StringWriter(System.Text.StringBuilder sb) => throw null;
+            public StringWriter(System.Text.StringBuilder sb, System.IFormatProvider formatProvider) => throw null;
             public override string ToString() => throw null;
-            public override void Write(string value) => throw null;
-            public override void Write(System.Text.StringBuilder value) => throw null;
-            public override void Write(System.ReadOnlySpan<System.Char> buffer) => throw null;
             public override void Write(System.Char[] buffer, int index, int count) => throw null;
+            public override void Write(System.ReadOnlySpan<System.Char> buffer) => throw null;
+            public override void Write(System.Text.StringBuilder value) => throw null;
             public override void Write(System.Char value) => throw null;
-            public override System.Threading.Tasks.Task WriteAsync(string value) => throw null;
-            public override System.Threading.Tasks.Task WriteAsync(System.Text.StringBuilder value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override void Write(string value) => throw null;
             public override System.Threading.Tasks.Task WriteAsync(System.Char[] buffer, int index, int count) => throw null;
+            public override System.Threading.Tasks.Task WriteAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteAsync(System.Text.StringBuilder value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override System.Threading.Tasks.Task WriteAsync(System.Char value) => throw null;
-            public override void WriteLine(System.Text.StringBuilder value) => throw null;
+            public override System.Threading.Tasks.Task WriteAsync(string value) => throw null;
             public override void WriteLine(System.ReadOnlySpan<System.Char> buffer) => throw null;
-            public override System.Threading.Tasks.Task WriteLineAsync(string value) => throw null;
-            public override System.Threading.Tasks.Task WriteLineAsync(System.Text.StringBuilder value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteLineAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override void WriteLine(System.Text.StringBuilder value) => throw null;
             public override System.Threading.Tasks.Task WriteLineAsync(System.Char[] buffer, int index, int count) => throw null;
+            public override System.Threading.Tasks.Task WriteLineAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteLineAsync(System.Text.StringBuilder value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override System.Threading.Tasks.Task WriteLineAsync(System.Char value) => throw null;
+            public override System.Threading.Tasks.Task WriteLineAsync(string value) => throw null;
         }
 
         // Generated from `System.IO.TextReader` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7727,15 +7727,15 @@ namespace System
             protected virtual void Dispose(bool disposing) => throw null;
             public static System.IO.TextReader Null;
             public virtual int Peek() => throw null;
-            public virtual int Read(System.Span<System.Char> buffer) => throw null;
-            public virtual int Read(System.Char[] buffer, int index, int count) => throw null;
             public virtual int Read() => throw null;
-            public virtual System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual int Read(System.Char[] buffer, int index, int count) => throw null;
+            public virtual int Read(System.Span<System.Char> buffer) => throw null;
             public virtual System.Threading.Tasks.Task<int> ReadAsync(System.Char[] buffer, int index, int count) => throw null;
-            public virtual int ReadBlock(System.Span<System.Char> buffer) => throw null;
+            public virtual System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public virtual int ReadBlock(System.Char[] buffer, int index, int count) => throw null;
-            public virtual System.Threading.Tasks.ValueTask<int> ReadBlockAsync(System.Memory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual int ReadBlock(System.Span<System.Char> buffer) => throw null;
             public virtual System.Threading.Tasks.Task<int> ReadBlockAsync(System.Char[] buffer, int index, int count) => throw null;
+            public virtual System.Threading.Tasks.ValueTask<int> ReadBlockAsync(System.Memory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public virtual string ReadLine() => throw null;
             public virtual System.Threading.Tasks.Task<string> ReadLineAsync() => throw null;
             public virtual string ReadToEnd() => throw null;
@@ -7745,7 +7745,7 @@ namespace System
         }
 
         // Generated from `System.IO.TextWriter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public abstract class TextWriter : System.MarshalByRefObject, System.IDisposable, System.IAsyncDisposable
+        public abstract class TextWriter : System.MarshalByRefObject, System.IAsyncDisposable, System.IDisposable
         {
             public virtual void Close() => throw null;
             protected System.Char[] CoreNewLine;
@@ -7759,60 +7759,60 @@ namespace System
             public virtual string NewLine { get => throw null; set => throw null; }
             public static System.IO.TextWriter Null;
             public static System.IO.TextWriter Synchronized(System.IO.TextWriter writer) => throw null;
-            protected TextWriter(System.IFormatProvider formatProvider) => throw null;
             protected TextWriter() => throw null;
-            public virtual void Write(string value) => throw null;
-            public virtual void Write(string format, params object[] arg) => throw null;
-            public virtual void Write(string format, object arg0, object arg1, object arg2) => throw null;
-            public virtual void Write(string format, object arg0, object arg1) => throw null;
-            public virtual void Write(string format, object arg0) => throw null;
-            public virtual void Write(object value) => throw null;
-            public virtual void Write(int value) => throw null;
-            public virtual void Write(float value) => throw null;
-            public virtual void Write(double value) => throw null;
-            public virtual void Write(bool value) => throw null;
-            public virtual void Write(System.UInt64 value) => throw null;
-            public virtual void Write(System.UInt32 value) => throw null;
-            public virtual void Write(System.Text.StringBuilder value) => throw null;
-            public virtual void Write(System.ReadOnlySpan<System.Char> buffer) => throw null;
-            public virtual void Write(System.Int64 value) => throw null;
-            public virtual void Write(System.Decimal value) => throw null;
-            public virtual void Write(System.Char[] buffer, int index, int count) => throw null;
+            protected TextWriter(System.IFormatProvider formatProvider) => throw null;
             public virtual void Write(System.Char[] buffer) => throw null;
+            public virtual void Write(System.Char[] buffer, int index, int count) => throw null;
+            public virtual void Write(System.ReadOnlySpan<System.Char> buffer) => throw null;
+            public virtual void Write(System.Text.StringBuilder value) => throw null;
+            public virtual void Write(bool value) => throw null;
             public virtual void Write(System.Char value) => throw null;
-            public virtual System.Threading.Tasks.Task WriteAsync(string value) => throw null;
-            public virtual System.Threading.Tasks.Task WriteAsync(System.Text.StringBuilder value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteAsync(System.Char[] buffer, int index, int count) => throw null;
-            public virtual System.Threading.Tasks.Task WriteAsync(System.Char value) => throw null;
+            public virtual void Write(System.Decimal value) => throw null;
+            public virtual void Write(double value) => throw null;
+            public virtual void Write(float value) => throw null;
+            public virtual void Write(int value) => throw null;
+            public virtual void Write(System.Int64 value) => throw null;
+            public virtual void Write(object value) => throw null;
+            public virtual void Write(string value) => throw null;
+            public virtual void Write(string format, object arg0) => throw null;
+            public virtual void Write(string format, object arg0, object arg1) => throw null;
+            public virtual void Write(string format, object arg0, object arg1, object arg2) => throw null;
+            public virtual void Write(string format, params object[] arg) => throw null;
+            public virtual void Write(System.UInt32 value) => throw null;
+            public virtual void Write(System.UInt64 value) => throw null;
             public System.Threading.Tasks.Task WriteAsync(System.Char[] buffer) => throw null;
-            public virtual void WriteLine(string value) => throw null;
-            public virtual void WriteLine(string format, params object[] arg) => throw null;
-            public virtual void WriteLine(string format, object arg0, object arg1, object arg2) => throw null;
-            public virtual void WriteLine(string format, object arg0, object arg1) => throw null;
-            public virtual void WriteLine(string format, object arg0) => throw null;
-            public virtual void WriteLine(object value) => throw null;
-            public virtual void WriteLine(int value) => throw null;
-            public virtual void WriteLine(float value) => throw null;
-            public virtual void WriteLine(double value) => throw null;
-            public virtual void WriteLine(bool value) => throw null;
-            public virtual void WriteLine(System.UInt64 value) => throw null;
-            public virtual void WriteLine(System.UInt32 value) => throw null;
-            public virtual void WriteLine(System.Text.StringBuilder value) => throw null;
-            public virtual void WriteLine(System.ReadOnlySpan<System.Char> buffer) => throw null;
-            public virtual void WriteLine(System.Int64 value) => throw null;
-            public virtual void WriteLine(System.Decimal value) => throw null;
-            public virtual void WriteLine(System.Char[] buffer, int index, int count) => throw null;
-            public virtual void WriteLine(System.Char[] buffer) => throw null;
-            public virtual void WriteLine(System.Char value) => throw null;
+            public virtual System.Threading.Tasks.Task WriteAsync(System.Char[] buffer, int index, int count) => throw null;
+            public virtual System.Threading.Tasks.Task WriteAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteAsync(System.Text.StringBuilder value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteAsync(System.Char value) => throw null;
+            public virtual System.Threading.Tasks.Task WriteAsync(string value) => throw null;
             public virtual void WriteLine() => throw null;
-            public virtual System.Threading.Tasks.Task WriteLineAsync(string value) => throw null;
-            public virtual System.Threading.Tasks.Task WriteLineAsync(System.Text.StringBuilder value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteLineAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteLineAsync(System.Char[] buffer, int index, int count) => throw null;
-            public virtual System.Threading.Tasks.Task WriteLineAsync(System.Char value) => throw null;
+            public virtual void WriteLine(System.Char[] buffer) => throw null;
+            public virtual void WriteLine(System.Char[] buffer, int index, int count) => throw null;
+            public virtual void WriteLine(System.ReadOnlySpan<System.Char> buffer) => throw null;
+            public virtual void WriteLine(System.Text.StringBuilder value) => throw null;
+            public virtual void WriteLine(bool value) => throw null;
+            public virtual void WriteLine(System.Char value) => throw null;
+            public virtual void WriteLine(System.Decimal value) => throw null;
+            public virtual void WriteLine(double value) => throw null;
+            public virtual void WriteLine(float value) => throw null;
+            public virtual void WriteLine(int value) => throw null;
+            public virtual void WriteLine(System.Int64 value) => throw null;
+            public virtual void WriteLine(object value) => throw null;
+            public virtual void WriteLine(string value) => throw null;
+            public virtual void WriteLine(string format, object arg0) => throw null;
+            public virtual void WriteLine(string format, object arg0, object arg1) => throw null;
+            public virtual void WriteLine(string format, object arg0, object arg1, object arg2) => throw null;
+            public virtual void WriteLine(string format, params object[] arg) => throw null;
+            public virtual void WriteLine(System.UInt32 value) => throw null;
+            public virtual void WriteLine(System.UInt64 value) => throw null;
             public virtual System.Threading.Tasks.Task WriteLineAsync() => throw null;
             public System.Threading.Tasks.Task WriteLineAsync(System.Char[] buffer) => throw null;
+            public virtual System.Threading.Tasks.Task WriteLineAsync(System.Char[] buffer, int index, int count) => throw null;
+            public virtual System.Threading.Tasks.Task WriteLineAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteLineAsync(System.Text.StringBuilder value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteLineAsync(System.Char value) => throw null;
+            public virtual System.Threading.Tasks.Task WriteLineAsync(string value) => throw null;
         }
 
         // Generated from `System.IO.UnmanagedMemoryStream` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7825,27 +7825,27 @@ namespace System
             protected override void Dispose(bool disposing) => throw null;
             public override void Flush() => throw null;
             public override System.Threading.Tasks.Task FlushAsync(System.Threading.CancellationToken cancellationToken) => throw null;
-            unsafe protected void Initialize(System.Byte* pointer, System.Int64 length, System.Int64 capacity, System.IO.FileAccess access) => throw null;
             protected void Initialize(System.Runtime.InteropServices.SafeBuffer buffer, System.Int64 offset, System.Int64 length, System.IO.FileAccess access) => throw null;
+            unsafe protected void Initialize(System.Byte* pointer, System.Int64 length, System.Int64 capacity, System.IO.FileAccess access) => throw null;
             public override System.Int64 Length { get => throw null; }
             public override System.Int64 Position { get => throw null; set => throw null; }
             unsafe public System.Byte* PositionPointer { get => throw null; set => throw null; }
-            public override int Read(System.Span<System.Byte> destination) => throw null;
             public override int Read(System.Byte[] buffer, int offset, int count) => throw null;
-            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override int Read(System.Span<System.Byte> destination) => throw null;
             public override System.Threading.Tasks.Task<int> ReadAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override int ReadByte() => throw null;
             public override System.Int64 Seek(System.Int64 offset, System.IO.SeekOrigin loc) => throw null;
             public override void SetLength(System.Int64 value) => throw null;
-            unsafe public UnmanagedMemoryStream(System.Byte* pointer, System.Int64 length, System.Int64 capacity, System.IO.FileAccess access) => throw null;
-            unsafe public UnmanagedMemoryStream(System.Byte* pointer, System.Int64 length) => throw null;
-            public UnmanagedMemoryStream(System.Runtime.InteropServices.SafeBuffer buffer, System.Int64 offset, System.Int64 length, System.IO.FileAccess access) => throw null;
-            public UnmanagedMemoryStream(System.Runtime.InteropServices.SafeBuffer buffer, System.Int64 offset, System.Int64 length) => throw null;
             protected UnmanagedMemoryStream() => throw null;
-            public override void Write(System.ReadOnlySpan<System.Byte> source) => throw null;
+            public UnmanagedMemoryStream(System.Runtime.InteropServices.SafeBuffer buffer, System.Int64 offset, System.Int64 length) => throw null;
+            public UnmanagedMemoryStream(System.Runtime.InteropServices.SafeBuffer buffer, System.Int64 offset, System.Int64 length, System.IO.FileAccess access) => throw null;
+            unsafe public UnmanagedMemoryStream(System.Byte* pointer, System.Int64 length) => throw null;
+            unsafe public UnmanagedMemoryStream(System.Byte* pointer, System.Int64 length, System.Int64 capacity, System.IO.FileAccess access) => throw null;
             public override void Write(System.Byte[] buffer, int offset, int count) => throw null;
-            public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override void Write(System.ReadOnlySpan<System.Byte> source) => throw null;
             public override System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+            public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override void WriteByte(System.Byte value) => throw null;
         }
 
@@ -7855,10 +7855,10 @@ namespace System
         // Generated from `System.Net.WebUtility` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class WebUtility
         {
-            public static void HtmlDecode(string value, System.IO.TextWriter output) => throw null;
             public static string HtmlDecode(string value) => throw null;
-            public static void HtmlEncode(string value, System.IO.TextWriter output) => throw null;
+            public static void HtmlDecode(string value, System.IO.TextWriter output) => throw null;
             public static string HtmlEncode(string value) => throw null;
+            public static void HtmlEncode(string value, System.IO.TextWriter output) => throw null;
             public static string UrlDecode(string encodedValue) => throw null;
             public static System.Byte[] UrlDecodeToBytes(System.Byte[] encodedValue, int offset, int count) => throw null;
             public static string UrlEncode(string value) => throw null;
@@ -7871,20 +7871,20 @@ namespace System
         // Generated from `System.Numerics.BitOperations` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class BitOperations
         {
-            public static int LeadingZeroCount(System.UInt64 value) => throw null;
             public static int LeadingZeroCount(System.UInt32 value) => throw null;
-            public static int Log2(System.UInt64 value) => throw null;
+            public static int LeadingZeroCount(System.UInt64 value) => throw null;
             public static int Log2(System.UInt32 value) => throw null;
-            public static int PopCount(System.UInt64 value) => throw null;
+            public static int Log2(System.UInt64 value) => throw null;
             public static int PopCount(System.UInt32 value) => throw null;
-            public static System.UInt64 RotateLeft(System.UInt64 value, int offset) => throw null;
+            public static int PopCount(System.UInt64 value) => throw null;
             public static System.UInt32 RotateLeft(System.UInt32 value, int offset) => throw null;
-            public static System.UInt64 RotateRight(System.UInt64 value, int offset) => throw null;
+            public static System.UInt64 RotateLeft(System.UInt64 value, int offset) => throw null;
             public static System.UInt32 RotateRight(System.UInt32 value, int offset) => throw null;
+            public static System.UInt64 RotateRight(System.UInt64 value, int offset) => throw null;
             public static int TrailingZeroCount(int value) => throw null;
-            public static int TrailingZeroCount(System.UInt64 value) => throw null;
-            public static int TrailingZeroCount(System.UInt32 value) => throw null;
             public static int TrailingZeroCount(System.Int64 value) => throw null;
+            public static int TrailingZeroCount(System.UInt32 value) => throw null;
+            public static int TrailingZeroCount(System.UInt64 value) => throw null;
         }
 
     }
@@ -7893,21 +7893,21 @@ namespace System
         // Generated from `System.Reflection.AmbiguousMatchException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AmbiguousMatchException : System.SystemException
         {
-            public AmbiguousMatchException(string message, System.Exception inner) => throw null;
-            public AmbiguousMatchException(string message) => throw null;
             public AmbiguousMatchException() => throw null;
+            public AmbiguousMatchException(string message) => throw null;
+            public AmbiguousMatchException(string message, System.Exception inner) => throw null;
         }
 
         // Generated from `System.Reflection.Assembly` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public abstract class Assembly : System.Runtime.Serialization.ISerializable, System.Reflection.ICustomAttributeProvider
+        public abstract class Assembly : System.Reflection.ICustomAttributeProvider, System.Runtime.Serialization.ISerializable
         {
             public static bool operator !=(System.Reflection.Assembly left, System.Reflection.Assembly right) => throw null;
             public static bool operator ==(System.Reflection.Assembly left, System.Reflection.Assembly right) => throw null;
             protected Assembly() => throw null;
             public virtual string CodeBase { get => throw null; }
-            public virtual object CreateInstance(string typeName, bool ignoreCase, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, object[] args, System.Globalization.CultureInfo culture, object[] activationAttributes) => throw null;
-            public object CreateInstance(string typeName, bool ignoreCase) => throw null;
             public object CreateInstance(string typeName) => throw null;
+            public object CreateInstance(string typeName, bool ignoreCase) => throw null;
+            public virtual object CreateInstance(string typeName, bool ignoreCase, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, object[] args, System.Globalization.CultureInfo culture, object[] activationAttributes) => throw null;
             public static string CreateQualifiedName(string assemblyName, string typeName) => throw null;
             public virtual System.Collections.Generic.IEnumerable<System.Reflection.CustomAttributeData> CustomAttributes { get => throw null; }
             public virtual System.Collections.Generic.IEnumerable<System.Reflection.TypeInfo> DefinedTypes { get => throw null; }
@@ -7918,35 +7918,35 @@ namespace System
             public virtual string FullName { get => throw null; }
             public static System.Reflection.Assembly GetAssembly(System.Type type) => throw null;
             public static System.Reflection.Assembly GetCallingAssembly() => throw null;
-            public virtual object[] GetCustomAttributes(bool inherit) => throw null;
             public virtual object[] GetCustomAttributes(System.Type attributeType, bool inherit) => throw null;
+            public virtual object[] GetCustomAttributes(bool inherit) => throw null;
             public virtual System.Collections.Generic.IList<System.Reflection.CustomAttributeData> GetCustomAttributesData() => throw null;
             public static System.Reflection.Assembly GetEntryAssembly() => throw null;
             public static System.Reflection.Assembly GetExecutingAssembly() => throw null;
             public virtual System.Type[] GetExportedTypes() => throw null;
             public virtual System.IO.FileStream GetFile(string name) => throw null;
-            public virtual System.IO.FileStream[] GetFiles(bool getResourceModules) => throw null;
             public virtual System.IO.FileStream[] GetFiles() => throw null;
+            public virtual System.IO.FileStream[] GetFiles(bool getResourceModules) => throw null;
             public virtual System.Type[] GetForwardedTypes() => throw null;
             public override int GetHashCode() => throw null;
-            public virtual System.Reflection.Module[] GetLoadedModules(bool getResourceModules) => throw null;
             public System.Reflection.Module[] GetLoadedModules() => throw null;
+            public virtual System.Reflection.Module[] GetLoadedModules(bool getResourceModules) => throw null;
             public virtual System.Reflection.ManifestResourceInfo GetManifestResourceInfo(string resourceName) => throw null;
             public virtual string[] GetManifestResourceNames() => throw null;
-            public virtual System.IO.Stream GetManifestResourceStream(string name) => throw null;
             public virtual System.IO.Stream GetManifestResourceStream(System.Type type, string name) => throw null;
+            public virtual System.IO.Stream GetManifestResourceStream(string name) => throw null;
             public virtual System.Reflection.Module GetModule(string name) => throw null;
-            public virtual System.Reflection.Module[] GetModules(bool getResourceModules) => throw null;
             public System.Reflection.Module[] GetModules() => throw null;
-            public virtual System.Reflection.AssemblyName GetName(bool copiedName) => throw null;
+            public virtual System.Reflection.Module[] GetModules(bool getResourceModules) => throw null;
             public virtual System.Reflection.AssemblyName GetName() => throw null;
+            public virtual System.Reflection.AssemblyName GetName(bool copiedName) => throw null;
             public virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public virtual System.Reflection.AssemblyName[] GetReferencedAssemblies() => throw null;
-            public virtual System.Reflection.Assembly GetSatelliteAssembly(System.Globalization.CultureInfo culture, System.Version version) => throw null;
             public virtual System.Reflection.Assembly GetSatelliteAssembly(System.Globalization.CultureInfo culture) => throw null;
-            public virtual System.Type GetType(string name, bool throwOnError, bool ignoreCase) => throw null;
-            public virtual System.Type GetType(string name, bool throwOnError) => throw null;
+            public virtual System.Reflection.Assembly GetSatelliteAssembly(System.Globalization.CultureInfo culture, System.Version version) => throw null;
             public virtual System.Type GetType(string name) => throw null;
+            public virtual System.Type GetType(string name, bool throwOnError) => throw null;
+            public virtual System.Type GetType(string name, bool throwOnError, bool ignoreCase) => throw null;
             public virtual System.Type[] GetTypes() => throw null;
             public virtual bool GlobalAssemblyCache { get => throw null; }
             public virtual System.Int64 HostContext { get => throw null; }
@@ -7955,23 +7955,23 @@ namespace System
             public virtual bool IsDefined(System.Type attributeType, bool inherit) => throw null;
             public virtual bool IsDynamic { get => throw null; }
             public bool IsFullyTrusted { get => throw null; }
-            public static System.Reflection.Assembly Load(string assemblyString) => throw null;
             public static System.Reflection.Assembly Load(System.Reflection.AssemblyName assemblyRef) => throw null;
-            public static System.Reflection.Assembly Load(System.Byte[] rawAssembly, System.Byte[] rawSymbolStore) => throw null;
             public static System.Reflection.Assembly Load(System.Byte[] rawAssembly) => throw null;
+            public static System.Reflection.Assembly Load(System.Byte[] rawAssembly, System.Byte[] rawSymbolStore) => throw null;
+            public static System.Reflection.Assembly Load(string assemblyString) => throw null;
             public static System.Reflection.Assembly LoadFile(string path) => throw null;
-            public static System.Reflection.Assembly LoadFrom(string assemblyFile, System.Byte[] hashValue, System.Configuration.Assemblies.AssemblyHashAlgorithm hashAlgorithm) => throw null;
             public static System.Reflection.Assembly LoadFrom(string assemblyFile) => throw null;
-            public virtual System.Reflection.Module LoadModule(string moduleName, System.Byte[] rawModule, System.Byte[] rawSymbolStore) => throw null;
+            public static System.Reflection.Assembly LoadFrom(string assemblyFile, System.Byte[] hashValue, System.Configuration.Assemblies.AssemblyHashAlgorithm hashAlgorithm) => throw null;
             public System.Reflection.Module LoadModule(string moduleName, System.Byte[] rawModule) => throw null;
+            public virtual System.Reflection.Module LoadModule(string moduleName, System.Byte[] rawModule, System.Byte[] rawSymbolStore) => throw null;
             public static System.Reflection.Assembly LoadWithPartialName(string partialName) => throw null;
             public virtual string Location { get => throw null; }
             public virtual System.Reflection.Module ManifestModule { get => throw null; }
             public virtual event System.Reflection.ModuleResolveEventHandler ModuleResolve;
             public virtual System.Collections.Generic.IEnumerable<System.Reflection.Module> Modules { get => throw null; }
             public virtual bool ReflectionOnly { get => throw null; }
-            public static System.Reflection.Assembly ReflectionOnlyLoad(string assemblyString) => throw null;
             public static System.Reflection.Assembly ReflectionOnlyLoad(System.Byte[] rawAssembly) => throw null;
+            public static System.Reflection.Assembly ReflectionOnlyLoad(string assemblyString) => throw null;
             public static System.Reflection.Assembly ReflectionOnlyLoadFrom(string assemblyFile) => throw null;
             public virtual System.Security.SecurityRuleSet SecurityRuleSet { get => throw null; }
             public override string ToString() => throw null;
@@ -7982,8 +7982,8 @@ namespace System
         public class AssemblyAlgorithmIdAttribute : System.Attribute
         {
             public System.UInt32 AlgorithmId { get => throw null; }
-            public AssemblyAlgorithmIdAttribute(System.UInt32 algorithmId) => throw null;
             public AssemblyAlgorithmIdAttribute(System.Configuration.Assemblies.AssemblyHashAlgorithm algorithmId) => throw null;
+            public AssemblyAlgorithmIdAttribute(System.UInt32 algorithmId) => throw null;
         }
 
         // Generated from `System.Reflection.AssemblyCompanyAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -8053,9 +8053,9 @@ namespace System
         public class AssemblyFlagsAttribute : System.Attribute
         {
             public int AssemblyFlags { get => throw null; }
+            public AssemblyFlagsAttribute(System.Reflection.AssemblyNameFlags assemblyFlags) => throw null;
             public AssemblyFlagsAttribute(int assemblyFlags) => throw null;
             public AssemblyFlagsAttribute(System.UInt32 flags) => throw null;
-            public AssemblyFlagsAttribute(System.Reflection.AssemblyNameFlags assemblyFlags) => throw null;
             public System.UInt32 Flags { get => throw null; }
         }
 
@@ -8089,10 +8089,10 @@ namespace System
         }
 
         // Generated from `System.Reflection.AssemblyName` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class AssemblyName : System.Runtime.Serialization.ISerializable, System.Runtime.Serialization.IDeserializationCallback, System.ICloneable
+        public class AssemblyName : System.ICloneable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
         {
-            public AssemblyName(string assemblyName) => throw null;
             public AssemblyName() => throw null;
+            public AssemblyName(string assemblyName) => throw null;
             public object Clone() => throw null;
             public string CodeBase { get => throw null; set => throw null; }
             public System.Reflection.AssemblyContentType ContentType { get => throw null; set => throw null; }
@@ -8231,8 +8231,8 @@ namespace System
             public static string ConstructorName;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
-            public object Invoke(object[] parameters) => throw null;
             public abstract object Invoke(System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object[] parameters, System.Globalization.CultureInfo culture);
+            public object Invoke(object[] parameters) => throw null;
             public override System.Reflection.MemberTypes MemberType { get => throw null; }
             public static string TypeConstructorName;
         }
@@ -8245,10 +8245,10 @@ namespace System
             public virtual System.Collections.Generic.IList<System.Reflection.CustomAttributeTypedArgument> ConstructorArguments { get => throw null; }
             protected CustomAttributeData() => throw null;
             public override bool Equals(object obj) => throw null;
-            public static System.Collections.Generic.IList<System.Reflection.CustomAttributeData> GetCustomAttributes(System.Reflection.ParameterInfo target) => throw null;
-            public static System.Collections.Generic.IList<System.Reflection.CustomAttributeData> GetCustomAttributes(System.Reflection.Module target) => throw null;
-            public static System.Collections.Generic.IList<System.Reflection.CustomAttributeData> GetCustomAttributes(System.Reflection.MemberInfo target) => throw null;
             public static System.Collections.Generic.IList<System.Reflection.CustomAttributeData> GetCustomAttributes(System.Reflection.Assembly target) => throw null;
+            public static System.Collections.Generic.IList<System.Reflection.CustomAttributeData> GetCustomAttributes(System.Reflection.MemberInfo target) => throw null;
+            public static System.Collections.Generic.IList<System.Reflection.CustomAttributeData> GetCustomAttributes(System.Reflection.Module target) => throw null;
+            public static System.Collections.Generic.IList<System.Reflection.CustomAttributeData> GetCustomAttributes(System.Reflection.ParameterInfo target) => throw null;
             public override int GetHashCode() => throw null;
             public virtual System.Collections.Generic.IList<System.Reflection.CustomAttributeNamedArgument> NamedArguments { get => throw null; }
             public override string ToString() => throw null;
@@ -8257,51 +8257,51 @@ namespace System
         // Generated from `System.Reflection.CustomAttributeExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class CustomAttributeExtensions
         {
-            public static T GetCustomAttribute<T>(this System.Reflection.ParameterInfo element, bool inherit) where T : System.Attribute => throw null;
-            public static T GetCustomAttribute<T>(this System.Reflection.ParameterInfo element) where T : System.Attribute => throw null;
-            public static T GetCustomAttribute<T>(this System.Reflection.Module element) where T : System.Attribute => throw null;
-            public static T GetCustomAttribute<T>(this System.Reflection.MemberInfo element, bool inherit) where T : System.Attribute => throw null;
-            public static T GetCustomAttribute<T>(this System.Reflection.MemberInfo element) where T : System.Attribute => throw null;
-            public static T GetCustomAttribute<T>(this System.Reflection.Assembly element) where T : System.Attribute => throw null;
-            public static System.Attribute GetCustomAttribute(this System.Reflection.ParameterInfo element, System.Type attributeType, bool inherit) => throw null;
-            public static System.Attribute GetCustomAttribute(this System.Reflection.ParameterInfo element, System.Type attributeType) => throw null;
-            public static System.Attribute GetCustomAttribute(this System.Reflection.Module element, System.Type attributeType) => throw null;
-            public static System.Attribute GetCustomAttribute(this System.Reflection.MemberInfo element, System.Type attributeType, bool inherit) => throw null;
-            public static System.Attribute GetCustomAttribute(this System.Reflection.MemberInfo element, System.Type attributeType) => throw null;
             public static System.Attribute GetCustomAttribute(this System.Reflection.Assembly element, System.Type attributeType) => throw null;
-            public static System.Collections.Generic.IEnumerable<T> GetCustomAttributes<T>(this System.Reflection.ParameterInfo element, bool inherit) where T : System.Attribute => throw null;
-            public static System.Collections.Generic.IEnumerable<T> GetCustomAttributes<T>(this System.Reflection.ParameterInfo element) where T : System.Attribute => throw null;
-            public static System.Collections.Generic.IEnumerable<T> GetCustomAttributes<T>(this System.Reflection.Module element) where T : System.Attribute => throw null;
-            public static System.Collections.Generic.IEnumerable<T> GetCustomAttributes<T>(this System.Reflection.MemberInfo element, bool inherit) where T : System.Attribute => throw null;
-            public static System.Collections.Generic.IEnumerable<T> GetCustomAttributes<T>(this System.Reflection.MemberInfo element) where T : System.Attribute => throw null;
-            public static System.Collections.Generic.IEnumerable<T> GetCustomAttributes<T>(this System.Reflection.Assembly element) where T : System.Attribute => throw null;
-            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.ParameterInfo element, bool inherit) => throw null;
-            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.ParameterInfo element, System.Type attributeType, bool inherit) => throw null;
-            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.ParameterInfo element, System.Type attributeType) => throw null;
-            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.ParameterInfo element) => throw null;
-            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.Module element, System.Type attributeType) => throw null;
-            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.Module element) => throw null;
-            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.MemberInfo element, bool inherit) => throw null;
-            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.MemberInfo element, System.Type attributeType, bool inherit) => throw null;
-            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.MemberInfo element, System.Type attributeType) => throw null;
-            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.MemberInfo element) => throw null;
-            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.Assembly element, System.Type attributeType) => throw null;
+            public static System.Attribute GetCustomAttribute(this System.Reflection.MemberInfo element, System.Type attributeType) => throw null;
+            public static System.Attribute GetCustomAttribute(this System.Reflection.MemberInfo element, System.Type attributeType, bool inherit) => throw null;
+            public static System.Attribute GetCustomAttribute(this System.Reflection.Module element, System.Type attributeType) => throw null;
+            public static System.Attribute GetCustomAttribute(this System.Reflection.ParameterInfo element, System.Type attributeType) => throw null;
+            public static System.Attribute GetCustomAttribute(this System.Reflection.ParameterInfo element, System.Type attributeType, bool inherit) => throw null;
+            public static T GetCustomAttribute<T>(this System.Reflection.Assembly element) where T : System.Attribute => throw null;
+            public static T GetCustomAttribute<T>(this System.Reflection.MemberInfo element) where T : System.Attribute => throw null;
+            public static T GetCustomAttribute<T>(this System.Reflection.MemberInfo element, bool inherit) where T : System.Attribute => throw null;
+            public static T GetCustomAttribute<T>(this System.Reflection.Module element) where T : System.Attribute => throw null;
+            public static T GetCustomAttribute<T>(this System.Reflection.ParameterInfo element) where T : System.Attribute => throw null;
+            public static T GetCustomAttribute<T>(this System.Reflection.ParameterInfo element, bool inherit) where T : System.Attribute => throw null;
             public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.Assembly element) => throw null;
-            public static bool IsDefined(this System.Reflection.ParameterInfo element, System.Type attributeType, bool inherit) => throw null;
-            public static bool IsDefined(this System.Reflection.ParameterInfo element, System.Type attributeType) => throw null;
-            public static bool IsDefined(this System.Reflection.Module element, System.Type attributeType) => throw null;
-            public static bool IsDefined(this System.Reflection.MemberInfo element, System.Type attributeType, bool inherit) => throw null;
-            public static bool IsDefined(this System.Reflection.MemberInfo element, System.Type attributeType) => throw null;
+            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.Assembly element, System.Type attributeType) => throw null;
+            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.MemberInfo element) => throw null;
+            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.MemberInfo element, System.Type attributeType) => throw null;
+            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.MemberInfo element, System.Type attributeType, bool inherit) => throw null;
+            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.MemberInfo element, bool inherit) => throw null;
+            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.Module element) => throw null;
+            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.Module element, System.Type attributeType) => throw null;
+            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.ParameterInfo element) => throw null;
+            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.ParameterInfo element, System.Type attributeType) => throw null;
+            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.ParameterInfo element, System.Type attributeType, bool inherit) => throw null;
+            public static System.Collections.Generic.IEnumerable<System.Attribute> GetCustomAttributes(this System.Reflection.ParameterInfo element, bool inherit) => throw null;
+            public static System.Collections.Generic.IEnumerable<T> GetCustomAttributes<T>(this System.Reflection.Assembly element) where T : System.Attribute => throw null;
+            public static System.Collections.Generic.IEnumerable<T> GetCustomAttributes<T>(this System.Reflection.MemberInfo element) where T : System.Attribute => throw null;
+            public static System.Collections.Generic.IEnumerable<T> GetCustomAttributes<T>(this System.Reflection.MemberInfo element, bool inherit) where T : System.Attribute => throw null;
+            public static System.Collections.Generic.IEnumerable<T> GetCustomAttributes<T>(this System.Reflection.Module element) where T : System.Attribute => throw null;
+            public static System.Collections.Generic.IEnumerable<T> GetCustomAttributes<T>(this System.Reflection.ParameterInfo element) where T : System.Attribute => throw null;
+            public static System.Collections.Generic.IEnumerable<T> GetCustomAttributes<T>(this System.Reflection.ParameterInfo element, bool inherit) where T : System.Attribute => throw null;
             public static bool IsDefined(this System.Reflection.Assembly element, System.Type attributeType) => throw null;
+            public static bool IsDefined(this System.Reflection.MemberInfo element, System.Type attributeType) => throw null;
+            public static bool IsDefined(this System.Reflection.MemberInfo element, System.Type attributeType, bool inherit) => throw null;
+            public static bool IsDefined(this System.Reflection.Module element, System.Type attributeType) => throw null;
+            public static bool IsDefined(this System.Reflection.ParameterInfo element, System.Type attributeType) => throw null;
+            public static bool IsDefined(this System.Reflection.ParameterInfo element, System.Type attributeType, bool inherit) => throw null;
         }
 
         // Generated from `System.Reflection.CustomAttributeFormatException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CustomAttributeFormatException : System.FormatException
         {
-            public CustomAttributeFormatException(string message, System.Exception inner) => throw null;
-            public CustomAttributeFormatException(string message) => throw null;
             public CustomAttributeFormatException() => throw null;
             protected CustomAttributeFormatException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public CustomAttributeFormatException(string message) => throw null;
+            public CustomAttributeFormatException(string message, System.Exception inner) => throw null;
         }
 
         // Generated from `System.Reflection.CustomAttributeNamedArgument` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -8309,9 +8309,9 @@ namespace System
         {
             public static bool operator !=(System.Reflection.CustomAttributeNamedArgument left, System.Reflection.CustomAttributeNamedArgument right) => throw null;
             public static bool operator ==(System.Reflection.CustomAttributeNamedArgument left, System.Reflection.CustomAttributeNamedArgument right) => throw null;
-            public CustomAttributeNamedArgument(System.Reflection.MemberInfo memberInfo, object value) => throw null;
-            public CustomAttributeNamedArgument(System.Reflection.MemberInfo memberInfo, System.Reflection.CustomAttributeTypedArgument typedArgument) => throw null;
             // Stub generator skipped constructor 
+            public CustomAttributeNamedArgument(System.Reflection.MemberInfo memberInfo, System.Reflection.CustomAttributeTypedArgument typedArgument) => throw null;
+            public CustomAttributeNamedArgument(System.Reflection.MemberInfo memberInfo, object value) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public bool IsField { get => throw null; }
@@ -8327,9 +8327,9 @@ namespace System
             public static bool operator !=(System.Reflection.CustomAttributeTypedArgument left, System.Reflection.CustomAttributeTypedArgument right) => throw null;
             public static bool operator ==(System.Reflection.CustomAttributeTypedArgument left, System.Reflection.CustomAttributeTypedArgument right) => throw null;
             public System.Type ArgumentType { get => throw null; }
-            public CustomAttributeTypedArgument(object value) => throw null;
-            public CustomAttributeTypedArgument(System.Type argumentType, object value) => throw null;
             // Stub generator skipped constructor 
+            public CustomAttributeTypedArgument(System.Type argumentType, object value) => throw null;
+            public CustomAttributeTypedArgument(object value) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public override string ToString() => throw null;
@@ -8364,15 +8364,15 @@ namespace System
             public override bool Equals(object obj) => throw null;
             public virtual System.Type EventHandlerType { get => throw null; }
             protected EventInfo() => throw null;
-            public abstract System.Reflection.MethodInfo GetAddMethod(bool nonPublic);
             public System.Reflection.MethodInfo GetAddMethod() => throw null;
+            public abstract System.Reflection.MethodInfo GetAddMethod(bool nonPublic);
             public override int GetHashCode() => throw null;
-            public virtual System.Reflection.MethodInfo[] GetOtherMethods(bool nonPublic) => throw null;
             public System.Reflection.MethodInfo[] GetOtherMethods() => throw null;
-            public abstract System.Reflection.MethodInfo GetRaiseMethod(bool nonPublic);
+            public virtual System.Reflection.MethodInfo[] GetOtherMethods(bool nonPublic) => throw null;
             public System.Reflection.MethodInfo GetRaiseMethod() => throw null;
-            public abstract System.Reflection.MethodInfo GetRemoveMethod(bool nonPublic);
+            public abstract System.Reflection.MethodInfo GetRaiseMethod(bool nonPublic);
             public System.Reflection.MethodInfo GetRemoveMethod() => throw null;
+            public abstract System.Reflection.MethodInfo GetRemoveMethod(bool nonPublic);
             public virtual bool IsMulticast { get => throw null; }
             public bool IsSpecialName { get => throw null; }
             public override System.Reflection.MemberTypes MemberType { get => throw null; }
@@ -8440,8 +8440,8 @@ namespace System
             public abstract System.RuntimeFieldHandle FieldHandle { get; }
             protected FieldInfo() => throw null;
             public abstract System.Type FieldType { get; }
-            public static System.Reflection.FieldInfo GetFieldFromHandle(System.RuntimeFieldHandle handle, System.RuntimeTypeHandle declaringType) => throw null;
             public static System.Reflection.FieldInfo GetFieldFromHandle(System.RuntimeFieldHandle handle) => throw null;
+            public static System.Reflection.FieldInfo GetFieldFromHandle(System.RuntimeFieldHandle handle, System.RuntimeTypeHandle declaringType) => throw null;
             public override int GetHashCode() => throw null;
             public virtual System.Type[] GetOptionalCustomModifiers() => throw null;
             public virtual object GetRawConstantValue() => throw null;
@@ -8486,8 +8486,8 @@ namespace System
         // Generated from `System.Reflection.ICustomAttributeProvider` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ICustomAttributeProvider
         {
-            object[] GetCustomAttributes(bool inherit);
             object[] GetCustomAttributes(System.Type attributeType, bool inherit);
+            object[] GetCustomAttributes(bool inherit);
             bool IsDefined(System.Type attributeType, bool inherit);
         }
 
@@ -8498,12 +8498,12 @@ namespace System
             System.Reflection.FieldInfo[] GetFields(System.Reflection.BindingFlags bindingAttr);
             System.Reflection.MemberInfo[] GetMember(string name, System.Reflection.BindingFlags bindingAttr);
             System.Reflection.MemberInfo[] GetMembers(System.Reflection.BindingFlags bindingAttr);
-            System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type[] types, System.Reflection.ParameterModifier[] modifiers);
             System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr);
+            System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type[] types, System.Reflection.ParameterModifier[] modifiers);
             System.Reflection.MethodInfo[] GetMethods(System.Reflection.BindingFlags bindingAttr);
             System.Reflection.PropertyInfo[] GetProperties(System.Reflection.BindingFlags bindingAttr);
-            System.Reflection.PropertyInfo GetProperty(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type returnType, System.Type[] types, System.Reflection.ParameterModifier[] modifiers);
             System.Reflection.PropertyInfo GetProperty(string name, System.Reflection.BindingFlags bindingAttr);
+            System.Reflection.PropertyInfo GetProperty(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type returnType, System.Type[] types, System.Reflection.ParameterModifier[] modifiers);
             object InvokeMember(string name, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object target, object[] args, System.Reflection.ParameterModifier[] modifiers, System.Globalization.CultureInfo culture, string[] namedParameters);
             System.Type UnderlyingSystemType { get; }
         }
@@ -8542,10 +8542,10 @@ namespace System
         // Generated from `System.Reflection.InvalidFilterCriteriaException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InvalidFilterCriteriaException : System.ApplicationException
         {
-            public InvalidFilterCriteriaException(string message, System.Exception inner) => throw null;
-            public InvalidFilterCriteriaException(string message) => throw null;
             public InvalidFilterCriteriaException() => throw null;
             protected InvalidFilterCriteriaException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public InvalidFilterCriteriaException(string message) => throw null;
+            public InvalidFilterCriteriaException(string message, System.Exception inner) => throw null;
         }
 
         // Generated from `System.Reflection.LocalVariableInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -8578,8 +8578,8 @@ namespace System
             public virtual System.Collections.Generic.IEnumerable<System.Reflection.CustomAttributeData> CustomAttributes { get => throw null; }
             public abstract System.Type DeclaringType { get; }
             public override bool Equals(object obj) => throw null;
-            public abstract object[] GetCustomAttributes(bool inherit);
             public abstract object[] GetCustomAttributes(System.Type attributeType, bool inherit);
+            public abstract object[] GetCustomAttributes(bool inherit);
             public virtual System.Collections.Generic.IList<System.Reflection.CustomAttributeData> GetCustomAttributesData() => throw null;
             public override int GetHashCode() => throw null;
             public virtual bool HasSameMetadataDefinitionAs(System.Reflection.MemberInfo other) => throw null;
@@ -8651,12 +8651,12 @@ namespace System
             public virtual System.Type[] GetGenericArguments() => throw null;
             public override int GetHashCode() => throw null;
             public virtual System.Reflection.MethodBody GetMethodBody() => throw null;
-            public static System.Reflection.MethodBase GetMethodFromHandle(System.RuntimeMethodHandle handle, System.RuntimeTypeHandle declaringType) => throw null;
             public static System.Reflection.MethodBase GetMethodFromHandle(System.RuntimeMethodHandle handle) => throw null;
+            public static System.Reflection.MethodBase GetMethodFromHandle(System.RuntimeMethodHandle handle, System.RuntimeTypeHandle declaringType) => throw null;
             public abstract System.Reflection.MethodImplAttributes GetMethodImplementationFlags();
             public abstract System.Reflection.ParameterInfo[] GetParameters();
-            public object Invoke(object obj, object[] parameters) => throw null;
             public abstract object Invoke(object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object[] parameters, System.Globalization.CultureInfo culture);
+            public object Invoke(object obj, object[] parameters) => throw null;
             public bool IsAbstract { get => throw null; }
             public bool IsAssembly { get => throw null; }
             public virtual bool IsConstructedGenericMethod { get => throw null; }
@@ -8720,10 +8720,10 @@ namespace System
         {
             public static bool operator !=(System.Reflection.MethodInfo left, System.Reflection.MethodInfo right) => throw null;
             public static bool operator ==(System.Reflection.MethodInfo left, System.Reflection.MethodInfo right) => throw null;
-            public virtual System.Delegate CreateDelegate(System.Type delegateType, object target) => throw null;
             public virtual System.Delegate CreateDelegate(System.Type delegateType) => throw null;
-            public T CreateDelegate<T>(object target) where T : System.Delegate => throw null;
+            public virtual System.Delegate CreateDelegate(System.Type delegateType, object target) => throw null;
             public T CreateDelegate<T>() where T : System.Delegate => throw null;
+            public T CreateDelegate<T>(object target) where T : System.Delegate => throw null;
             public override bool Equals(object obj) => throw null;
             public abstract System.Reflection.MethodInfo GetBaseDefinition();
             public override System.Type[] GetGenericArguments() => throw null;
@@ -8745,7 +8745,7 @@ namespace System
         }
 
         // Generated from `System.Reflection.Module` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public abstract class Module : System.Runtime.Serialization.ISerializable, System.Reflection.ICustomAttributeProvider
+        public abstract class Module : System.Reflection.ICustomAttributeProvider, System.Runtime.Serialization.ISerializable
         {
             public static bool operator !=(System.Reflection.Module left, System.Reflection.Module right) => throw null;
             public static bool operator ==(System.Reflection.Module left, System.Reflection.Module right) => throw null;
@@ -8756,25 +8756,25 @@ namespace System
             public static System.Reflection.TypeFilter FilterTypeNameIgnoreCase;
             public virtual System.Type[] FindTypes(System.Reflection.TypeFilter filter, object filterCriteria) => throw null;
             public virtual string FullyQualifiedName { get => throw null; }
-            public virtual object[] GetCustomAttributes(bool inherit) => throw null;
             public virtual object[] GetCustomAttributes(System.Type attributeType, bool inherit) => throw null;
+            public virtual object[] GetCustomAttributes(bool inherit) => throw null;
             public virtual System.Collections.Generic.IList<System.Reflection.CustomAttributeData> GetCustomAttributesData() => throw null;
-            public virtual System.Reflection.FieldInfo GetField(string name, System.Reflection.BindingFlags bindingAttr) => throw null;
             public System.Reflection.FieldInfo GetField(string name) => throw null;
-            public virtual System.Reflection.FieldInfo[] GetFields(System.Reflection.BindingFlags bindingFlags) => throw null;
+            public virtual System.Reflection.FieldInfo GetField(string name, System.Reflection.BindingFlags bindingAttr) => throw null;
             public System.Reflection.FieldInfo[] GetFields() => throw null;
+            public virtual System.Reflection.FieldInfo[] GetFields(System.Reflection.BindingFlags bindingFlags) => throw null;
             public override int GetHashCode() => throw null;
-            public System.Reflection.MethodInfo GetMethod(string name, System.Type[] types) => throw null;
-            public System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
             public System.Reflection.MethodInfo GetMethod(string name) => throw null;
+            public System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
+            public System.Reflection.MethodInfo GetMethod(string name, System.Type[] types) => throw null;
             protected virtual System.Reflection.MethodInfo GetMethodImpl(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
-            public virtual System.Reflection.MethodInfo[] GetMethods(System.Reflection.BindingFlags bindingFlags) => throw null;
             public System.Reflection.MethodInfo[] GetMethods() => throw null;
+            public virtual System.Reflection.MethodInfo[] GetMethods(System.Reflection.BindingFlags bindingFlags) => throw null;
             public virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public virtual void GetPEKind(out System.Reflection.PortableExecutableKinds peKind, out System.Reflection.ImageFileMachine machine) => throw null;
-            public virtual System.Type GetType(string className, bool throwOnError, bool ignoreCase) => throw null;
-            public virtual System.Type GetType(string className, bool ignoreCase) => throw null;
             public virtual System.Type GetType(string className) => throw null;
+            public virtual System.Type GetType(string className, bool ignoreCase) => throw null;
+            public virtual System.Type GetType(string className, bool throwOnError, bool ignoreCase) => throw null;
             public virtual System.Type[] GetTypes() => throw null;
             public virtual bool IsDefined(System.Type attributeType, bool inherit) => throw null;
             public virtual bool IsResource() => throw null;
@@ -8784,16 +8784,16 @@ namespace System
             public System.ModuleHandle ModuleHandle { get => throw null; }
             public virtual System.Guid ModuleVersionId { get => throw null; }
             public virtual string Name { get => throw null; }
-            public virtual System.Reflection.FieldInfo ResolveField(int metadataToken, System.Type[] genericTypeArguments, System.Type[] genericMethodArguments) => throw null;
             public System.Reflection.FieldInfo ResolveField(int metadataToken) => throw null;
-            public virtual System.Reflection.MemberInfo ResolveMember(int metadataToken, System.Type[] genericTypeArguments, System.Type[] genericMethodArguments) => throw null;
+            public virtual System.Reflection.FieldInfo ResolveField(int metadataToken, System.Type[] genericTypeArguments, System.Type[] genericMethodArguments) => throw null;
             public System.Reflection.MemberInfo ResolveMember(int metadataToken) => throw null;
-            public virtual System.Reflection.MethodBase ResolveMethod(int metadataToken, System.Type[] genericTypeArguments, System.Type[] genericMethodArguments) => throw null;
+            public virtual System.Reflection.MemberInfo ResolveMember(int metadataToken, System.Type[] genericTypeArguments, System.Type[] genericMethodArguments) => throw null;
             public System.Reflection.MethodBase ResolveMethod(int metadataToken) => throw null;
+            public virtual System.Reflection.MethodBase ResolveMethod(int metadataToken, System.Type[] genericTypeArguments, System.Type[] genericMethodArguments) => throw null;
             public virtual System.Byte[] ResolveSignature(int metadataToken) => throw null;
             public virtual string ResolveString(int metadataToken) => throw null;
-            public virtual System.Type ResolveType(int metadataToken, System.Type[] genericTypeArguments, System.Type[] genericMethodArguments) => throw null;
             public System.Type ResolveType(int metadataToken) => throw null;
+            public virtual System.Type ResolveType(int metadataToken, System.Type[] genericTypeArguments, System.Type[] genericMethodArguments) => throw null;
             public virtual string ScopeName { get => throw null; }
             public override string ToString() => throw null;
         }
@@ -8837,7 +8837,7 @@ namespace System
         }
 
         // Generated from `System.Reflection.ParameterInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class ParameterInfo : System.Runtime.Serialization.IObjectReference, System.Reflection.ICustomAttributeProvider
+        public class ParameterInfo : System.Reflection.ICustomAttributeProvider, System.Runtime.Serialization.IObjectReference
         {
             public virtual System.Reflection.ParameterAttributes Attributes { get => throw null; }
             protected System.Reflection.ParameterAttributes AttrsImpl;
@@ -8845,8 +8845,8 @@ namespace System
             public virtual System.Collections.Generic.IEnumerable<System.Reflection.CustomAttributeData> CustomAttributes { get => throw null; }
             public virtual object DefaultValue { get => throw null; }
             protected object DefaultValueImpl;
-            public virtual object[] GetCustomAttributes(bool inherit) => throw null;
             public virtual object[] GetCustomAttributes(System.Type attributeType, bool inherit) => throw null;
+            public virtual object[] GetCustomAttributes(bool inherit) => throw null;
             public virtual System.Collections.Generic.IList<System.Reflection.CustomAttributeData> GetCustomAttributesData() => throw null;
             public virtual System.Type[] GetOptionalCustomModifiers() => throw null;
             public object GetRealObject(System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -8875,8 +8875,8 @@ namespace System
         public struct ParameterModifier
         {
             public bool this[int index] { get => throw null; set => throw null; }
-            public ParameterModifier(int parameterCount) => throw null;
             // Stub generator skipped constructor 
+            public ParameterModifier(int parameterCount) => throw null;
         }
 
         // Generated from `System.Reflection.Pointer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -8933,30 +8933,30 @@ namespace System
             public abstract bool CanRead { get; }
             public abstract bool CanWrite { get; }
             public override bool Equals(object obj) => throw null;
-            public abstract System.Reflection.MethodInfo[] GetAccessors(bool nonPublic);
             public System.Reflection.MethodInfo[] GetAccessors() => throw null;
+            public abstract System.Reflection.MethodInfo[] GetAccessors(bool nonPublic);
             public virtual object GetConstantValue() => throw null;
-            public abstract System.Reflection.MethodInfo GetGetMethod(bool nonPublic);
             public System.Reflection.MethodInfo GetGetMethod() => throw null;
+            public abstract System.Reflection.MethodInfo GetGetMethod(bool nonPublic);
             public override int GetHashCode() => throw null;
             public abstract System.Reflection.ParameterInfo[] GetIndexParameters();
             public virtual System.Reflection.MethodInfo GetMethod { get => throw null; }
             public virtual System.Type[] GetOptionalCustomModifiers() => throw null;
             public virtual object GetRawConstantValue() => throw null;
             public virtual System.Type[] GetRequiredCustomModifiers() => throw null;
-            public abstract System.Reflection.MethodInfo GetSetMethod(bool nonPublic);
             public System.Reflection.MethodInfo GetSetMethod() => throw null;
-            public virtual object GetValue(object obj, object[] index) => throw null;
+            public abstract System.Reflection.MethodInfo GetSetMethod(bool nonPublic);
             public object GetValue(object obj) => throw null;
             public abstract object GetValue(object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object[] index, System.Globalization.CultureInfo culture);
+            public virtual object GetValue(object obj, object[] index) => throw null;
             public bool IsSpecialName { get => throw null; }
             public override System.Reflection.MemberTypes MemberType { get => throw null; }
             protected PropertyInfo() => throw null;
             public abstract System.Type PropertyType { get; }
             public virtual System.Reflection.MethodInfo SetMethod { get => throw null; }
             public void SetValue(object obj, object value) => throw null;
-            public virtual void SetValue(object obj, object value, object[] index) => throw null;
             public abstract void SetValue(object obj, object value, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object[] index, System.Globalization.CultureInfo culture);
+            public virtual void SetValue(object obj, object value, object[] index) => throw null;
         }
 
         // Generated from `System.Reflection.ReflectionContext` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -8974,8 +8974,8 @@ namespace System
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public System.Exception[] LoaderExceptions { get => throw null; }
             public override string Message { get => throw null; }
-            public ReflectionTypeLoadException(System.Type[] classes, System.Exception[] exceptions, string message) => throw null;
             public ReflectionTypeLoadException(System.Type[] classes, System.Exception[] exceptions) => throw null;
+            public ReflectionTypeLoadException(System.Type[] classes, System.Exception[] exceptions, string message) => throw null;
             public override string ToString() => throw null;
             public System.Type[] Types { get => throw null; }
         }
@@ -9014,39 +9014,39 @@ namespace System
         }
 
         // Generated from `System.Reflection.StrongNameKeyPair` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class StrongNameKeyPair : System.Runtime.Serialization.ISerializable, System.Runtime.Serialization.IDeserializationCallback
+        public class StrongNameKeyPair : System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
         {
             void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) => throw null;
             public System.Byte[] PublicKey { get => throw null; }
-            public StrongNameKeyPair(string keyPairContainer) => throw null;
-            public StrongNameKeyPair(System.IO.FileStream keyPairFile) => throw null;
             public StrongNameKeyPair(System.Byte[] keyPairArray) => throw null;
+            public StrongNameKeyPair(System.IO.FileStream keyPairFile) => throw null;
             protected StrongNameKeyPair(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public StrongNameKeyPair(string keyPairContainer) => throw null;
         }
 
         // Generated from `System.Reflection.TargetException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TargetException : System.ApplicationException
         {
-            public TargetException(string message, System.Exception inner) => throw null;
-            public TargetException(string message) => throw null;
             public TargetException() => throw null;
             protected TargetException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public TargetException(string message) => throw null;
+            public TargetException(string message, System.Exception inner) => throw null;
         }
 
         // Generated from `System.Reflection.TargetInvocationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TargetInvocationException : System.ApplicationException
         {
-            public TargetInvocationException(string message, System.Exception inner) => throw null;
             public TargetInvocationException(System.Exception inner) => throw null;
+            public TargetInvocationException(string message, System.Exception inner) => throw null;
         }
 
         // Generated from `System.Reflection.TargetParameterCountException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TargetParameterCountException : System.ApplicationException
         {
-            public TargetParameterCountException(string message, System.Exception inner) => throw null;
-            public TargetParameterCountException(string message) => throw null;
             public TargetParameterCountException() => throw null;
+            public TargetParameterCountException(string message) => throw null;
+            public TargetParameterCountException(string message, System.Exception inner) => throw null;
         }
 
         // Generated from `System.Reflection.TypeAttributes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9098,12 +9098,12 @@ namespace System
             protected override System.Reflection.TypeAttributes GetAttributeFlagsImpl() => throw null;
             protected override System.Reflection.ConstructorInfo GetConstructorImpl(System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
             public override System.Reflection.ConstructorInfo[] GetConstructors(System.Reflection.BindingFlags bindingAttr) => throw null;
-            public override object[] GetCustomAttributes(bool inherit) => throw null;
             public override object[] GetCustomAttributes(System.Type attributeType, bool inherit) => throw null;
+            public override object[] GetCustomAttributes(bool inherit) => throw null;
             public override System.Type GetElementType() => throw null;
             public override System.Reflection.EventInfo GetEvent(string name, System.Reflection.BindingFlags bindingAttr) => throw null;
-            public override System.Reflection.EventInfo[] GetEvents(System.Reflection.BindingFlags bindingAttr) => throw null;
             public override System.Reflection.EventInfo[] GetEvents() => throw null;
+            public override System.Reflection.EventInfo[] GetEvents(System.Reflection.BindingFlags bindingAttr) => throw null;
             public override System.Reflection.FieldInfo GetField(string name, System.Reflection.BindingFlags bindingAttr) => throw null;
             public override System.Reflection.FieldInfo[] GetFields(System.Reflection.BindingFlags bindingAttr) => throw null;
             public override System.Type GetInterface(string name, bool ignoreCase) => throw null;
@@ -9139,8 +9139,8 @@ namespace System
             public override System.Reflection.Module Module { get => throw null; }
             public override string Name { get => throw null; }
             public override string Namespace { get => throw null; }
-            public TypeDelegator(System.Type delegatingType) => throw null;
             protected TypeDelegator() => throw null;
+            public TypeDelegator(System.Type delegatingType) => throw null;
             public override System.RuntimeTypeHandle TypeHandle { get => throw null; }
             public override System.Type UnderlyingSystemType { get => throw null; }
             protected System.Type typeImpl;
@@ -9177,7 +9177,7 @@ namespace System
     namespace Resources
     {
         // Generated from `System.Resources.IResourceReader` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public interface IResourceReader : System.IDisposable, System.Collections.IEnumerable
+        public interface IResourceReader : System.Collections.IEnumerable, System.IDisposable
         {
             void Close();
             System.Collections.IDictionaryEnumerator GetEnumerator();
@@ -9186,21 +9186,21 @@ namespace System
         // Generated from `System.Resources.MissingManifestResourceException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MissingManifestResourceException : System.SystemException
         {
-            public MissingManifestResourceException(string message, System.Exception inner) => throw null;
-            public MissingManifestResourceException(string message) => throw null;
             public MissingManifestResourceException() => throw null;
             protected MissingManifestResourceException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public MissingManifestResourceException(string message) => throw null;
+            public MissingManifestResourceException(string message, System.Exception inner) => throw null;
         }
 
         // Generated from `System.Resources.MissingSatelliteAssemblyException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MissingSatelliteAssemblyException : System.SystemException
         {
             public string CultureName { get => throw null; }
-            public MissingSatelliteAssemblyException(string message, string cultureName) => throw null;
-            public MissingSatelliteAssemblyException(string message, System.Exception inner) => throw null;
-            public MissingSatelliteAssemblyException(string message) => throw null;
             public MissingSatelliteAssemblyException() => throw null;
             protected MissingSatelliteAssemblyException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public MissingSatelliteAssemblyException(string message) => throw null;
+            public MissingSatelliteAssemblyException(string message, System.Exception inner) => throw null;
+            public MissingSatelliteAssemblyException(string message, string cultureName) => throw null;
         }
 
         // Generated from `System.Resources.NeutralResourcesLanguageAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9208,8 +9208,8 @@ namespace System
         {
             public string CultureName { get => throw null; }
             public System.Resources.UltimateResourceFallbackLocation Location { get => throw null; }
-            public NeutralResourcesLanguageAttribute(string cultureName, System.Resources.UltimateResourceFallbackLocation location) => throw null;
             public NeutralResourcesLanguageAttribute(string cultureName) => throw null;
+            public NeutralResourcesLanguageAttribute(string cultureName, System.Resources.UltimateResourceFallbackLocation location) => throw null;
         }
 
         // Generated from `System.Resources.ResourceManager` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9219,42 +9219,42 @@ namespace System
             public static System.Resources.ResourceManager CreateFileBasedResourceManager(string baseName, string resourceDir, System.Type usingResourceSet) => throw null;
             protected System.Resources.UltimateResourceFallbackLocation FallbackLocation { get => throw null; set => throw null; }
             protected static System.Globalization.CultureInfo GetNeutralResourcesLanguage(System.Reflection.Assembly a) => throw null;
-            public virtual object GetObject(string name, System.Globalization.CultureInfo culture) => throw null;
             public virtual object GetObject(string name) => throw null;
+            public virtual object GetObject(string name, System.Globalization.CultureInfo culture) => throw null;
             protected virtual string GetResourceFileName(System.Globalization.CultureInfo culture) => throw null;
             public virtual System.Resources.ResourceSet GetResourceSet(System.Globalization.CultureInfo culture, bool createIfNotExists, bool tryParents) => throw null;
             protected static System.Version GetSatelliteContractVersion(System.Reflection.Assembly a) => throw null;
-            public System.IO.UnmanagedMemoryStream GetStream(string name, System.Globalization.CultureInfo culture) => throw null;
             public System.IO.UnmanagedMemoryStream GetStream(string name) => throw null;
-            public virtual string GetString(string name, System.Globalization.CultureInfo culture) => throw null;
+            public System.IO.UnmanagedMemoryStream GetStream(string name, System.Globalization.CultureInfo culture) => throw null;
             public virtual string GetString(string name) => throw null;
+            public virtual string GetString(string name, System.Globalization.CultureInfo culture) => throw null;
             public static int HeaderVersionNumber;
             public virtual bool IgnoreCase { get => throw null; set => throw null; }
             protected virtual System.Resources.ResourceSet InternalGetResourceSet(System.Globalization.CultureInfo culture, bool createIfNotExists, bool tryParents) => throw null;
             public static int MagicNumber;
             protected System.Reflection.Assembly MainAssembly;
             public virtual void ReleaseAllResources() => throw null;
-            public ResourceManager(string baseName, System.Reflection.Assembly assembly, System.Type usingResourceSet) => throw null;
-            public ResourceManager(string baseName, System.Reflection.Assembly assembly) => throw null;
-            public ResourceManager(System.Type resourceSource) => throw null;
             protected ResourceManager() => throw null;
+            public ResourceManager(System.Type resourceSource) => throw null;
+            public ResourceManager(string baseName, System.Reflection.Assembly assembly) => throw null;
+            public ResourceManager(string baseName, System.Reflection.Assembly assembly, System.Type usingResourceSet) => throw null;
             public virtual System.Type ResourceSetType { get => throw null; }
         }
 
         // Generated from `System.Resources.ResourceReader` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class ResourceReader : System.Resources.IResourceReader, System.IDisposable, System.Collections.IEnumerable
+        public class ResourceReader : System.Collections.IEnumerable, System.IDisposable, System.Resources.IResourceReader
         {
             public void Close() => throw null;
             public void Dispose() => throw null;
             public System.Collections.IDictionaryEnumerator GetEnumerator() => throw null;
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             public void GetResourceData(string resourceName, out string resourceType, out System.Byte[] resourceData) => throw null;
-            public ResourceReader(string fileName) => throw null;
             public ResourceReader(System.IO.Stream stream) => throw null;
+            public ResourceReader(string fileName) => throw null;
         }
 
         // Generated from `System.Resources.ResourceSet` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class ResourceSet : System.IDisposable, System.Collections.IEnumerable
+        public class ResourceSet : System.Collections.IEnumerable, System.IDisposable
         {
             public virtual void Close() => throw null;
             public void Dispose() => throw null;
@@ -9263,15 +9263,15 @@ namespace System
             public virtual System.Type GetDefaultWriter() => throw null;
             public virtual System.Collections.IDictionaryEnumerator GetEnumerator() => throw null;
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
-            public virtual object GetObject(string name, bool ignoreCase) => throw null;
             public virtual object GetObject(string name) => throw null;
-            public virtual string GetString(string name, bool ignoreCase) => throw null;
+            public virtual object GetObject(string name, bool ignoreCase) => throw null;
             public virtual string GetString(string name) => throw null;
+            public virtual string GetString(string name, bool ignoreCase) => throw null;
             protected virtual void ReadResources() => throw null;
-            public ResourceSet(string fileName) => throw null;
+            protected ResourceSet() => throw null;
             public ResourceSet(System.Resources.IResourceReader reader) => throw null;
             public ResourceSet(System.IO.Stream stream) => throw null;
-            protected ResourceSet() => throw null;
+            public ResourceSet(string fileName) => throw null;
         }
 
         // Generated from `System.Resources.SatelliteContractVersionAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9294,9 +9294,9 @@ namespace System
         // Generated from `System.Runtime.AmbiguousImplementationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AmbiguousImplementationException : System.Exception
         {
-            public AmbiguousImplementationException(string message, System.Exception innerException) => throw null;
-            public AmbiguousImplementationException(string message) => throw null;
             public AmbiguousImplementationException() => throw null;
+            public AmbiguousImplementationException(string message) => throw null;
+            public AmbiguousImplementationException(string message, System.Exception innerException) => throw null;
         }
 
         // Generated from `System.Runtime.AssemblyTargetedPatchBandAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9521,8 +9521,8 @@ namespace System
             public class CompilationRelaxationsAttribute : System.Attribute
             {
                 public int CompilationRelaxations { get => throw null; }
-                public CompilationRelaxationsAttribute(int relaxations) => throw null;
                 public CompilationRelaxationsAttribute(System.Runtime.CompilerServices.CompilationRelaxations relaxations) => throw null;
+                public CompilationRelaxationsAttribute(int relaxations) => throw null;
             }
 
             // Generated from `System.Runtime.CompilerServices.CompilerGeneratedAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9538,18 +9538,18 @@ namespace System
             }
 
             // Generated from `System.Runtime.CompilerServices.ConditionalWeakTable<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class ConditionalWeakTable<TKey, TValue> : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> where TKey : class where TValue : class
+            public class ConditionalWeakTable<TKey, TValue> : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable where TKey : class where TValue : class
             {
-                public void Add(TKey key, TValue value) => throw null;
-                public void AddOrUpdate(TKey key, TValue value) => throw null;
-                public void Clear() => throw null;
-                public ConditionalWeakTable() => throw null;
                 // Generated from `System.Runtime.CompilerServices.ConditionalWeakTable<,>+CreateValueCallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public delegate TValue CreateValueCallback(TKey key);
 
 
-                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
+                public void Add(TKey key, TValue value) => throw null;
+                public void AddOrUpdate(TKey key, TValue value) => throw null;
+                public void Clear() => throw null;
+                public ConditionalWeakTable() => throw null;
                 System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>.GetEnumerator() => throw null;
+                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                 public TValue GetOrCreateValue(TKey key) => throw null;
                 public TValue GetValue(TKey key, System.Runtime.CompilerServices.ConditionalWeakTable<TKey, TValue>.CreateValueCallback createValueCallback) => throw null;
                 public bool Remove(TKey key) => throw null;
@@ -9566,8 +9566,6 @@ namespace System
             // Generated from `System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ConfiguredCancelableAsyncEnumerable<T>
             {
-                public System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait(bool continueOnCapturedContext) => throw null;
-                // Stub generator skipped constructor 
                 // Generated from `System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<>+Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator
                 {
@@ -9578,6 +9576,8 @@ namespace System
                 }
 
 
+                public System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait(bool continueOnCapturedContext) => throw null;
+                // Stub generator skipped constructor 
                 public System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T>.Enumerator GetAsyncEnumerator() => throw null;
                 public System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> WithCancellation(System.Threading.CancellationToken cancellationToken) => throw null;
             }
@@ -9585,9 +9585,8 @@ namespace System
             // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ConfiguredTaskAwaitable
             {
-                // Stub generator skipped constructor 
                 // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable+ConfiguredTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public struct ConfiguredTaskAwaiter : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
+                public struct ConfiguredTaskAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
                 {
                     // Stub generator skipped constructor 
                     public void GetResult() => throw null;
@@ -9597,15 +9596,15 @@ namespace System
                 }
 
 
+                // Stub generator skipped constructor 
                 public System.Runtime.CompilerServices.ConfiguredTaskAwaitable.ConfiguredTaskAwaiter GetAwaiter() => throw null;
             }
 
             // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ConfiguredTaskAwaitable<TResult>
             {
-                // Stub generator skipped constructor 
                 // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>+ConfiguredTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public struct ConfiguredTaskAwaiter : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
+                public struct ConfiguredTaskAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
                 {
                     // Stub generator skipped constructor 
                     public TResult GetResult() => throw null;
@@ -9615,15 +9614,15 @@ namespace System
                 }
 
 
+                // Stub generator skipped constructor 
                 public System.Runtime.CompilerServices.ConfiguredTaskAwaitable<TResult>.ConfiguredTaskAwaiter GetAwaiter() => throw null;
             }
 
             // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ConfiguredValueTaskAwaitable
             {
-                // Stub generator skipped constructor 
                 // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable+ConfiguredValueTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public struct ConfiguredValueTaskAwaiter : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
+                public struct ConfiguredValueTaskAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
                 {
                     // Stub generator skipped constructor 
                     public void GetResult() => throw null;
@@ -9633,15 +9632,15 @@ namespace System
                 }
 
 
+                // Stub generator skipped constructor 
                 public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable.ConfiguredValueTaskAwaiter GetAwaiter() => throw null;
             }
 
             // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ConfiguredValueTaskAwaitable<TResult>
             {
-                // Stub generator skipped constructor 
                 // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<>+ConfiguredValueTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public struct ConfiguredValueTaskAwaiter : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
+                public struct ConfiguredValueTaskAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
                 {
                     // Stub generator skipped constructor 
                     public TResult GetResult() => throw null;
@@ -9651,6 +9650,7 @@ namespace System
                 }
 
 
+                // Stub generator skipped constructor 
                 public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<TResult>.ConfiguredValueTaskAwaiter GetAwaiter() => throw null;
             }
 
@@ -9797,7 +9797,7 @@ namespace System
             {
             }
 
-            // Generated from `System.Runtime.CompilerServices.IsReadOnlyAttribute` in `Microsoft.Extensions.FileSystemGlobbing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Logging.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Logging.Console, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.IO.Pipelines, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.IsReadOnlyAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class IsReadOnlyAttribute : System.Attribute
             {
                 public IsReadOnlyAttribute() => throw null;
@@ -9835,9 +9835,9 @@ namespace System
             public class MethodImplAttribute : System.Attribute
             {
                 public System.Runtime.CompilerServices.MethodCodeType MethodCodeType;
+                public MethodImplAttribute() => throw null;
                 public MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions methodImplOptions) => throw null;
                 public MethodImplAttribute(System.Int16 value) => throw null;
-                public MethodImplAttribute() => throw null;
                 public System.Runtime.CompilerServices.MethodImplOptions Value { get => throw null; }
             }
 
@@ -9872,8 +9872,8 @@ namespace System
             public class ReferenceAssemblyAttribute : System.Attribute
             {
                 public string Description { get => throw null; }
-                public ReferenceAssemblyAttribute(string description) => throw null;
                 public ReferenceAssemblyAttribute() => throw null;
+                public ReferenceAssemblyAttribute(string description) => throw null;
             }
 
             // Generated from `System.Runtime.CompilerServices.RuntimeCompatibilityAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9898,11 +9898,15 @@ namespace System
             // Generated from `System.Runtime.CompilerServices.RuntimeHelpers` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class RuntimeHelpers
             {
-                public static System.IntPtr AllocateTypeAssociatedMemory(System.Type type, int size) => throw null;
                 // Generated from `System.Runtime.CompilerServices.RuntimeHelpers+CleanupCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public delegate void CleanupCode(object userData, bool exceptionThrown);
 
 
+                // Generated from `System.Runtime.CompilerServices.RuntimeHelpers+TryCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                public delegate void TryCode(object userData);
+
+
+                public static System.IntPtr AllocateTypeAssociatedMemory(System.Type type, int size) => throw null;
                 public static void EnsureSufficientExecutionStack() => throw null;
                 public static bool Equals(object o1, object o2) => throw null;
                 public static void ExecuteCodeWithGuaranteedCleanup(System.Runtime.CompilerServices.RuntimeHelpers.TryCode code, System.Runtime.CompilerServices.RuntimeHelpers.CleanupCode backoutCode, object userData) => throw null;
@@ -9917,15 +9921,11 @@ namespace System
                 public static void PrepareConstrainedRegionsNoOP() => throw null;
                 public static void PrepareContractedDelegate(System.Delegate d) => throw null;
                 public static void PrepareDelegate(System.Delegate d) => throw null;
-                public static void PrepareMethod(System.RuntimeMethodHandle method, System.RuntimeTypeHandle[] instantiation) => throw null;
                 public static void PrepareMethod(System.RuntimeMethodHandle method) => throw null;
+                public static void PrepareMethod(System.RuntimeMethodHandle method, System.RuntimeTypeHandle[] instantiation) => throw null;
                 public static void ProbeForSufficientStack() => throw null;
                 public static void RunClassConstructor(System.RuntimeTypeHandle type) => throw null;
                 public static void RunModuleConstructor(System.ModuleHandle module) => throw null;
-                // Generated from `System.Runtime.CompilerServices.RuntimeHelpers+TryCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public delegate void TryCode(object userData);
-
-
                 public static bool TryEnsureSufficientExecutionStack() => throw null;
             }
 
@@ -9965,8 +9965,8 @@ namespace System
             // Generated from `System.Runtime.CompilerServices.StrongBox<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StrongBox<T> : System.Runtime.CompilerServices.IStrongBox
             {
-                public StrongBox(T value) => throw null;
                 public StrongBox() => throw null;
+                public StrongBox(T value) => throw null;
                 public T Value;
                 object System.Runtime.CompilerServices.IStrongBox.Value { get => throw null; set => throw null; }
             }
@@ -9982,16 +9982,16 @@ namespace System
             {
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
                 public override string Message { get => throw null; }
-                public SwitchExpressionException(string message, System.Exception innerException) => throw null;
-                public SwitchExpressionException(string message) => throw null;
-                public SwitchExpressionException(object unmatchedValue) => throw null;
-                public SwitchExpressionException(System.Exception innerException) => throw null;
                 public SwitchExpressionException() => throw null;
+                public SwitchExpressionException(System.Exception innerException) => throw null;
+                public SwitchExpressionException(object unmatchedValue) => throw null;
+                public SwitchExpressionException(string message) => throw null;
+                public SwitchExpressionException(string message, System.Exception innerException) => throw null;
                 public object UnmatchedValue { get => throw null; }
             }
 
             // Generated from `System.Runtime.CompilerServices.TaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public struct TaskAwaiter : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
+            public struct TaskAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
             {
                 public void GetResult() => throw null;
                 public bool IsCompleted { get => throw null; }
@@ -10001,7 +10001,7 @@ namespace System
             }
 
             // Generated from `System.Runtime.CompilerServices.TaskAwaiter<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public struct TaskAwaiter<TResult> : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
+            public struct TaskAwaiter<TResult> : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
             {
                 public TResult GetResult() => throw null;
                 public bool IsCompleted { get => throw null; }
@@ -10038,7 +10038,7 @@ namespace System
             }
 
             // Generated from `System.Runtime.CompilerServices.ValueTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public struct ValueTaskAwaiter : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
+            public struct ValueTaskAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
             {
                 public void GetResult() => throw null;
                 public bool IsCompleted { get => throw null; }
@@ -10048,7 +10048,7 @@ namespace System
             }
 
             // Generated from `System.Runtime.CompilerServices.ValueTaskAwaiter<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public struct ValueTaskAwaiter<TResult> : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
+            public struct ValueTaskAwaiter<TResult> : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
             {
                 public TResult GetResult() => throw null;
                 public bool IsCompleted { get => throw null; }
@@ -10060,10 +10060,8 @@ namespace System
             // Generated from `System.Runtime.CompilerServices.YieldAwaitable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct YieldAwaitable
             {
-                public System.Runtime.CompilerServices.YieldAwaitable.YieldAwaiter GetAwaiter() => throw null;
-                // Stub generator skipped constructor 
                 // Generated from `System.Runtime.CompilerServices.YieldAwaitable+YieldAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public struct YieldAwaiter : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
+                public struct YieldAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
                 {
                     public void GetResult() => throw null;
                     public bool IsCompleted { get => throw null; }
@@ -10073,6 +10071,8 @@ namespace System
                 }
 
 
+                public System.Runtime.CompilerServices.YieldAwaitable.YieldAwaiter GetAwaiter() => throw null;
+                // Stub generator skipped constructor 
             }
 
         }
@@ -10181,11 +10181,11 @@ namespace System
             public class ExternalException : System.SystemException
             {
                 public virtual int ErrorCode { get => throw null; }
-                public ExternalException(string message, int errorCode) => throw null;
-                public ExternalException(string message, System.Exception inner) => throw null;
-                public ExternalException(string message) => throw null;
                 public ExternalException() => throw null;
                 protected ExternalException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public ExternalException(string message) => throw null;
+                public ExternalException(string message, System.Exception inner) => throw null;
+                public ExternalException(string message, int errorCode) => throw null;
                 public override string ToString() => throw null;
             }
 
@@ -10202,8 +10202,8 @@ namespace System
                 public static bool operator !=(System.Runtime.InteropServices.GCHandle a, System.Runtime.InteropServices.GCHandle b) => throw null;
                 public static bool operator ==(System.Runtime.InteropServices.GCHandle a, System.Runtime.InteropServices.GCHandle b) => throw null;
                 public System.IntPtr AddrOfPinnedObject() => throw null;
-                public static System.Runtime.InteropServices.GCHandle Alloc(object value, System.Runtime.InteropServices.GCHandleType type) => throw null;
                 public static System.Runtime.InteropServices.GCHandle Alloc(object value) => throw null;
+                public static System.Runtime.InteropServices.GCHandle Alloc(object value, System.Runtime.InteropServices.GCHandleType type) => throw null;
                 public override bool Equals(object o) => throw null;
                 public void Free() => throw null;
                 public static System.Runtime.InteropServices.GCHandle FromIntPtr(System.IntPtr value) => throw null;
@@ -10212,8 +10212,8 @@ namespace System
                 public bool IsAllocated { get => throw null; }
                 public object Target { get => throw null; set => throw null; }
                 public static System.IntPtr ToIntPtr(System.Runtime.InteropServices.GCHandle value) => throw null;
-                public static explicit operator System.Runtime.InteropServices.GCHandle(System.IntPtr value) => throw null;
                 public static explicit operator System.IntPtr(System.Runtime.InteropServices.GCHandle value) => throw null;
+                public static explicit operator System.Runtime.InteropServices.GCHandle(System.IntPtr value) => throw null;
             }
 
             // Generated from `System.Runtime.InteropServices.GCHandleType` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -10250,9 +10250,9 @@ namespace System
             {
                 unsafe public void AcquirePointer(ref System.Byte* pointer) => throw null;
                 public System.UInt64 ByteLength { get => throw null; }
-                public void Initialize<T>(System.UInt32 numElements) where T : struct => throw null;
-                public void Initialize(System.UInt64 numBytes) => throw null;
                 public void Initialize(System.UInt32 numElements, System.UInt32 sizeOfEachElement) => throw null;
+                public void Initialize(System.UInt64 numBytes) => throw null;
+                public void Initialize<T>(System.UInt32 numElements) where T : struct => throw null;
                 public T Read<T>(System.UInt64 byteOffset) where T : struct => throw null;
                 public void ReadArray<T>(System.UInt64 byteOffset, T[] array, int index, int count) where T : struct => throw null;
                 public void ReleasePointer() => throw null;
@@ -10319,8 +10319,8 @@ namespace System
             // Generated from `System.Runtime.Serialization.IFormatterConverter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IFormatterConverter
             {
-                object Convert(object value, System.TypeCode typeCode);
                 object Convert(object value, System.Type type);
+                object Convert(object value, System.TypeCode typeCode);
                 bool ToBoolean(object value);
                 System.Byte ToByte(object value);
                 System.Char ToChar(object value);
@@ -10406,31 +10406,31 @@ namespace System
             // Generated from `System.Runtime.Serialization.SerializationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SerializationException : System.SystemException
             {
-                public SerializationException(string message, System.Exception innerException) => throw null;
-                public SerializationException(string message) => throw null;
                 public SerializationException() => throw null;
                 protected SerializationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public SerializationException(string message) => throw null;
+                public SerializationException(string message, System.Exception innerException) => throw null;
             }
 
             // Generated from `System.Runtime.Serialization.SerializationInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SerializationInfo
             {
-                public void AddValue(string name, object value, System.Type type) => throw null;
-                public void AddValue(string name, object value) => throw null;
-                public void AddValue(string name, int value) => throw null;
-                public void AddValue(string name, float value) => throw null;
-                public void AddValue(string name, double value) => throw null;
-                public void AddValue(string name, bool value) => throw null;
-                public void AddValue(string name, System.UInt64 value) => throw null;
-                public void AddValue(string name, System.UInt32 value) => throw null;
-                public void AddValue(string name, System.UInt16 value) => throw null;
-                public void AddValue(string name, System.SByte value) => throw null;
-                public void AddValue(string name, System.Int64 value) => throw null;
-                public void AddValue(string name, System.Int16 value) => throw null;
-                public void AddValue(string name, System.Decimal value) => throw null;
                 public void AddValue(string name, System.DateTime value) => throw null;
-                public void AddValue(string name, System.Char value) => throw null;
+                public void AddValue(string name, bool value) => throw null;
                 public void AddValue(string name, System.Byte value) => throw null;
+                public void AddValue(string name, System.Char value) => throw null;
+                public void AddValue(string name, System.Decimal value) => throw null;
+                public void AddValue(string name, double value) => throw null;
+                public void AddValue(string name, float value) => throw null;
+                public void AddValue(string name, int value) => throw null;
+                public void AddValue(string name, System.Int64 value) => throw null;
+                public void AddValue(string name, object value) => throw null;
+                public void AddValue(string name, object value, System.Type type) => throw null;
+                public void AddValue(string name, System.SByte value) => throw null;
+                public void AddValue(string name, System.Int16 value) => throw null;
+                public void AddValue(string name, System.UInt32 value) => throw null;
+                public void AddValue(string name, System.UInt64 value) => throw null;
+                public void AddValue(string name, System.UInt16 value) => throw null;
                 public string AssemblyName { get => throw null; set => throw null; }
                 public string FullTypeName { get => throw null; set => throw null; }
                 public bool GetBoolean(string name) => throw null;
@@ -10454,8 +10454,8 @@ namespace System
                 public bool IsFullTypeNameSetExplicit { get => throw null; }
                 public int MemberCount { get => throw null; }
                 public System.Type ObjectType { get => throw null; }
-                public SerializationInfo(System.Type type, System.Runtime.Serialization.IFormatterConverter converter, bool requireSameTokenInPartialTrust) => throw null;
                 public SerializationInfo(System.Type type, System.Runtime.Serialization.IFormatterConverter converter) => throw null;
+                public SerializationInfo(System.Type type, System.Runtime.Serialization.IFormatterConverter converter, bool requireSameTokenInPartialTrust) => throw null;
                 public void SetType(System.Type type) => throw null;
             }
 
@@ -10478,9 +10478,9 @@ namespace System
                 public override bool Equals(object obj) => throw null;
                 public override int GetHashCode() => throw null;
                 public System.Runtime.Serialization.StreamingContextStates State { get => throw null; }
-                public StreamingContext(System.Runtime.Serialization.StreamingContextStates state, object additional) => throw null;
-                public StreamingContext(System.Runtime.Serialization.StreamingContextStates state) => throw null;
                 // Stub generator skipped constructor 
+                public StreamingContext(System.Runtime.Serialization.StreamingContextStates state) => throw null;
+                public StreamingContext(System.Runtime.Serialization.StreamingContextStates state, object additional) => throw null;
             }
 
             // Generated from `System.Runtime.Serialization.StreamingContextStates` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -10523,11 +10523,11 @@ namespace System
             {
                 public static bool operator !=(System.Runtime.Versioning.FrameworkName left, System.Runtime.Versioning.FrameworkName right) => throw null;
                 public static bool operator ==(System.Runtime.Versioning.FrameworkName left, System.Runtime.Versioning.FrameworkName right) => throw null;
-                public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Runtime.Versioning.FrameworkName other) => throw null;
-                public FrameworkName(string identifier, System.Version version, string profile) => throw null;
-                public FrameworkName(string identifier, System.Version version) => throw null;
+                public override bool Equals(object obj) => throw null;
                 public FrameworkName(string frameworkName) => throw null;
+                public FrameworkName(string identifier, System.Version version) => throw null;
+                public FrameworkName(string identifier, System.Version version, string profile) => throw null;
                 public string FullName { get => throw null; }
                 public override int GetHashCode() => throw null;
                 public string Identifier { get => throw null; }
@@ -10536,8 +10536,8 @@ namespace System
                 public System.Version Version { get => throw null; }
             }
 
-            // Generated from `System.Runtime.Versioning.OSPlatformAttribute` in `Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.EventLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.Cryptography.Cng, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.Cryptography.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Windows.Extensions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public abstract partial class OSPlatformAttribute : System.Attribute
+            // Generated from `System.Runtime.Versioning.OSPlatformAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public abstract class OSPlatformAttribute : System.Attribute
             {
                 protected private OSPlatformAttribute(string platformName) => throw null;
                 public string PlatformName { get => throw null; }
@@ -10547,8 +10547,8 @@ namespace System
             public class ResourceConsumptionAttribute : System.Attribute
             {
                 public System.Runtime.Versioning.ResourceScope ConsumptionScope { get => throw null; }
-                public ResourceConsumptionAttribute(System.Runtime.Versioning.ResourceScope resourceScope, System.Runtime.Versioning.ResourceScope consumptionScope) => throw null;
                 public ResourceConsumptionAttribute(System.Runtime.Versioning.ResourceScope resourceScope) => throw null;
+                public ResourceConsumptionAttribute(System.Runtime.Versioning.ResourceScope resourceScope, System.Runtime.Versioning.ResourceScope consumptionScope) => throw null;
                 public System.Runtime.Versioning.ResourceScope ResourceScope { get => throw null; }
             }
 
@@ -10572,8 +10572,8 @@ namespace System
                 Process,
             }
 
-            // Generated from `System.Runtime.Versioning.SupportedOSPlatformAttribute` in `Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.EventLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.Cryptography.Cng, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.Cryptography.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Windows.Extensions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public partial class SupportedOSPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
+            // Generated from `System.Runtime.Versioning.SupportedOSPlatformAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class SupportedOSPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
             {
                 public SupportedOSPlatformAttribute(string platformName) : base(default(string)) => throw null;
             }
@@ -10586,14 +10586,14 @@ namespace System
                 public TargetFrameworkAttribute(string frameworkName) => throw null;
             }
 
-            // Generated from `System.Runtime.Versioning.TargetPlatformAttribute` in `Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.EventLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.Cryptography.Cng, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.Cryptography.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Windows.Extensions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public partial class TargetPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
+            // Generated from `System.Runtime.Versioning.TargetPlatformAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class TargetPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
             {
                 public TargetPlatformAttribute(string platformName) : base(default(string)) => throw null;
             }
 
-            // Generated from `System.Runtime.Versioning.UnsupportedOSPlatformAttribute` in `Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.EventLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.Cryptography.Cng, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.Cryptography.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Windows.Extensions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public partial class UnsupportedOSPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
+            // Generated from `System.Runtime.Versioning.UnsupportedOSPlatformAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class UnsupportedOSPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
             {
                 public UnsupportedOSPlatformAttribute(string platformName) : base(default(string)) => throw null;
             }
@@ -10601,8 +10601,8 @@ namespace System
             // Generated from `System.Runtime.Versioning.VersioningHelper` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class VersioningHelper
             {
-                public static string MakeVersionSafeName(string name, System.Runtime.Versioning.ResourceScope from, System.Runtime.Versioning.ResourceScope to, System.Type type) => throw null;
                 public static string MakeVersionSafeName(string name, System.Runtime.Versioning.ResourceScope from, System.Runtime.Versioning.ResourceScope to) => throw null;
+                public static string MakeVersionSafeName(string name, System.Runtime.Versioning.ResourceScope from, System.Runtime.Versioning.ResourceScope to, System.Type type) => throw null;
             }
 
         }
@@ -10650,7 +10650,7 @@ namespace System
         }
 
         // Generated from `System.Security.PermissionSet` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class PermissionSet : System.Security.IStackWalk, System.Security.ISecurityEncodable, System.Runtime.Serialization.IDeserializationCallback, System.Collections.IEnumerable, System.Collections.ICollection
+        public class PermissionSet : System.Collections.ICollection, System.Collections.IEnumerable, System.Runtime.Serialization.IDeserializationCallback, System.Security.ISecurityEncodable, System.Security.IStackWalk
         {
             public System.Security.IPermission AddPermission(System.Security.IPermission perm) => throw null;
             protected virtual System.Security.IPermission AddPermissionImpl(System.Security.IPermission perm) => throw null;
@@ -10676,8 +10676,8 @@ namespace System
             public virtual bool IsSynchronized { get => throw null; }
             public bool IsUnrestricted() => throw null;
             void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) => throw null;
-            public PermissionSet(System.Security.Permissions.PermissionState state) => throw null;
             public PermissionSet(System.Security.PermissionSet permSet) => throw null;
+            public PermissionSet(System.Security.Permissions.PermissionState state) => throw null;
             public void PermitOnly() => throw null;
             public System.Security.IPermission RemovePermission(System.Type permClass) => throw null;
             protected virtual System.Security.IPermission RemovePermissionImpl(System.Type permClass) => throw null;
@@ -10694,8 +10694,8 @@ namespace System
         public class SecurityCriticalAttribute : System.Attribute
         {
             public System.Security.SecurityCriticalScope Scope { get => throw null; }
-            public SecurityCriticalAttribute(System.Security.SecurityCriticalScope scope) => throw null;
             public SecurityCriticalAttribute() => throw null;
+            public SecurityCriticalAttribute(System.Security.SecurityCriticalScope scope) => throw null;
         }
 
         // Generated from `System.Security.SecurityCriticalScope` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -10723,8 +10723,8 @@ namespace System
             public static bool IsValidText(string text) => throw null;
             public System.Security.SecurityElement SearchForChildByTag(string tag) => throw null;
             public string SearchForTextOfTag(string tag) => throw null;
-            public SecurityElement(string tag, string text) => throw null;
             public SecurityElement(string tag) => throw null;
+            public SecurityElement(string tag, string text) => throw null;
             public string Tag { get => throw null; set => throw null; }
             public string Text { get => throw null; set => throw null; }
             public override string ToString() => throw null;
@@ -10743,12 +10743,12 @@ namespace System
             public System.Type PermissionType { get => throw null; set => throw null; }
             public object PermitOnlySetInstance { get => throw null; set => throw null; }
             public string RefusedSet { get => throw null; set => throw null; }
-            public SecurityException(string message, System.Type type, string state) => throw null;
-            public SecurityException(string message, System.Type type) => throw null;
-            public SecurityException(string message, System.Exception inner) => throw null;
-            public SecurityException(string message) => throw null;
             public SecurityException() => throw null;
             protected SecurityException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public SecurityException(string message) => throw null;
+            public SecurityException(string message, System.Exception inner) => throw null;
+            public SecurityException(string message, System.Type type) => throw null;
+            public SecurityException(string message, System.Type type, string state) => throw null;
             public override string ToString() => throw null;
             public string Url { get => throw null; set => throw null; }
         }
@@ -10802,10 +10802,10 @@ namespace System
         // Generated from `System.Security.VerificationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class VerificationException : System.SystemException
         {
-            public VerificationException(string message, System.Exception innerException) => throw null;
-            public VerificationException(string message) => throw null;
             public VerificationException() => throw null;
             protected VerificationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public VerificationException(string message) => throw null;
+            public VerificationException(string message, System.Exception innerException) => throw null;
         }
 
         namespace Cryptography
@@ -10813,12 +10813,12 @@ namespace System
             // Generated from `System.Security.Cryptography.CryptographicException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CryptographicException : System.SystemException
             {
-                public CryptographicException(string message, System.Exception inner) => throw null;
-                public CryptographicException(string message) => throw null;
-                public CryptographicException(string format, string insert) => throw null;
-                public CryptographicException(int hr) => throw null;
                 public CryptographicException() => throw null;
                 protected CryptographicException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public CryptographicException(int hr) => throw null;
+                public CryptographicException(string message) => throw null;
+                public CryptographicException(string message, System.Exception inner) => throw null;
+                public CryptographicException(string format, string insert) => throw null;
             }
 
         }
@@ -10947,20 +10947,20 @@ namespace System
         // Generated from `System.Text.Decoder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class Decoder
         {
-            unsafe public virtual void Convert(System.Byte* bytes, int byteCount, System.Char* chars, int charCount, bool flush, out int bytesUsed, out int charsUsed, out bool completed) => throw null;
-            public virtual void Convert(System.ReadOnlySpan<System.Byte> bytes, System.Span<System.Char> chars, bool flush, out int bytesUsed, out int charsUsed, out bool completed) => throw null;
             public virtual void Convert(System.Byte[] bytes, int byteIndex, int byteCount, System.Char[] chars, int charIndex, int charCount, bool flush, out int bytesUsed, out int charsUsed, out bool completed) => throw null;
+            public virtual void Convert(System.ReadOnlySpan<System.Byte> bytes, System.Span<System.Char> chars, bool flush, out int bytesUsed, out int charsUsed, out bool completed) => throw null;
+            unsafe public virtual void Convert(System.Byte* bytes, int byteCount, System.Char* chars, int charCount, bool flush, out int bytesUsed, out int charsUsed, out bool completed) => throw null;
             protected Decoder() => throw null;
             public System.Text.DecoderFallback Fallback { get => throw null; set => throw null; }
             public System.Text.DecoderFallbackBuffer FallbackBuffer { get => throw null; }
-            unsafe public virtual int GetCharCount(System.Byte* bytes, int count, bool flush) => throw null;
-            public virtual int GetCharCount(System.ReadOnlySpan<System.Byte> bytes, bool flush) => throw null;
-            public virtual int GetCharCount(System.Byte[] bytes, int index, int count, bool flush) => throw null;
             public abstract int GetCharCount(System.Byte[] bytes, int index, int count);
-            unsafe public virtual int GetChars(System.Byte* bytes, int byteCount, System.Char* chars, int charCount, bool flush) => throw null;
-            public virtual int GetChars(System.ReadOnlySpan<System.Byte> bytes, System.Span<System.Char> chars, bool flush) => throw null;
-            public virtual int GetChars(System.Byte[] bytes, int byteIndex, int byteCount, System.Char[] chars, int charIndex, bool flush) => throw null;
+            public virtual int GetCharCount(System.Byte[] bytes, int index, int count, bool flush) => throw null;
+            public virtual int GetCharCount(System.ReadOnlySpan<System.Byte> bytes, bool flush) => throw null;
+            unsafe public virtual int GetCharCount(System.Byte* bytes, int count, bool flush) => throw null;
             public abstract int GetChars(System.Byte[] bytes, int byteIndex, int byteCount, System.Char[] chars, int charIndex);
+            public virtual int GetChars(System.Byte[] bytes, int byteIndex, int byteCount, System.Char[] chars, int charIndex, bool flush) => throw null;
+            public virtual int GetChars(System.ReadOnlySpan<System.Byte> bytes, System.Span<System.Char> chars, bool flush) => throw null;
+            unsafe public virtual int GetChars(System.Byte* bytes, int byteCount, System.Char* chars, int charCount, bool flush) => throw null;
             public virtual void Reset() => throw null;
         }
 
@@ -11009,10 +11009,10 @@ namespace System
         public class DecoderFallbackException : System.ArgumentException
         {
             public System.Byte[] BytesUnknown { get => throw null; }
-            public DecoderFallbackException(string message, System.Exception innerException) => throw null;
-            public DecoderFallbackException(string message, System.Byte[] bytesUnknown, int index) => throw null;
-            public DecoderFallbackException(string message) => throw null;
             public DecoderFallbackException() => throw null;
+            public DecoderFallbackException(string message) => throw null;
+            public DecoderFallbackException(string message, System.Byte[] bytesUnknown, int index) => throw null;
+            public DecoderFallbackException(string message, System.Exception innerException) => throw null;
             public int Index { get => throw null; }
         }
 
@@ -11020,8 +11020,8 @@ namespace System
         public class DecoderReplacementFallback : System.Text.DecoderFallback
         {
             public override System.Text.DecoderFallbackBuffer CreateFallbackBuffer() => throw null;
-            public DecoderReplacementFallback(string replacement) => throw null;
             public DecoderReplacementFallback() => throw null;
+            public DecoderReplacementFallback(string replacement) => throw null;
             public string DefaultString { get => throw null; }
             public override bool Equals(object value) => throw null;
             public override int GetHashCode() => throw null;
@@ -11042,18 +11042,18 @@ namespace System
         // Generated from `System.Text.Encoder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class Encoder
         {
-            unsafe public virtual void Convert(System.Char* chars, int charCount, System.Byte* bytes, int byteCount, bool flush, out int charsUsed, out int bytesUsed, out bool completed) => throw null;
-            public virtual void Convert(System.ReadOnlySpan<System.Char> chars, System.Span<System.Byte> bytes, bool flush, out int charsUsed, out int bytesUsed, out bool completed) => throw null;
             public virtual void Convert(System.Char[] chars, int charIndex, int charCount, System.Byte[] bytes, int byteIndex, int byteCount, bool flush, out int charsUsed, out int bytesUsed, out bool completed) => throw null;
+            public virtual void Convert(System.ReadOnlySpan<System.Char> chars, System.Span<System.Byte> bytes, bool flush, out int charsUsed, out int bytesUsed, out bool completed) => throw null;
+            unsafe public virtual void Convert(System.Char* chars, int charCount, System.Byte* bytes, int byteCount, bool flush, out int charsUsed, out int bytesUsed, out bool completed) => throw null;
             protected Encoder() => throw null;
             public System.Text.EncoderFallback Fallback { get => throw null; set => throw null; }
             public System.Text.EncoderFallbackBuffer FallbackBuffer { get => throw null; }
-            unsafe public virtual int GetByteCount(System.Char* chars, int count, bool flush) => throw null;
-            public virtual int GetByteCount(System.ReadOnlySpan<System.Char> chars, bool flush) => throw null;
             public abstract int GetByteCount(System.Char[] chars, int index, int count, bool flush);
-            unsafe public virtual int GetBytes(System.Char* chars, int charCount, System.Byte* bytes, int byteCount, bool flush) => throw null;
-            public virtual int GetBytes(System.ReadOnlySpan<System.Char> chars, System.Span<System.Byte> bytes, bool flush) => throw null;
+            public virtual int GetByteCount(System.ReadOnlySpan<System.Char> chars, bool flush) => throw null;
+            unsafe public virtual int GetByteCount(System.Char* chars, int count, bool flush) => throw null;
             public abstract int GetBytes(System.Char[] chars, int charIndex, int charCount, System.Byte[] bytes, int byteIndex, bool flush);
+            public virtual int GetBytes(System.ReadOnlySpan<System.Char> chars, System.Span<System.Byte> bytes, bool flush) => throw null;
+            unsafe public virtual int GetBytes(System.Char* chars, int charCount, System.Byte* bytes, int byteCount, bool flush) => throw null;
             public virtual void Reset() => throw null;
         }
 
@@ -11106,9 +11106,9 @@ namespace System
             public System.Char CharUnknown { get => throw null; }
             public System.Char CharUnknownHigh { get => throw null; }
             public System.Char CharUnknownLow { get => throw null; }
-            public EncoderFallbackException(string message, System.Exception innerException) => throw null;
-            public EncoderFallbackException(string message) => throw null;
             public EncoderFallbackException() => throw null;
+            public EncoderFallbackException(string message) => throw null;
+            public EncoderFallbackException(string message, System.Exception innerException) => throw null;
             public int Index { get => throw null; }
             public bool IsUnknownSurrogate() => throw null;
         }
@@ -11118,8 +11118,8 @@ namespace System
         {
             public override System.Text.EncoderFallbackBuffer CreateFallbackBuffer() => throw null;
             public string DefaultString { get => throw null; }
-            public EncoderReplacementFallback(string replacement) => throw null;
             public EncoderReplacementFallback() => throw null;
+            public EncoderReplacementFallback(string replacement) => throw null;
             public override bool Equals(object value) => throw null;
             public override int GetHashCode() => throw null;
             public override int MaxCharCount { get => throw null; }
@@ -11145,58 +11145,58 @@ namespace System
             public virtual string BodyName { get => throw null; }
             public virtual object Clone() => throw null;
             public virtual int CodePage { get => throw null; }
-            public static System.Byte[] Convert(System.Text.Encoding srcEncoding, System.Text.Encoding dstEncoding, System.Byte[] bytes, int index, int count) => throw null;
             public static System.Byte[] Convert(System.Text.Encoding srcEncoding, System.Text.Encoding dstEncoding, System.Byte[] bytes) => throw null;
+            public static System.Byte[] Convert(System.Text.Encoding srcEncoding, System.Text.Encoding dstEncoding, System.Byte[] bytes, int index, int count) => throw null;
             public static System.IO.Stream CreateTranscodingStream(System.IO.Stream innerStream, System.Text.Encoding innerStreamEncoding, System.Text.Encoding outerStreamEncoding, bool leaveOpen = default(bool)) => throw null;
             public System.Text.DecoderFallback DecoderFallback { get => throw null; set => throw null; }
             public static System.Text.Encoding Default { get => throw null; }
             public System.Text.EncoderFallback EncoderFallback { get => throw null; set => throw null; }
-            protected Encoding(int codePage, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) => throw null;
-            protected Encoding(int codePage) => throw null;
             protected Encoding() => throw null;
+            protected Encoding(int codePage) => throw null;
+            protected Encoding(int codePage, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) => throw null;
             public virtual string EncodingName { get => throw null; }
             public override bool Equals(object value) => throw null;
+            public virtual int GetByteCount(System.Char[] chars) => throw null;
+            public abstract int GetByteCount(System.Char[] chars, int index, int count);
+            public virtual int GetByteCount(System.ReadOnlySpan<System.Char> chars) => throw null;
             unsafe public virtual int GetByteCount(System.Char* chars, int count) => throw null;
             public virtual int GetByteCount(string s) => throw null;
-            public virtual int GetByteCount(System.ReadOnlySpan<System.Char> chars) => throw null;
-            public virtual int GetByteCount(System.Char[] chars) => throw null;
             public int GetByteCount(string s, int index, int count) => throw null;
-            public abstract int GetByteCount(System.Char[] chars, int index, int count);
-            unsafe public virtual int GetBytes(System.Char* chars, int charCount, System.Byte* bytes, int byteCount) => throw null;
-            public virtual int GetBytes(string s, int charIndex, int charCount, System.Byte[] bytes, int byteIndex) => throw null;
-            public virtual int GetBytes(System.ReadOnlySpan<System.Char> chars, System.Span<System.Byte> bytes) => throw null;
-            public virtual System.Byte[] GetBytes(string s) => throw null;
-            public virtual System.Byte[] GetBytes(System.Char[] chars, int index, int count) => throw null;
             public virtual System.Byte[] GetBytes(System.Char[] chars) => throw null;
+            public virtual System.Byte[] GetBytes(System.Char[] chars, int index, int count) => throw null;
             public abstract int GetBytes(System.Char[] chars, int charIndex, int charCount, System.Byte[] bytes, int byteIndex);
+            public virtual int GetBytes(System.ReadOnlySpan<System.Char> chars, System.Span<System.Byte> bytes) => throw null;
+            unsafe public virtual int GetBytes(System.Char* chars, int charCount, System.Byte* bytes, int byteCount) => throw null;
+            public virtual System.Byte[] GetBytes(string s) => throw null;
             public System.Byte[] GetBytes(string s, int index, int count) => throw null;
-            unsafe public virtual int GetCharCount(System.Byte* bytes, int count) => throw null;
-            public virtual int GetCharCount(System.ReadOnlySpan<System.Byte> bytes) => throw null;
+            public virtual int GetBytes(string s, int charIndex, int charCount, System.Byte[] bytes, int byteIndex) => throw null;
             public virtual int GetCharCount(System.Byte[] bytes) => throw null;
             public abstract int GetCharCount(System.Byte[] bytes, int index, int count);
-            unsafe public virtual int GetChars(System.Byte* bytes, int byteCount, System.Char* chars, int charCount) => throw null;
-            public virtual int GetChars(System.ReadOnlySpan<System.Byte> bytes, System.Span<System.Char> chars) => throw null;
-            public virtual System.Char[] GetChars(System.Byte[] bytes, int index, int count) => throw null;
+            public virtual int GetCharCount(System.ReadOnlySpan<System.Byte> bytes) => throw null;
+            unsafe public virtual int GetCharCount(System.Byte* bytes, int count) => throw null;
             public virtual System.Char[] GetChars(System.Byte[] bytes) => throw null;
+            public virtual System.Char[] GetChars(System.Byte[] bytes, int index, int count) => throw null;
             public abstract int GetChars(System.Byte[] bytes, int byteIndex, int byteCount, System.Char[] chars, int charIndex);
+            public virtual int GetChars(System.ReadOnlySpan<System.Byte> bytes, System.Span<System.Char> chars) => throw null;
+            unsafe public virtual int GetChars(System.Byte* bytes, int byteCount, System.Char* chars, int charCount) => throw null;
             public virtual System.Text.Decoder GetDecoder() => throw null;
             public virtual System.Text.Encoder GetEncoder() => throw null;
-            public static System.Text.Encoding GetEncoding(string name, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) => throw null;
-            public static System.Text.Encoding GetEncoding(string name) => throw null;
-            public static System.Text.Encoding GetEncoding(int codepage, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) => throw null;
             public static System.Text.Encoding GetEncoding(int codepage) => throw null;
+            public static System.Text.Encoding GetEncoding(int codepage, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) => throw null;
+            public static System.Text.Encoding GetEncoding(string name) => throw null;
+            public static System.Text.Encoding GetEncoding(string name, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) => throw null;
             public static System.Text.EncodingInfo[] GetEncodings() => throw null;
             public override int GetHashCode() => throw null;
             public abstract int GetMaxByteCount(int charCount);
             public abstract int GetMaxCharCount(int byteCount);
             public virtual System.Byte[] GetPreamble() => throw null;
-            unsafe public string GetString(System.Byte* bytes, int byteCount) => throw null;
-            public virtual string GetString(System.Byte[] bytes, int index, int count) => throw null;
             public virtual string GetString(System.Byte[] bytes) => throw null;
+            public virtual string GetString(System.Byte[] bytes, int index, int count) => throw null;
             public string GetString(System.ReadOnlySpan<System.Byte> bytes) => throw null;
+            unsafe public string GetString(System.Byte* bytes, int byteCount) => throw null;
             public virtual string HeaderName { get => throw null; }
-            public virtual bool IsAlwaysNormalized(System.Text.NormalizationForm form) => throw null;
             public bool IsAlwaysNormalized() => throw null;
+            public virtual bool IsAlwaysNormalized(System.Text.NormalizationForm form) => throw null;
             public virtual bool IsBrowserDisplay { get => throw null; }
             public virtual bool IsBrowserSave { get => throw null; }
             public virtual bool IsMailNewsDisplay { get => throw null; }
@@ -11230,10 +11230,10 @@ namespace System
         public abstract class EncodingProvider
         {
             public EncodingProvider() => throw null;
-            public virtual System.Text.Encoding GetEncoding(string name, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) => throw null;
+            public abstract System.Text.Encoding GetEncoding(int codepage);
             public virtual System.Text.Encoding GetEncoding(int codepage, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) => throw null;
             public abstract System.Text.Encoding GetEncoding(string name);
-            public abstract System.Text.Encoding GetEncoding(int codepage);
+            public virtual System.Text.Encoding GetEncoding(string name, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) => throw null;
             public virtual System.Collections.Generic.IEnumerable<System.Text.EncodingInfo> GetEncodings() => throw null;
         }
 
@@ -11247,7 +11247,7 @@ namespace System
         }
 
         // Generated from `System.Text.Rune` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public struct Rune : System.IEquatable<System.Text.Rune>, System.IComparable<System.Text.Rune>, System.IComparable
+        public struct Rune : System.IComparable, System.IComparable<System.Text.Rune>, System.IEquatable<System.Text.Rune>
         {
             public static bool operator !=(System.Text.Rune left, System.Text.Rune right) => throw null;
             public static bool operator <(System.Text.Rune left, System.Text.Rune right) => throw null;
@@ -11263,8 +11263,8 @@ namespace System
             public static System.Buffers.OperationStatus DecodeLastFromUtf8(System.ReadOnlySpan<System.Byte> source, out System.Text.Rune value, out int bytesConsumed) => throw null;
             public int EncodeToUtf16(System.Span<System.Char> destination) => throw null;
             public int EncodeToUtf8(System.Span<System.Byte> destination) => throw null;
-            public override bool Equals(object obj) => throw null;
             public bool Equals(System.Text.Rune other) => throw null;
+            public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public static double GetNumericValue(System.Text.Rune value) => throw null;
             public static System.Text.Rune GetRuneAt(string input, int index) => throw null;
@@ -11286,77 +11286,34 @@ namespace System
             public static bool IsWhiteSpace(System.Text.Rune value) => throw null;
             public int Plane { get => throw null; }
             public static System.Text.Rune ReplacementChar { get => throw null; }
+            // Stub generator skipped constructor 
+            public Rune(System.Char ch) => throw null;
+            public Rune(System.Char highSurrogate, System.Char lowSurrogate) => throw null;
             public Rune(int value) => throw null;
             public Rune(System.UInt32 value) => throw null;
-            public Rune(System.Char highSurrogate, System.Char lowSurrogate) => throw null;
-            public Rune(System.Char ch) => throw null;
-            // Stub generator skipped constructor 
             public static System.Text.Rune ToLower(System.Text.Rune value, System.Globalization.CultureInfo culture) => throw null;
             public static System.Text.Rune ToLowerInvariant(System.Text.Rune value) => throw null;
             public override string ToString() => throw null;
             public static System.Text.Rune ToUpper(System.Text.Rune value, System.Globalization.CultureInfo culture) => throw null;
             public static System.Text.Rune ToUpperInvariant(System.Text.Rune value) => throw null;
-            public static bool TryCreate(int value, out System.Text.Rune result) => throw null;
-            public static bool TryCreate(System.UInt32 value, out System.Text.Rune result) => throw null;
             public static bool TryCreate(System.Char highSurrogate, System.Char lowSurrogate, out System.Text.Rune result) => throw null;
             public static bool TryCreate(System.Char ch, out System.Text.Rune result) => throw null;
+            public static bool TryCreate(int value, out System.Text.Rune result) => throw null;
+            public static bool TryCreate(System.UInt32 value, out System.Text.Rune result) => throw null;
             public bool TryEncodeToUtf16(System.Span<System.Char> destination, out int charsWritten) => throw null;
             public bool TryEncodeToUtf8(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             public static bool TryGetRuneAt(string input, int index, out System.Text.Rune value) => throw null;
             public int Utf16SequenceLength { get => throw null; }
             public int Utf8SequenceLength { get => throw null; }
             public int Value { get => throw null; }
+            public static explicit operator System.Text.Rune(System.Char ch) => throw null;
             public static explicit operator System.Text.Rune(int value) => throw null;
             public static explicit operator System.Text.Rune(System.UInt32 value) => throw null;
-            public static explicit operator System.Text.Rune(System.Char ch) => throw null;
         }
 
         // Generated from `System.Text.StringBuilder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StringBuilder : System.Runtime.Serialization.ISerializable
         {
-            unsafe public System.Text.StringBuilder Append(System.Char* value, int valueCount) => throw null;
-            public System.Text.StringBuilder Append(string value, int startIndex, int count) => throw null;
-            public System.Text.StringBuilder Append(string value) => throw null;
-            public System.Text.StringBuilder Append(object value) => throw null;
-            public System.Text.StringBuilder Append(int value) => throw null;
-            public System.Text.StringBuilder Append(float value) => throw null;
-            public System.Text.StringBuilder Append(double value) => throw null;
-            public System.Text.StringBuilder Append(bool value) => throw null;
-            public System.Text.StringBuilder Append(System.UInt64 value) => throw null;
-            public System.Text.StringBuilder Append(System.UInt32 value) => throw null;
-            public System.Text.StringBuilder Append(System.UInt16 value) => throw null;
-            public System.Text.StringBuilder Append(System.Text.StringBuilder value, int startIndex, int count) => throw null;
-            public System.Text.StringBuilder Append(System.Text.StringBuilder value) => throw null;
-            public System.Text.StringBuilder Append(System.SByte value) => throw null;
-            public System.Text.StringBuilder Append(System.ReadOnlySpan<System.Char> value) => throw null;
-            public System.Text.StringBuilder Append(System.ReadOnlyMemory<System.Char> value) => throw null;
-            public System.Text.StringBuilder Append(System.Int64 value) => throw null;
-            public System.Text.StringBuilder Append(System.Int16 value) => throw null;
-            public System.Text.StringBuilder Append(System.Decimal value) => throw null;
-            public System.Text.StringBuilder Append(System.Char[] value, int startIndex, int charCount) => throw null;
-            public System.Text.StringBuilder Append(System.Char[] value) => throw null;
-            public System.Text.StringBuilder Append(System.Char value, int repeatCount) => throw null;
-            public System.Text.StringBuilder Append(System.Char value) => throw null;
-            public System.Text.StringBuilder Append(System.Byte value) => throw null;
-            public System.Text.StringBuilder AppendFormat(string format, params object[] args) => throw null;
-            public System.Text.StringBuilder AppendFormat(string format, object arg0, object arg1, object arg2) => throw null;
-            public System.Text.StringBuilder AppendFormat(string format, object arg0, object arg1) => throw null;
-            public System.Text.StringBuilder AppendFormat(string format, object arg0) => throw null;
-            public System.Text.StringBuilder AppendFormat(System.IFormatProvider provider, string format, params object[] args) => throw null;
-            public System.Text.StringBuilder AppendFormat(System.IFormatProvider provider, string format, object arg0, object arg1, object arg2) => throw null;
-            public System.Text.StringBuilder AppendFormat(System.IFormatProvider provider, string format, object arg0, object arg1) => throw null;
-            public System.Text.StringBuilder AppendFormat(System.IFormatProvider provider, string format, object arg0) => throw null;
-            public System.Text.StringBuilder AppendJoin<T>(string separator, System.Collections.Generic.IEnumerable<T> values) => throw null;
-            public System.Text.StringBuilder AppendJoin<T>(System.Char separator, System.Collections.Generic.IEnumerable<T> values) => throw null;
-            public System.Text.StringBuilder AppendJoin(string separator, params string[] values) => throw null;
-            public System.Text.StringBuilder AppendJoin(string separator, params object[] values) => throw null;
-            public System.Text.StringBuilder AppendJoin(System.Char separator, params string[] values) => throw null;
-            public System.Text.StringBuilder AppendJoin(System.Char separator, params object[] values) => throw null;
-            public System.Text.StringBuilder AppendLine(string value) => throw null;
-            public System.Text.StringBuilder AppendLine() => throw null;
-            public int Capacity { get => throw null; set => throw null; }
-            [System.Runtime.CompilerServices.IndexerName("Chars")]
-            public System.Char this[int index] { get => throw null; set => throw null; }
             // Generated from `System.Text.StringBuilder+ChunkEnumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ChunkEnumerator
             {
@@ -11367,59 +11324,102 @@ namespace System
             }
 
 
+            public System.Text.StringBuilder Append(System.Char[] value) => throw null;
+            public System.Text.StringBuilder Append(System.Char[] value, int startIndex, int charCount) => throw null;
+            public System.Text.StringBuilder Append(System.ReadOnlyMemory<System.Char> value) => throw null;
+            public System.Text.StringBuilder Append(System.ReadOnlySpan<System.Char> value) => throw null;
+            public System.Text.StringBuilder Append(System.Text.StringBuilder value) => throw null;
+            public System.Text.StringBuilder Append(System.Text.StringBuilder value, int startIndex, int count) => throw null;
+            public System.Text.StringBuilder Append(bool value) => throw null;
+            public System.Text.StringBuilder Append(System.Byte value) => throw null;
+            public System.Text.StringBuilder Append(System.Char value) => throw null;
+            unsafe public System.Text.StringBuilder Append(System.Char* value, int valueCount) => throw null;
+            public System.Text.StringBuilder Append(System.Char value, int repeatCount) => throw null;
+            public System.Text.StringBuilder Append(System.Decimal value) => throw null;
+            public System.Text.StringBuilder Append(double value) => throw null;
+            public System.Text.StringBuilder Append(float value) => throw null;
+            public System.Text.StringBuilder Append(int value) => throw null;
+            public System.Text.StringBuilder Append(System.Int64 value) => throw null;
+            public System.Text.StringBuilder Append(object value) => throw null;
+            public System.Text.StringBuilder Append(System.SByte value) => throw null;
+            public System.Text.StringBuilder Append(System.Int16 value) => throw null;
+            public System.Text.StringBuilder Append(string value) => throw null;
+            public System.Text.StringBuilder Append(string value, int startIndex, int count) => throw null;
+            public System.Text.StringBuilder Append(System.UInt32 value) => throw null;
+            public System.Text.StringBuilder Append(System.UInt64 value) => throw null;
+            public System.Text.StringBuilder Append(System.UInt16 value) => throw null;
+            public System.Text.StringBuilder AppendFormat(System.IFormatProvider provider, string format, object arg0) => throw null;
+            public System.Text.StringBuilder AppendFormat(System.IFormatProvider provider, string format, object arg0, object arg1) => throw null;
+            public System.Text.StringBuilder AppendFormat(System.IFormatProvider provider, string format, object arg0, object arg1, object arg2) => throw null;
+            public System.Text.StringBuilder AppendFormat(System.IFormatProvider provider, string format, params object[] args) => throw null;
+            public System.Text.StringBuilder AppendFormat(string format, object arg0) => throw null;
+            public System.Text.StringBuilder AppendFormat(string format, object arg0, object arg1) => throw null;
+            public System.Text.StringBuilder AppendFormat(string format, object arg0, object arg1, object arg2) => throw null;
+            public System.Text.StringBuilder AppendFormat(string format, params object[] args) => throw null;
+            public System.Text.StringBuilder AppendJoin(System.Char separator, params object[] values) => throw null;
+            public System.Text.StringBuilder AppendJoin(System.Char separator, params string[] values) => throw null;
+            public System.Text.StringBuilder AppendJoin(string separator, params object[] values) => throw null;
+            public System.Text.StringBuilder AppendJoin(string separator, params string[] values) => throw null;
+            public System.Text.StringBuilder AppendJoin<T>(System.Char separator, System.Collections.Generic.IEnumerable<T> values) => throw null;
+            public System.Text.StringBuilder AppendJoin<T>(string separator, System.Collections.Generic.IEnumerable<T> values) => throw null;
+            public System.Text.StringBuilder AppendLine() => throw null;
+            public System.Text.StringBuilder AppendLine(string value) => throw null;
+            public int Capacity { get => throw null; set => throw null; }
+            [System.Runtime.CompilerServices.IndexerName("Chars")]
+            public System.Char this[int index] { get => throw null; set => throw null; }
             public System.Text.StringBuilder Clear() => throw null;
-            public void CopyTo(int sourceIndex, System.Span<System.Char> destination, int count) => throw null;
             public void CopyTo(int sourceIndex, System.Char[] destination, int destinationIndex, int count) => throw null;
+            public void CopyTo(int sourceIndex, System.Span<System.Char> destination, int count) => throw null;
             public int EnsureCapacity(int capacity) => throw null;
-            public bool Equals(System.Text.StringBuilder sb) => throw null;
             public bool Equals(System.ReadOnlySpan<System.Char> span) => throw null;
+            public bool Equals(System.Text.StringBuilder sb) => throw null;
             public System.Text.StringBuilder.ChunkEnumerator GetChunks() => throw null;
             void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
-            public System.Text.StringBuilder Insert(int index, string value, int count) => throw null;
-            public System.Text.StringBuilder Insert(int index, string value) => throw null;
-            public System.Text.StringBuilder Insert(int index, object value) => throw null;
-            public System.Text.StringBuilder Insert(int index, int value) => throw null;
-            public System.Text.StringBuilder Insert(int index, float value) => throw null;
-            public System.Text.StringBuilder Insert(int index, double value) => throw null;
-            public System.Text.StringBuilder Insert(int index, bool value) => throw null;
-            public System.Text.StringBuilder Insert(int index, System.UInt64 value) => throw null;
-            public System.Text.StringBuilder Insert(int index, System.UInt32 value) => throw null;
-            public System.Text.StringBuilder Insert(int index, System.UInt16 value) => throw null;
-            public System.Text.StringBuilder Insert(int index, System.SByte value) => throw null;
-            public System.Text.StringBuilder Insert(int index, System.ReadOnlySpan<System.Char> value) => throw null;
-            public System.Text.StringBuilder Insert(int index, System.Int64 value) => throw null;
-            public System.Text.StringBuilder Insert(int index, System.Int16 value) => throw null;
-            public System.Text.StringBuilder Insert(int index, System.Decimal value) => throw null;
-            public System.Text.StringBuilder Insert(int index, System.Char[] value, int startIndex, int charCount) => throw null;
             public System.Text.StringBuilder Insert(int index, System.Char[] value) => throw null;
-            public System.Text.StringBuilder Insert(int index, System.Char value) => throw null;
+            public System.Text.StringBuilder Insert(int index, System.Char[] value, int startIndex, int charCount) => throw null;
+            public System.Text.StringBuilder Insert(int index, System.ReadOnlySpan<System.Char> value) => throw null;
+            public System.Text.StringBuilder Insert(int index, bool value) => throw null;
             public System.Text.StringBuilder Insert(int index, System.Byte value) => throw null;
+            public System.Text.StringBuilder Insert(int index, System.Char value) => throw null;
+            public System.Text.StringBuilder Insert(int index, System.Decimal value) => throw null;
+            public System.Text.StringBuilder Insert(int index, double value) => throw null;
+            public System.Text.StringBuilder Insert(int index, float value) => throw null;
+            public System.Text.StringBuilder Insert(int index, int value) => throw null;
+            public System.Text.StringBuilder Insert(int index, System.Int64 value) => throw null;
+            public System.Text.StringBuilder Insert(int index, object value) => throw null;
+            public System.Text.StringBuilder Insert(int index, System.SByte value) => throw null;
+            public System.Text.StringBuilder Insert(int index, System.Int16 value) => throw null;
+            public System.Text.StringBuilder Insert(int index, string value) => throw null;
+            public System.Text.StringBuilder Insert(int index, string value, int count) => throw null;
+            public System.Text.StringBuilder Insert(int index, System.UInt32 value) => throw null;
+            public System.Text.StringBuilder Insert(int index, System.UInt64 value) => throw null;
+            public System.Text.StringBuilder Insert(int index, System.UInt16 value) => throw null;
             public int Length { get => throw null; set => throw null; }
             public int MaxCapacity { get => throw null; }
             public System.Text.StringBuilder Remove(int startIndex, int length) => throw null;
-            public System.Text.StringBuilder Replace(string oldValue, string newValue, int startIndex, int count) => throw null;
-            public System.Text.StringBuilder Replace(string oldValue, string newValue) => throw null;
-            public System.Text.StringBuilder Replace(System.Char oldChar, System.Char newChar, int startIndex, int count) => throw null;
             public System.Text.StringBuilder Replace(System.Char oldChar, System.Char newChar) => throw null;
-            public StringBuilder(string value, int startIndex, int length, int capacity) => throw null;
-            public StringBuilder(string value, int capacity) => throw null;
-            public StringBuilder(string value) => throw null;
-            public StringBuilder(int capacity, int maxCapacity) => throw null;
-            public StringBuilder(int capacity) => throw null;
+            public System.Text.StringBuilder Replace(System.Char oldChar, System.Char newChar, int startIndex, int count) => throw null;
+            public System.Text.StringBuilder Replace(string oldValue, string newValue) => throw null;
+            public System.Text.StringBuilder Replace(string oldValue, string newValue, int startIndex, int count) => throw null;
             public StringBuilder() => throw null;
-            public string ToString(int startIndex, int length) => throw null;
+            public StringBuilder(int capacity) => throw null;
+            public StringBuilder(int capacity, int maxCapacity) => throw null;
+            public StringBuilder(string value) => throw null;
+            public StringBuilder(string value, int capacity) => throw null;
+            public StringBuilder(string value, int startIndex, int length, int capacity) => throw null;
             public override string ToString() => throw null;
+            public string ToString(int startIndex, int length) => throw null;
         }
 
         // Generated from `System.Text.StringRuneEnumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public struct StringRuneEnumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.IEnumerable, System.Collections.Generic.IEnumerator<System.Text.Rune>, System.Collections.Generic.IEnumerable<System.Text.Rune>
+        public struct StringRuneEnumerator : System.Collections.Generic.IEnumerable<System.Text.Rune>, System.Collections.Generic.IEnumerator<System.Text.Rune>, System.Collections.IEnumerable, System.Collections.IEnumerator, System.IDisposable
         {
             public System.Text.Rune Current { get => throw null; }
             object System.Collections.IEnumerator.Current { get => throw null; }
             void System.IDisposable.Dispose() => throw null;
             public System.Text.StringRuneEnumerator GetEnumerator() => throw null;
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             System.Collections.Generic.IEnumerator<System.Text.Rune> System.Collections.Generic.IEnumerable<System.Text.Rune>.GetEnumerator() => throw null;
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             public bool MoveNext() => throw null;
             void System.Collections.IEnumerator.Reset() => throw null;
             // Stub generator skipped constructor 
@@ -11444,32 +11444,32 @@ namespace System
             public static bool operator !=(System.Threading.CancellationToken left, System.Threading.CancellationToken right) => throw null;
             public static bool operator ==(System.Threading.CancellationToken left, System.Threading.CancellationToken right) => throw null;
             public bool CanBeCanceled { get => throw null; }
-            public CancellationToken(bool canceled) => throw null;
             // Stub generator skipped constructor 
-            public override bool Equals(object other) => throw null;
+            public CancellationToken(bool canceled) => throw null;
             public bool Equals(System.Threading.CancellationToken other) => throw null;
+            public override bool Equals(object other) => throw null;
             public override int GetHashCode() => throw null;
             public bool IsCancellationRequested { get => throw null; }
             public static System.Threading.CancellationToken None { get => throw null; }
-            public System.Threading.CancellationTokenRegistration Register(System.Action<object> callback, object state, bool useSynchronizationContext) => throw null;
-            public System.Threading.CancellationTokenRegistration Register(System.Action<object> callback, object state) => throw null;
-            public System.Threading.CancellationTokenRegistration Register(System.Action callback, bool useSynchronizationContext) => throw null;
             public System.Threading.CancellationTokenRegistration Register(System.Action callback) => throw null;
+            public System.Threading.CancellationTokenRegistration Register(System.Action callback, bool useSynchronizationContext) => throw null;
+            public System.Threading.CancellationTokenRegistration Register(System.Action<object> callback, object state) => throw null;
+            public System.Threading.CancellationTokenRegistration Register(System.Action<object> callback, object state, bool useSynchronizationContext) => throw null;
             public void ThrowIfCancellationRequested() => throw null;
             public System.Threading.CancellationTokenRegistration UnsafeRegister(System.Action<object> callback, object state) => throw null;
             public System.Threading.WaitHandle WaitHandle { get => throw null; }
         }
 
         // Generated from `System.Threading.CancellationTokenRegistration` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public struct CancellationTokenRegistration : System.IEquatable<System.Threading.CancellationTokenRegistration>, System.IDisposable, System.IAsyncDisposable
+        public struct CancellationTokenRegistration : System.IAsyncDisposable, System.IDisposable, System.IEquatable<System.Threading.CancellationTokenRegistration>
         {
             public static bool operator !=(System.Threading.CancellationTokenRegistration left, System.Threading.CancellationTokenRegistration right) => throw null;
             public static bool operator ==(System.Threading.CancellationTokenRegistration left, System.Threading.CancellationTokenRegistration right) => throw null;
             // Stub generator skipped constructor 
             public void Dispose() => throw null;
             public System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
-            public override bool Equals(object obj) => throw null;
             public bool Equals(System.Threading.CancellationTokenRegistration other) => throw null;
+            public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public System.Threading.CancellationToken Token { get => throw null; }
             public bool Unregister() => throw null;
@@ -11478,16 +11478,16 @@ namespace System
         // Generated from `System.Threading.CancellationTokenSource` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CancellationTokenSource : System.IDisposable
         {
-            public void Cancel(bool throwOnFirstException) => throw null;
             public void Cancel() => throw null;
-            public void CancelAfter(int millisecondsDelay) => throw null;
+            public void Cancel(bool throwOnFirstException) => throw null;
             public void CancelAfter(System.TimeSpan delay) => throw null;
-            public CancellationTokenSource(int millisecondsDelay) => throw null;
-            public CancellationTokenSource(System.TimeSpan delay) => throw null;
+            public void CancelAfter(int millisecondsDelay) => throw null;
             public CancellationTokenSource() => throw null;
-            public static System.Threading.CancellationTokenSource CreateLinkedTokenSource(params System.Threading.CancellationToken[] tokens) => throw null;
-            public static System.Threading.CancellationTokenSource CreateLinkedTokenSource(System.Threading.CancellationToken token1, System.Threading.CancellationToken token2) => throw null;
+            public CancellationTokenSource(System.TimeSpan delay) => throw null;
+            public CancellationTokenSource(int millisecondsDelay) => throw null;
             public static System.Threading.CancellationTokenSource CreateLinkedTokenSource(System.Threading.CancellationToken token) => throw null;
+            public static System.Threading.CancellationTokenSource CreateLinkedTokenSource(System.Threading.CancellationToken token1, System.Threading.CancellationToken token2) => throw null;
+            public static System.Threading.CancellationTokenSource CreateLinkedTokenSource(params System.Threading.CancellationToken[] tokens) => throw null;
             public void Dispose() => throw null;
             protected virtual void Dispose(bool disposing) => throw null;
             public bool IsCancellationRequested { get => throw null; }
@@ -11510,21 +11510,21 @@ namespace System
         }
 
         // Generated from `System.Threading.Timer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class Timer : System.MarshalByRefObject, System.IDisposable, System.IAsyncDisposable
+        public class Timer : System.MarshalByRefObject, System.IAsyncDisposable, System.IDisposable
         {
             public static System.Int64 ActiveCount { get => throw null; }
-            public bool Change(int dueTime, int period) => throw null;
-            public bool Change(System.UInt32 dueTime, System.UInt32 period) => throw null;
             public bool Change(System.TimeSpan dueTime, System.TimeSpan period) => throw null;
+            public bool Change(int dueTime, int period) => throw null;
             public bool Change(System.Int64 dueTime, System.Int64 period) => throw null;
+            public bool Change(System.UInt32 dueTime, System.UInt32 period) => throw null;
             public void Dispose() => throw null;
             public bool Dispose(System.Threading.WaitHandle notifyObject) => throw null;
             public System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
-            public Timer(System.Threading.TimerCallback callback, object state, int dueTime, int period) => throw null;
-            public Timer(System.Threading.TimerCallback callback, object state, System.UInt32 dueTime, System.UInt32 period) => throw null;
-            public Timer(System.Threading.TimerCallback callback, object state, System.TimeSpan dueTime, System.TimeSpan period) => throw null;
-            public Timer(System.Threading.TimerCallback callback, object state, System.Int64 dueTime, System.Int64 period) => throw null;
             public Timer(System.Threading.TimerCallback callback) => throw null;
+            public Timer(System.Threading.TimerCallback callback, object state, System.TimeSpan dueTime, System.TimeSpan period) => throw null;
+            public Timer(System.Threading.TimerCallback callback, object state, int dueTime, int period) => throw null;
+            public Timer(System.Threading.TimerCallback callback, object state, System.Int64 dueTime, System.Int64 period) => throw null;
+            public Timer(System.Threading.TimerCallback callback, object state, System.UInt32 dueTime, System.UInt32 period) => throw null;
         }
 
         // Generated from `System.Threading.TimerCallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11539,25 +11539,25 @@ namespace System
             public virtual System.IntPtr Handle { get => throw null; set => throw null; }
             protected static System.IntPtr InvalidHandle;
             public Microsoft.Win32.SafeHandles.SafeWaitHandle SafeWaitHandle { get => throw null; set => throw null; }
-            public static bool SignalAndWait(System.Threading.WaitHandle toSignal, System.Threading.WaitHandle toWaitOn, int millisecondsTimeout, bool exitContext) => throw null;
-            public static bool SignalAndWait(System.Threading.WaitHandle toSignal, System.Threading.WaitHandle toWaitOn, System.TimeSpan timeout, bool exitContext) => throw null;
             public static bool SignalAndWait(System.Threading.WaitHandle toSignal, System.Threading.WaitHandle toWaitOn) => throw null;
-            public static bool WaitAll(System.Threading.WaitHandle[] waitHandles, int millisecondsTimeout, bool exitContext) => throw null;
-            public static bool WaitAll(System.Threading.WaitHandle[] waitHandles, int millisecondsTimeout) => throw null;
-            public static bool WaitAll(System.Threading.WaitHandle[] waitHandles, System.TimeSpan timeout, bool exitContext) => throw null;
-            public static bool WaitAll(System.Threading.WaitHandle[] waitHandles, System.TimeSpan timeout) => throw null;
+            public static bool SignalAndWait(System.Threading.WaitHandle toSignal, System.Threading.WaitHandle toWaitOn, System.TimeSpan timeout, bool exitContext) => throw null;
+            public static bool SignalAndWait(System.Threading.WaitHandle toSignal, System.Threading.WaitHandle toWaitOn, int millisecondsTimeout, bool exitContext) => throw null;
             public static bool WaitAll(System.Threading.WaitHandle[] waitHandles) => throw null;
-            public static int WaitAny(System.Threading.WaitHandle[] waitHandles, int millisecondsTimeout, bool exitContext) => throw null;
-            public static int WaitAny(System.Threading.WaitHandle[] waitHandles, int millisecondsTimeout) => throw null;
-            public static int WaitAny(System.Threading.WaitHandle[] waitHandles, System.TimeSpan timeout, bool exitContext) => throw null;
-            public static int WaitAny(System.Threading.WaitHandle[] waitHandles, System.TimeSpan timeout) => throw null;
+            public static bool WaitAll(System.Threading.WaitHandle[] waitHandles, System.TimeSpan timeout) => throw null;
+            public static bool WaitAll(System.Threading.WaitHandle[] waitHandles, System.TimeSpan timeout, bool exitContext) => throw null;
+            public static bool WaitAll(System.Threading.WaitHandle[] waitHandles, int millisecondsTimeout) => throw null;
+            public static bool WaitAll(System.Threading.WaitHandle[] waitHandles, int millisecondsTimeout, bool exitContext) => throw null;
             public static int WaitAny(System.Threading.WaitHandle[] waitHandles) => throw null;
+            public static int WaitAny(System.Threading.WaitHandle[] waitHandles, System.TimeSpan timeout) => throw null;
+            public static int WaitAny(System.Threading.WaitHandle[] waitHandles, System.TimeSpan timeout, bool exitContext) => throw null;
+            public static int WaitAny(System.Threading.WaitHandle[] waitHandles, int millisecondsTimeout) => throw null;
+            public static int WaitAny(System.Threading.WaitHandle[] waitHandles, int millisecondsTimeout, bool exitContext) => throw null;
             protected WaitHandle() => throw null;
-            public virtual bool WaitOne(int millisecondsTimeout, bool exitContext) => throw null;
-            public virtual bool WaitOne(int millisecondsTimeout) => throw null;
-            public virtual bool WaitOne(System.TimeSpan timeout, bool exitContext) => throw null;
-            public virtual bool WaitOne(System.TimeSpan timeout) => throw null;
             public virtual bool WaitOne() => throw null;
+            public virtual bool WaitOne(System.TimeSpan timeout) => throw null;
+            public virtual bool WaitOne(System.TimeSpan timeout, bool exitContext) => throw null;
+            public virtual bool WaitOne(int millisecondsTimeout) => throw null;
+            public virtual bool WaitOne(int millisecondsTimeout, bool exitContext) => throw null;
             public const int WaitTimeout = default;
         }
 
@@ -11575,56 +11575,56 @@ namespace System
             {
                 public void Complete() => throw null;
                 public System.Threading.Tasks.Task Completion { get => throw null; }
-                public ConcurrentExclusiveSchedulerPair(System.Threading.Tasks.TaskScheduler taskScheduler, int maxConcurrencyLevel, int maxItemsPerTask) => throw null;
-                public ConcurrentExclusiveSchedulerPair(System.Threading.Tasks.TaskScheduler taskScheduler, int maxConcurrencyLevel) => throw null;
-                public ConcurrentExclusiveSchedulerPair(System.Threading.Tasks.TaskScheduler taskScheduler) => throw null;
                 public ConcurrentExclusiveSchedulerPair() => throw null;
+                public ConcurrentExclusiveSchedulerPair(System.Threading.Tasks.TaskScheduler taskScheduler) => throw null;
+                public ConcurrentExclusiveSchedulerPair(System.Threading.Tasks.TaskScheduler taskScheduler, int maxConcurrencyLevel) => throw null;
+                public ConcurrentExclusiveSchedulerPair(System.Threading.Tasks.TaskScheduler taskScheduler, int maxConcurrencyLevel, int maxItemsPerTask) => throw null;
                 public System.Threading.Tasks.TaskScheduler ConcurrentScheduler { get => throw null; }
                 public System.Threading.Tasks.TaskScheduler ExclusiveScheduler { get => throw null; }
             }
 
             // Generated from `System.Threading.Tasks.Task` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class Task : System.IDisposable, System.IAsyncResult
+            public class Task : System.IAsyncResult, System.IDisposable
             {
                 public object AsyncState { get => throw null; }
                 System.Threading.WaitHandle System.IAsyncResult.AsyncWaitHandle { get => throw null; }
                 bool System.IAsyncResult.CompletedSynchronously { get => throw null; }
                 public static System.Threading.Tasks.Task CompletedTask { get => throw null; }
                 public System.Runtime.CompilerServices.ConfiguredTaskAwaitable ConfigureAwait(bool continueOnCapturedContext) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, TResult> continuationFunction) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task> continuationAction) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken) => throw null;
                 public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task, object> continuationAction, object state) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task> continuationAction) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, TResult> continuationFunction) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
                 public System.Threading.Tasks.TaskCreationOptions CreationOptions { get => throw null; }
                 public static int? CurrentId { get => throw null; }
-                public static System.Threading.Tasks.Task Delay(int millisecondsDelay, System.Threading.CancellationToken cancellationToken) => throw null;
-                public static System.Threading.Tasks.Task Delay(int millisecondsDelay) => throw null;
-                public static System.Threading.Tasks.Task Delay(System.TimeSpan delay, System.Threading.CancellationToken cancellationToken) => throw null;
                 public static System.Threading.Tasks.Task Delay(System.TimeSpan delay) => throw null;
+                public static System.Threading.Tasks.Task Delay(System.TimeSpan delay, System.Threading.CancellationToken cancellationToken) => throw null;
+                public static System.Threading.Tasks.Task Delay(int millisecondsDelay) => throw null;
+                public static System.Threading.Tasks.Task Delay(int millisecondsDelay, System.Threading.CancellationToken cancellationToken) => throw null;
                 public void Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;
                 public System.AggregateException Exception { get => throw null; }
                 public static System.Threading.Tasks.TaskFactory Factory { get => throw null; }
-                public static System.Threading.Tasks.Task<TResult> FromCanceled<TResult>(System.Threading.CancellationToken cancellationToken) => throw null;
                 public static System.Threading.Tasks.Task FromCanceled(System.Threading.CancellationToken cancellationToken) => throw null;
-                public static System.Threading.Tasks.Task<TResult> FromException<TResult>(System.Exception exception) => throw null;
+                public static System.Threading.Tasks.Task<TResult> FromCanceled<TResult>(System.Threading.CancellationToken cancellationToken) => throw null;
                 public static System.Threading.Tasks.Task FromException(System.Exception exception) => throw null;
+                public static System.Threading.Tasks.Task<TResult> FromException<TResult>(System.Exception exception) => throw null;
                 public static System.Threading.Tasks.Task<TResult> FromResult<TResult>(TResult result) => throw null;
                 public System.Runtime.CompilerServices.TaskAwaiter GetAwaiter() => throw null;
                 public int Id { get => throw null; }
@@ -11632,52 +11632,52 @@ namespace System
                 public bool IsCompleted { get => throw null; }
                 public bool IsCompletedSuccessfully { get => throw null; }
                 public bool IsFaulted { get => throw null; }
-                public static System.Threading.Tasks.Task<TResult> Run<TResult>(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken) => throw null;
-                public static System.Threading.Tasks.Task<TResult> Run<TResult>(System.Func<TResult> function) => throw null;
-                public static System.Threading.Tasks.Task<TResult> Run<TResult>(System.Func<System.Threading.Tasks.Task<TResult>> function, System.Threading.CancellationToken cancellationToken) => throw null;
-                public static System.Threading.Tasks.Task<TResult> Run<TResult>(System.Func<System.Threading.Tasks.Task<TResult>> function) => throw null;
-                public static System.Threading.Tasks.Task Run(System.Func<System.Threading.Tasks.Task> function, System.Threading.CancellationToken cancellationToken) => throw null;
-                public static System.Threading.Tasks.Task Run(System.Func<System.Threading.Tasks.Task> function) => throw null;
-                public static System.Threading.Tasks.Task Run(System.Action action, System.Threading.CancellationToken cancellationToken) => throw null;
                 public static System.Threading.Tasks.Task Run(System.Action action) => throw null;
-                public void RunSynchronously(System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public static System.Threading.Tasks.Task Run(System.Action action, System.Threading.CancellationToken cancellationToken) => throw null;
+                public static System.Threading.Tasks.Task Run(System.Func<System.Threading.Tasks.Task> function) => throw null;
+                public static System.Threading.Tasks.Task Run(System.Func<System.Threading.Tasks.Task> function, System.Threading.CancellationToken cancellationToken) => throw null;
+                public static System.Threading.Tasks.Task<TResult> Run<TResult>(System.Func<TResult> function) => throw null;
+                public static System.Threading.Tasks.Task<TResult> Run<TResult>(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken) => throw null;
+                public static System.Threading.Tasks.Task<TResult> Run<TResult>(System.Func<System.Threading.Tasks.Task<TResult>> function) => throw null;
+                public static System.Threading.Tasks.Task<TResult> Run<TResult>(System.Func<System.Threading.Tasks.Task<TResult>> function, System.Threading.CancellationToken cancellationToken) => throw null;
                 public void RunSynchronously() => throw null;
-                public void Start(System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public void RunSynchronously(System.Threading.Tasks.TaskScheduler scheduler) => throw null;
                 public void Start() => throw null;
+                public void Start(System.Threading.Tasks.TaskScheduler scheduler) => throw null;
                 public System.Threading.Tasks.TaskStatus Status { get => throw null; }
-                public Task(System.Action<object> action, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public Task(System.Action<object> action, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public Task(System.Action<object> action, object state, System.Threading.CancellationToken cancellationToken) => throw null;
-                public Task(System.Action<object> action, object state) => throw null;
-                public Task(System.Action action, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public Task(System.Action action, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public Task(System.Action action, System.Threading.CancellationToken cancellationToken) => throw null;
                 public Task(System.Action action) => throw null;
-                public void Wait(System.Threading.CancellationToken cancellationToken) => throw null;
+                public Task(System.Action action, System.Threading.CancellationToken cancellationToken) => throw null;
+                public Task(System.Action action, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public Task(System.Action action, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public Task(System.Action<object> action, object state) => throw null;
+                public Task(System.Action<object> action, object state, System.Threading.CancellationToken cancellationToken) => throw null;
+                public Task(System.Action<object> action, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public Task(System.Action<object> action, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
                 public void Wait() => throw null;
-                public bool Wait(int millisecondsTimeout, System.Threading.CancellationToken cancellationToken) => throw null;
-                public bool Wait(int millisecondsTimeout) => throw null;
+                public void Wait(System.Threading.CancellationToken cancellationToken) => throw null;
                 public bool Wait(System.TimeSpan timeout) => throw null;
-                public static void WaitAll(params System.Threading.Tasks.Task[] tasks) => throw null;
+                public bool Wait(int millisecondsTimeout) => throw null;
+                public bool Wait(int millisecondsTimeout, System.Threading.CancellationToken cancellationToken) => throw null;
                 public static void WaitAll(System.Threading.Tasks.Task[] tasks, System.Threading.CancellationToken cancellationToken) => throw null;
-                public static bool WaitAll(System.Threading.Tasks.Task[] tasks, int millisecondsTimeout, System.Threading.CancellationToken cancellationToken) => throw null;
-                public static bool WaitAll(System.Threading.Tasks.Task[] tasks, int millisecondsTimeout) => throw null;
                 public static bool WaitAll(System.Threading.Tasks.Task[] tasks, System.TimeSpan timeout) => throw null;
-                public static int WaitAny(params System.Threading.Tasks.Task[] tasks) => throw null;
-                public static int WaitAny(System.Threading.Tasks.Task[] tasks, int millisecondsTimeout, System.Threading.CancellationToken cancellationToken) => throw null;
-                public static int WaitAny(System.Threading.Tasks.Task[] tasks, int millisecondsTimeout) => throw null;
-                public static int WaitAny(System.Threading.Tasks.Task[] tasks, System.TimeSpan timeout) => throw null;
+                public static bool WaitAll(System.Threading.Tasks.Task[] tasks, int millisecondsTimeout) => throw null;
+                public static bool WaitAll(System.Threading.Tasks.Task[] tasks, int millisecondsTimeout, System.Threading.CancellationToken cancellationToken) => throw null;
+                public static void WaitAll(params System.Threading.Tasks.Task[] tasks) => throw null;
                 public static int WaitAny(System.Threading.Tasks.Task[] tasks, System.Threading.CancellationToken cancellationToken) => throw null;
-                public static System.Threading.Tasks.Task<TResult[]> WhenAll<TResult>(params System.Threading.Tasks.Task<TResult>[] tasks) => throw null;
-                public static System.Threading.Tasks.Task<TResult[]> WhenAll<TResult>(System.Collections.Generic.IEnumerable<System.Threading.Tasks.Task<TResult>> tasks) => throw null;
-                public static System.Threading.Tasks.Task WhenAll(params System.Threading.Tasks.Task[] tasks) => throw null;
+                public static int WaitAny(System.Threading.Tasks.Task[] tasks, System.TimeSpan timeout) => throw null;
+                public static int WaitAny(System.Threading.Tasks.Task[] tasks, int millisecondsTimeout) => throw null;
+                public static int WaitAny(System.Threading.Tasks.Task[] tasks, int millisecondsTimeout, System.Threading.CancellationToken cancellationToken) => throw null;
+                public static int WaitAny(params System.Threading.Tasks.Task[] tasks) => throw null;
                 public static System.Threading.Tasks.Task WhenAll(System.Collections.Generic.IEnumerable<System.Threading.Tasks.Task> tasks) => throw null;
-                public static System.Threading.Tasks.Task<System.Threading.Tasks.Task> WhenAny(params System.Threading.Tasks.Task[] tasks) => throw null;
-                public static System.Threading.Tasks.Task<System.Threading.Tasks.Task> WhenAny(System.Threading.Tasks.Task task1, System.Threading.Tasks.Task task2) => throw null;
+                public static System.Threading.Tasks.Task WhenAll(params System.Threading.Tasks.Task[] tasks) => throw null;
+                public static System.Threading.Tasks.Task<TResult[]> WhenAll<TResult>(System.Collections.Generic.IEnumerable<System.Threading.Tasks.Task<TResult>> tasks) => throw null;
+                public static System.Threading.Tasks.Task<TResult[]> WhenAll<TResult>(params System.Threading.Tasks.Task<TResult>[] tasks) => throw null;
                 public static System.Threading.Tasks.Task<System.Threading.Tasks.Task> WhenAny(System.Collections.Generic.IEnumerable<System.Threading.Tasks.Task> tasks) => throw null;
-                public static System.Threading.Tasks.Task<System.Threading.Tasks.Task<TResult>> WhenAny<TResult>(params System.Threading.Tasks.Task<TResult>[] tasks) => throw null;
-                public static System.Threading.Tasks.Task<System.Threading.Tasks.Task<TResult>> WhenAny<TResult>(System.Threading.Tasks.Task<TResult> task1, System.Threading.Tasks.Task<TResult> task2) => throw null;
+                public static System.Threading.Tasks.Task<System.Threading.Tasks.Task> WhenAny(System.Threading.Tasks.Task task1, System.Threading.Tasks.Task task2) => throw null;
+                public static System.Threading.Tasks.Task<System.Threading.Tasks.Task> WhenAny(params System.Threading.Tasks.Task[] tasks) => throw null;
                 public static System.Threading.Tasks.Task<System.Threading.Tasks.Task<TResult>> WhenAny<TResult>(System.Collections.Generic.IEnumerable<System.Threading.Tasks.Task<TResult>> tasks) => throw null;
+                public static System.Threading.Tasks.Task<System.Threading.Tasks.Task<TResult>> WhenAny<TResult>(System.Threading.Tasks.Task<TResult> task1, System.Threading.Tasks.Task<TResult> task2) => throw null;
+                public static System.Threading.Tasks.Task<System.Threading.Tasks.Task<TResult>> WhenAny<TResult>(params System.Threading.Tasks.Task<TResult>[] tasks) => throw null;
                 public static System.Runtime.CompilerServices.YieldAwaitable Yield() => throw null;
             }
 
@@ -11685,44 +11685,44 @@ namespace System
             public class Task<TResult> : System.Threading.Tasks.Task
             {
                 public System.Runtime.CompilerServices.ConfiguredTaskAwaitable<TResult> ConfigureAwait(bool continueOnCapturedContext) => throw null;
-                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state) => throw null;
-                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, TNewResult> continuationFunction, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, TNewResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, TNewResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, TNewResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, TNewResult> continuationFunction) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>> continuationAction, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>> continuationAction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>> continuationAction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>> continuationAction, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>> continuationAction) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken) => throw null;
                 public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>> continuationAction) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>> continuationAction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>> continuationAction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>> continuationAction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task ContinueWith(System.Action<System.Threading.Tasks.Task<TResult>> continuationAction, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, TNewResult> continuationFunction) => throw null;
+                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, TNewResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, TNewResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, TNewResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, TNewResult> continuationFunction, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state) => throw null;
+                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task<TNewResult> ContinueWith<TNewResult>(System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
                 public static System.Threading.Tasks.TaskFactory<TResult> Factory { get => throw null; }
                 public System.Runtime.CompilerServices.TaskAwaiter<TResult> GetAwaiter() => throw null;
                 public TResult Result { get => throw null; }
-                public Task(System.Func<object, TResult> function, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) : base(default(System.Action)) => throw null;
-                public Task(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions) : base(default(System.Action)) => throw null;
-                public Task(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken) : base(default(System.Action)) => throw null;
-                public Task(System.Func<object, TResult> function, object state) : base(default(System.Action)) => throw null;
-                public Task(System.Func<TResult> function, System.Threading.Tasks.TaskCreationOptions creationOptions) : base(default(System.Action)) => throw null;
-                public Task(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions) : base(default(System.Action)) => throw null;
-                public Task(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken) : base(default(System.Action)) => throw null;
                 public Task(System.Func<TResult> function) : base(default(System.Action)) => throw null;
+                public Task(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken) : base(default(System.Action)) => throw null;
+                public Task(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions) : base(default(System.Action)) => throw null;
+                public Task(System.Func<TResult> function, System.Threading.Tasks.TaskCreationOptions creationOptions) : base(default(System.Action)) => throw null;
+                public Task(System.Func<object, TResult> function, object state) : base(default(System.Action)) => throw null;
+                public Task(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken) : base(default(System.Action)) => throw null;
+                public Task(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions) : base(default(System.Action)) => throw null;
+                public Task(System.Func<object, TResult> function, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) : base(default(System.Action)) => throw null;
             }
 
             // Generated from `System.Threading.Tasks.TaskAsyncEnumerableExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class TaskAsyncEnumerableExtensions
             {
-                public static System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait<T>(this System.Collections.Generic.IAsyncEnumerable<T> source, bool continueOnCapturedContext) => throw null;
                 public static System.Runtime.CompilerServices.ConfiguredAsyncDisposable ConfigureAwait(this System.IAsyncDisposable source, bool continueOnCapturedContext) => throw null;
+                public static System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait<T>(this System.Collections.Generic.IAsyncEnumerable<T> source, bool continueOnCapturedContext) => throw null;
                 public static System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> WithCancellation<T>(this System.Collections.Generic.IAsyncEnumerable<T> source, System.Threading.CancellationToken cancellationToken) => throw null;
             }
 
@@ -11730,29 +11730,29 @@ namespace System
             public class TaskCanceledException : System.OperationCanceledException
             {
                 public System.Threading.Tasks.Task Task { get => throw null; }
-                public TaskCanceledException(string message, System.Exception innerException, System.Threading.CancellationToken token) => throw null;
-                public TaskCanceledException(string message, System.Exception innerException) => throw null;
-                public TaskCanceledException(string message) => throw null;
-                public TaskCanceledException(System.Threading.Tasks.Task task) => throw null;
                 public TaskCanceledException() => throw null;
                 protected TaskCanceledException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public TaskCanceledException(System.Threading.Tasks.Task task) => throw null;
+                public TaskCanceledException(string message) => throw null;
+                public TaskCanceledException(string message, System.Exception innerException) => throw null;
+                public TaskCanceledException(string message, System.Exception innerException, System.Threading.CancellationToken token) => throw null;
             }
 
             // Generated from `System.Threading.Tasks.TaskCompletionSource` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TaskCompletionSource
             {
-                public void SetCanceled(System.Threading.CancellationToken cancellationToken) => throw null;
                 public void SetCanceled() => throw null;
+                public void SetCanceled(System.Threading.CancellationToken cancellationToken) => throw null;
                 public void SetException(System.Exception exception) => throw null;
                 public void SetException(System.Collections.Generic.IEnumerable<System.Exception> exceptions) => throw null;
                 public void SetResult() => throw null;
                 public System.Threading.Tasks.Task Task { get => throw null; }
-                public TaskCompletionSource(object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public TaskCompletionSource(object state) => throw null;
-                public TaskCompletionSource(System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
                 public TaskCompletionSource() => throw null;
-                public bool TrySetCanceled(System.Threading.CancellationToken cancellationToken) => throw null;
+                public TaskCompletionSource(System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public TaskCompletionSource(object state) => throw null;
+                public TaskCompletionSource(object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
                 public bool TrySetCanceled() => throw null;
+                public bool TrySetCanceled(System.Threading.CancellationToken cancellationToken) => throw null;
                 public bool TrySetException(System.Exception exception) => throw null;
                 public bool TrySetException(System.Collections.Generic.IEnumerable<System.Exception> exceptions) => throw null;
                 public bool TrySetResult() => throw null;
@@ -11761,18 +11761,18 @@ namespace System
             // Generated from `System.Threading.Tasks.TaskCompletionSource<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TaskCompletionSource<TResult>
             {
-                public void SetCanceled(System.Threading.CancellationToken cancellationToken) => throw null;
                 public void SetCanceled() => throw null;
+                public void SetCanceled(System.Threading.CancellationToken cancellationToken) => throw null;
                 public void SetException(System.Exception exception) => throw null;
                 public void SetException(System.Collections.Generic.IEnumerable<System.Exception> exceptions) => throw null;
                 public void SetResult(TResult result) => throw null;
                 public System.Threading.Tasks.Task<TResult> Task { get => throw null; }
-                public TaskCompletionSource(object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public TaskCompletionSource(object state) => throw null;
-                public TaskCompletionSource(System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
                 public TaskCompletionSource() => throw null;
-                public bool TrySetCanceled(System.Threading.CancellationToken cancellationToken) => throw null;
+                public TaskCompletionSource(System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public TaskCompletionSource(object state) => throw null;
+                public TaskCompletionSource(object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
                 public bool TrySetCanceled() => throw null;
+                public bool TrySetCanceled(System.Threading.CancellationToken cancellationToken) => throw null;
                 public bool TrySetException(System.Exception exception) => throw null;
                 public bool TrySetException(System.Collections.Generic.IEnumerable<System.Exception> exceptions) => throw null;
                 public bool TrySetResult(TResult result) => throw null;
@@ -11812,11 +11812,11 @@ namespace System
                 RunContinuationsAsynchronously,
             }
 
-            // Generated from `System.Threading.Tasks.TaskExtensions` in `Microsoft.AspNetCore.Http.Connections, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public static partial class TaskExtensions
+            // Generated from `System.Threading.Tasks.TaskExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public static class TaskExtensions
             {
-                public static System.Threading.Tasks.Task<TResult> Unwrap<TResult>(this System.Threading.Tasks.Task<System.Threading.Tasks.Task<TResult>> task) => throw null;
                 public static System.Threading.Tasks.Task Unwrap(this System.Threading.Tasks.Task<System.Threading.Tasks.Task> task) => throw null;
+                public static System.Threading.Tasks.Task<TResult> Unwrap<TResult>(this System.Threading.Tasks.Task<System.Threading.Tasks.Task<TResult>> task) => throw null;
             }
 
             // Generated from `System.Threading.Tasks.TaskFactory` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11824,83 +11824,83 @@ namespace System
             {
                 public System.Threading.CancellationToken CancellationToken { get => throw null; }
                 public System.Threading.Tasks.TaskContinuationOptions ContinuationOptions { get => throw null; }
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>[]> continuationAction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>[]> continuationAction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>[]> continuationAction, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>[]> continuationAction) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task[]> continuationAction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task[]> continuationAction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task[]> continuationAction, System.Threading.CancellationToken cancellationToken) => throw null;
                 public System.Threading.Tasks.Task ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task[]> continuationAction) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>> continuationAction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>> continuationAction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>> continuationAction, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>> continuationAction) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task[]> continuationAction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task[]> continuationAction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task[]> continuationAction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>[]> continuationAction) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>[]> continuationAction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>[]> continuationAction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>[]> continuationAction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
                 public System.Threading.Tasks.Task ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task> continuationAction) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Action<System.Threading.Tasks.Task> continuationAction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult, TResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>> continuationAction) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>> continuationAction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>> continuationAction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Action<System.Threading.Tasks.Task<TAntecedentResult>> continuationAction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TResult>(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
                 public System.Threading.Tasks.TaskCreationOptions CreationOptions { get => throw null; }
-                public System.Threading.Tasks.Task<TResult> FromAsync<TResult>(System.IAsyncResult asyncResult, System.Func<System.IAsyncResult, TResult> endMethod, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TResult>(System.IAsyncResult asyncResult, System.Func<System.IAsyncResult, TResult> endMethod, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TResult>(System.IAsyncResult asyncResult, System.Func<System.IAsyncResult, TResult> endMethod) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TResult>(System.Func<System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TResult>(System.Func<System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, object state) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TResult>(System.Func<TArg1, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TResult>(System.Func<TArg1, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, object state) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2, TResult>(System.Func<TArg1, TArg2, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2, TResult>(System.Func<TArg1, TArg2, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, object state) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2, TArg3, TResult>(System.Func<TArg1, TArg2, TArg3, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, TArg3 arg3, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2, TArg3, TResult>(System.Func<TArg1, TArg2, TArg3, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, TArg3 arg3, object state) => throw null;
-                public System.Threading.Tasks.Task FromAsync<TArg1>(System.Func<TArg1, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, TArg1 arg1, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task FromAsync<TArg1>(System.Func<TArg1, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, TArg1 arg1, object state) => throw null;
-                public System.Threading.Tasks.Task FromAsync<TArg1, TArg2>(System.Func<TArg1, TArg2, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, TArg1 arg1, TArg2 arg2, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task FromAsync<TArg1, TArg2>(System.Func<TArg1, TArg2, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, TArg1 arg1, TArg2 arg2, object state) => throw null;
-                public System.Threading.Tasks.Task FromAsync<TArg1, TArg2, TArg3>(System.Func<TArg1, TArg2, TArg3, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, TArg1 arg1, TArg2 arg2, TArg3 arg3, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task FromAsync<TArg1, TArg2, TArg3>(System.Func<TArg1, TArg2, TArg3, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, TArg1 arg1, TArg2 arg2, TArg3 arg3, object state) => throw null;
-                public System.Threading.Tasks.Task FromAsync(System.IAsyncResult asyncResult, System.Action<System.IAsyncResult> endMethod, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task FromAsync(System.IAsyncResult asyncResult, System.Action<System.IAsyncResult> endMethod, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task FromAsync(System.IAsyncResult asyncResult, System.Action<System.IAsyncResult> endMethod) => throw null;
-                public System.Threading.Tasks.Task FromAsync(System.Func<System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
                 public System.Threading.Tasks.Task FromAsync(System.Func<System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, object state) => throw null;
+                public System.Threading.Tasks.Task FromAsync(System.Func<System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task FromAsync(System.IAsyncResult asyncResult, System.Action<System.IAsyncResult> endMethod) => throw null;
+                public System.Threading.Tasks.Task FromAsync(System.IAsyncResult asyncResult, System.Action<System.IAsyncResult> endMethod, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task FromAsync(System.IAsyncResult asyncResult, System.Action<System.IAsyncResult> endMethod, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2, TArg3, TResult>(System.Func<TArg1, TArg2, TArg3, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, TArg3 arg3, object state) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2, TArg3, TResult>(System.Func<TArg1, TArg2, TArg3, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, TArg3 arg3, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task FromAsync<TArg1, TArg2, TArg3>(System.Func<TArg1, TArg2, TArg3, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, TArg1 arg1, TArg2 arg2, TArg3 arg3, object state) => throw null;
+                public System.Threading.Tasks.Task FromAsync<TArg1, TArg2, TArg3>(System.Func<TArg1, TArg2, TArg3, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, TArg1 arg1, TArg2 arg2, TArg3 arg3, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2, TResult>(System.Func<TArg1, TArg2, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, object state) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2, TResult>(System.Func<TArg1, TArg2, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task FromAsync<TArg1, TArg2>(System.Func<TArg1, TArg2, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, TArg1 arg1, TArg2 arg2, object state) => throw null;
+                public System.Threading.Tasks.Task FromAsync<TArg1, TArg2>(System.Func<TArg1, TArg2, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, TArg1 arg1, TArg2 arg2, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TResult>(System.Func<TArg1, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, object state) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TResult>(System.Func<TArg1, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task FromAsync<TArg1>(System.Func<TArg1, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, TArg1 arg1, object state) => throw null;
+                public System.Threading.Tasks.Task FromAsync<TArg1>(System.Func<TArg1, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Action<System.IAsyncResult> endMethod, TArg1 arg1, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TResult>(System.Func<System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, object state) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TResult>(System.Func<System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TResult>(System.IAsyncResult asyncResult, System.Func<System.IAsyncResult, TResult> endMethod) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TResult>(System.IAsyncResult asyncResult, System.Func<System.IAsyncResult, TResult> endMethod, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TResult>(System.IAsyncResult asyncResult, System.Func<System.IAsyncResult, TResult> endMethod, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
                 public System.Threading.Tasks.TaskScheduler Scheduler { get => throw null; }
-                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<object, TResult> function, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<object, TResult> function, object state) => throw null;
-                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<TResult> function, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<TResult> function) => throw null;
-                public System.Threading.Tasks.Task StartNew(System.Action<object> action, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task StartNew(System.Action<object> action, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task StartNew(System.Action<object> action, object state, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task StartNew(System.Action<object> action, object state) => throw null;
-                public System.Threading.Tasks.Task StartNew(System.Action action, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task StartNew(System.Action action, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task StartNew(System.Action action, System.Threading.CancellationToken cancellationToken) => throw null;
                 public System.Threading.Tasks.Task StartNew(System.Action action) => throw null;
-                public TaskFactory(System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public TaskFactory(System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public TaskFactory(System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public TaskFactory(System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task StartNew(System.Action action, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task StartNew(System.Action action, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task StartNew(System.Action action, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task StartNew(System.Action<object> action, object state) => throw null;
+                public System.Threading.Tasks.Task StartNew(System.Action<object> action, object state, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task StartNew(System.Action<object> action, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task StartNew(System.Action<object> action, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<TResult> function) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<TResult> function, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<object, TResult> function, object state) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew<TResult>(System.Func<object, TResult> function, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
                 public TaskFactory() => throw null;
+                public TaskFactory(System.Threading.CancellationToken cancellationToken) => throw null;
+                public TaskFactory(System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public TaskFactory(System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public TaskFactory(System.Threading.Tasks.TaskScheduler scheduler) => throw null;
             }
 
             // Generated from `System.Threading.Tasks.TaskFactory<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11908,48 +11908,48 @@ namespace System
             {
                 public System.Threading.CancellationToken CancellationToken { get => throw null; }
                 public System.Threading.Tasks.TaskContinuationOptions ContinuationOptions { get => throw null; }
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
                 public System.Threading.Tasks.Task<TResult> ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task[], TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAll<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>[], TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
                 public System.Threading.Tasks.Task<TResult> ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny(System.Threading.Tasks.Task[] tasks, System.Func<System.Threading.Tasks.Task, TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> ContinueWhenAny<TAntecedentResult>(System.Threading.Tasks.Task<TAntecedentResult>[] tasks, System.Func<System.Threading.Tasks.Task<TAntecedentResult>, TResult> continuationFunction, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
                 public System.Threading.Tasks.TaskCreationOptions CreationOptions { get => throw null; }
-                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1>(System.Func<TArg1, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1>(System.Func<TArg1, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, object state) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2>(System.Func<TArg1, TArg2, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2>(System.Func<TArg1, TArg2, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, object state) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2, TArg3>(System.Func<TArg1, TArg2, TArg3, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, TArg3 arg3, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2, TArg3>(System.Func<TArg1, TArg2, TArg3, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, TArg3 arg3, object state) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync(System.IAsyncResult asyncResult, System.Func<System.IAsyncResult, TResult> endMethod, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync(System.IAsyncResult asyncResult, System.Func<System.IAsyncResult, TResult> endMethod, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync(System.IAsyncResult asyncResult, System.Func<System.IAsyncResult, TResult> endMethod) => throw null;
-                public System.Threading.Tasks.Task<TResult> FromAsync(System.Func<System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
                 public System.Threading.Tasks.Task<TResult> FromAsync(System.Func<System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, object state) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync(System.Func<System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync(System.IAsyncResult asyncResult, System.Func<System.IAsyncResult, TResult> endMethod) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync(System.IAsyncResult asyncResult, System.Func<System.IAsyncResult, TResult> endMethod, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync(System.IAsyncResult asyncResult, System.Func<System.IAsyncResult, TResult> endMethod, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2, TArg3>(System.Func<TArg1, TArg2, TArg3, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, TArg3 arg3, object state) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2, TArg3>(System.Func<TArg1, TArg2, TArg3, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, TArg3 arg3, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2>(System.Func<TArg1, TArg2, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, object state) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1, TArg2>(System.Func<TArg1, TArg2, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, TArg2 arg2, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1>(System.Func<TArg1, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, object state) => throw null;
+                public System.Threading.Tasks.Task<TResult> FromAsync<TArg1>(System.Func<TArg1, System.AsyncCallback, object, System.IAsyncResult> beginMethod, System.Func<System.IAsyncResult, TResult> endMethod, TArg1 arg1, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
                 public System.Threading.Tasks.TaskScheduler Scheduler { get => throw null; }
-                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<object, TResult> function, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<object, TResult> function, object state) => throw null;
-                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<TResult> function, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
-                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken) => throw null;
                 public System.Threading.Tasks.Task<TResult> StartNew(System.Func<TResult> function) => throw null;
-                public TaskFactory(System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public TaskFactory(System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
-                public TaskFactory(System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
-                public TaskFactory(System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<TResult> function, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<object, TResult> function, object state) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public System.Threading.Tasks.Task<TResult> StartNew(System.Func<object, TResult> function, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) => throw null;
                 public TaskFactory() => throw null;
+                public TaskFactory(System.Threading.CancellationToken cancellationToken) => throw null;
+                public TaskFactory(System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler) => throw null;
+                public TaskFactory(System.Threading.Tasks.TaskCreationOptions creationOptions, System.Threading.Tasks.TaskContinuationOptions continuationOptions) => throw null;
+                public TaskFactory(System.Threading.Tasks.TaskScheduler scheduler) => throw null;
             }
 
             // Generated from `System.Threading.Tasks.TaskScheduler` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11972,11 +11972,11 @@ namespace System
             // Generated from `System.Threading.Tasks.TaskSchedulerException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TaskSchedulerException : System.Exception
             {
-                public TaskSchedulerException(string message, System.Exception innerException) => throw null;
-                public TaskSchedulerException(string message) => throw null;
-                public TaskSchedulerException(System.Exception innerException) => throw null;
                 public TaskSchedulerException() => throw null;
+                public TaskSchedulerException(System.Exception innerException) => throw null;
                 protected TaskSchedulerException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public TaskSchedulerException(string message) => throw null;
+                public TaskSchedulerException(string message, System.Exception innerException) => throw null;
             }
 
             // Generated from `System.Threading.Tasks.TaskStatus` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -12009,12 +12009,12 @@ namespace System
                 public System.Threading.Tasks.Task AsTask() => throw null;
                 public static System.Threading.Tasks.ValueTask CompletedTask { get => throw null; }
                 public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable ConfigureAwait(bool continueOnCapturedContext) => throw null;
-                public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Threading.Tasks.ValueTask other) => throw null;
-                public static System.Threading.Tasks.ValueTask<TResult> FromCanceled<TResult>(System.Threading.CancellationToken cancellationToken) => throw null;
+                public override bool Equals(object obj) => throw null;
                 public static System.Threading.Tasks.ValueTask FromCanceled(System.Threading.CancellationToken cancellationToken) => throw null;
-                public static System.Threading.Tasks.ValueTask<TResult> FromException<TResult>(System.Exception exception) => throw null;
+                public static System.Threading.Tasks.ValueTask<TResult> FromCanceled<TResult>(System.Threading.CancellationToken cancellationToken) => throw null;
                 public static System.Threading.Tasks.ValueTask FromException(System.Exception exception) => throw null;
+                public static System.Threading.Tasks.ValueTask<TResult> FromException<TResult>(System.Exception exception) => throw null;
                 public static System.Threading.Tasks.ValueTask<TResult> FromResult<TResult>(TResult result) => throw null;
                 public System.Runtime.CompilerServices.ValueTaskAwaiter GetAwaiter() => throw null;
                 public override int GetHashCode() => throw null;
@@ -12023,9 +12023,9 @@ namespace System
                 public bool IsCompletedSuccessfully { get => throw null; }
                 public bool IsFaulted { get => throw null; }
                 public System.Threading.Tasks.ValueTask Preserve() => throw null;
-                public ValueTask(System.Threading.Tasks.Task task) => throw null;
-                public ValueTask(System.Threading.Tasks.Sources.IValueTaskSource source, System.Int16 token) => throw null;
                 // Stub generator skipped constructor 
+                public ValueTask(System.Threading.Tasks.Sources.IValueTaskSource source, System.Int16 token) => throw null;
+                public ValueTask(System.Threading.Tasks.Task task) => throw null;
             }
 
             // Generated from `System.Threading.Tasks.ValueTask<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -12035,8 +12035,8 @@ namespace System
                 public static bool operator ==(System.Threading.Tasks.ValueTask<TResult> left, System.Threading.Tasks.ValueTask<TResult> right) => throw null;
                 public System.Threading.Tasks.Task<TResult> AsTask() => throw null;
                 public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<TResult> ConfigureAwait(bool continueOnCapturedContext) => throw null;
-                public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Threading.Tasks.ValueTask<TResult> other) => throw null;
+                public override bool Equals(object obj) => throw null;
                 public System.Runtime.CompilerServices.ValueTaskAwaiter<TResult> GetAwaiter() => throw null;
                 public override int GetHashCode() => throw null;
                 public bool IsCanceled { get => throw null; }
@@ -12046,10 +12046,10 @@ namespace System
                 public System.Threading.Tasks.ValueTask<TResult> Preserve() => throw null;
                 public TResult Result { get => throw null; }
                 public override string ToString() => throw null;
+                // Stub generator skipped constructor 
+                public ValueTask(System.Threading.Tasks.Sources.IValueTaskSource<TResult> source, System.Int16 token) => throw null;
                 public ValueTask(TResult result) => throw null;
                 public ValueTask(System.Threading.Tasks.Task<TResult> task) => throw null;
-                public ValueTask(System.Threading.Tasks.Sources.IValueTaskSource<TResult> source, System.Int16 token) => throw null;
-                // Stub generator skipped constructor 
             }
 
             namespace Sources

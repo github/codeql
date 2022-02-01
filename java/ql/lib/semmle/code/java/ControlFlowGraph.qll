@@ -150,7 +150,7 @@ private module ControlFlowGraphImpl {
      * `TypeThrowable` which results in both `TypeError` and `TypeRuntimeException`.
      */
     UncheckedThrowableType getAnUncheckedSubtype() {
-      result = this.(UncheckedThrowableType)
+      result = this
       or
       result instanceof TypeError and this instanceof TypeThrowable
       or

@@ -1,6 +1,7 @@
 import subprocess
 import json
 import csv
+import shutil
 import sys
 import os
 import argparse
@@ -27,9 +28,42 @@ arguments = parser.parse_args()
 assert hasattr(arguments, "ignore_missing_query_packs")
 
 # Define which languages and query packs to consider
-languages = [ "cpp", "csharp", "go", "java", "javascript", "python"]
+languages = [ "cpp", "csharp", "go", "java", "javascript", "python", "ruby"]
 packs = [ "code-scanning", "security-and-quality", "security-extended" ]
 
+class CodeQL:
+    def __init__(self):
+        pass
+
+    def __enter__(self):
+        self.proc = subprocess.Popen(['codeql', 'execute','cli-server'],
+                      executable=shutil.which('codeql'),
+                      stdin=subprocess.PIPE,
+                      stdout=subprocess.PIPE,
+                      stderr=sys.stderr,
+                      env=os.environ.copy(),
+                     )
+        return self
+    def __exit__(self, type, value, tb):
+        self.proc.stdin.write(b'["shutdown"]\0')
+        self.proc.stdin.close()
+        try:
+            self.proc.wait(5)
+        except:
+            self.proc.kill()
+
+    def command(self, args): 
+        data = json.dumps(args)
+        data_bytes = data.encode('utf-8')
+        self.proc.stdin.write(data_bytes)
+        self.proc.stdin.write(b'\0')
+        self.proc.stdin.flush()
+        res = b''
+        while True:
+           b = self.proc.stdout.read(1)
+           if b == b'\0':
+               return res.decode('utf-8')
+           res += b
 
 def prefix_repo_nwo(filename):
     """
@@ -98,73 +132,74 @@ except Exception as e:
     print("Error: couldn't invoke 'git'. Is it on the path? Aborting.", file=sys.stderr)
     raise e
 
-try: # Check for `codeql` on path
-    subprocess_run(["codeql","--version"])
-except Exception as e:
-    print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
-    raise e
-
-# Define CodeQL search path so it'll find the CodeQL repositories:
-#  - anywhere in the current Git clone (including current working directory)
-#  - the 'codeql' subdirectory of the cwd
-#
-# (and assumes the codeql-go repo is in a similar location)
-codeql_search_path = "./codeql:./codeql-go:."   # will be extended further down
-
-# Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
-# can run this script from any location within the CodeQL git repository.
-try:
-    git_toplevel_dir = subprocess_run(["git","rev-parse","--show-toplevel"])
-
-    # Current working directory is in a Git repo. Add it to the search path, just in case it's the CodeQL repo
-    git_toplevel_dir = git_toplevel_dir.stdout.strip()
-    codeql_search_path += ":" + git_toplevel_dir + ":" + git_toplevel_dir + "/../codeql-go"
-except:
-    # git rev-parse --show-toplevel exited with non-zero exit code. We're not in a Git repo
-    pass
-
-# Create CSV writer and write CSV header to stdout
-csvwriter = csv.writer(sys.stdout)
-csvwriter.writerow([
-    "Query filename", "Suite", "Query name", "Query ID",
-    "Kind", "Severity", "Precision", "Tags"
-])
-
-# Iterate over all languages and packs, and resolve which queries are part of those packs
-for lang in languages:
-    for pack in packs:
-        # Get absolute paths to queries in this pack by using 'codeql resolve queries'
-        try:
-            queries_subp = subprocess_run(["codeql","resolve","queries","--search-path", codeql_search_path, "%s-%s.qls" % (lang, pack)])
+with CodeQL() as codeql:
+        try: # Check for `codeql` on path
+            codeql.command(["--version"])
         except Exception as e:
-            # Resolving queries might go wrong if the github/codeql and github/codeql-go repositories are not
-            # on the search path.
-            level = "Warning" if arguments.ignore_missing_query_packs else "Error"
-            print(
-                "%s: couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (level, pack, lang, codeql_search_path),
-                file=sys.stderr
-            )
-            if arguments.ignore_missing_query_packs:
-                continue
-            else:
-                sys.exit("You can use '--ignore-missing-query-packs' to ignore this error")
+            print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
+            raise e
 
-        # Investigate metadata for every query by using 'codeql resolve metadata'
-        for queryfile in queries_subp.stdout.strip().split("\n"):
-            query_metadata_json = subprocess_run(["codeql","resolve","metadata",queryfile]).stdout.strip()
+        # Define CodeQL search path so it'll find the CodeQL repositories:
+        #  - anywhere in the current Git clone (including current working directory)
+        #  - the 'codeql' subdirectory of the cwd
+        #
+        # (and assumes the codeql-go repo is in a similar location)
+        codeql_search_path = "./codeql:./codeql-go:."   # will be extended further down
 
-            # Turn an absolute path to a query file into an nwo-prefixed path (e.g. github/codeql/java/ql/src/....)
-            queryfile_nwo = prefix_repo_nwo(queryfile)
+        # Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
+        # can run this script from any location within the CodeQL git repository.
+        try:
+            git_toplevel_dir = subprocess_run(["git","rev-parse","--show-toplevel"])
 
-            meta = json.loads(query_metadata_json)
+            # Current working directory is in a Git repo. Add it to the search path, just in case it's the CodeQL repo
+            git_toplevel_dir = git_toplevel_dir.stdout.strip()
+            codeql_search_path += ":" + git_toplevel_dir + ":" + git_toplevel_dir + "/../codeql-go"
+        except:
+            # git rev-parse --show-toplevel exited with non-zero exit code. We're not in a Git repo
+            pass
 
-            # Python's CSV writer will automatically quote fields if necessary
-            csvwriter.writerow([
-                queryfile_nwo, pack,
-                get_query_metadata('name', meta, queryfile_nwo),
-                get_query_metadata('id', meta, queryfile_nwo),
-                get_query_metadata('kind', meta, queryfile_nwo),
-                get_query_metadata('problem.severity', meta, queryfile_nwo),
-                get_query_metadata('precision', meta, queryfile_nwo),
-                get_query_metadata('tags', meta, queryfile_nwo)
-            ])
+        # Create CSV writer and write CSV header to stdout
+        csvwriter = csv.writer(sys.stdout)
+        csvwriter.writerow([
+            "Query filename", "Suite", "Query name", "Query ID",
+            "Kind", "Severity", "Precision", "Tags"
+        ])
+
+        # Iterate over all languages and packs, and resolve which queries are part of those packs
+        for lang in languages:
+            for pack in packs:
+                # Get absolute paths to queries in this pack by using 'codeql resolve queries'
+                try:
+                    queries_subp = codeql.command(["resolve","queries","--search-path", codeql_search_path, "%s-%s.qls" % (lang, pack)])
+                except Exception as e:
+                    # Resolving queries might go wrong if the github/codeql and github/codeql-go repositories are not
+                    # on the search path.
+                    level = "Warning" if arguments.ignore_missing_query_packs else "Error"
+                    print(
+                        "%s: couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (level, pack, lang, codeql_search_path),
+                        file=sys.stderr
+                    )
+                    if arguments.ignore_missing_query_packs:
+                        continue
+                    else:
+                        sys.exit("You can use '--ignore-missing-query-packs' to ignore this error")
+
+                # Investigate metadata for every query by using 'codeql resolve metadata'
+                for queryfile in queries_subp.strip().split("\n"):
+                    query_metadata_json = codeql.command(["resolve","metadata",queryfile]).strip()
+
+                    # Turn an absolute path to a query file into an nwo-prefixed path (e.g. github/codeql/java/ql/src/....)
+                    queryfile_nwo = prefix_repo_nwo(queryfile)
+
+                    meta = json.loads(query_metadata_json)
+
+                    # Python's CSV writer will automatically quote fields if necessary
+                    csvwriter.writerow([
+                        queryfile_nwo, pack,
+                        get_query_metadata('name', meta, queryfile_nwo),
+                        get_query_metadata('id', meta, queryfile_nwo),
+                        get_query_metadata('kind', meta, queryfile_nwo),
+                        get_query_metadata('problem.severity', meta, queryfile_nwo),
+                        get_query_metadata('precision', meta, queryfile_nwo),
+                        get_query_metadata('tags', meta, queryfile_nwo)
+                    ])

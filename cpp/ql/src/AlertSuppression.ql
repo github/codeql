@@ -18,12 +18,12 @@ class SuppressionComment extends Comment {
     (
       this instanceof CppStyleComment and
       // strip the beginning slashes
-      text = getContents().suffix(2)
+      text = this.getContents().suffix(2)
       or
       this instanceof CStyleComment and
       // strip both the beginning /* and the end */ the comment
       exists(string text0 |
-        text0 = getContents().suffix(2) and
+        text0 = this.getContents().suffix(2) and
         text = text0.prefix(text0.length() - 2)
       ) and
       // The /* */ comment must be a single-line comment

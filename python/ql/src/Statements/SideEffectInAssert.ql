@@ -15,16 +15,9 @@ import python
 
 predicate func_with_side_effects(Expr e) {
   exists(string name | name = e.(Attribute).getName() or name = e.(Name).getId() |
-    name = "print" or
-    name = "write" or
-    name = "append" or
-    name = "pop" or
-    name = "remove" or
-    name = "discard" or
-    name = "delete" or
-    name = "close" or
-    name = "open" or
-    name = "exit"
+    name in [
+        "print", "write", "append", "pop", "remove", "discard", "delete", "close", "open", "exit"
+      ]
   )
 }
 

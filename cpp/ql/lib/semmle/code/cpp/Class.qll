@@ -206,9 +206,7 @@ class Class extends UserType {
    * it is callable by a particular caller. For C++11, there's also a question
    * of whether to include members that are defaulted or deleted.
    */
-  deprecated predicate hasCopyConstructor() {
-    exists(CopyConstructor cc | cc = this.getAMemberFunction())
-  }
+  deprecated predicate hasCopyConstructor() { this.getAMemberFunction() instanceof CopyConstructor }
 
   /**
    * Holds if this class has a copy assignment operator that is either
@@ -224,7 +222,7 @@ class Class extends UserType {
    * or deleted.
    */
   deprecated predicate hasCopyAssignmentOperator() {
-    exists(CopyAssignmentOperator coa | coa = this.getAMemberFunction())
+    this.getAMemberFunction() instanceof CopyAssignmentOperator
   }
 
   /**
@@ -237,7 +235,7 @@ class Class extends UserType {
     exists(ClassDerivation cd | cd.getBaseClass() = base |
       result =
         this.accessOfBaseMemberMulti(cd.getDerivedClass(),
-          fieldInBase.accessInDirectDerived(cd.getASpecifier().(AccessSpecifier)))
+          fieldInBase.accessInDirectDerived(cd.getASpecifier()))
     )
   }
 
@@ -261,8 +259,7 @@ class Class extends UserType {
    * includes the case of `base` = `this`.
    */
   AccessSpecifier accessOfBaseMember(Declaration member) {
-    result =
-      this.accessOfBaseMember(member.getDeclaringType(), member.getASpecifier().(AccessSpecifier))
+    result = this.accessOfBaseMember(member.getDeclaringType(), member.getASpecifier())
   }
 
   /**
@@ -319,7 +316,7 @@ class Class extends UserType {
     exists(Type t | t = this.getAFieldSubobjectType().getUnspecifiedType() |
       // Note: Overload resolution is not implemented -- all copy
       // constructors are considered equal.
-      this.cannotAccessCopyConstructorOnAny(t.(Class))
+      this.cannotAccessCopyConstructorOnAny(t)
     )
     or
     // - T has direct or virtual base class that cannot be copied (has deleted,
@@ -392,7 +389,7 @@ class Class extends UserType {
     exists(Type t | t = this.getAFieldSubobjectType().getUnspecifiedType() |
       // Note: Overload resolution is not implemented -- all copy assignment
       // operators are considered equal.
-      this.cannotAccessCopyAssignmentOperatorOnAny(t.(Class))
+      this.cannotAccessCopyAssignmentOperatorOnAny(t)
     )
     or
     exists(Class c | c = this.getADirectOrVirtualBase() |
@@ -888,7 +885,7 @@ class NestedClass extends Class {
  * pure virtual function.
  */
 class AbstractClass extends Class {
-  AbstractClass() { exists(PureVirtualFunction f | this.getAMemberFunction() = f) }
+  AbstractClass() { this.getAMemberFunction() instanceof PureVirtualFunction }
 
   override string getAPrimaryQlClass() { result = "AbstractClass" }
 }

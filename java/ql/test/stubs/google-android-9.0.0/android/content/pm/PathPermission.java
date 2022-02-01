@@ -1,39 +1,18 @@
-/*
- * Copyright (C) 2009 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
+// Generated automatically from android.content.pm.PathPermission for testing purposes
 
 package android.content.pm;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.PatternMatcher;
 
-public class PathPermission extends PatternMatcher {
-  public PathPermission(String pattern, int type, String readPermission, String writePermission) {
-    super(null);
-  }
-
-  public PathPermission(Parcel src) {
-    super(null);
-  }
-
-  public String getReadPermission() {
-    return null;
-  }
-
-  public String getWritePermission() {
-    return null;
-  }
-
-  public void writeToParcel(Parcel dest, int flags) {}
-
+public class PathPermission extends PatternMatcher
+{
+    protected PathPermission() {}
+    public PathPermission(Parcel p0){}
+    public PathPermission(String p0, int p1, String p2, String p3){}
+    public String getReadPermission(){ return null; }
+    public String getWritePermission(){ return null; }
+    public static Parcelable.Creator<PathPermission> CREATOR = null;
+    public void writeToParcel(Parcel p0, int p1){}
 }

@@ -8,15 +8,10 @@ import python
 import DefinitionTracking
 
 predicate uniqueness_error(int number, string what, string problem) {
-  (
-    what = "toString" or
-    what = "getLocation" or
-    what = "getNode" or
-    what = "getDefinition" or
-    what = "getEntryNode" or
-    what = "getOrigin" or
-    what = "getAnInferredType"
-  ) and
+  what in [
+      "toString", "getLocation", "getNode", "getDefinition", "getEntryNode", "getOrigin",
+      "getAnInferredType"
+    ] and
   (
     number = 0 and problem = "no results for " + what + "()"
     or

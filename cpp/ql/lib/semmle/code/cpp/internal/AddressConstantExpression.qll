@@ -31,7 +31,7 @@ private predicate addressConstantVariable(Variable v) {
 private predicate constantAddressLValue(Expr lvalue) {
   lvalue.(VariableAccess).getTarget() =
     any(Variable v |
-      v.(Variable).isStatic()
+      v.isStatic()
       or
       v instanceof GlobalOrNamespaceVariable
     )

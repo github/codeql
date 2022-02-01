@@ -8,7 +8,7 @@ namespace Semmle.Extraction
     /// </summary>
     public abstract class Extractor
     {
-        public abstract bool Standalone { get; }
+        public abstract ExtractorMode Mode { get; }
 
         /// <summary>
         /// Creates a new extractor instance for one compilation unit.

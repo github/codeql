@@ -35,7 +35,7 @@ class Call extends Expr, NameQualifiableElement, TCall {
    *
    * For example, `ptr->f()` has a qualifier, whereas plain `f()` does not.
    */
-  predicate hasQualifier() { exists(Expr e | this.getChild(-1) = e) }
+  predicate hasQualifier() { exists(this.getChild(-1)) }
 
   /**
    * Gets the expression to the left of the function name or function pointer variable name.

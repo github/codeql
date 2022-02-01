@@ -15,7 +15,7 @@ class ExternalData extends @externalDataElement {
    * Gets the path of the file this data was loaded from, with its
    * extension replaced by `.ql`.
    */
-  string getQueryPath() { result = getDataPath().regexpReplaceAll("\\.[^.]*$", ".ql") }
+  string getQueryPath() { result = this.getDataPath().regexpReplaceAll("\\.[^.]*$", ".ql") }
 
   /** Gets the number of fields in this data item. */
   int getNumFields() { result = 1 + max(int i | externalData(this, _, i, _) | i) }
@@ -24,22 +24,22 @@ class ExternalData extends @externalDataElement {
   string getField(int i) { externalData(this, _, i, result) }
 
   /** Gets the integer value of the `i`th field of this data item. */
-  int getFieldAsInt(int i) { result = getField(i).toInt() }
+  int getFieldAsInt(int i) { result = this.getField(i).toInt() }
 
   /** Gets the floating-point value of the `i`th field of this data item. */
-  float getFieldAsFloat(int i) { result = getField(i).toFloat() }
+  float getFieldAsFloat(int i) { result = this.getField(i).toFloat() }
 
   /** Gets the value of the `i`th field of this data item, interpreted as a date. */
-  date getFieldAsDate(int i) { result = getField(i).toDate() }
+  date getFieldAsDate(int i) { result = this.getField(i).toDate() }
 
   /** Gets a textual representation of this data item. */
-  string toString() { result = getQueryPath() + ": " + buildTupleString(0) }
+  string toString() { result = this.getQueryPath() + ": " + this.buildTupleString(0) }
 
   /** Gets a textual representation of this data item, starting with the `n`th field. */
   private string buildTupleString(int n) {
-    n = getNumFields() - 1 and result = getField(n)
+    n = this.getNumFields() - 1 and result = this.getField(n)
     or
-    n < getNumFields() - 1 and result = getField(n) + "," + buildTupleString(n + 1)
+    n < this.getNumFields() - 1 and result = this.getField(n) + "," + this.buildTupleString(n + 1)
   }
 }
 
@@ -48,26 +48,26 @@ class ExternalData extends @externalDataElement {
  */
 class ExternalError extends ExternalData {
   /** Gets the name of the tool that reported the error. */
-  string getReporter() { result = getField(0) }
+  string getReporter() { result = this.getField(0) }
 
   /** Gets the absolute path of the file in which the error occurs. */
-  string getPath() { result = getField(1) }
+  string getPath() { result = this.getField(1) }
 
   /** Gets the reported line of the error. */
-  int getLine() { result = getFieldAsInt(2) }
+  int getLine() { result = this.getFieldAsInt(2) }
 
   /** Gets the reported column of the error. */
-  int getColumn() { result = getFieldAsInt(3) }
+  int getColumn() { result = this.getFieldAsInt(3) }
 
   /**
    * Gets the error type.
    *
    * This is tool-specific, but usually either "warning" or "error".
    */
-  string getType() { result = getField(4) }
+  string getType() { result = this.getField(4) }
 
   /** Gets the error message. */
-  string getMessage() { result = getField(5) }
+  string getMessage() { result = this.getField(5) }
 
   /** Gets the file associated with this error. */
   File getFile() { result.getAbsolutePath() = this.getPath() }
@@ -93,8 +93,8 @@ class DefectExternalData extends ExternalData {
   }
 
   /** Gets the URL associated with this data item. */
-  string getURL() { result = getField(0) }
+  string getURL() { result = this.getField(0) }
 
   /** Gets the message associated with this data item. */
-  string getMessage() { result = getField(1) }
+  string getMessage() { result = this.getField(1) }
 }

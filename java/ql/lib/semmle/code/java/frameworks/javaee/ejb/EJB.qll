@@ -572,7 +572,7 @@ class RemoteInterface extends Interface {
    * abstract methods or overriding within an interface hierarchy.
    */
   Method getARemoteMethodImplementationChecked() {
-    result.overrides(this.getARemoteMethod()) and
+    result.overrides+(this.getARemoteMethod()) and
     exists(result.getBody())
   }
 
@@ -668,7 +668,7 @@ Type inheritsMatchingMethodExceptThrows(SessionEJB ejb, Method m) {
     sig = n.getSignature() and
     sig = m.getSignature() and
     exists(Exception ex | ex = n.getAnException() and not throwsExplicitUncheckedException(n, ex) |
-      not ex.getType().(RefType).hasSupertype*(m.getAnException().getType()) and
+      not ex.getType().hasSupertype*(m.getAnException().getType()) and
       result = ex.getType()
     )
   )
@@ -717,7 +717,7 @@ Type inheritsMatchingCreateMethodExceptThrows(StatefulSessionEJB ejb, EjbInterfa
     exists(Exception ex |
       ex = cm.getAnException() and not throwsExplicitUncheckedException(cm, ex)
     |
-      not ex.getType().(RefType).hasSupertype*(icm.getAnException().getType()) and
+      not ex.getType().hasSupertype*(icm.getAnException().getType()) and
       result = ex.getType()
     )
   )
@@ -732,7 +732,7 @@ Type inheritsMatchingCreateMethodExceptThrows(StatefulSessionEJB ejb, EjbInterfa
     exists(Exception ex |
       ex = im.getAnException() and not throwsExplicitUncheckedException(im, ex)
     |
-      not ex.getType().(RefType).hasSupertype*(icm.getAnException().getType()) and
+      not ex.getType().hasSupertype*(icm.getAnException().getType()) and
       result = ex.getType()
     )
   )

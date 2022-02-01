@@ -7,7 +7,7 @@ QL packs are used to organize the files used in CodeQL analysis. They
 contain queries, library files, query suites, and important metadata.
 
 The `CodeQL repository <https://github.com/github/codeql>`__ contains QL packs for
-C/C++, C#, Java, JavaScript, and Python. The `CodeQL for Go
+C/C++, C#, Java, JavaScript, Python, and Ruby. The `CodeQL for Go
 <https://github.com/github/codeql-go/>`__ repository contains a QL pack for Go
 analysis. You can also make custom QL packs to contain your own queries and
 libraries.
@@ -203,8 +203,7 @@ contains:
    name: codeql/cpp-all
    version: 0.0.0
    dbscheme: semmlecode.cpp.dbscheme
-   dependencies:
-    codeql/cpp-upgrades: "*"
+   upgrades: upgrades
 
 Core query pack
 ~~~~~~~~~~~~~~~
@@ -247,18 +246,3 @@ contains:
 
 
 .. _upgrade-ql-packs:
-
-Upgrade scripts for a language
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The ``qlpack.yml`` file for a QL pack that contains only upgrade scripts
-uses the following properties: ``name`` and ``upgrades``.
-
-For example, the ``qlpack.yml`` file for `C/C++ upgrades
-<https://github.com/github/codeql/blob/main/cpp/upgrades/qlpack.yml>`__
-contains:
-
-.. code-block:: yaml
-
-   name: codeql/cpp-upgrades
-   upgrades: .

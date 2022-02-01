@@ -63,4 +63,27 @@ public class StringBuilderTests {
     sb.insert(45, taint());
     sink(sb.toString());
   }
+
+  static void stringBuilderGetCharsBad() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("from preferences select locale where user=''");
+    sb.append(taint());
+    char[] chars = null;
+    sb.getChars(0, 0, chars, 0);
+    sink(new String(chars));
+  }
+
+  static void stringBuilderSubSequenceBad() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("from preferences select locale where user=''");
+    sb.append(taint());
+    sink(sb.subSequence(0, 0).toString());
+  }
+
+  static void stringBuilderSubstringBad() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("from preferences select locale where user=''");
+    sb.append(taint());
+    sink(sb.substring(0, 0));
+  }
 }

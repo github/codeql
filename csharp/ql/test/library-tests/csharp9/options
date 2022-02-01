@@ -1,1 +1,1 @@
-semmle-extractor-options: --standalone
+semmle-extractor-options: /r:System.Linq.dll

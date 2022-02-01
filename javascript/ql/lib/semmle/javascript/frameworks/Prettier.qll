@@ -4,7 +4,7 @@
 
 import javascript
 
-/** Provides classes and predicates modelling aspects of the [prettier](https://www.npmjs.com/package/prettier) library. */
+/** Provides classes and predicates modeling aspects of the [prettier](https://www.npmjs.com/package/prettier) library. */
 private module Prettier {
   /**
    * A taint step from the [prettier API](https://prettier.io/docs/en/api.html).

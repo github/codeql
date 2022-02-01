@@ -40,7 +40,7 @@ class Comment extends @py_comment {
 
 private predicate comment_block_part(Comment start, Comment part, int i) {
   not exists(Comment prev | prev.getFollowing() = part) and
-  exists(Comment following | part.getFollowing() = following) and
+  exists(part.getFollowing()) and
   start = part and
   i = 1
   or

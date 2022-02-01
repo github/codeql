@@ -15,12 +15,12 @@ import semmle.code.java.frameworks.spring.Spring
 class SpringConstructorArgUseShortcut extends SpringConstructorArg {
   SpringConstructorArgUseShortcut() {
     not this.hasArgValueString() and
-    exists(SpringValue val | val = this.getASpringChild())
+    this.getASpringChild() instanceof SpringValue
   }
 
   string getMessage() {
     not this.hasArgValueString() and
-    exists(SpringValue val | val = this.getASpringChild()) and
+    this.getASpringChild() instanceof SpringValue and
     result = "Use the shortcut \"value\" attribute instead of a nested <value> element."
   }
 }
@@ -28,12 +28,12 @@ class SpringConstructorArgUseShortcut extends SpringConstructorArg {
 class SpringEntryUseShortcut extends SpringEntry {
   SpringEntryUseShortcut() {
     not this.hasValueStringRaw() and
-    exists(SpringValue val | val = this.getASpringChild())
+    this.getASpringChild() instanceof SpringValue
   }
 
   string getMessage() {
     not this.hasValueStringRaw() and
-    exists(SpringValue val | val = this.getASpringChild()) and
+    this.getASpringChild() instanceof SpringValue and
     result = "Use the shortcut \"value\" attribute instead of a nested <value> element."
   }
 }
@@ -41,12 +41,12 @@ class SpringEntryUseShortcut extends SpringEntry {
 class SpringPropertyUseShortcut extends SpringProperty {
   SpringPropertyUseShortcut() {
     not this.hasPropertyValueString() and
-    exists(SpringValue val | val = this.getASpringChild())
+    this.getASpringChild() instanceof SpringValue
   }
 
   string getMessage() {
     not this.hasPropertyValueString() and
-    exists(SpringValue val | val = this.getASpringChild()) and
+    this.getASpringChild() instanceof SpringValue and
     result = "Use the shortcut \"value\" attribute instead of a nested <value> element."
   }
 }

@@ -105,8 +105,8 @@ def bp1_example(foo): # $ requestHandler routedParameter=foo
 
 app.register_blueprint(bp1) # by default, URLs of blueprints are not prefixed
 
-
-bp2 = flask.Blueprint("bp2", __name__)
+import flask.blueprints
+bp2 = flask.blueprints.Blueprint("bp2", __name__)
 
 @bp2.route("/example") # $ routeSetup="/example"
 def bp2_example(): # $ requestHandler

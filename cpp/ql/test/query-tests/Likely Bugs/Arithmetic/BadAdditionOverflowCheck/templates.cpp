@@ -20,3 +20,22 @@ bool compareValues() {
 bool callCompareValues() {
   return compareValues<C1, C2> || compareValues<C1, C1>();
 }
+
+template <bool C, typename T = void>
+struct enable_if {};
+
+template <typename T>
+struct enable_if<true, T> { typedef T type; };
+
+template<typename T1, typename T2>
+typename enable_if<T1::value <= T2::value, bool>::type constant_comparison() {
+  return true;
+}
+
+struct Value0 {
+  const static int value = 0;
+};
+
+void instantiation_with_pointless_comparison() {
+  constant_comparison<Value0, Value0>(); // GOOD
+}

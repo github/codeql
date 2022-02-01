@@ -43,17 +43,17 @@ module SqlInjection {
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
 
   /**
+   * A SQL statement of a SQL construction, considered as a flow sink.
+   */
+  class SqlConstructionAsSink extends Sink {
+    SqlConstructionAsSink() { this = any(SqlConstruction c).getSql() }
+  }
+
+  /**
    * A SQL statement of a SQL execution, considered as a flow sink.
    */
   class SqlExecutionAsSink extends Sink {
     SqlExecutionAsSink() { this = any(SqlExecution e).getSql() }
-  }
-
-  /**
-   * The text argument of a SQLAlchemy TextClause construction, considered as a flow sink.
-   */
-  class TextArgAsSink extends Sink {
-    TextArgAsSink() { this = any(SqlAlchemy::TextClause::TextClauseConstruction tcc).getTextArg() }
   }
 
   /**

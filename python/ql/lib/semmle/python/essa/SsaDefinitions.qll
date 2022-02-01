@@ -40,6 +40,28 @@ module SsaSource {
     )
   }
 
+  /** Holds if `v` is defined by a capture pattern. */
+  cached
+  predicate pattern_capture_definition(Variable v, ControlFlowNode defn) {
+    exists(MatchCapturePattern capture, Name var |
+      capture.getVariable() = var and
+      var.getAFlowNode() = defn
+    |
+      var = v.getAStore()
+    )
+  }
+
+  /** Holds if `v` is defined by as the alias of an as-pattern. */
+  cached
+  predicate pattern_alias_definition(Variable v, ControlFlowNode defn) {
+    exists(MatchAsPattern pattern, Name var |
+      pattern.getAlias() = var and
+      var.getAFlowNode() = defn
+    |
+      var = v.getAStore()
+    )
+  }
+
   /** Holds if `v` is defined by multiple assignment at `defn`. */
   cached
   predicate multi_assignment_definition(Variable v, ControlFlowNode defn, int n, SequenceNode lhs) {
@@ -127,7 +149,7 @@ module SsaSource {
     not test_contains(_, call)
   }
 
-  /** Holds if an attribute is deleted  at `def` and `use` is the use of `v` for that deletion */
+  /** Holds if an attribute is deleted at `def` and `use` is the use of `v` for that deletion */
   cached
   predicate attribute_deletion_refinement(Variable v, NameNode use, DeletionNode def) {
     use.uses(v) and

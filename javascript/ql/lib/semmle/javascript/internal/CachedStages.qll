@@ -69,6 +69,14 @@ module Stages {
       exists(any(Expr e).getStringValue())
       or
       any(ASTNode node).isAmbient()
+      or
+      exists(any(Identifier e).getName())
+      or
+      exists(any(ExprOrType e).getUnderlyingValue())
+      or
+      exists(ConstantExpr e)
+      or
+      exists(SyntacticConstants::NullConstant n)
     }
   }
 
@@ -234,6 +242,43 @@ module Stages {
   }
 
   /**
+   * The `APIStage` stage.
+   */
+  cached
+  module APIStage {
+    /**
+     * Always holds.
+     * Ensures that a predicate is evaluated as part of the APIStage stage.
+     */
+    cached
+    predicate ref() { 1 = 1 }
+
+    /**
+     * DONT USE!
+     * Contains references to each predicate that use the above `ref` predicate.
+     */
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      exists(
+        API::moduleImport("foo")
+            .getMember("bar")
+            .getUnknownMember()
+            .getAMember()
+            .getAParameter()
+            .getPromised()
+            .getReturn()
+            .getParameter(2)
+            .getUnknownMember()
+            .getInstance()
+            .getReceiver()
+            .getPromisedError()
+      )
+    }
+  }
+
+  /**
    * The `taint` stage.
    */
   cached
@@ -260,6 +305,22 @@ module Stages {
       exists(RemoteFlowSource r)
       or
       exists(Exports::getALibraryInputParameter())
+      or
+      any(RegExpTerm t).isUsedAsRegExp()
+      or
+      any(TaintTracking::AdditionalSanitizerGuardNode e).appliesTo(_)
+    }
+
+    cached
+    class DummySanitizer extends TaintTracking::AdditionalSanitizerGuardNode {
+      cached
+      DummySanitizer() { none() }
+
+      cached
+      override predicate appliesTo(TaintTracking::Configuration cfg) { none() }
+
+      cached
+      override predicate sanitizes(boolean outcome, Expr e) { none() }
     }
   }
 }

@@ -1,0 +1,17 @@
+[
+  {
+    "password": "$pwd"
+  },
+  {
+    "password": ""
+  },
+  {
+    "password": "ff"
+  },
+  {
+    "config": "username=foo&password= "
+  },
+  {
+    "config": "password=&username=foo"
+  }
+]

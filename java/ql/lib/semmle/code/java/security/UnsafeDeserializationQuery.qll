@@ -312,7 +312,7 @@ MethodAccess getASafeFlexjsonUseCall() {
     result.getArgument(0) instanceof NullLiteral
     or
     result.getMethod().getParameterType(0) instanceof FlexjsonObjectFactory and
-    exists(NullLiteral e | e = result.getAnArgument())
+    result.getAnArgument() instanceof NullLiteral
   )
 }
 

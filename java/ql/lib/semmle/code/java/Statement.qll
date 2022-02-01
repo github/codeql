@@ -567,7 +567,7 @@ class ThrowStmt extends Stmt, @throwstmt {
     or
     exists(Stmt mid |
       mid = this.findEnclosing() and
-      not exists(this.catchClauseForThis(mid.(TryStmt))) and
+      not exists(this.catchClauseForThis(mid)) and
       result = mid.getEnclosingStmt()
     )
   }
@@ -575,7 +575,7 @@ class ThrowStmt extends Stmt, @throwstmt {
   private CatchClause catchClauseForThis(TryStmt try) {
     result = try.getACatchClause() and
     result.getEnclosingCallable() = this.getEnclosingCallable() and
-    this.getExpr().getType().(RefType).hasSupertype*(result.getVariable().getType().(RefType)) and
+    this.getExpr().getType().(RefType).hasSupertype*(result.getVariable().getType()) and
     not this.getEnclosingStmt+() = result
   }
 
@@ -636,7 +636,7 @@ class BreakStmt extends Stmt, @breakstmt {
   string getLabel() { namestrings(result, _, this) }
 
   /** Holds if this `break` statement has an explicit label. */
-  predicate hasLabel() { exists(string s | s = this.getLabel()) }
+  predicate hasLabel() { exists(this.getLabel()) }
 
   override string pp() {
     if this.hasLabel() then result = "break " + this.getLabel() else result = "break"
@@ -673,7 +673,7 @@ class ContinueStmt extends Stmt, @continuestmt {
   string getLabel() { namestrings(result, _, this) }
 
   /** Holds if this `continue` statement has an explicit label. */
-  predicate hasLabel() { exists(string s | s = this.getLabel()) }
+  predicate hasLabel() { exists(this.getLabel()) }
 
   override string pp() {
     if this.hasLabel() then result = "continue " + this.getLabel() else result = "continue"

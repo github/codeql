@@ -84,13 +84,45 @@ private import internal.FlowSummaryImplSpecific
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
-  private import semmle.code.csharp.security.dataflow.flowsources.Local
-  private import semmle.code.csharp.security.dataflow.flowsinks.Html
-  private import semmle.code.csharp.frameworks.System
-  private import semmle.code.csharp.security.dataflow.XSSSinks
+  private import semmle.code.csharp.frameworks.EntityFramework
+  private import semmle.code.csharp.frameworks.JsonNET
+  private import semmle.code.csharp.frameworks.microsoft.extensions.Primitives
+  private import semmle.code.csharp.frameworks.microsoft.VisualBasic
   private import semmle.code.csharp.frameworks.ServiceStack
   private import semmle.code.csharp.frameworks.Sql
-  private import semmle.code.csharp.frameworks.EntityFramework
+  private import semmle.code.csharp.frameworks.System
+  private import semmle.code.csharp.frameworks.system.Collections
+  private import semmle.code.csharp.frameworks.system.collections.Concurrent
+  private import semmle.code.csharp.frameworks.system.collections.Generic
+  private import semmle.code.csharp.frameworks.system.collections.Immutable
+  private import semmle.code.csharp.frameworks.system.collections.ObjectModel
+  private import semmle.code.csharp.frameworks.system.collections.Specialized
+  private import semmle.code.csharp.frameworks.system.ComponentModel
+  private import semmle.code.csharp.frameworks.system.componentmodel.Design
+  private import semmle.code.csharp.frameworks.system.Data
+  private import semmle.code.csharp.frameworks.system.data.Common
+  private import semmle.code.csharp.frameworks.system.Diagnostics
+  private import semmle.code.csharp.frameworks.system.Dynamic
+  private import semmle.code.csharp.frameworks.system.Linq
+  private import semmle.code.csharp.frameworks.system.Net
+  private import semmle.code.csharp.frameworks.system.net.Http
+  private import semmle.code.csharp.frameworks.system.net.Mail
+  private import semmle.code.csharp.frameworks.system.IO
+  private import semmle.code.csharp.frameworks.system.io.Compression
+  private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
+  private import semmle.code.csharp.frameworks.system.security.Cryptography
+  private import semmle.code.csharp.frameworks.system.security.cryptography.X509Certificates
+  private import semmle.code.csharp.frameworks.system.Text
+  private import semmle.code.csharp.frameworks.system.text.RegularExpressions
+  private import semmle.code.csharp.frameworks.system.threading.Tasks
+  private import semmle.code.csharp.frameworks.system.Web
+  private import semmle.code.csharp.frameworks.system.web.ui.WebControls
+  private import semmle.code.csharp.frameworks.system.Xml
+  private import semmle.code.csharp.frameworks.system.xml.Schema
+  private import semmle.code.csharp.frameworks.system.xml.Serialization
+  private import semmle.code.csharp.security.dataflow.flowsinks.Html
+  private import semmle.code.csharp.security.dataflow.flowsources.Local
+  private import semmle.code.csharp.security.dataflow.XSSSinks
 }
 
 /**
@@ -261,7 +293,7 @@ module CsvValidation {
       not name.regexpMatch("[a-zA-Z0-9_<>,]*") and
       msg = "Dubious member name \"" + name + "\" in " + pred + " model."
       or
-      not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+,\\[\\]]*\\)") and
+      not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+\\*,\\[\\]]*\\)") and
       msg = "Dubious signature \"" + signature + "\" in " + pred + " model."
       or
       not ext.regexpMatch("|Attribute") and
@@ -317,6 +349,24 @@ module CsvValidation {
         msg = "Invalid boolean \"" + b + "\" in " + pred + " model."
       )
     )
+    or
+    exists(string row, string kind | summaryModel(row) |
+      kind = row.splitAt(";", 8) and
+      not kind = ["taint", "value"] and
+      msg = "Invalid kind \"" + kind + "\" in summary model."
+    )
+    or
+    exists(string row, string kind | sinkModel(row) |
+      kind = row.splitAt(";", 7) and
+      not kind = ["code", "sql", "xss", "remote", "html"] and
+      msg = "Invalid kind \"" + kind + "\" in sink model."
+    )
+    or
+    exists(string row, string kind | sourceModel(row) |
+      kind = row.splitAt(";", 7) and
+      not kind = "local" and
+      msg = "Invalid kind \"" + kind + "\" in source model."
+    )
   }
 }
 
@@ -347,13 +397,17 @@ private class UnboundValueOrRefType extends ValueOrRefType {
   }
 }
 
-private class UnboundCallable extends Callable, Virtualizable {
+/** An unbound callable. */
+class UnboundCallable extends Callable {
   UnboundCallable() { this.isUnboundDeclaration() }
 
+  /**
+   * Holds if this unbound callable overrides or implements (transitively)
+   * `that` unbound callable.
+   */
   predicate overridesOrImplementsUnbound(UnboundCallable that) {
     exists(Callable c |
-      this.overridesOrImplementsOrEquals(c) and
-      this != c and
+      this.(Overridable).overridesOrImplements(c) and
       that = c.getUnboundDeclaration()
     )
   }
@@ -409,7 +463,7 @@ private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
   exists(UnboundValueOrRefType t | elementSpec(namespace, type, subtypes, name, signature, _, t) |
-    exists(Member m |
+    exists(Declaration m |
       (
         result = m
         or
@@ -427,7 +481,7 @@ private Element interpretElement0(
       result = t
       or
       subtypes = true and
-      result = t.(UnboundValueOrRefType).getASubTypeUnbound+()
+      result = t.getASubTypeUnbound+()
     ) and
     result = t and
     name = "" and
