@@ -789,8 +789,6 @@ exprs.kt:
 #  168|               0: [TypeAccess] Direction
 #  168|         1: [ExprStmt] <Expr>;
 #  168|           0: [MethodAccess] <obinit>(...)
-#  168|     4: [Method] getName
-#  168|     4: [Method] getOrdinal
 #  172|   7: [Class] Color
 #    0|     1: [Method] values
 #    0|     1: [Method] valueOf
@@ -806,14 +804,12 @@ exprs.kt:
 #  172|               0: [TypeAccess] Color
 #  172|         1: [ExprStmt] <Expr>;
 #  172|           0: [MethodAccess] <obinit>(...)
-#  172|     4: [Method] getName
-#  172|     4: [Method] getOrdinal
-#  172|     7: [Method] getRgb
+#  172|     5: [Method] getRgb
 #  172|       5: [BlockStmt] { ... }
 #  172|         0: [ReturnStmt] return ...
 #  172|           0: [VarAccess] this.rgb
 #  172|             -1: [ThisAccess] this
-#  172|     7: [FieldDeclaration] int rgb;
+#  172|     5: [FieldDeclaration] int rgb;
 #  172|       -1: [TypeAccess] int
 #  183|   8: [Interface] Interface1
 #  185|   9: [Class] Class1

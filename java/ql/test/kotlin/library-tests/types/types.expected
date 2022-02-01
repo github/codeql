@@ -633,8 +633,6 @@
 | Collection<ConstantDesc> | Interface, ParameterizedType |
 | Collection<DateTimePrinterParser> | Interface, ParameterizedType |
 | Collection<E> | Interface, ParameterizedType |
-| Collection<Entry<?>> | Interface, ParameterizedType |
-| Collection<Entry<Identity,Entry<?>>> | Interface, ParameterizedType |
 | Collection<Entry<K,V>> | Interface, ParameterizedType |
 | Collection<Entry<Object,Object>> | Interface, ParameterizedType |
 | Collection<Era> | Interface, ParameterizedType |
@@ -642,7 +640,6 @@
 | Collection<F> | Interface, ParameterizedType |
 | Collection<FileSystemProvider> | Interface, ParameterizedType |
 | Collection<Future<T>> | Interface, ParameterizedType |
-| Collection<Identity> | Interface, ParameterizedType |
 | Collection<InterfaceAddress> | Interface, ParameterizedType |
 | Collection<K> | Interface, ParameterizedType |
 | Collection<LanguageRange> | Interface, ParameterizedType |
@@ -919,7 +916,6 @@
 | Entry<? extends K,? extends V>[] | Array |
 | Entry<?> | Class, ParameterizedType |
 | Entry<?>[] | Array |
-| Entry<Identity,Entry<?>> | Interface, ParameterizedType |
 | Entry<K,V> | Class, ParameterizedType |
 | Entry<K,V> | Interface, ParameterizedType |
 | Entry<K,V>[] | Array |
@@ -1233,8 +1229,6 @@
 | Iterable<ConstantDesc> | Interface, ParameterizedType |
 | Iterable<DateTimePrinterParser> | Interface, ParameterizedType |
 | Iterable<E> | Interface, ParameterizedType |
-| Iterable<Entry<?>> | Interface, ParameterizedType |
-| Iterable<Entry<Identity,Entry<?>>> | Interface, ParameterizedType |
 | Iterable<Entry<K,V>> | Interface, ParameterizedType |
 | Iterable<Entry<Object,Object>> | Interface, ParameterizedType |
 | Iterable<Era> | Interface, ParameterizedType |
@@ -1243,7 +1237,6 @@
 | Iterable<FileStore> | Interface, ParameterizedType |
 | Iterable<FileSystemProvider> | Interface, ParameterizedType |
 | Iterable<Future<T>> | Interface, ParameterizedType |
-| Iterable<Identity> | Interface, ParameterizedType |
 | Iterable<Integer> | Interface, ParameterizedType |
 | Iterable<InterfaceAddress> | Interface, ParameterizedType |
 | Iterable<K> | Interface, ParameterizedType |
@@ -1745,11 +1738,9 @@
 | Set<Chronology> | Interface, ParameterizedType |
 | Set<ClassOption> | Interface, ParameterizedType |
 | Set<E> | Interface, ParameterizedType |
-| Set<Entry<Identity,Entry<?>>> | Interface, ParameterizedType |
 | Set<Entry<K,V>> | Interface, ParameterizedType |
 | Set<Entry<Object,Object>> | Interface, ParameterizedType |
 | Set<Exports> | Interface, ParameterizedType |
-| Set<Identity> | Interface, ParameterizedType |
 | Set<K> | Interface, ParameterizedType |
 | Set<Locale> | Interface, ParameterizedType |
 | Set<Modifier> | Interface, ParameterizedType |
