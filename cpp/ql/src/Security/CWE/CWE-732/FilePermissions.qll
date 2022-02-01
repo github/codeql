@@ -83,7 +83,11 @@ abstract class FileCreationExpr extends FunctionCall {
   abstract int getMode();
 }
 
-class OpenCreationExpr extends FileCreationExpr {
+abstract class FileCreationWithOptionalModeExpr extends FileCreationExpr {
+  abstract predicate hasModeArgument();
+}
+
+class OpenCreationExpr extends FileCreationWithOptionalModeExpr {
   OpenCreationExpr() {
     this.getTarget().getName() = ["open", "_open", "_wopen"] and
     sets(this.getArgument(1).getValue().toInt(), o_creat())
@@ -91,8 +95,10 @@ class OpenCreationExpr extends FileCreationExpr {
 
   override Expr getPath() { result = this.getArgument(0) }
 
+  override predicate hasModeArgument() { exists(this.getArgument(2)) }
+
   override int getMode() {
-    if exists(this.getArgument(2))
+    if hasModeArgument()
     then result = this.getArgument(2).getValue().toInt()
     else
       // assume anything is permitted
@@ -108,7 +114,7 @@ class CreatCreationExpr extends FileCreationExpr {
   override int getMode() { result = this.getArgument(1).getValue().toInt() }
 }
 
-class OpenatCreationExpr extends FileCreationExpr {
+class OpenatCreationExpr extends FileCreationWithOptionalModeExpr {
   OpenatCreationExpr() {
     this.getTarget().getName() = "openat" and
     sets(this.getArgument(2).getValue().toInt(), o_creat())
@@ -116,8 +122,10 @@ class OpenatCreationExpr extends FileCreationExpr {
 
   override Expr getPath() { result = this.getArgument(1) }
 
+  override predicate hasModeArgument() { exists(this.getArgument(3)) }
+
   override int getMode() {
-    if exists(this.getArgument(3))
+    if hasModeArgument()
     then result = this.getArgument(3).getValue().toInt()
     else
       // assume anything is permitted
