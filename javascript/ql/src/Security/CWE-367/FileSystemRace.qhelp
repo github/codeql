@@ -44,7 +44,7 @@ This can be avoided by using <code>fs.open</code> to get a file descriptor, and 
 
 <references>
 <li>
-Wikipedia: <a href="https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use">Time-of-check to time-of-use.</a>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use">Time-of-check to time-of-use</a>.
 </li>
 
 <li>
