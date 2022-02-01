@@ -4,6 +4,7 @@ import (
 	"go/ast"
 	"go/token"
 	gotypes "go/types"
+
 	"golang.org/x/tools/go/packages"
 )
 
@@ -496,6 +497,9 @@ var ChanTypeExprs = map[ast.ChanDir]*BranchType{
 	ast.RECV:            ExprKind.NewBranch("@recvchantypeexpr", ChanTypeExpr),
 	ast.SEND | ast.RECV: ExprKind.NewBranch("@sendrcvchantypeexpr", ChanTypeExpr),
 }
+
+// ErrorExpr is an AST node type that is not used anywhere
+var ErrorExpr = ExprKind.NewBranch("@errorexpr")
 
 // StmtKind is a case type for distinguishing different kinds of statement AST nodes
 var StmtKind = NewCaseType(StmtType, "kind")
