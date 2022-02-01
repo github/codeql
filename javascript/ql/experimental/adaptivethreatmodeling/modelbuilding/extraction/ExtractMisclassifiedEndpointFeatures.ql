@@ -17,7 +17,7 @@ EndpointType getEndpointType() { result instanceof NosqlInjectionSinkType }
 /** Get a positive endpoint. This will be run through the classifier to determine whether it is misclassified. */
 DataFlow::Node getAPositiveEndpoint() { result instanceof NosqlInjection::Sink }
 
-/** ATM configuration to find misclassified endpoints of type `getEndpointType()`. */
+/** An ATM configuration to find misclassified endpoints of type `getEndpointType()`. */
 class ExtractMisclassifiedEndpointsATMConfig extends ATMConfig {
   ExtractMisclassifiedEndpointsATMConfig() { this = "ExtractMisclassifiedEndpointsATMConfig" }
 
