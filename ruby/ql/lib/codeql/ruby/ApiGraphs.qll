@@ -88,7 +88,7 @@ module API {
      * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
      * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
      */
-    Node getInstance() { result = this.getASubclass().getASuccessor(Label::instance()) }
+    Node getInstance() { result = this.getASubclass().getReturn("new") }
 
     /**
      * Gets a node representing the result of calling a method on the receiver represented by this node.
@@ -307,15 +307,6 @@ module API {
         node.asExpr() = call.getReceiver() and
         name = call.getExpr().getMethodName() and
         lbl = Label::return(name) and
-        name != "new" and
-        ref.asExpr() = call
-      )
-      or
-      // Calling the `new` method on a node that is a use of `base`, which creates a new instance
-      exists(ExprNodes::MethodCallCfgNode call |
-        node.asExpr() = call.getReceiver() and
-        lbl = Label::instance() and
-        call.getExpr().getMethodName() = "new" and
         ref.asExpr() = call
       )
     }
@@ -438,9 +429,6 @@ private module Label {
 
   /** Gets the `member` edge label for the unknown member. */
   string unknownMember() { result = "getUnknownMember()" }
-
-  /** Gets the `instance` edge label. */
-  string instance() { result = "instance" }
 
   /** Gets the `return` edge label. */
   bindingset[m]

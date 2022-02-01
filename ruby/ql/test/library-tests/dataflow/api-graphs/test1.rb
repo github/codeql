@@ -9,7 +9,7 @@ begin
 rescue AttributeError => e #$ use=getMember("AttributeError")
     Kernel.print(e)  #$ use=getMember("Kernel").getReturn("print")
 end
-Unknown.new.run #$ use=getMember("Unknown").instance.getReturn("run")
+Unknown.new.run #$ use=getMember("Unknown").getReturn("new").getReturn("run")
 Foo::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
 
 Const = [1, 2, 3] #$ use=getMember("Array").getReturn("[]")
