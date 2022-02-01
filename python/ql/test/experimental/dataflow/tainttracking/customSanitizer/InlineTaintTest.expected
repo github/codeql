@@ -3,9 +3,9 @@ untaintedArgumentToEnsureTaintedNotMarkedAsMissing
 failures
 isSanitizer
 | TestTaintTrackingConfiguration | test.py:21:39:21:39 | ControlFlowNode for s |
-| TestTaintTrackingConfiguration | test.py:50:10:50:29 | ControlFlowNode for emulated_escaping() |
+| TestTaintTrackingConfiguration | test.py:53:10:53:29 | ControlFlowNode for emulated_escaping() |
 isSanitizerGuard
-| TestTaintTrackingConfiguration | test.py:35:8:35:26 | ControlFlowNode for emulated_is_safe() |
+| TestTaintTrackingConfiguration | test.py:38:8:38:26 | ControlFlowNode for emulated_is_safe() |
 | TestTaintTrackingConfiguration | test_logical.py:29:8:29:17 | ControlFlowNode for is_safe() |
 | TestTaintTrackingConfiguration | test_logical.py:44:8:44:17 | ControlFlowNode for is_safe() |
 | TestTaintTrackingConfiguration | test_logical.py:52:12:52:21 | ControlFlowNode for is_safe() |
