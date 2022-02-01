@@ -79,7 +79,7 @@ module API {
     /**
      * Gets a call to the function represented by this API component.
      */
-    DataFlow::CallCfgNode getACall() { result = this.getReturn().getAnImmediateUse() } // TODO: Make a API::CallNode.
+    DataFlow::CallCfgNode getACall() { result = this.getReturn().getAnImmediateUse() } // TODO: Make a API::CallNode. After I figure out named parameters
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -441,7 +441,6 @@ module API {
       )
     }
 
-    // TODO: Compare with JS, check that I'm not missing stuff
     /**
      * Holds if `rhs` is the right-hand side of a definition of a node that should have an
      * incoming edge from `base` labeled `lbl` in the API graph.
@@ -470,30 +469,31 @@ module API {
           lbl = Label::member(item.getKey().(StrConst).getS()) and
           rhs.asExpr() = item.getValue()
         )
-        // or
-        // special case: from `require('m')` to an export of `prop` in `m`
-        // TODO: Figure out if this is needed.
-        /*
-         * exists(Import imp, Module m, string prop |
-         *          pred = imp.getImportedModuleNode() and
-         *          m = imp.getImportedModule() and
-         *          lbl = Label::member(prop) and
-         *          rhs = m.getAnExportedValue(prop)
-         *        )
-         *        or
-         *        // TODO:
-         *        exists(DataFlow::FunctionNode fn | fn = pred |
-         *          not fn.getFunction().isAsync() and
-         *          lbl = Label::return() and
-         *          rhs = fn.getAReturn()
-         *        )
-         *        or
-         *        lbl = Label::promised() and
-         *        PromiseFlow::storeStep(rhs, pred, Promises::valueProp())
-         */
-
+        or
+        exists(CallableExpr fn | fn = pred.asExpr() |
+          not fn.getInnerScope().isAsync() and
+          lbl = Label::return() and
+          exists(Return ret |
+            rhs.asExpr() = ret.getValue() and
+            ret.getScope() = fn.getInnerScope()
+          )
         )
+      )
       or
+      // or
+      // special case: from `require('m')` to an export of `prop` in `m`
+      // TODO: Figure out if this is needed.
+      /*
+       * exists(Import imp, Module m, string prop |
+       *          pred = imp.getImportedModuleNode() and
+       *          m = imp.getImportedModule() and
+       *          lbl = Label::member(prop) and
+       *          rhs = m.getAnExportedValue(prop)
+       *        )
+       *        or
+       *        // TODO:
+       */
+
       /*
        * or // TODO:
        *      exists(DataFlow::FunctionNode f |
@@ -727,6 +727,7 @@ module API {
         succ = MkDef(rhs)
       )
       // TODO: Compare with JS, check that I'm not missing stuff
+      // TODO: Port MkAsyncFuncResult?
     }
 
     /**

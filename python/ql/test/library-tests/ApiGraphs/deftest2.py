@@ -5,7 +5,7 @@ from flask.views import View #$ use=moduleImport("flask").getMember("views").get
 class MyView(View): #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass()
     myvar = 45 #$ def=moduleImport("flask").getMember("views").getMember("View").getASubclass().getMember("myvar")
     def my_method(self): #$ def=moduleImport("flask").getMember("views").getMember("View").getASubclass().getMember("my_method") use=moduleImport("flask").getMember("views").getMember("View").getASubclass().getMember("my_method").getParameter(0)
-        pass
+        return 3 #$ def=moduleImport("flask").getMember("views").getMember("View").getASubclass().getMember("my_method").getReturn()
 
 instance = MyView() #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass().getReturn()
 
