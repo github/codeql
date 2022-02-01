@@ -1,3 +1,9 @@
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname((__file__))))
+from testlib import *
+
 # These are defined so that we can evaluate the test code.
 NONSOURCE = "not a source"
 SOURCE = "source"
@@ -37,12 +43,13 @@ class NestedObj(object):
     def getObj(self):
         return self.obj
 
+# Actual tests
 
 def setFoo(obj, x):
     SINK_F(obj.foo)
     obj.foo = x
 
-
+@expects(2)
 def test_example1():
     myobj = MyObj("OK")
 

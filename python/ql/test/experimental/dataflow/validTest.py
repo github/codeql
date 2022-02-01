@@ -57,6 +57,7 @@ if __name__ == "__main__":
     check_tests_valid("variable-capture.nonlocal")
     check_tests_valid("variable-capture.dict")
     check_tests_valid("module-initialization.multiphase")
+    check_tests_valid("fieldflow.test")
 
     # The below will fail unless we use Python 3.10 or newer.
     # check_tests_valid("match.test")
