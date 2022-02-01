@@ -98,9 +98,17 @@ module API {
     /**
      * Gets a node representing the result of calling a method on the receiver represented by this node.
      */
-    Node getReturn(string method) {
-      result = this.getASubclass().getASuccessor(Label::return(method))
-    }
+    Node getMethod(string method) { result = this.getASubclass().getASuccessor(Label::method(method)) }
+
+    /**
+     * Gets a node representing the result of this call.
+     */
+    Node getReturn() { result = this.getASuccessor(Label::return()) }
+
+    /**
+     * Gets a node representing the result of calling a method on the receiver represented by this node.
+     */
+    Node getReturn(string method) { result = this.getMethod(method).getReturn() }
 
     private predicate hasParameterIndex(int n) {
       exists(string str |
@@ -288,6 +296,8 @@ module API {
     newtype TApiNode =
       /** The root of the API graph. */
       MkRoot() or
+      /** The method accessed at `call`, synthetically treated as a separate object. */
+      MkMethodCall(DataFlow::CallNode call) { isUse(call) } or
       /** A use of an API member at the node `nd`. */
       MkUse(DataFlow::Node nd) { isUse(nd) } or
       /** A value that escapes into an API at the node `nd` */
@@ -332,14 +342,7 @@ module API {
         ref.asExpr() = c and
         read = c.getExpr()
       )
-      or
-      // Calling a method on a node that is a use of `base`
-      exists(ExprNodes::MethodCallCfgNode call, string name |
-        node.asExpr() = call.getReceiver() and
-        name = call.getExpr().getMethodName() and
-        lbl = Label::return(name) and
-        ref.asExpr() = call
-      )
+      // note: method calls are not handled here as there is no DataFlow::Node for the intermediate MkMethodCall API node
     }
 
     pragma[nomagic]
@@ -350,6 +353,8 @@ module API {
         useCandFwd().flowsTo(node) and
         useStep(_, node, nd)
       )
+      or
+      useCandFwd().flowsTo(nd.(DataFlow::CallNode).getReceiver())
       or
       parameterStep(_, defCand(), nd)
     }
@@ -395,10 +400,8 @@ module API {
     }
 
     private predicate isDef(DataFlow::Node rhs) {
-      exists(DataFlow::Node use |
-        useCandFwd().flowsTo(use) and
-        argumentStep(_, use, rhs)
-      )
+      // If a call node is relevant as a use-node, treat its arguments as def-nodes
+      argumentStep(_, useCandFwd(), rhs)
     }
 
     /** Gets a data flow node that flows to the RHS of a def-node. */
@@ -504,6 +507,11 @@ module API {
       result = trackDefNode(rhs, TypeBackTracker::end())
     }
 
+    pragma[nomagic]
+    private predicate useNodeReachesReceiver(DataFlow::Node use, DataFlow::CallNode call) {
+      trackUseNode(use).flowsTo(call.getReceiver())
+    }
+
     /**
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */
@@ -519,6 +527,11 @@ module API {
           trackUseNode(src).flowsTo(node) and
           useStep(lbl, node, ref)
         )
+        or
+        exists(DataFlow::Node callback |
+          pred = MkDef(callback) and
+          parameterStep(lbl, trackDefNode(callback), ref)
+        )
       )
       or
       // `pred` is a use of class A
@@ -532,15 +545,26 @@ module API {
         lbl = Label::subclass()
       )
       or
-      exists(DataFlow::Node use, DataFlow::Node base, DataFlow::Node rhs |
-        pred = MkUse(use) and
-        trackUseNode(use).flowsTo(base) and
-        argumentStep(lbl, base, rhs) and
-        succ = MkDef(rhs)
+      exists(DataFlow::CallNode call |
+        // from receiver to method call node
+        exists(DataFlow::Node receiver |
+          pred = MkUse(receiver) and
+          useNodeReachesReceiver(receiver, call) and
+          lbl = Label::method(call.getMethodName()) and
+          succ = MkMethodCall(call)
+        )
         or
-        pred = MkDef(rhs) and
-        parameterStep(lbl, trackDefNode(rhs), use) and
-        succ = MkUse(use)
+        // from method call node to return and arguments
+        pred = MkMethodCall(call) and
+        (
+          lbl = Label::return() and
+          succ = MkUse(call)
+          or
+          exists(DataFlow::Node rhs |
+            argumentStep(lbl, call, rhs) and
+            succ = MkDef(rhs)
+          )
+        )
       )
     }
 
@@ -564,10 +588,13 @@ private module Label {
   /** Gets the `member` edge label for the unknown member. */
   string unknownMember() { result = "getUnknownMember()" }
 
-  /** Gets the `return` edge label. */
+  /** Gets the `method` edge label. */
   bindingset[m]
   bindingset[result]
-  string return(string m) { result = "getReturn(\"" + m + "\")" }
+  string method(string m) { result = "getMethod(\"" + m + "\")" }
+
+  /** Gets the `return` edge label. */
+  string return() { result = "getReturn()" }
 
   string subclass() { result = "getASubclass()" }
 
