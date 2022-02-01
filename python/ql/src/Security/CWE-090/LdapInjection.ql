@@ -4,6 +4,8 @@
  *              malicious LDAP code by the user.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
+ * @precision high
  * @id py/ldap-injection
  * @tags security
  *       external/cwe/cwe-090
