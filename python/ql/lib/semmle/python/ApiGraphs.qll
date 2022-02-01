@@ -507,16 +507,13 @@ module API {
         lbl = Label::parameter(i) and
         argumentPassing(base, i, rhs)
       )
-      /*
-       * or // TODO:
-       *      exists(DataFlow::SourceNode src, DataFlow::PropWrite pw |
-       *        use(base, src) and pw = trackUseNode(src).getAPropertyWrite() and rhs = pw.getRhs()
-       *      |
-       *        lbl = Label::memberFromRef(pw)
-       *      )
-       */
-
-      }
+      or
+      exists(DataFlow::LocalSourceNode src, DataFlow::AttrWrite pw |
+        use(base, src) and pw = trackUseNode(src).getAnAttributeWrite() and rhs = pw.getValue()
+      |
+        lbl = Label::memberFromRef(pw)
+      )
+    }
 
     /**
      * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
@@ -536,7 +533,7 @@ module API {
       |
         // Referring to an attribute on a node that is a use of `base`:
         lbl = Label::memberFromRef(ref) and
-        ref = pred.getAnAttributeReference() // TODO: Change to read.
+        ref = pred.getAnAttributeRead()
         or
         // Calling a node that is a use of `base`
         lbl = Label::return() and
@@ -778,7 +775,7 @@ module API {
         MkLabelParameter(int i) {
           exists(any(DataFlow::CallCfgNode c).getArg(i))
           or
-          i = [-1 .. 10] // TODO: Def nodes, figure out how to make this prettier.
+          exists(any(Function f).getArg(i))
         } or
         MkLabelReturn() or
         MkLabelSubclass() or
