@@ -61,7 +61,7 @@ def test_example1_method():
     myobj = MyObj("OK")
 
     myobj.setFoo(SOURCE)
-    SINK(myobj.foo)
+    SINK(myobj.foo) # $ MISSING: flow
 
 
 def test_example2():
@@ -81,7 +81,7 @@ def test_example2_method():
 
     a.getObj().foo = x
 
-    SINK(a.obj.foo)
+    SINK(a.obj.foo) # $ MISSING: flow
 
 
 def test_example3():

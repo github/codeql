@@ -100,6 +100,8 @@ query predicate untaintedArgumentToEnsureTaintedNotMarkedAsMissing(
     not any(TestTaintTrackingConfiguration config).hasFlow(_, sink) and
     location = sink.getLocation() and
     not exists(FalseNegativeExpectation missingResult |
+      missingResult.getTag() = "tainted" and
+      missingResult.getLocation().getFile() = location.getFile() and
       missingResult.getLocation().getStartLine() = location.getStartLine()
     )
   )
