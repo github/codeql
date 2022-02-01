@@ -54,7 +54,7 @@ def test_example1():
     myobj = MyObj("OK")
 
     setFoo(myobj, SOURCE)
-    SINK(myobj.foo)
+    SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
 
 
 def test_example1_method():
@@ -71,7 +71,7 @@ def test_example2():
 
     a.obj.foo = x
 
-    SINK(a.obj.foo)
+    SINK(a.obj.foo) # $ flow="SOURCE, l:-6 -> a.obj.foo"
 
 
 def test_example2_method():
@@ -86,12 +86,12 @@ def test_example2_method():
 
 def test_example3():
     obj = MyObj(SOURCE)
-    SINK(obj.foo)
+    SINK(obj.foo) # $ flow="SOURCE, l:-1 -> obj.foo"
 
 
 def test_example3_kw():
     obj = MyObj(foo=SOURCE)
-    SINK(obj.foo)
+    SINK(obj.foo) # $ flow="SOURCE, l:-1 -> obj.foo"
 
 
 def fields_with_local_flow(x):
@@ -101,4 +101,4 @@ def fields_with_local_flow(x):
 
 
 def test_fields():
-    SINK(fields_with_local_flow(SOURCE))
+    SINK(fields_with_local_flow(SOURCE)) # $ flow="SOURCE -> fields_with_local_flow(..)"
