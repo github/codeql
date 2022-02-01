@@ -125,6 +125,14 @@ module API {
     Node getParameter(int i) { result = this.getASuccessor(Label::parameter(i)) }
 
     /**
+     * Gets the node representing the parameter named `name` of the function represented by this node.
+     *
+     * This predicate may have multiple results when there are multiple invocations of this API component.
+     * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
+     */
+    Node getNamedParameter(string name) { result = this.getASuccessor(Label::namedParameter(name)) }
+
+    /**
      * Gets the number of parameters of the function represented by this node.
      */
     int getNumParameter() { result = max(int s | exists(this.getParameter(s))) + 1 }
@@ -491,7 +499,6 @@ module API {
        *          rhs = m.getAnExportedValue(prop)
        *        )
        *        or
-       *        // TODO:
        */
 
       /*
@@ -503,10 +510,7 @@ module API {
        *      )
        */
 
-      exists(int i |
-        lbl = Label::parameter(i) and
-        argumentPassing(base, i, rhs)
-      )
+      argumentPassing(base, lbl, rhs)
       or
       exists(DataFlow::LocalSourceNode src, DataFlow::AttrWrite pw |
         use(base, src) and pw = trackUseNode(src).getAnAttributeWrite() and rhs = pw.getValue()
@@ -553,23 +557,20 @@ module API {
         )
       )
       or
-      exists(DataFlow::Node def, CallableExpr fn, int i |
+      exists(DataFlow::Node def, CallableExpr fn |
         rhs(base, def) and fn = trackDefNode(def).asExpr()
       |
-        lbl = Label::parameter(i) and
-        ref.asExpr() = fn.getInnerScope().getArg(i)
+        exists(int i |
+          lbl = Label::parameter(i) and
+          ref.asExpr() = fn.getInnerScope().getArg(i)
+        )
+        or
+        exists(string name |
+          lbl = Label::namedParameter(name) and
+          ref.asExpr() = fn.getInnerScope().getArgByName(name)
+        )
       )
       or
-      /*
-       * or // TODO: Figure out classes.
-       *      exists(DataFlow::Node def, DataFlow::ClassNode cls, int i |
-       *        rhs(base, def) and cls = trackDefNode(def)
-       *      |
-       *        lbl = Label::parameter(i) and
-       *        ref = cls.getConstructor().getParameter(i)
-       *      )
-       */
-
       // Built-ins, treated as members of the module `builtins`
       base = MkModuleImport("builtins") and
       lbl = Label::member(any(string name | ref = Builtins::likelyBuiltin(name)))
@@ -618,23 +619,25 @@ module API {
     }
 
     /**
-     * Holds if `arg` is passed as the `i`th argument to a use of `base`, either by means of a
-     * full invocation, or in a partial function application.
+     * Holds if `arg` is passed as an argument to a use of `base`.
+     *
+     * `lbl` is represents which parameter of the function was passed. Either a numbered parameter, or a named parameter.
      *
      * The receiver is considered to be argument -1.
      */
-    private predicate argumentPassing(TApiNode base, int i, DataFlow::Node arg) {
+    private predicate argumentPassing(TApiNode base, Label::ApiLabel lbl, DataFlow::Node arg) {
       exists(DataFlow::Node use, DataFlow::LocalSourceNode pred |
         use(base, use) and pred = trackUseNode(use, _)
       |
-        arg = pred.getACall().getArg(i)
-        /*
-         * or // TODO: Figure out self in argument.
-         *        arg = pred.getACall().getReceiver() and
-         *        i = -1
-         */
-
+        exists(int i |
+          lbl = Label::parameter(i) and
+          arg = pred.getACall().getArg(i)
         )
+        or
+        exists(string name | lbl = Label::namedParameter(name) |
+          arg = pred.getACall().getArgByName(name)
+        )
+      )
     }
 
     /**
@@ -778,6 +781,11 @@ module API {
           or
           exists(any(Function f).getArg(i))
         } or
+        MkLabelNamedParameter(string name) {
+          exists(any(DataFlow::CallCfgNode c).getArgByName(name))
+          or
+          exists(any(Function f).getArgByName(name))
+        } or
         MkLabelReturn() or
         MkLabelSubclass() or
         MkLabelAwait()
@@ -819,11 +827,22 @@ module API {
 
         LabelParameter() { this = MkLabelParameter(i) }
 
-        // TODO: Named parameters, spread arguments.
         override string toString() { result = "getParameter(" + i + ")" }
 
         /** Gets the index of the parameter for this label. */
         int getIndex() { result = i }
+      }
+
+      /** A label for a named parameter `name`. */
+      class LabelNamedParameter extends ApiLabel {
+        string name;
+
+        LabelNamedParameter() { this = MkLabelNamedParameter(name) }
+
+        override string toString() { result = "getNamedParameter(\"" + name + "\")" }
+
+        /** Gets the name of the parameter for this label. */
+        string getName() { result = name }
       }
 
       /** A label that gets the return value of a function. */
@@ -867,6 +886,9 @@ module API {
 
     /** Gets the `parameter` edge label for parameter `i`. */
     LabelParameter parameter(int i) { result.getIndex() = i }
+
+    /** Gets the `parameter` edge label for the named parameter `name`. */
+    LabelNamedParameter namedParameter(string name) { result.getName() = name }
 
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
