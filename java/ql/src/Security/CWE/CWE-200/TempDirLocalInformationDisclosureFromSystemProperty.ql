@@ -16,8 +16,8 @@ import DataFlow::PathGraph
 
 private class MethodFileSystemFileCreation extends Method {
   MethodFileSystemFileCreation() {
-    getDeclaringType() instanceof TypeFile and
-    hasName(["mkdir", "mkdirs", "createNewFile"])
+    this.getDeclaringType() instanceof TypeFile and
+    this.hasName(["mkdir", "mkdirs", "createNewFile"])
   }
 }
 
@@ -58,7 +58,26 @@ private class FilesVulnerableCreationMethodAccess extends MethodAccess {
       m.hasName(["write", "newBufferedWriter", "newOutputStream"])
       or
       m.hasName(["createFile", "createDirectory", "createDirectories"]) and
-      getNumArgument() = 1
+      this.getNumArgument() = 1
+      or
+      m.hasName("newByteChannel") and
+      this.getNumArgument() = 2
+    )
+  }
+}
+
+/**
+ * A call to a `File` method that create files/directories with a specific set of permissions explicitly set.
+ * We can safely assume that any calls to these methods with explicit `PosixFilePermissions.asFileAttribute` contains a certain level of intentionality behind it.
+ */
+private class FilesSanitiznignCreationMethodAccess extends MethodAccess {
+  FilesSanitiznignCreationMethodAccess() {
+    exists(Method m |
+      m = this.getMethod() and
+      m.getDeclaringType().hasQualifiedName("java.nio.file", "Files")
+    |
+      m.hasName(["createFile", "createDirectory", "createDirectories"]) and
+      this.getNumArgument() = 2
     )
   }
 }
@@ -92,10 +111,16 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof FileCreationSink }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    exists(FilesSanitiznignCreationMethodAccess sanitisingMethodAccess |
+      sanitizer.asExpr() = sanitisingMethodAccess.getArgument(0)
+    )
+  }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, TempDirSystemGetPropertyToCreateConfig conf
 where conf.hasFlowPath(source, sink)
-select source.getNode(), source, sink,
+select sink.getNode(), source, sink,
   "Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users.",
   source.getNode(), "system temp directory"
