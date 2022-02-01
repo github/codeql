@@ -15,7 +15,11 @@ class ApiDefTest extends InlineExpectationsTest {
     // from the inline tests.
     not n instanceof DataFlow::ModuleVariableNode and
     exists(l.getFile().getRelativePath()) and
-    n.getLocation().getFile().getBaseName().matches("def%.py")
+    exists(File f | f = n.getLocation().getFile() |
+      f.getBaseName().matches("def%.py")
+      or
+      f.getAbsolutePath().matches("%/mypkg/%")
+    )
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {

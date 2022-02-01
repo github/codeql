@@ -1,1 +1,1 @@
-pass
+value = 3 #$ def=moduleImport("mypkg").getMember("foo").getMember("value")

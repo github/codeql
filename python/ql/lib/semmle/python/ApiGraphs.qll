@@ -380,13 +380,14 @@ module API {
         // The `builtins` module should always be implicitly available
         name = "builtins"
       } or
+      MkModuleExport(Module mod) or
       /** A use of an API member at the node `nd`. */
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) }
 
     class TUse = MkModuleImport or MkUse;
 
-    class TDef = MkDef;
+    class TDef = MkDef or MkModuleExport;
 
     /**
      * Holds if the dotted module name `sub` refers to the `member` member of `base`.
@@ -440,21 +441,19 @@ module API {
       )
     }
 
+    // TODO: Compare with JS, check that I'm not missing stuff
     /**
      * Holds if `rhs` is the right-hand side of a definition of a node that should have an
      * incoming edge from `base` labeled `lbl` in the API graph.
      */
     cached
     predicate rhs(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
-      /*
-       * exists(string m, string prop | // TODO: Figure out module exports in Python
-       *        base = MkModuleExport(m) and
-       *        lbl = Label::member(prop) and
-       *        exports(m, prop, rhs)
-       *      )
-       *      or
-       */
-
+      exists(Module mod, string prop |
+        base = MkModuleExport(mod) and
+        exports(mod, prop, rhs) and
+        lbl = Label::member(prop)
+      )
+      or
       exists(DataFlow::Node def, DataFlow::LocalSourceNode pred |
         rhs(base, def) and pred = trackDefNode(def)
       |
@@ -557,13 +556,23 @@ module API {
           ref.asExpr() = fn.getInnerScope().getArg(i)
         )
         /*
-         * or // TODO: Figure out self.
+         * or // TODO: Figure out self. (and arg = -2, that might be a thing in python)
          *        lbl = Label::receiver() and
          *        ref = fn.getReceiver()
          */
 
         )
       or
+      /*
+       * or // TODO: Figure out classes.
+       *      exists(DataFlow::Node def, DataFlow::ClassNode cls, int i |
+       *        rhs(base, def) and cls = trackDefNode(def)
+       *      |
+       *        lbl = Label::parameter(i) and
+       *        ref = cls.getConstructor().getParameter(i)
+       *      )
+       */
+
       // Built-ins, treated as members of the module `builtins`
       base = MkModuleImport("builtins") and
       lbl = Label::member(any(string name | ref = Builtins::likelyBuiltin(name)))
@@ -674,7 +683,8 @@ module API {
      */
     cached
     predicate rhs(TApiNode nd, DataFlow::Node rhs) {
-      // exists(string m | nd = MkModuleExport(m) | exports(m, rhs)) // TODO: Figure out module exported in Py.
+      // TODO: There are no "default" exports in python, right? E.g. in `import foo`, `foo` cannot be a function.
+      // exists(string m | nd = MkModuleExport(m) | exports(m, rhs))
       // or
       nd = MkDef(rhs)
     }
@@ -687,11 +697,13 @@ module API {
       /* There's an edge from the root node for each imported module. */
       exists(string m |
         pred = MkRoot() and
-        lbl = Label::mod(m)
-      |
-        succ = MkModuleImport(m) and
+        lbl = Label::mod(m) and
         // Only allow undotted names to count as base modules.
         not m.matches("%.%")
+      |
+        succ = MkModuleImport(m)
+        or
+        succ = MkModuleExport(any(Module mod | mod.getName() = m and mod.isPackage()))
       )
       or
       /* Step from the dotted module name `foo.bar` to `foo.bar.baz` along an edge labeled `baz` */
@@ -706,10 +718,18 @@ module API {
         succ = MkUse(ref)
       )
       or
+      exists(Module parentMod, Module childMod, string edge |
+        pred = MkModuleExport(parentMod) and
+        succ = MkModuleExport(childMod) and
+        parentMod.getSubModule(edge) = childMod and // TODO: __init__.py shows up here, handle those in some other way. See e.g. https://stackoverflow.com/questions/38927979/default-export-in-python-3
+        lbl = Label::member(edge)
+      )
+      or
       exists(DataFlow::Node rhs |
         rhs(pred, lbl, rhs) and
         succ = MkDef(rhs)
       )
+      // TODO: Compare with JS, check that I'm not missing stuff
     }
 
     /**
@@ -737,12 +757,21 @@ module API {
       private import semmle.python.dataflow.new.internal.ImportStar
 
       newtype TLabel =
-        MkLabelModule(string mod) { exists(Impl::MkModuleImport(mod)) } or
+        MkLabelModule(string mod) {
+          (
+            exists(Impl::MkModuleImport(mod))
+            or
+            exists(Module m | exists(Impl::MkModuleExport(m)) | mod = m.getName())
+          ) and
+          not mod.matches("%.%") // only top level modules count as base modules
+        } or
         MkLabelMember(string member) {
           member = any(DataFlow::AttrRef pr).getAttributeName() or
           exists(Builtins::likelyBuiltin(member)) or
           ImportStar::namePossiblyDefinedInImportStar(_, member, _) or
-          Impl::prefix_member(_, member, _)
+          Impl::prefix_member(_, member, _) or
+          exists(any(Module mod).getSubModule(member)) or
+          exports(_, member, _)
         } or
         MkLabelUnknownMember() or
         MkLabelParameter(int i) {
@@ -849,4 +878,15 @@ module API {
     /** Gets the `await` edge label. */
     LabelAwait await() { any() }
   }
+}
+
+/** Holds if module `mod` exports `rhs` under the name `prop`. */
+private predicate exports(Module mod, string prop, DataFlow::Node rhs) {
+  exists(Assign assign |
+    assign = mod.getAStmt() and
+    rhs.asExpr() = assign.getValue() and
+    exists(Variable v | assign.defines(v) and prop = v.getId())
+  )
+  // TODO: Re-exports.
+  // TODO: use this predicate with __init__.py?
 }
