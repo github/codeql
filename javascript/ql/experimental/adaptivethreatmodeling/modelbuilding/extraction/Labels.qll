@@ -4,7 +4,11 @@
  * Labels used in training and evaluation data to indicate knowledge about whether an endpoint is a
  * sink for a particular security query.
  */
-newtype TEndpointLabel = TSinkLabel() or TNotASinkLabel() or TUnknownLabel()
+
+newtype TEndpointLabel =
+  TSinkLabel() or
+  TNotASinkLabel() or
+  TUnknownLabel()
 
 abstract class EndpointLabel extends TEndpointLabel {
   abstract string getEncoding();

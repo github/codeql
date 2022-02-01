@@ -2,12 +2,13 @@
  * For internal use only.
  *
  * [DEPRECATED] Counts alerts and sinks for JavaScript security queries.
- * 
+ *
  * This query is deprecated due to the performance implications of bringing in data flow
  * configurations from multiple queries. Instead use `CountSourcesAndSinks.ql` to count sinks for
  * JavaScript security queries, and count alerts by running the standard or evaluation queries for
  * each security vulnerability.
  */
+
 import semmle.javascript.security.dataflow.NosqlInjection
 import semmle.javascript.security.dataflow.SqlInjection
 import semmle.javascript.security.dataflow.TaintedPath

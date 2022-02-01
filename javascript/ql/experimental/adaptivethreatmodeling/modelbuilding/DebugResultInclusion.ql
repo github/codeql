@@ -55,7 +55,8 @@ string getDescriptionForAlert(DataFlow::Node sourceCandidate, DataFlow::Node sin
   result =
     concat(Query query |
       |
-      query.getName() + ": " + getDescriptionForAlertCandidate(sourceCandidate, sinkCandidate, query), ", "
+      query.getName() + ": " +
+          getDescriptionForAlertCandidate(sourceCandidate, sinkCandidate, query), ", "
     )
 }
 

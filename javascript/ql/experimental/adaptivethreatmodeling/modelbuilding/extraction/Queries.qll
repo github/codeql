@@ -3,7 +3,12 @@
  *
  * Represents the security queries for which we currently have ML-powered versions.
  */
-newtype TQuery = TNosqlInjectionQuery() or TSqlInjectionQuery() or TTaintedPathQuery() or TXssQuery()
+
+newtype TQuery =
+  TNosqlInjectionQuery() or
+  TSqlInjectionQuery() or
+  TTaintedPathQuery() or
+  TXssQuery()
 
 abstract class Query extends TQuery {
   abstract string getName();

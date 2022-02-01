@@ -19,7 +19,9 @@ import experimental.adaptivethreatmodeling.EndpointScoring::ModelScoring as Mode
 class FunctionArgumentFeaturizationConfig extends FeaturizationConfig {
   FunctionArgumentFeaturizationConfig() { this = "FunctionArgumentFeaturization" }
 
-  override DataFlow::Node getAnEndpointToFeaturize() { exists(DataFlow::CallNode call | result = call.getAnArgument()) }
+  override DataFlow::Node getAnEndpointToFeaturize() {
+    exists(DataFlow::CallNode call | result = call.getAnArgument())
+  }
 }
 
 query predicate endpointScores = ModelScoring::endpointScores/3;

@@ -13,4 +13,4 @@ external predicate availableMlModels(
   string modelChecksum, string modelLanguage, string modelName, string modelType
 );
 
-select any(string checksum | availableMlModels(checksum, "javascript",_ ,_))
+select any(string checksum | availableMlModels(checksum, "javascript", _, _))
