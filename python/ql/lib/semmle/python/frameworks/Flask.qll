@@ -581,7 +581,7 @@ module Flask {
    * - https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask.logger
    * - https://flask.palletsprojects.com/en/2.0.x/logging/
    */
-  private class FlaskLogger extends Stdlib::Logger::LoggerInstance {
-    FlaskLogger() { this = FlaskApp::instance().getMember("logger") }
+  private class FlaskLogger extends Stdlib::Logger::InstanceSource {
+    FlaskLogger() { this = FlaskApp::instance().getMember("logger").getAnImmediateUse() }
   }
 }
