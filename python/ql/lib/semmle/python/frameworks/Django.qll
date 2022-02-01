@@ -2300,7 +2300,8 @@ module PrivateDjango {
   // Logging
   // ---------------------------------------------------------------------------
   /**
-   * Django provides a standard Python logger.
+   * A standard Python logger instance from Django.
+   * see https://github.com/django/django/blob/stable/4.0.x/django/utils/log.py#L11
    */
   private class DjangoLogger extends Stdlib::Logger::LoggerInstance {
     DjangoLogger() {
