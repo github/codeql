@@ -76,6 +76,10 @@ arguments
 | attributes.cs:81:14:81:17 | [Args(...)] | 3 | attributes.cs:81:56:81:60 | (...) ... |
 | attributes.cs:81:14:81:17 | [Args(...)] | 4 | attributes.cs:81:63:81:66 | null |
 | attributes.cs:81:14:81:17 | [Args(...)] | 5 | attributes.cs:81:76:81:106 | array creation of type Object[] |
+| attributes.cs:96:2:96:13 | [My3(...)] | 0 | attributes.cs:96:15:96:15 | 1 |
+| attributes.cs:97:10:97:21 | [My3(...)] | 0 | attributes.cs:97:23:97:23 | 2 |
+| attributes.cs:100:10:100:21 | [My3(...)] | 0 | attributes.cs:100:23:100:23 | 3 |
+| attributes.cs:101:8:101:19 | [My3(...)] | 0 | attributes.cs:101:21:101:21 | 4 |
 constructorArguments
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 1 |
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 3 |
@@ -142,6 +146,10 @@ constructorArguments
 | attributes.cs:81:14:81:17 | [Args(...)] | 2 | attributes.cs:81:50:81:53 | null |
 | attributes.cs:81:14:81:17 | [Args(...)] | 3 | attributes.cs:81:56:81:60 | (...) ... |
 | attributes.cs:81:14:81:17 | [Args(...)] | 4 | attributes.cs:81:63:81:66 | null |
+| attributes.cs:96:2:96:13 | [My3(...)] | 0 | attributes.cs:96:15:96:15 | 1 |
+| attributes.cs:97:10:97:21 | [My3(...)] | 0 | attributes.cs:97:23:97:23 | 2 |
+| attributes.cs:100:10:100:21 | [My3(...)] | 0 | attributes.cs:100:23:100:23 | 3 |
+| attributes.cs:101:8:101:19 | [My3(...)] | 0 | attributes.cs:101:21:101:21 | 4 |
 namedArguments
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |

@@ -300,3 +300,27 @@ attributes.cs:
 #   88|         -1: [TypeMention] int
 #   88|         1: [IntLiteral] 13
 #   88|     4: [BlockStmt] {...}
+#   91| [Class] My3Attribute
+#-----|   3: (Base types)
+#   91|     0: [TypeMention] Attribute
+#   93|   4: [InstanceConstructor] My3Attribute
+#-----|     2: (Parameters)
+#   93|       0: [Parameter] x
+#   93|         -1: [TypeMention] int
+#   93|     4: [BlockStmt] {...}
+#   98| [DelegateType] My1Delegate
+#-----|   0: (Attributes)
+#   96|     1: [DefaultAttribute] [My3(...)]
+#   96|       -1: [TypeMention] My3Attribute
+#   96|       0: [IntLiteral] 1
+#-----|   2: (Parameters)
+#   98|     0: [Parameter] message
+#   98|       -1: [TypeMention] string
+#  102| [DelegateType] My2Delegate
+#-----|   0: (Attributes)
+#  101|     1: [DefaultAttribute] [My3(...)]
+#  101|       -1: [TypeMention] My3Attribute
+#  101|       0: [IntLiteral] 4
+#-----|   2: (Parameters)
+#  102|     0: [Parameter] message
+#  102|       -1: [TypeMention] string

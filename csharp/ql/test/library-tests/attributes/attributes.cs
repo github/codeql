@@ -87,3 +87,16 @@ class My2Attribute : Attribute
     public int X { get; set; }
     public My2Attribute(bool a, bool b, int i = 12, int j = 13) { }
 }
+
+class My3Attribute : Attribute
+{
+    public My3Attribute(int x) { }
+}
+
+[My3Attribute(1)]
+[return: My3Attribute(2)]
+delegate int My1Delegate(string message);
+
+[return: My3Attribute(3)]
+[type: My3Attribute(4)]
+delegate string My2Delegate(string message);
