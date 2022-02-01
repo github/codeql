@@ -575,7 +575,11 @@ module Flask {
   // Logging
   // ---------------------------------------------------------------------------
   /**
-   * The attribute `logger` on a Flask application is a standard Python logger.
+   * A Flask application provides a standard Python logger via the `logger` attribute.
+   *
+   * See
+   * - https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask.logger
+   * - https://flask.palletsprojects.com/en/2.0.x/logging/
    */
   private class FlaskLogger extends Stdlib::Logger::LoggerInstance {
     FlaskLogger() { this = FlaskApp::instance().getMember("logger") }
