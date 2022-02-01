@@ -57,6 +57,59 @@ def test_indirect_assign_method():
     SINK(myobj.foo) # $ MISSING: flow
 
 
+def test_direct_assign():
+    myobj = MyObj(NONSOURCE)
+    myobj.foo = SOURCE
+    SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
+
+
+def test_direct_assign_overwrite():
+    myobj = MyObj(NONSOURCE)
+    myobj.foo = SOURCE
+    myobj.foo = NONSOURCE
+    SINK_F(myobj.foo) # $ SPURIOUS: flow="SOURCE, l:-2 -> myobj.foo"
+
+
+def test_direct_if_assign(cond = False):
+    myobj = MyObj(NONSOURCE)
+    myobj.foo = SOURCE
+    if cond:
+        myobj.foo = NONSOURCE
+        SINK_F(myobj.foo) # $ SPURIOUS: flow="SOURCE, l:-3 -> myobj.foo"
+    SINK(myobj.foo) # $ flow="SOURCE, l:-4 -> myobj.foo"
+
+
+@expects(2)
+def test_direct_if_always_assign(cond = True):
+    myobj = MyObj(NONSOURCE)
+    myobj.foo = SOURCE
+    if cond:
+        myobj.foo = NONSOURCE
+        SINK_F(myobj.foo) # $ SPURIOUS: flow="SOURCE, l:-3 -> myobj.foo"
+    else:
+        myobj.foo = NONSOURCE
+        SINK_F(myobj.foo) # $ SPURIOUS: flow="SOURCE, l:-6 -> myobj.foo"
+    SINK_F(myobj.foo) # $ SPURIOUS: flow="SOURCE, l:-7 -> myobj.foo"
+
+
+def test_getattr():
+    myobj = MyObj(NONSOURCE)
+    myobj.foo = SOURCE
+    SINK(getattr(myobj, "foo")) # $ MISSING: flow
+
+
+def test_setattr():
+    myobj = MyObj(NONSOURCE)
+    setattr(myobj, "foo", SOURCE)
+    SINK(myobj.foo) # $ MISSING: flow
+
+
+def test_setattr_getattr():
+    myobj = MyObj(NONSOURCE)
+    setattr(myobj, "foo", SOURCE)
+    SINK(getattr(myobj, "foo")) # $ MISSING: flow
+
+
 def test_constructor_assign():
     obj = MyObj(SOURCE)
     SINK(obj.foo) # $ flow="SOURCE, l:-1 -> obj.foo"
