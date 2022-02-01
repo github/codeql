@@ -60,7 +60,7 @@ module InsecureRandomness {
   class RandomFnSink extends Sink {
     RandomFnSink() {
       exists(DataFlowCallable randomFn |
-        randomFn.getName().regexpMatch("(?i).*(gen(erate)?|salt|make|mk).*")
+        randomFn.getName().regexpMatch("(?i).*(gen(erate)?|make|mk|create).*(nonce|salt|pepper).*")
       |
         this.getEnclosingCallable() = randomFn
       )
