@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @security-severity 7.8
  * @precision high
- * @id python/insecure-randomness
+ * @id py/insecure-randomness
  * @tags security
  *       external/cwe/cwe-338
  */
