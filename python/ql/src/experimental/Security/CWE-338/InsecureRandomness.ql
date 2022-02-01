@@ -1,6 +1,8 @@
 /**
  * @name Insecure randomness
- * @description Using insufficient randomness as the key of a cryptographic algorithm can allow an attacker to compromise security.
+ * @description Using a cryptographically weak pseudo-random number generator to generate a
+ *              security-sensitive value may allow an attacker to predict what value will
+ *              be generated.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.8
