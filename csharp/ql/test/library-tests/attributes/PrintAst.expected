@@ -1,41 +1,41 @@
 attributes.cs:
-#   10| [Attribute] [AssemblyTitle(...)]
+#   10| [AssemblyAttribute] [AssemblyTitle(...)]
 #   10|   -1: [TypeMention] AssemblyTitleAttribute
 #   10|   0: [StringLiteral] "C# attributes test"
-#   11| [Attribute] [AssemblyDescription(...)]
+#   11| [AssemblyAttribute] [AssemblyDescription(...)]
 #   11|   -1: [TypeMention] AssemblyDescriptionAttribute
 #   11|   0: [StringLiteral] "A test of C# attributes"
-#   12| [Attribute] [AssemblyConfiguration(...)]
+#   12| [AssemblyAttribute] [AssemblyConfiguration(...)]
 #   12|   -1: [TypeMention] AssemblyConfigurationAttribute
 #   12|   0: [StringLiteral] ""
-#   13| [Attribute] [AssemblyCompany(...)]
+#   13| [AssemblyAttribute] [AssemblyCompany(...)]
 #   13|   -1: [TypeMention] AssemblyCompanyAttribute
 #   13|   0: [StringLiteral] "Semmle Plc"
-#   14| [Attribute] [AssemblyProduct(...)]
+#   14| [AssemblyAttribute] [AssemblyProduct(...)]
 #   14|   -1: [TypeMention] AssemblyProductAttribute
 #   14|   0: [StringLiteral] "Odasa"
-#   15| [Attribute] [AssemblyCopyright(...)]
+#   15| [AssemblyAttribute] [AssemblyCopyright(...)]
 #   15|   -1: [TypeMention] AssemblyCopyrightAttribute
 #   15|   0: [StringLiteral] "Copyright © Semmle 2018"
-#   16| [Attribute] [AssemblyTrademark(...)]
+#   16| [AssemblyAttribute] [AssemblyTrademark(...)]
 #   16|   -1: [TypeMention] AssemblyTrademarkAttribute
 #   16|   0: [StringLiteral] ""
-#   17| [Attribute] [AssemblyCulture(...)]
+#   17| [AssemblyAttribute] [AssemblyCulture(...)]
 #   17|   -1: [TypeMention] AssemblyCultureAttribute
 #   17|   0: [StringLiteral] ""
-#   22| [Attribute] [ComVisible(...)]
+#   22| [AssemblyAttribute] [ComVisible(...)]
 #   22|   -1: [TypeMention] ComVisibleAttribute
 #   22|   0: [BoolLiteral] false
-#   25| [Attribute] [Guid(...)]
+#   25| [AssemblyAttribute] [Guid(...)]
 #   25|   -1: [TypeMention] GuidAttribute
 #   25|   0: [StringLiteral] "2f70fdd6-14aa-4850-b053-d547adb1f476"
-#   37| [Attribute] [AssemblyVersion(...)]
+#   37| [AssemblyAttribute] [AssemblyVersion(...)]
 #   37|   -1: [TypeMention] AssemblyVersionAttribute
 #   37|   0: [StringLiteral] "1.0.0.0"
-#   38| [Attribute] [AssemblyFileVersion(...)]
+#   38| [AssemblyAttribute] [AssemblyFileVersion(...)]
 #   38|   -1: [TypeMention] AssemblyFileVersionAttribute
 #   38|   0: [StringLiteral] "1.0.0.0"
-#   40| [Attribute] [Args(...)]
+#   40| [AssemblyAttribute] [Args(...)]
 #   40|   -1: [TypeMention] ArgsAttribute
 #   40|   0: [IntLiteral] 0
 #   40|   1: [ArrayCreation] array creation of type Object[]
@@ -64,7 +64,7 @@ attributes.cs:
 #   40|       1: [TypeofExpr] typeof(...)
 #   40|         0: [TypeAccess] access to type Int32
 #   40|           0: [TypeMention] int
-#   41| [Attribute] [Args(...)]
+#   41| [ModuleAttribute] [Args(...)]
 #   41|   -1: [TypeMention] ArgsAttribute
 #   41|   0: [IntLiteral] 0
 #   41|   1: [ArrayCreation] array creation of type Object[]
@@ -95,7 +95,7 @@ attributes.cs:
 #   41|           0: [TypeMention] int
 #   44| [Class] Foo
 #-----|   0: (Attributes)
-#   43|     1: [Attribute] [AttributeUsage(...)]
+#   43|     1: [DefaultAttribute] [AttributeUsage(...)]
 #   43|       -1: [TypeMention] AttributeUsageAttribute
 #   43|       0: [MemberConstantAccess] access to constant All
 #   43|         -1: [TypeAccess] access to type AttributeTargets
@@ -105,7 +105,7 @@ attributes.cs:
 #   47|   5: [Method] foo
 #   47|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
-#   46|       1: [Attribute] [Conditional(...)]
+#   46|       1: [DefaultAttribute] [Conditional(...)]
 #   46|         -1: [TypeMention] ConditionalAttribute
 #   46|         0: [StringLiteral] "DEBUG2"
 #   47|     4: [BlockStmt] {...}
@@ -116,7 +116,7 @@ attributes.cs:
 #   52|       0: [Parameter] x
 #   52|         -1: [TypeMention] int
 #-----|         0: (Attributes)
-#   52|           1: [Attribute] [Foo(...)]
+#   52|           1: [DefaultAttribute] [Foo(...)]
 #   52|             0: [TypeMention] Foo
 #   52|     4: [BlockStmt] {...}
 #   52|       0: [ReturnStmt] return ...;
@@ -126,19 +126,19 @@ attributes.cs:
 #   55|   6: [Method] M1
 #   55|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
-#   54|       1: [Attribute] [My(...)]
+#   54|       1: [DefaultAttribute] [My(...)]
 #   54|         -1: [TypeMention] MyAttribute
 #   54|         0: [BoolLiteral] false
 #   55|     4: [BlockStmt] {...}
 #   59|   7: [Method] M2
 #   59|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
-#   57|       1: [Attribute] [My(...)]
+#   57|       1: [DefaultAttribute] [My(...)]
 #   57|         -1: [TypeMention] MyAttribute
 #   57|         0: [BoolLiteral] true
 #   57|         1: [StringLiteral] ""
 #   57|         2: [IntLiteral] 0
-#   58|       2: [Attribute] [My2(...)]
+#   58|       2: [DefaultAttribute] [My2(...)]
 #   58|         -1: [TypeMention] My2Attribute
 #   58|         0: [BoolLiteral] false
 #   58|         1: [BoolLiteral] true
@@ -192,7 +192,7 @@ attributes.cs:
 #   74|     4: [BlockStmt] {...}
 #   78| [Class] X
 #-----|   0: (Attributes)
-#   77|     1: [Attribute] [Args(...)]
+#   77|     1: [DefaultAttribute] [Args(...)]
 #   77|       -1: [TypeMention] ArgsAttribute
 #   77|       0: [IntLiteral] 42
 #   77|       1: [NullLiteral] null
@@ -221,7 +221,7 @@ attributes.cs:
 #   82|   5: [Method] SomeMethod
 #   82|     -1: [TypeMention] int
 #-----|     0: (Attributes)
-#   80|       1: [Attribute] [Args(...)]
+#   80|       1: [DefaultAttribute] [Args(...)]
 #   80|         -1: [TypeMention] ArgsAttribute
 #   80|         0: [AddExpr] ... + ...
 #   80|           0: [IntLiteral] 42
@@ -248,7 +248,7 @@ attributes.cs:
 #   80|             1: [TypeofExpr] typeof(...)
 #   80|               0: [TypeAccess] access to type Int32
 #   80|                 0: [TypeMention] int
-#   81|       2: [Attribute] [Args(...)]
+#   81|       2: [ReturnAttribute] [Args(...)]
 #   81|         -1: [TypeMention] ArgsAttribute
 #   81|         0: [AddExpr] ... + ...
 #   81|           0: [IntLiteral] 42

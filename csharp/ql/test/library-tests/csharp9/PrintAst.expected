@@ -583,13 +583,13 @@ LocalFunction.cs:
 #   21|       0: [LocalFunctionStmt] dup(...)
 #   21|         0: [LocalFunction] dup
 #-----|           0: (Attributes)
-#   21|             1: [Attribute] [Obsolete(...)]
+#   21|             1: [DefaultAttribute] [Obsolete(...)]
 #   21|               0: [TypeMention] ObsoleteAttribute
 #-----|           2: (Parameters)
 #   22|             0: [Parameter] b
 #   22|               -1: [TypeMention] bool
 #-----|               0: (Attributes)
-#   22|                 1: [Attribute] [NotNullWhen(...)]
+#   22|                 1: [DefaultAttribute] [NotNullWhen(...)]
 #   22|                   -1: [TypeMention] NotNullWhenAttribute
 #   22|                   0: [BoolLiteral] true
 #   22|             1: [Parameter] i

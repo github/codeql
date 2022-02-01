@@ -97,3 +97,45 @@ class Attribute extends TopLevelExprParent, @attribute {
 
   override string getAPrimaryQlClass() { result = "Attribute" }
 }
+
+/**
+ * An attribute with default kind, for example `[...]` on line 1 in
+ * ```csharp
+ * [MyAttribute(0)]
+ * int SomeMethod() { return 1; }
+ * ```
+ */
+class DefaultAttribute extends Attribute, @attribute_default {
+  override string getAPrimaryQlClass() { result = "DefaultAttribute" }
+}
+
+/**
+ * An attribute with return kind, for example `[...]` on line 1 in
+ * ```csharp
+ * [return: MyAttribute(0)]
+ * int SomeMethod() { return 1; }
+ * ```
+ */
+class ReturnAttribute extends Attribute, @attribute_return {
+  override string getAPrimaryQlClass() { result = "ReturnAttribute" }
+}
+
+/**
+ * An attribute with assembly kind, for example `[...]` on line 1 in
+ * ```csharp
+ * [assembly: MyAttribute(0)]
+ * ```
+ */
+class AssemblyAttribute extends Attribute, @attribute_assembly {
+  override string getAPrimaryQlClass() { result = "AssemblyAttribute" }
+}
+
+/**
+ * An attribute with module kind, for example `[...]` on line 1 in
+ * ```csharp
+ * [module: MyAttribute(0)]
+ * ```
+ */
+class ModuleAttribute extends Attribute, @attribute_module {
+  override string getAPrimaryQlClass() { result = "ModuleAttribute" }
+}
