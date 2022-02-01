@@ -111,12 +111,18 @@ class CreatCreationExpr extends FileCreationExpr {
 class OpenatCreationExpr extends FileCreationExpr {
   OpenatCreationExpr() {
     this.getTarget().getName() = "openat" and
-    this.getNumberOfArguments() = 4
+    sets(this.getArgument(2).getValue().toInt(), o_creat())
   }
 
   override Expr getPath() { result = this.getArgument(1) }
 
-  override int getMode() { result = this.getArgument(3).getValue().toInt() }
+  override int getMode() {
+    if exists(this.getArgument(3))
+    then result = this.getArgument(3).getValue().toInt()
+    else
+      // assume anything is permitted
+      result = 0.bitNot()
+  }
 }
 
 private int fopenMode() {
