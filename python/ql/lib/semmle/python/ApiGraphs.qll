@@ -462,6 +462,14 @@ module API {
           lbl = Label::memberFromRef(pw) and
           rhs = pw.getValue()
         )
+        or
+        // TODO: I had expected `DataFlow::AttrWrite` to contain the attribute writes from a dict, that's how JS works.
+        exists(Dict dict, KeyValuePair item |
+          dict = pred.asExpr() and
+          dict.getItem(_) = item and
+          lbl = Label::member(item.getKey().(StrConst).getS()) and
+          rhs.asExpr() = item.getValue()
+        )
         // or
         // special case: from `require('m')` to an export of `prop` in `m`
         // TODO: Figure out if this is needed.
@@ -528,7 +536,7 @@ module API {
       |
         // Referring to an attribute on a node that is a use of `base`:
         lbl = Label::memberFromRef(ref) and
-        ref = pred.getAnAttributeReference()
+        ref = pred.getAnAttributeReference() // TODO: Change to read.
         or
         // Calling a node that is a use of `base`
         lbl = Label::return() and
@@ -548,20 +556,12 @@ module API {
         )
       )
       or
-      exists(DataFlow::Node def, CallableExpr fn |
+      exists(DataFlow::Node def, CallableExpr fn, int i |
         rhs(base, def) and fn = trackDefNode(def).asExpr()
       |
-        exists(int i |
-          lbl = Label::parameter(i) and
-          ref.asExpr() = fn.getInnerScope().getArg(i)
-        )
-        /*
-         * or // TODO: Figure out self. (and arg = -2, that might be a thing in python)
-         *        lbl = Label::receiver() and
-         *        ref = fn.getReceiver()
-         */
-
-        )
+        lbl = Label::parameter(i) and
+        ref.asExpr() = fn.getInnerScope().getArg(i)
+      )
       or
       /*
        * or // TODO: Figure out classes.
@@ -771,7 +771,8 @@ module API {
           ImportStar::namePossiblyDefinedInImportStar(_, member, _) or
           Impl::prefix_member(_, member, _) or
           exists(any(Module mod).getSubModule(member)) or
-          exports(_, member, _)
+          exports(_, member, _) or
+          member = any(Dict d).getAnItem().(KeyValuePair).getKey().(StrConst).getS()
         } or
         MkLabelUnknownMember() or
         MkLabelParameter(int i) {
