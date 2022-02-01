@@ -13,7 +13,7 @@
  */
 
 import python
-import semmle.python.security.dataflow.InsecureRandomness::InsecureRandomness
+import experimental.semmle.python.security.InsecureRandomness::InsecureRandomness
 import semmle.python.dataflow.new.DataFlow
 import DataFlow::PathGraph
 
