@@ -14,7 +14,7 @@ Foo::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
 
 Const = [1, 2, 3] #$ use=getMember("Array").getReturn("[]")
 Const.each do |c| #$ use=getMember("Const").getReturn("each")
-    puts c
+    puts c #$ use=getMember("Const").getReturn("each").getBlock().getParameter(0)
 end
 
 foo = Foo #$ use=getMember("Foo")
@@ -58,5 +58,5 @@ M2::C4 #$ use=getMember("M2").getMember("C4") use=getMember("C2").getASubclass()
 M1::C1.m #$ use=getMember("M1").getMember("C1").getReturn("m")
 M2::C3.m #$ use=getMember("M2").getMember("C3").getReturn("m") use=getMember("M1").getMember("C1").getASubclass().getReturn("m")
 
-M1::C1.new.m #$ use=getMember("M1").getMember("C1").instance.getReturn("m")
-M2::C3.new.m #$ use=getMember("M2").getMember("C3").instance.getReturn("m")
+M1::C1.new.m #$ use=getMember("M1").getMember("C1").getReturn("new").getReturn("m")
+M2::C3.new.m #$ use=getMember("M2").getMember("C3").getReturn("new").getReturn("m")
