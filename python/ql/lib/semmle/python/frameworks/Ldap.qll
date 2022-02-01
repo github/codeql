@@ -19,7 +19,7 @@ private module Ldap {
    *
    * See https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html#functions
    */
-  private class LdapQueryExecution extends DataFlow::CallCfgNode, LdapExecution::Range {
+  private class LdapQueryExecution extends DataFlow::CallCfgNode, LDAP::LdapExecution::Range {
     LdapQueryExecution() {
       this =
         API::moduleImport("ldap")

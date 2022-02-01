@@ -443,38 +443,41 @@ module RegexExecution {
   }
 }
 
-/**
- * A data-flow node that executes an LDAP query.
- *
- * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `LDAPQuery::Range` instead.
- */
-class LdapExecution extends DataFlow::Node {
-  LdapExecution::Range range;
-
-  LdapExecution() { this = range }
-
-  /** Gets the argument containing the filter string. */
-  DataFlow::Node getFilter() { result = range.getFilter() }
-
-  /** Gets the argument containing the base DN. */
-  DataFlow::Node getBaseDn() { result = range.getBaseDn() }
-}
-
-/** Provides classes for modeling new LDAP query execution-related APIs. */
-module LdapExecution {
+/** Provides classes for modeling LDAP-related APIs. */
+module LDAP {
   /**
    * A data-flow node that executes an LDAP query.
    *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `LDAPQuery` instead.
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `LDAPQuery::Range` instead.
    */
-  abstract class Range extends DataFlow::Node {
+  class LdapExecution extends DataFlow::Node {
+    LdapExecution::Range range;
+
+    LdapExecution() { this = range }
+
     /** Gets the argument containing the filter string. */
-    abstract DataFlow::Node getFilter();
+    DataFlow::Node getFilter() { result = range.getFilter() }
 
     /** Gets the argument containing the base DN. */
-    abstract DataFlow::Node getBaseDn();
+    DataFlow::Node getBaseDn() { result = range.getBaseDn() }
+  }
+
+  /** Provides classes for modeling new LDAP query execution-related APIs. */
+  module LdapExecution {
+    /**
+     * A data-flow node that executes an LDAP query.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `LDAPQuery` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the argument containing the filter string. */
+      abstract DataFlow::Node getFilter();
+
+      /** Gets the argument containing the base DN. */
+      abstract DataFlow::Node getBaseDn();
+    }
   }
 }
 

@@ -60,14 +60,14 @@ module LdapInjection {
    * A logging operation, considered as a flow sink.
    */
   class LdapExecutionAsDnSink extends DnSink {
-    LdapExecutionAsDnSink() { this = any(LdapExecution ldap).getBaseDn() }
+    LdapExecutionAsDnSink() { this = any(LDAP::LdapExecution ldap).getBaseDn() }
   }
 
   /**
    * A logging operation, considered as a flow sink.
    */
   class LdapExecutionAsFilterSink extends FilterSink {
-    LdapExecutionAsFilterSink() { this = any(LdapExecution ldap).getFilter() }
+    LdapExecutionAsFilterSink() { this = any(LDAP::LdapExecution ldap).getFilter() }
   }
 
   /**
