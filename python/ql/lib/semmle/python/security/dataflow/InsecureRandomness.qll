@@ -16,7 +16,7 @@ import semmle.python.dataflow.new.TaintTracking
  */
 module InsecureRandomness {
   import InsecureRandomnessCustomizations::InsecureRandomness
-  
+
   /**
    * A taint-tracking configuration for reasoning about random values that are
    * not cryptographically secure.
@@ -29,7 +29,7 @@ module InsecureRandomness {
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-    
+
     override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       guard instanceof SanitizerGuard
     }

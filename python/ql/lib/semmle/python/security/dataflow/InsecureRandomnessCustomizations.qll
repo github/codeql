@@ -38,22 +38,20 @@ module InsecureRandomness {
    * A random source that is not sufficient for security use. So far this is only made up
    * of the math package's rand function, more insufficient random sources can be added here.
    */
-  class InsecureRandomSource extends Source { 
-    InsecureRandomSource() { 
+  class InsecureRandomSource extends Source {
+    InsecureRandomSource() {
       this =
         API::moduleImport("random")
             .getMember([
-                "betavariate", "choice", "choices", "expovariate",
-                "gammavariate", "gauss", "getrandbits", "getstate",
-                "lognormvariate", "normalvariate", "paretovariate",
-                "randbytes", "randint", "random", "randrange",
-                "sample", "seed", "setstate", "shuffle",
-                "triangular", "uniform", "vonmisesvariate", "weibullvariate"
+                "betavariate", "choice", "choices", "expovariate", "gammavariate", "gauss",
+                "getrandbits", "getstate", "lognormvariate", "normalvariate", "paretovariate",
+                "randbytes", "randint", "random", "randrange", "sample", "seed", "setstate",
+                "shuffle", "triangular", "uniform", "vonmisesvariate", "weibullvariate"
               ])
             .getACall()
     }
   }
-  
+
   /**
    * A use in a function that heuristically deals with unsafe random numbers or random strings.
    */
@@ -73,9 +71,7 @@ module InsecureRandomness {
    */
   class CryptoKeySink extends Sink {
     CryptoKeySink() {
-      exists(Cryptography::CryptographicOperation operation |
-        this = operation.getAnInput()
-      )
+      exists(Cryptography::CryptographicOperation operation | this = operation.getAnInput())
     }
   }
 }
