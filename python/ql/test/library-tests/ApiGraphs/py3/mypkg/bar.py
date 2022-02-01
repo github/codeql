@@ -1,1 +1,1 @@
-pass
+from foo import *

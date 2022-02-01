@@ -908,6 +908,13 @@ private predicate exports(Module mod, string prop, DataFlow::Node rhs) {
     rhs.asExpr() = assign.getValue() and
     exists(Variable v | assign.defines(v) and prop = v.getId())
   )
-  // TODO: Re-exports.
+  or
+  // `from foo import *`, just forward directly.
+  exists(ImportStar star, Module subMod |
+    star.getEnclosingModule() = mod and
+    mod.getPackage().getName() + "." + star.getImportedModuleName() = subMod.getName() and
+    exports(subMod, prop, rhs)
+  )
+  // TODO: named imports (somehow)
   // TODO: use this predicate with __init__.py?
 }
