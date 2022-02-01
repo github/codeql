@@ -11,6 +11,7 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, node_info_table: &'a str) ->
         )),
         name: "toString",
         overridden: false,
+        is_final: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: ql::Expression::Equals(
@@ -26,6 +27,7 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, node_info_table: &'a str) ->
         name: "getLocation",
         qldoc: Some(String::from("Gets the location of this element.")),
         overridden: false,
+        is_final: true,
         return_type: Some(ql::Type::Normal("L::Location")),
         formal_parameters: vec![],
         body: ql::Expression::Pred(
@@ -48,6 +50,7 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, node_info_table: &'a str) ->
         qldoc: Some(String::from("Gets the parent of this element.")),
         name: "getParent",
         overridden: false,
+        is_final: true,
         return_type: Some(ql::Type::Normal("AstNode")),
         formal_parameters: vec![],
         body: ql::Expression::Pred(
@@ -66,6 +69,7 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, node_info_table: &'a str) ->
         )),
         name: "getParentIndex",
         overridden: false,
+        is_final: true,
         return_type: Some(ql::Type::Int),
         formal_parameters: vec![],
         body: ql::Expression::Pred(
@@ -84,6 +88,7 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, node_info_table: &'a str) ->
         )),
         name: "getAPrimaryQlClass",
         overridden: false,
+        is_final: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: ql::Expression::Equals(
@@ -99,6 +104,7 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, node_info_table: &'a str) ->
         ),
         name: "getPrimaryQlClasses",
         overridden: false,
+        is_final: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: ql::Expression::Equals(
@@ -140,6 +146,7 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
         qldoc: Some(String::from("Gets the value of this token.")),
         name: "getValue",
         overridden: false,
+        is_final: true,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: create_get_field_expr_for_column_storage("result", tokeninfo, 1, tokeninfo_arity),
@@ -150,6 +157,7 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
         )),
         name: "toString",
         overridden: true,
+        is_final: true,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: ql::Expression::Equals(
@@ -173,7 +181,7 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
             get_value,
             //get_location,
             to_string,
-            create_get_a_primary_ql_class("Token"),
+            create_get_a_primary_ql_class("Token", false),
         ],
     }
 }
@@ -181,7 +189,7 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
 // Creates the `ReservedWord` class.
 pub fn create_reserved_word_class(db_name: &str) -> ql::Class {
     let class_name = "ReservedWord";
-    let get_a_primary_ql_class = create_get_a_primary_ql_class(class_name);
+    let get_a_primary_ql_class = create_get_a_primary_ql_class(class_name, true);
     ql::Class {
         qldoc: Some(String::from("A reserved word.")),
         name: class_name,
@@ -205,6 +213,7 @@ fn create_none_predicate<'a>(
         qldoc,
         name,
         overridden,
+        is_final: false,
         return_type,
         formal_parameters: Vec::new(),
         body: ql::Expression::Pred("none", vec![]),
@@ -213,13 +222,14 @@ fn create_none_predicate<'a>(
 
 /// Creates an overridden `getAPrimaryQlClass` predicate that returns the given
 /// name.
-fn create_get_a_primary_ql_class(class_name: &str) -> ql::Predicate {
+fn create_get_a_primary_ql_class(class_name: &str, is_final: bool) -> ql::Predicate {
     ql::Predicate {
         qldoc: Some(String::from(
             "Gets the name of the primary QL class for this element.",
         )),
         name: "getAPrimaryQlClass",
         overridden: true,
+        is_final,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: ql::Expression::Equals(
@@ -428,6 +438,7 @@ fn create_field_getters<'a>(
             qldoc: Some(qldoc),
             name: &field.getter_name,
             overridden: false,
+            is_final: true,
             return_type,
             formal_parameters,
             body,
@@ -452,7 +463,8 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
         match &node.kind {
             node_types::EntryKind::Token { kind_id: _ } => {
                 if type_name.named {
-                    let get_a_primary_ql_class = create_get_a_primary_ql_class(&node.ql_class_name);
+                    let get_a_primary_ql_class =
+                        create_get_a_primary_ql_class(&node.ql_class_name, true);
                     let mut supertypes: BTreeSet<ql::Type> = BTreeSet::new();
                     supertypes.insert(ql::Type::At(&node.dbscheme_name));
                     supertypes.insert(ql::Type::Normal("Token"));
@@ -511,7 +523,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
                     .into_iter()
                     .collect(),
                     characteristic_predicate: None,
-                    predicates: vec![create_get_a_primary_ql_class(main_class_name)],
+                    predicates: vec![create_get_a_primary_ql_class(main_class_name, true)],
                 };
 
                 let mut main_table_column_index: usize = 0;
@@ -539,6 +551,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
                     qldoc: Some(String::from("Gets a field or child node of this node.")),
                     name: "getAFieldOrChild",
                     overridden: true,
+                    is_final: true,
                     return_type: Some(ql::Type::Normal("AstNode")),
                     formal_parameters: vec![],
                     body: ql::Expression::Or(get_child_exprs),
