@@ -1,24 +1,24 @@
 edges
-| argumentPassing.py:66:5:66:5 | ControlFlowNode for b | argumentPassing.py:76:11:76:11 | ControlFlowNode for b |
-| argumentPassing.py:94:28:94:31 | ControlFlowNode for arg2 | argumentPassing.py:66:5:66:5 | ControlFlowNode for b |
-| argumentPassing.py:97:25:97:25 | ControlFlowNode for b | argumentPassing.py:99:11:99:11 | ControlFlowNode for b |
-| argumentPassing.py:104:25:104:28 | ControlFlowNode for arg2 | argumentPassing.py:97:25:97:25 | ControlFlowNode for b |
-| argumentPassing.py:105:27:105:30 | ControlFlowNode for arg2 | argumentPassing.py:97:25:97:25 | ControlFlowNode for b |
-| argumentPassing.py:109:30:109:30 | ControlFlowNode for b | argumentPassing.py:111:11:111:11 | ControlFlowNode for b |
-| argumentPassing.py:117:29:117:32 | ControlFlowNode for arg2 | argumentPassing.py:109:30:109:30 | ControlFlowNode for b |
-| argumentPassing.py:120:5:120:70 | KwUnpacked b | argumentPassing.py:109:30:109:30 | ControlFlowNode for b |
-| argumentPassing.py:120:29:120:39 | ControlFlowNode for Dict [Dictionary element at key b] | argumentPassing.py:120:5:120:70 | KwUnpacked b |
-| argumentPassing.py:120:35:120:38 | ControlFlowNode for arg2 | argumentPassing.py:120:29:120:39 | ControlFlowNode for Dict [Dictionary element at key b] |
-| argumentPassing.py:123:36:123:36 | ControlFlowNode for b | argumentPassing.py:125:11:125:11 | ControlFlowNode for b |
-| argumentPassing.py:123:36:123:36 | ControlFlowNode for b | argumentPassing.py:125:11:125:11 | ControlFlowNode for b |
-| argumentPassing.py:123:38:123:41 | ControlFlowNode for arg2 | argumentPassing.py:123:36:123:36 | ControlFlowNode for b |
-| argumentPassing.py:133:30:133:33 | ControlFlowNode for arg2 | argumentPassing.py:123:36:123:36 | ControlFlowNode for b |
-| argumentPassing.py:138:29:138:34 | ControlFlowNode for kwargs [Dictionary element at key bar] | argumentPassing.py:140:20:140:25 | ControlFlowNode for kwargs [Dictionary element at key bar] |
-| argumentPassing.py:140:5:140:26 | KwUnpacked bar | argumentPassing.py:145:18:145:20 | ControlFlowNode for bar |
-| argumentPassing.py:140:20:140:25 | ControlFlowNode for kwargs [Dictionary element at key bar] | argumentPassing.py:140:5:140:26 | KwUnpacked bar |
-| argumentPassing.py:145:18:145:20 | ControlFlowNode for bar | argumentPassing.py:146:11:146:13 | ControlFlowNode for bar |
-| argumentPassing.py:160:5:160:50 | KwOverflowNode for grab_foo_bar_baz() [Dictionary element at key bar] | argumentPassing.py:138:29:138:34 | ControlFlowNode for kwargs [Dictionary element at key bar] |
-| argumentPassing.py:160:36:160:39 | ControlFlowNode for arg2 | argumentPassing.py:160:5:160:50 | KwOverflowNode for grab_foo_bar_baz() [Dictionary element at key bar] |
+| argumentPassing.py:44:5:44:5 | ControlFlowNode for b | argumentPassing.py:54:11:54:11 | ControlFlowNode for b |
+| argumentPassing.py:72:28:72:31 | ControlFlowNode for arg2 | argumentPassing.py:44:5:44:5 | ControlFlowNode for b |
+| argumentPassing.py:75:25:75:25 | ControlFlowNode for b | argumentPassing.py:77:11:77:11 | ControlFlowNode for b |
+| argumentPassing.py:82:25:82:28 | ControlFlowNode for arg2 | argumentPassing.py:75:25:75:25 | ControlFlowNode for b |
+| argumentPassing.py:83:27:83:30 | ControlFlowNode for arg2 | argumentPassing.py:75:25:75:25 | ControlFlowNode for b |
+| argumentPassing.py:87:30:87:30 | ControlFlowNode for b | argumentPassing.py:89:11:89:11 | ControlFlowNode for b |
+| argumentPassing.py:95:29:95:32 | ControlFlowNode for arg2 | argumentPassing.py:87:30:87:30 | ControlFlowNode for b |
+| argumentPassing.py:98:5:98:70 | KwUnpacked b | argumentPassing.py:87:30:87:30 | ControlFlowNode for b |
+| argumentPassing.py:98:29:98:39 | ControlFlowNode for Dict [Dictionary element at key b] | argumentPassing.py:98:5:98:70 | KwUnpacked b |
+| argumentPassing.py:98:35:98:38 | ControlFlowNode for arg2 | argumentPassing.py:98:29:98:39 | ControlFlowNode for Dict [Dictionary element at key b] |
+| argumentPassing.py:101:36:101:36 | ControlFlowNode for b | argumentPassing.py:103:11:103:11 | ControlFlowNode for b |
+| argumentPassing.py:101:36:101:36 | ControlFlowNode for b | argumentPassing.py:103:11:103:11 | ControlFlowNode for b |
+| argumentPassing.py:101:38:101:41 | ControlFlowNode for arg2 | argumentPassing.py:101:36:101:36 | ControlFlowNode for b |
+| argumentPassing.py:111:30:111:33 | ControlFlowNode for arg2 | argumentPassing.py:101:36:101:36 | ControlFlowNode for b |
+| argumentPassing.py:116:29:116:34 | ControlFlowNode for kwargs [Dictionary element at key bar] | argumentPassing.py:118:20:118:25 | ControlFlowNode for kwargs [Dictionary element at key bar] |
+| argumentPassing.py:118:5:118:26 | KwUnpacked bar | argumentPassing.py:123:18:123:20 | ControlFlowNode for bar |
+| argumentPassing.py:118:20:118:25 | ControlFlowNode for kwargs [Dictionary element at key bar] | argumentPassing.py:118:5:118:26 | KwUnpacked bar |
+| argumentPassing.py:123:18:123:20 | ControlFlowNode for bar | argumentPassing.py:124:11:124:13 | ControlFlowNode for bar |
+| argumentPassing.py:138:5:138:50 | KwOverflowNode for grab_foo_bar_baz() [Dictionary element at key bar] | argumentPassing.py:116:29:116:34 | ControlFlowNode for kwargs [Dictionary element at key bar] |
+| argumentPassing.py:138:36:138:39 | ControlFlowNode for arg2 | argumentPassing.py:138:5:138:50 | KwOverflowNode for grab_foo_bar_baz() [Dictionary element at key bar] |
 | classes.py:555:27:555:29 | ControlFlowNode for key | classes.py:556:15:556:17 | ControlFlowNode for key |
 | classes.py:565:18:565:21 | ControlFlowNode for arg2 | classes.py:555:27:555:29 | ControlFlowNode for key |
 | classes.py:570:27:570:29 | ControlFlowNode for key | classes.py:572:15:572:17 | ControlFlowNode for key |
@@ -52,31 +52,31 @@ edges
 | classes.py:858:22:858:26 | ControlFlowNode for other | classes.py:859:15:859:19 | ControlFlowNode for other |
 | classes.py:868:15:868:18 | ControlFlowNode for arg2 | classes.py:858:22:858:26 | ControlFlowNode for other |
 nodes
-| argumentPassing.py:66:5:66:5 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
-| argumentPassing.py:76:11:76:11 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
-| argumentPassing.py:94:28:94:31 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
-| argumentPassing.py:97:25:97:25 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
-| argumentPassing.py:99:11:99:11 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
-| argumentPassing.py:104:25:104:28 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
-| argumentPassing.py:105:27:105:30 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
-| argumentPassing.py:109:30:109:30 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
-| argumentPassing.py:111:11:111:11 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
-| argumentPassing.py:117:29:117:32 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
-| argumentPassing.py:120:5:120:70 | KwUnpacked b | semmle.label | KwUnpacked b |
-| argumentPassing.py:120:29:120:39 | ControlFlowNode for Dict [Dictionary element at key b] | semmle.label | ControlFlowNode for Dict [Dictionary element at key b] |
-| argumentPassing.py:120:35:120:38 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
-| argumentPassing.py:123:36:123:36 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
-| argumentPassing.py:123:36:123:36 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
-| argumentPassing.py:123:38:123:41 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
-| argumentPassing.py:125:11:125:11 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
-| argumentPassing.py:133:30:133:33 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
-| argumentPassing.py:138:29:138:34 | ControlFlowNode for kwargs [Dictionary element at key bar] | semmle.label | ControlFlowNode for kwargs [Dictionary element at key bar] |
-| argumentPassing.py:140:5:140:26 | KwUnpacked bar | semmle.label | KwUnpacked bar |
-| argumentPassing.py:140:20:140:25 | ControlFlowNode for kwargs [Dictionary element at key bar] | semmle.label | ControlFlowNode for kwargs [Dictionary element at key bar] |
-| argumentPassing.py:145:18:145:20 | ControlFlowNode for bar | semmle.label | ControlFlowNode for bar |
-| argumentPassing.py:146:11:146:13 | ControlFlowNode for bar | semmle.label | ControlFlowNode for bar |
-| argumentPassing.py:160:5:160:50 | KwOverflowNode for grab_foo_bar_baz() [Dictionary element at key bar] | semmle.label | KwOverflowNode for grab_foo_bar_baz() [Dictionary element at key bar] |
-| argumentPassing.py:160:36:160:39 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
+| argumentPassing.py:44:5:44:5 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| argumentPassing.py:54:11:54:11 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| argumentPassing.py:72:28:72:31 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
+| argumentPassing.py:75:25:75:25 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| argumentPassing.py:77:11:77:11 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| argumentPassing.py:82:25:82:28 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
+| argumentPassing.py:83:27:83:30 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
+| argumentPassing.py:87:30:87:30 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| argumentPassing.py:89:11:89:11 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| argumentPassing.py:95:29:95:32 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
+| argumentPassing.py:98:5:98:70 | KwUnpacked b | semmle.label | KwUnpacked b |
+| argumentPassing.py:98:29:98:39 | ControlFlowNode for Dict [Dictionary element at key b] | semmle.label | ControlFlowNode for Dict [Dictionary element at key b] |
+| argumentPassing.py:98:35:98:38 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
+| argumentPassing.py:101:36:101:36 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| argumentPassing.py:101:36:101:36 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| argumentPassing.py:101:38:101:41 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
+| argumentPassing.py:103:11:103:11 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| argumentPassing.py:111:30:111:33 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
+| argumentPassing.py:116:29:116:34 | ControlFlowNode for kwargs [Dictionary element at key bar] | semmle.label | ControlFlowNode for kwargs [Dictionary element at key bar] |
+| argumentPassing.py:118:5:118:26 | KwUnpacked bar | semmle.label | KwUnpacked bar |
+| argumentPassing.py:118:20:118:25 | ControlFlowNode for kwargs [Dictionary element at key bar] | semmle.label | ControlFlowNode for kwargs [Dictionary element at key bar] |
+| argumentPassing.py:123:18:123:20 | ControlFlowNode for bar | semmle.label | ControlFlowNode for bar |
+| argumentPassing.py:124:11:124:13 | ControlFlowNode for bar | semmle.label | ControlFlowNode for bar |
+| argumentPassing.py:138:5:138:50 | KwOverflowNode for grab_foo_bar_baz() [Dictionary element at key bar] | semmle.label | KwOverflowNode for grab_foo_bar_baz() [Dictionary element at key bar] |
+| argumentPassing.py:138:36:138:39 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
 | classes.py:555:27:555:29 | ControlFlowNode for key | semmle.label | ControlFlowNode for key |
 | classes.py:556:15:556:17 | ControlFlowNode for key | semmle.label | ControlFlowNode for key |
 | classes.py:565:18:565:21 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
@@ -127,14 +127,14 @@ nodes
 | classes.py:868:15:868:18 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
 subpaths
 #select
-| argumentPassing.py:94:28:94:31 | ControlFlowNode for arg2 | argumentPassing.py:94:28:94:31 | ControlFlowNode for arg2 | argumentPassing.py:76:11:76:11 | ControlFlowNode for b | Flow found |
-| argumentPassing.py:104:25:104:28 | ControlFlowNode for arg2 | argumentPassing.py:104:25:104:28 | ControlFlowNode for arg2 | argumentPassing.py:99:11:99:11 | ControlFlowNode for b | Flow found |
-| argumentPassing.py:105:27:105:30 | ControlFlowNode for arg2 | argumentPassing.py:105:27:105:30 | ControlFlowNode for arg2 | argumentPassing.py:99:11:99:11 | ControlFlowNode for b | Flow found |
-| argumentPassing.py:117:29:117:32 | ControlFlowNode for arg2 | argumentPassing.py:117:29:117:32 | ControlFlowNode for arg2 | argumentPassing.py:111:11:111:11 | ControlFlowNode for b | Flow found |
-| argumentPassing.py:120:35:120:38 | ControlFlowNode for arg2 | argumentPassing.py:120:35:120:38 | ControlFlowNode for arg2 | argumentPassing.py:111:11:111:11 | ControlFlowNode for b | Flow found |
-| argumentPassing.py:123:38:123:41 | ControlFlowNode for arg2 | argumentPassing.py:123:38:123:41 | ControlFlowNode for arg2 | argumentPassing.py:125:11:125:11 | ControlFlowNode for b | Flow found |
-| argumentPassing.py:133:30:133:33 | ControlFlowNode for arg2 | argumentPassing.py:133:30:133:33 | ControlFlowNode for arg2 | argumentPassing.py:125:11:125:11 | ControlFlowNode for b | Flow found |
-| argumentPassing.py:160:36:160:39 | ControlFlowNode for arg2 | argumentPassing.py:160:36:160:39 | ControlFlowNode for arg2 | argumentPassing.py:146:11:146:13 | ControlFlowNode for bar | Flow found |
+| argumentPassing.py:72:28:72:31 | ControlFlowNode for arg2 | argumentPassing.py:72:28:72:31 | ControlFlowNode for arg2 | argumentPassing.py:54:11:54:11 | ControlFlowNode for b | Flow found |
+| argumentPassing.py:82:25:82:28 | ControlFlowNode for arg2 | argumentPassing.py:82:25:82:28 | ControlFlowNode for arg2 | argumentPassing.py:77:11:77:11 | ControlFlowNode for b | Flow found |
+| argumentPassing.py:83:27:83:30 | ControlFlowNode for arg2 | argumentPassing.py:83:27:83:30 | ControlFlowNode for arg2 | argumentPassing.py:77:11:77:11 | ControlFlowNode for b | Flow found |
+| argumentPassing.py:95:29:95:32 | ControlFlowNode for arg2 | argumentPassing.py:95:29:95:32 | ControlFlowNode for arg2 | argumentPassing.py:89:11:89:11 | ControlFlowNode for b | Flow found |
+| argumentPassing.py:98:35:98:38 | ControlFlowNode for arg2 | argumentPassing.py:98:35:98:38 | ControlFlowNode for arg2 | argumentPassing.py:89:11:89:11 | ControlFlowNode for b | Flow found |
+| argumentPassing.py:101:38:101:41 | ControlFlowNode for arg2 | argumentPassing.py:101:38:101:41 | ControlFlowNode for arg2 | argumentPassing.py:103:11:103:11 | ControlFlowNode for b | Flow found |
+| argumentPassing.py:111:30:111:33 | ControlFlowNode for arg2 | argumentPassing.py:111:30:111:33 | ControlFlowNode for arg2 | argumentPassing.py:103:11:103:11 | ControlFlowNode for b | Flow found |
+| argumentPassing.py:138:36:138:39 | ControlFlowNode for arg2 | argumentPassing.py:138:36:138:39 | ControlFlowNode for arg2 | argumentPassing.py:124:11:124:13 | ControlFlowNode for bar | Flow found |
 | classes.py:565:18:565:21 | ControlFlowNode for arg2 | classes.py:565:18:565:21 | ControlFlowNode for arg2 | classes.py:556:15:556:17 | ControlFlowNode for key | Flow found |
 | classes.py:581:18:581:21 | ControlFlowNode for arg2 | classes.py:581:18:581:21 | ControlFlowNode for arg2 | classes.py:572:15:572:17 | ControlFlowNode for key | Flow found |
 | classes.py:595:22:595:25 | ControlFlowNode for arg2 | classes.py:595:22:595:25 | ControlFlowNode for arg2 | classes.py:587:15:587:17 | ControlFlowNode for key | Flow found |

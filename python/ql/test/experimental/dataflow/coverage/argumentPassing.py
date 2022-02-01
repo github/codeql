@@ -39,28 +39,6 @@ SINK6 = functools.partial(SINK, expected=arg6)
 SINK7 = functools.partial(SINK, expected=arg7)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def argument_passing(
     a,
     b,
