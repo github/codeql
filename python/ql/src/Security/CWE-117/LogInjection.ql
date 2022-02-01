@@ -4,7 +4,8 @@
  *              insertion of forged log entries by a malicious user.
  * @kind path-problem
  * @problem.severity error
- * @precision high
+ * @security-severity 7.8
+ * @precision medium
  * @id py/log-injection
  * @tags security
  *       external/cwe/cwe-117
