@@ -80,6 +80,16 @@ arguments
 | attributes.cs:97:10:97:21 | [My3(...)] | 0 | attributes.cs:97:23:97:23 | 2 |
 | attributes.cs:100:10:100:21 | [My3(...)] | 0 | attributes.cs:100:23:100:23 | 3 |
 | attributes.cs:101:8:101:19 | [My3(...)] | 0 | attributes.cs:101:21:101:21 | 4 |
+| attributes.cs:106:6:106:17 | [My3(...)] | 0 | attributes.cs:106:19:106:19 | 5 |
+| attributes.cs:107:14:107:25 | [My3(...)] | 0 | attributes.cs:107:27:107:27 | 6 |
+| attributes.cs:112:10:112:21 | [My3(...)] | 0 | attributes.cs:112:23:112:23 | 7 |
+| attributes.cs:113:18:113:29 | [My3(...)] | 0 | attributes.cs:113:31:113:31 | 8 |
+| attributes.cs:116:18:116:29 | [My3(...)] | 0 | attributes.cs:116:31:116:31 | 9 |
+| attributes.cs:117:17:117:28 | [My3(...)] | 0 | attributes.cs:117:30:117:31 | 10 |
+| attributes.cs:124:18:124:29 | [My3(...)] | 0 | attributes.cs:124:31:124:32 | 11 |
+| attributes.cs:125:18:125:29 | [My3(...)] | 0 | attributes.cs:125:31:125:32 | 12 |
+| attributes.cs:128:10:128:21 | [My3(...)] | 0 | attributes.cs:128:23:128:24 | 13 |
+| attributes.cs:129:17:129:28 | [My3(...)] | 0 | attributes.cs:129:30:129:31 | 14 |
 constructorArguments
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 1 |
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 3 |
@@ -150,6 +160,16 @@ constructorArguments
 | attributes.cs:97:10:97:21 | [My3(...)] | 0 | attributes.cs:97:23:97:23 | 2 |
 | attributes.cs:100:10:100:21 | [My3(...)] | 0 | attributes.cs:100:23:100:23 | 3 |
 | attributes.cs:101:8:101:19 | [My3(...)] | 0 | attributes.cs:101:21:101:21 | 4 |
+| attributes.cs:106:6:106:17 | [My3(...)] | 0 | attributes.cs:106:19:106:19 | 5 |
+| attributes.cs:107:14:107:25 | [My3(...)] | 0 | attributes.cs:107:27:107:27 | 6 |
+| attributes.cs:112:10:112:21 | [My3(...)] | 0 | attributes.cs:112:23:112:23 | 7 |
+| attributes.cs:113:18:113:29 | [My3(...)] | 0 | attributes.cs:113:31:113:31 | 8 |
+| attributes.cs:116:18:116:29 | [My3(...)] | 0 | attributes.cs:116:31:116:31 | 9 |
+| attributes.cs:117:17:117:28 | [My3(...)] | 0 | attributes.cs:117:30:117:31 | 10 |
+| attributes.cs:124:18:124:29 | [My3(...)] | 0 | attributes.cs:124:31:124:32 | 11 |
+| attributes.cs:125:18:125:29 | [My3(...)] | 0 | attributes.cs:125:31:125:32 | 12 |
+| attributes.cs:128:10:128:21 | [My3(...)] | 0 | attributes.cs:128:23:128:24 | 13 |
+| attributes.cs:129:17:129:28 | [My3(...)] | 0 | attributes.cs:129:30:129:31 | 14 |
 namedArguments
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |

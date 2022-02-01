@@ -324,3 +324,84 @@ attributes.cs:
 #-----|   2: (Parameters)
 #  102|     0: [Parameter] message
 #  102|       -1: [TypeMention] string
+#  104| [Class] MyAttributeUsage
+#  108|   5: [AddOperator] +
+#  108|     -1: [TypeMention] int
+#-----|     0: (Attributes)
+#  106|       1: [DefaultAttribute] [My3(...)]
+#  106|         -1: [TypeMention] My3Attribute
+#  106|         0: [IntLiteral] 5
+#  107|       2: [ReturnAttribute] [My3(...)]
+#  107|         -1: [TypeMention] My3Attribute
+#  107|         0: [IntLiteral] 6
+#-----|     2: (Parameters)
+#  108|       0: [Parameter] a
+#  108|         -1: [TypeMention] MyAttributeUsage
+#  108|       1: [Parameter] b
+#  108|         -1: [TypeMention] MyAttributeUsage
+#  108|     4: [IntLiteral] 0
+#  110|   6: [Indexer] Item
+#  110|     -1: [TypeMention] int
+#-----|     1: (Parameters)
+#  110|       0: [Parameter] x
+#  110|         -1: [TypeMention] int
+#  114|     3: [Getter] get_Item
+#-----|       0: (Attributes)
+#  112|         1: [DefaultAttribute] [My3(...)]
+#  112|           -1: [TypeMention] My3Attribute
+#  112|           0: [IntLiteral] 7
+#  113|         2: [ReturnAttribute] [My3(...)]
+#  113|           -1: [TypeMention] My3Attribute
+#  113|           0: [IntLiteral] 8
+#-----|       2: (Parameters)
+#  110|         0: [Parameter] x
+#  114|       4: [BlockStmt] {...}
+#  114|         0: [ReturnStmt] return ...;
+#  114|           0: [AddExpr] ... + ...
+#  114|             0: [ParameterAccess] access to parameter x
+#  114|             1: [IntLiteral] 1
+#  118|     4: [Setter] set_Item
+#-----|       0: (Attributes)
+#  116|         1: [DefaultAttribute] [My3(...)]
+#  116|           -1: [TypeMention] My3Attribute
+#  116|           0: [IntLiteral] 9
+#-----|       2: (Parameters)
+#  110|         0: [Parameter] x
+#  118|         1: [Parameter] value
+#-----|           0: (Attributes)
+#  117|             1: [DefaultAttribute] [My3(...)]
+#  117|               -1: [TypeMention] My3Attribute
+#  117|               0: [IntLiteral] 10
+#  118|       4: [BlockStmt] {...}
+#  118|         0: [ReturnStmt] return ...;
+#  121|   7: [Field] p
+#  121|     -1: [TypeMention] int
+#  122|   8: [Property] Prop1
+#  122|     -1: [TypeMention] int
+#  126|     3: [Getter] get_Prop1
+#-----|       0: (Attributes)
+#  124|         1: [DefaultAttribute] [My3(...)]
+#  124|           -1: [TypeMention] My3Attribute
+#  124|           0: [IntLiteral] 11
+#  125|         2: [ReturnAttribute] [My3(...)]
+#  125|           -1: [TypeMention] My3Attribute
+#  125|           0: [IntLiteral] 12
+#  126|       4: [BlockStmt] {...}
+#  126|         0: [ReturnStmt] return ...;
+#  126|           0: [FieldAccess] access to field p
+#  130|     4: [Setter] set_Prop1
+#-----|       0: (Attributes)
+#  128|         1: [DefaultAttribute] [My3(...)]
+#  128|           -1: [TypeMention] My3Attribute
+#  128|           0: [IntLiteral] 13
+#-----|       2: (Parameters)
+#  130|         0: [Parameter] value
+#-----|           0: (Attributes)
+#  129|             1: [DefaultAttribute] [My3(...)]
+#  129|               -1: [TypeMention] My3Attribute
+#  129|               0: [IntLiteral] 14
+#  130|       4: [BlockStmt] {...}
+#  130|         0: [ExprStmt] ...;
+#  130|           0: [AssignExpr] ... = ...
+#  130|             0: [FieldAccess] access to field p
+#  130|             1: [ParameterAccess] access to parameter value

@@ -22,6 +22,16 @@
 | attributes.cs:98:14:98:24 | My1Delegate | attributes.cs:96:2:96:13 | [My3(...)] | My3Attribute |
 | attributes.cs:102:17:102:27 | Invoke | attributes.cs:100:10:100:21 | [My3(...)] | My3Attribute |
 | attributes.cs:102:17:102:27 | My2Delegate | attributes.cs:101:8:101:19 | [My3(...)] | My3Attribute |
+| attributes.cs:108:32:108:32 | + | attributes.cs:106:6:106:17 | [My3(...)] | My3Attribute |
+| attributes.cs:108:32:108:32 | + | attributes.cs:107:14:107:25 | [My3(...)] | My3Attribute |
+| attributes.cs:114:9:114:11 | get_Item | attributes.cs:112:10:112:21 | [My3(...)] | My3Attribute |
+| attributes.cs:114:9:114:11 | get_Item | attributes.cs:113:18:113:29 | [My3(...)] | My3Attribute |
+| attributes.cs:118:9:118:11 | set_Item | attributes.cs:116:18:116:29 | [My3(...)] | My3Attribute |
+| attributes.cs:118:9:118:11 | value | attributes.cs:117:17:117:28 | [My3(...)] | My3Attribute |
+| attributes.cs:126:9:126:11 | get_Prop1 | attributes.cs:124:18:124:29 | [My3(...)] | My3Attribute |
+| attributes.cs:126:9:126:11 | get_Prop1 | attributes.cs:125:18:125:29 | [My3(...)] | My3Attribute |
+| attributes.cs:130:9:130:11 | set_Prop1 | attributes.cs:128:10:128:21 | [My3(...)] | My3Attribute |
+| attributes.cs:130:9:130:11 | value | attributes.cs:129:17:129:28 | [My3(...)] | My3Attribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:10:12:10:24 | [AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:11:12:11:30 | [AssemblyDescription(...)] | System.Reflection.AssemblyDescriptionAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:12:12:12:32 | [AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |
