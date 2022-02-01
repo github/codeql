@@ -41,6 +41,7 @@ edges
 | ldap_bad.py:48:21:48:44 | ControlFlowNode for Subscript | ldap_bad.py:55:43:55:55 | ControlFlowNode for search_filter |
 nodes
 | ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | ldap3_bad.py:13:17:13:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | ldap3_bad.py:13:17:13:34 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | ldap3_bad.py:14:21:14:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -48,6 +49,7 @@ nodes
 | ldap3_bad.py:14:21:14:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | ldap3_bad.py:21:17:21:18 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
 | ldap3_bad.py:21:21:21:33 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
+| ldap3_bad.py:30:17:30:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | ldap3_bad.py:30:17:30:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | ldap3_bad.py:30:17:30:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | ldap3_bad.py:30:17:30:34 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
@@ -57,6 +59,7 @@ nodes
 | ldap3_bad.py:38:9:38:10 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
 | ldap3_bad.py:38:13:38:25 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
 | ldap_bad.py:13:17:13:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| ldap_bad.py:13:17:13:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | ldap_bad.py:13:17:13:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | ldap_bad.py:13:17:13:34 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | ldap_bad.py:14:21:14:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -65,6 +68,7 @@ nodes
 | ldap_bad.py:21:9:21:10 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
 | ldap_bad.py:21:33:21:45 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
 | ldap_bad.py:30:17:30:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| ldap_bad.py:30:17:30:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | ldap_bad.py:30:17:30:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | ldap_bad.py:30:17:30:34 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | ldap_bad.py:31:21:31:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -72,6 +76,7 @@ nodes
 | ldap_bad.py:31:21:31:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | ldap_bad.py:37:9:37:10 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
 | ldap_bad.py:37:33:37:45 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
+| ldap_bad.py:47:17:47:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | ldap_bad.py:47:17:47:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | ldap_bad.py:47:17:47:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | ldap_bad.py:47:17:47:34 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
