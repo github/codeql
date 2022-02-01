@@ -35,7 +35,7 @@ private module Ldap3 {
   }
 
   /**
-   * A class to find calls to `ldap3.utils.dn.escape_rdn`.
+   * A call to `ldap3.utils.dn.escape_rdn`.
    *
    * See https://github.com/cannatag/ldap3/blob/4d33166f0869b929f59c6e6825a1b9505eb99967/ldap3/utils/dn.py#L390
    */
@@ -57,7 +57,7 @@ private module Ldap3 {
   }
 
   /**
-   * A class to find calls to `ldap3.utils.conv.escape_filter_chars`.
+   * A call to `ldap3.utils.conv.escape_filter_chars`.
    *
    * See https://github.com/cannatag/ldap3/blob/4d33166f0869b929f59c6e6825a1b9505eb99967/ldap3/utils/conv.py#L91
    */

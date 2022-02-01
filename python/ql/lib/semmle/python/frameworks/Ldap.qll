@@ -15,22 +15,17 @@ private import semmle.python.ApiGraphs
  */
 private module Ldap {
   /**
-   * The name of an `ldap` method used to execute a query.
+   * The execution of an `ldap` query.
    *
    * See https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html#functions
    */
-  private string ldapQueryMethodName() {
-    result in ["search", "search_s", "search_st", "search_ext", "search_ext_s"]
-  }
-
-  /** The execution of an `ldap` query. */
   private class LdapQueryExecution extends DataFlow::CallCfgNode, LdapExecution::Range {
     LdapQueryExecution() {
       this =
         API::moduleImport("ldap")
             .getMember("initialize")
             .getReturn()
-            .getMember(ldapQueryMethodName())
+            .getMember(["search", "search_s", "search_st", "search_ext", "search_ext_s"])
             .getACall()
     }
 
@@ -42,7 +37,7 @@ private module Ldap {
   }
 
   /**
-   * A class to find calls to `ldap.dn.escape_dn_chars`.
+   * A call to `ldap.dn.escape_dn_chars`.
    *
    * See https://github.com/python-ldap/python-ldap/blob/7ce471e238cdd9a4dd8d17baccd1c9e05e6f894a/Lib/ldap/dn.py#L17
    */
@@ -59,7 +54,7 @@ private module Ldap {
   }
 
   /**
-   * A class to find calls to `ldap.filter.escape_filter_chars`.
+   * A call to `ldap.filter.escape_filter_chars`.
    *
    * See https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap-filter.html#ldap.filter.escape_filter_chars
    */
