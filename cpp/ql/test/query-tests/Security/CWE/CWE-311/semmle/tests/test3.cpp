@@ -449,5 +449,5 @@ void test_tty()
 	int f;
 
 	f = open("/dev/tty", val());
-	recv(f, password, 256, val()); // GOOD: from terminal [FALSE POSITIVE]
+	recv(f, password, 256, val()); // GOOD: from terminal
 }

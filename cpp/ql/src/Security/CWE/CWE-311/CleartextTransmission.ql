@@ -16,6 +16,7 @@ import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.dataflow.TaintTracking
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.models.interfaces.FlowSource
+import semmle.code.cpp.commons.File
 import DataFlow::PathGraph
 
 /**
@@ -142,6 +143,13 @@ abstract class NetworkSendRecv extends FunctionCall {
         exists(VariableAccess v |
           v.getTarget().getName() = ["stdin", "stdout", "stderr"] and
           g = globalValueNumber(v)
+        )
+        or
+        // open of `"/dev/tty"`
+        exists(FunctionCall fc |
+          fopenCall(fc) and
+          fc.getAnArgument().getValue() = "/dev/tty" and
+          g = globalValueNumber(fc)
         )
         // (this is not exhaustive)
       )
