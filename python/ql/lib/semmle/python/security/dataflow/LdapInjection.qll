@@ -1,5 +1,9 @@
 /**
- * Provides a taint-tracking configuration for detecting LDAP injection vulnerabilities
+ * Provides taint-tracking configurations for detecting LDAP injection vulnerabilities
+ *
+ * Note, for performance reasons: only import this file if
+ * `LdapInjection::Configuration` is needed, otherwise
+ * `LdapInjectionCustomizations` should be imported instead.
  */
 
 import python
@@ -8,9 +12,20 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 
+/**
+ * Provides aint-tracking configurations for detecting LDAP injection vulnerabilities.class
+ *
+ * Two configurations are provided. One is for detecting LDAP injection
+ * via the distinguished name (DN). The other is for detecting LDAP injection
+ * via the filter. These require different escapings.
+ */
 module LdapInjection {
   import LdapInjectionCustomizations::LdapInjection
 
+  /**
+   * A taint-tracking configuration for detecting LDAP injection vulnerabilities
+   * via the distinguished name (DN) parameter of an LDAP search.
+   */
   class DnConfiguration extends TaintTracking::Configuration {
     DnConfiguration() { this = "LdapDnInjection" }
 
@@ -25,6 +40,10 @@ module LdapInjection {
     }
   }
 
+  /**
+   * A taint-tracking configuration for detecting LDAP injection vulnerabilities
+   * via the filter parameter of an LDAP search.
+   */
   class FilterConfiguration extends TaintTracking::Configuration {
     FilterConfiguration() { this = "LdapFilterInjection" }
 
@@ -41,6 +60,7 @@ module LdapInjection {
 
   import DataFlow::PathGraph
 
+  /** Holds if there is an LDAP injection from `source` to `sink` */
   predicate ldapInjection(DataFlow::PathNode source, DataFlow::PathNode sink) {
     any(DnConfiguration dnConfig).hasFlowPath(source, sink)
     or
