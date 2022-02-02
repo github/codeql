@@ -90,7 +90,9 @@ module Public {
     predicate contains(SummaryComponent c) { c = this.drop(_).head() }
 
     /** Gets the bottom element of this stack. */
-    SummaryComponent bottom() { result = this.drop(this.length() - 1).head() }
+    SummaryComponent bottom() {
+      this = TSingletonSummaryComponentStack(result) or result = this.tail().bottom()
+    }
 
     /** Gets a textual representation of this stack. */
     string toString() {
