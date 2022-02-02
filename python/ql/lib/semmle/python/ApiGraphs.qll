@@ -388,14 +388,13 @@ module API {
         // The `builtins` module should always be implicitly available
         name = "builtins"
       } or
-      MkModuleExport(Module mod) or
       /** A use of an API member at the node `nd`. */
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) }
 
     class TUse = MkModuleImport or MkUse;
 
-    class TDef = MkDef or MkModuleExport;
+    class TDef = MkDef;
 
     /**
      * Holds if the dotted module name `sub` refers to the `member` member of `base`.
@@ -455,12 +454,6 @@ module API {
      */
     cached
     predicate rhs(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
-      exists(Module mod, string prop |
-        base = MkModuleExport(mod) and
-        exports(mod, prop, rhs) and
-        lbl = Label::member(prop)
-      )
-      or
       exists(DataFlow::Node def, DataFlow::LocalSourceNode pred |
         rhs(base, def) and pred = trackDefNode(def)
       |
@@ -649,12 +642,7 @@ module API {
      * Holds if `rhs` is the right-hand side of a definition of node `nd`.
      */
     cached
-    predicate rhs(TApiNode nd, DataFlow::Node rhs) {
-      // TODO: There are no "default" exports in python, right? E.g. in `import foo`, `foo` cannot be a function.
-      // exists(string m | nd = MkModuleExport(m) | exports(m, rhs))
-      // or
-      nd = MkDef(rhs)
-    }
+    predicate rhs(TApiNode nd, DataFlow::Node rhs) { nd = MkDef(rhs) }
 
     /**
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
@@ -665,12 +653,9 @@ module API {
       exists(string m |
         pred = MkRoot() and
         lbl = Label::mod(m) and
+        succ = MkModuleImport(m) and
         // Only allow undotted names to count as base modules.
         not m.matches("%.%")
-      |
-        succ = MkModuleImport(m)
-        or
-        succ = MkModuleExport(any(Module mod | mod.getName() = m and mod.isPackage()))
       )
       or
       /* Step from the dotted module name `foo.bar` to `foo.bar.baz` along an edge labeled `baz` */
@@ -683,14 +668,6 @@ module API {
       exists(DataFlow::LocalSourceNode ref |
         use(pred, lbl, ref) and
         succ = MkUse(ref)
-      )
-      or
-      exists(Module parentMod, Module childMod, string edge |
-        pred = MkModuleExport(parentMod) and
-        succ = MkModuleExport(childMod) and
-        // TODO: __init__.py shows up here, maybe add some shortcut. Example code: https://stackoverflow.com/questions/38927979/default-export-in-python-3
-        parentMod.getSubModule(edge) = childMod and
-        lbl = Label::member(edge)
       )
       or
       exists(DataFlow::Node rhs |
@@ -725,11 +702,7 @@ module API {
 
       newtype TLabel =
         MkLabelModule(string mod) {
-          (
-            exists(Impl::MkModuleImport(mod))
-            or
-            exists(Module m | exists(Impl::MkModuleExport(m)) | mod = m.getName())
-          ) and
+          exists(Impl::MkModuleImport(mod)) and
           not mod.matches("%.%") // only top level modules count as base modules
         } or
         MkLabelMember(string member) {
@@ -737,8 +710,6 @@ module API {
           exists(Builtins::likelyBuiltin(member)) or
           ImportStar::namePossiblyDefinedInImportStar(_, member, _) or
           Impl::prefix_member(_, member, _) or
-          exists(any(Module mod).getSubModule(member)) or
-          exports(_, member, _) or
           member = any(Dict d).getAnItem().(KeyValuePair).getKey().(StrConst).getS()
         } or
         MkLabelUnknownMember() or
@@ -865,23 +836,4 @@ module API {
     /** Gets the `await` edge label. */
     LabelAwait await() { any() }
   }
-}
-
-/** Holds if module `mod` exports `rhs` under the name `prop`. */
-private predicate exports(Module mod, string prop, DataFlow::Node rhs) {
-  exists(Assign assign |
-    assign = mod.getAStmt() and
-    rhs.asExpr() = assign.getValue() and
-    exists(Variable v | assign.defines(v) and prop = v.getId())
-  )
-  or
-  // `from foo import *`, just forward directly.
-  exists(ImportStar star, Module subMod |
-    star.getEnclosingModule() = mod and
-    mod.getPackage().getName() + "." + star.getImportedModuleName() = subMod.getName() and
-    exports(subMod, prop, rhs)
-  )
-  // TODO: There should be a better way to do this, I'm just missing it.
-  // TODO: named imports, which should probably be an edge, unless there is some way imports are just magically "handled".
-  // TODO: use this predicate with __init__.py?
 }
