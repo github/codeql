@@ -94,7 +94,7 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
   ActionDispatch::Route getARoute() {
     result.getController() + "_controller" =
       ActionDispatch::underscore(namespaceDeclaration(controllerClass)) and
-    this.getName() = result.getAction()
+    isActionControllerMethod(this, result.getAction(), controllerClass)
   }
 }
 
