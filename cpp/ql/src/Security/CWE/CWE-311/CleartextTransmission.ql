@@ -27,6 +27,7 @@ class SensitiveNode extends DataFlow::Node {
     this.asExpr() = any(SensitiveVariable sv).getInitializer().getExpr() or
     this.asExpr().(VariableAccess).getTarget() =
       any(SensitiveVariable sv).(GlobalOrNamespaceVariable) or
+    this.asExpr().(VariableAccess).getTarget() = any(SensitiveVariable v | v instanceof Field) or
     this.asUninitialized() instanceof SensitiveVariable or
     this.asParameter() instanceof SensitiveVariable or
     this.asExpr().(FunctionCall).getTarget() instanceof SensitiveFunction
