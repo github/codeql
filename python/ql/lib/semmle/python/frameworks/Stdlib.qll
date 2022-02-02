@@ -264,7 +264,7 @@ module Stdlib {
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** A direct instantiation of `logging.Logger`. */
-    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+    private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
       ClassInstantiation() {
         this = subclassRef().getACall()
         or
