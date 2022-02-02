@@ -495,7 +495,7 @@ class RegExpEscape extends RegExpNormalChar {
   /**
    * Holds if this is a unicode escape.
    */
-  private predicate isUnicode() { this.getText().prefix(2) = "\\u" }
+  private predicate isUnicode() { this.getText().matches("\\u%") }
 
   /**
    * Gets the unicode char for this escape.
