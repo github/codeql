@@ -189,8 +189,8 @@ class RegExpTerm extends RegExpParent {
   ) {
     exists(int re_start, int re_end |
       re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, re_end) and
-      startcolumn = re_start + start + 4 and
-      endcolumn = re_start + end + 3
+      startcolumn = re_start + start + 1 and
+      endcolumn = re_start + end
     )
   }
 
