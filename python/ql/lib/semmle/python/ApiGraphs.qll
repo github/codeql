@@ -488,28 +488,6 @@ module API {
         )
       )
       or
-      // or
-      // special case: from `require('m')` to an export of `prop` in `m`
-      // TODO: Figure out if this is needed.
-      /*
-       * exists(Import imp, Module m, string prop |
-       *          pred = imp.getImportedModuleNode() and
-       *          m = imp.getImportedModule() and
-       *          lbl = Label::member(prop) and
-       *          rhs = m.getAnExportedValue(prop)
-       *        )
-       *        or
-       */
-
-      /*
-       * or // TODO:
-       *      exists(DataFlow::FunctionNode f |
-       *        base = MkAsyncFuncResult(f) and
-       *        lbl = Label::promised() and
-       *        rhs = f.getAReturn()
-       *      )
-       */
-
       argumentPassing(base, lbl, rhs)
       or
       exists(DataFlow::LocalSourceNode src, DataFlow::AttrWrite pw |
@@ -653,17 +631,6 @@ module API {
       rhs(_, nd) and
       result = nd.getALocalSource()
       or
-      // TODO: Figure out module exports in Python, and if this thing is needed.
-      // additional backwards step from `require('m')` to `exports` or `module.exports` in m
-      /*
-       * exists(Import imp | imp.getImportedModuleNode() = trackDefNode(nd, t.continue()) |
-       *        result = DataFlow::exportsVarNode(imp.getImportedModule())
-       *        or
-       *        result = DataFlow::moduleVarNode(imp.getImportedModule()).getAPropertyRead("exports")
-       *      )
-       *      or
-       */
-
       exists(DataFlow::TypeBackTracker t2 | result = trackDefNode(nd, t2).backtrack(t2, t))
     }
 
@@ -721,7 +688,8 @@ module API {
       exists(Module parentMod, Module childMod, string edge |
         pred = MkModuleExport(parentMod) and
         succ = MkModuleExport(childMod) and
-        parentMod.getSubModule(edge) = childMod and // TODO: __init__.py shows up here, handle those in some other way. See e.g. https://stackoverflow.com/questions/38927979/default-export-in-python-3
+        // TODO: __init__.py shows up here, maybe add some shortcut. Example code: https://stackoverflow.com/questions/38927979/default-export-in-python-3
+        parentMod.getSubModule(edge) = childMod and
         lbl = Label::member(edge)
       )
       or
@@ -729,8 +697,6 @@ module API {
         rhs(pred, lbl, rhs) and
         succ = MkDef(rhs)
       )
-      // TODO: Compare with JS, check that I'm not missing stuff
-      // TODO: Port MkAsyncFuncResult?
     }
 
     /**
@@ -915,6 +881,7 @@ private predicate exports(Module mod, string prop, DataFlow::Node rhs) {
     mod.getPackage().getName() + "." + star.getImportedModuleName() = subMod.getName() and
     exports(subMod, prop, rhs)
   )
-  // TODO: named imports (somehow)
+  // TODO: There should be a better way to do this, I'm just missing it.
+  // TODO: named imports, which should probably be an edge, unless there is some way imports are just magically "handled".
   // TODO: use this predicate with __init__.py?
 }
