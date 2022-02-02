@@ -137,7 +137,13 @@ abstract class NetworkSendRecv extends FunctionCall {
           forex(Expr arg | arg = fc.getAnArgument() | arg instanceof Literal) and
           g = globalValueNumber(fc)
         )
-        // (this is far from exhaustive)
+        or
+        // variable called `stdin`, `stdout` or `stderr`
+        exists(VariableAccess v |
+          v.getTarget().getName() = ["stdin", "stdout", "stderr"] and
+          g = globalValueNumber(v)
+        )
+        // (this is not exhaustive)
       )
     )
   }

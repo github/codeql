@@ -90,8 +90,6 @@ edges
 | test3.cpp:398:18:398:25 | password | test3.cpp:400:16:400:23 | password |
 | test3.cpp:398:18:398:25 | password | test3.cpp:400:33:400:40 | password |
 | test3.cpp:429:7:429:14 | password | test3.cpp:431:8:431:15 | password |
-| test3.cpp:436:7:436:14 | password | test3.cpp:439:8:439:15 | password |
-| test3.cpp:436:7:436:14 | password | test3.cpp:440:8:440:15 | password |
 | test3.cpp:448:7:448:14 | password | test3.cpp:452:10:452:17 | password |
 | test.cpp:41:23:41:43 | cleartext password! | test.cpp:48:21:48:27 | call to encrypt |
 | test.cpp:41:23:41:43 | cleartext password! | test.cpp:48:29:48:39 | thePassword |
@@ -214,9 +212,6 @@ nodes
 | test3.cpp:400:33:400:40 | password | semmle.label | password |
 | test3.cpp:429:7:429:14 | password | semmle.label | password |
 | test3.cpp:431:8:431:15 | password | semmle.label | password |
-| test3.cpp:436:7:436:14 | password | semmle.label | password |
-| test3.cpp:439:8:439:15 | password | semmle.label | password |
-| test3.cpp:440:8:440:15 | password | semmle.label | password |
 | test3.cpp:448:7:448:14 | password | semmle.label | password |
 | test3.cpp:452:10:452:17 | password | semmle.label | password |
 | test.cpp:41:23:41:43 | cleartext password! | semmle.label | cleartext password! |
@@ -250,6 +245,4 @@ subpaths
 | test3.cpp:341:4:341:7 | call to recv | test3.cpp:339:9:339:16 | password | test3.cpp:341:16:341:23 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:339:9:339:16 | password | password |
 | test3.cpp:388:3:388:6 | call to recv | test3.cpp:386:8:386:15 | password | test3.cpp:388:15:388:22 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:386:8:386:15 | password | password |
 | test3.cpp:431:2:431:6 | call to fgets | test3.cpp:429:7:429:14 | password | test3.cpp:431:8:431:15 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:429:7:429:14 | password | password |
-| test3.cpp:439:2:439:6 | call to fgets | test3.cpp:436:7:436:14 | password | test3.cpp:439:8:439:15 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:436:7:436:14 | password | password |
-| test3.cpp:440:2:440:6 | call to fgets | test3.cpp:436:7:436:14 | password | test3.cpp:440:8:440:15 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:436:7:436:14 | password | password |
 | test3.cpp:452:2:452:5 | call to recv | test3.cpp:448:7:448:14 | password | test3.cpp:452:10:452:17 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:448:7:448:14 | password | password |

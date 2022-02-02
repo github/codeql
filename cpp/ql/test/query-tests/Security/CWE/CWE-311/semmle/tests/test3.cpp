@@ -436,8 +436,8 @@ void test_stdin()
 	char password[128];
 	FILE *f = stdin;
 
-	fgets(password, 128, stdin); // GOOD: from standard input [FALSE POSITIVE]
-	fgets(password, 128, f); // GOOD: from standard input [FALSE POSITIVE]
+	fgets(password, 128, stdin); // GOOD: from standard input
+	fgets(password, 128, f); // GOOD: from standard input
 	test_stdin_param(stdin);
 }
 
