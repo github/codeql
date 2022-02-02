@@ -30,7 +30,12 @@ module InsecureTemporaryFile {
     string methodName;
 
     OpenFileCall() {
-      methodName = ["open", "openSync", "writeFile", "writeFileSync"] and
+      methodName =
+        [
+          "open", "openSync", "writeFile", "writeFileSync", "writeJson", "writeJSON",
+          "writeJsonSync", "writeJSONSync", "outputJson", "outputJSON", "outputJsonSync",
+          "outputJSONSync", "outputFile", "outputFileSync"
+        ] and
       this = NodeJSLib::FS::moduleMember(methodName).getACall()
     }
 
@@ -40,7 +45,7 @@ module InsecureTemporaryFile {
       methodName = ["open", "openSync"] and
       result = this.getArgument(2)
       or
-      methodName = ["writeFile", "writeFileSync"] and
+      not methodName = ["open", "openSync"] and
       result = this.getOptionArgument(2, "mode")
     }
   }
@@ -88,7 +93,8 @@ module InsecureTemporaryFile {
         not this = root.getFirstLeaf()
       )
       or
-      exists(DataFlow::CallNode join | join = DataFlow::moduleMember("path", "join").getACall() |
+      exists(DataFlow::CallNode join |
+        join = DataFlow::moduleMember("path", "join").getACall() and
         this = join.getArgument([1 .. join.getNumArgument() - 1])
       )
     }
