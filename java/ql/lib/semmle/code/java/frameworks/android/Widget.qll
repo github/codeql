@@ -6,7 +6,7 @@ import semmle.code.java.dataflow.FlowSources
 
 private class AndroidWidgetSourceModels extends SourceModelCsv {
   override predicate row(string row) {
-    row = ["android.widget;EditText;true;getText;;;ReturnValue;android-widget"]
+    row = "android.widget;EditText;true;getText;;;ReturnValue;android-widget"
   }
 }
 
@@ -18,6 +18,6 @@ private class DefaultAndroidWidgetSources extends RemoteFlowSource {
 
 private class AndroidWidgetSummaryModels extends SummaryModelCsv {
   override predicate row(string row) {
-    row = ["android.widget;EditText;true;getText;;;Argument[-1];ReturnValue;taint"]
+    row = "android.widget;EditText;true;getText;;;Argument[-1];ReturnValue;taint"
   }
 }
