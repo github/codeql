@@ -703,7 +703,7 @@ module ActionDispatch {
     }
   }
 
-  import Cached
+  private import Cached
 
   /**
    * This module contains the IPA types backing `RouteBlock` and `Route`, cached for performance.
