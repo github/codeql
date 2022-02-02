@@ -711,15 +711,11 @@ class ClassObject extends Class {
 }
 
 /** A Kotlin `companion object`. */
-class ClassCompanionObject extends Class {
-  ClassCompanionObject() {
-    type_companion_object(_, _, this)
-  }
+class CompanionObject extends Class {
+  CompanionObject() { type_companion_object(_, _, this) }
 
   /** Gets the instance variable that implements this `companion object`. */
-  Field getInstance() {
-    type_companion_object(_, result, this)
-  }
+  Field getInstance() { type_companion_object(_, result, this) }
 }
 
 /**
@@ -961,7 +957,7 @@ class ClassOrInterface extends RefType, @classorinterface {
   predicate isSealed() { exists(this.getAPermittedSubtype()) }
 
   /** Get the companion object of this class or interface, if any. */
-  ClassCompanionObject getCompanionObject() { type_companion_object(this, _, result) }
+  CompanionObject getCompanionObject() { type_companion_object(this, _, result) }
 }
 
 private string getAPublicObjectMethodSignature() {
