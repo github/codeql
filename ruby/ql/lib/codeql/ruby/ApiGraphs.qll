@@ -88,12 +88,14 @@ module API {
      * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
      * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
      */
-    Node getInstance() { result = this.getASuccessor(Label::instance()) }
+    Node getInstance() { result = this.getASubclass().getASuccessor(Label::instance()) }
 
     /**
      * Gets a node representing the result of calling a method on the receiver represented by this node.
      */
-    Node getReturn(string method) { result = this.getASuccessor(Label::return(method)) }
+    Node getReturn(string method) {
+      result = this.getASubclass().getASuccessor(Label::return(method))
+    }
 
     /**
      * Gets a `new` call to the function represented by this API component.
