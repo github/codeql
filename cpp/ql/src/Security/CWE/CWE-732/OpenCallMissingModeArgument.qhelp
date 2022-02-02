@@ -5,15 +5,15 @@
 
 <overview>
 <p>
-When opening a file with the <code>O_CREAT</code> flag, the <code>mode</code> must be supplied. If the
-<code>mode</code> argument is omitted, some arbitrary bytes from the stack will be used as the file mode.
-This leaks some bits from the stack into the permissions of the file.
+When opening a file with the <code>O_CREAT</code> or <code>O_TMPFILE</code> flag, the <code>mode</code> must
+be supplied. If the <code>mode</code> argument is omitted, some arbitrary bytes from the stack will be used
+as the file mode. This leaks some bits from the stack into the permissions of the file.
 </p>
 </overview>
 
 <recommendation>
 <p>
-The <code>mode</code> must be supplied when <code>O_CREAT</code> is specified.
+The <code>mode</code> must be supplied when <code>O_CREAT</code> or <code>O_TMPFILE</code> is specified.
 </p>
 </recommendation>
 

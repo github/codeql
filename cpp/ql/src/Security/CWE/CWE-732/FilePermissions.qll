@@ -1,6 +1,29 @@
 import cpp
 import semmle.code.cpp.commons.unix.Constants
 
+bindingset[input]
+int parseHex(string input) {
+  input.prefix(2) = "0x" and
+  result =
+    strictsum(int ix |
+      ix in [2 .. input.length()]
+    |
+      16.pow(input.length() - (ix + 1)) * "0123456789abcdef".indexOf(input.charAt(ix).toLowerCase())
+    )
+}
+
+int o_creat_new() {
+  exists(Macro m | m.getName() = "O_CREAT" | result = parseHex(m.getBody()))
+  or
+  exists(Macro m | m.getName() = "O_CREAT" | result = parseOctal(m.getBody()))
+}
+
+int o_tmpfile() {
+  exists(Macro m | m.getName() = "O_TMPFILE" | result = parseHex(m.getBody()))
+  or
+  exists(Macro m | m.getName() = "O_TMPFILE" | result = parseOctal(m.getBody()))
+}
+
 bindingset[n, digit]
 private string octalDigit(int n, int digit) {
   result = n.bitShiftRight(digit * 3).bitAnd(7).toString()
@@ -90,7 +113,9 @@ abstract class FileCreationWithOptionalModeExpr extends FileCreationExpr {
 class OpenCreationExpr extends FileCreationWithOptionalModeExpr {
   OpenCreationExpr() {
     this.getTarget().getName() = ["open", "_open", "_wopen"] and
-    sets(this.getArgument(1).getValue().toInt(), o_creat())
+    exists(int flag | flag = this.getArgument(1).getValue().toInt() |
+      sets(flag, o_creat_new()) or sets(flag, o_tmpfile())
+    )
   }
 
   override Expr getPath() { result = this.getArgument(0) }
@@ -117,7 +142,9 @@ class CreatCreationExpr extends FileCreationExpr {
 class OpenatCreationExpr extends FileCreationWithOptionalModeExpr {
   OpenatCreationExpr() {
     this.getTarget().getName() = "openat" and
-    sets(this.getArgument(2).getValue().toInt(), o_creat())
+    exists(int flag | flag = this.getArgument(2).getValue().toInt() |
+      sets(flag, o_creat_new()) or sets(flag, o_tmpfile())
+    )
   }
 
   override Expr getPath() { result = this.getArgument(1) }
