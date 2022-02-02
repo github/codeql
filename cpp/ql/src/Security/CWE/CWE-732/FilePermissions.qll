@@ -3,7 +3,7 @@ import semmle.code.cpp.commons.unix.Constants
 
 bindingset[input]
 int parseHex(string input) {
-  input.prefix(2) = "0x" and
+  input.matches("0x%") and
   result =
     strictsum(int ix |
       ix in [2 .. input.length()]
