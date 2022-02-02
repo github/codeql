@@ -47,7 +47,7 @@ class SafeExternalAPI extends Unit {
 
 /** The default set of "safe" external APIs. */
 private class DefaultSafeExternalAPI extends SafeExternalAPI {
-  override DataFlowPrivate::DataFlowCallable getSafeCallable() {
+  override DataFlowPrivate::NonLibraryDataFlowCallable getSafeCallable() {
     exists(CallableValue cv | cv = result.getCallableValue() |
       cv = Value::named(["len", "isinstance", "getattr", "hasattr"])
       or
@@ -62,8 +62,8 @@ private class DefaultSafeExternalAPI extends SafeExternalAPI {
 
 /** A node representing data being passed to an external API through a call. */
 class ExternalAPIDataNode extends DataFlow::Node {
-  DataFlowPrivate::DataFlowCall call;
-  DataFlowPrivate::DataFlowCallable callable;
+  DataFlowPrivate::DataFlowSourceCall call;
+  DataFlowPrivate::NonLibraryDataFlowCallable callable;
   int i;
 
   ExternalAPIDataNode() {
@@ -118,7 +118,7 @@ class UntrustedExternalAPIDataNode extends ExternalAPIDataNode {
 }
 
 private newtype TExternalAPI =
-  TExternalAPIParameter(DataFlowPrivate::DataFlowCallable callable, int index) {
+  TExternalAPIParameter(DataFlowPrivate::NonLibraryDataFlowCallable callable, int index) {
     exists(UntrustedExternalAPIDataNode n |
       callable = n.getCallable() and
       index = n.getIndex()
@@ -140,7 +140,7 @@ class ExternalAPIUsedWithUntrustedData extends TExternalAPI {
   /** Gets a textual representation of this element. */
   string toString() {
     exists(
-      DataFlowPrivate::DataFlowCallable callable, int index, string callableString,
+      DataFlowPrivate::NonLibraryDataFlowCallable callable, int index, string callableString,
       string indexString
     |
       this = TExternalAPIParameter(callable, index) and
