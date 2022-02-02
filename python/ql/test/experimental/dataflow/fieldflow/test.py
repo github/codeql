@@ -95,7 +95,7 @@ def test_direct_if_always_assign(cond = True):
 def test_getattr():
     myobj = MyObj(NONSOURCE)
     myobj.foo = SOURCE
-    SINK(getattr(myobj, "foo")) # $ MISSING: flow
+    SINK(getattr(myobj, "foo")) # $ flow="SOURCE, l:-1 -> getattr(..)"
 
 
 def test_setattr():
@@ -108,6 +108,13 @@ def test_setattr_getattr():
     myobj = MyObj(NONSOURCE)
     setattr(myobj, "foo", SOURCE)
     SINK(getattr(myobj, "foo")) # $ MISSING: flow
+
+
+def test_setattr_getattr_overwrite():
+    myobj = MyObj(NONSOURCE)
+    setattr(myobj, "foo", SOURCE)
+    setattr(myobj, "foo", NONSOURCE)
+    SINK_F(getattr(myobj, "foo"))
 
 
 def test_constructor_assign():

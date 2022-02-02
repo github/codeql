@@ -1067,19 +1067,18 @@ predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
 }
 
 /**
- * Holds if `nodeFrom` flows into an attribute (corresponding to `c`) of `nodeTo` via an attribute assignment.
+ * Holds if `nodeFrom` flows into the attribute `c` of `nodeTo` via an attribute assignment.
  *
  * For example, in
  * ```python
  * obj.foo = x
  * ```
- * data flows from `x` to (the post-update node for) `obj` via assignment to `foo`.
+ * data flows from `x` to the attribute `foo` of  (the post-update node for) `obj`.
  */
-predicate attributeStoreStep(CfgNode nodeFrom, AttributeContent c, PostUpdateNode nodeTo) {
-  exists(AttrNode attr |
-    nodeFrom.asCfgNode() = attr.(DefinitionNode).getValue() and
-    attr.getName() = c.getAttribute() and
-    attr.getObject() = nodeTo.getPreUpdateNode().(CfgNode).getNode()
+predicate attributeStoreStep(Node nodeFrom, AttributeContent c, PostUpdateNode nodeTo) {
+  exists(AttrWrite write |
+    write.accesses(nodeTo.getPreUpdateNode(), c.getAttribute()) and
+    nodeFrom = write.getValue()
   )
 }
 
@@ -1923,21 +1922,16 @@ pragma[noinline]
 TupleElementContent small_tuple() { result.getIndex() <= 7 }
 
 /**
- * Holds if `nodeTo` is a read of an attribute (corresponding to `c`) of the object in `nodeFrom`.
+ * Holds if `nodeTo` is a read of the attribute `c` of the object `nodeFrom`.
  *
- * For example, in
+ * For example
  * ```python
  * obj.foo
  * ```
- * data flows from `obj` to `obj.foo` via a read from `foo`.
+ * is a read of the attribute `foo` from the object `obj`.
  */
-predicate attributeReadStep(CfgNode nodeFrom, AttributeContent c, CfgNode nodeTo) {
-  exists(AttrNode attr |
-    nodeFrom.asCfgNode() = attr.getObject() and
-    nodeTo.asCfgNode() = attr and
-    attr.getName() = c.getAttribute() and
-    attr.isLoad()
-  )
+predicate attributeReadStep(Node nodeFrom, AttributeContent c, AttrRead nodeTo) {
+  nodeTo.accesses(nodeFrom, c.getAttribute())
 }
 
 /**
