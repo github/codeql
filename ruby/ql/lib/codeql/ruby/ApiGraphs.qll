@@ -455,7 +455,6 @@ module API {
       param instanceof BlockParameter and
       result = Label::blockParameter()
       or
-      // TODO: the index can be offset by preceding non-positional parameters; translate correctly
       (
         param instanceof SimpleParameter
         or
