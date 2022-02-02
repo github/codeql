@@ -12,9 +12,6 @@ on:
     paths:
       - "javascript/ql/experimental/adaptivethreatmodeling/**"
       - .github/workflows/js-ml-tests.yml
-    branches:
-      - main
-      - "rc/*"
 
 defaults:
   run:
