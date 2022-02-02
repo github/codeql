@@ -68,11 +68,7 @@ module UrlRedirect {
           // Otherwise, we have to rely on a heuristic to filter out invulnerable handlers.
           // We exclude any handlers with names containing create/update/destroy, as these are not likely to handle GET requests.
           not exists(method.(ActionControllerActionMethod).getARoute()) and
-          not this.asExpr()
-              .getExpr()
-              .getEnclosingMethod()
-              .getName()
-              .regexpMatch(".*(create|update|destroy).*")
+          not method.getName().regexpMatch(".*(create|update|destroy).*")
         )
       )
     }
