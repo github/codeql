@@ -1,0 +1,5 @@
+name: codeql/python-consistency-queries
+groups: [python, consistency-queries]
+dependencies:
+    codeql/python-all: "*"
+extractor: python
