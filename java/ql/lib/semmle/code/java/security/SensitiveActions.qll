@@ -14,7 +14,11 @@
 import java
 
 private string suspicious() {
-  result = ["%password%", "%passwd%", "%account%", "%accnt%", "%trusted%"]
+  result =
+    [
+      "%password%", "%passwd%", "pwd", "%account%", "%accnt%", "%trusted%", "%refresh%token%",
+      "%secret%token"
+    ]
 }
 
 private string nonSuspicious() {

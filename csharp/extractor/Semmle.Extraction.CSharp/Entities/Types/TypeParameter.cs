@@ -1,7 +1,5 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.Entities;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -21,33 +19,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            var constraints = new TypeParameterConstraints(Context);
-            trapFile.type_parameter_constraints(constraints, this);
-
-            if (Symbol.HasReferenceTypeConstraint)
-                trapFile.general_type_parameter_constraints(constraints, 1);
-
-            if (Symbol.HasValueTypeConstraint)
-                trapFile.general_type_parameter_constraints(constraints, 2);
-
-            if (Symbol.HasConstructorConstraint)
-                trapFile.general_type_parameter_constraints(constraints, 3);
-
-            if (Symbol.HasUnmanagedTypeConstraint)
-                trapFile.general_type_parameter_constraints(constraints, 4);
-
-            if (Symbol.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated)
-                trapFile.general_type_parameter_constraints(constraints, 5);
-
-            foreach (var abase in Symbol.GetAnnotatedTypeConstraints())
-            {
-                var t = Create(Context, abase.Symbol);
-                trapFile.specific_type_parameter_constraints(constraints, t.TypeRef);
-                if (!abase.HasObliviousNullability())
-                    trapFile.specific_type_parameter_nullability(constraints, t.TypeRef, NullabilityEntity.Create(Context, Nullability.Create(abase)));
-            }
-
             trapFile.types(this, Kinds.TypeKind.TYPE_PARAMETER, Symbol.Name);
+
+            TypeParameterConstraints.Create(Context, this);
 
             var parentNs = Namespace.Create(Context, Symbol.TypeParameterKind == TypeParameterKind.Method ? Context.Compilation.GlobalNamespace : Symbol.ContainingNamespace);
             trapFile.parent_namespace(this, parentNs);

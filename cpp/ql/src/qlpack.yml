@@ -1,6 +1,8 @@
 name: codeql/cpp-queries
 version: 0.0.8-dev
-groups: cpp
+groups: 
+  - cpp
+  - queries
 dependencies:
     codeql/cpp-all: "*"
     codeql/suite-helpers: "*"
