@@ -2159,10 +2159,9 @@ open class KotlinFileExtractor(
         callable: Label<out DbCallable>
     ) {
         with("function reference", functionReferenceExpr) {
-            var target = functionReferenceExpr.reflectionTarget
-            if (target == null) {
+            val target = functionReferenceExpr.reflectionTarget ?: run {
                 logger.warnElement(Severity.ErrorSevere, "Expected to find reflection target for function reference. Using underlying symbol instead.", functionReferenceExpr)
-                target = functionReferenceExpr.symbol
+                functionReferenceExpr.symbol
             }
 
             /*
