@@ -12,7 +12,7 @@ case to remote code execution.
 <recommendation>
 <p>
 Use a well tested library like <a href="https://www.npmjs.com/package/tmp">tmp</a> 
-for creating temprary files. These libraries ensure both that the file is inaccesible
+for creating temporary files. These libraries ensure both that the file is inaccessible
 to other users and that the file does not already exist.
 </p>
 </recommendation>

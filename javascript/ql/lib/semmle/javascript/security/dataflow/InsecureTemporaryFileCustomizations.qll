@@ -71,7 +71,7 @@ module InsecureTemporaryFile {
     }
   }
 
-  /** A a string that references the global tmp dir. Seen as a source for insecure temporary file creation. */
+  /** A string that references the global tmp dir. Seen as a source for insecure temporary file creation. */
   class OSTempDir extends Source {
     OSTempDir() {
       this = DataFlow::moduleImport("os").getAMemberCall("tmpdir")
