@@ -421,3 +421,33 @@ void test_member_password()
 		decrypt_inplace(p.password); // proof that `password` was in fact encrypted
 	}
 }
+
+extern FILE *stdin;
+
+void test_stdin_param(FILE *stream)
+{
+	char password[128];
+
+	fgets(password, 128, stream); // GOOD: from standard input (see call below) [FALSE POSITIVE]
+}
+
+void test_stdin()
+{
+	char password[128];
+	FILE *f = stdin;
+
+	fgets(password, 128, stdin); // GOOD: from standard input [FALSE POSITIVE]
+	fgets(password, 128, f); // GOOD: from standard input [FALSE POSITIVE]
+	test_stdin_param(stdin);
+}
+
+int open(const char *filename, int b);
+
+void test_tty()
+{
+	char password[256];
+	int f;
+
+	f = open("/dev/tty", val());
+	recv(f, password, 256, val()); // GOOD: from terminal [FALSE POSITIVE]
+}
