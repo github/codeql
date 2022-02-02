@@ -21,7 +21,7 @@ abstract class RegexString extends Expr {
   private predicate char_set_end0(int pos) {
     this.nonEscapedCharAt(pos) = "]" and
     /* special case: `[]]` and `[^]]` are valid char classes.  */
-    not char_set_start0(_, pos - 1)
+    not this.char_set_start0(_, pos - 1)
   }
 
   /**
@@ -64,7 +64,7 @@ abstract class RegexString extends Expr {
       end = inner_end + 1 and
       inner_end > inner_start and
       this.char_set_end(inner_end) and
-      not exists(int mid | char_set_end(mid) | mid > inner_start and mid < inner_end)
+      not exists(int mid | this.char_set_end(mid) | mid > inner_start and mid < inner_end)
     )
   }
 
@@ -304,7 +304,7 @@ abstract class RegexString extends Expr {
       // 16-bit hex value \uhhhh
       this.getChar(start + 1) = "u" and end = start + 6
       or
-      escapedBraces(start, end)
+      this.escapedBraces(start, end)
       or
       // Boundry matchers \b, \b{g}
       this.getChar(start + 1) = "b" and
