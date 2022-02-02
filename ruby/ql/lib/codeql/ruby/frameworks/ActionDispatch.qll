@@ -10,48 +10,6 @@ private import codeql.ruby.DataFlow
  * Models routing configuration specified using the `ActionDispatch` library, which is part of Rails.
  */
 module ActionDispatch {
-  private newtype TRouteBlock =
-    TTopLevelRouteBlock(MethodCall routes, MethodCall draw, Block b) {
-      routes.getMethodName() = "routes" and
-      draw.getMethodName() = "draw" and
-      draw.getReceiver() = routes and
-      draw.getBlock() = b
-    } or
-    // constraints(foo: /some_regex/) do
-    //   get "/posts/:foo", to "posts#something"
-    // end
-    TConstraintsRouteBlock(RouteBlock parent, MethodCall constraints, Block b) {
-      parent.getAStmt() = constraints and
-      constraints.getMethodName() = "constraints" and
-      constraints.getBlock() = b
-    } or
-    // scope(path: "/some_path", module: "some_module") do
-    //   get "/posts/:foo", to "posts#something"
-    // end
-    TScopeRouteBlock(RouteBlock parent, MethodCall scope, Block b) {
-      parent.getAStmt() = scope and scope.getMethodName() = "scope" and scope.getBlock() = b
-    } or
-    // resources :articles do
-    //   get "/comments", to "comments#index"
-    // end
-    TResourcesRouteBlock(RouteBlock parent, MethodCall resources, Block b) {
-      parent.getAStmt() = resources and
-      resources.getMethodName() = "resources" and
-      resources.getBlock() = b
-    } or
-    // A conditional statement guarding some routes.
-    // We ignore the condition and analyze both branches to obtain as
-    // much routing information as possible.
-    TConditionalRouteBlock(RouteBlock parent, ConditionalExpr e) { parent.getAStmt() = e } or
-    // namespace :admin do
-    //   resources :posts
-    // end
-    TNamespaceRouteBlock(RouteBlock parent, MethodCall namespace, Block b) {
-      parent.getAStmt() = namespace and
-      namespace.getMethodName() = "namespace" and
-      namespace.getBlock() = b
-    }
-
   /**
    * A block that defines some routes.
    * Route blocks can contribute to the path or controller namespace of their child routes.
@@ -313,39 +271,6 @@ module ActionDispatch {
 
     override Location getLocation() { result = call.getLocation() }
   }
-
-  /**
-   * A route configuration. See `Route` for more info
-   */
-  newtype TRoute =
-    /**
-     * See `ExplicitRoute`
-     */
-    TExplicitRoute(RouteBlock b, MethodCall m) {
-      b.getAStmt() = m and m.getMethodName() = anyHttpMethod()
-    } or
-    /**
-     * See `ResourcesRoute`
-     */
-    TResourcesRoute(RouteBlock b, MethodCall m, string action) {
-      b.getAStmt() = m and
-      m.getMethodName() = "resources" and
-      action in ["show", "index", "new", "edit", "create", "update", "destroy"] and
-      applyActionFilters(m, action)
-    } or
-    /**
-     * See `SingularResourceRoute`
-     */
-    TResourceRoute(RouteBlock b, MethodCall m, string action) {
-      b.getAStmt() = m and
-      m.getMethodName() = "resource" and
-      action in ["show", "new", "edit", "create", "update", "destroy"] and
-      applyActionFilters(m, action)
-    } or
-    /**
-     * See `MatchRoute`
-     */
-    TMatchRoute(RouteBlock b, MethodCall m) { b.getAStmt() = m and m.getMethodName() = "match" }
 
   /**
    * A route configuration. This defines a combination of HTTP method and URL
@@ -724,6 +649,91 @@ module ActionDispatch {
       result =
         extractAction(method.getArgument(0).(Pair).getValue().getConstantValue().getStringOrSymbol())
     }
+  }
+
+  import Cached
+
+  /**
+   * This module contains the IPA types backing `RouteBlock` and `Route`, cached for performance.
+   */
+  cached
+  private module Cached {
+    cached
+    newtype TRouteBlock =
+      TTopLevelRouteBlock(MethodCall routes, MethodCall draw, Block b) {
+        routes.getMethodName() = "routes" and
+        draw.getMethodName() = "draw" and
+        draw.getReceiver() = routes and
+        draw.getBlock() = b
+      } or
+      // constraints(foo: /some_regex/) do
+      //   get "/posts/:foo", to "posts#something"
+      // end
+      TConstraintsRouteBlock(RouteBlock parent, MethodCall constraints, Block b) {
+        parent.getAStmt() = constraints and
+        constraints.getMethodName() = "constraints" and
+        constraints.getBlock() = b
+      } or
+      // scope(path: "/some_path", module: "some_module") do
+      //   get "/posts/:foo", to "posts#something"
+      // end
+      TScopeRouteBlock(RouteBlock parent, MethodCall scope, Block b) {
+        parent.getAStmt() = scope and scope.getMethodName() = "scope" and scope.getBlock() = b
+      } or
+      // resources :articles do
+      //   get "/comments", to "comments#index"
+      // end
+      TResourcesRouteBlock(RouteBlock parent, MethodCall resources, Block b) {
+        parent.getAStmt() = resources and
+        resources.getMethodName() = "resources" and
+        resources.getBlock() = b
+      } or
+      // A conditional statement guarding some routes.
+      // We ignore the condition and analyze both branches to obtain as
+      // much routing information as possible.
+      TConditionalRouteBlock(RouteBlock parent, ConditionalExpr e) { parent.getAStmt() = e } or
+      // namespace :admin do
+      //   resources :posts
+      // end
+      TNamespaceRouteBlock(RouteBlock parent, MethodCall namespace, Block b) {
+        parent.getAStmt() = namespace and
+        namespace.getMethodName() = "namespace" and
+        namespace.getBlock() = b
+      }
+
+    /**
+     * A route configuration. See `Route` for more info
+     */
+    cached
+    newtype TRoute =
+      /**
+       * See `ExplicitRoute`
+       */
+      TExplicitRoute(RouteBlock b, MethodCall m) {
+        b.getAStmt() = m and m.getMethodName() = anyHttpMethod()
+      } or
+      /**
+       * See `ResourcesRoute`
+       */
+      TResourcesRoute(RouteBlock b, MethodCall m, string action) {
+        b.getAStmt() = m and
+        m.getMethodName() = "resources" and
+        action in ["show", "index", "new", "edit", "create", "update", "destroy"] and
+        applyActionFilters(m, action)
+      } or
+      /**
+       * See `SingularResourceRoute`
+       */
+      TResourceRoute(RouteBlock b, MethodCall m, string action) {
+        b.getAStmt() = m and
+        m.getMethodName() = "resource" and
+        action in ["show", "new", "edit", "create", "update", "destroy"] and
+        applyActionFilters(m, action)
+      } or
+      /**
+       * See `MatchRoute`
+       */
+      TMatchRoute(RouteBlock b, MethodCall m) { b.getAStmt() = m and m.getMethodName() = "match" }
   }
 
   /**
