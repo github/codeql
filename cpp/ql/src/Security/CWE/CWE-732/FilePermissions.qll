@@ -98,7 +98,7 @@ class OpenCreationExpr extends FileCreationWithOptionalModeExpr {
   override predicate hasModeArgument() { exists(this.getArgument(2)) }
 
   override int getMode() {
-    if hasModeArgument()
+    if this.hasModeArgument()
     then result = this.getArgument(2).getValue().toInt()
     else
       // assume anything is permitted
@@ -125,7 +125,7 @@ class OpenatCreationExpr extends FileCreationWithOptionalModeExpr {
   override predicate hasModeArgument() { exists(this.getArgument(3)) }
 
   override int getMode() {
-    if hasModeArgument()
+    if this.hasModeArgument()
     then result = this.getArgument(3).getValue().toInt()
     else
       // assume anything is permitted
