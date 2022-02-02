@@ -67,7 +67,7 @@ def test_direct_assign_overwrite():
     myobj = MyObj(NONSOURCE)
     myobj.foo = SOURCE
     myobj.foo = NONSOURCE
-    SINK_F(myobj.foo) # $ SPURIOUS: flow="SOURCE, l:-2 -> myobj.foo"
+    SINK_F(myobj.foo)
 
 
 def test_direct_if_assign(cond = False):
@@ -75,7 +75,7 @@ def test_direct_if_assign(cond = False):
     myobj.foo = SOURCE
     if cond:
         myobj.foo = NONSOURCE
-        SINK_F(myobj.foo) # $ SPURIOUS: flow="SOURCE, l:-3 -> myobj.foo"
+        SINK_F(myobj.foo)
     SINK(myobj.foo) # $ flow="SOURCE, l:-4 -> myobj.foo"
 
 
@@ -85,11 +85,11 @@ def test_direct_if_always_assign(cond = True):
     myobj.foo = SOURCE
     if cond:
         myobj.foo = NONSOURCE
-        SINK_F(myobj.foo) # $ SPURIOUS: flow="SOURCE, l:-3 -> myobj.foo"
+        SINK_F(myobj.foo)
     else:
         myobj.foo = NONSOURCE
-        SINK_F(myobj.foo) # $ SPURIOUS: flow="SOURCE, l:-6 -> myobj.foo"
-    SINK_F(myobj.foo) # $ SPURIOUS: flow="SOURCE, l:-7 -> myobj.foo"
+        SINK_F(myobj.foo)
+    SINK_F(myobj.foo)
 
 
 def test_getattr():

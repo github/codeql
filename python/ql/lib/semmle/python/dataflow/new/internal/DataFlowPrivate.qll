@@ -1973,6 +1973,18 @@ predicate clearsContent(Node n, Content c) {
   kwOverflowClearStep(n, c)
   or
   matchClearStep(n, c)
+  or
+  attributeClearStep(n, c)
+}
+
+/**
+ * Holds if values stored inside attribute `c` are cleared at node `n`.
+ *
+ * In `obj.foo = x` the any old value stored in `foo` is cleared at the pre-update node
+ * associated with `obj`
+ */
+predicate attributeClearStep(Node n, AttributeContent c) {
+  exists(PostUpdateNode post | post.getPreUpdateNode() = n | attributeStoreStep(_, c, post))
 }
 
 //--------
