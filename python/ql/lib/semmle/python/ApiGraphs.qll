@@ -6,7 +6,8 @@
  * directed and labeled; they specify how the components represented by nodes relate to each other.
  */
 
-private import python
+// Importing python under the `py` namespace to avoid importing `CallNode` from `Flow.qll` and thereby having a naming conflict with `API::CallNode`.
+private import python as py
 import semmle.python.dataflow.new.DataFlow
 
 /**
@@ -79,7 +80,7 @@ module API {
     /**
      * Gets a call to the function represented by this API component.
      */
-    DataFlow::CallCfgNode getACall() { result = this.getReturn().getAnImmediateUse() } // TODO: Make a API::CallNode. After I figure out named parameters
+    CallNode getACall() { result = this.getReturn().getAnImmediateUse() }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -290,6 +291,65 @@ module API {
   Node builtin(string n) { result = moduleImport("builtins").getMember(n) }
 
   /**
+   * An `CallCfgNode` that is connected to the API graph.
+   *
+   * Can be used to reason about calls to an external API in which the correlation between
+   * parameters and/or return values must be retained.
+   *
+   * The member predicates `getParameter`, `getNamedParameter`, `getReturn`, and `getInstance` mimic
+   * the corresponding predicates from `API::Node`. These are guaranteed to exist and be unique to this call.
+   */
+  class CallNode extends DataFlow::CallCfgNode {
+    API::Node callee;
+
+    CallNode() { this = callee.getReturn().getAnImmediateUse() }
+
+    /** Gets the API node for the `i`th parameter of this invocation. */
+    pragma[nomagic]
+    Node getParameter(int i) {
+      result = callee.getParameter(i) and
+      result = this.getAParameterCandidate(i)
+    }
+
+    /**
+     * Gets an API node where a RHS of the node is the `i`th argument to this call.
+     */
+    pragma[noinline]
+    private Node getAParameterCandidate(int i) { result.getARhs() = this.getArg(i) }
+
+    /** Gets the API node for a parameter of this invocation. */
+    Node getAParameter() { result = this.getParameter(_) }
+
+    /** Gets the API node for the last parameter of this invocation. */
+    Node getLastParameter() { result = this.getParameter(max(int i | exists(this.getArg(i)))) }
+
+    /** Gets the API node for the parameter named `name` of this invocation. */
+    Node getNamedParameter(string name) {
+      result = callee.getNamedParameter(name) and
+      result = this.getANamedParameterCandidate(name)
+    }
+
+    /** Gets the API node for the parameter that has index `i` or is named `name`. */
+    bindingset[i, name]
+    Node getParameter(int i, string name) {
+      result = this.getParameter(i)
+      or
+      result = this.getNamedParameter(name)
+    }
+
+    pragma[noinline]
+    private Node getANamedParameterCandidate(string name) {
+      result.getARhs() = this.getArgByName(name)
+    }
+
+    /** Gets the API node for the return value of this call. */
+    Node getReturn() {
+      result = callee.getReturn() and
+      result.getAnImmediateUse() = this
+    }
+  }
+
+  /**
    * Provides the actual implementation of API graphs, cached for performance.
    *
    * Ideally, we'd like nodes to correspond to (global) access paths, with edge labels
@@ -376,13 +436,13 @@ module API {
       /** An abstract representative for imports of the module called `name`. */
       MkModuleImport(string name) {
         // Ignore the following module name for Python 2, as we alias `__builtin__` to `builtins` elsewhere
-        (name != "__builtin__" or major_version() = 3) and
+        (name != "__builtin__" or py::major_version() = 3) and
         (
           imports(_, name)
           or
           // When we `import foo.bar.baz` we want to create API graph nodes also for the prefixes
           // `foo` and `foo.bar`:
-          name = any(ImportExpr e | not e.isRelative()).getAnImportedModuleName()
+          name = any(py::ImportExpr e | not e.isRelative()).getAnImportedModuleName()
         )
         or
         // The `builtins` module should always be implicitly available
@@ -418,7 +478,7 @@ module API {
      * Ignores relative imports, such as `from ..foo.bar import baz`.
      */
     private predicate imports(DataFlow::Node imp, string name) {
-      exists(ImportExprNode iexpr |
+      exists(py::ImportExprNode iexpr |
         imp.asCfgNode() = iexpr and
         not iexpr.getNode().isRelative() and
         name = iexpr.getNode().getImportedModuleName()
@@ -441,7 +501,7 @@ module API {
      *
      * `moduleImport("foo").getMember("bar")`
      */
-    private TApiNode potential_import_star_base(Scope s) {
+    private TApiNode potential_import_star_base(py::Scope s) {
       exists(DataFlow::Node n |
         n.asCfgNode() = ImportStar::potentialImportStarBase(s) and
         use(result, n)
@@ -464,17 +524,17 @@ module API {
         )
         or
         // TODO: I had expected `DataFlow::AttrWrite` to contain the attribute writes from a dict, that's how JS works.
-        exists(Dict dict, KeyValuePair item |
+        exists(py::Dict dict, py::KeyValuePair item |
           dict = pred.asExpr() and
           dict.getItem(_) = item and
-          lbl = Label::member(item.getKey().(StrConst).getS()) and
+          lbl = Label::member(item.getKey().(py::StrConst).getS()) and
           rhs.asExpr() = item.getValue()
         )
         or
-        exists(CallableExpr fn | fn = pred.asExpr() |
+        exists(py::CallableExpr fn | fn = pred.asExpr() |
           not fn.getInnerScope().isAsync() and
           lbl = Label::return() and
-          exists(Return ret |
+          exists(py::Return ret |
             rhs.asExpr() = ret.getValue() and
             ret.getScope() = fn.getInnerScope()
           )
@@ -517,7 +577,7 @@ module API {
         // Subclassing a node
         lbl = Label::subclass() and
         exists(DataFlow::Node superclass | pred.flowsTo(superclass) |
-          ref.asExpr().(ClassExpr).getABase() = superclass.asExpr()
+          ref.asExpr().(py::ClassExpr).getABase() = superclass.asExpr()
         )
         or
         // awaiting
@@ -528,7 +588,7 @@ module API {
         )
       )
       or
-      exists(DataFlow::Node def, CallableExpr fn |
+      exists(DataFlow::Node def, py::CallableExpr fn |
         rhs(base, def) and fn = trackDefNode(def).asExpr()
       |
         exists(int i |
@@ -547,7 +607,7 @@ module API {
       lbl = Label::member(any(string name | ref = Builtins::likelyBuiltin(name)))
       or
       // Unknown variables that may belong to a module imported with `import *`
-      exists(Scope s |
+      exists(py::Scope s |
         base = potential_import_star_base(s) and
         lbl =
           Label::member(any(string name |
@@ -567,7 +627,7 @@ module API {
       )
       or
       // Ensure the Python 2 `__builtin__` module gets the name of the Python 3 `builtins` module.
-      major_version() = 2 and
+      py::major_version() = 2 and
       nd = MkModuleImport("builtins") and
       imports(ref, "__builtin__")
       or
@@ -710,18 +770,18 @@ module API {
           exists(Builtins::likelyBuiltin(member)) or
           ImportStar::namePossiblyDefinedInImportStar(_, member, _) or
           Impl::prefix_member(_, member, _) or
-          member = any(Dict d).getAnItem().(KeyValuePair).getKey().(StrConst).getS()
+          member = any(py::Dict d).getAnItem().(py::KeyValuePair).getKey().(py::StrConst).getS()
         } or
         MkLabelUnknownMember() or
         MkLabelParameter(int i) {
           exists(any(DataFlow::CallCfgNode c).getArg(i))
           or
-          exists(any(Function f).getArg(i))
+          exists(any(py::Function f).getArg(i))
         } or
         MkLabelNamedParameter(string name) {
           exists(any(DataFlow::CallCfgNode c).getArgByName(name))
           or
-          exists(any(Function f).getArgByName(name))
+          exists(any(py::Function f).getArgByName(name))
         } or
         MkLabelReturn() or
         MkLabelSubclass() or

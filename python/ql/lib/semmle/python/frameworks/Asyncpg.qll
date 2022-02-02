@@ -71,48 +71,27 @@ private module Asyncpg {
    * The result of calling `prepare(query)` is a `PreparedStatementFactory` and the argument, `query` needs to
    * be tracked to the place where a `PreparedStatement` is created and then futher to any executing methods.
    * Hence the two type trackers.
-   *
-   * TODO: Rewrite this, once we have `API::CallNode` available.
    */
   module PreparedStatement {
-    class PreparedStatementConstruction extends SqlConstruction::Range, DataFlow::CallCfgNode {
+    class PreparedStatementConstruction extends SqlConstruction::Range, API::CallNode {
       PreparedStatementConstruction() { this = connection().getMember("prepare").getACall() }
 
-      override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("query")] }
+      override DataFlow::Node getSql() { result = this.getParameter(0, "query").getARhs() }
     }
 
-    private DataFlow::TypeTrackingNode preparedStatementFactory(
-      DataFlow::TypeTracker t, DataFlow::Node sql
-    ) {
-      t.start() and
-      sql = result.(PreparedStatementConstruction).getSql()
-      or
-      exists(DataFlow::TypeTracker t2 | result = preparedStatementFactory(t2, sql).track(t2, t))
-    }
-
-    DataFlow::Node preparedStatementFactory(DataFlow::Node sql) {
-      preparedStatementFactory(DataFlow::TypeTracker::end(), sql).flowsTo(result)
-    }
-
-    private DataFlow::TypeTrackingNode preparedStatement(DataFlow::TypeTracker t, DataFlow::Node sql) {
-      t.start() and
-      result = awaited(preparedStatementFactory(sql))
-      or
-      exists(DataFlow::TypeTracker t2 | result = preparedStatement(t2, sql).track(t2, t))
-    }
-
-    DataFlow::Node preparedStatement(DataFlow::Node sql) {
-      preparedStatement(DataFlow::TypeTracker::end(), sql).flowsTo(result)
-    }
-
-    class PreparedStatementExecution extends SqlExecution::Range, DataFlow::MethodCallNode {
-      DataFlow::Node sql;
+    class PreparedStatementExecution extends SqlExecution::Range, API::CallNode {
+      PreparedStatementConstruction prepareCall;
 
       PreparedStatementExecution() {
-        this.calls(preparedStatement(sql), ["executemany", "fetch", "fetchrow", "fetchval"])
+        this =
+          prepareCall
+              .getReturn()
+              .getAwaited()
+              .getMember(["executemany", "fetch", "fetchrow", "fetchval"])
+              .getACall()
       }
 
-      override DataFlow::Node getSql() { result = sql }
+      override DataFlow::Node getSql() { result = prepareCall.getSql() }
     }
   }
 
@@ -124,37 +103,36 @@ private module Asyncpg {
    * The result of calling `cursor` in either case is a `CursorFactory` and the argument, `query` needs to
    * be tracked to the place where a `Cursor` is created, hence the type tracker.
    * The creation of the `Cursor` executes the query.
-   *
-   * TODO: Rewrite this, once we have `API::CallNode` available.
    */
   module Cursor {
-    class CursorConstruction extends SqlConstruction::Range, DataFlow::CallCfgNode {
+    class CursorConstruction extends SqlConstruction::Range, API::CallNode {
       CursorConstruction() { this = connection().getMember("cursor").getACall() }
 
-      override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("query")] }
-    }
-
-    private DataFlow::TypeTrackingNode cursorFactory(DataFlow::TypeTracker t, DataFlow::Node sql) {
-      // cursor created from connection
-      t.start() and
-      sql = result.(CursorConstruction).getSql()
-      or
-      // cursor created from prepared statement
-      t.start() and
-      result.(DataFlow::MethodCallNode).calls(PreparedStatement::preparedStatement(sql), "cursor")
-      or
-      exists(DataFlow::TypeTracker t2 | result = cursorFactory(t2, sql).track(t2, t))
-    }
-
-    DataFlow::Node cursorFactory(DataFlow::Node sql) {
-      cursorFactory(DataFlow::TypeTracker::end(), sql).flowsTo(result)
+      override DataFlow::Node getSql() { result = this.getParameter(0, "query").getARhs() }
     }
 
     /** The creation of a `Cursor` executes the associated query. */
     class CursorCreation extends SqlExecution::Range {
       DataFlow::Node sql;
 
-      CursorCreation() { this = awaited(cursorFactory(sql)) }
+      CursorCreation() {
+        exists(CursorConstruction c |
+          sql = c.getSql() and
+          this = c.getReturn().getAwaited().getAnImmediateUse()
+        )
+        or
+        exists(PreparedStatement::PreparedStatementConstruction prepareCall |
+          sql = prepareCall.getSql() and
+          this =
+            prepareCall
+                .getReturn()
+                .getAwaited()
+                .getMember("cursor")
+                .getReturn()
+                .getAwaited()
+                .getAnImmediateUse()
+        )
+      }
 
       override DataFlow::Node getSql() { result = sql }
     }
