@@ -706,7 +706,7 @@ module ActionDispatch {
       |
         via = "all" and result = anyHttpMethod()
         or
-        via != "all" and result = "via"
+        via != "all" and result = via
       )
       or
       result =
