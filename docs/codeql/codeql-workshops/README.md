@@ -1,5 +1,5 @@
 # Introduction
-This repository contains material for teaching/learning CodeQL.  It supplements
+This directory contains material for teaching/learning CodeQL.  It supplements
 the more general introductory material and the reference material by presenting
 full solutions for specific problems.
 
@@ -60,11 +60,11 @@ python
 ```
 
 # Status & Roadmap
-These are actively developed and used workshops.  We are planning to add
+These are actively developed and used workshops and are subject to editorial changes at any time.  We are planning to add
 intermediate and advanced material as time permits.
 
 # Setup and running
-Currently all projects require installing VS Code and the CodeQL plugin.  They can
+Currently all projects require installing VS Code and the CodeQL extension.  They can
 be run on linux, macOS, and Windows.  Some additionally require the CodeQL command
 line tools.  See the individual project's instructions, or 
 [here for the cli](./common/cli-for-codeql.org) and 
