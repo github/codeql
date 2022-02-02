@@ -1,0 +1,4 @@
+| test.py:6:9:6:16 | ControlFlowNode for Attribute | test.py:6:9:6:12 | ControlFlowNode for self | foo |
+| test.py:9:1:9:9 | ControlFlowNode for Attribute | test.py:9:1:9:5 | ControlFlowNode for myobj | foo |
+| test.py:10:1:10:9 | ControlFlowNode for Attribute | test.py:10:1:10:5 | ControlFlowNode for myobj | foo |
+| test.py:13:1:13:21 | ControlFlowNode for getattr() | test.py:13:9:13:13 | ControlFlowNode for myobj | foo |
