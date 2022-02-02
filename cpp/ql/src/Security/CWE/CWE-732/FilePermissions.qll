@@ -1,27 +1,29 @@
 import cpp
-import semmle.code.cpp.commons.unix.Constants
+import semmle.code.cpp.commons.unix.Constants as UnixConstants
 
 bindingset[input]
 int parseHex(string input) {
-  input.matches("0x%") and
-  result =
-    strictsum(int ix |
-      ix in [2 .. input.length()]
-    |
-      16.pow(input.length() - (ix + 1)) * "0123456789abcdef".indexOf(input.charAt(ix).toLowerCase())
-    )
+  exists(string lowerCaseInput | lowerCaseInput = input.toLowerCase() |
+    lowerCaseInput.regexpMatch("0x[0-9a-f]+") and
+    result =
+      sum(int ix |
+        ix in [2 .. input.length()]
+      |
+        16.pow(input.length() - (ix + 1)) * "0123456789abcdef".indexOf(lowerCaseInput.charAt(ix))
+      )
+  )
 }
 
-int o_creat_new() {
-  exists(Macro m | m.getName() = "O_CREAT" | result = parseHex(m.getBody()))
-  or
-  exists(Macro m | m.getName() = "O_CREAT" | result = parseOctal(m.getBody()))
+int o_creat() {
+  exists(Macro m | m.getName() = "O_CREAT" |
+    result = parseHex(m.getBody()) or result = UnixConstants::parseOctal(m.getBody())
+  )
 }
 
 int o_tmpfile() {
-  exists(Macro m | m.getName() = "O_TMPFILE" | result = parseHex(m.getBody()))
-  or
-  exists(Macro m | m.getName() = "O_TMPFILE" | result = parseOctal(m.getBody()))
+  exists(Macro m | m.getName() = "O_TMPFILE" |
+    result = parseHex(m.getBody()) or result = UnixConstants::parseOctal(m.getBody())
+  )
 }
 
 bindingset[n, digit]
@@ -114,7 +116,7 @@ class OpenCreationExpr extends FileCreationWithOptionalModeExpr {
   OpenCreationExpr() {
     this.getTarget().getName() = ["open", "_open", "_wopen"] and
     exists(int flag | flag = this.getArgument(1).getValue().toInt() |
-      sets(flag, o_creat_new()) or sets(flag, o_tmpfile())
+      sets(flag, o_creat()) or sets(flag, o_tmpfile())
     )
   }
 
@@ -143,7 +145,7 @@ class OpenatCreationExpr extends FileCreationWithOptionalModeExpr {
   OpenatCreationExpr() {
     this.getTarget().getName() = "openat" and
     exists(int flag | flag = this.getArgument(2).getValue().toInt() |
-      sets(flag, o_creat_new()) or sets(flag, o_tmpfile())
+      sets(flag, o_creat()) or sets(flag, o_tmpfile())
     )
   }
 
@@ -162,7 +164,12 @@ class OpenatCreationExpr extends FileCreationWithOptionalModeExpr {
 
 private int fopenMode() {
   result =
-    s_irusr().bitOr(s_irgrp()).bitOr(s_iroth()).bitOr(s_iwusr()).bitOr(s_iwgrp()).bitOr(s_iwoth())
+    UnixConstants::s_irusr()
+        .bitOr(UnixConstants::s_irgrp())
+        .bitOr(UnixConstants::s_iroth())
+        .bitOr(UnixConstants::s_iwusr())
+        .bitOr(UnixConstants::s_iwgrp())
+        .bitOr(UnixConstants::s_iwoth())
 }
 
 class FopenCreationExpr extends FileCreationExpr {
@@ -194,6 +201,6 @@ class FopensCreationExpr extends FileCreationExpr {
     // fopen_s has restrictive permissions unless you have "u" in the mode
     if this.getArgument(2).getValue().charAt(_) = "u"
     then result = fopenMode()
-    else result = s_irusr().bitOr(s_iwusr())
+    else result = UnixConstants::s_irusr().bitOr(UnixConstants::s_iwusr())
   }
 }
