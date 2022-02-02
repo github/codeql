@@ -17,9 +17,9 @@ actionDispatchRoutes
 | app/config/routes.rb:19:5:19:44 | call to get | get | admin/jobs | background_jobs | index |
 | app/config/routes.rb:23:5:23:64 | call to get | get | admin/secrets | secrets | view_secrets |
 | app/config/routes.rb:24:5:24:42 | call to delete | delete | admin/:user_id | users | destroy |
-| app/config/routes.rb:27:3:27:48 | call to match | via | photos/:id | photos | show |
-| app/config/routes.rb:28:3:28:50 | call to match | via | photos/:id | photos | show |
-| app/config/routes.rb:29:3:29:69 | call to match | via | photos/:id | photos | show |
+| app/config/routes.rb:27:3:27:48 | call to match | get | photos/:id | photos | show |
+| app/config/routes.rb:28:3:28:50 | call to match | get | photos/:id | photos | show |
+| app/config/routes.rb:29:3:29:69 | call to match | get | photos/:id | photos | show |
 | app/config/routes.rb:30:3:30:50 | call to match | delete | photos/:id | photos | show |
 | app/config/routes.rb:30:3:30:50 | call to match | get | photos/:id | photos | show |
 | app/config/routes.rb:30:3:30:50 | call to match | patch | photos/:id | photos | show |
