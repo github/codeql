@@ -5,7 +5,7 @@ private import codeql.ruby.frameworks.ActionController
 query predicate actionDispatchRoutes(
   ActionDispatch::Route r, string method, string path, string controller, string action
 ) {
-  r.getHTTPMethod() = method and
+  r.getHttpMethod() = method and
   r.getPath() = path and
   r.getController() = controller and
   r.getAction() = action

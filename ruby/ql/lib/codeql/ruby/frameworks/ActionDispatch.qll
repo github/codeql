@@ -284,11 +284,63 @@ module ActionDispatch {
    * resources :photos
    * ```
    */
-  abstract class Route extends TRoute {
+  class Route extends TRoute instanceof RouteImpl {
     /**
      * Gets the name of a primary CodeQL class to which this route belongs.
      */
     string getAPrimaryQlClass() { result = "Route" }
+
+    /** Gets a string representation of this route. */
+    string toString() { result = super.toString() }
+
+    /**
+     * Gets the location of the method call that defines this route.
+     */
+    Location getLocation() { result = super.getLocation() }
+
+    /**
+     * Gets the full controller targeted by this route.
+     */
+    string getController() { result = super.getController() }
+
+    /**
+     * Gets the action targeted by this route.
+     */
+    string getAction() { result = super.getAction() }
+
+    /**
+     * Gets the HTTP method of this route.
+     * The result is one of [get, post, put, patch, delete].
+     */
+    string getHttpMethod() { result = super.getHttpMethod() }
+
+    /**
+     * Gets the full path of the route.
+     */
+    string getPath() { result = super.getPath() }
+
+    /**
+     * Get a URL capture. This is a wildcard URL segment whose value is placed in `params`.
+     * For example, in
+     * ```ruby
+     * get "/foo/:bar/baz", to: "users#index"
+     * ```
+     * the capture is `:bar`.
+     */
+    string getACapture() { result = super.getACapture() }
+  }
+
+  /**
+   * The implementation of `Route`.
+   * This class is abstract and is thus kept private so we don't expose it to
+   * users.
+   * Extend this class to add new instances of routes.
+   */
+  abstract private class RouteImpl extends TRoute {
+    /**
+     * Gets the name of a primary CodeQL class to which this route belongs.
+     */
+    string getAPrimaryQlClass() { result = "RouteImpl" }
 
     MethodCall method;
 
@@ -319,7 +371,7 @@ module ActionDispatch {
      * Gets the HTTP method of this route.
      * The result is one of [get, post, put, patch, delete].
      */
-    abstract string getHTTPMethod();
+    abstract string getHttpMethod();
 
     /**
      * Gets the last controller component.
@@ -420,7 +472,7 @@ module ActionDispatch {
    * put "/photos/:id", to: "photos#update"
    * ```
    */
-  private class ExplicitRoute extends Route, TExplicitRoute {
+  private class ExplicitRoute extends RouteImpl, TExplicitRoute {
     RouteBlock parentBlock;
 
     ExplicitRoute() { this = TExplicitRoute(parentBlock, method) }
@@ -485,7 +537,7 @@ module ActionDispatch {
       )
     }
 
-    override string getHTTPMethod() { result = method.getMethodName().toString() }
+    override string getHttpMethod() { result = method.getMethodName().toString() }
   }
 
   /**
@@ -519,7 +571,7 @@ module ActionDispatch {
    * get "/photos/:photo_id/foo", to: "photos#foo"
    * ```
    */
-  private class ResourcesRoute extends Route, TResourcesRoute {
+  private class ResourcesRoute extends RouteImpl, TResourcesRoute {
     RouteBlock parent;
     string resource;
     string action;
@@ -544,7 +596,7 @@ module ActionDispatch {
 
     override string getAction() { result = action }
 
-    override string getHTTPMethod() { result = httpMethod }
+    override string getHttpMethod() { result = httpMethod }
   }
 
   /**
@@ -556,7 +608,7 @@ module ActionDispatch {
    * resource :account
    * ```
    */
-  private class SingularResourceRoute extends Route, TResourceRoute {
+  private class SingularResourceRoute extends RouteImpl, TResourceRoute {
     RouteBlock parent;
     string resource;
     string action;
@@ -581,7 +633,7 @@ module ActionDispatch {
 
     override string getAction() { result = action }
 
-    override string getHTTPMethod() { result = httpMethod }
+    override string getHttpMethod() { result = httpMethod }
   }
 
   /**
@@ -597,7 +649,7 @@ module ActionDispatch {
    * match 'photos/:id', controller: 'photos', action: 'show', via: :get
    * ```
    */
-  private class MatchRoute extends Route, TMatchRoute {
+  private class MatchRoute extends RouteImpl, TMatchRoute {
     private RouteBlock parent;
 
     MatchRoute() { this = TMatchRoute(parent, method) }
@@ -625,7 +677,7 @@ module ActionDispatch {
               .getStringOrSymbol())
     }
 
-    override string getHTTPMethod() {
+    override string getHttpMethod() {
       exists(string via |
         method.getKeywordArgument("via").getConstantValue().isStringOrSymbol(via)
       |
