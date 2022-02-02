@@ -414,7 +414,7 @@ class TVariableReal =
 class TLocalVariable = TLocalVariableReal or TLocalVariableSynth or TSelfVariable;
 
 /**
- * A "real" (ie. non-synthesized) variable. This class only exists to
+ * A "real" (i.e. non-synthesized) variable. This class only exists to
  * avoid negative recursion warnings. Ideally, we would use `VariableImpl`
  * directly, but that results in incorrect negative recursion warnings.
  * Adding new root-defs for the predicates below works around this.
