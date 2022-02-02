@@ -45,3 +45,17 @@ def namedCallback(myName, otherName):
 foo.blob(namedCallback) #$ use=moduleImport("mypkg").getMember("foo").getMember("blob").getReturn()
 
 foo.named(myName = 2) #$ def=moduleImport("mypkg").getMember("foo").getMember("named").getNamedParameter("myName")
+
+
+def recusisionCallback(x):
+    x.recursion() #$ use=moduleImport("mypkg").getMember("foo").getMember("rec").getParameter(0).getMember("callback").getParameter(0).getMember("recursion").getReturn()
+    x.recursion() #$ use=moduleImport("mypkg").getMember("foo").getMember("rec").getParameter(0).getMember("rec1").getMember("callback").getParameter(0).getMember("recursion").getReturn()
+    x.recursion() #$ use=moduleImport("mypkg").getMember("foo").getMember("rec").getParameter(0).getMember("rec1").getMember("rec2").getMember("callback").getParameter(0).getMember("recursion").getReturn()
+    x.recursion() #$ use=moduleImport("mypkg").getMember("foo").getMember("rec").getParameter(0).getMember("rec1").getMember("rec2").getMember("rec1").getMember("callback").getParameter(0).getMember("recursion").getReturn()
+
+recursiveDict = {};
+recursiveDict.callback = recusisionCallback;
+recursiveDict.rec1 = recursiveDict;
+recursiveDict.rec2 = recursiveDict;
+
+foo.rec(recursiveDict); #$ def=moduleImport("mypkg").getMember("foo").getMember("rec").getParameter(0)
