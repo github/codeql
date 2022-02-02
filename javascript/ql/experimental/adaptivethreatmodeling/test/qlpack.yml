@@ -1,5 +1,4 @@
 name: codeql/javascript-experimental-atm-tests
-version: 0.0.0
 extractor: javascript
 dependencies:
     codeql/javascript-experimental-atm-model-building: "*"
