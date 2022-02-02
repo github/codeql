@@ -299,7 +299,7 @@ private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInsta
 }
 
 // A (locally tracked) active record model object
-private class ActiveRecordInstance extends DataFlow::Node {
+class ActiveRecordInstance extends DataFlow::Node {
   private ActiveRecordModelInstantiation instantiation;
 
   ActiveRecordInstance() { this = instantiation or instantiation.flowsTo(this) }

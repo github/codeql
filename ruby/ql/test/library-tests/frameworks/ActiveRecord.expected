@@ -33,6 +33,8 @@ activeRecordModelClassMethodCalls
 | ActiveRecordInjection.rb:85:5:85:33 | call to find_by |
 | ActiveRecordInjection.rb:88:5:88:34 | call to find |
 | ActiveRecordInjection.rb:94:5:94:45 | call to delete_by |
+| ActiveRecordInjection.rb:101:12:101:23 | call to find |
+| ActiveRecordInjection.rb:106:13:106:24 | call to find |
 potentiallyUnsafeSqlExecutingMethodCall
 | ActiveRecordInjection.rb:10:5:10:68 | call to find |
 | ActiveRecordInjection.rb:23:5:23:25 | call to destroy_by |
@@ -51,3 +53,11 @@ activeRecordModelInstantiations
 | ActiveRecordInjection.rb:80:7:80:40 | call to find_by | ActiveRecordInjection.rb:5:1:17:3 | User |
 | ActiveRecordInjection.rb:85:5:85:33 | call to find_by | ActiveRecordInjection.rb:5:1:17:3 | User |
 | ActiveRecordInjection.rb:88:5:88:34 | call to find | ActiveRecordInjection.rb:5:1:17:3 | User |
+| ActiveRecordInjection.rb:101:12:101:23 | call to find | ActiveRecordInjection.rb:5:1:17:3 | User |
+| ActiveRecordInjection.rb:106:13:106:24 | call to find | ActiveRecordInjection.rb:5:1:17:3 | User |
+activeRecordInstanceCalls
+| ActiveRecordInjection.rb:10:5:10:68 | self | ActiveRecordInjection.rb:10:5:10:68 | call to find |
+| ActiveRecordInjection.rb:15:5:15:40 | call to find_by | ActiveRecordInjection.rb:15:5:15:46 | call to users |
+| ActiveRecordInjection.rb:23:5:23:25 | self | ActiveRecordInjection.rb:23:5:23:25 | call to destroy_by |
+| ActiveRecordInjection.rb:102:5:102:8 | user | ActiveRecordInjection.rb:102:5:102:16 | call to destroy |
+| ActiveRecordInjection.rb:107:5:107:9 | @user | ActiveRecordInjection.rb:107:5:107:17 | call to destroy |

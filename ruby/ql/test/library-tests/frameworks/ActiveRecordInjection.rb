@@ -94,3 +94,16 @@ class BazController < BarController
     Admin.delete_by(params[:admin_condition])
   end
 end
+
+
+class JeffController < ApplicationController
+  def destroy
+    user = User.find(1)
+    user.destroy
+  end
+
+  def destroy_broken
+    @user = User.find(1)
+    @user.destroy
+  end
+end
