@@ -50,7 +50,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             ruby/target
-          key: ${{ runner.os }}-ruby-rust-cargo-${{ hashFiles('ruby/**/Cargo.lock') }}
+          key: ${{ runner.os }}-ruby-rust-cargo-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}
       - name: Check formatting
         run: cargo fmt --all -- --check
       - name: Build
