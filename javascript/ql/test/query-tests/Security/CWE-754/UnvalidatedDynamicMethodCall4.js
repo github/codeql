@@ -10,9 +10,9 @@ actions.put("pause", function pause(data) {
 });
 
 app.get('/perform/:action/:payload', function(req, res) {
-    let action = actions.get(req.params.action);
-    // GOOD: `action` is either the `play` or the `pause` function from above
-    if (typeof action === 'function') {
+    if (typeof actions.get(req.params.action) === 'function') {
+        let action = actions.get(req.params.action); // OK but flagged [INCONSISTENCY]
+        // GOOD: `action` is either the `play` or the `pause` function from above
         res.end(action(req.params.payload));
     } else {
         res.end("Unsupported action.");
