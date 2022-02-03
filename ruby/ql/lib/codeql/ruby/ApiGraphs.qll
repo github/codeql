@@ -49,6 +49,11 @@ module API {
     DataFlow::Node getARhs() { Impl::def(this, result) }
 
     /**
+     * Gets a data-flow node that may interprocedurally flow to the value escaping into this API component.
+     */
+    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.getARhs()) }
+
+    /**
      * Gets a call to a method on the receiver represented by this API component.
      */
     DataFlow::CallNode getAMethodCall(string method) {
