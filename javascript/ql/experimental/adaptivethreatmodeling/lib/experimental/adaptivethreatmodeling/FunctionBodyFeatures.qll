@@ -128,17 +128,15 @@ ASTNode getAnASTNodeWithAFeature(Function f) {
 }
 
 int getNumCharsInFunction(Function f) {
-    result = strictsum(int i |
-      exists(ASTNode node | node = getAnASTNodeWithAFeature(f) and i = getTokenizedAstNode(node).length()) |
-      i
-    )
+  result =
+    strictsum(ASTNode node | node = getAnASTNodeWithAFeature(f) | getTokenizedAstNode(node).length())
 }
 
 // Evaluator string limit is 5395415 characters. We choose a limit lower than this.
 private int getMaxChars() { result = 1000000 }
 
 Function getFeaturizableFunction(Function f) {
-   result = f and getNumCharsInFunction(f) <= getMaxChars()
+  result = f and getNumCharsInFunction(f) <= getMaxChars()
 }
 
 /**
@@ -146,10 +144,11 @@ Function getFeaturizableFunction(Function f) {
  * `enclosingFunctionBody` feature for an endpoint.
  */
 string getBodyTokensFeature(Function function) {
-  // Performance optimization: If a function has more than getMaxChars() characters in its body subtokens, 
+  // Performance optimization: If a function has more than getMaxChars() characters in its body subtokens,
   // then featurize it as absent.
   function = getFeaturizableFunction(function) and
-  result = strictconcat(Location l, string token |
+  result =
+    strictconcat(Location l, string token |
       // The use of a nested exists here allows us to avoid duplicates due to two AST nodes in the
       // same location featurizing to the same token. By using a nested exists, we take only unique
       // (location, token) pairs.
