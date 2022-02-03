@@ -6,6 +6,7 @@ import com.github.codeql.utils.versions.functionN
 import com.github.codeql.utils.substituteTypeAndArguments
 import com.github.codeql.utils.substituteTypeArguments
 import com.github.codeql.utils.toRawType
+import com.github.codeql.utils.versions.getIrStubFromDescriptor
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.pop
@@ -14,6 +15,7 @@ import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.java.JavaVisibilities
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
+import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
@@ -1932,11 +1934,17 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                    if (!e.symbol.isBound) {
-                        logger.warnElement(Severity.ErrorSevere, "Unbound enum value", e)
-                        return
+
+                    val owner = if (e.symbol.isBound) {
+                        e.symbol.owner
                     }
-                    val owner = e.symbol.owner
+                    else {
+                        logger.warnElement(Severity.WarnLow, "Unbound enum value, trying to use enum entry stub from descriptor", e)
+
+                        @OptIn(ObsoleteDescriptorBasedAPI::class)
+                        getIrStubFromDescriptor() { it.generateEnumEntryStub(e.symbol.descriptor) }
+                    } ?: return
+
                     val vId = useEnumEntry(owner)
                     tw.writeVariableBinding(id, vId)
                 }
@@ -2045,12 +2053,16 @@ open class KotlinFileExtractor(
                     // automatically-generated `public static final MyObject INSTANCE`
                     // field that we are accessing here.
                     val exprParent = parent.expr(e, callable)
-                    if (!e.symbol.isBound) {
-                        logger.warnElement(Severity.ErrorSevere, "Unbound object value", e)
-                        return
+                    val c = if (e.symbol.isBound) {
+                        e.symbol.owner
                     }
+                    else {
+                        logger.warnElement(Severity.WarnLow, "Unbound object value, trying to use class stub from descriptor", e)
 
-                    val c: IrClass = e.symbol.owner
+                        @OptIn(ObsoleteDescriptorBasedAPI::class)
+                        getIrStubFromDescriptor() { it.generateClassStub(e.symbol.descriptor) }
+                    } ?: return
+
                     val instance = if (c.isCompanion) useCompanionObjectClassInstance(c) else useObjectClassInstance(c)
 
                     if (instance != null) {
