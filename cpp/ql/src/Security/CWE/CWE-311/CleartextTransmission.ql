@@ -14,7 +14,6 @@
 import cpp
 import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.dataflow.TaintTracking
-import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.commons.File
 import DataFlow::PathGraph
@@ -121,35 +120,30 @@ abstract class NetworkSendRecv extends FunctionCall {
   NetworkSendRecv() {
     this.getTarget() = target and
     // exclude calls based on the socket...
-    not exists(GVN g |
-      g = globalValueNumber(target.getSocketExpr(this)) and
+    not exists(DataFlow::Node src, DataFlow::Node dest |
+      DataFlow::localFlow(src, dest) and
+      dest.asExpr() = target.getSocketExpr(this) and
       (
         // literal constant
-        globalValueNumber(any(Literal l)) = g
+        src.asExpr() instanceof Literal
         or
         // variable (such as a global) initialized to a literal constant
         exists(Variable v |
           v.getInitializer().getExpr() instanceof Literal and
-          g = globalValueNumber(v.getAnAccess())
+          src.asExpr() = v.getAnAccess()
         )
         or
         // result of a function call with literal inputs (likely constant)
-        exists(FunctionCall fc |
-          forex(Expr arg | arg = fc.getAnArgument() | arg instanceof Literal) and
-          g = globalValueNumber(fc)
-        )
+        forex(Expr arg | arg = src.asExpr().(FunctionCall).getAnArgument() | arg instanceof Literal)
         or
         // variable called `stdin`, `stdout` or `stderr`
-        exists(VariableAccess v |
-          v.getTarget().getName() = ["stdin", "stdout", "stderr"] and
-          g = globalValueNumber(v)
-        )
+        src.asExpr().(VariableAccess).getTarget().getName() = ["stdin", "stdout", "stderr"]
         or
         // open of `"/dev/tty"`
         exists(FunctionCall fc |
           fopenCall(fc) and
           fc.getAnArgument().getValue() = "/dev/tty" and
-          g = globalValueNumber(fc)
+          src.asExpr() = fc
         )
         // (this is not exhaustive)
       )

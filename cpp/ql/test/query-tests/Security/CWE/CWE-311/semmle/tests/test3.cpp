@@ -471,6 +471,6 @@ void test_tty()
 			f = STDIN_FILENO;
 		}
 
-		recv(f, password, 256, val()); // GOOD: from terminal or stdin [FALSE POSITIVE]
+		recv(f, password, 256, val()); // GOOD: from terminal or stdin
 	}
 }
