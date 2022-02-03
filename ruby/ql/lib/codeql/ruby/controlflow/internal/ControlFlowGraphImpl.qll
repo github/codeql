@@ -732,7 +732,7 @@ module Trees {
   }
 
   private class ReferencePatternTree extends StandardPreOrderTree, ReferencePattern {
-    override ControlFlowTree getChildElement(int i) { result = this.getValue() and i = 0 }
+    override ControlFlowTree getChildElement(int i) { result = this.getExpr() and i = 0 }
   }
 
   private class InClauseTree extends PreOrderTree, InClause {

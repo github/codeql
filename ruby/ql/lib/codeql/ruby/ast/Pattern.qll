@@ -423,17 +423,17 @@ class ReferencePattern extends CasePattern, TReferencePattern {
       any(Ruby::ExpressionReferencePattern g | this = TExpressionReferencePattern(g)).getValue()
   }
 
-  /** Gets the value this reference pattern matches against. */
-  final Expr getValue() { toGenerated(result) = value }
+  /** Gets the value this reference pattern matches against. For example `2 * x` in `^(2 * x)` */
+  final Expr getExpr() { toGenerated(result) = value }
 
   final override string getAPrimaryQlClass() { result = "ReferencePattern" }
 
   final override string toString() { result = "^..." }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
-    pred = "getValue" and result = this.getValue()
+    pred = "getExpr" and result = this.getExpr()
   }
 }
 
@@ -450,5 +450,5 @@ class ReferencePattern extends CasePattern, TReferencePattern {
  */
 deprecated class VariableReferencePattern extends ReferencePattern, TVariableReferencePattern {
   /** Gets the variable access corresponding to this variable reference pattern. */
-  final VariableReadAccess getVariableAccess() { result = this.getValue() }
+  final VariableReadAccess getVariableAccess() { result = this.getExpr() }
 }

@@ -1033,6 +1033,19 @@ private module ImplicitHashValueSynthesis {
   }
 }
 
+/**
+ * ```rb
+ * def foo(&)
+ *   bar(&)
+ * end
+ * ```
+ * desugars to,
+ * ```rb
+ * def foo(&__synth_0)
+ *   bar(&__synth_0)
+ * end
+ * ```
+ */
 private module AnonymousBlockParameterSynth {
   private BlockParameter anonymousBlockParameter() {
     exists(Ruby::BlockParameter p | not exists(p.getName()) and toGenerated(result) = p)
