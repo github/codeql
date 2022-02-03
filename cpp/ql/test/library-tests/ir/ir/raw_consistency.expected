@@ -17,7 +17,6 @@ containsLoopOfForwardEdges
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
-| ir.cpp:1457:3:1457:20 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1457:3:1457:20 | void Inheritance_Test_A::Inheritance_Test_A() | void Inheritance_Test_A::Inheritance_Test_A() |
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated
