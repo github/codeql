@@ -203,7 +203,13 @@ module API {
     /**
      * Gets the data-flow node that gives rise to this node, if any.
      */
-    DataFlow::Node getInducingNode() { this = Impl::MkUse(result) }
+    DataFlow::Node getInducingNode() {
+      this = Impl::MkUse(result)
+      or
+      this = Impl::MkDef(result)
+      or
+      this = Impl::MkMethodAccessNode(result)
+    }
 
     /** Gets the location of this node. */
     Location getLocation() {
@@ -250,15 +256,26 @@ module API {
     override string toString() { result = "root" }
   }
 
+  private string tryGetPath(Node node) {
+    result = node.getPath()
+    or
+    not exists(node.getPath()) and
+    result = "with no path"
+  }
+
   /** A node corresponding to the use of an API component. */
   class Use extends Node, Impl::MkUse {
-    override string toString() {
-      exists(string type | type = "Use " |
-        result = type + this.getPath()
-        or
-        not exists(this.getPath()) and result = type + "with no path"
-      )
-    }
+    override string toString() { result = "Use " + tryGetPath(this) }
+  }
+
+  /** A node corresponding to a value escaping into an API component. */
+  class Def extends Node, Impl::MkDef {
+    override string toString() { result = "Def " + tryGetPath(this) }
+  }
+
+  /** A node corresponding to the method being invoked at a method call. */
+  class MethodAccessNode extends Node, Impl::MkMethodAccessNode {
+    override string toString() { result = "MethodAccessNode " + tryGetPath(this) }
   }
 
   /** Gets the root node. */
@@ -304,7 +321,7 @@ module API {
       /** The root of the API graph. */
       MkRoot() or
       /** The method accessed at `call`, synthetically treated as a separate object. */
-      MkMethodCall(DataFlow::CallNode call) { isUse(call) } or
+      MkMethodAccessNode(DataFlow::CallNode call) { isUse(call) } or
       /** A use of an API member at the node `nd`. */
       MkUse(DataFlow::Node nd) { isUse(nd) } or
       /** A value that escapes into an API at the node `nd` */
@@ -349,7 +366,7 @@ module API {
         ref.asExpr() = c and
         read = c.getExpr()
       )
-      // note: method calls are not handled here as there is no DataFlow::Node for the intermediate MkMethodCall API node
+      // note: method calls are not handled here as there is no DataFlow::Node for the intermediate MkMethodAccessNode API node
     }
 
     pragma[nomagic]
@@ -459,7 +476,9 @@ module API {
      * Holds if there should be a `lbl`-edge from the given call to an argument.
      */
     pragma[nomagic]
-    private predicate argumentStep(string lbl, DataFlow::CallNode call, DataFlowPrivate::ArgumentNode argument) {
+    private predicate argumentStep(
+      string lbl, DataFlow::CallNode call, DataFlowPrivate::ArgumentNode argument
+    ) {
       exists(DataFlowDispatch::ArgumentPosition argPos |
         argument.sourceArgumentOf(call.asExpr(), argPos) and
         lbl = getLabelFromArgumentPosition(argPos)
@@ -470,7 +489,9 @@ module API {
      * Holds if there should be a `lbl`-edge from the given callable to a parameter.
      */
     pragma[nomagic]
-    private predicate parameterStep(string lbl, DataFlow::Node callable, DataFlowPrivate::ParameterNodeImpl paramNode) {
+    private predicate parameterStep(
+      string lbl, DataFlow::Node callable, DataFlowPrivate::ParameterNodeImpl paramNode
+    ) {
       exists(DataFlowDispatch::ParameterPosition paramPos |
         paramNode.isSourceParameterOf(callable.asExpr().getExpr(), paramPos) and
         lbl = getLabelFromParameterPosition(paramPos)
@@ -564,11 +585,11 @@ module API {
           pred = MkUse(receiver) and
           useNodeReachesReceiver(receiver, call) and
           lbl = Label::method(call.getMethodName()) and
-          succ = MkMethodCall(call)
+          succ = MkMethodAccessNode(call)
         )
         or
         // from method call node to return and arguments
-        pred = MkMethodCall(call) and
+        pred = MkMethodAccessNode(call) and
         (
           lbl = Label::return() and
           succ = MkUse(call)
