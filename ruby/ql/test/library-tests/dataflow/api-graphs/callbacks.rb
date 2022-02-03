@@ -32,3 +32,8 @@ def getCallback()
     }
 end
 Something.indirectCallback(getCallback()) #$ use=getMember("Something").getMethod("indirectCallback").getReturn()
+
+Something.withMixed do |a, *args, b| #$ use=getMember("Something").getMethod("withMixed").getReturn()
+    a.something #$ use=getMember("Something").getMethod("withMixed").getBlock().getParameter(0).getMethod("something").getReturn()
+    b.something #$ use=getMember("Something").getMethod("withMixed").getBlock().getParameter(1).getMethod("something").getReturn()
+end

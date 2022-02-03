@@ -11,6 +11,8 @@ import codeql.ruby.DataFlow
 import codeql.ruby.typetracking.TypeTracker
 import codeql.ruby.ast.internal.Module
 private import codeql.ruby.controlflow.CfgNodes
+private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 
 /**
  * Provides classes and predicates for working with APIs used in a database.
@@ -423,49 +425,56 @@ module API {
     /** Gets a data flow node that flows to the RHS of a def-node. */
     private DataFlow::LocalSourceNode defCand() { result = defCand(TypeBackTracker::end()) }
 
+    private string getLabelFromArgumentPosition(DataFlowDispatch::ArgumentPosition pos) {
+      exists(int n |
+        pos.isPositional(n) and
+        result = Label::parameter(n)
+      )
+      or
+      exists(string name |
+        pos.isKeyword(name) and
+        result = Label::keywordParameter(name)
+      )
+      or
+      pos.isBlock() and
+      result = Label::blockParameter()
+    }
+
+    private string getLabelFromParameterPosition(DataFlowDispatch::ParameterPosition pos) {
+      exists(int n |
+        pos.isPositional(n) and
+        result = Label::parameter(n)
+      )
+      or
+      exists(string name |
+        pos.isKeyword(name) and
+        result = Label::keywordParameter(name)
+      )
+      or
+      pos.isBlock() and
+      result = Label::blockParameter()
+    }
+
     /**
      * Holds if there should be a `lbl`-edge from the given call to an argument.
      */
     pragma[nomagic]
-    private predicate argumentStep(string lbl, DataFlow::CallNode call, DataFlow::Node argument) {
-      exists(int n |
-        argument = call.getArgument(n) and
-        lbl = Label::parameter(n)
+    private predicate argumentStep(string lbl, DataFlow::CallNode call, DataFlowPrivate::ArgumentNode argument) {
+      exists(DataFlowDispatch::ArgumentPosition argPos |
+        argument.sourceArgumentOf(call.asExpr(), argPos) and
+        lbl = getLabelFromArgumentPosition(argPos)
       )
-      or
-      exists(string name |
-        argument = call.getKeywordArgument(name) and
-        lbl = Label::keywordParameter(name)
-      )
-      or
-      argument = call.getBlock() and
-      lbl = Label::blockParameter()
     }
 
     /**
      * Holds if there should be a `lbl`-edge from the given callable to a parameter.
      */
     pragma[nomagic]
-    private predicate parameterStep(string lbl, DataFlow::Node callable, DataFlow::Node paramNode) {
-      exists(Parameter param |
-        paramNode.asParameter() = param and
-        callable.asExpr().getExpr().(Callable).getAParameter() = param and
-        lbl = getLabelFromParameter(param)
+    private predicate parameterStep(string lbl, DataFlow::Node callable, DataFlowPrivate::ParameterNodeImpl paramNode) {
+      exists(DataFlowDispatch::ParameterPosition paramPos |
+        paramNode.isSourceParameterOf(callable.asExpr().getExpr(), paramPos) and
+        lbl = getLabelFromParameterPosition(paramPos)
       )
-    }
-
-    private string getLabelFromParameter(Parameter param) {
-      result = Label::keywordParameter(param.(KeywordParameter).getName())
-      or
-      param instanceof BlockParameter and
-      result = Label::blockParameter()
-      or
-      (
-        param instanceof SimpleParameter
-        or
-        param instanceof OptionalParameter
-      ) and
-      result = Label::parameter(param.getPosition())
     }
 
     /**
