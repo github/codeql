@@ -101,13 +101,13 @@ def test_getattr():
 def test_setattr():
     myobj = MyObj(NONSOURCE)
     setattr(myobj, "foo", SOURCE)
-    SINK(myobj.foo) # $ MISSING: flow
+    SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
 
 
 def test_setattr_getattr():
     myobj = MyObj(NONSOURCE)
     setattr(myobj, "foo", SOURCE)
-    SINK(getattr(myobj, "foo")) # $ MISSING: flow
+    SINK(getattr(myobj, "foo")) # $ flow="SOURCE, l:-1 -> getattr(..)"
 
 
 def test_setattr_getattr_overwrite():

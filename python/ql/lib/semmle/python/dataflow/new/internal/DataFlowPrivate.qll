@@ -126,7 +126,7 @@ module syntheticPostUpdateNode {
    * Certain arguments, such as implicit self arguments are already post-update nodes
    * and should not have an extra node synthesised.
    */
-  ArgumentNode argumentPreUpdateNode() {
+  Node argumentPreUpdateNode() {
     result = any(FunctionCall c).getArg(_)
     or
     // Avoid argument 0 of method calls as those have read post-update nodes.
@@ -136,6 +136,11 @@ module syntheticPostUpdateNode {
     or
     // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
     exists(ClassCall c, int n | n > 0 | result = c.getArg(n))
+    or
+    // any argument of any call that we have not been able to resolve
+    exists(CallNode call | not call = any(DataFlowCall c).getNode() |
+      result.(CfgNode).getNode() in [call.getArg(_), call.getArgByName(_)]
+    )
   }
 
   /** An object might have its value changed after a store. */
