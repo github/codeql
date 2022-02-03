@@ -704,7 +704,7 @@ newtype TDataFlowCall =
   TFunctionCall(CallNode call) { call = any(FunctionValue f).getAFunctionCall() } or
   /** Bound methods need to make room for the explicit self parameter */
   TMethodCall(CallNode call) { call = any(FunctionValue f).getAMethodCall() } or
-  TClassCall(CallNode call) { call = any(ClassValue c).getACall() } or
+  TClassCall(CallNode call) { call = any(ClassValue c | not c.isAbsent()).getACall() } or
   TSpecialCall(SpecialMethodCallNode special)
 
 /** Represents a call. */

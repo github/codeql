@@ -31,7 +31,7 @@ try:
     # `mypkg.foo` is a `missing module variable`, but `mypkg.subpkg.bar` is compeltely
     # ignored.
     import mypkg
-    mypkg.foo(42) # $ call=mypkg.foo(..) qlclass=ClassCall arg_0=[pre]mypkg.foo(..)
+    mypkg.foo(42)
     mypkg.subpkg.bar(43)
 except:
     pass
