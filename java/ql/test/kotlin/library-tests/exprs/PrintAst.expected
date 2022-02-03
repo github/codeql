@@ -582,7 +582,7 @@ exprs.kt:
 #  127|                 0: [VarAccess] str1
 #  127|                 1: [VarAccess] str2
 #  127|               2: [StringLiteral]  bar 
-#  127|               3: [MethodAccess] plus(...)
+#  127|               3: [AddExpr] ... + ...
 #  127|                 0: [VarAccess] str2
 #  127|                 1: [VarAccess] str1
 #  127|               4: [StringLiteral]  baz
@@ -873,12 +873,13 @@ exprs.kt:
 #  202|               0: [VarAccess] aa
 #  203|         1: [LocalVariableDeclStmt] var ...;
 #  203|           1: [LocalVariableDeclExpr] b0
-#  203|             0: [MethodAccess] plus(...)
+#  203|             0: [MethodAccess] stringPlus(...)
+#  203|               -1: [TypeAccess] Intrinsics
 #  203|               0: [VarAccess] s
 #  203|               1: [IntegerLiteral] 5
 #  204|         2: [LocalVariableDeclStmt] var ...;
 #  204|           1: [LocalVariableDeclExpr] b1
-#  204|             0: [MethodAccess] plus(...)
+#  204|             0: [AddExpr] ... + ...
 #  204|               0: [VarAccess] s
 #  204|               1: [IntegerLiteral] 5
 #  205|         3: [LocalVariableDeclStmt] var ...;
