@@ -241,7 +241,11 @@ private module Cached {
       or
       FlowSummaryImplSpecific::ParsePositions::isParsedParameterPosition(_, pos)
     } or
-    TKeywordArgumentPosition(string name) { name = any(KeywordParameter kp).getName() }
+    TKeywordArgumentPosition(string name) {
+      name = any(KeywordParameter kp).getName()
+      or
+      exists(any(Call c).getKeywordArgument(name))
+    }
 
   cached
   newtype TParameterPosition =
