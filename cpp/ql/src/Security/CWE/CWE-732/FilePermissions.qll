@@ -6,7 +6,7 @@ int parseHex(string input) {
   exists(string lowerCaseInput | lowerCaseInput = input.toLowerCase() |
     lowerCaseInput.regexpMatch("0x[0-9a-f]+") and
     result =
-      sum(int ix |
+      strictsum(int ix |
         ix in [2 .. input.length()]
       |
         16.pow(input.length() - (ix + 1)) * "0123456789abcdef".indexOf(lowerCaseInput.charAt(ix))
@@ -14,6 +14,10 @@ int parseHex(string input) {
   )
 }
 
+/**
+ * Gets the value defined by the `O_CREAT` macro if the macro
+ * exists and if every definition defines the same value.
+ */
 int o_creat() {
   result =
     unique(int v |
@@ -23,6 +27,10 @@ int o_creat() {
     )
 }
 
+/**
+ * Gets the value defined by the `O_TMPFILE` macro if the macro
+ * exists and if every definition defines the same value.
+ */
 int o_tmpfile() {
   result =
     unique(int v |

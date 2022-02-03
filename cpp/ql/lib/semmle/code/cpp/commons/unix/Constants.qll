@@ -13,7 +13,7 @@ bindingset[input]
 int parseOctal(string input) {
   input.regexpMatch("0[0-7]+") and
   result =
-    sum(int ix |
+    strictsum(int ix |
       ix in [1 .. input.length()]
     |
       8.pow(input.length() - (ix + 1)) * input.charAt(ix).toInt()
