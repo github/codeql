@@ -14,10 +14,7 @@ import ModelGeneratorUtils
 
 string captureFlow(TargetAPI api) {
   result = captureQualifierFlow(api) or
-  result = captureParameterFlowToReturnValue(api) or
-  result = captureFieldFlowIn(api) or
-  result = captureParameterToParameterFlow(api) or
-  result = captureFieldFlow(api)
+  result = captureThroughFlow(api)
 }
 
 /**
@@ -40,22 +37,50 @@ string captureQualifierFlow(TargetAPI api) {
   result = asValueModel(api, "Argument[-1]", "ReturnValue")
 }
 
-class FieldToReturnConfig extends TaintTracking::Configuration {
-  FieldToReturnConfig() { this = "FieldToReturnConfig" }
+class TaintRead extends DataFlow::FlowState {
+  TaintRead() { this = "TaintRead" }
+}
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof DataFlow::InstanceParameterNode
+class TaintStore extends DataFlow::FlowState {
+  TaintStore() { this = "TaintStore" }
+}
+
+class ThroughFlowConfig extends TaintTracking::Configuration {
+  ThroughFlowConfig() { this = "ThroughFlowConfig" }
+
+  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+    source instanceof DataFlow::ParameterNode and
+    source.getEnclosingCallable() instanceof TargetAPI and
+    state instanceof TaintRead
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
     sink instanceof ReturnNodeExt and
     not sink.(ReturnNode).asExpr().(ThisAccess).isOwnInstanceAccess() and
-    not exists(captureQualifierFlow(sink.asExpr().getEnclosingCallable()))
+    not exists(captureQualifierFlow(sink.asExpr().getEnclosingCallable())) and
+    (state instanceof TaintRead or state instanceof TaintStore)
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    isRelevantTaintStep(node1, node2)
+  override predicate isAdditionalFlowStep(
+    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
+    DataFlow::FlowState state2
+  ) {
+    exists(TypedContent tc |
+      store(node1, tc, node2, _) and
+      isRelevantContent(tc.getContent()) and
+      (state1 instanceof TaintRead or state1 instanceof TaintStore) and
+      state2 instanceof TaintStore
+    )
+    or
+    exists(DataFlow::Content c |
+      readStep(node1, c, node2) and
+      isRelevantContent(c) and
+      state1 instanceof TaintRead and
+      state2 instanceof TaintRead
+    )
   }
+
+  override predicate isSanitizer(DataFlow::Node n) { not isRelevantType(n.getType()) }
 
   override DataFlow::FlowFeature getAFeature() {
     result instanceof DataFlow::FeatureEqualSourceSinkCallContext
@@ -63,8 +88,12 @@ class FieldToReturnConfig extends TaintTracking::Configuration {
 }
 
 /**
- * Capture APIs that return tainted instance data.
- * Example of an API that returns tainted instance data:
+ * Capture APIs that transfer taint from an input parameter to an output return
+ * value or parameter.
+ * Allows a sequence of read steps followed by a sequence of store steps.
+ *
+ * Examples:
+ *
  * ```
  * public class Foo {
  *   private String tainted;
@@ -83,48 +112,7 @@ class FieldToReturnConfig extends TaintTracking::Configuration {
  * p;Foo;true;returnsTainted;;Argument[-1];ReturnValue;taint
  * p;Foo;true;putsTaintIntoParameter;(List);Argument[-1];Argument[0];taint
  * ```
- */
-string captureFieldFlow(TargetAPI api) {
-  exists(FieldToReturnConfig config, ReturnNodeExt returnNodeExt |
-    config.hasFlow(_, returnNodeExt) and
-    returnNodeExt.getEnclosingCallable() = api and
-    not api.getDeclaringType() instanceof EnumType and
-    isRelevantType(returnNodeExt.getType())
-  |
-    result = asTaintModel(api, "Argument[-1]", returnNodeAsOutput(api, returnNodeExt))
-  )
-}
-
-class ParameterToFieldConfig extends TaintTracking::Configuration {
-  ParameterToFieldConfig() { this = "ParameterToFieldConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof DataFlow::ParameterNode and
-    isRelevantType(source.getType())
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    thisAccess(sink.(DataFlow::PostUpdateNode).getPreUpdateNode())
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    store(node1, _, node2, _)
-  }
-
-  override DataFlow::FlowFeature getAFeature() {
-    result instanceof DataFlow::FeatureEqualSourceSinkCallContext
-  }
-}
-
-private predicate thisAccess(DataFlow::Node n) {
-  n.asExpr().(InstanceAccess).isOwnInstanceAccess()
-  or
-  n.(DataFlow::ImplicitInstanceAccess).getInstanceAccess() instanceof OwnInstanceAccess
-}
-
-/**
- * Captures APIs that accept input and store them in a field.
- * Example:
+ *
  * ```
  * public class Foo {
  *  private String tainted;
@@ -134,96 +122,38 @@ private predicate thisAccess(DataFlow::Node n) {
  * ```
  * Captured Model:
  * `p;Foo;true;doSomething;(String);Argument[0];Argument[-1];taint`
- */
-string captureFieldFlowIn(TargetAPI api) {
-  exists(DataFlow::Node source, ParameterToFieldConfig config |
-    config.hasFlow(source, _) and
-    source.asParameter().getCallable() = api
-  |
-    result =
-      asTaintModel(api, "Argument[" + source.asParameter().getPosition() + "]", "Argument[-1]")
-  )
-}
-
-class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {
-  ParameterToReturnValueTaintConfig() { this = "ParameterToReturnValueTaintConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(TargetAPI api |
-      api = source.asParameter().getCallable() and
-      isRelevantType(api.getReturnType()) and
-      isRelevantType(source.asParameter().getType())
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ReturnNode }
-
-  // consider store steps to track taint across objects to model factory methods returning tainted objects
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    store(node1, _, node2, _)
-  }
-
-  override DataFlow::FlowFeature getAFeature() {
-    result instanceof DataFlow::FeatureEqualSourceSinkCallContext
-  }
-}
-
-predicate paramFlowToReturnValueExists(Parameter p) {
-  exists(ParameterToReturnValueTaintConfig config, ReturnStmt rtn |
-    config.hasFlow(DataFlow::parameterNode(p), DataFlow::exprNode(rtn.getResult()))
-  )
-}
-
-/**
- * Capture APIs that return (parts of) data passed in as a parameter.
- * Example:
+ *
  * ```
  * public class Foo {
- *
  *   public String returnData(String tainted) {
  *     return tainted.substring(0,10)
  *   }
  * }
  * ```
  * Captured Model:
- * ```
- * p;Foo;true;returnData;;Argument[0];ReturnValue;taint
- * ```
- */
-string captureParameterFlowToReturnValue(TargetAPI api) {
-  exists(Parameter p |
-    p = api.getAParameter() and
-    paramFlowToReturnValueExists(p)
-  |
-    result = asTaintModel(api, parameterAccess(p), "ReturnValue")
-  )
-}
-
-/**
- * Capture APIs that pass tainted data from a parameter to a parameter.
- * Example:
+ * `p;Foo;true;returnData;;Argument[0];ReturnValue;taint`
+ *
  * ```
  * public class Foo {
- *
  *   public void addToList(String tainted, List<String> foo) {
  *     foo.add(tainted);
  *   }
  * }
  * ```
  * Captured Model:
- * ```
- * p;Foo;true;addToList;;Argument[0];Argument[1];taint
- * ```
+ * `p;Foo;true;addToList;;Argument[0];Argument[1];taint`
  */
-string captureParameterToParameterFlow(TargetAPI api) {
-  exists(DataFlow::ParameterNode source, DataFlow::PostUpdateNode sink |
-    source.getEnclosingCallable() = api and
-    sink.getPreUpdateNode().asExpr() = api.getAParameter().getAnAccess() and
-    TaintTracking::localTaint(source, sink)
+string captureThroughFlow(TargetAPI api) {
+  exists(
+    ThroughFlowConfig config, DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, string input,
+    string output
   |
-    result =
-      asTaintModel(api, parameterAccess(source.asParameter()),
-        parameterAccess(sink.getPreUpdateNode().asExpr().(VarAccess).getVariable()))
+    config.hasFlow(p, returnNodeExt) and
+    returnNodeExt.getEnclosingCallable() = api and
+    input = parameterNodeAsInput(p) and
+    output = returnNodeAsOutput(api, returnNodeExt) and
+    input != output and
+    result = asTaintModel(api, input, output)
   )
 }
 

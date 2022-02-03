@@ -151,11 +151,29 @@ predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
   )
 }
 
+predicate isRelevantContent(DataFlow::Content f) {
+  isRelevantType(f.(DataFlow::FieldContent).getField().getType()) or
+  f instanceof DataFlow::ArrayContent or
+  f instanceof DataFlow::CollectionContent or
+  f instanceof DataFlow::MapKeyContent or
+  f instanceof DataFlow::MapValueContent
+}
+
+string parameterNodeAsInput(DataFlow::ParameterNode p) {
+  result = parameterAccess(p.asParameter())
+  or
+  result = "Argument[-1]" and p instanceof DataFlow::InstanceParameterNode
+}
+
 string returnNodeAsOutput(TargetAPI api, ReturnNodeExt node) {
   if node.getKind() instanceof ValueReturnKind
   then result = "ReturnValue"
   else
-    result = parameterAccess(api.getParameter(node.getKind().(ParamUpdateReturnKind).getPosition()))
+    exists(int pos | pos = node.getKind().(ParamUpdateReturnKind).getPosition() |
+      result = parameterAccess(api.getParameter(pos))
+      or
+      result = "Argument[-1]" and pos = -1
+    )
 }
 
 string parameterAccess(Parameter p) {
