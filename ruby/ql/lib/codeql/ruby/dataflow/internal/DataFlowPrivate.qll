@@ -379,17 +379,12 @@ private module ParameterNodes {
     override Parameter getParameter() { result = parameter }
 
     override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
-      exists(int i |
-        pos.isPositional(i) and
-        parameter = c.getAParameter() and
-        i = parameter.getLogicalPosition()
+      parameter = c.getAParameter() and
+      (
+        pos.isPositional(parameter.getLogicalPosition())
+        or
+        pos.isKeyword(parameter.(KeywordParameter).getName())
       )
-      or
-      parameter =
-        any(KeywordParameter kp |
-          c.getAParameter() = kp and
-          pos.isKeyword(kp.getName())
-        )
     }
 
     override CfgScope getCfgScope() { result = parameter.getCallable() }
