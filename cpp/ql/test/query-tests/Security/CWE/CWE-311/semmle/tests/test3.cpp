@@ -445,9 +445,32 @@ int open(const char *filename, int b);
 
 void test_tty()
 {
-	char password[256];
-	int f;
+	{
+		char password[256];
+		int f;
 
-	f = open("/dev/tty", val());
-	recv(f, password, 256, val()); // GOOD: from terminal
+		f = open("/dev/tty", val());
+		recv(f, password, 256, val()); // GOOD: from terminal
+	}
+
+	{
+		char password[256];
+		int f;
+
+		f = STDIN_FILENO;
+		recv(f, password, 256, val()); // GOOD: from stdin
+	}
+
+	{
+		char password[256];
+		int f;
+
+		f = open("/dev/tty", val());
+		if (f == -1)
+		{
+			f = STDIN_FILENO;
+		}
+
+		recv(f, password, 256, val()); // GOOD: from terminal or stdin [FALSE POSITIVE]
+	}
 }
