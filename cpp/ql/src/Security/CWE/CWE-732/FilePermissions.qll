@@ -15,15 +15,21 @@ int parseHex(string input) {
 }
 
 int o_creat() {
-  exists(Macro m | m.getName() = "O_CREAT" |
-    result = parseHex(m.getBody()) or result = UnixConstants::parseOctal(m.getBody())
-  )
+  result =
+    unique(int v |
+      exists(Macro m | m.getName() = "O_CREAT" |
+        v = parseHex(m.getBody()) or v = UnixConstants::parseOctal(m.getBody())
+      )
+    )
 }
 
 int o_tmpfile() {
-  exists(Macro m | m.getName() = "O_TMPFILE" |
-    result = parseHex(m.getBody()) or result = UnixConstants::parseOctal(m.getBody())
-  )
+  result =
+    unique(int v |
+      exists(Macro m | m.getName() = "O_TMPFILE" |
+        v = parseHex(m.getBody()) or v = UnixConstants::parseOctal(m.getBody())
+      )
+    )
 }
 
 bindingset[n, digit]
