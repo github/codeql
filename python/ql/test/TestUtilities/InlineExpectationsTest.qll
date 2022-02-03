@@ -93,7 +93,7 @@
 private import InlineExpectationsTestPrivate
 
 /**
- * Base class for tests with inline expectations. The test extends this class to provide the actual
+ * The base class for tests with inline expectations. The test extends this class to provide the actual
  * results of the query, which are then compared with the expected results in comments to produce a
  * list of failure messages that point out where the actual results differ from the expected
  * results.
