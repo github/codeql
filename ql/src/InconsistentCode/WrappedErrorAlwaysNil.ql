@@ -37,7 +37,7 @@ class NilTestGuard extends DataFlow::BarrierGuard, DataFlow::EqualityTestNode {
 DataFlow::ExprNode getNilFromLocalVariable() {
   exists(SsaVariable ssa, Write w |
     w.definesSsaVariable(ssa, Builtin::nil().getARead()) and
-    result.getExpr() = ssa.getAUse().(IR::EvalInstruction).getExpr()
+    result.asInstruction() = ssa.getAUse()
   )
 }
 
