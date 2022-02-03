@@ -1102,6 +1102,19 @@ open class KotlinFileExtractor(
         return result
     }
 
+    /**
+     * Returns true if EQEQ call `c` can be implemented by a Java-style `==` or `!=` test. This is true if both operands
+     * are primitives, or either is a null constant.
+     */
+    fun isShallowEqualityTest(c: IrCall): Boolean {
+        val arg0 = c.getValueArgument(0)!!
+        val arg1 = c.getValueArgument(1)!!
+
+        return (arg0.type.isPrimitiveType(false) && arg1.type.isPrimitiveType(false))
+                || arg0.isNullConst()
+                || arg1.isNullConst()
+    }
+
     fun extractCall(c: IrCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
         with("call", c) {
             fun isFunction(pkgName: String, className: String, fName: String, hasQuestionMark: Boolean? = false): Boolean {
@@ -1264,11 +1277,16 @@ open class KotlinFileExtractor(
                     binopDisp(id)
                 }
                 // != gets desugared into not and ==. Here we resugar it.
-                // TODO: This is wrong. Kotlin `a == b` is `a?.equals(b) ?: (b === null)`
                 c.origin == IrStatementOrigin.EXCLEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "EQEQ") -> {
-                    val id = tw.getFreshIdLabel<DbNeexpr>()
+                    var id: Label<out DbExpr>
                     val type = useType(c.type)
-                    tw.writeExprs_neexpr(id, type.javaResult.id, parent, idx)
+                    if (isShallowEqualityTest(dr)) {
+                        id = tw.getFreshIdLabel<DbNeexpr>()
+                        tw.writeExprs_neexpr(id, type.javaResult.id, parent, idx)
+                    } else {
+                        id = tw.getFreshIdLabel<DbValueneexpr>()
+                        tw.writeExprs_valueneexpr(id, type.javaResult.id, parent, idx)
+                    }
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binOp(id, dr, callable, enclosingStmt)
                 }
@@ -1282,7 +1300,6 @@ open class KotlinFileExtractor(
                 c.origin == IrStatementOrigin.EXCLEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "ieee754equals") -> {
                     val id = tw.getFreshIdLabel<DbNeexpr>()
                     val type = useType(c.type)
-                    // TODO: Is this consistent with Java?
                     tw.writeExprs_neexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binOp(id, dr, callable, enclosingStmt)
@@ -1334,10 +1351,15 @@ open class KotlinFileExtractor(
                     if(c.origin != IrStatementOrigin.EQEQ) {
                         logger.errorElement("Unexpected origin for EQEQ: ${c.origin}", c)
                     }
-                    // TODO: This is wrong. Kotlin `a == b` is `a?.equals(b) ?: (b === null)`
-                    val id = tw.getFreshIdLabel<DbEqexpr>()
+                    var id: Label<out DbExpr>
                     val type = useType(c.type)
-                    tw.writeExprs_eqexpr(id, type.javaResult.id, parent, idx)
+                    if (isShallowEqualityTest(c)) {
+                        id = tw.getFreshIdLabel<DbEqexpr>()
+                        tw.writeExprs_eqexpr(id, type.javaResult.id, parent, idx)
+                    } else {
+                        id = tw.getFreshIdLabel<DbValueeqexpr>()
+                        tw.writeExprs_valueeqexpr(id, type.javaResult.id, parent, idx)
+                    }
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binOp(id, c, callable, enclosingStmt)
                 }
@@ -1355,7 +1377,6 @@ open class KotlinFileExtractor(
                     if(c.origin != IrStatementOrigin.EQEQ) {
                         logger.errorElement("Unexpected origin for ieee754equals: ${c.origin}", c)
                     }
-                    // TODO: Is this consistent with Java?
                     val id = tw.getFreshIdLabel<DbEqexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_eqexpr(id, type.javaResult.id, parent, idx)

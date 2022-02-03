@@ -219,3 +219,26 @@ class SomeClass1 {}
 fun fnClassRef() {
     val x = SomeClass1::class
 }
+
+fun equalityTests(notNullPrimitive: Int, nullablePrimitive: Int?, notNullReftype: String, nullableReftype: String?) {
+  val b1 = notNullPrimitive == notNullPrimitive
+  val b2 = notNullPrimitive == nullablePrimitive
+  val b3 = nullablePrimitive == nullablePrimitive
+  val b4 = notNullReftype == notNullReftype
+  val b5 = notNullReftype == nullableReftype
+  val b6 = nullableReftype == nullableReftype
+  val b7 = notNullPrimitive != notNullPrimitive
+  val b8 = notNullPrimitive != nullablePrimitive
+  val b9 = nullablePrimitive != nullablePrimitive
+  val b10 = notNullReftype != notNullReftype
+  val b11 = notNullReftype != nullableReftype
+  val b12 = nullableReftype != nullableReftype
+  val b13 = notNullPrimitive == null
+  val b14 = nullablePrimitive == null
+  val b15 = notNullReftype == null
+  val b16 = nullableReftype == null
+  val b17 = notNullPrimitive != null
+  val b18 = nullablePrimitive != null
+  val b19 = notNullReftype != null
+  val b20 = nullableReftype != null
+}

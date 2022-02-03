@@ -619,6 +619,86 @@
 | exprs.kt:220:5:220:29 | x | exprs.kt:219:1:221:1 | fnClassRef | LocalVariableDeclExpr |
 | exprs.kt:220:13:220:29 | SomeClass1 | exprs.kt:219:1:221:1 | fnClassRef | TypeAccess |
 | exprs.kt:220:13:220:29 | SomeClass1.class | exprs.kt:219:1:221:1 | fnClassRef | TypeLiteral |
+| exprs.kt:224:3:224:47 | b1 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:224:12:224:27 | notNullPrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:224:12:224:47 | ... == ... | exprs.kt:223:1:244:1 | equalityTests | EQExpr |
+| exprs.kt:224:32:224:47 | notNullPrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:225:3:225:48 | b2 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:225:12:225:27 | notNullPrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:225:12:225:48 | ... == ... | exprs.kt:223:1:244:1 | equalityTests | ValueEQExpr |
+| exprs.kt:225:32:225:48 | nullablePrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:226:3:226:49 | b3 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:226:12:226:28 | nullablePrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:226:12:226:49 | ... == ... | exprs.kt:223:1:244:1 | equalityTests | ValueEQExpr |
+| exprs.kt:226:33:226:49 | nullablePrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:227:3:227:43 | b4 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:227:12:227:25 | notNullReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:227:12:227:43 | ... == ... | exprs.kt:223:1:244:1 | equalityTests | ValueEQExpr |
+| exprs.kt:227:30:227:43 | notNullReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:228:3:228:44 | b5 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:228:12:228:25 | notNullReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:228:12:228:44 | ... == ... | exprs.kt:223:1:244:1 | equalityTests | ValueEQExpr |
+| exprs.kt:228:30:228:44 | nullableReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:229:3:229:45 | b6 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:229:12:229:26 | nullableReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:229:12:229:45 | ... == ... | exprs.kt:223:1:244:1 | equalityTests | ValueEQExpr |
+| exprs.kt:229:31:229:45 | nullableReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:230:3:230:47 | b7 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:230:12:230:27 | notNullPrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:230:12:230:47 | ... != ... | exprs.kt:223:1:244:1 | equalityTests | NEExpr |
+| exprs.kt:230:32:230:47 | notNullPrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:231:3:231:48 | b8 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:231:12:231:27 | notNullPrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:231:12:231:48 | ... != ... | exprs.kt:223:1:244:1 | equalityTests | ValueNEExpr |
+| exprs.kt:231:32:231:48 | nullablePrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:232:3:232:49 | b9 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:232:12:232:28 | nullablePrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:232:12:232:49 | ... != ... | exprs.kt:223:1:244:1 | equalityTests | ValueNEExpr |
+| exprs.kt:232:33:232:49 | nullablePrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:233:3:233:44 | b10 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:233:13:233:26 | notNullReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:233:13:233:44 | ... != ... | exprs.kt:223:1:244:1 | equalityTests | ValueNEExpr |
+| exprs.kt:233:31:233:44 | notNullReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:234:3:234:45 | b11 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:234:13:234:26 | notNullReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:234:13:234:45 | ... != ... | exprs.kt:223:1:244:1 | equalityTests | ValueNEExpr |
+| exprs.kt:234:31:234:45 | nullableReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:235:3:235:46 | b12 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:235:13:235:27 | nullableReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:235:13:235:46 | ... != ... | exprs.kt:223:1:244:1 | equalityTests | ValueNEExpr |
+| exprs.kt:235:32:235:46 | nullableReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:236:3:236:36 | b13 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:236:13:236:28 | notNullPrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:236:13:236:36 | ... == ... | exprs.kt:223:1:244:1 | equalityTests | EQExpr |
+| exprs.kt:236:33:236:36 | null | exprs.kt:223:1:244:1 | equalityTests | NullLiteral |
+| exprs.kt:237:3:237:37 | b14 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:237:13:237:29 | nullablePrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:237:13:237:37 | ... == ... | exprs.kt:223:1:244:1 | equalityTests | EQExpr |
+| exprs.kt:237:34:237:37 | null | exprs.kt:223:1:244:1 | equalityTests | NullLiteral |
+| exprs.kt:238:3:238:34 | b15 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:238:13:238:26 | notNullReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:238:13:238:34 | ... == ... | exprs.kt:223:1:244:1 | equalityTests | EQExpr |
+| exprs.kt:238:31:238:34 | null | exprs.kt:223:1:244:1 | equalityTests | NullLiteral |
+| exprs.kt:239:3:239:35 | b16 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:239:13:239:27 | nullableReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:239:13:239:35 | ... == ... | exprs.kt:223:1:244:1 | equalityTests | EQExpr |
+| exprs.kt:239:32:239:35 | null | exprs.kt:223:1:244:1 | equalityTests | NullLiteral |
+| exprs.kt:240:3:240:36 | b17 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:240:13:240:28 | notNullPrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:240:13:240:36 | ... != ... | exprs.kt:223:1:244:1 | equalityTests | NEExpr |
+| exprs.kt:240:33:240:36 | null | exprs.kt:223:1:244:1 | equalityTests | NullLiteral |
+| exprs.kt:241:3:241:37 | b18 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:241:13:241:29 | nullablePrimitive | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:241:13:241:37 | ... != ... | exprs.kt:223:1:244:1 | equalityTests | NEExpr |
+| exprs.kt:241:34:241:37 | null | exprs.kt:223:1:244:1 | equalityTests | NullLiteral |
+| exprs.kt:242:3:242:34 | b19 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:242:13:242:26 | notNullReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:242:13:242:34 | ... != ... | exprs.kt:223:1:244:1 | equalityTests | NEExpr |
+| exprs.kt:242:31:242:34 | null | exprs.kt:223:1:244:1 | equalityTests | NullLiteral |
+| exprs.kt:243:3:243:35 | b20 | exprs.kt:223:1:244:1 | equalityTests | LocalVariableDeclExpr |
+| exprs.kt:243:13:243:27 | nullableReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
+| exprs.kt:243:13:243:35 | ... != ... | exprs.kt:223:1:244:1 | equalityTests | NEExpr |
+| exprs.kt:243:32:243:35 | null | exprs.kt:223:1:244:1 | equalityTests | NullLiteral |
 | funcExprs.kt:16:5:16:33 | functionExpression0a(...) | funcExprs.kt:15:1:46:1 | call | MethodAccess |
 | funcExprs.kt:16:26:16:33 | ...->... | funcExprs.kt:15:1:46:1 | call | LambdaExpr |
 | funcExprs.kt:16:26:16:33 | Function0<Integer> | funcExprs.kt:15:1:46:1 | call | TypeAccess |

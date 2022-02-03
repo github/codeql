@@ -737,6 +737,113 @@ exprs.kt:
 #  220|           1: [LocalVariableDeclExpr] x
 #  220|             0: [TypeLiteral] SomeClass1.class
 #  220|               0: [TypeAccess] SomeClass1
+#  223|     9: [Method] equalityTests
+#-----|       4: (Parameters)
+#  223|         0: [Parameter] notNullPrimitive
+#  223|         1: [Parameter] nullablePrimitive
+#  223|         2: [Parameter] notNullReftype
+#  223|         3: [Parameter] nullableReftype
+#  223|       5: [BlockStmt] { ... }
+#  224|         0: [LocalVariableDeclStmt] var ...;
+#  224|           1: [LocalVariableDeclExpr] b1
+#  224|             0: [EQExpr] ... == ...
+#  224|               0: [VarAccess] notNullPrimitive
+#  224|               1: [VarAccess] notNullPrimitive
+#  225|         1: [LocalVariableDeclStmt] var ...;
+#  225|           1: [LocalVariableDeclExpr] b2
+#  225|             0: [ValueEQExpr] ... == ...
+#  225|               0: [VarAccess] notNullPrimitive
+#  225|               1: [VarAccess] nullablePrimitive
+#  226|         2: [LocalVariableDeclStmt] var ...;
+#  226|           1: [LocalVariableDeclExpr] b3
+#  226|             0: [ValueEQExpr] ... == ...
+#  226|               0: [VarAccess] nullablePrimitive
+#  226|               1: [VarAccess] nullablePrimitive
+#  227|         3: [LocalVariableDeclStmt] var ...;
+#  227|           1: [LocalVariableDeclExpr] b4
+#  227|             0: [ValueEQExpr] ... == ...
+#  227|               0: [VarAccess] notNullReftype
+#  227|               1: [VarAccess] notNullReftype
+#  228|         4: [LocalVariableDeclStmt] var ...;
+#  228|           1: [LocalVariableDeclExpr] b5
+#  228|             0: [ValueEQExpr] ... == ...
+#  228|               0: [VarAccess] notNullReftype
+#  228|               1: [VarAccess] nullableReftype
+#  229|         5: [LocalVariableDeclStmt] var ...;
+#  229|           1: [LocalVariableDeclExpr] b6
+#  229|             0: [ValueEQExpr] ... == ...
+#  229|               0: [VarAccess] nullableReftype
+#  229|               1: [VarAccess] nullableReftype
+#  230|         6: [LocalVariableDeclStmt] var ...;
+#  230|           1: [LocalVariableDeclExpr] b7
+#  230|             0: [NEExpr] ... != ...
+#  230|               0: [VarAccess] notNullPrimitive
+#  230|               1: [VarAccess] notNullPrimitive
+#  231|         7: [LocalVariableDeclStmt] var ...;
+#  231|           1: [LocalVariableDeclExpr] b8
+#  231|             0: [ValueNEExpr] ... != ...
+#  231|               0: [VarAccess] notNullPrimitive
+#  231|               1: [VarAccess] nullablePrimitive
+#  232|         8: [LocalVariableDeclStmt] var ...;
+#  232|           1: [LocalVariableDeclExpr] b9
+#  232|             0: [ValueNEExpr] ... != ...
+#  232|               0: [VarAccess] nullablePrimitive
+#  232|               1: [VarAccess] nullablePrimitive
+#  233|         9: [LocalVariableDeclStmt] var ...;
+#  233|           1: [LocalVariableDeclExpr] b10
+#  233|             0: [ValueNEExpr] ... != ...
+#  233|               0: [VarAccess] notNullReftype
+#  233|               1: [VarAccess] notNullReftype
+#  234|         10: [LocalVariableDeclStmt] var ...;
+#  234|           1: [LocalVariableDeclExpr] b11
+#  234|             0: [ValueNEExpr] ... != ...
+#  234|               0: [VarAccess] notNullReftype
+#  234|               1: [VarAccess] nullableReftype
+#  235|         11: [LocalVariableDeclStmt] var ...;
+#  235|           1: [LocalVariableDeclExpr] b12
+#  235|             0: [ValueNEExpr] ... != ...
+#  235|               0: [VarAccess] nullableReftype
+#  235|               1: [VarAccess] nullableReftype
+#  236|         12: [LocalVariableDeclStmt] var ...;
+#  236|           1: [LocalVariableDeclExpr] b13
+#  236|             0: [EQExpr] ... == ...
+#  236|               0: [VarAccess] notNullPrimitive
+#  236|               1: [NullLiteral] null
+#  237|         13: [LocalVariableDeclStmt] var ...;
+#  237|           1: [LocalVariableDeclExpr] b14
+#  237|             0: [EQExpr] ... == ...
+#  237|               0: [VarAccess] nullablePrimitive
+#  237|               1: [NullLiteral] null
+#  238|         14: [LocalVariableDeclStmt] var ...;
+#  238|           1: [LocalVariableDeclExpr] b15
+#  238|             0: [EQExpr] ... == ...
+#  238|               0: [VarAccess] notNullReftype
+#  238|               1: [NullLiteral] null
+#  239|         15: [LocalVariableDeclStmt] var ...;
+#  239|           1: [LocalVariableDeclExpr] b16
+#  239|             0: [EQExpr] ... == ...
+#  239|               0: [VarAccess] nullableReftype
+#  239|               1: [NullLiteral] null
+#  240|         16: [LocalVariableDeclStmt] var ...;
+#  240|           1: [LocalVariableDeclExpr] b17
+#  240|             0: [NEExpr] ... != ...
+#  240|               0: [VarAccess] notNullPrimitive
+#  240|               1: [NullLiteral] null
+#  241|         17: [LocalVariableDeclStmt] var ...;
+#  241|           1: [LocalVariableDeclExpr] b18
+#  241|             0: [NEExpr] ... != ...
+#  241|               0: [VarAccess] nullablePrimitive
+#  241|               1: [NullLiteral] null
+#  242|         18: [LocalVariableDeclStmt] var ...;
+#  242|           1: [LocalVariableDeclExpr] b19
+#  242|             0: [NEExpr] ... != ...
+#  242|               0: [VarAccess] notNullReftype
+#  242|               1: [NullLiteral] null
+#  243|         19: [LocalVariableDeclStmt] var ...;
+#  243|           1: [LocalVariableDeclExpr] b20
+#  243|             0: [NEExpr] ... != ...
+#  243|               0: [VarAccess] nullableReftype
+#  243|               1: [NullLiteral] null
 #  142|   2: [Class] C
 #  142|     1: [Constructor] C
 #-----|       4: (Parameters)

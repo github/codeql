@@ -959,11 +959,25 @@ class EQExpr extends BinaryExpr, @eqexpr {
   override string getAPrimaryQlClass() { result = "EQExpr" }
 }
 
+/** A binary expression using the Kotlin `==` operator, semantically equivalent to `Objects.equals`. */
+class ValueEQExpr extends BinaryExpr, @valueeqexpr {
+  override string getOp() { result = " == " }
+
+  override string getAPrimaryQlClass() { result = "ValueEQExpr" }
+}
+
 /** A binary expression using the `!=` operator. */
 class NEExpr extends BinaryExpr, @neexpr {
   override string getOp() { result = " != " }
 
   override string getAPrimaryQlClass() { result = "NEExpr" }
+}
+
+/** A binary expression using the Kotlin `!=` operator, semantically equivalent to `Objects.equals`. */
+class ValueNEExpr extends BinaryExpr, @valueneexpr {
+  override string getOp() { result = " != " }
+
+  override string getAPrimaryQlClass() { result = "ValueNEExpr" }
 }
 
 /**
