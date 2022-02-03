@@ -46,10 +46,16 @@ string octalFileMode(int mode) {
 }
 
 /**
+ * Holds if the bitmask `value` sets the bits in `flag`.
+ */
+bindingset[value, flag]
+predicate setsFlag(int value, int flag) { value.bitAnd(flag) = flag }
+
+/**
  * Holds if the bitmask `mask` sets any of the bit fields in `fields`.
  */
 bindingset[mask, fields]
-predicate sets(int mask, int fields) { mask.bitAnd(fields) != 0 }
+predicate setsAnyBits(int mask, int fields) { mask.bitAnd(fields) != 0 }
 
 /**
  * Gets the value that `fc` sets the umask to, if `fc` is a call to
@@ -116,7 +122,7 @@ class OpenCreationExpr extends FileCreationWithOptionalModeExpr {
   OpenCreationExpr() {
     this.getTarget().getName() = ["open", "_open", "_wopen"] and
     exists(int flag | flag = this.getArgument(1).getValue().toInt() |
-      sets(flag, o_creat()) or sets(flag, o_tmpfile())
+      setsFlag(flag, o_creat()) or setsFlag(flag, o_tmpfile())
     )
   }
 
@@ -145,7 +151,7 @@ class OpenatCreationExpr extends FileCreationWithOptionalModeExpr {
   OpenatCreationExpr() {
     this.getTarget().getName() = "openat" and
     exists(int flag | flag = this.getArgument(2).getValue().toInt() |
-      sets(flag, o_creat()) or sets(flag, o_tmpfile())
+      setsFlag(flag, o_creat()) or setsFlag(flag, o_tmpfile())
     )
   }
 
