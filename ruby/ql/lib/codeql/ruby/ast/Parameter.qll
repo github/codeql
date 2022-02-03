@@ -19,6 +19,27 @@ class Parameter extends AstNode, TParameter {
   /** Gets the zero-based position of this parameter. */
   final int getPosition() { this = any(Callable c).getParameter(result) }
 
+  /** Holds if this parameter is declared after a positional `*splat` parameter. */
+  private predicate isAfterSplatParameter() {
+    exists(Callable c, int n |
+      c.getParameter(n) instanceof SplatParameter and
+      this = c.getParameter([n .. c.getNumberOfParameters() - 1])
+    )
+  }
+
+  /**
+   * Gets the zero-based position of this parameter, if it is a plain positional parameter.
+   *
+   * This corresponds to the index of a positional argument that can flow into this parameter.
+   *
+   * Has no result for non-positional parameters, splat parameters, or parameters declared after a splat parameter.
+   */
+  final int getLogicalPosition() {
+    (this instanceof SimpleParameter or this instanceof OptionalParameter) and
+    result = getPosition() and
+    not isAfterSplatParameter()
+  }
+
   /** Gets a variable introduced by this parameter. */
   LocalVariable getAVariable() { none() }
 
