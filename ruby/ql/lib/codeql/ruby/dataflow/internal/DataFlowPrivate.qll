@@ -383,10 +383,6 @@ private module ParameterNodes {
         pos.isPositional(i) and
         parameter = c.getAParameter() and
         i = parameter.getLogicalPosition()
-      |
-        parameter instanceof SimpleParameter
-        or
-        parameter instanceof OptionalParameter
       )
       or
       parameter =
