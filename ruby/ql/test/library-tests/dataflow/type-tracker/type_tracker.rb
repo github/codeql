@@ -14,3 +14,11 @@ def m()
     var.field = "hello"
     puts var.field
 end
+
+def foo(a, *b, c)
+    puts a
+    puts b
+    puts c
+end
+
+foo('a', 'b1', 'b2', 'c')

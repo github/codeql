@@ -1,4 +1,6 @@
 track
+| type_tracker.rb:1:1:10:3 | self (type_tracker.rb) | type tracker with call steps | type_tracker.rb:18:1:22:3 | self in foo |
+| type_tracker.rb:1:1:10:3 | self (type_tracker.rb) | type tracker without call steps | type_tracker.rb:1:1:10:3 | self (type_tracker.rb) |
 | type_tracker.rb:2:5:5:7 | &block | type tracker without call steps | type_tracker.rb:2:5:5:7 | &block |
 | type_tracker.rb:2:5:5:7 | field= | type tracker without call steps | type_tracker.rb:2:5:5:7 | field= |
 | type_tracker.rb:2:5:5:7 | return return in field= | type tracker without call steps | type_tracker.rb:2:5:5:7 | return return in field= |
@@ -66,7 +68,58 @@ track
 | type_tracker.rb:15:10:15:12 | [post] var | type tracker without call steps | type_tracker.rb:15:10:15:12 | [post] var |
 | type_tracker.rb:15:10:15:18 | [post] call to field | type tracker without call steps | type_tracker.rb:15:10:15:18 | [post] call to field |
 | type_tracker.rb:15:10:15:18 | call to field | type tracker without call steps | type_tracker.rb:15:10:15:18 | call to field |
+| type_tracker.rb:18:1:22:3 | &block | type tracker without call steps | type_tracker.rb:18:1:22:3 | &block |
+| type_tracker.rb:18:1:22:3 | foo | type tracker without call steps | type_tracker.rb:18:1:22:3 | foo |
+| type_tracker.rb:18:1:22:3 | return return in foo | type tracker without call steps | type_tracker.rb:18:1:22:3 | return return in foo |
+| type_tracker.rb:18:1:22:3 | return return in foo | type tracker without call steps | type_tracker.rb:24:1:24:25 | call to foo |
+| type_tracker.rb:18:1:22:3 | self (foo) | type tracker without call steps | type_tracker.rb:18:1:22:3 | self (foo) |
+| type_tracker.rb:18:1:22:3 | self in foo | type tracker without call steps | type_tracker.rb:18:1:22:3 | self in foo |
+| type_tracker.rb:18:9:18:9 | a | type tracker with call steps | type_tracker.rb:18:9:18:9 | a |
+| type_tracker.rb:18:9:18:9 | a | type tracker without call steps | type_tracker.rb:18:9:18:9 | a |
+| type_tracker.rb:18:9:18:9 | a | type tracker without call steps | type_tracker.rb:18:9:18:9 | a |
+| type_tracker.rb:18:9:18:9 | a | type tracker without call steps | type_tracker.rb:18:9:18:9 | a |
+| type_tracker.rb:18:13:18:13 | b | type tracker without call steps | type_tracker.rb:18:13:18:13 | b |
+| type_tracker.rb:18:13:18:13 | b | type tracker without call steps | type_tracker.rb:18:13:18:13 | b |
+| type_tracker.rb:18:16:18:16 | c | type tracker with call steps | type_tracker.rb:18:16:18:16 | c |
+| type_tracker.rb:18:16:18:16 | c | type tracker without call steps | type_tracker.rb:18:16:18:16 | c |
+| type_tracker.rb:18:16:18:16 | c | type tracker without call steps | type_tracker.rb:18:16:18:16 | c |
+| type_tracker.rb:18:16:18:16 | c | type tracker without call steps | type_tracker.rb:18:16:18:16 | c |
+| type_tracker.rb:19:5:19:10 | [post] self | type tracker without call steps | type_tracker.rb:19:5:19:10 | [post] self |
+| type_tracker.rb:19:5:19:10 | call to puts | type tracker without call steps | type_tracker.rb:19:5:19:10 | call to puts |
+| type_tracker.rb:19:5:19:10 | self | type tracker without call steps | type_tracker.rb:19:5:19:10 | self |
+| type_tracker.rb:19:10:19:10 | [post] a | type tracker without call steps | type_tracker.rb:19:10:19:10 | [post] a |
+| type_tracker.rb:19:10:19:10 | a | type tracker without call steps | type_tracker.rb:19:10:19:10 | a |
+| type_tracker.rb:20:5:20:10 | [post] self | type tracker without call steps | type_tracker.rb:20:5:20:10 | [post] self |
+| type_tracker.rb:20:5:20:10 | call to puts | type tracker without call steps | type_tracker.rb:20:5:20:10 | call to puts |
+| type_tracker.rb:20:5:20:10 | self | type tracker without call steps | type_tracker.rb:20:5:20:10 | self |
+| type_tracker.rb:20:10:20:10 | [post] b | type tracker without call steps | type_tracker.rb:20:10:20:10 | [post] b |
+| type_tracker.rb:20:10:20:10 | b | type tracker without call steps | type_tracker.rb:20:10:20:10 | b |
+| type_tracker.rb:21:5:21:10 | [post] self | type tracker without call steps | type_tracker.rb:21:5:21:10 | [post] self |
+| type_tracker.rb:21:5:21:10 | call to puts | type tracker without call steps | type_tracker.rb:18:1:22:3 | return return in foo |
+| type_tracker.rb:21:5:21:10 | call to puts | type tracker without call steps | type_tracker.rb:21:5:21:10 | call to puts |
+| type_tracker.rb:21:5:21:10 | call to puts | type tracker without call steps | type_tracker.rb:24:1:24:25 | call to foo |
+| type_tracker.rb:21:5:21:10 | self | type tracker without call steps | type_tracker.rb:21:5:21:10 | self |
+| type_tracker.rb:21:10:21:10 | [post] c | type tracker without call steps | type_tracker.rb:21:10:21:10 | [post] c |
+| type_tracker.rb:21:10:21:10 | c | type tracker without call steps | type_tracker.rb:21:10:21:10 | c |
+| type_tracker.rb:24:1:24:25 | [post] self | type tracker without call steps | type_tracker.rb:24:1:24:25 | [post] self |
+| type_tracker.rb:24:1:24:25 | call to foo | type tracker without call steps | type_tracker.rb:24:1:24:25 | call to foo |
+| type_tracker.rb:24:1:24:25 | self | type tracker with call steps | type_tracker.rb:18:1:22:3 | self in foo |
+| type_tracker.rb:24:1:24:25 | self | type tracker without call steps | type_tracker.rb:24:1:24:25 | self |
+| type_tracker.rb:24:5:24:7 | "a" | type tracker with call steps | type_tracker.rb:18:9:18:9 | a |
+| type_tracker.rb:24:5:24:7 | "a" | type tracker with call steps | type_tracker.rb:18:9:18:9 | a |
+| type_tracker.rb:24:5:24:7 | "a" | type tracker without call steps | type_tracker.rb:24:5:24:7 | "a" |
+| type_tracker.rb:24:5:24:7 | [post] "a" | type tracker without call steps | type_tracker.rb:24:5:24:7 | [post] "a" |
+| type_tracker.rb:24:10:24:13 | "b1" | type tracker without call steps | type_tracker.rb:24:10:24:13 | "b1" |
+| type_tracker.rb:24:10:24:13 | [post] "b1" | type tracker without call steps | type_tracker.rb:24:10:24:13 | [post] "b1" |
+| type_tracker.rb:24:16:24:19 | "b2" | type tracker with call steps | type_tracker.rb:18:16:18:16 | c |
+| type_tracker.rb:24:16:24:19 | "b2" | type tracker with call steps | type_tracker.rb:18:16:18:16 | c |
+| type_tracker.rb:24:16:24:19 | "b2" | type tracker without call steps | type_tracker.rb:24:16:24:19 | "b2" |
+| type_tracker.rb:24:16:24:19 | [post] "b2" | type tracker without call steps | type_tracker.rb:24:16:24:19 | [post] "b2" |
+| type_tracker.rb:24:22:24:24 | "c" | type tracker without call steps | type_tracker.rb:24:22:24:24 | "c" |
+| type_tracker.rb:24:22:24:24 | [post] "c" | type tracker without call steps | type_tracker.rb:24:22:24:24 | [post] "c" |
 trackEnd
+| type_tracker.rb:1:1:10:3 | self (type_tracker.rb) | type_tracker.rb:1:1:10:3 | self (type_tracker.rb) |
+| type_tracker.rb:1:1:10:3 | self (type_tracker.rb) | type_tracker.rb:18:1:22:3 | self in foo |
 | type_tracker.rb:2:5:5:7 | &block | type_tracker.rb:2:5:5:7 | &block |
 | type_tracker.rb:2:5:5:7 | field= | type_tracker.rb:2:5:5:7 | field= |
 | type_tracker.rb:2:5:5:7 | return return in field= | type_tracker.rb:2:5:5:7 | return return in field= |
@@ -132,3 +185,52 @@ trackEnd
 | type_tracker.rb:15:10:15:12 | [post] var | type_tracker.rb:15:10:15:12 | [post] var |
 | type_tracker.rb:15:10:15:18 | [post] call to field | type_tracker.rb:15:10:15:18 | [post] call to field |
 | type_tracker.rb:15:10:15:18 | call to field | type_tracker.rb:15:10:15:18 | call to field |
+| type_tracker.rb:18:1:22:3 | &block | type_tracker.rb:18:1:22:3 | &block |
+| type_tracker.rb:18:1:22:3 | foo | type_tracker.rb:18:1:22:3 | foo |
+| type_tracker.rb:18:1:22:3 | return return in foo | type_tracker.rb:18:1:22:3 | return return in foo |
+| type_tracker.rb:18:1:22:3 | return return in foo | type_tracker.rb:24:1:24:25 | call to foo |
+| type_tracker.rb:18:1:22:3 | self (foo) | type_tracker.rb:18:1:22:3 | self (foo) |
+| type_tracker.rb:18:1:22:3 | self in foo | type_tracker.rb:18:1:22:3 | self in foo |
+| type_tracker.rb:18:9:18:9 | a | type_tracker.rb:18:9:18:9 | a |
+| type_tracker.rb:18:9:18:9 | a | type_tracker.rb:18:9:18:9 | a |
+| type_tracker.rb:18:9:18:9 | a | type_tracker.rb:18:9:18:9 | a |
+| type_tracker.rb:18:9:18:9 | a | type_tracker.rb:18:9:18:9 | a |
+| type_tracker.rb:18:13:18:13 | b | type_tracker.rb:18:13:18:13 | b |
+| type_tracker.rb:18:13:18:13 | b | type_tracker.rb:18:13:18:13 | b |
+| type_tracker.rb:18:16:18:16 | c | type_tracker.rb:18:16:18:16 | c |
+| type_tracker.rb:18:16:18:16 | c | type_tracker.rb:18:16:18:16 | c |
+| type_tracker.rb:18:16:18:16 | c | type_tracker.rb:18:16:18:16 | c |
+| type_tracker.rb:18:16:18:16 | c | type_tracker.rb:18:16:18:16 | c |
+| type_tracker.rb:19:5:19:10 | [post] self | type_tracker.rb:19:5:19:10 | [post] self |
+| type_tracker.rb:19:5:19:10 | call to puts | type_tracker.rb:19:5:19:10 | call to puts |
+| type_tracker.rb:19:5:19:10 | self | type_tracker.rb:19:5:19:10 | self |
+| type_tracker.rb:19:10:19:10 | [post] a | type_tracker.rb:19:10:19:10 | [post] a |
+| type_tracker.rb:19:10:19:10 | a | type_tracker.rb:19:10:19:10 | a |
+| type_tracker.rb:20:5:20:10 | [post] self | type_tracker.rb:20:5:20:10 | [post] self |
+| type_tracker.rb:20:5:20:10 | call to puts | type_tracker.rb:20:5:20:10 | call to puts |
+| type_tracker.rb:20:5:20:10 | self | type_tracker.rb:20:5:20:10 | self |
+| type_tracker.rb:20:10:20:10 | [post] b | type_tracker.rb:20:10:20:10 | [post] b |
+| type_tracker.rb:20:10:20:10 | b | type_tracker.rb:20:10:20:10 | b |
+| type_tracker.rb:21:5:21:10 | [post] self | type_tracker.rb:21:5:21:10 | [post] self |
+| type_tracker.rb:21:5:21:10 | call to puts | type_tracker.rb:18:1:22:3 | return return in foo |
+| type_tracker.rb:21:5:21:10 | call to puts | type_tracker.rb:21:5:21:10 | call to puts |
+| type_tracker.rb:21:5:21:10 | call to puts | type_tracker.rb:24:1:24:25 | call to foo |
+| type_tracker.rb:21:5:21:10 | self | type_tracker.rb:21:5:21:10 | self |
+| type_tracker.rb:21:10:21:10 | [post] c | type_tracker.rb:21:10:21:10 | [post] c |
+| type_tracker.rb:21:10:21:10 | c | type_tracker.rb:21:10:21:10 | c |
+| type_tracker.rb:24:1:24:25 | [post] self | type_tracker.rb:24:1:24:25 | [post] self |
+| type_tracker.rb:24:1:24:25 | call to foo | type_tracker.rb:24:1:24:25 | call to foo |
+| type_tracker.rb:24:1:24:25 | self | type_tracker.rb:18:1:22:3 | self in foo |
+| type_tracker.rb:24:1:24:25 | self | type_tracker.rb:24:1:24:25 | self |
+| type_tracker.rb:24:5:24:7 | "a" | type_tracker.rb:18:9:18:9 | a |
+| type_tracker.rb:24:5:24:7 | "a" | type_tracker.rb:18:9:18:9 | a |
+| type_tracker.rb:24:5:24:7 | "a" | type_tracker.rb:24:5:24:7 | "a" |
+| type_tracker.rb:24:5:24:7 | [post] "a" | type_tracker.rb:24:5:24:7 | [post] "a" |
+| type_tracker.rb:24:10:24:13 | "b1" | type_tracker.rb:24:10:24:13 | "b1" |
+| type_tracker.rb:24:10:24:13 | [post] "b1" | type_tracker.rb:24:10:24:13 | [post] "b1" |
+| type_tracker.rb:24:16:24:19 | "b2" | type_tracker.rb:18:16:18:16 | c |
+| type_tracker.rb:24:16:24:19 | "b2" | type_tracker.rb:18:16:18:16 | c |
+| type_tracker.rb:24:16:24:19 | "b2" | type_tracker.rb:24:16:24:19 | "b2" |
+| type_tracker.rb:24:16:24:19 | [post] "b2" | type_tracker.rb:24:16:24:19 | [post] "b2" |
+| type_tracker.rb:24:22:24:24 | "c" | type_tracker.rb:24:22:24:24 | "c" |
+| type_tracker.rb:24:22:24:24 | [post] "c" | type_tracker.rb:24:22:24:24 | [post] "c" |
