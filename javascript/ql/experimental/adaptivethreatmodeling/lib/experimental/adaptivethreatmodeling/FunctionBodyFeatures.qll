@@ -144,6 +144,13 @@ Function getFeaturizableFunction(Function f) {
  * `enclosingFunctionBody` feature for an endpoint.
  */
 string getBodyTokensFeature(Function function) {
+  // Performance optimization: If a function has more than 256 body subtokens, then featurize it as
+  // absent. This approximates the behavior of the classifer on non-generic body features where
+  // large body features are replaced by the absent token.
+  strictcount(ASTNode node |
+    node = getAnASTNodeToFeaturize(function) and
+    exists(getTokenizedAstNode(node))
+  ) <= 256 and
   // Performance optimization: If a function has more than getMaxChars() characters in its body subtokens,
   // then featurize it as absent.
   function = getFeaturizableFunction(function) and
