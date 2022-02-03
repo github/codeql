@@ -57,8 +57,8 @@ private module Requests {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      disablingNode = this.getNamedParameter("verify").getARhs() and
-      argumentOrigin = this.getNamedParameter("verify").getAValueReachingRhs() and
+      disablingNode = this.getKeywordParameter("verify").getARhs() and
+      argumentOrigin = this.getKeywordParameter("verify").getAValueReachingRhs() and
       argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
       not argumentOrigin.asExpr() instanceof None
     }

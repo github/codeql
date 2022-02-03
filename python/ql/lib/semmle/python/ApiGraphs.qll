@@ -126,12 +126,14 @@ module API {
     Node getParameter(int i) { result = this.getASuccessor(Label::parameter(i)) }
 
     /**
-     * Gets the node representing the parameter named `name` of the function represented by this node.
+     * Gets the node representing the keyword parameter `name` of the function represented by this node.
      *
      * This predicate may have multiple results when there are multiple invocations of this API component.
      * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
      */
-    Node getNamedParameter(string name) { result = this.getASuccessor(Label::namedParameter(name)) }
+    Node getKeywordParameter(string name) {
+      result = this.getASuccessor(Label::keywordParameter(name))
+    }
 
     /**
      * Gets the number of parameters of the function represented by this node.
@@ -296,7 +298,7 @@ module API {
    * Can be used to reason about calls to an external API in which the correlation between
    * parameters and/or return values must be retained.
    *
-   * The member predicates `getParameter`, `getNamedParameter`, `getReturn`, and `getInstance` mimic
+   * The member predicates `getParameter`, `getKeywordParameter`, `getReturn`, and `getInstance` mimic
    * the corresponding predicates from `API::Node`. These are guaranteed to exist and be unique to this call.
    */
   class CallNode extends DataFlow::CallCfgNode {
@@ -323,22 +325,22 @@ module API {
     /** Gets the API node for the last parameter of this invocation. */
     Node getLastParameter() { result = this.getParameter(max(int i | exists(this.getArg(i)))) }
 
-    /** Gets the API node for the parameter named `name` of this invocation. */
-    Node getNamedParameter(string name) {
-      result = callee.getNamedParameter(name) and
-      result = this.getANamedParameterCandidate(name)
+    /** Gets the API node for the keyword parameter `name` of this invocation. */
+    Node getKeywordParameter(string name) {
+      result = callee.getKeywordParameter(name) and
+      result = this.getAKeywordParameterCandidate(name)
     }
 
-    /** Gets the API node for the parameter that has index `i` or is named `name`. */
+    /** Gets the API node for the parameter that has index `i` or has keyword `name`. */
     bindingset[i, name]
     Node getParameter(int i, string name) {
       result = this.getParameter(i)
       or
-      result = this.getNamedParameter(name)
+      result = this.getKeywordParameter(name)
     }
 
     pragma[noinline]
-    private Node getANamedParameterCandidate(string name) {
+    private Node getAKeywordParameterCandidate(string name) {
       result.getARhs() = this.getArgByName(name)
     }
 
@@ -597,7 +599,7 @@ module API {
         )
         or
         exists(string name |
-          lbl = Label::namedParameter(name) and
+          lbl = Label::keywordParameter(name) and
           ref.asExpr() = fn.getInnerScope().getArgByName(name)
         )
       )
@@ -652,7 +654,7 @@ module API {
     /**
      * Holds if `arg` is passed as an argument to a use of `base`.
      *
-     * `lbl` is represents which parameter of the function was passed. Either a numbered parameter, or a named parameter.
+     * `lbl` is represents which parameter of the function was passed. Either a numbered parameter, or a keyword parameter.
      *
      * The receiver is considered to be argument -1.
      */
@@ -665,7 +667,7 @@ module API {
           arg = pred.getACall().getArg(i)
         )
         or
-        exists(string name | lbl = Label::namedParameter(name) |
+        exists(string name | lbl = Label::keywordParameter(name) |
           arg = pred.getACall().getArgByName(name)
         )
       )
@@ -778,7 +780,7 @@ module API {
           or
           exists(any(py::Function f).getArg(i))
         } or
-        MkLabelNamedParameter(string name) {
+        MkLabelKeywordParameter(string name) {
           exists(any(DataFlow::CallCfgNode c).getArgByName(name))
           or
           exists(any(py::Function f).getArgByName(name))
@@ -830,13 +832,13 @@ module API {
         int getIndex() { result = i }
       }
 
-      /** A label for a named parameter `name`. */
-      class LabelNamedParameter extends ApiLabel {
+      /** A label for a keyword parameter `name`. */
+      class LabelKeywordParameter extends ApiLabel {
         string name;
 
-        LabelNamedParameter() { this = MkLabelNamedParameter(name) }
+        LabelKeywordParameter() { this = MkLabelKeywordParameter(name) }
 
-        override string toString() { result = "getNamedParameter(\"" + name + "\")" }
+        override string toString() { result = "getKeywordParameter(\"" + name + "\")" }
 
         /** Gets the name of the parameter for this label. */
         string getName() { result = name }
@@ -884,8 +886,8 @@ module API {
     /** Gets the `parameter` edge label for parameter `i`. */
     LabelParameter parameter(int i) { result.getIndex() = i }
 
-    /** Gets the `parameter` edge label for the named parameter `name`. */
-    LabelNamedParameter namedParameter(string name) { result.getName() = name }
+    /** Gets the `parameter` edge label for the keyword parameter `name`. */
+    LabelKeywordParameter keywordParameter(string name) { result.getName() = name }
 
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }

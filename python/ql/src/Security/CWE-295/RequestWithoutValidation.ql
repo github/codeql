@@ -19,7 +19,7 @@ from API::CallNode call, DataFlow::Node falseyOrigin, string verb
 where
   verb = HTTP::httpVerbLower() and
   call = API::moduleImport("requests").getMember(verb).getACall() and
-  falseyOrigin = call.getNamedParameter("verify").getAValueReachingRhs() and
+  falseyOrigin = call.getKeywordParameter("verify").getAValueReachingRhs() and
   // requests treats `None` as the default and all other "falsey" values as `False`.
   falseyOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
   not falseyOrigin.asExpr() instanceof None

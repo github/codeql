@@ -36,15 +36,15 @@ foo.quack(otherDict.fourth) #$ def=moduleImport("mypkg").getMember("foo").getMem
 
 def namedCallback(myName, otherName): 
     # Using named parameters: 
-    myName() #$ use=moduleImport("mypkg").getMember("foo").getMember("blob").getParameter(0).getNamedParameter("myName").getReturn()
-    otherName() #$ use=moduleImport("mypkg").getMember("foo").getMember("blob").getParameter(0).getNamedParameter("otherName").getReturn()
+    myName() #$ use=moduleImport("mypkg").getMember("foo").getMember("blob").getParameter(0).getKeywordParameter("myName").getReturn()
+    otherName() #$ use=moduleImport("mypkg").getMember("foo").getMember("blob").getParameter(0).getKeywordParameter("otherName").getReturn()
     # Using numbered parameters: 
     myName() #$ use=moduleImport("mypkg").getMember("foo").getMember("blob").getParameter(0).getParameter(0).getReturn()
     otherName() #$ use=moduleImport("mypkg").getMember("foo").getMember("blob").getParameter(0).getParameter(1).getReturn()
 
 foo.blob(namedCallback) #$ use=moduleImport("mypkg").getMember("foo").getMember("blob").getReturn()
 
-foo.named(myName = 2) #$ def=moduleImport("mypkg").getMember("foo").getMember("named").getNamedParameter("myName")
+foo.named(myName = 2) #$ def=moduleImport("mypkg").getMember("foo").getMember("named").getKeywordParameter("myName")
 
 
 def recusisionCallback(x):
