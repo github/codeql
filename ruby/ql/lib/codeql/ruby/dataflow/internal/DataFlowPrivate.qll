@@ -379,7 +379,11 @@ private module ParameterNodes {
     override Parameter getParameter() { result = parameter }
 
     override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
-      exists(int i | pos.isPositional(i) and c.getParameter(i) = parameter |
+      exists(int i |
+        pos.isPositional(i) and
+        parameter = c.getAParameter() and
+        i = parameter.getLogicalPosition()
+      |
         parameter instanceof SimpleParameter
         or
         parameter instanceof OptionalParameter

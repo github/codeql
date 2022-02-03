@@ -111,8 +111,6 @@ track
 | type_tracker.rb:24:5:24:7 | [post] "a" | type tracker without call steps | type_tracker.rb:24:5:24:7 | [post] "a" |
 | type_tracker.rb:24:10:24:13 | "b1" | type tracker without call steps | type_tracker.rb:24:10:24:13 | "b1" |
 | type_tracker.rb:24:10:24:13 | [post] "b1" | type tracker without call steps | type_tracker.rb:24:10:24:13 | [post] "b1" |
-| type_tracker.rb:24:16:24:19 | "b2" | type tracker with call steps | type_tracker.rb:18:16:18:16 | c |
-| type_tracker.rb:24:16:24:19 | "b2" | type tracker with call steps | type_tracker.rb:18:16:18:16 | c |
 | type_tracker.rb:24:16:24:19 | "b2" | type tracker without call steps | type_tracker.rb:24:16:24:19 | "b2" |
 | type_tracker.rb:24:16:24:19 | [post] "b2" | type tracker without call steps | type_tracker.rb:24:16:24:19 | [post] "b2" |
 | type_tracker.rb:24:22:24:24 | "c" | type tracker without call steps | type_tracker.rb:24:22:24:24 | "c" |
@@ -228,8 +226,6 @@ trackEnd
 | type_tracker.rb:24:5:24:7 | [post] "a" | type_tracker.rb:24:5:24:7 | [post] "a" |
 | type_tracker.rb:24:10:24:13 | "b1" | type_tracker.rb:24:10:24:13 | "b1" |
 | type_tracker.rb:24:10:24:13 | [post] "b1" | type_tracker.rb:24:10:24:13 | [post] "b1" |
-| type_tracker.rb:24:16:24:19 | "b2" | type_tracker.rb:18:16:18:16 | c |
-| type_tracker.rb:24:16:24:19 | "b2" | type_tracker.rb:18:16:18:16 | c |
 | type_tracker.rb:24:16:24:19 | "b2" | type_tracker.rb:24:16:24:19 | "b2" |
 | type_tracker.rb:24:16:24:19 | [post] "b2" | type_tracker.rb:24:16:24:19 | [post] "b2" |
 | type_tracker.rb:24:22:24:24 | "c" | type_tracker.rb:24:22:24:24 | "c" |
