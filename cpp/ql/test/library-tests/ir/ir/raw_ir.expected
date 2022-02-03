@@ -7858,6 +7858,50 @@ ir.cpp:
 # 1443|     v1443_5(void)               = AliasedUse                                        : ~m?
 # 1443|     v1443_6(void)               = ExitFunction                                      : 
 
+# 1451| void Inheritance_Test_B::~Inheritance_Test_B()
+# 1451|   Block 0
+# 1451|     v1451_1(void)                       = EnterFunction                : 
+# 1451|     mu1451_2(unknown)                   = AliasedDefinition            : 
+# 1451|     mu1451_3(unknown)                   = InitializeNonLocal           : 
+# 1451|     r1451_4(glval<unknown>)             = VariableAddress[#this]       : 
+# 1451|     mu1451_5(glval<Inheritance_Test_B>) = InitializeParameter[#this]   : &:r1451_4
+# 1451|     r1451_6(glval<Inheritance_Test_B>)  = Load[#this]                  : &:r1451_4, ~m?
+# 1451|     mu1451_7(Inheritance_Test_B)        = InitializeIndirection[#this] : &:r1451_6
+# 1451|     v1451_8(void)                       = NoOp                         : 
+# 1451|     v1451_9(void)                       = ReturnIndirection[#this]     : &:r1451_6, ~m?
+# 1451|     v1451_10(void)                      = ReturnVoid                   : 
+# 1451|     v1451_11(void)                      = AliasedUse                   : ~m?
+# 1451|     v1451_12(void)                      = ExitFunction                 : 
+
+# 1457| void Inheritance_Test_A::Inheritance_Test_A()
+# 1457|   Block 0
+# 1457|     v1457_1(void)                       = EnterFunction                : 
+# 1457|     mu1457_2(unknown)                   = AliasedDefinition            : 
+# 1457|     mu1457_3(unknown)                   = InitializeNonLocal           : 
+# 1457|     r1457_4(glval<unknown>)             = VariableAddress[#this]       : 
+# 1457|     mu1457_5(glval<Inheritance_Test_A>) = InitializeParameter[#this]   : &:r1457_4
+# 1457|     r1457_6(glval<Inheritance_Test_A>)  = Load[#this]                  : &:r1457_4, ~m?
+# 1457|     mu1457_7(Inheritance_Test_A)        = InitializeIndirection[#this] : &:r1457_6
+#-----|   Goto -> Block 2
+
+# 1457|   Block 1
+# 1457|     r1457_8(glval<int>) = FieldAddress[x] : mu1457_5
+# 1457|     r1457_9(int)        = Constant[42]    : 
+# 1457|     mu1457_10(int)      = Store[?]        : &:r1457_8, r1457_9
+#-----|   Goto -> Block 2
+
+# 1458|   Block 2
+# 1458|     r1458_1(int)                  = Constant[3]              : 
+# 1458|     r1458_2(glval<unknown>)       = VariableAddress[#this]   : 
+# 1458|     r1458_3(Inheritance_Test_A *) = Load[#this]              : &:r1458_2, ~m?
+# 1458|     r1458_4(glval<int>)           = FieldAddress[y]          : r1458_3
+# 1458|     mu1458_5(int)                 = Store[?]                 : &:r1458_4, r1458_1
+# 1459|     v1459_1(void)                 = NoOp                     : 
+# 1457|     v1457_11(void)                = ReturnIndirection[#this] : &:r1457_6, ~m?
+# 1457|     v1457_12(void)                = ReturnVoid               : 
+# 1457|     v1457_13(void)                = AliasedUse               : ~m?
+# 1457|     v1457_14(void)                = ExitFunction             : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
