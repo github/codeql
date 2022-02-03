@@ -620,10 +620,10 @@ module API {
     LabelUnknownMember unknownMember() { any() }
 
     /** Gets the `member` edge label for the given attribute reference. */
-    ApiLabel memberFromRef(DataFlow::AttrRef pr) {
-      result = member(pr.getAttributeName())
+    ApiLabel memberFromRef(DataFlow::AttrRef ref) {
+      result = member(ref.getAttributeName())
       or
-      not exists(pr.getAttributeName()) and
+      not exists(ref.getAttributeName()) and
       result = unknownMember()
     }
 
