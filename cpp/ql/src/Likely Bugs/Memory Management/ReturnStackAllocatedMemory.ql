@@ -14,6 +14,9 @@
  */
 
 import cpp
+// We don't actually use the global value numbering library in this query, but without it we end up
+// recomputing the IR.
+private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.DataFlow::DataFlow
 
