@@ -12,11 +12,12 @@ import tempfile
 import sys
 
 
+defaultModelPath = "java/ql/lib/semmle/code/java/frameworks"
 lgtmSlugToModelFile = {
-    # "apache/commons-beanutils": "java/ql/lib/semmle/code/java/frameworks/apache/BeanUtilsGenerated.qll",
-    # "apache/commons-codec": "java/ql/lib/semmle/code/java/frameworks/apache/CodecGenerated.qll",
-    # "apache/commons-lang": "java/ql/lib/semmle/code/java/frameworks/apache/Lang3Generated.qll",
-    "apache/commons-io": "java/ql/lib/semmle/code/java/frameworks/apache/IOGenerated.qll",
+    # "apache/commons-beanutils": "apache/BeanUtilsGenerated.qll",
+    # "apache/commons-codec": "apache/CodecGenerated.qll",
+    # "apache/commons-lang": "apache/Lang3Generated.qll",
+    "apache/commons-io": "apache/IOGenerated.qll",
 }
 
 
@@ -30,7 +31,13 @@ def regenerateModel(lgtmSlug, extractedDb):
     print("============================================================")
     print("Generating models for " + lgtmSlug)
     print("============================================================")
-    modelFile = lgtmSlugToModelFile[lgtmSlug]
+    # check if lgtmSlug exists as key
+    if lgtmSlug not in lgtmSlugToModelFile:
+        print("ERROR: slug " + lgtmSlug +
+              " is not mapped to a model file in script " + sys.argv[0])
+        sys.exit(1)
+    modelFile = defaultModelPath + \
+        lgtmSlugToModelFile[lgtmSlug]
     codeQlRoot = findGitRoot()
     targetModel = codeQlRoot + "/" + modelFile
     subprocess.check_call([codeQlRoot + "/java/ql/src/utils/model-generator/GenerateFlowModel.py", extractedDb,
