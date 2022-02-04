@@ -57,6 +57,7 @@
  */
 
 private import Impl as Impl
+import AccessPathSyntax
 
 private class Unit = Impl::Unit;
 
@@ -257,12 +258,9 @@ predicate isRelevantFullPath(string package, string type, string path) {
   )
 }
 
-/**
- * A string that occurs as an access path (either identifying or input/output spec)
- * which might be relevant for this database.
- */
-class AccessPath extends string {
-  AccessPath() {
+/** A string from a CSV row that should be parsed as an access path. */
+private class AccessPathRange extends AccessPath::Range {
+  AccessPathRange() {
     isRelevantFullPath(_, _, this)
     or
     exists(string package | isRelevantPackage(package) |
@@ -270,18 +268,6 @@ class AccessPath extends string {
       summaryModel(package, _, _, _, this, _)
     )
   }
-
-  /** Gets the `n`th token on the access path as a string. */
-  string getRawToken(int n) {
-    this != "" and // The empty path should have zero tokens, not a single empty token
-    result = this.splitAt(".", n)
-  }
-
-  /** Gets the `n`th token on the access path. */
-  AccessPathToken getToken(int n) { result = this.getRawToken(n) }
-
-  /** Gets the number of tokens on the path. */
-  int getNumToken() { result = count(int n | exists(this.getRawToken(n))) }
 }
 
 /**
@@ -429,35 +415,6 @@ private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPat
  */
 private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path) {
   result = getNodeFromInputOutputPath(baseNode, path, path.getNumToken())
-}
-
-/**
- * An access part token such as `Argument[1]` or `ReturnValue`, appearing in one or more access paths.
- */
-class AccessPathToken extends string {
-  AccessPathToken() { this = any(AccessPath path).getRawToken(_) }
-
-  private string getPart(int part) {
-    result = this.regexpCapture("([^\\[]+)(?:\\[([^\\]]*)\\])?", part)
-  }
-
-  /** Gets the name of the token, such as `Member` from `Member[x]` */
-  string getName() { result = this.getPart(1) }
-
-  /**
-   * Gets the argument list, such as `1,2` from `Member[1,2]`,
-   * or has no result if there are no arguments.
-   */
-  string getArgumentList() { result = this.getPart(2) }
-
-  /** Gets the `n`th argument to this token, such as `x` or `y` from `Member[x,y]`. */
-  string getArgument(int n) { result = this.getArgumentList().splitAt(",", n) }
-
-  /** Gets an argument to this token, such as `x` or `y` from `Member[x,y]`. */
-  string getAnArgument() { result = this.getArgument(_) }
-
-  /** Gets the number of arguments to this token, such as 2 for `Member[x,y]` or zero for `ReturnValue`. */
-  int getNumArgument() { result = count(int n | exists(this.getArgument(n))) }
 }
 
 /**
