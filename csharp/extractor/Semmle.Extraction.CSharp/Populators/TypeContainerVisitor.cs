@@ -80,21 +80,18 @@ namespace Semmle.Extraction.CSharp.Populators
             Entities.Type.Create(Cx, Cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(TrapFile, Parent);
         }
 
-        private static Entities.AttributeKind ExtractGlobalTarget(AttributeListSyntax node) =>
-            node.Target?.Identifier.Kind() switch
-            {
-                SyntaxKind.AssemblyKeyword => Entities.AttributeKind.Assembly,
-                SyntaxKind.ModuleKeyword => Entities.AttributeKind.Module,
-                _ => throw new InternalError(node, "Unhandled global target")
-            };
-
         public override void VisitAttributeList(AttributeListSyntax node)
         {
             if (Cx.Extractor.Mode.HasFlag(ExtractorMode.Standalone))
                 return;
 
             var outputAssembly = Assembly.CreateOutputAssembly(Cx);
-            var kind = ExtractGlobalTarget(node);
+            var kind = node.Target?.Identifier.Kind() switch
+            {
+                SyntaxKind.AssemblyKeyword => Entities.AttributeKind.Assembly,
+                SyntaxKind.ModuleKeyword => Entities.AttributeKind.Module,
+                _ => throw new InternalError(node, "Unhandled global target")
+            };
             foreach (var attribute in node.Attributes)
             {
                 if (attributeLookup.Value(attribute) is AttributeData attributeData)

@@ -137,9 +137,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        private static void ExtractAttributes<T>(Context cx, T symbol, Func<T, IEnumerable<AttributeData>> getAttributes, IEntity entity, AttributeKind kind) where T : ISymbol
+        private static void ExtractAttributes(Context cx, IEnumerable<AttributeData> attributes, IEntity entity, AttributeKind kind)
         {
-            foreach (var attribute in getAttributes(symbol))
+            foreach (var attribute in attributes)
             {
                 Create(cx, attribute, entity, kind);
             }
@@ -147,10 +147,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static void ExtractAttributes(Context cx, ISymbol symbol, IEntity entity)
         {
-            ExtractAttributes(cx, symbol, s => s.GetAttributes(), entity, AttributeKind.Default);
+            ExtractAttributes(cx, symbol.GetAttributes(), entity, AttributeKind.Default);
             if (symbol is IMethodSymbol method)
             {
-                ExtractAttributes(cx, method, s => s.GetReturnTypeAttributes(), entity, AttributeKind.Return);
+                ExtractAttributes(cx, method.GetReturnTypeAttributes(), entity, AttributeKind.Return);
             }
         }
 

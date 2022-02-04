@@ -36,6 +36,12 @@ class Attributable extends @attributable {
   }
 }
 
+private string getAttributeName(Attribute a) {
+  exists(string type | type = a.getType().getName() |
+    if type.matches("%Attribute") then result = type.prefix(type.length() - 9) else result = type
+  )
+}
+
 /**
  * An attribute, for example `[...]` on line 1 in
  *
@@ -88,12 +94,7 @@ class Attribute extends TopLevelExprParent, @attribute {
 
   override Location getALocation() { attribute_location(this, result) }
 
-  override string toString() {
-    exists(string type, string name | type = this.getType().getName() |
-      (if type.matches("%Attribute") then name = type.prefix(type.length() - 9) else name = type) and
-      result = "[" + name + "(...)]"
-    )
-  }
+  override string toString() { result = "[" + getAttributeName(this) + "(...)]" }
 
   override string getAPrimaryQlClass() { result = "Attribute" }
 }
@@ -117,6 +118,8 @@ class DefaultAttribute extends Attribute, @attribute_default {
  * ```
  */
 class ReturnAttribute extends Attribute, @attribute_return {
+  override string toString() { result = "[return: " + getAttributeName(this) + "(...)]" }
+
   override string getAPrimaryQlClass() { result = "ReturnAttribute" }
 }
 
@@ -127,6 +130,8 @@ class ReturnAttribute extends Attribute, @attribute_return {
  * ```
  */
 class AssemblyAttribute extends Attribute, @attribute_assembly {
+  override string toString() { result = "[assembly: " + getAttributeName(this) + "(...)]" }
+
   override string getAPrimaryQlClass() { result = "AssemblyAttribute" }
 }
 
@@ -137,5 +142,7 @@ class AssemblyAttribute extends Attribute, @attribute_assembly {
  * ```
  */
 class ModuleAttribute extends Attribute, @attribute_module {
+  override string toString() { result = "[module: " + getAttributeName(this) + "(...)]" }
+
   override string getAPrimaryQlClass() { result = "ModuleAttribute" }
 }

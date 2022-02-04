@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("array_element_type", array, dimension, rank, elementType);
 
         internal static void attributes(this TextWriter trapFile, Attribute attribute, AttributeKind kind, Type attributeType, IEntity entity) =>
-            trapFile.WriteTuple("attributes", attribute, (int)kind, attributeType, entity);
+            trapFile.WriteTuple("attributes", attribute, kind, attributeType, entity);
 
         internal static void attribute_location(this TextWriter trapFile, Attribute attribute, Location location) =>
             trapFile.WriteTuple("attribute_location", attribute, location);
