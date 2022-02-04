@@ -401,6 +401,7 @@
 | BaseStream<SplittableGenerator,Stream<SplittableGenerator>> | Interface, ParameterizedType |
 | BaseStream<StackFrame,Stream<StackFrame>> | Interface, ParameterizedType |
 | BaseStream<String,Stream<String>> | Interface, ParameterizedType |
+| BaseStream<T,S> | Interface, ParameterizedType |
 | BaseStream<T,Stream<T>> | Interface, ParameterizedType |
 | BaseStream<U,Stream<U>> | Interface, ParameterizedType |
 | BaseStream<URL,Stream<URL>> | Interface, ParameterizedType |
@@ -729,6 +730,7 @@
 | Comparable<Intrinsic> | Interface, ParameterizedType |
 | Comparable<IsoCountryCode> | Interface, ParameterizedType |
 | Comparable<IsoEra> | Interface, ParameterizedType |
+| Comparable<K> | Interface, ParameterizedType |
 | Comparable<Kind> | Interface, ParameterizedType |
 | Comparable<LinkOption> | Interface, ParameterizedType |
 | Comparable<LocalTime> | Interface, ParameterizedType |
@@ -756,13 +758,16 @@
 | Comparable<String> | Interface, ParameterizedType |
 | Comparable<StringBuffer> | Interface, ParameterizedType |
 | Comparable<StringBuilder> | Interface, ParameterizedType |
+| Comparable<T> | Interface, ParameterizedType |
 | Comparable<Tag> | Interface, ParameterizedType |
 | Comparable<TextStyle> | Interface, ParameterizedType |
 | Comparable<TimeDefinition> | Interface, ParameterizedType |
 | Comparable<TimeUnit> | Interface, ParameterizedType |
 | Comparable<Type> | Interface, ParameterizedType |
+| Comparable<U> | Interface, ParameterizedType |
 | Comparable<URI> | Interface, ParameterizedType |
 | Comparable<UnicodeScript> | Interface, ParameterizedType |
+| Comparable<V> | Interface, ParameterizedType |
 | Comparable<Version> | Interface, ParameterizedType |
 | Comparable<Wrapper> | Interface, ParameterizedType |
 | Comparable<ZoneOffset> | Interface, ParameterizedType |
@@ -940,6 +945,7 @@
 | Enum<ChronoUnit> | Class, ParameterizedType |
 | Enum<ClassOption> | Class, ParameterizedType |
 | Enum<DayOfWeek> | Class, ParameterizedType |
+| Enum<E> | Class, ParameterizedType |
 | Enum<ExtendedOption> | Class, ParameterizedType |
 | Enum<FilteringMode> | Class, ParameterizedType |
 | Enum<FormatStyle> | Class, ParameterizedType |
@@ -957,6 +963,7 @@
 | Enum<SignStyle> | Class, ParameterizedType |
 | Enum<State> | Class, ParameterizedType |
 | Enum<Status> | Class, ParameterizedType |
+| Enum<T> | Class, ParameterizedType |
 | Enum<Tag> | Class, ParameterizedType |
 | Enum<TextStyle> | Class, ParameterizedType |
 | Enum<TimeDefinition> | Class, ParameterizedType |
@@ -1545,16 +1552,19 @@
 | OfField<> | Interface, RawType |
 | OfField<Class<?>> | Interface, ParameterizedType |
 | OfField<ClassDesc> | Interface, ParameterizedType |
+| OfField<F> | Interface, ParameterizedType |
 | OfField[] | Array |
 | OfInt | Interface |
 | OfLong | Interface |
 | OfMethod | GenericType, Interface, ParameterizedType |
 | OfMethod<Class<?>,MethodType> | Interface, ParameterizedType |
 | OfMethod<ClassDesc,MethodTypeDesc> | Interface, ParameterizedType |
+| OfMethod<F,M> | Interface, ParameterizedType |
 | OfPrimitive | GenericType, Interface, ParameterizedType |
 | OfPrimitive<Double,DoubleConsumer,OfDouble> | Interface, ParameterizedType |
 | OfPrimitive<Integer,IntConsumer,OfInt> | Interface, ParameterizedType |
 | OfPrimitive<Long,LongConsumer,OfLong> | Interface, ParameterizedType |
+| OfPrimitive<T,T_CONS,T_SPLITR> | Interface, ParameterizedType |
 | OffsetClock | Class |
 | OffsetDateTime | Class |
 | OffsetIdPrinterParser | Class |
@@ -1999,6 +2009,9 @@
 | VecInsertOp | GenericType, Interface, ParameterizedType |
 | VecInsertOp<V> | Interface, ParameterizedType |
 | Vector | Class, GenericType, ParameterizedType |
+| Vector<?> | Class, ParameterizedType |
+| Vector<E> | Class, ParameterizedType |
+| Vector<Integer> | Class, ParameterizedType |
 | VectorBlendOp | GenericType, Interface, ParameterizedType |
 | VectorBlendOp<V,M,E> | Interface, ParameterizedType |
 | VectorBroadcastIntOp | GenericType, Interface, ParameterizedType |
@@ -2008,6 +2021,7 @@
 | VectorConvertOp | GenericType, Interface, ParameterizedType |
 | VectorConvertOp<VOUT,VIN,S> | Interface, ParameterizedType |
 | VectorMask | Class, GenericType, ParameterizedType |
+| VectorMask<E> | Class, ParameterizedType |
 | VectorMaskOp | GenericType, Interface, ParameterizedType |
 | VectorMaskOp<M> | Interface, ParameterizedType |
 | VectorPayload | Class |
@@ -2016,6 +2030,8 @@
 | VectorShuffle | Class, GenericType, ParameterizedType |
 | VectorShuffle<E> | Class, ParameterizedType |
 | VectorSpecies | Class, GenericType, ParameterizedType |
+| VectorSpecies<?> | Class, ParameterizedType |
+| VectorSpecies<E> | Class, ParameterizedType |
 | VectorSupport | Class |
 | Version | Class |
 | Version | Class, GenericType, ParameterizedType |
