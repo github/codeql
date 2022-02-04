@@ -11332,6 +11332,64 @@ ir.cpp:
 # 1447|                         Type = [Struct] POD_Derived
 # 1447|                         ValueCategory = prvalue
 # 1448|     getStmt(4): [ReturnStmt] return ...
+# 1450| [CopyAssignmentOperator] Inheritance_Test_B& Inheritance_Test_B::operator=(Inheritance_Test_B const&)
+# 1450|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Inheritance_Test_B &
+# 1450| [Constructor] void Inheritance_Test_B::Inheritance_Test_B()
+# 1450|   <params>: 
+# 1451| [Destructor] void Inheritance_Test_B::~Inheritance_Test_B()
+# 1451|   <params>: 
+# 1451|   getEntryPoint(): [BlockStmt] { ... }
+# 1451|     getStmt(0): [ReturnStmt] return ...
+# 1451|   <destructions>: 
+# 1454| [CopyAssignmentOperator] Inheritance_Test_A& Inheritance_Test_A::operator=(Inheritance_Test_A const&)
+# 1454|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Inheritance_Test_A &
+# 1454| [MoveAssignmentOperator] Inheritance_Test_A& Inheritance_Test_A::operator=(Inheritance_Test_A&&)
+# 1454|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] Inheritance_Test_A &&
+# 1454| [CopyConstructor] void Inheritance_Test_A::Inheritance_Test_A(Inheritance_Test_A const&)
+# 1454|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Inheritance_Test_A &
+# 1454| [MoveConstructor] void Inheritance_Test_A::Inheritance_Test_A(Inheritance_Test_A&&)
+# 1454|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] Inheritance_Test_A &&
+# 1454| [Destructor] void Inheritance_Test_A::~Inheritance_Test_A()
+# 1454|   <params>: 
+# 1457| [Constructor] void Inheritance_Test_A::Inheritance_Test_A()
+# 1457|   <params>: 
+# 1457|   <initializations>: 
+# 1457|     getInitializer(0): (no string representation)
+# 1457|         Type = [Struct] Inheritance_Test_B
+# 1457|         ValueCategory = prvalue
+# 1457|     getInitializer(1): [ConstructorFieldInit] constructor init of field x
+# 1457|         Type = [IntType] int
+# 1457|         ValueCategory = prvalue
+# 1457|       getExpr(): [Literal] 42
+# 1457|           Type = [IntType] int
+# 1457|           Value = [Literal] 42
+# 1457|           ValueCategory = prvalue
+# 1457|   getEntryPoint(): [BlockStmt] { ... }
+# 1458|     getStmt(0): [ExprStmt] ExprStmt
+# 1458|       getExpr(): [AssignExpr] ... = ...
+# 1458|           Type = [IntType] int
+# 1458|           ValueCategory = lvalue
+# 1458|         getLValue(): [PointerFieldAccess] y
+# 1458|             Type = [IntType] int
+# 1458|             ValueCategory = lvalue
+# 1458|           getQualifier(): [ThisExpr] this
+# 1458|               Type = [PointerType] Inheritance_Test_A *
+# 1458|               ValueCategory = prvalue(load)
+# 1458|         getRValue(): [Literal] 3
+# 1458|             Type = [IntType] int
+# 1458|             Value = [Literal] 3
+# 1458|             ValueCategory = prvalue
+# 1459|     getStmt(1): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
