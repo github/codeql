@@ -287,8 +287,8 @@ module Array {
       (
         mc.getNumberOfArguments() = 2 and
         (
-          not exists(mc.getArgument(0).getConstantValue().getInt()) or
-          not exists(mc.getArgument(1).getConstantValue().getInt())
+          not mc.getArgument(0).getConstantValue().isInt(_) or
+          not mc.getArgument(1).getConstantValue().isInt(_)
         )
         or
         mc.getNumberOfArguments() = 1 and
@@ -919,7 +919,7 @@ module Array {
   private class InsertUnknownSummary extends InsertSummary {
     InsertUnknownSummary() {
       this = "insert(index)" and
-      not exists(mc.getArgument(0).getConstantValue().getInt())
+      not mc.getArgument(0).getConstantValue().isInt(_)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1243,7 +1243,7 @@ module Array {
     RotateUnknownSummary() {
       this = "rotate(index)" and
       exists(mc.getArgument(0)) and
-      not exists(mc.getArgument(0).getConstantValue().getInt())
+      not mc.getArgument(0).getConstantValue().isInt(_)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1298,7 +1298,7 @@ module Array {
     RotateBangUnknownSummary() {
       this = "rotate!(index)" and
       exists(mc.getArgument(0)) and
-      not exists(mc.getArgument(0).getConstantValue().getInt())
+      not mc.getArgument(0).getConstantValue().isInt(_)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1387,7 +1387,7 @@ module Array {
     ShiftArgUnknownSummary() {
       this = "shift(index)" and
       exists(mc.getArgument(0)) and
-      not exists(mc.getArgument(0).getConstantValue().getInt())
+      not mc.getArgument(0).getConstantValue().isInt(_)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1538,8 +1538,8 @@ module Array {
       (
         mc.getNumberOfArguments() = 2 and
         (
-          not exists(mc.getArgument(0).getConstantValue().getInt()) or
-          not exists(mc.getArgument(1).getConstantValue().getInt())
+          not mc.getArgument(0).getConstantValue().isInt(_) or
+          not mc.getArgument(1).getConstantValue().isInt(_)
         )
         or
         mc.getNumberOfArguments() = 1 and
@@ -1847,7 +1847,7 @@ module Enumerable {
   private class DropUnknownSummary extends DropSummary {
     DropUnknownSummary() {
       this = "drop(index)" and
-      not exists(mc.getArgument(0).getConstantValue().getInt())
+      not mc.getArgument(0).getConstantValue().isInt(_)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -2017,7 +2017,7 @@ module Enumerable {
     FirstArgUnknownSummary() {
       this = "first(?)" and
       mc.getNumberOfArguments() > 0 and
-      not exists(mc.getArgument(0).getConstantValue().getInt())
+      not mc.getArgument(0).getConstantValue().isInt(_)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -2411,7 +2411,7 @@ module Enumerable {
   private class TakeUnknownSummary extends TakeSummary {
     TakeUnknownSummary() {
       this = "take(index)" and
-      not exists(mc.getArgument(0).getConstantValue().getInt())
+      not mc.getArgument(0).getConstantValue().isInt(_)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
