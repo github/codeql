@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity error
  * @security-severity 7.8
- * @precision medium
+ * @precision high
  * @id cpp/open-call-with-mode-argument
  * @tags security
  *       external/cwe/cwe-732
