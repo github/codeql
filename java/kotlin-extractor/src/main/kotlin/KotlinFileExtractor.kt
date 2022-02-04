@@ -1182,16 +1182,15 @@ open class KotlinFileExtractor(
     
                 extractMethodAccess(func as IrFunction, false)
             }
-    
-            fun binopDisp(id: Label<out DbExpr>) {
+
+            fun binopReceiver(id: Label<out DbExpr>, receiver: IrExpression?, receiverDescription: String) {
                 val locId = tw.getLocation(c)
                 tw.writeHasLocation(id, locId)
                 tw.writeCallableEnclosingExpr(id, callable)
                 tw.writeStatementEnclosingExpr(id, enclosingStmt)
-    
-                val receiver = c.dispatchReceiver ?: c.extensionReceiver
+
                 if(receiver == null) {
-                    logger.warnElement(Severity.ErrorSevere, "Receiver not found", c)
+                    logger.warnElement(Severity.ErrorSevere, "$receiverDescription not found", c)
                 } else {
                     extractExpressionExpr(receiver, callable, id, 0, enclosingStmt)
                 }
@@ -1209,6 +1208,20 @@ open class KotlinFileExtractor(
                     }
                 }
             }
+
+            /**
+             * Populate the lhs of a binary op from this call's dispatch receiver, and the rhs from its sole argument.
+             */
+            fun binopDisp(id: Label<out DbExpr>) {
+                binopReceiver(id, c.dispatchReceiver, "Dispatch receiver")
+            }
+
+            /**
+             * Populate the lhs of a binary op from this call's extension receiver, and the rhs from its sole argument.
+             */
+            fun binopExtensionMethod(id: Label<out DbExpr>) {
+                binopReceiver(id, c.extensionReceiver, "Extension receiver")
+            }
     
             val dr = c.dispatchReceiver
             when {
@@ -1219,7 +1232,10 @@ open class KotlinFileExtractor(
                     val type = useType(c.type)
                     tw.writeExprs_addexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    binopDisp(id)
+                    if (c.extensionReceiver != null)
+                        binopExtensionMethod(id)
+                    else
+                        binopDisp(id)
                 }
                 isFunction("kotlin", "String", "plus", true) -> {
                     findJdkIntrinsicOrWarn("stringPlus", c)?.let { stringPlusFn ->
