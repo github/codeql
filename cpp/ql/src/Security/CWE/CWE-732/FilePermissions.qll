@@ -1,6 +1,11 @@
 import cpp
 import semmle.code.cpp.commons.unix.Constants as UnixConstants
 
+/**
+ * Gets the number corresponding to the contents of `input` in base-16.
+ * Note: the first two characters of `input` must be `0x`. For example:
+ * `parseHex("0x123abc") = 1194684`.
+ */
 bindingset[input]
 int parseHex(string input) {
   exists(string lowerCaseInput | lowerCaseInput = input.toLowerCase() |
