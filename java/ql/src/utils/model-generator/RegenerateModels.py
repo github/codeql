@@ -36,8 +36,7 @@ def regenerateModel(lgtmSlug, extractedDb):
         print("ERROR: slug " + lgtmSlug +
               " is not mapped to a model file in script " + sys.argv[0])
         sys.exit(1)
-    modelFile = defaultModelPath + \
-        lgtmSlugToModelFile[lgtmSlug]
+    modelFile = defaultModelPath + "/" + lgtmSlugToModelFile[lgtmSlug]
     codeQlRoot = findGitRoot()
     targetModel = codeQlRoot + "/" + modelFile
     subprocess.check_call([codeQlRoot + "/java/ql/src/utils/model-generator/GenerateFlowModel.py", extractedDb,
