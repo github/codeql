@@ -311,12 +311,22 @@ def m36
     a = [0, 1, source(36.1)]
     b = a.delete(2) { source(36.2) }
     sink b # $ hasValueFlow=36.1 $ hasValueFlow=36.2
+    sink a[0] # $ hasValueFlow=36.1
+    sink a[1] # $ hasValueFlow=36.1
+    sink a[2] # $ hasValueFlow=36.1
 end
 
-def m37
-    a = [0, 1, source(37)]
+def m37(i)
+    a = [0, 1, source(37.1), source(37.2)]
     b = a.delete_at(2)
-    sink b # $ hasValueFlow=37
+    sink b # $ hasValueFlow=37.1
+    sink a[2] # $ hasValueFlow=37.2
+
+    a = [0, 1, source(37.1), source(37.2)]
+    b = a.delete_at(i)
+    sink b # $ hasValueFlow=37.1 $ hasValueFlow=37.2
+    sink a[0] # $ hasValueFlow=37.1 $ hasValueFlow=37.2
+    sink a[2] # $ hasValueFlow=37.1 $ hasValueFlow=37.2
 end
 
 def m38
@@ -324,7 +334,10 @@ def m38
     b = a.delete_if do |x|
         sink x # $ hasValueFlow=38
     end
-    sink(b[0]) # $ hasValueFlow=38
+    sink b[0] # $ hasValueFlow=38
+    sink a[0] # $ hasValueFlow=38
+    sink a[1] # $ hasValueFlow=38
+    sink a[2] # $ hasValueFlow=38
 end
 
 def m39
@@ -445,11 +458,19 @@ def m52
 end
 
 def m53(i)
-    a = [0, 1, 2, source(53.1)]
-    b = a.fetch(source(53.2)) do |x|
-        sink(x) # $ hasValueFlow=53.2
+    a = [0, 1, 2, source(53.1), source(53.2)]
+    b = a.fetch(source(53.3)) do |x|
+        sink(x) # $ hasValueFlow=53.3
     end
-    sink(b) # $ hasValueFlow=53.1
+    sink(b) # $ hasValueFlow=53.1 $ hasValueFlow=53.2
+    b = a.fetch(3)
+    sink b # $ hasValueFlow=53.1
+    b = a.fetch(3, source(53.3))
+    sink b # $ hasValueFlow=53.1 $ hasValueFlow=53.3
+    b = a.fetch(100, source(53.3))
+    sink b # $ hasValueFlow=53.3
+    b = a.fetch(i, source(53.3))
+    sink b # $ hasValueFlow=53.1 $ hasValueFlow=53.2 $ hasValueFlow=53.3
 end
 
 def m54

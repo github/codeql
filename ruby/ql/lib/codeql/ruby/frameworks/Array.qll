@@ -14,7 +14,7 @@ private class ArrayIndex extends int {
  * Provides flow summaries for the `Array` class.
  *
  * The summaries are ordered (and implemented) based on
- * https://ruby-doc.org/core-3.1.0/Array.html, however for methods that have the
+ * https://docs.ruby-lang.org/en/3.1/Array.html, however for methods that have the
  * more general `Enumerable` scope, they are implemented in the `Enumerable`
  * module instead.
  */
@@ -368,6 +368,10 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // We model this imprecisely, saying that there's flow from any element of
+      // the argument or the receiver to any element of the receiver. This could
+      // be made more precise when the range is known, similar to the way it's
+      // done in `ElementReferenceRangeReadKnownSummary`.
       exists(string arg |
         arg = "Argument[" + (mc.getNumberOfArguments() - 1) + "]" and
         input = ["ArrayElement of " + arg, arg, "ArrayElement of Receiver"] and
@@ -526,18 +530,71 @@ module Array {
     DeleteSummary() { this = "delete" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["ArrayElement of Receiver", "ReturnValue of BlockArgument"] and
-      output = "ReturnValue" and
+      (
+        input = "ArrayElement of Receiver" and
+        output = ["ArrayElement[?] of Receiver", "ReturnValue"]
+        or
+        input = "ReturnValue of BlockArgument" and
+        output = "ReturnValue"
+      ) and
+      preservesValue = true
+    }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::ArrayElementContent
+    }
+  }
+
+  abstract private class DeleteAtSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    DeleteAtSummary() { mc.getMethodName() = "delete_at" }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::ArrayElementContent
+    }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class DeleteAtKnownSummary extends DeleteAtSummary {
+    int i;
+
+    DeleteAtKnownSummary() {
+      this = "delete_at(" + i + ")" and
+      i = mc.getArgument(0).getConstantValue().getInt() and
+      i >= 0
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        input = "ArrayElement[?] of Receiver" and
+        output = ["ReturnValue", "ArrayElement[?] of Receiver"]
+        or
+        exists(ArrayIndex j | input = "ArrayElement[" + j + "] of Receiver" |
+          j < i and output = "ArrayElement[" + j + "] of Receiver"
+          or
+          j = i and output = "ReturnValue"
+          or
+          j > i and output = "ArrayElement[" + (j - 1) + "] of Receiver"
+        )
+      ) and
       preservesValue = true
     }
   }
 
-  private class DeleteAtSummary extends SimpleSummarizedCallable {
-    DeleteAtSummary() { this = "delete_at" }
+  private class DeleteAtUnknownSummary extends DeleteAtSummary {
+    DeleteAtUnknownSummary() {
+      this = "delete_at(index)" and
+      not exists(int i | i = mc.getArgument(0).getConstantValue().getInt() and i >= 0)
+    }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Receiver" and
-      output = "ReturnValue" and
+      output = ["ReturnValue", "ArrayElement[?] of Receiver"] and
       preservesValue = true
     }
   }
@@ -547,8 +604,17 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
+      output =
+        [
+          "Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue",
+          "ArrayElement[?] of Receiver"
+        ] and
       preservesValue = true
+    }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::ArrayElementContent
     }
   }
 
@@ -556,6 +622,8 @@ module Array {
     DifferenceSummary() { this = "difference" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // `Array#difference` and `Array#-` do not behave exactly the same way,
+      // but we model their flow the same way.
       any(SetDifferenceSummary s).propagatesFlowExt(input, output, preservesValue)
     }
   }
@@ -653,12 +721,53 @@ module Array {
     }
   }
 
-  private class FetchSummary extends SimpleSummarizedCallable {
-    FetchSummary() { this = "fetch" }
+  abstract private class FetchSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    FetchSummary() { mc.getMethodName() = "fetch" }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class FetchKnownSummary extends FetchSummary {
+    int i;
+
+    FetchKnownSummary() {
+      this = "fetch(" + i + ")" and
+      i = mc.getArgument(0).getConstantValue().getInt() and
+      i >= 0
+    }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver" and
+        input = "ArrayElement[?] of Receiver" and
+        output = ["ReturnValue", "ArrayElement[?] of Receiver"]
+        or
+        exists(ArrayIndex j | input = "ArrayElement[" + j + "] of Receiver" |
+          j = i and output = "ReturnValue"
+          or
+          j != i and output = "ArrayElement[" + j + "] of Receiver"
+        )
+        or
+        input = "Argument[0]" and
+        output = "Parameter[0] of BlockArgument"
+        or
+        input = "Argument[1]" and output = "ReturnValue"
+      ) and
+      preservesValue = true
+    }
+  }
+
+  private class FetchUnknownSummary extends FetchSummary {
+    FetchUnknownSummary() {
+      this = "fetch(index)" and
+      not exists(int i | i = mc.getArgument(0).getConstantValue().getInt() and i >= 0)
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        input = ["ArrayElement of Receiver", "Argument[1]"] and
         output = "ReturnValue"
         or
         input = "Argument[0]" and
@@ -702,6 +811,12 @@ module Array {
     }
   }
 
+  /**
+   * A call to `flatten`.
+   *
+   * Note that we model flow from elements up to 3 levels of nesting
+   * (`[[[1],[2]]]`), but not beyond that.
+   */
   private class FlattenSummary extends SimpleSummarizedCallable {
     FlattenSummary() { this = "flatten" }
 
@@ -1494,7 +1609,7 @@ module Array {
  * Provides flow summaries for the `Enumerable` class.
  *
  * The summaries are ordered (and implemented) based on
- * https://ruby-doc.org/core-3.1.0/Enumerable.html
+ * https://docs.ruby-lang.org/en/3.1/Enumerable.html
  */
 module Enumerable {
   private class ChunkSummary extends SimpleSummarizedCallable {
