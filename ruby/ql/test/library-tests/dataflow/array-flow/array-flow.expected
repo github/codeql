@@ -1,5 +1,4 @@
 failures
-| array_flow.rb:4:10:4:13 | ...[...] | Unexpected result: hasTaintFlow=0.1 |
 edges
 | array_flow.rb:2:9:2:20 | * ... :  | array_flow.rb:3:10:3:10 | a :  |
 | array_flow.rb:2:9:2:20 | * ... :  | array_flow.rb:4:10:4:10 | a :  |

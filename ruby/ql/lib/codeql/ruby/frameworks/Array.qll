@@ -199,7 +199,7 @@ module Array {
     private int i;
 
     ElementReferenceReadKnownSummary() {
-      this = "[" + i + "]" and
+      this = mc.getMethodName() + "(" + i + ")" and
       mc.getNumberOfArguments() = 1 and
       i = getKnownArrayElementContent(mc.getArgument(0)).getIndex()
     }
@@ -217,7 +217,7 @@ module Array {
    */
   private class ElementReferenceReadUnknownSummary extends ElementReferenceReadSummary {
     ElementReferenceReadUnknownSummary() {
-      this = "[](index)" and
+      this = mc.getMethodName() + "(index)" and
       mc.getNumberOfArguments() = 1 and
       isUnknownArrayElementContent(mc.getArgument(0))
     }
@@ -1067,7 +1067,7 @@ module Array {
     // `unshift` is an alias for `prepend`
     PrependSummary() {
       mc.getMethodName() = ["prepend", "unshift"] and
-      this = "prepend(" + mc.getNumberOfArguments() + ")"
+      this = mc.getMethodName() + "(" + mc.getNumberOfArguments() + ")"
     }
 
     override MethodCall getACall() { result = mc }
@@ -2044,7 +2044,7 @@ module Enumerable {
   }
 
   private class GrepBlockSummary extends GrepSummary {
-    GrepBlockSummary() { this = "grep(block)" and exists(mc.getBlock()) }
+    GrepBlockSummary() { this = mc.getMethodName() + "(block)" and exists(mc.getBlock()) }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -2059,7 +2059,7 @@ module Enumerable {
   }
 
   private class GrepNoBlockSummary extends GrepSummary {
-    GrepNoBlockSummary() { this = "grep(no_block)" and not exists(mc.getBlock()) }
+    GrepNoBlockSummary() { this = mc.getMethodName() + "(no_block)" and not exists(mc.getBlock()) }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Receiver" and
@@ -2090,7 +2090,7 @@ module Enumerable {
   }
 
   private class InjectNoArgSummary extends InjectSummary {
-    InjectNoArgSummary() { this = "inject(no_arg)" and mc.getNumberOfArguments() = 0 }
+    InjectNoArgSummary() { this = mc.getMethodName() + "_no_arg" and mc.getNumberOfArguments() = 0 }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       // The no-argument variant of inject passes element 0 to the first block
@@ -2110,7 +2110,7 @@ module Enumerable {
   }
 
   private class InjectArgSummary extends InjectSummary {
-    InjectArgSummary() { this = "inject(arg)" and mc.getNumberOfArguments() > 0 }
+    InjectArgSummary() { this = mc.getMethodName() + "_arg" and mc.getNumberOfArguments() > 0 }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -2139,7 +2139,7 @@ module Enumerable {
 
   private class MinOrMaxByNoArgSummary extends MinOrMaxBySummary {
     MinOrMaxByNoArgSummary() {
-      this = "min_or_max_by_no_arg" and
+      this = mc.getMethodName() + "_no_arg" and
       mc.getNumberOfArguments() = 0
     }
 
@@ -2152,7 +2152,7 @@ module Enumerable {
 
   private class MinOrMaxByArgSummary extends MinOrMaxBySummary {
     MinOrMaxByArgSummary() {
-      this = "min_or_max_by_arg" and
+      this = mc.getMethodName() + "_arg" and
       mc.getNumberOfArguments() > 0
     }
 
@@ -2174,7 +2174,7 @@ module Enumerable {
 
   private class MinOrMaxNoArgNoBlockSummary extends MinOrMaxSummary {
     MinOrMaxNoArgNoBlockSummary() {
-      this = "min_or_max_no_arg_no_block" and
+      this = mc.getMethodName() + "_no_arg_no_block" and
       mc.getNumberOfArguments() = 0 and
       not exists(mc.getBlock())
     }
@@ -2188,7 +2188,7 @@ module Enumerable {
 
   private class MinOrMaxArgNoBlockSummary extends MinOrMaxSummary {
     MinOrMaxArgNoBlockSummary() {
-      this = "min_or_max_arg_no_block" and
+      this = mc.getMethodName() + "_arg_no_block" and
       mc.getNumberOfArguments() > 0 and
       not exists(mc.getBlock())
     }
@@ -2202,7 +2202,7 @@ module Enumerable {
 
   private class MinOrMaxNoArgBlockSummary extends MinOrMaxSummary {
     MinOrMaxNoArgBlockSummary() {
-      this = "min_or_max_no_arg_block" and
+      this = mc.getMethodName() + "_no_arg_block" and
       mc.getNumberOfArguments() = 0 and
       exists(mc.getBlock())
     }
@@ -2216,7 +2216,7 @@ module Enumerable {
 
   private class MinOrMaxArgBlockSummary extends MinOrMaxSummary {
     MinOrMaxArgBlockSummary() {
-      this = "min_or_max_arg_block" and
+      this = mc.getMethodName() + "_arg_block" and
       mc.getNumberOfArguments() > 0 and
       exists(mc.getBlock())
     }
