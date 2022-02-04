@@ -66,7 +66,7 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
 
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
-SummaryComponent interpretComponentSpecific(string c) {
+SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   exists(Content content | parseContent(c, content) and result = SummaryComponent::content(content))
 }
 
