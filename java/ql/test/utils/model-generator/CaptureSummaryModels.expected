@@ -21,7 +21,6 @@
 | p;Joiner;false;merge;(Joiner);;Argument[-1];ReturnValue;value |
 | p;Joiner;false;setEmptyValue;(CharSequence);;Argument[-1];ReturnValue;value |
 | p;Joiner;false;setEmptyValue;(CharSequence);;Argument[0];Argument[-1];taint |
-| p;Joiner;false;setEmptyValue;(CharSequence);;Argument[0];ReturnValue;taint |
 | p;Joiner;false;toString;();;Argument[-1];ReturnValue;taint |
 | p;MultipleImpls$Strat2;true;getValue;();;Argument[-1];ReturnValue;taint |
 | p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];Argument[-1];taint |

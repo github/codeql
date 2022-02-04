@@ -80,7 +80,9 @@ class ThroughFlowConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node n) { not isRelevantType(n.getType()) }
+  override predicate isSanitizer(DataFlow::Node n) {
+    exists(Type t | t = n.getType() and not isRelevantType(t))
+  }
 
   override DataFlow::FlowFeature getAFeature() {
     result instanceof DataFlow::FeatureEqualSourceSinkCallContext
