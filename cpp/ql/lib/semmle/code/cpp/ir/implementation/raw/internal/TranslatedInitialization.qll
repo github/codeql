@@ -917,3 +917,36 @@ class TranslatedDestructorBaseDestruction extends TranslatedBaseStructorCall,
 
   final override string toString() { result = "destroy base: " + call.toString() }
 }
+
+/**
+ * A constructor base init call where no base constructor has been generated.
+ *
+ * Workaround for an extractor issue.
+ */
+class TranslatedConstructorBareInit extends TranslatedElement, TTranslatedConstructorBareInit {
+  ConstructorInit init;
+
+  TranslatedConstructorBareInit() { this = TTranslatedConstructorBareInit(init) }
+
+  override Locatable getAST() { result = init }
+
+  final override string toString() { result = "construct base (no constructor)" }
+
+  override Instruction getFirstInstruction() { result = getParent().getChildSuccessor(this) }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    none()
+  }
+
+  override TranslatedElement getChild(int id) { none() }
+
+  override Function getFunction() { result = getParent().getFunction() }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+}
+
+TranslatedConstructorBareInit getTranslatedConstructorBareInit(ConstructorInit init) {
+  result.getAST() = init
+}

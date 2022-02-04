@@ -213,6 +213,15 @@ module File {
   }
 
   /**
+   * A call to `File.open`, considered as a `FileSystemAccess`.
+   */
+  class FileOpen extends DataFlow::CallNode, FileSystemAccess::Range {
+    FileOpen() { this = API::getTopLevelMember("File").getAMethodCall("open") }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+  }
+
+  /**
    * A read using the `File` module, e.g. the `f.read` call in
    *
    * ```rb

@@ -567,6 +567,13 @@ newtype TTranslatedElement =
   } or
   // The initialization of a base class from within a constructor.
   TTranslatedConstructorBaseInit(ConstructorBaseInit init) { not ignoreExpr(init) } or
+  // Workaround for a case where no base constructor is generated but a targetless base
+  // constructor call is present.
+  TTranslatedConstructorBareInit(ConstructorInit init) {
+    not ignoreExpr(init) and
+    not init instanceof ConstructorBaseInit and
+    not init instanceof ConstructorFieldInit
+  } or
   // The destruction of a base class from within a destructor.
   TTranslatedDestructorBaseDestruction(DestructorBaseDestruction destruction) {
     not ignoreExpr(destruction)

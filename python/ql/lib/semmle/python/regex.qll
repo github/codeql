@@ -198,14 +198,11 @@ abstract class RegexString extends Expr {
 
   /** Whether there is a character class, between start (inclusive) and end (exclusive) */
   predicate charSet(int start, int end) {
-    exists(int inner_start, int inner_end |
+    exists(int inner_start |
       this.char_set_start(start, inner_start) and
       not this.char_set_start(_, start)
     |
-      end = inner_end + 1 and
-      inner_end > inner_start and
-      this.nonEscapedCharAt(inner_end) = "]" and
-      not exists(int mid | this.nonEscapedCharAt(mid) = "]" | mid > inner_start and mid < inner_end)
+      end - 1 = min(int i | this.nonEscapedCharAt(i) = "]" and inner_start < i)
     )
   }
 
@@ -344,9 +341,7 @@ abstract class RegexString extends Expr {
     this.escapingChar(start) and
     this.getChar(start + 1) = "N" and
     this.getChar(start + 2) = "{" and
-    this.getChar(end - 1) = "}" and
-    end > start and
-    not exists(int i | start + 2 < i and i < end - 1 | this.getChar(i) = "}")
+    end - 1 = min(int i | start + 2 < i and this.getChar(i) = "}")
   }
 
   /**

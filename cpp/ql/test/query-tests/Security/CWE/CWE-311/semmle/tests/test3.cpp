@@ -411,13 +411,66 @@ void test_member_password()
 	{
 		packet p;
 
-		recv(val(), p.password, 256, val()); // BAD: not encrypted [NOT DETECTED]
+		recv(val(), p.password, 256, val()); // BAD: not encrypted
 	}
 
 	{
 		packet p;
 
-		recv(val(), p.password, 256, val()); // GOOD: password is encrypted
+		recv(val(), p.password, 256, val()); // GOOD: password is encrypted [FALSE POSITIVE]
 		decrypt_inplace(p.password); // proof that `password` was in fact encrypted
+	}
+}
+
+extern FILE *stdin;
+
+void test_stdin_param(FILE *stream)
+{
+	char password[128];
+
+	fgets(password, 128, stream); // GOOD: from standard input (see call below) [FALSE POSITIVE]
+}
+
+void test_stdin()
+{
+	char password[128];
+	FILE *f = stdin;
+
+	fgets(password, 128, stdin); // GOOD: from standard input
+	fgets(password, 128, f); // GOOD: from standard input
+	test_stdin_param(stdin);
+}
+
+int open(const char *filename, int b);
+
+void test_tty()
+{
+	{
+		char password[256];
+		int f;
+
+		f = open("/dev/tty", val());
+		recv(f, password, 256, val()); // GOOD: from terminal
+	}
+
+	{
+		char password[256];
+		int f;
+
+		f = STDIN_FILENO;
+		recv(f, password, 256, val()); // GOOD: from stdin
+	}
+
+	{
+		char password[256];
+		int f;
+
+		f = open("/dev/tty", val());
+		if (f == -1)
+		{
+			f = STDIN_FILENO;
+		}
+
+		recv(f, password, 256, val()); // GOOD: from terminal or stdin
 	}
 }
