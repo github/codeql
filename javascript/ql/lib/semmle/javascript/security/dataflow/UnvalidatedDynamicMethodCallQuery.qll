@@ -58,5 +58,12 @@ class Configuration extends TaintTracking::Configuration {
       // avoid overlapping results with unsafe dynamic method access query
       not PropertyInjection::hasUnsafeMethods(read.getBase().getALocalSource())
     )
+    or
+    exists(DataFlow::SourceNode base, DataFlow::CallNode get | get = base.getAMethodCall("get") |
+      src = get.getArgument(0) and
+      dst = get
+    ) and
+    srclabel.isTaint() and
+    dstlabel instanceof MaybeNonFunction
   }
 }
