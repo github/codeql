@@ -326,7 +326,7 @@ module API {
       MkMethodAccessNode(DataFlow::CallNode call) { isUse(call) } or
       /** A use of an API member at the node `nd`. */
       MkUse(DataFlow::Node nd) { isUse(nd) } or
-      /** A value that escapes into an API at the node `nd` */
+      /** A value that escapes into an external library at the node `nd` */
       MkDef(DataFlow::Node nd) { isDef(nd) }
 
     private string resolveTopLevel(ConstantReadAccess read) {
