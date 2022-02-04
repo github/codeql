@@ -29,7 +29,7 @@ predicate isPackageUsed(string package) {
   or
   package = "global"
   or
-  exists(API::Node::ofType(package, _))
+  any(DataFlow::SourceNode sn).hasUnderlyingType(package, _)
 }
 
 /** Holds if `global` is a global variable referenced via a the `global` package in a CSV row. */
