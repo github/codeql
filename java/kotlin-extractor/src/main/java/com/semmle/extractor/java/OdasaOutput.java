@@ -342,6 +342,7 @@ public class OdasaOutput {
 				versionMap.put(MAJOR_VERSION, String.valueOf(tcv.getMajorVersion()));
 				versionMap.put(MINOR_VERSION, String.valueOf(tcv.getMinorVersion()));
 				versionMap.put(LAST_MODIFIED, String.valueOf(tcv.getLastModified()));
+				versionMap.put(EXTRACTOR_NAME, tcv.getExtractorName());
 				FileUtil.writePropertiesCSV(metadataFile, versionMap);
 			} catch (IOException e) {
 				log.warn("Could not save trap metadata file: " + metadataFile.getAbsolutePath(), e);
@@ -581,7 +582,7 @@ public class OdasaOutput {
 		}
 		@Override
 		public String toString() {
-			return majorVersion + "." + minorVersion + "-" + lastModified;
+			return majorVersion + "." + minorVersion + "-" + lastModified + "-" + extractorName;
 		}
 	}
 
