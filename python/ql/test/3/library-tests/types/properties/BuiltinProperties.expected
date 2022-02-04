@@ -1,5 +1,6 @@
 | builtin-class object | __class__ | Property __class__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |
 | builtin-class type | __abstractmethods__ | Property __abstractmethods__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |
+| builtin-class type | __annotations__ | Property __annotations__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |
 | builtin-class type | __bases__ | Property __bases__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |
 | builtin-class type | __dict__ | Property __dict__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |
 | builtin-class type | __doc__ | Property __doc__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |

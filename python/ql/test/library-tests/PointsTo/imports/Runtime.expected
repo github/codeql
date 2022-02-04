@@ -53,5 +53,5 @@
 | test.py | 27 | ControlFlowNode for ImportExpr | Module sys | ControlFlowNode for ImportExpr |
 | test.py | 31 | ControlFlowNode for argv | list object | ControlFlowNode for from sys import * |
 | test.py | 33 | ControlFlowNode for ImportExpr | Module socket | ControlFlowNode for ImportExpr |
-| test.py | 34 | ControlFlowNode for timeout | builtin-class socket.timeout | ControlFlowNode for from _socket import * |
+| test.py | 34 | ControlFlowNode for timeout | builtin-class TimeoutError | ControlFlowNode for from _socket import * |
 | x.py | 2 | ControlFlowNode for ImportExpr | Module sys | ControlFlowNode for ImportExpr |
