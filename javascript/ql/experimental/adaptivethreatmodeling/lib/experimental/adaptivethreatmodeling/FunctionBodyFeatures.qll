@@ -133,7 +133,10 @@ int getNumCharsInFunction(Function f) {
     strictsum(ASTNode node | node = getAnASTNodeWithAFeature(f) | getTokenizedAstNode(node).length())
 }
 
-// Evaluator string limit is 5395415 characters. We choose a limit lower than this.
+/**
+ * The maximum number of characters a feature can be.
+ * The evaluator string limit is 5395415 characters. We choose a limit lower than this.
+ */
 private int getMaxChars() { result = 1000000 }
 
 /**
