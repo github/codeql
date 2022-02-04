@@ -9,6 +9,6 @@
 
 import java
 
-from EqualityTest eq
+from AnyEqualityTest eq
 where eq.getAnOperand() instanceof BooleanLiteral
 select eq

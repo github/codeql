@@ -242,7 +242,7 @@ private predicate guardControls_v3(Guard guard, BasicBlock controlled, boolean b
 }
 
 private predicate equalityGuard(Guard g, Expr e1, Expr e2, boolean polarity) {
-  exists(EqualityTest eqtest |
+  exists(AnyEqualityTest eqtest |
     eqtest = g and
     polarity = eqtest.polarity() and
     eqtest.hasOperands(e1, e2)

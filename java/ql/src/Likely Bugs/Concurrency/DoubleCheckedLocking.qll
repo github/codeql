@@ -21,7 +21,7 @@ private Expr getAFieldRead(Field f) {
  * `f` or indirectly through a local variable `(x = f) == null`.
  */
 private Expr getANullCheck(Field f) {
-  exists(EqualityTest eq | eq.polarity() = true |
+  exists(AnyEqualityTest eq | eq.polarity() = true |
     eq.hasOperands(any(NullLiteral nl), getAFieldRead(f)) and
     result = eq
   )

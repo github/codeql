@@ -35,7 +35,7 @@ predicate implies_v1(Guard g1, boolean b1, Guard g2, boolean b2) {
   b1 = b2.booleanNot() and
   b1 = [true, false]
   or
-  exists(EqualityTest eqtest, boolean polarity, BooleanLiteral boollit |
+  exists(AnyEqualityTest eqtest, boolean polarity, BooleanLiteral boollit |
     eqtest = g1 and
     eqtest.hasOperands(g2, boollit) and
     eqtest.polarity() = polarity and

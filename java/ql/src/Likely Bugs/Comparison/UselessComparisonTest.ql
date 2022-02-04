@@ -44,7 +44,7 @@ predicate constCond(BinaryExpr cond, boolean isTrue, Reason reason) {
     isTrue = false and not comp.isStrict() and d1 > d2
   )
   or
-  exists(EqualityTest eq, Expr lhs, Expr rhs |
+  exists(AnyEqualityTest eq, Expr lhs, Expr rhs |
     eq = cond and
     lhs = eq.getLeftOperand() and
     rhs = eq.getRightOperand()
@@ -192,7 +192,7 @@ predicate concurrentModificationTest(BinaryExpr test) {
  * Holds if `test` and `guard` are equality tests of the same integral variable v with constants `c1` and `c2`.
  */
 pragma[nomagic]
-predicate guardedTest(EqualityTest test, Guard guard, boolean isEq, int i1, int i2) {
+predicate guardedTest(AnyEqualityTest test, Guard guard, boolean isEq, int i1, int i2) {
   exists(SsaVariable v, CompileTimeConstantExpr c1, CompileTimeConstantExpr c2 |
     guard.isEquality(v.getAUse(), c1, isEq) and
     test.hasOperands(v.getAUse(), c2) and
@@ -205,7 +205,7 @@ predicate guardedTest(EqualityTest test, Guard guard, boolean isEq, int i1, int 
 /**
  * Holds if `guard` implies that `test` always has the value `testIsTrue`.
  */
-predicate uselessEqTest(EqualityTest test, boolean testIsTrue, Guard guard) {
+predicate uselessEqTest(AnyEqualityTest test, boolean testIsTrue, Guard guard) {
   exists(boolean guardIsTrue, boolean guardpolarity, int i |
     guardedTest(test, guard, guardpolarity, i, i) and
     guard.controls(test.getBasicBlock(), guardIsTrue) and
@@ -218,7 +218,7 @@ where
   (
     if uselessEqTest(test, _, _)
     then
-      exists(EqualityTest r |
+      exists(AnyEqualityTest r |
         uselessEqTest(test, testIsTrue, r) and reason = ", because of $@" and reasonElem = r
       )
     else

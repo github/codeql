@@ -10,18 +10,18 @@
 
 import java
 
-class BoolCompare extends EqualityTest {
+class BoolCompare extends AnyEqualityTest {
   BoolCompare() { this.getAnOperand() instanceof BooleanLiteral }
 
   predicate simplify(string pattern, string rewrite) {
     exists(boolean b | b = this.getAnOperand().(BooleanLiteral).getBooleanValue() |
-      this instanceof EQExpr and b = true and pattern = "A == true" and rewrite = "A"
+      this instanceof AnyEqualsExpr and b = true and pattern = "A == true" and rewrite = "A"
       or
-      this instanceof NEExpr and b = false and pattern = "A != false" and rewrite = "A"
+      this instanceof AnyNotEqualsExpr and b = false and pattern = "A != false" and rewrite = "A"
       or
-      this instanceof EQExpr and b = false and pattern = "A == false" and rewrite = "!A"
+      this instanceof AnyEqualsExpr and b = false and pattern = "A == false" and rewrite = "!A"
       or
-      this instanceof NEExpr and b = true and pattern = "A != true" and rewrite = "!A"
+      this instanceof AnyNotEqualsExpr and b = true and pattern = "A != true" and rewrite = "!A"
     )
   }
 }
@@ -61,7 +61,7 @@ predicate conditionalWithBool(ConditionalExpr c, string pattern, string rewrite)
 }
 
 class ComparisonOrEquality extends BinaryExpr {
-  ComparisonOrEquality() { this instanceof ComparisonExpr or this instanceof EqualityTest }
+  ComparisonOrEquality() { this instanceof ComparisonExpr or this instanceof AnyEqualityTest }
 
   predicate negate(string pattern, string rewrite) {
     this instanceof EQExpr and pattern = "!(A == B)" and rewrite = "A != B"

@@ -225,12 +225,12 @@ class CompileTimeConstantExpr extends Expr {
       )
       or
       (
-        b instanceof EQExpr and
+        b instanceof AnyEqualsExpr and
         if left = right then result = true else result = false
       )
       or
       (
-        b instanceof NEExpr and
+        b instanceof AnyNotEqualsExpr and
         if left != right then result = true else result = false
       )
     )
@@ -242,12 +242,12 @@ class CompileTimeConstantExpr extends Expr {
       right = b.getRightOperand().(CompileTimeConstantExpr).getBooleanValue()
     |
       (
-        b instanceof EQExpr and
+        b instanceof AnyEqualsExpr and
         if left = right then result = true else result = false
       )
       or
       (
-        b instanceof NEExpr and
+        b instanceof AnyNotEqualsExpr and
         if left != right then result = true else result = false
       )
       or
@@ -269,15 +269,18 @@ class CompileTimeConstantExpr extends Expr {
       /*
        * JLS 15.28 specifies that compile-time `String` constants are interned. Therefore `==`
        * equality can be interpreted as equality over the constant values, not the references.
+       *
+       * Kotlin's `==` and `===` operators will return the same result for `String`s, so they
+       * can be handled alike:
        */
 
       (
-        b instanceof EQExpr and
+        b instanceof AnyEqualsExpr and
         if left = right then result = true else result = false
       )
       or
       (
-        b instanceof NEExpr and
+        b instanceof AnyNotEqualsExpr and
         if left != right then result = true else result = false
       )
     )
@@ -359,7 +362,7 @@ class CompileTimeConstantExpr extends Expr {
         or
         b instanceof XorBitwiseExpr and result = v1.bitXor(v2)
         // No `int` value for `AndLogicalExpr` or `OrLogicalExpr`.
-        // No `int` value for `LTExpr`, `GTExpr`, `LEExpr`, `GEExpr`, `EQExpr` or `NEExpr`.
+        // No `int` value for `LTExpr`, `GTExpr`, `LEExpr`, `GEExpr`, `AnyEqualsExpr` or `AnyNotEqualsExpr`.
       )
       or
       // Ternary conditional, with compile-time constant condition.
@@ -952,7 +955,7 @@ class GEExpr extends BinaryExpr, @geexpr {
   override string getAPrimaryQlClass() { result = "GEExpr" }
 }
 
-/** A binary expression using the `==` operator. */
+/** A binary expression using Java's `==` or Kotlin's `===` operator. */
 class EQExpr extends BinaryExpr, @eqexpr {
   override string getOp() { result = " == " }
 
@@ -961,12 +964,12 @@ class EQExpr extends BinaryExpr, @eqexpr {
 
 /** A binary expression using the Kotlin `==` operator, semantically equivalent to `Objects.equals`. */
 class ValueEQExpr extends BinaryExpr, @valueeqexpr {
-  override string getOp() { result = " == " }
+  override string getOp() { result = " (value equals) " }
 
   override string getAPrimaryQlClass() { result = "ValueEQExpr" }
 }
 
-/** A binary expression using the `!=` operator. */
+/** A binary expression using Java's `!=` or Kotlin's `!==` operator. */
 class NEExpr extends BinaryExpr, @neexpr {
   override string getOp() { result = " != " }
 
@@ -975,9 +978,33 @@ class NEExpr extends BinaryExpr, @neexpr {
 
 /** A binary expression using the Kotlin `!=` operator, semantically equivalent to `Objects.equals`. */
 class ValueNEExpr extends BinaryExpr, @valueneexpr {
-  override string getOp() { result = " != " }
+  override string getOp() { result = " (value not-equals) " }
 
   override string getAPrimaryQlClass() { result = "ValueNEExpr" }
+}
+
+/**
+ * A binary expression using either Java or Kotlin's `==` operator.
+ *
+ * This might test for reference equality or might function like `Objects.equals`. If you
+ * need to distinguish them, use `EQExpr` or `ValueEQExpr` instead.
+ */
+class AnyEqualsExpr extends BinaryExpr {
+  AnyEqualsExpr() {
+    this instanceof EQExpr or this instanceof ValueEQExpr
+  }
+}
+
+/**
+ * A binary expression using either Java or Kotlin's `!=` operator.
+ *
+ * This might test for reference equality or might function like `Objects.equals`. If you
+ * need to distinguish them, use `EQExpr` or `ValueEQExpr` instead.
+ */
+class AnyNotEqualsExpr extends BinaryExpr {
+  AnyNotEqualsExpr() {
+    this instanceof NEExpr or this instanceof ValueNEExpr
+  }
 }
 
 /**
@@ -1068,12 +1095,16 @@ class GreaterThanComparison extends ComparisonExpr {
 
 /**
  * An equality test is a binary expression using
- * the `==` or `!=` operator.
+ * Java's `==` or `!=` operators, or Kotlin's `==`, `!=`, `===` or `!==` operators.
+ *
+ * This could be a reference- or a value-in/equality test.
  */
-class EqualityTest extends BinaryExpr {
-  EqualityTest() {
+class AnyEqualityTest extends BinaryExpr {
+  AnyEqualityTest() {
     this instanceof EQExpr or
-    this instanceof NEExpr
+    this instanceof NEExpr or
+    this instanceof ValueEQExpr or
+    this instanceof ValueNEExpr
   }
 
   /** Gets a boolean indicating whether this is `==` (true) or `!=` (false). */
@@ -1081,6 +1112,23 @@ class EqualityTest extends BinaryExpr {
     result = true and this instanceof EQExpr
     or
     result = false and this instanceof NEExpr
+    or
+    result = true and this instanceof ValueEQExpr
+    or
+    result = false and this instanceof ValueNEExpr
+  }
+}
+
+/**
+ * An equality test is a binary expression using
+ * Java's `==` or `!=` operator.
+ *
+ * If either operand is a reference type, this is a reference-in/equality test.
+ */
+class EqualityTest extends AnyEqualityTest {
+  EqualityTest() {
+    this instanceof EQExpr or
+    this instanceof NEExpr
   }
 }
 

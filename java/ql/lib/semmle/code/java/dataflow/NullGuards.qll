@@ -17,7 +17,7 @@ Expr alwaysNullExpr() {
 
 /** Gets an equality test between an expression `e` and an enum constant `c`. */
 Expr enumConstEquality(Expr e, boolean polarity, EnumConstant c) {
-  exists(EqualityTest eqtest |
+  exists(AnyEqualityTest eqtest |
     eqtest = result and
     eqtest.hasOperands(e, c.getAnAccess()) and
     polarity = eqtest.polarity()
@@ -33,8 +33,10 @@ InstanceOfExpr instanceofExpr(SsaVariable v, RefType type) {
 /**
  * Gets an expression of the form `v1 == v2` or `v1 != v2`.
  * The predicate is symmetric in `v1` and `v2`.
+ *
+ * Note this includes Kotlin's `==` and `!=` operators, which are value-equality tests.
  */
-EqualityTest varEqualityTestExpr(SsaVariable v1, SsaVariable v2, boolean isEqualExpr) {
+AnyEqualityTest varEqualityTestExpr(SsaVariable v1, SsaVariable v2, boolean isEqualExpr) {
   result.hasOperands(v1.getAUse(), v2.getAUse()) and
   isEqualExpr = result.polarity()
 }
@@ -172,7 +174,7 @@ predicate nullCheckMethod(Method m, boolean branch, boolean isnull) {
  * is true, and non-null if `isnull` is false.
  */
 Expr basicNullGuard(Expr e, boolean branch, boolean isnull) {
-  exists(EqualityTest eqtest, boolean polarity |
+  exists(AnyEqualityTest eqtest, boolean polarity |
     eqtest = result and
     eqtest.hasOperands(e, any(NullLiteral n)) and
     polarity = eqtest.polarity() and
@@ -191,7 +193,7 @@ Expr basicNullGuard(Expr e, boolean branch, boolean isnull) {
     nullCheckMethod(call.getMethod(), branch, isnull)
   )
   or
-  exists(EqualityTest eqtest |
+  exists(AnyEqualityTest eqtest |
     eqtest = result and
     eqtest.hasOperands(e, clearlyNotNullExpr()) and
     isnull = false and

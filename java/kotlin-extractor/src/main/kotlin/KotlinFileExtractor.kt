@@ -1278,15 +1278,9 @@ open class KotlinFileExtractor(
                 }
                 // != gets desugared into not and ==. Here we resugar it.
                 c.origin == IrStatementOrigin.EXCLEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "EQEQ") -> {
-                    var id: Label<out DbExpr>
+                    var id = tw.getFreshIdLabel<DbValueneexpr>()
                     val type = useType(c.type)
-                    if (isShallowEqualityTest(dr)) {
-                        id = tw.getFreshIdLabel<DbNeexpr>()
-                        tw.writeExprs_neexpr(id, type.javaResult.id, parent, idx)
-                    } else {
-                        id = tw.getFreshIdLabel<DbValueneexpr>()
-                        tw.writeExprs_valueneexpr(id, type.javaResult.id, parent, idx)
-                    }
+                    tw.writeExprs_valueneexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binOp(id, dr, callable, enclosingStmt)
                 }
@@ -1351,15 +1345,9 @@ open class KotlinFileExtractor(
                     if(c.origin != IrStatementOrigin.EQEQ) {
                         logger.errorElement("Unexpected origin for EQEQ: ${c.origin}", c)
                     }
-                    var id: Label<out DbExpr>
+                    var id = tw.getFreshIdLabel<DbValueeqexpr>()
                     val type = useType(c.type)
-                    if (isShallowEqualityTest(c)) {
-                        id = tw.getFreshIdLabel<DbEqexpr>()
-                        tw.writeExprs_eqexpr(id, type.javaResult.id, parent, idx)
-                    } else {
-                        id = tw.getFreshIdLabel<DbValueeqexpr>()
-                        tw.writeExprs_valueeqexpr(id, type.javaResult.id, parent, idx)
-                    }
+                    tw.writeExprs_valueeqexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binOp(id, c, callable, enclosingStmt)
                 }

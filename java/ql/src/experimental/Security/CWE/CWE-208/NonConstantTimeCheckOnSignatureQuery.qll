@@ -266,7 +266,7 @@ private predicate isNonConstantTimeComparisonCall(Expr firstInput, Expr secondIn
  */
 private predicate existsFailFastCheck(Expr firstArray, Expr secondArray) {
   exists(
-    Guard guard, EqualityTest eqTest, boolean branch, Stmt fastFailingStmt,
+    Guard guard, AnyEqualityTest eqTest, boolean branch, Stmt fastFailingStmt,
     ArrayAccess firstArrayAccess, ArrayAccess secondArrayAccess
   |
     guard = eqTest and

@@ -14,7 +14,7 @@
 import java
 
 predicate comparison(BinaryExpr binop, Expr left, Expr right) {
-  (binop instanceof ComparisonExpr or binop instanceof EqualityTest) and
+  (binop instanceof ComparisonExpr or binop instanceof AnyEqualityTest) and
   binop.getLeftOperand() = left and
   binop.getRightOperand() = right
 }
@@ -64,13 +64,13 @@ predicate equal(Expr left, Expr right) {
   )
 }
 
-predicate specialCase(EqualityTest comparison, string msg) {
+predicate specialCase(AnyEqualityTest comparison, string msg) {
   exists(FloatingPointType fptp, string neg, string boxedName |
     fptp = comparison.getAnOperand().getType() and
     // Name of boxed type corresponding to `fptp`.
     (if fptp.getName().toLowerCase() = "float" then boxedName = "Float" else boxedName = "Double") and
     // Equality tests are tests for not-`NaN`, inequality tests for `NaN`.
-    (if comparison instanceof EQExpr then neg = "!" else neg = "") and
+    (if comparison instanceof AnyEqualsExpr then neg = "!" else neg = "") and
     msg = "equivalent to " + neg + boxedName + ".isNaN(" + comparison.getLeftOperand() + ")"
   )
 }
