@@ -1,3 +1,4 @@
+
 /**
  * @name Useless Test
  * @description A boolean condition that is guaranteed to never be evaluated should be deleted.
@@ -38,6 +39,8 @@ where
   ) and
   eq.getRightOperand() instanceof Literal and
   ne.getRightOperand() instanceof Literal and
+  eq.getLeftOperand().getFullyConverted().getType() =
+    ne.getLeftOperand().getFullyConverted().getType() and
   nearestParent(eq) = nearestParent(ne) and
   sameExpr(eq.getLeftOperand(), ne.getLeftOperand())
-select  ne,"Useless Test"
+select ne, "Useless Test"
