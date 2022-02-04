@@ -134,7 +134,7 @@ abstract class FileCreationWithOptionalModeExpr extends FileCreationExpr {
 
 class OpenCreationExpr extends FileCreationWithOptionalModeExpr {
   OpenCreationExpr() {
-    this.getTarget().getName() = ["open", "_open", "_wopen"] and
+    this.getTarget().hasGlobalOrStdName(["open", "_open", "_wopen"]) and
     exists(int flag | flag = this.getArgument(1).getValue().toInt() |
       setsFlag(flag, o_creat()) or setsFlag(flag, o_tmpfile())
     )
@@ -163,7 +163,7 @@ class CreatCreationExpr extends FileCreationExpr {
 
 class OpenatCreationExpr extends FileCreationWithOptionalModeExpr {
   OpenatCreationExpr() {
-    this.getTarget().getName() = "openat" and
+    this.getTarget().hasGlobalOrStdName("openat") and
     exists(int flag | flag = this.getArgument(2).getValue().toInt() |
       setsFlag(flag, o_creat()) or setsFlag(flag, o_tmpfile())
     )
