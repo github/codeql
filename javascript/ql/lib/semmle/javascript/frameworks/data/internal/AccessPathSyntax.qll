@@ -22,15 +22,31 @@ module AccessPath {
 class AccessPath extends string instanceof AccessPath::Range {
   /** Gets the `n`th token on the access path as a string. */
   string getRawToken(int n) {
-    this != "" and // The empty path should have zero tokens, not a single empty token
-    result = this.splitAt(".", n)
+    // Avoid splitting by '.' since tokens may contain dots, e.g. `Field[foo.Bar.x]`.
+    // Instead use regexpFind to match valid tokens, and supplement with a final length
+    // check to ensure all characters were included in a token.
+    result = this.regexpFind("\\w+(?:\\[[^\\]]*\\])?(?=\\.|$)", n, _)
   }
 
-  /** Gets the `n`th token on the access path. */
-  AccessPathToken getToken(int n) { result = this.getRawToken(n) }
+  /** Holds if this string is not a syntactically valid access path. */
+  predicate hasSyntaxError() {
+    // If the lengths match, all characters must haven been included in a token
+    // or seen by the `.` lookahead pattern.
+    this != "" and
+    not this.length() = sum(int n | | getRawToken(n).length() + 1) - 1
+  }
 
-  /** Gets the number of tokens on the path. */
-  int getNumToken() { result = count(int n | exists(this.getRawToken(n))) }
+  /** Gets the `n`th token on the access path (if there are no syntax errors). */
+  AccessPathToken getToken(int n) {
+    result = this.getRawToken(n) and
+    not hasSyntaxError()
+  }
+
+  /** Gets the number of tokens on the path (if there are no syntax errors). */
+  int getNumToken() {
+    result = count(int n | exists(this.getRawToken(n))) and
+    not hasSyntaxError()
+  }
 }
 
 /**

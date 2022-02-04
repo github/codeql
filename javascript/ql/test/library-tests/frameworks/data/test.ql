@@ -1,5 +1,6 @@
 import javascript
 import testUtilities.ConsistencyChecking
+import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
 
 class Steps extends ModelInput::SummaryModelCsv {
   override predicate row(string row) {
@@ -53,4 +54,25 @@ query predicate taintFlow(DataFlow::Node source, DataFlow::Node sink) {
 
 query predicate isSink(DataFlow::Node node, string kind) {
   node = ModelOutput::getASinkNode(kind).getARhs()
+}
+
+class SyntaxErrorTest extends ModelInput::SinkModelCsv {
+  override predicate row(string row) {
+    row = [
+      "testlib;;Member[foo],Member[bar];test-sink",
+      "testlib;;Member[foo] Member[bar];test-sink",
+      "testlib;;Member[foo]. Member[bar];test-sink",
+      "testlib;;Member[foo], Member[bar];test-sink",
+      "testlib;;Member[foo]..Member[bar];test-sink",
+      "testlib;;Member[foo] .Member[bar];test-sink",
+      "testlib;;Member[foo]Member[bar];test-sink",
+      "testlib;;Member[foo;test-sink",
+      "testlib;;Member[foo]];test-sink",
+      "testlib;;Member[foo]].Member[bar];test-sink"
+    ]
+  }
+}
+
+query predicate syntaxErrors(AccessPathSyntax::AccessPath path) {
+  path.hasSyntaxError()
 }

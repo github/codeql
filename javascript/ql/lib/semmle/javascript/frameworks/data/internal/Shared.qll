@@ -163,19 +163,13 @@ private predicate summaryModel(string row) { any(SummaryModelCsv s).row(inverseP
 
 private predicate typeModel(string row) { any(TypeModelCsv s).row(inversePad(row)) }
 
-/**
- * Replaces `..` with `-->` in order to simplify subsequent parsing.
- */
-bindingset[path]
-private string normalizePath(string path) { result = path.replaceAll("..", "-->") }
-
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(string package, string type, string path, string kind) {
   exists(string row |
     sourceModel(row) and
     row.splitAt(";", 0) = package and
     row.splitAt(";", 1) = type and
-    normalizePath(row.splitAt(";", 2)) = path and
+    row.splitAt(";", 2) = path and
     row.splitAt(";", 3) = kind
   )
 }
@@ -186,7 +180,7 @@ private predicate sinkModel(string package, string type, string path, string kin
     sinkModel(row) and
     row.splitAt(";", 0) = package and
     row.splitAt(";", 1) = type and
-    normalizePath(row.splitAt(";", 2)) = path and
+    row.splitAt(";", 2) = path and
     row.splitAt(";", 3) = kind
   )
 }
@@ -199,9 +193,9 @@ private predicate summaryModel(
     summaryModel(row) and
     row.splitAt(";", 0) = package and
     row.splitAt(";", 1) = type and
-    normalizePath(row.splitAt(";", 2)) = path and
-    normalizePath(row.splitAt(";", 3)) = input and
-    normalizePath(row.splitAt(";", 4)) = output and
+    row.splitAt(";", 2) = path and
+    row.splitAt(";", 3) = input and
+    row.splitAt(";", 4) = output and
     row.splitAt(";", 5) = kind
   )
 }
@@ -216,7 +210,7 @@ private predicate typeModel(
     row.splitAt(";", 1) = type1 and
     row.splitAt(";", 2) = package2 and
     row.splitAt(";", 3) = type2 and
-    normalizePath(row.splitAt(";", 4)) = path
+    row.splitAt(";", 4) = path
   )
 }
 
@@ -434,9 +428,9 @@ bindingset[arg]
 private int getAnIntFromString(string arg) {
   result = arg.toInt()
   or
-  // Match "n1..n2", where ".." has previously been replaced with "-->" to simplify parsing
+  // Match "n1..n2"
   exists(string lo, string hi |
-    regexpCaptureTwo(arg, "(\\d+)-->(\\d+)", lo, hi) and
+    regexpCaptureTwo(arg, "(\\d+)\\.\\.(\\d+)", lo, hi) and
     result = [lo.toInt() .. hi.toInt()]
   )
 }
@@ -446,8 +440,8 @@ private int getAnIntFromString(string arg) {
  */
 bindingset[arg]
 private int getLowerBoundFromString(string arg) {
-  // Match "n..", where ".." has previously been replaced with "-->" to simplify parsing
-  result = arg.regexpCapture("(\\d+)-->", 1).toInt()
+  // Match "n.."
+  result = arg.regexpCapture("(\\d+)\\.\\.", 1).toInt()
 }
 
 /**
@@ -479,22 +473,22 @@ private int getAnIntFromStringWithArity(string arg, int arity) {
     result = arity - lo.toInt()
     or
     // N-x..
-    lo = arg.regexpCapture("N-(\\d+)-->", 1) and
+    lo = arg.regexpCapture("N-(\\d+)\\.\\.", 1) and
     result = [arity - lo.toInt(), arity - 1]
   )
   or
   exists(string lo, string hi |
     // x..N-y
-    regexpCaptureTwo(arg, "(\\d+)-->N-(\\d+)", lo, hi) and
+    regexpCaptureTwo(arg, "(\\d+)\\.\\.N-(\\d+)", lo, hi) and
     result = [lo.toInt() .. arity - hi.toInt()]
     or
     // N-x..Ny
-    regexpCaptureTwo(arg, "N-(\\d+)-->N-(\\d+)", lo, hi) and
+    regexpCaptureTwo(arg, "N-(\\d+)\\.\\.N-(\\d+)", lo, hi) and
     result = [arity - lo.toInt() .. arity - hi.toInt()] and
     result >= 0
     or
     // N-x..y
-    regexpCaptureTwo(arg, "N-(\\d+)-->(\\d+)", lo, hi) and
+    regexpCaptureTwo(arg, "N-(\\d+)\\.\\.(\\d+)", lo, hi) and
     result = [arity - lo.toInt() .. hi.toInt()] and
     result >= 0
   )

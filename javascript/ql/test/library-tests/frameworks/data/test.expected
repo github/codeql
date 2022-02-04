@@ -71,3 +71,14 @@ isSink
 | test.js:78:34:78:34 | 3 | test-sink |
 | test.js:81:28:81:35 | source() | test-sink |
 | test.js:82:28:82:28 | 1 | test-sink |
+syntaxErrors
+| Member[foo |
+| Member[foo] .Member[bar] |
+| Member[foo] Member[bar] |
+| Member[foo], Member[bar] |
+| Member[foo],Member[bar] |
+| Member[foo]. Member[bar] |
+| Member[foo]..Member[bar] |
+| Member[foo]Member[bar] |
+| Member[foo]] |
+| Member[foo]].Member[bar] |
