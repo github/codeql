@@ -1,7 +1,6 @@
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
-private import codeql.ruby.frameworks.Core
 
 module BasicObject {
   /**

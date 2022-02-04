@@ -9,14 +9,6 @@ import core.Array
 import core.Regexp
 
 /**
- * A `Method` call that has no known target.
- * These will typically be calls to methods inherited from a superclass.
- */
-class UnknownMethodCall extends MethodCall {
-  UnknownMethodCall() { not exists(this.(Call).getATarget()) }
-}
-
-/**
  * A system command executed via subshell literal syntax.
  * E.g.
  * ```ruby

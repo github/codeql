@@ -5,7 +5,6 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
-private import codeql.ruby.frameworks.Core
 
 /** Modeling for the `Kernel` class. */
 module Kernel {

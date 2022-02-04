@@ -1,4 +1,4 @@
-private import codeql.ruby.frameworks.Core
+private import codeql.ruby.AST
 
 module Object {
   /**
