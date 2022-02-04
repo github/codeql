@@ -127,6 +127,7 @@ ASTNode getAnASTNodeWithAFeature(Function f) {
   result = getAnASTNodeToFeaturize(f)
 }
 
+/** Returns the number of source-code characters in a function.  */
 int getNumCharsInFunction(Function f) {
   result =
     strictsum(ASTNode node | node = getAnASTNodeWithAFeature(f) | getTokenizedAstNode(node).length())
@@ -134,10 +135,6 @@ int getNumCharsInFunction(Function f) {
 
 // Evaluator string limit is 5395415 characters. We choose a limit lower than this.
 private int getMaxChars() { result = 1000000 }
-
-Function getFeaturizableFunction(Function f) {
-  result = f and getNumCharsInFunction(f) <= getMaxChars()
-}
 
 /**
  * Returns a featurized representation of the function that can be used to populate the
@@ -147,13 +144,15 @@ string getBodyTokensFeature(Function function) {
   // Performance optimization: If a function has more than 256 body subtokens, then featurize it as
   // absent. This approximates the behavior of the classifer on non-generic body features where
   // large body features are replaced by the absent token.
+  //
+  // We count nodes instead of tokens because tokens are often not unique.
   strictcount(ASTNode node |
     node = getAnASTNodeToFeaturize(function) and
     exists(getTokenizedAstNode(node))
   ) <= 256 and
   // Performance optimization: If a function has more than getMaxChars() characters in its body subtokens,
   // then featurize it as absent.
-  function = getFeaturizableFunction(function) and
+  getNumCharsInFunction(function) <= getMaxChars() and
   result =
     strictconcat(Location l, string token |
       // The use of a nested exists here allows us to avoid duplicates due to two AST nodes in the
