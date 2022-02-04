@@ -237,7 +237,7 @@ module Array {
     ElementReferenceRangeReadKnownSummary() {
       mc.getNumberOfArguments() = 2 and
       start = getKnownArrayElementContent(mc.getArgument(0)).getIndex() and
-      exists(int length | length = mc.getArgument(1).getConstantValue().getInt() |
+      exists(int length | mc.getArgument(1).getConstantValue().isInt(length) |
         end = (start + length - 1) and
         this = "[](" + start + ", " + length + ")"
       )
@@ -565,7 +565,7 @@ module Array {
 
     DeleteAtKnownSummary() {
       this = "delete_at(" + i + ")" and
-      i = mc.getArgument(0).getConstantValue().getInt() and
+      mc.getArgument(0).getConstantValue().isInt(i) and
       i >= 0
     }
 
@@ -589,7 +589,7 @@ module Array {
   private class DeleteAtUnknownSummary extends DeleteAtSummary {
     DeleteAtUnknownSummary() {
       this = "delete_at(index)" and
-      not exists(int i | i = mc.getArgument(0).getConstantValue().getInt() and i >= 0)
+      not exists(int i | mc.getArgument(0).getConstantValue().isInt(i) and i >= 0)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -735,7 +735,7 @@ module Array {
 
     FetchKnownSummary() {
       this = "fetch(" + i + ")" and
-      i = mc.getArgument(0).getConstantValue().getInt() and
+      mc.getArgument(0).getConstantValue().isInt(i) and
       i >= 0
     }
 
@@ -762,7 +762,7 @@ module Array {
   private class FetchUnknownSummary extends FetchSummary {
     FetchUnknownSummary() {
       this = "fetch(index)" and
-      not exists(int i | i = mc.getArgument(0).getConstantValue().getInt() and i >= 0)
+      not exists(int i | mc.getArgument(0).getConstantValue().isInt(i) and i >= 0)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -878,7 +878,7 @@ module Array {
 
     InsertKnownSummary() {
       this = "insert(" + i + ")" and
-      i = mc.getArgument(0).getConstantValue().getInt()
+      mc.getArgument(0).getConstantValue().isInt(i)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1215,7 +1215,7 @@ module Array {
     private int c;
 
     RotateKnownSummary() {
-      c = mc.getArgument(0).getConstantValue().getInt() and
+      mc.getArgument(0).getConstantValue().isInt(c) and
       this = "rotate(" + c + ")"
       or
       not exists(mc.getArgument(0)) and c = 1 and this = "rotate"
@@ -1271,7 +1271,7 @@ module Array {
     private int c;
 
     RotateBangKnownSummary() {
-      c = mc.getArgument(0).getConstantValue().getInt() and
+      mc.getArgument(0).getConstantValue().isInt(c) and
       this = "rotate!(" + c + ")"
       or
       not exists(mc.getArgument(0)) and c = 1 and this = "rotate!"
@@ -1364,7 +1364,7 @@ module Array {
     private int n;
 
     ShiftArgKnownSummary() {
-      n = mc.getArgument(0).getConstantValue().getInt() and
+      mc.getArgument(0).getConstantValue().isInt(n) and
       this = "shift(" + n + ")"
     }
 
@@ -1489,7 +1489,7 @@ module Array {
     SliceBangRangeKnownSummary() {
       mc.getNumberOfArguments() = 2 and
       start = getKnownArrayElementContent(mc.getArgument(0)).getIndex() and
-      exists(int length | length = mc.getArgument(1).getConstantValue().getInt() |
+      exists(int length | mc.getArgument(1).getConstantValue().isInt(length) |
         end = (start + length - 1) and
         this = "slice!(" + start + ", " + length + ")"
       )
@@ -1681,7 +1681,7 @@ module Array {
         or
         exists(ArrayIndex elementIndex, int argIndex |
           argIndex in [0 .. mc.getNumberOfArguments() - 1] and
-          elementIndex = mc.getArgument(argIndex).getConstantValue().getInt()
+          mc.getArgument(argIndex).getConstantValue().isInt(elementIndex)
         |
           input = "ArrayElement[" + elementIndex + "] of Receiver" and
           output = "ArrayElement[" + argIndex + "] of ReturnValue"
@@ -1698,7 +1698,7 @@ module Array {
     ValuesAtUnknownSummary() {
       this = "values_at(unknown)" and
       exists(int i | i in [0 .. mc.getNumberOfArguments() - 1] |
-        not exists(int val | val = mc.getArgument(i).getConstantValue().getInt() and val >= 0)
+        not exists(int val | mc.getArgument(i).getConstantValue().isInt(val) and val >= 0)
       )
     }
 
@@ -1827,7 +1827,7 @@ module Enumerable {
 
     DropKnownSummary() {
       this = "drop(" + i + ")" and
-      i = mc.getArgument(0).getConstantValue().getInt()
+      mc.getArgument(0).getConstantValue().isInt(i)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1995,7 +1995,7 @@ module Enumerable {
     private int n;
 
     FirstArgKnownSummary() {
-      this = "first(" + n + ")" and n = mc.getArgument(0).getConstantValue().getInt()
+      this = "first(" + n + ")" and mc.getArgument(0).getConstantValue().isInt(n)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -2391,7 +2391,7 @@ module Enumerable {
 
     TakeKnownSummary() {
       this = "take(" + i + ")" and
-      i = mc.getArgument(0).getConstantValue().getInt()
+      mc.getArgument(0).getConstantValue().isInt(i)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
