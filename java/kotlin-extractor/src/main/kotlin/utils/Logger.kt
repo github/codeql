@@ -52,7 +52,7 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         System.out.flush()
     }
 
-    fun warn(severity: Severity, msg: String, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
+    fun diagnostic(severity: Severity, msg: String, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
         val diagnosticLoc = getDiagnosticLocation()
         val diagnosticLocStr = if(diagnosticLoc == null) "<unknown location>" else diagnosticLoc
         val suffix =
@@ -93,13 +93,13 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         trace(msg + " // " + exn)
     }
     fun warn(msg: String, exn: Exception) {
-        warn(Severity.Warn, msg + " // " + exn)
+        warn(msg + " // " + exn)
     }
     fun warn(msg: String) {
-        warn(Severity.Warn, msg)
+        diagnostic(Severity.Warn, msg)
     }
     fun error(msg: String) {
-        warn(Severity.Error, msg)
+        diagnostic(Severity.Error, msg)
     }
     fun error(msg: String, exn: Exception) {
         error(msg + " // " + exn)
