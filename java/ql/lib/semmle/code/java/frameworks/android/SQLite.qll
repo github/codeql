@@ -1,3 +1,5 @@
+/** Provides classes and predicates for working with SQLite databases. */
+
 import java
 import Android
 import semmle.code.java.dataflow.FlowSteps
@@ -22,6 +24,20 @@ class TypeSQLiteQueryBuilder extends Class {
  */
 class TypeDatabaseUtils extends Class {
   TypeDatabaseUtils() { hasQualifiedName("android.database", "DatabaseUtils") }
+}
+
+/**
+ * The class `android.database.sqlite.SQLiteOpenHelper`.
+ */
+class TypeSQLiteOpenHelper extends Class {
+  TypeSQLiteOpenHelper() { this.hasQualifiedName("android.database.sqlite", "SQLiteOpenHelper") }
+}
+
+/**
+ * The class `android.database.sqlite.SQLiteStatement`.
+ */
+class TypeSQLiteStatement extends Class {
+  TypeSQLiteStatement() { this.hasQualifiedName("android.database.sqlite", "SQLiteStatement") }
 }
 
 private class SQLiteSinkCsv extends SinkModelCsv {

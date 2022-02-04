@@ -150,8 +150,10 @@ newtype TObject =
   TBuiltinTuple(Builtin bltn) { bltn.getClass() = Builtin::special("tuple") } or
   /** Represents a tuple in the Python source */
   TPythonTuple(TupleNode origin, PointsToContext context) {
-    origin.isLoad() and
-    context.appliesTo(origin)
+    exists(Scope s |
+      context.appliesToScope(s) and
+      scope_loads_tuplenode(s, origin)
+    )
   } or
   /** Varargs tuple */
   TVarargsTuple(CallNode call, PointsToContext context, int offset, int length) {
@@ -200,6 +202,13 @@ newtype TObject =
     index.isNotSubscriptedType() and
     Expressions::subscriptPartsPointsTo(_, _, generic, index)
   }
+
+/** Join-order helper for TPythonTuple */
+pragma[nomagic]
+private predicate scope_loads_tuplenode(Scope s, TupleNode origin) {
+  origin.isLoad() and
+  origin.getScope() = s
+}
 
 /** Holds if the object `t` is a type. */
 predicate isType(ObjectInternal t) {

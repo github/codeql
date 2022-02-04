@@ -1,0 +1,3 @@
+| bad-jwt.js:10:19:10:20 | "" | This argument disables the integrity enforcement of the token verification. |
+| bad-jwt.js:11:19:11:27 | undefined | This argument disables the integrity enforcement of the token verification. |
+| bad-jwt.js:12:19:12:23 | false | This argument disables the integrity enforcement of the token verification. |

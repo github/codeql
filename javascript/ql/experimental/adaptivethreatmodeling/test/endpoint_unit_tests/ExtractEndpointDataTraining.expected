@@ -1,0 +1,66 @@
+endpoints
+| index.js:9:15:9:45 | { 'isAd ... Admin } | NosqlInjection | hasFlowFromSource | true | boolean |
+| index.js:9:15:9:45 | { 'isAd ... Admin } | NosqlInjection | isConstantExpression | false | boolean |
+| index.js:9:15:9:45 | { 'isAd ... Admin } | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:9:15:9:45 | { 'isAd ... Admin } | NosqlInjection | sinkLabel | Sink | string |
+| index.js:15:17:15:32 | req.body.isAdmin | NosqlInjection | hasFlowFromSource | true | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | NosqlInjection | isConstantExpression | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | NosqlInjection | notASinkReason | LoggerMethod | string |
+| index.js:15:17:15:32 | req.body.isAdmin | NosqlInjection | sinkLabel | NotASink | string |
+| index.js:15:17:15:32 | req.body.isAdmin | SqlInjection | hasFlowFromSource | true | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | SqlInjection | isConstantExpression | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | SqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | SqlInjection | notASinkReason | LoggerMethod | string |
+| index.js:15:17:15:32 | req.body.isAdmin | SqlInjection | sinkLabel | NotASink | string |
+| index.js:15:17:15:32 | req.body.isAdmin | TaintedPath | hasFlowFromSource | true | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | TaintedPath | isConstantExpression | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | TaintedPath | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | TaintedPath | notASinkReason | LoggerMethod | string |
+| index.js:15:17:15:32 | req.body.isAdmin | TaintedPath | sinkLabel | NotASink | string |
+| index.js:15:17:15:32 | req.body.isAdmin | Xss | hasFlowFromSource | true | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | Xss | isConstantExpression | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | Xss | notASinkReason | LoggerMethod | string |
+| index.js:15:17:15:32 | req.body.isAdmin | Xss | sinkLabel | NotASink | string |
+| index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | hasFlowFromSource | false | boolean |
+| index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | isConstantExpression | false | boolean |
+| index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | sinkLabel | Sink | string |
+| index.js:28:13:28:28 | UNDEFINED_GLOBAL | NosqlInjection | hasFlowFromSource | false | boolean |
+| index.js:28:13:28:28 | UNDEFINED_GLOBAL | NosqlInjection | isConstantExpression | false | boolean |
+| index.js:28:13:28:28 | UNDEFINED_GLOBAL | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:28:13:28:28 | UNDEFINED_GLOBAL | NosqlInjection | sinkLabel | Sink | string |
+tokenFeatures
+| index.js:9:15:9:45 | { 'isAd ... Admin } | argumentIndex | 0 |
+| index.js:9:15:9:45 | { 'isAd ... Admin } | calleeAccessPath | mongoose model find |
+| index.js:9:15:9:45 | { 'isAd ... Admin } | calleeAccessPathWithStructuralInfo | mongoose member model instanceorreturn member find instanceorreturn |
+| index.js:9:15:9:45 | { 'isAd ... Admin } | calleeApiName | mongoose |
+| index.js:9:15:9:45 | { 'isAd ... Admin } | calleeName | find |
+| index.js:9:15:9:45 | { 'isAd ... Admin } | enclosingFunctionBody | app post /isAdmin req res User find isAdmin req body isAdmin |
+| index.js:9:15:9:45 | { 'isAd ... Admin } | enclosingFunctionName | flowFromSourceToSink |
+| index.js:9:15:9:45 | { 'isAd ... Admin } | receiverName | User |
+| index.js:15:17:15:32 | req.body.isAdmin | argumentIndex | 0 |
+| index.js:15:17:15:32 | req.body.isAdmin | calleeAccessPath |  |
+| index.js:15:17:15:32 | req.body.isAdmin | calleeAccessPathWithStructuralInfo |  |
+| index.js:15:17:15:32 | req.body.isAdmin | calleeApiName |  |
+| index.js:15:17:15:32 | req.body.isAdmin | calleeName | log |
+| index.js:15:17:15:32 | req.body.isAdmin | enclosingFunctionBody | app post /isAdmin req res console log req body isAdmin |
+| index.js:15:17:15:32 | req.body.isAdmin | enclosingFunctionName | flowFromSourceToNotASink |
+| index.js:15:17:15:32 | req.body.isAdmin | receiverName | console |
+| index.js:20:13:20:31 | { 'isAdmin': true } | argumentIndex | 0 |
+| index.js:20:13:20:31 | { 'isAdmin': true } | calleeAccessPath | mongoose model find |
+| index.js:20:13:20:31 | { 'isAdmin': true } | calleeAccessPathWithStructuralInfo | mongoose member model instanceorreturn member find instanceorreturn |
+| index.js:20:13:20:31 | { 'isAdmin': true } | calleeApiName | mongoose |
+| index.js:20:13:20:31 | { 'isAdmin': true } | calleeName | find |
+| index.js:20:13:20:31 | { 'isAdmin': true } | enclosingFunctionBody | User find isAdmin true |
+| index.js:20:13:20:31 | { 'isAdmin': true } | enclosingFunctionName | notFlowFromSource |
+| index.js:20:13:20:31 | { 'isAdmin': true } | receiverName | User |
+| index.js:28:13:28:28 | UNDEFINED_GLOBAL | argumentIndex | 0 |
+| index.js:28:13:28:28 | UNDEFINED_GLOBAL | calleeAccessPath | mongoose model find |
+| index.js:28:13:28:28 | UNDEFINED_GLOBAL | calleeAccessPathWithStructuralInfo | mongoose member model instanceorreturn member find instanceorreturn |
+| index.js:28:13:28:28 | UNDEFINED_GLOBAL | calleeApiName | mongoose |
+| index.js:28:13:28:28 | UNDEFINED_GLOBAL | calleeName | find |
+| index.js:28:13:28:28 | UNDEFINED_GLOBAL | enclosingFunctionBody | User find UNDEFINED_GLOBAL |
+| index.js:28:13:28:28 | UNDEFINED_GLOBAL | enclosingFunctionName | notConstantExpression |
+| index.js:28:13:28:28 | UNDEFINED_GLOBAL | receiverName | User |

@@ -414,10 +414,10 @@ class TVariableReal =
 class TLocalVariable = TLocalVariableReal or TLocalVariableSynth or TSelfVariable;
 
 /**
- * This class only exists to avoid negative recursion warnings. Ideally,
- * we would use `VariableImpl` directly, but that results in incorrect
- * negative recursion warnings. Adding new root-defs for the predicates
- * below works around this.
+ * A "real" (i.e. non-synthesized) variable. This class only exists to
+ * avoid negative recursion warnings. Ideally, we would use `VariableImpl`
+ * directly, but that results in incorrect negative recursion warnings.
+ * Adding new root-defs for the predicates below works around this.
  */
 abstract class VariableReal extends TVariableReal {
   abstract string getNameImpl();

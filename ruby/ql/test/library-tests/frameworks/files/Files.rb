@@ -33,3 +33,5 @@ date = IO.read("|date")
 
 # `rand_open` is an `IO` instance
 rand_open = IO.open(IO.sysopen("/dev/random", "r"), "r")
+
+foo_file_3 = File.open("foo.txt")

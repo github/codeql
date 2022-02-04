@@ -16,7 +16,6 @@
 package android.webkit;
 
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.util.Map;
 
 /**

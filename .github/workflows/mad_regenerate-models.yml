@@ -1,0 +1,62 @@
+name: Regenerate framework models
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 2 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mad_regenerate-models.yml"
+
+jobs:
+  regenerate-models:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # placeholder required for each axis, excluded below, replaced by the actual combinations (see include)
+        slug: ["placeholder"]
+        ref: ["placeholder"]
+        include:
+          - slug: "apache/commons-io"
+            ref: "8985de8fe74f6622a419b37a6eed0dbc484dc128"
+        exclude:
+          - slug: "placeholder"
+            ref: "placeholder"
+    steps:
+      - name: Clone self (github/codeql)
+        uses: actions/checkout@v2
+      - name: Setup CodeQL binaries
+        uses: ./.github/actions/fetch-codeql
+      - name: Clone repositories
+        uses: actions/checkout@v2
+        with:
+          path: repos/${{ matrix.ref }}
+          ref: ${{ matrix.ref }}
+          repository: ${{ matrix.slug }}
+      - name: Build database
+        env:
+          SLUG: ${{ matrix.slug }}
+          REF: ${{ matrix.ref }}
+        run: |
+          mkdir dbs
+          cd repos/${REF}
+          SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
+          codeql database create --language=java ../../dbs/${SHORTNAME}
+      - name: Regenerate models in-place
+        env:
+          SLUG: ${{ matrix.slug }}
+        run: |
+          SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
+          java/ql/src/utils/model-generator/RegenerateModels.py "${SLUG}" dbs/${SHORTNAME}
+      - name: Stage changes
+        run: |
+          find java -name "*.qll" -print0 | xargs -0 git add
+          git status
+          git diff --cached > models.patch
+      - uses: actions/upload-artifact@v2
+        with:
+          name: patch
+          path: models.patch
+          retention-days: 7
