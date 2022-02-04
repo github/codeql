@@ -102,7 +102,7 @@ open class KotlinUsesExtractor(
         when(t) {
             is IrSimpleType -> useSimpleType(t, context)
             else -> {
-                logger.warn(Severity.ErrorSevere, "Unrecognised IrType: " + t.javaClass)
+                logger.error("Unrecognised IrType: " + t.javaClass)
                 TypeResults(TypeResult(fakeLabel(), "unknown", "unknown"), TypeResult(fakeLabel(), "unknown", "unknown"))
             }
         }
@@ -188,7 +188,7 @@ open class KotlinUsesExtractor(
     // For non-generic types it will be zero-length list.
     fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>?, inReceiverContext: Boolean = false): UseClassInstanceResult {
         if (c.isAnonymousObject) {
-            logger.warn(Severity.ErrorSevere, "Unexpected access to anonymous class instance")
+            logger.error("Unexpected access to anonymous class instance")
         }
 
         // TODO: only substitute in class and function signatures
@@ -227,8 +227,8 @@ open class KotlinUsesExtractor(
         when (val parent = d.parent) {
             is IrClass -> extractExternalClassLater(parent)
             is IrFunction -> extractExternalEnclosingClassLater(parent)
-            is IrFile -> logger.warn(Severity.ErrorSevere, "extractExternalEnclosingClassLater but no enclosing class.")
-            else -> logger.warn(Severity.ErrorSevere, "Unrecognised extractExternalEnclosingClassLater: " + d.javaClass)
+            is IrFile -> logger.error("extractExternalEnclosingClassLater but no enclosing class.")
+            else -> logger.error("Unrecognised extractExternalEnclosingClassLater: " + d.javaClass)
         }
     }
 
@@ -305,10 +305,10 @@ open class KotlinUsesExtractor(
     fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>?, hasQuestionMark: Boolean): TypeResults {
         if (c.isAnonymousObject) {
             if (args?.isNotEmpty() == true) {
-                logger.warn(Severity.ErrorHigh, "Anonymous class with unexpected type arguments")
+                logger.error("Anonymous class with unexpected type arguments")
             }
             if (hasQuestionMark) {
-                logger.warn(Severity.ErrorHigh, "Unexpected nullable anonymous class")
+                logger.error("Unexpected nullable anonymous class")
             }
 
             return useAnonymousClass(c)
@@ -423,7 +423,7 @@ open class KotlinUsesExtractor(
     fun useSimpleType(s: IrSimpleType, context: TypeContext): TypeResults {
         if (s.abbreviation != null) {
             // TODO: Extract this information
-            logger.warn(Severity.ErrorSevere, "Type alias ignored for " + s.render())
+            logger.error("Type alias ignored for " + s.render())
         }
         // We use this when we don't actually have an IrClass for a class
         // we want to refer to
@@ -529,7 +529,7 @@ open class KotlinUsesExtractor(
                 return TypeResults(javaResult, kotlinResult)
             }
             else -> {
-                logger.warn(Severity.ErrorSevere, "Unrecognised IrSimpleType: " + s.javaClass + ": " + s.render())
+                logger.error("Unrecognised IrSimpleType: " + s.javaClass + ": " + s.render())
                 return TypeResults(TypeResult(fakeLabel(), "unknown", "unknown"), TypeResult(fakeLabel(), "unknown", "unknown"))
             }
         }
@@ -557,11 +557,11 @@ open class KotlinUsesExtractor(
             is IrFunction -> useFunction(dp)
             is IrExternalPackageFragment -> {
                 // TODO
-                logger.warn(Severity.ErrorSevere, "Unhandled IrExternalPackageFragment")
+                logger.error("Unhandled IrExternalPackageFragment")
                 fakeLabel()
             }
             else -> {
-                logger.warn(Severity.ErrorSevere, "Unrecognised IrDeclarationParent: " + dp.javaClass)
+                logger.error("Unrecognised IrDeclarationParent: " + dp.javaClass)
                 fakeLabel()
             }
         }
@@ -577,8 +577,7 @@ open class KotlinUsesExtractor(
                 it.owner.getter -> return JvmAbi.getterName(propName)
                 it.owner.setter -> return JvmAbi.setterName(propName)
                 else -> {
-                    logger.warn(
-                        Severity.ErrorSevere,
+                    logger.error(
                         "Function has a corresponding property, but is neither the getter nor the setter"
                     )
                 }
@@ -713,7 +712,7 @@ open class KotlinUsesExtractor(
      */
     fun getLocallyVisibleFunctionLabels(f: IrFunction): LocallyVisibleFunctionLabels {
         if (!f.isLocalFunction()){
-            logger.warn(Severity.ErrorSevere, "Extracting a non-local function as a local one")
+            logger.error("Extracting a non-local function as a local one")
         }
 
         var res = locallyVisibleFunctionLabelMapping[f]
@@ -793,7 +792,7 @@ open class KotlinUsesExtractor(
                 }
             }
             else -> {
-                logger.warn(Severity.ErrorSevere, "Unexpected type argument.")
+                logger.error("Unexpected type argument.")
                 return TypeResult(fakeLabel(), "unknown", "unknown")
             }
         }
@@ -846,7 +845,7 @@ open class KotlinUsesExtractor(
     // For non-generic types it will be zero-length list.
     fun getClassLabel(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): ClassLabelResults {
         if (c.isAnonymousObject) {
-            logger.warn(Severity.ErrorSevere, "Label generation should not be requested for an anonymous class")
+            logger.error("Label generation should not be requested for an anonymous class")
         }
 
         val unquotedLabel = getUnquotedClassLabel(c, argsIncludingOuterClasses)
@@ -876,7 +875,7 @@ open class KotlinUsesExtractor(
             tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(param)) {
                 // Any type parameter that is in scope should have been extracted already
                 // in extractClassSource or extractFunction
-                logger.warn(Severity.ErrorSevere, "Missing type parameter label")
+                logger.error("Missing type parameter label")
             },
             useType(eraseTypeParameter(param)).javaResult.signature,
             param.name.asString()
@@ -938,11 +937,11 @@ open class KotlinUsesExtractor(
                             tw.writeExtendsReftype(id, l)
                         }
                         else -> {
-                            logger.warn(Severity.ErrorSevere, "Unexpected simple type supertype: " + t.javaClass + ": " + t.render())
+                            logger.error("Unexpected simple type supertype: " + t.javaClass + ": " + t.render())
                         }
                     }
                 } else -> {
-                    logger.warn(Severity.ErrorSevere, "Unexpected supertype: " + t.javaClass + ": " + t.render())
+                    logger.error("Unexpected supertype: " + t.javaClass + ": " + t.render())
                 }
             }
         }
@@ -953,7 +952,7 @@ open class KotlinUsesExtractor(
             is IrValueParameter -> useValueParameter(d, null)
             is IrVariable -> useVariable(d)
             else -> {
-                logger.warn(Severity.ErrorSevere, "Unrecognised IrValueDeclaration: " + d.javaClass)
+                logger.error("Unrecognised IrValueDeclaration: " + d.javaClass)
                 fakeLabel()
             }
         }
@@ -994,7 +993,7 @@ open class KotlinUsesExtractor(
             val p = vp.parent
             if (p !is IrFunction || p.extensionReceiverParameter != vp) {
                 // We're not extracting this and this@TYPE parameters of functions:
-                logger.warn(Severity.ErrorSevere, "Unexpected negative index for parameter")
+                logger.error("Unexpected negative index for parameter")
             }
         }
         return "@\"params;{$parentId};$idx\""

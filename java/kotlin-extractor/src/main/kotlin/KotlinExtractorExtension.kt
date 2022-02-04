@@ -66,7 +66,7 @@ class KotlinExtractorExtension(
                 doFile(fileExtractionProblems, invocationTrapFile, fileTrapWriter, checkTrapIdentical, logCounter, trapDir, srcDir, file, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
                 fileTrapWriter.writeCompilation_compiling_files_completed(compilation, index, fileExtractionProblems.extractionResult())
             }
-            logger.printLimitedWarningCounts()
+            logger.printLimitedDiagnosticCounts()
             // We don't want the compiler to continue and generate class
             // files etc, so we just exit when we are finished extracting.
             logger.info("Extraction completed")
@@ -194,19 +194,19 @@ fun doFile(fileExtractionProblems: FileExtractionProblems,
             if (checkTrapIdentical && trapFile.exists()) {
                 if (equivalentTrap(trapTmpFile, trapFile)) {
                     if (!trapTmpFile.delete()) {
-                        logger.warn(Severity.WarnLow, "Failed to delete $trapTmpFile")
+                        logger.warn("Failed to delete $trapTmpFile")
                     }
                 } else {
                     val trapDifferentFile = File.createTempFile("$srcFilePath.", ".trap.different", dbTrapDir)
                     if (trapTmpFile.renameTo(trapDifferentFile)) {
-                        logger.warn(Severity.Warn, "TRAP difference: $trapFile vs $trapDifferentFile")
+                        logger.warn("TRAP difference: $trapFile vs $trapDifferentFile")
                     } else {
-                        logger.warn(Severity.WarnLow, "Failed to rename $trapTmpFile to $trapFile")
+                        logger.warn("Failed to rename $trapTmpFile to $trapFile")
                     }
                 }
             } else {
                 if (!trapTmpFile.renameTo(trapFile)) {
-                    logger.warn(Severity.WarnLow, "Failed to rename $trapTmpFile to $trapFile")
+                    logger.warn("Failed to rename $trapTmpFile to $trapFile")
                 }
             }
         } catch (e: Exception) {

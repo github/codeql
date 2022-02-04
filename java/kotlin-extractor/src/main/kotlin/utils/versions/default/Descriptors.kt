@@ -13,6 +13,6 @@ fun <TIrStub> KotlinUsesExtractor.getIrStubFromDescriptor(generateStub: (Declara
         val stubGenerator = DeclarationStubGeneratorImpl(pluginContext.moduleDescriptor, it, pluginContext.languageVersionSettings)
         generateStub(stubGenerator)
     } ?: run {
-        logger.warn(Severity.ErrorHigh, "Plugin context has no symbol table, couldn't get IR stub")
+        logger.error("Plugin context has no symbol table, couldn't get IR stub")
         null
     }

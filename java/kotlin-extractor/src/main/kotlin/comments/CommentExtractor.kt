@@ -21,7 +21,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
 
     fun extract() {
         if (ktFile == null) {
-            logger.warn(Severity.Warn, "Comments are not being processed in ${file.path}.")
+            logger.warn("Comments are not being processed in ${file.path}.")
         } else {
             ktFile.accept(commentVisitor)
         }
@@ -50,7 +50,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                         CommentType.Doc
                     }
                     else -> {
-                        logger.warn(Severity.Warn, "Unhandled comment token type: ${comment.tokenType}")
+                        logger.warn("Unhandled comment token type: ${comment.tokenType}")
                         return
                     }
                 }
@@ -65,7 +65,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                 }
 
                 if (comment !is KDoc) {
-                    logger.warn(Severity.Warn, "Unexpected comment type with DocComment token type.")
+                    logger.warn("Unexpected comment type with DocComment token type.")
                     return
                 }
 
@@ -96,7 +96,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                             val label = fileExtractor.getLabel(ownerIr) ?: continue
                             val existingLabel = tw.getExistingLabelFor<DbTop>(label)
                             if (existingLabel == null) {
-                                logger.warn(Severity.Warn, "Couldn't get existing label for $label")
+                                logger.warn("Couldn't get existing label for $label")
                                 continue
                             }
                             existingLabel
@@ -108,7 +108,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
             private fun getKDocOwner(comment: KDoc) : PsiElement? {
                 val owner = comment.owner
                 if (owner == null) {
-                    logger.warn(Severity.Warn, "Couldn't get owner of KDoc.")
+                    logger.warn("Couldn't get owner of KDoc.")
                 }
                 return owner
             }

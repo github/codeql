@@ -61,7 +61,7 @@ class ExternalClassExtractor(val logger: FileLogger, val invocationTrapFile: Str
                                 }
 
                                 if (!trapTmpFile.renameTo(trapFile)) {
-                                    logger.warn(Severity.Error, "Failed to rename $trapTmpFile to $trapFile")
+                                    logger.error("Failed to rename $trapTmpFile to $trapFile")
                                 }
 
                             } catch (e: Exception) {

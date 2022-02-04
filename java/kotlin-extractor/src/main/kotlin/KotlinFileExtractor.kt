@@ -102,7 +102,7 @@ open class KotlinFileExtractor(
                     extractField(declaration, parentId)
                 }
                 is IrTypeAlias -> extractTypeAlias(declaration)
-                else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclaration: " + declaration.javaClass, declaration)
+                else -> logger.errorElement("Unrecognised IrDeclaration: " + declaration.javaClass, declaration)
             }
         }
     }
@@ -125,7 +125,7 @@ open class KotlinFileExtractor(
 
             // todo add others:
             else -> {
-                logger.warnElement(Severity.ErrorSevere, "Unhandled element type: ${element::class}", element)
+                logger.errorElement("Unhandled element type: ${element::class}", element)
                 return null
             }
         }
@@ -139,7 +139,7 @@ open class KotlinFileExtractor(
                 is IrFunction -> useFunction(parent)
                 is IrClass -> useClassSource(parent)
                 else -> {
-                    logger.warnElement(Severity.ErrorSevere, "Unexpected type parameter parent", tp)
+                    logger.errorElement("Unexpected type parameter parent", tp)
                     fakeLabel()
                 }
             }
@@ -189,10 +189,10 @@ open class KotlinFileExtractor(
                         JavaVisibilities.ProtectedAndPackage -> {
                             // default java visibility (member level)
                         }
-                        else -> logger.warnElement(Severity.ErrorSevere, "Unexpected delegated visibility: $v", elementForLocation)
+                        else -> logger.errorElement("Unexpected delegated visibility: $v", elementForLocation)
                     }
                 }
-                else -> logger.warnElement(Severity.ErrorSevere, "Unexpected visibility: $v", elementForLocation)
+                else -> logger.errorElement("Unexpected visibility: $v", elementForLocation)
             }
         }
     }
@@ -204,7 +204,7 @@ open class KotlinFileExtractor(
                 Modality.SEALED -> addModifiers(id, "sealed")
                 Modality.OPEN -> { } // This is the default
                 Modality.ABSTRACT -> addModifiers(id, "abstract")
-                else -> logger.warnElement(Severity.ErrorSevere, "Unexpected class modality: ${c.modality}", c)
+                else -> logger.errorElement("Unexpected class modality: ${c.modality}", c)
             }
             extractVisibility(c, id, c.visibility)
         }
@@ -215,7 +215,7 @@ open class KotlinFileExtractor(
     fun extractClassInstance(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbClassorinterface> {
         with("class instance", c) {
             if (argsIncludingOuterClasses?.isEmpty() == true) {
-                logger.warn(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString())
+                logger.error("Instance without type arguments: " + c.name.asString())
             }
 
             val classLabelResults = getClassLabel(c, argsIncludingOuterClasses)
@@ -413,11 +413,11 @@ open class KotlinFileExtractor(
     fun useCompanionObjectClassInstance(c: IrClass): FieldResult? {
         val parent = c.parent
         if(!c.isCompanion) {
-            logger.warn(Severity.ErrorSevere, "Using companion instance for non-companion class")
+            logger.error("Using companion instance for non-companion class")
             return null
         }
         else if (parent !is IrClass) {
-            logger.warn(Severity.ErrorSevere, "Using companion instance for non-companion class")
+            logger.error("Using companion instance for non-companion class")
             return null
         } else {
             val parentId = useClassInstance(parent, listOf()).typeResult.id
@@ -430,7 +430,7 @@ open class KotlinFileExtractor(
 
     fun useObjectClassInstance(c: IrClass): FieldResult {
         if(!c.isNonCompanionObject) {
-            logger.warn(Severity.ErrorSevere, "Using instance for non-object class")
+            logger.error("Using instance for non-object class")
         }
         val classId = useClassInstance(c, listOf()).typeResult.id
         val instanceName = "INSTANCE"
@@ -607,7 +607,7 @@ open class KotlinFileExtractor(
                 val body = f.body
                 if (body != null && extractBody) {
                     if (typeSubstitution != null)
-                        logger.warnElement(Severity.ErrorSevere, "Type substitution should only be used to extract a function prototype, not the body", f)
+                        logger.errorElement("Type substitution should only be used to extract a function prototype, not the body", f)
                     extractBody(body, id)
                 }
 
@@ -673,20 +673,20 @@ open class KotlinFileExtractor(
                     tw.writeKtPropertyGetters(id, getterId)
                 } else {
                     if (p.modality != Modality.FINAL || !isExternalDeclaration(p)) {
-                        logger.warnElement(Severity.ErrorSevere, "IrProperty without a getter", p)
+                        logger.errorElement("IrProperty without a getter", p)
                     }
                 }
 
                 if (setter != null) {
                     if (!p.isVar) {
-                        logger.warnElement(Severity.ErrorSevere, "!isVar property with a setter", p)
+                        logger.errorElement("!isVar property with a setter", p)
                     }
                     @Suppress("UNCHECKED_CAST")
                     val setterId = extractFunction(setter, parentId, extractBackingField, typeSubstitution, classTypeArgs) as Label<out DbMethod>
                     tw.writeKtPropertySetters(id, setterId)
                 } else {
                     if (p.isVar && !isExternalDeclaration(p)) {
-                        logger.warnElement(Severity.ErrorSevere, "isVar property without a setter", p)
+                        logger.errorElement("isVar property without a setter", p)
                     }
                 }
 
@@ -706,9 +706,9 @@ open class KotlinFileExtractor(
                 val id = useEnumEntry(ee)
                 val parent = ee.parent
                 if (parent !is IrClass) {
-                    logger.warnElement(Severity.ErrorSevere, "Enum entry with unexpected parent: " + parent.javaClass, ee)
+                    logger.errorElement("Enum entry with unexpected parent: " + parent.javaClass, ee)
                 } else if (parent.typeParameters.isNotEmpty()) {
-                    logger.warnElement(Severity.ErrorSevere, "Enum entry parent class has type parameters: " + parent.name, ee)
+                    logger.errorElement("Enum entry parent class has type parameters: " + parent.name, ee)
                 } else {
                     val type = useSimpleTypeClass(parent, emptyList(), false)
                     tw.writeFields(id, ee.name.asString(), type.javaResult.id, parentId, id)
@@ -724,7 +724,7 @@ open class KotlinFileExtractor(
         with("type alias", ta) {
             if (ta.typeParameters.isNotEmpty()) {
                 // TODO: Extract this information
-                logger.warn(Severity.ErrorSevere, "Type alias type parameters ignored for " + ta.render())
+                logger.error("Type alias type parameters ignored for " + ta.render())
             }
             val id = useTypeAlias(ta)
             val locId = tw.getLocation(ta)
@@ -742,7 +742,7 @@ open class KotlinFileExtractor(
                 is IrSyntheticBody -> extractSyntheticBody(b, callable)
                 is IrExpressionBody -> extractExpressionBody(b, callable)
                 else -> {
-                    logger.warnElement(Severity.ErrorSevere, "Unrecognised IrBody: " + b.javaClass, b)
+                    logger.errorElement("Unrecognised IrBody: " + b.javaClass, b)
                 }
             }
         }
@@ -843,15 +843,15 @@ open class KotlinFileExtractor(
                         val ids = getLocallyVisibleFunctionLabels(s)
                         tw.writeKtLocalFunction(ids.function)
                     } else {
-                        logger.warnElement(Severity.ErrorSevere, "Expected to find local function", s)
+                        logger.errorElement("Expected to find local function", s)
                     }
                 }
                 is IrLocalDelegatedProperty -> {
                     // TODO:
-                    logger.warnElement(Severity.ErrorSevere, "Unhandled IrLocalDelegatedProperty", s)
+                    logger.errorElement("Unhandled IrLocalDelegatedProperty", s)
                 }
                 else -> {
-                    logger.warnElement(Severity.ErrorSevere, "Unrecognised IrStatement: " + s.javaClass, s)
+                    logger.errorElement("Unrecognised IrStatement: " + s.javaClass, s)
                 }
             }
         }
@@ -909,18 +909,18 @@ open class KotlinFileExtractor(
 
         val dr = c.dispatchReceiver
         if (dr != null) {
-            logger.warnElement(Severity.ErrorSevere, "Unexpected dispatch receiver found", c)
+            logger.errorElement("Unexpected dispatch receiver found", c)
         }
 
         if (c.valueArgumentsCount < 1) {
-            logger.warnElement(Severity.ErrorSevere, "No arguments found", c)
+            logger.errorElement("No arguments found", c)
             return
         }
 
         extractArgument(id, c, callable, enclosingStmt, 0, "Operand null")
 
         if (c.valueArgumentsCount > 1) {
-            logger.warnElement(Severity.ErrorSevere, "Extra arguments found", c)
+            logger.errorElement("Extra arguments found", c)
         }
     }
 
@@ -932,32 +932,32 @@ open class KotlinFileExtractor(
 
         val dr = c.dispatchReceiver
         if (dr != null) {
-            logger.warnElement(Severity.ErrorSevere, "Unexpected dispatch receiver found", c)
+            logger.errorElement("Unexpected dispatch receiver found", c)
         }
 
         if (c.valueArgumentsCount < 1) {
-            logger.warnElement(Severity.ErrorSevere, "No arguments found", c)
+            logger.errorElement("No arguments found", c)
             return
         }
 
         extractArgument(id, c, callable, enclosingStmt, 0, "LHS null")
 
         if (c.valueArgumentsCount < 2) {
-            logger.warnElement(Severity.ErrorSevere, "No RHS found", c)
+            logger.errorElement("No RHS found", c)
             return
         }
 
         extractArgument(id, c, callable, enclosingStmt, 1, "RHS null")
 
         if (c.valueArgumentsCount > 2) {
-            logger.warnElement(Severity.ErrorSevere, "Extra arguments found", c)
+            logger.errorElement("Extra arguments found", c)
         }
     }
 
     private fun extractArgument(id: Label<out DbExpr>, c: IrCall, callable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>, idx: Int, msg: String) {
         val op = c.getValueArgument(idx)
         if (op == null) {
-            logger.warnElement(Severity.ErrorSevere, msg, c)
+            logger.errorElement(msg, c)
         } else {
             extractExpressionExpr(op, callable, id, idx, enclosingStmt)
         }
@@ -987,7 +987,7 @@ open class KotlinFileExtractor(
 
         // If a path was found, repeatedly substitute types to get the corresponding specialisation of that ancestor.
         return if (!walkFrom(receiverClass)) {
-            logger.warnElement(Severity.ErrorSevere, "Failed to find a class declaring ${callTarget.name}", callTarget)
+            logger.errorElement("Failed to find a class declaring ${callTarget.name}", callTarget)
             listOf()
         } else {
             var subbedType = receiverType
@@ -1097,7 +1097,7 @@ open class KotlinFileExtractor(
     fun findJdkIntrinsicOrWarn(name: String, warnAgainstElement: IrElement): IrFunction? {
         val result = jvmIntrinsicsClass?.let { findFunction(it, name) }
         if(result == null) {
-            logger.warnElement(Severity.ErrorSevere, "Couldn't find JVM intrinsic function $name", warnAgainstElement)
+            logger.errorElement("Couldn't find JVM intrinsic function $name", warnAgainstElement)
         }
         return result
     }
@@ -1170,13 +1170,13 @@ open class KotlinFileExtractor(
     
             fun extractSpecialEnumFunction(fnName: String){
                 if (c.typeArgumentsCount != 1) {
-                    logger.warnElement(Severity.ErrorSevere, "Expected to find exactly one type argument", c)
+                    logger.errorElement("Expected to find exactly one type argument", c)
                     return
                 }
     
                 val func = ((c.getTypeArgument(0) as? IrSimpleType)?.classifier?.owner as? IrClass)?.declarations?.find { it is IrFunction && it.name.asString() == fnName }
                 if (func == null) {
-                    logger.warnElement(Severity.ErrorSevere, "Couldn't find function $fnName on enum type", c)
+                    logger.errorElement("Couldn't find function $fnName on enum type", c)
                     return
                 }
     
@@ -1190,19 +1190,19 @@ open class KotlinFileExtractor(
                 tw.writeStatementEnclosingExpr(id, enclosingStmt)
 
                 if(receiver == null) {
-                    logger.warnElement(Severity.ErrorSevere, "$receiverDescription not found", c)
+                    logger.errorElement("$receiverDescription not found", c)
                 } else {
                     extractExpressionExpr(receiver, callable, id, 0, enclosingStmt)
                 }
                 if(c.valueArgumentsCount < 1) {
-                    logger.warnElement(Severity.ErrorSevere, "No RHS found", c)
+                    logger.errorElement("No RHS found", c)
                 } else {
                     if(c.valueArgumentsCount > 1) {
-                        logger.warnElement(Severity.ErrorSevere, "Extra arguments found", c)
+                        logger.errorElement("Extra arguments found", c)
                     }
                     val arg = c.getValueArgument(0)
                     if(arg == null) {
-                        logger.warnElement(Severity.ErrorSevere, "RHS null", c)
+                        logger.errorElement("RHS null", c)
                     } else {
                         extractExpressionExpr(arg, callable, id, 1, enclosingStmt)
                     }
@@ -1292,7 +1292,7 @@ open class KotlinFileExtractor(
                 // as they can't be extracted as external dependencies.
                 isBuiltinCallInternal(c, "less") -> {
                     if(c.origin != IrStatementOrigin.LT) {
-                        logger.warnElement(Severity.ErrorSevere, "Unexpected origin for LT: ${c.origin}", c)
+                        logger.errorElement("Unexpected origin for LT: ${c.origin}", c)
                     }
                     val id = tw.getFreshIdLabel<DbLtexpr>()
                     val type = useType(c.type)
@@ -1302,7 +1302,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "lessOrEqual") -> {
                     if(c.origin != IrStatementOrigin.LTEQ) {
-                        logger.warnElement(Severity.ErrorSevere, "Unexpected origin for LTEQ: ${c.origin}", c)
+                        logger.errorElement("Unexpected origin for LTEQ: ${c.origin}", c)
                     }
                     val id = tw.getFreshIdLabel<DbLeexpr>()
                     val type = useType(c.type)
@@ -1312,7 +1312,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "greater") -> {
                     if(c.origin != IrStatementOrigin.GT) {
-                        logger.warnElement(Severity.ErrorSevere, "Unexpected origin for GT: ${c.origin}", c)
+                        logger.errorElement("Unexpected origin for GT: ${c.origin}", c)
                     }
                     val id = tw.getFreshIdLabel<DbGtexpr>()
                     val type = useType(c.type)
@@ -1322,7 +1322,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "greaterOrEqual") -> {
                     if(c.origin != IrStatementOrigin.GTEQ) {
-                        logger.warnElement(Severity.ErrorSevere, "Unexpected origin for GTEQ: ${c.origin}", c)
+                        logger.errorElement("Unexpected origin for GTEQ: ${c.origin}", c)
                     }
                     val id = tw.getFreshIdLabel<DbGeexpr>()
                     val type = useType(c.type)
@@ -1332,7 +1332,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "EQEQ") -> {
                     if(c.origin != IrStatementOrigin.EQEQ) {
-                        logger.warnElement(Severity.ErrorSevere, "Unexpected origin for EQEQ: ${c.origin}", c)
+                        logger.errorElement("Unexpected origin for EQEQ: ${c.origin}", c)
                     }
                     // TODO: This is wrong. Kotlin `a == b` is `a?.equals(b) ?: (b === null)`
                     val id = tw.getFreshIdLabel<DbEqexpr>()
@@ -1343,7 +1343,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "EQEQEQ") -> {
                     if(c.origin != IrStatementOrigin.EQEQEQ) {
-                        logger.warnElement(Severity.ErrorSevere, "Unexpected origin for EQEQEQ: ${c.origin}", c)
+                        logger.errorElement("Unexpected origin for EQEQEQ: ${c.origin}", c)
                     }
                     val id = tw.getFreshIdLabel<DbEqexpr>()
                     val type = useType(c.type)
@@ -1353,7 +1353,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "ieee754equals") -> {
                     if(c.origin != IrStatementOrigin.EQEQ) {
-                        logger.warnElement(Severity.ErrorSevere, "Unexpected origin for ieee754equals: ${c.origin}", c)
+                        logger.errorElement("Unexpected origin for ieee754equals: ${c.origin}", c)
                     }
                     // TODO: Is this consistent with Java?
                     val id = tw.getFreshIdLabel<DbEqexpr>()
@@ -1364,7 +1364,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "CHECK_NOT_NULL") -> {
                     if(c.origin != IrStatementOrigin.EXCLEXCL) {
-                        logger.warnElement(Severity.ErrorSevere, "Unexpected origin for CHECK_NOT_NULL: ${c.origin}", c)
+                        logger.errorElement("Unexpected origin for CHECK_NOT_NULL: ${c.origin}", c)
                     }
     
                     val id = tw.getFreshIdLabel<DbNotnullexpr>()
@@ -1375,33 +1375,33 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "THROW_CCE") -> {
                     // TODO
-                    logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
+                    logger.errorElement("Unhandled builtin", c)
                 }
                 isBuiltinCallInternal(c, "THROW_ISE") -> {
                     // TODO
-                    logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
+                    logger.errorElement("Unhandled builtin", c)
                 }
                 isBuiltinCallInternal(c, "noWhenBranchMatchedException") -> {
                     // TODO
-                    logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
+                    logger.errorElement("Unhandled builtin", c)
                 }
                 isBuiltinCallInternal(c, "illegalArgumentException") -> {
                     // TODO
-                    logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
+                    logger.errorElement("Unhandled builtin", c)
                 }
                 isBuiltinCallInternal(c, "ANDAND") -> {
                     // TODO
-                    logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
+                    logger.errorElement("Unhandled builtin", c)
                 }
                 isBuiltinCallInternal(c, "OROR") -> {
                     // TODO
-                    logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
+                    logger.errorElement("Unhandled builtin", c)
                 }
                 isFunction("kotlin", "Any", "toString", true) -> {
                     // TODO: this is not correct. `a.toString()` becomes `(a?:"\"null\"").toString()`
                     val func = pluginContext.irBuiltIns.anyType.classOrNull?.owner?.declarations?.find { it is IrFunction && it.name.asString() == "toString" }
                     if (func == null) {
-                        logger.warnElement(Severity.ErrorSevere, "Couldn't find toString function", c)
+                        logger.errorElement("Couldn't find toString function", c)
                         return
                     }
                     extractMethodAccess(func as IrFunction)
@@ -1424,7 +1424,7 @@ open class KotlinFileExtractor(
                     if (c.typeArgumentsCount == 1) {
                         extractTypeArguments(c, id, callable, enclosingStmt, -1)
                     } else {
-                        logger.warnElement(Severity.ErrorSevere, "Expected to find exactly one type argument in an arrayOfNulls call", c)
+                        logger.errorElement("Expected to find exactly one type argument in an arrayOfNulls call", c)
                     }
     
                     if (c.valueArgumentsCount == 1) {
@@ -1432,10 +1432,10 @@ open class KotlinFileExtractor(
                         if (dim != null) {
                             extractExpressionExpr(dim, callable, id, 0, enclosingStmt)
                         } else {
-                            logger.warnElement(Severity.ErrorSevere, "Expected to find non-null argument in an arrayOfNulls call", c)
+                            logger.errorElement("Expected to find non-null argument in an arrayOfNulls call", c)
                         }
                     } else {
-                        logger.warnElement(Severity.ErrorSevere, "Expected to find only one argument in an arrayOfNulls call", c)
+                        logger.errorElement("Expected to find only one argument in an arrayOfNulls call", c)
                     }
                 }
                 isBuiltinCallKotlin(c, "arrayOf")
@@ -1459,7 +1459,7 @@ open class KotlinFileExtractor(
                         if (c.typeArgumentsCount == 1) {
                             extractTypeArguments(c, id, callable, enclosingStmt,-1)
                         } else {
-                            logger.warnElement( Severity.ErrorSevere, "Expected to find one type argument in arrayOf call", c )
+                            logger.errorElement("Expected to find one type argument in arrayOf call", c )
                         }
                     } else {
                         val elementType = c.type.getArrayElementType(pluginContext.irBuiltIns)
@@ -1487,21 +1487,21 @@ open class KotlinFileExtractor(
                             tw.writeStatementEnclosingExpr(dimId, enclosingStmt)
                             tw.writeNamestrings(dim.toString(), dim.toString(), dimId)
                         } else {
-                            logger.warnElement(Severity.ErrorSevere, "Expected to find vararg argument in ${c.symbol.owner.name.asString()} call", c)
+                            logger.errorElement("Expected to find vararg argument in ${c.symbol.owner.name.asString()} call", c)
                         }
                     } else {
-                        logger.warnElement(Severity.ErrorSevere, "Expected to find only one (vararg) argument in ${c.symbol.owner.name.asString()} call", c)
+                        logger.errorElement("Expected to find only one (vararg) argument in ${c.symbol.owner.name.asString()} call", c)
                     }
                 }
                 isBuiltinCall(c, "<unsafe-coerce>", "kotlin.jvm.internal") -> {
 
                     if (c.valueArgumentsCount != 1) {
-                        logger.warnElement(Severity.ErrorSevere, "Expected to find only one argument for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
+                        logger.errorElement("Expected to find only one argument for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
                         return
                     }
 
                     if (c.typeArgumentsCount != 2) {
-                        logger.warnElement(Severity.ErrorSevere, "Expected to find two type arguments for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
+                        logger.errorElement("Expected to find two type arguments for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
                         return
                     }
 
@@ -1921,7 +1921,7 @@ open class KotlinFileExtractor(
                             tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
                         }
                         else -> {
-                            logger.warnElement(Severity.ErrorSevere, "Unrecognised IrConst: " + v.javaClass, e)
+                            logger.errorElement("Unrecognised IrConst: " + v.javaClass, e)
                         }
                     }
                 }
@@ -1942,7 +1942,7 @@ open class KotlinFileExtractor(
                             is IrFunction -> {
                                 if (ownerParent.dispatchReceiverParameter == owner &&
                                     ownerParent.extensionReceiverParameter != null) {
-                                    logger.warnElement(Severity.ErrorSevere, "Function-qualifier for this", e)
+                                    logger.errorElement("Function-qualifier for this", e)
                                 }
                             }
                             is IrClass -> {
@@ -1952,7 +1952,7 @@ open class KotlinFileExtractor(
                                 }
                             }
                             else -> {
-                                logger.warnElement(Severity.ErrorSevere, "Unexpected owner parent for this access: " + ownerParent.javaClass, e)
+                                logger.errorElement("Unexpected owner parent for this access: " + ownerParent.javaClass, e)
                             }
                         }
                     } else {
@@ -2004,7 +2004,7 @@ open class KotlinFileExtractor(
                         e.symbol.owner
                     }
                     else {
-                        logger.warnElement(Severity.WarnLow, "Unbound enum value, trying to use enum entry stub from descriptor", e)
+                        logger.warnElement("Unbound enum value, trying to use enum entry stub from descriptor", e)
 
                         @OptIn(ObsoleteDescriptorBasedAPI::class)
                         getIrStubFromDescriptor() { it.generateEnumEntryStub(e.symbol.descriptor) }
@@ -2056,7 +2056,7 @@ open class KotlinFileExtractor(
                             }
                         }
                         else -> {
-                            logger.warnElement(Severity.ErrorSevere, "Unhandled IrSet* element.", e)
+                            logger.errorElement("Unhandled IrSet* element.", e)
                         }
                     }
                 }
@@ -2122,7 +2122,7 @@ open class KotlinFileExtractor(
                         e.symbol.owner
                     }
                     else {
-                        logger.warnElement(Severity.WarnLow, "Unbound object value, trying to use class stub from descriptor", e)
+                        logger.warnElement("Unbound object value, trying to use class stub from descriptor", e)
 
                         @OptIn(ObsoleteDescriptorBasedAPI::class)
                         getIrStubFromDescriptor() { it.generateClassStub(e.symbol.descriptor) }
@@ -2220,10 +2220,10 @@ open class KotlinFileExtractor(
                 }
                 is IrPropertyReference -> {
                     // TODO
-                    logger.warnElement(Severity.ErrorSevere, "Unhandled IrPropertyReference", e)
+                    logger.errorElement("Unhandled IrPropertyReference", e)
                 }
                 else -> {
-                    logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)
+                    logger.errorElement("Unrecognised IrExpression: " + e.javaClass, e)
                 }
             }
             return
@@ -2237,7 +2237,7 @@ open class KotlinFileExtractor(
     ) {
         with("function reference", functionReferenceExpr) {
             val target = functionReferenceExpr.reflectionTarget ?: run {
-                logger.warnElement(Severity.ErrorSevere, "Expected to find reflection target for function reference. Using underlying symbol instead.", functionReferenceExpr)
+                logger.errorElement("Expected to find reflection target for function reference. Using underlying symbol instead.", functionReferenceExpr)
                 functionReferenceExpr.symbol
             }
 
@@ -2680,10 +2680,10 @@ open class KotlinFileExtractor(
                 }
                 is IrSpreadElement -> {
                     // TODO:
-                    logger.warnElement(Severity.ErrorSevere, "Unhandled IrSpreadElement", e)
+                    logger.errorElement("Unhandled IrSpreadElement", e)
                 }
                 else -> {
-                    logger.warnElement(Severity.ErrorSevere, "Unrecognised IrVarargElement: " + e.javaClass, e)
+                    logger.errorElement("Unrecognised IrVarargElement: " + e.javaClass, e)
                 }
             }
         }
@@ -2808,10 +2808,10 @@ open class KotlinFileExtractor(
                 }
                 IrTypeOperator.SAM_CONVERSION -> {
                     // TODO:
-                    logger.warnElement(Severity.ErrorSevere, "Unhandled IrTypeOperatorCall for SAM_CONVERSION: " + e.render(), e)
+                    logger.errorElement("Unhandled IrTypeOperatorCall for SAM_CONVERSION: " + e.render(), e)
                 }
                 else -> {
-                    logger.warnElement(Severity.ErrorSevere, "Unrecognised IrTypeOperatorCall for ${e.operator}: " + e.render(), e)
+                    logger.errorElement("Unrecognised IrTypeOperatorCall for ${e.operator}: " + e.render(), e)
                 }
             }
         }
@@ -2831,7 +2831,7 @@ open class KotlinFileExtractor(
 
             val loopId = loopIdMap[e.loop]
             if (loopId == null) {
-                logger.warnElement(Severity.ErrorSevere, "Missing break/continue target", e)
+                logger.errorElement("Missing break/continue target", e)
                 return
             }
 
@@ -2909,7 +2909,7 @@ open class KotlinFileExtractor(
 
             if (parent is IrFile) {
                 if (this.filePath != parent.path) {
-                    logger.warn(Severity.ErrorSevere, "Unexpected file parent found")
+                    logger.error("Unexpected file parent found")
                 }
                 val fileId = extractFileClass(parent)
                 tw.writeEnclInReftype(id, fileId)
