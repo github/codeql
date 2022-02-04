@@ -479,8 +479,12 @@ module Array {
     CombinationSummary() { this = "combination" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of Parameter[0] of BlockArgument" and
+      (
+        input = "ArrayElement of Receiver" and
+        output = "ArrayElement[?] of Parameter[0] of BlockArgument"
+        or
+        input = "Receiver" and output = "ReturnValue"
+      ) and
       preservesValue = true
     }
   }

@@ -242,6 +242,7 @@ def m27
         sink x # $ hasValueFlow=27.1
         source 27.2
     end
+    sink a[0] # $ hasValueFlow=27.2
     sink b[0] # $ hasValueFlow=27.2
 end
 
@@ -256,9 +257,11 @@ end
 
 def m29
     a = [0, 1, source(29)]
-    a.combination(1) do |x|
+    b = a.combination(1) do |x|
         sink(x[0]) # $ hasValueFlow=29
     end
+    sink b[0]
+    sink b[2] # $ hasValueFlow=29
 end
 
 def m30
@@ -798,12 +801,7 @@ def m83
     end
 end
 
-def m84
-    a = [0, 1, source(84)]
-    b = a.old_to_s
-    # TODO should we model `old_to_s` as adding a taint step?
-    sink b
-end
+# m84 deleted (was `old_to_s`)
 
 def m85
     a = [0, 1, source(85)]
