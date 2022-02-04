@@ -51,22 +51,7 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         tw.flush()
         System.out.flush()
     }
-    fun info(msg: String) {
-        val fullMsg = "${timestamp()} $msg"
-        tw.writeComment(fullMsg)
-        println(fullMsg)
-    }
-    fun trace(msg: String) {
-        if(false) {
-            info(msg)
-        }
-    }
-    fun debug(msg: String) {
-        info(msg)
-    }
-    fun trace(msg: String, exn: Exception) {
-        trace(msg + " // " + exn)
-    }
+
     fun warn(severity: Severity, msg: String, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
         val diagnosticLoc = getDiagnosticLocation()
         val diagnosticLocStr = if(diagnosticLoc == null) "<unknown location>" else diagnosticLoc
@@ -89,6 +74,23 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         tw.writeDiagnostics(StarLabel(), "CodeQL Kotlin extractor", severity.sev, "", msg, "$ts $msg\n$suffix", locationId)
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
         print("$ts Diagnostic($diagnosticLocStr): $locStr$msg\n$suffix")
+    }
+
+    fun info(msg: String) {
+        val fullMsg = "${timestamp()} $msg"
+        tw.writeComment(fullMsg)
+        println(fullMsg)
+    }
+    fun trace(msg: String) {
+        if(false) {
+            info(msg)
+        }
+    }
+    fun debug(msg: String) {
+        info(msg)
+    }
+    fun trace(msg: String, exn: Exception) {
+        trace(msg + " // " + exn)
     }
     fun warn(msg: String, exn: Exception) {
         warn(Severity.Warn, msg + " // " + exn)
