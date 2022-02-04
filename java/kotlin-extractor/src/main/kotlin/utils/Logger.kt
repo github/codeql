@@ -8,7 +8,7 @@ class LogCounter() {
     public val diagnosticCounts = mutableMapOf<String, Int>()
     public val diagnosticLimit: Int
     init {
-        diagnosticLimit = System.getenv("CODEQL_EXTRACTOR_KOTLIN_WARNING_LIMIT")?.toIntOrNull() ?: 100
+        diagnosticLimit = System.getenv("CODEQL_EXTRACTOR_KOTLIN_DIAGNOSTIC_LIMIT")?.toIntOrNull() ?: 100
     }
 }
 
