@@ -5,10 +5,10 @@ import java.util.Date
 import org.jetbrains.kotlin.ir.IrElement
 
 class LogCounter() {
-    public val warningCounts = mutableMapOf<String, Int>()
-    public val warningLimit: Int
+    public val diagnosticCounts = mutableMapOf<String, Int>()
+    public val diagnosticLimit: Int
     init {
-        warningLimit = System.getenv("CODEQL_EXTRACTOR_KOTLIN_WARNING_LIMIT")?.toIntOrNull() ?: 100
+        diagnosticLimit = System.getenv("CODEQL_EXTRACTOR_KOTLIN_WARNING_LIMIT")?.toIntOrNull() ?: 100
     }
 }
 
@@ -33,7 +33,7 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         return "[${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())} K]"
     }
 
-    private fun getWarningLocation(): String? {
+    private fun getDiagnosticLocation(): String? {
         val st = Exception().stackTrace
         for(x in st) {
             when(x.className) {
@@ -68,18 +68,18 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         trace(msg + " // " + exn)
     }
     fun warn(severity: Severity, msg: String, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
-        val warningLoc = getWarningLocation()
-        val warningLocStr = if(warningLoc == null) "<unknown location>" else warningLoc
+        val diagnosticLoc = getDiagnosticLocation()
+        val diagnosticLocStr = if(diagnosticLoc == null) "<unknown location>" else diagnosticLoc
         val suffix =
-            if(warningLoc == null) {
+            if(diagnosticLoc == null) {
                 "    Missing caller information.\n"
             } else {
-                val count = logCounter.warningCounts.getOrDefault(warningLoc, 0) + 1
-                logCounter.warningCounts[warningLoc] = count
+                val count = logCounter.diagnosticCounts.getOrDefault(diagnosticLoc, 0) + 1
+                logCounter.diagnosticCounts[diagnosticLoc] = count
                 when {
-                    logCounter.warningLimit <= 0 -> ""
-                    count == logCounter.warningLimit -> "    Limit reached for warnings from $warningLoc.\n"
-                    count > logCounter.warningLimit -> return
+                    logCounter.diagnosticLimit <= 0 -> ""
+                    count == logCounter.diagnosticLimit -> "    Limit reached for diagnostics from $diagnosticLoc.\n"
+                    count > logCounter.diagnosticLimit -> return
                     else -> ""
                 }
             }
@@ -88,7 +88,7 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         val locationId = mkLocationId()
         tw.writeDiagnostics(StarLabel(), "CodeQL Kotlin extractor", severity.sev, "", msg, "$ts $msg\n$suffix", locationId)
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
-        print("$ts Warning($warningLocStr): $locStr$msg\n$suffix")
+        print("$ts Diagnostic($diagnosticLocStr): $locStr$msg\n$suffix")
     }
     fun warn(msg: String, exn: Exception) {
         warn(Severity.Warn, msg + " // " + exn)
@@ -102,10 +102,10 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
     fun error(msg: String, exn: Exception) {
         error(msg + " // " + exn)
     }
-    fun printLimitedWarningCounts() {
-        for((caller, count) in logCounter.warningCounts) {
-            if(count >= logCounter.warningLimit) {
-                val msg = "Total of $count warnings from $caller.\n"
+    fun printLimitedDiagnosticCounts() {
+        for((caller, count) in logCounter.diagnosticCounts) {
+            if(count >= logCounter.diagnosticLimit) {
+                val msg = "Total of $count diagnostics from $caller.\n"
                 tw.writeComment(msg)
                 print(msg)
             }
