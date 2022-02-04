@@ -1,8 +1,24 @@
-`echo foo`
-%x(echo foo)
-%x{echo foo}
-%x[echo foo]
-%x/echo foo/
+eval("raise \"error\"", binding, "file", 1)
+send("raise", "error")
+
+a = []
+a.send("push", "1")
+
+class Foo
+  def eval(x)
+    x + 1
+  end
+
+  def send(*args)
+    2
+  end
+
+  def run
+    eval("exit 1")
+  end
+end
+
+Foo.new.send("exit", 1)
 
 system("echo foo")
 system("echo", "foo")
@@ -51,22 +67,6 @@ spawn(["echo", "echo"], "foo", unsetenv_others: true)
 spawn({"FOO" => "BAR"}, "echo foo", unsetenv_others: true)
 spawn({"FOO" => "BAR"}, "echo", "foo", unsetenv_others: true)
 spawn({"FOO" => "BAR"}, ["echo", "echo"], "foo", unsetenv_others: true)
-
-Open3.popen3("echo foo")
-Open3.popen2("echo foo")
-Open3.popen2e("echo foo")
-Open3.capture3("echo foo")
-Open3.capture2("echo foo")
-Open3.capture2e("echo foo")
-Open3.pipeline_rw("echo foo", "grep bar")
-Open3.pipeline_r("echo foo", "grep bar")
-Open3.pipeline_w("echo foo", "grep bar")
-Open3.pipeline_start("echo foo", "grep bar")
-Open3.pipeline("echo foo", "grep bar")
-
-<<`EOF`
-echo foo
-EOF
 
 module MockSystem
   def system(*args)

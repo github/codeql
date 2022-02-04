@@ -1,0 +1,23 @@
+| Logging.rb:5:3:5:23 | call to progname= | Logging.rb:5:27:5:38 | "LoggerTest" |
+| Logging.rb:15:5:15:21 | call to debug | Logging.rb:15:19:15:21 | msg |
+| Logging.rb:20:5:22:7 | call to error | Logging.rb:21:7:21:15 | ... + ... |
+| Logging.rb:27:5:27:21 | call to fatal | Logging.rb:27:19:27:21 | msg |
+| Logging.rb:32:5:32:20 | call to warn | Logging.rb:32:18:32:20 | msg |
+| Logging.rb:37:5:37:43 | call to unknown | Logging.rb:37:21:37:34 | "unknown prog" |
+| Logging.rb:37:5:37:43 | call to unknown | Logging.rb:37:39:37:41 | msg |
+| Logging.rb:42:5:48:7 | call to info | Logging.rb:43:7:47:9 | if ... |
+| Logging.rb:54:5:54:44 | ... << ... | Logging.rb:54:21:54:44 | ( ... ) |
+| Logging.rb:58:5:58:46 | call to add | Logging.rb:58:38:58:44 | "block" |
+| Logging.rb:60:5:60:64 | call to add | Logging.rb:60:36:60:38 | nil |
+| Logging.rb:60:5:60:64 | call to add | Logging.rb:60:41:60:51 | "progname1" |
+| Logging.rb:60:5:60:64 | call to add | Logging.rb:60:56:60:62 | "block" |
+| Logging.rb:63:5:63:63 | call to add | Logging.rb:63:36:63:45 | "message1" |
+| Logging.rb:64:5:64:76 | call to add | Logging.rb:64:36:64:45 | "message2" |
+| Logging.rb:64:5:64:76 | call to add | Logging.rb:64:48:64:58 | "progname2" |
+| Logging.rb:68:5:68:46 | call to log | Logging.rb:68:38:68:44 | "block" |
+| Logging.rb:70:5:70:64 | call to log | Logging.rb:70:36:70:38 | nil |
+| Logging.rb:70:5:70:64 | call to log | Logging.rb:70:41:70:51 | "progname1" |
+| Logging.rb:70:5:70:64 | call to log | Logging.rb:70:56:70:62 | "block" |
+| Logging.rb:73:5:73:63 | call to log | Logging.rb:73:36:73:45 | "message1" |
+| Logging.rb:74:5:74:76 | call to log | Logging.rb:74:36:74:45 | "message2" |
+| Logging.rb:74:5:74:76 | call to log | Logging.rb:74:48:74:58 | "progname2" |

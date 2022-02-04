@@ -25,3 +25,6 @@ Foo.const_get("Bar::VAL")
 # Should not be identified as a use of Module#const_get
 Foo::Bar.new.const_get 5
 Foo::Baz.const_get 5
+
+Foo.class_eval("def foo; 1; end", "file.rb", 1)
+Foo.module_eval("def bar; 1; end", "other_file.rb", 2)
