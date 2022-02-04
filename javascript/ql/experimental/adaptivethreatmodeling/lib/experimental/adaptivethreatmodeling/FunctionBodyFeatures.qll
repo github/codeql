@@ -127,7 +127,7 @@ ASTNode getAnASTNodeWithAFeature(Function f) {
   result = getAnASTNodeToFeaturize(f)
 }
 
-/** Returns the number of source-code characters in a function.  */
+/** Returns the number of source-code characters in a function. */
 int getNumCharsInFunction(Function f) {
   result =
     strictsum(ASTNode node | node = getAnASTNodeWithAFeature(f) | getTokenizedAstNode(node).length())
