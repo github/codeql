@@ -83,4 +83,6 @@ function testSinks() {
   testlib.mySinkIfArityTwo(source(), 2, 3); // OK
   testlib.mySinkIfArityTwo(1, source(), 3); // OK
   testlib.mySinkIfArityTwo(1, 2, source()); // OK
+
+  testlib.one.two.three().legacySyntax(source()); // NOT OK
 }

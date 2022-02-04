@@ -50,6 +50,23 @@ class AccessPath extends string instanceof AccessPath::Range {
 }
 
 /**
+ * An access path that uses `A of B` syntax, which should now be written as `B.A`.
+ *
+ * This is a compatibility layer to help test at checkpoints during transition to the new syntax.
+ */
+private class LegacyAccessPath extends AccessPath {
+  LegacyAccessPath() { this.matches("% of %") }
+
+  private string getRawSplit(int n) { result = this.splitAt(" of ", n) }
+
+  private int getNumRawSplits() { result = strictcount(int n | exists(getRawSplit(n))) }
+
+  override string getRawToken(int n) { result = getRawSplit(getNumRawSplits() - n - 1) }
+
+  override predicate hasSyntaxError() { none() }
+}
+
+/**
  * An access part token such as `Argument[1]` or `ReturnValue`, appearing in one or more access paths.
  */
 class AccessPathToken extends string {

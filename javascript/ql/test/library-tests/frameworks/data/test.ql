@@ -34,6 +34,13 @@ class Sinks extends ModelInput::SinkModelCsv {
   }
 }
 
+class LegacySyntaxTest extends ModelInput::SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      "testlib;;Argument[0] of Member[legacySyntax] of ReturnValue of Member[three] of Member[two] of Member[one];test-sink"
+  }
+}
+
 class BasicTaintTracking extends TaintTracking::Configuration {
   BasicTaintTracking() { this = "BasicTaintTracking" }
 
@@ -58,21 +65,17 @@ query predicate isSink(DataFlow::Node node, string kind) {
 
 class SyntaxErrorTest extends ModelInput::SinkModelCsv {
   override predicate row(string row) {
-    row = [
-      "testlib;;Member[foo],Member[bar];test-sink",
-      "testlib;;Member[foo] Member[bar];test-sink",
-      "testlib;;Member[foo]. Member[bar];test-sink",
-      "testlib;;Member[foo], Member[bar];test-sink",
-      "testlib;;Member[foo]..Member[bar];test-sink",
-      "testlib;;Member[foo] .Member[bar];test-sink",
-      "testlib;;Member[foo]Member[bar];test-sink",
-      "testlib;;Member[foo;test-sink",
-      "testlib;;Member[foo]];test-sink",
-      "testlib;;Member[foo]].Member[bar];test-sink"
-    ]
+    row =
+      [
+        "testlib;;Member[foo],Member[bar];test-sink", "testlib;;Member[foo] Member[bar];test-sink",
+        "testlib;;Member[foo]. Member[bar];test-sink",
+        "testlib;;Member[foo], Member[bar];test-sink",
+        "testlib;;Member[foo]..Member[bar];test-sink",
+        "testlib;;Member[foo] .Member[bar];test-sink", "testlib;;Member[foo]Member[bar];test-sink",
+        "testlib;;Member[foo;test-sink", "testlib;;Member[foo]];test-sink",
+        "testlib;;Member[foo]].Member[bar];test-sink"
+      ]
   }
 }
 
-query predicate syntaxErrors(AccessPathSyntax::AccessPath path) {
-  path.hasSyntaxError()
-}
+query predicate syntaxErrors(AccessPathSyntax::AccessPath path) { path.hasSyntaxError() }
