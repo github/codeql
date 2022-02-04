@@ -105,7 +105,9 @@ module API {
     /**
      * Gets a node representing the result of calling a method on the receiver represented by this node.
      */
-    Node getMethod(string method) { result = this.getASubclass().getASuccessor(Label::method(method)) }
+    Node getMethod(string method) {
+      result = this.getASubclass().getASuccessor(Label::method(method))
+    }
 
     /**
      * Gets a node representing the result of this call.
