@@ -843,7 +843,7 @@ module Array {
             "ArrayElement of Receiver", "ArrayElement of ArrayElement of Receiver",
             "ArrayElement of ArrayElement of ArrayElement of Receiver"
           ] and
-        output = "ArrayElement[?] of Receiver"
+        output = ["ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue"]
       ) and
       preservesValue = true
     }
@@ -1139,6 +1139,25 @@ module Array {
         )
       ) and
       preservesValue = true
+    }
+  }
+
+  private class RejectBangSummary extends SimpleSummarizedCallable {
+    RejectBangSummary() { this = "reject!" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver",
+          "Parameter[0] of BlockArgument"
+        ] and
+      preservesValue = true
+    }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::ArrayElementContent
     }
   }
 
@@ -1507,14 +1526,6 @@ module Array {
         )
       )
     }
-
-    predicate debugDeleteMe(MethodCall c, string input, string output, int s, int e, int ln) {
-      c = mc and
-      s = start and
-      e = end and
-      propagatesFlowExt(input, output, _) and
-      ln = mc.getLocation().getStartLine()
-    }
   }
 
   /**
@@ -1544,6 +1555,100 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Receiver" and
       output = ["ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  private class SortBangSummary extends SimpleSummarizedCallable {
+    SortBangSummary() { this = "sort!" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument",
+          "ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue"
+        ] and
+      preservesValue = true
+    }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::KnownArrayElementContent
+    }
+  }
+
+  private class SortByBangSummary extends SimpleSummarizedCallable {
+    SortByBangSummary() { this = "sort_by!" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "Parameter[0] of BlockArgument", "ArrayElement[?] of Receiver",
+          "ArrayElement[?] of ReturnValue"
+        ] and
+      preservesValue = true
+    }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::KnownArrayElementContent
+    }
+  }
+
+  private class TransposeSummary extends SimpleSummarizedCallable {
+    TransposeSummary() { this = "transpose" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      preservesValue = true and
+      (
+        input = "ArrayElement[?] of ArrayElement[?] of Receiver" and
+        output = "ArrayElement[?] of ArrayElement[?] of ReturnValue"
+        or
+        exists(ArrayIndex i, ArrayIndex j |
+          input = "ArrayElement[" + i + "] of ArrayElement[" + j + "] of Receiver" and
+          output = "ArrayElement[" + j + "] of ArrayElement[" + i + "] of ReturnValue"
+        )
+      )
+    }
+  }
+
+  private class UniqBangSummary extends SimpleSummarizedCallable {
+    UniqBangSummary() { this = "uniq!" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue",
+          "Parameter[0] of BlockArgument"
+        ] and
+      preservesValue = true
+    }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::KnownArrayElementContent
+    }
+  }
+
+  private class UnionSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    UnionSummary() { this = "union" and mc.getMethodName() = this }
+
+    override MethodCall getACall() { result = mc }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        input = "ArrayElement of Receiver"
+        or
+        exists(int i | i in [0 .. mc.getNumberOfArguments() - 1] |
+          input = "ArrayElement of Argument[" + i + "]"
+        )
+      ) and
+      output = "ArrayElement[?] of ReturnValue" and
       preservesValue = true
     }
   }
@@ -1656,7 +1761,7 @@ module Enumerable {
       output = "Parameter[0] of BlockArgument" and
       preservesValue = true
       or
-      input = "ArrayElement of ReturnValue of BlockArgument" and
+      input = ["ArrayElement of ReturnValue of BlockArgument", "ReturnValue of BlockArgument"] and
       output = "ArrayElement[?] of ReturnValue" and
       preservesValue = true
     }
@@ -1997,6 +2102,8 @@ module Enumerable {
         or
         exists(ArrayIndex i | i > 0 | input = "ArrayElement[" + i + "] of Receiver") and
         output = "Parameter[1] of BlockArgument"
+        or
+        input = "ReturnValue of BlockArgument" and output = "ReturnValue"
       ) and
       preservesValue = true
     }
@@ -2014,6 +2121,8 @@ module Enumerable {
         // Each element in the receiver is passed to the second block parameter.
         exists(ArrayIndex i | input = "ArrayElement[" + i + "] of Receiver") and
         output = "Parameter[1] of BlockArgument"
+        or
+        input = "ReturnValue of BlockArgument" and output = "ReturnValue"
       ) and
       preservesValue = true
     }
@@ -2203,25 +2312,6 @@ module Enumerable {
     }
   }
 
-  private class RejectBangSummary extends SimpleSummarizedCallable {
-    RejectBangSummary() { this = "reject!" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output =
-        [
-          "ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver",
-          "Parameter[0] of BlockArgument"
-        ] and
-      preservesValue = true
-    }
-
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
-      pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
-    }
-  }
-
   private class SelectSummary extends SimpleSummarizedCallable {
     // `find_all` and `filter` are aliases of `select`.
     SelectSummary() { this = ["select", "find_all", "filter"] }
@@ -2267,25 +2357,6 @@ module Enumerable {
     }
   }
 
-  private class SortBangSummary extends SimpleSummarizedCallable {
-    SortBangSummary() { this = "sort!" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output =
-        [
-          "Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument",
-          "ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue"
-        ] and
-      preservesValue = true
-    }
-
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
-      pos.isSelf() and
-      content instanceof DataFlow::Content::KnownArrayElementContent
-    }
-  }
-
   private class SortBySummary extends SimpleSummarizedCallable {
     SortBySummary() { this = "sort_by" }
 
@@ -2293,25 +2364,6 @@ module Enumerable {
       input = "ArrayElement of Receiver" and
       output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
       preservesValue = true
-    }
-  }
-
-  private class SortByBangSummary extends SimpleSummarizedCallable {
-    SortByBangSummary() { this = "sort_by!" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output =
-        [
-          "Parameter[0] of BlockArgument", "ArrayElement[?] of Receiver",
-          "ArrayElement[?] of ReturnValue"
-        ] and
-      preservesValue = true
-    }
-
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
-      pos.isSelf() and
-      content instanceof DataFlow::Content::KnownArrayElementContent
     }
   }
 
@@ -2377,7 +2429,7 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument"] and
+      output = "Parameter[0] of BlockArgument" and
       preservesValue = true
       or
       // We can't know the size of the return value, but we know that indices
@@ -2401,43 +2453,6 @@ module Enumerable {
     }
   }
 
-  private class TransposeSummary extends SimpleSummarizedCallable {
-    TransposeSummary() { this = "transpose" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      preservesValue = true and
-      (
-        input = "ArrayElement[?] of ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ArrayElement[?] of ReturnValue"
-        or
-        exists(ArrayIndex i, ArrayIndex j |
-          input = "ArrayElement[" + i + "] of ArrayElement[" + j + "] of Receiver" and
-          output = "ArrayElement[" + j + "] of ArrayElement[" + i + "] of ReturnValue"
-        )
-      )
-    }
-  }
-
-  private class UnionSummary extends SummarizedCallable {
-    MethodCall mc;
-
-    UnionSummary() { this = "union" and mc.getMethodName() = this }
-
-    override MethodCall getACall() { result = mc }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      (
-        input = "ArrayElement of Receiver"
-        or
-        exists(int i | i in [0 .. mc.getNumberOfArguments() - 1] |
-          input = "ArrayElement of Argument[" + i + "]"
-        )
-      ) and
-      output = "ArrayElement[?] of ReturnValue" and
-      preservesValue = true
-    }
-  }
-
   private class UniqSummary extends SimpleSummarizedCallable {
     UniqSummary() { this = "uniq" }
 
@@ -2445,25 +2460,6 @@ module Enumerable {
       input = "ArrayElement of Receiver" and
       output = ["ArrayElement[?] of ReturnValue", "Parameter[0] of BlockArgument"] and
       preservesValue = true
-    }
-  }
-
-  private class UniqBangSummary extends SimpleSummarizedCallable {
-    UniqBangSummary() { this = "uniq!" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output =
-        [
-          "ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue",
-          "Parameter[0] of BlockArgument"
-        ] and
-      preservesValue = true
-    }
-
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
-      pos.isSelf() and
-      content instanceof DataFlow::Content::KnownArrayElementContent
     }
   }
 
@@ -2504,7 +2500,7 @@ module Enumerable {
           output = "ArrayElement[0] of ArrayElement[" + i + "] of ReturnValue"
         )
         or
-        // receiver[?] -> return_value[0][?]
+        // receiver[?] -> return_value[?][0]
         input = "ArrayElement[?] of Receiver" and
         output = "ArrayElement[0] of ArrayElement[?] of ReturnValue"
         or

@@ -253,6 +253,11 @@ def m28
         [x, source(28.2)]
     end
     sink(b[0]) # $ hasValueFlow=28.1 $ hasValueFlow=28.2
+    b = a.collect_concat do |x|
+        sink(x) # $ hasValueFlow=28.1
+        source(28.2)
+    end
+    sink b[0] # $ hasValueFlow=28.2
 end
 
 def m29
@@ -557,6 +562,11 @@ def m62
         [x, source(62.2)]
     end
     sink(b[0]) # $ hasValueFlow=62.1 $ hasValueFlow=62.2
+    b = a.flat_map do |x|
+        sink(x) # $ hasValueFlow=62.1
+        source(62.2)
+    end
+    sink b[0] # $ hasValueFlow=62.2
 end
 
 def m63
@@ -568,9 +578,11 @@ end
 def m64
     a = [0, 1, [2, source(64)]]
     sink(a[2][1]) # $ hasValueFlow=64
-    a.flatten!
+    b = a.flatten!
     sink(a[0]) # $ hasValueFlow=64
     sink(a[2][1]) # $ SPURIOUS: hasValueFlow=64
+    sink(b[0]) # $ hasValueFlow=64
+    sink(b[2][1]) # $ SPURIOUS: hasValueFlow=64
 end
 
 def m65
@@ -616,13 +628,15 @@ def m69
     b = a.inject do |x, y|
         sink x # $ hasValueFlow=69.1
         sink y # $ hasValueFlow=69.2
-        x + y
+        source 69.3
     end
+    sink b # $ hasValueFlow=69.3
     c = a.inject(0) do |x, y|
         sink x
         sink y # $ hasValueFlow=69.1 $ hasValueFlow=69.2
-        x + y
+        source 69.3
     end
+    sink c # $ hasValueFlow=69.3
 end
 
 def m70(i)
