@@ -233,12 +233,17 @@ private module ResolveImpl {
 
   pragma[nomagic]
   private string resolveConstantReadAccessNonRec(ConstantReadAccess c, int priority) {
+    // ::B
     c.hasGlobalScope() and result = c.getName() and priority = 0
     or
+    // A::B
     exists(string name, string s | result = isDefinedConstantNonRec(s, name) |
       s = resolveConstantReadAccessScopeNonRec(c, priority, name)
     )
     or
+    // module A
+    //   B
+    // end
     exists(string name |
       exists(Namespace n, string qname |
         n = constantReadAccessEnclosingNameSpace(c, priority, name) and

@@ -1032,12 +1032,14 @@ SideEffectInstruction getSideEffectFor(CallInstruction call, int argument) {
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
+pragma[inline]
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
 /**
  * Holds if data can flow from `i1` to `i2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localInstructionFlow(Instruction e1, Instruction e2) {
   localFlow(instructionNode(e1), instructionNode(e2))
 }
@@ -1046,6 +1048,7 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
  * Holds if data can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 private newtype TContent =

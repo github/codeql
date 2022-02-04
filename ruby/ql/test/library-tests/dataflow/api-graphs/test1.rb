@@ -29,3 +29,34 @@ module Outer
 end
 
 Outer::Inner.foo #$ use=getMember("Outer").getMember("Inner").getReturn("foo")
+
+module M1
+    class C1
+        def self.m
+        end
+
+        def m
+        end
+    end
+end
+
+class C2 < M1::C1 #$ use=getMember("M1").getMember("C1")
+end
+
+module M2
+    class C3 < M1::C1 #$ use=getMember("M1").getMember("C1")
+    end
+    
+    class C4 < C2 #$ use=getMember("C2")
+    end
+end
+
+C2 #$ use=getMember("C2") use=getMember("M1").getMember("C1").getASubclass()
+M2::C3 #$ use=getMember("M2").getMember("C3") use=getMember("M1").getMember("C1").getASubclass()
+M2::C4 #$ use=getMember("M2").getMember("C4") use=getMember("C2").getASubclass() use=getMember("M1").getMember("C1").getASubclass().getASubclass()
+
+M1::C1.m #$ use=getMember("M1").getMember("C1").getReturn("m")
+M2::C3.m #$ use=getMember("M2").getMember("C3").getReturn("m") use=getMember("M1").getMember("C1").getASubclass().getReturn("m")
+
+M1::C1.new.m #$ use=getMember("M1").getMember("C1").instance.getReturn("m")
+M2::C3.new.m #$ use=getMember("M2").getMember("C3").instance.getReturn("m")
