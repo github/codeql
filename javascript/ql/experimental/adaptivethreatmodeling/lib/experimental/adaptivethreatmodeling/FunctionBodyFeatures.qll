@@ -127,6 +127,18 @@ ASTNode getAnASTNodeWithAFeature(Function f) {
   result = getAnASTNodeToFeaturize(f)
 }
 
+/** Returns the number of source-code characters in a function. */
+int getNumCharsInFunction(Function f) {
+  result =
+    strictsum(ASTNode node | node = getAnASTNodeWithAFeature(f) | getTokenizedAstNode(node).length())
+}
+
+/**
+ * The maximum number of characters a feature can be.
+ * The evaluator string limit is 5395415 characters. We choose a limit lower than this.
+ */
+private int getMaxChars() { result = 1000000 }
+
 /**
  * Returns a featurized representation of the function that can be used to populate the
  * `enclosingFunctionBody` feature for an endpoint.
@@ -141,6 +153,9 @@ string getBodyTokensFeature(Function function) {
     node = getAnASTNodeToFeaturize(function) and
     exists(getTokenizedAstNode(node))
   ) <= 256 and
+  // Performance optimization: If a function has more than getMaxChars() characters in its body subtokens,
+  // then featurize it as absent.
+  getNumCharsInFunction(function) <= getMaxChars() and
   result =
     strictconcat(Location l, string token |
       // The use of a nested exists here allows us to avoid duplicates due to two AST nodes in the

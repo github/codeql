@@ -22,3 +22,15 @@ fs.createReadStream('archive.zip')
     const fileName = entry.path;
     var file = fs.openSync(fileName, "w");
   });
+
+const JSZip = require('jszip');
+const zip = new JSZip();
+function doZipSlip() {
+  for (const name in zip.files) {
+    fs.createWriteStream(name);
+  }
+
+  zip.forEach((name, file) => {
+    fs.createWriteStream(name);
+  });
+}
