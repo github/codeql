@@ -156,7 +156,7 @@ class Log4jInjectionSummaries extends SummaryModelCsv {
         "org.apache.logging.log4j.message;MapMessage;true;with;;;Argument[1];Argument[-1];taint",
         "org.apache.logging.log4j.message;MapMessage;true;with;;;Argument[-1];ReturnValue;value",
         "org.apache.logging.log4j.message;MapMessage;true;put;;;Argument[1];Argument[-1];taint",
-        "org.apache.logging.log4j.message;MapMessage;true;putAll;;;MapValue of Argument[0];Argument[-1];taint",
+        "org.apache.logging.log4j.message;MapMessage;true;putAll;;;Argument[0].MapValue;Argument[-1];taint",
       ]
   }
 }
