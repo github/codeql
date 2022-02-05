@@ -64,16 +64,13 @@
  */
 
 import java
+private import RangeAnalysisSpecific as Specific
 private import SSA
 private import RangeUtils
 private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 private import semmle.code.java.controlflow.internal.GuardsLogic
-private import semmle.code.java.security.RandomDataSource
 private import SignAnalysis
 private import ModulusAnalysis
-private import semmle.code.java.Reflection
-private import semmle.code.java.Collections
-private import semmle.code.java.Maps
 import Bound
 
 cached
@@ -487,31 +484,7 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
   or
   e2.(AssignOrExpr).getSource() = e1 and positive(e2) and delta = 0 and upper = false
   or
-  exists(RandomDataSource rds |
-    e2 = rds.getOutput() and
-    (
-      e1 = rds.getUpperBoundExpr() and
-      delta = -1 and
-      upper = true
-      or
-      e1 = rds.getLowerBoundExpr() and
-      delta = 0 and
-      upper = false
-    )
-  )
-  or
-  exists(MethodAccess ma, Method m |
-    e2 = ma and
-    ma.getMethod() = m and
-    (
-      m.hasName("max") and upper = false
-      or
-      m.hasName("min") and upper = true
-    ) and
-    m.getDeclaringType().hasQualifiedName("java.lang", "Math") and
-    e1 = ma.getAnArgument() and
-    delta = 0
-  )
+  Specific::hasBound(e2, e1, delta, upper)
 }
 
 /** Holds if `e2 = e1 * factor` and `factor > 0`. */
@@ -743,10 +716,8 @@ private predicate boundedPhi(
  * Holds if `e` has a lower bound of zero.
  */
 private predicate lowerBoundZero(Expr e) {
-  e.(MethodAccess).getMethod() instanceof StringLengthMethod or
-  e.(MethodAccess).getMethod() instanceof CollectionSizeMethod or
-  e.(MethodAccess).getMethod() instanceof MapSizeMethod or
-  e.(FieldRead).getField() instanceof ArrayLengthField or
+  Specific::hasZeroLowerBound(e)
+  or
   positive(e.(AndBitwiseExpr).getAnOperand())
 }
 
