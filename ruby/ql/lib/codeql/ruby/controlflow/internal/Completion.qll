@@ -235,7 +235,7 @@ private predicate inMatchingContext(AstNode n) {
   or
   n instanceof CasePattern
   or
-  n = any(VariableReferencePattern p).getVariableAccess()
+  n = any(ReferencePattern p).getExpr()
   or
   n.(Trees::DefaultValueParameterTree).hasDefaultValue()
 }

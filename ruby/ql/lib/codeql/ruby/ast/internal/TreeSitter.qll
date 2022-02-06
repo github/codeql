@@ -59,6 +59,8 @@ module Ruby {
 
   class UnderscoreMethodName extends @ruby_underscore_method_name, AstNode { }
 
+  class UnderscoreNonlocalVariable extends @ruby_underscore_nonlocal_variable, AstNode { }
+
   class UnderscorePatternConstant extends @ruby_underscore_pattern_constant, AstNode { }
 
   class UnderscorePatternExpr extends @ruby_underscore_pattern_expr, AstNode { }
@@ -365,13 +367,13 @@ module Ruby {
     override string getAPrimaryQlClass() { result = "BlockArgument" }
 
     /** Gets the location of this element. */
-    override L::Location getLocation() { ruby_block_argument_def(this, _, result) }
+    override L::Location getLocation() { ruby_block_argument_def(this, result) }
 
     /** Gets the child of this node. */
-    UnderscoreArg getChild() { ruby_block_argument_def(this, result, _) }
+    UnderscoreArg getChild() { ruby_block_argument_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    override AstNode getAFieldOrChild() { ruby_block_argument_def(this, result, _) }
+    override AstNode getAFieldOrChild() { ruby_block_argument_child(this, result) }
   }
 
   /** A class representing `block_parameter` nodes. */
@@ -380,13 +382,13 @@ module Ruby {
     override string getAPrimaryQlClass() { result = "BlockParameter" }
 
     /** Gets the location of this element. */
-    override L::Location getLocation() { ruby_block_parameter_def(this, _, result) }
+    override L::Location getLocation() { ruby_block_parameter_def(this, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    Identifier getName() { ruby_block_parameter_def(this, result, _) }
+    Identifier getName() { ruby_block_parameter_name(this, result) }
 
     /** Gets a field or child node of this node. */
-    override AstNode getAFieldOrChild() { ruby_block_parameter_def(this, result, _) }
+    override AstNode getAFieldOrChild() { ruby_block_parameter_name(this, result) }
   }
 
   /** A class representing `block_parameters` nodes. */
@@ -804,6 +806,21 @@ module Ruby {
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() { ruby_exceptions_child(this, _, result) }
+  }
+
+  /** A class representing `expression_reference_pattern` nodes. */
+  class ExpressionReferencePattern extends @ruby_expression_reference_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "ExpressionReferencePattern" }
+
+    /** Gets the location of this element. */
+    override L::Location getLocation() { ruby_expression_reference_pattern_def(this, _, result) }
+
+    /** Gets the node corresponding to the field `value`. */
+    UnderscoreExpression getValue() { ruby_expression_reference_pattern_def(this, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { ruby_expression_reference_pattern_def(this, result, _) }
   }
 
   /** A class representing `false` tokens. */
@@ -1392,17 +1409,17 @@ module Ruby {
     override string getAPrimaryQlClass() { result = "Pair" }
 
     /** Gets the location of this element. */
-    override L::Location getLocation() { ruby_pair_def(this, _, _, result) }
+    override L::Location getLocation() { ruby_pair_def(this, _, result) }
 
     /** Gets the node corresponding to the field `key`. */
-    AstNode getKey() { ruby_pair_def(this, result, _, _) }
+    AstNode getKey() { ruby_pair_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    UnderscoreArg getValue() { ruby_pair_def(this, _, result, _) }
+    UnderscoreArg getValue() { ruby_pair_value(this, result) }
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() {
-      ruby_pair_def(this, result, _, _) or ruby_pair_def(this, _, result, _)
+      ruby_pair_def(this, result, _) or ruby_pair_value(this, result)
     }
   }
 
@@ -2041,7 +2058,7 @@ module Ruby {
     override L::Location getLocation() { ruby_variable_reference_pattern_def(this, _, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    Identifier getName() { ruby_variable_reference_pattern_def(this, result, _) }
+    AstNode getName() { ruby_variable_reference_pattern_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() { ruby_variable_reference_pattern_def(this, result, _) }

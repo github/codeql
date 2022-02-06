@@ -187,7 +187,10 @@ class BlockArgument extends Expr, TBlockArgument {
    * foo(&bar)
    * ```
    */
-  final Expr getValue() { toGenerated(result) = g.getChild() }
+  final Expr getValue() {
+    toGenerated(result) = g.getChild() or
+    synthChild(this, 0, result)
+  }
 
   final override string toString() { result = "&..." }
 
