@@ -17,28 +17,19 @@ public class IgnoredHostnameVerification {
     return socket;
   }
 
-  // BAD: ignored result of HostnameVerifier.verify()
-  public static SSLSocket connectAndOnlyPrintResultOfHostnameVerification(
-      String host, int port, HostnameVerifier verifier) throws IOException {
-
-    SSLSocket socket = (SSLSocket) SSLSocketFactory.getDefault().createSocket(host, port);
-    socket.startHandshake();
-    boolean result = verifier.verify(host, socket.getSession());
-    System.out.println("Result of hostname verification: " + result);
-    return socket;
+  public static void check(boolean result) throws SSLException {
+    if (!result) {
+      throw new SSLException("Oops! Hostname verification failed!");
+    }
   }
 
-  // BAD: ignored result of HostnameVerifier.verify()
-  public static SSLSocket connectAndOnlyPrintFailureOfHostnameVerification(
+  // GOOD: connect and check result of HostnameVerifier.verify()
+  public static SSLSocket connectWithHostnameVerification00(
       String host, int port, HostnameVerifier verifier) throws IOException {
 
     SSLSocket socket = (SSLSocket) SSLSocketFactory.getDefault().createSocket(host, port);
     socket.startHandshake();
-    boolean failed = verifier.verify(host, socket.getSession());
-    if (failed) {
-      System.out.println("Hostname verification failed");
-    }
-
+    check(verifier.verify(host, socket.getSession()));
     return socket;
   }
 

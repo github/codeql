@@ -4,15 +4,13 @@
  *              A caller has to check the result and drop the connection if the verification failed.
  * @kind problem
  * @problem.severity error
- * @precision medium
+ * @precision high
  * @id java/ignored-hostname-verification
  * @tags security
  *       external/cwe/cwe-297
  */
 
 import java
-import semmle.code.java.controlflow.Guards
-import semmle.code.java.dataflow.DataFlow
 
 /** The `HostnameVerifier.verify()` method. */
 private class HostnameVerifierVerifyMethod extends Method {
@@ -22,45 +20,17 @@ private class HostnameVerifierVerifyMethod extends Method {
   }
 }
 
-/** Defines `HostnameVerifier.verity()` calls that are not wrapped by another `HostnameVerifier`. */
+/** Defines `HostnameVerifier.verity()` calls that is not wrapped in another `HostnameVerifier`. */
 private class HostnameVerificationCall extends MethodAccess {
   HostnameVerificationCall() {
     this.getMethod() instanceof HostnameVerifierVerifyMethod and
     not this.getCaller() instanceof HostnameVerifierVerifyMethod
   }
 
-  /** Holds if the result if the call is not useds. */
+  /** Holds if the result of the call is not used. */
   predicate isIgnored() {
-    not exists(
-      DataFlow::Node source, DataFlow::Node sink, CheckFailedHostnameVerificationConfig config
-    |
-      this = source.asExpr() and config.hasFlow(source, sink)
-    )
-  }
-}
-
-/**
- * A configuration that tracks data flows from the result of a `HostnameVerifier.vefiry()` call
- * to a condition that controls a throw statement.
- */
-private class CheckFailedHostnameVerificationConfig extends DataFlow::Configuration {
-  CheckFailedHostnameVerificationConfig() { this = "CheckFailedHostnameVerificationConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof HostnameVerificationCall
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(Guard guard, ThrowStmt throwStmt, ReturnStmt returnStmt |
-      (
-        guard.controls(throwStmt.getBasicBlock(), false) or
-        guard.controls(returnStmt.getBasicBlock(), true)
-      ) and
-      (
-        guard = sink.asExpr() or
-        guard.(EqualityTest).getAnOperand() = sink.asExpr() or
-        guard.(HostnameVerificationCall) = sink.asExpr()
-      )
+    not exists(Expr expr, IfStmt ifStmt, MethodAccess ma |
+      this = [expr.getAChildExpr(), ifStmt.getCondition(), ma.getAnArgument()]
     )
   }
 }
