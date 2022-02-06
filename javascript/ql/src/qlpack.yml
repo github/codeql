@@ -1,5 +1,5 @@
 name: codeql/javascript-queries
-version: 0.0.9
+version: 0.0.10-dev
 groups: javascript
 suites: codeql-suites
 extractor: javascript
