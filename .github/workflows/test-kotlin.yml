@@ -31,6 +31,7 @@ jobs:
           fetch-depth: 1
           lfs: true
           repository: github/semmle-code
+          token: ${{ secrets.CI_TOKEN }}
 
       - name: Checkout codeql-kotlin
         shell: bash
