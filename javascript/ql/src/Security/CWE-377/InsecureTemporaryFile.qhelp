@@ -3,15 +3,15 @@
 
 <overview>
 <p>
-Temporary files created in the operating system tmp directory are by default accessible 
-to other users. This can in some cases lead to information exposure, or in the worst 
-case to remote code execution.
+Temporary files created in the operating system's temporary directory are by default accessible 
+to other users. In some cases, this can lead to information exposure, or in the worst 
+case, to remote code execution.
 </p>
 </overview>
 
 <recommendation>
 <p>
-Use a well tested library like <a href="https://www.npmjs.com/package/tmp">tmp</a> 
+Use a well-tested library like <a href="https://www.npmjs.com/package/tmp">tmp</a> 
 for creating temporary files. These libraries ensure both that the file is inaccessible
 to other users and that the file does not already exist.
 </p>
@@ -19,7 +19,7 @@ to other users and that the file does not already exist.
 
 <example>
 <p>
-The following example creates a temporary file in the operating system tmp directory.
+The following example creates a temporary file in the operating system's temporary directory.
 </p>
 <sample src="examples/insecure-temporary-file.js" />
 
