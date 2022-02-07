@@ -175,7 +175,7 @@ predicate encryptionFunction(Function f)
   .regexpMatch(".*(crypt|encode|decode|hash|securezero).*")
 }
 
-predicate encryptionType(Type t)
+predicate encryptionType(UserType t)
 {
   t.getName().toLowerCase().regexpMatch(".*(crypt|encode|decode|hash|securezero).*")
 }
