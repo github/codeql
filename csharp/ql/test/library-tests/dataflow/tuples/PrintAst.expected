@@ -428,20 +428,96 @@ Tuples.cs:
 #  111|             0: [CastExpr] (...) ...
 #  111|               1: [LocalVariableAccess] access to local variable y
 #  112|         3: [BreakStmt] break;
-#  116|   11: [Method] Sink
+#  116|   11: [Method] M6
 #  116|     -1: [TypeMention] Void
+#  117|     4: [BlockStmt] {...}
+#  118|       0: [LocalVariableDeclStmt] ... ...;
+#  118|         0: [LocalVariableDeclAndInitExpr] Object o = ...
+#  118|           -1: [TypeMention] object
+#  118|           0: [LocalVariableAccess] access to local variable o
+#  118|           1: [MethodCall] call to method Source<Object>
+#  118|             0: [CastExpr] (...) ...
+#  118|               1: [IntLiteral] 9
+#  120|       1: [LocalVariableDeclStmt] ... ...;
+#  120|         0: [LocalVariableDeclAndInitExpr] Int32 y1 = ...
+#  120|           -1: [TypeMention] int
+#  120|           0: [LocalVariableAccess] access to local variable y1
+#  120|           1: [IntLiteral] 0
+#  121|       2: [ExprStmt] ...;
+#  121|         0: [AssignExpr] ... = ...
+#  121|           0: [TupleExpr] (..., ...)
+#  121|             0: [LocalVariableDeclExpr] Object x1
+#  121|             1: [LocalVariableAccess] access to local variable y1
+#  121|           1: [TupleExpr] (..., ...)
+#  121|             0: [LocalVariableAccess] access to local variable o
+#  121|             1: [IntLiteral] 1
+#  122|       3: [ExprStmt] ...;
+#  122|         0: [MethodCall] call to method Sink
+#  122|           0: [LocalVariableAccess] access to local variable x1
+#  124|       4: [LocalVariableDeclStmt] ... ...;
+#  124|         0: [LocalVariableDeclAndInitExpr] Object x2 = ...
+#  124|           -1: [TypeMention] object
+#  124|           0: [LocalVariableAccess] access to local variable x2
+#  124|           1: [ObjectCreation] object creation of type Object
+#  124|             0: [TypeMention] object
+#  125|       5: [ExprStmt] ...;
+#  125|         0: [AssignExpr] ... = ...
+#  125|           0: [TupleExpr] (..., ...)
+#  125|             0: [LocalVariableAccess] access to local variable x2
+#  125|             1: [LocalVariableDeclExpr] Int32 y2
+#  125|           1: [TupleExpr] (..., ...)
+#  125|             0: [LocalVariableAccess] access to local variable o
+#  125|             1: [IntLiteral] 1
+#  126|       6: [ExprStmt] ...;
+#  126|         0: [MethodCall] call to method Sink
+#  126|           0: [LocalVariableAccess] access to local variable x2
+#  128|       7: [LocalVariableDeclStmt] ... ...;
+#  128|         0: [LocalVariableDeclAndInitExpr] Int32 x3 = ...
+#  128|           -1: [TypeMention] int
+#  128|           0: [LocalVariableAccess] access to local variable x3
+#  128|           1: [IntLiteral] 0
+#  129|       8: [ExprStmt] ...;
+#  129|         0: [AssignExpr] ... = ...
+#  129|           0: [TupleExpr] (..., ...)
+#  129|             0: [LocalVariableAccess] access to local variable x3
+#  129|             1: [LocalVariableDeclExpr] Object y3
+#  129|           1: [TupleExpr] (..., ...)
+#  129|             0: [IntLiteral] 1
+#  129|             1: [LocalVariableAccess] access to local variable o
+#  130|       9: [ExprStmt] ...;
+#  130|         0: [MethodCall] call to method Sink
+#  130|           0: [LocalVariableAccess] access to local variable y3
+#  132|       10: [LocalVariableDeclStmt] ... ...;
+#  132|         0: [LocalVariableDeclAndInitExpr] Object y4 = ...
+#  132|           -1: [TypeMention] object
+#  132|           0: [LocalVariableAccess] access to local variable y4
+#  132|           1: [ObjectCreation] object creation of type Object
+#  132|             0: [TypeMention] object
+#  133|       11: [ExprStmt] ...;
+#  133|         0: [AssignExpr] ... = ...
+#  133|           0: [TupleExpr] (..., ...)
+#  133|             0: [LocalVariableDeclExpr] Int32 x4
+#  133|             1: [LocalVariableAccess] access to local variable y4
+#  133|           1: [TupleExpr] (..., ...)
+#  133|             0: [IntLiteral] 1
+#  133|             1: [LocalVariableAccess] access to local variable o
+#  134|       12: [ExprStmt] ...;
+#  134|         0: [MethodCall] call to method Sink
+#  134|           0: [LocalVariableAccess] access to local variable y4
+#  137|   12: [Method] Sink
+#  137|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
-#  116|       0: [Parameter] o
-#  116|         -1: [TypeMention] object
-#  116|     4: [BlockStmt] {...}
-#  118|   12: [Method] Source<>
-#  118|     -1: [TypeMention] T
+#  137|       0: [Parameter] o
+#  137|         -1: [TypeMention] object
+#  137|     4: [BlockStmt] {...}
+#  139|   13: [Method] Source<>
+#  139|     -1: [TypeMention] T
 #-----|     1: (Type parameters)
-#  118|       0: [TypeParameter] T
+#  139|       0: [TypeParameter] T
 #-----|     2: (Parameters)
-#  118|       0: [Parameter] source
-#  118|         -1: [TypeMention] object
-#  118|     4: [ThrowExpr] throw ...
-#  118|       0: [NullLiteral] null
-#  121| [NamespaceDeclaration] namespace ... { ... }
-#  123|   1: [Class] IsExternalInit
+#  139|       0: [Parameter] source
+#  139|         -1: [TypeMention] object
+#  139|     4: [ThrowExpr] throw ...
+#  139|       0: [NullLiteral] null
+#  142| [NamespaceDeclaration] namespace ... { ... }
+#  144|   1: [Class] IsExternalInit

@@ -113,6 +113,27 @@ class Tuples
         }
     }
 
+    static void M6()
+    {
+        var o = Source<object>(9);
+
+        int y1 = 0;
+        (object x1, y1) = (o, 1);
+        Sink(x1);               // $ hasValueFlow=9
+
+        var x2 = new object();
+        (x2, int y2) = (o, 1);
+        Sink(x2);               // $ hasValueFlow=9
+
+        var x3 = 0;
+        (x3, object y3) = (1, o);
+        Sink(y3);               // $ hasValueFlow=9
+
+        var y4 = new object();
+        (int x4, y4) = (1, o);
+        Sink(y4);               // $ hasValueFlow=9
+    }
+
     public static void Sink(object o) { }
 
     static T Source<T>(object source) => throw null;
