@@ -25,7 +25,7 @@ def test_tainted_attr():
     # https://github.com/github/codeql/issues/7786
 
     f = Foo(TAINTED_STRING)
-    ensure_not_tainted(f) # $ SPURIOUS: tainted
+    ensure_not_tainted(f)
     ensure_tainted(f.arg) # $ tainted
     ensure_not_tainted(f.other_arg)
 
@@ -34,7 +34,7 @@ def test_tainted_attr():
     ensure_not_tainted(x, x.arg, x.other_arg)
 
     x.arg = TAINTED_STRING
-    ensure_not_tainted(x) # $ SPURIOUS: tainted
+    ensure_not_tainted(x)
     ensure_tainted(x.arg) # $ tainted
     ensure_not_tainted(f.other_arg)
 
