@@ -8,8 +8,8 @@ directories that are shared between all users on the system.</p>
 
 <p>On most <a href="https://en.wikipedia.org/wiki/Unix-like">unix-like</a> systems,
 the system temporary directory is shared between local users.
-If files/directories are created within the system temporary directory without using 
-APIs that explicitly set the correct file permissions, local information disclosure 
+If files/directories are created within the system temporary directory without using
+APIs that explicitly set the correct file permissions, local information disclosure
 can occur.</p>
 
 <p>Depending upon the particular file contents exposed, this vulnerability can have a
