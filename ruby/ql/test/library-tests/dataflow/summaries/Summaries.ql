@@ -7,15 +7,16 @@ import codeql.ruby.dataflow.FlowSummary
 import DataFlow::PathGraph
 import codeql.ruby.TaintTracking
 import codeql.ruby.dataflow.internal.FlowSummaryImpl
+import codeql.ruby.dataflow.internal.AccessPathSyntax
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {
   (sc.propagatesFlowExt(s, _, _) or sc.propagatesFlowExt(_, s, _)) and
   Private::External::invalidSpecComponent(s, c)
 }
 
-query predicate invalidOutputSpecComponent(SummarizedCallable sc, string s, string c) {
+query predicate invalidOutputSpecComponent(SummarizedCallable sc, AccessPath s, AccessPathToken c) {
   sc.propagatesFlowExt(_, s, _) and
-  Private::External::specSplit(s, c, _) and
+  c = s.getToken(_) and
   c = "ArrayElement" // not allowed in output specs; use `ArrayElement[?] instead
 }
 
