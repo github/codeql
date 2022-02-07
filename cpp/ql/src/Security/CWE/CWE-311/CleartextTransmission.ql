@@ -168,15 +168,11 @@ class NetworkRecv extends NetworkSendRecv {
   override Recv target;
 }
 
-predicate encryptionFunction(Function f)
-{
-  f.getName()
-  .toLowerCase()
-  .regexpMatch(".*(crypt|encode|decode|hash|securezero).*")
+predicate encryptionFunction(Function f) {
+  f.getName().toLowerCase().regexpMatch(".*(crypt|encode|decode|hash|securezero).*")
 }
 
-predicate encryptionType(UserType t)
-{
+predicate encryptionType(UserType t) {
   t.getName().toLowerCase().regexpMatch(".*(crypt|encode|decode|hash|securezero).*")
 }
 
