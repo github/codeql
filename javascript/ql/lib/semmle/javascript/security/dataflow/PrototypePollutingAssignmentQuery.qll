@@ -83,8 +83,6 @@ class Configuration extends TaintTracking::Configuration {
       inlbl.isTaint() and
       outlbl instanceof ObjectPrototype
     )
-    or
-    DataFlow::localFieldStep(pred, succ) and inlbl = outlbl
   }
 
   override predicate hasFlowPath(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {

@@ -67,6 +67,6 @@ class Box {
 }
 let box1 = new Box(fb.database());
 let box2 = new Box(whatever());
-box2.x.ref(); // not a firebase ref
+box2.x.ref(); // is a firebase ref
 
 functions.https.onRequest((req, res) => { res.send(req.params.foo); });

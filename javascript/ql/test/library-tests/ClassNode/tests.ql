@@ -1,9 +1,5 @@
 import javascript
 
-query predicate fieldStep(DataFlow::Node pred, DataFlow::Node succ) {
-  DataFlow::localFieldStep(pred, succ)
-}
-
 query predicate getAReceiverNode(DataFlow::ClassNode cls, DataFlow::SourceNode recv) {
   cls.getAReceiverNode() = recv
 }
