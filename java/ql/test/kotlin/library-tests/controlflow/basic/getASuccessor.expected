@@ -73,9 +73,9 @@
 | Test.kt:30:3:33:3 | <Expr>; | ExprStmt | Test.kt:30:3:33:3 | when ... | WhenExpr |
 | Test.kt:30:3:33:3 | when ... | WhenExpr | Test.kt:30:3:33:3 | ... -> ... | WhenBranch |
 | Test.kt:30:7:30:7 | x | VarAccess | Test.kt:30:12:30:12 | 0 | IntegerLiteral |
-| Test.kt:30:7:30:12 | ... == ... | EQExpr | Test.kt:30:15:33:3 | { ... } | BlockStmt |
-| Test.kt:30:7:30:12 | ... == ... | EQExpr | Test.kt:35:3:35:3 | <Expr>; | ExprStmt |
-| Test.kt:30:12:30:12 | 0 | IntegerLiteral | Test.kt:30:7:30:12 | ... == ... | EQExpr |
+| Test.kt:30:7:30:12 | ... (value equals) ... | ValueEQExpr | Test.kt:30:15:33:3 | { ... } | BlockStmt |
+| Test.kt:30:7:30:12 | ... (value equals) ... | ValueEQExpr | Test.kt:35:3:35:3 | <Expr>; | ExprStmt |
+| Test.kt:30:12:30:12 | 0 | IntegerLiteral | Test.kt:30:7:30:12 | ... (value equals) ... | ValueEQExpr |
 | Test.kt:30:15:33:3 | { ... } | BlockStmt | Test.kt:31:4:31:4 | <Expr>; | ExprStmt |
 | Test.kt:31:4:31:4 | ...=... | AssignExpr | Test.kt:32:4:32:4 | <Expr>; | ExprStmt |
 | Test.kt:31:4:31:4 | <Expr>; | ExprStmt | Test.kt:31:8:31:9 | 60 | LongLiteral |
