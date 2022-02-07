@@ -286,6 +286,16 @@ class Class extends UserType {
     not this.implicitCopyConstructorDeleted() and
     forall(CopyConstructor cc | cc = this.getAMemberFunction() |
       cc.isCompilerGenerated() and not cc.isDeleted()
+    ) and
+    (
+      not this instanceof ClassTemplateInstantiation
+      or
+      this.(ClassTemplateInstantiation).getTemplate().hasImplicitCopyConstructor()
+    ) and
+    (
+      not this instanceof PartialClassTemplateSpecialization
+      or
+      this.(PartialClassTemplateSpecialization).getPrimaryTemplate().hasImplicitCopyConstructor()
     )
   }
 
@@ -301,6 +311,18 @@ class Class extends UserType {
     not this.implicitCopyAssignmentOperatorDeleted() and
     forall(CopyAssignmentOperator ca | ca = this.getAMemberFunction() |
       ca.isCompilerGenerated() and not ca.isDeleted()
+    ) and
+    (
+      not this instanceof ClassTemplateInstantiation
+      or
+      this.(ClassTemplateInstantiation).getTemplate().hasImplicitCopyAssignmentOperator()
+    ) and
+    (
+      not this instanceof PartialClassTemplateSpecialization
+      or
+      this.(PartialClassTemplateSpecialization)
+          .getPrimaryTemplate()
+          .hasImplicitCopyAssignmentOperator()
     )
   }
 
