@@ -1,3 +1,17 @@
+/**
+ * @name Timing attack against headers value
+ * @description A constant-time algorithm should be used for checking the value of headers. 
+ *              In other words, the comparison time should not depend on the content of the input
+ *              Otherwise, an attacker may be able to implement a timing attacks that may reveal the value of sensitive headers
+ * @kind path-problem
+ * @problem.severity error
+ * @precision high
+ * @id java/timing-attack-against-headers-value
+ * @tags security
+ *       external/cwe/cwe-208
+ */
+
+
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
