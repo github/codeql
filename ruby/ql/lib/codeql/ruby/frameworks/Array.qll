@@ -1095,10 +1095,8 @@ module Array {
     }
   }
 
-  private class ProductSummary extends SummarizedCallable {
-    MethodCall mc;
-
-    ProductSummary() { this = "product" and mc.getMethodName() = this }
+  private class ProductSummary extends SimpleSummarizedCallable {
+    ProductSummary() { this = "product" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -1111,17 +1109,11 @@ module Array {
       output = "ArrayElement[?] of ArrayElement[?] of ReturnValue" and
       preservesValue = true
     }
-
-    override MethodCall getACall() { result = mc }
   }
 
-  private class PushSummary extends SummarizedCallable {
-    MethodCall mc;
-
+  private class PushSummary extends SimpleSummarizedCallable {
     // `append` is an alias for `push`
-    PushSummary() { this = ["push", "append"] and mc.getMethodName() = this }
-
-    override MethodCall getACall() { result = mc }
+    PushSummary() { this = ["push", "append"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -1633,12 +1625,8 @@ module Array {
     }
   }
 
-  private class UnionSummary extends SummarizedCallable {
-    MethodCall mc;
-
-    UnionSummary() { this = "union" and mc.getMethodName() = this }
-
-    override MethodCall getACall() { result = mc }
+  private class UnionSummary extends SimpleSummarizedCallable {
+    UnionSummary() { this = "union" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
