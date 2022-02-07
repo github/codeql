@@ -4,7 +4,7 @@
  *              user to execute arbitrary code.
  * @kind path-problem
  * @problem.severity warning
- * @precision warning
+ * @precision medium
  * @id js/unsafe-code-construction
  * @tags security
  *       external/cwe/cwe-094
