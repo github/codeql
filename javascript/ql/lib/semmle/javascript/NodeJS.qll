@@ -2,6 +2,7 @@
 
 import javascript
 private import NodeModuleResolutionImpl
+private import semmle.javascript.DynamicPropertyAccess as DynamicPropertyAccess
 
 /**
  * A Node.js module.
@@ -90,6 +91,18 @@ class NodeModule extends Module {
             .getAnExportedValue(name)
     )
     or
+    // var imp = require('./imp');
+    // for (var name in imp){
+    //   module.exports[name] = imp[name];
+    // }
+    exists(DynamicPropertyAccess::EnumeratedPropName read, Import imp, DataFlow::PropWrite write |
+      read.getSourceObject().getALocalSource().asExpr() = imp and
+      read.getASourceProp() = write.getRhs() and
+      write.getBase() = this.getAModuleExportsNode() and
+      write.getPropertyNameExpr().flow().getImmediatePredecessor*() = read and
+      result = imp.getImportedModule().getAnExportedValue(name)
+    )
+    or
     // an externs definition (where appropriate)
     exists(PropAccess pacc | result = DataFlow::valueNode(pacc) |
       pacc.getBase() = this.getAModuleExportsNode().asExpr() and
@@ -158,7 +171,7 @@ class NodeModule extends Module {
 pragma[noinline]
 private DataFlow::Node getAModuleExportsCandidate() {
   // A bit of manual magic
-  result = any(DataFlow::PropWrite w | exists(w.getPropertyName())).getBase()
+  result = any(DataFlow::PropWrite w).getBase()
   or
   result = DataFlow::valueNode(any(PropAccess p | exists(p.getPropertyName())).getBase())
   or
