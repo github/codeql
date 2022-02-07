@@ -200,7 +200,8 @@ clone and rename the repository in a single step by running
 
 The CodeQL libraries and queries for Go analysis live in the `CodeQL for Go
 repository <https://github.com/github/codeql-go/>`__. Clone a copy of this
-repository into ``codeql-home``.
+repository into ``codeql-home``, and run ``codeql-go/scripts/install-deps.sh``
+to install its dependencies.
 
 The cloned repositories should have a sibling relationship.
 For example, if the root of the cloned CodeQL repository is
