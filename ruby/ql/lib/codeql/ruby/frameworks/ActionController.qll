@@ -92,10 +92,19 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
    * May return multiple results.
    */
   ActionDispatch::Route getARoute() {
-    result.getController() + "_controller" =
-      ActionDispatch::underscore(namespaceDeclaration(controllerClass)) and
-    isActionControllerMethod(this, result.getAction(), controllerClass)
+    exists(string name |
+      isRoute(result, name, controllerClass) and
+      isActionControllerMethod(this, name, controllerClass)
+    )
   }
+}
+
+private predicate isRoute(
+  ActionDispatch::Route route, string name, ActionControllerControllerClass controllerClass
+) {
+  route.getController() + "_controller" =
+    ActionDispatch::underscore(namespaceDeclaration(controllerClass)) and
+  name = route.getAction()
 }
 
 // A method call with a `self` receiver from within a controller class
