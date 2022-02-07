@@ -26,4 +26,8 @@
     deprecated: //
 - exclude:
     query path: /^experimental\/.*/
+- exclude:
+    query path:
+      - /^experimental\/.*/
+      - Diagnostics/CoverageDiagnostics.ql
 
