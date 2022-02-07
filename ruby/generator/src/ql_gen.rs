@@ -179,7 +179,6 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
         characteristic_predicate: None,
         predicates: vec![
             get_value,
-            //get_location,
             to_string,
             create_get_a_primary_ql_class("Token", false),
         ],
