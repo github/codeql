@@ -70,13 +70,13 @@ private predicate unboxed(Expr e) {
     or
     exists(AssignOp assign | assign.getSource() = e and assign.getType() instanceof PrimitiveType)
     or
-    exists(AnyEqualityTest eq |
+    exists(EqualityTest eq |
       eq.getAnOperand() = e and eq.getAnOperand().getType() instanceof PrimitiveType
     )
     or
     exists(BinaryExpr bin |
       bin.getAnOperand() = e and
-      not bin instanceof AnyEqualityTest and
+      not bin instanceof EqualityTest and
       bin.getType() instanceof PrimitiveType
     )
     or
@@ -653,7 +653,7 @@ private Expr trackingVarGuard(
     )
   )
   or
-  exists(AnyEqualityTest eqtest, boolean branch0, boolean polarity, BooleanLiteral boollit |
+  exists(EqualityTest eqtest, boolean branch0, boolean polarity, BooleanLiteral boollit |
     eqtest = result and
     eqtest.hasOperands(trackingVarGuard(trackssa, trackvar, kind, branch0, isA), boollit) and
     eqtest.polarity() = polarity and

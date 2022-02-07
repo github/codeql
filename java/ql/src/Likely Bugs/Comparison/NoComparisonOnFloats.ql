@@ -46,7 +46,7 @@ predicate comparisonMethod(Method m) { m.getName() = "compareTo" }
 
 // Check for equalities of the form `a.x == b.x` or `a.x == x`, where `x` is assigned to `a.x`,
 // which are less interesting but occur often.
-predicate similarVarComparison(AnyEqualityTest e) {
+predicate similarVarComparison(EqualityTest e) {
   exists(Field f |
     e.getLeftOperand() = f.getAnAccess() and
     e.getRightOperand() = f.getAnAccess()
@@ -59,7 +59,7 @@ predicate similarVarComparison(AnyEqualityTest e) {
   )
 }
 
-from AnyEqualityTest ee
+from EqualityTest ee
 where
   ee.getAnOperand().getType() instanceof Floating and
   not ee.getAnOperand() instanceof NullLiteral and

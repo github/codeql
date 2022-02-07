@@ -387,7 +387,7 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
 /** A comparison or equality test with a constant. */
 private predicate comparisonStep(Expr tracked, Expr sink) {
   exists(Expr other |
-    exists(BinaryExpr e | e instanceof ComparisonExpr or e instanceof AnyEqualityTest |
+    exists(BinaryExpr e | e instanceof ComparisonExpr or e instanceof EqualityTest |
       e = sink and
       e.hasOperands(tracked, other)
     )

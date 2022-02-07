@@ -10,7 +10,7 @@
 
 import java
 
-class BoolCompare extends AnyEqualityTest {
+class BoolCompare extends EqualityTest {
   BoolCompare() { this.getAnOperand() instanceof BooleanLiteral }
 
   predicate simplify(string pattern, string rewrite) {
@@ -61,7 +61,7 @@ predicate conditionalWithBool(ConditionalExpr c, string pattern, string rewrite)
 }
 
 class ComparisonOrEquality extends BinaryExpr {
-  ComparisonOrEquality() { this instanceof ComparisonExpr or this instanceof AnyEqualityTest }
+  ComparisonOrEquality() { this instanceof ComparisonExpr or this instanceof EqualityTest }
 
   predicate negate(string pattern, string rewrite) {
     this instanceof EQExpr and pattern = "!(A == B)" and rewrite = "A != B"

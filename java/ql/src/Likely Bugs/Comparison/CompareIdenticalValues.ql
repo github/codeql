@@ -14,7 +14,7 @@
 import java
 
 predicate comparison(BinaryExpr binop, Expr left, Expr right) {
-  (binop instanceof ComparisonExpr or binop instanceof AnyEqualityTest) and
+  (binop instanceof ComparisonExpr or binop instanceof EqualityTest) and
   binop.getLeftOperand() = left and
   binop.getRightOperand() = right
 }
@@ -64,7 +64,7 @@ predicate equal(Expr left, Expr right) {
   )
 }
 
-predicate specialCase(AnyEqualityTest comparison, string msg) {
+predicate specialCase(EqualityTest comparison, string msg) {
   exists(FloatingPointType fptp, string neg, string boxedName |
     fptp = comparison.getAnOperand().getType() and
     // Name of boxed type corresponding to `fptp`.

@@ -1099,8 +1099,8 @@ class GreaterThanComparison extends ComparisonExpr {
  *
  * This could be a reference- or a value-in/equality test.
  */
-class AnyEqualityTest extends BinaryExpr {
-  AnyEqualityTest() {
+class EqualityTest extends BinaryExpr {
+  EqualityTest() {
     this instanceof EQExpr or
     this instanceof NEExpr or
     this instanceof ValueEQExpr or
@@ -1121,12 +1121,12 @@ class AnyEqualityTest extends BinaryExpr {
 
 /**
  * An equality test is a binary expression using
- * Java's `==` or `!=` operator.
+ * Java's `==` or `!=` operators or Kotlin's `===` or `!==` operators.
  *
  * If either operand is a reference type, this is a reference-in/equality test.
  */
-class EqualityTest extends AnyEqualityTest {
-  EqualityTest() {
+class ReferenceEqualityTest extends EqualityTest {
+  ReferenceEqualityTest() {
     this instanceof EQExpr or
     this instanceof NEExpr
   }

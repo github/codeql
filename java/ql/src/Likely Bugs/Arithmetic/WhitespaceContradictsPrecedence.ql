@@ -45,7 +45,7 @@ class ShiftExpr extends BinaryExpr {
  */
 class RelationExpr extends BinaryExpr {
   RelationExpr() {
-    this instanceof AnyEqualityTest or
+    this instanceof EqualityTest or
     this instanceof ComparisonExpr
   }
 }
@@ -79,7 +79,7 @@ class AssocNestedExpr extends BinaryExpr {
       parent.getKind() = this.getKind()
       or
       // Equality tests are associate over each other.
-      this instanceof AnyEqualityTest and parent instanceof AnyEqualityTest
+      this instanceof EqualityTest and parent instanceof EqualityTest
       or
       // (x*y)/z = x*(y/z)
       this instanceof MulExpr and parent instanceof DivExpr and idx = 0

@@ -116,7 +116,7 @@ private predicate intentFlagsOrDataChecked(Guard g, Expr intent, boolean branch)
     bitwiseLocalTaintStep*(DataFlow::exprNode(ma), DataFlow::exprNode(checkedValue))
   |
     bitwiseCheck(g, branch) and
-    checkedValue = g.(AnyEqualityTest).getAnOperand().(AndBitwiseExpr)
+    checkedValue = g.(EqualityTest).getAnOperand().(AndBitwiseExpr)
     or
     g.(MethodAccess).getMethod() instanceof EqualsMethod and
     branch = true and
@@ -129,10 +129,10 @@ private predicate intentFlagsOrDataChecked(Guard g, Expr intent, boolean branch)
  * and `false` otherwise.
  */
 private predicate bitwiseCheck(Guard g, boolean branch) {
-  exists(CompileTimeConstantExpr operand | operand = g.(AnyEqualityTest).getAnOperand() |
+  exists(CompileTimeConstantExpr operand | operand = g.(EqualityTest).getAnOperand() |
     if operand.getIntValue() = 0
-    then g.(AnyEqualityTest).polarity() = branch
-    else g.(AnyEqualityTest).polarity().booleanNot() = branch
+    then g.(EqualityTest).polarity() = branch
+    else g.(EqualityTest).polarity().booleanNot() = branch
   )
 }
 

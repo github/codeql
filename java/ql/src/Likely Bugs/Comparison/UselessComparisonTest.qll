@@ -42,7 +42,7 @@ predicate uselessTest(ConditionNode s1, BinaryExpr test, boolean testIsTrue) {
     exists(BoundKind boundKind, int bound |
       // Simple range analysis. We infer a bound based on `cond` being
       // either true (`condIsTrue = true`) or false (`condIsTrue = false`).
-      exists(AnyEqualityTest condeq | cond = condeq and bound = k1 |
+      exists(EqualityTest condeq | cond = condeq and bound = k1 |
         condIsTrue = condeq.polarity() and boundKind.isEqual()
         or
         condIsTrue = condeq.polarity().booleanNot() and boundKind.isNotEqual()
@@ -74,7 +74,7 @@ predicate uselessTest(ConditionNode s1, BinaryExpr test, boolean testIsTrue) {
     |
       // Given the bound we check if the `test` is either
       // always true (`testIsTrue = true`) or always false (`testIsTrue = false`).
-      exists(AnyEqualityTest testeq, boolean pol | testeq = test and pol = testeq.polarity() |
+      exists(EqualityTest testeq, boolean pol | testeq = test and pol = testeq.polarity() |
         (
           boundKind.providesLowerBound() and k2 < bound
           or

@@ -46,7 +46,7 @@ predicate boundedRead(RValue read) {
 }
 
 predicate castCheck(RValue read) {
-  exists(AnyEqualityTest eq, CastExpr cast |
+  exists(EqualityTest eq, CastExpr cast |
     cast.getExpr() = read and
     eq.hasOperands(cast, read.getVariable().getAnAccess())
   )

@@ -16,7 +16,7 @@ private predicate inWeakCheck(Expr e) {
   )
   or
   // Checking against `null` has no bearing on path traversal.
-  exists(AnyEqualityTest b | b.getAnOperand() = e | b.getAnOperand() instanceof NullLiteral)
+  exists(EqualityTest b | b.getAnOperand() = e | b.getAnOperand() instanceof NullLiteral)
 }
 
 // Ignore cases where the variable has been checked somehow,

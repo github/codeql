@@ -16,7 +16,7 @@ predicate nanField(Field f) {
   f.hasName("NaN")
 }
 
-from AnyEqualityTest eq, Field f, string classname
+from EqualityTest eq, Field f, string classname
 where
   eq.getAnOperand() = f.getAnAccess() and nanField(f) and f.getDeclaringType().hasName(classname)
 select eq,

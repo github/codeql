@@ -42,7 +42,7 @@ class IntComparableExpr extends Expr {
  */
 pragma[nomagic]
 Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
-  exists(AnyEqualityTest eqtest, boolean polarity |
+  exists(EqualityTest eqtest, boolean polarity |
     eqtest = result and
     eqtest.hasOperands(e, any(ConstantIntegerExpr c | c.getIntValue() = k)) and
     polarity = eqtest.polarity() and
@@ -53,7 +53,7 @@ Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
     )
   )
   or
-  exists(AnyEqualityTest eqtest, int val, Expr c, boolean upper |
+  exists(EqualityTest eqtest, int val, Expr c, boolean upper |
     k = e.relevantInt() and
     eqtest = result and
     eqtest.hasOperands(e, c) and
