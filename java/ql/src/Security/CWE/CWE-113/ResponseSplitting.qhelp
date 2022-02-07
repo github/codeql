@@ -7,14 +7,14 @@
 <p>Directly writing user input (for example, an HTTP request parameter) to an HTTP header
 can lead to an HTTP request-splitting or response-splitting vulnerability.</p>
 
-<p>HTTP Response-splitting can lead to vulnerabilities such as XSS, and cache poisoning.</p>
-<p>HTTP Request-splitting can allow an attacker to inject/smuggle an additional HTTP request into a client's outgoing socket connection.
+<p>HTTP response splitting can lead to vulnerabilities such as XSS and cache poisoning.</p>
+<p>HTTP request splitting can allow an attacker to inject an additional HTTP request into a client's outgoing socket connection.
 This can allow an attacker to perform an SSRF-like attack.</p>
 
-<p>In the context of a servlet container, if the user input includes blank lines,
-and if the servlet container does not itself escape the blank lines,
-then a remote user can cause the response to turn into two separate responses, 
-one of which is controlled by the remote user. This is also HTTP Response-splitting.</p>
+<p>In the context of a servlet container, if the user input includes blank lines
+and the servlet container does not escape the blank lines,
+then a remote user can cause the response to turn into two separate responses. 
+The remote user can then control one response, which is also HTTP response splitting.</p>
 </overview>
 
 <recommendation>
@@ -22,7 +22,7 @@ one of which is controlled by the remote user. This is also HTTP Response-splitt
 Before passing any data into HTTP headers, either check the data for special characters, or
 escape any special characters that are present.</p>
 
-<p>In the case of code calling Netty API's directly, ensure that the <code>validateHeaders</code> parameter is set to <code>true</code>.</p>
+<p>If the code calls Netty API's directly, ensure that the <code>validateHeaders</code> parameter is set to <code>true</code>.</p>
 </recommendation>
 
 <example>
@@ -42,8 +42,8 @@ The second way will verify the parameters before using them to build the HTTP re
 </example>
 
 <example>
-<p>The following example shows the use of the library 'netty' with HTTP request-splitting verification configurations.
-The second way will verify the parameters before using them to build the HTTP request.</p>
+<p>The following example shows the use of the netty library with configurations for verification of HTTP request splitting.
+The second recommended approach in the example verifies the parameters before using them to build the HTTP request.</p>
 
 <sample src="NettyRequestSplitting.java" />
 </example>
