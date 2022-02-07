@@ -1,3 +1,0 @@
-| Test.java:18:25:18:61 | createTempFile(...) | Local information disclosure vulnerability due to use of file readable by other local users. |
-| Test.java:26:25:26:67 | createTempFile(...) | Local information disclosure vulnerability due to use of file readable by other local users. |
-| Test.java:95:24:95:65 | createTempDir(...) | Local information disclosure vulnerability due to use of directory readable by other local users. |

@@ -16,15 +16,16 @@ import DataFlow::PathGraph
 
 private class MethodFileSystemFileCreation extends Method {
   MethodFileSystemFileCreation() {
-    getDeclaringType() instanceof TypeFile and
-    hasName(["mkdir", "mkdirs", "createNewFile"])
+    this.getDeclaringType() instanceof TypeFile and
+    this.hasName(["mkdir", "mkdirs", "createNewFile"])
   }
 }
 
 abstract private class FileCreationSink extends DataFlow::Node { }
 
 /**
- * Sink for tainted `File` having a file or directory creation method called on it.
+ * The qualifier of a call to one of `File`'s file-creating or directory-creating methods,
+ * treated as a sink by `TempDirSystemGetPropertyToCreateConfig`.
  */
 private class FileFileCreationSink extends FileCreationSink {
   FileFileCreationSink() {
@@ -36,7 +37,8 @@ private class FileFileCreationSink extends FileCreationSink {
 }
 
 /**
- * Sink for if tained File/Path having some `Files` method called on it that creates a file or directory.
+ * The argument to a call to one of `Files` file-creating or directory-creating methods,
+ * treated as a sink by `TempDirSystemGetPropertyToCreateConfig`.
  */
 private class FilesFileCreationSink extends FileCreationSink {
   FilesFileCreationSink() {
@@ -45,8 +47,8 @@ private class FilesFileCreationSink extends FileCreationSink {
 }
 
 /**
- * Captures all of the vulnerable methods on `Files` that create files/directories without explicitly
- * setting the permissions.
+ * A call to a `Files` method that create files/directories without explicitly
+ * setting the newly-created file or directory's permissions.
  */
 private class FilesVulnerableCreationMethodAccess extends MethodAccess {
   FilesVulnerableCreationMethodAccess() {
@@ -57,13 +59,34 @@ private class FilesVulnerableCreationMethodAccess extends MethodAccess {
       m.hasName(["write", "newBufferedWriter", "newOutputStream"])
       or
       m.hasName(["createFile", "createDirectory", "createDirectories"]) and
-      getNumArgument() = 1
+      this.getNumArgument() = 1
+      or
+      m.hasName("newByteChannel") and
+      this.getNumArgument() = 2
     )
   }
 }
 
 /**
- * A call to `java.io.File::createTempFile` where the the system temp dir sinks to the last argument.
+ * A call to a `File` method that create files/directories with a specific set of permissions explicitly set.
+ * We can safely assume that any calls to these methods with explicit `PosixFilePermissions.asFileAttribute`
+ * contains a certain level of intentionality behind it.
+ */
+private class FilesSanitiznignCreationMethodAccess extends MethodAccess {
+  FilesSanitiznignCreationMethodAccess() {
+    exists(Method m |
+      m = this.getMethod() and
+      m.getDeclaringType().hasQualifiedName("java.nio.file", "Files")
+    |
+      m.hasName(["createFile", "createDirectory", "createDirectories"]) and
+      this.getNumArgument() = 2
+    )
+  }
+}
+
+/**
+ * The temp directory argument to a call to `java.io.File::createTempFile`,
+ * treated as a sink by `TempDirSystemGetPropertyToCreateConfig`.
  */
 private class FileCreateTempFileSink extends FileCreationSink {
   FileCreateTempFileSink() {
@@ -80,37 +103,57 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
     source.asExpr() instanceof MethodAccessSystemGetPropertyTempDirTainted
   }
 
+  /**
+   * Find dataflow from the temp directory system property to the `File` constructor.
+   * Examples:
+   *  - `new File(System.getProperty("java.io.tmpdir"))`
+   *  - `new File(new File(System.getProperty("java.io.tmpdir")), "/child")`
+   */
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     isAdditionalFileTaintStep(node1, node2)
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof FileCreationSink }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    exists(FilesSanitiznignCreationMethodAccess sanitisingMethodAccess |
+      sanitizer.asExpr() = sanitisingMethodAccess.getArgument(0)
+    )
+  }
 }
 
+// Below this, configuration for tracking single-method calls that are vulnerable.
+/**
+ * A MethodAccess against a method that creates a temporary file or directory in a shared temporary directory.
+ */
 abstract class MethodAccessInsecureFileCreation extends MethodAccess {
   /**
-   * Docstring describing the file system type (ie. file, directory, etc...) returned.
+   * Gets the type of entity created (e.g. `file`, `directory`, ...).
    */
-  abstract string getFileSystemType();
+  abstract string getFileSystemEntityType();
 }
 
 /**
- * Insecure calls to `java.io.File::createTempFile`.
+ * An insecure call to `java.io.File.createTempFile`.
  */
 class MethodAccessInsecureFileCreateTempFile extends MethodAccessInsecureFileCreation {
   MethodAccessInsecureFileCreateTempFile() {
     this.getMethod() instanceof MethodFileCreateTempFile and
     (
+      // `File.createTempFile(string, string)` always uses the default temporary directory
       this.getNumArgument() = 2
       or
-      // Vulnerablilty exists when the last argument is `null`
-      getArgument(2) instanceof NullLiteral
+      // The default temporary directory is used when the last argument of `File.createTempFile(string, string, File)` is `null`
+      DataFlow::localExprFlow(any(NullLiteral n), getArgument(2))
     )
   }
 
-  override string getFileSystemType() { result = "file" }
+  override string getFileSystemEntityType() { result = "file" }
 }
 
+/**
+ * The `com.google.common.io.Files.createTempDir` method.
+ */
 class MethodGuavaFilesCreateTempFile extends Method {
   MethodGuavaFilesCreateTempFile() {
     getDeclaringType().hasQualifiedName("com.google.common.io", "Files") and
@@ -118,12 +161,15 @@ class MethodGuavaFilesCreateTempFile extends Method {
   }
 }
 
+/**
+ * A call to the `com.google.common.io.Files.createTempDir` method.
+ */
 class MethodAccessInsecureGuavaFilesCreateTempFile extends MethodAccessInsecureFileCreation {
   MethodAccessInsecureGuavaFilesCreateTempFile() {
     getMethod() instanceof MethodGuavaFilesCreateTempFile
   }
 
-  override string getFileSystemType() { result = "directory" }
+  override string getFileSystemEntityType() { result = "directory" }
 }
 
 /**
@@ -157,6 +203,6 @@ where
   // Note this message has no "$@" placeholder, so the "system temp directory" template parameter below is not used.
   message =
     "Local information disclosure vulnerability due to use of " +
-      source.getNode().asExpr().(MethodAccessInsecureFileCreation).getFileSystemType() +
+      source.getNode().asExpr().(MethodAccessInsecureFileCreation).getFileSystemEntityType() +
       " readable by other local users."
 select source.getNode(), source, sink, message, source.getNode(), "system temp directory"
