@@ -72,6 +72,7 @@
  */
 
 import csharp
+private import internal.AccessPathSyntax
 private import internal.DataFlowDispatch
 private import internal.DataFlowPrivate
 private import internal.DataFlowPublic
@@ -300,7 +301,7 @@ module CsvValidation {
       msg = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
     )
     or
-    exists(string pred, string input, string part |
+    exists(string pred, AccessPath input, string part |
       sinkModel(_, _, _, _, _, _, input, _) and pred = "sink"
       or
       summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
@@ -311,7 +312,7 @@ module CsvValidation {
         not (part = "Argument" and pred = "sink") and
         not parseArg(part, _)
         or
-        specSplit(input, part, _) and
+        part = input.getToken(_) and
         parseParam(part, _)
       ) and
       msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
