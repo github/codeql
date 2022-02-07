@@ -97,7 +97,7 @@ class NodeModule extends Module {
     // }
     exists(DynamicPropertyAccess::EnumeratedPropName read, Import imp, DataFlow::PropWrite write |
       read.getSourceObject().getALocalSource().asExpr() = imp and
-      read.getASourceProp() = write.getRhs() and
+      getASourceProp(read) = write.getRhs() and
       write.getBase() = this.getAModuleExportsNode() and
       write.getPropertyNameExpr().flow().getImmediatePredecessor*() = read and
       result = imp.getImportedModule().getAnExportedValue(name)
@@ -161,6 +161,21 @@ class NodeModule extends Module {
       findNodeModulesFolder(this.getFile().getParentContainer(), searchRoot, priority)
     )
   }
+}
+
+// An copy of `DynamicPropertyAccess::EnumeratedPropName::getASourceProp` that doesn't use the callgraph.
+// This avoids making the module-imports recursive with the callgraph.
+private DataFlow::SourceNode getASourceProp(DynamicPropertyAccess::EnumeratedPropName prop) {
+  exists(DataFlow::Node base, DataFlow::Node key |
+    exists(DynamicPropertyAccess::DynamicPropRead read |
+      not read.hasDominatingAssignment() and
+      base = read.getBase() and
+      key = read.getPropertyNameNode() and
+      result = read
+    ) and
+    prop.getASourceObjectRef().flowsTo(base) and
+    key.getImmediatePredecessor*() = prop
+  )
 }
 
 /**
