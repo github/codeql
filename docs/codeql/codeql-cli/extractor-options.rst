@@ -12,30 +12,32 @@ About extractor options
 
 Each extractor defines its own set of configuration options. To find out which options are available for a particular extractor, you can run ``codeql resolve languages`` or ``codeql resolve extractor`` with the ``--format=betterjson`` option. The ``betterjson`` output format provides the root paths of extractors and additional information. The output of ``codeql resolve extractor --format=betterjson`` will often be formatted like the following example::
 
+.. code-block:: json
+
     {
-         "extractor_root" : "/home/user/codeql/java",
-         "extractor_options" : {
-             "option1" : {
-             "title" : "Java extractor option 1",
-             "description" : "An example string option for the Java extractor.",
-             "type" : "string",
-             "pattern" : "[a-z]+"
-             },
-         "group1" : {
-             "title" : "Java extractor group 1",
-             "description" : "An example option group for the Java extractor.",
-             "type" : "object",
-             "properties" : {
-                 "option2" : {
-                     "title" : "Java extractor option 2",
-                     "description" : "An example array option for the Java extractor",
-                     "type" : "array",
-                     "pattern" : "[1-9][0-9]*"
+        "extractor_root" : "/home/user/codeql/java",
+        "extractor_options" : {
+            "option1" : {
+                "title" : "Java extractor option 1",
+                "description" : "An example string option for the Java extractor.",
+                "type" : "string",
+                "pattern" : "[a-z]+"
+            },
+            "group1" : {
+                "title" : "Java extractor group 1",
+                "description" : "An example option group for the Java extractor.",
+                "type" : "object",
+                "properties" : {
+                    "option2" : {
+                        "title" : "Java extractor option 2",
+                        "description" : "An example array option for the Java extractor",
+                        "type" : "array",
+                        "pattern" : "[1-9][0-9]*"
+                    }
                 }
-             }
-         }
-         }
-     }
+            }
+        }
+    }
 
 The extractor option names and descriptions are listed under ``extractor_options``. Each option may contain the following fields:
 
@@ -95,25 +97,29 @@ Each option file contains a tree structure of nested maps. At the root is an ext
 
 In JSON::
 
+.. code-block:: json
+
     {
          "extractor" : {
-             “java”: {
-                 "option1" : “abc”,
-                 "group1" : {
-                 "option2" : [ 102 ]
-                 }
-             }
-         }
-     }
+            "java": {
+                "option1" : "abc",
+                "group1" : {
+                    "option2" : [ 102 ]
+                }
+            }
+        }
+    }
 
 
 In YAML::
 
+.. code-block:: yaml
+
     extractor:
-     java:
-         option1: “abc”
-         group1:
-             option2: [ 102 ]
+        java:
+            option1: "abc"
+            group1:
+                option2: [ 102 ]
 
 The value for a ``string`` extractor option must be a string or a number (which will be converted to a string before further processing).
 
@@ -125,12 +131,14 @@ Each extractor option value must match the regular expression pattern of the ext
 
 Assigning an extractor option that does not exist is an error. You can make the CodeQL CLI ignore unknown extractor options by using a special ``__allow_unknown_properties`` Boolean field. For example, the following option file asks the CodeQL CLI to ignore all unknown extractor options and option groups under ``group1``::
 
+.. code-block:: yaml
+
     extractor:
-     java:
-         option1: “abc”
-         group1:
-             __allow_unknown_properties: true
-             option2: [ 102 ]
+        java:
+            option1: "abc"
+            group1:
+                __allow_unknown_properties: true
+                option2: [ 102 ]
 
 You can specify ``--extractor-options-file`` multiple times. The extractor option assignments are processed in the following order:
 
