@@ -14,7 +14,7 @@ This can allow an attacker to perform an SSRF-like attack.</p>
 <p>In the context of a servlet container, if the user input includes blank lines
 and the servlet container does not escape the blank lines,
 then a remote user can cause the response to turn into two separate responses. 
-The remote user can then control one response, which is also HTTP response splitting.</p>
+The remote user can then control one or more responses, which is also HTTP response splitting.</p>
 </overview>
 
 <recommendation>
@@ -58,6 +58,9 @@ OWASP:
 </li>
 <li>
 Wikipedia: <a href="http://en.wikipedia.org/wiki/HTTP_response_splitting">HTTP response splitting</a>.
+</li>
+<li>
+CAPEC: <a href="https://capec.mitre.org/data/definitions/105.html">CAPEC-105: HTTP Request Splitting</a>
 </li>
 </references>
 </qhelp>
