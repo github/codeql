@@ -27,7 +27,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: kotlin
-          token: ${{ secrets.CI_TOKEN }} # enables read access to private submodule repos
           submodules: recursive
           fetch-depth: 1
           lfs: true
