@@ -513,12 +513,23 @@ module TaintedPath {
 
     override predicate blocks(boolean outcome, Expr e) {
       member = "relative" and
-      e = pathCall.getArgument(1).asExpr() and
+      e = maybeGetJoinArg(pathCall.getArgument(1)).asExpr() and
       outcome = startsWith.getPolarity().booleanNot()
       or
       not member = "relative" and
-      e = pathCall.getArgument(0).asExpr() and
+      e = maybeGetJoinArg(pathCall.getArgument(0)).asExpr() and
       outcome = startsWith.getPolarity()
+    }
+
+    bindingset[e]
+    private DataFlow::Node maybeGetJoinArg(DataFlow::Node e) {
+      exists(DataFlow::CallNode call |
+        call = NodeJSLib::Path::moduleMember("join").getACall() and e = call
+      |
+        result = call.getLastArgument()
+      )
+      or
+      result = e
     }
   }
 
