@@ -85,11 +85,13 @@ module CleartextLogging {
    */
   private class MaskingReplacerSanitizedNode extends SanitizerIn {
     MaskingReplacerSanitizedNode() {
-      exists(MaskingReplacerSanitizer maskCall, Variable v |
-        maskCall.getMethodName() = ["sub!", "gsub!"] and
-        v = maskCall.getReceiver().asExpr().getExpr().(VariableReadAccess).getVariable() and
-        v = this.asExpr().getExpr().(VariableReadAccess).getVariable() and
-        maskCall.asExpr().getASuccessor*() = this.asExpr()
+      exists(Ssa::Definition def |
+        exists(MaskingReplacerSanitizer maskCall |
+          maskCall.getMethodName() = ["sub!", "gsub!"] and
+          def.hasAdjacentReads(maskCall.getReceiver().asExpr(), this.asExpr())
+        )
+        or
+        def.hasAdjacentReads(any(MaskingReplacerSanitizedNode read).asExpr(), this.asExpr())
       )
     }
   }
