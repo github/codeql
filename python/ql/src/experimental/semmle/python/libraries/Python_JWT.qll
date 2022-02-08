@@ -21,26 +21,21 @@ private module Python_JWT {
    * * `getOptions()`'s result would be `none()`.
    * * `verifiesSignature()` predicate would succeed.
    */
-  private class Python_JWTProcessCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
-    DataFlow::CallCfgNode verifyCall;
-    boolean verifiesSignature;
+  private class PythonJwtProcessCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
+    PythonJwtProcessCall() {
+      this = API::moduleImport("python_jwt").getMember("process_jwt").getACall()
+    }
 
-    Python_JWTProcessCall() {
-      this = API::moduleImport("python_jwt").getMember("process_jwt").getACall() and
-      (
-        verifyCall = API::moduleImport("python_jwt").getMember("verify_jwt").getACall() and
-        this.getArg(0).getALocalSource().flowsTo(verifyCall.getArg(0)) and
-        verifiesSignature = true
-        or
-        verifiesSignature = false
-      )
+    DataFlow::CallCfgNode verifyCall() {
+      result = API::moduleImport("python_jwt").getMember("verify_jwt").getACall() and
+      this.getPayload().getALocalSource() = result.getArg(0).getALocalSource()
     }
 
     override DataFlow::Node getPayload() { result = this.getArg(0) }
 
-    override DataFlow::Node getKey() { result = verifyCall.getArg(1) }
+    override DataFlow::Node getKey() { result = verifyCall().getArg(1) }
 
-    override DataFlow::Node getAlgorithm() { result = verifyCall.getArg(2) }
+    override DataFlow::Node getAlgorithm() { result = verifyCall().getArg(2) }
 
     override string getAlgorithmString() {
       exists(StrConst str |
@@ -51,6 +46,6 @@ private module Python_JWT {
 
     override DataFlow::Node getOptions() { none() }
 
-    override predicate verifiesSignature() { verifiesSignature = true }
+    override predicate verifiesSignature() { exists(verifyCall()) }
   }
 }
