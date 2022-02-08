@@ -92,19 +92,25 @@ module CleartextLogging {
   }
 
   /**
-   * Gets the name of a method that would be falsely marked as non-sensitive
-   * by `notSensitiveRegexp`.
+   * Holds if `name` is for a method or variable that appears, syntactically, to
+   * not be sensitive.
    */
-  private predicate nonSensitiveMethodNameExclusion(string name) { name = ["[]", "[]="] }
+  bindingset[name]
+  private predicate nameIsNotSensitive(string name) {
+    name.regexpMatch(notSensitiveRegexp()) and
+    // By default `notSensitiveRegexp()` includes some false positives for
+    // common ruby method names that are not necessarily non-sensitive.
+    // We explicitly exclude element references, element assignments, and
+    // mutation methods.
+    not name = ["[]", "[]="] and
+    not name.suffix(1) = "!"
+  }
 
   /**
    * A call that might obfuscate a password, for example through hashing.
    */
   private class ObfuscatorCall extends Sanitizer, DataFlow::CallNode {
-    ObfuscatorCall() {
-      this.getMethodName().regexpMatch(notSensitiveRegexp()) and
-      not nonSensitiveMethodNameExclusion(this.getMethodName())
-    }
+    ObfuscatorCall() { nameIsNotSensitive(this.getMethodName()) }
   }
 
   /**
@@ -112,7 +118,7 @@ module CleartextLogging {
    */
   private class NameGuidedNonCleartextPassword extends NonCleartextPassword {
     NameGuidedNonCleartextPassword() {
-      exists(string name | name.regexpMatch(notSensitiveRegexp()) |
+      exists(string name | nameIsNotSensitive(name) |
         // accessing a non-sensitive variable
         this.asExpr().getExpr().(VariableReadAccess).getVariable().getName() = name
         or
@@ -125,8 +131,7 @@ module CleartextLogging {
             .getStringOrSymbol() = name
         or
         // calling a non-sensitive method
-        this.(DataFlow::CallNode).getMethodName() = name and
-        not nonSensitiveMethodNameExclusion(name)
+        this.(DataFlow::CallNode).getMethodName() = name
       )
       or
       // avoid i18n strings
@@ -175,7 +180,7 @@ module CleartextLogging {
     HashKeyWritePasswordSource() {
       exists(DataFlow::Node val |
         name.regexpMatch(maybePassword()) and
-        not name.regexpMatch(notSensitiveRegexp()) and
+        not nameIsNotSensitive(name) and
         // avoid safe values assigned to presumably unsafe names
         not val instanceof NonCleartextPassword and
         (
