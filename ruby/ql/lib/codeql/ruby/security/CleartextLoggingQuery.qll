@@ -28,10 +28,6 @@ class Configuration extends TaintTracking::Configuration {
     node instanceof CleartextLogging::Sanitizer
   }
 
-  override predicate isSanitizerIn(DataFlow::Node node) {
-    node instanceof CleartextLogging::SanitizerIn
-  }
-
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     CleartextLogging::isAdditionalTaintStep(nodeFrom, nodeTo)
   }

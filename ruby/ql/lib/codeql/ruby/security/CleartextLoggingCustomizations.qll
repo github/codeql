@@ -38,11 +38,6 @@ module CleartextLogging {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A node that receives sanitized sensitive information.
-   */
-  abstract class SanitizerIn extends DataFlow::Node { }
-
-  /**
    * Holds if `re` may be a regular expression that can be used to sanitize
    * sensitive data with a call to `sub`.
    */
@@ -83,7 +78,7 @@ module CleartextLogging {
    * Logger.new(STDOUT).info password
    * ```
    */
-  private class MaskingReplacerSanitizedNode extends SanitizerIn {
+  private class MaskingReplacerSanitizedNode extends Sanitizer {
     MaskingReplacerSanitizedNode() {
       exists(Ssa::Definition def |
         exists(MaskingReplacerSanitizer maskCall |
