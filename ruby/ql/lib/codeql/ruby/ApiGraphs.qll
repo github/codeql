@@ -119,25 +119,16 @@ module API {
      */
     Node getReturn(string method) { result = this.getMethod(method).getReturn() }
 
-    private predicate hasParameterIndex(int n) {
-      exists(string str |
-        exists(this.getASuccessor(Label::parameterByStr(str))) and
-        n = str.toInt()
-      )
-    }
-
     /** Gets an API node representing the `n`th positional parameter. */
+    pragma[nomagic]
     Node getParameter(int n) {
-      result = this.getASuccessor(Label::parameter(n)) and this.hasParameterIndex(n)
-    }
-
-    private predicate hasKeywordParameter(string name) {
-      exists(this.getASuccessor(Label::keywordParameter(name)))
+      result = this.getASuccessor(Label::parameter(n))
     }
 
     /** Gets an API node representing the given keyword parameter. */
+    pragma[nomagic]
     Node getKeywordParameter(string name) {
-      result = this.getASuccessor(Label::keywordParameter(name)) and this.hasKeywordParameter(name)
+      result = this.getASuccessor(Label::keywordParameter(name))
     }
 
     /** Gets an API node representing the block parameter. */
@@ -641,7 +632,14 @@ private module Label {
 
   /** Gets the label representing the `n`th positional argument/parameter. */
   bindingset[n]
-  string parameter(int n) { result = parameterByStr(n.toString()) }
+  bindingset[result]
+  string parameter(int n) {
+    exists(string s |
+      result = parameterByStr(s) and
+      n = s.toInt() and
+      s = n.toString()
+    )
+  }
 
   /** Gets the label representing the `n`th positional argument/parameter. */
   bindingset[n]
