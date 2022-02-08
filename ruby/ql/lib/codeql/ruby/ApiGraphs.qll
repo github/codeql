@@ -121,9 +121,7 @@ module API {
 
     /** Gets an API node representing the `n`th positional parameter. */
     pragma[nomagic]
-    Node getParameter(int n) {
-      result = this.getASuccessor(Label::parameter(n))
-    }
+    Node getParameter(int n) { result = this.getASuccessor(Label::parameter(n)) }
 
     /** Gets an API node representing the given keyword parameter. */
     pragma[nomagic]
