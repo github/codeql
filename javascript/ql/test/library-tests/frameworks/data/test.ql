@@ -34,13 +34,6 @@ class Sinks extends ModelInput::SinkModelCsv {
   }
 }
 
-class LegacySyntaxTest extends ModelInput::SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      "testlib;;Argument[0] of Member[legacySyntax] of ReturnValue of Member[three] of Member[two] of Member[one];test-sink"
-  }
-}
-
 class BasicTaintTracking extends TaintTracking::Configuration {
   BasicTaintTracking() { this = "BasicTaintTracking" }
 

@@ -28,7 +28,6 @@ taintFlow
 | test.js:76:31:76:38 | source() | test.js:76:31:76:38 | source() |
 | test.js:77:34:77:41 | source() | test.js:77:34:77:41 | source() |
 | test.js:81:28:81:35 | source() | test.js:81:28:81:35 | source() |
-| test.js:87:40:87:47 | source() | test.js:87:40:87:47 | source() |
 isSink
 | test.js:46:18:46:25 | source() | test-sink |
 | test.js:47:22:47:29 | source() | test-sink |
@@ -72,7 +71,6 @@ isSink
 | test.js:78:34:78:34 | 3 | test-sink |
 | test.js:81:28:81:35 | source() | test-sink |
 | test.js:82:28:82:28 | 1 | test-sink |
-| test.js:87:40:87:47 | source() | test-sink |
 syntaxErrors
 | Member[foo |
 | Member[foo] .Member[bar] |
