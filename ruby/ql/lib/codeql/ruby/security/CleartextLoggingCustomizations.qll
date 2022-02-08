@@ -95,7 +95,7 @@ module CleartextLogging {
   }
 
   /**
-   * Gets the name of a  method that would be falsely marked as non-sensitive
+   * Gets the name of a method that would be falsely marked as non-sensitive
    * by `notSensitiveRegexp`.
    */
   private predicate nonSensitiveMethodNameExclusion(string name) { name = ["[]", "[]="] }
@@ -189,7 +189,7 @@ module CleartextLogging {
       )
     }
 
-    override string describe() { result = "an write to " + name }
+    override string describe() { result = "a write to " + name }
 
     /** Gets the name of the key */
     string getName() { result = name }
