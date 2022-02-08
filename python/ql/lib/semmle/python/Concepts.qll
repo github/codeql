@@ -450,6 +450,53 @@ module RegexExecution {
 }
 
 /**
+ * A data-flow node that executes a xpath expression.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `XPathExecution::Range` instead.
+ */
+class XPathExecution extends DataFlow::Node {
+  XPathExecution::Range range;
+
+  XPathExecution() { this = range }
+
+  /** Gets the data flow node for the xpath expression being executed by this node. */
+  DataFlow::Node getXPath() { result = range.getXPath() }
+
+  /** Gets a dataflow node for the tree in which the xpath is being evaluated. */
+  DataFlow::Node getTree() { result = range.getTree() }
+
+  /**
+   * Gets the name of this xpath expression execution, typically the name of an executing method.
+   * This is used for nice alert messages and should include the module if possible.
+   */
+  string getName() { result = range.getName() }
+}
+
+/** Provides classes for modeling new regular-expression execution APIs. */
+module XPathExecution {
+  /**
+   * A data-flow node that executes a xpath expression.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `XPathExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the data flow node for the xpath expression being executed by this node. */
+    abstract DataFlow::Node getXPath();
+
+    /** Gets a dataflow node for the tree in which the xpath is being evaluated. */
+    abstract DataFlow::Node getTree();
+
+    /**
+     * Gets the name of this xpath expression execution, typically the name of an executing method.
+     * This is used for nice alert messages and should include the module if possible.
+     */
+    abstract string getName();
+  }
+}
+
+/**
  * A data-flow node that escapes meta-characters, which could be used to prevent
  * injection attacks.
  *
