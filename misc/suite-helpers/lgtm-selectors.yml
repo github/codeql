@@ -24,4 +24,4 @@
 - exclude:
     query path:
       - /^experimental\/.*/
-      - Diagnostics/CoverageDiagnostics.ql
+      - Metrics/Summaries/FrameworkCoverage.ql
