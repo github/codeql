@@ -18,6 +18,7 @@ import android.content.Context;
 import android.view.View;
 
 public class WebView extends View {
+
     public WebView(Context context) {
         super(context);
     }

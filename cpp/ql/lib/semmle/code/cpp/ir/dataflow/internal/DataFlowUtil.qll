@@ -491,19 +491,6 @@ class ExprNode extends InstructionNode {
 }
 
 /**
- * INTERNAL: do not use. Translates a parameter/argument index into a negative
- * number that denotes the index of its side effect (pointer indirection).
- */
-bindingset[index]
-int getArgumentPosOfSideEffect(int index) {
-  // -1 -> -2
-  //  0 -> -3
-  //  1 -> -4
-  // ...
-  result = -3 - index
-}
-
-/**
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph. This includes both explicit parameters such as `x` in `f(x)`
  * and implicit parameters such as `this` in `x.f()`.
@@ -525,7 +512,7 @@ class ParameterNode extends InstructionNode {
    * implicit `this` parameter is considered to have position `-1`, and
    * pointer-indirection parameters are at further negative positions.
    */
-  predicate isParameterOf(Function f, int pos) { none() } // overridden by subclasses
+  predicate isParameterOf(Function f, ParameterPosition pos) { none() } // overridden by subclasses
 }
 
 /** An explicit positional parameter, not including `this` or `...`. */
@@ -534,8 +521,8 @@ private class ExplicitParameterNode extends ParameterNode {
 
   ExplicitParameterNode() { exists(instr.getParameter()) }
 
-  override predicate isParameterOf(Function f, int pos) {
-    f.getParameter(pos) = instr.getParameter()
+  override predicate isParameterOf(Function f, ParameterPosition pos) {
+    f.getParameter(pos.(DirectPosition).getIndex()) = instr.getParameter()
   }
 
   /** Gets the `Parameter` associated with this node. */
@@ -550,8 +537,8 @@ class ThisParameterNode extends ParameterNode {
 
   ThisParameterNode() { instr.getIRVariable() instanceof IRThisVariable }
 
-  override predicate isParameterOf(Function f, int pos) {
-    pos = -1 and instr.getEnclosingFunction() = f
+  override predicate isParameterOf(Function f, ParameterPosition pos) {
+    pos.(DirectPosition).getIndex() = -1 and instr.getEnclosingFunction() = f
   }
 
   override string toString() { result = "this" }
@@ -561,12 +548,12 @@ class ThisParameterNode extends ParameterNode {
 class ParameterIndirectionNode extends ParameterNode {
   override InitializeIndirectionInstruction instr;
 
-  override predicate isParameterOf(Function f, int pos) {
+  override predicate isParameterOf(Function f, ParameterPosition pos) {
     exists(int index |
       instr.getEnclosingFunction() = f and
       instr.hasIndex(index)
     |
-      pos = getArgumentPosOfSideEffect(index)
+      pos.(IndirectionPosition).getIndex() = index
     )
   }
 
@@ -1045,12 +1032,14 @@ SideEffectInstruction getSideEffectFor(CallInstruction call, int argument) {
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
+pragma[inline]
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
 /**
  * Holds if data can flow from `i1` to `i2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localInstructionFlow(Instruction e1, Instruction e2) {
   localFlow(instructionNode(e1), instructionNode(e2))
 }
@@ -1059,6 +1048,7 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
  * Holds if data can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 private newtype TContent =

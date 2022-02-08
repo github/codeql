@@ -87,13 +87,24 @@ class AndroidBundle extends Class {
   AndroidBundle() { this.getASupertype*().hasQualifiedName("android.os", "BaseBundle") }
 }
 
-/** An `Intent` that explicitly sets a destination component. */
+/**
+ * An `Intent` that explicitly sets a destination component.
+ *
+ * The `Intent` is not considered explicit if a `null` value ever flows to the destination
+ * component, even if only conditionally.
+ *
+ * For example, in the following code, `intent` is not considered an `ExplicitIntent`:
+ * ```java
+ * intent.setClass(condition ? null : "MyClass");
+ * ```
+ */
 class ExplicitIntent extends Expr {
   ExplicitIntent() {
     exists(MethodAccess ma, Method m |
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeIntent and
       m.hasName(["setPackage", "setClass", "setClassName", "setComponent"]) and
+      not exists(NullLiteral nullLiteral | DataFlow::localExprFlow(nullLiteral, ma.getAnArgument())) and
       ma.getQualifier() = this
     )
     or
@@ -135,6 +146,31 @@ predicate allowIntentExtrasImplicitRead(DataFlow::Node node, DataFlow::Content c
     or
     c.(DataFlow::SyntheticFieldContent).getType() instanceof AndroidBundle
   )
+}
+
+/**
+ * The fields to grant URI permissions of the class `android.content.Intent`:
+ *
+ * - `Intent.FLAG_GRANT_READ_URI_PERMISSION`
+ * - `Intent.FLAG_GRANT_WRITE_URI_PERMISSION`
+ * - `Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION`
+ * - `Intent.FLAG_GRANT_PREFIX_URI_PERMISSION`
+ */
+class GrantUriPermissionFlag extends Field {
+  GrantUriPermissionFlag() {
+    this.getDeclaringType() instanceof TypeIntent and
+    this.getName().matches("FLAG_GRANT_%_URI_PERMISSION")
+  }
+}
+
+/** The field `Intent.FLAG_GRANT_READ_URI_PERMISSION`. */
+class GrantReadUriPermissionFlag extends GrantUriPermissionFlag {
+  GrantReadUriPermissionFlag() { this.hasName("FLAG_GRANT_READ_URI_PERMISSION") }
+}
+
+/** The field `Intent.FLAG_GRANT_WRITE_URI_PERMISSION`. */
+class GrantWriteUriPermissionFlag extends GrantUriPermissionFlag {
+  GrantWriteUriPermissionFlag() { this.hasName("FLAG_GRANT_WRITE_URI_PERMISSION") }
 }
 
 private class IntentBundleFlowSteps extends SummaryModelCsv {

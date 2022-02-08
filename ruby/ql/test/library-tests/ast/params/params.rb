@@ -77,3 +77,8 @@ end
 array.each do |val, **nil|
 end
 
+# Anonymous block parameter
+def anonymous_block_parameter(array, &)
+  proc(&)
+  array.each(&)
+end

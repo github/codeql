@@ -62,7 +62,7 @@ private EnumConstant getAContainedEnumConstant(Expr enumSetRef) {
 private VarAccess getFileForPathConversion(Expr pathExpr) {
   pathExpr.getType().(RefType).hasQualifiedName("java.nio.file", "Path") and
   (
-    // Look for conversion from `File` to `Path` using `file.getPath()`.
+    // Look for conversion from `File` to `Path` using `file.toPath()`.
     exists(MethodAccess fileToPath |
       fileToPath = pathExpr and
       result = fileToPath.getQualifier() and

@@ -970,7 +970,7 @@ private module StdlibPrivate {
   private class OsPathNormpathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
     OsPathNormpathCall() { this = os::path().getMember("normpath").getACall() }
 
-    DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
+    override DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
 
   /**
@@ -980,7 +980,7 @@ private module StdlibPrivate {
   private class OsPathAbspathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
     OsPathAbspathCall() { this = os::path().getMember("abspath").getACall() }
 
-    DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
+    override DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
 
   /**
@@ -990,7 +990,7 @@ private module StdlibPrivate {
   private class OsPathRealpathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
     OsPathRealpathCall() { this = os::path().getMember("realpath").getACall() }
 
-    DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
+    override DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
 
   /**
@@ -2092,6 +2092,201 @@ private module StdlibPrivate {
   }
 
   // ---------------------------------------------------------------------------
+  // http.client (Python 3)
+  // httplib (Python 2)
+  // ---------------------------------------------------------------------------
+  /**
+   * Provides models for the `http.client.HTTPConnection` and `HTTPSConnection` classes
+   *
+   * See
+   * - https://docs.python.org/3.10/library/http.client.html#http.client.HTTPConnection
+   * - https://docs.python.org/3.10/library/http.client.html#http.client.HTTPSConnection
+   * - https://docs.python.org/2.7/library/httplib.html#httplib.HTTPConnection
+   * - https://docs.python.org/2.7/library/httplib.html#httplib.HTTPSConnection
+   */
+  module HTTPConnection {
+    /** Gets a reference to the `http.client.HTTPConnection` class. */
+    private API::Node classRef() {
+      exists(string className | className in ["HTTPConnection", "HTTPSConnection"] |
+        // Python 3
+        result = API::moduleImport("http").getMember("client").getMember(className)
+        or
+        // Python 2
+        result = API::moduleImport("httplib").getMember(className)
+        or
+        result =
+          API::moduleImport("six").getMember("moves").getMember("http_client").getMember(className)
+      )
+    }
+
+    /**
+     * A source of instances of `http.client.HTTPConnection`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `HTTPConnection::instance()` to get references to instances of `http.client.HTTPConnection`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode {
+      /** Gets the argument that specified the host, if any. */
+      abstract DataFlow::Node getHostArgument();
+    }
+
+    /** A direct instantiation of `http.client.HTTPConnection`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+
+      override DataFlow::Node getHostArgument() {
+        result in [this.getArg(0), this.getArgByName("host")]
+      }
+    }
+
+    /**
+     * Gets a reference to an instance of `http.client.HTTPConnection`,
+     * that was instantiated with host argument `hostArg`.
+     */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t, DataFlow::Node hostArg) {
+      t.start() and
+      hostArg = result.(InstanceSource).getHostArgument()
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2, hostArg).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to an instance of `http.client.HTTPConnection`,
+     * that was instantiated with host argument `hostArg`.
+     */
+    DataFlow::Node instance(DataFlow::Node hostArg) {
+      instance(DataFlow::TypeTracker::end(), hostArg).flowsTo(result)
+    }
+
+    /** A method call on a HTTPConnection that sends off a request */
+    private class RequestCall extends HTTP::Client::Request::Range, DataFlow::MethodCallNode {
+      RequestCall() { this.calls(instance(_), ["request", "_send_request", "putrequest"]) }
+
+      DataFlow::Node getUrlArg() { result in [this.getArg(1), this.getArgByName("url")] }
+
+      override DataFlow::Node getAUrlPart() {
+        result = this.getUrlArg()
+        or
+        this.getObject() = instance(result)
+      }
+
+      override string getFramework() { result = "http.client.HTTP[S]Connection" }
+
+      override predicate disablesCertificateValidation(
+        DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+      ) {
+        // TODO: Proper alerting of insecure verification settings on SSLContext.
+        // Because that is not restricted to HTTP[S]Connection usage, we need something
+        // more general, and I would like to tackle that in future PR.
+        none()
+      }
+    }
+
+    /** A call to the `getresponse` method. */
+    private class HttpConnectionGetResponseCall extends DataFlow::MethodCallNode,
+      HTTPResponse::InstanceSource {
+      HttpConnectionGetResponseCall() { this.calls(instance(_), "getresponse") }
+    }
+
+    /**
+     * Extra taint propagation for `http.client.HTTPConnection`,
+     * to ensure that responses to user-controlled URL are tainted.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // constructor
+        exists(InstanceSource instanceSource |
+          nodeFrom = instanceSource.getHostArgument() and
+          nodeTo = instanceSource
+        )
+        or
+        // a request method
+        exists(RequestCall call |
+          nodeFrom = call.getUrlArg() and
+          nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() = call.getObject()
+        )
+        or
+        // `getresponse` call
+        exists(HttpConnectionGetResponseCall call |
+          nodeFrom = call.getObject() and
+          nodeTo = call
+        )
+      }
+    }
+  }
+
+  /**
+   * Provides models for the `http.client.HTTPResponse` class
+   *
+   * See
+   * - https://docs.python.org/3.10/library/http.client.html#httpresponse-objects
+   * - https://docs.python.org/3/library/http.client.html#http.client.HTTPResponse.
+   */
+  module HTTPResponse {
+    /** Gets a reference to the `http.client.HTTPResponse` class. */
+    private API::Node classRef() {
+      result = API::moduleImport("http").getMember("client").getMember("HTTPResponse")
+    }
+
+    /**
+     * A source of instances of `http.client.HTTPResponse`, extend this class to model new instances.
+     *
+     * A `http.client.HTTPResponse` is itself a file-like object.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `HTTPResponse::instance()` to get references to instances of `http.client.HTTPResponse`.
+     */
+    abstract class InstanceSource extends Stdlib::FileLikeObject::InstanceSource,
+      DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `http.client.HTTPResponse`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /** Gets a reference to an instance of `http.client.HTTPResponse`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `http.client.HTTPResponse`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `http.client.HTTPResponse`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "http.client.HTTPResponse" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { result in ["headers", "msg", "reason", "url"] }
+
+      override string getMethodName() { result in ["getheader", "getheaders", "info", "geturl",] }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /** An attribute read that is a HTTPMessage instance. */
+    private class HTTPMessageInstances extends Stdlib::HTTPMessage::InstanceSource {
+      HTTPMessageInstances() {
+        this.(DataFlow::AttrRead).accesses(instance(), ["headers", "msg"])
+        or
+        this.(DataFlow::MethodCallNode).calls(instance(), "info")
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
   // sqlite3
   // ---------------------------------------------------------------------------
   /**
@@ -2745,6 +2940,90 @@ private module StdlibPrivate {
           this.getArg(0), this.getArgByName("suffix"), this.getArg(1), this.getArgByName("prefix"),
           this.getArg(2), this.getArgByName("dir")
         ]
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // shutil
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `shutil` module. */
+  private API::Node shutil() { result = API::moduleImport("shutil") }
+
+  /**
+   * A call to the `shutil.rmtree` function.
+   *
+   * See https://docs.python.org/3/library/shutil.html#shutil.rmtree
+   */
+  private class ShutilRmtreeCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    ShutilRmtreeCall() { this = shutil().getMember("rmtree").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("path")]
+    }
+  }
+
+  /**
+   * The `shutil` module provides methods to copy, move files or copy file attributes.
+   * See:
+   * - https://docs.python.org/3/library/shutil.html#shutil.copyfile
+   * - https://docs.python.org/3/library/shutil.html#shutil.copymode
+   * - https://docs.python.org/3/library/shutil.html#shutil.copystat
+   * - https://docs.python.org/3/library/shutil.html#shutil.copy
+   * - https://docs.python.org/3/library/shutil.html#shutil.copy2
+   * - https://docs.python.org/3/library/shutil.html#shutil.copytree
+   * - https://docs.python.org/3/library/shutil.html#shutil.move
+   */
+  private class ShutilCopyCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    ShutilCopyCall() {
+      this =
+        shutil()
+            .getMember([
+                // these are used to copy files
+                "copyfile", "copy", "copy2", "copytree",
+                // these are used to move files
+                "move",
+                // these are used to copy some attributes of the file
+                "copymode", "copystat"
+              ])
+            .getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("src"), this.getArg(1), this.getArgByName("dst")]
+    }
+  }
+
+  // TODO: once we have flow summaries, model `shutil.copyfileobj` which copies the content between its' file-like arguments.
+  // See https://docs.python.org/3/library/shutil.html#shutil.copyfileobj
+  private class ShutilCopyfileobjCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    ShutilCopyfileobjCall() { this = shutil().getMember("copyfileobj").getACall() }
+
+    override DataFlow::Node getAPathArgument() { none() }
+  }
+
+  /**
+   * A call to the `shutil.disk_usage` function.
+   *
+   * See https://docs.python.org/3/library/shutil.html#shutil.disk_usage
+   */
+  private class ShutilDiskUsageCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    ShutilDiskUsageCall() { this = shutil().getMember("disk_usage").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("path")]
+    }
+  }
+
+  /**
+   * A call to the `shutil.chown` function.
+   *
+   * See https://docs.python.org/3/library/shutil.html#shutil.chown
+   */
+  private class ShutilChownCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    ShutilChownCall() { this = shutil().getMember("chown").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("path")]
     }
   }
 }

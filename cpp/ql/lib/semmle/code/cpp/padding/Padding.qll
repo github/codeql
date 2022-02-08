@@ -397,7 +397,7 @@ class PaddedType extends Class {
     // Support only single inheritance for now. If multiple inheritance is
     // supported, be sure to fix up the calls to getABaseClass*() to correctly
     // handle the presence of multiple base class subojects with the same type.
-    not exists(ClassDerivation cd | cd = this.getDerivation(1))
+    not exists(this.getDerivation(1))
   }
 
   /**

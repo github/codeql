@@ -13,6 +13,8 @@ fileInstances
 | Files.rb:23:19:23:33 | call to open |
 | Files.rb:24:1:24:40 | ... = ... |
 | Files.rb:24:19:24:40 | call to open |
+| Files.rb:37:1:37:33 | ... = ... |
+| Files.rb:37:14:37:33 | call to open |
 ioInstances
 | Files.rb:2:1:2:30 | ... = ... |
 | Files.rb:2:1:2:30 | ... = ... |
@@ -36,6 +38,8 @@ ioInstances
 | Files.rb:24:19:24:40 | call to open |
 | Files.rb:35:1:35:56 | ... = ... |
 | Files.rb:35:13:35:56 | call to open |
+| Files.rb:37:1:37:33 | ... = ... |
+| Files.rb:37:14:37:33 | call to open |
 fileModuleReaders
 | Files.rb:7:13:7:32 | call to readlines |
 ioReaders
@@ -55,6 +59,11 @@ fileSystemReadAccesses
 | Files.rb:7:13:7:32 | call to readlines |
 | Files.rb:20:13:20:25 | call to read |
 | Files.rb:29:12:29:29 | call to read |
+fileSystemAccesses
+| Files.rb:7:13:7:32 | call to readlines |
+| Files.rb:20:13:20:25 | call to read |
+| Files.rb:29:12:29:29 | call to read |
+| Files.rb:37:14:37:33 | call to open |
 fileNameSources
 | Files.rb:10:6:10:18 | call to path |
 | Files.rb:11:6:11:21 | call to to_path |

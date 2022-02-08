@@ -50,22 +50,8 @@ public class TestSources extends SliceProvider {
     // Methods needed for compilation
 
     @Override
-    public AssetFileDescriptor openTypedAssetFile(Uri uri, String mimeTypeFilter, Bundle opts,
-            CancellationSignal signal) throws RemoteException, FileNotFoundException {
-        return null;
-    }
-
-    @Override
-    public Bundle call(String authority, String method, String arg, Bundle extras)
-            throws RemoteException {
-        return null;
-    }
-
-    @Override
     public boolean onCreateSliceProvider() {
         return false;
     }
-
-
 
 }

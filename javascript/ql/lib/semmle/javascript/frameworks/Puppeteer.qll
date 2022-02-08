@@ -5,7 +5,7 @@
 import javascript
 
 /**
- * Classes and predicates modelling the [puppeteer](https://www.npmjs.com/package/puppeteer) library.
+ * Classes and predicates modeling the [puppeteer](https://www.npmjs.com/package/puppeteer) library.
  */
 module Puppeteer {
   /**

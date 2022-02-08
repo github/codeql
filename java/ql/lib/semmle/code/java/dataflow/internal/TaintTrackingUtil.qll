@@ -21,12 +21,14 @@ private import semmle.code.java.frameworks.JaxWS
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(src, sink) }
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprTaint(Expr src, Expr sink) {
   localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))
 }
@@ -92,8 +94,6 @@ private module Cached {
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
-    or
-    entrypointFieldStep(src, sink)
   }
 
   /**
@@ -103,6 +103,7 @@ private module Cached {
   cached
   predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     localAdditionalTaintStep(src, sink) or
+    entrypointFieldStep(src, sink) or
     any(AdditionalTaintStep a).step(src, sink)
   }
 
@@ -117,6 +118,12 @@ private module Cached {
     node.asExpr() instanceof ValidatedVariableAccess
   }
 }
+
+/**
+ * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
+ * but not in local taint.
+ */
+predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
 import Cached
 

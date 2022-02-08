@@ -18,7 +18,7 @@ class SpringXMLElement extends XMLElement {
    */
   string getAttributeValueWithDefault(string attributeName) {
     this.hasAttribute(attributeName) and
-    if exists(XMLAttribute a | a = this.getAttribute(attributeName))
+    if exists(this.getAttribute(attributeName))
     then result = this.getAttributeValue(attributeName)
     else result = "default"
   }

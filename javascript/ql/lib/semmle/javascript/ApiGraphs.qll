@@ -389,6 +389,23 @@ module API {
   }
 
   /**
+   * A class for contributing new steps for tracking uses of an API.
+   */
+  class AdditionalUseStep extends Unit {
+    /**
+     * Holds if use nodes should flow from `pred` to `succ`.
+     */
+    predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ) { none() }
+  }
+
+  private module AdditionalUseStep {
+    pragma[nomagic]
+    predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
+      any(AdditionalUseStep st).step(pred, succ)
+    }
+  }
+
+  /**
    * Provides the actual implementation of API graphs, cached for performance.
    *
    * Ideally, we'd like nodes to correspond to (global) access paths, with edge labels
@@ -751,6 +768,11 @@ module API {
         boundArgs in [0 .. 10]
       )
       or
+      exists(DataFlow::SourceNode mid |
+        mid = trackUseNode(nd, promisified, boundArgs, prop, t) and
+        AdditionalUseStep::step(pragma[only_bind_out](mid), result)
+      )
+      or
       exists(DataFlow::Node pred, string preprop |
         trackUseNode(nd, promisified, boundArgs, preprop, t.continue()).flowsTo(pred) and
         promisified = false and
@@ -976,7 +998,7 @@ module API {
      * Gets an API node where a RHS of the node is the `i`th argument to this call.
      */
     pragma[noinline]
-    private Node getAParameterCandidate(int i) { result.getARhs() = getArgument(i) }
+    private Node getAParameterCandidate(int i) { result.getARhs() = this.getArgument(i) }
 
     /** Gets the API node for a parameter of this invocation. */
     Node getAParameter() { result = this.getParameter(_) }

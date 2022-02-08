@@ -295,7 +295,7 @@ private class JQueryChainedElement extends DOM::Element, InvokeExpr {
 }
 
 /**
- * Classes and predicates for modelling `ClientRequest`s in JQuery.
+ * Classes and predicates for modeling `ClientRequest`s in JQuery.
  */
 private module JQueryClientRequest {
   /**
@@ -385,12 +385,7 @@ private module JQueryClientRequest {
     string name;
 
     JQueryAjaxShortHand() {
-      (
-        name = "get" or
-        name = "getJSON" or
-        name = "getScript" or
-        name = "post"
-      ) and
+      name = ["get", "getJSON", "getScript", "post"] and
       this = jquery().getAMemberCall(name)
       or
       name = "load" and

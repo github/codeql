@@ -1,9 +1,9 @@
 import ruby
 
 private string getValueText(MethodName m) {
-  result = m.getValueText()
+  result = m.getConstantValue().getStringOrSymbol()
   or
-  not exists(m.getValueText()) and result = "(none)"
+  not exists(m.getConstantValue()) and result = "(none)"
 }
 
 query predicate undef(UndefStmt u, int i, MethodName m, string name, string pClass) {

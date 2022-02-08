@@ -73,12 +73,12 @@ module UnsafeDeserialization {
     result = "object" and isSafe = false
   }
 
-  private predicate isOjModePair(Pair p, string modeValue) {
-    p.getKey().getValueText() = "mode" and
+  private predicate isOjModePair(CfgNodes::ExprNodes::PairCfgNode p, string modeValue) {
+    p.getKey().getConstantValue().isStringOrSymbol("mode") and
     exists(DataFlow::LocalSourceNode symbolLiteral, DataFlow::Node value |
-      symbolLiteral.asExpr().getExpr().(SymbolLiteral).getValueText() = modeValue and
+      symbolLiteral.asExpr().getExpr().getConstantValue().isSymbol(modeValue) and
       symbolLiteral.flowsTo(value) and
-      value.asExpr().getExpr() = p.getValue()
+      value.asExpr() = p.getValue()
     )
   }
 
@@ -91,7 +91,8 @@ module UnsafeDeserialization {
     OjOptionsHashWithModeKey() {
       exists(DataFlow::LocalSourceNode options |
         options.flowsTo(this) and
-        isOjModePair(options.asExpr().getExpr().(HashLiteral).getAKeyValuePair(), modeValue)
+        isOjModePair(options.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair(),
+          modeValue)
       )
     }
 
@@ -143,7 +144,7 @@ module UnsafeDeserialization {
       exists(DataFlow::Node arg, int i | i >= 1 and arg = this.getArgument(i) |
         arg.(OjOptionsHashWithModeKey).hasKnownMode(isSafe)
         or
-        isOjModePair(arg.asExpr().getExpr(), getAKnownOjModeName(isSafe))
+        isOjModePair(arg.asExpr(), getAKnownOjModeName(isSafe))
       )
     }
   }

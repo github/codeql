@@ -28,14 +28,12 @@ deprecated class Pattern extends AstNode {
   Variable getAVariable() { none() }
 }
 
-deprecated private class TVariablePattern = TVariableAccess or TSimpleParameter;
-
 /**
  * DEPRECATED
  *
  * A simple variable pattern.
  */
-deprecated class VariablePattern extends Pattern, LhsExpr, TVariablePattern {
+deprecated class VariablePattern extends Pattern, LhsExpr, TVariableAccess {
   override Variable getAVariable() { result = this.(VariableAccess).getVariable() }
 }
 
@@ -82,7 +80,7 @@ deprecated class TuplePattern extends Pattern, TTuplePattern {
 
 private class TPatternNode =
   TArrayPattern or TFindPattern or THashPattern or TAlternativePattern or TAsPattern or
-      TParenthesizedPattern or TVariableReferencePattern;
+      TParenthesizedPattern or TExpressionReferencePattern or TVariableReferencePattern;
 
 private class TPattern =
   TPatternNode or TLiteral or TLambda or TConstantAccess or TLocalVariableAccess or
@@ -99,7 +97,10 @@ private class TPattern =
  * ```
  */
 class CasePattern extends AstNode, TPattern {
-  CasePattern() { casePattern(toGenerated(this)) }
+  CasePattern() {
+    casePattern(toGenerated(this)) or
+    synthChild(any(HashPattern p), _, this)
+  }
 }
 
 /**
@@ -137,7 +138,7 @@ class ArrayPattern extends CasePattern, TArrayPattern {
     (
       n < this.restIndex()
       or
-      not exists(restIndex())
+      not exists(this.restIndex())
     )
   }
 
@@ -158,7 +159,7 @@ class ArrayPattern extends CasePattern, TArrayPattern {
    * ```
    */
   LocalVariableWriteAccess getRestVariableAccess() {
-    toGenerated(result) = g.getChild(restIndex()).(Ruby::SplatParameter).getName()
+    toGenerated(result) = g.getChild(this.restIndex()).(Ruby::SplatParameter).getName()
   }
 
   /**
@@ -209,7 +210,7 @@ class FindPattern extends CasePattern, TFindPattern {
   CasePattern getAnElement() { result = this.getElement(_) }
 
   /**
-   * Gets the variable for the prefix of this list pattern, if any. For example `init` in:
+   * Gets the variable for the prefix of this find pattern, if any. For example `init` in:
    * ```rb
    * in List[*init, "a", Integer => x, *tail]
    * ```
@@ -219,7 +220,7 @@ class FindPattern extends CasePattern, TFindPattern {
   }
 
   /**
-   * Gets the variable for the suffix of this list pattern, if any. For example `tail` in:
+   * Gets the variable for the suffix of this find pattern, if any. For example `tail` in:
    * ```rb
    * in List[*init, "a", Integer => x, *tail]
    * ```
@@ -266,14 +267,19 @@ class HashPattern extends CasePattern, THashPattern {
   private Ruby::KeywordPattern keyValuePair(int n) { result = g.getChild(n) }
 
   /** Gets the key of the `n`th pair. */
-  StringlikeLiteral getKey(int n) { toGenerated(result) = keyValuePair(n).getKey() }
+  StringlikeLiteral getKey(int n) { toGenerated(result) = this.keyValuePair(n).getKey() }
 
   /** Gets the value of the `n`th pair. */
-  CasePattern getValue(int n) { toGenerated(result) = keyValuePair(n).getValue() }
+  CasePattern getValue(int n) {
+    toGenerated(result) = this.keyValuePair(n).getValue() or
+    synthChild(this, n, result)
+  }
 
   /** Gets the value for a given key name. */
   CasePattern getValueByKey(string key) {
-    exists(int i | key = this.getKey(i).getValueText() and result = this.getValue(i))
+    exists(int i |
+      this.getKey(i).getConstantValue().isStringOrSymbol(key) and result = this.getValue(i)
+    )
   }
 
   /**
@@ -383,6 +389,7 @@ class ParenthesizedPattern extends CasePattern, TParenthesizedPattern {
 
   ParenthesizedPattern() { this = TParenthesizedPattern(g) }
 
+  /** Gets the underlying pattern. */
   final CasePattern getPattern() { toGenerated(result) = g.getChild() }
 
   final override string getAPrimaryQlClass() { result = "ParenthesizedPattern" }
@@ -397,6 +404,42 @@ class ParenthesizedPattern extends CasePattern, TParenthesizedPattern {
 }
 
 /**
+ * A variable or value reference in a pattern, i.e. `^x`, and `^(2 * x)` in the following example:
+ * ```rb
+ * x = 10
+ * case expr
+ *   in ^x then puts "ok"
+ *   in ^(2 * x) then puts "ok"
+ * end
+ * ```
+ */
+class ReferencePattern extends CasePattern, TReferencePattern {
+  private Ruby::AstNode value;
+
+  ReferencePattern() {
+    value = any(Ruby::VariableReferencePattern g | this = TVariableReferencePattern(g)).getName()
+    or
+    value =
+      any(Ruby::ExpressionReferencePattern g | this = TExpressionReferencePattern(g)).getValue()
+  }
+
+  /** Gets the value this reference pattern matches against. For example `2 * x` in `^(2 * x)` */
+  final Expr getExpr() { toGenerated(result) = value }
+
+  final override string getAPrimaryQlClass() { result = "ReferencePattern" }
+
+  final override string toString() { result = "^..." }
+
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getExpr" and result = this.getExpr()
+  }
+}
+
+/**
+ * DEPRECATED: Use `ReferencePattern` instead.
+ *
  * A variable reference in a pattern, i.e. `^x` in the following example:
  * ```rb
  * x = 10
@@ -405,21 +448,7 @@ class ParenthesizedPattern extends CasePattern, TParenthesizedPattern {
  * end
  * ```
  */
-class VariableReferencePattern extends CasePattern, TVariableReferencePattern {
-  private Ruby::VariableReferencePattern g;
-
-  VariableReferencePattern() { this = TVariableReferencePattern(g) }
-
+deprecated class VariableReferencePattern extends ReferencePattern, TVariableReferencePattern {
   /** Gets the variable access corresponding to this variable reference pattern. */
-  LocalVariableReadAccess getVariableAccess() { toGenerated(result) = g.getName() }
-
-  final override string getAPrimaryQlClass() { result = "VariableReferencePattern" }
-
-  final override string toString() { result = "^..." }
-
-  final override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
-    or
-    pred = "getVariableAccess" and result = this.getVariableAccess()
-  }
+  final VariableReadAccess getVariableAccess() { result = this.getExpr() }
 }

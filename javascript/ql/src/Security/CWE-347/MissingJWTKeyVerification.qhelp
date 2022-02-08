@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd"> <qhelp>
+
+<overview>
+<p>
+Applications decoding JSON Web Tokens (JWT) may be misconfigured due to the <code>None</code> algorithm.
+</p>
+<p>
+The <code>None</code> algorithm is selected by calling the <code>verify()</code> function with a falsy value
+instead of a cryptographic secret or key. The <code>None</code> algorithm disables the integrity enforcement of
+a JWT payload and may allow a malicious actor to make unintended changes to a JWT payload leading
+to critical security issues like privilege escalation.
+</p>
+
+</overview>
+
+<recommendation>
+<p>
+Calls to <code>verify()</code> functions should use a cryptographic secret or key to decode JWT payloads.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the example below, <code>false</code> is used to disable the integrity enforcement of a JWT payload. 
+This may allow a malicious actor to make changes to a JWT payload.
+</p>
+
+<sample src="examples/missing-key-verification-bad.js" />
+
+<p>
+The following code fixes the problem by using a cryptographic secret or key to decode JWT payloads.
+</p>
+
+<sample src="examples/missing-key-verification-good.js" />
+
+</example>
+
+<references>
+<li>Auth0 Blog: <a href="https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/#Meet-the--None--Algorithm">Meet the "None" Algorithm</a>.</li>
+
+</references>
+</qhelp>

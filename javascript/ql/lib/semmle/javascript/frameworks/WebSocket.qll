@@ -19,7 +19,7 @@ import javascript
 private string channelName() { result = "message" }
 
 /**
- * The names of the libraries modelled in this file.
+ * The names of the libraries modeled in this file.
  */
 private module LibraryNames {
   string sockjs() { result = "SockJS" }

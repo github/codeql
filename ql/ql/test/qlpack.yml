@@ -1,0 +1,7 @@
+name: codeql-ql-tests
+version: 0.0.0
+libraryPathDependencies:
+  - codeql-ql
+  - codeql-ql-examples
+extractor: ql
+tests: .

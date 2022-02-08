@@ -916,7 +916,7 @@ private module InterModulePointsTo {
   private predicate exportsSubmodule(Folder folder, string name) {
     name.regexpMatch("\\p{L}(\\p{L}|\\d|_)*") and
     (
-      exists(Folder child | child = folder.getChildContainer(name))
+      folder.getChildContainer(name) instanceof Folder
       or
       exists(folder.getFile(name + ".py"))
     )

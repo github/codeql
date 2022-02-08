@@ -10,7 +10,6 @@ class ArgumentPosition = DataFlowDispatch::ArgumentPosition;
 
 // import all instances below
 private module Summaries {
-  private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
   private import semmle.code.csharp.frameworks.EntityFramework
 }
 
@@ -41,7 +40,12 @@ module SummaryComponent {
   predicate return = SummaryComponentInternal::return/1;
 
   /** Gets a summary component that represents a qualifier. */
-  SummaryComponent qualifier() { result = argument(-1) }
+  SummaryComponent qualifier() {
+    exists(ParameterPosition pos |
+      result = SummaryComponentInternal::argument(pos) and
+      pos.isThisParameter()
+    )
+  }
 
   /** Gets a summary component that represents an element in a collection. */
   SummaryComponent element() { result = content(any(DataFlow::ElementContent c)) }
@@ -111,6 +115,29 @@ module SummaryComponentStack {
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
 
+private predicate recordConstructorFlow(Constructor c, int i, Property p) {
+  c = any(RecordType r).getAMember() and
+  exists(string name |
+    c.getParameter(i).getName() = name and
+    c.getDeclaringType().getAMember(name) = p
+  )
+}
+
+private class RecordConstructorFlow extends SummarizedCallable {
+  RecordConstructorFlow() { recordConstructorFlow(this, _, _) }
+
+  override predicate propagatesFlow(
+    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+  ) {
+    exists(int i, Property p |
+      recordConstructorFlow(this, i, p) and
+      input = SummaryComponentStack::argument(i) and
+      output = SummaryComponentStack::propertyOf(p, SummaryComponentStack::return()) and
+      preservesValue = true
+    )
+  }
+}
+
 private class SummarizedCallableDefaultClearsContent extends Impl::Public::SummarizedCallable {
   SummarizedCallableDefaultClearsContent() {
     this instanceof Impl::Public::SummarizedCallable or none()
@@ -118,14 +145,29 @@ private class SummarizedCallableDefaultClearsContent extends Impl::Public::Summa
 
   // By default, we assume that all stores into arguments are definite
   override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
-    exists(SummaryComponentStack output |
+    exists(SummaryComponentStack output, SummaryComponent target |
       this.propagatesFlow(_, output, _) and
       output.drop(_) =
         SummaryComponentStack::push(SummaryComponent::content(content),
-          SummaryComponentStack::argument(pos.getPosition())) and
+          SummaryComponentStack::singleton(target)) and
       not content instanceof DataFlow::ElementContent
+    |
+      target = SummaryComponent::argument(pos.getPosition())
+      or
+      target = SummaryComponent::qualifier() and
+      pos.isThisParameter()
     )
   }
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
+
+private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
+  override predicate required(SummaryComponent head, SummaryComponentStack tail) {
+    exists(Property p |
+      recordConstructorFlow(_, _, p) and
+      head = SummaryComponent::property(p) and
+      tail = SummaryComponentStack::return()
+    )
+  }
+}

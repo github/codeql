@@ -72,7 +72,7 @@ predicate lvalue(Element e) {
   or
   exists(Cast c | lvalue(c) and e.(Expr).getConversion() = c)
   or
-  exists(ReferenceToExpr toref | e.(Expr).getConversion() = toref)
+  e.(Expr).getConversion() instanceof ReferenceToExpr
   or
   // If f is a function-pointer, then the following two
   // calls are equivalent:  f()  and  (*f)()

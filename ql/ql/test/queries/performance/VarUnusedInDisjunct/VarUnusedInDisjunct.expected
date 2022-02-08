@@ -1,0 +1,8 @@
+| Test.qll:14:3:16:7 | Disjunction | The variable b is only used in one side of disjunct. |
+| Test.qll:21:5:23:37 | Disjunction | The variable big is only used in one side of disjunct. |
+| Test.qll:28:3:30:33 | Disjunction | The variable t is only used in one side of disjunct. |
+| Test.qll:49:3:53:26 | Disjunction | The variable toType is only used in one side of disjunct. |
+| Test.qll:74:8:74:77 | Disjunction | The variable bad is only used in one side of disjunct. |
+| Test.qll:115:26:115:80 | IfFormula | The variable bb is only used in one side of disjunct. |
+| Test.qll:127:5:129:9 | Disjunction | The variable a is only used in one side of disjunct. |
+| Test.qll:132:5:134:9 | Disjunction | The variable a is only used in one side of disjunct. |

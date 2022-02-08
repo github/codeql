@@ -3,6 +3,7 @@ import io
 import os
 import stat
 import tempfile
+import shutil
 
 open("file")  # $ getAPathArgument="file"
 open(file="file")  # $ getAPathArgument="file"
@@ -238,3 +239,34 @@ tempfile.mkdtemp(suffix="suffix", prefix="prefix", dir="dir") # $ getAPathArgume
 
 tempfile.TemporaryDirectory("suffix", "prefix", "dir") # $ getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
 tempfile.TemporaryDirectory(suffix="suffix", prefix="prefix", dir="dir") # $ getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
+
+# ------------------------------------------------------------------------------
+# shutil
+# ------------------------------------------------------------------------------
+
+shutil.rmtree("path") # $ getAPathArgument="path"
+shutil.rmtree(path="path") # $ getAPathArgument="path"
+
+shutil.copyfile("src", "dst") # $ getAPathArgument="src" getAPathArgument="dst"
+shutil.copyfile(src="src", dst="dst") # $ getAPathArgument="src" getAPathArgument="dst"
+
+shutil.copy("src", "dst") # $ getAPathArgument="src" getAPathArgument="dst"
+shutil.copy(src="src", dst="dst") # $ getAPathArgument="src" getAPathArgument="dst"
+
+shutil.copy2("src", "dst") # $ getAPathArgument="src" getAPathArgument="dst"
+shutil.copy2(src="src", dst="dst") # $ getAPathArgument="src" getAPathArgument="dst"
+
+shutil.copytree("src", "dst") # $ getAPathArgument="src" getAPathArgument="dst"
+shutil.copytree(src="src", dst="dst") # $ getAPathArgument="src" getAPathArgument="dst"
+
+shutil.move("src", "dst") # $ getAPathArgument="src" getAPathArgument="dst"
+shutil.move(src="src", dst="dst") # $ getAPathArgument="src" getAPathArgument="dst"
+
+shutil.copymode("src", "dst") # $ getAPathArgument="src" getAPathArgument="dst"
+shutil.copymode(src="src", dst="dst") # $ getAPathArgument="src" getAPathArgument="dst"
+
+shutil.copystat("src", "dst") # $ getAPathArgument="src" getAPathArgument="dst"
+shutil.copystat(src="src", dst="dst") # $ getAPathArgument="src" getAPathArgument="dst"
+
+shutil.disk_usage("path") # $ getAPathArgument="path"
+shutil.disk_usage(path="path") # $ getAPathArgument="path"

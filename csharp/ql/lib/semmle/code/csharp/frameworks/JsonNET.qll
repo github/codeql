@@ -1,5 +1,5 @@
 /**
- * Classes for modelling Json.NET.
+ * Classes for modeling Json.NET.
  */
 
 import csharp
@@ -228,11 +228,11 @@ module JsonNET {
     override predicate row(string row) {
       row =
         [
-          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String);;Argument[-1];ReturnValue;taint",
-          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String,Newtonsoft.Json.Linq.JsonSelectSettings);;Argument[-1];ReturnValue;taint",
-          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String,System.Boolean);;Argument[-1];ReturnValue;taint",
-          "Newtonsoft.Json.Linq;JToken;false;ToString;();;Argument[-1];ReturnValue;taint",
-          "Newtonsoft.Json.Linq;JToken;false;ToString;(Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonConverter[]);;Argument[-1];ReturnValue;taint",
+          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String);;Argument[Qualifier];ReturnValue;taint",
+          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String,Newtonsoft.Json.Linq.JsonSelectSettings);;Argument[Qualifier];ReturnValue;taint",
+          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String,System.Boolean);;Argument[Qualifier];ReturnValue;taint",
+          "Newtonsoft.Json.Linq;JToken;false;ToString;();;Argument[Qualifier];ReturnValue;taint",
+          "Newtonsoft.Json.Linq;JToken;false;ToString;(Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonConverter[]);;Argument[Qualifier];ReturnValue;taint",
         ]
     }
   }
@@ -253,9 +253,52 @@ module JsonNET {
     override predicate row(string row) {
       row =
         [
+          "Newtonsoft.Json.Linq;JObject;false;Add;(System.Collections.Generic.KeyValuePair<System.String,Newtonsoft.Json.Linq.JToken>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[Qualifier];value",
+          "Newtonsoft.Json.Linq;JObject;false;Add;(System.Collections.Generic.KeyValuePair<System.String,Newtonsoft.Json.Linq.JToken>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];value",
+          "Newtonsoft.Json.Linq;JObject;false;JObject;(Newtonsoft.Json.Linq.JObject);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
+          "Newtonsoft.Json.Linq;JObject;false;JObject;(Newtonsoft.Json.Linq.JObject);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
+          "Newtonsoft.Json.Linq;JObject;false;JObject;(System.Object[]);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
+          "Newtonsoft.Json.Linq;JObject;false;JObject;(System.Object[]);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
           "Newtonsoft.Json.Linq;JObject;false;Parse;(System.String);;Argument[0];ReturnValue;taint",
-          "Newtonsoft.Json.Linq;JObject;false;Parse;(System.String,Newtonsoft.Json.Linq.JsonLoadSettings);;Argument[0];ReturnValue;taint"
+          "Newtonsoft.Json.Linq;JObject;false;Parse;(System.String,Newtonsoft.Json.Linq.JsonLoadSettings);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json.Linq;JObject;false;get_Item;(System.Object);;Element of Argument[Qualifier];ReturnValue;value",
+          "Newtonsoft.Json.Linq;JObject;false;get_Item;(System.Object);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];ReturnValue;value",
+          "Newtonsoft.Json.Linq;JObject;false;get_Item;(System.String);;Element of Argument[Qualifier];ReturnValue;value",
+          "Newtonsoft.Json.Linq;JObject;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[Qualifier];value",
+          "Newtonsoft.Json.Linq;JObject;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Element of Argument[Qualifier];value",
+          "Newtonsoft.Json.Linq;JObject;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];value",
+          "Newtonsoft.Json.Linq;JObject;false;set_Item;(System.String,Newtonsoft.Json.Linq.JToken);;Argument[1];Element of Argument[Qualifier];value",
         ]
+    }
+  }
+
+  /** Data flow for `Newtonsoft.JSon.Linq.JArray` */
+  private class NewtonsoftJsonLinqJArrayFlowModelCsv extends SummaryModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "Newtonsoft.Json.Linq;JArray;false;get_Item;(System.Object);;Element of Argument[Qualifier];ReturnValue;value",
+          "Newtonsoft.Json.Linq;JArray;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Element of Argument[Qualifier];value",
+        ]
+    }
+  }
+
+  /** Data flow for `Newtonsoft.JSon.Linq.JConstructor` */
+  private class NewtonsoftJsonLinqJConstructorFlowModelCsv extends SummaryModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "Newtonsoft.Json.Linq;JConstructor;false;get_Item;(System.Object);;Element of Argument[Qualifier];ReturnValue;value",
+          "Newtonsoft.Json.Linq;JConstructor;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Element of Argument[Qualifier];value",
+        ]
+    }
+  }
+
+  /** Data flow for `Newtonsoft.JSon.Linq.JContainer` */
+  private class NewtonsoftJsonLinqJContainerFlowModelCsv extends SummaryModelCsv {
+    override predicate row(string row) {
+      row =
+        "Newtonsoft.Json.Linq;JContainer;true;Add;(System.Object);;Argument[0];Element of Argument[Qualifier];value"
     }
   }
 }

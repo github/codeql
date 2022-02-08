@@ -101,12 +101,7 @@ class Struts2ConventionActionClass extends Class {
     exists(string ancestorPackage |
       // Has an ancestor package on the whitelist
       ancestorPackage = this.getPackage().getName().splitAt(".") and
-      (
-        ancestorPackage = "struts" or
-        ancestorPackage = "struts2" or
-        ancestorPackage = "action" or
-        ancestorPackage = "actions"
-      )
+      ancestorPackage = ["struts", "struts2", "action", "actions"]
     ) and
     (
       this.getName().matches("%" + getConventionSuffix(this)) or

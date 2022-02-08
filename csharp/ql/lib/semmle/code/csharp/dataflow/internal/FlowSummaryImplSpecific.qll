@@ -166,10 +166,26 @@ string getComponentSpecificCsv(SummaryComponent sc) {
 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
-string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
+string getParameterPositionCsv(ParameterPosition pos) {
+  result = pos.getPosition().toString()
+  or
+  pos.isThisParameter() and
+  result = "Qualifier"
+}
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
-string getArgumentPositionCsv(ArgumentPosition pos) { result = pos.toString() }
+string getArgumentPositionCsv(ArgumentPosition pos) {
+  result = pos.getPosition().toString()
+  or
+  pos.isQualifier() and
+  result = "This"
+}
+
+/** Holds if input specification component `c` needs a reference. */
+predicate inputNeedsReferenceSpecific(string c) { none() }
+
+/** Holds if output specification component `c` needs a reference. */
+predicate outputNeedsReferenceSpecific(string c) { none() }
 
 class SourceOrSinkElement = Element;
 
@@ -238,20 +254,30 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
 }
 
 bindingset[s]
-private int parsePosition(string s) {
-  result = s.regexpCapture("([-0-9]+)", 1).toInt()
+private int parseIntegerPosition(string s) {
+  result = s.regexpCapture("([0-9]+)", 1).toInt()
   or
   exists(int n1, int n2 |
-    s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 1).toInt() = n1 and
-    s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 2).toInt() = n2 and
+    s.regexpCapture("([0-9]+)\\.\\.([0-9]+)", 1).toInt() = n1 and
+    s.regexpCapture("([0-9]+)\\.\\.([0-9]+)", 2).toInt() = n2 and
     result in [n1 .. n2]
   )
 }
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[s]
-ArgumentPosition parseParamBody(string s) { result.getPosition() = parsePosition(s) }
+ArgumentPosition parseParamBody(string s) {
+  result.getPosition() = parseIntegerPosition(s)
+  or
+  s = "This" and
+  result.isQualifier()
+}
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
 bindingset[s]
-ParameterPosition parseArgBody(string s) { result.getPosition() = parsePosition(s) }
+ParameterPosition parseArgBody(string s) {
+  result.getPosition() = parseIntegerPosition(s)
+  or
+  s = "Qualifier" and
+  result.isThisParameter()
+}

@@ -78,10 +78,12 @@ private import FlowSummary
 private module Frameworks {
   private import internal.ContainerFlow
   private import semmle.code.java.frameworks.android.Android
+  private import semmle.code.java.frameworks.android.ContentProviders
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.android.Notifications
   private import semmle.code.java.frameworks.android.Slice
   private import semmle.code.java.frameworks.android.SQLite
+  private import semmle.code.java.frameworks.android.Widget
   private import semmle.code.java.frameworks.android.XssSinks
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Collections
@@ -91,17 +93,21 @@ private module Frameworks {
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
+  private import semmle.code.java.frameworks.JavaIo
   private import semmle.code.java.frameworks.JavaxJson
   private import semmle.code.java.frameworks.JaxWS
   private import semmle.code.java.frameworks.JoddJson
   private import semmle.code.java.frameworks.JsonJava
+  private import semmle.code.java.frameworks.Logging
   private import semmle.code.java.frameworks.Objects
   private import semmle.code.java.frameworks.Optional
+  private import semmle.code.java.frameworks.Regex
   private import semmle.code.java.frameworks.Stream
   private import semmle.code.java.frameworks.Strings
   private import semmle.code.java.frameworks.ratpack.Ratpack
   private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.spring.SpringCache
+  private import semmle.code.java.frameworks.spring.SpringContext
   private import semmle.code.java.frameworks.spring.SpringHttp
   private import semmle.code.java.frameworks.spring.SpringUtil
   private import semmle.code.java.frameworks.spring.SpringUi
@@ -113,7 +119,9 @@ private module Frameworks {
   private import semmle.code.java.security.AndroidIntentRedirection
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
+  private import semmle.code.java.security.Files
   private import semmle.code.java.security.GroovyInjection
+  private import semmle.code.java.security.ImplicitPendingIntents
   private import semmle.code.java.security.JexlInjectionSinkModels
   private import semmle.code.java.security.JndiInjection
   private import semmle.code.java.security.LdapInjection
@@ -256,20 +264,6 @@ private predicate sinkModelCsv(string row) {
       "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader);;Argument[1];open-url",
       "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader,URLStreamHandlerFactory);;Argument[1];open-url",
       "java.net;URLClassLoader;false;newInstance;;;Argument[0];open-url",
-      // Create file
-      "java.io;FileOutputStream;false;FileOutputStream;;;Argument[0];create-file",
-      "java.io;RandomAccessFile;false;RandomAccessFile;;;Argument[0];create-file",
-      "java.io;FileWriter;false;FileWriter;;;Argument[0];create-file",
-      "java.nio.file;Files;false;move;;;Argument[1];create-file",
-      "java.nio.file;Files;false;copy;;;Argument[1];create-file",
-      "java.nio.file;Files;false;newOutputStream;;;Argument[0];create-file",
-      "java.nio.file;Files;false;newBufferedReader;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createDirectory;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createFile;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createLink;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createSymbolicLink;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createTempDirectory;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createTempFile;;;Argument[0];create-file",
       // Bean validation
       "javax.validation;ConstraintValidatorContext;true;buildConstraintViolationWithTemplate;;;Argument[0];bean-validation",
       // Set hostname
@@ -695,7 +689,7 @@ class SyntheticField extends string {
 
 private predicate parseSynthField(string c, string f) {
   specSplit(_, c, _) and
-  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9]+)\\]", 1) = f
+  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9$]+)\\]", 1) = f
 }
 
 /** Holds if the specification component parses as a `Content`. */

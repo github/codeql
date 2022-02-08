@@ -20,7 +20,7 @@
  * not allow reasoning about nested property writes of the form `p.q.r` (except where `p.q`
  * is a module/exports object and hence handled by local flow).
  *
- * Also note that object inheritance is not modelled. Soundness is, however, preserved in
+ * Also note that object inheritance is not modeled. Soundness is, however, preserved in
  * the sense that all expressions whole value derives (directly or indirectly) from a property
  * read are marked as indefinite.
  */
@@ -175,9 +175,9 @@ class AnalyzedValueNode extends AnalyzedNode, DataFlow::ValueNode { }
  * A module for which analysis results are available.
  *
  * The type inference supports AMD, CommonJS and ES2015 modules. All three
- * variants are modelled as CommonJS modules, with `module` object and a default
+ * variants are modeled as CommonJS modules, with `module` object and a default
  * `exports` object which is the initial value of `module.exports`. ES2015
- * exports are modelled as property writes on `module.exports`, and imports
+ * exports are modeled as property writes on `module.exports`, and imports
  * as property reads on any potential value of `module.exports`.
  */
 class AnalyzedModule extends TopLevel {

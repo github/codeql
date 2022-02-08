@@ -239,7 +239,7 @@ module HTTP {
         string getUrlPattern() {
           exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
             this.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getValueText()
+            result = strNode.getExpr().getConstantValue().getStringOrSymbol()
           )
         }
 
@@ -364,7 +364,7 @@ module HTTP {
         string getMimetype() {
           exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
             this.getMimetypeOrContentTypeArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getValueText().splitAt(";", 0)
+            result = strNode.getExpr().getConstantValue().getStringOrSymbol().splitAt(";", 0)
           )
           or
           not exists(this.getMimetypeOrContentTypeArg()) and
@@ -642,5 +642,65 @@ module Path {
      * to safely access paths.
      */
     abstract class Range extends DataFlow::Node { }
+  }
+}
+
+/**
+ * A data-flow node that may configure behavior relating to cookie security.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `CookieSecurityConfigurationSetting::Range` instead.
+ */
+class CookieSecurityConfigurationSetting extends DataFlow::Node instanceof CookieSecurityConfigurationSetting::Range {
+  /**
+   * Gets a description of how this cookie setting may weaken application security.
+   * This predicate has no results if the setting is considered to be safe.
+   */
+  string getSecurityWarningMessage() { result = super.getSecurityWarningMessage() }
+}
+
+/** Provides a class for modeling new cookie security setting APIs. */
+module CookieSecurityConfigurationSetting {
+  /**
+   * A data-flow node that may configure behavior relating to cookie security.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `CookieSecurityConfigurationSetting` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets a description of how this cookie setting may weaken application security.
+     * This predicate has no results if the setting is considered to be safe.
+     */
+    abstract string getSecurityWarningMessage();
+  }
+}
+
+/**
+ * A data-flow node that logs data.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `Logging::Range` instead.
+ */
+class Logging extends DataFlow::Node {
+  Logging::Range range;
+
+  Logging() { this = range }
+
+  /** Gets an input that is logged. */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+}
+
+/** Provides a class for modeling new logging mechanisms. */
+module Logging {
+  /**
+   * A data-flow node that logs data.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `Logging` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an input that is logged. */
+    abstract DataFlow::Node getAnInput();
   }
 }

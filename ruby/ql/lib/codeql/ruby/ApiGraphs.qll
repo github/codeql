@@ -88,22 +88,41 @@ module API {
      * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
      * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
      */
-    Node getInstance() { result = this.getASuccessor(Label::instance()) }
+    Node getInstance() { result = this.getASubclass().getASuccessor(Label::instance()) }
 
     /**
      * Gets a node representing the result of calling a method on the receiver represented by this node.
      */
-    Node getReturn(string method) { result = this.getASuccessor(Label::return(method)) }
+    Node getReturn(string method) {
+      result = this.getASubclass().getASuccessor(Label::return(method))
+    }
 
     /**
      * Gets a `new` call to the function represented by this API component.
      */
-    DataFlow::Node getAnInstantiation() { result = this.getInstance().getAnImmediateUse() }
+    DataFlow::ExprNode getAnInstantiation() { result = this.getInstance().getAnImmediateUse() }
 
     /**
-     * Gets a node representing a subclass of the class represented by this node.
+     * Gets a node representing a (direct or indirect) subclass of the class represented by this node.
+     * ```rb
+     * class A; end
+     * class B < A; end
+     * class C < B; end
+     * ```
+     * In the example above, `getMember("A").getASubclass()` will return uses of `A`, `B` and `C`.
      */
-    Node getASubclass() { result = this.getASuccessor(Label::subclass()) }
+    Node getASubclass() { result = this.getAnImmediateSubclass*() }
+
+    /**
+     * Gets a node representing a direct subclass of the class represented by this node.
+     * ```rb
+     * class A; end
+     * class B < A; end
+     * class C < B; end
+     * ```
+     * In the example above, `getMember("A").getAnImmediateSubclass()` will return uses of `B` only.
+     */
+    Node getAnImmediateSubclass() { result = this.getASuccessor(Label::subclass()) }
 
     /**
      * Gets a string representation of the lexicographically least among all shortest access paths
@@ -254,10 +273,9 @@ module API {
      */
     pragma[nomagic]
     private predicate useRoot(string lbl, DataFlow::Node ref) {
-      exists(string name, ExprNodes::ConstantAccessCfgNode access, ConstantReadAccess read |
-        access = ref.asExpr() and
-        lbl = Label::member(read.getName()) and
-        read = access.getExpr()
+      exists(string name, ConstantReadAccess read |
+        read = ref.asExpr().getExpr() and
+        lbl = Label::member(read.getName())
       |
         name = resolveTopLevel(read)
         or
@@ -388,6 +406,17 @@ module API {
           trackUseNode(src).flowsTo(any(DataFlow::ExprNode n | n.getExprNode() = node)) and
           useStep(lbl, node, ref)
         )
+      )
+      or
+      // `pred` is a use of class A
+      // `succ` is a use of class B
+      // there exists a class declaration B < A
+      exists(ClassDeclaration c, DataFlow::Node a, DataFlow::Node b |
+        use(pred, a) and
+        use(succ, b) and
+        resolveConstant(b.asExpr().getExpr()) = resolveConstantWriteAccess(c) and
+        c.getSuperclassExpr() = a.asExpr().getExpr() and
+        lbl = Label::subclass()
       )
     }
 

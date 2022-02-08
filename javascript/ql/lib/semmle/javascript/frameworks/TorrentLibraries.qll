@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling Torrent libraries.
+ * Provides classes for modeling Torrent libraries.
  */
 
 import javascript

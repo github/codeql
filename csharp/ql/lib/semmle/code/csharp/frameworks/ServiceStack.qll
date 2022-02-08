@@ -1,5 +1,5 @@
 /**
- * General modelling of ServiceStack framework including separate modules for:
+ * General modeling of ServiceStack framework including separate modules for:
  *  - flow sources
  *  - SQLi sinks
  *  - XSS sinks

@@ -86,7 +86,6 @@ foo = 42
 case expr 
   in 5
   in ^foo
-  in var
   in "string"
   in %w(foo bar)
   in %i(foo bar)
@@ -95,7 +94,6 @@ case expr
   in .. 10
   in 5 ..
   in 5 => x
-  in 5 | ^foo | var | "string"
   in Foo
   in Foo::Bar
   in ::Foo::Bar
@@ -106,6 +104,11 @@ case expr
   in -5 | +10
   in (1 ..)
   in (0 | "" | [] | {})
+  in var
+end
+
+case expr 
+  in 5 | ^foo | "string" | var
 end
 
 # array patterns
@@ -141,3 +144,15 @@ case expr
   in Bar( a: 1, **nil);
 end
 
+case expr 
+  in ^foo;
+  in ^$foo;
+  in ^@foo;
+  in ^@@foo;
+end
+
+case expr 
+  in ^(foo);
+  in ^(@foo);
+  in ^(1 + 1);
+end

@@ -500,3 +500,8 @@ module.exports.myCommand = function (myCommand) {
 	}
 });
   
+
+var imp = require('./isImported');
+for (var name in imp){
+  module.exports[name] = imp[name];
+}

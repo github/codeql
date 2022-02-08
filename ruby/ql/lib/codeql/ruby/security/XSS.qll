@@ -141,7 +141,7 @@ private module Shared {
     exists(RenderCall call, Pair kvPair |
       call.getLocals().getAKeyValuePair() = kvPair and
       kvPair.getValue() = value and
-      kvPair.getKey().getValueText() = hashKey and
+      kvPair.getKey().getConstantValue().isStringOrSymbol(hashKey) and
       call.getTemplateFile() = erb
     )
   }
@@ -154,7 +154,7 @@ private module Shared {
       argNode.asExpr() = refNode.getArgument(0) and
       refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "local_assigns" and
       argNode.getALocalSource() = DataFlow::exprNode(strNode) and
-      strNode.getExpr().getValueText() = hashKey and
+      strNode.getExpr().getConstantValue().isStringOrSymbol(hashKey) and
       erb = refNode.getFile()
     )
   }
@@ -227,7 +227,7 @@ private module Shared {
       isHelperMethod(helperMethod, name, template) and
       isMethodCall(helperMethodCall.getExpr(), name, template) and
       helperMethodCall.getArgument(pragma[only_bind_into](argIdx)) = node1.asExpr() and
-      helperMethod.getParameter(pragma[only_bind_into](argIdx)) = node2.asExpr().getExpr()
+      helperMethod.getParameter(pragma[only_bind_into](argIdx)) = node2.asParameter()
     )
   }
 

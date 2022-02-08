@@ -83,7 +83,7 @@ class RaisingNode extends ControlFlowNode {
         result = this.innateException_objectapi()
       )
       or
-      not exists(ExceptFlowNode except | except = this.getAnExceptionalSuccessor()) and
+      not this.getAnExceptionalSuccessor() instanceof ExceptFlowNode and
       sequence_or_mapping(this) and
       result = theLookupErrorType()
       or
@@ -110,7 +110,7 @@ class RaisingNode extends ControlFlowNode {
         result = this.innateException()
       )
       or
-      not exists(ExceptFlowNode except | except = this.getAnExceptionalSuccessor()) and
+      not this.getAnExceptionalSuccessor() instanceof ExceptFlowNode and
       sequence_or_mapping(this) and
       result = ClassValue::lookupError()
       or

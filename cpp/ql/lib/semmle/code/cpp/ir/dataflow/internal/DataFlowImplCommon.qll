@@ -3,6 +3,17 @@ private import DataFlowImplSpecific::Public
 import Cached
 
 module DataFlowImplCommonPublic {
+  /** A state value to track during data flow. */
+  class FlowState = string;
+
+  /**
+   * The default state, which is used when the state is unspecified for a source
+   * or a sink.
+   */
+  class FlowStateEmpty extends FlowState {
+    FlowStateEmpty() { this = "" }
+  }
+
   private newtype TFlowFeature =
     TFeatureHasSourceCallContext() or
     TFeatureHasSinkCallContext() or
@@ -1279,7 +1290,7 @@ class DataFlowCallOption extends TDataFlowCallOption {
   }
 }
 
-/** Content tagged with the type of a containing object. */
+/** A `Content` tagged with the type of a containing object. */
 class TypedContent extends MkTypedContent {
   private Content c;
   private DataFlowType t;

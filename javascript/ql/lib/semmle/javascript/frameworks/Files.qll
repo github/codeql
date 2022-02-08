@@ -145,7 +145,7 @@ private class FastGlobFileNameSource extends FileNameSource {
 }
 
 /**
- * Classes and predicates for modelling the `fstream` library (https://www.npmjs.com/package/fstream).
+ * Classes and predicates for modeling the `fstream` library (https://www.npmjs.com/package/fstream).
  */
 private module FStream {
   /**
@@ -159,7 +159,7 @@ private module FStream {
         or
         readOrWrite = "Writer" and writer = true
       ) and
-      (subMod = "File" or subMod = "Dir" or subMod = "Link" or subMod = "Proxy")
+      subMod = ["File", "Dir", "Link", "Proxy"]
     |
       result = mod.getAPropertyRead(readOrWrite) or
       result = mod.getAPropertyRead(readOrWrite).getAPropertyRead(subMod) or
@@ -242,7 +242,7 @@ private class RecursiveReadDir extends FileSystemAccess, FileNameProducer, DataF
 }
 
 /**
- * Classes and predicates for modelling the `jsonfile` library (https://www.npmjs.com/package/jsonfile).
+ * Classes and predicates for modeling the `jsonfile` library (https://www.npmjs.com/package/jsonfile).
  */
 private module JSONFile {
   /**
@@ -433,9 +433,7 @@ private class LibraryAccess extends FileSystemAccess, DataFlow::InvokeNode {
       or
       this =
         DataFlow::moduleMember("node-dir",
-          any(string s |
-            s = ["readFiles", "readFilesStream", "files", "promiseFiles", "subdirs", "paths"]
-          )).getACall()
+          ["readFiles", "readFilesStream", "files", "promiseFiles", "subdirs", "paths"]).getACall()
     )
     or
     pathArgument = 0 and

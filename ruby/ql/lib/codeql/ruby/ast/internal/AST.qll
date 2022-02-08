@@ -272,10 +272,25 @@ private module Cached {
     TStmtSequenceSynth(AST::AstNode parent, int i) { mkSynthChild(StmtSequenceKind(), parent, i) } or
     TStringArrayLiteral(Ruby::StringArray g) or
     TStringConcatenation(Ruby::ChainedString g) or
-    TStringEscapeSequenceComponent(Ruby::EscapeSequence g) or
-    TStringInterpolationComponent(Ruby::Interpolation g) or
-    TStringTextComponent(Ruby::Token g) {
-      g instanceof Ruby::StringContent or g instanceof Ruby::HeredocContent
+    TStringEscapeSequenceComponentNonRegexp(Ruby::EscapeSequence g) {
+      not g.getParent() instanceof Ruby::Regex
+    } or
+    TStringEscapeSequenceComponentRegexp(Ruby::EscapeSequence g) {
+      g.getParent() instanceof Ruby::Regex
+    } or
+    TStringInterpolationComponentNonRegexp(Ruby::Interpolation g) {
+      not g.getParent() instanceof Ruby::Regex
+    } or
+    TStringInterpolationComponentRegexp(Ruby::Interpolation g) {
+      g.getParent() instanceof Ruby::Regex
+    } or
+    TStringTextComponentNonRegexp(Ruby::Token g) {
+      (g instanceof Ruby::StringContent or g instanceof Ruby::HeredocContent) and
+      not g.getParent() instanceof Ruby::Regex
+    } or
+    TStringTextComponentRegexp(Ruby::Token g) {
+      (g instanceof Ruby::StringContent or g instanceof Ruby::HeredocContent) and
+      g.getParent() instanceof Ruby::Regex
     } or
     TSubExprReal(Ruby::Binary g) { g instanceof @ruby_binary_minus } or
     TSubExprSynth(AST::AstNode parent, int i) { mkSynthChild(SubExprKind(), parent, i) } or
@@ -305,10 +320,13 @@ private module Cached {
     TUntilExpr(Ruby::Until g) or
     TUntilModifierExpr(Ruby::UntilModifier g) or
     TVariableReferencePattern(Ruby::VariableReferencePattern g) or
-    TWhenExpr(Ruby::When g) or
+    TExpressionReferencePattern(Ruby::ExpressionReferencePattern g) or
+    TWhenClause(Ruby::When g) or
     TWhileExpr(Ruby::While g) or
     TWhileModifierExpr(Ruby::WhileModifier g) or
     TYieldCall(Ruby::Yield g)
+
+  class TReferencePattern = TVariableReferencePattern or TExpressionReferencePattern;
 
   class TAstNodeReal =
     TAddExprReal or TAliasStmt or TAlternativePattern or TArgumentList or TArrayPattern or
@@ -344,7 +362,7 @@ private module Cached {
         TTernaryIfExpr or TThen or TTokenConstantAccess or TTokenMethodName or TTokenSuperCall or
         TToplevel or TTrueLiteral or TUnaryMinusExpr or TUnaryPlusExpr or TUndefStmt or
         TUnlessExpr or TUnlessModifierExpr or TUntilExpr or TUntilModifierExpr or
-        TVariableReferencePattern or TWhenExpr or TWhileExpr or TWhileModifierExpr or TYieldCall;
+        TReferencePattern or TWhenClause or TWhileExpr or TWhileModifierExpr or TYieldCall;
 
   class TAstNodeSynth =
     TAddExprSynth or TAssignExprSynth or TBitwiseAndExprSynth or TBitwiseOrExprSynth or
@@ -489,9 +507,12 @@ private module Cached {
     n = TSplatParameter(result) or
     n = TStringArrayLiteral(result) or
     n = TStringConcatenation(result) or
-    n = TStringEscapeSequenceComponent(result) or
-    n = TStringInterpolationComponent(result) or
-    n = TStringTextComponent(result) or
+    n = TStringEscapeSequenceComponentNonRegexp(result) or
+    n = TStringEscapeSequenceComponentRegexp(result) or
+    n = TStringInterpolationComponentNonRegexp(result) or
+    n = TStringInterpolationComponentRegexp(result) or
+    n = TStringTextComponentNonRegexp(result) or
+    n = TStringTextComponentRegexp(result) or
     n = TSubExprReal(result) or
     n = TSubshellLiteral(result) or
     n = TSymbolArrayLiteral(result) or
@@ -511,7 +532,8 @@ private module Cached {
     n = TUntilExpr(result) or
     n = TUntilModifierExpr(result) or
     n = TVariableReferencePattern(result) or
-    n = TWhenExpr(result) or
+    n = TExpressionReferencePattern(result) or
+    n = TWhenClause(result) or
     n = TWhileExpr(result) or
     n = TWhileModifierExpr(result) or
     n = TYieldCall(result)
@@ -657,10 +679,9 @@ class TSelf = TSelfReal or TSelfSynth;
 class TDestructuredLhsExpr = TDestructuredLeftAssignment or TLeftAssignmentList;
 
 class TExpr =
-  TSelf or TArgumentList or TInClause or TRescueClause or TRescueModifierExpr or TPair or
-      TStringConcatenation or TCall or TBlockArgument or TConstantAccess or TControlExpr or
-      TWhenExpr or TLiteral or TCallable or TVariableAccess or TStmtSequence or TOperation or
-      TSimpleParameter or TForwardArgument or TDestructuredLhsExpr;
+  TSelf or TArgumentList or TRescueClause or TRescueModifierExpr or TPair or TStringConcatenation or
+      TCall or TBlockArgument or TConstantAccess or TControlExpr or TLiteral or TCallable or
+      TVariableAccess or TStmtSequence or TOperation or TForwardArgument or TDestructuredLhsExpr;
 
 class TSplatExpr = TSplatExprReal or TSplatExprSynth;
 
@@ -680,6 +701,14 @@ class TNumericLiteral = TIntegerLiteral or TFloatLiteral or TRationalLiteral or 
 class TIntegerLiteral = TIntegerLiteralReal or TIntegerLiteralSynth;
 
 class TBooleanLiteral = TTrueLiteral or TFalseLiteral;
+
+class TStringTextComponent = TStringTextComponentNonRegexp or TStringTextComponentRegexp;
+
+class TStringEscapeSequenceComponent =
+  TStringEscapeSequenceComponentNonRegexp or TStringEscapeSequenceComponentRegexp;
+
+class TStringInterpolationComponent =
+  TStringInterpolationComponentNonRegexp or TStringInterpolationComponentRegexp;
 
 class TStringComponent =
   TStringTextComponent or TStringEscapeSequenceComponent or TStringInterpolationComponent;

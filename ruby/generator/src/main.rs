@@ -3,6 +3,7 @@ mod language;
 mod ql;
 mod ql_gen;
 
+use clap::arg;
 use language::Language;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
@@ -232,15 +233,6 @@ fn convert_nodes(
                     });
                 }
 
-                // Finally, the type's defining table also includes the location.
-                main_table.columns.push(dbscheme::Column {
-                    unique: false,
-                    db_type: dbscheme::DbColumnType::Int,
-                    name: "loc",
-                    ql_type: ql::Type::At("location"),
-                    ql_type_is_ref: true,
-                });
-
                 entries.push(dbscheme::Entry::Table(main_table));
             }
             node_types::EntryKind::Token { .. } => {}
@@ -250,19 +242,25 @@ fn convert_nodes(
     (entries, ast_node_members, token_kinds)
 }
 
-/// Creates a dbscheme table entry representing the parent relation for AST nodes.
+/// Creates a dbscheme table specifying the parent node and location for each
+/// AST node.
 ///
 /// # Arguments
-/// - `name` - the name of both the table to create and the node parent type.
+/// - `name` - the name of the table to create.
+/// - `parent_name` - the name of the parent type.
 /// - `ast_node_name` - the name of the node child type.
-fn create_ast_node_parent_table<'a>(name: &'a str, ast_node_name: &'a str) -> dbscheme::Table<'a> {
+fn create_ast_node_info_table<'a>(
+    name: &'a str,
+    parent_name: &'a str,
+    ast_node_name: &'a str,
+) -> dbscheme::Table<'a> {
     dbscheme::Table {
         name,
         columns: vec![
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::Int,
-                name: "child",
-                unique: false,
+                name: "node",
+                unique: true,
                 ql_type: ql::Type::At(ast_node_name),
                 ql_type_is_ref: true,
             },
@@ -270,7 +268,7 @@ fn create_ast_node_parent_table<'a>(name: &'a str, ast_node_name: &'a str) -> db
                 db_type: dbscheme::DbColumnType::Int,
                 name: "parent",
                 unique: false,
-                ql_type: ql::Type::At(name),
+                ql_type: ql::Type::At(parent_name),
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
@@ -278,6 +276,13 @@ fn create_ast_node_parent_table<'a>(name: &'a str, ast_node_name: &'a str) -> db
                 db_type: dbscheme::DbColumnType::Int,
                 name: "parent_index",
                 ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "loc",
+                ql_type: ql::Type::At("location"),
                 ql_type_is_ref: true,
             },
         ],
@@ -309,13 +314,6 @@ fn create_tokeninfo<'a>(name: &'a str, type_name: &'a str) -> dbscheme::Table<'a
                 db_type: dbscheme::DbColumnType::String,
                 name: "value",
                 ql_type: ql::Type::String,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "loc",
-                ql_type: ql::Type::At("location"),
                 ql_type_is_ref: true,
             },
         ],
@@ -556,10 +554,8 @@ fn main() -> std::io::Result<()> {
         .version("1.0")
         .author("GitHub")
         .about("CodeQL Ruby dbscheme generator")
-        .args_from_usage(
-            "--dbscheme=<FILE>                  'Path of the generated dbscheme file'
-             --library=<FILE>                   'Path of the generated QLL file'",
-        )
+        .arg(arg!(--dbscheme <FILE>                  "Path of the generated dbscheme file"))
+        .arg(arg!(--library <FILE>                   "Path of the generated QLL file"))
         .get_matches();
     let dbscheme_path = matches.value_of("dbscheme").expect("missing --dbscheme");
     let dbscheme_path = PathBuf::from(dbscheme_path);
@@ -620,6 +616,7 @@ fn main() -> std::io::Result<()> {
     for language in languages {
         let prefix = node_types::to_snake_case(&language.name);
         let ast_node_name = format!("{}_ast_node", &prefix);
+        let node_info_table_name = format!("{}_ast_node_info", &prefix);
         let ast_node_parent_name = format!("{}_ast_node_parent", &prefix);
         let token_name = format!("{}_token", &prefix);
         let tokeninfo_name = format!("{}_tokeninfo", &prefix);
@@ -642,7 +639,8 @@ fn main() -> std::io::Result<()> {
                     name: &ast_node_parent_name,
                     members: [&ast_node_name, "file"].iter().cloned().collect(),
                 }),
-                dbscheme::Entry::Table(create_ast_node_parent_table(
+                dbscheme::Entry::Table(create_ast_node_info_table(
+                    &node_info_table_name,
                     &ast_node_parent_name,
                     &ast_node_name,
                 )),
@@ -652,7 +650,7 @@ fn main() -> std::io::Result<()> {
         let mut body = vec![
             ql::TopLevel::Class(ql_gen::create_ast_node_class(
                 &ast_node_name,
-                &ast_node_parent_name,
+                &node_info_table_name,
             )),
             ql::TopLevel::Class(ql_gen::create_token_class(&token_name, &tokeninfo_name)),
             ql::TopLevel::Class(ql_gen::create_reserved_word_class(&reserved_word_name)),
