@@ -471,6 +471,12 @@ class XPathConstruction extends DataFlow::Node {
 
   /** Gets the argument that specifies the XPath expressions to be constructed. */
   DataFlow::Node getXPath() { result = range.getXPath() }
+
+  /**
+   * Gets the name of this XPath expression construction, typically the name of an executing method.
+   * This is used for nice alert messages and should include the module if possible.
+   */
+  string getName() { result = range.getName() }
 }
 
 /** Provides a class for modeling new XPath construction APIs. */
@@ -487,6 +493,12 @@ module XPathConstruction {
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the XPath expressions to be constructed. */
     abstract DataFlow::Node getXPath();
+
+    /**
+     * Gets the name of this XPath expression construction, typically the name of an executing method.
+     * This is used for nice alert messages and should include the module if possible.
+     */
+    abstract string getName();
   }
 }
 
