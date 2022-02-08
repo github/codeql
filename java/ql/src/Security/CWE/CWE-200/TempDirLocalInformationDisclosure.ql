@@ -72,8 +72,8 @@ private class FilesVulnerableCreationMethodAccess extends MethodAccess {
  * We can safely assume that any calls to these methods with explicit `PosixFilePermissions.asFileAttribute`
  * contains a certain level of intentionality behind it.
  */
-private class FilesSanitiznignCreationMethodAccess extends MethodAccess {
-  FilesSanitiznignCreationMethodAccess() {
+private class FilesSanitizingCreationMethodAccess extends MethodAccess {
+  FilesSanitizingCreationMethodAccess() {
     exists(Method m |
       m = this.getMethod() and
       m.getDeclaringType().hasQualifiedName("java.nio.file", "Files")
@@ -116,15 +116,18 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
   override predicate isSink(DataFlow::Node sink) { sink instanceof FileCreationSink }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
-    exists(FilesSanitiznignCreationMethodAccess sanitisingMethodAccess |
+    exists(FilesSanitizingCreationMethodAccess sanitisingMethodAccess |
       sanitizer.asExpr() = sanitisingMethodAccess.getArgument(0)
     )
   }
 }
 
-// Below this, configuration for tracking single-method calls that are vulnerable.
+//
+// Begin configuration for tracking single-method calls that are vulnerable.
+//
+
 /**
- * A MethodAccess against a method that creates a temporary file or directory in a shared temporary directory.
+ * A `MethodAccess` against a method that creates a temporary file or directory in a shared temporary directory.
  */
 abstract class MethodAccessInsecureFileCreation extends MethodAccess {
   /**
@@ -174,7 +177,7 @@ class MethodAccessInsecureGuavaFilesCreateTempFile extends MethodAccessInsecureF
 
 /**
  * This is a hack: we include use of inherently insecure methods, which don't have any associated
- * flow path, in with results describing a path from reading java.io.tmpdir or similar to use
+ * flow path, in with results describing a path from reading `java.io.tmpdir` or similar to use
  * in a file creation op.
  *
  * We achieve this by making inherently-insecure method invocations both a source and a sink in
@@ -182,7 +185,7 @@ class MethodAccessInsecureGuavaFilesCreateTempFile extends MethodAccessInsecureF
  * path-flow results.
  */
 class InsecureMethodPseudoConfiguration extends DataFlow::Configuration {
-  InsecureMethodPseudoConfiguration() { this = "InsecureMethodPseudoConfiguration " }
+  InsecureMethodPseudoConfiguration() { this = "InsecureMethodPseudoConfiguration" }
 
   override predicate isSource(DataFlow::Node node) {
     node.asExpr() instanceof MethodAccessInsecureFileCreation
