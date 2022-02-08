@@ -505,3 +505,19 @@ var imp = require('./isImported');
 for (var name in imp){
   module.exports[name] = imp[name];
 }
+
+module.exports.sanitizer4 = function (name) {
+	cp.exec("rm -rf " + name); // NOT OK
+
+	if (isNaN(name)) {
+		cp.exec("rm -rf " + name); // NOT OK
+	} else {
+		cp.exec("rm -rf " + name); // OK
+	}
+
+	if (isNaN(parseInt(name))) {
+		cp.exec("rm -rf " + name); // NOT OK
+	} else {
+		cp.exec("rm -rf " + name); // OK
+	}
+}
