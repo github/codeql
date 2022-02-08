@@ -1326,7 +1326,7 @@ case @ruby_token.kind of
 
 #keyset[parent, parent_index]
 ruby_ast_node_info(
-  int node: @ruby_ast_node ref,
+  unique int node: @ruby_ast_node ref,
   int parent: @ruby_ast_node_parent ref,
   int parent_index: int ref,
   int loc: @location ref
@@ -1385,7 +1385,7 @@ case @erb_token.kind of
 
 #keyset[parent, parent_index]
 erb_ast_node_info(
-  int node: @erb_ast_node ref,
+  unique int node: @erb_ast_node ref,
   int parent: @erb_ast_node_parent ref,
   int parent_index: int ref,
   int loc: @location ref
