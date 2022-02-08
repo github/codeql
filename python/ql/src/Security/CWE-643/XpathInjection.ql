@@ -17,7 +17,7 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
-import XpathInjection::XpathInjection
+import semmle.python.security.dataflow.XpathInjection::XpathInjection
 import DataFlow::PathGraph
 
 class XpathInjectionConfiguration extends TaintTracking::Configuration {
