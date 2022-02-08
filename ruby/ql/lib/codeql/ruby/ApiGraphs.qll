@@ -383,7 +383,7 @@ module API {
     predicate use(TApiNode nd, DataFlow::Node ref) { nd = MkUse(ref) }
 
     /**
-     * Holds if `ref` is a RHS of node `nd`.
+     * Holds if `rhs` is a RHS of node `nd`.
      */
     cached
     predicate def(TApiNode nd, DataFlow::Node rhs) { nd = MkDef(rhs) }
