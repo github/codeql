@@ -513,11 +513,11 @@ module TaintedPath {
 
     override predicate blocks(boolean outcome, Expr e) {
       member = "relative" and
-      e = maybeGetPathSuffix(pathCall.getArgument(1)).asExpr() and
+      e = this.maybeGetPathSuffix(pathCall.getArgument(1)).asExpr() and
       outcome = startsWith.getPolarity().booleanNot()
       or
       not member = "relative" and
-      e = maybeGetPathSuffix(pathCall.getArgument(0)).asExpr() and
+      e = this.maybeGetPathSuffix(pathCall.getArgument(0)).asExpr() and
       outcome = startsWith.getPolarity()
     }
 
