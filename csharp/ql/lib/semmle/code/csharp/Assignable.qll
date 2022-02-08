@@ -281,11 +281,11 @@ module AssignableInternal {
     def = TPatternDefinition(result)
   }
 
-  /** A local variable declaration at the top-level of a pattern. */
-  class TopLevelPatternDecl extends LocalVariableDeclExpr {
+  /** A local variable declaration at any level of a pattern. */
+  class AnyLevelPatternDecl extends LocalVariableDeclExpr {
     private PatternMatch pm;
 
-    TopLevelPatternDecl() { this = pm.getPattern().(BindingPatternExpr).getVariableDeclExpr() }
+    AnyLevelPatternDecl() { this = pm.getAPattern().(BindingPatternExpr).getVariableDeclExpr() }
 
     PatternMatch getMatch() { result = pm }
   }
@@ -305,7 +305,7 @@ module AssignableInternal {
       TLocalVariableDefinition(LocalVariableDeclExpr lvde) {
         not lvde.hasInitializer() and
         not exists(getTupleSource(TTupleAssignmentDefinition(_, lvde))) and
-        not lvde instanceof TopLevelPatternDecl and
+        not lvde instanceof AnyLevelPatternDecl and
         not lvde.isOutArgument()
       } or
       TImplicitParameterDefinition(Parameter p) {
@@ -317,7 +317,7 @@ module AssignableInternal {
         )
       } or
       TAddressOfDefinition(AddressOfExpr aoe) or
-      TPatternDefinition(TopLevelPatternDecl tlpd)
+      TPatternDefinition(AnyLevelPatternDecl tlpd)
 
     /**
      * Gets the source expression assigned in tuple definition `def`, if any.
@@ -707,15 +707,15 @@ module AssignableDefinitions {
    * A local variable definition in a pattern, for example `x is int i`.
    */
   class PatternDefinition extends AssignableDefinition, TPatternDefinition {
-    TopLevelPatternDecl tlpd;
+    AnyLevelPatternDecl alpd;
 
-    PatternDefinition() { this = TPatternDefinition(tlpd) }
+    PatternDefinition() { this = TPatternDefinition(alpd) }
 
     /** Gets the element matches against this pattern. */
-    PatternMatch getMatch() { result = tlpd.getMatch() }
+    PatternMatch getMatch() { result = alpd.getMatch() }
 
     /** Gets the underlying local variable declaration. */
-    LocalVariableDeclExpr getDeclaration() { result = tlpd }
+    LocalVariableDeclExpr getDeclaration() { result = alpd }
 
     override Expr getSource() { result = this.getMatch().getExpr() }
 

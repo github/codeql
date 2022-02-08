@@ -12,7 +12,7 @@ public class K
         var r = new RecordClass2(o);
         if (r is RecordClass2 { Prop: object p })
         {
-            Sink(p); // $ MISSING: hasValueFlow=1
+            Sink(p); // $ hasValueFlow=1
         }
     }
 

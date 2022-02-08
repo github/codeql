@@ -554,9 +554,13 @@ class PatternMatch extends ControlFlowElement, @pattern_match {
   /** Gets the pattern of this match. */
   PatternExpr getPattern() { none() }
 
+  PatternExpr getAPattern() { hasChildPattern(this, result) }
+
   /** Gets the expression that is matched against a pattern. */
   Expr getExpr() { none() }
 }
+
+private predicate myTest(PatternMatch pm, PatternExpr child) { child = pm.getAPattern() }
 
 /** An `is` expression. */
 class IsExpr extends Expr, PatternMatch, @is_expr {
