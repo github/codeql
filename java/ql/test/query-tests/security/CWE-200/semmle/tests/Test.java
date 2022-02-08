@@ -263,4 +263,10 @@ public class Test {
         // TO MAKE SAFE REWRITE TO:
         Files.createDirectories(tempDirChild.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)));
     }
+
+    void safeFileCreationWithPermissions() throws IOException {
+        File tempFile = File.createTempFile("temp", "file.txt");
+        tempFile.setReadable(false, false);
+        tempFile.setReadable(true, true);
+    }
 }

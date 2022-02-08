@@ -197,14 +197,17 @@ class InsecureMethodPseudoConfiguration extends DataFlow::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, string message
 where
-  any(TempDirSystemGetPropertyToCreateConfig conf).hasFlowPath(source, sink) and
-  message =
-    "Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users."
-  or
-  any(InsecureMethodPseudoConfiguration conf).hasFlowPath(source, sink) and
-  // Note this message has no "$@" placeholder, so the "system temp directory" template parameter below is not used.
-  message =
-    "Local information disclosure vulnerability due to use of " +
-      source.getNode().asExpr().(MethodAccessInsecureFileCreation).getFileSystemEntityType() +
-      " readable by other local users."
+  (
+    any(TempDirSystemGetPropertyToCreateConfig conf).hasFlowPath(source, sink) and
+    message =
+      "Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users."
+    or
+    any(InsecureMethodPseudoConfiguration conf).hasFlowPath(source, sink) and
+    // Note this message has no "$@" placeholder, so the "system temp directory" template parameter below is not used.
+    message =
+      "Local information disclosure vulnerability due to use of " +
+        source.getNode().asExpr().(MethodAccessInsecureFileCreation).getFileSystemEntityType() +
+        " readable by other local users."
+  ) and
+  not isPermissionsProtectedTempDirUse(sink.getNode())
 select source.getNode(), source, sink, message, source.getNode(), "system temp directory"
