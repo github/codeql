@@ -25,13 +25,13 @@ jobs:
         run: |
           DATABASE="${{ runner.temp }}/java-database"
           PROJECT="${{ runner.temp }}/java-project"
-          mkdir -p $PROJECT/src/tmp/empty
-          echo "class Empty {}" >> $PROJECT/src/tmp/empty/Empty.java
-          codeql database create $DATABASE --language=java --source-root=$PROJECT --command 'javac src/tmp/empty/Empty.java'
+          mkdir -p "$PROJECT/src/tmp/empty"
+          echo "class Empty {}" >> "$PROJECT/src/tmp/empty/Empty.java"
+          codeql database create "$DATABASE" --language=java --source-root="$PROJECT" --command 'javac src/tmp/empty/Empty.java'
       - name: Capture coverage information
         run: |
           DATABASE="${{ runner.temp }}/java-database"
-          codeql database analyze --format=sarif-latest --output=metrics.sarif -- $DATABASE ./java/ql/src/Diagnostics/CoverageDiagnostics.ql
+          codeql database analyze --format=sarif-latest --output=metrics.sarif -- "$DATABASE" ./java/ql/src/Diagnostics/CoverageDiagnostics.ql
       - uses: actions/upload-artifact@v2
         with:
           name: metrics.sarif
