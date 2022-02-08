@@ -2,7 +2,7 @@ from flask import request, Flask
 from io import StringIO
 import xml.sax
 
-# xml_content = '<?xml version="1.0"?><!DOCTYPE dt [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><test>&xxe;</test>'
+# xxe = '<?xml version="1.0"?><!DOCTYPE dt [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><test>&xxe;</test>'
 
 app = Flask(__name__)
 
@@ -74,12 +74,28 @@ def xml_makeparser_minidom_entitiesTrue():
     parser.setFeature(xml.sax.handler.feature_external_ges, True)
     return xml.dom.minidom.parse(StringIO(xml_content), parser=parser).documentElement.childNodes
 
-# Forward Type Tracker test
+# Forward Type Tracking test
 
-def contrived_example(user_input, action):
+@app.route("forward_tracking1")
+def forward_tracking1(action):
+    xml_content = request.args['xml_content']
+
     parser = xml.sax.make_parser()
     if action == 'load-config':
         parser.setFeature(xml.sax.handler.feature_external_ges, False)
         parser.parse("/not-user-controlled/default_config.xml")
     else:
-        parser.parse(StringIO(user_input))
+        parser.parse(StringIO(xml_content))
+    return 
+
+@app.route("forward_tracking2")
+def forward_tracking2(action):
+    xml_content = request.args['xml_content']
+
+    parser = xml.sax.make_parser()
+    if action == 'load-config':
+        parser.setFeature(xml.sax.handler.feature_external_ges, True)
+        parser.parse("/not-user-controlled/default_config.xml")
+    else:
+        parser.parse(StringIO(xml_content))
+    return 

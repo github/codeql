@@ -44,94 +44,84 @@ class LogOutput extends DataFlow::Node {
   DataFlow::Node getAnInput() { result = range.getAnInput() }
 }
 
-/** Provides classes for modeling XML parsing APIs. */
-module XMLParsing {
+module XML {
   /**
    * A data-flow node that collects functions parsing XML.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `XMLParsing` instead.
    */
-  abstract class Range extends DataFlow::Node {
+  class XMLParsing extends DataFlow::Node instanceof XMLParsing::Range {
     /**
      * Gets the argument containing the content to parse.
      */
-    abstract DataFlow::Node getAnInput();
+    DataFlow::Node getAnInput() { result = super.getAnInput() }
 
     /**
-     * Holds if the parser may be parsing the input dangerously.
-     *
-     * Specifically, this predicate holds whether the XML parsing parses/extends external
-     * entities in the parsed XML stream.
+     * Holds if the parsing method or the parser holding it is vulnerable to `kind`.
      */
-    abstract predicate mayBeDangerous();
+    predicate vulnerable(string kind) { super.vulnerable(kind) }
   }
-}
 
-/**
- * A data-flow node that collects functions parsing XML.
- *
- * Extend this class to model new APIs. If you want to refine existing API models,
- * extend `XMLParsing` instead.
- */
-class XMLParsing extends DataFlow::Node instanceof XMLParsing::Range {
-  /**
-   * Gets the argument containing the content to parse.
-   *
-   * Specifically, this predicate holds whether the XML parsing parses/extends external
-   * entities in the parsed XML stream.
-   */
-  DataFlow::Node getAnInput() { result = super.getAnInput() }
+  /** Provides classes for modeling XML parsing APIs. */
+  module XMLParsing {
+    /**
+     * A data-flow node that collects functions parsing XML.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `XMLParsing` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /**
+       * Gets the argument containing the content to parse.
+       */
+      abstract DataFlow::Node getAnInput();
 
-  /**
-   * Holds if the parser may be parsing the input dangerously.
-   */
-  predicate mayBeDangerous() { super.mayBeDangerous() }
-}
+      /**
+       * Holds if the parsing method or the parser holding it is vulnerable to `kind`.
+       */
+      abstract predicate vulnerable(string kind);
+    }
+  }
 
-/** Provides classes for modeling XML parsers. */
-module XMLParser {
   /**
    * A data-flow node that collects XML parsers.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `XMLParser` instead.
    */
-  abstract class Range extends DataFlow::Node {
+  class XMLParser extends DataFlow::Node instanceof XMLParser::Range {
     /**
      * Gets the argument containing the content to parse.
      */
-    abstract DataFlow::Node getAnInput();
+    DataFlow::Node getAnInput() { result = super.getAnInput() }
 
     /**
-     * Holds if the parser may be dangerously configured.
-     *
-     * Specifically, this predicate holds whether the XML parser parses/extends external
-     * entities in the parsed XML stream.
+     * Holds if the parser is vulnerable to `kind`.
      */
-    abstract predicate mayBeDangerous();
+    predicate vulnerable(string kind) { super.vulnerable(kind) }
   }
-}
 
-/**
- * A data-flow node that collects XML parsers.
- *
- * Extend this class to model new APIs. If you want to refine existing API models,
- * extend `XMLParser` instead.
- */
-class XMLParser extends DataFlow::Node instanceof XMLParser::Range {
-  /**
-   * Gets the argument containing the content to parse.
-   */
-  DataFlow::Node getAnInput() { result = super.getAnInput() }
+  /** Provides classes for modeling XML parsers. */
+  module XMLParser {
+    /**
+     * A data-flow node that collects XML parsers.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `XMLParser` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /**
+       * Gets the argument containing the content to parse.
+       */
+      abstract DataFlow::Node getAnInput();
 
-  /**
-   * Holds if the parser may be dangerously configured.
-   *
-   * Specifically, this predicate holds whether the XML parser parses/extends external
-   * entities in the parsed XML stream.
-   */
-  predicate mayBeDangerous() { super.mayBeDangerous() }
+      /**
+       * Holds if the parser is vulnerable to `kind`.
+       */
+      abstract predicate vulnerable(string kind);
+    }
+  }
 }
 
 /** Provides classes for modeling LDAP query execution-related APIs. */
