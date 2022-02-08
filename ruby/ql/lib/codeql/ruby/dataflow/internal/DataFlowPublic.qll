@@ -18,11 +18,11 @@ class Node extends TNode {
   Parameter asParameter() { result = this.(ParameterNode).getParameter() }
 
   /** Gets a textual representation of this node. */
-  // TODO: cache
+  cached
   final string toString() { result = this.(NodeImpl).toStringImpl() }
 
   /** Gets the location of this node. */
-  // TODO: cache
+  cached
   final Location getLocation() { result = this.(NodeImpl).getLocationImpl() }
 
   /**
@@ -121,7 +121,8 @@ class LocalSourceNode extends Node {
   LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 }
 
-predicate hasLocalSource(Node sink, Node source) {
+cached
+private predicate hasLocalSource(Node sink, Node source) {
   // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
   // recursive case, so instead we check it explicitly here.
   source = sink and
