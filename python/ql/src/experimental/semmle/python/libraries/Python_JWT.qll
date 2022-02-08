@@ -26,7 +26,7 @@ private module Python_JWT {
       this = API::moduleImport("python_jwt").getMember("process_jwt").getACall()
     }
 
-    DataFlow::CallCfgNode verifyCall() {
+    private DataFlow::CallCfgNode verifyCall() {
       result = API::moduleImport("python_jwt").getMember("verify_jwt").getACall() and
       this.getPayload().getALocalSource() = result.getArg(0).getALocalSource()
     }
