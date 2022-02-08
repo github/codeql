@@ -40,6 +40,11 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node nd) { super.isSanitizer(nd) }
 
+  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
+    guard instanceof NumberGuard or
+    guard instanceof FunctionCheck
+  }
+
   override predicate isAdditionalFlowStep(
     DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
     DataFlow::FlowLabel dstlabel

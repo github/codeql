@@ -25,7 +25,7 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
     guard instanceof PathExistsSanitizerGuard or
     guard instanceof TaintTracking::AdHocWhitelistCheckSanitizer or
-    guard instanceof NaNGuard or
+    guard instanceof NumberGuard or
     guard instanceof TypeOfSanitizer
   }
 

@@ -1166,6 +1166,25 @@ module TaintTracking {
     )
   }
 
+  /** Holds if `guard` is a test that checks if `operand` is a number. */
+  predicate isNumberGuard(DataFlow::Node guard, Expr operand, boolean polarity) {
+    exists(DataFlow::CallNode isNaN |
+      isNaN = DataFlow::globalVarRef("isNaN").getACall() and guard = isNaN and polarity = false
+    |
+      operand = isNaN.getArgument(0).asExpr()
+      or
+      exists(DataFlow::CallNode parse |
+        parse = DataFlow::globalVarRef(["parseInt", "parseFloat"]).getACall()
+      |
+        parse = isNaN.getArgument(0) and
+        operand = parse.getArgument(0).asExpr()
+      )
+    )
+    or
+    isTypeofGuard(guard.asExpr(), operand, "number") and
+    polarity = guard.asExpr().(EqualityTest).getPolarity()
+  }
+
   /** DEPRECATED. This class has been renamed to `MembershipTestSanitizer`. */
   deprecated class StringInclusionSanitizer = MembershipTestSanitizer;
 

@@ -110,6 +110,16 @@ module TaintedObject {
     }
   }
 
+  /** A guard that checks whether `x` is a number. */
+  class NumberGuard extends SanitizerGuard instanceof DataFlow::CallNode {
+    Expr x;
+    boolean polarity;
+
+    NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
+
+    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
+  }
+
   /**
    * A sanitizer guard that validates an input against a JSON schema.
    */

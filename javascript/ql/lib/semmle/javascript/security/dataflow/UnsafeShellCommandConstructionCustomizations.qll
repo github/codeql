@@ -286,27 +286,14 @@ module UnsafeShellCommandConstruction {
     }
   }
 
-  /**
-   * A guard of the form `isNaN(x)`, which sanitizes `x` in its "else" branch.
-   */
-  class NaNGuard extends TaintTracking::SanitizerGuardNode instanceof DataFlow::CallNode {
+  /** A guard that checks whether `x` is a number. */
+  class NumberGuard extends TaintTracking::SanitizerGuardNode instanceof DataFlow::CallNode {
     Expr x;
+    boolean polarity;
 
-    NaNGuard() {
-      this = DataFlow::globalVarRef("isNaN").getACall() and
-      (
-        x = this.getArgument(0).asExpr()
-        or
-        exists(DataFlow::CallNode parse |
-          parse = DataFlow::globalVarRef(["parseInt", "parseFloat"]).getACall()
-        |
-          parse = this.getArgument(0) and
-          x = parse.getArgument(0).asExpr()
-        )
-      )
-    }
+    NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
 
-    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = false }
+    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
   }
 
   private import semmle.javascript.dataflow.internal.AccessPaths
