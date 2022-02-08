@@ -125,7 +125,6 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
 //
 // Begin configuration for tracking single-method calls that are vulnerable.
 //
-
 /**
  * A `MethodAccess` against a method that creates a temporary file or directory in a shared temporary directory.
  */
