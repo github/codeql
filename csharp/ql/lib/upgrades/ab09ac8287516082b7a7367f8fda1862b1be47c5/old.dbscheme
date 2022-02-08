@@ -191,7 +191,7 @@ sourceLocationPrefix(
 
 @attributable = @assembly | @field | @parameter | @operator | @method | @constructor
               | @destructor | @callable_accessor | @value_or_ref_type | @declaration_with_accessors
-              | @local_function | @lambda_expr;
+              | @local_function;
 
 /** LOCATIONS, ASEMMBLIES, MODULES, FILES and FOLDERS **/
 
@@ -1269,10 +1269,6 @@ expr_argument_name(
   unique int id: @expr ref,
   string name: string ref);
 
-lambda_expr_return_type(
-  unique int id: @lambda_expr ref,
-  int type_id: @type_or_ref ref);
-  
 /** CONTROL/DATA FLOW **/
 
 @control_flow_element = @stmt | @expr;
