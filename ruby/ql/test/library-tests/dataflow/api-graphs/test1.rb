@@ -1,6 +1,6 @@
 MyModule #$ use=getMember("MyModule")
 print MyModule.foo #$ use=getMember("MyModule").getMethod("foo").getReturn()
-Kernel.print(e) #$ use=getMember("Kernel").getMethod("print").getReturn()
+Kernel.print(e) #$ use=getMember("Kernel").getMethod("print").getReturn() def=getMember("Kernel").getMethod("print").getParameter(0)
 Object::Kernel #$ use=getMember("Kernel")
 Object::Kernel.print(e)  #$ use=getMember("Kernel").getMethod("print").getReturn()
 begin
@@ -13,7 +13,7 @@ Unknown.new.run #$ use=getMember("Unknown").getMethod("new").getReturn().getMeth
 Foo::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
 
 Const = [1, 2, 3] #$ use=getMember("Array").getMethod("[]").getReturn()
-Const.each do |c| #$ use=getMember("Const").getMethod("each").getReturn()
+Const.each do |c| #$ use=getMember("Const").getMethod("each").getReturn() def=getMember("Const").getMethod("each").getBlock()
     puts c #$ use=getMember("Const").getMethod("each").getBlock().getParameter(0)
 end
 
@@ -60,3 +60,5 @@ M2::C3.m #$ use=getMember("M2").getMember("C3").getMethod("m").getReturn() use=g
 
 M1::C1.new.m #$ use=getMember("M1").getMember("C1").getMethod("new").getReturn().getMethod("m").getReturn()
 M2::C3.new.m #$ use=getMember("M2").getMember("C3").getMethod("new").getReturn().getMethod("m").getReturn()
+
+Foo.foo(a,b:c) #$ use=getMember("Foo").getMethod("foo").getReturn() def=getMember("Foo").getMethod("foo").getParameter(0) def=getMember("Foo").getMethod("foo").getKeywordParameter("b")
