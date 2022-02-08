@@ -163,12 +163,16 @@ private module Xml {
     override DataFlow::Node getAnInput() { none() }
 
     override predicate vulnerable(string kind) {
-      kind = "XXE" and not this.getArgByName("resolve_entities").asExpr() = any(False f)
+      kind = "XXE" and
+      not (
+        exists(this.getArgByName("resolve_entities")) or
+        this.getArgByName("resolve_entities").getALocalSource().asExpr() = any(False f)
+      )
       or
       kind = ["Billion Laughs", "Quadratic Blowup"] and
       (
-        this.getArgByName("huge_tree").asExpr() = any(True t) and
-        not this.getArgByName("resolve_entities").asExpr() = any(False f)
+        this.getArgByName("huge_tree").getALocalSource().asExpr() = any(True t) and
+        not this.getArgByName("resolve_entities").getALocalSource().asExpr() = any(False f)
       )
     }
   }
@@ -231,7 +235,7 @@ private module Xml {
 
     override predicate vulnerable(string kind) {
       kind = ["Billion Laughs", "Quadratic Blowup"] and
-      this.getAMethodCall("disable_entities").asExpr() = any(False f)
+      this.getArgByName("disable_entities").getALocalSource().asExpr() = any(False f)
     }
   }
 
