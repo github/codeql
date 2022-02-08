@@ -83,7 +83,11 @@ module SQL {
       SquirrelQueryString() {
         exists(Function fn |
           exists(string sq |
-            sq = package(["github.com/Masterminds", "github.com/lann"], "squirrel")
+            sq =
+              package([
+                  "github.com/Masterminds/squirrel", "gopkg.in/Masterminds/squirrel",
+                  "github.com/lann/squirrel"
+                ], "")
           |
             // first argument to `squirrel.Expr`
             fn.hasQualifiedName(sq, "Expr")
