@@ -41,6 +41,14 @@ public abstract class Controller {
 		return null;
 	}
 
+	public Controller setAttr(String name, Object value) {
+		return null;
+	}
+
+	public Controller setAttrs(Map<String, Object> attrMap) {
+		return null;
+	}
+
 	public Enumeration<String> getAttrNames() {
 		return null;
 	}
@@ -134,6 +142,10 @@ public abstract class Controller {
 	}
 
 	public <T> T getSessionAttr(String key, T defaultValue) {
+		return null;
+	}
+
+	public Controller setSessionAttr(String key, Object value) {
 		return null;
 	}
 
@@ -242,6 +254,10 @@ public abstract class Controller {
 	}
 
 	public UploadFile getFile(String parameterName) {
+		return null;
+	}
+
+	public Controller set(String attributeName, Object attributeValue) {
 		return null;
 	}
 

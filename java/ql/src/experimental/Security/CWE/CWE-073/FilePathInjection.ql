@@ -13,36 +13,26 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.PathCreation
 import JFinalController
 import PathSanitizer
 import DataFlow::PathGraph
 
-/**
- * A sink that represents a file read operation.
- */
-private class ReadFileSinkModels extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "java.io;FileInputStream;false;FileInputStream;;;Argument[0];read-file",
-        "java.io;File;false;File;;;Argument[0];read-file"
-      ]
-  }
-}
-
-/**
- * A sink that represents a file creation or access, such as a file read, write, copy or move operation.
- */
-private class FileAccessSink extends DataFlow::Node {
-  FileAccessSink() { sinkNode(this, "create-file") or sinkNode(this, "read-file") }
-}
-
 class InjectFilePathConfig extends TaintTracking::Configuration {
   InjectFilePathConfig() { this = "InjectFilePathConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) {
+    source instanceof RemoteFlowSource or
+    isGetAttributeFromRemoteSource(source.asExpr())
+  }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof FileAccessSink }
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(PathCreation p).getAnInput()
+  }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    exists(Type t | t = node.getType() | t instanceof BoxedType or t instanceof PrimitiveType)
+  }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof PathTraversalBarrierGuard

@@ -58,6 +58,29 @@ public class FilePathInjection extends Controller {
 		}
 	}
 
+	// BAD: Upload file to user specified path without validation
+	public void uploadFile3() throws IOException {
+		String savePath = getPara("dir");
+		setSessionAttr("uploadDir", savePath);
+		String sessionUploadDir = getSessionAttr("uploadDir");
+
+		File file = getFile("fileParam").getFile();
+		String finalFilePath = BASE_PATH + sessionUploadDir;
+
+		FileInputStream fis = new FileInputStream(file);
+		FileOutputStream fos = new FileOutputStream(finalFilePath);
+		int i = 0;
+
+		do {
+			byte[] buf = new byte[1024];
+			i = fis.read(buf);
+			fos.write(buf);
+		} while (i != -1);
+
+		fis.close();
+		fos.close();
+	}
+
 	private void readFile(HttpServletResponse resp, File file) {
 		OutputStream os = null;
 		FileInputStream fis = null;
