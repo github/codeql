@@ -210,15 +210,17 @@ module CleartextLogging {
     private string name;
 
     HashLiteralPasswordSource() {
-      exists(DataFlow::Node val, HashLiteral lit |
+      exists(DataFlow::Node val, CfgNodes::ExprNodes::HashLiteralCfgNode lit |
         name.regexpMatch(maybePassword()) and
         not name.regexpMatch(notSensitiveRegexp()) and
         // avoid safe values assigned to presumably unsafe names
         not val instanceof NonCleartextPassword and
         // hash = { name: val }
-        exists(Pair p | this.asExpr().getExpr() = lit and p = lit.getAKeyValuePair() |
+        exists(CfgNodes::ExprNodes::PairCfgNode p |
+          this.asExpr() = lit and p = lit.getAKeyValuePair()
+        |
           p.getKey().getConstantValue().getStringOrSymbol() = name and
-          p.getValue() = val.asExpr().getExpr()
+          p.getValue() = val.asExpr()
         )
       )
     }
