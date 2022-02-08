@@ -6,8 +6,6 @@ import lxml.etree
 
 app = Flask(__name__)
 
-# xxe = '<?xml version="1.0"?><!DOCTYPE dt [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><test>&xxe;</test>'
-
 # Parsing
 
 @app.route("/xml_etree_fromstring")

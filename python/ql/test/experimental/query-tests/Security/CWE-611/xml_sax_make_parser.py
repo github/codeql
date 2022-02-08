@@ -2,8 +2,6 @@ from flask import request, Flask
 from io import StringIO
 import xml.sax
 
-# xxe = '<?xml version="1.0"?><!DOCTYPE dt [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><test>&xxe;</test>'
-
 app = Flask(__name__)
 
 
