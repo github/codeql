@@ -734,14 +734,12 @@ edges
 | array_flow.rb:399:10:399:10 | b [array element 2] :  | array_flow.rb:399:10:399:13 | ...[...] |
 | array_flow.rb:403:16:403:25 | call to source :  | array_flow.rb:404:18:404:18 | a [array element 2] :  |
 | array_flow.rb:403:16:403:25 | call to source :  | array_flow.rb:404:18:404:18 | a [array element 2] :  |
-| array_flow.rb:404:9:406:7 | ... = ... :  | array_flow.rb:404:9:406:7 | call to each :  |
-| array_flow.rb:404:9:406:7 | ... = ... :  | array_flow.rb:404:9:406:7 | call to each :  |
+| array_flow.rb:404:9:406:7 | ... = ... :  | array_flow.rb:407:10:407:10 | x |
+| array_flow.rb:404:9:406:7 | ... = ... :  | array_flow.rb:407:10:407:10 | x |
 | array_flow.rb:404:9:406:7 | __synth__0__1 :  | array_flow.rb:404:9:406:7 | ... = ... :  |
 | array_flow.rb:404:9:406:7 | __synth__0__1 :  | array_flow.rb:404:9:406:7 | ... = ... :  |
 | array_flow.rb:404:9:406:7 | __synth__0__1 :  | array_flow.rb:405:14:405:14 | x |
 | array_flow.rb:404:9:406:7 | __synth__0__1 :  | array_flow.rb:405:14:405:14 | x |
-| array_flow.rb:404:9:406:7 | call to each :  | array_flow.rb:407:10:407:10 | x |
-| array_flow.rb:404:9:406:7 | call to each :  | array_flow.rb:407:10:407:10 | x |
 | array_flow.rb:404:18:404:18 | a [array element 2] :  | array_flow.rb:404:9:406:7 | __synth__0__1 :  |
 | array_flow.rb:404:18:404:18 | a [array element 2] :  | array_flow.rb:404:9:406:7 | __synth__0__1 :  |
 | array_flow.rb:404:18:404:18 | a [array element 2] :  | array_flow.rb:408:10:408:10 | b [array element 2] :  |
@@ -4225,8 +4223,6 @@ nodes
 | array_flow.rb:404:9:406:7 | ... = ... :  | semmle.label | ... = ... :  |
 | array_flow.rb:404:9:406:7 | __synth__0__1 :  | semmle.label | __synth__0__1 :  |
 | array_flow.rb:404:9:406:7 | __synth__0__1 :  | semmle.label | __synth__0__1 :  |
-| array_flow.rb:404:9:406:7 | call to each :  | semmle.label | call to each :  |
-| array_flow.rb:404:9:406:7 | call to each :  | semmle.label | call to each :  |
 | array_flow.rb:404:18:404:18 | a [array element 2] :  | semmle.label | a [array element 2] :  |
 | array_flow.rb:404:18:404:18 | a [array element 2] :  | semmle.label | a [array element 2] :  |
 | array_flow.rb:405:14:405:14 | x | semmle.label | x |

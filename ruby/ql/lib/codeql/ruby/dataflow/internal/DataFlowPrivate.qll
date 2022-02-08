@@ -320,8 +320,12 @@ import Cached
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
   exists(Ssa::Definition def | def = n.(SsaDefinitionNode).getDefinition() |
-    def instanceof Ssa::PhiNode
+    def instanceof Ssa::PhiNode or
+    def instanceof Ssa::CapturedEntryDefinition or
+    def instanceof Ssa::CapturedCallDefinition
   )
+  or
+  n = LocalFlow::getParameterDefNode(_)
   or
   isDesugarNode(n.(ExprNode).getExprNode().getExpr())
   or
