@@ -142,7 +142,7 @@ class DeserializedClass extends ReflectivelyConstructedClass {
     exists(CastExpr cast, ReadObjectMethod readObject |
       cast.getExpr().(MethodAccess).getMethod() = readObject
     |
-      hasSubtype*(cast.getType(), this)
+      hasDescendant(cast.getType(), this)
     )
   }
 }
@@ -315,7 +315,7 @@ class FacesComponentReflectivelyConstructedClass extends ReflectivelyConstructed
  * Entry point for EJB home interfaces.
  */
 class EJBHome extends Interface, EntryPoint {
-  EJBHome() { this.getASupertype*().hasQualifiedName("javax.ejb", "EJBHome") }
+  EJBHome() { this.getAnAncestor().hasQualifiedName("javax.ejb", "EJBHome") }
 
   override Callable getALiveCallable() { result = this.getACallable() }
 }
@@ -324,7 +324,7 @@ class EJBHome extends Interface, EntryPoint {
  * Entry point for EJB object interfaces.
  */
 class EJBObject extends Interface, EntryPoint {
-  EJBObject() { this.getASupertype*().hasQualifiedName("javax.ejb", "EJBObject") }
+  EJBObject() { this.getAnAncestor().hasQualifiedName("javax.ejb", "EJBObject") }
 
   override Callable getALiveCallable() { result = this.getACallable() }
 }

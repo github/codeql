@@ -263,7 +263,7 @@ private predicate almostPrivate(Field f) {
   or
   exists(Interface i | i = f.getDeclaringType() |
     forall(VarAccess va | va.getVariable() = f |
-      va.getEnclosingCallable().getDeclaringType().getASupertype*() = i
+      va.getEnclosingCallable().getDeclaringType().getAnAncestor() = i
     )
   )
 }

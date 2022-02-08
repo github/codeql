@@ -164,6 +164,6 @@ private class TypeGroovySourceUnit extends RefType {
 /** The class `org.codehaus.groovy.control.io.ReaderSource`. */
 private class TypeReaderSource extends RefType {
   TypeReaderSource() {
-    this.getASupertype*().hasQualifiedName("org.codehaus.groovy.control.io", "ReaderSource")
+    this.getAnAncestor().hasQualifiedName("org.codehaus.groovy.control.io", "ReaderSource")
   }
 }

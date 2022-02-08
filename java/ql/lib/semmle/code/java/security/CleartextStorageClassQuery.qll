@@ -30,7 +30,7 @@ abstract class ClassStore extends Storable, ClassInstanceExpr {
  */
 private class Serializable extends ClassStore {
   Serializable() {
-    this.getConstructor().getDeclaringType().getASupertype*() instanceof TypeSerializable and
+    this.getConstructor().getDeclaringType().getAnAncestor() instanceof TypeSerializable and
     // `Properties` are `Serializable`, but handled elsewhere.
     not this instanceof Properties and
     // restrict attention to tainted instances

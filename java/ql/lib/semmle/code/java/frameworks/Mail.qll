@@ -23,5 +23,5 @@ class MailSessionGetInstanceMethod extends Method {
  * A subtype of the class `org.apache.commons.mail.Email`.
  */
 class ApacheEmail extends Class {
-  ApacheEmail() { this.getASupertype*().hasQualifiedName("org.apache.commons.mail", "Email") }
+  ApacheEmail() { this.getAnAncestor().hasQualifiedName("org.apache.commons.mail", "Email") }
 }

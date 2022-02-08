@@ -11,7 +11,7 @@ private import semmle.code.java.Reflection
 class IsValidFragmentMethod extends Method {
   IsValidFragmentMethod() {
     this.getDeclaringType()
-        .getASupertype*()
+        .getAnAncestor()
         .hasQualifiedName("android.preference", "PreferenceActivity") and
     this.hasName("isValidFragment")
   }

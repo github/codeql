@@ -19,7 +19,7 @@ private predicate nonChaining(Method m) {
   not exists(m.getBody()) and
   (
     // ... it has the wrong return type, ...
-    not hasSubtype*(m.getReturnType(), m.getDeclaringType())
+    not hasDescendant(m.getReturnType(), m.getDeclaringType())
     or
     // ... it is defined on an immutable type, or ...
     m.getDeclaringType() instanceof ImmutableType
@@ -44,7 +44,7 @@ private predicate nonChainingReturn(Method m, ReturnStmt ret) {
     or
     delegate.isStatic()
     or
-    not hasSubtype*(m.getReturnType(), delegate.getReturnType())
+    not hasDescendant(m.getReturnType(), delegate.getReturnType())
     or
     // A method on the wrong object is called.
     not delegateCall.isOwnMethodAccess()

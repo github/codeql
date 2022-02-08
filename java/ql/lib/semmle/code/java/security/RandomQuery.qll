@@ -57,7 +57,7 @@ private predicate predictableCalcStep(Expr e1, Expr e2) {
     ma = e2 and
     e1 = ma.getQualifier() and
     m = ma.getMethod() and
-    exists(TypeNumber t | hasSubtype*(t, m.getDeclaringType())) and
+    exists(TypeNumber t | hasDescendant(t, m.getDeclaringType())) and
     (
       m.getName().matches("to%String") or
       m.getName() = "toByteArray" or
@@ -69,7 +69,7 @@ private predicate predictableCalcStep(Expr e1, Expr e2) {
     ma = e2 and
     e1 = ma.getArgument(0) and
     m = ma.getMethod() and
-    exists(TypeNumber t | hasSubtype*(t, m.getDeclaringType())) and
+    exists(TypeNumber t | hasDescendant(t, m.getDeclaringType())) and
     (
       m.getName().matches("parse%") or
       m.getName().matches("valueOf%") or
