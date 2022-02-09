@@ -214,7 +214,7 @@ abstract class SplitKind extends SplitKindBase {
   abstract string toString();
 }
 
-/** Provides the interface for implementing an entity to split on. */
+/** An interface for implementing an entity to split on. */
 abstract class SplitImpl extends Split {
   /** Gets the kind of this split. */
   abstract SplitKind getKind();
@@ -894,16 +894,31 @@ module TestOutput {
             p
             order by
               l.getFile().getBaseName(), l.getFile().getAbsolutePath(), l.getStartLine(),
-              l.getStartColumn()
+              l.getStartColumn(), l.getEndLine(), l.getEndColumn(), p.toString()
           )
       ).toString()
   }
 
   query predicate edges(RelevantNode pred, RelevantNode succ, string attr, string val) {
+    attr = "semmle.label" and
     exists(SuccessorType t | succ = getASuccessor(pred, t) |
-      attr = "semmle.label" and
       if successorTypeIsSimple(t) then val = "" else val = t.toString()
     )
+    or
+    attr = "semmle.order" and
+    val =
+      any(int i |
+        succ =
+          rank[i](RelevantNode s, SuccessorType t, Location l |
+            s = getASuccessor(pred, t) and
+            l = s.getLocation()
+          |
+            s
+            order by
+              l.getFile().getBaseName(), l.getFile().getAbsolutePath(), l.getStartLine(),
+              l.getStartColumn(), l.getEndLine(), l.getEndColumn(), t.toString()
+          )
+      ).toString()
   }
 }
 

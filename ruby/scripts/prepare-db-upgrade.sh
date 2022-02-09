@@ -63,6 +63,7 @@ fi
 
 scheme_file="ql/lib/ruby.dbscheme"
 upgrade_root="ql/lib/upgrades"
+downgrade_root="downgrades"
 
 check_hash_valid()
 {
@@ -95,12 +96,28 @@ description: <INSERT DESCRIPTION HERE>
 compatibility: full|backwards|partial|breaking
 EOF
 
+# Copy current and new dbscheme into the downgrade dir
+downgradedir="${downgrade_root}/${current_hash}"
+mkdir -p "${downgradedir}"
+
+cp "${scheme_file}" "${downgradedir}/old.dbscheme"
+git cat-file blob "${prev_hash}" > "${downgradedir}/$(basename "${scheme_file}")"
+
+# Create the template upgrade.properties file.
+cat <<EOF > "${downgradedir}/upgrade.properties"
+description: <INSERT DESCRIPTION HERE>
+compatibility: full|backwards|partial|breaking
+EOF
+
 # Tell user what we've done
 cat <<EOF
 Created upgrade directory here:
   ${upgradedir}
+Created downgrade directory here:
+  ${downgradedir}
 
 Please update:
   ${upgradedir}/upgrade.properties
-with appropriate upgrade instructions
+  ${downgradedir}/upgrade.properties
+with appropriate instructions
 EOF

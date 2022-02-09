@@ -1,4 +1,8 @@
 nodes
+| lib/isImported.js:5:49:5:52 | name |
+| lib/isImported.js:5:49:5:52 | name |
+| lib/isImported.js:6:22:6:25 | name |
+| lib/isImported.js:6:22:6:25 | name |
 | lib/lib2.js:3:28:3:31 | name |
 | lib/lib2.js:3:28:3:31 | name |
 | lib/lib2.js:4:22:4:25 | name |
@@ -271,6 +275,10 @@ nodes
 | lib/subLib/index.js:8:22:8:25 | name |
 | lib/subLib/index.js:8:22:8:25 | name |
 edges
+| lib/isImported.js:5:49:5:52 | name | lib/isImported.js:6:22:6:25 | name |
+| lib/isImported.js:5:49:5:52 | name | lib/isImported.js:6:22:6:25 | name |
+| lib/isImported.js:5:49:5:52 | name | lib/isImported.js:6:22:6:25 | name |
+| lib/isImported.js:5:49:5:52 | name | lib/isImported.js:6:22:6:25 | name |
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
@@ -587,6 +595,7 @@ edges
 | lib/subLib/index.js:7:32:7:35 | name | lib/subLib/index.js:8:22:8:25 | name |
 | lib/subLib/index.js:7:32:7:35 | name | lib/subLib/index.js:8:22:8:25 | name |
 #select
+| lib/isImported.js:6:10:6:25 | "rm -rf " + name | lib/isImported.js:5:49:5:52 | name | lib/isImported.js:6:22:6:25 | name | $@ based on $@ is later used in $@. | lib/isImported.js:6:10:6:25 | "rm -rf " + name | String concatenation | lib/isImported.js:5:49:5:52 | name | library input | lib/isImported.js:6:2:6:26 | cp.exec ... + name) | shell command |
 | lib/lib2.js:4:10:4:25 | "rm -rf " + name | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name | $@ based on $@ is later used in $@. | lib/lib2.js:4:10:4:25 | "rm -rf " + name | String concatenation | lib/lib2.js:3:28:3:31 | name | library input | lib/lib2.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/lib2.js:8:10:8:25 | "rm -rf " + name | lib/lib2.js:7:32:7:35 | name | lib/lib2.js:8:22:8:25 | name | $@ based on $@ is later used in $@. | lib/lib2.js:8:10:8:25 | "rm -rf " + name | String concatenation | lib/lib2.js:7:32:7:35 | name | library input | lib/lib2.js:8:2:8:26 | cp.exec ... + name) | shell command |
 | lib/lib.js:4:10:4:25 | "rm -rf " + name | lib/lib.js:3:28:3:31 | name | lib/lib.js:4:22:4:25 | name | $@ based on $@ is later used in $@. | lib/lib.js:4:10:4:25 | "rm -rf " + name | String concatenation | lib/lib.js:3:28:3:31 | name | library input | lib/lib.js:4:2:4:26 | cp.exec ... + name) | shell command |

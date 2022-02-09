@@ -278,16 +278,9 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
     or
     result.asExpr().getExpr() instanceof StringlikeLiteral and tp = TResolved("String")
     or
-    exists(ConstantReadAccess array, MethodCall mc |
-      result.asExpr().getExpr() = mc and
-      mc.getMethodName() = "[]" and
-      mc.getReceiver() = array and
-      array.getName() = "Array" and
-      array.hasGlobalScope() and
-      tp = TResolved("Array")
-    )
+    result.asExpr() instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode and tp = TResolved("Array")
     or
-    result.asExpr().getExpr() instanceof HashLiteral and tp = TResolved("Hash")
+    result.asExpr() instanceof CfgNodes::ExprNodes::HashLiteralCfgNode and tp = TResolved("Hash")
     or
     result.asExpr().getExpr() instanceof MethodBase and tp = TResolved("Symbol")
     or
@@ -470,18 +463,7 @@ predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { non
  */
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
-/**
- * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
- */
-predicate exprNodeReturnedFrom(DataFlow::ExprNode e, Callable c) {
-  exists(ReturningNode r |
-    nodeGetEnclosingCallable(r).asCallable() = c and
-    (
-      r.(ExplicitReturnNode).getReturningNode().getReturnedValueNode() = e.asExpr() or
-      r.(ExprReturnNode) = e
-    )
-  )
-}
+predicate exprNodeReturnedFrom = exprNodeReturnedFromCached/2;
 
 /** A parameter position. */
 class ParameterPosition extends TParameterPosition {

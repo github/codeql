@@ -731,8 +731,8 @@ module Trees {
     override ControlFlowTree getChildElement(int i) { result = this.getPattern() and i = 0 }
   }
 
-  private class VariableReferencePatternTree extends StandardPreOrderTree, VariableReferencePattern {
-    override ControlFlowTree getChildElement(int i) { result = this.getVariableAccess() and i = 0 }
+  private class ReferencePatternTree extends StandardPreOrderTree, ReferencePattern {
+    override ControlFlowTree getChildElement(int i) { result = this.getExpr() and i = 0 }
   }
 
   private class InClauseTree extends PreOrderTree, InClause {
@@ -985,10 +985,6 @@ module Trees {
   private class ForwardParameterTree extends LeafTree, ForwardParameter { }
 
   private class GlobalVariableTree extends LeafTree, GlobalVariableAccess { }
-
-  private class HashLiteralTree extends StandardPostOrderTree, HashLiteral {
-    final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
-  }
 
   private class HashSplatNilParameterTree extends LeafTree, HashSplatNilParameter { }
 

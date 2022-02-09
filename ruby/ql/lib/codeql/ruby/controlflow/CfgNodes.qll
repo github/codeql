@@ -484,6 +484,9 @@ module ExprNodes {
     /** Gets the `n`th argument of this call. */
     final ExprCfgNode getArgument(int n) { e.hasCfgChild(e.getArgument(n), this, result) }
 
+    /** Gets an argument of this call. */
+    final ExprCfgNode getAnArgument() { result = this.getArgument(_) }
+
     /** Gets the the keyword argument whose key is `keyword` of this call. */
     final ExprCfgNode getKeywordArgument(string keyword) {
       exists(PairCfgNode n |
@@ -939,5 +942,40 @@ module ExprNodes {
     ElementReferenceCfgNode() { e instanceof ElementReference }
 
     final override ElementReference getExpr() { result = super.getExpr() }
+  }
+
+  /**
+   * A control-flow node that wraps an array literal. Array literals are desugared
+   * into calls to `Array.[]`, so this includes both desugared calls as well as
+   * explicit calls.
+   */
+  class ArrayLiteralCfgNode extends MethodCallCfgNode {
+    ArrayLiteralCfgNode() {
+      exists(ConstantReadAccess array |
+        array = this.getReceiver().getExpr() and
+        e.(MethodCall).getMethodName() = "[]" and
+        array.getName() = "Array" and
+        array.hasGlobalScope()
+      )
+    }
+  }
+
+  /**
+   * A control-flow node that wraps a hash literal. Hash literals are desugared
+   * into calls to `Hash.[]`, so this includes both desugared calls as well as
+   * explicit calls.
+   */
+  class HashLiteralCfgNode extends MethodCallCfgNode {
+    HashLiteralCfgNode() {
+      exists(ConstantReadAccess array |
+        array = this.getReceiver().getExpr() and
+        e.(MethodCall).getMethodName() = "[]" and
+        array.getName() = "Hash" and
+        array.hasGlobalScope()
+      )
+    }
+
+    /** Gets a pair of this hash literal. */
+    PairCfgNode getAKeyValuePair() { result = this.getAnArgument() }
   }
 }

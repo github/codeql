@@ -53,9 +53,6 @@ private newtype TPrintAstNode =
     shouldPrint(list.getAnItem(), _) and
     not list = any(Module mod).getBody() and
     not forall(AstNode child | child = list.getAnItem() | isNotNeeded(child))
-  } or
-  TRegExpTermNode(RegExpTerm term) {
-    exists(StrConst str | term.getRootTerm() = getParsedRegExp(str) and shouldPrint(str, _))
   }
 
 /**
@@ -430,32 +427,6 @@ class ParameterNode extends AstElementNode {
  */
 class StrConstNode extends AstElementNode {
   override StrConst element;
-
-  override PrintAstNode getChild(int childIndex) {
-    childIndex = 0 and result.(RegExpTermNode).getTerm() = getParsedRegExp(element)
-  }
-}
-
-/**
- * A print node for a regular expression term.
- */
-class RegExpTermNode extends TRegExpTermNode, PrintAstNode {
-  RegExpTerm term;
-
-  RegExpTermNode() { this = TRegExpTermNode(term) }
-
-  /** Gets the `RegExpTerm` for this node. */
-  RegExpTerm getTerm() { result = term }
-
-  override PrintAstNode getChild(int childIndex) {
-    result.(RegExpTermNode).getTerm() = term.getChild(childIndex)
-  }
-
-  override string toString() {
-    result = "[" + strictconcat(term.getPrimaryQLClass(), " | ") + "] " + term.toString()
-  }
-
-  override Location getLocation() { result = term.getLocation() }
 }
 
 /**
