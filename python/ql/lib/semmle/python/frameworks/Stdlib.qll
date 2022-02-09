@@ -242,7 +242,7 @@ module Stdlib {
   // logging
   // ---------------------------------------------------------------------------
   /**
-   * Provides models for the `logging.Logger` class
+   * Provides models for the `logging.Logger` class and subclasses.
    *
    * See https://docs.python.org/3.9/library/logging.html#logging.Logger.
    */
