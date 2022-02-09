@@ -21,10 +21,7 @@ import DataFlow::PathGraph
 class InjectFilePathConfig extends TaintTracking::Configuration {
   InjectFilePathConfig() { this = "InjectFilePathConfig" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource or
-    isGetAttributeFromRemoteSource(source.asExpr())
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PathCreation p).getAnInput()

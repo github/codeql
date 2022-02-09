@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.jfinal.core.Controller;
 
@@ -58,10 +59,56 @@ public class FilePathInjection extends Controller {
 		}
 	}
 
-	// BAD: Upload file to user specified path without validation
+	// BAD: Upload file to user specified path without validation through session attribute
 	public void uploadFile3() throws IOException {
 		String savePath = getPara("dir");
 		setSessionAttr("uploadDir", savePath);
+		String sessionUploadDir = getSessionAttr("uploadDir");
+
+		File file = getFile("fileParam").getFile();
+		String finalFilePath = BASE_PATH + sessionUploadDir;
+
+		FileInputStream fis = new FileInputStream(file);
+		FileOutputStream fos = new FileOutputStream(finalFilePath);
+		int i = 0;
+
+		do {
+			byte[] buf = new byte[1024];
+			i = fis.read(buf);
+			fos.write(buf);
+		} while (i != -1);
+
+		fis.close();
+		fos.close();
+	}
+
+	// BAD: Upload file to user specified path without validation through request attribute
+	public void uploadFile4() throws IOException {
+		String savePath = getPara("dir");
+		setAttr("uploadDir", savePath);
+		String requestUploadDir = getAttr("uploadDir");
+
+		File file = getFile("fileParam").getFile();
+		String finalFilePath = BASE_PATH + requestUploadDir;
+
+		FileInputStream fis = new FileInputStream(file);
+		FileOutputStream fos = new FileOutputStream(finalFilePath);
+		int i = 0;
+
+		do {
+			byte[] buf = new byte[1024];
+			i = fis.read(buf);
+			fos.write(buf);
+		} while (i != -1);
+
+		fis.close();
+		fos.close();
+	}
+
+	// BAD: Upload file to user specified path without validation through session object (not detected)
+	public void uploadFile5() throws IOException {
+		String savePath = getPara("dir");
+		getSession().setAttribute("uploadDir", savePath);
 		String sessionUploadDir = getSessionAttr("uploadDir");
 
 		File file = getFile("fileParam").getFile();
