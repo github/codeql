@@ -601,8 +601,8 @@ class RegExpCharacterClass extends RegExpTerm, TRegExpCharacterClass {
     result.getRegex() = re and
     exists(int itemStart, int itemEnd |
       result.getStart() = itemStart and
-      re.char_set_start(start, itemStart) and
-      re.char_set_child(start, itemStart, itemEnd) and
+      re.charSetStart(start, itemStart) and
+      re.charSetChild(start, itemStart, itemEnd) and
       result.getEnd() = itemEnd
     )
     or
@@ -610,7 +610,7 @@ class RegExpCharacterClass extends RegExpTerm, TRegExpCharacterClass {
     result.getRegex() = re and
     exists(int itemStart | itemStart = this.getChild(i - 1).getEnd() |
       result.getStart() = itemStart and
-      re.char_set_child(start, itemStart, result.getEnd())
+      re.charSetChild(start, itemStart, result.getEnd())
     )
   }
 
