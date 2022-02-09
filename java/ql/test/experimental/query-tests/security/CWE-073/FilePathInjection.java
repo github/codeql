@@ -153,6 +153,7 @@ public class FilePathInjection extends Controller {
 		}
 	}
 
+	// BAD: Download file to user specified path without validation
 	public void downloadFile() throws FileNotFoundException, IOException {
 		HttpServletRequest request = getRequest();
 		String path = request.getParameter("path");
@@ -173,6 +174,7 @@ public class FilePathInjection extends Controller {
 		}
 	}
 
+	// GOOD: Download file with path validation
 	public void downloadFile2() throws FileNotFoundException, IOException {
 		HttpServletRequest request = getRequest();
 		String path = request.getParameter("path");

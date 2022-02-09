@@ -24,7 +24,8 @@ class InjectFilePathConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(PathCreation p).getAnInput()
+    sink.asExpr() = any(PathCreation p).getAnInput() and
+    not sink instanceof SanitizedNode
   }
 
   override predicate isSanitizer(DataFlow::Node node) {

@@ -173,3 +173,25 @@ private class UrlDecodeSanitizer extends MethodAccess {
     this.getMethod().hasName("decode")
   }
 }
+
+/** A sanitized node that is protected against path traversal vulnerabilities. */
+abstract class SanitizedNode extends DataFlow::Node { }
+
+class NodeWithPathNormalizer extends SanitizedNode {
+  NodeWithPathNormalizer() {
+    exists(MethodAccess ma |
+      DataFlow::localExprFlow(this.asExpr(), ma) and ma instanceof PathNormalizeSanitizer
+    )
+  }
+}
+
+/** Data model related to `java.nio.file.Path`. */
+private class PathDataModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "java.nio.file;Paths;true;get;;;Argument[0];ReturnValue;value",
+        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;value"
+      ]
+  }
+}
