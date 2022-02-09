@@ -724,7 +724,8 @@ open class KotlinFileExtractor(
         with("type alias", ta) {
             if (ta.typeParameters.isNotEmpty()) {
                 // TODO: Extract this information
-                logger.error("Type alias type parameters ignored for " + ta.render())
+                logger.error("Type alias with type parameters discarded: " + ta.render())
+                return
             }
             val id = useTypeAlias(ta)
             val locId = tw.getLocation(ta)
