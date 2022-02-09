@@ -5,11 +5,11 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.BarrierGuards
 
-module XmlInjection {
-  import XmlInjectionCustomizations::XmlInjection
+module XmlEntityInjection {
+  import XmlEntityInjectionCustomizations::XmlEntityInjection
 
-  class XMLInjectionConfiguration extends TaintTracking::Configuration {
-    XMLInjectionConfiguration() { this = "XMLInjectionConfiguration" }
+  class XmlEntityInjectionConfiguration extends TaintTracking::Configuration {
+    XmlEntityInjectionConfiguration() { this = "XmlEntityInjectionConfiguration" }
 
     override predicate isSource(DataFlow::Node source) {
       source instanceof RemoteFlowSourceAsSource
@@ -29,13 +29,15 @@ module XmlInjection {
   private import DataFlow::PathGraph
 
   /** Holds if there is an XML injection from `source` to `sink` */
-  predicate xmlInjection(DataFlow::PathNode source, DataFlow::PathNode sink) {
-    any(XMLInjectionConfiguration xmlInjectionConfig).hasFlowPath(source, sink)
+  predicate xmlEntityInjection(DataFlow::PathNode source, DataFlow::PathNode sink) {
+    any(XmlEntityInjectionConfiguration x).hasFlowPath(source, sink)
   }
 
   /** Holds if there is an XML injection from `source` to `sink` vulnerable to `kind` */
-  predicate xmlInjectionVulnerable(DataFlow::PathNode source, DataFlow::PathNode sink, string kind) {
-    xmlInjection(source, sink) and
+  predicate xmlEntityInjectionVulnerable(
+    DataFlow::PathNode source, DataFlow::PathNode sink, string kind
+  ) {
+    xmlEntityInjection(source, sink) and
     (
       xmlParsingInputAsVulnerableSink(sink.getNode(), kind) or
       xmlParserInputAsVulnerableSink(sink.getNode(), kind)

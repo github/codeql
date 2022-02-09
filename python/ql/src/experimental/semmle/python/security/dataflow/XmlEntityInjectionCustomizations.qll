@@ -15,7 +15,7 @@ private import semmle.python.ApiGraphs
  * Provides default sources, sinks and sanitizers for detecting "xml injection"
  * vulnerabilities, as well as extension points for adding your own.
  */
-module XmlInjection {
+module XmlEntityInjection {
   /**
    * A data flow source for "xml injection" vulnerabilities.
    */

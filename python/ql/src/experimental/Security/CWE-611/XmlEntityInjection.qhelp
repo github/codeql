@@ -26,7 +26,7 @@ to prevent any potentially malicious operation.
 The following example calls <code>xml.etree.ElementTree.fromstring</code> using a parser (<code>lxml.etree.XMLParser</code>)
 that is not safely configured on untrusted data, and is therefore inherently unsafe.
 </p>
-<sample src="XmlInjection.py"/>
+<sample src="XmlEntityInjection.py"/>
 <p>
 Providing an input (<code>xml_content</code>) like the following XML content against /bad, the request response would contain the contents of
 <code>/etc/passwd</code>.
