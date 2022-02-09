@@ -10,8 +10,26 @@ private newtype TGvn =
   TVariableGvn(Declaration d) or
   TBinaryExprGvn(int kind, TGvn child1, TGvn child2) { binaryExpr(_, kind, child1, child2) }
 
+private int getNumberOfChildren(Expr r) { result = r.getNumberOfChildren() }
+
 private predicate binaryExpr(Expr e, int kind, TGvn child1, TGvn child2) {
-  none() // Needs to be implemeneted.
+  getNumberOfChildren(e) = 2 and
+  expressions(e, kind, _) and
+  child1 = toGvn(e.getChild(0)) and
+  child2 = toGvn(e.getChild(1))
+}
+
+private Gvn toGvn(Expr e) {
+  result = TConstantGvn(e.getValue())
+  or
+  not exists(e.getValue()) and
+  (
+    result = TVariableGvn(e.(VariableAccess).getTarget())
+    or
+    exists(int kind, TGvn child1, TGvn child2 |
+      binaryExpr(e, kind, child1, child2) and result = TBinaryExprGvn(kind, child1, child2)
+    )
+  )
 }
 
 abstract private class Gvn extends TGvn {
@@ -47,9 +65,7 @@ abstract class GvnStructuralComparisonConfiguration extends string {
 
   abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
 
-  private predicate sameInternal(ControlFlowElement x, ControlFlowElement y) {
-    none() // Needs to be implemented.
-  }
+  private predicate sameInternal(ControlFlowElement x, ControlFlowElement y) { toGvn(x) = toGvn(y) }
 
   predicate same(ControlFlowElement x, ControlFlowElement y) {
     candidate(x, y) and
