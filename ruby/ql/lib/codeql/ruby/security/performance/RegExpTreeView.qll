@@ -637,6 +637,9 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
    */
   int getNumber() { result = re.getGroupNumber(start, end) }
 
+  /** Holds if this is a capture group. */
+  predicate isCapture() { not exists(this.getNumber()) }
+
   /** Holds if this is a named capture group. */
   predicate isNamed() { exists(this.getName()) }
 

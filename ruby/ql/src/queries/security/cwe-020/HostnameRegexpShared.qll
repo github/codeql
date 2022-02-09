@@ -3,7 +3,8 @@
  * that match URLs and hostname patterns.
  */
 
-import javascript
+private import codeql.ruby.security.performance.RegExpTreeView
+private import codeql.ruby.DataFlow
 
 /**
  * Holds if the given constant is unlikely to occur in the origin part of a URL.
@@ -19,7 +20,7 @@ predicate isConstantInvalidInsideOrigin(RegExpConstant term) {
 
 /** Holds if `term` is a dot constant of form `\.` or `[.]`. */
 predicate isDotConstant(RegExpTerm term) {
-  term.(RegExpCharEscape).getValue() = "."
+  term.(RegExpEscape).getValue() = "."
   or
   exists(RegExpCharacterClass cls |
     term = cls and

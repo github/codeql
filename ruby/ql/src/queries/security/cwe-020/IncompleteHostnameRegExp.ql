@@ -5,15 +5,16 @@
  * @problem.severity warning
  * @security-severity 7.8
  * @precision high
- * @id js/incomplete-hostname-regexp
+ * @id rb/incomplete-hostname-regexp
  * @tags correctness
  *       security
  *       external/cwe/cwe-020
  */
 
-import javascript
-import semmle.javascript.CharacterEscapes
 import HostnameRegexpShared
+import codeql.ruby.security.performance.RegExpTreeView
+import codeql.ruby.DataFlow
+import codeql.ruby.AST as AST
 
 /**
  * Holds if `term` occurs inside a quantifier or alternative (and thus
@@ -102,6 +103,5 @@ where
     ) else (
       kind = "regular expression" and aux = re
     )
-  ) and
-  not CharacterEscapes::hasALikelyRegExpPatternMistake(re)
+  )
 select hostSequence, "This " + kind + " " + msg, aux, "here"
