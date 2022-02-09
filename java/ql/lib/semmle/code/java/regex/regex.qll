@@ -21,7 +21,7 @@ abstract class RegexString extends Expr {
   private predicate char_set_end0(int pos) {
     this.nonEscapedCharAt(pos) = "]" and
     /* special case: `[]]` and `[^]]` are valid char classes.  */
-    not this.char_set_start0(_, pos - 1)
+    not this.char_set_start0(_, pos)
   }
 
   /**
@@ -283,7 +283,7 @@ abstract class RegexString extends Expr {
    */
   predicate escapedCharacter(int start, int end) {
     this.escapingChar(start) and
-    not this.numbered_backreference(start, _, _) and
+    not this.backreference(start, _) and
     (
       // hex value \xhh
       this.getChar(start + 1) = "x" and
@@ -362,7 +362,8 @@ abstract class RegexString extends Expr {
   predicate character(int start, int end) {
     (
       this.simpleCharacter(start, end) and
-      not exists(int x, int y | this.escapedCharacter(x, y) and x <= start and y >= end)
+      not exists(int x, int y | this.escapedCharacter(x, y) and x <= start and y >= end) and
+      not exists(int x, int y | this.quote(x, y) and x <= start and y >= end)
       or
       this.escapedCharacter(start, end)
     ) and
@@ -486,8 +487,6 @@ abstract class RegexString extends Expr {
     or
     this.named_group_start(start, end)
     or
-    this.named_backreference_start(start, end)
-    or
     this.lookahead_assertion_start(start, end)
     or
     this.negative_lookahead_assertion_start(start, end)
@@ -524,16 +523,6 @@ abstract class RegexString extends Expr {
       name_end = min(int i | i > start + 3 and this.getChar(i) = ">") and
       end = name_end + 1
     )
-  }
-
-  private predicate named_backreference_start(int start, int end) {
-    this.isGroupStart(start) and
-    this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) = "k" and
-    this.getChar(start + 3) = "=" and
-    // Should this be looking for unescaped ")"?
-    // TODO: test this
-    end = min(int i | i > start + 4 and this.getChar(i) = "?")
   }
 
   private predicate flag_group_start(int start, int end, string c) {
@@ -609,9 +598,11 @@ abstract class RegexString extends Expr {
   }
 
   private predicate named_backreference(int start, int end, string name) {
-    this.named_backreference_start(start, start + 4) and
-    end = min(int i | i > start + 4 and this.getChar(i) = ")") + 1 and
-    name = this.getText().substring(start + 4, end - 2)
+    this.escapingChar(start) and
+    this.getChar(start + 1) = "k" and
+    this.getChar(start + 2) = "<" and
+    end = min(int i | i > start + 2 and this.getChar(i) = ">") + 1 and
+    name = this.getText().substring(start + 3, end - 2)
   }
 
   private predicate numbered_backreference(int start, int end, int value) {
@@ -660,6 +651,8 @@ abstract class RegexString extends Expr {
     this.charSet(start, end)
     or
     this.backreference(start, end)
+    or
+    this.quote(start, end)
   }
 
   private predicate qualifier(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
