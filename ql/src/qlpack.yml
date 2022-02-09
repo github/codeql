@@ -1,6 +1,8 @@
 name: codeql/go-queries
-version: 0.0.7
-groups: go
+version: 0.0.8-dev
+groups:
+  - go
+  - queries
 suites: codeql-suites
 extractor: go
 defaultSuiteFile: codeql-suites/go-code-scanning.qls

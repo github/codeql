@@ -1,4 +1,6 @@
 name: codeql/go-examples
-version: 0.0.2
+groups: 
+  - go
+  - examples
 dependencies:
-    codeql/go-all: "*"
+  codeql/go-all: "*"
