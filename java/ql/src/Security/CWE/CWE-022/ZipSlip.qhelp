@@ -41,9 +41,9 @@ Prefix checking can be done with <code>String.startsWith(..)</code>, but it is b
 </recommendation>
 <example>
 
-<p>In this example, a file path taken from a zip archive item entry is combined with a
+<p>In this example, a file path taken from a zip and Jar archive item entry is combined with a
 destination directory. The result is used as the destination file path without verifying that
-the result is within the destination directory. If provided with a zip file containing an archive
+the result is within the destination directory. If provided with a zip or Jar file containing an archive
 path like <code>..\sneaky-file</code>, then this file would be written outside the destination
 directory.</p>
 

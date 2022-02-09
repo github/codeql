@@ -5,3 +5,15 @@ void writeZipEntry(ZipEntry entry, File destinationDir) {
     FileOutputStream fos = new FileOutputStream(file); // OK
     // ... write entry to fos ...
 }
+
+
+
+
+void writeJarEntry(JarEntry entry, File destinationDir) {
+    File file = new File(destinationDir, entry.getName());
+    if (!file.toPath().normalize().startsWith(destinationDir.toPath()))
+        throw new Exception("Bad Jar entry");
+    FileOutputStream fos = new FileOutputStream(file); // OK
+    // ... write entry to fos ...
+}
+  

@@ -27,7 +27,11 @@ class ArchiveEntryNameMethod extends Method {
   ArchiveEntryNameMethod() {
     exists(RefType archiveEntry |
       archiveEntry.hasQualifiedName("java.util.zip", "ZipEntry") or
-      archiveEntry.hasQualifiedName("org.apache.commons.compress.archivers", "ArchiveEntry")
+      archiveEntry.hasQualifiedName("org.apache.commons.compress.archivers", "ArchiveEntry") or 
+      archiveEntry.hasQualifiedName("java.util.jar", "JarEntry") or
+      archiveEntry.hasQualifiedName("org.apache.commons.compress.archivers.zip", "ZipArchiveEntry") or
+      archiveEntry.hasQualifiedName("org.apache.tools.zip", "ZipEntry") or
+      archiveEntry.hasQualifiedName("org.apache.commons.compress.archivers.tar", "TarArchiveEntry")
     |
       this.getDeclaringType().getASupertype*() = archiveEntry and
       this.hasName("getName")
