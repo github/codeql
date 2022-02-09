@@ -55,8 +55,8 @@ void test1()
 	int sock = socket(val(), val(), val());
 
 	// tests for a strict implementation of CWE-497
-	std::cout << getenv("HOME"); // BAD: outputs HOME environment variable
-	std::cout << "PATH = " << getenv("PATH") << "."; // BAD: outputs PATH environment variable
+	std::cout << getenv("HOME"); // BAD: outputs HOME environment variable [NOT DETECTED]
+	std::cout << "PATH = " << getenv("PATH") << "."; // BAD: outputs PATH environment variable [NOT DETECTED]
 	std::cout << "PATHPATHPATH"; // GOOD: not system data
 
 	// tests for a more pragmatic implementation of CWE-497
@@ -76,8 +76,8 @@ void test1()
 		strcpy(buffer, mysql_get_client_info());
 
 		send(sock, mysql_get_client_info(), val(), val()); // BAD
-		send(sock, buffer, val(), val()); // BAD [NOT DETECTED]
-		send(sock, global1, val(), val()); // BAD
+		send(sock, buffer, val(), val()); // BAD
+		send(sock, global1, val(), val()); // BAD [NOT DETECTED]
 		send(sock, global2, val(), val()); // GOOD: not system data
 	}
 
@@ -88,7 +88,7 @@ void test1()
 
 		mysql_real_connect(sock, val(), val(), str1, val(), val(), val(), val());
 
-		send(sock, str1, val(), val()); // BAD
+		send(sock, str1, val(), val()); // BAD [NOT DETECTED]
 		send(sock, str2, val(), val()); // GOOD: not system data
 	}
 
@@ -97,7 +97,7 @@ void test1()
 		passwd *pw;
 
 		pw = getpwuid(val());
-		send(sock, pw->pw_passwd, val(), val()); // BAD
+		send(sock, pw->pw_passwd, val(), val()); // BAD [NOT DETECTED]
 	}
 
 	// tests for containers
@@ -107,6 +107,6 @@ void test1()
 		c1.ptr = getenv("MY_SECRET_TOKEN");
 		c2.ptr = "";
 		send(sock, c1.ptr, val(), val()); // BAD
-		send(sock, c2.ptr, val(), val()); // GOOD: not system data [FALSE POSITIVE]
+		send(sock, c2.ptr, val(), val()); // GOOD: not system data
 	}
 }

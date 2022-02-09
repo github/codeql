@@ -3,7 +3,7 @@
  * @description Exposing system data or debugging information helps
  *              an adversary learn about the system and form an
  *              attack plan.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @security-severity 6.5
  * @precision medium
@@ -14,7 +14,9 @@
 
 import cpp
 import semmle.code.cpp.commons.Environment
-import semmle.code.cpp.security.OutputWrite
+import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.models.interfaces.FlowSource
+import DataFlow::PathGraph
 
 /**
  * An element that should not be exposed to an adversary.
@@ -24,35 +26,6 @@ abstract class SystemData extends Element {
    * Gets an expression that is part of this `SystemData`.
    */
   abstract Expr getAnExpr();
-
-  /**
-   * Gets an expression whose value originates from, or is used by,
-   * this `SystemData`.
-   */
-  Expr getAnExprIndirect() {
-    // direct SystemData
-    result = this.getAnExpr() or
-    // flow via global or member variable (conservative approximation)
-    result = this.getAnAffectedVar().getAnAccess() or
-    // flow via stack variable
-    definitionUsePair(_, this.getAnExprIndirect(), result) or
-    useUsePair(_, this.getAnExprIndirect(), result) or
-    useUsePair(_, result, this.getAnExprIndirect()) or
-    // flow from assigned value to assignment expression
-    result.(AssignExpr).getRValue() = this.getAnExprIndirect()
-  }
-
-  /**
-   * Gets a global or member variable that may be affected by this system
-   * data (conservative approximation).
-   */
-  private Variable getAnAffectedVar() {
-    (
-      result.getAnAssignedValue() = this.getAnExprIndirect() or
-      result.getAnAccess() = this.getAnExprIndirect()
-    ) and
-    not result instanceof LocalScopeVariable
-  }
 }
 
 /**
@@ -311,70 +284,23 @@ class RegQuery extends SystemData {
   override Expr getAnExpr() { regQuery(this, result) }
 }
 
-/**
- * Somewhere data is output.
- */
-abstract class DataOutput extends Element {
-  /**
-   * Get an expression containing data that is output.
-   */
-  abstract Expr getASource();
-}
+class ExposedSystemDataConfiguration extends TaintTracking::Configuration {
+  ExposedSystemDataConfiguration() { this = "ExposedSystemDataConfiguration" }
 
-/**
- * Data that is output via standard output or standard error.
- */
-class StandardOutput extends DataOutput instanceof OutputWrite {
-  override Expr getASource() { result = OutputWrite.super.getASource() }
-}
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr() = any(SystemData sd).getAnExpr()
+  }
 
-private predicate socketCallOrIndirect(FunctionCall call) {
-  // direct socket call
-  // int socket(int domain, int type, int protocol);
-  call.getTarget().getName() = "socket"
-  or
-  exists(ReturnStmt rtn |
-    // indirect socket call
-    call.getTarget() = rtn.getEnclosingFunction() and
-    (
-      socketCallOrIndirect(rtn.getExpr()) or
-      socketCallOrIndirect(rtn.getExpr().(VariableAccess).getTarget().getAnAssignedValue())
+  override predicate isSink(DataFlow::Node sink) {
+    exists(FunctionCall fc, FunctionInput input, int arg |
+      fc.getTarget().(RemoteFlowSinkFunction).hasRemoteFlowSink(input, _) and
+      input.isParameterDeref(arg) and
+      fc.getArgument(arg) = sink.asExpr()
     )
-  )
+  }
 }
 
-private predicate socketFileDescriptor(Expr e) {
-  exists(Variable var, FunctionCall socket |
-    socketCallOrIndirect(socket) and
-    var.getAnAssignedValue() = socket and
-    e = var.getAnAccess()
-  )
-}
-
-private predicate socketOutput(FunctionCall call, Expr data) {
-  (
-    // ssize_t send(int sockfd, const void *buf, size_t len, int flags);
-    // ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
-    //                const struct sockaddr *dest_addr, socklen_t addrlen);
-    // ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);
-    // int write(int handle, void *buffer, int nbyte);
-    call.getTarget().hasGlobalName(["send", "sendto", "sendmsg", "write"]) and
-    data = call.getArgument(1) and
-    socketFileDescriptor(call.getArgument(0))
-  )
-}
-
-/**
- * Data that is output via a socket.
- */
-class SocketOutput extends DataOutput {
-  SocketOutput() { socketOutput(this, _) }
-
-  override Expr getASource() { socketOutput(this, result) }
-}
-
-from SystemData sd, DataOutput ow
-where
-  sd.getAnExprIndirect() = ow.getASource() or
-  sd.getAnExprIndirect() = ow.getASource().getAChild*()
-select ow, "This operation exposes system data from $@.", sd, sd.toString()
+from ExposedSystemDataConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
+select sink, source, sink, "This operation exposes system data from $@.", source,
+  source.getNode().toString()
