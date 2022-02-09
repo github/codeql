@@ -5,6 +5,42 @@
 
 import csharp
 
+private newtype TGvn =
+  TConstantGvn(string s) { s = any(Expr e).getValue() } or
+  TVariableGvn(Declaration d) or
+  TBinaryExprGvn(int kind, TGvn child1, TGvn child2) { binaryExpr(_, kind, child1, child2) }
+
+private predicate binaryExpr(Expr e, int kind, TGvn child1, TGvn child2) {
+  none() // Needs to be implemeneted.
+}
+
+abstract private class Gvn extends TGvn {
+  abstract string toString();
+}
+
+private class ConstantGvn extends Gvn, TConstantGvn {
+  override string toString() { this = TConstantGvn(result) }
+}
+
+private class VariableGvn extends Gvn, TVariableGvn {
+  override string toString() {
+    exists(Declaration d |
+      this = TVariableGvn(d) and
+      result = d.toString()
+    )
+  }
+}
+
+private class BinaryExprGvn extends Gvn, TBinaryExprGvn {
+  // Consider better printing, but good enough for now.
+  override string toString() {
+    exists(Gvn child1, Gvn child2, int kind |
+      this = TBinaryExprGvn(kind, child1, child2) and
+      result = child1.toString() + " " + "kind(" + kind + ") " + child2.toString()
+    )
+  }
+}
+
 abstract class GvnStructuralComparisonConfiguration extends string {
   bindingset[this]
   GvnStructuralComparisonConfiguration() { any() }
