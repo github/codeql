@@ -1102,19 +1102,6 @@ open class KotlinFileExtractor(
         return result
     }
 
-    /**
-     * Returns true if EQEQ call `c` can be implemented by a Java-style `==` or `!=` test. This is true if both operands
-     * are primitives, or either is a null constant.
-     */
-    fun isShallowEqualityTest(c: IrCall): Boolean {
-        val arg0 = c.getValueArgument(0)!!
-        val arg1 = c.getValueArgument(1)!!
-
-        return (arg0.type.isPrimitiveType(false) && arg1.type.isPrimitiveType(false))
-                || arg0.isNullConst()
-                || arg1.isNullConst()
-    }
-
     fun extractCall(c: IrCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
         with("call", c) {
             fun isFunction(pkgName: String, className: String, fName: String, hasQuestionMark: Boolean? = false): Boolean {
