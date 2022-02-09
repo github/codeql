@@ -30,3 +30,20 @@ gvnSame
 | StructuralComparison.cs:10:22:10:22 | access to local variable y | StructuralComparison.cs:9:22:9:22 | access to local variable y |
 sameDiff
 gvnSameDiff
+gvnPrinting
+| StructuralComparison.cs:7:13:7:13 | access to local variable x | x |
+| StructuralComparison.cs:7:13:7:17 | Int32 x = ... | 0 kind(83) x |
+| StructuralComparison.cs:7:17:7:17 | 0 | 0 |
+| StructuralComparison.cs:8:13:8:13 | access to local variable y | y |
+| StructuralComparison.cs:8:13:8:17 | Int32 y = ... | 1 kind(83) y |
+| StructuralComparison.cs:8:17:8:17 | 1 | 1 |
+| StructuralComparison.cs:9:13:9:14 | access to local variable z1 | z1 |
+| StructuralComparison.cs:9:13:9:22 | Int32 z1 = ... | x kind(44) y kind(83) z1 |
+| StructuralComparison.cs:9:18:9:18 | access to local variable x | x |
+| StructuralComparison.cs:9:18:9:22 | ... + ... | x kind(44) y |
+| StructuralComparison.cs:9:22:9:22 | access to local variable y | y |
+| StructuralComparison.cs:10:13:10:14 | access to local variable z2 | z2 |
+| StructuralComparison.cs:10:13:10:22 | Int32 z2 = ... | x kind(44) y kind(83) z2 |
+| StructuralComparison.cs:10:18:10:18 | access to local variable x | x |
+| StructuralComparison.cs:10:18:10:22 | ... + ... | x kind(44) y |
+| StructuralComparison.cs:10:22:10:22 | access to local variable y | y |

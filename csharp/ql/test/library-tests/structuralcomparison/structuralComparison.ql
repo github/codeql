@@ -32,3 +32,5 @@ query predicate gvnSame(Expr e1, Expr e2) {
 query predicate sameDiff(Expr e1, Expr e2) { same(e1, e2) and not gvnSame(e1, e2) }
 
 query predicate gvnSameDiff(Expr e1, Expr e2) { gvnSame(e1, e2) and not same(e1, e2) }
+
+query predicate gvnPrinting(Expr e, Gvn gvn) { gvn = toGvn(e) and e.fromSource() }

@@ -10,7 +10,7 @@ private newtype TGvn =
   TVariableGvn(Declaration d) or
   TBinaryExprGvn(int kind, TGvn child1, TGvn child2) { binaryExpr(_, kind, child1, child2) }
 
-private int getNumberOfChildren(Expr r) { result = r.getNumberOfChildren() }
+private int getNumberOfChildren(Expr e) { result = e.getNumberOfChildren() }
 
 private predicate binaryExpr(Expr e, int kind, TGvn child1, TGvn child2) {
   getNumberOfChildren(e) = 2 and
@@ -19,7 +19,7 @@ private predicate binaryExpr(Expr e, int kind, TGvn child1, TGvn child2) {
   child2 = toGvn(e.getChild(1))
 }
 
-private Gvn toGvn(Expr e) {
+Gvn toGvn(Expr e) {
   result = TConstantGvn(e.getValue())
   or
   not exists(e.getValue()) and
@@ -32,7 +32,7 @@ private Gvn toGvn(Expr e) {
   )
 }
 
-abstract private class Gvn extends TGvn {
+abstract class Gvn extends TGvn {
   abstract string toString();
 }
 
