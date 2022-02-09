@@ -26,18 +26,16 @@ inputs, or avoid constructing code in the first place.
 <example>
 <p>
 The following example shows two methods implemented using `eval`: a simple
-deserialization routine and a getter method. 
+deserialization routine and a getter method.
+If untrusted inputs are used with these methods,
+then an attacker might be able to execute arbitrary code on the system. 
 </p>
 
 <sample src="examples/UnsafeCodeConstruction.js" />
 
 <p>
-If untrusted inputs are used with these methods,
-then an attacker might be able to execute arbitrary code on the system.
-</p>
-<p>
 To avoid this problem, either properly document that the function is potentially
-unsafe, or use an alternative solution such as `JSON.parse` or another library 
+unsafe, or use an alternative solution such as `JSON.parse` or another library, like in the examples below, 
 that does not allow arbitrary code to be executed.
 </p>
 
