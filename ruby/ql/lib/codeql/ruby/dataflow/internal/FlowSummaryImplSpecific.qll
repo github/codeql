@@ -73,18 +73,20 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
     ppos.isPositionalLowerBound(AccessPath::parseLowerBound(arg))
   )
   or
-  c.getName() = "ArrayElement" and
+  c.getName() = "Element" and
   (
     c.getNumArgument() = 0 and
-    result = FlowSummary::SummaryComponent::arrayElementAny()
+    result = FlowSummary::SummaryComponent::elementAny()
     or
     exists(string arg | arg = c.getAnArgument() |
       arg = "?" and
-      result = FlowSummary::SummaryComponent::arrayElementUnknown()
+      result = FlowSummary::SummaryComponent::elementUnknown()
       or
-      exists(int i |
-        i = AccessPath::parseInt(c.getAnArgument()) and
-        result = FlowSummary::SummaryComponent::arrayElementKnown(i)
+      exists(ConstantValue cv | result = FlowSummary::SummaryComponent::elementKnown(cv) |
+        cv.isInt(AccessPath::parseInt(arg))
+        or
+        not exists(AccessPath::parseInt(arg)) and
+        cv.serialize() = c.getAnArgument()
       )
     )
   )

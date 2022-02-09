@@ -133,7 +133,7 @@ module String {
     FormatSummary() { this = "%" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["Argument[self]", "Argument[0]", "Argument[0].ArrayElement"] and
+      input = ["Argument[self]", "Argument[0]", "Argument[0].Element"] and
       output = "ReturnValue" and
       preservesValue = false
     }
@@ -301,7 +301,7 @@ module String {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = false and
       input = "Argument[self]" and
-      output = "ReturnValue.ArrayElement[?]"
+      output = "ReturnValue.Element[?]"
     }
   }
 
@@ -415,7 +415,7 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
-      output = "ReturnValue.ArrayElement[" + [0, 1, 2] + "]" and
+      output = "ReturnValue.Element[" + [0, 1, 2] + "]" and
       preservesValue = false
     }
   }
@@ -480,7 +480,7 @@ module String {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       // scan(pattern) -> array
       input = "Argument[self]" and
-      output = "ReturnValue.ArrayElement[?]" and
+      output = "ReturnValue.Element[?]" and
       preservesValue = false
     }
   }
@@ -547,7 +547,7 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
-      output = "ReturnValue.ArrayElement[?]" and
+      output = "ReturnValue.Element[?]" and
       preservesValue = false
     }
   }
@@ -631,7 +631,7 @@ module String {
       preservesValue = false
       or
       input = "Argument[block].ReturnValue" and
-      output = "ReturnValue.ArrayElement[?]" and
+      output = "ReturnValue.Element[?]" and
       preservesValue = false
     }
   }
@@ -651,7 +651,7 @@ module String {
       preservesValue = false
       or
       input = "Argument[block].ReturnValue" and
-      output = "ReturnValue.ArrayElement[?]" and
+      output = "ReturnValue.Element[?]" and
       preservesValue = false
     }
   }
