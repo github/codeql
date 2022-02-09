@@ -5,18 +5,18 @@ private import semmle.code.java.regex.regex
 
 /**
  * An element containing a regular expression term, that is, either
- * a string literal (parsed as a regular expression)
- * or another regular expression term.
+ * a string literal (parsed as a regular expression; the root of the parse tree)
+ * or another regular expression term (a decendent of the root).
  *
- * For sequences and alternations, we require at least one child.
+ * For sequences and alternations, we require at least two children.
  * Otherwise, we wish to represent the term differently.
  * This avoids multiple representations of the same term.
  */
-newtype TRegExpParent =
+private newtype TRegExpParent =
   /** A string literal used as a regular expression */
   TRegExpLiteral(Regex re) or
   /** A quantified term */
-  TRegExpQuantifier(Regex re, int start, int end) { re.qualifiedItem(start, end, _, _) } or
+  TRegExpQuantifier(Regex re, int start, int end) { re.quantifiedItem(start, end, _, _) } or
   /** A sequence term */
   TRegExpSequence(Regex re, int start, int end) {
     re.sequence(start, end) and
@@ -47,8 +47,8 @@ newtype TRegExpParent =
 
 /**
  * An element containing a regular expression term, that is, either
- * a string literal (parsed as a regular expression)
- * or another regular expression term.
+ * a string literal (parsed as a regular expression; the root of the parse tree)
+ * or another regular expression term (a decendent of the root).
  */
 class RegExpParent extends TRegExpParent {
   /** Gets a textual representation of this element. */
@@ -92,6 +92,7 @@ class RegExpLiteral extends TRegExpLiteral, RegExpParent {
 
 /**
  * A regular expression term, that is, a syntactic part of a regular expression.
+ * These are the tree nodes that form the parse tree of a regular expression literal.
  */
 class RegExpTerm extends RegExpParent {
   Regex re;
@@ -187,6 +188,8 @@ class RegExpTerm extends RegExpParent {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
+    // This currently gives incorrect results for string literals including backslashes. TODO: fix that.
+    // There are also more complex cases where it fails. Handling all of them would be difficult for not much gain.
     exists(int re_start, int re_end |
       re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, re_end) and
       startcolumn = re_start + start + 1 and
@@ -245,7 +248,7 @@ class RegExpQuantifier extends RegExpTerm, TRegExpQuantifier {
 
   RegExpQuantifier() {
     this = TRegExpQuantifier(re, start, end) and
-    re.qualifiedPart(start, part_end, end, maybe_empty, may_repeat_forever)
+    re.quantifiedPart(start, part_end, end, maybe_empty, may_repeat_forever)
   }
 
   override RegExpTerm getChild(int i) {
@@ -255,11 +258,11 @@ class RegExpQuantifier extends RegExpTerm, TRegExpQuantifier {
     result.getEnd() = part_end
   }
 
-  /** Hols if this term may match an unlimited number of times. */
+  /** Holds if this term may match an unlimited number of times. */
   predicate mayRepeatForever() { may_repeat_forever = true }
 
-  /** Gets the qualifier for this term. That is e.g "?" for "a?". */
-  string getQualifier() { result = re.getText().substring(part_end, end) }
+  /** Gets the quantifier for this term. That is e.g "?" for "a?". */
+  string getquantifier() { result = re.getText().substring(part_end, end) }
 
   override string getPrimaryQLClass() { result = "RegExpQuantifier" }
 }
@@ -281,7 +284,7 @@ class InfiniteRepetitionQuantifier extends RegExpQuantifier {
  * ```
  */
 class RegExpStar extends InfiniteRepetitionQuantifier {
-  RegExpStar() { this.getQualifier().charAt(0) = "*" }
+  RegExpStar() { this.getquantifier().charAt(0) = "*" }
 
   override string getPrimaryQLClass() { result = "RegExpStar" }
 }
@@ -296,7 +299,7 @@ class RegExpStar extends InfiniteRepetitionQuantifier {
  * ```
  */
 class RegExpPlus extends InfiniteRepetitionQuantifier {
-  RegExpPlus() { this.getQualifier().charAt(0) = "+" }
+  RegExpPlus() { this.getquantifier().charAt(0) = "+" }
 
   override string getPrimaryQLClass() { result = "RegExpPlus" }
 }
@@ -311,7 +314,7 @@ class RegExpPlus extends InfiniteRepetitionQuantifier {
  * ```
  */
 class RegExpOpt extends RegExpQuantifier {
-  RegExpOpt() { this.getQualifier().charAt(0) = "?" }
+  RegExpOpt() { this.getquantifier().charAt(0) = "?" }
 
   override string getPrimaryQLClass() { result = "RegExpOpt" }
 }
@@ -333,10 +336,10 @@ class RegExpRange extends RegExpQuantifier {
 
   RegExpRange() { re.multiples(part_end, end, lower, upper) }
 
-  /** Gets the string defining the upper bound of this range, if any. */
+  /** Gets the string defining the upper bound of this range, which is empty when no such bound exists. */
   string getUpper() { result = upper }
 
-  /** Gets the string defining the lower bound of this range, if any. */
+  /** Gets the string defining the lower bound of this range, which is empty when no such bound exists. */
   string getLower() { result = lower }
 
   /**
@@ -578,9 +581,6 @@ class RegExpCharacterClass extends RegExpTerm, TRegExpCharacterClass {
   /** Holds if this character class is inverted, matching the opposite of its content. */
   predicate isInverted() { re.getChar(start + 1) = "^" }
 
-  /** Gets the `i`th char inside this charater class. */
-  string getCharThing(int i) { result = re.getChar(i + start) }
-
   /** Holds if this character class can match anything. */
   predicate isUniversalClass() {
     // [^]
@@ -724,9 +724,9 @@ class RegExpConstant extends RegExpTerm {
   RegExpConstant() {
     (this = TRegExpNormalChar(re, start, end) or this = TRegExpQuote(re, start, end)) and
     not this instanceof RegExpCharacterClassEscape and
-    // exclude chars in qualifiers
+    // exclude chars in quantifiers
     // TODO: push this into regex library
-    not exists(int qstart, int qend | re.qualifiedPart(_, qstart, qend, _, _) |
+    not exists(int qstart, int qend | re.quantifiedPart(_, qstart, qend, _, _) |
       qstart <= start and end <= qend
     ) and
     (value = this.(RegExpNormalChar).getValue() or value = this.(RegExpQuote).getValue())

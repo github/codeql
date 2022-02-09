@@ -1,20 +1,15 @@
 import java
 private import RegexFlowConfigs
 
+// In all ranges handled by this library, `start` is inclusive and `end` is exclusive.
 /**
- * A string literal that is used as a regular exprssion.
+ * A string literal that is used as a regular expression.
  */
-abstract class RegexString extends Expr {
-  RegexString() { this instanceof StringLiteral }
-
-  /** Holds if a character set starts between `start` and `end`. */
+abstract class RegexString extends StringLiteral {
+  /** Holds if a character set starts between `start` and `end`, including any negation character (`^`). */
   private predicate char_set_start0(int start, int end) {
     this.nonEscapedCharAt(start) = "[" and
-    (
-      this.getChar(start + 1) = "^" and end = start + 2
-      or
-      not this.getChar(start + 1) = "^" and end = start + 1
-    )
+    (if this.getChar(start + 1) = "^" then end = start + 2 else end = start + 1)
   }
 
   /** Holds if the character at `pos` marks the end of a character class. */
@@ -25,7 +20,7 @@ abstract class RegexString extends Expr {
   }
 
   /**
-   * Gets the nesting depth of charcter classes at position `pos`
+   * Gets the nesting depth of character classes at position `pos`
    */
   private int char_set_depth(int pos) {
     exists(this.getChar(pos)) and
@@ -51,7 +46,7 @@ abstract class RegexString extends Expr {
   }
 
   /**
-   * Whether there is a top-level character class, between start (inclusive) and end (exclusive)
+   * Holds if there is a top-level character class beginning at `start` (inclusive) and ending at `end` (exclusive)
    *
    * For now, nested character classes are approximated by only considering the top-level class for parsing.
    * This leads to very similar results for ReDoS queries.
@@ -355,7 +350,7 @@ abstract class RegexString extends Expr {
       not c = "[" and
       not c = ")" and
       not c = "|" and
-      not this.qualifier(start, _, _, _)
+      not this.quantifier(start, _, _, _)
     )
   }
 
@@ -384,7 +379,7 @@ abstract class RegexString extends Expr {
     not this.inCharSet(start)
   }
 
-  /** Whether the text in the range start,end is a group */
+  /** Holds if the text in the range start,end is a group */
   predicate group(int start, int end) {
     this.groupContents(start, end, _, _)
     or
@@ -407,7 +402,7 @@ abstract class RegexString extends Expr {
     )
   }
 
-  /** Whether the text in the range start, end is a group and can match the empty string. */
+  /** Holds if the text in the range start, end is a group and can match the empty string. */
   predicate zeroWidthMatch(int start, int end) {
     this.emptyGroup(start, end)
     or
@@ -629,7 +624,7 @@ abstract class RegexString extends Expr {
     )
   }
 
-  /** Whether the text in the range start,end is a back reference */
+  /** Holds if the text in the range start,end is a back reference */
   predicate backreference(int start, int end) {
     this.numbered_backreference(start, end, _)
     or
@@ -655,16 +650,18 @@ abstract class RegexString extends Expr {
     this.quote(start, end)
   }
 
-  private predicate qualifier(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
-    this.short_qualifier(start, end, maybe_empty, may_repeat_forever) and
+  private predicate quantifier(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
+    this.short_quantifier(start, end, maybe_empty, may_repeat_forever) and
     not this.getChar(end) = ["?", "+"]
     or
-    exists(int short_end | this.short_qualifier(start, short_end, maybe_empty, may_repeat_forever) |
+    exists(int short_end |
+      this.short_quantifier(start, short_end, maybe_empty, may_repeat_forever)
+    |
       if this.getChar(short_end) = ["?", "+"] then end = short_end + 1 else end = short_end
     )
   }
 
-  private predicate short_qualifier(
+  private predicate short_quantifier(
     int start, int end, boolean maybe_empty, boolean may_repeat_forever
   ) {
     (
@@ -708,32 +705,32 @@ abstract class RegexString extends Expr {
   }
 
   /**
-   * Whether the text in the range start,end is a qualified item, where item is a character,
+   * Holds if the text in the range start,end is a quantified item, where item is a character,
    * a character set or a group.
    */
-  predicate qualifiedItem(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
-    this.qualifiedPart(start, _, end, maybe_empty, may_repeat_forever)
+  predicate quantifiedItem(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
+    this.quantifiedPart(start, _, end, maybe_empty, may_repeat_forever)
   }
 
   /**
-   * Holds if a qualified part is found between `start` and `part_end` and the qualifier is
+   * Holds if a quantified part is found between `start` and `part_end` and the quantifier is
    * found between `part_end` and `end`.
    *
    * `maybe_empty` is true if the part is optional.
    * `may_repeat_forever` is true if the part may be repeated unboundedly.
    */
-  predicate qualifiedPart(
+  predicate quantifiedPart(
     int start, int part_end, int end, boolean maybe_empty, boolean may_repeat_forever
   ) {
     this.baseItem(start, part_end) and
-    this.qualifier(part_end, end, maybe_empty, may_repeat_forever)
+    this.quantifier(part_end, end, maybe_empty, may_repeat_forever)
   }
 
   /** Holds if the range `start`, `end` contains a character, a quantifier, a character set or a group. */
   predicate item(int start, int end) {
-    this.qualifiedItem(start, end, _, _)
+    this.quantifiedItem(start, end, _, _)
     or
-    this.baseItem(start, end) and not this.qualifier(end, _, _, _)
+    this.baseItem(start, end) and not this.quantifier(end, _, _, _)
   }
 
   private predicate subsequence(int start, int end) {
@@ -751,15 +748,15 @@ abstract class RegexString extends Expr {
   }
 
   /**
-   * Whether the text in the range start,end is a sequence of 1 or more items, where an item is a character,
+   * Holds if the text in the range start,end is a sequence of 1 or more items, where an item is a character,
    * a character set or a group.
    */
   predicate sequence(int start, int end) {
-    this.sequenceOrQualified(start, end) and
-    not this.qualifiedItem(start, end, _, _)
+    this.sequenceOrquantified(start, end) and
+    not this.quantifiedItem(start, end, _, _)
   }
 
-  private predicate sequenceOrQualified(int start, int end) {
+  private predicate sequenceOrquantified(int start, int end) {
     this.subsequence(start, end) and
     not this.item_start(end)
   }
@@ -779,7 +776,7 @@ abstract class RegexString extends Expr {
     or
     this.charSet(_, end)
     or
-    this.qualifier(_, end, _, _)
+    this.quantifier(_, end, _, _)
     or
     this.quote(_, end)
   }
@@ -790,7 +787,7 @@ abstract class RegexString extends Expr {
   }
 
   private predicate subalternation(int start, int end, int item_start) {
-    this.sequenceOrQualified(start, end) and
+    this.sequenceOrquantified(start, end) and
     not this.isOptionDivider(start - 1) and
     item_start = start
     or
@@ -804,14 +801,14 @@ abstract class RegexString extends Expr {
       this.isOptionDivider(mid) and
       item_start = mid + 1
     |
-      this.sequenceOrQualified(item_start, end)
+      this.sequenceOrquantified(item_start, end)
       or
       not this.item_start(end) and end = item_start
     )
   }
 
   /**
-   * Whether the text in the range start,end is an alternation
+   * Holds if the text in the range start,end is an alternation
    */
   predicate alternation(int start, int end) {
     this.top_level(start, end) and
@@ -819,7 +816,7 @@ abstract class RegexString extends Expr {
   }
 
   /**
-   * Whether the text in the range start,end is an alternation and the text in part_start, part_end is one of the
+   * Holds if the text in the range start,end is an alternation and the text in part_start, part_end is one of the
    * options in that alternation.
    */
   predicate alternationOption(int start, int end, int part_start, int part_end) {
@@ -833,14 +830,14 @@ abstract class RegexString extends Expr {
     or
     exists(int x | this.firstPart(x, end) |
       this.emptyMatchAtStartGroup(x, start) or
-      this.qualifiedItem(x, start, true, _) or
+      this.quantifiedItem(x, start, true, _) or
       this.specialCharacter(x, start, "^")
     )
     or
     exists(int y | this.firstPart(start, y) |
       this.item(start, end)
       or
-      this.qualifiedPart(start, end, y, _, _)
+      this.quantifiedPart(start, end, y, _, _)
     )
     or
     exists(int x, int y | this.firstPart(x, y) |
@@ -857,7 +854,7 @@ abstract class RegexString extends Expr {
     exists(int y | this.lastPart(start, y) |
       this.emptyMatchAtEndGroup(end, y)
       or
-      this.qualifiedItem(end, y, true, _)
+      this.quantifiedItem(end, y, true, _)
       or
       this.specialCharacter(end, y, "$")
       or
@@ -869,7 +866,7 @@ abstract class RegexString extends Expr {
       this.item(start, end)
     )
     or
-    exists(int y | this.lastPart(start, y) | this.qualifiedPart(start, end, y, _, _))
+    exists(int y | this.lastPart(start, y) | this.quantifiedPart(start, end, y, _, _))
     or
     exists(int x, int y | this.lastPart(x, y) |
       this.groupContents(x, y, start, end)
@@ -879,14 +876,14 @@ abstract class RegexString extends Expr {
   }
 
   /**
-   * Whether the item at [start, end) is one of the first items
+   * Holds if the item at [start, end) is one of the first items
    * to be matched.
    */
   predicate firstItem(int start, int end) {
     (
       this.character(start, end)
       or
-      this.qualifiedItem(start, end, _, _)
+      this.quantifiedItem(start, end, _, _)
       or
       this.charSet(start, end)
       or
@@ -896,14 +893,14 @@ abstract class RegexString extends Expr {
   }
 
   /**
-   * Whether the item at [start, end) is one of the last items
+   * Holds if the item at [start, end) is one of the last items
    * to be matched.
    */
   predicate lastItem(int start, int end) {
     (
       this.character(start, end)
       or
-      this.qualifiedItem(start, end, _, _)
+      this.quantifiedItem(start, end, _, _)
       or
       this.charSet(start, end)
       or
@@ -915,7 +912,7 @@ abstract class RegexString extends Expr {
 
 /** A string literal used as a regular expression */
 class Regex extends RegexString {
-  Regex() { used_as_regex(this, _) }
+  Regex() { usedAsRegex(this, _) }
 
   /**
    * Gets a mode (if any) of this regular expression. Can be any of:
@@ -929,7 +926,7 @@ class Regex extends RegexString {
    */
   string getAMode() {
     result != "None" and
-    used_as_regex(this, result)
+    usedAsRegex(this, result)
     or
     result = this.getModeFromPrefix()
   }

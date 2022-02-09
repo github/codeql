@@ -286,7 +286,7 @@ final class AnnotationPartNode extends ExprStmtNode {
 
 /**
  * A node representing a `StringLiteral`.
- * It has a child if it is used as a regular expression, which is the root of the regular expression.
+ * If it is used as a regular expression, then it has a single child, the root of the parsed regular expression.
  */
 final class StringLiteralNode extends ExprStmtNode {
   StringLiteralNode() { element instanceof StringLiteral }
