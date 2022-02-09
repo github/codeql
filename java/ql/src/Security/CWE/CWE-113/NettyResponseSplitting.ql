@@ -9,8 +9,8 @@
  * @precision high
  * @id java/netty-http-request-or-response-splitting
  * @tags security
+ *       external/cwe/cwe-93
  *       external/cwe/cwe-113
- *       external/capec/capec-105
  */
 
 import java
