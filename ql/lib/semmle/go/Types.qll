@@ -306,6 +306,26 @@ class NilLiteralType extends @nilliteraltype, LiteralType {
 /** A composite type, that is, not a basic type. */
 class CompositeType extends @compositetype, Type { }
 
+/** A type that comes from a type parameter. */
+class TypeParamType extends @typeparamtype, CompositeType {
+  /** Gets the name of this type parameter type. */
+  string getParamName() { typeparam(this, result, _) }
+
+  /** Gets the constraint of this type parameter type. */
+  Type getConstraint() { typeparam(this, _, result) }
+
+  override InterfaceType getUnderlyingType() { result = this.getConstraint().getUnderlyingType() }
+
+  override string pp() { result = this.getParamName() }
+
+  /**
+   * Gets a pretty-printed representation of this type including its constraint.
+   */
+  string ppWithConstraint() { result = this.getParamName() + " " + this.getConstraint().pp() }
+
+  override string toString() { result = "type parameter type" }
+}
+
 /** An array type. */
 class ArrayType extends @arraytype, CompositeType {
   /** Gets the element type of this array type. */
