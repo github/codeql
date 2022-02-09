@@ -657,7 +657,7 @@ module Array {
       strictconcat(int i |
         i in [0 .. dig.getNumberOfArguments() - 1]
       |
-        "ArrayElement" + buildDigInputSpecComponent(dig, i) + " of " order by i desc
+        ".ArrayElement" + buildDigInputSpecComponent(dig, i) order by i
       )
   }
 
@@ -677,7 +677,7 @@ module Array {
     override MethodCall getACall() { result = dig }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = buildDigInputSpec(dig) + "Receiver" and
+      input = "Receiver" + buildDigInputSpec(dig) and
       output = "ReturnValue" and
       preservesValue = true
     }
