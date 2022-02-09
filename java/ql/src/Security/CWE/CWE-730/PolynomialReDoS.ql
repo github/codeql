@@ -22,12 +22,12 @@ import DataFlow::PathGraph
 class PolynomialRedosSink extends DataFlow::Node {
   RegExpLiteral reg;
 
-  PolynomialRedosSink() { regex_match(reg.getRegex(), this.asExpr()) }
+  PolynomialRedosSink() { regexMatchedAgainst(reg.getRegex(), this.asExpr()) }
 
   RegExpTerm getRegExp() { result = reg }
 }
 
-class PolynomialRedosConfig extends DataFlow::Configuration {
+class PolynomialRedosConfig extends TaintTracking::Configuration {
   PolynomialRedosConfig() { this = "PolynomialRodisConfig" }
 
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }

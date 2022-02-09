@@ -20,7 +20,7 @@ private class RegexCompileFlowConf extends DataFlow2::Configuration {
  * Holds if `s` is used as a regex, with the mode `mode` (if known).
  * If regex mode is not known, `mode` will be `"None"`.
  */
-predicate used_as_regex(Expr s, string mode) {
+predicate usedAsRegex(StringLiteral s, string mode) {
   any(RegexCompileFlowConf c).hasFlow(DataFlow2::exprNode(s), _) and
   mode = "None" // TODO: proper mode detection
 }
@@ -43,10 +43,10 @@ abstract class RegexMatchMethodAccess extends MethodAccess {
     stringArg in [-1 .. m.getNumberOfParameters() - 1]
   }
 
-  /** Gets the argument of this call that the regex to be matched against flows into */
+  /** Gets the argument of this call that the regex to be matched against flows into. */
   Expr getRegexArg() { result = argOf(this, regexArg) }
 
-  /** Gets the argument of this call that the */
+  /** Gets the argument of this call that the string being matched flows into. */
   Expr getStringArg() { result = argOf(this, stringArg) }
 }
 
@@ -178,9 +178,9 @@ private class RegexMatchFlowConf extends DataFlow2::Configuration {
 }
 
 /**
- * Holds if the string literal `regex` is matched against the expression `str`.
+ * Holds if the string literal `regex` is a regular expression that is matched against the expression `str`.
  */
-predicate regex_match(StringLiteral regex, Expr str) {
+predicate regexMatchedAgainst(StringLiteral regex, Expr str) {
   exists(
     DataFlow::Node src, DataFlow::Node sink, RegexMatchMethodAccess ma, RegexMatchFlowConf conf
   |
