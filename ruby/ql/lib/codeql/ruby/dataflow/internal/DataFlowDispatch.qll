@@ -232,6 +232,18 @@ private module Cached {
     )
   }
 
+  /** Gets a viable run-time target for the call `call`. */
+  cached
+  DataFlowCallable viableCallable(DataFlowCall call) {
+    result = TCfgScope(getTarget(call.asCall())) and
+    not call.asCall().getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
+    or
+    exists(LibraryCallable callable |
+      result = TLibraryCallable(callable) and
+      call.asCall().getExpr() = callable.getACall()
+    )
+  }
+
   cached
   newtype TArgumentPosition =
     TSelfArgumentPosition() or
@@ -421,17 +433,6 @@ private DataFlow::LocalSourceNode trackModuleRec(Module tp, TypeTracker t, StepS
 
 private DataFlow::LocalSourceNode trackModule(Module tp) {
   result = trackModule(tp, TypeTracker::end())
-}
-
-/** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(DataFlowCall call) {
-  result = TCfgScope(getTarget(call.asCall())) and
-  not call.asCall().getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
-  or
-  exists(LibraryCallable callable |
-    result = TLibraryCallable(callable) and
-    call.asCall().getExpr() = callable.getACall()
-  )
 }
 
 /**
