@@ -863,11 +863,7 @@ open class KotlinUsesExtractor(
 
     fun useTypeParameter(param: IrTypeParameter) =
         TypeResult(
-            tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(param)) {
-                // Any type parameter that is in scope should have been extracted already
-                // in extractClassSource or extractFunction
-                logger.error("Missing type parameter label")
-            },
+            tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(param)),
             useType(eraseTypeParameter(param)).javaResult.signature,
             param.name.asString()
         )
