@@ -32,7 +32,13 @@ abstract class SystemData extends Element {
  * Data originating from the environment.
  */
 class EnvData extends SystemData {
-  EnvData() { this instanceof EnvironmentRead }
+  EnvData() {
+    // identify risky looking environment variables only
+    this.(EnvironmentRead)
+        .getEnvironmentVariable()
+        .toLowerCase()
+        .regexpMatch(".*(user|host|admin|root|home|path|http|ssl|snmp|sock|port|proxy|pass|token|crypt|key).*")
+  }
 
   override Expr getAnExpr() { result = this }
 }
@@ -64,11 +70,6 @@ class SQLConnectInfo extends SystemData {
 }
 
 private predicate posixSystemInfo(FunctionCall source, Element use) {
-  // long sysconf(int name)
-  //  - various OS / system values and limits
-  source.getTarget().hasName("sysconf") and
-  use = source
-  or
   // size_t confstr(int name, char *buf, size_t len)
   //  - various OS / system strings, such as the libc version
   // int statvfs(const char *__path, struct statvfs *__buf)
