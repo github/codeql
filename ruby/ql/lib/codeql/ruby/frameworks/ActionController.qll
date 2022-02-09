@@ -99,6 +99,7 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
   }
 }
 
+pragma[nomagic]
 private predicate isRoute(
   ActionDispatch::Route route, string name, ActionControllerControllerClass controllerClass
 ) {
