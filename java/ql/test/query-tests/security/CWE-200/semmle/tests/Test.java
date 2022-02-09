@@ -269,4 +269,14 @@ public class Test {
         tempFile.setReadable(false, false);
         tempFile.setReadable(true, true);
     }
+
+    void notVulnerableCreateOnSystemPropertyDir() throws IOException {
+        File tempDir = new File(System.getProperty("java.io.tmpdir"));
+        tempDir.mkdir();
+    }
+
+    void notVulnerableCreateOnSystemPropertyDirs() throws IOException {
+        File tempDir = new File(System.getProperty("java.io.tmpdir"));
+        tempDir.mkdirs();
+    }
 }

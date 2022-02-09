@@ -13,12 +13,18 @@
 import java
 import TempDirUtils
 import DataFlow::PathGraph
+import semmle.code.java.dataflow.TaintTracking2
 
-private class MethodFileSystemFileCreation extends Method {
-  MethodFileSystemFileCreation() {
-    this.getDeclaringType() instanceof TypeFile and
-    this.hasName(["mkdir", "mkdirs", "createNewFile"])
-  }
+abstract private class MethodFileSystemFileCreation extends Method {
+  MethodFileSystemFileCreation() { this.getDeclaringType() instanceof TypeFile }
+}
+
+private class MethodFileDirectoryCreation extends MethodFileSystemFileCreation {
+  MethodFileDirectoryCreation() { this.hasName(["mkdir", "mkdirs"]) }
+}
+
+private class MethodFileFileCreation extends MethodFileSystemFileCreation {
+  MethodFileFileCreation() { this.hasName(["createNewFile"]) }
 }
 
 abstract private class FileCreationSink extends DataFlow::Node { }
@@ -113,12 +119,51 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
     isAdditionalFileTaintStep(node1, node2)
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof FileCreationSink }
+  override predicate isSink(DataFlow::Node sink) {
+    sink instanceof FileCreationSink and
+    exists(TempDirSystemGetPropertyDirectlyToMkdirConfig config | not config.hasFlowTo(sink))
+  }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     exists(FilesSanitizingCreationMethodAccess sanitisingMethodAccess |
       sanitizer.asExpr() = sanitisingMethodAccess.getArgument(0)
     )
+  }
+}
+
+/**
+ * Configuration that tracks calls to to `mkdir` or `mkdirs` that are are directly on the temp directory system property.
+ * Examples:
+ * - `File tempDir = new File(System.getProperty("java.io.tmpdir")); tempDir.mkdir();`
+ * - `File tempDir = new File(System.getProperty("java.io.tmpdir")); tempDir.mkdirs();`
+ *
+ * These are examples of code that is simply verifying that the temp directory exists.
+ * As such, this code pattern is filtered out as an explicit vulnerability in
+ * `TempDirSystemGetPropertyToCreateConfig::isSink`.
+ */
+private class TempDirSystemGetPropertyDirectlyToMkdirConfig extends TaintTracking2::Configuration {
+  TempDirSystemGetPropertyDirectlyToMkdirConfig() {
+    this = "TempDirSystemGetPropertyDirectlyToMkdirConfig"
+  }
+
+  override predicate isSource(DataFlow::Node node) {
+    exists(
+      MethodAccessSystemGetPropertyTempDirTainted propertyGetMethodAccess, DataFlow::Node callSite
+    |
+      DataFlow::localFlow(DataFlow::exprNode(propertyGetMethodAccess), callSite)
+    |
+      isFileConstructorArgument(callSite.asExpr(), node.asExpr(), 1)
+    )
+  }
+
+  override predicate isSink(DataFlow::Node node) {
+    exists(MethodAccess ma | ma.getMethod() instanceof MethodFileDirectoryCreation |
+      ma.getQualifier() = node.asExpr()
+    )
+  }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    isFileConstructorArgument(sanitizer.asExpr(), _, _)
   }
 }
 

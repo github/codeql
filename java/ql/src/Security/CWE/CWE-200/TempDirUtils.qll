@@ -46,11 +46,12 @@ class MethodFileCreateTempFile extends Method {
 /**
  * Holds if `expDest` is some constructor call `new java.io.File(x)` and `expSource` is `x`.
  */
-private predicate isFileConstructorArgument(Expr expSource, Expr exprDest) {
+predicate isFileConstructorArgument(Expr expSource, Expr exprDest, int paramCount) {
   exists(ConstructorCall construtorCall |
     construtorCall.getConstructedType() instanceof TypeFile and
     construtorCall.getArgument(0) = expSource and
-    construtorCall = exprDest
+    construtorCall = exprDest and
+    construtorCall.getConstructor().getNumberOfParameters() = paramCount
   )
 }
 
@@ -77,7 +78,7 @@ private predicate isTaintPropagatingFileTransformation(Expr expSource, Expr expr
  * For example, `taintedFile.getCanonicalFile()` is itself tainted.
  */
 predicate isAdditionalFileTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-  isFileConstructorArgument(node1.asExpr(), node2.asExpr()) or
+  isFileConstructorArgument(node1.asExpr(), node2.asExpr(), _) or
   isTaintPropagatingFileTransformation(node1.asExpr(), node2.asExpr())
 }
 
