@@ -12,7 +12,10 @@ class Test {
         "\\cA",
         "\\c(",
         "\\c\\(ab)",
-        "(?>hi)(?<name>hell*?o*+)123\\k<name>"
+        "(?>hi)(?<name>hell*?o*+)123\\k<name>",
+        "a+b*c?d{2}e{3,4}f{,5}g{6,}h+?i*?j??k{7}?l{8,9}?m{,10}?n{11,}?o++p*+q?+r{12}+s{13,14}+t{,15}+u{16,}+",
+        "(?i)(?=a)(?!b)(?<=c)(?<!d)",
+        "a|b|c(d|e)f|g"
     };
 
     void test() {

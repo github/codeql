@@ -174,7 +174,7 @@ abstract class RegexString extends StringLiteral {
   }
 
   /**
-   * Helper predicate for `quoteSequence`.
+   * Helper predicate for `quote`.
    * Holds if the char at `pos` could be the beginning of a quote delimiter, i.e. `\Q` (non-escaped) or `\E` (escaping not checked, as quote sequences turn off escapes).
    * Result is `true` for `\Q` and `false` for `\E`.
    */
@@ -189,7 +189,7 @@ abstract class RegexString extends StringLiteral {
   }
 
   /**
-   * Helper predicate for `quoteSequence`.
+   * Helper predicate for `quote`.
    * Holds if the char at `pos` is the one-based `index`th occourence of a quote delimiter (`\Q` or `\E`)
    * Result is `true` for `\Q` and `false` for `\E`.
    */
@@ -343,7 +343,10 @@ abstract class RegexString extends StringLiteral {
       not c = "[" and
       not c = ")" and
       not c = "|" and
-      not this.quantifier(start, _, _, _)
+      not c = "{" and
+      not exists(int qstart, int qend | this.quantifier(qstart, qend, _, _) |
+        qstart <= start and start < qend
+      )
     )
   }
 
