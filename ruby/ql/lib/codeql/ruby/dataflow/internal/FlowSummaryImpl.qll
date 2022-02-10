@@ -892,7 +892,7 @@ module Private {
 
     /** Holds if component `c` of specification `spec` cannot be parsed. */
     predicate invalidSpecComponent(AccessPath spec, string c) {
-      c = spec.getRawToken(_) and
+      c = spec.getToken(_) and
       not exists(interpretComponent(c))
     }
 
