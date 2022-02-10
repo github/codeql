@@ -602,6 +602,7 @@ module API {
     int distanceFromRoot(TApiNode nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)
   }
 
+  /** Provides classes modeling the various edges (labels) in the API graph. */
   module Label {
     /** A label in the API-graph */
     class ApiLabel extends TLabel {
@@ -719,6 +720,7 @@ module API {
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
 
+    /** Gets the `subclass` edge label. */
     LabelSubclass subclass() { any() }
 
     /** Gets the label representing the given keword argument/parameter. */
