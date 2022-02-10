@@ -10,7 +10,7 @@ setting extractor configuration options through the CodeQL CLI.
 About extractor options
 -----------------------
 
-Each extractor defines its own set of configuration options. To find out which options are available for a particular extractor, you can run ``codeql resolve languages`` or ``codeql resolve extractor`` with the ``--format=betterjson`` option. The ``betterjson`` output format provides the root paths of extractors and additional information. The output of ``codeql resolve extractor --format=betterjson`` will often be formatted like the following example::
+Each extractor defines its own set of configuration options. To find out which options are available for a particular extractor, you can run ``codeql resolve languages`` or ``codeql resolve extractor`` with the ``--format=betterjson`` option. The ``betterjson`` output format provides the root paths of extractors and additional information. The output of ``codeql resolve extractor --format=betterjson`` will often be formatted like the following example:
 
 .. code-block:: json
 
@@ -95,7 +95,7 @@ You can also set extractor options through a file. The CodeQL CLI subcommands th
 
 Each option file contains a tree structure of nested maps. At the root is an extractor map key, and beneath it are map keys that correspond to extractor names. Starting at the third level, there are extractor options and option groups.
 
-In JSON::
+In JSON:
 
 .. code-block:: json
 
@@ -111,7 +111,7 @@ In JSON::
     }
 
 
-In YAML::
+In YAML:
 
 .. code-block:: yaml
 
@@ -129,7 +129,7 @@ The value for an option group (of type ``object``) must be a map, which may cont
 
 Each extractor option value must match the regular expression pattern of the extractor option (if it exists), and it must not contain newline characters.
 
-Assigning an extractor option that does not exist is an error. You can make the CodeQL CLI ignore unknown extractor options by using a special ``__allow_unknown_properties`` Boolean field. For example, the following option file asks the CodeQL CLI to ignore all unknown extractor options and option groups under ``group1``::
+Assigning an extractor option that does not exist is an error. You can make the CodeQL CLI ignore unknown extractor options by using a special ``__allow_unknown_properties`` Boolean field. For example, the following option file asks the CodeQL CLI to ignore all unknown extractor options and option groups under ``group1``:
 
 .. code-block:: yaml
 
