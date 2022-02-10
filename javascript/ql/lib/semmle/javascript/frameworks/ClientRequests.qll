@@ -463,16 +463,11 @@ module ClientRequest {
   }
 
   /**
-   * Gets an instantiation `socket` of `require("net").Socket` type tracked using `t`.
+   * Gets an instantiation `socket` of `require("net").Socket`.
    */
-  private DataFlow::SourceNode netSocketInstantiation(
-    DataFlow::TypeTracker t, DataFlow::NewNode socket
-  ) {
-    t.start() and
-    socket = DataFlow::moduleMember("net", "Socket").getAnInstantiation() and
-    result = socket
-    or
-    exists(DataFlow::TypeTracker t2 | result = netSocketInstantiation(t2, socket).track(t2, t))
+  private API::Node netSocketInstantiation(DataFlow::NewNode socket) {
+    result = API::moduleImport("net").getMember("Socket").getInstance() and
+    socket = result.getAnImmediateUse()
   }
 
   /**
@@ -481,9 +476,7 @@ module ClientRequest {
   class NetSocketRequest extends ClientRequest::Range {
     DataFlow::NewNode socket;
 
-    NetSocketRequest() {
-      this = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMethodCall("connect")
-    }
+    NetSocketRequest() { this = netSocketInstantiation(socket).getMember("connect").getACall() }
 
     override DataFlow::Node getUrl() {
       result = this.getArgument([0, 1]) // there are multiple overrides of `connect`, and the URL can be in the first or second argument.
@@ -495,7 +488,7 @@ module ClientRequest {
       responseType = "text" and
       promise = false and
       exists(DataFlow::CallNode call |
-        call = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMemberCall("on") and
+        call = netSocketInstantiation(socket).getMember("on").getACall() and
         call.getArgument(0).mayHaveStringValue("data") and
         result = call.getABoundCallbackParameter(1, 0)
       )
@@ -503,7 +496,7 @@ module ClientRequest {
 
     override DataFlow::Node getADataNode() {
       exists(DataFlow::CallNode call |
-        call = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMemberCall("write") and
+        call = netSocketInstantiation(socket).getMember("write").getACall() and
         result = call.getArgument(0)
       )
     }
@@ -713,22 +706,15 @@ module ClientRequest {
    * Gets a reference to an instance of `chrome-remote-interface`.
    *
    * An instantiation of `chrome-remote-interface` either accepts a callback or returns a promise.
-   *
-   * The `isPromise` parameter reflects whether the reference is a promise containing
-   * an instance of `chrome-remote-interface`, or an instance of `chrome-remote-interface`.
    */
-  private DataFlow::SourceNode chromeRemoteInterface(DataFlow::TypeTracker t) {
-    exists(DataFlow::CallNode call |
-      call = DataFlow::moduleImport("chrome-remote-interface").getAnInvocation()
-    |
+  private API::Node chromeRemoteInterface() {
+    exists(API::CallNode call | call = API::moduleImport("chrome-remote-interface").getACall() |
       // the client is inside in a promise.
-      t.startInPromise() and result = call
+      result = call.getReturn().getPromised()
       or
       // the client is accessed directly using a callback.
-      t.start() and result = call.getCallback([0 .. 1]).getParameter(0)
+      result = call.getParameter([0 .. 1]).getParameter(0)
     )
-    or
-    exists(DataFlow::TypeTracker t2 | result = chromeRemoteInterface(t2).track(t2, t))
   }
 
   /**
@@ -738,14 +724,12 @@ module ClientRequest {
     int optionsArg;
 
     ChromeRemoteInterfaceRequest() {
-      exists(DataFlow::SourceNode instance |
-        instance = chromeRemoteInterface(DataFlow::TypeTracker::end())
-      |
+      exists(API::Node instance | instance = chromeRemoteInterface() |
         optionsArg = 0 and
-        this = instance.getAPropertyRead("Page").getAMemberCall("navigate")
+        this = instance.getMember("Page").getMember("navigate").getACall()
         or
         optionsArg = 1 and
-        this = instance.getAMemberCall("send") and
+        this = instance.getMember("send").getACall() and
         this.getArgument(0).mayHaveStringValue("Page.navigate")
       )
     }
