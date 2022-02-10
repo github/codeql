@@ -1,3 +1,16 @@
+## 0.0.9
+
+### New Queries
+
+* Added a new query, `cpp/open-call-with-mode-argument`, to detect when `open` or `openat` is called with the `O_CREAT` or `O_TMPFILE` flag but when the `mode` argument is omitted.
+
+### Minor Analysis Improvements
+
+* The "Cleartext transmission of sensitive information" (`cpp/cleartext-transmission`) query has been further improved to reduce false positive results, and upgraded from `medium` to `high` precision.
+* The `cpp/cleartext-storage-file` query has been improved, removing false positives where data is written to a standard output stream.
+* The `cpp/cleartext-storage-buffer` query has been updated to use the `semmle.code.cpp.dataflow.TaintTracking` library.
+* The "Cleartext transmission of sensitive information" (`cpp/cleartext-transmission`) query now finds more results, where a password is stored in a struct field or class member variable.
+
 ## 0.0.8
 
 ### New Queries
