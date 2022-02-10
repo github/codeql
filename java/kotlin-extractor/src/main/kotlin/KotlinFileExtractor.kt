@@ -2694,8 +2694,8 @@ open class KotlinFileExtractor(
 
     private fun extractTypeAccess(type: TypeResults, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
         // TODO: elementForLocation allows us to give some sort of
-        // location, but a proper location for the type access will
-        // require upstream changes
+        //   location, but a proper location for the type access will
+        //   require upstream changes
         val id = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
         tw.writeExprs_unannotatedtypeaccess(id, type.javaResult.id, parent, idx)
         tw.writeExprsKotlinType(id, type.kotlinResult.id)
