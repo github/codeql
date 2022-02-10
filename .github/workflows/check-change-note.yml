@@ -8,6 +8,7 @@ on:
       - "*/ql/src/**/*.qll"
       - "!**/experimental/**"
       - "!ql/**"
+      - ".github/workflows/check-change-not.yml"
 
 jobs:
   check-change-note:
