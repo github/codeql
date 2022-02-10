@@ -5,7 +5,7 @@
 <p>
 The method <code>HostnameVerifier.verify()</code> checks that the hostname from the server's certificate
 matches the server hostname after an HTTPS connection is established.
-The method returns true if the hostname is acceptable and false otherwise. The contract of the method
+The method returns <code>true</code> if the hostname is acceptable and <code>false</code> otherwise. The contract of the method
 does not require it to throw an exception if the verification failed.
 Therefore, a caller has to check the result and drop the connection if the hostname verification failed.
 Otherwise, an attacker may be able to implement a man-in-the-middle attack and impersonate the server.
@@ -28,7 +28,7 @@ As a result, no hostname verification actually happens.
 
 <p>
 In the next example, the result of the <code>HostnameVerifier.verify()</code> method is checked
-and an exeption is thrown if the verification failed.
+and an exception is thrown if the verification failed.
 </p>
 <sample src="CheckedHostnameVerification.java" />
 </example>

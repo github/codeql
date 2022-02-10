@@ -20,7 +20,7 @@ private class HostnameVerifierVerifyMethod extends Method {
   }
 }
 
-/** Defines `HostnameVerifier.verity()` calls that is not wrapped in another `HostnameVerifier`. */
+/** A `HostnameVerifier.verify()` call that is not wrapped in another `HostnameVerifier`. */
 private class HostnameVerificationCall extends MethodAccess {
   HostnameVerificationCall() {
     this.getMethod() instanceof HostnameVerifierVerifyMethod and
