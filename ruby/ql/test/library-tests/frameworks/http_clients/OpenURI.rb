@@ -11,3 +11,6 @@ resp3.read
 
 resp4 = URI.parse("https://example.com").open
 resp4.read
+
+resp5 = OpenURI.open_uri("https://example.com")
+resp5.read
