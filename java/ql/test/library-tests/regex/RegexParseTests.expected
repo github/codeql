@@ -130,3 +130,10 @@ parseFailures
 | Test.java:18:18:18:18 | e | [RegExpConstant,RegExpNormalChar] |
 | Test.java:18:20:18:20 | f | [RegExpConstant,RegExpNormalChar] |
 | Test.java:18:22:18:22 | g | [RegExpConstant,RegExpNormalChar] |
+| Test.java:19:10:19:12 | \\01 | [RegExpConstant,RegExpEscape] |
+| Test.java:19:10:19:27 | \\018\\033\\0377\\0777 | [RegExpSequence] |
+| Test.java:19:13:19:13 | 8 | [RegExpConstant,RegExpNormalChar] |
+| Test.java:19:14:19:17 | \\033 | [RegExpConstant,RegExpEscape] |
+| Test.java:19:18:19:22 | \\0377 | [RegExpConstant,RegExpEscape] |
+| Test.java:19:23:19:26 | \\077 | [RegExpConstant,RegExpEscape] |
+| Test.java:19:27:19:27 | 7 | [RegExpConstant,RegExpNormalChar] |
