@@ -51,6 +51,6 @@ class ClientSuppliedIpUsedInSecurityCheckConfig extends TaintTracking::Configura
 from
   ClientSuppliedIpUsedInSecurityCheckConfig config, DataFlow::PathNode source,
   DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+where none()
 select sink.getNode(), source, sink, "IP address spoofing might include code from $@.",
   source.getNode(), "this user input"
