@@ -201,7 +201,6 @@ edges
 | string_flow.rb:241:10:241:10 | b [array element] :  | string_flow.rb:241:10:241:13 | ...[...] |
 | string_flow.rb:242:10:242:10 | b [array element] :  | string_flow.rb:242:10:242:13 | ...[...] |
 | string_flow.rb:246:5:246:18 | ... = ... :  | string_flow.rb:250:26:250:26 | a :  |
-| string_flow.rb:246:5:246:18 | ... = ... :  | string_flow.rb:258:27:258:27 | a :  |
 | string_flow.rb:246:9:246:18 | call to source :  | string_flow.rb:246:5:246:18 | ... = ... :  |
 | string_flow.rb:246:9:246:18 | call to source :  | string_flow.rb:247:10:247:10 | a :  |
 | string_flow.rb:246:9:246:18 | call to source :  | string_flow.rb:248:20:248:20 | a :  |
@@ -215,7 +214,6 @@ edges
 | string_flow.rb:250:26:250:26 | a :  | string_flow.rb:250:10:250:28 | call to scrub |
 | string_flow.rb:252:10:252:10 | a :  | string_flow.rb:252:10:252:22 | call to scrub! |
 | string_flow.rb:253:21:253:21 | a :  | string_flow.rb:253:10:253:22 | call to scrub! |
-| string_flow.rb:255:5:255:18 | ... = ... :  | string_flow.rb:250:26:250:26 | a :  |
 | string_flow.rb:255:5:255:18 | ... = ... :  | string_flow.rb:258:27:258:27 | a :  |
 | string_flow.rb:255:9:255:18 | call to source :  | string_flow.rb:255:5:255:18 | ... = ... :  |
 | string_flow.rb:255:9:255:18 | call to source :  | string_flow.rb:256:5:256:5 | a :  |

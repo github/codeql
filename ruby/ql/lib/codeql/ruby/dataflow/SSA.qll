@@ -316,7 +316,7 @@ module Ssa {
     CapturedCallDefinition() {
       exists(Variable v, BasicBlock bb, int i |
         this.definesAt(v, bb, i) and
-        SsaImpl::capturedCallWrite(bb, i, v)
+        SsaImpl::capturedCallWrite(_, bb, i, v)
       )
     }
 
