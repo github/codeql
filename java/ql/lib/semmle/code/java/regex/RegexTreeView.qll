@@ -725,9 +725,6 @@ class RegExpConstant extends RegExpTerm {
     not this instanceof RegExpCharacterClassEscape and
     // exclude chars in quantifiers
     // TODO: push this into regex library
-    not exists(int qstart, int qend | re.quantifiedPart(_, qstart, qend, _, _) |
-      qstart <= start and end <= qend
-    ) and
     (value = this.(RegExpNormalChar).getValue() or value = this.(RegExpQuote).getValue())
   }
 
