@@ -313,7 +313,6 @@ open class KotlinUsesExtractor(
         val classInstanceResult = useClassInstance(c, args)
         val javaClassId = classInstanceResult.typeResult.id
         val kotlinQualClassName = getUnquotedClassLabel(c, args).classLabel
-        // TODO: args ought to be substituted, so e.g. MutableList<MutableList<String>> gets the Java type List<List<String>>
         val javaResult = classInstanceResult.typeResult
         val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
             if (hasQuestionMark) {
