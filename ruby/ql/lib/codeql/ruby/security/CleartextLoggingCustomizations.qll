@@ -41,7 +41,7 @@ module CleartextLogging {
    * Holds if `re` may be a regular expression that can be used to sanitize
    * sensitive data with a call to `sub`.
    */
-  private predicate effectiveSubRegExp(RegExpLiteral re) {
+  private predicate effectiveSubRegExp(CfgNodes::ExprNodes::RegExpLiteralCfgNode re) {
     re.getConstantValue().getStringOrSymbol().matches([".*", ".+"])
   }
 
@@ -49,7 +49,7 @@ module CleartextLogging {
    * Holds if `re` may be a regular expression that can be used to sanitize
    * sensitive data with a call to `gsub`.
    */
-  private predicate effectiveGsubRegExp(RegExpLiteral re) {
+  private predicate effectiveGsubRegExp(CfgNodes::ExprNodes::RegExpLiteralCfgNode re) {
     re.getConstantValue().getStringOrSymbol().matches(".")
   }
 
@@ -58,8 +58,8 @@ module CleartextLogging {
    */
   private class MaskingReplacerSanitizer extends Sanitizer, DataFlow::CallNode {
     MaskingReplacerSanitizer() {
-      exists(RegExpLiteral re |
-        re = this.getArgument(0).asExpr().getExpr() and
+      exists(CfgNodes::ExprNodes::RegExpLiteralCfgNode re |
+        re = this.getArgument(0).asExpr() and
         (
           this.getMethodName() = ["sub", "sub!"] and effectiveSubRegExp(re)
           or
@@ -124,8 +124,7 @@ module CleartextLogging {
         or
         // dereferencing a non-sensitive field
         this.asExpr()
-            .getExpr()
-            .(ElementReference)
+            .(CfgNodes::ExprNodes::ElementReferenceCfgNode)
             .getArgument(0)
             .getConstantValue()
             .getStringOrSymbol() = name
@@ -136,8 +135,7 @@ module CleartextLogging {
       or
       // avoid i18n strings
       this.asExpr()
-          .getExpr()
-          .(ElementReference)
+          .(CfgNodes::ExprNodes::ElementReferenceCfgNode)
           .getReceiver()
           .getConstantValue()
           .getStringOrSymbol()
@@ -161,13 +159,12 @@ module CleartextLogging {
 
   // `writeNode` assigns pair with key `name` to `val`
   private predicate hashKeyWrite(DataFlow::CallNode writeNode, string name, DataFlow::Node val) {
-    exists(SetterMethodCall setter |
-      setter = writeNode.asExpr().getExpr() and
-      // hash[name]
-      setter.getArgument(0).getConstantValue().getStringOrSymbol() = name and
-      // val
-      setter.getArgument(1).(Assignment).getRightOperand() = val.asExpr().getExpr()
-    )
+    writeNode.asExpr().getExpr() instanceof SetterMethodCall and
+    // hash[name]
+    writeNode.getArgument(0).asExpr().getConstantValue().getStringOrSymbol() = name and
+    // val
+    writeNode.getArgument(1).asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs() =
+      val.asExpr()
   }
 
   /**
