@@ -82,3 +82,12 @@ end
 password_arg = "65f2950df2f0e2c38d7ba2ccca767291"
 foo(password_arg, stdout_logger)
 foo("65f2950df2f0e2c38d7ba2ccca767292", stdout_logger)
+
+def redact(password)
+  "***"
+end
+
+password_r1 = redact("65f2950df2f0e2c38d7ba2ccca767291")
+password_r2 = password_r1
+# GOOD: password_r2 has been redacted
+stdout_logger.info password_r2
