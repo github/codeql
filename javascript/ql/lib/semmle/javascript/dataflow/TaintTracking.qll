@@ -1179,6 +1179,17 @@ module TaintTracking {
         parse = isNaN.getArgument(0) and
         operand = parse.getArgument(0).asExpr()
       )
+      or
+      exists(UnaryExpr unary | unary.getOperator() = ["+", "-"] |
+        unary = isNaN.getArgument(0).asExpr() and
+        operand = unary.getOperand()
+      )
+      or
+      exists(BinaryExpr bin | bin.getOperator() = ["+", "-"] |
+        bin = isNaN.getArgument(0).asExpr() and
+        operand = bin.getAnOperand() and
+        bin.getAnOperand() instanceof NumberLiteral
+      )
     )
     or
     isTypeofGuard(guard.asExpr(), operand, "number") and
