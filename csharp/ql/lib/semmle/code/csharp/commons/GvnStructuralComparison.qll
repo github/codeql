@@ -9,9 +9,12 @@ private newtype TGvn =
   TConstantGvn(string s) { s = any(Expr e).getValue() } or
   TVariableGvn(Declaration d) or
   TMethodGvn(Method m) or
-  //  TBinaryExprGvn(int kind, TGvn child1, TGvn child2) { binaryExpr(_, kind, child1, child2) } or
   TListExprGvn(GvnList l)
 
+/**
+ * Type for containing a global value number for expressions with an arbitrary number of children.
+ * The empty list carries the kind of the expression.
+ */
 private newtype TGvnList =
   TGvnNil(int kind) { expressions(_, kind, _) } or
   TGvnCons(Gvn head, GvnList tail) { gvnConstructedCons(_, _, _, head, tail) }
@@ -39,15 +42,20 @@ abstract private class GvnList extends TGvnList {
 }
 
 private class GvnNil extends GvnList, TGvnNil {
-  override string toString() {
-    result = "GvnNil" // TODO: Implement this
-  }
+  private int kind;
+
+  GvnNil() { this = TGvnNil(kind) }
+
+  override string toString() { result = "Nil(kind:" + kind + ")]" }
 }
 
 private class GvnCons extends GvnList, TGvnCons {
-  override string toString() {
-    result = "GvnCons" // TODO: Implement this
-  }
+  private Gvn head;
+  private GvnList tail;
+
+  GvnCons() { this = TGvnCons(head, tail) }
+
+  override string toString() { result = head.toString() + " :: " + tail.toString() }
 }
 
 private Declaration referenceAttribute(Expr e) {
@@ -66,21 +74,12 @@ private int getNumberOfChildren(Expr e) {
   )
 }
 
-private predicate myTest(Expr e) { e.fromSource() and getNumberOfChildren(e) = 2 }
-
 // Turns out that a e = M() will have 2 children. One for the method (which is the target) and one for the implicit this access.
 private predicate myTest2(Expr e, Declaration d, Expr e1) {
   e.fromSource() and
   getNumberOfChildren(e) = 2 and
   d = referenceAttribute(e) and
   e1 = e.getChild(-1)
-}
-
-private predicate binaryExpr(Expr e, int kind, Gvn child1, Gvn child2) {
-  getNumberOfChildren(e) = 2 and
-  expressions(e, kind, _) and
-  child1 = toGvn(e.getChild(0)) and
-  child2 = toGvn(e.getChild(1))
 }
 
 Gvn toGvn(Expr e) {
@@ -98,9 +97,6 @@ Gvn toGvn(Expr e) {
       index = getNumberOfChildren(e) and // TODO: Should this be factored
       result = TListExprGvn(l)
     )
-    // exists(int kind, TGvn child1, TGvn child2 |
-    //   binaryExpr(e, kind, child1, child2) and result = TBinaryExprGvn(kind, child1, child2)
-    // )
   )
 }
 
@@ -118,39 +114,27 @@ private class ConstantGvn extends Gvn, TConstantGvn {
 }
 
 private class VariableGvn extends Gvn, TVariableGvn {
-  override string toString() {
-    exists(Declaration d |
-      this = TVariableGvn(d) and
-      result = d.toString()
-    )
-  }
+  private Declaration d;
+
+  VariableGvn() { this = TVariableGvn(d) }
+
+  override string toString() { result = d.toString() }
 }
 
 private class MethodGvn extends Gvn, TMethodGvn {
-  override string toString() {
-    exists(Method m |
-      this = TMethodGvn(m) and
-      result = m.toString()
-    )
-  }
+  private Method m;
+
+  MethodGvn() { this = TMethodGvn(m) }
+
+  override string toString() { result = m.toString() }
 }
 
-// private class BinaryExprGvn extends Gvn, TBinaryExprGvn {
-//   // Consider better printing, but good enough for now.
-//   override string toString() {
-//     exists(Gvn child1, Gvn child2, int kind |
-//       this = TBinaryExprGvn(kind, child1, child2) and
-//       result = child1.toString() + " " + "kind(" + kind + ") " + child2.toString()
-//     )
-//   }
-// }
 private class ListExprGvn extends Gvn, TListExprGvn {
-  override string toString() {
-    exists(GvnList l |
-      this = TListExprGvn(l) and
-      result = l.toString()
-    )
-  }
+  private GvnList l;
+
+  ListExprGvn() { this = TListExprGvn(l) }
+
+  override string toString() { result = "[" + l.toString() + "]" }
 }
 
 abstract class GvnStructuralComparisonConfiguration extends string {
