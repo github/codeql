@@ -527,8 +527,7 @@ class RegExpEscape extends RegExpNormalChar {
  * Gets the hex number for the `hex` char.
  */
 private int toHex(string hex) {
-  hex = [0 .. 9].toString() and
-  result = hex.toInt()
+  result = [0 .. 9] and hex = result.toString()
   or
   result = 10 and hex = ["a", "A"]
   or
@@ -545,7 +544,7 @@ private int toHex(string hex) {
 
 /**
  * A character class escape in a regular expression.
- * That is, an escaped charachter that denotes multiple characters.
+ * That is, an escaped character that denotes multiple characters.
  *
  * Examples:
  *
