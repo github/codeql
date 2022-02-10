@@ -24,16 +24,12 @@ int instanceParameterPosition() { result = -1 }
 
 /** A parameter position represented by an integer. */
 class ParameterPosition extends int {
-  ParameterPosition() {
-    parameterPosition(this)
-  }
+  ParameterPosition() { parameterPosition(this) }
 }
 
 /** An argument position represented by an integer. */
 class ArgumentPosition extends int {
-  ArgumentPosition() {
-    parameterPosition(this)
-  }
+  ArgumentPosition() { parameterPosition(this) }
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
@@ -303,11 +299,7 @@ private int parseConstantOrRange(string arg) {
 }
 
 bindingset[arg]
-ArgumentPosition parseParamBody(string arg) {
-  result = parseConstantOrRange(arg)
-}
+ArgumentPosition parseParamBody(string arg) { result = parseConstantOrRange(arg) }
 
 bindingset[arg]
-ParameterPosition parseArgBody(string arg) {
-  result = parseConstantOrRange(arg)
-}
+ParameterPosition parseArgBody(string arg) { result = parseConstantOrRange(arg) }
