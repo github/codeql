@@ -9,7 +9,46 @@ private newtype TGvn =
   TConstantGvn(string s) { s = any(Expr e).getValue() } or
   TVariableGvn(Declaration d) or
   TMethodGvn(Method m) or
-  TBinaryExprGvn(int kind, TGvn child1, TGvn child2) { binaryExpr(_, kind, child1, child2) }
+  //  TBinaryExprGvn(int kind, TGvn child1, TGvn child2) { binaryExpr(_, kind, child1, child2) } or
+  TListExprGvn(GvnList l)
+
+private newtype TGvnList =
+  TGvnNil(int kind) { expressions(_, kind, _) } or
+  TGvnCons(Gvn head, GvnList tail) { gvnConstructedCons(_, _, _, head, tail) }
+
+// TODO: Do we need no inline pragma?
+private GvnList gvnConstructed(Expr e, int kind, int index) {
+  result = TGvnNil(kind) and
+  index = -1 and // TODO: Is this correct? Should it be something else depending on the kind of expression?
+  expressions(e, kind, _)
+  or
+  exists(Gvn head, GvnList tail |
+    gvnConstructedCons(e, kind, index, head, tail) and
+    result = TGvnCons(head, tail)
+  )
+}
+
+// TODO: Do we need noinline pragma?
+private predicate gvnConstructedCons(Expr e, int kind, int index, Gvn head, GvnList tail) {
+  tail = gvnConstructed(e, kind, index - 1) and
+  head = toGvn(e.getChild(index))
+}
+
+abstract private class GvnList extends TGvnList {
+  abstract string toString();
+}
+
+private class GvnNil extends GvnList, TGvnNil {
+  override string toString() {
+    result = "GvnNil" // TODO: Implement this
+  }
+}
+
+private class GvnCons extends GvnList, TGvnCons {
+  override string toString() {
+    result = "GvnCons" // TODO: Implement this
+  }
+}
 
 private Declaration referenceAttribute(Expr e) {
   result = e.(MethodCall).getTarget()
@@ -54,10 +93,20 @@ Gvn toGvn(Expr e) {
     // This doesn't correctly capture the argument expressions.
     result = TMethodGvn(e.(MethodCall).getTarget())
     or
-    exists(int kind, TGvn child1, TGvn child2 |
-      binaryExpr(e, kind, child1, child2) and result = TBinaryExprGvn(kind, child1, child2)
+    exists(GvnList l, int kind, int index |
+      l = gvnConstructed(e, kind, index - 1) and
+      index = getNumberOfChildren(e) and // TODO: Should this be factored
+      result = TListExprGvn(l)
     )
+    // exists(int kind, TGvn child1, TGvn child2 |
+    //   binaryExpr(e, kind, child1, child2) and result = TBinaryExprGvn(kind, child1, child2)
+    // )
   )
+}
+
+private predicate myTest3(Expr e, Gvn gvn) {
+  e.fromSource() and
+  gvn = toGvn(e)
 }
 
 abstract class Gvn extends TGvn {
@@ -86,12 +135,20 @@ private class MethodGvn extends Gvn, TMethodGvn {
   }
 }
 
-private class BinaryExprGvn extends Gvn, TBinaryExprGvn {
-  // Consider better printing, but good enough for now.
+// private class BinaryExprGvn extends Gvn, TBinaryExprGvn {
+//   // Consider better printing, but good enough for now.
+//   override string toString() {
+//     exists(Gvn child1, Gvn child2, int kind |
+//       this = TBinaryExprGvn(kind, child1, child2) and
+//       result = child1.toString() + " " + "kind(" + kind + ") " + child2.toString()
+//     )
+//   }
+// }
+private class ListExprGvn extends Gvn, TListExprGvn {
   override string toString() {
-    exists(Gvn child1, Gvn child2, int kind |
-      this = TBinaryExprGvn(kind, child1, child2) and
-      result = child1.toString() + " " + "kind(" + kind + ") " + child2.toString()
+    exists(GvnList l |
+      this = TListExprGvn(l) and
+      result = l.toString()
     )
   }
 }

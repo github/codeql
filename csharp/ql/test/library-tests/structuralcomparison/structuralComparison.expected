@@ -74,31 +74,31 @@ gvnPrinting
 | StructuralComparison.cs:5:27:5:27 | 0 | 0 |
 | StructuralComparison.cs:7:29:7:29 | access to parameter a | a |
 | StructuralComparison.cs:11:13:11:13 | access to local variable x | x |
-| StructuralComparison.cs:11:13:11:17 | Int32 x = ... | 0 kind(83) x |
+| StructuralComparison.cs:11:13:11:17 | Int32 x = ... | GvnCons |
 | StructuralComparison.cs:11:17:11:17 | 0 | 0 |
 | StructuralComparison.cs:12:13:12:13 | access to local variable y | y |
-| StructuralComparison.cs:12:13:12:17 | Int32 y = ... | 1 kind(83) y |
+| StructuralComparison.cs:12:13:12:17 | Int32 y = ... | GvnCons |
 | StructuralComparison.cs:12:17:12:17 | 1 | 1 |
 | StructuralComparison.cs:13:13:13:14 | access to local variable z1 | z1 |
-| StructuralComparison.cs:13:13:13:22 | Int32 z1 = ... | x kind(44) y kind(83) z1 |
+| StructuralComparison.cs:13:13:13:22 | Int32 z1 = ... | GvnCons |
 | StructuralComparison.cs:13:18:13:18 | access to local variable x | x |
-| StructuralComparison.cs:13:18:13:22 | ... + ... | x kind(44) y |
+| StructuralComparison.cs:13:18:13:22 | ... + ... | GvnCons |
 | StructuralComparison.cs:13:22:13:22 | access to local variable y | y |
 | StructuralComparison.cs:14:13:14:14 | access to local variable z2 | z2 |
-| StructuralComparison.cs:14:13:14:22 | Int32 z2 = ... | x kind(44) y kind(83) z2 |
+| StructuralComparison.cs:14:13:14:22 | Int32 z2 = ... | GvnCons |
 | StructuralComparison.cs:14:18:14:18 | access to local variable x | x |
-| StructuralComparison.cs:14:18:14:22 | ... + ... | x kind(44) y |
+| StructuralComparison.cs:14:18:14:22 | ... + ... | GvnCons |
 | StructuralComparison.cs:14:22:14:22 | access to local variable y | y |
 | StructuralComparison.cs:15:13:15:14 | access to local variable z3 | z3 |
-| StructuralComparison.cs:15:13:15:22 | Int32 z3 = ... | M0 kind(83) z3 |
+| StructuralComparison.cs:15:13:15:22 | Int32 z3 = ... | GvnCons |
 | StructuralComparison.cs:15:18:15:22 | call to method M0 | M0 |
 | StructuralComparison.cs:15:21:15:21 | access to local variable x | x |
 | StructuralComparison.cs:16:13:16:14 | access to local variable z4 | z4 |
-| StructuralComparison.cs:16:13:16:22 | Int32 z4 = ... | M0 kind(83) z4 |
+| StructuralComparison.cs:16:13:16:22 | Int32 z4 = ... | GvnCons |
 | StructuralComparison.cs:16:18:16:22 | call to method M0 | M0 |
 | StructuralComparison.cs:16:21:16:21 | access to local variable x | x |
 | StructuralComparison.cs:17:13:17:14 | access to local variable z5 | z5 |
-| StructuralComparison.cs:17:13:17:24 | Int32 z5 = ... | MUnit kind(83) z5 |
+| StructuralComparison.cs:17:13:17:24 | Int32 z5 = ... | GvnCons |
 | StructuralComparison.cs:17:18:17:24 | call to method MUnit | MUnit |
 sameDiff
 | StructuralComparison.cs:15:18:15:22 | this access | StructuralComparison.cs:16:18:16:22 | this access |
