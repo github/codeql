@@ -297,6 +297,20 @@ private module Cached {
     TKnownArrayElementContent(int i) { i in [0 .. 10] } or
     TUnknownArrayElementContent() or
     TAnyArrayElementContent()
+
+  /**
+   * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
+   */
+  cached
+  predicate exprNodeReturnedFromCached(ExprNode e, Callable c) {
+    exists(ReturningNode r |
+      nodeGetEnclosingCallable(r).asCallable() = c and
+      (
+        r.(ExplicitReturnNode).getReturningNode().getReturnedValueNode() = e.asExpr() or
+        r.(ExprReturnNode) = e
+      )
+    )
+  }
 }
 
 class TArrayElementContent = TKnownArrayElementContent or TUnknownArrayElementContent;
@@ -306,8 +320,12 @@ import Cached
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
   exists(Ssa::Definition def | def = n.(SsaDefinitionNode).getDefinition() |
-    def instanceof Ssa::PhiNode
+    def instanceof Ssa::PhiNode or
+    def instanceof Ssa::CapturedEntryDefinition or
+    def instanceof Ssa::CapturedCallDefinition
   )
+  or
+  n = LocalFlow::getParameterDefNode(_)
   or
   isDesugarNode(n.(ExprNode).getExprNode().getExpr())
   or

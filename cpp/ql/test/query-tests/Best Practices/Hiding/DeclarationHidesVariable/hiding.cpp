@@ -35,7 +35,7 @@ void structuredBinding() {
   int xs[1] = {1};
   auto [x] = xs;
   {
-    auto [x] = xs; // BAD [NOT DETECTED]
+    auto [x] = xs; // BAD
     auto [y] = xs; // GOOD
   }
 }

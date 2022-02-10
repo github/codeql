@@ -168,6 +168,16 @@ class NetworkRecv extends NetworkSendRecv {
   override Recv target;
 }
 
+pragma[noinline]
+predicate encryptionFunction(Function f) {
+  f.getName().toLowerCase().regexpMatch(".*(crypt|encode|decode|hash|securezero).*")
+}
+
+pragma[noinline]
+predicate encryptionType(UserType t) {
+  t.getName().toLowerCase().regexpMatch(".*(crypt|encode|decode|hash|securezero).*")
+}
+
 /**
  * An expression that is an argument or return value from an encryption /
  * decryption call. This is quite inclusive to minimize false positives, for
@@ -177,10 +187,7 @@ class NetworkRecv extends NetworkSendRecv {
 class Encrypted extends Expr {
   Encrypted() {
     exists(FunctionCall fc |
-      fc.getTarget()
-          .getName()
-          .toLowerCase()
-          .regexpMatch(".*(crypt|encode|decode|hash|securezero).*") and
+      encryptionFunction(fc.getTarget()) and
       (
         this = fc or
         this = fc.getAnArgument()
@@ -189,7 +196,7 @@ class Encrypted extends Expr {
     or
     exists(Type t |
       this.getType().refersTo(t) and
-      t.getName().toLowerCase().regexpMatch(".*(crypt|encode|decode|hash|securezero).*")
+      encryptionType(t)
     )
   }
 }

@@ -216,6 +216,10 @@ private DataFlow::Node getAnExportFromModule(Module mod) {
   or
   result = mod.getABulkExportedNode()
   or
+  // exports saved to the global object
+  result = DataFlow::globalObjectRef().getAPropertyWrite().getRhs() and
+  result.getTopLevel() = mod
+  or
   result.analyze().getAValue() = TAbstractModuleObject(mod)
 }
 
