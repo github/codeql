@@ -191,10 +191,6 @@ open class KotlinUsesExtractor(
             logger.error("Unexpected access to anonymous class instance")
         }
 
-        // TODO: only substitute in class and function signatures
-        //       because within function bodies we can get things like Unit.INSTANCE
-        //       and List.asIterable (an extension, i.e. static, method)
-        // Map Kotlin class to its equivalent Java class:
         val substituteClass = getJavaEquivalentClass(c)
 
         val extractClass = substituteClass ?: c
