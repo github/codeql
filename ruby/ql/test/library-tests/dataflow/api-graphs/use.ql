@@ -59,9 +59,8 @@ string getAPath(API::Node node, int length) {
   length = 0 and
   result = ""
   or
-  exists(API::Node pred, string lbl, string predpath |
+  exists(API::Node pred, API::Label::ApiLabel lbl, string predpath |
     pred.getASuccessor(lbl) = node and
-    lbl != "" and
     predpath = getAPath(pred, length - 1) and
     exists(string dot | if length = 1 then dot = "" else dot = "." |
       result = predpath + dot + lbl and
