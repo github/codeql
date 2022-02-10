@@ -108,6 +108,7 @@ nodes
 | Test.java:258:38:258:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:261:33:261:44 | tempDirChild : File | semmle.label | tempDirChild : File |
 | Test.java:261:33:261:53 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:268:25:268:63 | createTempFile(...) | semmle.label | createTempFile(...) |
 subpaths
 #select
 | Files.java:10:33:10:68 | getProperty(...) | Files.java:10:33:10:68 | getProperty(...) : String | Files.java:15:17:15:23 | tempDir | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Files.java:10:33:10:68 | getProperty(...) | system temp directory |
