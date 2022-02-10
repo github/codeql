@@ -1,8 +1,7 @@
 /**
- * @name Timing attack against headers value
- * @description A constant-time algorithm should be used for checking the value of headers. 
- *              In other words, the comparison time should not depend on the content of the input
- *              Otherwise, an attacker may be able to implement a timing attacks that may reveal the value of sensitive headers
+ * @name Timing attack against header value
+ * @description Use of a non-constant-time verification routine to check the value of an HTTP header,
+ *              possibly allowing a timing attack to infer the header's expected value.
  * @kind path-problem
  * @problem.severity error
  * @precision high
@@ -24,19 +23,15 @@ private class NonConstantTimeEqualsCall extends MethodAccess {
   }
 }
 
-private predicate isNonConstantTimeEqualsCall(Expr firstObject, Expr secondObject) {
+private predicate isNonConstantEqualsCallArgument(Expr e) {
   exists(NonConstantTimeEqualsCall call |
-    firstObject = call.getQualifier() and
-    secondObject = call.getAnArgument()
-    or
-    firstObject = call.getAnArgument() and
-    secondObject = call.getQualifier()
-  )
+    e = [call.getQualifier(), call.getAnArgument()]
 }
+
+
 class NonConstantTimeComparisonSink extends DataFlow::Node {
-  Expr anotherParameter;
   NonConstantTimeComparisonSink() {
-      isNonConstantTimeEqualsCall(this.asExpr(), anotherParameter)
+      isNonConstantEqualsCallArgument(this.asExpr())
   }    
 } 
 class ClientSuppliedIpTokenCheck extends DataFlow::Node {
