@@ -1,110 +1,278 @@
 same
-| StructuralComparison.cs:5:27:5:27 | 0 | StructuralComparison.cs:11:17:11:17 | 0 |
-| StructuralComparison.cs:11:13:11:13 | access to local variable x | StructuralComparison.cs:13:18:13:18 | access to local variable x |
-| StructuralComparison.cs:11:13:11:13 | access to local variable x | StructuralComparison.cs:14:18:14:18 | access to local variable x |
-| StructuralComparison.cs:11:13:11:13 | access to local variable x | StructuralComparison.cs:15:21:15:21 | access to local variable x |
-| StructuralComparison.cs:11:13:11:13 | access to local variable x | StructuralComparison.cs:16:21:16:21 | access to local variable x |
-| StructuralComparison.cs:11:17:11:17 | 0 | StructuralComparison.cs:5:27:5:27 | 0 |
-| StructuralComparison.cs:12:13:12:13 | access to local variable y | StructuralComparison.cs:13:22:13:22 | access to local variable y |
-| StructuralComparison.cs:12:13:12:13 | access to local variable y | StructuralComparison.cs:14:22:14:22 | access to local variable y |
-| StructuralComparison.cs:13:18:13:18 | access to local variable x | StructuralComparison.cs:11:13:11:13 | access to local variable x |
-| StructuralComparison.cs:13:18:13:18 | access to local variable x | StructuralComparison.cs:14:18:14:18 | access to local variable x |
-| StructuralComparison.cs:13:18:13:18 | access to local variable x | StructuralComparison.cs:15:21:15:21 | access to local variable x |
-| StructuralComparison.cs:13:18:13:18 | access to local variable x | StructuralComparison.cs:16:21:16:21 | access to local variable x |
-| StructuralComparison.cs:13:18:13:22 | ... + ... | StructuralComparison.cs:14:18:14:22 | ... + ... |
-| StructuralComparison.cs:13:22:13:22 | access to local variable y | StructuralComparison.cs:12:13:12:13 | access to local variable y |
-| StructuralComparison.cs:13:22:13:22 | access to local variable y | StructuralComparison.cs:14:22:14:22 | access to local variable y |
-| StructuralComparison.cs:14:18:14:18 | access to local variable x | StructuralComparison.cs:11:13:11:13 | access to local variable x |
-| StructuralComparison.cs:14:18:14:18 | access to local variable x | StructuralComparison.cs:13:18:13:18 | access to local variable x |
-| StructuralComparison.cs:14:18:14:18 | access to local variable x | StructuralComparison.cs:15:21:15:21 | access to local variable x |
-| StructuralComparison.cs:14:18:14:18 | access to local variable x | StructuralComparison.cs:16:21:16:21 | access to local variable x |
-| StructuralComparison.cs:14:18:14:22 | ... + ... | StructuralComparison.cs:13:18:13:22 | ... + ... |
-| StructuralComparison.cs:14:22:14:22 | access to local variable y | StructuralComparison.cs:12:13:12:13 | access to local variable y |
-| StructuralComparison.cs:14:22:14:22 | access to local variable y | StructuralComparison.cs:13:22:13:22 | access to local variable y |
-| StructuralComparison.cs:15:18:15:22 | call to method M0 | StructuralComparison.cs:16:18:16:22 | call to method M0 |
-| StructuralComparison.cs:15:18:15:22 | this access | StructuralComparison.cs:16:18:16:22 | this access |
-| StructuralComparison.cs:15:18:15:22 | this access | StructuralComparison.cs:17:18:17:24 | this access |
-| StructuralComparison.cs:15:21:15:21 | access to local variable x | StructuralComparison.cs:11:13:11:13 | access to local variable x |
-| StructuralComparison.cs:15:21:15:21 | access to local variable x | StructuralComparison.cs:13:18:13:18 | access to local variable x |
-| StructuralComparison.cs:15:21:15:21 | access to local variable x | StructuralComparison.cs:14:18:14:18 | access to local variable x |
-| StructuralComparison.cs:15:21:15:21 | access to local variable x | StructuralComparison.cs:16:21:16:21 | access to local variable x |
-| StructuralComparison.cs:16:18:16:22 | call to method M0 | StructuralComparison.cs:15:18:15:22 | call to method M0 |
-| StructuralComparison.cs:16:18:16:22 | this access | StructuralComparison.cs:15:18:15:22 | this access |
-| StructuralComparison.cs:16:18:16:22 | this access | StructuralComparison.cs:17:18:17:24 | this access |
-| StructuralComparison.cs:16:21:16:21 | access to local variable x | StructuralComparison.cs:11:13:11:13 | access to local variable x |
-| StructuralComparison.cs:16:21:16:21 | access to local variable x | StructuralComparison.cs:13:18:13:18 | access to local variable x |
-| StructuralComparison.cs:16:21:16:21 | access to local variable x | StructuralComparison.cs:14:18:14:18 | access to local variable x |
-| StructuralComparison.cs:16:21:16:21 | access to local variable x | StructuralComparison.cs:15:21:15:21 | access to local variable x |
-| StructuralComparison.cs:17:18:17:24 | this access | StructuralComparison.cs:15:18:15:22 | this access |
-| StructuralComparison.cs:17:18:17:24 | this access | StructuralComparison.cs:16:18:16:22 | this access |
+| StructuralComparison.cs:5:27:5:27 | 0 | StructuralComparison.cs:13:17:13:17 | 0 |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | StructuralComparison.cs:17:21:17:21 | access to local variable x |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | StructuralComparison.cs:18:21:18:21 | access to local variable x |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:13:17:13:17 | 0 | StructuralComparison.cs:5:27:5:27 | 0 |
+| StructuralComparison.cs:14:13:14:13 | access to local variable y | StructuralComparison.cs:15:22:15:22 | access to local variable y |
+| StructuralComparison.cs:14:13:14:13 | access to local variable y | StructuralComparison.cs:16:22:16:22 | access to local variable y |
+| StructuralComparison.cs:14:13:14:13 | access to local variable y | StructuralComparison.cs:19:21:19:21 | access to local variable y |
+| StructuralComparison.cs:14:13:14:13 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
+| StructuralComparison.cs:14:13:14:13 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | StructuralComparison.cs:17:21:17:21 | access to local variable x |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | StructuralComparison.cs:18:21:18:21 | access to local variable x |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:15:18:15:22 | ... + ... | StructuralComparison.cs:16:18:16:22 | ... + ... |
+| StructuralComparison.cs:15:22:15:22 | access to local variable y | StructuralComparison.cs:14:13:14:13 | access to local variable y |
+| StructuralComparison.cs:15:22:15:22 | access to local variable y | StructuralComparison.cs:16:22:16:22 | access to local variable y |
+| StructuralComparison.cs:15:22:15:22 | access to local variable y | StructuralComparison.cs:19:21:19:21 | access to local variable y |
+| StructuralComparison.cs:15:22:15:22 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
+| StructuralComparison.cs:15:22:15:22 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | StructuralComparison.cs:17:21:17:21 | access to local variable x |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | StructuralComparison.cs:18:21:18:21 | access to local variable x |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:16:18:16:22 | ... + ... | StructuralComparison.cs:15:18:15:22 | ... + ... |
+| StructuralComparison.cs:16:22:16:22 | access to local variable y | StructuralComparison.cs:14:13:14:13 | access to local variable y |
+| StructuralComparison.cs:16:22:16:22 | access to local variable y | StructuralComparison.cs:15:22:15:22 | access to local variable y |
+| StructuralComparison.cs:16:22:16:22 | access to local variable y | StructuralComparison.cs:19:21:19:21 | access to local variable y |
+| StructuralComparison.cs:16:22:16:22 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
+| StructuralComparison.cs:16:22:16:22 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
+| StructuralComparison.cs:17:18:17:22 | call to method M0 | StructuralComparison.cs:18:18:18:22 | call to method M0 |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:21:18:21:25 | this access |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:21:29:21:36 | this access |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:18:21:18:21 | access to local variable x |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:18:18:18:22 | call to method M0 | StructuralComparison.cs:17:18:17:22 | call to method M0 |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:21:18:21:25 | this access |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:21:29:21:36 | this access |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:17:21:17:21 | access to local variable x |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:21:18:21:25 | this access |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:21:29:21:36 | this access |
+| StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:14:13:14:13 | access to local variable y |
+| StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:15:22:15:22 | access to local variable y |
+| StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:16:22:16:22 | access to local variable y |
+| StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
+| StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:21:18:21:25 | this access |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:21:29:21:36 | this access |
+| StructuralComparison.cs:21:18:21:25 | call to method M1 | StructuralComparison.cs:21:29:21:36 | call to method M1 |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:21:29:21:36 | this access |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:17:21:17:21 | access to local variable x |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:18:21:18:21 | access to local variable x |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:21:24:21:24 | access to local variable y | StructuralComparison.cs:14:13:14:13 | access to local variable y |
+| StructuralComparison.cs:21:24:21:24 | access to local variable y | StructuralComparison.cs:15:22:15:22 | access to local variable y |
+| StructuralComparison.cs:21:24:21:24 | access to local variable y | StructuralComparison.cs:16:22:16:22 | access to local variable y |
+| StructuralComparison.cs:21:24:21:24 | access to local variable y | StructuralComparison.cs:19:21:19:21 | access to local variable y |
+| StructuralComparison.cs:21:24:21:24 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
+| StructuralComparison.cs:21:29:21:36 | call to method M1 | StructuralComparison.cs:21:18:21:25 | call to method M1 |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:21:18:21:25 | this access |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:17:21:17:21 | access to local variable x |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:18:21:18:21 | access to local variable x |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
+| StructuralComparison.cs:21:35:21:35 | access to local variable y | StructuralComparison.cs:14:13:14:13 | access to local variable y |
+| StructuralComparison.cs:21:35:21:35 | access to local variable y | StructuralComparison.cs:15:22:15:22 | access to local variable y |
+| StructuralComparison.cs:21:35:21:35 | access to local variable y | StructuralComparison.cs:16:22:16:22 | access to local variable y |
+| StructuralComparison.cs:21:35:21:35 | access to local variable y | StructuralComparison.cs:19:21:19:21 | access to local variable y |
+| StructuralComparison.cs:21:35:21:35 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
 gvnSame
-| StructuralComparison.cs:5:27:5:27 | 0 | StructuralComparison.cs:11:17:11:17 | 0 |
-| StructuralComparison.cs:11:13:11:13 | access to local variable x | StructuralComparison.cs:13:18:13:18 | access to local variable x |
-| StructuralComparison.cs:11:13:11:13 | access to local variable x | StructuralComparison.cs:14:18:14:18 | access to local variable x |
-| StructuralComparison.cs:11:13:11:13 | access to local variable x | StructuralComparison.cs:15:21:15:21 | access to local variable x |
-| StructuralComparison.cs:11:13:11:13 | access to local variable x | StructuralComparison.cs:16:21:16:21 | access to local variable x |
-| StructuralComparison.cs:11:17:11:17 | 0 | StructuralComparison.cs:5:27:5:27 | 0 |
-| StructuralComparison.cs:12:13:12:13 | access to local variable y | StructuralComparison.cs:13:22:13:22 | access to local variable y |
-| StructuralComparison.cs:12:13:12:13 | access to local variable y | StructuralComparison.cs:14:22:14:22 | access to local variable y |
-| StructuralComparison.cs:13:18:13:18 | access to local variable x | StructuralComparison.cs:11:13:11:13 | access to local variable x |
-| StructuralComparison.cs:13:18:13:18 | access to local variable x | StructuralComparison.cs:14:18:14:18 | access to local variable x |
-| StructuralComparison.cs:13:18:13:18 | access to local variable x | StructuralComparison.cs:15:21:15:21 | access to local variable x |
-| StructuralComparison.cs:13:18:13:18 | access to local variable x | StructuralComparison.cs:16:21:16:21 | access to local variable x |
-| StructuralComparison.cs:13:18:13:22 | ... + ... | StructuralComparison.cs:14:18:14:22 | ... + ... |
-| StructuralComparison.cs:13:22:13:22 | access to local variable y | StructuralComparison.cs:12:13:12:13 | access to local variable y |
-| StructuralComparison.cs:13:22:13:22 | access to local variable y | StructuralComparison.cs:14:22:14:22 | access to local variable y |
-| StructuralComparison.cs:14:18:14:18 | access to local variable x | StructuralComparison.cs:11:13:11:13 | access to local variable x |
-| StructuralComparison.cs:14:18:14:18 | access to local variable x | StructuralComparison.cs:13:18:13:18 | access to local variable x |
-| StructuralComparison.cs:14:18:14:18 | access to local variable x | StructuralComparison.cs:15:21:15:21 | access to local variable x |
-| StructuralComparison.cs:14:18:14:18 | access to local variable x | StructuralComparison.cs:16:21:16:21 | access to local variable x |
-| StructuralComparison.cs:14:18:14:22 | ... + ... | StructuralComparison.cs:13:18:13:22 | ... + ... |
-| StructuralComparison.cs:14:22:14:22 | access to local variable y | StructuralComparison.cs:12:13:12:13 | access to local variable y |
-| StructuralComparison.cs:14:22:14:22 | access to local variable y | StructuralComparison.cs:13:22:13:22 | access to local variable y |
-| StructuralComparison.cs:15:18:15:22 | call to method M0 | StructuralComparison.cs:16:18:16:22 | call to method M0 |
-| StructuralComparison.cs:15:21:15:21 | access to local variable x | StructuralComparison.cs:11:13:11:13 | access to local variable x |
-| StructuralComparison.cs:15:21:15:21 | access to local variable x | StructuralComparison.cs:13:18:13:18 | access to local variable x |
-| StructuralComparison.cs:15:21:15:21 | access to local variable x | StructuralComparison.cs:14:18:14:18 | access to local variable x |
-| StructuralComparison.cs:15:21:15:21 | access to local variable x | StructuralComparison.cs:16:21:16:21 | access to local variable x |
-| StructuralComparison.cs:16:18:16:22 | call to method M0 | StructuralComparison.cs:15:18:15:22 | call to method M0 |
-| StructuralComparison.cs:16:21:16:21 | access to local variable x | StructuralComparison.cs:11:13:11:13 | access to local variable x |
-| StructuralComparison.cs:16:21:16:21 | access to local variable x | StructuralComparison.cs:13:18:13:18 | access to local variable x |
-| StructuralComparison.cs:16:21:16:21 | access to local variable x | StructuralComparison.cs:14:18:14:18 | access to local variable x |
-| StructuralComparison.cs:16:21:16:21 | access to local variable x | StructuralComparison.cs:15:21:15:21 | access to local variable x |
+| StructuralComparison.cs:5:27:5:27 | 0 | StructuralComparison.cs:13:17:13:17 | 0 |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | StructuralComparison.cs:17:21:17:21 | access to local variable x |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | StructuralComparison.cs:18:21:18:21 | access to local variable x |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:13:17:13:17 | 0 | StructuralComparison.cs:5:27:5:27 | 0 |
+| StructuralComparison.cs:14:13:14:13 | access to local variable y | StructuralComparison.cs:15:22:15:22 | access to local variable y |
+| StructuralComparison.cs:14:13:14:13 | access to local variable y | StructuralComparison.cs:16:22:16:22 | access to local variable y |
+| StructuralComparison.cs:14:13:14:13 | access to local variable y | StructuralComparison.cs:19:21:19:21 | access to local variable y |
+| StructuralComparison.cs:14:13:14:13 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
+| StructuralComparison.cs:14:13:14:13 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | StructuralComparison.cs:17:21:17:21 | access to local variable x |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | StructuralComparison.cs:18:21:18:21 | access to local variable x |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:15:18:15:22 | ... + ... | StructuralComparison.cs:16:18:16:22 | ... + ... |
+| StructuralComparison.cs:15:22:15:22 | access to local variable y | StructuralComparison.cs:14:13:14:13 | access to local variable y |
+| StructuralComparison.cs:15:22:15:22 | access to local variable y | StructuralComparison.cs:16:22:16:22 | access to local variable y |
+| StructuralComparison.cs:15:22:15:22 | access to local variable y | StructuralComparison.cs:19:21:19:21 | access to local variable y |
+| StructuralComparison.cs:15:22:15:22 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
+| StructuralComparison.cs:15:22:15:22 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | StructuralComparison.cs:17:21:17:21 | access to local variable x |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | StructuralComparison.cs:18:21:18:21 | access to local variable x |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:16:18:16:22 | ... + ... | StructuralComparison.cs:15:18:15:22 | ... + ... |
+| StructuralComparison.cs:16:22:16:22 | access to local variable y | StructuralComparison.cs:14:13:14:13 | access to local variable y |
+| StructuralComparison.cs:16:22:16:22 | access to local variable y | StructuralComparison.cs:15:22:15:22 | access to local variable y |
+| StructuralComparison.cs:16:22:16:22 | access to local variable y | StructuralComparison.cs:19:21:19:21 | access to local variable y |
+| StructuralComparison.cs:16:22:16:22 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
+| StructuralComparison.cs:16:22:16:22 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
+| StructuralComparison.cs:17:18:17:22 | call to method M0 | StructuralComparison.cs:18:18:18:22 | call to method M0 |
+| StructuralComparison.cs:17:18:17:22 | call to method M0 | StructuralComparison.cs:19:18:19:22 | call to method M0 |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:18:21:18:21 | access to local variable x |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:18:18:18:22 | call to method M0 | StructuralComparison.cs:17:18:17:22 | call to method M0 |
+| StructuralComparison.cs:18:18:18:22 | call to method M0 | StructuralComparison.cs:19:18:19:22 | call to method M0 |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:17:21:17:21 | access to local variable x |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:19:18:19:22 | call to method M0 | StructuralComparison.cs:17:18:17:22 | call to method M0 |
+| StructuralComparison.cs:19:18:19:22 | call to method M0 | StructuralComparison.cs:18:18:18:22 | call to method M0 |
+| StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:14:13:14:13 | access to local variable y |
+| StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:15:22:15:22 | access to local variable y |
+| StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:16:22:16:22 | access to local variable y |
+| StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
+| StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
+| StructuralComparison.cs:21:18:21:25 | call to method M1 | StructuralComparison.cs:21:29:21:36 | call to method M1 |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:17:21:17:21 | access to local variable x |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:18:21:18:21 | access to local variable x |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:21:24:21:24 | access to local variable y | StructuralComparison.cs:14:13:14:13 | access to local variable y |
+| StructuralComparison.cs:21:24:21:24 | access to local variable y | StructuralComparison.cs:15:22:15:22 | access to local variable y |
+| StructuralComparison.cs:21:24:21:24 | access to local variable y | StructuralComparison.cs:16:22:16:22 | access to local variable y |
+| StructuralComparison.cs:21:24:21:24 | access to local variable y | StructuralComparison.cs:19:21:19:21 | access to local variable y |
+| StructuralComparison.cs:21:24:21:24 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
+| StructuralComparison.cs:21:29:21:36 | call to method M1 | StructuralComparison.cs:21:18:21:25 | call to method M1 |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:17:21:17:21 | access to local variable x |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:18:21:18:21 | access to local variable x |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
+| StructuralComparison.cs:21:35:21:35 | access to local variable y | StructuralComparison.cs:14:13:14:13 | access to local variable y |
+| StructuralComparison.cs:21:35:21:35 | access to local variable y | StructuralComparison.cs:15:22:15:22 | access to local variable y |
+| StructuralComparison.cs:21:35:21:35 | access to local variable y | StructuralComparison.cs:16:22:16:22 | access to local variable y |
+| StructuralComparison.cs:21:35:21:35 | access to local variable y | StructuralComparison.cs:19:21:19:21 | access to local variable y |
+| StructuralComparison.cs:21:35:21:35 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
 gvnPrinting
 | StructuralComparison.cs:5:27:5:27 | 0 | 0 |
 | StructuralComparison.cs:7:29:7:29 | access to parameter a | a |
-| StructuralComparison.cs:11:13:11:13 | access to local variable x | x |
-| StructuralComparison.cs:11:13:11:17 | Int32 x = ... | [x :: 0 :: Nil(kind:83)]] |
-| StructuralComparison.cs:11:17:11:17 | 0 | 0 |
-| StructuralComparison.cs:12:13:12:13 | access to local variable y | y |
-| StructuralComparison.cs:12:13:12:17 | Int32 y = ... | [y :: 1 :: Nil(kind:83)]] |
-| StructuralComparison.cs:12:17:12:17 | 1 | 1 |
-| StructuralComparison.cs:13:13:13:14 | access to local variable z1 | z1 |
-| StructuralComparison.cs:13:13:13:22 | Int32 z1 = ... | [z1 :: [y :: x :: Nil(kind:44)]] :: Nil(kind:83)]] |
-| StructuralComparison.cs:13:18:13:18 | access to local variable x | x |
-| StructuralComparison.cs:13:18:13:22 | ... + ... | [y :: x :: Nil(kind:44)]] |
-| StructuralComparison.cs:13:22:13:22 | access to local variable y | y |
-| StructuralComparison.cs:14:13:14:14 | access to local variable z2 | z2 |
-| StructuralComparison.cs:14:13:14:22 | Int32 z2 = ... | [z2 :: [y :: x :: Nil(kind:44)]] :: Nil(kind:83)]] |
-| StructuralComparison.cs:14:18:14:18 | access to local variable x | x |
-| StructuralComparison.cs:14:18:14:22 | ... + ... | [y :: x :: Nil(kind:44)]] |
-| StructuralComparison.cs:14:22:14:22 | access to local variable y | y |
-| StructuralComparison.cs:15:13:15:14 | access to local variable z3 | z3 |
-| StructuralComparison.cs:15:13:15:22 | Int32 z3 = ... | [z3 :: M0 :: Nil(kind:83)]] |
-| StructuralComparison.cs:15:18:15:22 | call to method M0 | M0 |
-| StructuralComparison.cs:15:21:15:21 | access to local variable x | x |
-| StructuralComparison.cs:16:13:16:14 | access to local variable z4 | z4 |
-| StructuralComparison.cs:16:13:16:22 | Int32 z4 = ... | [z4 :: M0 :: Nil(kind:83)]] |
-| StructuralComparison.cs:16:18:16:22 | call to method M0 | M0 |
-| StructuralComparison.cs:16:21:16:21 | access to local variable x | x |
-| StructuralComparison.cs:17:13:17:14 | access to local variable z5 | z5 |
-| StructuralComparison.cs:17:13:17:24 | Int32 z5 = ... | [z5 :: MUnit :: Nil(kind:83)]] |
-| StructuralComparison.cs:17:18:17:24 | call to method MUnit | MUnit |
+| StructuralComparison.cs:8:38:8:39 | access to parameter v1 | v1 |
+| StructuralComparison.cs:8:38:8:44 | ... + ... | [v2 :: v1 :: Nil(kind:44)]] |
+| StructuralComparison.cs:8:43:8:44 | access to parameter v2 | v2 |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | x |
+| StructuralComparison.cs:13:13:13:17 | Int32 x = ... | [x :: 0 :: Nil(kind:83)]] |
+| StructuralComparison.cs:13:17:13:17 | 0 | 0 |
+| StructuralComparison.cs:14:13:14:13 | access to local variable y | y |
+| StructuralComparison.cs:14:13:14:17 | Int32 y = ... | [y :: 1 :: Nil(kind:83)]] |
+| StructuralComparison.cs:14:17:14:17 | 1 | 1 |
+| StructuralComparison.cs:15:13:15:14 | access to local variable z1 | z1 |
+| StructuralComparison.cs:15:13:15:22 | Int32 z1 = ... | [z1 :: [y :: x :: Nil(kind:44)]] :: Nil(kind:83)]] |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | x |
+| StructuralComparison.cs:15:18:15:22 | ... + ... | [y :: x :: Nil(kind:44)]] |
+| StructuralComparison.cs:15:22:15:22 | access to local variable y | y |
+| StructuralComparison.cs:16:13:16:14 | access to local variable z2 | z2 |
+| StructuralComparison.cs:16:13:16:22 | Int32 z2 = ... | [z2 :: [y :: x :: Nil(kind:44)]] :: Nil(kind:83)]] |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | x |
+| StructuralComparison.cs:16:18:16:22 | ... + ... | [y :: x :: Nil(kind:44)]] |
+| StructuralComparison.cs:16:22:16:22 | access to local variable y | y |
+| StructuralComparison.cs:17:13:17:14 | access to local variable z3 | z3 |
+| StructuralComparison.cs:17:13:17:22 | Int32 z3 = ... | [z3 :: M0 :: Nil(kind:83)]] |
+| StructuralComparison.cs:17:18:17:22 | call to method M0 | M0 |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | x |
+| StructuralComparison.cs:18:13:18:14 | access to local variable z4 | z4 |
+| StructuralComparison.cs:18:13:18:22 | Int32 z4 = ... | [z4 :: M0 :: Nil(kind:83)]] |
+| StructuralComparison.cs:18:18:18:22 | call to method M0 | M0 |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | x |
+| StructuralComparison.cs:19:13:19:14 | access to local variable z5 | z5 |
+| StructuralComparison.cs:19:13:19:22 | Int32 z5 = ... | [z5 :: M0 :: Nil(kind:83)]] |
+| StructuralComparison.cs:19:18:19:22 | call to method M0 | M0 |
+| StructuralComparison.cs:19:21:19:21 | access to local variable y | y |
+| StructuralComparison.cs:20:13:20:14 | access to local variable z6 | z6 |
+| StructuralComparison.cs:20:13:20:24 | Int32 z6 = ... | [z6 :: MUnit :: Nil(kind:83)]] |
+| StructuralComparison.cs:20:18:20:24 | call to method MUnit | MUnit |
+| StructuralComparison.cs:21:13:21:14 | access to local variable z7 | z7 |
+| StructuralComparison.cs:21:13:21:36 | Int32 z7 = ... | [z7 :: [M1 :: M1 :: Nil(kind:44)]] :: Nil(kind:83)]] |
+| StructuralComparison.cs:21:18:21:25 | call to method M1 | M1 |
+| StructuralComparison.cs:21:18:21:36 | ... + ... | [M1 :: M1 :: Nil(kind:44)]] |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | x |
+| StructuralComparison.cs:21:24:21:24 | access to local variable y | y |
+| StructuralComparison.cs:21:29:21:36 | call to method M1 | M1 |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | x |
+| StructuralComparison.cs:21:35:21:35 | access to local variable y | y |
 sameDiff
-| StructuralComparison.cs:15:18:15:22 | this access | StructuralComparison.cs:16:18:16:22 | this access |
-| StructuralComparison.cs:15:18:15:22 | this access | StructuralComparison.cs:17:18:17:24 | this access |
-| StructuralComparison.cs:16:18:16:22 | this access | StructuralComparison.cs:15:18:15:22 | this access |
-| StructuralComparison.cs:16:18:16:22 | this access | StructuralComparison.cs:17:18:17:24 | this access |
-| StructuralComparison.cs:17:18:17:24 | this access | StructuralComparison.cs:15:18:15:22 | this access |
-| StructuralComparison.cs:17:18:17:24 | this access | StructuralComparison.cs:16:18:16:22 | this access |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:21:18:21:25 | this access |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:21:29:21:36 | this access |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:21:18:21:25 | this access |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:21:29:21:36 | this access |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:21:18:21:25 | this access |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:21:29:21:36 | this access |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:21:18:21:25 | this access |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:21:29:21:36 | this access |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:21:29:21:36 | this access |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:21:18:21:25 | this access |
 gvnSameDiff
+| StructuralComparison.cs:17:18:17:22 | call to method M0 | StructuralComparison.cs:19:18:19:22 | call to method M0 |
+| StructuralComparison.cs:18:18:18:22 | call to method M0 | StructuralComparison.cs:19:18:19:22 | call to method M0 |
+| StructuralComparison.cs:19:18:19:22 | call to method M0 | StructuralComparison.cs:17:18:17:22 | call to method M0 |
+| StructuralComparison.cs:19:18:19:22 | call to method M0 | StructuralComparison.cs:18:18:18:22 | call to method M0 |
