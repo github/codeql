@@ -600,7 +600,6 @@ open class KotlinFileExtractor(
                     val methodId = id as Label<DbMethod>
                     tw.writeMethods(methodId, shortName, "$shortName$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration as Label<DbMethod>)
                     tw.writeMethodsKotlinType(methodId, returnType.kotlinResult.id)
-                    // TODO: fix `sourceId`. It doesn't always match the method ID.
                 }
 
                 tw.writeHasLocation(id, locId)
