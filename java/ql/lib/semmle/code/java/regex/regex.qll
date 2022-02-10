@@ -52,14 +52,10 @@ abstract class RegexString extends StringLiteral {
    * This leads to very similar results for ReDoS queries.
    */
   predicate charSet(int start, int end) {
-    exists(int inner_start, int inner_end |
-      this.charSetStart(start, inner_start) and
-      not this.charSetStart(_, start)
-    |
+    exists(int inner_start, int inner_end | this.charSetStart(start, inner_start) |
       end = inner_end + 1 and
-      inner_end > inner_start and
-      this.charSetEnd(inner_end) and
-      not exists(int mid | this.charSetEnd(mid) | mid > inner_start and mid < inner_end)
+      inner_end =
+        min(int end_delimiter | this.charSetEnd(end_delimiter) and end_delimiter > inner_start)
     )
   }
 
@@ -159,7 +155,7 @@ abstract class RegexString extends StringLiteral {
 
   /**
    * Helper predicate for `escapingChar`.
-   * In order to avoid negative recusrion, we return a boolean.
+   * In order to avoid negative recursion, we return a boolean.
    * This way, we can refer to `escaping(pos - 1).booleanNot()`
    * rather than to a negated version of `escaping(pos)`.
    * Does not take into account escape characters inside quote sequences.
@@ -199,13 +195,13 @@ abstract class RegexString extends StringLiteral {
    */
   private boolean quoteDelimiter(int index, int pos) {
     result = this.quoteDelimiter(pos) and
-    pos = rank[index](int p | this.quoteDelimiter(p) = [true, false])
+    pos = rank[index](int p | exists(this.quoteDelimiter(p)))
   }
 
   /** Holds if a quoted sequence is found between `start` and `end` */
   predicate quote(int start, int end) { this.quote(start, end, _, _) }
 
-  /** Holds if a quoted sequence is fund between `start` and `end`, with ontent found between `inner_start` and `inner_end`. */
+  /** Holds if a quoted sequence is found between `start` and `end`, with ontent found between `inner_start` and `inner_end`. */
   predicate quote(int start, int end, int inner_start, int inner_end) {
     exists(int index |
       this.quoteDelimiter(index, start) = true and
@@ -216,11 +212,10 @@ abstract class RegexString extends StringLiteral {
       ) and
       inner_start = start + 2 and
       inner_end = end - 2 and
-      inner_end > inner_start and
-      this.quoteDelimiter(inner_end) = false and
-      not exists(int mid |
-        this.quoteDelimiter(mid) = false and mid in [inner_start .. inner_end - 1]
-      )
+      inner_end =
+        min(int end_delimiter |
+          this.quoteDelimiter(end_delimiter) = false and end_delimiter > inner_start
+        )
     )
   }
 
@@ -266,9 +261,7 @@ abstract class RegexString extends StringLiteral {
     this.escapingChar(start) and
     this.getChar(start + 1) = ["N", "p", "P", "x"] and
     this.getChar(start + 2) = "{" and
-    this.getChar(end - 1) = "}" and
-    end > start and
-    not exists(int i | start + 2 < i and i < end - 1 | this.getChar(i) = "}")
+    end = min(int i | start + 2 < i and this.getChar(i - 1) = "}")
   }
 
   /**
@@ -301,7 +294,7 @@ abstract class RegexString extends StringLiteral {
       or
       this.escapedBraces(start, end)
       or
-      // Boundry matchers \b, \b{g}
+      // Boundary matchers \b, \b{g}
       this.getChar(start + 1) = "b" and
       (
         if this.getText().substring(start + 2, start + 5) = "{g}"
@@ -654,9 +647,7 @@ abstract class RegexString extends StringLiteral {
     this.shortQuantifier(start, end, maybe_empty, may_repeat_forever) and
     not this.getChar(end) = ["?", "+"]
     or
-    exists(int short_end |
-      this.shortQuantifier(start, short_end, maybe_empty, may_repeat_forever)
-    |
+    exists(int short_end | this.shortQuantifier(start, short_end, maybe_empty, may_repeat_forever) |
       if this.getChar(short_end) = ["?", "+"] then end = short_end + 1 else end = short_end
     )
   }
@@ -752,11 +743,11 @@ abstract class RegexString extends StringLiteral {
    * a character set or a group.
    */
   predicate sequence(int start, int end) {
-    this.sequenceOrquantified(start, end) and
+    this.sequenceOrQuantified(start, end) and
     not this.quantifiedItem(start, end, _, _)
   }
 
-  private predicate sequenceOrquantified(int start, int end) {
+  private predicate sequenceOrQuantified(int start, int end) {
     this.subsequence(start, end) and
     not this.itemStart(end)
   }
@@ -787,7 +778,7 @@ abstract class RegexString extends StringLiteral {
   }
 
   private predicate subalternation(int start, int end, int itemStart) {
-    this.sequenceOrquantified(start, end) and
+    this.sequenceOrQuantified(start, end) and
     not this.isOptionDivider(start - 1) and
     itemStart = start
     or
@@ -801,7 +792,7 @@ abstract class RegexString extends StringLiteral {
       this.isOptionDivider(mid) and
       itemStart = mid + 1
     |
-      this.sequenceOrquantified(itemStart, end)
+      this.sequenceOrQuantified(itemStart, end)
       or
       not this.itemStart(end) and end = itemStart
     )
