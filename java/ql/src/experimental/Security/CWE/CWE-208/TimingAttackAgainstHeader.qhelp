@@ -21,7 +21,9 @@ and does not depend on the contents of the arrays.
 <p>
 The following example uses <code>Arrays.equals()</code> method for validating a csrf token.
 This method implements a non-constant-time algorithm.
+
+In the same example i use a safe constant-time algorithm for validating.
 </p>
-<sample src="UnsafecsrfComparison.java" />
+<sample src="csrfComparison.java" />
 </qhelp>
 
