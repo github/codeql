@@ -280,13 +280,14 @@ abstract class RegexString extends StringLiteral {
       or
       // octal value \0o, \0oo, or \0ooo. Max of 0377.
       this.getChar(start + 1) = "0" and
-      end in [start + 3 .. start + 5] and
-      forall(int i | i in [start + 1 .. end - 1] | this.isOctal(i)) and
-      (end = start + 5 implies this.getChar(start + 2) <= "3") and
-      not (
-        end < start + 5 and
-        this.isOctal(end) and
-        (end = start + 4 implies this.getChar(start + 2) <= "3")
+      this.isOctal(start + 2) and
+      (
+        if this.isOctal(start + 3)
+        then
+          if this.isOctal(start + 4) and this.getChar(start + 2) in ["0", "1", "2", "3"]
+          then end = start + 5
+          else end = start + 4
+        else end = start + 3
       )
       or
       // 16-bit hex value \uhhhh
