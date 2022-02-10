@@ -6,20 +6,26 @@ import codeql.ruby.ApiGraphs
 class ApiUseTest extends InlineExpectationsTest {
   ApiUseTest() { this = "ApiUseTest" }
 
-  override string getARelevantTag() { result = "use" }
+  override string getARelevantTag() { result = ["use", "def"] }
 
-  private predicate relevantNode(API::Node a, DataFlow::Node n, Location l) {
-    n = a.getAUse() and
-    l = n.getLocation()
+  private predicate relevantNode(API::Node a, DataFlow::Node n, Location l, string tag) {
+    l = n.getLocation() and
+    (
+      tag = "use" and
+      n = a.getAUse()
+      or
+      tag = "def" and
+      n = a.getARhs()
+    )
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(API::Node a, DataFlow::Node n | relevantNode(a, n, location) |
-      tag = "use" and
+    tag = "use" and // def tags are always optional
+    exists(API::Node a, DataFlow::Node n | relevantNode(a, n, location, tag) |
       // Only report the longest path on this line:
       value =
         max(API::Node a2, Location l2, DataFlow::Node n2 |
-          relevantNode(a2, n2, l2) and
+          relevantNode(a2, n2, l2, tag) and
           l2.getFile() = location.getFile() and
           l2.getStartLine() = location.getStartLine()
         |
@@ -34,8 +40,7 @@ class ApiUseTest extends InlineExpectationsTest {
   // We also permit optional annotations for any other path on the line.
   // This is used to test subclass paths, which typically have a shorter canonical path.
   override predicate hasOptionalResult(Location location, string element, string tag, string value) {
-    exists(API::Node a, DataFlow::Node n | relevantNode(a, n, location) |
-      tag = "use" and
+    exists(API::Node a, DataFlow::Node n | relevantNode(a, n, location, tag) |
       element = n.toString() and
       value = getAPath(a, _)
     )

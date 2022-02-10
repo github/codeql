@@ -285,11 +285,17 @@ private module Cached {
     // and we can remove this case.
     n.asExpr().getExpr() instanceof Self
     or
+    // Nodes that can't be reached from another parameter or expression.
     not localFlowStepTypeTracker+(any(Node e |
         e instanceof ExprNode
         or
         e instanceof ParameterNode
       ), n)
+    or
+    // Ensure all parameter SSA nodes are local sources -- this is needed by type tracking.
+    // Note that when the parameter has a default value, it will be reachable from an
+    // expression (the default value) and therefore won't be caught by the rule above.
+    n = LocalFlow::getParameterDefNode(_)
   }
 
   cached
