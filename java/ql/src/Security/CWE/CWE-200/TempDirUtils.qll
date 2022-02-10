@@ -44,7 +44,7 @@ class MethodFileCreateTempFile extends Method {
 }
 
 /**
- * Holds if `expDest` is some constructor call `new java.io.File(x)` and `expSource` is `x`.
+ * Holds if `expDest` is some constructor call `new java.io.File(expSource)`, where the specific `File` constructor being used has `paramCount` parameters.
  */
 predicate isFileConstructorArgument(Expr expSource, Expr exprDest, int paramCount) {
   exists(ConstructorCall construtorCall |

@@ -121,7 +121,7 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
 
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof FileCreationSink and
-    exists(TempDirSystemGetPropertyDirectlyToMkdirConfig config | not config.hasFlowTo(sink))
+    not any(TempDirSystemGetPropertyDirectlyToMkdirConfig config).hasFlowTo(sink)
   }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
