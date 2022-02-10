@@ -367,8 +367,6 @@ open class KotlinUsesExtractor(
         // Ensure we extract Array<Int> as Integer[], not int[], for example:
         fun nullableIfNotPrimitive(type: IrType) = if (type.isPrimitiveType() && !isPrimitiveArray) type.makeNullable() else type
 
-        // TODO: Figure out what signatures should be returned
-
         val componentTypeResults = useType(nullableIfNotPrimitive(componentType))
         val elementTypeLabel = useType(nullableIfNotPrimitive(elementType)).javaResult.id
 
