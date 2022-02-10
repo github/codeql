@@ -6,151 +6,20 @@ private import RegexFlowConfigs
  * A string literal that is used as a regular expression.
  */
 abstract class RegexString extends StringLiteral {
-  /** Holds if a character set starts between `start` and `end`, including any negation character (`^`). */
-  private predicate charSetStart0(int start, int end) {
-    this.nonEscapedCharAt(start) = "[" and
-    (if this.getChar(start + 1) = "^" then end = start + 2 else end = start + 1)
-  }
+  /** Gets the text of this regex */
+  string getText() { result = this.(StringLiteral).getValue() }
 
-  /** Holds if the character at `pos` marks the end of a character class. */
-  private predicate charSetEnd0(int pos) {
-    this.nonEscapedCharAt(pos) = "]" and
-    /* special case: `[]]` and `[^]]` are valid char classes.  */
-    not this.charSetStart0(_, pos)
-  }
+  /** Gets the `i`th character of this regex. */
+  string getChar(int i) { result = this.getText().charAt(i) }
 
-  /**
-   * Gets the nesting depth of character classes at position `pos`
-   */
-  private int charSetDepth(int pos) {
-    exists(this.getChar(pos)) and
-    result =
-      max(int j |
-        j = 0 or
-        j =
-          count(int i | i < pos and this.charSetStart0(i, _)) -
-            count(int i | i < pos and this.charSetEnd0(i))
-      )
-  }
-
-  /** Hold if a top-level character set starts between `start` and `end`. */
-  predicate charSetStart(int start, int end) {
-    this.charSetStart0(start, end) and
-    this.charSetDepth(start) = 0
-  }
-
-  /** Holds if a top-level character set ends at `pos`. */
-  predicate charSetEnd(int pos) {
-    this.charSetEnd0(pos) and
-    this.charSetDepth(pos) = 1
-  }
-
-  /**
-   * Holds if there is a top-level character class beginning at `start` (inclusive) and ending at `end` (exclusive)
-   *
-   * For now, nested character classes are approximated by only considering the top-level class for parsing.
-   * This leads to very similar results for ReDoS queries.
-   */
-  predicate charSet(int start, int end) {
-    exists(int inner_start, int inner_end | this.charSetStart(start, inner_start) |
-      end = inner_end + 1 and
-      inner_end =
-        min(int end_delimiter | this.charSetEnd(end_delimiter) and end_delimiter > inner_start)
+  /** Holds if the regex failed to parse. */
+  predicate failedToParse(int i) {
+    exists(this.getChar(i)) and
+    not exists(int start, int end |
+      this.topLevel(start, end) and
+      start <= i and
+      end > i
     )
-  }
-
-  /** An indexed version of `charSetToken/3` */
-  private predicate charSetToken(int charset_start, int index, int token_start, int token_end) {
-    token_start =
-      rank[index](int start, int end | this.charSetToken(charset_start, start, end) | start) and
-    this.charSetToken(charset_start, token_start, token_end)
-  }
-
-  /** Either a char or a - */
-  private predicate charSetToken(int charset_start, int start, int end) {
-    this.charSetStart(charset_start, start) and
-    (
-      this.escapedCharacter(start, end)
-      or
-      exists(this.nonEscapedCharAt(start)) and end = start + 1
-      or
-      this.quote(start, end)
-    )
-    or
-    this.charSetToken(charset_start, _, start) and
-    (
-      this.escapedCharacter(start, end)
-      or
-      exists(this.nonEscapedCharAt(start)) and
-      end = start + 1 and
-      not this.charSetEnd(start)
-      or
-      this.quote(start, end)
-    )
-  }
-
-  /**
-   * Holds if the character set starting at `charset_start` contains either
-   * a character or a range found between `start` and `end`.
-   */
-  predicate charSetChild(int charset_start, int start, int end) {
-    this.charSetToken(charset_start, start, end) and
-    not exists(int range_start, int range_end |
-      this.charRange(charset_start, range_start, _, _, range_end) and
-      range_start <= start and
-      range_end >= end
-    )
-    or
-    this.charRange(charset_start, start, _, _, end)
-  }
-
-  /**
-   * Holds if the character set starting at `charset_start` contains a character range
-   * with lower bound found between `start` and `lower_end`
-   * and upper bound found between `upper_start` and `end`.
-   */
-  predicate charRange(int charset_start, int start, int lower_end, int upper_start, int end) {
-    exists(int index |
-      this.charRangeEnd(charset_start, index) = true and
-      this.charSetToken(charset_start, index - 2, start, lower_end) and
-      this.charSetToken(charset_start, index, upper_start, end)
-    )
-  }
-
-  /**
-   * Helper predicate for `charRange`.
-   * We can determine where character ranges end by a left to right sweep.
-   *
-   * To avoid negative recursion we return a boolean. See `escaping`,
-   * the helper for `escapingChar`, for a clean use of this pattern.
-   */
-  private boolean charRangeEnd(int charset_start, int index) {
-    this.charSetToken(charset_start, index, _, _) and
-    (
-      index in [1, 2] and result = false
-      or
-      index > 2 and
-      exists(int connector_start |
-        this.charSetToken(charset_start, index - 1, connector_start, _) and
-        this.nonEscapedCharAt(connector_start) = "-" and
-        result =
-          this.charRangeEnd(charset_start, index - 2)
-              .booleanNot()
-              .booleanAnd(this.charRangeEnd(charset_start, index - 1).booleanNot())
-      )
-      or
-      not exists(int connector_start |
-        this.charSetToken(charset_start, index - 1, connector_start, _) and
-        this.nonEscapedCharAt(connector_start) = "-"
-      ) and
-      result = false
-    )
-  }
-
-  /** Holds if the character at `pos` is a "\" that is actually escaping what comes after. */
-  predicate escapingChar(int pos) {
-    this.escaping(pos) = true and
-    not exists(int x, int y | this.quote(x, y) and pos in [x .. y - 1])
   }
 
   /**
@@ -219,6 +88,12 @@ abstract class RegexString extends StringLiteral {
     )
   }
 
+  /** Holds if the character at `pos` is a "\" that is actually escaping what comes after. */
+  predicate escapingChar(int pos) {
+    this.escaping(pos) = true and
+    not exists(int x, int y | this.quote(x, y) and pos in [x .. y - 1])
+  }
+
   /**
    * A control sequence, `\cx`
    * `x` may be any ascii character including special characters.
@@ -229,11 +104,6 @@ abstract class RegexString extends StringLiteral {
     end = start + 3
   }
 
-  /** Gets the text of this regex */
-  string getText() { result = this.(StringLiteral).getValue() }
-
-  string getChar(int i) { result = this.getText().charAt(i) }
-
   string nonEscapedCharAt(int i) {
     result = this.getText().charAt(i) and
     not exists(int x, int y | this.escapedCharacter(x, y) and i in [x .. y - 1]) and
@@ -241,20 +111,151 @@ abstract class RegexString extends StringLiteral {
     not exists(int x, int y | this.controlEscape(x, y) and i in [x .. y - 1])
   }
 
-  private predicate isOptionDivider(int i) { this.nonEscapedCharAt(i) = "|" }
+  /** Holds if a character set starts between `start` and `end`, including any negation character (`^`). */
+  private predicate charSetStart0(int start, int end) {
+    this.nonEscapedCharAt(start) = "[" and
+    (if this.getChar(start + 1) = "^" then end = start + 2 else end = start + 1)
+  }
 
-  private predicate isGroupEnd(int i) { this.nonEscapedCharAt(i) = ")" and not this.inCharSet(i) }
+  /** Holds if the character at `pos` marks the end of a character class. */
+  private predicate charSetEnd0(int pos) {
+    this.nonEscapedCharAt(pos) = "]" and
+    /* special case: `[]]` and `[^]]` are valid char classes.  */
+    not this.charSetStart0(_, pos)
+  }
 
-  private predicate isGroupStart(int i) { this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i) }
+  /**
+   * Gets the nesting depth of character classes at position `pos`
+   */
+  private int charSetDepth(int pos) {
+    pos = -1 and result = 0
+    or
+    exists(this.getChar(pos)) and
+    result =
+      max(int j |
+        j = 0 or
+        j =
+          count(int i | i < pos and this.charSetStart0(i, _)) -
+            count(int i | i < pos and this.charSetEnd0(i))
+      )
+  }
 
-  predicate failedToParse(int i) {
-    exists(this.getChar(i)) and
-    not exists(int start, int end |
-      this.topLevel(start, end) and
-      start <= i and
-      end > i
+  /** Hold if a top-level character set starts between `start` and `end`. */
+  predicate charSetStart(int start, int end) {
+    this.charSetStart0(start, end) and
+    this.charSetDepth(start) = 0
+  }
+
+  /** Holds if a top-level character set ends at `pos`. */
+  predicate charSetEnd(int pos) {
+    this.charSetEnd0(pos) and
+    this.charSetDepth(pos) = 1
+  }
+
+  /**
+   * Holds if there is a top-level character class beginning at `start` (inclusive) and ending at `end` (exclusive)
+   *
+   * For now, nested character classes are approximated by only considering the top-level class for parsing.
+   * This leads to very similar results for ReDoS queries.
+   */
+  predicate charSet(int start, int end) {
+    exists(int inner_start, int inner_end | this.charSetStart(start, inner_start) |
+      end = inner_end + 1 and
+      inner_end =
+        min(int end_delimiter | this.charSetEnd(end_delimiter) and end_delimiter > inner_start)
     )
   }
+
+  /** Either a char or a - */
+  private predicate charSetToken(int charset_start, int start, int end) {
+    this.charSetStart(charset_start, start) and
+    (
+      this.escapedCharacter(start, end)
+      or
+      exists(this.nonEscapedCharAt(start)) and end = start + 1
+      or
+      this.quote(start, end)
+    )
+    or
+    this.charSetToken(charset_start, _, start) and
+    (
+      this.escapedCharacter(start, end)
+      or
+      exists(this.nonEscapedCharAt(start)) and
+      end = start + 1 and
+      not this.charSetEnd(start)
+      or
+      this.quote(start, end)
+    )
+  }
+
+  /** An indexed version of `charSetToken/3` */
+  private predicate charSetToken(int charset_start, int index, int token_start, int token_end) {
+    token_start =
+      rank[index](int start, int end | this.charSetToken(charset_start, start, end) | start) and
+    this.charSetToken(charset_start, token_start, token_end)
+  }
+
+  /**
+   * Holds if the character set starting at `charset_start` contains either
+   * a character or a range found between `start` and `end`.
+   */
+  predicate charSetChild(int charset_start, int start, int end) {
+    this.charSetToken(charset_start, start, end) and
+    not exists(int range_start, int range_end |
+      this.charRange(charset_start, range_start, _, _, range_end) and
+      range_start <= start and
+      range_end >= end
+    )
+    or
+    this.charRange(charset_start, start, _, _, end)
+  }
+
+  /**
+   * Helper predicate for `charRange`.
+   * We can determine where character ranges end by a left to right sweep.
+   *
+   * To avoid negative recursion we return a boolean. See `escaping`,
+   * the helper for `escapingChar`, for a clean use of this pattern.
+   */
+  private boolean charRangeEnd(int charset_start, int index) {
+    this.charSetToken(charset_start, index, _, _) and
+    (
+      index in [1, 2] and result = false
+      or
+      index > 2 and
+      exists(int connector_start |
+        this.charSetToken(charset_start, index - 1, connector_start, _) and
+        this.nonEscapedCharAt(connector_start) = "-" and
+        result =
+          this.charRangeEnd(charset_start, index - 2)
+              .booleanNot()
+              .booleanAnd(this.charRangeEnd(charset_start, index - 1).booleanNot())
+      )
+      or
+      not exists(int connector_start |
+        this.charSetToken(charset_start, index - 1, connector_start, _) and
+        this.nonEscapedCharAt(connector_start) = "-"
+      ) and
+      result = false
+    )
+  }
+
+  /**
+   * Holds if the character set starting at `charset_start` contains a character range
+   * with lower bound found between `start` and `lower_end`
+   * and upper bound found between `upper_start` and `end`.
+   */
+  predicate charRange(int charset_start, int start, int lower_end, int upper_start, int end) {
+    exists(int index |
+      this.charRangeEnd(charset_start, index) = true and
+      this.charSetToken(charset_start, index - 2, start, lower_end) and
+      this.charSetToken(charset_start, index, upper_start, end)
+    )
+  }
+
+  pragma[inline]
+  private predicate isOctal(int index) { this.getChar(index) = [0 .. 7].toString() }
 
   /** An escape sequence that includes braces, such as named characters (\N{degree sign}), named classes (\p{Lower}), or hex values (\x{h..h}) */
   private predicate escapedBraces(int start, int end) {
@@ -312,9 +313,6 @@ abstract class RegexString extends StringLiteral {
     )
   }
 
-  pragma[inline]
-  private predicate isOctal(int index) { this.getChar(index) = [0 .. 7].toString() }
-
   /** Holds if `index` is inside a character set. */
   predicate inCharSet(int index) {
     exists(int x, int y | this.charSet(x, y) and index in [x + 1 .. y - 2])
@@ -351,7 +349,7 @@ abstract class RegexString extends StringLiteral {
     )
   }
 
-  predicate character(int start, int end) {
+  private predicate character(int start, int end) {
     (
       this.simpleCharacter(start, end) and
       not exists(int x, int y | this.escapedCharacter(x, y) and x <= start and y >= end) and
@@ -376,39 +374,9 @@ abstract class RegexString extends StringLiteral {
     not this.inCharSet(start)
   }
 
-  /** Holds if the text in the range start,end is a group */
-  predicate group(int start, int end) {
-    this.groupContents(start, end, _, _)
-    or
-    this.emptyGroup(start, end)
-  }
+  private predicate isGroupEnd(int i) { this.nonEscapedCharAt(i) = ")" and not this.inCharSet(i) }
 
-  /** Gets the number of the group in start,end */
-  int getGroupNumber(int start, int end) {
-    this.group(start, end) and
-    result =
-      count(int i | this.group(i, _) and i < start and not this.nonCapturingGroupStart(i, _)) + 1
-  }
-
-  /** Gets the name, if it has one, of the group in start,end */
-  string getGroupName(int start, int end) {
-    this.group(start, end) and
-    exists(int name_end |
-      this.namedGroupStart(start, name_end) and
-      result = this.getText().substring(start + 3, name_end - 1)
-    )
-  }
-
-  /** Holds if the text in the range start, end is a group and can match the empty string. */
-  predicate zeroWidthMatch(int start, int end) {
-    this.emptyGroup(start, end)
-    or
-    this.negativeAssertionGroup(start, end)
-    or
-    this.positiveLookaheadAssertionGroup(start, end)
-    or
-    this.positiveLookbehindAssertionGroup(start, end)
-  }
+  private predicate isGroupStart(int i) { this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i) }
 
   /** Holds if an empty group is found between `start` and `end`. */
   predicate emptyGroup(int start, int end) {
@@ -416,80 +384,6 @@ abstract class RegexString extends StringLiteral {
       this.groupStart(start, endm1) and
       this.isGroupEnd(endm1)
     )
-  }
-
-  private predicate emptyMatchAtStartGroup(int start, int end) {
-    this.emptyGroup(start, end)
-    or
-    this.negativeAssertionGroup(start, end)
-    or
-    this.positiveLookaheadAssertionGroup(start, end)
-  }
-
-  private predicate emptyMatchAtEndGroup(int start, int end) {
-    this.emptyGroup(start, end)
-    or
-    this.negativeAssertionGroup(start, end)
-    or
-    this.positiveLookbehindAssertionGroup(start, end)
-  }
-
-  private predicate negativeAssertionGroup(int start, int end) {
-    exists(int in_start |
-      this.negativeLookaheadAssertionStart(start, in_start)
-      or
-      this.negativeLookbehindAssertionStart(start, in_start)
-    |
-      this.groupContents(start, end, in_start, _)
-    )
-  }
-
-  /** Holds if a negative lookahead is found between `start` and `end` */
-  predicate negativeLookaheadAssertionGroup(int start, int end) {
-    exists(int in_start | this.negativeLookaheadAssertionStart(start, in_start) |
-      this.groupContents(start, end, in_start, _)
-    )
-  }
-
-  /** Holds if a negative lookbehind is found between `start` and `end` */
-  predicate negativeLookbehindAssertionGroup(int start, int end) {
-    exists(int in_start | this.negativeLookbehindAssertionStart(start, in_start) |
-      this.groupContents(start, end, in_start, _)
-    )
-  }
-
-  /** Holds if a positive lookahead is found between `start` and `end` */
-  predicate positiveLookaheadAssertionGroup(int start, int end) {
-    exists(int in_start | this.lookaheadAssertionStart(start, in_start) |
-      this.groupContents(start, end, in_start, _)
-    )
-  }
-
-  /** Holds if a positive lookbehind is found between `start` and `end` */
-  predicate positiveLookbehindAssertionGroup(int start, int end) {
-    exists(int in_start | this.lookbehindAssertionStart(start, in_start) |
-      this.groupContents(start, end, in_start, _)
-    )
-  }
-
-  private predicate groupStart(int start, int end) {
-    this.nonCapturingGroupStart(start, end)
-    or
-    this.flagGroupStart(start, end, _)
-    or
-    this.namedGroupStart(start, end)
-    or
-    this.lookaheadAssertionStart(start, end)
-    or
-    this.negativeLookaheadAssertionStart(start, end)
-    or
-    this.lookbehindAssertionStart(start, end)
-    or
-    this.negativeLookbehindAssertionStart(start, end)
-    or
-    this.atomicGroupStart(start, end)
-    or
-    this.simpleGroupStart(start, end)
   }
 
   private predicate nonCapturingGroupStart(int start, int end) {
@@ -582,11 +476,103 @@ abstract class RegexString extends StringLiteral {
     end = start + 3
   }
 
+  private predicate groupStart(int start, int end) {
+    this.nonCapturingGroupStart(start, end)
+    or
+    this.flagGroupStart(start, end, _)
+    or
+    this.namedGroupStart(start, end)
+    or
+    this.lookaheadAssertionStart(start, end)
+    or
+    this.negativeLookaheadAssertionStart(start, end)
+    or
+    this.lookbehindAssertionStart(start, end)
+    or
+    this.negativeLookbehindAssertionStart(start, end)
+    or
+    this.atomicGroupStart(start, end)
+    or
+    this.simpleGroupStart(start, end)
+  }
+
   predicate groupContents(int start, int end, int in_start, int in_end) {
     this.groupStart(start, in_start) and
     end = in_end + 1 and
     this.topLevel(in_start, in_end) and
     this.isGroupEnd(in_end)
+  }
+
+  /** Holds if the text in the range start,end is a group */
+  predicate group(int start, int end) {
+    this.groupContents(start, end, _, _)
+    or
+    this.emptyGroup(start, end)
+  }
+
+  /** Gets the number of the group in start,end */
+  int getGroupNumber(int start, int end) {
+    this.group(start, end) and
+    result =
+      count(int i | this.group(i, _) and i < start and not this.nonCapturingGroupStart(i, _)) + 1
+  }
+
+  /** Gets the name, if it has one, of the group in start,end */
+  string getGroupName(int start, int end) {
+    this.group(start, end) and
+    exists(int name_end |
+      this.namedGroupStart(start, name_end) and
+      result = this.getText().substring(start + 3, name_end - 1)
+    )
+  }
+
+  /** Holds if a negative lookahead is found between `start` and `end` */
+  predicate negativeLookaheadAssertionGroup(int start, int end) {
+    exists(int in_start | this.negativeLookaheadAssertionStart(start, in_start) |
+      this.groupContents(start, end, in_start, _)
+    )
+  }
+
+  /** Holds if a negative lookbehind is found between `start` and `end` */
+  predicate negativeLookbehindAssertionGroup(int start, int end) {
+    exists(int in_start | this.negativeLookbehindAssertionStart(start, in_start) |
+      this.groupContents(start, end, in_start, _)
+    )
+  }
+
+  private predicate negativeAssertionGroup(int start, int end) {
+    exists(int in_start |
+      this.negativeLookaheadAssertionStart(start, in_start)
+      or
+      this.negativeLookbehindAssertionStart(start, in_start)
+    |
+      this.groupContents(start, end, in_start, _)
+    )
+  }
+
+  /** Holds if a positive lookahead is found between `start` and `end` */
+  predicate positiveLookaheadAssertionGroup(int start, int end) {
+    exists(int in_start | this.lookaheadAssertionStart(start, in_start) |
+      this.groupContents(start, end, in_start, _)
+    )
+  }
+
+  /** Holds if a positive lookbehind is found between `start` and `end` */
+  predicate positiveLookbehindAssertionGroup(int start, int end) {
+    exists(int in_start | this.lookbehindAssertionStart(start, in_start) |
+      this.groupContents(start, end, in_start, _)
+    )
+  }
+
+  /** Holds if the text in the range start, end is a group and can match the empty string. */
+  predicate zeroWidthMatch(int start, int end) {
+    this.emptyGroup(start, end)
+    or
+    this.negativeAssertionGroup(start, end)
+    or
+    this.positiveLookaheadAssertionGroup(start, end)
+    or
+    this.positiveLookbehindAssertionGroup(start, end)
   }
 
   private predicate namedBackreference(int start, int end, string name) {
@@ -647,15 +633,6 @@ abstract class RegexString extends StringLiteral {
     this.quote(start, end)
   }
 
-  private predicate quantifier(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
-    this.shortQuantifier(start, end, maybe_empty, may_repeat_forever) and
-    not this.getChar(end) = ["?", "+"]
-    or
-    exists(int short_end | this.shortQuantifier(start, short_end, maybe_empty, may_repeat_forever) |
-      if this.getChar(short_end) = ["?", "+"] then end = short_end + 1 else end = short_end
-    )
-  }
-
   private predicate shortQuantifier(
     int start, int end, boolean maybe_empty, boolean may_repeat_forever
   ) {
@@ -699,12 +676,13 @@ abstract class RegexString extends StringLiteral {
     )
   }
 
-  /**
-   * Holds if the text in the range start,end is a quantified item, where item is a character,
-   * a character set or a group.
-   */
-  predicate quantifiedItem(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
-    this.quantifiedPart(start, _, end, maybe_empty, may_repeat_forever)
+  private predicate quantifier(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
+    this.shortQuantifier(start, end, maybe_empty, may_repeat_forever) and
+    not this.getChar(end) = ["?", "+"]
+    or
+    exists(int short_end | this.shortQuantifier(start, short_end, maybe_empty, may_repeat_forever) |
+      if this.getChar(short_end) = ["?", "+"] then end = short_end + 1 else end = short_end
+    )
   }
 
   /**
@@ -721,39 +699,19 @@ abstract class RegexString extends StringLiteral {
     this.quantifier(part_end, end, maybe_empty, may_repeat_forever)
   }
 
+  /**
+   * Holds if the text in the range start,end is a quantified item, where item is a character,
+   * a character set or a group.
+   */
+  predicate quantifiedItem(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
+    this.quantifiedPart(start, _, end, maybe_empty, may_repeat_forever)
+  }
+
   /** Holds if the range `start`, `end` contains a character, a quantifier, a character set or a group. */
   predicate item(int start, int end) {
     this.quantifiedItem(start, end, _, _)
     or
     this.baseItem(start, end) and not this.quantifier(end, _, _, _)
-  }
-
-  private predicate subsequence(int start, int end) {
-    (
-      start = 0 or
-      this.groupStart(_, start) or
-      this.isOptionDivider(start - 1)
-    ) and
-    this.item(start, end)
-    or
-    exists(int mid |
-      this.subsequence(start, mid) and
-      this.item(mid, end)
-    )
-  }
-
-  /**
-   * Holds if the text in the range start,end is a sequence of 1 or more items, where an item is a character,
-   * a character set or a group.
-   */
-  predicate sequence(int start, int end) {
-    this.sequenceOrQuantified(start, end) and
-    not this.quantifiedItem(start, end, _, _)
-  }
-
-  private predicate sequenceOrQuantified(int start, int end) {
-    this.subsequence(start, end) and
-    not this.itemStart(end)
   }
 
   private predicate itemStart(int start) {
@@ -776,9 +734,34 @@ abstract class RegexString extends StringLiteral {
     this.quote(_, end)
   }
 
-  private predicate topLevel(int start, int end) {
-    this.subalternation(start, end, _) and
-    not this.isOptionDivider(end)
+  private predicate isOptionDivider(int i) { this.nonEscapedCharAt(i) = "|" }
+
+  private predicate subsequence(int start, int end) {
+    (
+      start = 0 or
+      this.groupStart(_, start) or
+      this.isOptionDivider(start - 1)
+    ) and
+    this.item(start, end)
+    or
+    exists(int mid |
+      this.subsequence(start, mid) and
+      this.item(mid, end)
+    )
+  }
+
+  private predicate sequenceOrQuantified(int start, int end) {
+    this.subsequence(start, end) and
+    not this.itemStart(end)
+  }
+
+  /**
+   * Holds if the text in the range start,end is a sequence of 1 or more items, where an item is a character,
+   * a character set or a group.
+   */
+  predicate sequence(int start, int end) {
+    this.sequenceOrQuantified(start, end) and
+    not this.quantifiedItem(start, end, _, _)
   }
 
   private predicate subalternation(int start, int end, int itemStart) {
@@ -802,6 +785,11 @@ abstract class RegexString extends StringLiteral {
     )
   }
 
+  private predicate topLevel(int start, int end) {
+    this.subalternation(start, end, _) and
+    not this.isOptionDivider(end)
+  }
+
   /**
    * Holds if the text in the range start,end is an alternation
    */
@@ -817,91 +805,6 @@ abstract class RegexString extends StringLiteral {
   predicate alternationOption(int start, int end, int part_start, int part_end) {
     this.alternation(start, end) and
     this.subalternation(start, part_end, part_start)
-  }
-
-  /** A part of the regex that may match the start of the string. */
-  private predicate firstPart(int start, int end) {
-    start = 0 and end = this.getText().length()
-    or
-    exists(int x | this.firstPart(x, end) |
-      this.emptyMatchAtStartGroup(x, start) or
-      this.quantifiedItem(x, start, true, _) or
-      this.specialCharacter(x, start, "^")
-    )
-    or
-    exists(int y | this.firstPart(start, y) |
-      this.item(start, end)
-      or
-      this.quantifiedPart(start, end, y, _, _)
-    )
-    or
-    exists(int x, int y | this.firstPart(x, y) |
-      this.groupContents(x, y, start, end)
-      or
-      this.alternationOption(x, y, start, end)
-    )
-  }
-
-  /** A part of the regex that may match the end of the string. */
-  private predicate lastPart(int start, int end) {
-    start = 0 and end = this.getText().length()
-    or
-    exists(int y | this.lastPart(start, y) |
-      this.emptyMatchAtEndGroup(end, y)
-      or
-      this.quantifiedItem(end, y, true, _)
-      or
-      this.specialCharacter(end, y, "$")
-      or
-      y = end + 2 and this.escapingChar(end) and this.getChar(end + 1) = "Z"
-    )
-    or
-    exists(int x |
-      this.lastPart(x, end) and
-      this.item(start, end)
-    )
-    or
-    exists(int y | this.lastPart(start, y) | this.quantifiedPart(start, end, y, _, _))
-    or
-    exists(int x, int y | this.lastPart(x, y) |
-      this.groupContents(x, y, start, end)
-      or
-      this.alternationOption(x, y, start, end)
-    )
-  }
-
-  /**
-   * Holds if the item at [start, end) is one of the first items
-   * to be matched.
-   */
-  predicate firstItem(int start, int end) {
-    (
-      this.character(start, end)
-      or
-      this.quantifiedItem(start, end, _, _)
-      or
-      this.charSet(start, end)
-      or
-      this.quote(start, end)
-    ) and
-    this.firstPart(start, end)
-  }
-
-  /**
-   * Holds if the item at [start, end) is one of the last items
-   * to be matched.
-   */
-  predicate lastItem(int start, int end) {
-    (
-      this.character(start, end)
-      or
-      this.quantifiedItem(start, end, _, _)
-      or
-      this.charSet(start, end)
-      or
-      this.quote(start, end)
-    ) and
-    this.lastPart(start, end)
   }
 }
 
