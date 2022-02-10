@@ -806,8 +806,6 @@ open class KotlinUsesExtractor(
         val cls = c.name.asString()
         val label = when (val parent = c.parent) {
             is IrClass -> {
-                // todo: fix this. Ugly string concat to handle nested class IDs.
-                // todo: Can the containing class have type arguments?
                 "${getUnquotedClassLabel(parent, listOf()).classLabel}\$$cls"
             }
             is IrFunction -> {
