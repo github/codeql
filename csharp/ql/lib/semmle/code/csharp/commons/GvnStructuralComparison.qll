@@ -67,10 +67,16 @@ private Declaration referenceAttribute(Expr e) {
   result = e.(Access).getTarget()
 }
 
+private int getNumberOfActualChildren(ControlFlowElement e) {
+  if e.(MemberAccess).targetIsThisInstance()
+  then result = e.getNumberOfChildren() - 1
+  else result = e.getNumberOfChildren()
+}
+
 private int getNumberOfChildren(Expr e) {
   exists(int ref |
     (if exists(referenceAttribute(e)) then ref = 1 else ref = 0) and
-    result = e.getNumberOfChildren() + ref
+    result = getNumberOfActualChildren(e) + ref
   )
 }
 
