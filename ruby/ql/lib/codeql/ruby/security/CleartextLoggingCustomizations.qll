@@ -103,7 +103,7 @@ module CleartextLogging {
     // We explicitly exclude element references, element assignments, and
     // mutation methods.
     not name = ["[]", "[]="] and
-    not name.suffix(1) = "!"
+    not name.matches("%!")
   }
 
   /**
