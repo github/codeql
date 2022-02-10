@@ -3,9 +3,9 @@
 
 <overview>
 <p>
-A constant-time algorithm should be used for checking the value of headers.
+A constant-time algorithm should be used for checking the value of sensitive headers.
 In other words, the comparison time should not depend on the content of the input. 
-An attacker may be able to forge the value of the header.
+Otherwise timing information could be used to infer the header's expected, secret value.
 </p>
 </overview>
 
@@ -19,7 +19,7 @@ and does not depend on the contents of the arrays.
 </recommendation>
 <example>
 <p>
-The following example uses <code>Arrays.equals()</code> method for validating a csrf token .
+The following example uses <code>Arrays.equals()</code> method for validating a csrf token.
 This method implements a non-constant-time algorithm.
 Both the message and the signature come from an untrusted HTTP request:
 </p>
