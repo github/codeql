@@ -948,6 +948,12 @@ open class KotlinUsesExtractor(
             }
         }
 
+    /**
+     * Returns `t` with generic types replaced by raw types, and type parameters replaced by their first bound.
+     *
+     * Note that `Array<T>` is retained (with `T` itself erased) because these are expected to be lowered to Java
+     * arrays, which are not generic.
+     */
     fun erase (t: IrType): IrType {
         if (t is IrSimpleType) {
             val classifier = t.classifier
@@ -956,8 +962,7 @@ open class KotlinUsesExtractor(
                 return eraseTypeParameter(owner)
             }
 
-            // todo: fix this:
-            if (t.makeNotNull().isArray()) {
+            if (t.isArray() || t.isNullableArray()) {
                 val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
                 val erasedElementType = erase(elementType)
                 return withQuestionMark((classifier as IrClassSymbol).typeWith(erasedElementType), t.hasQuestionMark)
