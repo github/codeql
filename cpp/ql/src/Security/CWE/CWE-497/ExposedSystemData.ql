@@ -14,7 +14,7 @@
 
 import cpp
 import semmle.code.cpp.commons.Environment
-import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.models.interfaces.FlowSource
 import DataFlow::PathGraph
 

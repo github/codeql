@@ -88,7 +88,7 @@ void test1()
 
 		mysql_real_connect(sock, val(), val(), str1, val(), val(), val(), val());
 
-		send(sock, str1, val(), val()); // BAD [NOT DETECTED]
+		send(sock, str1, val(), val()); // BAD
 		send(sock, str2, val(), val()); // GOOD: not system data
 	}
 
