@@ -38,7 +38,7 @@ module PrototypePollutingAssignment {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** Flow label representing the `Object.prototype` value. */
+  /** A flow label representing the `Object.prototype` value. */
   abstract class ObjectPrototype extends DataFlow::FlowLabel {
     ObjectPrototype() { this = "Object.prototype" }
   }

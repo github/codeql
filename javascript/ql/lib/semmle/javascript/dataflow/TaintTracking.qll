@@ -635,39 +635,18 @@ module TaintTracking {
           pred.asExpr() = succ.getAstNode().(MethodCallExpr).getReceiver() and
           (
             // sorted, interesting, properties of String.prototype
-            name = "anchor" or
-            name = "big" or
-            name = "blink" or
-            name = "bold" or
-            name = "concat" or
-            name = "fixed" or
-            name = "fontcolor" or
-            name = "fontsize" or
-            name = "italics" or
-            name = "link" or
-            name = "padEnd" or
-            name = "padStart" or
-            name = "repeat" or
-            name = "replace" or
-            name = "replaceAll" or
-            name = "slice" or
-            name = "small" or
-            name = "split" or
-            name = "strike" or
-            name = "sub" or
-            name = "substr" or
-            name = "substring" or
-            name = "sup" or
-            name = "toLocaleLowerCase" or
-            name = "toLocaleUpperCase" or
-            name = "toLowerCase" or
-            name = "toUpperCase" or
-            name = "trim" or
-            name = "trimLeft" or
-            name = "trimRight" or
+            name =
+              [
+                "anchor", "big", "blink", "bold", "concat", "fixed", "fontcolor", "fontsize",
+                "italics", "link", "padEnd", "padStart", "repeat", "replace", "replaceAll", "slice",
+                "small", "split", "strike", "sub", "substr", "substring", "sup",
+                "toLocaleLowerCase", "toLocaleUpperCase", "toLowerCase", "toUpperCase", "trim",
+                "trimLeft", "trimRight"
+              ]
+            or
             // sorted, interesting, properties of Object.prototype
-            name = "toString" or
-            name = "valueOf" or
+            name = ["toString", "valueOf"]
+            or
             // sorted, interesting, properties of Array.prototype
             name = "join"
           )

@@ -25,7 +25,7 @@ module Cheerio {
 
   module CheerioObjectCreation {
     /**
-     * Creation of a `cheerio` object.
+     * The creation of a `cheerio` object.
      */
     abstract class Range extends DataFlow::SourceNode { }
 
