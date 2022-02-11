@@ -188,12 +188,18 @@ class RegExpTerm extends RegExpParent {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    // This currently gives incorrect results for string literals including backslashes. TODO: fix that.
-    // There are also more complex cases where it fails. Handling all of them would be difficult for not much gain.
-    exists(int re_start, int re_end |
+    /*
+     * This is an approximation that handles the simple and common case of single,
+     * normal string literal written in the source, but does not give correct results in more complex cases
+     * such as compile-time concatenation, or multi-line string literals.
+     */
+
+    exists(int re_start, int re_end, int src_start, int src_end |
       re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, re_end) and
-      startcolumn = re_start + start + 1 and
-      endcolumn = re_start + end
+      re.sourceCharacter(start, src_start, _) and
+      re.sourceCharacter(end - 1, _, src_end) and
+      startcolumn = re_start + src_start and
+      endcolumn = re_start + src_end - 1
     )
   }
 
