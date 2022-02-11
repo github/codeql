@@ -4,6 +4,7 @@ module Private {
   private import semmle.code.java.dataflow.RangeUtils as RU
   private import semmle.code.java.controlflow.Guards as G
   private import semmle.code.java.controlflow.BasicBlocks as BB
+  private import semmle.code.java.dataflow.ConstantAnalysis as Const
   private import SsaReadPositionCommon
 
   class BasicBlock = BB::BasicBlock;
@@ -16,7 +17,7 @@ module Private {
 
   class Guard = G::Guard;
 
-  class ConstantIntegerExpr = RU::ConstantIntegerExpr;
+  class ConstantIntegerExpr = Const::ConstantIntegerExpr;
 
   class ConditionalExpr = J::ConditionalExpr;
 

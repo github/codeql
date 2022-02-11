@@ -6,6 +6,8 @@ import java
 private import SSA
 private import RangeUtils
 private import RangeAnalysis
+private import ConstantAnalysis
+private import Bound
 
 /** Gets an expression that might have the value `i`. */
 private Expr exprWithIntValue(int i) {
