@@ -174,12 +174,10 @@ private class UrlDecodeSanitizer extends MethodAccess {
   }
 }
 
-/** A sanitized node that is protected against path traversal vulnerabilities. */
-abstract class SanitizedNode extends DataFlow::Node { }
-
-class NodeWithPathNormalizer extends SanitizedNode {
-  NodeWithPathNormalizer() {
-    DataFlow::localExprFlow(this.asExpr(), any(PathNormalizeSanitizer ma))
+/** A node with path normalization. */
+class NormalizedPathNode extends DataFlow::Node {
+  NormalizedPathNode() {
+    TaintTracking::localExprTaint(this.asExpr(), any(PathNormalizeSanitizer ma))
   }
 }
 
@@ -188,8 +186,8 @@ private class PathDataModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "java.nio.file;Paths;true;get;;;Argument[0];ReturnValue;value",
-        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;value"
+        "java.nio.file;Paths;true;get;;;Argument[0];ReturnValue;taint",
+        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint"
       ]
   }
 }
