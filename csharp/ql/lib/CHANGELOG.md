@@ -2,7 +2,7 @@
 
 ### Deprecated APIs
 
-* The `codeql/csharp-upgrades` CodeQL pack has been removed. All upgrades scripts have been merged into the `codeql/charp-all` CodeQL pack.
+* The `codeql/csharp-upgrades` CodeQL pack has been removed. All upgrades scripts have been merged into the `codeql/csharp-all` CodeQL pack.
 
 ### Major Analysis Improvements
 
