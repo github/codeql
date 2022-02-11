@@ -277,13 +277,7 @@ predicate parseReturn(string c, int n) {
   (
     c = "ReturnValue" and n = 0
     or
-    c.regexpCapture("ReturnValue\\[([-0-9]+)\\]", 1).toInt() = n
-    or
-    exists(int n1, int n2 |
-      c.regexpCapture("ReturnValue\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
-      c.regexpCapture("ReturnValue\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
-      n = [n1 .. n2]
-    )
+    n = parseConstantOrRange(c.regexpCapture("ReturnValue\\[([^\\]]+)\\]", 1))
   )
 }
 
