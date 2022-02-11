@@ -28,12 +28,6 @@ private predicate isNonConstantEqualsCallArgument(Expr e) {
     e = [call.getQualifier(), call.getAnArgument()]
 }
 
-
-class NonConstantTimeComparisonSink extends DataFlow::Node {
-  NonConstantTimeComparisonSink() {
-      isNonConstantEqualsCallArgument(this.asExpr())
-  }    
-} 
 class ClientSuppliedIpTokenCheck extends DataFlow::Node {
   ClientSuppliedIpTokenCheck() {
     exists(MethodAccess ma |
@@ -52,7 +46,7 @@ class NonConstantTimeComparisonConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof ClientSuppliedIpTokenCheck }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
+  override predicate isSink(DataFlow::Node sink) { isNonConstantEqualsCallArgument(sink.asExpr()) }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, NonConstantTimeComparisonConfig conf
