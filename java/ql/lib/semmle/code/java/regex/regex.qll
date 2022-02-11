@@ -27,7 +27,6 @@ abstract class RegexString extends StringLiteral {
    * In order to avoid negative recursion, we return a boolean.
    * This way, we can refer to `escaping(pos - 1).booleanNot()`
    * rather than to a negated version of `escaping(pos)`.
-   * Does not take into account escape characters inside quote sequences.
    */
   private boolean escaping(int pos) {
     pos = -1 and result = false
@@ -104,11 +103,10 @@ abstract class RegexString extends StringLiteral {
     end = start + 3
   }
 
-  string nonEscapedCharAt(int i) {
-    result = this.getText().charAt(i) and
+  private string nonEscapedCharAt(int i) {
+    result = this.getChar(i) and
     not exists(int x, int y | this.escapedCharacter(x, y) and i in [x .. y - 1]) and
-    not exists(int x, int y | this.quote(x, y) and i in [x .. y - 1]) and
-    not exists(int x, int y | this.controlEscape(x, y) and i in [x .. y - 1])
+    not exists(int x, int y | this.quote(x, y) and i in [x .. y - 1])
   }
 
   /** Holds if a character set starts between `start` and `end`, including any negation character (`^`). */
@@ -821,6 +819,66 @@ abstract class RegexString extends StringLiteral {
   predicate alternationOption(int start, int end, int part_start, int part_end) {
     this.alternation(start, end) and
     this.subalternation(start, part_end, part_start)
+  }
+
+  /**
+   * Gets the `i`th character of this literal as it was written in the source code.
+   */
+  string getSourceChar(int i) { result = this.(StringLiteral).getLiteral().charAt(i) }
+
+  /**
+   * Helper predicate for `sourceEscapingChar` that
+   * results in a boolean in order to avoid negative recursion.
+   */
+  private boolean sourceEscaping(int pos) {
+    pos = -1 and result = false
+    or
+    this.getSourceChar(pos) = "\\" and
+    result = this.sourceEscaping(pos - 1).booleanNot()
+    or
+    this.getSourceChar(pos) != "\\" and result = false
+  }
+
+  /**
+   * Equivalent of `escapingChar` for the literal source rather than the string value.
+   * Holds if the character at position `pos` in the source literal is a '\' that is
+   * actually escaping what comes after it.
+   */
+  private predicate sourceEcapingChar(int pos) { this.sourceEscaping(pos) = true }
+
+  /**
+   * Holds if an escaped character exists between `start` and `end` in the source iteral.
+   */
+  private predicate sourceEscapedCharacter(int start, int end) {
+    this.sourceEcapingChar(start) and
+    (if this.getSourceChar(start + 1) = "u" then end = start + 6 else end = start + 2)
+  }
+
+  private predicate sourceNonEscapedCharacter(int i) {
+    exists(this.getSourceChar(i)) and
+    not exists(int x, int y | this.sourceEscapedCharacter(x, y) and i in [x .. y - 1])
+  }
+
+  /**
+   * Holds if a character is represented between `start` and `end` in the source literal.
+   */
+  private predicate sourceCharacter(int start, int end) {
+    sourceEscapedCharacter(start, end)
+    or
+    sourceNonEscapedCharacter(start) and
+    end = start + 1
+  }
+
+  /**
+   * Holds if the `i`th character of the string is represented between offsets
+   * `start` (inclusive) and `end` (exclusive) in the source code of this literal.
+   * This only gives correct results if the literal is written as a normal single-line string literal;
+   * without compile-time concatenation involved.
+   */
+  predicate sourceCharacter(int pos, int start, int end) {
+    exists(this.getChar(pos)) and
+    sourceCharacter(start, end) and
+    start = rank[pos + 2](int s | sourceCharacter(s, _))
   }
 }
 
