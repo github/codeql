@@ -9,7 +9,7 @@
 | this.kt:20:42:20:45 | this | file://:0:0:0:0 | <none> |
 | this.kt:24:34:24:37 | this | file://:0:0:0:0 | <none> |
 | this.kt:29:38:29:41 | this | file://:0:0:0:0 | <none> |
-| this.kt:30:29:30:38 | this | file://:0:0:0:0 | <none> |
+| this.kt:30:29:30:38 | Inner.this | this.kt:30:29:30:38 | Inner |
 | this.kt:31:29:31:38 | Outer.this | this.kt:31:29:31:38 | Outer |
 | this.kt:32:38:32:54 | this | file://:0:0:0:0 | <none> |
 | this.kt:37:13:37:22 | Outer.this | this.kt:37:13:37:22 | Outer |

@@ -1934,17 +1934,27 @@ open class KotlinFileExtractor(
                         tw.writeCallableEnclosingExpr(id, callable)
                         tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
+
+                        fun extractTypeAccess(parent: IrClass){
+                            extractTypeAccess(parent.typeWith(listOf()), locId, callable, id, 0, exprParent.enclosingStmt)
+                        }
+
                         when(val ownerParent = owner.parent) {
                             is IrFunction -> {
                                 if (ownerParent.dispatchReceiverParameter == owner &&
                                     ownerParent.extensionReceiverParameter != null) {
-                                    logger.errorElement("Function-qualifier for this", e)
+
+                                    val ownerParent2 = ownerParent.parent
+                                    if (ownerParent2 is IrClass){
+                                        extractTypeAccess(ownerParent2)
+                                    } else {
+                                        logger.errorElement("Unhandled qualifier for this", e)
+                                    }
                                 }
                             }
                             is IrClass -> {
                                 if (ownerParent.thisReceiver == owner) {
-                                    // TODO: Type arguments
-                                    extractTypeAccess(ownerParent.typeWith(listOf()), locId, callable, id, 0, exprParent.enclosingStmt)
+                                    extractTypeAccess(ownerParent)
                                 }
                             }
                             else -> {
