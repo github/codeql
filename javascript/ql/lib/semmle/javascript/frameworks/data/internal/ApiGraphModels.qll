@@ -275,9 +275,6 @@ API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
   token.getName() = ["Argument", "Parameter"] and
   result = node.getParameter(getAnIntFromStringUnbounded(token.getAnArgument()))
   or
-  token.getName() = "Member" and
-  result = node.getMember(token.getAnArgument())
-  or
   token.getName() = "ReturnValue" and
   result = node.getReturn()
   or

@@ -89,6 +89,9 @@ API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int
  */
 bindingset[token]
 API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
+  token.getName() = "Member" and
+  result = node.getMember(token.getAnArgument())
+  or
   token.getName() = "Instance" and
   result = node.getInstance()
   or
