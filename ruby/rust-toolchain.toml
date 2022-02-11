@@ -3,4 +3,5 @@
 
 [toolchain]
 channel = "1.54"
-profile = "default"
+profile = "minimal"
+components = [ "rustfmt" ]
