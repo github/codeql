@@ -7,9 +7,33 @@ import csharp
 
 // TODO: Everyting should be generalized to ControlFlowElement.
 // TODO: Do we need any inlining or caching?
+// TODO: Consider to make a GvNil for statement and only with an int kind.
+// TODO: Elaborate on descriptions. Maybe provide some examples.
+// TODO: Test against the existing usecases.
+// TODO: Make tests for the new functionality, such we have a chance of changing the implementation later.
 private newtype TGvnKind =
   TGvnKindInt(int kind) { expressions(_, kind, _) } or
   TGvnKindDeclaration(Declaration d) { d = referenceAttribute(_) }
+
+abstract private class GvnKind extends TGvnKind {
+  abstract string toString();
+}
+
+private class GvnKindInt extends GvnKind, TGvnKindInt {
+  private int kind;
+
+  GvnKindInt() { this = TGvnKindInt(kind) }
+
+  override string toString() { result = kind.toString() }
+}
+
+private class GvnKindDeclaration extends GvnKind, TGvnKindDeclaration {
+  private Declaration d;
+
+  GvnKindDeclaration() { this = TGvnKindDeclaration(d) }
+
+  override string toString() { result = d.toString() }
+}
 
 private Declaration referenceAttribute(Expr e) {
   result = e.(MethodCall).getTarget()
@@ -23,68 +47,29 @@ private newtype TGvn =
   TConstantGvn(string s) { s = any(Expr e).getValue() } or
   TListExprGvn(GvnList l)
 
-abstract private class GvnKind extends TGvnKind {
+abstract class Gvn extends TGvn {
   abstract string toString();
 }
 
-private class GvnKindInt extends GvnKind, TGvnKindInt {
-  private int kind;
-
-  GvnKindInt() { this = TGvnKindInt(kind) }
-
-  override string toString() { result = "GvnKindInt(" + kind + ")" }
+private class ConstantGvn extends Gvn, TConstantGvn {
+  override string toString() { this = TConstantGvn(result) }
 }
 
-private class GvnKindMethod extends GvnKind, TGvnKindDeclaration {
-  private Declaration d;
+private class ListExprGvn extends Gvn, TListExprGvn {
+  private GvnList l;
 
-  GvnKindMethod() { this = TGvnKindDeclaration(d) }
+  ListExprGvn() { this = TListExprGvn(l) }
 
-  override string toString() { result = "GvnKindDeclaration(" + d.toString() + ")" }
+  override string toString() { result = "[" + l.toString() + "]" }
 }
 
 /**
- * Type for containing a global value number for expressions with an arbitrary number of children.
- * The empty list carries the kind of the expression.
+ * Type for containing a list of global value numbers with a kind.
+ * The empty list carries the kind of the controlflowelement.
  */
 private newtype TGvnList =
-  // TODO: Consider to make a GvNil for statement and only with an int kind.
   TGvnNil(GvnKind gkind) or
   TGvnCons(Gvn head, GvnList tail) { gvnConstructedCons(_, _, _, head, tail) }
-
-private GvnKind getGvnKind(Expr e) {
-  result = TGvnKindDeclaration(referenceAttribute(e))
-  or
-  not exists(referenceAttribute(e)) and
-  exists(int kind | expressions(e, kind, _) and result = TGvnKindInt(kind))
-}
-
-private GvnList gvnConstructed(Expr e, int kind, int index) {
-  result = TGvnNil(getGvnKind(e)) and
-  index = -1 and
-  expressions(e, kind, _)
-  or
-  exists(Gvn head, GvnList tail |
-    gvnConstructedCons(e, kind, index, head, tail) and
-    result = TGvnCons(head, tail)
-  )
-}
-
-private predicate myTest3(Expr e, Gvn gvn) {
-  e.fromSource() and
-  gvn = toGvn(e)
-}
-
-private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk) {
-  result =
-    rank[rnk + 1](ControlFlowElement child, int j | child = cfe.getChild(j) | child order by j)
-}
-
-// TODO: Do we need noinline pragma?
-private predicate gvnConstructedCons(Expr e, int kind, int index, Gvn head, GvnList tail) {
-  tail = gvnConstructed(e, kind, index - 1) and
-  head = toGvn(getRankedChild(e, index))
-}
 
 abstract private class GvnList extends TGvnList {
   abstract string toString();
@@ -107,6 +92,34 @@ private class GvnCons extends GvnList, TGvnCons {
   override string toString() { result = head.toString() + " :: " + tail.toString() }
 }
 
+private GvnKind getGvnKind(Expr e) {
+  result = TGvnKindDeclaration(referenceAttribute(e))
+  or
+  not exists(referenceAttribute(e)) and
+  exists(int kind | expressions(e, kind, _) and result = TGvnKindInt(kind))
+}
+
+private GvnList gvnConstructed(Expr e, int kind, int index) {
+  result = TGvnNil(getGvnKind(e)) and
+  index = -1 and
+  expressions(e, kind, _) // TODO: Can we re-factor not to get the int kind moved around
+  or
+  exists(Gvn head, GvnList tail |
+    gvnConstructedCons(e, kind, index, head, tail) and
+    result = TGvnCons(head, tail)
+  )
+}
+
+private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk) {
+  result =
+    rank[rnk + 1](ControlFlowElement child, int j | child = cfe.getChild(j) | child order by j)
+}
+
+private predicate gvnConstructedCons(Expr e, int kind, int index, Gvn head, GvnList tail) {
+  tail = gvnConstructed(e, kind, index - 1) and
+  head = toGvn(getRankedChild(e, index))
+}
+
 Gvn toGvn(Expr e) {
   result = TConstantGvn(e.getValue())
   or
@@ -116,22 +129,6 @@ Gvn toGvn(Expr e) {
     index = e.getNumberOfChildren() and
     result = TListExprGvn(l)
   )
-}
-
-abstract class Gvn extends TGvn {
-  abstract string toString();
-}
-
-private class ConstantGvn extends Gvn, TConstantGvn {
-  override string toString() { this = TConstantGvn(result) }
-}
-
-private class ListExprGvn extends Gvn, TListExprGvn {
-  private GvnList l;
-
-  ListExprGvn() { this = TListExprGvn(l) }
-
-  override string toString() { result = "[" + l.toString() + "]" }
 }
 
 abstract class GvnStructuralComparisonConfiguration extends string {
@@ -146,4 +143,10 @@ abstract class GvnStructuralComparisonConfiguration extends string {
     candidate(x, y) and
     sameInternal(x, y)
   }
+}
+
+// Temporary code section
+private predicate print(Expr e, Gvn gvn) {
+  e.fromSource() and
+  gvn = toGvn(e)
 }
