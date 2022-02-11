@@ -171,13 +171,13 @@ module API {
      * Gets a node such that there is an edge in the API graph between this node and the other
      * one, and that edge is labeled with `lbl`.
      */
-    Node getASuccessor(string lbl) { Impl::edge(this, lbl, result) }
+    Node getASuccessor(Label::ApiLabel lbl) { Impl::edge(this, lbl, result) }
 
     /**
      * Gets a node such that there is an edge in the API graph between that other node and
      * this one, and that edge is labeled with `lbl`
      */
-    Node getAPredecessor(string lbl) { this = result.getASuccessor(lbl) }
+    Node getAPredecessor(Label::ApiLabel lbl) { this = result.getASuccessor(lbl) }
 
     /**
      * Gets a node such that there is an edge in the API graph between this node and the other
@@ -225,9 +225,8 @@ module API {
       length = 0 and
       result = ""
       or
-      exists(Node pred, string lbl, string predpath |
+      exists(Node pred, Label::ApiLabel lbl, string predpath |
         Impl::edge(pred, lbl, this) and
-        lbl != "" and
         predpath = pred.getAPath(length - 1) and
         exists(string dot | if length = 1 then dot = "" else dot = "." |
           result = predpath + dot + lbl and
@@ -328,7 +327,7 @@ module API {
      * node labeled `lbl` in the API graph.
      */
     pragma[nomagic]
-    private predicate useRoot(string lbl, DataFlow::Node ref) {
+    private predicate useRoot(Label::ApiLabel lbl, DataFlow::Node ref) {
       exists(string name, ConstantReadAccess read |
         read = ref.asExpr().getExpr() and
         lbl = Label::member(read.getName())
@@ -345,7 +344,7 @@ module API {
      * Holds if `ref` is a use of a node that should have an incoming edge labeled `lbl`,
      * from a use node that flows to `node`.
      */
-    private predicate useStep(string lbl, DataFlow::Node node, DataFlow::Node ref) {
+    private predicate useStep(Label::ApiLabel lbl, DataFlow::Node node, DataFlow::Node ref) {
       // // Referring to an attribute on a node that is a use of `base`:
       // pred = `Rails` part of `Rails::Whatever`
       // lbl = `Whatever`
@@ -433,7 +432,7 @@ module API {
     /** Gets a data flow node that flows to the RHS of a def-node. */
     private DataFlow::LocalSourceNode defCand() { result = defCand(TypeBackTracker::end()) }
 
-    private string getLabelFromArgumentPosition(DataFlowDispatch::ArgumentPosition pos) {
+    private Label::ApiLabel getLabelFromArgumentPosition(DataFlowDispatch::ArgumentPosition pos) {
       exists(int n |
         pos.isPositional(n) and
         result = Label::parameter(n)
@@ -448,7 +447,7 @@ module API {
       result = Label::blockParameter()
     }
 
-    private string getLabelFromParameterPosition(DataFlowDispatch::ParameterPosition pos) {
+    private Label::ApiLabel getLabelFromParameterPosition(DataFlowDispatch::ParameterPosition pos) {
       exists(int n |
         pos.isPositional(n) and
         result = Label::parameter(n)
@@ -468,7 +467,7 @@ module API {
      */
     pragma[nomagic]
     private predicate argumentStep(
-      string lbl, DataFlow::CallNode call, DataFlowPrivate::ArgumentNode argument
+      Label::ApiLabel lbl, DataFlow::CallNode call, DataFlowPrivate::ArgumentNode argument
     ) {
       exists(DataFlowDispatch::ArgumentPosition argPos |
         argument.sourceArgumentOf(call.asExpr(), argPos) and
@@ -481,7 +480,7 @@ module API {
      */
     pragma[nomagic]
     private predicate parameterStep(
-      string lbl, DataFlow::Node callable, DataFlowPrivate::ParameterNodeImpl paramNode
+      Label::ApiLabel lbl, DataFlow::Node callable, DataFlowPrivate::ParameterNodeImpl paramNode
     ) {
       exists(DataFlowDispatch::ParameterPosition paramPos |
         paramNode.isSourceParameterOf(callable.asExpr().getExpr(), paramPos) and
@@ -541,7 +540,7 @@ module API {
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */
     cached
-    predicate edge(TApiNode pred, string lbl, TApiNode succ) {
+    predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
       /* Every node that is a use of an API component is itself added to the API graph. */
       exists(DataFlow::LocalSourceNode ref | succ = MkUse(ref) |
         pred = MkRoot() and
@@ -601,49 +600,140 @@ module API {
     /** Gets the shortest distance from the root to `nd` in the API graph. */
     cached
     int distanceFromRoot(TApiNode nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)
-  }
-}
 
-private module Label {
-  /** Gets the `member` edge label for member `m`. */
-  bindingset[m]
-  bindingset[result]
-  string member(string m) { result = "getMember(\"" + m + "\")" }
-
-  /** Gets the `member` edge label for the unknown member. */
-  string unknownMember() { result = "getUnknownMember()" }
-
-  /** Gets the `method` edge label. */
-  bindingset[m]
-  bindingset[result]
-  string method(string m) { result = "getMethod(\"" + m + "\")" }
-
-  /** Gets the `return` edge label. */
-  string return() { result = "getReturn()" }
-
-  string subclass() { result = "getASubclass()" }
-
-  /** Gets the label representing the given keword argument/parameter. */
-  bindingset[name]
-  bindingset[result]
-  string keywordParameter(string name) { result = "getKeywordParameter(\"" + name + "\")" }
-
-  /** Gets the label representing the `n`th positional argument/parameter. */
-  bindingset[n]
-  bindingset[result]
-  string parameter(int n) {
-    exists(string s |
-      result = parameterByStr(s) and
-      n = s.toInt() and
-      s = n.toString()
-    )
+    /** All the possible labels in the API graph. */
+    cached
+    newtype TLabel =
+      MkLabelMember(string member) { member = any(ConstantReadAccess a).getName() } or
+      MkLabelUnknownMember() or
+      MkLabelMethod(string m) { m = any(DataFlow::CallNode c).getMethodName() } or
+      MkLabelReturn() or
+      MkLabelSubclass() or
+      MkLabelKeywordParameter(string name) {
+        any(DataFlowDispatch::ArgumentPosition arg).isKeyword(name)
+        or
+        any(DataFlowDispatch::ParameterPosition arg).isKeyword(name)
+      } or
+      MkLabelParameter(int n) {
+        any(DataFlowDispatch::ArgumentPosition c).isPositional(n)
+        or
+        any(DataFlowDispatch::ParameterPosition c).isPositional(n)
+      } or
+      MkLabelBlockParameter()
   }
 
-  /** Gets the label representing the `n`th positional argument/parameter. */
-  bindingset[n]
-  bindingset[result]
-  string parameterByStr(string n) { result = "getParameter(" + n + ")" }
+  /** Provides classes modeling the various edges (labels) in the API graph. */
+  module Label {
+    /** A label in the API-graph */
+    class ApiLabel extends Impl::TLabel {
+      /** Gets a string representation of this label. */
+      string toString() { result = "???" }
+    }
 
-  /** Gets the label representing the block argument/parameter. */
-  string blockParameter() { result = "getBlock()" }
+    private import LabelImpl
+
+    private module LabelImpl {
+      private import Impl
+
+      /** A label for a member, for example a constant. */
+      class LabelMember extends ApiLabel {
+        private string member;
+
+        LabelMember() { this = MkLabelMember(member) }
+
+        /** Gets the member name associated with this label. */
+        string getMember() { result = member }
+
+        override string toString() { result = "getMember(\"" + member + "\")" }
+      }
+
+      /** A label for a member with an unknown name. */
+      class LabelUnknownMember extends ApiLabel {
+        LabelUnknownMember() { this = MkLabelUnknownMember() }
+
+        override string toString() { result = "getUnknownMember()" }
+      }
+
+      /** A label for a method. */
+      class LabelMethod extends ApiLabel {
+        private string method;
+
+        LabelMethod() { this = MkLabelMethod(method) }
+
+        /** Gets the method name associated with this label. */
+        string getMethod() { result = method }
+
+        override string toString() { result = "getMethod(\"" + method + "\")" }
+      }
+
+      /** A label for the return value of a method. */
+      class LabelReturn extends ApiLabel {
+        LabelReturn() { this = MkLabelReturn() }
+
+        override string toString() { result = "getReturn()" }
+      }
+
+      /** A label for the subclass relationship. */
+      class LabelSubclass extends ApiLabel {
+        LabelSubclass() { this = MkLabelSubclass() }
+
+        override string toString() { result = "getASubclass()" }
+      }
+
+      /** A label for a keyword parameter. */
+      class LabelKeywordParameter extends ApiLabel {
+        private string name;
+
+        LabelKeywordParameter() { this = MkLabelKeywordParameter(name) }
+
+        /** Gets the name of the keyword parameter associated with this label. */
+        string getName() { result = name }
+
+        override string toString() { result = "getKeywordParameter(\"" + name + "\")" }
+      }
+
+      /** A label for a parameter. */
+      class LabelParameter extends ApiLabel {
+        private int n;
+
+        LabelParameter() { this = MkLabelParameter(n) }
+
+        /** Gets the parameter number associated with this label. */
+        int getIndex() { result = n }
+
+        override string toString() { result = "getParameter(" + n + ")" }
+      }
+
+      /** A label for a block parameter. */
+      class LabelBlockParameter extends ApiLabel {
+        LabelBlockParameter() { this = MkLabelBlockParameter() }
+
+        override string toString() { result = "getBlock()" }
+      }
+    }
+
+    /** Gets the `member` edge label for member `m`. */
+    LabelMember member(string m) { result.getMember() = m }
+
+    /** Gets the `member` edge label for the unknown member. */
+    LabelUnknownMember unknownMember() { any() }
+
+    /** Gets the `method` edge label. */
+    LabelMethod method(string m) { result.getMethod() = m }
+
+    /** Gets the `return` edge label. */
+    LabelReturn return() { any() }
+
+    /** Gets the `subclass` edge label. */
+    LabelSubclass subclass() { any() }
+
+    /** Gets the label representing the given keword argument/parameter. */
+    LabelKeywordParameter keywordParameter(string name) { result.getName() = name }
+
+    /** Gets the label representing the `n`th positional argument/parameter. */
+    LabelParameter parameter(int n) { result.getIndex() = n }
+
+    /** Gets the label representing the block argument/parameter. */
+    LabelBlockParameter blockParameter() { any() }
+  }
 }
