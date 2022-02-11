@@ -1,5 +1,5 @@
 /**
- * Contains the language-specific part of the models-as-data implementation found in `Shared.qll`.
+ * Contains the language-specific part of the models-as-data implementation found in `ApiGraphModels.qll`.
  *
  * It must export the following members:
  * ```codeql
@@ -15,7 +15,7 @@
 
 private import javascript as js
 private import js::DataFlow as DataFlow
-private import Shared
+private import ApiGraphModels
 
 class Unit = js::Unit;
 

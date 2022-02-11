@@ -21,7 +21,8 @@
  */
 
 private import javascript
-private import internal.Shared as Shared
+private import internal.ApiGraphModels as Shared
+private import internal.ApiGraphModelsSpecific as Specific
 import Shared::ModelInput as ModelInput
 import Shared::ModelOutput as ModelOutput
 

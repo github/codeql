@@ -56,12 +56,12 @@
  * the type is related to the `foo` package but is not intended to match a static type.
  */
 
-private import Impl as Impl
+private import ApiGraphModelsSpecific as Specific
 import AccessPathSyntax
 
-private class Unit = Impl::Unit;
+private class Unit = Specific::Unit;
 
-private module API = Impl::API;
+private module API = Specific::API;
 
 /** Module containing hooks for providing input data to be interpreted as a model. */
 module ModelInput {
@@ -230,7 +230,7 @@ string getAPackageAlias(string package) {
  * Holds if CSV rows involving `package` might be relevant for the analysis of this database.
  */
 private predicate isRelevantPackage(string package) {
-  Impl::isPackageUsed(package)
+  Specific::isPackageUsed(package)
   or
   exists(string other |
     isRelevantPackage(other) and
@@ -282,7 +282,7 @@ private API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
   result = node.getReturn()
   or
   // Language-specific tokens
-  result = Impl::getExtraSuccessorFromNode(node, token)
+  result = Specific::getExtraSuccessorFromNode(node, token)
 }
 
 /**
@@ -303,7 +303,7 @@ private API::Node getSuccessorFromInvoke(API::InvokeNode invoke, AccessPathToken
   result = invoke.getReturn()
   or
   // Language-specific tokens
-  result = Impl::getExtraSuccessorFromInvoke(invoke, token)
+  result = Specific::getExtraSuccessorFromInvoke(invoke, token)
 }
 
 /**
@@ -314,7 +314,7 @@ private predicate invocationMatchesCallSiteFilter(API::InvokeNode invoke, Access
   token.getName() = "WithArity" and
   invoke.getNumArgument() = getAnIntFromStringUnbounded(token.getAnArgument())
   or
-  Impl::invocationMatchesExtraCallSiteFilter(invoke, token)
+  Specific::invocationMatchesExtraCallSiteFilter(invoke, token)
 }
 
 /**
@@ -335,7 +335,7 @@ API::Node getNodeFromPath(string package, string type, AccessPath path, int n) {
     )
     or
     // Language-specific cases, such as handling of global variables
-    result = Impl::getExtraNodeFromPath(package, type, path, n)
+    result = Specific::getExtraNodeFromPath(package, type, path, n)
   )
   or
   result = getSuccessorFromNode(getNodeFromPath(package, type, path, n - 1), path.getToken(n - 1))
