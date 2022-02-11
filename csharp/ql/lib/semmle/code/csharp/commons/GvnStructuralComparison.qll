@@ -11,6 +11,7 @@ import csharp
 // TODO: Elaborate on descriptions. Maybe provide some examples.
 // TODO: Test against the existing usecases.
 // TODO: Make tests for the new functionality, such we have a chance of changing the implementation later.
+// TODO: Cleanup temporary code section.
 private newtype TGvnKind =
   TGvnKindInt(int kind) { expressions(_, kind, _) } or
   TGvnKindDeclaration(Declaration d) { d = referenceAttribute(_) }
@@ -99,10 +100,10 @@ private GvnKind getGvnKind(Expr e) {
   exists(int kind | expressions(e, kind, _) and result = TGvnKindInt(kind))
 }
 
-private GvnList gvnConstructed(Expr e, int kind, int index) {
-  result = TGvnNil(getGvnKind(e)) and
-  index = -1 and
-  expressions(e, kind, _) // TODO: Can we re-factor not to get the int kind moved around
+private GvnList gvnConstructed(Expr e, GvnKind kind, int index) {
+  kind = getGvnKind(e) and
+  result = TGvnNil(kind) and
+  index = -1
   or
   exists(Gvn head, GvnList tail |
     gvnConstructedCons(e, kind, index, head, tail) and
@@ -115,7 +116,7 @@ private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk) {
     rank[rnk + 1](ControlFlowElement child, int j | child = cfe.getChild(j) | child order by j)
 }
 
-private predicate gvnConstructedCons(Expr e, int kind, int index, Gvn head, GvnList tail) {
+private predicate gvnConstructedCons(Expr e, GvnKind kind, int index, Gvn head, GvnList tail) {
   tail = gvnConstructed(e, kind, index - 1) and
   head = toGvn(getRankedChild(e, index))
 }
@@ -124,7 +125,7 @@ Gvn toGvn(Expr e) {
   result = TConstantGvn(e.getValue())
   or
   not exists(e.getValue()) and
-  exists(GvnList l, int kind, int index |
+  exists(GvnList l, GvnKind kind, int index |
     l = gvnConstructed(e, kind, index - 1) and
     index = e.getNumberOfChildren() and
     result = TListExprGvn(l)
