@@ -1,4 +1,5 @@
 invalidModelRow
+| Unrecognized input specification "Argument[0..2]" in sink model. |
 #select
 | test.go:47:10:47:12 | arg | qltest |
 | test.go:48:2:48:13 | type assertion | qltest |

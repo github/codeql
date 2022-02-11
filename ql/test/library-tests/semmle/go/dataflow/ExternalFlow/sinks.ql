@@ -9,7 +9,8 @@ class SinkModelTest extends SinkModelCsv {
       [
         //`namespace; type; subtypes; name; -; ext; input; kind`
         "github.com/nonexistent/test;B;false;Sink1;;;Argument[0];qltest",
-        "github.com/nonexistent/test;B;false;SinkMethod;;;Argument[-1];qltest"
+        "github.com/nonexistent/test;B;false;SinkMethod;;;Argument[-1];qltest",
+        "github.com/nonexistent/test;B;false;SinkManyArgs;;;Argument[0..2];qltest",
       ]
   }
 }

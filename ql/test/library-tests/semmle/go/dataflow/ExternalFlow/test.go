@@ -140,4 +140,10 @@ func simpleflow() {
 	c4.Set(a.Src1().(string))
 	c4.Set("")
 	b.Sink1(c4.Get()) // $ SPURIOUS: hasTaintFlow="call to Get" // because we currently don't clear content
+
+	arg1 := src
+	arg2 := src
+	arg3 := src
+	arg4 := src
+	b.SinkManyArgs(arg1, arg2, arg3, arg4) // $ hasTaintFlow="arg1" hasTaintFlow="arg2" hasTaintFlow="arg3"
 }
