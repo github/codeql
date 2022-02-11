@@ -5,34 +5,42 @@
 
 import csharp
 
-// TODO: Change this to always be a list or a constant.
+// TODO: Everyting should be generalized to ControlFlowElement.
+// TODO: Do we need any inlining or caching?
+private newtype TGvnKind =
+  TGvnKindInt(int kind) { expressions(_, kind, _) } or
+  TGvnKindDeclaration(Declaration d) { d = referenceAttribute(_) }
+
+private Declaration referenceAttribute(Expr e) {
+  result = e.(MethodCall).getTarget()
+  or
+  result = e.(ObjectCreation).getTarget()
+  or
+  result = e.(Access).getTarget()
+}
+
 private newtype TGvn =
   TConstantGvn(string s) { s = any(Expr e).getValue() } or
-  TVariableGvn(Declaration d) or
-  TMethodGvn(Method m) or
   TListExprGvn(GvnList l)
-
-// TODO: Change this to be TGvnKindDeclaration and only allow referenceAttribute like stuff.
-private newtype TGvnKind =
-  TGvnKindNone() or
-  TGvnKindMethod(Method m)
 
 abstract private class GvnKind extends TGvnKind {
   abstract string toString();
 }
 
-private class GvnKindNone extends GvnKind, TGvnKindNone {
-  GvnKindNone() { this = TGvnKindNone() }
+private class GvnKindInt extends GvnKind, TGvnKindInt {
+  private int kind;
 
-  override string toString() { result = "GvnKindNone" }
+  GvnKindInt() { this = TGvnKindInt(kind) }
+
+  override string toString() { result = "GvnKindInt(" + kind + ")" }
 }
 
-private class GvnKindMethod extends GvnKind, TGvnKindMethod {
-  private Method m;
+private class GvnKindMethod extends GvnKind, TGvnKindDeclaration {
+  private Declaration d;
 
-  GvnKindMethod() { this = TGvnKindMethod(m) }
+  GvnKindMethod() { this = TGvnKindDeclaration(d) }
 
-  override string toString() { result = "GvnKindMethod(" + m.toString() + ")" }
+  override string toString() { result = "GvnKindDeclaration(" + d.toString() + ")" }
 }
 
 /**
@@ -40,19 +48,20 @@ private class GvnKindMethod extends GvnKind, TGvnKindMethod {
  * The empty list carries the kind of the expression.
  */
 private newtype TGvnList =
-  // TODO: Make a limitation. Eg. only int kind that represents methods, when relevant kind
   // TODO: Consider to make a GvNil for statement and only with an int kind.
-  TGvnNil(int kind, GvnKind gkind) { expressions(_, kind, _) } or
+  TGvnNil(GvnKind gkind) or
   TGvnCons(Gvn head, GvnList tail) { gvnConstructedCons(_, _, _, head, tail) }
 
-// TODO: Do we need no inline pragma?
+private GvnKind getGvnKind(Expr e) {
+  result = TGvnKindDeclaration(referenceAttribute(e))
+  or
+  not exists(referenceAttribute(e)) and
+  exists(int kind | expressions(e, kind, _) and result = TGvnKindInt(kind))
+}
+
 private GvnList gvnConstructed(Expr e, int kind, int index) {
-  (
-    if e instanceof MethodCall
-    then result = TGvnNil(kind, TGvnKindMethod(e.(MethodCall).getTarget()))
-    else result = TGvnNil(kind, any(GvnKindNone gk))
-  ) and
-  index = -1 and // TODO: Is this correct? Should it be something else depending on the kind of expression?
+  result = TGvnNil(getGvnKind(e)) and
+  index = -1 and
   expressions(e, kind, _)
   or
   exists(Gvn head, GvnList tail |
@@ -61,45 +70,20 @@ private GvnList gvnConstructed(Expr e, int kind, int index) {
   )
 }
 
-private predicate myTest22(
-  Expr e, GvnList l, int kind, int index, int actchildren, int adjustedchildren, int children
-) {
-  e.fromSource() and
-  l = gvnConstructed(e, kind, index) and
-  actchildren = getNumberOfActualChildren(e) and
-  adjustedchildren = getNumberOfChildren(e) and
-  children = e.getNumberOfChildren()
-}
-
-private predicate testGetChild(Expr parent, Expr child, int i) {
-  child = getChild(parent, i) and parent.fromSource()
-}
-
-private predicate testGetChild2(Expr parent, Expr child, int i) {
-  child = parent.getChild(i) and parent.fromSource()
-}
-
 private predicate myTest3(Expr e, Gvn gvn) {
   e.fromSource() and
   gvn = toGvn(e)
 }
 
-// TODO: Use getRankedChild. instead of getChild.
 private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk) {
   result =
     rank[rnk + 1](ControlFlowElement child, int j | child = cfe.getChild(j) | child order by j)
 }
 
-private Expr getChild(Expr e, int child) {
-  if e instanceof MethodCall
-  then result = e.(MethodCall).getRawArgument(child)
-  else result = e.getChild(child)
-}
-
 // TODO: Do we need noinline pragma?
 private predicate gvnConstructedCons(Expr e, int kind, int index, Gvn head, GvnList tail) {
   tail = gvnConstructed(e, kind, index - 1) and
-  head = toGvn(getChild(e, index))
+  head = toGvn(getRankedChild(e, index))
 }
 
 abstract private class GvnList extends TGvnList {
@@ -107,12 +91,11 @@ abstract private class GvnList extends TGvnList {
 }
 
 private class GvnNil extends GvnList, TGvnNil {
-  private int kind;
-  private GvnKind gkind;
+  private GvnKind kind;
 
-  GvnNil() { this = TGvnNil(kind, gkind) }
+  GvnNil() { this = TGvnNil(kind) }
 
-  override string toString() { result = "Nil(kind:" + kind + ", gkind:" + gkind + ")]" }
+  override string toString() { result = "(kind:" + kind + ")" }
 }
 
 private class GvnCons extends GvnList, TGvnCons {
@@ -124,43 +107,14 @@ private class GvnCons extends GvnList, TGvnCons {
   override string toString() { result = head.toString() + " :: " + tail.toString() }
 }
 
-private Declaration referenceAttribute(Expr e) {
-  // result = e.(MethodCall).getTarget()
-  // or
-  // The cases below should probably also be handled explicitly somehow.
-  result = e.(ObjectCreation).getTarget()
-  // or
-  // result = e.(Access).getTarget()
-}
-
-private int getNumberOfActualChildren(ControlFlowElement e) {
-  if e.(MemberAccess).targetIsThisInstance()
-  then result = e.getNumberOfChildren() - 1
-  else result = e.getNumberOfChildren()
-}
-
-private int getNumberOfChildren(Expr e) {
-  exists(int ref |
-    (if exists(referenceAttribute(e)) then ref = 1 else ref = 0) and
-    result = getNumberOfActualChildren(e) + ref
-  )
-}
-
 Gvn toGvn(Expr e) {
   result = TConstantGvn(e.getValue())
   or
   not exists(e.getValue()) and
-  (
-    result = TVariableGvn(e.(VariableAccess).getTarget())
-    or
-    // This doesn't correctly capture the argument expressions.
-    // result = TMethodGvn(e.(MethodCall).getTarget())
-    // or
-    exists(GvnList l, int kind, int index |
-      l = gvnConstructed(e, kind, index - 1) and
-      index = getNumberOfChildren(e) and // TODO: Should this be factored
-      result = TListExprGvn(l)
-    )
+  exists(GvnList l, int kind, int index |
+    l = gvnConstructed(e, kind, index - 1) and
+    index = e.getNumberOfChildren() and
+    result = TListExprGvn(l)
   )
 }
 
@@ -170,22 +124,6 @@ abstract class Gvn extends TGvn {
 
 private class ConstantGvn extends Gvn, TConstantGvn {
   override string toString() { this = TConstantGvn(result) }
-}
-
-private class VariableGvn extends Gvn, TVariableGvn {
-  private Declaration d;
-
-  VariableGvn() { this = TVariableGvn(d) }
-
-  override string toString() { result = d.toString() }
-}
-
-private class MethodGvn extends Gvn, TMethodGvn {
-  private Method m;
-
-  MethodGvn() { this = TMethodGvn(m) }
-
-  override string toString() { result = m.toString() }
 }
 
 private class ListExprGvn extends Gvn, TListExprGvn {

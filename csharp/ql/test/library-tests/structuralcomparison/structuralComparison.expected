@@ -147,23 +147,51 @@ gvnSame
 | StructuralComparison.cs:16:22:16:22 | access to local variable y | StructuralComparison.cs:19:21:19:21 | access to local variable y |
 | StructuralComparison.cs:16:22:16:22 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
 | StructuralComparison.cs:16:22:16:22 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
+| StructuralComparison.cs:17:18:17:22 | call to method M0 | StructuralComparison.cs:18:18:18:22 | call to method M0 |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:21:18:21:25 | this access |
+| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:21:29:21:36 | this access |
 | StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
 | StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
 | StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
 | StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:18:21:18:21 | access to local variable x |
 | StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
 | StructuralComparison.cs:17:21:17:21 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:18:18:18:22 | call to method M0 | StructuralComparison.cs:17:18:17:22 | call to method M0 |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:21:18:21:25 | this access |
+| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:21:29:21:36 | this access |
 | StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
 | StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
 | StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
 | StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:17:21:17:21 | access to local variable x |
 | StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:21:21:21:21 | access to local variable x |
 | StructuralComparison.cs:18:21:18:21 | access to local variable x | StructuralComparison.cs:21:32:21:32 | access to local variable x |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:21:18:21:25 | this access |
+| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:21:29:21:36 | this access |
 | StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:14:13:14:13 | access to local variable y |
 | StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:15:22:15:22 | access to local variable y |
 | StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:16:22:16:22 | access to local variable y |
 | StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
 | StructuralComparison.cs:19:21:19:21 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:21:18:21:25 | this access |
+| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:21:29:21:36 | this access |
+| StructuralComparison.cs:21:18:21:25 | call to method M1 | StructuralComparison.cs:21:29:21:36 | call to method M1 |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:21:29:21:36 | this access |
 | StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
 | StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
 | StructuralComparison.cs:21:21:21:21 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
@@ -175,6 +203,12 @@ gvnSame
 | StructuralComparison.cs:21:24:21:24 | access to local variable y | StructuralComparison.cs:16:22:16:22 | access to local variable y |
 | StructuralComparison.cs:21:24:21:24 | access to local variable y | StructuralComparison.cs:19:21:19:21 | access to local variable y |
 | StructuralComparison.cs:21:24:21:24 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
+| StructuralComparison.cs:21:29:21:36 | call to method M1 | StructuralComparison.cs:21:18:21:25 | call to method M1 |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:17:18:17:22 | this access |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:18:18:18:22 | this access |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:19:18:19:22 | this access |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:20:18:20:24 | this access |
+| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:21:18:21:25 | this access |
 | StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:13:13:13:13 | access to local variable x |
 | StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
 | StructuralComparison.cs:21:32:21:32 | access to local variable x | StructuralComparison.cs:16:18:16:18 | access to local variable x |
@@ -188,71 +222,55 @@ gvnSame
 | StructuralComparison.cs:21:35:21:35 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
 gvnPrinting
 | StructuralComparison.cs:5:27:5:27 | 0 | 0 |
-| StructuralComparison.cs:7:29:7:29 | access to parameter a | a |
-| StructuralComparison.cs:8:38:8:39 | access to parameter v1 | v1 |
-| StructuralComparison.cs:8:38:8:44 | ... + ... | [v2 :: v1 :: Nil(kind:44, gkind:GvnKindNone)]] |
-| StructuralComparison.cs:8:43:8:44 | access to parameter v2 | v2 |
-| StructuralComparison.cs:13:13:13:13 | access to local variable x | x |
-| StructuralComparison.cs:13:13:13:17 | Int32 x = ... | [x :: 0 :: Nil(kind:83, gkind:GvnKindNone)]] |
+| StructuralComparison.cs:7:29:7:29 | access to parameter a | [(kind:GvnKindDeclaration(a))] |
+| StructuralComparison.cs:8:38:8:39 | access to parameter v1 | [(kind:GvnKindDeclaration(v1))] |
+| StructuralComparison.cs:8:38:8:44 | ... + ... | [[(kind:GvnKindDeclaration(v2))] :: [(kind:GvnKindDeclaration(v1))] :: (kind:GvnKindInt(44))] |
+| StructuralComparison.cs:8:43:8:44 | access to parameter v2 | [(kind:GvnKindDeclaration(v2))] |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | [(kind:GvnKindDeclaration(x))] |
+| StructuralComparison.cs:13:13:13:17 | Int32 x = ... | [[(kind:GvnKindDeclaration(x))] :: 0 :: (kind:GvnKindInt(83))] |
 | StructuralComparison.cs:13:17:13:17 | 0 | 0 |
-| StructuralComparison.cs:14:13:14:13 | access to local variable y | y |
-| StructuralComparison.cs:14:13:14:17 | Int32 y = ... | [y :: 1 :: Nil(kind:83, gkind:GvnKindNone)]] |
+| StructuralComparison.cs:14:13:14:13 | access to local variable y | [(kind:GvnKindDeclaration(y))] |
+| StructuralComparison.cs:14:13:14:17 | Int32 y = ... | [[(kind:GvnKindDeclaration(y))] :: 1 :: (kind:GvnKindInt(83))] |
 | StructuralComparison.cs:14:17:14:17 | 1 | 1 |
-| StructuralComparison.cs:15:13:15:14 | access to local variable z1 | z1 |
-| StructuralComparison.cs:15:13:15:22 | Int32 z1 = ... | [z1 :: [y :: x :: Nil(kind:44, gkind:GvnKindNone)]] :: Nil(kind:83, gkind:GvnKindNone)]] |
-| StructuralComparison.cs:15:18:15:18 | access to local variable x | x |
-| StructuralComparison.cs:15:18:15:22 | ... + ... | [y :: x :: Nil(kind:44, gkind:GvnKindNone)]] |
-| StructuralComparison.cs:15:22:15:22 | access to local variable y | y |
-| StructuralComparison.cs:16:13:16:14 | access to local variable z2 | z2 |
-| StructuralComparison.cs:16:13:16:22 | Int32 z2 = ... | [z2 :: [y :: x :: Nil(kind:44, gkind:GvnKindNone)]] :: Nil(kind:83, gkind:GvnKindNone)]] |
-| StructuralComparison.cs:16:18:16:18 | access to local variable x | x |
-| StructuralComparison.cs:16:18:16:22 | ... + ... | [y :: x :: Nil(kind:44, gkind:GvnKindNone)]] |
-| StructuralComparison.cs:16:22:16:22 | access to local variable y | y |
-| StructuralComparison.cs:17:13:17:14 | access to local variable z3 | z3 |
-| StructuralComparison.cs:17:21:17:21 | access to local variable x | x |
-| StructuralComparison.cs:18:13:18:14 | access to local variable z4 | z4 |
-| StructuralComparison.cs:18:21:18:21 | access to local variable x | x |
-| StructuralComparison.cs:19:13:19:14 | access to local variable z5 | z5 |
-| StructuralComparison.cs:19:21:19:21 | access to local variable y | y |
-| StructuralComparison.cs:20:13:20:14 | access to local variable z6 | z6 |
-| StructuralComparison.cs:21:13:21:14 | access to local variable z7 | z7 |
-| StructuralComparison.cs:21:21:21:21 | access to local variable x | x |
-| StructuralComparison.cs:21:24:21:24 | access to local variable y | y |
-| StructuralComparison.cs:21:32:21:32 | access to local variable x | x |
-| StructuralComparison.cs:21:35:21:35 | access to local variable y | y |
+| StructuralComparison.cs:15:13:15:14 | access to local variable z1 | [(kind:GvnKindDeclaration(z1))] |
+| StructuralComparison.cs:15:13:15:22 | Int32 z1 = ... | [[(kind:GvnKindDeclaration(z1))] :: [[(kind:GvnKindDeclaration(y))] :: [(kind:GvnKindDeclaration(x))] :: (kind:GvnKindInt(44))] :: (kind:GvnKindInt(83))] |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | [(kind:GvnKindDeclaration(x))] |
+| StructuralComparison.cs:15:18:15:22 | ... + ... | [[(kind:GvnKindDeclaration(y))] :: [(kind:GvnKindDeclaration(x))] :: (kind:GvnKindInt(44))] |
+| StructuralComparison.cs:15:22:15:22 | access to local variable y | [(kind:GvnKindDeclaration(y))] |
+| StructuralComparison.cs:16:13:16:14 | access to local variable z2 | [(kind:GvnKindDeclaration(z2))] |
+| StructuralComparison.cs:16:13:16:22 | Int32 z2 = ... | [[(kind:GvnKindDeclaration(z2))] :: [[(kind:GvnKindDeclaration(y))] :: [(kind:GvnKindDeclaration(x))] :: (kind:GvnKindInt(44))] :: (kind:GvnKindInt(83))] |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | [(kind:GvnKindDeclaration(x))] |
+| StructuralComparison.cs:16:18:16:22 | ... + ... | [[(kind:GvnKindDeclaration(y))] :: [(kind:GvnKindDeclaration(x))] :: (kind:GvnKindInt(44))] |
+| StructuralComparison.cs:16:22:16:22 | access to local variable y | [(kind:GvnKindDeclaration(y))] |
+| StructuralComparison.cs:17:13:17:14 | access to local variable z3 | [(kind:GvnKindDeclaration(z3))] |
+| StructuralComparison.cs:17:13:17:22 | Int32 z3 = ... | [[(kind:GvnKindDeclaration(z3))] :: [[(kind:GvnKindDeclaration(x))] :: [(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(M0))] :: (kind:GvnKindInt(83))] |
+| StructuralComparison.cs:17:18:17:22 | call to method M0 | [[(kind:GvnKindDeclaration(x))] :: [(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(M0))] |
+| StructuralComparison.cs:17:18:17:22 | this access | [(kind:GvnKindDeclaration(Class))] |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | [(kind:GvnKindDeclaration(x))] |
+| StructuralComparison.cs:18:13:18:14 | access to local variable z4 | [(kind:GvnKindDeclaration(z4))] |
+| StructuralComparison.cs:18:13:18:22 | Int32 z4 = ... | [[(kind:GvnKindDeclaration(z4))] :: [[(kind:GvnKindDeclaration(x))] :: [(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(M0))] :: (kind:GvnKindInt(83))] |
+| StructuralComparison.cs:18:18:18:22 | call to method M0 | [[(kind:GvnKindDeclaration(x))] :: [(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(M0))] |
+| StructuralComparison.cs:18:18:18:22 | this access | [(kind:GvnKindDeclaration(Class))] |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | [(kind:GvnKindDeclaration(x))] |
+| StructuralComparison.cs:19:13:19:14 | access to local variable z5 | [(kind:GvnKindDeclaration(z5))] |
+| StructuralComparison.cs:19:13:19:22 | Int32 z5 = ... | [[(kind:GvnKindDeclaration(z5))] :: [[(kind:GvnKindDeclaration(y))] :: [(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(M0))] :: (kind:GvnKindInt(83))] |
+| StructuralComparison.cs:19:18:19:22 | call to method M0 | [[(kind:GvnKindDeclaration(y))] :: [(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(M0))] |
+| StructuralComparison.cs:19:18:19:22 | this access | [(kind:GvnKindDeclaration(Class))] |
+| StructuralComparison.cs:19:21:19:21 | access to local variable y | [(kind:GvnKindDeclaration(y))] |
+| StructuralComparison.cs:20:13:20:14 | access to local variable z6 | [(kind:GvnKindDeclaration(z6))] |
+| StructuralComparison.cs:20:13:20:24 | Int32 z6 = ... | [[(kind:GvnKindDeclaration(z6))] :: [[(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(MUnit))] :: (kind:GvnKindInt(83))] |
+| StructuralComparison.cs:20:18:20:24 | call to method MUnit | [[(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(MUnit))] |
+| StructuralComparison.cs:20:18:20:24 | this access | [(kind:GvnKindDeclaration(Class))] |
+| StructuralComparison.cs:21:13:21:14 | access to local variable z7 | [(kind:GvnKindDeclaration(z7))] |
+| StructuralComparison.cs:21:13:21:36 | Int32 z7 = ... | [[(kind:GvnKindDeclaration(z7))] :: [[[(kind:GvnKindDeclaration(y))] :: [(kind:GvnKindDeclaration(x))] :: [(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(M1))] :: [[(kind:GvnKindDeclaration(y))] :: [(kind:GvnKindDeclaration(x))] :: [(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(M1))] :: (kind:GvnKindInt(44))] :: (kind:GvnKindInt(83))] |
+| StructuralComparison.cs:21:18:21:25 | call to method M1 | [[(kind:GvnKindDeclaration(y))] :: [(kind:GvnKindDeclaration(x))] :: [(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(M1))] |
+| StructuralComparison.cs:21:18:21:25 | this access | [(kind:GvnKindDeclaration(Class))] |
+| StructuralComparison.cs:21:18:21:36 | ... + ... | [[[(kind:GvnKindDeclaration(y))] :: [(kind:GvnKindDeclaration(x))] :: [(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(M1))] :: [[(kind:GvnKindDeclaration(y))] :: [(kind:GvnKindDeclaration(x))] :: [(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(M1))] :: (kind:GvnKindInt(44))] |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | [(kind:GvnKindDeclaration(x))] |
+| StructuralComparison.cs:21:24:21:24 | access to local variable y | [(kind:GvnKindDeclaration(y))] |
+| StructuralComparison.cs:21:29:21:36 | call to method M1 | [[(kind:GvnKindDeclaration(y))] :: [(kind:GvnKindDeclaration(x))] :: [(kind:GvnKindDeclaration(Class))] :: (kind:GvnKindDeclaration(M1))] |
+| StructuralComparison.cs:21:29:21:36 | this access | [(kind:GvnKindDeclaration(Class))] |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | [(kind:GvnKindDeclaration(x))] |
+| StructuralComparison.cs:21:35:21:35 | access to local variable y | [(kind:GvnKindDeclaration(y))] |
 sameDiff
-| StructuralComparison.cs:17:18:17:22 | call to method M0 | StructuralComparison.cs:18:18:18:22 | call to method M0 |
-| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:18:18:18:22 | this access |
-| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:19:18:19:22 | this access |
-| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:20:18:20:24 | this access |
-| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:21:18:21:25 | this access |
-| StructuralComparison.cs:17:18:17:22 | this access | StructuralComparison.cs:21:29:21:36 | this access |
-| StructuralComparison.cs:18:18:18:22 | call to method M0 | StructuralComparison.cs:17:18:17:22 | call to method M0 |
-| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:17:18:17:22 | this access |
-| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:19:18:19:22 | this access |
-| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:20:18:20:24 | this access |
-| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:21:18:21:25 | this access |
-| StructuralComparison.cs:18:18:18:22 | this access | StructuralComparison.cs:21:29:21:36 | this access |
-| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:17:18:17:22 | this access |
-| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:18:18:18:22 | this access |
-| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:20:18:20:24 | this access |
-| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:21:18:21:25 | this access |
-| StructuralComparison.cs:19:18:19:22 | this access | StructuralComparison.cs:21:29:21:36 | this access |
-| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:17:18:17:22 | this access |
-| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:18:18:18:22 | this access |
-| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:19:18:19:22 | this access |
-| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:21:18:21:25 | this access |
-| StructuralComparison.cs:20:18:20:24 | this access | StructuralComparison.cs:21:29:21:36 | this access |
-| StructuralComparison.cs:21:18:21:25 | call to method M1 | StructuralComparison.cs:21:29:21:36 | call to method M1 |
-| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:17:18:17:22 | this access |
-| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:18:18:18:22 | this access |
-| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:19:18:19:22 | this access |
-| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:20:18:20:24 | this access |
-| StructuralComparison.cs:21:18:21:25 | this access | StructuralComparison.cs:21:29:21:36 | this access |
-| StructuralComparison.cs:21:29:21:36 | call to method M1 | StructuralComparison.cs:21:18:21:25 | call to method M1 |
-| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:17:18:17:22 | this access |
-| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:18:18:18:22 | this access |
-| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:19:18:19:22 | this access |
-| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:20:18:20:24 | this access |
-| StructuralComparison.cs:21:29:21:36 | this access | StructuralComparison.cs:21:18:21:25 | this access |
 gvnSameDiff
