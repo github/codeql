@@ -274,7 +274,7 @@ API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
   // use-node represents be an argument, and an edge originating from a def-node represents a parameter.
   // We just map both to the same thing.
   token.getName() = ["Argument", "Parameter"] and
-  result = node.getParameter(getAnIntFromStringUnbounded(token.getAnArgument()))
+  result = node.getParameter(AccessPath::parseIntUnbounded(token.getAnArgument()))
   or
   token.getName() = "ReturnValue" and
   result = node.getReturn()
@@ -289,13 +289,9 @@ API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
 bindingset[token]
 API::Node getSuccessorFromInvoke(Specific::InvokeNode invoke, AccessPathToken token) {
   token.getName() = "Argument" and
-  (
-    result = invoke.getParameter(getAnIntFromStringUnbounded(token.getAnArgument()))
-    or
-    result =
-      invoke
-          .getParameter(getAnIntFromStringWithArity(token.getAnArgument(), invoke.getNumArgument()))
-  )
+  result =
+    invoke
+        .getParameter(AccessPath::parseIntWithArity(token.getAnArgument(), invoke.getNumArgument()))
   or
   token.getName() = "ReturnValue" and
   result = invoke.getReturn()
@@ -310,7 +306,7 @@ API::Node getSuccessorFromInvoke(Specific::InvokeNode invoke, AccessPathToken to
 pragma[inline]
 private predicate invocationMatchesCallSiteFilter(Specific::InvokeNode invoke, AccessPathToken token) {
   token.getName() = "WithArity" and
-  invoke.getNumArgument() = getAnIntFromStringUnbounded(token.getAnArgument())
+  invoke.getNumArgument() = AccessPath::parseIntUnbounded(token.getAnArgument())
   or
   Specific::invocationMatchesExtraCallSiteFilter(invoke, token)
 }
@@ -359,89 +355,6 @@ Specific::InvokeNode getInvocationFromPath(string package, string type, AccessPa
 /** Gets an invocation identified by the given `(package, type, path)` tuple. */
 Specific::InvokeNode getInvocationFromPath(string package, string type, AccessPath path) {
   result = getInvocationFromPath(package, type, path, path.getNumToken())
-}
-
-/**
- * Convenience-predicate for extracting two capture groups at once.
- */
-bindingset[input, regexp]
-private predicate regexpCaptureTwo(string input, string regexp, string capture1, string capture2) {
-  capture1 = input.regexpCapture(regexp, 1) and
-  capture2 = input.regexpCapture(regexp, 2)
-}
-
-/**
- * Parses an integer constant `n` or interval `n1..n2` (inclusive) and gets the value
- * of the constant or any value contained in the interval.
- */
-bindingset[arg]
-private int getAnIntFromString(string arg) {
-  result = arg.toInt()
-  or
-  // Match "n1..n2"
-  exists(string lo, string hi |
-    regexpCaptureTwo(arg, "(\\d+)\\.\\.(\\d+)", lo, hi) and
-    result = [lo.toInt() .. hi.toInt()]
-  )
-}
-
-/**
- * Parses a lower-bounded interval `n..` and gets the lower bound.
- */
-bindingset[arg]
-private int getLowerBoundFromString(string arg) {
-  // Match "n.."
-  result = arg.regexpCapture("(\\d+)\\.\\.", 1).toInt()
-}
-
-/**
- * Parses an integer constant or interval (bounded or unbounded) and gets any
- * of the integers contained within (of which there may be infinitely many).
- *
- * Has no result for arguments involving an explicit arity, such as `N-1`.
- */
-bindingset[arg, result]
-private int getAnIntFromStringUnbounded(string arg) {
-  result = getAnIntFromString(arg)
-  or
-  result >= getLowerBoundFromString(arg)
-}
-
-/**
- * Parses an integer constant or interval (bounded or unbounded) that explicitly
- * references the arity, such as `N-1` or `N-3..N-1`.
- *
- * Note that such expressions will never resolve to a negative index, even if the
- * arity is zero (it will have no result in that case).
- */
-bindingset[arg, arity]
-private int getAnIntFromStringWithArity(string arg, int arity) {
-  result >= 0 and // do not allow N-1 to resolve to a negative index
-  exists(string lo |
-    // N-x
-    lo = arg.regexpCapture("N-(\\d+)", 1) and
-    result = arity - lo.toInt()
-    or
-    // N-x..
-    lo = arg.regexpCapture("N-(\\d+)\\.\\.", 1) and
-    result = [arity - lo.toInt(), arity - 1]
-  )
-  or
-  exists(string lo, string hi |
-    // x..N-y
-    regexpCaptureTwo(arg, "(\\d+)\\.\\.N-(\\d+)", lo, hi) and
-    result = [lo.toInt() .. arity - hi.toInt()]
-    or
-    // N-x..Ny
-    regexpCaptureTwo(arg, "N-(\\d+)\\.\\.N-(\\d+)", lo, hi) and
-    result = [arity - lo.toInt() .. arity - hi.toInt()] and
-    result >= 0
-    or
-    // N-x..y
-    regexpCaptureTwo(arg, "N-(\\d+)\\.\\.(\\d+)", lo, hi) and
-    result = [arity - lo.toInt() .. hi.toInt()] and
-    result >= 0
-  )
 }
 
 /**
