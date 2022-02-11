@@ -179,9 +179,7 @@ abstract class SanitizedNode extends DataFlow::Node { }
 
 class NodeWithPathNormalizer extends SanitizedNode {
   NodeWithPathNormalizer() {
-    exists(MethodAccess ma |
-      DataFlow::localExprFlow(this.asExpr(), ma) and ma instanceof PathNormalizeSanitizer
-    )
+    DataFlow::localExprFlow(this.asExpr(), any(PathNormalizeSanitizer ma))
   }
 }
 
