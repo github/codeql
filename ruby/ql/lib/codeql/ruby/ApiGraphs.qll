@@ -631,13 +631,13 @@ module API {
         } or
         MkLabelBlockParameter()
 
-      /** A label for the member named `prop`. */
+      /** A label for a member, for example a constant. */
       class LabelMember extends ApiLabel {
-        string member;
+        private string member;
 
         LabelMember() { this = MkLabelMember(member) }
 
-        /** Gets the property associated with this label. */
+        /** Gets the member name associated with this label. */
         string getMember() { result = member }
 
         override string toString() { result = "getMember(\"" + member + "\")" }
@@ -650,9 +650,9 @@ module API {
         override string toString() { result = "getUnknownMember()" }
       }
 
-      /** A label for the method named `method`. */
+      /** A label for a method. */
       class LabelMethod extends ApiLabel {
-        string method;
+        private string method;
 
         LabelMethod() { this = MkLabelMethod(method) }
 
@@ -678,7 +678,7 @@ module API {
 
       /** A label for a keyword parameter. */
       class LabelKeywordParameter extends ApiLabel {
-        string name;
+        private string name;
 
         LabelKeywordParameter() { this = MkLabelKeywordParameter(name) }
 
@@ -690,7 +690,7 @@ module API {
 
       /** A label for a parameter. */
       class LabelParameter extends ApiLabel {
-        int n;
+        private int n;
 
         LabelParameter() { this = MkLabelParameter(n) }
 
