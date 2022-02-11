@@ -125,31 +125,47 @@ abstract class RegexString extends StringLiteral {
   }
 
   /**
-   * Gets the nesting depth of character classes at position `pos`
+   * Holds if the character at `pos` starts a character set delimiter.
+   * Result is 1 for `[` and 0 for `]`.
    */
-  private int charSetDepth(int pos) {
-    pos = -1 and result = 0
+  private int charSetDelimiter(int pos) {
+    result = 1 and this.charSetStart0(pos, _)
     or
-    exists(this.getChar(pos)) and
-    result =
-      max(int j |
-        j = 0 or
-        j =
-          count(int i | i < pos and this.charSetStart0(i, _)) -
-            count(int i | i < pos and this.charSetEnd0(i))
-      )
+    result = -1 and this.charSetEnd0(pos)
+  }
+
+  /**
+   * Holds if the char at `pos` is the one-based `index`th occourence of a character set delimiter (`[` or `]`).
+   * Result is 1 for `[` and -1 for `]`.
+   */
+  private int charSetDelimiter(int index, int pos) {
+    result = this.charSetDelimiter(pos) and
+    pos = rank[index](int p | exists(this.charSetDelimiter(p)))
+  }
+
+  bindingset[x]
+  int max_zero(int x) { result = max([x, 0]) }
+
+  /**
+   * Gets the nesting depth of character classes after position `pos`,
+   * where `pos` is the position of a character set delimiter.
+   */
+  private int charSetDepth(int index, int pos) {
+    index = 1 and result = max_zero(charSetDelimiter(index, pos))
+    or
+    result = max_zero(charSetDelimiter(index, pos) + charSetDepth(index - 1, _))
   }
 
   /** Hold if a top-level character set starts between `start` and `end`. */
   predicate charSetStart(int start, int end) {
     this.charSetStart0(start, end) and
-    this.charSetDepth(start) = 0
+    this.charSetDepth(_, start) = 1
   }
 
   /** Holds if a top-level character set ends at `pos`. */
   predicate charSetEnd(int pos) {
     this.charSetEnd0(pos) and
-    this.charSetDepth(pos) = 1
+    this.charSetDepth(_, pos) = 0
   }
 
   /**
