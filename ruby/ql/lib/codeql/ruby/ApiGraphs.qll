@@ -305,7 +305,7 @@ module API {
    * shortest length.
    */
   cached
-  module Impl {
+  private module Impl {
     cached
     newtype TApiNode =
       /** The root of the API graph. */
