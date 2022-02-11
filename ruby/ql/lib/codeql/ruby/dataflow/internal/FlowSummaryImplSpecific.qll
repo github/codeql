@@ -59,7 +59,7 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
  * is currently restricted to `"BlockArgument"`.
  */
 bindingset[c]
-SummaryComponent interpretComponentSpecific(string c) {
+SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   c = "Receiver" and
   result = FlowSummary::SummaryComponent::receiver()
   or
@@ -76,14 +76,9 @@ SummaryComponent interpretComponentSpecific(string c) {
   result = FlowSummary::SummaryComponent::arrayElementUnknown()
   or
   exists(int i |
-    c.regexpCapture("ArrayElement\\[([0-9]+)\\]", 1).toInt() = i and
+    c.getName() = "ArrayElement" and
+    i = AccessPath::parseInt(c.getAnArgument()) and
     result = FlowSummary::SummaryComponent::arrayElementKnown(i)
-  )
-  or
-  exists(int i1, int i2 |
-    c.regexpCapture("ArrayElement\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = i1 and
-    c.regexpCapture("ArrayElement\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = i2 and
-    result = FlowSummary::SummaryComponent::arrayElementKnown([i1 .. i2])
   )
 }
 
@@ -172,25 +167,14 @@ module ParsePositions {
     )
   }
 
-  bindingset[s]
-  private int parsePosition(string s) {
-    result = s.regexpCapture("([-0-9]+)", 1).toInt()
-    or
-    exists(int n1, int n2 |
-      s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 1).toInt() = n1 and
-      s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 2).toInt() = n2 and
-      result in [n1 .. n2]
-    )
-  }
-
   predicate isParsedParameterPosition(string c, int i) {
     isParamBody(c) and
-    i = parsePosition(c)
+    i = AccessPath::parseInt(c)
   }
 
   predicate isParsedArgumentPosition(string c, int i) {
     isArgBody(c) and
-    i = parsePosition(c)
+    i = AccessPath::parseInt(c)
   }
 }
 
