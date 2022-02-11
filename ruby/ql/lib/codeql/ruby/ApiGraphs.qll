@@ -600,12 +600,32 @@ module API {
     /** Gets the shortest distance from the root to `nd` in the API graph. */
     cached
     int distanceFromRoot(TApiNode nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)
+
+    /** All the possible labels in the API graph. */
+    cached
+    newtype TLabel =
+      MkLabelMember(string member) { member = any(ConstantReadAccess a).getName() } or
+      MkLabelUnknownMember() or
+      MkLabelMethod(string m) { m = any(DataFlow::CallNode c).getMethodName() } or
+      MkLabelReturn() or
+      MkLabelSubclass() or
+      MkLabelKeywordParameter(string name) {
+        any(DataFlowDispatch::ArgumentPosition arg).isKeyword(name)
+        or
+        any(DataFlowDispatch::ParameterPosition arg).isKeyword(name)
+      } or
+      MkLabelParameter(int n) {
+        any(DataFlowDispatch::ArgumentPosition c).isPositional(n)
+        or
+        any(DataFlowDispatch::ParameterPosition c).isPositional(n)
+      } or
+      MkLabelBlockParameter()
   }
 
   /** Provides classes modeling the various edges (labels) in the API graph. */
   module Label {
     /** A label in the API-graph */
-    class ApiLabel extends TLabel {
+    class ApiLabel extends Impl::TLabel {
       /** Gets a string representation of this label. */
       string toString() { result = "???" }
     }
@@ -613,23 +633,7 @@ module API {
     private import LabelImpl
 
     private module LabelImpl {
-      newtype TLabel =
-        MkLabelMember(string member) { member = any(ConstantReadAccess a).getName() } or
-        MkLabelUnknownMember() or
-        MkLabelMethod(string m) { m = any(DataFlow::CallNode c).getMethodName() } or
-        MkLabelReturn() or
-        MkLabelSubclass() or
-        MkLabelKeywordParameter(string name) {
-          any(DataFlowDispatch::ArgumentPosition arg).isKeyword(name)
-          or
-          any(DataFlowDispatch::ParameterPosition arg).isKeyword(name)
-        } or
-        MkLabelParameter(int n) {
-          any(DataFlowDispatch::ArgumentPosition c).isPositional(n)
-          or
-          any(DataFlowDispatch::ParameterPosition c).isPositional(n)
-        } or
-        MkLabelBlockParameter()
+      private import Impl
 
       /** A label for a member, for example a constant. */
       class LabelMember extends ApiLabel {
