@@ -40,7 +40,7 @@ private class RemoteFlowSourceFromCsv extends RemoteFlowSource {
  */
 private predicate summaryStepNodes(DataFlow::Node pred, DataFlow::Node succ, string kind) {
   exists(API::Node predNode, API::Node succNode |
-    ModelOutput::summaryStep(predNode, succNode, kind) and
+    Specific::summaryStep(predNode, succNode, kind) and
     pred = predNode.getARhs() and
     succ = succNode.getAnImmediateUse()
   )

@@ -268,7 +268,7 @@ private class AccessPathRange extends AccessPath::Range {
  * Gets a successor of `node` in the API graph.
  */
 bindingset[token]
-private API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
+API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
   // API graphs use the same label for arguments and parameters. An edge originating from a
   // use-node represents be an argument, and an edge originating from a def-node represents a parameter.
   // We just map both to the same thing.
@@ -289,7 +289,7 @@ private API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
  * Gets an API-graph successor for the given invocation.
  */
 bindingset[token]
-private API::Node getSuccessorFromInvoke(API::InvokeNode invoke, AccessPathToken token) {
+API::Node getSuccessorFromInvoke(API::InvokeNode invoke, AccessPathToken token) {
   token.getName() = "Argument" and
   (
     result = invoke.getParameter(getAnIntFromStringUnbounded(token.getAnArgument()))
@@ -365,50 +365,6 @@ API::InvokeNode getInvocationFromPath(string package, string type, AccessPath pa
 /** Gets an invocation identified by the given `(package, type, path)` tuple. */
 API::InvokeNode getInvocationFromPath(string package, string type, AccessPath path) {
   result = getInvocationFromPath(package, type, path, path.getNumToken())
-}
-
-/**
- * Holds if a summary edge with the given `input, output, kind` columns have a `package, type, path` tuple
- * that resolves to `baseNode`.
- */
-private predicate resolvedSummaryBase(
-  API::InvokeNode baseNode, AccessPath input, AccessPath output, string kind
-) {
-  exists(string package, string type, AccessPath path |
-    summaryModel(package, type, path, input, output, kind) and
-    baseNode = getInvocationFromPath(package, type, path)
-  )
-}
-
-/**
- * Holds if `path` is an input or output spec for a summary with the given `base` node.
- */
-pragma[nomagic]
-private predicate relevantInputOutputPath(API::InvokeNode base, AccessPath path) {
-  resolvedSummaryBase(base, path, _, _)
-  or
-  resolvedSummaryBase(base, _, path, _)
-}
-
-/**
- * Gets the API node for the first `n` tokens of the given input/output path, evaluated relative to `baseNode`.
- */
-private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path, int n) {
-  relevantInputOutputPath(baseNode, path) and
-  (
-    n = 1 and
-    result = getSuccessorFromInvoke(baseNode, path.getToken(0))
-    or
-    result =
-      getSuccessorFromNode(getNodeFromInputOutputPath(baseNode, path, n - 1), path.getToken(n - 1))
-  )
-}
-
-/**
- * Gets the API node for the given input/output path, evaluated relative to `baseNode`.
- */
-private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path) {
-  result = getNodeFromInputOutputPath(baseNode, path, path.getNumToken())
 }
 
 /**
@@ -519,13 +475,15 @@ module ModelOutput {
   }
 
   /**
-   * Holds if a CSV summary contributed the step `pred -> succ` of the given `kind`.
+   * Holds if a summary edge with the given `input, output, kind` columns have a `package, type, path` tuple
+   * that resolves to `baseNode`.
    */
-  predicate summaryStep(API::Node pred, API::Node succ, string kind) {
-    exists(API::InvokeNode base, AccessPath input, AccessPath output |
-      resolvedSummaryBase(base, input, output, kind) and
-      pred = getNodeFromInputOutputPath(base, input) and
-      succ = getNodeFromInputOutputPath(base, output)
+  predicate resolvedSummaryBase(
+    API::InvokeNode baseNode, AccessPath input, AccessPath output, string kind
+  ) {
+    exists(string package, string type, AccessPath path |
+      summaryModel(package, type, path, input, output, kind) and
+      baseNode = getInvocationFromPath(package, type, path)
     )
   }
 
