@@ -289,14 +289,14 @@ class ExposedSystemDataConfiguration extends TaintTracking::Configuration {
   ExposedSystemDataConfiguration() { this = "ExposedSystemDataConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr() = any(SystemData sd).getAnExpr()
+    source.asConvertedExpr() = any(SystemData sd).getAnExpr()
   }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(FunctionCall fc, FunctionInput input, int arg |
       fc.getTarget().(RemoteFlowSinkFunction).hasRemoteFlowSink(input, _) and
       input.isParameterDeref(arg) and
-      fc.getArgument(arg) = sink.asExpr()
+      fc.getArgument(arg).getFullyConverted() = sink.asConvertedExpr()
     )
   }
 }
