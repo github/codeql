@@ -21,6 +21,9 @@ class Unit = js::Unit;
 
 module API = js::API;
 
+import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
+private import AccessPathSyntax
+
 /**
  * Holds if models describing `package` may be relevant for the analysis of this database.
  */

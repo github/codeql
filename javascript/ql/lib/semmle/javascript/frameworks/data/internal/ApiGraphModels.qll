@@ -57,11 +57,12 @@
  */
 
 private import ApiGraphModelsSpecific as Specific
-import AccessPathSyntax
 
 private class Unit = Specific::Unit;
 
 private module API = Specific::API;
+
+private import Specific::AccessPathSyntax
 
 /** Module containing hooks for providing input data to be interpreted as a model. */
 module ModelInput {
