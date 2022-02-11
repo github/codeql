@@ -38,6 +38,34 @@ class SetRequestAttributeMethod extends Method {
   }
 }
 
+/**
+ * Holds if the result of an attribute getter call is from a method invocation of remote attribute setter.
+ * Only values received from remote flow source is to be checked by the query.
+ */
+predicate isGetAttributeFromRemoteSource(Expr expr) {
+  exists(MethodAccess gma, MethodAccess sma |
+    (
+      gma.getMethod() instanceof GetSessionAttributeMethod and
+      sma.getMethod() instanceof SetSessionAttributeMethod
+      or
+      gma.getMethod() instanceof GetRequestAttributeMethod and
+      sma.getMethod() instanceof SetRequestAttributeMethod
+    ) and
+    expr = gma and
+    gma.getArgument(0).(CompileTimeConstantExpr).getStringValue() =
+      sma.getArgument(0).(CompileTimeConstantExpr).getStringValue() and
+    gma.getEnclosingCallable() = sma.getEnclosingCallable() and
+    TaintTracking::localExprTaint(any(RemoteFlowSource rs).asExpr(), sma.getArgument(1))
+  )
+}
+
+/** Remote flow source of JFinal request or session attribute getters. */
+private class JFinalRequestSource extends RemoteFlowSource {
+  JFinalRequestSource() { isGetAttributeFromRemoteSource(this.asExpr()) }
+
+  override string getSourceType() { result = "JFinal session or request attribute source" }
+}
+
 /** Source model of remote flow source with `JFinal`. */
 private class JFinalControllerSource extends SourceModelCsv {
   override predicate row(string row) {
@@ -55,24 +83,6 @@ private class JFinalControllerSource extends SourceModelCsv {
           ] + ";;;ReturnValue;remote",
         "com.jfinal.core;Controller;true;get" + ["", "Int", "Long", "Boolean", "Date"] +
           ";;;ReturnValue;remote"
-      ]
-  }
-}
-
-/** `JFinal` data model related to session and request attribute operations. */
-private class JFinalDataModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "com.jfinal.core;Controller;true;setSessionAttr;;;Argument[0];MapKey of SyntheticField[com.jfinal.core.Controller.session] of Argument[-1];value",
-        "com.jfinal.core;Controller;true;setSessionAttr;;;Argument[1];MapValue of SyntheticField[com.jfinal.core.Controller.session] of Argument[-1];value",
-        "com.jfinal.core;Controller;true;getSessionAttr;;;MapValue of SyntheticField[com.jfinal.core.Controller.session] of Argument[-1];ReturnValue;value",
-        "com.jfinal.core;Controller;true;set" + ["", "Attr"] +
-          ";;;Argument[0];MapKey of SyntheticField[com.jfinal.core.Controller.request] of Argument[-1];value",
-        "com.jfinal.core;Controller;true;set" + ["", "Attr"] +
-          ";;;Argument[1];MapValue of SyntheticField[com.jfinal.core.Controller.request] of Argument[-1];value",
-        "com.jfinal.core;Controller;true;get" + ["Attr", "AttrForStr"] +
-          ";;;MapValue of SyntheticField[com.jfinal.core.Controller.request] of Argument[-1];ReturnValue;value"
       ]
   }
 }

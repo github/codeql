@@ -128,6 +128,52 @@ public class FilePathInjection extends Controller {
 		fos.close();
 	}
 
+	// GOOD: Upload file to a system path from a request object
+	public void uploadFile6() throws IOException {
+		setAttr("uploadDir", "/data/upload_dir/");
+		String requestUploadDir = getAttr("uploadDir");
+
+		File file = getFile("fileParam").getFile();
+		String finalFilePath = BASE_PATH + requestUploadDir;
+
+		FileInputStream fis = new FileInputStream(file);
+		FileOutputStream fos = new FileOutputStream(finalFilePath);
+		int i = 0;
+
+		do {
+			byte[] buf = new byte[1024];
+			i = fis.read(buf);
+			fos.write(buf);
+		} while (i != -1);
+
+		fis.close();
+		fos.close();
+	}
+
+	// GOOD: Upload file to a system path from a request object
+	public void uploadFile7() throws IOException {
+		String savePath = getPara("dir");
+		setAttr("uploadDir", savePath);
+		setAttr("realUploadDir", "/data/upload_dir/");
+		String requestUploadDir = getAttr("realUploadDir");
+
+		File file = getFile("fileParam").getFile();
+		String finalFilePath = BASE_PATH + requestUploadDir;
+
+		FileInputStream fis = new FileInputStream(file);
+		FileOutputStream fos = new FileOutputStream(finalFilePath);
+		int i = 0;
+
+		do {
+			byte[] buf = new byte[1024];
+			i = fis.read(buf);
+			fos.write(buf);
+		} while (i != -1);
+
+		fis.close();
+		fos.close();
+	}
+
 	private void readFile(HttpServletResponse resp, File file) {
 		OutputStream os = null;
 		FileInputStream fis = null;

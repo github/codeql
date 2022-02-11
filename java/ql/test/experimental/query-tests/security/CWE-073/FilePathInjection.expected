@@ -1,36 +1,20 @@
 edges
 | FilePathInjection.java:21:21:21:34 | getPara(...) : String | FilePathInjection.java:26:47:26:59 | finalFilePath |
-| FilePathInjection.java:64:21:64:34 | getPara(...) : String | FilePathInjection.java:65:31:65:38 | savePath : String |
-| FilePathInjection.java:65:3:65:39 | this <.method> [post update] [com.jfinal.core.Controller.session, <map.value>] : String | FilePathInjection.java:66:29:66:55 | this <.method> [com.jfinal.core.Controller.session, <map.value>] : String |
-| FilePathInjection.java:65:31:65:38 | savePath : String | FilePathInjection.java:65:3:65:39 | this <.method> [post update] [com.jfinal.core.Controller.session, <map.value>] : String |
 | FilePathInjection.java:66:29:66:55 | getSessionAttr(...) : String | FilePathInjection.java:72:47:72:59 | finalFilePath |
-| FilePathInjection.java:66:29:66:55 | this <.method> [com.jfinal.core.Controller.session, <map.value>] : String | FilePathInjection.java:66:29:66:55 | getSessionAttr(...) : String |
-| FilePathInjection.java:87:21:87:34 | getPara(...) : String | FilePathInjection.java:88:24:88:31 | savePath : String |
-| FilePathInjection.java:88:3:88:32 | this <.method> [post update] [com.jfinal.core.Controller.request, <map.value>] : String | FilePathInjection.java:89:29:89:48 | this <.method> [com.jfinal.core.Controller.request, <map.value>] : String |
-| FilePathInjection.java:88:24:88:31 | savePath : String | FilePathInjection.java:88:3:88:32 | this <.method> [post update] [com.jfinal.core.Controller.request, <map.value>] : String |
 | FilePathInjection.java:89:29:89:48 | getAttr(...) : String | FilePathInjection.java:95:47:95:59 | finalFilePath |
-| FilePathInjection.java:89:29:89:48 | this <.method> [com.jfinal.core.Controller.request, <map.value>] : String | FilePathInjection.java:89:29:89:48 | getAttr(...) : String |
-| FilePathInjection.java:159:17:159:44 | getParameter(...) : String | FilePathInjection.java:163:24:163:31 | filePath |
+| FilePathInjection.java:205:17:205:44 | getParameter(...) : String | FilePathInjection.java:209:24:209:31 | filePath |
 nodes
 | FilePathInjection.java:21:21:21:34 | getPara(...) : String | semmle.label | getPara(...) : String |
 | FilePathInjection.java:26:47:26:59 | finalFilePath | semmle.label | finalFilePath |
-| FilePathInjection.java:64:21:64:34 | getPara(...) : String | semmle.label | getPara(...) : String |
-| FilePathInjection.java:65:3:65:39 | this <.method> [post update] [com.jfinal.core.Controller.session, <map.value>] : String | semmle.label | this <.method> [post update] [com.jfinal.core.Controller.session, <map.value>] : String |
-| FilePathInjection.java:65:31:65:38 | savePath : String | semmle.label | savePath : String |
 | FilePathInjection.java:66:29:66:55 | getSessionAttr(...) : String | semmle.label | getSessionAttr(...) : String |
-| FilePathInjection.java:66:29:66:55 | this <.method> [com.jfinal.core.Controller.session, <map.value>] : String | semmle.label | this <.method> [com.jfinal.core.Controller.session, <map.value>] : String |
 | FilePathInjection.java:72:47:72:59 | finalFilePath | semmle.label | finalFilePath |
-| FilePathInjection.java:87:21:87:34 | getPara(...) : String | semmle.label | getPara(...) : String |
-| FilePathInjection.java:88:3:88:32 | this <.method> [post update] [com.jfinal.core.Controller.request, <map.value>] : String | semmle.label | this <.method> [post update] [com.jfinal.core.Controller.request, <map.value>] : String |
-| FilePathInjection.java:88:24:88:31 | savePath : String | semmle.label | savePath : String |
 | FilePathInjection.java:89:29:89:48 | getAttr(...) : String | semmle.label | getAttr(...) : String |
-| FilePathInjection.java:89:29:89:48 | this <.method> [com.jfinal.core.Controller.request, <map.value>] : String | semmle.label | this <.method> [com.jfinal.core.Controller.request, <map.value>] : String |
 | FilePathInjection.java:95:47:95:59 | finalFilePath | semmle.label | finalFilePath |
-| FilePathInjection.java:159:17:159:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| FilePathInjection.java:163:24:163:31 | filePath | semmle.label | filePath |
+| FilePathInjection.java:205:17:205:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| FilePathInjection.java:209:24:209:31 | filePath | semmle.label | filePath |
 subpaths
 #select
 | FilePathInjection.java:26:47:26:59 | finalFilePath | FilePathInjection.java:21:21:21:34 | getPara(...) : String | FilePathInjection.java:26:47:26:59 | finalFilePath | External control of file name or path due to $@. | FilePathInjection.java:21:21:21:34 | getPara(...) | user-provided value |
-| FilePathInjection.java:72:47:72:59 | finalFilePath | FilePathInjection.java:64:21:64:34 | getPara(...) : String | FilePathInjection.java:72:47:72:59 | finalFilePath | External control of file name or path due to $@. | FilePathInjection.java:64:21:64:34 | getPara(...) | user-provided value |
-| FilePathInjection.java:95:47:95:59 | finalFilePath | FilePathInjection.java:87:21:87:34 | getPara(...) : String | FilePathInjection.java:95:47:95:59 | finalFilePath | External control of file name or path due to $@. | FilePathInjection.java:87:21:87:34 | getPara(...) | user-provided value |
-| FilePathInjection.java:163:24:163:31 | filePath | FilePathInjection.java:159:17:159:44 | getParameter(...) : String | FilePathInjection.java:163:24:163:31 | filePath | External control of file name or path due to $@. | FilePathInjection.java:159:17:159:44 | getParameter(...) | user-provided value |
+| FilePathInjection.java:72:47:72:59 | finalFilePath | FilePathInjection.java:66:29:66:55 | getSessionAttr(...) : String | FilePathInjection.java:72:47:72:59 | finalFilePath | External control of file name or path due to $@. | FilePathInjection.java:66:29:66:55 | getSessionAttr(...) | user-provided value |
+| FilePathInjection.java:95:47:95:59 | finalFilePath | FilePathInjection.java:89:29:89:48 | getAttr(...) : String | FilePathInjection.java:95:47:95:59 | finalFilePath | External control of file name or path due to $@. | FilePathInjection.java:89:29:89:48 | getAttr(...) | user-provided value |
+| FilePathInjection.java:209:24:209:31 | filePath | FilePathInjection.java:205:17:205:44 | getParameter(...) : String | FilePathInjection.java:209:24:209:31 | filePath | External control of file name or path due to $@. | FilePathInjection.java:205:17:205:44 | getParameter(...) | user-provided value |
