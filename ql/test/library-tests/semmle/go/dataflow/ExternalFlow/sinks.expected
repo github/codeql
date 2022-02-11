@@ -26,3 +26,6 @@ invalidModelRow
 | test.go:133:10:133:17 | call to Get | qltest |
 | test.go:137:10:137:17 | call to Get | qltest |
 | test.go:142:10:142:17 | call to Get | qltest |
+| test.go:148:17:148:20 | arg1 | qltest |
+| test.go:148:23:148:26 | arg2 | qltest |
+| test.go:148:29:148:32 | arg3 | qltest |

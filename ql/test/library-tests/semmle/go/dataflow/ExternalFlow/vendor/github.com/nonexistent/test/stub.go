@@ -58,6 +58,7 @@ func (a *A1) SrcArg(arg interface{}) {}
 type B interface {
 	Sink1(arg interface{})
 	SinkMethod() interface{}
+	SinkManyArgs(arg1 interface{}, arg2 interface{}, arg3 interface{}, arg4 interface{})
 }
 
 type C struct {

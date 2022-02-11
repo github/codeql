@@ -22,6 +22,38 @@ predicate parameterPosition(int i) {
 /** Gets the parameter position of the instance parameter. */
 int instanceParameterPosition() { result = -1 }
 
+/** A parameter position represented by an integer. */
+class ParameterPosition extends int {
+  ParameterPosition() { parameterPosition(this) }
+}
+
+/** An argument position represented by an integer. */
+class ArgumentPosition extends int {
+  ArgumentPosition() { parameterPosition(this) }
+}
+
+/** Holds if arguments at position `apos` match parameters at position `ppos`. */
+pragma[inline]
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+
+/**
+ * Holds if `arg` is an argument of `call` with an argument position that matches
+ * parameter position `ppos`.
+ */
+pragma[noinline]
+predicate argumentPositionMatch(DataFlowCall call, ArgNode arg, ParameterPosition ppos) {
+  exists(ArgumentPosition apos |
+    arg.argumentOf(call, apos) and
+    parameterMatch(ppos, apos)
+  )
+}
+
+/** Gets the textual representation of a parameter position in the format used for flow summaries. */
+string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
+
+/** Gets the textual representation of an argument position in the format used for flow summaries. */
+string getArgumentPositionCsv(ArgumentPosition pos) { result = pos.toString() }
+
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSummaryNode(c, state) }
 
 /** Gets the synthesized data-flow call for `receiver`. */
@@ -245,12 +277,23 @@ predicate parseReturn(string c, int n) {
   (
     c = "ReturnValue" and n = 0
     or
-    c.regexpCapture("ReturnValue\\[([-0-9]+)\\]", 1).toInt() = n
-    or
-    exists(int n1, int n2 |
-      c.regexpCapture("ReturnValue\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
-      c.regexpCapture("ReturnValue\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
-      n = [n1 .. n2]
-    )
+    n = parseConstantOrRange(c.regexpCapture("ReturnValue\\[([^\\]]+)\\]", 1))
   )
 }
+
+bindingset[arg]
+private int parseConstantOrRange(string arg) {
+  result = arg.toInt()
+  or
+  exists(int n1, int n2 |
+    arg.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 1).toInt() = n1 and
+    arg.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 2).toInt() = n2 and
+    result = [n1 .. n2]
+  )
+}
+
+bindingset[arg]
+ArgumentPosition parseParamBody(string arg) { result = parseConstantOrRange(arg) }
+
+bindingset[arg]
+ParameterPosition parseArgBody(string arg) { result = parseConstantOrRange(arg) }
