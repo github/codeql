@@ -5,7 +5,7 @@
 import javascript
 
 /**
- * A module modelling taint steps for the [snapdragon](https://www.npmjs.com/package/snapdragon) library.
+ * A module modeling taint steps for the [snapdragon](https://www.npmjs.com/package/snapdragon) library.
  */
 private module Snapdragon {
   private API::Node getSetCall(API::Node base) { result = base.getMember("set").getReturn() }
