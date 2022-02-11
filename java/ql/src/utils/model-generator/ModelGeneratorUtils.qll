@@ -165,6 +165,7 @@ string parameterNodeAsInput(DataFlow::ParameterNode p) {
   result = "Argument[-1]" and p instanceof DataFlow::InstanceParameterNode
 }
 
+bindingset[api]
 string returnNodeAsOutput(TargetAPI api, ReturnNodeExt node) {
   if node.getKind() instanceof ValueReturnKind
   then result = "ReturnValue"
