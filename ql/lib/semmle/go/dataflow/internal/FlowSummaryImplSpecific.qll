@@ -292,8 +292,8 @@ private int parseConstantOrRange(string arg) {
   result = arg.toInt()
   or
   exists(int n1, int n2 |
-    arg.regexpCapture("ReturnValue\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
-    arg.regexpCapture("ReturnValue\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
+    arg.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 1).toInt() = n1 and
+    arg.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 2).toInt() = n2 and
     result = [n1 .. n2]
   )
 }
