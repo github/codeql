@@ -12,9 +12,12 @@ import csharp
 // TODO: Test against the existing usecases.
 // TODO: Make tests for the new functionality, such we have a chance of changing the implementation later.
 // TODO: Cleanup temporary code section.
+// TODO: Rename ListExpGvn as it covers more than expressions.
 private newtype TGvnKind =
   TGvnKindInt(int kind) { expressions(_, kind, _) } or
-  TGvnKindDeclaration(Declaration d) { d = referenceAttribute(_) }
+  TGvnKindDeclaration(int kind, Declaration d) {
+    exists(Expr e | d = referenceAttribute(e) and expressions(e, kind, _))
+  }
 
 abstract private class GvnKind extends TGvnKind {
   abstract string toString();
@@ -29,11 +32,12 @@ private class GvnKindInt extends GvnKind, TGvnKindInt {
 }
 
 private class GvnKindDeclaration extends GvnKind, TGvnKindDeclaration {
+  private int kind;
   private Declaration d;
 
-  GvnKindDeclaration() { this = TGvnKindDeclaration(d) }
+  GvnKindDeclaration() { this = TGvnKindDeclaration(kind, d) }
 
-  override string toString() { result = d.toString() }
+  override string toString() { result = kind.toString() + "," + d.toString() }
 }
 
 private Declaration referenceAttribute(Expr e) {
@@ -93,14 +97,20 @@ private class GvnCons extends GvnList, TGvnCons {
   override string toString() { result = head.toString() + " :: " + tail.toString() }
 }
 
-private GvnKind getGvnKind(Expr e) {
-  result = TGvnKindDeclaration(referenceAttribute(e))
+private int getKind(ControlFlowElement cfe) {
+  expressions(cfe, result, _)
   or
-  not exists(referenceAttribute(e)) and
-  exists(int kind | expressions(e, kind, _) and result = TGvnKindInt(kind))
+  exists(int kind | statements(_, kind) and result = -kind)
 }
 
-private GvnList gvnConstructed(Expr e, GvnKind kind, int index) {
+private GvnKind getGvnKind(ControlFlowElement cfe) {
+  result = TGvnKindDeclaration(getKind(cfe), referenceAttribute(cfe))
+  or
+  not exists(referenceAttribute(cfe)) and
+  result = TGvnKindInt(getKind(cfe))
+}
+
+private GvnList gvnConstructed(ControlFlowElement e, GvnKind kind, int index) {
   kind = getGvnKind(e) and
   result = TGvnNil(kind) and
   index = -1
@@ -116,15 +126,17 @@ private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk) {
     rank[rnk + 1](ControlFlowElement child, int j | child = cfe.getChild(j) | child order by j)
 }
 
-private predicate gvnConstructedCons(Expr e, GvnKind kind, int index, Gvn head, GvnList tail) {
+private predicate gvnConstructedCons(
+  ControlFlowElement e, GvnKind kind, int index, Gvn head, GvnList tail
+) {
   tail = gvnConstructed(e, kind, index - 1) and
   head = toGvn(getRankedChild(e, index))
 }
 
-Gvn toGvn(Expr e) {
-  result = TConstantGvn(e.getValue())
+Gvn toGvn(ControlFlowElement e) {
+  result = TConstantGvn(e.(Expr).getValue())
   or
-  not exists(e.getValue()) and
+  not exists(e.(Expr).getValue()) and
   exists(GvnList l, GvnKind kind, int index |
     l = gvnConstructed(e, kind, index - 1) and
     index = e.getNumberOfChildren() and
@@ -147,7 +159,7 @@ abstract class GvnStructuralComparisonConfiguration extends string {
 }
 
 // Temporary code section
-private predicate print(Expr e, Gvn gvn) {
+private predicate print(ControlFlowElement e, Gvn gvn) {
   e.fromSource() and
   gvn = toGvn(e)
 }

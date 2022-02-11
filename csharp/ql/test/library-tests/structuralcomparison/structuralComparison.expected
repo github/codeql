@@ -222,55 +222,55 @@ gvnSame
 | StructuralComparison.cs:21:35:21:35 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
 gvnPrinting
 | StructuralComparison.cs:5:27:5:27 | 0 | 0 |
-| StructuralComparison.cs:7:29:7:29 | access to parameter a | [(kind:a)] |
-| StructuralComparison.cs:8:38:8:39 | access to parameter v1 | [(kind:v1)] |
-| StructuralComparison.cs:8:38:8:44 | ... + ... | [[(kind:v2)] :: [(kind:v1)] :: (kind:44)] |
-| StructuralComparison.cs:8:43:8:44 | access to parameter v2 | [(kind:v2)] |
-| StructuralComparison.cs:13:13:13:13 | access to local variable x | [(kind:x)] |
-| StructuralComparison.cs:13:13:13:17 | Int32 x = ... | [[(kind:x)] :: 0 :: (kind:83)] |
+| StructuralComparison.cs:7:29:7:29 | access to parameter a | [(kind:15,a)] |
+| StructuralComparison.cs:8:38:8:39 | access to parameter v1 | [(kind:15,v1)] |
+| StructuralComparison.cs:8:38:8:44 | ... + ... | [[(kind:15,v2)] :: [(kind:15,v1)] :: (kind:44)] |
+| StructuralComparison.cs:8:43:8:44 | access to parameter v2 | [(kind:15,v2)] |
+| StructuralComparison.cs:13:13:13:13 | access to local variable x | [(kind:14,x)] |
+| StructuralComparison.cs:13:13:13:17 | Int32 x = ... | [[(kind:14,x)] :: 0 :: (kind:83)] |
 | StructuralComparison.cs:13:17:13:17 | 0 | 0 |
-| StructuralComparison.cs:14:13:14:13 | access to local variable y | [(kind:y)] |
-| StructuralComparison.cs:14:13:14:17 | Int32 y = ... | [[(kind:y)] :: 1 :: (kind:83)] |
+| StructuralComparison.cs:14:13:14:13 | access to local variable y | [(kind:14,y)] |
+| StructuralComparison.cs:14:13:14:17 | Int32 y = ... | [[(kind:14,y)] :: 1 :: (kind:83)] |
 | StructuralComparison.cs:14:17:14:17 | 1 | 1 |
-| StructuralComparison.cs:15:13:15:14 | access to local variable z1 | [(kind:z1)] |
-| StructuralComparison.cs:15:13:15:22 | Int32 z1 = ... | [[(kind:z1)] :: [[(kind:y)] :: [(kind:x)] :: (kind:44)] :: (kind:83)] |
-| StructuralComparison.cs:15:18:15:18 | access to local variable x | [(kind:x)] |
-| StructuralComparison.cs:15:18:15:22 | ... + ... | [[(kind:y)] :: [(kind:x)] :: (kind:44)] |
-| StructuralComparison.cs:15:22:15:22 | access to local variable y | [(kind:y)] |
-| StructuralComparison.cs:16:13:16:14 | access to local variable z2 | [(kind:z2)] |
-| StructuralComparison.cs:16:13:16:22 | Int32 z2 = ... | [[(kind:z2)] :: [[(kind:y)] :: [(kind:x)] :: (kind:44)] :: (kind:83)] |
-| StructuralComparison.cs:16:18:16:18 | access to local variable x | [(kind:x)] |
-| StructuralComparison.cs:16:18:16:22 | ... + ... | [[(kind:y)] :: [(kind:x)] :: (kind:44)] |
-| StructuralComparison.cs:16:22:16:22 | access to local variable y | [(kind:y)] |
-| StructuralComparison.cs:17:13:17:14 | access to local variable z3 | [(kind:z3)] |
-| StructuralComparison.cs:17:13:17:22 | Int32 z3 = ... | [[(kind:z3)] :: [[(kind:x)] :: [(kind:Class)] :: (kind:M0)] :: (kind:83)] |
-| StructuralComparison.cs:17:18:17:22 | call to method M0 | [[(kind:x)] :: [(kind:Class)] :: (kind:M0)] |
-| StructuralComparison.cs:17:18:17:22 | this access | [(kind:Class)] |
-| StructuralComparison.cs:17:21:17:21 | access to local variable x | [(kind:x)] |
-| StructuralComparison.cs:18:13:18:14 | access to local variable z4 | [(kind:z4)] |
-| StructuralComparison.cs:18:13:18:22 | Int32 z4 = ... | [[(kind:z4)] :: [[(kind:x)] :: [(kind:Class)] :: (kind:M0)] :: (kind:83)] |
-| StructuralComparison.cs:18:18:18:22 | call to method M0 | [[(kind:x)] :: [(kind:Class)] :: (kind:M0)] |
-| StructuralComparison.cs:18:18:18:22 | this access | [(kind:Class)] |
-| StructuralComparison.cs:18:21:18:21 | access to local variable x | [(kind:x)] |
-| StructuralComparison.cs:19:13:19:14 | access to local variable z5 | [(kind:z5)] |
-| StructuralComparison.cs:19:13:19:22 | Int32 z5 = ... | [[(kind:z5)] :: [[(kind:y)] :: [(kind:Class)] :: (kind:M0)] :: (kind:83)] |
-| StructuralComparison.cs:19:18:19:22 | call to method M0 | [[(kind:y)] :: [(kind:Class)] :: (kind:M0)] |
-| StructuralComparison.cs:19:18:19:22 | this access | [(kind:Class)] |
-| StructuralComparison.cs:19:21:19:21 | access to local variable y | [(kind:y)] |
-| StructuralComparison.cs:20:13:20:14 | access to local variable z6 | [(kind:z6)] |
-| StructuralComparison.cs:20:13:20:24 | Int32 z6 = ... | [[(kind:z6)] :: [[(kind:Class)] :: (kind:MUnit)] :: (kind:83)] |
-| StructuralComparison.cs:20:18:20:24 | call to method MUnit | [[(kind:Class)] :: (kind:MUnit)] |
-| StructuralComparison.cs:20:18:20:24 | this access | [(kind:Class)] |
-| StructuralComparison.cs:21:13:21:14 | access to local variable z7 | [(kind:z7)] |
-| StructuralComparison.cs:21:13:21:36 | Int32 z7 = ... | [[(kind:z7)] :: [[[(kind:y)] :: [(kind:x)] :: [(kind:Class)] :: (kind:M1)] :: [[(kind:y)] :: [(kind:x)] :: [(kind:Class)] :: (kind:M1)] :: (kind:44)] :: (kind:83)] |
-| StructuralComparison.cs:21:18:21:25 | call to method M1 | [[(kind:y)] :: [(kind:x)] :: [(kind:Class)] :: (kind:M1)] |
-| StructuralComparison.cs:21:18:21:25 | this access | [(kind:Class)] |
-| StructuralComparison.cs:21:18:21:36 | ... + ... | [[[(kind:y)] :: [(kind:x)] :: [(kind:Class)] :: (kind:M1)] :: [[(kind:y)] :: [(kind:x)] :: [(kind:Class)] :: (kind:M1)] :: (kind:44)] |
-| StructuralComparison.cs:21:21:21:21 | access to local variable x | [(kind:x)] |
-| StructuralComparison.cs:21:24:21:24 | access to local variable y | [(kind:y)] |
-| StructuralComparison.cs:21:29:21:36 | call to method M1 | [[(kind:y)] :: [(kind:x)] :: [(kind:Class)] :: (kind:M1)] |
-| StructuralComparison.cs:21:29:21:36 | this access | [(kind:Class)] |
-| StructuralComparison.cs:21:32:21:32 | access to local variable x | [(kind:x)] |
-| StructuralComparison.cs:21:35:21:35 | access to local variable y | [(kind:y)] |
+| StructuralComparison.cs:15:13:15:14 | access to local variable z1 | [(kind:14,z1)] |
+| StructuralComparison.cs:15:13:15:22 | Int32 z1 = ... | [[(kind:14,z1)] :: [[(kind:14,y)] :: [(kind:14,x)] :: (kind:44)] :: (kind:83)] |
+| StructuralComparison.cs:15:18:15:18 | access to local variable x | [(kind:14,x)] |
+| StructuralComparison.cs:15:18:15:22 | ... + ... | [[(kind:14,y)] :: [(kind:14,x)] :: (kind:44)] |
+| StructuralComparison.cs:15:22:15:22 | access to local variable y | [(kind:14,y)] |
+| StructuralComparison.cs:16:13:16:14 | access to local variable z2 | [(kind:14,z2)] |
+| StructuralComparison.cs:16:13:16:22 | Int32 z2 = ... | [[(kind:14,z2)] :: [[(kind:14,y)] :: [(kind:14,x)] :: (kind:44)] :: (kind:83)] |
+| StructuralComparison.cs:16:18:16:18 | access to local variable x | [(kind:14,x)] |
+| StructuralComparison.cs:16:18:16:22 | ... + ... | [[(kind:14,y)] :: [(kind:14,x)] :: (kind:44)] |
+| StructuralComparison.cs:16:22:16:22 | access to local variable y | [(kind:14,y)] |
+| StructuralComparison.cs:17:13:17:14 | access to local variable z3 | [(kind:14,z3)] |
+| StructuralComparison.cs:17:13:17:22 | Int32 z3 = ... | [[(kind:14,z3)] :: [[(kind:14,x)] :: [(kind:12,Class)] :: (kind:24,M0)] :: (kind:83)] |
+| StructuralComparison.cs:17:18:17:22 | call to method M0 | [[(kind:14,x)] :: [(kind:12,Class)] :: (kind:24,M0)] |
+| StructuralComparison.cs:17:18:17:22 | this access | [(kind:12,Class)] |
+| StructuralComparison.cs:17:21:17:21 | access to local variable x | [(kind:14,x)] |
+| StructuralComparison.cs:18:13:18:14 | access to local variable z4 | [(kind:14,z4)] |
+| StructuralComparison.cs:18:13:18:22 | Int32 z4 = ... | [[(kind:14,z4)] :: [[(kind:14,x)] :: [(kind:12,Class)] :: (kind:24,M0)] :: (kind:83)] |
+| StructuralComparison.cs:18:18:18:22 | call to method M0 | [[(kind:14,x)] :: [(kind:12,Class)] :: (kind:24,M0)] |
+| StructuralComparison.cs:18:18:18:22 | this access | [(kind:12,Class)] |
+| StructuralComparison.cs:18:21:18:21 | access to local variable x | [(kind:14,x)] |
+| StructuralComparison.cs:19:13:19:14 | access to local variable z5 | [(kind:14,z5)] |
+| StructuralComparison.cs:19:13:19:22 | Int32 z5 = ... | [[(kind:14,z5)] :: [[(kind:14,y)] :: [(kind:12,Class)] :: (kind:24,M0)] :: (kind:83)] |
+| StructuralComparison.cs:19:18:19:22 | call to method M0 | [[(kind:14,y)] :: [(kind:12,Class)] :: (kind:24,M0)] |
+| StructuralComparison.cs:19:18:19:22 | this access | [(kind:12,Class)] |
+| StructuralComparison.cs:19:21:19:21 | access to local variable y | [(kind:14,y)] |
+| StructuralComparison.cs:20:13:20:14 | access to local variable z6 | [(kind:14,z6)] |
+| StructuralComparison.cs:20:13:20:24 | Int32 z6 = ... | [[(kind:14,z6)] :: [[(kind:12,Class)] :: (kind:24,MUnit)] :: (kind:83)] |
+| StructuralComparison.cs:20:18:20:24 | call to method MUnit | [[(kind:12,Class)] :: (kind:24,MUnit)] |
+| StructuralComparison.cs:20:18:20:24 | this access | [(kind:12,Class)] |
+| StructuralComparison.cs:21:13:21:14 | access to local variable z7 | [(kind:14,z7)] |
+| StructuralComparison.cs:21:13:21:36 | Int32 z7 = ... | [[(kind:14,z7)] :: [[[(kind:14,y)] :: [(kind:14,x)] :: [(kind:12,Class)] :: (kind:24,M1)] :: [[(kind:14,y)] :: [(kind:14,x)] :: [(kind:12,Class)] :: (kind:24,M1)] :: (kind:44)] :: (kind:83)] |
+| StructuralComparison.cs:21:18:21:25 | call to method M1 | [[(kind:14,y)] :: [(kind:14,x)] :: [(kind:12,Class)] :: (kind:24,M1)] |
+| StructuralComparison.cs:21:18:21:25 | this access | [(kind:12,Class)] |
+| StructuralComparison.cs:21:18:21:36 | ... + ... | [[[(kind:14,y)] :: [(kind:14,x)] :: [(kind:12,Class)] :: (kind:24,M1)] :: [[(kind:14,y)] :: [(kind:14,x)] :: [(kind:12,Class)] :: (kind:24,M1)] :: (kind:44)] |
+| StructuralComparison.cs:21:21:21:21 | access to local variable x | [(kind:14,x)] |
+| StructuralComparison.cs:21:24:21:24 | access to local variable y | [(kind:14,y)] |
+| StructuralComparison.cs:21:29:21:36 | call to method M1 | [[(kind:14,y)] :: [(kind:14,x)] :: [(kind:12,Class)] :: (kind:24,M1)] |
+| StructuralComparison.cs:21:29:21:36 | this access | [(kind:12,Class)] |
+| StructuralComparison.cs:21:32:21:32 | access to local variable x | [(kind:14,x)] |
+| StructuralComparison.cs:21:35:21:35 | access to local variable y | [(kind:14,y)] |
 sameDiff
 gvnSameDiff
