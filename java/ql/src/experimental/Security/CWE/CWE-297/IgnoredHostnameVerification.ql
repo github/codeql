@@ -11,20 +11,13 @@
  */
 
 import java
-
-/** The `HostnameVerifier.verify()` method. */
-private class HostnameVerifierVerifyMethod extends Method {
-  HostnameVerifierVerifyMethod() {
-    this.getDeclaringType().getASupertype*().hasQualifiedName("javax.net.ssl", "HostnameVerifier") and
-    this.hasStringSignature("verify(String, SSLSession)")
-  }
-}
+import semmle.code.java.security.Encryption
 
 /** A `HostnameVerifier.verify()` call that is not wrapped in another `HostnameVerifier`. */
 private class HostnameVerificationCall extends MethodAccess {
   HostnameVerificationCall() {
-    this.getMethod() instanceof HostnameVerifierVerifyMethod and
-    not this.getCaller() instanceof HostnameVerifierVerifyMethod
+    this.getMethod() instanceof HostnameVerifierVerify and
+    not this.getCaller() instanceof HostnameVerifierVerify
   }
 
   /** Holds if the result of the call is not used. */
