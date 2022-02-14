@@ -16,8 +16,10 @@ import csharp
 // TODO: Consider using different constructors for statements and expressions.
 private newtype TGvnKind =
   TGvnKindInt(int kind) { kind = getKind(_) } or
-  TGvnKindDeclaration(int kind, Declaration d) {
-    exists(Expr e | d = referenceAttribute(e) and expressions(e, kind, _))
+  TGvnKindDeclaration(int kind, boolean thisTarget, Declaration d) {
+    exists(Expr e |
+      d = referenceAttribute(e) and thisTarget = isTargetThis(e) and expressions(e, kind, _)
+    )
   }
 
 abstract private class GvnKind extends TGvnKind {
@@ -34,11 +36,12 @@ private class GvnKindInt extends GvnKind, TGvnKindInt {
 
 private class GvnKindDeclaration extends GvnKind, TGvnKindDeclaration {
   private int kind;
+  private boolean isTargetThis;
   private Declaration d;
 
-  GvnKindDeclaration() { this = TGvnKindDeclaration(kind, d) }
+  GvnKindDeclaration() { this = TGvnKindDeclaration(kind, isTargetThis, d) }
 
-  override string toString() { result = kind.toString() + "," + d.toString() }
+  override string toString() { result = kind.toString() + "," + isTargetThis + "," + d.toString() }
 }
 
 private Declaration referenceAttribute(Expr e) {
@@ -47,6 +50,12 @@ private Declaration referenceAttribute(Expr e) {
   result = e.(ObjectCreation).getTarget()
   or
   result = e.(Access).getTarget()
+}
+
+private boolean isTargetThis(Expr cfe) {
+  result = true and cfe.(MemberAccess).targetIsThisInstance()
+  or
+  result = false and not cfe.(MemberAccess).targetIsThisInstance()
 }
 
 private int getKind(ControlFlowElement cfe) {
@@ -108,7 +117,7 @@ private GvnKind getGvnKind(ControlFlowElement cfe) {
   exists(int kind |
     kind = getKind(cfe) and
     (
-      result = TGvnKindDeclaration(kind, referenceAttribute(cfe))
+      result = TGvnKindDeclaration(kind, isTargetThis(cfe), referenceAttribute(cfe))
       or
       not exists(referenceAttribute(cfe)) and
       result = TGvnKindInt(kind)
@@ -127,9 +136,21 @@ private GvnList gvnConstructed(ControlFlowElement cfe, GvnKind kind, int index) 
   )
 }
 
+private int getNumberOfActualChildren(ControlFlowElement cfe) {
+  if cfe.(MemberAccess).targetIsThisInstance()
+  then result = cfe.getNumberOfChildren() - 1
+  else result = cfe.getNumberOfChildren()
+}
+
 private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk) {
   result =
-    rank[rnk + 1](ControlFlowElement child, int j | child = cfe.getChild(j) | child order by j)
+    rank[rnk + 1](ControlFlowElement child, int j |
+      child = cfe.getChild(j) and j >= 0
+      or
+      child = cfe.getChild(j) and j = -1 and not cfe.(MemberAccess).targetIsThisInstance()
+    |
+      child order by j
+    )
 }
 
 private predicate gvnConstructedCons(
@@ -139,13 +160,13 @@ private predicate gvnConstructedCons(
   head = toGvn(getRankedChild(e, index))
 }
 
-Gvn toGvn(ControlFlowElement e) {
-  result = TConstantGvn(e.(Expr).getValue())
+Gvn toGvn(ControlFlowElement cfe) {
+  result = TConstantGvn(cfe.(Expr).getValue())
   or
-  not exists(e.(Expr).getValue()) and
+  not exists(cfe.(Expr).getValue()) and
   exists(GvnList l, GvnKind kind, int index |
-    l = gvnConstructed(e, kind, index - 1) and
-    index = e.getNumberOfChildren() and
+    l = gvnConstructed(cfe, kind, index - 1) and
+    index = getNumberOfActualChildren(cfe) and
     result = TListExprGvn(l)
   )
 }
