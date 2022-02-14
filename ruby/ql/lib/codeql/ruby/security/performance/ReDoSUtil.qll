@@ -15,45 +15,6 @@
 import ReDoSUtilSpecific
 
 /**
- * A configuration for which parts of a regular expression should be considered relevant for
- * the different predicates in `ReDoS.qll`.
- * Used to adjust the computations for either superlinear or exponential backtracking.
- */
-abstract class ReDoSConfiguration extends string {
-  bindingset[this]
-  ReDoSConfiguration() { any() }
-
-  /**
-   * Holds if `state` with the pump string `pump` is a candidate for a
-   * ReDoS vulnerable state.
-   * This is used to determine which states are considered for the prefix/suffix construction.
-   */
-  abstract predicate isReDoSCandidate(State state, string pump);
-}
-
-/**
- * Holds if repeating `pump` starting at `state` is a candidate for causing backtracking.
- * No check whether a rejected suffix exists has been made.
- */
-private predicate isReDoSCandidate(State state, string pump) {
-  any(ReDoSConfiguration conf).isReDoSCandidate(state, pump) and
-  (
-    not any(ReDoSConfiguration conf).isReDoSCandidate(epsilonSucc+(state), _)
-    or
-    epsilonSucc+(state) = state and
-    state =
-      max(State s, Location l |
-        s = epsilonSucc+(state) and
-        l = s.getRepr().getLocation() and
-        any(ReDoSConfiguration conf).isReDoSCandidate(s, _) and
-        s.getRepr() instanceof InfiniteRepetitionQuantifier
-      |
-        s order by l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine()
-      )
-  )
-}
-
-/**
  * Gets the char after `c` (from a simplified ASCII table).
  */
 private string nextChar(string c) { exists(int code | code = ascii(c) | code + 1 = ascii(result)) }
@@ -877,266 +838,341 @@ predicate isStartState(State state) {
 }
 
 /**
- * Predicates for constructing a prefix string that leads to a given state.
+ * A configuration for which parts of a regular expression should be considered relevant for
+ * the different predicates in `ReDoS.qll`.
+ * Used to adjust the computations for either superlinear or exponential backtracking.
  */
-private module PrefixConstruction {
-  /**
-   * Holds if `state` is the textually last start state for the regular expression.
-   */
-  private predicate lastStartState(State state) {
-    exists(RegExpRoot root |
-      state =
-        max(StateInPumpableRegexp s, Location l |
-          isStartState(s) and getRoot(s.getRepr()) = root and l = s.getRepr().getLocation()
-        |
-          s
-          order by
-            l.getStartLine(), l.getStartColumn(), s.getRepr().toString(), l.getEndColumn(),
-            l.getEndLine()
-        )
-    )
-  }
+abstract class ReDoSConfiguration extends string {
+  bindingset[this]
+  ReDoSConfiguration() { any() }
 
   /**
-   * Holds if there exists any transition (Epsilon() or other) from `a` to `b`.
+   * Holds if `state` with the pump string `pump` is a candidate for a
+   * ReDoS vulnerable state.
+   * This is used to determine which states are considered for the prefix/suffix construction.
    */
-  private predicate existsTransition(State a, State b) { delta(a, _, b) }
-
-  /**
-   * Gets the minimum number of transitions it takes to reach `state` from the `start` state.
-   */
-  int prefixLength(State start, State state) =
-    shortestDistances(lastStartState/1, existsTransition/2)(start, state, result)
-
-  /**
-   * Gets the minimum number of transitions it takes to reach `state` from the start state.
-   */
-  private int lengthFromStart(State state) { result = prefixLength(_, state) }
-
-  /**
-   * Gets a string for which the regular expression will reach `state`.
-   *
-   * Has at most one result for any given `state`.
-   * This predicate will not always have a result even if there is a ReDoS issue in
-   * the regular expression.
-   */
-  string prefix(State state) {
-    lastStartState(state) and
-    result = ""
-    or
-    // the search stops past the last redos candidate state.
-    lengthFromStart(state) <= max(lengthFromStart(any(State s | isReDoSCandidate(s, _)))) and
-    exists(State prev |
-      // select a unique predecessor (by an arbitrary measure)
-      prev =
-        min(State s, Location loc |
-          lengthFromStart(s) = lengthFromStart(state) - 1 and
-          loc = s.getRepr().getLocation() and
-          delta(s, _, state)
-        |
-          s
-          order by
-            loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(), loc.getEndColumn(),
-            s.getRepr().toString()
-        )
-    |
-      // greedy search for the shortest prefix
-      result = prefix(prev) and delta(prev, Epsilon(), state)
-      or
-      not delta(prev, Epsilon(), state) and
-      result = prefix(prev) + getCanonicalEdgeChar(prev, state)
-    )
-  }
-
-  /**
-   * Gets a canonical char for which there exists a transition from `prev` to `next` in the NFA.
-   */
-  private string getCanonicalEdgeChar(State prev, State next) {
-    result =
-      min(string c | delta(prev, any(InputSymbol symbol | c = intersect(Any(), symbol)), next))
-  }
-
-  /**
-   * A state within a regular expression that has a pumpable state.
-   */
-  class StateInPumpableRegexp extends State {
-    pragma[noinline]
-    StateInPumpableRegexp() {
-      exists(State s | isReDoSCandidate(s, _) | getRoot(s.getRepr()) = getRoot(this.getRepr()))
-    }
-  }
+  abstract predicate isReDoSCandidate(State state, string pump);
 }
 
-/**
- * Predicates for testing the presence of a rejecting suffix.
- *
- * These predicates are used to ensure that the all states reached from the fork
- * by repeating `w` have a rejecting suffix.
- *
- * For example, a regexp like `/^(a+)+/` will accept any string as long the prefix is
- * some number of `"a"`s, and it is therefore not possible to construct a rejecting suffix.
- *
- * A regexp like `/(a+)+$/` or `/(a+)+b/` trivially has a rejecting suffix,
- * as the suffix "X" will cause both the regular expressions to be rejected.
- *
- * The string `w` is repeated any number of times because it needs to be
- * infinitely repeatedable for the attack to work.
- * For the regular expression `/((ab)+)*abab/` the accepting state is not reachable from the fork
- * using epsilon transitions. But any attempt at repeating `w` will end in a state that accepts all suffixes.
- */
-private module SuffixConstruction {
-  import PrefixConstruction
-
+module ReDoSPruning {
   /**
-   * Holds if all states reachable from `fork` by repeating `w`
-   * are likely rejectable by appending some suffix.
+   * Holds if repeating `pump` starting at `state` is a candidate for causing backtracking.
+   * No check whether a rejected suffix exists has been made.
    */
-  predicate reachesOnlyRejectableSuffixes(State fork, string w) {
-    isReDoSCandidate(fork, w) and
-    forex(State next | next = process(fork, w, w.length() - 1) | isLikelyRejectable(next))
-  }
-
-  /**
-   * Holds if there likely exists a suffix starting from `s` that leads to the regular expression being rejected.
-   * This predicate might find impossible suffixes when searching for suffixes of length > 1, which can cause FPs.
-   */
-  pragma[noinline]
-  private predicate isLikelyRejectable(StateInPumpableRegexp s) {
-    // exists a reject edge with some char.
-    hasRejectEdge(s)
-    or
-    hasEdgeToLikelyRejectable(s)
-    or
-    // stopping here is rejection
-    isRejectState(s)
-  }
-
-  /**
-   * Holds if `s` is not an accept state, and there is no epsilon transition to an accept state.
-   */
-  predicate isRejectState(StateInPumpableRegexp s) { not epsilonSucc*(s) = Accept(_) }
-
-  /**
-   * Holds if there is likely a non-empty suffix leading to rejection starting in `s`.
-   */
-  pragma[noopt]
-  predicate hasEdgeToLikelyRejectable(StateInPumpableRegexp s) {
-    // all edges (at least one) with some char leads to another state that is rejectable.
-    // the `next` states might not share a common suffix, which can cause FPs.
-    exists(string char | char = hasEdgeToLikelyRejectableHelper(s) |
-      // noopt to force `hasEdgeToLikelyRejectableHelper` to be first in the join-order.
-      exists(State next | deltaClosedChar(s, char, next) | isLikelyRejectable(next)) and
-      forall(State next | deltaClosedChar(s, char, next) | isLikelyRejectable(next))
-    )
-  }
-
-  /**
-   * Gets a char for there exists a transition away from `s`,
-   * and `s` has not been found to be rejectable by `hasRejectEdge` or `isRejectState`.
-   */
-  pragma[noinline]
-  private string hasEdgeToLikelyRejectableHelper(StateInPumpableRegexp s) {
-    not hasRejectEdge(s) and
-    not isRejectState(s) and
-    deltaClosedChar(s, result, _)
-  }
-
-  /**
-   * Holds if there is a state `next` that can be reached from `prev`
-   * along epsilon edges, such that there is a transition from
-   * `prev` to `next` that the character symbol `char`.
-   */
-  predicate deltaClosedChar(StateInPumpableRegexp prev, string char, StateInPumpableRegexp next) {
-    deltaClosed(prev, getAnInputSymbolMatchingRelevant(char), next)
-  }
-
-  pragma[noinline]
-  InputSymbol getAnInputSymbolMatchingRelevant(string char) {
-    char = relevant(_) and
-    result = getAnInputSymbolMatching(char)
-  }
-
-  /**
-   * Gets a char used for finding possible suffixes inside `root`.
-   */
-  pragma[noinline]
-  private string relevant(RegExpRoot root) {
-    exists(ascii(result)) and exists(root)
-    or
-    exists(InputSymbol s | belongsTo(s, root) | result = intersect(s, _))
-    or
-    // The characters from `hasSimpleRejectEdge`. Only `\n` is really needed (as `\n` is not in the `ascii` relation).
-    // The three chars must be kept in sync with `hasSimpleRejectEdge`.
-    result = ["|", "\n", "Z"] and exists(root)
-  }
-
-  /**
-   * Holds if there exists a `char` such that there is no edge from `s` labeled `char` in our NFA.
-   * The NFA does not model reject states, so the above is the same as saying there is a reject edge.
-   */
-  private predicate hasRejectEdge(State s) {
-    hasSimpleRejectEdge(s)
-    or
-    not hasSimpleRejectEdge(s) and
-    exists(string char | char = relevant(getRoot(s.getRepr())) | not deltaClosedChar(s, char, _))
-  }
-
-  /**
-   * Holds if there is no edge from `s` labeled with "|", "\n", or "Z" in our NFA.
-   * This predicate is used as a cheap pre-processing to speed up `hasRejectEdge`.
-   */
-  private predicate hasSimpleRejectEdge(State s) {
-    // The three chars were chosen arbitrarily. The three chars must be kept in sync with `relevant`.
-    exists(string char | char = ["|", "\n", "Z"] | not deltaClosedChar(s, char, _))
-  }
-
-  /**
-   * Gets a state that can be reached from pumpable `fork` consuming all
-   * chars in `w` any number of times followed by the first `i+1` characters of `w`.
-   */
-  pragma[noopt]
-  private State process(State fork, string w, int i) {
-    exists(State prev | prev = getProcessPrevious(fork, i, w) |
-      exists(string char, InputSymbol sym |
-        char = w.charAt(i) and
-        deltaClosed(prev, sym, result) and
-        // noopt to prevent joining `prev` with all possible `chars` that could transition away from `prev`.
-        // Instead only join with the set of `chars` where a relevant `InputSymbol` has already been found.
-        sym = getAProcessInputSymbol(char)
-      )
-    )
-  }
-
-  /**
-   * Gets a state that can be reached from pumpable `fork` consuming all
-   * chars in `w` any number of times followed by the first `i` characters of `w`.
-   */
-  private State getProcessPrevious(State fork, int i, string w) {
-    isReDoSCandidate(fork, w) and
+  private predicate isReDoSCandidate(State state, string pump) {
+    any(ReDoSConfiguration conf).isReDoSCandidate(state, pump) and
     (
-      i = 0 and result = fork
+      not any(ReDoSConfiguration conf).isReDoSCandidate(epsilonSucc+(state), _)
       or
-      result = process(fork, w, i - 1)
-      or
-      // repeat until fixpoint
-      i = 0 and
-      result = process(fork, w, w.length() - 1)
+      epsilonSucc+(state) = state and
+      state =
+        max(State s, Location l |
+          s = epsilonSucc+(state) and
+          l = s.getRepr().getLocation() and
+          any(ReDoSConfiguration conf).isReDoSCandidate(s, _) and
+          s.getRepr() instanceof InfiniteRepetitionQuantifier
+        |
+          s order by l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine()
+        )
     )
   }
 
   /**
-   * Gets an InputSymbol that matches `char`.
-   * The predicate is specialized to only have a result for the `char`s that are relevant for the `process` predicate.
+   * Predicates for constructing a prefix string that leads to a given state.
    */
-  private InputSymbol getAProcessInputSymbol(string char) {
-    char = getAProcessChar() and
-    result = getAnInputSymbolMatching(char)
+  private module PrefixConstruction {
+    /**
+     * Holds if `state` is the textually last start state for the regular expression.
+     */
+    private predicate lastStartState(State state) {
+      exists(RegExpRoot root |
+        state =
+          max(StateInPumpableRegexp s, Location l |
+            isStartState(s) and getRoot(s.getRepr()) = root and l = s.getRepr().getLocation()
+          |
+            s
+            order by
+              l.getStartLine(), l.getStartColumn(), s.getRepr().toString(), l.getEndColumn(),
+              l.getEndLine()
+          )
+      )
+    }
+
+    /**
+     * Holds if there exists any transition (Epsilon() or other) from `a` to `b`.
+     */
+    private predicate existsTransition(State a, State b) { delta(a, _, b) }
+
+    /**
+     * Gets the minimum number of transitions it takes to reach `state` from the `start` state.
+     */
+    int prefixLength(State start, State state) =
+      shortestDistances(lastStartState/1, existsTransition/2)(start, state, result)
+
+    /**
+     * Gets the minimum number of transitions it takes to reach `state` from the start state.
+     */
+    private int lengthFromStart(State state) { result = prefixLength(_, state) }
+
+    /**
+     * Gets a string for which the regular expression will reach `state`.
+     *
+     * Has at most one result for any given `state`.
+     * This predicate will not always have a result even if there is a ReDoS issue in
+     * the regular expression.
+     */
+    string prefix(State state) {
+      lastStartState(state) and
+      result = ""
+      or
+      // the search stops past the last redos candidate state.
+      lengthFromStart(state) <= max(lengthFromStart(any(State s | isReDoSCandidate(s, _)))) and
+      exists(State prev |
+        // select a unique predecessor (by an arbitrary measure)
+        prev =
+          min(State s, Location loc |
+            lengthFromStart(s) = lengthFromStart(state) - 1 and
+            loc = s.getRepr().getLocation() and
+            delta(s, _, state)
+          |
+            s
+            order by
+              loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(), loc.getEndColumn(),
+              s.getRepr().toString()
+          )
+      |
+        // greedy search for the shortest prefix
+        result = prefix(prev) and delta(prev, Epsilon(), state)
+        or
+        not delta(prev, Epsilon(), state) and
+        result = prefix(prev) + getCanonicalEdgeChar(prev, state)
+      )
+    }
+
+    /**
+     * Gets a canonical char for which there exists a transition from `prev` to `next` in the NFA.
+     */
+    private string getCanonicalEdgeChar(State prev, State next) {
+      result =
+        min(string c | delta(prev, any(InputSymbol symbol | c = intersect(Any(), symbol)), next))
+    }
+
+    /**
+     * A state within a regular expression that has a pumpable state.
+     */
+    class StateInPumpableRegexp extends State {
+      pragma[noinline]
+      StateInPumpableRegexp() {
+        exists(State s | isReDoSCandidate(s, _) | getRoot(s.getRepr()) = getRoot(this.getRepr()))
+      }
+    }
   }
 
   /**
-   * Gets a `char` that occurs in a `pump` string.
+   * Predicates for testing the presence of a rejecting suffix.
+   *
+   * These predicates are used to ensure that the all states reached from the fork
+   * by repeating `w` have a rejecting suffix.
+   *
+   * For example, a regexp like `/^(a+)+/` will accept any string as long the prefix is
+   * some number of `"a"`s, and it is therefore not possible to construct a rejecting suffix.
+   *
+   * A regexp like `/(a+)+$/` or `/(a+)+b/` trivially has a rejecting suffix,
+   * as the suffix "X" will cause both the regular expressions to be rejected.
+   *
+   * The string `w` is repeated any number of times because it needs to be
+   * infinitely repeatedable for the attack to work.
+   * For the regular expression `/((ab)+)*abab/` the accepting state is not reachable from the fork
+   * using epsilon transitions. But any attempt at repeating `w` will end in a state that accepts all suffixes.
    */
-  private string getAProcessChar() { result = any(string s | isReDoSCandidate(_, s)).charAt(_) }
+  private module SuffixConstruction {
+    import PrefixConstruction
+
+    /**
+     * Holds if all states reachable from `fork` by repeating `w`
+     * are likely rejectable by appending some suffix.
+     */
+    predicate reachesOnlyRejectableSuffixes(State fork, string w) {
+      isReDoSCandidate(fork, w) and
+      forex(State next | next = process(fork, w, w.length() - 1) | isLikelyRejectable(next))
+    }
+
+    /**
+     * Holds if there likely exists a suffix starting from `s` that leads to the regular expression being rejected.
+     * This predicate might find impossible suffixes when searching for suffixes of length > 1, which can cause FPs.
+     */
+    pragma[noinline]
+    private predicate isLikelyRejectable(StateInPumpableRegexp s) {
+      // exists a reject edge with some char.
+      hasRejectEdge(s)
+      or
+      hasEdgeToLikelyRejectable(s)
+      or
+      // stopping here is rejection
+      isRejectState(s)
+    }
+
+    /**
+     * Holds if `s` is not an accept state, and there is no epsilon transition to an accept state.
+     */
+    predicate isRejectState(StateInPumpableRegexp s) { not epsilonSucc*(s) = Accept(_) }
+
+    /**
+     * Holds if there is likely a non-empty suffix leading to rejection starting in `s`.
+     */
+    pragma[noopt]
+    predicate hasEdgeToLikelyRejectable(StateInPumpableRegexp s) {
+      // all edges (at least one) with some char leads to another state that is rejectable.
+      // the `next` states might not share a common suffix, which can cause FPs.
+      exists(string char | char = hasEdgeToLikelyRejectableHelper(s) |
+        // noopt to force `hasEdgeToLikelyRejectableHelper` to be first in the join-order.
+        exists(State next | deltaClosedChar(s, char, next) | isLikelyRejectable(next)) and
+        forall(State next | deltaClosedChar(s, char, next) | isLikelyRejectable(next))
+      )
+    }
+
+    /**
+     * Gets a char for there exists a transition away from `s`,
+     * and `s` has not been found to be rejectable by `hasRejectEdge` or `isRejectState`.
+     */
+    pragma[noinline]
+    private string hasEdgeToLikelyRejectableHelper(StateInPumpableRegexp s) {
+      not hasRejectEdge(s) and
+      not isRejectState(s) and
+      deltaClosedChar(s, result, _)
+    }
+
+    /**
+     * Holds if there is a state `next` that can be reached from `prev`
+     * along epsilon edges, such that there is a transition from
+     * `prev` to `next` that the character symbol `char`.
+     */
+    predicate deltaClosedChar(StateInPumpableRegexp prev, string char, StateInPumpableRegexp next) {
+      deltaClosed(prev, getAnInputSymbolMatchingRelevant(char), next)
+    }
+
+    pragma[noinline]
+    InputSymbol getAnInputSymbolMatchingRelevant(string char) {
+      char = relevant(_) and
+      result = getAnInputSymbolMatching(char)
+    }
+
+    /**
+     * Gets a char used for finding possible suffixes inside `root`.
+     */
+    pragma[noinline]
+    private string relevant(RegExpRoot root) {
+      exists(ascii(result)) and exists(root)
+      or
+      exists(InputSymbol s | belongsTo(s, root) | result = intersect(s, _))
+      or
+      // The characters from `hasSimpleRejectEdge`. Only `\n` is really needed (as `\n` is not in the `ascii` relation).
+      // The three chars must be kept in sync with `hasSimpleRejectEdge`.
+      result = ["|", "\n", "Z"] and exists(root)
+    }
+
+    /**
+     * Holds if there exists a `char` such that there is no edge from `s` labeled `char` in our NFA.
+     * The NFA does not model reject states, so the above is the same as saying there is a reject edge.
+     */
+    private predicate hasRejectEdge(State s) {
+      hasSimpleRejectEdge(s)
+      or
+      not hasSimpleRejectEdge(s) and
+      exists(string char | char = relevant(getRoot(s.getRepr())) | not deltaClosedChar(s, char, _))
+    }
+
+    /**
+     * Holds if there is no edge from `s` labeled with "|", "\n", or "Z" in our NFA.
+     * This predicate is used as a cheap pre-processing to speed up `hasRejectEdge`.
+     */
+    private predicate hasSimpleRejectEdge(State s) {
+      // The three chars were chosen arbitrarily. The three chars must be kept in sync with `relevant`.
+      exists(string char | char = ["|", "\n", "Z"] | not deltaClosedChar(s, char, _))
+    }
+
+    /**
+     * Gets a state that can be reached from pumpable `fork` consuming all
+     * chars in `w` any number of times followed by the first `i+1` characters of `w`.
+     */
+    pragma[noopt]
+    private State process(State fork, string w, int i) {
+      exists(State prev | prev = getProcessPrevious(fork, i, w) |
+        exists(string char, InputSymbol sym |
+          char = w.charAt(i) and
+          deltaClosed(prev, sym, result) and
+          // noopt to prevent joining `prev` with all possible `chars` that could transition away from `prev`.
+          // Instead only join with the set of `chars` where a relevant `InputSymbol` has already been found.
+          sym = getAProcessInputSymbol(char)
+        )
+      )
+    }
+
+    /**
+     * Gets a state that can be reached from pumpable `fork` consuming all
+     * chars in `w` any number of times followed by the first `i` characters of `w`.
+     */
+    private State getProcessPrevious(State fork, int i, string w) {
+      isReDoSCandidate(fork, w) and
+      (
+        i = 0 and result = fork
+        or
+        result = process(fork, w, i - 1)
+        or
+        // repeat until fixpoint
+        i = 0 and
+        result = process(fork, w, w.length() - 1)
+      )
+    }
+
+    /**
+     * Gets an InputSymbol that matches `char`.
+     * The predicate is specialized to only have a result for the `char`s that are relevant for the `process` predicate.
+     */
+    private InputSymbol getAProcessInputSymbol(string char) {
+      char = getAProcessChar() and
+      result = getAnInputSymbolMatching(char)
+    }
+
+    /**
+     * Gets a `char` that occurs in a `pump` string.
+     */
+    private string getAProcessChar() { result = any(string s | isReDoSCandidate(_, s)).charAt(_) }
+  }
+
+  /**
+   * Holds if `term` may cause superlinear backtracking on strings containing many repetitions of `pump`.
+   * Gets the shortest string that causes superlinear backtracking.
+   */
+  private predicate isReDoSAttackable(RegExpTerm term, string pump, State s) {
+    exists(int i, string c | s = Match(term, i) |
+      c =
+        min(string w |
+          any(ReDoSConfiguration conf).isReDoSCandidate(s, w) and
+          SuffixConstruction::reachesOnlyRejectableSuffixes(s, w)
+        |
+          w order by w.length(), w
+        ) and
+      pump = escape(rotate(c, i))
+    )
+  }
+
+  /**
+   * Holds if the state `s` (represented by the term `t`) can have backtracking with repetitions of `pump`.
+   *
+   * `prefixMsg` contains a friendly message for a prefix that reaches `s` (or `prefixMsg` is the empty string if the prefix is empty or if no prefix could be found).
+   */
+  predicate hasReDoSResult(RegExpTerm t, string pump, State s, string prefixMsg) {
+    isReDoSAttackable(t, pump, s) and
+    (
+      prefixMsg = "starting with '" + escape(PrefixConstruction::prefix(s)) + "' and " and
+      not PrefixConstruction::prefix(s) = ""
+      or
+      PrefixConstruction::prefix(s) = "" and prefixMsg = ""
+      or
+      not exists(PrefixConstruction::prefix(s)) and prefixMsg = ""
+    )
+  }
 }
 
 /**
@@ -1161,38 +1197,4 @@ private string escape(string s) {
 bindingset[str, i]
 private string rotate(string str, int i) {
   result = str.suffix(str.length() - i) + str.prefix(str.length() - i)
-}
-
-/**
- * Holds if `term` may cause superlinear backtracking on strings containing many repetitions of `pump`.
- * Gets the shortest string that causes superlinear backtracking.
- */
-private predicate isReDoSAttackable(RegExpTerm term, string pump, State s) {
-  exists(int i, string c | s = Match(term, i) |
-    c =
-      min(string w |
-        any(ReDoSConfiguration conf).isReDoSCandidate(s, w) and
-        SuffixConstruction::reachesOnlyRejectableSuffixes(s, w)
-      |
-        w order by w.length(), w
-      ) and
-    pump = escape(rotate(c, i))
-  )
-}
-
-/**
- * Holds if the state `s` (represented by the term `t`) can have backtracking with repetitions of `pump`.
- *
- * `prefixMsg` contains a friendly message for a prefix that reaches `s` (or `prefixMsg` is the empty string if the prefix is empty or if no prefix could be found).
- */
-predicate hasReDoSResult(RegExpTerm t, string pump, State s, string prefixMsg) {
-  isReDoSAttackable(t, pump, s) and
-  (
-    prefixMsg = "starting with '" + escape(PrefixConstruction::prefix(s)) + "' and " and
-    not PrefixConstruction::prefix(s) = ""
-    or
-    PrefixConstruction::prefix(s) = "" and prefixMsg = ""
-    or
-    not exists(PrefixConstruction::prefix(s)) and prefixMsg = ""
-  )
 }
