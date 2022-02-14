@@ -1,5 +1,5 @@
 /**
- * @name Temporary Directory Local information disclosure
+ * @name Local information disclosure in a temporary directory
  * @description Writing information without explicit permissions to a shared temporary directory may disclose it to other users.
  * @kind path-problem
  * @problem.severity warning
