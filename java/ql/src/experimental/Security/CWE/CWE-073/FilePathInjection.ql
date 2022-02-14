@@ -28,6 +28,10 @@ class InjectFilePathConfig extends TaintTracking::Configuration {
     not sink instanceof NormalizedPathNode
   }
 
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(AdditionalValueStep r).step(pred, succ)
+  }
+
   override predicate isSanitizer(DataFlow::Node node) {
     exists(Type t | t = node.getType() | t instanceof BoxedType or t instanceof PrimitiveType)
   }

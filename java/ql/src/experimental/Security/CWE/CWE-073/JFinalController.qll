@@ -38,32 +38,25 @@ class SetRequestAttributeMethod extends Method {
   }
 }
 
-/**
- * Holds if the result of an attribute getter call is from a method invocation of remote attribute setter.
- * Only values received from remote flow source is to be checked by the query.
- */
-predicate isGetAttributeFromRemoteSource(Expr expr) {
-  exists(MethodAccess gma, MethodAccess sma |
-    (
-      gma.getMethod() instanceof GetSessionAttributeMethod and
-      sma.getMethod() instanceof SetSessionAttributeMethod
-      or
-      gma.getMethod() instanceof GetRequestAttributeMethod and
-      sma.getMethod() instanceof SetRequestAttributeMethod
-    ) and
-    expr = gma and
-    gma.getArgument(0).(CompileTimeConstantExpr).getStringValue() =
-      sma.getArgument(0).(CompileTimeConstantExpr).getStringValue() and
-    gma.getEnclosingCallable() = sma.getEnclosingCallable() and
-    TaintTracking::localExprTaint(any(RemoteFlowSource rs).asExpr(), sma.getArgument(1))
-  )
-}
-
-/** Remote flow source of JFinal request or session attribute getters. */
-private class JFinalRequestSource extends RemoteFlowSource {
-  JFinalRequestSource() { isGetAttributeFromRemoteSource(this.asExpr()) }
-
-  override string getSourceType() { result = "JFinal session or request attribute source" }
+/** Value step from the setter call to the getter call of a session or request attribute. */
+private class SetToGetAttributeStep extends AdditionalValueStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(MethodAccess gma, MethodAccess sma |
+      (
+        gma.getMethod() instanceof GetSessionAttributeMethod and
+        sma.getMethod() instanceof SetSessionAttributeMethod
+        or
+        gma.getMethod() instanceof GetRequestAttributeMethod and
+        sma.getMethod() instanceof SetRequestAttributeMethod
+      ) and
+      gma.getArgument(0).(CompileTimeConstantExpr).getStringValue() =
+        sma.getArgument(0).(CompileTimeConstantExpr).getStringValue() and
+      gma.getEnclosingCallable() = sma.getEnclosingCallable()
+    |
+      pred.asExpr() = sma.getArgument(1) and
+      succ.asExpr() = gma
+    )
+  }
 }
 
 /** Source model of remote flow source with `JFinal`. */
