@@ -22,8 +22,6 @@ private class HostnameVerificationCall extends MethodAccess {
 
   /** Holds if the result of the call is not used. */
   predicate isIgnored() {
-    not exists(Expr expr | this = expr.getAChildExpr()) and
-    not exists(IfStmt ifStmt | this = ifStmt.getCondition()) and
     this = any(ExprStmt es).getExpr()
   }
 }
