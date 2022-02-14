@@ -47,6 +47,7 @@ abstract class AstNode extends AstNode_ {
   AstNode getParentNode() { result.getAChildNode() = this }
 
   /** Whether this contains `inner` syntactically */
+  pragma[inline]
   predicate contains(AstNode inner) { this.getAChildNode+() = inner }
 
   pragma[noinline]
