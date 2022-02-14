@@ -34,7 +34,13 @@
 
 		<li>
 
-			MDN — Subresource Integrity: <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity">
+			MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity">Subresource Integrity</a>
+
+		</li>
+
+		<li>
+
+			cwe.mitre.org: <a href="https://cwe.mitre.org/data/definitions/830.html">CWE 830</a>
 
 		</li>
 	</references>
