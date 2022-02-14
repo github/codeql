@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the `ActiveRecord` library.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
@@ -183,6 +187,9 @@ class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMeth
     )
   }
 
+  /**
+   * Gets the SQL fragment argument of this method call.
+   */
   Expr getSqlFragmentSinkArgument() { result = sqlFragmentExpr }
 }
 
@@ -208,6 +215,9 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
  */
 abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range,
   DataFlow::LocalSourceNode {
+  /**
+   * Gets the `ActiveRecordModelClass` that this instance belongs to.
+   */
   abstract ActiveRecordModelClass getClass();
 
   bindingset[methodName]

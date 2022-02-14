@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the `Logger` library.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
@@ -6,6 +10,9 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.CFG
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 
+/**
+ * Provides modeling for the `Logger` library.
+ */
 module Logger {
   /** A reference to a `Logger` instance */
   private DataFlow::Node loggerInstance() {

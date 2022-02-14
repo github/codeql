@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the Ruby core libraries.
+ */
+
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary

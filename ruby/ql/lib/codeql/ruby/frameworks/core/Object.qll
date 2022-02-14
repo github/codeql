@@ -1,5 +1,12 @@
+/**
+ * Provides modeling for the `Object` class.
+ */
+
 private import codeql.ruby.AST
 
+/**
+ * Provides modeling for the `Object` class.
+ */
 module Object {
   /**
    * An instance method on `Object`, which is available to all classes except `BasicObject`.
@@ -8,6 +15,9 @@ module Object {
     ObjectInstanceMethodCall() { this.getMethodName() = objectInstanceMethodName() }
   }
 
+  /**
+   * Gets the name of an `Object` instance method.
+   */
   string objectInstanceMethodName() {
     result in [
         "!~", "<=>", "===", "=~", "callable_methods", "define_singleton_method", "display",

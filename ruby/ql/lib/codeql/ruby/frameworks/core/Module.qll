@@ -1,7 +1,14 @@
+/**
+ * Provides modeling for the `Module` class.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 
+/**
+ * Provides modeling for the `Module` class.
+ */
 module Module {
   /**
    * A call to `Module#module_eval`, which executes its first argument as Ruby code.

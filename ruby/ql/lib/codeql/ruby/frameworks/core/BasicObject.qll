@@ -1,7 +1,14 @@
+/**
+ * Provides modeling for the `BasicObject` class.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 
+/**
+ * Provides modeling for the `BasicObject` class.
+ */
 module BasicObject {
   /**
    * An instance method on `BasicObject`, which is available to all classes.
@@ -10,6 +17,9 @@ module BasicObject {
     BasicObjectInstanceMethodCall() { this.getMethodName() = basicObjectInstanceMethodName() }
   }
 
+  /**
+   * Gets the name of an instance method on `BasicObject`.
+   */
   string basicObjectInstanceMethodName() {
     result in [
         "equal?", "instance_eval", "instance_exec", "method_missing", "singleton_method_added",

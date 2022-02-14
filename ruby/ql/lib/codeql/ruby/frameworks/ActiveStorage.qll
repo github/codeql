@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the `ActiveStorage` library.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts

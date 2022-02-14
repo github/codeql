@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the `Kernel` module.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.CFG
@@ -6,7 +10,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 
-/** Modeling for the `Kernel` class. */
+/** Provides modeling for the `Kernel` class. */
 module Kernel {
   /**
    * The `Kernel` module is included by the `Object` class, so its methods are available
