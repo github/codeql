@@ -364,11 +364,5 @@ private predicate isPumpable(State fork, string w) {
   )
 }
 
-/**
- * An instantiation of `ReDoSConfiguration` for exponential backtracking.
- */
-class ExponentialReDoSConfiguration extends ReDoSConfiguration {
-  ExponentialReDoSConfiguration() { this = "ExponentialReDoSConfiguration" }
-
-  override predicate isReDoSCandidate(State state, string pump) { isPumpable(state, pump) }
-}
+/** Holds if `state` has exponential ReDoS */
+predicate hasReDoSResult = ReDoSPruning<isPumpable/2>::hasReDoSResult/4;
