@@ -122,10 +122,64 @@ compilation_finished(
     float elapsed_seconds : float ref
 );
 
+
+/**
+ * External data, loaded from CSV files during snapshot creation. See
+ * [Tutorial: Incorporating external data](https://help.semmle.com/wiki/display/SD/Tutorial%3A+Incorporating+external+data)
+ * for more information.
+ */
+externalData(
+    int id : @externalDataElement,
+    string path : string ref,
+    int column: int ref,
+    string value : string ref
+);
+
+/**
+ * The date of the snapshot.
+ */
+snapshotDate(unique date snapshotDate : date ref);
+
 /**
  * The source location of the snapshot.
  */
 sourceLocationPrefix(string prefix : string ref);
+
+/**
+ * Data used by the 'duplicate code' detection.
+ */
+duplicateCode(
+    unique int id : @duplication,
+    string relativePath : string ref,
+    int equivClass : int ref
+);
+
+/**
+ * Data used by the 'similar code' detection.
+ */
+similarCode(
+    unique int id : @similarity,
+    string relativePath : string ref,
+    int equivClass : int ref
+);
+
+/**
+ * Data used by the 'duplicate code' and 'similar code' detection.
+ */
+@duplication_or_similarity = @duplication | @similarity
+
+/**
+ * Data used by the 'duplicate code' and 'similar code' detection.
+ */
+#keyset[id, offset]
+tokens(
+    int id : @duplication_or_similarity ref,
+    int offset : int ref,
+    int beginLine : int ref,
+    int beginColumn : int ref,
+    int endLine : int ref,
+    int endColumn : int ref
+);
 
 /**
  * Information about packages that provide code used during compilation.
