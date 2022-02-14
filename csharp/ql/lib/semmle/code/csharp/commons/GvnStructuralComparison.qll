@@ -156,16 +156,24 @@ abstract class StructuralComparisonConfiguration extends string {
 
   abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
 
-  private predicate sameInternal(ControlFlowElement x, ControlFlowElement y) { toGvn(x) = toGvn(y) }
-
   predicate same(ControlFlowElement x, ControlFlowElement y) {
     candidate(x, y) and
-    sameInternal(x, y)
+    toGvn(x) = toGvn(y)
   }
 }
 
-// Temporary code section
-private predicate print(ControlFlowElement e, Gvn gvn) {
-  e.fromSource() and
-  gvn = toGvn(e)
+module Internal {
+  private import semmle.code.csharp.controlflow.Guards as G
+
+  abstract class InternalStructuralComparisonConfiguration extends string {
+    bindingset[this]
+    InternalStructuralComparisonConfiguration() { any() }
+
+    abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
+
+    predicate same(ControlFlowElement x, ControlFlowElement y) {
+      candidate(x, y) and
+      toGvn(x) = toGvn(y)
+    }
+  }
 }
