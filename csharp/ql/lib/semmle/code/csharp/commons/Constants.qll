@@ -2,7 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.commons.ComparisonTest
-private import semmle.code.csharp.commons.StructuralComparison as StructuralComparison
+private import semmle.code.csharp.commons.GvnStructuralComparison as StructuralComparison
 
 pragma[noinline]
 private predicate isConstantCondition0(ControlFlow::Node cfn, boolean b) {

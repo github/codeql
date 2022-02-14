@@ -12,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.commons.StructuralComparison
+import semmle.code.csharp.commons.GvnStructuralComparison
 
 class StructuralComparisonConfig extends StructuralComparisonConfiguration {
   StructuralComparisonConfig() { this = "UselessNullCoalescingExpression" }

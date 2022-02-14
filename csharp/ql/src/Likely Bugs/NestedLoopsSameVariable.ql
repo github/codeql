@@ -13,7 +13,7 @@
 
 import csharp
 import semmle.code.csharp.commons.ComparisonTest
-import semmle.code.csharp.commons.StructuralComparison as SC
+import semmle.code.csharp.commons.GvnStructuralComparison as SC
 
 /** A structural comparison configuration for comparing the conditions of nested `for` loops. */
 class NestedForConditions extends SC::StructuralComparisonConfiguration {

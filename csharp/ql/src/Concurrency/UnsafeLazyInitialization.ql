@@ -12,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.commons.StructuralComparison
+import semmle.code.csharp.commons.GvnStructuralComparison
 
 class DoubleCheckedLock extends StructuralComparisonConfiguration {
   DoubleCheckedLock() { this = "double checked lock" }

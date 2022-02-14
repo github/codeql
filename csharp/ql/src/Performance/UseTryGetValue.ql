@@ -10,7 +10,7 @@
  */
 
 import csharp
-import semmle.code.csharp.commons.StructuralComparison
+import semmle.code.csharp.commons.GvnStructuralComparison
 import semmle.code.csharp.controlflow.Guards as G
 
 class SameElement extends StructuralComparisonConfiguration {
