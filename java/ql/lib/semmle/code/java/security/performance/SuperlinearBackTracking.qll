@@ -391,7 +391,7 @@ predicate isPumpable(State pivot, State succ, string pump) {
  */
 predicate polynimalReDoS(RegExpTerm t, string pump, string prefixMsg, RegExpTerm prev) {
   exists(State s, State pivot |
-    hasReDoSResult(t, pump, s, prefixMsg) and
+    ReDoSPruning::hasReDoSResult(t, pump, s, prefixMsg) and
     isPumpable(pivot, s, _) and
     prev = pivot.getRepr()
   )

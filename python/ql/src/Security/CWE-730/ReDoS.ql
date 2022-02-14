@@ -18,7 +18,7 @@ import semmle.python.security.performance.ExponentialBackTracking
 
 from RegExpTerm t, string pump, State s, string prefixMsg
 where
-  hasReDoSResult(t, pump, s, prefixMsg) and
+  ReDoSPruning::hasReDoSResult(t, pump, s, prefixMsg) and
   // exclude verbose mode regexes for now
   not t.getRegex().getAMode() = "VERBOSE"
 select t,

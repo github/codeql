@@ -19,7 +19,7 @@ import semmle.javascript.security.performance.ReDoSUtil
 import semmle.javascript.security.performance.ExponentialBackTracking
 
 from RegExpTerm t, string pump, State s, string prefixMsg
-where hasReDoSResult(t, pump, s, prefixMsg)
+where ReDoSPruning::hasReDoSResult(t, pump, s, prefixMsg)
 select t,
   "This part of the regular expression may cause exponential backtracking on strings " + prefixMsg +
     "containing many repetitions of '" + pump + "'."
