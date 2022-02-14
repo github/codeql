@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            (function() {
+              // NOT OK (no integrity attribute)
+              var scrpt = document.createElement('script');
+              scrpt.type = 'text/javascript';
+              scrpt.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.cdn.local/ga.js';
+
+              // OK (integrity digest present)
+              var scrpt2 = document.createElement('script');
+              scrpt2.type = 'text/javascript';
+              scrpt2.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.cdn.local/ga.js';
+              scrpt2.integrity = 'sha256-h0UuK3mE9taiYlB5u9vT9A0s/XDgkfVd+F4VhN/sky=';
+
+              // NOT OK (http URL)
+              var ifrm = document.createElement('iframe');
+              ifrm.src = 'http://www.example.com/';
+
+              // OK (https URL)
+              var ifrm2 = document.createElement('iframe');
+              ifrm2.src = 'https://www.example.com/';
+            })();
+          </script>
+    </head>
+    <body>
+        hello
+    </body>
+</html>

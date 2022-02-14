@@ -1,0 +1,20 @@
+nodes
+| dynamic.html:8:27:8:97 | ('https ... //www') |
+| dynamic.html:8:27:8:118 | ('https ... /ga.js' |
+| dynamic.html:8:27:8:118 | ('https ... /ga.js' |
+| dynamic.html:8:28:8:96 | 'https: ... ://www' |
+| dynamic.html:8:85:8:96 | 'http://www' |
+| dynamic.html:8:85:8:96 | 'http://www' |
+| dynamic.html:18:26:18:50 | 'http:/ ... e.com/' |
+| dynamic.html:18:26:18:50 | 'http:/ ... e.com/' |
+| dynamic.html:18:26:18:50 | 'http:/ ... e.com/' |
+edges
+| dynamic.html:8:27:8:97 | ('https ... //www') | dynamic.html:8:27:8:118 | ('https ... /ga.js' |
+| dynamic.html:8:27:8:97 | ('https ... //www') | dynamic.html:8:27:8:118 | ('https ... /ga.js' |
+| dynamic.html:8:28:8:96 | 'https: ... ://www' | dynamic.html:8:27:8:97 | ('https ... //www') |
+| dynamic.html:8:85:8:96 | 'http://www' | dynamic.html:8:28:8:96 | 'https: ... ://www' |
+| dynamic.html:8:85:8:96 | 'http://www' | dynamic.html:8:28:8:96 | 'https: ... ://www' |
+| dynamic.html:18:26:18:50 | 'http:/ ... e.com/' | dynamic.html:18:26:18:50 | 'http:/ ... e.com/' |
+#select
+| dynamic.html:8:27:8:118 | ('https ... /ga.js' | dynamic.html:8:85:8:96 | 'http://www' | dynamic.html:8:27:8:118 | ('https ... /ga.js' | Illegal flow from $@. | dynamic.html:8:85:8:96 | 'http://www' | here |
+| dynamic.html:18:26:18:50 | 'http:/ ... e.com/' | dynamic.html:18:26:18:50 | 'http:/ ... e.com/' | dynamic.html:18:26:18:50 | 'http:/ ... e.com/' | Illegal flow from $@. | dynamic.html:18:26:18:50 | 'http:/ ... e.com/' | here |
