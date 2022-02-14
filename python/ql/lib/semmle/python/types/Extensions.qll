@@ -87,7 +87,7 @@ class RangeIterationVariableFact extends PointsToExtension {
 }
 
 /* bottle module route constants */
-class BottleRoutePointToExtension extends PointsToExtension {
+deprecated class BottleRoutePointToExtension extends PointsToExtension {
   string name;
 
   BottleRoutePointToExtension() {

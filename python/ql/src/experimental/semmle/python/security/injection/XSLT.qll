@@ -21,7 +21,7 @@ module XSLTInjection {
   /**
    * A kind of "taint", representing an untrusted XML string
    */
-  private class ExternalXmlStringKind extends ExternalStringKind {
+  deprecated private class ExternalXmlStringKind extends ExternalStringKind {
     ExternalXmlStringKind() { this = "etree.XML string" }
 
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
