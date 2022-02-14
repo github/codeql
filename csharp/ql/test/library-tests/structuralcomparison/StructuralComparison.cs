@@ -23,3 +23,27 @@ public class Class
         M1(x, y);
     }
 }
+
+public class BaseClass
+{
+    public int Field;
+    public object Prop { get; set; }
+}
+
+public class DerivedClass : BaseClass
+{
+    public void M3()
+    {
+        var x1 = base.Field;
+        var x2 = Field;
+        var x3 = this.Field;
+    }
+
+    public void M4()
+    {
+        var y1 = base.Prop;
+        var y2 = Prop;
+        var y3 = this.Prop;
+    }
+}
+

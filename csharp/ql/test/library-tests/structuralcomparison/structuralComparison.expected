@@ -203,6 +203,32 @@ same
 | StructuralComparison.cs:23:15:23:15 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
 | StructuralComparison.cs:23:15:23:15 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
 | StructuralComparison.cs:23:15:23:15 | access to local variable y | StructuralComparison.cs:22:15:22:15 | access to local variable y |
+| StructuralComparison.cs:37:18:37:21 | base access | StructuralComparison.cs:44:18:44:21 | base access |
+| StructuralComparison.cs:37:18:37:27 | access to field Field | StructuralComparison.cs:38:18:38:22 | access to field Field |
+| StructuralComparison.cs:37:18:37:27 | access to field Field | StructuralComparison.cs:39:18:39:27 | access to field Field |
+| StructuralComparison.cs:38:18:38:22 | access to field Field | StructuralComparison.cs:37:18:37:27 | access to field Field |
+| StructuralComparison.cs:38:18:38:22 | access to field Field | StructuralComparison.cs:39:18:39:27 | access to field Field |
+| StructuralComparison.cs:38:18:38:22 | this access | StructuralComparison.cs:39:18:39:21 | this access |
+| StructuralComparison.cs:38:18:38:22 | this access | StructuralComparison.cs:45:18:45:21 | this access |
+| StructuralComparison.cs:38:18:38:22 | this access | StructuralComparison.cs:46:18:46:21 | this access |
+| StructuralComparison.cs:39:18:39:21 | this access | StructuralComparison.cs:38:18:38:22 | this access |
+| StructuralComparison.cs:39:18:39:21 | this access | StructuralComparison.cs:45:18:45:21 | this access |
+| StructuralComparison.cs:39:18:39:21 | this access | StructuralComparison.cs:46:18:46:21 | this access |
+| StructuralComparison.cs:39:18:39:27 | access to field Field | StructuralComparison.cs:37:18:37:27 | access to field Field |
+| StructuralComparison.cs:39:18:39:27 | access to field Field | StructuralComparison.cs:38:18:38:22 | access to field Field |
+| StructuralComparison.cs:44:18:44:21 | base access | StructuralComparison.cs:37:18:37:21 | base access |
+| StructuralComparison.cs:44:18:44:26 | access to property Prop | StructuralComparison.cs:45:18:45:21 | access to property Prop |
+| StructuralComparison.cs:44:18:44:26 | access to property Prop | StructuralComparison.cs:46:18:46:26 | access to property Prop |
+| StructuralComparison.cs:45:18:45:21 | access to property Prop | StructuralComparison.cs:44:18:44:26 | access to property Prop |
+| StructuralComparison.cs:45:18:45:21 | access to property Prop | StructuralComparison.cs:46:18:46:26 | access to property Prop |
+| StructuralComparison.cs:45:18:45:21 | this access | StructuralComparison.cs:38:18:38:22 | this access |
+| StructuralComparison.cs:45:18:45:21 | this access | StructuralComparison.cs:39:18:39:21 | this access |
+| StructuralComparison.cs:45:18:45:21 | this access | StructuralComparison.cs:46:18:46:21 | this access |
+| StructuralComparison.cs:46:18:46:21 | this access | StructuralComparison.cs:38:18:38:22 | this access |
+| StructuralComparison.cs:46:18:46:21 | this access | StructuralComparison.cs:39:18:39:21 | this access |
+| StructuralComparison.cs:46:18:46:21 | this access | StructuralComparison.cs:45:18:45:21 | this access |
+| StructuralComparison.cs:46:18:46:26 | access to property Prop | StructuralComparison.cs:44:18:44:26 | access to property Prop |
+| StructuralComparison.cs:46:18:46:26 | access to property Prop | StructuralComparison.cs:45:18:45:21 | access to property Prop |
 gvnSame
 | StructuralComparison.cs:5:27:5:27 | 0 | StructuralComparison.cs:13:17:13:17 | 0 |
 | StructuralComparison.cs:13:13:13:13 | access to local variable x | StructuralComparison.cs:15:18:15:18 | access to local variable x |
@@ -408,6 +434,24 @@ gvnSame
 | StructuralComparison.cs:23:15:23:15 | access to local variable y | StructuralComparison.cs:21:24:21:24 | access to local variable y |
 | StructuralComparison.cs:23:15:23:15 | access to local variable y | StructuralComparison.cs:21:35:21:35 | access to local variable y |
 | StructuralComparison.cs:23:15:23:15 | access to local variable y | StructuralComparison.cs:22:15:22:15 | access to local variable y |
+| StructuralComparison.cs:37:18:37:21 | base access | StructuralComparison.cs:44:18:44:21 | base access |
+| StructuralComparison.cs:38:18:38:22 | access to field Field | StructuralComparison.cs:39:18:39:27 | access to field Field |
+| StructuralComparison.cs:38:18:38:22 | this access | StructuralComparison.cs:39:18:39:21 | this access |
+| StructuralComparison.cs:38:18:38:22 | this access | StructuralComparison.cs:45:18:45:21 | this access |
+| StructuralComparison.cs:38:18:38:22 | this access | StructuralComparison.cs:46:18:46:21 | this access |
+| StructuralComparison.cs:39:18:39:21 | this access | StructuralComparison.cs:38:18:38:22 | this access |
+| StructuralComparison.cs:39:18:39:21 | this access | StructuralComparison.cs:45:18:45:21 | this access |
+| StructuralComparison.cs:39:18:39:21 | this access | StructuralComparison.cs:46:18:46:21 | this access |
+| StructuralComparison.cs:39:18:39:27 | access to field Field | StructuralComparison.cs:38:18:38:22 | access to field Field |
+| StructuralComparison.cs:44:18:44:21 | base access | StructuralComparison.cs:37:18:37:21 | base access |
+| StructuralComparison.cs:45:18:45:21 | access to property Prop | StructuralComparison.cs:46:18:46:26 | access to property Prop |
+| StructuralComparison.cs:45:18:45:21 | this access | StructuralComparison.cs:38:18:38:22 | this access |
+| StructuralComparison.cs:45:18:45:21 | this access | StructuralComparison.cs:39:18:39:21 | this access |
+| StructuralComparison.cs:45:18:45:21 | this access | StructuralComparison.cs:46:18:46:21 | this access |
+| StructuralComparison.cs:46:18:46:21 | this access | StructuralComparison.cs:38:18:38:22 | this access |
+| StructuralComparison.cs:46:18:46:21 | this access | StructuralComparison.cs:39:18:39:21 | this access |
+| StructuralComparison.cs:46:18:46:21 | this access | StructuralComparison.cs:45:18:45:21 | this access |
+| StructuralComparison.cs:46:18:46:26 | access to property Prop | StructuralComparison.cs:45:18:45:21 | access to property Prop |
 gvnPrinting
 | StructuralComparison.cs:5:27:5:27 | 0 | 0 |
 | StructuralComparison.cs:7:29:7:29 | access to parameter a | [(kind:15,a)] |
@@ -480,5 +524,45 @@ gvnPrinting
 | StructuralComparison.cs:23:9:23:17 | ...; | [[[(kind:14,y)] :: [(kind:14,x)] :: [(kind:12,Class)] :: (kind:24,M1)] :: (kind:-2)] |
 | StructuralComparison.cs:23:12:23:12 | access to local variable x | [(kind:14,x)] |
 | StructuralComparison.cs:23:15:23:15 | access to local variable y | [(kind:14,y)] |
+| StructuralComparison.cs:36:5:40:5 | {...} | [[[[(kind:14,x3)] :: [[(kind:12,DerivedClass)] :: (kind:16,Field)] :: (kind:83)] :: (kind:-22)] :: [[[(kind:14,x2)] :: [[(kind:12,DerivedClass)] :: (kind:16,Field)] :: (kind:83)] :: (kind:-22)] :: [[[(kind:14,x1)] :: [[(kind:13,BaseClass)] :: (kind:16,Field)] :: (kind:83)] :: (kind:-22)] :: (kind:-1)] |
+| StructuralComparison.cs:37:9:37:28 | ... ...; | [[[(kind:14,x1)] :: [[(kind:13,BaseClass)] :: (kind:16,Field)] :: (kind:83)] :: (kind:-22)] |
+| StructuralComparison.cs:37:13:37:14 | access to local variable x1 | [(kind:14,x1)] |
+| StructuralComparison.cs:37:13:37:27 | Int32 x1 = ... | [[(kind:14,x1)] :: [[(kind:13,BaseClass)] :: (kind:16,Field)] :: (kind:83)] |
+| StructuralComparison.cs:37:18:37:21 | base access | [(kind:13,BaseClass)] |
+| StructuralComparison.cs:37:18:37:27 | access to field Field | [[(kind:13,BaseClass)] :: (kind:16,Field)] |
+| StructuralComparison.cs:38:9:38:23 | ... ...; | [[[(kind:14,x2)] :: [[(kind:12,DerivedClass)] :: (kind:16,Field)] :: (kind:83)] :: (kind:-22)] |
+| StructuralComparison.cs:38:13:38:14 | access to local variable x2 | [(kind:14,x2)] |
+| StructuralComparison.cs:38:13:38:22 | Int32 x2 = ... | [[(kind:14,x2)] :: [[(kind:12,DerivedClass)] :: (kind:16,Field)] :: (kind:83)] |
+| StructuralComparison.cs:38:18:38:22 | access to field Field | [[(kind:12,DerivedClass)] :: (kind:16,Field)] |
+| StructuralComparison.cs:38:18:38:22 | this access | [(kind:12,DerivedClass)] |
+| StructuralComparison.cs:39:9:39:28 | ... ...; | [[[(kind:14,x3)] :: [[(kind:12,DerivedClass)] :: (kind:16,Field)] :: (kind:83)] :: (kind:-22)] |
+| StructuralComparison.cs:39:13:39:14 | access to local variable x3 | [(kind:14,x3)] |
+| StructuralComparison.cs:39:13:39:27 | Int32 x3 = ... | [[(kind:14,x3)] :: [[(kind:12,DerivedClass)] :: (kind:16,Field)] :: (kind:83)] |
+| StructuralComparison.cs:39:18:39:21 | this access | [(kind:12,DerivedClass)] |
+| StructuralComparison.cs:39:18:39:27 | access to field Field | [[(kind:12,DerivedClass)] :: (kind:16,Field)] |
+| StructuralComparison.cs:43:5:47:5 | {...} | [[[[(kind:14,y3)] :: [[(kind:12,DerivedClass)] :: (kind:17,Prop)] :: (kind:83)] :: (kind:-22)] :: [[[(kind:14,y2)] :: [[(kind:12,DerivedClass)] :: (kind:17,Prop)] :: (kind:83)] :: (kind:-22)] :: [[[(kind:14,y1)] :: [[(kind:13,BaseClass)] :: (kind:17,Prop)] :: (kind:83)] :: (kind:-22)] :: (kind:-1)] |
+| StructuralComparison.cs:44:9:44:27 | ... ...; | [[[(kind:14,y1)] :: [[(kind:13,BaseClass)] :: (kind:17,Prop)] :: (kind:83)] :: (kind:-22)] |
+| StructuralComparison.cs:44:13:44:14 | access to local variable y1 | [(kind:14,y1)] |
+| StructuralComparison.cs:44:13:44:26 | Object y1 = ... | [[(kind:14,y1)] :: [[(kind:13,BaseClass)] :: (kind:17,Prop)] :: (kind:83)] |
+| StructuralComparison.cs:44:18:44:21 | base access | [(kind:13,BaseClass)] |
+| StructuralComparison.cs:44:18:44:26 | access to property Prop | [[(kind:13,BaseClass)] :: (kind:17,Prop)] |
+| StructuralComparison.cs:45:9:45:22 | ... ...; | [[[(kind:14,y2)] :: [[(kind:12,DerivedClass)] :: (kind:17,Prop)] :: (kind:83)] :: (kind:-22)] |
+| StructuralComparison.cs:45:13:45:14 | access to local variable y2 | [(kind:14,y2)] |
+| StructuralComparison.cs:45:13:45:21 | Object y2 = ... | [[(kind:14,y2)] :: [[(kind:12,DerivedClass)] :: (kind:17,Prop)] :: (kind:83)] |
+| StructuralComparison.cs:45:18:45:21 | access to property Prop | [[(kind:12,DerivedClass)] :: (kind:17,Prop)] |
+| StructuralComparison.cs:45:18:45:21 | this access | [(kind:12,DerivedClass)] |
+| StructuralComparison.cs:46:9:46:27 | ... ...; | [[[(kind:14,y3)] :: [[(kind:12,DerivedClass)] :: (kind:17,Prop)] :: (kind:83)] :: (kind:-22)] |
+| StructuralComparison.cs:46:13:46:14 | access to local variable y3 | [(kind:14,y3)] |
+| StructuralComparison.cs:46:13:46:26 | Object y3 = ... | [[(kind:14,y3)] :: [[(kind:12,DerivedClass)] :: (kind:17,Prop)] :: (kind:83)] |
+| StructuralComparison.cs:46:18:46:21 | this access | [(kind:12,DerivedClass)] |
+| StructuralComparison.cs:46:18:46:26 | access to property Prop | [[(kind:12,DerivedClass)] :: (kind:17,Prop)] |
 sameDiff
+| StructuralComparison.cs:37:18:37:27 | access to field Field | StructuralComparison.cs:38:18:38:22 | access to field Field |
+| StructuralComparison.cs:37:18:37:27 | access to field Field | StructuralComparison.cs:39:18:39:27 | access to field Field |
+| StructuralComparison.cs:38:18:38:22 | access to field Field | StructuralComparison.cs:37:18:37:27 | access to field Field |
+| StructuralComparison.cs:39:18:39:27 | access to field Field | StructuralComparison.cs:37:18:37:27 | access to field Field |
+| StructuralComparison.cs:44:18:44:26 | access to property Prop | StructuralComparison.cs:45:18:45:21 | access to property Prop |
+| StructuralComparison.cs:44:18:44:26 | access to property Prop | StructuralComparison.cs:46:18:46:26 | access to property Prop |
+| StructuralComparison.cs:45:18:45:21 | access to property Prop | StructuralComparison.cs:44:18:44:26 | access to property Prop |
+| StructuralComparison.cs:46:18:46:26 | access to property Prop | StructuralComparison.cs:44:18:44:26 | access to property Prop |
 gvnSameDiff
