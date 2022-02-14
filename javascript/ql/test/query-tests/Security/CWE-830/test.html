@@ -9,5 +9,8 @@
         <iframe src="http://test.local/foo.html"></iframe> <!-- NOT OK -->
         <iframe src="https://test.local/foo.html"></iframe> <!-- OK (https) -->
         <iframe src="//test.local/foo.html"></iframe> <!-- NOT OK (protocol-relative url) -->
+        <iframe src="http://::1/foo.html"></iframe> <!-- OK (localhost) -->
+        <iframe src="http://[::1]:80/foo.html"></iframe> <!-- OK (localhost) -->
+        <iframe src="http://127.0.0.1:444/foo.html"></iframe> <!-- OK (localhost) -->
     </body>
 </html>
