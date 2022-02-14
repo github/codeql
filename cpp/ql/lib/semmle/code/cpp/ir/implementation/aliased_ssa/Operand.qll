@@ -56,6 +56,7 @@ class Operand extends TStageOperand {
    * By default this is where the operand is used, but some subclasses may override this
    * using `getAnyDef()` if it makes more sense.
    */
+  cached
   Language::Location getLocation() { result = this.getUse().getLocation() }
 
   /**
@@ -281,6 +282,7 @@ class RegisterOperand extends NonPhiOperand, TRegisterOperand {
 
   // most `RegisterOperands` have a more meaningful location at the definition
   // the only exception are specific cases of `ThisArgumentOperand`
+  cached
   override Language::Location getLocation() { result = this.getAnyDef().getLocation() }
 
   final override Instruction getAnyDef() { result = defInstr }
@@ -423,6 +425,7 @@ class ThisArgumentOperand extends ArgumentOperand {
 
   // in most cases the def location makes more sense, but in some corner cases it
   // has an unknown location: in those cases we fall back to the use location
+  cached
   override Language::Location getLocation() {
     if this.getAnyDef().getLocation() instanceof KnownLocation
     then result = this.getAnyDef().getLocation()

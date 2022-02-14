@@ -213,6 +213,7 @@ class Instruction extends Construction::TStageInstruction {
   /**
    * Gets the location of the source code for this instruction.
    */
+  cached
   final Language::Location getLocation() { result = this.getAST().getLocation() }
 
   /**
