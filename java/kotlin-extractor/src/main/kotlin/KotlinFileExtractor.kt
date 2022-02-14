@@ -537,15 +537,15 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunctionIfReal(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
+    fun extractFunctionIfReal(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, memberName: String? = null) {
         with("function if real", f) {
             if (f.origin == IrDeclarationOrigin.FAKE_OVERRIDE)
                 return
-            extractFunction(f, parentId, extractBody, typeSubstitution, classTypeArgsIncludingOuterClasses)
+            extractFunction(f, parentId, extractBody, typeSubstitution, classTypeArgsIncludingOuterClasses, memberName)
         }
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbCallable> {
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, memberName: String? = null): Label<out DbCallable> {
         with("function", f) {
             DeclarationStackAdjuster(f).use {
 
@@ -598,7 +598,7 @@ open class KotlinFileExtractor(
                     tw.writeConstrsKotlinType(constrId, unitType.kotlinResult.id)
                 } else {
                     val returnType = useType(substReturnType, TypeContext.RETURN)
-                    val shortName = getFunctionShortName(f)
+                    val shortName = memberName ?: getFunctionShortName(f)
                     @Suppress("UNCHECKED_CAST")
                     val methodId = id as Label<DbMethod>
                     tw.writeMethods(methodId, shortName, "$shortName$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration as Label<DbMethod>)
@@ -2249,7 +2249,8 @@ open class KotlinFileExtractor(
                     val fnInterfaceType = getFunctionalInterfaceType(types)
                     val id = extractGeneratedClass(
                         e.function, // We're adding this function as a member, and changing its name to `invoke` to implement `kotlin.FunctionX<,,,>.invoke(,,)`
-                        listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType))
+                        listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType),
+                        OperatorNameConventions.INVOKE.asString())
 
                     if (types.size > BuiltInFunctionArity.BIG_ARITY) {
                         implementFunctionNInvoke(e.function, ids, locId, parameters)
@@ -2872,8 +2873,81 @@ open class KotlinFileExtractor(
                     extractTypeAccess(e.typeOperand, callable, id, 1, e, enclosingStmt)
                 }
                 IrTypeOperator.SAM_CONVERSION -> {
-                    // TODO:
-                    logger.errorElement("Unhandled IrTypeOperatorCall for SAM_CONVERSION: " + e.render(), e)
+
+                    /*
+                       The following Kotlin code
+
+                       ```
+                       fun interface IntPredicate {
+                           fun accept(i: Int): Boolean
+                       }
+
+                       val x = IntPredicate { it % 2 == 0 }
+                       ```
+
+                       is extracted as
+
+                       ```
+                       interface IntPredicate {
+                           Boolean accept(Integer i);
+                       }
+                       class <Anon> extends Object implements IntPredicate {
+                           public Boolean accept(Integer i) { return i % 2 == 0; }
+                       }
+
+                       IntPredicate x = (IntPredicate)new <Anon>();
+                       ```
+                     */
+
+                    val fnExpr = e.argument
+                    if (fnExpr !is IrFunctionExpression) {
+                        logger.errorElement("Expected to find function expression in SAM conversion. Found '${e.argument.javaClass}' instead", e)
+                        return
+                    }
+
+                    val ids = getLocallyVisibleFunctionLabels(fnExpr.function)
+                    val locId = tw.getLocation(e)
+
+                    val typeOwner = e.typeOperandClassifier.owner
+                    val samMemberName = if (typeOwner !is IrClass) {
+                        logger.errorElement("Expected to find SAM conversion to IrClass. Found '${typeOwner.javaClass}' instead. Can't rename lambda function to match SAM interface member name.", e)
+                        null
+                    } else {
+                        val samMember = typeOwner.declarations.filterIsInstance<IrFunction>().firstOrNull { it is IrOverridableMember && it.modality == Modality.ABSTRACT }
+                        if (samMember == null) {
+                            logger.errorElement("Couldn't find SAM member in type '${typeOwner.kotlinFqName.asString()}'. Can't rename lambda function to match SAM interface member name.", e)
+                            null
+                        } else {
+                            samMember.name.asString()
+                        }
+                    }
+
+                    extractGeneratedClass(
+                        fnExpr.function,
+                        listOf(pluginContext.irBuiltIns.anyType, e.typeOperand),
+                        samMemberName)
+
+                    val id = tw.getFreshIdLabel<DbCastexpr>()
+                    val type = useType(e.type)
+                    tw.writeExprs_castexpr(id, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, enclosingStmt)
+                    extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
+
+                    val idNewexpr = tw.getFreshIdLabel<DbNewexpr>()
+                    tw.writeExprs_newexpr(idNewexpr, ids.type.javaResult.id, id, 1)
+                    tw.writeExprsKotlinType(idNewexpr, ids.type.kotlinResult.id)
+                    tw.writeHasLocation(idNewexpr, locId)
+                    tw.writeCallableEnclosingExpr(idNewexpr, callable)
+                    tw.writeStatementEnclosingExpr(idNewexpr, enclosingStmt)
+                    tw.writeCallableBinding(idNewexpr, ids.constructor)
+
+                    @Suppress("UNCHECKED_CAST")
+                    tw.writeIsAnonymClass(ids.type.javaResult.id as Label<DbClass>, idNewexpr)
+
+                    extractTypeAccess(pluginContext.irBuiltIns.anyType, callable, idNewexpr, -3, e, enclosingStmt)
                 }
                 else -> {
                     logger.errorElement("Unrecognised IrTypeOperatorCall for ${e.operator}: " + e.render(), e)
@@ -2990,14 +3064,14 @@ open class KotlinFileExtractor(
     /**
      * Extracts the class around a local function or a lambda.
      */
-    private fun extractGeneratedClass(localFunction: IrFunction, superTypes: List<IrType>) : Label<out DbClass> {
+    private fun extractGeneratedClass(localFunction: IrFunction, superTypes: List<IrType>, memberName: String? = null) : Label<out DbClass> {
         with("generated class", localFunction) {
             val ids = getLocallyVisibleFunctionLabels(localFunction)
 
             val id = extractGeneratedClass(ids, superTypes, tw.getLocation(localFunction), localFunction)
 
             // Extract local function as a member
-            extractFunctionIfReal(localFunction, id, true, null, listOf())
+            extractFunctionIfReal(localFunction, id, true, null, listOf(), memberName)
 
             return id
         }

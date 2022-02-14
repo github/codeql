@@ -2204,3 +2204,80 @@ localFunctionCalls.kt:
 #   13|         0: [SuperConstructorInvocationStmt] super(...)
 #   13|         1: [ExprStmt] <Expr>;
 #   13|           0: [MethodAccess] <obinit>(...)
+samConversion.kt:
+#    0| [CompilationUnit] samConversion
+#    0|   1: [Class] SamConversionKt
+#    1|     1: [Method] main
+#    1|       5: [BlockStmt] { ... }
+#    2|         0: [LocalVariableDeclStmt] var ...;
+#    2|           1: [LocalVariableDeclExpr] isEven
+#    2|             0: [CastExpr] (...)...
+#    2|               0: [TypeAccess] IntPredicate
+#    2|               1: [ClassInstanceExpr] new (...)
+#    2|                 -4: [AnonymousClass] new Object(...) { ... }
+#    2|                   1: [Constructor] 
+#    2|                     5: [BlockStmt] { ... }
+#    2|                       0: [SuperConstructorInvocationStmt] super(...)
+#    2|                   1: [Method] accept
+#-----|                     4: (Parameters)
+#    2|                       0: [Parameter] it
+#    2|                     5: [BlockStmt] { ... }
+#    2|                       0: [ReturnStmt] return ...
+#    2|                         0: [ValueEQExpr] ... (value equals) ...
+#    2|                           0: [RemExpr] ... % ...
+#    2|                             0: [VarAccess] it
+#    2|                             1: [IntegerLiteral] 2
+#    2|                           1: [IntegerLiteral] 0
+#    2|                 -3: [TypeAccess] Object
+#    4|         1: [ExprStmt] <Expr>;
+#    4|           0: [MethodAccess] fn1(...)
+#    4|             -1: [CastExpr] (...)...
+#    4|               0: [TypeAccess] InterfaceFn1
+#    4|               1: [ClassInstanceExpr] new (...)
+#    4|                 -4: [AnonymousClass] new Object(...) { ... }
+#    4|                   1: [Constructor] 
+#    4|                     5: [BlockStmt] { ... }
+#    4|                       0: [SuperConstructorInvocationStmt] super(...)
+#    4|                   1: [Method] fn1
+#-----|                     4: (Parameters)
+#    4|                       0: [Parameter] a
+#    4|                       1: [Parameter] b
+#    4|                     5: [BlockStmt] { ... }
+#    4|                       0: [ExprStmt] <Expr>;
+#    4|                         0: [VarAccess] INSTANCE
+#    4|                 -3: [TypeAccess] Object
+#    4|             0: [IntegerLiteral] 1
+#    4|             1: [IntegerLiteral] 2
+#    6|         2: [LocalVariableDeclStmt] var ...;
+#    6|           1: [LocalVariableDeclExpr] i
+#    6|             0: [CastExpr] (...)...
+#    6|               0: [TypeAccess] InterfaceFnExt1
+#    6|               1: [ClassInstanceExpr] new (...)
+#    6|                 -4: [AnonymousClass] new Object(...) { ... }
+#    6|                   1: [Constructor] 
+#    6|                     5: [BlockStmt] { ... }
+#    6|                       0: [SuperConstructorInvocationStmt] super(...)
+#    6|                   1: [ExtensionMethod] ext
+#-----|                     4: (Parameters)
+#    6|                       0: [Parameter] $this$InterfaceFnExt1
+#    6|                       1: [Parameter] i
+#    6|                     5: [BlockStmt] { ... }
+#    6|                       0: [ReturnStmt] return ...
+#    6|                         0: [ValueEQExpr] ... (value equals) ...
+#    6|                           0: [ThisAccess] this
+#    6|                           1: [StringLiteral] 
+#    6|                 -3: [TypeAccess] Object
+#    9|   2: [Interface] IntPredicate
+#   10|     2: [Method] accept
+#-----|       4: (Parameters)
+#   10|         0: [Parameter] i
+#   13|   3: [Interface] InterfaceFn1
+#   14|     2: [Method] fn1
+#-----|       4: (Parameters)
+#   14|         0: [Parameter] i
+#   14|         1: [Parameter] j
+#   17|   4: [Interface] InterfaceFnExt1
+#   18|     2: [ExtensionMethod] ext
+#-----|       4: (Parameters)
+#   18|         0: [Parameter] <this>
+#   18|         1: [Parameter] i

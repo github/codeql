@@ -1317,3 +1317,29 @@
 | localFunctionCalls.kt:10:15:10:20 | new (...) | localFunctionCalls.kt:3:1:11:1 | x | ClassInstanceExpr |
 | localFunctionCalls.kt:10:18:10:19 | 42 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:13:1:13:14 | <obinit>(...) | localFunctionCalls.kt:13:1:13:14 | C1 | MethodAccess |
+| samConversion.kt:2:5:2:45 | isEven | samConversion.kt:1:1:7:1 | main | LocalVariableDeclExpr |
+| samConversion.kt:2:18:2:45 | (...)... | samConversion.kt:1:1:7:1 | main | CastExpr |
+| samConversion.kt:2:18:2:45 | IntPredicate | samConversion.kt:1:1:7:1 | main | TypeAccess |
+| samConversion.kt:2:18:2:45 | Object | samConversion.kt:1:1:7:1 | main | TypeAccess |
+| samConversion.kt:2:18:2:45 | new (...) | samConversion.kt:1:1:7:1 | main | ClassInstanceExpr |
+| samConversion.kt:2:33:2:34 | it | samConversion.kt:2:31:2:45 | accept | VarAccess |
+| samConversion.kt:2:33:2:38 | ... % ... | samConversion.kt:2:31:2:45 | accept | RemExpr |
+| samConversion.kt:2:33:2:43 | ... (value equals) ... | samConversion.kt:2:31:2:45 | accept | ValueEQExpr |
+| samConversion.kt:2:38:2:38 | 2 | samConversion.kt:2:31:2:45 | accept | IntegerLiteral |
+| samConversion.kt:2:43:2:43 | 0 | samConversion.kt:2:31:2:45 | accept | IntegerLiteral |
+| samConversion.kt:4:5:4:33 | (...)... | samConversion.kt:1:1:7:1 | main | CastExpr |
+| samConversion.kt:4:5:4:33 | InterfaceFn1 | samConversion.kt:1:1:7:1 | main | TypeAccess |
+| samConversion.kt:4:5:4:33 | Object | samConversion.kt:1:1:7:1 | main | TypeAccess |
+| samConversion.kt:4:5:4:33 | new (...) | samConversion.kt:1:1:7:1 | main | ClassInstanceExpr |
+| samConversion.kt:4:28:4:31 | INSTANCE | samConversion.kt:4:18:4:33 | fn1 | VarAccess |
+| samConversion.kt:4:35:4:42 | fn1(...) | samConversion.kt:1:1:7:1 | main | MethodAccess |
+| samConversion.kt:4:39:4:39 | 1 | samConversion.kt:1:1:7:1 | main | IntegerLiteral |
+| samConversion.kt:4:41:4:41 | 2 | samConversion.kt:1:1:7:1 | main | IntegerLiteral |
+| samConversion.kt:6:5:6:46 | i | samConversion.kt:1:1:7:1 | main | LocalVariableDeclExpr |
+| samConversion.kt:6:13:6:46 | (...)... | samConversion.kt:1:1:7:1 | main | CastExpr |
+| samConversion.kt:6:13:6:46 | InterfaceFnExt1 | samConversion.kt:1:1:7:1 | main | TypeAccess |
+| samConversion.kt:6:13:6:46 | Object | samConversion.kt:1:1:7:1 | main | TypeAccess |
+| samConversion.kt:6:13:6:46 | new (...) | samConversion.kt:1:1:7:1 | main | ClassInstanceExpr |
+| samConversion.kt:6:36:6:39 | this | samConversion.kt:6:29:6:46 | ext | ThisAccess |
+| samConversion.kt:6:36:6:45 | ... (value equals) ... | samConversion.kt:6:29:6:46 | ext | ValueEQExpr |
+| samConversion.kt:6:44:6:45 |  | samConversion.kt:6:29:6:46 | ext | StringLiteral |

@@ -106,3 +106,6 @@
 | exprs.kt:257:11:257:17 | ... * ... | exprs.kt:257:11:257:12 | fx | exprs.kt:257:16:257:17 | fy |
 | funcExprs.kt:26:35:26:42 | ... + ... | funcExprs.kt:26:35:26:38 | this | funcExprs.kt:26:42:26:42 | a |
 | localFunctionCalls.kt:5:25:5:29 | ... + ... | localFunctionCalls.kt:5:25:5:25 | i | localFunctionCalls.kt:5:29:5:29 | x |
+| samConversion.kt:2:33:2:38 | ... % ... | samConversion.kt:2:33:2:34 | it | samConversion.kt:2:38:2:38 | 2 |
+| samConversion.kt:2:33:2:43 | ... (value equals) ... | samConversion.kt:2:33:2:38 | ... % ... | samConversion.kt:2:43:2:43 | 0 |
+| samConversion.kt:6:36:6:45 | ... (value equals) ... | samConversion.kt:6:36:6:39 | this | samConversion.kt:6:44:6:45 |  |

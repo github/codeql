@@ -562,8 +562,6 @@ open class KotlinUsesExtractor(
     private val IrDeclaration.isAnonymousFunction get() = this is IrSimpleFunction && name == SpecialNames.NO_NAME_PROVIDED
 
     fun getFunctionShortName(f: IrFunction) : String {
-        if (f.origin == IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA || f.isAnonymousFunction)
-            return OperatorNameConventions.INVOKE.asString()
         (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
             val propName = it.owner.name.asString()
             when(f) {
