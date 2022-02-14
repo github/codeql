@@ -150,9 +150,9 @@ Gvn toGvn(ControlFlowElement e) {
   )
 }
 
-abstract class GvnStructuralComparisonConfiguration extends string {
+abstract class StructuralComparisonConfiguration extends string {
   bindingset[this]
-  GvnStructuralComparisonConfiguration() { any() }
+  StructuralComparisonConfiguration() { any() }
 
   abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
 
