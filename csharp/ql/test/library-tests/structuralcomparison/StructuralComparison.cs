@@ -19,5 +19,7 @@ public class Class
         var z5 = M0(y);
         var z6 = MUnit();
         var z7 = M1(x, y) + M1(x, y);
+        M1(x, y);
+        M1(x, y);
     }
 }

@@ -13,8 +13,9 @@ import csharp
 // TODO: Make tests for the new functionality, such we have a chance of changing the implementation later.
 // TODO: Cleanup temporary code section.
 // TODO: Rename ListExpGvn as it covers more than expressions.
+// TODO: Consider using different constructors for statements and expressions.
 private newtype TGvnKind =
-  TGvnKindInt(int kind) { expressions(_, kind, _) } or
+  TGvnKindInt(int kind) { kind = getKind(_) } or
   TGvnKindDeclaration(int kind, Declaration d) {
     exists(Expr e | d = referenceAttribute(e) and expressions(e, kind, _))
   }
@@ -46,6 +47,12 @@ private Declaration referenceAttribute(Expr e) {
   result = e.(ObjectCreation).getTarget()
   or
   result = e.(Access).getTarget()
+}
+
+private int getKind(ControlFlowElement cfe) {
+  expressions(cfe, result, _)
+  or
+  exists(int kind | statements(cfe, kind) and result = -kind)
 }
 
 private newtype TGvn =
@@ -97,26 +104,25 @@ private class GvnCons extends GvnList, TGvnCons {
   override string toString() { result = head.toString() + " :: " + tail.toString() }
 }
 
-private int getKind(ControlFlowElement cfe) {
-  expressions(cfe, result, _)
-  or
-  exists(int kind | statements(_, kind) and result = -kind)
-}
-
 private GvnKind getGvnKind(ControlFlowElement cfe) {
-  result = TGvnKindDeclaration(getKind(cfe), referenceAttribute(cfe))
-  or
-  not exists(referenceAttribute(cfe)) and
-  result = TGvnKindInt(getKind(cfe))
+  exists(int kind |
+    kind = getKind(cfe) and
+    (
+      result = TGvnKindDeclaration(kind, referenceAttribute(cfe))
+      or
+      not exists(referenceAttribute(cfe)) and
+      result = TGvnKindInt(kind)
+    )
+  )
 }
 
-private GvnList gvnConstructed(ControlFlowElement e, GvnKind kind, int index) {
-  kind = getGvnKind(e) and
+private GvnList gvnConstructed(ControlFlowElement cfe, GvnKind kind, int index) {
+  kind = getGvnKind(cfe) and
   result = TGvnNil(kind) and
   index = -1
   or
   exists(Gvn head, GvnList tail |
-    gvnConstructedCons(e, kind, index, head, tail) and
+    gvnConstructedCons(cfe, kind, index, head, tail) and
     result = TGvnCons(head, tail)
   )
 }
