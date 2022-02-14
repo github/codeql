@@ -1102,6 +1102,25 @@ open class KotlinFileExtractor(
         return result
     }
 
+    val javaLangString by lazy {
+        val result = pluginContext.referenceClass(FqName("java.lang.String"))?.owner
+        result?.let { extractExternalClassLater(it) }
+        result
+    }
+
+    val stringValueOfObjectMethod by lazy {
+        val result = javaLangString?.declarations?.find {
+            it is IrFunction &&
+            it.name.asString() == "valueOf" &&
+            it.valueParameters.size == 1 &&
+            it.valueParameters[0].type == pluginContext.irBuiltIns.anyNType
+        } as IrFunction?
+        if (result == null) {
+            logger.error("Couldn't find declaration java.lang.String.valueOf(Object)")
+        }
+        result
+    }
+
     fun extractCall(c: IrCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
         with("call", c) {
             fun isFunction(pkgName: String, className: String, fName: String, hasQuestionMark: Boolean? = false): Boolean {
@@ -1394,13 +1413,9 @@ open class KotlinFileExtractor(
                     logger.errorElement("Unhandled builtin", c)
                 }
                 isFunction("kotlin", "Any", "toString", true) -> {
-                    // TODO: this is not correct. `a.toString()` becomes `(a?:"\"null\"").toString()`
-                    val func = pluginContext.irBuiltIns.anyType.classOrNull?.owner?.declarations?.find { it is IrFunction && it.name.asString() == "toString" }
-                    if (func == null) {
-                        logger.errorElement("Couldn't find toString function", c)
-                        return
+                    stringValueOfObjectMethod?.let {
+                        extractRawMethodAccess(it, c, callable, parent, idx, enclosingStmt, listOf(c.extensionReceiver), null, null)
                     }
-                    extractMethodAccess(func as IrFunction)
                 }
                 isBuiltinCallKotlin(c, "enumValues") -> {
                     extractSpecialEnumFunction("values")

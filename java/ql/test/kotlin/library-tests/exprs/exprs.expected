@@ -579,7 +579,8 @@
 | exprs.kt:199:1:212:1 | <obinit>(...) | exprs.kt:199:1:212:1 | Class2 | MethodAccess |
 | exprs.kt:202:9:202:29 | a | exprs.kt:200:5:211:5 | x | LocalVariableDeclExpr |
 | exprs.kt:202:17:202:18 | aa | exprs.kt:200:5:211:5 | x | VarAccess |
-| exprs.kt:202:20:202:29 | toString(...) | exprs.kt:200:5:211:5 | x | MethodAccess |
+| exprs.kt:202:20:202:29 | String | exprs.kt:200:5:211:5 | x | TypeAccess |
+| exprs.kt:202:20:202:29 | valueOf(...) | exprs.kt:200:5:211:5 | x | MethodAccess |
 | exprs.kt:203:9:203:27 | b0 | exprs.kt:200:5:211:5 | x | LocalVariableDeclExpr |
 | exprs.kt:203:19:203:19 | s | exprs.kt:200:5:211:5 | x | VarAccess |
 | exprs.kt:203:21:203:27 | Intrinsics | exprs.kt:200:5:211:5 | x | TypeAccess |

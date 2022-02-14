@@ -976,7 +976,8 @@ exprs.kt:
 #  200|       5: [BlockStmt] { ... }
 #  202|         0: [LocalVariableDeclStmt] var ...;
 #  202|           1: [LocalVariableDeclExpr] a
-#  202|             0: [MethodAccess] toString(...)
+#  202|             0: [MethodAccess] valueOf(...)
+#  202|               -1: [TypeAccess] String
 #  202|               0: [VarAccess] aa
 #  203|         1: [LocalVariableDeclStmt] var ...;
 #  203|           1: [LocalVariableDeclExpr] b0
