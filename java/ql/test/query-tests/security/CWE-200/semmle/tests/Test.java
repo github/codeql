@@ -279,4 +279,21 @@ public class Test {
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
         tempDir.mkdirs();
     }
+
+    void safeBecauseWindows() {
+        File tempDir = new File(System.getProperty("java.io.tmpdir"), "child");
+        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+            tempDir.mkdir(); // Safe on windows
+        }
+    }
+
+    void vulnerableBecauseInvertedPosixCheck() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        // Oops, this check should be inverted
+        if (tempDirChild.toPath().getFileSystem().supportedFileAttributeViews().contains("posix")) {
+            Files.createDirectory(tempDirChild.toPath()); // Creates with permissions 'drwxr-xr-x'
+        }
+    }
 }

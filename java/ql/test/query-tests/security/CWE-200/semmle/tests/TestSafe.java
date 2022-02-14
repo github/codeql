@@ -8,23 +8,7 @@ import java.nio.file.attribute.PosixFilePermissions;
 
 import java.util.EnumSet;
 
-
-public class TempDirUsageSafe {
-    void exampleSafe() throws IOException {
-        Path temp1 = Files.createTempFile("random", ".txt"); // GOOD: File has permissions `-rw-------`
-
-        Path temp2 = Files.createTempDirectory("random-directory"); // GOOD: File has permissions `drwx------`
-
-        // Creating a temporary file with a non-randomly generated name
-        File tempChildFile = new File(System.getProperty("java.io.tmpdir"), "/child-create-file.txt");
-        // Warning: This will fail on windows as it doesn't support PosixFilePermissions.
-        // See `exampleSafeWithWindowsSupportFile` if your code needs to support windows and unix-like systems.
-        Files.createFile(
-            tempChildFile.toPath(),
-            PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE))
-        ); // GOOD: Good has permissions `-rw-------`
-    }
-
+public class TestSafe {
     /*
      * An example of a safe use of createFile or createDirectory if your code must support windows and unix-like systems.
      */

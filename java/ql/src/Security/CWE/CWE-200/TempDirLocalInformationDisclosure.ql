@@ -11,6 +11,7 @@
  */
 
 import java
+import semmle.code.java.os.OSCheck
 import TempDirUtils
 import DataFlow::PathGraph
 import semmle.code.java.dataflow.TaintTracking2
@@ -102,6 +103,21 @@ private class FileCreateTempFileSink extends FileCreationSink {
   }
 }
 
+/**
+ * A guard that checks what OS the program is running on.
+ */
+abstract private class OsBarrierGuard extends DataFlow::BarrierGuard { }
+
+private class IsUnixBarrierGuard extends OsBarrierGuard instanceof IsUnixGuard {
+  override predicate checks(Expr e, boolean branch) {
+    this.controls(e.getBasicBlock(), branch.booleanNot())
+  }
+}
+
+private class IsWindowsBarrierGuard extends OsBarrierGuard instanceof IsWindowsGuard {
+  override predicate checks(Expr e, boolean branch) { this.controls(e.getBasicBlock(), branch) }
+}
+
 private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Configuration {
   TempDirSystemGetPropertyToCreateConfig() { this = "TempDirSystemGetPropertyToCreateConfig" }
 
@@ -128,6 +144,10 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
     exists(FilesSanitizingCreationMethodAccess sanitisingMethodAccess |
       sanitizer.asExpr() = sanitisingMethodAccess.getArgument(0)
     )
+  }
+
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof OsBarrierGuard
   }
 }
 

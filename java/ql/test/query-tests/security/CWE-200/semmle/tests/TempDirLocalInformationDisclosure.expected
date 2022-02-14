@@ -52,6 +52,10 @@ edges
 | Test.java:258:38:258:73 | getProperty(...) : String | Test.java:258:29:258:109 | new File(...) : File |
 | Test.java:258:38:258:73 | getProperty(...) : String | Test.java:261:33:261:44 | tempDirChild : File |
 | Test.java:261:33:261:44 | tempDirChild : File | Test.java:261:33:261:53 | toPath(...) |
+| Test.java:292:29:292:101 | new File(...) : File | Test.java:296:35:296:46 | tempDirChild : File |
+| Test.java:292:38:292:73 | getProperty(...) : String | Test.java:292:29:292:101 | new File(...) : File |
+| Test.java:292:38:292:73 | getProperty(...) : String | Test.java:296:35:296:46 | tempDirChild : File |
+| Test.java:296:35:296:46 | tempDirChild : File | Test.java:296:35:296:55 | toPath(...) |
 nodes
 | Files.java:10:24:10:69 | new File(...) : File | semmle.label | new File(...) : File |
 | Files.java:10:33:10:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
@@ -109,6 +113,10 @@ nodes
 | Test.java:261:33:261:44 | tempDirChild : File | semmle.label | tempDirChild : File |
 | Test.java:261:33:261:53 | toPath(...) | semmle.label | toPath(...) |
 | Test.java:268:25:268:63 | createTempFile(...) | semmle.label | createTempFile(...) |
+| Test.java:292:29:292:101 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:292:38:292:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:296:35:296:46 | tempDirChild : File | semmle.label | tempDirChild : File |
+| Test.java:296:35:296:55 | toPath(...) | semmle.label | toPath(...) |
 subpaths
 #select
 | Files.java:10:33:10:68 | getProperty(...) | Files.java:10:33:10:68 | getProperty(...) : String | Files.java:15:17:15:23 | tempDir | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Files.java:10:33:10:68 | getProperty(...) | system temp directory |
@@ -128,3 +136,4 @@ subpaths
 | Test.java:226:38:226:73 | getProperty(...) | Test.java:226:38:226:73 | getProperty(...) : String | Test.java:229:26:229:46 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:226:38:226:73 | getProperty(...) | system temp directory |
 | Test.java:247:38:247:73 | getProperty(...) | Test.java:247:38:247:73 | getProperty(...) : String | Test.java:250:31:250:51 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:247:38:247:73 | getProperty(...) | system temp directory |
 | Test.java:258:38:258:73 | getProperty(...) | Test.java:258:38:258:73 | getProperty(...) : String | Test.java:261:33:261:53 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:258:38:258:73 | getProperty(...) | system temp directory |
+| Test.java:292:38:292:73 | getProperty(...) | Test.java:292:38:292:73 | getProperty(...) : String | Test.java:296:35:296:55 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:292:38:292:73 | getProperty(...) | system temp directory |
