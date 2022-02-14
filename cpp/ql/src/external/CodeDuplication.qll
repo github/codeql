@@ -2,40 +2,59 @@
 
 import cpp
 
-private newtype TDuplicationOrSimilarity = MKDuplicationOrSimilarity()
+private string relativePath(File file) { result = file.getRelativePath().replaceAll("\\", "/") }
 
-/**
- * DEPRECATED: This class is no longer used.
- *
- * A token block used for detection of duplicate and similar code.
- */
-class Copy extends TDuplicationOrSimilarity {
+cached
+private predicate tokenLocation(string path, int sl, int sc, int ec, int el, Copy copy, int index) {
+  path = copy.sourceFile().getAbsolutePath() and
+  tokens(copy, index, sl, sc, ec, el)
+}
+
+/** A token block used for detection of duplicate and similar code. */
+class Copy extends @duplication_or_similarity {
+  /** Gets the index of the last token in this block. */
+  private int lastToken() { result = max(int i | tokens(this, i, _, _, _, _) | i) }
+
   /** Gets the index of the token in this block starting at the location `loc`, if any. */
-  int tokenStartingAt(Location loc) { none() }
+  int tokenStartingAt(Location loc) {
+    exists(string filepath, int startline, int startcol |
+      loc.hasLocationInfo(filepath, startline, startcol, _, _) and
+      tokenLocation(filepath, startline, startcol, _, _, this, result)
+    )
+  }
 
   /** Gets the index of the token in this block ending at the location `loc`, if any. */
-  int tokenEndingAt(Location loc) { none() }
+  int tokenEndingAt(Location loc) {
+    exists(string filepath, int endline, int endcol |
+      loc.hasLocationInfo(filepath, _, _, endline, endcol) and
+      tokenLocation(filepath, _, _, endline, endcol, this, result)
+    )
+  }
 
   /** Gets the line on which the first token in this block starts. */
-  int sourceStartLine() { none() }
+  int sourceStartLine() { tokens(this, 0, result, _, _, _) }
 
   /** Gets the column on which the first token in this block starts. */
-  int sourceStartColumn() { none() }
+  int sourceStartColumn() { tokens(this, 0, _, result, _, _) }
 
   /** Gets the line on which the last token in this block ends. */
-  int sourceEndLine() { none() }
+  int sourceEndLine() { tokens(this, this.lastToken(), _, _, result, _) }
 
   /** Gets the column on which the last token in this block ends. */
-  int sourceEndColumn() { none() }
+  int sourceEndColumn() { tokens(this, this.lastToken(), _, _, _, result) }
 
   /** Gets the number of lines containing at least (part of) one token in this block. */
   int sourceLines() { result = this.sourceEndLine() + 1 - this.sourceStartLine() }
 
   /** Gets an opaque identifier for the equivalence class of this block. */
-  int getEquivalenceClass() { none() }
+  int getEquivalenceClass() { duplicateCode(this, _, result) or similarCode(this, _, result) }
 
   /** Gets the source file in which this block appears. */
-  File sourceFile() { none() }
+  File sourceFile() {
+    exists(string name | duplicateCode(this, name, _) or similarCode(this, name, _) |
+      name.replaceAll("\\", "/") = relativePath(result)
+    )
+  }
 
   /**
    * Holds if this element is at the specified location.
@@ -58,23 +77,15 @@ class Copy extends TDuplicationOrSimilarity {
   string toString() { none() }
 }
 
-/**
- * DEPRECATED: This class is no longer used.
- *
- * A block of duplicated code.
- */
-class DuplicateBlock extends Copy {
+/** A block of duplicated code. */
+class DuplicateBlock extends Copy, @duplication {
   override string toString() {
     result = "Duplicate code: " + this.sourceLines() + " duplicated lines."
   }
 }
 
-/**
- * DEPRECATED: This class is no longer used.
- *
- * A block of similar code.
- */
-class SimilarBlock extends Copy {
+/** A block of similar code. */
+class SimilarBlock extends Copy, @similarity {
   override string toString() {
     result = "Similar code: " + this.sourceLines() + " almost duplicated lines."
   }
