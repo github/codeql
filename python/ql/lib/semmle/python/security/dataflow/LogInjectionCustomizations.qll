@@ -57,6 +57,11 @@ module LogInjection {
    * A call to replace line breaks functions as a sanitizer.
    */
   class ReplaceLineBreaksSanitizer extends Sanitizer, DataFlow::CallCfgNode {
+    // This is actually not safe:
+    // - we do not check that all kinds of line breaks are replaced
+    // - we do not check that one kind of line breaks is not replaced by another
+    // however, we lack a simple way to do better, and the query would likely
+    // be too noisy without this. Consider rewriting using flow states.
     ReplaceLineBreaksSanitizer() {
       this.getFunction().(DataFlow::AttrRead).getAttributeName() = "replace" and
       this.getArg(0).asExpr().(StrConst).getText() in ["\r\n", "\n"]
