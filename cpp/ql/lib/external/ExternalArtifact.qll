@@ -4,16 +4,12 @@
 
 import cpp
 
-private newtype TExternalDataElement = MKExternalDataElement()
-
 /**
- * DEPRECATED: This class is no longer used.
- *
  * An external data item.
  */
-class ExternalData extends TExternalDataElement {
+class ExternalData extends @externalDataElement {
   /** Gets the path of the file this data was loaded from. */
-  string getDataPath() { none() }
+  string getDataPath() { externalData(this, result, _, _) }
 
   /**
    * Gets the path of the file this data was loaded from, with its
@@ -22,10 +18,10 @@ class ExternalData extends TExternalDataElement {
   string getQueryPath() { result = this.getDataPath().regexpReplaceAll("\\.[^.]*$", ".ql") }
 
   /** Gets the number of fields in this data item. */
-  int getNumFields() { none() }
+  int getNumFields() { result = 1 + max(int i | externalData(this, _, i, _) | i) }
 
   /** Gets the value of the `i`th field of this data item. */
-  string getField(int i) { none() }
+  string getField(int i) { externalData(this, _, i, result) }
 
   /** Gets the integer value of the `i`th field of this data item. */
   int getFieldAsInt(int i) { result = this.getField(i).toInt() }
