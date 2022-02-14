@@ -24,7 +24,7 @@ private class MethodFileDirectoryCreation extends MethodFileSystemFileCreation {
 }
 
 private class MethodFileFileCreation extends MethodFileSystemFileCreation {
-  MethodFileFileCreation() { this.hasName(["createNewFile"]) }
+  MethodFileFileCreation() { this.hasName("createNewFile") }
 }
 
 abstract private class FileCreationSink extends DataFlow::Node { }
@@ -191,7 +191,7 @@ class MethodAccessInsecureFileCreateTempFile extends MethodAccessInsecureFileCre
       this.getNumArgument() = 2
       or
       // The default temporary directory is used when the last argument of `File.createTempFile(string, string, File)` is `null`
-      DataFlow::localExprFlow(any(NullLiteral n), getArgument(2))
+      DataFlow::localExprFlow(any(NullLiteral n), this.getArgument(2))
     )
   }
 
@@ -203,8 +203,8 @@ class MethodAccessInsecureFileCreateTempFile extends MethodAccessInsecureFileCre
  */
 class MethodGuavaFilesCreateTempFile extends Method {
   MethodGuavaFilesCreateTempFile() {
-    getDeclaringType().hasQualifiedName("com.google.common.io", "Files") and
-    hasName("createTempDir")
+    this.getDeclaringType().hasQualifiedName("com.google.common.io", "Files") and
+    this.hasName("createTempDir")
   }
 }
 
@@ -213,14 +213,14 @@ class MethodGuavaFilesCreateTempFile extends Method {
  */
 class MethodAccessInsecureGuavaFilesCreateTempFile extends MethodAccessInsecureFileCreation {
   MethodAccessInsecureGuavaFilesCreateTempFile() {
-    getMethod() instanceof MethodGuavaFilesCreateTempFile
+    this.getMethod() instanceof MethodGuavaFilesCreateTempFile
   }
 
   override string getFileSystemEntityType() { result = "directory" }
 }
 
 /**
- * This is a hack: we include use of inherently insecure methods, which don't have any associated
+ * A hack: we include use of inherently insecure methods, which don't have any associated
  * flow path, in with results describing a path from reading `java.io.tmpdir` or similar to use
  * in a file creation op.
  *
