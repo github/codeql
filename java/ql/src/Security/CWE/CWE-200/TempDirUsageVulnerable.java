@@ -15,5 +15,9 @@ public class TempDirUsageVulnerable {
 
         File tempDirChildFile = new File(System.getProperty("java.io.tmpdir"), "/child-create-file.txt");
         Files.createFile(tempDirChildFile.toPath()); // BAD: File has permissions `-rw-r--r--`
+
+        File tempDirChildDir = new File(System.getProperty("java.io.tmpdir"), "/child-dir");
+        tempDirChildDir.mkdir(); // BAD: Directory has permissions `drwxr-xr-x`
+        Files.createDirectory(tempDirChildDir.toPath()); // BAD: Directory has permissions `drwxr-xr-x`
     }
 }
