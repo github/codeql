@@ -480,10 +480,12 @@ class RegExpEscape extends RegExpNormalChar {
     or
     this.getUnescaped() = "t" and result = "\t"
     or
-    // TODO: Find a way to include a formfeed character
-    // also the alert/bell character for \a and escape character for \e.
-    // this.getUnescaped() = "f" and result = ""
-    // or
+    this.getUnescaped() = "f" and result = 12.toUnicode() // form feed
+    or
+    this.getUnescaped() = "a" and result = 7.toUnicode() // alert/bell
+    or
+    this.getUnescaped() = "e" and result = 27.toUnicode() // escape (0x1B)
+    or
     this.isUnicode() and
     result = this.getUnicode()
   }
@@ -664,6 +666,7 @@ class RegExpCharacterRange extends RegExpTerm, TRegExpCharacterRange {
 /**
  * A normal character in a regular expression, that is, a character
  * without special meaning. This includes escaped characters.
+ * It also includes escape sequences that represent character classes.
  *
  * Examples:
  * ```
@@ -727,11 +730,8 @@ class RegExpConstant extends RegExpTerm {
   string value;
 
   RegExpConstant() {
-    (this = TRegExpNormalChar(re, start, end) or this = TRegExpQuote(re, start, end)) and
-    not this instanceof RegExpCharacterClassEscape and
-    // exclude chars in quantifiers
-    // TODO: push this into regex library
-    (value = this.(RegExpNormalChar).getValue() or value = this.(RegExpQuote).getValue())
+    (value = this.(RegExpNormalChar).getValue() or value = this.(RegExpQuote).getValue()) and
+    not this instanceof RegExpCharacterClassEscape
   }
 
   /**
