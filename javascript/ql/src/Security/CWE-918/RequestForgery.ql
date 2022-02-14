@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.1
- * @precision medium
+ * @precision high
  * @id js/request-forgery
  * @tags security
  *       external/cwe/cwe-918
