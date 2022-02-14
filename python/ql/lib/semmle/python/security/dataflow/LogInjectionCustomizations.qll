@@ -54,7 +54,7 @@ module LogInjection {
   class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
 
   /**
-   * A call to replace line breaks functions as a sanitizer.
+   * A call to replace line breaks, considered as a sanitizer.
    */
   class ReplaceLineBreaksSanitizer extends Sanitizer, DataFlow::CallCfgNode {
     // This is actually not safe:
