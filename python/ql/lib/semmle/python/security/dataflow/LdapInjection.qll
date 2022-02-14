@@ -57,13 +57,4 @@ module LdapInjection {
       guard instanceof FilterSanitizerGuard
     }
   }
-
-  import DataFlow::PathGraph
-
-  /** Holds if there is an LDAP injection from `source` to `sink` */
-  predicate ldapInjection(DataFlow::PathNode source, DataFlow::PathNode sink) {
-    any(DnConfiguration dnConfig).hasFlowPath(source, sink)
-    or
-    any(FilterConfiguration filterConfig).hasFlowPath(source, sink)
-  }
 }

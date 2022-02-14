@@ -16,7 +16,13 @@ import python
 import semmle.python.security.dataflow.LdapInjection
 import DataFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink
-where LdapInjection::ldapInjection(source, sink)
-select sink.getNode(), source, sink, "$@ LDAP query parameter comes from $@.", sink.getNode(),
-  "This", source.getNode(), "a user-provided value"
+from DataFlow::PathNode source, DataFlow::PathNode sink, string parameterName
+where
+  any(LdapInjection::DnConfiguration dnConfig).hasFlowPath(source, sink) and
+  parameterName = "DN"
+  or
+  any(LdapInjection::FilterConfiguration filterConfig).hasFlowPath(source, sink) and
+  parameterName = "filter"
+select sink.getNode(), source, sink,
+  "$@ LDAP query parameter (" + parameterName + ") comes from $@.", sink.getNode(), "This",
+  source.getNode(), "a user-provided value"
