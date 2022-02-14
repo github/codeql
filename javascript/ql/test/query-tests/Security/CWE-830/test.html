@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <script src="http://test.local/foo.js"></script>> <!-- NOT OK -->
+        <script src="http://test.local/foo.js" integrity="some-integrity-hash"></script>>  <!-- OK (integrity digest present) -->
+        <script src="https://test.local/bar.js"></script>> <!-- OK (https) -->
+        <iframe src="http://test.local/foo.html"></iframe> <!-- NOT OK -->
+        <iframe src="https://test.local/foo.html"></iframe> <!-- OK (https) -->
+        <iframe src="//test.local/foo.html"></iframe> <!-- NOT OK (protocol-relative url) -->
+    </body>
+</html>

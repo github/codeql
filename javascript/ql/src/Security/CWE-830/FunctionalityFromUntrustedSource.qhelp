@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+
+			Including functionality from an external source via an http link may
+			allow an attacker to inject malicious code via a MITM (man-in-the-middle) attack.
+
+		</p>
+
+	</overview>
+
+	<recommendation>
+		<p>
+
+			When including external pages or behaviour, use <em>https</em> links (instead of http)
+			to be certain that you are getting a response from the intended server, not
+			someone else.
+
+		</p>
+
+		<p>
+
+			Using http links is unsafe because the request sent may be intercepted by an attacker,
+			and malicious data may be sent back in reply.
+
+		</p>
+
+	</recommendation>
+
+	<references>
+
+		<li>
+
+			MDN — Subresource Integrity: <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity">
+
+		</li>
+	</references>
+</qhelp>
