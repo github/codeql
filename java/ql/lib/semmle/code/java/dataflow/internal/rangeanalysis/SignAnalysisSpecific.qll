@@ -11,7 +11,7 @@ module Private {
   private import semmle.code.java.semantic.SemanticExpr
   import Impl
 
-  class ConstantIntegerExpr = Const::ConstantIntegerExpr;
+  class ConstantIntegerExpr = RU::ConstantIntegerExpr;
 
   class Guard = G::Guard;
 

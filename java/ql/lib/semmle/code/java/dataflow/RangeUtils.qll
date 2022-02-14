@@ -123,11 +123,18 @@ predicate semValueFlowStep(SemExpr e2, SemExpr e1, int delta) {
   )
 }
 
-/** Non-semantic interface wrappers */
+/**
+ * Non-semantic interface wrappers
+ *
+ * Several types and predicates here wrap semantic types and predicates from other files. The non-
+ * semantic wrappers are included here because clients that imported `RangeUtils.qll` expect to find
+ * these here.
+ */
 private module Java {
   private import java
   private import SSA
   private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
+  import ArrayLengthFlow // Public for backward compatibility
 
   predicate ssaUpdateStep(SsaExplicitUpdate v, Expr e, int delta) {
     semSsaUpdateStep(getSemanticSsaVariable(v), getSemanticExpr(e), delta)
@@ -157,6 +164,20 @@ private module Java {
 
   Expr ssaRead(SsaVariable v, int delta) {
     result = getJavaExpr(semSsaRead(getSemanticSsaVariable(v), delta))
+  }
+
+  predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
+    semBackEdge(getSemanticSsaVariable(phi), getSemanticSsaVariable(inp),
+      getSemanticSsaReadPosition(edge))
+  }
+
+  /** An expression that always has the same integer value. */
+  class ConstantIntegerExpr extends Expr {
+    final SemConstantIntegerExpr expr;
+
+    ConstantIntegerExpr() { expr = getSemanticExpr(this) }
+
+    final int getIntValue() { result = expr.getIntValue() }
   }
 }
 

@@ -17,7 +17,7 @@ module Private {
 
   class Guard = G::Guard;
 
-  class ConstantIntegerExpr = Const::ConstantIntegerExpr;
+  class ConstantIntegerExpr = RU::ConstantIntegerExpr;
 
   class ConditionalExpr = J::ConditionalExpr;
 

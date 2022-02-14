@@ -13,7 +13,7 @@ class Expr = J::Expr;
 
 class IntegralType = J::IntegralType;
 
-class ConstantIntegerExpr = Const::ConstantIntegerExpr;
+class ConstantIntegerExpr = RU::ConstantIntegerExpr;
 
 /** Holds if `e` is a bound expression and it is not an SSA variable read. */
 predicate interestingExprBound(Expr e) {

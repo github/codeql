@@ -1,6 +1,6 @@
 private import java
-private import semmle.code.java.semantic.SemanticExpr
-private import semmle.code.java.semantic.SemanticSSA
+private import SSA
+private import RangeUtils
 
 /**
  * Holds if `v` is an input to `phi` that is not along a back edge, and the
@@ -10,20 +10,20 @@ private import semmle.code.java.semantic.SemanticSSA
  * `SsaPhiNode` in order for the reflexive case of `nonNullSsaFwdStep*(..)` to
  * have non-`SsaPhiNode` results.
  */
-private predicate nonNullSsaFwdStep(SemSsaVariable v, SemSsaVariable phi) {
-  exists(SemSsaExplicitUpdate vnull, SemSsaPhiNode phi0 | phi0 = phi |
+private predicate nonNullSsaFwdStep(SsaVariable v, SsaVariable phi) {
+  exists(SsaExplicitUpdate vnull, SsaPhiNode phi0 | phi0 = phi |
     2 = strictcount(phi0.getAPhiInput()) and
     vnull = phi0.getAPhiInput() and
     v = phi0.getAPhiInput() and
-    not semBackEdge(phi0, v, _) and
+    not backEdge(phi0, v, _) and
     vnull != v and
-    vnull.getDefiningExpr().(SemVariableAssign).getSource() instanceof SemNullLiteral
+    vnull.getDefiningExpr().(VariableAssign).getSource() instanceof NullLiteral
   )
 }
 
-private predicate nonNullDefStep(SemExpr e1, SemExpr e2) {
-  exists(ConditionalExpr cond, boolean branch | cond = getJavaExpr(e2) |
-    cond.getBranchExpr(branch) = getJavaExpr(e1) and
+private predicate nonNullDefStep(Expr e1, Expr e2) {
+  exists(ConditionalExpr cond, boolean branch | cond = e2 |
+    cond.getBranchExpr(branch) = e1 and
     cond.getBranchExpr(branch.booleanNot()) instanceof NullLiteral
   )
 }
@@ -33,13 +33,13 @@ private predicate nonNullDefStep(SemExpr e1, SemExpr e2) {
  * explicit `ArrayCreationExpr` definition and that the definition does not go
  * through a back edge.
  */
-private ArrayCreationExpr getArrayDef(SemSsaVariable v) {
-  exists(SemExpr src |
-    v.(SemSsaExplicitUpdate).getDefiningExpr().(SemVariableAssign).getSource() = src and
-    nonNullDefStep*(getSemanticExpr(result), src)
+ArrayCreationExpr getArrayDef(SsaVariable v) {
+  exists(Expr src |
+    v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = src and
+    nonNullDefStep*(result, src)
   )
   or
-  exists(SemSsaVariable mid |
+  exists(SsaVariable mid |
     result = getArrayDef(mid) and
     nonNullSsaFwdStep(mid, v)
   )
@@ -51,9 +51,9 @@ private ArrayCreationExpr getArrayDef(SemSsaVariable v) {
  * `arrlen` without going through a back edge.
  */
 predicate arrayLengthDef(FieldRead arrlen, ArrayCreationExpr def) {
-  exists(SemSsaVariable arr |
+  exists(SsaVariable arr |
     arrlen.getField() instanceof ArrayLengthField and
-    arrlen.getQualifier() = getJavaExpr(arr.getAUse()) and
+    arrlen.getQualifier() = arr.getAUse() and
     def = getArrayDef(arr)
   )
 }

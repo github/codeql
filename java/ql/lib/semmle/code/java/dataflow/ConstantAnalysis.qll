@@ -27,21 +27,3 @@ class SemConstantIntegerExpr extends SemExpr {
   /** Gets the integer value of this expression. */
   int getIntValue() { constantIntegerExpr(this, result) }
 }
-
-/**
- * Private module to ensure that the rest of the file uses only the semantic interface.
- */
-private module Java {
-  private import java
-
-  /** An expression that always has the same integer value. */
-  class ConstantIntegerExpr extends Expr {
-    final SemConstantIntegerExpr expr;
-
-    ConstantIntegerExpr() { expr = getSemanticExpr(this) }
-
-    final int getIntValue() { result = expr.getIntValue() }
-  }
-}
-
-import Java
