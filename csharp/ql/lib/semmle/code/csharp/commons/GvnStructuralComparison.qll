@@ -5,15 +5,11 @@
 
 import csharp
 
-// TODO: Everyting should be generalized to ControlFlowElement.
-// TODO: Do we need any inlining or caching?
 // TODO: Consider to make a GvNil for statement and only with an int kind.
 // TODO: Elaborate on descriptions. Maybe provide some examples.
 // TODO: Test against the existing usecases.
 // TODO: Make tests for the new functionality, such we have a chance of changing the implementation later.
-// TODO: Cleanup temporary code section.
 // TODO: Rename ListExpGvn as it covers more than expressions.
-// TODO: Consider using different constructors for statements and expressions.
 private newtype TGvnKind =
   TGvnKindInt(int kind) { kind = getKind(_) } or
   TGvnKindDeclaration(int kind, boolean thisTarget, Declaration d) {
@@ -145,9 +141,12 @@ private int getNumberOfActualChildren(ControlFlowElement cfe) {
 private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk) {
   result =
     rank[rnk + 1](ControlFlowElement child, int j |
-      child = cfe.getChild(j) and j >= 0
-      or
-      child = cfe.getChild(j) and j = -1 and not cfe.(MemberAccess).targetIsThisInstance()
+      child = cfe.getChild(j) and
+      (
+        j >= 0
+        or
+        j = -1 and not cfe.(MemberAccess).targetIsThisInstance()
+      )
     |
       child order by j
     )
