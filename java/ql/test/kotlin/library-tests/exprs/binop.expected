@@ -108,4 +108,8 @@
 | localFunctionCalls.kt:5:25:5:29 | ... + ... | localFunctionCalls.kt:5:25:5:25 | i | localFunctionCalls.kt:5:29:5:29 | x |
 | samConversion.kt:2:33:2:38 | ... % ... | samConversion.kt:2:33:2:34 | it | samConversion.kt:2:38:2:38 | 2 |
 | samConversion.kt:2:33:2:43 | ... (value equals) ... | samConversion.kt:2:33:2:38 | ... % ... | samConversion.kt:2:43:2:43 | 0 |
-| samConversion.kt:6:36:6:45 | ... (value equals) ... | samConversion.kt:6:36:6:39 | this | samConversion.kt:6:44:6:45 |  |
+| samConversion.kt:7:36:7:45 | ... (value equals) ... | samConversion.kt:7:36:7:39 | this | samConversion.kt:7:44:7:45 |  |
+| samConversion.kt:10:14:10:18 | ... % ... | samConversion.kt:10:14:10:14 | j | samConversion.kt:10:18:10:18 | 2 |
+| samConversion.kt:10:14:10:23 | ... (value equals) ... | samConversion.kt:10:14:10:18 | ... % ... | samConversion.kt:10:23:10:23 | 0 |
+| samConversion.kt:12:14:12:18 | ... % ... | samConversion.kt:12:14:12:14 | j | samConversion.kt:12:18:12:18 | 2 |
+| samConversion.kt:12:14:12:23 | ... (value equals) ... | samConversion.kt:12:14:12:18 | ... % ... | samConversion.kt:12:23:12:23 | 1 |

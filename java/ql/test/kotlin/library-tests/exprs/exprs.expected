@@ -1317,29 +1317,108 @@
 | localFunctionCalls.kt:10:15:10:20 | new (...) | localFunctionCalls.kt:3:1:11:1 | x | ClassInstanceExpr |
 | localFunctionCalls.kt:10:18:10:19 | 42 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:13:1:13:14 | <obinit>(...) | localFunctionCalls.kt:13:1:13:14 | C1 | MethodAccess |
-| samConversion.kt:2:5:2:45 | isEven | samConversion.kt:1:1:7:1 | main | LocalVariableDeclExpr |
-| samConversion.kt:2:18:2:45 | (...)... | samConversion.kt:1:1:7:1 | main | CastExpr |
-| samConversion.kt:2:18:2:45 | IntPredicate | samConversion.kt:1:1:7:1 | main | TypeAccess |
-| samConversion.kt:2:18:2:45 | Object | samConversion.kt:1:1:7:1 | main | TypeAccess |
-| samConversion.kt:2:18:2:45 | new (...) | samConversion.kt:1:1:7:1 | main | ClassInstanceExpr |
-| samConversion.kt:2:33:2:34 | it | samConversion.kt:2:31:2:45 | accept | VarAccess |
-| samConversion.kt:2:33:2:38 | ... % ... | samConversion.kt:2:31:2:45 | accept | RemExpr |
-| samConversion.kt:2:33:2:43 | ... (value equals) ... | samConversion.kt:2:31:2:45 | accept | ValueEQExpr |
-| samConversion.kt:2:38:2:38 | 2 | samConversion.kt:2:31:2:45 | accept | IntegerLiteral |
-| samConversion.kt:2:43:2:43 | 0 | samConversion.kt:2:31:2:45 | accept | IntegerLiteral |
-| samConversion.kt:4:5:4:33 | (...)... | samConversion.kt:1:1:7:1 | main | CastExpr |
-| samConversion.kt:4:5:4:33 | InterfaceFn1 | samConversion.kt:1:1:7:1 | main | TypeAccess |
-| samConversion.kt:4:5:4:33 | Object | samConversion.kt:1:1:7:1 | main | TypeAccess |
-| samConversion.kt:4:5:4:33 | new (...) | samConversion.kt:1:1:7:1 | main | ClassInstanceExpr |
-| samConversion.kt:4:28:4:31 | INSTANCE | samConversion.kt:4:18:4:33 | fn1 | VarAccess |
-| samConversion.kt:4:35:4:42 | fn1(...) | samConversion.kt:1:1:7:1 | main | MethodAccess |
-| samConversion.kt:4:39:4:39 | 1 | samConversion.kt:1:1:7:1 | main | IntegerLiteral |
-| samConversion.kt:4:41:4:41 | 2 | samConversion.kt:1:1:7:1 | main | IntegerLiteral |
-| samConversion.kt:6:5:6:46 | i | samConversion.kt:1:1:7:1 | main | LocalVariableDeclExpr |
-| samConversion.kt:6:13:6:46 | (...)... | samConversion.kt:1:1:7:1 | main | CastExpr |
-| samConversion.kt:6:13:6:46 | InterfaceFnExt1 | samConversion.kt:1:1:7:1 | main | TypeAccess |
-| samConversion.kt:6:13:6:46 | Object | samConversion.kt:1:1:7:1 | main | TypeAccess |
-| samConversion.kt:6:13:6:46 | new (...) | samConversion.kt:1:1:7:1 | main | ClassInstanceExpr |
-| samConversion.kt:6:36:6:39 | this | samConversion.kt:6:29:6:46 | ext | ThisAccess |
-| samConversion.kt:6:36:6:45 | ... (value equals) ... | samConversion.kt:6:29:6:46 | ext | ValueEQExpr |
-| samConversion.kt:6:44:6:45 |  | samConversion.kt:6:29:6:46 | ext | StringLiteral |
+| samConversion.kt:2:5:2:45 | isEven | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
+| samConversion.kt:2:18:2:45 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
+| samConversion.kt:2:18:2:45 | ...=... | samConversion.kt:2:18:2:45 |  | AssignExpr |
+| samConversion.kt:2:18:2:45 | <fn> | samConversion.kt:2:18:2:45 |  | VarAccess |
+| samConversion.kt:2:18:2:45 | <fn> | samConversion.kt:17:5:17:31 | accept | VarAccess |
+| samConversion.kt:2:18:2:45 | Function1<Integer,Boolean> | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:2:18:2:45 | IntPredicate | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:2:18:2:45 | IntPredicate | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:2:18:2:45 | i | samConversion.kt:17:5:17:31 | accept | VarAccess |
+| samConversion.kt:2:18:2:45 | invoke(...) | samConversion.kt:17:5:17:31 | accept | MethodAccess |
+| samConversion.kt:2:18:2:45 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
+| samConversion.kt:2:18:2:45 | this | samConversion.kt:2:18:2:45 |  | ThisAccess |
+| samConversion.kt:2:18:2:45 | this.<fn> | samConversion.kt:2:18:2:45 |  | VarAccess |
+| samConversion.kt:2:31:2:45 | ...->... | samConversion.kt:1:1:14:1 | main | LambdaExpr |
+| samConversion.kt:2:31:2:45 | Function1<Integer,Boolean> | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:2:33:2:34 | it | samConversion.kt:2:31:2:45 | invoke | VarAccess |
+| samConversion.kt:2:33:2:38 | ... % ... | samConversion.kt:2:31:2:45 | invoke | RemExpr |
+| samConversion.kt:2:33:2:43 | ... (value equals) ... | samConversion.kt:2:31:2:45 | invoke | ValueEQExpr |
+| samConversion.kt:2:38:2:38 | 2 | samConversion.kt:2:31:2:45 | invoke | IntegerLiteral |
+| samConversion.kt:2:43:2:43 | 0 | samConversion.kt:2:31:2:45 | invoke | IntegerLiteral |
+| samConversion.kt:4:5:4:42 | i0 | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
+| samConversion.kt:4:14:4:42 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
+| samConversion.kt:4:14:4:42 | ...=... | samConversion.kt:4:14:4:42 |  | AssignExpr |
+| samConversion.kt:4:14:4:42 | <fn> | samConversion.kt:4:14:4:42 |  | VarAccess |
+| samConversion.kt:4:14:4:42 | <fn> | samConversion.kt:23:5:23:27 | fn1 | VarAccess |
+| samConversion.kt:4:14:4:42 | Function2<Integer,Integer,Unit> | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:4:14:4:42 | InterfaceFn1 | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:4:14:4:42 | InterfaceFn1 | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:4:14:4:42 | i | samConversion.kt:23:5:23:27 | fn1 | VarAccess |
+| samConversion.kt:4:14:4:42 | invoke(...) | samConversion.kt:23:5:23:27 | fn1 | MethodAccess |
+| samConversion.kt:4:14:4:42 | j | samConversion.kt:23:5:23:27 | fn1 | VarAccess |
+| samConversion.kt:4:14:4:42 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
+| samConversion.kt:4:14:4:42 | this | samConversion.kt:4:14:4:42 |  | ThisAccess |
+| samConversion.kt:4:14:4:42 | this.<fn> | samConversion.kt:4:14:4:42 |  | VarAccess |
+| samConversion.kt:4:27:4:42 | ...->... | samConversion.kt:1:1:14:1 | main | LambdaExpr |
+| samConversion.kt:4:27:4:42 | Function2<Integer,Integer,Unit> | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:4:37:4:40 | INSTANCE | samConversion.kt:4:27:4:42 | invoke | VarAccess |
+| samConversion.kt:5:5:5:32 | i1 | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
+| samConversion.kt:5:14:5:32 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
+| samConversion.kt:5:14:5:32 | ...=... | samConversion.kt:5:14:5:32 |  | AssignExpr |
+| samConversion.kt:5:14:5:32 | <fn> | samConversion.kt:5:14:5:32 |  | VarAccess |
+| samConversion.kt:5:14:5:32 | <fn> | samConversion.kt:23:5:23:27 | fn1 | VarAccess |
+| samConversion.kt:5:14:5:32 | Function2<Integer,Integer,Unit> | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:5:14:5:32 | InterfaceFn1 | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:5:14:5:32 | InterfaceFn1 | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:5:14:5:32 | i | samConversion.kt:23:5:23:27 | fn1 | VarAccess |
+| samConversion.kt:5:14:5:32 | invoke(...) | samConversion.kt:23:5:23:27 | fn1 | MethodAccess |
+| samConversion.kt:5:14:5:32 | j | samConversion.kt:23:5:23:27 | fn1 | VarAccess |
+| samConversion.kt:5:14:5:32 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
+| samConversion.kt:5:14:5:32 | this | samConversion.kt:5:14:5:32 |  | ThisAccess |
+| samConversion.kt:5:14:5:32 | this.<fn> | samConversion.kt:5:14:5:32 |  | VarAccess |
+| samConversion.kt:5:27:5:31 | ...::... | samConversion.kt:1:1:14:1 | main | MemberRefExpr |
+| samConversion.kt:5:27:5:31 | Function2<Integer,Integer,Unit> | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:5:27:5:31 | a0 | samConversion.kt:5:27:5:31 | invoke | VarAccess |
+| samConversion.kt:5:27:5:31 | a1 | samConversion.kt:5:27:5:31 | invoke | VarAccess |
+| samConversion.kt:5:27:5:31 | fn2(...) | samConversion.kt:5:27:5:31 | invoke | MethodAccess |
+| samConversion.kt:7:5:7:46 | i | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
+| samConversion.kt:7:13:7:46 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
+| samConversion.kt:7:13:7:46 | ...=... | samConversion.kt:7:13:7:46 |  | AssignExpr |
+| samConversion.kt:7:13:7:46 | <fn> | samConversion.kt:7:13:7:46 |  | VarAccess |
+| samConversion.kt:7:13:7:46 | <fn> | samConversion.kt:27:5:27:35 | ext | VarAccess |
+| samConversion.kt:7:13:7:46 | <this> | samConversion.kt:27:5:27:35 | ext | VarAccess |
+| samConversion.kt:7:13:7:46 | Function2<String,Integer,Boolean> | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:7:13:7:46 | InterfaceFnExt1 | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:7:13:7:46 | InterfaceFnExt1 | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:7:13:7:46 | i | samConversion.kt:27:5:27:35 | ext | VarAccess |
+| samConversion.kt:7:13:7:46 | invoke(...) | samConversion.kt:27:5:27:35 | ext | MethodAccess |
+| samConversion.kt:7:13:7:46 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
+| samConversion.kt:7:13:7:46 | this | samConversion.kt:7:13:7:46 |  | ThisAccess |
+| samConversion.kt:7:13:7:46 | this.<fn> | samConversion.kt:7:13:7:46 |  | VarAccess |
+| samConversion.kt:7:29:7:46 | ...->... | samConversion.kt:1:1:14:1 | main | LambdaExpr |
+| samConversion.kt:7:29:7:46 | Function2<String,Integer,Boolean> | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:7:36:7:39 | this | samConversion.kt:7:29:7:46 | invoke | ThisAccess |
+| samConversion.kt:7:36:7:45 | ... (value equals) ... | samConversion.kt:7:29:7:46 | invoke | ValueEQExpr |
+| samConversion.kt:7:44:7:45 |  | samConversion.kt:7:29:7:46 | invoke | StringLiteral |
+| samConversion.kt:9:5:13:6 | x | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
+| samConversion.kt:9:13:13:6 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
+| samConversion.kt:9:13:13:6 | ...=... | samConversion.kt:9:13:13:6 |  | AssignExpr |
+| samConversion.kt:9:13:13:6 | <fn> | samConversion.kt:9:13:13:6 |  | VarAccess |
+| samConversion.kt:9:13:13:6 | <fn> | samConversion.kt:17:5:17:31 | accept | VarAccess |
+| samConversion.kt:9:13:13:6 | Function1<Integer,Boolean> | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:9:13:13:6 | IntPredicate | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:9:13:13:6 | IntPredicate | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:9:13:13:6 | i | samConversion.kt:17:5:17:31 | accept | VarAccess |
+| samConversion.kt:9:13:13:6 | invoke(...) | samConversion.kt:17:5:17:31 | accept | MethodAccess |
+| samConversion.kt:9:13:13:6 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
+| samConversion.kt:9:13:13:6 | this | samConversion.kt:9:13:13:6 |  | ThisAccess |
+| samConversion.kt:9:13:13:6 | this.<fn> | samConversion.kt:9:13:13:6 |  | VarAccess |
+| samConversion.kt:9:26:13:5 | true | samConversion.kt:1:1:14:1 | main | BooleanLiteral |
+| samConversion.kt:9:26:13:5 | when ... | samConversion.kt:1:1:14:1 | main | WhenExpr |
+| samConversion.kt:9:30:9:30 | b | samConversion.kt:1:1:14:1 | main | VarAccess |
+| samConversion.kt:9:33:11:5 | ...->... | samConversion.kt:1:1:14:1 | main | LambdaExpr |
+| samConversion.kt:9:33:11:5 | Function1<Integer,Boolean> | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:10:14:10:14 | j | samConversion.kt:9:33:11:5 | invoke | VarAccess |
+| samConversion.kt:10:14:10:18 | ... % ... | samConversion.kt:9:33:11:5 | invoke | RemExpr |
+| samConversion.kt:10:14:10:23 | ... (value equals) ... | samConversion.kt:9:33:11:5 | invoke | ValueEQExpr |
+| samConversion.kt:10:18:10:18 | 2 | samConversion.kt:9:33:11:5 | invoke | IntegerLiteral |
+| samConversion.kt:10:23:10:23 | 0 | samConversion.kt:9:33:11:5 | invoke | IntegerLiteral |
+| samConversion.kt:11:12:13:5 | ...->... | samConversion.kt:1:1:14:1 | main | LambdaExpr |
+| samConversion.kt:11:12:13:5 | Function1<Integer,Boolean> | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:12:14:12:14 | j | samConversion.kt:11:12:13:5 | invoke | VarAccess |
+| samConversion.kt:12:14:12:18 | ... % ... | samConversion.kt:11:12:13:5 | invoke | RemExpr |
+| samConversion.kt:12:14:12:23 | ... (value equals) ... | samConversion.kt:11:12:13:5 | invoke | ValueEQExpr |
+| samConversion.kt:12:18:12:18 | 2 | samConversion.kt:11:12:13:5 | invoke | IntegerLiteral |
+| samConversion.kt:12:23:12:23 | 1 | samConversion.kt:11:12:13:5 | invoke | IntegerLiteral |
