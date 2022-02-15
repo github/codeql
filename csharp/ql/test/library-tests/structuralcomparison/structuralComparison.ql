@@ -21,4 +21,5 @@ private class StructuralComparisonTest extends StructuralComparisonConfiguration
 query predicate same(ControlFlowElement e1, ControlFlowElement e2) {
   exists(StructuralComparisonTest sct | sct.same(e1, e2))
 }
-// query predicate gvn(ControlFlowElement e, Gvn gvn) { gvn = toGvn(e) and e.fromSource() }
+
+query predicate gvn(ControlFlowElement e, Gvn gvn) { gvn = toGvn(e) and e.fromSource() }
