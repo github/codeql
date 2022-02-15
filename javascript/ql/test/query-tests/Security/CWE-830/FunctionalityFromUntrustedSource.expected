@@ -1,3 +1,3 @@
-| test.html:6:9:6:56 | <script>...</> | HTML-element imports untrusted content (script elements should use an https link and/or use the integrity attribute) |
-| test.html:9:9:9:58 | <iframe>...</> | HTML-element imports untrusted content (iframe elements should use an https link) |
-| test.html:11:9:11:53 | <iframe>...</> | HTML-element imports untrusted content (iframe elements should use an https link) |
+| FunctionalityFromUntrustedSource.html:6:9:6:56 | <script>...</> | HTML-element uses untrusted content (script elements should use an HTTPS url and/or use the integrity attribute) |
+| FunctionalityFromUntrustedSource.html:9:9:9:58 | <iframe>...</> | HTML-element uses untrusted content (iframe elements should use an HTTPS url) |
+| FunctionalityFromUntrustedSource.html:11:9:11:53 | <iframe>...</> | HTML-element uses untrusted content (iframe elements should use an HTTPS url) |
