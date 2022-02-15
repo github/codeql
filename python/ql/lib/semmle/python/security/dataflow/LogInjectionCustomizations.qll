@@ -62,7 +62,7 @@ module LogInjection {
     // - we do not check that one kind of line breaks is not replaced by another
     //
     // However, we lack a simple way to do better, and the query would likely
-    // be too noisy without this. 
+    // be too noisy without this.
     //
     // TODO: Consider rewriting using flow states.
     ReplaceLineBreaksSanitizer() {
