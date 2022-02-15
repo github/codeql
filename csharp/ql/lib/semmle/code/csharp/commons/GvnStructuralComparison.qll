@@ -5,16 +5,14 @@
 
 import csharp
 
-// TODO: Consider to make a GvNil for statement and only with an int kind.
 // TODO: Elaborate on descriptions. Maybe provide some examples.
-// TODO: Test against the existing usecases.
 // TODO: Make tests for the new functionality, such we have a chance of changing the implementation later.
-// TODO: Rename ListExpGvn as it covers more than expressions.
 private newtype TGvnKind =
-  TGvnKindInt(int kind) { kind = getKind(_) } or
-  TGvnKindDeclaration(int kind, boolean thisTarget, Declaration d) {
+  TGvnKindExpr(int kind) { expressions(_, kind, _) } or
+  TGvnKindStmt(int kind) { statements(_, kind) } or
+  TGvnKindDeclaration(GvnKindExpr kind, boolean thisTarget, Declaration d) {
     exists(Expr e |
-      d = referenceAttribute(e) and thisTarget = isTargetThis(e) and expressions(e, kind, _)
+      d = referenceAttribute(e) and thisTarget = isTargetThis(e) and kind = getKind(e)
     )
   }
 
@@ -22,16 +20,24 @@ abstract private class GvnKind extends TGvnKind {
   abstract string toString();
 }
 
-private class GvnKindInt extends GvnKind, TGvnKindInt {
+private class GvnKindExpr extends GvnKind, TGvnKindExpr {
   private int kind;
 
-  GvnKindInt() { this = TGvnKindInt(kind) }
+  GvnKindExpr() { this = TGvnKindExpr(kind) }
 
-  override string toString() { result = kind.toString() }
+  override string toString() { result = "Expr(" + kind.toString() + ")" }
+}
+
+private class GvnKindStmt extends GvnKind, TGvnKindStmt {
+  private int kind;
+
+  GvnKindStmt() { this = TGvnKindStmt(kind) }
+
+  override string toString() { result = "Stmt(" + kind.toString() + ")" }
 }
 
 private class GvnKindDeclaration extends GvnKind, TGvnKindDeclaration {
-  private int kind;
+  private GvnKindExpr kind;
   private boolean isTargetThis;
   private Declaration d;
 
@@ -54,15 +60,19 @@ private boolean isTargetThis(Expr cfe) {
   result = false and not cfe.(MemberAccess).targetIsThisInstance()
 }
 
-private int getKind(ControlFlowElement cfe) {
-  expressions(cfe, result, _)
-  or
-  exists(int kind | statements(cfe, kind) and result = -kind)
+private GvnKind getKind(ControlFlowElement cfe) {
+  exists(int kind |
+    expressions(cfe, kind, _) and
+    result = TGvnKindExpr(kind)
+    or
+    statements(cfe, kind) and
+    result = TGvnKindStmt(kind)
+  )
 }
 
 private newtype TGvn =
   TConstantGvn(string s) { s = any(Expr e).getValue() } or
-  TListExprGvn(GvnList l)
+  TListGvn(GvnList l)
 
 abstract class Gvn extends TGvn {
   abstract string toString();
@@ -72,10 +82,10 @@ private class ConstantGvn extends Gvn, TConstantGvn {
   override string toString() { this = TConstantGvn(result) }
 }
 
-private class ListExprGvn extends Gvn, TListExprGvn {
+private class ListGvn extends Gvn, TListGvn {
   private GvnList l;
 
-  ListExprGvn() { this = TListExprGvn(l) }
+  ListGvn() { this = TListGvn(l) }
 
   override string toString() { result = "[" + l.toString() + "]" }
 }
@@ -110,13 +120,13 @@ private class GvnCons extends GvnList, TGvnCons {
 }
 
 private GvnKind getGvnKind(ControlFlowElement cfe) {
-  exists(int kind |
+  exists(GvnKind kind |
     kind = getKind(cfe) and
     (
       result = TGvnKindDeclaration(kind, isTargetThis(cfe), referenceAttribute(cfe))
       or
       not exists(referenceAttribute(cfe)) and
-      result = TGvnKindInt(kind)
+      result = kind
     )
   )
 }
@@ -166,7 +176,7 @@ Gvn toGvn(ControlFlowElement cfe) {
   exists(GvnList l, GvnKind kind, int index |
     l = gvnConstructed(cfe, kind, index - 1) and
     index = getNumberOfActualChildren(cfe) and
-    result = TListExprGvn(l)
+    result = TListGvn(l)
   )
 }
 
