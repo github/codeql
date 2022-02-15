@@ -4,6 +4,7 @@ import (
 	"go/ast"
 	"go/token"
 	gotypes "go/types"
+
 	"golang.org/x/tools/go/packages"
 )
 
@@ -371,14 +372,19 @@ var ParenExpr = ExprKind.NewBranch("@parenexpr")
 // SelectorExpr is the type of selector expression AST nodes
 var SelectorExpr = ExprKind.NewBranch("@selectorexpr")
 
-// IndexExpr is the type of index expression AST nodes which are not generic type
-// instantiation expressions
+// IndexExpr is the type of AST nodes for index expressions and generic type
+// instantiation expressions with one type argument
 var IndexExpr = ExprKind.NewBranch("@indexexpr")
 
 // GenericFunctionInstantiationExpr is the type of AST nodes that represent a instantiation
 // of a generic type. These correspond to some index expression AST nodes and all index
 // list expression AST nodes.
 var GenericFunctionInstantiationExpr = ExprKind.NewBranch("@genericfunctioninstantiationexpr")
+
+// GenericTypeInstantiationExpr is the type of AST nodes that represent an instantiation
+// of a generic type. These correspond to some index expression AST nodes and all index
+// list expression AST nodes.
+var GenericTypeInstantiationExpr = ExprKind.NewBranch("@generictypeinstantiationexpr")
 
 // SliceExpr is the type of slice expression AST nodes
 var SliceExpr = ExprKind.NewBranch("@sliceexpr")

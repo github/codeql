@@ -877,14 +877,13 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		if expr == nil {
 			return
 		}
-		switch tp := tw.Package.TypesInfo.TypeOf(expr.X).Underlying().(type) {
-		case *types.Signature:
+		if _, ok := tw.Package.TypesInfo.TypeOf(expr.X).Underlying().(*types.Signature); ok {
 			kind = dbscheme.GenericFunctionInstantiationExpr.Index()
-		case *types.Map, *types.Array, *types.Slice, *types.Basic, *types.Pointer:
-			// map, array, slice, string or pointer to array
+		} else {
+			// Can't distinguish between actual index expressions (into a map,
+			// array, slice, string or pointer to array) and generic type
+			// specialization expression, so we do it later in QL.
 			kind = dbscheme.IndexExpr.Index()
-		default:
-			log.Fatalf("unsupported IndexExpr: its base expression is a %s.", tp.String())
 		}
 		extractExpr(tw, expr.X, lbl, 0)
 		extractExpr(tw, expr.Index, lbl, 1)
@@ -892,7 +891,11 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		if expr == nil {
 			return
 		}
-		kind = dbscheme.GenericFunctionInstantiationExpr.Index()
+		if _, ok := tw.Package.TypesInfo.TypeOf(expr.X).Underlying().(*types.Signature); ok {
+			kind = dbscheme.GenericFunctionInstantiationExpr.Index()
+		} else {
+			kind = dbscheme.GenericTypeInstantiationExpr.Index()
+		}
 		extractExpr(tw, expr.X, lbl, 0)
 		extractExprs(tw, expr.Indices, lbl, 1, 1)
 	case *ast.SliceExpr:
