@@ -39,17 +39,17 @@ class AccessPath extends string instanceof AccessPath::Range {
   /** Gets the `n`th token on the access path (if there are no syntax errors). */
   AccessPathToken getToken(int n) {
     result = getRawToken(this, n) and
-    not hasSyntaxError()
+    not this.hasSyntaxError()
   }
 
   /** Gets the number of tokens on the path (if there are no syntax errors). */
   int getNumToken() {
     result = count(int n | exists(getRawToken(this, n))) and
-    not hasSyntaxError()
+    not this.hasSyntaxError()
   }
 
   /** Gets the `n`th-last token, with 0 being the last token. */
-  AccessPathToken getLastToken(int n) { result = getToken(getNumToken() - 1 - n) }
+  AccessPathToken getLastToken(int n) { result = this.getToken(this.getNumToken() - 1 - n) }
 }
 
 /**
