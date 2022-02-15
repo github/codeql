@@ -5,8 +5,6 @@
 
 import csharp
 
-// TODO: Elaborate on descriptions. Maybe provide some examples.
-// TODO: Make tests for the new functionality, such we have a chance of changing the implementation later.
 private newtype TGvnKind =
   TGvnKindExpr(int kind) { expressions(_, kind, _) } or
   TGvnKindStmt(int kind) { statements(_, kind) } or
@@ -46,6 +44,7 @@ private class GvnKindDeclaration extends GvnKind, TGvnKindDeclaration {
   override string toString() { result = kind.toString() + "," + isTargetThis + "," + d.toString() }
 }
 
+/** Gets the declaration referenced by the expression `e`, if any. */
 private Declaration referenceAttribute(Expr e) {
   result = e.(MethodCall).getTarget()
   or
@@ -54,12 +53,14 @@ private Declaration referenceAttribute(Expr e) {
   result = e.(Access).getTarget()
 }
 
-private boolean isTargetThis(Expr cfe) {
-  result = true and cfe.(MemberAccess).targetIsThisInstance()
+/** Returns true iff the target of the expression `e` is `this`. */
+private boolean isTargetThis(Expr e) {
+  result = true and e.(MemberAccess).targetIsThisInstance()
   or
-  result = false and not cfe.(MemberAccess).targetIsThisInstance()
+  result = false and not e.(MemberAccess).targetIsThisInstance()
 }
 
+/** Gets the AST node kind of element `cfe` wrapped in the GvnKind type. */
 private GvnKind getKind(ControlFlowElement cfe) {
   exists(int kind |
     expressions(cfe, kind, _) and
@@ -70,11 +71,19 @@ private GvnKind getKind(ControlFlowElement cfe) {
   )
 }
 
+/**
+ * Type for containing the global value number of a control flow element.
+ * A global value number, can either be a constant or a list of global value numbers,
+ * where the list also carries a `kind`, which is used to distinguish between general expressions,
+ * declarations and statements.
+ */
 private newtype TGvn =
   TConstantGvn(string s) { s = any(Expr e).getValue() } or
   TListGvn(GvnList l)
 
+/** The global value number of a control flow element. */
 abstract class Gvn extends TGvn {
+  /** Gets the string representation of this global value number. */
   abstract string toString();
 }
 
@@ -119,6 +128,11 @@ private class GvnCons extends GvnList, TGvnCons {
   override string toString() { result = head.toString() + " :: " + tail.toString() }
 }
 
+/**
+ * Gets the `GvnKind` of the element `cfe`.
+ * In case `cfe` is a reference attribute, we encode the entire declaration and whether
+ * the target is semantically equivalent to `this`.
+ */
 private GvnKind getGvnKind(ControlFlowElement cfe) {
   exists(GvnKind kind |
     kind = getKind(cfe) and
@@ -169,6 +183,7 @@ private predicate gvnConstructedCons(
   head = toGvn(getRankedChild(e, index))
 }
 
+/** Gets the global value number of the element `cfe` */
 Gvn toGvn(ControlFlowElement cfe) {
   result = TConstantGvn(cfe.(Expr).getValue())
   or
@@ -180,27 +195,95 @@ Gvn toGvn(ControlFlowElement cfe) {
   )
 }
 
+/**
+ * A configuration for performing structural comparisons of program elements
+ * (expressions and statements).
+ *
+ * The predicate `candidate()` must be overridden, in order to identify the
+ * elements for which to perform structural comparison.
+ *
+ * Each use of the library is identified by a unique string value.
+ */
 abstract class StructuralComparisonConfiguration extends string {
   bindingset[this]
   StructuralComparisonConfiguration() { any() }
 
+  /**
+   * Holds if elements `x` and `y` are candidates for testing structural
+   * equality.
+   *
+   * Subclasses are expected to override this predicate to identify the
+   * top-level elements which they want to compare. Care should be
+   * taken to avoid identifying too many pairs of elements, as in general
+   * there are very many structurally equal subtrees in a program, and
+   * in order to keep the computation feasible we must focus attention.
+   *
+   * Note that this relation is not expected to be symmetric -- it's
+   * fine to include a pair `(x, y)` but not `(y, x)`.
+   * In fact, not including the symmetrically implied fact will save
+   * half the computation time on the structural comparison.
+   */
   abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
 
+  /**
+   * Holds if elements `x` and `y` structurally equal. `x` and `y` must be
+   * flagged as candidates for structural equality, that is,
+   * `candidate(x, y)` must hold.
+   */
   predicate same(ControlFlowElement x, ControlFlowElement y) {
     candidate(x, y) and
     toGvn(x) = toGvn(y)
   }
 }
 
+/**
+ * INTERNAL: Do not use.
+ *
+ * A verbatim copy of the class `StructuralComparisonConfiguration` for internal
+ * use.
+ *
+ * A copy is needed in order to use structural comparison within the standard
+ * library without running into caching issues.
+ */
 module Internal {
+  // Import all uses of the internal library to make sure caching works
   private import semmle.code.csharp.controlflow.Guards as G
 
+  /**
+   * A configuration for performing structural comparisons of program elements
+   * (expressions and statements).
+   *
+   * The predicate `candidate()` must be overridden, in order to identify the
+   * elements for which to perform structural comparison.
+   *
+   * Each use of the library is identified by a unique string value.
+   */
   abstract class InternalStructuralComparisonConfiguration extends string {
     bindingset[this]
     InternalStructuralComparisonConfiguration() { any() }
 
+    /**
+     * Holds if elements `x` and `y` are candidates for testing structural
+     * equality.
+     *
+     * Subclasses are expected to override this predicate to identify the
+     * top-level elements which they want to compare. Care should be
+     * taken to avoid identifying too many pairs of elements, as in general
+     * there are very many structurally equal subtrees in a program, and
+     * in order to keep the computation feasible we must focus attention.
+     *
+     * Note that this relation is not expected to be symmetric -- it's
+     * fine to include a pair `(x, y)` but not `(y, x)`.
+     * In fact, not including the symmetrically implied fact will save
+     * half the computation time on the structural comparison.
+     */
     abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
 
+    /**
+     * Holds if elements `x` and `y` structurally equal. `x` and `y` must be
+     * flagged as candidates for structural equality, that is,
+     * `candidate(x, y)` must hold.
+     */
     predicate same(ControlFlowElement x, ControlFlowElement y) {
       candidate(x, y) and
       toGvn(x) = toGvn(y)
