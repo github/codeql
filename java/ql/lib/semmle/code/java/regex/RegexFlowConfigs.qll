@@ -37,7 +37,7 @@ abstract class RegexMatchMethodAccess extends MethodAccess {
   Method m;
 
   RegexMatchMethodAccess() {
-    this.getMethod().overrides*(m) and
+    this.getMethod().getSourceDeclaration().overrides*(m) and
     m.hasQualifiedName(package, type, name) and
     regexArg in [-1 .. m.getNumberOfParameters() - 1] and
     stringArg in [-1 .. m.getNumberOfParameters() - 1]
@@ -79,9 +79,9 @@ private class JdkRegexMatchMethodAccess extends RegexMatchMethodAccess {
       or
       name = "matches" and regexArg = 0 and stringArg = 1
       or
-      name = "split" and regexArg = 0 and stringArg = 1
+      name = "split" and regexArg = -1 and stringArg = 0
       or
-      name = "splitAsStream" and regexArg = 0 and stringArg = 1
+      name = "splitAsStream" and regexArg = -1 and stringArg = 0
     )
     or
     package = "java.lang" and
@@ -90,7 +90,7 @@ private class JdkRegexMatchMethodAccess extends RegexMatchMethodAccess {
     regexArg = 0 and
     stringArg = -1
     or
-    package = "java.util" and
+    package = "java.util.function" and
     type = "Predicate" and
     name = "test" and
     regexArg = -1 and
@@ -101,7 +101,7 @@ private class JdkRegexMatchMethodAccess extends RegexMatchMethodAccess {
 private class JdkRegexFlowStep extends RegexAdditionalFlowStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodAccess ma, Method m, string package, string type, string name, int arg |
-      ma.getMethod().overrides*(m) and
+      ma.getMethod().getSourceDeclaration().overrides*(m) and
       m.hasQualifiedName(package, type, name) and
       node1.asExpr() = argOf(ma, arg) and
       node2.asExpr() = ma
@@ -116,7 +116,7 @@ private class JdkRegexFlowStep extends RegexAdditionalFlowStep {
         arg = 0
       )
       or
-      package = "java.util" and
+      package = "java.util.function" and
       type = "Predicate" and
       name = ["and", "or", "not", "negate"] and
       arg = [-1, 0]
@@ -126,7 +126,7 @@ private class JdkRegexFlowStep extends RegexAdditionalFlowStep {
 
 private class GuavaRegexMatchMethodAccess extends RegexMatchMethodAccess {
   GuavaRegexMatchMethodAccess() {
-    package = "com.google.common.collect" and
+    package = "com.google.common.base" and
     regexArg = -1 and
     stringArg = 0 and
     type = ["Splitter", "Splitter$MapSplitter"] and
@@ -137,7 +137,7 @@ private class GuavaRegexMatchMethodAccess extends RegexMatchMethodAccess {
 private class GuavaRegexFlowStep extends RegexAdditionalFlowStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodAccess ma, Method m, string package, string type, string name, int arg |
-      ma.getMethod().overrides*(m) and
+      ma.getMethod().getSourceDeclaration().overrides*(m) and
       m.hasQualifiedName(package, type, name) and
       node1.asExpr() = argOf(ma, arg) and
       node2.asExpr() = ma

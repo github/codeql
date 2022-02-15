@@ -1,7 +1,6 @@
-
 import java.util.regex.Pattern;
 
-class Test {
+class ExpRedosTest {
     static String[] regs = {
 
         // NOT GOOD; attack: "_" + "__".repeat(100)
