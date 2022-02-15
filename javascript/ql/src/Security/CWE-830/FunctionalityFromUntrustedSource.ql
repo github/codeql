@@ -52,15 +52,24 @@ abstract class IncludesUntrustedContent extends HTML::Element {
 class ScriptElementWithUntrustedContent extends IncludesUntrustedContent, HTML::ScriptElement {
   ScriptElementWithUntrustedContent() {
     not exists(string digest | not digest = "" | this.getIntegrityDigest() = digest) and
-    (
-      isUntrustedSourceUrl(this.getSourcePath())
-      or
-      isCdnUrlWithCheckingRequired(this.getSourcePath())
-    )
+    isUntrustedSourceUrl(this.getSourcePath())
   }
 
   override string getProblem() {
     result = "script elements should use an HTTPS url and/or use the integrity attribute"
+  }
+}
+
+/** A script element that refers to untrusted content. */
+class CDNScriptElementWithUntrustedContent extends IncludesUntrustedContent, HTML::ScriptElement {
+  CDNScriptElementWithUntrustedContent() {
+    not exists(string digest | not digest = "" | this.getIntegrityDigest() = digest) and
+    isCdnUrlWithCheckingRequired(this.getSourcePath())
+  }
+
+  override string getProblem() {
+    result =
+      "script elements that depend on this CDN should use an HTTPS url and use the integrity attribute"
   }
 }
 
