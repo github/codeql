@@ -128,8 +128,69 @@ private class GvnCons extends GvnList, TGvnCons {
   override string toString() { result = head.toString() + " :: " + tail.toString() }
 }
 
+/**
+ * Gets the `GvnKind` of the element `cfe`.
+ * In case `cfe` is a reference attribute, we encode the entire declaration and whether
+ * the target is semantically equivalent to `this`.
+ */
+private GvnKind getGvnKind(ControlFlowElement cfe) {
+  exists(GvnKind kind |
+    kind = getKind(cfe) and
+    (
+      result = TGvnKindDeclaration(kind, isTargetThis(cfe), referenceAttribute(cfe))
+      or
+      not exists(referenceAttribute(cfe)) and
+      result = kind
+    )
+  )
+}
+
+private GvnList gvnConstructed(ControlFlowElement cfe, GvnKind kind, int index) {
+  kind = getGvnKind(cfe) and
+  result = TGvnNil(kind) and
+  index = -1
+  or
+  exists(Gvn head, GvnList tail |
+    gvnConstructedCons(cfe, kind, index, head, tail) and
+    result = TGvnCons(head, tail)
+  )
+}
+
+private int getNumberOfActualChildren(ControlFlowElement cfe) {
+  if cfe.(MemberAccess).targetIsThisInstance()
+  then result = cfe.getNumberOfChildren() - 1
+  else result = cfe.getNumberOfChildren()
+}
+
+private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk) {
+  result =
+    rank[rnk + 1](ControlFlowElement child, int j |
+      child = cfe.getChild(j) and
+      (
+        j >= 0
+        or
+        j = -1 and not cfe.(MemberAccess).targetIsThisInstance()
+      )
+    |
+      child order by j
+    )
+}
+
 private predicate gvnConstructedCons(
   ControlFlowElement e, GvnKind kind, int index, Gvn head, GvnList tail
 ) {
-  none()
+  tail = gvnConstructed(e, kind, index - 1) and
+  head = toGvn(getRankedChild(e, index))
+}
+
+/** Gets the global value number of the element `cfe` */
+Gvn toGvn(ControlFlowElement cfe) {
+  result = TConstantGvn(cfe.(Expr).getValue())
+  or
+  not exists(cfe.(Expr).getValue()) and
+  exists(GvnList l, GvnKind kind, int index |
+    l = gvnConstructed(cfe, kind, index - 1) and
+    index = getNumberOfActualChildren(cfe) and
+    result = TListGvn(l)
+  )
 }
