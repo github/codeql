@@ -85,8 +85,8 @@ public class FilePathInjection extends Controller {
 	// BAD: Upload file to user specified path without validation through request attribute
 	public void uploadFile4() throws IOException {
 		String savePath = getPara("dir");
-		setAttr("uploadDir", savePath);
-		String requestUploadDir = getAttr("uploadDir");
+		setAttr("uploadDir2", savePath);
+		String requestUploadDir = getAttr("uploadDir2");
 
 		File file = getFile("fileParam").getFile();
 		String finalFilePath = BASE_PATH + requestUploadDir;
@@ -108,8 +108,8 @@ public class FilePathInjection extends Controller {
 	// BAD: Upload file to user specified path without validation through session object (not detected)
 	public void uploadFile5() throws IOException {
 		String savePath = getPara("dir");
-		getSession().setAttribute("uploadDir", savePath);
-		String sessionUploadDir = getSessionAttr("uploadDir");
+		getSession().setAttribute("uploadDir3", savePath);
+		String sessionUploadDir = getSessionAttr("uploadDir3");
 
 		File file = getFile("fileParam").getFile();
 		String finalFilePath = BASE_PATH + sessionUploadDir;
@@ -130,8 +130,8 @@ public class FilePathInjection extends Controller {
 
 	// GOOD: Upload file to a system path from a request object
 	public void uploadFile6() throws IOException {
-		setAttr("uploadDir", "/data/upload_dir/");
-		String requestUploadDir = getAttr("uploadDir");
+		setAttr("uploadDir4", "/data/upload_dir/");
+		String requestUploadDir = getAttr("uploadDir4");
 
 		File file = getFile("fileParam").getFile();
 		String finalFilePath = BASE_PATH + requestUploadDir;
@@ -153,9 +153,9 @@ public class FilePathInjection extends Controller {
 	// GOOD: Upload file to a system path from a request object
 	public void uploadFile7() throws IOException {
 		String savePath = getPara("dir");
-		setAttr("uploadDir", savePath);
+		setAttr("uploadDir5", savePath);
 		setAttr("realUploadDir", "/data/upload_dir/");
-		String requestUploadDir = getAttr("realUploadDir");
+		String requestUploadDir = getAttr("realUploadDir5");
 
 		File file = getFile("fileParam").getFile();
 		String finalFilePath = BASE_PATH + requestUploadDir;

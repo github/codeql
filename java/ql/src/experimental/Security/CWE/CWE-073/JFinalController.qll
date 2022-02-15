@@ -50,8 +50,7 @@ private class SetToGetAttributeStep extends AdditionalValueStep {
         sma.getMethod() instanceof SetRequestAttributeMethod
       ) and
       gma.getArgument(0).(CompileTimeConstantExpr).getStringValue() =
-        sma.getArgument(0).(CompileTimeConstantExpr).getStringValue() and
-      gma.getEnclosingCallable() = sma.getEnclosingCallable()
+        sma.getArgument(0).(CompileTimeConstantExpr).getStringValue()
     |
       pred.asExpr() = sma.getArgument(1) and
       succ.asExpr() = gma
