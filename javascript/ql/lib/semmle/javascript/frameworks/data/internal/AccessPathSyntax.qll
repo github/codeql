@@ -72,7 +72,7 @@ class AccessPathToken extends string {
   string getArgumentList() { result = this.getPart(2) }
 
   /** Gets the `n`th argument to this token, such as `x` or `y` from `Member[x,y]`. */
-  string getArgument(int n) { result = this.getArgumentList().splitAt(",", n) }
+  string getArgument(int n) { result = this.getArgumentList().splitAt(",", n).trim() }
 
   /** Gets an argument to this token, such as `x` or `y` from `Member[x,y]`. */
   string getAnArgument() { result = this.getArgument(_) }
