@@ -21,8 +21,11 @@ predicate variableUsedInNestedLoops(For inner, For outer, Variable v) {
   loop_variable(inner, v) and
   loop_variable(outer, v) and
   /* Ignore cases where there is no use of the variable or the only use is in the inner loop */
-  exists(Name n | n.uses(v) and outer.contains(n) and not inner.contains(n))
+  exists(Name n | n.uses(v) and forLoopContainsName(outer, n) and not forLoopContainsName(inner, n))
 }
+
+pragma[nomagic]
+private predicate forLoopContainsName(For for, Name n) { for.contains(n) }
 
 from For inner, For outer, Variable v
 where variableUsedInNestedLoops(inner, outer, v)
