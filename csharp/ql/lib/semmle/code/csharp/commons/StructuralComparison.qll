@@ -70,3 +70,66 @@ private GvnKind getKind(ControlFlowElement cfe) {
     result = TGvnKindStmt(kind)
   )
 }
+
+/**
+ * Type for containing the global value number of a control flow element.
+ * A global value number, can either be a constant or a list of global value numbers,
+ * where the list also carries a `kind`, which is used to distinguish between general expressions,
+ * declarations and statements.
+ */
+private newtype TGvn =
+  TConstantGvn(string s) { s = any(Expr e).getValue() } or
+  TListGvn(GvnList l)
+
+/** The global value number of a control flow element. */
+abstract class Gvn extends TGvn {
+  /** Gets the string representation of this global value number. */
+  abstract string toString();
+}
+
+private class ConstantGvn extends Gvn, TConstantGvn {
+  override string toString() { this = TConstantGvn(result) }
+}
+
+private class ListGvn extends Gvn, TListGvn {
+  private GvnList l;
+
+  ListGvn() { this = TListGvn(l) }
+
+  override string toString() { result = "[" + l.toString() + "]" }
+}
+
+/**
+ * Type for containing a list of global value numbers with a kind.
+ * The empty list carries the kind of the controlflowelement.
+ */
+private newtype TGvnList =
+  TGvnNil(GvnKind gkind) or
+  TGvnCons(Gvn head, GvnList tail) { gvnConstructedCons(_, _, _, head, tail) }
+
+abstract private class GvnList extends TGvnList {
+  abstract string toString();
+}
+
+private class GvnNil extends GvnList, TGvnNil {
+  private GvnKind kind;
+
+  GvnNil() { this = TGvnNil(kind) }
+
+  override string toString() { result = "(kind:" + kind + ")" }
+}
+
+private class GvnCons extends GvnList, TGvnCons {
+  private Gvn head;
+  private GvnList tail;
+
+  GvnCons() { this = TGvnCons(head, tail) }
+
+  override string toString() { result = head.toString() + " :: " + tail.toString() }
+}
+
+private predicate gvnConstructedCons(
+  ControlFlowElement e, GvnKind kind, int index, Gvn head, GvnList tail
+) {
+  none()
+}
