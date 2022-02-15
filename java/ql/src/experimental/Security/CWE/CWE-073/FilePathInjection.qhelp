@@ -6,12 +6,12 @@
 
 <overview>
 <p>External Control of File Name or Path, also called File Path Injection, is a vulnerability by which
-a file path is created using data from outside the application (such as the HTTP request, the database, or
-the filesystem). It allows an attacker to traverse through the filesystem and access arbitrary files.</p>
+a file path is created using data from outside the application (such as the HTTP request). It allows
+an attacker to traverse through the filesystem and access arbitrary files.</p>
 </overview>
 
 <recommendation>
-<p>Unsanitized user-provided data must not be used to construct the file path. In order to prevent File
+<p>Unsanitized user-provided data must not be used to construct file paths. In order to prevent File
 Path Injection, it is recommended to avoid concatenating user input directly into the file path. Instead, 
 user input should be checked against allowed or disallowed paths (for example, the path must be within
 <code>/user_content/</code> or must not be within <code>/internal</code>), ensuring that neither path

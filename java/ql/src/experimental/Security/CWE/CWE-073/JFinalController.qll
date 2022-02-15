@@ -22,7 +22,7 @@ class SetSessionAttributeMethod extends Method {
   }
 }
 
-/** The request attribute getter method of `JFinalController`. */
+/** A request attribute getter method of `JFinalController`. */
 class GetRequestAttributeMethod extends Method {
   GetRequestAttributeMethod() {
     this.getName().matches("getAttr%") and
@@ -30,7 +30,7 @@ class GetRequestAttributeMethod extends Method {
   }
 }
 
-/** The request attribute setter method of `JFinalController`. */
+/** A request attribute setter method of `JFinalController`. */
 class SetRequestAttributeMethod extends Method {
   SetRequestAttributeMethod() {
     this.getName() = ["set", "setAttr"] and
@@ -38,7 +38,10 @@ class SetRequestAttributeMethod extends Method {
   }
 }
 
-/** Value step from the setter call to the getter call of a session or request attribute. */
+/**
+ * Value step from a setter call to a corresponding getter call relating to a
+ * session or request attribute.
+ */
 private class SetToGetAttributeStep extends AdditionalValueStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(MethodAccess gma, MethodAccess sma |
@@ -58,7 +61,7 @@ private class SetToGetAttributeStep extends AdditionalValueStep {
   }
 }
 
-/** Source model of remote flow source with `JFinal`. */
+/** Remote flow source models relating to `JFinal`. */
 private class JFinalControllerSource extends SourceModelCsv {
   override predicate row(string row) {
     row =
