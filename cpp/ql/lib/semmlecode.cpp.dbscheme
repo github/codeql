@@ -446,6 +446,7 @@ var_decl_specifiers(
     int id: @var_decl ref,
     string name: string ref
 )
+is_structured_binding(unique int id: @variable ref);
 
 type_decls(
     unique int id: @type_decl,
