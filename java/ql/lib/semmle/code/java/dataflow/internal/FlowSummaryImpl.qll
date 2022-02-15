@@ -966,9 +966,7 @@ module Private {
     }
 
     /** Holds if the first `n` tokens of `input` resolve to the given interpretation. */
-    private predicate interpretInput(
-      AccessPath input, int n, InterpretNode ref, InterpretNode node
-    ) {
+    private predicate interpretInput(AccessPath input, int n, InterpretNode ref, InterpretNode node) {
       sinkElementRef(ref, input, _) and
       n = 0 and
       (
