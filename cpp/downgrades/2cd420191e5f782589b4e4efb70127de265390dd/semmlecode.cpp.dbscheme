@@ -136,9 +136,50 @@ externalData(
 );
 
 /**
+ * The date of the snapshot.
+ */
+snapshotDate(unique date snapshotDate : date ref);
+
+/**
  * The source location of the snapshot.
  */
 sourceLocationPrefix(string prefix : string ref);
+
+/**
+ * Data used by the 'duplicate code' detection.
+ */
+duplicateCode(
+    unique int id : @duplication,
+    string relativePath : string ref,
+    int equivClass : int ref
+);
+
+/**
+ * Data used by the 'similar code' detection.
+ */
+similarCode(
+    unique int id : @similarity,
+    string relativePath : string ref,
+    int equivClass : int ref
+);
+
+/**
+ * Data used by the 'duplicate code' and 'similar code' detection.
+ */
+@duplication_or_similarity = @duplication | @similarity
+
+/**
+ * Data used by the 'duplicate code' and 'similar code' detection.
+ */
+#keyset[id, offset]
+tokens(
+    int id : @duplication_or_similarity ref,
+    int offset : int ref,
+    int beginLine : int ref,
+    int beginColumn : int ref,
+    int endLine : int ref,
+    int endColumn : int ref
+);
 
 /**
  * Information about packages that provide code used during compilation.
