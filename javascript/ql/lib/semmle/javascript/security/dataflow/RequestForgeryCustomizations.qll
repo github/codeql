@@ -9,7 +9,15 @@ module RequestForgery {
   /**
    * A data flow source for request forgery.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /**
+     * Holds if this source is relevant for server-side request forgery (SSRF).
+     *
+     * Otherwise, it is considered to be a source for client-side request forgery, which is
+     * considered less severe than the server-side variant.
+     */
+    predicate isServerSide() { any() }
+  }
 
   /**
    * A data flow sink for request forgery.
@@ -31,15 +39,18 @@ module RequestForgery {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A source of remote user input, considered as a flow source for request forgery. */
-  private class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() {
+  /** A source of server-side remote user input, considered as a flow source for request forgery. */
+  private class ServerSideSource extends Source instanceof RemoteFlowSource {
+    ServerSideSource() { not this instanceof ClientSideRemoteFlowSource }
+  }
+
+  private class ClientSideSource extends Source instanceof ClientSideRemoteFlowSource {
+    ClientSideSource() {
       // Reduce FPs by excluding sources from client-side path or URL
-      exists(RemoteFlowSource src |
-        this = src and
-        not src.(ClientSideRemoteFlowSource).getKind().isPathOrUrl()
-      )
+      not ClientSideRemoteFlowSource.super.getKind().isPathOrUrl()
     }
+
+    override predicate isServerSide() { none() }
   }
 
   /**

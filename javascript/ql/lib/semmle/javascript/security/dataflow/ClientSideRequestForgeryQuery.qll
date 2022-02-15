@@ -12,12 +12,17 @@ import UrlConcatenation
 import RequestForgeryCustomizations::RequestForgery
 
 /**
- * A taint tracking configuration for request forgery.
+ * A taint tracking configuration for client-side request forgery.
  */
 class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "RequestForgery" }
+  Configuration() { this = "ClientSideRequestForgery" }
 
-  override predicate isSource(DataFlow::Node source) { source.(Source).isServerSide() }
+  override predicate isSource(DataFlow::Node source) {
+    exists(Source src |
+      source = src and
+      not src.isServerSide()
+    )
+  }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
