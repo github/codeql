@@ -1,4 +1,4 @@
 ---
 category: feature
 ---
-* Added predicates for sealed classes.
+* Added predicates `ClassOrInterface.getAPermittedSubtype` and `isSealed` exposing information about sealed classes.
