@@ -99,7 +99,7 @@ module Public {
       exists(SummaryComponent head, SummaryComponentStack tail |
         head = this.head() and
         tail = this.tail() and
-        result = head + " of " + tail
+        result = tail + "." + head
       )
       or
       exists(SummaryComponent c |
@@ -164,7 +164,7 @@ module Public {
     exists(SummaryComponent head, SummaryComponentStack tail |
       head = stack.head() and
       tail = stack.tail() and
-      result = getComponentCsv(head) + " of " + getComponentStackCsv(tail)
+      result = getComponentStackCsv(tail) + "." + getComponentCsv(head)
     )
     or
     exists(SummaryComponent c |
@@ -966,7 +966,9 @@ module Private {
     }
 
     /** Holds if the first `n` tokens of `input` resolve to the given interpretation. */
-    private predicate interpretInput(AccessPath input, int n, InterpretNode ref, InterpretNode node) {
+    private predicate interpretInput(
+      AccessPath input, int n, InterpretNode ref, InterpretNode node
+    ) {
       sinkElementRef(ref, input, _) and
       n = 0 and
       (
