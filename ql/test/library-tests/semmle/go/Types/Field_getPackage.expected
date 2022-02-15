@@ -12,6 +12,17 @@
 | embedded.go:8:3:8:5 | Baz | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
 | embedded.go:13:2:13:4 | Qux | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
 | embedded.go:14:2:14:4 | Baz | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| generic.go:4:2:4:11 | valueField | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| generic.go:5:2:5:13 | pointerField | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| generic.go:6:2:6:11 | arrayField | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| generic.go:7:2:7:11 | sliceField | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| generic.go:8:2:8:9 | mapField | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| generic.go:12:2:12:13 | pointerField | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| generic.go:16:2:16:5 | root | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| generic.go:20:2:20:12 | structField | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| generic.go:21:2:21:9 | mapField | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| generic.go:25:2:25:12 | structField | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| generic.go:29:2:29:13 | pointerField | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
 | pkg1/embedding.go:19:23:19:26 | base | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
 | pkg1/embedding.go:22:27:22:30 | base | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
 | pkg1/embedding.go:25:24:25:31 | embedder | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
