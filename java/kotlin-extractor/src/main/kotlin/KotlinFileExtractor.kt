@@ -2917,8 +2917,22 @@ open class KotlinFileExtractor(
                     }
 
                     val functionType = if (e.argument.type.isKFunction()) {
-                        // todo: add error handling to the below
-                        getFunctionalInterfaceType((e.argument.type as IrSimpleType).arguments.filterIsInstance<IrTypeProjection>().map { it.type })
+                        val st = e.argument.type as? IrSimpleType
+                        if (st == null) {
+                            logger.errorElement("Expected to find a simple type in SAM conversion.", e)
+                            return
+                        }
+
+                        val typeArgs = mutableListOf<IrType>()
+                        for (arg in st.arguments) {
+                            if (arg !is IrTypeProjection) {
+                                logger.errorElement("Expected to find only type projections in SAM conversion.", e)
+                                return
+                            }
+                            typeArgs.add(arg.type)
+                        }
+
+                        getFunctionalInterfaceType(typeArgs)
                     } else {
                         e.argument.type
                     }
