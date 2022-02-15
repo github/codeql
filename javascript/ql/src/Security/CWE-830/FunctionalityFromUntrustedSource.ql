@@ -13,73 +13,169 @@
 
 import javascript
 import semmle.javascript.HTML
+import semmle.javascript.dataflow.TaintTracking
 
-bindingset[host]
-predicate isLocalhostPrefix(string host) {
-  host.toLowerCase()
-      .regexpMatch([
-          "localhost(:[0-9]+)?/.*", "127.0.0.1(:[0-9]+)?/.*", "::1/.*", "\\[::1\\]:[0-9]+/.*"
-        ])
-}
-
-/** A path that is vulnerable to a MITM attack. */
-bindingset[url]
-predicate isUntrustedSourceUrl(string url) {
-  url.substring(0, 2) = "//"
-  or
-  exists(string hostPath | hostPath = url.regexpCapture("http://(.*)", 1) |
-    not isLocalhostPrefix(hostPath)
-  )
-}
-
-/** A path that needs an integrity check — even with https. */
-bindingset[url]
-predicate isCdnUrlWithCheckingRequired(string url) {
-  // Some CDN URLs are required to have an integrity attribute. We only add CDNs to that list
-  // that recommend integrity-checking.
-  url.regexpMatch([
-      "^https?://code\\.jquery\\.com/.*\\.js$", "^https?://cdnjs\\.cloudflare\\.com/.*\\.js$",
-      "^https?://cdnjs\\.com/.*\\.js$"
-    ])
-}
-
-abstract class IncludesUntrustedContent extends HTML::Element {
-  /** Gets an explanation why this source is untrusted. */
-  abstract string getProblem();
-}
-
-/** A script element that refers to untrusted content. */
-class ScriptElementWithUntrustedContent extends IncludesUntrustedContent, HTML::ScriptElement {
-  ScriptElementWithUntrustedContent() {
-    not exists(string digest | not digest = "" | this.getIntegrityDigest() = digest) and
-    isUntrustedSourceUrl(this.getSourcePath())
+module Generic {
+  /** A `CallNode` that creates an element of kind `name`. */
+  predicate isCreateElementNode(DataFlow::CallNode call, string name) {
+    call = DataFlow::globalVarRef("document").getAMethodCall("createElement") and
+    call.getArgument(0).getStringValue().toLowerCase() = name
   }
 
-  override string getProblem() {
-    result = "script elements should use an HTTPS url and/or use the integrity attribute"
+  /**
+   * True if `rhs` is being assigned to the `propName` property of an HTML
+   * element created by `createElementCall`.
+   */
+  predicate isPropWrite(DataFlow::CallNode createElementCall, string propName, DataFlow::Node rhs) {
+    exists(DataFlow::PropWrite assignment |
+      isCreateElementNode(createElementCall, _) and
+      assignment.writes(createElementCall.getALocalUse(), propName, rhs)
+    )
+  }
+
+  /**
+   * A `createElement` call that creates a `<script ../>` element which never
+   * has its `integrity` attribute set locally.
+   */
+  predicate isCreateScriptNodeWoIntegrityCheck(DataFlow::CallNode createCall) {
+    isCreateElementNode(createCall, "script") and
+    not exists(DataFlow::Node rhs | isPropWrite(createCall, "integrity", rhs))
+  }
+
+  /** A location that adds a reference to an untrusted source. */
+  abstract class AddsUntrustedUrl extends Locatable {
+    /** Gets an explanation why this source is untrusted. */
+    abstract string getProblem();
   }
 }
 
-/** A script element that refers to untrusted content. */
-class CDNScriptElementWithUntrustedContent extends IncludesUntrustedContent, HTML::ScriptElement {
-  CDNScriptElementWithUntrustedContent() {
-    not exists(string digest | not digest = "" | this.getIntegrityDigest() = digest) and
-    isCdnUrlWithCheckingRequired(this.getSourcePath())
+module StaticCreation {
+  bindingset[host]
+  predicate isLocalhostPrefix(string host) {
+    host.toLowerCase()
+        .regexpMatch([
+            "localhost(:[0-9]+)?/.*", "127.0.0.1(:[0-9]+)?/.*", "::1/.*", "\\[::1\\]:[0-9]+/.*"
+          ])
   }
 
-  override string getProblem() {
-    result =
-      "script elements that depend on this CDN should use an HTTPS url and use the integrity attribute"
+  /** A path that is vulnerable to a MITM attack. */
+  bindingset[url]
+  predicate isUntrustedSourceUrl(string url) {
+    exists(string hostPath | hostPath = url.regexpCapture("http://(.*)", 1) |
+      not isLocalhostPrefix(hostPath)
+    )
+  }
+
+  /** A path that needs an integrity check — even with https. */
+  bindingset[url]
+  predicate isCdnUrlWithCheckingRequired(string url) {
+    // Some CDN URLs are required to have an integrity attribute. We only add CDNs to that list
+    // that recommend integrity-checking.
+    url.regexpMatch([
+        "^https?://code\\.jquery\\.com/.*\\.js$", "^https?://cdnjs\\.cloudflare\\.com/.*\\.js$",
+        "^https?://cdnjs\\.com/.*\\.js$"
+      ])
+  }
+
+  /** A script element that refers to untrusted content. */
+  class ScriptElementWithUntrustedContent extends Generic::AddsUntrustedUrl, HTML::ScriptElement {
+    ScriptElementWithUntrustedContent() {
+      not exists(string digest | not digest = "" | this.getIntegrityDigest() = digest) and
+      isUntrustedSourceUrl(this.getSourcePath())
+    }
+
+    override string getProblem() {
+      result = "script elements should use an HTTPS url and/or use the integrity attribute"
+    }
+  }
+
+  /** A script element that refers to untrusted content. */
+  class CDNScriptElementWithUntrustedContent extends Generic::AddsUntrustedUrl, HTML::ScriptElement {
+    CDNScriptElementWithUntrustedContent() {
+      not exists(string digest | not digest = "" | this.getIntegrityDigest() = digest) and
+      isCdnUrlWithCheckingRequired(this.getSourcePath())
+    }
+
+    override string getProblem() {
+      result =
+        "script elements that depend on this CDN should use an HTTPS url and use the integrity attribute"
+    }
+  }
+
+  /** An iframe element that includes untrusted content. */
+  class IframeElementWithUntrustedContent extends HTML::IframeElement, Generic::AddsUntrustedUrl {
+    IframeElementWithUntrustedContent() { isUntrustedSourceUrl(this.getSourcePath()) }
+
+    override string getProblem() { result = "iframe elements should use an HTTPS url" }
   }
 }
 
-/** An iframe element that includes untrusted content. */
-class IframeElementWithUntrustedContent extends HTML::IframeElement, IncludesUntrustedContent {
-  IframeElementWithUntrustedContent() { isUntrustedSourceUrl(this.getSourcePath()) }
+module DynamicCreation {
+  import DataFlow::TypeTracker
 
-  override string getProblem() { result = "iframe elements should use an HTTPS url" }
+  predicate isUnsafeSourceLiteral(DataFlow::Node source) {
+    exists(StringLiteral s | source = s.flow() |
+      s.getValue().toLowerCase() = "http:" + any(string rest)
+    )
+  }
+
+  DataFlow::Node urlTrackedFromUnsafeSourceLiteral(DataFlow::TypeTracker t) {
+    t.start() and isUnsafeSourceLiteral(result)
+    or
+    exists(DataFlow::TypeTracker t2, DataFlow::Node prev |
+      prev = urlTrackedFromUnsafeSourceLiteral(t2)
+    |
+      not exists(string httpsUrl | httpsUrl.toLowerCase() = "https:" + any(string rest) |
+        // when the result may have a string value starting with https,
+        // we're most likely with an assignment like:
+        // e.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'
+        // these assignments, we don't want to fix — once the browser is using http,
+        // MITM attacks are possible anyway.
+        result.mayHaveStringValue(httpsUrl)
+      ) and
+      (
+        t2 = t.smallstep(prev, result)
+        or
+        TaintTracking::sharedTaintStep(prev, result) and
+        t = t2
+      )
+    )
+  }
+
+  DataFlow::Node urlTrackedFromUnsafeSourceLiteral() {
+    result = urlTrackedFromUnsafeSourceLiteral(DataFlow::TypeTracker::end())
+  }
+
+  predicate isAssignedToSrcAttribute(string name, DataFlow::Node sink) {
+    exists(DataFlow::CallNode createElementCall |
+      name = "script" and
+      Generic::isCreateScriptNodeWoIntegrityCheck(createElementCall) and
+      Generic::isPropWrite(createElementCall, "src", sink)
+      or
+      name = "iframe" and
+      Generic::isCreateElementNode(createElementCall, "iframe") and
+      Generic::isPropWrite(createElementCall, "src", sink)
+    )
+  }
+
+  class IframeOrScriptSrcAssignment extends Expr, Generic::AddsUntrustedUrl {
+    string name;
+
+    IframeOrScriptSrcAssignment() {
+      exists(DataFlow::Node n | n.asExpr() = this |
+        DynamicCreation::isAssignedToSrcAttribute(name, n) and
+        n = DynamicCreation::urlTrackedFromUnsafeSourceLiteral()
+      )
+    }
+
+    override string getProblem() {
+      name = "script" and
+      result = "script elements should use an HTTPS url and/or use the integrity attribute"
+      or
+      name = "iframe" and result = "iframe elements should use an HTTPS url"
+    }
+  }
 }
 
-from IncludesUntrustedContent s, string problem
-where problem = s.getProblem()
-select s, "HTML-element uses untrusted content (" + problem + ")"
+from Generic::AddsUntrustedUrl s
+select s, "HTML-element uses untrusted content (" + s.getProblem() + ")"

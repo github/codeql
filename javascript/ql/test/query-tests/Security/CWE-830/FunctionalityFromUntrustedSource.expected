@@ -1,4 +1,5 @@
-| FunctionalityFromUntrustedSource.html:6:9:6:56 | <script>...</> | HTML-element uses untrusted content (script elements should use an HTTPS url and/or use the integrity attribute) |
-| FunctionalityFromUntrustedSource.html:9:9:9:58 | <iframe>...</> | HTML-element uses untrusted content (iframe elements should use an HTTPS url) |
-| FunctionalityFromUntrustedSource.html:11:9:11:53 | <iframe>...</> | HTML-element uses untrusted content (iframe elements should use an HTTPS url) |
-| FunctionalityFromUntrustedSource.html:20:9:20:155 | <script>...</> | HTML-element uses untrusted content (script elements that depend on this CDN should use an HTTPS url and use the integrity attribute) |
+| DynamicCreationOfUntrustedSourceUse.html:18:26:18:50 | 'http:/ ... e.com/' | HTML-element uses untrusted content (iframe elements should use an HTTPS url) |
+| DynamicCreationOfUntrustedSourceUse.html:29:27:29:40 | getUrl('v123') | HTML-element uses untrusted content (iframe elements should use an HTTPS url) |
+| StaticCreationOfUntrustedSourceUse.html:6:9:6:56 | <script>...</> | HTML-element uses untrusted content (script elements should use an HTTPS url and/or use the integrity attribute) |
+| StaticCreationOfUntrustedSourceUse.html:9:9:9:58 | <iframe>...</> | HTML-element uses untrusted content (iframe elements should use an HTTPS url) |
+| StaticCreationOfUntrustedSourceUse.html:21:9:21:155 | <script>...</> | HTML-element uses untrusted content (script elements that depend on this CDN should use an HTTPS url and use the integrity attribute) |
