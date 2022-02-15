@@ -296,12 +296,17 @@ class ExposedSystemDataConfiguration extends TaintTracking::Configuration {
     exists(FunctionCall fc, FunctionInput input, int arg |
       fc.getTarget().(RemoteFlowSinkFunction).hasRemoteFlowSink(input, _) and
       input.isParameterDeref(arg) and
-      fc.getArgument(arg).getFullyConverted() = sink.asConvertedExpr()
+      fc.getArgument(arg) = sink.asExpr()
     )
   }
 }
 
 from ExposedSystemDataConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
+and not exists(DataFlow::Node alt | // remove duplicate results on conversions
+  config.hasFlow(source.getNode(), alt) and
+  alt.asConvertedExpr() = sink.getNode().asExpr() and
+  alt != sink.getNode()
+)
 select sink, source, sink, "This operation exposes system data from $@.", source,
   source.getNode().toString()
