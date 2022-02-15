@@ -22,13 +22,25 @@ predicate isLocalhostPrefix(string host) {
         ])
 }
 
-bindingset[path]
-predicate isUntrustedSourcePath(string path) {
-  path.substring(0, 2) = "//"
+/** A path that is vulnerable to a MITM attack. */
+bindingset[url]
+predicate isUntrustedSourceUrl(string url) {
+  url.substring(0, 2) = "//"
   or
-  exists(string hostPath | hostPath = path.regexpCapture("http://(.*)", 1) |
+  exists(string hostPath | hostPath = url.regexpCapture("http://(.*)", 1) |
     not isLocalhostPrefix(hostPath)
   )
+}
+
+/** A path that needs an integrity check — even with https. */
+bindingset[url]
+predicate isCdnUrlWithCheckingRequired(string url) {
+  // Some CDN URLs are required to have an integrity attribute. We only add CDNs to that list
+  // that recommend integrity-checking.
+  url.regexpMatch([
+      "^https?://code\\.jquery\\.com/.*\\.js$", "^https?://cdnjs\\.cloudflare\\.com/.*\\.js$",
+      "^https?://cdnjs\\.com/.*\\.js$"
+    ])
 }
 
 abstract class IncludesUntrustedContent extends HTML::Element {
@@ -39,8 +51,12 @@ abstract class IncludesUntrustedContent extends HTML::Element {
 /** A script element that refers to untrusted content. */
 class ScriptElementWithUntrustedContent extends IncludesUntrustedContent, HTML::ScriptElement {
   ScriptElementWithUntrustedContent() {
-    isUntrustedSourcePath(this.getSourcePath()) and
-    not exists(string digest | not digest = "" | this.getIntegrityDigest() = digest)
+    not exists(string digest | not digest = "" | this.getIntegrityDigest() = digest) and
+    (
+      isUntrustedSourceUrl(this.getSourcePath())
+      or
+      isCdnUrlWithCheckingRequired(this.getSourcePath())
+    )
   }
 
   override string getProblem() {
@@ -50,7 +66,7 @@ class ScriptElementWithUntrustedContent extends IncludesUntrustedContent, HTML::
 
 /** An iframe element that includes untrusted content. */
 class IframeElementWithUntrustedContent extends HTML::IframeElement, IncludesUntrustedContent {
-  IframeElementWithUntrustedContent() { isUntrustedSourcePath(this.getSourcePath()) }
+  IframeElementWithUntrustedContent() { isUntrustedSourceUrl(this.getSourcePath()) }
 
   override string getProblem() { result = "iframe elements should use an HTTPS url" }
 }

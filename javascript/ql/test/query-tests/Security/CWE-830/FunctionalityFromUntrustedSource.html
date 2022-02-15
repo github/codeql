@@ -12,5 +12,11 @@
         <iframe src="http://::1/foo.html"></iframe> <!-- OK (localhost) -->
         <iframe src="http://[::1]:80/foo.html"></iframe> <!-- OK (localhost) -->
         <iframe src="http://127.0.0.1:444/foo.html"></iframe> <!-- OK (localhost) -->
+
+        <!-- Some CDNs recommend using the integrity attribute — for those, we demand it even with https links -->
+        <!-- OK (digest present) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js" integrity="sha512-7oYXeK0OxTFxndh0erL8FsjGvrl2VMDor6fVqzlLGfwOQQqTbYsGPv4ZZ15QHfSk80doyaM0ZJdvkyDcVO7KFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- NOT OK (digest missing) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </body>
 </html>
