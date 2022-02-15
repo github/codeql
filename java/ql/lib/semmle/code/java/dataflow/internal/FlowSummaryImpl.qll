@@ -846,24 +846,26 @@ module Private {
      * Holds if `spec` specifies summary component stack `stack`.
      */
     predicate interpretSpec(AccessPath spec, SummaryComponentStack stack) {
-      interpretSpec(spec, 0, stack)
+      interpretSpec(spec, spec.getNumToken(), stack)
     }
 
-    private predicate interpretSpec(AccessPath spec, int idx, SummaryComponentStack stack) {
-      idx = spec.getNumToken() - 1 and
-      stack = SummaryComponentStack::singleton(interpretComponent(spec.getLastToken(idx)))
+    /** Holds if the first `n` tokens of `spec` resolves to `stack`. */
+    private predicate interpretSpec(AccessPath spec, int n, SummaryComponentStack stack) {
+      n = 1 and
+      stack = SummaryComponentStack::singleton(interpretComponent(spec.getToken(0)))
       or
       exists(SummaryComponent head, SummaryComponentStack tail |
-        interpretSpec(spec, idx, head, tail) and
+        interpretSpec(spec, n, head, tail) and
         stack = SummaryComponentStack::push(head, tail)
       )
     }
 
+    /** Holds if the first `n` tokens of `spec` resolves to `head` followed by `tail` */
     private predicate interpretSpec(
-      AccessPath output, int idx, SummaryComponent head, SummaryComponentStack tail
+      AccessPath spec, int n, SummaryComponent head, SummaryComponentStack tail
     ) {
-      interpretSpec(output, idx + 1, tail) and
-      head = interpretComponent(output.getLastToken(idx))
+      interpretSpec(spec, n - 1, tail) and
+      head = interpretComponent(spec.getToken(n - 1))
     }
 
     private class MkStack extends RequiredSummaryComponentStack {
@@ -924,11 +926,12 @@ module Private {
       )
     }
 
+    /** Holds if the first `n` tokens of `output` resolve to the given interpretation. */
     private predicate interpretOutput(
-      AccessPath output, int idx, InterpretNode ref, InterpretNode node
+      AccessPath output, int n, InterpretNode ref, InterpretNode node
     ) {
       sourceElementRef(ref, output, _) and
-      idx = output.getNumToken() and
+      n = 0 and
       (
         if output = ""
         then
@@ -938,8 +941,8 @@ module Private {
       )
       or
       exists(InterpretNode mid, AccessPathToken c |
-        interpretOutput(output, idx + 1, ref, mid) and
-        c = output.getLastToken(idx)
+        interpretOutput(output, n - 1, ref, mid) and
+        c = output.getToken(n - 1)
       |
         exists(ArgumentPosition apos, ParameterPosition ppos |
           node.asNode().(PostUpdateNode).getPreUpdateNode().(ArgNode).argumentOf(mid.asCall(), apos) and
@@ -962,11 +965,12 @@ module Private {
       )
     }
 
+    /** Holds if the first `n` tokens of `input` resolve to the given interpretation. */
     private predicate interpretInput(
-      AccessPath input, int idx, InterpretNode ref, InterpretNode node
+      AccessPath input, int n, InterpretNode ref, InterpretNode node
     ) {
       sinkElementRef(ref, input, _) and
-      idx = input.getNumToken() and
+      n = 0 and
       (
         if input = ""
         then
@@ -976,8 +980,8 @@ module Private {
       )
       or
       exists(InterpretNode mid, AccessPathToken c |
-        interpretInput(input, idx + 1, ref, mid) and
-        c = input.getLastToken(idx)
+        interpretInput(input, n - 1, ref, mid) and
+        c = input.getToken(n - 1)
       |
         exists(ArgumentPosition apos, ParameterPosition ppos |
           node.asNode().(ArgNode).argumentOf(mid.asCall(), apos) and
@@ -1002,9 +1006,9 @@ module Private {
      * model.
      */
     predicate isSourceNode(InterpretNode node, string kind) {
-      exists(InterpretNode ref, string output |
+      exists(InterpretNode ref, AccessPath output |
         sourceElementRef(ref, output, kind) and
-        interpretOutput(output, 0, ref, node)
+        interpretOutput(output, output.getNumToken(), ref, node)
       )
     }
 
@@ -1013,9 +1017,9 @@ module Private {
      * model.
      */
     predicate isSinkNode(InterpretNode node, string kind) {
-      exists(InterpretNode ref, string input |
+      exists(InterpretNode ref, AccessPath input |
         sinkElementRef(ref, input, kind) and
-        interpretInput(input, 0, ref, node)
+        interpretInput(input, input.getNumToken(), ref, node)
       )
     }
   }
