@@ -19,7 +19,7 @@ module AccessPath {
 private string getRawToken(AccessPath path, int n) {
   // Avoid splitting by '.' since tokens may contain dots, e.g. `Field[foo.Bar.x]`.
   // Instead use regexpFind to match valid tokens, and supplement with a final length
-  // check to ensure all characters were included in a token.
+  // check (in `AccessPath.hasSyntaxError`) to ensure all characters were included in a token.
   result = path.regexpFind("\\w+(?:\\[[^\\]]*\\])?(?=\\.|$)", n, _)
 }
 
@@ -39,17 +39,17 @@ class AccessPath extends string instanceof AccessPath::Range {
   /** Gets the `n`th token on the access path (if there are no syntax errors). */
   AccessPathToken getToken(int n) {
     result = getRawToken(this, n) and
-    not hasSyntaxError()
+    not this.hasSyntaxError()
   }
 
   /** Gets the number of tokens on the path (if there are no syntax errors). */
   int getNumToken() {
     result = count(int n | exists(getRawToken(this, n))) and
-    not hasSyntaxError()
+    not this.hasSyntaxError()
   }
 
   /** Gets the `n`th-last token, with 0 being the last token. */
-  AccessPathToken getLastToken(int n) { result = getToken(getNumToken() - 1 - n) }
+  AccessPathToken getLastToken(int n) { result = this.getToken(this.getNumToken() - 1 - n) }
 }
 
 /**
