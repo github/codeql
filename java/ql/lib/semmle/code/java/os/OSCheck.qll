@@ -9,12 +9,12 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.StringCheck
 
 /**
- * A complimentatry guard that checks if the current platform is Windows.
+ * A guard that checks if the current platform is Windows.
  */
 abstract class IsWindowsGuard extends Guard { }
 
 /**
- * A complimentatry guard that checks if the current platform is unix or unix-like.
+ * A guard that checks if the current platform is unix or unix-like.
  */
 abstract class IsUnixGuard extends Guard { }
 
@@ -53,7 +53,7 @@ private class IsUnixFromSystemProp extends IsUnixGuard instanceof MethodAccess {
 
 private predicate isOsFromApacheCommons(FieldAccess fa, string fieldName) {
   exists(Field f | f = fa.getField() |
-    f.getDeclaringType() instanceof ApacheSystemUtilis and
+    f.getDeclaringType() instanceof ApacheSystemUtils and
     f.hasName(fieldName)
   )
 }
@@ -63,7 +63,7 @@ private class IsWindowsFromApacheCommons extends IsWindowsGuard instanceof Field
 }
 
 private class IsUnixFromApacheCommons extends IsUnixGuard instanceof FieldAccess {
-  IsUnixFromApacheCommons() { isOsFromApacheCommons(this, ["IS_OS_UNIX"]) }
+  IsUnixFromApacheCommons() { isOsFromApacheCommons(this, "IS_OS_UNIX") }
 }
 
 /**
