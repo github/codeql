@@ -26,3 +26,21 @@ fun interface InterfaceFn1 {
 fun interface InterfaceFnExt1 {
     fun String.ext(i: Int): Boolean
 }
+
+fun interface BigArityPredicate {
+    fun accept(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, i6: Int, i7: Int, i8: Int, i9: Int,
+               i10: Int, i11: Int, i12: Int, i13: Int, i14: Int, i15: Int, i16: Int, i17: Int, i18: Int, i19: Int,
+               i20: Int, i21: Int, i22: Int): Boolean
+}
+
+fun ff(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, i6: Int, i7: Int, i8: Int, i9: Int,
+      i10: Int, i11: Int, i12: Int, i13: Int, i14: Int, i15: Int, i16: Int, i17: Int, i18: Int, i19: Int,
+      i20: Int, i21: Int, i22: Int): Boolean = true
+
+fun fn(boo: Boolean) {
+    val a = ::ff
+    val b = BigArityPredicate(a)
+    val c = BigArityPredicate {i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, i6: Int, i7: Int, i8: Int, i9: Int,
+      i10: Int, i11: Int, i12: Int, i13: Int, i14: Int, i15: Int, i16: Int, i17: Int, i18: Int, i19: Int,
+      i20: Int, i21: Int, i22: Int -> true}
+}

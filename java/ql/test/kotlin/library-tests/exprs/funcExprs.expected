@@ -18,6 +18,7 @@ lambdaExpr
 | samConversion.kt:7:29:7:46 | ...->... | stmt body | samConversion.kt:7:29:7:46 | invoke | invoke(java.lang.String,int) | samConversion.kt:7:29:7:46 | new Function2<String,Integer,Boolean>(...) { ... } |
 | samConversion.kt:9:33:11:5 | ...->... | stmt body | samConversion.kt:9:33:11:5 | invoke | invoke(int) | samConversion.kt:9:33:11:5 | new Function1<Integer,Boolean>(...) { ... } |
 | samConversion.kt:11:12:13:5 | ...->... | stmt body | samConversion.kt:11:12:13:5 | invoke | invoke(int) | samConversion.kt:11:12:13:5 | new Function1<Integer,Boolean>(...) { ... } |
+| samConversion.kt:43:31:45:43 | ...->... | stmt body | samConversion.kt:43:31:45:43 | invoke | invoke(java.lang.Object[]) | samConversion.kt:43:31:45:43 | new FunctionN<Boolean>(...) { ... } |
 memberRefExprs
 | funcExprs.kt:32:26:32:38 | ...::... | funcExprs.kt:32:26:32:38 | invoke | invoke() | funcExprs.kt:32:26:32:38 | new Function0<Integer>(...) { ... } |
 | funcExprs.kt:33:26:33:36 | ...::... | funcExprs.kt:33:26:33:36 | invoke | invoke() | funcExprs.kt:33:26:33:36 | new Function0<Integer>(...) { ... } |
@@ -31,3 +32,4 @@ memberRefExprs
 | funcExprs.kt:43:26:43:32 | ...::... | funcExprs.kt:43:26:43:32 | invoke | invoke() | funcExprs.kt:43:26:43:32 | new Function0<Integer>(...) { ... } |
 | funcExprs.kt:45:8:45:16 | ...::... | funcExprs.kt:45:8:45:16 | invoke | invoke() | funcExprs.kt:45:8:45:16 | new Function0<FuncRef>(...) { ... } |
 | samConversion.kt:5:27:5:31 | ...::... | samConversion.kt:5:27:5:31 | invoke | invoke(int,int) | samConversion.kt:5:27:5:31 | new Function2<Integer,Integer,Unit>(...) { ... } |
+| samConversion.kt:41:13:41:16 | ...::... | samConversion.kt:41:13:41:16 | invoke | invoke(java.lang.Object[]) | samConversion.kt:41:13:41:16 | new FunctionN<Boolean>(...) { ... } |
