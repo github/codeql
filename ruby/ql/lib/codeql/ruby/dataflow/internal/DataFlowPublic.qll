@@ -39,9 +39,20 @@ class Node extends TNode {
   }
 
   /**
-   * Gets a local source node from which data may flow to this node in zero or more local data-flow steps.
+   * Gets a local source node from which data may flow to this node in zero or
+   * more local data-flow steps.
    */
   LocalSourceNode getALocalSource() { result.flowsTo(this) }
+
+  /**
+   * Gets a data flow node from which data may flow to this node in one local step.
+   */
+  Node getAPredecessor() { localFlowStep(result, this) }
+
+  /**
+   * Gets a data flow node to which data may flow from this node in one local step.
+   */
+  Node getASuccessor() { localFlowStep(this, result) }
 }
 
 /** A data-flow node corresponding to a call in the control-flow graph. */

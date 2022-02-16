@@ -246,6 +246,23 @@ class RegExpTerm extends RegExpParent {
     )
   }
 
+  /**
+   * Gets the single string this regular-expression term matches.
+   *
+   * This predicate is only defined for (sequences/groups of) constant regular
+   * expressions.  In particular, terms involving zero-width assertions like `^`
+   * or `\b` are not considered to have a constant value.
+   *
+   * Note that this predicate does not take flags of the enclosing
+   * regular-expression literal into account.
+   */
+  string getConstantValue() { none() }
+
+  /**
+   * Gets a string that is matched by this regular-expression term.
+   */
+  string getAMatchedString() { result = this.getConstantValue() }
+
   /** Gets the primary QL class for this term. */
   override string getAPrimaryQlClass() { result = "RegExpTerm" }
 }
@@ -406,6 +423,19 @@ class RegExpSequence extends RegExpTerm, TRegExpSequence {
     )
   }
 
+  override string getConstantValue() { result = this.getConstantValue(0) }
+
+  /**
+   * Gets the single string matched by the `i`th child and all following
+   * children of this sequence, if any.
+   */
+  private string getConstantValue(int i) {
+    i = this.getNumChild() and
+    result = ""
+    or
+    result = this.getChild(i).getConstantValue() + this.getConstantValue(i + 1)
+  }
+
   override string getAPrimaryQlClass() { result = "RegExpSequence" }
 }
 
@@ -465,6 +495,11 @@ class RegExpAlt extends RegExpTerm, TRegExpAlt {
       re.alternationOption(start, end, part_start, result.getEnd())
     )
   }
+
+  /** Gets an alternative of this term. */
+  RegExpTerm getAlternative() { result = this.getAChild() }
+
+  override string getAMatchedString() { result = this.getAlternative().getAMatchedString() }
 
   override string getAPrimaryQlClass() { result = "RegExpAlt" }
 }
@@ -611,6 +646,10 @@ class RegExpCharacterClass extends RegExpTerm, TRegExpCharacterClass {
     )
   }
 
+  override string getAMatchedString() {
+    not this.isInverted() and result = this.getAChild().getAMatchedString()
+  }
+
   override string getAPrimaryQlClass() { result = "RegExpCharacterClass" }
 }
 
@@ -719,6 +758,8 @@ class RegExpConstant extends RegExpTerm {
 
   override RegExpTerm getChild(int i) { none() }
 
+  override string getConstantValue() { result = this.getValue() }
+
   override string getAPrimaryQlClass() { result = "RegExpConstant" }
 }
 
@@ -761,6 +802,10 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
     i = 0 and
     re.groupContents(start, end, result.getStart(), result.getEnd())
   }
+
+  override string getConstantValue() { result = this.getAChild().getConstantValue() }
+
+  override string getAMatchedString() { result = this.getAChild().getAMatchedString() }
 
   override string getAPrimaryQlClass() { result = "RegExpGroup" }
 }
