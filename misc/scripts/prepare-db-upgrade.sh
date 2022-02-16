@@ -6,6 +6,7 @@ set -e
 set -u
 
 app_name="$(basename "$0")"
+app_dir="$(dirname "$0")"
 
 usage()
 {
@@ -75,16 +76,6 @@ if [ -z ${lang+x} ]; then
   usage 2 "No language specified"
 fi
 
-top_level="$(git rev-parse --show-superproject-working-tree)"
-
-if [ "x${top_level}" = "x" ]; then
-  top_level="$(git rev-parse --show-toplevel)"
-fi
-
-if [ "x${top_level}" = "x" ]; then
-  usage 2 "Not in a code repository."
-fi
-
 case "${lang}" in
   java)
     scheme_file="${lang}/ql/lib/config/semmlecode.dbscheme"
@@ -100,7 +91,12 @@ case "${lang}" in
     ;;
 esac
 
-qldir="${top_level}/ql"
+cd ${app_dir}
+qldir="$(git rev-parse --show-toplevel)"
+
+if [ "x${qldir}" = "x" ]; then
+  usage 2 "Script not in a code repository."
+fi
 
 upgrade_root="${qldir}/${lang}/ql/lib/upgrades"
 downgrade_root="${qldir}/${lang}/downgrades"
