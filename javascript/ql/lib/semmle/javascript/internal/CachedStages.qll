@@ -238,6 +238,8 @@ module Stages {
       AccessPath::DominatingPaths::hasDominatingWrite(_)
       or
       DataFlow::SharedFlowStep::step(_, _)
+      or
+      exists(any(DataFlow::RegExpCreationNode e).getAReference())
     }
   }
 
