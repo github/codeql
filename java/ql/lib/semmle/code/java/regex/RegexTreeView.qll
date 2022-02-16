@@ -73,6 +73,8 @@ class RegExpLiteral extends TRegExpLiteral, RegExpParent {
 
   RegExpLiteral() { this = TRegExpLiteral(re) }
 
+  override string toString() { result = re.toString() }
+
   override RegExpTerm getChild(int i) { i = 0 and result.getRegex() = re and result.isRootTerm() }
 
   /** Holds if dot, `.`, matches all characters, including newlines. */

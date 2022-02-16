@@ -24,11 +24,11 @@ class PolynomialRedosSink extends DataFlow::Node {
 
   PolynomialRedosSink() { regexMatchedAgainst(reg.getRegex(), this.asExpr()) }
 
-  RegExpTerm getRegExp() { result = reg }
+  RegExpTerm getRegExp() { result.getParent() = reg }
 }
 
 class PolynomialRedosConfig extends TaintTracking::Configuration {
-  PolynomialRedosConfig() { this = "PolynomialRodisConfig" }
+  PolynomialRedosConfig() { this = "PolynomialRedosConfig" }
 
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
