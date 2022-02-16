@@ -14877,6 +14877,17 @@
 </dependencies>
 </relation>
 <relation>
+<name>is_structured_binding</name>
+<cardinality>10</cardinality>
+<columnsizes>
+<e>
+<k>id</k>
+<v>10</v>
+</e>
+</columnsizes>
+<dependencies/>
+</relation>
+<relation>
 <name>type_decls</name>
 <cardinality>1316547</cardinality>
 <columnsizes>
