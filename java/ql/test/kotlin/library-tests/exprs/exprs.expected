@@ -1543,6 +1543,7 @@
 | samConversion.kt:41:13:41:16 | int | samConversion.kt:41:13:41:16 | invoke | TypeAccess |
 | samConversion.kt:41:13:41:16 | int | samConversion.kt:41:13:41:16 | invoke | TypeAccess |
 | samConversion.kt:42:5:42:32 | b | samConversion.kt:40:1:46:1 | fn | LocalVariableDeclExpr |
+| samConversion.kt:42:13:42:32 | 23 | samConversion.kt:31:5:33:53 | accept | IntegerLiteral |
 | samConversion.kt:42:13:42:32 | (...)... | samConversion.kt:40:1:46:1 | fn | CastExpr |
 | samConversion.kt:42:13:42:32 | ...=... | samConversion.kt:42:13:42:32 |  | AssignExpr |
 | samConversion.kt:42:13:42:32 | <fn> | samConversion.kt:31:5:33:53 | accept | VarAccess |
@@ -1550,6 +1551,7 @@
 | samConversion.kt:42:13:42:32 | BigArityPredicate | samConversion.kt:40:1:46:1 | fn | TypeAccess |
 | samConversion.kt:42:13:42:32 | BigArityPredicate | samConversion.kt:40:1:46:1 | fn | TypeAccess |
 | samConversion.kt:42:13:42:32 | FunctionN<Boolean> | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | Object | samConversion.kt:31:5:33:53 | accept | TypeAccess |
 | samConversion.kt:42:13:42:32 | i0 | samConversion.kt:31:5:33:53 | accept | VarAccess |
 | samConversion.kt:42:13:42:32 | i1 | samConversion.kt:31:5:33:53 | accept | VarAccess |
 | samConversion.kt:42:13:42:32 | i2 | samConversion.kt:31:5:33:53 | accept | VarAccess |
@@ -1575,10 +1577,13 @@
 | samConversion.kt:42:13:42:32 | i22 | samConversion.kt:31:5:33:53 | accept | VarAccess |
 | samConversion.kt:42:13:42:32 | invoke(...) | samConversion.kt:31:5:33:53 | accept | MethodAccess |
 | samConversion.kt:42:13:42:32 | new (...) | samConversion.kt:40:1:46:1 | fn | ClassInstanceExpr |
+| samConversion.kt:42:13:42:32 | new Object[] | samConversion.kt:31:5:33:53 | accept | ArrayCreationExpr |
 | samConversion.kt:42:13:42:32 | this | samConversion.kt:42:13:42:32 |  | ThisAccess |
 | samConversion.kt:42:13:42:32 | this.<fn> | samConversion.kt:42:13:42:32 |  | VarAccess |
+| samConversion.kt:42:13:42:32 | {...} | samConversion.kt:31:5:33:53 | accept | ArrayInit |
 | samConversion.kt:42:31:42:31 | a | samConversion.kt:40:1:46:1 | fn | VarAccess |
 | samConversion.kt:43:5:45:43 | c | samConversion.kt:40:1:46:1 | fn | LocalVariableDeclExpr |
+| samConversion.kt:43:13:45:43 | 23 | samConversion.kt:31:5:33:53 | accept | IntegerLiteral |
 | samConversion.kt:43:13:45:43 | (...)... | samConversion.kt:40:1:46:1 | fn | CastExpr |
 | samConversion.kt:43:13:45:43 | ...=... | samConversion.kt:43:13:45:43 |  | AssignExpr |
 | samConversion.kt:43:13:45:43 | <fn> | samConversion.kt:31:5:33:53 | accept | VarAccess |
@@ -1586,6 +1591,7 @@
 | samConversion.kt:43:13:45:43 | BigArityPredicate | samConversion.kt:40:1:46:1 | fn | TypeAccess |
 | samConversion.kt:43:13:45:43 | BigArityPredicate | samConversion.kt:40:1:46:1 | fn | TypeAccess |
 | samConversion.kt:43:13:45:43 | FunctionN<Boolean> | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:43 | Object | samConversion.kt:31:5:33:53 | accept | TypeAccess |
 | samConversion.kt:43:13:45:43 | i0 | samConversion.kt:31:5:33:53 | accept | VarAccess |
 | samConversion.kt:43:13:45:43 | i1 | samConversion.kt:31:5:33:53 | accept | VarAccess |
 | samConversion.kt:43:13:45:43 | i2 | samConversion.kt:31:5:33:53 | accept | VarAccess |
@@ -1611,8 +1617,10 @@
 | samConversion.kt:43:13:45:43 | i22 | samConversion.kt:31:5:33:53 | accept | VarAccess |
 | samConversion.kt:43:13:45:43 | invoke(...) | samConversion.kt:31:5:33:53 | accept | MethodAccess |
 | samConversion.kt:43:13:45:43 | new (...) | samConversion.kt:40:1:46:1 | fn | ClassInstanceExpr |
+| samConversion.kt:43:13:45:43 | new Object[] | samConversion.kt:31:5:33:53 | accept | ArrayCreationExpr |
 | samConversion.kt:43:13:45:43 | this | samConversion.kt:43:13:45:43 |  | ThisAccess |
 | samConversion.kt:43:13:45:43 | this.<fn> | samConversion.kt:43:13:45:43 |  | VarAccess |
+| samConversion.kt:43:13:45:43 | {...} | samConversion.kt:31:5:33:53 | accept | ArrayInit |
 | samConversion.kt:43:31:45:43 | 0 | samConversion.kt:43:31:45:43 | invoke | IntegerLiteral |
 | samConversion.kt:43:31:45:43 | 1 | samConversion.kt:43:31:45:43 | invoke | IntegerLiteral |
 | samConversion.kt:43:31:45:43 | 2 | samConversion.kt:43:31:45:43 | invoke | IntegerLiteral |

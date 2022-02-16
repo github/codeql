@@ -2213,7 +2213,7 @@ samConversion.kt:
 #    1|       5: [BlockStmt] { ... }
 #    2|         0: [LocalVariableDeclStmt] var ...;
 #    2|           1: [LocalVariableDeclExpr] isEven
-#    2|             1: [CastExpr] (...)...
+#    2|             0: [CastExpr] (...)...
 #    2|               0: [TypeAccess] IntPredicate
 #    2|               1: [ClassInstanceExpr] new (...)
 #    2|                 -4: [AnonymousClass] new IntPredicate(...) { ... }
@@ -2256,7 +2256,7 @@ samConversion.kt:
 #    2|                   -3: [TypeAccess] Function1<Integer,Boolean>
 #    4|         1: [LocalVariableDeclStmt] var ...;
 #    4|           1: [LocalVariableDeclExpr] i0
-#    4|             2: [CastExpr] (...)...
+#    4|             0: [CastExpr] (...)...
 #    4|               0: [TypeAccess] InterfaceFn1
 #    4|               1: [ClassInstanceExpr] new (...)
 #    4|                 -4: [AnonymousClass] new InterfaceFn1(...) { ... }
@@ -2298,7 +2298,7 @@ samConversion.kt:
 #    4|                   -3: [TypeAccess] Function2<Integer,Integer,Unit>
 #    5|         2: [LocalVariableDeclStmt] var ...;
 #    5|           1: [LocalVariableDeclExpr] i1
-#    5|             2: [CastExpr] (...)...
+#    5|             0: [CastExpr] (...)...
 #    5|               0: [TypeAccess] InterfaceFn1
 #    5|               1: [ClassInstanceExpr] new (...)
 #    5|                 -4: [AnonymousClass] new InterfaceFn1(...) { ... }
@@ -2342,7 +2342,7 @@ samConversion.kt:
 #    5|                   -3: [TypeAccess] Function2<Integer,Integer,Unit>
 #    7|         3: [LocalVariableDeclStmt] var ...;
 #    7|           1: [LocalVariableDeclExpr] i
-#    7|             2: [CastExpr] (...)...
+#    7|             0: [CastExpr] (...)...
 #    7|               0: [TypeAccess] InterfaceFnExt1
 #    7|               1: [ClassInstanceExpr] new (...)
 #    7|                 -4: [AnonymousClass] new InterfaceFnExt1(...) { ... }
@@ -2386,7 +2386,7 @@ samConversion.kt:
 #    7|                   -3: [TypeAccess] Function2<String,Integer,Boolean>
 #    9|         4: [LocalVariableDeclStmt] var ...;
 #    9|           1: [LocalVariableDeclExpr] x
-#    9|             1: [CastExpr] (...)...
+#    9|             0: [CastExpr] (...)...
 #    9|               0: [TypeAccess] IntPredicate
 #    9|               1: [ClassInstanceExpr] new (...)
 #    9|                 -4: [AnonymousClass] new IntPredicate(...) { ... }
@@ -2618,7 +2618,7 @@ samConversion.kt:
 #   41|               -3: [TypeAccess] FunctionN<Boolean>
 #   42|         1: [LocalVariableDeclStmt] var ...;
 #   42|           1: [LocalVariableDeclExpr] b
-#   42|             23: [CastExpr] (...)...
+#   42|             0: [CastExpr] (...)...
 #   42|               0: [TypeAccess] BigArityPredicate
 #   42|               1: [ClassInstanceExpr] new (...)
 #   42|                 -4: [AnonymousClass] new BigArityPredicate(...) { ... }
@@ -2651,29 +2651,33 @@ samConversion.kt:
 #   42|                       0: [ReturnStmt] return ...
 #   42|                         0: [MethodAccess] invoke(...)
 #   42|                           -1: [VarAccess] <fn>
-#   42|                           0: [VarAccess] i0
-#   42|                           1: [VarAccess] i1
-#   42|                           2: [VarAccess] i2
-#   42|                           3: [VarAccess] i3
-#   42|                           4: [VarAccess] i4
-#   42|                           5: [VarAccess] i5
-#   42|                           6: [VarAccess] i6
-#   42|                           7: [VarAccess] i7
-#   42|                           8: [VarAccess] i8
-#   42|                           9: [VarAccess] i9
-#   42|                           10: [VarAccess] i10
-#   42|                           11: [VarAccess] i11
-#   42|                           12: [VarAccess] i12
-#   42|                           13: [VarAccess] i13
-#   42|                           14: [VarAccess] i14
-#   42|                           15: [VarAccess] i15
-#   42|                           16: [VarAccess] i16
-#   42|                           17: [VarAccess] i17
-#   42|                           18: [VarAccess] i18
-#   42|                           19: [VarAccess] i19
-#   42|                           20: [VarAccess] i20
-#   42|                           21: [VarAccess] i21
-#   42|                           22: [VarAccess] i22
+#   42|                           0: [ArrayCreationExpr] new Object[]
+#   42|                             -2: [ArrayInit] {...}
+#   42|                               0: [VarAccess] i0
+#   42|                               1: [VarAccess] i1
+#   42|                               2: [VarAccess] i2
+#   42|                               3: [VarAccess] i3
+#   42|                               4: [VarAccess] i4
+#   42|                               5: [VarAccess] i5
+#   42|                               6: [VarAccess] i6
+#   42|                               7: [VarAccess] i7
+#   42|                               8: [VarAccess] i8
+#   42|                               9: [VarAccess] i9
+#   42|                               10: [VarAccess] i10
+#   42|                               11: [VarAccess] i11
+#   42|                               12: [VarAccess] i12
+#   42|                               13: [VarAccess] i13
+#   42|                               14: [VarAccess] i14
+#   42|                               15: [VarAccess] i15
+#   42|                               16: [VarAccess] i16
+#   42|                               17: [VarAccess] i17
+#   42|                               18: [VarAccess] i18
+#   42|                               19: [VarAccess] i19
+#   42|                               20: [VarAccess] i20
+#   42|                               21: [VarAccess] i21
+#   42|                               22: [VarAccess] i22
+#   42|                             -1: [TypeAccess] Object
+#   42|                             0: [IntegerLiteral] 23
 #   42|                   2: [Constructor] 
 #-----|                     4: (Parameters)
 #   42|                       0: [Parameter] <fn>
@@ -2690,7 +2694,7 @@ samConversion.kt:
 #   42|                 0: [VarAccess] a
 #   43|         2: [LocalVariableDeclStmt] var ...;
 #   43|           1: [LocalVariableDeclExpr] c
-#   43|             23: [CastExpr] (...)...
+#   43|             0: [CastExpr] (...)...
 #   43|               0: [TypeAccess] BigArityPredicate
 #   43|               1: [ClassInstanceExpr] new (...)
 #   43|                 -4: [AnonymousClass] new BigArityPredicate(...) { ... }
@@ -2723,29 +2727,33 @@ samConversion.kt:
 #   43|                       0: [ReturnStmt] return ...
 #   43|                         0: [MethodAccess] invoke(...)
 #   43|                           -1: [VarAccess] <fn>
-#   43|                           0: [VarAccess] i0
-#   43|                           1: [VarAccess] i1
-#   43|                           2: [VarAccess] i2
-#   43|                           3: [VarAccess] i3
-#   43|                           4: [VarAccess] i4
-#   43|                           5: [VarAccess] i5
-#   43|                           6: [VarAccess] i6
-#   43|                           7: [VarAccess] i7
-#   43|                           8: [VarAccess] i8
-#   43|                           9: [VarAccess] i9
-#   43|                           10: [VarAccess] i10
-#   43|                           11: [VarAccess] i11
-#   43|                           12: [VarAccess] i12
-#   43|                           13: [VarAccess] i13
-#   43|                           14: [VarAccess] i14
-#   43|                           15: [VarAccess] i15
-#   43|                           16: [VarAccess] i16
-#   43|                           17: [VarAccess] i17
-#   43|                           18: [VarAccess] i18
-#   43|                           19: [VarAccess] i19
-#   43|                           20: [VarAccess] i20
-#   43|                           21: [VarAccess] i21
-#   43|                           22: [VarAccess] i22
+#   43|                           0: [ArrayCreationExpr] new Object[]
+#   43|                             -2: [ArrayInit] {...}
+#   43|                               0: [VarAccess] i0
+#   43|                               1: [VarAccess] i1
+#   43|                               2: [VarAccess] i2
+#   43|                               3: [VarAccess] i3
+#   43|                               4: [VarAccess] i4
+#   43|                               5: [VarAccess] i5
+#   43|                               6: [VarAccess] i6
+#   43|                               7: [VarAccess] i7
+#   43|                               8: [VarAccess] i8
+#   43|                               9: [VarAccess] i9
+#   43|                               10: [VarAccess] i10
+#   43|                               11: [VarAccess] i11
+#   43|                               12: [VarAccess] i12
+#   43|                               13: [VarAccess] i13
+#   43|                               14: [VarAccess] i14
+#   43|                               15: [VarAccess] i15
+#   43|                               16: [VarAccess] i16
+#   43|                               17: [VarAccess] i17
+#   43|                               18: [VarAccess] i18
+#   43|                               19: [VarAccess] i19
+#   43|                               20: [VarAccess] i20
+#   43|                               21: [VarAccess] i21
+#   43|                               22: [VarAccess] i22
+#   43|                             -1: [TypeAccess] Object
+#   43|                             0: [IntegerLiteral] 23
 #   43|                   2: [Constructor] 
 #-----|                     4: (Parameters)
 #   43|                       0: [Parameter] <fn>

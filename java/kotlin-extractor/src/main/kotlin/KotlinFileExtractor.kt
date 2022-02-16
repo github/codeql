@@ -2989,9 +2989,8 @@ open class KotlinFileExtractor(
                     tw.writeStmts_returnstmt(returnId, blockId, 0, functionId)
                     tw.writeHasLocation(returnId, locId)
 
-                    //extractExpressionExpr(b.expression, callable, returnId, 0, returnId)
                     //<fn>.invoke(vp0, cp1, vp2, vp3, ...) or
-                    //<fn>.invoke(new Object[x]{vp0, vp1, vp2, ...}) // TODO: handle big arity functions. We'd need an arraycreationexpr with an initializer
+                    //<fn>.invoke(new Object[x]{vp0, vp1, vp2, ...})
 
                     fun extractCommonExpr(id: Label<out DbExpr>) {
                         tw.writeHasLocation(id, locId)
@@ -3005,7 +3004,7 @@ open class KotlinFileExtractor(
                     tw.writeExprs_methodaccess(callId, callType.javaResult.id, returnId, 0)
                     tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
                     extractCommonExpr(callId)
-                    val calledMethodId = useFunction<DbMethod>(invokeMethod, (functionType as IrSimpleType).arguments)
+                    val calledMethodId = useFunction<DbMethod>(invokeMethod, functionType.arguments)
                     tw.writeCallableBinding(callId, calledMethodId)
 
                     // <fn> access
@@ -3016,22 +3015,55 @@ open class KotlinFileExtractor(
                     extractCommonExpr(lhsId)
                     tw.writeVariableBinding(lhsId, fieldId)
 
-                    fun extractArgument(p: IrValueParameter, idx: Int) {
+                    val parameters = mutableListOf<IrValueParameter>()
+                    val extParam = samMember.extensionReceiverParameter
+                    if (extParam != null) {
+                        parameters.add(extParam)
+                    }
+                    parameters.addAll(samMember.valueParameters)
+
+                    fun extractArgument(p: IrValueParameter, idx: Int, parent: Label<out DbExprparent>) {
                         val argsAccessId = tw.getFreshIdLabel<DbVaraccess>()
                         val paramType = useType(p.type)
-                        tw.writeExprs_varaccess(argsAccessId, paramType.javaResult.id, callId, idx)
+                        tw.writeExprs_varaccess(argsAccessId, paramType.javaResult.id, parent, idx)
                         tw.writeExprsKotlinType(argsAccessId, paramType.kotlinResult.id)
                         extractCommonExpr(argsAccessId)
                         tw.writeVariableBinding(argsAccessId, useValueParameter(p, functionId))
                     }
 
-                    var idx = 0
-                    val extParam = samMember.extensionReceiverParameter
-                    if (extParam != null) {
-                        extractArgument(extParam, idx++)
-                    }
-                    for (vp in samMember.valueParameters) {
-                        extractArgument(vp, idx++)
+                    if (st.arguments.size > BuiltInFunctionArity.BIG_ARITY) {
+                        //<fn>.invoke(new Object[x]{vp0, vp1, vp2, ...})
+                        val arrayCreationId = tw.getFreshIdLabel<DbArraycreationexpr>()
+                        val arrayType = pluginContext.irBuiltIns.arrayClass.typeWith(pluginContext.irBuiltIns.anyNType)
+                        val at = useType(arrayType)
+                        tw.writeExprs_arraycreationexpr(arrayCreationId, at.javaResult.id, callId, 0)
+                        tw.writeExprsKotlinType(arrayCreationId, at.kotlinResult.id)
+                        extractCommonExpr(arrayCreationId)
+
+                        extractTypeAccess(pluginContext.irBuiltIns.anyNType, functionId, arrayCreationId, -1, e, returnId)
+
+                        val initId = tw.getFreshIdLabel<DbArrayinit>()
+                        tw.writeExprs_arrayinit(initId, at.javaResult.id, arrayCreationId, -2)
+                        tw.writeExprsKotlinType(initId, at.kotlinResult.id)
+                        extractCommonExpr(initId)
+
+                        for ((idx, vp) in parameters.withIndex()) {
+                            extractArgument(vp, idx, initId)
+                        }
+
+                        val dim = parameters.size.toString()
+                        val dimId = tw.getFreshIdLabel<DbIntegerliteral>()
+                        val dimType = useType(pluginContext.irBuiltIns.intType)
+                        tw.writeExprs_integerliteral(dimId, dimType.javaResult.id, arrayCreationId, 0)
+                        tw.writeExprsKotlinType(dimId, dimType.kotlinResult.id)
+                        extractCommonExpr(dimId)
+                        tw.writeNamestrings(dim, dim, dimId)
+
+                    } else {
+                        //<fn>.invoke(vp0, cp1, vp2, vp3, ...) or
+                        for ((idx, vp) in parameters.withIndex()) {
+                            extractArgument(vp, idx, callId)
+                        }
                     }
 
                     val id = tw.getFreshIdLabel<DbCastexpr>()
