@@ -77,7 +77,7 @@ Where `<old-extractor-pack>` is an extractor pack containing the old extractor a
 To test the downgrade script, create an extractor pack that includes your new dbscheme and extractor changes. Then checkout the `main` branch of `codeql` (i.e. a branch that does not include your changes), and run:
 
 ```
-codeql test run --search-path=<new-extractor-pack> --search-path=ql <test-dir>
+codeql test run --search-path=<new-extractor-pack> <test-dir>
 ```
 
 This will run the tests using your new extractor, and the databases will be downgraded using your new downgrade script so that they match the dbscheme of the `main` branch.
