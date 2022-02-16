@@ -66,7 +66,7 @@ module StaticCreation {
     )
   }
 
-  /** A path that needs an integrity check — even with https. */
+  /** A path that needs an integrity check - even with https. */
   bindingset[url]
   predicate isCdnUrlWithCheckingRequired(string url) {
     // Some CDN URLs are required to have an integrity attribute. We only add CDNs to that list
@@ -129,7 +129,7 @@ module DynamicCreation {
         // when the result may have a string value starting with https,
         // we're most likely with an assignment like:
         // e.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'
-        // these assignments, we don't want to fix — once the browser is using http,
+        // these assignments, we don't want to fix - once the browser is using http,
         // MITM attacks are possible anyway.
         result.mayHaveStringValue(httpsUrl)
       ) and
