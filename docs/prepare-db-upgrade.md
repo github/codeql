@@ -62,7 +62,7 @@ relationname.rel: run relationname.qlo
 
 ### Testing your scripts
 
-Although we have some automated testing of the scripts (e.g. to test that you can upgrade databases all the way from the an initial dbscheme to the newest, and back), it's essential that you apply some more rigorous testing any non-trivial upgrade or downgrade. You might do so as follows:
+Although we have some automated testing of the scripts (e.g. to test that you can upgrade databases all the way from an initial dbscheme to the newest, and back), it's essential that you apply some more rigorous testing for any non-trivial upgrade or downgrade. You might do so as follows:
 
 #### Running qltests
 
