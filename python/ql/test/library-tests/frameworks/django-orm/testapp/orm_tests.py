@@ -34,7 +34,7 @@ def test_save1_store():
 
 def test_save1_load():
     obj = TestSave1.objects.first()
-    SINK(obj.text)
+    SINK(obj.text) # $ MISSING: flow
 
 # --------------------------------------
 # Constructor: positional arg
@@ -50,7 +50,7 @@ def test_save2_store():
 
 def test_save2_load():
     obj = TestSave2.objects.first()
-    SINK(obj.text)
+    SINK(obj.text) # $ MISSING: flow
 
 # --------------------------------------
 # Constructor: positional arg, with own primary key
@@ -65,7 +65,7 @@ def test_save3_store():
 
 def test_save3_load():
     obj = TestSave3.objects.first()
-    SINK(obj.text)
+    SINK(obj.text) # $ MISSING: flow
 
 # --------------------------------------
 # Set attribute on fresh object
@@ -80,7 +80,7 @@ def test_save4_store():
 
 def test_save4_load():
     obj = TestSave4.objects.first()
-    SINK(obj.text)
+    SINK(obj.text) # $ MISSING: flow
 
 # --------------------------------------
 # Set attribute on existing
@@ -101,7 +101,7 @@ def test_save4b_store():
 
 def test_save4b_load():
     obj = TestSave4b.objects.first()
-    SINK(obj.text)
+    SINK(obj.text) # $ MISSING: flow
 
 # --------------------------------------
 # <Model>.objects.create()
@@ -113,11 +113,11 @@ class TestSave5(models.Model):
 def test_save5_store():
     # note: positional args not possible
     obj = TestSave5.objects.create(text=SOURCE)
-    SINK(obj.text)
+    SINK(obj.text) # $ MISSING: flow
 
 def test_save5_load():
     obj = TestSave5.objects.first()
-    SINK(obj.text)
+    SINK(obj.text) # $ MISSING: flow
 
 # --------------------------------------
 # <Model>.objects.get_or_create()
@@ -129,13 +129,13 @@ class TestSave6(models.Model):
 
 def test_save6_store():
     obj, _created = TestSave6.objects.get_or_create(defaults={"text": SOURCE}, email=SOURCE)
-    SINK(obj.text)
-    SINK(obj.email)
+    SINK(obj.text) # $ MISSING: flow
+    SINK(obj.email) # $ MISSING: flow
 
 def test_save6_load():
     obj = TestSave6.objects.first()
-    SINK(obj.text)
-    SINK(obj.email)
+    SINK(obj.text) # $ MISSING: flow
+    SINK(obj.email) # $ MISSING: flow
 
 # --------------------------------------
 # <Model>.objects.update_or_create()
@@ -147,13 +147,13 @@ class TestSave7(models.Model):
 
 def test_save7_store():
     obj, _created = TestSave7.objects.update_or_create(defaults={"text": SOURCE}, email=SOURCE)
-    SINK(obj.text)
-    SINK(obj.email)
+    SINK(obj.text) # $ MISSING: flow
+    SINK(obj.email) # $ MISSING: flow
 
 def test_save7_load():
     obj = TestSave7.objects.first()
-    SINK(obj.text)
-    SINK(obj.email)
+    SINK(obj.text) # $ MISSING: flow
+    SINK(obj.email) # $ MISSING: flow
 
 # --------------------------------------
 # <Model>.objects.[<QuerySet>].update()
@@ -169,7 +169,7 @@ def test_save8_store():
 
 def test_save8_load():
     obj = TestSave8.objects.first()
-    SINK(obj.text)
+    SINK(obj.text) # $ MISSING: flow
 
 # --------------------------------------
 # .save() on foreign key field
@@ -192,7 +192,7 @@ def test_save9_store():
 
 def test_save9_load():
     obj = TestSave9.objects.first()
-    SINK(obj.text)
+    SINK(obj.text) # $ MISSING: flow
 
 # --------------------------------------
 # foreign key backreference (auto-generated name)
@@ -219,7 +219,7 @@ def test_save10_store():
 
 def test_save10_load():
     obj = save10_Comment.objects.first()
-    SINK(obj.text)
+    SINK(obj.text) # $ MISSING: flow
 
 # --------------------------------------
 # foreign key backreference, with custom name
@@ -246,7 +246,7 @@ def test_save11_store():
 
 def test_save11_load():
     obj = save11_Comment.objects.first()
-    SINK(obj.text)
+    SINK(obj.text) # $ MISSING: flow
 
 # ------------------------------------------------------------------------------
 # Different ways to load data from the DB through the ORM
@@ -263,61 +263,61 @@ def test_load_init():
 
 def test_load_single():
     obj = TestLoad.objects.get(id=1)
-    SINK(obj.text)
+    SINK(obj.text) # $ MISSING: flow
 
 def test_load_many():
     objs = TestLoad.objects.all()
     for obj in objs:
-        SINK(obj.text)
-    SINK(objs[0].text)
+        SINK(obj.text) # $ MISSING: flow
+    SINK(objs[0].text) # $ MISSING: flow
 
 def test_load_many_skip():
     objs = TestLoad.objects.all()[5:]
     for obj in objs:
-        SINK(obj.text)
-    SINK(objs[0].text)
+        SINK(obj.text) # $ MISSING: flow
+    SINK(objs[0].text) # $ MISSING: flow
 
 def test_load_qs_chain_single():
     obj = TestLoad.objects.all().filter(text__contains="s").exclude(text=None).first()
-    SINK(obj.text)
+    SINK(obj.text) # $ MISSING: flow
 
 def test_load_qs_chain_many():
     objs = TestLoad.objects.all().filter(text__contains="s").exclude(text=None)
     for obj in objs:
-        SINK(obj.text)
-    SINK(objs[0].text)
+        SINK(obj.text) # $ MISSING: flow
+    SINK(objs[0].text) # $ MISSING: flow
 
 def test_load_values():
     # see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#django.db.models.query.QuerySet.values
     vals = TestLoad.objects.all().values()
     for val in vals:
-        SINK(val['text'])
-    SINK(vals[0]['text'])
+        SINK(val['text']) # $ MISSING: flow
+    SINK(vals[0]['text']) # $ MISSING: flow
 
     # only selecting some of the fields
     vals = TestLoad.objects.all().values("text")
     for val in vals:
-        SINK(val['text'])
-    SINK(vals[0]['text'])
+        SINK(val['text']) # $ MISSING: flow
+    SINK(vals[0]['text']) # $ MISSING: flow
 
 def test_load_values_list():
     # see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#django.db.models.query.QuerySet.values_list
     vals = TestLoad.objects.all().values_list()
     for (_id, text) in vals:
-        SINK(text)
-    SINK(vals[0][1])
+        SINK(text) # $ MISSING: flow
+    SINK(vals[0][1]) # $ MISSING: flow
 
     # only selecting some of the fields
     vals = TestLoad.objects.all().values_list("text")
     for (text,) in vals:
-        SINK(text)
-    SINK(vals[0][0])
+        SINK(text) # $ MISSING: flow
+    SINK(vals[0][0]) # $ MISSING: flow
 
     # with flat=True, each row will not be a tuple, but just the value
     vals = TestLoad.objects.all().values_list("text", flat=True)
     for text in vals:
-        SINK(text)
-    SINK(vals[0])
+        SINK(text) # $ MISSING: flow
+    SINK(vals[0]) # $ MISSING: flow
 
 # Good resources:
 # - https://docs.djangoproject.com/en/4.0/topics/db/queries/#making-queries
