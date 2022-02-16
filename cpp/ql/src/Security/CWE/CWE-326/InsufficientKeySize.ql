@@ -14,7 +14,7 @@ import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.ir.IR
 
-// Holds if `func` is the name of an encryption function that accepts a key size as parameter `paramIndex`
+// Gets the recommended minimum key size (in bits) of `func`, the name of an encryption function that accepts a key size as parameter `paramIndex`
 int getMinimumKeyStrength(string func, int paramIndex) {
   func =
     [
