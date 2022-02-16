@@ -271,6 +271,9 @@ class RegExpTerm extends RegExpParent {
 
   /** Holds if this regular expression term can match the empty string. */
   predicate matchesEmptyString() { none() }
+
+  /** Gets a string matched by this regular expression. */
+  string getAMatch() { none() }
 }
 
 /**
@@ -456,6 +459,20 @@ class RegExpSequence extends RegExpTerm, TRegExpSequence {
 
   override predicate matchesEmptyString() {
     forall(RegExpTerm child | child = this.getAChild() | child.matchesEmptyString())
+  }
+
+  // Why can't we use concat(...) with language[monotonicAggregates] here instead?
+  override string getAMatch() { result = this.getAMatchFromChildAtIndex(0) }
+
+  private string getAMatchFromChildAtIndex(int i) {
+    i = this.getNumChild() and result = ""
+    or
+    exists(string substring, string rest |
+      substring = this.getChild(i).getAMatch() and
+      rest = this.getAMatchFromChildAtIndex(i + 1)
+    |
+      result = substring + rest
+    )
   }
 }
 
@@ -688,6 +705,8 @@ class RegExpCharacterClass extends RegExpTerm, TRegExpCharacterClass {
   override string getAPrimaryQlClass() { result = "RegExpCharacterClass" }
 
   override predicate matchesEmptyString() { none() }
+
+  override string getAMatch() { not this.isInverted() and result = this.getAChild().getAMatch() }
 }
 
 /**
@@ -802,6 +821,8 @@ class RegExpConstant extends RegExpTerm {
   override string getAPrimaryQlClass() { result = "RegExpConstant" }
 
   override predicate matchesEmptyString() { none() }
+
+  override string getAMatch() { result = this.getValue() }
 }
 
 /**
@@ -851,6 +872,8 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
   override string getAPrimaryQlClass() { result = "RegExpGroup" }
 
   override predicate matchesEmptyString() { this.getAChild().matchesEmptyString() }
+
+  override string getAMatch() { result = this.getAChild().getAMatch() }
 }
 
 /**
