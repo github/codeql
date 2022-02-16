@@ -17,7 +17,11 @@ encrypted data.</p>
 </recommendation>
 <example>
 
+<p>The following code shows an example of using the <code>openssl</code> library to generate an RSA key.
+When creating a key, you must specify which key size to use. The first example uses 1024 bits, which is not
+considered sufficient. The second example uses 2048 bits, which is currently considered sufficient.</p>
 
+<sample src="InsufficientKeySize.c" />
 
 </example>
 <references>
@@ -26,8 +30,6 @@ encrypted data.</p>
 Approved Security Functions</a>.</li>
 <li>NIST, SP 800-131A: <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf">
 Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
-
-
 
 <!--  LocalWords:  CWE
  -->
