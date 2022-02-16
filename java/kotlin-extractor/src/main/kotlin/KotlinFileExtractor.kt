@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.descriptors.java.JavaVisibilities
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
+import org.jetbrains.kotlin.ir.backend.js.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
@@ -1018,7 +1019,7 @@ open class KotlinFileExtractor(
         typeArguments: List<IrType> = listOf(),
         extractClassTypeArguments: Boolean = false) {
 
-        val callTarget = syntacticCallTarget.target
+        val callTarget = syntacticCallTarget.target.realOverrideTarget
         val id = tw.getFreshIdLabel<DbMethodaccess>()
         val type = useType(callsite.type)
         val locId = tw.getLocation(callsite)

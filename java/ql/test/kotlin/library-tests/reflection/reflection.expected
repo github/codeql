@@ -1,0 +1,5 @@
+variableInitializerType
+| reflection.kt:5:9:5:54 | KFunction<Double> ref | file://<external>/KFunction.class:0:0:0:0 | KFunction<Double> | reflection.kt:5:49:5:54 | new Function2<Ccc,Integer,Double>(...) { ... } | file://<external>/Function2.class:0:0:0:0 | Function2<Ccc,Integer,Double> | false |
+| reflection.kt:5:9:5:54 | KFunction<Double> ref | file://<external>/KFunction.class:0:0:0:0 | KFunction<Double> | reflection.kt:5:49:5:54 | new Function2<Ccc,Integer,Double>(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object | false |
+invocation
+| reflection.kt:6:21:6:24 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |

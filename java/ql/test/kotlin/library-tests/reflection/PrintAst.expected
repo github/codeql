@@ -1,0 +1,46 @@
+reflection.kt:
+#    0| [CompilationUnit] reflection
+#    3|   1: [Class] Reflection
+#    3|     1: [Constructor] Reflection
+#    3|       5: [BlockStmt] { ... }
+#    3|         0: [SuperConstructorInvocationStmt] super(...)
+#    3|         1: [ExprStmt] <Expr>;
+#    3|           0: [MethodAccess] <obinit>(...)
+#    4|     3: [Method] fn
+#-----|       4: (Parameters)
+#    4|         0: [Parameter] boo
+#    4|       5: [BlockStmt] { ... }
+#    5|         0: [LocalVariableDeclStmt] var ...;
+#    5|           1: [LocalVariableDeclExpr] ref
+#    5|             0: [MemberRefExpr] ...::...
+#    5|               -4: [AnonymousClass] new Function2<Ccc,Integer,Double>(...) { ... }
+#    5|                 1: [Constructor] 
+#    5|                   5: [BlockStmt] { ... }
+#    5|                     0: [SuperConstructorInvocationStmt] super(...)
+#    5|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#    5|                     0: [Parameter] a0
+#    5|                     1: [Parameter] a1
+#    5|                   5: [BlockStmt] { ... }
+#    5|                     0: [ReturnStmt] return ...
+#    5|                       0: [MethodAccess] m(...)
+#    5|                         -1: [VarAccess] a0
+#    5|                         0: [VarAccess] a1
+#    5|               -3: [TypeAccess] Function2<Ccc,Integer,Double>
+#    6|         1: [ExprStmt] <Expr>;
+#    6|           0: [MethodAccess] println(...)
+#    6|             -1: [TypeAccess] ConsoleKt
+#    6|             0: [MethodAccess] getName(...)
+#    6|               -1: [VarAccess] ref
+#    9|     4: [Class] Ccc
+#    9|       1: [Constructor] Ccc
+#    9|         5: [BlockStmt] { ... }
+#    9|           0: [SuperConstructorInvocationStmt] super(...)
+#    9|           1: [ExprStmt] <Expr>;
+#    9|             0: [MethodAccess] <obinit>(...)
+#   10|       3: [Method] m
+#-----|         4: (Parameters)
+#   10|           0: [Parameter] i
+#   10|         5: [BlockStmt] { ... }
+#   10|           0: [ReturnStmt] return ...
+#   10|             0: [DoubleLiteral] 5.0
