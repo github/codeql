@@ -270,3 +270,18 @@
         })
     });
 });
+
+(function() {
+    require("http").request({auth: "user:{{ INSERT_HERE }}"}); // OK
+    require("http").request({auth: "user:token {{ INSERT_HERE }}"}); // OK
+    require("http").request({auth: "user:( INSERT_HERE )"}); // OK
+    require("http").request({auth: "user:{{ env.access_token }}"}); // OK
+    require("http").request({auth: "user:abcdefgh"}); // OK
+    require("http").request({auth: "user:12345678"}); // OK
+    require("http").request({auth: "user:foo"}); // OK
+    require("http").request({auth: "user:mypassword"}) // OK
+    require("http").request({auth: "user:mytoken"}) // OK
+    require("http").request({auth: "user:fake token"}) // OK
+    require("http").request({auth: "user:dcba"}) // OK
+    require("http").request({auth: "user:custom string"}) // OK
+});
