@@ -15,14 +15,14 @@ usage()
   cat >&2 <<EOF
 ${app_name}: $@
 ${app_name}: Generate skeleton upgrade script.
-Usage: ${app_name} [--prev_hash <COMMITISH>] [--lang <LANG>]"
+Usage: ${app_name} --lang <LANG> [--prev_hash <COMMITISH>]"
+
+--lang <LANG>
+        Language to update the schema for.
 
 --prev-hash <COMMITISH>
         Hash/branch to use to get SHA1 for previous DB scheme.
         Default: origin/main
-
---lang <LANG>
-        Language to update the schema for.
 
 Must be run within the git repo needing an update.
 EOF
@@ -30,7 +30,6 @@ EOF
 }
 
 prev_hash="origin/main"
-lang="cpp"
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -70,6 +69,10 @@ done
 
 if [ $# -gt 0 ]; then
   usage 2 "Unrecognised operand: $1"
+fi
+
+if [ -z ${lang+x} ]; then
+  usage 2 "No language specified"
 fi
 
 top_level="$(git rev-parse --show-superproject-working-tree)"
