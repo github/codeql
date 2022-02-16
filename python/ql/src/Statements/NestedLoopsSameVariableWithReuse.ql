@@ -19,8 +19,8 @@ predicate loop_variable_ssa(For f, Variable v, SsaVariable s) {
 
 predicate variableUsedInNestedLoops(For inner, For outer, Variable v, Name n) {
   /* Ignore cases where there is no use of the variable or the only use is in the inner loop. */
-  outer.contains(n) and
-  not inner.contains(n) and
+  forLoopContainsName(outer, n) and
+  not forLoopContainsName(inner, n) and
   /* Only treat loops in body as inner loops. Loops in the else clause are ignored. */
   outer.getBody().contains(inner) and
   exists(SsaVariable s |
@@ -29,6 +29,9 @@ predicate variableUsedInNestedLoops(For inner, For outer, Variable v, Name n) {
     s.getAUse().getNode() = n
   )
 }
+
+pragma[nomagic]
+private predicate forLoopContainsName(For for, Name name) { for.contains(name) }
 
 from For inner, For outer, Variable v, Name n
 where variableUsedInNestedLoops(inner, outer, v, n)
