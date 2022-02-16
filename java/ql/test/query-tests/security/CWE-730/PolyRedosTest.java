@@ -6,30 +6,30 @@ import com.google.common.base.Splitter;
 class PolyRedosTest {
     void test(HttpServletRequest request) {
         String tainted = request.getParameter("inp");
-        String reg = "a\\.\\d+E?\\d+b";
+        String reg = "0\\.\\d+E?\\d+!";
         Predicate<String> dummyPred = (s -> s.length() % 7 == 0);
         
-        tainted.matches(reg); // $ hasTaintFlow
-        tainted.split(reg); // $ hasTaintFlow
-        tainted.split(reg, 7); // $ hasTaintFlow
-        Pattern.matches(reg, tainted); // $ hasTaintFlow
-        Pattern.compile(reg).matcher(tainted).matches(); // $ hasTaintFlow
-        Pattern.compile(reg).split(tainted); // $ hasTaintFlow
-        Pattern.compile(reg, Pattern.DOTALL).split(tainted); // $ hasTaintFlow
-        Pattern.compile(reg).split(tainted, 7); // $ hasTaintFlow
-        Pattern.compile(reg).splitAsStream(tainted); // $ hasTaintFlow
-        Pattern.compile(reg).asPredicate().test(tainted); // $ hasTaintFlow
-        Pattern.compile(reg).asMatchPredicate().negate().and(dummyPred).or(dummyPred).test(tainted); // $ hasTaintFlow
-        Predicate.not(dummyPred.and(dummyPred.or(Pattern.compile(reg).asPredicate()))).test(tainted); // $ hasTaintFlow
+        tainted.matches(reg); // $ hasPolyRedos
+        tainted.split(reg); // $ hasPolyRedos
+        tainted.split(reg, 7); // $ hasPolyRedos
+        Pattern.matches(reg, tainted); // $ hasPolyRedos
+        Pattern.compile(reg).matcher(tainted).matches(); // $ hasPolyRedos
+        Pattern.compile(reg).split(tainted); // $ hasPolyRedos
+        Pattern.compile(reg, Pattern.DOTALL).split(tainted); // $ hasPolyRedos
+        Pattern.compile(reg).split(tainted, 7); // $ hasPolyRedos
+        Pattern.compile(reg).splitAsStream(tainted); // $ hasPolyRedos
+        Pattern.compile(reg).asPredicate().test(tainted); // $ hasPolyRedos
+        Pattern.compile(reg).asMatchPredicate().negate().and(dummyPred).or(dummyPred).test(tainted); // $ hasPolyRedos
+        Predicate.not(dummyPred.and(dummyPred.or(Pattern.compile(reg).asPredicate()))).test(tainted); // $ hasPolyRedos
 
-        Splitter.on(Pattern.compile(reg)).split(tainted); // $ hasTaintFlow
+        Splitter.on(Pattern.compile(reg)).split(tainted); // $ hasPolyRedos
         Splitter.on(reg).split(tainted); 
-        Splitter.onPattern(reg).split(tainted); // $ hasTaintFlow
-        Splitter.onPattern(reg).splitToList(tainted); // $ hasTaintFlow
-        Splitter.onPattern(reg).limit(7).omitEmptyStrings().trimResults().split(tainted); // $ hasTaintFlow
-        Splitter.onPattern(reg).withKeyValueSeparator(" => ").split(tainted); // $ hasTaintFlow
+        Splitter.onPattern(reg).split(tainted); // $ hasPolyRedos
+        Splitter.onPattern(reg).splitToList(tainted); // $ hasPolyRedos
+        Splitter.onPattern(reg).limit(7).omitEmptyStrings().trimResults().split(tainted); // $ hasPolyRedos
+        Splitter.onPattern(reg).withKeyValueSeparator(" => ").split(tainted); // $ hasPolyRedos
         Splitter.on(";").withKeyValueSeparator(reg).split(tainted);
-        Splitter.on(";").withKeyValueSeparator(Splitter.onPattern(reg)).split(tainted); // $ hasTaintFlow
+        Splitter.on(";").withKeyValueSeparator(Splitter.onPattern(reg)).split(tainted); // $ hasPolyRedos
 
     }
 }
