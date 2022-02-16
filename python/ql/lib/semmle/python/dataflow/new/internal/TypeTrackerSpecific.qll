@@ -12,7 +12,7 @@ class TypeTrackingNode = DataFlowPublic::TypeTrackingNode;
 
 predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStep/2;
 
-predicate jumpStep = DataFlowPrivate::jumpStep/2;
+predicate jumpStep = DataFlowPrivate::jumpStepSharedWithTypeTracker/2;
 
 /**
  * Gets the name of a possible piece of content. For Python, this is currently only attribute names,
