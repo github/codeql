@@ -2,7 +2,7 @@
  * @name Use of a cryptographic algorithm with insufficient key size
  * @description Using cryptographic algorithms with too small a key size can
  *              allow an attacker to compromise security.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id cpp/insufficient-key-size
@@ -43,13 +43,13 @@ class KeyStrengthFlow extends DataFlow::Configuration {
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, KeyStrengthFlow conf, FunctionCall fc,
+  DataFlow::PathNode source, DataFlow::PathNode sink, KeyStrengthFlow conf, FunctionCall fc, int param,
   string name, int bits
 where
   conf.hasFlowPath(source, sink) and
-  sink.getNode().asExpr() = fc.getArgument(1) and
+  sink.getNode().asExpr() = fc.getArgument(param) and
   fc.getTarget().hasGlobalName(name) and
-  bits = getMinimumKeyStrength(name, _) and
+  bits = getMinimumKeyStrength(name, param) and
   source.getNode().asInstruction().(ConstantValueInstruction).getValue().toInt() < bits
 select fc, source, sink,
   "The key size $@ is less than the recommended key size of " + bits.toString() + " bits.", source,

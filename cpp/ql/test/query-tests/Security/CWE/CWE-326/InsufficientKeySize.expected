@@ -1,3 +1,3 @@
-| test.cpp:32:5:32:38 | call to EVP_PKEY_CTX_set_dsa_paramgen_bits | test.cpp:32:45:32:48 | 1024 | test.cpp:32:45:32:48 | 1024 | The key size $@ is insufficient for security | test.cpp:32:45:32:48 | 1024 | 1024 |
-| test.cpp:33:5:33:42 | call to EVP_PKEY_CTX_set_dh_paramgen_prime_len | test.cpp:33:49:33:52 | 1024 | test.cpp:33:49:33:52 | 1024 | The key size $@ is insufficient for security | test.cpp:33:49:33:52 | 1024 | 1024 |
-| test.cpp:35:5:35:36 | call to EVP_PKEY_CTX_set_rsa_keygen_bits | test.cpp:35:43:35:46 | 1024 | test.cpp:35:43:35:46 | 1024 | The key size $@ is insufficient for security | test.cpp:35:43:35:46 | 1024 | 1024 |
+| test.cpp:34:5:34:38 | call to EVP_PKEY_CTX_set_dsa_paramgen_bits | test.cpp:34:45:34:48 | 1024 | test.cpp:34:45:34:48 | 1024 | The key size $@ is less than the recommended key size of 2048 bits. | test.cpp:34:45:34:48 | 1024 | 1024 |
+| test.cpp:35:5:35:42 | call to EVP_PKEY_CTX_set_dh_paramgen_prime_len | test.cpp:35:49:35:52 | 1024 | test.cpp:35:49:35:52 | 1024 | The key size $@ is less than the recommended key size of 2048 bits. | test.cpp:35:49:35:52 | 1024 | 1024 |
+| test.cpp:37:5:37:36 | call to EVP_PKEY_CTX_set_rsa_keygen_bits | test.cpp:37:43:37:46 | 1024 | test.cpp:37:43:37:46 | 1024 | The key size $@ is less than the recommended key size of 2048 bits. | test.cpp:37:43:37:46 | 1024 | 1024 |
