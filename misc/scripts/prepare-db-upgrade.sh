@@ -124,6 +124,14 @@ if [ "${current_hash}" = "${prev_hash}" ]; then
   exit
 fi
 
+create_upgrade_properties()
+{
+  cat <<EOF > "$1/upgrade.properties"
+description: <INSERT DESCRIPTION HERE>
+compatibility: full|backwards|partial|breaking
+EOF
+}
+
 # Copy current and new dbscheme into the upgrade dir
 upgradedir="${upgrade_root}/${prev_hash}"
 mkdir -p "${upgradedir}"
@@ -131,11 +139,7 @@ mkdir -p "${upgradedir}"
 cp "${scheme_file}" "${upgradedir}"
 git cat-file blob "${prev_hash}" > "${upgradedir}/old.dbscheme"
 
-# Create the template upgrade.properties file in the upgrade dir.
-cat <<EOF > "${upgradedir}/upgrade.properties"
-description: <INSERT DESCRIPTION HERE>
-compatibility: full|backwards|partial|breaking
-EOF
+create_upgrade_properties "${upgradedir}"
 
 # Copy current and new dbscheme into the downgrade dir
 downgradedir="${downgrade_root}/${current_hash}"
@@ -144,11 +148,7 @@ mkdir -p "${downgradedir}"
 cp "${scheme_file}" "${downgradedir}/old.dbscheme"
 git cat-file blob "${prev_hash}" > "${downgradedir}/$(basename "${scheme_file}")"
 
-# Create the template upgrade.properties file in the downgrade dir.
-cat <<EOF > "${downgradedir}/upgrade.properties"
-description: <INSERT DESCRIPTION HERE>
-compatibility: full|backwards|partial|breaking
-EOF
+create_upgrade_properties "${downgradedir}"
 
 # Tell user what we've done
 cat <<EOF
