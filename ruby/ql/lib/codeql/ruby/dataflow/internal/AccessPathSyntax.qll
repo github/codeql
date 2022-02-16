@@ -47,9 +47,6 @@ class AccessPath extends string instanceof AccessPath::Range {
     result = count(int n | exists(getRawToken(this, n))) and
     not this.hasSyntaxError()
   }
-
-  /** Gets the `n`th-last token, with 0 being the last token. */
-  AccessPathToken getLastToken(int n) { result = this.getToken(this.getNumToken() - 1 - n) }
 }
 
 /**
@@ -72,7 +69,7 @@ class AccessPathToken extends string {
   string getArgumentList() { result = this.getPart(2) }
 
   /** Gets the `n`th argument to this token, such as `x` or `y` from `Member[x,y]`. */
-  string getArgument(int n) { result = this.getArgumentList().splitAt(",", n) }
+  string getArgument(int n) { result = this.getArgumentList().splitAt(",", n).trim() }
 
   /** Gets an argument to this token, such as `x` or `y` from `Member[x,y]`. */
   string getAnArgument() { result = this.getArgument(_) }
