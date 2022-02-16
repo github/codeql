@@ -23,23 +23,12 @@ module Generic {
   }
 
   /**
-   * True if `rhs` is being assigned to the `propName` property of an HTML
-   * element created by `createElementCall`.
-   */
-  predicate isPropWrite(DataFlow::CallNode createElementCall, string propName, DataFlow::Node rhs) {
-    exists(DataFlow::PropWrite assignment |
-      isCreateElementNode(createElementCall, _) and
-      assignment.writes(createElementCall.getALocalUse(), propName, rhs)
-    )
-  }
-
-  /**
    * A `createElement` call that creates a `<script ../>` element which never
    * has its `integrity` attribute set locally.
    */
   predicate isCreateScriptNodeWoIntegrityCheck(DataFlow::CallNode createCall) {
     isCreateElementNode(createCall, "script") and
-    not exists(DataFlow::Node rhs | isPropWrite(createCall, "integrity", rhs))
+    not exists(createCall.getAPropertyWrite("integrity"))
   }
 
   /** A location that adds a reference to an untrusted source. */
@@ -54,14 +43,14 @@ module StaticCreation {
   predicate isLocalhostPrefix(string host) {
     host.toLowerCase()
         .regexpMatch([
-            "localhost(:[0-9]+)?/.*", "127.0.0.1(:[0-9]+)?/.*", "::1/.*", "\\[::1\\]:[0-9]+/.*"
+            "(?i)localhost(:[0-9]+)?/.*", "127.0.0.1(:[0-9]+)?/.*", "::1/.*", "\\[::1\\]:[0-9]+/.*"
           ])
   }
 
   /** A path that is vulnerable to a MITM attack. */
   bindingset[url]
   predicate isUntrustedSourceUrl(string url) {
-    exists(string hostPath | hostPath = url.regexpCapture("http://(.*)", 1) |
+    exists(string hostPath | hostPath = url.regexpCapture("(?i)http://(.*)", 1) |
       not isLocalhostPrefix(hostPath)
     )
   }
@@ -71,10 +60,11 @@ module StaticCreation {
   predicate isCdnUrlWithCheckingRequired(string url) {
     // Some CDN URLs are required to have an integrity attribute. We only add CDNs to that list
     // that recommend integrity-checking.
-    url.regexpMatch([
-        "^https?://code\\.jquery\\.com/.*\\.js$", "^https?://cdnjs\\.cloudflare\\.com/.*\\.js$",
-        "^https?://cdnjs\\.com/.*\\.js$"
-      ])
+    url.regexpMatch("(?i)" +
+        [
+          "^https?://code\\.jquery\\.com/.*\\.js$", "^https?://cdnjs\\.cloudflare\\.com/.*\\.js$",
+          "^https?://cdnjs\\.com/.*\\.js$"
+        ])
   }
 
   /** A script element that refers to untrusted content. */
@@ -85,7 +75,7 @@ module StaticCreation {
     }
 
     override string getProblem() {
-      result = "script elements should use an HTTPS url and/or use the integrity attribute"
+      result = "script elements should use an 'https:' URL and/or use the integrity attribute"
     }
   }
 
@@ -98,7 +88,7 @@ module StaticCreation {
 
     override string getProblem() {
       result =
-        "script elements that depend on this CDN should use an HTTPS url and use the integrity attribute"
+        "script elements that depend on this CDN should use an 'https:' URL and use the integrity attribute"
     }
   }
 
@@ -106,7 +96,7 @@ module StaticCreation {
   class IframeElementWithUntrustedContent extends HTML::IframeElement, Generic::AddsUntrustedUrl {
     IframeElementWithUntrustedContent() { isUntrustedSourceUrl(this.getSourcePath()) }
 
-    override string getProblem() { result = "iframe elements should use an HTTPS url" }
+    override string getProblem() { result = "iframe elements should use an 'https:' URL" }
   }
 }
 
@@ -114,9 +104,7 @@ module DynamicCreation {
   import DataFlow::TypeTracker
 
   predicate isUnsafeSourceLiteral(DataFlow::Node source) {
-    exists(StringLiteral s | source = s.flow() |
-      s.getValue().toLowerCase() = "http:" + any(string rest)
-    )
+    exists(StringLiteral s | source = s.flow() | s.getValue().regexpMatch("(?i)http:.*"))
   }
 
   DataFlow::Node urlTrackedFromUnsafeSourceLiteral(DataFlow::TypeTracker t) {
@@ -150,11 +138,11 @@ module DynamicCreation {
     exists(DataFlow::CallNode createElementCall |
       name = "script" and
       Generic::isCreateScriptNodeWoIntegrityCheck(createElementCall) and
-      Generic::isPropWrite(createElementCall, "src", sink)
+      sink = createElementCall.getAPropertyWrite("src").getRhs()
       or
       name = "iframe" and
       Generic::isCreateElementNode(createElementCall, "iframe") and
-      Generic::isPropWrite(createElementCall, "src", sink)
+      sink = createElementCall.getAPropertyWrite("src").getRhs()
     )
   }
 
@@ -170,9 +158,9 @@ module DynamicCreation {
 
     override string getProblem() {
       name = "script" and
-      result = "script elements should use an HTTPS url and/or use the integrity attribute"
+      result = "script elements should use an 'https:' URL and/or use the integrity attribute"
       or
-      name = "iframe" and result = "iframe elements should use an HTTPS url"
+      name = "iframe" and result = "iframe elements should use an 'https:' URL"
     }
   }
 }
