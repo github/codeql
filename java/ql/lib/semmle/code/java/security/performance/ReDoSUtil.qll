@@ -1052,13 +1052,13 @@ private module SuffixConstruction {
    */
   pragma[noinline]
   private string relevant(RegExpRoot root) {
-    exists(ascii(result))
+    exists(ascii(result)) and exists(root)
     or
     exists(InputSymbol s | belongsTo(s, root) | result = intersect(s, _))
     or
     // The characters from `hasSimpleRejectEdge`. Only `\n` is really needed (as `\n` is not in the `ascii` relation).
     // The three chars must be kept in sync with `hasSimpleRejectEdge`.
-    result = ["|", "\n", "Z"]
+    result = ["|", "\n", "Z"] and exists(root)
   }
 
   /**
