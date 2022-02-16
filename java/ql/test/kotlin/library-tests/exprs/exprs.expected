@@ -1580,7 +1580,6 @@
 | samConversion.kt:42:31:42:31 | a | samConversion.kt:40:1:46:1 | fn | VarAccess |
 | samConversion.kt:43:5:45:43 | c | samConversion.kt:40:1:46:1 | fn | LocalVariableDeclExpr |
 | samConversion.kt:43:13:45:43 | (...)... | samConversion.kt:40:1:46:1 | fn | CastExpr |
-| samConversion.kt:43:13:45:43 | (no string representation) | samConversion.kt:31:5:33:53 | accept | MethodAccess |
 | samConversion.kt:43:13:45:43 | ...=... | samConversion.kt:43:13:45:43 |  | AssignExpr |
 | samConversion.kt:43:13:45:43 | <fn> | samConversion.kt:31:5:33:53 | accept | VarAccess |
 | samConversion.kt:43:13:45:43 | <fn> | samConversion.kt:43:13:45:43 |  | VarAccess |
@@ -1610,6 +1609,7 @@
 | samConversion.kt:43:13:45:43 | i20 | samConversion.kt:31:5:33:53 | accept | VarAccess |
 | samConversion.kt:43:13:45:43 | i21 | samConversion.kt:31:5:33:53 | accept | VarAccess |
 | samConversion.kt:43:13:45:43 | i22 | samConversion.kt:31:5:33:53 | accept | VarAccess |
+| samConversion.kt:43:13:45:43 | invoke(...) | samConversion.kt:31:5:33:53 | accept | MethodAccess |
 | samConversion.kt:43:13:45:43 | new (...) | samConversion.kt:40:1:46:1 | fn | ClassInstanceExpr |
 | samConversion.kt:43:13:45:43 | this | samConversion.kt:43:13:45:43 |  | ThisAccess |
 | samConversion.kt:43:13:45:43 | this.<fn> | samConversion.kt:43:13:45:43 |  | VarAccess |

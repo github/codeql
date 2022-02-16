@@ -2584,6 +2584,14 @@ open class KotlinFileExtractor(
             functionN(pluginContext)(functionNTypeArguments.size - 1).typeWith(functionNTypeArguments)
         }
 
+    private fun getFunctionalInterfaceTypeWithTypeArgs(functionNTypeArguments: List<IrTypeArgument>) =
+        if (functionNTypeArguments.size > BuiltInFunctionArity.BIG_ARITY) {
+            pluginContext.referenceClass(FqName("kotlin.jvm.functions.FunctionN"))!!
+                .typeWithArguments(listOf(functionNTypeArguments.last()))
+        } else {
+            functionN(pluginContext)(functionNTypeArguments.size - 1).symbol.typeWithArguments(functionNTypeArguments)
+        }
+
     private data class FunctionLabels(
         val methodId: Label<DbMethod>,
         val blockId: Label<DbBlock>,
@@ -2916,26 +2924,14 @@ open class KotlinFileExtractor(
                         return
                     }
 
-                    val functionType = if (e.argument.type.isKFunction()) {
-                        val st = e.argument.type as? IrSimpleType
-                        if (st == null) {
-                            logger.errorElement("Expected to find a simple type in SAM conversion.", e)
-                            return
-                        }
-
-                        val typeArgs = mutableListOf<IrType>()
-                        for (arg in st.arguments) {
-                            if (arg !is IrTypeProjection) {
-                                logger.errorElement("Expected to find only type projections in SAM conversion.", e)
-                                return
-                            }
-                            typeArgs.add(arg.type)
-                        }
-
-                        getFunctionalInterfaceType(typeArgs)
-                    } else {
-                        e.argument.type
+                    val st = e.argument.type as? IrSimpleType
+                    if (st == null) {
+                        logger.errorElement("Expected to find a simple type in SAM conversion.", e)
+                        return
                     }
+
+                    // Either Function1, ... Function22 or FunctionN type, but not Function23 or above.
+                    val functionType = getFunctionalInterfaceTypeWithTypeArgs(st.arguments)
 
                     val invokeMethod = functionType.classOrNull?.owner?.declarations?.filterIsInstance<IrFunction>()?.find { it.name.asString() == "invoke"}
                     if (invokeMethod == null) {

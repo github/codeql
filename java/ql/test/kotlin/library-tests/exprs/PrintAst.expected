@@ -1,28 +1,3 @@
-samConversion.kt:
-#   43| [VarAccess] <fn>
-#   43| [VarAccess] i0
-#   43| [VarAccess] i1
-#   43| [VarAccess] i2
-#   43| [VarAccess] i3
-#   43| [VarAccess] i4
-#   43| [VarAccess] i5
-#   43| [VarAccess] i6
-#   43| [VarAccess] i7
-#   43| [VarAccess] i8
-#   43| [VarAccess] i9
-#   43| [VarAccess] i10
-#   43| [VarAccess] i11
-#   43| [VarAccess] i12
-#   43| [VarAccess] i13
-#   43| [VarAccess] i14
-#   43| [VarAccess] i15
-#   43| [VarAccess] i16
-#   43| [VarAccess] i17
-#   43| [VarAccess] i18
-#   43| [VarAccess] i19
-#   43| [VarAccess] i20
-#   43| [VarAccess] i21
-#   43| [VarAccess] i22
 exprs.kt:
 #    0| [CompilationUnit] exprs
 #    0|   1: [Class] ExprsKt
@@ -2746,6 +2721,31 @@ samConversion.kt:
 #   33|                       22: [Parameter] i22
 #   43|                     5: [BlockStmt] { ... }
 #   43|                       0: [ReturnStmt] return ...
+#   43|                         0: [MethodAccess] invoke(...)
+#   43|                           -1: [VarAccess] <fn>
+#   43|                           0: [VarAccess] i0
+#   43|                           1: [VarAccess] i1
+#   43|                           2: [VarAccess] i2
+#   43|                           3: [VarAccess] i3
+#   43|                           4: [VarAccess] i4
+#   43|                           5: [VarAccess] i5
+#   43|                           6: [VarAccess] i6
+#   43|                           7: [VarAccess] i7
+#   43|                           8: [VarAccess] i8
+#   43|                           9: [VarAccess] i9
+#   43|                           10: [VarAccess] i10
+#   43|                           11: [VarAccess] i11
+#   43|                           12: [VarAccess] i12
+#   43|                           13: [VarAccess] i13
+#   43|                           14: [VarAccess] i14
+#   43|                           15: [VarAccess] i15
+#   43|                           16: [VarAccess] i16
+#   43|                           17: [VarAccess] i17
+#   43|                           18: [VarAccess] i18
+#   43|                           19: [VarAccess] i19
+#   43|                           20: [VarAccess] i20
+#   43|                           21: [VarAccess] i21
+#   43|                           22: [VarAccess] i22
 #   43|                   2: [Constructor] 
 #-----|                     4: (Parameters)
 #   43|                       0: [Parameter] <fn>
