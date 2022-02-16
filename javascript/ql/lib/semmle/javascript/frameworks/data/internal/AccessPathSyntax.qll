@@ -47,9 +47,6 @@ class AccessPath extends string instanceof AccessPath::Range {
     result = count(int n | exists(getRawToken(this, n))) and
     not this.hasSyntaxError()
   }
-
-  /** Gets the `n`th-last token, with 0 being the last token. */
-  AccessPathToken getLastToken(int n) { result = this.getToken(this.getNumToken() - 1 - n) }
 }
 
 /**
