@@ -836,6 +836,35 @@ module PrivateDjango {
                 nodeTo = call
               )
               or
+              // attribute store in `<Model>.objects.create`, `get_or_create`, and `update_or_create`
+              // see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#create
+              // see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#get-or-create
+              // see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#update-or-create
+              // TODO: This does currently not handle values passed in the `defaults` dictionary
+              exists(
+                DataFlow::CallCfgNode call, API::Node modelClass, string fieldName,
+                string methodName
+              |
+                modelClass = Model::subclassRef() and
+                methodName in ["create", "get_or_create", "update_or_create"] and
+                call = modelClass.getMember("objects").getMember(methodName).getACall() and
+                nodeFrom = call.getArgByName(fieldName) and
+                c.(DataFlow::AttributeContent).getAttribute() = fieldName and
+                (
+                  // -> object created
+                  (
+                    methodName = "create" and nodeTo = call
+                    or
+                    // TODO: for these two methods, the result is a tuple `(<Model>, bool)`,
+                    // which we need flow-summaries to model properly
+                    methodName in ["get_or_create", "update_or_create"] and none()
+                  )
+                  or
+                  // -> DB store on synthetic node
+                  nodeTo.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass
+                )
+              )
+              or
               // synthetic -> method-call that returns collection of ORM models (all/filter/...)
               exists(API::Node modelClass |
                 nodeFrom.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass and

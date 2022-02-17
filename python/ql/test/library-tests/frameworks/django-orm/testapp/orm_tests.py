@@ -113,11 +113,11 @@ class TestSave5(models.Model):
 def test_save5_store():
     # note: positional args not possible
     obj = TestSave5.objects.create(text=SOURCE)
-    SINK(obj.text) # $ MISSING: flow
+    SINK(obj.text) # $ flow="SOURCE, l:-1 -> obj.text"
 
 def test_save5_load():
     obj = TestSave5.objects.first()
-    SINK(obj.text) # $ MISSING: flow
+    SINK(obj.text) # $ flow="SOURCE, l:-5 -> obj.text"
 
 # --------------------------------------
 # <Model>.objects.get_or_create()
@@ -135,7 +135,7 @@ def test_save6_store():
 def test_save6_load():
     obj = TestSave6.objects.first()
     SINK(obj.text) # $ MISSING: flow
-    SINK(obj.email) # $ MISSING: flow
+    SINK(obj.email) # $ flow="SOURCE, l:-7 -> obj.email"
 
 # --------------------------------------
 # <Model>.objects.update_or_create()
@@ -153,7 +153,7 @@ def test_save7_store():
 def test_save7_load():
     obj = TestSave7.objects.first()
     SINK(obj.text) # $ MISSING: flow
-    SINK(obj.email) # $ MISSING: flow
+    SINK(obj.email) # $ flow="SOURCE, l:-7 -> obj.email"
 
 # --------------------------------------
 # <Model>.objects.[<QuerySet>].update()
