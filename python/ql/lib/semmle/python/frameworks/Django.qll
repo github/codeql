@@ -614,7 +614,7 @@ module PrivateDjango {
             override predicate isDbFetch() { none() }
           }
 
-          /** A method on a query-set or manager that returns an instance of a django model. */
+          /** A method call on a query-set or manager that returns an instance of a django model. */
           private class QuerySetMethod extends InstanceSource, DataFlow::CallCfgNode {
             API::Node modelClass;
             string methodName;
@@ -628,6 +628,76 @@ module PrivateDjango {
             override API::Node getModelClass() { result = modelClass }
 
             override predicate isDbFetch() { not methodName = "create" }
+          }
+
+          /**
+           * A method call on a query-set or manager that returns a collection
+           * containing instances of a django models.
+           */
+          class QuerySetMethodInstanceCollection extends DataFlow::CallCfgNode {
+            API::Node modelClass;
+            string methodName;
+
+            QuerySetMethodInstanceCollection() {
+              modelClass = subclassRef() and
+              this = querySetReturningMethod(modelClass, methodName).getACall() and
+              not methodName in ["none", "datetimes", "dates", "values", "values_list"]
+              or
+              // TODO: When we have flow-summaries, we should be able to model `values` and `values_list`
+              // Potentially by doing `synthetic ===store of list element==> <Model>.objects`, and then
+              // `.all()` just keeps that content, and `.first()` will do a read step (of the list element).
+              //
+              // So for `Model.objects.filter().exclude().first()` we would have
+              // 1: <Synthetic node for Model> ===store of list element==> Model.objects
+              // 2: Model.objects ==> Model.objects.filter()
+              // 3: Model.objects.filter() ==> Model.objects.filter().exclude()
+              // 4: Model.objects.filter().exclude() ===read of list element==> Model.objects.filter().exclude().first()
+              //
+              // This also means that `.none()` could clear contents. Right now we
+              // think that the result of `Model.objects.none().all()` can contain
+              // Model objects, but it will be empty due to the `.none()` part. Not
+              // that this is important, since no-one would need to write
+              // `.none().all()` code anyway, but it would be cool to be able to model it properly :D
+              //
+              //
+              // The big benefit is for how we could then model `values`/`values_list`. For example,
+              // `Model.objects.value_list(name, description)` would result in (for the attribute description)
+              // 0: <Synthetic node for Model> -- [attr description]
+              // 1: ==> Model.objects [ListElement, attr description]
+              // 2: ==> .value_list(...) [ListElement, TupleIndex 1]
+              //
+              // but for now, we just model a store step directly from the synthetic
+              // node to the method call.
+              // extra method on query-set/manager that does _not_ return a query-set
+              modelClass = subclassRef() and
+              methodName in ["iterator", "bulk_create"] and
+              this = [manager(modelClass), querySet(modelClass)].getMember(methodName).getACall()
+            }
+
+            /** Gets the model class that this is an instance source of. */
+            API::Node getModelClass() { result = modelClass }
+
+            /** Holds if this instance-source is fetching data from the DB. */
+            predicate isDbFetch() { not methodName = "bulk_create" }
+          }
+
+          /**
+           * A method call on a query-set or manager that returns a dictionary
+           * containing instances of a django models as the values.
+           */
+          class QuerySetMethodInstanceDictValue extends DataFlow::CallCfgNode {
+            API::Node modelClass;
+
+            QuerySetMethodInstanceDictValue() {
+              modelClass = subclassRef() and
+              this = [manager(modelClass), querySet(modelClass)].getMember("in_bulk").getACall()
+            }
+
+            /** Gets the model class that this is an instance source of. */
+            API::Node getModelClass() { result = modelClass }
+
+            /** Holds if this instance-source is fetching data from the DB. */
+            predicate isDbFetch() { any() }
           }
 
           /**
@@ -764,6 +834,22 @@ module PrivateDjango {
                 nodeFrom = call.getArgByName(fieldName) and
                 c.(DataFlow::AttributeContent).getAttribute() = fieldName and
                 nodeTo = call
+              )
+              or
+              // synthetic -> method-call that returns collection of ORM models (all/filter/...)
+              exists(API::Node modelClass |
+                nodeFrom.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass and
+                nodeTo.(Model::QuerySetMethodInstanceCollection).getModelClass() = modelClass and
+                nodeTo.(Model::QuerySetMethodInstanceCollection).isDbFetch() and
+                c instanceof DataFlow::ListElementContent
+              )
+              or
+              // synthetic -> method-call that returns dictionary with ORM models as values
+              exists(API::Node modelClass |
+                nodeFrom.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass and
+                nodeTo.(Model::QuerySetMethodInstanceDictValue).getModelClass() = modelClass and
+                nodeTo.(Model::QuerySetMethodInstanceDictValue).isDbFetch() and
+                c instanceof DataFlow::DictionaryElementAnyContent
               )
             }
 

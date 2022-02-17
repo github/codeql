@@ -307,8 +307,8 @@ def test_load_single():
 def test_load_many():
     objs = TestLoad.objects.all()
     for obj in objs:
-        SINK(obj.text) # $ MISSING: flow
-    SINK(objs[0].text) # $ MISSING: flow
+        SINK(obj.text) # $ flow="SOURCE, l:-10 -> obj.text"
+    SINK(objs[0].text) # $ flow="SOURCE, l:-11 -> objs[0].text"
 
 def test_load_many_skip():
     objs = TestLoad.objects.all()[5:]
@@ -323,8 +323,8 @@ def test_load_qs_chain_single():
 def test_load_qs_chain_many():
     objs = TestLoad.objects.all().filter(text__contains="s").exclude(text=None)
     for obj in objs:
-        SINK(obj.text) # $ MISSING: flow
-    SINK(objs[0].text) # $ MISSING: flow
+        SINK(obj.text) # $ flow="SOURCE, l:-26 -> obj.text"
+    SINK(objs[0].text) # $ flow="SOURCE, l:-27 -> objs[0].text"
 
 def test_load_values():
     # see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#django.db.models.query.QuerySet.values
@@ -363,7 +363,7 @@ def test_load_in_bulk():
     d = TestLoad.objects.in_bulk([1])
     for val in d.values():
         SINK(val.text) # $ MISSING: flow
-    SINK(d[1].text) # $ MISSING: flow
+    SINK(d[1].text) # $ flow="SOURCE, l:-66 -> d[1].text"
 
 
 # Good resources:

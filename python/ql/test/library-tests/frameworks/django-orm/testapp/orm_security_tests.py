@@ -41,7 +41,7 @@ def person(request):
         resp_text = "<h1>Persons:</h1>"
         for person in Person.objects.all():
             resp_text += "\n{} (age {})".format(person.name, person.age)
-        return HttpResponse(resp_text) # NOT OK
+        return HttpResponse(resp_text)  # NOT OK
 
 def show_name(request):
     person = Person.objects.get(id=request.GET["id"])
