@@ -23,7 +23,6 @@ import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
-import org.jetbrains.kotlin.metadata.ProtoBuf
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.util.OperatorNameConventions
 import org.jetbrains.kotlin.types.Variance
@@ -539,15 +538,15 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunctionIfReal(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, memberName: String? = null) {
+    fun extractFunctionIfReal(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
         with("function if real", f) {
             if (f.origin == IrDeclarationOrigin.FAKE_OVERRIDE)
                 return
-            extractFunction(f, parentId, extractBody, typeSubstitution, classTypeArgsIncludingOuterClasses, memberName)
+            extractFunction(f, parentId, extractBody, typeSubstitution, classTypeArgsIncludingOuterClasses)
         }
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, memberName: String? = null, idOverride: Label<DbMethod>? = null): Label<out DbCallable> {
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null): Label<out DbCallable> {
         with("function", f) {
             DeclarationStackAdjuster(f).use {
 
@@ -602,7 +601,7 @@ open class KotlinFileExtractor(
                     tw.writeConstrsKotlinType(constrId, unitType.kotlinResult.id)
                 } else {
                     val returnType = useType(substReturnType, TypeContext.RETURN)
-                    val shortName = memberName ?: getFunctionShortName(f)
+                    val shortName = getFunctionShortName(f)
                     @Suppress("UNCHECKED_CAST")
                     val methodId = id as Label<DbMethod>
                     tw.writeMethods(methodId, shortName, "$shortName$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration as Label<DbMethod>)
@@ -2253,8 +2252,7 @@ open class KotlinFileExtractor(
                     val fnInterfaceType = getFunctionalInterfaceType(types)
                     val id = extractGeneratedClass(
                         e.function, // We're adding this function as a member, and changing its name to `invoke` to implement `kotlin.FunctionX<,,,>.invoke(,,)`
-                        listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType),
-                        OperatorNameConventions.INVOKE.asString())
+                        listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType))
 
                     if (types.size > BuiltInFunctionArity.BIG_ARITY) {
                         implementFunctionNInvoke(e.function, ids, locId, parameters)
@@ -2358,7 +2356,7 @@ open class KotlinFileExtractor(
         functionReferenceExpr: IrFunctionReference,
         parent: StmtExprParent,
         callable: Label<out DbCallable>
-    ) : Label<out DbClassinstancexpr> {
+    ) {
         with("function reference", functionReferenceExpr) {
             val target = functionReferenceExpr.reflectionTarget ?: run {
                 logger.errorElement("Expected to find reflection target for function reference. Using underlying symbol instead.", functionReferenceExpr)
@@ -2571,8 +2569,6 @@ open class KotlinFileExtractor(
             }
 
             tw.writeIsAnonymClass(id, idMemberRef)
-
-            return idMemberRef
         }
     }
 
@@ -2977,7 +2973,7 @@ open class KotlinFileExtractor(
 
                     // add implementation function
                     val functionId = tw.getFreshIdLabel<DbMethod>()
-                    extractFunction(samMember, classId, false, null, null, null, functionId)
+                    extractFunction(samMember, classId, false, null, null, functionId)
 
                     //body
                     val blockId = tw.getFreshIdLabel<DbBlock>()
@@ -3204,14 +3200,14 @@ open class KotlinFileExtractor(
     /**
      * Extracts the class around a local function or a lambda.
      */
-    private fun extractGeneratedClass(localFunction: IrFunction, superTypes: List<IrType>, memberName: String? = null) : Label<out DbClass> {
+    private fun extractGeneratedClass(localFunction: IrFunction, superTypes: List<IrType>) : Label<out DbClass> {
         with("generated class", localFunction) {
             val ids = getLocallyVisibleFunctionLabels(localFunction)
 
             val id = extractGeneratedClass(ids, superTypes, tw.getLocation(localFunction), localFunction)
 
             // Extract local function as a member
-            extractFunctionIfReal(localFunction, id, true, null, listOf(), memberName)
+            extractFunctionIfReal(localFunction, id, true, null, listOf())
 
             return id
         }
