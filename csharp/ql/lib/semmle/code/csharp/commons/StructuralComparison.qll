@@ -5,15 +5,6 @@
 
 import csharp
 
-private newtype TGvnKind =
-  TGvnKindExpr(int kind) { expressions(_, kind, _) } or
-  TGvnKindStmt(int kind) { statements(_, kind) } or
-  TGvnKindDeclaration(GvnKindExpr kind, boolean thisTarget, Declaration d) {
-    exists(Expr e |
-      d = referenceAttribute(e) and thisTarget = isTargetThis(e) and kind = getKind(e)
-    )
-  }
-
 abstract private class GvnKind extends TGvnKind {
   abstract string toString();
 }
@@ -71,16 +62,6 @@ private GvnKind getKind(ControlFlowElement cfe) {
   )
 }
 
-/**
- * Type for containing the global value number of a control flow element.
- * A global value number, can either be a constant or a list of global value numbers,
- * where the list also carries a `kind`, which is used to distinguish between general expressions,
- * declarations and statements.
- */
-private newtype TGvn =
-  TConstantGvn(string s) { s = any(Expr e).getValue() } or
-  TListGvn(GvnList l)
-
 /** The global value number of a control flow element. */
 abstract class Gvn extends TGvn {
   /** Gets the string representation of this global value number. */
@@ -98,14 +79,6 @@ private class ListGvn extends Gvn, TListGvn {
 
   override string toString() { result = "[" + l.toString() + "]" }
 }
-
-/**
- * Type for containing a list of global value numbers with a kind.
- * The empty list carries the kind of the controlflowelement.
- */
-private newtype TGvnList =
-  TGvnNil(GvnKind gkind) or
-  TGvnCons(Gvn head, GvnList tail) { gvnConstructedCons(_, _, _, head, tail) }
 
 abstract private class GvnList extends TGvnList {
   abstract string toString();
@@ -176,14 +149,56 @@ private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk) {
     )
 }
 
-private predicate gvnConstructedCons(
-  ControlFlowElement e, GvnKind kind, int index, Gvn head, GvnList tail
-) {
-  tail = gvnConstructed(e, kind, index - 1) and
-  head = toGvn(getRankedChild(e, index))
+pragma[noinline]
+private Gvn gvnChild(ControlFlowElement cfe, int index) {
+  result = toGvn(getRankedChild(cfe, index))
 }
 
+pragma[noinline]
+private predicate gvnConstructedCons(
+  ControlFlowElement cfe, GvnKind kind, int index, Gvn head, GvnList tail
+) {
+  tail = gvnConstructed(cfe, kind, index - 1) and
+  head = gvnChild(cfe, index)
+}
+
+cached
+private module Cached {
+  cached
+  newtype TGvnKind =
+    TGvnKindExpr(int kind) { expressions(_, kind, _) } or
+    TGvnKindStmt(int kind) { statements(_, kind) } or
+    TGvnKindDeclaration(GvnKindExpr kind, boolean thisTarget, Declaration d) {
+      exists(Expr e |
+        d = referenceAttribute(e) and thisTarget = isTargetThis(e) and kind = getKind(e)
+      )
+    }
+
+  /**
+   * Type for containing the global value number of a control flow element.
+   * A global value number, can either be a constant or a list of global value numbers,
+   * where the list also carries a `kind`, which is used to distinguish between general expressions,
+   * declarations and statements.
+   */
+  cached
+  newtype TGvn =
+    TConstantGvn(string s) { s = any(Expr e).getValue() } or
+    TListGvn(GvnList l)
+
+  /**
+   * Type for containing a list of global value numbers with a kind.
+   * The empty list carries the kind of the controlflowelement.
+   */
+  cached
+  newtype TGvnList =
+    TGvnNil(GvnKind gkind) or
+    TGvnCons(Gvn head, GvnList tail) { gvnConstructedCons(_, _, _, head, tail) }
+}
+
+private import Cached
+
 /** Gets the global value number of the element `cfe` */
+cached
 Gvn toGvn(ControlFlowElement cfe) {
   result = TConstantGvn(cfe.(Expr).getValue())
   or
