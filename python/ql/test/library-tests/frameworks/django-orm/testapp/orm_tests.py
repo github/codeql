@@ -169,7 +169,7 @@ def test_save8_store():
 
 def test_save8_load():
     obj = TestSave8.objects.first()
-    SINK(obj.text) # $ MISSING: flow
+    SINK(obj.text) # $ flow="SOURCE, l:-4 -> obj.text"
 
 # --------------------------------------
 # .save() on foreign key field

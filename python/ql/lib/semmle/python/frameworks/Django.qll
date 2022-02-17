@@ -865,6 +865,15 @@ module PrivateDjango {
                 )
               )
               or
+              // attribute store in `<Model>.objects.[<QuerySet>].update()` -> synthetic
+              // see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#update
+              exists(DataFlow::CallCfgNode call, API::Node modelClass, string fieldName |
+                call = [manager(modelClass), querySet(modelClass)].getMember("update").getACall() and
+                nodeFrom = call.getArgByName(fieldName) and
+                c.(DataFlow::AttributeContent).getAttribute() = fieldName and
+                nodeTo.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass
+              )
+              or
               // synthetic -> method-call that returns collection of ORM models (all/filter/...)
               exists(API::Node modelClass |
                 nodeFrom.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass and
