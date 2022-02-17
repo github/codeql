@@ -70,23 +70,14 @@ module CleartextLogging {
   }
 
   /**
-   * A node sanitized by a prior call to `sub!` or `gsub!`,
-   * e.g. the `password` argument to `info` in:
-   * ```
-   * password = "changeme"
-   * password.sub!(/.+/, "")
-   * Logger.new(STDOUT).info password
-   * ```
+   * Like `MaskingReplacerSanitizer` but updates the receiver for methods that
+   * sanitize the receiver.
+   * Taint is thereby cleared for any subsequent read.
    */
-  private class MaskingReplacerSanitizedNode extends Sanitizer {
-    MaskingReplacerSanitizedNode() {
-      exists(Ssa::Definition def |
-        exists(MaskingReplacerSanitizer maskCall |
-          maskCall.getMethodName() = ["sub!", "gsub!"] and
-          def.hasAdjacentReads(maskCall.getReceiver().asExpr(), this.asExpr())
-        )
-        or
-        def.hasAdjacentReads(any(MaskingReplacerSanitizedNode read).asExpr(), this.asExpr())
+  private class InPlaceMaskingReplacerSanitizer extends Sanitizer {
+    InPlaceMaskingReplacerSanitizer() {
+      exists(MaskingReplacerSanitizer m | m.getMethodName() = ["gsub!", "sub!"] |
+        m.getReceiver() = this
       )
     }
   }
