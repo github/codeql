@@ -25,5 +25,15 @@ class TestArrayCreation {
     val a13 = IntArray(5) { 1 }
     var a14 = IntArray(5) { it * 1 }
     val a15 = Array(4) { IntArray(2) }
+
+    val clone1 = arrayOf(*a1)
+    val clone2 = doubleArrayOf(*a2)
+    val clone3 = floatArrayOf(*a3)
+    val clone4 = longArrayOf(*a4)
+    val clone5 = intArrayOf(*a5)
+    val clone6 = charArrayOf(*a6)
+    val clone7 = shortArrayOf(*a7)
+    val clone8 = byteArrayOf(*a8)
+    val clone9 = booleanArrayOf(*a9)
   }
 }

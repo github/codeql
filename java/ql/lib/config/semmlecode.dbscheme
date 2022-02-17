@@ -745,11 +745,10 @@ case @expr.kind of
 | 81  = @notinstanceofexpr
 | 82  = @stmtexpr
 | 83  = @stringtemplateexpr
-| 84  = @varargexpr
-| 85  = @notnullexpr
-| 86  = @unsafecoerceexpr
-| 87  = @valueeqexpr
-| 88  = @valueneexpr
+| 84  = @notnullexpr
+| 85  = @unsafecoerceexpr
+| 86  = @valueeqexpr
+| 87  = @valueneexpr
 ;
 
 /** Holds if this `when` expression was written as an `if` expression. */

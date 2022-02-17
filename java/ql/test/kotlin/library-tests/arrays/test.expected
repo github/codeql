@@ -4,9 +4,9 @@ cloneMethods
 | file://:0:0:0:0 | clone | clone() | file://:0:0:0:0 | int[] | file://:0:0:0:0 | int[] | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass |
 | file://:0:0:0:0 | clone | clone() | file://:0:0:0:0 | int[][] | file://:0:0:0:0 | int[][] | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass |
 sourceSignatures
-| arrayCreations.kt:3:1:29:1 | <obinit> | <obinit>() |
-| arrayCreations.kt:3:1:29:1 | TestArrayCreation | TestArrayCreation() |
-| arrayCreations.kt:4:3:28:3 | test1 | test1() |
+| arrayCreations.kt:3:1:39:1 | <obinit> | <obinit>() |
+| arrayCreations.kt:3:1:39:1 | TestArrayCreation | TestArrayCreation() |
+| arrayCreations.kt:4:3:38:3 | test1 | test1() |
 | arrayCreations.kt:22:29:22:33 |  |  |
 | arrayCreations.kt:22:29:22:33 | invoke | invoke(int) |
 | arrayCreations.kt:23:24:23:28 |  |  |

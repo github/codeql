@@ -441,17 +441,20 @@ open class KotlinFileExtractor(
 
     private fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>, idx: Int, typeSubstitution: TypeSubstitution?, parentSourceDeclaration: Label<out DbCallable>): TypeResults {
         with("value parameter", vp) {
-            return extractValueParameter(useValueParameter(vp, parent), vp.type, vp.name.asString(), tw.getLocation(vp), parent, idx, typeSubstitution, useValueParameter(vp, parentSourceDeclaration))
+            return extractValueParameter(useValueParameter(vp, parent), vp.type, vp.name.asString(), tw.getLocation(vp), parent, idx, typeSubstitution, useValueParameter(vp, parentSourceDeclaration), vp.isVararg)
         }
     }
 
-    private fun extractValueParameter(id: Label<out DbParam>, t: IrType, name: String, locId: Label<DbLocation>, parent: Label<out DbCallable>, idx: Int, typeSubstitution: TypeSubstitution?, paramSourceDeclaration: Label<out DbParam>): TypeResults {
+    private fun extractValueParameter(id: Label<out DbParam>, t: IrType, name: String, locId: Label<DbLocation>, parent: Label<out DbCallable>, idx: Int, typeSubstitution: TypeSubstitution?, paramSourceDeclaration: Label<out DbParam>, isVararg: Boolean): TypeResults {
         val substitutedType = typeSubstitution?.let { it(t, TypeContext.OTHER, pluginContext) } ?: t
         val type = useType(substitutedType)
         tw.writeParams(id, type.javaResult.id, idx, parent, paramSourceDeclaration)
         tw.writeParamsKotlinType(id, type.kotlinResult.id)
         tw.writeHasLocation(id, locId)
         tw.writeParamName(id, name)
+        if (isVararg) {
+            tw.writeIsVarargsParam(id)
+        }
         return type
     }
 
@@ -1079,9 +1082,15 @@ open class KotlinFileExtractor(
             idxOffset = 0
         }
 
-        valueArguments.forEachIndexed { i, arg ->
+        var i = 0
+        valueArguments.forEach { arg ->
             if(arg != null) {
-                extractExpressionExpr(arg, enclosingCallable, id, i + idxOffset, enclosingStmt)
+                if (arg is IrVararg) {
+                    arg.elements.forEachIndexed { varargNo, vararg -> extractVarargElement(vararg, enclosingCallable, id, i + idxOffset + varargNo, enclosingStmt) }
+                    i += arg.elements.size
+                } else {
+                    extractExpressionExpr(arg, enclosingCallable, id, (i++) + idxOffset, enclosingStmt)
+                }
             }
         }
     }
@@ -1117,6 +1126,22 @@ open class KotlinFileExtractor(
         } as IrFunction?
         if (result == null) {
             logger.error("Couldn't find declaration java.lang.String.valueOf(Object)")
+        }
+        result
+    }
+
+    val javaLangObject by lazy {
+        val result = pluginContext.referenceClass(FqName("java.lang.Object"))?.owner
+        result?.let { extractExternalClassLater(it) }
+        result
+    }
+
+    val objectCloneMethod by lazy {
+        val result = javaLangObject?.declarations?.find {
+            it is IrFunction && it.name.asString() == "clone"
+        } as IrFunction?
+        if (result == null) {
+            logger.error("Couldn't find declaration java.lang.Object.clone(...)")
         }
         result
     }
@@ -1458,37 +1483,63 @@ open class KotlinFileExtractor(
                         || isBuiltinCallKotlin(c, "shortArrayOf")
                         || isBuiltinCallKotlin(c, "byteArrayOf")
                         || isBuiltinCallKotlin(c, "booleanArrayOf") -> {
-                    val id = tw.getFreshIdLabel<DbArraycreationexpr>()
-                    val type = useType(c.type)
-                    tw.writeExprs_arraycreationexpr(id, type.javaResult.id, parent, idx)
-                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    val locId = tw.getLocation(c)
-                    tw.writeHasLocation(id, locId)
-                    tw.writeCallableEnclosingExpr(id, callable)
-    
-                    if (isBuiltinCallKotlin(c, "arrayOf")) {
-                        if (c.typeArgumentsCount == 1) {
-                            extractTypeArguments(c, id, callable, enclosingStmt,-1)
-                        } else {
-                            logger.errorElement("Expected to find one type argument in arrayOf call", c )
+
+                    val arg = if (c.valueArgumentsCount == 1) c.getValueArgument(0) else {
+                        logger.errorElement("Expected to find only one (vararg) argument in ${c.symbol.owner.name.asString()} call", c)
+                        null
+                    }?.let {
+                        if (it is IrVararg) it else {
+                            logger.errorElement("Expected to find vararg argument in ${c.symbol.owner.name.asString()} call", c)
+                            null
+                        }
+                    }
+
+                    // If this is [someType]ArrayOf(*x), x, otherwise null
+                    val clonedArray = arg?.let {
+                        if (arg.elements.size == 1) {
+                            val onlyElement = arg.elements[0]
+                            if (onlyElement is IrSpreadElement)
+                                onlyElement.expression
+                            else null
+                        } else null
+                    }
+
+                    if (clonedArray != null) {
+                        // This is an array clone: extract is as a call to java.lang.Object.clone
+                        objectCloneMethod?.let {
+                            extractRawMethodAccess(it, c, callable, parent, idx, enclosingStmt, listOf(), clonedArray, null)
                         }
                     } else {
-                        val elementType = c.type.getArrayElementType(pluginContext.irBuiltIns)
-                        extractTypeAccess(elementType, callable, id, -1, c, enclosingStmt)
-                    }
-    
-                    if (c.valueArgumentsCount == 1) {
-                        val vararg = c.getValueArgument(0)
-                        if (vararg is IrVararg) {
+                        // This is array creation: extract it as a call to new ArrayType[] { ... }
+                        val id = tw.getFreshIdLabel<DbArraycreationexpr>()
+                        val type = useType(c.type)
+                        tw.writeExprs_arraycreationexpr(id, type.javaResult.id, parent, idx)
+                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                        val locId = tw.getLocation(c)
+                        tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
+
+                        if (isBuiltinCallKotlin(c, "arrayOf")) {
+                            if (c.typeArgumentsCount == 1) {
+                                extractTypeArguments(c, id, callable, enclosingStmt,-1)
+                            } else {
+                                logger.errorElement("Expected to find one type argument in arrayOf call", c )
+                            }
+                        } else {
+                            val elementType = c.type.getArrayElementType(pluginContext.irBuiltIns)
+                            extractTypeAccess(elementType, callable, id, -1, c, enclosingStmt)
+                        }
+
+                        arg?.let {
                             val initId = tw.getFreshIdLabel<DbArrayinit>()
                             tw.writeExprs_arrayinit(initId, type.javaResult.id, id, -2)
                             tw.writeExprsKotlinType(initId, type.kotlinResult.id)
                             tw.writeHasLocation(initId, locId)
                             tw.writeCallableEnclosingExpr(initId, callable)
                             tw.writeStatementEnclosingExpr(initId, enclosingStmt)
-                            vararg.elements.forEachIndexed { i, arg -> extractVarargElement(arg, callable, initId, i, enclosingStmt) }
-    
-                            val dim = vararg.elements.size
+                            it.elements.forEachIndexed { i, arg -> extractVarargElement(arg, callable, initId, i, enclosingStmt) }
+
+                            val dim = it.elements.size
                             val dimId = tw.getFreshIdLabel<DbIntegerliteral>()
                             val dimType = useType(pluginContext.irBuiltIns.intType)
                             tw.writeExprs_integerliteral(dimId, dimType.javaResult.id, id, 0)
@@ -1497,11 +1548,7 @@ open class KotlinFileExtractor(
                             tw.writeCallableEnclosingExpr(dimId, callable)
                             tw.writeStatementEnclosingExpr(dimId, enclosingStmt)
                             tw.writeNamestrings(dim.toString(), dim.toString(), dimId)
-                        } else {
-                            logger.errorElement("Expected to find vararg argument in ${c.symbol.owner.name.asString()} call", c)
                         }
-                    } else {
-                        logger.errorElement("Expected to find only one (vararg) argument in ${c.symbol.owner.name.asString()} call", c)
                     }
                 }
                 isBuiltinCall(c, "<unsafe-coerce>", "kotlin.jvm.internal") -> {
@@ -2123,16 +2170,7 @@ open class KotlinFileExtractor(
                     extractTypeOperatorCall(e, callable, exprParent.parent, exprParent.idx, exprParent.enclosingStmt)
                 }
                 is IrVararg -> {
-                    val exprParent = parent.expr(e, callable)
-                    val id = tw.getFreshIdLabel<DbVarargexpr>()
-                    val locId = tw.getLocation(e)
-                    val type = useType(e.type)
-                    tw.writeExprs_varargexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    tw.writeHasLocation(id, locId)
-                    tw.writeCallableEnclosingExpr(id, callable)
-                    tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                    e.elements.forEachIndexed { i, arg -> extractVarargElement(arg, callable, id, i, exprParent.enclosingStmt) }
+                    logger.errorElement("Unexpected IrVararg", e)
                 }
                 is IrGetObjectValue -> {
                     // For `object MyObject { ... }`, the .class has an
@@ -2349,7 +2387,7 @@ open class KotlinFileExtractor(
                 stmtIdx: Int
             ) {
                 val paramId = tw.getFreshIdLabel<DbParam>()
-                val paramType = extractValueParameter(paramId, type, paramName, locId, ids.constructor, paramIdx, null, paramId)
+                val paramType = extractValueParameter(paramId, type, paramName, locId, ids.constructor, paramIdx, null, paramId, false)
 
                 val assignmentStmtId = tw.getFreshIdLabel<DbExprstmt>()
                 tw.writeStmts_exprstmt(assignmentStmtId, ids.constructorBlock, stmtIdx, ids.constructor)
@@ -2548,7 +2586,7 @@ open class KotlinFileExtractor(
 
         val parameters = parameterTypes.mapIndexed { idx, p ->
             val paramId = tw.getFreshIdLabel<DbParam>()
-            val paramType = extractValueParameter(paramId, p, "a$idx", locId, methodId, idx, null, paramId)
+            val paramType = extractValueParameter(paramId, p, "a$idx", locId, methodId, idx, null, paramId, false)
 
             Pair(paramId, paramType)
         }
@@ -2695,17 +2733,16 @@ open class KotlinFileExtractor(
 
     fun extractVarargElement(e: IrVarargElement, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
         with("vararg element", e) {
-            when(e) {
-                is IrExpression -> {
-                    extractExpressionExpr(e, callable, parent, idx, enclosingStmt)
-                }
-                is IrSpreadElement -> {
-                    // TODO:
-                    logger.errorElement("Unhandled IrSpreadElement", e)
-                }
+            val argExpr = when(e) {
+                is IrExpression -> e
+                is IrSpreadElement -> e.expression
                 else -> {
                     logger.errorElement("Unrecognised IrVarargElement: " + e.javaClass, e)
+                    null
                 }
+            }
+            argExpr?.let {
+                extractExpressionExpr(it, callable, parent, idx, enclosingStmt)
             }
         }
     }

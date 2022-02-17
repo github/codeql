@@ -467,8 +467,6 @@ private module ControlFlowGraphImpl {
       or
       this instanceof StringTemplateExpr
       or
-      this instanceof VarArgExpr
-      or
       this instanceof ClassExpr
       or
       this instanceof RValue
@@ -559,10 +557,6 @@ private module ControlFlowGraphImpl {
       )
       or
       exists(StringTemplateExpr e | e = this |
-        result = e.getComponent(index)
-      )
-      or
-      exists(VarArgExpr e | e = this |
         result = e.getComponent(index)
       )
       or

@@ -103,3 +103,13 @@ arrayCreationInit
 | arrayCreations.kt:19:43:19:61 | new Integer[] | arrayCreations.kt:19:43:19:61 | {...} | arrayCreations.kt:19:54:19:54 | 2 | 1 |
 | arrayCreations.kt:19:43:19:61 | new Integer[] | arrayCreations.kt:19:43:19:61 | {...} | arrayCreations.kt:19:57:19:57 | 3 | 2 |
 | arrayCreations.kt:19:43:19:61 | new Integer[] | arrayCreations.kt:19:43:19:61 | {...} | arrayCreations.kt:19:60:19:60 | 4 | 3 |
+cloneCalls
+| arrayCreations.kt:29:18:29:29 | clone(...) | file://:0:0:0:0 | Integer[] |
+| arrayCreations.kt:30:18:30:35 | clone(...) | file://:0:0:0:0 | double[] |
+| arrayCreations.kt:31:18:31:34 | clone(...) | file://:0:0:0:0 | float[] |
+| arrayCreations.kt:32:18:32:33 | clone(...) | file://:0:0:0:0 | long[] |
+| arrayCreations.kt:33:18:33:32 | clone(...) | file://:0:0:0:0 | int[] |
+| arrayCreations.kt:34:18:34:33 | clone(...) | file://:0:0:0:0 | char[] |
+| arrayCreations.kt:35:18:35:34 | clone(...) | file://:0:0:0:0 | short[] |
+| arrayCreations.kt:36:18:36:33 | clone(...) | file://:0:0:0:0 | byte[] |
+| arrayCreations.kt:37:18:37:36 | clone(...) | file://:0:0:0:0 | boolean[] |
