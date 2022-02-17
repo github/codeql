@@ -34,7 +34,7 @@ def test_save1_store():
 
 def test_save1_load():
     obj = TestSave1.objects.first()
-    SINK(obj.text) # $ MISSING: flow
+    SINK(obj.text) # $ flow="SOURCE, l:-5 -> obj.text"
 
 # --------------------------------------
 # Constructor: positional arg

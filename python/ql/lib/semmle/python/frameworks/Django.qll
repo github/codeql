@@ -755,7 +755,16 @@ module PrivateDjango {
             override predicate storeStep(
               DataFlow::Node nodeFrom, DataFlow::Content c, DataFlow::Node nodeTo
             ) {
-              none()
+              // attribute value from constructor call -> object created
+              exists(DataFlow::CallCfgNode call, string fieldName |
+                // Note: Currently only supports kwargs, which should by far be the most
+                // common way to do things. We _should_ investigate how often
+                // positional-args are used.
+                call = Model::subclassRef().getACall() and
+                nodeFrom = call.getArgByName(fieldName) and
+                c.(DataFlow::AttributeContent).getAttribute() = fieldName and
+                nodeTo = call
+              )
             }
 
             override predicate jumpStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {

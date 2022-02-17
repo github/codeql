@@ -99,7 +99,7 @@ def save_comment_validator_not_used(request): # $requestHandler
 
 def display_comment_validator_not_used(request): # $requestHandler
     comment = CommentValidatorNotUsed.objects.last()
-    return HttpResponse(comment.text) # NOT OK
+    return HttpResponse(comment.text)  # NOT OK
 
 # To test this
 """
@@ -118,7 +118,7 @@ def save_comment_validator_used(request): # $requestHandler
 
 def display_comment_validator_used(request): # $requestHandler
     comment = CommentValidatorUsed.objects.last()
-    return HttpResponse(comment.text) # sort of OK
+    return HttpResponse(comment.text)  # sort of OK
 
 # Doing the following will raise a ValidationError
 """

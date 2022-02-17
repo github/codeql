@@ -18,6 +18,22 @@ edges
 | testapp/orm_security_tests.py:51:14:51:53 | ControlFlowNode for Attribute() [Attribute age] | testapp/orm_security_tests.py:55:45:55:50 | ControlFlowNode for person [Attribute age] |
 | testapp/orm_security_tests.py:55:45:55:50 | ControlFlowNode for person [Attribute age] | testapp/orm_security_tests.py:55:45:55:54 | ControlFlowNode for Attribute |
 | testapp/orm_security_tests.py:55:45:55:54 | ControlFlowNode for Attribute | testapp/orm_security_tests.py:55:25:55:55 | ControlFlowNode for Attribute() |
+| testapp/orm_security_tests.py:92:1:92:44 | [orm-model] Class CommentValidatorNotUsed [Attribute text] | testapp/orm_security_tests.py:101:15:101:52 | ControlFlowNode for Attribute() [Attribute text] |
+| testapp/orm_security_tests.py:95:37:95:43 | ControlFlowNode for request | testapp/orm_security_tests.py:96:44:96:55 | ControlFlowNode for Attribute |
+| testapp/orm_security_tests.py:96:15:96:64 | ControlFlowNode for CommentValidatorNotUsed() [Attribute text] | testapp/orm_security_tests.py:97:5:97:11 | ControlFlowNode for comment [Attribute text] |
+| testapp/orm_security_tests.py:96:44:96:55 | ControlFlowNode for Attribute | testapp/orm_security_tests.py:96:44:96:63 | ControlFlowNode for Subscript |
+| testapp/orm_security_tests.py:96:44:96:63 | ControlFlowNode for Subscript | testapp/orm_security_tests.py:96:15:96:64 | ControlFlowNode for CommentValidatorNotUsed() [Attribute text] |
+| testapp/orm_security_tests.py:97:5:97:11 | ControlFlowNode for comment [Attribute text] | testapp/orm_security_tests.py:92:1:92:44 | [orm-model] Class CommentValidatorNotUsed [Attribute text] |
+| testapp/orm_security_tests.py:101:15:101:52 | ControlFlowNode for Attribute() [Attribute text] | testapp/orm_security_tests.py:102:25:102:31 | ControlFlowNode for comment [Attribute text] |
+| testapp/orm_security_tests.py:102:25:102:31 | ControlFlowNode for comment [Attribute text] | testapp/orm_security_tests.py:102:25:102:36 | ControlFlowNode for Attribute |
+| testapp/orm_security_tests.py:111:1:111:41 | [orm-model] Class CommentValidatorUsed [Attribute text] | testapp/orm_security_tests.py:120:15:120:49 | ControlFlowNode for Attribute() [Attribute text] |
+| testapp/orm_security_tests.py:114:33:114:39 | ControlFlowNode for request | testapp/orm_security_tests.py:115:41:115:52 | ControlFlowNode for Attribute |
+| testapp/orm_security_tests.py:115:15:115:61 | ControlFlowNode for CommentValidatorUsed() [Attribute text] | testapp/orm_security_tests.py:117:5:117:11 | ControlFlowNode for comment [Attribute text] |
+| testapp/orm_security_tests.py:115:41:115:52 | ControlFlowNode for Attribute | testapp/orm_security_tests.py:115:41:115:60 | ControlFlowNode for Subscript |
+| testapp/orm_security_tests.py:115:41:115:60 | ControlFlowNode for Subscript | testapp/orm_security_tests.py:115:15:115:61 | ControlFlowNode for CommentValidatorUsed() [Attribute text] |
+| testapp/orm_security_tests.py:117:5:117:11 | ControlFlowNode for comment [Attribute text] | testapp/orm_security_tests.py:111:1:111:41 | [orm-model] Class CommentValidatorUsed [Attribute text] |
+| testapp/orm_security_tests.py:120:15:120:49 | ControlFlowNode for Attribute() [Attribute text] | testapp/orm_security_tests.py:121:25:121:31 | ControlFlowNode for comment [Attribute text] |
+| testapp/orm_security_tests.py:121:25:121:31 | ControlFlowNode for comment [Attribute text] | testapp/orm_security_tests.py:121:25:121:36 | ControlFlowNode for Attribute |
 nodes
 | testapp/orm_security_tests.py:15:1:15:27 | [orm-model] Class Person [Attribute age] | semmle.label | [orm-model] Class Person [Attribute age] |
 | testapp/orm_security_tests.py:15:1:15:27 | [orm-model] Class Person [Attribute name] | semmle.label | [orm-model] Class Person [Attribute name] |
@@ -39,7 +55,27 @@ nodes
 | testapp/orm_security_tests.py:55:25:55:55 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | testapp/orm_security_tests.py:55:45:55:50 | ControlFlowNode for person [Attribute age] | semmle.label | ControlFlowNode for person [Attribute age] |
 | testapp/orm_security_tests.py:55:45:55:54 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| testapp/orm_security_tests.py:92:1:92:44 | [orm-model] Class CommentValidatorNotUsed [Attribute text] | semmle.label | [orm-model] Class CommentValidatorNotUsed [Attribute text] |
+| testapp/orm_security_tests.py:95:37:95:43 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| testapp/orm_security_tests.py:96:15:96:64 | ControlFlowNode for CommentValidatorNotUsed() [Attribute text] | semmle.label | ControlFlowNode for CommentValidatorNotUsed() [Attribute text] |
+| testapp/orm_security_tests.py:96:44:96:55 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| testapp/orm_security_tests.py:96:44:96:63 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| testapp/orm_security_tests.py:97:5:97:11 | ControlFlowNode for comment [Attribute text] | semmle.label | ControlFlowNode for comment [Attribute text] |
+| testapp/orm_security_tests.py:101:15:101:52 | ControlFlowNode for Attribute() [Attribute text] | semmle.label | ControlFlowNode for Attribute() [Attribute text] |
+| testapp/orm_security_tests.py:102:25:102:31 | ControlFlowNode for comment [Attribute text] | semmle.label | ControlFlowNode for comment [Attribute text] |
+| testapp/orm_security_tests.py:102:25:102:36 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| testapp/orm_security_tests.py:111:1:111:41 | [orm-model] Class CommentValidatorUsed [Attribute text] | semmle.label | [orm-model] Class CommentValidatorUsed [Attribute text] |
+| testapp/orm_security_tests.py:114:33:114:39 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| testapp/orm_security_tests.py:115:15:115:61 | ControlFlowNode for CommentValidatorUsed() [Attribute text] | semmle.label | ControlFlowNode for CommentValidatorUsed() [Attribute text] |
+| testapp/orm_security_tests.py:115:41:115:52 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| testapp/orm_security_tests.py:115:41:115:60 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| testapp/orm_security_tests.py:117:5:117:11 | ControlFlowNode for comment [Attribute text] | semmle.label | ControlFlowNode for comment [Attribute text] |
+| testapp/orm_security_tests.py:120:15:120:49 | ControlFlowNode for Attribute() [Attribute text] | semmle.label | ControlFlowNode for Attribute() [Attribute text] |
+| testapp/orm_security_tests.py:121:25:121:31 | ControlFlowNode for comment [Attribute text] | semmle.label | ControlFlowNode for comment [Attribute text] |
+| testapp/orm_security_tests.py:121:25:121:36 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 subpaths
 #select
 | testapp/orm_security_tests.py:48:25:48:57 | ControlFlowNode for Attribute() | testapp/orm_security_tests.py:19:12:19:18 | ControlFlowNode for request | testapp/orm_security_tests.py:48:25:48:57 | ControlFlowNode for Attribute() | Cross-site scripting vulnerability due to $@. | testapp/orm_security_tests.py:19:12:19:18 | ControlFlowNode for request | a user-provided value |
 | testapp/orm_security_tests.py:55:25:55:55 | ControlFlowNode for Attribute() | testapp/orm_security_tests.py:19:12:19:18 | ControlFlowNode for request | testapp/orm_security_tests.py:55:25:55:55 | ControlFlowNode for Attribute() | Cross-site scripting vulnerability due to $@. | testapp/orm_security_tests.py:19:12:19:18 | ControlFlowNode for request | a user-provided value |
+| testapp/orm_security_tests.py:102:25:102:36 | ControlFlowNode for Attribute | testapp/orm_security_tests.py:95:37:95:43 | ControlFlowNode for request | testapp/orm_security_tests.py:102:25:102:36 | ControlFlowNode for Attribute | Cross-site scripting vulnerability due to $@. | testapp/orm_security_tests.py:95:37:95:43 | ControlFlowNode for request | a user-provided value |
+| testapp/orm_security_tests.py:121:25:121:36 | ControlFlowNode for Attribute | testapp/orm_security_tests.py:114:33:114:39 | ControlFlowNode for request | testapp/orm_security_tests.py:121:25:121:36 | ControlFlowNode for Attribute | Cross-site scripting vulnerability due to $@. | testapp/orm_security_tests.py:114:33:114:39 | ControlFlowNode for request | a user-provided value |
