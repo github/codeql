@@ -1002,7 +1002,7 @@ predicate listStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) 
 }
 
 /** Data flows from an element of a set to the set. */
-predicate setStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) {
+predicate setStoreStep(CfgNode nodeFrom, SetElementContent c, CfgNode nodeTo) {
   // Set
   //   `{..., 42, ...}`
   //   nodeFrom is `42`, cfg node

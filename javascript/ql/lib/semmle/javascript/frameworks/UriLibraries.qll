@@ -175,7 +175,12 @@ module querystringify {
    * Gets a data flow source node for member `name` of the querystringify library.
    */
   DataFlow::SourceNode querystringifyMember(string name) {
-    result = DataFlow::moduleMember("querystringify", name)
+    result = querystringify().getMember(name).getAnImmediateUse()
+  }
+
+  /** Gets an API node referring to the `querystringify` module. */
+  private API::Node querystringify() {
+    result = [API::moduleImport("querystringify"), API::moduleImport("url-parse").getMember("qs")]
   }
 
   /**
@@ -184,7 +189,7 @@ module querystringify {
   private class Step extends TaintTracking::SharedTaintStep {
     override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call |
-        call = querystringifyMember(["parse", "stringify"]).getACall() and
+        call = querystringify().getMember(["parse", "stringify"]).getACall() and
         pred = call.getAnArgument() and
         succ = call
       )

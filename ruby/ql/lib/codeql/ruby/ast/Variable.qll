@@ -35,7 +35,10 @@ class LocalVariable extends Variable, TLocalVariable {
   override LocalVariableAccess getAnAccess() { result.getVariable() = this }
 
   /** Gets the access where this local variable is first introduced. */
-  VariableAccess getDefiningAccess() { result = this.(LocalVariableReal).getDefiningAccessImpl() }
+  VariableAccess getDefiningAccess() {
+    result = this.(LocalVariableReal).getDefiningAccessImpl() or
+    synthChild(any(BlockParameter p | this = p.getVariable()), 0, result)
+  }
 
   /**
    * Holds if this variable is captured. For example in
@@ -117,6 +120,8 @@ class VariableAccess extends Expr instanceof VariableAccessImpl {
     this = any(SimpleParameterSynthImpl p).getDefininingAccess()
     or
     this = any(HashPattern p).getValue(_)
+    or
+    synthChild(any(BlockParameter p), 0, this)
   }
 
   final override string toString() { result = VariableAccessImpl.super.toString() }

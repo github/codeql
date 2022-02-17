@@ -913,6 +913,12 @@ class ClassOrInterface extends RefType, @classorinterface {
     not this.isProtected() and
     not this.isPublic()
   }
+
+  /** Gets a permitted subtype in case this class or interface is a sealed class (Java 17 feature). */
+  ClassOrInterface getAPermittedSubtype() { permits(this, result) }
+
+  /** Holds if this class or interface is explicitly or implicitly a sealed class (Java 17 feature). */
+  predicate isSealed() { exists(this.getAPermittedSubtype()) }
 }
 
 private string getAPublicObjectMethodSignature() {

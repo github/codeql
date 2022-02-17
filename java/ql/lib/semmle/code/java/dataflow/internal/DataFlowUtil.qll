@@ -74,12 +74,14 @@ private module ThisFlow {
  * Holds if data can flow from `node1` to `node2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localFlow(Node node1, Node node2) { localFlowStep*(node1, node2) }
 
 /**
  * Holds if data can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 /**

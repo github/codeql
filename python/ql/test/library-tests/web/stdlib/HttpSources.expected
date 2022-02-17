@@ -1,3 +1,4 @@
+WARNING: Type HttpRequestTaintSource has been deprecated and may be removed in future (HttpSources.ql:5,6-28)
 | test.py:18:13:18:16 | self | BaseHTTPRequestHandlerKind |
 | test.py:20:13:20:16 | self | BaseHTTPRequestHandlerKind |
 | test.py:22:13:22:16 | self | BaseHTTPRequestHandlerKind |

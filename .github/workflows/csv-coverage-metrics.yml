@@ -1,0 +1,43 @@
+name: "Publish framework coverage as metrics"
+
+on:
+  schedule:
+    - cron: '5 0 * * *'
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/csv-coverage-metrics.yml"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup CodeQL
+        uses: ./.github/actions/fetch-codeql
+      - name: Create empty database
+        run: |
+          DATABASE="${{ runner.temp }}/java-database"
+          PROJECT="${{ runner.temp }}/java-project"
+          mkdir -p "$PROJECT/src/tmp/empty"
+          echo "class Empty {}" >> "$PROJECT/src/tmp/empty/Empty.java"
+          codeql database create "$DATABASE" --language=java --source-root="$PROJECT" --command 'javac src/tmp/empty/Empty.java'
+      - name: Capture coverage information
+        run: |
+          DATABASE="${{ runner.temp }}/java-database"
+          codeql database analyze --format=sarif-latest --output=metrics.sarif -- "$DATABASE" ./java/ql/src/Metrics/Summaries/FrameworkCoverage.ql
+      - uses: actions/upload-artifact@v2
+        with:
+          name: metrics.sarif
+          path: metrics.sarif
+          retention-days: 20
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: metrics.sarif

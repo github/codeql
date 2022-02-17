@@ -52,7 +52,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// The compression algorithm used for trap files.
         /// </summary>
-        public TrapWriter.CompressionMode TrapCompression { get; set; } = TrapWriter.CompressionMode.Gzip;
+        public TrapWriter.CompressionMode TrapCompression { get; set; } = TrapWriter.CompressionMode.Brotli;
 
         public virtual bool HandleOption(string key, string value)
         {

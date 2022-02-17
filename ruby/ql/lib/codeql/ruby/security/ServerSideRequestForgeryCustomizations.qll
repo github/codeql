@@ -46,6 +46,6 @@ module ServerSideRequestForgery {
     HttpRequestAsSink() { exists(HTTP::Client::Request req | req.getURL() = this) }
   }
 
-  /** String interpolation with a fixed prefix, considered as a flow sanitizer. */
+  /** A string interpolation with a fixed prefix, considered as a flow sanitizer. */
   class StringInterpolationAsSanitizer extends PrefixedStringInterpolation, Sanitizer { }
 }

@@ -48,9 +48,9 @@ break_ensure.rb:
 #-----|  -> 0
 
 #    3| ... > ...
-#-----| true -> break
-#-----| false -> if ...
 #-----| raise -> while ...
+#-----| false -> if ...
+#-----| true -> break
 
 #    3| 0
 #-----|  -> ... > ...
@@ -160,8 +160,8 @@ break_ensure.rb:
 #-----|  -> 0
 
 #   16| ... > ...
-#-----| true -> break
 #-----| false -> if ...
+#-----| true -> break
 #-----| raise -> [ensure: raise] y
 
 #   16| 0
@@ -364,16 +364,16 @@ break_ensure.rb:
 #-----|  -> 0
 
 #   35| ... > ...
-#-----| true -> break
 #-----| false -> if ...
+#-----| true -> break
 
 #   35| [ensure: raise] ... > ...
-#-----| true -> [ensure: raise] break
 #-----| false -> [ensure: raise] if ...
+#-----| true -> [ensure: raise] break
 
 #   35| [ensure: return] ... > ...
-#-----| true -> [ensure: return] break
 #-----| false -> [ensure: return] if ...
+#-----| true -> [ensure: return] break
 
 #   35| 0
 #-----|  -> ... > ...
@@ -443,8 +443,8 @@ break_ensure.rb:
 
 #   47| ... > ...
 #-----| false -> if ...
-#-----| raise -> [ensure: raise] x
 #-----| true -> self
+#-----| raise -> [ensure: raise] x
 
 #   47| 1
 #-----|  -> ... > ...
@@ -535,8 +535,8 @@ case.rb:
 #-----|  -> 1
 
 #    3| 1
-#-----| no-match -> when ...
 #-----| match -> self
+#-----| no-match -> when ...
 
 #    3| then ...
 #-----|  -> case ...
@@ -622,8 +622,8 @@ case.rb:
 #-----|  -> 1
 
 #   11| 1
-#-----| no-match -> in ... then ...
 #-----| match -> 3
+#-----| no-match -> in ... then ...
 
 #   11| then ...
 #-----|  -> case ...
@@ -635,8 +635,8 @@ case.rb:
 #-----|  -> 2
 
 #   12| 2
-#-----| no-match -> in ... then ...
 #-----| match -> 4
+#-----| no-match -> in ... then ...
 
 #   12| then ...
 #-----|  -> case ...
@@ -654,8 +654,8 @@ case.rb:
 #-----|  -> 5
 
 #   14| ... == ...
-#-----| false -> in ... then ...
 #-----| true -> 6
+#-----| false -> in ... then ...
 
 #   14| 5
 #-----|  -> ... == ...
@@ -721,8 +721,8 @@ case.rb:
 #-----|  -> 1
 
 #   22| 1
-#-----| match -> case ...
 #-----| raise -> exit case_match_no_match (abnormal)
+#-----| match -> case ...
 
 #   26| case_match_raise
 #-----|  -> case_match_array
@@ -751,8 +751,8 @@ case.rb:
 #-----|  -> -> { ... }
 
 #   28| -> { ... }
-#-----| match -> case ...
 #-----| raise -> exit case_match_raise (abnormal)
+#-----| match -> case ...
 
 #   28| enter -> { ... }
 #-----|  -> x
@@ -811,8 +811,8 @@ case.rb:
 #-----|  -> [ ..., * ]
 
 #   35| [ ..., * ]
-#-----| no-match -> in ... then ...
 #-----| match -> x
+#-----| no-match -> in ... then ...
 
 #   35| x
 #-----| match -> case ...
@@ -821,8 +821,8 @@ case.rb:
 #-----|  -> [ ..., * ]
 
 #   36| [ ..., * ]
-#-----| no-match -> in ... then ...
 #-----| match -> x
+#-----| no-match -> in ... then ...
 
 #   36| x
 #-----| match -> case ...
@@ -831,12 +831,12 @@ case.rb:
 #-----|  -> Bar
 
 #   37| Bar
-#-----| match -> [ ..., * ]
 #-----| raise -> exit case_match_array (abnormal)
+#-----| match -> [ ..., * ]
 
 #   37| [ ..., * ]
-#-----| match -> a
 #-----| raise -> exit case_match_array (abnormal)
+#-----| match -> a
 
 #   37| a
 #-----| match -> b
@@ -880,19 +880,19 @@ case.rb:
 #-----|  -> [ *,...,* ]
 
 #   43| [ *,...,* ]
-#-----| match -> x
 #-----| raise -> exit case_match_find (abnormal)
+#-----| match -> x
 
 #   43| x
 #-----|  -> 1
 
 #   43| 1
-#-----| match -> 2
 #-----| raise -> exit case_match_find (abnormal)
+#-----| match -> 2
 
 #   43| 2
-#-----| match -> y
 #-----| raise -> exit case_match_find (abnormal)
+#-----| match -> y
 
 #   43| y
 #-----|  -> case ...
@@ -931,12 +931,12 @@ case.rb:
 #-----| no-match -> in ... then ...
 
 #   49| { ..., ** }
-#-----| no-match -> in ... then ...
 #-----| match -> 1
+#-----| no-match -> in ... then ...
 
 #   49| 1
-#-----| no-match -> in ... then ...
 #-----| match -> a
+#-----| no-match -> in ... then ...
 
 #   49| a
 #-----| match -> rest
@@ -952,8 +952,8 @@ case.rb:
 #-----| no-match -> in ... then ...
 
 #   50| { ..., ** }
-#-----| no-match -> in ... then ...
 #-----| match -> 1
+#-----| no-match -> in ... then ...
 
 #   50| 1
 #-----| match -> case ...
@@ -963,12 +963,12 @@ case.rb:
 #-----|  -> Bar
 
 #   51| Bar
-#-----| match -> { ..., ** }
 #-----| raise -> exit case_match_hash (abnormal)
+#-----| match -> { ..., ** }
 
 #   51| { ..., ** }
-#-----| match -> case ...
 #-----| raise -> exit case_match_hash (abnormal)
+#-----| match -> case ...
 
 #   55| case_match_variable
 #-----|  -> case_match_underscore
@@ -1186,8 +1186,8 @@ case.rb:
 #-----|  -> ... => ...
 
 #   82| 5
-#-----| no-match -> in ... then ...
 #-----| match -> x
+#-----| no-match -> in ... then ...
 
 #   82| ... => ...
 #-----|  -> 5
@@ -1360,16 +1360,16 @@ case.rb:
 #-----|  -> 0
 
 #   91| ""
-#-----| no-match -> [ ..., * ]
 #-----| match -> case ...
+#-----| no-match -> [ ..., * ]
 
 #   91| [ ..., * ]
-#-----| no-match -> { ..., ** }
 #-----| match -> case ...
+#-----| no-match -> { ..., ** }
 
 #   91| { ..., ** }
-#-----| match -> case ...
 #-----| raise -> exit case_match_various (abnormal)
+#-----| match -> case ...
 
 #   95| case_match_guard_no_else
 #-----|  -> exit case.rb (normal)
@@ -1404,8 +1404,8 @@ case.rb:
 #-----|  -> 5
 
 #   97| ... == ...
-#-----| true -> 6
 #-----| raise -> exit case_match_guard_no_else (abnormal)
+#-----| true -> 6
 
 #   97| 5
 #-----|  -> ... == ...
@@ -1820,8 +1820,8 @@ cfg.rb:
 #-----|  -> 1
 
 #   42| 1
-#-----| no-match -> when ...
 #-----| match -> self
+#-----| no-match -> when ...
 
 #   42| then ...
 #-----|  -> case ...
@@ -1893,8 +1893,8 @@ cfg.rb:
 #-----|  -> 1
 
 #   48| ... == ...
-#-----| false -> when ...
 #-----| true -> self
+#-----| false -> when ...
 
 #   48| 1
 #-----|  -> ... == ...
@@ -2662,8 +2662,8 @@ cfg.rb:
 #-----|  -> 10
 
 #  113| ... > ...
-#-----| false -> ... if ...
 #-----| true -> self
+#-----| false -> ... if ...
 
 #  113| 10
 #-----|  -> ... > ...
@@ -3246,8 +3246,8 @@ cfg.rb:
 #-----|  -> 0
 
 #  174| ... == ...
-#-----| true -> ... unless ...
 #-----| false -> self
+#-----| true -> ... unless ...
 
 #  174| 0
 #-----|  -> ... == ...
@@ -4310,8 +4310,8 @@ ifs.rb:
 #-----|  -> 2
 
 #    2| ... > ...
-#-----| false -> x
 #-----| true -> self
+#-----| false -> x
 
 #    2| 2
 #-----|  -> ... > ...
@@ -4772,8 +4772,8 @@ ifs.rb:
 #-----|  -> self
 
 #   47| b
-#-----| false -> else ...
 #-----| true -> self
+#-----| false -> else ...
 
 #   47| then ...
 #-----|  -> if ...
@@ -5125,8 +5125,8 @@ loops.rb:
 #-----|  -> y
 
 #   31| ... < ...
-#-----| true -> do ...
 #-----| false -> while ...
+#-----| true -> do ...
 
 #   31| y
 #-----|  -> ... < ...
@@ -5246,8 +5246,8 @@ raise.rb:
 #-----|  -> self
 
 #   19| ExceptionA
-#-----| match -> self
 #-----| raise -> exit m2 (abnormal)
+#-----| match -> self
 
 #   19| then ...
 #-----|  -> rescue ...
@@ -5488,8 +5488,8 @@ raise.rb:
 #-----| match -> e
 
 #   62| ExceptionB
-#-----| match -> e
 #-----| raise -> exit m6 (abnormal)
+#-----| match -> e
 
 #   62| e
 #-----|  -> self
@@ -5545,8 +5545,8 @@ raise.rb:
 #-----|  -> 2
 
 #   69| ... > ...
-#-----| false -> x
 #-----| true -> self
+#-----| false -> x
 #-----| raise -> [ensure: raise] self
 
 #   69| 2
@@ -5588,8 +5588,8 @@ raise.rb:
 #-----|  -> "x < 0"
 
 #   74| call to puts
-#-----|  -> self
 #-----| raise -> [ensure: raise] self
+#-----|  -> self
 
 #   74| self
 #-----|  -> 0 <= x <= 2
@@ -5681,8 +5681,8 @@ raise.rb:
 #-----|  -> 2
 
 #   82| ... > ...
-#-----| false -> x
 #-----| true -> self
+#-----| false -> x
 #-----| raise -> [ensure: raise] self
 
 #   82| 2
@@ -5724,8 +5724,8 @@ raise.rb:
 #-----|  -> "x < 0"
 
 #   87| call to puts
-#-----|  -> self
 #-----| raise -> [ensure: raise] self
+#-----|  -> self
 
 #   87| self
 #-----|  -> 0 <= x <= 2
@@ -5836,8 +5836,8 @@ raise.rb:
 #-----|  -> 2
 
 #   97| ... > ...
-#-----| false -> x
 #-----| true -> self
+#-----| false -> x
 #-----| raise -> [ensure: raise] self
 
 #   97| 2
@@ -5879,8 +5879,8 @@ raise.rb:
 #-----|  -> "x < 0"
 
 #  102| call to puts
-#-----|  -> self
 #-----| raise -> [ensure: raise] self
+#-----|  -> self
 
 #  102| self
 #-----|  -> 0 <= x <= 2
@@ -6093,8 +6093,8 @@ raise.rb:
 #-----|  -> "inner ensure"
 
 #  113| call to puts
-#-----|  -> self
 #-----| raise -> [ensure: raise] self
+#-----|  -> self
 
 #  113| self
 #-----|  -> End m9
@@ -6465,8 +6465,8 @@ raise.rb:
 #-----|  -> call to nil?
 
 #  155| call to nil?
-#-----| false -> ... if ...
 #-----| true -> self
+#-----| false -> ... if ...
 
 #  158| enter m15
 #-----|  -> self
@@ -6532,8 +6532,8 @@ raise.rb:
 #-----|  -> call to raise
 
 #  161| x
-#-----| true -> ... unless ...
 #-----| false -> self
+#-----| true -> ... unless ...
 
 #  166| C
 #-----|  -> self

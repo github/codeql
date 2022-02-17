@@ -1,3 +1,15 @@
+## 0.0.9
+
+### Bug Fixes
+
+* The [View AST functionality](https://codeql.github.com/docs/codeql-for-visual-studio-code/exploring-the-structure-of-your-source-code/) no longer prints detailed information about regular expressions, greatly improving performance.
+
+## 0.0.8
+
+### Major Analysis Improvements
+
+* User names and other account information is no longer considered to be sensitive data for the queries `py/clear-text-logging-sensitive-data` and `py/clear-text-storage-sensitive-data`, since this lead to many false positives.
+
 ## 0.0.7
 
 ## 0.0.6

@@ -33,11 +33,19 @@ class Guard extends Expr {
   }
 
   /**
+   * Holds if `cfn` is guarded by this expression having value `v`.
+   *
+   * Note: This predicate is inlined.
+   */
+  pragma[inline]
+  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, AbstractValue v) {
+    guardControls(this, cfn.getBasicBlock(), v)
+  }
+
+  /**
    * Holds if basic block `bb` is guarded by this expression having value `v`.
    */
-  predicate controlsBasicBlock(BasicBlock bb, AbstractValue v) {
-    Internal::guardControls(this, bb, v)
-  }
+  predicate controlsBasicBlock(BasicBlock bb, AbstractValue v) { guardControls(this, bb, v) }
 
   /**
    * Holds if this guard is an equality test between `e1` and `e2`. If the test is
@@ -46,7 +54,7 @@ class Guard extends Expr {
    */
   predicate isEquality(Expr e1, Expr e2, boolean polarity) {
     exists(BooleanValue v |
-      this = Internal::getAnEqualityCheck(e1, v, e2) and
+      this = getAnEqualityCheck(e1, v, e2) and
       polarity = v.getValue()
     )
   }

@@ -1,3 +1,4 @@
+WARNING: Module Client has been deprecated and may be removed in future (ClientHttpRequests.ql:5,6-12)
 | test.py:6:5:6:32 | ControlFlowNode for Attribute() | test.py:5:27:5:39 | ControlFlowNode for Str | GET |
 | test.py:6:5:6:32 | ControlFlowNode for Attribute() | test.py:6:25:6:31 | ControlFlowNode for Str | GET |
 | test.py:15:5:15:33 | ControlFlowNode for Attribute() | test.py:10:28:10:40 | ControlFlowNode for Str | POST |

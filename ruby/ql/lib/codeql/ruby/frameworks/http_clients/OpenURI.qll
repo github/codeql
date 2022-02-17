@@ -19,8 +19,10 @@ class OpenUriRequest extends HTTP::Client::Request::Range {
 
   OpenUriRequest() {
     requestNode =
-      [API::getTopLevelMember("URI"), API::getTopLevelMember("URI").getReturn("parse")]
-          .getReturn("open") and
+      [
+        [API::getTopLevelMember("URI"), API::getTopLevelMember("URI").getReturn("parse")]
+            .getReturn("open"), API::getTopLevelMember("OpenURI").getReturn("open_uri")
+      ] and
     requestUse = requestNode.getAnImmediateUse() and
     this = requestUse.asExpr().getExpr()
   }

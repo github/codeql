@@ -1447,4 +1447,15 @@ void temporary_hierarchy() {
     float f = (returnValue<POD_Derived>()).f();
 }
 
+struct Inheritance_Test_B {
+  ~Inheritance_Test_B() {}
+};
+
+struct Inheritance_Test_A : public Inheritance_Test_B {
+  int x;
+  int y;
+  Inheritance_Test_A() : x(42) {
+    y = 3;
+  }
+};
 // semmle-extractor-options: -std=c++17 --clang

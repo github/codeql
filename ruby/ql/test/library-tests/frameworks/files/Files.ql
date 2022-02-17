@@ -18,4 +18,6 @@ query predicate fileUtilsFilenameSources(FileUtils::FileUtilsFilenameSource s) {
 
 query predicate fileSystemReadAccesses(FileSystemReadAccess a) { any() }
 
+query predicate fileSystemAccesses(FileSystemAccess a) { any() }
+
 query predicate fileNameSources(FileNameSource s) { any() }

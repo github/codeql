@@ -6,7 +6,7 @@
 | 66 | \nSingle quotes string | ''' |
 | 69 | \nDouble-quotes\nstring | """ |
 | 73 | \nBytes\n | r''' |
-| 77 | \nRaw\nUnicode\n | U""" |
+| 77 | \nRaw\nUnicode\n | u""" |
 | 101 |   | " |
 | 101 | Hello | " |
 | 101 | world | " |

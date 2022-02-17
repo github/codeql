@@ -31,13 +31,13 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ runner.temp }}/query-pack.zip
-          key: queries-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}
+          key: queries-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/**/qlpack.yml') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}
       - name: Build query pack
         if: steps.cache-queries.outputs.cache-hit != 'true'
         run: |
           cd ql/ql/src
           "${CODEQL}" pack create
-          cd .codeql/pack/codeql/ql-all/0.0.0
+          cd .codeql/pack/codeql/ql/0.0.0
           zip "${PACKZIP}" -r .
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
@@ -189,4 +189,11 @@ jobs:
         uses: github/codeql-action/analyze@erik-krogh/ql
         with: 
           category: "ql-for-ql-${{ matrix.folder }}"
+      - name: Copy sarif file to CWD
+        run: cp ../results/ql.sarif ./${{ matrix.folder }}.sarif
+      - name: Sarif as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.folder }}.sarif
+          path: ${{ matrix.folder }}.sarif
 

@@ -1187,8 +1187,8 @@ Assert.cs:
 #-----|  -> access to local variable s
 
 #   24| access to local variable s
-#-----| null -> [assertion failure] call to method IsNotNull
 #-----| non-null -> [assertion success] call to method IsNotNull
+#-----| null -> [assertion failure] call to method IsNotNull
 
 #   25| call to method WriteLine
 #-----|  -> exit M3 (normal)
@@ -1376,8 +1376,8 @@ Assert.cs:
 #-----|  -> null
 
 #   45| ... != ...
-#-----| true -> [assertion failure] call to method IsFalse
 #-----| false -> [assertion success] call to method IsFalse
+#-----| true -> [assertion failure] call to method IsFalse
 
 #   45| null
 #-----|  -> ... != ...
@@ -1440,8 +1440,8 @@ Assert.cs:
 #-----|  -> null
 
 #   52| ... == ...
-#-----| true -> [assertion failure] call to method IsFalse
 #-----| false -> [assertion success] call to method IsFalse
+#-----| true -> [assertion failure] call to method IsFalse
 
 #   52| null
 #-----|  -> ... == ...
@@ -2068,12 +2068,12 @@ Assert.cs:
 #-----|  -> [b (line 84): true] access to local variable s
 
 #   95| [b (line 84): false] access to local variable s
-#-----| null -> [assertion failure, b (line 84): false] call to method IsNotNull
 #-----| non-null -> [assertion success, b (line 84): false] call to method IsNotNull
+#-----| null -> [assertion failure, b (line 84): false] call to method IsNotNull
 
 #   95| [b (line 84): true] access to local variable s
-#-----| null -> [assertion failure, b (line 84): true] call to method IsNotNull
 #-----| non-null -> [assertion success, b (line 84): true] call to method IsNotNull
+#-----| null -> [assertion failure, b (line 84): true] call to method IsNotNull
 
 #   96| [b (line 84): false] call to method WriteLine
 #-----|  -> [b (line 84): false] ...;
@@ -2338,12 +2338,12 @@ Assert.cs:
 #-----|  -> [b (line 84): true] null
 
 #  107| [b (line 84): false] ... != ...
-#-----| true -> [assertion failure, b (line 84): false] call to method IsFalse
 #-----| false -> [assertion success, b (line 84): false] call to method IsFalse
+#-----| true -> [assertion failure, b (line 84): false] call to method IsFalse
 
 #  107| [b (line 84): true] ... != ...
-#-----| true -> [assertion failure, b (line 84): true] call to method IsFalse
 #-----| false -> [assertion success, b (line 84): true] call to method IsFalse
+#-----| true -> [assertion failure, b (line 84): true] call to method IsFalse
 
 #  107| [b (line 84): false] null
 #-----|  -> [b (line 84): false] ... != ...
@@ -2430,12 +2430,12 @@ Assert.cs:
 #-----|  -> [b (line 84): true] null
 
 #  111| [b (line 84): false] ... == ...
-#-----| true -> [assertion failure, b (line 84): false] call to method IsFalse
 #-----| false -> [assertion success, b (line 84): false] call to method IsFalse
+#-----| true -> [assertion failure, b (line 84): false] call to method IsFalse
 
 #  111| [b (line 84): true] ... == ...
-#-----| true -> [assertion failure, b (line 84): true] call to method IsFalse
 #-----| false -> [assertion success, b (line 84): true] call to method IsFalse
+#-----| true -> [assertion failure, b (line 84): true] call to method IsFalse
 
 #  111| [b (line 84): false] null
 #-----|  -> [b (line 84): false] ... == ...
@@ -2771,15 +2771,15 @@ Assert.cs:
 #-----|  -> this access
 
 #  140| access to parameter b1
-#-----| true -> access to parameter b2
 #-----| false -> [assertion failure] access to parameter b2
+#-----| true -> access to parameter b2
 
 #  140| [assertion failure] access to parameter b2
-#-----| true -> [assertion failure] access to parameter b3
+#-----| false -> [assertion failure] access to parameter b3
 
 #  140| access to parameter b2
-#-----| true -> [assertion failure] access to parameter b3
 #-----| false -> [assertion success] access to parameter b3
+#-----| true -> [assertion failure] access to parameter b3
 
 #  140| [assertion failure] access to parameter b3
 #-----|  -> [assertion failure] call to method AssertTrueFalse
@@ -2980,8 +2980,8 @@ BreakInTry.cs:
 #-----|  -> null
 
 #   15| ... == ...
-#-----| true -> ;
 #-----| false -> exit M1 (normal)
+#-----| true -> ;
 
 #   15| null
 #-----|  -> ... == ...
@@ -3116,8 +3116,8 @@ BreakInTry.cs:
 #-----|  -> access to parameter args
 
 #   47| [finally: return] foreach (... ... in ...) ...
-#-----| non-empty -> [finally: return] String arg
 #-----| return -> exit M3 (normal)
+#-----| non-empty -> [finally: return] String arg
 
 #   47| foreach (... ... in ...) ...
 #-----| non-empty -> String arg
@@ -3216,12 +3216,12 @@ BreakInTry.cs:
 #-----|  -> access to parameter args
 
 #   65| [finally: return] foreach (... ... in ...) ...
-#-----| non-empty -> [finally: return] String arg
 #-----| return -> exit M4 (normal)
+#-----| non-empty -> [finally: return] String arg
 
 #   65| foreach (... ... in ...) ...
-#-----| non-empty -> String arg
 #-----| empty -> exit M4 (normal)
+#-----| non-empty -> String arg
 
 #   65| String arg
 #-----|  -> {...}
@@ -3396,12 +3396,12 @@ ConditionalAccess.cs:
 #-----|  -> exit M1
 
 #    3| access to parameter i
-#-----| non-null -> call to method ToString
 #-----| null -> exit M1 (normal)
+#-----| non-null -> call to method ToString
 
 #    3| call to method ToString
-#-----| non-null -> call to method ToLower
 #-----| null -> exit M1 (normal)
+#-----| non-null -> call to method ToLower
 
 #    3| call to method ToLower
 #-----|  -> exit M1 (normal)
@@ -3415,8 +3415,8 @@ ConditionalAccess.cs:
 #-----|  -> exit M2
 
 #    5| access to parameter s
-#-----| non-null -> access to property Length
 #-----| null -> exit M2 (normal)
+#-----| non-null -> access to property Length
 
 #    5| access to property Length
 #-----|  -> exit M2 (normal)
@@ -3434,8 +3434,8 @@ ConditionalAccess.cs:
 #-----| null -> access to parameter s2
 
 #    7| ... ?? ...
-#-----| non-null -> access to property Length
 #-----| null -> exit M3 (normal)
+#-----| non-null -> access to property Length
 
 #    7| [non-null] ... ?? ...
 #-----| non-null -> access to property Length
@@ -3524,8 +3524,8 @@ ConditionalAccess.cs:
 #-----|  -> exit M6
 
 #   19| access to parameter s1
-#-----| non-null -> access to parameter s2
 #-----| null -> exit M6 (normal)
+#-----| non-null -> access to parameter s2
 
 #   19| call to method CommaJoinWith
 #-----|  -> exit M6 (normal)
@@ -3621,8 +3621,8 @@ ConditionalAccess.cs:
 #-----|  -> ... = ...
 
 #   35| access to property Prop
-#-----| non-null -> call to method Out
 #-----| null -> exit M8 (normal)
+#-----| non-null -> call to method Out
 
 #   35| this access
 #-----|  -> access to property Prop
@@ -4058,8 +4058,8 @@ Conditions.cs:
 #-----| true -> [b (line 46): true] ...;
 
 #   51| access to parameter b
-#-----| true -> [b (line 46): true] ...;
 #-----| false -> [b (line 46): false] access to parameter x
+#-----| true -> [b (line 46): true] ...;
 
 #   52| [b (line 46): true] access to local variable y
 #-----|  -> [b (line 46): true] ...++
@@ -4163,8 +4163,8 @@ Conditions.cs:
 #-----| true -> [b (line 57): true] ...;
 
 #   62| access to parameter b
-#-----| true -> [b (line 57): true] ...;
 #-----| false -> [b (line 57): false] access to parameter x
+#-----| true -> [b (line 57): true] ...;
 
 #   63| [b (line 57): true] access to local variable y
 #-----|  -> [b (line 57): true] ...++
@@ -4580,8 +4580,8 @@ Conditions.cs:
 #-----|  -> access to parameter args
 
 #  116| ... < ...
-#-----| true -> {...}
 #-----| false -> exit M9 (normal)
+#-----| true -> {...}
 
 #  116| access to parameter args
 #-----|  -> access to property Length
@@ -4632,8 +4632,8 @@ Conditions.cs:
 #-----| true -> [last (line 118): false] ...;
 
 #  119| access to local variable last
-#-----| true -> [false, last (line 118): true] !...
 #-----| false -> [true, last (line 118): false] !...
+#-----| true -> [false, last (line 118): true] !...
 
 #  120| [last (line 118): false] ... = ...
 #-----|  -> [last (line 118): false] if (...) ...
@@ -5073,8 +5073,8 @@ ExitMethods.cs:
 #-----|  -> access to parameter b
 
 #   68| access to parameter b
-#-----| true -> object creation of type Exception
 #-----| false -> exit ErrorMaybe (normal)
+#-----| true -> object creation of type Exception
 
 #   69| throw ...;
 #-----| exception(Exception) -> exit ErrorMaybe (abnormal)
@@ -5230,8 +5230,8 @@ ExitMethods.cs:
 #-----|  -> 0
 
 #  112| ... != ...
-#-----| false -> "input"
 #-----| true -> 1
+#-----| false -> "input"
 
 #  112| ... ? ... : ...
 #-----|  -> return ...;
@@ -5354,8 +5354,8 @@ ExitMethods.cs:
 #-----|  -> exit AssertFalse (normal)
 
 #  132| access to parameter b
-#-----| true -> [assertion failure] call to method IsFalse
 #-----| false -> [assertion success] call to method IsFalse
+#-----| true -> [assertion failure] call to method IsFalse
 
 #  134| enter FailingAssertion3
 #-----|  -> {...}
@@ -5558,8 +5558,8 @@ Finally.cs:
 #-----|  -> ...;
 
 #   11| call to method WriteLine
-#-----|  -> {...}
 #-----| exception(Exception) -> [finally: exception(Exception)] {...}
+#-----|  -> {...}
 
 #   11| ...;
 #-----|  -> "Try1"
@@ -5612,8 +5612,8 @@ Finally.cs:
 #-----|  -> ...;
 
 #   23| call to method WriteLine
-#-----| exception(Exception) -> [exception: Exception] catch (...) {...}
 #-----|  -> return ...;
+#-----| exception(Exception) -> [exception: Exception] catch (...) {...}
 
 #   23| ...;
 #-----|  -> "Try2"
@@ -5752,8 +5752,8 @@ Finally.cs:
 #-----|  -> ...;
 
 #   58| call to method WriteLine
-#-----| exception(Exception) -> [exception: Exception] catch (...) {...}
 #-----|  -> return ...;
+#-----| exception(Exception) -> [exception: Exception] catch (...) {...}
 
 #   58| ...;
 #-----|  -> "Try3"
@@ -5880,8 +5880,8 @@ Finally.cs:
 #-----|  -> 0
 
 #   77| ... > ...
-#-----| true -> {...}
 #-----| false -> exit M4 (normal)
+#-----| true -> {...}
 
 #   77| 0
 #-----|  -> ... > ...
@@ -6179,16 +6179,16 @@ Finally.cs:
 #-----|  -> this access
 
 #  107| access to field Field
-#-----| exception(NullReferenceException) -> [finally: exception(NullReferenceException)] {...}
 #-----|  -> access to property Length
+#-----| exception(NullReferenceException) -> [finally: exception(NullReferenceException)] {...}
 
 #  107| this access
 #-----|  -> access to field Field
 
 #  107| access to property Length
+#-----|  -> 0
 #-----| exception(Exception) -> [finally: exception(Exception)] {...}
 #-----| exception(NullReferenceException) -> [finally: exception(NullReferenceException)] {...}
-#-----|  -> 0
 
 #  107| ... == ...
 #-----| true -> return ...;
@@ -6204,16 +6204,16 @@ Finally.cs:
 #-----|  -> this access
 
 #  109| access to field Field
-#-----| exception(NullReferenceException) -> [finally: exception(NullReferenceException)] {...}
 #-----|  -> access to property Length
+#-----| exception(NullReferenceException) -> [finally: exception(NullReferenceException)] {...}
 
 #  109| this access
 #-----|  -> access to field Field
 
 #  109| access to property Length
+#-----|  -> 1
 #-----| exception(Exception) -> [finally: exception(Exception)] {...}
 #-----| exception(NullReferenceException) -> [finally: exception(NullReferenceException)] {...}
-#-----|  -> 1
 
 #  109| ... == ...
 #-----| true -> object creation of type OutOfMemoryException
@@ -6335,24 +6335,24 @@ Finally.cs:
 #-----|  -> 0
 
 #  114| ... == ...
-#-----| true -> [false] !...
 #-----| false -> [true] !...
+#-----| true -> [false] !...
 
 #  114| [finally: exception(Exception)] ... == ...
-#-----| true -> [false, finally: exception(Exception)] !...
 #-----| false -> [true, finally: exception(Exception)] !...
+#-----| true -> [false, finally: exception(Exception)] !...
 
 #  114| [finally: exception(NullReferenceException)] ... == ...
-#-----| true -> [false, finally: exception(NullReferenceException)] !...
 #-----| false -> [true, finally: exception(NullReferenceException)] !...
+#-----| true -> [false, finally: exception(NullReferenceException)] !...
 
 #  114| [finally: exception(OutOfMemoryException)] ... == ...
-#-----| true -> [false, finally: exception(OutOfMemoryException)] !...
 #-----| false -> [true, finally: exception(OutOfMemoryException)] !...
+#-----| true -> [false, finally: exception(OutOfMemoryException)] !...
 
 #  114| [finally: return] ... == ...
-#-----| true -> [false, finally: return] !...
 #-----| false -> [true, finally: return] !...
+#-----| true -> [false, finally: return] !...
 
 #  114| 0
 #-----|  -> ... == ...
@@ -6490,24 +6490,24 @@ Finally.cs:
 #-----|  -> 0
 
 #  116| ... > ...
-#-----| true -> ...;
 #-----| false -> exit M5 (normal)
+#-----| true -> ...;
 
 #  116| [finally: exception(Exception)] ... > ...
-#-----| true -> [finally: exception(Exception)] ...;
 #-----| exception(Exception) -> exit M5 (abnormal)
+#-----| true -> [finally: exception(Exception)] ...;
 
 #  116| [finally: exception(NullReferenceException)] ... > ...
-#-----| true -> [finally: exception(NullReferenceException)] ...;
 #-----| exception(NullReferenceException) -> exit M5 (abnormal)
+#-----| true -> [finally: exception(NullReferenceException)] ...;
 
 #  116| [finally: exception(OutOfMemoryException)] ... > ...
-#-----| true -> [finally: exception(OutOfMemoryException)] ...;
 #-----| exception(OutOfMemoryException) -> exit M5 (abnormal)
+#-----| true -> [finally: exception(OutOfMemoryException)] ...;
 
 #  116| [finally: return] ... > ...
-#-----| true -> [finally: return] ...;
 #-----| return -> exit M5 (normal)
+#-----| true -> [finally: return] ...;
 
 #  116| 0
 #-----|  -> ... > ...
@@ -6622,8 +6622,8 @@ Finally.cs:
 #-----|  -> ...;
 
 #  137| call to method WriteLine
-#-----|  -> {...}
 #-----| exception(Exception) -> [finally: exception(Exception)] {...}
+#-----|  -> {...}
 
 #  137| ...;
 #-----|  -> "Try"
@@ -6741,31 +6741,31 @@ Finally.cs:
 #-----|  -> access to property Length
 
 #  158| [finally: exception(ArgumentNullException)] access to property Length
+#-----|  -> [finally: exception(ArgumentNullException)] 1
 #-----| exception(Exception) -> [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...}
 #-----| exception(NullReferenceException) -> [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...}
-#-----|  -> [finally: exception(ArgumentNullException)] 1
 
 #  158| [finally: exception(Exception)] access to property Length
+#-----|  -> [finally: exception(Exception)] 1
 #-----| exception(Exception) -> [finally: exception(Exception), exception: Exception] catch (...) {...}
 #-----| exception(NullReferenceException) -> [finally: exception(Exception), exception: NullReferenceException] catch (...) {...}
-#-----|  -> [finally: exception(Exception)] 1
 
 #  158| access to property Length
+#-----|  -> 1
 #-----| exception(Exception) -> [exception: Exception] catch (...) {...}
 #-----| exception(NullReferenceException) -> [exception: NullReferenceException] catch (...) {...}
-#-----|  -> 1
 
 #  158| ... == ...
-#-----| true -> "1"
 #-----| false -> exit M8 (normal)
+#-----| true -> "1"
 
 #  158| [finally: exception(ArgumentNullException)] ... == ...
-#-----| true -> [finally: exception(ArgumentNullException)] "1"
 #-----| exception(ArgumentNullException) -> exit M8 (abnormal)
+#-----| true -> [finally: exception(ArgumentNullException)] "1"
 
 #  158| [finally: exception(Exception)] ... == ...
-#-----| true -> [finally: exception(Exception)] "1"
 #-----| exception(Exception) -> exit M8 (abnormal)
+#-----| true -> [finally: exception(Exception)] "1"
 
 #  158| 1
 #-----|  -> ... == ...
@@ -6786,16 +6786,16 @@ Finally.cs:
 #-----| exception(Exception) -> [exception: Exception] catch (...) {...}
 
 #  159| [finally: exception(ArgumentNullException)] object creation of type Exception
-#-----| exception(Exception) -> [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...}
 #-----|  -> [finally: exception(ArgumentNullException)] throw ...;
+#-----| exception(Exception) -> [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...}
 
 #  159| [finally: exception(Exception)] object creation of type Exception
-#-----| exception(Exception) -> [finally: exception(Exception), exception: Exception] catch (...) {...}
 #-----|  -> [finally: exception(Exception)] throw ...;
+#-----| exception(Exception) -> [finally: exception(Exception), exception: Exception] catch (...) {...}
 
 #  159| object creation of type Exception
-#-----| exception(Exception) -> [exception: Exception] catch (...) {...}
 #-----|  -> throw ...;
+#-----| exception(Exception) -> [exception: Exception] catch (...) {...}
 
 #  159| "1"
 #-----|  -> object creation of type Exception
@@ -7090,16 +7090,16 @@ Finally.cs:
 #-----|  -> [finally: exception(ExceptionA), b1 (line 176): true] access to parameter b2
 
 #  186| [b1 (line 176): false] access to parameter b2
-#-----| true -> [b1 (line 176): false, b2 (line 176): true] object creation of type ExceptionB
 #-----| false -> exit M9 (normal)
+#-----| true -> [b1 (line 176): false, b2 (line 176): true] object creation of type ExceptionB
 
 #  186| [finally: exception(Exception), b1 (line 176): true] access to parameter b2
-#-----| true -> [finally: exception(Exception), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB
 #-----| exception(Exception) -> exit M9 (abnormal)
+#-----| true -> [finally: exception(Exception), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB
 
 #  186| [finally: exception(ExceptionA), b1 (line 176): true] access to parameter b2
-#-----| true -> [finally: exception(ExceptionA), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB
 #-----| exception(ExceptionA) -> exit M9 (abnormal)
+#-----| true -> [finally: exception(ExceptionA), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB
 
 #  186| [b1 (line 176): false, b2 (line 176): true] throw ...;
 #-----| exception(ExceptionB) -> [exception: ExceptionB, b1 (line 176): false, b2 (line 176): true] catch (...) {...}
@@ -7111,34 +7111,34 @@ Finally.cs:
 #-----| exception(ExceptionB) -> [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] catch (...) {...}
 
 #  186| [b1 (line 176): false, b2 (line 176): true] object creation of type ExceptionB
-#-----| exception(Exception) -> [exception: Exception, b1 (line 176): false, b2 (line 176): true] catch (...) {...}
 #-----|  -> [b1 (line 176): false, b2 (line 176): true] throw ...;
+#-----| exception(Exception) -> [exception: Exception, b1 (line 176): false, b2 (line 176): true] catch (...) {...}
 
 #  186| [finally: exception(Exception), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB
-#-----| exception(Exception) -> [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...}
 #-----|  -> [finally: exception(Exception), b1 (line 176): true, b2 (line 176): true] throw ...;
+#-----| exception(Exception) -> [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...}
 
 #  186| [finally: exception(ExceptionA), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB
-#-----| exception(Exception) -> [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...}
 #-----|  -> [finally: exception(ExceptionA), b1 (line 176): true, b2 (line 176): true] throw ...;
+#-----| exception(Exception) -> [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...}
 
 #  188| [exception: Exception, b1 (line 176): false, b2 (line 176): true] catch (...) {...}
-#-----| match -> [exception: Exception, b1 (line 176): false, b2 (line 176): true] access to parameter b2
 #-----| exception(Exception) -> exit M9 (abnormal)
+#-----| match -> [exception: Exception, b1 (line 176): false, b2 (line 176): true] access to parameter b2
 
 #  188| [exception: ExceptionB, b1 (line 176): false, b2 (line 176): true] catch (...) {...}
 #-----| match -> [exception: ExceptionB, b1 (line 176): false, b2 (line 176): true] access to parameter b2
 
 #  188| [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...}
-#-----| match -> [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2
 #-----| exception(Exception) -> exit M9 (abnormal)
+#-----| match -> [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2
 
 #  188| [finally: exception(Exception), exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] catch (...) {...}
 #-----| match -> [finally: exception(Exception), exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] access to parameter b2
 
 #  188| [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...}
-#-----| match -> [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2
 #-----| exception(Exception) -> exit M9 (abnormal)
+#-----| match -> [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2
 
 #  188| [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] catch (...) {...}
 #-----| match -> [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] access to parameter b2
@@ -7358,32 +7358,32 @@ Finally.cs:
 #-----|  -> access to parameter b3
 
 #  209| [finally(1): exception(Exception)] access to parameter b3
-#-----| true -> [finally(1): exception(Exception)] object creation of type ExceptionC
 #-----| exception(Exception) -> exit M10 (abnormal)
+#-----| true -> [finally(1): exception(Exception)] object creation of type ExceptionC
 
 #  209| [finally(1): exception(ExceptionB)] access to parameter b3
-#-----| true -> [finally(1): exception(ExceptionB)] object creation of type ExceptionC
 #-----| exception(ExceptionB) -> exit M10 (abnormal)
+#-----| true -> [finally(1): exception(ExceptionB)] object creation of type ExceptionC
 
 #  209| [finally: exception(Exception), finally(1): exception(Exception)] access to parameter b3
-#-----| true -> [finally: exception(Exception), finally(1): exception(Exception)] object creation of type ExceptionC
 #-----| exception(Exception) -> exit M10 (abnormal)
+#-----| true -> [finally: exception(Exception), finally(1): exception(Exception)] object creation of type ExceptionC
 
 #  209| [finally: exception(Exception), finally(1): exception(ExceptionB)] access to parameter b3
-#-----| true -> [finally: exception(Exception), finally(1): exception(ExceptionB)] object creation of type ExceptionC
 #-----| exception(ExceptionB) -> exit M10 (abnormal)
+#-----| true -> [finally: exception(Exception), finally(1): exception(ExceptionB)] object creation of type ExceptionC
 
 #  209| [finally: exception(Exception)] access to parameter b3
 #-----| true -> [finally: exception(Exception)] object creation of type ExceptionC
 #-----| false -> [finally: exception(Exception)] ...;
 
 #  209| [finally: exception(ExceptionA), finally(1): exception(Exception)] access to parameter b3
-#-----| true -> [finally: exception(ExceptionA), finally(1): exception(Exception)] object creation of type ExceptionC
 #-----| exception(Exception) -> exit M10 (abnormal)
+#-----| true -> [finally: exception(ExceptionA), finally(1): exception(Exception)] object creation of type ExceptionC
 
 #  209| [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] access to parameter b3
-#-----| true -> [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] object creation of type ExceptionC
 #-----| exception(ExceptionB) -> exit M10 (abnormal)
+#-----| true -> [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] object creation of type ExceptionC
 
 #  209| [finally: exception(ExceptionA)] access to parameter b3
 #-----| true -> [finally: exception(ExceptionA)] object creation of type ExceptionC
@@ -7776,8 +7776,8 @@ Finally.cs:
 #-----|  -> [finally: exception(ExceptionA)] call to method WriteLine
 
 #  254| call to method WriteLine
-#-----|  -> {...}
 #-----| exception(Exception) -> [finally: exception(Exception)] {...}
+#-----|  -> {...}
 
 #  254| ...;
 #-----|  -> "Mid finally"
@@ -7851,8 +7851,8 @@ Finally.cs:
 #-----|  -> ...;
 
 #  267| call to method WriteLine
-#-----|  -> {...}
 #-----| exception(Exception) -> [finally: exception(Exception)] {...}
+#-----|  -> {...}
 
 #  267| ...;
 #-----|  -> "1"
@@ -7927,8 +7927,8 @@ Foreach.cs:
 #-----|  -> access to parameter args
 
 #    8| foreach (... ... in ...) ...
-#-----| non-empty -> String arg
 #-----| empty -> exit M1 (normal)
+#-----| non-empty -> String arg
 
 #    8| String arg
 #-----|  -> ;
@@ -7951,8 +7951,8 @@ Foreach.cs:
 #-----|  -> access to parameter args
 
 #   14| foreach (... ... in ...) ...
-#-----| non-empty -> String _
 #-----| empty -> exit M2 (normal)
+#-----| non-empty -> String _
 
 #   14| String _
 #-----|  -> ;
@@ -7975,8 +7975,8 @@ Foreach.cs:
 #-----|  -> access to parameter e
 
 #   20| foreach (... ... in ...) ...
-#-----| non-empty -> String x
 #-----| empty -> exit M3 (normal)
+#-----| non-empty -> String x
 
 #   20| String x
 #-----|  -> ;
@@ -8010,8 +8010,8 @@ Foreach.cs:
 #-----|  -> access to parameter args
 
 #   26| foreach (... ... in ...) ...
-#-----| non-empty -> String x
 #-----| empty -> exit M4 (normal)
+#-----| non-empty -> String x
 
 #   26| (..., ...)
 #-----|  -> ;
@@ -8040,8 +8040,8 @@ Foreach.cs:
 #-----|  -> access to parameter args
 
 #   32| foreach (... ... in ...) ...
-#-----| non-empty -> String x
 #-----| empty -> exit M5 (normal)
+#-----| non-empty -> String x
 
 #   32| (..., ...)
 #-----|  -> ;
@@ -8070,8 +8070,8 @@ Foreach.cs:
 #-----|  -> access to parameter args
 
 #   38| foreach (... ... in ...) ...
-#-----| non-empty -> String x
 #-----| empty -> exit M6 (normal)
+#-----| non-empty -> String x
 
 #   38| (..., ...)
 #-----|  -> ;
@@ -8739,8 +8739,8 @@ LoopUnrolling.cs:
 #-----| non-empty -> String arg
 
 #   11| foreach (... ... in ...) ...
-#-----| non-empty -> String arg
 #-----| empty -> exit M1 (normal)
+#-----| non-empty -> String arg
 
 #   11| String arg
 #-----|  -> ...;
@@ -8796,8 +8796,8 @@ LoopUnrolling.cs:
 #-----| non-empty -> String x
 
 #   18| foreach (... ... in ...) ...
-#-----| non-empty -> String x
 #-----| empty -> exit M2 (normal)
+#-----| non-empty -> String x
 
 #   18| String x
 #-----|  -> ...;
@@ -8826,8 +8826,8 @@ LoopUnrolling.cs:
 #-----|  -> access to parameter args
 
 #   24| foreach (... ... in ...) ...
-#-----| non-empty -> Char arg
 #-----| empty -> exit M3 (normal)
+#-----| non-empty -> Char arg
 
 #   24| Char arg
 #-----|  -> access to parameter args
@@ -8949,8 +8949,8 @@ LoopUnrolling.cs:
 #-----| non-empty -> String x
 
 #   40| foreach (... ... in ...) ...
-#-----| non-empty -> String x
 #-----| empty -> exit M5 (normal)
+#-----| non-empty -> String x
 
 #   40| String x
 #-----|  -> access to local variable ys
@@ -9079,12 +9079,12 @@ LoopUnrolling.cs:
 #-----|  -> { ..., ... }
 
 #   58| [b (line 55): false] foreach (... ... in ...) ...
-#-----| non-empty -> [b (line 55): false] String x
 #-----| empty -> exit M7 (normal)
+#-----| non-empty -> [b (line 55): false] String x
 
 #   58| [b (line 55): true] foreach (... ... in ...) ...
-#-----| non-empty -> [b (line 55): true] String x
 #-----| empty -> exit M7 (normal)
+#-----| non-empty -> [b (line 55): true] String x
 
 #   58| [unroll (line 58)] foreach (... ... in ...) ...
 #-----| non-empty -> String x
@@ -9183,8 +9183,8 @@ LoopUnrolling.cs:
 #-----|  -> call to method Any<String>
 
 #   69| call to method Any<String>
-#-----| true -> [false] !...
 #-----| false -> [true] !...
+#-----| true -> [false] !...
 
 #   70| return ...;
 #-----| return -> exit M8 (normal)
@@ -9298,8 +9298,8 @@ LoopUnrolling.cs:
 #-----| non-empty -> String x
 
 #   97| foreach (... ... in ...) ...
-#-----| non-empty -> String x
 #-----| empty -> exit M11 (normal)
+#-----| non-empty -> String x
 
 #   97| String x
 #-----|  -> {...}
@@ -10388,8 +10388,8 @@ Patterns.cs:
 #-----| true -> {...}
 
 #    8| Int32 i1
-#-----| no-match -> [false] ... is ...
 #-----| match -> [true] ... is ...
+#-----| no-match -> [false] ... is ...
 
 #    9| {...}
 #-----|  -> ...;
@@ -10422,8 +10422,8 @@ Patterns.cs:
 #-----| true -> {...}
 
 #   12| String s1
-#-----| no-match -> [false] ... is ...
 #-----| match -> [true] ... is ...
+#-----| no-match -> [false] ... is ...
 
 #   13| {...}
 #-----|  -> ...;
@@ -10456,8 +10456,8 @@ Patterns.cs:
 #-----| true -> {...}
 
 #   16| Object v1
-#-----| no-match -> [false] ... is ...
 #-----| match -> [true] ... is ...
+#-----| no-match -> [false] ... is ...
 
 #   17| {...}
 #-----|  -> switch (...) {...}
@@ -10482,8 +10482,8 @@ Patterns.cs:
 #-----|  -> Int32 i2
 
 #   24| Int32 i2
-#-----| no-match -> case ...:
 #-----| match -> access to local variable i2
+#-----| no-match -> case ...:
 
 #   24| access to local variable i2
 #-----|  -> 0
@@ -10693,8 +10693,8 @@ Patterns.cs:
 #-----| no-match -> { ... }
 
 #   54| 1
-#-----| no-match -> [no-match] { ... }
 #-----| match -> [match] { ... }
+#-----| no-match -> [no-match] { ... }
 
 #   56| enter M5
 #-----|  -> {...}
@@ -10979,8 +10979,8 @@ Patterns.cs:
 #-----| no-match -> [no-match] { ... }
 
 #   95| access to constant B
-#-----| no-match -> [no-match] ... or ...
 #-----| match -> [match] ... or ...
+#-----| no-match -> [no-match] ... or ...
 
 #   96| {...}
 #-----|  -> ...;
@@ -11039,8 +11039,8 @@ PostDominance.cs:
 #-----| true -> return ...;
 
 #   12| null
-#-----| no-match -> [false] ... is ...
 #-----| match -> [true] ... is ...
+#-----| no-match -> [false] ... is ...
 
 #   13| return ...;
 #-----| return -> exit M2 (normal)
@@ -11081,8 +11081,8 @@ PostDominance.cs:
 #-----| true -> nameof(...)
 
 #   19| null
-#-----| no-match -> [false] ... is ...
 #-----| match -> [true] ... is ...
+#-----| no-match -> [false] ... is ...
 
 #   20| throw ...;
 #-----| exception(ArgumentNullException) -> exit M3 (abnormal)
@@ -11402,8 +11402,8 @@ Switch.cs:
 #-----|  -> String s
 
 #   24| String s
-#-----| no-match -> case ...:
 #-----| match -> access to local variable s
+#-----| no-match -> case ...:
 
 #   24| access to local variable s
 #-----|  -> access to property Length
@@ -11516,15 +11516,15 @@ Switch.cs:
 #-----|  -> access to type Boolean
 
 #   50| access to type Boolean
-#-----| match -> access to parameter o
 #-----| no-match -> exit M4 (normal)
+#-----| match -> access to parameter o
 
 #   50| access to parameter o
 #-----|  -> null
 
 #   50| ... != ...
-#-----| true -> break;
 #-----| false -> exit M4 (normal)
+#-----| true -> break;
 
 #   50| null
 #-----|  -> ... != ...
@@ -11600,8 +11600,8 @@ Switch.cs:
 #-----|  -> ""
 
 #   72| ""
-#-----| match -> break;
 #-----| no-match -> exit M6 (normal)
+#-----| match -> break;
 
 #   73| break;
 #-----| break -> exit M6 (normal)
@@ -11801,8 +11801,8 @@ Switch.cs:
 #-----|  -> 3
 
 #  117| 3
-#-----| no-match -> case ...:
 #-----| match -> access to parameter s
+#-----| no-match -> case ...:
 
 #  117| access to parameter s
 #-----|  -> "foo"
@@ -11824,8 +11824,8 @@ Switch.cs:
 #-----|  -> 2
 
 #  118| 2
-#-----| no-match -> 1
 #-----| match -> access to parameter s
+#-----| no-match -> 1
 
 #  118| access to parameter s
 #-----|  -> "fu"
@@ -12097,8 +12097,8 @@ Switch.cs:
 #-----|  -> ... => ...
 
 #  156| false
-#-----| match -> "b"
 #-----| exception(InvalidOperationException) -> exit M15 (abnormal)
+#-----| match -> "b"
 
 #  156| ... => ...
 #-----|  -> ... switch { ... }
@@ -12192,8 +12192,8 @@ TypeAccesses.cs:
 #-----| true -> ;
 
 #    7| Int32 j
-#-----| no-match -> [false] ... is ...
 #-----| match -> [true] ... is ...
+#-----| no-match -> [false] ... is ...
 
 #    7| ;
 #-----|  -> ... ...;
@@ -12503,8 +12503,8 @@ cflow.cs:
 #-----|  -> 20
 
 #   24| ... <= ...
-#-----| true -> {...}
 #-----| false -> exit Main (normal)
+#-----| true -> {...}
 
 #   24| 20
 #-----|  -> ... <= ...
@@ -12791,8 +12791,8 @@ cflow.cs:
 #-----|  -> access to field Field
 
 #   63| ... == ...
-#-----| true -> [false] !...
 #-----| false -> [true] !...
+#-----| true -> [false] !...
 
 #   63| ""
 #-----|  -> ... == ...
@@ -13042,8 +13042,8 @@ cflow.cs:
 #-----|  -> null
 
 #  102| ... != ...
-#-----| true -> ...;
 #-----| false -> exit M3 (normal)
+#-----| true -> ...;
 
 #  102| null
 #-----|  -> ... != ...
@@ -13536,8 +13536,8 @@ cflow.cs:
 #-----|  -> 10
 
 #  173| ... < ...
-#-----| true -> {...}
 #-----| false -> exit For (normal)
+#-----| true -> {...}
 
 #  173| access to local variable j
 #-----|  -> ... + ...
@@ -13853,8 +13853,8 @@ cflow.cs:
 #-----|  -> 0
 
 #  200| ... == ...
-#-----| true -> [false] !...
 #-----| false -> [true] !...
+#-----| true -> [false] !...
 
 #  200| 0
 #-----|  -> ... == ...
@@ -14007,8 +14007,8 @@ cflow.cs:
 #-----|  -> 10
 
 #  221| ... < ...
-#-----| true -> {...}
 #-----| false -> exit Do (normal)
+#-----| true -> {...}
 
 #  221| 10
 #-----|  -> ... < ...
@@ -14025,8 +14025,8 @@ cflow.cs:
 #-----|  -> "a"
 
 #  226| foreach (... ... in ...) ...
-#-----| non-empty -> String x
 #-----| empty -> exit Foreach (normal)
+#-----| non-empty -> String x
 
 #  226| String x
 #-----|  -> {...}
@@ -14153,8 +14153,8 @@ cflow.cs:
 #-----|  -> 0
 
 #  242| ... == ...
-#-----| true -> [false] !...
 #-----| false -> [true] !...
+#-----| true -> [false] !...
 
 #  242| 0
 #-----|  -> ... == ...
@@ -14440,8 +14440,8 @@ cflow.cs:
 #-----|  -> 0
 
 #  300| ... > ...
-#-----| true -> [false] !...
 #-----| false -> [true] !...
+#-----| true -> [false] !...
 
 #  300| 0
 #-----|  -> ... > ...
