@@ -80,7 +80,7 @@ def test_save4_store():
 
 def test_save4_load():
     obj = TestSave4.objects.first()
-    SINK(obj.text) # $ MISSING: flow
+    SINK(obj.text) # $ flow="SOURCE, l:-5 -> obj.text"
 
 # --------------------------------------
 # Set attribute on existing
@@ -101,7 +101,7 @@ def test_save4b_store():
 
 def test_save4b_load():
     obj = TestSave4b.objects.first()
-    SINK(obj.text) # $ MISSING: flow
+    SINK(obj.text) # $ flow="SOURCE, l:-5 -> obj.text"
 
 # --------------------------------------
 # <Model>.objects.create()
@@ -263,7 +263,7 @@ def test_load_init():
 
 def test_load_single():
     obj = TestLoad.objects.get(id=1)
-    SINK(obj.text) # $ MISSING: flow
+    SINK(obj.text) # $ flow="SOURCE, l:-5 -> obj.text"
 
 def test_load_many():
     objs = TestLoad.objects.all()
@@ -279,7 +279,7 @@ def test_load_many_skip():
 
 def test_load_qs_chain_single():
     obj = TestLoad.objects.all().filter(text__contains="s").exclude(text=None).first()
-    SINK(obj.text) # $ MISSING: flow
+    SINK(obj.text) # $ flow="SOURCE, l:-21 -> obj.text"
 
 def test_load_qs_chain_many():
     objs = TestLoad.objects.all().filter(text__contains="s").exclude(text=None)

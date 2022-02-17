@@ -565,7 +565,7 @@ module PrivateDjango {
          * See https://docs.djangoproject.com/en/3.1/topics/db/models/.
          */
         module Model {
-          /** Gets a reference to the `flask.views.View` class or any subclass. */
+          /** Gets a reference to the `django.db.models.Model` class or any subclass. */
           API::Node subclassRef() {
             result =
               API::moduleImport("django")
@@ -573,37 +573,121 @@ module PrivateDjango {
                   .getMember("models")
                   .getMember("Model")
                   .getASubclass*()
+            or
+            result =
+              API::moduleImport("django")
+                  .getMember("db")
+                  .getMember("models")
+                  .getMember("base")
+                  .getMember("Model")
+                  .getASubclass*()
+          }
+
+          /**
+           * A source of instances of `django.db.models.Model` class or any subclass, extend this class to model new instances.
+           *
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
+           * library.
+           *
+           * Use the predicate `Model::instance()` to get references to instances of `django.db.models.Model` class or any subclass.
+           */
+          abstract class InstanceSource extends DataFlow::LocalSourceNode {
+            /** Gets the model class that this is an instance source of. */
+            abstract API::Node getModelClass();
+
+            /** Holds if this instance-source is fetching data from the DB. */
+            abstract predicate isDbFetch();
+          }
+
+          /** A direct instantiation of `django.db.models.Model` class or any subclass. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            API::Node modelClass;
+
+            ClassInstantiation() {
+              modelClass = subclassRef() and
+              this = modelClass.getACall()
+            }
+
+            override API::Node getModelClass() { result = modelClass }
+
+            override predicate isDbFetch() { none() }
+          }
+
+          /** A method on a query-set or manager that returns an instance of a django model. */
+          private class QuerySetMethod extends InstanceSource, DataFlow::CallCfgNode {
+            API::Node modelClass;
+            string methodName;
+
+            QuerySetMethod() {
+              modelClass = subclassRef() and
+              methodName in ["get", "create", "earliest", "latest", "first", "last"] and
+              this = [manager(modelClass), querySet(modelClass)].getMember(methodName).getACall()
+            }
+
+            override API::Node getModelClass() { result = modelClass }
+
+            override predicate isDbFetch() { not methodName = "create" }
+          }
+
+          /**
+           * Gets a reference to an instance of `django.db.models.Model` class or any subclass,
+           * where `modelClass` specifies the class.
+           */
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t, API::Node modelClass) {
+            t.start() and
+            modelClass = result.(InstanceSource).getModelClass()
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2, modelClass).track(t2, t))
+          }
+
+          /**
+           * Gets a reference to an instance of `django.db.models.Model` class or any subclass,
+           * where `modelClass` specifies the class.
+           */
+          DataFlow::Node instance(API::Node modelClass) {
+            instance(DataFlow::TypeTracker::end(), modelClass).flowsTo(result)
           }
         }
 
         /**
-         * Gets a reference to the Manager (django.db.models.Manager) for a django Model,
-         * accessed by `<ModelName>.objects`.
+         * Gets a reference to the Manager (django.db.models.Manager) for the django Model `modelClass`,
+         * accessed by `<modelClass>.objects`.
          */
-        API::Node manager() { result = Model::subclassRef().getMember("objects") }
+        API::Node manager(API::Node modelClass) {
+          modelClass = Model::subclassRef() and
+          result = modelClass.getMember("objects")
+        }
 
         /**
          * Gets a method with `name` that returns a QuerySet.
          * This method can originate on a QuerySet or a Manager.
+         * `modelClass` specifies the django Model that this query-set originates from.
          *
          * See https://docs.djangoproject.com/en/3.1/ref/models/querysets/
          */
-        API::Node querySetReturningMethod(string name) {
+        API::Node querySetReturningMethod(API::Node modelClass, string name) {
           name in [
               "none", "all", "filter", "exclude", "complex_filter", "union", "intersection",
               "difference", "select_for_update", "select_related", "prefetch_related", "order_by",
               "distinct", "reverse", "defer", "only", "using", "annotate", "extra", "raw",
               "datetimes", "dates", "values", "values_list", "alias"
             ] and
-          result = [manager(), querySet()].getMember(name)
+          result = [manager(modelClass), querySet(modelClass)].getMember(name)
+          or
+          name = "get_queryset" and
+          result = manager(modelClass).getMember(name)
         }
 
         /**
          * Gets a reference to a QuerySet (django.db.models.query.QuerySet).
+         * `modelClass` specifies the django Model that this query-set originates from.
          *
          * See https://docs.djangoproject.com/en/3.1/ref/models/querysets/
          */
-        API::Node querySet() { result = querySetReturningMethod(_).getReturn() }
+        API::Node querySet(API::Node modelClass) {
+          result = querySetReturningMethod(modelClass, _).getReturn()
+        }
 
         /** Gets a reference to the `django.db.models.expressions` module. */
         API::Node expressions() { result = models().getMember("expressions") }
@@ -645,6 +729,52 @@ module PrivateDjango {
             }
           }
         }
+
+        /** This internal module provides data-flow modeling of Django ORM. */
+        private module OrmDataflow {
+          private import semmle.python.dataflow.new.internal.DataFlowPrivate::Orm
+
+          /** Gets the (AST) class of the Django model class `modelClass`. */
+          Class getModelClassClass(API::Node modelClass) {
+            result.getParent() = modelClass.getAUse().asExpr().(ClassExpr) and
+            modelClass = Model::subclassRef()
+          }
+
+          /** A synthetic node representing the data for an Django ORM model saved in a DB. */
+          class SyntheticDjangoOrmModelNode extends SyntheticOrmModelNode {
+            API::Node modelClass;
+
+            SyntheticDjangoOrmModelNode() { this.getClass() = getModelClassClass(modelClass) }
+
+            /** Gets the API node for this Django model class. */
+            API::Node getModelClass() { result = modelClass }
+          }
+
+          /** Additional data-flow steps for Django ORM models. */
+          class DjangOrmSteps extends AdditionalOrmSteps {
+            override predicate storeStep(
+              DataFlow::Node nodeFrom, DataFlow::Content c, DataFlow::Node nodeTo
+            ) {
+              none()
+            }
+
+            override predicate jumpStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+              // save -> synthetic
+              exists(API::Node modelClass, DataFlow::MethodCallNode saveCall |
+                nodeTo.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass and
+                saveCall.calls(Model::instance(modelClass), "save") and
+                nodeFrom = saveCall.getObject()
+              )
+              or
+              // synthetic -> method-call that returns single ORM model (get/first/...)
+              exists(API::Node modelClass |
+                nodeTo.(Model::InstanceSource).getModelClass() = modelClass and
+                nodeTo.(Model::InstanceSource).isDbFetch() and
+                nodeFrom.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass
+              )
+            }
+          }
+        }
       }
     }
 
@@ -659,7 +789,7 @@ module PrivateDjango {
       DataFlow::Node sql;
 
       ObjectsAnnotate() {
-        this = django::db::models::querySetReturningMethod("annotate").getACall() and
+        this = django::db::models::querySetReturningMethod(_, "annotate").getACall() and
         django::db::models::expressions::RawSQL::instance(sql) in [
             this.getArg(_), this.getArgByName(_)
           ]
@@ -677,7 +807,7 @@ module PrivateDjango {
       DataFlow::Node sql;
 
       ObjectsAlias() {
-        this = django::db::models::querySetReturningMethod("alias").getACall() and
+        this = django::db::models::querySetReturningMethod(_, "alias").getACall() and
         django::db::models::expressions::RawSQL::instance(sql) in [
             this.getArg(_), this.getArgByName(_)
           ]
@@ -694,7 +824,7 @@ module PrivateDjango {
      * - https://docs.djangoproject.com/en/3.1/ref/models/querysets/#raw
      */
     private class ObjectsRaw extends SqlExecution::Range, DataFlow::CallCfgNode {
-      ObjectsRaw() { this = django::db::models::querySetReturningMethod("raw").getACall() }
+      ObjectsRaw() { this = django::db::models::querySetReturningMethod(_, "raw").getACall() }
 
       override DataFlow::Node getSql() { result = this.getArg(0) }
     }
@@ -705,7 +835,7 @@ module PrivateDjango {
      * See https://docs.djangoproject.com/en/3.1/ref/models/querysets/#extra
      */
     private class ObjectsExtra extends SqlExecution::Range, DataFlow::CallCfgNode {
-      ObjectsExtra() { this = django::db::models::querySetReturningMethod("extra").getACall() }
+      ObjectsExtra() { this = django::db::models::querySetReturningMethod(_, "extra").getACall() }
 
       override DataFlow::Node getSql() {
         result in [

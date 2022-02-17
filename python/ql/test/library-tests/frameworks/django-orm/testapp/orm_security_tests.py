@@ -45,14 +45,14 @@ def person(request):
 
 def show_name(request):
     person = Person.objects.get(id=request.GET["id"])
-    return HttpResponse("Name is: {}".format(person.name)) # NOT OK
+    return HttpResponse("Name is: {}".format(person.name))  # NOT OK
 
 def show_age(request):
     person = Person.objects.get(id=request.GET["id"])
     assert isinstance(person.age, int)
 
     # Since the age is an integer, there is not actually XSS in the line below
-    return HttpResponse("Age is: {}".format(person.age)) # OK
+    return HttpResponse("Age is: {}".format(person.age))  # OK
 
 # look at the log after doing
 """
