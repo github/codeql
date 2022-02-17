@@ -74,3 +74,12 @@ def test_mymodel_form_save():
 
     obj = MyModel.objects.last()
     assert obj.text == text
+
+@pytest.mark.django_db
+def test_none_all():
+    from .orm_form_test import MyModel
+    MyModel.objects.create(text="foo")
+
+    assert len(MyModel.objects.all()) == 1
+    assert len(MyModel.objects.none().all()) == 0
+    assert len(MyModel.objects.all().none()) == 0

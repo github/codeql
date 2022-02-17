@@ -248,6 +248,45 @@ def test_save11_load():
     obj = save11_Comment.objects.first()
     SINK(obj.text) # $ MISSING: flow
 
+# --------------------------------------
+# <Model>.objects.bulk_create()
+# see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#bulk-create
+# --------------------------------------
+class TestSave12(models.Model):
+    text = models.CharField(max_length=512)
+
+def test_save12_store():
+    objs = TestSave12.objects.bulk_create([
+        TestSave12(text=SOURCE),
+        TestSave12(text="foo"),
+    ])
+    SINK(objs[0].text) # $ MISSING: flow
+
+def test_save12_load():
+    obj = TestSave12.objects.first()
+    SINK(obj.text) # $ MISSING: flow
+
+# --------------------------------------
+# <Model>.objects.bulk_update()
+# see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#bulk-update
+# --------------------------------------
+class TestSave13(models.Model):
+    text = models.CharField(max_length=512)
+
+def test_save13_init():
+    obj = TestSave13(text="foo")
+    obj.save()
+
+def test_save13_store():
+    objs = TestSave13.objects.all()
+    for obj in objs:
+        obj.text = SOURCE
+    TestSave13.objects.bulk_update(objs, ["text"])
+
+def test_save13_load():
+    obj = TestSave13.objects.first()
+    SINK(obj.text) # $ MISSING: flow
+
 # ------------------------------------------------------------------------------
 # Different ways to load data from the DB through the ORM
 # ------------------------------------------------------------------------------
@@ -318,6 +357,14 @@ def test_load_values_list():
     for text in vals:
         SINK(text) # $ MISSING: flow
     SINK(vals[0]) # $ MISSING: flow
+
+def test_load_in_bulk():
+    # see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#in-bulk
+    d = TestLoad.objects.in_bulk([1])
+    for val in d.values():
+        SINK(val.text) # $ MISSING: flow
+    SINK(d[1].text) # $ MISSING: flow
+
 
 # Good resources:
 # - https://docs.djangoproject.com/en/4.0/topics/db/queries/#making-queries
