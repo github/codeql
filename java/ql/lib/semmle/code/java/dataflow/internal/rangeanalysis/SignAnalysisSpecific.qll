@@ -7,8 +7,6 @@ module Private {
   private import semmle.code.java.dataflow.SSA as Ssa
   private import semmle.code.java.controlflow.Guards as G
   private import Sign
-  private import semmle.code.java.dataflow.ConstantAnalysis as Const
-  private import semmle.code.java.semantic.SemanticExpr
   import Impl
 
   class ConstantIntegerExpr = RU::ConstantIntegerExpr;
