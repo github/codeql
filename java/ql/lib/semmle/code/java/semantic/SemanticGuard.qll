@@ -16,13 +16,9 @@ private newtype TSemGuard = MkSemGuard(LanguageGuard guard)
 class SemGuard extends TSemGuard {
   LanguageGuard guard;
 
-  SemGuard() {
-    this = MkSemGuard(guard)
-  }
+  SemGuard() { this = MkSemGuard(guard) }
 
-  final string toString() {
-    result = guard.toString()
-  }
+  final string toString() { result = guard.toString() }
 
   final predicate isEquality(SemExpr e1, SemExpr e2, boolean polarity) {
     guard.isEquality(getJavaExpr(e1), getJavaExpr(e2), polarity)
@@ -36,13 +32,9 @@ class SemGuard extends TSemGuard {
     guard.hasBranchEdge(getJavaBasicBlock(bb1), getJavaBasicBlock(bb2), branch)
   }
 
-  final SemBasicBlock getBasicBlock() {
-    result = getSemanticBasicBlock(guard.getBasicBlock())
-  }
+  final SemBasicBlock getBasicBlock() { result = getSemanticBasicBlock(guard.getBasicBlock()) }
 
-  final SemExpr asExpr() {
-    result = getSemanticExpr(guard)
-  }
+  final SemExpr asExpr() { result = getSemanticExpr(guard) }
 }
 
 predicate semImplies_v2(SemGuard g1, boolean b1, SemGuard g2, boolean b2) {
@@ -76,14 +68,8 @@ predicate semGuardControlsSsaRead(SemGuard guard, SemSsaReadPosition controlled,
   )
 }
 
-SemGuard semGetComparisonGuard(SemComparisonExpr e) {
-  result = getSemanticGuard(getJavaExpr(e))  
-}
+SemGuard semGetComparisonGuard(SemComparisonExpr e) { result = getSemanticGuard(getJavaExpr(e)) }
 
-SemGuard getSemanticGuard(LanguageGuard guard) {
-  result = MkSemGuard(guard)
-}
+SemGuard getSemanticGuard(LanguageGuard guard) { result = MkSemGuard(guard) }
 
-LanguageGuard getLanguageGuard(SemGuard guard) {
-  guard = getSemanticGuard(result)
-}
+LanguageGuard getLanguageGuard(SemGuard guard) { guard = getSemanticGuard(result) }

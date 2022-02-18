@@ -19,7 +19,5 @@ int getIntConstantValue(SemExpr expr) {
     getJavaExpr(expr) = arrlen
   )
   or
-  exists(CompileTimeConstantExpr const | const = getJavaExpr(expr) |
-    result = const.getIntValue()
-  )
+  exists(CompileTimeConstantExpr const | const = getJavaExpr(expr) | result = const.getIntValue())
 }
