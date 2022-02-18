@@ -839,7 +839,7 @@ private SemType getTrackedType(SemExpr e) {
 
 private module Java {
   private import java
-  import Bound  // Public for backwards compatibility.
+  import Bound // Public for backwards compatibility.
   private import semmle.code.java.controlflow.Guards
 
   predicate bounded(Expr e, Bound b, int delta, boolean upper, Reason reason) {
