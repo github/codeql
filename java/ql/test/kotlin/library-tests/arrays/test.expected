@@ -17,6 +17,7 @@ sourceSignatures
 | arrayCreations.kt:26:27:26:36 | invoke | invoke(int) |
 | arrayCreations.kt:27:24:27:38 |  |  |
 | arrayCreations.kt:27:24:27:38 | invoke | invoke(int) |
+| arrayGetsSets.kt:1:1:22:1 | arrayGetSet | arrayGetSet(int[],short[],byte[],long[],float[],double[],boolean[],char[],java.lang.Object[]) |
 | primitiveArrays.kt:3:1:7:1 | <obinit> | <obinit>() |
 | primitiveArrays.kt:3:1:7:1 | Test | Test() |
 | primitiveArrays.kt:5:3:5:123 | test | test(java.lang.Integer[],java.lang.Integer[],int[],java.lang.Integer[][],java.lang.Integer[][],int[][]) |

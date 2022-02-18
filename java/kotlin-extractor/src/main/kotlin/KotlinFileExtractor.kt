@@ -1151,10 +1151,10 @@ open class KotlinFileExtractor(
 
     fun extractCall(c: IrCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
         with("call", c) {
-            fun isFunction(pkgName: String, className: String, fName: String, hasQuestionMark: Boolean? = false): Boolean {
+            fun isFunction(pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, fName: String, hasQuestionMark: Boolean? = false): Boolean {
                 val verbose = false
                 fun verboseln(s: String) { if(verbose) println(s) }
-                verboseln("Attempting match for $pkgName $className $fName")
+                verboseln("Attempting match for $pkgName $classNameLogged $fName")
                 val target = c.symbol.owner
                 if (target.name.asString() != fName) {
                     verboseln("No match as function name is ${target.name.asString()} not $fName")
@@ -1179,8 +1179,8 @@ open class KotlinFileExtractor(
                     verboseln("No match as didn't find target class")
                     return false
                 }
-                if (targetClass.name.asString() != className) {
-                    verboseln("No match as class name is ${targetClass.name.asString()} not $className")
+                if (!classNamePredicate(targetClass.name.asString())) {
+                    verboseln("No match as class name is ${targetClass.name.asString()} not $classNameLogged")
                     return false
                 }
                 val targetPkg = targetClass.parent
@@ -1195,7 +1195,10 @@ open class KotlinFileExtractor(
                 verboseln("Match")
                 return true
             }
-    
+
+            fun isFunction(pkgName: String, className: String, fName: String, hasQuestionMark: Boolean? = false) =
+                isFunction(pkgName, className, { it == className }, fName, hasQuestionMark)
+
             fun isNumericFunction(fName: String): Boolean {
                 return isFunction("kotlin", "Int", fName) ||
                        isFunction("kotlin", "Byte", fName) ||
@@ -1204,6 +1207,20 @@ open class KotlinFileExtractor(
                        isFunction("kotlin", "Float", fName) ||
                        isFunction("kotlin", "Double", fName)
             }
+
+            fun isArrayType(typeName: String) =
+                when(typeName) {
+                    "Array" -> true
+                    "IntArray" -> true
+                    "ByteArray" -> true
+                    "ShortArray" -> true
+                    "LongArray" -> true
+                    "FloatArray" -> true
+                    "DoubleArray" -> true
+                    "CharArray" -> true
+                    "BooleanArray" -> true
+                    else -> false
+                }
 
             fun extractMethodAccess(syntacticCallTarget: IrFunction, extractMethodTypeArguments: Boolean = true, extractClassTypeArguments: Boolean = false) {
                 val typeArgs =
@@ -1559,6 +1576,46 @@ open class KotlinFileExtractor(
                             tw.writeStatementEnclosingExpr(dimId, enclosingStmt)
                             tw.writeNamestrings(dim.toString(), dim.toString(), dimId)
                         }
+                    }
+                }
+                isFunction("kotlin", "(some array type)", { isArrayType(it) }, "get") && c.origin == IrStatementOrigin.GET_ARRAY_ELEMENT -> {
+                    val id = tw.getFreshIdLabel<DbArrayaccess>()
+                    val type = useType(c.type)
+                    tw.writeExprs_arrayaccess(id, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                    binopDisp(id)
+                }
+                isFunction("kotlin", "(some array type)", { isArrayType(it) }, "set") && c.origin == IrStatementOrigin.EQ -> {
+                    val array = c.dispatchReceiver
+                    val arrayIdx = c.getValueArgument(0)
+                    val assignedValue = c.getValueArgument(1)
+
+                    if (array != null && arrayIdx != null && assignedValue != null) {
+
+                        val assignId = tw.getFreshIdLabel<DbAssignexpr>()
+                        val type = useType(c.type)
+                        val locId = tw.getLocation(c)
+                        tw.writeExprs_assignexpr(assignId, type.javaResult.id, parent, idx)
+                        tw.writeExprsKotlinType(assignId, type.kotlinResult.id)
+                        tw.writeHasLocation(assignId, locId)
+                        tw.writeCallableEnclosingExpr(assignId, callable)
+                        tw.writeStatementEnclosingExpr(assignId, enclosingStmt)
+
+                        val arrayAccessId = tw.getFreshIdLabel<DbArrayaccess>()
+                        val arrayType = useType(array.type)
+                        tw.writeExprs_arrayaccess(arrayAccessId, arrayType.javaResult.id, assignId, 0)
+                        tw.writeExprsKotlinType(arrayAccessId, arrayType.kotlinResult.id)
+                        tw.writeHasLocation(arrayAccessId, locId)
+                        tw.writeCallableEnclosingExpr(arrayAccessId, callable)
+                        tw.writeStatementEnclosingExpr(arrayAccessId, enclosingStmt)
+
+                        extractExpressionExpr(array, callable, arrayAccessId, 0, enclosingStmt)
+                        extractExpressionExpr(arrayIdx, callable, arrayAccessId, 1, enclosingStmt)
+
+                        extractExpressionExpr(assignedValue, callable, assignId, 1, enclosingStmt)
+
+                    } else {
+                        logger.errorElement("Unexpected Array.set function signature", c)
                     }
                 }
                 isBuiltinCall(c, "<unsafe-coerce>", "kotlin.jvm.internal") -> {
