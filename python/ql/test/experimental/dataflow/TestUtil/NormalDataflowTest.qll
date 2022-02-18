@@ -11,10 +11,6 @@ class DataFlowTest extends FlowTest {
   override predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink) {
     exists(TestConfiguration cfg | cfg.hasFlow(source, sink))
   }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    super.hasActualResult(location, element, tag, value)
-  }
 }
 
 query predicate missingAnnotationOnSINK(Location location, string error, string element) {
