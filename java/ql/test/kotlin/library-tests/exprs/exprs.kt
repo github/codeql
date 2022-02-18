@@ -257,3 +257,14 @@ fun mulOperators(x: Int, y: Int,
   val f = fx * fy
 
 }
+
+fun inPlaceOperators() {
+
+  var updated = 0
+  updated += 1
+  updated -= 1
+  updated *= 1
+  updated /= 1
+  updated %= 1
+
+}

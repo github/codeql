@@ -61,11 +61,9 @@
 | Test.kt:31:8:31:9 | 60 | Test.kt:31:4:31:4 | ...=... |
 | Test.kt:32:4:32:4 | <Expr>; | Test.kt:32:8:32:9 | 10 |
 | Test.kt:32:8:32:9 | 10 | Test.kt:32:4:32:4 | ...=... |
-| Test.kt:35:3:35:3 | ...=... | Test.kt:38:3:41:3 | while (...) |
+| Test.kt:35:3:35:3 | ...+=... | Test.kt:38:3:41:3 | while (...) |
 | Test.kt:35:3:35:3 | <Expr>; | Test.kt:35:3:35:3 | z |
-| Test.kt:35:3:35:3 | z | Test.kt:35:8:35:8 | x |
-| Test.kt:35:3:35:8 | plus(...) | Test.kt:35:3:35:3 | ...=... |
-| Test.kt:35:8:35:8 | x | Test.kt:35:3:35:8 | plus(...) |
+| Test.kt:35:8:35:8 | x | Test.kt:35:3:35:3 | ...+=... |
 | Test.kt:38:3:41:3 | while (...) | Test.kt:38:10:38:10 | x |
 | Test.kt:38:10:38:10 | x | Test.kt:38:14:38:14 | 0 |
 | Test.kt:38:10:38:14 | ... > ... | Test.kt:38:17:41:3 | { ... } |
@@ -87,19 +85,15 @@
 | Test.kt:40:4:40:6 | tmp0 | Test.kt:40:4:40:6 | <implicit coercion to unit> |
 | Test.kt:40:4:40:6 | tmp0 | Test.kt:40:4:40:6 | dec(...) |
 | Test.kt:40:4:40:6 | { ... } | Test.kt:40:4:40:4 | var ...; |
-| Test.kt:43:3:43:3 | ...=... | Test.kt:73:3:73:3 | <Expr>; |
+| Test.kt:43:3:43:3 | ...+=... | Test.kt:73:3:73:3 | <Expr>; |
 | Test.kt:43:3:43:3 | <Expr>; | Test.kt:43:3:43:3 | z |
-| Test.kt:43:3:43:3 | z | Test.kt:43:8:43:8 | y |
-| Test.kt:43:3:43:15 | plus(...) | Test.kt:43:3:43:3 | ...=... |
 | Test.kt:43:8:43:8 | y | Test.kt:43:8:43:15 | (...)... |
-| Test.kt:43:8:43:15 | (...)... | Test.kt:43:3:43:15 | plus(...) |
-| Test.kt:73:3:73:3 | ...=... | Test.kt:77:3:77:3 | <Expr>; |
+| Test.kt:43:8:43:15 | (...)... | Test.kt:43:3:43:3 | ...+=... |
+| Test.kt:73:3:73:3 | ...+=... | Test.kt:77:3:77:3 | <Expr>; |
 | Test.kt:73:3:73:3 | <Expr>; | Test.kt:73:3:73:3 | z |
-| Test.kt:73:3:73:3 | z | Test.kt:73:8:73:8 | x |
-| Test.kt:73:3:73:16 | plus(...) | Test.kt:73:3:73:3 | ...=... |
 | Test.kt:73:8:73:8 | x | Test.kt:73:12:73:12 | y |
 | Test.kt:73:8:73:12 | ... + ... | Test.kt:73:16:73:16 | w |
-| Test.kt:73:8:73:16 | ... + ... | Test.kt:73:3:73:16 | plus(...) |
+| Test.kt:73:8:73:16 | ... + ... | Test.kt:73:3:73:3 | ...+=... |
 | Test.kt:73:12:73:12 | <implicit cast> | Test.kt:73:8:73:12 | ... + ... |
 | Test.kt:73:12:73:12 | y | Test.kt:73:12:73:12 | <implicit cast> |
 | Test.kt:73:16:73:16 | w | Test.kt:73:8:73:16 | ... + ... |

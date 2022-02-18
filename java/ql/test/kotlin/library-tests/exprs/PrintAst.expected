@@ -884,6 +884,31 @@ exprs.kt:
 #  257|             0: [MulExpr] ... * ...
 #  257|               0: [VarAccess] fx
 #  257|               1: [VarAccess] fy
+#  261|     11: [Method] inPlaceOperators
+#  261|       5: [BlockStmt] { ... }
+#  263|         0: [LocalVariableDeclStmt] var ...;
+#  263|           1: [LocalVariableDeclExpr] updated
+#  263|             0: [IntegerLiteral] 0
+#  264|         1: [ExprStmt] <Expr>;
+#  264|           0: [AssignAddExpr] ...+=...
+#  264|             0: [VarAccess] updated
+#  264|             1: [IntegerLiteral] 1
+#  265|         2: [ExprStmt] <Expr>;
+#  265|           0: [AssignSubExpr] ...-=...
+#  265|             0: [VarAccess] updated
+#  265|             1: [IntegerLiteral] 1
+#  266|         3: [ExprStmt] <Expr>;
+#  266|           0: [AssignMulExpr] ...*=...
+#  266|             0: [VarAccess] updated
+#  266|             1: [IntegerLiteral] 1
+#  267|         4: [ExprStmt] <Expr>;
+#  267|           0: [AssignDivExpr] .../=...
+#  267|             0: [VarAccess] updated
+#  267|             1: [IntegerLiteral] 1
+#  268|         5: [ExprStmt] <Expr>;
+#  268|           0: [AssignRemExpr] ...%=...
+#  268|             0: [VarAccess] updated
+#  268|             1: [IntegerLiteral] 1
 #  142|   2: [Class] C
 #  142|     1: [Constructor] C
 #-----|       4: (Parameters)

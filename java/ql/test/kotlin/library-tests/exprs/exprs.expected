@@ -720,6 +720,23 @@
 | exprs.kt:257:11:257:12 | fx | exprs.kt:246:1:259:1 | mulOperators | VarAccess |
 | exprs.kt:257:11:257:17 | ... * ... | exprs.kt:246:1:259:1 | mulOperators | MulExpr |
 | exprs.kt:257:16:257:17 | fy | exprs.kt:246:1:259:1 | mulOperators | VarAccess |
+| exprs.kt:263:3:263:17 | updated | exprs.kt:261:1:270:1 | inPlaceOperators | LocalVariableDeclExpr |
+| exprs.kt:263:17:263:17 | 0 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
+| exprs.kt:264:3:264:9 | ...+=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignAddExpr |
+| exprs.kt:264:3:264:9 | updated | exprs.kt:261:1:270:1 | inPlaceOperators | VarAccess |
+| exprs.kt:264:14:264:14 | 1 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
+| exprs.kt:265:3:265:9 | ...-=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignSubExpr |
+| exprs.kt:265:3:265:9 | updated | exprs.kt:261:1:270:1 | inPlaceOperators | VarAccess |
+| exprs.kt:265:14:265:14 | 1 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
+| exprs.kt:266:3:266:9 | ...*=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignMulExpr |
+| exprs.kt:266:3:266:9 | updated | exprs.kt:261:1:270:1 | inPlaceOperators | VarAccess |
+| exprs.kt:266:14:266:14 | 1 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
+| exprs.kt:267:3:267:9 | .../=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignDivExpr |
+| exprs.kt:267:3:267:9 | updated | exprs.kt:261:1:270:1 | inPlaceOperators | VarAccess |
+| exprs.kt:267:14:267:14 | 1 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
+| exprs.kt:268:3:268:9 | ...%=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignRemExpr |
+| exprs.kt:268:3:268:9 | updated | exprs.kt:261:1:270:1 | inPlaceOperators | VarAccess |
+| exprs.kt:268:14:268:14 | 1 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
 | funcExprs.kt:16:5:16:33 | functionExpression0a(...) | funcExprs.kt:15:1:46:1 | call | MethodAccess |
 | funcExprs.kt:16:26:16:33 | ...->... | funcExprs.kt:15:1:46:1 | call | LambdaExpr |
 | funcExprs.kt:16:26:16:33 | Function0<Integer> | funcExprs.kt:15:1:46:1 | call | TypeAccess |

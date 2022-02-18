@@ -1149,64 +1149,65 @@ open class KotlinFileExtractor(
         result
     }
 
+    fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, fName: String, hasQuestionMark: Boolean? = false): Boolean {
+        val verbose = false
+        fun verboseln(s: String) { if(verbose) println(s) }
+        verboseln("Attempting match for $pkgName $classNameLogged $fName")
+        if (target.name.asString() != fName) {
+            verboseln("No match as function name is ${target.name.asString()} not $fName")
+            return false
+        }
+        val extensionReceiverParameter = target.extensionReceiverParameter
+        val targetClass = if (extensionReceiverParameter == null) {
+            if (hasQuestionMark == true) {
+                verboseln("Nullablility of type didn't match (target is not an extension method)")
+                return false
+            }
+            target.parent
+        } else {
+            val st = extensionReceiverParameter.type as? IrSimpleType
+            if (hasQuestionMark != null && st?.hasQuestionMark != hasQuestionMark) {
+                verboseln("Nullablility of type didn't match")
+                return false
+            }
+            st?.classifier?.owner
+        }
+        if (targetClass !is IrClass) {
+            verboseln("No match as didn't find target class")
+            return false
+        }
+        if (!classNamePredicate(targetClass.name.asString())) {
+            verboseln("No match as class name is ${targetClass.name.asString()} not $classNameLogged")
+            return false
+        }
+        val targetPkg = targetClass.parent
+        if (targetPkg !is IrPackageFragment) {
+            verboseln("No match as didn't find target package")
+            return false
+        }
+        if (targetPkg.fqName.asString() != pkgName) {
+            verboseln("No match as package name is ${targetPkg.fqName.asString()} not $pkgName")
+            return false
+        }
+        verboseln("Match")
+        return true
+    }
+
+    fun isFunction(target: IrFunction, pkgName: String, className: String, fName: String, hasQuestionMark: Boolean? = false) =
+        isFunction(target, pkgName, className, { it == className }, fName, hasQuestionMark)
+
+    fun isNumericFunction(target: IrFunction, fName: String): Boolean {
+        return isFunction(target, "kotlin", "Int", fName) ||
+                isFunction(target, "kotlin", "Byte", fName) ||
+                isFunction(target, "kotlin", "Short", fName) ||
+                isFunction(target, "kotlin", "Long", fName) ||
+                isFunction(target, "kotlin", "Float", fName) ||
+                isFunction(target, "kotlin", "Double", fName)
+    }
+
     fun extractCall(c: IrCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
         with("call", c) {
-            fun isFunction(pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, fName: String, hasQuestionMark: Boolean? = false): Boolean {
-                val verbose = false
-                fun verboseln(s: String) { if(verbose) println(s) }
-                verboseln("Attempting match for $pkgName $classNameLogged $fName")
-                val target = c.symbol.owner
-                if (target.name.asString() != fName) {
-                    verboseln("No match as function name is ${target.name.asString()} not $fName")
-                    return false
-                }
-                val extensionReceiverParameter = target.extensionReceiverParameter
-                val targetClass = if (extensionReceiverParameter == null) {
-                                      if (hasQuestionMark == true) {
-                                          verboseln("Nullablility of type didn't match (target is not an extension method)")
-                                          return false
-                                      }
-                                      target.parent
-                                  } else {
-                                      val st = extensionReceiverParameter.type as? IrSimpleType
-                                      if (hasQuestionMark != null && st?.hasQuestionMark != hasQuestionMark) {
-                                          verboseln("Nullablility of type didn't match")
-                                          return false
-                                      }
-                                      st?.classifier?.owner
-                                  }
-                if (targetClass !is IrClass) {
-                    verboseln("No match as didn't find target class")
-                    return false
-                }
-                if (!classNamePredicate(targetClass.name.asString())) {
-                    verboseln("No match as class name is ${targetClass.name.asString()} not $classNameLogged")
-                    return false
-                }
-                val targetPkg = targetClass.parent
-                if (targetPkg !is IrPackageFragment) {
-                    verboseln("No match as didn't find target package")
-                    return false
-                }
-                if (targetPkg.fqName.asString() != pkgName) {
-                    verboseln("No match as package name is ${targetPkg.fqName.asString()} not $pkgName")
-                    return false
-                }
-                verboseln("Match")
-                return true
-            }
-
-            fun isFunction(pkgName: String, className: String, fName: String, hasQuestionMark: Boolean? = false) =
-                isFunction(pkgName, className, { it == className }, fName, hasQuestionMark)
-
-            fun isNumericFunction(fName: String): Boolean {
-                return isFunction("kotlin", "Int", fName) ||
-                       isFunction("kotlin", "Byte", fName) ||
-                       isFunction("kotlin", "Short", fName) ||
-                       isFunction("kotlin", "Long", fName) ||
-                       isFunction("kotlin", "Float", fName) ||
-                       isFunction("kotlin", "Double", fName)
-            }
+            val target = c.symbol.owner
 
             fun isArrayType(typeName: String) =
                 when(typeName) {
@@ -1290,8 +1291,8 @@ open class KotlinFileExtractor(
             val dr = c.dispatchReceiver
             when {
                 c.origin == IrStatementOrigin.PLUS &&
-                (isNumericFunction("plus")
-                        || isFunction("kotlin", "String", "plus", null)) -> {
+                (isNumericFunction(target, "plus")
+                        || isFunction(target, "kotlin", "String", "plus", null)) -> {
                     val id = tw.getFreshIdLabel<DbAddexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_addexpr(id, type.javaResult.id, parent, idx)
@@ -1301,33 +1302,33 @@ open class KotlinFileExtractor(
                     else
                         binopDisp(id)
                 }
-                isFunction("kotlin", "String", "plus", true) -> {
+                isFunction(target, "kotlin", "String", "plus", true) -> {
                     findJdkIntrinsicOrWarn("stringPlus", c)?.let { stringPlusFn ->
                         extractRawMethodAccess(stringPlusFn, c, callable, parent, idx, enclosingStmt, listOf(c.extensionReceiver, c.getValueArgument(0)), null, null)
                     }
                 }
-                c.origin == IrStatementOrigin.MINUS && isNumericFunction("minus") -> {
+                c.origin == IrStatementOrigin.MINUS && isNumericFunction(target, "minus") -> {
                     val id = tw.getFreshIdLabel<DbSubexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_subexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
-                c.origin == IrStatementOrigin.MUL && isNumericFunction("times") -> {
+                c.origin == IrStatementOrigin.MUL && isNumericFunction(target, "times") -> {
                     val id = tw.getFreshIdLabel<DbMulexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_mulexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
-                c.origin == IrStatementOrigin.DIV && isNumericFunction("div") -> {
+                c.origin == IrStatementOrigin.DIV && isNumericFunction(target, "div") -> {
                     val id = tw.getFreshIdLabel<DbDivexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_divexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
-                c.origin == IrStatementOrigin.PERC && isNumericFunction("rem") -> {
+                c.origin == IrStatementOrigin.PERC && isNumericFunction(target, "rem") -> {
                     val id = tw.getFreshIdLabel<DbRemexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_remexpr(id, type.javaResult.id, parent, idx)
@@ -1335,21 +1336,21 @@ open class KotlinFileExtractor(
                     binopDisp(id)
                 }
                 // != gets desugared into not and ==. Here we resugar it.
-                c.origin == IrStatementOrigin.EXCLEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "EQEQ") -> {
+                c.origin == IrStatementOrigin.EXCLEQ && isFunction(target, "kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "EQEQ") -> {
                     var id = tw.getFreshIdLabel<DbValueneexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_valueneexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binOp(id, dr, callable, enclosingStmt)
                 }
-                c.origin == IrStatementOrigin.EXCLEQEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "EQEQEQ") -> {
+                c.origin == IrStatementOrigin.EXCLEQEQ && isFunction(target, "kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "EQEQEQ") -> {
                     val id = tw.getFreshIdLabel<DbNeexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_neexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binOp(id, dr, callable, enclosingStmt)
                 }
-                c.origin == IrStatementOrigin.EXCLEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "ieee754equals") -> {
+                c.origin == IrStatementOrigin.EXCLEQ && isFunction(target, "kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "ieee754equals") -> {
                     val id = tw.getFreshIdLabel<DbNeexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_neexpr(id, type.javaResult.id, parent, idx)
@@ -1464,7 +1465,7 @@ open class KotlinFileExtractor(
                     // TODO
                     logger.errorElement("Unhandled builtin", c)
                 }
-                isFunction("kotlin", "Any", "toString", true) -> {
+                isFunction(target, "kotlin", "Any", "toString", true) -> {
                     stringValueOfObjectMethod?.let {
                         extractRawMethodAccess(it, c, callable, parent, idx, enclosingStmt, listOf(c.extensionReceiver), null, null)
                     }
@@ -1578,14 +1579,14 @@ open class KotlinFileExtractor(
                         }
                     }
                 }
-                isFunction("kotlin", "(some array type)", { isArrayType(it) }, "get") && c.origin == IrStatementOrigin.GET_ARRAY_ELEMENT -> {
+                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "get") && c.origin == IrStatementOrigin.GET_ARRAY_ELEMENT -> {
                     val id = tw.getFreshIdLabel<DbArrayaccess>()
                     val type = useType(c.type)
                     tw.writeExprs_arrayaccess(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
-                isFunction("kotlin", "(some array type)", { isArrayType(it) }, "set") && c.origin == IrStatementOrigin.EQ -> {
+                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "set") && c.origin == IrStatementOrigin.EQ -> {
                     val array = c.dispatchReceiver
                     val arrayIdx = c.getValueArgument(0)
                     val assignedValue = c.getValueArgument(1)
@@ -2154,7 +2155,6 @@ open class KotlinFileExtractor(
                     val id = tw.getFreshIdLabel<DbAssignexpr>()
                     val type = useType(e.type)
                     val locId = tw.getLocation(e)
-                    tw.writeExprs_assignexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
@@ -2166,6 +2166,39 @@ open class KotlinFileExtractor(
 
                     when (e) {
                         is IrSetValue -> {
+                            val rhsValue = e.value
+
+                            // Check for a desugared in-place update operator, such as "v += e":
+                            val expectedOperator = when (e.origin) {
+                                IrStatementOrigin.PLUSEQ -> "plus"
+                                IrStatementOrigin.MINUSEQ -> "minus"
+                                IrStatementOrigin.MULTEQ -> "times"
+                                IrStatementOrigin.DIVEQ -> "div"
+                                IrStatementOrigin.PERCEQ -> "rem"
+                                else -> null
+                            }
+                            val inPlaceUpdateRhs = expectedOperator?.let {
+                                if (rhsValue is IrCall &&
+                                    isNumericFunction(rhsValue.symbol.owner, expectedOperator)
+                                ) {
+                                    // Check for an expression like x = get(x).op(e):
+                                    val opReceiver = rhsValue.dispatchReceiver
+                                    if (opReceiver is IrGetValue && opReceiver.symbol.owner == e.symbol.owner) {
+                                        rhsValue.getValueArgument(0)
+                                    } else null
+                                } else null
+                            }
+
+                            val extractOrigin = if (inPlaceUpdateRhs == null) null else e.origin
+                            when(extractOrigin) {
+                                IrStatementOrigin.PLUSEQ -> tw.writeExprs_assignaddexpr(id as Label<DbAssignaddexpr>, type.javaResult.id, exprParent.parent, exprParent.idx)
+                                IrStatementOrigin.MINUSEQ -> tw.writeExprs_assignsubexpr(id as Label<DbAssignsubexpr>, type.javaResult.id, exprParent.parent, exprParent.idx)
+                                IrStatementOrigin.MULTEQ -> tw.writeExprs_assignmulexpr(id as Label<DbAssignmulexpr>, type.javaResult.id, exprParent.parent, exprParent.idx)
+                                IrStatementOrigin.DIVEQ -> tw.writeExprs_assigndivexpr(id as Label<DbAssigndivexpr>, type.javaResult.id, exprParent.parent, exprParent.idx)
+                                IrStatementOrigin.PERCEQ -> tw.writeExprs_assignremexpr(id as Label<DbAssignremexpr>, type.javaResult.id, exprParent.parent, exprParent.idx)
+                                else -> tw.writeExprs_assignexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                            }
+
                             val lhsType = useType(e.symbol.owner.type)
                             tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, id, 0)
                             tw.writeExprsKotlinType(lhsId, lhsType.kotlinResult.id)
@@ -2173,9 +2206,10 @@ open class KotlinFileExtractor(
                             tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
                             val vId = useValueDeclaration(e.symbol.owner)
                             tw.writeVariableBinding(lhsId, vId)
-                            extractExpressionExpr(e.value, callable, id, 1, exprParent.enclosingStmt)
+                            extractExpressionExpr(inPlaceUpdateRhs ?: rhsValue, callable, id, 1, exprParent.enclosingStmt)
                         }
                         is IrSetField -> {
+                            tw.writeExprs_assignexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
                             val lhsType = useType(e.symbol.owner.type)
                             tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, id, 0)
                             tw.writeExprsKotlinType(lhsId, lhsType.kotlinResult.id)
