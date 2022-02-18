@@ -700,6 +700,26 @@
 | exprs.kt:243:13:243:27 | nullableReftype | exprs.kt:223:1:244:1 | equalityTests | VarAccess |
 | exprs.kt:243:13:243:35 | ... (value not-equals) ... | exprs.kt:223:1:244:1 | equalityTests | ValueNEExpr |
 | exprs.kt:243:32:243:35 | null | exprs.kt:223:1:244:1 | equalityTests | NullLiteral |
+| exprs.kt:253:3:253:15 | i | exprs.kt:246:1:259:1 | mulOperators | LocalVariableDeclExpr |
+| exprs.kt:253:11:253:11 | x | exprs.kt:246:1:259:1 | mulOperators | VarAccess |
+| exprs.kt:253:11:253:15 | ... * ... | exprs.kt:246:1:259:1 | mulOperators | MulExpr |
+| exprs.kt:253:15:253:15 | y | exprs.kt:246:1:259:1 | mulOperators | VarAccess |
+| exprs.kt:254:3:254:19 | b | exprs.kt:246:1:259:1 | mulOperators | LocalVariableDeclExpr |
+| exprs.kt:254:11:254:13 | byx | exprs.kt:246:1:259:1 | mulOperators | VarAccess |
+| exprs.kt:254:11:254:19 | ... * ... | exprs.kt:246:1:259:1 | mulOperators | MulExpr |
+| exprs.kt:254:17:254:19 | byy | exprs.kt:246:1:259:1 | mulOperators | VarAccess |
+| exprs.kt:255:3:255:17 | l | exprs.kt:246:1:259:1 | mulOperators | LocalVariableDeclExpr |
+| exprs.kt:255:11:255:12 | lx | exprs.kt:246:1:259:1 | mulOperators | VarAccess |
+| exprs.kt:255:11:255:17 | ... * ... | exprs.kt:246:1:259:1 | mulOperators | MulExpr |
+| exprs.kt:255:16:255:17 | ly | exprs.kt:246:1:259:1 | mulOperators | VarAccess |
+| exprs.kt:256:3:256:17 | d | exprs.kt:246:1:259:1 | mulOperators | LocalVariableDeclExpr |
+| exprs.kt:256:11:256:12 | dx | exprs.kt:246:1:259:1 | mulOperators | VarAccess |
+| exprs.kt:256:11:256:17 | ... * ... | exprs.kt:246:1:259:1 | mulOperators | MulExpr |
+| exprs.kt:256:16:256:17 | dy | exprs.kt:246:1:259:1 | mulOperators | VarAccess |
+| exprs.kt:257:3:257:17 | f | exprs.kt:246:1:259:1 | mulOperators | LocalVariableDeclExpr |
+| exprs.kt:257:11:257:12 | fx | exprs.kt:246:1:259:1 | mulOperators | VarAccess |
+| exprs.kt:257:11:257:17 | ... * ... | exprs.kt:246:1:259:1 | mulOperators | MulExpr |
+| exprs.kt:257:16:257:17 | fy | exprs.kt:246:1:259:1 | mulOperators | VarAccess |
 | funcExprs.kt:16:5:16:33 | functionExpression0a(...) | funcExprs.kt:15:1:46:1 | call | MethodAccess |
 | funcExprs.kt:16:26:16:33 | ...->... | funcExprs.kt:15:1:46:1 | call | LambdaExpr |
 | funcExprs.kt:16:26:16:33 | Function0<Integer> | funcExprs.kt:15:1:46:1 | call | TypeAccess |

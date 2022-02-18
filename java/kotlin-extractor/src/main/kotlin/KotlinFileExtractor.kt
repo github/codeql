@@ -1293,6 +1293,13 @@ open class KotlinFileExtractor(
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
+                c.origin == IrStatementOrigin.MUL && isNumericFunction("times") -> {
+                    val id = tw.getFreshIdLabel<DbMulexpr>()
+                    val type = useType(c.type)
+                    tw.writeExprs_mulexpr(id, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                    binopDisp(id)
+                }
                 c.origin == IrStatementOrigin.DIV && isNumericFunction("div") -> {
                     val id = tw.getFreshIdLabel<DbDivexpr>()
                     val type = useType(c.type)

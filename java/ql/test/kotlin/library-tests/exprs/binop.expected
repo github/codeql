@@ -99,5 +99,10 @@
 | exprs.kt:241:13:241:37 | ... (value not-equals) ... | exprs.kt:241:13:241:29 | nullablePrimitive | exprs.kt:241:34:241:37 | null |
 | exprs.kt:242:13:242:34 | ... (value not-equals) ... | exprs.kt:242:13:242:26 | notNullReftype | exprs.kt:242:31:242:34 | null |
 | exprs.kt:243:13:243:35 | ... (value not-equals) ... | exprs.kt:243:13:243:27 | nullableReftype | exprs.kt:243:32:243:35 | null |
+| exprs.kt:253:11:253:15 | ... * ... | exprs.kt:253:11:253:11 | x | exprs.kt:253:15:253:15 | y |
+| exprs.kt:254:11:254:19 | ... * ... | exprs.kt:254:11:254:13 | byx | exprs.kt:254:17:254:19 | byy |
+| exprs.kt:255:11:255:17 | ... * ... | exprs.kt:255:11:255:12 | lx | exprs.kt:255:16:255:17 | ly |
+| exprs.kt:256:11:256:17 | ... * ... | exprs.kt:256:11:256:12 | dx | exprs.kt:256:16:256:17 | dy |
+| exprs.kt:257:11:257:17 | ... * ... | exprs.kt:257:11:257:12 | fx | exprs.kt:257:16:257:17 | fy |
 | funcExprs.kt:26:35:26:42 | ... + ... | funcExprs.kt:26:35:26:38 | this | funcExprs.kt:26:42:26:42 | a |
 | localFunctionCalls.kt:5:25:5:29 | ... + ... | localFunctionCalls.kt:5:25:5:25 | i | localFunctionCalls.kt:5:29:5:29 | x |

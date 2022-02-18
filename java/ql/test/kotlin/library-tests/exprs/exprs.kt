@@ -242,3 +242,18 @@ fun equalityTests(notNullPrimitive: Int, nullablePrimitive: Int?, notNullReftype
   val b19 = notNullReftype != null
   val b20 = nullableReftype != null
 }
+
+fun mulOperators(x: Int, y: Int,
+                 byx: Byte, byy: Byte,
+                 sx: Short, sy: Short,
+                 lx: Long, ly: Long,
+                 dx: Double, dy: Double,
+                 fx: Float, fy: Float) {
+
+  val i = x * y
+  val b = byx * byy
+  val l = lx * ly
+  val d = dx * dy
+  val f = fx * fy
+
+}
