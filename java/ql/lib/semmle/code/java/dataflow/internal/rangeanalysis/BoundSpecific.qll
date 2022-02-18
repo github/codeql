@@ -5,7 +5,6 @@
 private import java as J
 private import semmle.code.java.dataflow.SSA as Ssa
 private import semmle.code.java.dataflow.RangeUtils as RU
-private import semmle.code.java.dataflow.ConstantAnalysis as Const
 
 class SsaVariable = Ssa::SsaVariable;
 
