@@ -17,11 +17,69 @@ class SemExpr extends MkExpr {
 
   final Location getLocation() { result = expr.getLocation() }
 
-  final int getConstantIntValue() { result = expr.(CompileTimeConstantExpr).getIntValue() }
-
   final SemType getSemType() { result = getSemanticType(expr.getType()) }
 
   final SemBasicBlock getBasicBlock() { result = getSemanticBasicBlock(expr.getBasicBlock()) }
+}
+
+class SemLiteralExpr extends SemExpr {
+  override Literal expr;
+}
+
+class SemNumericLiteralExpr extends SemLiteralExpr {
+  SemNumericLiteralExpr() {
+    expr instanceof IntegerLiteral
+    or
+    expr instanceof LongLiteral
+    or
+    expr instanceof CharacterLiteral
+    or
+    expr instanceof FloatingPointLiteral
+    or
+    expr instanceof DoubleLiteral
+  }
+
+  float getApproximateFloatValue() { none() }
+}
+
+class SemIntegerLiteralExpr extends SemNumericLiteralExpr {
+  SemIntegerLiteralExpr() {
+    expr instanceof IntegerLiteral
+    or
+    expr instanceof LongLiteral
+    or
+    expr instanceof CharacterLiteral
+  }
+
+  final int getIntValue() {
+    result = expr.(IntegerLiteral).getIntValue()
+    or
+    result = expr.(CharacterLiteral).getCodePointValue()
+    // To avoid changing analysis results, we don't report an exact `int` value for a `LongLiteral`,
+    // even if it fits in a 32-bit `int`.
+  }
+
+  final override float getApproximateFloatValue() {
+    result = getIntValue()
+    or
+    not exists(getIntValue()) and result = expr.(LongLiteral).getValue().toFloat()
+  }
+}
+
+class SemFloatingPointLiteralExpr extends SemNumericLiteralExpr {
+  SemFloatingPointLiteralExpr() {
+    expr instanceof FloatingPointLiteral
+    or
+    expr instanceof DoubleLiteral
+  }
+
+  final override float getApproximateFloatValue() { result = getFloatValue() }
+
+  final float getFloatValue() {
+    result = expr.(FloatingPointLiteral).getFloatValue()
+    or
+    result = expr.(DoubleLiteral).getDoubleValue()
+  }
 }
 
 class SemBinaryExpr extends SemExpr {
@@ -100,20 +158,44 @@ class SemUnaryExpr extends SemExpr {
   final SemExpr getExpr() { getJavaExpr(result) = expr.getExpr() }
 }
 
-class SemPreIncExpr extends SemUnaryExpr {
+class SemIncrementExpr extends SemUnaryExpr {
+  SemIncrementExpr() {
+    expr instanceof PreIncExpr
+    or
+    expr instanceof PostIncExpr
+  }
+}
+
+class SemDecrementExpr extends SemUnaryExpr {
+  SemDecrementExpr() {
+    expr instanceof PreDecExpr
+    or
+    expr instanceof PostDecExpr
+  }
+}
+
+class SemPreIncExpr extends SemIncrementExpr {
   override PreIncExpr expr;
 }
 
-class SemPreDecExpr extends SemUnaryExpr {
+class SemPreDecExpr extends SemDecrementExpr {
   override PreDecExpr expr;
 }
 
-class SemPostIncExpr extends SemUnaryExpr {
+class SemPostIncExpr extends SemIncrementExpr {
   override PostIncExpr expr;
 }
 
-class SemPostDecExpr extends SemUnaryExpr {
+class SemPostDecExpr extends SemDecrementExpr {
   override PostDecExpr expr;
+}
+
+class SemMinusExpr extends SemUnaryExpr {
+  override MinusExpr expr;
+}
+
+class SemBitNotExpr extends SemUnaryExpr {
+  override BitNotExpr expr;
 }
 
 class SemAssignment extends SemExpr {
@@ -178,6 +260,14 @@ class SemVariableAssign extends SemExpr {
   override VariableAssign expr;
 
   final SemExpr getSource() { getJavaExpr(result) = expr.getSource() }
+}
+
+class SemVarAccess extends SemExpr {
+  override VarAccess expr;
+}
+
+class SemVariableUpdate extends SemExpr {
+  override VariableUpdate expr;
 }
 
 class SemPlusExpr extends SemUnaryExpr {

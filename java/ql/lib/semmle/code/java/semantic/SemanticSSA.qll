@@ -87,6 +87,8 @@ class SemSsaReadPositionBlock extends SemSsaReadPosition {
   override SsaReadPositionBlock pos;
 
   SemBasicBlock getBlock() { result = getSemanticBasicBlock(pos.getBlock()) }
+
+  SemExpr getAnExpr() { result = getBlock().getAnExpr() }
 }
 
 SemSsaReadPosition getSemanticSsaReadPosition(SsaReadPosition pos) {

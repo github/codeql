@@ -76,6 +76,10 @@ predicate semGuardControlsSsaRead(SemGuard guard, SemSsaReadPosition controlled,
   )
 }
 
+SemGuard semGetComparisonGuard(SemComparisonExpr e) {
+  result = getSemanticGuard(getJavaExpr(e))  
+}
+
 SemGuard getSemanticGuard(LanguageGuard guard) {
   result = MkSemGuard(guard)
 }
