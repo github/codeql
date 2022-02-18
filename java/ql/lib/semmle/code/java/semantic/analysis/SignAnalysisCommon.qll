@@ -47,7 +47,7 @@ private predicate unknownSign(SemExpr e) {
     or
     exists(SemCastExpr cast, SemType fromtyp |
       cast = e and
-      fromtyp = cast.getSemType() and
+      fromtyp = getTrackedType(cast.getExpr()) and
       not fromtyp instanceof SemNumericType
     )
     or
@@ -291,7 +291,7 @@ Sign semExprSign(SemExpr e) {
       s = specificSubExprSign(e)
     )
   |
-    if e.getSemType() instanceof SemUnsignedIntegerType and s = TNeg()
+    if getTrackedType(e) instanceof SemUnsignedIntegerType and s = TNeg()
     then result = TPos()
     else result = s
   )

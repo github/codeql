@@ -6,6 +6,7 @@ private import semmle.code.java.semantic.SemanticCFG
 private import semmle.code.java.semantic.SemanticExpr
 private import semmle.code.java.semantic.SemanticGuard
 private import semmle.code.java.semantic.SemanticSSA
+private import semmle.code.java.semantic.SemanticType
 private import RangeAnalysisSpecific as Specific
 private import ConstantAnalysis
 
@@ -121,4 +122,16 @@ predicate semValueFlowStep(SemExpr e2, SemExpr e1, int delta) {
   |
     x.(SemConstantIntegerExpr).getIntValue() = -delta
   )
+}
+
+/**
+ * Gets the type used to track the specified expression's range information.
+ *
+ * Usually, this just `e.getSemType()`, but the language can override this to track immutable boxed
+ * primitive types as the underlying primitive type.
+ */
+SemType getTrackedType(SemExpr e) {
+  result = Specific::getAlternateType(e)
+  or
+  not exists(Specific::getAlternateType(e)) and result = e.getSemType()
 }

@@ -13,7 +13,7 @@ private int pointerSize() { result = 8 }
 predicate voidType(Type type) { type instanceof J::VoidType }
 
 predicate addressType(Type type, int byteSize) {
-  type instanceof J::ClassOrInterface and
+  (type instanceof J::RefType or type instanceof J::NullType) and
   byteSize = pointerSize()
 }
 
@@ -37,7 +37,7 @@ predicate floatingPointType(Type type, int byteSize) {
 
 predicate integerType(Type type, int byteSize, boolean signed) {
   exists(J::PrimitiveType primType | primType = type |
-    primType.hasName("byte") and byteSize = 1 and signed = false
+    primType.hasName("byte") and byteSize = 1 and signed = true
     or
     primType.hasName("char") and byteSize = 2 and signed = false
     or
