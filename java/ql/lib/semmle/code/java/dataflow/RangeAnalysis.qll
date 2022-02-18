@@ -65,7 +65,7 @@
 
 private import RangeAnalysisSpecific as Specific
 private import RangeUtils
-private import SemanticSignAnalysis
+private import SignAnalysis
 private import SemanticModulusAnalysis
 private import SemanticBound
 private import semmle.code.java.semantic.SemanticExpr
@@ -373,12 +373,12 @@ private class NarrowingCastExpr extends SemCastExpr {
 
 /** Holds if `e >= 1` as determined by sign analysis. */
 private predicate strictlyPositiveIntegralExpr(SemExpr e) {
-  strictlyPositive(e) and getTrackedType(e) instanceof SemIntegerType
+  semStrictlyPositive(e) and getTrackedType(e) instanceof SemIntegerType
 }
 
 /** Holds if `e <= -1` as determined by sign analysis. */
 private predicate strictlyNegativeIntegralExpr(SemExpr e) {
-  strictlyNegative(e) and getTrackedType(e) instanceof SemIntegerType
+  semStrictlyNegative(e) and getTrackedType(e) instanceof SemIntegerType
 }
 
 /**
@@ -409,13 +409,13 @@ private predicate boundFlowStep(SemExpr e2, SemExpr e1, int delta, boolean upper
     if strictlyPositiveIntegralExpr(x)
     then upper = false and delta = 1
     else
-      if positive(x)
+      if semPositive(x)
       then upper = false and delta = 0
       else
         if strictlyNegativeIntegralExpr(x)
         then upper = true and delta = -1
         else
-          if negative(x)
+          if semNegative(x)
           then upper = true and delta = 0
           else none()
   )
@@ -438,45 +438,45 @@ private predicate boundFlowStep(SemExpr e2, SemExpr e1, int delta, boolean upper
     if strictlyPositiveIntegralExpr(x)
     then upper = true and delta = -1
     else
-      if positive(x)
+      if semPositive(x)
       then upper = true and delta = 0
       else
         if strictlyNegativeIntegralExpr(x)
         then upper = false and delta = 1
         else
-          if negative(x)
+          if semNegative(x)
           then upper = false and delta = 0
           else none()
   )
   or
   e2.(SemRemExpr).getRightOperand() = e1 and
-  positive(e1) and
+  semPositive(e1) and
   delta = -1 and
   upper = true
   or
-  e2.(SemRemExpr).getLeftOperand() = e1 and positive(e1) and delta = 0 and upper = true
+  e2.(SemRemExpr).getLeftOperand() = e1 and semPositive(e1) and delta = 0 and upper = true
   or
-  e2.(SemAssignRemExpr).getRhs() = e1 and positive(e1) and delta = -1 and upper = true
+  e2.(SemAssignRemExpr).getRhs() = e1 and semPositive(e1) and delta = -1 and upper = true
   or
-  e2.(SemAssignRemExpr).getDest() = e1 and positive(e1) and delta = 0 and upper = true
+  e2.(SemAssignRemExpr).getDest() = e1 and semPositive(e1) and delta = 0 and upper = true
   or
   e2.(SemAndBitwiseExpr).getAnOperand() = e1 and
-  positive(e1) and
+  semPositive(e1) and
   delta = 0 and
   upper = true
   or
   e2.(SemAssignAndExpr).getSource() = e1 and
-  positive(e1) and
+  semPositive(e1) and
   delta = 0 and
   upper = true
   or
   e2.(SemOrBitwiseExpr).getAnOperand() = e1 and
-  positive(e1) and
+  semPositive(e1) and
   delta = 0 and
   upper = false
   or
   e2.(SemAssignOrExpr).getSource() = e1 and
-  positive(e1) and
+  semPositive(e1) and
   delta = 0 and
   upper = false
   or
@@ -715,7 +715,7 @@ private predicate boundedPhi(
 private predicate baseBound(SemExpr e, int b, boolean upper) {
   Specific::hasConstantBound(e, b, upper)
   or
-  upper = false and b = 0 and positive(e.(SemAndBitwiseExpr).getAnOperand())
+  upper = false and b = 0 and semPositive(e.(SemAndBitwiseExpr).getAnOperand())
 }
 
 /**
