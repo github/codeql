@@ -18,4 +18,8 @@ int getIntConstantValue(SemExpr expr) {
     arrlen.getQualifier() = a.getAnAccess() and
     getJavaExpr(expr) = arrlen
   )
+  or
+  exists(CompileTimeConstantExpr const | const = getJavaExpr(expr) |
+    result = const.getIntValue()
+  )
 }

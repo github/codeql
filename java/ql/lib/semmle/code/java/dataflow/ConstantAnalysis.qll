@@ -9,14 +9,17 @@ private import ConstantAnalysisSpecific as Specific
 /** An expression that always has the same integer value. */
 pragma[nomagic]
 private predicate constantIntegerExpr(SemExpr e, int val) {
-  e.getConstantIntValue() = val
+  // An integer literal
+  e.(SemIntegerLiteralExpr).getIntValue() = val
   or
+  // Copy of another constant
   exists(SemSsaExplicitUpdate v, SemExpr src |
     e = v.getAUse() and
     src = v.getDefiningExpr().(SemVariableAssign).getSource() and
     constantIntegerExpr(src, val)
   )
   or
+  // Language-specific enhancements
   val = Specific::getIntConstantValue(e)
 }
 
