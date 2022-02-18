@@ -194,7 +194,7 @@ private module Impl {
     exists(SsaVariable javaVariable | javaVariable = getJavaSsaVariable(v) |
       result = fieldSign(getImplicitSsaDeclaration(javaVariable))
       or
-      anySign(result) and nonFieldImplicitSsaDefinition(javaVariable)
+      semAnySign(result) and nonFieldImplicitSsaDefinition(javaVariable)
     )
   }
 
@@ -209,7 +209,7 @@ private module Impl {
       fieldDecrementOperationOperand(f) and result = fieldSign(f).dec()
       or
       result = specificFieldSign(f)
-    else anySign(result)
+    else semAnySign(result)
   }
 
   /** Returned an expression that is assigned to `f`. */
@@ -248,7 +248,7 @@ private module Impl {
         else
           if f.hasName("MIN_VALUE")
           then result = TNeg()
-          else anySign(result)
+          else semAnySign(result)
   }
 
   /** Returns a sub expression of `e` for expression types where the sign depends on the child. */
@@ -266,7 +266,7 @@ private module Impl {
   Sign getVarAccessSign(SemVarAccess access) {
     result = fieldSign(getField(getJavaExpr(access).(FieldAccess)))
     or
-    anySign(result) and not getJavaExpr(access) instanceof FieldAccess
+    semAnySign(result) and not getJavaExpr(access) instanceof FieldAccess
   }
 
   Sign specificCertainExprSign(SemExpr e) {

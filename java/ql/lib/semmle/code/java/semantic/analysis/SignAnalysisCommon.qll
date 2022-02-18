@@ -250,7 +250,7 @@ private Sign explicitSsaDefSign(SemSsaVariable v) {
   exists(SemVariableUpdate def | def = getExplicitSsaAssignment(v) |
     result = semExprSign(getExprFromSsaAssignment(def))
     or
-    anySign(result) and explicitSsaDefWithAnySign(def)
+    semAnySign(result) and explicitSsaDefWithAnySign(def)
     or
     result = semExprSign(def.(SemIncrementExpr).getExpr()).inc()
     or
@@ -268,7 +268,7 @@ Sign semExprSign(SemExpr e) {
     not exists(certainExprSign(e)) and
     (
       // We'll never know what the sign is.
-      anySign(s) and unknownSign(e)
+      semAnySign(s) and unknownSign(e)
       or
       // Propagate via SSA
       exists(SemSsaVariable v | v.getAUse() = e |
@@ -330,7 +330,7 @@ private Sign binaryOpRhsSign(BinaryOperation e) { result = semExprSign(e.getRigh
  * Dummy predicate that holds for any sign. This is added to improve readability
  * of cases where the sign is unrestricted.
  */
-predicate anySign(Sign s) { any() }
+predicate semAnySign(Sign s) { any() }
 
 /** Holds if `e` can be positive and cannot be negative. */
 predicate semPositive(SemExpr e) {
@@ -357,17 +357,3 @@ predicate semStrictlyNegative(SemExpr e) {
   not semExprSign(e) = TPos() and
   not semExprSign(e) = TZero()
 }
-
-private module Java {
-  private import java
-
-  predicate positive(Expr e) { semPositive(getSemanticExpr(e)) }
-
-  predicate negative(Expr e) { semNegative(getSemanticExpr(e)) }
-
-  predicate strictlyPositive(Expr e) { semStrictlyPositive(getSemanticExpr(e)) }
-
-  predicate strictlyNegative(Expr e) { semStrictlyNegative(getSemanticExpr(e)) }
-}
-
-import Java
