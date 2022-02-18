@@ -3,18 +3,14 @@
  */
 module Private {
   private import java as J
-  import semmle.code.java.dataflow.RangeUtils as RU
-  private import semmle.code.java.dataflow.SSA as Ssa
-  private import semmle.code.java.controlflow.Guards as G
   private import Sign
-  private import semmle.code.java.dataflow.ConstantAnalysis as Const
   private import semmle.code.java.semantic.SemanticExpr
   private import semmle.code.java.semantic.SemanticGuard
   private import semmle.code.java.semantic.SemanticSSA
   import Impl
 
   /** Class to represent unary operation. */
-  class UnaryOperation extends SemExpr {
+  class UnaryOperation extends SemUnaryExpr {
     UnaryOperation() {
       expr instanceof J::PreIncExpr or
       expr instanceof J::PreDecExpr or
@@ -23,22 +19,17 @@ module Private {
     }
 
     /** Returns the operand of this expression. */
-    SemExpr getOperand() {
-      result = this.(SemPreIncExpr).getExpr() or
-      result = this.(SemPreDecExpr).getExpr() or
-      result = this.(SemMinusExpr).getExpr() or
-      result = this.(SemBitNotExpr).getExpr()
-    }
+    SemExpr getOperand() { result = getExpr() }
 
     /** Returns the operation representing this expression. */
     TUnarySignOperation getOp() {
-      expr instanceof J::PreIncExpr and result = TIncOp()
+      this instanceof SemPreIncExpr and result = TIncOp()
       or
-      expr instanceof J::PreDecExpr and result = TDecOp()
+      this instanceof SemPreDecExpr and result = TDecOp()
       or
-      expr instanceof J::MinusExpr and result = TNegOp()
+      this instanceof SemMinusExpr and result = TNegOp()
       or
-      expr instanceof J::BitNotExpr and result = TBitNotOp()
+      this instanceof SemBitNotExpr and result = TBitNotOp()
     }
   }
 
@@ -160,13 +151,13 @@ private module Impl {
    */
   predicate numericExprWithUnknownSign(SemExpr e) {
     exists(Expr expr | expr = getJavaExpr(e) |
-    // The expression types handled in the predicate complements the expression
-    // types handled in `specificSubExprSign`.
-    expr instanceof ArrayAccess and expr.getType() instanceof NumericOrCharType
-    or
-    expr instanceof MethodAccess and expr.getType() instanceof NumericOrCharType
-    or
-    expr instanceof ClassInstanceExpr and expr.getType() instanceof NumericOrCharType
+      // The expression types handled in the predicate complements the expression
+      // types handled in `specificSubExprSign`.
+      expr instanceof ArrayAccess and expr.getType() instanceof NumericOrCharType
+      or
+      expr instanceof MethodAccess and expr.getType() instanceof NumericOrCharType
+      or
+      expr instanceof ClassInstanceExpr and expr.getType() instanceof NumericOrCharType
     )
   }
 
