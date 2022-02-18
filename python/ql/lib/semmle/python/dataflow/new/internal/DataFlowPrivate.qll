@@ -1979,7 +1979,7 @@ predicate clearsContent(Node n, Content c) {
 /**
  * Holds if values stored inside attribute `c` are cleared at node `n`.
  *
- * In `obj.foo = x` the any old value stored in `foo` is cleared at the pre-update node
+ * In `obj.foo = x` any old value stored in `foo` is cleared at the pre-update node
  * associated with `obj`
  */
 predicate attributeClearStep(Node n, AttributeContent c) {

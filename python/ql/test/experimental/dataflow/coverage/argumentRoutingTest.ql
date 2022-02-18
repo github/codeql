@@ -43,7 +43,7 @@ class Argument1RoutingConfig extends DataFlow::Configuration {
    * making it seem like we handle all cases even if we only handle the last one.
    * We make the test honest by preventing flow into source nodes.
    */
-  override predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+  override predicate isBarrierIn(DataFlow::Node node) { this.isSource(node) }
 }
 
 // for argument 2 and up, we use a generic approach. Change `maxNumArgs` below if we
