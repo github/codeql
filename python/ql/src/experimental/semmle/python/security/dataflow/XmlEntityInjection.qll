@@ -22,7 +22,7 @@ module XmlEntityInjection {
     }
 
     override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      ioAdditionalTaintStep(nodeFrom, nodeTo)
+      any(AdditionalTaintStep s).step(nodeFrom, nodeTo)
     }
   }
 

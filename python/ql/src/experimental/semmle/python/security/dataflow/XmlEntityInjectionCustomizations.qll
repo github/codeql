@@ -32,6 +32,20 @@ module XmlEntityInjection {
   abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
+   * A unit class for adding additional taint steps.
+   *
+   * Extend this class to add additional taint steps that should apply to `XmlEntityInjection`
+   * taint configuration.
+   */
+  class AdditionalTaintStep extends Unit {
+    /**
+     * Holds if the step from `nodeFrom` to `nodeTo` should be considered a taint
+     * step for `XmlEntityInjection` configuration.
+     */
+    abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
+  }
+
+  /**
    * A data flow sink for XML parsing libraries.
    *
    * See `XML::XMLParsing`.
@@ -85,11 +99,16 @@ module XmlEntityInjection {
    */
   class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
 
-  predicate ioAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    exists(DataFlow::CallCfgNode ioCalls |
-      ioCalls = API::moduleImport("io").getMember(["StringIO", "BytesIO"]).getACall() and
-      nodeFrom = ioCalls.getArg(0) and
-      nodeTo = ioCalls
-    )
+  /**
+   * A taint step for `io`'s `StringIO` and `BytesIO` methods.
+   */
+  class IoAdditionalTaintStep extends AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(DataFlow::CallCfgNode ioCalls |
+        ioCalls = API::moduleImport("io").getMember(["StringIO", "BytesIO"]).getACall() and
+        nodeFrom = ioCalls.getArg(0) and
+        nodeTo = ioCalls
+      )
+    }
   }
 }
