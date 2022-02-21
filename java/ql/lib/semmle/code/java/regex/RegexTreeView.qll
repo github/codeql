@@ -55,7 +55,7 @@ class RegExpParent extends TRegExpParent {
   string toString() { result = "RegExpParent" }
 
   /** Gets the `i`th child term. */
-  abstract RegExpTerm getChild(int i);
+  RegExpTerm getChild(int i) { none() }
 
   /** Gets a child term . */
   RegExpTerm getAChild() { result = this.getChild(_) }
@@ -142,26 +142,6 @@ class RegExpTerm extends RegExpParent {
    * Holds if this is the root term of a regular expression.
    */
   predicate isRootTerm() { start = 0 and end = re.getText().length() }
-
-  override RegExpTerm getChild(int i) {
-    result = this.(RegExpAlt).getChild(i)
-    or
-    result = this.(RegExpBackRef).getChild(i)
-    or
-    result = this.(RegExpCharacterClass).getChild(i)
-    or
-    result = this.(RegExpCharacterRange).getChild(i)
-    or
-    result = this.(RegExpNormalChar).getChild(i)
-    or
-    result = this.(RegExpGroup).getChild(i)
-    or
-    result = this.(RegExpQuantifier).getChild(i)
-    or
-    result = this.(RegExpSequence).getChild(i)
-    or
-    result = this.(RegExpSpecialChar).getChild(i)
-  }
 
   /**
    * Gets the parent term of this regular expression term, or the
@@ -508,7 +488,7 @@ class RegExpEscape extends RegExpNormalChar {
   /**
    * Holds if this is a unicode escape.
    */
-  private predicate isUnicode() { this.getText().matches("\\u%") }
+  private predicate isUnicode() { this.getText().matches(["\\u%", "\\x%"]) }
 
   /**
    * Gets the unicode char for this escape.
@@ -520,13 +500,24 @@ class RegExpEscape extends RegExpNormalChar {
     )
   }
 
+  /** Gets the part of this escape that is a hexidecimal string */
+  private string getHexString() {
+    this.isUnicode() and
+    if this.getText().matches("\\u%") // \uhhhh
+    then result = this.getText().suffix(2)
+    else
+      if this.getText().matches("\\x{%") // \x{h..h}
+      then result = this.getText().substring(3, this.getText().length() - 1)
+      else result = this.getText().suffix(2) // \xhh
+  }
+
   /**
    * Gets int value for the `index`th char in the hex number of the unicode escape.
    * E.g. for `\u0061` and `index = 2` this returns 96 (the number `6` interpreted as hex).
    */
   private int getHexValueFromUnicode(int index) {
     this.isUnicode() and
-    exists(string hex, string char | hex = this.getText().suffix(2) |
+    exists(string hex, string char | hex = this.getHexString() |
       char = hex.charAt(index) and
       result = 16.pow(hex.length() - index - 1) * toHex(char)
     )
@@ -572,6 +563,50 @@ class RegExpCharacterClassEscape extends RegExpEscape {
   override RegExpTerm getChild(int i) { none() }
 
   override string getPrimaryQLClass() { result = "RegExpCharacterClassEscape" }
+}
+
+/**
+ * A named character class in a regular expression.
+ *
+ * Examples:
+ *
+ * ```
+ * \p{Digit}
+ * \p{IsLowerCase}
+ */
+class RegExpNamedProperty extends RegExpCharacterClassEscape {
+  boolean inverted;
+  string name;
+
+  RegExpNamedProperty() {
+    name = this.getValue().substring(2, this.getValue().length() - 1) and
+    (
+      inverted = false and
+      this.getValue().charAt(0) = "p"
+      or
+      inverted = true and
+      this.getValue().charAt(0) = "P"
+    )
+  }
+
+  /** Holds if this class is inverted. */
+  predicate isInverted() { inverted = true }
+
+  /** Gets the name of this class. */
+  string getClassName() { result = name }
+
+  /**
+   * Gets an equivalent single-chcracter escape sequence for this class (e.g. \d) if possible, excluding the escape character.
+   */
+  string getBackslashEquivalent() {
+    exists(string eq | if inverted = true then result = eq.toUpperCase() else result = eq |
+      name = ["Digit", "IsDigit"] and
+      eq = "d"
+      or
+      name = ["Space", "IsWhite_Space"] and
+      eq = "s"
+    )
+  }
 }
 
 /**

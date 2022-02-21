@@ -371,6 +371,42 @@ class ExpRedosTest {
         // GOOD
         "X(\\u0061|b)+Y",
 
+        // NOT GOOD
+        "X(\\x61|a)*Y", // $ hasExpRedos
+
+        // GOOD
+        "X(\\x61|b)+Y",
+
+        // NOT GOOD
+        "X(\\x{061}|a)*Y", // $ hasExpRedos
+
+        // GOOD
+        "X(\\x{061}|b)+Y",
+
+        // NOT GOOD
+        "X(\\p{Digit}|7)*Y", // $ hasExpRedos
+
+        // GOOD
+        "X(\\p{Digit}|b)+Y",
+
+         // NOT GOOD
+        "X(\\P{Digit}|b)*Y", // $ hasExpRedos
+
+        // GOOD
+        "X(\\P{Digit}|7)+Y",
+
+        // NOT GOOD
+        "X(\\p{IsDigit}|7)*Y", // $ hasExpRedos
+
+        // GOOD
+        "X(\\p{IsDigit}|b)+Y",
+
+         // NOT GOOD - but not detected
+        "X(\\p{Alpha}|a)*Y", // $ MISSING: hasExpRedos
+
+        // GOOD
+        "X(\\p{Alpha}|7)+Y",
+
         // GOOD
         "(\"[^\"]*?\"|[^\"\\s]+)+(?=\\s*|\\s*$)",
 
