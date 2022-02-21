@@ -1,3 +1,12 @@
+## 0.0.9
+
+## 0.0.8
+
+### Deprecated APIs
+
+* Moved the files defining regex injection configuration and customization, instead of `import semmle.python.security.injection.RegexInjection` please use `import semmle.python.security.dataflow.RegexInjection` (the same for `RegexInjectionCustomizations`).
+* The `codeql/python-upgrades` CodeQL pack has been removed. All upgrades scripts have been merged into the `codeql/python-all` CodeQL pack.
+
 ## 0.0.7
 
 ## 0.0.6

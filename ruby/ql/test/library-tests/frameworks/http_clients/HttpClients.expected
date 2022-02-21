@@ -55,6 +55,7 @@
 | OpenURI.rb:3:9:3:41 | call to open | OpenURI | OpenURI.rb:3:21:3:40 | "http://example.com" | OpenURI.rb:4:1:4:10 | call to read |
 | OpenURI.rb:6:9:6:34 | call to open | OpenURI | OpenURI.rb:6:14:6:33 | "http://example.com" | OpenURI.rb:7:1:7:15 | call to readlines |
 | OpenURI.rb:9:9:9:38 | call to open | OpenURI | OpenURI.rb:9:18:9:37 | "http://example.com" | OpenURI.rb:10:1:10:10 | call to read |
+| OpenURI.rb:15:9:15:47 | call to open_uri | OpenURI | OpenURI.rb:15:26:15:46 | "https://example.com" | OpenURI.rb:16:1:16:10 | call to read |
 | RestClient.rb:3:9:3:45 | call to get | RestClient | RestClient.rb:3:24:3:44 | "http://example.com/" | RestClient.rb:4:1:4:10 | call to body |
 | RestClient.rb:6:9:6:59 | call to post | RestClient | RestClient.rb:6:25:6:44 | "http://example.com" | RestClient.rb:7:1:7:10 | call to body |
 | RestClient.rb:9:9:9:58 | call to put | RestClient | RestClient.rb:9:24:9:43 | "http://example.com" | RestClient.rb:10:1:10:10 | call to body |

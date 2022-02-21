@@ -1,0 +1,23 @@
+lambdaDeclaration
+| Func<bool, int> | Lambda.cs:16:13:16:14 | f5 | Lambda.cs:16:18:16:42 | (...) => ... |
+| Func<bool, object> | Lambda.cs:12:13:12:14 | f3 | Lambda.cs:12:18:12:47 | (...) => ... |
+| Func<bool, object> | Lambda.cs:13:28:13:29 | f4 | Lambda.cs:13:33:13:62 | (...) => ... |
+| Func<bool, object> | Lambda.cs:17:13:17:14 | f6 | Lambda.cs:17:18:17:45 | (...) => ... |
+| Func<int, string> | Lambda.cs:8:27:8:28 | f1 | Lambda.cs:8:32:8:54 | (...) => ... |
+| Func<int, string> | Lambda.cs:9:13:9:14 | f2 | Lambda.cs:9:18:9:40 | (...) => ... |
+| Func<int, string> | LambdaAttributes.cs:14:13:14:14 | f7 | LambdaAttributes.cs:14:18:14:53 | (...) => ... |
+| Func<int, string> | LambdaAttributes.cs:15:13:15:14 | f8 | LambdaAttributes.cs:15:17:15:52 | (...) => ... |
+| Func<int, string> | LambdaAttributes.cs:16:13:16:14 | f9 | LambdaAttributes.cs:16:17:16:60 | (...) => ... |
+lambdaDeclarationNatural
+| Func<bool, int> | Lambda.cs:16:13:16:14 | f5 | Lambda.cs:16:18:16:42 | (...) => ... |
+| Func<bool, object> | Lambda.cs:12:13:12:14 | f3 | Lambda.cs:12:18:12:47 | (...) => ... |
+| Func<bool, object> | Lambda.cs:17:13:17:14 | f6 | Lambda.cs:17:18:17:45 | (...) => ... |
+| Func<int, string> | Lambda.cs:9:13:9:14 | f2 | Lambda.cs:9:18:9:40 | (...) => ... |
+| Func<int, string> | LambdaAttributes.cs:14:13:14:14 | f7 | LambdaAttributes.cs:14:18:14:53 | (...) => ... |
+| Func<int, string> | LambdaAttributes.cs:15:13:15:14 | f8 | LambdaAttributes.cs:15:17:15:52 | (...) => ... |
+| Func<int, string> | LambdaAttributes.cs:16:13:16:14 | f9 | LambdaAttributes.cs:16:17:16:60 | (...) => ... |
+lambdaDeclarationExplicitReturnType
+| Func<bool, int> | int | int | Lambda.cs:16:13:16:14 | f5 | Lambda.cs:16:18:16:42 | (...) => ... |
+| Func<bool, object> | object | object | Lambda.cs:12:13:12:14 | f3 | Lambda.cs:12:18:12:47 | (...) => ... |
+| Func<bool, object> | object | object | Lambda.cs:13:28:13:29 | f4 | Lambda.cs:13:33:13:62 | (...) => ... |
+| Func<bool, object> | object | object | Lambda.cs:17:13:17:14 | f6 | Lambda.cs:17:18:17:45 | (...) => ... |

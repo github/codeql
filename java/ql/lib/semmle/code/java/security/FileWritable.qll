@@ -67,7 +67,7 @@ private VarAccess getFileForPathConversion(Expr pathExpr) {
       fileToPath = pathExpr and
       result = fileToPath.getQualifier() and
       fileToPath.getMethod().hasName("toPath") and
-      fileToPath.getMethod().getDeclaringType().hasQualifiedName("java.io", "File")
+      fileToPath.getMethod().getDeclaringType() instanceof TypeFile
     )
     or
     // Look for the pattern `Paths.get(file.get*Path())` for converting between a `File` and a `Path`.

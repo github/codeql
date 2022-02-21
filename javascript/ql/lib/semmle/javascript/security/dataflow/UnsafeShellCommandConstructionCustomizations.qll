@@ -286,6 +286,16 @@ module UnsafeShellCommandConstruction {
     }
   }
 
+  /** A guard that checks whether `x` is a number. */
+  class NumberGuard extends TaintTracking::SanitizerGuardNode instanceof DataFlow::CallNode {
+    Expr x;
+    boolean polarity;
+
+    NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
+
+    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
+  }
+
   private import semmle.javascript.dataflow.internal.AccessPaths
   private import semmle.javascript.dataflow.InferredTypes
 

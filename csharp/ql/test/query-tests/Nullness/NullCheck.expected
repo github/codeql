@@ -294,6 +294,10 @@
 | E.cs:404:9:404:9 | access to local variable i | E.cs:404:9:404:9 | access to local variable i | null | true |
 | E.cs:411:9:411:9 | access to local variable i | E.cs:411:9:411:9 | access to local variable i | non-null | false |
 | E.cs:411:9:411:9 | access to local variable i | E.cs:411:9:411:9 | access to local variable i | null | true |
+| E.cs:422:13:422:22 | access to property HasValue | E.cs:422:13:422:13 | access to parameter i | false | true |
+| E.cs:422:13:422:22 | access to property HasValue | E.cs:422:13:422:13 | access to parameter i | true | false |
+| E.cs:429:13:429:22 | access to property HasValue | E.cs:429:13:429:13 | access to parameter i | false | true |
+| E.cs:429:13:429:22 | access to property HasValue | E.cs:429:13:429:13 | access to parameter i | true | false |
 | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | Forwarding.cs:9:14:9:14 | access to local variable s | false | false |
 | Forwarding.cs:14:13:14:32 | call to method IsNotNullOrEmpty | Forwarding.cs:14:13:14:13 | access to local variable s | true | false |
 | Forwarding.cs:19:14:19:23 | call to method IsNull | Forwarding.cs:19:14:19:14 | access to local variable s | false | false |

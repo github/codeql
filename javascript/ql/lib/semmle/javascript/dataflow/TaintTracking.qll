@@ -635,39 +635,18 @@ module TaintTracking {
           pred.asExpr() = succ.getAstNode().(MethodCallExpr).getReceiver() and
           (
             // sorted, interesting, properties of String.prototype
-            name = "anchor" or
-            name = "big" or
-            name = "blink" or
-            name = "bold" or
-            name = "concat" or
-            name = "fixed" or
-            name = "fontcolor" or
-            name = "fontsize" or
-            name = "italics" or
-            name = "link" or
-            name = "padEnd" or
-            name = "padStart" or
-            name = "repeat" or
-            name = "replace" or
-            name = "replaceAll" or
-            name = "slice" or
-            name = "small" or
-            name = "split" or
-            name = "strike" or
-            name = "sub" or
-            name = "substr" or
-            name = "substring" or
-            name = "sup" or
-            name = "toLocaleLowerCase" or
-            name = "toLocaleUpperCase" or
-            name = "toLowerCase" or
-            name = "toUpperCase" or
-            name = "trim" or
-            name = "trimLeft" or
-            name = "trimRight" or
+            name =
+              [
+                "anchor", "big", "blink", "bold", "concat", "fixed", "fontcolor", "fontsize",
+                "italics", "link", "padEnd", "padStart", "repeat", "replace", "replaceAll", "slice",
+                "small", "split", "strike", "sub", "substr", "substring", "sup",
+                "toLocaleLowerCase", "toLocaleUpperCase", "toLowerCase", "toUpperCase", "trim",
+                "trimLeft", "trimRight"
+              ]
+            or
             // sorted, interesting, properties of Object.prototype
-            name = "toString" or
-            name = "valueOf" or
+            name = ["toString", "valueOf"]
+            or
             // sorted, interesting, properties of Array.prototype
             name = "join"
           )
@@ -1164,6 +1143,36 @@ module TaintTracking {
       str.mayHaveStringValue(tag) and
       typeof.getOperand() = operand
     )
+  }
+
+  /** Holds if `guard` is a test that checks if `operand` is a number. */
+  predicate isNumberGuard(DataFlow::Node guard, Expr operand, boolean polarity) {
+    exists(DataFlow::CallNode isNaN |
+      isNaN = DataFlow::globalVarRef("isNaN").getACall() and guard = isNaN and polarity = false
+    |
+      operand = isNaN.getArgument(0).asExpr()
+      or
+      exists(DataFlow::CallNode parse |
+        parse = DataFlow::globalVarRef(["parseInt", "parseFloat"]).getACall()
+      |
+        parse = isNaN.getArgument(0) and
+        operand = parse.getArgument(0).asExpr()
+      )
+      or
+      exists(UnaryExpr unary | unary.getOperator() = ["+", "-"] |
+        unary = isNaN.getArgument(0).asExpr() and
+        operand = unary.getOperand()
+      )
+      or
+      exists(BinaryExpr bin | bin.getOperator() = ["+", "-"] |
+        bin = isNaN.getArgument(0).asExpr() and
+        operand = bin.getAnOperand() and
+        bin.getAnOperand() instanceof NumberLiteral
+      )
+    )
+    or
+    isTypeofGuard(guard.asExpr(), operand, "number") and
+    polarity = guard.asExpr().(EqualityTest).getPolarity()
   }
 
   /** DEPRECATED. This class has been renamed to `MembershipTestSanitizer`. */

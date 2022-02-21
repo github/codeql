@@ -6,7 +6,7 @@ private import ruby
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.frameworks.StandardLibrary
+private import codeql.ruby.frameworks.Core
 private import codeql.ruby.dataflow.FlowSummary
 
 private DataFlow::Node ioInstanceInstantiation() {
@@ -210,6 +210,15 @@ module File {
    */
   class FileInstance extends IO::IOInstance {
     FileInstance() { this = fileInstance() }
+  }
+
+  /**
+   * A call to `File.open`, considered as a `FileSystemAccess`.
+   */
+  class FileOpen extends DataFlow::CallNode, FileSystemAccess::Range {
+    FileOpen() { this = API::getTopLevelMember("File").getAMethodCall("open") }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
   }
 
   /**

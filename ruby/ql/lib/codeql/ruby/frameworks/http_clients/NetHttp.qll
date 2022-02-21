@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the `Net::HTTP` library.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.RemoteFlowSources
