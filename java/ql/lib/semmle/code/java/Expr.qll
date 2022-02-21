@@ -990,9 +990,7 @@ class ValueNEExpr extends BinaryExpr, @valueneexpr {
  * need to distinguish them, use `EQExpr` or `ValueEQExpr` instead.
  */
 class AnyEqualsExpr extends BinaryExpr {
-  AnyEqualsExpr() {
-    this instanceof EQExpr or this instanceof ValueEQExpr
-  }
+  AnyEqualsExpr() { this instanceof EQExpr or this instanceof ValueEQExpr }
 }
 
 /**
@@ -1002,9 +1000,7 @@ class AnyEqualsExpr extends BinaryExpr {
  * need to distinguish them, use `EQExpr` or `ValueEQExpr` instead.
  */
 class AnyNotEqualsExpr extends BinaryExpr {
-  AnyNotEqualsExpr() {
-    this instanceof NEExpr or this instanceof ValueNEExpr
-  }
+  AnyNotEqualsExpr() { this instanceof NEExpr or this instanceof ValueNEExpr }
 }
 
 /**
@@ -2353,6 +2349,16 @@ class StmtExpr extends Expr, @stmtexpr {
   override string getHalsteadID() { result = "StmtExpr" }
 
   override string getAPrimaryQlClass() { result = "StmtExpr" }
+
+  /**
+   * Gets the result expression of the enclosed statement.
+   */
+  Expr getResultExpr() { result = getStmtResultExpr(this.getStmt()) }
+}
+
+private Expr getStmtResultExpr(Stmt stmt) {
+  result = stmt.(ExprStmt).getExpr() or
+  result = getStmtResultExpr(stmt.(BlockStmt).getLastStmt())
 }
 
 /**
