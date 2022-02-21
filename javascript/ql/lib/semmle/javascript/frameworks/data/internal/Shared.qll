@@ -57,6 +57,7 @@
  */
 
 private import Impl as Impl
+import AccessPathSyntax
 
 private class Unit = Impl::Unit;
 
@@ -162,19 +163,13 @@ private predicate summaryModel(string row) { any(SummaryModelCsv s).row(inverseP
 
 private predicate typeModel(string row) { any(TypeModelCsv s).row(inversePad(row)) }
 
-/**
- * Replaces `..` with `-->` in order to simplify subsequent parsing.
- */
-bindingset[path]
-private string normalizePath(string path) { result = path.replaceAll("..", "-->") }
-
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(string package, string type, string path, string kind) {
   exists(string row |
     sourceModel(row) and
     row.splitAt(";", 0) = package and
     row.splitAt(";", 1) = type and
-    normalizePath(row.splitAt(";", 2)) = path and
+    row.splitAt(";", 2) = path and
     row.splitAt(";", 3) = kind
   )
 }
@@ -185,7 +180,7 @@ private predicate sinkModel(string package, string type, string path, string kin
     sinkModel(row) and
     row.splitAt(";", 0) = package and
     row.splitAt(";", 1) = type and
-    normalizePath(row.splitAt(";", 2)) = path and
+    row.splitAt(";", 2) = path and
     row.splitAt(";", 3) = kind
   )
 }
@@ -198,9 +193,9 @@ private predicate summaryModel(
     summaryModel(row) and
     row.splitAt(";", 0) = package and
     row.splitAt(";", 1) = type and
-    normalizePath(row.splitAt(";", 2)) = path and
-    normalizePath(row.splitAt(";", 3)) = input and
-    normalizePath(row.splitAt(";", 4)) = output and
+    row.splitAt(";", 2) = path and
+    row.splitAt(";", 3) = input and
+    row.splitAt(";", 4) = output and
     row.splitAt(";", 5) = kind
   )
 }
@@ -215,7 +210,7 @@ private predicate typeModel(
     row.splitAt(";", 1) = type1 and
     row.splitAt(";", 2) = package2 and
     row.splitAt(";", 3) = type2 and
-    normalizePath(row.splitAt(";", 4)) = path
+    row.splitAt(";", 4) = path
   )
 }
 
@@ -257,12 +252,9 @@ predicate isRelevantFullPath(string package, string type, string path) {
   )
 }
 
-/**
- * A string that occurs as an access path (either identifying or input/output spec)
- * which might be relevant for this database.
- */
-class AccessPath extends string {
-  AccessPath() {
+/** A string from a CSV row that should be parsed as an access path. */
+private class AccessPathRange extends AccessPath::Range {
+  AccessPathRange() {
     isRelevantFullPath(_, _, this)
     or
     exists(string package | isRelevantPackage(package) |
@@ -270,18 +262,6 @@ class AccessPath extends string {
       summaryModel(package, _, _, _, this, _)
     )
   }
-
-  /** Gets the `n`th token on the access path as a string. */
-  string getRawToken(int n) {
-    this != "" and // The empty path should have zero tokens, not a single empty token
-    result = this.splitAt(".", n)
-  }
-
-  /** Gets the `n`th token on the access path. */
-  AccessPathToken getToken(int n) { result = this.getRawToken(n) }
-
-  /** Gets the number of tokens on the path. */
-  int getNumToken() { result = count(int n | exists(this.getRawToken(n))) }
 }
 
 /**
@@ -432,35 +412,6 @@ private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPat
 }
 
 /**
- * An access part token such as `Argument[1]` or `ReturnValue`, appearing in one or more access paths.
- */
-class AccessPathToken extends string {
-  AccessPathToken() { this = any(AccessPath path).getRawToken(_) }
-
-  private string getPart(int part) {
-    result = this.regexpCapture("([^\\[]+)(?:\\[([^\\]]*)\\])?", part)
-  }
-
-  /** Gets the name of the token, such as `Member` from `Member[x]` */
-  string getName() { result = this.getPart(1) }
-
-  /**
-   * Gets the argument list, such as `1,2` from `Member[1,2]`,
-   * or has no result if there are no arguments.
-   */
-  string getArgumentList() { result = this.getPart(2) }
-
-  /** Gets the `n`th argument to this token, such as `x` or `y` from `Member[x,y]`. */
-  string getArgument(int n) { result = this.getArgumentList().splitAt(",", n) }
-
-  /** Gets an argument to this token, such as `x` or `y` from `Member[x,y]`. */
-  string getAnArgument() { result = this.getArgument(_) }
-
-  /** Gets the number of arguments to this token, such as 2 for `Member[x,y]` or zero for `ReturnValue`. */
-  int getNumArgument() { result = count(int n | exists(this.getArgument(n))) }
-}
-
-/**
  * Convenience-predicate for extracting two capture groups at once.
  */
 bindingset[input, regexp]
@@ -477,9 +428,9 @@ bindingset[arg]
 private int getAnIntFromString(string arg) {
   result = arg.toInt()
   or
-  // Match "n1..n2", where ".." has previously been replaced with "-->" to simplify parsing
+  // Match "n1..n2"
   exists(string lo, string hi |
-    regexpCaptureTwo(arg, "(\\d+)-->(\\d+)", lo, hi) and
+    regexpCaptureTwo(arg, "(\\d+)\\.\\.(\\d+)", lo, hi) and
     result = [lo.toInt() .. hi.toInt()]
   )
 }
@@ -489,8 +440,8 @@ private int getAnIntFromString(string arg) {
  */
 bindingset[arg]
 private int getLowerBoundFromString(string arg) {
-  // Match "n..", where ".." has previously been replaced with "-->" to simplify parsing
-  result = arg.regexpCapture("(\\d+)-->", 1).toInt()
+  // Match "n.."
+  result = arg.regexpCapture("(\\d+)\\.\\.", 1).toInt()
 }
 
 /**
@@ -522,22 +473,22 @@ private int getAnIntFromStringWithArity(string arg, int arity) {
     result = arity - lo.toInt()
     or
     // N-x..
-    lo = arg.regexpCapture("N-(\\d+)-->", 1) and
+    lo = arg.regexpCapture("N-(\\d+)\\.\\.", 1) and
     result = [arity - lo.toInt(), arity - 1]
   )
   or
   exists(string lo, string hi |
     // x..N-y
-    regexpCaptureTwo(arg, "(\\d+)-->N-(\\d+)", lo, hi) and
+    regexpCaptureTwo(arg, "(\\d+)\\.\\.N-(\\d+)", lo, hi) and
     result = [lo.toInt() .. arity - hi.toInt()]
     or
     // N-x..Ny
-    regexpCaptureTwo(arg, "N-(\\d+)-->N-(\\d+)", lo, hi) and
+    regexpCaptureTwo(arg, "N-(\\d+)\\.\\.N-(\\d+)", lo, hi) and
     result = [arity - lo.toInt() .. arity - hi.toInt()] and
     result >= 0
     or
     // N-x..y
-    regexpCaptureTwo(arg, "N-(\\d+)-->(\\d+)", lo, hi) and
+    regexpCaptureTwo(arg, "N-(\\d+)\\.\\.(\\d+)", lo, hi) and
     result = [arity - lo.toInt() .. hi.toInt()] and
     result >= 0
   )

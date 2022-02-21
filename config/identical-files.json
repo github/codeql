@@ -502,5 +502,11 @@
     "javascript/ql/lib/tutorial.qll",
     "python/ql/lib/tutorial.qll",
     "ruby/ql/lib/tutorial.qll"
+  ],
+  "AccessPathSyntax": [
+    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/AccessPathSyntax.qll",
+    "java/ql/lib/semmle/code/java/dataflow/internal/AccessPathSyntax.qll",
+    "javascript/ql/lib/semmle/javascript/frameworks/data/internal/AccessPathSyntax.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/AccessPathSyntax.qll"
   ]
 }

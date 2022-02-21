@@ -159,16 +159,16 @@ module ParsePositions {
   private import FlowSummaryImpl
 
   private predicate isParamBody(string body) {
-    exists(string c |
-      Private::External::specSplit(_, c, _) and
-      body = c.regexpCapture("Parameter\\[([^\\]]*)\\]", 1)
+    exists(AccessPathToken tok |
+      tok.getName() = "Parameter" and
+      body = tok.getAnArgument()
     )
   }
 
   private predicate isArgBody(string body) {
-    exists(string c |
-      Private::External::specSplit(_, c, _) and
-      body = c.regexpCapture("Argument\\[([^\\]]*)\\]", 1)
+    exists(AccessPathToken tok |
+      tok.getName() = "Argument" and
+      body = tok.getAnArgument()
     )
   }
 

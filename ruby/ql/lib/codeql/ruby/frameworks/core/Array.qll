@@ -40,7 +40,7 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       exists(ArrayIndex i |
         input = "Argument[" + i + "]" and
-        output = "ArrayElement[" + i + "] of ReturnValue" and
+        output = "ReturnValue.ArrayElement[" + i + "]" and
         preservesValue = true
       )
     }
@@ -56,18 +56,18 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
         input = "Argument[1]" and
-        output = "ArrayElement[?] of ReturnValue"
+        output = "ReturnValue.ArrayElement[?]"
         or
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Argument[0]" and
-          output = "ArrayElement[" + i + "] of ReturnValue"
+          input = "Argument[0].ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "]"
         )
         or
-        input = "ArrayElement[?] of Argument[0]" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Argument[0].ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
         or
-        input = "ReturnValue of BlockArgument" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "BlockArgument.ReturnValue" and
+        output = "ReturnValue.ArrayElement[?]"
       ) and
       preservesValue = true
     }
@@ -83,12 +83,12 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Argument[0]" and
-          output = "ArrayElement[" + i + "] of ReturnValue"
+          input = "Argument[0].ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "]"
         )
         or
-        input = "ArrayElement[?] of Argument[0]" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Argument[0].ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
       ) and
       preservesValue = true
     }
@@ -100,8 +100,8 @@ module Array {
     override BitwiseAndExpr getACall() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["ArrayElement of Receiver", "ArrayElement of Argument[0]"] and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = ["Receiver.ArrayElement", "Argument[0].ArrayElement"] and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -112,8 +112,8 @@ module Array {
     override BitwiseOrExpr getACall() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["ArrayElement of Receiver", "ArrayElement of Argument[0]"] and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = ["Receiver.ArrayElement", "Argument[0].ArrayElement"] and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -124,8 +124,8 @@ module Array {
     override MulExpr getACall() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -138,12 +138,12 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Receiver" and
-          output = "ArrayElement[" + i + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "]"
         )
         or
-        input = ["ArrayElement[?] of Receiver", "ArrayElement of Argument[0]"] and
-        output = "ArrayElement[?] of ReturnValue"
+        input = ["Receiver.ArrayElement[?]", "Argument[0].ArrayElement"] and
+        output = "ReturnValue.ArrayElement[?]"
       ) and
       preservesValue = true
     }
@@ -155,8 +155,8 @@ module Array {
     override SubExpr getACall() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -170,15 +170,15 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Receiver" and
-          output = "ArrayElement[" + i + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "]"
         )
         or
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
         or
         input = "Argument[0]" and
-        output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"]
+        output = ["ReturnValue.ArrayElement[?]", "Receiver.ArrayElement[?]"]
       ) and
       preservesValue = true
     }
@@ -205,7 +205,7 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement[" + [i.toString(), "?"] + "] of Receiver" and
+      input = "Receiver.ArrayElement[" + [i.toString(), "?"] + "]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -223,8 +223,8 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["ReturnValue", "ArrayElement[?] of ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["ReturnValue", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -266,12 +266,12 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = true and
       (
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
         or
         exists(ArrayIndex i | i >= start and i <= end |
-          input = "ArrayElement[" + i + "] of Receiver" and
-          output = "ArrayElement[" + (i - start) + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + (i - start) + "]"
         )
       )
     }
@@ -302,8 +302,8 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -330,7 +330,7 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[1]" and
-      output = "ArrayElement[" + c.getIndex() + "] of Receiver" and
+      output = "Receiver.ArrayElement[" + c.getIndex() + "]" and
       preservesValue = true
     }
 
@@ -350,7 +350,7 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[1]" and
-      output = "ArrayElement[?] of Receiver" and
+      output = "Receiver.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -374,8 +374,8 @@ module Array {
       // done in `ElementReferenceRangeReadKnownSummary`.
       exists(string arg |
         arg = "Argument[" + (mc.getNumberOfArguments() - 1) + "]" and
-        input = ["ArrayElement of " + arg, arg, "ArrayElement of Receiver"] and
-        output = "ArrayElement[?] of Receiver" and
+        input = [arg + ".ArrayElement", arg, "Receiver.ArrayElement"] and
+        output = "Receiver.ArrayElement[?]" and
         preservesValue = true
       )
     }
@@ -390,8 +390,8 @@ module Array {
     AssocSummary() { this = ["assoc", "rassoc"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -415,7 +415,7 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement[" + [i.toString(), "?"] + "] of Receiver" and
+      input = "Receiver.ArrayElement[" + [i.toString(), "?"] + "]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -429,7 +429,7 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -439,8 +439,8 @@ module Array {
     BSearchSummary() { this = "bsearch" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument", "ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["BlockArgument.Parameter[0]", "ReturnValue"] and
       preservesValue = true
     }
   }
@@ -449,8 +449,8 @@ module Array {
     BSearchIndexSummary() { this = "bsearch_index" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
     }
   }
@@ -469,12 +469,12 @@ module Array {
     CollectBangSummary() { this = ["collect!", "map!"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
       or
-      input = "ReturnValue of BlockArgument" and
-      output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"] and
+      input = "BlockArgument.ReturnValue" and
+      output = ["ReturnValue.ArrayElement[?]", "Receiver.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -484,8 +484,8 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver" and
-        output = "ArrayElement[?] of Parameter[0] of BlockArgument"
+        input = "Receiver.ArrayElement" and
+        output = "BlockArgument.Parameter[0].ArrayElement[?]"
         or
         input = "Receiver" and output = "ReturnValue"
       ) and
@@ -497,8 +497,8 @@ module Array {
     CompactBangSummary() { this = "compact!" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"] and
+      input = "Receiver.ArrayElement" and
+      output = ["ReturnValue.ArrayElement[?]", "Receiver.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -507,8 +507,8 @@ module Array {
     ConcatSummary() { this = "concat" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Argument[_]" and
-      output = "ArrayElement[?] of Receiver" and
+      input = "Argument[_].ArrayElement" and
+      output = "Receiver.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -531,10 +531,10 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver" and
-        output = ["ArrayElement[?] of Receiver", "ReturnValue"]
+        input = "Receiver.ArrayElement" and
+        output = ["Receiver.ArrayElement[?]", "ReturnValue"]
         or
-        input = "ReturnValue of BlockArgument" and
+        input = "BlockArgument.ReturnValue" and
         output = "ReturnValue"
       ) and
       preservesValue = true
@@ -571,15 +571,15 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement[?] of Receiver" and
-        output = ["ReturnValue", "ArrayElement[?] of Receiver"]
+        input = "Receiver.ArrayElement[?]" and
+        output = ["ReturnValue", "Receiver.ArrayElement[?]"]
         or
-        exists(ArrayIndex j | input = "ArrayElement[" + j + "] of Receiver" |
-          j < i and output = "ArrayElement[" + j + "] of Receiver"
+        exists(ArrayIndex j | input = "Receiver.ArrayElement[" + j + "]" |
+          j < i and output = "Receiver.ArrayElement[" + j + "]"
           or
           j = i and output = "ReturnValue"
           or
-          j > i and output = "ArrayElement[" + (j - 1) + "] of Receiver"
+          j > i and output = "Receiver.ArrayElement[" + (j - 1) + "]"
         )
       ) and
       preservesValue = true
@@ -593,8 +593,8 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["ReturnValue", "ArrayElement[?] of Receiver"] and
+      input = "Receiver.ArrayElement" and
+      output = ["ReturnValue", "Receiver.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -603,12 +603,9 @@ module Array {
     DeleteIfSummary() { this = "delete_if" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output =
-        [
-          "Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue",
-          "ArrayElement[?] of Receiver"
-        ] and
+        ["BlockArgument.Parameter[0]", "ReturnValue.ArrayElement[?]", "Receiver.ArrayElement[?]"] and
       preservesValue = true
     }
 
@@ -657,7 +654,7 @@ module Array {
       strictconcat(int i |
         i in [0 .. dig.getNumberOfArguments() - 1]
       |
-        "ArrayElement" + buildDigInputSpecComponent(dig, i) + " of " order by i desc
+        ".ArrayElement" + buildDigInputSpecComponent(dig, i) order by i
       )
   }
 
@@ -677,7 +674,7 @@ module Array {
     override MethodCall getACall() { result = dig }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = buildDigInputSpec(dig) + "Receiver" and
+      input = "Receiver" + buildDigInputSpec(dig) and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -689,15 +686,15 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver" and
-        output = "Parameter[0] of BlockArgument"
+        input = "Receiver.ArrayElement" and
+        output = "BlockArgument.Parameter[0]"
         or
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
         or
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Receiver" and
-          output = "ArrayElement[" + i + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "]"
         )
       ) and
       preservesValue = true
@@ -709,12 +706,12 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
         or
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Receiver" and
-          output = "ArrayElement[" + i + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "]"
         )
       ) and
       preservesValue = true
@@ -741,17 +738,17 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement[?] of Receiver" and
-        output = ["ReturnValue", "ArrayElement[?] of Receiver"]
+        input = "Receiver.ArrayElement[?]" and
+        output = ["ReturnValue", "Receiver.ArrayElement[?]"]
         or
-        exists(ArrayIndex j | input = "ArrayElement[" + j + "] of Receiver" |
+        exists(ArrayIndex j | input = "Receiver.ArrayElement[" + j + "]" |
           j = i and output = "ReturnValue"
           or
-          j != i and output = "ArrayElement[" + j + "] of Receiver"
+          j != i and output = "Receiver.ArrayElement[" + j + "]"
         )
         or
         input = "Argument[0]" and
-        output = "Parameter[0] of BlockArgument"
+        output = "BlockArgument.Parameter[0]"
         or
         input = "Argument[1]" and output = "ReturnValue"
       ) and
@@ -767,11 +764,11 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = ["ArrayElement of Receiver", "Argument[1]"] and
+        input = ["Receiver.ArrayElement", "Argument[1]"] and
         output = "ReturnValue"
         or
         input = "Argument[0]" and
-        output = "Parameter[0] of BlockArgument"
+        output = "BlockArgument.Parameter[0]"
       ) and
       preservesValue = true
     }
@@ -786,8 +783,8 @@ module Array {
     override MethodCall getACall() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["Argument[0]", "ReturnValue of BlockArgument"] and
-      output = "ArrayElement[?] of Receiver" and
+      input = ["Argument[0]", "BlockArgument.ReturnValue"] and
+      output = "Receiver.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -824,10 +821,10 @@ module Array {
       (
         input =
           [
-            "ArrayElement of Receiver", "ArrayElement of ArrayElement of Receiver",
-            "ArrayElement of ArrayElement of ArrayElement of Receiver"
+            "Receiver.ArrayElement", "Receiver.ArrayElement.ArrayElement",
+            "Receiver.ArrayElement.ArrayElement.ArrayElement"
           ] and
-        output = "ArrayElement[?] of ReturnValue"
+        output = "ReturnValue.ArrayElement[?]"
       ) and
       preservesValue = true
     }
@@ -840,10 +837,10 @@ module Array {
       (
         input =
           [
-            "ArrayElement of Receiver", "ArrayElement of ArrayElement of Receiver",
-            "ArrayElement of ArrayElement of ArrayElement of Receiver"
+            "Receiver.ArrayElement", "Receiver.ArrayElement.ArrayElement",
+            "Receiver.ArrayElement.ArrayElement.ArrayElement"
           ] and
-        output = ["ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue"]
+        output = ["Receiver.ArrayElement[?]", "ReturnValue.ArrayElement[?]"]
       ) and
       preservesValue = true
     }
@@ -858,8 +855,8 @@ module Array {
     IndexSummary() { this = ["index", "rindex"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
     }
   }
@@ -887,25 +884,25 @@ module Array {
         r = ["ReturnValue", "Receiver"] and
         preservesValue = true
       |
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of " + r
+        input = "Receiver.ArrayElement[?]" and
+        output = r + ".ArrayElement[?]"
         or
         exists(ArrayIndex j |
           // Existing elements before the insertion point are unaffected.
           j < i and
-          input = "ArrayElement[" + j + "] of Receiver" and
-          output = "ArrayElement[" + j + "] of " + r
+          input = "Receiver.ArrayElement[" + j + "]" and
+          output = r + ".ArrayElement[" + j + "]"
           or
           // Existing elements after the insertion point are shifted by however
           // many values we're inserting.
           j >= i and
-          input = "ArrayElement[" + j + "] of Receiver" and
-          output = "ArrayElement[" + (j + numValues) + "] of " + r
+          input = "Receiver.ArrayElement[" + j + "]" and
+          output = r + ".ArrayElement[" + (j + numValues) + "]"
         )
         or
         exists(int j | j in [1 .. numValues] |
           input = "Argument[" + j + "]" and
-          output = "ArrayElement[" + (i + j - 1) + "] of " + r
+          output = r + ".ArrayElement[" + (i + j - 1) + "]"
         )
       )
     }
@@ -924,11 +921,11 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver"
+        input = "Receiver.ArrayElement"
         or
         exists(int j | j in [1 .. mc.getNumberOfArguments() - 1] | input = "Argument[" + j + "]")
       ) and
-      output = "ArrayElement[?] of " + ["ReturnValue", "Receiver"] and
+      output = ["ReturnValue", "Receiver"] + ".ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -940,13 +937,13 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver"
+        input = "Receiver.ArrayElement"
         or
         exists(int i | i in [0 .. mc.getNumberOfArguments() - 1] |
-          input = "ArrayElement of Argument[" + i + "]"
+          input = "Argument[" + i + "].ArrayElement"
         )
       ) and
-      output = "ArrayElement[?] of ReturnValue" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
 
@@ -957,12 +954,9 @@ module Array {
     KeepIfSummary() { this = "keep_if" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output =
-        [
-          "ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver",
-          "Parameter[0] of BlockArgument"
-        ] and
+        ["ReturnValue.ArrayElement[?]", "Receiver.ArrayElement[?]", "BlockArgument.Parameter[0]"] and
       preservesValue = true
     }
 
@@ -985,7 +979,7 @@ module Array {
     LastNoArgSummary() { this = "last(no_arg)" and mc.getNumberOfArguments() = 0 }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -995,8 +989,8 @@ module Array {
     LastArgSummary() { this = "last(arg)" and mc.getNumberOfArguments() > 0 }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1005,7 +999,7 @@ module Array {
     PackSummary() { this = "pack" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output = "ReturnValue" and
       preservesValue = false
     }
@@ -1016,8 +1010,8 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver" and
-        output = "ArrayElement[?] of Parameter[0] of BlockArgument"
+        input = "Receiver.ArrayElement" and
+        output = "BlockArgument.Parameter[0].ArrayElement[?]"
         or
         input = "Receiver" and
         output = "ReturnValue"
@@ -1042,7 +1036,7 @@ module Array {
     // clears the last element of the receiver, and we can't be precise about
     // which particular element flows to the return value.
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -1055,8 +1049,8 @@ module Array {
     // clears elements from the end of the receiver, and we can't be precise
     // about which particular elements flow to the return value.
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1075,16 +1069,16 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       exists(int num | num = mc.getNumberOfArguments() and preservesValue = true |
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Receiver" and
-          output = "ArrayElement[" + (i + num) + "] of Receiver"
+          input = "Receiver.ArrayElement[" + i + "]" and
+          output = "Receiver.ArrayElement[" + (i + num) + "]"
         )
         or
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of Receiver"
+        input = "Receiver.ArrayElement[?]" and
+        output = "Receiver.ArrayElement[?]"
         or
         exists(int i | i in [0 .. (num - 1)] |
           input = "Argument[" + i + "]" and
-          output = "ArrayElement[" + i + "] of Receiver"
+          output = "Receiver.ArrayElement[" + i + "]"
         )
       )
     }
@@ -1100,13 +1094,13 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver"
+        input = "Receiver.ArrayElement"
         or
         exists(int i | i in [0 .. (mc.getNumberOfArguments() - 1)] |
-          input = "ArrayElement of Argument[" + i + "]"
+          input = "Argument[" + i + "].ArrayElement"
         )
       ) and
-      output = "ArrayElement[?] of ArrayElement[?] of ReturnValue" and
+      output = "ReturnValue.ArrayElement[?].ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1118,16 +1112,16 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Receiver" and
-          output = "ArrayElement[" + i + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "]"
         )
         or
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
         or
         exists(int i | i in [0 .. (mc.getNumberOfArguments() - 1)] |
           input = "Argument[" + i + "]" and
-          output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"]
+          output = ["ReturnValue.ArrayElement[?]", "Receiver.ArrayElement[?]"]
         )
       ) and
       preservesValue = true
@@ -1138,12 +1132,9 @@ module Array {
     RejectBangSummary() { this = "reject!" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output =
-        [
-          "ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver",
-          "Parameter[0] of BlockArgument"
-        ] and
+        ["ReturnValue.ArrayElement[?]", "Receiver.ArrayElement[?]", "BlockArgument.Parameter[0]"] and
       preservesValue = true
     }
 
@@ -1158,12 +1149,12 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       exists(string r | r = ["ReturnValue", "Receiver"] and preservesValue = true |
-        input = "ArrayElement[?] of Argument[0]" and
-        output = "ArrayElement[?] of " + r
+        input = "Argument[0].ArrayElement[?]" and
+        output = r + ".ArrayElement[?]"
         or
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Argument[0]" and
-          output = "ArrayElement[" + i + "] of " + r
+          input = "Argument[0].ArrayElement[" + i + "]" and
+          output = r + ".ArrayElement[" + i + "]"
         )
       )
     }
@@ -1178,8 +1169,8 @@ module Array {
     ReverseSummary() { this = "reverse" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1188,8 +1179,8 @@ module Array {
     ReverseBangSummary() { this = "reverse!" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of " + ["Receiver", "ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["Receiver", "ReturnValue"] + ".ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1216,15 +1207,15 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = true and
       (
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
         or
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Receiver" and
+          input = "Receiver.ArrayElement[" + i + "]" and
           (
-            i < c and output = "ArrayElement[?] of ReturnValue"
+            i < c and output = "ReturnValue.ArrayElement[?]"
             or
-            i >= c and output = "ArrayElement[" + (i - c) + "] of ReturnValue"
+            i >= c and output = "ReturnValue.ArrayElement[" + (i - c) + "]"
           )
         )
       )
@@ -1239,8 +1230,8 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1271,15 +1262,15 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       exists(string r | r = ["Receiver", "ReturnValue"] and preservesValue = true |
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of " + r
+        input = "Receiver.ArrayElement[?]" and
+        output = r + ".ArrayElement[?]"
         or
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Receiver" and
+          input = "Receiver.ArrayElement[" + i + "]" and
           (
-            i < c and output = "ArrayElement[?] of " + r
+            i < c and output = r + ".ArrayElement[?]"
             or
-            i >= c and output = "ArrayElement[" + (i - c) + "] of " + r
+            i >= c and output = r + ".ArrayElement[" + (i - c) + "]"
           )
         )
       )
@@ -1294,8 +1285,8 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["Receiver.ArrayElement[?]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -1305,12 +1296,9 @@ module Array {
     SelectBangSummary() { this = ["select!", "filter!"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output =
-        [
-          "Parameter[0] of BlockArgument", "ArrayElement[?] of Receiver",
-          "ArrayElement[?] of ReturnValue"
-        ] and
+        ["BlockArgument.Parameter[0]", "Receiver.ArrayElement[?]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
 
@@ -1340,13 +1328,13 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = true and
       (
-        input = "ArrayElement[?] of Receiver" and
-        output = ["ReturnValue", "ArrayElement[?] of Receiver"]
+        input = "Receiver.ArrayElement[?]" and
+        output = ["ReturnValue", "Receiver.ArrayElement[?]"]
         or
-        exists(ArrayIndex i | input = "ArrayElement[" + i + "] of Receiver" |
+        exists(ArrayIndex i | input = "Receiver.ArrayElement[" + i + "]" |
           i = 0 and output = "ReturnValue"
           or
-          i > 0 and output = "ArrayElement[" + (i - 1) + "] of Receiver"
+          i > 0 and output = "Receiver.ArrayElement[" + (i - 1) + "]"
         )
       )
     }
@@ -1363,13 +1351,13 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = true and
       (
-        input = "ArrayElement[?] of Receiver" and
-        output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"]
+        input = "Receiver.ArrayElement[?]" and
+        output = ["ReturnValue.ArrayElement[?]", "Receiver.ArrayElement[?]"]
         or
-        exists(ArrayIndex i | input = "ArrayElement[" + i + "] of Receiver" |
-          i < n and output = "ArrayElement[" + i + "] of ReturnValue"
+        exists(ArrayIndex i | input = "Receiver.ArrayElement[" + i + "]" |
+          i < n and output = "ReturnValue.ArrayElement[" + i + "]"
           or
-          i >= n and output = "ArrayElement[" + (i - n) + "] of Receiver"
+          i >= n and output = "Receiver.ArrayElement[" + (i - n) + "]"
         )
       )
     }
@@ -1383,8 +1371,8 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["Receiver.ArrayElement[?]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -1393,8 +1381,8 @@ module Array {
     ShuffleSummary() { this = "shuffle" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1403,8 +1391,8 @@ module Array {
     ShuffleBangSummary() { this = "shuffle!" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"] and
+      input = "Receiver.ArrayElement" and
+      output = ["ReturnValue.ArrayElement[?]", "Receiver.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -1436,15 +1424,15 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = true and
       (
-        input = "ArrayElement[?] of Receiver" and
-        output = ["ReturnValue", "ArrayElement[?] of Receiver"]
+        input = "Receiver.ArrayElement[?]" and
+        output = ["ReturnValue", "Receiver.ArrayElement[?]"]
         or
-        exists(ArrayIndex i | input = "ArrayElement[" + i + "] of Receiver" |
-          i < n and output = "ArrayElement[" + i + "] of Receiver"
+        exists(ArrayIndex i | input = "Receiver.ArrayElement[" + i + "]" |
+          i < n and output = "Receiver.ArrayElement[" + i + "]"
           or
           i = n and output = "ReturnValue"
           or
-          i > n and output = "ArrayElement[" + (i - 1) + "] of Receiver"
+          i > n and output = "Receiver.ArrayElement[" + (i - 1) + "]"
         )
       )
     }
@@ -1462,11 +1450,11 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output =
         [
-          "ArrayElement[?] of Receiver",
-          "ArrayElement[?] of ReturnValue", // Return value is an array if the argument is a range
+          "Receiver.ArrayElement[?]",
+          "ReturnValue.ArrayElement[?]", // Return value is an array if the argument is a range
           "ReturnValue" // Return value is an element if the argument is an integer
         ] and
       preservesValue = true
@@ -1506,15 +1494,15 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = true and
       (
-        input = "ArrayElement[?] of Receiver" and
-        output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"]
+        input = "Receiver.ArrayElement[?]" and
+        output = ["ReturnValue.ArrayElement[?]", "Receiver.ArrayElement[?]"]
         or
-        exists(ArrayIndex i | input = "ArrayElement[" + i + "] of Receiver" |
-          i < start and output = "ArrayElement[" + i + "] of Receiver"
+        exists(ArrayIndex i | input = "Receiver.ArrayElement[" + i + "]" |
+          i < start and output = "Receiver.ArrayElement[" + i + "]"
           or
-          i >= start and i <= end and output = "ArrayElement[" + (i - start) + "] of ReturnValue"
+          i >= start and i <= end and output = "ReturnValue.ArrayElement[" + (i - start) + "]"
           or
-          i > end and output = "ArrayElement[" + (i - (end - start + 1)) + "] of Receiver"
+          i > end and output = "Receiver.ArrayElement[" + (i - (end - start + 1)) + "]"
         )
       )
     }
@@ -1545,8 +1533,8 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["Receiver.ArrayElement[?]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -1555,11 +1543,11 @@ module Array {
     SortBangSummary() { this = "sort!" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output =
         [
-          "Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument",
-          "ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue"
+          "BlockArgument.Parameter[0]", "BlockArgument.Parameter[1]", "Receiver.ArrayElement[?]",
+          "ReturnValue.ArrayElement[?]"
         ] and
       preservesValue = true
     }
@@ -1574,12 +1562,9 @@ module Array {
     SortByBangSummary() { this = "sort_by!" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output =
-        [
-          "Parameter[0] of BlockArgument", "ArrayElement[?] of Receiver",
-          "ArrayElement[?] of ReturnValue"
-        ] and
+        ["BlockArgument.Parameter[0]", "Receiver.ArrayElement[?]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
 
@@ -1595,12 +1580,12 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = true and
       (
-        input = "ArrayElement[?] of ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?].ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?].ArrayElement[?]"
         or
         exists(ArrayIndex i, ArrayIndex j |
-          input = "ArrayElement[" + i + "] of ArrayElement[" + j + "] of Receiver" and
-          output = "ArrayElement[" + j + "] of ArrayElement[" + i + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + j + "].ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "].ArrayElement[" + j + "]"
         )
       )
     }
@@ -1610,12 +1595,9 @@ module Array {
     UniqBangSummary() { this = "uniq!" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output =
-        [
-          "ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue",
-          "Parameter[0] of BlockArgument"
-        ] and
+        ["Receiver.ArrayElement[?]", "ReturnValue.ArrayElement[?]", "BlockArgument.Parameter[0]"] and
       preservesValue = true
     }
 
@@ -1630,13 +1612,13 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver"
+        input = "Receiver.ArrayElement"
         or
         exists(int i | i in [0 .. mc.getNumberOfArguments() - 1] |
-          input = "ArrayElement of Argument[" + i + "]"
+          input = "Argument[" + i + "].ArrayElement"
         )
       ) and
-      output = "ArrayElement[?] of ReturnValue" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1664,15 +1646,15 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = true and
       (
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
         or
         exists(ArrayIndex elementIndex, int argIndex |
           argIndex in [0 .. mc.getNumberOfArguments() - 1] and
           mc.getArgument(argIndex).getConstantValue().isInt(elementIndex)
         |
-          input = "ArrayElement[" + elementIndex + "] of Receiver" and
-          output = "ArrayElement[" + argIndex + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + elementIndex + "]" and
+          output = "ReturnValue.ArrayElement[" + argIndex + "]"
         )
       )
     }
@@ -1691,8 +1673,8 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1709,8 +1691,8 @@ module Enumerable {
     ChunkSummary() { this = "chunk" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
     }
   }
@@ -1719,8 +1701,8 @@ module Enumerable {
     ChunkWhileSummary() { this = "chunk_while" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument"] and
+      input = "Receiver.ArrayElement" and
+      output = ["BlockArgument.Parameter[0]", "BlockArgument.Parameter[1]"] and
       preservesValue = true
     }
   }
@@ -1730,12 +1712,12 @@ module Enumerable {
     CollectSummary() { this = ["collect", "map"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
       or
-      input = "ReturnValue of BlockArgument" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "BlockArgument.ReturnValue" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1745,12 +1727,12 @@ module Enumerable {
     CollectConcatSummary() { this = ["collect_concat", "flat_map"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
       or
-      input = ["ArrayElement of ReturnValue of BlockArgument", "ReturnValue of BlockArgument"] and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = ["BlockArgument.ReturnValue.ArrayElement", "BlockArgument.ReturnValue"] and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1759,8 +1741,8 @@ module Enumerable {
     CompactSummary() { this = "compact" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1769,8 +1751,8 @@ module Enumerable {
     CountSummary() { this = "count" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
     }
   }
@@ -1779,8 +1761,8 @@ module Enumerable {
     CycleSummary() { this = "cycle" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
     }
   }
@@ -1791,10 +1773,10 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver" and
-        output = ["Parameter[0] of BlockArgument", "ReturnValue"]
+        input = "Receiver.ArrayElement" and
+        output = ["BlockArgument.Parameter[0]", "ReturnValue"]
         or
-        input = "ReturnValue of Argument[0]" and
+        input = "Argument[0].ReturnValue" and
         output = "ReturnValue"
       ) and
       preservesValue = true
@@ -1820,12 +1802,12 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
         or
         exists(ArrayIndex j |
-          input = "ArrayElement[" + j + "] of Receiver" and
-          output = "ArrayElement[" + (j - i) + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + j + "]" and
+          output = "ReturnValue.ArrayElement[" + (j - i) + "]"
         )
       ) and
       preservesValue = true
@@ -1839,8 +1821,8 @@ module Enumerable {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1849,8 +1831,8 @@ module Enumerable {
     DropWhileSummary() { this = "drop_while" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["ArrayElement[?] of ReturnValue", "Parameter[0] of BlockArgument"] and
+      input = "Receiver.ArrayElement" and
+      output = ["ReturnValue.ArrayElement[?]", "BlockArgument.Parameter[0]"] and
       preservesValue = true
     }
   }
@@ -1859,8 +1841,8 @@ module Enumerable {
     EachConsSummary() { this = "each_cons" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0].ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -1870,15 +1852,15 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver" and
-        output = "Parameter[0] of BlockArgument"
+        input = "Receiver.ArrayElement" and
+        output = "BlockArgument.Parameter[0]"
         or
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
         or
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Receiver" and
-          output = "ArrayElement[" + i + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "]"
         )
       ) and
       preservesValue = true
@@ -1890,15 +1872,15 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver" and
-        output = "ArrayElement[?] of Parameter[0] of BlockArgument"
+        input = "Receiver.ArrayElement" and
+        output = "BlockArgument.Parameter[0].ArrayElement[?]"
         or
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
         or
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Receiver" and
-          output = "ArrayElement[" + i + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "]"
         )
       ) and
       preservesValue = true
@@ -1910,15 +1892,15 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver" and
-        output = "Parameter[0] of BlockArgument"
+        input = "Receiver.ArrayElement" and
+        output = "BlockArgument.Parameter[0]"
         or
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
         or
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Receiver" and
-          output = "ArrayElement[" + i + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "]"
         )
       ) and
       preservesValue = true
@@ -1930,11 +1912,11 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver" and
-        output = "Parameter[0] of BlockArgument"
+        input = "Receiver.ArrayElement" and
+        output = "BlockArgument.Parameter[0]"
         or
         input = "Argument[0]" and
-        output = ["Parameter[1] of BlockArgument", "ReturnValue"]
+        output = ["BlockArgument.Parameter[1]", "ReturnValue"]
       ) and
       preservesValue = true
     }
@@ -1944,8 +1926,8 @@ module Enumerable {
     FilterMapSummary() { this = "filter_map" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["BlockArgument.Parameter[0]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -1954,8 +1936,8 @@ module Enumerable {
     FindIndexSummary() { this = "find_index" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
     }
   }
@@ -1973,7 +1955,7 @@ module Enumerable {
     FirstNoArgSummary() { this = "first(no_arg)" and mc.getNumberOfArguments() = 0 }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["ArrayElement[0] of Receiver", "ArrayElement[?] of Receiver"] and
+      input = ["Receiver.ArrayElement[0]", "Receiver.ArrayElement[?]"] and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -1990,12 +1972,12 @@ module Enumerable {
       (
         exists(ArrayIndex i |
           i < n and
-          input = "ArrayElement[" + i + "] of Receiver" and
-          output = "ArrayElement[" + i + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "]"
         )
         or
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
       ) and
       preservesValue = true
     }
@@ -2011,12 +1993,12 @@ module Enumerable {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Receiver" and
-          output = "ArrayElement[" + i + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "]"
         )
         or
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
       ) and
       preservesValue = true
     }
@@ -2036,11 +2018,11 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver" and
-        output = "Parameter[0] of BlockArgument"
+        input = "Receiver.ArrayElement" and
+        output = "BlockArgument.Parameter[0]"
         or
-        input = "ReturnValue of BlockArgument" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "BlockArgument.ReturnValue" and
+        output = "ReturnValue.ArrayElement[?]"
       ) and
       preservesValue = true
     }
@@ -2050,8 +2032,8 @@ module Enumerable {
     GrepNoBlockSummary() { this = mc.getMethodName() + "(no_block)" and not exists(mc.getBlock()) }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -2061,8 +2043,8 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       // TODO: Add flow to return value once we have flow through hashes
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
     }
   }
@@ -2085,13 +2067,13 @@ module Enumerable {
       // parameter (first iteration only). All other elements are passed to the
       // second block parameter.
       (
-        input = "ArrayElement[0] of Receiver" and
-        output = "Parameter[0] of BlockArgument"
+        input = "Receiver.ArrayElement[0]" and
+        output = "BlockArgument.Parameter[0]"
         or
-        exists(ArrayIndex i | i > 0 | input = "ArrayElement[" + i + "] of Receiver") and
-        output = "Parameter[1] of BlockArgument"
+        exists(ArrayIndex i | i > 0 | input = "Receiver.ArrayElement[" + i + "]") and
+        output = "BlockArgument.Parameter[1]"
         or
-        input = "ReturnValue of BlockArgument" and output = "ReturnValue"
+        input = "BlockArgument.ReturnValue" and output = "ReturnValue"
       ) and
       preservesValue = true
     }
@@ -2104,13 +2086,13 @@ module Enumerable {
       (
         // The first argument of the call is passed to the first block parameter.
         input = "Argument[0]" and
-        output = "Parameter[0] of BlockArgument"
+        output = "BlockArgument.Parameter[0]"
         or
         // Each element in the receiver is passed to the second block parameter.
-        exists(ArrayIndex i | input = "ArrayElement[" + i + "] of Receiver") and
-        output = "Parameter[1] of BlockArgument"
+        exists(ArrayIndex i | input = "Receiver.ArrayElement[" + i + "]") and
+        output = "BlockArgument.Parameter[1]"
         or
-        input = "ReturnValue of BlockArgument" and output = "ReturnValue"
+        input = "BlockArgument.ReturnValue" and output = "ReturnValue"
       ) and
       preservesValue = true
     }
@@ -2132,8 +2114,8 @@ module Enumerable {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument", "ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["BlockArgument.Parameter[0]", "ReturnValue"] and
       preservesValue = true
     }
   }
@@ -2145,8 +2127,8 @@ module Enumerable {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["BlockArgument.Parameter[0]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -2168,7 +2150,7 @@ module Enumerable {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -2182,8 +2164,8 @@ module Enumerable {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -2196,8 +2178,8 @@ module Enumerable {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument", "ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["BlockArgument.Parameter[0]", "BlockArgument.Parameter[1]", "ReturnValue"] and
       preservesValue = true
     }
   }
@@ -2210,12 +2192,9 @@ module Enumerable {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output =
-        [
-          "Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument",
-          "ArrayElement[?] of ReturnValue"
-        ] and
+        ["BlockArgument.Parameter[0]", "BlockArgument.Parameter[1]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -2236,8 +2215,8 @@ module Enumerable {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "Receiver.ArrayElement" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -2249,12 +2228,9 @@ module Enumerable {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output =
-        [
-          "Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument",
-          "ArrayElement[?] of ReturnValue"
-        ] and
+        ["BlockArgument.Parameter[0]", "BlockArgument.Parameter[1]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -2263,8 +2239,8 @@ module Enumerable {
     MinmaxBySummary() { this = "minmax_by" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["BlockArgument.Parameter[0]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -2273,9 +2249,8 @@ module Enumerable {
     PartitionSummary() { this = "partition" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output =
-        ["Parameter[0] of BlockArgument", "ArrayElement[?] of ArrayElement[?] of ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["BlockArgument.Parameter[0]", "ReturnValue.ArrayElement[?].ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -2284,8 +2259,8 @@ module Enumerable {
     QuerySummary() { this = ["all?", "any?", "none?", "one?"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
     }
   }
@@ -2294,8 +2269,8 @@ module Enumerable {
     RejectSummary() { this = "reject" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["BlockArgument.Parameter[0]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -2305,8 +2280,8 @@ module Enumerable {
     SelectSummary() { this = ["select", "find_all", "filter"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["BlockArgument.Parameter[0]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -2315,8 +2290,8 @@ module Enumerable {
     SliceBeforeAfterSummary() { this = ["slice_before", "slice_after"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
     }
   }
@@ -2325,8 +2300,8 @@ module Enumerable {
     SliceWhenSummary() { this = "slice_when" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument"] and
+      input = "Receiver.ArrayElement" and
+      output = ["BlockArgument.Parameter[0]", "BlockArgument.Parameter[1]"] and
       preservesValue = true
     }
   }
@@ -2335,12 +2310,9 @@ module Enumerable {
     SortSummary() { this = "sort" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
+      input = "Receiver.ArrayElement" and
       output =
-        [
-          "Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument",
-          "ArrayElement[?] of ReturnValue"
-        ] and
+        ["BlockArgument.Parameter[0]", "BlockArgument.Parameter[1]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -2349,8 +2321,8 @@ module Enumerable {
     SortBySummary() { this = "sort_by" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
+      input = "Receiver.ArrayElement" and
+      output = ["BlockArgument.Parameter[0]", "ReturnValue.ArrayElement[?]"] and
       preservesValue = true
     }
   }
@@ -2359,8 +2331,8 @@ module Enumerable {
     SumSummary() { this = "sum" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
     }
   }
@@ -2384,12 +2356,12 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?]"
         or
         exists(ArrayIndex j | j < i |
-          input = "ArrayElement[" + j + "] of Receiver" and
-          output = "ArrayElement[" + j + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + j + "]" and
+          output = "ReturnValue.ArrayElement[" + j + "]"
         )
       ) and
       preservesValue = true
@@ -2416,8 +2388,8 @@ module Enumerable {
     TakeWhileSummary() { this = "take_while" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      input = "Receiver.ArrayElement" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
       or
       // We can't know the size of the return value, but we know that indices
@@ -2445,8 +2417,8 @@ module Enumerable {
     UniqSummary() { this = "uniq" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["ArrayElement[?] of ReturnValue", "Parameter[0] of BlockArgument"] and
+      input = "Receiver.ArrayElement" and
+      output = ["ReturnValue.ArrayElement[?]", "BlockArgument.Parameter[0]"] and
       preservesValue = true
     }
   }
@@ -2465,12 +2437,12 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement of Receiver" and
-        output = "ArrayElement[0] of Parameter[0] of BlockArgument"
+        input = "Receiver.ArrayElement" and
+        output = "BlockArgument.Parameter[0].ArrayElement[0]"
         or
         exists(int i | i in [0 .. (mc.getNumberOfArguments() - 1)] |
-          input = "ArrayElement of Argument[" + i + "]" and
-          output = "ArrayElement[" + (i + 1) + "] of Parameter[0] of BlockArgument"
+          input = "Argument[" + i + "].ArrayElement" and
+          output = "BlockArgument.Parameter[0].ArrayElement[" + (i + 1) + "]"
         )
       ) and
       preservesValue = true
@@ -2484,24 +2456,24 @@ module Enumerable {
       (
         // receiver[i] -> return_value[i][0]
         exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Receiver" and
-          output = "ArrayElement[0] of ArrayElement[" + i + "] of ReturnValue"
+          input = "Receiver.ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "].ArrayElement[0]"
         )
         or
         // receiver[?] -> return_value[?][0]
-        input = "ArrayElement[?] of Receiver" and
-        output = "ArrayElement[0] of ArrayElement[?] of ReturnValue"
+        input = "Receiver.ArrayElement[?]" and
+        output = "ReturnValue.ArrayElement[?].ArrayElement[0]"
         or
         // arg_j[i] -> return_value[i][j+1]
         exists(ArrayIndex i, int j | j in [0 .. (mc.getNumberOfArguments() - 1)] |
-          input = "ArrayElement[" + i + "] of Argument[" + j + "]" and
-          output = "ArrayElement[" + (j + 1) + "] of ArrayElement[" + i + "] of ReturnValue"
+          input = "Argument[" + j + "].ArrayElement[" + i + "]" and
+          output = "ReturnValue.ArrayElement[" + i + "].ArrayElement[" + (j + 1) + "]"
         )
         or
         // arg_j[?] -> return_value[?][j+1]
         exists(int j | j in [0 .. (mc.getNumberOfArguments() - 1)] |
-          input = "ArrayElement[?] of Argument[" + j + "]" and
-          output = "ArrayElement[" + (j + 1) + "] of ArrayElement[?] of ReturnValue"
+          input = "Argument[" + j + "].ArrayElement[?]" and
+          output = "ReturnValue.ArrayElement[?].ArrayElement[" + (j + 1) + "]"
         )
       ) and
       preservesValue = true
