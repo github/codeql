@@ -50,7 +50,7 @@
 | local_anonymous.kt:17:23:17:49 | new Function2<Integer,Integer,Integer>(...) { ... } | file://<external>/Function2.class:0:0:0:0 | Function2<Integer,Integer,Integer> |
 | local_anonymous.kt:17:23:17:49 | new Function2<Integer,Integer,Integer>(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
 | local_anonymous.kt:21:21:21:31 | new Function1<Class1,Unit>(...) { ... } | file://<external>/Function1.class:0:0:0:0 | Function1<Class1,Unit> |
-| local_anonymous.kt:21:21:21:31 | new Function1<Class1,Unit>(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
+| local_anonymous.kt:21:21:21:31 | new Function1<Class1,Unit>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference |
 | local_anonymous.kt:25:9:25:27 | LocalClass | file://<external>/Object.class:0:0:0:0 | Object |
 | superChain.kt:1:1:1:33 | SuperChain1 | file://<external>/Object.class:0:0:0:0 | Object |
 | superChain.kt:1:1:1:33 | SuperChain1<T3,String> | file://<external>/Object.class:0:0:0:0 | Object |
