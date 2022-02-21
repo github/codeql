@@ -2,7 +2,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
-
 private boolean UnsafecsrfComparison(String csrfTokenInCookie) {
          if(csrfTokenInCookie == null || !csrfTokenInCookie.equals(request.getHeader("X-CSRF-TOKEN"))) { // BAD
                  return false;
