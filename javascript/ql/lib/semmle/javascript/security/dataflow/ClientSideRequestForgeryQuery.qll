@@ -1,9 +1,9 @@
 /**
- * Provides a taint-tracking configuration for reasoning about request
- * forgery.
+ * Provides a taint-tracking configuration for reasoning about client-side
+ * request forgery.
  *
  * Note, for performance reasons: only import this file if
- * `RequestForgery::Configuration` is needed, otherwise
+ * the `Configuration` class is needed, otherwise
  * `RequestForgeryCustomizations` should be imported instead.
  */
 
