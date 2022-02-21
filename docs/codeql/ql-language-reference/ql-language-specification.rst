@@ -1308,7 +1308,7 @@ The values of an ``any`` expression are those values of the expression for which
 The abbreviated cases for an ``any`` expression are interpreted in the same way as for an aggregation.
 
 Expression Pragma
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 Expression pragmas can be used to guide optimisation.
 
