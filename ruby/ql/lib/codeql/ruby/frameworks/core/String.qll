@@ -175,7 +175,12 @@ module String {
    * A flow summary for `String#concat` and `String#prepend`.
    */
   private class ConcatSummary extends SimpleSummarizedCallable {
-    ConcatSummary() { this = ["concat", "prepend"] }
+    ConcatSummary() {
+      // `concat` and `prepend` omitted because they clash with the summaries for
+      // `Array#concat` and `Array#prepend`.
+      // this = ["concat", "prepend"]
+      none()
+    }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = ["Receiver", "Argument[_]"] and
@@ -304,7 +309,11 @@ module String {
    * A flow summary for `String#insert`.
    */
   private class InsertSummary extends SimpleSummarizedCallable {
-    InsertSummary() { this = "insert" }
+    InsertSummary() {
+      this = "insert" and
+      // Disabled because it clashes with the summary for Array#insert.
+      none()
+    }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (

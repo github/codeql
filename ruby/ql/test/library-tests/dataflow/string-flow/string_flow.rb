@@ -83,21 +83,24 @@ def m_clear
     sink a
 end
 
-def m_concat
-    a = source "a"
-    b = source "b"
-    c = "c"
-    sink c.concat(a, b) # $ hasValueFlow=a hasValueFlow=b
-    sink c # $ hasValueFlow=a hasValueFlow=b
-end
+# concat and prepend omitted because they clash with the summaries for
+# Array#concat and Array#prepend.
+#
+# def m_concat
+#     a = source "a"
+#     b = source "b"
+#     c = "c"
+#     sink c.concat(a, b) # $ hasValueFlow=a hasValueFlow=b
+#     sink c # $ hasValueFlow=a hasValueFlow=b
+# end
 
-def m_prepend
-    a = source "a"
-    b = source "b"
-    c = "c"
-    sink c.prepend(a, b) # $ hasValueFlow=a hasValueFlow=b
-    sink c # $ hasValueFlow=a hasValueFlow=b
-end
+# def m_prepend
+#     a = source "a"
+#     b = source "b"
+#     c = "c"
+#     sink c.prepend(a, b) # $ hasValueFlow=a hasValueFlow=b
+#     sink c # $ hasValueFlow=a hasValueFlow=b
+# end
 
 def m_delete
     a = source "a"
@@ -175,11 +178,12 @@ def m_sub
     sink a.sub!("b") { |match| source "b" } # $ hasTaintFlow=a hasValueFlow=b
 end
 
-def m_insert
-    a = source "a"
-    sink a.insert(1, "c") # $ hasTaintFlow=a
-    sink "c".insert(1, a) # $ hasValueFlow=a
-end
+# omitted because it clashes with the summary for Array#insert
+# def m_insert
+#     a = source "a"
+#     sink a.insert(1, "c") # $ hasTaintFlow=a
+#     sink "c".insert(1, a) # $ hasValueFlow=a
+# end
 
 def m_inspect
     a = source "a"
