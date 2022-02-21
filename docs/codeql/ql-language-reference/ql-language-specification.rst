@@ -1001,6 +1001,7 @@ There are several kinds of expressions:
            |   postfix_cast
            |   callwithresults
            |   aggregation
+           |   expression_pragma
            |   any
            |   range
            |   setliteral
@@ -1305,6 +1306,26 @@ The ``any`` expression is a special kind of quantified expression.
 The values of an ``any`` expression are those values of the expression for which the formula matches.
 
 The abbreviated cases for an ``any`` expression are interpreted in the same way as for an aggregation.
+
+Expression Pragma
+~~~~~~~~~~~~~~~~
+
+Expression pragmas can be used to guide optimisation.
+
+::
+   expression_pragma ::= "pragma" "[" expression_pragma_type "]" "(" expr ")"
+
+   expression_pragma_type ::= "only_bind_out" | "only_bind_into"
+
+The values of an expression pragma are the values of the expression.
+
+The type `only_bind_out` hints that uses the result of the expression pragma should not be used to guide the evaluation of the result of the contained expression.
+When checking to see that all values are bound the compiler does not assume that if the result of the expression pragma is bound then the result of the contained 
+expression is bound.
+
+The type `only_bind_into` hints that uses the result of expression pragma should not be used to guide the evaluation of the result of the expression pragma.
+When checking to see that all values are bound the compiler does not assume that if the result of the contained expression is bound then the result of the 
+expression pragma is bound.
 
 Ranges
 ~~~~~~
@@ -2131,6 +2152,7 @@ The complete grammar for QL is as follows:
            |   postfix_cast
            |   callwithresults
            |   aggregation
+           |   expression_pragma
            |   any
            |   range
            |   setliteral
@@ -2162,6 +2184,10 @@ The complete grammar for QL is as follows:
                |   aggid ("[" expr "]")? "(" as_exprs ("order" "by" aggorderbys)? ")"
                |   "unique" "(" var_decls "|" (formula)? ("|" as_exprs)? ")"
  
+   expression_pragma ::= "pragma" "[" expression_pragma_type "]" "(" expr ")"
+
+   expression_pragma_type ::= "only_bind_out" | "only_bind_into"
+
    aggid ::= "avg" | "concat" | "count" | "max" | "min" | "rank" | "strictconcat" | "strictcount" | "strictsum" | "sum"
 
    aggorderbys ::= aggorderby ("," aggorderby)*
