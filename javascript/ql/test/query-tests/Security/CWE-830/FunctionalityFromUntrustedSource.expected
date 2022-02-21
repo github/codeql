@@ -1,5 +1,5 @@
-| DynamicCreationOfUntrustedSourceUse.html:18:26:18:50 | 'http:/ ... e.com/' | HTML-element uses untrusted content (iframe elements should use an 'https:' URL) |
-| DynamicCreationOfUntrustedSourceUse.html:29:27:29:40 | getUrl('v123') | HTML-element uses untrusted content (iframe elements should use an 'https:' URL) |
-| StaticCreationOfUntrustedSourceUse.html:6:9:6:56 | <script>...</> | HTML-element uses untrusted content (script elements should use an 'https:' URL and/or use the integrity attribute) |
-| StaticCreationOfUntrustedSourceUse.html:9:9:9:58 | <iframe>...</> | HTML-element uses untrusted content (iframe elements should use an 'https:' URL) |
-| StaticCreationOfUntrustedSourceUse.html:21:9:21:155 | <script>...</> | HTML-element uses untrusted content (script elements that depend on this CDN should use an 'https:' URL and use the integrity attribute) |
+| DynamicCreationOfUntrustedSourceUse.html:18:26:18:50 | 'http:/ ... e.com/' | HTML iframe element loaded using unencrypted connection. |
+| DynamicCreationOfUntrustedSourceUse.html:29:27:29:40 | getUrl('v123') | HTML iframe element loaded using unencrypted connection. |
+| StaticCreationOfUntrustedSourceUse.html:6:9:6:56 | <script>...</> | HTML script element loaded using unencrypted connection. |
+| StaticCreationOfUntrustedSourceUse.html:9:9:9:58 | <iframe>...</> | HTML iframe element loaded using unencrypted connection. |
+| StaticCreationOfUntrustedSourceUse.html:21:9:21:155 | <script>...</> | Script loaded from content delivery network with no integrity check. |
