@@ -304,6 +304,15 @@ constants/constants.rb:
 #   20|       getComponent: [StringTextComponent] Chuck
 #   20|     getArgument: [StringLiteral] "Dave"
 #   20|       getComponent: [StringTextComponent] Dave
+escape_sequences/escapes.rb:
+#   58| [ArrayLiteral] %w(...)
+#   58|   getDesugared: [MethodCall] call to []
+#   58|     getReceiver: [ConstantReadAccess] Array
+#   58|     getArgument: [StringLiteral] "foo \n"
+#   58|       getComponent: [StringTextComponent] foo
+#   58|       getComponent: [StringEscapeSequenceComponent]  \n
+#   58|     getArgument: [StringLiteral] "bar"
+#   58|       getComponent: [StringTextComponent] bar
 literals/literals.rb:
 #   88| [HashLiteral] {...}
 #   88|   getDesugared: [MethodCall] call to []

@@ -27,14 +27,14 @@ allLiterals
 | literals.rb:47:1:47:2 | "" | StringLiteral |  |
 | literals.rb:48:1:48:7 | "hello" | StringLiteral | hello |
 | literals.rb:49:1:49:9 | "goodbye" | StringLiteral | goodbye |
-| literals.rb:50:1:50:30 | "string with escaped \\" quote" | StringLiteral | string with escaped \\" quote |
+| literals.rb:50:1:50:30 | "string with escaped \\" quote" | StringLiteral | string with escaped " quote |
 | literals.rb:51:1:51:21 | "string with " quote" | StringLiteral | string with " quote |
 | literals.rb:52:1:52:14 | "foo bar baz" | StringLiteral | foo bar baz |
 | literals.rb:53:1:53:15 | "foo bar baz" | StringLiteral | foo bar baz |
 | literals.rb:54:1:54:20 | "foo ' bar " baz'" | StringLiteral | foo ' bar " baz' |
 | literals.rb:55:1:55:20 | "FOO ' BAR " BAZ'" | StringLiteral | FOO ' BAR " BAZ' |
 | literals.rb:56:1:56:12 | "foo\\ bar" | StringLiteral | foo\\ bar |
-| literals.rb:57:1:57:12 | "foo\\ bar" | StringLiteral | foo\\ bar |
+| literals.rb:57:1:57:12 | "foo\\ bar" | StringLiteral | foo bar |
 | literals.rb:58:1:58:20 | "2 + 2 = #{...}" | StringLiteral | 2 + 2 = 4 |
 | literals.rb:58:13:58:13 | 2 | IntegerLiteral | 2 |
 | literals.rb:58:17:58:17 | 2 | IntegerLiteral | 2 |
@@ -209,10 +209,10 @@ allLiterals
 | literals.rb:147:1:147:10 | /foo/ | RegExpLiteral | <none> |
 | literals.rb:150:1:150:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | StringLiteral | abcdefghijklmnopqrstuvwxyzabcdef |
 | literals.rb:151:1:151:35 | "foobarfoobarfoobarfoobarfooba..." | StringLiteral | foobarfoobarfoobarfoobarfoobarfoo |
-| literals.rb:152:1:152:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | foobar\\\\foobar\\\\foobar\\\\foobar\\\\foobar |
+| literals.rb:152:1:152:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | foobar\\foobar\\foobar\\foobar\\foobar |
 | literals.rb:155:9:155:13 | <<SQL | HereDoc | \nselect * from table\n |
 | literals.rb:155:16:155:20 | <<SQL | HereDoc | <none> |
-| literals.rb:162:11:162:16 | <<-BLA | HereDoc | \nsome text\\nand some more\n   |
+| literals.rb:162:11:162:16 | <<-BLA | HereDoc | \nsome text\nand some more\n   |
 | literals.rb:167:9:167:19 | <<~SQUIGGLY | HereDoc | \n   indented stuff\n |
 | literals.rb:171:9:171:15 | <<"DOC" | HereDoc | <none> |
 | literals.rb:176:9:176:15 | <<'DOC' | HereDoc | <none> |
@@ -230,14 +230,14 @@ stringlikeLiterals
 | literals.rb:47:1:47:2 | "" |  |
 | literals.rb:48:1:48:7 | "hello" | hello |
 | literals.rb:49:1:49:9 | "goodbye" | goodbye |
-| literals.rb:50:1:50:30 | "string with escaped \\" quote" | string with escaped \\" quote |
+| literals.rb:50:1:50:30 | "string with escaped \\" quote" | string with escaped " quote |
 | literals.rb:51:1:51:21 | "string with " quote" | string with " quote |
 | literals.rb:52:1:52:14 | "foo bar baz" | foo bar baz |
 | literals.rb:53:1:53:15 | "foo bar baz" | foo bar baz |
 | literals.rb:54:1:54:20 | "foo ' bar " baz'" | foo ' bar " baz' |
 | literals.rb:55:1:55:20 | "FOO ' BAR " BAZ'" | FOO ' BAR " BAZ' |
 | literals.rb:56:1:56:12 | "foo\\ bar" | foo\\ bar |
-| literals.rb:57:1:57:12 | "foo\\ bar" | foo\\ bar |
+| literals.rb:57:1:57:12 | "foo\\ bar" | foo bar |
 | literals.rb:58:1:58:20 | "2 + 2 = #{...}" | 2 + 2 = 4 |
 | literals.rb:59:1:59:22 | "3 + 4 = #{...}" | 3 + 4 = 7 |
 | literals.rb:60:1:60:20 | "2 + 2 = #{ 2 + 2 }" | 2 + 2 = #{ 2 + 2 } |
@@ -327,10 +327,10 @@ stringlikeLiterals
 | literals.rb:147:1:147:10 | /foo/ | <none> |
 | literals.rb:150:1:150:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | abcdefghijklmnopqrstuvwxyzabcdef |
 | literals.rb:151:1:151:35 | "foobarfoobarfoobarfoobarfooba..." | foobarfoobarfoobarfoobarfoobarfoo |
-| literals.rb:152:1:152:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | foobar\\\\foobar\\\\foobar\\\\foobar\\\\foobar |
+| literals.rb:152:1:152:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | foobar\\foobar\\foobar\\foobar\\foobar |
 | literals.rb:155:9:155:13 | <<SQL | \nselect * from table\n |
 | literals.rb:155:16:155:20 | <<SQL | <none> |
-| literals.rb:162:11:162:16 | <<-BLA | \nsome text\\nand some more\n   |
+| literals.rb:162:11:162:16 | <<-BLA | \nsome text\nand some more\n   |
 | literals.rb:167:9:167:19 | <<~SQUIGGLY | \n   indented stuff\n |
 | literals.rb:171:9:171:15 | <<"DOC" | <none> |
 | literals.rb:176:9:176:15 | <<'DOC' | <none> |
@@ -344,14 +344,14 @@ stringLiterals
 | literals.rb:47:1:47:2 | "" |  |
 | literals.rb:48:1:48:7 | "hello" | hello |
 | literals.rb:49:1:49:9 | "goodbye" | goodbye |
-| literals.rb:50:1:50:30 | "string with escaped \\" quote" | string with escaped \\" quote |
+| literals.rb:50:1:50:30 | "string with escaped \\" quote" | string with escaped " quote |
 | literals.rb:51:1:51:21 | "string with " quote" | string with " quote |
 | literals.rb:52:1:52:14 | "foo bar baz" | foo bar baz |
 | literals.rb:53:1:53:15 | "foo bar baz" | foo bar baz |
 | literals.rb:54:1:54:20 | "foo ' bar " baz'" | foo ' bar " baz' |
 | literals.rb:55:1:55:20 | "FOO ' BAR " BAZ'" | FOO ' BAR " BAZ' |
 | literals.rb:56:1:56:12 | "foo\\ bar" | foo\\ bar |
-| literals.rb:57:1:57:12 | "foo\\ bar" | foo\\ bar |
+| literals.rb:57:1:57:12 | "foo\\ bar" | foo bar |
 | literals.rb:58:1:58:20 | "2 + 2 = #{...}" | 2 + 2 = 4 |
 | literals.rb:59:1:59:22 | "3 + 4 = #{...}" | 3 + 4 = 7 |
 | literals.rb:60:1:60:20 | "2 + 2 = #{ 2 + 2 }" | 2 + 2 = #{ 2 + 2 } |
@@ -392,7 +392,7 @@ stringLiterals
 | literals.rb:117:22:117:26 | "baz" | baz |
 | literals.rb:150:1:150:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | abcdefghijklmnopqrstuvwxyzabcdef |
 | literals.rb:151:1:151:35 | "foobarfoobarfoobarfoobarfooba..." | foobarfoobarfoobarfoobarfoobarfoo |
-| literals.rb:152:1:152:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | foobar\\\\foobar\\\\foobar\\\\foobar\\\\foobar |
+| literals.rb:152:1:152:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | foobar\\foobar\\foobar\\foobar\\foobar |
 regExpLiterals
 | literals.rb:136:1:136:2 | // |  |  |
 | literals.rb:137:1:137:5 | /foo/ | foo |  |

@@ -3,6 +3,7 @@ private import AST
 private import Constant
 private import TreeSitter
 private import codeql.ruby.controlflow.CfgNodes
+private import codeql.NumberUtils
 
 int parseInteger(Ruby::Integer i) {
   exists(string s | s = i.getValue().toLowerCase().replaceAll("_", "") |
@@ -148,15 +149,84 @@ private class RequiredFileLiteralConstantValue extends RequiredConstantValue {
 
 private class RequiredStringTextComponentConstantValue extends RequiredConstantValue {
   override predicate requiredString(string s) {
-    s = any(Ruby::Token t | exists(TStringTextComponentNonRegexp(t))).getValue()
+    s =
+      unescapeTextComponent(any(Ruby::Token t | exists(TStringTextComponentNonRegexp(t))).getValue())
   }
 }
 
 private class RequiredStringEscapeSequenceComponentConstantValue extends RequiredConstantValue {
   override predicate requiredString(string s) {
-    s = any(Ruby::Token t | exists(TStringEscapeSequenceComponentNonRegexp(t))).getValue()
+    s =
+      unescapeEscapeSequence(any(Ruby::Token t | exists(TStringEscapeSequenceComponentNonRegexp(t)))
+            .getValue())
   }
 }
+
+/**
+ * Gets the string represented by the escape sequence in `escaped`. For example:
+ *
+ * ```
+ * \\     => \
+ * \141   => a
+ * \u0078 => x
+ * ```
+ */
+bindingset[escaped]
+string unescapeEscapeSequence(string escaped) {
+  result = unescapeKnownEscapeSequence(escaped)
+  or
+  // Any other character following a backslash is just that character.
+  not exists(unescapeKnownEscapeSequence(escaped)) and
+  result = escaped.suffix(1)
+}
+
+bindingset[escaped]
+private string unescapeKnownEscapeSequence(string escaped) {
+  escaped = "\\\\" and result = "\\"
+  or
+  escaped = "\\'" and result = "'"
+  or
+  escaped = "\\\"" and result = "\""
+  or
+  escaped = "\\a" and result = 7.toUnicode()
+  or
+  escaped = "\\b" and result = 8.toUnicode()
+  or
+  escaped = "\\t" and result = "\t"
+  or
+  escaped = "\\n" and result = "\n"
+  or
+  escaped = "\\v" and result = 11.toUnicode()
+  or
+  escaped = "\\f" and result = 12.toUnicode()
+  or
+  escaped = "\\r" and result = "\r"
+  or
+  escaped = "\\e" and result = 27.toUnicode()
+  or
+  escaped = "\\s" and result = " "
+  or
+  escaped = ["\\c?", "\\C-?"] and result = 127.toUnicode()
+  or
+  result = parseOctalInt(escaped.regexpCapture("\\\\([0-7]{1,3})", 1)).toUnicode()
+  or
+  result = parseHexInt(escaped.regexpCapture("\\\\x([0-9a-fA-F]{1,2})", 1)).toUnicode()
+  or
+  result = parseHexInt(escaped.regexpCapture("\\\\u([0-9a-fA-F]{4})", 1)).toUnicode()
+  or
+  result = parseHexInt(escaped.regexpCapture("\\\\u\\{([0-9a-fA-F]{1,6})\\}", 1)).toUnicode()
+}
+
+/**
+ * Gets the result of unescaping a string text component by replacing `\\` and
+ * `\'` with `\` and `'`, respectively.
+ *
+ * ```rb
+ * 'foo\\bar \'baz\'' # foo\bar 'baz'
+ * ```
+ */
+bindingset[text]
+string unescapeTextComponent(string text) { result = text.regexpReplaceAll("\\\\(['\\\\])", "$1") }
 
 class TRegExpComponent =
   TStringTextComponentRegexp or TStringEscapeSequenceComponentRegexp or
