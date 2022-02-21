@@ -9,12 +9,12 @@ import javascript
  */
 module Puppeteer {
   /**
-   * A reference to a module import of puppeteer.
+   * Gets a reference to a module import of puppeteer.
    */
   private API::Node puppeteer() { result = API::moduleImport(["puppeteer", "puppeteer-core"]) }
 
   /**
-   * A reference to a `Browser` from puppeteer.
+   * Gets a reference to a `Browser` from puppeteer.
    */
   private API::Node browser() {
     result = API::Node::ofType("puppeteer", "Browser")
@@ -25,7 +25,7 @@ module Puppeteer {
   }
 
   /**
-   * A reference to a `Page` from puppeteer.
+   * Gets a reference to a `Page` from puppeteer.
    */
   API::Node page() {
     result = API::Node::ofType("puppeteer", "Page")
@@ -38,7 +38,7 @@ module Puppeteer {
   }
 
   /**
-   * A reference to a `Target` from puppeteer.
+   * Gets a reference to a `Target` from puppeteer.
    */
   private API::Node target() {
     result = API::Node::ofType("puppeteer", "Target")
@@ -51,7 +51,7 @@ module Puppeteer {
   }
 
   /**
-   * A reference to a `BrowserContext` from puppeteer.
+   * Gets a reference to a `BrowserContext` from puppeteer.
    */
   private API::Node context() {
     result = API::Node::ofType("puppeteer", "BrowserContext")

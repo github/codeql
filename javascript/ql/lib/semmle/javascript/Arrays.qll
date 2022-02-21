@@ -16,7 +16,7 @@ module ArrayTaintTracking {
   }
 
   /**
-   * A taint propagating data flow edge from `pred` to `succ` caused by a call `call` to a builtin array functions.
+   * Holds if there is a taint propagating data flow edge from `pred` to `succ` caused by a call `call` to a builtin array functions.
    */
   predicate arrayFunctionTaintStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::CallNode call) {
     // `array.map(function (elt, i, ary) { ... })`: if `array` is tainted, then so are
@@ -357,7 +357,7 @@ private module ArrayLibraries {
   }
 
   /**
-   * A call to a library that copies the elements of an array into another array.
+   * Gets a call to a library that copies the elements of an array into another array.
    * E.g. `array-union` that creates a union of multiple arrays, or `array-uniq` that creates an array with unique elements.
    */
   DataFlow::CallNode arrayCopyCall(DataFlow::Node array) {

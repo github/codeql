@@ -27,7 +27,7 @@ module Redux {
       importer.getADependenciesObject("").getADependency(dependency.getPackageName(), _)
     }
 
-    /** A package that can be considered an entry point for a Redux app. */
+    /** Gets a package that can be considered an entry point for a Redux app. */
     private PackageJSON entryPointPackage() {
       result = getPackageJson(any(StoreCreation c).getFile())
       or

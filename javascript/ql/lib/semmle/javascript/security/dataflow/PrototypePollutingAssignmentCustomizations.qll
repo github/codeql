@@ -25,7 +25,7 @@ module PrototypePollutingAssignment {
    */
   abstract class Sink extends DataFlow::Node {
     /**
-     * The flow label relevant for this sink.
+     * Gets the flow label relevant for this sink.
      *
      * Use the `taint` label for untrusted property names, and the `ObjectPrototype` label for
      * object mutations.
