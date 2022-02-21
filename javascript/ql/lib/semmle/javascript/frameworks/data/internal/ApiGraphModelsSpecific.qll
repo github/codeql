@@ -72,6 +72,10 @@ private API::Node getGlobalNode(string globalName) {
 /** Gets a JavaScript-specific interpretation of the `(package, type, path)` tuple after resolving the first `n` access path tokens. */
 bindingset[package, type, path]
 API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int n) {
+  type = "" and
+  n = 0 and
+  result = API::moduleImport(package)
+  or
   // Global variable accesses is via the 'global' package
   exists(AccessPathToken token |
     package = getAPackageAlias("global") and
@@ -180,3 +184,8 @@ predicate summaryStep(API::Node pred, API::Node succ, string kind) {
     succ = getNodeFromInputOutputPath(base, output)
   )
 }
+
+class InvokeNode = API::InvokeNode;
+
+/** Gets an `InvokeNode` corresponding to an invocation of `node`. */
+InvokeNode getAnInvocationOf(API::Node node) { result = node.getAnInvocation() }
