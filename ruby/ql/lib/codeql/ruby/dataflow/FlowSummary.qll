@@ -2,6 +2,8 @@
 
 import ruby
 import codeql.ruby.DataFlow
+private import codeql.ruby.frameworks.data.ModelsAsData
+private import codeql.ruby.ApiGraphs
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch
 private import internal.DataFlowPrivate
@@ -165,3 +167,33 @@ private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
+
+private class SummarizedCallableFromModel extends SummarizedCallable {
+  string input;
+  string output;
+  string kind;
+
+  SummarizedCallableFromModel() {
+    ModelOutput::summaryModel(input, output, kind) and
+    this = input + ";" + output + ";" + kind
+  }
+
+  override Call getACall() {
+    exists(API::MethodAccessNode base |
+      ModelOutput::resolvedSummaryBase(base, input, output, kind) and
+      result = base.getCallNode().asExpr().getExpr()
+    )
+  }
+
+  override predicate propagatesFlowExt(string input_, string output_, boolean preservesValue) {
+    input_ = input and
+    output_ = output and
+    (
+      kind = "value" and
+      preservesValue = true
+      or
+      kind = "taint" and
+      preservesValue = false
+    )
+  }
+}

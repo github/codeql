@@ -266,6 +266,9 @@ module API {
   /** A node corresponding to the method being invoked at a method call. */
   class MethodAccessNode extends Node, Impl::MkMethodAccessNode {
     override string toString() { result = "MethodAccessNode " + tryGetPath(this) }
+
+    /** Gets the call node corresponding to this method access. */
+    DataFlow::CallNode getCallNode() { this = Impl::MkMethodAccessNode(result) }
   }
 
   /** Gets the root node. */
