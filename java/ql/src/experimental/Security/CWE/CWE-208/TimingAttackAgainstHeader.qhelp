@@ -19,7 +19,7 @@ and does not depend on the contents of the arrays.
 </recommendation>
 <example>
 <p>
-The following example uses <code>Arrays.equals()</code> method for validating a csrf token.
+The following example uses <code>String.equals()</code> method for validating a csrf token.
 This method implements a non-constant-time algorithm. The example also demonstrates validation using a safe constant-time algorithm.
 </p>
 <sample src="ComparingValueOfSensetiveHeader.java" />
