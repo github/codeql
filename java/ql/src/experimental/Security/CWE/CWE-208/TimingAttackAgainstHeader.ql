@@ -34,7 +34,7 @@ class ClientSuppliedIpTokenCheck extends DataFlow::Node {
       ma.getMethod().hasName("getHeader") and
       ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
           "x-auth-token", "x-csrf-token", "http_x_csrf_token", "x-csrf-param", "x-csrf-header", 
-           "http_x_csrf_token", "x-api-key"
+           "http_x_csrf_token", "x-api-key", "authorization", "proxy-authorization"
         ] and
       ma = this.asExpr()
     )
