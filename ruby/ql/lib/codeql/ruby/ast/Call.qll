@@ -117,6 +117,16 @@ class MethodCall extends Call instanceof MethodCallImpl {
 }
 
 /**
+ * A `Method` call that has no known target.
+ * These will typically be calls to methods inherited from a superclass.
+ * TODO: When API Graphs is able to resolve calls to methods like `Kernel.send`
+ * this class is no longer necessary and should be removed.
+ */
+class UnknownMethodCall extends MethodCall {
+  UnknownMethodCall() { not exists(this.(Call).getATarget()) }
+}
+
+/**
  * A call to a setter method.
  * ```rb
  * self.foo = 10
