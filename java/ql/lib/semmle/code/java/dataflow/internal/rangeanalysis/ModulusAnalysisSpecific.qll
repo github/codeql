@@ -8,9 +8,32 @@ module Private {
 
   class BasicBlock = BB::BasicBlock;
 
-  class SsaVariable = Ssa::SsaVariable;
+  private J::File getAFileWithErrors() {
+    result =
+      any(J::Location loc, int severity |
+        diagnostics(_, severity, _, _, _, loc) and severity >= 4
+      |
+        loc.getFile()
+      )
+  }
 
-  class SsaPhiNode = Ssa::SsaPhiNode;
+  class SsaVariable extends Ssa::SsaVariable {
+    SsaVariable() {
+      // Exclude consideration of SSA graphs in files with compilation errors,
+      // which could contain e.g. variables without an initialiser and can cause
+      // practically infinite recursion in modulus analysis.
+      not this.getLocation().getFile() = getAFileWithErrors()
+    }
+  }
+
+  class SsaPhiNode extends Ssa::SsaPhiNode {
+    SsaPhiNode() {
+      // Exclude consideration of SSA graphs in files with compilation errors,
+      // which could contain e.g. variables without an initialiser and can cause
+      // practically infinite recursion in modulus analysis.
+      not this.getLocation().getFile() = getAFileWithErrors()
+    }
+  }
 
   class Expr = J::Expr;
 
