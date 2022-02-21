@@ -49,6 +49,6 @@
 </example>
 
 <references>
-<li>errors package - github.com/pkg/errors - pkg.go.dev: <a href="https://pkg.go.dev/github.com/pkg/errors#Wrap">errors.Wrap</a></li>
+<li>Go errors, github.com/pkg/errors: <a href="https://pkg.go.dev/github.com/pkg/errors#Wrap">errors.Wrap</a></li>
 </references>
 </qhelp>

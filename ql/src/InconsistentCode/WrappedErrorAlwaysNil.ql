@@ -65,4 +65,4 @@ where
     // }
     n = any(NilTestGuard ntg).getAGuardedNode()
   )
-select n, "The first argument to errors.Wrap is always nil"
+select n, "The first argument to 'errors.Wrap' is always nil"
