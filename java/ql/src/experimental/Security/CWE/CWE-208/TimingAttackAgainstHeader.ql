@@ -26,6 +26,7 @@ private class NonConstantTimeEqualsCall extends MethodAccess {
 private predicate isNonConstantEqualsCallArgument(Expr e) {
   exists(NonConstantTimeEqualsCall call |
     e = [call.getQualifier(), call.getAnArgument()]
+  )
 }
 
 class ClientSuppliedIpTokenCheck extends DataFlow::Node {
