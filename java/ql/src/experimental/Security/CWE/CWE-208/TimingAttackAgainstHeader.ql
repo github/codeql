@@ -16,10 +16,17 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 
+private class NonConstantTimeComparisonCall extends StaticMethodAccess {
+  NonConstantTimeComparisonCall() {
+    this.getMethod()
+        .hasQualifiedName("org.apache.commons.lang3", "StringUtils",
+          ["equals", "equalsAny", "equalsAnyIgnoreCase", "equalsIgnoreCase"])
+  }
+}
+
 private class NonConstantTimeEqualsCall extends MethodAccess {
   NonConstantTimeEqualsCall() {
-    this.getMethod().hasQualifiedName("java.lang", "String", ["equals", "contentEquals", "equalsIgnoreCase"]) or
-    this.getMethod().hasQualifiedName("java.nio", "ByteBuffer", ["equals", "compareTo"])
+    this.getMethod().hasQualifiedName("java.lang", "String", ["equals", "contentEquals", "equalsIgnoreCase"])
   }
 }
 
@@ -27,6 +34,12 @@ private predicate isNonConstantEqualsCallArgument(Expr e) {
   exists(NonConstantTimeEqualsCall call |
     e = [call.getQualifier(), call.getAnArgument()]
   )
+}
+
+private predicate isNonConstantComparisonCallArgument(Expr p) {
+   exists(NonConstantTimeComparisonCall call |
+     p = [call.getArgument(0), call.getArgument(1)]
+   )
 }
 
 class ClientSuppliedIpTokenCheck extends DataFlow::Node {
@@ -47,7 +60,10 @@ class NonConstantTimeComparisonConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof ClientSuppliedIpTokenCheck }
 
-  override predicate isSink(DataFlow::Node sink) { isNonConstantEqualsCallArgument(sink.asExpr()) }
+  override predicate isSink(DataFlow::Node sink) {   
+    isNonConstantEqualsCallArgument(sink.asExpr()) or 
+    isNonConstantComparisonCallArgument(sink.asExpr())
+  }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, NonConstantTimeComparisonConfig conf
