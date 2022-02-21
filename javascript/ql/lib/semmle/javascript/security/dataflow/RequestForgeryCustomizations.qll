@@ -40,17 +40,10 @@ module RequestForgery {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of server-side remote user input, considered as a flow source for request forgery. */
-  private class ServerSideSource extends Source instanceof RemoteFlowSource {
-    ServerSideSource() { not this instanceof ClientSideRemoteFlowSource }
-  }
+  private class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
+    RemoteFlowSourceAsSource() { not this.(ClientSideRemoteFlowSource).getKind().isPathOrUrl() }
 
-  private class ClientSideSource extends Source instanceof ClientSideRemoteFlowSource {
-    ClientSideSource() {
-      // Reduce FPs by excluding sources from client-side path or URL
-      not ClientSideRemoteFlowSource.super.getKind().isPathOrUrl()
-    }
-
-    override predicate isServerSide() { none() }
+    override predicate isServerSide() { not this instanceof ClientSideRemoteFlowSource }
   }
 
   /**
