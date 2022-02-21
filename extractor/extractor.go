@@ -1434,24 +1434,25 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			kind = dbscheme.ChanTypes[tp.Dir()].Index()
 			extractElementType(tw, lbl, tp.Elem())
 		case *types.Named:
+			origintp := tp.Origin()
 			kind = dbscheme.NamedType.Index()
-			dbscheme.TypeNameTable.Emit(tw, lbl, tp.Obj().Name())
-			underlying := tp.Underlying()
+			dbscheme.TypeNameTable.Emit(tw, lbl, origintp.Obj().Name())
+			underlying := origintp.Underlying()
 			extractUnderlyingType(tw, lbl, underlying)
 
-			entitylbl, exists := tw.Labeler.LookupObjectID(tp.Obj(), lbl)
+			entitylbl, exists := tw.Labeler.LookupObjectID(origintp.Obj(), lbl)
 			if entitylbl == trap.InvalidLabel {
-				log.Printf("Omitting type-object binding for unknown object %v.\n", tp.Obj())
+				log.Printf("Omitting type-object binding for unknown object %v.\n", origintp.Obj())
 			} else {
 				if !exists {
-					extractObject(tw, tp.Obj(), entitylbl)
+					extractObject(tw, origintp.Obj(), entitylbl)
 				}
 				dbscheme.TypeObjectTable.Emit(tw, lbl, entitylbl)
 			}
 
 			// ensure all methods have labels
-			for i := 0; i < tp.NumMethods(); i++ {
-				meth := tp.Method(i)
+			for i := 0; i < origintp.NumMethods(); i++ {
+				meth := origintp.Method(i)
 
 				extractMethod(tw, meth)
 			}
@@ -1568,12 +1569,13 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			elem := extractType(tw, tp.Elem())
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%v,{%s};chantype", dir, elem))
 		case *types.Named:
-			entitylbl, exists := tw.Labeler.LookupObjectID(tp.Obj(), lbl)
+			origintp := tp.Origin()
+			entitylbl, exists := tw.Labeler.LookupObjectID(origintp.Obj(), lbl)
 			if entitylbl == trap.InvalidLabel {
-				panic(fmt.Sprintf("Cannot construct label for named type %v (underlying object is %v).\n", tp, tp.Obj()))
+				panic(fmt.Sprintf("Cannot construct label for named type %v (underlying object is %v).\n", origintp, origintp.Obj()))
 			}
 			if !exists {
-				extractObject(tw, tp.Obj(), entitylbl)
+				extractObject(tw, origintp.Obj(), entitylbl)
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};namedtype", entitylbl))
 		}
