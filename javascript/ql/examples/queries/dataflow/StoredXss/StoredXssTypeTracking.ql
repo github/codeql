@@ -28,7 +28,7 @@ DataFlow::SourceNode mysqlConnection(DataFlow::TypeTracker t) {
 DataFlow::SourceNode mysqlConnection() { result = mysqlConnection(DataFlow::TypeTracker::end()) }
 
 /**
- * Data returned from a MySQL query.
+ * The data returned from a MySQL query.
  *
  * For example:
  * ```

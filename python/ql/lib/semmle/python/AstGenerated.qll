@@ -7,17 +7,17 @@
 import python
 
 /** INTERNAL: See the class `Add` for further information. */
-library class Add_ extends @py_Add, Operator {
+class Add_ extends @py_Add, Operator {
   override string toString() { result = "Add" }
 }
 
 /** INTERNAL: See the class `And` for further information. */
-library class And_ extends @py_And, Boolop {
+class And_ extends @py_And, Boolop {
   override string toString() { result = "And" }
 }
 
 /** INTERNAL: See the class `AnnAssign` for further information. */
-library class AnnAssign_ extends @py_AnnAssign, Stmt {
+class AnnAssign_ extends @py_AnnAssign, Stmt {
   /** Gets the value of this annotated assignment. */
   Expr getValue() { py_exprs(result, _, this, 1) }
 
@@ -31,7 +31,7 @@ library class AnnAssign_ extends @py_AnnAssign, Stmt {
 }
 
 /** INTERNAL: See the class `Assert` for further information. */
-library class Assert_ extends @py_Assert, Stmt {
+class Assert_ extends @py_Assert, Stmt {
   /** Gets the value being tested of this assert statement. */
   Expr getTest() { py_exprs(result, _, this, 1) }
 
@@ -42,7 +42,7 @@ library class Assert_ extends @py_Assert, Stmt {
 }
 
 /** INTERNAL: See the class `Assign` for further information. */
-library class Assign_ extends @py_Assign, Stmt {
+class Assign_ extends @py_Assign, Stmt {
   /** Gets the value of this assignment statement. */
   Expr getValue() { py_exprs(result, _, this, 1) }
 
@@ -59,7 +59,7 @@ library class Assign_ extends @py_Assign, Stmt {
 }
 
 /** INTERNAL: See the class `AssignExpr` for further information. */
-library class AssignExpr_ extends @py_AssignExpr, Expr {
+class AssignExpr_ extends @py_AssignExpr, Expr {
   /** Gets the value of this assignment expression. */
   Expr getValue() { py_exprs(result, _, this, 2) }
 
@@ -70,7 +70,7 @@ library class AssignExpr_ extends @py_AssignExpr, Expr {
 }
 
 /** INTERNAL: See the class `Attribute` for further information. */
-library class Attribute_ extends @py_Attribute, Expr {
+class Attribute_ extends @py_Attribute, Expr {
   /** Gets the object of this attribute expression. */
   Expr getValue() { py_exprs(result, _, this, 2) }
 
@@ -84,7 +84,7 @@ library class Attribute_ extends @py_Attribute, Expr {
 }
 
 /** INTERNAL: See the class `AugAssign` for further information. */
-library class AugAssign_ extends @py_AugAssign, Stmt {
+class AugAssign_ extends @py_AugAssign, Stmt {
   /** Gets the operation of this augmented assignment statement. */
   BinaryExpr getOperation() { py_exprs(result, _, this, 1) }
 
@@ -92,17 +92,17 @@ library class AugAssign_ extends @py_AugAssign, Stmt {
 }
 
 /** INTERNAL: See the class `AugLoad` for further information. */
-library class AugLoad_ extends @py_AugLoad, ExprContext {
+class AugLoad_ extends @py_AugLoad, ExprContext {
   override string toString() { result = "AugLoad" }
 }
 
 /** INTERNAL: See the class `AugStore` for further information. */
-library class AugStore_ extends @py_AugStore, ExprContext {
+class AugStore_ extends @py_AugStore, ExprContext {
   override string toString() { result = "AugStore" }
 }
 
 /** INTERNAL: See the class `Await` for further information. */
-library class Await_ extends @py_Await, Expr {
+class Await_ extends @py_Await, Expr {
   /** Gets the expression waited upon of this await expression. */
   Expr getValue() { py_exprs(result, _, this, 2) }
 
@@ -110,7 +110,7 @@ library class Await_ extends @py_Await, Expr {
 }
 
 /** INTERNAL: See the class `BinaryExpr` for further information. */
-library class BinaryExpr_ extends @py_BinaryExpr, Expr {
+class BinaryExpr_ extends @py_BinaryExpr, Expr {
   /** Gets the left sub-expression of this binary expression. */
   Expr getLeft() { py_exprs(result, _, this, 2) }
 
@@ -126,22 +126,22 @@ library class BinaryExpr_ extends @py_BinaryExpr, Expr {
 }
 
 /** INTERNAL: See the class `BitAnd` for further information. */
-library class BitAnd_ extends @py_BitAnd, Operator {
+class BitAnd_ extends @py_BitAnd, Operator {
   override string toString() { result = "BitAnd" }
 }
 
 /** INTERNAL: See the class `BitOr` for further information. */
-library class BitOr_ extends @py_BitOr, Operator {
+class BitOr_ extends @py_BitOr, Operator {
   override string toString() { result = "BitOr" }
 }
 
 /** INTERNAL: See the class `BitXor` for further information. */
-library class BitXor_ extends @py_BitXor, Operator {
+class BitXor_ extends @py_BitXor, Operator {
   override string toString() { result = "BitXor" }
 }
 
 /** INTERNAL: See the class `BoolExpr` for further information. */
-library class BoolExpr_ extends @py_BoolExpr, Expr {
+class BoolExpr_ extends @py_BoolExpr, Expr {
   /** Gets the operator of this boolean expression. */
   Boolop getOp() { py_boolops(result, _, this) }
 
@@ -158,12 +158,12 @@ library class BoolExpr_ extends @py_BoolExpr, Expr {
 }
 
 /** INTERNAL: See the class `Break` for further information. */
-library class Break_ extends @py_Break, Stmt {
+class Break_ extends @py_Break, Stmt {
   override string toString() { result = "Break" }
 }
 
 /** INTERNAL: See the class `Bytes` for further information. */
-library class Bytes_ extends @py_Bytes, Expr {
+class Bytes_ extends @py_Bytes, Expr {
   /** Gets the value of this bytes expression. */
   string getS() { py_bytes(result, this, 2) }
 
@@ -187,13 +187,13 @@ library class Bytes_ extends @py_Bytes, Expr {
 }
 
 /** INTERNAL: See the class `BytesOrStr` for further information. */
-library class BytesOrStr_ extends @py_Bytes_or_Str {
+class BytesOrStr_ extends @py_Bytes_or_Str {
   /** Gets a textual representation of this element. */
   string toString() { result = "BytesOrStr" }
 }
 
 /** INTERNAL: See the class `Call` for further information. */
-library class Call_ extends @py_Call, Expr {
+class Call_ extends @py_Call, Expr {
   /** Gets the callable of this call expression. */
   Expr getFunc() { py_exprs(result, _, this, 2) }
 
@@ -219,7 +219,7 @@ library class Call_ extends @py_Call, Expr {
 }
 
 /** INTERNAL: See the class `Case` for further information. */
-library class Case_ extends @py_Case, Stmt {
+class Case_ extends @py_Case, Stmt {
   /** Gets the pattern of this case statement. */
   Pattern getPattern() { py_patterns(result, _, this, 1) }
 
@@ -239,7 +239,7 @@ library class Case_ extends @py_Case, Stmt {
 }
 
 /** INTERNAL: See the class `Class` for further information. */
-library class Class_ extends @py_Class {
+class Class_ extends @py_Class {
   /** Gets the name of this class. */
   string getName() { py_strs(result, this, 0) }
 
@@ -260,7 +260,7 @@ library class Class_ extends @py_Class {
 }
 
 /** INTERNAL: See the class `ClassExpr` for further information. */
-library class ClassExpr_ extends @py_ClassExpr, Expr {
+class ClassExpr_ extends @py_ClassExpr, Expr {
   /** Gets the name of this class definition. */
   string getName() { py_strs(result, this, 2) }
 
@@ -289,7 +289,7 @@ library class ClassExpr_ extends @py_ClassExpr, Expr {
 }
 
 /** INTERNAL: See the class `Compare` for further information. */
-library class Compare_ extends @py_Compare, Expr {
+class Compare_ extends @py_Compare, Expr {
   /** Gets the left sub-expression of this compare expression. */
   Expr getLeft() { py_exprs(result, _, this, 2) }
 
@@ -315,17 +315,17 @@ library class Compare_ extends @py_Compare, Expr {
 }
 
 /** INTERNAL: See the class `Continue` for further information. */
-library class Continue_ extends @py_Continue, Stmt {
+class Continue_ extends @py_Continue, Stmt {
   override string toString() { result = "Continue" }
 }
 
 /** INTERNAL: See the class `Del` for further information. */
-library class Del_ extends @py_Del, ExprContext {
+class Del_ extends @py_Del, ExprContext {
   override string toString() { result = "Del" }
 }
 
 /** INTERNAL: See the class `Delete` for further information. */
-library class Delete_ extends @py_Delete, Stmt {
+class Delete_ extends @py_Delete, Stmt {
   /** Gets the targets of this delete statement. */
   ExprList getTargets() { py_expr_lists(result, this, 1) }
 
@@ -339,7 +339,7 @@ library class Delete_ extends @py_Delete, Stmt {
 }
 
 /** INTERNAL: See the class `Dict` for further information. */
-library class Dict_ extends @py_Dict, Expr {
+class Dict_ extends @py_Dict, Expr {
   /** Gets the items of this dictionary expression. */
   DictItemList getItems() { py_dict_item_lists(result, this) }
 
@@ -353,7 +353,7 @@ library class Dict_ extends @py_Dict, Expr {
 }
 
 /** INTERNAL: See the class `DictComp` for further information. */
-library class DictComp_ extends @py_DictComp, Expr {
+class DictComp_ extends @py_DictComp, Expr {
   /** Gets the implementation of this dictionary comprehension. */
   Function getFunction() { py_Functions(result, this) }
 
@@ -364,7 +364,7 @@ library class DictComp_ extends @py_DictComp, Expr {
 }
 
 /** INTERNAL: See the class `DictUnpacking` for further information. */
-library class DictUnpacking_ extends @py_DictUnpacking, DictItem {
+class DictUnpacking_ extends @py_DictUnpacking, DictItem {
   /** Gets the location of this dictionary unpacking. */
   override Location getLocation() { py_locations(result, this) }
 
@@ -375,22 +375,22 @@ library class DictUnpacking_ extends @py_DictUnpacking, DictItem {
 }
 
 /** INTERNAL: See the class `Div` for further information. */
-library class Div_ extends @py_Div, Operator {
+class Div_ extends @py_Div, Operator {
   override string toString() { result = "Div" }
 }
 
 /** INTERNAL: See the class `Ellipsis` for further information. */
-library class Ellipsis_ extends @py_Ellipsis, Expr {
+class Ellipsis_ extends @py_Ellipsis, Expr {
   override string toString() { result = "Ellipsis" }
 }
 
 /** INTERNAL: See the class `Eq` for further information. */
-library class Eq_ extends @py_Eq, Cmpop {
+class Eq_ extends @py_Eq, Cmpop {
   override string toString() { result = "Eq" }
 }
 
 /** INTERNAL: See the class `ExceptStmt` for further information. */
-library class ExceptStmt_ extends @py_ExceptStmt, Stmt {
+class ExceptStmt_ extends @py_ExceptStmt, Stmt {
   /** Gets the type of this except block. */
   Expr getType() { py_exprs(result, _, this, 1) }
 
@@ -410,7 +410,7 @@ library class ExceptStmt_ extends @py_ExceptStmt, Stmt {
 }
 
 /** INTERNAL: See the class `Exec` for further information. */
-library class Exec_ extends @py_Exec, Stmt {
+class Exec_ extends @py_Exec, Stmt {
   /** Gets the body of this exec statement. */
   Expr getBody() { py_exprs(result, _, this, 1) }
 
@@ -424,7 +424,7 @@ library class Exec_ extends @py_Exec, Stmt {
 }
 
 /** INTERNAL: See the class `ExprStmt` for further information. */
-library class ExprStmt_ extends @py_Expr_stmt, Stmt {
+class ExprStmt_ extends @py_Expr_stmt, Stmt {
   /** Gets the value of this expr statement. */
   Expr getValue() { py_exprs(result, _, this, 1) }
 
@@ -432,7 +432,7 @@ library class ExprStmt_ extends @py_Expr_stmt, Stmt {
 }
 
 /** INTERNAL: See the class `Filter` for further information. */
-library class Filter_ extends @py_Filter, Expr {
+class Filter_ extends @py_Filter, Expr {
   /** Gets the filtered value of this template filter expression. */
   Expr getValue() { py_exprs(result, _, this, 2) }
 
@@ -443,12 +443,12 @@ library class Filter_ extends @py_Filter, Expr {
 }
 
 /** INTERNAL: See the class `FloorDiv` for further information. */
-library class FloorDiv_ extends @py_FloorDiv, Operator {
+class FloorDiv_ extends @py_FloorDiv, Operator {
   override string toString() { result = "FloorDiv" }
 }
 
 /** INTERNAL: See the class `For` for further information. */
-library class For_ extends @py_For, Stmt {
+class For_ extends @py_For, Stmt {
   /** Gets the target of this for statement. */
   Expr getTarget() { py_exprs(result, _, this, 1) }
 
@@ -480,7 +480,7 @@ library class For_ extends @py_For, Stmt {
 }
 
 /** INTERNAL: See the class `FormattedValue` for further information. */
-library class FormattedValue_ extends @py_FormattedValue, Expr {
+class FormattedValue_ extends @py_FormattedValue, Expr {
   /** Gets the expression to be formatted of this formatted value. */
   Expr getValue() { py_exprs(result, _, this, 2) }
 
@@ -494,7 +494,7 @@ library class FormattedValue_ extends @py_FormattedValue, Expr {
 }
 
 /** INTERNAL: See the class `Function` for further information. */
-library class Function_ extends @py_Function {
+class Function_ extends @py_Function {
   /** Gets the name of this function. */
   string getName() { py_strs(result, this, 0) }
 
@@ -542,7 +542,7 @@ library class Function_ extends @py_Function {
 }
 
 /** INTERNAL: See the class `FunctionExpr` for further information. */
-library class FunctionExpr_ extends @py_FunctionExpr, Expr {
+class FunctionExpr_ extends @py_FunctionExpr, Expr {
   /** Gets the name of this function definition. */
   string getName() { py_strs(result, this, 2) }
 
@@ -559,13 +559,13 @@ library class FunctionExpr_ extends @py_FunctionExpr, Expr {
 }
 
 /** INTERNAL: See the class `FunctionParent` for further information. */
-library class FunctionParent_ extends @py_Function_parent {
+class FunctionParent_ extends @py_Function_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "FunctionParent" }
 }
 
 /** INTERNAL: See the class `GeneratorExp` for further information. */
-library class GeneratorExp_ extends @py_GeneratorExp, Expr {
+class GeneratorExp_ extends @py_GeneratorExp, Expr {
   /** Gets the implementation of this generator expression. */
   Function getFunction() { py_Functions(result, this) }
 
@@ -576,7 +576,7 @@ library class GeneratorExp_ extends @py_GeneratorExp, Expr {
 }
 
 /** INTERNAL: See the class `Global` for further information. */
-library class Global_ extends @py_Global, Stmt {
+class Global_ extends @py_Global, Stmt {
   /** Gets the names of this global statement. */
   StringList getNames() { py_str_lists(result, this) }
 
@@ -590,17 +590,17 @@ library class Global_ extends @py_Global, Stmt {
 }
 
 /** INTERNAL: See the class `Gt` for further information. */
-library class Gt_ extends @py_Gt, Cmpop {
+class Gt_ extends @py_Gt, Cmpop {
   override string toString() { result = "Gt" }
 }
 
 /** INTERNAL: See the class `GtE` for further information. */
-library class GtE_ extends @py_GtE, Cmpop {
+class GtE_ extends @py_GtE, Cmpop {
   override string toString() { result = "GtE" }
 }
 
 /** INTERNAL: See the class `Guard` for further information. */
-library class Guard_ extends @py_Guard, Expr {
+class Guard_ extends @py_Guard, Expr {
   /** Gets the test of this guard expression. */
   Expr getTest() { py_exprs(result, _, this, 2) }
 
@@ -608,7 +608,7 @@ library class Guard_ extends @py_Guard, Expr {
 }
 
 /** INTERNAL: See the class `If` for further information. */
-library class If_ extends @py_If, Stmt {
+class If_ extends @py_If, Stmt {
   /** Gets the test of this if statement. */
   Expr getTest() { py_exprs(result, _, this, 1) }
 
@@ -634,7 +634,7 @@ library class If_ extends @py_If, Stmt {
 }
 
 /** INTERNAL: See the class `IfExp` for further information. */
-library class IfExp_ extends @py_IfExp, Expr {
+class IfExp_ extends @py_IfExp, Expr {
   /** Gets the test of this if expression. */
   Expr getTest() { py_exprs(result, _, this, 2) }
 
@@ -648,7 +648,7 @@ library class IfExp_ extends @py_IfExp, Expr {
 }
 
 /** INTERNAL: See the class `Import` for further information. */
-library class Import_ extends @py_Import, Stmt {
+class Import_ extends @py_Import, Stmt {
   /** Gets the alias list of this import statement. */
   AliasList getNames() { py_alias_lists(result, this) }
 
@@ -662,7 +662,7 @@ library class Import_ extends @py_Import, Stmt {
 }
 
 /** INTERNAL: See the class `ImportExpr` for further information. */
-library class ImportExpr_ extends @py_ImportExpr, Expr {
+class ImportExpr_ extends @py_ImportExpr, Expr {
   /** Gets the level of this import expression. */
   int getLevel() { py_ints(result, this) }
 
@@ -676,7 +676,7 @@ library class ImportExpr_ extends @py_ImportExpr, Expr {
 }
 
 /** INTERNAL: See the class `ImportStar` for further information. */
-library class ImportStar_ extends @py_ImportStar, Stmt {
+class ImportStar_ extends @py_ImportStar, Stmt {
   /** Gets the module of this import * statement. */
   Expr getModule() { py_exprs(result, _, this, 1) }
 
@@ -684,7 +684,7 @@ library class ImportStar_ extends @py_ImportStar, Stmt {
 }
 
 /** INTERNAL: See the class `ImportMember` for further information. */
-library class ImportMember_ extends @py_ImportMember, Expr {
+class ImportMember_ extends @py_ImportMember, Expr {
   /** Gets the module of this from import. */
   Expr getModule() { py_exprs(result, _, this, 2) }
 
@@ -695,27 +695,27 @@ library class ImportMember_ extends @py_ImportMember, Expr {
 }
 
 /** INTERNAL: See the class `In` for further information. */
-library class In_ extends @py_In, Cmpop {
+class In_ extends @py_In, Cmpop {
   override string toString() { result = "In" }
 }
 
 /** INTERNAL: See the class `Invert` for further information. */
-library class Invert_ extends @py_Invert, Unaryop {
+class Invert_ extends @py_Invert, Unaryop {
   override string toString() { result = "Invert" }
 }
 
 /** INTERNAL: See the class `Is` for further information. */
-library class Is_ extends @py_Is, Cmpop {
+class Is_ extends @py_Is, Cmpop {
   override string toString() { result = "Is" }
 }
 
 /** INTERNAL: See the class `IsNot` for further information. */
-library class IsNot_ extends @py_IsNot, Cmpop {
+class IsNot_ extends @py_IsNot, Cmpop {
   override string toString() { result = "IsNot" }
 }
 
 /** INTERNAL: See the class `Fstring` for further information. */
-library class Fstring_ extends @py_Fstring, Expr {
+class Fstring_ extends @py_Fstring, Expr {
   /** Gets the values of this formatted string literal. */
   ExprList getValues() { py_expr_lists(result, this, 2) }
 
@@ -731,7 +731,7 @@ library class Fstring_ extends @py_Fstring, Expr {
 }
 
 /** INTERNAL: See the class `KeyValuePair` for further information. */
-library class KeyValuePair_ extends @py_KeyValuePair, DictItem {
+class KeyValuePair_ extends @py_KeyValuePair, DictItem {
   /** Gets the location of this key-value pair. */
   override Location getLocation() { py_locations(result, this) }
 
@@ -745,12 +745,12 @@ library class KeyValuePair_ extends @py_KeyValuePair, DictItem {
 }
 
 /** INTERNAL: See the class `LShift` for further information. */
-library class LShift_ extends @py_LShift, Operator {
+class LShift_ extends @py_LShift, Operator {
   override string toString() { result = "LShift" }
 }
 
 /** INTERNAL: See the class `Lambda` for further information. */
-library class Lambda_ extends @py_Lambda, Expr {
+class Lambda_ extends @py_Lambda, Expr {
   /** Gets the arguments of this lambda expression. */
   Arguments getArgs() { py_arguments(result, this) }
 
@@ -761,7 +761,7 @@ library class Lambda_ extends @py_Lambda, Expr {
 }
 
 /** INTERNAL: See the class `List` for further information. */
-library class List_ extends @py_List, Expr {
+class List_ extends @py_List, Expr {
   /** Gets the element list of this list expression. */
   ExprList getElts() { py_expr_lists(result, this, 2) }
 
@@ -778,7 +778,7 @@ library class List_ extends @py_List, Expr {
 }
 
 /** INTERNAL: See the class `ListComp` for further information. */
-library class ListComp_ extends @py_ListComp, Expr {
+class ListComp_ extends @py_ListComp, Expr {
   /** Gets the implementation of this list comprehension. */
   Function getFunction() { py_Functions(result, this) }
 
@@ -801,27 +801,27 @@ library class ListComp_ extends @py_ListComp, Expr {
 }
 
 /** INTERNAL: See the class `Load` for further information. */
-library class Load_ extends @py_Load, ExprContext {
+class Load_ extends @py_Load, ExprContext {
   override string toString() { result = "Load" }
 }
 
 /** INTERNAL: See the class `Lt` for further information. */
-library class Lt_ extends @py_Lt, Cmpop {
+class Lt_ extends @py_Lt, Cmpop {
   override string toString() { result = "Lt" }
 }
 
 /** INTERNAL: See the class `LtE` for further information. */
-library class LtE_ extends @py_LtE, Cmpop {
+class LtE_ extends @py_LtE, Cmpop {
   override string toString() { result = "LtE" }
 }
 
 /** INTERNAL: See the class `MatMult` for further information. */
-library class MatMult_ extends @py_MatMult, Operator {
+class MatMult_ extends @py_MatMult, Operator {
   override string toString() { result = "MatMult" }
 }
 
 /** INTERNAL: See the class `MatchStmt` for further information. */
-library class MatchStmt_ extends @py_MatchStmt, Stmt {
+class MatchStmt_ extends @py_MatchStmt, Stmt {
   /** Gets the subject of this match statement. */
   Expr getSubject() { py_exprs(result, _, this, 1) }
 
@@ -838,7 +838,7 @@ library class MatchStmt_ extends @py_MatchStmt, Stmt {
 }
 
 /** INTERNAL: See the class `MatchAsPattern` for further information. */
-library class MatchAsPattern_ extends @py_MatchAsPattern, Pattern {
+class MatchAsPattern_ extends @py_MatchAsPattern, Pattern {
   /** Gets the pattern of this matchaspattern pattern. */
   Pattern getPattern() { py_patterns(result, _, this, 2) }
 
@@ -849,7 +849,7 @@ library class MatchAsPattern_ extends @py_MatchAsPattern, Pattern {
 }
 
 /** INTERNAL: See the class `MatchCapturePattern` for further information. */
-library class MatchCapturePattern_ extends @py_MatchCapturePattern, Pattern {
+class MatchCapturePattern_ extends @py_MatchCapturePattern, Pattern {
   /** Gets the variable of this matchcapturepattern pattern. */
   Expr getVariable() { py_exprs(result, _, this, 2) }
 
@@ -857,7 +857,7 @@ library class MatchCapturePattern_ extends @py_MatchCapturePattern, Pattern {
 }
 
 /** INTERNAL: See the class `MatchClassPattern` for further information. */
-library class MatchClassPattern_ extends @py_MatchClassPattern, Pattern {
+class MatchClassPattern_ extends @py_MatchClassPattern, Pattern {
   /** Gets the class of this matchclasspattern pattern. */
   Expr getClass() { py_exprs(result, _, this, 2) }
 
@@ -886,7 +886,7 @@ library class MatchClassPattern_ extends @py_MatchClassPattern, Pattern {
 }
 
 /** INTERNAL: See the class `MatchDoubleStarPattern` for further information. */
-library class MatchDoubleStarPattern_ extends @py_MatchDoubleStarPattern, Pattern {
+class MatchDoubleStarPattern_ extends @py_MatchDoubleStarPattern, Pattern {
   /** Gets the target of this matchdoublestarpattern pattern. */
   Pattern getTarget() { py_patterns(result, _, this, 2) }
 
@@ -894,7 +894,7 @@ library class MatchDoubleStarPattern_ extends @py_MatchDoubleStarPattern, Patter
 }
 
 /** INTERNAL: See the class `MatchKeyValuePattern` for further information. */
-library class MatchKeyValuePattern_ extends @py_MatchKeyValuePattern, Pattern {
+class MatchKeyValuePattern_ extends @py_MatchKeyValuePattern, Pattern {
   /** Gets the key of this matchkeyvaluepattern pattern. */
   Pattern getKey() { py_patterns(result, _, this, 2) }
 
@@ -905,7 +905,7 @@ library class MatchKeyValuePattern_ extends @py_MatchKeyValuePattern, Pattern {
 }
 
 /** INTERNAL: See the class `MatchKeywordPattern` for further information. */
-library class MatchKeywordPattern_ extends @py_MatchKeywordPattern, Pattern {
+class MatchKeywordPattern_ extends @py_MatchKeywordPattern, Pattern {
   /** Gets the attribute of this matchkeywordpattern pattern. */
   Expr getAttribute() { py_exprs(result, _, this, 2) }
 
@@ -916,7 +916,7 @@ library class MatchKeywordPattern_ extends @py_MatchKeywordPattern, Pattern {
 }
 
 /** INTERNAL: See the class `MatchLiteralPattern` for further information. */
-library class MatchLiteralPattern_ extends @py_MatchLiteralPattern, Pattern {
+class MatchLiteralPattern_ extends @py_MatchLiteralPattern, Pattern {
   /** Gets the literal of this matchliteralpattern pattern. */
   Expr getLiteral() { py_exprs(result, _, this, 2) }
 
@@ -924,7 +924,7 @@ library class MatchLiteralPattern_ extends @py_MatchLiteralPattern, Pattern {
 }
 
 /** INTERNAL: See the class `MatchMappingPattern` for further information. */
-library class MatchMappingPattern_ extends @py_MatchMappingPattern, Pattern {
+class MatchMappingPattern_ extends @py_MatchMappingPattern, Pattern {
   /** Gets the mappings of this matchmappingpattern pattern. */
   PatternList getMappings() { py_pattern_lists(result, this, 2) }
 
@@ -938,7 +938,7 @@ library class MatchMappingPattern_ extends @py_MatchMappingPattern, Pattern {
 }
 
 /** INTERNAL: See the class `MatchOrPattern` for further information. */
-library class MatchOrPattern_ extends @py_MatchOrPattern, Pattern {
+class MatchOrPattern_ extends @py_MatchOrPattern, Pattern {
   /** Gets the patterns of this matchorpattern pattern. */
   PatternList getPatterns() { py_pattern_lists(result, this, 2) }
 
@@ -952,7 +952,7 @@ library class MatchOrPattern_ extends @py_MatchOrPattern, Pattern {
 }
 
 /** INTERNAL: See the class `MatchSequencePattern` for further information. */
-library class MatchSequencePattern_ extends @py_MatchSequencePattern, Pattern {
+class MatchSequencePattern_ extends @py_MatchSequencePattern, Pattern {
   /** Gets the patterns of this matchsequencepattern pattern. */
   PatternList getPatterns() { py_pattern_lists(result, this, 2) }
 
@@ -966,7 +966,7 @@ library class MatchSequencePattern_ extends @py_MatchSequencePattern, Pattern {
 }
 
 /** INTERNAL: See the class `MatchStarPattern` for further information. */
-library class MatchStarPattern_ extends @py_MatchStarPattern, Pattern {
+class MatchStarPattern_ extends @py_MatchStarPattern, Pattern {
   /** Gets the target of this matchstarpattern pattern. */
   Pattern getTarget() { py_patterns(result, _, this, 2) }
 
@@ -974,7 +974,7 @@ library class MatchStarPattern_ extends @py_MatchStarPattern, Pattern {
 }
 
 /** INTERNAL: See the class `MatchValuePattern` for further information. */
-library class MatchValuePattern_ extends @py_MatchValuePattern, Pattern {
+class MatchValuePattern_ extends @py_MatchValuePattern, Pattern {
   /** Gets the value of this matchvaluepattern pattern. */
   Expr getValue() { py_exprs(result, _, this, 2) }
 
@@ -982,17 +982,17 @@ library class MatchValuePattern_ extends @py_MatchValuePattern, Pattern {
 }
 
 /** INTERNAL: See the class `MatchWildcardPattern` for further information. */
-library class MatchWildcardPattern_ extends @py_MatchWildcardPattern, Pattern {
+class MatchWildcardPattern_ extends @py_MatchWildcardPattern, Pattern {
   override string toString() { result = "MatchWildcardPattern" }
 }
 
 /** INTERNAL: See the class `Mod` for further information. */
-library class Mod_ extends @py_Mod, Operator {
+class Mod_ extends @py_Mod, Operator {
   override string toString() { result = "Mod" }
 }
 
 /** INTERNAL: See the class `Module` for further information. */
-library class Module_ extends @py_Module {
+class Module_ extends @py_Module {
   /** Gets the name of this module. */
   string getName() { py_strs(result, this, 0) }
 
@@ -1016,12 +1016,12 @@ library class Module_ extends @py_Module {
 }
 
 /** INTERNAL: See the class `Mult` for further information. */
-library class Mult_ extends @py_Mult, Operator {
+class Mult_ extends @py_Mult, Operator {
   override string toString() { result = "Mult" }
 }
 
 /** INTERNAL: See the class `Name` for further information. */
-library class Name_ extends @py_Name, Expr {
+class Name_ extends @py_Name, Expr {
   /** Gets the variable of this name expression. */
   Variable getVariable() { py_variables(result, this) }
 
@@ -1034,7 +1034,7 @@ library class Name_ extends @py_Name, Expr {
 }
 
 /** INTERNAL: See the class `Nonlocal` for further information. */
-library class Nonlocal_ extends @py_Nonlocal, Stmt {
+class Nonlocal_ extends @py_Nonlocal, Stmt {
   /** Gets the names of this nonlocal statement. */
   StringList getNames() { py_str_lists(result, this) }
 
@@ -1048,22 +1048,22 @@ library class Nonlocal_ extends @py_Nonlocal, Stmt {
 }
 
 /** INTERNAL: See the class `Not` for further information. */
-library class Not_ extends @py_Not, Unaryop {
+class Not_ extends @py_Not, Unaryop {
   override string toString() { result = "Not" }
 }
 
 /** INTERNAL: See the class `NotEq` for further information. */
-library class NotEq_ extends @py_NotEq, Cmpop {
+class NotEq_ extends @py_NotEq, Cmpop {
   override string toString() { result = "NotEq" }
 }
 
 /** INTERNAL: See the class `NotIn` for further information. */
-library class NotIn_ extends @py_NotIn, Cmpop {
+class NotIn_ extends @py_NotIn, Cmpop {
   override string toString() { result = "NotIn" }
 }
 
 /** INTERNAL: See the class `Num` for further information. */
-library class Num_ extends @py_Num, Expr {
+class Num_ extends @py_Num, Expr {
   /** Gets the value of this numeric literal. */
   string getN() { py_numbers(result, this, 2) }
 
@@ -1074,22 +1074,22 @@ library class Num_ extends @py_Num, Expr {
 }
 
 /** INTERNAL: See the class `Or` for further information. */
-library class Or_ extends @py_Or, Boolop {
+class Or_ extends @py_Or, Boolop {
   override string toString() { result = "Or" }
 }
 
 /** INTERNAL: See the class `Param` for further information. */
-library class Param_ extends @py_Param, ExprContext {
+class Param_ extends @py_Param, ExprContext {
   override string toString() { result = "Param" }
 }
 
 /** INTERNAL: See the class `Pass` for further information. */
-library class Pass_ extends @py_Pass, Stmt {
+class Pass_ extends @py_Pass, Stmt {
   override string toString() { result = "Pass" }
 }
 
 /** INTERNAL: See the class `PlaceHolder` for further information. */
-library class PlaceHolder_ extends @py_PlaceHolder, Expr {
+class PlaceHolder_ extends @py_PlaceHolder, Expr {
   /** Gets the variable of this template place-holder expression. */
   Variable getVariable() { py_variables(result, this) }
 
@@ -1100,12 +1100,12 @@ library class PlaceHolder_ extends @py_PlaceHolder, Expr {
 }
 
 /** INTERNAL: See the class `Pow` for further information. */
-library class Pow_ extends @py_Pow, Operator {
+class Pow_ extends @py_Pow, Operator {
   override string toString() { result = "Pow" }
 }
 
 /** INTERNAL: See the class `Print` for further information. */
-library class Print_ extends @py_Print, Stmt {
+class Print_ extends @py_Print, Stmt {
   /** Gets the destination of this print statement. */
   Expr getDest() { py_exprs(result, _, this, 1) }
 
@@ -1125,12 +1125,12 @@ library class Print_ extends @py_Print, Stmt {
 }
 
 /** INTERNAL: See the class `RShift` for further information. */
-library class RShift_ extends @py_RShift, Operator {
+class RShift_ extends @py_RShift, Operator {
   override string toString() { result = "RShift" }
 }
 
 /** INTERNAL: See the class `Raise` for further information. */
-library class Raise_ extends @py_Raise, Stmt {
+class Raise_ extends @py_Raise, Stmt {
   /** Gets the exception of this raise statement. */
   Expr getExc() { py_exprs(result, _, this, 1) }
 
@@ -1150,7 +1150,7 @@ library class Raise_ extends @py_Raise, Stmt {
 }
 
 /** INTERNAL: See the class `Repr` for further information. */
-library class Repr_ extends @py_Repr, Expr {
+class Repr_ extends @py_Repr, Expr {
   /** Gets the value of this backtick expression. */
   Expr getValue() { py_exprs(result, _, this, 2) }
 
@@ -1158,7 +1158,7 @@ library class Repr_ extends @py_Repr, Expr {
 }
 
 /** INTERNAL: See the class `Return` for further information. */
-library class Return_ extends @py_Return, Stmt {
+class Return_ extends @py_Return, Stmt {
   /** Gets the value of this return statement. */
   Expr getValue() { py_exprs(result, _, this, 1) }
 
@@ -1166,7 +1166,7 @@ library class Return_ extends @py_Return, Stmt {
 }
 
 /** INTERNAL: See the class `Set` for further information. */
-library class Set_ extends @py_Set, Expr {
+class Set_ extends @py_Set, Expr {
   /** Gets the elements of this set expression. */
   ExprList getElts() { py_expr_lists(result, this, 2) }
 
@@ -1180,7 +1180,7 @@ library class Set_ extends @py_Set, Expr {
 }
 
 /** INTERNAL: See the class `SetComp` for further information. */
-library class SetComp_ extends @py_SetComp, Expr {
+class SetComp_ extends @py_SetComp, Expr {
   /** Gets the implementation of this set comprehension. */
   Function getFunction() { py_Functions(result, this) }
 
@@ -1191,7 +1191,7 @@ library class SetComp_ extends @py_SetComp, Expr {
 }
 
 /** INTERNAL: See the class `Slice` for further information. */
-library class Slice_ extends @py_Slice, Expr {
+class Slice_ extends @py_Slice, Expr {
   /** Gets the start of this slice. */
   Expr getStart() { py_exprs(result, _, this, 2) }
 
@@ -1205,7 +1205,7 @@ library class Slice_ extends @py_Slice, Expr {
 }
 
 /** INTERNAL: See the class `SpecialOperation` for further information. */
-library class SpecialOperation_ extends @py_SpecialOperation, Expr {
+class SpecialOperation_ extends @py_SpecialOperation, Expr {
   /** Gets the name of this special operation. */
   string getName() { py_strs(result, this, 2) }
 
@@ -1222,7 +1222,7 @@ library class SpecialOperation_ extends @py_SpecialOperation, Expr {
 }
 
 /** INTERNAL: See the class `Starred` for further information. */
-library class Starred_ extends @py_Starred, Expr {
+class Starred_ extends @py_Starred, Expr {
   /** Gets the value of this starred expression. */
   Expr getValue() { py_exprs(result, _, this, 2) }
 
@@ -1233,12 +1233,12 @@ library class Starred_ extends @py_Starred, Expr {
 }
 
 /** INTERNAL: See the class `Store` for further information. */
-library class Store_ extends @py_Store, ExprContext {
+class Store_ extends @py_Store, ExprContext {
   override string toString() { result = "Store" }
 }
 
 /** INTERNAL: See the class `Str` for further information. */
-library class Str_ extends @py_Str, Expr {
+class Str_ extends @py_Str, Expr {
   /** Gets the text of this string literal. */
   string getS() { py_strs(result, this, 2) }
 
@@ -1262,7 +1262,7 @@ library class Str_ extends @py_Str, Expr {
 }
 
 /** INTERNAL: See the class `StringPart` for further information. */
-library class StringPart_ extends @py_StringPart {
+class StringPart_ extends @py_StringPart {
   /** Gets the text of this implicitly concatenated part. */
   string getText() { py_strs(result, this, 0) }
 
@@ -1277,7 +1277,7 @@ library class StringPart_ extends @py_StringPart {
 }
 
 /** INTERNAL: See the class `StringPartList` for further information. */
-library class StringPartList_ extends @py_StringPart_list {
+class StringPartList_ extends @py_StringPart_list {
   /** Gets a parent of this implicitly concatenated part list */
   BytesOrStr getParent() { py_StringPart_lists(this, result) }
 
@@ -1292,12 +1292,12 @@ library class StringPartList_ extends @py_StringPart_list {
 }
 
 /** INTERNAL: See the class `Sub` for further information. */
-library class Sub_ extends @py_Sub, Operator {
+class Sub_ extends @py_Sub, Operator {
   override string toString() { result = "Sub" }
 }
 
 /** INTERNAL: See the class `Subscript` for further information. */
-library class Subscript_ extends @py_Subscript, Expr {
+class Subscript_ extends @py_Subscript, Expr {
   /** Gets the value of this subscript expression. */
   Expr getValue() { py_exprs(result, _, this, 2) }
 
@@ -1311,7 +1311,7 @@ library class Subscript_ extends @py_Subscript, Expr {
 }
 
 /** INTERNAL: See the class `TemplateDottedNotation` for further information. */
-library class TemplateDottedNotation_ extends @py_TemplateDottedNotation, Expr {
+class TemplateDottedNotation_ extends @py_TemplateDottedNotation, Expr {
   /** Gets the object of this template dotted notation expression. */
   Expr getValue() { py_exprs(result, _, this, 2) }
 
@@ -1325,7 +1325,7 @@ library class TemplateDottedNotation_ extends @py_TemplateDottedNotation, Expr {
 }
 
 /** INTERNAL: See the class `TemplateWrite` for further information. */
-library class TemplateWrite_ extends @py_TemplateWrite, Stmt {
+class TemplateWrite_ extends @py_TemplateWrite, Stmt {
   /** Gets the value of this template write statement. */
   Expr getValue() { py_exprs(result, _, this, 1) }
 
@@ -1333,7 +1333,7 @@ library class TemplateWrite_ extends @py_TemplateWrite, Stmt {
 }
 
 /** INTERNAL: See the class `Try` for further information. */
-library class Try_ extends @py_Try, Stmt {
+class Try_ extends @py_Try, Stmt {
   /** Gets the body of this try statement. */
   StmtList getBody() { py_stmt_lists(result, this, 1) }
 
@@ -1374,7 +1374,7 @@ library class Try_ extends @py_Try, Stmt {
 }
 
 /** INTERNAL: See the class `Tuple` for further information. */
-library class Tuple_ extends @py_Tuple, Expr {
+class Tuple_ extends @py_Tuple, Expr {
   /** Gets the elements of this tuple expression. */
   ExprList getElts() { py_expr_lists(result, this, 2) }
 
@@ -1393,17 +1393,17 @@ library class Tuple_ extends @py_Tuple, Expr {
 }
 
 /** INTERNAL: See the class `UAdd` for further information. */
-library class UAdd_ extends @py_UAdd, Unaryop {
+class UAdd_ extends @py_UAdd, Unaryop {
   override string toString() { result = "UAdd" }
 }
 
 /** INTERNAL: See the class `USub` for further information. */
-library class USub_ extends @py_USub, Unaryop {
+class USub_ extends @py_USub, Unaryop {
   override string toString() { result = "USub" }
 }
 
 /** INTERNAL: See the class `UnaryExpr` for further information. */
-library class UnaryExpr_ extends @py_UnaryExpr, Expr {
+class UnaryExpr_ extends @py_UnaryExpr, Expr {
   /** Gets the operator of this unary expression. */
   Unaryop getOp() { py_unaryops(result, _, this) }
 
@@ -1414,7 +1414,7 @@ library class UnaryExpr_ extends @py_UnaryExpr, Expr {
 }
 
 /** INTERNAL: See the class `While` for further information. */
-library class While_ extends @py_While, Stmt {
+class While_ extends @py_While, Stmt {
   /** Gets the test of this while statement. */
   Expr getTest() { py_exprs(result, _, this, 1) }
 
@@ -1440,7 +1440,7 @@ library class While_ extends @py_While, Stmt {
 }
 
 /** INTERNAL: See the class `With` for further information. */
-library class With_ extends @py_With, Stmt {
+class With_ extends @py_With, Stmt {
   /** Gets the context manager of this with statement. */
   Expr getContextExpr() { py_exprs(result, _, this, 1) }
 
@@ -1463,7 +1463,7 @@ library class With_ extends @py_With, Stmt {
 }
 
 /** INTERNAL: See the class `Yield` for further information. */
-library class Yield_ extends @py_Yield, Expr {
+class Yield_ extends @py_Yield, Expr {
   /** Gets the value of this yield expression. */
   Expr getValue() { py_exprs(result, _, this, 2) }
 
@@ -1471,7 +1471,7 @@ library class Yield_ extends @py_Yield, Expr {
 }
 
 /** INTERNAL: See the class `YieldFrom` for further information. */
-library class YieldFrom_ extends @py_YieldFrom, Expr {
+class YieldFrom_ extends @py_YieldFrom, Expr {
   /** Gets the value of this yield-from expression. */
   Expr getValue() { py_exprs(result, _, this, 2) }
 
@@ -1479,7 +1479,7 @@ library class YieldFrom_ extends @py_YieldFrom, Expr {
 }
 
 /** INTERNAL: See the class `Alias` for further information. */
-library class Alias_ extends @py_alias {
+class Alias_ extends @py_alias {
   /** Gets the value of this alias. */
   Expr getValue() { py_exprs(result, _, this, 0) }
 
@@ -1494,7 +1494,7 @@ library class Alias_ extends @py_alias {
 }
 
 /** INTERNAL: See the class `AliasList` for further information. */
-library class AliasList_ extends @py_alias_list {
+class AliasList_ extends @py_alias_list {
   /** Gets a parent of this alias list */
   Import getParent() { py_alias_lists(this, result) }
 
@@ -1509,7 +1509,7 @@ library class AliasList_ extends @py_alias_list {
 }
 
 /** INTERNAL: See the class `Arguments` for further information. */
-library class Arguments_ extends @py_arguments {
+class Arguments_ extends @py_arguments {
   /** Gets the keyword-only default values of this parameters definition. */
   ExprList getKwDefaults() { py_expr_lists(result, this, 0) }
 
@@ -1560,25 +1560,25 @@ library class Arguments_ extends @py_arguments {
 }
 
 /** INTERNAL: See the class `ArgumentsParent` for further information. */
-library class ArgumentsParent_ extends @py_arguments_parent {
+class ArgumentsParent_ extends @py_arguments_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "ArgumentsParent" }
 }
 
 /** INTERNAL: See the class `AstNode` for further information. */
-library class AstNode_ extends @py_ast_node {
+class AstNode_ extends @py_ast_node {
   /** Gets a textual representation of this element. */
   string toString() { result = "AstNode" }
 }
 
 /** INTERNAL: See the class `BoolParent` for further information. */
-library class BoolParent_ extends @py_bool_parent {
+class BoolParent_ extends @py_bool_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "BoolParent" }
 }
 
 /** INTERNAL: See the class `Boolop` for further information. */
-library class Boolop_ extends @py_boolop {
+class Boolop_ extends @py_boolop {
   /** Gets a parent of this boolean operator */
   BoolExpr getParent() { py_boolops(this, _, result) }
 
@@ -1587,7 +1587,7 @@ library class Boolop_ extends @py_boolop {
 }
 
 /** INTERNAL: See the class `Cmpop` for further information. */
-library class Cmpop_ extends @py_cmpop {
+class Cmpop_ extends @py_cmpop {
   /** Gets a parent of this comparison operator */
   CmpopList getParent() { py_cmpops(this, _, result, _) }
 
@@ -1596,7 +1596,7 @@ library class Cmpop_ extends @py_cmpop {
 }
 
 /** INTERNAL: See the class `CmpopList` for further information. */
-library class CmpopList_ extends @py_cmpop_list {
+class CmpopList_ extends @py_cmpop_list {
   /** Gets a parent of this comparison operator list */
   Compare getParent() { py_cmpop_lists(this, result) }
 
@@ -1611,7 +1611,7 @@ library class CmpopList_ extends @py_cmpop_list {
 }
 
 /** INTERNAL: See the class `Comprehension` for further information. */
-library class Comprehension_ extends @py_comprehension {
+class Comprehension_ extends @py_comprehension {
   /** Gets the location of this comprehension. */
   Location getLocation() { py_locations(result, this) }
 
@@ -1638,7 +1638,7 @@ library class Comprehension_ extends @py_comprehension {
 }
 
 /** INTERNAL: See the class `ComprehensionList` for further information. */
-library class ComprehensionList_ extends @py_comprehension_list {
+class ComprehensionList_ extends @py_comprehension_list {
   /** Gets a parent of this comprehension list */
   ListComp getParent() { py_comprehension_lists(this, result) }
 
@@ -1653,7 +1653,7 @@ library class ComprehensionList_ extends @py_comprehension_list {
 }
 
 /** INTERNAL: See the class `DictItem` for further information. */
-library class DictItem_ extends @py_dict_item {
+class DictItem_ extends @py_dict_item {
   /** Gets a parent of this dict_item */
   DictItemList getParent() { py_dict_items(this, _, result, _) }
 
@@ -1662,7 +1662,7 @@ library class DictItem_ extends @py_dict_item {
 }
 
 /** INTERNAL: See the class `DictItemList` for further information. */
-library class DictItemList_ extends @py_dict_item_list {
+class DictItemList_ extends @py_dict_item_list {
   /** Gets a parent of this dict_item list */
   DictItemListParent getParent() { py_dict_item_lists(this, result) }
 
@@ -1677,13 +1677,13 @@ library class DictItemList_ extends @py_dict_item_list {
 }
 
 /** INTERNAL: See the class `DictItemListParent` for further information. */
-library class DictItemListParent_ extends @py_dict_item_list_parent {
+class DictItemListParent_ extends @py_dict_item_list_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "DictItemListParent" }
 }
 
 /** INTERNAL: See the class `Expr` for further information. */
-library class Expr_ extends @py_expr {
+class Expr_ extends @py_expr {
   /** Gets the location of this expression. */
   Location getLocation() { py_locations(result, this) }
 
@@ -1698,7 +1698,7 @@ library class Expr_ extends @py_expr {
 }
 
 /** INTERNAL: See the class `ExprContext` for further information. */
-library class ExprContext_ extends @py_expr_context {
+class ExprContext_ extends @py_expr_context {
   /** Gets a parent of this expression context */
   ExprContextParent getParent() { py_expr_contexts(this, _, result) }
 
@@ -1707,13 +1707,13 @@ library class ExprContext_ extends @py_expr_context {
 }
 
 /** INTERNAL: See the class `ExprContextParent` for further information. */
-library class ExprContextParent_ extends @py_expr_context_parent {
+class ExprContextParent_ extends @py_expr_context_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "ExprContextParent" }
 }
 
 /** INTERNAL: See the class `ExprList` for further information. */
-library class ExprList_ extends @py_expr_list {
+class ExprList_ extends @py_expr_list {
   /** Gets a parent of this expression list */
   ExprListParent getParent() { py_expr_lists(this, result, _) }
 
@@ -1728,25 +1728,25 @@ library class ExprList_ extends @py_expr_list {
 }
 
 /** INTERNAL: See the class `ExprListParent` for further information. */
-library class ExprListParent_ extends @py_expr_list_parent {
+class ExprListParent_ extends @py_expr_list_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "ExprListParent" }
 }
 
 /** INTERNAL: See the class `ExprOrStmt` for further information. */
-library class ExprOrStmt_ extends @py_expr_or_stmt {
+class ExprOrStmt_ extends @py_expr_or_stmt {
   /** Gets a textual representation of this element. */
   string toString() { result = "ExprOrStmt" }
 }
 
 /** INTERNAL: See the class `ExprParent` for further information. */
-library class ExprParent_ extends @py_expr_parent {
+class ExprParent_ extends @py_expr_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "ExprParent" }
 }
 
 /** INTERNAL: See the class `Keyword` for further information. */
-library class Keyword_ extends @py_keyword, DictItem {
+class Keyword_ extends @py_keyword, DictItem {
   /** Gets the location of this keyword argument. */
   override Location getLocation() { py_locations(result, this) }
 
@@ -1760,13 +1760,13 @@ library class Keyword_ extends @py_keyword, DictItem {
 }
 
 /** INTERNAL: See the class `LocationParent` for further information. */
-library class LocationParent_ extends @py_location_parent {
+class LocationParent_ extends @py_location_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "LocationParent" }
 }
 
 /** INTERNAL: See the class `Operator` for further information. */
-library class Operator_ extends @py_operator {
+class Operator_ extends @py_operator {
   /** Gets a parent of this operator */
   BinaryExpr getParent() { py_operators(this, _, result) }
 
@@ -1775,13 +1775,13 @@ library class Operator_ extends @py_operator {
 }
 
 /** INTERNAL: See the class `Parameter` for further information. */
-library class Parameter_ extends @py_parameter {
+class Parameter_ extends @py_parameter {
   /** Gets a textual representation of this element. */
   string toString() { result = "Parameter" }
 }
 
 /** INTERNAL: See the class `Pattern` for further information. */
-library class Pattern_ extends @py_pattern {
+class Pattern_ extends @py_pattern {
   /** Gets the location of this pattern. */
   Location getLocation() { py_locations(result, this) }
 
@@ -1796,7 +1796,7 @@ library class Pattern_ extends @py_pattern {
 }
 
 /** INTERNAL: See the class `PatternList` for further information. */
-library class PatternList_ extends @py_pattern_list {
+class PatternList_ extends @py_pattern_list {
   /** Gets a parent of this pattern list */
   PatternListParent getParent() { py_pattern_lists(this, result, _) }
 
@@ -1811,25 +1811,25 @@ library class PatternList_ extends @py_pattern_list {
 }
 
 /** INTERNAL: See the class `PatternListParent` for further information. */
-library class PatternListParent_ extends @py_pattern_list_parent {
+class PatternListParent_ extends @py_pattern_list_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "PatternListParent" }
 }
 
 /** INTERNAL: See the class `PatternParent` for further information. */
-library class PatternParent_ extends @py_pattern_parent {
+class PatternParent_ extends @py_pattern_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "PatternParent" }
 }
 
 /** INTERNAL: See the class `Scope` for further information. */
-library class Scope_ extends @py_scope {
+class Scope_ extends @py_scope {
   /** Gets a textual representation of this element. */
   string toString() { result = "Scope" }
 }
 
 /** INTERNAL: See the class `Stmt` for further information. */
-library class Stmt_ extends @py_stmt {
+class Stmt_ extends @py_stmt {
   /** Gets the location of this statement. */
   Location getLocation() { py_locations(result, this) }
 
@@ -1841,7 +1841,7 @@ library class Stmt_ extends @py_stmt {
 }
 
 /** INTERNAL: See the class `StmtList` for further information. */
-library class StmtList_ extends @py_stmt_list {
+class StmtList_ extends @py_stmt_list {
   /** Gets a parent of this statement list */
   StmtListParent getParent() { py_stmt_lists(this, result, _) }
 
@@ -1856,13 +1856,13 @@ library class StmtList_ extends @py_stmt_list {
 }
 
 /** INTERNAL: See the class `StmtListParent` for further information. */
-library class StmtListParent_ extends @py_stmt_list_parent {
+class StmtListParent_ extends @py_stmt_list_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "StmtListParent" }
 }
 
 /** INTERNAL: See the class `StringList` for further information. */
-library class StringList_ extends @py_str_list {
+class StringList_ extends @py_str_list {
   /** Gets a parent of this string list */
   StrListParent getParent() { py_str_lists(this, result) }
 
@@ -1877,19 +1877,19 @@ library class StringList_ extends @py_str_list {
 }
 
 /** INTERNAL: See the class `StrListParent` for further information. */
-library class StrListParent_ extends @py_str_list_parent {
+class StrListParent_ extends @py_str_list_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "StrListParent" }
 }
 
 /** INTERNAL: See the class `StrParent` for further information. */
-library class StrParent_ extends @py_str_parent {
+class StrParent_ extends @py_str_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "StrParent" }
 }
 
 /** INTERNAL: See the class `Unaryop` for further information. */
-library class Unaryop_ extends @py_unaryop {
+class Unaryop_ extends @py_unaryop {
   /** Gets a parent of this unary operation */
   UnaryExpr getParent() { py_unaryops(this, _, result) }
 
@@ -1898,7 +1898,7 @@ library class Unaryop_ extends @py_unaryop {
 }
 
 /** INTERNAL: See the class `VariableParent` for further information. */
-library class VariableParent_ extends @py_variable_parent {
+class VariableParent_ extends @py_variable_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "VariableParent" }
 }

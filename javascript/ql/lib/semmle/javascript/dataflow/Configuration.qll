@@ -1800,6 +1800,22 @@ class PathNode extends TPathNode {
   ) {
     nd.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /**
+   * Gets a summary for the path node.
+   */
+  PathSummary getPathSummary() {
+    this = MkMidNode(_, _, result)
+    or
+    this = MkSinkNode(_, _) and getASuccessor(MkMidNode(_, _, result)) = this
+    or
+    this = MkSourceNode(_, _) and getASuccessor(this) = MkMidNode(_, _, result)
+  }
+
+  /**
+   * Gets a flow label for the path node.
+   */
+  FlowLabel getFlowLabel() { result = getPathSummary().getEndLabel() }
 }
 
 /** Gets the mid node corresponding to `src`. */
@@ -1871,9 +1887,6 @@ class MidPathNode extends PathNode, MkMidNode {
   PathSummary summary;
 
   MidPathNode() { this = MkMidNode(nd, cfg, summary) }
-
-  /** Gets the summary of the path underlying this path node. */
-  PathSummary getPathSummary() { result = summary }
 
   /** Holds if this path node wraps data-flow node `nd`, configuration `c` and summary `s`. */
   predicate wraps(DataFlow::Node n, DataFlow::Configuration c, PathSummary s) {

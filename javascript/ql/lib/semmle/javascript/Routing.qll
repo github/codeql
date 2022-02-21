@@ -652,7 +652,7 @@ module Routing {
    */
   module Router {
     /**
-     * Creation of a mutable router object.
+     * The creation of a mutable router object.
      */
     abstract class Range extends DataFlow::Node {
       /** Gets a reference to this router. */

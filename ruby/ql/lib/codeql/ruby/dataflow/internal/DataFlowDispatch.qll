@@ -241,7 +241,11 @@ private module Cached {
       or
       FlowSummaryImplSpecific::ParsePositions::isParsedParameterPosition(_, pos)
     } or
-    TKeywordArgumentPosition(string name) { name = any(KeywordParameter kp).getName() }
+    TKeywordArgumentPosition(string name) {
+      name = any(KeywordParameter kp).getName()
+      or
+      exists(any(Call c).getKeywordArgument(name))
+    }
 
   cached
   newtype TParameterPosition =
@@ -463,18 +467,7 @@ predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { non
  */
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
-/**
- * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
- */
-predicate exprNodeReturnedFrom(DataFlow::ExprNode e, Callable c) {
-  exists(ReturningNode r |
-    nodeGetEnclosingCallable(r).asCallable() = c and
-    (
-      r.(ExplicitReturnNode).getReturningNode().getReturnedValueNode() = e.asExpr() or
-      r.(ExprReturnNode) = e
-    )
-  )
-}
+predicate exprNodeReturnedFrom = exprNodeReturnedFromCached/2;
 
 /** A parameter position. */
 class ParameterPosition extends TParameterPosition {

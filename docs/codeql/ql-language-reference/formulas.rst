@@ -154,7 +154,7 @@ For example, ``isThree(x)`` might be a call to a predicate that holds if the arg
 
 A call to a predicate can also contain a closure operator, namely ``*`` or ``+``. For example,
 ``a.isChildOf+(b)`` is a call to the :ref:`transitive closure <transitive-closures>` of 
-``isChildOf()``, so it holds if ``a`` is a descendent of ``b``. 
+``isChildOf()``, so it holds if ``a`` is a descendant of ``b``.
 
 The predicate reference must resolve to exactly one predicate. For more information about how a predicate 
 reference is resolved, see ":ref:`name-resolution`." 

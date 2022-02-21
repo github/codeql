@@ -1,3 +1,20 @@
+## 0.0.10
+
+### New Queries
+
+* A new query, `js/unsafe-code-construction`, has been added to the query suite, highlighting libraries that may leave clients vulnerable to arbitary code execution.
+  The query is not run by default.
+* A new query `js/file-system-race` has been added. The query detects when there is time between a file being checked and used. The query is not run by default.
+* A new query `js/jwt-missing-verification` has been added. The query detects applications that don't verify JWT tokens.
+* The `js/insecure-dependency` query has been added. It detects depedencies that are downloaded using an unencrypted connection.
+
+## 0.0.9
+
+### New Queries
+
+* A new query `js/samesite-none-cookie` has been added. The query detects when the SameSite attribute is set to None on a sensitive cookie.
+* A new query `js/empty-password-in-configuration-file` has been added. The query detects empty passwords in configuration files. The query is not run by default.
+
 ## 0.0.8
 
 ## 0.0.7

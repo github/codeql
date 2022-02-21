@@ -181,3 +181,6 @@ output = <<`SCRIPT`
  cat file.txt
 SCRIPT
 
+x = 42
+{x:, y:5}
+{y: , Z:}
