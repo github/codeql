@@ -8,7 +8,6 @@ private boolean UnsafecsrfComparison(String csrfTokenInCookie) {
          }
 }
 
-
 private boolean safecsrfComparison(String csrfTokenInCookie) {
 	  String csrfTokenInRequest = request.getHeader("X-CSRF-TOKEN");
           if (csrfTokenInRequest == null || !MessageDigest.isEqual(
