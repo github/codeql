@@ -61,7 +61,7 @@ private class SplatSummary extends SummarizedCallable {
     (
       // *1 = [1]
       input = "Receiver" and
-      output = "ArrayElement[0] of ReturnValue"
+      output = "ReturnValue.ArrayElement[0]"
       or
       // *[1] = [1]
       input = "Receiver" and

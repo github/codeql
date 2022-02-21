@@ -39,10 +39,10 @@ private class SummarizedCallableApplyBlock extends SummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[0]" and
-    output = "Parameter[0] of BlockArgument" and
+    output = "BlockArgument.Parameter[0]" and
     preservesValue = true
     or
-    input = "ReturnValue of BlockArgument" and
+    input = "BlockArgument.ReturnValue" and
     output = "ReturnValue" and
     preservesValue = true
   }
@@ -55,10 +55,10 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[1]" and
-    output = "Parameter[0] of Argument[0]" and
+    output = "Argument[0].Parameter[0]" and
     preservesValue = true
     or
-    input = "ReturnValue of Argument[0]" and
+    input = "Argument[0].ReturnValue" and
     output = "ReturnValue" and
     preservesValue = true
   }
