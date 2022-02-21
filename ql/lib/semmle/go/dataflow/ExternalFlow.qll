@@ -64,6 +64,7 @@ private import go
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
+private import internal.AccessPathSyntax
 private import FlowSummary
 
 /**
@@ -295,7 +296,7 @@ module CsvValidation {
       msg = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
     )
     or
-    exists(string pred, string input, string part |
+    exists(string pred, AccessPath input, string part |
       sinkModel(_, _, _, _, _, _, input, _) and pred = "sink"
       or
       summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
@@ -305,7 +306,7 @@ module CsvValidation {
         not part = "" and
         not parseArg(part, _)
         or
-        specSplit(input, part, _) and
+        part = input.getToken(_) and
         parseParam(part, _)
       ) and
       msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
@@ -403,8 +404,7 @@ predicate hasExternalSpecification(Function f) {
   exists(SourceOrSinkElement e | f = e.asEntity() | sourceElement(e, _, _) or sinkElement(e, _, _))
 }
 
-private predicate parseField(string c, DataFlow::FieldContent f) {
-  specSplit(_, c, _) and
+private predicate parseField(AccessPathToken c, DataFlow::FieldContent f) {
   exists(string fieldRegex, string package, string className, string fieldName |
     fieldRegex = "^Field\\[(.*)\\.([^.]+)\\.([^.]+)\\]$" and
     package = c.regexpCapture(fieldRegex, 1) and
@@ -425,8 +425,7 @@ class SyntheticField extends string {
   Type getType() { result instanceof EmptyInterfaceType }
 }
 
-private predicate parseSynthField(string c, string f) {
-  specSplit(_, c, _) and
+private predicate parseSynthField(AccessPathToken c, string f) {
   c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9]+)\\]", 1) = f
 }
 
