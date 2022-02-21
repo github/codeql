@@ -16,6 +16,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 
+/** A static method that uses a non-constant-time algorithm for comparing inputs. */
 private class NonConstantTimeComparisonCall extends StaticMethodAccess {
   NonConstantTimeComparisonCall() {
     this.getMethod()
@@ -24,6 +25,7 @@ private class NonConstantTimeComparisonCall extends StaticMethodAccess {
   }
 }
 
+/** Methods that use a non-constant-time algorithm for comparing inputs. */
 private class NonConstantTimeEqualsCall extends MethodAccess {
   NonConstantTimeEqualsCall() {
     this.getMethod().hasQualifiedName("java.lang", "String", ["equals", "contentEquals", "equalsIgnoreCase"])
