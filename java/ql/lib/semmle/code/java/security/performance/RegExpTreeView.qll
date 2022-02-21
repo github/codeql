@@ -12,6 +12,8 @@ import semmle.code.java.regex.RegexTreeView
  */
 predicate isEscapeClass(RegExpTerm term, string clazz) {
   term.(RegExpCharacterClassEscape).getValue() = clazz
+  or
+  term.(RegExpNamedProperty).getBackslashEquivalent() = clazz
 }
 
 /**
