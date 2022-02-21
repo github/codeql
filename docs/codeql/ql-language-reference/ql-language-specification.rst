@@ -1530,9 +1530,10 @@ A range check has the following syntax:
 
 ::
 
-   inrange ::= expr "in" range
+   inrange ::= expr "in" (range | setliteral)
 
-The formula is equivalent to ``expr "=" range``.
+
+The formula is equivalent to ``expr "=" range`` or ``expr "=" setliteral``.
 
 Calls
 ~~~~~
@@ -2131,7 +2132,7 @@ The complete grammar for QL is as follows:
 
    instanceof ::= expr "instanceof" type
 
-   inrange ::= expr "in" range
+   inrange ::= expr "in" (range | setliteral)
 
    call ::= predicateRef (closure)? "(" (exprs)? ")"
         |   primary "." predicateName (closure)? "(" (exprs)? ")"
