@@ -998,10 +998,13 @@ There are several kinds of expressions:
            |   literal
            |   variable
            |   super_expr
-           |   callwithresult
            |   postfix_cast
+           |   callwithresults
            |   aggregation
            |   any
+           |   range
+           |   setliteral
+
 
 Parenthesized expressions
 ~~~~~~~~~~~~~~~~~~~~~~~~~
