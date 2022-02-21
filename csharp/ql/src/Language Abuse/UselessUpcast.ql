@@ -207,6 +207,17 @@ class ExplicitUpcast extends ExplicitCast {
   }
 }
 
+// Stop external filepaths from appearing in the results
+class ValueOrRefTypeLocation extends ValueOrRefType {
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    exists(string fullPath | super.hasLocationInfo(fullPath, sl, sc, el, ec) |
+      if exists(this.getFile().getRelativePath())
+      then path = fullPath
+      else path = fullPath.regexpReplaceAll(".*/", "<external>/")
+    )
+  }
+}
+
 from ExplicitUpcast u, ValueOrRefType src, ValueOrRefType dest
 where
   src = u.getSourceType() and

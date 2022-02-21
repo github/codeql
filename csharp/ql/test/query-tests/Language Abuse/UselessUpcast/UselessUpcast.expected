@@ -6,4 +6,5 @@
 | UselessUpcast.cs:103:16:103:19 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:25:7:25:7 | C | C | UselessUpcast.cs:18:7:18:7 | B | B |
 | UselessUpcast.cs:158:34:158:40 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:156:11:156:16 | SubSub | SubSub | UselessUpcast.cs:151:11:151:13 | Sub | Sub |
 | UselessUpcast.cs:162:21:162:27 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:156:11:156:16 | SubSub | SubSub | UselessUpcast.cs:151:11:151:13 | Sub | Sub |
+| UselessUpcast.cs:170:23:170:32 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | file://<external>/System.Private.CoreLib.dll:0:0:0:0 | Object | Object | file://<external>/System.Private.CoreLib.dll:0:0:0:0 | dynamic | dynamic |
 | UselessUpcastBad.cs:9:23:9:32 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcastBad.cs:4:11:4:13 | Sub | Sub | UselessUpcastBad.cs:3:11:3:15 | Super | Super |
