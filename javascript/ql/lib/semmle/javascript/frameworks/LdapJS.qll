@@ -36,10 +36,10 @@ module LdapJS {
 
   /** A creation of an LDAPjs filter, or object containing a filter, that doesn't sanitizes the input. */
   abstract class TaintPreservingLdapFilterStep extends DataFlow::Node {
-    /** The input that creates (part of) an LDAPjs filter. */
+    /** Gets the input that creates (part of) an LDAPjs filter. */
     abstract DataFlow::Node getInput();
 
-    /** The resulting LDAPjs filter. */
+    /** Gets the resulting LDAPjs filter. */
     abstract DataFlow::Node getOutput();
   }
 

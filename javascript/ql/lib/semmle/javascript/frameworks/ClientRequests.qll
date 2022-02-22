@@ -807,7 +807,7 @@ module ClientRequest {
    */
   private module ApolloClient {
     /**
-     * A function from `apollo-client` that accepts an options object that may contain a `uri` property.
+     * Gets a function from `apollo-client` that accepts an options object that may contain a `uri` property.
      */
     API::Node apolloUriCallee() {
       result = API::moduleImport("apollo-link-http").getMember(["HttpLink", "createHttpLink"])
