@@ -71,7 +71,7 @@ module String {
     override MethodCall getACall() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["Receiver", "Argument[0]", "ArrayElement of Argument[0]"] and
+      input = ["Receiver", "Argument[0]", "Argument[0].ArrayElement"] and
       output = "ReturnValue" and
       preservesValue = false
     }
@@ -234,7 +234,7 @@ module String {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = false and
       input = "Receiver" and
-      output = ["Parameter[0] of BlockArgument", "ReturnValue"]
+      output = ["BlockArgument.Parameter[0]", "ReturnValue"]
     }
   }
 
@@ -247,7 +247,7 @@ module String {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = false and
       input = "Receiver" and
-      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"]
+      output = ["BlockArgument.Parameter[0]", "ReturnValue.ArrayElement[?]"]
     }
   }
 
@@ -299,7 +299,7 @@ module String {
       // block return -> return value
       preservesValue = false and
       output = "ReturnValue" and
-      input = ["Receiver", "Argument[1]", "ReturnValue of BlockArgument"]
+      input = ["Receiver", "Argument[1]", "BlockArgument.ReturnValue"]
     }
   }
 
@@ -361,7 +361,7 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Receiver" and
-      output = "ArrayElement[" + [0, 1, 2] + "] of ReturnValue" and
+      output = "ReturnValue.ArrayElement[" + [0, 1, 2] + "]" and
       preservesValue = false
     }
   }
@@ -414,7 +414,7 @@ module String {
           // scan(pattern) -> array
           "ReturnValue",
           // Parameter[_] doesn't seem to work
-          "Parameter[" + [0 .. 10] + "] of BlockArgument"
+          "BlockArgument.Parameter[" + [0 .. 10] + "]"
         ]
     }
   }
@@ -428,9 +428,9 @@ module String {
       output =
         [
           // scan(pattern) {|match, ...| block } -> str
-          "ArrayElement[?] of ReturnValue",
+          "ReturnValue.ArrayElement[?]",
           // Parameter[_] doesn't seem to work
-          "Parameter[" + [0 .. 10] + "] of BlockArgument"
+          "BlockArgument.Parameter[" + [0 .. 10] + "]"
         ]
     }
   }
@@ -456,11 +456,11 @@ module String {
       preservesValue = false and
       (
         input = "Receiver" and
-        output = "Parameter[0] of BlockArgument"
+        output = "BlockArgument.Parameter[0]"
         or
         input = "Argument[0]" and output = "ReturnValue"
         or
-        input = "ReturnValue of BlockArgument" and
+        input = "BlockArgument.ReturnValue" and
         output = "ReturnValue"
       )
     }
@@ -475,7 +475,7 @@ module String {
       preservesValue = false and
       (
         input = "Receiver" and
-        output = "Parameter[0] of BlockArgument"
+        output = "BlockArgument.Parameter[0]"
         or
         input = "Argument[0]" and output = "ReturnValue"
       )
@@ -501,7 +501,7 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = false
     }
   }
@@ -581,11 +581,11 @@ module String {
       valueIdentityFlow(input, output, preservesValue)
       or
       input = ["Receiver", "Argument[0]"] and
-      output = "Parameter[0] of BlockArgument" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
       or
-      input = "ReturnValue of BlockArgument" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "BlockArgument.ReturnValue" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
@@ -601,11 +601,11 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      output = "BlockArgument.Parameter[0]" and
       preservesValue = true
       or
-      input = "ReturnValue of BlockArgument" and
-      output = "ArrayElement[?] of ReturnValue" and
+      input = "BlockArgument.ReturnValue" and
+      output = "ReturnValue.ArrayElement[?]" and
       preservesValue = true
     }
   }
