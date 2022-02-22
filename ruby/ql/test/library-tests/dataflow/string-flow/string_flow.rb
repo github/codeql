@@ -306,7 +306,7 @@ end
 def m_upto(i)
     a = source "a"
     a.upto("b") { |x| sink x } # $ hasValueFlow=a
+    a.upto("b", true) { |x| sink x } # $ hasValueFlow=a
     "b".upto(a) { |x| sink x } # $ hasValueFlow=a
-    c = a.upto("b")
-    sink c[i] # $ hasTaintFlow=a
+    "b".upto(a, true) { |x| sink x }
 end

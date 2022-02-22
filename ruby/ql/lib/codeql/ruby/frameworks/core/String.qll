@@ -224,26 +224,40 @@ module String {
 
   /**
    * A flow summary for `String#each_line` and `String#lines`.
+   * This is split into two summaries below - one for when a block is passed and one for when no block is passed.
    */
-  private class EachLineSummary extends SummarizedCallable {
+  abstract private class EachLineSummary extends SummarizedCallable {
     MethodCall mc;
 
-    EachLineSummary() { this = ["each_line", "lines"] and mc.getMethodName() = this }
+    bindingset[this]
+    EachLineSummary() { mc.getMethodName() = ["each_line", "lines"] }
 
     override MethodCall getACall() { result = mc }
+  }
 
-    predicate hasBlock() { exists(Block b | b = mc.getBlock()) }
+  /**
+   * A flow summary for `String#each_line` and `String#lines` when a block is passed.
+   */
+  private class EachLineBlockSummary extends EachLineSummary {
+    EachLineBlockSummary() { this = "each_line_with_block" and exists(mc.getBlock()) }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = false and
       input = "Receiver" and
-      (
-        output = "Parameter[0] of BlockArgument"
-        or
-        not this.hasBlock() and output = "ArrayElement[?] of ReturnValue"
-        or
-        this.hasBlock() and output = "ReturnValue"
-      )
+      output = ["Parameter[0] of BlockArgument", "ReturnValue"]
+    }
+  }
+
+  /**
+   * A flow summary for `String#each_line` and `String#lines` when no block is passed.
+   */
+  private class EachLineNoBlockSummary extends EachLineSummary {
+    EachLineNoBlockSummary() { this = "each_line_without_block" and not exists(mc.getBlock()) }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      preservesValue = false and
+      input = "Receiver" and
+      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"]
     }
   }
 
@@ -399,30 +413,43 @@ module String {
   /**
    * A flow summary for `String#scan`.
    */
-  private class ScanSummary extends SummarizedCallable {
-    private MethodCall mc;
+  abstract private class ScanSummary extends SummarizedCallable {
+    MethodCall mc;
 
-    ScanSummary() { this = "scan" and mc.getMethodName() = this }
+    bindingset[this]
+    ScanSummary() { mc.getMethodName() = "scan" }
 
     override MethodCall getACall() { result = mc }
+  }
 
-    private predicate hasBlock() { exists(Block b | b = mc.getBlock()) }
+  private class ScanBlockSummary extends ScanSummary {
+    ScanBlockSummary() { this = "scan_with_block" and exists(mc.getBlock()) }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Receiver" and
+      (
+        // Parameter[_] doesn't seem to work
+        output = "Parameter[" + [0 .. 10] + "] of BlockArgument" and preservesValue = false
+        or
+        // scan(pattern) -> array
+        output = "ReturnValue" and
+        preservesValue = true
+      )
+    }
+  }
+
+  private class ScanNoBlockSummary extends ScanSummary {
+    ScanNoBlockSummary() { this = "scan_no_block" and not exists(mc.getBlock()) }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Receiver" and
       (
         // scan(pattern) {|match, ...| block } -> str
-        not this.hasBlock() and
         output = "ArrayElement[?] of ReturnValue" and
         preservesValue = false
         or
         // Parameter[_] doesn't seem to work
         output = "Parameter[" + [0 .. 10] + "] of BlockArgument" and preservesValue = false
-        or
-        // scan(pattern) -> array
-        this.hasBlock() and
-        output = "ReturnValue" and
-        preservesValue = true
       )
     }
   }
@@ -430,14 +457,17 @@ module String {
   /**
    * A flow summary for `String#scrub(!)`.
    */
-  private class ScrubSummary extends SummarizedCallable {
-    private MethodCall mc;
+  abstract private class ScrubSummary extends SummarizedCallable {
+    MethodCall mc;
 
-    ScrubSummary() { this = ["scrub", "scrub!"] and mc.getMethodName() = this }
+    bindingset[this]
+    ScrubSummary() { mc.getMethodName() = ["scrub", "scrub!"] }
 
     override MethodCall getACall() { result = mc }
+  }
 
-    private predicate hasBlock() { exists(Block b | b = mc.getBlock()) }
+  private class ScrubBlockSummary extends ScrubSummary {
+    ScrubBlockSummary() { this = "scrub_block" and exists(mc.getBlock()) }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Receiver" and
@@ -446,10 +476,23 @@ module String {
       or
       input = "Argument[0]" and output = "ReturnValue" and preservesValue = true
       or
-      this.hasBlock() and
       input = "ReturnValue of BlockArgument" and
       output = "ReturnValue" and
       preservesValue = true
+      or
+      taintIdentityFlow(input, output, preservesValue)
+    }
+  }
+
+  private class ScrubNoBlockSummary extends ScrubSummary {
+    ScrubNoBlockSummary() { this = "scrub_no_block" and not exists(mc.getBlock()) }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Receiver" and
+      output = "Parameter[0] of BlockArgument" and
+      preservesValue = true
+      or
+      input = "Argument[0]" and output = "ReturnValue" and preservesValue = true
       or
       taintIdentityFlow(input, output, preservesValue)
     }
@@ -515,15 +558,27 @@ module String {
 
   /**
    * A flow summary for `String#upto`.
+   * ```
+   * String#upto(stop, exclusive=false, &block)
+   * ```
    */
-  private class UptoSummary extends SummarizedCallable {
-    private MethodCall mc;
+  abstract private class UptoSummary extends SummarizedCallable {
+    MethodCall mc;
 
-    UptoSummary() { this = "upto" and mc.getMethodName() = this }
+    bindingset[this]
+    UptoSummary() { mc.getMethodName() = "upto" }
 
     override MethodCall getACall() { result = mc }
+  }
 
-    private predicate hasBlock() { exists(Block b | b = mc.getBlock()) }
+  /**
+   * A flow summary for `String#upto`, when `exclusive = false`.
+   */
+  private class UptoInclusiveSummary extends UptoSummary {
+    UptoInclusiveSummary() {
+      this = "upto_inclusive" and
+      (not exists(mc.getArgument(1)) or mc.getArgument(1).getConstantValue().isBoolean(false))
+    }
 
     // TODO: if second arg ('exclusive') is true, the first arg is excluded
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -533,7 +588,26 @@ module String {
       output = "Parameter[0] of BlockArgument" and
       preservesValue = true
       or
-      not this.hasBlock() and
+      input = "ReturnValue of BlockArgument" and
+      output = "ArrayElement[?] of ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  /**
+   * A flow summary for `String#upto`, when `exclusive = true`.
+   */
+  private class UptoExclusiveSummary extends UptoSummary {
+    UptoExclusiveSummary() {
+      this = "upto_exclusive" and
+      mc.getArgument(1).getConstantValue().isBoolean(true)
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = ["Receiver"] and
+      output = "Parameter[0] of BlockArgument" and
+      preservesValue = true
+      or
       input = "ReturnValue of BlockArgument" and
       output = "ArrayElement[?] of ReturnValue" and
       preservesValue = true
