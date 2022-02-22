@@ -1,3 +1,4 @@
+using System;
 using Semmle.Util.Logging;
 using Semmle.Util;
 
@@ -49,6 +50,7 @@ namespace Semmle.Extraction
         /// </summary>
         public bool QlTest { get; private set; } = false;
 
+
         /// <summary>
         /// The compression algorithm used for trap files.
         /// </summary>
@@ -64,6 +66,16 @@ namespace Semmle.Extraction
                 case "verbosity":
                     Verbosity = (Verbosity)int.Parse(value);
                     return true;
+                case "compression":
+                    try
+                    {
+                        TrapCompression = (TrapWriter.CompressionMode)Enum.Parse(typeof(TrapWriter.CompressionMode), value, true);
+                        return true;
+                    }
+                    catch (ArgumentException)
+                    {
+                        return false;
+                    }
                 default:
                     return false;
             }
