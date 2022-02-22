@@ -26,6 +26,7 @@ query predicate variableInitializerType(
   LocalVariableDecl decl, RefType t1, RefType t2, RefType t3, boolean compatible
 ) {
   decl.getType() = t1 and
+  t1.getPackage().getName() = "kotlin.reflect" and
   decl.getInitializer().getType() = t2 and
   t2.extendsOrImplements(t3) and
   (

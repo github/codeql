@@ -1,14 +1,35 @@
 reflection.kt:
 #    0| [CompilationUnit] reflection
-#    3|   1: [Class] Reflection
+#    0|   1: [Class] ReflectionKt
+#   45|     1: [ExtensionMethod] getLastChar
+#-----|       4: (Parameters)
+#   44|         0: [Parameter] <this>
+#   45|       5: [BlockStmt] { ... }
+#   45|         0: [ReturnStmt] return ...
+#   45|           0: [MethodAccess] get(...)
+#   45|             -1: [ThisAccess] this
+#   45|             0: [SubExpr] ... - ...
+#   45|               0: [MethodAccess] getLength(...)
+#   45|                 -1: [ThisAccess] this
+#   45|               1: [IntegerLiteral] 1
+#   47|     2: [Method] fn2
+#   47|       5: [BlockStmt] { ... }
+#   48|         0: [ExprStmt] <Expr>;
+#   48|           0: [MethodAccess] println(...)
+#   48|             -1: [TypeAccess] ConsoleKt
+#   48|             0: [MethodAccess] get(...)
+#   48|               0: [StringLiteral] abc
+#   49|         1: [ExprStmt] <Expr>;
+#   49|           0: [MethodAccess] println(...)
+#   49|             -1: [TypeAccess] ConsoleKt
+#   49|             0: [MethodAccess] get(...)
+#    3|   2: [Class] Reflection
 #    3|     1: [Constructor] Reflection
 #    3|       5: [BlockStmt] { ... }
 #    3|         0: [SuperConstructorInvocationStmt] super(...)
 #    3|         1: [ExprStmt] <Expr>;
 #    3|           0: [MethodAccess] <obinit>(...)
 #    4|     3: [Method] fn
-#-----|       4: (Parameters)
-#    4|         0: [Parameter] boo
 #    4|       5: [BlockStmt] { ... }
 #    5|         0: [LocalVariableDeclStmt] var ...;
 #    5|           1: [LocalVariableDeclExpr] ref
@@ -32,15 +53,194 @@ reflection.kt:
 #    6|             -1: [TypeAccess] ConsoleKt
 #    6|             0: [MethodAccess] getName(...)
 #    6|               -1: [VarAccess] ref
-#    9|     4: [Class] Ccc
-#    9|       1: [Constructor] Ccc
-#    9|         5: [BlockStmt] { ... }
-#    9|           0: [SuperConstructorInvocationStmt] super(...)
-#    9|           1: [ExprStmt] <Expr>;
-#    9|             0: [MethodAccess] <obinit>(...)
-#   10|       3: [Method] m
+#    8|         2: [LocalVariableDeclStmt] var ...;
+#    8|           1: [LocalVariableDeclExpr] x0
+#    9|         3: [LocalVariableDeclStmt] var ...;
+#    9|           1: [LocalVariableDeclExpr] x1
+#    9|             0: [MethodAccess] get(...)
+#    9|               -1: [VarAccess] x0
+#    9|               0: [ClassInstanceExpr] new C(...)
+#    9|                 -3: [TypeAccess] C
+#   10|         4: [LocalVariableDeclStmt] var ...;
+#   10|           1: [LocalVariableDeclExpr] x2
+#   10|             0: [MethodAccess] getName(...)
+#   10|               -1: [VarAccess] x0
+#   11|         5: [LocalVariableDeclStmt] var ...;
+#   11|           1: [LocalVariableDeclExpr] x3
+#   11|             0: [MethodAccess] getGetter(...)
+#   11|               -1: [VarAccess] x0
+#   12|         6: [LocalVariableDeclStmt] var ...;
+#   12|           1: [LocalVariableDeclExpr] x4
+#   12|             0: [MemberRefExpr] ...::...
+#   12|               -4: [AnonymousClass] new Function1<T,V>(...) { ... }
+#   12|                 1: [Constructor] 
+#-----|                   4: (Parameters)
+#   12|                     0: [Parameter] <dispatchReceiver>
+#   12|                   5: [BlockStmt] { ... }
+#   12|                     0: [SuperConstructorInvocationStmt] super(...)
+#   12|                     1: [ExprStmt] <Expr>;
+#   12|                       0: [AssignExpr] ...=...
+#   12|                         0: [VarAccess] this.<dispatchReceiver>
+#   12|                           -1: [ThisAccess] this
+#   12|                         1: [VarAccess] <dispatchReceiver>
+#   12|                 1: [FieldDeclaration] KProperty1<C,Integer> <dispatchReceiver>;
+#   12|                   -1: [TypeAccess] KProperty1<C,Integer>
+#   12|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   12|                     0: [Parameter] a0
+#   12|                   5: [BlockStmt] { ... }
+#   12|                     0: [ReturnStmt] return ...
+#   12|                       0: [MethodAccess] get(...)
+#   12|                         -1: [VarAccess] this.<dispatchReceiver>
+#   12|                           -1: [ThisAccess] this
+#   12|                         0: [VarAccess] a0
+#   12|               -3: [TypeAccess] Function1<T,V>
+#   12|               0: [VarAccess] x0
+#   13|         7: [LocalVariableDeclStmt] var ...;
+#   13|           1: [LocalVariableDeclExpr] x5
+#   15|         8: [LocalVariableDeclStmt] var ...;
+#   15|           1: [LocalVariableDeclExpr] y0
+#   16|         9: [LocalVariableDeclStmt] var ...;
+#   16|           1: [LocalVariableDeclExpr] y1
+#   16|             0: [MethodAccess] set(...)
+#   16|               -1: [VarAccess] y0
+#   16|               0: [ClassInstanceExpr] new C(...)
+#   16|                 -3: [TypeAccess] C
+#   16|               1: [IntegerLiteral] 5
+#   17|         10: [LocalVariableDeclStmt] var ...;
+#   17|           1: [LocalVariableDeclExpr] y2
+#   17|             0: [MethodAccess] getName(...)
+#   17|               -1: [VarAccess] y0
+#   18|         11: [LocalVariableDeclStmt] var ...;
+#   18|           1: [LocalVariableDeclExpr] y3
+#   18|             0: [MethodAccess] getSetter(...)
+#   18|               -1: [VarAccess] y0
+#   19|         12: [LocalVariableDeclStmt] var ...;
+#   19|           1: [LocalVariableDeclExpr] y4
+#   19|             0: [MemberRefExpr] ...::...
+#   19|               -4: [AnonymousClass] new Function2<T,V,Unit>(...) { ... }
+#   19|                 1: [Constructor] 
+#-----|                   4: (Parameters)
+#   19|                     0: [Parameter] <dispatchReceiver>
+#   19|                   5: [BlockStmt] { ... }
+#   19|                     0: [SuperConstructorInvocationStmt] super(...)
+#   19|                     1: [ExprStmt] <Expr>;
+#   19|                       0: [AssignExpr] ...=...
+#   19|                         0: [VarAccess] this.<dispatchReceiver>
+#   19|                           -1: [ThisAccess] this
+#   19|                         1: [VarAccess] <dispatchReceiver>
+#   19|                 1: [FieldDeclaration] KMutableProperty1<C,Integer> <dispatchReceiver>;
+#   19|                   -1: [TypeAccess] KMutableProperty1<C,Integer>
+#   19|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   19|                     0: [Parameter] a0
+#   19|                     1: [Parameter] a1
+#   19|                   5: [BlockStmt] { ... }
+#   19|                     0: [ReturnStmt] return ...
+#   19|                       0: [MethodAccess] set(...)
+#   19|                         -1: [VarAccess] this.<dispatchReceiver>
+#   19|                           -1: [ThisAccess] this
+#   19|                         0: [VarAccess] a0
+#   19|                         1: [VarAccess] a1
+#   19|               -3: [TypeAccess] Function2<T,V,Unit>
+#   19|               0: [VarAccess] y0
+#   20|         13: [LocalVariableDeclStmt] var ...;
+#   20|           1: [LocalVariableDeclExpr] y5
+#   22|         14: [LocalVariableDeclStmt] var ...;
+#   22|           1: [LocalVariableDeclExpr] prop
+#   22|             0: [CastExpr] (...)...
+#   22|               0: [TypeAccess] KProperty2<C,Integer,Integer>
+#   22|               1: [MethodAccess] single(...)
+#   22|                 -2: [TypeAccess] KCallable<?>
+#   22|                 -1: [TypeAccess] CollectionsKt
+#   22|                 0: [MethodAccess] getMembers(...)
+#   22|                   -1: [TypeLiteral] C.class
+#   22|                     0: [TypeAccess] C
+#   22|                 1: [LambdaExpr] ...->...
+#   22|                   -4: [AnonymousClass] new Function1<KCallable<?>,Boolean>(...) { ... }
+#   22|                     1: [Constructor] 
+#   22|                       5: [BlockStmt] { ... }
+#   22|                         0: [SuperConstructorInvocationStmt] super(...)
+#   22|                     1: [Method] invoke
+#-----|                       4: (Parameters)
+#   22|                         0: [Parameter] it
+#   22|                       5: [BlockStmt] { ... }
+#   22|                         0: [ReturnStmt] return ...
+#   22|                           0: [ValueEQExpr] ... (value equals) ...
+#   22|                             0: [MethodAccess] getName(...)
+#   22|                               -1: [VarAccess] it
+#   22|                             1: [StringLiteral] p3
+#   22|                   -3: [TypeAccess] Function1<KCallable<?>,Boolean>
+#   23|         15: [LocalVariableDeclStmt] var ...;
+#   23|           1: [LocalVariableDeclExpr] z0
+#   23|             0: [MethodAccess] get(...)
+#   23|               -1: [VarAccess] prop
+#   23|               0: [ClassInstanceExpr] new C(...)
+#   23|                 -3: [TypeAccess] C
+#   23|               1: [IntegerLiteral] 5
+#   26|     4: [Class] Ccc
+#   26|       1: [Constructor] Ccc
+#   26|         5: [BlockStmt] { ... }
+#   26|           0: [SuperConstructorInvocationStmt] super(...)
+#   26|           1: [ExprStmt] <Expr>;
+#   26|             0: [MethodAccess] <obinit>(...)
+#   27|       3: [Method] m
 #-----|         4: (Parameters)
-#   10|           0: [Parameter] i
-#   10|         5: [BlockStmt] { ... }
-#   10|           0: [ReturnStmt] return ...
-#   10|             0: [DoubleLiteral] 5.0
+#   27|           0: [Parameter] i
+#   27|         5: [BlockStmt] { ... }
+#   27|           0: [ReturnStmt] return ...
+#   27|             0: [DoubleLiteral] 5.0
+#   30|     5: [Class] C
+#   30|       1: [Constructor] C
+#   30|         5: [BlockStmt] { ... }
+#   30|           0: [SuperConstructorInvocationStmt] super(...)
+#   30|           1: [ExprStmt] <Expr>;
+#   30|             0: [MethodAccess] <obinit>(...)
+#   31|       3: [Method] getP0
+#   31|         5: [BlockStmt] { ... }
+#   31|           0: [ReturnStmt] return ...
+#   31|             0: [VarAccess] this.p0
+#   31|               -1: [ThisAccess] this
+#   31|       3: [FieldDeclaration] int p0;
+#   31|         -1: [TypeAccess] int
+#   31|         0: [IntegerLiteral] 1
+#   32|       5: [Method] getP1
+#   32|         5: [BlockStmt] { ... }
+#   32|           0: [ReturnStmt] return ...
+#   32|             0: [VarAccess] this.p1
+#   32|               -1: [ThisAccess] this
+#   32|       5: [Method] setP1
+#-----|         4: (Parameters)
+#   32|           0: [Parameter] <set-?>
+#   32|         5: [BlockStmt] { ... }
+#   32|           0: [ExprStmt] <Expr>;
+#   32|             0: [AssignExpr] ...=...
+#   32|               0: [VarAccess] this.p1
+#   32|                 -1: [ThisAccess] this
+#   32|               1: [VarAccess] <set-?>
+#   32|       5: [FieldDeclaration] int p1;
+#   32|         -1: [TypeAccess] int
+#   32|         0: [IntegerLiteral] 2
+#   34|       8: [Method] getP2
+#   34|         5: [BlockStmt] { ... }
+#   34|           0: [ReturnStmt] return ...
+#   34|             0: [IntegerLiteral] 1
+#   35|       9: [Method] setP2
+#-----|         4: (Parameters)
+#   35|           0: [Parameter] value
+#   35|         5: [BlockStmt] { ... }
+#   35|           0: [ReturnStmt] return ...
+#   35|             0: [VarAccess] INSTANCE
+#   38|       10: [ExtensionMethod] getP3
+#-----|         4: (Parameters)
+#   37|           0: [Parameter] <this>
+#   38|         5: [BlockStmt] { ... }
+#   38|           0: [ReturnStmt] return ...
+#   38|             0: [IntegerLiteral] 1
+#   39|       11: [ExtensionMethod] setP3
+#-----|         4: (Parameters)
+#   37|           0: [Parameter] <this>
+#   39|           1: [Parameter] value
+#   39|         5: [BlockStmt] { ... }
+#   39|           0: [ReturnStmt] return ...
+#   39|             0: [VarAccess] INSTANCE
