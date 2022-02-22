@@ -10,7 +10,7 @@
 		<p>
 			Consider this regular expression:
 		</p>
-		<sample language="python">
+		<sample language="java">
 			^_(__|.)+_$
 		</sample>
 		<p>
@@ -24,7 +24,7 @@
 			This problem can be avoided by rewriting the regular expression to remove the ambiguity between
 			the two branches of the alternative inside the repetition:
 		</p>
-		<sample language="python">
+		<sample language="java">
 			^_(__|[^_])+_$
 		</sample>
 	</example>

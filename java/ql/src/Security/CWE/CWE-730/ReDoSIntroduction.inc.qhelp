@@ -17,7 +17,7 @@
 
 		<p>
 
-			The regular expression engine provided by Python uses a backtracking non-deterministic finite
+			The regular expression engine provided by Java uses a backtracking non-deterministic finite
 			automata to implement regular expression matching. While this approach
 			is space-efficient and allows supporting advanced features like
 			capture groups, it is not time-efficient in general. The worst-case
@@ -38,6 +38,11 @@
 			references.
 
 		</p>
+
+		<p>
+			Note that Java versions 9 and above have some mitigations against ReDoS; however they aren't perfect 
+			and more complex regular expressions can still be affected by this problem. 
+		</p>
 	</overview>
 
 	<recommendation>
@@ -47,6 +52,8 @@
 			Modify the regular expression to remove the ambiguity, or
 			ensure that the strings matched with the regular expression are short
 			enough that the time-complexity does not matter.
+
+			Alternatively, an alternate regex library that guarantees linear time execution, such as Google's RE2J, may be used. 
 
 		</p>
 
