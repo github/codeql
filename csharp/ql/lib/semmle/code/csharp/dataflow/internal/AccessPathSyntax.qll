@@ -71,7 +71,7 @@ module AccessPath {
       regexpCaptureTwo(arg, "(-?\\d+)\\.\\.N-(\\d+)", lo, hi) and
       result = [lo.toInt() .. arity - hi.toInt()]
       or
-      // N-x..Ny
+      // N-x..N-y
       regexpCaptureTwo(arg, "N-(\\d+)\\.\\.N-(\\d+)", lo, hi) and
       result = [arity - lo.toInt() .. arity - hi.toInt()] and
       result >= 0
