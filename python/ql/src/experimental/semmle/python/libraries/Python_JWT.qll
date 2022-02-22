@@ -33,9 +33,9 @@ private module Python_JWT {
 
     override DataFlow::Node getPayload() { result = this.getArg(0) }
 
-    override DataFlow::Node getKey() { result = verifyCall().getArg(1) }
+    override DataFlow::Node getKey() { result = this.verifyCall().getArg(1) }
 
-    override DataFlow::Node getAlgorithm() { result = verifyCall().getArg(2) }
+    override DataFlow::Node getAlgorithm() { result = this.verifyCall().getArg(2) }
 
     override string getAlgorithmString() {
       exists(StrConst str |
@@ -46,6 +46,6 @@ private module Python_JWT {
 
     override DataFlow::Node getOptions() { none() }
 
-    override predicate verifiesSignature() { exists(verifyCall()) }
+    override predicate verifiesSignature() { exists(this.verifyCall()) }
   }
 }
