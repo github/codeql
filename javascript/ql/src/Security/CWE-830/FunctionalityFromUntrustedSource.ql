@@ -90,13 +90,22 @@ module DynamicCreation {
     call.getArgument(0).getStringValue().toLowerCase() = name
   }
 
+  DataFlow::Node getAttributeAssignmentRhs(DataFlow::CallNode createCall, string name) {
+    result = createCall.getAPropertyWrite(name).getRhs()
+    or
+    exists(DataFlow::InvokeNode inv | inv = createCall.getAMemberInvocation("setAttribute") |
+      inv.getArgument(0).getStringValue() = name and
+      result = inv.getArgument(1)
+    )
+  }
+
   /**
    * Holds if `createCall` creates a `<script ../>` element which never
    * has its `integrity` attribute set locally.
    */
   predicate isCreateScriptNodeWoIntegrityCheck(DataFlow::CallNode createCall) {
     isCreateElementNode(createCall, "script") and
-    not exists(createCall.getAPropertyWrite("integrity"))
+    not exists(getAttributeAssignmentRhs(createCall, "integrity"))
   }
 
   DataFlow::Node urlTrackedFromUnsafeSourceLiteral(DataFlow::TypeTracker t) {
@@ -126,15 +135,17 @@ module DynamicCreation {
     result = urlTrackedFromUnsafeSourceLiteral(DataFlow::TypeTracker::end())
   }
 
+  /** Holds if `sink` is assigned to the attribute `name` of any HTML element. */
   predicate isAssignedToSrcAttribute(string name, DataFlow::Node sink) {
     exists(DataFlow::CallNode createElementCall |
-      name = "script" and
-      isCreateScriptNodeWoIntegrityCheck(createElementCall) and
-      sink = createElementCall.getAPropertyWrite("src").getRhs()
-      or
-      name = "iframe" and
-      isCreateElementNode(createElementCall, "iframe") and
-      sink = createElementCall.getAPropertyWrite("src").getRhs()
+      sink = getAttributeAssignmentRhs(createElementCall, "src") and
+      (
+        name = "script" and
+        isCreateScriptNodeWoIntegrityCheck(createElementCall)
+        or
+        name = "iframe" and
+        isCreateElementNode(createElementCall, "iframe")
+      )
     )
   }
 
@@ -143,8 +154,8 @@ module DynamicCreation {
 
     IframeOrScriptSrcAssignment() {
       exists(DataFlow::Node n | n.asExpr() = this |
-        DynamicCreation::isAssignedToSrcAttribute(name, n) and
-        n = DynamicCreation::urlTrackedFromUnsafeSourceLiteral()
+        isAssignedToSrcAttribute(name, n) and
+        n = urlTrackedFromUnsafeSourceLiteral()
       )
     }
 

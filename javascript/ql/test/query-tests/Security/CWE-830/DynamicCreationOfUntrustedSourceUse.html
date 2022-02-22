@@ -33,6 +33,13 @@
               var ifrm3 = document.createElement('iframe');
               ifrm3.src = getUrl('v123');
 
+              // NOT OK (assignment of bad URL using setAttribute)
+              var ifrm4 = document.createElement('iframe');
+              ifrm4.setAttribute('src', 'http://www.example.local/page.html');
+
+              // OK (bad URL, but the attribute is not `src`)
+              var ifrm5 = document.createElement('iframe');
+              ifrm5.setAttribute('data-src', 'http://www.example.local/page.html');
             })();
           </script>
     </head>
