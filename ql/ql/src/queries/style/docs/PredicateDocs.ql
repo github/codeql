@@ -30,7 +30,7 @@ where
     message = "The QLDoc for a predicate with a result should start with 'Gets'."
     or
     not exists(pred.getReturnTypeExpr()) and
-    not docLines(pred).matches(["Holds" + " %", "INTERNAL%", "DEPRECATED%", "EXPERIMENTAL%"]) and
+    not docLines(pred).matches(["Holds ", "INTERNAL", "DEPRECATED", "EXPERIMENTAL"] + "%") and
     message = "The QLDoc for a predicate without a result should start with 'Holds'."
   )
 select pred.getQLDoc(), message
