@@ -42,11 +42,12 @@ module StaticCreation {
   predicate isCdnUrlWithCheckingRequired(string url) {
     // Some CDN URLs are required to have an integrity attribute. We only add CDNs to that list
     // that recommend integrity-checking.
-    url.regexpMatch("(?i)" +
+    url.regexpMatch("(?i)^https?://" +
         [
-          "^https?://code\\.jquery\\.com/.*\\.js$", "^https?://cdnjs\\.cloudflare\\.com/.*\\.js$",
-          "^https?://cdnjs\\.com/.*\\.js$"
-        ])
+          "code\\.jquery\\.com", //
+          "cdnjs\\.cloudflare\\.com", //
+          "cdnjs\\.com" //
+        ] + "/.*\\.js$")
   }
 
   /** A script element that refers to untrusted content. */
@@ -56,9 +57,7 @@ module StaticCreation {
       isUntrustedSourceUrl(super.getSourcePath())
     }
 
-    override string getProblem() {
-      result = "HTML script element loaded using unencrypted connection."
-    }
+    override string getProblem() { result = "Script loaded using unencrypted connection." }
   }
 
   /** A script element that refers to untrusted content. */
@@ -77,9 +76,7 @@ module StaticCreation {
   class IframeElementWithUntrustedContent extends AddsUntrustedUrl instanceof HTML::IframeElement {
     IframeElementWithUntrustedContent() { isUntrustedSourceUrl(super.getSourcePath()) }
 
-    override string getProblem() {
-      result = "HTML iframe element loaded using unencrypted connection."
-    }
+    override string getProblem() { result = "Iframe loaded using unencrypted connection." }
   }
 }
 
@@ -153,6 +150,7 @@ module DynamicCreation {
     string name;
 
     IframeOrScriptSrcAssignment() {
+      name = ["script", "iframe"] and
       exists(DataFlow::Node n | n.asExpr() = this |
         isAssignedToSrcAttribute(name, n) and
         n = urlTrackedFromUnsafeSourceLiteral()
@@ -160,7 +158,9 @@ module DynamicCreation {
     }
 
     override string getProblem() {
-      result = "HTML " + name + " element loaded using unencrypted connection."
+      name = "script" and result = "Script loaded using unencrypted connection."
+      or
+      name = "iframe" and result = "Iframe loaded using unencrypted connection."
     }
   }
 }

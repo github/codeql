@@ -49,7 +49,7 @@
 
 	<example>
 		<p>
-			The following sample loads the jQuery library from the jQuery CDN without using <code>https</code>
+			The following example loads the jQuery library from the jQuery CDN without using <code>https</code>
 			and without checking subresource integrity.
 		</p>
 
@@ -57,7 +57,7 @@
 
 		<p>
 			Instead, loading jQuery from the same domain using <code>https</code> and checking
-			subresource integrity is recommended, as in the next sample.
+			subresource integrity is recommended, as in the next example.
 		</p>
 
 		<sample src="jquery-https-check.html" />
