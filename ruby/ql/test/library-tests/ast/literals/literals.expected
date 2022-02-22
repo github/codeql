@@ -10,8 +10,8 @@ allLiterals
 | literals.rb:12:1:12:1 | 0 | IntegerLiteral | 0 |
 | literals.rb:13:1:13:5 | 0d900 | IntegerLiteral | 0 |
 | literals.rb:16:1:16:6 | 0x1234 | IntegerLiteral | 4660 |
-| literals.rb:17:1:17:10 | 0xdeadbeef | IntegerLiteral | -559038737 |
-| literals.rb:18:1:18:11 | 0xF00D_face | IntegerLiteral | -267519282 |
+| literals.rb:17:1:17:10 | 0xdeadbeef | IntegerLiteral | <none> |
+| literals.rb:18:1:18:11 | 0xF00D_face | IntegerLiteral | <none> |
 | literals.rb:21:1:21:4 | 0123 | IntegerLiteral | 83 |
 | literals.rb:22:1:22:5 | 0o234 | IntegerLiteral | 156 |
 | literals.rb:23:1:23:6 | 0O45_6 | IntegerLiteral | 302 |
@@ -765,8 +765,8 @@ numericLiterals
 | literals.rb:12:1:12:1 | 0 | IntegerLiteral | 0 |
 | literals.rb:13:1:13:5 | 0d900 | IntegerLiteral | 0 |
 | literals.rb:16:1:16:6 | 0x1234 | IntegerLiteral | 4660 |
-| literals.rb:17:1:17:10 | 0xdeadbeef | IntegerLiteral | -559038737 |
-| literals.rb:18:1:18:11 | 0xF00D_face | IntegerLiteral | -267519282 |
+| literals.rb:17:1:17:10 | 0xdeadbeef | IntegerLiteral | <none> |
+| literals.rb:18:1:18:11 | 0xF00D_face | IntegerLiteral | <none> |
 | literals.rb:21:1:21:4 | 0123 | IntegerLiteral | 83 |
 | literals.rb:22:1:22:5 | 0o234 | IntegerLiteral | 156 |
 | literals.rb:23:1:23:6 | 0O45_6 | IntegerLiteral | 302 |
@@ -836,8 +836,8 @@ integerLiterals
 | literals.rb:12:1:12:1 | 0 | IntegerLiteral | 0 |
 | literals.rb:13:1:13:5 | 0d900 | IntegerLiteral | 0 |
 | literals.rb:16:1:16:6 | 0x1234 | IntegerLiteral | 4660 |
-| literals.rb:17:1:17:10 | 0xdeadbeef | IntegerLiteral | -559038737 |
-| literals.rb:18:1:18:11 | 0xF00D_face | IntegerLiteral | -267519282 |
+| literals.rb:17:1:17:10 | 0xdeadbeef | IntegerLiteral | <none> |
+| literals.rb:18:1:18:11 | 0xF00D_face | IntegerLiteral | <none> |
 | literals.rb:21:1:21:4 | 0123 | IntegerLiteral | 83 |
 | literals.rb:22:1:22:5 | 0o234 | IntegerLiteral | 156 |
 | literals.rb:23:1:23:6 | 0O45_6 | IntegerLiteral | 302 |

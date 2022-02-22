@@ -454,8 +454,6 @@
 | literals/literals.rb:12:1:12:1 | 0 | 0 |
 | literals/literals.rb:13:1:13:5 | 0d900 | 0 |
 | literals/literals.rb:16:1:16:6 | 0x1234 | 4660 |
-| literals/literals.rb:17:1:17:10 | 0xdeadbeef | -559038737 |
-| literals/literals.rb:18:1:18:11 | 0xF00D_face | -267519282 |
 | literals/literals.rb:21:1:21:4 | 0123 | 83 |
 | literals/literals.rb:22:1:22:5 | 0o234 | 156 |
 | literals/literals.rb:23:1:23:6 | 0O45_6 | 302 |

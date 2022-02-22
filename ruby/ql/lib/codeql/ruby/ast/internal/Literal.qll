@@ -10,37 +10,16 @@ int parseInteger(Ruby::Integer i) {
     s.charAt(0) != "0" and
     result = s.toInt()
     or
-    exists(string str, string values, int shift |
-      s.matches("0b%") and
-      values = "01" and
-      str = s.suffix(2) and
-      shift = 1
-      or
-      s.matches("0x%") and
-      values = "0123456789abcdef" and
-      str = s.suffix(2) and
-      shift = 4
-      or
-      s.charAt(0) = "0" and
-      not s.charAt(1) = ["b", "x", "o"] and
-      values = "01234567" and
-      str = s.suffix(1) and
-      shift = 3
-      or
-      s.matches("0o%") and
-      values = "01234567" and
-      str = s.suffix(2) and
-      shift = 3
-    |
-      result =
-        sum(int index, string c, int v, int exp |
-          c = str.charAt(index) and
-          v = values.indexOf(c.toLowerCase()) and
-          exp = str.length() - index - 1
-        |
-          v.bitShiftLeft((str.length() - index - 1) * shift)
-        )
-    )
+    s.matches("0b%") and result = parseBinaryInt(s.suffix(2))
+    or
+    s.matches("0x%") and result = parseHexInt(s.suffix(2))
+    or
+    s.charAt(0) = "0" and
+    not s.charAt(1) = ["b", "x", "o"] and
+    result = parseOctalInt(s.suffix(1))
+    or
+    s.matches("0o%") and
+    result = parseOctalInt(s.suffix(2))
   )
 }
 

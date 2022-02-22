@@ -4,9 +4,36 @@
  */
 
 /**
+ * Gets the integer value of `binary` when interpreted as binary. `binary` must
+ * contain only the digits 0 and 1. For values greater than
+ * 01111111111111111111111111111111 (2^31-1, the maximum value that `int` can
+ * represent), there is no result.
+ *
+ * ```
+ * "0"       => 0
+ * "01"      => 1
+ * "1010101" => 85
+ * ```
+ */
+bindingset[binary]
+int parseBinaryInt(string binary) {
+  exists(string stripped | stripped = stripLeadingZeros(binary) |
+    stripped.length() <= 31 and
+    result >= 0 and
+    result =
+      sum(int index, string c, int digit |
+        c = stripped.charAt(index) and
+        digit = "01".indexOf(c)
+      |
+        twoToThe(stripped.length() - 1 - index) * digit
+      )
+  )
+}
+
+/**
  * Gets the integer value of `hex` when interpreted as hex. `hex` must be a
- * valid hexadecimal string and, for integer-wrapping reasons, no longer than 6
- * digits.
+ * valid hexadecimal string. For values greater than 7FFFFFFF (2^31-1, the
+ * maximum value that `int` can represent), there is no result.
  *
  * ```
  * "0"    => 0
@@ -16,19 +43,23 @@
  */
 bindingset[hex]
 int parseHexInt(string hex) {
-  hex.length() <= 6 and
-  result =
-    sum(int index, string c |
-      c = hex.charAt(index)
-    |
-      sixteenToThe(hex.length() - 1 - index) * toHex(c)
-    )
+  exists(string stripped | stripped = stripLeadingZeros(hex) |
+    stripped.length() <= 8 and
+    result >= 0 and
+    result =
+      sum(int index, string c |
+        c = stripped.charAt(index)
+      |
+        sixteenToThe(stripped.length() - 1 - index) * toHex(c)
+      )
+  )
 }
 
 /**
  * Gets the integer value of `octal` when interpreted as octal. `octal` must be
- * a valid octal string and, for integer-wrapping reasons, no longer than 10
- * digits.
+ * a valid octal string containing only the digits 0-7. For values greater than
+ * 17777777777 (2^31-1, the maximum value that `int` can represent), there is no
+ * result.
  *
  * ```
  * "0"        => 0
@@ -38,13 +69,17 @@ int parseHexInt(string hex) {
  */
 bindingset[octal]
 int parseOctalInt(string octal) {
-  octal.length() <= 10 and
-  result =
-    sum(int index, string c |
-      c = octal.charAt(index)
-    |
-      eightToThe(octal.length() - 1 - index) * toOctal(c)
-    )
+  exists(string stripped | stripped = stripLeadingZeros(octal) |
+    stripped.length() <= 11 and
+    result >= 0 and
+    result =
+      sum(int index, string c, int digit |
+        c = stripped.charAt(index) and
+        digit = "01234567".indexOf(c)
+      |
+        eightToThe(stripped.length() - 1 - index) * digit
+      )
+  )
 }
 
 /** Gets the integer value of the `hex` char. */
@@ -65,33 +100,30 @@ private int toHex(string hex) {
   result = 15 and hex = ["f", "F"]
 }
 
-/** Gets the integer value of the `octal` char. */
-private int toOctal(string octal) {
-  octal = "0" and result = 0
-  or
-  octal = "1" and result = 1
-  or
-  octal = "2" and result = 2
-  or
-  octal = "3" and result = 3
-  or
-  octal = "4" and result = 4
-  or
-  octal = "5" and result = 5
-  or
-  octal = "6" and result = 6
-  or
-  octal = "7" and result = 7
-}
-
-/** Gets the value of 16 to the power of `n`. */
+/**
+ * Gets the value of 16 to the power of `n`. Holds only for `n` in the range
+ * 0..7 (inclusive).
+ */
 int sixteenToThe(int n) {
   // 16**7 is the largest power of 16 that fits in an int.
   n in [0 .. 7] and result = 1.bitShiftLeft(4 * n)
 }
 
-/** Gets the value of 8 to the power of `n`. */
+/**
+ * Gets the value of 8 to the power of `n`. Holds only for `n` in the range
+ * 0..10 (inclusive).
+ */
 int eightToThe(int n) {
   // 8**10 is the largest power of 8 that fits in an int.
   n in [0 .. 10] and result = 1.bitShiftLeft(3 * n)
 }
+
+/**
+ * Gets the value of 2 to the power of `n`. Holds only for `n` in the range
+ * 0..30 (inclusive).
+ */
+int twoToThe(int n) { n in [0 .. 30] and result = 1.bitShiftLeft(n) }
+
+/** Gets `s` with any leading "0" characters removed. */
+bindingset[s]
+private string stripLeadingZeros(string s) { result = s.regexpCapture("0*(.*)", 1) }
