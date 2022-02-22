@@ -6,12 +6,6 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 
-// TODO: the way we interpret `preservesValue` in this module may not be
-// correct: we assume that if the input string appears intact in the output,
-// then value is preserves. This means that we consider appending or prepending
-// characters to the string to be value-preserving.
-// We may want to be stricter here, and define value-preserving as when the
-// output string exactly matches the input string.
 /**
  * Provides flow summaries for the `String` class.
  *
@@ -79,7 +73,7 @@ module String {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = ["Receiver", "Argument[0]", "ArrayElement of Argument[0]"] and
       output = "ReturnValue" and
-      preservesValue = true
+      preservesValue = false
     }
   }
 
@@ -110,7 +104,7 @@ module String {
     override MethodCall getACall() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      valueIdentityFlow(input, output, preservesValue)
+      taintIdentityFlow(input, output, preservesValue)
     }
   }
 
@@ -138,13 +132,10 @@ module String {
     CenterSummary() { this = ["center", "ljust", "rjust"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      (
-        input = "Receiver" and
-        output = "ReturnValue"
-        or
-        input = "Argument[1]" and
-        output = "ReturnValue"
-      ) and
+      taintIdentityFlow(input, output, preservesValue)
+      or
+      input = "Argument[1]" and
+      output = "ReturnValue" and
       preservesValue = false
     }
   }
@@ -160,13 +151,12 @@ module String {
     override MethodCall getACall() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      taintIdentityFlow(input, output, preservesValue)
+      or
+      this = ["chomp!", "chop!"] and
       input = "Receiver" and
       preservesValue = false and
-      (
-        output = "ReturnValue"
-        or
-        this = ["chomp!", "chop!"] and output = "Receiver"
-      )
+      output = "Receiver"
     }
   }
 
@@ -185,7 +175,7 @@ module String {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = ["Receiver", "Argument[_]"] and
       output = ["ReturnValue", "Receiver"] and
-      preservesValue = true
+      preservesValue = false
     }
   }
 
@@ -279,9 +269,7 @@ module String {
     ForceEncodingSummary() { this = "force_encoding" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Receiver" and
-      output = "ReturnValue" and
-      preservesValue = false
+      taintIdentityFlow(input, output, preservesValue)
     }
   }
 
@@ -309,13 +297,9 @@ module String {
       // receiver -> return value
       // replacement -> return value
       // block return -> return value
-      (
-        input = ["Receiver", "Argument[1]"] and
-        preservesValue = false
-        or
-        input = "ReturnValue of BlockArgument" and preservesValue = true
-      ) and
-      output = "ReturnValue"
+      preservesValue = false and
+      output = "ReturnValue" and
+      input = ["Receiver", "Argument[1]", "ReturnValue of BlockArgument"]
     }
   }
 
@@ -330,12 +314,9 @@ module String {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      (
-        input = "Receiver" and preservesValue = false
-        or
-        input = "Argument[1]" and preservesValue = true
-      ) and
-      output = "ReturnValue"
+      taintIdentityFlow(input, output, preservesValue)
+      or
+      input = "Argument[1]" and output = "ReturnValue" and preservesValue = false
     }
   }
 
@@ -357,7 +338,7 @@ module String {
     StripSummary() { this = ["strip", "lstrip", "rstrip"] + ["", "!"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      valueIdentityFlow(input, output, preservesValue)
+      taintIdentityFlow(input, output, preservesValue)
     }
   }
 
@@ -427,14 +408,14 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Receiver" and
-      (
-        // Parameter[_] doesn't seem to work
-        output = "Parameter[" + [0 .. 10] + "] of BlockArgument" and preservesValue = false
-        or
-        // scan(pattern) -> array
-        output = "ReturnValue" and
-        preservesValue = true
-      )
+      preservesValue = false and
+      output =
+        [
+          // scan(pattern) -> array
+          "ReturnValue",
+          // Parameter[_] doesn't seem to work
+          "Parameter[" + [0 .. 10] + "] of BlockArgument"
+        ]
     }
   }
 
@@ -443,14 +424,14 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Receiver" and
-      (
-        // scan(pattern) {|match, ...| block } -> str
-        output = "ArrayElement[?] of ReturnValue" and
-        preservesValue = false
-        or
-        // Parameter[_] doesn't seem to work
-        output = "Parameter[" + [0 .. 10] + "] of BlockArgument" and preservesValue = false
-      )
+      preservesValue = false and
+      output =
+        [
+          // scan(pattern) {|match, ...| block } -> str
+          "ArrayElement[?] of ReturnValue",
+          // Parameter[_] doesn't seem to work
+          "Parameter[" + [0 .. 10] + "] of BlockArgument"
+        ]
     }
   }
 
@@ -470,17 +451,18 @@ module String {
     ScrubBlockSummary() { this = "scrub_block" and exists(mc.getBlock()) }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Receiver" and
-      output = "Parameter[0] of BlockArgument" and
-      preservesValue = true
-      or
-      input = "Argument[0]" and output = "ReturnValue" and preservesValue = true
-      or
-      input = "ReturnValue of BlockArgument" and
-      output = "ReturnValue" and
-      preservesValue = true
-      or
       taintIdentityFlow(input, output, preservesValue)
+      or
+      preservesValue = false and
+      (
+        input = "Receiver" and
+        output = "Parameter[0] of BlockArgument"
+        or
+        input = "Argument[0]" and output = "ReturnValue"
+        or
+        input = "ReturnValue of BlockArgument" and
+        output = "ReturnValue"
+      )
     }
   }
 
@@ -488,17 +470,29 @@ module String {
     ScrubNoBlockSummary() { this = "scrub_no_block" and not exists(mc.getBlock()) }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Receiver" and
-      output = "Parameter[0] of BlockArgument" and
-      preservesValue = true
+      taintIdentityFlow(input, output, preservesValue)
       or
-      input = "Argument[0]" and output = "ReturnValue" and preservesValue = true
-      or
+      preservesValue = false and
+      (
+        input = "Receiver" and
+        output = "Parameter[0] of BlockArgument"
+        or
+        input = "Argument[0]" and output = "ReturnValue"
+      )
+    }
+  }
+
+  /**
+   * A flow summary for `String#shellescape`.
+   */
+  private class ShellescapeSummary extends SimpleSummarizedCallable {
+    ShellescapeSummary() { this = "shellescape" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
 
-  // TODO: what do we do about `String#shellescape`?
   /**
    * A flow summary for `String#shellsplit`.
    */
@@ -552,7 +546,9 @@ module String {
     TrSummary() { this = ["tr", "tr_s"] + ["", "!"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["Receiver", "Argument[1]"] and output = "ReturnValue" and preservesValue = false
+      taintIdentityFlow(input, output, preservesValue)
+      or
+      input = "Argument[1]" and output = "ReturnValue" and preservesValue = false
     }
   }
 
@@ -604,7 +600,7 @@ module String {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["Receiver"] and
+      input = "Receiver" and
       output = "Parameter[0] of BlockArgument" and
       preservesValue = true
       or

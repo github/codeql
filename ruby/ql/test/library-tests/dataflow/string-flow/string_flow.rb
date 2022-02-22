@@ -10,9 +10,9 @@ end
 
 def m_format
     a = source "a"
-    sink "%s" % a # $ hasValueFlow=a
-    sink "%s %s" % ["foo", a] # $ hasValueFlow=a
-    sink a % "foo" # $ hasValueFlow=a
+    sink "%s" % a # $ hasTaintFlow=a
+    sink "%s %s" % ["foo", a] # $ hasTaintFlow=a
+    sink a % "foo" # $ hasTaintFlow=a
 end
 
 def m_plus
@@ -42,9 +42,9 @@ end
 
 def m_byteslice
     a = source "a"
-    sink a.byteslice(1) # $ hasValueFlow=a
-    sink a.byteslice(1, 2) # $ hasValueFlow=a
-    sink a.byteslice(1..2) # $ hasValueFlow=a
+    sink a.byteslice(1) # $ hasTaintFlow=a
+    sink a.byteslice(1, 2) # $ hasTaintFlow=a
+    sink a.byteslice(1..2) # $ hasTaintFlow=a
 end
 
 def m_capitalize
@@ -165,8 +165,8 @@ def m_gsub
     c = source "c"
     sink a.gsub("b", c) # $ hasTaintFlow=a hasTaintFlow=c
     sink a.gsub!("b", c) # $ hasTaintFlow=a hasTaintFlow=c
-    sink a.gsub("b") { |match| source "b" } # $ hasTaintFlow=a hasValueFlow=b
-    sink a.gsub!("b") { |match| source "b" } # $ hasTaintFlow=a hasValueFlow=b
+    sink a.gsub("b") { |match| source "b" } # $ hasTaintFlow=a hasTaintFlow=b
+    sink a.gsub!("b") { |match| source "b" } # $ hasTaintFlow=a hasTaintFlow=b
 end
 
 def m_sub
@@ -174,8 +174,8 @@ def m_sub
     c = source "c"
     sink a.sub("b", c) # $ hasTaintFlow=a hasTaintFlow=c
     sink a.sub!("b", c) # $ hasTaintFlow=a hasTaintFlow=c
-    sink a.sub("b") { |match| source "b" } # $ hasTaintFlow=a hasValueFlow=b
-    sink a.sub!("b") { |match| source "b" } # $ hasTaintFlow=a hasValueFlow=b
+    sink a.sub("b") { |match| source "b" } # $ hasTaintFlow=a hasTaintFlow=b
+    sink a.sub!("b") { |match| source "b" } # $ hasTaintFlow=a hasTaintFlow=b
 end
 
 # omitted because it clashes with the summary for Array#insert
@@ -192,12 +192,12 @@ end
 
 def m_strip
     a = source "a"
-    sink a.strip # $ hasValueFlow=a
-    sink a.strip! # $ hasValueFlow=a
-    sink a.lstrip # $ hasValueFlow=a
-    sink a.lstrip! # $ hasValueFlow=a
-    sink a.rstrip # $ hasValueFlow=a
-    sink a.rstrip! # $ hasValueFlow=a
+    sink a.strip # $ hasTaintFlow=a
+    sink a.strip! # $ hasTaintFlow=a
+    sink a.lstrip # $ hasTaintFlow=a
+    sink a.lstrip! # $ hasTaintFlow=a
+    sink a.rstrip # $ hasTaintFlow=a
+    sink a.rstrip! # $ hasTaintFlow=a
 end
 
 def m_next
@@ -234,7 +234,7 @@ def m_scan(i)
     a = source "a"
     b = a.scan(/b/) { |x, y| sink x } # $ hasTaintFlow=a
     b = a.scan(/b/) { |x, y| sink y } # $ hasTaintFlow=a
-    sink b # $ hasValueFlow=a
+    sink b # $ hasTaintFlow=a
     b = a.scan(/b/)
     sink b[0] # $ hasTaintFlow=a
     sink b[i] # $ hasTaintFlow=a
@@ -243,17 +243,22 @@ end
 def m_scrub
     a = source "a"
     sink a.scrub("b") # $ hasTaintFlow=a
-    sink "b".scrub(a) # $ hasValueFlow=a
-    a.scrub { |x| sink x } # $ hasValueFlow=a
-    sink("b".scrub { |x| a }) # $ hasValueFlow=a
+    sink "b".scrub(a) # $ hasTaintFlow=a
+    a.scrub { |x| sink x } # $ hasTaintFlow=a
+    sink("b".scrub { |x| a }) # $ hasTaintFlow=a
 
     sink a.scrub!("b") # $ hasTaintFlow=a
-    sink "b".scrub!(a) # $ hasValueFlow=a
+    sink "b".scrub!(a) # $ hasTaintFlow=a
 
     a = source "a"
-    a.scrub! { |x| sink x } # $ hasValueFlow=a
+    a.scrub! { |x| sink x } # $ hasTaintFlow=a
 
-    sink("b".scrub! { |x| a }) # $ hasValueFlow=a
+    sink("b".scrub! { |x| a }) # $ hasTaintFlow=a
+end
+
+def m_shellescape
+    a = source "a"
+    sink a.shellescape # $ hasTaintFlow=a
 end
 
 def m_shellsplit(i)
