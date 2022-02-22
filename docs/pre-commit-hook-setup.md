@@ -21,7 +21,7 @@ Alternatively, you can use the [pre-commit framework](https://pre-commit.com/). 
 
 By default, pre-commit will check and fix
 * trailing whitespaces;
-* absence of double newlines at end of files;
+* absence of or duplicate newlines at end of files;
 * QL formatting;
 * files out of sync (see [`config/sync-files.py`](../config/sync-files.py)).
 
