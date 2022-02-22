@@ -13,6 +13,7 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.ir.IR
+import DataFlow::PathGraph
 
 // Gets the recommended minimum key size (in bits) of `func`, the name of an encryption function that accepts a key size as parameter `paramIndex`
 int getMinimumKeyStrength(string func, int paramIndex) {
@@ -43,14 +44,16 @@ class KeyStrengthFlow extends DataFlow::Configuration {
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, KeyStrengthFlow conf, FunctionCall fc, int param,
-  string name, int bits
+  DataFlow::PathNode source, DataFlow::PathNode sink, KeyStrengthFlow conf, FunctionCall fc,
+  int param, string name, int minimumBits, int bits
 where
   conf.hasFlowPath(source, sink) and
   sink.getNode().asExpr() = fc.getArgument(param) and
   fc.getTarget().hasGlobalName(name) and
-  bits = getMinimumKeyStrength(name, param) and
-  source.getNode().asInstruction().(ConstantValueInstruction).getValue().toInt() < bits
+  minimumBits = getMinimumKeyStrength(name, param) and
+  bits = source.getNode().asInstruction().(ConstantValueInstruction).getValue().toInt() and
+  bits < minimumBits and
+  bits != 0
 select fc, source, sink,
-  "The key size $@ is less than the recommended key size of " + bits.toString() + " bits.", source,
-  source.toString()
+  "The key size $@ is less than the recommended key size of " + minimumBits.toString() + " bits.",
+  source, bits.toString()
