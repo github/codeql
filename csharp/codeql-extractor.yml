@@ -16,3 +16,10 @@ file_types:
     extensions:
       - .cs
 legacy_qltest_extraction: true
+options:
+  compression:
+    title: The type of compression.
+    description: >
+      A value indicating, which type of compression that should be used for the TRAP archive.
+      Allowed values are 'brotli', 'gzip' or 'none'. The default is 'brotli'.
+    type: string
