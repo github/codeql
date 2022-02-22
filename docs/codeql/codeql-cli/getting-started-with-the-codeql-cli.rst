@@ -23,7 +23,9 @@ and 4 are slightly different---for further details, see the sections labeled
 **Information for macOS "Catalina" (or newer) users**. If you are using macOS
 on Apple Silicon (e.g. Apple M1), ensure that the `Xcode command-line developer
 tools <https://developer.apple.com/downloads/index.action>`__ and `Rosetta 2
-<https://support.apple.com/en-us/HT211861>`__ are installed.
+<https://support.apple.com/en-us/HT211861>`__ are installed. The CodeQL CLI
+is not compatible with non-glibc Linux distributions such as muslc-based
+Alpine Linux at this time.
 
 For information about installing the CodeQL CLI in a CI system to create results
 to display in GitHub as code scanning alerts, see
