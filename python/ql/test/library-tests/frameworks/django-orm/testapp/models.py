@@ -4,3 +4,4 @@ from django.db import models
 from .orm_tests import *
 from .orm_security_tests import *
 from .orm_form_test import *
+from .orm_inheritance import *

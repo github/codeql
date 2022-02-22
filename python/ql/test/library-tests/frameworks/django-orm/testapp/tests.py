@@ -83,3 +83,61 @@ def test_none_all():
     assert len(MyModel.objects.all()) == 1
     assert len(MyModel.objects.none().all()) == 0
     assert len(MyModel.objects.all().none()) == 0
+
+
+@pytest.mark.django_db
+def test_orm_inheritance():
+    from .orm_inheritance import (save_physical_book, save_ebook, save_base_book,
+        fetch_book, fetch_physical_book, fetch_ebook,
+        PhysicalBook, EBook,
+    )
+
+    base = save_base_book()
+    physical = save_physical_book()
+    ebook = save_ebook()
+
+    fetch_book(base.id)
+    fetch_book(physical.id)
+    fetch_book(ebook.id)
+
+    fetch_physical_book(physical.id)
+    fetch_ebook(ebook.id)
+
+    try:
+        fetch_physical_book(base.id)
+    except PhysicalBook.DoesNotExist:
+        pass
+
+    try:
+        fetch_ebook(ebook.id)
+    except EBook.DoesNotExist:
+        pass
+
+
+@pytest.mark.django_db
+def test_poly_orm_inheritance():
+    from .orm_inheritance import (poly_save_physical_book, poly_save_ebook, poly_save_base_book,
+        poly_fetch_book, poly_fetch_physical_book, poly_fetch_ebook,
+        PolyPhysicalBook, PolyEBook,
+    )
+
+    base = poly_save_base_book()
+    physical = poly_save_physical_book()
+    ebook = poly_save_ebook()
+
+    poly_fetch_book(base.id, test_for_subclass=False)
+    poly_fetch_book(physical.id)
+    poly_fetch_book(ebook.id)
+
+    poly_fetch_physical_book(physical.id)
+    poly_fetch_ebook(ebook.id)
+
+    try:
+        poly_fetch_physical_book(base.id)
+    except PolyPhysicalBook.DoesNotExist:
+        pass
+
+    try:
+        poly_fetch_ebook(ebook.id)
+    except PolyEBook.DoesNotExist:
+        pass
