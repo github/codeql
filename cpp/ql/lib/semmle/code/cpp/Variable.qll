@@ -170,6 +170,12 @@ class Variable extends Declaration, @variable {
   }
 
   /**
+   * Holds if this variable is declated as part of a structured binding
+   * declaration. For example, `x` in `auto [x, y] = ...`.
+   */
+  predicate isStructuredBinding() { is_structured_binding(underlyingElement(this)) }
+
+  /**
    * Holds if this is a compiler-generated variable. For example, a
    * [range-based for loop](http://en.cppreference.com/w/cpp/language/range-for)
    * typically has three compiler-generated variables, named `__range`,
