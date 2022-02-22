@@ -581,6 +581,12 @@ module PrivateDjango {
                   .getMember("base")
                   .getMember("Model")
                   .getASubclass*()
+            or
+            result =
+              API::moduleImport("polymorphic")
+                  .getMember("models")
+                  .getMember("PolymorphicModel")
+                  .getASubclass*()
           }
 
           /**

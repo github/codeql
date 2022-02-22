@@ -140,7 +140,7 @@ def poly_fetch_book(id, test_for_subclass=True):
     try:
         # This sink should have 2 sources, from `poly_save_base_book` and
         # `poly_save_physical_book`
-        SINK(book.title) # $ MISSING: flow
+        SINK(book.title) # $ flow="SOURCE, l:-10 -> book.title"
     # The sink assertion will fail for the PolyEBook, which we handle. The title
     # attribute of a PolyBook could be tainted, so we want this to be a sink in general.
     except AssertionError:
@@ -153,11 +153,11 @@ def poly_fetch_book(id, test_for_subclass=True):
         assert isinstance(book, PolyPhysicalBook) or isinstance(book, PolyEBook)
 
     if isinstance(book, PolyPhysicalBook):
-        SINK(book.title) # $ MISSING: flow
+        SINK(book.title) # $ MISSING: flow="SOURCE, l:+11 -> book.title" SPURIOUS: flow="SOURCE, l:-23 -> book.title"
         SINK(book.physical_location) # $ MISSING: flow
         SINK(book.same_name_different_value) # $ MISSING: flow
     elif isinstance(book, PolyEBook):
-        SINK_F(book.title)
+        SINK_F(book.title) # $ SPURIOUS: flow="SOURCE, l:-27 -> book.title"
         SINK_F(book.download_link)
         SINK_F(book.same_name_different_value)
 
@@ -173,9 +173,9 @@ def poly_save_physical_book():
 def poly_fetch_physical_book(id):
     book = PolyPhysicalBook.objects.get(id=id)
 
-    SINK(book.title) # $ MISSING: flow
-    SINK(book.physical_location) # $ MISSING: flow
-    SINK(book.same_name_different_value) # $ MISSING: flow
+    SINK(book.title) # $ flow="SOURCE, l:-9 -> book.title"
+    SINK(book.physical_location) # $ flow="SOURCE, l:-9 -> book.physical_location"
+    SINK(book.same_name_different_value) # $ flow="SOURCE, l:-9 -> book.same_name_different_value"
 
 
 def poly_save_ebook():
