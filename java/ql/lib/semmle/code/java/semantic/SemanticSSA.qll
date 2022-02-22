@@ -59,6 +59,10 @@ SemSsaSourceVariable getSemanticSsaSourceVariable(SSA::SsaSourceVariable var) {
   result = MkSemSsaSourceVariable(var)
 }
 
+SSA::SsaSourceVariable getJavaSsaSourceVariable(SemSsaSourceVariable var) {
+  var = getSemanticSsaSourceVariable(result)
+}
+
 private newtype TSemSsaReadPosition = MkSemSsaReadPosition(SsaReadPosition pos)
 
 class SemSsaReadPosition extends TSemSsaReadPosition {

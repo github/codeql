@@ -6,6 +6,7 @@ private import semmle.code.java.Maps
 private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 private import semmle.code.java.security.RandomDataSource
 private import semmle.code.java.semantic.SemanticExpr
+private import semmle.code.java.semantic.SemanticSSA
 private import semmle.code.java.semantic.SemanticType
 private import ArrayLengthFlow
 
@@ -104,4 +105,15 @@ predicate isSafeCast(SemCastExpr cast) {
  */
 SemType getAlternateType(SemExpr e) {
   result = getSemanticType(getJavaExpr(e).getType().(BoxedType).getPrimitiveType())
+}
+
+/**
+ * Gets the type that range analysis should use to track the result of the specified source
+ * variable, if a type other than the original type of the expression is to be used.
+ *
+ * This predicate is commonly used in languages that support immutable "boxed" types that are
+ * actually references but whose values can be tracked as the type contained in the box.
+ */
+SemType getAlternateTypeForSourceVariable(SemSsaSourceVariable var) {
+  result = getSemanticType(getJavaSsaSourceVariable(var).getType().(BoxedType).getPrimitiveType())
 }

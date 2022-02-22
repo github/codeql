@@ -135,3 +135,15 @@ SemType getTrackedType(SemExpr e) {
   or
   not exists(Specific::getAlternateType(e)) and result = e.getSemType()
 }
+
+/**
+ * Gets the type used to track the specified source variable's range information.
+ *
+ * Usually, this just `e.getType()`, but the language can override this to track immutable boxed
+ * primitive types as the underlying primitive type.
+ */
+SemType getTrackedTypeForSourceVariable(SemSsaSourceVariable var) {
+  result = Specific::getAlternateTypeForSourceVariable(var)
+  or
+  not exists(Specific::getAlternateTypeForSourceVariable(var)) and result = var.getType()
+}

@@ -267,9 +267,11 @@ predicate conversionCannotOverflow(SemNumericType fromType, SemNumericType toTyp
   |
     // Conversion to a larger type. Safe unless converting signed -> unsigned.
     fromSize < toSize and
-    toInteger.isSigned()
-    or
-    not fromInteger.isSigned()
+    (
+      toInteger.isSigned()
+      or
+      not fromInteger.isSigned()
+    )
   )
 }
 
