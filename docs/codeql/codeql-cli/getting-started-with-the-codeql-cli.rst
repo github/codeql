@@ -25,8 +25,10 @@ on Apple Silicon (e.g. Apple M1), ensure that the `Xcode command-line developer
 tools <https://developer.apple.com/downloads/index.action>`__ and `Rosetta 2
 <https://support.apple.com/en-us/HT211861>`__ are installed. 
 
-Please note that the CodeQL CLI is not compatible with non-glibc Linux 
-distributions such as (muslc-based) Alpine Linux at this time.
+.. pull-quote:: Note
+
+   The CodeQL CLI is currently not compatible with non-glibc Linux 
+   distributions such as (muslc-based) Alpine Linux.
 
 For information about installing the CodeQL CLI in a CI system to create results
 to display in GitHub as code scanning alerts, see
