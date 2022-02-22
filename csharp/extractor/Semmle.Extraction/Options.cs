@@ -114,9 +114,6 @@ namespace Semmle.Extraction
                 case "qltest":
                     QlTest = value;
                     return true;
-                case "brotli":
-                    TrapCompression = value ? TrapWriter.CompressionMode.Brotli : TrapWriter.CompressionMode.Gzip;
-                    return true;
                 default:
                     return false;
             }
