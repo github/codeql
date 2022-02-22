@@ -914,7 +914,7 @@ private module ControlFlowGraphImpl {
     last(n.(ExprStmt).getExpr(), last, completion) and completion = NormalCompletion()
     or
     // the last node in a `StmtExpr` is the last node in the statement
-    last(n.(StmtExpr).getStmt(), last, completion) and completion = NormalCompletion()
+    last(n.(StmtExpr).getStmt(), last, completion)
     or
     // the last statement of a labeled statement is the last statement of its body...
     exists(LabeledStmt lbl, Completion bodyCompletion |
@@ -950,7 +950,7 @@ private module ControlFlowGraphImpl {
         not exists(whenexpr.getBranch(i + 1))
       )
       or
-      // Any branch getting an abnormal completion is propogated
+      // Any branch getting an abnormal completion is propagated
       last(whenexpr.getBranch(_), last, completion) and
       not completion instanceof YieldCompletion and
       not completion instanceof NormalOrBooleanCompletion
@@ -968,6 +968,11 @@ private module ControlFlowGraphImpl {
       last(whenbranch.getCondition(), last, completion) and
       not completion = BooleanCompletion(true, _) and
       not completion = NormalCompletion()
+      or
+      // Similarly any non-normal completion of the RHS
+      // should propagate outwards:
+      last(whenbranch.getRhs(), last, completion) and
+      not completion instanceof NormalOrBooleanCompletion
       or
       // Otherwise we wrap the completion up in a YieldCompletion
       // so that the `when` expression can tell that we have finished,

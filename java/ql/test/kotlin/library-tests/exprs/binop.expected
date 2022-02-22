@@ -113,3 +113,7 @@
 | samConversion.kt:10:14:10:23 | ... (value equals) ... | samConversion.kt:10:14:10:18 | ... % ... | samConversion.kt:10:23:10:23 | 0 |
 | samConversion.kt:12:14:12:18 | ... % ... | samConversion.kt:12:14:12:14 | j | samConversion.kt:12:18:12:18 | 2 |
 | samConversion.kt:12:14:12:23 | ... (value equals) ... | samConversion.kt:12:14:12:18 | ... % ... | samConversion.kt:12:23:12:23 | 1 |
+| whenExpr.kt:3:5:3:5 | ... (value equals) ... | whenExpr.kt:3:5:3:5 | tmp0_subject | whenExpr.kt:3:5:3:5 | 0 |
+| whenExpr.kt:4:5:4:5 | ... (value equals) ... | whenExpr.kt:4:5:4:5 | tmp0_subject | whenExpr.kt:4:5:4:5 | 1 |
+| whenExpr.kt:5:5:5:5 | ... (value equals) ... | whenExpr.kt:5:5:5:5 | tmp0_subject | whenExpr.kt:5:5:5:5 | 2 |
+| whenExpr.kt:6:5:6:5 | ... (value equals) ... | whenExpr.kt:6:5:6:5 | tmp0_subject | whenExpr.kt:6:5:6:5 | 3 |

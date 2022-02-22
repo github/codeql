@@ -2988,3 +2988,48 @@ samConversion.kt:
 #   33|         20: [Parameter] i20
 #   33|         21: [Parameter] i21
 #   33|         22: [Parameter] i22
+whenExpr.kt:
+#    0| [CompilationUnit] whenExpr
+#    0|   1: [Class] WhenExprKt
+#    1|     1: [Method] testWhen
+#-----|       4: (Parameters)
+#    1|         0: [Parameter] i
+#    1|       5: [BlockStmt] { ... }
+#    2|         0: [ReturnStmt] return ...
+#    2|           0: [StmtExpr] <Stmt>
+#    2|             0: [BlockStmt] { ... }
+#    2|               0: [LocalVariableDeclStmt] var ...;
+#    2|                 1: [LocalVariableDeclExpr] tmp0_subject
+#    2|                   0: [VarAccess] i
+#    2|               1: [ExprStmt] <Expr>;
+#    2|                 0: [WhenExpr] when ...
+#-----|                   0: (branch)
+#    3|                     0: [ValueEQExpr] ... (value equals) ...
+#    3|                       0: [VarAccess] tmp0_subject
+#    3|                       1: [IntegerLiteral] 0
+#    3|                     1: [ExprStmt] <Expr>;
+#    3|                       0: [IntegerLiteral] 1
+#-----|                   1: (branch)
+#    4|                     0: [ValueEQExpr] ... (value equals) ...
+#    4|                       0: [VarAccess] tmp0_subject
+#    4|                       1: [IntegerLiteral] 1
+#    4|                     1: [ExprStmt] <Expr>;
+#    4|                       0: [IntegerLiteral] 2
+#-----|                   2: (branch)
+#    5|                     0: [ValueEQExpr] ... (value equals) ...
+#    5|                       0: [VarAccess] tmp0_subject
+#    5|                       1: [IntegerLiteral] 2
+#    5|                     1: [ReturnStmt] return ...
+#    5|                       0: [IntegerLiteral] 3
+#-----|                   3: (branch)
+#    6|                     0: [ValueEQExpr] ... (value equals) ...
+#    6|                       0: [VarAccess] tmp0_subject
+#    6|                       1: [IntegerLiteral] 3
+#    6|                     1: [ThrowStmt] throw ...
+#    6|                       0: [ClassInstanceExpr] new Exception(...)
+#    6|                         -3: [TypeAccess] Exception
+#    6|                         0: [StringLiteral] No threes please
+#-----|                   4: (branch)
+#    7|                     0: [BooleanLiteral] true
+#    7|                     1: [ExprStmt] <Expr>;
+#    7|                       0: [IntegerLiteral] 999

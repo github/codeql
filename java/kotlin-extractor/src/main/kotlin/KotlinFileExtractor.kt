@@ -1038,13 +1038,7 @@ open class KotlinFileExtractor(
             val methodId = ids.function
             tw.writeCallableBinding(id, methodId)
 
-            val idNewexpr = tw.getFreshIdLabel<DbNewexpr>()
-            tw.writeExprs_newexpr(idNewexpr, ids.type.javaResult.id, id, -1)
-            tw.writeExprsKotlinType(idNewexpr, ids.type.kotlinResult.id)
-            tw.writeHasLocation(idNewexpr, locId)
-            tw.writeCallableEnclosingExpr(idNewexpr, enclosingCallable)
-            tw.writeStatementEnclosingExpr(idNewexpr, enclosingStmt)
-            tw.writeCallableBinding(idNewexpr, ids.constructor)
+            val idNewexpr = extractNewExpr(ids.constructor, ids.type, locId, id, -1, enclosingCallable, enclosingStmt)
 
             @Suppress("UNCHECKED_CAST")
             tw.writeIsAnonymClass(ids.type.javaResult.id as Label<DbClass>, idNewexpr)
@@ -1150,6 +1144,23 @@ open class KotlinFileExtractor(
         result
     }
 
+    val kotlinNoWhenBranchMatchedExn by lazy {
+        val result = pluginContext.referenceClass(FqName("kotlin.NoWhenBranchMatchedException"))?.owner
+        result?.let { extractExternalClassLater(it) }
+        result
+    }
+
+    val kotlinNoWhenBranchMatchedConstructor by lazy {
+        val result = kotlinNoWhenBranchMatchedExn?.declarations?.find {
+            it is IrConstructor &&
+            it.valueParameters.isEmpty()
+        } as IrConstructor?
+        if (result == null) {
+            logger.error("Couldn't find no-arg constructor for kotlin.NoWhenBranchMatchedException")
+        }
+        result
+    }
+
     fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, fName: String, hasQuestionMark: Boolean? = false): Boolean {
         val verbose = false
         fun verboseln(s: String) { if(verbose) println(s) }
@@ -1220,9 +1231,26 @@ open class KotlinFileExtractor(
             else -> false
         }
 
-    fun extractCall(c: IrCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
+    fun extractCall(c: IrCall, callable: Label<out DbCallable>, stmtExprParent: StmtExprParent) {
         with("call", c) {
             val target = c.symbol.owner
+
+            // The vast majority of types of call want an expr context, so make one available lazily:
+            val exprParent by lazy {
+                stmtExprParent.expr(c, callable)
+            }
+
+            val parent by lazy {
+                exprParent.parent
+            }
+
+            val idx by lazy {
+                exprParent.idx
+            }
+
+            val enclosingStmt by lazy {
+                exprParent.enclosingStmt
+            }
 
             fun extractMethodAccess(syntacticCallTarget: IrFunction, extractMethodTypeArguments: Boolean = true, extractClassTypeArguments: Boolean = false) {
                 val typeArgs =
@@ -1451,8 +1479,16 @@ open class KotlinFileExtractor(
                     logger.errorElement("Unhandled builtin", c)
                 }
                 isBuiltinCallInternal(c, "noWhenBranchMatchedException") -> {
-                    // TODO
-                    logger.errorElement("Unhandled builtin", c)
+                    kotlinNoWhenBranchMatchedConstructor?.let {
+                        val locId = tw.getLocation(c)
+                        val thrownType = useSimpleTypeClass(it.parentAsClass, listOf(), false)
+                        val stmtParent = stmtExprParent.stmt(c, callable)
+                        val throwId = tw.getFreshIdLabel<DbThrowstmt>()
+                        tw.writeStmts_throwstmt(throwId, stmtParent.parent, stmtParent.idx, callable)
+                        tw.writeHasLocation(throwId, locId)
+                        val newExprId = extractNewExpr(it, null, thrownType, locId, throwId, 0, callable, throwId)
+                        extractTypeAccess(thrownType, callable, newExprId, -3, c, throwId)
+                    }
                 }
                 isBuiltinCallInternal(c, "illegalArgumentException") -> {
                     // TODO
@@ -1676,6 +1712,36 @@ open class KotlinFileExtractor(
         extractTypeArguments((0 until c.typeArgumentsCount).map { c.getTypeArgument(it)!! }, c, parentExpr, enclosingCallable, enclosingStmt, startIndex, reverse)
     }
 
+    private fun extractNewExpr(
+        methodId: Label<out DbConstructor>,
+        constructedType: TypeResults,
+        locId: Label<out DbLocation>,
+        parent: Label<out DbExprparent>,
+        idx: Int,
+        callable: Label<out DbCallable>,
+        enclosingStmt: Label<out DbStmt>
+    ): Label<DbNewexpr> {
+        val id = tw.getFreshIdLabel<DbNewexpr>()
+        tw.writeExprs_newexpr(id, constructedType.javaResult.id, parent, idx)
+        tw.writeExprsKotlinType(id, constructedType.kotlinResult.id)
+        tw.writeHasLocation(id, locId)
+        tw.writeCallableEnclosingExpr(id, callable)
+        tw.writeStatementEnclosingExpr(id, enclosingStmt)
+        tw.writeCallableBinding(id, methodId)
+        return id
+    }
+
+    private fun extractNewExpr(
+        calledConstructor: IrFunction,
+        constructorTypeArgs: List<IrTypeArgument>?,
+        constructedType: TypeResults,
+        locId: Label<out DbLocation>,
+        parent: Label<out DbExprparent>,
+        idx: Int,
+        callable: Label<out DbCallable>,
+        enclosingStmt: Label<out DbStmt>
+    ): Label<DbNewexpr> = extractNewExpr(useFunction<DbConstructor>(calledConstructor, constructorTypeArgs), constructedType, locId, parent, idx, callable, enclosingStmt)
+
     private fun extractConstructorCall(
         e: IrFunctionAccessExpression,
         parent: Label<out DbExprparent>,
@@ -1683,31 +1749,24 @@ open class KotlinFileExtractor(
         callable: Label<out DbCallable>,
         enclosingStmt: Label<out DbStmt>
     ) {
-        val id = tw.getFreshIdLabel<DbNewexpr>()
-        val type: TypeResults
         val isAnonymous = e.type.isAnonymous
-        if (isAnonymous) {
+        val type: TypeResults = if (isAnonymous) {
             if (e.typeArgumentsCount > 0) {
                 logger.warn("Unexpected type arguments for anonymous class constructor call")
             }
-
             val c = (e.type as IrSimpleType).classifier.owner as IrClass
-
-            type = useAnonymousClass(c)
-
-            @Suppress("UNCHECKED_CAST")
-            tw.writeIsAnonymClass(type.javaResult.id as Label<DbClass>, id)
+            useAnonymousClass(c)
         } else {
-            type = useType(e.type)
+            useType(e.type)
         }
         val locId = tw.getLocation(e)
-        val methodId = useFunction<DbConstructor>(e.symbol.owner, (e.type as? IrSimpleType)?.arguments)
-        tw.writeExprs_newexpr(id, type.javaResult.id, parent, idx)
-        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-        tw.writeHasLocation(id, locId)
-        tw.writeCallableEnclosingExpr(id, callable)
-        tw.writeStatementEnclosingExpr(id, enclosingStmt)
-        tw.writeCallableBinding(id, methodId)
+        val id = extractNewExpr(e.symbol.owner, (e.type as? IrSimpleType)?.arguments, type, locId, parent, idx, callable, enclosingStmt)
+
+        if (isAnonymous) {
+            @Suppress("UNCHECKED_CAST")
+            tw.writeIsAnonymClass(type.javaResult.id as Label<DbClass>, id)
+        }
+
         for (i in 0 until e.valueArgumentsCount) {
             val arg = e.getValueArgument(i)
             if (arg != null) {
@@ -2055,8 +2114,7 @@ open class KotlinFileExtractor(
                     extractConstructorCall(e, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
                 }
                 is IrCall -> {
-                    val exprParent = parent.expr(e, callable)
-                    extractCall(e, callable, exprParent.parent, exprParent.idx, exprParent.enclosingStmt)
+                    extractCall(e, callable, parent)
                 }
                 is IrStringConcatenation -> {
                     val exprParent = parent.expr(e, callable)
@@ -3255,13 +3313,7 @@ open class KotlinFileExtractor(
                     tw.writeStatementEnclosingExpr(id, enclosingStmt)
                     extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
 
-                    val idNewexpr = tw.getFreshIdLabel<DbNewexpr>()
-                    tw.writeExprs_newexpr(idNewexpr, ids.type.javaResult.id, id, 1)
-                    tw.writeExprsKotlinType(idNewexpr, ids.type.kotlinResult.id)
-                    tw.writeHasLocation(idNewexpr, locId)
-                    tw.writeCallableEnclosingExpr(idNewexpr, callable)
-                    tw.writeStatementEnclosingExpr(idNewexpr, enclosingStmt)
-                    tw.writeCallableBinding(idNewexpr, ids.constructor)
+                    val idNewexpr = extractNewExpr(ids.constructor, ids.type, locId, id, 1, callable, enclosingStmt)
 
                     @Suppress("UNCHECKED_CAST")
                     tw.writeIsAnonymClass(ids.type.javaResult.id as Label<DbClass>, idNewexpr)

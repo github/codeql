@@ -1758,3 +1758,27 @@
 | samConversion.kt:43:31:45:43 | invoke(...) | samConversion.kt:43:31:45:43 | invoke | MethodAccess |
 | samConversion.kt:43:31:45:43 | this | samConversion.kt:43:31:45:43 | invoke | ThisAccess |
 | samConversion.kt:45:39:45:42 | true | samConversion.kt:43:31:45:43 | invoke | BooleanLiteral |
+| whenExpr.kt:2:10:8:3 | <Stmt> | whenExpr.kt:1:1:9:1 | testWhen | StmtExpr |
+| whenExpr.kt:2:10:8:3 | when ... | whenExpr.kt:1:1:9:1 | testWhen | WhenExpr |
+| whenExpr.kt:2:15:2:15 | i | whenExpr.kt:1:1:9:1 | testWhen | VarAccess |
+| whenExpr.kt:2:15:2:15 | tmp0_subject | whenExpr.kt:1:1:9:1 | testWhen | LocalVariableDeclExpr |
+| whenExpr.kt:3:5:3:5 | 0 | whenExpr.kt:1:1:9:1 | testWhen | IntegerLiteral |
+| whenExpr.kt:3:5:3:5 | ... (value equals) ... | whenExpr.kt:1:1:9:1 | testWhen | ValueEQExpr |
+| whenExpr.kt:3:5:3:5 | tmp0_subject | whenExpr.kt:1:1:9:1 | testWhen | VarAccess |
+| whenExpr.kt:3:10:3:10 | 1 | whenExpr.kt:1:1:9:1 | testWhen | IntegerLiteral |
+| whenExpr.kt:4:5:4:5 | 1 | whenExpr.kt:1:1:9:1 | testWhen | IntegerLiteral |
+| whenExpr.kt:4:5:4:5 | ... (value equals) ... | whenExpr.kt:1:1:9:1 | testWhen | ValueEQExpr |
+| whenExpr.kt:4:5:4:5 | tmp0_subject | whenExpr.kt:1:1:9:1 | testWhen | VarAccess |
+| whenExpr.kt:4:10:4:10 | 2 | whenExpr.kt:1:1:9:1 | testWhen | IntegerLiteral |
+| whenExpr.kt:5:5:5:5 | 2 | whenExpr.kt:1:1:9:1 | testWhen | IntegerLiteral |
+| whenExpr.kt:5:5:5:5 | ... (value equals) ... | whenExpr.kt:1:1:9:1 | testWhen | ValueEQExpr |
+| whenExpr.kt:5:5:5:5 | tmp0_subject | whenExpr.kt:1:1:9:1 | testWhen | VarAccess |
+| whenExpr.kt:5:17:5:17 | 3 | whenExpr.kt:1:1:9:1 | testWhen | IntegerLiteral |
+| whenExpr.kt:6:5:6:5 | 3 | whenExpr.kt:1:1:9:1 | testWhen | IntegerLiteral |
+| whenExpr.kt:6:5:6:5 | ... (value equals) ... | whenExpr.kt:1:1:9:1 | testWhen | ValueEQExpr |
+| whenExpr.kt:6:5:6:5 | tmp0_subject | whenExpr.kt:1:1:9:1 | testWhen | VarAccess |
+| whenExpr.kt:6:16:6:44 | Exception | whenExpr.kt:1:1:9:1 | testWhen | TypeAccess |
+| whenExpr.kt:6:16:6:44 | new Exception(...) | whenExpr.kt:1:1:9:1 | testWhen | ClassInstanceExpr |
+| whenExpr.kt:6:27:6:42 | No threes please | whenExpr.kt:1:1:9:1 | testWhen | StringLiteral |
+| whenExpr.kt:7:13:7:15 | 999 | whenExpr.kt:1:1:9:1 | testWhen | IntegerLiteral |
+| whenExpr.kt:7:13:7:15 | true | whenExpr.kt:1:1:9:1 | testWhen | BooleanLiteral |

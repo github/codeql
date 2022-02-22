@@ -41,3 +41,5 @@
 | stmts.kt:37:9:37:16 | return ... | ReturnStmt |
 | stmts.kt:39:13:41:5 | { ... } | BlockStmt |
 | stmts.kt:40:9:40:16 | return ... | ReturnStmt |
+| stmts.kt:44:25:46:1 | { ... } | BlockStmt |
+| stmts.kt:45:5:45:26 | throw ... | ThrowStmt |
