@@ -10,7 +10,7 @@ private class FlowSources extends SourceModelCsv {
     row =
       [
         "net/http;Request;true;Cookie;;;ReturnValue[0];remote",
-        "net/http;Request;true;Cookies;;;ArrayElement of ReturnValue;remote",
+        "net/http;Request;true;Cookies;;;ReturnValue.ArrayElement;remote",
         "net/http;Request;true;FormFile;;;ReturnValue[0..1];remote",
         "net/http;Request;true;FormValue;;;ReturnValue;remote",
         "net/http;Request;true;MultipartReader;;;ReturnValue[0];remote",

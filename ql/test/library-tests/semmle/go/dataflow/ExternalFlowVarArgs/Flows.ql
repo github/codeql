@@ -9,10 +9,10 @@ class SummaryModelTest extends SummaryModelCsv {
       [
         //`namespace; type; subtypes; name; signature; ext; input; output; kind`
         "github.com/nonexistent/test;;false;FunctionWithParameter;;;Argument[0];ReturnValue;value",
-        "github.com/nonexistent/test;;false;FunctionWithSliceParameter;;;ArrayElement of Argument[0];ReturnValue;value",
-        "github.com/nonexistent/test;;false;FunctionWithVarArgsParameter;;;ArrayElement of Argument[0];ReturnValue;value",
-        "github.com/nonexistent/test;;false;FunctionWithSliceOfStructsParameter;;;Field[github.com/nonexistent/test.A.Field] of ArrayElement of Argument[0];ReturnValue;value",
-        "github.com/nonexistent/test;;false;FunctionWithVarArgsOfStructsParameter;;;Field[github.com/nonexistent/test.A.Field] of ArrayElement of Argument[0];ReturnValue;value"
+        "github.com/nonexistent/test;;false;FunctionWithSliceParameter;;;Argument[0].ArrayElement;ReturnValue;value",
+        "github.com/nonexistent/test;;false;FunctionWithVarArgsParameter;;;Argument[0].ArrayElement;ReturnValue;value",
+        "github.com/nonexistent/test;;false;FunctionWithSliceOfStructsParameter;;;Argument[0].ArrayElement.Field[github.com/nonexistent/test.A.Field];ReturnValue;value",
+        "github.com/nonexistent/test;;false;FunctionWithVarArgsOfStructsParameter;;;Argument[0].ArrayElement.Field[github.com/nonexistent/test.A.Field];ReturnValue;value"
       ]
   }
 }

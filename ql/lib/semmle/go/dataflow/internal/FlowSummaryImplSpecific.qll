@@ -272,12 +272,12 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
 }
 
 /** Holds if specification component `c` parses as return value `n`. */
-predicate parseReturn(string c, int n) {
-  External::specSplit(_, c, _) and
+predicate parseReturn(AccessPathToken c, int n) {
   (
     c = "ReturnValue" and n = 0
     or
-    n = parseConstantOrRange(c.regexpCapture("ReturnValue\\[([^\\]]+)\\]", 1))
+    c.getName() = "ReturnValue" and
+    n = parseConstantOrRange(c.getAnArgument())
   )
 }
 
