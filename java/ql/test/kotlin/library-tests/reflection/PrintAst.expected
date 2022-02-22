@@ -18,11 +18,33 @@ reflection.kt:
 #   48|           0: [MethodAccess] println(...)
 #   48|             -1: [TypeAccess] ConsoleKt
 #   48|             0: [MethodAccess] get(...)
+#   48|               -1: [ClassInstanceExpr] new (...)
+#   48|                 -4: [AnonymousClass] new KProperty1<String,Character>(...) { ... }
+#   48|                   1: [Constructor] 
+#   48|                     5: [BlockStmt] { ... }
+#   48|                       0: [SuperConstructorInvocationStmt] super(...)
+#   48|                 -3: [TypeAccess] KProperty1<String,Character>
 #   48|               0: [StringLiteral] abc
 #   49|         1: [ExprStmt] <Expr>;
 #   49|           0: [MethodAccess] println(...)
 #   49|             -1: [TypeAccess] ConsoleKt
 #   49|             0: [MethodAccess] get(...)
+#   49|               -1: [ClassInstanceExpr] new (...)
+#   49|                 -4: [AnonymousClass] new KProperty0<Character>(...) { ... }
+#   49|                   1: [Constructor] 
+#-----|                     4: (Parameters)
+#   49|                       0: [Parameter] <extensionReceiver>
+#   49|                     5: [BlockStmt] { ... }
+#   49|                       0: [SuperConstructorInvocationStmt] super(...)
+#   49|                       1: [ExprStmt] <Expr>;
+#   49|                         0: [AssignExpr] ...=...
+#   49|                           0: [VarAccess] this.<extensionReceiver>
+#   49|                             -1: [ThisAccess] this
+#   49|                           1: [VarAccess] <extensionReceiver>
+#   49|                   1: [FieldDeclaration] String <extensionReceiver>;
+#   49|                     -1: [TypeAccess] String
+#   49|                 -3: [TypeAccess] KProperty0<Character>
+#   49|                 0: [StringLiteral] abcd
 #    3|   2: [Class] Reflection
 #    3|     1: [Constructor] Reflection
 #    3|       5: [BlockStmt] { ... }
@@ -55,6 +77,12 @@ reflection.kt:
 #    6|               -1: [VarAccess] ref
 #    8|         2: [LocalVariableDeclStmt] var ...;
 #    8|           1: [LocalVariableDeclExpr] x0
+#    8|             0: [ClassInstanceExpr] new (...)
+#    8|               -4: [AnonymousClass] new KProperty1<C,Integer>(...) { ... }
+#    8|                 1: [Constructor] 
+#    8|                   5: [BlockStmt] { ... }
+#    8|                     0: [SuperConstructorInvocationStmt] super(...)
+#    8|               -3: [TypeAccess] KProperty1<C,Integer>
 #    9|         3: [LocalVariableDeclStmt] var ...;
 #    9|           1: [LocalVariableDeclExpr] x1
 #    9|             0: [MethodAccess] get(...)
@@ -98,8 +126,31 @@ reflection.kt:
 #   12|               0: [VarAccess] x0
 #   13|         7: [LocalVariableDeclStmt] var ...;
 #   13|           1: [LocalVariableDeclExpr] x5
+#   13|             0: [ClassInstanceExpr] new (...)
+#   13|               -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
+#   13|                 1: [Constructor] 
+#-----|                   4: (Parameters)
+#   13|                     0: [Parameter] <dispatchReceiver>
+#   13|                   5: [BlockStmt] { ... }
+#   13|                     0: [SuperConstructorInvocationStmt] super(...)
+#   13|                     1: [ExprStmt] <Expr>;
+#   13|                       0: [AssignExpr] ...=...
+#   13|                         0: [VarAccess] this.<dispatchReceiver>
+#   13|                           -1: [ThisAccess] this
+#   13|                         1: [VarAccess] <dispatchReceiver>
+#   13|                 1: [FieldDeclaration] C <dispatchReceiver>;
+#   13|                   -1: [TypeAccess] C
+#   13|               -3: [TypeAccess] KProperty0<Integer>
+#   13|               0: [ClassInstanceExpr] new C(...)
+#   13|                 -3: [TypeAccess] C
 #   15|         8: [LocalVariableDeclStmt] var ...;
 #   15|           1: [LocalVariableDeclExpr] y0
+#   15|             0: [ClassInstanceExpr] new (...)
+#   15|               -4: [AnonymousClass] new KMutableProperty1<C,Integer>(...) { ... }
+#   15|                 1: [Constructor] 
+#   15|                   5: [BlockStmt] { ... }
+#   15|                     0: [SuperConstructorInvocationStmt] super(...)
+#   15|               -3: [TypeAccess] KMutableProperty1<C,Integer>
 #   16|         9: [LocalVariableDeclStmt] var ...;
 #   16|           1: [LocalVariableDeclExpr] y1
 #   16|             0: [MethodAccess] set(...)
@@ -146,6 +197,23 @@ reflection.kt:
 #   19|               0: [VarAccess] y0
 #   20|         13: [LocalVariableDeclStmt] var ...;
 #   20|           1: [LocalVariableDeclExpr] y5
+#   20|             0: [ClassInstanceExpr] new (...)
+#   20|               -4: [AnonymousClass] new KMutableProperty0<Integer>(...) { ... }
+#   20|                 1: [Constructor] 
+#-----|                   4: (Parameters)
+#   20|                     0: [Parameter] <dispatchReceiver>
+#   20|                   5: [BlockStmt] { ... }
+#   20|                     0: [SuperConstructorInvocationStmt] super(...)
+#   20|                     1: [ExprStmt] <Expr>;
+#   20|                       0: [AssignExpr] ...=...
+#   20|                         0: [VarAccess] this.<dispatchReceiver>
+#   20|                           -1: [ThisAccess] this
+#   20|                         1: [VarAccess] <dispatchReceiver>
+#   20|                 1: [FieldDeclaration] C <dispatchReceiver>;
+#   20|                   -1: [TypeAccess] C
+#   20|               -3: [TypeAccess] KMutableProperty0<Integer>
+#   20|               0: [ClassInstanceExpr] new C(...)
+#   20|                 -3: [TypeAccess] C
 #   22|         14: [LocalVariableDeclStmt] var ...;
 #   22|           1: [LocalVariableDeclExpr] prop
 #   22|             0: [CastExpr] (...)...

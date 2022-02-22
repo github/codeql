@@ -2528,8 +2528,7 @@ open class KotlinFileExtractor(
                     extractTypeAccess(e.classType, locId, callable, id, 0, exprParent.enclosingStmt)
                 }
                 is IrPropertyReference -> {
-                    // TODO
-                    logger.errorElement("Unhandled IrPropertyReference", e)
+                    extractPropertyReference(e, parent, callable)
                 }
                 else -> {
                     logger.errorElement("Unrecognised IrExpression: " + e.javaClass, e)
@@ -2592,6 +2591,133 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun extractPropertyReference(
+        propertyReferenceExpr: IrPropertyReference,
+        parent: StmtExprParent,
+        callable: Label<out DbCallable>
+    ) {
+        with("property reference", propertyReferenceExpr) {
+            /*
+             * Extract generated class:
+             * ```
+             * class C : kotlin.jvm.internal.PropertyReference, kotlin.reflect.KMutableProperty0<R> {
+             *   private dispatchReceiver: TD
+             *   constructor(dispatchReceiver: TD) {
+             *       super()
+             *       this.dispatchReceiver = dispatchReceiver
+             *   }
+             *
+             *   fun get(): R { return this.dispatchReceiver.FN1() }
+             *
+             *   fun set(a0: R): Unit { return this.dispatchReceiver.FN2(a0) }
+             * }
+             * ```
+             *
+             * Variations:
+             * - KProperty vs KMutableProperty
+             * - KProperty0<> vs KProperty1<,>
+             * - no receiver vs dispatchReceiver vs extensionReceiver
+             **/
+
+            val target = propertyReferenceExpr.getter ?: run {
+                logger.errorElement("Expected to find getter for property reference.", propertyReferenceExpr)
+                return
+            }
+
+            val locId = tw.getLocation(propertyReferenceExpr)
+
+            val extensionParameter = target.owner.extensionReceiverParameter
+            val dispatchParameter = target.owner.dispatchReceiverParameter
+
+            var parameters = LinkedList<IrValueParameter>()
+            if (extensionParameter != null && propertyReferenceExpr.extensionReceiver == null) {
+                parameters.addFirst(extensionParameter)
+            }
+            if (dispatchParameter != null && propertyReferenceExpr.dispatchReceiver == null) {
+                parameters.addFirst(dispatchParameter)
+            }
+
+            val parameterTypes = parameters.map { it.type }
+            val kPropertyTypeArguments = parameterTypes + target.owner.returnType
+
+            val kPropertyType = propertyReferenceExpr.type
+
+            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
+            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
+            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
+            val ids = LocallyVisibleFunctionLabels(
+                TypeResults(javaResult, kotlinResult),
+                tw.getFreshIdLabel(),
+                tw.getFreshIdLabel(), // not used
+                tw.getFreshIdLabel()
+            )
+
+            val currentDeclaration = declarationStack.peek()
+            // The base class could be `Any`. `PropertyReference` is used to keep symmetry with function references.
+            val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.PropertyReference"))?.owner?.typeWith()
+                ?: pluginContext.irBuiltIns.anyType
+
+            val id = extractGeneratedClass(ids, listOf(baseClass, kPropertyType), locId, currentDeclaration)
+
+            val helper = FunctionReferenceHelper(locId, ids)
+            val firstAssignmentStmtIdx = 1
+            val extensionParameterIndex: Int
+            val dispatchReceiver = propertyReferenceExpr.dispatchReceiver
+            val dispatchFieldId: Label<DbField>?
+            if (dispatchReceiver != null) {
+                dispatchFieldId = tw.getFreshIdLabel()
+                extensionParameterIndex = 1
+
+                extractField(dispatchFieldId, "<dispatchReceiver>", dispatchReceiver.type, id, locId, DescriptorVisibilities.PRIVATE, propertyReferenceExpr, false)
+                helper.extractParameterToFieldAssignmentInConstructor("<dispatchReceiver>", dispatchReceiver.type, dispatchFieldId, 0, firstAssignmentStmtIdx)
+            } else {
+                dispatchFieldId = null
+                extensionParameterIndex = 0
+            }
+
+            val extensionReceiver = propertyReferenceExpr.extensionReceiver
+            val extensionFieldId: Label<out DbField>?
+            if (extensionReceiver != null) {
+                extensionFieldId = tw.getFreshIdLabel()
+
+                extractField(extensionFieldId, "<extensionReceiver>", extensionReceiver.type, id, locId, DescriptorVisibilities.PRIVATE, propertyReferenceExpr, false)
+                helper.extractParameterToFieldAssignmentInConstructor( "<extensionReceiver>", extensionReceiver.type, extensionFieldId, 0 + extensionParameterIndex, firstAssignmentStmtIdx + extensionParameterIndex)
+            } else {
+                extensionFieldId = null
+            }
+
+
+            // todo: add get and set methods with body, call to reflection target (get and set), arguments
+
+            // todo: property ref
+            // Add constructor (property ref) call:
+            val exprParent = parent.expr(propertyReferenceExpr, callable)
+            val idCtorRef = tw.getFreshIdLabel<DbNewexpr>()
+            tw.writeExprs_newexpr(idCtorRef, ids.type.javaResult.id, exprParent.parent, exprParent.idx)
+            tw.writeExprsKotlinType(idCtorRef, ids.type.kotlinResult.id)
+            tw.writeHasLocation(idCtorRef, locId)
+            tw.writeCallableEnclosingExpr(idCtorRef, callable)
+            tw.writeStatementEnclosingExpr(idCtorRef, exprParent.enclosingStmt)
+            tw.writeCallableBinding(idCtorRef, ids.constructor)
+
+            extractTypeAccess(kPropertyType, locId, callable, idCtorRef, -3, exprParent.enclosingStmt)
+
+            // todo: property ref:
+            //tw.writeMemberRefBinding(idMemberRef, targetCallableId)
+
+            // constructor arguments:
+            if (dispatchReceiver != null) {
+                extractExpressionExpr(dispatchReceiver, callable, idCtorRef, 0, exprParent.enclosingStmt)
+            }
+
+            if (extensionReceiver != null) {
+                extractExpressionExpr(extensionReceiver, callable, idCtorRef, 0 + extensionParameterIndex, exprParent.enclosingStmt)
+            }
+
+            tw.writeIsAnonymClass(id, idCtorRef)
+        }
+    }
+
     private fun extractFunctionReference(
         functionReferenceExpr: IrFunctionReference,
         parent: StmtExprParent,
@@ -2634,6 +2760,7 @@ open class KotlinFileExtractor(
             val typeArguments = if (target is IrConstructorSymbol) {
                 (target.owner.returnType as? IrSimpleType)?.arguments
             } else {
+                // todo: do we need to check the arguments of the extensionReceiver?
                 (functionReferenceExpr.dispatchReceiver?.type as? IrSimpleType)?.arguments
             }
 
@@ -2661,11 +2788,12 @@ open class KotlinFileExtractor(
             val ids = LocallyVisibleFunctionLabels(
                 TypeResults(javaResult, kotlinResult),
                 tw.getFreshIdLabel(),
-                tw.getFreshIdLabel(),
+                tw.getFreshIdLabel(), // not used
                 tw.getFreshIdLabel()
             )
 
             val currentDeclaration = declarationStack.peek()
+            // `FunctionReference` base class is required, because that's implementing `KFunction`.
             val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.FunctionReference"))?.owner?.typeWith()
                 ?: pluginContext.irBuiltIns.anyType
 
