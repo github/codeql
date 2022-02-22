@@ -13,6 +13,11 @@
               scrpt2.src = 'http://www.cdn.local/ga.js';
               scrpt2.integrity = 'sha256-h0UuK3mE9taiYlB5u9vT9A0s/XDgkfVd+F4VhN/sky=';
 
+              // NOT OK (http + ternary)
+              var scrpt3 = document.createElement('script');
+              scrpt3.type = 'text/javascript';
+              scrpt3.src = ('https:' == document.location.protocol ? 'http://unsafe' : 'http://also-unsafe') + '.cdn.local/ga.js';
+
               // NOT OK (http URL)
               var ifrm = document.createElement('iframe');
               ifrm.src = 'http://www.example.com/';
@@ -27,6 +32,7 @@
               }
               var ifrm3 = document.createElement('iframe');
               ifrm3.src = getUrl('v123');
+
             })();
           </script>
     </head>

@@ -69,8 +69,7 @@ module StaticCreation {
     }
 
     override string getProblem() {
-      result =
-        "Script loaded from content delivery network with no integrity check."
+      result = "Script loaded from content delivery network with no integrity check."
     }
   }
 
@@ -78,7 +77,9 @@ module StaticCreation {
   class IframeElementWithUntrustedContent extends AddsUntrustedUrl instanceof HTML::IframeElement {
     IframeElementWithUntrustedContent() { isUntrustedSourceUrl(super.getSourcePath()) }
 
-    override string getProblem() { result = "HTML iframe element loaded using unencrypted connection." }
+    override string getProblem() {
+      result = "HTML iframe element loaded using unencrypted connection."
+    }
   }
 }
 
