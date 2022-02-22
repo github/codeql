@@ -21,7 +21,7 @@ public class JinJavaSSTI {
 		String template = request.getParameter("template");
 		Jinjava jinjava = new Jinjava();
 		Map<String, Object> context = new HashMap<>();
-		// String render​(String template, Map<String,​?> bindings)
+		// String render(String template, Map<String,​?> bindings)
 		String renderedTemplate = jinjava.render(template, context);
 	}
 
