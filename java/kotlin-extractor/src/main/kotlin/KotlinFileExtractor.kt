@@ -2458,7 +2458,7 @@ open class KotlinFileExtractor(
             /*
              * Extract generated class:
              * ```
-             * class C : Any, kotlin.FunctionI<T0,T1, ... TI, R> {
+             * class C : kotlin.jvm.internal.FunctionReference, kotlin.FunctionI<T0,T1, ... TI, R> {
              *   private dispatchReceiver: TD
              *   private extensionReceiver: TE
              *   constructor(dispatchReceiver: TD, extensionReceiver: TE) {
@@ -2473,7 +2473,7 @@ open class KotlinFileExtractor(
              * ```
              * or in case of big arity lambdas ????
              * ```
-             * class C : Any, kotlin.FunctionN<R> {
+             * class C : kotlin.jvm.internal.FunctionReference, kotlin.FunctionN<R> {
              *   private receiver: TD
              *   constructor(receiver: TD) { super(); this.receiver = receiver; }
              *   fun invoke(vararg args: Any?): R {
@@ -2518,7 +2518,10 @@ open class KotlinFileExtractor(
             )
 
             val currentDeclaration = declarationStack.peek()
-            val id = extractGeneratedClass(ids, listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType), locId, currentDeclaration)
+            val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.FunctionReference"))?.owner?.typeWith()
+                ?: pluginContext.irBuiltIns.anyType
+
+            val id = extractGeneratedClass(ids, listOf(baseClass, fnInterfaceType), locId, currentDeclaration)
 
             val helper = FunctionReferenceHelper(locId, ids)
 
