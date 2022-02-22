@@ -1,3 +1,5 @@
+/** Definitions of data flow steps for determining flow of regular expressions. */
+
 import java
 import semmle.code.java.dataflow.ExternalFlow
 

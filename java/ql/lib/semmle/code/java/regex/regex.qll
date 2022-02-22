@@ -1,3 +1,7 @@
+/**
+ * Definitions for parsing regular expressions.
+ */
+
 import java
 private import RegexFlowConfigs
 
@@ -142,7 +146,7 @@ abstract class RegexString extends StringLiteral {
   }
 
   bindingset[x]
-  int max_zero(int x) { result = max([x, 0]) }
+  private int max_zero(int x) { result = max([x, 0]) }
 
   /**
    * Gets the nesting depth of character classes after position `pos`,
@@ -375,11 +379,13 @@ abstract class RegexString extends StringLiteral {
     not exists(int x, int y | this.backreference(x, y) and x <= start and y >= end)
   }
 
+  /** Holds if a normal character or escape sequence is between `start` and `end`. */
   predicate normalCharacter(int start, int end) {
     this.character(start, end) and
     not this.specialCharacter(start, end, _)
   }
 
+  /** Holds if a special character `char` is between `start` and `end`. */
   predicate specialCharacter(int start, int end, string char) {
     this.character(start, end) and
     end = start + 1 and
@@ -510,6 +516,7 @@ abstract class RegexString extends StringLiteral {
     this.simpleGroupStart(start, end)
   }
 
+  /** Holds if the text in the range start,end is a group with contents in the range in_start,in_end */
   predicate groupContents(int start, int end, int in_start, int in_end) {
     this.groupStart(start, in_start) and
     end = in_end + 1 and
