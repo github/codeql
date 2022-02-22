@@ -24,13 +24,25 @@ where
     exists(pred.getReturnTypeExpr()) and
     not docLines(pred)
         .matches([
-            ["Gets", "Get", "Holds", "Create", "Creates"] + " %", "INTERNAL%", "DEPRECATED%",
+            "Gets %", //
+            "Get %", //
+            "Holds %", // <- predicates without a result can sometimes still use 'Holds'.
+            "Create %", //
+            "Creates %", //
+            "INTERNAL%", //
+            "DEPRECATED%", //
             "EXPERIMENTAL%"
-          ]) and // <- predicates without a result can sometimes still use 'Holds'.
+          ]) and
     message = "The QLDoc for a predicate with a result should start with 'Gets'."
     or
     not exists(pred.getReturnTypeExpr()) and
-    not docLines(pred).matches(["Holds ", "INTERNAL", "DEPRECATED", "EXPERIMENTAL"] + "%") and
+    not docLines(pred)
+        .matches([
+            "Holds %", //
+            "INTERNAL%", //
+            "DEPRECATED%", //
+            "EXPERIMENTAL%" //
+          ]) and
     message = "The QLDoc for a predicate without a result should start with 'Holds'."
   )
 select pred.getQLDoc(), message
