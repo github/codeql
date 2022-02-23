@@ -12,7 +12,7 @@
 
 import java
 import UnsafeUrlForward
-import semmle.code.java.dataflow.FlowSources
+import experimental.semmle.code.java.PathSanitizer
 import DataFlow::PathGraph
 
 class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
@@ -35,7 +35,7 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) { node instanceof UnsafeUrlForwardSanitizer }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof UnsafeUrlForwardBarrierGuard
+    guard instanceof PathTraversalBarrierGuard
   }
 
   override DataFlow::FlowFeature getAFeature() {
