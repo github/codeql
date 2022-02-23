@@ -58,3 +58,31 @@ void test()
 		openUrl(buffer);
 	}
 }
+
+typedef unsigned long size_t;
+int strncmp(const char *s1, const char *s2, size_t n);
+char* strstr(char* s1, const char* s2);
+
+void test2(const char *url)
+{
+	if (strncmp(url, "http://", 7)) // GOOD (or at least dubious; we are not constructing the URL)
+	{
+		openUrl(url);
+	}
+}
+
+void test3(char *url)
+{
+	char *ptr;
+
+	ptr = strstr(url, "https://");
+	if (!ptr)
+	{
+		ptr = strstr(url, "http://"); // GOOD (we are not constructing the URL) [FALSE POSITIVE]
+	}
+
+	if (ptr)
+	{
+		openUrl(ptr);
+	}
+}
