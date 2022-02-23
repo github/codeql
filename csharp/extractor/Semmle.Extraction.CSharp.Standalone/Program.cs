@@ -51,22 +51,8 @@ namespace Semmle.Extraction.CSharp.Standalone
 
     public class Program
     {
-        public static int Main(string[] args)
+        public static Extractor.ExitCode Run(Options options)
         {
-            Extractor.SetInvariantCulture();
-
-            var options = Options.Create(args);
-            // options.CIL = true;  // To do: Enable this
-
-            if (options.Help)
-            {
-                Options.ShowHelp(System.Console.Out);
-                return 0;
-            }
-
-            if (options.Errors)
-                return 1;
-
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
@@ -78,7 +64,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             if (sourceFileCount == 0)
             {
                 logger.Log(Severity.Error, "No source files found");
-                return 1;
+                return Extractor.ExitCode.Errors;
             }
 
             if (!options.SkipExtraction)
@@ -95,8 +81,26 @@ namespace Semmle.Extraction.CSharp.Standalone
                     options);
                 logger.Log(Severity.Info, $"Extraction completed in {stopwatch.Elapsed}");
             }
+            return Extractor.ExitCode.Ok;
+        }
 
-            return 0;
+        public static int Main(string[] args)
+        {
+            Extractor.SetInvariantCulture();
+
+            var options = Options.Create(args);
+            // options.CIL = true;  // To do: Enable this
+
+            if (options.Help)
+            {
+                Options.ShowHelp(System.Console.Out);
+                return 0;
+            }
+
+            if (options.Errors)
+                return 1;
+
+            return (int)Run(options);
         }
 
         private class ExtractionProgress : IProgressMonitor
