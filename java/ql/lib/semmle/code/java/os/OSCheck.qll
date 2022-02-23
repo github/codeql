@@ -51,10 +51,11 @@ private class IsUnixFromSystemProp extends IsUnixGuard instanceof MethodAccess {
   }
 }
 
-private predicate isOsFromApacheCommons(FieldAccess fa, string fieldName) {
+bindingset[fieldNamePattern]
+private predicate isOsFromApacheCommons(FieldAccess fa, string fieldNamePattern) {
   exists(Field f | f = fa.getField() |
     f.getDeclaringType() instanceof ApacheSystemUtils and
-    f.hasName(fieldName)
+    f.getName().matches(fieldNamePattern)
   )
 }
 
