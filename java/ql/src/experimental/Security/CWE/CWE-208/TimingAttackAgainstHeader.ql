@@ -70,5 +70,4 @@ class NonConstantTimeComparisonConfig extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, NonConstantTimeComparisonConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Possible timing attack against $@ validation.", source,
-  source.getNode()
+select sink.getNode(), source, sink, "Possible timing attack against $@ validation.", source.getNode()
