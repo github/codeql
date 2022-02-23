@@ -153,7 +153,7 @@ StoreInstruction getAStoreStrictlyAfter(StoreInstruction store) {
 
 /**
  * Holds if `store` copies the address of `f`'s local variable `var`
- * into th address `globalAddress`.
+ * into the address `globalAddress`.
  */
 predicate stackAddressEscapes(
   StoreInstruction store, StackVariable var, TGlobalAddress globalAddress, Function f
