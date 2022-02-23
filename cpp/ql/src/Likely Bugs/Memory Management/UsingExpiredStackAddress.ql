@@ -219,7 +219,7 @@ where
     // We know that we have a sequence:
     // (1) store to `address` -> (2) return from `f` -> (3) load from `address`.
     // But if (2) and (3) happen in the sam block we need to check the
-    // block indices to nsure that (3) happens after (2).
+    // block indices to ensure that (3) happens after (2).
     if isCallBlock = true
     then
       // If so, the load must happen after the call.
