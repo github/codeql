@@ -16,20 +16,22 @@ import cpp
 import semmle.code.cpp.ir.ValueNumbering
 import semmle.code.cpp.ir.IR
 
+predicate instructionHasVariable(VariableAddressInstruction vai, StackVariable var, Function f) {
+  var = vai.getASTVariable() and
+  f = vai.getEnclosingFunction() and
+  // Pointer-to-member types aren't properly handled in the dbscheme.
+  not vai.getResultType() instanceof PointerToMemberType and
+  // Rule out FPs caused by extraction errors.
+  not any(ErrorExpr e).getEnclosingFunction() = f
+}
+
 /**
  * Holds if `source` is the base address of an address computation whose
  * result is stored in `address`.
  */
 predicate stackPointerFlowsToUse(Instruction address, VariableAddressInstruction source) {
-  exists(VariableAddressInstruction var |
-    var = address and
-    var = source and
-    var.getASTVariable() instanceof StackVariable and
-    // Pointer-to-member types aren't properly handled in the dbscheme.
-    not var.getResultType() instanceof PointerToMemberType and
-    // Rule out FPs caused by extraction errors.
-    not any(ErrorExpr e).getEnclosingFunction() = var.getEnclosingFunction()
-  )
+  address = source and
+  instructionHasVariable(source, _, _)
   or
   stackPointerFlowsToUse(address.(CopyInstruction).getSourceValue(), source)
   or
@@ -158,11 +160,10 @@ StoreInstruction getAStoreStrictlyAfter(StoreInstruction store) {
 predicate stackAddressEscapes(
   StoreInstruction store, StackVariable var, TGlobalAddress globalAddress, Function f
 ) {
+  globalAddress = globalValueNumber(store.getDestinationAddress()) and
   exists(VariableAddressInstruction vai |
-    stackPointerFlowsToUse(store.getSourceValue(), vai) and
-    globalAddress = globalValueNumber(store.getDestinationAddress()) and
-    f = vai.getEnclosingFunction() and
-    var = vai.getASTVariable()
+    instructionHasVariable(pragma[only_bind_into](vai), var, f) and
+    stackPointerFlowsToUse(store.getSourceValue(), vai)
   ) and
   // Ensure there's no subsequent store that overrides the global address.
   not globalAddress = globalValueNumber(getAStoreStrictlyAfter(store).getDestinationAddress())
