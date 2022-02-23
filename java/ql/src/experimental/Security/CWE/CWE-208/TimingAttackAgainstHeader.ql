@@ -58,7 +58,7 @@ class ClientSuppliedIpTokenCheck extends DataFlow::Node {
 }
 
 class NonConstantTimeComparisonConfig extends TaintTracking::Configuration {
-  NonConstantTimeComparisonConfig() { this = "NonConstantTimeCryptoComparisonConfig" }
+  NonConstantTimeComparisonConfig() { this = "NonConstantTimeComparisonConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof ClientSuppliedIpTokenCheck }
 
