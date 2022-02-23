@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CSharp.Standalone
                 references => GetResolvedReferencesStandalone(referencePaths, references),
                 (analyser, syntaxTrees) => CSharp.Extractor.ReadSyntaxTrees(sources, analyser, null, null, syntaxTrees),
                 (syntaxTrees, references) => CSharpCompilation.Create("csharp.dll", syntaxTrees, references),
-                (compilation, options) => analyser.InitializeStandalone(compilation, options),
+                (compilation, options) => analyser.Initialize(compilation, options),
                 () => { },
                 _ => { },
                 () =>
