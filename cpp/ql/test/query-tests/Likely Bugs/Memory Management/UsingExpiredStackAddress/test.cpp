@@ -181,3 +181,19 @@ void test_escape_through_arrays() {
   int x18 = s5.pp[0][0]; // BAD
   int x19 = (*s6.pp)[0]; // BAD
 }
+
+void not_escape_through_arrays() {
+  int x;
+
+  s1.a1[0] = x;
+  s1.a2[0][1] = s1.a1[0];
+  **s1.a3[0] = 42;
+}
+
+void test_not_escape_through_array() {
+  not_escape_through_arrays();
+  
+  int x20 = s1.a1[0]; // GOOD
+  int x21 = s1.a2[0][1]; // GOOD
+  int* x22 = s1.a3[5][2]; // GOOD
+}
