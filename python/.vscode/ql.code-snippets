@@ -250,4 +250,22 @@
         ],
         "description": "API graph .getMember chain (select full path before inserting)",
     },
+    "debug partial flow": {
+        "scope": "ql",
+        "prefix": "debug partial flow",
+        "body": [
+            "// put the line below inside the configuration",
+            "// override int explorationLimit() { result = 5 }",
+            "// and then run quick evaluation on the predicate below",
+            "// (and potentially limit the set of sources)",
+            "predicate debugPartialFlow(Location loc, DataFlow::PartialPathNode node, int dist) {",
+            "  loc = node.getNode().getLocation() and",
+            "  exists(loc.getFile().getRelativePath()) and",
+            "  exists(Configuration config, DataFlow::PartialPathNode source |",
+            "    config.hasPartialFlow(source, node, dist)",
+            "  )",
+            "}",
+        ],
+        "description": "debug partial flow",
+    },
 }
