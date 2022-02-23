@@ -826,6 +826,32 @@ module PrivateDjango {
             API::Node getModelClass() { result = modelClass }
           }
 
+          /**
+           * Gets a synthetic node where the data in the attribute `fieldName` can flow
+           * to, when a DB store is made on `subModel`, taking ORM inheritance into
+           * account.
+           *
+           * If `fieldName` is defined in class `base`, the results will include the
+           * synthetic node for `base` itself, the synthetic node for `subModel`, as
+           * well as all the classes in-between (in the class hierarchy).
+           */
+          SyntheticDjangoOrmModelNode nodeToStoreIn(API::Node subModel, string fieldName) {
+            exists(Class base, API::Node baseModel, API::Node resultModel |
+              baseModel = Model::subclassRef() and
+              resultModel = Model::subclassRef() and
+              baseModel.getASubclass*() = subModel and
+              base = getModelClassClass(baseModel) and
+              exists(Variable v |
+                base.getBody().getAnItem().(AssignStmt).defines(v) and
+                v.getId() = fieldName
+              )
+            |
+              baseModel.getASubclass*() = resultModel and
+              resultModel.getASubclass*() = subModel and
+              result.getModelClass() = resultModel
+            )
+          }
+
           /** Additional data-flow steps for Django ORM models. */
           class DjangOrmSteps extends AdditionalOrmSteps {
             override predicate storeStep(
@@ -867,7 +893,7 @@ module PrivateDjango {
                   )
                   or
                   // -> DB store on synthetic node
-                  nodeTo.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass
+                  nodeTo = nodeToStoreIn(modelClass, fieldName)
                 )
               )
               or
@@ -877,7 +903,7 @@ module PrivateDjango {
                 call = [manager(modelClass), querySet(modelClass)].getMember("update").getACall() and
                 nodeFrom = call.getArgByName(fieldName) and
                 c.(DataFlow::AttributeContent).getAttribute() = fieldName and
-                nodeTo.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass
+                nodeTo = nodeToStoreIn(modelClass, fieldName)
               )
               or
               // synthetic -> method-call that returns collection of ORM models (all/filter/...)
@@ -900,7 +926,12 @@ module PrivateDjango {
             override predicate jumpStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
               // save -> synthetic
               exists(API::Node modelClass, DataFlow::MethodCallNode saveCall |
-                nodeTo.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass and
+                // TODO: The `nodeTo` should be restricted more, such that flow to
+                // base-classes are only for the fields that are defined in the
+                // base-class... but only passing on flow for a specific attribute requires flow-summaries,
+                // so we can do
+                // `obj (in obj.save call) ==read of attr==> synthetic attr on base-class ==store of attr==> synthetic for base-class`
+                nodeTo = nodeToStoreIn(modelClass, _) and
                 saveCall.calls(Model::instance(modelClass), "save") and
                 nodeFrom = saveCall.getObject()
               )
