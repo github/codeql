@@ -2322,20 +2322,27 @@ open class KotlinFileExtractor(
                     val exprParent = parent.expr(e, callable)
                     val id = tw.getFreshIdLabel<DbAssignexpr>()
                     val type = useType(e.type)
-                    val locId = tw.getLocation(e)
+                    val rhsValue = when(e) {
+                        is IrSetValue -> e.value
+                        is IrSetField -> e.value
+                        else -> { logger.errorElement("Unhandled IrSet* element.", e); return }
+                    }
+                    // The set operation's location as actually that of its LHS. Hence, the assignment spans the
+                    // set op plus its RHS, while the varAccess takes its location from `e`.
+                    val locId = tw.getLocation(e.startOffset, rhsValue.endOffset)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
                     val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-                    tw.writeHasLocation(lhsId, locId)
+                    val lhsLocId = tw.getLocation(e)
+                    tw.writeHasLocation(lhsId, lhsLocId)
                     tw.writeCallableEnclosingExpr(lhsId, callable)
+                    tw.writeStatementEnclosingExpr(lhsId, exprParent.enclosingStmt)
 
                     when (e) {
                         is IrSetValue -> {
-                            val rhsValue = e.value
-
                             // Check for a desugared in-place update operator, such as "v += e":
                             val inPlaceUpdateRhs = getUpdateInPlaceRHS(e.origin, { it is IrGetValue && it.symbol.owner == e.symbol.owner }, rhsValue)
                             if (inPlaceUpdateRhs != null) {
@@ -2350,8 +2357,6 @@ open class KotlinFileExtractor(
                             val lhsType = useType(e.symbol.owner.type)
                             tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, id, 0)
                             tw.writeExprsKotlinType(lhsId, lhsType.kotlinResult.id)
-                            // TODO: location, enclosing callable?
-                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
                             val vId = useValueDeclaration(e.symbol.owner)
                             tw.writeVariableBinding(lhsId, vId)
                             extractExpressionExpr(inPlaceUpdateRhs ?: rhsValue, callable, id, 1, exprParent.enclosingStmt)
@@ -2362,8 +2367,6 @@ open class KotlinFileExtractor(
                             val lhsType = useType(realField.type)
                             tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, id, 0)
                             tw.writeExprsKotlinType(lhsId, lhsType.kotlinResult.id)
-                            // TODO: location, enclosing callable?
-                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
                             val vId = useField(realField)
                             tw.writeVariableBinding(lhsId, vId)
                             extractExpressionExpr(e.value, callable, id, 1, exprParent.enclosingStmt)
