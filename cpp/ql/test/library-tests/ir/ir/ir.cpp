@@ -1479,4 +1479,39 @@ void array_structured_binding() {
     }
 }
 
+struct StructuredBindingDataMemberStruct {
+    int i = 1;
+    double d = 2.0;
+    unsigned int b : 3;
+    int& r = i;
+};
+
+void data_member_structured_binding() {
+    StructuredBindingDataMemberStruct s;
+    // structured binding use
+    {
+        auto [i, d, b, r] = s;
+        d = 4.0;
+        double& rd = d;
+        int v = i;
+        r = 5;
+        int& rr = r;
+        int w = r;
+    }
+    // explicit reference version
+    {
+        auto unnamed_local_variable = s;
+        auto& i = unnamed_local_variable.i;
+        auto& d = unnamed_local_variable.d;
+        // no equivalent for b
+        auto& r = unnamed_local_variable.r;
+        d = 4.0;
+        double& rd = d;
+        int v = i;
+        r = 5;
+        int& rr = r;
+        int w = r;
+    }
+}
+
 // semmle-extractor-options: -std=c++17 --clang
