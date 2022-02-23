@@ -20,6 +20,6 @@ void localAddressDoesNotEscape() {
 }
 
 void example2() {
-  localAddressEscapes();
+  localAddressDoesNotEscape();
   const int* x = xptr; // GOOD: This pointer does not point to expired memory.
 }
