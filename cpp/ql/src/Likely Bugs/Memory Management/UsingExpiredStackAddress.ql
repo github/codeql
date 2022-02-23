@@ -13,7 +13,9 @@
  */
 
 import cpp
-import semmle.code.cpp.ir.ValueNumbering
+// We don't actually use the global value numbering library in this query, but without it we end up
+// recomputing the IR.
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.ir.IR
 
 predicate instructionHasVariable(VariableAddressInstruction vai, StackVariable var, Function f) {
@@ -56,31 +58,31 @@ newtype TGlobalAddress =
     not v.getUnspecifiedType() instanceof PointerToMemberType
   } or
   TLoad(TGlobalAddress address) {
-    address = globalValueNumber(any(LoadInstruction load).getSourceAddress())
+    address = globalAddress(any(LoadInstruction load).getSourceAddress())
   } or
   TConversion(string kind, TGlobalAddress address, Type fromType, Type toType) {
     kind = "unchecked" and
     exists(ConvertInstruction convert |
       uncheckedConversionTypes(convert, fromType, toType) and
-      address = globalValueNumber(convert.getUnary())
+      address = globalAddress(convert.getUnary())
     )
     or
     kind = "checked" and
     exists(CheckedConvertOrNullInstruction convert |
       checkedConversionTypes(convert, fromType, toType) and
-      address = globalValueNumber(convert.getUnary())
+      address = globalAddress(convert.getUnary())
     )
     or
     kind = "inheritance" and
     exists(InheritanceConversionInstruction convert |
       inheritanceConversionTypes(convert, fromType, toType) and
-      address = globalValueNumber(convert.getUnary())
+      address = globalAddress(convert.getUnary())
     )
   } or
   TFieldAddress(TGlobalAddress address, Field f) {
     exists(FieldAddressInstruction fai |
       fai.getField() = f and
-      address = globalValueNumber(fai.getObjectAddress())
+      address = globalAddress(fai.getObjectAddress())
     )
   }
 
@@ -105,36 +107,36 @@ predicate inheritanceConversionTypes(
 }
 
 /** Gets the HashCons value of an address computed by `instr`, if any. */
-TGlobalAddress globalValueNumber(Instruction instr) {
+TGlobalAddress globalAddress(Instruction instr) {
   result = TGlobalVariable(instr.(VariableAddressInstruction).getASTVariable())
   or
   not instr instanceof LoadInstruction and
-  result = globalValueNumber(instr.(CopyInstruction).getSourceValue())
+  result = globalAddress(instr.(CopyInstruction).getSourceValue())
   or
   exists(LoadInstruction load | instr = load |
-    result = TLoad(globalValueNumber(load.getSourceAddress()))
+    result = TLoad(globalAddress(load.getSourceAddress()))
   )
   or
   exists(ConvertInstruction convert, Type fromType, Type toType | instr = convert |
     uncheckedConversionTypes(convert, fromType, toType) and
-    result = TConversion("unchecked", globalValueNumber(convert.getUnary()), fromType, toType)
+    result = TConversion("unchecked", globalAddress(convert.getUnary()), fromType, toType)
   )
   or
   exists(CheckedConvertOrNullInstruction convert, Type fromType, Type toType | instr = convert |
     checkedConversionTypes(convert, fromType, toType) and
-    result = TConversion("checked", globalValueNumber(convert.getUnary()), fromType, toType)
+    result = TConversion("checked", globalAddress(convert.getUnary()), fromType, toType)
   )
   or
   exists(InheritanceConversionInstruction convert, Type fromType, Type toType | instr = convert |
     inheritanceConversionTypes(convert, fromType, toType) and
-    result = TConversion("inheritance", globalValueNumber(convert.getUnary()), fromType, toType)
+    result = TConversion("inheritance", globalAddress(convert.getUnary()), fromType, toType)
   )
   or
   exists(FieldAddressInstruction fai | instr = fai |
-    result = TFieldAddress(globalValueNumber(fai.getObjectAddress()), fai.getField())
+    result = TFieldAddress(globalAddress(fai.getObjectAddress()), fai.getField())
   )
   or
-  result = globalValueNumber(instr.(PointerOffsetInstruction).getLeft())
+  result = globalAddress(instr.(PointerOffsetInstruction).getLeft())
 }
 
 /** Gets a `StoreInstruction` that may be executed after executing `store`. */
@@ -160,27 +162,27 @@ StoreInstruction getAStoreStrictlyAfter(StoreInstruction store) {
 predicate stackAddressEscapes(
   StoreInstruction store, StackVariable var, TGlobalAddress globalAddress, Function f
 ) {
-  globalAddress = globalValueNumber(store.getDestinationAddress()) and
+  globalAddress = globalAddress(store.getDestinationAddress()) and
   exists(VariableAddressInstruction vai |
     instructionHasVariable(pragma[only_bind_into](vai), var, f) and
     stackPointerFlowsToUse(store.getSourceValue(), vai)
   ) and
   // Ensure there's no subsequent store that overrides the global address.
-  not globalAddress = globalValueNumber(getAStoreStrictlyAfter(store).getDestinationAddress())
+  not globalAddress = globalAddress(getAStoreStrictlyAfter(store).getDestinationAddress())
 }
 
 predicate blockStoresToAddress(
   IRBlock block, int index, StoreInstruction store, TGlobalAddress globalAddress
 ) {
   block.getInstruction(index) = store and
-  globalAddress = globalValueNumber(store.getDestinationAddress())
+  globalAddress = globalAddress(store.getDestinationAddress())
 }
 
 predicate blockLoadsFromAddress(
   IRBlock block, int index, LoadInstruction load, TGlobalAddress globalAddress
 ) {
   block.getInstruction(index) = load and
-  globalAddress = globalValueNumber(load.getSourceAddress())
+  globalAddress = globalAddress(load.getSourceAddress())
 }
 
 predicate globalAddressPointsToStack(
@@ -215,7 +217,7 @@ from
 where
   globalAddressPointsToStack(store, var, call, block, address, isCallBlock, isStoreBlock) and
   block.getAnInstruction() = load and
-  globalValueNumber(load.getSourceAddress()) = address and
+  globalAddress(load.getSourceAddress()) = address and
   (
     // We know that we have a sequence:
     // (1) store to `address` -> (2) return from `f` -> (3) load from `address`.
