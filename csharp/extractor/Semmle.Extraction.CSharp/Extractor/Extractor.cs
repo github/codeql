@@ -16,15 +16,15 @@ using System.Threading;
 
 namespace Semmle.Extraction.CSharp
 {
+    public enum ExitCode
+    {
+        Ok,         // Everything worked perfectly
+        Errors,     // Trap was generated but there were processing errors
+        Failed      // Trap could not be generated
+    }
+
     public static class Extractor
     {
-        public enum ExitCode
-        {
-            Ok,         // Everything worked perfectly
-            Errors,     // Trap was generated but there were processing errors
-            Failed      // Trap could not be generated
-        }
-
         private class LogProgressMonitor : IProgressMonitor
         {
             private readonly ILogger logger;

@@ -51,7 +51,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
     public class Program
     {
-        public static Extractor.ExitCode Run(Options options)
+        public static ExitCode Run(Options options)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -64,7 +64,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             if (sourceFileCount == 0)
             {
                 logger.Log(Severity.Error, "No source files found");
-                return Extractor.ExitCode.Errors;
+                return ExitCode.Errors;
             }
 
             if (!options.SkipExtraction)
@@ -81,7 +81,7 @@ namespace Semmle.Extraction.CSharp.Standalone
                     options);
                 logger.Log(Severity.Info, $"Extraction completed in {stopwatch.Elapsed}");
             }
-            return Extractor.ExitCode.Ok;
+            return ExitCode.Ok;
         }
 
         public static int Main(string[] args)
