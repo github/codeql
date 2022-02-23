@@ -1541,14 +1541,14 @@ funcExprs.kt:
 #   32|                         0: [VarAccess] this.<dispatchReceiver>
 #   32|                           -1: [ThisAccess] this
 #   32|                         1: [VarAccess] <dispatchReceiver>
-#   32|                 1: [FieldDeclaration] FuncRef <dispatchReceiver>;
-#   32|                   -1: [TypeAccess] FuncRef
 #   32|                 1: [Method] invoke
 #   32|                   5: [BlockStmt] { ... }
 #   32|                     0: [ReturnStmt] return ...
 #   32|                       0: [MethodAccess] f0(...)
 #   32|                         -1: [VarAccess] this.<dispatchReceiver>
 #   32|                           -1: [ThisAccess] this
+#   32|                 1: [FieldDeclaration] FuncRef <dispatchReceiver>;
+#   32|                   -1: [TypeAccess] FuncRef
 #   32|               -3: [TypeAccess] Function0<Integer>
 #   32|               0: [ClassInstanceExpr] new FuncRef(...)
 #   32|                 -3: [TypeAccess] FuncRef
@@ -1566,14 +1566,14 @@ funcExprs.kt:
 #   33|                         0: [VarAccess] this.<dispatchReceiver>
 #   33|                           -1: [ThisAccess] this
 #   33|                         1: [VarAccess] <dispatchReceiver>
-#   33|                 1: [FieldDeclaration] Companion <dispatchReceiver>;
-#   33|                   -1: [TypeAccess] Companion
 #   33|                 1: [Method] invoke
 #   33|                   5: [BlockStmt] { ... }
 #   33|                     0: [ReturnStmt] return ...
 #   33|                       0: [MethodAccess] f0(...)
 #   33|                         -1: [VarAccess] this.<dispatchReceiver>
 #   33|                           -1: [ThisAccess] this
+#   33|                 1: [FieldDeclaration] Companion <dispatchReceiver>;
+#   33|                   -1: [TypeAccess] Companion
 #   33|               -3: [TypeAccess] Function0<Integer>
 #   33|               0: [VarAccess] Companion
 #   34|         16: [ExprStmt] <Expr>;
@@ -1591,8 +1591,6 @@ funcExprs.kt:
 #   34|                         0: [VarAccess] this.<dispatchReceiver>
 #   34|                           -1: [ThisAccess] this
 #   34|                         1: [VarAccess] <dispatchReceiver>
-#   34|                 1: [FieldDeclaration] FuncRef <dispatchReceiver>;
-#   34|                   -1: [TypeAccess] FuncRef
 #   34|                 1: [Method] invoke
 #-----|                   4: (Parameters)
 #   34|                     0: [Parameter] a0
@@ -1602,6 +1600,8 @@ funcExprs.kt:
 #   34|                         -1: [VarAccess] this.<dispatchReceiver>
 #   34|                           -1: [ThisAccess] this
 #   34|                         0: [VarAccess] a0
+#   34|                 1: [FieldDeclaration] FuncRef <dispatchReceiver>;
+#   34|                   -1: [TypeAccess] FuncRef
 #   34|               -3: [TypeAccess] Function1<Integer,Integer>
 #   34|               0: [ClassInstanceExpr] new FuncRef(...)
 #   34|                 -3: [TypeAccess] FuncRef
@@ -1638,8 +1638,6 @@ funcExprs.kt:
 #   36|                         0: [VarAccess] this.<extensionReceiver>
 #   36|                           -1: [ThisAccess] this
 #   36|                         1: [VarAccess] <extensionReceiver>
-#   36|                 1: [FieldDeclaration] int <extensionReceiver>;
-#   36|                   -1: [TypeAccess] int
 #   36|                 1: [Method] invoke
 #-----|                   4: (Parameters)
 #   36|                     0: [Parameter] a0
@@ -1649,6 +1647,8 @@ funcExprs.kt:
 #   36|                         0: [VarAccess] this.<extensionReceiver>
 #   36|                           -1: [ThisAccess] this
 #   36|                         1: [VarAccess] a0
+#   36|                 1: [FieldDeclaration] int <extensionReceiver>;
+#   36|                   -1: [TypeAccess] int
 #   36|               -3: [TypeAccess] Function1<Integer,Integer>
 #   36|               0: [IntegerLiteral] 3
 #   37|         19: [ExprStmt] <Expr>;
@@ -1684,8 +1684,6 @@ funcExprs.kt:
 #   38|                         0: [VarAccess] this.<dispatchReceiver>
 #   38|                           -1: [ThisAccess] this
 #   38|                         1: [VarAccess] <dispatchReceiver>
-#   38|                 1: [FieldDeclaration] FuncRef <dispatchReceiver>;
-#   38|                   -1: [TypeAccess] FuncRef
 #   38|                 1: [Method] invoke
 #-----|                   4: (Parameters)
 #   38|                     0: [Parameter] a0
@@ -1737,6 +1735,8 @@ funcExprs.kt:
 #   38|                         19: [VarAccess] a19
 #   38|                         20: [VarAccess] a20
 #   38|                         21: [VarAccess] a21
+#   38|                 1: [FieldDeclaration] FuncRef <dispatchReceiver>;
+#   38|                   -1: [TypeAccess] FuncRef
 #   38|               -3: [TypeAccess] Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>
 #   38|               0: [ClassInstanceExpr] new FuncRef(...)
 #   38|                 -3: [TypeAccess] FuncRef
@@ -1755,8 +1755,6 @@ funcExprs.kt:
 #   39|                         0: [VarAccess] this.<dispatchReceiver>
 #   39|                           -1: [ThisAccess] this
 #   39|                         1: [VarAccess] <dispatchReceiver>
-#   39|                 1: [FieldDeclaration] FuncRef <dispatchReceiver>;
-#   39|                   -1: [TypeAccess] FuncRef
 #   39|                 1: [Method] invoke
 #-----|                   4: (Parameters)
 #   39|                     0: [Parameter] a0
@@ -1880,6 +1878,8 @@ funcExprs.kt:
 #   39|                           1: [MethodAccess] get(...)
 #   39|                             -1: [VarAccess] a0
 #   39|                             22: [IntegerLiteral] 22
+#   39|                 1: [FieldDeclaration] FuncRef <dispatchReceiver>;
+#   39|                   -1: [TypeAccess] FuncRef
 #   39|               -3: [TypeAccess] FunctionN<String>
 #   39|               0: [ClassInstanceExpr] new FuncRef(...)
 #   39|                 -3: [TypeAccess] FuncRef

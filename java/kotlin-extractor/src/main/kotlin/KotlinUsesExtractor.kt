@@ -752,12 +752,18 @@ open class KotlinUsesExtractor(
     private val locallyVisibleFunctionLabelMapping: MutableMap<IrFunction, LocallyVisibleFunctionLabels> = mutableMapOf()
 
     /**
-     * Data class to hold labels generated for locally visible functions, such as
+     * Class to hold labels for generated classes around local functions, lambdas, function references, and property references.
+     */
+    open class GeneratedClassLabels(val type: TypeResults, val constructor: Label<DbConstructor>, val constructorBlock: Label<DbBlock>)
+
+    /**
+     * Class to hold labels generated for locally visible functions, such as
      *  - local functions,
      *  - lambdas, and
      *  - wrappers around function references.
      */
-    data class LocallyVisibleFunctionLabels(val type: TypeResults, val constructor: Label<DbConstructor>, val function: Label<DbMethod>, val constructorBlock: Label<DbBlock>)
+    class LocallyVisibleFunctionLabels(type: TypeResults, constructor: Label<DbConstructor>, constructorBlock: Label<DbBlock>, val function: Label<DbMethod>)
+        : GeneratedClassLabels(type, constructor, constructorBlock)
 
     /**
      * Gets the labels for functions belonging to

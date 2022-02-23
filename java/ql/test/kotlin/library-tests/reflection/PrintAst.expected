@@ -131,8 +131,6 @@ reflection.kt:
 #   12|                         0: [VarAccess] this.<dispatchReceiver>
 #   12|                           -1: [ThisAccess] this
 #   12|                         1: [VarAccess] <dispatchReceiver>
-#   12|                 1: [FieldDeclaration] KProperty1<C,Integer> <dispatchReceiver>;
-#   12|                   -1: [TypeAccess] KProperty1<C,Integer>
 #   12|                 1: [Method] invoke
 #-----|                   4: (Parameters)
 #   12|                     0: [Parameter] a0
@@ -142,6 +140,8 @@ reflection.kt:
 #   12|                         -1: [VarAccess] this.<dispatchReceiver>
 #   12|                           -1: [ThisAccess] this
 #   12|                         0: [VarAccess] a0
+#   12|                 1: [FieldDeclaration] KProperty1<C,Integer> <dispatchReceiver>;
+#   12|                   -1: [TypeAccess] KProperty1<C,Integer>
 #   12|               -3: [TypeAccess] Function1<T,V>
 #   12|               0: [VarAccess] x0
 #   13|         7: [LocalVariableDeclStmt] var ...;
@@ -222,8 +222,6 @@ reflection.kt:
 #   19|                         0: [VarAccess] this.<dispatchReceiver>
 #   19|                           -1: [ThisAccess] this
 #   19|                         1: [VarAccess] <dispatchReceiver>
-#   19|                 1: [FieldDeclaration] KMutableProperty1<C,Integer> <dispatchReceiver>;
-#   19|                   -1: [TypeAccess] KMutableProperty1<C,Integer>
 #   19|                 1: [Method] invoke
 #-----|                   4: (Parameters)
 #   19|                     0: [Parameter] a0
@@ -235,6 +233,8 @@ reflection.kt:
 #   19|                           -1: [ThisAccess] this
 #   19|                         0: [VarAccess] a0
 #   19|                         1: [VarAccess] a1
+#   19|                 1: [FieldDeclaration] KMutableProperty1<C,Integer> <dispatchReceiver>;
+#   19|                   -1: [TypeAccess] KMutableProperty1<C,Integer>
 #   19|               -3: [TypeAccess] Function2<T,V,Unit>
 #   19|               0: [VarAccess] y0
 #   20|         13: [LocalVariableDeclStmt] var ...;
