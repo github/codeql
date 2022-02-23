@@ -5,7 +5,7 @@
 <overview>
 <p>
 This rule finds uses of pointers that likely point to local variables in
-expired stack frames. Such pointers to local variables is only valid
+expired stack frames. A pointer to a local variable is only valid
 until the function returns, after which it becomes a dangling pointer.
 </p>
 
