@@ -154,12 +154,12 @@ def poly_fetch_book(id, test_for_subclass=True):
 
     if isinstance(book, PolyPhysicalBook):
         SINK(book.title) # $ flow="SOURCE, l:+11 -> book.title" SPURIOUS: flow="SOURCE, l:-23 -> book.title"
-        SINK(book.physical_location) # $ MISSING: flow
-        SINK(book.same_name_different_value) # $ MISSING: flow
+        SINK(book.physical_location) # $ flow="SOURCE, l:+11 -> book.physical_location"
+        SINK(book.same_name_different_value) # $ flow="SOURCE, l:+11 -> book.same_name_different_value"
     elif isinstance(book, PolyEBook):
         SINK_F(book.title) # $ SPURIOUS: flow="SOURCE, l:-27 -> book.title" flow="SOURCE, l:+7 -> book.title"
         SINK_F(book.download_link)
-        SINK_F(book.same_name_different_value)
+        SINK_F(book.same_name_different_value) # $ SPURIOUS: flow="SOURCE, l:+7 -> book.same_name_different_value"
 
 
 def poly_save_physical_book():

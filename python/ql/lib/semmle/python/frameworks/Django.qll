@@ -852,6 +852,26 @@ module PrivateDjango {
             )
           }
 
+          /**
+           * Gets the synthetic node where data could be loaded from, when a fetch is
+           * made on `modelClass`.
+           *
+           * In vanilla Django inheritance, this is simply the model itself, but if a
+           * model is based on `polymorphic.models.PolymorphicModel`, a fetch of the
+           * base-class can also yield instances of its subclasses.
+           */
+          SyntheticDjangoOrmModelNode nodeToLoadFrom(API::Node modelClass) {
+            result.getModelClass() = modelClass
+            or
+            exists(API::Node polymorphicModel |
+              polymorphicModel =
+                API::moduleImport("polymorphic").getMember("models").getMember("PolymorphicModel")
+            |
+              polymorphicModel.getASubclass+() = modelClass and
+              modelClass.getASubclass+() = result.getModelClass()
+            )
+          }
+
           /** Additional data-flow steps for Django ORM models. */
           class DjangOrmSteps extends AdditionalOrmSteps {
             override predicate storeStep(
@@ -908,7 +928,7 @@ module PrivateDjango {
               or
               // synthetic -> method-call that returns collection of ORM models (all/filter/...)
               exists(API::Node modelClass |
-                nodeFrom.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass and
+                nodeFrom = nodeToLoadFrom(modelClass) and
                 nodeTo.(Model::QuerySetMethodInstanceCollection).getModelClass() = modelClass and
                 nodeTo.(Model::QuerySetMethodInstanceCollection).isDbFetch() and
                 c instanceof DataFlow::ListElementContent
@@ -916,7 +936,7 @@ module PrivateDjango {
               or
               // synthetic -> method-call that returns dictionary with ORM models as values
               exists(API::Node modelClass |
-                nodeFrom.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass and
+                nodeFrom = nodeToLoadFrom(modelClass) and
                 nodeTo.(Model::QuerySetMethodInstanceDictValue).getModelClass() = modelClass and
                 nodeTo.(Model::QuerySetMethodInstanceDictValue).isDbFetch() and
                 c instanceof DataFlow::DictionaryElementAnyContent
@@ -938,9 +958,9 @@ module PrivateDjango {
               or
               // synthetic -> method-call that returns single ORM model (get/first/...)
               exists(API::Node modelClass |
+                nodeFrom = nodeToLoadFrom(modelClass) and
                 nodeTo.(Model::InstanceSource).getModelClass() = modelClass and
-                nodeTo.(Model::InstanceSource).isDbFetch() and
-                nodeFrom.(SyntheticDjangoOrmModelNode).getModelClass() = modelClass
+                nodeTo.(Model::InstanceSource).isDbFetch()
               )
             }
           }
