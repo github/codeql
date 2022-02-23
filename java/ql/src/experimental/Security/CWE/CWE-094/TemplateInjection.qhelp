@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+            Template Injection occurs when user input is embedded in a template in an unsafe manner.
+            An attacker can use native template syntax to inject a malicious payload into a template, which is then executed server-side. This permits the attacker to run arbitrary code in the server's context.</p>
+  </overview>
+  <recommendation>
+    <p>
+            To fix this, ensure that an untrusted value is not used as a template. If the application requirements do not allow this, use a sandboxed environment where access to unsafe attributes and methods is prohibited.
+        </p>
+  </recommendation>
+  <example>
+    <p>
+      In the example given below, an untrusted HTTP parameter
+      <code>code</code>
+      is used as a Velocity template string. This can lead to remote code execution.
+    </p>
+    <sample src="SSTIBad.java" />
+
+    <p>
+      In the next example the problem is avoided by using a fixed template string
+      <code>s</code>
+      . Since, the template is not attacker controlled in this case, we prevent untrusted code execution.
+    </p>
+    <sample src="SSTIGood.java" />
+  </example>
+  <references>
+    <li>Portswigger : [Server Side Template Injection](https://portswigger.net/web-security/server-side-template-injection)</li>
+  </references>
+</qhelp>
