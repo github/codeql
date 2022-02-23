@@ -51,42 +51,9 @@ namespace Semmle.Extraction.CSharp.Standalone
 
     public class Program
     {
-        public static ExitCode Run(Options options)
-        {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            using var logger = new ConsoleLogger(options.Verbosity);
-            logger.Log(Severity.Info, "Running C# standalone extractor");
-            using var a = new Analysis(logger, options);
-            var sourceFileCount = a.Extraction.Sources.Count;
-
-            if (sourceFileCount == 0)
-            {
-                logger.Log(Severity.Error, "No source files found");
-                return ExitCode.Errors;
-            }
-
-            if (!options.SkipExtraction)
-            {
-                using var fileLogger = Extractor.MakeLogger(options.Verbosity, false);
-
-                logger.Log(Severity.Info, "");
-                logger.Log(Severity.Info, "Extracting...");
-                Extractor.ExtractStandalone(
-                    a.Extraction.Sources,
-                    a.References,
-                    new ExtractionProgress(logger),
-                    fileLogger,
-                    options);
-                logger.Log(Severity.Info, $"Extraction completed in {stopwatch.Elapsed}");
-            }
-            return ExitCode.Ok;
-        }
-
         public static int Main(string[] args)
         {
-            Extractor.SetInvariantCulture();
+            CSharp.Extractor.SetInvariantCulture();
 
             var options = Options.Create(args);
             // options.CIL = true;  // To do: Enable this
@@ -100,42 +67,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             if (options.Errors)
                 return 1;
 
-            return (int)Run(options);
-        }
-
-        private class ExtractionProgress : IProgressMonitor
-        {
-            public ExtractionProgress(ILogger output)
-            {
-                logger = output;
-            }
-
-            private readonly ILogger logger;
-
-            public void Analysed(int item, int total, string source, string output, TimeSpan time, AnalysisAction action)
-            {
-                logger.Log(Severity.Info, "[{0}/{1}] {2} ({3})", item, total, source,
-                    action == AnalysisAction.Extracted
-                        ? time.ToString()
-                        : action == AnalysisAction.Excluded
-                            ? "excluded"
-                            : "up to date");
-            }
-
-            public void MissingType(string type)
-            {
-                logger.Log(Severity.Debug, "Missing type {0}", type);
-            }
-
-            public void MissingNamespace(string @namespace)
-            {
-                logger.Log(Severity.Info, "Missing namespace {0}", @namespace);
-            }
-
-            public void MissingSummary(int missingTypes, int missingNamespaces)
-            {
-                logger.Log(Severity.Info, "Failed to resolve {0} types in {1} namespaces", missingTypes, missingNamespaces);
-            }
+            return (int)Extractor.Run(options);
         }
     }
 }

@@ -281,7 +281,7 @@ namespace Semmle.Extraction.CSharp
         /// The constructed syntax trees will be added (thread-safely) to the supplied
         /// list <paramref name="ret"/>.
         /// </summary>
-        private static IEnumerable<Action> ReadSyntaxTrees(IEnumerable<string> sources, Analyser analyser, CSharpParseOptions? parseOptions, Encoding? encoding, IList<SyntaxTree> ret)
+        public static IEnumerable<Action> ReadSyntaxTrees(IEnumerable<string> sources, Analyser analyser, CSharpParseOptions? parseOptions, Encoding? encoding, IList<SyntaxTree> ret)
         {
             return sources.Select<string, Action>(path => () =>
             {
@@ -303,31 +303,7 @@ namespace Semmle.Extraction.CSharp
             });
         }
 
-        public static void ExtractStandalone(
-            IEnumerable<string> sources,
-            IEnumerable<string> referencePaths,
-            IProgressMonitor pm,
-            ILogger logger,
-            CommonOptions options)
-        {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
-            var pathTransformer = new PathTransformer(canonicalPathCache);
-
-            using var analyser = new StandaloneAnalyser(pm, logger, false, pathTransformer);
-            try
-            {
-                AnalyseStandalone(analyser, sources, referencePaths, options, pm, stopwatch);
-            }
-            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
-            {
-                analyser.Logger.Log(Severity.Error, "  Unhandled exception: {0}", ex);
-            }
-        }
-
-        private static ExitCode Analyse(Stopwatch stopwatch, Analyser analyser, CommonOptions options,
+        public static ExitCode Analyse(Stopwatch stopwatch, Analyser analyser, CommonOptions options,
             Func<BlockingCollection<MetadataReference>, IEnumerable<Action>> getResolvedReferenceTasks,
             Func<Analyser, List<SyntaxTree>, IEnumerable<Action>> getSyntaxTreeTasks,
             Func<IEnumerable<SyntaxTree>, IEnumerable<MetadataReference>, CSharpCompilation> getCompilation,
@@ -400,37 +376,6 @@ namespace Semmle.Extraction.CSharp
             return analyser.TotalErrors == 0 ? ExitCode.Ok : ExitCode.Errors;
         }
 
-        private static void AnalyseStandalone(
-            StandaloneAnalyser analyser,
-            IEnumerable<string> sources,
-            IEnumerable<string> referencePaths,
-            CommonOptions options,
-            IProgressMonitor progressMonitor,
-            Stopwatch stopwatch)
-        {
-            Analyse(stopwatch, analyser, options,
-                references => GetResolvedReferencesStandalone(referencePaths, references),
-                (analyser, syntaxTrees) => ReadSyntaxTrees(sources, analyser, null, null, syntaxTrees),
-                (syntaxTrees, references) => CSharpCompilation.Create("csharp.dll", syntaxTrees, references),
-                (compilation, options) => analyser.InitializeStandalone(compilation, options),
-                () => { },
-                _ => { },
-                () =>
-                {
-                    foreach (var type in analyser.MissingNamespaces)
-                    {
-                        progressMonitor.MissingNamespace(type);
-                    }
-
-                    foreach (var type in analyser.MissingTypes)
-                    {
-                        progressMonitor.MissingType(type);
-                    }
-
-                    progressMonitor.MissingSummary(analyser.MissingTypes.Count(), analyser.MissingNamespaces.Count());
-                });
-        }
-
         private static ExitCode AnalyseTracing(
             TracingAnalyser analyser,
             CSharpCommandLineArguments compilerArguments,
@@ -471,15 +416,6 @@ namespace Semmle.Extraction.CSharp
                 () => analyser.AnalyseCompilation(),
                 performance => analyser.LogPerformance(performance),
                 () => { });
-        }
-
-        private static IEnumerable<Action> GetResolvedReferencesStandalone(IEnumerable<string> referencePaths, BlockingCollection<MetadataReference> references)
-        {
-            return referencePaths.Select<string, Action>(path => () =>
-            {
-                var reference = MetadataReference.CreateFromFile(path);
-                references.Add(reference);
-            });
         }
 
         /// <summary>
