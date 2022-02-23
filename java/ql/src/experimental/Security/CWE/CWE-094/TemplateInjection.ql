@@ -11,6 +11,7 @@
 
 import java
 import TemplateInjection
+import DataFlow::PathGraph
 
 from TemplateInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
