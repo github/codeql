@@ -48,8 +48,8 @@ int store_argument_value() {
   return *s101.p; // GOOD
 }
 
-void store_address_of_argument(int x) {
-  s101.p = &x;
+void store_address_of_argument(int y) {
+  s101.p = &y;
 }
 
 int store_argument_address() {
@@ -59,8 +59,8 @@ int store_argument_address() {
 }
 
 void address_escapes_through_pointer_arith() {
-  int x = 0;
-  int* p0 = &x;
+  int x[2];
+  int* p0 = x;
   int* p1 = p0 + 1;
   int* p2 = p1 - 1;
   int* p3 = 1 + p2;

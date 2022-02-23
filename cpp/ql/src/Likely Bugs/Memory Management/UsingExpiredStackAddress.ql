@@ -3,7 +3,7 @@
  * @description Accessing the stack-allocated memory of a function
  *              after it has returned can lead to memory corruption.
  * @kind problem
- * @problem.severity warning
+ * @problem.severity error
  * @security-severity 9.3
  * @precision high
  * @id cpp/using-expired-stack-address
