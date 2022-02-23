@@ -1,5 +1,5 @@
 /**
- * @name Inclusion of functionality from untrusted source.
+ * @name Inclusion of functionality from an untrusted source
  * @description Including functionality from an untrusted source may allow
  *              an attacker to control the functionality and execute arbitrary code.
  * @kind problem
