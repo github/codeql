@@ -130,7 +130,6 @@ private module Impl {
   private import semmle.code.java.semantic.SemanticExpr
   private import semmle.code.java.semantic.SemanticGuard
   private import semmle.code.java.semantic.SemanticSSA
-//  private import SsaReadPositionCommon
 
   /**
    * Holds if `e` is an access to the size of a container (`string`, `Map`, or

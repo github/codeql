@@ -6,6 +6,7 @@ private import RangeUtils
 private predicate backEdge(SsaPhiNode phi0, SsaVariable v) {
   semBackEdge(getSemanticSsaVariable(phi0), getSemanticSsaVariable(v), _)
 }
+
 /**
  * Holds if `v` is an input to `phi` that is not along a back edge, and the
  * only other input to `phi` is a `null` value.
