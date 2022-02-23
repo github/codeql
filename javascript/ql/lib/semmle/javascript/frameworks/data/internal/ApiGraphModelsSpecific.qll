@@ -1,5 +1,5 @@
 /**
- * Contains the language-specific part of the models-as-data implementation found in `Shared.qll`.
+ * Contains the language-specific part of the models-as-data implementation found in `ApiGraphModels.qll`.
  *
  * It must export the following members:
  * ```codeql
@@ -15,11 +15,14 @@
 
 private import javascript as js
 private import js::DataFlow as DataFlow
-private import Shared
+private import ApiGraphModels
 
 class Unit = js::Unit;
 
 module API = js::API;
+
+import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
+private import AccessPathSyntax
 
 /**
  * Holds if models describing `package` may be relevant for the analysis of this database.
@@ -69,6 +72,10 @@ private API::Node getGlobalNode(string globalName) {
 /** Gets a JavaScript-specific interpretation of the `(package, type, path)` tuple after resolving the first `n` access path tokens. */
 bindingset[package, type, path]
 API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int n) {
+  type = "" and
+  n = 0 and
+  result = API::moduleImport(package)
+  or
   // Global variable accesses is via the 'global' package
   exists(AccessPathToken token |
     package = getAPackageAlias("global") and
@@ -89,6 +96,9 @@ API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int
  */
 bindingset[token]
 API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
+  token.getName() = "Member" and
+  result = node.getMember(token.getAnArgument())
+  or
   token.getName() = "Instance" and
   result = node.getInstance()
   or
@@ -132,3 +142,50 @@ predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPat
   invoke instanceof API::CallNode and
   invoke instanceof DataFlow::CallNode // Workaround compiler bug
 }
+
+/**
+ * Holds if `path` is an input or output spec for a summary with the given `base` node.
+ */
+pragma[nomagic]
+private predicate relevantInputOutputPath(API::InvokeNode base, AccessPath path) {
+  ModelOutput::resolvedSummaryBase(base, path, _, _)
+  or
+  ModelOutput::resolvedSummaryBase(base, _, path, _)
+}
+
+/**
+ * Gets the API node for the first `n` tokens of the given input/output path, evaluated relative to `baseNode`.
+ */
+private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path, int n) {
+  relevantInputOutputPath(baseNode, path) and
+  (
+    n = 1 and
+    result = getSuccessorFromInvoke(baseNode, path.getToken(0))
+    or
+    result =
+      getSuccessorFromNode(getNodeFromInputOutputPath(baseNode, path, n - 1), path.getToken(n - 1))
+  )
+}
+
+/**
+ * Gets the API node for the given input/output path, evaluated relative to `baseNode`.
+ */
+private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path) {
+  result = getNodeFromInputOutputPath(baseNode, path, path.getNumToken())
+}
+
+/**
+ * Holds if a CSV summary contributed the step `pred -> succ` of the given `kind`.
+ */
+predicate summaryStep(API::Node pred, API::Node succ, string kind) {
+  exists(API::InvokeNode base, AccessPath input, AccessPath output |
+    ModelOutput::resolvedSummaryBase(base, input, output, kind) and
+    pred = getNodeFromInputOutputPath(base, input) and
+    succ = getNodeFromInputOutputPath(base, output)
+  )
+}
+
+class InvokeNode = API::InvokeNode;
+
+/** Gets an `InvokeNode` corresponding to an invocation of `node`. */
+InvokeNode getAnInvocationOf(API::Node node) { result = node.getAnInvocation() }
