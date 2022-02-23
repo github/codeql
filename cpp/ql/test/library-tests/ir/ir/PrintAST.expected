@@ -11390,6 +11390,190 @@ ir.cpp:
 # 1458|             Value = [Literal] 3
 # 1458|             ValueCategory = prvalue
 # 1459|     getStmt(1): [ReturnStmt] return ...
+# 1462| [TopLevelFunction] void array_structured_binding()
+# 1462|   <params>: 
+# 1462|   getEntryPoint(): [BlockStmt] { ... }
+# 1463|     getStmt(0): [DeclStmt] declaration
+# 1463|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of xs
+# 1463|           Type = [ArrayType] int[2]
+# 1463|         getVariable().getInitializer(): [Initializer] initializer for xs
+# 1463|           getExpr(): [ArrayAggregateLiteral] {...}
+# 1463|               Type = [ArrayType] int[2]
+# 1463|               ValueCategory = prvalue
+# 1463|             getElementExpr(0): [Literal] 1
+# 1463|                 Type = [IntType] int
+# 1463|                 Value = [Literal] 1
+# 1463|                 ValueCategory = prvalue
+# 1463|             getElementExpr(1): [Literal] 2
+# 1463|                 Type = [IntType] int
+# 1463|                 Value = [Literal] 2
+# 1463|                 ValueCategory = prvalue
+# 1465|     getStmt(1): [BlockStmt] { ... }
+# 1466|       getStmt(0): [DeclStmt] declaration
+# 1466|         getDeclarationEntry(0): (no string representation)
+# 1466|             Type = [LValueReferenceType] int(&)[2]
+# 1466|           getVariable().getInitializer(): [Initializer] initializer for (unnamed local variable)
+# 1466|             getExpr(): [VariableAccess] xs
+# 1466|                 Type = [ArrayType] int[2]
+# 1466|                 ValueCategory = lvalue
+# 1466|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1466|                 Type = [LValueReferenceType] int(&)[2]
+# 1466|                 ValueCategory = prvalue
+# 1466|         getDeclarationEntry(1): [VariableDeclarationEntry] definition of x0
+# 1466|             Type = [IntType] int
+#-----|           getVariable().getInitializer(): [Initializer] initializer for x0
+#-----|             getExpr(): [ArrayExpr] access to array
+#-----|                 Type = [IntType] int
+#-----|                 ValueCategory = lvalue
+#-----|               getArrayBase(): [VariableAccess] (unnamed local variable)
+#-----|                   Type = [LValueReferenceType] int(&)[2]
+#-----|                   ValueCategory = prvalue(load)
+#-----|               getArrayOffset(): [Literal] 0
+#-----|                   Type = [LongType] unsigned long
+#-----|                   Value = [Literal] 0
+#-----|                   ValueCategory = prvalue
+#-----|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#-----|                   Type = [IntPointerType] int *
+#-----|                   ValueCategory = prvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ArrayType] int[2]
+#-----|                     ValueCategory = lvalue
+# 1466|         getDeclarationEntry(2): [VariableDeclarationEntry] definition of x1
+# 1466|             Type = [IntType] int
+#-----|           getVariable().getInitializer(): [Initializer] initializer for x1
+#-----|             getExpr(): [ArrayExpr] access to array
+#-----|                 Type = [IntType] int
+#-----|                 ValueCategory = lvalue
+#-----|               getArrayBase(): [VariableAccess] (unnamed local variable)
+#-----|                   Type = [LValueReferenceType] int(&)[2]
+#-----|                   ValueCategory = prvalue(load)
+#-----|               getArrayOffset(): [Literal] 1
+#-----|                   Type = [LongType] unsigned long
+#-----|                   Value = [Literal] 1
+#-----|                   ValueCategory = prvalue
+#-----|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#-----|                   Type = [IntPointerType] int *
+#-----|                   ValueCategory = prvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ArrayType] int[2]
+#-----|                     ValueCategory = lvalue
+# 1467|       getStmt(1): [ExprStmt] ExprStmt
+# 1467|         getExpr(): [AssignExpr] ... = ...
+# 1467|             Type = [IntType] int
+# 1467|             ValueCategory = lvalue
+# 1467|           getLValue(): [VariableAccess] x1
+# 1467|               Type = [IntType] int
+# 1467|               ValueCategory = lvalue
+# 1467|           getRValue(): [Literal] 3
+# 1467|               Type = [IntType] int
+# 1467|               Value = [Literal] 3
+# 1467|               ValueCategory = prvalue
+# 1468|       getStmt(2): [DeclStmt] declaration
+# 1468|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rx1
+# 1468|             Type = [LValueReferenceType] int &
+# 1468|           getVariable().getInitializer(): [Initializer] initializer for rx1
+# 1468|             getExpr(): [VariableAccess] x1
+# 1468|                 Type = [IntType] int
+# 1468|                 ValueCategory = lvalue
+# 1468|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1468|                 Type = [LValueReferenceType] int &
+# 1468|                 ValueCategory = prvalue
+# 1469|       getStmt(3): [DeclStmt] declaration
+# 1469|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1469|             Type = [IntType] int
+# 1469|           getVariable().getInitializer(): [Initializer] initializer for x
+# 1469|             getExpr(): [VariableAccess] x1
+# 1469|                 Type = [IntType] int
+# 1469|                 ValueCategory = prvalue(load)
+# 1472|     getStmt(2): [BlockStmt] { ... }
+# 1473|       getStmt(0): [DeclStmt] declaration
+# 1473|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of unnamed_local_variable
+# 1473|             Type = [LValueReferenceType] int(&)[2]
+# 1473|           getVariable().getInitializer(): [Initializer] initializer for unnamed_local_variable
+# 1473|             getExpr(): [VariableAccess] xs
+# 1473|                 Type = [ArrayType] int[2]
+# 1473|                 ValueCategory = lvalue
+# 1473|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1473|                 Type = [LValueReferenceType] int(&)[2]
+# 1473|                 ValueCategory = prvalue
+# 1474|       getStmt(1): [DeclStmt] declaration
+# 1474|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x0
+# 1474|             Type = [LValueReferenceType] int &
+# 1474|           getVariable().getInitializer(): [Initializer] initializer for x0
+# 1474|             getExpr(): [ArrayExpr] access to array
+# 1474|                 Type = [IntType] int
+# 1474|                 ValueCategory = lvalue
+# 1474|               getArrayBase(): [VariableAccess] xs
+# 1474|                   Type = [ArrayType] int[2]
+# 1474|                   ValueCategory = lvalue
+# 1474|               getArrayOffset(): [Literal] 0
+# 1474|                   Type = [IntType] int
+# 1474|                   Value = [Literal] 0
+# 1474|                   ValueCategory = prvalue
+# 1474|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1474|                   Type = [IntPointerType] int *
+# 1474|                   ValueCategory = prvalue
+# 1474|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1474|                 Type = [LValueReferenceType] int &
+# 1474|                 ValueCategory = prvalue
+# 1475|       getStmt(2): [DeclStmt] declaration
+# 1475|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x1
+# 1475|             Type = [LValueReferenceType] int &
+# 1475|           getVariable().getInitializer(): [Initializer] initializer for x1
+# 1475|             getExpr(): [ArrayExpr] access to array
+# 1475|                 Type = [IntType] int
+# 1475|                 ValueCategory = lvalue
+# 1475|               getArrayBase(): [VariableAccess] xs
+# 1475|                   Type = [ArrayType] int[2]
+# 1475|                   ValueCategory = lvalue
+# 1475|               getArrayOffset(): [Literal] 1
+# 1475|                   Type = [IntType] int
+# 1475|                   Value = [Literal] 1
+# 1475|                   ValueCategory = prvalue
+# 1475|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1475|                   Type = [IntPointerType] int *
+# 1475|                   ValueCategory = prvalue
+# 1475|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1475|                 Type = [LValueReferenceType] int &
+# 1475|                 ValueCategory = prvalue
+# 1476|       getStmt(3): [ExprStmt] ExprStmt
+# 1476|         getExpr(): [AssignExpr] ... = ...
+# 1476|             Type = [IntType] int
+# 1476|             ValueCategory = lvalue
+# 1476|           getLValue(): [VariableAccess] x1
+# 1476|               Type = [LValueReferenceType] int &
+# 1476|               ValueCategory = prvalue(load)
+# 1476|           getRValue(): [Literal] 3
+# 1476|               Type = [IntType] int
+# 1476|               Value = [Literal] 3
+# 1476|               ValueCategory = prvalue
+# 1476|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1476|               Type = [IntType] int
+# 1476|               ValueCategory = lvalue
+# 1477|       getStmt(4): [DeclStmt] declaration
+# 1477|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rx1
+# 1477|             Type = [LValueReferenceType] int &
+# 1477|           getVariable().getInitializer(): [Initializer] initializer for rx1
+# 1477|             getExpr(): [VariableAccess] x1
+# 1477|                 Type = [LValueReferenceType] int &
+# 1477|                 ValueCategory = prvalue(load)
+# 1477|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1477|                 Type = [LValueReferenceType] int &
+# 1477|                 ValueCategory = prvalue
+# 1477|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1477|                   Type = [IntType] int
+# 1477|                   ValueCategory = lvalue
+# 1478|       getStmt(5): [DeclStmt] declaration
+# 1478|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1478|             Type = [IntType] int
+# 1478|           getVariable().getInitializer(): [Initializer] initializer for x
+# 1478|             getExpr(): [VariableAccess] x1
+# 1478|                 Type = [LValueReferenceType] int &
+# 1478|                 ValueCategory = prvalue(load)
+# 1478|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1478|                 Type = [IntType] int
+# 1478|                 ValueCategory = prvalue(load)
+# 1480|     getStmt(3): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

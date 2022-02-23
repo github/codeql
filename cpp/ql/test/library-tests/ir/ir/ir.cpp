@@ -1458,4 +1458,25 @@ struct Inheritance_Test_A : public Inheritance_Test_B {
     y = 3;
   }
 };
+
+void array_structured_binding() {
+    int xs[2] = {1, 2};
+    // structured binding use
+    {
+        auto& [x0, x1] = xs;
+        x1 = 3;
+        int &rx1 = x1;
+        int x = x1;
+    }
+    // explicit reference version
+    {
+        auto& unnamed_local_variable = xs;
+        auto& x0 = xs[0];
+        auto& x1 = xs[1];
+        x1 = 3;
+        int &rx1 = x1;
+        int x = x1;
+    }
+}
+
 // semmle-extractor-options: -std=c++17 --clang
