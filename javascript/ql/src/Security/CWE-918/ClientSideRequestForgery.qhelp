@@ -48,7 +48,7 @@
         </p>
 
         <p>
-            In example below, the input has been restricted to a number so the endpoint cannot be altered:
+            In example below, the input has been restricted to a number so that the endpoint cannot be altered:
         </p>
 
         <sample src="examples/ClientSideRequestForgeryGood.js"/>
