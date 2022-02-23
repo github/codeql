@@ -69,7 +69,7 @@ private class IsUnixFromApacheCommons extends IsUnixGuard instanceof FieldAccess
 /**
  * A guard that checks if the `java.nio.file.FileSystem` supports posix file permissions.
  * This is often used to infer if the OS is unix-based.
- * Looks for calls to `contains("poxix")` on the `supportedFileAttributeViews` method returned by `FileSystem`.
+ * Looks for calls to `contains("posix")` on the `supportedFileAttributeViews` method returned by `FileSystem`.
  */
 private class IsUnixFromPosixFromFileSystem extends IsUnixGuard instanceof MethodAccess {
   IsUnixFromPosixFromFileSystem() {
