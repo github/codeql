@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Semmle.BuildAnalyser;
 using Semmle.Util.Logging;
 
@@ -56,7 +57,6 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             var options = Options.Create(args);
             // options.CIL = true;  // To do: Enable this
-            using var output = new ConsoleLogger(options.Verbosity);
 
             if (options.Help)
             {
@@ -67,31 +67,33 @@ namespace Semmle.Extraction.CSharp.Standalone
             if (options.Errors)
                 return 1;
 
-            var start = DateTime.Now;
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
 
-            output.Log(Severity.Info, "Running C# standalone extractor");
-            using var a = new Analysis(output, options);
+            using var logger = new ConsoleLogger(options.Verbosity);
+            logger.Log(Severity.Info, "Running C# standalone extractor");
+            using var a = new Analysis(logger, options);
             var sourceFileCount = a.Extraction.Sources.Count;
 
             if (sourceFileCount == 0)
             {
-                output.Log(Severity.Error, "No source files found");
+                logger.Log(Severity.Error, "No source files found");
                 return 1;
             }
 
             if (!options.SkipExtraction)
             {
-                using var fileLogger = new FileLogger(options.Verbosity, Extractor.GetCSharpLogPath());
+                using var fileLogger = Extractor.MakeLogger(options.Verbosity, false);
 
-                output.Log(Severity.Info, "");
-                output.Log(Severity.Info, "Extracting...");
+                logger.Log(Severity.Info, "");
+                logger.Log(Severity.Info, "Extracting...");
                 Extractor.ExtractStandalone(
                     a.Extraction.Sources,
                     a.References,
-                    new ExtractionProgress(output),
+                    new ExtractionProgress(logger),
                     fileLogger,
                     options);
-                output.Log(Severity.Info, $"Extraction completed in {DateTime.Now - start}");
+                logger.Log(Severity.Info, $"Extraction completed in {stopwatch.Elapsed}");
             }
 
             return 0;

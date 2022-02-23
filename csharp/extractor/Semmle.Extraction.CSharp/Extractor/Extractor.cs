@@ -69,6 +69,14 @@ namespace Semmle.Extraction.CSharp
             Thread.CurrentThread.CurrentUICulture = culture;
         }
 
+        public static ILogger MakeLogger(Verbosity verbosity, bool includeConsole)
+        {
+            var fileLogger = new FileLogger(verbosity, GetCSharpLogPath());
+            return includeConsole
+                ? new CombinedLogger(new ConsoleLogger(verbosity), fileLogger)
+                : (ILogger)fileLogger;
+        }
+
         /// <summary>
         /// Command-line driver for the extractor.
         /// </summary>
@@ -89,10 +97,7 @@ namespace Semmle.Extraction.CSharp
             var options = Options.CreateWithEnvironment(args);
             Entities.Compilation.Settings = (Directory.GetCurrentDirectory(), options.CompilerArguments.ToArray());
 
-            var fileLogger = new FileLogger(options.Verbosity, GetCSharpLogPath());
-            using var logger = options.Console
-                ? new CombinedLogger(new ConsoleLogger(options.Verbosity), fileLogger)
-                : (ILogger)fileLogger;
+            using var logger = MakeLogger(options.Verbosity, options.Console);
 
             if (Environment.GetEnvironmentVariable("SEMMLE_CLRTRACER") == "1" && !options.ClrTracer)
             {
