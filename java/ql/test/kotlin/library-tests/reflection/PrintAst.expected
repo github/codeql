@@ -23,6 +23,13 @@ reflection.kt:
 #   48|                   1: [Constructor] 
 #   48|                     5: [BlockStmt] { ... }
 #   48|                       0: [SuperConstructorInvocationStmt] super(...)
+#   48|                   1: [Method] get
+#-----|                     4: (Parameters)
+#   48|                       0: [Parameter] a0
+#   48|                     5: [BlockStmt] { ... }
+#   48|                       0: [ReturnStmt] return ...
+#   48|                         0: [MethodAccess] getLastChar(...)
+#   48|                           0: [VarAccess] a0
 #   48|                 -3: [TypeAccess] KProperty1<String,Character>
 #   48|               0: [StringLiteral] abc
 #   49|         1: [ExprStmt] <Expr>;
@@ -43,6 +50,12 @@ reflection.kt:
 #   49|                           1: [VarAccess] <extensionReceiver>
 #   49|                   1: [FieldDeclaration] String <extensionReceiver>;
 #   49|                     -1: [TypeAccess] String
+#   49|                   1: [Method] get
+#   49|                     5: [BlockStmt] { ... }
+#   49|                       0: [ReturnStmt] return ...
+#   49|                         0: [MethodAccess] getLastChar(...)
+#   49|                           0: [VarAccess] this.<extensionReceiver>
+#   49|                             -1: [ThisAccess] this
 #   49|                 -3: [TypeAccess] KProperty0<Character>
 #   49|                 0: [StringLiteral] abcd
 #    3|   2: [Class] Reflection
@@ -82,6 +95,13 @@ reflection.kt:
 #    8|                 1: [Constructor] 
 #    8|                   5: [BlockStmt] { ... }
 #    8|                     0: [SuperConstructorInvocationStmt] super(...)
+#    8|                 1: [Method] get
+#-----|                   4: (Parameters)
+#    8|                     0: [Parameter] a0
+#    8|                   5: [BlockStmt] { ... }
+#    8|                     0: [ReturnStmt] return ...
+#    8|                       0: [MethodAccess] getP0(...)
+#    8|                         -1: [VarAccess] a0
 #    8|               -3: [TypeAccess] KProperty1<C,Integer>
 #    9|         3: [LocalVariableDeclStmt] var ...;
 #    9|           1: [LocalVariableDeclExpr] x1
@@ -140,6 +160,12 @@ reflection.kt:
 #   13|                         1: [VarAccess] <dispatchReceiver>
 #   13|                 1: [FieldDeclaration] C <dispatchReceiver>;
 #   13|                   -1: [TypeAccess] C
+#   13|                 1: [Method] get
+#   13|                   5: [BlockStmt] { ... }
+#   13|                     0: [ReturnStmt] return ...
+#   13|                       0: [MethodAccess] getP0(...)
+#   13|                         -1: [VarAccess] this.<dispatchReceiver>
+#   13|                           -1: [ThisAccess] this
 #   13|               -3: [TypeAccess] KProperty0<Integer>
 #   13|               0: [ClassInstanceExpr] new C(...)
 #   13|                 -3: [TypeAccess] C
@@ -150,6 +176,22 @@ reflection.kt:
 #   15|                 1: [Constructor] 
 #   15|                   5: [BlockStmt] { ... }
 #   15|                     0: [SuperConstructorInvocationStmt] super(...)
+#   15|                 1: [Method] get
+#-----|                   4: (Parameters)
+#   15|                     0: [Parameter] a0
+#   15|                   5: [BlockStmt] { ... }
+#   15|                     0: [ReturnStmt] return ...
+#   15|                       0: [MethodAccess] getP1(...)
+#   15|                         -1: [VarAccess] a0
+#   15|                 1: [Method] set
+#-----|                   4: (Parameters)
+#   15|                     0: [Parameter] a0
+#   15|                     1: [Parameter] a1
+#   15|                   5: [BlockStmt] { ... }
+#   15|                     0: [ReturnStmt] return ...
+#   15|                       0: [MethodAccess] setP1(...)
+#   15|                         -1: [VarAccess] a0
+#   15|                         0: [VarAccess] a1
 #   15|               -3: [TypeAccess] KMutableProperty1<C,Integer>
 #   16|         9: [LocalVariableDeclStmt] var ...;
 #   16|           1: [LocalVariableDeclExpr] y1
@@ -211,6 +253,21 @@ reflection.kt:
 #   20|                         1: [VarAccess] <dispatchReceiver>
 #   20|                 1: [FieldDeclaration] C <dispatchReceiver>;
 #   20|                   -1: [TypeAccess] C
+#   20|                 1: [Method] get
+#   20|                   5: [BlockStmt] { ... }
+#   20|                     0: [ReturnStmt] return ...
+#   20|                       0: [MethodAccess] getP1(...)
+#   20|                         -1: [VarAccess] this.<dispatchReceiver>
+#   20|                           -1: [ThisAccess] this
+#   20|                 1: [Method] set
+#-----|                   4: (Parameters)
+#   20|                     0: [Parameter] a0
+#   20|                   5: [BlockStmt] { ... }
+#   20|                     0: [ReturnStmt] return ...
+#   20|                       0: [MethodAccess] setP1(...)
+#   20|                         -1: [VarAccess] this.<dispatchReceiver>
+#   20|                           -1: [ThisAccess] this
+#   20|                         0: [VarAccess] a0
 #   20|               -3: [TypeAccess] KMutableProperty0<Integer>
 #   20|               0: [ClassInstanceExpr] new C(...)
 #   20|                 -3: [TypeAccess] C

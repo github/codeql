@@ -2619,27 +2619,15 @@ open class KotlinFileExtractor(
              * - no receiver vs dispatchReceiver vs extensionReceiver
              **/
 
-            val target = propertyReferenceExpr.getter ?: run {
-                logger.errorElement("Expected to find getter for property reference.", propertyReferenceExpr)
+            val getter = propertyReferenceExpr.getter
+            val setter = propertyReferenceExpr.setter
+
+            if (getter == null && setter == null) {
+                logger.errorElement("Expected to find getter or setter for property reference.", propertyReferenceExpr)
                 return
             }
 
             val locId = tw.getLocation(propertyReferenceExpr)
-
-            val extensionParameter = target.owner.extensionReceiverParameter
-            val dispatchParameter = target.owner.dispatchReceiverParameter
-
-            var parameters = LinkedList<IrValueParameter>()
-            if (extensionParameter != null && propertyReferenceExpr.extensionReceiver == null) {
-                parameters.addFirst(extensionParameter)
-            }
-            if (dispatchParameter != null && propertyReferenceExpr.dispatchReceiver == null) {
-                parameters.addFirst(dispatchParameter)
-            }
-
-            val parameterTypes = parameters.map { it.type }
-            val kPropertyTypeArguments = parameterTypes + target.owner.returnType
-
             val kPropertyType = propertyReferenceExpr.type
 
             val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
@@ -2686,8 +2674,165 @@ open class KotlinFileExtractor(
                 extensionFieldId = null
             }
 
+            val accessor = (getter ?: setter)!!
+            val extensionParameter = accessor.owner.extensionReceiverParameter
+            val dispatchParameter = accessor.owner.dispatchReceiverParameter
 
-            // todo: add get and set methods with body, call to reflection target (get and set), arguments
+            var parameters = LinkedList<IrValueParameter>()
+            if (extensionParameter != null && propertyReferenceExpr.extensionReceiver == null) {
+                parameters.addFirst(extensionParameter)
+            }
+            if (dispatchParameter != null && propertyReferenceExpr.dispatchReceiver == null) {
+                parameters.addFirst(dispatchParameter)
+            }
+
+            if (getter != null) {
+                val getterParameterTypes = parameters.map { it.type }
+                val getLabels = addFunctionManual("get", getterParameterTypes, getter.owner.returnType, id, locId)
+
+                // Return statement of generated function:
+                val retId = tw.getFreshIdLabel<DbReturnstmt>()
+                tw.writeStmts_returnstmt(retId, getLabels.blockId, 0, getLabels.methodId)
+                tw.writeHasLocation(retId, locId)
+
+                // Call to target function:
+                val callId: Label<out DbExpr>
+                val callType = useType(getter.owner.returnType)
+                callId = tw.getFreshIdLabel<DbMethodaccess>()
+                tw.writeExprs_methodaccess(callId, callType.javaResult.id, retId, 0)
+                tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
+
+                extractTypeArguments(propertyReferenceExpr, callId, getLabels.methodId, retId, -2, true)
+
+                helper.writeExpressionMetadataToTrapFile(callId, getLabels.methodId, retId)
+
+                // todo: type arguments
+                val getterCallableId = useFunction<DbCallable>(getter.owner, null)
+                @Suppress("UNCHECKED_CAST")
+                tw.writeCallableBinding(callId as Label<out DbCaller>, getterCallableId)
+
+                fun writeVariableAccessInFunctionBody(
+                    pType: TypeResults,
+                    idx: Int,
+                    variable: Label<out DbVariable>
+                ): Label<DbVaraccess> {
+                    val pId = tw.getFreshIdLabel<DbVaraccess>()
+                    tw.writeExprs_varaccess(pId, pType.javaResult.id, callId, idx)
+                    tw.writeExprsKotlinType(pId, pType.kotlinResult.id)
+                    tw.writeVariableBinding(pId, variable)
+                    helper.writeExpressionMetadataToTrapFile(pId, getLabels.methodId, retId)
+                    return pId
+                }
+
+                fun writeFieldAccessInFunctionBody(pType: IrType, idx: Int, variable: Label<out DbField>) {
+                    val accessId = writeVariableAccessInFunctionBody(useType(pType), idx, variable)
+                    val thisId = tw.getFreshIdLabel<DbThisaccess>()
+                    tw.writeExprs_thisaccess(thisId, ids.type.javaResult.id, accessId, -1)
+                    tw.writeExprsKotlinType(thisId, ids.type.kotlinResult.id)
+                    helper.writeExpressionMetadataToTrapFile(thisId, getLabels.methodId, retId)
+                }
+
+                val useFirstArgAsDispatch: Boolean
+                if (dispatchReceiver != null) {
+                    writeFieldAccessInFunctionBody(dispatchReceiver.type, -1, dispatchFieldId!!)
+
+                    useFirstArgAsDispatch = false
+                } else {
+                    useFirstArgAsDispatch = dispatchParameter != null
+                }
+
+                val extensionIdxOffset: Int
+                if (extensionReceiver != null) {
+                    writeFieldAccessInFunctionBody(extensionReceiver.type, 0, extensionFieldId!!)
+                    extensionIdxOffset = 1
+                } else {
+                    extensionIdxOffset = 0
+                }
+
+                val dispatchIdxOffset = if (useFirstArgAsDispatch) 1 else 0
+                for ((pIdx, p) in getLabels.parameters.withIndex()) {
+                    val childIdx = if (pIdx == 0 && useFirstArgAsDispatch) {
+                        -1
+                    } else {
+                        pIdx + extensionIdxOffset - dispatchIdxOffset
+                    }
+                    writeVariableAccessInFunctionBody(p.second, childIdx, p.first)
+                }
+            }
+
+            if (setter != null) {
+                val setterParameterTypes = parameters.map { it.type } + setter.owner.valueParameters.map { it.type }
+                val setLabels = addFunctionManual("set", setterParameterTypes, setter.owner.returnType, id, locId)
+
+                // Return statement of generated function:
+                val retId = tw.getFreshIdLabel<DbReturnstmt>()
+                tw.writeStmts_returnstmt(retId, setLabels.blockId, 0, setLabels.methodId)
+                tw.writeHasLocation(retId, locId)
+
+                // Call to target function:
+                val callId: Label<out DbExpr>
+                val callType = useType(setter.owner.returnType)
+                callId = tw.getFreshIdLabel<DbMethodaccess>()
+                tw.writeExprs_methodaccess(callId, callType.javaResult.id, retId, 0)
+                tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
+
+                extractTypeArguments(propertyReferenceExpr, callId, setLabels.methodId, retId, -2, true)
+
+                helper.writeExpressionMetadataToTrapFile(callId, setLabels.methodId, retId)
+
+                // todo: type arguments
+                val setterCallableId = useFunction<DbCallable>(setter.owner, null)
+                @Suppress("UNCHECKED_CAST")
+                tw.writeCallableBinding(callId as Label<out DbCaller>, setterCallableId)
+
+                fun writeVariableAccessInFunctionBody(
+                    pType: TypeResults,
+                    idx: Int,
+                    variable: Label<out DbVariable>
+                ): Label<DbVaraccess> {
+                    val pId = tw.getFreshIdLabel<DbVaraccess>()
+                    tw.writeExprs_varaccess(pId, pType.javaResult.id, callId, idx)
+                    tw.writeExprsKotlinType(pId, pType.kotlinResult.id)
+                    tw.writeVariableBinding(pId, variable)
+                    helper.writeExpressionMetadataToTrapFile(pId, setLabels.methodId, retId)
+                    return pId
+                }
+
+                fun writeFieldAccessInFunctionBody(pType: IrType, idx: Int, variable: Label<out DbField>) {
+                    val accessId = writeVariableAccessInFunctionBody(useType(pType), idx, variable)
+                    val thisId = tw.getFreshIdLabel<DbThisaccess>()
+                    tw.writeExprs_thisaccess(thisId, ids.type.javaResult.id, accessId, -1)
+                    tw.writeExprsKotlinType(thisId, ids.type.kotlinResult.id)
+                    helper.writeExpressionMetadataToTrapFile(thisId, setLabels.methodId, retId)
+                }
+
+                val useFirstArgAsDispatch: Boolean
+                if (dispatchReceiver != null) {
+                    writeFieldAccessInFunctionBody(dispatchReceiver.type, -1, dispatchFieldId!!)
+
+                    useFirstArgAsDispatch = false
+                } else {
+                    useFirstArgAsDispatch = dispatchParameter != null
+                }
+
+                val extensionIdxOffset: Int
+                if (extensionReceiver != null) {
+                    writeFieldAccessInFunctionBody(extensionReceiver.type, 0, extensionFieldId!!)
+                    extensionIdxOffset = 1
+                } else {
+                    extensionIdxOffset = 0
+                }
+
+                val dispatchIdxOffset = if (useFirstArgAsDispatch) 1 else 0
+                for ((pIdx, p) in setLabels.parameters.withIndex()) {
+                    val childIdx = if (pIdx == 0 && useFirstArgAsDispatch) {
+                        -1
+                    } else {
+                        pIdx + extensionIdxOffset - dispatchIdxOffset
+                    }
+                    writeVariableAccessInFunctionBody(p.second, childIdx, p.first)
+                }
+            }
 
             // todo: property ref
             // Add constructor (property ref) call:
@@ -2972,9 +3117,16 @@ open class KotlinFileExtractor(
     }
 
     /**
-     * Adds a function named "invoke" with the specified parameter types and return type to the class identified by parentId.
+     * Adds a function named "invoke" with the specified parameter types and return type to the class identified by `parentId`.
      */
     private fun addFunctionInvoke(parameterTypes: List<IrType>, returnType: IrType, parentId: Label<out DbReftype>, locId: Label<DbLocation>): FunctionLabels {
+        return addFunctionManual(OperatorNameConventions.INVOKE.asString(), parameterTypes, returnType, parentId, locId)
+    }
+
+    /**
+     * Extracts a function with the given name, parameter types, return type, and containing type.
+     */
+    private fun addFunctionManual(name: String, parameterTypes: List<IrType>, returnType: IrType, parentId: Label<out DbReftype>, locId: Label<DbLocation>): FunctionLabels {
         val methodId = tw.getFreshIdLabel<DbMethod>()
 
         val parameters = parameterTypes.mapIndexed { idx, p ->
@@ -2987,8 +3139,7 @@ open class KotlinFileExtractor(
         val paramsSignature = parameters.joinToString(separator = ",", prefix = "(", postfix = ")") { it.second.javaResult.signature!! }
 
         val rt = useType(returnType, TypeContext.RETURN)
-        val shortName = OperatorNameConventions.INVOKE.asString()
-        tw.writeMethods(methodId, shortName, "$shortName$paramsSignature", rt.javaResult.id, parentId, methodId)
+        tw.writeMethods(methodId, name, "$name$paramsSignature", rt.javaResult.id, parentId, methodId)
         tw.writeMethodsKotlinType(methodId, rt.kotlinResult.id)
         tw.writeHasLocation(methodId, locId)
 
@@ -2999,7 +3150,6 @@ open class KotlinFileExtractor(
 
         return FunctionLabels(methodId, blockId, parameters)
     }
-
 
     /*
     * This function generates an implementation for `fun kotlin.FunctionN<R>.invoke(vararg args: Any?): R`
