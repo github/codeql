@@ -1,5 +1,5 @@
 /**
- * @name Use of expired stack-address.
+ * @name Use of expired stack-address
  * @description Accessing the stack-allocated memory of a function
  *              after it has returned can lead to memory corruption.
  * @kind problem
