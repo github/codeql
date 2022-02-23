@@ -120,14 +120,21 @@ private DataFlow::Node getAValueExportedByPackage() {
   exists(ImmediatelyInvokedFunctionExpr func, DataFlow::ParameterNode prev, int i |
     prev.getName() = "factory" and
     func.getParameter(i) = prev.getParameter() and
-    result = func.getInvocation().getArgument(i).flow().getAFunctionValue().getAReturn() and
-    DataFlow::globalVarRef("define").getACall().getArgument(1) = prev.getALocalUse() and
+    DataFlow::globalVarRef("define").getACall().getArgument(any(int a | a >= 1)) =
+      prev.getALocalUse() and
     func.getFile() =
       min(int j, File f |
         f = NodeModule::resolveMainModule(any(PackageJSON pack | exists(pack.getPackageName())), j)
       |
         f order by j
       )
+  |
+    result = func.getInvocation().getArgument(i).flow().getAFunctionValue().getAReturn()
+    or
+    exists(DataFlow::ParameterNode exports | exports.getName() = "exports" |
+      exports = func.getInvocation().getAnArgument().flow().getAFunctionValue().getParameter(0) and
+      result = exports.getAPropertyWrite().getRhs()
+    )
   )
   or
   // the exported value is a call to a unique callee
