@@ -12,6 +12,7 @@
 
 import cpp
 import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import DataFlow::PathGraph
 
 /**
@@ -61,7 +62,7 @@ class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
     // block taint starting at `strstr`, which is likely testing an existing URL, rather than constructing an HTTP URL.
     not exists(FunctionCall fc |
       fc.getTarget().getName() = ["strstr", "strcasestr"] and
-      fc.getAnArgument() = src.asExpr()
+      fc.getArgument(1) = globalValueNumber(src.asExpr()).getAnExpr()
     )
   }
 

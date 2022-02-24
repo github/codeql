@@ -90,7 +90,7 @@ void test3(char *url)
 void test4(char *url)
 {
 	const char *https_string = "https://"; // GOOD (https)
-	const char *http_string = "http://"; // GOOD (we are not constructing the URL) [FALSE POSITIVE]
+	const char *http_string = "http://"; // GOOD (we are not constructing the URL)
 	char *ptr;
 
 	ptr = strstr(url, https_string);
