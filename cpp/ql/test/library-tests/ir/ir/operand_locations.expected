@@ -6694,6 +6694,8 @@
 | ir.cpp:1466:26:1466:27 | StoreValue | r1466_3 |
 | ir.cpp:1466:26:1466:27 | Unary | r1466_2 |
 | ir.cpp:1467:9:1467:10 | Address | &:r1467_2 |
+| ir.cpp:1467:9:1467:14 | ChiPartial | partial:m1467_3 |
+| ir.cpp:1467:9:1467:14 | ChiTotal | total:m0_14 |
 | ir.cpp:1467:14:1467:14 | StoreValue | r1467_1 |
 | ir.cpp:1468:14:1468:16 | Address | &:r1468_1 |
 | ir.cpp:1468:20:1468:21 | StoreValue | r1468_3 |
@@ -6801,9 +6803,11 @@
 | ir.cpp:1500:22:1500:22 | Unary | r1500_2 |
 | ir.cpp:1501:13:1501:13 | Address | &:r1501_1 |
 | ir.cpp:1501:17:1501:17 | Address | &:r1501_2 |
-| ir.cpp:1501:17:1501:17 | Load | m1498_8 |
+| ir.cpp:1501:17:1501:17 | Load | ~m1498_8 |
 | ir.cpp:1501:17:1501:17 | StoreValue | r1501_3 |
 | ir.cpp:1502:9:1502:9 | Address | &:r1502_2 |
+| ir.cpp:1502:9:1502:13 | ChiPartial | partial:m1502_3 |
+| ir.cpp:1502:9:1502:13 | ChiTotal | total:m1498_22 |
 | ir.cpp:1502:13:1502:13 | StoreValue | r1502_1 |
 | ir.cpp:1503:9:1503:10 | Address | &:r1503_4 |
 | ir.cpp:1503:9:1503:14 | ChiPartial | partial:m1503_5 |
