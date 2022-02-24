@@ -64,7 +64,7 @@
 | Test.kt:22:4:22:4 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:22:8:22:9 | 40 | LongLiteral | Test.kt:22:4:22:4 | ...=... | AssignExpr |
 | Test.kt:24:4:24:9 | INSTANCE | VarAccess | Test.kt:24:4:24:9 | return ... | ReturnStmt |
-| Test.kt:24:4:24:9 | return ... | ReturnStmt | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:24:4:24:9 | return ... | ReturnStmt | Test.kt:4:2:79:2 | test | Method |
 | Test.kt:27:3:27:3 | ...=... | AssignExpr | Test.kt:30:3:33:3 | <Expr>; | ExprStmt |
 | Test.kt:27:3:27:3 | <Expr>; | ExprStmt | Test.kt:27:7:27:8 | 10 | IntegerLiteral |
 | Test.kt:27:3:27:3 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
