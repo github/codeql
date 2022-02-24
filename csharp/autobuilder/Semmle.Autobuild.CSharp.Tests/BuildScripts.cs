@@ -399,6 +399,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.GetEnvironmentVariable["LGTM_INDEX_SOLUTION"] = solution;
             actions.GetEnvironmentVariable["LGTM_INDEX_IGNORE_ERRORS"] = ignoreErrors;
             actions.GetEnvironmentVariable["LGTM_INDEX_BUILDLESS"] = buildless;
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_OPTION_BUILDLESS"] = buildless;
             actions.GetEnvironmentVariable["LGTM_INDEX_ALL_SOLUTIONS"] = allSolutions;
             actions.GetEnvironmentVariable["LGTM_INDEX_NUGET_RESTORE"] = nugetRestore;
             actions.GetEnvironmentVariable["ProgramFiles(x86)"] = isWindows ? @"C:\Program Files (x86)" : null;
