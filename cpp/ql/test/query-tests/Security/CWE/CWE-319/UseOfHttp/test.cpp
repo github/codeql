@@ -78,7 +78,7 @@ void test3(char *url)
 	ptr = strstr(url, "https://");
 	if (!ptr)
 	{
-		ptr = strstr(url, "http://"); // GOOD (we are not constructing the URL) [FALSE POSITIVE]
+		ptr = strstr(url, "http://"); // GOOD (we are not constructing the URL)
 	}
 
 	if (ptr)

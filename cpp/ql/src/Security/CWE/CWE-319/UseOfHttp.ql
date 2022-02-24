@@ -57,7 +57,12 @@ class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node src) {
     // Sources are strings containing an HTTP URL not in a private domain.
-    src.asExpr() instanceof HttpStringLiteral
+    src.asExpr() instanceof HttpStringLiteral and
+    // block taint starting at `strstr`, which is likely testing an existing URL, rather than constructing an HTTP URL.
+    not exists(FunctionCall fc |
+      fc.getTarget().getName() = ["strstr", "strcasestr"] and
+      fc.getAnArgument() = src.asExpr()
+    )
   }
 
   override predicate isSink(DataFlow::Node sink) {
