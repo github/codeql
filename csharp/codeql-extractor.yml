@@ -29,3 +29,11 @@ options:
           (to write uncompressed TRAP).
         type: string
         pattern: "^(none|gzip|brotli)$"
+  buildless:
+    title: Whether to use buildless (standalone) extraction.
+    description: >
+      A value indicating, which type of extraction the autobuilder should perform.
+      If 'yes', then the standalone extractor will be used, otherwise tracing extraction
+      will be performed.
+      The default is 'no'.
+    type: string
