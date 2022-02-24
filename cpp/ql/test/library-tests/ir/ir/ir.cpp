@@ -1484,18 +1484,21 @@ struct StructuredBindingDataMemberStruct {
     double d = 2.0;
     unsigned int b : 3;
     int& r = i;
+    int* p = &i;
 };
 
 void data_member_structured_binding() {
     StructuredBindingDataMemberStruct s;
     // structured binding use
     {
-        auto [i, d, b, r] = s;
+        auto [i, d, b, r, p] = s;
         d = 4.0;
         double& rd = d;
         int v = i;
         r = 5;
+        *p = 6;
         int& rr = r;
+        int* pr = &r;
         int w = r;
     }
     // explicit reference version
@@ -1505,11 +1508,14 @@ void data_member_structured_binding() {
         auto& d = unnamed_local_variable.d;
         // no equivalent for b
         auto& r = unnamed_local_variable.r;
+        auto& p = unnamed_local_variable.p;
         d = 4.0;
         double& rd = d;
         int v = i;
         r = 5;
+        *p = 6;
         int& rr = r;
+        int* pr = &r;
         int w = r;
     }
 }
