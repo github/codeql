@@ -37,7 +37,7 @@ end
 
 def m_b
     a = source "a"
-    sink a.b # $ hasValueFlow=a
+    sink a.b # $ hasTaintFlow=a
 end
 
 def m_byteslice
@@ -157,7 +157,7 @@ end
 
 def m_freeze
     a = source "a"
-    sink a.freeze # $ hasValueFlow=a
+    sink a.freeze # $ hasTaintFlow=a
 end
 
 def m_gsub
@@ -220,9 +220,9 @@ end
 def m_replace
     a = source "a"
     b = source "b"
-    sink a.replace(b) # $ hasValueFlow=b
+    sink a.replace(b) # $ hasTaintFlow=b
     # TODO: currently we get value flow for a, because we don't clear content
-    sink a # $ hasValueFlow=b
+    sink a # $ hasTaintFlow=b
 end
 
 def m_reverse
@@ -292,8 +292,8 @@ end
 
 def m_to_str
     a = source "a"
-    sink a.to_str # $ hasValueFlow=a
-    sink a.to_s # $ hasValueFlow=a
+    sink a.to_str # $ hasTaintFlow=a
+    sink a.to_s # $ hasTaintFlow=a
 end
 
 def m_tr
@@ -310,8 +310,8 @@ end
 
 def m_upto(i)
     a = source "a"
-    a.upto("b") { |x| sink x } # $ hasValueFlow=a
-    a.upto("b", true) { |x| sink x } # $ hasValueFlow=a
-    "b".upto(a) { |x| sink x } # $ hasValueFlow=a
+    a.upto("b") { |x| sink x } # $ hasTaintFlow=a
+    a.upto("b", true) { |x| sink x } # $ hasTaintFlow=a
+    "b".upto(a) { |x| sink x } # $ hasTaintFlow=a
     "b".upto(a, true) { |x| sink x }
 end

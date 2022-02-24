@@ -14,15 +14,6 @@ private import codeql.ruby.dataflow.internal.DataFlowDispatch
  */
 module String {
   /**
-   * Value-preserving flow from the receiver to the return value.
-   */
-  private predicate valueIdentityFlow(string input, string output, boolean preservesValue) {
-    input = "Receiver" and
-    output = "ReturnValue" and
-    preservesValue = true
-  }
-
-  /**
    * Taint-preserving (but not value-preserving) flow from the receiver to the return value.
    */
   private predicate taintIdentityFlow(string input, string output, boolean preservesValue) {
@@ -89,7 +80,7 @@ module String {
     override MethodCall getACall() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      valueIdentityFlow(input, output, preservesValue)
+      taintIdentityFlow(input, output, preservesValue)
     }
   }
 
@@ -280,7 +271,7 @@ module String {
     FreezeSummary() { this = "freeze" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      valueIdentityFlow(input, output, preservesValue)
+      taintIdentityFlow(input, output, preservesValue)
     }
   }
 
@@ -375,7 +366,7 @@ module String {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and
       output = ["ReturnValue", "Receiver"] and
-      preservesValue = true
+      preservesValue = false
     }
     // TODO: we should also clear any existing content in Receiver
   }
@@ -527,7 +518,7 @@ module String {
     ToStrSummary() { this = ["to_str", "to_s"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      valueIdentityFlow(input, output, preservesValue)
+      taintIdentityFlow(input, output, preservesValue)
     }
   }
 
@@ -570,15 +561,15 @@ module String {
 
     // TODO: if second arg ('exclusive') is true, the first arg is excluded
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      valueIdentityFlow(input, output, preservesValue)
+      taintIdentityFlow(input, output, preservesValue)
       or
       input = ["Receiver", "Argument[0]"] and
       output = "BlockArgument.Parameter[0]" and
-      preservesValue = true
+      preservesValue = false
       or
       input = "BlockArgument.ReturnValue" and
       output = "ReturnValue.ArrayElement[?]" and
-      preservesValue = true
+      preservesValue = false
     }
   }
 
@@ -594,11 +585,11 @@ module String {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Receiver" and
       output = "BlockArgument.Parameter[0]" and
-      preservesValue = true
+      preservesValue = false
       or
       input = "BlockArgument.ReturnValue" and
       output = "ReturnValue.ArrayElement[?]" and
-      preservesValue = true
+      preservesValue = false
     }
   }
 }
