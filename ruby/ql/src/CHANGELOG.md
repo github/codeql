@@ -1,3 +1,9 @@
+## 0.0.10
+
+### New Queries
+
+* Added a new query, `rb/clear-text-logging-sensitive-data`. The query finds cases where sensitive information, such as user credentials, are logged as cleartext.
+
 ## 0.0.9
 
 ## 0.0.8
