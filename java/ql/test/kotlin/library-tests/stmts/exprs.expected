@@ -63,6 +63,3 @@
 | stmts.kt:36:12:36:23 | e | LocalVariableDeclExpr |
 | stmts.kt:37:16:37:16 | 1 | IntegerLiteral |
 | stmts.kt:40:16:40:16 | 2 | IntegerLiteral |
-| stmts.kt:45:11:45:26 | Exception | TypeAccess |
-| stmts.kt:45:11:45:26 | new Exception(...) | ClassInstanceExpr |
-| stmts.kt:45:22:45:24 | Bar | StringLiteral |
