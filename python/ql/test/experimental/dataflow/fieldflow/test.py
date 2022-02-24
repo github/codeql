@@ -159,3 +159,22 @@ def test_nested_obj_method():
     a = NestedObj()
     a.getObj().foo = x
     SINK(a.obj.foo) # $ MISSING: flow
+
+# ------------------------------------------------------------------------------
+# In global scope
+# ------------------------------------------------------------------------------
+
+def func_defined_before():
+    SINK(global_obj.foo) # $ MISSING: flow="SOURCE, l:+3 -> global_obj.foo"
+
+global_obj = MyObj(NONSOURCE)
+global_obj.foo = SOURCE
+SINK(global_obj.foo) # $ flow="SOURCE, l:-1 -> global_obj.foo"
+
+def func_defined_after():
+    SINK(global_obj.foo) # $ MISSING: flow="SOURCE, l:-4 -> global_obj.foo"
+
+@expects(2)
+def test_global_funcs():
+    func_defined_before()
+    func_defined_after()
