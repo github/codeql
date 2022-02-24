@@ -247,7 +247,7 @@ module String {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = false and
       input = "Receiver" and
-      output = ["BlockArgument.Parameter[0]", "ReturnValue.ArrayElement[?]"]
+      output = "ReturnValue.ArrayElement[?]"
     }
   }
 
@@ -413,6 +413,7 @@ module String {
         [
           // scan(pattern) -> array
           "ReturnValue",
+          // scan(pattern) {|match, ...| block } -> str
           // Parameter[_] doesn't seem to work
           "BlockArgument.Parameter[" + [0 .. 10] + "]"
         ]
@@ -423,15 +424,10 @@ module String {
     ScanNoBlockSummary() { this = "scan_no_block" and not exists(mc.getBlock()) }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // scan(pattern) -> array
       input = "Receiver" and
-      preservesValue = false and
-      output =
-        [
-          // scan(pattern) {|match, ...| block } -> str
-          "ReturnValue.ArrayElement[?]",
-          // Parameter[_] doesn't seem to work
-          "BlockArgument.Parameter[" + [0 .. 10] + "]"
-        ]
+      output = "ReturnValue.ArrayElement[?]" and
+      preservesValue = false
     }
   }
 
@@ -473,12 +469,8 @@ module String {
       taintIdentityFlow(input, output, preservesValue)
       or
       preservesValue = false and
-      (
-        input = "Receiver" and
-        output = "BlockArgument.Parameter[0]"
-        or
-        input = "Argument[0]" and output = "ReturnValue"
-      )
+      input = "Argument[0]" and
+      output = "ReturnValue"
     }
   }
 
