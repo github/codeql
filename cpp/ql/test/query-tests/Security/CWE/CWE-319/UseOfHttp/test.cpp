@@ -75,10 +75,45 @@ void test3(char *url)
 {
 	char *ptr;
 
-	ptr = strstr(url, "https://");
+	ptr = strstr(url, "https://"); // GOOD (https)
 	if (!ptr)
 	{
 		ptr = strstr(url, "http://"); // GOOD (we are not constructing the URL)
+	}
+
+	if (ptr)
+	{
+		openUrl(ptr);
+	}
+}
+
+void test4(char *url)
+{
+	const char *https_string = "https://"; // GOOD (https)
+	const char *http_string = "http://"; // GOOD (we are not constructing the URL) [FALSE POSITIVE]
+	char *ptr;
+
+	ptr = strstr(url, https_string);
+	if (!ptr)
+	{
+		ptr = strstr(url, http_string);
+	}
+
+	if (ptr)
+	{
+		openUrl(ptr);
+	}
+}
+
+void test5()
+{
+	char *url_string = "http://example.com"; // BAD
+	char *ptr;
+
+	ptr = strstr(url_string, "https://"); // GOOD (https)
+	if (!ptr)
+	{
+		ptr = strstr(url_string, "http://"); // GOOD (we are not constructing the URL here)
 	}
 
 	if (ptr)
