@@ -97,7 +97,7 @@ void test1()
 		passwd *pw;
 
 		pw = getpwuid(val());
-		send(sock, pw->pw_passwd, val(), val()); // BAD [NOT DETECTED]
+		send(sock, pw->pw_passwd, val(), val()); // BAD
 	}
 
 	// tests for containers
