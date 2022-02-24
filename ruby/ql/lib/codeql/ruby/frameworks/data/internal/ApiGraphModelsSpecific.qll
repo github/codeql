@@ -86,7 +86,13 @@ API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token) {
  * Holds if `invoke` matches the Ruby-specific call site filter in `token`.
  */
 bindingset[token]
-predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathToken token) { none() }
+predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathToken token) {
+  token.getName() = "WithBlock" and
+  exists(invoke.getBlock())
+  or
+  token.getName() = "WithoutBlock" and
+  not exists(invoke.getBlock())
+}
 
 /** An API graph node representing a method call. */
 class InvokeNode extends API::MethodAccessNode {

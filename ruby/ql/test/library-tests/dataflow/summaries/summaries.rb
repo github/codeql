@@ -25,3 +25,8 @@ sink(notTainted)
 
 tainted5 = Foo.secondArg(nil, tainted)
 sink(tainted5)
+
+sink(Foo.onlyWithBlock(tainted))
+sink(Foo.onlyWithBlock(tainted) do |x| end)
+sink(Foo.onlyWithoutBlock(tainted))
+sink(Foo.onlyWithoutBlock(tainted) do |x| end)

@@ -4,6 +4,8 @@ edges
 | summaries.rb:1:11:1:26 | call to identity :  | summaries.rb:16:36:16:42 | tainted :  |
 | summaries.rb:1:11:1:26 | call to identity :  | summaries.rb:20:25:20:31 | tainted :  |
 | summaries.rb:1:11:1:26 | call to identity :  | summaries.rb:26:31:26:37 | tainted :  |
+| summaries.rb:1:11:1:26 | call to identity :  | summaries.rb:30:24:30:30 | tainted :  |
+| summaries.rb:1:11:1:26 | call to identity :  | summaries.rb:31:27:31:33 | tainted :  |
 | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:1:11:1:26 | call to identity :  |
 | summaries.rb:4:12:7:3 | call to apply_block :  | summaries.rb:9:6:9:13 | tainted2 |
 | summaries.rb:4:24:4:30 | tainted :  | summaries.rb:4:12:7:3 | call to apply_block :  |
@@ -17,6 +19,8 @@ edges
 | summaries.rb:20:25:20:31 | tainted :  | summaries.rb:20:12:20:32 | call to firstArg :  |
 | summaries.rb:26:12:26:38 | call to secondArg :  | summaries.rb:27:6:27:13 | tainted5 |
 | summaries.rb:26:31:26:37 | tainted :  | summaries.rb:26:12:26:38 | call to secondArg :  |
+| summaries.rb:30:24:30:30 | tainted :  | summaries.rb:30:6:30:42 | call to onlyWithBlock |
+| summaries.rb:31:27:31:33 | tainted :  | summaries.rb:31:6:31:34 | call to onlyWithoutBlock |
 nodes
 | summaries.rb:1:11:1:26 | call to identity :  | semmle.label | call to identity :  |
 | summaries.rb:1:20:1:26 | "taint" :  | semmle.label | "taint" :  |
@@ -37,6 +41,10 @@ nodes
 | summaries.rb:26:12:26:38 | call to secondArg :  | semmle.label | call to secondArg :  |
 | summaries.rb:26:31:26:37 | tainted :  | semmle.label | tainted :  |
 | summaries.rb:27:6:27:13 | tainted5 | semmle.label | tainted5 |
+| summaries.rb:30:6:30:42 | call to onlyWithBlock | semmle.label | call to onlyWithBlock |
+| summaries.rb:30:24:30:30 | tainted :  | semmle.label | tainted :  |
+| summaries.rb:31:6:31:34 | call to onlyWithoutBlock | semmle.label | call to onlyWithoutBlock |
+| summaries.rb:31:27:31:33 | tainted :  | semmle.label | tainted :  |
 subpaths
 invalidSpecComponent
 invalidOutputSpecComponent
@@ -48,3 +56,5 @@ invalidOutputSpecComponent
 | summaries.rb:18:6:18:13 | tainted3 | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:18:6:18:13 | tainted3 | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
 | summaries.rb:21:6:21:13 | tainted4 | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:21:6:21:13 | tainted4 | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
 | summaries.rb:27:6:27:13 | tainted5 | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:27:6:27:13 | tainted5 | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
+| summaries.rb:30:6:30:42 | call to onlyWithBlock | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:30:6:30:42 | call to onlyWithBlock | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
+| summaries.rb:31:6:31:34 | call to onlyWithoutBlock | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:31:6:31:34 | call to onlyWithoutBlock | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
