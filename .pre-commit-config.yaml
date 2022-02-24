@@ -22,7 +22,7 @@ repos:
         entry: python3 config/sync-files.py --latest
         pass_filenames: false
 
-    -   id: qlhelp
+    -   id: qhelp
         name: Check query help generation
         files: \.qhelp$
         language: system
