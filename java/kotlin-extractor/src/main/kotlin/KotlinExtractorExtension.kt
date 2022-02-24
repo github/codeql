@@ -58,12 +58,12 @@ class KotlinExtractorExtension(
             FileUtil.logger = logger
             val srcDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/src")
             srcDir.mkdirs()
-            val genericSpecialisationsExtracted = HashSet<String>()
+            val globalExtensionState = KotlinExtractorGlobalState()
             moduleFragment.files.mapIndexed { index: Int, file: IrFile ->
                 val fileExtractionProblems = FileExtractionProblems(invocationExtractionProblems)
                 val fileTrapWriter = tw.makeSourceFileTrapWriter(file, true)
                 fileTrapWriter.writeCompilation_compiling_files(compilation, index, fileTrapWriter.fileId)
-                doFile(fileExtractionProblems, invocationTrapFile, fileTrapWriter, checkTrapIdentical, logCounter, trapDir, srcDir, file, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+                doFile(fileExtractionProblems, invocationTrapFile, fileTrapWriter, checkTrapIdentical, logCounter, trapDir, srcDir, file, primitiveTypeMapping, pluginContext, globalExtensionState)
                 fileTrapWriter.writeCompilation_compiling_files_completed(compilation, index, fileExtractionProblems.extractionResult())
             }
             logger.printLimitedDiagnosticCounts()
@@ -76,6 +76,13 @@ class KotlinExtractorExtension(
             tw.flush()
         }
     }
+}
+
+class KotlinExtractorGlobalState {
+    val genericSpecialisationsExtracted = HashSet<String>()
+    val syntheticToRealClassMap = HashMap<IrClass, IrClass?>()
+    val syntheticToRealFunctionMap = HashMap<IrSimpleFunction, IrSimpleFunction?>()
+    val syntheticToRealFieldMap = HashMap<IrField, IrField?>()
 }
 
 /*
@@ -146,7 +153,7 @@ fun doFile(fileExtractionProblems: FileExtractionProblems,
            srcFile: IrFile,
            primitiveTypeMapping: PrimitiveTypeMapping,
            pluginContext: IrPluginContext,
-           genericSpecialisationsExtracted: MutableSet<String>) {
+           globalExtensionState: KotlinExtractorGlobalState) {
     val srcFilePath = srcFile.path
     val logger = FileLogger(logCounter, fileTrapWriter)
     logger.info("Extracting file $srcFilePath")
@@ -178,8 +185,8 @@ fun doFile(fileExtractionProblems: FileExtractionProblems,
                 // Now elevate to a SourceFileTrapWriter, and populate the
                 // file information
                 val sftw = tw.makeSourceFileTrapWriter(srcFile, true)
-                val externalClassExtractor = ExternalClassExtractor(logger, invocationTrapFile, srcFilePath, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
-                val fileExtractor = KotlinFileExtractor(logger, sftw, srcFilePath, null, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+                val externalClassExtractor = ExternalClassExtractor(logger, invocationTrapFile, srcFilePath, primitiveTypeMapping, pluginContext, globalExtensionState)
+                val fileExtractor = KotlinFileExtractor(logger, sftw, srcFilePath, null, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState)
 
                 fileExtractor.extractFileContents(srcFile, sftw.fileId)
                 externalClassExtractor.extractExternalClasses()

@@ -9,7 +9,7 @@ import java.util.ArrayList
 import java.util.HashSet
 import java.util.zip.GZIPOutputStream
 
-class ExternalClassExtractor(val logger: FileLogger, val invocationTrapFile: String, val sourceFilePath: String, val primitiveTypeMapping: PrimitiveTypeMapping, val pluginContext: IrPluginContext, val genericSpecialisationsExtracted: MutableSet<String>) {
+class ExternalClassExtractor(val logger: FileLogger, val invocationTrapFile: String, val sourceFilePath: String, val primitiveTypeMapping: PrimitiveTypeMapping, val pluginContext: IrPluginContext, val globalExtensionState: KotlinExtractorGlobalState) {
 
     val externalClassesDone = HashSet<IrClass>()
     val externalClassWorkList = ArrayList<IrClass>()
@@ -47,7 +47,7 @@ class ExternalClassExtractor(val logger: FileLogger, val invocationTrapFile: Str
                                     // file information
                                     val ftw = tw.makeFileTrapWriter(binaryPath, true)
 
-                                    val fileExtractor = KotlinFileExtractor(logger, ftw, binaryPath, manager, this, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+                                    val fileExtractor = KotlinFileExtractor(logger, ftw, binaryPath, manager, this, primitiveTypeMapping, pluginContext, globalExtensionState)
 
                                     // Populate a location and compilation-unit package for the file. This is similar to
                                     // the beginning of `KotlinFileExtractor.extractFileContents` but without an `IrFile`

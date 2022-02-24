@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.JvmAbi
+import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -31,7 +32,7 @@ open class KotlinUsesExtractor(
     val externalClassExtractor: ExternalClassExtractor,
     val primitiveTypeMapping: PrimitiveTypeMapping,
     val pluginContext: IrPluginContext,
-    val genericSpecialisationsExtracted: MutableSet<String>
+    val globalExtensionState: KotlinExtractorGlobalState
 ) {
     fun usePackage(pkg: String): Label<out DbPackage> {
         return extractPackage(pkg)
@@ -123,7 +124,7 @@ open class KotlinUsesExtractor(
             val filePath = getIrClassBinaryPath(cls)
             val newTrapWriter = tw.makeFileTrapWriter(filePath, false)
             val newLogger = FileLogger(logger.logCounter, newTrapWriter)
-            return KotlinFileExtractor(newLogger, newTrapWriter, filePath, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+            return KotlinFileExtractor(newLogger, newTrapWriter, filePath, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState)
         }
 
         if (this is KotlinFileExtractor && this.filePath == clsFile.path) {
@@ -132,7 +133,7 @@ open class KotlinUsesExtractor(
 
         val newTrapWriter = tw.makeSourceFileTrapWriter(clsFile, false)
         val newLogger = FileLogger(logger.logCounter, newTrapWriter)
-        return KotlinFileExtractor(newLogger, newTrapWriter, clsFile.path, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+        return KotlinFileExtractor(newLogger, newTrapWriter, clsFile.path, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState)
     }
 
     // The Kotlin compiler internal representation of Outer<T>.Inner<S>.InnerInner<R> is InnerInner<R, S, T>. This function returns just `R`.
@@ -233,9 +234,69 @@ open class KotlinUsesExtractor(
         externalClassExtractor.extractLater(c)
     }
 
+    fun tryReplaceAndroidSyntheticClass(c: IrClass): IrClass {
+        // The Android Kotlin Extensions Gradle plugin introduces synthetic functions, fields and classes. The most
+        // obvious signature is that they lack any supertype information even though they are not root classes.
+        // If possible, replace them by a real version of the same class.
+        if (c.superTypes.isNotEmpty() ||
+            c.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB ||
+            c.hasEqualFqName(FqName("java.lang.Object")))
+            return c
+        return globalExtensionState.syntheticToRealClassMap.getOrPut(c) {
+            val result = c.fqNameWhenAvailable?.let {
+                pluginContext.referenceClass(it)?.owner
+            }
+            if (result == null) {
+                logger.warn("Failed to replace synthetic class ${c.name}")
+            } else {
+                logger.info("Replaced synthetic class ${c.name} with its real equivalent")
+            }
+            result
+        } ?: c
+    }
+
+    fun tryReplaceAndroidSyntheticFunction(f: IrSimpleFunction): IrSimpleFunction {
+        val parentClass = f.parent as? IrClass ?: return f
+        val replacementClass = tryReplaceAndroidSyntheticClass(parentClass)
+        if (replacementClass === parentClass)
+            return f
+        return globalExtensionState.syntheticToRealFunctionMap.getOrPut(f) {
+            val result = replacementClass.declarations.find { replacementDecl ->
+                replacementDecl is IrSimpleFunction && replacementDecl.name == f.name && replacementDecl.valueParameters.zip(f.valueParameters).all {
+                    it.first.type == it.second.type
+                }
+            } as IrSimpleFunction?
+            if (result == null) {
+                logger.warn("Failed to replace synthetic class function ${f.name}")
+            } else {
+                logger.info("Replaced synthetic class function ${f.name} with its real equivalent")
+            }
+            result
+        } ?: f
+    }
+
+    fun tryReplaceAndroidSyntheticField(f: IrField): IrField {
+        val parentClass = f.parent as? IrClass ?: return f
+        val replacementClass = tryReplaceAndroidSyntheticClass(parentClass)
+        if (replacementClass === parentClass)
+            return f
+        return globalExtensionState.syntheticToRealFieldMap.getOrPut(f) {
+            val result = replacementClass.declarations.find { replacementDecl ->
+                replacementDecl is IrField && replacementDecl.name == f.name
+            } as IrField?
+            if (result == null) {
+                logger.warn("Failed to replace synthetic class field ${f.name}")
+            } else {
+                logger.info("Replaced synthetic class field ${f.name} with its real equivalent")
+            }
+            result
+        } ?: f
+    }
+
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun addClassLabel(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
+    fun addClassLabel(cBeforeReplacement: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
+        val c = tryReplaceAndroidSyntheticClass(cBeforeReplacement)
         val classLabelResult = getClassLabel(c, argsIncludingOuterClasses)
 
         var instanceSeenBefore = true
@@ -255,7 +316,7 @@ open class KotlinUsesExtractor(
                 extractorWithCSource.extractClassInstance(c, argsIncludingOuterClasses)
             }
 
-            if (inReceiverContext && genericSpecialisationsExtracted.add(classLabelResult.classLabel)) {
+            if (inReceiverContext && globalExtensionState.genericSpecialisationsExtracted.add(classLabelResult.classLabel)) {
                 val supertypeMode = if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses)
                 extractorWithCSource.extractClassSupertypes(c, classLabel, supertypeMode, true)
                 extractorWithCSource.extractMemberPrototypes(c, argsIncludingOuterClasses, classLabel)

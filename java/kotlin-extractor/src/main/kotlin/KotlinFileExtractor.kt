@@ -38,8 +38,8 @@ open class KotlinFileExtractor(
     externalClassExtractor: ExternalClassExtractor,
     primitiveTypeMapping: PrimitiveTypeMapping,
     pluginContext: IrPluginContext,
-    genericSpecialisationsExtracted: MutableSet<String>
-): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted) {
+    globalExtensionState: KotlinExtractorGlobalState
+): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState) {
 
     inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
         try {
@@ -1233,7 +1233,7 @@ open class KotlinFileExtractor(
 
     fun extractCall(c: IrCall, callable: Label<out DbCallable>, stmtExprParent: StmtExprParent) {
         with("call", c) {
-            val target = c.symbol.owner
+            val target = tryReplaceAndroidSyntheticFunction(c.symbol.owner)
 
             // The vast majority of types of call want an expr context, so make one available lazily:
             val exprParent by lazy {
@@ -1680,7 +1680,7 @@ open class KotlinFileExtractor(
                     extractExpressionExpr(c.getValueArgument(0)!!, callable, id, 1, enclosingStmt)
                 }
                 else -> {
-                    extractMethodAccess(c.symbol.owner, true, true)
+                    extractMethodAccess(target, true, true)
                 }
             }
         }
@@ -2283,7 +2283,7 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                    val owner = e.symbol.owner
+                    val owner = tryReplaceAndroidSyntheticField(e.symbol.owner)
                     val vId = useField(owner)
                     tw.writeVariableBinding(id, vId)
                     tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
@@ -2358,12 +2358,13 @@ open class KotlinFileExtractor(
                         }
                         is IrSetField -> {
                             tw.writeExprs_assignexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                            val lhsType = useType(e.symbol.owner.type)
+                            val realField = tryReplaceAndroidSyntheticField(e.symbol.owner)
+                            val lhsType = useType(realField.type)
                             tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, id, 0)
                             tw.writeExprsKotlinType(lhsId, lhsType.kotlinResult.id)
                             // TODO: location, enclosing callable?
                             tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                            val vId = useField(e.symbol.owner)
+                            val vId = useField(realField)
                             tw.writeVariableBinding(lhsId, vId)
                             extractExpressionExpr(e.value, callable, id, 1, exprParent.enclosingStmt)
 
