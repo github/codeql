@@ -1480,18 +1480,20 @@ void array_structured_binding() {
 }
 
 struct StructuredBindingDataMemberStruct {
+    typedef int ArrayType[2]; 
     int i = 1;
     double d = 2.0;
     unsigned int b : 3;
     int& r = i;
     int* p = &i;
+    ArrayType xs = {1, 2};
 };
 
 void data_member_structured_binding() {
     StructuredBindingDataMemberStruct s;
     // structured binding use
     {
-        auto [i, d, b, r, p] = s;
+        auto [i, d, b, r, p, xs] = s;
         d = 4.0;
         double& rd = d;
         int v = i;
