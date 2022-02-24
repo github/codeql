@@ -3,7 +3,7 @@
  * @description Non-HTTPS connections can be intercepted by third parties.
  * @kind path-problem
  * @problem.severity warning
- * @precision medium
+ * @precision high
  * @id cpp/non-https-url
  * @tags security
  *       external/cwe/cwe-319
