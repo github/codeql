@@ -218,7 +218,9 @@ myobj.foo = SOURCE
 if cond:
     myobj.foo = NONSOURCE
     SINK_F(myobj.foo)
-SINK(myobj.foo) # $ flow="SOURCE, l:-4 -> myobj.foo"
+# SPLITTING happens here, so in one version there is flow, and in the other there isn't
+# that's why it has both a flow and a MISSING: flow annotation
+SINK(myobj.foo) # $ flow="SOURCE, l:-6 -> myobj.foo" MISSING: flow
 
 
 
@@ -259,16 +261,16 @@ SINK_F(getattr(myobj, "foo"))
 
 
 
-obj = MyObj(SOURCE)
-SINK(obj.foo) # $ flow="SOURCE, l:-1 -> obj.foo"
+obj2 = MyObj(SOURCE)
+SINK(obj2.foo) # $ MISSING: flow="SOURCE, l:-1 -> obj2.foo"
 
 
 
-obj = MyObj(foo=SOURCE)
-SINK(obj.foo) # $ flow="SOURCE, l:-1 -> obj.foo"
+obj3 = MyObj(foo=SOURCE)
+SINK(obj3.foo) # $ MISSING: flow="SOURCE, l:-1 -> obj3.foo"
 
 
-SINK(fields_with_local_flow(SOURCE)) # $ flow="SOURCE -> fields_with_local_flow(..)"
+SINK(fields_with_local_flow(SOURCE)) # $ MISSING: flow="SOURCE -> fields_with_local_flow(..)"
 
 # ------------------------------------------------------------------------------
 # Nested Object
