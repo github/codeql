@@ -161,7 +161,7 @@ def test_nested_obj_method():
     SINK(a.obj.foo) # $ MISSING: flow
 
 # ------------------------------------------------------------------------------
-# In global scope
+# Global scope
 # ------------------------------------------------------------------------------
 
 def func_defined_before():
@@ -178,3 +178,111 @@ def func_defined_after():
 def test_global_funcs():
     func_defined_before()
     func_defined_after()
+
+# ------------------------------------------------------------------------------
+# All the other tests, but also in global scope.
+#
+# You might think that these are just the same... but it turns out they are not :O
+# ------------------------------------------------------------------------------
+
+
+myobj = MyObj("OK")
+
+setFoo(myobj, SOURCE)
+SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
+
+
+
+myobj = MyObj("OK")
+
+myobj.setFoo(SOURCE)
+SINK(myobj.foo) # $ MISSING: flow
+
+
+
+myobj = MyObj(NONSOURCE)
+myobj.foo = SOURCE
+SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
+
+
+
+myobj = MyObj(NONSOURCE)
+myobj.foo = SOURCE
+myobj.foo = NONSOURCE
+SINK_F(myobj.foo)
+
+
+
+myobj = MyObj(NONSOURCE)
+myobj.foo = SOURCE
+if cond:
+    myobj.foo = NONSOURCE
+    SINK_F(myobj.foo)
+SINK(myobj.foo) # $ flow="SOURCE, l:-4 -> myobj.foo"
+
+
+
+myobj = MyObj(NONSOURCE)
+myobj.foo = SOURCE
+if cond:
+    myobj.foo = NONSOURCE
+    SINK_F(myobj.foo)
+else:
+    myobj.foo = NONSOURCE
+    SINK_F(myobj.foo)
+SINK_F(myobj.foo)
+
+
+
+myobj = MyObj(NONSOURCE)
+myobj.foo = SOURCE
+SINK(getattr(myobj, "foo")) # $ flow="SOURCE, l:-1 -> getattr(..)"
+
+
+
+myobj = MyObj(NONSOURCE)
+setattr(myobj, "foo", SOURCE)
+SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
+
+
+
+myobj = MyObj(NONSOURCE)
+setattr(myobj, "foo", SOURCE)
+SINK(getattr(myobj, "foo")) # $ flow="SOURCE, l:-1 -> getattr(..)"
+
+
+
+myobj = MyObj(NONSOURCE)
+setattr(myobj, "foo", SOURCE)
+setattr(myobj, "foo", NONSOURCE)
+SINK_F(getattr(myobj, "foo"))
+
+
+
+obj = MyObj(SOURCE)
+SINK(obj.foo) # $ flow="SOURCE, l:-1 -> obj.foo"
+
+
+
+obj = MyObj(foo=SOURCE)
+SINK(obj.foo) # $ flow="SOURCE, l:-1 -> obj.foo"
+
+
+SINK(fields_with_local_flow(SOURCE)) # $ flow="SOURCE -> fields_with_local_flow(..)"
+
+# ------------------------------------------------------------------------------
+# Nested Object
+# ------------------------------------------------------------------------------
+
+
+x = SOURCE
+a = NestedObj()
+a.obj.foo = x
+SINK(a.obj.foo) # $ flow="SOURCE, l:-3 -> a.obj.foo"
+
+
+
+x = SOURCE
+a = NestedObj()
+a.getObj().foo = x
+SINK(a.obj.foo) # $ MISSING: flow
