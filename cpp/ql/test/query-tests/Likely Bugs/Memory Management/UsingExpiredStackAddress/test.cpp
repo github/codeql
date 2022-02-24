@@ -77,7 +77,7 @@ int test_pointer_arith_good_1() {
   int x;
   address_escapes_through_pointer_arith();
   s101.p = &x;
-  return *s101.p; // GOOD [FALSE POSITIVE]
+  return *s101.p; // GOOD
 }
 
 int test_pointer_arith_good_2(bool b) {
