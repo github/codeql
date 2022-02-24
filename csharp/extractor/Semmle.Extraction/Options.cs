@@ -67,15 +67,12 @@ namespace Semmle.Extraction
                     Verbosity = (Verbosity)int.Parse(value);
                     return true;
                 case "compression":
-                    try
+                    if (Enum.TryParse<TrapWriter.CompressionMode>(value, true, out var mode))
                     {
-                        TrapCompression = (TrapWriter.CompressionMode)Enum.Parse(typeof(TrapWriter.CompressionMode), value, true);
+                        TrapCompression = mode;
                         return true;
                     }
-                    catch (ArgumentException)
-                    {
-                        return false;
-                    }
+                    return false;
                 default:
                     return false;
             }
