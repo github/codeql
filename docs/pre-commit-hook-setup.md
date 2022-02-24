@@ -28,7 +28,7 @@ If you want to change any behaviour (for example, you want to skip the out-of-sy
 ```
 cp .pre-commit-config.yaml ~/my-codeql-pre-commit-config.yaml
 pre-commit install --config ~/my-codeql-pre-commit-config.yaml
-# edit ~/my-codeql-pre-commit-config.yaml to your linking
+# edit ~/my-codeql-pre-commit-config.yaml to your liking
 ```
 
 You can for example:
