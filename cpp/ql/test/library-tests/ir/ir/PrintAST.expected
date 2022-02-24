@@ -11503,9 +11503,9 @@ ir.cpp:
 # 1474|             getExpr(): [ArrayExpr] access to array
 # 1474|                 Type = [IntType] int
 # 1474|                 ValueCategory = lvalue
-# 1474|               getArrayBase(): [VariableAccess] xs
-# 1474|                   Type = [ArrayType] int[2]
-# 1474|                   ValueCategory = lvalue
+# 1474|               getArrayBase(): [VariableAccess] unnamed_local_variable
+# 1474|                   Type = [LValueReferenceType] int(&)[2]
+# 1474|                   ValueCategory = prvalue(load)
 # 1474|               getArrayOffset(): [Literal] 0
 # 1474|                   Type = [IntType] int
 # 1474|                   Value = [Literal] 0
@@ -11513,6 +11513,9 @@ ir.cpp:
 # 1474|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 # 1474|                   Type = [IntPointerType] int *
 # 1474|                   ValueCategory = prvalue
+# 1474|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1474|                     Type = [ArrayType] int[2]
+# 1474|                     ValueCategory = lvalue
 # 1474|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
 # 1474|                 Type = [LValueReferenceType] int &
 # 1474|                 ValueCategory = prvalue
@@ -11523,9 +11526,9 @@ ir.cpp:
 # 1475|             getExpr(): [ArrayExpr] access to array
 # 1475|                 Type = [IntType] int
 # 1475|                 ValueCategory = lvalue
-# 1475|               getArrayBase(): [VariableAccess] xs
-# 1475|                   Type = [ArrayType] int[2]
-# 1475|                   ValueCategory = lvalue
+# 1475|               getArrayBase(): [VariableAccess] unnamed_local_variable
+# 1475|                   Type = [LValueReferenceType] int(&)[2]
+# 1475|                   ValueCategory = prvalue(load)
 # 1475|               getArrayOffset(): [Literal] 1
 # 1475|                   Type = [IntType] int
 # 1475|                   Value = [Literal] 1
@@ -11533,6 +11536,9 @@ ir.cpp:
 # 1475|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 # 1475|                   Type = [IntPointerType] int *
 # 1475|                   ValueCategory = prvalue
+# 1475|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1475|                     Type = [ArrayType] int[2]
+# 1475|                     ValueCategory = lvalue
 # 1475|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
 # 1475|                 Type = [LValueReferenceType] int &
 # 1475|                 ValueCategory = prvalue

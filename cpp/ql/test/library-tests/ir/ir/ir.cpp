@@ -1471,8 +1471,8 @@ void array_structured_binding() {
     // explicit reference version
     {
         auto& unnamed_local_variable = xs;
-        auto& x0 = xs[0];
-        auto& x1 = xs[1];
+        auto& x0 = unnamed_local_variable[0];
+        auto& x1 = unnamed_local_variable[1];
         x1 = 3;
         int &rx1 = x1;
         int x = x1;
