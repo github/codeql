@@ -1,3 +1,9 @@
+## 0.0.10
+
+### Deprecated Queries
+
+* The `CodeDuplication.Copy`, `CodeDuplication.DuplicateBlock`, and `CodeDuplication.SimilarBlock` classes have been deprecated.
+
 ## 0.0.9
 
 ### New Queries
