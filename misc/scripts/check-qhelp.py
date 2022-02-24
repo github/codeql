@@ -4,25 +4,66 @@
 
 This takes care of:
 * providing a temporary directory to --output
-* turning .inc.qhelp arguments into their containing directory
+* finding usages of .inc.qhelp arguments
 """
 
 import pathlib
 import tempfile
 import sys
 import subprocess
+import xml.sax
 
-def transform_input(arg):
-    arg = pathlib.Path(arg)
-    if arg.suffixes == ['.inc', '.qhelp']:
-        return str(arg.parent)
-    return str(arg)
+
+include_cache = {}
+
+class IncludeHandler(xml.sax.ContentHandler):
+    def __init__(self, xml):
+        self.__xml = xml
+
+    def startElement(self, name, attrs):
+        if name == "include":
+            src = (self.__xml.parent / attrs["src"]).resolve()
+            include_cache.setdefault(src, set()).add(self.__xml)
+
+class IgnoreErrorsHandler(xml.sax.ErrorHandler):
+    def error(self, exc):
+        pass
+
+    def fatalError(self, exc):
+        pass
+
+    def warning(self, exc):
+        pass
+
+def init_include_cache():
+    if not include_cache:
+        for qhelp in pathlib.Path().rglob("*.qhelp"):
+            xml.sax.parse(qhelp, IncludeHandler(qhelp), IgnoreErrorsHandler())
+
+
+def find_inc_qhelp_usages(arg):
+    init_include_cache()
+    return include_cache.get(arg.resolve(), ())
+
+def transform_inputs(args):
+    for arg in args:
+        arg = pathlib.Path(arg)
+        if arg.suffixes == ['.inc', '.qhelp']:
+            for qhelp in find_inc_qhelp_usages(arg):
+                yield str(qhelp)
+        return str(arg)
+
+affected_qhelp_files = list(transform_inputs(sys.argv[1:]))
+if not affected_qhelp_files:
+    # can happen with changes on an unused .inc.qhelp file
+    print("nothing to do!")
+    sys.exit(0)
 
 cmd = ["codeql", "generate", "query-help", "--format=markdown"]
 
 with tempfile.TemporaryDirectory() as tmp:
     cmd += [f"--output={tmp}", "--"]
-    cmd.extend(transform_input(x) for x in sys.argv[1:])
+    cmd += affected_qhelp_files
     res = subprocess.run(cmd)
 
 sys.exit(res.returncode)
