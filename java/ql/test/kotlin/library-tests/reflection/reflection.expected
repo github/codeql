@@ -34,3 +34,15 @@ invocation
 | reflection.kt:23:23:23:33 | get(...) | file://<external>/KProperty2.class:0:0:0:0 | get |
 | reflection.kt:48:30:48:39 | get(...) | file://<external>/KProperty1.class:0:0:0:0 | get |
 | reflection.kt:49:30:49:34 | get(...) | file://<external>/KProperty0.class:0:0:0:0 | get |
+functionReferences
+| reflection.kt:5:49:5:54 | ...::... | reflection.kt:5:49:5:54 | invoke | reflection.kt:27:9:27:33 | m |
+propertyGetReferences
+| reflection.kt:8:38:8:42 | ...::... | reflection.kt:8:38:8:42 | get | reflection.kt:8:38:8:42 | get |
+| reflection.kt:13:35:13:41 | ...::... | reflection.kt:13:35:13:41 | get | reflection.kt:13:35:13:41 | get |
+| reflection.kt:15:45:15:49 | ...::... | reflection.kt:15:45:15:49 | get | reflection.kt:15:45:15:49 | get |
+| reflection.kt:20:42:20:48 | ...::... | reflection.kt:20:42:20:48 | get | reflection.kt:20:42:20:48 | get |
+| reflection.kt:48:13:48:28 | ...::... | reflection.kt:48:13:48:28 | get | reflection.kt:48:13:48:28 | get |
+| reflection.kt:49:13:49:28 | ...::... | reflection.kt:49:13:49:28 | get | reflection.kt:49:13:49:28 | get |
+propertySetReferences
+| reflection.kt:15:45:15:49 | ...::... | reflection.kt:15:45:15:49 | set | reflection.kt:15:45:15:49 | set |
+| reflection.kt:20:42:20:48 | ...::... | reflection.kt:20:42:20:48 | set | reflection.kt:20:42:20:48 | set |

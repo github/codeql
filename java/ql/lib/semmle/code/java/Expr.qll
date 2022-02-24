@@ -1438,6 +1438,42 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
   override string getAPrimaryQlClass() { result = "MemberRefExpr" }
 }
 
+/**
+ * Property references are represented by their implicit class instance expressions,
+ * which instantiate an anonymous class that overrides the `get` and `set` methods designated by
+ * their functional interface type.
+ */
+class PropertyRefExpr extends ClassInstanceExpr, @propertyref {
+  /**
+   * Gets the implicit `get` method corresponding to this property reference expression, if any.
+   */
+  Method asGetMethod() {
+    result = this.getAnonymousClass().getAMethod() and result.getName() = "get"
+  }
+
+  /**
+   * Gets the implicit `set` method corresponding to this property reference expression, if any.
+   */
+  Method asSetMethod() {
+    result = this.getAnonymousClass().getAMethod() and result.getName() = "set"
+  }
+
+  /**
+   * Gets the property getter referenced by this property reference expression, if any.
+   */
+  Callable getGetterCallable() { propertyRefGetBinding(this, result) }
+
+  /**
+   * Gets the property setter referenced by this property reference expression, if any.
+   */
+  Callable getSetterCallable() { propertyRefSetBinding(this, result) }
+
+  /** Gets a printable representation of this expression. */
+  override string toString() { result = "...::..." }
+
+  override string getAPrimaryQlClass() { result = "PropertyRefExpr" }
+}
+
 /** A conditional expression or a `switch` expression. */
 class ChooseExpr extends Expr {
   ChooseExpr() { this instanceof ConditionalExpr or this instanceof SwitchExpr }

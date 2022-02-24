@@ -18,7 +18,7 @@ reflection.kt:
 #   48|           0: [MethodAccess] println(...)
 #   48|             -1: [TypeAccess] ConsoleKt
 #   48|             0: [MethodAccess] get(...)
-#   48|               -1: [ClassInstanceExpr] new (...)
+#   48|               -1: [PropertyRefExpr] ...::...
 #   48|                 -4: [AnonymousClass] new KProperty1<String,Character>(...) { ... }
 #   48|                   1: [Constructor] 
 #   48|                     5: [BlockStmt] { ... }
@@ -36,7 +36,7 @@ reflection.kt:
 #   49|           0: [MethodAccess] println(...)
 #   49|             -1: [TypeAccess] ConsoleKt
 #   49|             0: [MethodAccess] get(...)
-#   49|               -1: [ClassInstanceExpr] new (...)
+#   49|               -1: [PropertyRefExpr] ...::...
 #   49|                 -4: [AnonymousClass] new KProperty0<Character>(...) { ... }
 #   49|                   1: [Constructor] 
 #-----|                     4: (Parameters)
@@ -90,7 +90,7 @@ reflection.kt:
 #    6|               -1: [VarAccess] ref
 #    8|         2: [LocalVariableDeclStmt] var ...;
 #    8|           1: [LocalVariableDeclExpr] x0
-#    8|             0: [ClassInstanceExpr] new (...)
+#    8|             0: [PropertyRefExpr] ...::...
 #    8|               -4: [AnonymousClass] new KProperty1<C,Integer>(...) { ... }
 #    8|                 1: [Constructor] 
 #    8|                   5: [BlockStmt] { ... }
@@ -146,7 +146,7 @@ reflection.kt:
 #   12|               0: [VarAccess] x0
 #   13|         7: [LocalVariableDeclStmt] var ...;
 #   13|           1: [LocalVariableDeclExpr] x5
-#   13|             0: [ClassInstanceExpr] new (...)
+#   13|             0: [PropertyRefExpr] ...::...
 #   13|               -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
 #   13|                 1: [Constructor] 
 #-----|                   4: (Parameters)
@@ -171,7 +171,7 @@ reflection.kt:
 #   13|                 -3: [TypeAccess] C
 #   15|         8: [LocalVariableDeclStmt] var ...;
 #   15|           1: [LocalVariableDeclExpr] y0
-#   15|             0: [ClassInstanceExpr] new (...)
+#   15|             0: [PropertyRefExpr] ...::...
 #   15|               -4: [AnonymousClass] new KMutableProperty1<C,Integer>(...) { ... }
 #   15|                 1: [Constructor] 
 #   15|                   5: [BlockStmt] { ... }
@@ -239,7 +239,7 @@ reflection.kt:
 #   19|               0: [VarAccess] y0
 #   20|         13: [LocalVariableDeclStmt] var ...;
 #   20|           1: [LocalVariableDeclExpr] y5
-#   20|             0: [ClassInstanceExpr] new (...)
+#   20|             0: [PropertyRefExpr] ...::...
 #   20|               -4: [AnonymousClass] new KMutableProperty0<Integer>(...) { ... }
 #   20|                 1: [Constructor] 
 #-----|                   4: (Parameters)

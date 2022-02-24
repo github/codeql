@@ -749,6 +749,7 @@ case @expr.kind of
 | 85  = @unsafecoerceexpr
 | 86  = @valueeqexpr
 | 87  = @valueneexpr
+| 88  = @propertyref
 ;
 
 /** Holds if this `when` expression was written as an `if` expression. */
@@ -764,7 +765,7 @@ when_branch(
 /** Holds if this `when` branch was written as an `else` branch. */
 when_branch_else(unique int id: @whenbranch ref);
 
-@classinstancexpr = @newexpr | @lambdaexpr | @memberref
+@classinstancexpr = @newexpr | @lambdaexpr | @memberref | @propertyref
 
 @annotation = @declannotation | @typeannotation
 @typeaccess = @unannotatedtypeaccess | @annotatedtypeaccess
@@ -843,6 +844,16 @@ callableBinding(
 memberRefBinding(
   unique int id: @expr ref,
   int callable: @callable ref
+);
+
+propertyRefGetBinding(
+  unique int id: @expr ref,
+  int getter: @callable ref
+);
+
+propertyRefSetBinding(
+  unique int id: @expr ref,
+  int setter: @callable ref
 );
 
 @exprparent = @stmt | @expr | @whenbranch | @callable | @field | @fielddecl | @class | @interface | @param | @localvar | @typevariable;

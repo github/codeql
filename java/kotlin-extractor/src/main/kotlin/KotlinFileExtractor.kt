@@ -2811,6 +2811,8 @@ open class KotlinFileExtractor(
                 return callId
             }
 
+            val idPropertyRef = tw.getFreshIdLabel<DbPropertyref>()
+
             if (getter != null) {
                 val getterParameterTypes = parameters.map { it.type }
                 val getLabels = addFunctionManual(tw.getFreshIdLabel(), "get", getterParameterTypes, getter.owner.returnType, classId, locId)
@@ -2820,6 +2822,8 @@ open class KotlinFileExtractor(
                     getter,
                     { r, c -> extractAccessToTarget(getLabels.methodId, r, c) }
                 )
+
+                tw.writePropertyRefGetBinding(idPropertyRef, getLabels.methodId)
             }
 
             if (setter != null) {
@@ -2831,27 +2835,24 @@ open class KotlinFileExtractor(
                     setter,
                     { r, c -> extractAccessToTarget(setLabels.methodId, r, c) }
                 )
+
+                tw.writePropertyRefSetBinding(idPropertyRef, setLabels.methodId)
             }
 
-            // todo: property ref
             // Add constructor (property ref) call:
             val exprParent = parent.expr(propertyReferenceExpr, callable)
-            val idCtorRef = tw.getFreshIdLabel<DbNewexpr>()
-            tw.writeExprs_newexpr(idCtorRef, ids.type.javaResult.id, exprParent.parent, exprParent.idx)
-            tw.writeExprsKotlinType(idCtorRef, ids.type.kotlinResult.id)
-            tw.writeHasLocation(idCtorRef, locId)
-            tw.writeCallableEnclosingExpr(idCtorRef, callable)
-            tw.writeStatementEnclosingExpr(idCtorRef, exprParent.enclosingStmt)
-            tw.writeCallableBinding(idCtorRef, ids.constructor)
+            tw.writeExprs_propertyref(idPropertyRef, ids.type.javaResult.id, exprParent.parent, exprParent.idx)
+            tw.writeExprsKotlinType(idPropertyRef, ids.type.kotlinResult.id)
+            tw.writeHasLocation(idPropertyRef, locId)
+            tw.writeCallableEnclosingExpr(idPropertyRef, callable)
+            tw.writeStatementEnclosingExpr(idPropertyRef, exprParent.enclosingStmt)
+            tw.writeCallableBinding(idPropertyRef, ids.constructor)
 
-            extractTypeAccess(kPropertyType, locId, callable, idCtorRef, -3, exprParent.enclosingStmt)
+            extractTypeAccess(kPropertyType, locId, callable, idPropertyRef, -3, exprParent.enclosingStmt)
 
-            // todo: property ref:
-            //tw.writeMemberRefBinding(idMemberRef, targetCallableId)
+            helper.extractConstructorArguments(callable, idPropertyRef, exprParent.enclosingStmt)
 
-            helper.extractConstructorArguments(callable, idCtorRef, exprParent.enclosingStmt)
-
-            tw.writeIsAnonymClass(classId, idCtorRef)
+            tw.writeIsAnonymClass(classId, idPropertyRef)
         }
     }
 

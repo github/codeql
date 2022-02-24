@@ -39,3 +39,18 @@ query predicate variableInitializerType(
 query predicate invocation(Call c, Callable callee) {
   c.getCallee() = callee and callee.getDeclaringType().getPackage().getName() = "kotlin.reflect"
 }
+
+query predicate functionReferences(MemberRefExpr e, Method m, Callable c) {
+  e.asMethod() = m and
+  e.getReferencedCallable() = c
+}
+
+query predicate propertyGetReferences(PropertyRefExpr e, Method m, Callable c) {
+  e.asGetMethod() = m and
+  e.getGetterCallable() = c
+}
+
+query predicate propertySetReferences(PropertyRefExpr e, Method m, Callable c) {
+  e.asSetMethod() = m and
+  e.getSetterCallable() = c
+}
