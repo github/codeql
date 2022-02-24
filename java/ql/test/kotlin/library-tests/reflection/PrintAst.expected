@@ -136,7 +136,7 @@ reflection.kt:
 #   12|         6: [LocalVariableDeclStmt] var ...;
 #   12|           1: [LocalVariableDeclExpr] x4
 #   12|             0: [MemberRefExpr] ...::...
-#   12|               -4: [AnonymousClass] new Function1<T,V>(...) { ... }
+#   12|               -4: [AnonymousClass] new Function1<C,Integer>(...) { ... }
 #   12|                 1: [Constructor] 
 #-----|                   4: (Parameters)
 #   12|                     0: [Parameter] <dispatchReceiver>
@@ -158,7 +158,7 @@ reflection.kt:
 #   12|                         0: [VarAccess] a0
 #   12|                 1: [FieldDeclaration] KProperty1<C,Integer> <dispatchReceiver>;
 #   12|                   -1: [TypeAccess] KProperty1<C,Integer>
-#   12|               -3: [TypeAccess] Function1<T,V>
+#   12|               -3: [TypeAccess] Function1<C,Integer>
 #   12|               0: [VarAccess] x0
 #   13|         7: [LocalVariableDeclStmt] var ...;
 #   13|           1: [LocalVariableDeclExpr] x5
@@ -227,7 +227,7 @@ reflection.kt:
 #   19|         12: [LocalVariableDeclStmt] var ...;
 #   19|           1: [LocalVariableDeclExpr] y4
 #   19|             0: [MemberRefExpr] ...::...
-#   19|               -4: [AnonymousClass] new Function2<T,V,Unit>(...) { ... }
+#   19|               -4: [AnonymousClass] new Function2<C,Integer,Unit>(...) { ... }
 #   19|                 1: [Constructor] 
 #-----|                   4: (Parameters)
 #   19|                     0: [Parameter] <dispatchReceiver>
@@ -251,7 +251,7 @@ reflection.kt:
 #   19|                         1: [VarAccess] a1
 #   19|                 1: [FieldDeclaration] KMutableProperty1<C,Integer> <dispatchReceiver>;
 #   19|                   -1: [TypeAccess] KMutableProperty1<C,Integer>
-#   19|               -3: [TypeAccess] Function2<T,V,Unit>
+#   19|               -3: [TypeAccess] Function2<C,Integer,Unit>
 #   19|               0: [VarAccess] y0
 #   20|         13: [LocalVariableDeclStmt] var ...;
 #   20|           1: [LocalVariableDeclExpr] y5
@@ -397,7 +397,7 @@ reflection.kt:
 #   58|           0: [MethodAccess] println(...)
 #   58|             -1: [TypeAccess] ConsoleKt
 #   58|             0: [MemberRefExpr] ...::...
-#   58|               -4: [AnonymousClass] new Function2<Generic<T1>,T1,String>(...) { ... }
+#   58|               -4: [AnonymousClass] new Function2<Generic<Integer>,Integer,String>(...) { ... }
 #   58|                 1: [Constructor] 
 #   58|                   5: [BlockStmt] { ... }
 #   58|                     0: [SuperConstructorInvocationStmt] super(...)
@@ -410,12 +410,12 @@ reflection.kt:
 #   58|                       0: [MethodAccess] m1(...)
 #   58|                         -1: [VarAccess] a0
 #   58|                         0: [VarAccess] a1
-#   58|               -3: [TypeAccess] Function2<Generic<T1>,T1,String>
+#   58|               -3: [TypeAccess] Function2<Generic<Integer>,Integer,String>
 #   59|         1: [ExprStmt] <Expr>;
 #   59|           0: [MethodAccess] println(...)
 #   59|             -1: [TypeAccess] ConsoleKt
 #   59|             0: [MemberRefExpr] ...::...
-#   59|               -4: [AnonymousClass] new Function1<T1,String>(...) { ... }
+#   59|               -4: [AnonymousClass] new Function1<Integer,String>(...) { ... }
 #   59|                 1: [Constructor] 
 #-----|                   4: (Parameters)
 #   59|                     0: [Parameter] <dispatchReceiver>
@@ -437,7 +437,7 @@ reflection.kt:
 #   59|                         0: [VarAccess] a0
 #   59|                 1: [FieldDeclaration] Generic<Integer> <dispatchReceiver>;
 #   59|                   -1: [TypeAccess] Generic<Integer>
-#   59|               -3: [TypeAccess] Function1<T1,String>
+#   59|               -3: [TypeAccess] Function1<Integer,String>
 #   59|               0: [ClassInstanceExpr] new Generic<Integer>(...)
 #   59|                 -3: [TypeAccess] Generic<Integer>
 #   59|                   0: [TypeAccess] Integer
@@ -445,7 +445,7 @@ reflection.kt:
 #   60|           0: [MethodAccess] println(...)
 #   60|             -1: [TypeAccess] ConsoleKt
 #   60|             0: [MemberRefExpr] ...::...
-#   60|               -4: [AnonymousClass] new Function1<Generic<T2>,String>(...) { ... }
+#   60|               -4: [AnonymousClass] new Function1<Generic<Integer>,String>(...) { ... }
 #   60|                 1: [Constructor] 
 #   60|                   5: [BlockStmt] { ... }
 #   60|                     0: [SuperConstructorInvocationStmt] super(...)
@@ -457,7 +457,7 @@ reflection.kt:
 #   60|                       0: [MethodAccess] ext1(...)
 #   60|                         -2: [TypeAccess] Integer
 #   60|                         0: [VarAccess] a0
-#   60|               -3: [TypeAccess] Function1<Generic<T2>,String>
+#   60|               -3: [TypeAccess] Function1<Generic<Integer>,String>
 #   61|         3: [ExprStmt] <Expr>;
 #   61|           0: [MethodAccess] println(...)
 #   61|             -1: [TypeAccess] ConsoleKt
