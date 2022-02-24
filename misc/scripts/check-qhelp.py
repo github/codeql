@@ -51,7 +51,8 @@ def transform_inputs(args):
         if arg.suffixes == ['.inc', '.qhelp']:
             for qhelp in find_inc_qhelp_usages(arg):
                 yield str(qhelp)
-        return str(arg)
+        else:
+            yield str(arg)
 
 affected_qhelp_files = list(transform_inputs(sys.argv[1:]))
 if not affected_qhelp_files:
