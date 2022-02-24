@@ -804,13 +804,13 @@ module TaintTracking {
   }
 
   /**
-   * A pseudo-property a `URL` that stores a value that can be obtained
+   * Gets a pseudo-property a `URL` that stores a value that can be obtained
    * with a `get` or `getAll` call to the `searchParams` property.
    */
   private string hiddenUrlPseudoProperty() { result = "$hiddenSearchPararms" }
 
   /**
-   * A pseudo-property on a `URLSearchParams` that can be obtained
+   * Gets a pseudo-property on a `URLSearchParams` that can be obtained
    * with a `get` or `getAll` call.
    */
   private string getableUrlPseudoProperty() { result = "$gettableSearchPararms" }

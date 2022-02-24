@@ -12,7 +12,7 @@ import semmle.javascript.PrintAst
 import definitions
 
 /**
- * The source file to generate an AST from.
+ * Gets the source file to generate an AST from.
  */
 external string selectedSourceFile();
 

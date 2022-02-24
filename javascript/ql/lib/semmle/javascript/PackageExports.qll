@@ -87,6 +87,15 @@ private DataFlow::Node getAValueExportedByPackage() {
     result = getAnExportFromModule(mod)
   )
   or
+  // require("./other-module.js"); inside an AMD module.
+  exists(Module mod, CallExpr call |
+    call = getAValueExportedByPackage().asExpr() and
+    call = any(AmdModuleDefinition e).getARequireCall() and
+    mod = call.getAnArgument().(Import).getImportedModule()
+  |
+    result = getAnExportFromModule(mod)
+  )
+  or
   // module.exports = class Foo {
   //   bar() {} // <- result
   //   static baz() {} // <- result

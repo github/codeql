@@ -493,7 +493,7 @@ module NodeJSLib {
    */
   module FS {
     /**
-     * A member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
+     * Gets a member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
      */
     DataFlow::SourceNode moduleMember(string member) {
       result = fsModule(DataFlow::TypeTracker::end()).getAPropertyRead(member)

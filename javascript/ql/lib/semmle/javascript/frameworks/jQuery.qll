@@ -525,7 +525,7 @@ module JQuery {
     }
   }
 
-  /** A source of jQuery objects from the AST-based `JQueryObject` class. */
+  /** Gets a source of jQuery objects from the AST-based `JQueryObject` class. */
   private DataFlow::SourceNode legacyObjectSource() {
     result = any(JQueryObjectInternal e).flow().getALocalSource()
   }
