@@ -569,6 +569,21 @@ module AccessPath {
         read.asExpr() = getAccessTo(root, path, AccessPathRead()) and
         getAWriteBlock(root, path).strictlyDominates(read.getBasicBlock())
       )
+      or
+      // Dynamic write where the same variable is used to index the read and write (in the same basic block)
+      // For example, this is true for `dst[x]` on line 2 below:
+      // ```js
+      // dst[x] = {};
+      // dst[x][y] = src[y];
+      // ```
+      exists(DataFlow::PropWrite write, BasicBlock bb, int i, int j, SsaVariable ssaVar |
+        write = read.getBase().getALocalSource().getAPropertyWrite() and
+        bb.getNode(i) = write.getWriteNode() and
+        bb.getNode(j) = read.asExpr() and
+        i < j and
+        write.getPropertyNameExpr() = ssaVar.getAUse() and
+        read.getPropertyNameExpr() = ssaVar.getAUse()
+      )
     }
   }
 }

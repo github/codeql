@@ -181,16 +181,7 @@ class DynamicPropRead extends DataFlow::SourceNode, DataFlow::ValueNode {
    * dst[x][y] = src[y];
    * ```
    */
-  predicate hasDominatingAssignment() {
-    exists(DataFlow::PropWrite write, BasicBlock bb, int i, int j, SsaVariable ssaVar |
-      write = getBase().getALocalSource().getAPropertyWrite() and
-      bb.getNode(i) = write.getWriteNode() and
-      bb.getNode(j) = astNode and
-      i < j and
-      write.getPropertyNameExpr() = ssaVar.getAUse() and
-      astNode.getIndex() = ssaVar.getAUse()
-    )
-  }
+  predicate hasDominatingAssignment() { AccessPath::DominatingPaths::hasDominatingWrite(this) }
 }
 
 /**
