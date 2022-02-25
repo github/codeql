@@ -55,7 +55,7 @@ SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
 myobj = MyObj("OK")
 
 myobj.setFoo(SOURCE)
-SINK(myobj.foo) # $ MISSING: flow
+SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
 
 
 
@@ -124,12 +124,12 @@ SINK_F(getattr(myobj, "foo"))
 
 
 obj2 = MyObj(SOURCE)
-SINK(obj2.foo) # $ MISSING: flow="SOURCE, l:-1 -> obj2.foo"
+SINK(obj2.foo) # $ flow="SOURCE, l:-1 -> obj2.foo"
 
 
 
 obj3 = MyObj(foo=SOURCE)
-SINK(obj3.foo) # $ MISSING: flow="SOURCE, l:-1 -> obj3.foo"
+SINK(obj3.foo) # $ flow="SOURCE, l:-1 -> obj3.foo"
 
 
 
@@ -138,7 +138,7 @@ def fields_with_local_flow(x):
     a = obj.foo
     return a
 
-SINK(fields_with_local_flow(SOURCE)) # $ MISSING: flow="SOURCE -> fields_with_local_flow(..)"
+SINK(fields_with_local_flow(SOURCE)) # $ flow="SOURCE -> fields_with_local_flow(..)"
 
 # ------------------------------------------------------------------------------
 # Nested Object
@@ -161,7 +161,7 @@ SINK(a.obj.foo) # $ flow="SOURCE, l:-3 -> a.obj.foo"
 x = SOURCE
 a = NestedObj()
 a.getObj().foo = x
-SINK(a.obj.foo) # $ MISSING: flow
+SINK(a.obj.foo) # $ flow="SOURCE, l:-3 -> a.obj.foo"
 
 # ------------------------------------------------------------------------------
 # Global scope interaction
