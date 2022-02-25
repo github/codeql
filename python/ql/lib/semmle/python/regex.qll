@@ -427,6 +427,7 @@ abstract class RegexString extends Expr {
   }
 
   predicate normalCharacter(int start, int end) {
+    end = start + 1 and
     this.character(start, end) and
     not this.specialCharacter(start, end, _)
   }
@@ -447,16 +448,16 @@ abstract class RegexString extends Expr {
   }
 
   /**
-   * A sequence of 'simple' characters.
+   * Holds if the range [start:end) consists of only 'normal' characters.
    */
-  predicate simpleCharacterSequence(int start, int end) {
-    // a simple character inside a character set is interpreted on its own
-    this.simpleCharacter(start, end) and
+  predicate normalCharacterSequence(int start, int end) {
+    // a normal character inside a character set is interpreted on its own
+    this.normalCharacter(start, end) and
     this.inCharSet(start)
     or
-    // a maximal run of simple characters is considered as one constant
+    // a maximal run of normal characters is considered as one constant
     exists(int s, int e |
-      e = max(int i | simpleCharacterRun(s, i)) and
+      e = max(int i | this.normalCharacterRun(s, i)) and
       not this.inCharSet(s)
     |
       // 'abc' can be considered one constant, but
@@ -474,17 +475,17 @@ abstract class RegexString extends Expr {
     )
   }
 
-  private predicate simpleCharacterRun(int start, int end) {
+  private predicate normalCharacterRun(int start, int end) {
     (
-      simpleCharacterRun(start, end - 1)
+      this.normalCharacterRun(start, end - 1)
       or
-      start = end - 1 and not normalCharacter(start - 1, start)
+      start = end - 1 and not this.normalCharacter(start - 1, start)
     ) and
-    this.simpleCharacter(end - 1, end)
+    this.normalCharacter(end - 1, end)
   }
 
   private predicate characterItem(int start, int end) {
-    this.simpleCharacterSequence(start, end) or
+    this.normalCharacterSequence(start, end) or
     this.escapedCharacter(start, end) or
     this.specialCharacter(start, end, _)
   }
