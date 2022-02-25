@@ -18,9 +18,8 @@ import semmle.code.java.Reflection
  * Gets a transitive superType avoiding magic optimisation
  */
 pragma[nomagic]
-cached private RefType getASuperTypePlus(RefType t) {
-  hasDescendant(result, t) and result != t
-}
+cached
+private RefType getASuperTypePlus(RefType t) { hasDescendant(result, t) and result != t }
 
 /**
  * A class or interface that is not used anywhere.

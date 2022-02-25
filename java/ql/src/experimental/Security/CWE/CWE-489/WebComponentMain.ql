@@ -37,9 +37,7 @@ class WebComponentMainMethod extends Method {
       this.getDeclaringType() instanceof ServletClass or
       this.getDeclaringType() instanceof ServletFilterClass or
       this.getDeclaringType() instanceof ServletListenerClass or
-      this.getDeclaringType()
-          .getAnAncestor()
-          .hasQualifiedName("org.apache.struts.action", "Action") or // Struts actions
+      this.getDeclaringType().getAnAncestor().hasQualifiedName("org.apache.struts.action", "Action") or // Struts actions
       this.getDeclaringType()
           .getAStrictAncestor()
           .hasQualifiedName("com.opensymphony.xwork2", "ActionSupport") or // Struts 2 actions

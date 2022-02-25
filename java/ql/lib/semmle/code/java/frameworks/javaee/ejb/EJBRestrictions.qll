@@ -415,8 +415,7 @@ class EnableReplaceObjectMethod extends Method {
     this.hasName("enableReplaceObject") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(PrimitiveType).hasName("boolean") and
-    this.getDeclaringType().getAnAncestor().getSourceDeclaration() instanceof
-      TypeObjectOutputStream
+    this.getDeclaringType().getAnAncestor().getSourceDeclaration() instanceof TypeObjectOutputStream
   }
 }
 
@@ -429,8 +428,7 @@ class ReplaceObjectMethod extends Method {
     this.hasName("replaceObject") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType() instanceof TypeObject and
-    this.getDeclaringType().getAnAncestor().getSourceDeclaration() instanceof
-      TypeObjectOutputStream
+    this.getDeclaringType().getAnAncestor().getSourceDeclaration() instanceof TypeObjectOutputStream
   }
 }
 
