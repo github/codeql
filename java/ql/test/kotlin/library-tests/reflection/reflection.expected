@@ -45,16 +45,38 @@ functionReferences
 | reflection.kt:62:17:62:34 | ...::... | reflection.kt:62:17:62:34 | invoke | reflection.kt:54:1:54:48 | ext2 |
 | reflection.kt:63:17:63:36 | ...::... | reflection.kt:63:17:63:36 | invoke | reflection.kt:54:1:54:48 | ext2 |
 propertyGetReferences
-| reflection.kt:8:38:8:42 | ...::... | reflection.kt:8:38:8:42 | get | reflection.kt:8:38:8:42 | get |
-| reflection.kt:13:35:13:41 | ...::... | reflection.kt:13:35:13:41 | get | reflection.kt:13:35:13:41 | get |
-| reflection.kt:15:45:15:49 | ...::... | reflection.kt:15:45:15:49 | get | reflection.kt:15:45:15:49 | get |
-| reflection.kt:20:42:20:48 | ...::... | reflection.kt:20:42:20:48 | get | reflection.kt:20:42:20:48 | get |
-| reflection.kt:48:13:48:28 | ...::... | reflection.kt:48:13:48:28 | get | reflection.kt:48:13:48:28 | get |
-| reflection.kt:49:13:49:28 | ...::... | reflection.kt:49:13:49:28 | get | reflection.kt:49:13:49:28 | get |
-| reflection.kt:65:17:65:32 | ...::... | reflection.kt:65:17:65:32 | get | reflection.kt:65:17:65:32 | get |
-| reflection.kt:66:17:66:34 | ...::... | reflection.kt:66:17:66:34 | get | reflection.kt:66:17:66:34 | get |
+| reflection.kt:8:38:8:42 | ...::... | reflection.kt:8:38:8:42 | get | reflection.kt:31:9:31:23 | getP0 |
+| reflection.kt:13:35:13:41 | ...::... | reflection.kt:13:35:13:41 | get | reflection.kt:31:9:31:23 | getP0 |
+| reflection.kt:15:45:15:49 | ...::... | reflection.kt:15:45:15:49 | get | reflection.kt:32:9:32:23 | getP1 |
+| reflection.kt:20:42:20:48 | ...::... | reflection.kt:20:42:20:48 | get | reflection.kt:32:9:32:23 | getP1 |
+| reflection.kt:48:13:48:28 | ...::... | reflection.kt:48:13:48:28 | get | reflection.kt:45:5:45:28 | getLastChar |
+| reflection.kt:49:13:49:28 | ...::... | reflection.kt:49:13:49:28 | get | reflection.kt:45:5:45:28 | getLastChar |
+| reflection.kt:65:17:65:32 | ...::... | reflection.kt:65:17:65:32 | get | reflection.kt:72:13:72:24 | getP2 |
+| reflection.kt:66:17:66:34 | ...::... | reflection.kt:66:17:66:34 | get | reflection.kt:72:13:72:24 | getP2 |
 propertySetReferences
-| reflection.kt:15:45:15:49 | ...::... | reflection.kt:15:45:15:49 | set | reflection.kt:15:45:15:49 | set |
-| reflection.kt:20:42:20:48 | ...::... | reflection.kt:20:42:20:48 | set | reflection.kt:20:42:20:48 | set |
-| reflection.kt:65:17:65:32 | ...::... | reflection.kt:65:17:65:32 | set | reflection.kt:65:17:65:32 | set |
-| reflection.kt:66:17:66:34 | ...::... | reflection.kt:66:17:66:34 | set | reflection.kt:66:17:66:34 | set |
+| reflection.kt:15:45:15:49 | ...::... | reflection.kt:15:45:15:49 | set | reflection.kt:32:9:32:23 | setP1 |
+| reflection.kt:20:42:20:48 | ...::... | reflection.kt:20:42:20:48 | set | reflection.kt:32:9:32:23 | setP1 |
+| reflection.kt:65:17:65:32 | ...::... | reflection.kt:65:17:65:32 | set | reflection.kt:73:13:73:29 | setP2 |
+| reflection.kt:66:17:66:34 | ...::... | reflection.kt:66:17:66:34 | set | reflection.kt:73:13:73:29 | setP2 |
+callsInsideInvocationMethods
+| reflection.kt:5:49:5:54 | ...::... | reflection.kt:5:49:5:54 | new Function2<Ccc,Integer,Double>(...) { ... } | reflection.kt:5:49:5:54 | invoke | reflection.kt:5:49:5:54 | m(...) | Ccc.m |
+| reflection.kt:8:38:8:42 | ...::... | reflection.kt:8:38:8:42 | new KProperty1<C,Integer>(...) { ... } | reflection.kt:8:38:8:42 | get | reflection.kt:8:38:8:42 | getP0(...) | C.getP0 |
+| reflection.kt:12:38:12:44 | ...::... | reflection.kt:12:38:12:44 | new Function1<C,Integer>(...) { ... } | reflection.kt:12:38:12:44 | invoke | reflection.kt:12:38:12:44 | get(...) | KProperty1<C,Integer>.get |
+| reflection.kt:13:35:13:41 | ...::... | reflection.kt:13:35:13:41 | new KProperty0<Integer>(...) { ... } | reflection.kt:13:35:13:41 | get | reflection.kt:13:35:13:41 | getP0(...) | C.getP0 |
+| reflection.kt:15:45:15:49 | ...::... | reflection.kt:15:45:15:49 | new KMutableProperty1<C,Integer>(...) { ... } | reflection.kt:15:45:15:49 | get | reflection.kt:15:45:15:49 | getP1(...) | C.getP1 |
+| reflection.kt:15:45:15:49 | ...::... | reflection.kt:15:45:15:49 | new KMutableProperty1<C,Integer>(...) { ... } | reflection.kt:15:45:15:49 | set | reflection.kt:15:45:15:49 | setP1(...) | C.setP1 |
+| reflection.kt:19:44:19:50 | ...::... | reflection.kt:19:44:19:50 | new Function2<C,Integer,Unit>(...) { ... } | reflection.kt:19:44:19:50 | invoke | reflection.kt:19:44:19:50 | set(...) | KMutableProperty1<C,Integer>.set |
+| reflection.kt:20:42:20:48 | ...::... | reflection.kt:20:42:20:48 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:20:42:20:48 | get | reflection.kt:20:42:20:48 | getP1(...) | C.getP1 |
+| reflection.kt:20:42:20:48 | ...::... | reflection.kt:20:42:20:48 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:20:42:20:48 | set | reflection.kt:20:42:20:48 | setP1(...) | C.setP1 |
+| reflection.kt:48:13:48:28 | ...::... | reflection.kt:48:13:48:28 | new KProperty1<String,Character>(...) { ... } | reflection.kt:48:13:48:28 | get | reflection.kt:48:13:48:28 | getLastChar(...) | ReflectionKt.getLastChar |
+| reflection.kt:49:13:49:28 | ...::... | reflection.kt:49:13:49:28 | new KProperty0<Character>(...) { ... } | reflection.kt:49:13:49:28 | get | reflection.kt:49:13:49:28 | getLastChar(...) | ReflectionKt.getLastChar |
+| reflection.kt:58:17:58:32 | ...::... | reflection.kt:58:17:58:32 | new Function2<Generic<Integer>,Integer,String>(...) { ... } | reflection.kt:58:17:58:32 | invoke | reflection.kt:58:17:58:32 | m1(...) | Generic<Integer>.m1 |
+| reflection.kt:59:17:59:34 | ...::... | reflection.kt:59:17:59:34 | new Function1<Integer,String>(...) { ... } | reflection.kt:59:17:59:34 | invoke | reflection.kt:59:17:59:34 | m1(...) | Generic<Integer>.m1 |
+| reflection.kt:60:17:60:34 | ...::... | reflection.kt:60:17:60:34 | new Function1<Generic<Integer>,String>(...) { ... } | reflection.kt:60:17:60:34 | invoke | reflection.kt:60:17:60:34 | ext1(...) | ReflectionKt.ext1 |
+| reflection.kt:61:17:61:36 | ...::... | reflection.kt:61:17:61:36 | new Function0<String>(...) { ... } | reflection.kt:61:17:61:36 | invoke | reflection.kt:61:17:61:36 | ext1(...) | ReflectionKt.ext1 |
+| reflection.kt:62:17:62:34 | ...::... | reflection.kt:62:17:62:34 | new Function1<Generic<Integer>,String>(...) { ... } | reflection.kt:62:17:62:34 | invoke | reflection.kt:62:17:62:34 | ext2(...) | ReflectionKt.ext2 |
+| reflection.kt:63:17:63:36 | ...::... | reflection.kt:63:17:63:36 | new Function0<String>(...) { ... } | reflection.kt:63:17:63:36 | invoke | reflection.kt:63:17:63:36 | ext2(...) | ReflectionKt.ext2 |
+| reflection.kt:65:17:65:32 | ...::... | reflection.kt:65:17:65:32 | new KMutableProperty1<Generic<Integer>,Integer>(...) { ... } | reflection.kt:65:17:65:32 | get | reflection.kt:65:17:65:32 | getP2(...) | Generic<Integer>.getP2 |
+| reflection.kt:65:17:65:32 | ...::... | reflection.kt:65:17:65:32 | new KMutableProperty1<Generic<Integer>,Integer>(...) { ... } | reflection.kt:65:17:65:32 | set | reflection.kt:65:17:65:32 | setP2(...) | Generic<Integer>.setP2 |
+| reflection.kt:66:17:66:34 | ...::... | reflection.kt:66:17:66:34 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:66:17:66:34 | get | reflection.kt:66:17:66:34 | getP2(...) | Generic<Integer>.getP2 |
+| reflection.kt:66:17:66:34 | ...::... | reflection.kt:66:17:66:34 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:66:17:66:34 | set | reflection.kt:66:17:66:34 | setP2(...) | Generic<Integer>.setP2 |

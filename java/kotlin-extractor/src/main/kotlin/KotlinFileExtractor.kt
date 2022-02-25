@@ -2638,6 +2638,7 @@ open class KotlinFileExtractor(
             labels: FunctionLabels,
             target: IrFunctionSymbol,
             extractAccessToTarget: (Label<DbReturnstmt>, TypeResults) -> Label<out DbExpr>,
+            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
             dispatchReceiverIdx: Int = -1,
             isBigArity: Boolean = false,
             bigArityParameterTypes: List<IrType>? = null
@@ -2652,8 +2653,7 @@ open class KotlinFileExtractor(
             val callId = extractAccessToTarget(retId, callType)
             writeExpressionMetadataToTrapFile(callId, labels.methodId, retId)
 
-            // todo: type arguments
-            val callableId = useFunction<DbCallable>(target.owner, null)
+            val callableId = useFunction<DbCallable>(target.owner, classTypeArgsIncludingOuterClasses)
             @Suppress("UNCHECKED_CAST")
             tw.writeCallableBinding(callId as Label<out DbCaller>, callableId)
 
@@ -2804,31 +2804,39 @@ open class KotlinFileExtractor(
                 return callId
             }
 
+            val typeArguments = (propertyReferenceExpr.dispatchReceiver?.type as? IrSimpleType)?.arguments ?:
+                if ((getter?.owner?.dispatchReceiverParameter ?: setter?.owner?.dispatchReceiverParameter )!= null) { (kPropertyType.arguments.first() as? IrSimpleType)?.arguments } else { null }
+
             val idPropertyRef = tw.getFreshIdLabel<DbPropertyref>()
 
             if (getter != null) {
                 val getterParameterTypes = parameterTypes.dropLast(1)
                 val getLabels = addFunctionManual(tw.getFreshIdLabel(), "get", getterParameterTypes, parameterTypes.last(), classId, locId)
+                val getterCallableId = useFunction<DbCallable>(getter.owner, typeArguments)
 
                 helper.extractCallToReflectionTarget(
                     getLabels,
                     getter,
-                    { r, c -> extractAccessToTarget(getLabels.methodId, r, c) }
+                    { r, c -> extractAccessToTarget(getLabels.methodId, r, c) },
+                    typeArguments
                 )
 
-                tw.writePropertyRefGetBinding(idPropertyRef, getLabels.methodId)
+                tw.writePropertyRefGetBinding(idPropertyRef, getterCallableId)
             }
 
             if (setter != null) {
                 val setLabels = addFunctionManual(tw.getFreshIdLabel(), "set", parameterTypes, pluginContext.irBuiltIns.unitType, classId, locId)
 
+                val setterCallableId = useFunction<DbCallable>(setter.owner, typeArguments)
+
                 helper.extractCallToReflectionTarget(
                     setLabels,
                     setter,
-                    { r, c -> extractAccessToTarget(setLabels.methodId, r, c) }
+                    { r, c -> extractAccessToTarget(setLabels.methodId, r, c) },
+                    typeArguments
                 )
 
-                tw.writePropertyRefSetBinding(idPropertyRef, setLabels.methodId)
+                tw.writePropertyRefSetBinding(idPropertyRef, setterCallableId)
             }
 
             // Add constructor (property ref) call:
@@ -2968,6 +2976,7 @@ open class KotlinFileExtractor(
                 funLabels,
                 target,
                 ::extractAccessToTarget,
+                typeArguments,
                 dispatchReceiverIdx,
                 isBigArity,
                 parameterTypes.dropLast(1))

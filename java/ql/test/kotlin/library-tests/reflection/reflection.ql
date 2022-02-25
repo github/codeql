@@ -54,3 +54,14 @@ query predicate propertySetReferences(PropertyRefExpr e, Method m, Callable c) {
   e.asSetMethod() = m and
   e.getSetterCallable() = c
 }
+
+query predicate callsInsideInvocationMethods(
+  ClassInstanceExpr e, AnonymousClass c, Method m, Call call, string callee
+) {
+  (e instanceof MemberRefExpr or e instanceof PropertyRefExpr) and
+  e.getAnonymousClass() = c and
+  c.getAMethod() = m and
+  m.getName() = ["invoke", "get", "set"] and
+  call.getEnclosingCallable() = m and
+  callee = call.getCallee().getQualifiedName()
+}
