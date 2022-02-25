@@ -165,13 +165,12 @@ string parameterNodeAsInput(DataFlow::ParameterNode p) {
   result = "Argument[-1]" and p instanceof DataFlow::InstanceParameterNode
 }
 
-bindingset[api]
-string returnNodeAsOutput(TargetAPI api, ReturnNodeExt node) {
+string returnNodeAsOutput(ReturnNodeExt node) {
   if node.getKind() instanceof ValueReturnKind
   then result = "ReturnValue"
   else
     exists(int pos | pos = node.getKind().(ParamUpdateReturnKind).getPosition() |
-      result = parameterAccess(api.getParameter(pos))
+      result = parameterAccess(node.getEnclosingCallable().getParameter(pos))
       or
       result = "Argument[-1]" and pos = -1
     )

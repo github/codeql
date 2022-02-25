@@ -153,7 +153,7 @@ string captureThroughFlow(TargetAPI api) {
     config.hasFlow(p, returnNodeExt) and
     returnNodeExt.getEnclosingCallable() = api and
     input = parameterNodeAsInput(p) and
-    output = returnNodeAsOutput(api, returnNodeExt) and
+    output = returnNodeAsOutput(returnNodeExt) and
     input != output and
     result = asTaintModel(api, input, output)
   )
