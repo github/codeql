@@ -1,0 +1,2 @@
+| test.cpp:23:3:23:7 | call to scanf | Unchecked return value for call to 'scanf'. |
+| test.cpp:41:3:41:7 | call to scanf | Unchecked return value for call to 'scanf'. |
