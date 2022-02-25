@@ -46,7 +46,7 @@ project = u'Supported languages and frameworks for LGTM Enterprise'
 release = u'1.29'
 
 # CodeQL CLI version used by LGTM Enterprise release
-version = u'2.6.4'
+version = u'2.6.3'
 
 # -- Project-specifc options for HTML output ----------------------------------------------
 
