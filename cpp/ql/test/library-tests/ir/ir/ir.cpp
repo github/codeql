@@ -1603,4 +1603,70 @@ void tuple_structured_binding_ref_get() {
     }
 }
 
+struct StructuredBindingTupleNoRefGet {
+    int i = 1;
+    int& r = i;
+
+    template<int i>
+    typename std::tuple_element<i, StructuredBindingTupleNoRefGet>::type get();
+};
+
+template<>
+struct std::tuple_size<StructuredBindingTupleNoRefGet> {
+    static const unsigned int value = 3;
+};
+
+template<>
+struct std::tuple_element<0, StructuredBindingTupleNoRefGet> {
+    using type = int;
+};
+template<>
+struct std::tuple_element<1, StructuredBindingTupleNoRefGet> {
+    using type = int&;
+};
+template<>
+struct std::tuple_element<2, StructuredBindingTupleNoRefGet> {
+    using type = int&&;
+};
+
+template<>
+std::tuple_element<0, StructuredBindingTupleNoRefGet>::type StructuredBindingTupleNoRefGet::get<0>() {
+    return i;
+}
+template<>
+std::tuple_element<1, StructuredBindingTupleNoRefGet>::type StructuredBindingTupleNoRefGet::get<1>() {
+    return r;
+}
+template<>
+std::tuple_element<2, StructuredBindingTupleNoRefGet>::type StructuredBindingTupleNoRefGet::get<2>() {
+    return 5;
+}
+
+void tuple_structured_binding_no_ref_get() {
+    StructuredBindingTupleNoRefGet t;
+    //structured binding use
+    {
+        auto&& [i, r, rv] = t;
+        i = 4;
+        int& ri = i;
+        int v = i;
+        r = 5;
+        int& rr = r;
+        int w = r;
+    }
+    // explicit reference version
+    {
+        auto&& unnamed_local_variable = t;
+        auto&& i = unnamed_local_variable.get<0>();
+        auto& r = unnamed_local_variable.get<1>();
+        auto&& rv = unnamed_local_variable.get<2>();
+        i = 4;
+        int& ri = i;
+        int v = i;
+        r = 5;
+        int& rr = r;
+        int w = r;
+    }
+}
+
 // semmle-extractor-options: -std=c++17 --clang

@@ -41,7 +41,7 @@ Type getVariableType(Variable v) {
         not exists(v.getInitializer()) and result = v.getType()
       else
         if isNonReferenceStructuredBinding(v)
-        then exists(ReferenceType r | r.getBaseType() = v.getUnderlyingType() | result = r)
+        then exists(LValueReferenceType r | r.getBaseType() = v.getUnderlyingType() | result = r)
         else result = v.getType()
   )
 }

@@ -903,7 +903,7 @@ class TranslatedStructuredBindingVariableAccess extends TranslatedNonConstantExp
   }
 
   private Type getReferenceType() {
-    result.(ReferenceType).getBaseType() = expr.getUnderlyingType()
+    result.(LValueReferenceType).getBaseType() = expr.getUnderlyingType()
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
