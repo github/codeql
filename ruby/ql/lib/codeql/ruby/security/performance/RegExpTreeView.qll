@@ -229,7 +229,7 @@ newtype TRegExpParent =
   TRegExpGroup(RegExp re, int start, int end) { re.group(start, end) } or
   TRegExpSpecialChar(RegExp re, int start, int end) { re.specialCharacter(start, end, _) } or
   TRegExpNormalChar(RegExp re, int start, int end) {
-    re.normalCharacterSequence(start, end)
+    re.simpleCharacterSequence(start, end)
     or
     re.escapedCharacter(start, end) and
     not re.specialCharacter(start, end, _)

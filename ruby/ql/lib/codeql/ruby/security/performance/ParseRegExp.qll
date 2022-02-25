@@ -402,18 +402,22 @@ class RegExp extends AST::RegExpLiteral {
   }
 
   /**
-   * A sequence of 'normal' characters.
+   * A sequence of 'simple' characters.
    */
-  predicate normalCharacterSequence(int start, int end) {
-    this.normalCharacter(start, end) and
-    end = start + 1 and
-    exists(int x, int y | this.charSet(x, y) and x <= start and y >= end)
+  predicate simpleCharacterSequence(int start, int end) {
+    // a simple character inside a character set is interpreted on its own
+    this.simpleCharacter(start, end) and
+    this.inCharSet(start)
     or
+    // a maximal run of simple characters is considered as one constant
     exists(int s, int e |
-      e = max(int i | normalCharacterSub(s, i)) and
-      not exists(int x, int y | this.charSet(x, y) and x <= s and y >= e)
+      e = max(int i | simpleCharacterRun(s, i)) and
+      not this.inCharSet(s)
     |
-      if qualifier(e, _, _, _)
+      // 'abc' can be considered one constant, but
+      // 'abc+' has to be broken up into 'ab' and 'c+',
+      // as the qualifier only applies to 'c'.
+      if this.qualifier(e, _, _, _)
       then
         end = e and start = e - 1
         or
@@ -425,17 +429,17 @@ class RegExp extends AST::RegExpLiteral {
     )
   }
 
-  private predicate normalCharacterSub(int start, int end) {
+  private predicate simpleCharacterRun(int start, int end) {
     (
-      normalCharacterSub(start, end - 1)
+      simpleCharacterRun(start, end - 1)
       or
       start = end - 1 and not normalCharacter(start - 1, start)
     ) and
-    this.normalCharacter(end - 1, end)
+    this.simpleCharacter(end - 1, end)
   }
 
   private predicate characterItem(int start, int end) {
-    this.normalCharacterSequence(start, end) or
+    this.simpleCharacterSequence(start, end) or
     this.escapedCharacter(start, end) or
     this.specialCharacter(start, end, _)
   }
