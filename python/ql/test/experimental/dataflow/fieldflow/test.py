@@ -179,3 +179,55 @@ def test_global_scope():
 
     fieldflow.test_global.func_defined_before()
     fieldflow.test_global.func_defined_after()
+
+# ------------------------------------------------------------------------------
+# Global flow cases that doesn't work in this file, but works in test_global.py
+# ------------------------------------------------------------------------------
+
+# --------------------------------------
+# using constructor
+# --------------------------------------
+
+# def test_constructor_assign():
+obj2 = MyObj(SOURCE)
+SINK(obj2.foo) # $ flow="SOURCE, l:-1 -> obj2.foo"
+
+# apparently these if statements below makes a difference :O
+# but one is not enough
+cond = os.urandom(1)[0] > 128
+
+if cond:
+    pass
+
+# def test_constructor_assign():
+obj2 = MyObj(SOURCE)
+SINK(obj2.foo) # $ MISSING: flow="SOURCE, l:-1 -> obj2.foo"
+
+if cond:
+    pass
+
+# def test_constructor_assign():
+obj2 = MyObj(SOURCE)
+SINK(obj2.foo) # $ MISSING: flow="SOURCE, l:-1 -> obj2.foo"
+
+# def test_constructor_assign_kw():
+obj3 = MyObj(foo=SOURCE)
+SINK(obj3.foo) # $ MISSING: flow="SOURCE, l:-1 -> obj3.foo"
+
+# def test_fields():
+SINK(fields_with_local_flow(SOURCE)) # $ MISSING: flow="SOURCE -> fields_with_local_flow(..)"
+
+# --------------------------------------
+# method calls
+# --------------------------------------
+
+# def test_indirect_assign_method():
+myobj2 = MyObj("OK")
+myobj2.setFoo(SOURCE)
+SINK(myobj2.foo) # $ MISSING: flow="SOURCE, l:-1 -> myobj2.foo"
+
+# def test_nested_obj_method():
+x2 = SOURCE
+a2 = NestedObj()
+a2.getObj().foo = x2
+SINK(a2.obj.foo) # $ MISSING: flow="SOURCE, l:-3 -> a2.obj.foo"
