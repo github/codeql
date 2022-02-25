@@ -30,3 +30,8 @@ sink(Foo.onlyWithBlock(tainted))
 sink(Foo.onlyWithBlock(tainted) do |x| end)
 sink(Foo.onlyWithoutBlock(tainted))
 sink(Foo.onlyWithoutBlock(tainted) do |x| end)
+
+Foo.new.method(tainted)
+Bar.new.method(tainted)
+Bar.new.next.method(tainted)
+Bar.new.next.next.next.next.method(tainted)

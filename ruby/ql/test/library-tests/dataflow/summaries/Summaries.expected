@@ -6,6 +6,10 @@ edges
 | summaries.rb:1:11:1:26 | call to identity :  | summaries.rb:26:31:26:37 | tainted :  |
 | summaries.rb:1:11:1:26 | call to identity :  | summaries.rb:30:24:30:30 | tainted :  |
 | summaries.rb:1:11:1:26 | call to identity :  | summaries.rb:31:27:31:33 | tainted :  |
+| summaries.rb:1:11:1:26 | call to identity :  | summaries.rb:34:16:34:22 | tainted |
+| summaries.rb:1:11:1:26 | call to identity :  | summaries.rb:35:16:35:22 | tainted |
+| summaries.rb:1:11:1:26 | call to identity :  | summaries.rb:36:21:36:27 | tainted |
+| summaries.rb:1:11:1:26 | call to identity :  | summaries.rb:37:36:37:42 | tainted |
 | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:1:11:1:26 | call to identity :  |
 | summaries.rb:4:12:7:3 | call to apply_block :  | summaries.rb:9:6:9:13 | tainted2 |
 | summaries.rb:4:24:4:30 | tainted :  | summaries.rb:4:12:7:3 | call to apply_block :  |
@@ -45,6 +49,10 @@ nodes
 | summaries.rb:30:24:30:30 | tainted :  | semmle.label | tainted :  |
 | summaries.rb:31:6:31:34 | call to onlyWithoutBlock | semmle.label | call to onlyWithoutBlock |
 | summaries.rb:31:27:31:33 | tainted :  | semmle.label | tainted :  |
+| summaries.rb:34:16:34:22 | tainted | semmle.label | tainted |
+| summaries.rb:35:16:35:22 | tainted | semmle.label | tainted |
+| summaries.rb:36:21:36:27 | tainted | semmle.label | tainted |
+| summaries.rb:37:36:37:42 | tainted | semmle.label | tainted |
 subpaths
 invalidSpecComponent
 invalidOutputSpecComponent
@@ -58,3 +66,7 @@ invalidOutputSpecComponent
 | summaries.rb:27:6:27:13 | tainted5 | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:27:6:27:13 | tainted5 | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
 | summaries.rb:30:6:30:42 | call to onlyWithBlock | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:30:6:30:42 | call to onlyWithBlock | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
 | summaries.rb:31:6:31:34 | call to onlyWithoutBlock | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:31:6:31:34 | call to onlyWithoutBlock | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
+| summaries.rb:34:16:34:22 | tainted | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:34:16:34:22 | tainted | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
+| summaries.rb:35:16:35:22 | tainted | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:35:16:35:22 | tainted | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
+| summaries.rb:36:21:36:27 | tainted | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:36:21:36:27 | tainted | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
+| summaries.rb:37:36:37:42 | tainted | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:37:36:37:42 | tainted | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |

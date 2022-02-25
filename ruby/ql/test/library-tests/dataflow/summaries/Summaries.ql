@@ -77,6 +77,21 @@ private class StepsFromModel extends ModelInput::SummaryModelCsv {
   }
 }
 
+private class TypeFromModel extends ModelInput::TypeModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "test;FooOrBar;;;Member[Foo].Instance", //
+        "test;FooOrBar;;;Member[Bar].Instance", //
+        "test;FooOrBar;test;FooOrBar;Method[next].ReturnValue",
+      ]
+  }
+}
+
+private class SinkFromModel extends ModelInput::SinkModelCsv {
+  override predicate row(string row) { row = "test;FooOrBar;Method[method].Argument[0];test-sink" }
+}
+
 class Conf extends TaintTracking::Configuration {
   Conf() { this = "FlowSummaries" }
 
@@ -89,6 +104,8 @@ class Conf extends TaintTracking::Configuration {
       mc.getMethodName() = "sink" and
       mc.getAnArgument() = sink.asExpr().getExpr()
     )
+    or
+    sink = ModelOutput::getASinkNode("test-sink").getARhs()
   }
 }
 
