@@ -164,127 +164,18 @@ def test_nested_obj_method():
 # Global scope
 # ------------------------------------------------------------------------------
 
-def func_defined_before():
-    SINK(global_obj.foo) # $ MISSING: flow="SOURCE, l:+3 -> global_obj.foo"
-
-global_obj = MyObj(NONSOURCE)
-global_obj.foo = SOURCE
-SINK(global_obj.foo) # $ flow="SOURCE, l:-1 -> global_obj.foo"
-
-def func_defined_after():
-    SINK(global_obj.foo) # $ MISSING: flow="SOURCE, l:-4 -> global_obj.foo"
-
-@expects(2)
-def test_global_funcs():
-    func_defined_before()
-    func_defined_after()
-
-# ------------------------------------------------------------------------------
-# All the other tests, but also in global scope.
+# since these are defined on global scope, and we still want to run them with
+# `validTest.py`, we have them defined in a different file, and have hardcoded this
+# number that reflects how many OK we expect to see ...  Not an ideal solution, but at
+# least we know that the tests are actually valid.
 #
-# You might think that these are just the same... but it turns out they are not :O
-# ------------------------------------------------------------------------------
+# Notice that since the tests are run in a random order, we cannot split the global
+# scope tests into multiple functions, since we wouldn't know which one did the initial
+# import that does all the printing :|
 
+@expects(18 + 2)
+def test_global_scope():
+    import fieldflow.test_global
 
-myobj = MyObj("OK")
-
-setFoo(myobj, SOURCE)
-SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
-
-
-
-myobj = MyObj("OK")
-
-myobj.setFoo(SOURCE)
-SINK(myobj.foo) # $ MISSING: flow
-
-
-
-myobj = MyObj(NONSOURCE)
-myobj.foo = SOURCE
-SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
-
-
-
-myobj = MyObj(NONSOURCE)
-myobj.foo = SOURCE
-myobj.foo = NONSOURCE
-SINK_F(myobj.foo)
-
-
-
-myobj = MyObj(NONSOURCE)
-myobj.foo = SOURCE
-if cond:
-    myobj.foo = NONSOURCE
-    SINK_F(myobj.foo)
-# SPLITTING happens here, so in one version there is flow, and in the other there isn't
-# that's why it has both a flow and a MISSING: flow annotation
-SINK(myobj.foo) # $ flow="SOURCE, l:-6 -> myobj.foo" MISSING: flow
-
-
-
-myobj = MyObj(NONSOURCE)
-myobj.foo = SOURCE
-if cond:
-    myobj.foo = NONSOURCE
-    SINK_F(myobj.foo)
-else:
-    myobj.foo = NONSOURCE
-    SINK_F(myobj.foo)
-SINK_F(myobj.foo)
-
-
-
-myobj = MyObj(NONSOURCE)
-myobj.foo = SOURCE
-SINK(getattr(myobj, "foo")) # $ flow="SOURCE, l:-1 -> getattr(..)"
-
-
-
-myobj = MyObj(NONSOURCE)
-setattr(myobj, "foo", SOURCE)
-SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
-
-
-
-myobj = MyObj(NONSOURCE)
-setattr(myobj, "foo", SOURCE)
-SINK(getattr(myobj, "foo")) # $ flow="SOURCE, l:-1 -> getattr(..)"
-
-
-
-myobj = MyObj(NONSOURCE)
-setattr(myobj, "foo", SOURCE)
-setattr(myobj, "foo", NONSOURCE)
-SINK_F(getattr(myobj, "foo"))
-
-
-
-obj2 = MyObj(SOURCE)
-SINK(obj2.foo) # $ MISSING: flow="SOURCE, l:-1 -> obj2.foo"
-
-
-
-obj3 = MyObj(foo=SOURCE)
-SINK(obj3.foo) # $ MISSING: flow="SOURCE, l:-1 -> obj3.foo"
-
-
-SINK(fields_with_local_flow(SOURCE)) # $ MISSING: flow="SOURCE -> fields_with_local_flow(..)"
-
-# ------------------------------------------------------------------------------
-# Nested Object
-# ------------------------------------------------------------------------------
-
-
-x = SOURCE
-a = NestedObj()
-a.obj.foo = x
-SINK(a.obj.foo) # $ flow="SOURCE, l:-3 -> a.obj.foo"
-
-
-
-x = SOURCE
-a = NestedObj()
-a.getObj().foo = x
-SINK(a.obj.foo) # $ MISSING: flow
+    fieldflow.test_global.func_defined_before()
+    fieldflow.test_global.func_defined_after()
