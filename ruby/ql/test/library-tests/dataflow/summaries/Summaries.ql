@@ -8,6 +8,7 @@ import DataFlow::PathGraph
 import codeql.ruby.TaintTracking
 import codeql.ruby.dataflow.internal.FlowSummaryImpl
 import codeql.ruby.dataflow.internal.AccessPathSyntax
+import codeql.ruby.frameworks.data.ModelsAsData
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {
   (sc.propagatesFlowExt(s, _, _) or sc.propagatesFlowExt(_, s, _)) and
@@ -61,6 +62,16 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable {
     input = "Argument[0].ReturnValue" and
     output = "ReturnValue" and
     preservesValue = true
+  }
+}
+
+private class StepsFromModel extends ModelInput::SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        ";;Member[Foo].Method[firstArg];Argument[0];ReturnValue;taint",
+        ";;Member[Foo].Method[secondArg];Argument[1];ReturnValue;taint",
+      ]
   }
 }
 
