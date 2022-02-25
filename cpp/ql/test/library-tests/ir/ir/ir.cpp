@@ -1528,50 +1528,56 @@ void data_member_structured_binding() {
         int w = r;
     }
 }
-struct StructuredBindingTuple;
 
 namespace std {
     template<typename T>
     struct tuple_size;
-    template<>
-    struct tuple_size<StructuredBindingTuple> {
-        static const unsigned int value = 3;
-    };
-
     template<int, typename T>
     struct tuple_element;
-    template<>
-    struct tuple_element<0, StructuredBindingTuple> {
-        using type = int;
-    };
-    template<>
-    struct tuple_element<1, StructuredBindingTuple> {
-        using type = double;
-    };
-    template<>
-    struct tuple_element<2, StructuredBindingTuple> {
-        using type = int&;
-    };
 }
 
-struct StructuredBindingTuple {
+struct StructuredBindingTupleRefGet {
     int i = 1;
     double d = 2.2;
     int& r = i;
 
     template<int i>
-    typename std::tuple_element<i, StructuredBindingTuple>::type& get();
+    typename std::tuple_element<i, StructuredBindingTupleRefGet>::type& get();
 };
 
 template<>
-std::tuple_element<0, StructuredBindingTuple>::type& StructuredBindingTuple::get<0>() { return i; }
-template<>
-std::tuple_element<1, StructuredBindingTuple>::type& StructuredBindingTuple::get<1>() { return d; }
-template<>
-std::tuple_element<2, StructuredBindingTuple>::type& StructuredBindingTuple::get<2>() { return r; }
+struct std::tuple_size<StructuredBindingTupleRefGet> {
+    static const unsigned int value = 3;
+};
 
-void tuple_structured_binding() {
-    StructuredBindingTuple t;
+template<>
+struct std::tuple_element<0, StructuredBindingTupleRefGet> {
+    using type = int;
+};
+template<>
+struct std::tuple_element<1, StructuredBindingTupleRefGet> {
+    using type = double;
+};
+template<>
+struct std::tuple_element<2, StructuredBindingTupleRefGet> {
+    using type = int&;
+};
+
+template<>
+std::tuple_element<0, StructuredBindingTupleRefGet>::type& StructuredBindingTupleRefGet::get<0>() {
+    return i;
+}
+template<>
+std::tuple_element<1, StructuredBindingTupleRefGet>::type& StructuredBindingTupleRefGet::get<1>() {
+    return d;
+}
+template<>
+std::tuple_element<2, StructuredBindingTupleRefGet>::type& StructuredBindingTupleRefGet::get<2>() {
+    return r;
+}
+
+void tuple_structured_binding_ref_get() {
+    StructuredBindingTupleRefGet t;
     // structured binding use
     {
         auto [i, d, r] = t;
