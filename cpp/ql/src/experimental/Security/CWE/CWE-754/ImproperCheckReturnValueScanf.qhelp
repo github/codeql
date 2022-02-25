@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Working with reading data without validation procedures and with uninitialized arguments can lead to unpredictable consequences.</p>
+
+</recommendation>
+<example>
+<p>The following example demonstrates erroneous and corrected work with a function call.</p>
+<sample src="ImproperCheckReturnValueScanf.cpp" />
+
+</example>
+<references>
+
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/EXP12-C.+Do+not+ignore+values+returned+by+functions">EXP12-C. Do not ignore values returned by functions</a>.
+</li>
+
+</references>
+</qhelp>
