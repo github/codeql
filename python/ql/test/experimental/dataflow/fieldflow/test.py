@@ -2,7 +2,7 @@ import sys
 import os
 
 sys.path.append(os.path.dirname(os.path.dirname((__file__)))) # $ unresolved_call=os.path.dirname(..) unresolved_call=sys.path.append(..)
-from testlib import *
+from testlib import expects
 
 # These are defined so that we can evaluate the test code.
 NONSOURCE = "not a source"
@@ -53,8 +53,8 @@ def test_indirect_assign():
 def test_indirect_assign_method():
     myobj = MyObj("OK")
 
-    myobj.setFoo(SOURCE) # $ unresolved_call=myobj.setFoo(..)
-    SINK(myobj.foo) # $ MISSING: flow
+    myobj.setFoo(SOURCE)
+    SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
 
 
 def test_direct_assign():
@@ -157,8 +157,8 @@ def test_nested_obj():
 def test_nested_obj_method():
     x = SOURCE
     a = NestedObj()
-    a.getObj().foo = x # $ unresolved_call=a.getObj()
-    SINK(a.obj.foo) # $ MISSING: flow
+    a.getObj().foo = x
+    SINK(a.obj.foo) # $ flow="SOURCE, l:-3 -> a.obj.foo"
 
 # ------------------------------------------------------------------------------
 # Global scope
@@ -183,6 +183,22 @@ def test_global_scope():
 # ------------------------------------------------------------------------------
 # Global flow cases that doesn't work in this file, but works in test_global.py
 # ------------------------------------------------------------------------------
+
+# --------------------------------------
+# method calls _before_ those ifs
+# --------------------------------------
+
+# def test_indirect_assign_method():
+myobj2 = MyObj("OK")
+myobj2.setFoo(SOURCE)
+SINK(myobj2.foo) # $ flow="SOURCE, l:-1 -> myobj2.foo"
+
+# def test_nested_obj_method():
+x2 = SOURCE
+a2 = NestedObj()
+a2.getObj().foo = x2
+SINK(a2.obj.foo) # $ flow="SOURCE, l:-3 -> a2.obj.foo"
+
 
 # --------------------------------------
 # using constructor
@@ -218,7 +234,7 @@ SINK(obj3.foo) # $ unresolved_call=SINK(..) MISSING: flow="SOURCE, l:-1 -> obj3.
 SINK(fields_with_local_flow(SOURCE)) # $ unresolved_call=fields_with_local_flow(..) unresolved_call=SINK(..) MISSING: flow="SOURCE -> fields_with_local_flow(..)"
 
 # --------------------------------------
-# method calls
+# method calls _after_ those ifs
 # --------------------------------------
 
 # def test_indirect_assign_method():
