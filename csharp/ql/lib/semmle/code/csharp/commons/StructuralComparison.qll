@@ -51,7 +51,7 @@ private boolean isTargetThis(Expr e) {
   result = false and not e.(MemberAccess).targetIsThisInstance()
 }
 
-/** Gets the AST node kind of element `cfe` wrapped in the GvnKind type. */
+/** Gets the AST node kind of element `cfe` wrapped in the `GvnKind` type. */
 private GvnKind getKind(ControlFlowElement cfe) {
   exists(int kind |
     expressions(cfe, kind, _) and
@@ -72,33 +72,21 @@ private class ConstantGvn extends Gvn, TConstantGvn {
   override string toString() { this = TConstantGvn(result) }
 }
 
-private class ListGvn extends Gvn, TListGvn {
-  private GvnList l;
-
-  ListGvn() { this = TListGvn(l) }
-
-  override string toString() { result = "[" + l.toString() + "]" }
-}
-
-abstract private class GvnList extends TGvnList {
-  abstract string toString();
-}
-
-private class GvnNil extends GvnList, TGvnNil {
+private class GvnBase extends Gvn, TGvnBase {
   private GvnKind kind;
 
-  GvnNil() { this = TGvnNil(kind) }
+  GvnBase() { this = TGvnBase(kind) }
 
   override string toString() { result = "(kind:" + kind + ")" }
 }
 
-private class GvnCons extends GvnList, TGvnCons {
+private class GvnStruct extends Gvn, TGvnStruct {
   private Gvn head;
-  private GvnList tail;
+  private Gvn tail;
 
-  GvnCons() { this = TGvnCons(head, tail) }
+  GvnStruct() { this = TGvnStruct(head, tail) }
 
-  override string toString() { result = head.toString() + " :: " + tail.toString() }
+  override string toString() { result = "(" + head.toString() + " :: " + tail.toString() + ")" }
 }
 
 /**
@@ -118,14 +106,14 @@ private GvnKind getGvnKind(ControlFlowElement cfe) {
   )
 }
 
-private GvnList gvnConstructed(ControlFlowElement cfe, GvnKind kind, int index) {
+private Gvn gvnConstructed(ControlFlowElement cfe, GvnKind kind, int index) {
   kind = getGvnKind(cfe) and
-  result = TGvnNil(kind) and
+  result = TGvnBase(kind) and
   index = -1
   or
-  exists(Gvn head, GvnList tail |
-    gvnConstructedCons(cfe, kind, index, head, tail) and
-    result = TGvnCons(head, tail)
+  exists(Gvn head, Gvn tail |
+    gvnConstructedStruct(cfe, kind, index, head, tail) and
+    result = TGvnStruct(head, tail)
   )
 }
 
@@ -155,8 +143,8 @@ private Gvn gvnChild(ControlFlowElement cfe, int index) {
 }
 
 pragma[noinline]
-private predicate gvnConstructedCons(
-  ControlFlowElement cfe, GvnKind kind, int index, Gvn head, GvnList tail
+private predicate gvnConstructedStruct(
+  ControlFlowElement cfe, GvnKind kind, int index, Gvn head, Gvn tail
 ) {
   tail = gvnConstructed(cfe, kind, index - 1) and
   head = gvnChild(cfe, index)
@@ -176,23 +164,14 @@ private module Cached {
 
   /**
    * Type for containing the global value number of a control flow element.
-   * A global value number, can either be a constant or a list of global value numbers,
-   * where the list also carries a `kind`, which is used to distinguish between general expressions,
-   * declarations and statements.
+   * A global value number, can either be a constant, a kind or a structure containing multiple global value numbers.
+   * The construction of the type produces a list like structure.
    */
   cached
   newtype TGvn =
     TConstantGvn(string s) { s = any(Expr e).getValue() } or
-    TListGvn(GvnList l)
-
-  /**
-   * Type for containing a list of global value numbers with a kind.
-   * The empty list carries the kind of the controlflowelement.
-   */
-  cached
-  newtype TGvnList =
-    TGvnNil(GvnKind gkind) or
-    TGvnCons(Gvn head, GvnList tail) { gvnConstructedCons(_, _, _, head, tail) }
+    TGvnBase(GvnKind gkind) or
+    TGvnStruct(Gvn head, Gvn tail) { gvnConstructedStruct(_, _, _, head, tail) }
 }
 
 private import Cached
@@ -203,10 +182,9 @@ Gvn toGvn(ControlFlowElement cfe) {
   result = TConstantGvn(cfe.(Expr).getValue())
   or
   not exists(cfe.(Expr).getValue()) and
-  exists(GvnList l, GvnKind kind, int index |
-    l = gvnConstructed(cfe, kind, index - 1) and
-    index = getNumberOfActualChildren(cfe) and
-    result = TListGvn(l)
+  exists(GvnKind kind, int index |
+    result = gvnConstructed(cfe, kind, index - 1) and
+    index = getNumberOfActualChildren(cfe)
   )
 }
 
