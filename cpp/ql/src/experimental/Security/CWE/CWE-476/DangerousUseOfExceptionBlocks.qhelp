@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>When clearing the data in the catch block, you must be sure that the memory was allocated before the exception.</p>
+
+</overview>
+
+<example>
+<p>The following example shows erroneous and fixed ways to use exception handling.</p>
+<sample src="DangerousUseOfExceptionBlocks.cpp" />
+
+</example>
+<references>
+
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/EXP34-C.+Do+not+dereference+null+pointers">EXP34-C. Do not dereference null pointers</a>.
+</li>
+
+</references>
+</qhelp>
