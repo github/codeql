@@ -124,21 +124,26 @@ predicate sinkElement(Element e, string input, string kind) {
 
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
-SummaryComponent interpretComponentSpecific(string c) {
+SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   c = "Element" and result = SummaryComponent::content(any(ElementContent ec))
   or
+  // Qualified names may contain commas,such as in `Tuple<,>`, so get the entire argument list
+  // rather than an individual argument.
   exists(Field f |
-    c.regexpCapture("Field\\[(.+)\\]", 1) = f.getQualifiedName() and
+    c.getName() = "Field" and
+    c.getArgumentList() = f.getQualifiedName() and
     result = SummaryComponent::content(any(FieldContent fc | fc.getField() = f))
   )
   or
   exists(Property p |
-    c.regexpCapture("Property\\[(.+)\\]", 1) = p.getQualifiedName() and
+    c.getName() = "Property" and
+    c.getArgumentList() = p.getQualifiedName() and
     result = SummaryComponent::content(any(PropertyContent pc | pc.getProperty() = p))
   )
   or
   exists(SyntheticField f |
-    c.regexpCapture("SyntheticField\\[(.+)\\]", 1) = f and
+    c.getName() = "SyntheticField" and
+    c.getArgumentList() = f and
     result = SummaryComponent::content(any(SyntheticFieldContent sfc | sfc.getField() = f))
   )
 }
@@ -253,21 +258,10 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
   )
 }
 
-bindingset[s]
-private int parseIntegerPosition(string s) {
-  result = s.regexpCapture("([0-9]+)", 1).toInt()
-  or
-  exists(int n1, int n2 |
-    s.regexpCapture("([0-9]+)\\.\\.([0-9]+)", 1).toInt() = n1 and
-    s.regexpCapture("([0-9]+)\\.\\.([0-9]+)", 2).toInt() = n2 and
-    result in [n1 .. n2]
-  )
-}
-
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[s]
 ArgumentPosition parseParamBody(string s) {
-  result.getPosition() = parseIntegerPosition(s)
+  result.getPosition() = AccessPath::parseInt(s)
   or
   s = "This" and
   result.isQualifier()
@@ -276,7 +270,7 @@ ArgumentPosition parseParamBody(string s) {
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
 bindingset[s]
 ParameterPosition parseArgBody(string s) {
-  result.getPosition() = parseIntegerPosition(s)
+  result.getPosition() = AccessPath::parseInt(s)
   or
   s = "Qualifier" and
   result.isThisParameter()
