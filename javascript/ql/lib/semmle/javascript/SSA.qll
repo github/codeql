@@ -12,7 +12,7 @@
  *    affect `x`, while `yield` expressions in functions other than `f`
  *    still may affect it.
  *
- * This is modelled as follows.
+ * This is modeled as follows.
  *
  * Within each function `g` that accesses a variable `x` declared in an
  * enclosing function `f`, we introduce a pseudo-assignment to `x` called
@@ -180,7 +180,7 @@ private module Internal {
 
   /**
    * Holds if the `i`th node of basic block `bb` may induce a pseudo-definition for
-   * modelling updates to captured variable `v`. Whether the definition is actually
+   * modeling updates to captured variable `v`. Whether the definition is actually
    * introduced depends on whether `v` is live at this point in the program.
    */
   private predicate mayCapture(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
@@ -503,7 +503,7 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   /** This SSA definition corresponds to the definition of `v` at `def`. */
   predicate defines(VarDef d, SsaSourceVariable v) { this = TExplicitDef(_, _, d, v) }
 
-  /** The variable definition wrapped by this SSA definition. */
+  /** Gets the variable definition wrapped by this SSA definition. */
   VarDef getDef() { this = TExplicitDef(_, _, result, _) }
 
   /** Gets the basic block to which this definition belongs. */

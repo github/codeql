@@ -5,7 +5,7 @@ import semmle.python.security.strings.Basic
 import Twisted
 import Request
 
-class TwistedResponse extends HttpResponseTaintSink {
+deprecated class TwistedResponse extends HttpResponseTaintSink {
   TwistedResponse() {
     exists(PythonFunctionValue func, string name |
       isKnownRequestHandlerMethodName(name) and
@@ -25,7 +25,7 @@ class TwistedResponse extends HttpResponseTaintSink {
  * object, which affects the properties of the subsequent response sent to this
  * request.
  */
-class TwistedRequestSetter extends HttpResponseTaintSink {
+deprecated class TwistedRequestSetter extends HttpResponseTaintSink {
   TwistedRequestSetter() {
     exists(CallNode call, ControlFlowNode node, string name |
       (

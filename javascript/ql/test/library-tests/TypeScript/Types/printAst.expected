@@ -105,6 +105,9 @@ nodes
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
+| file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
+| file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
+| file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (TypeParameters) | semmle.label | (TypeParameters) |
 | file://:0:0:0:0 | (TypeParameters) | semmle.label | (TypeParameters) |
 | file://:0:0:0:0 | (TypeParameters) | semmle.label | (TypeParameters) |
@@ -790,17 +793,142 @@ nodes
 | tst.ts:189:19:189:21 | [VarRef] Foo | semmle.label | [VarRef] Foo |
 | tst.ts:189:19:189:28 | [DotExpr] Foo.#count | semmle.label | [DotExpr] Foo.#count |
 | tst.ts:189:23:189:28 | [Label] #count | semmle.label | [Label] #count |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | semmle.label | [NamespaceDeclaration] module ... } } } |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | semmle.order | 57 |
+| tst.ts:195:8:195:11 | [VarDecl] TS45 | semmle.label | [VarDecl] TS45 |
+| tst.ts:197:3:197:36 | [TypeAliasDeclaration,TypeDefinition] type A ... ring>>; | semmle.label | [TypeAliasDeclaration,TypeDefinition] type A ... ring>>; |
+| tst.ts:197:8:197:8 | [Identifier] A | semmle.label | [Identifier] A |
+| tst.ts:197:12:197:18 | [LocalTypeAccess] Awaited | semmle.label | [LocalTypeAccess] Awaited |
+| tst.ts:197:12:197:35 | [GenericTypeExpr] Awaited ... tring>> | semmle.label | [GenericTypeExpr] Awaited ... tring>> |
+| tst.ts:197:20:197:26 | [LocalTypeAccess] Promise | semmle.label | [LocalTypeAccess] Promise |
+| tst.ts:197:20:197:34 | [GenericTypeExpr] Promise<string> | semmle.label | [GenericTypeExpr] Promise<string> |
+| tst.ts:197:28:197:33 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
+| tst.ts:200:3:200:45 | [TypeAliasDeclaration,TypeDefinition] type B ... ber>>>; | semmle.label | [TypeAliasDeclaration,TypeDefinition] type B ... ber>>>; |
+| tst.ts:200:8:200:8 | [Identifier] B | semmle.label | [Identifier] B |
+| tst.ts:200:12:200:18 | [LocalTypeAccess] Awaited | semmle.label | [LocalTypeAccess] Awaited |
+| tst.ts:200:12:200:44 | [GenericTypeExpr] Awaited ... mber>>> | semmle.label | [GenericTypeExpr] Awaited ... mber>>> |
+| tst.ts:200:20:200:26 | [LocalTypeAccess] Promise | semmle.label | [LocalTypeAccess] Promise |
+| tst.ts:200:20:200:43 | [GenericTypeExpr] Promise ... umber>> | semmle.label | [GenericTypeExpr] Promise ... umber>> |
+| tst.ts:200:28:200:34 | [LocalTypeAccess] Promise | semmle.label | [LocalTypeAccess] Promise |
+| tst.ts:200:28:200:42 | [GenericTypeExpr] Promise<number> | semmle.label | [GenericTypeExpr] Promise<number> |
+| tst.ts:200:36:200:41 | [KeywordTypeExpr] number | semmle.label | [KeywordTypeExpr] number |
+| tst.ts:203:3:203:46 | [TypeAliasDeclaration,TypeDefinition] type C ... mber>>; | semmle.label | [TypeAliasDeclaration,TypeDefinition] type C ... mber>>; |
+| tst.ts:203:8:203:8 | [Identifier] C | semmle.label | [Identifier] C |
+| tst.ts:203:12:203:18 | [LocalTypeAccess] Awaited | semmle.label | [LocalTypeAccess] Awaited |
+| tst.ts:203:12:203:45 | [GenericTypeExpr] Awaited ... umber>> | semmle.label | [GenericTypeExpr] Awaited ... umber>> |
+| tst.ts:203:20:203:26 | [KeywordTypeExpr] boolean | semmle.label | [KeywordTypeExpr] boolean |
+| tst.ts:203:20:203:44 | [UnionTypeExpr] boolean ... number> | semmle.label | [UnionTypeExpr] boolean ... number> |
+| tst.ts:203:30:203:36 | [LocalTypeAccess] Promise | semmle.label | [LocalTypeAccess] Promise |
+| tst.ts:203:30:203:44 | [GenericTypeExpr] Promise<number> | semmle.label | [GenericTypeExpr] Promise<number> |
+| tst.ts:203:38:203:43 | [KeywordTypeExpr] number | semmle.label | [KeywordTypeExpr] number |
+| tst.ts:205:3:208:3 | [ExportDeclaration] export ... ng; } | semmle.label | [ExportDeclaration] export ... ng; } |
+| tst.ts:205:10:208:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } |
+| tst.ts:205:20:205:26 | [Identifier] Success | semmle.label | [Identifier] Success |
+| tst.ts:206:5:206:8 | [Label] type | semmle.label | [Label] type |
+| tst.ts:206:5:206:29 | [FieldDeclaration] type: ` ... ccess`; | semmle.label | [FieldDeclaration] type: ` ... ccess`; |
+| tst.ts:206:11:206:28 | [TemplateLiteralTypeExpr] `${string}Success` | semmle.label | [TemplateLiteralTypeExpr] `${string}Success` |
+| tst.ts:206:14:206:19 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
+| tst.ts:206:21:206:27 | [LiteralTypeExpr] Success | semmle.label | [LiteralTypeExpr] Success |
+| tst.ts:207:5:207:8 | [Label] body | semmle.label | [Label] body |
+| tst.ts:207:5:207:17 | [FieldDeclaration] body: string; | semmle.label | [FieldDeclaration] body: string; |
+| tst.ts:207:11:207:16 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
+| tst.ts:210:3:213:3 | [ExportDeclaration] export ... ng; } | semmle.label | [ExportDeclaration] export ... ng; } |
+| tst.ts:210:10:213:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } |
+| tst.ts:210:20:210:24 | [Identifier] Error | semmle.label | [Identifier] Error |
+| tst.ts:211:7:211:10 | [Label] type | semmle.label | [Label] type |
+| tst.ts:211:7:211:29 | [FieldDeclaration] type: ` ... Error`; | semmle.label | [FieldDeclaration] type: ` ... Error`; |
+| tst.ts:211:13:211:28 | [TemplateLiteralTypeExpr] `${string}Error` | semmle.label | [TemplateLiteralTypeExpr] `${string}Error` |
+| tst.ts:211:16:211:21 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
+| tst.ts:211:23:211:27 | [LiteralTypeExpr] Error | semmle.label | [LiteralTypeExpr] Error |
+| tst.ts:212:7:212:13 | [Label] message | semmle.label | [Label] message |
+| tst.ts:212:7:212:22 | [FieldDeclaration] message: string; | semmle.label | [FieldDeclaration] message: string; |
+| tst.ts:212:16:212:21 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
+| tst.ts:215:3:220:3 | [ExportDeclaration] export ... } } | semmle.label | [ExportDeclaration] export ... } } |
+| tst.ts:215:10:220:3 | [FunctionDeclStmt] functio ... } } | semmle.label | [FunctionDeclStmt] functio ... } } |
+| tst.ts:215:19:215:25 | [VarDecl] handler | semmle.label | [VarDecl] handler |
+| tst.ts:215:27:215:27 | [SimpleParameter] r | semmle.label | [SimpleParameter] r |
+| tst.ts:215:30:215:36 | [LocalTypeAccess] Success | semmle.label | [LocalTypeAccess] Success |
+| tst.ts:215:30:215:44 | [UnionTypeExpr] Success \| Error | semmle.label | [UnionTypeExpr] Success \| Error |
+| tst.ts:215:40:215:44 | [LocalTypeAccess] Error | semmle.label | [LocalTypeAccess] Error |
+| tst.ts:215:47:220:3 | [BlockStmt] { ... } } | semmle.label | [BlockStmt] { ... } } |
+| tst.ts:216:7:219:7 | [IfStmt] if (r.t ... } | semmle.label | [IfStmt] if (r.t ... } |
+| tst.ts:216:11:216:11 | [VarRef] r | semmle.label | [VarRef] r |
+| tst.ts:216:11:216:16 | [DotExpr] r.type | semmle.label | [DotExpr] r.type |
+| tst.ts:216:11:216:34 | [BinaryExpr] r.type ... uccess" | semmle.label | [BinaryExpr] r.type ... uccess" |
+| tst.ts:216:13:216:16 | [Label] type | semmle.label | [Label] type |
+| tst.ts:216:22:216:34 | [Literal] "HttpSuccess" | semmle.label | [Literal] "HttpSuccess" |
+| tst.ts:216:37:219:7 | [BlockStmt] { ... } | semmle.label | [BlockStmt] { ... } |
+| tst.ts:218:11:218:29 | [DeclStmt] let token = ... | semmle.label | [DeclStmt] let token = ... |
+| tst.ts:218:15:218:19 | [VarDecl] token | semmle.label | [VarDecl] token |
+| tst.ts:218:15:218:28 | [VariableDeclarator] token = r.body | semmle.label | [VariableDeclarator] token = r.body |
+| tst.ts:218:23:218:23 | [VarRef] r | semmle.label | [VarRef] r |
+| tst.ts:218:23:218:28 | [DotExpr] r.body | semmle.label | [DotExpr] r.body |
+| tst.ts:218:25:218:28 | [Label] body | semmle.label | [Label] body |
+| tst.ts:222:3:234:3 | [ClassDefinition,TypeDefinition] class P ... } } | semmle.label | [ClassDefinition,TypeDefinition] class P ... } } |
+| tst.ts:222:9:222:14 | [VarDecl] Person | semmle.label | [VarDecl] Person |
+| tst.ts:223:5:223:9 | [Label] #name | semmle.label | [Label] #name |
+| tst.ts:223:5:223:18 | [FieldDeclaration] #name: string; | semmle.label | [FieldDeclaration] #name: string; |
+| tst.ts:223:12:223:17 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
+| tst.ts:224:5:226:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | semmle.label | [ClassInitializedMember,ConstructorDefinition] constru ... ; } |
+| tst.ts:224:5:226:5 | [FunctionExpr] constru ... ; } | semmle.label | [FunctionExpr] constru ... ; } |
+| tst.ts:224:5:226:5 | [Label] constructor | semmle.label | [Label] constructor |
+| tst.ts:224:17:224:20 | [SimpleParameter] name | semmle.label | [SimpleParameter] name |
+| tst.ts:224:23:224:28 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
+| tst.ts:224:31:226:5 | [BlockStmt] { ... ; } | semmle.label | [BlockStmt] { ... ; } |
+| tst.ts:225:9:225:12 | [ThisExpr] this | semmle.label | [ThisExpr] this |
+| tst.ts:225:9:225:18 | [DotExpr] this.#name | semmle.label | [DotExpr] this.#name |
+| tst.ts:225:9:225:25 | [AssignExpr] this.#name = name | semmle.label | [AssignExpr] this.#name = name |
+| tst.ts:225:9:225:26 | [ExprStmt] this.#name = name; | semmle.label | [ExprStmt] this.#name = name; |
+| tst.ts:225:14:225:18 | [Label] #name | semmle.label | [Label] #name |
+| tst.ts:225:22:225:25 | [VarRef] name | semmle.label | [VarRef] name |
+| tst.ts:228:5:228:10 | [Label] equals | semmle.label | [Label] equals |
+| tst.ts:228:5:233:5 | [ClassInitializedMember,MethodDefinition] equals( ... . } | semmle.label | [ClassInitializedMember,MethodDefinition] equals( ... . } |
+| tst.ts:228:5:233:5 | [FunctionExpr] equals( ... . } | semmle.label | [FunctionExpr] equals( ... . } |
+| tst.ts:228:12:228:16 | [SimpleParameter] other | semmle.label | [SimpleParameter] other |
+| tst.ts:228:19:228:25 | [KeywordTypeExpr] unknown | semmle.label | [KeywordTypeExpr] unknown |
+| tst.ts:228:28:233:5 | [BlockStmt] { ... . } | semmle.label | [BlockStmt] { ... . } |
+| tst.ts:229:9:232:39 | [ReturnStmt] return ... .#name; | semmle.label | [ReturnStmt] return ... .#name; |
+| tst.ts:229:16:229:20 | [VarRef] other | semmle.label | [VarRef] other |
+| tst.ts:229:16:230:37 | [BinaryExpr] other & ... object" | semmle.label | [BinaryExpr] other & ... object" |
+| tst.ts:229:16:231:26 | [BinaryExpr] other & ... n other | semmle.label | [BinaryExpr] other & ... n other |
+| tst.ts:229:16:232:38 | [BinaryExpr] other & ... r.#name | semmle.label | [BinaryExpr] other & ... r.#name |
+| tst.ts:230:13:230:24 | [UnaryExpr] typeof other | semmle.label | [UnaryExpr] typeof other |
+| tst.ts:230:13:230:37 | [BinaryExpr] typeof ... object" | semmle.label | [BinaryExpr] typeof ... object" |
+| tst.ts:230:20:230:24 | [VarRef] other | semmle.label | [VarRef] other |
+| tst.ts:230:30:230:37 | [Literal] "object" | semmle.label | [Literal] "object" |
+| tst.ts:231:13:231:17 | [Label] #name | semmle.label | [Label] #name |
+| tst.ts:231:13:231:26 | [BinaryExpr] #name in other | semmle.label | [BinaryExpr] #name in other |
+| tst.ts:231:22:231:26 | [VarRef] other | semmle.label | [VarRef] other |
+| tst.ts:232:13:232:16 | [ThisExpr] this | semmle.label | [ThisExpr] this |
+| tst.ts:232:13:232:22 | [DotExpr] this.#name | semmle.label | [DotExpr] this.#name |
+| tst.ts:232:13:232:38 | [BinaryExpr] this.#n ... r.#name | semmle.label | [BinaryExpr] this.#n ... r.#name |
+| tst.ts:232:18:232:22 | [Label] #name | semmle.label | [Label] #name |
+| tst.ts:232:28:232:32 | [VarRef] other | semmle.label | [VarRef] other |
+| tst.ts:232:28:232:38 | [DotExpr] other.#name | semmle.label | [DotExpr] other.#name |
+| tst.ts:232:34:232:38 | [Label] #name | semmle.label | [Label] #name |
+| tst.ts:237:1:237:65 | [ImportDeclaration] import ... son" }; | semmle.label | [ImportDeclaration] import ... son" }; |
+| tst.ts:237:1:237:65 | [ImportDeclaration] import ... son" }; | semmle.order | 58 |
+| tst.ts:237:8:237:16 | [ImportSpecifier] * as Foo3 | semmle.label | [ImportSpecifier] * as Foo3 |
+| tst.ts:237:13:237:16 | [VarDecl] Foo3 | semmle.label | [VarDecl] Foo3 |
+| tst.ts:237:23:237:40 | [Literal] "./something.json" | semmle.label | [Literal] "./something.json" |
+| tst.ts:238:1:238:19 | [DeclStmt] var foo = ... | semmle.label | [DeclStmt] var foo = ... |
+| tst.ts:238:1:238:19 | [DeclStmt] var foo = ... | semmle.order | 59 |
+| tst.ts:238:5:238:7 | [VarDecl] foo | semmle.label | [VarDecl] foo |
+| tst.ts:238:5:238:18 | [VariableDeclarator] foo = Foo3.foo | semmle.label | [VariableDeclarator] foo = Foo3.foo |
+| tst.ts:238:11:238:14 | [VarRef] Foo3 | semmle.label | [VarRef] Foo3 |
+| tst.ts:238:11:238:18 | [DotExpr] Foo3.foo | semmle.label | [DotExpr] Foo3.foo |
+| tst.ts:238:16:238:18 | [Label] foo | semmle.label | [Label] foo |
 | type_alias.ts:1:1:1:17 | [TypeAliasDeclaration,TypeDefinition] type B = boolean; | semmle.label | [TypeAliasDeclaration,TypeDefinition] type B = boolean; |
-| type_alias.ts:1:1:1:17 | [TypeAliasDeclaration,TypeDefinition] type B = boolean; | semmle.order | 57 |
+| type_alias.ts:1:1:1:17 | [TypeAliasDeclaration,TypeDefinition] type B = boolean; | semmle.order | 60 |
 | type_alias.ts:1:6:1:6 | [Identifier] B | semmle.label | [Identifier] B |
 | type_alias.ts:1:10:1:16 | [KeywordTypeExpr] boolean | semmle.label | [KeywordTypeExpr] boolean |
 | type_alias.ts:3:1:3:9 | [DeclStmt] var b = ... | semmle.label | [DeclStmt] var b = ... |
-| type_alias.ts:3:1:3:9 | [DeclStmt] var b = ... | semmle.order | 58 |
+| type_alias.ts:3:1:3:9 | [DeclStmt] var b = ... | semmle.order | 61 |
 | type_alias.ts:3:5:3:5 | [VarDecl] b | semmle.label | [VarDecl] b |
 | type_alias.ts:3:5:3:8 | [VariableDeclarator] b: B | semmle.label | [VariableDeclarator] b: B |
 | type_alias.ts:3:8:3:8 | [LocalTypeAccess] B | semmle.label | [LocalTypeAccess] B |
 | type_alias.ts:5:1:5:50 | [TypeAliasDeclaration,TypeDefinition] type Va ... ay<T>>; | semmle.label | [TypeAliasDeclaration,TypeDefinition] type Va ... ay<T>>; |
-| type_alias.ts:5:1:5:50 | [TypeAliasDeclaration,TypeDefinition] type Va ... ay<T>>; | semmle.order | 59 |
+| type_alias.ts:5:1:5:50 | [TypeAliasDeclaration,TypeDefinition] type Va ... ay<T>>; | semmle.order | 62 |
 | type_alias.ts:5:6:5:17 | [Identifier] ValueOrArray | semmle.label | [Identifier] ValueOrArray |
 | type_alias.ts:5:19:5:19 | [Identifier] T | semmle.label | [Identifier] T |
 | type_alias.ts:5:19:5:19 | [TypeParameter] T | semmle.label | [TypeParameter] T |
@@ -812,14 +940,14 @@ nodes
 | type_alias.ts:5:34:5:48 | [GenericTypeExpr] ValueOrArray<T> | semmle.label | [GenericTypeExpr] ValueOrArray<T> |
 | type_alias.ts:5:47:5:47 | [LocalTypeAccess] T | semmle.label | [LocalTypeAccess] T |
 | type_alias.ts:7:1:7:28 | [DeclStmt] var c = ... | semmle.label | [DeclStmt] var c = ... |
-| type_alias.ts:7:1:7:28 | [DeclStmt] var c = ... | semmle.order | 60 |
+| type_alias.ts:7:1:7:28 | [DeclStmt] var c = ... | semmle.order | 63 |
 | type_alias.ts:7:5:7:5 | [VarDecl] c | semmle.label | [VarDecl] c |
 | type_alias.ts:7:5:7:27 | [VariableDeclarator] c: Valu ... number> | semmle.label | [VariableDeclarator] c: Valu ... number> |
 | type_alias.ts:7:8:7:19 | [LocalTypeAccess] ValueOrArray | semmle.label | [LocalTypeAccess] ValueOrArray |
 | type_alias.ts:7:8:7:27 | [GenericTypeExpr] ValueOrArray<number> | semmle.label | [GenericTypeExpr] ValueOrArray<number> |
 | type_alias.ts:7:21:7:26 | [KeywordTypeExpr] number | semmle.label | [KeywordTypeExpr] number |
 | type_alias.ts:9:1:15:13 | [TypeAliasDeclaration,TypeDefinition] type Js ... Json[]; | semmle.label | [TypeAliasDeclaration,TypeDefinition] type Js ... Json[]; |
-| type_alias.ts:9:1:15:13 | [TypeAliasDeclaration,TypeDefinition] type Js ... Json[]; | semmle.order | 61 |
+| type_alias.ts:9:1:15:13 | [TypeAliasDeclaration,TypeDefinition] type Js ... Json[]; | semmle.order | 64 |
 | type_alias.ts:9:6:9:9 | [Identifier] Json | semmle.label | [Identifier] Json |
 | type_alias.ts:10:5:15:12 | [UnionTypeExpr] \| strin ... Json[] | semmle.label | [UnionTypeExpr] \| strin ... Json[] |
 | type_alias.ts:10:7:10:12 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
@@ -835,12 +963,12 @@ nodes
 | type_alias.ts:15:7:15:10 | [LocalTypeAccess] Json | semmle.label | [LocalTypeAccess] Json |
 | type_alias.ts:15:7:15:12 | [ArrayTypeExpr] Json[] | semmle.label | [ArrayTypeExpr] Json[] |
 | type_alias.ts:17:1:17:15 | [DeclStmt] var json = ... | semmle.label | [DeclStmt] var json = ... |
-| type_alias.ts:17:1:17:15 | [DeclStmt] var json = ... | semmle.order | 62 |
+| type_alias.ts:17:1:17:15 | [DeclStmt] var json = ... | semmle.order | 65 |
 | type_alias.ts:17:5:17:8 | [VarDecl] json | semmle.label | [VarDecl] json |
 | type_alias.ts:17:5:17:14 | [VariableDeclarator] json: Json | semmle.label | [VariableDeclarator] json: Json |
 | type_alias.ts:17:11:17:14 | [LocalTypeAccess] Json | semmle.label | [LocalTypeAccess] Json |
 | type_alias.ts:19:1:21:57 | [TypeAliasDeclaration,TypeDefinition] type Vi ... ode[]]; | semmle.label | [TypeAliasDeclaration,TypeDefinition] type Vi ... ode[]]; |
-| type_alias.ts:19:1:21:57 | [TypeAliasDeclaration,TypeDefinition] type Vi ... ode[]]; | semmle.order | 63 |
+| type_alias.ts:19:1:21:57 | [TypeAliasDeclaration,TypeDefinition] type Vi ... ode[]]; | semmle.order | 66 |
 | type_alias.ts:19:6:19:16 | [Identifier] VirtualNode | semmle.label | [Identifier] VirtualNode |
 | type_alias.ts:20:5:21:56 | [UnionTypeExpr] \| strin ... Node[]] | semmle.label | [UnionTypeExpr] \| strin ... Node[]] |
 | type_alias.ts:20:7:20:12 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
@@ -856,7 +984,7 @@ nodes
 | type_alias.ts:21:43:21:53 | [LocalTypeAccess] VirtualNode | semmle.label | [LocalTypeAccess] VirtualNode |
 | type_alias.ts:21:43:21:55 | [ArrayTypeExpr] VirtualNode[] | semmle.label | [ArrayTypeExpr] VirtualNode[] |
 | type_alias.ts:23:1:27:6 | [DeclStmt] const myNode = ... | semmle.label | [DeclStmt] const myNode = ... |
-| type_alias.ts:23:1:27:6 | [DeclStmt] const myNode = ... | semmle.order | 64 |
+| type_alias.ts:23:1:27:6 | [DeclStmt] const myNode = ... | semmle.order | 67 |
 | type_alias.ts:23:7:23:12 | [VarDecl] myNode | semmle.label | [VarDecl] myNode |
 | type_alias.ts:23:7:27:5 | [VariableDeclarator] myNode: ... ] ] | semmle.label | [VariableDeclarator] myNode: ... ] ] |
 | type_alias.ts:23:15:23:25 | [LocalTypeAccess] VirtualNode | semmle.label | [LocalTypeAccess] VirtualNode |
@@ -881,12 +1009,12 @@ nodes
 | type_alias.ts:26:23:26:36 | [Literal] "second-child" | semmle.label | [Literal] "second-child" |
 | type_alias.ts:26:41:26:62 | [Literal] "I'm the second child" | semmle.label | [Literal] "I'm the second child" |
 | type_definition_objects.ts:1:1:1:33 | [ImportDeclaration] import ... dummy"; | semmle.label | [ImportDeclaration] import ... dummy"; |
-| type_definition_objects.ts:1:1:1:33 | [ImportDeclaration] import ... dummy"; | semmle.order | 65 |
+| type_definition_objects.ts:1:1:1:33 | [ImportDeclaration] import ... dummy"; | semmle.order | 68 |
 | type_definition_objects.ts:1:8:1:17 | [ImportSpecifier] * as dummy | semmle.label | [ImportSpecifier] * as dummy |
 | type_definition_objects.ts:1:13:1:17 | [VarDecl] dummy | semmle.label | [VarDecl] dummy |
 | type_definition_objects.ts:1:24:1:32 | [Literal] "./dummy" | semmle.label | [Literal] "./dummy" |
 | type_definition_objects.ts:3:1:3:17 | [ExportDeclaration] export class C {} | semmle.label | [ExportDeclaration] export class C {} |
-| type_definition_objects.ts:3:1:3:17 | [ExportDeclaration] export class C {} | semmle.order | 66 |
+| type_definition_objects.ts:3:1:3:17 | [ExportDeclaration] export class C {} | semmle.order | 69 |
 | type_definition_objects.ts:3:8:3:17 | [ClassDefinition,TypeDefinition] class C {} | semmle.label | [ClassDefinition,TypeDefinition] class C {} |
 | type_definition_objects.ts:3:14:3:14 | [VarDecl] C | semmle.label | [VarDecl] C |
 | type_definition_objects.ts:3:16:3:15 | [BlockStmt] {} | semmle.label | [BlockStmt] {} |
@@ -894,36 +1022,36 @@ nodes
 | type_definition_objects.ts:3:16:3:15 | [FunctionExpr] () {} | semmle.label | [FunctionExpr] () {} |
 | type_definition_objects.ts:3:16:3:15 | [Label] constructor | semmle.label | [Label] constructor |
 | type_definition_objects.ts:4:1:4:17 | [DeclStmt] let classObj = ... | semmle.label | [DeclStmt] let classObj = ... |
-| type_definition_objects.ts:4:1:4:17 | [DeclStmt] let classObj = ... | semmle.order | 67 |
+| type_definition_objects.ts:4:1:4:17 | [DeclStmt] let classObj = ... | semmle.order | 70 |
 | type_definition_objects.ts:4:5:4:12 | [VarDecl] classObj | semmle.label | [VarDecl] classObj |
 | type_definition_objects.ts:4:5:4:16 | [VariableDeclarator] classObj = C | semmle.label | [VariableDeclarator] classObj = C |
 | type_definition_objects.ts:4:16:4:16 | [VarRef] C | semmle.label | [VarRef] C |
 | type_definition_objects.ts:6:1:6:16 | [ExportDeclaration] export enum E {} | semmle.label | [ExportDeclaration] export enum E {} |
-| type_definition_objects.ts:6:1:6:16 | [ExportDeclaration] export enum E {} | semmle.order | 68 |
+| type_definition_objects.ts:6:1:6:16 | [ExportDeclaration] export enum E {} | semmle.order | 71 |
 | type_definition_objects.ts:6:8:6:16 | [EnumDeclaration,TypeDefinition] enum E {} | semmle.label | [EnumDeclaration,TypeDefinition] enum E {} |
 | type_definition_objects.ts:6:13:6:13 | [VarDecl] E | semmle.label | [VarDecl] E |
 | type_definition_objects.ts:7:1:7:16 | [DeclStmt] let enumObj = ... | semmle.label | [DeclStmt] let enumObj = ... |
-| type_definition_objects.ts:7:1:7:16 | [DeclStmt] let enumObj = ... | semmle.order | 69 |
+| type_definition_objects.ts:7:1:7:16 | [DeclStmt] let enumObj = ... | semmle.order | 72 |
 | type_definition_objects.ts:7:5:7:11 | [VarDecl] enumObj | semmle.label | [VarDecl] enumObj |
 | type_definition_objects.ts:7:5:7:15 | [VariableDeclarator] enumObj = E | semmle.label | [VariableDeclarator] enumObj = E |
 | type_definition_objects.ts:7:15:7:15 | [VarRef] E | semmle.label | [VarRef] E |
 | type_definition_objects.ts:9:1:9:22 | [ExportDeclaration] export ... e N {;} | semmle.label | [ExportDeclaration] export ... e N {;} |
-| type_definition_objects.ts:9:1:9:22 | [ExportDeclaration] export ... e N {;} | semmle.order | 70 |
+| type_definition_objects.ts:9:1:9:22 | [ExportDeclaration] export ... e N {;} | semmle.order | 73 |
 | type_definition_objects.ts:9:8:9:22 | [NamespaceDeclaration] namespace N {;} | semmle.label | [NamespaceDeclaration] namespace N {;} |
 | type_definition_objects.ts:9:18:9:18 | [VarDecl] N | semmle.label | [VarDecl] N |
 | type_definition_objects.ts:9:21:9:21 | [EmptyStmt] ; | semmle.label | [EmptyStmt] ; |
 | type_definition_objects.ts:10:1:10:21 | [DeclStmt] let namespaceObj = ... | semmle.label | [DeclStmt] let namespaceObj = ... |
-| type_definition_objects.ts:10:1:10:21 | [DeclStmt] let namespaceObj = ... | semmle.order | 71 |
+| type_definition_objects.ts:10:1:10:21 | [DeclStmt] let namespaceObj = ... | semmle.order | 74 |
 | type_definition_objects.ts:10:5:10:16 | [VarDecl] namespaceObj | semmle.label | [VarDecl] namespaceObj |
 | type_definition_objects.ts:10:5:10:20 | [VariableDeclarator] namespaceObj = N | semmle.label | [VariableDeclarator] namespaceObj = N |
 | type_definition_objects.ts:10:20:10:20 | [VarRef] N | semmle.label | [VarRef] N |
 | type_definitions.ts:1:1:1:33 | [ImportDeclaration] import ... dummy"; | semmle.label | [ImportDeclaration] import ... dummy"; |
-| type_definitions.ts:1:1:1:33 | [ImportDeclaration] import ... dummy"; | semmle.order | 72 |
+| type_definitions.ts:1:1:1:33 | [ImportDeclaration] import ... dummy"; | semmle.order | 75 |
 | type_definitions.ts:1:8:1:17 | [ImportSpecifier] * as dummy | semmle.label | [ImportSpecifier] * as dummy |
 | type_definitions.ts:1:13:1:17 | [VarDecl] dummy | semmle.label | [VarDecl] dummy |
 | type_definitions.ts:1:24:1:32 | [Literal] "./dummy" | semmle.label | [Literal] "./dummy" |
 | type_definitions.ts:3:1:5:1 | [InterfaceDeclaration,TypeDefinition] interfa ... x: S; } | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... x: S; } |
-| type_definitions.ts:3:1:5:1 | [InterfaceDeclaration,TypeDefinition] interfa ... x: S; } | semmle.order | 73 |
+| type_definitions.ts:3:1:5:1 | [InterfaceDeclaration,TypeDefinition] interfa ... x: S; } | semmle.order | 76 |
 | type_definitions.ts:3:11:3:11 | [Identifier] I | semmle.label | [Identifier] I |
 | type_definitions.ts:3:13:3:13 | [Identifier] S | semmle.label | [Identifier] S |
 | type_definitions.ts:3:13:3:13 | [TypeParameter] S | semmle.label | [TypeParameter] S |
@@ -931,14 +1059,14 @@ nodes
 | type_definitions.ts:4:3:4:7 | [FieldDeclaration] x: S; | semmle.label | [FieldDeclaration] x: S; |
 | type_definitions.ts:4:6:4:6 | [LocalTypeAccess] S | semmle.label | [LocalTypeAccess] S |
 | type_definitions.ts:6:1:6:16 | [DeclStmt] let i = ... | semmle.label | [DeclStmt] let i = ... |
-| type_definitions.ts:6:1:6:16 | [DeclStmt] let i = ... | semmle.order | 74 |
+| type_definitions.ts:6:1:6:16 | [DeclStmt] let i = ... | semmle.order | 77 |
 | type_definitions.ts:6:5:6:5 | [VarDecl] i | semmle.label | [VarDecl] i |
 | type_definitions.ts:6:5:6:16 | [VariableDeclarator] i: I<number> | semmle.label | [VariableDeclarator] i: I<number> |
 | type_definitions.ts:6:8:6:8 | [LocalTypeAccess] I | semmle.label | [LocalTypeAccess] I |
 | type_definitions.ts:6:8:6:16 | [GenericTypeExpr] I<number> | semmle.label | [GenericTypeExpr] I<number> |
 | type_definitions.ts:6:10:6:15 | [KeywordTypeExpr] number | semmle.label | [KeywordTypeExpr] number |
 | type_definitions.ts:8:1:10:1 | [ClassDefinition,TypeDefinition] class C ... x: T } | semmle.label | [ClassDefinition,TypeDefinition] class C ... x: T } |
-| type_definitions.ts:8:1:10:1 | [ClassDefinition,TypeDefinition] class C ... x: T } | semmle.order | 75 |
+| type_definitions.ts:8:1:10:1 | [ClassDefinition,TypeDefinition] class C ... x: T } | semmle.order | 78 |
 | type_definitions.ts:8:7:8:7 | [VarDecl] C | semmle.label | [VarDecl] C |
 | type_definitions.ts:8:8:8:7 | [BlockStmt] {} | semmle.label | [BlockStmt] {} |
 | type_definitions.ts:8:8:8:7 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.label | [ClassInitializedMember,ConstructorDefinition] constructor() {} |
@@ -950,14 +1078,14 @@ nodes
 | type_definitions.ts:9:3:9:6 | [FieldDeclaration] x: T | semmle.label | [FieldDeclaration] x: T |
 | type_definitions.ts:9:6:9:6 | [LocalTypeAccess] T | semmle.label | [LocalTypeAccess] T |
 | type_definitions.ts:11:1:11:17 | [DeclStmt] let c = ... | semmle.label | [DeclStmt] let c = ... |
-| type_definitions.ts:11:1:11:17 | [DeclStmt] let c = ... | semmle.order | 76 |
+| type_definitions.ts:11:1:11:17 | [DeclStmt] let c = ... | semmle.order | 79 |
 | type_definitions.ts:11:5:11:5 | [VarDecl] c | semmle.label | [VarDecl] c |
 | type_definitions.ts:11:5:11:16 | [VariableDeclarator] c: C<number> | semmle.label | [VariableDeclarator] c: C<number> |
 | type_definitions.ts:11:8:11:8 | [LocalTypeAccess] C | semmle.label | [LocalTypeAccess] C |
 | type_definitions.ts:11:8:11:16 | [GenericTypeExpr] C<number> | semmle.label | [GenericTypeExpr] C<number> |
 | type_definitions.ts:11:10:11:15 | [KeywordTypeExpr] number | semmle.label | [KeywordTypeExpr] number |
 | type_definitions.ts:13:1:15:1 | [EnumDeclaration,TypeDefinition] enum Co ... blue } | semmle.label | [EnumDeclaration,TypeDefinition] enum Co ... blue } |
-| type_definitions.ts:13:1:15:1 | [EnumDeclaration,TypeDefinition] enum Co ... blue } | semmle.order | 77 |
+| type_definitions.ts:13:1:15:1 | [EnumDeclaration,TypeDefinition] enum Co ... blue } | semmle.order | 80 |
 | type_definitions.ts:13:6:13:10 | [VarDecl] Color | semmle.label | [VarDecl] Color |
 | type_definitions.ts:14:3:14:5 | [EnumMember,TypeDefinition] red | semmle.label | [EnumMember,TypeDefinition] red |
 | type_definitions.ts:14:3:14:5 | [VarDecl] red | semmle.label | [VarDecl] red |
@@ -966,29 +1094,29 @@ nodes
 | type_definitions.ts:14:15:14:18 | [EnumMember,TypeDefinition] blue | semmle.label | [EnumMember,TypeDefinition] blue |
 | type_definitions.ts:14:15:14:18 | [VarDecl] blue | semmle.label | [VarDecl] blue |
 | type_definitions.ts:16:1:16:17 | [DeclStmt] let color = ... | semmle.label | [DeclStmt] let color = ... |
-| type_definitions.ts:16:1:16:17 | [DeclStmt] let color = ... | semmle.order | 78 |
+| type_definitions.ts:16:1:16:17 | [DeclStmt] let color = ... | semmle.order | 81 |
 | type_definitions.ts:16:5:16:9 | [VarDecl] color | semmle.label | [VarDecl] color |
 | type_definitions.ts:16:5:16:16 | [VariableDeclarator] color: Color | semmle.label | [VariableDeclarator] color: Color |
 | type_definitions.ts:16:12:16:16 | [LocalTypeAccess] Color | semmle.label | [LocalTypeAccess] Color |
 | type_definitions.ts:18:1:18:33 | [EnumDeclaration,TypeDefinition] enum En ... ember } | semmle.label | [EnumDeclaration,TypeDefinition] enum En ... ember } |
-| type_definitions.ts:18:1:18:33 | [EnumDeclaration,TypeDefinition] enum En ... ember } | semmle.order | 79 |
+| type_definitions.ts:18:1:18:33 | [EnumDeclaration,TypeDefinition] enum En ... ember } | semmle.order | 82 |
 | type_definitions.ts:18:6:18:22 | [VarDecl] EnumWithOneMember | semmle.label | [VarDecl] EnumWithOneMember |
 | type_definitions.ts:18:26:18:31 | [EnumMember,TypeDefinition] member | semmle.label | [EnumMember,TypeDefinition] member |
 | type_definitions.ts:18:26:18:31 | [VarDecl] member | semmle.label | [VarDecl] member |
 | type_definitions.ts:19:1:19:25 | [DeclStmt] let e = ... | semmle.label | [DeclStmt] let e = ... |
-| type_definitions.ts:19:1:19:25 | [DeclStmt] let e = ... | semmle.order | 80 |
+| type_definitions.ts:19:1:19:25 | [DeclStmt] let e = ... | semmle.order | 83 |
 | type_definitions.ts:19:5:19:5 | [VarDecl] e | semmle.label | [VarDecl] e |
 | type_definitions.ts:19:5:19:24 | [VariableDeclarator] e: EnumWithOneMember | semmle.label | [VariableDeclarator] e: EnumWithOneMember |
 | type_definitions.ts:19:8:19:24 | [LocalTypeAccess] EnumWithOneMember | semmle.label | [LocalTypeAccess] EnumWithOneMember |
 | type_definitions.ts:21:1:21:20 | [TypeAliasDeclaration,TypeDefinition] type Alias<T> = T[]; | semmle.label | [TypeAliasDeclaration,TypeDefinition] type Alias<T> = T[]; |
-| type_definitions.ts:21:1:21:20 | [TypeAliasDeclaration,TypeDefinition] type Alias<T> = T[]; | semmle.order | 81 |
+| type_definitions.ts:21:1:21:20 | [TypeAliasDeclaration,TypeDefinition] type Alias<T> = T[]; | semmle.order | 84 |
 | type_definitions.ts:21:6:21:10 | [Identifier] Alias | semmle.label | [Identifier] Alias |
 | type_definitions.ts:21:12:21:12 | [Identifier] T | semmle.label | [Identifier] T |
 | type_definitions.ts:21:12:21:12 | [TypeParameter] T | semmle.label | [TypeParameter] T |
 | type_definitions.ts:21:17:21:17 | [LocalTypeAccess] T | semmle.label | [LocalTypeAccess] T |
 | type_definitions.ts:21:17:21:19 | [ArrayTypeExpr] T[] | semmle.label | [ArrayTypeExpr] T[] |
 | type_definitions.ts:22:1:22:39 | [DeclStmt] let aliasForNumberArray = ... | semmle.label | [DeclStmt] let aliasForNumberArray = ... |
-| type_definitions.ts:22:1:22:39 | [DeclStmt] let aliasForNumberArray = ... | semmle.order | 82 |
+| type_definitions.ts:22:1:22:39 | [DeclStmt] let aliasForNumberArray = ... | semmle.order | 85 |
 | type_definitions.ts:22:5:22:23 | [VarDecl] aliasForNumberArray | semmle.label | [VarDecl] aliasForNumberArray |
 | type_definitions.ts:22:5:22:38 | [VariableDeclarator] aliasFo ... number> | semmle.label | [VariableDeclarator] aliasFo ... number> |
 | type_definitions.ts:22:26:22:30 | [LocalTypeAccess] Alias | semmle.label | [LocalTypeAccess] Alias |
@@ -1159,6 +1287,12 @@ edges
 | file://:0:0:0:0 | (Parameters) | tst.ts:166:8:166:10 | [SimpleParameter] key | semmle.order | 0 |
 | file://:0:0:0:0 | (Parameters) | tst.ts:172:8:172:14 | [SimpleParameter] optName | semmle.label | 0 |
 | file://:0:0:0:0 | (Parameters) | tst.ts:172:8:172:14 | [SimpleParameter] optName | semmle.order | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:215:27:215:27 | [SimpleParameter] r | semmle.label | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:215:27:215:27 | [SimpleParameter] r | semmle.order | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:224:17:224:20 | [SimpleParameter] name | semmle.label | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:224:17:224:20 | [SimpleParameter] name | semmle.order | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:228:12:228:16 | [SimpleParameter] other | semmle.label | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:228:12:228:16 | [SimpleParameter] other | semmle.order | 0 |
 | file://:0:0:0:0 | (Parameters) | type_alias.ts:14:10:14:17 | [SimpleParameter] property | semmle.label | 0 |
 | file://:0:0:0:0 | (Parameters) | type_alias.ts:14:10:14:17 | [SimpleParameter] property | semmle.order | 0 |
 | file://:0:0:0:0 | (Parameters) | type_alias.ts:21:19:21:21 | [SimpleParameter] key | semmle.label | 0 |
@@ -2353,6 +2487,244 @@ edges
 | tst.ts:189:19:189:28 | [DotExpr] Foo.#count | tst.ts:189:19:189:21 | [VarRef] Foo | semmle.order | 1 |
 | tst.ts:189:19:189:28 | [DotExpr] Foo.#count | tst.ts:189:23:189:28 | [Label] #count | semmle.label | 2 |
 | tst.ts:189:19:189:28 | [DotExpr] Foo.#count | tst.ts:189:23:189:28 | [Label] #count | semmle.order | 2 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:195:8:195:11 | [VarDecl] TS45 | semmle.label | 1 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:195:8:195:11 | [VarDecl] TS45 | semmle.order | 1 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:197:3:197:36 | [TypeAliasDeclaration,TypeDefinition] type A ... ring>>; | semmle.label | 2 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:197:3:197:36 | [TypeAliasDeclaration,TypeDefinition] type A ... ring>>; | semmle.order | 2 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:200:3:200:45 | [TypeAliasDeclaration,TypeDefinition] type B ... ber>>>; | semmle.label | 3 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:200:3:200:45 | [TypeAliasDeclaration,TypeDefinition] type B ... ber>>>; | semmle.order | 3 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:203:3:203:46 | [TypeAliasDeclaration,TypeDefinition] type C ... mber>>; | semmle.label | 4 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:203:3:203:46 | [TypeAliasDeclaration,TypeDefinition] type C ... mber>>; | semmle.order | 4 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:205:3:208:3 | [ExportDeclaration] export ... ng; } | semmle.label | 5 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:205:3:208:3 | [ExportDeclaration] export ... ng; } | semmle.order | 5 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:210:3:213:3 | [ExportDeclaration] export ... ng; } | semmle.label | 6 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:210:3:213:3 | [ExportDeclaration] export ... ng; } | semmle.order | 6 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:215:3:220:3 | [ExportDeclaration] export ... } } | semmle.label | 7 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:215:3:220:3 | [ExportDeclaration] export ... } } | semmle.order | 7 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:222:3:234:3 | [ClassDefinition,TypeDefinition] class P ... } } | semmle.label | 8 |
+| tst.ts:195:1:235:1 | [NamespaceDeclaration] module ... } } } | tst.ts:222:3:234:3 | [ClassDefinition,TypeDefinition] class P ... } } | semmle.order | 8 |
+| tst.ts:197:3:197:36 | [TypeAliasDeclaration,TypeDefinition] type A ... ring>>; | tst.ts:197:8:197:8 | [Identifier] A | semmle.label | 1 |
+| tst.ts:197:3:197:36 | [TypeAliasDeclaration,TypeDefinition] type A ... ring>>; | tst.ts:197:8:197:8 | [Identifier] A | semmle.order | 1 |
+| tst.ts:197:3:197:36 | [TypeAliasDeclaration,TypeDefinition] type A ... ring>>; | tst.ts:197:12:197:35 | [GenericTypeExpr] Awaited ... tring>> | semmle.label | 2 |
+| tst.ts:197:3:197:36 | [TypeAliasDeclaration,TypeDefinition] type A ... ring>>; | tst.ts:197:12:197:35 | [GenericTypeExpr] Awaited ... tring>> | semmle.order | 2 |
+| tst.ts:197:12:197:35 | [GenericTypeExpr] Awaited ... tring>> | tst.ts:197:12:197:18 | [LocalTypeAccess] Awaited | semmle.label | 1 |
+| tst.ts:197:12:197:35 | [GenericTypeExpr] Awaited ... tring>> | tst.ts:197:12:197:18 | [LocalTypeAccess] Awaited | semmle.order | 1 |
+| tst.ts:197:12:197:35 | [GenericTypeExpr] Awaited ... tring>> | tst.ts:197:20:197:34 | [GenericTypeExpr] Promise<string> | semmle.label | 2 |
+| tst.ts:197:12:197:35 | [GenericTypeExpr] Awaited ... tring>> | tst.ts:197:20:197:34 | [GenericTypeExpr] Promise<string> | semmle.order | 2 |
+| tst.ts:197:20:197:34 | [GenericTypeExpr] Promise<string> | tst.ts:197:20:197:26 | [LocalTypeAccess] Promise | semmle.label | 1 |
+| tst.ts:197:20:197:34 | [GenericTypeExpr] Promise<string> | tst.ts:197:20:197:26 | [LocalTypeAccess] Promise | semmle.order | 1 |
+| tst.ts:197:20:197:34 | [GenericTypeExpr] Promise<string> | tst.ts:197:28:197:33 | [KeywordTypeExpr] string | semmle.label | 2 |
+| tst.ts:197:20:197:34 | [GenericTypeExpr] Promise<string> | tst.ts:197:28:197:33 | [KeywordTypeExpr] string | semmle.order | 2 |
+| tst.ts:200:3:200:45 | [TypeAliasDeclaration,TypeDefinition] type B ... ber>>>; | tst.ts:200:8:200:8 | [Identifier] B | semmle.label | 1 |
+| tst.ts:200:3:200:45 | [TypeAliasDeclaration,TypeDefinition] type B ... ber>>>; | tst.ts:200:8:200:8 | [Identifier] B | semmle.order | 1 |
+| tst.ts:200:3:200:45 | [TypeAliasDeclaration,TypeDefinition] type B ... ber>>>; | tst.ts:200:12:200:44 | [GenericTypeExpr] Awaited ... mber>>> | semmle.label | 2 |
+| tst.ts:200:3:200:45 | [TypeAliasDeclaration,TypeDefinition] type B ... ber>>>; | tst.ts:200:12:200:44 | [GenericTypeExpr] Awaited ... mber>>> | semmle.order | 2 |
+| tst.ts:200:12:200:44 | [GenericTypeExpr] Awaited ... mber>>> | tst.ts:200:12:200:18 | [LocalTypeAccess] Awaited | semmle.label | 1 |
+| tst.ts:200:12:200:44 | [GenericTypeExpr] Awaited ... mber>>> | tst.ts:200:12:200:18 | [LocalTypeAccess] Awaited | semmle.order | 1 |
+| tst.ts:200:12:200:44 | [GenericTypeExpr] Awaited ... mber>>> | tst.ts:200:20:200:43 | [GenericTypeExpr] Promise ... umber>> | semmle.label | 2 |
+| tst.ts:200:12:200:44 | [GenericTypeExpr] Awaited ... mber>>> | tst.ts:200:20:200:43 | [GenericTypeExpr] Promise ... umber>> | semmle.order | 2 |
+| tst.ts:200:20:200:43 | [GenericTypeExpr] Promise ... umber>> | tst.ts:200:20:200:26 | [LocalTypeAccess] Promise | semmle.label | 1 |
+| tst.ts:200:20:200:43 | [GenericTypeExpr] Promise ... umber>> | tst.ts:200:20:200:26 | [LocalTypeAccess] Promise | semmle.order | 1 |
+| tst.ts:200:20:200:43 | [GenericTypeExpr] Promise ... umber>> | tst.ts:200:28:200:42 | [GenericTypeExpr] Promise<number> | semmle.label | 2 |
+| tst.ts:200:20:200:43 | [GenericTypeExpr] Promise ... umber>> | tst.ts:200:28:200:42 | [GenericTypeExpr] Promise<number> | semmle.order | 2 |
+| tst.ts:200:28:200:42 | [GenericTypeExpr] Promise<number> | tst.ts:200:28:200:34 | [LocalTypeAccess] Promise | semmle.label | 1 |
+| tst.ts:200:28:200:42 | [GenericTypeExpr] Promise<number> | tst.ts:200:28:200:34 | [LocalTypeAccess] Promise | semmle.order | 1 |
+| tst.ts:200:28:200:42 | [GenericTypeExpr] Promise<number> | tst.ts:200:36:200:41 | [KeywordTypeExpr] number | semmle.label | 2 |
+| tst.ts:200:28:200:42 | [GenericTypeExpr] Promise<number> | tst.ts:200:36:200:41 | [KeywordTypeExpr] number | semmle.order | 2 |
+| tst.ts:203:3:203:46 | [TypeAliasDeclaration,TypeDefinition] type C ... mber>>; | tst.ts:203:8:203:8 | [Identifier] C | semmle.label | 1 |
+| tst.ts:203:3:203:46 | [TypeAliasDeclaration,TypeDefinition] type C ... mber>>; | tst.ts:203:8:203:8 | [Identifier] C | semmle.order | 1 |
+| tst.ts:203:3:203:46 | [TypeAliasDeclaration,TypeDefinition] type C ... mber>>; | tst.ts:203:12:203:45 | [GenericTypeExpr] Awaited ... umber>> | semmle.label | 2 |
+| tst.ts:203:3:203:46 | [TypeAliasDeclaration,TypeDefinition] type C ... mber>>; | tst.ts:203:12:203:45 | [GenericTypeExpr] Awaited ... umber>> | semmle.order | 2 |
+| tst.ts:203:12:203:45 | [GenericTypeExpr] Awaited ... umber>> | tst.ts:203:12:203:18 | [LocalTypeAccess] Awaited | semmle.label | 1 |
+| tst.ts:203:12:203:45 | [GenericTypeExpr] Awaited ... umber>> | tst.ts:203:12:203:18 | [LocalTypeAccess] Awaited | semmle.order | 1 |
+| tst.ts:203:12:203:45 | [GenericTypeExpr] Awaited ... umber>> | tst.ts:203:20:203:44 | [UnionTypeExpr] boolean ... number> | semmle.label | 2 |
+| tst.ts:203:12:203:45 | [GenericTypeExpr] Awaited ... umber>> | tst.ts:203:20:203:44 | [UnionTypeExpr] boolean ... number> | semmle.order | 2 |
+| tst.ts:203:20:203:44 | [UnionTypeExpr] boolean ... number> | tst.ts:203:20:203:26 | [KeywordTypeExpr] boolean | semmle.label | 1 |
+| tst.ts:203:20:203:44 | [UnionTypeExpr] boolean ... number> | tst.ts:203:20:203:26 | [KeywordTypeExpr] boolean | semmle.order | 1 |
+| tst.ts:203:20:203:44 | [UnionTypeExpr] boolean ... number> | tst.ts:203:30:203:44 | [GenericTypeExpr] Promise<number> | semmle.label | 2 |
+| tst.ts:203:20:203:44 | [UnionTypeExpr] boolean ... number> | tst.ts:203:30:203:44 | [GenericTypeExpr] Promise<number> | semmle.order | 2 |
+| tst.ts:203:30:203:44 | [GenericTypeExpr] Promise<number> | tst.ts:203:30:203:36 | [LocalTypeAccess] Promise | semmle.label | 1 |
+| tst.ts:203:30:203:44 | [GenericTypeExpr] Promise<number> | tst.ts:203:30:203:36 | [LocalTypeAccess] Promise | semmle.order | 1 |
+| tst.ts:203:30:203:44 | [GenericTypeExpr] Promise<number> | tst.ts:203:38:203:43 | [KeywordTypeExpr] number | semmle.label | 2 |
+| tst.ts:203:30:203:44 | [GenericTypeExpr] Promise<number> | tst.ts:203:38:203:43 | [KeywordTypeExpr] number | semmle.order | 2 |
+| tst.ts:205:3:208:3 | [ExportDeclaration] export ... ng; } | tst.ts:205:10:208:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | semmle.label | 1 |
+| tst.ts:205:3:208:3 | [ExportDeclaration] export ... ng; } | tst.ts:205:10:208:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | semmle.order | 1 |
+| tst.ts:205:10:208:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | tst.ts:205:20:205:26 | [Identifier] Success | semmle.label | 1 |
+| tst.ts:205:10:208:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | tst.ts:205:20:205:26 | [Identifier] Success | semmle.order | 1 |
+| tst.ts:205:10:208:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | tst.ts:206:5:206:29 | [FieldDeclaration] type: ` ... ccess`; | semmle.label | 2 |
+| tst.ts:205:10:208:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | tst.ts:206:5:206:29 | [FieldDeclaration] type: ` ... ccess`; | semmle.order | 2 |
+| tst.ts:205:10:208:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | tst.ts:207:5:207:17 | [FieldDeclaration] body: string; | semmle.label | 3 |
+| tst.ts:205:10:208:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | tst.ts:207:5:207:17 | [FieldDeclaration] body: string; | semmle.order | 3 |
+| tst.ts:206:5:206:29 | [FieldDeclaration] type: ` ... ccess`; | tst.ts:206:5:206:8 | [Label] type | semmle.label | 1 |
+| tst.ts:206:5:206:29 | [FieldDeclaration] type: ` ... ccess`; | tst.ts:206:5:206:8 | [Label] type | semmle.order | 1 |
+| tst.ts:206:5:206:29 | [FieldDeclaration] type: ` ... ccess`; | tst.ts:206:11:206:28 | [TemplateLiteralTypeExpr] `${string}Success` | semmle.label | 2 |
+| tst.ts:206:5:206:29 | [FieldDeclaration] type: ` ... ccess`; | tst.ts:206:11:206:28 | [TemplateLiteralTypeExpr] `${string}Success` | semmle.order | 2 |
+| tst.ts:206:11:206:28 | [TemplateLiteralTypeExpr] `${string}Success` | tst.ts:206:14:206:19 | [KeywordTypeExpr] string | semmle.label | 1 |
+| tst.ts:206:11:206:28 | [TemplateLiteralTypeExpr] `${string}Success` | tst.ts:206:14:206:19 | [KeywordTypeExpr] string | semmle.order | 1 |
+| tst.ts:206:11:206:28 | [TemplateLiteralTypeExpr] `${string}Success` | tst.ts:206:21:206:27 | [LiteralTypeExpr] Success | semmle.label | 2 |
+| tst.ts:206:11:206:28 | [TemplateLiteralTypeExpr] `${string}Success` | tst.ts:206:21:206:27 | [LiteralTypeExpr] Success | semmle.order | 2 |
+| tst.ts:207:5:207:17 | [FieldDeclaration] body: string; | tst.ts:207:5:207:8 | [Label] body | semmle.label | 1 |
+| tst.ts:207:5:207:17 | [FieldDeclaration] body: string; | tst.ts:207:5:207:8 | [Label] body | semmle.order | 1 |
+| tst.ts:207:5:207:17 | [FieldDeclaration] body: string; | tst.ts:207:11:207:16 | [KeywordTypeExpr] string | semmle.label | 2 |
+| tst.ts:207:5:207:17 | [FieldDeclaration] body: string; | tst.ts:207:11:207:16 | [KeywordTypeExpr] string | semmle.order | 2 |
+| tst.ts:210:3:213:3 | [ExportDeclaration] export ... ng; } | tst.ts:210:10:213:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | semmle.label | 1 |
+| tst.ts:210:3:213:3 | [ExportDeclaration] export ... ng; } | tst.ts:210:10:213:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | semmle.order | 1 |
+| tst.ts:210:10:213:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | tst.ts:210:20:210:24 | [Identifier] Error | semmle.label | 1 |
+| tst.ts:210:10:213:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | tst.ts:210:20:210:24 | [Identifier] Error | semmle.order | 1 |
+| tst.ts:210:10:213:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | tst.ts:211:7:211:29 | [FieldDeclaration] type: ` ... Error`; | semmle.label | 2 |
+| tst.ts:210:10:213:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | tst.ts:211:7:211:29 | [FieldDeclaration] type: ` ... Error`; | semmle.order | 2 |
+| tst.ts:210:10:213:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | tst.ts:212:7:212:22 | [FieldDeclaration] message: string; | semmle.label | 3 |
+| tst.ts:210:10:213:3 | [InterfaceDeclaration,TypeDefinition] interfa ... ng; } | tst.ts:212:7:212:22 | [FieldDeclaration] message: string; | semmle.order | 3 |
+| tst.ts:211:7:211:29 | [FieldDeclaration] type: ` ... Error`; | tst.ts:211:7:211:10 | [Label] type | semmle.label | 1 |
+| tst.ts:211:7:211:29 | [FieldDeclaration] type: ` ... Error`; | tst.ts:211:7:211:10 | [Label] type | semmle.order | 1 |
+| tst.ts:211:7:211:29 | [FieldDeclaration] type: ` ... Error`; | tst.ts:211:13:211:28 | [TemplateLiteralTypeExpr] `${string}Error` | semmle.label | 2 |
+| tst.ts:211:7:211:29 | [FieldDeclaration] type: ` ... Error`; | tst.ts:211:13:211:28 | [TemplateLiteralTypeExpr] `${string}Error` | semmle.order | 2 |
+| tst.ts:211:13:211:28 | [TemplateLiteralTypeExpr] `${string}Error` | tst.ts:211:16:211:21 | [KeywordTypeExpr] string | semmle.label | 1 |
+| tst.ts:211:13:211:28 | [TemplateLiteralTypeExpr] `${string}Error` | tst.ts:211:16:211:21 | [KeywordTypeExpr] string | semmle.order | 1 |
+| tst.ts:211:13:211:28 | [TemplateLiteralTypeExpr] `${string}Error` | tst.ts:211:23:211:27 | [LiteralTypeExpr] Error | semmle.label | 2 |
+| tst.ts:211:13:211:28 | [TemplateLiteralTypeExpr] `${string}Error` | tst.ts:211:23:211:27 | [LiteralTypeExpr] Error | semmle.order | 2 |
+| tst.ts:212:7:212:22 | [FieldDeclaration] message: string; | tst.ts:212:7:212:13 | [Label] message | semmle.label | 1 |
+| tst.ts:212:7:212:22 | [FieldDeclaration] message: string; | tst.ts:212:7:212:13 | [Label] message | semmle.order | 1 |
+| tst.ts:212:7:212:22 | [FieldDeclaration] message: string; | tst.ts:212:16:212:21 | [KeywordTypeExpr] string | semmle.label | 2 |
+| tst.ts:212:7:212:22 | [FieldDeclaration] message: string; | tst.ts:212:16:212:21 | [KeywordTypeExpr] string | semmle.order | 2 |
+| tst.ts:215:3:220:3 | [ExportDeclaration] export ... } } | tst.ts:215:10:220:3 | [FunctionDeclStmt] functio ... } } | semmle.label | 1 |
+| tst.ts:215:3:220:3 | [ExportDeclaration] export ... } } | tst.ts:215:10:220:3 | [FunctionDeclStmt] functio ... } } | semmle.order | 1 |
+| tst.ts:215:10:220:3 | [FunctionDeclStmt] functio ... } } | file://:0:0:0:0 | (Parameters) | semmle.label | 1 |
+| tst.ts:215:10:220:3 | [FunctionDeclStmt] functio ... } } | file://:0:0:0:0 | (Parameters) | semmle.order | 1 |
+| tst.ts:215:10:220:3 | [FunctionDeclStmt] functio ... } } | tst.ts:215:19:215:25 | [VarDecl] handler | semmle.label | 0 |
+| tst.ts:215:10:220:3 | [FunctionDeclStmt] functio ... } } | tst.ts:215:19:215:25 | [VarDecl] handler | semmle.order | 0 |
+| tst.ts:215:10:220:3 | [FunctionDeclStmt] functio ... } } | tst.ts:215:47:220:3 | [BlockStmt] { ... } } | semmle.label | 5 |
+| tst.ts:215:10:220:3 | [FunctionDeclStmt] functio ... } } | tst.ts:215:47:220:3 | [BlockStmt] { ... } } | semmle.order | 5 |
+| tst.ts:215:27:215:27 | [SimpleParameter] r | tst.ts:215:30:215:44 | [UnionTypeExpr] Success \| Error | semmle.label | 0 |
+| tst.ts:215:27:215:27 | [SimpleParameter] r | tst.ts:215:30:215:44 | [UnionTypeExpr] Success \| Error | semmle.order | 0 |
+| tst.ts:215:30:215:44 | [UnionTypeExpr] Success \| Error | tst.ts:215:30:215:36 | [LocalTypeAccess] Success | semmle.label | 1 |
+| tst.ts:215:30:215:44 | [UnionTypeExpr] Success \| Error | tst.ts:215:30:215:36 | [LocalTypeAccess] Success | semmle.order | 1 |
+| tst.ts:215:30:215:44 | [UnionTypeExpr] Success \| Error | tst.ts:215:40:215:44 | [LocalTypeAccess] Error | semmle.label | 2 |
+| tst.ts:215:30:215:44 | [UnionTypeExpr] Success \| Error | tst.ts:215:40:215:44 | [LocalTypeAccess] Error | semmle.order | 2 |
+| tst.ts:215:47:220:3 | [BlockStmt] { ... } } | tst.ts:216:7:219:7 | [IfStmt] if (r.t ... } | semmle.label | 1 |
+| tst.ts:215:47:220:3 | [BlockStmt] { ... } } | tst.ts:216:7:219:7 | [IfStmt] if (r.t ... } | semmle.order | 1 |
+| tst.ts:216:7:219:7 | [IfStmt] if (r.t ... } | tst.ts:216:11:216:34 | [BinaryExpr] r.type ... uccess" | semmle.label | 1 |
+| tst.ts:216:7:219:7 | [IfStmt] if (r.t ... } | tst.ts:216:11:216:34 | [BinaryExpr] r.type ... uccess" | semmle.order | 1 |
+| tst.ts:216:7:219:7 | [IfStmt] if (r.t ... } | tst.ts:216:37:219:7 | [BlockStmt] { ... } | semmle.label | 2 |
+| tst.ts:216:7:219:7 | [IfStmt] if (r.t ... } | tst.ts:216:37:219:7 | [BlockStmt] { ... } | semmle.order | 2 |
+| tst.ts:216:11:216:16 | [DotExpr] r.type | tst.ts:216:11:216:11 | [VarRef] r | semmle.label | 1 |
+| tst.ts:216:11:216:16 | [DotExpr] r.type | tst.ts:216:11:216:11 | [VarRef] r | semmle.order | 1 |
+| tst.ts:216:11:216:16 | [DotExpr] r.type | tst.ts:216:13:216:16 | [Label] type | semmle.label | 2 |
+| tst.ts:216:11:216:16 | [DotExpr] r.type | tst.ts:216:13:216:16 | [Label] type | semmle.order | 2 |
+| tst.ts:216:11:216:34 | [BinaryExpr] r.type ... uccess" | tst.ts:216:11:216:16 | [DotExpr] r.type | semmle.label | 1 |
+| tst.ts:216:11:216:34 | [BinaryExpr] r.type ... uccess" | tst.ts:216:11:216:16 | [DotExpr] r.type | semmle.order | 1 |
+| tst.ts:216:11:216:34 | [BinaryExpr] r.type ... uccess" | tst.ts:216:22:216:34 | [Literal] "HttpSuccess" | semmle.label | 2 |
+| tst.ts:216:11:216:34 | [BinaryExpr] r.type ... uccess" | tst.ts:216:22:216:34 | [Literal] "HttpSuccess" | semmle.order | 2 |
+| tst.ts:216:37:219:7 | [BlockStmt] { ... } | tst.ts:218:11:218:29 | [DeclStmt] let token = ... | semmle.label | 1 |
+| tst.ts:216:37:219:7 | [BlockStmt] { ... } | tst.ts:218:11:218:29 | [DeclStmt] let token = ... | semmle.order | 1 |
+| tst.ts:218:11:218:29 | [DeclStmt] let token = ... | tst.ts:218:15:218:28 | [VariableDeclarator] token = r.body | semmle.label | 1 |
+| tst.ts:218:11:218:29 | [DeclStmt] let token = ... | tst.ts:218:15:218:28 | [VariableDeclarator] token = r.body | semmle.order | 1 |
+| tst.ts:218:15:218:28 | [VariableDeclarator] token = r.body | tst.ts:218:15:218:19 | [VarDecl] token | semmle.label | 1 |
+| tst.ts:218:15:218:28 | [VariableDeclarator] token = r.body | tst.ts:218:15:218:19 | [VarDecl] token | semmle.order | 1 |
+| tst.ts:218:15:218:28 | [VariableDeclarator] token = r.body | tst.ts:218:23:218:28 | [DotExpr] r.body | semmle.label | 2 |
+| tst.ts:218:15:218:28 | [VariableDeclarator] token = r.body | tst.ts:218:23:218:28 | [DotExpr] r.body | semmle.order | 2 |
+| tst.ts:218:23:218:28 | [DotExpr] r.body | tst.ts:218:23:218:23 | [VarRef] r | semmle.label | 1 |
+| tst.ts:218:23:218:28 | [DotExpr] r.body | tst.ts:218:23:218:23 | [VarRef] r | semmle.order | 1 |
+| tst.ts:218:23:218:28 | [DotExpr] r.body | tst.ts:218:25:218:28 | [Label] body | semmle.label | 2 |
+| tst.ts:218:23:218:28 | [DotExpr] r.body | tst.ts:218:25:218:28 | [Label] body | semmle.order | 2 |
+| tst.ts:222:3:234:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:222:9:222:14 | [VarDecl] Person | semmle.label | 1 |
+| tst.ts:222:3:234:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:222:9:222:14 | [VarDecl] Person | semmle.order | 1 |
+| tst.ts:222:3:234:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:223:5:223:18 | [FieldDeclaration] #name: string; | semmle.label | 2 |
+| tst.ts:222:3:234:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:223:5:223:18 | [FieldDeclaration] #name: string; | semmle.order | 2 |
+| tst.ts:222:3:234:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:224:5:226:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | semmle.label | 3 |
+| tst.ts:222:3:234:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:224:5:226:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | semmle.order | 3 |
+| tst.ts:222:3:234:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:228:5:233:5 | [ClassInitializedMember,MethodDefinition] equals( ... . } | semmle.label | 4 |
+| tst.ts:222:3:234:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:228:5:233:5 | [ClassInitializedMember,MethodDefinition] equals( ... . } | semmle.order | 4 |
+| tst.ts:223:5:223:18 | [FieldDeclaration] #name: string; | tst.ts:223:5:223:9 | [Label] #name | semmle.label | 1 |
+| tst.ts:223:5:223:18 | [FieldDeclaration] #name: string; | tst.ts:223:5:223:9 | [Label] #name | semmle.order | 1 |
+| tst.ts:223:5:223:18 | [FieldDeclaration] #name: string; | tst.ts:223:12:223:17 | [KeywordTypeExpr] string | semmle.label | 2 |
+| tst.ts:223:5:223:18 | [FieldDeclaration] #name: string; | tst.ts:223:12:223:17 | [KeywordTypeExpr] string | semmle.order | 2 |
+| tst.ts:224:5:226:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | tst.ts:224:5:226:5 | [FunctionExpr] constru ... ; } | semmle.label | 2 |
+| tst.ts:224:5:226:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | tst.ts:224:5:226:5 | [FunctionExpr] constru ... ; } | semmle.order | 2 |
+| tst.ts:224:5:226:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | tst.ts:224:5:226:5 | [Label] constructor | semmle.label | 1 |
+| tst.ts:224:5:226:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | tst.ts:224:5:226:5 | [Label] constructor | semmle.order | 1 |
+| tst.ts:224:5:226:5 | [FunctionExpr] constru ... ; } | file://:0:0:0:0 | (Parameters) | semmle.label | 1 |
+| tst.ts:224:5:226:5 | [FunctionExpr] constru ... ; } | file://:0:0:0:0 | (Parameters) | semmle.order | 1 |
+| tst.ts:224:5:226:5 | [FunctionExpr] constru ... ; } | tst.ts:224:31:226:5 | [BlockStmt] { ... ; } | semmle.label | 5 |
+| tst.ts:224:5:226:5 | [FunctionExpr] constru ... ; } | tst.ts:224:31:226:5 | [BlockStmt] { ... ; } | semmle.order | 5 |
+| tst.ts:224:17:224:20 | [SimpleParameter] name | tst.ts:224:23:224:28 | [KeywordTypeExpr] string | semmle.label | 0 |
+| tst.ts:224:17:224:20 | [SimpleParameter] name | tst.ts:224:23:224:28 | [KeywordTypeExpr] string | semmle.order | 0 |
+| tst.ts:224:31:226:5 | [BlockStmt] { ... ; } | tst.ts:225:9:225:26 | [ExprStmt] this.#name = name; | semmle.label | 1 |
+| tst.ts:224:31:226:5 | [BlockStmt] { ... ; } | tst.ts:225:9:225:26 | [ExprStmt] this.#name = name; | semmle.order | 1 |
+| tst.ts:225:9:225:18 | [DotExpr] this.#name | tst.ts:225:9:225:12 | [ThisExpr] this | semmle.label | 1 |
+| tst.ts:225:9:225:18 | [DotExpr] this.#name | tst.ts:225:9:225:12 | [ThisExpr] this | semmle.order | 1 |
+| tst.ts:225:9:225:18 | [DotExpr] this.#name | tst.ts:225:14:225:18 | [Label] #name | semmle.label | 2 |
+| tst.ts:225:9:225:18 | [DotExpr] this.#name | tst.ts:225:14:225:18 | [Label] #name | semmle.order | 2 |
+| tst.ts:225:9:225:25 | [AssignExpr] this.#name = name | tst.ts:225:9:225:18 | [DotExpr] this.#name | semmle.label | 1 |
+| tst.ts:225:9:225:25 | [AssignExpr] this.#name = name | tst.ts:225:9:225:18 | [DotExpr] this.#name | semmle.order | 1 |
+| tst.ts:225:9:225:25 | [AssignExpr] this.#name = name | tst.ts:225:22:225:25 | [VarRef] name | semmle.label | 2 |
+| tst.ts:225:9:225:25 | [AssignExpr] this.#name = name | tst.ts:225:22:225:25 | [VarRef] name | semmle.order | 2 |
+| tst.ts:225:9:225:26 | [ExprStmt] this.#name = name; | tst.ts:225:9:225:25 | [AssignExpr] this.#name = name | semmle.label | 1 |
+| tst.ts:225:9:225:26 | [ExprStmt] this.#name = name; | tst.ts:225:9:225:25 | [AssignExpr] this.#name = name | semmle.order | 1 |
+| tst.ts:228:5:233:5 | [ClassInitializedMember,MethodDefinition] equals( ... . } | tst.ts:228:5:228:10 | [Label] equals | semmle.label | 1 |
+| tst.ts:228:5:233:5 | [ClassInitializedMember,MethodDefinition] equals( ... . } | tst.ts:228:5:228:10 | [Label] equals | semmle.order | 1 |
+| tst.ts:228:5:233:5 | [ClassInitializedMember,MethodDefinition] equals( ... . } | tst.ts:228:5:233:5 | [FunctionExpr] equals( ... . } | semmle.label | 2 |
+| tst.ts:228:5:233:5 | [ClassInitializedMember,MethodDefinition] equals( ... . } | tst.ts:228:5:233:5 | [FunctionExpr] equals( ... . } | semmle.order | 2 |
+| tst.ts:228:5:233:5 | [FunctionExpr] equals( ... . } | file://:0:0:0:0 | (Parameters) | semmle.label | 1 |
+| tst.ts:228:5:233:5 | [FunctionExpr] equals( ... . } | file://:0:0:0:0 | (Parameters) | semmle.order | 1 |
+| tst.ts:228:5:233:5 | [FunctionExpr] equals( ... . } | tst.ts:228:28:233:5 | [BlockStmt] { ... . } | semmle.label | 5 |
+| tst.ts:228:5:233:5 | [FunctionExpr] equals( ... . } | tst.ts:228:28:233:5 | [BlockStmt] { ... . } | semmle.order | 5 |
+| tst.ts:228:12:228:16 | [SimpleParameter] other | tst.ts:228:19:228:25 | [KeywordTypeExpr] unknown | semmle.label | 0 |
+| tst.ts:228:12:228:16 | [SimpleParameter] other | tst.ts:228:19:228:25 | [KeywordTypeExpr] unknown | semmle.order | 0 |
+| tst.ts:228:28:233:5 | [BlockStmt] { ... . } | tst.ts:229:9:232:39 | [ReturnStmt] return ... .#name; | semmle.label | 1 |
+| tst.ts:228:28:233:5 | [BlockStmt] { ... . } | tst.ts:229:9:232:39 | [ReturnStmt] return ... .#name; | semmle.order | 1 |
+| tst.ts:229:9:232:39 | [ReturnStmt] return ... .#name; | tst.ts:229:16:232:38 | [BinaryExpr] other & ... r.#name | semmle.label | 1 |
+| tst.ts:229:9:232:39 | [ReturnStmt] return ... .#name; | tst.ts:229:16:232:38 | [BinaryExpr] other & ... r.#name | semmle.order | 1 |
+| tst.ts:229:16:230:37 | [BinaryExpr] other & ... object" | tst.ts:229:16:229:20 | [VarRef] other | semmle.label | 1 |
+| tst.ts:229:16:230:37 | [BinaryExpr] other & ... object" | tst.ts:229:16:229:20 | [VarRef] other | semmle.order | 1 |
+| tst.ts:229:16:230:37 | [BinaryExpr] other & ... object" | tst.ts:230:13:230:37 | [BinaryExpr] typeof ... object" | semmle.label | 2 |
+| tst.ts:229:16:230:37 | [BinaryExpr] other & ... object" | tst.ts:230:13:230:37 | [BinaryExpr] typeof ... object" | semmle.order | 2 |
+| tst.ts:229:16:231:26 | [BinaryExpr] other & ... n other | tst.ts:229:16:230:37 | [BinaryExpr] other & ... object" | semmle.label | 1 |
+| tst.ts:229:16:231:26 | [BinaryExpr] other & ... n other | tst.ts:229:16:230:37 | [BinaryExpr] other & ... object" | semmle.order | 1 |
+| tst.ts:229:16:231:26 | [BinaryExpr] other & ... n other | tst.ts:231:13:231:26 | [BinaryExpr] #name in other | semmle.label | 2 |
+| tst.ts:229:16:231:26 | [BinaryExpr] other & ... n other | tst.ts:231:13:231:26 | [BinaryExpr] #name in other | semmle.order | 2 |
+| tst.ts:229:16:232:38 | [BinaryExpr] other & ... r.#name | tst.ts:229:16:231:26 | [BinaryExpr] other & ... n other | semmle.label | 1 |
+| tst.ts:229:16:232:38 | [BinaryExpr] other & ... r.#name | tst.ts:229:16:231:26 | [BinaryExpr] other & ... n other | semmle.order | 1 |
+| tst.ts:229:16:232:38 | [BinaryExpr] other & ... r.#name | tst.ts:232:13:232:38 | [BinaryExpr] this.#n ... r.#name | semmle.label | 2 |
+| tst.ts:229:16:232:38 | [BinaryExpr] other & ... r.#name | tst.ts:232:13:232:38 | [BinaryExpr] this.#n ... r.#name | semmle.order | 2 |
+| tst.ts:230:13:230:24 | [UnaryExpr] typeof other | tst.ts:230:20:230:24 | [VarRef] other | semmle.label | 1 |
+| tst.ts:230:13:230:24 | [UnaryExpr] typeof other | tst.ts:230:20:230:24 | [VarRef] other | semmle.order | 1 |
+| tst.ts:230:13:230:37 | [BinaryExpr] typeof ... object" | tst.ts:230:13:230:24 | [UnaryExpr] typeof other | semmle.label | 1 |
+| tst.ts:230:13:230:37 | [BinaryExpr] typeof ... object" | tst.ts:230:13:230:24 | [UnaryExpr] typeof other | semmle.order | 1 |
+| tst.ts:230:13:230:37 | [BinaryExpr] typeof ... object" | tst.ts:230:30:230:37 | [Literal] "object" | semmle.label | 2 |
+| tst.ts:230:13:230:37 | [BinaryExpr] typeof ... object" | tst.ts:230:30:230:37 | [Literal] "object" | semmle.order | 2 |
+| tst.ts:231:13:231:26 | [BinaryExpr] #name in other | tst.ts:231:13:231:17 | [Label] #name | semmle.label | 1 |
+| tst.ts:231:13:231:26 | [BinaryExpr] #name in other | tst.ts:231:13:231:17 | [Label] #name | semmle.order | 1 |
+| tst.ts:231:13:231:26 | [BinaryExpr] #name in other | tst.ts:231:22:231:26 | [VarRef] other | semmle.label | 2 |
+| tst.ts:231:13:231:26 | [BinaryExpr] #name in other | tst.ts:231:22:231:26 | [VarRef] other | semmle.order | 2 |
+| tst.ts:232:13:232:22 | [DotExpr] this.#name | tst.ts:232:13:232:16 | [ThisExpr] this | semmle.label | 1 |
+| tst.ts:232:13:232:22 | [DotExpr] this.#name | tst.ts:232:13:232:16 | [ThisExpr] this | semmle.order | 1 |
+| tst.ts:232:13:232:22 | [DotExpr] this.#name | tst.ts:232:18:232:22 | [Label] #name | semmle.label | 2 |
+| tst.ts:232:13:232:22 | [DotExpr] this.#name | tst.ts:232:18:232:22 | [Label] #name | semmle.order | 2 |
+| tst.ts:232:13:232:38 | [BinaryExpr] this.#n ... r.#name | tst.ts:232:13:232:22 | [DotExpr] this.#name | semmle.label | 1 |
+| tst.ts:232:13:232:38 | [BinaryExpr] this.#n ... r.#name | tst.ts:232:13:232:22 | [DotExpr] this.#name | semmle.order | 1 |
+| tst.ts:232:13:232:38 | [BinaryExpr] this.#n ... r.#name | tst.ts:232:28:232:38 | [DotExpr] other.#name | semmle.label | 2 |
+| tst.ts:232:13:232:38 | [BinaryExpr] this.#n ... r.#name | tst.ts:232:28:232:38 | [DotExpr] other.#name | semmle.order | 2 |
+| tst.ts:232:28:232:38 | [DotExpr] other.#name | tst.ts:232:28:232:32 | [VarRef] other | semmle.label | 1 |
+| tst.ts:232:28:232:38 | [DotExpr] other.#name | tst.ts:232:28:232:32 | [VarRef] other | semmle.order | 1 |
+| tst.ts:232:28:232:38 | [DotExpr] other.#name | tst.ts:232:34:232:38 | [Label] #name | semmle.label | 2 |
+| tst.ts:232:28:232:38 | [DotExpr] other.#name | tst.ts:232:34:232:38 | [Label] #name | semmle.order | 2 |
+| tst.ts:237:1:237:65 | [ImportDeclaration] import ... son" }; | tst.ts:237:8:237:16 | [ImportSpecifier] * as Foo3 | semmle.label | 1 |
+| tst.ts:237:1:237:65 | [ImportDeclaration] import ... son" }; | tst.ts:237:8:237:16 | [ImportSpecifier] * as Foo3 | semmle.order | 1 |
+| tst.ts:237:1:237:65 | [ImportDeclaration] import ... son" }; | tst.ts:237:23:237:40 | [Literal] "./something.json" | semmle.label | 2 |
+| tst.ts:237:1:237:65 | [ImportDeclaration] import ... son" }; | tst.ts:237:23:237:40 | [Literal] "./something.json" | semmle.order | 2 |
+| tst.ts:237:8:237:16 | [ImportSpecifier] * as Foo3 | tst.ts:237:13:237:16 | [VarDecl] Foo3 | semmle.label | 1 |
+| tst.ts:237:8:237:16 | [ImportSpecifier] * as Foo3 | tst.ts:237:13:237:16 | [VarDecl] Foo3 | semmle.order | 1 |
+| tst.ts:238:1:238:19 | [DeclStmt] var foo = ... | tst.ts:238:5:238:18 | [VariableDeclarator] foo = Foo3.foo | semmle.label | 1 |
+| tst.ts:238:1:238:19 | [DeclStmt] var foo = ... | tst.ts:238:5:238:18 | [VariableDeclarator] foo = Foo3.foo | semmle.order | 1 |
+| tst.ts:238:5:238:18 | [VariableDeclarator] foo = Foo3.foo | tst.ts:238:5:238:7 | [VarDecl] foo | semmle.label | 1 |
+| tst.ts:238:5:238:18 | [VariableDeclarator] foo = Foo3.foo | tst.ts:238:5:238:7 | [VarDecl] foo | semmle.order | 1 |
+| tst.ts:238:5:238:18 | [VariableDeclarator] foo = Foo3.foo | tst.ts:238:11:238:18 | [DotExpr] Foo3.foo | semmle.label | 2 |
+| tst.ts:238:5:238:18 | [VariableDeclarator] foo = Foo3.foo | tst.ts:238:11:238:18 | [DotExpr] Foo3.foo | semmle.order | 2 |
+| tst.ts:238:11:238:18 | [DotExpr] Foo3.foo | tst.ts:238:11:238:14 | [VarRef] Foo3 | semmle.label | 1 |
+| tst.ts:238:11:238:18 | [DotExpr] Foo3.foo | tst.ts:238:11:238:14 | [VarRef] Foo3 | semmle.order | 1 |
+| tst.ts:238:11:238:18 | [DotExpr] Foo3.foo | tst.ts:238:16:238:18 | [Label] foo | semmle.label | 2 |
+| tst.ts:238:11:238:18 | [DotExpr] Foo3.foo | tst.ts:238:16:238:18 | [Label] foo | semmle.order | 2 |
 | type_alias.ts:1:1:1:17 | [TypeAliasDeclaration,TypeDefinition] type B = boolean; | type_alias.ts:1:6:1:6 | [Identifier] B | semmle.label | 1 |
 | type_alias.ts:1:1:1:17 | [TypeAliasDeclaration,TypeDefinition] type B = boolean; | type_alias.ts:1:6:1:6 | [Identifier] B | semmle.order | 1 |
 | type_alias.ts:1:1:1:17 | [TypeAliasDeclaration,TypeDefinition] type B = boolean; | type_alias.ts:1:10:1:16 | [KeywordTypeExpr] boolean | semmle.label | 2 |

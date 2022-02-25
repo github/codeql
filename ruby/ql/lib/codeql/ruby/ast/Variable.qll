@@ -5,6 +5,7 @@ private import codeql.Locations
 private import internal.AST
 private import internal.TreeSitter
 private import internal.Variable
+private import internal.Parameter
 
 /** A variable declared in a scope. */
 class Variable instanceof VariableImpl {
@@ -34,7 +35,10 @@ class LocalVariable extends Variable, TLocalVariable {
   override LocalVariableAccess getAnAccess() { result.getVariable() = this }
 
   /** Gets the access where this local variable is first introduced. */
-  VariableAccess getDefiningAccess() { result = this.(LocalVariableReal).getDefiningAccessImpl() }
+  VariableAccess getDefiningAccess() {
+    result = this.(LocalVariableReal).getDefiningAccessImpl() or
+    synthChild(any(BlockParameter p | this = p.getVariable()), 0, result)
+  }
 
   /**
    * Holds if this variable is captured. For example in
@@ -50,7 +54,7 @@ class LocalVariable extends Variable, TLocalVariable {
    *
    * `x` is a captured variable, whereas `y` is not.
    */
-  predicate isCaptured() { this.getAnAccess().isCapturedAccess() }
+  final predicate isCaptured() { this.getAnAccess().isCapturedAccess() }
 }
 
 /** A global variable. */
@@ -110,7 +114,15 @@ class VariableAccess extends Expr instanceof VariableAccessImpl {
    * the access to `elements` in the parameter list is an implicit assignment,
    * as is the first access to `e`.
    */
-  predicate isImplicitWrite() { implicitWriteAccess(toGenerated(this)) }
+  predicate isImplicitWrite() {
+    implicitWriteAccess(toGenerated(this))
+    or
+    this = any(SimpleParameterSynthImpl p).getDefininingAccess()
+    or
+    this = any(HashPattern p).getValue(_)
+    or
+    synthChild(any(BlockParameter p), 0, this)
+  }
 
   final override string toString() { result = VariableAccessImpl.super.toString() }
 }
@@ -147,7 +159,7 @@ class LocalVariableAccess extends VariableAccess instanceof LocalVariableAccessI
    * the access to `x` in the first `puts x` is a captured access, while
    * the access to `x` in the second `puts x` is not.
    */
-  predicate isCapturedAccess() { isCapturedAccess(this) }
+  final predicate isCapturedAccess() { isCapturedAccess(this) }
 }
 
 /** An access to a local variable where the value is updated. */
@@ -195,10 +207,4 @@ class SelfVariableAccess extends LocalVariableAccess instanceof SelfVariableAcce
 }
 
 /** An access to the `self` variable where the value is read. */
-class SelfVariableReadAccess extends SelfVariableAccess, VariableReadAccess {
-  // We override the definition in `LocalVariableAccess` because it gives the
-  // wrong result for synthesised `self` variables.
-  override predicate isCapturedAccess() {
-    this.getVariable().getDeclaringScope() != this.getCfgScope()
-  }
-}
+class SelfVariableReadAccess extends SelfVariableAccess, VariableReadAccess { }

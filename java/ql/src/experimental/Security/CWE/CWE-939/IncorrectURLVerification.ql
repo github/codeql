@@ -26,8 +26,8 @@ class AndroidRString extends RefType {
  */
 class Uri extends RefType {
   Uri() {
-    hasQualifiedName("android.net", "Uri") or
-    hasQualifiedName("java.net", "URL")
+    this.hasQualifiedName("android.net", "Uri") or
+    this.hasQualifiedName("java.net", "URL")
   }
 }
 
@@ -36,9 +36,9 @@ class Uri extends RefType {
  */
 class UriGetHostMethod extends Method {
   UriGetHostMethod() {
-    getDeclaringType() instanceof Uri and
-    hasName("getHost") and
-    getNumberOfParameters() = 0
+    this.getDeclaringType() instanceof Uri and
+    this.hasName("getHost") and
+    this.getNumberOfParameters() = 0
   }
 }
 
@@ -54,7 +54,7 @@ class HostVerificationMethodAccess extends MethodAccess {
     ) and
     this.getMethod().getNumberOfParameters() = 1 and
     (
-      this.getArgument(0).(StringLiteral).getRepresentedString().charAt(0) != "." //string constant comparison e.g. uri.getHost().endsWith("example.com")
+      this.getArgument(0).(StringLiteral).getValue().charAt(0) != "." //string constant comparison e.g. uri.getHost().endsWith("example.com")
       or
       this.getArgument(0)
           .(AddExpr)
@@ -63,15 +63,10 @@ class HostVerificationMethodAccess extends MethodAccess {
           .getVariable()
           .getAnAssignedValue()
           .(StringLiteral)
-          .getRepresentedString()
+          .getValue()
           .charAt(0) != "." //var1+var2, check var1 starts with "." e.g. String domainName = "example"; Uri.parse(url).getHost().endsWith(domainName+".com")
       or
-      this.getArgument(0)
-          .(AddExpr)
-          .getLeftOperand()
-          .(StringLiteral)
-          .getRepresentedString()
-          .charAt(0) != "." //"."+var2, check string constant "." e.g. String domainName = "example.com";  Uri.parse(url).getHost().endsWith("www."+domainName)
+      this.getArgument(0).(AddExpr).getLeftOperand().(StringLiteral).getValue().charAt(0) != "." //"."+var2, check string constant "." e.g. String domainName = "example.com";  Uri.parse(url).getHost().endsWith("www."+domainName)
       or
       exists(MethodAccess ma, Method m, Field f |
         this.getArgument(0) = ma and
@@ -87,7 +82,7 @@ class HostVerificationMethodAccess extends MethodAccess {
           .getVariable()
           .getAnAssignedValue()
           .(StringLiteral)
-          .getRepresentedString()
+          .getValue()
           .charAt(0) != "." //check variable starts with "." e.g. String domainName = "example.com";  Uri.parse(url).getHost().endsWith(domainName)
     )
   }

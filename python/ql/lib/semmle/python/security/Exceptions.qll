@@ -7,13 +7,15 @@ import python
 import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Basic
 
-private Value traceback_function(string name) { result = Module::named("traceback").attr(name) }
+deprecated private Value traceback_function(string name) {
+  result = Module::named("traceback").attr(name)
+}
 
 /**
  * This represents information relating to an exception, for instance the
  * message, arguments or parts of the exception traceback.
  */
-class ExceptionInfo extends StringKind {
+deprecated class ExceptionInfo extends StringKind {
   ExceptionInfo() { this = "exception.info" }
 
   override string repr() { result = "exception info" }
@@ -23,12 +25,12 @@ class ExceptionInfo extends StringKind {
  * A class representing sources of information about
  * execution state exposed in tracebacks and the like.
  */
-abstract class ErrorInfoSource extends TaintSource { }
+abstract deprecated class ErrorInfoSource extends TaintSource { }
 
 /**
  * This kind represents exceptions themselves.
  */
-class ExceptionKind extends TaintKind {
+deprecated class ExceptionKind extends TaintKind {
   ExceptionKind() { this = "exception.kind" }
 
   override string repr() { result = "exception" }
@@ -44,7 +46,7 @@ class ExceptionKind extends TaintKind {
  * A source of exception objects, either explicitly created, or captured by an
  * `except` statement.
  */
-class ExceptionSource extends ErrorInfoSource {
+deprecated class ExceptionSource extends ErrorInfoSource {
   ExceptionSource() {
     exists(ClassValue cls |
       cls.getASuperType() = ClassValue::baseException() and
@@ -63,7 +65,7 @@ class ExceptionSource extends ErrorInfoSource {
  * Represents a sequence of pieces of information relating to an exception,
  * for instance the contents of the `args` attribute, or the stack trace.
  */
-class ExceptionInfoSequence extends SequenceKind {
+deprecated class ExceptionInfoSequence extends SequenceKind {
   ExceptionInfoSequence() { this.getItem() instanceof ExceptionInfo }
 }
 
@@ -71,16 +73,13 @@ class ExceptionInfoSequence extends SequenceKind {
  * Represents calls to functions in the `traceback` module that return
  * sequences of exception information.
  */
-class CallToTracebackFunction extends ErrorInfoSource {
+deprecated class CallToTracebackFunction extends ErrorInfoSource {
   CallToTracebackFunction() {
     exists(string name |
-      name = "extract_tb" or
-      name = "extract_stack" or
-      name = "format_list" or
-      name = "format_exception_only" or
-      name = "format_exception" or
-      name = "format_tb" or
-      name = "format_stack"
+      name in [
+          "extract_tb", "extract_stack", "format_list", "format_exception_only", "format_exception",
+          "format_tb", "format_stack"
+        ]
     |
       this = traceback_function(name).getACall()
     )
@@ -95,7 +94,7 @@ class CallToTracebackFunction extends ErrorInfoSource {
  * Represents calls to functions in the `traceback` module that return a single
  * string of information about an exception.
  */
-class FormattedTracebackSource extends ErrorInfoSource {
+deprecated class FormattedTracebackSource extends ErrorInfoSource {
   FormattedTracebackSource() { this = traceback_function("format_exc").getACall() }
 
   override string toString() { result = "exception.info.source" }

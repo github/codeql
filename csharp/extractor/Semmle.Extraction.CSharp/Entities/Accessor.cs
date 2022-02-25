@@ -6,11 +6,15 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Accessor : Method
     {
-        protected Accessor(Context cx, IMethodSymbol init)
-            : base(cx, init) { }
+        private readonly IPropertySymbol property;
+        protected Accessor(Context cx, IMethodSymbol init, IPropertySymbol property)
+            : base(cx, init)
+        {
+            this.property = property;
+        }
 
         /// <summary>
-        /// Gets the property symbol associated accessor `symbol`, or `null`
+        /// Gets the property symbol associated with accessor `symbol`, or `null`
         /// if there is no associated symbol.
         /// </summary>
         public static IPropertySymbol? GetPropertySymbol(IMethodSymbol symbol)
@@ -26,42 +30,30 @@ namespace Semmle.Extraction.CSharp.Entities
             return props.SingleOrDefault();
         }
 
-        /// <summary>
-        /// Gets the property symbol associated with this accessor.
-        /// </summary>
-        private IPropertySymbol? PropertySymbol => GetPropertySymbol(Symbol);
-
-        public new Accessor OriginalDefinition => Create(Context, Symbol.OriginalDefinition);
-
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
             PopulateModifiers(trapFile);
             ContainingType!.PopulateGenerics();
 
-            var prop = PropertySymbol;
-            if (prop is null)
-            {
-                Context.ModelError(Symbol, "Unhandled accessor associated symbol");
-                return;
-            }
-
-            var parent = Property.Create(Context, prop);
+            var parent = Property.Create(Context, property);
             int kind;
             Accessor unboundAccessor;
-            if (SymbolEqualityComparer.Default.Equals(Symbol, prop.GetMethod))
+            if (SymbolEqualityComparer.Default.Equals(Symbol, property.GetMethod))
             {
                 kind = 1;
-                unboundAccessor = Create(Context, prop.OriginalDefinition.GetMethod!);
+                var orig = property.OriginalDefinition;
+                unboundAccessor = Create(Context, orig.GetMethod!, orig);
             }
-            else if (SymbolEqualityComparer.Default.Equals(Symbol, prop.SetMethod))
+            else if (SymbolEqualityComparer.Default.Equals(Symbol, property.SetMethod))
             {
                 kind = 2;
-                unboundAccessor = Create(Context, prop.OriginalDefinition.SetMethod!);
+                var orig = property.OriginalDefinition;
+                unboundAccessor = Create(Context, orig.SetMethod!, orig);
             }
             else
             {
-                Context.ModelError(Symbol, "Unhandled accessor kind");
+                Context.ModelError(Symbol, $"Unhandled accessor method {Symbol.ToDisplayString()}");
                 return;
             }
 
@@ -83,14 +75,14 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static new Accessor Create(Context cx, IMethodSymbol symbol) =>
-            AccessorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
+        public static Accessor Create(Context cx, IMethodSymbol symbol, IPropertySymbol prop) =>
+            AccessorFactory.Instance.CreateEntity(cx, symbol, (symbol, prop));
 
-        private class AccessorFactory : CachedEntityFactory<IMethodSymbol, Accessor>
+        private class AccessorFactory : CachedEntityFactory<(IMethodSymbol, IPropertySymbol), Accessor>
         {
             public static AccessorFactory Instance { get; } = new AccessorFactory();
 
-            public override Accessor Create(Context cx, IMethodSymbol init) => new Accessor(cx, init);
+            public override Accessor Create(Context cx, (IMethodSymbol, IPropertySymbol) init) => new(cx, init.Item1, init.Item2);
         }
     }
 }

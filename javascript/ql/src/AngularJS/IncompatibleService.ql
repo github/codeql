@@ -64,20 +64,14 @@ predicate isWildcardKind(string kind) {
  * (see https://docs.angularjs.org/guide/di)
  */
 predicate isCompatibleRequestedService(InjectableFunctionServiceRequest request, string kind) {
-  isWildcardKind(kind)
+  isWildcardKind(kind) and exists(request)
   or
   (
     isServiceDirectiveOrFilterFunction(request) or
     isRunMethod(request) or
     isControllerFunction(request)
   ) and
-  (
-    kind = "value" or
-    kind = "service" or
-    kind = "factory" or
-    kind = "constant" or
-    kind = "provider-value"
-  )
+  kind = ["value", "service", "factory", "constant", "provider-value"]
   or
   isControllerFunction(request) and
   kind = "controller-only"

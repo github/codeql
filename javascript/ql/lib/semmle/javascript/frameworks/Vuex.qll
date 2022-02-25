@@ -376,7 +376,7 @@ module Vuex {
       importer.getADependenciesObject("").getADependency(dependency.getPackageName(), _)
     }
 
-    /** A package that can be considered an entry point for a Vuex app. */
+    /** Gets a package that can be considered an entry point for a Vuex app. */
     private PackageJSON entryPointPackage() {
       result = getPackageJson(storeRef().getAnImmediateUse().getFile())
       or

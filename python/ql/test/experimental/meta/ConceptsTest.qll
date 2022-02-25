@@ -128,6 +128,24 @@ class CodeExecutionTest extends InlineExpectationsTest {
   }
 }
 
+class SqlConstructionTest extends InlineExpectationsTest {
+  SqlConstructionTest() { this = "SqlConstructionTest" }
+
+  override string getARelevantTag() { result = "constructedSql" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(SqlConstruction e, DataFlow::Node sql |
+      exists(location.getFile().getRelativePath()) and
+      sql = e.getSql() and
+      location = e.getLocation() and
+      element = sql.toString() and
+      value = prettyNodeForInlineTest(sql) and
+      tag = "constructedSql"
+    )
+  }
+}
+
 class SqlExecutionTest extends InlineExpectationsTest {
   SqlExecutionTest() { this = "SqlExecutionTest" }
 
@@ -454,6 +472,34 @@ class CryptographicOperationTest extends InlineExpectationsTest {
         value = cryptoOperation.getAlgorithm().getName() and
         tag = "CryptographicOperationAlgorithm"
       )
+    )
+  }
+}
+
+class HttpClientRequestTest extends InlineExpectationsTest {
+  HttpClientRequestTest() { this = "HttpClientRequestTest" }
+
+  override string getARelevantTag() {
+    result in ["clientRequestUrlPart", "clientRequestCertValidationDisabled"]
+  }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Client::Request req, DataFlow::Node url |
+      url = req.getAUrlPart() and
+      location = url.getLocation() and
+      element = url.toString() and
+      value = prettyNodeForInlineTest(url) and
+      tag = "clientRequestUrlPart"
+    )
+    or
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Client::Request req |
+      req.disablesCertificateValidation(_, _) and
+      location = req.getLocation() and
+      element = req.toString() and
+      value = "" and
+      tag = "clientRequestCertValidationDisabled"
     )
   }
 }

@@ -4,35 +4,35 @@ import csharp
 
 private class WaitCall extends MethodCall {
   WaitCall() {
-    getTarget().hasName("Wait") and
-    getTarget().getDeclaringType().hasQualifiedName("System.Threading.Monitor")
+    this.getTarget().hasName("Wait") and
+    this.getTarget().getDeclaringType().hasQualifiedName("System.Threading.Monitor")
   }
 
-  Expr getExpr() { result = getArgument(0) }
+  Expr getExpr() { result = this.getArgument(0) }
 }
 
 /** An expression statement containing a `Wait` call. */
 class WaitStmt extends ExprStmt {
-  WaitStmt() { getExpr() instanceof WaitCall }
+  WaitStmt() { this.getExpr() instanceof WaitCall }
 
   /** Gets the expression that this wait call is waiting on. */
-  Expr getLock() { result = getExpr().(WaitCall).getExpr() }
+  Expr getLock() { result = this.getExpr().(WaitCall).getExpr() }
 
   /** Gets the variable that this wait call is waiting on, if any. */
-  Variable getWaitVariable() { result.getAnAccess() = getLock() }
+  Variable getWaitVariable() { result.getAnAccess() = this.getLock() }
 
   /** Holds if this wait call waits on `this`. */
-  predicate isWaitThis() { getLock() instanceof ThisAccess }
+  predicate isWaitThis() { this.getLock() instanceof ThisAccess }
 
   /** Gets the type that this wait call waits on, if any. */
-  Type getWaitTypeObject() { result = getLock().(TypeofExpr).getTypeAccess().getTarget() }
+  Type getWaitTypeObject() { result = this.getLock().(TypeofExpr).getTypeAccess().getTarget() }
 }
 
 private class SynchronizedMethodAttribute extends Attribute {
   SynchronizedMethodAttribute() {
-    getType().hasQualifiedName("System.Runtime.CompilerServices.MethodImplAttribute") and
+    this.getType().hasQualifiedName("System.Runtime.CompilerServices.MethodImplAttribute") and
     exists(MemberConstantAccess a, MemberConstant mc |
-      a = getArgument(0) and
+      a = this.getArgument(0) and
       a.getTarget() = mc and
       mc.hasName("Synchronized") and
       mc.getDeclaringType().hasQualifiedName("System.Runtime.CompilerServices.MethodImplOptions")
@@ -42,13 +42,13 @@ private class SynchronizedMethodAttribute extends Attribute {
 
 /** A method with attribute `[MethodImpl(MethodImplOptions.Synchronized)]`. */
 private class SynchronizedMethod extends Method {
-  SynchronizedMethod() { getAnAttribute() instanceof SynchronizedMethodAttribute }
+  SynchronizedMethod() { this.getAnAttribute() instanceof SynchronizedMethodAttribute }
 
   /** Holds if this method locks `this`. */
-  predicate isLockThis() { not isStatic() }
+  predicate isLockThis() { not this.isStatic() }
 
   /** Gets the type that is locked by this method, if any. */
-  Type getLockTypeObject() { isStatic() and result = getDeclaringType() }
+  Type getLockTypeObject() { this.isStatic() and result = this.getDeclaringType() }
 }
 
 /** A block that is locked by a `lock` statement. */
@@ -68,7 +68,7 @@ abstract class LockedBlock extends BlockStmt {
     // delegates and lambdas
     result.getParent() = this
     or
-    exists(Stmt mid | mid = getALockedStmt() and result.getParent() = mid)
+    exists(Stmt mid | mid = this.getALockedStmt() and result.getParent() = mid)
   }
 }
 

@@ -48,6 +48,12 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { n
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
 /**
+ * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
+ * but not in local taint.
+ */
+predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
+
+/**
  * Holds if taint can flow in one local step from `nodeFrom` to `nodeTo` excluding
  * local data flow steps. That is, `nodeFrom` and `nodeTo` are likely to represent
  * different objects.
@@ -118,12 +124,14 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
  * Holds if taint may propagate from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
+pragma[inline]
 predicate localTaint(DataFlow::Node source, DataFlow::Node sink) { localTaintStep*(source, sink) }
 
 /**
  * Holds if taint can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprTaint(Expr e1, Expr e2) {
   localTaint(DataFlow::exprNode(e1), DataFlow::exprNode(e2))
 }

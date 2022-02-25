@@ -1447,4 +1447,139 @@ void temporary_hierarchy() {
     float f = (returnValue<POD_Derived>()).f();
 }
 
+struct Inheritance_Test_B {
+  ~Inheritance_Test_B() {}
+};
+
+struct Inheritance_Test_A : public Inheritance_Test_B {
+  int x;
+  int y;
+  Inheritance_Test_A() : x(42) {
+    y = 3;
+  }
+};
+
+void array_structured_binding() {
+    int xs[2] = {1, 2};
+    // structured binding use
+    {
+        auto& [x0, x1] = xs;
+        x1 = 3;
+        int &rx1 = x1;
+        int x = x1;
+    }
+    // explicit reference version
+    {
+        auto& unnamed_local_variable = xs;
+        auto& x0 = xs[0];
+        auto& x1 = xs[1];
+        x1 = 3;
+        int &rx1 = x1;
+        int x = x1;
+    }
+}
+
+struct StructuredBindingDataMemberStruct {
+    int i = 1;
+    double d = 2.0;
+    unsigned int b : 3;
+    int& r = i;
+};
+
+void data_member_structured_binding() {
+    StructuredBindingDataMemberStruct s;
+    // structured binding use
+    {
+        auto [i, d, b, r] = s;
+        d = 4.0;
+        double& rd = d;
+        int v = i;
+        r = 5;
+        int& rr = r;
+        int w = r;
+    }
+    // explicit reference version
+    {
+        auto unnamed_local_variable = s;
+        auto& i = unnamed_local_variable.i;
+        auto& d = unnamed_local_variable.d;
+        // no equivalent for b
+        auto& r = unnamed_local_variable.r;
+        d = 4.0;
+        double& rd = d;
+        int v = i;
+        r = 5;
+        int& rr = r;
+        int w = r;
+    }
+}
+struct StructuredBindingTuple;
+
+namespace std {
+    template<typename T>
+    struct tuple_size;
+    template<>
+    struct tuple_size<StructuredBindingTuple> {
+        static const unsigned int value = 3;
+    };
+
+    template<int, typename T>
+    struct tuple_element;
+    template<>
+    struct tuple_element<0, StructuredBindingTuple> {
+        using type = int;
+    };
+    template<>
+    struct tuple_element<1, StructuredBindingTuple> {
+        using type = double;
+    };
+    template<>
+    struct tuple_element<2, StructuredBindingTuple> {
+        using type = int&;
+    };
+}
+
+struct StructuredBindingTuple {
+    int i = 1;
+    double d = 2.2;
+    int& r = i;
+
+    template<int i>
+    typename std::tuple_element<i, StructuredBindingTuple>::type& get();
+};
+
+template<>
+std::tuple_element<0, StructuredBindingTuple>::type& StructuredBindingTuple::get<0>() { return i; }
+template<>
+std::tuple_element<1, StructuredBindingTuple>::type& StructuredBindingTuple::get<1>() { return d; }
+template<>
+std::tuple_element<2, StructuredBindingTuple>::type& StructuredBindingTuple::get<2>() { return r; }
+
+void tuple_structured_binding() {
+    StructuredBindingTuple t;
+    // structured binding use
+    {
+        auto [i, d, r] = t;
+        d = 4.0;
+        double& rd = d;
+        int v = i;
+        r = 5;
+        int& rr = r;
+        int w = r;
+    }
+    // explicit reference version
+    {
+        auto unnamed_local_variable = t;
+        auto& i = unnamed_local_variable.get<0>();
+        auto& d = unnamed_local_variable.get<1>();
+        auto& r = unnamed_local_variable.get<2>();
+        d = 4.0;
+        double& rd = d;
+        int v = i;
+        r = 5;
+        int& rr = r;
+        int w = r;
+    }
+}
+
 // semmle-extractor-options: -std=c++17 --clang

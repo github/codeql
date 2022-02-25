@@ -9,7 +9,6 @@
  * @id py/path-injection
  * @tags correctness
  *       security
- *       external/owasp/owasp-a1
  *       external/cwe/cwe-022
  *       external/cwe/cwe-023
  *       external/cwe/cwe-036
@@ -19,7 +18,9 @@
 
 import python
 import semmle.python.security.dataflow.PathInjection
+import DataFlow::PathGraph
 
-from CustomPathNode source, CustomPathNode sink
-where pathInjection(source, sink)
-select sink, source, sink, "This path depends on $@.", source, "a user-provided value"
+from PathInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "This path depends on $@.", source.getNode(),
+  "a user-provided value"

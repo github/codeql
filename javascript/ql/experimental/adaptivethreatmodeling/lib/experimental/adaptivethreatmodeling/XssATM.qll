@@ -24,21 +24,22 @@ module SinkEndpointFilter {
    * effective sink.
    */
   string getAReasonSinkExcluded(DataFlow::Node sinkCandidate) {
-    (
-      result = StandardEndpointFilters::getAReasonSinkExcluded(sinkCandidate)
-      or
-      exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
-        call.getCalleeName() = "setState"
-      ) and
-      result = "setState calls ought to be safe in react applications"
+    result = StandardEndpointFilters::getAReasonSinkExcluded(sinkCandidate)
+    or
+    exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
+      call.getCalleeName() = "setState"
     ) and
+    result = "setState calls ought to be safe in react applications"
+    or
+    // Require XSS sink candidates to be (a) arguments to external library calls (possibly
+    // indirectly), or (b) heuristic sinks.
+    //
+    // Heuristic sinks are copied from the `HeuristicDomBasedXssSink` class defined within
+    // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
+    // We can't reuse the class because importing that file would cause us to treat these
+    // heuristic sinks as known sinks.
+    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(sinkCandidate) and
     not (
-      // Explicitly allow the following heuristic sinks.
-      //
-      // These are copied from the `HeuristicDomBasedXssSink` class defined within
-      // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
-      // We can't reuse the class because importing that file would cause us to treat these
-      // heuristic sinks as known sinks.
       isAssignedToOrConcatenatedWith(sinkCandidate, "(?i)(html|innerhtml)")
       or
       isArgTo(sinkCandidate, "(?i)(html|render)")
@@ -54,7 +55,8 @@ module SinkEndpointFilter {
         pw.getPropertyName().regexpMatch("(?i).*html*") and
         pw.getRhs() = sinkCandidate
       )
-    )
+    ) and
+    result = "not a direct argument to a likely external library call or a heuristic sink"
   }
 }
 

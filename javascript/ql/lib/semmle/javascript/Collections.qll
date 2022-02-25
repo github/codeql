@@ -156,7 +156,7 @@ private module CollectionDataFlow {
   }
 
   /**
-   * A step for modelling `for of` iteration on arrays, maps, sets, and iterators.
+   * A step for modeling `for of` iteration on arrays, maps, sets, and iterators.
    *
    * For sets and iterators the l-value are the elements of the set/iterator.
    * For maps the l-value is a tuple containing a key and a value.

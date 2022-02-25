@@ -38,9 +38,9 @@ void do_source()
 	global10 = zero(source());
 
 	sink(global6);
-	sink(global7); // $ ast MISSING: ir
-	sink(global8); // $ ast MISSING: ir
-	sink(global9); // $ ast MISSING: ir
+	sink(global7); // $ ast,ir
+	sink(global8); // $ ast,ir
+	sink(global9); // $ ast,ir
 	sink(global10);
 }
 
@@ -87,11 +87,11 @@ void class_field_test() {
 
 	sink(mc1.a);
 	sink(mc1.b); // $ ast,ir
-	sink(mc1.c); // $ ast,ir
+	sink(mc1.c); // $ ast MISSING: ir
 	sink(mc1.d); // $ ast,ir
 	sink(mc2.a);
 	sink(mc2.b); // $ ast,ir
-	sink(mc2.c); // $ ast,ir
+	sink(mc2.c); // $ ast MISSING: ir
 	sink(mc2.d);
 }
 
@@ -134,7 +134,7 @@ void pointer_test() {
 	sink(*p3); // $ ast,ir
 
 	*p3 = 0;
-	sink(*p3); // $ SPURIOUS: ast
+	sink(*p3); // $ SPURIOUS: ast,ir
 }
 
 // --- return values ---
@@ -233,7 +233,7 @@ void test_lambdas()
 	sink(a()); // $ ast,ir
 
 	auto b = [&] {
-		sink(t); // $ ast MISSING: ir
+		sink(t); // $ ast,ir
 		sink(u); // clean
 		v = source(); // (v is reference captured)
 	};
@@ -448,9 +448,9 @@ void test_qualifiers()
 	sink(b);
 	sink(b.getMember());
 	b.member = source();
-	sink(b); // $ ir MISSING: ast
+	sink(b); // $ MISSING: ast,ir
 	sink(b.member); // $ ast,ir
-	sink(b.getMember()); // $ ir MISSING: ast
+	sink(b.getMember()); // $ MISSING: ast,ir
 
 	c = new MyClass2(0);
 
@@ -665,7 +665,7 @@ public:
 void test_no_const_member(char* source) {
   C_no_const_member_function c;
   memcpy(c.data(), source, 16);
-  sink(c.data()); // $ ast MISSING: ir
+  sink(c.data()); // $ ast,ir
 }
 
 class C_const_member_function {
@@ -691,6 +691,6 @@ void test_argument_source_field_to_obj() {
 	argument_source(s.x);
 
 	sink(s); // $ SPURIOUS: ast
-	sink(s.x); // $ ast MISSING: ir
+	sink(s.x); // $ ast,ir
 	sink(s.y); // clean
 }

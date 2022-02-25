@@ -88,7 +88,7 @@ abstract class TlsLibrary extends string {
   /** The name of a specific protocol version. */
   abstract string specific_version_name(ProtocolVersion version);
 
-  /** Gets a name, which is a member of `version_constants`,  that can be used to specify the protocol family `family`. */
+  /** Gets a name, which is a member of `version_constants`, that can be used to specify the protocol family `family`. */
   abstract string unspecific_version_name(ProtocolFamily family);
 
   /** Gets an API node representing the module or class holding the version constants. */
@@ -96,12 +96,12 @@ abstract class TlsLibrary extends string {
 
   /** Gets an API node representing a specific protocol version. */
   API::Node specific_version(ProtocolVersion version) {
-    result = version_constants().getMember(specific_version_name(version))
+    result = this.version_constants().getMember(this.specific_version_name(version))
   }
 
   /** Gets an API node representing the protocol family `family`. */
   API::Node unspecific_version(ProtocolFamily family) {
-    result = version_constants().getMember(unspecific_version_name(family))
+    result = this.version_constants().getMember(this.unspecific_version_name(family))
   }
 
   /** Gets a creation of a context with a default protocol. */
@@ -112,14 +112,14 @@ abstract class TlsLibrary extends string {
 
   /** Gets a creation of a context with a specific protocol version, known to be insecure. */
   ContextCreation insecure_context_creation(ProtocolVersion version) {
-    result in [specific_context_creation(), default_context_creation()] and
+    result in [this.specific_context_creation(), this.default_context_creation()] and
     result.getProtocol() = version and
     version.isInsecure()
   }
 
   /** Gets a context that was created using `family`, known to have insecure instances. */
   ContextCreation unspecific_context_creation(ProtocolFamily family) {
-    result in [specific_context_creation(), default_context_creation()] and
+    result in [this.specific_context_creation(), this.default_context_creation()] and
     result.getProtocol() = family
   }
 

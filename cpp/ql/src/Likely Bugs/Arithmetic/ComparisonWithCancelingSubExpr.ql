@@ -85,7 +85,8 @@ private predicate cancelingSubExprs(ComparisonOperation cmp, VariableAccess a1, 
   exists(Variable v |
     exists(float m | m < 0 and cmpLinearSubVariable(cmp, v, a1, m)) and
     exists(float m | m > 0 and cmpLinearSubVariable(cmp, v, a2, m))
-  )
+  ) and
+  not any(ClassTemplateInstantiation inst).getATemplateArgument() = cmp.getParent*()
 }
 
 from ComparisonOperation cmp, VariableAccess a1, VariableAccess a2

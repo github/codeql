@@ -27,6 +27,7 @@ nodes
 | summaries.rb:18:6:18:13 | tainted3 | semmle.label | tainted3 |
 subpaths
 invalidSpecComponent
+invalidOutputSpecComponent
 #select
 | summaries.rb:2:6:2:12 | tainted | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:2:6:2:12 | tainted | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
 | summaries.rb:5:8:5:8 | x | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:5:8:5:8 | x | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |

@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Working with a file, without checking its existence and its rights, as well as working with names that can be predicted, may not be safe. Requires the attention of developers.</p>
+
+</overview>
+
+<example>
+<p>The following example demonstrates erroneous and corrected work with file.</p>
+<sample src="InsecureTemporaryFile.cpp" />
+
+</example>
+<references>
+
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/CON33-C.+Avoid+race+conditions+when+using+library+functions">CON33-C. Avoid race conditions when using library functions</a>.
+</li>
+
+</references>
+</qhelp>

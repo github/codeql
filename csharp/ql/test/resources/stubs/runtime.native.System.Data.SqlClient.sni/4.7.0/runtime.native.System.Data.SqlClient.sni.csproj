@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../runtime.win-arm64.runtime.native.System.Data.SqlClient.sni/4.4.0/runtime.win-arm64.runtime.native.System.Data.SqlClient.sni.csproj" />
+    <ProjectReference Include="../../runtime.win-x64.runtime.native.System.Data.SqlClient.sni/4.4.0/runtime.win-x64.runtime.native.System.Data.SqlClient.sni.csproj" />
+    <ProjectReference Include="../../runtime.win-x86.runtime.native.System.Data.SqlClient.sni/4.4.0/runtime.win-x86.runtime.native.System.Data.SqlClient.sni.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

@@ -21,6 +21,4 @@ class Foo
 end
 
 Foo.new.send("exit", 1)
-Foo.new.instance_eval("self.class", "file.rb", 3)
-Foo.class_eval("def foo; 1; end", "file.rb", 1)
 Foo.module_eval("def bar; 1; end", "other_file.rb", 2)

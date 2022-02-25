@@ -573,6 +573,11 @@ class TranslatedConstructorInitList extends TranslatedElement, InitializationCon
       baseInit = func.(Constructor).getInitializer(id) and
       result = getTranslatedConstructorBaseInit(baseInit)
     )
+    or
+    exists(ConstructorInit bareInit |
+      bareInit = func.(Constructor).getInitializer(id) and
+      result = getTranslatedConstructorBareInit(bareInit)
+    )
   }
 
   override Instruction getFirstInstruction() {

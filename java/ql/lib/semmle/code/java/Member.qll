@@ -285,7 +285,20 @@ private predicate overrides(Method m1, Method m2) {
     or
     m2.isProtected()
     or
-    m2.isPackageProtected() and t1.getPackage() = t2.getPackage()
+    m2.isPackageProtected() and
+    pragma[only_bind_out](t1.getPackage()) = pragma[only_bind_out](t2.getPackage())
+  )
+}
+
+pragma[nomagic]
+private predicate overridesCandidateType(RefType tsup, string sig, RefType t, Method m) {
+  virtualMethodWithSignature(sig, t, m) and
+  t.extendsOrImplements(tsup)
+  or
+  exists(RefType mid |
+    overridesCandidateType(mid, sig, t, m) and
+    mid.extendsOrImplements(tsup) and
+    not virtualMethodWithSignature(sig, mid, _)
   )
 }
 
@@ -294,11 +307,10 @@ private predicate overrides(Method m1, Method m2) {
  * ignoring any access modifiers. Additionally, this predicate binds
  * `t1` to the type declaring `m1` and `t2` to the type declaring `m2`.
  */
-pragma[noopt]
+cached
 predicate overridesIgnoringAccess(Method m1, RefType t1, Method m2, RefType t2) {
   exists(string sig |
-    virtualMethodWithSignature(sig, t1, m1) and
-    t1.extendsOrImplements+(t2) and
+    overridesCandidateType(t2, sig, t1, m1) and
     virtualMethodWithSignature(sig, t2, m2)
   )
 }
@@ -575,7 +587,7 @@ class FieldDeclaration extends ExprParent, @fielddecl, Annotatable {
   int getNumField() { result = max(int idx | fieldDeclaredIn(_, this, idx) | idx) + 1 }
 
   override string toString() {
-    if this.getNumField() = 0
+    if this.getNumField() = 1
     then result = this.getTypeAccess() + " " + this.getField(0) + ";"
     else result = this.getTypeAccess() + " " + this.getField(0) + ", ...;"
   }

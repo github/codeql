@@ -80,7 +80,8 @@ module Gvn {
     LeafType() {
       not this instanceof GenericType and
       not this instanceof TypeParameter and
-      not this instanceof DynamicType
+      not this instanceof DynamicType and
+      not this instanceof TupleType
     }
   }
 
@@ -477,6 +478,8 @@ module Gvn {
     cached
     GvnType getGlobalValueNumber(Type t) {
       result = TLeafGvnType(t)
+      or
+      result = TLeafGvnType(t.(TupleType).getUnderlyingType())
       or
       t instanceof DynamicType and
       result = TLeafGvnType(any(ObjectType ot))

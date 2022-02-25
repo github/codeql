@@ -50,14 +50,14 @@ module UnsafeShellCommandConstruction {
   /**
    * A parameter of an exported function, seen as a source for shell command constructed from library input.
    */
-  class ExternalInputSource extends Source, DataFlow::ParameterNode {
+  class ExternalInputSource extends Source, DataFlow::SourceNode {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
       not (
         // looks to be on purpose.
-        this.getName() = ["cmd", "command"]
+        this.(DataFlow::ParameterNode).getName() = ["cmd", "command"]
         or
-        this.getName().regexpMatch(".*(Cmd|Command)$") // ends with "Cmd" or "Command"
+        this.(DataFlow::ParameterNode).getName().regexpMatch(".*(Cmd|Command)$") // ends with "Cmd" or "Command"
       )
     }
   }
@@ -264,8 +264,8 @@ module UnsafeShellCommandConstruction {
     override predicate sanitizes(boolean outcome, Expr e) {
       outcome = true and
       (
-        e = getArgument(0).asExpr() or
-        e = getArgument(0).(StringOps::ConcatenationRoot).getALeaf().asExpr()
+        e = this.getArgument(0).asExpr() or
+        e = this.getArgument(0).(StringOps::ConcatenationRoot).getALeaf().asExpr()
       )
     }
   }
@@ -284,6 +284,16 @@ module UnsafeShellCommandConstruction {
       outcome = astNode.getPolarity() and
       e = x
     }
+  }
+
+  /** A guard that checks whether `x` is a number. */
+  class NumberGuard extends TaintTracking::SanitizerGuardNode instanceof DataFlow::CallNode {
+    Expr x;
+    boolean polarity;
+
+    NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
+
+    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
   }
 
   private import semmle.javascript.dataflow.internal.AccessPaths

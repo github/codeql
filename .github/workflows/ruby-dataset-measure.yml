@@ -4,15 +4,17 @@ on:
   push:
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
     paths:
       - ruby/ql/lib/ruby.dbscheme
+      - .github/workflows/ruby-dataset-measure.yml
   pull_request:
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
     paths:
       - ruby/ql/lib/ruby.dbscheme
+      - .github/workflows/ruby-dataset-measure.yml
   workflow_dispatch:
 
 jobs:
@@ -22,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        repo: [rails/rails, discourse/discourse, spree/spree]
+        repo: [rails/rails, discourse/discourse, spree/spree, ruby/ruby]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -39,7 +41,7 @@ jobs:
       - name: Create database
         run: |
           codeql database create \
-            --search-path "${{ github.workspace }}/ruby" \
+            --search-path "${{ github.workspace }}/ruby/extractor-pack" \
             --threads 4 \
             --language ruby --source-root "${{ github.workspace }}/repo" \
             "${{ runner.temp }}/database"

@@ -9,12 +9,12 @@ import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Basic
 import semmle.python.web.flask.General
 
-FunctionValue flask_redirect() { result = Value::named("flask.redirect") }
+deprecated FunctionValue flask_redirect() { result = Value::named("flask.redirect") }
 
 /**
  * Represents an argument to the `flask.redirect` function.
  */
-class FlaskRedirect extends HttpRedirectTaintSink {
+deprecated class FlaskRedirect extends HttpRedirectTaintSink {
   override string toString() { result = "flask.redirect" }
 
   FlaskRedirect() {

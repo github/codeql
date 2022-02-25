@@ -15,9 +15,9 @@ import semmle.code.xml.WebXML
 private class HttpOnlyConfig extends WebContextParameter {
   HttpOnlyConfig() { this.getParamName().getValue() = "useHttpOnly" }
 
-  string getParamValueElementValue() { result = getParamValue().getValue() }
+  string getParamValueElementValue() { result = this.getParamValue().getValue() }
 
-  predicate isHTTPOnlySet() { getParamValueElementValue().toLowerCase() = "false" }
+  predicate isHTTPOnlySet() { this.getParamValueElementValue().toLowerCase() = "false" }
 }
 
 from HttpOnlyConfig config

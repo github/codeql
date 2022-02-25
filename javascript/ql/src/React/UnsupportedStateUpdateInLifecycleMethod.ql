@@ -16,7 +16,7 @@ import javascript
  */
 class CallOnSelf extends DataFlow::CallNode {
   CallOnSelf() {
-    exists(Function binder | binder = getEnclosingFunction().getThisBinder() |
+    exists(Function binder | binder = this.getEnclosingFunction().getThisBinder() |
       exists(DataFlow::ThisNode thiz |
         this = thiz.getAMethodCall(_) and
         thiz.getBinder().getAstNode() = binder
@@ -76,13 +76,11 @@ class StateUpdateVolatileMethod extends Function {
     // - componentsWillMount
     // - componentsDidMount
     exists(ReactComponent c |
-      methodName = "componentDidUnmount" or
-      methodName = "componentDidUpdate" or
-      methodName = "componentWillUpdate" or
-      methodName = "getDefaultProps" or
-      methodName = "getInitialState" or
-      methodName = "render" or
-      methodName = "shouldComponentUpdate"
+      methodName =
+        [
+          "componentDidUnmount", "componentDidUpdate", "componentWillUpdate", "getDefaultProps",
+          "getInitialState", "render", "shouldComponentUpdate"
+        ]
     |
       this = c.getInstanceMethod(methodName)
     )

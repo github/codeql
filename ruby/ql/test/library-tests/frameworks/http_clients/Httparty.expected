@@ -1,7 +1,0 @@
-| Httparty.rb:5:1:5:35 | call to get | Httparty.rb:5:1:5:35 | call to get |
-| Httparty.rb:7:1:7:55 | call to post | Httparty.rb:7:1:7:55 | call to post |
-| Httparty.rb:9:1:9:54 | call to put | Httparty.rb:9:1:9:54 | call to put |
-| Httparty.rb:11:1:11:56 | call to patch | Httparty.rb:11:1:11:56 | call to patch |
-| Httparty.rb:15:9:15:46 | call to delete | Httparty.rb:16:1:16:10 | call to body |
-| Httparty.rb:18:9:18:44 | call to head | Httparty.rb:19:1:19:10 | call to body |
-| Httparty.rb:21:9:21:47 | call to options | Httparty.rb:22:1:22:10 | call to body |

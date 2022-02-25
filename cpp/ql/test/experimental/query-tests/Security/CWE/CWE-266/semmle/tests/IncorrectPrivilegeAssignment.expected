@@ -1,0 +1,2 @@
+| test.cpp:9:3:9:7 | call to umask | Not use equal argument in umask and $@ functions. | test.cpp:13:3:13:7 | call to chmod | chmod |
+| test.cpp:30:3:30:7 | call to chmod | Using arithmetic to compute the mask in $@ may not be safe. | test.cpp:30:3:30:7 | call to chmod | chmod |

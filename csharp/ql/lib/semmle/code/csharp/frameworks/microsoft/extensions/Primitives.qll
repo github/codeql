@@ -1,0 +1,66 @@
+/** Provides definitions related to the `Microsoft.Extensions.Primitives` namespace. */
+
+private import semmle.code.csharp.dataflow.ExternalFlow
+
+/** Data flow for `Microsoft.Extensions.Primitives.StringValues`. */
+private class MicrosoftExtensionsPrimitivesStringValuesFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "Microsoft.Extensions.Primitives;StringValues;false;Add;(System.String);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Add;(System.String);;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Concat;(Microsoft.Extensions.Primitives.StringValues,Microsoft.Extensions.Primitives.StringValues);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Concat;(Microsoft.Extensions.Primitives.StringValues,Microsoft.Extensions.Primitives.StringValues);;Argument[1];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Concat;(Microsoft.Extensions.Primitives.StringValues,System.String);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Concat;(Microsoft.Extensions.Primitives.StringValues,System.String);;Argument[1];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Concat;(System.String,Microsoft.Extensions.Primitives.StringValues);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Concat;(System.String,Microsoft.Extensions.Primitives.StringValues);;Argument[1];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Contains;(System.String);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Contains;(System.String);;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;CopyTo;(System.String[],System.Int32);;Argument[0].Element;ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;CopyTo;(System.String[],System.Int32);;Argument[1];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;CopyTo;(System.String[],System.Int32);;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(Microsoft.Extensions.Primitives.StringValues);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(Microsoft.Extensions.Primitives.StringValues);;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(Microsoft.Extensions.Primitives.StringValues,Microsoft.Extensions.Primitives.StringValues);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(Microsoft.Extensions.Primitives.StringValues,Microsoft.Extensions.Primitives.StringValues);;Argument[1];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(Microsoft.Extensions.Primitives.StringValues,System.String);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(Microsoft.Extensions.Primitives.StringValues,System.String);;Argument[1];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(Microsoft.Extensions.Primitives.StringValues,System.String[]);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(Microsoft.Extensions.Primitives.StringValues,System.String[]);;Argument[1].Element;ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(System.Object);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(System.Object);;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(System.String);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(System.String);;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(System.String,Microsoft.Extensions.Primitives.StringValues);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(System.String,Microsoft.Extensions.Primitives.StringValues);;Argument[1];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(System.String[]);;Argument[0].Element;ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(System.String[]);;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(System.String[],Microsoft.Extensions.Primitives.StringValues);;Argument[0].Element;ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Equals;(System.String[],Microsoft.Extensions.Primitives.StringValues);;Argument[1];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;GetEnumerator;();;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;GetHashCode;();;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;IndexOf;(System.String);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;IndexOf;(System.String);;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Insert;(System.Int32,System.String);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Insert;(System.Int32,System.String);;Argument[1];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Insert;(System.Int32,System.String);;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;IsNullOrEmpty;(Microsoft.Extensions.Primitives.StringValues);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Remove;(System.String);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;Remove;(System.String);;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;RemoveAt;(System.Int32);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;RemoveAt;(System.Int32);;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;StringValues;(System.String);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;StringValues;(System.String[]);;Argument[0].Element;ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;ToArray;();;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;ToString;();;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;get_Count;();;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;get_IsReadOnly;();;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;get_Item;(System.Int32);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;get_Item;(System.Int32);;Argument[Qualifier];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;set_Item;(System.Int32,System.String);;Argument[0];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;set_Item;(System.Int32,System.String);;Argument[1];ReturnValue;taint",
+        "Microsoft.Extensions.Primitives;StringValues;false;set_Item;(System.Int32,System.String);;Argument[Qualifier];ReturnValue;taint",
+      ]
+  }
+}

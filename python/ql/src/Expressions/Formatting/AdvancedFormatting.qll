@@ -40,9 +40,7 @@ library class PossibleAdvancedFormatString extends StrConst {
 
   private predicate implicitlyNumberedField(int start, int end) {
     this.field(start, end) and
-    exists(string c | start + 1 = this.getText().indexOf(c) |
-      c = "}" or c = ":" or c = "!" or c = "."
-    )
+    exists(string c | start + 1 = this.getText().indexOf(c) | c in ["}", ":", "!", "."])
   }
 
   /** Whether this format string has implicitly numbered fields */

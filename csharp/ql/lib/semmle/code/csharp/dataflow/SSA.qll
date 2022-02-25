@@ -170,7 +170,7 @@ module Ssa {
     /**
      * Gets the control flow node of this SSA definition, if any. Phi nodes are
      * examples of SSA definitions without a control flow node, as they are
-     * modelled at index `-1` in the relevant basic block.
+     * modeled at index `-1` in the relevant basic block.
      */
     final ControlFlow::Node getControlFlowNode() {
       exists(ControlFlow::BasicBlock bb, int i | this.definesAt(_, bb, i) | result = bb.getNode(i))

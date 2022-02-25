@@ -2,7 +2,7 @@
  * @name External libraries
  * @description A list of external libraries used in the code
  * @kind metric
- * @metricType callable
+ * @tags summary
  * @id java/telemetry/external-libs
  */
 

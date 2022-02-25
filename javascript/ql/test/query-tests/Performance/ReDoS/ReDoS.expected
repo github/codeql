@@ -29,12 +29,14 @@
 | regexplib/email.js:5:24:5:35 | [a-zA-Z0-9]+ | This part of the regular expression may cause exponential backtracking on strings starting with '0' and containing many repetitions of '0'. |
 | regexplib/email.js:5:63:5:74 | [a-zA-Z0-9]+ | This part of the regular expression may cause exponential backtracking on strings starting with '0@0' and containing many repetitions of '0'. |
 | regexplib/email.js:6:10:6:35 | (?:[a-zA-Z0-9][\\.\\-\\+_]?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
+| regexplib/email.js:6:60:6:88 | (?:[a-zA-Z0-9][\\.\\-_]?){0,62} | This part of the regular expression may cause exponential backtracking on strings starting with '0@' and containing many repetitions of '0'. |
 | regexplib/email.js:13:36:13:44 | [a-zA-Z]* | This part of the regular expression may cause exponential backtracking on strings starting with 'A' and containing many repetitions of 'A'. |
 | regexplib/email.js:25:67:25:78 | [a-zA-Z0-9]+ | This part of the regular expression may cause exponential backtracking on strings starting with '0' and containing many repetitions of '0'. |
 | regexplib/email.js:25:106:25:117 | [a-zA-Z0-9]+ | This part of the regular expression may cause exponential backtracking on strings starting with '0@0' and containing many repetitions of '0'. |
 | regexplib/email.js:25:212:25:223 | [a-zA-Z0-9]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
 | regexplib/email.js:25:251:25:262 | [a-zA-Z0-9]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
 | regexplib/email.js:32:10:32:25 | (?:\\w[\\.\\-\\+]?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| regexplib/email.js:32:41:32:61 | (?:\\w[\\.\\-\\+]?){0,62} | This part of the regular expression may cause exponential backtracking on strings starting with 'a@' and containing many repetitions of 'a'. |
 | regexplib/email.js:33:16:33:22 | [-.\\w]* | This part of the regular expression may cause exponential backtracking on strings starting with '0' and containing many repetitions of '0'. |
 | regexplib/email.js:33:38:33:51 | ([0-9a-zA-Z])+ | This part of the regular expression may cause exponential backtracking on strings starting with '0@' and containing many repetitions of '00.'. |
 | regexplib/email.js:33:53:33:58 | [-\\w]* | This part of the regular expression may cause exponential backtracking on strings starting with '0@0' and containing many repetitions of '0'. |
@@ -45,9 +47,13 @@
 | regexplib/markup.js:13:6:13:12 | [^"']+? | This part of the regular expression may cause exponential backtracking on strings starting with '<' and containing many repetitions of '!'. |
 | regexplib/markup.js:13:14:13:16 | .+? | This part of the regular expression may cause exponential backtracking on strings starting with '<' and containing many repetitions of 'a"'. |
 | regexplib/markup.js:17:17:17:19 | .*? | This part of the regular expression may cause exponential backtracking on strings starting with '<a ="' and containing many repetitions of '" ="'. |
+| regexplib/markup.js:24:43:24:45 | \\S+ | This part of the regular expression may cause exponential backtracking on strings starting with '&lt;A ' and containing many repetitions of '!=- '. |
+| regexplib/markup.js:24:47:24:118 | (\\s*=\\s*([-\\w\\.]{1,1024}\|&quot;[^&quot;]{0,1024}&quot;\|'[^']{0,1024}'))? | This part of the regular expression may cause exponential backtracking on strings starting with '&lt;A !' and containing many repetitions of ' =- !'. |
 | regexplib/markup.js:37:29:37:56 | [a-zA-Z0-9\|:\|\\/\|=\|-\|.\|\\?\|&]* | This part of the regular expression may cause exponential backtracking on strings starting with '[a=' and containing many repetitions of '='. |
 | regexplib/markup.js:40:23:40:25 | \\w+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | regexplib/markup.js:40:132:40:134 | \\s* | This part of the regular expression may cause exponential backtracking on strings starting with 'a[@a=''' and containing many repetitions of ' @a<""'. |
+| regexplib/markup.js:47:43:47:45 | \\S+ | This part of the regular expression may cause exponential backtracking on strings starting with '&lt;A ' and containing many repetitions of '!=- '. |
+| regexplib/markup.js:47:47:47:118 | (\\s*=\\s*([-\\w\\.]{1,1024}\|&quot;[^&quot;]{0,1024}&quot;\|'[^']{0,1024}'))? | This part of the regular expression may cause exponential backtracking on strings starting with '&lt;A !' and containing many repetitions of ' =- !'. |
 | regexplib/markup.js:53:29:53:56 | [a-zA-Z0-9\|:\|\\/\|=\|-\|.\|\\?\|&]* | This part of the regular expression may cause exponential backtracking on strings starting with '[a=' and containing many repetitions of '='. |
 | regexplib/markup.js:56:23:56:25 | \\w+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | regexplib/markup.js:56:132:56:134 | \\s* | This part of the regular expression may cause exponential backtracking on strings starting with 'a[@a=''' and containing many repetitions of ' @a<""'. |
@@ -62,7 +68,10 @@
 | regexplib/misc.js:148:23:148:29 | [^"'=]+ | This part of the regular expression may cause exponential backtracking on strings starting with '<! ' and containing many repetitions of '! '. |
 | regexplib/misc.js:173:4:173:11 | ([a-z])+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'aa'. |
 | regexplib/strings.js:19:31:19:57 | [a-z&#230;&#248;&#229;0-9]+ | This part of the regular expression may cause exponential backtracking on strings starting with '#@' and containing many repetitions of '#'. |
+| regexplib/strings.js:19:69:19:95 | [a-z&#230;&#248;&#229;0-9]+ | This part of the regular expression may cause exponential backtracking on strings starting with '#@#' and containing many repetitions of '##'. |
 | regexplib/strings.js:47:3:47:5 | \\S* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '!'. |
+| regexplib/strings.js:53:4:53:12 | [a-z0-9]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '00.'. |
+| regexplib/strings.js:53:14:53:24 | [\\-a-z0-9]* | This part of the regular expression may cause exponential backtracking on strings starting with '0' and containing many repetitions of '00.0'. |
 | regexplib/strings.js:57:17:57:19 | \\d+ | This part of the regular expression may cause exponential backtracking on strings starting with '?se[' and containing many repetitions of '9'. |
 | regexplib/strings.js:81:17:81:19 | \\d+ | This part of the regular expression may cause exponential backtracking on strings starting with '?se[' and containing many repetitions of '9'. |
 | regexplib/strings.js:91:3:91:5 | \\S* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '!'. |
@@ -183,3 +192,10 @@
 | tst.js:385:14:385:25 | ([DE]\|[de])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'd'. |
 | tst.js:387:27:387:33 | (a\|aa)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'aa'. |
 | tst.js:388:14:388:20 | (a\|aa)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'aa'. |
+| tst.js:391:6:394:5 | (a\|aa)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'aa'. |
+| tst.js:398:6:398:12 | (c\|cc)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'cc'. |
+| tst.js:399:6:399:12 | (d\|dd)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'dd'. |
+| tst.js:400:6:401:1 | (e\|ee)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'ee'. |
+| tst.js:404:6:405:7 | (g\|gg)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'gg'. |
+| tst.js:407:125:407:127 | \\s* | This part of the regular expression may cause exponential backtracking on strings starting with '0/*' and containing many repetitions of ' ;0'. |
+| tst.js:411:15:411:19 | a{1,} | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |

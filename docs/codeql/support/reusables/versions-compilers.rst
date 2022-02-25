@@ -11,19 +11,19 @@
    Microsoft extensions (up to VS 2019),
 
    Arm Compiler 5 [3]_","``.cpp``, ``.c++``, ``.cxx``, ``.hpp``, ``.hh``, ``.h++``, ``.hxx``, ``.c``, ``.cc``, ``.h``"
-   C#,C# up to 9.0,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
+   C#,C# up to 10.0,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
 
    .NET Core up to 3.1
 
-   .NET 5","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
-   Go (aka Golang), "Go up to 1.16", "Go 1.11 or more recent", ``.go``
+   .NET 5, .NET 6","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
+   Go (aka Golang), "Go up to 1.17", "Go 1.11 or more recent", ``.go``
    Java,"Java 7 to 16 [4]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [5]_",``.java``
-   JavaScript,ECMAScript 2021 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhm``, ``.xhtml``, ``.vue``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [6]_"
+   JavaScript,ECMAScript 2021 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [6]_"
    Python,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9",Not applicable,``.py``
-   Ruby [7]_,"up to 3.02",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
-   TypeScript [8]_,"2.6-4.4",Standard TypeScript compiler,"``.ts``, ``.tsx``"
+   Ruby [7]_,"up to 3.0.2",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
+   TypeScript [8]_,"2.6-4.5",Standard TypeScript compiler,"``.ts``, ``.tsx``"
 
 .. container:: footnote-group
 

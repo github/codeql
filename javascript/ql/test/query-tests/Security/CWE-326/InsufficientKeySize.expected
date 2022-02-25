@@ -1,0 +1,11 @@
+| tst.js:3:14:3:71 | crypto. ... 1024 }) | Creation of an asymmetric RSA key uses 1024 bits, which is below 2048 and considered breakable. |
+| tst.js:7:14:7:59 | crypto. ... : 64 }) | Creation of an symmetric key uses 64 bits, which is below 128 and considered breakable. |
+| tst.js:13:14:13:56 | CryptoJ ... e: 2 }) | Creation of an symmetric PBKDF2 key uses 64 bits, which is below 128 and considered breakable. |
+| tst.js:14:14:14:60 | CryptoJ ... e: 2 }) | Creation of an symmetric PBKDF2 key uses 64 bits, which is below 128 and considered breakable. |
+| tst.js:15:14:15:60 | CryptoJ ... e: 2 }) | Creation of an symmetric EVPKDF key uses 64 bits, which is below 128 and considered breakable. |
+| tst.js:19:12:19:57 | forge.r ... rd, 64) | Creation of an symmetric RC2 key uses 64 bits, which is below 128 and considered breakable. |
+| tst.js:26:12:26:53 | forge.c ... , key2) | Creation of an symmetric AES key uses 64 bits, which is below 128 and considered breakable. |
+| tst.js:30:12:30:56 | forge.c ... , key3) | Creation of an symmetric 3DES key uses 64 bits, which is below 128 and considered breakable. |
+| tst.js:35:13:35:43 | crypto. ... an(512) | Creation of an asymmetric key uses 512 bits, which is below 2048 and considered breakable. |
+| tst.js:39:13:39:33 | new Nod ... : 512}) | Creation of an asymmetric RSA key uses 512 bits, which is below 2048 and considered breakable. |
+| tst.js:43:1:43:31 | key.gen ...  65537) | Creation of an asymmetric RSA key uses 512 bits, which is below 2048 and considered breakable. |

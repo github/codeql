@@ -27,3 +27,6 @@ csharp/extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json
 
 # Avoid committing cached package components
 .codeql
+
+# Compiled class file
+*.class

@@ -3,6 +3,7 @@
 private import csharp
 private import AssignableDefinitions
 private import SsaImpl as SsaImpl
+private import semmle.code.csharp.dataflow.SSA
 
 class BasicBlock = ControlFlow::BasicBlock;
 
@@ -12,7 +13,7 @@ BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() 
 
 class ExitBasicBlock = ControlFlow::BasicBlocks::ExitBlock;
 
-class SourceVariable = SsaImpl::TSourceVariable;
+class SourceVariable = Ssa::SourceVariable;
 
 predicate variableWrite = SsaImpl::variableWrite/4;
 

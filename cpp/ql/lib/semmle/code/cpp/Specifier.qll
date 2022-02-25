@@ -286,13 +286,13 @@ class AttributeArgument extends Element, @attribute_arg {
   override Location getLocation() { attribute_args(underlyingElement(this), _, _, _, result) }
 
   override string toString() {
-    if exists(@attribute_arg_empty self | self = underlyingElement(this))
+    if underlyingElement(this) instanceof @attribute_arg_empty
     then result = "empty argument"
     else
       exists(string prefix, string tail |
         (if exists(this.getName()) then prefix = this.getName() + "=" else prefix = "") and
         (
-          if exists(@attribute_arg_type self | self = underlyingElement(this))
+          if underlyingElement(this) instanceof @attribute_arg_type
           then tail = this.getValueType().getName()
           else tail = this.getValueText()
         ) and

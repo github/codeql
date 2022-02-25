@@ -84,7 +84,7 @@ private predicate property_getter(CallNode decorated, FunctionObject getter) {
 private predicate property_setter(CallNode decorated, FunctionObject setter) {
   property_getter(decorated, _) and
   exists(CallNode setter_call, AttrNode prop_setter |
-    prop_setter.getObject("setter").refersTo(decorated.(Object))
+    prop_setter.getObject("setter").refersTo(decorated)
   |
     setter_call.getArg(0).refersTo(setter) and
     setter_call.getFunction() = prop_setter
@@ -97,7 +97,7 @@ private predicate property_setter(CallNode decorated, FunctionObject setter) {
 private predicate property_deleter(CallNode decorated, FunctionObject deleter) {
   property_getter(decorated, _) and
   exists(CallNode deleter_call, AttrNode prop_deleter |
-    prop_deleter.getObject("deleter").refersTo(decorated.(Object))
+    prop_deleter.getObject("deleter").refersTo(decorated)
   |
     deleter_call.getArg(0).refersTo(deleter) and
     deleter_call.getFunction() = prop_deleter

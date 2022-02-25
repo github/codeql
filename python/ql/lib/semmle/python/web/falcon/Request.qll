@@ -5,20 +5,14 @@ import semmle.python.web.falcon.General
 import semmle.python.security.strings.External
 
 /** https://falcon.readthedocs.io/en/stable/api/request_and_response.html */
-class FalconRequest extends TaintKind {
+deprecated class FalconRequest extends TaintKind {
   FalconRequest() { this = "falcon.request" }
 
   override TaintKind getTaintOfAttribute(string name) {
     name = "env" and result instanceof WsgiEnvironment
     or
     result instanceof ExternalStringKind and
-    (
-      name = "uri" or
-      name = "url" or
-      name = "forwarded_uri" or
-      name = "relative_uri" or
-      name = "query_string"
-    )
+    name in ["uri", "url", "forwarded_uri", "relative_uri", "query_string"]
     or
     result instanceof ExternalStringDictKind and
     (name = "cookies" or name = "params")
@@ -35,7 +29,7 @@ class FalconRequest extends TaintKind {
   }
 }
 
-class FalconRequestParameter extends HttpRequestTaintSource {
+deprecated class FalconRequestParameter extends HttpRequestTaintSource {
   FalconRequestParameter() {
     exists(FalconHandlerFunction f | f.getRequest() = this.(ControlFlowNode).getNode())
   }

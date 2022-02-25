@@ -19,7 +19,7 @@ class Struts1ActionEntryPoint extends EntryPoint, Class {
       exists(Method methodFromAction |
         methodFromAction.getDeclaringType().hasQualifiedName("org.apache.struts.action", "Action")
       |
-        result.(Method).overrides(methodFromAction)
+        result.(Method).overrides+(methodFromAction)
       )
       or
       this.getASupertype*().hasQualifiedName("org.apache.struts.actions", "DispatchAction") and

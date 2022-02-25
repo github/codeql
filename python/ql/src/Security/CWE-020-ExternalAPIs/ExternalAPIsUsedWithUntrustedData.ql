@@ -3,7 +3,7 @@
  * @description This reports the external APIs that are used with untrusted data, along with how
  *              frequently the API is called, and how many unique sources of untrusted data flow
  *              to it.
- * @id python/count-untrusted-data-external-api
+ * @id py/count-untrusted-data-external-api
  * @kind table
  * @tags security external/cwe/cwe-20
  */

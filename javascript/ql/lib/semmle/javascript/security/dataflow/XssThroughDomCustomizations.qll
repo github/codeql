@@ -22,8 +22,8 @@ module XssThroughDom {
    */
   bindingset[result]
   string unsafeAttributeName() {
-    result.regexpMatch("data-.*") or
-    result.regexpMatch("aria-.*") or
+    result.matches("data-%") or
+    result.matches("aria-%") or
     result = ["name", "value", "title", "alt"]
   }
 
@@ -136,7 +136,7 @@ module XssThroughDom {
    */
   module Forms {
     /**
-     * A reference to an import of `Formik`.
+     * Gets a reference to an import of `Formik`.
      */
     private DataFlow::SourceNode formik() {
       result = DataFlow::moduleImport("formik")

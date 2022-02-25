@@ -233,7 +233,7 @@ class SpringBean extends SpringXMLElement {
   SpringBean getBeanParent() { result.getBeanIdentifier() = this.getBeanParentName() }
 
   /** Holds if this bean has a parent bean. */
-  predicate hasBeanParent() { exists(SpringBean b | b = this.getBeanParent()) }
+  predicate hasBeanParent() { exists(this.getBeanParent()) }
 
   predicate hasBeanAncestor(SpringBean ancestor) {
     ancestor = this.getBeanParent() or

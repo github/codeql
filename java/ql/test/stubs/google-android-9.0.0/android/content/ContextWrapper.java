@@ -15,22 +15,16 @@
  */
 package android.content;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentCallbacks;
-import android.content.ComponentName;
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.IntentSender;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.concurrent.Executor;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -40,13 +34,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.UserHandle;
-import android.util.AttributeSet;
 import android.view.Display;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.util.concurrent.Executor;
 
 /**
  * Proxying implementation of Context that simply delegates all of its calls to
@@ -54,7 +42,15 @@ import java.util.concurrent.Executor;
  * the original Context.
  */
 public class ContextWrapper extends Context {
-    public ContextWrapper() {
+    public ContextWrapper() {}
+
+    public Context getBaseContext() {
+        return null;
+    }
+
+    @Override
+    public Executor getMainExecutor() {
+        return null;
     }
 
     public ContextWrapper(Context base) {
@@ -75,6 +71,7 @@ public class ContextWrapper extends Context {
     @Override public ClassLoader getClassLoader() { return null; }
     @Override public ComponentName startForegroundService(Intent p0) { return null; }
     @Override public ComponentName startService(Intent p0) { return null; }
+    @Override public ComponentName startServiceAsUser(Intent p0, UserHandle p1) { return null; }
     @Override public ContentResolver getContentResolver() { return null; }
     @Override public Context createConfigurationContext(Configuration p0) { return null; }
     @Override public Context createContextForSplit(String p0) { return null; }
@@ -120,6 +117,7 @@ public class ContextWrapper extends Context {
     @Override public String[] databaseList() { return null; }
     @Override public String[] fileList() { return null; }
     @Override public boolean bindService(Intent p0, ServiceConnection p1, int p2) { return false; }
+    @Override public boolean bindServiceAsUser(Intent p0, ServiceConnection p1, int p2, UserHandle p3) { return false; }
     @Override public boolean deleteDatabase(String p0) { return false; }
     @Override public boolean deleteFile(String p0) { return false; }
     @Override public boolean deleteSharedPreferences(String p0) { return false; }
@@ -171,6 +169,7 @@ public class ContextWrapper extends Context {
     @Override public void startActivities(Intent[] p0, Bundle p1) { }
     @Override public void startActivity(Intent p0) { }
     @Override public void startActivity(Intent p0, Bundle p1) { }
+    @Override public void startActivityAsUser(Intent p0, UserHandle p1) { }
     @Override public void startIntentSender(IntentSender p0, Intent p1, int p2, int p3, int p4) { }
     @Override public void startIntentSender(IntentSender p0, Intent p1, int p2, int p3, int p4, Bundle p5) { }
     @Override public void unbindService(ServiceConnection p0) { }

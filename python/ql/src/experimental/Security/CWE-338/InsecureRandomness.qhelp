@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Using a cryptographically weak pseudo-random number generator to generate a security-sensitive value,
+such as a password, makes it easier for an attacker to predict the value.
+</p>
+<p>
+Pseudo-random number generators generate a sequence of numbers that only approximates the properties
+of random numbers. The sequence is not truly random because it is completely determined by a
+relatively small set of initial values, the seed. If the random number generator is
+cryptographically weak, then this sequence may be easily predictable through outside observations.
+</p>
+</overview>
+<recommendation>
+<p>
+Use a cryptographically secure pseudo-random number generator if the output is to be used in a
+security sensitive context. As a rule of thumb, a value should be considered "security sensitive"
+if predicting it would allow the attacker to perform an action that they would otherwise be unable
+to perform. For example, if an attacker could predict the random password generated for a new user,
+they would be able to log in as that new user.
+</p>
+<p>
+For Python, <code>secrets</code> provides a cryptographically secure pseudo-random
+number generator. <code>random</code> is not cryptographically secure, and should be avoided in
+security contexts.
+</p>
+</recommendation>
+
+<example>
+<p>
+The example below uses the <code>random</code> package instead of <code>secrets</code> to generate a password:
+</p>
+<sample src="examples/InsecureRandomness.py" />
+<p>
+Instead, use <code>secrets</code>:
+</p>
+<sample src="examples/InsecureRandomnessGood.py" />
+</example>
+
+<references>
+  <li>Wikipedia. <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
+  <li>OWASP: <a href="https://owasp.org/www-community/vulnerabilities/Insecure_Randomness">Insecure Randomness</a>.</li>
+  <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#secure-random-number-generation">Secure Random Number Generation</a>.</li>
+</references>
+</qhelp>

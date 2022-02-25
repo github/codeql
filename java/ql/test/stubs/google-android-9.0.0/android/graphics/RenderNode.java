@@ -7,6 +7,7 @@ import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.RecordingCanvas;
 import android.graphics.Rect;
+import android.graphics.RenderEffect;
 
 public class RenderNode
 {
@@ -42,6 +43,7 @@ public class RenderNode
     public boolean setPosition(int p0, int p1, int p2, int p3){ return false; }
     public boolean setProjectBackwards(boolean p0){ return false; }
     public boolean setProjectionReceiver(boolean p0){ return false; }
+    public boolean setRenderEffect(RenderEffect p0){ return false; }
     public boolean setRotationX(float p0){ return false; }
     public boolean setRotationY(float p0){ return false; }
     public boolean setRotationZ(float p0){ return false; }

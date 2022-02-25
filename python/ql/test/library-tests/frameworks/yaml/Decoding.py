@@ -2,6 +2,7 @@ import yaml
 
 # Unsafe:
 yaml.load(payload)  # $decodeInput=payload decodeOutput=yaml.load(..) decodeFormat=YAML decodeMayExecuteInput
+yaml.load(stream=payload)  # $decodeInput=payload decodeOutput=yaml.load(..) decodeFormat=YAML decodeMayExecuteInput
 yaml.load(payload, yaml.Loader)  # $decodeInput=payload decodeOutput=yaml.load(..) decodeFormat=YAML decodeMayExecuteInput
 yaml.unsafe_load(payload) # $ decodeInput=payload decodeOutput=yaml.unsafe_load(..) decodeFormat=YAML decodeMayExecuteInput
 yaml.full_load(payload) # $ decodeInput=payload decodeOutput=yaml.full_load(..) decodeFormat=YAML decodeMayExecuteInput
