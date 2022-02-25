@@ -1310,20 +1310,20 @@ The abbreviated cases for an ``any`` expression are interpreted in the same way 
 Expression Pragma
 ~~~~~~~~~~~~~~~~~
 
-Expression pragmas can be used to guide optimisation.
+Expression pragmas can be used to guide optimization.
 
 ::
    expression_pragma ::= "pragma" "[" expression_pragma_type "]" "(" expr ")"
 
    expression_pragma_type ::= "only_bind_out" | "only_bind_into"
 
-The values of an expression pragma are the values of the expression.
+The values of an expression pragma are the values of the contained expression.
 
-The type `only_bind_out` hints that uses the result of the expression pragma should not be used to guide the evaluation of the result of the contained expression.
+The type `only_bind_out` hints that uses of the result of the expression pragma should not be used to guide the evaluation of the result of the contained expression.
 When checking to see that all values are bound the compiler does not assume that if the result of the expression pragma is bound then the result of the contained 
 expression is bound.
 
-The type `only_bind_into` hints that uses the result of expression pragma should not be used to guide the evaluation of the result of the expression pragma.
+The type `only_bind_into` hints that uses of the contained expression should not be used to guide the evaluation of the result of the expression pragma.
 When checking to see that all values are bound the compiler does not assume that if the result of the contained expression is bound then the result of the 
 expression pragma is bound.
 
