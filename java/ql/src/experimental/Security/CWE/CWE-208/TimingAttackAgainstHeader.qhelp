@@ -23,5 +23,6 @@ The following example uses <code>String.equals()</code> method for validating a 
 This method implements a non-constant-time algorithm. The example also demonstrates validation using a safe constant-time algorithm.
 </p>
 <sample src="ComparingValueOfSensetiveHeader.java" />
+</example>
 </qhelp>
 
