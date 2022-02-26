@@ -98,7 +98,7 @@ class LShift extends LShift_ {
   override string getSpecialMethodName() { result = "__lshift__" }
 }
 
-/** A modulo (`%`) binary operator, which includes  string formatting */
+/** A modulo (`%`) binary operator, which includes string formatting */
 class Mod extends Mod_ {
   override string getSpecialMethodName() { result = "__mod__" }
 }

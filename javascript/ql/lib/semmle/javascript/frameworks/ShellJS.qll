@@ -37,7 +37,7 @@ module ShellJS {
       override string getName() { result = name }
     }
 
-    /** The `shelljs.exec` library modelled as a `shelljs` member. */
+    /** The `shelljs.exec` library modeled as a `shelljs` member. */
     private class ShellJsExec extends Range {
       ShellJsExec() { this = DataFlow::moduleImport("shelljs.exec") }
 
@@ -76,7 +76,7 @@ module ShellJS {
   }
 
   /**
-   * A file system access that can't be modelled as a read or a write.
+   * A file system access that can't be modeled as a read or a write.
    */
   private class ShellJSGenericFileAccess extends FileSystemAccess, ShellJSCall {
     ShellJSGenericFileAccess() {
@@ -132,7 +132,7 @@ module ShellJS {
   }
 
   /**
-   * A call to `shelljs.exec()` modelled as command execution.
+   * A call to `shelljs.exec()` modeled as command execution.
    */
   private class ShellJSExec extends SystemCommandExecution, ShellJSCall {
     ShellJSExec() { name = "exec" }

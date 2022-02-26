@@ -11,8 +11,12 @@ edges
 | ExternalFlow.cs:30:13:30:16 | [post] this access [field Field] : Object | ExternalFlow.cs:31:18:31:21 | this access [field Field] : Object |
 | ExternalFlow.cs:30:26:30:37 | object creation of type Object : Object | ExternalFlow.cs:30:13:30:16 | [post] this access [field Field] : Object |
 | ExternalFlow.cs:31:18:31:21 | this access [field Field] : Object | ExternalFlow.cs:31:18:31:39 | call to method StepFieldGetter |
-| ExternalFlow.cs:36:13:36:16 | [post] this access [field Field] : Object | ExternalFlow.cs:37:18:37:21 | this access [field Field] : Object |
-| ExternalFlow.cs:36:34:36:45 | object creation of type Object : Object | ExternalFlow.cs:36:13:36:16 | [post] this access [field Field] : Object |
+| ExternalFlow.cs:36:19:36:62 | (...) ... [field Field] : Object | ExternalFlow.cs:36:18:36:69 | access to field Field |
+| ExternalFlow.cs:36:22:36:25 | [post] this access [field Field] : Object | ExternalFlow.cs:37:18:37:21 | this access [field Field] : Object |
+| ExternalFlow.cs:36:22:36:55 | call to method StepFieldSetter [field Field2, field Field] : Object | ExternalFlow.cs:36:22:36:62 | access to field Field2 [field Field] : Object |
+| ExternalFlow.cs:36:22:36:62 | access to field Field2 [field Field] : Object | ExternalFlow.cs:36:19:36:62 | (...) ... [field Field] : Object |
+| ExternalFlow.cs:36:43:36:54 | object creation of type Object : Object | ExternalFlow.cs:36:22:36:25 | [post] this access [field Field] : Object |
+| ExternalFlow.cs:36:43:36:54 | object creation of type Object : Object | ExternalFlow.cs:36:22:36:55 | call to method StepFieldSetter [field Field2, field Field] : Object |
 | ExternalFlow.cs:37:18:37:21 | this access [field Field] : Object | ExternalFlow.cs:37:18:37:27 | access to field Field |
 | ExternalFlow.cs:42:13:42:16 | [post] this access [property Property] : Object | ExternalFlow.cs:43:18:43:21 | this access [property Property] : Object |
 | ExternalFlow.cs:42:29:42:40 | object creation of type Object : Object | ExternalFlow.cs:42:13:42:16 | [post] this access [property Property] : Object |
@@ -24,12 +28,12 @@ edges
 | ExternalFlow.cs:54:36:54:47 | object creation of type Object : Object | ExternalFlow.cs:54:13:54:16 | [post] this access [element] : Object |
 | ExternalFlow.cs:55:18:55:21 | this access [element] : Object | ExternalFlow.cs:55:18:55:41 | call to method StepElementGetter |
 | ExternalFlow.cs:60:35:60:35 | o : Object | ExternalFlow.cs:60:47:60:47 | access to parameter o |
-| ExternalFlow.cs:60:64:60:75 | object creation of type Object : Object | ExternalFlow.cs:135:46:135:46 | s : Object |
+| ExternalFlow.cs:60:64:60:75 | object creation of type Object : Object | ExternalFlow.cs:60:35:60:35 | o : Object |
 | ExternalFlow.cs:65:21:65:60 | call to method Apply<Int32,Object> : Object | ExternalFlow.cs:66:18:66:18 | access to local variable o |
 | ExternalFlow.cs:65:45:65:56 | object creation of type Object : Object | ExternalFlow.cs:65:21:65:60 | call to method Apply<Int32,Object> : Object |
 | ExternalFlow.cs:71:30:71:45 | { ..., ... } [element] : Object | ExternalFlow.cs:72:17:72:20 | access to local variable objs [element] : Object |
 | ExternalFlow.cs:71:32:71:43 | object creation of type Object : Object | ExternalFlow.cs:71:30:71:45 | { ..., ... } [element] : Object |
-| ExternalFlow.cs:72:17:72:20 | access to local variable objs [element] : Object | ExternalFlow.cs:137:34:137:41 | elements [element] : Object |
+| ExternalFlow.cs:72:17:72:20 | access to local variable objs [element] : Object | ExternalFlow.cs:72:23:72:23 | o : Object |
 | ExternalFlow.cs:72:23:72:23 | o : Object | ExternalFlow.cs:72:35:72:35 | access to parameter o |
 | ExternalFlow.cs:77:24:77:58 | call to method Map<Int32,Object> [element] : Object | ExternalFlow.cs:78:18:78:21 | access to local variable objs [element] : Object |
 | ExternalFlow.cs:77:46:77:57 | object creation of type Object : Object | ExternalFlow.cs:77:24:77:58 | call to method Map<Int32,Object> [element] : Object |
@@ -47,25 +51,11 @@ edges
 | ExternalFlow.cs:98:13:98:14 | [post] access to local variable d1 [field Field] : Object | ExternalFlow.cs:104:18:104:19 | access to local variable d1 [field Field] : Object |
 | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:98:13:98:14 | [post] access to local variable d1 [field Field] : Object |
 | ExternalFlow.cs:100:20:100:20 | d : Object | ExternalFlow.cs:102:22:102:22 | access to parameter d |
-| ExternalFlow.cs:103:16:103:17 | access to local variable d1 [field Field] : Object | ExternalFlow.cs:103:20:103:21 | [post] access to local variable d2 [field Field2] : Object |
-| ExternalFlow.cs:103:16:103:17 | access to local variable d1 [field Field] : Object | ExternalFlow.cs:139:46:139:47 | s1 [field Field] : Object |
-| ExternalFlow.cs:103:20:103:21 | [post] access to local variable d2 [field Field2] : Object | ExternalFlow.cs:105:18:105:19 | access to local variable d2 [field Field2] : Object |
+| ExternalFlow.cs:103:16:103:17 | access to local variable d1 [field Field] : Object | ExternalFlow.cs:100:20:100:20 | d : Object |
 | ExternalFlow.cs:104:18:104:19 | access to local variable d1 [field Field] : Object | ExternalFlow.cs:104:18:104:25 | access to field Field |
-| ExternalFlow.cs:105:18:105:19 | access to local variable d2 [field Field2] : Object | ExternalFlow.cs:105:18:105:26 | access to field Field2 |
-| ExternalFlow.cs:135:46:135:46 | s : Object | ExternalFlow.cs:60:35:60:35 | o : Object |
-| ExternalFlow.cs:137:34:137:41 | elements [element] : Object | ExternalFlow.cs:72:23:72:23 | o : Object |
-| ExternalFlow.cs:137:34:137:41 | elements [element] : Object | ExternalFlow.cs:72:23:72:23 | o : Object |
-| ExternalFlow.cs:137:34:137:41 | elements [element] : Object | ExternalFlow.cs:137:34:137:41 | elements [element] : Object |
-| ExternalFlow.cs:137:34:137:41 | elements [element] : Object | ExternalFlow.cs:137:34:137:41 | elements [element] : Object |
-| ExternalFlow.cs:139:46:139:47 | s1 [field Field] : Object | ExternalFlow.cs:100:20:100:20 | d : Object |
-| ExternalFlow.cs:139:46:139:47 | s1 [field Field] : Object | ExternalFlow.cs:100:20:100:20 | d : Object |
-| ExternalFlow.cs:139:46:139:47 | s1 [field Field] : Object | ExternalFlow.cs:139:46:139:47 | s1 [field Field] : Object |
-| ExternalFlow.cs:139:46:139:47 | s1 [field Field] : Object | ExternalFlow.cs:139:46:139:47 | s1 [field Field] : Object |
-| ExternalFlow.cs:139:46:139:47 | s1 [field Field] : Object | ExternalFlow.cs:139:52:139:53 | s2 [field Field2] : Object |
-| ExternalFlow.cs:139:46:139:47 | s1 [field Field] : Object | ExternalFlow.cs:139:52:139:53 | s2 [field Field2] : Object |
-| ExternalFlow.cs:139:52:139:53 | s2 [field Field2] : Object | ExternalFlow.cs:100:20:100:20 | d : Object |
-| ExternalFlow.cs:139:52:139:53 | s2 [field Field2] : Object | ExternalFlow.cs:139:46:139:47 | s1 [field Field] : Object |
-| ExternalFlow.cs:139:52:139:53 | s2 [field Field2] : Object | ExternalFlow.cs:139:52:139:53 | s2 [field Field2] : Object |
+| ExternalFlow.cs:111:13:111:13 | [post] access to local variable f [field MyField] : Object | ExternalFlow.cs:112:18:112:18 | access to local variable f [field MyField] : Object |
+| ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | ExternalFlow.cs:111:13:111:13 | [post] access to local variable f [field MyField] : Object |
+| ExternalFlow.cs:112:18:112:18 | access to local variable f [field MyField] : Object | ExternalFlow.cs:112:18:112:25 | access to property MyProp |
 nodes
 | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | semmle.label | call to method StepArgRes |
@@ -83,8 +73,12 @@ nodes
 | ExternalFlow.cs:30:26:30:37 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:31:18:31:21 | this access [field Field] : Object | semmle.label | this access [field Field] : Object |
 | ExternalFlow.cs:31:18:31:39 | call to method StepFieldGetter | semmle.label | call to method StepFieldGetter |
-| ExternalFlow.cs:36:13:36:16 | [post] this access [field Field] : Object | semmle.label | [post] this access [field Field] : Object |
-| ExternalFlow.cs:36:34:36:45 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:36:18:36:69 | access to field Field | semmle.label | access to field Field |
+| ExternalFlow.cs:36:19:36:62 | (...) ... [field Field] : Object | semmle.label | (...) ... [field Field] : Object |
+| ExternalFlow.cs:36:22:36:25 | [post] this access [field Field] : Object | semmle.label | [post] this access [field Field] : Object |
+| ExternalFlow.cs:36:22:36:55 | call to method StepFieldSetter [field Field2, field Field] : Object | semmle.label | call to method StepFieldSetter [field Field2, field Field] : Object |
+| ExternalFlow.cs:36:22:36:62 | access to field Field2 [field Field] : Object | semmle.label | access to field Field2 [field Field] : Object |
+| ExternalFlow.cs:36:43:36:54 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:37:18:37:21 | this access [field Field] : Object | semmle.label | this access [field Field] : Object |
 | ExternalFlow.cs:37:18:37:27 | access to field Field | semmle.label | access to field Field |
 | ExternalFlow.cs:42:13:42:16 | [post] this access [property Property] : Object | semmle.label | [post] this access [property Property] : Object |
@@ -130,17 +124,12 @@ nodes
 | ExternalFlow.cs:100:20:100:20 | d : Object | semmle.label | d : Object |
 | ExternalFlow.cs:102:22:102:22 | access to parameter d | semmle.label | access to parameter d |
 | ExternalFlow.cs:103:16:103:17 | access to local variable d1 [field Field] : Object | semmle.label | access to local variable d1 [field Field] : Object |
-| ExternalFlow.cs:103:20:103:21 | [post] access to local variable d2 [field Field2] : Object | semmle.label | [post] access to local variable d2 [field Field2] : Object |
 | ExternalFlow.cs:104:18:104:19 | access to local variable d1 [field Field] : Object | semmle.label | access to local variable d1 [field Field] : Object |
 | ExternalFlow.cs:104:18:104:25 | access to field Field | semmle.label | access to field Field |
-| ExternalFlow.cs:105:18:105:19 | access to local variable d2 [field Field2] : Object | semmle.label | access to local variable d2 [field Field2] : Object |
-| ExternalFlow.cs:105:18:105:26 | access to field Field2 | semmle.label | access to field Field2 |
-| ExternalFlow.cs:135:46:135:46 | s : Object | semmle.label | s : Object |
-| ExternalFlow.cs:137:34:137:41 | elements [element] : Object | semmle.label | elements [element] : Object |
-| ExternalFlow.cs:137:34:137:41 | elements [element] : Object | semmle.label | elements [element] : Object |
-| ExternalFlow.cs:139:46:139:47 | s1 [field Field] : Object | semmle.label | s1 [field Field] : Object |
-| ExternalFlow.cs:139:46:139:47 | s1 [field Field] : Object | semmle.label | s1 [field Field] : Object |
-| ExternalFlow.cs:139:52:139:53 | s2 [field Field2] : Object | semmle.label | s2 [field Field2] : Object |
+| ExternalFlow.cs:111:13:111:13 | [post] access to local variable f [field MyField] : Object | semmle.label | [post] access to local variable f [field MyField] : Object |
+| ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:112:18:112:18 | access to local variable f [field MyField] : Object | semmle.label | access to local variable f [field MyField] : Object |
+| ExternalFlow.cs:112:18:112:25 | access to property MyProp | semmle.label | access to property MyProp |
 subpaths
 invalidModelRow
 #select
@@ -149,7 +138,8 @@ invalidModelRow
 | ExternalFlow.cs:18:18:18:24 | access to local variable argOut1 | ExternalFlow.cs:16:30:16:41 | object creation of type Object : Object | ExternalFlow.cs:18:18:18:24 | access to local variable argOut1 | $@ | ExternalFlow.cs:16:30:16:41 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:25:18:25:21 | this access | ExternalFlow.cs:23:27:23:38 | object creation of type Object : Object | ExternalFlow.cs:25:18:25:21 | this access | $@ | ExternalFlow.cs:23:27:23:38 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:31:18:31:39 | call to method StepFieldGetter | ExternalFlow.cs:30:26:30:37 | object creation of type Object : Object | ExternalFlow.cs:31:18:31:39 | call to method StepFieldGetter | $@ | ExternalFlow.cs:30:26:30:37 | object creation of type Object : Object | object creation of type Object : Object |
-| ExternalFlow.cs:37:18:37:27 | access to field Field | ExternalFlow.cs:36:34:36:45 | object creation of type Object : Object | ExternalFlow.cs:37:18:37:27 | access to field Field | $@ | ExternalFlow.cs:36:34:36:45 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:36:18:36:69 | access to field Field | ExternalFlow.cs:36:43:36:54 | object creation of type Object : Object | ExternalFlow.cs:36:18:36:69 | access to field Field | $@ | ExternalFlow.cs:36:43:36:54 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:37:18:37:27 | access to field Field | ExternalFlow.cs:36:43:36:54 | object creation of type Object : Object | ExternalFlow.cs:37:18:37:27 | access to field Field | $@ | ExternalFlow.cs:36:43:36:54 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:43:18:43:42 | call to method StepPropertyGetter | ExternalFlow.cs:42:29:42:40 | object creation of type Object : Object | ExternalFlow.cs:43:18:43:42 | call to method StepPropertyGetter | $@ | ExternalFlow.cs:42:29:42:40 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:49:18:49:30 | access to property Property | ExternalFlow.cs:48:37:48:48 | object creation of type Object : Object | ExternalFlow.cs:49:18:49:30 | access to property Property | $@ | ExternalFlow.cs:48:37:48:48 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:55:18:55:41 | call to method StepElementGetter | ExternalFlow.cs:54:36:54:47 | object creation of type Object : Object | ExternalFlow.cs:55:18:55:41 | call to method StepElementGetter | $@ | ExternalFlow.cs:54:36:54:47 | object creation of type Object : Object | object creation of type Object : Object |
@@ -161,4 +151,4 @@ invalidModelRow
 | ExternalFlow.cs:92:18:92:18 | (...) ... | ExternalFlow.cs:90:21:90:34 | object creation of type String : String | ExternalFlow.cs:92:18:92:18 | (...) ... | $@ | ExternalFlow.cs:90:21:90:34 | object creation of type String : String | object creation of type String : String |
 | ExternalFlow.cs:102:22:102:22 | access to parameter d | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:102:22:102:22 | access to parameter d | $@ | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:104:18:104:25 | access to field Field | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:104:18:104:25 | access to field Field | $@ | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | object creation of type Object : Object |
-| ExternalFlow.cs:105:18:105:26 | access to field Field2 | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:105:18:105:26 | access to field Field2 | $@ | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:112:18:112:25 | access to property MyProp | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | ExternalFlow.cs:112:18:112:25 | access to property MyProp | $@ | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | object creation of type Object : Object |

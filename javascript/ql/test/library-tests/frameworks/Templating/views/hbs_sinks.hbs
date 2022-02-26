@@ -1,7 +1,19 @@
 <html>
     <body>
         {{ escapedHtml }}
+        {{~ escapedHtml }}
+        {{ escapedHtml ~}}
+        {{~ escapedHtml ~}}
+        {{~escapedHtml~}}
+
         {{{ rawHtml }}}
+        {{{~rawHtml }}}
+        {{{ rawHtml~}}}
+        {{{~rawHtml~}}}
+        {{{~ rawHtml ~}}}
+
+        {{& rawHtml }}
+
         {{{ rawHtmlSafeValue }}}
 
         {{{ object.rawHtmlProp }}}

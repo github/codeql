@@ -2,11 +2,17 @@
 
 package android.content;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.util.concurrent.Executor;
+import android.content.AttributionSource;
+import android.content.BroadcastReceiver;
+import android.content.ComponentCallbacks;
+import android.content.ComponentName;
+import android.content.ContentResolver;
+import android.content.ContextParams;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.IntentSender;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
@@ -25,11 +31,25 @@ import android.os.Looper;
 import android.os.UserHandle;
 import android.util.AttributeSet;
 import android.view.Display;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.List;
+import java.util.concurrent.Executor;
 
 abstract public class Context
 {
+    public AttributionSource getAttributionSource(){ return null; }
+    public Context createAttributionContext(String p0){ return null; }
+    public Context createContext(ContextParams p0){ return null; }
+    public Context createWindowContext(Display p0, int p1, Bundle p2){ return null; }
+    public Context createWindowContext(int p0, Bundle p1){ return null; }
     public Context(){}
+    public ContextParams getParams(){ return null; }
+    public Display getDisplay(){ return null; }
     public Executor getMainExecutor(){ return null; }
+    public String getAttributionTag(){ return null; }
     public String getOpPackageName(){ return null; }
     public abstract ApplicationInfo getApplicationInfo();
     public abstract AssetManager getAssets();
@@ -118,8 +138,6 @@ abstract public class Context
     public abstract void sendBroadcast(Intent p0, String p1);
     public abstract void sendBroadcastAsUser(Intent p0, UserHandle p1);
     public abstract void sendBroadcastAsUser(Intent p0, UserHandle p1, String p2);
-    // Slight cheat: this is an Android 11 function which shouldn't really be present in this Android 9 stub.
-    public abstract void sendBroadcastWithMultiplePermissions(Intent p1, String[] p2);
     public abstract void sendOrderedBroadcast(Intent p0, String p1);
     public abstract void sendOrderedBroadcast(Intent p0, String p1, BroadcastReceiver p2, Handler p3, int p4, String p5, Bundle p6);
     public abstract void sendOrderedBroadcastAsUser(Intent p0, UserHandle p1, String p2, BroadcastReceiver p3, Handler p4, int p5, String p6, Bundle p7);
@@ -142,6 +160,7 @@ abstract public class Context
     public boolean bindIsolatedService(Intent p0, int p1, String p2, Executor p3, ServiceConnection p4){ return false; }
     public boolean bindService(Intent p0, int p1, Executor p2, ServiceConnection p3){ return false; }
     public boolean isRestricted(){ return false; }
+    public boolean isUiContext(){ return false; }
     public final <T> T getSystemService(Class<T> p0){ return null; }
     public final CharSequence getText(int p0){ return null; }
     public final ColorStateList getColorStateList(int p0){ return null; }
@@ -153,30 +172,41 @@ abstract public class Context
     public final TypedArray obtainStyledAttributes(int p0, int[] p1){ return null; }
     public final TypedArray obtainStyledAttributes(int[] p0){ return null; }
     public final int getColor(int p0){ return 0; }
+    public int[] checkCallingOrSelfUriPermissions(List<Uri> p0, int p1){ return null; }
+    public int[] checkCallingUriPermissions(List<Uri> p0, int p1){ return null; }
+    public int[] checkUriPermissions(List<Uri> p0, int p1, int p2, int p3){ return null; }
     public static String ACCESSIBILITY_SERVICE = null;
     public static String ACCOUNT_SERVICE = null;
     public static String ACTIVITY_SERVICE = null;
     public static String ALARM_SERVICE = null;
     public static String APPWIDGET_SERVICE = null;
     public static String APP_OPS_SERVICE = null;
+    public static String APP_SEARCH_SERVICE = null;
     public static String AUDIO_SERVICE = null;
     public static String BATTERY_SERVICE = null;
     public static String BIOMETRIC_SERVICE = null;
+    public static String BLOB_STORE_SERVICE = null;
     public static String BLUETOOTH_SERVICE = null;
+    public static String BUGREPORT_SERVICE = null;
     public static String CAMERA_SERVICE = null;
     public static String CAPTIONING_SERVICE = null;
     public static String CARRIER_CONFIG_SERVICE = null;
     public static String CLIPBOARD_SERVICE = null;
     public static String COMPANION_DEVICE_SERVICE = null;
+    public static String CONNECTIVITY_DIAGNOSTICS_SERVICE = null;
     public static String CONNECTIVITY_SERVICE = null;
     public static String CONSUMER_IR_SERVICE = null;
     public static String CROSS_PROFILE_APPS_SERVICE = null;
     public static String DEVICE_POLICY_SERVICE = null;
+    public static String DISPLAY_HASH_SERVICE = null;
     public static String DISPLAY_SERVICE = null;
+    public static String DOMAIN_VERIFICATION_SERVICE = null;
     public static String DOWNLOAD_SERVICE = null;
     public static String DROPBOX_SERVICE = null;
     public static String EUICC_SERVICE = null;
+    public static String FILE_INTEGRITY_SERVICE = null;
     public static String FINGERPRINT_SERVICE = null;
+    public static String GAME_SERVICE = null;
     public static String HARDWARE_PROPERTIES_SERVICE = null;
     public static String INPUT_METHOD_SERVICE = null;
     public static String INPUT_SERVICE = null;
@@ -186,6 +216,8 @@ abstract public class Context
     public static String LAUNCHER_APPS_SERVICE = null;
     public static String LAYOUT_INFLATER_SERVICE = null;
     public static String LOCATION_SERVICE = null;
+    public static String MEDIA_COMMUNICATION_SERVICE = null;
+    public static String MEDIA_METRICS_SERVICE = null;
     public static String MEDIA_PROJECTION_SERVICE = null;
     public static String MEDIA_ROUTER_SERVICE = null;
     public static String MEDIA_SESSION_SERVICE = null;
@@ -194,6 +226,8 @@ abstract public class Context
     public static String NFC_SERVICE = null;
     public static String NOTIFICATION_SERVICE = null;
     public static String NSD_SERVICE = null;
+    public static String PEOPLE_SERVICE = null;
+    public static String PERFORMANCE_HINT_SERVICE = null;
     public static String POWER_SERVICE = null;
     public static String PRINT_SERVICE = null;
     public static String RESTRICTIONS_SERVICE = null;
@@ -205,6 +239,7 @@ abstract public class Context
     public static String STORAGE_STATS_SERVICE = null;
     public static String SYSTEM_HEALTH_SERVICE = null;
     public static String TELECOM_SERVICE = null;
+    public static String TELEPHONY_IMS_SERVICE = null;
     public static String TELEPHONY_SERVICE = null;
     public static String TELEPHONY_SUBSCRIPTION_SERVICE = null;
     public static String TEXT_CLASSIFICATION_SERVICE = null;
@@ -214,7 +249,9 @@ abstract public class Context
     public static String USAGE_STATS_SERVICE = null;
     public static String USB_SERVICE = null;
     public static String USER_SERVICE = null;
+    public static String VIBRATOR_MANAGER_SERVICE = null;
     public static String VIBRATOR_SERVICE = null;
+    public static String VPN_MANAGEMENT_SERVICE = null;
     public static String WALLPAPER_SERVICE = null;
     public static String WIFI_AWARE_SERVICE = null;
     public static String WIFI_P2P_SERVICE = null;
@@ -244,6 +281,9 @@ abstract public class Context
     public static int MODE_WORLD_WRITEABLE = 0;
     public static int RECEIVER_VISIBLE_TO_INSTANT_APPS = 0;
     public void registerComponentCallbacks(ComponentCallbacks p0){}
+    public void sendBroadcastWithMultiplePermissions(Intent p0, String[] p1){}
+    public void sendOrderedBroadcast(Intent p0, String p1, String p2, BroadcastReceiver p3, Handler p4, int p5, String p6, Bundle p7){}
+    public void sendStickyBroadcast(Intent p0, Bundle p1){}
     public void unregisterComponentCallbacks(ComponentCallbacks p0){}
     public void updateServiceGroup(ServiceConnection p0, int p1, int p2){}
 }

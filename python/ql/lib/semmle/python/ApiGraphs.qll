@@ -114,13 +114,13 @@ module API {
      * Gets a node such that there is an edge in the API graph between this node and the other
      * one, and that edge is labeled with `lbl`.
      */
-    Node getASuccessor(string lbl) { Impl::edge(this, lbl, result) }
+    Node getASuccessor(Label::ApiLabel lbl) { Impl::edge(this, lbl, result) }
 
     /**
      * Gets a node such that there is an edge in the API graph between that other node and
      * this one, and that edge is labeled with `lbl`
      */
-    Node getAPredecessor(string lbl) { this = result.getASuccessor(lbl) }
+    Node getAPredecessor(Label::ApiLabel lbl) { this = result.getASuccessor(lbl) }
 
     /**
      * Gets a node such that there is an edge in the API graph between this node and the other
@@ -174,9 +174,8 @@ module API {
       length = 0 and
       result = ""
       or
-      exists(Node pred, string lbl, string predpath |
+      exists(Node pred, Label::ApiLabel lbl, string predpath |
         Impl::edge(pred, lbl, this) and
-        lbl != "" and
         predpath = pred.getAPath(length - 1) and
         exists(string dot | if length = 1 then dot = "" else dot = "." |
           result = predpath + dot + lbl and
@@ -335,7 +334,8 @@ module API {
      *
      * For instance, `prefix_member("foo.bar", "baz", "foo.bar.baz")` would hold.
      */
-    private predicate prefix_member(TApiNode base, string member, TApiNode sub) {
+    cached
+    predicate prefix_member(TApiNode base, string member, TApiNode sub) {
       exists(string sub_str, string regexp |
         regexp = "(.+)[.]([^.]+)" and
         base = MkModuleImport(sub_str.regexpCapture(regexp, 1)) and
@@ -358,134 +358,26 @@ module API {
       )
     }
 
-    /** Gets the name of a known built-in. */
-    private string getBuiltInName() {
-      // These lists were created by inspecting the `builtins` and `__builtin__` modules in
-      // Python 3 and 2 respectively, using the `dir` built-in.
-      // Built-in functions and exceptions shared between Python 2 and 3
-      result in [
-          "abs", "all", "any", "bin", "bool", "bytearray", "callable", "chr", "classmethod",
-          "compile", "complex", "delattr", "dict", "dir", "divmod", "enumerate", "eval", "filter",
-          "float", "format", "frozenset", "getattr", "globals", "hasattr", "hash", "help", "hex",
-          "id", "input", "int", "isinstance", "issubclass", "iter", "len", "list", "locals", "map",
-          "max", "memoryview", "min", "next", "object", "oct", "open", "ord", "pow", "print",
-          "property", "range", "repr", "reversed", "round", "set", "setattr", "slice", "sorted",
-          "staticmethod", "str", "sum", "super", "tuple", "type", "vars", "zip", "__import__",
-          // Exceptions
-          "ArithmeticError", "AssertionError", "AttributeError", "BaseException", "BufferError",
-          "BytesWarning", "DeprecationWarning", "EOFError", "EnvironmentError", "Exception",
-          "FloatingPointError", "FutureWarning", "GeneratorExit", "IOError", "ImportError",
-          "ImportWarning", "IndentationError", "IndexError", "KeyError", "KeyboardInterrupt",
-          "LookupError", "MemoryError", "NameError", "NotImplemented", "NotImplementedError",
-          "OSError", "OverflowError", "PendingDeprecationWarning", "ReferenceError", "RuntimeError",
-          "RuntimeWarning", "StandardError", "StopIteration", "SyntaxError", "SyntaxWarning",
-          "SystemError", "SystemExit", "TabError", "TypeError", "UnboundLocalError",
-          "UnicodeDecodeError", "UnicodeEncodeError", "UnicodeError", "UnicodeTranslateError",
-          "UnicodeWarning", "UserWarning", "ValueError", "Warning", "ZeroDivisionError",
-          // Added for compatibility
-          "exec"
-        ]
-      or
-      // Built-in constants shared between Python 2 and 3
-      result in ["False", "True", "None", "NotImplemented", "Ellipsis", "__debug__"]
-      or
-      // Python 3 only
-      result in [
-          "ascii", "breakpoint", "bytes", "exec", "aiter", "anext",
-          // Exceptions
-          "BlockingIOError", "BrokenPipeError", "ChildProcessError", "ConnectionAbortedError",
-          "ConnectionError", "ConnectionRefusedError", "ConnectionResetError", "FileExistsError",
-          "FileNotFoundError", "InterruptedError", "IsADirectoryError", "ModuleNotFoundError",
-          "NotADirectoryError", "PermissionError", "ProcessLookupError", "RecursionError",
-          "ResourceWarning", "StopAsyncIteration", "TimeoutError"
-        ]
-      or
-      // Python 2 only
-      result in [
-          "basestring", "cmp", "execfile", "file", "long", "raw_input", "reduce", "reload",
-          "unichr", "unicode", "xrange"
-        ]
-    }
-
-    /**
-     * Gets a data flow node that is likely to refer to a built-in with the name `name`.
-     *
-     * Currently this is an over-approximation, and may not account for things like overwriting a
-     * built-in with a different value.
-     */
-    private DataFlow::Node likely_builtin(string name) {
-      exists(Module m |
-        result.asCfgNode() =
-          any(NameNode n |
-            possible_builtin_accessed_in_module(n, name, m) and
-            not possible_builtin_defined_in_module(name, m)
-          )
-      )
-    }
-
-    /**
-     * Holds if a global variable called `name` (which is also the name of a built-in) is assigned
-     * a value in the module `m`.
-     */
-    private predicate possible_builtin_defined_in_module(string name, Module m) {
-      global_name_defined_in_module(name, m) and
-      name = getBuiltInName()
-    }
-
-    /**
-     * Holds if `n` is an access of a global variable called `name` (which is also the name of a
-     * built-in) inside the module `m`.
-     */
-    private predicate possible_builtin_accessed_in_module(NameNode n, string name, Module m) {
-      n.isGlobal() and
-      n.isLoad() and
-      name = n.getId() and
-      name = getBuiltInName() and
-      m = n.getEnclosingModule()
-    }
-
-    /**
-     * Holds if `n` is an access of a variable called `name` (which is _not_ the name of a
-     * built-in, and which is _not_ a global defined in the enclosing module) inside the scope `s`.
-     */
-    private predicate name_possibly_defined_in_import_star(NameNode n, string name, Scope s) {
-      n.isLoad() and
-      name = n.getId() and
-      // Not already defined in an enclosing scope.
-      not exists(LocalVariable v |
-        v.getId() = name and v.getScope() = n.getScope().getEnclosingScope*()
-      ) and
-      not name = getBuiltInName() and
-      s = n.getScope().getEnclosingScope*() and
-      exists(potential_import_star_base(s)) and
-      not global_name_defined_in_module(name, n.getEnclosingModule())
-    }
-
-    /** Holds if a global variable called `name` is assigned a value in the module `m`. */
-    private predicate global_name_defined_in_module(string name, Module m) {
-      exists(NameNode n |
-        not exists(LocalVariable v | n.defines(v)) and
-        n.isStore() and
-        name = n.getId() and
-        m = n.getEnclosingModule()
-      )
-    }
+    private import semmle.python.dataflow.new.internal.Builtins
+    private import semmle.python.dataflow.new.internal.ImportStar
 
     /**
      * Gets the API graph node for all modules imported with `from ... import *` inside the scope `s`.
      *
      * For example, given
      *
-     * `from foo.bar import *`
+     * ```python
+     * from foo.bar import *
+     * ```
      *
      * this would be the API graph node with the path
      *
      * `moduleImport("foo").getMember("bar")`
      */
     private TApiNode potential_import_star_base(Scope s) {
-      exists(DataFlow::Node ref |
-        ref.asCfgNode() = any(ImportStarNode n | n.getScope() = s).getModule() and
-        use(result, ref)
+      exists(DataFlow::Node n |
+        n.asCfgNode() = ImportStar::potentialImportStarBase(s) and
+        use(result, n)
       )
     }
 
@@ -494,7 +386,7 @@ module API {
      * `lbl` in the API graph.
      */
     cached
-    predicate use(TApiNode base, string lbl, DataFlow::Node ref) {
+    predicate use(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
       exists(DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode pred |
         // First, we find a predecessor of the node `ref` that we want to determine. The predecessor
         // is any node that is a type-tracked use of a data flow node (`src`), which is itself a
@@ -529,14 +421,14 @@ module API {
       or
       // Built-ins, treated as members of the module `builtins`
       base = MkModuleImport("builtins") and
-      lbl = Label::member(any(string name | ref = likely_builtin(name)))
+      lbl = Label::member(any(string name | ref = Builtins::likelyBuiltin(name)))
       or
       // Unknown variables that may belong to a module imported with `import *`
       exists(Scope s |
         base = potential_import_star_base(s) and
         lbl =
           Label::member(any(string name |
-              name_possibly_defined_in_import_star(ref.asCfgNode(), name, s)
+              ImportStar::namePossiblyDefinedInImportStar(ref.asCfgNode(), name, s)
             ))
       )
     }
@@ -589,7 +481,7 @@ module API {
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */
     cached
-    predicate edge(TApiNode pred, string lbl, TApiNode succ) {
+    predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
       /* There's an edge from the root node for each imported module. */
       exists(string m |
         pred = MkRoot() and
@@ -622,36 +514,126 @@ module API {
     cached
     int distanceFromRoot(TApiNode nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)
   }
-}
 
-private module Label {
-  /** Gets the edge label for the module `m`. */
-  bindingset[m]
-  bindingset[result]
-  string mod(string m) { result = "moduleImport(\"" + m + "\")" }
+  /** Provides classes modeling the various edges (labels) in the API graph. */
+  module Label {
+    /** A label in the API-graph */
+    class ApiLabel extends TLabel {
+      /** Gets a string representation of this label. */
+      string toString() { result = "???" }
+    }
 
-  /** Gets the `member` edge label for member `m`. */
-  bindingset[m]
-  bindingset[result]
-  string member(string m) { result = "getMember(\"" + m + "\")" }
+    private import LabelImpl
 
-  /** Gets the `member` edge label for the unknown member. */
-  string unknownMember() { result = "getUnknownMember()" }
+    private module LabelImpl {
+      private import semmle.python.dataflow.new.internal.Builtins
+      private import semmle.python.dataflow.new.internal.ImportStar
 
-  /** Gets the `member` edge label for the given attribute reference. */
-  string memberFromRef(DataFlow::AttrRef pr) {
-    result = member(pr.getAttributeName())
-    or
-    not exists(pr.getAttributeName()) and
-    result = unknownMember()
+      newtype TLabel =
+        MkLabelModule(string mod) { exists(Impl::MkModuleImport(mod)) } or
+        MkLabelMember(string member) {
+          member = any(DataFlow::AttrRef pr).getAttributeName() or
+          exists(Builtins::likelyBuiltin(member)) or
+          ImportStar::namePossiblyDefinedInImportStar(_, member, _) or
+          Impl::prefix_member(_, member, _)
+        } or
+        MkLabelUnknownMember() or
+        MkLabelParameter(int i) {
+          none() // TODO: Fill in when adding def nodes
+        } or
+        MkLabelReturn() or
+        MkLabelSubclass() or
+        MkLabelAwait()
+
+      /** A label for a module. */
+      class LabelModule extends ApiLabel {
+        string mod;
+
+        LabelModule() { this = MkLabelModule(mod) }
+
+        /** Gets the module associated with this label. */
+        string getMod() { result = mod }
+
+        override string toString() { result = "moduleImport(\"" + mod + "\")" }
+      }
+
+      /** A label for the member named `prop`. */
+      class LabelMember extends ApiLabel {
+        string member;
+
+        LabelMember() { this = MkLabelMember(member) }
+
+        /** Gets the property associated with this label. */
+        string getMember() { result = member }
+
+        override string toString() { result = "getMember(\"" + member + "\")" }
+      }
+
+      /** A label for a member with an unknown name. */
+      class LabelUnknownMember extends ApiLabel {
+        LabelUnknownMember() { this = MkLabelUnknownMember() }
+
+        override string toString() { result = "getUnknownMember()" }
+      }
+
+      /** A label for parameter `i`. */
+      class LabelParameter extends ApiLabel {
+        int i;
+
+        LabelParameter() { this = MkLabelParameter(i) }
+
+        override string toString() { result = "getParameter(" + i + ")" }
+
+        /** Gets the index of the parameter for this label. */
+        int getIndex() { result = i }
+      }
+
+      /** A label that gets the return value of a function. */
+      class LabelReturn extends ApiLabel {
+        LabelReturn() { this = MkLabelReturn() }
+
+        override string toString() { result = "getReturn()" }
+      }
+
+      /** A label that gets the subclass of a class. */
+      class LabelSubclass extends ApiLabel {
+        LabelSubclass() { this = MkLabelSubclass() }
+
+        override string toString() { result = "getASubclass()" }
+      }
+
+      /** A label for awaited values. */
+      class LabelAwait extends ApiLabel {
+        LabelAwait() { this = MkLabelAwait() }
+
+        override string toString() { result = "getAwaited()" }
+      }
+    }
+
+    /** Gets the edge label for the module `m`. */
+    LabelModule mod(string m) { result.getMod() = m }
+
+    /** Gets the `member` edge label for member `m`. */
+    LabelMember member(string m) { result.getMember() = m }
+
+    /** Gets the `member` edge label for the unknown member. */
+    LabelUnknownMember unknownMember() { any() }
+
+    /** Gets the `member` edge label for the given attribute reference. */
+    ApiLabel memberFromRef(DataFlow::AttrRef pr) {
+      result = member(pr.getAttributeName())
+      or
+      not exists(pr.getAttributeName()) and
+      result = unknownMember()
+    }
+
+    /** Gets the `return` edge label. */
+    LabelReturn return() { any() }
+
+    /** Gets the `subclass` edge label. */
+    LabelSubclass subclass() { any() }
+
+    /** Gets the `await` edge label. */
+    LabelAwait await() { any() }
   }
-
-  /** Gets the `return` edge label. */
-  string return() { result = "getReturn()" }
-
-  /** Gets the `subclass` edge label. */
-  string subclass() { result = "getASubclass()" }
-
-  /** Gets the `await` edge label. */
-  string await() { result = "getAwaited()" }
 }

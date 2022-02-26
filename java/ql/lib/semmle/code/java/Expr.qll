@@ -713,6 +713,17 @@ class DoubleLiteral extends Literal, @doubleliteral {
   override string getAPrimaryQlClass() { result = "DoubleLiteral" }
 }
 
+bindingset[s]
+private int fromHex(string s) {
+  exists(string digits | s.toUpperCase() = digits |
+    result =
+      sum(int i |
+        |
+        "0123456789ABCDEF".indexOf(digits.charAt(i)).bitShiftLeft((digits.length() - i - 1) * 4)
+      )
+  )
+}
+
 /** A character literal. For example, `'\n'`. */
 class CharacterLiteral extends Literal, @characterliteral {
   override string getAPrimaryQlClass() { result = "CharacterLiteral" }
@@ -731,7 +742,11 @@ class CharacterLiteral extends Literal, @characterliteral {
    * this literal. The result is the same as if the Java code had cast
    * the character to an `int`.
    */
-  int getCodePointValue() { result.toUnicode() = this.getValue() }
+  int getCodePointValue() {
+    if this.getLiteral().matches("'\\u____'")
+    then result = fromHex(this.getLiteral().substring(3, 7))
+    else result.toUnicode() = this.getValue()
+  }
 }
 
 /**
@@ -1260,7 +1275,7 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
    */
   RefType getReceiverType() {
     exists(Stmt stmt, Expr resultExpr |
-      stmt = asMethod().getBody().(SingletonBlock).getStmt() and
+      stmt = this.asMethod().getBody().(SingletonBlock).getStmt() and
       (
         resultExpr = stmt.(ReturnStmt).getResult()
         or
@@ -1735,7 +1750,7 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
   Expr getQualifier() { result.isNthChildOf(this, -1) }
 
   /** Holds if this type access has a qualifier. */
-  predicate hasQualifier() { exists(Expr e | e = this.getQualifier()) }
+  predicate hasQualifier() { exists(this.getQualifier()) }
 
   /** Gets a type argument supplied to this type access. */
   Expr getATypeArgument() { result.getIndex() >= 0 and result.getParent() = this }
@@ -1747,7 +1762,7 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
   }
 
   /** Holds if this type access has a type argument. */
-  predicate hasTypeArgument() { exists(Expr e | e = this.getATypeArgument()) }
+  predicate hasTypeArgument() { exists(this.getATypeArgument()) }
 
   /** Gets the compilation unit in which this type access occurs. */
   override CompilationUnit getCompilationUnit() { result = Expr.super.getCompilationUnit() }

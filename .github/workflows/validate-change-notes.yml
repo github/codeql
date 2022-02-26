@@ -1,0 +1,29 @@
+name: Validate change notes
+
+on:
+  push:
+    paths:
+      - "*/ql/*/change-notes/**/*"
+      - ".github/workflows/validate-change-notes.yml"
+    branches:
+      - main
+      - "rc/*"
+  pull_request:
+    paths:
+      - "*/ql/*/change-notes/**/*"
+      - ".github/workflows/validate-change-notes.yml"
+
+jobs:
+  check-change-note:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup CodeQL
+        uses: ./.github/actions/fetch-codeql
+
+      - name: Fail if there are any errors with existing change notes
+
+        run: |
+          codeql pack release --groups cpp,csharp,java,javascript,python,ruby,-examples,-test,-experimental

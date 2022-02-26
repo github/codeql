@@ -126,67 +126,49 @@ private string getBuiltinKind(string name) {
   result = "service" and
   (
     // ng
-    name = "$anchorScroll" or
-    name = "$animate" or
-    name = "$animateCss" or
-    name = "$cacheFactory" or
-    name = "$controller" or
-    name = "$document" or
-    name = "$exceptionHandler" or
-    name = "$filter" or
-    name = "$http" or
-    name = "$httpBackend" or
-    name = "$httpParamSerializer" or
-    name = "$httpParamSerializerJQLike" or
-    name = "$interpolate" or
-    name = "$interval" or
-    name = "$jsonpCallbacks" or
-    name = "$locale" or
-    name = "$location" or
-    name = "$log" or
-    name = "$parse" or
-    name = "$q" or
-    name = "$rootElement" or
-    name = "$rootScope" or
-    name = "$sce" or
-    name = "$sceDelegate" or
-    name = "$templateCache" or
-    name = "$templateRequest" or
-    name = "$timeout" or
-    name = "$window" or
-    name = "$xhrFactory" or
+    name =
+      [
+        "$anchorScroll", "$animate", "$animateCss", "$cacheFactory", "$controller", "$document",
+        "$exceptionHandler", "$filter", "$http", "$httpBackend", "$httpParamSerializer",
+        "$httpParamSerializerJQLike", "$interpolate", "$interval", "$jsonpCallbacks", "$locale",
+        "$location", "$log", "$parse", "$q", "$rootElement", "$rootScope", "$sce", "$sceDelegate",
+        "$templateCache", "$templateRequest", "$timeout", "$window", "$xhrFactory"
+      ]
+    or
     // auto
-    name = "$injector" or
-    name = "$provide" or
+    name = ["$injector", "$provide"]
+    or
     // ngAnimate
-    name = "$animate" or
-    name = "$animateCss" or
+    name = ["$animate", "$animateCss"]
+    or
     // ngAria
-    name = "$aria" or
+    name = "$aria"
+    or
     // ngComponentRouter
-    name = "$rootRouter" or
-    name = "$routerRootComponent" or
+    name = ["$rootRouter", "$routerRootComponent"]
+    or
     // ngCookies
-    name = "$cookieStore" or
-    name = "$cookies" or
+    name = ["$cookieStore", "$cookies"]
+    or
     //ngMock
-    name = "$animate" or
-    name = "$componentController" or
-    name = "$controller" or
-    name = "$exceptionHandler" or
-    name = "$httpBackend" or
-    name = "$interval" or
-    name = "$log" or
-    name = "$timeout" or
+    name =
+      [
+        "$animate", "$componentController", "$controller", "$exceptionHandler", "$httpBackend",
+        "$interval", "$log", "$timeout"
+      ]
+    or
     //ngMockE2E
-    name = "$httpBackend" or
+    name = "$httpBackend"
+    or
     // ngResource
-    name = "$resource" or
+    name = "$resource"
+    or
     // ngRoute
-    name = "$route" or
-    name = "$routeParams" or
+    name = ["$route", "$routeParams"]
+    or
     // ngSanitize
-    name = "$sanitize" or
+    name = "$sanitize"
+    or
     // ngTouch
     name = "$swipe"
   )
@@ -194,32 +176,29 @@ private string getBuiltinKind(string name) {
   result = "provider" and
   (
     // ng
-    name = "$anchorScrollProvider" or
-    name = "$animateProvider" or
-    name = "$compileProvider" or
-    name = "$controllerProvider" or
-    name = "$filterProvider" or
-    name = "$httpProvider" or
-    name = "$interpolateProvider" or
-    name = "$locationProvider" or
-    name = "$logProvider" or
-    name = "$parseProvider" or
-    name = "$provider" or
-    name = "$qProvider" or
-    name = "$rootScopeProvider" or
-    name = "$sceDelegateProvider" or
-    name = "$sceProvider" or
-    name = "$templateRequestProvider" or
+    name =
+      [
+        "$anchorScrollProvider", "$animateProvider", "$compileProvider", "$controllerProvider",
+        "$filterProvider", "$httpProvider", "$interpolateProvider", "$locationProvider",
+        "$logProvider", "$parseProvider", "$provider", "$qProvider", "$rootScopeProvider",
+        "$sceDelegateProvider", "$sceProvider", "$templateRequestProvider"
+      ]
+    or
     // ngAria
-    name = "$ariaProvider" or
+    name = "$ariaProvider"
+    or
     // ngCookies
-    name = "$cookiesProvider" or
+    name = "$cookiesProvider"
+    or
     // ngmock
-    name = "$exceptionHandlerProvider" or
+    name = "$exceptionHandlerProvider"
+    or
     // ngResource
-    name = "$resourceProvider" or
+    name = "$resourceProvider"
+    or
     // ngRoute
-    name = "$routeProvider" or
+    name = "$routeProvider"
+    or
     // ngSanitize
     name = "$sanitizeProvider"
   )
@@ -227,9 +206,8 @@ private string getBuiltinKind(string name) {
   result = "type" and
   (
     // ng
-    name = "$cacheFactory" or
-    name = "$compile" or
-    name = "$rootScope" or
+    name = ["$cacheFactory", "$compile", "$rootScope"]
+    or
     // ngMock
     name = "$rootScope"
   )

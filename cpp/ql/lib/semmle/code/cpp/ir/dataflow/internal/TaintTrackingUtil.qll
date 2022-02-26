@@ -121,12 +121,14 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
  * Holds if taint may propagate from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
+pragma[inline]
 predicate localTaint(DataFlow::Node source, DataFlow::Node sink) { localTaintStep*(source, sink) }
 
 /**
  * Holds if taint can flow from `i1` to `i2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localInstructionTaint(Instruction i1, Instruction i2) {
   localTaint(DataFlow::instructionNode(i1), DataFlow::instructionNode(i2))
 }
@@ -135,6 +137,7 @@ predicate localInstructionTaint(Instruction i1, Instruction i2) {
  * Holds if taint can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprTaint(Expr e1, Expr e2) {
   localTaint(DataFlow::exprNode(e1), DataFlow::exprNode(e2))
 }
@@ -159,6 +162,12 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { n
  * but not in local taint.
  */
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
+
+/**
+ * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
+ * but not in local taint.
+ */
+predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
 /**
  * Holds if taint can flow from `instrIn` to `instrOut` through a call to a

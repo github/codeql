@@ -20,8 +20,8 @@ import javascript
 class Stmt extends @stmt, ExprOrStmt, Documentable {
   /** Holds if this statement has an implicitly inserted semicolon. */
   predicate hasSemicolonInserted() {
-    isSubjectToSemicolonInsertion() and
-    getLastToken().getValue() != ";"
+    this.isSubjectToSemicolonInsertion() and
+    this.getLastToken().getValue() != ";"
   }
 
   /** Holds if automatic semicolon insertion applies to this statement. */
@@ -47,8 +47,8 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
    * Holds if this statement is lexically nested inside statement `outer`.
    */
   predicate nestedIn(Stmt outer) {
-    outer = getParentStmt+() or
-    getContainer().(Expr).getEnclosingStmt().nestedIn(outer)
+    outer = this.getParentStmt+() or
+    this.getContainer().(Expr).getEnclosingStmt().nestedIn(outer)
   }
 
   /**
@@ -56,10 +56,10 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
    * crossing function boundaries or other `try ` statements with catch blocks.
    */
   TryStmt getEnclosingTryCatchStmt() {
-    getParentStmt+() = result.getBody() and
+    this.getParentStmt+() = result.getBody() and
     exists(result.getACatchClause()) and
     not exists(TryStmt mid | exists(mid.getACatchClause()) |
-      getParentStmt+() = mid.getBody() and mid.getParentStmt+() = result.getBody()
+      this.getParentStmt+() = mid.getBody() and mid.getParentStmt+() = result.getBody()
     )
   }
 }
@@ -116,7 +116,7 @@ class LoopStmt extends TLoopStmt, ControlStmt {
   /** Gets the loop test of this loop. */
   abstract Expr getTest();
 
-  override Stmt getAControlledStmt() { result = getBody() }
+  override Stmt getAControlledStmt() { result = this.getBody() }
 }
 
 /**
@@ -145,13 +145,13 @@ class EmptyStmt extends @empty_stmt, Stmt {
  */
 class BlockStmt extends @block_stmt, Stmt {
   /** Gets the `i`th statement in this block. */
-  Stmt getStmt(int i) { result = getChildStmt(i) }
+  Stmt getStmt(int i) { result = this.getChildStmt(i) }
 
   /** Gets a statement in this block. */
-  Stmt getAStmt() { result = getStmt(_) }
+  Stmt getAStmt() { result = this.getStmt(_) }
 
   /** Gets the number of statements in this block. */
-  int getNumStmt() { result = count(getAStmt()) }
+  int getNumStmt() { result = count(this.getAStmt()) }
 
   /** Holds if this block is a function body. */
   predicate isFunctionBody() { this.getParent() instanceof Function }
@@ -171,9 +171,9 @@ class BlockStmt extends @block_stmt, Stmt {
  */
 class ExprStmt extends @expr_stmt, Stmt {
   /** Gets the expression of this expression statement. */
-  Expr getExpr() { result = getChildExpr(0) }
+  Expr getExpr() { result = this.getChildExpr(0) }
 
-  override predicate isSubjectToSemicolonInsertion() { not isDoubleColonMethod(_, _, _) }
+  override predicate isSubjectToSemicolonInsertion() { not this.isDoubleColonMethod(_, _, _) }
 
   /**
    * Holds if this expression statement is a JScript-style double colon method declaration.
@@ -182,7 +182,7 @@ class ExprStmt extends @expr_stmt, Stmt {
     // the parser converts double colon method declarations into assignments, but we
     // can consult token-level information to identify them
     exists(Assignment assgn, DotExpr dot, Token tk |
-      assgn = getExpr() and
+      assgn = this.getExpr() and
       dot = assgn.getLhs() and
       interface = dot.getBase() and
       // check if the interface name is followed by two colons
@@ -205,7 +205,7 @@ class ExprStmt extends @expr_stmt, Stmt {
  * be a directive).
  */
 private class MaybeDirective extends ExprStmt {
-  MaybeDirective() { getExpr() instanceof StringLiteral }
+  MaybeDirective() { this.getExpr() instanceof StringLiteral }
 
   /**
    * Gets the raw text of the string literal wrapped by this statement.
@@ -228,7 +228,7 @@ private class MaybeDirective extends ExprStmt {
    * string literal is the same as in the former case.)
    */
   string getDirectiveText() {
-    exists(string text | text = getExpr().(StringLiteral).getRawValue() |
+    exists(string text | text = this.getExpr().(StringLiteral).getRawValue() |
       result = text.substring(1, text.length() - 1)
     )
   }
@@ -279,7 +279,7 @@ abstract class KnownDirective extends Directive { }
  * ```
  */
 class StrictModeDecl extends KnownDirective {
-  StrictModeDecl() { getDirectiveText() = "use strict" }
+  StrictModeDecl() { this.getDirectiveText() = "use strict" }
 }
 
 /**
@@ -292,7 +292,7 @@ class StrictModeDecl extends KnownDirective {
  * ```
  */
 class ASMJSDirective extends KnownDirective {
-  ASMJSDirective() { getDirectiveText() = "use asm" }
+  ASMJSDirective() { this.getDirectiveText() = "use asm" }
 }
 
 /**
@@ -305,7 +305,7 @@ class ASMJSDirective extends KnownDirective {
  * ```
  */
 class BabelDirective extends KnownDirective {
-  BabelDirective() { getDirectiveText() = "use babel" }
+  BabelDirective() { this.getDirectiveText() = "use babel" }
 }
 
 /**
@@ -318,7 +318,7 @@ class BabelDirective extends KnownDirective {
  * ```
  */
 class SixToFiveDirective extends KnownDirective {
-  SixToFiveDirective() { getDirectiveText() = "use 6to5" }
+  SixToFiveDirective() { this.getDirectiveText() = "use 6to5" }
 }
 
 /**
@@ -331,7 +331,9 @@ class SixToFiveDirective extends KnownDirective {
  * ```
  */
 class SystemJSFormatDirective extends KnownDirective {
-  SystemJSFormatDirective() { getDirectiveText().regexpMatch("format (cjs|esm|global|register)") }
+  SystemJSFormatDirective() {
+    this.getDirectiveText().regexpMatch("format (cjs|esm|global|register)")
+  }
 }
 
 /**
@@ -344,7 +346,7 @@ class SystemJSFormatDirective extends KnownDirective {
  * ```
  */
 class FormatRegisterDirective extends SystemJSFormatDirective {
-  FormatRegisterDirective() { getDirectiveText() = "format register" }
+  FormatRegisterDirective() { this.getDirectiveText() = "format register" }
 }
 
 /**
@@ -357,7 +359,7 @@ class FormatRegisterDirective extends SystemJSFormatDirective {
  * ```
  */
 class NgInjectDirective extends KnownDirective {
-  NgInjectDirective() { getDirectiveText().regexpMatch("ng(No)?Inject") }
+  NgInjectDirective() { this.getDirectiveText().regexpMatch("ng(No)?Inject") }
 }
 
 /**
@@ -370,7 +372,9 @@ class NgInjectDirective extends KnownDirective {
  * ```
  */
 class YuiDirective extends KnownDirective {
-  YuiDirective() { getDirectiveText().regexpMatch("([a-z0-9_]+:nomunge, ?)*([a-z0-9_]+:nomunge)") }
+  YuiDirective() {
+    this.getDirectiveText().regexpMatch("([a-z0-9_]+:nomunge, ?)*([a-z0-9_]+:nomunge)")
+  }
 }
 
 /**
@@ -383,7 +387,7 @@ class YuiDirective extends KnownDirective {
  * ```
  */
 class SystemJSDepsDirective extends KnownDirective {
-  SystemJSDepsDirective() { getDirectiveText().regexpMatch("deps [^ ]+") }
+  SystemJSDepsDirective() { this.getDirectiveText().regexpMatch("deps [^ ]+") }
 }
 
 /**
@@ -396,7 +400,7 @@ class SystemJSDepsDirective extends KnownDirective {
  * ```
  */
 class BundleDirective extends KnownDirective {
-  BundleDirective() { getDirectiveText() = "bundle" }
+  BundleDirective() { this.getDirectiveText() = "bundle" }
 }
 
 /**
@@ -414,26 +418,26 @@ class BundleDirective extends KnownDirective {
  */
 class IfStmt extends @if_stmt, ControlStmt {
   /** Gets the condition of this `if` statement. */
-  Expr getCondition() { result = getChildExpr(0) }
+  Expr getCondition() { result = this.getChildExpr(0) }
 
   /** Gets the "then" branch of this `if` statement. */
-  Stmt getThen() { result = getChildStmt(1) }
+  Stmt getThen() { result = this.getChildStmt(1) }
 
   /** Gets the "else" branch of this `if` statement, if any. */
-  Stmt getElse() { result = getChildStmt(2) }
+  Stmt getElse() { result = this.getChildStmt(2) }
 
   /** Gets the `if` token of this `if` statement. */
-  KeywordToken getIfToken() { result = getFirstToken() }
+  KeywordToken getIfToken() { result = this.getFirstToken() }
 
   /** Gets the `else` token of this `if` statement, if any. */
   KeywordToken getElseToken() {
-    result = getThen().getLastToken().getNextToken() and
-    result.getIndex() < getLastToken().getIndex()
+    result = this.getThen().getLastToken().getNextToken() and
+    result.getIndex() < this.getLastToken().getIndex()
   }
 
   override Stmt getAControlledStmt() {
-    result = getThen() or
-    result = getElse()
+    result = this.getThen() or
+    result = this.getElse()
   }
 
   /** Holds if this `if` statement is an `else if` of an outer `if` statement. */
@@ -459,10 +463,10 @@ class IfStmt extends @if_stmt, ControlStmt {
  */
 class LabeledStmt extends @labeled_stmt, Stmt {
   /** Gets the label of this statement. */
-  string getLabel() { result = getChildExpr(0).(Identifier).getName() }
+  string getLabel() { result = this.getChildExpr(0).(Identifier).getName() }
 
   /** Gets the labeled statement of this statement. */
-  Stmt getStmt() { result = getChildStmt(1) }
+  Stmt getStmt() { result = this.getChildStmt(1) }
 
   override string getAPrimaryQlClass() { result = "LabeledStmt" }
 }
@@ -513,10 +517,10 @@ class JumpStmt extends TJumpStmt, Stmt {
  */
 class BreakOrContinueStmt extends TBreakOrContinueStmt, JumpStmt {
   /** Gets the label this statement refers to, if any. */
-  string getTargetLabel() { result = getChildExpr(0).(Identifier).getName() }
+  string getTargetLabel() { result = this.getChildExpr(0).(Identifier).getName() }
 
   /** Holds if this statement has an explicit target label. */
-  predicate hasTargetLabel() { exists(getTargetLabel()) }
+  predicate hasTargetLabel() { exists(this.getTargetLabel()) }
 
   /** Gets the statement this statement breaks out of or continues with. */
   override Stmt getTarget() { jump_targets(this, result) }
@@ -565,25 +569,27 @@ class ContinueStmt extends @continue_stmt, BreakOrContinueStmt {
  */
 class WithStmt extends @with_stmt, ControlStmt {
   /** Gets the controlling expression of this `with` statement. */
-  Expr getExpr() { result = getChildExpr(0) }
+  Expr getExpr() { result = this.getChildExpr(0) }
 
   /** Gets the body of this `with` statement. */
-  Stmt getBody() { result = getChildStmt(1) }
+  Stmt getBody() { result = this.getChildStmt(1) }
 
   /**
    * Holds if `acc` could refer to a property of the scope object
    * introduced by this `with` statement.
    */
   predicate mayAffect(VarAccess acc) {
-    acc.getEnclosingStmt().nestedIn(getBody()) and
+    acc.getEnclosingStmt().nestedIn(this.getBody()) and
     exists(Variable v | v = acc.getVariable() |
       v instanceof GlobalVariable
       or
-      exists(ASTNode scopeElt | scopeElt = v.getScope().getScopeElement() | scopeElt = getParent+())
+      exists(ASTNode scopeElt | scopeElt = v.getScope().getScopeElement() |
+        scopeElt = this.getParent+()
+      )
     )
   }
 
-  override Stmt getAControlledStmt() { result = getBody() }
+  override Stmt getAControlledStmt() { result = this.getBody() }
 
   override string getAPrimaryQlClass() { result = "WithStmt" }
 }
@@ -608,18 +614,18 @@ class WithStmt extends @with_stmt, ControlStmt {
  */
 class SwitchStmt extends @switch_stmt, ControlStmt {
   /** Gets the controlling expression of this `switch` statement. */
-  Expr getExpr() { result = getChildExpr(-1) }
+  Expr getExpr() { result = this.getChildExpr(-1) }
 
   /** Gets the `i`th `case` clause of this `switch` statement. */
-  Case getCase(int i) { result = getChildStmt(i) }
+  Case getCase(int i) { result = this.getChildStmt(i) }
 
   /** Gets a `case` clause of this `switch` statement. */
-  Case getACase() { result = getCase(_) }
+  Case getACase() { result = this.getCase(_) }
 
   /** Gets the number of `case` clauses of this `switch` statement. */
-  int getNumCase() { result = count(getACase()) }
+  int getNumCase() { result = count(this.getACase()) }
 
-  override Case getAControlledStmt() { result = getACase() }
+  override Case getAControlledStmt() { result = this.getACase() }
 
   override string getAPrimaryQlClass() { result = "SwitchStmt" }
 }
@@ -636,13 +642,15 @@ class SwitchStmt extends @switch_stmt, ControlStmt {
  */
 class ReturnStmt extends @return_stmt, JumpStmt {
   /** Gets the expression specifying the returned value, if any. */
-  Expr getExpr() { result = getChildExpr(0) }
+  Expr getExpr() { result = this.getChildExpr(0) }
 
   /** Gets the target of this `return` statement, which is the enclosing statement container. */
-  override Function getTarget() { result = getContainer() }
+  override Function getTarget() { result = this.getContainer() }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    if exists(getExpr()) then result = getExpr().getFirstControlFlowNode() else result = this
+    if exists(this.getExpr())
+    then result = this.getExpr().getFirstControlFlowNode()
+    else result = this
   }
 
   override predicate isSubjectToSemicolonInsertion() { any() }
@@ -661,7 +669,7 @@ class ReturnStmt extends @return_stmt, JumpStmt {
  */
 class ThrowStmt extends @throw_stmt, JumpStmt {
   /** Gets the expression specifying the value to throw. */
-  Expr getExpr() { result = getChildExpr(0) }
+  Expr getExpr() { result = this.getChildExpr(0) }
 
   /**
    * Gets the target of this `throw` statement, which is the closest surrounding
@@ -669,15 +677,17 @@ class ThrowStmt extends @throw_stmt, JumpStmt {
    * `try` statement, the target defaults to the enclosing statement container.
    */
   override ASTNode getTarget() {
-    if exists(TryStmt ts | getParentStmt+() = ts.getBody())
+    if exists(TryStmt ts | this.getParentStmt+() = ts.getBody())
     then
-      getParentStmt+() = result.(TryStmt).getBody() and
-      not exists(TryStmt mid | getParentStmt+() = mid.getBody() and mid.getParentStmt+() = result)
-    else result = getContainer()
+      this.getParentStmt+() = result.(TryStmt).getBody() and
+      not exists(TryStmt mid |
+        this.getParentStmt+() = mid.getBody() and mid.getParentStmt+() = result
+      )
+    else result = this.getContainer()
   }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getExpr().getFirstControlFlowNode()
+    result = this.getExpr().getFirstControlFlowNode()
   }
 
   override predicate isSubjectToSemicolonInsertion() { any() }
@@ -701,37 +711,37 @@ class ThrowStmt extends @throw_stmt, JumpStmt {
  */
 class TryStmt extends @try_stmt, ControlStmt {
   /** Gets the body of this `try` statement. */
-  BlockStmt getBody() { result = getChildStmt(0) }
+  BlockStmt getBody() { result = this.getChildStmt(0) }
 
   override Stmt getAControlledStmt() {
-    result = getBody() or
-    result = getACatchClause() or
-    result = getFinally()
+    result = this.getBody() or
+    result = this.getACatchClause() or
+    result = this.getFinally()
   }
 
   /** Gets the `i`th `catch` clause of this `try` statement, if any. */
   CatchClause getCatchClause(int i) {
     exists(int idx |
-      result = getChildStmt(idx) and
+      result = this.getChildStmt(idx) and
       idx >= 1 and
       i = idx - 1
     )
   }
 
   /** Gets a `catch` clause of this `try` statement. */
-  CatchClause getACatchClause() { result = getCatchClause(_) }
+  CatchClause getACatchClause() { result = this.getCatchClause(_) }
 
   /** Gets the (unique) unguarded `catch` clause of this `try` statement, if any. */
   CatchClause getCatchClause() {
-    result = getACatchClause() and
+    result = this.getACatchClause() and
     not exists(result.getGuard())
   }
 
   /** Gets the number of `catch` clauses of this `try` statement. */
-  int getNumCatchClause() { result = count(getACatchClause()) }
+  int getNumCatchClause() { result = count(this.getACatchClause()) }
 
   /** Gets the `finally` block of this `try` statement, if any. */
-  BlockStmt getFinally() { result = getChildStmt(-1) }
+  BlockStmt getFinally() { result = this.getChildStmt(-1) }
 
   override string getAPrimaryQlClass() { result = "TryStmt" }
 }
@@ -749,11 +759,11 @@ class TryStmt extends @try_stmt, ControlStmt {
  */
 class WhileStmt extends @while_stmt, LoopStmt {
   /** Gets the loop condition of this `while` loop. */
-  Expr getExpr() { result = getChildExpr(0) }
+  Expr getExpr() { result = this.getChildExpr(0) }
 
-  override Expr getTest() { result = getExpr() }
+  override Expr getTest() { result = this.getExpr() }
 
-  override Stmt getBody() { result = getChildStmt(1) }
+  override Stmt getBody() { result = this.getChildStmt(1) }
 
   override string getAPrimaryQlClass() { result = "WhileStmt" }
 }
@@ -771,11 +781,11 @@ class WhileStmt extends @while_stmt, LoopStmt {
  */
 class DoWhileStmt extends @do_while_stmt, LoopStmt {
   /** Gets the loop condition of this `do`-`while` loop. */
-  Expr getExpr() { result = getChildExpr(1) }
+  Expr getExpr() { result = this.getChildExpr(1) }
 
-  override Expr getTest() { result = getExpr() }
+  override Expr getTest() { result = this.getExpr() }
 
-  override Stmt getBody() { result = getChildStmt(0) }
+  override Stmt getBody() { result = this.getChildStmt(0) }
 
   override predicate isSubjectToSemicolonInsertion() { any() }
 
@@ -813,16 +823,16 @@ class ExprOrVarDecl extends ASTNode {
 class ForStmt extends @for_stmt, LoopStmt {
   /** Gets the init part of this `for` loop. */
   ExprOrVarDecl getInit() {
-    result = getChildExpr(0) or
-    result = getChildStmt(0)
+    result = this.getChildExpr(0) or
+    result = this.getChildStmt(0)
   }
 
-  override Expr getTest() { result = getChildExpr(1) }
+  override Expr getTest() { result = this.getChildExpr(1) }
 
   /** Gets the update part of this `for` loop. */
-  Expr getUpdate() { result = getChildExpr(2) }
+  Expr getUpdate() { result = this.getChildExpr(2) }
 
-  override Stmt getBody() { result = getChildStmt(3) }
+  override Stmt getBody() { result = this.getChildStmt(3) }
 
   override string getAPrimaryQlClass() { result = "ForStmt" }
 }
@@ -848,22 +858,22 @@ class EnhancedForLoop extends TEnhancedForLoop, LoopStmt {
    * pattern, a property reference, or a variable declaration statement.
    */
   ExprOrVarDecl getIterator() {
-    result = getChildExpr(0) or
-    result = getChildStmt(0)
+    result = this.getChildExpr(0) or
+    result = this.getChildStmt(0)
   }
 
   /**
    * Gets the default value of the loop's iterator, if any.
    */
-  Expr getDefault() { result = getChildExpr(-1) }
+  Expr getDefault() { result = this.getChildExpr(-1) }
 
   /**
    * Gets the iterator expression of this `for`-`in` or `for`-`of` loop; this can be
    * either a variable access or a variable declarator.
    */
   Expr getIteratorExpr() {
-    result = getIterator() or
-    result = getIterator().(DeclStmt).getADecl()
+    result = this.getIterator() or
+    result = this.getIterator().(DeclStmt).getADecl()
   }
 
   /**
@@ -871,29 +881,29 @@ class EnhancedForLoop extends TEnhancedForLoop, LoopStmt {
    * expression in this `for`-`in` or `for`-`of` loop.
    */
   Expr getLValue() {
-    result = getIterator() and
+    result = this.getIterator() and
     (result instanceof BindingPattern or result instanceof PropAccess)
     or
-    result = getIterator().(DeclStmt).getADecl().getBindingPattern()
+    result = this.getIterator().(DeclStmt).getADecl().getBindingPattern()
   }
 
   /**
    * Gets an iterator variable of this `for`-`in` or `for`-`of` loop.
    */
   Variable getAnIterationVariable() {
-    result = getIterator().(DeclStmt).getADecl().getBindingPattern().getAVariable() or
-    result = getIterator().(BindingPattern).getAVariable()
+    result = this.getIterator().(DeclStmt).getADecl().getBindingPattern().getAVariable() or
+    result = this.getIterator().(BindingPattern).getAVariable()
   }
 
   override Expr getTest() { none() }
 
   /** Gets the expression this `for`-`in` or `for`-`of` loop iterates over. */
-  Expr getIterationDomain() { result = getChildExpr(1) }
+  Expr getIterationDomain() { result = this.getChildExpr(1) }
 
-  override Stmt getBody() { result = getChildStmt(2) }
+  override Stmt getBody() { result = this.getChildStmt(2) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getIteratorExpr().getFirstControlFlowNode()
+    result = this.getIteratorExpr().getFirstControlFlowNode()
   }
 }
 
@@ -993,10 +1003,10 @@ class FunctionDeclStmt extends @function_decl_stmt, Stmt, Function {
  */
 class DeclStmt extends @decl_stmt, Stmt {
   /** Gets the `i`th declarator in this declaration statement. */
-  VariableDeclarator getDecl(int i) { result = getChildExpr(i) and i >= 0 }
+  VariableDeclarator getDecl(int i) { result = this.getChildExpr(i) and i >= 0 }
 
   /** Gets a declarator in this declaration statement. */
-  VariableDeclarator getADecl() { result = getDecl(_) }
+  VariableDeclarator getADecl() { result = this.getDecl(_) }
 
   override predicate isSubjectToSemicolonInsertion() {
     // exclude variable declarations in the init part of for/for-in/for-of loops
@@ -1052,7 +1062,7 @@ class LetStmt extends @let_stmt, DeclStmt { }
  */
 class LegacyLetStmt extends @legacy_let_stmt, DeclStmt {
   /** Gets the statement this let statement scopes over. */
-  Stmt getBody() { result = getChildStmt(-1) }
+  Stmt getBody() { result = this.getChildStmt(-1) }
 
   override predicate isSubjectToSemicolonInsertion() { none() }
 }
@@ -1069,22 +1079,22 @@ class LegacyLetStmt extends @legacy_let_stmt, DeclStmt {
  */
 class Case extends @case, Stmt {
   /** Gets the test expression of this `case` clause. */
-  Expr getExpr() { result = getChildExpr(-1) }
+  Expr getExpr() { result = this.getChildExpr(-1) }
 
   /** Holds if this is a `default` clause. */
-  predicate isDefault() { not exists(getExpr()) }
+  predicate isDefault() { not exists(this.getExpr()) }
 
   /** Gets the `i`th statement in this `case` clause. */
-  Stmt getBodyStmt(int i) { result = getChildStmt(i) }
+  Stmt getBodyStmt(int i) { result = this.getChildStmt(i) }
 
   /** Gets a statement in this `case` clause. */
-  Stmt getABodyStmt() { result = getChildStmt(_) }
+  Stmt getABodyStmt() { result = this.getChildStmt(_) }
 
   /** Gets the number of statements in this `case` clause. */
-  int getNumBodyStmt() { result = count(getABodyStmt()) }
+  int getNumBodyStmt() { result = count(this.getABodyStmt()) }
 
   /** Gets the `switch` statement to which this clause belongs. */
-  SwitchStmt getSwitch() { result = getParent() }
+  SwitchStmt getSwitch() { result = this.getParent() }
 
   override string getAPrimaryQlClass() { result = "Case" }
 }
@@ -1102,12 +1112,12 @@ class Case extends @case, Stmt {
  */
 class CatchClause extends @catch_clause, ControlStmt, Parameterized {
   /** Gets the body of this `catch` clause. */
-  BlockStmt getBody() { result = getChildStmt(1) }
+  BlockStmt getBody() { result = this.getChildStmt(1) }
 
   /** Gets the guard expression of this `catch` clause, if any. */
-  Expr getGuard() { result = getChildExpr(2) }
+  Expr getGuard() { result = this.getChildExpr(2) }
 
-  override Stmt getAControlledStmt() { result = getBody() }
+  override Stmt getAControlledStmt() { result = this.getBody() }
 
   /** Gets the scope induced by this `catch` clause. */
   CatchScope getScope() { result.getCatchClause() = this }

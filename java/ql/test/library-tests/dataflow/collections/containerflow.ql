@@ -8,8 +8,8 @@ class SummaryModelTest extends SummaryModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
-        ";B;false;readElement;(Spliterator);;Element of Argument[0];ReturnValue;value",
-        ";B;false;readElement;(Stream);;Element of Argument[0];ReturnValue;value"
+        ";B;false;readElement;(Spliterator);;Argument[0].Element;ReturnValue;value",
+        ";B;false;readElement;(Stream);;Argument[0].Element;ReturnValue;value"
       ]
   }
 }

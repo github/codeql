@@ -18,7 +18,7 @@ class MetricStmt extends Stmt {
 
   /** Gets the nested depth of this statement. */
   int getNestedDepth() {
-    not exists(Stmt s | s = this.getParent()) and result = 0
+    not this.getParent() instanceof Stmt and result = 0
     or
     exists(MetricStmt s | s = this.getParent() and result = s.getNestedDepth() + 1)
   }

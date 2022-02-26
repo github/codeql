@@ -115,6 +115,9 @@ module Path {
     PathNormalization::Range range;
 
     PathNormalization() { this = range }
+
+    /** Gets an argument to this path normalization that is interpreted as a path. */
+    DataFlow::Node getPathArg() { result = range.getPathArg() }
   }
 
   /** Provides a class for modeling new path normalization APIs. */
@@ -123,7 +126,10 @@ module Path {
      * A data-flow node that performs path normalization. This is often needed in order
      * to safely access paths.
      */
-    abstract class Range extends DataFlow::Node { }
+    abstract class Range extends DataFlow::Node {
+      /** Gets an argument to this path normalization that is interpreted as a path. */
+      abstract DataFlow::Node getPathArg();
+    }
   }
 
   /** A data-flow node that checks that a path is safe to access. */
@@ -443,6 +449,44 @@ module RegexExecution {
   }
 }
 
+/** Provides classes for modeling LDAP-related APIs. */
+module LDAP {
+  /**
+   * A data-flow node that executes an LDAP query.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `LDAPQuery::Range` instead.
+   */
+  class LdapExecution extends DataFlow::Node {
+    LdapExecution::Range range;
+
+    LdapExecution() { this = range }
+
+    /** Gets the argument containing the filter string. */
+    DataFlow::Node getFilter() { result = range.getFilter() }
+
+    /** Gets the argument containing the base DN. */
+    DataFlow::Node getBaseDn() { result = range.getBaseDn() }
+  }
+
+  /** Provides classes for modeling new LDAP query execution-related APIs. */
+  module LdapExecution {
+    /**
+     * A data-flow node that executes an LDAP query.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `LDAPQuery` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the argument containing the filter string. */
+      abstract DataFlow::Node getFilter();
+
+      /** Gets the argument containing the base DN. */
+      abstract DataFlow::Node getBaseDn();
+    }
+  }
+}
+
 /**
  * A data-flow node that escapes meta-characters, which could be used to prevent
  * injection attacks.
@@ -500,8 +544,20 @@ module Escaping {
   /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
   string getHtmlKind() { result = "html" }
 
-  /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
+  /** Gets the escape-kind for escaping a string so it can safely be included in a regular expression. */
   string getRegexKind() { result = "regex" }
+
+  /**
+   * Gets the escape-kind for escaping a string so it can safely be used as a
+   * distinguished name (DN) in an LDAP search.
+   */
+  string getLdapDnKind() { result = "ldap_dn" }
+
+  /**
+   * Gets the escape-kind for escaping a string so it can safely be used as a
+   * filter in an LDAP search.
+   */
+  string getLdapFilterKind() { result = "ldap_filter" }
   // TODO: If adding an XML kind, update the modeling of the `MarkupSafe` PyPI package.
   //
   // Technically it claims to escape for both HTML and XML, but for now we don't have
@@ -526,9 +582,28 @@ class RegexEscaping extends Escaping {
   RegexEscaping() { range.getKind() = Escaping::getRegexKind() }
 }
 
+/**
+ * An escape of a string so it can be safely used as a distinguished name (DN)
+ * in an LDAP search.
+ */
+class LdapDnEscaping extends Escaping {
+  LdapDnEscaping() { range.getKind() = Escaping::getLdapDnKind() }
+}
+
+/**
+ * An escape of a string so it can be safely used as a filter in an LDAP search.
+ */
+class LdapFilterEscaping extends Escaping {
+  LdapFilterEscaping() { range.getKind() = Escaping::getLdapFilterKind() }
+}
+
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
-  import semmle.python.web.HttpConstants
+  /** Gets an HTTP verb, in upper case */
+  string httpVerb() { result in ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"] }
+
+  /** Gets an HTTP verb, in lower case */
+  string httpVerbLower() { result = httpVerb().toLowerCase() }
 
   /** Provides classes for modeling HTTP servers. */
   module Server {
@@ -811,6 +886,72 @@ module HTTP {
         abstract DataFlow::Node getValueArg();
       }
     }
+  }
+
+  /** Provides classes for modeling HTTP clients. */
+  module Client {
+    /**
+     * A data-flow node that makes an outgoing HTTP request.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HTTP::Client::Request::Range` instead.
+     */
+    class Request extends DataFlow::Node instanceof Request::Range {
+      /**
+       * Gets a data-flow node that contributes to the URL of the request.
+       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+       */
+      DataFlow::Node getAUrlPart() { result = super.getAUrlPart() }
+
+      /** Gets a string that identifies the framework used for this request. */
+      string getFramework() { result = super.getFramework() }
+
+      /**
+       * Holds if this request is made using a mode that disables SSL/TLS
+       * certificate validation, where `disablingNode` represents the point at
+       * which the validation was disabled, and `argumentOrigin` represents the origin
+       * of the argument that disabled the validation (which could be the same node as
+       * `disablingNode`).
+       */
+      predicate disablesCertificateValidation(
+        DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+      ) {
+        super.disablesCertificateValidation(disablingNode, argumentOrigin)
+      }
+    }
+
+    /** Provides a class for modeling new HTTP requests. */
+    module Request {
+      /**
+       * A data-flow node that makes an outgoing HTTP request.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HTTP::Client::Request` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets a data-flow node that contributes to the URL of the request.
+         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+         */
+        abstract DataFlow::Node getAUrlPart();
+
+        /** Gets a string that identifies the framework used for this request. */
+        abstract string getFramework();
+
+        /**
+         * Holds if this request is made using a mode that disables SSL/TLS
+         * certificate validation, where `disablingNode` represents the point at
+         * which the validation was disabled, and `argumentOrigin` represents the origin
+         * of the argument that disabled the validation (which could be the same node as
+         * `disablingNode`).
+         */
+        abstract predicate disablesCertificateValidation(
+          DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+        );
+      }
+    }
+    // TODO: investigate whether we should treat responses to client requests as
+    // remote-flow-sources in general.
   }
 }
 

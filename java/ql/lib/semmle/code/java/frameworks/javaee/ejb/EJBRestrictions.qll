@@ -244,7 +244,7 @@ class SecurityManagerClass extends Class {
 /** A class involving file input or output. */
 class FileInputOutputClass extends Class {
   FileInputOutputClass() {
-    this.hasQualifiedName("java.io", "File") or
+    this instanceof TypeFile or
     this.hasQualifiedName("java.io", "FileDescriptor") or
     this.hasQualifiedName("java.io", "FileInputStream") or
     this.hasQualifiedName("java.io", "FileOutputStream") or

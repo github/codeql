@@ -3,6 +3,7 @@
 package android.graphics;
 
 import android.graphics.RectF;
+import java.io.PrintWriter;
 
 public class Matrix
 {
@@ -36,8 +37,10 @@ public class Matrix
     public boolean setConcat(Matrix p0, Matrix p1){ return false; }
     public boolean setPolyToPoly(float[] p0, int p1, float[] p2, int p3, int p4){ return false; }
     public boolean setRectToRect(RectF p0, RectF p1, Matrix.ScaleToFit p2){ return false; }
+    public final void dump(PrintWriter p0){}
     public float mapRadius(float p0){ return 0; }
     public int hashCode(){ return 0; }
+    public static Matrix IDENTITY_MATRIX = null;
     public static int MPERSP_0 = 0;
     public static int MPERSP_1 = 0;
     public static int MPERSP_2 = 0;

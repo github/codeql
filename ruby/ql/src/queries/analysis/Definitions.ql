@@ -78,7 +78,7 @@ ConstantWriteAccess definitionOf(string fqn) {
   fqn = resolveConstant(_) and
   result =
     min(ConstantWriteAccess w, Location l |
-      w.getQualifiedName() = fqn and l = w.getLocation()
+      w.getAQualifiedName() = fqn and l = w.getLocation()
     |
       w
       order by

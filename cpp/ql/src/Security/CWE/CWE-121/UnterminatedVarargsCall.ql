@@ -42,7 +42,7 @@ class VarargsFunction extends Function {
   }
 
   private int trailingArgValueCount(string value) {
-    result = strictcount(FunctionCall fc | trailingArgValue(fc) = value)
+    result = strictcount(FunctionCall fc | this.trailingArgValue(fc) = value)
   }
 
   string nonTrailingVarArgValue(FunctionCall fc, int index) {
@@ -58,11 +58,11 @@ class VarargsFunction extends Function {
 
   string normalTerminator(int cnt) {
     result = ["0", "-1"] and
-    cnt = trailingArgValueCount(result) and
-    2 * cnt > totalCount() and
+    cnt = this.trailingArgValueCount(result) and
+    2 * cnt > this.totalCount() and
     not exists(FunctionCall fc, int index |
       // terminator value is used in a non-terminating position
-      nonTrailingVarArgValue(fc, index) = result
+      this.nonTrailingVarArgValue(fc, index) = result
     )
   }
 

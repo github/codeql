@@ -3,7 +3,9 @@ import ratpack.core.http.TypedData;
 import ratpack.core.form.Form;
 import ratpack.core.form.UploadedFile;
 import ratpack.core.parse.Parse;
+import ratpack.exec.Operation;
 import ratpack.exec.Promise;
+import ratpack.exec.Result;
 import ratpack.func.Action;
 import ratpack.func.Function;
 import java.io.OutputStream;
@@ -167,6 +169,14 @@ class Resource {
             .next(value -> {
                 sink(value); //$hasTaintFlow
             })
+            .map(value -> {
+                sink(value); //$hasTaintFlow
+                return value;
+            })
+            .blockingMap(value -> {
+                sink(value); //$hasTaintFlow
+                return value;
+            })
             .then(value -> {
                 sink(value); //$hasTaintFlow
             });
@@ -316,5 +326,77 @@ class Resource {
             .then(value -> {
                 sink(value); // no tainted flow
             });
-    }    
+    }
+
+    void test13() {
+        String tainted = taint();
+        Promise
+            .value(tainted)
+            .replace(Promise.value("safe"))
+            .then(value -> {
+                sink(value); // no tainted flow
+            });
+        Promise
+            .value("safe")
+            .replace(Promise.value(tainted))
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
+    }
+
+    void test14() {
+        String tainted = taint();
+        Promise
+            .value(tainted)
+            .blockingOp(value -> {
+                sink(value); //$hasTaintFlow
+            })
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
+    }
+
+    void test15() {
+        String tainted = taint();
+        Promise
+            .value(tainted)
+            .nextOp(value -> Operation.of(() -> {
+                sink(value); //$hasTaintFlow
+            }))
+            .nextOpIf(value -> {
+                sink(value); //$hasTaintFlow
+                return true;
+            }, value -> Operation.of(() -> {
+                sink(value); //$hasTaintFlow
+            }))
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
+    }
+
+    void test16() {
+        String tainted = taint();
+        Promise
+            .value(tainted)
+            .flatOp(value ->  Operation.of(() -> {
+                sink(value); //$hasTaintFlow
+            }));
+    }
+
+    void test17() throws Exception {
+        String tainted = taint();
+        Result<String> result = Result.success(tainted);
+        sink(result.getValue()); //$hasTaintFlow
+        sink(result.getValueOrThrow()); //$hasTaintFlow
+        Promise
+            .value(tainted)
+            .wiretap(r -> {
+                sink(r.getValue()); //$hasTaintFlow
+                sink(r.getValueOrThrow()); //$hasTaintFlow
+            })
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
+    }
+
 }

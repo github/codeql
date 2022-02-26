@@ -18,17 +18,17 @@ import javascript
  */
 class IndexOfCall extends DataFlow::MethodCallNode {
   IndexOfCall() {
-    exists(string name | name = getMethodName() |
+    exists(string name | name = this.getMethodName() |
       name = "indexOf" or
       name = "lastIndexOf"
     ) and
-    getNumArgument() = 1
+    this.getNumArgument() = 1
   }
 
   /** Gets the receiver or argument of this call. */
   DataFlow::Node getAnOperand() {
-    result = getReceiver() or
-    result = getArgument(0)
+    result = this.getReceiver() or
+    result = this.getArgument(0)
   }
 
   /**
@@ -73,14 +73,14 @@ DataFlow::SourceNode getStringSource(DataFlow::Node node) {
  */
 class LiteralLengthExpr extends DotExpr {
   LiteralLengthExpr() {
-    getPropertyName() = "length" and
-    getBase() instanceof StringLiteral
+    this.getPropertyName() = "length" and
+    this.getBase() instanceof StringLiteral
   }
 
   /**
    * Gets the value of the string literal whose length is taken.
    */
-  string getBaseValue() { result = getBase().getStringValue() }
+  string getBaseValue() { result = this.getBase().getStringValue() }
 }
 
 /**
@@ -126,7 +126,7 @@ class UnsafeIndexOfComparison extends EqualityTest {
   DataFlow::Node testedValue;
 
   UnsafeIndexOfComparison() {
-    hasOperands(indexOf.getAUse(), testedValue.asExpr()) and
+    this.hasOperands(indexOf.getAUse(), testedValue.asExpr()) and
     isDerivedFromLength(testedValue, indexOf.getReceiver()) and
     isDerivedFromLength(testedValue, indexOf.getArgument(0)) and
     // Ignore cases like `x.indexOf("/") === x.length - 1` that can only be bypassed if `x` is the empty string.

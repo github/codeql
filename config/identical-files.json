@@ -7,6 +7,7 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl5.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl6.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplForSerializability.qll",
+    "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplForOnActivityResult.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl3.qll",
@@ -452,17 +453,25 @@
     "ruby/ql/lib/codeql/ruby/dataflow/internal/SsaImplCommon.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/SsaImplCommon.qll"
   ],
-  "CryptoAlgorithms Python/JS": [
+  "CryptoAlgorithms Python/JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/CryptoAlgorithms.qll",
-    "python/ql/lib/semmle/python/concepts/CryptoAlgorithms.qll"
+    "python/ql/lib/semmle/python/concepts/CryptoAlgorithms.qll",
+    "ruby/ql/lib/codeql/ruby/security/CryptoAlgorithms.qll"
+  ],
+  "CryptoAlgorithmNames Python/JS/Ruby": [
+    "javascript/ql/lib/semmle/javascript/security/internal/CryptoAlgorithmNames.qll",
+    "python/ql/lib/semmle/python/concepts/internal/CryptoAlgorithmNames.qll",
+    "ruby/ql/lib/codeql/ruby/security/internal/CryptoAlgorithmNames.qll"
   ],
   "SensitiveDataHeuristics Python/JS": [
     "javascript/ql/lib/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
-    "python/ql/lib/semmle/python/security/internal/SensitiveDataHeuristics.qll"
+    "python/ql/lib/semmle/python/security/internal/SensitiveDataHeuristics.qll",
+    "ruby/ql/lib/codeql/ruby/security/internal/SensitiveDataHeuristics.qll"
   ],
-  "ReDoS Util Python/JS": [
+  "ReDoS Util Python/JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/performance/ReDoSUtil.qll",
-    "python/ql/lib/semmle/python/security/performance/ReDoSUtil.qll"
+    "python/ql/lib/semmle/python/security/performance/ReDoSUtil.qll",
+    "ruby/ql/lib/codeql/ruby/security/performance/ReDoSUtil.qll"
   ],
   "ReDoS Exponential Python/JS": [
     "javascript/ql/lib/semmle/javascript/security/performance/ExponentialBackTracking.qll",
@@ -471,7 +480,12 @@
   "ReDoS Polynomial Python/JS": [
     "javascript/ql/lib/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
     "python/ql/lib/semmle/python/security/performance/SuperlinearBackTracking.qll",
-    "ruby/ql/lib/codeql/ruby/regexp/SuperlinearBackTracking.qll"
+    "ruby/ql/lib/codeql/ruby/security/performance/SuperlinearBackTracking.qll"
+  ],
+  "BadTagFilterQuery Python/JS/Ruby": [
+    "javascript/ql/lib/semmle/javascript/security/BadTagFilterQuery.qll",
+    "python/ql/lib/semmle/python/security/BadTagFilterQuery.qll",
+    "ruby/ql/lib/codeql/ruby/security/BadTagFilterQuery.qll"
   ],
   "CFG": [
     "csharp/ql/lib/semmle/code/csharp/controlflow/internal/ControlFlowGraphImplShared.qll",
@@ -488,5 +502,11 @@
     "javascript/ql/lib/tutorial.qll",
     "python/ql/lib/tutorial.qll",
     "ruby/ql/lib/tutorial.qll"
+  ],
+  "AccessPathSyntax": [
+    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/AccessPathSyntax.qll",
+    "java/ql/lib/semmle/code/java/dataflow/internal/AccessPathSyntax.qll",
+    "javascript/ql/lib/semmle/javascript/frameworks/data/internal/AccessPathSyntax.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/AccessPathSyntax.qll"
   ]
 }

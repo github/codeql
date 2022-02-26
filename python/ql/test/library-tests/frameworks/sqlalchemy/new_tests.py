@@ -147,6 +147,13 @@ with Session.begin() as session:
     result = session.execute(raw_sql) # $ getSql=raw_sql
     assert result.fetchall() == [("FOO",)]
 
+# scoped_session
+Session = sqlalchemy.orm.scoped_session(sqlalchemy.orm.sessionmaker(engine))
+session = Session()
+
+result = session.execute(raw_sql) # $ getSql=raw_sql
+assert result.fetchall() == [("FOO",)]
+
 # Querying (1.4)
 # see https://docs.sqlalchemy.org/en/14/orm/session_basics.html#querying-1-x-style
 

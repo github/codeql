@@ -136,10 +136,10 @@ async def file_response(): # $ requestHandler
 
     # We don't really have any good QL modeling of passing a file-path, whose content
     # will be returned as part of the response... so will leave this as a TODO for now.
-    resp = fastapi.responses.FileResponse(__file__) # $ HttpResponse
+    resp = fastapi.responses.FileResponse(__file__) # $ HttpResponse getAPathArgument=__file__
     return resp # $ SPURIOUS: HttpResponse mimetype=application/json responseBody=resp
 
 
 @app.get("/file_response2", response_class=fastapi.responses.FileResponse) # $ routeSetup="/file_response2"
 async def file_response2(): # $ requestHandler
-    return __file__ # $ HttpResponse
+    return __file__ # $ HttpResponse getAPathArgument=__file__

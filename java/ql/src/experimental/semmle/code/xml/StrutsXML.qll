@@ -19,7 +19,7 @@ class StrutsXMLElement extends XMLElement {
   /**
    * Gets the value for this element, with leading and trailing whitespace trimmed.
    */
-  string getValue() { result = allCharactersString().trim() }
+  string getValue() { result = this.allCharactersString().trim() }
 }
 
 /**
@@ -31,10 +31,10 @@ class ConstantParameter extends StrutsXMLElement {
   /**
    * Gets the value of the `name` attribute of this `<constant>`.
    */
-  string getNameValue() { result = getAttributeValue("name") }
+  string getNameValue() { result = this.getAttributeValue("name") }
 
   /**
    * Gets the value of the `value` attribute of this `<constant>`.
    */
-  string getValueValue() { result = getAttributeValue("value") }
+  string getValueValue() { result = this.getAttributeValue("value") }
 }

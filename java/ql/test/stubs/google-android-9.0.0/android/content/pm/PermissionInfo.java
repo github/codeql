@@ -39,6 +39,7 @@ public class PermissionInfo extends PackageItemInfo implements Parcelable
     public static int PROTECTION_FLAG_SETUP = 0;
     public static int PROTECTION_FLAG_SYSTEM = 0;
     public static int PROTECTION_FLAG_VERIFIER = 0;
+    public static int PROTECTION_INTERNAL = 0;
     public static int PROTECTION_MASK_BASE = 0;
     public static int PROTECTION_MASK_FLAGS = 0;
     public static int PROTECTION_NORMAL = 0;

@@ -1,0 +1,22 @@
+edges
+| ConditionalBypass.rb:3:13:3:18 | call to params :  | ConditionalBypass.rb:3:13:3:26 | ...[...] :  |
+| ConditionalBypass.rb:3:13:3:26 | ...[...] :  | ConditionalBypass.rb:6:8:6:12 | check |
+| ConditionalBypass.rb:14:14:14:19 | call to params :  | ConditionalBypass.rb:14:14:14:27 | ...[...] |
+| ConditionalBypass.rb:25:10:25:15 | call to params :  | ConditionalBypass.rb:25:10:25:22 | ...[...] |
+| ConditionalBypass.rb:25:10:25:15 | call to params :  | ConditionalBypass.rb:25:10:25:22 | ...[...] :  |
+| ConditionalBypass.rb:25:10:25:22 | ...[...] :  | ConditionalBypass.rb:27:8:27:8 | p |
+nodes
+| ConditionalBypass.rb:3:13:3:18 | call to params :  | semmle.label | call to params :  |
+| ConditionalBypass.rb:3:13:3:26 | ...[...] :  | semmle.label | ...[...] :  |
+| ConditionalBypass.rb:6:8:6:12 | check | semmle.label | check |
+| ConditionalBypass.rb:14:14:14:19 | call to params :  | semmle.label | call to params :  |
+| ConditionalBypass.rb:14:14:14:27 | ...[...] | semmle.label | ...[...] |
+| ConditionalBypass.rb:25:10:25:15 | call to params :  | semmle.label | call to params :  |
+| ConditionalBypass.rb:25:10:25:22 | ...[...] | semmle.label | ...[...] |
+| ConditionalBypass.rb:25:10:25:22 | ...[...] :  | semmle.label | ...[...] :  |
+| ConditionalBypass.rb:27:8:27:8 | p | semmle.label | p |
+subpaths
+#select
+| ConditionalBypass.rb:6:8:6:12 | check | ConditionalBypass.rb:3:13:3:18 | call to params :  | ConditionalBypass.rb:6:8:6:12 | check | This condition guards a sensitive $@, but $@ controls it. | ConditionalBypass.rb:8:7:8:29 | call to authenticate_user! | action | ConditionalBypass.rb:3:13:3:18 | call to params | a user-provided value |
+| ConditionalBypass.rb:14:14:14:27 | ...[...] | ConditionalBypass.rb:14:14:14:19 | call to params :  | ConditionalBypass.rb:14:14:14:27 | ...[...] | This condition guards a sensitive $@, but $@ controls it. | ConditionalBypass.rb:14:5:14:9 | call to login | action | ConditionalBypass.rb:14:14:14:19 | call to params | a user-provided value |
+| ConditionalBypass.rb:27:8:27:8 | p | ConditionalBypass.rb:25:10:25:15 | call to params :  | ConditionalBypass.rb:27:8:27:8 | p | This condition guards a sensitive $@, but $@ controls it. | ConditionalBypass.rb:28:7:28:13 | call to verify! | action | ConditionalBypass.rb:25:10:25:15 | call to params | a user-provided value |

@@ -34,6 +34,21 @@ class SSLSession extends RefType {
   SSLSession() { this.hasQualifiedName("javax.net.ssl", "SSLSession") }
 }
 
+/** The `javax.net.ssl.SSLEngine` class. */
+class SSLEngine extends RefType {
+  SSLEngine() { this.hasQualifiedName("javax.net.ssl", "SSLEngine") }
+}
+
+/** The `javax.net.ssl.SSLSocket` class. */
+class SSLSocket extends RefType {
+  SSLSocket() { this.hasQualifiedName("javax.net.ssl", "SSLSocket") }
+}
+
+/** The `javax.net.ssl.SSLParameters` class. */
+class SSLParameters extends RefType {
+  SSLParameters() { this.hasQualifiedName("javax.net.ssl", "SSLParameters") }
+}
+
 class HostnameVerifier extends RefType {
   HostnameVerifier() { this.hasQualifiedName("javax.net.ssl", "HostnameVerifier") }
 }
@@ -79,6 +94,14 @@ class GetSocketFactory extends Method {
   }
 }
 
+/** The `createSSLEngine` method of the class `javax.net.ssl.SSLContext` */
+class CreateSslEngineMethod extends Method {
+  CreateSslEngineMethod() {
+    this.hasName("createSSLEngine") and
+    this.getDeclaringType() instanceof SSLContext
+  }
+}
+
 class SetConnectionFactoryMethod extends Method {
   SetConnectionFactoryMethod() {
     this.hasName("setSSLSocketFactory") and
@@ -98,6 +121,38 @@ class SetDefaultHostnameVerifierMethod extends Method {
   SetDefaultHostnameVerifierMethod() {
     this.hasName("setDefaultHostnameVerifier") and
     this.getDeclaringType().getASupertype*() instanceof HttpsURLConnection
+  }
+}
+
+/** The `beginHandshake` method of the class `javax.net.ssl.SSLEngine`. */
+class BeginHandshakeMethod extends Method {
+  BeginHandshakeMethod() {
+    this.hasName("beginHandshake") and
+    this.getDeclaringType().getASupertype*() instanceof SSLEngine
+  }
+}
+
+/** The `wrap` method of the class `javax.net.ssl.SSLEngine`. */
+class SslWrapMethod extends Method {
+  SslWrapMethod() {
+    this.hasName("wrap") and
+    this.getDeclaringType().getASupertype*() instanceof SSLEngine
+  }
+}
+
+/** The `unwrap` method of the class `javax.net.ssl.SSLEngine`. */
+class SslUnwrapMethod extends Method {
+  SslUnwrapMethod() {
+    this.hasName("unwrap") and
+    this.getDeclaringType().getASupertype*() instanceof SSLEngine
+  }
+}
+
+/** The `getSession` method of the class `javax.net.ssl.SSLSession`.select */
+class GetSslSessionMethod extends Method {
+  GetSslSessionMethod() {
+    this.hasName("getSession") and
+    this.getDeclaringType().getASupertype*() instanceof SSLSession
   }
 }
 

@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 SyntaxKind.DisableKeyword => 0,
                 SyntaxKind.EnableKeyword => 1,
                 SyntaxKind.RestoreKeyword => 2,
-                _ => throw new InternalError(Symbol, "Unhandled setting token kind")
+                _ => throw new InternalError(Symbol, $"Unhandled setting token kind {Symbol.SettingToken.Kind()}")
             };
 
             var target = Symbol.TargetToken.Kind() switch
@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 SyntaxKind.None => 0,
                 SyntaxKind.AnnotationsKeyword => 1,
                 SyntaxKind.WarningsKeyword => 2,
-                _ => throw new InternalError(Symbol, "Unhandled target token kind")
+                _ => throw new InternalError(Symbol, $"Unhandled target token kind {Symbol.TargetToken.Kind()}")
             };
 
             trapFile.directive_nullables(this, setting, target);

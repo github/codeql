@@ -5,21 +5,26 @@ package android.view;
 import android.graphics.ColorSpace;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.hardware.display.DeviceProductInfo;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.view.DisplayCutout;
+import android.view.RoundedCorner;
 
 public class Display
 {
     public ColorSpace getPreferredWideGamutColorSpace(){ return null; }
+    public DeviceProductInfo getDeviceProductInfo(){ return null; }
     public Display.HdrCapabilities getHdrCapabilities(){ return null; }
     public Display.Mode getMode(){ return null; }
     public Display.Mode[] getSupportedModes(){ return null; }
     public DisplayCutout getCutout(){ return null; }
+    public RoundedCorner getRoundedCorner(int p0){ return null; }
     public String getName(){ return null; }
     public String toString(){ return null; }
     public boolean isHdr(){ return false; }
+    public boolean isMinimalPostProcessingSupported(){ return false; }
     public boolean isValid(){ return false; }
     public boolean isWideColorGamut(){ return false; }
     public float getRefreshRate(){ return 0; }
@@ -56,6 +61,7 @@ public class Display
     public void getSize(Point p0){}
     static public class HdrCapabilities implements Parcelable
     {
+        public String toString(){ return null; }
         public boolean equals(Object p0){ return false; }
         public float getDesiredMaxAverageLuminance(){ return 0; }
         public float getDesiredMaxLuminance(){ return 0; }
@@ -73,10 +79,10 @@ public class Display
     }
     static public class Mode implements Parcelable
     {
-        protected Mode() {}
         public String toString(){ return null; }
         public boolean equals(Object p0){ return false; }
         public float getRefreshRate(){ return 0; }
+        public float[] getAlternativeRefreshRates(){ return null; }
         public int describeContents(){ return 0; }
         public int getModeId(){ return 0; }
         public int getPhysicalHeight(){ return 0; }

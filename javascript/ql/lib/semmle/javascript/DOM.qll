@@ -51,13 +51,13 @@ module DOM {
      * Gets the root element (i.e. an element without a parent) in which this element is contained.
      */
     ElementDefinition getRoot() {
-      if not exists(getParent()) then result = this else result = getParent().getRoot()
+      if not exists(this.getParent()) then result = this else result = this.getParent().getRoot()
     }
 
     /**
      * Gets the document element to which this element belongs, if it can be determined.
      */
-    DocumentElementDefinition getDocument() { result = getRoot() }
+    DocumentElementDefinition getDocument() { result = this.getRoot() }
   }
 
   /**
@@ -108,7 +108,7 @@ module DOM {
     /**
      * Gets the value of this attribute, if it can be determined.
      */
-    string getStringValue() { result = getValueNode().getStringValue() }
+    string getStringValue() { result = this.getValueNode().getStringValue() }
 
     /**
      * Gets the DOM element this attribute belongs to.
@@ -120,7 +120,7 @@ module DOM {
      * such as `{{window.location.url}}`.
      */
     predicate mayHaveTemplateValue() {
-      getStringValue().regexpMatch(Templating::getDelimiterMatchingRegexp())
+      this.getStringValue().regexpMatch(Templating::getDelimiterMatchingRegexp())
     }
   }
 
@@ -176,18 +176,13 @@ module DOM {
       eltName = ["script", "iframe", "embed", "video", "audio", "source", "track"] and
       attrName = "src"
       or
-      (
-        eltName = "link" or
-        eltName = "a" or
-        eltName = "base" or
-        eltName = "area"
-      ) and
+      eltName = ["link", "a", "base", "area"] and
       attrName = "href"
       or
       eltName = "form" and
       attrName = "action"
       or
-      (eltName = "input" or eltName = "button") and
+      eltName = ["input", "button"] and
       attrName = "formaction"
     )
   }
@@ -305,7 +300,7 @@ module DOM {
     }
 
     /**
-     * A data flow node that might refer to some form.
+     * Gets a data flow node that might refer to some form.
      * Either by a read like `document.forms[0]`, or a property read from `document` with some constant property-name.
      * E.g. if `<form name="foobar">..</form>` exists, then `document.foobar` refers to that form.
      */

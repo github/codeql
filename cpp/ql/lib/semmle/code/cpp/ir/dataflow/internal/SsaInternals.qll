@@ -51,16 +51,6 @@ private newtype TDefOrUse =
   TExplicitUse(Operand op) { isExplicitUse(op) } or
   TReturnParamIndirection(Operand op) { returnParameterIndirection(op, _) }
 
-pragma[nomagic]
-private int getRank(DefOrUse defOrUse, IRBlock block) {
-  defOrUse =
-    rank[result](int i, DefOrUse cand |
-      block.getInstruction(i) = toInstruction(cand)
-    |
-      cand order by i
-    )
-}
-
 private class DefOrUse extends TDefOrUse {
   /** Gets the instruction associated with this definition, if any. */
   Instruction asDef() { none() }
@@ -74,9 +64,10 @@ private class DefOrUse extends TDefOrUse {
   /** Gets the block of this definition or use. */
   abstract IRBlock getBlock();
 
-  /** Holds if this definition or use has rank `rank` in block `block`. */
-  cached
-  final predicate hasRankInBlock(IRBlock block, int rnk) { rnk = getRank(this, block) }
+  /** Holds if this definition or use has index `index` in block `block`. */
+  final predicate hasIndexInBlock(IRBlock block, int index) {
+    block.getInstruction(index) = toInstruction(this)
+  }
 
   /** Gets the location of this element. */
   abstract Cpp::Location getLocation();
@@ -179,10 +170,16 @@ private class ReturnParameterIndirection extends Use, TReturnParamIndirection {
 }
 
 private predicate isExplicitUse(Operand op) {
-  op.getDef() instanceof VariableAddressInstruction and
-  not exists(LoadInstruction load |
-    load.getSourceAddressOperand() = op and
-    load.getAUse().getUse() instanceof InitializeIndirectionInstruction
+  exists(VariableAddressInstruction vai | vai = op.getDef() |
+    // Don't include this operand as a use if it only exists to initialize the
+    // indirection of a parameter.
+    not exists(LoadInstruction load |
+      load.getSourceAddressOperand() = op and
+      load.getAUse().getUse() instanceof InitializeIndirectionInstruction
+    ) and
+    // Don't include this operand as a use if the only use of the address is for a write
+    // that definitely overrides a variable.
+    not (explicitWrite(true, _, vai) and exists(unique( | | vai.getAUse())))
   )
 }
 
@@ -244,17 +241,6 @@ Instruction getDestinationAddress(Instruction instr) {
     ]
 }
 
-class ReferenceToInstruction extends CopyValueInstruction {
-  ReferenceToInstruction() {
-    this.getResultType() instanceof Cpp::ReferenceType and
-    not this.getUnary().getResultType() instanceof Cpp::ReferenceType
-  }
-
-  Instruction getSourceAddress() { result = getSourceAddressOperand().getDef() }
-
-  Operand getSourceAddressOperand() { result = this.getUnaryOperand() }
-}
-
 /** Gets the source address of `instr` if it is an instruction that behaves like a `LoadInstruction`. */
 Instruction getSourceAddress(Instruction instr) { result = getSourceAddressOperand(instr).getDef() }
 
@@ -266,11 +252,7 @@ Operand getSourceAddressOperand(Instruction instr) {
   result =
     [
       instr.(LoadInstruction).getSourceAddressOperand(),
-      instr.(ReadSideEffectInstruction).getArgumentOperand(),
-      // `ReferenceToInstruction` is really more of an address-of operation,
-      // but by including it in this list we break out of `flowOutOfAddressStep` at an
-      // instruction that, at the source level, looks like a use of a variable.
-      instr.(ReferenceToInstruction).getSourceAddressOperand()
+      instr.(ReadSideEffectInstruction).getArgumentOperand()
     ]
 }
 
@@ -295,10 +277,6 @@ Operand getSourceValueOperand(Instruction instr) {
   result = instr.(LoadInstruction).getSourceValueOperand()
   or
   result = instr.(ReadSideEffectInstruction).getSideEffectOperand()
-  or
-  // See the comment on the `ReferenceToInstruction` disjunct in `getSourceAddressOperand` for why
-  // this case is included.
-  result = instr.(ReferenceToInstruction).getSourceValueOperand()
 }
 
 /**
@@ -332,8 +310,8 @@ cached
 private module Cached {
   private predicate defUseFlow(Node nodeFrom, Node nodeTo) {
     exists(IRBlock bb1, int i1, IRBlock bb2, int i2, DefOrUse defOrUse, Use use |
-      defOrUse.hasRankInBlock(bb1, i1) and
-      use.hasRankInBlock(bb2, i2) and
+      defOrUse.hasIndexInBlock(bb1, i1) and
+      use.hasIndexInBlock(bb2, i2) and
       adjacentDefRead(_, bb1, i1, bb2, i2) and
       nodeFrom.asInstruction() = toInstruction(defOrUse) and
       flowOutOfAddressStep(use.getOperand(), nodeTo)
@@ -345,9 +323,9 @@ private module Cached {
     exists(IRBlock bb1, int i1, IRBlock bb2, int i2, Def def, Use use |
       nodeFrom.isTerminal() and
       def.getInstruction() = nodeFrom.getStoreInstruction() and
-      def.hasRankInBlock(bb1, i1) and
+      def.hasIndexInBlock(bb1, i1) and
       adjacentDefRead(_, bb1, i1, bb2, i2) and
-      use.hasRankInBlock(bb2, i2) and
+      use.hasIndexInBlock(bb2, i2) and
       flowOutOfAddressStep(use.getOperand(), nodeTo)
     )
     or
@@ -378,8 +356,8 @@ private module Cached {
 
   private predicate fromReadNode(ReadNode nodeFrom, Node nodeTo) {
     exists(IRBlock bb1, int i1, IRBlock bb2, int i2, Use use1, Use use2 |
-      use1.hasRankInBlock(bb1, i1) and
-      use2.hasRankInBlock(bb2, i2) and
+      use1.hasIndexInBlock(bb1, i1) and
+      use2.hasIndexInBlock(bb2, i2) and
       use1.getOperand().getDef() = nodeFrom.getInstruction() and
       adjacentDefRead(_, bb1, i1, bb2, i2) and
       flowOutOfAddressStep(use2.getOperand(), nodeTo)
@@ -390,7 +368,7 @@ private module Cached {
     exists(PhiNode phi, Use use, IRBlock block, int rnk |
       phi = nodeFrom.getPhiNode() and
       adjacentDefRead(phi, _, _, block, rnk) and
-      use.hasRankInBlock(block, rnk) and
+      use.hasIndexInBlock(block, rnk) and
       flowOutOfAddressStep(use.getOperand(), nodeTo)
     )
   }
@@ -398,7 +376,7 @@ private module Cached {
   private predicate toPhiNode(Node nodeFrom, SsaPhiNode nodeTo) {
     // Flow to phi nodes
     exists(Def def, IRBlock block, int rnk |
-      def.hasRankInBlock(block, rnk) and
+      def.hasIndexInBlock(block, rnk) and
       nodeTo.hasInputAtRankInBlock(block, rnk)
     |
       exists(StoreNodeInstr storeNode |
@@ -513,6 +491,64 @@ private module Cached {
       explicitWrite(false, storeNode.getStoreInstruction(), def)
     )
     or
+    // The destination of a store operation has undergone lvalue-to-rvalue conversion and is now a
+    // right-hand-side of a store operation.
+    // Find the next use of the variable in that store operation, and recursively find the load of that
+    // pointer. For example, consider this case:
+    //
+    // ```cpp
+    // int x = source();
+    // int* p = &x;
+    // sink(*p);
+    // ```
+    //
+    // if we want to find the load of the address of `x`, we see that the pointer is stored into `p`,
+    // and we then need to recursively look for the load of `p`.
+    exists(
+      Def def, StoreInstruction store, IRBlock block1, int rnk1, Use use, IRBlock block2, int rnk2
+    |
+      store = def.getInstruction() and
+      store.getSourceValueOperand() = operand and
+      def.hasIndexInBlock(block1, rnk1) and
+      use.hasIndexInBlock(block2, rnk2) and
+      adjacentDefRead(_, block1, rnk1, block2, rnk2)
+    |
+      // The shared SSA library has determined that `use` is the next use of the operand
+      // so we find the next load of that use (but only if there is no `PostUpdateNode`) we
+      // need to flow into first.
+      not StoreNodeFlow::flowInto(store, _) and
+      flowOutOfAddressStep(use.getOperand(), nodeTo)
+      or
+      // It may also be the case that `store` gives rise to another store step. So let's make sure that
+      // we also take those into account.
+      StoreNodeFlow::flowInto(store, nodeTo)
+    )
+    or
+    // As we find the next load of an address, we might come across another use of the same variable.
+    // In that case, we recursively find the next use of _that_ operand, and continue searching for
+    // the next load of that operand. For example, consider this case:
+    //
+    // ```cpp
+    // int x = source();
+    // use(&x);
+    // int* p = &x;
+    // sink(*p);
+    // ```
+    //
+    // The next use of `x` after its definition is `use(&x)`, but there is a later load of the address
+    // of `x` that we want to flow to. So we use the shared SSA library to find the next load.
+    not operand = getSourceAddressOperand(_) and
+    exists(Use use1, Use use2, IRBlock block1, int rnk1, IRBlock block2, int rnk2 |
+      use1.getOperand() = operand and
+      use1.hasIndexInBlock(block1, rnk1) and
+      // Don't flow to the next use if this use is part of a store operation that totally
+      // overrides a variable.
+      not explicitWrite(true, _, use1.getOperand().getDef()) and
+      adjacentDefRead(_, block1, rnk1, block2, rnk2) and
+      use2.hasIndexInBlock(block2, rnk2) and
+      flowOutOfAddressStep(use2.getOperand(), nodeTo)
+    )
+    or
     operand = getSourceAddressOperand(nodeTo.asInstruction())
     or
     exists(ReturnIndirectionInstruction ret |
@@ -581,7 +617,7 @@ import Cached
 predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
   DataFlowImplCommon::forceCachingInSameStage() and
   exists(Def def |
-    def.hasRankInBlock(bb, i) and
+    def.hasIndexInBlock(bb, i) and
     v = def.getSourceVariable() and
     (if def.isCertain() then certain = true else certain = false)
   )
@@ -593,7 +629,7 @@ predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
  */
 predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
   exists(Use use |
-    use.hasRankInBlock(bb, i) and
+    use.hasIndexInBlock(bb, i) and
     v = use.getSourceVariable() and
     certain = true
   )

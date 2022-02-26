@@ -23,9 +23,9 @@ edges
 | globalVars.c:15:21:15:23 | val | globalVars.c:16:2:16:12 | Store |
 | globalVars.c:16:2:16:12 | Store | globalVars.c:9:7:9:11 | copy2 |
 | globalVars.c:19:25:19:27 | *str | globalVars.c:19:25:19:27 | ReturnIndirection |
-| globalVars.c:24:2:24:9 | argv | globalVars.c:11:22:11:25 | argv |
-| globalVars.c:24:11:24:14 | argv | globalVars.c:24:2:24:9 | argv |
-| globalVars.c:24:11:24:14 | argv | globalVars.c:24:2:24:9 | argv |
+| globalVars.c:24:11:24:14 | argv | globalVars.c:11:22:11:25 | argv |
+| globalVars.c:24:11:24:14 | argv | globalVars.c:24:11:24:14 | argv |
+| globalVars.c:24:11:24:14 | argv | globalVars.c:24:11:24:14 | argv |
 | globalVars.c:24:11:24:14 | argv | globalVars.c:24:11:24:14 | argv indirection |
 | globalVars.c:24:11:24:14 | argv | globalVars.c:24:11:24:14 | argv indirection |
 | globalVars.c:24:11:24:14 | argv indirection | globalVars.c:11:22:11:25 | *argv |
@@ -37,13 +37,13 @@ edges
 | globalVars.c:30:15:30:18 | copy | globalVars.c:30:15:30:18 | copy |
 | globalVars.c:30:15:30:18 | copy | globalVars.c:30:15:30:18 | copy indirection |
 | globalVars.c:30:15:30:18 | copy | globalVars.c:30:15:30:18 | copy indirection |
-| globalVars.c:30:15:30:18 | copy | globalVars.c:35:2:35:9 | copy |
+| globalVars.c:30:15:30:18 | copy | globalVars.c:35:11:35:14 | copy |
 | globalVars.c:30:15:30:18 | copy indirection | globalVars.c:19:25:19:27 | *str |
 | globalVars.c:30:15:30:18 | copy indirection | globalVars.c:30:15:30:18 | printWrapper output argument |
-| globalVars.c:30:15:30:18 | printWrapper output argument | globalVars.c:35:2:35:9 | copy |
-| globalVars.c:33:15:33:18 | copy | globalVars.c:35:2:35:9 | copy |
-| globalVars.c:35:2:35:9 | copy | globalVars.c:15:21:15:23 | val |
-| globalVars.c:35:11:35:14 | copy | globalVars.c:35:2:35:9 | copy |
+| globalVars.c:30:15:30:18 | printWrapper output argument | globalVars.c:35:11:35:14 | copy |
+| globalVars.c:33:15:33:18 | copy | globalVars.c:35:11:35:14 | copy |
+| globalVars.c:35:11:35:14 | copy | globalVars.c:15:21:15:23 | val |
+| globalVars.c:35:11:35:14 | copy | globalVars.c:35:11:35:14 | copy |
 | globalVars.c:38:9:38:13 | copy2 | globalVars.c:38:9:38:13 | (const char *)... |
 | globalVars.c:38:9:38:13 | copy2 | globalVars.c:38:9:38:13 | copy2 |
 | globalVars.c:38:9:38:13 | copy2 | globalVars.c:38:9:38:13 | copy2 indirection |
@@ -85,7 +85,7 @@ nodes
 | globalVars.c:16:2:16:12 | Store | semmle.label | Store |
 | globalVars.c:19:25:19:27 | *str | semmle.label | *str |
 | globalVars.c:19:25:19:27 | ReturnIndirection | semmle.label | ReturnIndirection |
-| globalVars.c:24:2:24:9 | argv | semmle.label | argv |
+| globalVars.c:24:11:24:14 | argv | semmle.label | argv |
 | globalVars.c:24:11:24:14 | argv | semmle.label | argv |
 | globalVars.c:24:11:24:14 | argv | semmle.label | argv |
 | globalVars.c:24:11:24:14 | argv indirection | semmle.label | argv indirection |
@@ -103,7 +103,7 @@ nodes
 | globalVars.c:30:15:30:18 | copy indirection | semmle.label | copy indirection |
 | globalVars.c:30:15:30:18 | printWrapper output argument | semmle.label | printWrapper output argument |
 | globalVars.c:33:15:33:18 | copy | semmle.label | copy |
-| globalVars.c:35:2:35:9 | copy | semmle.label | copy |
+| globalVars.c:35:11:35:14 | copy | semmle.label | copy |
 | globalVars.c:35:11:35:14 | copy | semmle.label | copy |
 | globalVars.c:38:9:38:13 | (const char *)... | semmle.label | (const char *)... |
 | globalVars.c:38:9:38:13 | (const char *)... | semmle.label | (const char *)... |

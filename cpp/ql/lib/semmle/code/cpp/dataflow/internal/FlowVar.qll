@@ -353,9 +353,9 @@ module FlowVar_internal {
         // indirection.
         result = def.getAUse(v)
         or
-        exists(SsaDefinition descendentDef |
-          this.getASuccessorSsaVar+() = TSsaVar(descendentDef, _) and
-          result = descendentDef.getAUse(v)
+        exists(SsaDefinition descendantDef |
+          this.getASuccessorSsaVar+() = TSsaVar(descendantDef, _) and
+          result = descendantDef.getAUse(v)
         )
       )
       or
@@ -435,7 +435,7 @@ module FlowVar_internal {
       parameterIsNonConstReference(p) and
       p = v and
       // This definition reaches the exit node of the function CFG
-      getAReachedBlockVarSBB(this).getANode() = p.getFunction()
+      getAReachedBlockVarSBB(this).getEnd() = p.getFunction()
     }
 
     override predicate definedByInitialValue(StackVariable lsv) {

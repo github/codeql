@@ -35,7 +35,7 @@ module Vue {
   API::Node vueLibrary() {
     result = API::moduleImport("vue")
     or
-    result = API::root().getASuccessor(any(GlobalVueEntryPoint e))
+    result = any(GlobalVueEntryPoint e).getNode()
   }
 
   /**
@@ -43,7 +43,7 @@ module Vue {
    */
   DataFlow::SourceNode vue() { result = vueLibrary().getAnImmediateUse() }
 
-  /** An API node referring to a component or `Vue`. */
+  /** Gets an API node referring to a component or `Vue`. */
   private API::Node component() {
     result = vueLibrary()
     or
@@ -51,7 +51,7 @@ module Vue {
     or
     result = vueLibrary().getMember("component").getReturn()
     or
-    result = API::root().getASuccessor(any(VueFileImportEntryPoint e))
+    result = any(VueFileImportEntryPoint e).getNode()
   }
 
   /**
@@ -683,7 +683,7 @@ module Vue {
     }
   }
 
-  /** An API node referring to a `RouteConfig` being passed to `vue-router`. */
+  /** Gets an API node referring to a `RouteConfig` being passed to `vue-router`. */
   private API::Node routeConfig() {
     result = API::moduleImport("vue-router").getParameter(0).getMember("routes").getAMember()
     or

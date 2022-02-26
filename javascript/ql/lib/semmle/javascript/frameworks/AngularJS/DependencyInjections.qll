@@ -26,7 +26,7 @@ class InjectorInvokeCall extends DataFlow::CallNode, DependencyInjection {
 }
 
 /**
- * Base class for expressions that dependency-inject some of their input with AngularJS dependency injection services.
+ * An expression that dependency-inject some of its input with AngularJS dependency injection services.
  */
 abstract class DependencyInjection extends DataFlow::ValueNode {
   /**

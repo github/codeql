@@ -50,3 +50,9 @@ def empty_else b
   end
   puts "done"
 end
+
+def disjunct (b1, b2)
+  if (b1 || b2) then
+    puts "b1 or b2"
+  end
+end

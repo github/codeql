@@ -2,6 +2,7 @@ private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 
 /**
@@ -62,7 +63,7 @@ private module VirtualDispatch {
         this.flowsFrom(other, allowOtherFromArg)
       |
         // Call argument
-        exists(DataFlowCall call, int i |
+        exists(DataFlowCall call, Position i |
           other
               .(DataFlow::ParameterNode)
               .isParameterOf(pragma[only_bind_into](call).getStaticCallTarget(), i) and
@@ -266,3 +267,7 @@ Function viableImplInCallContext(CallInstruction call, CallInstruction ctx) {
     result = ctx.getArgument(i).getUnconvertedResultExpression().(FunctionAccess).getTarget()
   )
 }
+
+/** Holds if arguments at position `apos` match parameters at position `ppos`. */
+pragma[inline]
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }

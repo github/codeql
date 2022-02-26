@@ -153,12 +153,12 @@ class ExtClass extends Class {
   }
 
   predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
-    if hasOneVariableGroup()
+    if this.hasOneVariableGroup()
     then
       exists(VariableDeclarationGroup vdg | vdg.getClass() = this |
         vdg.hasLocationInfo(path, startline, startcol, endline, endcol)
       )
-    else getLocation().hasLocationInfo(path, startline, startcol, endline, endcol)
+    else this.getLocation().hasLocationInfo(path, startline, startcol, endline, endcol)
   }
 }
 

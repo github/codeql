@@ -75,7 +75,7 @@ class ExponentialRegexDataflow extends DataFlow2::Configuration {
 
 /**
  * An expression passed as the `input` to a call to a `Regex` method, where the regex appears to
- * have exponential behaviour.
+ * have exponential behavior.
  */
 class ExponentialRegexSink extends DataFlow::ExprNode, Sink {
   ExponentialRegexSink() {

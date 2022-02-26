@@ -50,7 +50,7 @@ class CustomOptions extends Options {
    *   __assume(0);
    * ```
    * (note that in this case if the hint is wrong and the expression is reached at
-   * runtime, the program's behaviour is undefined)
+   * runtime, the program's behavior is undefined)
    */
   override predicate exprExits(Expr e) { Options.super.exprExits(e) }
 

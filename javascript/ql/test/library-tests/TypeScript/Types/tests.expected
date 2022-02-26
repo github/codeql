@@ -260,6 +260,47 @@ getExprType
 | tst.ts:189:11:189:15 | count | number |
 | tst.ts:189:19:189:21 | Foo | typeof Foo in tst.ts:132 |
 | tst.ts:189:19:189:28 | Foo.#count | number |
+| tst.ts:195:8:195:11 | TS45 | typeof TS45 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:207:5:207:8 | body | string |
+| tst.ts:212:7:212:13 | message | string |
+| tst.ts:215:19:215:25 | handler | (r: Success \| Error) => void |
+| tst.ts:215:27:215:27 | r | Success \| Error |
+| tst.ts:216:11:216:11 | r | Success \| Error |
+| tst.ts:216:11:216:34 | r.type  ... uccess" | boolean |
+| tst.ts:216:22:216:34 | "HttpSuccess" | "HttpSuccess" |
+| tst.ts:218:15:218:19 | token | string |
+| tst.ts:218:23:218:23 | r | Success |
+| tst.ts:218:23:218:28 | r.body | string |
+| tst.ts:218:25:218:28 | body | string |
+| tst.ts:222:9:222:14 | Person | Person |
+| tst.ts:224:5:226:5 | constru ... ;\\n    } | any |
+| tst.ts:224:17:224:20 | name | string |
+| tst.ts:225:9:225:18 | this.#name | string |
+| tst.ts:225:9:225:25 | this.#name = name | string |
+| tst.ts:225:22:225:25 | name | string |
+| tst.ts:228:5:228:10 | equals | (other: unknown) => boolean |
+| tst.ts:228:5:233:5 | equals( ... .\\n    } | (other: unknown) => boolean |
+| tst.ts:228:12:228:16 | other | unknown |
+| tst.ts:229:16:229:20 | other | unknown |
+| tst.ts:229:16:230:37 | other & ... object" | boolean |
+| tst.ts:229:16:231:26 | other & ... n other | boolean |
+| tst.ts:229:16:232:38 | other & ... r.#name | boolean |
+| tst.ts:230:13:230:24 | typeof other | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| tst.ts:230:13:230:37 | typeof  ... object" | boolean |
+| tst.ts:230:20:230:24 | other | unknown |
+| tst.ts:230:30:230:37 | "object" | "object" |
+| tst.ts:231:13:231:26 | #name in other | boolean |
+| tst.ts:231:22:231:26 | other | object |
+| tst.ts:232:13:232:22 | this.#name | string |
+| tst.ts:232:13:232:38 | this.#n ... r.#name | boolean |
+| tst.ts:232:28:232:32 | other | Person |
+| tst.ts:232:28:232:38 | other.#name | string |
+| tst.ts:237:13:237:16 | Foo3 | { foo: string; } |
+| tst.ts:237:23:237:40 | "./something.json" | any |
+| tst.ts:238:5:238:7 | foo | string |
+| tst.ts:238:11:238:14 | Foo3 | { foo: string; } |
+| tst.ts:238:11:238:18 | Foo3.foo | string |
+| tst.ts:238:16:238:18 | foo | string |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
 | type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |
@@ -323,6 +364,12 @@ getTypeDefinitionType
 | tst.ts:165:5:167:5 | interfa ... ;\\n    } | Foo |
 | tst.ts:171:5:173:5 | interfa ... ;\\n    } | Data |
 | tst.ts:179:3:192:3 | class F ...    \\n  } | Foo |
+| tst.ts:197:3:197:36 | type A  ... ring>>; | string |
+| tst.ts:200:3:200:45 | type B  ... ber>>>; | number |
+| tst.ts:203:3:203:46 | type C  ... mber>>; | C |
+| tst.ts:205:10:208:3 | interfa ... ng;\\n  } | Success |
+| tst.ts:210:10:213:3 | interfa ... ng;\\n  } | Error |
+| tst.ts:222:3:234:3 | class P ...   }\\n  } | Person |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -489,6 +536,42 @@ getTypeExprType
 | tst.ts:172:26:172:31 | symbol | symbol |
 | tst.ts:172:35:172:41 | boolean | boolean |
 | tst.ts:175:17:175:20 | Data | Data |
+| tst.ts:197:8:197:8 | A | string |
+| tst.ts:197:12:197:18 | Awaited | Awaited<T> |
+| tst.ts:197:12:197:35 | Awaited ... tring>> | string |
+| tst.ts:197:20:197:26 | Promise | Promise<T> |
+| tst.ts:197:20:197:34 | Promise<string> | Promise<string> |
+| tst.ts:197:28:197:33 | string | string |
+| tst.ts:200:8:200:8 | B | number |
+| tst.ts:200:12:200:18 | Awaited | Awaited<T> |
+| tst.ts:200:12:200:44 | Awaited ... mber>>> | number |
+| tst.ts:200:20:200:26 | Promise | Promise<T> |
+| tst.ts:200:20:200:43 | Promise ... umber>> | Promise<Promise<number>> |
+| tst.ts:200:28:200:34 | Promise | Promise<T> |
+| tst.ts:200:28:200:42 | Promise<number> | Promise<number> |
+| tst.ts:200:36:200:41 | number | number |
+| tst.ts:203:8:203:8 | C | C |
+| tst.ts:203:12:203:18 | Awaited | Awaited<T> |
+| tst.ts:203:12:203:45 | Awaited ... umber>> | number \| boolean |
+| tst.ts:203:20:203:26 | boolean | boolean |
+| tst.ts:203:20:203:44 | boolean ... number> | boolean \| Promise<number> |
+| tst.ts:203:30:203:36 | Promise | Promise<T> |
+| tst.ts:203:30:203:44 | Promise<number> | Promise<number> |
+| tst.ts:203:38:203:43 | number | number |
+| tst.ts:205:20:205:26 | Success | Success |
+| tst.ts:206:14:206:19 | string | string |
+| tst.ts:206:21:206:27 | Success | any |
+| tst.ts:207:11:207:16 | string | string |
+| tst.ts:210:20:210:24 | Error | Error |
+| tst.ts:211:16:211:21 | string | string |
+| tst.ts:211:23:211:27 | Error | any |
+| tst.ts:212:16:212:21 | string | string |
+| tst.ts:215:30:215:36 | Success | Success |
+| tst.ts:215:30:215:44 | Success \| Error | Success \| Error |
+| tst.ts:215:40:215:44 | Error | Error |
+| tst.ts:223:12:223:17 | string | string |
+| tst.ts:224:23:224:28 | string | string |
+| tst.ts:228:19:228:25 | unknown | unknown |
 | type_alias.ts:1:6:1:6 | B | boolean |
 | type_alias.ts:1:10:1:16 | boolean | boolean |
 | type_alias.ts:3:8:3:8 | B | boolean |
@@ -552,6 +635,7 @@ missingToString
 referenceDefinition
 | Alias<T> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
 | Alias<number> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
+| C | tst.ts:203:3:203:46 | type C  ... mber>>; |
 | C | type_definition_objects.ts:3:8:3:17 | class C {} |
 | C<T> | type_definitions.ts:8:1:10:1 | class C ...  x: T\\n} |
 | C<number> | type_definitions.ts:8:1:10:1 | class C ...  x: T\\n} |
@@ -563,6 +647,7 @@ referenceDefinition
 | Data | tst.ts:171:5:173:5 | interfa ... ;\\n    } |
 | E | type_definition_objects.ts:6:8:6:16 | enum E {} |
 | EnumWithOneMember | type_definitions.ts:18:26:18:31 | member |
+| Error | tst.ts:210:10:213:3 | interfa ... ng;\\n  } |
 | Foo | tst.ts:116:3:129:3 | class F ...   }\\n  } |
 | Foo | tst.ts:165:5:167:5 | interfa ... ;\\n    } |
 | Foo | tst.ts:179:3:192:3 | class F ...    \\n  } |
@@ -573,8 +658,10 @@ referenceDefinition
 | MyUnion | tst.ts:65:1:65:54 | type My ...  true}; |
 | MyUnion2 | tst.ts:68:1:68:49 | type My ...  true}; |
 | NonAbstractDummy | tst.ts:54:1:56:1 | interfa ... mber;\\n} |
+| Person | tst.ts:222:3:234:3 | class P ...   }\\n  } |
 | Shape | tst.ts:140:3:142:47 | type Sh ... mber }; |
 | Sub | tst.ts:97:3:101:3 | class S ...   }\\n  } |
+| Success | tst.ts:205:10:208:3 | interfa ... ng;\\n  } |
 | Super | tst.ts:91:3:95:3 | class S ...   }\\n  } |
 | Super | tst.ts:91:3:95:3 | class S ...   }\\n  } |
 | Thing | tst.ts:78:10:88:3 | class T ...   }\\n  } |
@@ -617,6 +704,9 @@ unknownType
 | tst.ts:48:14:48:14 | e | unknown |
 | tst.ts:133:16:133:18 | arg | unknown |
 | tst.ts:134:32:134:34 | arg | unknown |
+| tst.ts:228:12:228:16 | other | unknown |
+| tst.ts:229:16:229:20 | other | unknown |
+| tst.ts:230:20:230:24 | other | unknown |
 abstractSignature
 | (): HasArea |
 | new (): HasArea |
@@ -633,16 +723,28 @@ unionIndex
 | "string" | 0 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "symbol" | 4 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "undefined" | 5 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| Error | 1 | Success \| Error |
 | Json[] | 5 | string \| number \| boolean \| { [property: string... |
+| Promise<number> | 2 | boolean \| Promise<number> |
+| PromiseLike<TResult1> | 1 | TResult1 \| PromiseLike<TResult1> |
+| PromiseLike<TResult2> | 1 | TResult2 \| PromiseLike<TResult2> |
+| Success | 0 | Success \| Error |
 | T | 0 | T \| ValueOrArray<T>[] |
+| TResult1 | 0 | TResult1 \| PromiseLike<TResult1> |
+| TResult1 | 0 | TResult1 \| TResult2 |
+| TResult2 | 0 | TResult2 \| PromiseLike<TResult2> |
+| TResult2 | 1 | TResult1 \| TResult2 |
 | ValueOrArray<T>[] | 1 | T \| ValueOrArray<T>[] |
 | ValueOrArray<number>[] | 1 | number \| ValueOrArray<number>[] |
 | [string, { [key: string]: any; }, ...VirtualNod... | 1 | VirtualNode \| { [key: string]: any; } |
 | [string, { [key: string]: any; }, ...VirtualNod... | 1 | string \| [string, { [key: string]: any; }, ...V... |
 | false | 0 | boolean |
+| false | 0 | boolean \| Promise<number> |
+| false | 1 | number \| boolean |
 | false | 2 | string \| number \| boolean |
 | false | 2 | string \| number \| boolean \| { [property: string... |
 | number | 0 | number \| ValueOrArray<number>[] |
+| number | 0 | number \| boolean |
 | number | 1 | string \| number |
 | number | 1 | string \| number \| boolean |
 | number | 1 | string \| number \| boolean \| { [property: string... |
@@ -657,6 +759,8 @@ unionIndex
 | string | 0 | string \| { [key: string]: any; } |
 | symbol | 1 | string \| symbol |
 | true | 1 | boolean |
+| true | 1 | boolean \| Promise<number> |
+| true | 2 | number \| boolean |
 | true | 2 | string \| number \| true |
 | true | 3 | string \| number \| boolean |
 | true | 3 | string \| number \| boolean \| { [property: string... |

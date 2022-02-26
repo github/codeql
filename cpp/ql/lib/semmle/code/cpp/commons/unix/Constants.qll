@@ -11,10 +11,10 @@ import cpp
  */
 bindingset[input]
 int parseOctal(string input) {
-  input.charAt(0) = "0" and
+  input.regexpMatch("0[0-7]+") and
   result =
     strictsum(int ix |
-      ix in [0 .. input.length()]
+      ix in [1 .. input.length()]
     |
       8.pow(input.length() - (ix + 1)) * input.charAt(ix).toInt()
     )

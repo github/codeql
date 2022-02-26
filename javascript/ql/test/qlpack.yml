@@ -1,5 +1,5 @@
 name: codeql/javascript-tests
-version: 0.0.3
+groups: [javascript, test]
 dependencies:
   codeql/javascript-all: "*"
   codeql/javascript-queries: "*"

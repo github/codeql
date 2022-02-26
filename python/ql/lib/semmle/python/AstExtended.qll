@@ -62,27 +62,33 @@ abstract class AstNode extends AstNode_ {
 
 /* Parents */
 /** Internal implementation class */
-library class FunctionParent extends FunctionParent_ { }
+class FunctionParent extends FunctionParent_ { }
 
 /** Internal implementation class */
-library class ArgumentsParent extends ArgumentsParent_ { }
+class ArgumentsParent extends ArgumentsParent_ { }
 
 /** Internal implementation class */
-library class ExprListParent extends ExprListParent_ { }
+class ExprListParent extends ExprListParent_ { }
 
 /** Internal implementation class */
-library class ExprContextParent extends ExprContextParent_ { }
+class ExprContextParent extends ExprContextParent_ { }
 
 /** Internal implementation class */
-library class StmtListParent extends StmtListParent_ { }
+class StmtListParent extends StmtListParent_ { }
 
 /** Internal implementation class */
-library class StrListParent extends StrListParent_ { }
+class StrListParent extends StrListParent_ { }
 
 /** Internal implementation class */
-library class ExprParent extends ExprParent_ { }
+class ExprParent extends ExprParent_ { }
 
-library class DictItem extends DictItem_, AstNode {
+/** Internal implementation class */
+class PatternListParent extends PatternListParent_ { }
+
+/** Internal implementation class */
+class PatternParent extends PatternParent_ { }
+
+class DictItem extends DictItem_, AstNode {
   override string toString() { result = DictItem_.super.toString() }
 
   override AstNode getAChildNode() { none() }
@@ -162,9 +168,12 @@ class ExprList extends ExprList_ {
   /* syntax: Expr, ... */
 }
 
-library class DictItemList extends DictItemList_ { }
+/** A list of patterns */
+class PatternList extends PatternList_ { }
 
-library class DictItemListParent extends DictItemListParent_ { }
+class DictItemList extends DictItemList_ { }
+
+class DictItemListParent extends DictItemListParent_ { }
 
 /** A list of strings (the primitive type string not Bytes or Unicode) */
 class StringList extends StringList_ { }

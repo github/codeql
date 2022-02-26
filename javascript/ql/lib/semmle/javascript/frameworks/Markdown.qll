@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling common markdown parsers and generators.
+ * Provides classes for modeling common markdown parsers and generators.
  */
 
 import semmle.javascript.Unit
@@ -76,11 +76,11 @@ module Markdown {
   }
 
   /**
-   * Classes and predicates for modelling taint steps in `unified` and `remark`.
+   * Classes and predicates for modeling taint steps in `unified` and `remark`.
    */
   private module Unified {
     /**
-     * The creation of a parser from `unified`.
+     * Gets a parser from `unified`.
      * The `remark` module is a shorthand that initializes `unified` with a markdown parser.
      */
     DataFlow::CallNode unified() {
@@ -106,13 +106,13 @@ module Markdown {
       /**
        * Gets the input that is processed.
        */
-      DataFlow::Node getInput() { result = getArgument(0) }
+      DataFlow::Node getInput() { result = this.getArgument(0) }
 
       /**
        * Gets the processed output.
        */
       DataFlow::Node getOutput() {
-        this.getCalleeName() = "process" and result = getABoundCallbackParameter(1, 1)
+        this.getCalleeName() = "process" and result = this.getABoundCallbackParameter(1, 1)
         or
         this.getCalleeName() = "processSync" and result = this
       }
@@ -148,11 +148,11 @@ module Markdown {
   }
 
   /**
-   * Classes and predicates for modelling taint steps the `markdown-it` library.
+   * Classes and predicates for modeling taint steps the `markdown-it` library.
    */
   private module MarkdownIt {
     /**
-     * The creation of a parser from `markdown-it`.
+     * Gets a creation of a parser from `markdown-it`.
      */
     private API::Node markdownIt() {
       exists(API::InvokeNode call |

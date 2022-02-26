@@ -4,7 +4,7 @@ import semmle.python.web.Http
 import Twisted
 
 /** A twisted.web.http.Request object */
-class TwistedRequest extends TaintKind {
+deprecated class TwistedRequest extends TaintKind {
   TwistedRequest() { this = "twisted.request.http.Request" }
 
   override TaintKind getTaintOfAttribute(string name) {
@@ -16,17 +16,12 @@ class TwistedRequest extends TaintKind {
   }
 
   override TaintKind getTaintOfMethodResult(string name) {
-    (
-      name = "getHeader" or
-      name = "getCookie" or
-      name = "getUser" or
-      name = "getPassword"
-    ) and
+    name in ["getHeader", "getCookie", "getUser", "getPassword"] and
     result instanceof ExternalStringKind
   }
 }
 
-class TwistedRequestSource extends HttpRequestTaintSource {
+deprecated class TwistedRequestSource extends HttpRequestTaintSource {
   TwistedRequestSource() { isTwistedRequestInstance(this) }
 
   override string toString() { result = "Twisted request source" }

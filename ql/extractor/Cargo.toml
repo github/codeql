@@ -1,0 +1,19 @@
+[package]
+name = "ql-extractor"
+version = "0.1.0"
+authors = ["GitHub"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+flate2 = "1.0"
+node-types = { path = "../node-types" }
+tree-sitter = "0.19"
+tree-sitter-ql = { git = "https://github.com/tausbn/tree-sitter-ql.git", rev = "725395405e65814f10095a451404b0ced5dc6289" }
+clap = "2.33"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
+rayon = "1.5.0"
+num_cpus = "1.13.0"
+regex = "1.4.3"

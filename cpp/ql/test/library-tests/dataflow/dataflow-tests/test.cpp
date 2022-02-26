@@ -482,3 +482,15 @@ void local_field_flow_def_by_ref_steps_with_local_flow(MyStruct * s) {
   int* p_content = s->content;
   sink(*p_content);
 }
+
+bool unknown();
+
+void regression_with_phi_flow(int clean1) {
+  int x = 0;
+  while (unknown()) {
+    x = clean1;
+    if (unknown()) { }
+    sink(x); // clean
+    x = source();
+  }
+}

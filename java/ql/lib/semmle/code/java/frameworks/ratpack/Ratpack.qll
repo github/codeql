@@ -70,18 +70,64 @@ private class RatpackModel extends SummaryModelCsv {
         [
           "Context;true;parse;(ratpack.http.TypedData,ratpack.parse.Parse);;Argument[0];ReturnValue;taint",
           "Context;true;parse;(ratpack.core.http.TypedData,ratpack.core.parse.Parse);;Argument[0];ReturnValue;taint",
-          "Context;true;parse;(ratpack.core.http.TypedData,ratpack.core.parse.Parse);;Argument[0];MapKey of ReturnValue;taint",
-          "Context;true;parse;(ratpack.core.http.TypedData,ratpack.core.parse.Parse);;Argument[0];MapValue of ReturnValue;taint"
+          "Context;true;parse;(ratpack.core.http.TypedData,ratpack.core.parse.Parse);;Argument[0];ReturnValue.MapKey;taint",
+          "Context;true;parse;(ratpack.core.http.TypedData,ratpack.core.parse.Parse);;Argument[0];ReturnValue.MapValue;taint"
         ]
     or
     row =
       ["ratpack.util;", "ratpack.func;"] +
         [
-          "MultiValueMap;true;getAll;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
-          "MultiValueMap;true;getAll;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value",
-          "MultiValueMap;true;getAll;(Object);;MapValue of Argument[-1];Element of ReturnValue;value",
-          "MultiValueMap;true;asMultimap;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
-          "MultiValueMap;true;asMultimap;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
+          "MultiValueMap;true;getAll;;;Argument[-1].MapKey;ReturnValue.MapKey;value",
+          "MultiValueMap;true;getAll;();;Argument[-1].MapValue;ReturnValue.MapValue.Element;value",
+          "MultiValueMap;true;getAll;(Object);;Argument[-1].MapValue;ReturnValue.Element;value",
+          "MultiValueMap;true;asMultimap;;;Argument[-1].MapKey;ReturnValue.MapKey;value",
+          "MultiValueMap;true;asMultimap;;;Argument[-1].MapValue;ReturnValue.MapValue;value"
         ]
+    or
+    exists(string left, string right |
+      left = "Field[ratpack.func.Pair.left]" and
+      right = "Field[ratpack.func.Pair.right]"
+    |
+      row =
+        ["ratpack.util;", "ratpack.func;"] + "Pair;true;" +
+          [
+            "of;;;Argument[0];ReturnValue." + left + ";value",
+            "of;;;Argument[1];ReturnValue." + right + ";value",
+            "pair;;;Argument[0];ReturnValue." + left + ";value",
+            "pair;;;Argument[1];ReturnValue." + right + ";value",
+            "left;();;Argument[-1]." + left + ";ReturnValue;value",
+            "right;();;Argument[-1]." + right + ";ReturnValue;value",
+            "getLeft;;;Argument[-1]." + left + ";ReturnValue;value",
+            "getRight;;;Argument[-1]." + right + ";ReturnValue;value",
+            "left;(Object);;Argument[0];ReturnValue." + left + ";value",
+            "left;(Object);;Argument[-1]." + right + ";ReturnValue." + right + ";value",
+            "right;(Object);;Argument[0];ReturnValue." + right + ";value",
+            "right;(Object);;Argument[-1]." + left + ";ReturnValue." + left + ";value",
+            "pushLeft;(Object);;Argument[-1];ReturnValue." + right + ";value",
+            "pushRight;(Object);;Argument[-1];ReturnValue." + left + ";value",
+            "pushLeft;(Object);;Argument[0];ReturnValue." + left + ";value",
+            "pushRight;(Object);;Argument[0];ReturnValue." + right + ";value",
+            // `nestLeft` Pair<A, B>.nestLeft(C) -> Pair<Pair<C, A>, B>
+            "nestLeft;(Object);;Argument[0];ReturnValue." + left + "." + left + ";value",
+            "nestLeft;(Object);;Argument[-1]." + left + ";ReturnValue." + left + "." + right +
+              ";value",
+            "nestLeft;(Object);;Argument[-1]." + right + ";ReturnValue." + right + ";value",
+            // `nestRight` Pair<A, B>.nestRight(C) -> Pair<A, Pair<C, B>>
+            "nestRight;(Object);;Argument[0];ReturnValue." + right + "." + left + ";value",
+            "nestRight;(Object);;Argument[-1]." + left + ";ReturnValue." + left + ";value",
+            "nestRight;(Object);;Argument[-1]." + right + ";ReturnValue." + right + "." + right +
+              ";value",
+            // `mapLeft` & `mapRight` map over their respective fields
+            "mapLeft;;;Argument[-1]." + left + ";Argument[0].Parameter[0];value",
+            "mapLeft;;;Argument[-1]." + right + ";ReturnValue." + right + ";value",
+            "mapRight;;;Argument[-1]." + right + ";Argument[0].Parameter[0];value",
+            "mapRight;;;Argument[-1]." + left + ";ReturnValue." + left + ";value",
+            "mapLeft;;;Argument[0].ReturnValue;ReturnValue." + left + ";value",
+            "mapRight;;;Argument[0].ReturnValue;ReturnValue." + right + ";value",
+            // `map` maps over the `Pair`
+            "map;;;Argument[-1];Argument[0].Parameter[0];value",
+            "map;;;Argument[0].ReturnValue;ReturnValue;value"
+          ]
+    )
   }
 }

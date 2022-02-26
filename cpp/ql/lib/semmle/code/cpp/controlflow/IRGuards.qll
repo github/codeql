@@ -29,7 +29,7 @@ class GuardCondition extends Expr {
     exists(IRGuardCondition ir | this = ir.getUnconvertedResultExpression())
     or
     // no binary operators in the IR
-    exists(GuardCondition gc | this.(BinaryLogicalOperation).getAnOperand() = gc)
+    this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
     or
     // the IR short-circuits if(!x)
     // don't produce a guard condition for `y = !x` and other non-short-circuited cases
@@ -98,7 +98,7 @@ class GuardCondition extends Expr {
  */
 private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
   GuardConditionFromBinaryLogicalOperator() {
-    exists(GuardCondition gc | this.(BinaryLogicalOperation).getAnOperand() = gc)
+    this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
   }
 
   override predicate controls(BasicBlock controlled, boolean testIsTrue) {

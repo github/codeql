@@ -478,12 +478,11 @@ private module SsaComputeImpl {
     predicate adjacentUseUse(ControlFlowNode use1, ControlFlowNode use2) {
       adjacentUseUseSameVar(use1, use2)
       or
-      exists(SsaSourceVariable v, EssaDefinition def, BasicBlock b1, int i1, BasicBlock b2, int i2 |
+      exists(SsaSourceVariable v, PhiFunction def, BasicBlock b1, int i1, BasicBlock b2, int i2 |
         adjacentVarRefs(v, b1, i1, b2, i2) and
-        variableUse(v, use1, b1, i1) and
-        definesAt(def, v, b2, i2) and
-        firstUse(def, use2) and
-        def instanceof PhiFunction
+        variableUse(pragma[only_bind_into](v), use1, b1, i1) and
+        definesAt(def, pragma[only_bind_into](v), b2, i2) and
+        firstUse(def, use2)
       )
     }
 

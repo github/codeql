@@ -11,7 +11,7 @@ import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Untrusted
 import semmle.python.security.injection.Deserialization
 
-private ModuleObject pickleModule() {
+deprecated private ModuleObject pickleModule() {
   result.getName() = "pickle"
   or
   result.getName() = "cPickle"
@@ -19,10 +19,10 @@ private ModuleObject pickleModule() {
   result.getName() = "dill"
 }
 
-private FunctionObject pickleLoads() { result = pickleModule().attr("loads") }
+deprecated private FunctionObject pickleLoads() { result = pickleModule().attr("loads") }
 
 /** `pickle.loads(untrusted)` vulnerability. */
-class UnpicklingNode extends DeserializationSink {
+deprecated class UnpicklingNode extends DeserializationSink {
   override string toString() { result = "unpickling untrusted data" }
 
   UnpicklingNode() {

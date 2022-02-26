@@ -1,0 +1,16 @@
+edges
+| MybatisSqlInjection.java:62:19:62:43 | name : String | MybatisSqlInjection.java:63:35:63:38 | name : String |
+| MybatisSqlInjection.java:63:35:63:38 | name : String | MybatisSqlInjectionService.java:48:19:48:29 | name : String |
+| MybatisSqlInjectionService.java:48:19:48:29 | name : String | MybatisSqlInjectionService.java:50:23:50:26 | name : String |
+| MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] [<map.value>] : String | MybatisSqlInjectionService.java:51:27:51:33 | hashMap |
+| MybatisSqlInjectionService.java:50:23:50:26 | name : String | MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] [<map.value>] : String |
+nodes
+| MybatisSqlInjection.java:62:19:62:43 | name : String | semmle.label | name : String |
+| MybatisSqlInjection.java:63:35:63:38 | name : String | semmle.label | name : String |
+| MybatisSqlInjectionService.java:48:19:48:29 | name : String | semmle.label | name : String |
+| MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] [<map.value>] : String | semmle.label | hashMap [post update] [<map.value>] : String |
+| MybatisSqlInjectionService.java:50:23:50:26 | name : String | semmle.label | name : String |
+| MybatisSqlInjectionService.java:51:27:51:33 | hashMap | semmle.label | hashMap |
+subpaths
+#select
+| MybatisSqlInjectionService.java:51:27:51:33 | hashMap | MybatisSqlInjection.java:62:19:62:43 | name : String | MybatisSqlInjectionService.java:51:27:51:33 | hashMap | MyBatis annotation SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:62:19:62:43 | name | this user input | SqlInjectionMapper.java:29:2:29:54 | Select | this SQL operation |

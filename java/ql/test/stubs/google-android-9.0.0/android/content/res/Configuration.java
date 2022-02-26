@@ -17,6 +17,7 @@ public class Configuration implements Comparable<Configuration>, Parcelable
     public boolean equals(Configuration p0){ return false; }
     public boolean equals(Object p0){ return false; }
     public boolean isLayoutSizeAtLeast(int p0){ return false; }
+    public boolean isNightModeActive(){ return false; }
     public boolean isScreenHdr(){ return false; }
     public boolean isScreenRound(){ return false; }
     public boolean isScreenWideColorGamut(){ return false; }
@@ -26,6 +27,7 @@ public class Configuration implements Comparable<Configuration>, Parcelable
     public int densityDpi = 0;
     public int describeContents(){ return 0; }
     public int diff(Configuration p0){ return 0; }
+    public int fontWeightAdjustment = 0;
     public int getLayoutDirection(){ return 0; }
     public int hardKeyboardHidden = 0;
     public int hashCode(){ return 0; }
@@ -56,6 +58,7 @@ public class Configuration implements Comparable<Configuration>, Parcelable
     public static int COLOR_MODE_WIDE_COLOR_GAMUT_UNDEFINED = 0;
     public static int COLOR_MODE_WIDE_COLOR_GAMUT_YES = 0;
     public static int DENSITY_DPI_UNDEFINED = 0;
+    public static int FONT_WEIGHT_ADJUSTMENT_UNDEFINED = 0;
     public static int HARDKEYBOARDHIDDEN_NO = 0;
     public static int HARDKEYBOARDHIDDEN_UNDEFINED = 0;
     public static int HARDKEYBOARDHIDDEN_YES = 0;

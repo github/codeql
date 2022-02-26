@@ -208,16 +208,15 @@ commands that you can specify for compiled languages.
 
      codeql database create cpp-database --language=cpp --command=make
 
-- C# project built using ``dotnet build`` (.NET Core 3.0 or later)::
+- C# project built using ``dotnet build``::
 
-     codeql database create csharp-database --language=csharp --command='dotnet build /t:rebuild' 
+     For C# projects using either `dotnet build` or `msbuild`, you should specify `/p:UseSharedCompilation=false`
+     in the build command. It is also a good idea to add `/t:rebuild` to ensure that all code will be built (code
+     that is not built will not be included in the CodeQL database):
 
-  On Linux and macOS (but not Windows), you need to disable shared compilation when building C# projects
-  with .NET Core 2 or earlier, so expand the command to::
+     codeql database create csharp-database --language=csharp --command='dotnet build /p:UseSharedCompilation=false /t:rebuild' 
 
-     codeql database create csharp-database --language=csharp --command='dotnet build /p:UseSharedCompilation=false /t:rebuild'
-
-- Go project built using the ``COEQL_EXTRACTOR_GO_BUILD_TRACING=on`` environment variable::
+- Go project built using the ``CODEQL_EXTRACTOR_GO_BUILD_TRACING=on`` environment variable::
 
    CODEQL_EXTRACTOR_GO_BUILD_TRACING=on codeql database create go-database --language=go
 
