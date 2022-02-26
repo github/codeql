@@ -28,8 +28,7 @@ written to <code>c:\sneaky-file</code>.</p>
 <p>Ensure that output paths constructed from Zip archive entries are validated
 to prevent writing files to unexpected locations.</p>
 
-<p>The recommended way of writing an output file from a Zip archive entry is to use
-this function instead of <code>extract()</code> or <code>extractall()</code>.
+<p>The recommended way of writing an output file from a Zip archive entry is to call <code>extract()</code> or <code>extractall()</code>.
 </p>
 
 </recommendation>
@@ -41,7 +40,7 @@ In this example an archive is extracted without validating file paths.
 
 <sample src="zipslip_bad.py" />
 
-<p>To fix this vulnerability, we need to this function <code>extractall()</code>.
+<p>To fix this vulnerability, we need to call the function <code>extractall()</code>.
 </p>
 
 <sample src="zipslip_good.py" />
