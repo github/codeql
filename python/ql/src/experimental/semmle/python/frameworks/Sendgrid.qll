@@ -114,25 +114,25 @@ private module Sendgrid {
       result = sendgridWrite("html_content")
       or
       exists(KeyValuePair content, Dict generalDict, KeyValuePair typePair, KeyValuePair valuePair |
-        content.getKey().(StrConst).getS() = "content" and
+        content.getKey().(StrConst).getText() = "content" and
         content.getValue().(List).getAnElt() = generalDict and
         // declare KeyValuePairs keys and values
-        typePair.getKey().(StrConst).getS() = "type" and
-        typePair.getValue().(StrConst).getS() = ["text/html", "text/x-amp-html"] and
-        valuePair.getKey().(StrConst).getS() = "value" and
+        typePair.getKey().(StrConst).getText() = "type" and
+        typePair.getValue().(StrConst).getText() = ["text/html", "text/x-amp-html"] and
+        valuePair.getKey().(StrConst).getText() = "value" and
         result.asExpr() = valuePair.getValue() and
         // correlate generalDict with previously set KeyValuePairs
         generalDict.getAnItem() in [typePair, valuePair]
       )
       or
       exists(KeyValuePair footer, Dict generalDict, KeyValuePair enablePair, KeyValuePair htmlPair |
-        footer.getKey().(StrConst).getS() = ["footer", "subscription_tracking"] and
+        footer.getKey().(StrConst).getText() = ["footer", "subscription_tracking"] and
         footer.getValue().(Dict) = generalDict and
         // check footer is enabled
-        enablePair.getKey().(StrConst).getS() = "enable" and
+        enablePair.getKey().(StrConst).getText() = "enable" and
         exists(enablePair.getValue().(True)) and
         // get html content
-        htmlPair.getKey().(StrConst).getS() = "html" and
+        htmlPair.getKey().(StrConst).getText() = "html" and
         result.asExpr() = htmlPair.getValue() and
         // correlate generalDict with previously set KeyValuePairs
         generalDict.getAnItem() in [enablePair, htmlPair]

@@ -23,7 +23,7 @@ module SmtpLib {
 
   private DataFlow::CallCfgNode mimeText(string mimetype) {
     result = smtpMimeTextInstance().getACall() and
-    [result.getArg(1), result.getArgByName("_subtype")].asExpr().(Str_).getS() = mimetype
+    [result.getArg(1), result.getArgByName("_subtype")].asExpr().(StrConst).getText() = mimetype
   }
 
   /**
@@ -123,7 +123,7 @@ module SmtpLib {
       DataFlow::exprNode(sub.getObject()).getALocalSource() =
         [sendCall.getArg(2), sendCall.getArg(2).(DataFlow::MethodCallNode).getObject()]
             .getALocalSource() and
-      sub.getIndex().(Str_).getS() = index and
+      sub.getIndex().(StrConst).getText() = index and
       result.asCfgNode() = def.getValue()
     )
   }
