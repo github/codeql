@@ -20,13 +20,25 @@ private class ExactStringPathMatchGuard extends PathTraversalBarrierGuard instan
   }
 }
 
+/**
+ * Returns the qualifier of a method call if it's a variable access, or the qualifier of the qualifier if
+ * the qualifier itself is a method call to `getPath`, which helps to reduce FPs by handling scenarios
+ * such as `!uri.getPath().contains("..")`.
+ */
+private Expr getRealQualifier(Expr e) {
+  e.(MethodAccess).getMethod().hasQualifiedName("android.net", "Uri", "getPath") and
+  result = e.(MethodAccess).getQualifier()
+  or
+  result = e.(VarAccess)
+}
+
 private class AllowListGuard extends Guard instanceof MethodAccess {
   AllowListGuard() {
     (isStringPartialMatch(this) or isPathPartialMatch(this)) and
     not isDisallowedWord(super.getAnArgument())
   }
 
-  Expr getCheckedExpr() { result = super.getQualifier() }
+  Expr getCheckedExpr() { result = getRealQualifier(super.getQualifier()) }
 }
 
 /**
@@ -73,7 +85,7 @@ private class BlockListGuard extends Guard instanceof MethodAccess {
     isDisallowedWord(super.getAnArgument())
   }
 
-  Expr getCheckedExpr() { result = super.getQualifier() }
+  Expr getCheckedExpr() { result = getRealQualifier(super.getQualifier()) }
 }
 
 /**
@@ -144,7 +156,7 @@ class PathTraversalGuard extends Guard instanceof MethodAccess {
     super.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".."
   }
 
-  Expr getCheckedExpr() { result = super.getQualifier() }
+  Expr getCheckedExpr() { result = getRealQualifier(super.getQualifier()) }
 }
 
 /** A complementary sanitizer that protects against path traversal using path normalization. */
