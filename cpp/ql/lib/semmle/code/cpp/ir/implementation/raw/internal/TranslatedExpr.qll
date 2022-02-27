@@ -863,6 +863,15 @@ class TranslatedFieldAccess extends TranslatedVariableAccess {
   }
 }
 
+/**
+ * The IR translation of a variable access of a structured binding, where the type
+ * of the structured binding is not of a reference type, e.g., `x0` and `x1`
+ * in `auto [x0, x1] = xs` where `xs` is an array. Although the type of the
+ * structured binding is a non-reference type, the structured binding behaves
+ * like a reference. Hence, the translation requires a `VariableAddress` followed
+ * by a `Load` instead of only a `VariableAddress` as produced by
+ * `TranslatedVariableAccess`.
+ */
 class TranslatedStructuredBindingVariableAccess extends TranslatedNonConstantExpr {
   override VariableAccess expr;
 
