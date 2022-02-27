@@ -17,7 +17,7 @@ private Type getDecayedType(Type type) {
  */
 predicate isNonReferenceStructuredBinding(Variable v) {
   v.isStructuredBinding() and
-  not v.getUnderlyingType() instanceof ReferenceType
+  not v.getUnspecifiedType() instanceof ReferenceType
 }
 
 /**
@@ -41,7 +41,7 @@ Type getVariableType(Variable v) {
         not exists(v.getInitializer()) and result = v.getType()
       else
         if isNonReferenceStructuredBinding(v)
-        then exists(LValueReferenceType r | r.getBaseType() = v.getUnderlyingType() | result = r)
+        then exists(LValueReferenceType r | r.getBaseType() = v.getUnspecifiedType() | result = r)
         else result = v.getType()
   )
 }

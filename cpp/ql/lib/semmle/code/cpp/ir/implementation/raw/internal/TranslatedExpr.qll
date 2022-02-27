@@ -895,15 +895,15 @@ class TranslatedStructuredBindingVariableAccess extends TranslatedNonConstantExp
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = StructuredBindingAccessTag() and
     opcode instanceof Opcode::VariableAddress and
-    resultType = getTypeForGLValue(this.getReferenceType())
+    resultType = getTypeForGLValue(this.getLValueReferenceType())
     or
     tag = LoadTag() and
     opcode instanceof Opcode::Load and
-    resultType = getTypeForPRValue(this.getReferenceType())
+    resultType = getTypeForPRValue(this.getLValueReferenceType())
   }
 
-  private Type getReferenceType() {
-    result.(LValueReferenceType).getBaseType() = expr.getUnderlyingType()
+  private LValueReferenceType getLValueReferenceType() {
+    result.getBaseType() = expr.getUnspecifiedType()
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
