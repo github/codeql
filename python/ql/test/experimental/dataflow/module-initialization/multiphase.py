@@ -2,7 +2,7 @@ import sys  #$ importTimeFlow="ImportExpr -> GSSA Variable sys"
 import os  #$ importTimeFlow="ImportExpr -> GSSA Variable os"
 
 sys.path.append(os.path.dirname(os.path.dirname((__file__))))
-from testlib import *
+from testlib import expects #$ importTimeFlow="ImportMember -> GSSA Variable expects"
 
 # These are defined so that we can evaluate the test code.
 NONSOURCE = "not a source"  #$ importTimeFlow="'not a source' -> GSSA Variable NONSOURCE"

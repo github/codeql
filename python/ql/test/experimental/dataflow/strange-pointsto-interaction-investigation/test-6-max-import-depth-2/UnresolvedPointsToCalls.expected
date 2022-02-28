@@ -1,0 +1,4 @@
+| ../src/isfile_no_problem.py:34:8:34:31 | ../src/isfile_no_problem.py:34 | os.path.isfile(..) |
+| ../src/isfile_no_problem.py:42:7:42:16 | ../src/isfile_no_problem.py:42 | give_src() |
+| ../src/isfile_no_problem.py:43:1:43:9 | ../src/isfile_no_problem.py:43 | SINK(..) |
+| ../src/urandom_no_import_no_problem.py:34:8:34:20 | ../src/urandom_no_import_no_problem.py:34 | os.urandom(..) |
