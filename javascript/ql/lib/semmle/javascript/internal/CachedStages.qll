@@ -212,6 +212,8 @@ module Stages {
       any(DataFlow::Node node).hasUnderlyingType(_)
       or
       any(DataFlow::Node node).hasUnderlyingType(_, _)
+      or
+      AccessPath::DominatingPaths::hasDominatingWrite(_)
     }
   }
 
@@ -234,8 +236,6 @@ module Stages {
     cached
     predicate backref() {
       1 = 1
-      or
-      AccessPath::DominatingPaths::hasDominatingWrite(_)
       or
       DataFlow::SharedFlowStep::step(_, _)
     }
