@@ -314,3 +314,183 @@ private class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
 
   ActiveRecordInstance getInstance() { result = instance }
 }
+
+/**
+ * Provides modeling relating to the `ActiveRecord::Persistence` module.
+ */
+private module Persistence {
+  /**
+   * A call to a method that may modify or create a model object and write it to
+   * the database. Examples include `create`, `insert`, and `update`.
+   */
+  abstract class ModifyAndSaveCall extends DataFlow::CallNode, OrmWriteAccess::Range {
+    /**
+     * Holds if the given key-value pair is set on an object by this call.
+     */
+    abstract predicate setsKeyValuePair(ExprCfgNode key, ExprCfgNode value);
+
+    /**
+     * Gets the ActiveRecord model class to which this call applies.
+     */
+    abstract ActiveRecordModelClass getClass();
+
+    final override string getFieldNameAssignedTo(DataFlow::Node value) {
+      exists(ExprCfgNode keyExpr, ExprCfgNode valueExpr |
+        this.setsKeyValuePair(keyExpr, valueExpr)
+      |
+        keyExpr.getConstantValue().isStringOrSymbol(result) and
+        // avoid vacuous matches where the key is not a string or not a symbol
+        not result = "" and
+        value.asExpr() = valueExpr
+      )
+    }
+  }
+
+  /**
+   * Holds if there is a hash literal argument to `call` at `argIndex`
+   * containing a `key`-`value` pair.
+   */
+  private predicate hashArgument(
+    DataFlow::CallNode call, int argIndex, ExprCfgNode key, ExprCfgNode value
+  ) {
+    exists(ExprNodes::HashLiteralCfgNode hash, ExprNodes::PairCfgNode pair |
+      hash = call.getArgument(argIndex).asExpr() and
+      pair = hash.getAKeyValuePair()
+    |
+      key = pair.getKey() and value = pair.getValue()
+    )
+  }
+
+  /**
+   * Holds if `call` has a keyword argument of the form `key: value`.
+   */
+  private predicate keywordArgument(DataFlow::CallNode call, ExprCfgNode key, ExprCfgNode value) {
+    exists(ExprNodes::PairCfgNode pair | pair = call.getArgument(_).asExpr() |
+      key = pair.getKey() and value = pair.getValue()
+    )
+  }
+
+  /** A call to e.g. `User.create(name: "foo")` */
+  private class CreateLikeCall extends ModifyAndSaveCall {
+    private ActiveRecordModelClass modelCls;
+
+    CreateLikeCall() {
+      modelCls = this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass() and
+      this.getMethodName() =
+        [
+          "create", "create!", "create_or_find_by", "create_or_find_by!", "find_or_create_by",
+          "find_or_create_by!", "insert", "insert!"
+        ]
+    }
+
+    override predicate setsKeyValuePair(ExprCfgNode key, ExprCfgNode value) {
+      // attrs as hash elements in arg0
+      hashArgument(this, 0, key, value) or
+      keywordArgument(this, key, value)
+    }
+
+    override ActiveRecordModelClass getClass() { result = modelCls }
+  }
+
+  /** A call to e.g. `User.update(1, name: "foo")` */
+  private class UpdateLikeClassMethodCall extends ModifyAndSaveCall {
+    private ActiveRecordModelClass modelCls;
+
+    UpdateLikeClassMethodCall() {
+      modelCls = this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass() and
+      this.getMethodName() = ["update", "update!", "upsert"]
+    }
+
+    override predicate setsKeyValuePair(ExprCfgNode key, ExprCfgNode value) {
+      keywordArgument(this, key, value)
+      or
+      // Case where 2 array args are passed - the first an array of IDs, and the
+      // second an array of hashes - each hash corresponding to an ID in the
+      // first array.
+      exists(ExprNodes::ArrayLiteralCfgNode hashesArray |
+        this.getArgument(0).asExpr() instanceof ExprNodes::ArrayLiteralCfgNode and
+        hashesArray = this.getArgument(1).asExpr()
+      |
+        exists(ExprNodes::HashLiteralCfgNode hash, ExprNodes::PairCfgNode pair |
+          hash = hashesArray.getArgument(_) and
+          pair = hash.getAKeyValuePair()
+        |
+          key = pair.getKey() and value = pair.getValue()
+        )
+      )
+    }
+
+    override ActiveRecordModelClass getClass() { result = modelCls }
+  }
+
+  /** A call to e.g. `User.insert_all([{name: "foo"}, {name: "bar"}])` */
+  private class InsertAllLikeCall extends ModifyAndSaveCall {
+    private ExprNodes::ArrayLiteralCfgNode arr;
+    private ActiveRecordModelClass modelCls;
+
+    InsertAllLikeCall() {
+      modelCls = this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass() and
+      this.getMethodName() = ["insert_all", "insert_all!", "upsert_all"] and
+      arr = this.getArgument(0).asExpr()
+    }
+
+    override predicate setsKeyValuePair(ExprCfgNode key, ExprCfgNode value) {
+      // attrs as hash elements of members of array arg0
+      exists(ExprNodes::HashLiteralCfgNode hash, ExprNodes::PairCfgNode pair |
+        hash = arr.getArgument(_) and
+        pair = hash.getAKeyValuePair()
+      |
+        key = pair.getKey() and value = pair.getValue()
+      )
+    }
+
+    override ActiveRecordModelClass getClass() { result = modelCls }
+  }
+
+  /** A call to e.g. `user.update(name: "foo")` */
+  private class UpdateLikeInstanceMethodCall extends ModifyAndSaveCall,
+    ActiveRecordInstanceMethodCall {
+    UpdateLikeInstanceMethodCall() {
+      this.getMethodName() = ["update", "update!", "update_attributes", "update_attributes!"]
+    }
+
+    override predicate setsKeyValuePair(ExprCfgNode key, ExprCfgNode value) {
+      // attrs as hash elements in arg0
+      hashArgument(this, 0, key, value)
+      or
+      // keyword arg
+      keywordArgument(this, key, value)
+    }
+
+    override ActiveRecordModelClass getClass() { result = this.getInstance().getClass() }
+  }
+
+  /** A call to e.g. `user.update_attribute(name, "foo")` */
+  private class UpdateAttributeCall extends ModifyAndSaveCall, ActiveRecordInstanceMethodCall {
+    UpdateAttributeCall() { this.getMethodName() = "update_attribute" }
+
+    override predicate setsKeyValuePair(ExprCfgNode key, ExprCfgNode value) {
+      // e.g. `foo.update_attribute(key, value)`
+      key = this.getArgument(0).asExpr() and value = this.getArgument(1).asExpr()
+    }
+
+    override ActiveRecordModelClass getClass() { result = this.getInstance().getClass() }
+  }
+
+  /**
+   * An assignment like `user.name = "foo"`. Though this does not write to the
+   * database without a subsequent call to persist the object, it is considered
+   * as an `OrmWriteAccess` to avoid missing cases where the path to a
+   * subsequent write is not clear.
+   */
+  private class AssignAttributeCall extends DataFlow::CallNode, ActiveRecordInstanceMethodCall,
+    OrmWriteAccess::Range {
+    AssignAttributeCall() { this.asExpr().getExpr() instanceof SetterMethodCall }
+
+    override string getFieldNameAssignedTo(DataFlow::Node value) {
+      result + "=" = this.getMethodName() and
+      // match RHS
+      this.getArgument(0).asExpr().(ExprNodes::AssignExprCfgNode).getRhs() = value.asExpr()
+    }
+  }
+}
