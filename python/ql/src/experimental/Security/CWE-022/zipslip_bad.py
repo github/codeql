@@ -6,4 +6,4 @@ zf = zipfile.ZipFile(filename)
 with zf.open() as zipf:
     #BAD : This could write any file on the filesystem.
     for entry in zipf:
-    shutil.copyfileobj(entry, "/tmp/unpack/")
+       shutil.copy(entry, "/tmp/unpack/")
