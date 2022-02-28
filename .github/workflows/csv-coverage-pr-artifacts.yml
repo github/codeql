@@ -54,7 +54,7 @@ jobs:
     - name: Generate CSV files on merge commit of the PR
       run: |
         echo "Running generator on merge"
-        PATH="$PATH:codeql-cli/codeql" python merge/misc/scripts/library-coverage/generate-report.py ci merge merge
+        PATH="$PATH:codeql-cli/codeql" python base/misc/scripts/library-coverage/generate-report.py ci merge merge
         mkdir out_merge
         mv framework-coverage-*.csv out_merge/
         mv framework-coverage-*.rst out_merge/
