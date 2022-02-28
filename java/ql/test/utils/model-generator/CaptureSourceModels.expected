@@ -2,3 +2,4 @@
 | p;Sources;true;socketStream;();;ReturnValue;remote |
 | p;Sources;true;sourceToParameter;(InputStream[],List);;Argument[0].ArrayElement;remote |
 | p;Sources;true;sourceToParameter;(InputStream[],List);;Argument[1].Element;remote |
+| p;Sources;true;wrappedSocketStream;();;ReturnValue;remote |
