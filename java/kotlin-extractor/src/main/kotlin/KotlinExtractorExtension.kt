@@ -3,6 +3,7 @@ package com.github.codeql
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.util.*
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.file.Files
@@ -85,6 +86,9 @@ class KotlinExtractorExtension(
             val logger = Logger(logCounter, tw)
             logger.info("Extraction started")
             logger.flush()
+            if (System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true") {
+                logger.info("moduleFragment:\n" + moduleFragment.dump())
+            }
             val primitiveTypeMapping = PrimitiveTypeMapping(logger, pluginContext)
             // FIXME: FileUtil expects a static global logger
             // which should be provided by SLF4J's factory facility. For now we set it here.
