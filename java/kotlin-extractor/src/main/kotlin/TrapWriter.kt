@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 
 import com.semmle.extractor.java.PopulateFile
+import com.semmle.util.unicode.UTF8Util
 
 /**
  * Each `.trap` file has a `TrapLabelManager` while we are writing it.
@@ -39,7 +40,7 @@ class TrapLabelManager {
  * instances will have different additional state, but they must all
  * share the same `TrapLabelManager` and `BufferedWriter`.
  */
-open class TrapWriter (protected val lm: TrapLabelManager, private val bw: BufferedWriter) {
+open class TrapWriter (protected val loggerBase: LoggerBase, protected val lm: TrapLabelManager, private val bw: BufferedWriter) {
     /**
      * Returns the label that is defined to be the given key, if such
      * a label exists, and `null` otherwise. Most users will want to use
@@ -176,19 +177,36 @@ open class TrapWriter (protected val lm: TrapLabelManager, private val bw: Buffe
         bw.flush()
     }
 
+    fun escapeTrapString(str: String) = str.replace("\"", "\"\"")
+
+    val MAX_STRLEN = 1.shl(20) // 1 megabyte
+
+    fun truncateString(str: String): String {
+        val len = str.length
+        val newLen = UTF8Util.encodablePrefixLength(str, MAX_STRLEN)
+        if (newLen < len) {
+            loggerBase.warn(this,
+                "Truncated string of length $len",
+                "Truncated string of length $len, starting '${str.take(100)}', ending '${str.takeLast(100)}'")
+            return str.take(newLen)
+        } else {
+            return str
+        }
+    }
+
     /**
      * Gets a FileTrapWriter like this one (using the same label manager,
      * writer etc), but using the given `filePath` for locations.
      */
     fun makeFileTrapWriter(filePath: String, populateFileTables: Boolean) =
-        FileTrapWriter(lm, bw, filePath, populateFileTables)
+        FileTrapWriter(loggerBase, lm, bw, filePath, populateFileTables)
 
     /**
      * Gets a FileTrapWriter like this one (using the same label manager,
      * writer etc), but using the given `IrFile` for locations.
      */
     fun makeSourceFileTrapWriter(file: IrFile, populateFileTables: Boolean) =
-        SourceFileTrapWriter(lm, bw, file, populateFileTables)
+        SourceFileTrapWriter(loggerBase, lm, bw, file, populateFileTables)
 }
 
 /**
@@ -196,11 +214,12 @@ open class TrapWriter (protected val lm: TrapLabelManager, private val bw: Buffe
  * entities from, so we can at least give the right file as a location.
  */
 open class FileTrapWriter (
+    loggerBase: LoggerBase,
     lm: TrapLabelManager,
     bw: BufferedWriter,
     val filePath: String,
     populateFileTables: Boolean
-): TrapWriter (lm, bw) {
+): TrapWriter (loggerBase, lm, bw) {
     val fileId = mkFileId(filePath, populateFileTables)
 
     /**
@@ -244,11 +263,12 @@ open class FileTrapWriter (
  * and column numbers.
  */
 class SourceFileTrapWriter (
+    loggerBase: LoggerBase,
     lm: TrapLabelManager,
     bw: BufferedWriter,
     irFile: IrFile,
     populateFileTables: Boolean) :
-    FileTrapWriter(lm, bw, irFile.path, populateFileTables) {
+    FileTrapWriter(loggerBase, lm, bw, irFile.path, populateFileTables) {
 
     private val fileEntry = irFile.fileEntry
 

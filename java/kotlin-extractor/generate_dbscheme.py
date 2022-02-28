@@ -143,7 +143,7 @@ def genTable(kt, relname, columns, enum = None, kind = None, num = None, typ = N
         if colname == kind:
             kt.write(str(num))
         elif db_type == 'string':
-            kt.write('\\"${escapeTrapString(truncateString(' + colname + '))}\\"')
+            kt.write('\\"${this.escapeTrapString(this.truncateString(' + colname + '))}\\"')
         elif db_type == 'date':
             kt.write('D\\"${' + colname + '}\\"')
         else:

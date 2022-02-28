@@ -56,7 +56,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                 }
 
                 val commentLabel = tw.getFreshIdLabel<DbKtcomment>()
-                tw.writeKtComments(commentLabel, type.value, escapeTrapString(comment.text))
+                tw.writeKtComments(commentLabel, type.value, tw.escapeTrapString(comment.text))
                 val locId = tw.getLocation(comment.startOffset, comment.endOffset)
                 tw.writeHasLocation(commentLabel, locId)
 
@@ -71,14 +71,14 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
 
                 for (sec in comment.getAllSections()) {
                     val commentSectionLabel = tw.getFreshIdLabel<DbKtcommentsection>()
-                    tw.writeKtCommentSections(commentSectionLabel, commentLabel, escapeTrapString(sec.getContent()))
+                    tw.writeKtCommentSections(commentSectionLabel, commentLabel, tw.escapeTrapString(sec.getContent()))
                     val name = sec.name
                     if (name != null) {
-                        tw.writeKtCommentSectionNames(commentSectionLabel, escapeTrapString(name))
+                        tw.writeKtCommentSectionNames(commentSectionLabel, tw.escapeTrapString(name))
                     }
                     val subjectName = sec.getSubjectName()
                     if (subjectName != null) {
-                        tw.writeKtCommentSectionSubjectNames(commentSectionLabel, escapeTrapString(subjectName))
+                        tw.writeKtCommentSectionSubjectNames(commentSectionLabel, tw.escapeTrapString(subjectName))
                     }
                 }
 

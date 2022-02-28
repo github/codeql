@@ -28,8 +28,8 @@ enum class Severity(val sev: Int) {
     ErrorGlobal(8)
 }
 
-open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
-    private fun timestamp(): String {
+open class LoggerBase(val logCounter: LogCounter) {
+    protected fun timestamp(): String {
         return "[${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())} K]"
     }
 
@@ -47,12 +47,7 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         return null
     }
 
-    fun flush() {
-        tw.flush()
-        System.out.flush()
-    }
-
-    fun diagnostic(severity: Severity, msg: String, extraInfo: String?, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
+    fun diagnostic(tw: TrapWriter, severity: Severity, msg: String, extraInfo: String?, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
         val diagnosticLoc = getDiagnosticLocation()
         val diagnosticLocStr = if(diagnosticLoc == null) "<unknown location>" else diagnosticLoc
         val extraInfoStr = if (extraInfo == null) "" else (extraInfo + "\n")
@@ -78,6 +73,34 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         print("$ts Diagnostic($diagnosticLocStr): $locStr$fullMsg")
     }
 
+    fun warn(tw: TrapWriter, msg: String, extraInfo: String?) {
+        diagnostic(tw, Severity.Warn, msg, extraInfo)
+    }
+    fun error(tw: TrapWriter, msg: String, extraInfo: String?) {
+        diagnostic(tw, Severity.Error, msg, extraInfo)
+    }
+}
+
+open class Logger(logCounter: LogCounter, open val tw: TrapWriter): LoggerBase(logCounter) {
+    private fun getDiagnosticLocation(): String? {
+        val st = Exception().stackTrace
+        for(x in st) {
+            when(x.className) {
+                "com.github.codeql.Logger",
+                "com.github.codeql.FileLogger" -> {}
+                else -> {
+                    return x.toString()
+                }
+            }
+        }
+        return null
+    }
+
+    fun flush() {
+        tw.flush()
+        System.out.flush()
+    }
+
     fun info(msg: String) {
         val fullMsg = "${timestamp()} $msg"
         tw.writeComment(fullMsg)
@@ -98,13 +121,13 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         warn(msg, exn.stackTraceToString())
     }
     fun warn(msg: String, extraInfo: String?) {
-        diagnostic(Severity.Warn, msg, extraInfo)
+        warn(tw, msg, extraInfo)
     }
     fun warn(msg: String) {
         warn(msg, null)
     }
     fun error(msg: String, extraInfo: String?) {
-        diagnostic(Severity.Error, msg, extraInfo)
+        error(tw, msg, extraInfo)
     }
     fun error(msg: String) {
         error(msg, null)
@@ -124,19 +147,15 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
 }
 
 class FileLogger(logCounter: LogCounter, override val tw: FileTrapWriter): Logger(logCounter, tw) {
-    private fun timestamp(): String {
-        return "[${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())} K]"
-    }
-
     fun warnElement(msg: String, element: IrElement) {
         val locationString = tw.getLocationString(element)
         val mkLocationId = { tw.getLocation(element) }
-        diagnostic(Severity.Warn, msg, null, locationString, mkLocationId)
+        diagnostic(tw, Severity.Warn, msg, null, locationString, mkLocationId)
     }
 
     fun errorElement(msg: String, element: IrElement) {
         val locationString = tw.getLocationString(element)
         val mkLocationId = { tw.getLocation(element) }
-        diagnostic(Severity.Error, msg, null, locationString, mkLocationId)
+        diagnostic(tw, Severity.Error, msg, null, locationString, mkLocationId)
     }
 }
