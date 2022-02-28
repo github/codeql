@@ -1,7 +1,7 @@
-namespace System.Runtime.CompilerServices
-{
-    internal static class IsExternalInit { }
-}
+
+
+
+
 
 public record class RecordClass(object Prop1, object Prop2) { }
 
