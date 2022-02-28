@@ -459,10 +459,10 @@
 | exprs.kt:131:12:131:19 | variable | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:131:12:131:23 | ... > ... | exprs.kt:4:1:136:1 | topLevelMethod | GTExpr |
 | exprs.kt:131:23:131:23 | 0 | exprs.kt:4:1:136:1 | topLevelMethod | IntegerLiteral |
-| exprs.kt:132:9:132:16 | ...=... | exprs.kt:4:1:136:1 | topLevelMethod | AssignExpr |
 | exprs.kt:132:9:132:16 | tmp0 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:132:9:132:16 | variable | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:132:9:132:16 | variable | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
+| exprs.kt:132:9:132:18 | ...=... | exprs.kt:4:1:136:1 | topLevelMethod | AssignExpr |
 | exprs.kt:132:9:132:18 | <Stmt> | exprs.kt:4:1:136:1 | topLevelMethod | StmtExpr |
 | exprs.kt:132:9:132:18 | <implicit coercion to unit> | exprs.kt:4:1:136:1 | topLevelMethod | ImplicitCoercionToUnitExpr |
 | exprs.kt:132:9:132:18 | Unit | exprs.kt:4:1:136:1 | topLevelMethod | TypeAccess |
@@ -511,11 +511,11 @@
 | exprs.kt:156:9:156:9 | x | exprs.kt:150:1:157:1 | typeTests | VarAccess |
 | exprs.kt:156:9:156:22 | ...instanceof... | exprs.kt:150:1:157:1 | typeTests | InstanceOfExpr |
 | exprs.kt:156:9:156:22 | Subclass1 | exprs.kt:150:1:157:1 | typeTests | TypeAccess |
-| exprs.kt:156:27:156:27 | ...=... | exprs.kt:150:1:157:1 | typeTests | AssignExpr |
 | exprs.kt:156:27:156:27 | q | exprs.kt:150:1:157:1 | typeTests | VarAccess |
+| exprs.kt:156:27:156:31 | ...=... | exprs.kt:150:1:157:1 | typeTests | AssignExpr |
 | exprs.kt:156:31:156:31 | 2 | exprs.kt:150:1:157:1 | typeTests | IntegerLiteral |
-| exprs.kt:156:42:156:42 | ...=... | exprs.kt:150:1:157:1 | typeTests | AssignExpr |
 | exprs.kt:156:42:156:42 | q | exprs.kt:150:1:157:1 | typeTests | VarAccess |
+| exprs.kt:156:42:156:46 | ...=... | exprs.kt:150:1:157:1 | typeTests | AssignExpr |
 | exprs.kt:156:46:156:46 | 3 | exprs.kt:150:1:157:1 | typeTests | IntegerLiteral |
 | exprs.kt:160:5:160:25 | r | exprs.kt:159:1:166:1 | foo | LocalVariableDeclExpr |
 | exprs.kt:160:13:160:13 | p | exprs.kt:159:1:166:1 | foo | VarAccess |
@@ -532,8 +532,8 @@
 | exprs.kt:163:22:163:23 | r2 | exprs.kt:159:1:166:1 | foo | VarAccess |
 | exprs.kt:163:25:163:30 | r2.height | exprs.kt:159:1:166:1 | foo | VarAccess |
 | exprs.kt:164:9:164:10 | r2 | exprs.kt:159:1:166:1 | foo | VarAccess |
-| exprs.kt:164:9:164:17 | ...=... | exprs.kt:159:1:166:1 | foo | AssignExpr |
 | exprs.kt:164:9:164:17 | r2.height | exprs.kt:159:1:166:1 | foo | VarAccess |
+| exprs.kt:164:9:164:21 | ...=... | exprs.kt:159:1:166:1 | foo | AssignExpr |
 | exprs.kt:164:21:164:21 | 3 | exprs.kt:159:1:166:1 | foo | IntegerLiteral |
 | exprs.kt:168:1:170:1 | <obinit>(...) | exprs.kt:168:6:170:1 | Direction | MethodAccess |
 | exprs.kt:168:1:170:1 | Direction | exprs.kt:168:6:170:1 | Direction | TypeAccess |
@@ -722,20 +722,20 @@
 | exprs.kt:257:16:257:17 | fy | exprs.kt:246:1:259:1 | mulOperators | VarAccess |
 | exprs.kt:263:3:263:17 | updated | exprs.kt:261:1:270:1 | inPlaceOperators | LocalVariableDeclExpr |
 | exprs.kt:263:17:263:17 | 0 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
-| exprs.kt:264:3:264:9 | ...+=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignAddExpr |
 | exprs.kt:264:3:264:9 | updated | exprs.kt:261:1:270:1 | inPlaceOperators | VarAccess |
+| exprs.kt:264:3:264:14 | ...+=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignAddExpr |
 | exprs.kt:264:14:264:14 | 1 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
-| exprs.kt:265:3:265:9 | ...-=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignSubExpr |
 | exprs.kt:265:3:265:9 | updated | exprs.kt:261:1:270:1 | inPlaceOperators | VarAccess |
+| exprs.kt:265:3:265:14 | ...-=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignSubExpr |
 | exprs.kt:265:14:265:14 | 1 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
-| exprs.kt:266:3:266:9 | ...*=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignMulExpr |
 | exprs.kt:266:3:266:9 | updated | exprs.kt:261:1:270:1 | inPlaceOperators | VarAccess |
+| exprs.kt:266:3:266:14 | ...*=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignMulExpr |
 | exprs.kt:266:14:266:14 | 1 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
-| exprs.kt:267:3:267:9 | .../=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignDivExpr |
 | exprs.kt:267:3:267:9 | updated | exprs.kt:261:1:270:1 | inPlaceOperators | VarAccess |
+| exprs.kt:267:3:267:14 | .../=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignDivExpr |
 | exprs.kt:267:14:267:14 | 1 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
-| exprs.kt:268:3:268:9 | ...%=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignRemExpr |
 | exprs.kt:268:3:268:9 | updated | exprs.kt:261:1:270:1 | inPlaceOperators | VarAccess |
+| exprs.kt:268:3:268:14 | ...%=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignRemExpr |
 | exprs.kt:268:14:268:14 | 1 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
 | funcExprs.kt:16:5:16:33 | functionExpression0a(...) | funcExprs.kt:15:1:46:1 | call | MethodAccess |
 | funcExprs.kt:16:26:16:33 | ...->... | funcExprs.kt:15:1:46:1 | call | LambdaExpr |
@@ -1309,8 +1309,8 @@
 | localFunctionCalls.kt:5:25:5:25 | i | localFunctionCalls.kt:5:5:5:29 | a | VarAccess |
 | localFunctionCalls.kt:5:25:5:29 | ... + ... | localFunctionCalls.kt:5:5:5:29 | a | AddExpr |
 | localFunctionCalls.kt:5:29:5:29 | x | localFunctionCalls.kt:5:5:5:29 | a | VarAccess |
-| localFunctionCalls.kt:6:5:6:5 | ...=... | localFunctionCalls.kt:3:1:11:1 | x | AssignExpr |
 | localFunctionCalls.kt:6:5:6:5 | x | localFunctionCalls.kt:3:1:11:1 | x | VarAccess |
+| localFunctionCalls.kt:6:5:6:9 | ...=... | localFunctionCalls.kt:3:1:11:1 | x | AssignExpr |
 | localFunctionCalls.kt:6:9:6:9 | 6 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:7:5:7:17 | <implicit coercion to unit> | localFunctionCalls.kt:3:1:11:1 | x | ImplicitCoercionToUnitExpr |
 | localFunctionCalls.kt:7:5:7:17 | Object | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
@@ -1319,8 +1319,8 @@
 | localFunctionCalls.kt:7:5:7:17 | a(...) | localFunctionCalls.kt:3:1:11:1 | x | MethodAccess |
 | localFunctionCalls.kt:7:5:7:17 | new (...) | localFunctionCalls.kt:3:1:11:1 | x | ClassInstanceExpr |
 | localFunctionCalls.kt:7:15:7:16 | 42 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
-| localFunctionCalls.kt:8:5:8:5 | ...=... | localFunctionCalls.kt:3:1:11:1 | x | AssignExpr |
 | localFunctionCalls.kt:8:5:8:5 | x | localFunctionCalls.kt:3:1:11:1 | x | VarAccess |
+| localFunctionCalls.kt:8:5:8:9 | ...=... | localFunctionCalls.kt:3:1:11:1 | x | AssignExpr |
 | localFunctionCalls.kt:8:9:8:9 | 7 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:9:34:9:34 | 5 | localFunctionCalls.kt:9:5:9:34 | f1 | IntegerLiteral |
 | localFunctionCalls.kt:10:5:10:13 | C1<Integer> | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
