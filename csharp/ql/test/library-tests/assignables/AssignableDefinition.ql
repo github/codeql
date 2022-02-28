@@ -53,6 +53,7 @@ class SourceOption extends TSourceOption {
 from AssignableDefinition def, TargetAccessOption access, SourceOption source, string certain
 where
   (if def.isCertain() then certain = "certain" else certain = "uncertain") and
+  def.getElement().fromSource() and
   access.fromAssignableDefinition(def) and
   source.fromAssignableDefinition(def)
 select def.getTarget(), def, access, source, certain
