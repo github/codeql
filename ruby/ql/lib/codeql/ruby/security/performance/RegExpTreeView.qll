@@ -1,7 +1,6 @@
 private import codeql.ruby.ast.Literal as AST
 private import codeql.Locations
 private import ParseRegExp
-import codeql.Locations
 
 /**
  * Holds if `term` is an ecape class representing e.g. `\d`.
@@ -27,7 +26,7 @@ predicate isEscapeClass(RegExpTerm term, string clazz) {
  * Holds if the regular expression should not be considered.
  */
 predicate isExcluded(RegExpParent parent) {
-  parent.(RegExpTerm).getRegExp().hasFreeSpacingFlag() // exclude free-spacing mode regexes
+  parent.(RegExpTerm).getRegExp().(AST::RegExpLiteral).hasFreeSpacingFlag() // exclude free-spacing mode regexes
 }
 
 /**
@@ -93,11 +92,11 @@ class RegExpLiteral extends TRegExpLiteral, RegExpParent {
 
   override RegExpTerm getChild(int i) { i = 0 and result.getRegExp() = re and result.isRootTerm() }
 
-  predicate isDotAll() { re.hasMultilineFlag() }
+  predicate isDotAll() { re.isDotAll() }
 
-  predicate isIgnoreCase() { re.hasCaseInsensitiveFlag() }
+  predicate isIgnoreCase() { re.isIgnoreCase() }
 
-  string getFlags() { result = re.getFlagString() }
+  string getFlags() { result = re.getFlags() }
 
   override string getAPrimaryQlClass() { result = "RegExpLiteral" }
 }
