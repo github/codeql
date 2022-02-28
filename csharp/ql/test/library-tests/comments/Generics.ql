@@ -8,5 +8,6 @@ where
     e instanceof ConstructedClass or
     e instanceof UnboundGenericClass or
     e instanceof UnboundGenericMethod
-  )
+  ) and
+  e.fromSource()
 select b, e

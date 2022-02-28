@@ -6,7 +6,8 @@ private predicate commentLine(
   l.getParent() = c and
   numLines = c.getNumLines() and
   text = l.getText() and
-  rawText = l.getRawText()
+  rawText = l.getRawText() and
+  l.getLocation().getFile().fromSource()
 }
 
 query predicate singlelineComment(
