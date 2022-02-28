@@ -912,6 +912,7 @@ class TranslatedStructuredBindingVariableAccess extends TranslatedNonConstantExp
   }
 
   private LValueReferenceType getLValueReferenceType() {
+    // The extractor ensures `result` exists when `isNonReferenceStructuredBinding(expr.getTarget())` holds.
     result.getBaseType() = expr.getUnspecifiedType()
   }
 
