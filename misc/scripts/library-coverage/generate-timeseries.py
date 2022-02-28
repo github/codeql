@@ -74,7 +74,9 @@ configs = [
     utils.LanguageConfig(
         "java", "Java", ".java", "java/ql/src/meta/frameworks/Coverage.ql", ["java/ql/lib/config/semmlecode.dbscheme", "java/ql/src/config/semmlecode.dbscheme"]),
     utils.LanguageConfig(
-        "csharp", "C#", ".cs", "csharp/ql/src/meta/frameworks/Coverage.ql", ["csharp/ql/lib/semmlecode.csharp.dbscheme", "csharp/ql/src/semmlecode.csharp.dbscheme"])
+        "csharp", "C#", ".cs", "csharp/ql/src/meta/frameworks/Coverage.ql", ["csharp/ql/lib/semmlecode.csharp.dbscheme", "csharp/ql/src/semmlecode.csharp.dbscheme"]),
+    utils.LanguageConfig(
+        "javascript", "JavaScript", ".js", "javascript/ql/src/meta/Coverage.ql", ["javascript/ql/lib/semmlecode.javascript.dbscheme", "javascript/ql/src/semmlecode.javascript.dbscheme"])
 ]
 
 output_prefix = "framework-coverage-timeseries-"

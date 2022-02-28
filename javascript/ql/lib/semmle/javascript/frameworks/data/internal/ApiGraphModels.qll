@@ -194,7 +194,7 @@ predicate sourceModel(string package, string type, string path, string kind) {
 }
 
 /** Holds if a sink model exists for the given parameters. */
-private predicate sinkModel(string package, string type, string path, string kind) {
+predicate sinkModel(string package, string type, string path, string kind) {
   exists(string row |
     sinkModel(row) and
     row.splitAt(";", 0) = package and
@@ -205,7 +205,7 @@ private predicate sinkModel(string package, string type, string path, string kin
 }
 
 /** Holds if a summary model `row` exists for the given parameters. */
-private predicate summaryModel(
+predicate summaryModel(
   string package, string type, string path, string input, string output, string kind
 ) {
   exists(string row |

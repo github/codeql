@@ -1,0 +1,3 @@
+package,sink,source,sink:credentials[password],sink:credentials[user name],sink:sql-injection,source:database-access-result
+@google-cloud/spanner,3,4,,,3,4
+sequelize,4,1,1,1,2,1
