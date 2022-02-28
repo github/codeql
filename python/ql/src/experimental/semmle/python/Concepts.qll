@@ -14,6 +14,68 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
+
+/** Provides classes for modeling copying file related APIs. */
+module CopyFile {
+  /**
+   * A data flow node for copying file.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `CopyFile` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the path.
+     */
+    abstract DataFlow::Node getAPathArgument();    
+  }
+}
+
+/**
+ * A data flow node for copying file.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `CopyFile::Range` instead.
+ */
+class CopyFile extends DataFlow::Node {
+  CopyFile::Range range;
+
+  CopyFile() { this = range }
+
+  DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
+}
+
+/** Provides classes for modeling zip related APIs. */
+module ZipFile {
+  /**
+   * A data flow node for zipfile.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `ZipFile` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Get the parameter value of the zip function.
+     */
+    abstract DataFlow::Node getAnInput();
+    
+  }
+}
+
+/**
+ * A data flow node for zip.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `ZipFile::Range` instead.
+ */
+class ZipFile extends DataFlow::Node {
+  ZipFile::Range range;
+
+  ZipFile() { this = range }
+
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+}
+
 /** Provides classes for modeling log related APIs. */
 module LogOutput {
   /**
