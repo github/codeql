@@ -138,8 +138,3 @@ class Tuples
 
     static T Source<T>(object source) => throw null;
 }
-
-namespace System.Runtime.CompilerServices
-{
-    public class IsExternalInit { }
-}

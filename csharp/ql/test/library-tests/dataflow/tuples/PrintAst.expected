@@ -519,5 +519,3 @@ Tuples.cs:
 #  139|         -1: [TypeMention] object
 #  139|     4: [ThrowExpr] throw ...
 #  139|       0: [NullLiteral] null
-#  142| [NamespaceDeclaration] namespace ... { ... }
-#  144|   1: [Class] IsExternalInit
