@@ -8,6 +8,10 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
 
+/**
+ * Provides default sources, sinks and sanitizers for reasoning about
+ * format injections, as well as extension points for adding your own.
+ */
 module TaintedFormatString {
   /**
    * A data flow source for format injections.
@@ -47,11 +51,20 @@ module TaintedFormatString {
    */
   abstract class PrintfCall extends DataFlow::CallNode {
     // We assume that most printf-like calls have the signature f(format_string, args...)
+    /**
+     * Gets the format string of this call.
+     */
     DataFlow::Node getFormatString() { result = this.getArgument(0) }
 
-    DataFlow::Node getFormatArgument(int n) { n > 0 and result = this.getArgument(n) }
+    /**
+     * Gets then `n`th formatted argument of this call.
+     */
+    DataFlow::Node getFormatArgument(int n) { result = this.getArgument(n + 1) }
   }
 
+  /**
+   * A call to `Kernel.printf`.
+   */
   class KernelPrintfCall extends PrintfCall {
     KernelPrintfCall() {
       this = API::getTopLevelMember("Kernel").getAMethodCall("printf")
@@ -66,6 +79,9 @@ module TaintedFormatString {
     override DataFlow::Node getFormatString() { result = this.getArgument([0, 1]) }
   }
 
+  /**
+   * A call to `Kernel.sprintf`.
+   */
   class KernelSprintfCall extends PrintfCall {
     KernelSprintfCall() {
       this = API::getTopLevelMember("Kernel").getAMethodCall("sprintf")
@@ -75,6 +91,9 @@ module TaintedFormatString {
     }
   }
 
+  /**
+   * A call to `IO#printf`.
+   */
   class IOPrintfCall extends PrintfCall {
     IOPrintfCall() { this = API::getTopLevelMember("IO").getInstance().getAMethodCall("printf") }
   }
