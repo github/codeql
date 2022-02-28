@@ -1,7 +1,7 @@
 import sys
 import os
 
-sys.path.append(os.path.dirname(os.path.dirname((__file__)))) # $ unresolved_call=os.path.dirname(..) unresolved_call=sys.path.append(..)
+sys.path.append(os.path.dirname(os.path.dirname((__file__)))) # $ unresolved_call=sys.path.append(..)
 from testlib import expects
 
 # These are defined so that we can evaluate the test code.
@@ -210,40 +210,40 @@ SINK(obj2.foo) # $ flow="SOURCE, l:-1 -> obj2.foo"
 
 # apparently these if statements below makes a difference :O
 # but one is not enough
-cond = os.urandom(1)[0] > 128 # $ unresolved_call=os.urandom(..)
+cond = os.urandom(1)[0] > 128
 
 if cond:
     pass
 
 # def test_constructor_assign():
-obj2 = MyObj(SOURCE) # $ unresolved_call=MyObj(..)
-SINK(obj2.foo) # $ unresolved_call=SINK(..) MISSING: flow="SOURCE, l:-1 -> obj2.foo"
+obj2 = MyObj(SOURCE)
+SINK(obj2.foo) # $ flow="SOURCE, l:-1 -> obj2.foo"
 
 if cond:
     pass
 
 # def test_constructor_assign():
-obj2 = MyObj(SOURCE) # $ unresolved_call=MyObj(..)
-SINK(obj2.foo) # $ unresolved_call=SINK(..) MISSING: flow="SOURCE, l:-1 -> obj2.foo"
+obj2 = MyObj(SOURCE)
+SINK(obj2.foo) # $ flow="SOURCE, l:-1 -> obj2.foo"
 
 # def test_constructor_assign_kw():
-obj3 = MyObj(foo=SOURCE) # $ unresolved_call=MyObj(..)
-SINK(obj3.foo) # $ unresolved_call=SINK(..) MISSING: flow="SOURCE, l:-1 -> obj3.foo"
+obj3 = MyObj(foo=SOURCE)
+SINK(obj3.foo) # $ flow="SOURCE, l:-1 -> obj3.foo"
 
 # def test_fields():
-SINK(fields_with_local_flow(SOURCE)) # $ unresolved_call=fields_with_local_flow(..) unresolved_call=SINK(..) MISSING: flow="SOURCE -> fields_with_local_flow(..)"
+SINK(fields_with_local_flow(SOURCE)) # $ flow="SOURCE -> fields_with_local_flow(..)"
 
 # --------------------------------------
 # method calls _after_ those ifs
 # --------------------------------------
 
 # def test_indirect_assign_method():
-myobj2 = MyObj("OK") # $ unresolved_call=MyObj(..)
-myobj2.setFoo(SOURCE) # $ unresolved_call=myobj2.setFoo(..)
-SINK(myobj2.foo) # $ unresolved_call=SINK(..) MISSING: flow="SOURCE, l:-1 -> myobj2.foo"
+myobj2 = MyObj("OK")
+myobj2.setFoo(SOURCE)
+SINK(myobj2.foo) # $ flow="SOURCE, l:-1 -> myobj2.foo"
 
 # def test_nested_obj_method():
 x2 = SOURCE
-a2 = NestedObj() # $ unresolved_call=NestedObj()
-a2.getObj().foo = x2 # $ unresolved_call=a2.getObj()
-SINK(a2.obj.foo) # $ unresolved_call=SINK(..) MISSING: flow="SOURCE, l:-3 -> a2.obj.foo"
+a2 = NestedObj()
+a2.getObj().foo = x2
+SINK(a2.obj.foo) # $ flow="SOURCE, l:-3 -> a2.obj.foo"
