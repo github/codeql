@@ -25,6 +25,8 @@ delegateCall
 | DelegateFlow.cs:132:9:132:11 | delegate call | DelegateFlow.cs:131:17:131:24 | (...) => ... |
 | DelegateFlow.cs:132:9:132:11 | delegate call | DelegateFlow.cs:135:29:135:36 | (...) => ... |
 viableLambda
+| ../../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.Runtime.cs:2665:16:2665:19 | [summary] call to valueFactory in Lazy | DelegateFlow.cs:105:9:105:24 | object creation of type Lazy<Int32> | DelegateFlow.cs:104:23:104:30 | (...) => ... |
+| ../../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.Runtime.cs:2665:16:2665:19 | [summary] call to valueFactory in Lazy | DelegateFlow.cs:107:9:107:24 | object creation of type Lazy<Int32> | DelegateFlow.cs:106:13:106:20 | (...) => ... |
 | DelegateFlow.cs:9:9:9:12 | delegate call | DelegateFlow.cs:16:9:16:20 | call to method M2 | DelegateFlow.cs:16:12:16:19 | (...) => ... |
 | DelegateFlow.cs:9:9:9:12 | delegate call | DelegateFlow.cs:17:9:17:14 | call to method M2 | DelegateFlow.cs:5:10:5:11 | M1 |
 | DelegateFlow.cs:9:9:9:12 | delegate call | DelegateFlow.cs:22:9:22:13 | call to method M2 | DelegateFlow.cs:5:10:5:11 | M1 |
@@ -51,5 +53,3 @@ viableLambda
 | DelegateFlow.cs:125:9:125:25 | function pointer call | file://:0:0:0:0 | (none) | DelegateFlow.cs:7:17:7:18 | M2 |
 | DelegateFlow.cs:132:9:132:11 | delegate call | DelegateFlow.cs:135:25:135:40 | call to method M19 | DelegateFlow.cs:135:29:135:36 | (...) => ... |
 | DelegateFlow.cs:132:9:132:11 | delegate call | file://:0:0:0:0 | (none) | DelegateFlow.cs:131:17:131:24 | (...) => ... |
-| file://:0:0:0:0 | [summary] call to valueFactory in Lazy | DelegateFlow.cs:105:9:105:24 | object creation of type Lazy<Int32> | DelegateFlow.cs:104:23:104:30 | (...) => ... |
-| file://:0:0:0:0 | [summary] call to valueFactory in Lazy | DelegateFlow.cs:107:9:107:24 | object creation of type Lazy<Int32> | DelegateFlow.cs:106:13:106:20 | (...) => ... |
