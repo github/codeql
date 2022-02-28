@@ -91,6 +91,18 @@ predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nod
   nodeFrom.asExpr() =
     nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
   or
+  // flow from value to hash pair
+  nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::PairCfgNode).getValue()
+  or
+  // flow container to referenced element
+  nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ElementReferenceCfgNode).getReceiver()
+  or
+  // flow element to container
+  nodeFrom.asExpr() =
+    any(CfgNodes::ExprNodes::MethodCallCfgNode call |
+      call = nodeTo.asExpr() and call.getExpr().getMethodName() = "[]"
+    ).getAnArgument()
+  or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
   or
   // Although flow through arrays is modelled precisely using stores/reads, we still
