@@ -3,7 +3,7 @@ import os
 import functools
 
 sys.path.append(os.path.dirname(os.path.dirname((__file__))))
-from testlib import *
+from testlib import expects
 
 arg = "source"
 arg1 = "source1"
