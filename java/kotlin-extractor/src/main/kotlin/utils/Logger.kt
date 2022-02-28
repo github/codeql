@@ -1,5 +1,9 @@
 package com.github.codeql
 
+import java.io.File
+import java.io.FileWriter
+import java.io.OutputStreamWriter
+import java.io.Writer
 import java.text.SimpleDateFormat
 import java.util.Date
 import org.jetbrains.kotlin.ir.IrElement
@@ -29,7 +33,18 @@ enum class Severity(val sev: Int) {
 }
 
 open class LoggerBase(val logCounter: LogCounter) {
-    protected fun timestamp(): String {
+    private val logStream: Writer
+    init {
+        val extractorLogDir = System.getenv("CODEQL_EXTRACTOR_JAVA_LOG_DIR")
+        if (extractorLogDir == null || extractorLogDir == "") {
+            logStream = OutputStreamWriter(System.out)
+        } else {
+            val logFile = File.createTempFile("kotlin-extractor.", ".log", File(extractorLogDir))
+            logStream = FileWriter(logFile)
+        }
+    }
+
+    private fun timestamp(): String {
         return "[${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())} K]"
     }
 
@@ -70,7 +85,13 @@ open class LoggerBase(val logCounter: LogCounter) {
         val locationId = mkLocationId()
         tw.writeDiagnostics(StarLabel(), "CodeQL Kotlin extractor", severity.sev, "", msg, "$ts $fullMsg", locationId)
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
-        print("$ts Diagnostic($diagnosticLocStr): $locStr$fullMsg")
+        logStream.write("$ts Diagnostic($diagnosticLocStr): $locStr$fullMsg")
+    }
+
+    fun info(tw: TrapWriter, msg: String) {
+        val fullMsg = "${timestamp()} $msg"
+        tw.writeComment(fullMsg)
+        logStream.write(fullMsg + "\n")
     }
 
     fun warn(tw: TrapWriter, msg: String, extraInfo: String?) {
@@ -79,9 +100,27 @@ open class LoggerBase(val logCounter: LogCounter) {
     fun error(tw: TrapWriter, msg: String, extraInfo: String?) {
         diagnostic(tw, Severity.Error, msg, extraInfo)
     }
+
+    fun printLimitedDiagnosticCounts(tw: TrapWriter) {
+        for((caller, count) in logCounter.diagnosticCounts) {
+            if(count >= logCounter.diagnosticLimit) {
+                val msg = "Total of $count diagnostics from $caller.\n"
+                tw.writeComment(msg)
+                logStream.write(msg)
+            }
+        }
+    }
+
+    fun flush() {
+        logStream.flush()
+    }
+
+    fun close() {
+        logStream.close()
+    }
 }
 
-open class Logger(logCounter: LogCounter, open val tw: TrapWriter): LoggerBase(logCounter) {
+open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
     private fun getDiagnosticLocation(): String? {
         val st = Exception().stackTrace
         for(x in st) {
@@ -98,13 +137,11 @@ open class Logger(logCounter: LogCounter, open val tw: TrapWriter): LoggerBase(l
 
     fun flush() {
         tw.flush()
-        System.out.flush()
+        loggerBase.flush()
     }
 
     fun info(msg: String) {
-        val fullMsg = "${timestamp()} $msg"
-        tw.writeComment(fullMsg)
-        println(fullMsg)
+        loggerBase.info(tw, msg)
     }
     fun trace(msg: String) {
         if(false) {
@@ -117,17 +154,19 @@ open class Logger(logCounter: LogCounter, open val tw: TrapWriter): LoggerBase(l
     fun trace(msg: String, exn: Exception) {
         trace(msg + "\n" + exn.stackTraceToString())
     }
+
     fun warn(msg: String, exn: Exception) {
         warn(msg, exn.stackTraceToString())
     }
     fun warn(msg: String, extraInfo: String?) {
-        warn(tw, msg, extraInfo)
+        loggerBase.warn(tw, msg, extraInfo)
     }
     fun warn(msg: String) {
         warn(msg, null)
     }
+
     fun error(msg: String, extraInfo: String?) {
-        error(tw, msg, extraInfo)
+        loggerBase.error(tw, msg, extraInfo)
     }
     fun error(msg: String) {
         error(msg, null)
@@ -135,27 +174,18 @@ open class Logger(logCounter: LogCounter, open val tw: TrapWriter): LoggerBase(l
     fun error(msg: String, exn: Exception) {
         error(msg, exn.stackTraceToString())
     }
-    fun printLimitedDiagnosticCounts() {
-        for((caller, count) in logCounter.diagnosticCounts) {
-            if(count >= logCounter.diagnosticLimit) {
-                val msg = "Total of $count diagnostics from $caller.\n"
-                tw.writeComment(msg)
-                print(msg)
-            }
-        }
-    }
 }
 
-class FileLogger(logCounter: LogCounter, override val tw: FileTrapWriter): Logger(logCounter, tw) {
+class FileLogger(loggerBase: LoggerBase, override val tw: FileTrapWriter): Logger(loggerBase, tw) {
     fun warnElement(msg: String, element: IrElement) {
         val locationString = tw.getLocationString(element)
         val mkLocationId = { tw.getLocation(element) }
-        diagnostic(tw, Severity.Warn, msg, null, locationString, mkLocationId)
+        loggerBase.diagnostic(tw, Severity.Warn, msg, null, locationString, mkLocationId)
     }
 
     fun errorElement(msg: String, element: IrElement) {
         val locationString = tw.getLocationString(element)
         val mkLocationId = { tw.getLocation(element) }
-        diagnostic(tw, Severity.Error, msg, null, locationString, mkLocationId)
+        loggerBase.diagnostic(tw, Severity.Error, msg, null, locationString, mkLocationId)
     }
 }
