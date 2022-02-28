@@ -29,7 +29,7 @@ class ArchiveEntryNameMethod extends Method {
       archiveEntry.hasQualifiedName("java.util.zip", "ZipEntry") or
       archiveEntry.hasQualifiedName("org.apache.commons.compress.archivers", "ArchiveEntry")
     |
-      this.getDeclaringType().getASupertype*() = archiveEntry and
+      this.getDeclaringType().getAnAncestor() = archiveEntry and
       this.hasName("getName")
     )
   }

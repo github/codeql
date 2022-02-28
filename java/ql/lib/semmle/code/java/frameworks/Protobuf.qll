@@ -15,7 +15,7 @@ class ProtobufParser extends Interface {
    * Gets a method named `parseFrom` (or similar) declared on a subtype of `com.google.protobuf.Parser`.
    */
   Method getAParseFromMethod() {
-    result.getDeclaringType().getASupertype*().getSourceDeclaration() = this and
+    result.getDeclaringType().getAnAncestor().getSourceDeclaration() = this and
     result.getName().matches("parse%From")
   }
 }

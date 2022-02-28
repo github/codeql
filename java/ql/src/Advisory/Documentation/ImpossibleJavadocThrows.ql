@@ -20,10 +20,10 @@ predicate canThrow(Callable callable, RefType exception) {
   exists(string uncheckedException |
     uncheckedException = "RuntimeException" or uncheckedException = "Error"
   |
-    exception.getASupertype*().hasQualifiedName("java.lang", uncheckedException)
+    exception.getAnAncestor().hasQualifiedName("java.lang", uncheckedException)
   )
   or
-  callable.getAnException().getType().getASubtype*() = exception
+  callable.getAnException().getType().getADescendant() = exception
 }
 
 from ThrowsTag throwsTag, RefType thrownType, Callable docMethod

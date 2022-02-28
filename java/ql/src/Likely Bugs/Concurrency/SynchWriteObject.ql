@@ -17,7 +17,7 @@ import java
 
 from Method m
 where
-  m.getDeclaringType().getASupertype*() instanceof TypeSerializable and
+  m.getDeclaringType().getAnAncestor() instanceof TypeSerializable and
   m.hasName("writeObject") and
   m.getNumberOfParameters() = 1 and
   m.getAParamType() instanceof TypeObjectOutputStream and
