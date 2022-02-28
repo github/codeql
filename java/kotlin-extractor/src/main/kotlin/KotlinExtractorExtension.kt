@@ -10,13 +10,44 @@ import java.nio.file.Paths
 import com.semmle.util.files.FileUtil
 import kotlin.system.exitProcess
 
+/*
+ * KotlinExtractorExtension is the main entry point of the CodeQL Kotlin
+ * extractor. When the jar is used as a kotlinc plugin, kotlinc will
+ * call the `generate` method.
+ */
 class KotlinExtractorExtension(
+    // The filepath for the invocation TRAP file.
+    // This TRAP file is for this invocation of the extractor as a
+    // whole, not tied to a particular source file. It contains
+    // information about which files this invocation compiled, and
+    // any warnings or errors encountered during the invocation.
     private val invocationTrapFile: String,
+    // By default, if a TRAP file we want to generate for a source
+    // file already exists, then we will do nothing. If this is set,
+    // then we will instead generate the TRAP file, and give a
+    // warning if we would generate different TRAP to that which
+    // already exists.
     private val checkTrapIdentical: Boolean,
+    // If non-null, then this is the number of milliseconds since
+    // midnight, January 1, 1970 UTC (as returned by Java's
+    // `System.currentTimeMillis()`. If this is given, then it is used
+    // to record the time taken to compile the source code, which is
+    // presumed to be the difference between this time and the time
+    // that this plugin is invoked.
     private val compilationStartTime: Long?,
+    // Under normal conditions, the extractor runs during a build of
+    // the project, and kotlinc continues after the plugin has finished.
+    // If the plugin is being used independently of a build, then this
+    // can be set to true to make the plugin terminate the kotlinc
+    // invocation when it has finished. This means that kotlinc will not
+    // write any `.class` files etc.
     private val exitAfterExtraction: Boolean)
     : IrGenerationExtension {
 
+    // This is the main entry point to the extractor.
+    // It will be called by kotlinc with the IR for the files being
+    // compiled in `moduleFragment`, and `pluginContext` providing
+    // various utility functions.
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         try {
             runExtractor(moduleFragment, pluginContext)
@@ -34,10 +65,12 @@ class KotlinExtractorExtension(
 
     private fun runExtractor(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         val startTimeMs = System.currentTimeMillis()
-        val invocationExtractionProblems = ExtractionProblems()
         // This default should be kept in sync with com.semmle.extractor.java.interceptors.KotlinInterceptor.initializeExtractionContext
         val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
+        // The invocation TRAP file will already have been started
+        // before the plugin is run, so we open it in append mode.
         FileOutputStream(File(invocationTrapFile), true).bufferedWriter().use { invocationTrapFileBW ->
+            val invocationExtractionProblems = ExtractionProblems()
             val lm = TrapLabelManager()
             val logCounter = LogCounter()
             val loggerBase = LoggerBase(logCounter)
@@ -67,8 +100,6 @@ class KotlinExtractorExtension(
                 fileTrapWriter.writeCompilation_compiling_files_completed(compilation, index, fileExtractionProblems.extractionResult())
             }
             logger.printLimitedDiagnosticCounts()
-            // We don't want the compiler to continue and generate class
-            // files etc, so we just exit when we are finished extracting.
             logger.info("Extraction completed")
             logger.flush()
             val compilationTimeMs = System.currentTimeMillis() - startTimeMs
@@ -90,10 +121,11 @@ class KotlinExtractorGlobalState {
 }
 
 /*
-ExtractionProblems distinguish 2 kinds of problems:
+The `ExtractionProblems` class is used to record whether this invocation
+had any problems. It distinguish 2 kinds of problem:
 * Recoverable problems: e.g. if we check something that we expect to be
   non-null and find that it is null.
-* Non-recoverable problems: if we catch an exception
+* Non-recoverable problems: if we catch an exception.
 */
 open class ExtractionProblems {
     private var recoverableProblem = false
@@ -116,6 +148,11 @@ open class ExtractionProblems {
     }
 }
 
+/*
+The `FileExtractionProblems` is analogous to `ExtractionProblems`,
+except it records whether there were any problems while extracting a
+particular source file.
+*/
 class FileExtractionProblems(val invocationExtractionProblems: ExtractionProblems): ExtractionProblems() {
     override fun setRecoverableProblem() {
         super.setRecoverableProblem()
@@ -127,6 +164,11 @@ class FileExtractionProblems(val invocationExtractionProblems: ExtractionProblem
     }
 }
 
+/*
+This function determines whether 2 TRAP files should be considered to be
+equivalent. It returns `true` iff all of their non-comment lines are
+identical.
+*/
 private fun equivalentTrap(f1: File, f2: File): Boolean {
     f1.bufferedReader().use { bw1 ->
         f2.bufferedReader().use { bw2 ->
@@ -147,17 +189,18 @@ private fun equivalentTrap(f1: File, f2: File): Boolean {
     }
 }
 
-fun doFile(fileExtractionProblems: FileExtractionProblems,
-           invocationTrapFile: String,
-           fileTrapWriter: FileTrapWriter,
-           checkTrapIdentical: Boolean,
-           logCounter: LogCounter,
-           dbTrapDir: File,
-           dbSrcDir: File,
-           srcFile: IrFile,
-           primitiveTypeMapping: PrimitiveTypeMapping,
-           pluginContext: IrPluginContext,
-           globalExtensionState: KotlinExtractorGlobalState) {
+private fun doFile(
+    fileExtractionProblems: FileExtractionProblems,
+    invocationTrapFile: String,
+    fileTrapWriter: FileTrapWriter,
+    checkTrapIdentical: Boolean,
+    logCounter: LogCounter,
+    dbTrapDir: File,
+    dbSrcDir: File,
+    srcFile: IrFile,
+    primitiveTypeMapping: PrimitiveTypeMapping,
+    pluginContext: IrPluginContext,
+    globalExtensionState: KotlinExtractorGlobalState) {
     val srcFilePath = srcFile.path
     val logger = FileLogger(logCounter, fileTrapWriter)
     logger.info("Extracting file $srcFilePath")
