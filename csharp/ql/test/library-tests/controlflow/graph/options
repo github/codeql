@@ -1,2 +1,7 @@
-semmle-extractor-options: /r:System.Linq.dll /r:System.Runtime.Extensions.dll
-semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Windows.cs  ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs
+semmle-extractor-options: /nostdlib /noconfig
+semmle-extractor-options: ${testdir}/../../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.Runtime.cs
+semmle-extractor-options: ${testdir}/../../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.Console.cs
+semmle-extractor-options: ${testdir}/../../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.Collections.cs
+semmle-extractor-options: ${testdir}/../../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.Linq.cs
+semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Windows.cs 
+semmle-extractor-options: ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs

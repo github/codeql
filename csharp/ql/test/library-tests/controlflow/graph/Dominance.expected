@@ -2008,11 +2008,13 @@ dominance
 | Finally.cs:123:9:130:9 | try {...} ... | Finally.cs:124:9:126:9 | {...} |
 | Finally.cs:124:9:126:9 | {...} | Finally.cs:125:13:125:41 | ... ...; |
 | Finally.cs:125:13:125:41 | ... ...; | Finally.cs:125:24:125:24 | 0 |
-| Finally.cs:125:17:125:40 | Double temp = ... | Finally.cs:121:10:121:11 | exit M6 (normal) |
 | Finally.cs:125:24:125:24 | 0 | Finally.cs:125:24:125:24 | (...) ... |
 | Finally.cs:125:24:125:24 | (...) ... | Finally.cs:125:28:125:40 | access to constant E |
 | Finally.cs:125:24:125:40 | ... / ... | Finally.cs:125:17:125:40 | Double temp = ... |
+| Finally.cs:125:24:125:40 | ... / ... | Finally.cs:127:9:130:9 | catch {...} |
 | Finally.cs:125:28:125:40 | access to constant E | Finally.cs:125:24:125:40 | ... / ... |
+| Finally.cs:127:9:130:9 | catch {...} | Finally.cs:128:9:130:9 | {...} |
+| Finally.cs:128:9:130:9 | {...} | Finally.cs:129:13:129:13 | ; |
 | Finally.cs:133:10:133:11 | enter M7 | Finally.cs:134:5:145:5 | {...} |
 | Finally.cs:133:10:133:11 | exit M7 (abnormal) | Finally.cs:133:10:133:11 | exit M7 |
 | Finally.cs:134:5:145:5 | {...} | Finally.cs:135:9:143:9 | try {...} ... |
@@ -6218,15 +6220,17 @@ postDominance
 | Finally.cs:117:35:117:35 | [finally: return] 1 | Finally.cs:117:17:117:37 | [finally: return] ...; |
 | Finally.cs:121:10:121:11 | exit M6 | Finally.cs:121:10:121:11 | exit M6 (normal) |
 | Finally.cs:121:10:121:11 | exit M6 (normal) | Finally.cs:125:17:125:40 | Double temp = ... |
+| Finally.cs:121:10:121:11 | exit M6 (normal) | Finally.cs:129:13:129:13 | ; |
 | Finally.cs:122:5:131:5 | {...} | Finally.cs:121:10:121:11 | enter M6 |
 | Finally.cs:123:9:130:9 | try {...} ... | Finally.cs:122:5:131:5 | {...} |
 | Finally.cs:124:9:126:9 | {...} | Finally.cs:123:9:130:9 | try {...} ... |
 | Finally.cs:125:13:125:41 | ... ...; | Finally.cs:124:9:126:9 | {...} |
-| Finally.cs:125:17:125:40 | Double temp = ... | Finally.cs:125:24:125:40 | ... / ... |
 | Finally.cs:125:24:125:24 | 0 | Finally.cs:125:13:125:41 | ... ...; |
 | Finally.cs:125:24:125:24 | (...) ... | Finally.cs:125:24:125:24 | 0 |
 | Finally.cs:125:24:125:40 | ... / ... | Finally.cs:125:28:125:40 | access to constant E |
 | Finally.cs:125:28:125:40 | access to constant E | Finally.cs:125:24:125:24 | (...) ... |
+| Finally.cs:128:9:130:9 | {...} | Finally.cs:127:9:130:9 | catch {...} |
+| Finally.cs:129:13:129:13 | ; | Finally.cs:128:9:130:9 | {...} |
 | Finally.cs:133:10:133:11 | exit M7 | Finally.cs:133:10:133:11 | exit M7 (abnormal) |
 | Finally.cs:134:5:145:5 | {...} | Finally.cs:133:10:133:11 | enter M7 |
 | Finally.cs:135:9:143:9 | try {...} ... | Finally.cs:134:5:145:5 | {...} |
@@ -10767,6 +10771,12 @@ blockDominance
 | Finally.cs:117:17:117:37 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:117:17:117:37 | [finally: exception(OutOfMemoryException)] ...; |
 | Finally.cs:117:17:117:37 | [finally: return] ...; | Finally.cs:117:17:117:37 | [finally: return] ...; |
 | Finally.cs:121:10:121:11 | enter M6 | Finally.cs:121:10:121:11 | enter M6 |
+| Finally.cs:121:10:121:11 | enter M6 | Finally.cs:121:10:121:11 | exit M6 (normal) |
+| Finally.cs:121:10:121:11 | enter M6 | Finally.cs:125:17:125:40 | Double temp = ... |
+| Finally.cs:121:10:121:11 | enter M6 | Finally.cs:127:9:130:9 | catch {...} |
+| Finally.cs:121:10:121:11 | exit M6 (normal) | Finally.cs:121:10:121:11 | exit M6 (normal) |
+| Finally.cs:125:17:125:40 | Double temp = ... | Finally.cs:125:17:125:40 | Double temp = ... |
+| Finally.cs:127:9:130:9 | catch {...} | Finally.cs:127:9:130:9 | catch {...} |
 | Finally.cs:133:10:133:11 | enter M7 | Finally.cs:133:10:133:11 | enter M7 |
 | Finally.cs:133:10:133:11 | enter M7 | Finally.cs:133:10:133:11 | exit M7 (abnormal) |
 | Finally.cs:133:10:133:11 | enter M7 | Finally.cs:140:9:143:9 | [finally: exception(Exception)] {...} |
@@ -14651,6 +14661,12 @@ postBlockDominance
 | Finally.cs:117:17:117:37 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:117:17:117:37 | [finally: exception(OutOfMemoryException)] ...; |
 | Finally.cs:117:17:117:37 | [finally: return] ...; | Finally.cs:117:17:117:37 | [finally: return] ...; |
 | Finally.cs:121:10:121:11 | enter M6 | Finally.cs:121:10:121:11 | enter M6 |
+| Finally.cs:121:10:121:11 | exit M6 (normal) | Finally.cs:121:10:121:11 | enter M6 |
+| Finally.cs:121:10:121:11 | exit M6 (normal) | Finally.cs:121:10:121:11 | exit M6 (normal) |
+| Finally.cs:121:10:121:11 | exit M6 (normal) | Finally.cs:125:17:125:40 | Double temp = ... |
+| Finally.cs:121:10:121:11 | exit M6 (normal) | Finally.cs:127:9:130:9 | catch {...} |
+| Finally.cs:125:17:125:40 | Double temp = ... | Finally.cs:125:17:125:40 | Double temp = ... |
+| Finally.cs:127:9:130:9 | catch {...} | Finally.cs:127:9:130:9 | catch {...} |
 | Finally.cs:133:10:133:11 | enter M7 | Finally.cs:133:10:133:11 | enter M7 |
 | Finally.cs:133:10:133:11 | exit M7 (abnormal) | Finally.cs:133:10:133:11 | exit M7 (abnormal) |
 | Finally.cs:140:9:143:9 | [finally: exception(Exception)] {...} | Finally.cs:140:9:143:9 | [finally: exception(Exception)] {...} |

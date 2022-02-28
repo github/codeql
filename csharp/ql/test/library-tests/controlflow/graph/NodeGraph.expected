@@ -2775,7 +2775,7 @@ Assert.cs:
 #-----| true -> access to parameter b2
 
 #  140| [assertion failure] access to parameter b2
-#-----| false -> [assertion failure] access to parameter b3
+#-----| true -> [assertion failure] access to parameter b3
 
 #  140| access to parameter b2
 #-----| false -> [assertion success] access to parameter b3
@@ -6600,9 +6600,19 @@ Finally.cs:
 
 #  125| ... / ...
 #-----|  -> Double temp = ...
+#-----| exception(DivideByZeroException) -> catch {...}
 
 #  125| access to constant E
 #-----|  -> ... / ...
+
+#  127| catch {...}
+#-----|  -> {...}
+
+#  128| {...}
+#-----|  -> ;
+
+#  129| ;
+#-----|  -> exit M6 (normal)
 
 #  133| enter M7
 #-----|  -> {...}

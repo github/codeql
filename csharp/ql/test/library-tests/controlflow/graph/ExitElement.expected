@@ -1913,11 +1913,15 @@
 | Finally.cs:123:9:130:9 | try {...} ... | Finally.cs:125:17:125:40 | Double temp = ... | normal |
 | Finally.cs:123:9:130:9 | try {...} ... | Finally.cs:129:13:129:13 | ; | normal |
 | Finally.cs:124:9:126:9 | {...} | Finally.cs:125:17:125:40 | Double temp = ... | normal |
+| Finally.cs:124:9:126:9 | {...} | Finally.cs:125:24:125:40 | ... / ... | throw(DivideByZeroException) |
 | Finally.cs:125:13:125:41 | ... ...; | Finally.cs:125:17:125:40 | Double temp = ... | normal |
+| Finally.cs:125:13:125:41 | ... ...; | Finally.cs:125:24:125:40 | ... / ... | throw(DivideByZeroException) |
 | Finally.cs:125:17:125:40 | Double temp = ... | Finally.cs:125:17:125:40 | Double temp = ... | normal |
+| Finally.cs:125:17:125:40 | Double temp = ... | Finally.cs:125:24:125:40 | ... / ... | throw(DivideByZeroException) |
 | Finally.cs:125:24:125:24 | 0 | Finally.cs:125:24:125:24 | 0 | normal |
 | Finally.cs:125:24:125:24 | (...) ... | Finally.cs:125:24:125:24 | (...) ... | normal |
 | Finally.cs:125:24:125:40 | ... / ... | Finally.cs:125:24:125:40 | ... / ... | normal |
+| Finally.cs:125:24:125:40 | ... / ... | Finally.cs:125:24:125:40 | ... / ... | throw(DivideByZeroException) |
 | Finally.cs:125:28:125:40 | access to constant E | Finally.cs:125:28:125:40 | access to constant E | normal |
 | Finally.cs:127:9:130:9 | catch {...} | Finally.cs:129:13:129:13 | ; | normal |
 | Finally.cs:128:9:130:9 | {...} | Finally.cs:129:13:129:13 | ; | normal |

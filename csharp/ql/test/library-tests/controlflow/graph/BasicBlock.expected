@@ -519,7 +519,10 @@
 | Finally.cs:117:17:117:37 | [finally: exception(NullReferenceException)] ...; | Finally.cs:117:17:117:36 | [finally: exception(NullReferenceException)] call to method WriteLine | 3 |
 | Finally.cs:117:17:117:37 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:117:17:117:36 | [finally: exception(OutOfMemoryException)] call to method WriteLine | 3 |
 | Finally.cs:117:17:117:37 | [finally: return] ...; | Finally.cs:117:17:117:36 | [finally: return] call to method WriteLine | 3 |
-| Finally.cs:121:10:121:11 | enter M6 | Finally.cs:121:10:121:11 | exit M6 | 12 |
+| Finally.cs:121:10:121:11 | enter M6 | Finally.cs:125:24:125:40 | ... / ... | 9 |
+| Finally.cs:121:10:121:11 | exit M6 (normal) | Finally.cs:121:10:121:11 | exit M6 | 2 |
+| Finally.cs:125:17:125:40 | Double temp = ... | Finally.cs:125:17:125:40 | Double temp = ... | 1 |
+| Finally.cs:127:9:130:9 | catch {...} | Finally.cs:129:13:129:13 | ; | 3 |
 | Finally.cs:133:10:133:11 | enter M7 | Finally.cs:137:13:137:36 | call to method WriteLine | 7 |
 | Finally.cs:133:10:133:11 | exit M7 (abnormal) | Finally.cs:133:10:133:11 | exit M7 | 2 |
 | Finally.cs:140:9:143:9 | [finally: exception(Exception)] {...} | Finally.cs:141:13:141:44 | [finally: exception(Exception)] throw ...; | 4 |

@@ -94,7 +94,6 @@ abstractValue
 | non-null | Assert.cs:9:31:9:32 | "" |
 | non-null | Assert.cs:10:9:10:13 | access to type Debug |
 | non-null | Assert.cs:11:9:11:15 | access to type Console |
-| non-null | Assert.cs:11:27:11:27 | access to local variable s |
 | non-null | Assert.cs:16:31:16:32 | "" |
 | non-null | Assert.cs:17:9:17:14 | access to type Assert |
 | non-null | Assert.cs:18:9:18:15 | access to type Console |
@@ -339,13 +338,18 @@ abstractValue
 | non-null | Guards.cs:132:16:132:16 | access to parameter s |
 | non-null | Guards.cs:138:20:138:20 | access to parameter s |
 | non-null | Guards.cs:145:20:145:20 | access to local variable s |
+| non-null | Guards.cs:146:16:146:27 | call to method ToString |
 | non-null | Guards.cs:154:24:154:24 | access to parameter o |
+| non-null | Guards.cs:154:24:154:35 | call to method ToString |
 | non-null | Guards.cs:156:24:156:24 | access to local variable a |
+| non-null | Guards.cs:156:24:156:35 | call to method ToString |
 | non-null | Guards.cs:158:24:158:24 | access to parameter o |
+| non-null | Guards.cs:158:24:158:35 | call to method ToString |
+| non-null | Guards.cs:160:24:160:35 | call to method ToString |
 | non-null | Guards.cs:162:24:162:24 | access to parameter o |
+| non-null | Guards.cs:162:24:162:35 | call to method ToString |
 | non-null | Guards.cs:168:14:168:19 | access to type String |
 | non-null | Guards.cs:169:13:169:19 | access to type Console |
-| non-null | Guards.cs:169:31:169:31 | access to parameter x |
 | non-null | Guards.cs:183:38:183:49 | this access |
 | non-null | Guards.cs:189:14:189:25 | this access |
 | non-null | Guards.cs:190:13:190:19 | access to type Console |
@@ -358,38 +362,79 @@ abstractValue
 | non-null | Guards.cs:197:14:197:29 | this access |
 | non-null | Guards.cs:198:13:198:19 | access to type Console |
 | non-null | Guards.cs:205:13:205:13 | access to parameter o |
+| non-null | Guards.cs:205:13:205:24 | call to method ToString |
 | non-null | Guards.cs:206:33:206:36 | access to parameter args |
 | non-null | Guards.cs:208:17:208:17 | access to parameter o |
+| non-null | Guards.cs:208:17:208:28 | call to method ToString |
 | non-null | Guards.cs:268:30:268:41 | call to method GetType |
 | non-null | Guards.cs:269:13:269:14 | access to parameter o1 |
+| non-null | Guards.cs:269:13:269:25 | call to method ToString |
 | non-null | Guards.cs:270:30:270:31 | access to parameter o2 |
+| non-null | Guards.cs:271:13:271:25 | call to method ToString |
+| non-null | Guards.cs:276:16:288:9 | ... switch { ... } |
 | non-null | Guards.cs:279:17:279:17 | access to parameter o |
+| non-null | Guards.cs:279:17:279:28 | call to method ToString |
 | non-null | Guards.cs:281:17:281:17 | access to local variable a |
+| non-null | Guards.cs:281:17:281:28 | call to method ToString |
 | non-null | Guards.cs:283:17:283:17 | access to parameter o |
+| non-null | Guards.cs:283:17:283:28 | call to method ToString |
+| non-null | Guards.cs:285:17:285:28 | call to method ToString |
 | non-null | Guards.cs:287:17:287:17 | access to parameter o |
+| non-null | Guards.cs:287:17:287:28 | call to method ToString |
 | non-null | Guards.cs:341:31:341:32 | "" |
 | non-null | Guards.cs:343:13:343:19 | access to type Console |
 | non-null | Guards.cs:343:31:343:31 | access to local variable s |
 | non-null | Guards.cs:349:13:349:13 | access to parameter o |
+| non-null | Guards.cs:349:13:349:24 | call to method ToString |
 | non-null | Splitting.cs:13:17:13:17 | access to parameter o |
+| non-null | Splitting.cs:13:17:13:28 | call to method ToString |
+| non-null | Splitting.cs:15:13:15:24 | call to method ToString |
+| non-null | Splitting.cs:16:9:16:20 | call to method ToString |
 | non-null | Splitting.cs:23:24:23:24 | access to parameter o |
+| non-null | Splitting.cs:23:24:23:35 | call to method ToString |
+| non-null | Splitting.cs:25:13:25:24 | call to method ToString |
+| non-null | Splitting.cs:26:16:26:27 | call to method ToString |
 | non-null | Splitting.cs:33:24:33:25 | "" |
+| non-null | Splitting.cs:35:13:35:24 | call to method ToString |
+| non-null | Splitting.cs:36:16:36:27 | call to method ToString |
 | non-null | Splitting.cs:44:17:44:17 | access to parameter o |
+| non-null | Splitting.cs:44:17:44:28 | call to method ToString |
 | non-null | Splitting.cs:46:17:46:17 | access to parameter o |
+| non-null | Splitting.cs:46:17:46:28 | call to method ToString |
+| non-null | Splitting.cs:53:13:53:24 | call to method ToString |
 | non-null | Splitting.cs:55:13:55:13 | access to parameter o |
+| non-null | Splitting.cs:55:13:55:24 | call to method ToString |
+| non-null | Splitting.cs:57:13:57:24 | call to method ToString |
+| non-null | Splitting.cs:58:16:58:27 | call to method ToString |
+| non-null | Splitting.cs:64:13:64:24 | call to method ToString |
 | non-null | Splitting.cs:66:20:66:20 | access to parameter o |
+| non-null | Splitting.cs:66:20:66:31 | call to method ToString |
+| non-null | Splitting.cs:68:13:68:24 | call to method ToString |
+| non-null | Splitting.cs:69:16:69:27 | call to method ToString |
+| non-null | Splitting.cs:75:13:75:24 | call to method ToString |
 | non-null | Splitting.cs:78:24:78:24 | access to parameter o |
+| non-null | Splitting.cs:78:24:78:35 | call to method ToString |
+| non-null | Splitting.cs:80:13:80:24 | call to method ToString |
+| non-null | Splitting.cs:81:16:81:27 | call to method ToString |
 | non-null | Splitting.cs:87:13:87:17 | access to type Debug |
+| non-null | Splitting.cs:88:9:88:20 | call to method ToString |
 | non-null | Splitting.cs:90:13:90:13 | access to parameter o |
+| non-null | Splitting.cs:90:13:90:24 | call to method ToString |
 | non-null | Splitting.cs:91:9:91:9 | access to parameter o |
+| non-null | Splitting.cs:91:9:91:20 | call to method ToString |
 | non-null | Splitting.cs:97:13:97:17 | access to type Debug |
+| non-null | Splitting.cs:99:13:99:24 | call to method ToString |
+| non-null | Splitting.cs:100:16:100:27 | call to method ToString |
 | non-null | Splitting.cs:105:9:105:13 | access to type Debug |
-| non-null | Splitting.cs:107:13:107:13 | access to parameter o |
-| non-null | Splitting.cs:109:13:109:13 | access to parameter o |
+| non-null | Splitting.cs:107:13:107:24 | call to method ToString |
+| non-null | Splitting.cs:109:13:109:24 | call to method ToString |
+| non-null | Splitting.cs:115:13:115:24 | call to method ToString |
 | non-null | Splitting.cs:116:9:116:13 | access to type Debug |
-| non-null | Splitting.cs:117:9:117:9 | access to parameter o |
+| non-null | Splitting.cs:117:9:117:20 | call to method ToString |
 | non-null | Splitting.cs:119:13:119:13 | access to parameter o |
+| non-null | Splitting.cs:119:13:119:24 | call to method ToString |
 | non-null | Splitting.cs:120:16:120:16 | access to parameter o |
+| non-null | Splitting.cs:120:16:120:27 | call to method ToString |
 | non-null | Splitting.cs:129:17:129:17 | access to local variable o |
 | non-null | Splitting.cs:133:17:133:17 | access to local variable o |
 | non-null | Splitting.cs:133:17:133:29 | ... = ... |
