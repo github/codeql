@@ -1,6 +1,7 @@
 private import codeql.ruby.ast.Literal as AST
-private import codeql.Locations
 private import ParseRegExp
+import codeql.Locations
+private import codeql.ruby.DataFlow
 
 /**
  * Holds if `term` is an ecape class representing e.g. `\d`.
@@ -793,4 +794,48 @@ class RegExpNamedCharacterProperty extends RegExpTerm, TRegExpNamedCharacterProp
 
 RegExpTerm getParsedRegExp(AST::RegExpLiteral re) {
   result.getRegExp() = re and result.isRootTerm()
+}
+
+/**
+ * A node whose value may flow to a position where it is interpreted
+ * as a part of a regular expression.
+ */
+abstract class RegExpPatternSource extends DataFlow::Node {
+  /**
+   * Gets a node where the pattern of this node is parsed as a part of
+   * a regular expression.
+   */
+  abstract DataFlow::Node getAParse();
+
+  /**
+   * Gets the root term of the regular expression parsed from this pattern.
+   */
+  abstract RegExpTerm getRegExpTerm();
+}
+
+/**
+ * A regular expression literal, viewed as the pattern source for itself.
+ */
+private class RegExpLiteralPatternSource extends RegExpPatternSource {
+  private AST::RegExpLiteral astNode;
+
+  RegExpLiteralPatternSource() { astNode = this.asExpr().getExpr() }
+
+  override DataFlow::Node getAParse() { result = this }
+
+  override RegExpTerm getRegExpTerm() { result = astNode.getParsed() }
+}
+
+/**
+ * A node whose string value may flow to a position where it is interpreted
+ * as a part of a regular expression.
+ */
+private class StringRegExpPatternSource extends RegExpPatternSource {
+  private DataFlow::Node parse;
+
+  StringRegExpPatternSource() { this = regExpSource(parse) }
+
+  override DataFlow::Node getAParse() { result = parse }
+
+  override RegExpTerm getRegExpTerm() { result.getRegExp() = this.asExpr().getExpr() }
 }
