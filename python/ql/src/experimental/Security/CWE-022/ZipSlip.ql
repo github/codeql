@@ -19,31 +19,13 @@ import semmle.python.ApiGraphs
 import ZipSlipCheckLib
 import DataFlow::PathGraph
 
-/**
- * Taint-tracking configuration tracing flow from opening a zipfile to copy to another place.
- */
+import python
+import experimental.semmle.python.security.ZipSlip
+import DataFlow::PathGraph
 
-class ZipSlipConfig extends TaintTracking::Configuration {
-  ZipSlipConfig() { this = "ZipSlipConfig" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof OpenZipFile
-  }
-
-  override predicate isSink(DataFlow::Node sink) { 
-    sink instanceof CopyZipFile 
-  }
-  
-  override predicate isSanitizer(DataFlow::Node node) {
-     exists(Subscript ss |
-      ss.getObject().(Call).getFunc().(Attribute).getName().matches("%path") and
-      ss = node.asExpr()
-    )
-  }
-}
 from ZipSlipConfig config, DataFlow::PathNode source,
   DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Extraction of zipfile from $@", source.getNode(),
   "a potentially untrusted source"
-
