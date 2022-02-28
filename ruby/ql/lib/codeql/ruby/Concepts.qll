@@ -626,6 +626,37 @@ module OrmInstantiation {
 }
 
 /**
+ * A data-flow node that may represent a write to the database in an ORM system.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `OrmWriteAccess::Range` instead.
+ */
+class OrmWriteAccess extends DataFlow::Node instanceof OrmWriteAccess::Range {
+  /**
+   * Gets the name of a field that is assigned to `value` by this write.
+   */
+  string getFieldNameAssignedTo(DataFlow::Node value) {
+    result = super.getFieldNameAssignedTo(value)
+  }
+}
+
+/** Provides a class for modeling new ORM write access APIs. */
+module OrmWriteAccess {
+  /**
+   * A data-flow node that may represent a write to the database in an ORM system.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `OrmWriteAccess` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the name of a field that is assigned to `value` by this write.
+     */
+    abstract string getFieldNameAssignedTo(DataFlow::Node value);
+  }
+}
+
+/**
  * A data-flow node that may set or unset Cross-site request forgery protection.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
