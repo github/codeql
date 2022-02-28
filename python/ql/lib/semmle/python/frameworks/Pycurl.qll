@@ -25,7 +25,7 @@ module Pycurl {
     private API::Node instance() { result = classRef().getReturn() }
 
     /**
-     * When the first parameter value of the `setopt` function is set to `pycurl.URL`, 
+     * When the first parameter value of the `setopt` function is set to `pycurl.URL`,
      * the second parameter value is the request resource link.
      *
      * See https://pycurl.io/docs/latest/curl.html#set_option.
@@ -36,15 +36,16 @@ module Pycurl {
         this.getArg(0).asCfgNode().(AttrNode).getName() = "URL"
       }
 
-      DataFlow::Node getUrlArg() { result in [this.getArg(1), this.getArgByName("value")] }
-
-      override DataFlow::Node getAUrlPart() { result = this.getUrlArg() }
+      override DataFlow::Node getAUrlPart() {
+        result in [this.getArg(1), this.getArgByName("value")]
+      }
 
       override string getFramework() { result = "pycurl.Curl" }
 
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
+        // TODO: Look into disabling certificate validation
         none()
       }
     }

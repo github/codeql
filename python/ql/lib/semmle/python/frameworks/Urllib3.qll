@@ -30,15 +30,14 @@ module Urllib3 {
           instance().getMember(["request", "request_encode_url", "request_encode_body"]).getACall()
       }
 
-      DataFlow::Node getUrlArg() { result in [this.getArg(1), this.getArgByName("url")] }
-
-      override DataFlow::Node getAUrlPart() { result = this.getUrlArg() }
+      override DataFlow::Node getAUrlPart() { result in [this.getArg(1), this.getArgByName("url")] }
 
       override string getFramework() { result = "urllib3.PoolManager" }
 
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
+        // TODO: Look into disabling certificate validation
         none()
       }
     }
@@ -46,15 +45,14 @@ module Urllib3 {
     private class UrlOpenCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
       UrlOpenCall() { this = instance().getMember("urlopen").getACall() }
 
-      DataFlow::Node getUrlArg() { result in [this.getArg(1), this.getArgByName("url")] }
-
-      override DataFlow::Node getAUrlPart() { result = this.getUrlArg() }
+      override DataFlow::Node getAUrlPart() { result in [this.getArg(1), this.getArgByName("url")] }
 
       override string getFramework() { result = "urllib3.PoolManager" }
 
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
+        // TODO: Look into disabling certificate validation
         none()
       }
     }

@@ -22,15 +22,14 @@ module Libtaxii {
       this.getArgByName("allow_url").asExpr().toString() = "True"
     }
 
-    DataFlow::Node getUrlArg() { result in [this.getArg(0), this.getArgByName("s")] }
-
-    override DataFlow::Node getAUrlPart() { result = this.getUrlArg() }
+    override DataFlow::Node getAUrlPart() { result in [this.getArg(0), this.getArgByName("s")] }
 
     override string getFramework() { result = "libtaxii.common.parse" }
 
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
+      // TODO: Look into disabling certificate validation
       none()
     }
   }

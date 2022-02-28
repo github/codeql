@@ -20,7 +20,7 @@ module HttpxModel {
       this = API::moduleImport("httpx").getMember(methodName).getACall()
     }
 
-    DataFlow::Node getUrlArg() {
+    override DataFlow::Node getAUrlPart() {
       result = this.getArgByName("url")
       or
       not methodName = "request" and
@@ -30,13 +30,12 @@ module HttpxModel {
       result = this.getArg(1)
     }
 
-    override DataFlow::Node getAUrlPart() { result = this.getUrlArg() }
-
     override string getFramework() { result = "httpx" }
 
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
+      // TODO: Look into disabling certificate validation
       none()
     }
   }
@@ -64,7 +63,7 @@ module HttpxModel {
         this = instance().getMember(methodName).getACall()
       }
 
-      DataFlow::Node getUrlArg() {
+      override DataFlow::Node getAUrlPart() {
         result = this.getArgByName("url")
         or
         not methodName = "request" and
@@ -74,13 +73,12 @@ module HttpxModel {
         result = this.getArg(1)
       }
 
-      override DataFlow::Node getAUrlPart() { result = this.getUrlArg() }
-
       override string getFramework() { result = "httpx.[Async]Client" }
 
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
+        // TODO: Look into disabling certificate validation
         none()
       }
     }

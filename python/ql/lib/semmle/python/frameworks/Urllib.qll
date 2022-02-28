@@ -27,15 +27,14 @@ module Urllib {
         this = API::moduleImport("urllib").getMember("request").getMember("Request").getACall()
       }
 
-      DataFlow::Node getUrlArg() { result in [this.getArg(0), this.getArgByName("url")] }
-
-      override DataFlow::Node getAUrlPart() { result = this.getUrlArg() }
+      override DataFlow::Node getAUrlPart() { result in [this.getArg(0), this.getArgByName("url")] }
 
       override string getFramework() { result = "urllib.request.Request" }
 
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
+        // TODO: Look into disabling certificate validation
         none()
       }
     }
@@ -49,15 +48,14 @@ module Urllib {
         this = API::moduleImport("urllib").getMember("request").getMember("urlopen").getACall()
       }
 
-      DataFlow::Node getUrlArg() { result in [this.getArg(0), this.getArgByName("url")] }
-
-      override DataFlow::Node getAUrlPart() { result = this.getUrlArg() }
+      override DataFlow::Node getAUrlPart() { result in [this.getArg(0), this.getArgByName("url")] }
 
       override string getFramework() { result = "urllib.request.urlopen" }
 
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
+        // TODO: Look into disabling certificate validation
         none()
       }
     }

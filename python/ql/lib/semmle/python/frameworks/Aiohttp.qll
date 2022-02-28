@@ -644,7 +644,7 @@ module AiohttpWebModel {
  * Provides models for the web server part (`aiohttp.client`) of the `aiohttp` PyPI package.
  * See https://docs.aiohttp.org/en/stable/client.html
  */
-module AiohttpClientModel {
+private module AiohttpClientModel {
   /**
    * Provides models for the `aiohttp.ClientSession` class
    *
@@ -668,7 +668,7 @@ module AiohttpClientModel {
         this = instance().getMember(methodName).getACall()
       }
 
-      DataFlow::Node getUrlArg() {
+      override DataFlow::Node getAUrlPart() {
         result = this.getArgByName("url")
         or
         not methodName = "request" and
@@ -678,13 +678,12 @@ module AiohttpClientModel {
         result = this.getArg(1)
       }
 
-      override DataFlow::Node getAUrlPart() { result = this.getUrlArg() }
-
       override string getFramework() { result = "aiohttp.ClientSession" }
 
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
+        // TODO: Look into disabling certificate validation
         none()
       }
     }
