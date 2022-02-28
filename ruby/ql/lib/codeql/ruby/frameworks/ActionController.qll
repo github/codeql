@@ -11,6 +11,7 @@ private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 private import ActionView
 private import codeql.ruby.frameworks.ActionDispatch
+private import codeql.ruby.dataflow.FlowSummary
 
 /**
  * A `ClassDeclaration` for a class that extends `ActionController::Base`.
@@ -346,5 +347,67 @@ private class ActionControllerProtectFromForgeryCall extends CSRFProtectionSetti
   // in some scenarios.
   override boolean getVerificationSetting() {
     if this.getWithValueText() = "exception" then result = true else result = false
+  }
+}
+
+module ActionController {
+  module Parameters {
+    /**
+     * A dataflow node which is an instance of `ActionController::Parameters`.
+     */
+    private class Params extends DataFlow::Node {
+      Params() {
+        this.asExpr().getExpr() instanceof ActionControllerParamsCall or
+        exists(Params p | p.(DataFlow::LocalSourceNode).flowsTo(this))
+      }
+    }
+
+    private class FetchSummary extends SummarizedCallable {
+      FetchSummary() { this = "ActionController::Parameters#fetch" }
+
+      override MethodCall getACall() {
+        exists(Params params, DataFlow::CallNode fetchNode |
+          fetchNode.getMethodName() = "fetch" and
+          fetchNode.getReceiver() = params and
+          result = fetchNode.asExpr().getExpr()
+        )
+      }
+
+      override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        input = "Receiver" and
+        output = "Result" and
+        preservesValue = false
+      }
+    }
+
+    /**
+     * A flow summary for methods that return a modified instance of `ActionController::Parameters`, with taint preserved.
+     */
+    private class ModifierSummary extends SummarizedCallable {
+      ModifierSummary() { this = "ActionController::Parameters#<various methods>" }
+
+      string getMethodName() {
+        result =
+          [
+            "compact", "compact!", "compact_blank", "compact_blank!", "deep_dup",
+            "deep_transform_keys", "deep_transform_keys!", "except", "reject", "reject!", "select",
+            "select!", "slice", "slice!", "to_h", "to_hash"
+          ]
+      }
+
+      override MethodCall getACall() {
+        exists(Params params, DataFlow::CallNode fetchNode |
+          fetchNode.getMethodName() = "fetch" and
+          fetchNode.getReceiver() = params and
+          result = fetchNode.asExpr().getExpr()
+        )
+      }
+
+      override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        input = "Receiver" and
+        output = "Result" and
+        preservesValue = false
+      }
+    }
   }
 }
