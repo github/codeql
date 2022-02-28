@@ -1,1 +1,1 @@
-semmle-extractor-options: -p ../lib/ --max-import-depth=2
+semmle-extractor-options: -p ../lib/ --max-import-depth=100
