@@ -13,13 +13,6 @@
  */
 
 import python
-import semmle.python.dataflow.new.DataFlow
-import semmle.python.dataflow.new.TaintTracking
-import semmle.python.ApiGraphs
-import ZipSlipCheckLib
-import DataFlow::PathGraph
-
-import python
 import experimental.semmle.python.security.ZipSlip
 import DataFlow::PathGraph
 
