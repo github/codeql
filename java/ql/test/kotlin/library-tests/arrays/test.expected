@@ -4,7 +4,6 @@ cloneMethods
 | file://:0:0:0:0 | clone | clone() | file://:0:0:0:0 | int[] | file://:0:0:0:0 | int[] | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass |
 | file://:0:0:0:0 | clone | clone() | file://:0:0:0:0 | int[][] | file://:0:0:0:0 | int[][] | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass |
 sourceSignatures
-| arrayCreations.kt:3:1:39:1 | <obinit> | <obinit>() |
 | arrayCreations.kt:3:1:39:1 | TestArrayCreation | TestArrayCreation() |
 | arrayCreations.kt:4:3:38:3 | test1 | test1() |
 | arrayCreations.kt:22:29:22:33 |  |  |
@@ -19,7 +18,6 @@ sourceSignatures
 | arrayCreations.kt:27:24:27:38 | invoke | invoke(int) |
 | arrayGetsSets.kt:1:1:22:1 | arrayGetSet | arrayGetSet(int[],short[],byte[],long[],float[],double[],boolean[],char[],java.lang.Object[]) |
 | arrayGetsSets.kt:24:1:41:1 | arrayGetSetInPlace | arrayGetSetInPlace(int[],long[],float[],double[]) |
-| primitiveArrays.kt:3:1:7:1 | <obinit> | <obinit>() |
 | primitiveArrays.kt:3:1:7:1 | Test | Test() |
 | primitiveArrays.kt:5:3:5:123 | test | test(java.lang.Integer[],java.lang.Integer[],int[],java.lang.Integer[][],java.lang.Integer[][],int[][]) |
 #select

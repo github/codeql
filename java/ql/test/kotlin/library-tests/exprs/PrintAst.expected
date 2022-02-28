@@ -915,58 +915,53 @@ exprs.kt:
 #  142|         0: [Parameter] n
 #  142|       5: [BlockStmt] { ... }
 #  142|         0: [SuperConstructorInvocationStmt] super(...)
-#  142|         1: [ExprStmt] <Expr>;
-#  142|           0: [MethodAccess] <obinit>(...)
-#  142|     3: [Method] getN
+#  142|         1: [BlockStmt] { ... }
+#  142|           0: [ExprStmt] <Expr>;
+#  142|             0: [AssignExpr] ...=...
+#  142|               0: [VarAccess] n
+#  142|               1: [VarAccess] n
+#  142|     2: [Method] getN
 #  142|       5: [BlockStmt] { ... }
 #  142|         0: [ReturnStmt] return ...
 #  142|           0: [VarAccess] this.n
 #  142|             -1: [ThisAccess] this
-#  142|     3: [FieldDeclaration] int n;
+#  142|     2: [FieldDeclaration] int n;
 #  142|       -1: [TypeAccess] int
-#  143|     5: [Method] foo
+#  143|     4: [Method] foo
 #  143|       5: [BlockStmt] { ... }
 #  143|         0: [ReturnStmt] return ...
 #  143|           0: [ClassInstanceExpr] new C(...)
 #  143|             -3: [TypeAccess] C
 #  143|             0: [IntegerLiteral] 42
 #  146|   3: [Class] Root
-#  146|     2: [Constructor] Root
+#  146|     1: [Constructor] Root
 #  146|       5: [BlockStmt] { ... }
 #  146|         0: [SuperConstructorInvocationStmt] super(...)
-#  146|         1: [ExprStmt] <Expr>;
-#  146|           0: [MethodAccess] <obinit>(...)
 #  147|   4: [Class] Subclass1
 #  147|     1: [Constructor] Subclass1
 #  147|       5: [BlockStmt] { ... }
 #  147|         0: [SuperConstructorInvocationStmt] super(...)
-#  147|         1: [ExprStmt] <Expr>;
-#  147|           0: [MethodAccess] <obinit>(...)
 #  148|   5: [Class] Subclass2
 #  148|     1: [Constructor] Subclass2
 #  148|       5: [BlockStmt] { ... }
 #  148|         0: [SuperConstructorInvocationStmt] super(...)
-#  148|         1: [ExprStmt] <Expr>;
-#  148|           0: [MethodAccess] <obinit>(...)
 #  168|   6: [Class] Direction
 #    0|     1: [Method] values
 #    0|     1: [Method] valueOf
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] value
-#  168|     4: [Constructor] Direction
+#  168|     3: [Constructor] Direction
 #  168|       5: [BlockStmt] { ... }
 #  168|         0: [ExprStmt] <Expr>;
 #  168|           0: [ClassInstanceExpr] new Enum(...)
 #  168|             -3: [TypeAccess] Unit
 #  168|               0: [TypeAccess] Direction
-#  168|         1: [ExprStmt] <Expr>;
-#  168|           0: [MethodAccess] <obinit>(...)
 #  172|   7: [Class] Color
 #    0|     1: [Method] values
 #    0|     1: [Method] valueOf
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] value
-#  172|     4: [Constructor] Color
+#  172|     3: [Constructor] Color
 #-----|       4: (Parameters)
 #  172|         0: [Parameter] rgb
 #  172|       5: [BlockStmt] { ... }
@@ -974,31 +969,36 @@ exprs.kt:
 #  172|           0: [ClassInstanceExpr] new Enum(...)
 #  172|             -3: [TypeAccess] Unit
 #  172|               0: [TypeAccess] Color
-#  172|         1: [ExprStmt] <Expr>;
-#  172|           0: [MethodAccess] <obinit>(...)
-#  172|     5: [Method] getRgb
+#  172|         1: [BlockStmt] { ... }
+#  172|           0: [ExprStmt] <Expr>;
+#  172|             0: [AssignExpr] ...=...
+#  172|               0: [VarAccess] rgb
+#  172|               1: [VarAccess] rgb
+#  172|     4: [Method] getRgb
 #  172|       5: [BlockStmt] { ... }
 #  172|         0: [ReturnStmt] return ...
 #  172|           0: [VarAccess] this.rgb
 #  172|             -1: [ThisAccess] this
-#  172|     5: [FieldDeclaration] int rgb;
+#  172|     4: [FieldDeclaration] int rgb;
 #  172|       -1: [TypeAccess] int
 #  183|   8: [Interface] Interface1
 #  185|   9: [Class] Class1
 #  185|     1: [Constructor] Class1
 #  185|       5: [BlockStmt] { ... }
 #  185|         0: [SuperConstructorInvocationStmt] super(...)
-#  185|         1: [ExprStmt] <Expr>;
-#  185|           0: [MethodAccess] <obinit>(...)
-#  186|     3: [Method] getA1
+#  185|         1: [BlockStmt] { ... }
+#  186|           0: [ExprStmt] <Expr>;
+#  186|             0: [AssignExpr] ...=...
+#  186|               0: [VarAccess] a1
+#  186|               1: [IntegerLiteral] 1
+#  186|     2: [Method] getA1
 #  186|       5: [BlockStmt] { ... }
 #  186|         0: [ReturnStmt] return ...
 #  186|           0: [VarAccess] this.a1
 #  186|             -1: [ThisAccess] this
-#  186|     3: [FieldDeclaration] int a1;
+#  186|     2: [FieldDeclaration] int a1;
 #  186|       -1: [TypeAccess] int
-#  186|       0: [IntegerLiteral] 1
-#  187|     5: [Method] getObject
+#  187|     4: [Method] getObject
 #  187|       5: [BlockStmt] { ... }
 #  188|         0: [LocalVariableDeclStmt] var ...;
 #  188|           1: [LocalVariableDeclExpr] a2
@@ -1011,20 +1011,22 @@ exprs.kt:
 #  189|                   1: [Constructor] 
 #  189|                     5: [BlockStmt] { ... }
 #  189|                       0: [SuperConstructorInvocationStmt] super(...)
-#  189|                       1: [ExprStmt] <Expr>;
-#  189|                         0: [MethodAccess] <obinit>(...)
-#  190|                   3: [Method] getA3
+#  189|                       1: [BlockStmt] { ... }
+#  190|                         0: [ExprStmt] <Expr>;
+#  190|                           0: [AssignExpr] ...=...
+#  190|                             0: [VarAccess] a3
+#  190|                             1: [MethodAccess] toString(...)
+#  190|                               -1: [AddExpr] ... + ...
+#  190|                                 0: [MethodAccess] getA1(...)
+#  190|                                   -1: [ThisAccess] this
+#  190|                                 1: [VarAccess] a2
+#  190|                   2: [Method] getA3
 #  190|                     5: [BlockStmt] { ... }
 #  190|                       0: [ReturnStmt] return ...
 #  190|                         0: [VarAccess] this.a3
 #  190|                           -1: [ThisAccess] this
-#  190|                   3: [FieldDeclaration] String a3;
+#  190|                   2: [FieldDeclaration] String a3;
 #  190|                     -1: [TypeAccess] String
-#  190|                     0: [MethodAccess] toString(...)
-#  190|                       -1: [AddExpr] ... + ...
-#  190|                         0: [MethodAccess] getA1(...)
-#  190|                           -1: [ThisAccess] this
-#  190|                         1: [VarAccess] a2
 #  189|               1: [ExprStmt] <Expr>;
 #  189|                 0: [ClassInstanceExpr] new (...)
 #  189|                   -3: [TypeAccess] Interface1
@@ -1032,9 +1034,7 @@ exprs.kt:
 #  199|     1: [Constructor] Class2
 #  199|       5: [BlockStmt] { ... }
 #  199|         0: [SuperConstructorInvocationStmt] super(...)
-#  199|         1: [ExprStmt] <Expr>;
-#  199|           0: [MethodAccess] <obinit>(...)
-#  200|     3: [Method] x
+#  200|     2: [Method] x
 #-----|       4: (Parameters)
 #  200|         0: [Parameter] aa
 #  200|         1: [Parameter] s
@@ -1089,8 +1089,6 @@ exprs.kt:
 #  218|     1: [Constructor] SomeClass1
 #  218|       5: [BlockStmt] { ... }
 #  218|         0: [SuperConstructorInvocationStmt] super(...)
-#  218|         1: [ExprStmt] <Expr>;
-#  218|           0: [MethodAccess] <obinit>(...)
 funcExprs.kt:
 #    0| [CompilationUnit] funcExprs
 #    0|   1: [Class] FuncExprsKt
@@ -2070,9 +2068,7 @@ funcExprs.kt:
 #   48|     1: [Constructor] MyLambda
 #   48|       5: [BlockStmt] { ... }
 #   48|         0: [SuperConstructorInvocationStmt] super(...)
-#   48|         1: [ExprStmt] <Expr>;
-#   48|           0: [MethodAccess] <obinit>(...)
-#   49|     3: [Method] invoke
+#   49|     2: [Method] invoke
 #-----|       4: (Parameters)
 #   49|         0: [Parameter] x
 #   49|       5: [BlockStmt] { ... }
@@ -2082,29 +2078,25 @@ funcExprs.kt:
 #   55|     1: [Constructor] FuncRef
 #   55|       5: [BlockStmt] { ... }
 #   55|         0: [SuperConstructorInvocationStmt] super(...)
-#   55|         1: [ExprStmt] <Expr>;
-#   55|           0: [MethodAccess] <obinit>(...)
-#   56|     3: [Class] Companion
+#   56|     2: [Class] Companion
 #   56|       1: [Constructor] Companion
 #   56|         5: [BlockStmt] { ... }
 #   56|           0: [SuperConstructorInvocationStmt] super(...)
-#   56|           1: [ExprStmt] <Expr>;
-#   56|             0: [MethodAccess] <obinit>(...)
-#   57|       3: [Method] f0
+#   57|       2: [Method] f0
 #   57|         5: [BlockStmt] { ... }
 #   57|           0: [ReturnStmt] return ...
 #   57|             0: [IntegerLiteral] 5
-#   59|     4: [Method] f0
+#   59|     3: [Method] f0
 #   59|       5: [BlockStmt] { ... }
 #   59|         0: [ReturnStmt] return ...
 #   59|           0: [IntegerLiteral] 5
-#   60|     5: [Method] f1
+#   60|     4: [Method] f1
 #-----|       4: (Parameters)
 #   60|         0: [Parameter] a
 #   60|       5: [BlockStmt] { ... }
 #   60|         0: [ReturnStmt] return ...
 #   60|           0: [IntegerLiteral] 5
-#   61|     6: [Method] f22
+#   61|     5: [Method] f22
 #-----|       4: (Parameters)
 #   61|         0: [Parameter] a0
 #   61|         1: [Parameter] a1
@@ -2129,7 +2121,7 @@ funcExprs.kt:
 #   62|         20: [Parameter] a20
 #   62|         21: [Parameter] a21
 #   62|       5: [BlockStmt] { ... }
-#   63|     7: [Method] f23
+#   63|     6: [Method] f23
 #-----|       4: (Parameters)
 #   63|         0: [Parameter] a0
 #   63|         1: [Parameter] a1
@@ -2227,8 +2219,6 @@ localFunctionCalls.kt:
 #   13|     1: [Constructor] C1
 #   13|       5: [BlockStmt] { ... }
 #   13|         0: [SuperConstructorInvocationStmt] super(...)
-#   13|         1: [ExprStmt] <Expr>;
-#   13|           0: [MethodAccess] <obinit>(...)
 samConversion.kt:
 #    0| [CompilationUnit] samConversion
 #    0|   1: [Class] SamConversionKt
@@ -2949,21 +2939,21 @@ samConversion.kt:
 #   43|                                 22: [IntegerLiteral] 22
 #   43|                   -3: [TypeAccess] FunctionN<Boolean>
 #   16|   2: [Interface] IntPredicate
-#   17|     2: [Method] accept
+#   17|     1: [Method] accept
 #-----|       4: (Parameters)
 #   17|         0: [Parameter] i
 #   22|   3: [Interface] InterfaceFn1
-#   23|     2: [Method] fn1
+#   23|     1: [Method] fn1
 #-----|       4: (Parameters)
 #   23|         0: [Parameter] i
 #   23|         1: [Parameter] j
 #   26|   4: [Interface] InterfaceFnExt1
-#   27|     2: [ExtensionMethod] ext
+#   27|     1: [ExtensionMethod] ext
 #-----|       4: (Parameters)
 #   27|         0: [Parameter] <this>
 #   27|         1: [Parameter] i
 #   30|   5: [Interface] BigArityPredicate
-#   31|     2: [Method] accept
+#   31|     1: [Method] accept
 #-----|       4: (Parameters)
 #   31|         0: [Parameter] i0
 #   31|         1: [Parameter] i1

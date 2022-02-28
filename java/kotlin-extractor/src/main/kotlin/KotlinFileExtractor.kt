@@ -347,7 +347,6 @@ open class KotlinFileExtractor(
 
                 c.typeParameters.mapIndexed { idx, it -> extractTypeParameter(it, idx) }
                 c.declarations.map { extractDeclaration(it) }
-                extractObjectInitializerFunction(c, id)
                 if (c.isNonCompanionObject) {
                     // For `object MyObject { ... }`, the .class has an
                     // automatically-generated `public static final MyObject INSTANCE`
@@ -460,30 +459,25 @@ open class KotlinFileExtractor(
         return type
     }
 
-    private fun extractObjectInitializerFunction(c: IrClass, parentId: Label<out DbReftype>) {
-        with("object initializer function", c) {
-            if (isExternalDeclaration(c)) {
+    private fun extractInstanceInitializerBlock(parent: StmtParent, enclosingConstructor: IrConstructor) {
+        with("object initializer block", enclosingConstructor) {
+            val constructorId = useFunction<DbConstructor>(enclosingConstructor)
+            val blockId by lazy {
+                tw.getFreshIdLabel<DbBlock>().also {
+                    tw.writeStmts_block(it, parent.parent, parent.idx, constructorId)
+                    val locId = tw.getLocation(enclosingConstructor)
+                    tw.writeHasLocation(it, locId)
+                }
+            }
+            val enclosingClass = enclosingConstructor.parentClassOrNull
+            if (enclosingClass == null) {
+                logger.warnElement("Constructor's parent is not a class", enclosingConstructor)
                 return
             }
 
-            // add method:
-            val obinitLabel = getFunctionLabel(c, parentId, "<obinit>", listOf(), pluginContext.irBuiltIns.unitType, extensionReceiverParameter = null, functionTypeParameters = listOf(), classTypeArgsIncludingOuterClasses = listOf())
-            val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
-            val returnType = useType(pluginContext.irBuiltIns.unitType)
-            tw.writeMethods(obinitId, "<obinit>", "<obinit>()", returnType.javaResult.id, parentId, obinitId)
-            tw.writeMethodsKotlinType(obinitId, returnType.kotlinResult.id)
-
-            val locId = tw.getLocation(c)
-            tw.writeHasLocation(obinitId, locId)
-
-            // add body:
-            val blockId = tw.getFreshIdLabel<DbBlock>()
-            tw.writeStmts_block(blockId, obinitId, 0, obinitId)
-            tw.writeHasLocation(blockId, locId)
-
             // body content with field initializers and init blocks
             var idx = 0
-            for (decl in c.declarations) {
+            for (decl in enclosingClass.declarations) {
                 when (decl) {
                     is IrProperty -> {
                         val backingField = decl.backingField
@@ -495,21 +489,16 @@ open class KotlinFileExtractor(
 
                         val expr = initializer.expression
 
-                        if (expr is IrGetValue && expr.origin == IrStatementOrigin.INITIALIZE_PROPERTY_FROM_PARAMETER) {
-                            // TODO: this initialization should go into the default constructor
-                            continue
-                        }
-
                         val declLocId = tw.getLocation(decl)
                         val stmtId = tw.getFreshIdLabel<DbExprstmt>()
-                        tw.writeStmts_exprstmt(stmtId, blockId, idx++, obinitId)
+                        tw.writeStmts_exprstmt(stmtId, blockId, idx++, constructorId)
                         tw.writeHasLocation(stmtId, declLocId)
                         val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
                         val type = useType(expr.type)
                         tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, stmtId, 0)
                         tw.writeExprsKotlinType(assignmentId, type.kotlinResult.id)
                         tw.writeHasLocation(assignmentId, declLocId)
-                        tw.writeCallableEnclosingExpr(assignmentId, obinitId)
+                        tw.writeCallableEnclosingExpr(assignmentId, constructorId)
                         tw.writeStatementEnclosingExpr(assignmentId, stmtId)
 
                         val lhsId = tw.getFreshIdLabel<DbVaraccess>()
@@ -517,12 +506,12 @@ open class KotlinFileExtractor(
                         tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, assignmentId, 0)
                         tw.writeExprsKotlinType(lhsId, lhsType.kotlinResult.id)
                         tw.writeHasLocation(lhsId, declLocId)
-                        tw.writeCallableEnclosingExpr(lhsId, obinitId)
+                        tw.writeCallableEnclosingExpr(lhsId, constructorId)
                         tw.writeStatementEnclosingExpr(lhsId, stmtId)
                         val vId = useField(backingField)
                         tw.writeVariableBinding(lhsId, vId)
 
-                        extractExpressionExpr(expr, obinitId, assignmentId, 1, stmtId)
+                        extractExpressionExpr(expr, constructorId, assignmentId, 1, stmtId)
                     }
                     is IrAnonymousInitializer -> {
                         if (decl.isStatic) {
@@ -530,7 +519,7 @@ open class KotlinFileExtractor(
                         }
 
                         for (stmt in decl.body.statements) {
-                            extractStatement(stmt, obinitId, blockId, idx++)
+                            extractStatement(stmt, constructorId, blockId, idx++)
                         }
                     }
                     else -> continue
@@ -2085,25 +2074,13 @@ open class KotlinFileExtractor(
                     loopIdMap.remove(e)
                 }
                 is IrInstanceInitializerCall -> {
-                    val exprParent = parent.expr(e, callable)
-                    val irCallable = declarationStack.peek()
-
-                    if (irCallable is IrConstructor && irCallable.isPrimary) {
-                        // Todo add parameter to field assignments
+                    val stmtParent = parent.stmt(e, callable)
+                    val irConstructor = declarationStack.peek() as? IrConstructor
+                    if (irConstructor == null) {
+                        logger.warnElement("IrInstanceInitializerCall outside constructor", e)
+                        return
                     }
-
-                    // Add call to <obinit>:
-                    val id = tw.getFreshIdLabel<DbMethodaccess>()
-                    val type = useType(e.type)
-                    val locId = tw.getLocation(e)
-                    val methodLabel = getFunctionLabel(irCallable.parent, null, "<obinit>", listOf(), e.type, null, functionTypeParameters = listOf(), classTypeArgsIncludingOuterClasses = listOf())
-                    val methodId = tw.getLabelFor<DbMethod>(methodLabel)
-                    tw.writeExprs_methodaccess(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    tw.writeHasLocation(id, locId)
-                    tw.writeCallableEnclosingExpr(id, callable)
-                    tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                    tw.writeCallableBinding(id, methodId)
+                    extractInstanceInitializerBlock(stmtParent, irConstructor)
                 }
                 is IrConstructorCall -> {
                     val exprParent = parent.expr(e, callable)

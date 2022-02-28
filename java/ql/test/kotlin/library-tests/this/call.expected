@@ -1,6 +1,4 @@
-| this.kt:2:1:58:1 | <obinit>(...) | <obinit> |
 | this.kt:2:1:58:1 | super(...) | Any |
-| this.kt:3:5:53:5 | <obinit>(...) | <obinit> |
 | this.kt:3:5:53:5 | super(...) | Any |
 | this.kt:9:66:17:13 | ...->... |  |
 | this.kt:9:66:17:13 | super(...) | Any |
@@ -21,7 +19,5 @@
 | this.kt:44:18:44:35 | topLevelInnerFun(...) | topLevelInnerFun |
 | this.kt:45:18:45:32 | outerInnerFun(...) | outerInnerFun |
 | this.kt:46:18:46:40 | topLevelOuterInnerFun(...) | topLevelOuterInnerFun |
-| this.kt:64:1:65:1 | <obinit>(...) | <obinit> |
 | this.kt:64:1:65:1 | super(...) | Any |
-| this.kt:67:1:68:1 | <obinit>(...) | <obinit> |
 | this.kt:67:1:68:1 | super(...) | Any |

@@ -7,13 +7,9 @@
 | test.kt:2:31:4:1 | { ... } | BlockStmt |
 | test.kt:3:5:3:15 | return ... | ReturnStmt |
 | test.kt:3:12:3:15 | true | BooleanLiteral |
-| test.kt:6:1:10:1 | <Expr>; | ExprStmt |
-| test.kt:6:1:10:1 | <obinit> | Method |
-| test.kt:6:1:10:1 | <obinit>(...) | MethodAccess |
 | test.kt:6:1:10:1 | Foo | Class, GenericType, ParameterizedType |
 | test.kt:6:1:10:1 | Foo | Constructor |
 | test.kt:6:1:10:1 | super(...) | SuperConstructorInvocationStmt |
-| test.kt:6:1:10:1 | { ... } | BlockStmt |
 | test.kt:6:1:10:1 | { ... } | BlockStmt |
 | test.kt:6:11:6:11 | T | TypeVariable |
 | test.kt:7:5:9:5 | foo | Method |

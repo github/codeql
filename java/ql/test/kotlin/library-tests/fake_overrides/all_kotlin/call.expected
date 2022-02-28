@@ -1,3 +1,1 @@
 | A.kt:4:21:4:29 | someFun(...) | A.kt:15:6:17:6 | someFun | A.kt:14:2:18:2 | C<D1,D2,E1,E2> | A.kt:13:1:19:1 | OC<F1,F2> |
-| A.kt:9:2:10:2 | <obinit>(...) | A.kt:9:2:10:2 | <obinit> | A.kt:9:2:10:2 | B | A.kt:8:1:11:1 | OB |
-| A.kt:14:2:18:2 | <obinit>(...) | A.kt:14:2:18:2 | <obinit> | A.kt:14:2:18:2 | C | A.kt:13:1:19:1 | OC |

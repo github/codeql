@@ -1,4 +1,3 @@
-| Test.kt:1:1:100:1 | { ... } | Test.kt:1:1:100:1 | <obinit> |
 | Test.kt:2:43:79:2 | { ... } | Test.kt:3:9:3:18 | var ...; |
 | Test.kt:3:9:3:18 | var ...; | Test.kt:3:17:3:18 | px |
 | Test.kt:3:9:3:18 | x | Test.kt:4:9:4:18 | var ...; |

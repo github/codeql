@@ -78,9 +78,7 @@ reflection.kt:
 #    3|     1: [Constructor] Reflection
 #    3|       5: [BlockStmt] { ... }
 #    3|         0: [SuperConstructorInvocationStmt] super(...)
-#    3|         1: [ExprStmt] <Expr>;
-#    3|           0: [MethodAccess] <obinit>(...)
-#    4|     3: [Method] fn
+#    4|     2: [Method] fn
 #    4|       5: [BlockStmt] { ... }
 #    5|         0: [LocalVariableDeclStmt] var ...;
 #    5|           1: [LocalVariableDeclExpr] ref
@@ -319,38 +317,42 @@ reflection.kt:
 #   23|               0: [ClassInstanceExpr] new C(...)
 #   23|                 -3: [TypeAccess] C
 #   23|               1: [IntegerLiteral] 5
-#   26|     4: [Class] Ccc
+#   26|     3: [Class] Ccc
 #   26|       1: [Constructor] Ccc
 #   26|         5: [BlockStmt] { ... }
 #   26|           0: [SuperConstructorInvocationStmt] super(...)
-#   26|           1: [ExprStmt] <Expr>;
-#   26|             0: [MethodAccess] <obinit>(...)
-#   27|       3: [Method] m
+#   27|       2: [Method] m
 #-----|         4: (Parameters)
 #   27|           0: [Parameter] i
 #   27|         5: [BlockStmt] { ... }
 #   27|           0: [ReturnStmt] return ...
 #   27|             0: [DoubleLiteral] 5.0
-#   30|     5: [Class] C
+#   30|     4: [Class] C
 #   30|       1: [Constructor] C
 #   30|         5: [BlockStmt] { ... }
 #   30|           0: [SuperConstructorInvocationStmt] super(...)
-#   30|           1: [ExprStmt] <Expr>;
-#   30|             0: [MethodAccess] <obinit>(...)
-#   31|       3: [Method] getP0
+#   30|           1: [BlockStmt] { ... }
+#   31|             0: [ExprStmt] <Expr>;
+#   31|               0: [AssignExpr] ...=...
+#   31|                 0: [VarAccess] p0
+#   31|                 1: [IntegerLiteral] 1
+#   32|             1: [ExprStmt] <Expr>;
+#   32|               0: [AssignExpr] ...=...
+#   32|                 0: [VarAccess] p1
+#   32|                 1: [IntegerLiteral] 2
+#   31|       2: [Method] getP0
 #   31|         5: [BlockStmt] { ... }
 #   31|           0: [ReturnStmt] return ...
 #   31|             0: [VarAccess] this.p0
 #   31|               -1: [ThisAccess] this
-#   31|       3: [FieldDeclaration] int p0;
+#   31|       2: [FieldDeclaration] int p0;
 #   31|         -1: [TypeAccess] int
-#   31|         0: [IntegerLiteral] 1
-#   32|       5: [Method] getP1
+#   32|       4: [Method] getP1
 #   32|         5: [BlockStmt] { ... }
 #   32|           0: [ReturnStmt] return ...
 #   32|             0: [VarAccess] this.p1
 #   32|               -1: [ThisAccess] this
-#   32|       5: [Method] setP1
+#   32|       4: [Method] setP1
 #-----|         4: (Parameters)
 #   32|           0: [Parameter] <set-?>
 #   32|         5: [BlockStmt] { ... }
@@ -359,26 +361,25 @@ reflection.kt:
 #   32|               0: [VarAccess] this.p1
 #   32|                 -1: [ThisAccess] this
 #   32|               1: [VarAccess] <set-?>
-#   32|       5: [FieldDeclaration] int p1;
+#   32|       4: [FieldDeclaration] int p1;
 #   32|         -1: [TypeAccess] int
-#   32|         0: [IntegerLiteral] 2
-#   34|       8: [Method] getP2
+#   34|       7: [Method] getP2
 #   34|         5: [BlockStmt] { ... }
 #   34|           0: [ReturnStmt] return ...
 #   34|             0: [IntegerLiteral] 1
-#   35|       9: [Method] setP2
+#   35|       8: [Method] setP2
 #-----|         4: (Parameters)
 #   35|           0: [Parameter] value
 #   35|         5: [BlockStmt] { ... }
 #   35|           0: [ReturnStmt] return ...
 #   35|             0: [VarAccess] INSTANCE
-#   38|       10: [ExtensionMethod] getP3
+#   38|       9: [ExtensionMethod] getP3
 #-----|         4: (Parameters)
 #   37|           0: [Parameter] <this>
 #   38|         5: [BlockStmt] { ... }
 #   38|           0: [ReturnStmt] return ...
 #   38|             0: [IntegerLiteral] 1
-#   39|       11: [ExtensionMethod] setP3
+#   39|       10: [ExtensionMethod] setP3
 #-----|         4: (Parameters)
 #   37|           0: [Parameter] <this>
 #   39|           1: [Parameter] value
@@ -389,9 +390,7 @@ reflection.kt:
 #   56|     1: [Constructor] Class1
 #   56|       5: [BlockStmt] { ... }
 #   56|         0: [SuperConstructorInvocationStmt] super(...)
-#   56|         1: [ExprStmt] <Expr>;
-#   56|           0: [MethodAccess] <obinit>(...)
-#   57|     3: [Method] fn
+#   57|     2: [Method] fn
 #   57|       5: [BlockStmt] { ... }
 #   58|         0: [ExprStmt] <Expr>;
 #   58|           0: [MethodAccess] println(...)
@@ -590,26 +589,24 @@ reflection.kt:
 #   66|               0: [ClassInstanceExpr] new Generic<Integer>(...)
 #   66|                 -3: [TypeAccess] Generic<Integer>
 #   66|                   0: [TypeAccess] Integer
-#   69|     4: [Class,GenericType,ParameterizedType] Generic
+#   69|     3: [Class,GenericType,ParameterizedType] Generic
 #-----|       -2: (Generic Parameters)
 #   69|         0: [TypeVariable] T1
 #   69|       1: [Constructor] Generic
 #   69|         5: [BlockStmt] { ... }
 #   69|           0: [SuperConstructorInvocationStmt] super(...)
-#   69|           1: [ExprStmt] <Expr>;
-#   69|             0: [MethodAccess] <obinit>(...)
-#   70|       3: [Method] m1
+#   70|       2: [Method] m1
 #-----|         4: (Parameters)
 #   70|           0: [Parameter] i
 #   70|         5: [BlockStmt] { ... }
 #   70|           0: [ReturnStmt] return ...
 #   70|             0: [MethodAccess] toString(...)
 #   70|               -1: [ThisAccess] this
-#   72|       4: [Method] getP2
+#   72|       3: [Method] getP2
 #   72|         5: [BlockStmt] { ... }
 #   72|           0: [ReturnStmt] return ...
 #   72|             0: [NullLiteral] null
-#   73|       5: [Method] setP2
+#   73|       4: [Method] setP2
 #-----|         4: (Parameters)
 #   73|           0: [Parameter] value
 #   73|         5: [BlockStmt] { ... }
