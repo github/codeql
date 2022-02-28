@@ -655,8 +655,6 @@ module API {
      * Holds if `arg` is passed as an argument to a use of `base`.
      *
      * `lbl` is represents which parameter of the function was passed. Either a numbered parameter, or a keyword parameter.
-     *
-     * The receiver is considered to be argument -1.
      */
     private predicate argumentPassing(TApiNode base, Label::ApiLabel lbl, DataFlow::Node arg) {
       exists(DataFlow::Node use, DataFlow::LocalSourceNode pred |
