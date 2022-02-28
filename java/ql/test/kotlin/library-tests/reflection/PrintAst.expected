@@ -58,6 +58,22 @@ reflection.kt:
 #   49|                             -1: [ThisAccess] this
 #   49|                 -3: [TypeAccess] KProperty0<Character>
 #   49|                 0: [StringLiteral] abcd
+#   52|     3: [ExtensionMethod] ext1
+#-----|       2: (Generic Parameters)
+#   52|         0: [TypeVariable] T2
+#-----|       4: (Parameters)
+#   52|         0: [Parameter] <this>
+#   52|       5: [BlockStmt] { ... }
+#   52|         0: [ReturnStmt] return ...
+#   52|           0: [MethodAccess] toString(...)
+#   52|             -1: [ThisAccess] this
+#   54|     4: [ExtensionMethod] ext2
+#-----|       4: (Parameters)
+#   54|         0: [Parameter] <this>
+#   54|       5: [BlockStmt] { ... }
+#   54|         0: [ReturnStmt] return ...
+#   54|           0: [MethodAccess] toString(...)
+#   54|             -1: [ThisAccess] this
 #    3|   2: [Class] Reflection
 #    3|     1: [Constructor] Reflection
 #    3|       5: [BlockStmt] { ... }
@@ -369,3 +385,233 @@ reflection.kt:
 #   39|         5: [BlockStmt] { ... }
 #   39|           0: [ReturnStmt] return ...
 #   39|             0: [VarAccess] INSTANCE
+#   56|   3: [Class] Class1
+#   56|     1: [Constructor] Class1
+#   56|       5: [BlockStmt] { ... }
+#   56|         0: [SuperConstructorInvocationStmt] super(...)
+#   56|         1: [ExprStmt] <Expr>;
+#   56|           0: [MethodAccess] <obinit>(...)
+#   57|     3: [Method] fn
+#   57|       5: [BlockStmt] { ... }
+#   58|         0: [ExprStmt] <Expr>;
+#   58|           0: [MethodAccess] println(...)
+#   58|             -1: [TypeAccess] ConsoleKt
+#   58|             0: [MemberRefExpr] ...::...
+#   58|               -4: [AnonymousClass] new Function2<Generic<T1>,T1,String>(...) { ... }
+#   58|                 1: [Constructor] 
+#   58|                   5: [BlockStmt] { ... }
+#   58|                     0: [SuperConstructorInvocationStmt] super(...)
+#   58|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   58|                     0: [Parameter] a0
+#   58|                     1: [Parameter] a1
+#   58|                   5: [BlockStmt] { ... }
+#   58|                     0: [ReturnStmt] return ...
+#   58|                       0: [MethodAccess] m1(...)
+#   58|                         -1: [VarAccess] a0
+#   58|                         0: [VarAccess] a1
+#   58|               -3: [TypeAccess] Function2<Generic<T1>,T1,String>
+#   59|         1: [ExprStmt] <Expr>;
+#   59|           0: [MethodAccess] println(...)
+#   59|             -1: [TypeAccess] ConsoleKt
+#   59|             0: [MemberRefExpr] ...::...
+#   59|               -4: [AnonymousClass] new Function1<T1,String>(...) { ... }
+#   59|                 1: [Constructor] 
+#-----|                   4: (Parameters)
+#   59|                     0: [Parameter] <dispatchReceiver>
+#   59|                   5: [BlockStmt] { ... }
+#   59|                     0: [SuperConstructorInvocationStmt] super(...)
+#   59|                     1: [ExprStmt] <Expr>;
+#   59|                       0: [AssignExpr] ...=...
+#   59|                         0: [VarAccess] this.<dispatchReceiver>
+#   59|                           -1: [ThisAccess] this
+#   59|                         1: [VarAccess] <dispatchReceiver>
+#   59|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   59|                     0: [Parameter] a0
+#   59|                   5: [BlockStmt] { ... }
+#   59|                     0: [ReturnStmt] return ...
+#   59|                       0: [MethodAccess] m1(...)
+#   59|                         -1: [VarAccess] this.<dispatchReceiver>
+#   59|                           -1: [ThisAccess] this
+#   59|                         0: [VarAccess] a0
+#   59|                 1: [FieldDeclaration] Generic<Integer> <dispatchReceiver>;
+#   59|                   -1: [TypeAccess] Generic<Integer>
+#   59|               -3: [TypeAccess] Function1<T1,String>
+#   59|               0: [ClassInstanceExpr] new Generic<Integer>(...)
+#   59|                 -3: [TypeAccess] Generic<Integer>
+#   59|                   0: [TypeAccess] Integer
+#   60|         2: [ExprStmt] <Expr>;
+#   60|           0: [MethodAccess] println(...)
+#   60|             -1: [TypeAccess] ConsoleKt
+#   60|             0: [MemberRefExpr] ...::...
+#   60|               -4: [AnonymousClass] new Function1<Generic<T2>,String>(...) { ... }
+#   60|                 1: [Constructor] 
+#   60|                   5: [BlockStmt] { ... }
+#   60|                     0: [SuperConstructorInvocationStmt] super(...)
+#   60|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   60|                     0: [Parameter] a0
+#   60|                   5: [BlockStmt] { ... }
+#   60|                     0: [ReturnStmt] return ...
+#   60|                       0: [MethodAccess] ext1(...)
+#   60|                         -2: [TypeAccess] Integer
+#   60|                         0: [VarAccess] a0
+#   60|               -3: [TypeAccess] Function1<Generic<T2>,String>
+#   61|         3: [ExprStmt] <Expr>;
+#   61|           0: [MethodAccess] println(...)
+#   61|             -1: [TypeAccess] ConsoleKt
+#   61|             0: [MemberRefExpr] ...::...
+#   61|               -4: [AnonymousClass] new Function0<String>(...) { ... }
+#   61|                 1: [Constructor] 
+#-----|                   4: (Parameters)
+#   61|                     0: [Parameter] <extensionReceiver>
+#   61|                   5: [BlockStmt] { ... }
+#   61|                     0: [SuperConstructorInvocationStmt] super(...)
+#   61|                     1: [ExprStmt] <Expr>;
+#   61|                       0: [AssignExpr] ...=...
+#   61|                         0: [VarAccess] this.<extensionReceiver>
+#   61|                           -1: [ThisAccess] this
+#   61|                         1: [VarAccess] <extensionReceiver>
+#   61|                 1: [Method] invoke
+#   61|                   5: [BlockStmt] { ... }
+#   61|                     0: [ReturnStmt] return ...
+#   61|                       0: [MethodAccess] ext1(...)
+#   61|                         -2: [TypeAccess] Integer
+#   61|                         0: [VarAccess] this.<extensionReceiver>
+#   61|                           -1: [ThisAccess] this
+#   61|                 1: [FieldDeclaration] Generic<Integer> <extensionReceiver>;
+#   61|                   -1: [TypeAccess] Generic<Integer>
+#   61|               -3: [TypeAccess] Function0<String>
+#   61|               0: [ClassInstanceExpr] new Generic<Integer>(...)
+#   61|                 -3: [TypeAccess] Generic<Integer>
+#   61|                   0: [TypeAccess] Integer
+#   62|         4: [ExprStmt] <Expr>;
+#   62|           0: [MethodAccess] println(...)
+#   62|             -1: [TypeAccess] ConsoleKt
+#   62|             0: [MemberRefExpr] ...::...
+#   62|               -4: [AnonymousClass] new Function1<Generic<Integer>,String>(...) { ... }
+#   62|                 1: [Constructor] 
+#   62|                   5: [BlockStmt] { ... }
+#   62|                     0: [SuperConstructorInvocationStmt] super(...)
+#   62|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   62|                     0: [Parameter] a0
+#   62|                   5: [BlockStmt] { ... }
+#   62|                     0: [ReturnStmt] return ...
+#   62|                       0: [MethodAccess] ext2(...)
+#   62|                         0: [VarAccess] a0
+#   62|               -3: [TypeAccess] Function1<Generic<Integer>,String>
+#   63|         5: [ExprStmt] <Expr>;
+#   63|           0: [MethodAccess] println(...)
+#   63|             -1: [TypeAccess] ConsoleKt
+#   63|             0: [MemberRefExpr] ...::...
+#   63|               -4: [AnonymousClass] new Function0<String>(...) { ... }
+#   63|                 1: [Constructor] 
+#-----|                   4: (Parameters)
+#   63|                     0: [Parameter] <extensionReceiver>
+#   63|                   5: [BlockStmt] { ... }
+#   63|                     0: [SuperConstructorInvocationStmt] super(...)
+#   63|                     1: [ExprStmt] <Expr>;
+#   63|                       0: [AssignExpr] ...=...
+#   63|                         0: [VarAccess] this.<extensionReceiver>
+#   63|                           -1: [ThisAccess] this
+#   63|                         1: [VarAccess] <extensionReceiver>
+#   63|                 1: [Method] invoke
+#   63|                   5: [BlockStmt] { ... }
+#   63|                     0: [ReturnStmt] return ...
+#   63|                       0: [MethodAccess] ext2(...)
+#   63|                         0: [VarAccess] this.<extensionReceiver>
+#   63|                           -1: [ThisAccess] this
+#   63|                 1: [FieldDeclaration] Generic<Integer> <extensionReceiver>;
+#   63|                   -1: [TypeAccess] Generic<Integer>
+#   63|               -3: [TypeAccess] Function0<String>
+#   63|               0: [ClassInstanceExpr] new Generic<Integer>(...)
+#   63|                 -3: [TypeAccess] Generic<Integer>
+#   63|                   0: [TypeAccess] Integer
+#   65|         6: [ExprStmt] <Expr>;
+#   65|           0: [MethodAccess] println(...)
+#   65|             -1: [TypeAccess] ConsoleKt
+#   65|             0: [PropertyRefExpr] ...::...
+#   65|               -4: [AnonymousClass] new KMutableProperty1<Generic<Integer>,Integer>(...) { ... }
+#   65|                 1: [Constructor] 
+#   65|                   5: [BlockStmt] { ... }
+#   65|                     0: [SuperConstructorInvocationStmt] super(...)
+#   65|                 1: [Method] get
+#-----|                   4: (Parameters)
+#   65|                     0: [Parameter] a0
+#   65|                   5: [BlockStmt] { ... }
+#   65|                     0: [ReturnStmt] return ...
+#   65|                       0: [MethodAccess] getP2(...)
+#   65|                         -1: [VarAccess] a0
+#   65|                 1: [Method] set
+#-----|                   4: (Parameters)
+#   65|                     0: [Parameter] a0
+#   65|                     1: [Parameter] a1
+#   65|                   5: [BlockStmt] { ... }
+#   65|                     0: [ReturnStmt] return ...
+#   65|                       0: [MethodAccess] setP2(...)
+#   65|                         -1: [VarAccess] a0
+#   65|                         0: [VarAccess] a1
+#   65|               -3: [TypeAccess] KMutableProperty1<Generic<Integer>,Integer>
+#   66|         7: [ExprStmt] <Expr>;
+#   66|           0: [MethodAccess] println(...)
+#   66|             -1: [TypeAccess] ConsoleKt
+#   66|             0: [PropertyRefExpr] ...::...
+#   66|               -4: [AnonymousClass] new KMutableProperty0<Integer>(...) { ... }
+#   66|                 1: [Constructor] 
+#-----|                   4: (Parameters)
+#   66|                     0: [Parameter] <dispatchReceiver>
+#   66|                   5: [BlockStmt] { ... }
+#   66|                     0: [SuperConstructorInvocationStmt] super(...)
+#   66|                     1: [ExprStmt] <Expr>;
+#   66|                       0: [AssignExpr] ...=...
+#   66|                         0: [VarAccess] this.<dispatchReceiver>
+#   66|                           -1: [ThisAccess] this
+#   66|                         1: [VarAccess] <dispatchReceiver>
+#   66|                 1: [FieldDeclaration] Generic<Integer> <dispatchReceiver>;
+#   66|                   -1: [TypeAccess] Generic<Integer>
+#   66|                 1: [Method] get
+#   66|                   5: [BlockStmt] { ... }
+#   66|                     0: [ReturnStmt] return ...
+#   66|                       0: [MethodAccess] getP2(...)
+#   66|                         -1: [VarAccess] this.<dispatchReceiver>
+#   66|                           -1: [ThisAccess] this
+#   66|                 1: [Method] set
+#-----|                   4: (Parameters)
+#   66|                     0: [Parameter] a0
+#   66|                   5: [BlockStmt] { ... }
+#   66|                     0: [ReturnStmt] return ...
+#   66|                       0: [MethodAccess] setP2(...)
+#   66|                         -1: [VarAccess] this.<dispatchReceiver>
+#   66|                           -1: [ThisAccess] this
+#   66|                         0: [VarAccess] a0
+#   66|               -3: [TypeAccess] KMutableProperty0<Integer>
+#   66|               0: [ClassInstanceExpr] new Generic<Integer>(...)
+#   66|                 -3: [TypeAccess] Generic<Integer>
+#   66|                   0: [TypeAccess] Integer
+#   69|     4: [Class,GenericType,ParameterizedType] Generic
+#-----|       -2: (Generic Parameters)
+#   69|         0: [TypeVariable] T1
+#   69|       1: [Constructor] Generic
+#   69|         5: [BlockStmt] { ... }
+#   69|           0: [SuperConstructorInvocationStmt] super(...)
+#   69|           1: [ExprStmt] <Expr>;
+#   69|             0: [MethodAccess] <obinit>(...)
+#   70|       3: [Method] m1
+#-----|         4: (Parameters)
+#   70|           0: [Parameter] i
+#   70|         5: [BlockStmt] { ... }
+#   70|           0: [ReturnStmt] return ...
+#   70|             0: [MethodAccess] toString(...)
+#   70|               -1: [ThisAccess] this
+#   72|       4: [Method] getP2
+#   72|         5: [BlockStmt] { ... }
+#   72|           0: [ReturnStmt] return ...
+#   72|             0: [NullLiteral] null
+#   73|       5: [Method] setP2
+#-----|         4: (Parameters)
+#   73|           0: [Parameter] value
+#   73|         5: [BlockStmt] { ... }
+#   73|           0: [ReturnStmt] return ...
+#   73|             0: [VarAccess] INSTANCE

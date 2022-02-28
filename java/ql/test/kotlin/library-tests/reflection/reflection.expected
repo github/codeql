@@ -36,6 +36,14 @@ invocation
 | reflection.kt:49:30:49:34 | get(...) | file://<external>/KProperty0.class:0:0:0:0 | get |
 functionReferences
 | reflection.kt:5:49:5:54 | ...::... | reflection.kt:5:49:5:54 | invoke | reflection.kt:27:9:27:33 | m |
+| reflection.kt:12:38:12:44 | ...::... | reflection.kt:12:38:12:44 | invoke | file://<external>/KProperty1.class:0:0:0:0 | get |
+| reflection.kt:19:44:19:50 | ...::... | reflection.kt:19:44:19:50 | invoke | file://<external>/KMutableProperty1.class:0:0:0:0 | set |
+| reflection.kt:58:17:58:32 | ...::... | reflection.kt:58:17:58:32 | invoke | reflection.kt:70:9:70:38 | m1 |
+| reflection.kt:59:17:59:34 | ...::... | reflection.kt:59:17:59:34 | invoke | reflection.kt:70:9:70:38 | m1 |
+| reflection.kt:60:17:60:34 | ...::... | reflection.kt:60:17:60:34 | invoke | reflection.kt:52:1:52:52 | ext1 |
+| reflection.kt:61:17:61:36 | ...::... | reflection.kt:61:17:61:36 | invoke | reflection.kt:52:1:52:52 | ext1 |
+| reflection.kt:62:17:62:34 | ...::... | reflection.kt:62:17:62:34 | invoke | reflection.kt:54:1:54:48 | ext2 |
+| reflection.kt:63:17:63:36 | ...::... | reflection.kt:63:17:63:36 | invoke | reflection.kt:54:1:54:48 | ext2 |
 propertyGetReferences
 | reflection.kt:8:38:8:42 | ...::... | reflection.kt:8:38:8:42 | get | reflection.kt:8:38:8:42 | get |
 | reflection.kt:13:35:13:41 | ...::... | reflection.kt:13:35:13:41 | get | reflection.kt:13:35:13:41 | get |
@@ -43,6 +51,10 @@ propertyGetReferences
 | reflection.kt:20:42:20:48 | ...::... | reflection.kt:20:42:20:48 | get | reflection.kt:20:42:20:48 | get |
 | reflection.kt:48:13:48:28 | ...::... | reflection.kt:48:13:48:28 | get | reflection.kt:48:13:48:28 | get |
 | reflection.kt:49:13:49:28 | ...::... | reflection.kt:49:13:49:28 | get | reflection.kt:49:13:49:28 | get |
+| reflection.kt:65:17:65:32 | ...::... | reflection.kt:65:17:65:32 | get | reflection.kt:65:17:65:32 | get |
+| reflection.kt:66:17:66:34 | ...::... | reflection.kt:66:17:66:34 | get | reflection.kt:66:17:66:34 | get |
 propertySetReferences
 | reflection.kt:15:45:15:49 | ...::... | reflection.kt:15:45:15:49 | set | reflection.kt:15:45:15:49 | set |
 | reflection.kt:20:42:20:48 | ...::... | reflection.kt:20:42:20:48 | set | reflection.kt:20:42:20:48 | set |
+| reflection.kt:65:17:65:32 | ...::... | reflection.kt:65:17:65:32 | set | reflection.kt:65:17:65:32 | set |
+| reflection.kt:66:17:66:34 | ...::... | reflection.kt:66:17:66:34 | set | reflection.kt:66:17:66:34 | set |

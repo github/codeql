@@ -48,3 +48,28 @@ fun fn2() {
     println(String::lastChar.get("abc"))
     println("abcd"::lastChar.get())
 }
+
+fun <T2> Class1.Generic<T2>.ext1() = this.toString()
+
+fun Class1.Generic<Int>.ext2() = this.toString()
+
+class Class1 {
+    fun fn() {
+        println(Generic<Int>::m1)
+        println(Generic<Int>()::m1)
+        println(Generic<Int>::ext1)
+        println(Generic<Int>()::ext1)
+        println(Generic<Int>::ext2)
+        println(Generic<Int>()::ext2)
+
+        println(Generic<Int>::p2)
+        println(Generic<Int>()::p2)
+    }
+
+    class Generic<T1> {
+        fun m1(i:T1) = this.toString()
+        var p2: T1?
+            get() = null
+            set(value) = Unit
+    }
+}
