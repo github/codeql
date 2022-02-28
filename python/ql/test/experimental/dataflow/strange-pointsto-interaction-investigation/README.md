@@ -81,7 +81,7 @@ $ diff -u -r test-4-max-import-depth-100/ test-5-max-import-depth-3/
 +semmle-extractor-options: --max-import-depth=3 -R ../src
 ```
 
-Also notice that using import depth 2 actually makes things worse, as we no longer handle the `isfile_no_problem.py` file properly :facepalm: :sweat_smile:
+Also notice that using import depth 2 actually makes things worse, as we no longer handle the `isfile_no_problem.py` file properly :facepalm: :sweat_smile: NOTE: This was only for Python 3, for Python 2 there was no change :flushed:
 
 ```diff
 diff '--color=auto' -u -r test-4-max-import-depth-100/NormalDataflowTest.expected test-6-max-import-depth-2/NormalDataflowTest.expected
