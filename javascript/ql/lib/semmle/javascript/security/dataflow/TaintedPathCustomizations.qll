@@ -6,6 +6,9 @@
 
 import javascript
 
+/**
+ * Provides logic for tracking of tainted paths.
+ */
 module TaintedPath {
   /**
    * A data flow source for tainted-path vulnerabilities.
