@@ -520,9 +520,9 @@ module API {
         rhs(base, def) and pred = trackDefNode(def)
       |
         // from `x` to a definition of `x.prop`
-        exists(DataFlow::AttrWrite pw | pw = pred.getAnAttributeWrite() |
-          lbl = Label::memberFromRef(pw) and
-          rhs = pw.getValue()
+        exists(DataFlow::AttrWrite aw | aw = pred.getAnAttributeWrite() |
+          lbl = Label::memberFromRef(aw) and
+          rhs = aw.getValue()
         )
         or
         // TODO: I had expected `DataFlow::AttrWrite` to contain the attribute writes from a dict, that's how JS works.
@@ -545,10 +545,10 @@ module API {
       or
       argumentPassing(base, lbl, rhs)
       or
-      exists(DataFlow::LocalSourceNode src, DataFlow::AttrWrite pw |
-        use(base, src) and pw = trackUseNode(src).getAnAttributeWrite() and rhs = pw.getValue()
+      exists(DataFlow::LocalSourceNode src, DataFlow::AttrWrite aw |
+        use(base, src) and aw = trackUseNode(src).getAnAttributeWrite() and rhs = aw.getValue()
       |
-        lbl = Label::memberFromRef(pw)
+        lbl = Label::memberFromRef(aw)
       )
     }
 
