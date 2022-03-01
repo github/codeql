@@ -231,6 +231,12 @@ string getAPackageAlias(string package) {
  * Holds if CSV rows involving `package` might be relevant for the analysis of this database.
  */
 private predicate isRelevantPackage(string package) {
+  (
+    sourceModel(package, _, _, _) or
+    sinkModel(package, _, _, _) or
+    summaryModel(package, _, _, _, _, _) or
+    typeModel(package, _, _, _, _)
+  ) and
   Specific::isPackageUsed(package)
   or
   exists(string other |
