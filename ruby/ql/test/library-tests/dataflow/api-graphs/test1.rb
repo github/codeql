@@ -62,3 +62,9 @@ M1::C1.new.m #$ use=getMember("M1").getMember("C1").getMethod("new").getReturn()
 M2::C3.new.m #$ use=getMember("M2").getMember("C3").getMethod("new").getReturn().getMethod("m").getReturn()
 
 Foo.foo(a,b:c) #$ use=getMember("Foo").getMethod("foo").getReturn() def=getMember("Foo").getMethod("foo").getParameter(0) def=getMember("Foo").getMethod("foo").getKeywordParameter("b")
+
+def userDefinedFunction(x, y)
+    x.noApiGraph(y)
+    x.customEntryPointCall(y) #$ call=CustomEntryPointCall use=CustomEntryPointCall.getReturn() rhs=CustomEntryPointCall.getParameter(0)
+    x.customEntryPointUse(y) #$ use=CustomEntryPointUse
+end
