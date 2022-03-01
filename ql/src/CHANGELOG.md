@@ -1,3 +1,9 @@
+## 0.0.9
+
+### New Queries
+
+* Added a new query, `go/unexpected-nil-value`, to find calls to `Wrap` from `pkg/errors` where the error argument is always nil.
+
 ## 0.0.8
 
 ## 0.0.7
