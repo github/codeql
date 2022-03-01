@@ -1,3 +1,5 @@
+import sys
+
 def check_output(outtext, f):
     if outtext == "OK\n":
         pass
@@ -57,9 +59,13 @@ if __name__ == "__main__":
     check_tests_valid("variable-capture.nonlocal")
     check_tests_valid("variable-capture.dict")
     check_tests_valid("module-initialization.multiphase")
+    check_tests_valid("fieldflow.test")
 
-    # The below will fail unless we use Python 3.10 or newer.
-    # check_tests_valid("match.test")
+    if sys.version_info[:2] >= (3, 10):
+        print("INFO: Will run `match` tests since we're running Python 3.10 or newer")
+        check_tests_valid("match.test")
+    else:
+        print("WARN: Skipping `match` tests since we're not running 3.10 or newer")
 
     # The below fails when trying to import modules
     # check_tests_valid("module-initialization.test")

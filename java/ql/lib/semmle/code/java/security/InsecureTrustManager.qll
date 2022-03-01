@@ -48,7 +48,7 @@ private predicate isGuardedByInsecureFlag(DataFlow::Node node) {
  */
 private class InsecureX509TrustManager extends RefType {
   InsecureX509TrustManager() {
-    this.getASupertype*() instanceof X509TrustManager and
+    this.getAnAncestor() instanceof X509TrustManager and
     exists(Method m |
       m.getDeclaringType() = this and
       m.hasName("checkServerTrusted") and
@@ -70,7 +70,7 @@ private class CertificateException extends RefType {
  */
 private predicate mayThrowCertificateException(Method m) {
   exists(ThrowStmt throwStmt |
-    throwStmt.getThrownExceptionType().getASupertype*() instanceof CertificateException
+    throwStmt.getThrownExceptionType().getAnAncestor() instanceof CertificateException
   |
     throwStmt.getEnclosingCallable() = m
   )
@@ -79,7 +79,7 @@ private predicate mayThrowCertificateException(Method m) {
     mayThrowCertificateException(otherMethod)
     or
     not otherMethod.fromSource() and
-    otherMethod.getAnException().getType().getASupertype*() instanceof CertificateException
+    otherMethod.getAnException().getType().getAnAncestor() instanceof CertificateException
   )
 }
 

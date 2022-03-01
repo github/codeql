@@ -93,7 +93,7 @@ class SerialVersionUIDField extends ReflectivelyReadField {
     this.isStatic() and
     this.isFinal() and
     this.getType().hasName("long") and
-    this.getDeclaringType().getASupertype*() instanceof TypeSerializable
+    this.getDeclaringType().getAnAncestor() instanceof TypeSerializable
   }
 }
 

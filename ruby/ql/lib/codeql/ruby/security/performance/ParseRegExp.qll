@@ -382,6 +382,7 @@ class RegExp extends AST::RegExpLiteral {
   }
 
   predicate normalCharacter(int start, int end) {
+    end = start + 1 and
     this.character(start, end) and
     not this.specialCharacter(start, end, _)
   }
@@ -399,6 +400,49 @@ class RegExp extends AST::RegExpLiteral {
       char = this.getText().substring(start, end) and
       char = ["\\A", "\\Z", "\\z", "\\G", "\\b", "\\B"]
     )
+  }
+
+  /**
+   * Holds if the range [start:end) consists of only 'normal' characters.
+   */
+  predicate normalCharacterSequence(int start, int end) {
+    // a normal character inside a character set is interpreted on its own
+    this.normalCharacter(start, end) and
+    this.inCharSet(start)
+    or
+    // a maximal run of normal characters is considered as one constant
+    exists(int s, int e |
+      e = max(int i | this.normalCharacterRun(s, i)) and
+      not this.inCharSet(s)
+    |
+      // 'abc' can be considered one constant, but
+      // 'abc+' has to be broken up into 'ab' and 'c+',
+      // as the qualifier only applies to 'c'.
+      if this.qualifier(e, _, _, _)
+      then
+        end = e and start = e - 1
+        or
+        end = e - 1 and start = s and start < end
+      else (
+        end = e and
+        start = s
+      )
+    )
+  }
+
+  private predicate normalCharacterRun(int start, int end) {
+    (
+      this.normalCharacterRun(start, end - 1)
+      or
+      start = end - 1 and not this.normalCharacter(start - 1, start)
+    ) and
+    this.normalCharacter(end - 1, end)
+  }
+
+  private predicate characterItem(int start, int end) {
+    this.normalCharacterSequence(start, end) or
+    this.escapedCharacter(start, end) or
+    this.specialCharacter(start, end, _)
   }
 
   /** Whether the text in the range `start,end` is a group */
@@ -639,7 +683,7 @@ class RegExp extends AST::RegExpLiteral {
   string getBackRefName(int start, int end) { this.namedBackreference(start, end, result) }
 
   private predicate baseItem(int start, int end) {
-    this.character(start, end) and
+    this.characterItem(start, end) and
     not exists(int x, int y | this.charSet(x, y) and x <= start and y >= end)
     or
     this.group(start, end)
@@ -746,7 +790,7 @@ class RegExp extends AST::RegExpLiteral {
   }
 
   private predicate itemStart(int start) {
-    this.character(start, _) or
+    this.characterItem(start, _) or
     this.isGroupStart(start) or
     this.charSet(start, _) or
     this.backreference(start, _) or
@@ -754,7 +798,7 @@ class RegExp extends AST::RegExpLiteral {
   }
 
   private predicate itemEnd(int end) {
-    this.character(_, end)
+    this.characterItem(_, end)
     or
     exists(int endm1 | this.isGroupEnd(endm1) and end = endm1 + 1)
     or
@@ -865,7 +909,7 @@ class RegExp extends AST::RegExpLiteral {
    */
   predicate firstItem(int start, int end) {
     (
-      this.character(start, end)
+      this.characterItem(start, end)
       or
       this.qualifiedItem(start, end, _, _)
       or
@@ -880,7 +924,7 @@ class RegExp extends AST::RegExpLiteral {
    */
   predicate lastItem(int start, int end) {
     (
-      this.character(start, end)
+      this.characterItem(start, end)
       or
       this.qualifiedItem(start, end, _, _)
       or

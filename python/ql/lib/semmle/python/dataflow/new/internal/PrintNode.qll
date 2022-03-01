@@ -9,6 +9,7 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * INTERNAL: Do not use.
@@ -66,7 +67,12 @@ string prettyNodeForInlineTest(DataFlow::Node node) {
     result = "[post]" + prettyExpr(e)
   )
   or
+  exists(Expr e | e = node.(DataFlowPrivate::SyntheticPreUpdateNode).getPostUpdateNode().asExpr() |
+    result = "[pre]" + prettyExpr(e)
+  )
+  or
   not exists(node.asExpr()) and
   not exists(node.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()) and
+  not exists(node.(DataFlowPrivate::SyntheticPreUpdateNode).getPostUpdateNode().asExpr()) and
   result = node.toString()
 }

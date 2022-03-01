@@ -1,22 +1,24 @@
 import python
 import semmle.python.dataflow.TaintTracking
 
-private ClassValue theTwistedHttpRequestClass() {
+deprecated private ClassValue theTwistedHttpRequestClass() {
   result = Value::named("twisted.web.http.Request")
 }
 
-private ClassValue theTwistedHttpResourceClass() {
+deprecated private ClassValue theTwistedHttpResourceClass() {
   result = Value::named("twisted.web.resource.Resource")
 }
 
-ClassValue aTwistedRequestHandlerClass() { result.getABaseType+() = theTwistedHttpResourceClass() }
+deprecated ClassValue aTwistedRequestHandlerClass() {
+  result.getABaseType+() = theTwistedHttpResourceClass()
+}
 
-FunctionValue getTwistedRequestHandlerMethod(string name) {
+deprecated FunctionValue getTwistedRequestHandlerMethod(string name) {
   result = aTwistedRequestHandlerClass().declaredAttribute(name)
 }
 
 bindingset[name]
-predicate isKnownRequestHandlerMethodName(string name) {
+deprecated predicate isKnownRequestHandlerMethodName(string name) {
   name = "render" or
   name.matches("render_%")
 }
@@ -25,7 +27,7 @@ predicate isKnownRequestHandlerMethodName(string name) {
  * Holds if `node` is likely to refer to an instance of the twisted
  * `Request` class.
  */
-predicate isTwistedRequestInstance(NameNode node) {
+deprecated predicate isTwistedRequestInstance(NameNode node) {
   node.pointsTo().getClass() = theTwistedHttpRequestClass()
   or
   /*

@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the `ActiveRecord` library.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
@@ -5,7 +9,8 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.frameworks.StandardLibrary
+private import codeql.ruby.frameworks.Stdlib
+private import codeql.ruby.frameworks.Core
 
 /// See https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html
 private string activeRecordPersistenceInstanceMethodName() {
@@ -182,6 +187,9 @@ class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMeth
     )
   }
 
+  /**
+   * Gets the SQL fragment argument of this method call.
+   */
   Expr getSqlFragmentSinkArgument() { result = sqlFragmentExpr }
 }
 
@@ -207,6 +215,9 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
  */
 abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range,
   DataFlow::LocalSourceNode {
+  /**
+   * Gets the `ActiveRecordModelClass` that this instance belongs to.
+   */
   abstract ActiveRecordModelClass getClass();
 
   bindingset[methodName]

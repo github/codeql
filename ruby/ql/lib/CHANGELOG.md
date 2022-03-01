@@ -1,3 +1,13 @@
+## 0.0.10
+
+### Minor Analysis Improvements
+
+* Added `FileSystemWriteAccess` concept to model data written to the filesystem.
+
+## 0.0.9
+
+## 0.0.8
+
 ## 0.0.7
 
 ## 0.0.6

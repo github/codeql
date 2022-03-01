@@ -1,0 +1,44 @@
+kernelSystemCallExecutions
+| Kernel.rb:23:1:23:18 | call to system |
+| Kernel.rb:24:1:24:21 | call to system |
+| Kernel.rb:25:1:25:31 | call to system |
+| Kernel.rb:27:1:27:36 | call to system |
+| Kernel.rb:28:1:28:39 | call to system |
+| Kernel.rb:29:1:29:49 | call to system |
+| Kernel.rb:31:1:31:41 | call to system |
+| Kernel.rb:32:1:32:44 | call to system |
+| Kernel.rb:33:1:33:54 | call to system |
+| Kernel.rb:35:1:35:59 | call to system |
+| Kernel.rb:36:1:36:62 | call to system |
+| Kernel.rb:37:1:37:72 | call to system |
+kernelExecCallExecutions
+| Kernel.rb:39:1:39:16 | call to exec |
+| Kernel.rb:40:1:40:19 | call to exec |
+| Kernel.rb:41:1:41:29 | call to exec |
+| Kernel.rb:43:1:43:34 | call to exec |
+| Kernel.rb:44:1:44:37 | call to exec |
+| Kernel.rb:45:1:45:47 | call to exec |
+| Kernel.rb:47:1:47:39 | call to exec |
+| Kernel.rb:48:1:48:42 | call to exec |
+| Kernel.rb:49:1:49:52 | call to exec |
+| Kernel.rb:51:1:51:57 | call to exec |
+| Kernel.rb:52:1:52:60 | call to exec |
+| Kernel.rb:53:1:53:70 | call to exec |
+kernelSpawnCallExecutions
+| Kernel.rb:55:1:55:17 | call to spawn |
+| Kernel.rb:56:1:56:20 | call to spawn |
+| Kernel.rb:57:1:57:30 | call to spawn |
+| Kernel.rb:59:1:59:35 | call to spawn |
+| Kernel.rb:60:1:60:38 | call to spawn |
+| Kernel.rb:61:1:61:48 | call to spawn |
+| Kernel.rb:63:1:63:40 | call to spawn |
+| Kernel.rb:64:1:64:43 | call to spawn |
+| Kernel.rb:65:1:65:53 | call to spawn |
+| Kernel.rb:67:1:67:58 | call to spawn |
+| Kernel.rb:68:1:68:61 | call to spawn |
+| Kernel.rb:69:1:69:71 | call to spawn |
+sendCallCodeExecutions
+| Kernel.rb:2:1:2:22 | call to send | Kernel.rb:2:6:2:12 | "raise" |
+| Kernel.rb:5:1:5:19 | call to send | Kernel.rb:5:8:5:13 | "push" |
+evalCallCodeExecutions
+| Kernel.rb:1:1:1:43 | call to eval | Kernel.rb:1:6:1:22 | "raise \\"error\\"" |

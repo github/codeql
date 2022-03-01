@@ -38,7 +38,7 @@ predicate contradictoryTypeCheck(Expr e, Variable v, RefType t, RefType sup, Exp
   exists(SsaVariable ssa |
     ssa.getSourceVariable().getVariable() = v and
     requiresInstanceOf(e, ssa.getAUse(), t) and
-    sup = t.getASupertype*() and
+    sup = t.getAnAncestor() and
     instanceOfCheck(cond, ssa.getAUse(), sup) and
     cond.(Guard).controls(e.getBasicBlock(), false)
   )

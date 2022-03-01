@@ -60,7 +60,7 @@ module XML {
     }
 
     /**
-     * A document from the `libxmljs` library.
+     * Gets a document from the `libxmljs` library.
      * The API is based on https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/libxmljs/index.d.ts
      */
     private API::Node doc() {
@@ -74,7 +74,7 @@ module XML {
     }
 
     /**
-     * An `Element` from the `libxmljs` library.
+     * Gets an `Element` from the `libxmljs` library.
      */
     private API::Node element() {
       result = doc().getMember(["child", "get", "node", "root"]).getReturn()
@@ -91,7 +91,7 @@ module XML {
     }
 
     /**
-     * An `Attr` from the `libxmljs` library.
+     * Gets an `Attr` from the `libxmljs` library.
      */
     private API::Node attr() {
       result = element().getMember("attr").getReturn()

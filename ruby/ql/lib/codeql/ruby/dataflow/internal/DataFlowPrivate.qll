@@ -285,11 +285,17 @@ private module Cached {
     // and we can remove this case.
     n.asExpr().getExpr() instanceof Self
     or
+    // Nodes that can't be reached from another parameter or expression.
     not localFlowStepTypeTracker+(any(Node e |
         e instanceof ExprNode
         or
         e instanceof ParameterNode
       ), n)
+    or
+    // Ensure all parameter SSA nodes are local sources -- this is needed by type tracking.
+    // Note that when the parameter has a default value, it will be reachable from an
+    // expression (the default value) and therefore won't be caught by the rule above.
+    n = LocalFlow::getParameterDefNode(_)
   }
 
   cached
@@ -297,6 +303,20 @@ private module Cached {
     TKnownArrayElementContent(int i) { i in [0 .. 10] } or
     TUnknownArrayElementContent() or
     TAnyArrayElementContent()
+
+  /**
+   * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
+   */
+  cached
+  predicate exprNodeReturnedFromCached(ExprNode e, Callable c) {
+    exists(ReturningNode r |
+      nodeGetEnclosingCallable(r).asCallable() = c and
+      (
+        r.(ExplicitReturnNode).getReturningNode().getReturnedValueNode() = e.asExpr() or
+        r.(ExprReturnNode) = e
+      )
+    )
+  }
 }
 
 class TArrayElementContent = TKnownArrayElementContent or TUnknownArrayElementContent;
@@ -306,8 +326,12 @@ import Cached
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
   exists(Ssa::Definition def | def = n.(SsaDefinitionNode).getDefinition() |
-    def instanceof Ssa::PhiNode
+    def instanceof Ssa::PhiNode or
+    def instanceof Ssa::CapturedEntryDefinition or
+    def instanceof Ssa::CapturedCallDefinition
   )
+  or
+  n = LocalFlow::getParameterDefNode(_)
   or
   isDesugarNode(n.(ExprNode).getExprNode().getExpr())
   or

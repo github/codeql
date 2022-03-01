@@ -20,15 +20,6 @@ private predicate hasCapturedVariableRead(BasicBlock bb, LocalVariable v) {
   )
 }
 
-/**
- * Holds if an entry definition is needed for captured variable `v` at index
- * `i` in entry block `bb`.
- */
-predicate capturedEntryWrite(EntryBasicBlock bb, int i, LocalVariable v) {
-  hasCapturedVariableRead(bb.getASuccessor*(), v) and
-  i = -1
-}
-
 /** Holds if `bb` contains a caputured write to variable `v`. */
 pragma[noinline]
 private predicate writesCapturedVariable(BasicBlock bb, LocalVariable v) {
@@ -132,6 +123,16 @@ private predicate hasVariableReadWithCapturedWrite(BasicBlock bb, LocalVariable 
 
 cached
 private module Cached {
+  /**
+   * Holds if an entry definition is needed for captured variable `v` at index
+   * `i` in entry block `bb`.
+   */
+  cached
+  predicate capturedEntryWrite(EntryBasicBlock bb, int i, LocalVariable v) {
+    hasCapturedVariableRead(bb.getASuccessor*(), v) and
+    i = -1
+  }
+
   /**
    * Holds if the call at index `i` in basic block `bb` may reach a callable
    * that writes captured variable `v`.

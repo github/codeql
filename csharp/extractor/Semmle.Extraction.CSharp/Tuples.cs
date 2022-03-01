@@ -215,6 +215,9 @@ namespace Semmle.Extraction.CSharp
         internal static void indexers(this TextWriter trapFile, Indexer propKey, string name, Type declaringType, Type memberType, Indexer unboundProperty) =>
             trapFile.WriteTuple("indexers", propKey, name, declaringType, memberType, unboundProperty);
 
+        internal static void lambda_expr_return_type(this TextWriter trapFile, Lambda expr, Type returnType) =>
+            trapFile.WriteTuple("lambda_expr_return_type", expr, returnType);
+
         internal static void local_function_stmts(this TextWriter trapFile, Entities.Statements.LocalFunction fnStmt, LocalFunction fn) =>
             trapFile.WriteTuple("local_function_stmts", fnStmt, fn);
 

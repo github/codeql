@@ -230,7 +230,7 @@ class AnalyzedModule extends TopLevel {
 }
 
 /**
- * Flow analysis for functions.
+ * A function for which analysis results are available.
  */
 class AnalyzedFunction extends DataFlow::AnalyzedValueNode {
   override Function astNode;

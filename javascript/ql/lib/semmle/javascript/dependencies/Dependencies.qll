@@ -21,7 +21,7 @@ abstract class Dependency extends Locatable {
   abstract predicate info(string id, string v);
 
   /**
-   * A use of this dependency, which is of the given `kind`.
+   * Gets a use of this dependency, which is of the given `kind`.
    *
    * Currently, the only supported kinds are `"import"` and `"use"`.
    */

@@ -41,6 +41,8 @@ class Configuration extends TaintTracking::Configuration {
 }
 
 /**
+ * A sanitizer for ternary operators.
+ *
  * This sanitizers models the next example:
  * let valid = req.params.id ? Number.isInteger(req.params.id) : false
  * if (valid) { sink(req.params.id) }

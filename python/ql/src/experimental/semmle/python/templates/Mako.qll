@@ -5,7 +5,7 @@ import semmle.python.web.HttpRequest
 import experimental.semmle.python.templates.SSTISink
 
 /** returns the ClassValue representing `mako.template.Template` */
-ClassValue theMakoTemplateClass() { result = Value::named("mako.template.Template") }
+deprecated ClassValue theMakoTemplateClass() { result = Value::named("mako.template.Template") }
 
 /**
  * Sink representing the `mako.template.Template` class instantiation argument.
@@ -13,7 +13,7 @@ ClassValue theMakoTemplateClass() { result = Value::named("mako.template.Templat
  *  from mako.template import Template
  *  mytemplate = Template("hello world!")
  */
-class MakoTemplateSink extends SSTISink {
+deprecated class MakoTemplateSink extends SSTISink {
   override string toString() { result = "argument to mako.template.Template()" }
 
   MakoTemplateSink() {

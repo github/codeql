@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the `Typhoeus` library.
+ */
+
 private import ruby
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts

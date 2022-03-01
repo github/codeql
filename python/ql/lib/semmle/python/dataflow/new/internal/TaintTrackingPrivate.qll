@@ -167,8 +167,25 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
  */
 predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   // construction by literal
-  // TODO: Not limiting the content argument here feels like a BIG hack, but we currently get nothing for free :|
-  DataFlowPrivate::storeStep(nodeFrom, _, nodeTo)
+  //
+  // TODO: once we have proper flow-summary modeling, we might not need this step any
+  // longer -- but there needs to be a matching read-step for the store-step, and we
+  // don't provide that right now.
+  DataFlowPrivate::listStoreStep(nodeFrom, _, nodeTo)
+  or
+  DataFlowPrivate::setStoreStep(nodeFrom, _, nodeTo)
+  or
+  DataFlowPrivate::tupleStoreStep(nodeFrom, _, nodeTo)
+  or
+  DataFlowPrivate::dictStoreStep(nodeFrom, _, nodeTo)
+  or
+  // comprehension, so there is taint-flow from `x` in `[x for x in xs]` to the
+  // resulting list of the list-comprehension.
+  //
+  // TODO: once we have proper flow-summary modeling, we might not need this step any
+  // longer -- but there needs to be a matching read-step for the store-step, and we
+  // don't provide that right now.
+  DataFlowPrivate::comprehensionStoreStep(nodeFrom, _, nodeTo)
   or
   // constructor call
   exists(DataFlow::CallCfgNode call | call = nodeTo |

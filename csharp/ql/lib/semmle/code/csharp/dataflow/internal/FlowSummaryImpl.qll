@@ -99,7 +99,7 @@ module Public {
       exists(SummaryComponent head, SummaryComponentStack tail |
         head = this.head() and
         tail = this.tail() and
-        result = head + " of " + tail
+        result = tail + "." + head
       )
       or
       exists(SummaryComponent c |
@@ -164,7 +164,7 @@ module Public {
     exists(SummaryComponent head, SummaryComponentStack tail |
       head = stack.head() and
       tail = stack.tail() and
-      result = getComponentCsv(head) + " of " + getComponentStackCsv(tail)
+      result = getComponentStackCsv(tail) + "." + getComponentCsv(head)
     )
     or
     exists(SummaryComponent c |
@@ -228,6 +228,7 @@ module Public {
  */
 module Private {
   private import Public
+  import AccessPathSyntax
 
   newtype TSummaryComponent =
     TContentSummaryComponent(Content c) or
@@ -811,84 +812,60 @@ module Private {
       sinkElement(_, spec, _)
     }
 
-    /** Holds if the `n`th component of specification `s` is `c`. */
-    predicate specSplit(string s, string c, int n) { relevantSpec(s) and s.splitAt(" of ", n) = c }
-
-    /** Holds if specification `s` has length `len`. */
-    predicate specLength(string s, int len) { len = 1 + max(int n | specSplit(s, _, n)) }
-
-    /** Gets the last component of specification `s`. */
-    string specLast(string s) {
-      exists(int len |
-        specLength(s, len) and
-        specSplit(s, result, len - 1)
-      )
+    private class AccessPathRange extends AccessPath::Range {
+      AccessPathRange() { relevantSpec(this) }
     }
 
     /** Holds if specification component `c` parses as parameter `n`. */
-    predicate parseParam(string c, ArgumentPosition pos) {
-      specSplit(_, c, _) and
-      exists(string body |
-        body = c.regexpCapture("Parameter\\[([^\\]]*)\\]", 1) and
-        pos = parseParamBody(body)
-      )
+    predicate parseParam(AccessPathToken token, ArgumentPosition pos) {
+      token.getName() = "Parameter" and
+      pos = parseParamBody(token.getAnArgument())
     }
 
     /** Holds if specification component `c` parses as argument `n`. */
-    predicate parseArg(string c, ParameterPosition pos) {
-      specSplit(_, c, _) and
-      exists(string body |
-        body = c.regexpCapture("Argument\\[([^\\]]*)\\]", 1) and
-        pos = parseArgBody(body)
-      )
+    predicate parseArg(AccessPathToken token, ParameterPosition pos) {
+      token.getName() = "Argument" and
+      pos = parseArgBody(token.getAnArgument())
     }
 
-    private SummaryComponent interpretComponent(string c) {
-      specSplit(_, c, _) and
-      (
-        exists(ParameterPosition pos |
-          parseArg(c, pos) and result = SummaryComponent::argument(pos)
-        )
-        or
-        exists(ArgumentPosition pos |
-          parseParam(c, pos) and result = SummaryComponent::parameter(pos)
-        )
-        or
-        c = "ReturnValue" and result = SummaryComponent::return(getReturnValueKind())
-        or
-        result = interpretComponentSpecific(c)
+    private SummaryComponent interpretComponent(AccessPathToken token) {
+      exists(ParameterPosition pos |
+        parseArg(token, pos) and result = SummaryComponent::argument(pos)
       )
+      or
+      exists(ArgumentPosition pos |
+        parseParam(token, pos) and result = SummaryComponent::parameter(pos)
+      )
+      or
+      token = "ReturnValue" and result = SummaryComponent::return(getReturnValueKind())
+      or
+      result = interpretComponentSpecific(token)
     }
 
     /**
      * Holds if `spec` specifies summary component stack `stack`.
      */
-    predicate interpretSpec(string spec, SummaryComponentStack stack) {
-      interpretSpec(spec, 0, stack)
+    predicate interpretSpec(AccessPath spec, SummaryComponentStack stack) {
+      interpretSpec(spec, spec.getNumToken(), stack)
     }
 
-    private predicate interpretSpec(string spec, int idx, SummaryComponentStack stack) {
-      exists(string c |
-        relevantSpec(spec) and
-        specLength(spec, idx + 1) and
-        specSplit(spec, c, idx) and
-        stack = SummaryComponentStack::singleton(interpretComponent(c))
-      )
+    /** Holds if the first `n` tokens of `spec` resolves to `stack`. */
+    private predicate interpretSpec(AccessPath spec, int n, SummaryComponentStack stack) {
+      n = 1 and
+      stack = SummaryComponentStack::singleton(interpretComponent(spec.getToken(0)))
       or
       exists(SummaryComponent head, SummaryComponentStack tail |
-        interpretSpec(spec, idx, head, tail) and
+        interpretSpec(spec, n, head, tail) and
         stack = SummaryComponentStack::push(head, tail)
       )
     }
 
+    /** Holds if the first `n` tokens of `spec` resolves to `head` followed by `tail` */
     private predicate interpretSpec(
-      string output, int idx, SummaryComponent head, SummaryComponentStack tail
+      AccessPath spec, int n, SummaryComponent head, SummaryComponentStack tail
     ) {
-      exists(string c |
-        interpretSpec(output, idx + 1, tail) and
-        specSplit(output, c, idx) and
-        head = interpretComponent(c)
-      )
+      interpretSpec(spec, n - 1, tail) and
+      head = interpretComponent(spec.getToken(n - 1))
     }
 
     private class MkStack extends RequiredSummaryComponentStack {
@@ -903,7 +880,7 @@ module Private {
       override predicate propagatesFlow(
         SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
       ) {
-        exists(string inSpec, string outSpec, string kind |
+        exists(AccessPath inSpec, AccessPath outSpec, string kind |
           summaryElement(this, inSpec, outSpec, kind) and
           interpretSpec(inSpec, input) and
           interpretSpec(outSpec, output)
@@ -916,50 +893,56 @@ module Private {
     }
 
     /** Holds if component `c` of specification `spec` cannot be parsed. */
-    predicate invalidSpecComponent(string spec, string c) {
-      specSplit(spec, c, _) and
+    predicate invalidSpecComponent(AccessPath spec, string c) {
+      c = spec.getToken(_) and
       not exists(interpretComponent(c))
     }
 
-    private predicate inputNeedsReference(string c) {
-      c = "Argument" or
-      parseArg(c, _) or
+    private predicate inputNeedsReference(AccessPathToken c) {
+      c.getName() = "Argument" or
       inputNeedsReferenceSpecific(c)
     }
 
-    private predicate outputNeedsReference(string c) {
-      c = "Argument" or
-      parseArg(c, _) or
-      c = "ReturnValue" or
+    private predicate outputNeedsReference(AccessPathToken c) {
+      c.getName() = ["Argument", "ReturnValue"] or
       outputNeedsReferenceSpecific(c)
     }
 
-    private predicate sourceElementRef(InterpretNode ref, string output, string kind) {
+    private predicate sourceElementRef(InterpretNode ref, AccessPath output, string kind) {
       exists(SourceOrSinkElement e |
         sourceElement(e, output, kind) and
-        if outputNeedsReference(specLast(output))
+        if outputNeedsReference(output.getToken(0))
         then e = ref.getCallTarget()
         else e = ref.asElement()
       )
     }
 
-    private predicate sinkElementRef(InterpretNode ref, string input, string kind) {
+    private predicate sinkElementRef(InterpretNode ref, AccessPath input, string kind) {
       exists(SourceOrSinkElement e |
         sinkElement(e, input, kind) and
-        if inputNeedsReference(specLast(input))
+        if inputNeedsReference(input.getToken(0))
         then e = ref.getCallTarget()
         else e = ref.asElement()
       )
     }
 
-    private predicate interpretOutput(string output, int idx, InterpretNode ref, InterpretNode node) {
+    /** Holds if the first `n` tokens of `output` resolve to the given interpretation. */
+    private predicate interpretOutput(
+      AccessPath output, int n, InterpretNode ref, InterpretNode node
+    ) {
       sourceElementRef(ref, output, _) and
-      specLength(output, idx) and
-      node = ref
+      n = 0 and
+      (
+        if output = ""
+        then
+          // Allow language-specific interpretation of the empty access path
+          interpretOutputSpecific("", ref, node)
+        else node = ref
+      )
       or
-      exists(InterpretNode mid, string c |
-        interpretOutput(output, idx + 1, ref, mid) and
-        specSplit(output, c, idx)
+      exists(InterpretNode mid, AccessPathToken c |
+        interpretOutput(output, n - 1, ref, mid) and
+        c = output.getToken(n - 1)
       |
         exists(ArgumentPosition apos, ParameterPosition ppos |
           node.asNode().(PostUpdateNode).getPreUpdateNode().(ArgNode).argumentOf(mid.asCall(), apos) and
@@ -982,14 +965,21 @@ module Private {
       )
     }
 
-    private predicate interpretInput(string input, int idx, InterpretNode ref, InterpretNode node) {
+    /** Holds if the first `n` tokens of `input` resolve to the given interpretation. */
+    private predicate interpretInput(AccessPath input, int n, InterpretNode ref, InterpretNode node) {
       sinkElementRef(ref, input, _) and
-      specLength(input, idx) and
-      node = ref
+      n = 0 and
+      (
+        if input = ""
+        then
+          // Allow language-specific interpretation of the empty access path
+          interpretInputSpecific("", ref, node)
+        else node = ref
+      )
       or
-      exists(InterpretNode mid, string c |
-        interpretInput(input, idx + 1, ref, mid) and
-        specSplit(input, c, idx)
+      exists(InterpretNode mid, AccessPathToken c |
+        interpretInput(input, n - 1, ref, mid) and
+        c = input.getToken(n - 1)
       |
         exists(ArgumentPosition apos, ParameterPosition ppos |
           node.asNode().(ArgNode).argumentOf(mid.asCall(), apos) and
@@ -1014,9 +1004,9 @@ module Private {
      * model.
      */
     predicate isSourceNode(InterpretNode node, string kind) {
-      exists(InterpretNode ref, string output |
+      exists(InterpretNode ref, AccessPath output |
         sourceElementRef(ref, output, kind) and
-        interpretOutput(output, 0, ref, node)
+        interpretOutput(output, output.getNumToken(), ref, node)
       )
     }
 
@@ -1025,9 +1015,9 @@ module Private {
      * model.
      */
     predicate isSinkNode(InterpretNode node, string kind) {
-      exists(InterpretNode ref, string input |
+      exists(InterpretNode ref, AccessPath input |
         sinkElementRef(ref, input, kind) and
-        interpretInput(input, 0, ref, node)
+        interpretInput(input, input.getNumToken(), ref, node)
       )
     }
   }

@@ -22,7 +22,7 @@ private module Immutable {
   }
 
   /**
-   * An import of the `Immutable` library.
+   * Gets an import of the `Immutable` library.
    */
   API::Node immutableImport() {
     result = API::moduleImport("immutable")
@@ -31,7 +31,7 @@ private module Immutable {
   }
 
   /**
-   * An instance of any immutable collection.
+   * Gets an instance of any immutable collection.
    *
    * This predicate keeps track of which values in the program are Immutable collections.
    */

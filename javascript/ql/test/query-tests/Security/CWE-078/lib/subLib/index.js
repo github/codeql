@@ -7,3 +7,5 @@ module.exports = function (name) {
 module.exports.foo = function (name) {
 	cp.exec("rm -rf " + name); // NOT OK - this is being called explicitly from child_process-test.js
 };
+
+module.exports.amd = require("./amd.js");
