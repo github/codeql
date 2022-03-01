@@ -18,4 +18,4 @@ def test_ETXpath_class():
 def test_XPathEvaluator_class():
     root = etree.XML("<root><a>TEXT</a></root>")
     search_root = etree.XPathEvaluator(root)
-    text = search_root("path")[0]  # $ MISSING: getXPath="path"
+    text = search_root("path")[0]  # $ getXPath="path"

@@ -70,4 +70,19 @@ private module Lxml {
 
     override string getName() { result = "lxml.etree" }
   }
+
+  class XPathEvaluatorCall extends XPathExecution::Range, DataFlow::CallCfgNode {
+    XPathEvaluatorCall() {
+      this =
+        API::moduleImport("lxml")
+            .getMember("etree")
+            .getMember("XPathEvaluator")
+            .getReturn()
+            .getACall()
+    }
+
+    override DataFlow::Node getXPath() { result = this.getArg(0) }
+
+    override string getName() { result = "lxml.etree" }
+  }
 }
