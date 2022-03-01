@@ -71,10 +71,14 @@ abstract deprecated class TrackedNode extends DataFlow::Node {
 /**
  * An expression whose value should be tracked inter-procedurally.
  *
- * To track additional expressions, extends this class with additional
+ * To track additional expressions, extend this class with additional
  * subclasses.
  */
 abstract deprecated class TrackedExpr extends Expr {
+  /**
+   * Holds if this expression flows into `sink` in zero or more (possibly
+   * inter-procedural) steps.
+   */
   predicate flowsTo(Expr sink) {
     exists(TrackedExprNode ten | ten.asExpr() = this | ten.flowsTo(DataFlow::valueNode(sink)))
   }
