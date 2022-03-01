@@ -122,6 +122,7 @@ class Configuration extends TaintTracking::Configuration {
     guard instanceof InstanceofCheck or
     guard instanceof IsArrayCheck or
     guard instanceof TypeofCheck or
+    guard instanceof NumberGuard or
     guard instanceof EqualityCheck or
     guard instanceof IncludesCheck
   }
@@ -226,6 +227,16 @@ private class TypeofCheck extends TaintTracking::LabeledSanitizerGuardNode, Data
     e = operand and
     label instanceof ObjectPrototype
   }
+}
+
+/** A guard that checks whether `x` is a number. */
+class NumberGuard extends TaintTracking::SanitizerGuardNode instanceof DataFlow::CallNode {
+  Expr x;
+  boolean polarity;
+
+  NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
+
+  override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
 }
 
 /** A call to `Array.isArray`, which is false for `Object.prototype`. */

@@ -87,6 +87,15 @@ private DataFlow::Node getAValueExportedByPackage() {
     result = getAnExportFromModule(mod)
   )
   or
+  // require("./other-module.js"); inside an AMD module.
+  exists(Module mod, CallExpr call |
+    call = getAValueExportedByPackage().asExpr() and
+    call = any(AmdModuleDefinition e).getARequireCall() and
+    mod = call.getAnArgument().(Import).getImportedModule()
+  |
+    result = getAnExportFromModule(mod)
+  )
+  or
   // module.exports = class Foo {
   //   bar() {} // <- result
   //   static baz() {} // <- result
@@ -215,6 +224,10 @@ private DataFlow::Node getAnExportFromModule(Module mod) {
   result = mod.getAnExportedValue(publicPropertyName())
   or
   result = mod.getABulkExportedNode()
+  or
+  // exports saved to the global object
+  result = DataFlow::globalObjectRef().getAPropertyWrite().getRhs() and
+  result.getTopLevel() = mod
   or
   result.analyze().getAValue() = TAbstractModuleObject(mod)
 }

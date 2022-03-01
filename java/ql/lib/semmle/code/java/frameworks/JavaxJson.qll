@@ -11,13 +11,13 @@ private class FlowSummaries extends SummaryModelCsv {
       ["javax", "jakarta"] +
         [
           ".json;Json;false;createArrayBuilder;(JsonArray);;Argument[0];ReturnValue;taint",
-          ".json;Json;false;createArrayBuilder;(Collection);;Element of Argument[0];ReturnValue;taint",
+          ".json;Json;false;createArrayBuilder;(Collection);;Argument[0].Element;ReturnValue;taint",
           ".json;Json;false;createDiff;;;Argument[0..1];ReturnValue;taint",
           ".json;Json;false;createMergeDiff;;;Argument[0..1];ReturnValue;taint",
           ".json;Json;false;createMergePatch;;;Argument[0];ReturnValue;taint",
           ".json;Json;false;createObjectBuilder;(JsonObject);;Argument[0];ReturnValue;taint",
-          ".json;Json;false;createObjectBuilder;(Map);;MapKey of Argument[0];ReturnValue;taint",
-          ".json;Json;false;createObjectBuilder;(Map);;MapValue of Argument[0];ReturnValue;taint",
+          ".json;Json;false;createObjectBuilder;(Map);;Argument[0].MapKey;ReturnValue;taint",
+          ".json;Json;false;createObjectBuilder;(Map);;Argument[0].MapValue;ReturnValue;taint",
           ".json;Json;false;createPatch;;;Argument[0];ReturnValue;taint",
           ".json;Json;false;createPatchBuilder;;;Argument[0];ReturnValue;taint",
           ".json;Json;false;createPointer;;;Argument[0];ReturnValue;taint",

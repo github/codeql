@@ -8,7 +8,7 @@ private module Micro {
   private import DataFlow
 
   /**
-   * A node that should be interpreted as a route handler, to use as starting
+   * Gets a node that should be interpreted as a route handler, to use as starting
    * point for back-tracking.
    */
   Node microRouteHandlerSink() {

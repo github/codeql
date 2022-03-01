@@ -66,7 +66,7 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
 
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
-SummaryComponent interpretComponentSpecific(string c) {
+SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   exists(Content content | parseContent(c, content) and result = SummaryComponent::content(content))
 }
 
@@ -200,21 +200,10 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
   )
 }
 
-bindingset[s]
-private int parsePosition(string s) {
-  result = s.regexpCapture("([-0-9]+)", 1).toInt()
-  or
-  exists(int n1, int n2 |
-    s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 1).toInt() = n1 and
-    s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 2).toInt() = n2 and
-    result in [n1 .. n2]
-  )
-}
-
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[s]
-ArgumentPosition parseParamBody(string s) { result = parsePosition(s) }
+ArgumentPosition parseParamBody(string s) { result = AccessPath::parseInt(s) }
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
 bindingset[s]
-ParameterPosition parseArgBody(string s) { result = parsePosition(s) }
+ParameterPosition parseArgBody(string s) { result = AccessPath::parseInt(s) }

@@ -1,0 +1,1 @@
+| BasicObject.rb:1:1:1:49 | call to instance_eval | BasicObject.rb:1:23:1:34 | "self.class" |

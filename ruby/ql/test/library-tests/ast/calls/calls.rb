@@ -265,7 +265,7 @@ X::foo rescue X::bar
 # block argument
 foo(&bar)
 foo(&X::bar)
-
+foo(&)
 # splat argument
 foo(*bar)
 foo(*X::bar)
@@ -340,3 +340,8 @@ end
 for x, y, z in [[1,2,3], [4,5,6]]
   foo x, y, z
 end
+
+foo(x: 42)
+foo(x:, novar:)
+foo(X: 42)
+foo(X:)

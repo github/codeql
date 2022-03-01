@@ -1,10 +1,10 @@
 /**
- * @name Uncontrolled data used in network request
- * @description Sending network requests with user-controlled data allows for request forgery attacks.
+ * @name Server-side request forgery
+ * @description Making a network request with user-controlled data in the URL allows for request forgery attacks.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.1
- * @precision medium
+ * @precision high
  * @id js/request-forgery
  * @tags security
  *       external/cwe/cwe-918

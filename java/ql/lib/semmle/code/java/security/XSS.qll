@@ -79,7 +79,7 @@ private class XssVulnerableWriterSourceToWritingMethodFlowConfig extends TaintTr
 /** A method that can be used to output data to an output stream or writer. */
 private class WritingMethod extends Method {
   WritingMethod() {
-    this.getDeclaringType().getASupertype*().hasQualifiedName("java.io", _) and
+    this.getDeclaringType().getAnAncestor().hasQualifiedName("java.io", _) and
     (
       this.getName().matches("print%") or
       this.getName() = "append" or

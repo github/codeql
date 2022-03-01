@@ -293,13 +293,16 @@ class Pair extends Expr, TPair {
   final Expr getKey() { toGenerated(result) = g.getKey() }
 
   /**
-   * Gets the value expression of this pair. For example, the `InteralLiteral`
+   * Gets the value expression of this pair. For example, the `IntegerLiteral`
    * 123 in the following hash pair:
    * ```rb
    * { 'foo' => 123 }
    * ```
    */
-  final Expr getValue() { toGenerated(result) = g.getValue() }
+  final Expr getValue() {
+    toGenerated(result) = g.getValue() or
+    synthChild(this, 0, result)
+  }
 
   final override string toString() { result = "Pair" }
 

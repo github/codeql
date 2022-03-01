@@ -1,5 +1,5 @@
 # `foo_file` is a `File` instance
-foo_file = File.new("foo.txt")
+foo_file = File.new("foo.txt", "a+")
 foo_file_2 = foo_file
 foo_file
 
@@ -35,3 +35,14 @@ date = IO.read("|date")
 rand_open = IO.open(IO.sysopen("/dev/random", "r"), "r")
 
 foo_file_3 = File.open("foo.txt")
+
+# File write accesses
+foo_file.puts("hello")
+File.open("foo.txt", "a+").write("world\n")
+
+# IO instance
+io_file = IO.open(IO.sysopen("foo.txt", "w"))
+str_1 = "hello"
+int_1 = 123
+# File/IO write
+io_file.printf("%s: %d\n", str_1, int_1)

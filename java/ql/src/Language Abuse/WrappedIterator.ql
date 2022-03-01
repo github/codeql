@@ -27,7 +27,7 @@ predicate iteratorWrapper(Iterable it, Field f, boolean wrap) {
   // ... whose type is a sub-type of `java.util.Iterator` and ...
   f.getType()
       .(RefType)
-      .getASupertype*()
+      .getAnAncestor()
       .getSourceDeclaration()
       .hasQualifiedName("java.util", "Iterator") and
   // ... whose value is returned by the `iterator()` method of this class ...

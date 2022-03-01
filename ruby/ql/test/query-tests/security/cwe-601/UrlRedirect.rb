@@ -45,9 +45,16 @@ class UsersController < ActionController::Base
   end
 
   # GOOD
-  # Technically vulnerable, but we assume this is a handler for a POST request,
+  # Technically vulnerable, this is a handler for a POST request,
   # so can't be triggered by following a link.
-  def create
+  def create1
+    redirect_to params[:key]
+  end
+
+  # BAD
+  # The same as `create1` but this is reachable via a GET request, as configured
+  # by the routes at the top of this file.
+  def route9
     redirect_to params[:key]
   end
 
@@ -56,4 +63,8 @@ class UsersController < ActionController::Base
   def filter_params(input_params)
     input_params.permit(:key)
   end
+end
+
+Rails.routes.draw do
+  get "/r9", to: "users#route9"
 end

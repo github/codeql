@@ -1,0 +1,1497 @@
+// CodeQL database schema for Ruby
+// Automatically generated from the tree-sitter grammar; do not edit
+
+@location = @location_default
+
+locations_default(
+  unique int id: @location_default,
+  int file: @file ref,
+  int start_line: int ref,
+  int start_column: int ref,
+  int end_line: int ref,
+  int end_column: int ref
+);
+
+files(
+  unique int id: @file,
+  string name: string ref
+);
+
+folders(
+  unique int id: @folder,
+  string name: string ref
+);
+
+@container = @file | @folder
+
+containerparent(
+  int parent: @container ref,
+  unique int child: @container ref
+);
+
+sourceLocationPrefix(
+  string prefix: string ref
+);
+
+diagnostics(
+  unique int id: @diagnostic,
+  int severity: int ref,
+  string error_tag: string ref,
+  string error_message: string ref,
+  string full_error_message: string ref,
+  int location: @location_default ref
+);
+
+case @diagnostic.severity of
+  10 = @diagnostic_debug
+| 20 = @diagnostic_info
+| 30 = @diagnostic_warning
+| 40 = @diagnostic_error
+;
+
+
+@ruby_underscore_arg = @ruby_assignment | @ruby_binary | @ruby_conditional | @ruby_operator_assignment | @ruby_range | @ruby_unary | @ruby_underscore_primary
+
+@ruby_underscore_expression = @ruby_assignment | @ruby_binary | @ruby_break | @ruby_call | @ruby_next | @ruby_operator_assignment | @ruby_return | @ruby_unary | @ruby_underscore_arg | @ruby_yield
+
+@ruby_underscore_lhs = @ruby_call | @ruby_element_reference | @ruby_scope_resolution | @ruby_token_false | @ruby_token_nil | @ruby_token_true | @ruby_underscore_variable
+
+@ruby_underscore_method_name = @ruby_delimited_symbol | @ruby_setter | @ruby_token_constant | @ruby_token_identifier | @ruby_token_operator | @ruby_token_simple_symbol | @ruby_underscore_nonlocal_variable
+
+@ruby_underscore_nonlocal_variable = @ruby_token_class_variable | @ruby_token_global_variable | @ruby_token_instance_variable
+
+@ruby_underscore_pattern_constant = @ruby_scope_resolution | @ruby_token_constant
+
+@ruby_underscore_pattern_expr = @ruby_alternative_pattern | @ruby_as_pattern | @ruby_underscore_pattern_expr_basic
+
+@ruby_underscore_pattern_expr_basic = @ruby_array_pattern | @ruby_expression_reference_pattern | @ruby_find_pattern | @ruby_hash_pattern | @ruby_parenthesized_pattern | @ruby_range | @ruby_token_identifier | @ruby_underscore_pattern_constant | @ruby_underscore_pattern_primitive | @ruby_variable_reference_pattern
+
+@ruby_underscore_pattern_primitive = @ruby_delimited_symbol | @ruby_lambda | @ruby_regex | @ruby_string__ | @ruby_string_array | @ruby_symbol_array | @ruby_token_encoding | @ruby_token_false | @ruby_token_file | @ruby_token_line | @ruby_token_nil | @ruby_token_self | @ruby_token_simple_symbol | @ruby_token_true | @ruby_unary | @ruby_underscore_simple_numeric
+
+@ruby_underscore_pattern_top_expr_body = @ruby_array_pattern | @ruby_find_pattern | @ruby_hash_pattern | @ruby_underscore_pattern_expr
+
+@ruby_underscore_primary = @ruby_array | @ruby_begin | @ruby_break | @ruby_case__ | @ruby_case_match | @ruby_chained_string | @ruby_class | @ruby_delimited_symbol | @ruby_for | @ruby_hash | @ruby_if | @ruby_lambda | @ruby_method | @ruby_module | @ruby_next | @ruby_parenthesized_statements | @ruby_redo | @ruby_regex | @ruby_retry | @ruby_return | @ruby_singleton_class | @ruby_singleton_method | @ruby_string__ | @ruby_string_array | @ruby_subshell | @ruby_symbol_array | @ruby_token_character | @ruby_token_heredoc_beginning | @ruby_token_simple_symbol | @ruby_unary | @ruby_underscore_lhs | @ruby_underscore_simple_numeric | @ruby_unless | @ruby_until | @ruby_while | @ruby_yield
+
+@ruby_underscore_simple_numeric = @ruby_rational | @ruby_token_complex | @ruby_token_float | @ruby_token_integer
+
+@ruby_underscore_statement = @ruby_alias | @ruby_begin_block | @ruby_end_block | @ruby_if_modifier | @ruby_rescue_modifier | @ruby_undef | @ruby_underscore_expression | @ruby_unless_modifier | @ruby_until_modifier | @ruby_while_modifier
+
+@ruby_underscore_variable = @ruby_token_constant | @ruby_token_identifier | @ruby_token_self | @ruby_token_super | @ruby_underscore_nonlocal_variable
+
+ruby_alias_def(
+  unique int id: @ruby_alias,
+  int alias: @ruby_underscore_method_name ref,
+  int name: @ruby_underscore_method_name ref,
+  int loc: @location ref
+);
+
+#keyset[ruby_alternative_pattern, index]
+ruby_alternative_pattern_alternatives(
+  int ruby_alternative_pattern: @ruby_alternative_pattern ref,
+  int index: int ref,
+  unique int alternatives: @ruby_underscore_pattern_expr_basic ref
+);
+
+ruby_alternative_pattern_def(
+  unique int id: @ruby_alternative_pattern,
+  int loc: @location ref
+);
+
+@ruby_argument_list_child_type = @ruby_block_argument | @ruby_hash_splat_argument | @ruby_pair | @ruby_splat_argument | @ruby_token_forward_argument | @ruby_underscore_expression
+
+#keyset[ruby_argument_list, index]
+ruby_argument_list_child(
+  int ruby_argument_list: @ruby_argument_list ref,
+  int index: int ref,
+  unique int child: @ruby_argument_list_child_type ref
+);
+
+ruby_argument_list_def(
+  unique int id: @ruby_argument_list,
+  int loc: @location ref
+);
+
+@ruby_array_child_type = @ruby_block_argument | @ruby_hash_splat_argument | @ruby_pair | @ruby_splat_argument | @ruby_token_forward_argument | @ruby_underscore_expression
+
+#keyset[ruby_array, index]
+ruby_array_child(
+  int ruby_array: @ruby_array ref,
+  int index: int ref,
+  unique int child: @ruby_array_child_type ref
+);
+
+ruby_array_def(
+  unique int id: @ruby_array,
+  int loc: @location ref
+);
+
+ruby_array_pattern_class(
+  unique int ruby_array_pattern: @ruby_array_pattern ref,
+  unique int class: @ruby_underscore_pattern_constant ref
+);
+
+@ruby_array_pattern_child_type = @ruby_splat_parameter | @ruby_underscore_pattern_expr
+
+#keyset[ruby_array_pattern, index]
+ruby_array_pattern_child(
+  int ruby_array_pattern: @ruby_array_pattern ref,
+  int index: int ref,
+  unique int child: @ruby_array_pattern_child_type ref
+);
+
+ruby_array_pattern_def(
+  unique int id: @ruby_array_pattern,
+  int loc: @location ref
+);
+
+ruby_as_pattern_def(
+  unique int id: @ruby_as_pattern,
+  int name: @ruby_token_identifier ref,
+  int value: @ruby_underscore_pattern_expr ref,
+  int loc: @location ref
+);
+
+@ruby_assignment_left_type = @ruby_left_assignment_list | @ruby_underscore_lhs
+
+@ruby_assignment_right_type = @ruby_right_assignment_list | @ruby_splat_argument | @ruby_underscore_expression
+
+ruby_assignment_def(
+  unique int id: @ruby_assignment,
+  int left: @ruby_assignment_left_type ref,
+  int right: @ruby_assignment_right_type ref,
+  int loc: @location ref
+);
+
+@ruby_bare_string_child_type = @ruby_interpolation | @ruby_token_escape_sequence | @ruby_token_string_content
+
+#keyset[ruby_bare_string, index]
+ruby_bare_string_child(
+  int ruby_bare_string: @ruby_bare_string ref,
+  int index: int ref,
+  unique int child: @ruby_bare_string_child_type ref
+);
+
+ruby_bare_string_def(
+  unique int id: @ruby_bare_string,
+  int loc: @location ref
+);
+
+@ruby_bare_symbol_child_type = @ruby_interpolation | @ruby_token_escape_sequence | @ruby_token_string_content
+
+#keyset[ruby_bare_symbol, index]
+ruby_bare_symbol_child(
+  int ruby_bare_symbol: @ruby_bare_symbol ref,
+  int index: int ref,
+  unique int child: @ruby_bare_symbol_child_type ref
+);
+
+ruby_bare_symbol_def(
+  unique int id: @ruby_bare_symbol,
+  int loc: @location ref
+);
+
+@ruby_begin_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_begin, index]
+ruby_begin_child(
+  int ruby_begin: @ruby_begin ref,
+  int index: int ref,
+  unique int child: @ruby_begin_child_type ref
+);
+
+ruby_begin_def(
+  unique int id: @ruby_begin,
+  int loc: @location ref
+);
+
+@ruby_begin_block_child_type = @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_begin_block, index]
+ruby_begin_block_child(
+  int ruby_begin_block: @ruby_begin_block ref,
+  int index: int ref,
+  unique int child: @ruby_begin_block_child_type ref
+);
+
+ruby_begin_block_def(
+  unique int id: @ruby_begin_block,
+  int loc: @location ref
+);
+
+case @ruby_binary.operator of
+  0 = @ruby_binary_bangequal
+| 1 = @ruby_binary_bangtilde
+| 2 = @ruby_binary_percent
+| 3 = @ruby_binary_ampersand
+| 4 = @ruby_binary_ampersandampersand
+| 5 = @ruby_binary_star
+| 6 = @ruby_binary_starstar
+| 7 = @ruby_binary_plus
+| 8 = @ruby_binary_minus
+| 9 = @ruby_binary_slash
+| 10 = @ruby_binary_langle
+| 11 = @ruby_binary_langlelangle
+| 12 = @ruby_binary_langleequal
+| 13 = @ruby_binary_langleequalrangle
+| 14 = @ruby_binary_equalequal
+| 15 = @ruby_binary_equalequalequal
+| 16 = @ruby_binary_equaltilde
+| 17 = @ruby_binary_rangle
+| 18 = @ruby_binary_rangleequal
+| 19 = @ruby_binary_ranglerangle
+| 20 = @ruby_binary_caret
+| 21 = @ruby_binary_and
+| 22 = @ruby_binary_or
+| 23 = @ruby_binary_pipe
+| 24 = @ruby_binary_pipepipe
+;
+
+
+ruby_binary_def(
+  unique int id: @ruby_binary,
+  int left: @ruby_underscore_expression ref,
+  int operator: int ref,
+  int right: @ruby_underscore_expression ref,
+  int loc: @location ref
+);
+
+ruby_block_parameters(
+  unique int ruby_block: @ruby_block ref,
+  unique int parameters: @ruby_block_parameters ref
+);
+
+@ruby_block_child_type = @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_block, index]
+ruby_block_child(
+  int ruby_block: @ruby_block ref,
+  int index: int ref,
+  unique int child: @ruby_block_child_type ref
+);
+
+ruby_block_def(
+  unique int id: @ruby_block,
+  int loc: @location ref
+);
+
+ruby_block_argument_child(
+  unique int ruby_block_argument: @ruby_block_argument ref,
+  unique int child: @ruby_underscore_arg ref
+);
+
+ruby_block_argument_def(
+  unique int id: @ruby_block_argument,
+  int loc: @location ref
+);
+
+ruby_block_parameter_name(
+  unique int ruby_block_parameter: @ruby_block_parameter ref,
+  unique int name: @ruby_token_identifier ref
+);
+
+ruby_block_parameter_def(
+  unique int id: @ruby_block_parameter,
+  int loc: @location ref
+);
+
+@ruby_block_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_hash_splat_nil | @ruby_token_identifier
+
+#keyset[ruby_block_parameters, index]
+ruby_block_parameters_child(
+  int ruby_block_parameters: @ruby_block_parameters ref,
+  int index: int ref,
+  unique int child: @ruby_block_parameters_child_type ref
+);
+
+ruby_block_parameters_def(
+  unique int id: @ruby_block_parameters,
+  int loc: @location ref
+);
+
+ruby_break_child(
+  unique int ruby_break: @ruby_break ref,
+  unique int child: @ruby_argument_list ref
+);
+
+ruby_break_def(
+  unique int id: @ruby_break,
+  int loc: @location ref
+);
+
+ruby_call_arguments(
+  unique int ruby_call: @ruby_call ref,
+  unique int arguments: @ruby_argument_list ref
+);
+
+@ruby_call_block_type = @ruby_block | @ruby_do_block
+
+ruby_call_block(
+  unique int ruby_call: @ruby_call ref,
+  unique int block: @ruby_call_block_type ref
+);
+
+@ruby_call_method_type = @ruby_argument_list | @ruby_scope_resolution | @ruby_token_operator | @ruby_underscore_variable
+
+@ruby_call_receiver_type = @ruby_call | @ruby_underscore_primary
+
+ruby_call_receiver(
+  unique int ruby_call: @ruby_call ref,
+  unique int receiver: @ruby_call_receiver_type ref
+);
+
+ruby_call_def(
+  unique int id: @ruby_call,
+  int method: @ruby_call_method_type ref,
+  int loc: @location ref
+);
+
+ruby_case_value(
+  unique int ruby_case__: @ruby_case__ ref,
+  unique int value: @ruby_underscore_statement ref
+);
+
+@ruby_case_child_type = @ruby_else | @ruby_when
+
+#keyset[ruby_case__, index]
+ruby_case_child(
+  int ruby_case__: @ruby_case__ ref,
+  int index: int ref,
+  unique int child: @ruby_case_child_type ref
+);
+
+ruby_case_def(
+  unique int id: @ruby_case__,
+  int loc: @location ref
+);
+
+#keyset[ruby_case_match, index]
+ruby_case_match_clauses(
+  int ruby_case_match: @ruby_case_match ref,
+  int index: int ref,
+  unique int clauses: @ruby_in_clause ref
+);
+
+ruby_case_match_else(
+  unique int ruby_case_match: @ruby_case_match ref,
+  unique int else: @ruby_else ref
+);
+
+ruby_case_match_def(
+  unique int id: @ruby_case_match,
+  int value: @ruby_underscore_statement ref,
+  int loc: @location ref
+);
+
+#keyset[ruby_chained_string, index]
+ruby_chained_string_child(
+  int ruby_chained_string: @ruby_chained_string ref,
+  int index: int ref,
+  unique int child: @ruby_string__ ref
+);
+
+ruby_chained_string_def(
+  unique int id: @ruby_chained_string,
+  int loc: @location ref
+);
+
+@ruby_class_name_type = @ruby_scope_resolution | @ruby_token_constant
+
+ruby_class_superclass(
+  unique int ruby_class: @ruby_class ref,
+  unique int superclass: @ruby_superclass ref
+);
+
+@ruby_class_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_class, index]
+ruby_class_child(
+  int ruby_class: @ruby_class ref,
+  int index: int ref,
+  unique int child: @ruby_class_child_type ref
+);
+
+ruby_class_def(
+  unique int id: @ruby_class,
+  int name: @ruby_class_name_type ref,
+  int loc: @location ref
+);
+
+ruby_conditional_def(
+  unique int id: @ruby_conditional,
+  int alternative: @ruby_underscore_arg ref,
+  int condition: @ruby_underscore_arg ref,
+  int consequence: @ruby_underscore_arg ref,
+  int loc: @location ref
+);
+
+@ruby_delimited_symbol_child_type = @ruby_interpolation | @ruby_token_escape_sequence | @ruby_token_string_content
+
+#keyset[ruby_delimited_symbol, index]
+ruby_delimited_symbol_child(
+  int ruby_delimited_symbol: @ruby_delimited_symbol ref,
+  int index: int ref,
+  unique int child: @ruby_delimited_symbol_child_type ref
+);
+
+ruby_delimited_symbol_def(
+  unique int id: @ruby_delimited_symbol,
+  int loc: @location ref
+);
+
+@ruby_destructured_left_assignment_child_type = @ruby_destructured_left_assignment | @ruby_rest_assignment | @ruby_underscore_lhs
+
+#keyset[ruby_destructured_left_assignment, index]
+ruby_destructured_left_assignment_child(
+  int ruby_destructured_left_assignment: @ruby_destructured_left_assignment ref,
+  int index: int ref,
+  unique int child: @ruby_destructured_left_assignment_child_type ref
+);
+
+ruby_destructured_left_assignment_def(
+  unique int id: @ruby_destructured_left_assignment,
+  int loc: @location ref
+);
+
+@ruby_destructured_parameter_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_hash_splat_nil | @ruby_token_identifier
+
+#keyset[ruby_destructured_parameter, index]
+ruby_destructured_parameter_child(
+  int ruby_destructured_parameter: @ruby_destructured_parameter ref,
+  int index: int ref,
+  unique int child: @ruby_destructured_parameter_child_type ref
+);
+
+ruby_destructured_parameter_def(
+  unique int id: @ruby_destructured_parameter,
+  int loc: @location ref
+);
+
+@ruby_do_child_type = @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_do, index]
+ruby_do_child(
+  int ruby_do: @ruby_do ref,
+  int index: int ref,
+  unique int child: @ruby_do_child_type ref
+);
+
+ruby_do_def(
+  unique int id: @ruby_do,
+  int loc: @location ref
+);
+
+ruby_do_block_parameters(
+  unique int ruby_do_block: @ruby_do_block ref,
+  unique int parameters: @ruby_block_parameters ref
+);
+
+@ruby_do_block_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_do_block, index]
+ruby_do_block_child(
+  int ruby_do_block: @ruby_do_block ref,
+  int index: int ref,
+  unique int child: @ruby_do_block_child_type ref
+);
+
+ruby_do_block_def(
+  unique int id: @ruby_do_block,
+  int loc: @location ref
+);
+
+@ruby_element_reference_child_type = @ruby_block_argument | @ruby_hash_splat_argument | @ruby_pair | @ruby_splat_argument | @ruby_token_forward_argument | @ruby_underscore_expression
+
+#keyset[ruby_element_reference, index]
+ruby_element_reference_child(
+  int ruby_element_reference: @ruby_element_reference ref,
+  int index: int ref,
+  unique int child: @ruby_element_reference_child_type ref
+);
+
+ruby_element_reference_def(
+  unique int id: @ruby_element_reference,
+  int object: @ruby_underscore_primary ref,
+  int loc: @location ref
+);
+
+@ruby_else_child_type = @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_else, index]
+ruby_else_child(
+  int ruby_else: @ruby_else ref,
+  int index: int ref,
+  unique int child: @ruby_else_child_type ref
+);
+
+ruby_else_def(
+  unique int id: @ruby_else,
+  int loc: @location ref
+);
+
+@ruby_elsif_alternative_type = @ruby_else | @ruby_elsif
+
+ruby_elsif_alternative(
+  unique int ruby_elsif: @ruby_elsif ref,
+  unique int alternative: @ruby_elsif_alternative_type ref
+);
+
+ruby_elsif_consequence(
+  unique int ruby_elsif: @ruby_elsif ref,
+  unique int consequence: @ruby_then ref
+);
+
+ruby_elsif_def(
+  unique int id: @ruby_elsif,
+  int condition: @ruby_underscore_statement ref,
+  int loc: @location ref
+);
+
+@ruby_end_block_child_type = @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_end_block, index]
+ruby_end_block_child(
+  int ruby_end_block: @ruby_end_block ref,
+  int index: int ref,
+  unique int child: @ruby_end_block_child_type ref
+);
+
+ruby_end_block_def(
+  unique int id: @ruby_end_block,
+  int loc: @location ref
+);
+
+@ruby_ensure_child_type = @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_ensure, index]
+ruby_ensure_child(
+  int ruby_ensure: @ruby_ensure ref,
+  int index: int ref,
+  unique int child: @ruby_ensure_child_type ref
+);
+
+ruby_ensure_def(
+  unique int id: @ruby_ensure,
+  int loc: @location ref
+);
+
+ruby_exception_variable_def(
+  unique int id: @ruby_exception_variable,
+  int child: @ruby_underscore_lhs ref,
+  int loc: @location ref
+);
+
+@ruby_exceptions_child_type = @ruby_splat_argument | @ruby_underscore_arg
+
+#keyset[ruby_exceptions, index]
+ruby_exceptions_child(
+  int ruby_exceptions: @ruby_exceptions ref,
+  int index: int ref,
+  unique int child: @ruby_exceptions_child_type ref
+);
+
+ruby_exceptions_def(
+  unique int id: @ruby_exceptions,
+  int loc: @location ref
+);
+
+ruby_expression_reference_pattern_def(
+  unique int id: @ruby_expression_reference_pattern,
+  int value: @ruby_underscore_expression ref,
+  int loc: @location ref
+);
+
+ruby_find_pattern_class(
+  unique int ruby_find_pattern: @ruby_find_pattern ref,
+  unique int class: @ruby_underscore_pattern_constant ref
+);
+
+@ruby_find_pattern_child_type = @ruby_splat_parameter | @ruby_underscore_pattern_expr
+
+#keyset[ruby_find_pattern, index]
+ruby_find_pattern_child(
+  int ruby_find_pattern: @ruby_find_pattern ref,
+  int index: int ref,
+  unique int child: @ruby_find_pattern_child_type ref
+);
+
+ruby_find_pattern_def(
+  unique int id: @ruby_find_pattern,
+  int loc: @location ref
+);
+
+@ruby_for_pattern_type = @ruby_left_assignment_list | @ruby_underscore_lhs
+
+ruby_for_def(
+  unique int id: @ruby_for,
+  int body: @ruby_do ref,
+  int pattern: @ruby_for_pattern_type ref,
+  int value: @ruby_in ref,
+  int loc: @location ref
+);
+
+@ruby_hash_child_type = @ruby_hash_splat_argument | @ruby_pair
+
+#keyset[ruby_hash, index]
+ruby_hash_child(
+  int ruby_hash: @ruby_hash ref,
+  int index: int ref,
+  unique int child: @ruby_hash_child_type ref
+);
+
+ruby_hash_def(
+  unique int id: @ruby_hash,
+  int loc: @location ref
+);
+
+ruby_hash_pattern_class(
+  unique int ruby_hash_pattern: @ruby_hash_pattern ref,
+  unique int class: @ruby_underscore_pattern_constant ref
+);
+
+@ruby_hash_pattern_child_type = @ruby_hash_splat_parameter | @ruby_keyword_pattern | @ruby_token_hash_splat_nil
+
+#keyset[ruby_hash_pattern, index]
+ruby_hash_pattern_child(
+  int ruby_hash_pattern: @ruby_hash_pattern ref,
+  int index: int ref,
+  unique int child: @ruby_hash_pattern_child_type ref
+);
+
+ruby_hash_pattern_def(
+  unique int id: @ruby_hash_pattern,
+  int loc: @location ref
+);
+
+ruby_hash_splat_argument_def(
+  unique int id: @ruby_hash_splat_argument,
+  int child: @ruby_underscore_arg ref,
+  int loc: @location ref
+);
+
+ruby_hash_splat_parameter_name(
+  unique int ruby_hash_splat_parameter: @ruby_hash_splat_parameter ref,
+  unique int name: @ruby_token_identifier ref
+);
+
+ruby_hash_splat_parameter_def(
+  unique int id: @ruby_hash_splat_parameter,
+  int loc: @location ref
+);
+
+@ruby_heredoc_body_child_type = @ruby_interpolation | @ruby_token_escape_sequence | @ruby_token_heredoc_content | @ruby_token_heredoc_end
+
+#keyset[ruby_heredoc_body, index]
+ruby_heredoc_body_child(
+  int ruby_heredoc_body: @ruby_heredoc_body ref,
+  int index: int ref,
+  unique int child: @ruby_heredoc_body_child_type ref
+);
+
+ruby_heredoc_body_def(
+  unique int id: @ruby_heredoc_body,
+  int loc: @location ref
+);
+
+@ruby_if_alternative_type = @ruby_else | @ruby_elsif
+
+ruby_if_alternative(
+  unique int ruby_if: @ruby_if ref,
+  unique int alternative: @ruby_if_alternative_type ref
+);
+
+ruby_if_consequence(
+  unique int ruby_if: @ruby_if ref,
+  unique int consequence: @ruby_then ref
+);
+
+ruby_if_def(
+  unique int id: @ruby_if,
+  int condition: @ruby_underscore_statement ref,
+  int loc: @location ref
+);
+
+ruby_if_guard_def(
+  unique int id: @ruby_if_guard,
+  int condition: @ruby_underscore_expression ref,
+  int loc: @location ref
+);
+
+ruby_if_modifier_def(
+  unique int id: @ruby_if_modifier,
+  int body: @ruby_underscore_statement ref,
+  int condition: @ruby_underscore_expression ref,
+  int loc: @location ref
+);
+
+ruby_in_def(
+  unique int id: @ruby_in,
+  int child: @ruby_underscore_arg ref,
+  int loc: @location ref
+);
+
+ruby_in_clause_body(
+  unique int ruby_in_clause: @ruby_in_clause ref,
+  unique int body: @ruby_then ref
+);
+
+@ruby_in_clause_guard_type = @ruby_if_guard | @ruby_unless_guard
+
+ruby_in_clause_guard(
+  unique int ruby_in_clause: @ruby_in_clause ref,
+  unique int guard: @ruby_in_clause_guard_type ref
+);
+
+ruby_in_clause_def(
+  unique int id: @ruby_in_clause,
+  int pattern: @ruby_underscore_pattern_top_expr_body ref,
+  int loc: @location ref
+);
+
+@ruby_interpolation_child_type = @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_interpolation, index]
+ruby_interpolation_child(
+  int ruby_interpolation: @ruby_interpolation ref,
+  int index: int ref,
+  unique int child: @ruby_interpolation_child_type ref
+);
+
+ruby_interpolation_def(
+  unique int id: @ruby_interpolation,
+  int loc: @location ref
+);
+
+ruby_keyword_parameter_value(
+  unique int ruby_keyword_parameter: @ruby_keyword_parameter ref,
+  unique int value: @ruby_underscore_arg ref
+);
+
+ruby_keyword_parameter_def(
+  unique int id: @ruby_keyword_parameter,
+  int name: @ruby_token_identifier ref,
+  int loc: @location ref
+);
+
+@ruby_keyword_pattern_key_type = @ruby_string__ | @ruby_token_hash_key_symbol
+
+ruby_keyword_pattern_value(
+  unique int ruby_keyword_pattern: @ruby_keyword_pattern ref,
+  unique int value: @ruby_underscore_pattern_expr ref
+);
+
+ruby_keyword_pattern_def(
+  unique int id: @ruby_keyword_pattern,
+  int key__: @ruby_keyword_pattern_key_type ref,
+  int loc: @location ref
+);
+
+@ruby_lambda_body_type = @ruby_block | @ruby_do_block
+
+ruby_lambda_parameters(
+  unique int ruby_lambda: @ruby_lambda ref,
+  unique int parameters: @ruby_lambda_parameters ref
+);
+
+ruby_lambda_def(
+  unique int id: @ruby_lambda,
+  int body: @ruby_lambda_body_type ref,
+  int loc: @location ref
+);
+
+@ruby_lambda_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_hash_splat_nil | @ruby_token_identifier
+
+#keyset[ruby_lambda_parameters, index]
+ruby_lambda_parameters_child(
+  int ruby_lambda_parameters: @ruby_lambda_parameters ref,
+  int index: int ref,
+  unique int child: @ruby_lambda_parameters_child_type ref
+);
+
+ruby_lambda_parameters_def(
+  unique int id: @ruby_lambda_parameters,
+  int loc: @location ref
+);
+
+@ruby_left_assignment_list_child_type = @ruby_destructured_left_assignment | @ruby_rest_assignment | @ruby_underscore_lhs
+
+#keyset[ruby_left_assignment_list, index]
+ruby_left_assignment_list_child(
+  int ruby_left_assignment_list: @ruby_left_assignment_list ref,
+  int index: int ref,
+  unique int child: @ruby_left_assignment_list_child_type ref
+);
+
+ruby_left_assignment_list_def(
+  unique int id: @ruby_left_assignment_list,
+  int loc: @location ref
+);
+
+ruby_method_parameters(
+  unique int ruby_method: @ruby_method ref,
+  unique int parameters: @ruby_method_parameters ref
+);
+
+@ruby_method_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_arg | @ruby_underscore_statement
+
+#keyset[ruby_method, index]
+ruby_method_child(
+  int ruby_method: @ruby_method ref,
+  int index: int ref,
+  unique int child: @ruby_method_child_type ref
+);
+
+ruby_method_def(
+  unique int id: @ruby_method,
+  int name: @ruby_underscore_method_name ref,
+  int loc: @location ref
+);
+
+@ruby_method_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_hash_splat_nil | @ruby_token_identifier
+
+#keyset[ruby_method_parameters, index]
+ruby_method_parameters_child(
+  int ruby_method_parameters: @ruby_method_parameters ref,
+  int index: int ref,
+  unique int child: @ruby_method_parameters_child_type ref
+);
+
+ruby_method_parameters_def(
+  unique int id: @ruby_method_parameters,
+  int loc: @location ref
+);
+
+@ruby_module_name_type = @ruby_scope_resolution | @ruby_token_constant
+
+@ruby_module_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_module, index]
+ruby_module_child(
+  int ruby_module: @ruby_module ref,
+  int index: int ref,
+  unique int child: @ruby_module_child_type ref
+);
+
+ruby_module_def(
+  unique int id: @ruby_module,
+  int name: @ruby_module_name_type ref,
+  int loc: @location ref
+);
+
+ruby_next_child(
+  unique int ruby_next: @ruby_next ref,
+  unique int child: @ruby_argument_list ref
+);
+
+ruby_next_def(
+  unique int id: @ruby_next,
+  int loc: @location ref
+);
+
+case @ruby_operator_assignment.operator of
+  0 = @ruby_operator_assignment_percentequal
+| 1 = @ruby_operator_assignment_ampersandampersandequal
+| 2 = @ruby_operator_assignment_ampersandequal
+| 3 = @ruby_operator_assignment_starstarequal
+| 4 = @ruby_operator_assignment_starequal
+| 5 = @ruby_operator_assignment_plusequal
+| 6 = @ruby_operator_assignment_minusequal
+| 7 = @ruby_operator_assignment_slashequal
+| 8 = @ruby_operator_assignment_langlelangleequal
+| 9 = @ruby_operator_assignment_ranglerangleequal
+| 10 = @ruby_operator_assignment_caretequal
+| 11 = @ruby_operator_assignment_pipeequal
+| 12 = @ruby_operator_assignment_pipepipeequal
+;
+
+
+ruby_operator_assignment_def(
+  unique int id: @ruby_operator_assignment,
+  int left: @ruby_underscore_lhs ref,
+  int operator: int ref,
+  int right: @ruby_underscore_expression ref,
+  int loc: @location ref
+);
+
+ruby_optional_parameter_def(
+  unique int id: @ruby_optional_parameter,
+  int name: @ruby_token_identifier ref,
+  int value: @ruby_underscore_arg ref,
+  int loc: @location ref
+);
+
+@ruby_pair_key_type = @ruby_string__ | @ruby_token_hash_key_symbol | @ruby_underscore_arg
+
+ruby_pair_value(
+  unique int ruby_pair: @ruby_pair ref,
+  unique int value: @ruby_underscore_arg ref
+);
+
+ruby_pair_def(
+  unique int id: @ruby_pair,
+  int key__: @ruby_pair_key_type ref,
+  int loc: @location ref
+);
+
+ruby_parenthesized_pattern_def(
+  unique int id: @ruby_parenthesized_pattern,
+  int child: @ruby_underscore_pattern_expr ref,
+  int loc: @location ref
+);
+
+@ruby_parenthesized_statements_child_type = @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_parenthesized_statements, index]
+ruby_parenthesized_statements_child(
+  int ruby_parenthesized_statements: @ruby_parenthesized_statements ref,
+  int index: int ref,
+  unique int child: @ruby_parenthesized_statements_child_type ref
+);
+
+ruby_parenthesized_statements_def(
+  unique int id: @ruby_parenthesized_statements,
+  int loc: @location ref
+);
+
+@ruby_pattern_child_type = @ruby_splat_argument | @ruby_underscore_arg
+
+ruby_pattern_def(
+  unique int id: @ruby_pattern,
+  int child: @ruby_pattern_child_type ref,
+  int loc: @location ref
+);
+
+@ruby_program_child_type = @ruby_token_empty_statement | @ruby_token_uninterpreted | @ruby_underscore_statement
+
+#keyset[ruby_program, index]
+ruby_program_child(
+  int ruby_program: @ruby_program ref,
+  int index: int ref,
+  unique int child: @ruby_program_child_type ref
+);
+
+ruby_program_def(
+  unique int id: @ruby_program,
+  int loc: @location ref
+);
+
+@ruby_range_begin_type = @ruby_underscore_arg | @ruby_underscore_pattern_primitive
+
+ruby_range_begin(
+  unique int ruby_range: @ruby_range ref,
+  unique int begin: @ruby_range_begin_type ref
+);
+
+@ruby_range_end_type = @ruby_underscore_arg | @ruby_underscore_pattern_primitive
+
+ruby_range_end(
+  unique int ruby_range: @ruby_range ref,
+  unique int end: @ruby_range_end_type ref
+);
+
+case @ruby_range.operator of
+  0 = @ruby_range_dotdot
+| 1 = @ruby_range_dotdotdot
+;
+
+
+ruby_range_def(
+  unique int id: @ruby_range,
+  int operator: int ref,
+  int loc: @location ref
+);
+
+@ruby_rational_child_type = @ruby_token_float | @ruby_token_integer
+
+ruby_rational_def(
+  unique int id: @ruby_rational,
+  int child: @ruby_rational_child_type ref,
+  int loc: @location ref
+);
+
+ruby_redo_child(
+  unique int ruby_redo: @ruby_redo ref,
+  unique int child: @ruby_argument_list ref
+);
+
+ruby_redo_def(
+  unique int id: @ruby_redo,
+  int loc: @location ref
+);
+
+@ruby_regex_child_type = @ruby_interpolation | @ruby_token_escape_sequence | @ruby_token_string_content
+
+#keyset[ruby_regex, index]
+ruby_regex_child(
+  int ruby_regex: @ruby_regex ref,
+  int index: int ref,
+  unique int child: @ruby_regex_child_type ref
+);
+
+ruby_regex_def(
+  unique int id: @ruby_regex,
+  int loc: @location ref
+);
+
+ruby_rescue_body(
+  unique int ruby_rescue: @ruby_rescue ref,
+  unique int body: @ruby_then ref
+);
+
+ruby_rescue_exceptions(
+  unique int ruby_rescue: @ruby_rescue ref,
+  unique int exceptions: @ruby_exceptions ref
+);
+
+ruby_rescue_variable(
+  unique int ruby_rescue: @ruby_rescue ref,
+  unique int variable: @ruby_exception_variable ref
+);
+
+ruby_rescue_def(
+  unique int id: @ruby_rescue,
+  int loc: @location ref
+);
+
+@ruby_rescue_modifier_body_type = @ruby_underscore_arg | @ruby_underscore_statement
+
+ruby_rescue_modifier_def(
+  unique int id: @ruby_rescue_modifier,
+  int body: @ruby_rescue_modifier_body_type ref,
+  int handler: @ruby_underscore_expression ref,
+  int loc: @location ref
+);
+
+ruby_rest_assignment_child(
+  unique int ruby_rest_assignment: @ruby_rest_assignment ref,
+  unique int child: @ruby_underscore_lhs ref
+);
+
+ruby_rest_assignment_def(
+  unique int id: @ruby_rest_assignment,
+  int loc: @location ref
+);
+
+ruby_retry_child(
+  unique int ruby_retry: @ruby_retry ref,
+  unique int child: @ruby_argument_list ref
+);
+
+ruby_retry_def(
+  unique int id: @ruby_retry,
+  int loc: @location ref
+);
+
+ruby_return_child(
+  unique int ruby_return: @ruby_return ref,
+  unique int child: @ruby_argument_list ref
+);
+
+ruby_return_def(
+  unique int id: @ruby_return,
+  int loc: @location ref
+);
+
+@ruby_right_assignment_list_child_type = @ruby_splat_argument | @ruby_underscore_arg
+
+#keyset[ruby_right_assignment_list, index]
+ruby_right_assignment_list_child(
+  int ruby_right_assignment_list: @ruby_right_assignment_list ref,
+  int index: int ref,
+  unique int child: @ruby_right_assignment_list_child_type ref
+);
+
+ruby_right_assignment_list_def(
+  unique int id: @ruby_right_assignment_list,
+  int loc: @location ref
+);
+
+@ruby_scope_resolution_name_type = @ruby_token_constant | @ruby_token_identifier
+
+@ruby_scope_resolution_scope_type = @ruby_underscore_pattern_constant | @ruby_underscore_primary
+
+ruby_scope_resolution_scope(
+  unique int ruby_scope_resolution: @ruby_scope_resolution ref,
+  unique int scope: @ruby_scope_resolution_scope_type ref
+);
+
+ruby_scope_resolution_def(
+  unique int id: @ruby_scope_resolution,
+  int name: @ruby_scope_resolution_name_type ref,
+  int loc: @location ref
+);
+
+ruby_setter_def(
+  unique int id: @ruby_setter,
+  int name: @ruby_token_identifier ref,
+  int loc: @location ref
+);
+
+@ruby_singleton_class_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_singleton_class, index]
+ruby_singleton_class_child(
+  int ruby_singleton_class: @ruby_singleton_class ref,
+  int index: int ref,
+  unique int child: @ruby_singleton_class_child_type ref
+);
+
+ruby_singleton_class_def(
+  unique int id: @ruby_singleton_class,
+  int value: @ruby_underscore_arg ref,
+  int loc: @location ref
+);
+
+@ruby_singleton_method_object_type = @ruby_underscore_arg | @ruby_underscore_variable
+
+ruby_singleton_method_parameters(
+  unique int ruby_singleton_method: @ruby_singleton_method ref,
+  unique int parameters: @ruby_method_parameters ref
+);
+
+@ruby_singleton_method_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_arg | @ruby_underscore_statement
+
+#keyset[ruby_singleton_method, index]
+ruby_singleton_method_child(
+  int ruby_singleton_method: @ruby_singleton_method ref,
+  int index: int ref,
+  unique int child: @ruby_singleton_method_child_type ref
+);
+
+ruby_singleton_method_def(
+  unique int id: @ruby_singleton_method,
+  int name: @ruby_underscore_method_name ref,
+  int object: @ruby_singleton_method_object_type ref,
+  int loc: @location ref
+);
+
+ruby_splat_argument_def(
+  unique int id: @ruby_splat_argument,
+  int child: @ruby_underscore_arg ref,
+  int loc: @location ref
+);
+
+ruby_splat_parameter_name(
+  unique int ruby_splat_parameter: @ruby_splat_parameter ref,
+  unique int name: @ruby_token_identifier ref
+);
+
+ruby_splat_parameter_def(
+  unique int id: @ruby_splat_parameter,
+  int loc: @location ref
+);
+
+@ruby_string_child_type = @ruby_interpolation | @ruby_token_escape_sequence | @ruby_token_string_content
+
+#keyset[ruby_string__, index]
+ruby_string_child(
+  int ruby_string__: @ruby_string__ ref,
+  int index: int ref,
+  unique int child: @ruby_string_child_type ref
+);
+
+ruby_string_def(
+  unique int id: @ruby_string__,
+  int loc: @location ref
+);
+
+#keyset[ruby_string_array, index]
+ruby_string_array_child(
+  int ruby_string_array: @ruby_string_array ref,
+  int index: int ref,
+  unique int child: @ruby_bare_string ref
+);
+
+ruby_string_array_def(
+  unique int id: @ruby_string_array,
+  int loc: @location ref
+);
+
+@ruby_subshell_child_type = @ruby_interpolation | @ruby_token_escape_sequence | @ruby_token_string_content
+
+#keyset[ruby_subshell, index]
+ruby_subshell_child(
+  int ruby_subshell: @ruby_subshell ref,
+  int index: int ref,
+  unique int child: @ruby_subshell_child_type ref
+);
+
+ruby_subshell_def(
+  unique int id: @ruby_subshell,
+  int loc: @location ref
+);
+
+ruby_superclass_def(
+  unique int id: @ruby_superclass,
+  int child: @ruby_underscore_expression ref,
+  int loc: @location ref
+);
+
+#keyset[ruby_symbol_array, index]
+ruby_symbol_array_child(
+  int ruby_symbol_array: @ruby_symbol_array ref,
+  int index: int ref,
+  unique int child: @ruby_bare_symbol ref
+);
+
+ruby_symbol_array_def(
+  unique int id: @ruby_symbol_array,
+  int loc: @location ref
+);
+
+@ruby_then_child_type = @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_then, index]
+ruby_then_child(
+  int ruby_then: @ruby_then ref,
+  int index: int ref,
+  unique int child: @ruby_then_child_type ref
+);
+
+ruby_then_def(
+  unique int id: @ruby_then,
+  int loc: @location ref
+);
+
+@ruby_unary_operand_type = @ruby_parenthesized_statements | @ruby_underscore_expression | @ruby_underscore_simple_numeric
+
+case @ruby_unary.operator of
+  0 = @ruby_unary_bang
+| 1 = @ruby_unary_plus
+| 2 = @ruby_unary_minus
+| 3 = @ruby_unary_definedquestion
+| 4 = @ruby_unary_not
+| 5 = @ruby_unary_tilde
+;
+
+
+ruby_unary_def(
+  unique int id: @ruby_unary,
+  int operand: @ruby_unary_operand_type ref,
+  int operator: int ref,
+  int loc: @location ref
+);
+
+#keyset[ruby_undef, index]
+ruby_undef_child(
+  int ruby_undef: @ruby_undef ref,
+  int index: int ref,
+  unique int child: @ruby_underscore_method_name ref
+);
+
+ruby_undef_def(
+  unique int id: @ruby_undef,
+  int loc: @location ref
+);
+
+@ruby_unless_alternative_type = @ruby_else | @ruby_elsif
+
+ruby_unless_alternative(
+  unique int ruby_unless: @ruby_unless ref,
+  unique int alternative: @ruby_unless_alternative_type ref
+);
+
+ruby_unless_consequence(
+  unique int ruby_unless: @ruby_unless ref,
+  unique int consequence: @ruby_then ref
+);
+
+ruby_unless_def(
+  unique int id: @ruby_unless,
+  int condition: @ruby_underscore_statement ref,
+  int loc: @location ref
+);
+
+ruby_unless_guard_def(
+  unique int id: @ruby_unless_guard,
+  int condition: @ruby_underscore_expression ref,
+  int loc: @location ref
+);
+
+ruby_unless_modifier_def(
+  unique int id: @ruby_unless_modifier,
+  int body: @ruby_underscore_statement ref,
+  int condition: @ruby_underscore_expression ref,
+  int loc: @location ref
+);
+
+ruby_until_def(
+  unique int id: @ruby_until,
+  int body: @ruby_do ref,
+  int condition: @ruby_underscore_statement ref,
+  int loc: @location ref
+);
+
+ruby_until_modifier_def(
+  unique int id: @ruby_until_modifier,
+  int body: @ruby_underscore_statement ref,
+  int condition: @ruby_underscore_expression ref,
+  int loc: @location ref
+);
+
+@ruby_variable_reference_pattern_name_type = @ruby_token_identifier | @ruby_underscore_nonlocal_variable
+
+ruby_variable_reference_pattern_def(
+  unique int id: @ruby_variable_reference_pattern,
+  int name: @ruby_variable_reference_pattern_name_type ref,
+  int loc: @location ref
+);
+
+ruby_when_body(
+  unique int ruby_when: @ruby_when ref,
+  unique int body: @ruby_then ref
+);
+
+#keyset[ruby_when, index]
+ruby_when_pattern(
+  int ruby_when: @ruby_when ref,
+  int index: int ref,
+  unique int pattern: @ruby_pattern ref
+);
+
+ruby_when_def(
+  unique int id: @ruby_when,
+  int loc: @location ref
+);
+
+ruby_while_def(
+  unique int id: @ruby_while,
+  int body: @ruby_do ref,
+  int condition: @ruby_underscore_statement ref,
+  int loc: @location ref
+);
+
+ruby_while_modifier_def(
+  unique int id: @ruby_while_modifier,
+  int body: @ruby_underscore_statement ref,
+  int condition: @ruby_underscore_expression ref,
+  int loc: @location ref
+);
+
+ruby_yield_child(
+  unique int ruby_yield: @ruby_yield ref,
+  unique int child: @ruby_argument_list ref
+);
+
+ruby_yield_def(
+  unique int id: @ruby_yield,
+  int loc: @location ref
+);
+
+ruby_tokeninfo(
+  unique int id: @ruby_token,
+  int kind: int ref,
+  string value: string ref,
+  int loc: @location ref
+);
+
+case @ruby_token.kind of
+  0 = @ruby_reserved_word
+| 1 = @ruby_token_character
+| 2 = @ruby_token_class_variable
+| 3 = @ruby_token_comment
+| 4 = @ruby_token_complex
+| 5 = @ruby_token_constant
+| 6 = @ruby_token_empty_statement
+| 7 = @ruby_token_encoding
+| 8 = @ruby_token_escape_sequence
+| 9 = @ruby_token_false
+| 10 = @ruby_token_file
+| 11 = @ruby_token_float
+| 12 = @ruby_token_forward_argument
+| 13 = @ruby_token_forward_parameter
+| 14 = @ruby_token_global_variable
+| 15 = @ruby_token_hash_key_symbol
+| 16 = @ruby_token_hash_splat_nil
+| 17 = @ruby_token_heredoc_beginning
+| 18 = @ruby_token_heredoc_content
+| 19 = @ruby_token_heredoc_end
+| 20 = @ruby_token_identifier
+| 21 = @ruby_token_instance_variable
+| 22 = @ruby_token_integer
+| 23 = @ruby_token_line
+| 24 = @ruby_token_nil
+| 25 = @ruby_token_operator
+| 26 = @ruby_token_self
+| 27 = @ruby_token_simple_symbol
+| 28 = @ruby_token_string_content
+| 29 = @ruby_token_super
+| 30 = @ruby_token_true
+| 31 = @ruby_token_uninterpreted
+;
+
+
+@ruby_ast_node = @ruby_alias | @ruby_alternative_pattern | @ruby_argument_list | @ruby_array | @ruby_array_pattern | @ruby_as_pattern | @ruby_assignment | @ruby_bare_string | @ruby_bare_symbol | @ruby_begin | @ruby_begin_block | @ruby_binary | @ruby_block | @ruby_block_argument | @ruby_block_parameter | @ruby_block_parameters | @ruby_break | @ruby_call | @ruby_case__ | @ruby_case_match | @ruby_chained_string | @ruby_class | @ruby_conditional | @ruby_delimited_symbol | @ruby_destructured_left_assignment | @ruby_destructured_parameter | @ruby_do | @ruby_do_block | @ruby_element_reference | @ruby_else | @ruby_elsif | @ruby_end_block | @ruby_ensure | @ruby_exception_variable | @ruby_exceptions | @ruby_expression_reference_pattern | @ruby_find_pattern | @ruby_for | @ruby_hash | @ruby_hash_pattern | @ruby_hash_splat_argument | @ruby_hash_splat_parameter | @ruby_heredoc_body | @ruby_if | @ruby_if_guard | @ruby_if_modifier | @ruby_in | @ruby_in_clause | @ruby_interpolation | @ruby_keyword_parameter | @ruby_keyword_pattern | @ruby_lambda | @ruby_lambda_parameters | @ruby_left_assignment_list | @ruby_method | @ruby_method_parameters | @ruby_module | @ruby_next | @ruby_operator_assignment | @ruby_optional_parameter | @ruby_pair | @ruby_parenthesized_pattern | @ruby_parenthesized_statements | @ruby_pattern | @ruby_program | @ruby_range | @ruby_rational | @ruby_redo | @ruby_regex | @ruby_rescue | @ruby_rescue_modifier | @ruby_rest_assignment | @ruby_retry | @ruby_return | @ruby_right_assignment_list | @ruby_scope_resolution | @ruby_setter | @ruby_singleton_class | @ruby_singleton_method | @ruby_splat_argument | @ruby_splat_parameter | @ruby_string__ | @ruby_string_array | @ruby_subshell | @ruby_superclass | @ruby_symbol_array | @ruby_then | @ruby_token | @ruby_unary | @ruby_undef | @ruby_unless | @ruby_unless_guard | @ruby_unless_modifier | @ruby_until | @ruby_until_modifier | @ruby_variable_reference_pattern | @ruby_when | @ruby_while | @ruby_while_modifier | @ruby_yield
+
+@ruby_ast_node_parent = @file | @ruby_ast_node
+
+#keyset[parent, parent_index]
+ruby_ast_node_parent(
+  int child: @ruby_ast_node ref,
+  int parent: @ruby_ast_node_parent ref,
+  int parent_index: int ref
+);
+
+erb_comment_directive_def(
+  unique int id: @erb_comment_directive,
+  int child: @erb_token_comment ref,
+  int loc: @location ref
+);
+
+erb_directive_def(
+  unique int id: @erb_directive,
+  int child: @erb_token_code ref,
+  int loc: @location ref
+);
+
+erb_graphql_directive_def(
+  unique int id: @erb_graphql_directive,
+  int child: @erb_token_code ref,
+  int loc: @location ref
+);
+
+erb_output_directive_def(
+  unique int id: @erb_output_directive,
+  int child: @erb_token_code ref,
+  int loc: @location ref
+);
+
+@erb_template_child_type = @erb_comment_directive | @erb_directive | @erb_graphql_directive | @erb_output_directive | @erb_token_content
+
+#keyset[erb_template, index]
+erb_template_child(
+  int erb_template: @erb_template ref,
+  int index: int ref,
+  unique int child: @erb_template_child_type ref
+);
+
+erb_template_def(
+  unique int id: @erb_template,
+  int loc: @location ref
+);
+
+erb_tokeninfo(
+  unique int id: @erb_token,
+  int kind: int ref,
+  string value: string ref,
+  int loc: @location ref
+);
+
+case @erb_token.kind of
+  0 = @erb_reserved_word
+| 1 = @erb_token_code
+| 2 = @erb_token_comment
+| 3 = @erb_token_content
+;
+
+
+@erb_ast_node = @erb_comment_directive | @erb_directive | @erb_graphql_directive | @erb_output_directive | @erb_template | @erb_token
+
+@erb_ast_node_parent = @erb_ast_node | @file
+
+#keyset[parent, parent_index]
+erb_ast_node_parent(
+  int child: @erb_ast_node ref,
+  int parent: @erb_ast_node_parent ref,
+  int parent_index: int ref
+);
+

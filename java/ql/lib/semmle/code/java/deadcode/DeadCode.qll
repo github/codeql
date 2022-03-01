@@ -33,7 +33,7 @@ Callable possibleLivenessCause(Callable c, string reason) {
   or
   c.hasName("<clinit>") and
   reason = "class initialization" and
-  exists(RefType clintedType | c = clintedType.getASupertype*().getACallable() |
+  exists(RefType clintedType | c = clintedType.getAnAncestor().getACallable() |
     result.getDeclaringType() = clintedType or
     result.getAnAccessedField().getDeclaringType() = clintedType
   )
@@ -155,7 +155,7 @@ library class SourceClassOrInterface extends ClassOrInterface {
  */
 class LiveClass extends SourceClassOrInterface {
   LiveClass() {
-    exists(Callable c | c.getDeclaringType().getASupertype*().getSourceDeclaration() = this |
+    exists(Callable c | c.getDeclaringType().getAnAncestor().getSourceDeclaration() = this |
       isLive(c)
     )
     or

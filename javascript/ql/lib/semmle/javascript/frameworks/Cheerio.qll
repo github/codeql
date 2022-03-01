@@ -6,27 +6,15 @@ import javascript
 private import semmle.javascript.security.dataflow.Xss as Xss
 
 module Cheerio {
-  /**
-   * A reference to the `cheerio` function, possibly with a loaded DOM.
-   */
-  private DataFlow::SourceNode cheerioRef(DataFlow::TypeTracker t) {
-    t.start() and
-    (
-      result = DataFlow::moduleImport("cheerio")
-      or
-      exists(string name | result = cheerioRef().getAMemberCall(name) |
-        name = "load" or
-        name = "parseHTML"
-      )
-    )
+  /** Gets a reference to the `cheerio` function, possibly with a loaded DOM. */
+  private API::Node cheerioApi() {
+    result = API::moduleImport("cheerio")
     or
-    exists(DataFlow::TypeTracker t2 | result = cheerioRef(t2).track(t2, t))
+    result = cheerioApi().getMember(["load", "parseHTML"]).getReturn()
   }
 
-  /**
-   * A reference to the `cheerio` function, possibly with a loaded DOM.
-   */
-  DataFlow::SourceNode cheerioRef() { result = cheerioRef(DataFlow::TypeTracker::end()) }
+  /** Gets a reference to the `cheerio` function, possibly with a loaded DOM. */
+  DataFlow::SourceNode cheerioRef() { result = cheerioApi().getAUse() }
 
   /**
    * A creation of `cheerio` object, a collection of virtual DOM elements
@@ -37,15 +25,15 @@ module Cheerio {
 
   module CheerioObjectCreation {
     /**
-     * Creation of a `cheerio` object.
+     * The creation of a `cheerio` object.
      */
     abstract class Range extends DataFlow::SourceNode { }
 
     private class DefaultRange extends Range {
       DefaultRange() {
-        this = cheerioRef().getACall()
+        this = cheerioApi().getACall()
         or
-        this = cheerioRef().getAMethodCall()
+        this = cheerioApi().getAMember().getACall()
       }
     }
   }

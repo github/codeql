@@ -116,6 +116,11 @@ private string variableNameInScope(Ruby::AstNode i, Scope::Range scope) {
       result = i.(Ruby::String).getChild(0).(Ruby::StringContent).getValue() or
       result = i.(Ruby::HashKeySymbol).getValue()
     )
+    or
+    exists(Ruby::Pair p | i = p.getKey() and not exists(p.getValue()) |
+      result = i.(Ruby::String).getChild(0).(Ruby::StringContent).getValue() or
+      result = i.(Ruby::HashKeySymbol).getValue()
+    )
   )
 }
 
@@ -307,6 +312,8 @@ private module Cached {
     i = any(Ruby::WhileModifier x).getCondition()
     or
     i = any(Ruby::WhileModifier x).getBody()
+    or
+    i = any(Ruby::ExpressionReferencePattern x).getValue()
   }
 
   pragma[nomagic]

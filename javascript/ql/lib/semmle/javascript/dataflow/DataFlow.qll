@@ -651,10 +651,18 @@ module DataFlow {
     override string getPropertyName() { result = astNode.getArgument(1).getStringValue() }
 
     override Node getRhs() {
-      exists(ObjectExpr obj | obj = astNode.getArgument(2) |
-        result = obj.getPropertyByName("value").getInit().flow()
+      exists(DataFlow::SourceNode descriptor |
+        descriptor = astNode.getArgument(2).flow().getALocalSource()
+      |
+        result =
+          descriptor
+              .getAPropertyWrite("get")
+              .getRhs()
+              .getALocalSource()
+              .(DataFlow::FunctionNode)
+              .getAReturn()
         or
-        result = obj.getPropertyByName("get").getInit().flow().(DataFlow::FunctionNode).getAReturn()
+        result = descriptor.getAPropertyWrite("value").getRhs()
       )
     }
 

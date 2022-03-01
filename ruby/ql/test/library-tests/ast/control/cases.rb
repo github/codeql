@@ -144,3 +144,15 @@ case expr
   in Bar( a: 1, **nil);
 end
 
+case expr 
+  in ^foo;
+  in ^$foo;
+  in ^@foo;
+  in ^@@foo;
+end
+
+case expr 
+  in ^(foo);
+  in ^(@foo);
+  in ^(1 + 1);
+end

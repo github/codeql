@@ -449,6 +449,44 @@ module RegexExecution {
   }
 }
 
+/** Provides classes for modeling LDAP-related APIs. */
+module LDAP {
+  /**
+   * A data-flow node that executes an LDAP query.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `LDAPQuery::Range` instead.
+   */
+  class LdapExecution extends DataFlow::Node {
+    LdapExecution::Range range;
+
+    LdapExecution() { this = range }
+
+    /** Gets the argument containing the filter string. */
+    DataFlow::Node getFilter() { result = range.getFilter() }
+
+    /** Gets the argument containing the base DN. */
+    DataFlow::Node getBaseDn() { result = range.getBaseDn() }
+  }
+
+  /** Provides classes for modeling new LDAP query execution-related APIs. */
+  module LdapExecution {
+    /**
+     * A data-flow node that executes an LDAP query.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `LDAPQuery` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the argument containing the filter string. */
+      abstract DataFlow::Node getFilter();
+
+      /** Gets the argument containing the base DN. */
+      abstract DataFlow::Node getBaseDn();
+    }
+  }
+}
+
 /**
  * A data-flow node that escapes meta-characters, which could be used to prevent
  * injection attacks.
@@ -506,8 +544,20 @@ module Escaping {
   /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
   string getHtmlKind() { result = "html" }
 
-  /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
+  /** Gets the escape-kind for escaping a string so it can safely be included in a regular expression. */
   string getRegexKind() { result = "regex" }
+
+  /**
+   * Gets the escape-kind for escaping a string so it can safely be used as a
+   * distinguished name (DN) in an LDAP search.
+   */
+  string getLdapDnKind() { result = "ldap_dn" }
+
+  /**
+   * Gets the escape-kind for escaping a string so it can safely be used as a
+   * filter in an LDAP search.
+   */
+  string getLdapFilterKind() { result = "ldap_filter" }
   // TODO: If adding an XML kind, update the modeling of the `MarkupSafe` PyPI package.
   //
   // Technically it claims to escape for both HTML and XML, but for now we don't have
@@ -532,9 +582,28 @@ class RegexEscaping extends Escaping {
   RegexEscaping() { range.getKind() = Escaping::getRegexKind() }
 }
 
+/**
+ * An escape of a string so it can be safely used as a distinguished name (DN)
+ * in an LDAP search.
+ */
+class LdapDnEscaping extends Escaping {
+  LdapDnEscaping() { range.getKind() = Escaping::getLdapDnKind() }
+}
+
+/**
+ * An escape of a string so it can be safely used as a filter in an LDAP search.
+ */
+class LdapFilterEscaping extends Escaping {
+  LdapFilterEscaping() { range.getKind() = Escaping::getLdapFilterKind() }
+}
+
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
-  import semmle.python.web.HttpConstants
+  /** Gets an HTTP verb, in upper case */
+  string httpVerb() { result in ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"] }
+
+  /** Gets an HTTP verb, in lower case */
+  string httpVerbLower() { result = httpVerb().toLowerCase() }
 
   /** Provides classes for modeling HTTP servers. */
   module Server {

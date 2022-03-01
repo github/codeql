@@ -5,7 +5,7 @@ import semmle.python.web.HttpRequest
 import experimental.semmle.python.templates.SSTISink
 
 /** returns the ClassValue representing `trender.TRender` */
-ClassValue theTRenderTemplateClass() { result = Value::named("trender.TRender") }
+deprecated ClassValue theTRenderTemplateClass() { result = Value::named("trender.TRender") }
 
 /**
  * Sink representing the `trender.TRender` class instantiation argument.
@@ -13,7 +13,7 @@ ClassValue theTRenderTemplateClass() { result = Value::named("trender.TRender") 
  *  from trender import TRender
  *  template = TRender(`sink`)
  */
-class TRenderTemplateSink extends SSTISink {
+deprecated class TRenderTemplateSink extends SSTISink {
   override string toString() { result = "argument to trender.TRender()" }
 
   TRenderTemplateSink() {

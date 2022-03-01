@@ -93,6 +93,35 @@ module FileSystemReadAccess {
 }
 
 /**
+ * A data flow node that writes data to the file system.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemWriteAccess::Range` instead.
+ */
+class FileSystemWriteAccess extends FileSystemAccess instanceof FileSystemWriteAccess::Range {
+  /**
+   * Gets a node that represents data written to the file system by this access.
+   */
+  DataFlow::Node getADataNode() { result = FileSystemWriteAccess::Range.super.getADataNode() }
+}
+
+/** Provides a class for modeling new file system writes. */
+module FileSystemWriteAccess {
+  /**
+   * A data flow node that writes data to the file system.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemWriteAccess` instead.
+   */
+  abstract class Range extends FileSystemAccess::Range {
+    /**
+     * Gets a node that represents data written to the file system by this access.
+     */
+    abstract DataFlow::Node getADataNode();
+  }
+}
+
+/**
  * A data flow node that sets the permissions for one or more files.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,

@@ -11,7 +11,7 @@ import semmle.javascript.dependencies.SemVer
 
 module PrototypePollution {
   /**
-   * Label for wrappers around tainted objects, that is, objects that are
+   * A label for wrappers around tainted objects, that is, objects that are
    * not completely user-controlled, but contain a user-controlled object.
    *
    * For example, `options` below is a tainted wrapper, but is not itself

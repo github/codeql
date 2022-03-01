@@ -22,6 +22,6 @@ where
   ) and
   not exists(Callable c |
     e.getEnclosingCallable() = c and
-    c.getAThrownExceptionType().getASubtype*() instanceof NumberFormatException
+    c.getAThrownExceptionType().getADescendant() instanceof NumberFormatException
   )
 select e, "Potential uncaught 'java.lang.NumberFormatException'."

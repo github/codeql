@@ -2295,4 +2295,22 @@ module PrivateDjango {
 
     override string getMimetypeDefault() { none() }
   }
+
+  // ---------------------------------------------------------------------------
+  // Logging
+  // ---------------------------------------------------------------------------
+  /**
+   * A standard Python logger instance from Django.
+   * see https://github.com/django/django/blob/stable/4.0.x/django/utils/log.py#L11
+   */
+  private class DjangoLogger extends Stdlib::Logger::InstanceSource {
+    DjangoLogger() {
+      this =
+        API::moduleImport("django")
+            .getMember("utils")
+            .getMember("log")
+            .getMember("request_logger")
+            .getAnImmediateUse()
+    }
+  }
 }

@@ -83,7 +83,7 @@ module IndirectCommandInjection {
   }
 
   /**
-   * A command line parsing step from `pred` to `succ`.
+   * Holds if there is a command line parsing step from `pred` to `succ`.
    * E.g: `var succ = require("minimist")(pred)`.
    */
   predicate argsParseStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -97,7 +97,7 @@ module IndirectCommandInjection {
   }
 
   /**
-   * A Command instance from the `commander` library.
+   * Gets a Command instance from the `commander` library.
    */
   private API::Node commander() {
     result = API::moduleImport("commander")

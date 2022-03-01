@@ -12,6 +12,15 @@ private Type getDecayedType(Type type) {
 }
 
 /**
+ * Holds if the sepcified variable is a structured binding with a non-reference
+ * type.
+ */
+predicate isNonReferenceStructuredBinding(Variable v) {
+  v.isStructuredBinding() and
+  not v.getUnspecifiedType() instanceof ReferenceType
+}
+
+/**
  * Get the actual type of the specified variable, as opposed to the declared type.
  * This returns the type of the variable after any pointer decay is applied, and
  * after any unsized array type has its size inferred from the initializer.
@@ -30,7 +39,12 @@ Type getVariableType(Variable v) {
         result = v.getInitializer().getExpr().getType()
         or
         not exists(v.getInitializer()) and result = v.getType()
-      else result = v.getType()
+      else
+        if isNonReferenceStructuredBinding(v)
+        then
+          // The extractor ensures `r` exists when `isNonReferenceStructuredBinding(v)` holds.
+          exists(LValueReferenceType r | r.getBaseType() = v.getUnspecifiedType() | result = r)
+        else result = v.getType()
   )
 }
 

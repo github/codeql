@@ -1,3 +1,4 @@
+WARNING: Module SensitiveData has been deprecated and may be removed in future (Sources.ql:4,6-19)
 | test.py:16:1:16:14 | test.py:16 | a call returning a password |
 | test.py:17:1:17:12 | test.py:17 | a call returning a password |
 | test.py:18:1:18:12 | test.py:18 | a call returning a secret |
