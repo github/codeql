@@ -333,13 +333,11 @@ reflection.kt:
 #   30|           0: [SuperConstructorInvocationStmt] super(...)
 #   30|           1: [BlockStmt] { ... }
 #   31|             0: [ExprStmt] <Expr>;
-#   31|               0: [AssignExpr] ...=...
+#   31|               0: [KtInitializerAssignExpr] ...=...
 #   31|                 0: [VarAccess] p0
-#   31|                 1: [IntegerLiteral] 1
 #   32|             1: [ExprStmt] <Expr>;
-#   32|               0: [AssignExpr] ...=...
+#   32|               0: [KtInitializerAssignExpr] ...=...
 #   32|                 0: [VarAccess] p1
-#   32|                 1: [IntegerLiteral] 2
 #   31|       2: [Method] getP0
 #   31|         5: [BlockStmt] { ... }
 #   31|           0: [ReturnStmt] return ...
@@ -347,6 +345,7 @@ reflection.kt:
 #   31|               -1: [ThisAccess] this
 #   31|       2: [FieldDeclaration] int p0;
 #   31|         -1: [TypeAccess] int
+#   31|         0: [IntegerLiteral] 1
 #   32|       4: [Method] getP1
 #   32|         5: [BlockStmt] { ... }
 #   32|           0: [ReturnStmt] return ...
@@ -363,6 +362,7 @@ reflection.kt:
 #   32|               1: [VarAccess] <set-?>
 #   32|       4: [FieldDeclaration] int p1;
 #   32|         -1: [TypeAccess] int
+#   32|         0: [IntegerLiteral] 2
 #   34|       7: [Method] getP2
 #   34|         5: [BlockStmt] { ... }
 #   34|           0: [ReturnStmt] return ...

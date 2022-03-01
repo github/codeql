@@ -475,7 +475,7 @@
 | exprs.kt:139:5:139:23 | d | exprs.kt:138:1:140:1 | getClass | LocalVariableDeclExpr |
 | exprs.kt:139:13:139:16 | true | exprs.kt:138:1:140:1 | getClass | BooleanLiteral |
 | exprs.kt:139:13:139:23 | ::class | exprs.kt:138:1:140:1 | getClass | ClassExpr |
-| exprs.kt:142:9:142:18 | ...=... | exprs.kt:142:1:144:1 | C | AssignExpr |
+| exprs.kt:142:9:142:18 | ...=... | exprs.kt:142:1:144:1 | C | KtInitializerAssignExpr |
 | exprs.kt:142:9:142:18 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:142:9:142:18 | n | exprs.kt:142:1:144:1 | C | VarAccess |
 | exprs.kt:142:9:142:18 | n | exprs.kt:142:1:144:1 | C | VarAccess |
@@ -540,7 +540,7 @@
 | exprs.kt:172:1:176:1 | Color | exprs.kt:172:6:176:1 | Color | TypeAccess |
 | exprs.kt:172:1:176:1 | Unit | exprs.kt:172:6:176:1 | Color | TypeAccess |
 | exprs.kt:172:1:176:1 | new Enum(...) | exprs.kt:172:6:176:1 | Color | ClassInstanceExpr |
-| exprs.kt:172:18:172:29 | ...=... | exprs.kt:172:6:176:1 | Color | AssignExpr |
+| exprs.kt:172:18:172:29 | ...=... | exprs.kt:172:6:176:1 | Color | KtInitializerAssignExpr |
 | exprs.kt:172:18:172:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:172:18:172:29 | rgb | exprs.kt:172:6:176:1 | Color | VarAccess |
 | exprs.kt:172:18:172:29 | rgb | exprs.kt:172:6:176:1 | Color | VarAccess |
@@ -550,7 +550,7 @@
 | exprs.kt:179:27:179:31 | SOUTH | exprs.kt:178:1:181:1 | enums | VarAccess |
 | exprs.kt:180:5:180:27 | green | exprs.kt:178:1:181:1 | enums | LocalVariableDeclExpr |
 | exprs.kt:180:23:180:27 | GREEN | exprs.kt:178:1:181:1 | enums | VarAccess |
-| exprs.kt:186:5:186:14 | ...=... | exprs.kt:185:1:193:1 | Class1 | AssignExpr |
+| exprs.kt:186:5:186:14 | ...=... | exprs.kt:185:1:193:1 | Class1 | KtInitializerAssignExpr |
 | exprs.kt:186:5:186:14 | a1 | exprs.kt:185:1:193:1 | Class1 | VarAccess |
 | exprs.kt:186:5:186:14 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:186:5:186:14 | this | exprs.kt:186:5:186:14 | getA1 | ThisAccess |
@@ -561,7 +561,7 @@
 | exprs.kt:189:16:191:9 | <Stmt> | exprs.kt:187:13:192:5 | getObject | StmtExpr |
 | exprs.kt:189:16:191:9 | Interface1 | exprs.kt:187:13:192:5 | getObject | TypeAccess |
 | exprs.kt:189:16:191:9 | new (...) | exprs.kt:187:13:192:5 | getObject | ClassInstanceExpr |
-| exprs.kt:190:13:190:49 | ...=... | exprs.kt:189:16:191:9 |  | AssignExpr |
+| exprs.kt:190:13:190:49 | ...=... | exprs.kt:189:16:191:9 |  | KtInitializerAssignExpr |
 | exprs.kt:190:13:190:49 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:190:13:190:49 | a3 | exprs.kt:189:16:191:9 |  | VarAccess |
 | exprs.kt:190:13:190:49 | this | exprs.kt:190:13:190:49 | getA3 | ThisAccess |
