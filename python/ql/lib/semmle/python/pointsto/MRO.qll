@@ -131,7 +131,7 @@ class ClassList extends TClassList {
 
   pragma[noinline]
   private ClassObjectInternal findDeclaringClassAttribute(string name) {
-    result = findDeclaringClass(name) and
+    result = this.findDeclaringClass(name) and
     (
       exists(any(Builtin b).getMember(name))
       or
