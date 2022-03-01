@@ -6,7 +6,6 @@ import java
 import semmle.code.java.controlflow.Guards
 private import semmle.code.java.frameworks.apache.Lang
 private import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.StringCheck
 
 /**
  * A guard that checks if the current platform is Windows.
@@ -21,34 +20,36 @@ abstract class IsUnixGuard extends Guard { }
 /**
  * Holds when the MethodAccess is a call to check the current OS using either the upper case `osUpperCase` or lower case `osLowerCase` string constants.
  */
-bindingset[osUpperCase, osLowerCase]
-private predicate isOsFromSystemProp(MethodAccess ma, string osUpperCase, string osLowerCase) {
-  exists(MethodAccessSystemGetProperty sgpMa |
+bindingset[osString]
+private predicate isOsFromSystemProp(MethodAccess ma, string osString) {
+  exists(MethodAccessSystemGetProperty sgpMa, Expr sgpFlowsToExpr |
     sgpMa.hasCompileTimeConstantGetPropertyName("os.name")
   |
-    DataFlow::localExprFlow(sgpMa, ma.getQualifier()) and // Call from System.getProperty to some partial match method
-    ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().matches(osUpperCase)
-    or
-    exists(MethodAccess toLowerCaseMa |
-      toLowerCaseMa.getMethod() =
-        any(Method m | m.getDeclaringType() instanceof TypeString and m.hasName("toLowerCase"))
-    |
-      DataFlow::localExprFlow(sgpMa, toLowerCaseMa.getQualifier()) and // Call from System.getProperty to toLowerCase
-      DataFlow::localExprFlow(toLowerCaseMa, ma.getQualifier()) and // Call from toLowerCase to some partial match method
-      ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().matches(osLowerCase)
+    DataFlow::localExprFlow(sgpMa, sgpFlowsToExpr) and
+    ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().toLowerCase().matches(osString) and // Call from System.getProperty to some partial match method
+    (
+      sgpFlowsToExpr = ma.getQualifier()
+      or
+      exists(MethodAccess caseChangeMa |
+        caseChangeMa.getMethod() =
+          any(Method m |
+            m.getDeclaringType() instanceof TypeString and m.hasName(["toLowerCase", "toUpperCase"])
+          )
+      |
+        sgpFlowsToExpr = caseChangeMa.getQualifier() and // Call from System.getProperty to case-switching method
+        DataFlow::localExprFlow(caseChangeMa, ma.getQualifier()) // Call from case-switching method to some partial match method
+      )
     )
   ) and
-  isStringPartialMatch(ma)
+  ma.getMethod() instanceof StringPartialMatchMethod
 }
 
 private class IsWindowsFromSystemProp extends IsWindowsGuard instanceof MethodAccess {
-  IsWindowsFromSystemProp() { isOsFromSystemProp(this, "Window%", "window%") }
+  IsWindowsFromSystemProp() { isOsFromSystemProp(this, "window%") }
 }
 
 private class IsUnixFromSystemProp extends IsUnixGuard instanceof MethodAccess {
-  IsUnixFromSystemProp() {
-    isOsFromSystemProp(this, ["Mac%", "Linux%", "LINUX%"], ["mac%", "linux%"])
-  }
+  IsUnixFromSystemProp() { isOsFromSystemProp(this, ["mac%", "linux%"]) }
 }
 
 bindingset[fieldNamePattern]
@@ -70,7 +71,7 @@ private class IsUnixFromApacheCommons extends IsUnixGuard instanceof FieldAccess
 /**
  * A guard that checks if the `java.nio.file.FileSystem` supports posix file permissions.
  * This is often used to infer if the OS is unix-based.
- * Looks for calls to `contains("posix")` on the `supportedFileAttributeViews` method returned by `FileSystem`.
+ * Looks for calls to `contains("posix")` on the `supportedFileAttributeViews()` method returned by `FileSystem`.
  */
 private class IsUnixFromPosixFromFileSystem extends IsUnixGuard instanceof MethodAccess {
   IsUnixFromPosixFromFileSystem() {

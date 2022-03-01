@@ -1,0 +1,8 @@
+| jdk/StringMatch.java:5:9:5:29 | matches(...) | jdk/StringMatch.java:5:21:5:28 | "[a-z]+" |
+| jdk/StringMatch.java:9:9:9:27 | contains(...) | jdk/StringMatch.java:9:22:9:26 | "the" |
+| jdk/StringMatch.java:13:9:13:29 | startsWith(...) | jdk/StringMatch.java:13:24:13:28 | "the" |
+| jdk/StringMatch.java:17:9:17:27 | endsWith(...) | jdk/StringMatch.java:17:22:17:26 | "dog" |
+| jdk/StringMatch.java:21:9:21:27 | indexOf(...) | jdk/StringMatch.java:21:21:21:26 | "lazy" |
+| jdk/StringMatch.java:25:9:25:31 | lastIndexOf(...) | jdk/StringMatch.java:25:25:25:30 | "lazy" |
+| jdk/StringMatch.java:29:9:29:41 | regionMatches(...) | jdk/StringMatch.java:29:30:29:34 | "fox" |
+| jdk/StringMatch.java:33:9:33:47 | regionMatches(...) | jdk/StringMatch.java:33:36:33:40 | "FOX" |

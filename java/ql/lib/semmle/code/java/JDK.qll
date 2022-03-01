@@ -37,6 +37,27 @@ class StringLengthMethod extends Method {
   StringLengthMethod() { this.hasName("length") and this.getDeclaringType() instanceof TypeString }
 }
 
+/**
+ * The methods on the class `java.lang.String` that are used to perform partial matches with a specified substring or char.
+ */
+class StringPartialMatchMethod extends Method {
+  StringPartialMatchMethod() {
+    this.hasName([
+        "contains", "startsWith", "endsWith", "matches", "indexOf", "lastIndexOf", "regionMatches"
+      ]) and
+    this.getDeclaringType() instanceof TypeString
+  }
+
+  /**
+   * The index of the parameter that is being matched against.
+   */
+  int getMatchParameterIndex() {
+    if not this.hasName("regionMatches")
+    then result = 0
+    else this.getParameterType(result) instanceof TypeString
+  }
+}
+
 /** The class `java.lang.StringBuffer`. */
 class TypeStringBuffer extends Class {
   TypeStringBuffer() { this.hasQualifiedName("java.lang", "StringBuffer") }

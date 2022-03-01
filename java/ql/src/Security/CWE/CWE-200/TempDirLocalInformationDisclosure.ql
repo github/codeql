@@ -104,17 +104,17 @@ private class FileCreateTempFileSink extends FileCreationSink {
 }
 
 /**
- * A guard that checks what OS the program is running on.
+ * A guard that checks whether or not the the program is running on the Windows OS.
  */
-abstract private class OsBarrierGuard extends DataFlow::BarrierGuard { }
+abstract private class WindowsOsBarrierGuard extends DataFlow::BarrierGuard { }
 
-private class IsUnixBarrierGuard extends OsBarrierGuard instanceof IsUnixGuard {
+private class IsNotUnixBarrierGuard extends WindowsOsBarrierGuard instanceof IsUnixGuard {
   override predicate checks(Expr e, boolean branch) {
     this.controls(e.getBasicBlock(), branch.booleanNot())
   }
 }
 
-private class IsWindowsBarrierGuard extends OsBarrierGuard instanceof IsWindowsGuard {
+private class IsWindowsBarrierGuard extends WindowsOsBarrierGuard instanceof IsWindowsGuard {
   override predicate checks(Expr e, boolean branch) { this.controls(e.getBasicBlock(), branch) }
 }
 
@@ -147,7 +147,7 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
   }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof OsBarrierGuard
+    guard instanceof WindowsOsBarrierGuard
   }
 }
 
