@@ -28,7 +28,6 @@ members
 | Record.cs:4:1:10:1 | Person | System.Object.MemberwiseClone() | no location |
 | Record.cs:4:1:10:1 | Person | System.Object.Object() | no location |
 | Record.cs:4:1:10:1 | Person | System.Object.ReferenceEquals(object, object) | no location |
-| Record.cs:4:1:10:1 | Person | System.Object.~Object() | no location |
 | Record.cs:12:1:18:1 | Teacher | Person.!=(Person, Person) | Record.cs:4:15:4:20 |
 | Record.cs:12:1:18:1 | Teacher | Person.==(Person, Person) | Record.cs:4:15:4:20 |
 | Record.cs:12:1:18:1 | Teacher | Person.FirstName | Record.cs:7:19:7:27 |
@@ -40,7 +39,6 @@ members
 | Record.cs:12:1:18:1 | Teacher | System.Object.MemberwiseClone() | no location |
 | Record.cs:12:1:18:1 | Teacher | System.Object.Object() | no location |
 | Record.cs:12:1:18:1 | Teacher | System.Object.ReferenceEquals(object, object) | no location |
-| Record.cs:12:1:18:1 | Teacher | System.Object.~Object() | no location |
 | Record.cs:12:1:18:1 | Teacher | Teacher.!=(Teacher, Teacher) | Record.cs:12:15:12:21 |
 | Record.cs:12:1:18:1 | Teacher | Teacher.<Clone>$() | no location |
 | Record.cs:12:1:18:1 | Teacher | Teacher.==(Teacher, Teacher) | Record.cs:12:15:12:21 |
@@ -78,7 +76,6 @@ members
 | Record.cs:20:1:25:1 | Student | System.Object.MemberwiseClone() | no location |
 | Record.cs:20:1:25:1 | Student | System.Object.Object() | no location |
 | Record.cs:20:1:25:1 | Student | System.Object.ReferenceEquals(object, object) | no location |
-| Record.cs:20:1:25:1 | Student | System.Object.~Object() | no location |
 | Record.cs:27:1:27:57 | Person1 | Person1.!=(Person1, Person1) | Record.cs:27:15:27:21 |
 | Record.cs:27:1:27:57 | Person1 | Person1.<Clone>$() | no location |
 | Record.cs:27:1:27:57 | Person1 | Person1.==(Person1, Person1) | Record.cs:27:15:27:21 |
@@ -98,7 +95,6 @@ members
 | Record.cs:27:1:27:57 | Person1 | System.Object.MemberwiseClone() | no location |
 | Record.cs:27:1:27:57 | Person1 | System.Object.Object() | no location |
 | Record.cs:27:1:27:57 | Person1 | System.Object.ReferenceEquals(object, object) | no location |
-| Record.cs:27:1:27:57 | Person1 | System.Object.~Object() | no location |
 | Record.cs:29:1:30:35 | Teacher1 | Person1.!=(Person1, Person1) | Record.cs:27:15:27:21 |
 | Record.cs:29:1:30:35 | Teacher1 | Person1.==(Person1, Person1) | Record.cs:27:15:27:21 |
 | Record.cs:29:1:30:35 | Teacher1 | Person1.Deconstruct(out string, out string) | no location |
@@ -111,7 +107,6 @@ members
 | Record.cs:29:1:30:35 | Teacher1 | System.Object.MemberwiseClone() | no location |
 | Record.cs:29:1:30:35 | Teacher1 | System.Object.Object() | no location |
 | Record.cs:29:1:30:35 | Teacher1 | System.Object.ReferenceEquals(object, object) | no location |
-| Record.cs:29:1:30:35 | Teacher1 | System.Object.~Object() | no location |
 | Record.cs:29:1:30:35 | Teacher1 | Teacher1.!=(Teacher1, Teacher1) | Record.cs:29:15:29:22 |
 | Record.cs:29:1:30:35 | Teacher1 | Teacher1.<Clone>$() | no location |
 | Record.cs:29:1:30:35 | Teacher1 | Teacher1.==(Teacher1, Teacher1) | Record.cs:29:15:29:22 |
@@ -152,7 +147,6 @@ members
 | Record.cs:32:1:33:35 | Student1 | System.Object.MemberwiseClone() | no location |
 | Record.cs:32:1:33:35 | Student1 | System.Object.Object() | no location |
 | Record.cs:32:1:33:35 | Student1 | System.Object.ReferenceEquals(object, object) | no location |
-| Record.cs:32:1:33:35 | Student1 | System.Object.~Object() | no location |
 | Record.cs:35:1:39:1 | Pet | Pet.!=(Pet, Pet) | Record.cs:35:15:35:17 |
 | Record.cs:35:1:39:1 | Pet | Pet.<Clone>$() | no location |
 | Record.cs:35:1:39:1 | Pet | Pet.==(Pet, Pet) | Record.cs:35:15:35:17 |
@@ -172,7 +166,6 @@ members
 | Record.cs:35:1:39:1 | Pet | System.Object.MemberwiseClone() | no location |
 | Record.cs:35:1:39:1 | Pet | System.Object.Object() | no location |
 | Record.cs:35:1:39:1 | Pet | System.Object.ReferenceEquals(object, object) | no location |
-| Record.cs:35:1:39:1 | Pet | System.Object.~Object() | no location |
 | Record.cs:41:1:52:1 | Dog | Dog.!=(Dog, Dog) | Record.cs:41:15:41:17 |
 | Record.cs:41:1:52:1 | Dog | Dog.<Clone>$() | no location |
 | Record.cs:41:1:52:1 | Dog | Dog.==(Dog, Dog) | Record.cs:41:15:41:17 |
@@ -199,7 +192,6 @@ members
 | Record.cs:41:1:52:1 | Dog | System.Object.MemberwiseClone() | no location |
 | Record.cs:41:1:52:1 | Dog | System.Object.Object() | no location |
 | Record.cs:41:1:52:1 | Dog | System.Object.ReferenceEquals(object, object) | no location |
-| Record.cs:41:1:52:1 | Dog | System.Object.~Object() | no location |
 | Record.cs:54:1:54:39 | R1 | R1.!=(R1, R1) | Record.cs:54:24:54:25 |
 | Record.cs:54:1:54:39 | R1 | R1.<Clone>$() | no location |
 | Record.cs:54:1:54:39 | R1 | R1.==(R1, R1) | Record.cs:54:24:54:25 |
@@ -218,7 +210,6 @@ members
 | Record.cs:54:1:54:39 | R1 | System.Object.MemberwiseClone() | no location |
 | Record.cs:54:1:54:39 | R1 | System.Object.Object() | no location |
 | Record.cs:54:1:54:39 | R1 | System.Object.ReferenceEquals(object, object) | no location |
-| Record.cs:54:1:54:39 | R1 | System.Object.~Object() | no location |
 | Record.cs:56:1:56:48 | R2 | R1.!=(R1, R1) | Record.cs:54:24:54:25 |
 | Record.cs:56:1:56:48 | R2 | R1.==(R1, R1) | Record.cs:54:24:54:25 |
 | Record.cs:56:1:56:48 | R2 | R1.A | Record.cs:54:34:54:34 |
@@ -244,4 +235,3 @@ members
 | Record.cs:56:1:56:48 | R2 | System.Object.MemberwiseClone() | no location |
 | Record.cs:56:1:56:48 | R2 | System.Object.Object() | no location |
 | Record.cs:56:1:56:48 | R2 | System.Object.ReferenceEquals(object, object) | no location |
-| Record.cs:56:1:56:48 | R2 | System.Object.~Object() | no location |

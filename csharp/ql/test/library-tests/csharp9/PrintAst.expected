@@ -484,9 +484,6 @@ InitOnlyProperty.cs:
 #   34|               2: [MemberInitializer] ... = ...
 #   34|                 0: [PropertyCall] access to property Prop0
 #   34|                 1: [IntLiteral] 0
-IsExternalInit.cs:
-#    4| [NamespaceDeclaration] namespace ... { ... }
-#    6|   1: [Class] IsExternalInit
 LambdaModifier.cs:
 #    4| [Class] Class1
 #    6|   5: [Method] M1
