@@ -210,19 +210,19 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void CompressionTests()
         {
-            Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_COMPRESSION", "gzip");
+            Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_TRAP_COMPRESSION", "gzip");
             options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
             Assert.Equal(TrapWriter.CompressionMode.Gzip, options.TrapCompression);
 
-            Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_COMPRESSION", "brotli");
+            Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_TRAP_COMPRESSION", "brotli");
             options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
             Assert.Equal(TrapWriter.CompressionMode.Brotli, options.TrapCompression);
 
-            Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_COMPRESSION", "none");
+            Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_TRAP_COMPRESSION", "none");
             options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
             Assert.Equal(TrapWriter.CompressionMode.None, options.TrapCompression);
 
-            Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_COMPRESSION", null);
+            Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_TRAP_COMPRESSION", null);
             options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
             Assert.Equal(TrapWriter.CompressionMode.Brotli, options.TrapCompression);
         }

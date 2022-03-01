@@ -47,10 +47,10 @@ namespace Semmle.Util
         {
             var extractorOptions = new List<string>();
 
-            var compressionMode = GetExtractorOption("compression");
-            if (!string.IsNullOrEmpty(compressionMode))
+            var trapCompression = GetExtractorOption("trap_compression");
+            if (!string.IsNullOrEmpty(trapCompression))
             {
-                extractorOptions.Add($"--compression:{compressionMode}");
+                extractorOptions.Add($"--trap_compression:{trapCompression}");
             }
 
             return extractorOptions;
