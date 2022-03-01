@@ -1,10 +1,10 @@
 void testCall (unsigned long);
-void functionWork() {
+void functionWork(char aA[10],unsigned int aUI) {
+
   unsigned long aL;
-  char aA[10],*aP;
-  unsigned char aUC;
+  char *aP;
   int aI;
-  unsigned int aUI;
+
   aI = (aUI*8)/10; // GOOD
   aI = aUI*8; // BAD
   aP = aA+aI;
