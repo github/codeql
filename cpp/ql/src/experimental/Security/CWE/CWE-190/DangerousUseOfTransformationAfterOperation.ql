@@ -2,7 +2,7 @@
  * @name Dangerous use of transformation after operation.
  * @description By using the transformation after the operation, you are doing a pointless and dangerous action.
  * @kind problem
- * @id cpp/dangerous-use-of-transformation-after-operation.
+ * @id cpp/dangerous-use-of-transformation-after-operation
  * @problem.severity warning
  * @precision medium
  * @tags correctness
@@ -85,10 +85,10 @@ where
     ) and
     (
       conversionDoneLate(mexp, e1, e2) and
-      msg = "this transformation is applied after multiplication"
+      msg = "This transformation is applied after multiplication."
       or
       signSmallerWithEqualSizes(mexp, e1, e2) and
-      msg = "possible signed overflow followed by offset of the pointer out of bounds"
+      msg = "Possible signed overflow followed by offset of the pointer out of bounds."
     )
   )
 select mexp, msg
