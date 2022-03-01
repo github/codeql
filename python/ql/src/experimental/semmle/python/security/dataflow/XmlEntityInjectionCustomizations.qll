@@ -24,7 +24,10 @@ module XmlEntityInjection {
   /**
    * A data flow sink for "xml injection" vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends DataFlow::Node {
+    /** Gets the kind of XML injection that this sink is vulnerable to. */
+    abstract string getVulnerableKind();
+  }
 
   /**
    * A sanitizer guard for "xml injection" vulnerabilities.
@@ -46,53 +49,35 @@ module XmlEntityInjection {
   }
 
   /**
-   * A data flow sink for XML parsing libraries.
+   * An input to a direct XML parsing function, considered as a flow sink.
    *
    * See `XML::XMLParsing`.
    */
-  abstract class XMLParsingSink extends Sink { }
+  class XMLParsingInputAsSink extends Sink {
+    XML::XMLParsing xmlParsing;
+
+    XMLParsingInputAsSink() { this = xmlParsing.getAnInput() }
+
+    override string getVulnerableKind() { xmlParsing.vulnerable(result) }
+  }
 
   /**
-   * A data flow sink for XML parsers.
+   * An input to an XML parser, considered as a flow sink.
    *
    * See `XML::XMLParser`
    */
-  abstract class XMLParserSink extends Sink { }
+  class XMLParserInputAsSink extends Sink {
+    XML::XMLParser xmlParser;
+
+    XMLParserInputAsSink() { this = xmlParser.getAnInput() }
+
+    override string getVulnerableKind() { xmlParser.vulnerable(result) }
+  }
 
   /**
    * A source of remote user input, considered as a flow source.
    */
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
-
-  /**
-   * An xml parsing operation, considered as a flow sink.
-   */
-  class XMLParsingInputAsSink extends XMLParsingSink {
-    XMLParsingInputAsSink() { this = any(XML::XMLParsing xmlParsing).getAnInput() }
-  }
-
-  /**
-   * An xml parsing operation vulnerable to `kind`.
-   */
-  predicate xmlParsingInputAsVulnerableSink(DataFlow::Node sink, string kind) {
-    exists(XML::XMLParsing xmlParsing |
-      sink = xmlParsing.getAnInput() and xmlParsing.vulnerable(kind)
-    )
-  }
-
-  /**
-   * An xml parser operation, considered as a flow sink.
-   */
-  class XMLParserInputAsSink extends XMLParserSink {
-    XMLParserInputAsSink() { this = any(XML::XMLParser xmlParser).getAnInput() }
-  }
-
-  /**
-   * An xml parser operation vulnerable to `kind`.
-   */
-  predicate xmlParserInputAsVulnerableSink(DataFlow::Node sink, string kind) {
-    exists(XML::XMLParser xmlParser | sink = xmlParser.getAnInput() and xmlParser.vulnerable(kind))
-  }
 
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.

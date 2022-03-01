@@ -25,22 +25,4 @@ module XmlEntityInjection {
       any(AdditionalTaintStep s).step(nodeFrom, nodeTo)
     }
   }
-
-  private import DataFlow::PathGraph
-
-  /** Holds if there is an XML injection from `source` to `sink` */
-  predicate xmlEntityInjection(DataFlow::PathNode source, DataFlow::PathNode sink) {
-    any(XmlEntityInjectionConfiguration x).hasFlowPath(source, sink)
-  }
-
-  /** Holds if there is an XML injection from `source` to `sink` vulnerable to `kind` */
-  predicate xmlEntityInjectionVulnerable(
-    DataFlow::PathNode source, DataFlow::PathNode sink, string kind
-  ) {
-    xmlEntityInjection(source, sink) and
-    (
-      xmlParsingInputAsVulnerableSink(sink.getNode(), kind) or
-      xmlParserInputAsVulnerableSink(sink.getNode(), kind)
-    )
-  }
 }
