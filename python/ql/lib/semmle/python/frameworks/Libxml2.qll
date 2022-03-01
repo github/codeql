@@ -40,9 +40,6 @@ private module Libxml2 {
 
     override DataFlow::Node getXPath() { result = this.getArg(0) }
 
-    // TODO: implement when we get call nodes
-    override DataFlow::Node getTree() { none() }
-
     override string getName() { result = "libxml2" }
   }
 }

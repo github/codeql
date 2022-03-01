@@ -68,9 +68,6 @@ private module Lxml {
 
     override DataFlow::Node getXPath() { result in [this.getArg(0), this.getArgByName("_path")] }
 
-    // TODO: implement when we get call nodes
-    override DataFlow::Node getTree() { none() }
-
     override string getName() { result = "lxml.etree" }
   }
 }

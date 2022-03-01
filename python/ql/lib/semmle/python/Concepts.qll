@@ -519,9 +519,6 @@ class XPathExecution extends DataFlow::Node {
   /** Gets the data flow node for the XPath expression being executed by this node. */
   DataFlow::Node getXPath() { result = range.getXPath() }
 
-  /** Gets a dataflow node for the tree in which the XPath expression is being evaluated. */
-  DataFlow::Node getTree() { result = range.getTree() }
-
   /**
    * Gets the name of this XPath expression execution, typically the name of an executing method.
    * This is used for nice alert messages and should include the module if possible.
@@ -543,9 +540,6 @@ module XPathExecution {
   abstract class Range extends DataFlow::Node {
     /** Gets the data flow node for the XPath expression being executed by this node. */
     abstract DataFlow::Node getXPath();
-
-    /** Gets a dataflow node for the tree in which the XPath expression is being evaluated. */
-    abstract DataFlow::Node getTree();
 
     /**
      * Gets the name of this xpath expression execution, typically the name of an executing method.
