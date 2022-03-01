@@ -73,3 +73,12 @@ function quz() {
 
     history.replace(payload); // NOT OK
 }
+
+function bar() {
+    var url = document.location.search.substr(1);
+
+    $("<a>", {href: url}).appendTo("body"); // NOT OK - but not detected [INCONSISTENCY]
+    $("#foo").attr("href", url); // NOT OK - but not detected [INCONSISTENCY]
+    $("#foo").attr({href: url}); // NOT OK - but not detected [INCONSISTENCY]
+    $("<img>", {src: url}).appendTo("body"); // NOT OK - but not detected [INCONSISTENCY]
+}
