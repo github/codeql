@@ -245,6 +245,21 @@ class ExprStmtNode extends ElementNode {
 }
 
 /**
+ * A node representing a `KtInitializerAssignExpr`.
+ */
+class KtInitializerNode extends ExprStmtNode {
+  KtInitializerNode() { element instanceof KtInitializerAssignExpr }
+
+  override PrintAstNode getChild(int childIndex) {
+    // Remove the RHS of the initializer, because otherwise
+    // it appears as both the initializer's child and the
+    // initialize of the related field, producing a DAG not
+    // a tree and consequently unreadable output.
+    result = super.getChild(childIndex) and childIndex = 0
+  }
+}
+
+/**
  * Holds if the given expression is part of an annotation.
  */
 private predicate partOfAnnotation(Expr e) {
