@@ -200,8 +200,8 @@ private predicate inheritanceConversionValueNumber(
   instr.getEnclosingIRFunction() = irFunc and
   instr.getOpcode() = opcode and
   tvalueNumber(instr.getUnary()) = operand and
-  unique( | | instr.(InheritanceConversionInstruction).getBaseClass()) = baseClass and
-  unique( | | instr.(InheritanceConversionInstruction).getDerivedClass()) = derivedClass
+  unique( | | instr.getBaseClass()) = baseClass and
+  unique( | | instr.getDerivedClass()) = derivedClass
 }
 
 private predicate loadTotalOverlapValueNumber(
