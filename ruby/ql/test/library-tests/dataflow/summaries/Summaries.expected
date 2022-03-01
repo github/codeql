@@ -25,6 +25,10 @@ edges
 | summaries.rb:26:31:26:37 | tainted :  | summaries.rb:26:12:26:38 | call to secondArg :  |
 | summaries.rb:30:24:30:30 | tainted :  | summaries.rb:30:6:30:42 | call to onlyWithBlock |
 | summaries.rb:31:27:31:33 | tainted :  | summaries.rb:31:6:31:34 | call to onlyWithoutBlock |
+| summaries.rb:40:7:40:13 | "taint" :  | summaries.rb:41:24:41:24 | t :  |
+| summaries.rb:40:7:40:13 | "taint" :  | summaries.rb:42:24:42:24 | t :  |
+| summaries.rb:41:24:41:24 | t :  | summaries.rb:41:8:41:25 | call to matchedByName |
+| summaries.rb:42:24:42:24 | t :  | summaries.rb:42:8:42:25 | call to matchedByName |
 nodes
 | summaries.rb:1:11:1:26 | call to identity :  | semmle.label | call to identity :  |
 | summaries.rb:1:20:1:26 | "taint" :  | semmle.label | "taint" :  |
@@ -53,6 +57,11 @@ nodes
 | summaries.rb:35:16:35:22 | tainted | semmle.label | tainted |
 | summaries.rb:36:21:36:27 | tainted | semmle.label | tainted |
 | summaries.rb:37:36:37:42 | tainted | semmle.label | tainted |
+| summaries.rb:40:7:40:13 | "taint" :  | semmle.label | "taint" :  |
+| summaries.rb:41:8:41:25 | call to matchedByName | semmle.label | call to matchedByName |
+| summaries.rb:41:24:41:24 | t :  | semmle.label | t :  |
+| summaries.rb:42:8:42:25 | call to matchedByName | semmle.label | call to matchedByName |
+| summaries.rb:42:24:42:24 | t :  | semmle.label | t :  |
 subpaths
 invalidSpecComponent
 invalidOutputSpecComponent
@@ -70,3 +79,5 @@ invalidOutputSpecComponent
 | summaries.rb:35:16:35:22 | tainted | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:35:16:35:22 | tainted | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
 | summaries.rb:36:21:36:27 | tainted | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:36:21:36:27 | tainted | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
 | summaries.rb:37:36:37:42 | tainted | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:37:36:37:42 | tainted | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
+| summaries.rb:41:8:41:25 | call to matchedByName | summaries.rb:40:7:40:13 | "taint" :  | summaries.rb:41:8:41:25 | call to matchedByName | $@ | summaries.rb:40:7:40:13 | "taint" :  | "taint" :  |
+| summaries.rb:42:8:42:25 | call to matchedByName | summaries.rb:40:7:40:13 | "taint" :  | summaries.rb:42:8:42:25 | call to matchedByName | $@ | summaries.rb:40:7:40:13 | "taint" :  | "taint" :  |

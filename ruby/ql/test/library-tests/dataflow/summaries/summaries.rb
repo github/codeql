@@ -35,3 +35,10 @@ Foo.new.method(tainted)
 Bar.new.method(tainted)
 Bar.new.next.method(tainted)
 Bar.new.next.next.next.next.method(tainted)
+
+def userDefinedFunction(x, y)
+  t = "taint"
+  sink(x.matchedByName(t))
+  sink(y.matchedByName(t))
+  sink(x.unmatchedName(t))
+end

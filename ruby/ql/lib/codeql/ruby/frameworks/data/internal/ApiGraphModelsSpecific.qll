@@ -53,6 +53,43 @@ API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int
   type = "" and
   n = 0 and
   result = API::root()
+  or
+  // A row of form `;any;Method[foo]` should match any method named `foo`.
+  package = any(string s) and
+  type = "any" and
+  n = 1 and
+  exists(EntryPointFromAnyType entry |
+    methodMatchedByName(path, entry.getName()) and
+    result = entry.getNode()
+  )
+}
+
+/**
+ * Holds if `path` occurs in a CSV row with type `any`, meaning it can start
+ * matching anywhere, and the path begins with `Method[methodName]`.
+ */
+private predicate methodMatchedByName(AccessPath path, string methodName) {
+  isRelevantFullPath(_, "any", path) and
+  exists(AccessPathToken token |
+    token = path.getToken(0) and
+    token.getName() = "Method" and
+    methodName = token.getAnArgument()
+  )
+}
+
+/**
+ * An API graph entry point corresponding to a method name such as `foo` in `;any;Method[foo]`.
+ *
+ * This ensures that the API graph rooted in that method call is materialized.
+ */
+private class EntryPointFromAnyType extends API::EntryPoint {
+  string name;
+
+  EntryPointFromAnyType() { this = "AnyMethod[" + name + "]" and methodMatchedByName(_, name) }
+
+  override DataFlow::CallNode getACall() { result.getMethodName() = name }
+
+  string getName() { result = name }
 }
 
 /**
