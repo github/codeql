@@ -155,7 +155,6 @@ private predicate fieldAddressValueNumber(
   TValueNumber objectAddress
 ) {
   instr.getEnclosingIRFunction() = irFunc and
-  instr.getField() = field and
   unique( | | instr.getField()) = field and
   tvalueNumber(instr.getObjectAddress()) = objectAddress
 }
