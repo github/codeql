@@ -1,0 +1,29 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+exclude: /test/.*$(?<!\.ql)(?<!\.qll)(?<!\.qlref)
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+
+-   repo: local
+    hooks:
+    -   id: codeql-format
+        name: Fix QL file formatting
+        files: \.qll?$
+        language: system
+        entry: codeql query format --in-place
+
+    -   id: sync-files
+        name: Fix files required to be identical
+        language: system
+        entry: python3 config/sync-files.py --latest
+        pass_filenames: false
+
+    -   id: qhelp
+        name: Check query help generation
+        files: \.qhelp$
+        language: system
+        entry: python3 misc/scripts/check-qhelp.py

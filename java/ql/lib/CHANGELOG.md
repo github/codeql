@@ -1,3 +1,9 @@
+## 0.0.10
+
+### New Features
+
+* Added predicates `ClassOrInterface.getAPermittedSubtype` and `isSealed` exposing information about sealed classes.
+
 ## 0.0.9
 
 ## 0.0.8

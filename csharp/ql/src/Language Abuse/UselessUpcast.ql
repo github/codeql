@@ -204,6 +204,8 @@ class ExplicitUpcast extends ExplicitCast {
     this = any(LocalVariableDeclAndInitExpr decl | decl.isImplicitlyTyped()).getInitializer()
     or
     exists(LambdaExpr c | c.canReturn(this))
+    or
+    dest instanceof DynamicType
   }
 }
 
