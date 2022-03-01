@@ -508,5 +508,10 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/AccessPathSyntax.qll",
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/AccessPathSyntax.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/AccessPathSyntax.qll"
+  ],
+  "Concepts Python/Ruby/JS": [
+    "python/ql/lib/semmle/python/ConceptsShared.qll",
+    "ruby/ql/lib/codeql/ruby/ConceptsShared.qll",
+    "javascript/ql/lib/semmle/javascript/ConceptsShared.qll"
   ]
 }

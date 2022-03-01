@@ -4,7 +4,7 @@
  * provide concrete subclasses.
  */
 
-import javascript
+private import javascript
 
 /**
  * A data flow node that executes an operating system command,
