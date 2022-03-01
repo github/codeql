@@ -476,12 +476,12 @@ function urlStuff() {
   $("<img>", {src: url}).appendTo("body"); // NOT OK
   $("<a>", {href: win.location.href}).appendTo("body"); // OK
 
-  $("<img>", {src: "http://google.com/" + url}).appendTo("body"); // OK - but flagged [INCONSISTENCY]
+  $("<img>", {src: "http://google.com/" + url}).appendTo("body"); // OK
 
-  $("<img>", {src: ["http://google.com", url].join("/")}).appendTo("body"); // OK - but flagged [INCONSISTENCY]
+  $("<img>", {src: ["http://google.com", url].join("/")}).appendTo("body"); // OK
 
   if (url.startsWith("https://")) {
-    $("<img>", {src: url}).appendTo("body"); // OK - but flagged [INCONSISTENCY]
+    $("<img>", {src: url}).appendTo("body"); // OK
   } else {
     $("<img>", {src: url}).appendTo("body"); // NOT OK
   }
