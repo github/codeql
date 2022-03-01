@@ -333,6 +333,12 @@ class Class extends UserType {
    * http://en.cppreference.com/w/cpp/language/copy_constructor#Deleted_implicitly-declared_copy_constructor
    */
   predicate implicitCopyConstructorDeleted() {
+    forex(CopyConstructor cc | cc = this.getAConstructor() |
+      cc.isDeleted()
+      or
+      not cc.isCompilerGenerated()
+    )
+    or
     // - T has non-static data members that cannot be copied (have deleted,
     //   inaccessible, or ambiguous copy constructors);
     exists(Type t | t = this.getAFieldSubobjectType().getUnspecifiedType() |
@@ -340,34 +346,6 @@ class Class extends UserType {
       // constructors are considered equal.
       this.cannotAccessCopyConstructorOnAny(t)
     )
-    or
-    // - T has direct or virtual base class that cannot be copied (has deleted,
-    //   inaccessible, or ambiguous copy constructors);
-    exists(Class c | c = this.getADirectOrVirtualBase() |
-      // Note: Overload resolution is not implemented -- all copy
-      // constructors are considered equal.
-      this.cannotAccessCopyConstructorOnThis(c)
-    )
-    or
-    // - T has direct or virtual base class with a deleted or inaccessible
-    //   destructor;
-    exists(Class base | base = this.getADirectOrVirtualBase() |
-      this.cannotAccessDestructor(base, this)
-    )
-    or
-    // - T has a user-defined move constructor or move assignment operator;
-    exists(MoveConstructor mc | mc = this.getAMemberFunction() | not mc.isCompilerGenerated())
-    or
-    exists(MoveAssignmentOperator ma | ma = this.getAMemberFunction() |
-      not ma.isCompilerGenerated()
-    )
-    or
-    // - T is a union and has a variant member with non-trivial copy
-    //   constructor (since C++11)
-    none() // Not implemented
-    or
-    // - T has a data member of rvalue reference type.
-    exists(Type t | t = this.getAFieldSubobjectType() | t instanceof RValueReferenceType)
   }
 
   /**
@@ -377,33 +355,11 @@ class Class extends UserType {
    * http://en.cppreference.com/w/cpp/language/copy_assignment#Deleted_implicitly-declared_copy_assignment_operator
    */
   predicate implicitCopyAssignmentOperatorDeleted() {
-    // - T has a user-declared move constructor;
-    exists(MoveConstructor mc | mc = this.getAMemberFunction() | not mc.isCompilerGenerated())
-    or
-    // - T has a user-declared move assignment operator.
-    exists(MoveAssignmentOperator ma | ma = this.getAMemberFunction() |
-      not ma.isCompilerGenerated()
+    forex(CopyAssignmentOperator ca | ca = this.getAMemberFunction() |
+      ca.isDeleted()
+      or
+      not ca.isCompilerGenerated()
     )
-    or
-    // - T has a non-static data member of non-class type (or array thereof)
-    //   that is const;
-    exists(Type t | t = this.getAFieldSubobjectType() |
-      // The rule for this case refers only to non-class types only, but our
-      // implementation extends it to cover class types too. Class types are
-      // supposed to be covered by the rule below on data members that
-      // cannot be copy-assigned. Copy-assigning a const class-typed member
-      // would call an overload of type
-      // `const C& operator=(const C&) const;`. Such an overload is unlikely
-      // to exist because it contradicts the intention of "const": it allows
-      // assigning to a const object. But since we have not implemented the
-      // ability to distinguish between overloads, we cannot distinguish that
-      // overload from the ordinary `C& operator=(const C&);`. Instead, we
-      // require class types to be non-const in this clause.
-      /* not t instanceof Class and */ t.isConst()
-    )
-    or
-    // - T has a non-static data member of a reference type;
-    exists(Type t | t = this.getAFieldSubobjectType() | t instanceof ReferenceType)
     or
     // - T has a non-static data member or a direct or virtual base class that
     //   cannot be copy-assigned (overload resolution for the copy assignment
@@ -413,15 +369,6 @@ class Class extends UserType {
       // operators are considered equal.
       this.cannotAccessCopyAssignmentOperatorOnAny(t)
     )
-    or
-    exists(Class c | c = this.getADirectOrVirtualBase() |
-      // Note: Overload resolution is not implemented -- all copy assignment
-      // operators are considered equal.
-      this.cannotAccessCopyAssignmentOperatorOnThis(c)
-    )
-    // - T is a union-like class, and has a variant member whose corresponding
-    //   assignment operator is non-trivial.
-    // Not implemented
   }
 
   /** Gets the destructor of this class, struct or union, if any. */
