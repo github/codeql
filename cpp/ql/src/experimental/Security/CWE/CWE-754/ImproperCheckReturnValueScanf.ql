@@ -13,92 +13,91 @@
 
 import cpp
 import semmle.code.cpp.commons.Exclusions
-import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /** Returns the position of the first argument being filled. */
 int posArgumentInFunctionCall(FunctionCall fc) {
   (
-    (
-      fc.getTarget().hasGlobalOrStdName(["scanf", "scanf_s"])
-    ) and
+    fc.getTarget().hasGlobalOrStdName(["scanf", "scanf_s"]) and
     result = 1
     or
-    (
-      fc.getTarget().hasGlobalOrStdName(["fscanf", "sscanf", "fscanf_s", "sscanf_s"])
-    ) and
+    fc.getTarget().hasGlobalOrStdName(["fscanf", "sscanf", "fscanf_s", "sscanf_s"]) and
     result = 2
   )
 }
 
-from FunctionCall fc, int n
-where
-  n = posArgumentInFunctionCall(fc) and
-  // Function return value is not evaluated.
-  fc instanceof ExprInVoidContext and
-  not isFromMacroDefinition(fc) and
-  exists(Expr e0, int i |
-    i in [n .. fc.getNumberOfArguments() - 1] and
+/** Holds if a function argument was not initialized but used after the call. */
+predicate argumentIsNotInitializedAndIsUsed(Variable vt, FunctionCall fc) {
+  exists(Expr e0 |
     // Fillable argument was not initialized.
+    vt instanceof LocalScopeVariable and
+    not vt.getAnAssignment().getASuccessor+() = fc and
     (
-      fc.getArgument(i).(VariableAccess).getTarget() instanceof LocalScopeVariable or
-      fc.getArgument(i).(AddressOfExpr).getOperand().(VariableAccess).getTarget() instanceof
-        LocalScopeVariable
+      not vt.hasInitializer()
+      or
+      exists(Expr e1, Variable v1 |
+        e1 = vt.getInitializer().getExpr() and
+        v1 = e1.(AddressOfExpr).getOperand().(VariableAccess).getTarget() and
+        (
+          not v1.hasInitializer() and
+          not v1.getAnAssignment().getASuccessor+() = fc
+        )
+      )
     ) and
-    (
-      not fc.getArgument(i).(VariableAccess).getTarget().hasInitializer() and
-      not fc.getArgument(i)
-          .(AddressOfExpr)
-          .getOperand()
-          .(VariableAccess)
-          .getTarget()
-          .hasInitializer()
+    not exists(AssignExpr ae |
+      ae.getLValue() = vt.getAnAccess().getParent() and
+      ae.getASuccessor+() = fc
     ) and
-    (
-      not fc.getArgument(i).(VariableAccess).getTarget().getAnAssignment().getASuccessor+() = fc and
-      not fc.getArgument(i)
-          .(AddressOfExpr)
-          .getOperand()
-          .(VariableAccess)
-          .getTarget()
-          .getAnAssignment()
-          .getASuccessor+() = fc
+    not exists(FunctionCall f0 |
+      f0.getAnArgument().getAChild() = vt.getAnAccess() and
+      f0.getASuccessor+() = fc
     ) and
     // After the call, the completed arguments are assigned or returned as the result of the operation of the upper function.
     fc.getASuccessor+() = e0 and
     (
       (
-        e0.(Assignment).getRValue().(VariableAccess).getTarget() =
-          fc.getArgument(i).(AddressOfExpr).getOperand().(VariableAccess).getTarget() or
-        e0.(Assignment).getRValue().(VariableAccess).getTarget() =
-          fc.getArgument(i).(VariableAccess).getTarget()
+        e0.(Assignment).getRValue().(VariableAccess).getTarget() = vt or
+        e0.(Assignment).getRValue().(ArrayExpr).getArrayBase().(VariableAccess).getTarget() = vt
       )
       or
       e0.getEnclosingStmt() instanceof ReturnStmt and
-      (
-        e0.(VariableAccess).getTarget() =
-          fc.getArgument(i).(AddressOfExpr).getOperand().(VariableAccess).getTarget() or
-        e0.(VariableAccess).getTarget() = fc.getArgument(i).(VariableAccess).getTarget()
-      )
+      e0.(VariableAccess).getTarget() = vt
       or
       not exists(Expr e1 |
         fc.getASuccessor+() = e1 and
-        (
-          e1.(VariableAccess).getTarget() =
-            fc.getArgument(i).(AddressOfExpr).getOperand().(VariableAccess).getTarget() or
-          e1.(VariableAccess).getTarget() = fc.getArgument(i).(VariableAccess).getTarget()
-        )
+        e1.(VariableAccess).getTarget() = vt
       )
     )
+  )
+}
+
+from FunctionCall fc, int i
+where
+  // Function return value is not evaluated.
+  fc instanceof ExprInVoidContext and
+  not isFromMacroDefinition(fc) and
+  i in [posArgumentInFunctionCall(fc) .. fc.getNumberOfArguments() - 1] and
+  (
+    argumentIsNotInitializedAndIsUsed(fc.getArgument(i).(VariableAccess).getTarget(), fc) or
+    argumentIsNotInitializedAndIsUsed(fc.getArgument(i)
+          .(AddressOfExpr)
+          .getOperand()
+          .(VariableAccess)
+          .getTarget(), fc) or
+    argumentIsNotInitializedAndIsUsed(fc.getArgument(i)
+          .(ArrayExpr)
+          .getArrayBase()
+          .(VariableAccess)
+          .getTarget(), fc)
   ) and
   // After the call, filled arguments are not evaluated.
-  not exists(Expr e0, int i |
-    i in [n .. fc.getNumberOfArguments() - 1] and
+  not exists(Expr e0, int i1 |
+    i1 in [posArgumentInFunctionCall(fc) .. fc.getNumberOfArguments() - 1] and
     fc.getASuccessor+() = e0 and
     e0.getEnclosingElement() instanceof ComparisonOperation and
     (
-      e0.(VariableAccess).getTarget() = fc.getArgument(i).(VariableAccess).getTarget() or
+      e0.(VariableAccess).getTarget() = fc.getArgument(i1).(VariableAccess).getTarget() or
       e0.(VariableAccess).getTarget() =
-        fc.getArgument(i).(AddressOfExpr).getOperand().(VariableAccess).getTarget()
+        fc.getArgument(i1).(AddressOfExpr).getOperand().(VariableAccess).getTarget()
     )
   )
 select fc, "Unchecked return value for call to '" + fc.getTarget().getName() + "'."
