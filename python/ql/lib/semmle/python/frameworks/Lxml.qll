@@ -23,7 +23,6 @@ private module Lxml {
    * A class constructor compiling an XPath expression.
    *
    *    from lxml import etree
-   *    root = etree.XML("<xmlContent>")
    *    find_text = etree.XPath("`sink`")
    *    find_text = etree.ETXPath("`sink`")
    *
@@ -38,7 +37,7 @@ private module Lxml {
 
     override DataFlow::Node getXPath() { result in [this.getArg(0), this.getArgByName("path")] }
 
-    override string getName() { result = "Lxml.etree" }
+    override string getName() { result = "lxml.etree" }
   }
 
   /**
@@ -72,6 +71,6 @@ private module Lxml {
     // TODO: implement when we get call nodes
     override DataFlow::Node getTree() { none() }
 
-    override string getName() { result = "Lxml.etree" }
+    override string getName() { result = "lxml.etree" }
   }
 }
