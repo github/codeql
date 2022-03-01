@@ -17,13 +17,12 @@ private import semmle.python.Frameworks
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SystemCommandExecution::Range` instead.
  */
-class SystemCommandExecution extends DataFlow::Node {
-  SystemCommandExecution::Range range;
-
-  SystemCommandExecution() { this = range }
+class SystemCommandExecution extends DataFlow::Node instanceof SystemCommandExecution::Range {
+  /** Holds if a shell interprets `arg`. */
+  predicate isShellInterpreted(DataFlow::Node arg) { super.isShellInterpreted(arg) }
 
   /** Gets the argument that specifies the command to be executed. */
-  DataFlow::Node getCommand() { result = range.getCommand() }
+  DataFlow::Node getACommandArgument() { result = super.getACommandArgument() }
 }
 
 /** Provides a class for modeling new system-command execution APIs. */
@@ -37,7 +36,10 @@ module SystemCommandExecution {
    */
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the command to be executed. */
-    abstract DataFlow::Node getCommand();
+    abstract DataFlow::Node getACommandArgument();
+
+    /** Holds if a shell interprets `arg`. */
+    predicate isShellInterpreted(DataFlow::Node arg) { none() }
   }
 }
 

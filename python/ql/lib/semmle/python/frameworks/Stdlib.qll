@@ -1048,7 +1048,7 @@ private module StdlibPrivate {
   private class OsSystemCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     OsSystemCall() { this = os().getMember("system").getACall() }
 
-    override DataFlow::Node getCommand() { result = this.getArg(0) }
+    override DataFlow::Node getACommandArgument() { result = this.getArg(0) }
   }
 
   /**
@@ -1067,7 +1067,7 @@ private module StdlibPrivate {
       this = os().getMember(name).getACall()
     }
 
-    override DataFlow::Node getCommand() {
+    override DataFlow::Node getACommandArgument() {
       result = this.getArg(0)
       or
       not name = "popen" and
@@ -1088,9 +1088,9 @@ private module StdlibPrivate {
       )
     }
 
-    override DataFlow::Node getCommand() { result = this.getArg(0) }
+    override DataFlow::Node getACommandArgument() { result = this.getArg(0) }
 
-    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+    override DataFlow::Node getAPathArgument() { result = this.getACommandArgument() }
   }
 
   /**
@@ -1108,7 +1108,7 @@ private module StdlibPrivate {
       )
     }
 
-    override DataFlow::Node getCommand() {
+    override DataFlow::Node getACommandArgument() {
       result = this.getArg(1)
       or
       // `file` keyword argument only valid for the `v` variants, but this
@@ -1116,7 +1116,7 @@ private module StdlibPrivate {
       result = this.getArgByName("file")
     }
 
-    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+    override DataFlow::Node getAPathArgument() { result = this.getACommandArgument() }
   }
 
   /**
@@ -1127,9 +1127,11 @@ private module StdlibPrivate {
     DataFlow::CallCfgNode {
     OsPosixSpawnCall() { this = os().getMember(["posix_spawn", "posix_spawnp"]).getACall() }
 
-    override DataFlow::Node getCommand() { result in [this.getArg(0), this.getArgByName("path")] }
+    override DataFlow::Node getACommandArgument() {
+      result in [this.getArg(0), this.getArgByName("path")]
+    }
 
-    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+    override DataFlow::Node getAPathArgument() { result = this.getACommandArgument() }
   }
 
   /** An additional taint step for calls to `os.path.join` */
@@ -1192,7 +1194,7 @@ private module StdlibPrivate {
       result in [this.getArg(2), this.getArgByName("executable")]
     }
 
-    override DataFlow::Node getCommand() {
+    override DataFlow::Node getACommandArgument() {
       // TODO: Track arguments ("args" and "shell")
       // TODO: Handle using `args=["sh", "-c", <user-input>]`
       result = this.get_executable_arg()
@@ -1369,7 +1371,9 @@ private module StdlibPrivate {
       )
     }
 
-    override DataFlow::Node getCommand() { result in [this.getArg(0), this.getArgByName("cmd")] }
+    override DataFlow::Node getACommandArgument() {
+      result in [this.getArg(0), this.getArgByName("cmd")]
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -1385,7 +1389,9 @@ private module StdlibPrivate {
   private class PlatformPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     PlatformPopenCall() { this = platform().getMember("popen").getACall() }
 
-    override DataFlow::Node getCommand() { result in [this.getArg(0), this.getArgByName("cmd")] }
+    override DataFlow::Node getACommandArgument() {
+      result in [this.getArg(0), this.getArgByName("cmd")]
+    }
   }
 
   // ---------------------------------------------------------------------------

@@ -12,7 +12,7 @@ class SystemCommandExecutionTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     exists(SystemCommandExecution sce, DataFlow::Node command |
-      command = sce.getCommand() and
+      command = sce.getACommandArgument() and
       location = command.getLocation() and
       element = command.toString() and
       value = prettyNodeForInlineTest(command) and

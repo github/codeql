@@ -80,7 +80,7 @@ private module Invoke {
       this.getFunction() = invoke::context::Context::instanceRunMethods()
     }
 
-    override DataFlow::Node getCommand() {
+    override DataFlow::Node getACommandArgument() {
       result in [this.getArg(0), this.getArgByName("command")]
     }
   }
