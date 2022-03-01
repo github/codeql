@@ -19,7 +19,12 @@ module ClientSideUrlRedirect {
   /**
    * A data flow sink for unvalidated URL redirect vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends DataFlow::Node {
+    /** Holds if the sink can execute JavaScript code in the current context. */
+    predicate isXSSSink() {
+      none() // overwritten in subclasses
+    }
+  }
 
   /**
    * A sanitizer for unvalidated URL redirect vulnerabilities.
@@ -84,11 +89,14 @@ module ClientSideUrlRedirect {
    * A sink which is used to set the window location.
    */
   class LocationSink extends Sink, DataFlow::ValueNode {
+    boolean xss;
+
     LocationSink() {
       // A call to a `window.navigate` or `window.open`
       exists(string name | name = ["navigate", "open", "openDialog", "showModalDialog"] |
         this = DataFlow::globalVarRef(name).getACall().getArgument(0)
-      )
+      ) and
+      xss = false
       or
       // A call to `location.replace` or `location.assign`
       exists(DataFlow::MethodCallNode locationCall, string name |
@@ -96,25 +104,31 @@ module ClientSideUrlRedirect {
         this = locationCall.getArgument(0)
       |
         name = ["replace", "assign"]
-      )
+      ) and
+      xss = true
       or
       // An assignment to `location`
-      exists(Assignment assgn | isLocation(assgn.getTarget()) and astNode = assgn.getRhs())
+      exists(Assignment assgn | isLocation(assgn.getTarget()) and astNode = assgn.getRhs()) and
+      xss = true
       or
       // An assignment to `location.href`, `location.protocol` or `location.hostname`
       exists(DataFlow::PropWrite pw, string propName |
         pw = DOM::locationRef().getAPropertyWrite(propName) and
         this = pw.getRhs()
       |
-        propName = ["href", "protocol", "hostname"]
+        propName = ["href", "protocol", "hostname"] and
+        (if propName = "href" then xss = true else xss = false)
       )
       or
       // A redirection using the AngularJS `$location` service
       exists(AngularJS::ServiceReference service |
         service.getName() = "$location" and
         this.asExpr() = service.getAMethodCall("url").getArgument(0)
-      )
+      ) and
+      xss = false
     }
+
+    override predicate isXSSSink() { xss = true }
   }
 
   /**
@@ -164,6 +178,8 @@ module ClientSideUrlRedirect {
         this = attr.getValueNode()
       )
     }
+
+    override predicate isXSSSink() { any() }
   }
 
   /**
@@ -177,6 +193,8 @@ module ClientSideUrlRedirect {
         this = DataFlow::valueNode(pw.getRhs())
       )
     }
+
+    override predicate isXSSSink() { any() }
   }
 
   /**
@@ -193,6 +211,8 @@ module ClientSideUrlRedirect {
         this = attr.getValue().flow()
       )
     }
+
+    override predicate isXSSSink() { any() }
   }
 
   /**
