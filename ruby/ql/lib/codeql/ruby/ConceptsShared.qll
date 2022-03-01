@@ -133,3 +133,64 @@ module FileWriteAccess {
     abstract DataFlow::Node getADataNode();
   }
 }
+
+/** DEPRECATED: use `CommandExecution::Range` instead. */
+deprecated class SystemCommandExecution = CommandExecution::Range;
+
+/**
+ * A data flow node that executes an operating system command,
+ * for instance by spawning a new process.
+ */
+class CommandExecution extends DataFlow::Node instanceof CommandExecution::Range {
+  /** Gets an argument to this execution that specifies the command or an argument to it. */
+  DataFlow::Node getACommandArgument() { result = super.getACommandArgument() }
+
+  /** Holds if a shell interprets `arg`. */
+  predicate isShellInterpreted(DataFlow::Node arg) { super.isShellInterpreted(arg) }
+
+  /**
+   * Gets an argument to this command execution that specifies the argument list
+   * to the command.
+   */
+  DataFlow::Node getArgumentList() { result = super.getArgumentList() }
+
+  /** Holds if the command execution happens synchronously. */
+  predicate isSync() { super.isSync() }
+
+  /**
+   * Gets the data-flow node (if it exists) for an options argument.
+   */
+  DataFlow::Node getOptionsArg() { result = super.getOptionsArg() }
+}
+
+/** Provides a class for modeling new operating system command APIs. */
+module CommandExecution {
+  /**
+   * A data flow node that executes an operating system command, for instance by spawning a new
+   * process.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `CommandExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an argument to this execution that specifies the command or an argument to it. */
+    abstract DataFlow::Node getACommandArgument();
+
+    /** Holds if a shell interprets `arg`. */
+    predicate isShellInterpreted(DataFlow::Node arg) { none() }
+
+    /**
+     * Gets an argument to this command execution that specifies the argument list
+     * to the command.
+     */
+    DataFlow::Node getArgumentList() { none() }
+
+    /** Holds if the command execution happens synchronously. */
+    predicate isSync() { none() }
+
+    /**
+     * Gets the data-flow node (if it exists) for an options argument.
+     */
+    DataFlow::Node getOptionsArg() { none() }
+  }
+}

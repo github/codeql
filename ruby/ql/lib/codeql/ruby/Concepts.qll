@@ -421,39 +421,6 @@ module HTTP {
   }
 }
 
-/** DEPRECATED: use `CommandExecution::Range` instead. */
-deprecated class SystemCommandExecution = CommandExecution::Range;
-
-/**
- * A data flow node that executes an operating system command,
- * for instance by spawning a new process.
- */
-class CommandExecution extends DataFlow::Node instanceof CommandExecution::Range {
-  /** Holds if a shell interprets `arg`. */
-  predicate isShellInterpreted(DataFlow::Node arg) { super.isShellInterpreted(arg) }
-
-  /** Gets an argument to this execution that specifies the command or an argument to it. */
-  DataFlow::Node getACommandArgument() { result = super.getACommandArgument() }
-}
-
-/** Provides a class for modeling new operating system command APIs. */
-module CommandExecution {
-  /**
-   * A data flow node that executes an operating system command, for instance by spawning a new
-   * process.
-   *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `CommandExecution` instead.
-   */
-  abstract class Range extends DataFlow::Node {
-    /** Gets an argument to this execution that specifies the command or an argument to it. */
-    abstract DataFlow::Node getACommandArgument();
-
-    /** Holds if a shell interprets `arg`. */
-    predicate isShellInterpreted(DataFlow::Node arg) { none() }
-  }
-}
-
 /**
  * A data-flow node that dynamically executes Ruby code.
  *
