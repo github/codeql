@@ -100,11 +100,11 @@ module Kernel {
   class KernelSystemCall extends SystemCommandExecution::Range, KernelMethodCall {
     KernelSystemCall() { this.getMethodName() = "system" }
 
-    override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
+    override DataFlow::Node getACommandArgument() { result = this.getArgument(_) }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // Kernel.system invokes a subshell if you provide a single string as argument
-      this.getNumberOfArguments() = 1 and arg = this.getAnArgument()
+      this.getNumberOfArguments() = 1 and arg = this.getACommandArgument()
     }
   }
 
@@ -116,11 +116,11 @@ module Kernel {
   class KernelExecCall extends SystemCommandExecution::Range, KernelMethodCall {
     KernelExecCall() { this.getMethodName() = "exec" }
 
-    override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
+    override DataFlow::Node getACommandArgument() { result = this.getArgument(_) }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // Kernel.exec invokes a subshell if you provide a single string as argument
-      this.getNumberOfArguments() = 1 and arg = this.getAnArgument()
+      this.getNumberOfArguments() = 1 and arg = this.getACommandArgument()
     }
   }
 
@@ -137,11 +137,11 @@ module Kernel {
   class KernelSpawnCall extends SystemCommandExecution::Range, KernelMethodCall {
     KernelSpawnCall() { this.getMethodName() = "spawn" }
 
-    override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
+    override DataFlow::Node getACommandArgument() { result = this.getArgument(_) }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // Kernel.spawn invokes a subshell if you provide a single string as argument
-      this.getNumberOfArguments() = 1 and arg = this.getAnArgument()
+      this.getNumberOfArguments() = 1 and arg = this.getACommandArgument()
     }
   }
 

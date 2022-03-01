@@ -29,9 +29,11 @@ class SubshellLiteralExecution extends SystemCommandExecution::Range {
 
   SubshellLiteralExecution() { this.asExpr().getExpr() = literal }
 
-  override DataFlow::Node getAnArgument() { result.asExpr().getExpr() = literal.getComponent(_) }
+  override DataFlow::Node getACommandArgument() {
+    result.asExpr().getExpr() = literal.getComponent(_)
+  }
 
-  override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
+  override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getACommandArgument() }
 }
 
 /**
@@ -48,9 +50,11 @@ class SubshellHeredocExecution extends SystemCommandExecution::Range {
 
   SubshellHeredocExecution() { this.asExpr().getExpr() = heredoc and heredoc.isSubShell() }
 
-  override DataFlow::Node getAnArgument() { result.asExpr().getExpr() = heredoc.getComponent(_) }
+  override DataFlow::Node getACommandArgument() {
+    result.asExpr().getExpr() = heredoc.getComponent(_)
+  }
 
-  override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
+  override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getACommandArgument() }
 }
 
 private class SplatSummary extends SummarizedCallable {

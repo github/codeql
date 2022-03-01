@@ -27,7 +27,7 @@ module Open3 {
             .getAMethodCall(["popen3", "popen2", "popen2e", "capture3", "capture2", "capture2e"])
     }
 
-    override DataFlow::Node getAnArgument() {
+    override DataFlow::Node getACommandArgument() {
       result.asExpr().getExpr() = methodCall.getAnArgument()
     }
 
@@ -59,7 +59,7 @@ module Open3 {
               ])
     }
 
-    override DataFlow::Node getAnArgument() {
+    override DataFlow::Node getACommandArgument() {
       result.asExpr().getExpr() = methodCall.getAnArgument()
     }
 
