@@ -118,6 +118,16 @@ private class IsWindowsBarrierGuard extends WindowsOsBarrierGuard instanceof IsW
   override predicate checks(Expr e, boolean branch) { this.controls(e.getBasicBlock(), branch) }
 }
 
+private class IsAnyWindowsBarrierGuard extends WindowsOsBarrierGuard instanceof IsAnyWindowsGuard {
+  override predicate checks(Expr e, boolean branch) {
+    branch = true and this.controls(e.getBasicBlock(), branch)
+  }
+}
+
+/**
+ * A taint tracking configuration tracking the access of the system temporary directory
+ * flowing to the creation of files or directories.
+ */
 private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Configuration {
   TempDirSystemGetPropertyToCreateConfig() { this = "TempDirSystemGetPropertyToCreateConfig" }
 

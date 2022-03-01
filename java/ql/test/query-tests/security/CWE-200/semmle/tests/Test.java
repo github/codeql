@@ -11,6 +11,8 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.EnumSet;
 
+import org.apache.commons.lang3.SystemUtils;
+
 public class Test {
 
     void vulnerableFileCreateTempFile() throws IOException {
@@ -294,6 +296,24 @@ public class Test {
         // Oops, this check should be inverted
         if (tempDirChild.toPath().getFileSystem().supportedFileAttributeViews().contains("posix")) {
             Files.createDirectory(tempDirChild.toPath()); // Creates with permissions 'drwxr-xr-x'
+        }
+    }
+
+    void safeBecauseCheckingForWindowsVersion() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        if (SystemUtils.IS_OS_WINDOWS_10) {
+            Files.createDirectory(tempDirChild.toPath());
+        }
+    }
+
+    void vulnerableBecauseCheckingForNotLinux() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        if (!SystemUtils.IS_OS_LINUX) {
+            Files.createDirectory(tempDirChild.toPath());
         }
     }
 }
