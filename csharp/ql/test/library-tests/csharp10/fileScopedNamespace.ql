@@ -9,4 +9,6 @@ query predicate fileScopedNamespace(Namespace n, Member m) {
   )
 }
 
-query predicate namespaceDeclaration(NamespaceDeclaration nd, Namespace n) { n = nd.getNamespace() }
+query predicate namespaceDeclaration(NamespaceDeclaration nd, Namespace n) {
+  n = nd.getNamespace() and nd.fromSource()
+}

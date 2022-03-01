@@ -5,5 +5,6 @@ globalUsing
 localUsing
 | MyClass1.cs:1:1:1:25 | using ...; |
 globalUsingNamespace
-| GlobalUsing.cs:1:1:1:20 | using ...; | file://:0:0:0:0 | System |
-| GlobalUsing.cs:2:1:2:23 | using ...; | file://:0:0:0:0 | System.IO |
+| GlobalUsing.cs:1:1:1:20 | using ...; | ../../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.Console.cs:3:11:3:16 | System |
+| GlobalUsing.cs:1:1:1:20 | using ...; | ../../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.Runtime.cs:55:11:55:16 | System |
+| GlobalUsing.cs:2:1:2:23 | using ...; | ../../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.Runtime.cs:7116:15:7116:16 | System.IO |
