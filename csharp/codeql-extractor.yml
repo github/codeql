@@ -33,7 +33,10 @@ options:
     title: Whether to use buildless (standalone) extraction.
     description: >
       A value indicating, which type of extraction the autobuilder should perform.
-      If 'yes', then the standalone extractor will be used, otherwise tracing extraction
+      If 'true', then the standalone extractor will be used, otherwise tracing extraction
       will be performed.
-      The default is 'no'.
+      The default is 'false'.
+      Note that buildless extraction will generally yield less accurate analysis results,
+      and should only be used in cases where it is not possible to build
+      the code (for example if it uses inaccessible dependencies).
     type: string
