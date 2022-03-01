@@ -1,0 +1,6 @@
+semmle-extractor-options: /nostdlib /noconfig
+semmle-extractor-options: ${testdir}/../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.Runtime.cs
+semmle-extractor-options: ${testdir}/../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.Console.cs
+semmle-extractor-options: ${testdir}/../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.Collections.cs
+semmle-extractor-options: ${testdir}/../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.Threading.cs
+

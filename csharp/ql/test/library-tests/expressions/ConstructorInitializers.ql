@@ -17,5 +17,5 @@ private class ConstructorInitializerTarget extends Constructor {
 }
 
 from Constructor c, ConstructorInitializer i, ConstructorInitializerTarget target
-where c.getInitializer() = i and target = i.getTarget()
+where c.getInitializer() = i and target = i.getTarget() and c.fromSource()
 select c, i, target
