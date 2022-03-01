@@ -89,6 +89,12 @@ module TaintedPath {
     }
 
     /**
+     * Holds if `s` is a drive path, eg.: `C:\\test.txt`.
+     */
+    bindingset[s]
+    predicate isDrivePath(string s) { s.regexpMatch("^[a-zA-Z]:\\\\*") }
+
+    /**
      * A flow label representing a file path.
      *
      * By default, there are four flow labels, representing the different combinations of
@@ -299,15 +305,34 @@ module TaintedPath {
         Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
-        exists(int n | inputNode = this.getArgument(n) and outputNode = this |
-          n = 0 and outputLabel = inputLabel.toNormalized()
+        outputNode = this and
+        inputNode = input and
+        (
+          inputLabel.getPlatform() = Path::platformPosix() and
+          exists(int n | inputNode = this.getArgument(n) |
+            // If the initial argument is tainted, just normalize it. It can be relative or absolute.
+            n = 0 and outputLabel = inputLabel.toNormalized()
+            or
+            n > 0 and
+            // For later arguments, the flow label depends on whether the first argument is absolute or relative.
+            // If in doubt, we assume it is absolute.
+            inputLabel.canContainDotDotSep() and
+            outputLabel.isNormalized() and
+            if Path::isRelative(this.getArgument(0).getStringValue())
+            then outputLabel.isRelative()
+            else outputLabel.isAbsolute()
+          )
           or
-          n > 0 and
-          inputLabel.canContainDotDotSep() and
-          outputLabel.isNormalized() and
-          if Path::isRelative(this.getArgument(0).getStringValue())
-          then outputLabel.isRelative()
-          else outputLabel.isAbsolute()
+          inputLabel.getPlatform() = Path::platformWin32() and
+          // on windows, when one input is absolute, the output may also be
+          // absolute, no matter the position. This is due to drive paths:
+          // path.win32.join('foo\\bar', 'D:\\fnord') => absolute ('D:\\test.txt')
+          // path.win32.join('D:\\fnord', 'foo\\bar') => absolute ('D:\\fnord\\foo\\bar')
+          if
+            inputLabel.isAbsolute() or
+            exists(int n | Path::isDrivePath(this.getArgument(n).getStringValue()))
+          then outputLabel = inputLabel.toAbsolute().toNormalized()
+          else outputLabel = inputLabel
         )
       }
     }
