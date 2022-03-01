@@ -1,5 +1,5 @@
 /**
- * @name Improper check return value scanf.
+ * @name Improper check return value scanf
  * @description Using a function call without the ability to evaluate the correctness of the work can lead to unexpected results.
  * @kind problem
  * @id cpp/improper-check-return-value-scanf
@@ -15,20 +15,16 @@ import cpp
 import semmle.code.cpp.commons.Exclusions
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
-/** Returns the starting position of the argument being filled. */
+/** Returns the position of the first argument being filled. */
 int posArgumentInFunctionCall(FunctionCall fc) {
   (
     (
-      fc.getTarget().hasGlobalOrStdName("scanf") or
-      fc.getTarget().hasGlobalOrStdName("scanf_s")
+      fc.getTarget().hasGlobalOrStdName(["scanf", "scanf_s"])
     ) and
     result = 1
     or
     (
-      fc.getTarget().hasGlobalOrStdName("fscanf") or
-      fc.getTarget().hasGlobalOrStdName("sscanf") or
-      fc.getTarget().hasGlobalOrStdName("fscanf_s") or
-      fc.getTarget().hasGlobalOrStdName("sscanf_s")
+      fc.getTarget().hasGlobalOrStdName(["fscanf", "sscanf", "fscanf_s", "sscanf_s"])
     ) and
     result = 2
   )
