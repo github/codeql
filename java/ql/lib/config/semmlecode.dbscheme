@@ -1213,3 +1213,7 @@ ktSyntheticBody(
 ktLocalFunction(
   unique int id: @method ref
 )
+
+ktInitializerAssignment(
+  unique int id: @assignexpr ref
+)

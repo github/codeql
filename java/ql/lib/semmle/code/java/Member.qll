@@ -638,6 +638,16 @@ class Field extends Member, ExprParent, @field, Variable {
       // (CodeQL models explicit initializer blocks as BlockStmt in initializer methods)
       exprStmt.getParent() = im.getBody()
     )
+    or
+    // Kotlin initializers are more general than Java's, in that they may refer to
+    // primary constructor parameters. This identifies a syntactic initializer, so
+    // `class A { val y = 1 }` is an initializer, as is `class B(x: Int) { val y = x }`,
+    // but `class C { var x: Int; init { x = 1 } }` is not, and neither is
+    // `class D { var x: Int; constructor(y: Int) { x = y } }`
+    exists(KtInitializerAssignExpr e |
+      e.getDest() = this.getAnAccess() and
+      e.getSource() = result
+    )
   }
 
   /**

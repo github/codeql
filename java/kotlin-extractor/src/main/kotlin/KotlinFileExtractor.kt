@@ -500,6 +500,7 @@ open class KotlinFileExtractor(
                         tw.writeHasLocation(assignmentId, declLocId)
                         tw.writeCallableEnclosingExpr(assignmentId, constructorId)
                         tw.writeStatementEnclosingExpr(assignmentId, stmtId)
+                        tw.writeKtInitializerAssignment(assignmentId)
 
                         val lhsId = tw.getFreshIdLabel<DbVaraccess>()
                         val lhsType = useType(backingField.type)

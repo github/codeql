@@ -518,6 +518,19 @@ class AssignExpr extends Assignment, @assignexpr {
 }
 
 /**
+ * A Kotlin class member initializer assignment.
+ *
+ * For example, `class X { val y = 1 }`
+ */
+class KtInitializerAssignExpr extends AssignExpr {
+  KtInitializerAssignExpr() {
+    ktInitializerAssignment(this)
+  }
+
+  override string getAPrimaryQlClass() { result = "KtInitializerAssignExpr" }
+}
+
+/**
  * A common super-class to represent compound assignments, which include an implicit operator.
  *
  * For example, the compound assignment `x += 23`
