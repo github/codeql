@@ -550,7 +550,7 @@ module NodeJSLib {
   /**
    * A call to a method from module `fs`, `graceful-fs` or `fs-extra`.
    */
-  private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::CallNode {
+  private class NodeJSFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
     string methodName;
 
     NodeJSFileSystemAccess() { this = maybePromisified(FS::moduleMember(methodName)).getACall() }
@@ -566,7 +566,8 @@ module NodeJSLib {
   }
 
   /** A write to the file system. */
-  private class NodeJSFileSystemAccessWrite extends FileSystemWriteAccess, NodeJSFileSystemAccess {
+  private class NodeJSFileSystemAccessWrite extends FileSystemWriteAccess::Range,
+    NodeJSFileSystemAccess {
     NodeJSFileSystemAccessWrite() {
       methodName =
         [
@@ -590,7 +591,8 @@ module NodeJSLib {
   }
 
   /** A file system read. */
-  private class NodeJSFileSystemAccessRead extends FileSystemReadAccess, NodeJSFileSystemAccess {
+  private class NodeJSFileSystemAccessRead extends FileSystemReadAccess::Range,
+    NodeJSFileSystemAccess {
     NodeJSFileSystemAccessRead() { methodName = ["read", "readSync", "readFile", "readFileSync"] }
 
     override DataFlow::Node getADataNode() {
@@ -613,7 +615,7 @@ module NodeJSLib {
   /**
    * A write to the file system, using a stream.
    */
-  private class FileStreamWrite extends FileSystemWriteAccess, DataFlow::CallNode {
+  private class FileStreamWrite extends FileSystemWriteAccess::Range, DataFlow::CallNode {
     NodeJSFileSystemAccess stream;
 
     FileStreamWrite() {
@@ -634,7 +636,7 @@ module NodeJSLib {
   /**
    * A read from the file system using a stream.
    */
-  private class FileStreamRead extends FileSystemReadAccess, DataFlow::CallNode {
+  private class FileStreamRead extends FileSystemReadAccess::Range, DataFlow::CallNode {
     NodeJSFileSystemAccess stream;
     string method;
 

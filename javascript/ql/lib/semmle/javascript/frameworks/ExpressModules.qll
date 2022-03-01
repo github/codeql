@@ -242,7 +242,7 @@ module FileUpload {
   /**
    * A call to `req.files.<name>.mv`
    */
-  class Move extends FileSystemWriteAccess, DataFlow::MethodCallNode {
+  class Move extends FileSystemWriteAccess::Range, DataFlow::MethodCallNode {
     Move() {
       exists(DataFlow::moduleImport("express-fileupload")) and
       this = filesRef(_, DataFlow::TypeTracker::end()).getAPropertyRead().getAMethodCall("mv")

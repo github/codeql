@@ -78,7 +78,7 @@ module ShellJS {
   /**
    * A file system access that can't be modeled as a read or a write.
    */
-  private class ShellJSGenericFileAccess extends FileSystemAccess, ShellJSCall {
+  private class ShellJSGenericFileAccess extends FileSystemAccess::Range, ShellJSCall {
     ShellJSGenericFileAccess() {
       name = ["cd", "cp", "touch", "chmod", "pushd", "find", "ls", "ln", "mkdir", "mv", "rm"]
     }
@@ -99,7 +99,7 @@ module ShellJS {
   /**
    * A file system access that returns the contents of a file.
    */
-  private class ShellJSRead extends FileSystemReadAccess, ShellJSCall {
+  private class ShellJSRead extends FileSystemReadAccess::Range, ShellJSCall {
     ShellJSRead() { name = ["cat", "head", "sort", "tail", "uniq"] }
 
     override DataFlow::Node getAPathArgument() { result = getAnArgument() }
@@ -111,7 +111,7 @@ module ShellJS {
    * A file system access that returns the contents of a file, but where certain arguemnts
    * should be treated as patterns, not filenames.
    */
-  private class ShellJSPatternRead extends FileSystemReadAccess, ShellJSCall {
+  private class ShellJSPatternRead extends FileSystemReadAccess::Range, ShellJSCall {
     int offset;
 
     ShellJSPatternRead() {
@@ -155,7 +155,7 @@ module ShellJS {
    * A call to `to()` or `toEnd()` on the `ShellString` object returned from another `shelljs` call,
    * such as `shelljs.cat(file1).to(file2)`.
    */
-  private class ShellJSPipe extends FileSystemWriteAccess, DataFlow::CallNode {
+  private class ShellJSPipe extends FileSystemWriteAccess::Range, DataFlow::CallNode {
     ShellJSPipe() {
       exists(string name | this = any(ShellJSCall inner).getAMethodCall(name) |
         name = "to" or
