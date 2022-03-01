@@ -140,7 +140,10 @@ predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     readStep(node1, f, node2) and
     if f instanceof DataFlow::FieldContent
     then isRelevantType(f.(DataFlow::FieldContent).getField().getType())
-    else any()
+    else
+      if f instanceof DataFlow::SyntheticFieldContent
+      then isRelevantType(f.(DataFlow::SyntheticFieldContent).getField().getType())
+      else any()
   )
   or
   exists(DataFlow::Content f | storeStep(node1, f, node2) |
