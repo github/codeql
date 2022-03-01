@@ -475,6 +475,8 @@ local_anonymous.kt:
 #   21|                       0: [MethodAccess] fn3(...)
 #   21|                         -1: [VarAccess] a0
 #   21|               -3: [TypeAccess] Function1<Class1,Unit>
+#   21|                 0: [TypeAccess] Class1
+#   21|                 1: [TypeAccess] Unit
 #   24|     6: [Method] fn5
 #   24|       5: [BlockStmt] { ... }
 #   25|         0: [LocalTypeDeclStmt] class ...

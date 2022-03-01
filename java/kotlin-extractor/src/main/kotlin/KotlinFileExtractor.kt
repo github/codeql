@@ -1687,7 +1687,10 @@ open class KotlinFileExtractor(
     ) {
         typeArgs.forEachIndexed { argIdx, arg ->
             val mul = if (reverse) -1 else 1
-            extractTypeAccess(arg, enclosingCallable, parentExpr, argIdx * mul + startIndex, elementForLocation, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+            val ta = extractTypeAccess(arg, enclosingCallable, parentExpr, argIdx * mul + startIndex, elementForLocation, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+            if (arg is IrSimpleType) {
+                extractTypeArguments(arg.arguments.filterIsInstance<IrType>(), elementForLocation, ta, enclosingCallable, enclosingStmt)
+            }
         }
     }
 
@@ -2829,7 +2832,8 @@ open class KotlinFileExtractor(
             tw.writeStatementEnclosingExpr(idPropertyRef, exprParent.enclosingStmt)
             tw.writeCallableBinding(idPropertyRef, ids.constructor)
 
-            extractTypeAccess(kPropertyType, locId, callable, idPropertyRef, -3, exprParent.enclosingStmt)
+            val typeAccessId = extractTypeAccess(kPropertyType, locId, callable, idPropertyRef, -3, exprParent.enclosingStmt)
+            extractTypeArguments(parameterTypes, propertyReferenceExpr, typeAccessId, callable, exprParent.enclosingStmt)
 
             helper.extractConstructorArguments(callable, idPropertyRef, exprParent.enclosingStmt)
 
@@ -2972,7 +2976,9 @@ open class KotlinFileExtractor(
             tw.writeStatementEnclosingExpr(idMemberRef, exprParent.enclosingStmt)
             tw.writeCallableBinding(idMemberRef, ids.constructor)
 
-            extractTypeAccess(fnInterfaceType, locId, callable, idMemberRef, -3, exprParent.enclosingStmt)
+            val typeAccessId = extractTypeAccess(fnInterfaceType, locId, callable, idMemberRef, -3, exprParent.enclosingStmt)
+            val typeAccessArguments = if (isBigArity) listOf(parameterTypes.last()) else parameterTypes
+            extractTypeArguments(typeAccessArguments, functionReferenceExpr, typeAccessId, callable, exprParent.enclosingStmt)
 
             tw.writeMemberRefBinding(idMemberRef, targetCallableId)
 
@@ -3497,6 +3503,7 @@ open class KotlinFileExtractor(
                     tw.writeIsAnonymClass(ids.type.javaResult.id as Label<DbClass>, idNewexpr)
 
                     extractTypeAccess(e.typeOperand, callable, idNewexpr, -3, e, enclosingStmt)
+
                     extractExpressionExpr(e.argument, callable, idNewexpr, 0, enclosingStmt)
                 }
                 else -> {

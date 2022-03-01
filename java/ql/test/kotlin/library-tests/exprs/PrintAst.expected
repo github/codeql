@@ -1548,6 +1548,7 @@ funcExprs.kt:
 #   32|                 1: [FieldDeclaration] FuncRef <dispatchReceiver>;
 #   32|                   -1: [TypeAccess] FuncRef
 #   32|               -3: [TypeAccess] Function0<Integer>
+#   32|                 0: [TypeAccess] Integer
 #   32|               0: [ClassInstanceExpr] new FuncRef(...)
 #   32|                 -3: [TypeAccess] FuncRef
 #   33|         15: [ExprStmt] <Expr>;
@@ -1573,6 +1574,7 @@ funcExprs.kt:
 #   33|                 1: [FieldDeclaration] Companion <dispatchReceiver>;
 #   33|                   -1: [TypeAccess] Companion
 #   33|               -3: [TypeAccess] Function0<Integer>
+#   33|                 0: [TypeAccess] Integer
 #   33|               0: [VarAccess] Companion
 #   34|         16: [ExprStmt] <Expr>;
 #   34|           0: [MethodAccess] functionExpression1a(...)
@@ -1601,6 +1603,8 @@ funcExprs.kt:
 #   34|                 1: [FieldDeclaration] FuncRef <dispatchReceiver>;
 #   34|                   -1: [TypeAccess] FuncRef
 #   34|               -3: [TypeAccess] Function1<Integer,Integer>
+#   34|                 0: [TypeAccess] Integer
+#   34|                 1: [TypeAccess] Integer
 #   34|               0: [ClassInstanceExpr] new FuncRef(...)
 #   34|                 -3: [TypeAccess] FuncRef
 #   35|         17: [ExprStmt] <Expr>;
@@ -1621,6 +1625,9 @@ funcExprs.kt:
 #   35|                         -1: [VarAccess] a0
 #   35|                         0: [VarAccess] a1
 #   35|               -3: [TypeAccess] Function2<FuncRef,Integer,Integer>
+#   35|                 0: [TypeAccess] FuncRef
+#   35|                 1: [TypeAccess] Integer
+#   35|                 2: [TypeAccess] Integer
 #   36|         18: [ExprStmt] <Expr>;
 #   36|           0: [MethodAccess] functionExpression1a(...)
 #   36|             0: [IntegerLiteral] 5
@@ -1648,6 +1655,8 @@ funcExprs.kt:
 #   36|                 1: [FieldDeclaration] int <extensionReceiver>;
 #   36|                   -1: [TypeAccess] int
 #   36|               -3: [TypeAccess] Function1<Integer,Integer>
+#   36|                 0: [TypeAccess] Integer
+#   36|                 1: [TypeAccess] Integer
 #   36|               0: [IntegerLiteral] 3
 #   37|         19: [ExprStmt] <Expr>;
 #   37|           0: [MethodAccess] functionExpression3(...)
@@ -1667,6 +1676,9 @@ funcExprs.kt:
 #   37|                         0: [VarAccess] a0
 #   37|                         1: [VarAccess] a1
 #   37|               -3: [TypeAccess] Function2<Integer,Integer,Integer>
+#   37|                 0: [TypeAccess] Integer
+#   37|                 1: [TypeAccess] Integer
+#   37|                 2: [TypeAccess] Integer
 #   38|         20: [ExprStmt] <Expr>;
 #   38|           0: [MethodAccess] functionExpression22(...)
 #   38|             0: [IntegerLiteral] 5
@@ -1736,6 +1748,29 @@ funcExprs.kt:
 #   38|                 1: [FieldDeclaration] FuncRef <dispatchReceiver>;
 #   38|                   -1: [TypeAccess] FuncRef
 #   38|               -3: [TypeAccess] Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>
+#   38|                 0: [TypeAccess] Integer
+#   38|                 1: [TypeAccess] Integer
+#   38|                 2: [TypeAccess] Integer
+#   38|                 3: [TypeAccess] Integer
+#   38|                 4: [TypeAccess] Integer
+#   38|                 5: [TypeAccess] Integer
+#   38|                 6: [TypeAccess] Integer
+#   38|                 7: [TypeAccess] Integer
+#   38|                 8: [TypeAccess] Integer
+#   38|                 9: [TypeAccess] Integer
+#   38|                 10: [TypeAccess] Integer
+#   38|                 11: [TypeAccess] Integer
+#   38|                 12: [TypeAccess] Integer
+#   38|                 13: [TypeAccess] Integer
+#   38|                 14: [TypeAccess] Integer
+#   38|                 15: [TypeAccess] Integer
+#   38|                 16: [TypeAccess] Integer
+#   38|                 17: [TypeAccess] Integer
+#   38|                 18: [TypeAccess] Integer
+#   38|                 19: [TypeAccess] Integer
+#   38|                 20: [TypeAccess] Integer
+#   38|                 21: [TypeAccess] Integer
+#   38|                 22: [TypeAccess] Unit
 #   38|               0: [ClassInstanceExpr] new FuncRef(...)
 #   38|                 -3: [TypeAccess] FuncRef
 #   39|         21: [ExprStmt] <Expr>;
@@ -1879,6 +1914,7 @@ funcExprs.kt:
 #   39|                 1: [FieldDeclaration] FuncRef <dispatchReceiver>;
 #   39|                   -1: [TypeAccess] FuncRef
 #   39|               -3: [TypeAccess] FunctionN<String>
+#   39|                 0: [TypeAccess] String
 #   39|               0: [ClassInstanceExpr] new FuncRef(...)
 #   39|                 -3: [TypeAccess] FuncRef
 #   40|         22: [ExprStmt] <Expr>;
@@ -2016,6 +2052,7 @@ funcExprs.kt:
 #   40|                             -1: [VarAccess] a0
 #   40|                             23: [IntegerLiteral] 23
 #   40|               -3: [TypeAccess] FunctionN<String>
+#   40|                 0: [TypeAccess] String
 #   42|         23: [LocalTypeDeclStmt] class ...
 #   42|           0: [LocalClass] 
 #   42|             1: [Constructor] 
@@ -2037,6 +2074,7 @@ funcExprs.kt:
 #   43|                     0: [ReturnStmt] return ...
 #   43|                       0: [MethodAccess] local(...)
 #   43|               -3: [TypeAccess] Function0<Integer>
+#   43|                 0: [TypeAccess] Integer
 #   45|         25: [ExprStmt] <Expr>;
 #   45|           0: [MethodAccess] fn(...)
 #   45|             -2: [TypeAccess] FuncRef
@@ -2051,6 +2089,7 @@ funcExprs.kt:
 #   45|                       0: [ClassInstanceExpr] new FuncRef(...)
 #   45|                         -3: [TypeAccess] FuncRef
 #   45|               -3: [TypeAccess] Function0<FuncRef>
+#   45|                 0: [TypeAccess] FuncRef
 #   52|     14: [Method] fn
 #-----|       2: (Generic Parameters)
 #   52|         0: [TypeVariable] T
@@ -2355,6 +2394,9 @@ samConversion.kt:
 #    5|                             0: [VarAccess] a0
 #    5|                             1: [VarAccess] a1
 #    5|                   -3: [TypeAccess] Function2<Integer,Integer,Unit>
+#    5|                     0: [TypeAccess] Integer
+#    5|                     1: [TypeAccess] Integer
+#    5|                     2: [TypeAccess] Unit
 #    7|         3: [LocalVariableDeclStmt] var ...;
 #    7|           1: [LocalVariableDeclExpr] i
 #    7|             0: [CastExpr] (...)...
@@ -2631,6 +2673,7 @@ samConversion.kt:
 #   41|                             -1: [VarAccess] a0
 #   41|                             22: [IntegerLiteral] 22
 #   41|               -3: [TypeAccess] FunctionN<Boolean>
+#   41|                 0: [TypeAccess] Boolean
 #   42|         1: [LocalVariableDeclStmt] var ...;
 #   42|           1: [LocalVariableDeclExpr] b
 #   42|             0: [CastExpr] (...)...

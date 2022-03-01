@@ -31,6 +31,8 @@ reflection.kt:
 #   48|                         0: [MethodAccess] getLastChar(...)
 #   48|                           0: [VarAccess] a0
 #   48|                 -3: [TypeAccess] KProperty1<String,Character>
+#   48|                   0: [TypeAccess] String
+#   48|                   1: [TypeAccess] Character
 #   48|               0: [StringLiteral] abc
 #   49|         1: [ExprStmt] <Expr>;
 #   49|           0: [MethodAccess] println(...)
@@ -57,6 +59,7 @@ reflection.kt:
 #   49|                           0: [VarAccess] this.<extensionReceiver>
 #   49|                             -1: [ThisAccess] this
 #   49|                 -3: [TypeAccess] KProperty0<Character>
+#   49|                   0: [TypeAccess] Character
 #   49|                 0: [StringLiteral] abcd
 #   52|     3: [ExtensionMethod] ext1
 #-----|       2: (Generic Parameters)
@@ -97,6 +100,9 @@ reflection.kt:
 #    5|                         -1: [VarAccess] a0
 #    5|                         0: [VarAccess] a1
 #    5|               -3: [TypeAccess] Function2<Ccc,Integer,Double>
+#    5|                 0: [TypeAccess] Ccc
+#    5|                 1: [TypeAccess] Integer
+#    5|                 2: [TypeAccess] Double
 #    6|         1: [ExprStmt] <Expr>;
 #    6|           0: [MethodAccess] println(...)
 #    6|             -1: [TypeAccess] ConsoleKt
@@ -117,6 +123,8 @@ reflection.kt:
 #    8|                       0: [MethodAccess] getP0(...)
 #    8|                         -1: [VarAccess] a0
 #    8|               -3: [TypeAccess] KProperty1<C,Integer>
+#    8|                 0: [TypeAccess] C
+#    8|                 1: [TypeAccess] Integer
 #    9|         3: [LocalVariableDeclStmt] var ...;
 #    9|           1: [LocalVariableDeclExpr] x1
 #    9|             0: [MethodAccess] get(...)
@@ -157,6 +165,8 @@ reflection.kt:
 #   12|                 1: [FieldDeclaration] KProperty1<C,Integer> <dispatchReceiver>;
 #   12|                   -1: [TypeAccess] KProperty1<C,Integer>
 #   12|               -3: [TypeAccess] Function1<C,Integer>
+#   12|                 0: [TypeAccess] C
+#   12|                 1: [TypeAccess] Integer
 #   12|               0: [VarAccess] x0
 #   13|         7: [LocalVariableDeclStmt] var ...;
 #   13|           1: [LocalVariableDeclExpr] x5
@@ -181,6 +191,7 @@ reflection.kt:
 #   13|                         -1: [VarAccess] this.<dispatchReceiver>
 #   13|                           -1: [ThisAccess] this
 #   13|               -3: [TypeAccess] KProperty0<Integer>
+#   13|                 0: [TypeAccess] Integer
 #   13|               0: [ClassInstanceExpr] new C(...)
 #   13|                 -3: [TypeAccess] C
 #   15|         8: [LocalVariableDeclStmt] var ...;
@@ -207,6 +218,8 @@ reflection.kt:
 #   15|                         -1: [VarAccess] a0
 #   15|                         0: [VarAccess] a1
 #   15|               -3: [TypeAccess] KMutableProperty1<C,Integer>
+#   15|                 0: [TypeAccess] C
+#   15|                 1: [TypeAccess] Integer
 #   16|         9: [LocalVariableDeclStmt] var ...;
 #   16|           1: [LocalVariableDeclExpr] y1
 #   16|             0: [MethodAccess] set(...)
@@ -250,6 +263,9 @@ reflection.kt:
 #   19|                 1: [FieldDeclaration] KMutableProperty1<C,Integer> <dispatchReceiver>;
 #   19|                   -1: [TypeAccess] KMutableProperty1<C,Integer>
 #   19|               -3: [TypeAccess] Function2<C,Integer,Unit>
+#   19|                 0: [TypeAccess] C
+#   19|                 1: [TypeAccess] Integer
+#   19|                 2: [TypeAccess] Unit
 #   19|               0: [VarAccess] y0
 #   20|         13: [LocalVariableDeclStmt] var ...;
 #   20|           1: [LocalVariableDeclExpr] y5
@@ -283,6 +299,7 @@ reflection.kt:
 #   20|                           -1: [ThisAccess] this
 #   20|                         0: [VarAccess] a0
 #   20|               -3: [TypeAccess] KMutableProperty0<Integer>
+#   20|                 0: [TypeAccess] Integer
 #   20|               0: [ClassInstanceExpr] new C(...)
 #   20|                 -3: [TypeAccess] C
 #   22|         14: [LocalVariableDeclStmt] var ...;
@@ -410,6 +427,10 @@ reflection.kt:
 #   58|                         -1: [VarAccess] a0
 #   58|                         0: [VarAccess] a1
 #   58|               -3: [TypeAccess] Function2<Generic<Integer>,Integer,String>
+#   58|                 0: [TypeAccess] Generic<Integer>
+#   58|                   0: [TypeAccess] Integer
+#   58|                 1: [TypeAccess] Integer
+#   58|                 2: [TypeAccess] String
 #   59|         1: [ExprStmt] <Expr>;
 #   59|           0: [MethodAccess] println(...)
 #   59|             -1: [TypeAccess] ConsoleKt
@@ -437,6 +458,8 @@ reflection.kt:
 #   59|                 1: [FieldDeclaration] Generic<Integer> <dispatchReceiver>;
 #   59|                   -1: [TypeAccess] Generic<Integer>
 #   59|               -3: [TypeAccess] Function1<Integer,String>
+#   59|                 0: [TypeAccess] Integer
+#   59|                 1: [TypeAccess] String
 #   59|               0: [ClassInstanceExpr] new Generic<Integer>(...)
 #   59|                 -3: [TypeAccess] Generic<Integer>
 #   59|                   0: [TypeAccess] Integer
@@ -457,6 +480,9 @@ reflection.kt:
 #   60|                         -2: [TypeAccess] Integer
 #   60|                         0: [VarAccess] a0
 #   60|               -3: [TypeAccess] Function1<Generic<Integer>,String>
+#   60|                 0: [TypeAccess] Generic<Integer>
+#   60|                   0: [TypeAccess] Integer
+#   60|                 1: [TypeAccess] String
 #   61|         3: [ExprStmt] <Expr>;
 #   61|           0: [MethodAccess] println(...)
 #   61|             -1: [TypeAccess] ConsoleKt
@@ -482,6 +508,7 @@ reflection.kt:
 #   61|                 1: [FieldDeclaration] Generic<Integer> <extensionReceiver>;
 #   61|                   -1: [TypeAccess] Generic<Integer>
 #   61|               -3: [TypeAccess] Function0<String>
+#   61|                 0: [TypeAccess] String
 #   61|               0: [ClassInstanceExpr] new Generic<Integer>(...)
 #   61|                 -3: [TypeAccess] Generic<Integer>
 #   61|                   0: [TypeAccess] Integer
@@ -501,6 +528,9 @@ reflection.kt:
 #   62|                       0: [MethodAccess] ext2(...)
 #   62|                         0: [VarAccess] a0
 #   62|               -3: [TypeAccess] Function1<Generic<Integer>,String>
+#   62|                 0: [TypeAccess] Generic<Integer>
+#   62|                   0: [TypeAccess] Integer
+#   62|                 1: [TypeAccess] String
 #   63|         5: [ExprStmt] <Expr>;
 #   63|           0: [MethodAccess] println(...)
 #   63|             -1: [TypeAccess] ConsoleKt
@@ -525,6 +555,7 @@ reflection.kt:
 #   63|                 1: [FieldDeclaration] Generic<Integer> <extensionReceiver>;
 #   63|                   -1: [TypeAccess] Generic<Integer>
 #   63|               -3: [TypeAccess] Function0<String>
+#   63|                 0: [TypeAccess] String
 #   63|               0: [ClassInstanceExpr] new Generic<Integer>(...)
 #   63|                 -3: [TypeAccess] Generic<Integer>
 #   63|                   0: [TypeAccess] Integer
@@ -553,6 +584,9 @@ reflection.kt:
 #   65|                         -1: [VarAccess] a0
 #   65|                         0: [VarAccess] a1
 #   65|               -3: [TypeAccess] KMutableProperty1<Generic<Integer>,Integer>
+#   65|                 0: [TypeAccess] Generic<Integer>
+#   65|                   0: [TypeAccess] Integer
+#   65|                 1: [TypeAccess] Integer
 #   66|         7: [ExprStmt] <Expr>;
 #   66|           0: [MethodAccess] println(...)
 #   66|             -1: [TypeAccess] ConsoleKt
@@ -586,6 +620,7 @@ reflection.kt:
 #   66|                           -1: [ThisAccess] this
 #   66|                         0: [VarAccess] a0
 #   66|               -3: [TypeAccess] KMutableProperty0<Integer>
+#   66|                 0: [TypeAccess] Integer
 #   66|               0: [ClassInstanceExpr] new Generic<Integer>(...)
 #   66|                 -3: [TypeAccess] Generic<Integer>
 #   66|                   0: [TypeAccess] Integer
