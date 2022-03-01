@@ -17,13 +17,11 @@ classes.kt:
 #    4|         0: [SuperConstructorInvocationStmt] super(...)
 #    4|         1: [BlockStmt] { ... }
 #    4|           0: [ExprStmt] <Expr>;
-#    4|             0: [AssignExpr] ...=...
+#    4|             0: [KtInitializerAssignExpr] ...=...
 #    4|               0: [VarAccess] arg
-#    4|               1: [VarAccess] arg
 #    5|           1: [ExprStmt] <Expr>;
-#    5|             0: [AssignExpr] ...=...
+#    5|             0: [KtInitializerAssignExpr] ...=...
 #    5|               0: [VarAccess] x
-#    5|               1: [IntegerLiteral] 3
 #    4|     2: [Method] getArg
 #    4|       5: [BlockStmt] { ... }
 #    4|         0: [ReturnStmt] return ...
@@ -31,6 +29,7 @@ classes.kt:
 #    4|             -1: [ThisAccess] this
 #    4|     2: [FieldDeclaration] int arg;
 #    4|       -1: [TypeAccess] int
+#    4|       0: [VarAccess] arg
 #    5|     4: [Method] getX
 #    5|       5: [BlockStmt] { ... }
 #    5|         0: [ReturnStmt] return ...
@@ -38,6 +37,7 @@ classes.kt:
 #    5|             -1: [ThisAccess] this
 #    5|     4: [FieldDeclaration] int x;
 #    5|       -1: [TypeAccess] int
+#    5|       0: [IntegerLiteral] 3
 #    8|   4: [Class] ClassThree
 #    8|     1: [Constructor] ClassThree
 #    8|       5: [BlockStmt] { ... }
@@ -83,9 +83,8 @@ classes.kt:
 #   39|             0: [MethodAccess] f(...)
 #   39|               0: [StringLiteral] init1
 #   42|           1: [ExprStmt] <Expr>;
-#   42|             0: [AssignExpr] ...=...
+#   42|             0: [KtInitializerAssignExpr] ...=...
 #   42|               0: [VarAccess] x
-#   42|               1: [IntegerLiteral] 3
 #   45|           2: [ExprStmt] <Expr>;
 #   45|             0: [MethodAccess] f(...)
 #   45|               0: [StringLiteral] init2
@@ -99,6 +98,7 @@ classes.kt:
 #   42|             -1: [ThisAccess] this
 #   42|     2: [FieldDeclaration] int x;
 #   42|       -1: [TypeAccess] int
+#   42|       0: [IntegerLiteral] 3
 #   49|   11: [Class] Direction
 #    0|     1: [Method] values
 #    0|     1: [Method] valueOf
@@ -125,9 +125,8 @@ classes.kt:
 #   53|               0: [TypeAccess] Color
 #   53|         1: [BlockStmt] { ... }
 #   53|           0: [ExprStmt] <Expr>;
-#   53|             0: [AssignExpr] ...=...
+#   53|             0: [KtInitializerAssignExpr] ...=...
 #   53|               0: [VarAccess] rgb
-#   53|               1: [VarAccess] rgb
 #   53|     4: [Method] getRgb
 #   53|       5: [BlockStmt] { ... }
 #   53|         0: [ReturnStmt] return ...
@@ -135,6 +134,7 @@ classes.kt:
 #   53|             -1: [ThisAccess] this
 #   53|     4: [FieldDeclaration] int rgb;
 #   53|       -1: [TypeAccess] int
+#   53|       0: [VarAccess] rgb
 #   59|   13: [Interface] Interface1
 #   60|   14: [Interface] Interface2
 #   61|   15: [GenericType,Interface,ParameterizedType] Interface3
@@ -188,9 +188,8 @@ classes.kt:
 #   72|                       0: [SuperConstructorInvocationStmt] super(...)
 #   72|                       1: [BlockStmt] { ... }
 #   73|                         0: [ExprStmt] <Expr>;
-#   73|                           0: [AssignExpr] ...=...
+#   73|                           0: [KtInitializerAssignExpr] ...=...
 #   73|                             0: [VarAccess] x
-#   73|                             1: [IntegerLiteral] 1
 #   73|                   2: [Method] getX
 #   73|                     5: [BlockStmt] { ... }
 #   73|                       0: [ReturnStmt] return ...
@@ -198,6 +197,7 @@ classes.kt:
 #   73|                           -1: [ThisAccess] this
 #   73|                   2: [FieldDeclaration] int x;
 #   73|                     -1: [TypeAccess] int
+#   73|                     0: [IntegerLiteral] 1
 #   74|                   4: [Method] foo
 #   74|                     5: [BlockStmt] { ... }
 #   75|                       0: [ReturnStmt] return ...
