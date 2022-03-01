@@ -20,6 +20,7 @@
 | tst.rb:74:10:74:17 | (b\|a?b)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'b'. |
 | tst.rb:77:10:77:17 | (a\|aa?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.rb:83:10:83:16 | (.\|\\n)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\n'. |
+| tst.rb:89:21:89:28 | (a\|aa?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.rb:95:11:95:24 | ([\\S\\s]\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '`'. |
 | tst.rb:101:11:101:19 | (.\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '`'. |
 | tst.rb:107:11:107:19 | (b\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'b'. |
