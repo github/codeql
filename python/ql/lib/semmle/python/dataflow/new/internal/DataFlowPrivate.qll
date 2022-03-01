@@ -4,6 +4,17 @@ import semmle.python.SpecialMethods
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
 
+// Since we allow extra data-flow steps from modeled frameworks, we import these
+// up-front, to ensure these are included. This provides a more seamless experience from
+// a user point of view, since they don't need to know they need to import a specific
+// set of .qll files to get the same data-flow steps as they are used to seeing. This
+// also ensures that we don't end up re-evaluating data-flow because it has different
+// global steps in some configurations.
+//
+// This matches behavior in C#.
+private import semmle.python.Frameworks
+private import semmle.python.Concepts
+
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
