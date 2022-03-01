@@ -584,7 +584,7 @@ module PrivateDjango {
          * - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.ImageField
          */
         module FileField {
-          /** Gets a reference to the `flask.views.View` class or any subclass. */
+          /** Gets a reference to the `django.db.models.FileField` or  the `django.db.models.ImageField` class or any subclass. */
           API::Node subclassRef() {
             exists(string className | className in ["FileField", "ImageField"] |
               // commonly used alias
@@ -2288,11 +2288,7 @@ module PrivateDjango {
       exists(DataFlow::CallCfgNode call, DataFlow::Node uploadToArg, Function func |
         this.getParameter() = func.getArg(1) and
         call = django::db::models::FileField::subclassRef().getACall() and
-        (
-          uploadToArg = call.getArg(2)
-          or
-          uploadToArg = call.getArgByName("upload_to")
-        ) and
+        uploadToArg in [call.getArg(2), call.getArgByName("upload_to")] and
         uploadToArg = poorMansFunctionTracker(func)
       )
     }
