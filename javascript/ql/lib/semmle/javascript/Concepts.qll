@@ -10,26 +10,58 @@ private import javascript
  * A data flow node that executes an operating system command,
  * for instance by spawning a new process.
  */
-abstract class SystemCommandExecution extends DataFlow::Node {
+class SystemCommandExecution extends DataFlow::Node instanceof SystemCommandExecution::Range {
   /** Gets an argument to this execution that specifies the command. */
-  abstract DataFlow::Node getACommandArgument();
+  DataFlow::Node getACommandArgument() { result = super.getACommandArgument() }
 
   /** Holds if a shell interprets `arg`. */
-  predicate isShellInterpreted(DataFlow::Node arg) { none() }
+  predicate isShellInterpreted(DataFlow::Node arg) { super.isShellInterpreted(arg) }
 
   /**
    * Gets an argument to this command execution that specifies the argument list
    * to the command.
    */
-  DataFlow::Node getArgumentList() { none() }
+  DataFlow::Node getArgumentList() { result = super.getArgumentList() }
 
   /** Holds if the command execution happens synchronously. */
-  abstract predicate isSync();
+  predicate isSync() { super.isSync() }
 
   /**
    * Gets the data-flow node (if it exists) for an options argument.
    */
-  abstract DataFlow::Node getOptionsArg();
+  DataFlow::Node getOptionsArg() { result = super.getOptionsArg() }
+}
+
+/** Provides a class for modeling new operating system command APIs. */
+module SystemCommandExecution {
+  /**
+   * A data flow node that executes an operating system command, for instance by spawning a new
+   * process.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `SystemCommandExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an argument to this execution that specifies the command or an argument to it. */
+    abstract DataFlow::Node getACommandArgument();
+
+    /** Holds if a shell interprets `arg`. */
+    predicate isShellInterpreted(DataFlow::Node arg) { none() }
+
+    /**
+     * Gets an argument to this command execution that specifies the argument list
+     * to the command.
+     */
+    DataFlow::Node getArgumentList() { none() }
+
+    /** Holds if the command execution happens synchronously. */
+    abstract predicate isSync();
+
+    /**
+     * Gets the data-flow node (if it exists) for an options argument.
+     */
+    abstract DataFlow::Node getOptionsArg();
+  }
 }
 
 /**

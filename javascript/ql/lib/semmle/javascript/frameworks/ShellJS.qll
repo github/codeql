@@ -134,7 +134,7 @@ module ShellJS {
   /**
    * A call to `shelljs.exec()` modeled as command execution.
    */
-  private class ShellJSExec extends SystemCommandExecution, ShellJSCall {
+  private class ShellJSExec extends SystemCommandExecution::Range, ShellJSCall {
     ShellJSExec() { name = "exec" }
 
     override DataFlow::Node getACommandArgument() { result = getArgument(0) }

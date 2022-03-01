@@ -11,10 +11,10 @@ The two mechanisms used for customization are subclassing and overriding.
 
 We can teach the JavaScript analysis to handle further instances of abstract concepts it already
 understands by subclassing abstract classes and implementing their member predicates. For example,
-the standard library defines an abstract class ``SystemCommandExecution`` that covers various APIs
+the standard library defines an abstract class ``SystemCommandExecution::Range`` that covers various APIs
 for executing operating-system commands. This class is used by the command-injection analysis to
 identify problematic flows where input from a potentially malicious user is interpreted as the name
-of a system command to execute. By defining additional subclasses of ``SystemCommandExecution``, we
+of a system command to execute. By defining additional subclasses of ``SystemCommandExecution::Range``, we
 can make this analysis more powerful without touching its implementation.
 
 By overriding a member predicate defined in the library, we can change its behavior either for all

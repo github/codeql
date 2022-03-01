@@ -54,7 +54,7 @@ private predicate execApi(string mod, int cmdArg, int optionsArg, boolean shell)
   )
 }
 
-private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::InvokeNode {
+private class SystemCommandExecutors extends SystemCommandExecution::Range, DataFlow::InvokeNode {
   int cmdArg;
   int optionsArg; // either a positive number representing the n'th argument, or a negative number representing the n'th last argument (e.g. -2 is the second last argument).
   boolean shell;
@@ -110,7 +110,7 @@ private boolean getSync(string name) {
   if name.matches("%Sync") or name.matches("%sync") then result = true else result = false
 }
 
-private class RemoteCommandExecutor extends SystemCommandExecution, DataFlow::InvokeNode {
+private class RemoteCommandExecutor extends SystemCommandExecution::Range, DataFlow::InvokeNode {
   int cmdArg;
 
   RemoteCommandExecutor() {
@@ -140,7 +140,7 @@ private class RemoteCommandExecutor extends SystemCommandExecution, DataFlow::In
   override DataFlow::Node getOptionsArg() { none() }
 }
 
-private class Opener extends SystemCommandExecution, DataFlow::InvokeNode {
+private class Opener extends SystemCommandExecution::Range, DataFlow::InvokeNode {
   Opener() { this = API::moduleImport("opener").getACall() }
 
   override DataFlow::Node getACommandArgument() { result = getOptionArgument(1, "command") }
