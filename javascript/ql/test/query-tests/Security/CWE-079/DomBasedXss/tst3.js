@@ -1,13 +1,13 @@
 var foo = document.getElementById("foo");
 var data = JSON.parse(decodeURIComponent(window.location.search.substr(1)));
 
-foo.setAttribute("src", data.src); // NOT OK - but not detected [INCONSISTENCY]
-foo.setAttribute("HREF", data.p);  // NOT OK - but not detected [INCONSISTENCY]
+foo.setAttribute("src", data.src); // NOT OK
+foo.setAttribute("HREF", data.p);  // NOT OK
 foo.setAttribute("width", data.w); // OK
-foo.setAttribute("xlink:href", data.p) // NOT OK - but not detected [INCONSISTENCY]
+foo.setAttribute("xlink:href", data.p) // NOT OK
 
-foo.setAttributeNS('xlink', 'href', data.p); // NOT OK - but not detected [INCONSISTENCY]
-foo.setAttributeNS('foobar', 'href', data.p); // NOT OK - but not detected [INCONSISTENCY]
+foo.setAttributeNS('xlink', 'href', data.p); // NOT OK
+foo.setAttributeNS('foobar', 'href', data.p); // NOT OK
 foo.setAttributeNS('baz', 'width', data.w); // OK
 
 

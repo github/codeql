@@ -432,6 +432,26 @@ nodes
 | trusted-types.js:2:71:2:71 | x |
 | trusted-types.js:3:24:3:34 | window.name |
 | trusted-types.js:3:24:3:34 | window.name |
+| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) |
+| tst3.js:2:23:2:74 | decodeU ... str(1)) |
+| tst3.js:2:42:2:63 | window. ... .search |
+| tst3.js:2:42:2:63 | window. ... .search |
+| tst3.js:2:42:2:73 | window. ... bstr(1) |
+| tst3.js:4:25:4:28 | data |
+| tst3.js:4:25:4:32 | data.src |
+| tst3.js:4:25:4:32 | data.src |
+| tst3.js:5:26:5:29 | data |
+| tst3.js:5:26:5:31 | data.p |
+| tst3.js:5:26:5:31 | data.p |
+| tst3.js:7:32:7:35 | data |
+| tst3.js:7:32:7:37 | data.p |
+| tst3.js:7:32:7:37 | data.p |
+| tst3.js:9:37:9:40 | data |
+| tst3.js:9:37:9:42 | data.p |
+| tst3.js:9:37:9:42 | data.p |
+| tst3.js:10:38:10:41 | data |
+| tst3.js:10:38:10:43 | data.p |
+| tst3.js:10:38:10:43 | data.p |
 | tst.js:2:7:2:39 | target |
 | tst.js:2:7:2:39 | target |
 | tst.js:2:16:2:39 | documen ... .search |
@@ -732,6 +752,29 @@ nodes
 | tst.js:465:19:465:24 | source |
 | tst.js:467:20:467:25 | source |
 | tst.js:467:20:467:25 | source |
+| tst.js:471:7:471:46 | url |
+| tst.js:471:13:471:36 | documen ... .search |
+| tst.js:471:13:471:36 | documen ... .search |
+| tst.js:471:13:471:46 | documen ... bstr(1) |
+| tst.js:473:19:473:21 | url |
+| tst.js:473:19:473:21 | url |
+| tst.js:474:26:474:28 | url |
+| tst.js:474:26:474:28 | url |
+| tst.js:475:25:475:27 | url |
+| tst.js:475:25:475:27 | url |
+| tst.js:476:20:476:22 | url |
+| tst.js:476:20:476:22 | url |
+| tst.js:479:20:479:45 | "http:/ ... " + url |
+| tst.js:479:20:479:45 | "http:/ ... " + url |
+| tst.js:479:43:479:45 | url |
+| tst.js:481:20:481:45 | ["http: ... ", url] |
+| tst.js:481:20:481:55 | ["http: ... in("/") |
+| tst.js:481:20:481:55 | ["http: ... in("/") |
+| tst.js:481:42:481:44 | url |
+| tst.js:484:22:484:24 | url |
+| tst.js:484:22:484:24 | url |
+| tst.js:486:22:486:24 | url |
+| tst.js:486:22:486:24 | url |
 | typeahead.js:20:13:20:45 | target |
 | typeahead.js:20:22:20:45 | documen ... .search |
 | typeahead.js:20:22:20:45 | documen ... .search |
@@ -1172,6 +1215,25 @@ edges
 | trusted-types.js:2:66:2:66 | x | trusted-types.js:2:71:2:71 | x |
 | trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:66:2:66 | x |
 | trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:66:2:66 | x |
+| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:4:25:4:28 | data |
+| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:5:26:5:29 | data |
+| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:7:32:7:35 | data |
+| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:9:37:9:40 | data |
+| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:10:38:10:41 | data |
+| tst3.js:2:23:2:74 | decodeU ... str(1)) | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) |
+| tst3.js:2:42:2:63 | window. ... .search | tst3.js:2:42:2:73 | window. ... bstr(1) |
+| tst3.js:2:42:2:63 | window. ... .search | tst3.js:2:42:2:73 | window. ... bstr(1) |
+| tst3.js:2:42:2:73 | window. ... bstr(1) | tst3.js:2:23:2:74 | decodeU ... str(1)) |
+| tst3.js:4:25:4:28 | data | tst3.js:4:25:4:32 | data.src |
+| tst3.js:4:25:4:28 | data | tst3.js:4:25:4:32 | data.src |
+| tst3.js:5:26:5:29 | data | tst3.js:5:26:5:31 | data.p |
+| tst3.js:5:26:5:29 | data | tst3.js:5:26:5:31 | data.p |
+| tst3.js:7:32:7:35 | data | tst3.js:7:32:7:37 | data.p |
+| tst3.js:7:32:7:35 | data | tst3.js:7:32:7:37 | data.p |
+| tst3.js:9:37:9:40 | data | tst3.js:9:37:9:42 | data.p |
+| tst3.js:9:37:9:40 | data | tst3.js:9:37:9:42 | data.p |
+| tst3.js:10:38:10:41 | data | tst3.js:10:38:10:43 | data.p |
+| tst3.js:10:38:10:41 | data | tst3.js:10:38:10:43 | data.p |
 | tst.js:2:7:2:39 | target | tst.js:5:18:5:23 | target |
 | tst.js:2:7:2:39 | target | tst.js:5:18:5:23 | target |
 | tst.js:2:7:2:39 | target | tst.js:12:28:12:33 | target |
@@ -1426,6 +1488,28 @@ edges
 | tst.js:460:6:460:38 | source | tst.js:467:20:467:25 | source |
 | tst.js:460:15:460:38 | documen ... .search | tst.js:460:6:460:38 | source |
 | tst.js:460:15:460:38 | documen ... .search | tst.js:460:6:460:38 | source |
+| tst.js:471:7:471:46 | url | tst.js:473:19:473:21 | url |
+| tst.js:471:7:471:46 | url | tst.js:473:19:473:21 | url |
+| tst.js:471:7:471:46 | url | tst.js:474:26:474:28 | url |
+| tst.js:471:7:471:46 | url | tst.js:474:26:474:28 | url |
+| tst.js:471:7:471:46 | url | tst.js:475:25:475:27 | url |
+| tst.js:471:7:471:46 | url | tst.js:475:25:475:27 | url |
+| tst.js:471:7:471:46 | url | tst.js:476:20:476:22 | url |
+| tst.js:471:7:471:46 | url | tst.js:476:20:476:22 | url |
+| tst.js:471:7:471:46 | url | tst.js:479:43:479:45 | url |
+| tst.js:471:7:471:46 | url | tst.js:481:42:481:44 | url |
+| tst.js:471:7:471:46 | url | tst.js:484:22:484:24 | url |
+| tst.js:471:7:471:46 | url | tst.js:484:22:484:24 | url |
+| tst.js:471:7:471:46 | url | tst.js:486:22:486:24 | url |
+| tst.js:471:7:471:46 | url | tst.js:486:22:486:24 | url |
+| tst.js:471:13:471:36 | documen ... .search | tst.js:471:13:471:46 | documen ... bstr(1) |
+| tst.js:471:13:471:36 | documen ... .search | tst.js:471:13:471:46 | documen ... bstr(1) |
+| tst.js:471:13:471:46 | documen ... bstr(1) | tst.js:471:7:471:46 | url |
+| tst.js:479:43:479:45 | url | tst.js:479:20:479:45 | "http:/ ... " + url |
+| tst.js:479:43:479:45 | url | tst.js:479:20:479:45 | "http:/ ... " + url |
+| tst.js:481:20:481:45 | ["http: ... ", url] | tst.js:481:20:481:55 | ["http: ... in("/") |
+| tst.js:481:20:481:45 | ["http: ... ", url] | tst.js:481:20:481:55 | ["http: ... in("/") |
+| tst.js:481:42:481:44 | url | tst.js:481:20:481:45 | ["http: ... ", url] |
 | typeahead.js:20:13:20:45 | target | typeahead.js:21:12:21:17 | target |
 | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:20:13:20:45 | target |
 | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:20:13:20:45 | target |
@@ -1583,6 +1667,11 @@ edges
 | tooltip.jsx:11:25:11:30 | source | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:11:25:11:30 | source | Cross-site scripting vulnerability due to $@. | tooltip.jsx:6:20:6:30 | window.name | user-provided value |
 | translate.js:9:27:9:50 | searchP ... 'term') | translate.js:6:16:6:39 | documen ... .search | translate.js:9:27:9:50 | searchP ... 'term') | Cross-site scripting vulnerability due to $@. | translate.js:6:16:6:39 | documen ... .search | user-provided value |
 | trusted-types.js:2:71:2:71 | x | trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:71:2:71 | x | Cross-site scripting vulnerability due to $@. | trusted-types.js:3:24:3:34 | window.name | user-provided value |
+| tst3.js:4:25:4:32 | data.src | tst3.js:2:42:2:63 | window. ... .search | tst3.js:4:25:4:32 | data.src | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:63 | window. ... .search | user-provided value |
+| tst3.js:5:26:5:31 | data.p | tst3.js:2:42:2:63 | window. ... .search | tst3.js:5:26:5:31 | data.p | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:63 | window. ... .search | user-provided value |
+| tst3.js:7:32:7:37 | data.p | tst3.js:2:42:2:63 | window. ... .search | tst3.js:7:32:7:37 | data.p | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:63 | window. ... .search | user-provided value |
+| tst3.js:9:37:9:42 | data.p | tst3.js:2:42:2:63 | window. ... .search | tst3.js:9:37:9:42 | data.p | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:63 | window. ... .search | user-provided value |
+| tst3.js:10:38:10:43 | data.p | tst3.js:2:42:2:63 | window. ... .search | tst3.js:10:38:10:43 | data.p | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:63 | window. ... .search | user-provided value |
 | tst.js:5:18:5:23 | target | tst.js:2:16:2:39 | documen ... .search | tst.js:5:18:5:23 | target | Cross-site scripting vulnerability due to $@. | tst.js:2:16:2:39 | documen ... .search | user-provided value |
 | tst.js:8:18:8:126 | "<OPTIO ... PTION>" | tst.js:8:37:8:58 | documen ... on.href | tst.js:8:18:8:126 | "<OPTIO ... PTION>" | Cross-site scripting vulnerability due to $@. | tst.js:8:37:8:58 | documen ... on.href | user-provided value |
 | tst.js:12:5:12:42 | '<div s ...  'px">' | tst.js:2:16:2:39 | documen ... .search | tst.js:12:5:12:42 | '<div s ...  'px">' | Cross-site scripting vulnerability due to $@. | tst.js:2:16:2:39 | documen ... .search | user-provided value |
@@ -1665,6 +1754,14 @@ edges
 | tst.js:463:21:463:26 | source | tst.js:460:15:460:38 | documen ... .search | tst.js:463:21:463:26 | source | Cross-site scripting vulnerability due to $@. | tst.js:460:15:460:38 | documen ... .search | user-provided value |
 | tst.js:465:19:465:24 | source | tst.js:460:15:460:38 | documen ... .search | tst.js:465:19:465:24 | source | Cross-site scripting vulnerability due to $@. | tst.js:460:15:460:38 | documen ... .search | user-provided value |
 | tst.js:467:20:467:25 | source | tst.js:460:15:460:38 | documen ... .search | tst.js:467:20:467:25 | source | Cross-site scripting vulnerability due to $@. | tst.js:460:15:460:38 | documen ... .search | user-provided value |
+| tst.js:473:19:473:21 | url | tst.js:471:13:471:36 | documen ... .search | tst.js:473:19:473:21 | url | Cross-site scripting vulnerability due to $@. | tst.js:471:13:471:36 | documen ... .search | user-provided value |
+| tst.js:474:26:474:28 | url | tst.js:471:13:471:36 | documen ... .search | tst.js:474:26:474:28 | url | Cross-site scripting vulnerability due to $@. | tst.js:471:13:471:36 | documen ... .search | user-provided value |
+| tst.js:475:25:475:27 | url | tst.js:471:13:471:36 | documen ... .search | tst.js:475:25:475:27 | url | Cross-site scripting vulnerability due to $@. | tst.js:471:13:471:36 | documen ... .search | user-provided value |
+| tst.js:476:20:476:22 | url | tst.js:471:13:471:36 | documen ... .search | tst.js:476:20:476:22 | url | Cross-site scripting vulnerability due to $@. | tst.js:471:13:471:36 | documen ... .search | user-provided value |
+| tst.js:479:20:479:45 | "http:/ ... " + url | tst.js:471:13:471:36 | documen ... .search | tst.js:479:20:479:45 | "http:/ ... " + url | Cross-site scripting vulnerability due to $@. | tst.js:471:13:471:36 | documen ... .search | user-provided value |
+| tst.js:481:20:481:55 | ["http: ... in("/") | tst.js:471:13:471:36 | documen ... .search | tst.js:481:20:481:55 | ["http: ... in("/") | Cross-site scripting vulnerability due to $@. | tst.js:471:13:471:36 | documen ... .search | user-provided value |
+| tst.js:484:22:484:24 | url | tst.js:471:13:471:36 | documen ... .search | tst.js:484:22:484:24 | url | Cross-site scripting vulnerability due to $@. | tst.js:471:13:471:36 | documen ... .search | user-provided value |
+| tst.js:486:22:486:24 | url | tst.js:471:13:471:36 | documen ... .search | tst.js:486:22:486:24 | url | Cross-site scripting vulnerability due to $@. | tst.js:471:13:471:36 | documen ... .search | user-provided value |
 | typeahead.js:25:18:25:20 | val | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:25:18:25:20 | val | Cross-site scripting vulnerability due to $@. | typeahead.js:20:22:20:45 | documen ... .search | user-provided value |
 | v-html.vue:2:8:2:23 | v-html=tainted | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted | Cross-site scripting vulnerability due to $@. | v-html.vue:6:42:6:58 | document.location | user-provided value |
 | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" | various-concat-obfuscations.js:2:16:2:39 | documen ... .search | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" | Cross-site scripting vulnerability due to $@. | various-concat-obfuscations.js:2:16:2:39 | documen ... .search | user-provided value |

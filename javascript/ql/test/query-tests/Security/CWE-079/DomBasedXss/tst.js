@@ -470,20 +470,20 @@ function domMethods() {
 function urlStuff() {
   var url = document.location.search.substr(1);
 
-  $("<a>", {href: url}).appendTo("body"); // NOT OK - but not detected [INCONSISTENCY]
-  $("#foo").attr("href", url); // NOT OK - but not detected [INCONSISTENCY]
-  $("#foo").attr({href: url}); // NOT OK - but not detected [INCONSISTENCY]
-  $("<img>", {src: url}).appendTo("body"); // NOT OK - but not detected [INCONSISTENCY]
+  $("<a>", {href: url}).appendTo("body"); // NOT OK
+  $("#foo").attr("href", url); // NOT OK
+  $("#foo").attr({href: url}); // NOT OK
+  $("<img>", {src: url}).appendTo("body"); // NOT OK
   $("<a>", {href: win.location.href}).appendTo("body"); // OK
 
-  $("<img>", {src: "http://google.com/" + url}).appendTo("body"); // OK
+  $("<img>", {src: "http://google.com/" + url}).appendTo("body"); // OK - but flagged [INCONSISTENCY]
 
-  $("<img>", {src: ["http://google.com", url].join("/")}).appendTo("body"); // OK
+  $("<img>", {src: ["http://google.com", url].join("/")}).appendTo("body"); // OK - but flagged [INCONSISTENCY]
 
   if (url.startsWith("https://")) {
-    $("<img>", {src: url}).appendTo("body"); // OK
+    $("<img>", {src: url}).appendTo("body"); // OK - but flagged [INCONSISTENCY]
   } else {
-    $("<img>", {src: url}).appendTo("body"); // NOT OK - but not detected [INCONSISTENCY]
+    $("<img>", {src: url}).appendTo("body"); // NOT OK
   }
 
   window.open(location.hash.substr(1)); // OK - any JavaScript is executed in another context

@@ -439,6 +439,26 @@ nodes
 | trusted-types.js:2:71:2:71 | x |
 | trusted-types.js:3:24:3:34 | window.name |
 | trusted-types.js:3:24:3:34 | window.name |
+| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) |
+| tst3.js:2:23:2:74 | decodeU ... str(1)) |
+| tst3.js:2:42:2:63 | window. ... .search |
+| tst3.js:2:42:2:63 | window. ... .search |
+| tst3.js:2:42:2:73 | window. ... bstr(1) |
+| tst3.js:4:25:4:28 | data |
+| tst3.js:4:25:4:32 | data.src |
+| tst3.js:4:25:4:32 | data.src |
+| tst3.js:5:26:5:29 | data |
+| tst3.js:5:26:5:31 | data.p |
+| tst3.js:5:26:5:31 | data.p |
+| tst3.js:7:32:7:35 | data |
+| tst3.js:7:32:7:37 | data.p |
+| tst3.js:7:32:7:37 | data.p |
+| tst3.js:9:37:9:40 | data |
+| tst3.js:9:37:9:42 | data.p |
+| tst3.js:9:37:9:42 | data.p |
+| tst3.js:10:38:10:41 | data |
+| tst3.js:10:38:10:43 | data.p |
+| tst3.js:10:38:10:43 | data.p |
 | tst.js:2:7:2:39 | target |
 | tst.js:2:7:2:39 | target |
 | tst.js:2:16:2:39 | documen ... .search |
@@ -739,6 +759,29 @@ nodes
 | tst.js:465:19:465:24 | source |
 | tst.js:467:20:467:25 | source |
 | tst.js:467:20:467:25 | source |
+| tst.js:471:7:471:46 | url |
+| tst.js:471:13:471:36 | documen ... .search |
+| tst.js:471:13:471:36 | documen ... .search |
+| tst.js:471:13:471:46 | documen ... bstr(1) |
+| tst.js:473:19:473:21 | url |
+| tst.js:473:19:473:21 | url |
+| tst.js:474:26:474:28 | url |
+| tst.js:474:26:474:28 | url |
+| tst.js:475:25:475:27 | url |
+| tst.js:475:25:475:27 | url |
+| tst.js:476:20:476:22 | url |
+| tst.js:476:20:476:22 | url |
+| tst.js:479:20:479:45 | "http:/ ... " + url |
+| tst.js:479:20:479:45 | "http:/ ... " + url |
+| tst.js:479:43:479:45 | url |
+| tst.js:481:20:481:45 | ["http: ... ", url] |
+| tst.js:481:20:481:55 | ["http: ... in("/") |
+| tst.js:481:20:481:55 | ["http: ... in("/") |
+| tst.js:481:42:481:44 | url |
+| tst.js:484:22:484:24 | url |
+| tst.js:484:22:484:24 | url |
+| tst.js:486:22:486:24 | url |
+| tst.js:486:22:486:24 | url |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:10:16:10:18 | loc |
@@ -1207,6 +1250,25 @@ edges
 | trusted-types.js:2:66:2:66 | x | trusted-types.js:2:71:2:71 | x |
 | trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:66:2:66 | x |
 | trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:66:2:66 | x |
+| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:4:25:4:28 | data |
+| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:5:26:5:29 | data |
+| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:7:32:7:35 | data |
+| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:9:37:9:40 | data |
+| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:10:38:10:41 | data |
+| tst3.js:2:23:2:74 | decodeU ... str(1)) | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) |
+| tst3.js:2:42:2:63 | window. ... .search | tst3.js:2:42:2:73 | window. ... bstr(1) |
+| tst3.js:2:42:2:63 | window. ... .search | tst3.js:2:42:2:73 | window. ... bstr(1) |
+| tst3.js:2:42:2:73 | window. ... bstr(1) | tst3.js:2:23:2:74 | decodeU ... str(1)) |
+| tst3.js:4:25:4:28 | data | tst3.js:4:25:4:32 | data.src |
+| tst3.js:4:25:4:28 | data | tst3.js:4:25:4:32 | data.src |
+| tst3.js:5:26:5:29 | data | tst3.js:5:26:5:31 | data.p |
+| tst3.js:5:26:5:29 | data | tst3.js:5:26:5:31 | data.p |
+| tst3.js:7:32:7:35 | data | tst3.js:7:32:7:37 | data.p |
+| tst3.js:7:32:7:35 | data | tst3.js:7:32:7:37 | data.p |
+| tst3.js:9:37:9:40 | data | tst3.js:9:37:9:42 | data.p |
+| tst3.js:9:37:9:40 | data | tst3.js:9:37:9:42 | data.p |
+| tst3.js:10:38:10:41 | data | tst3.js:10:38:10:43 | data.p |
+| tst3.js:10:38:10:41 | data | tst3.js:10:38:10:43 | data.p |
 | tst.js:2:7:2:39 | target | tst.js:5:18:5:23 | target |
 | tst.js:2:7:2:39 | target | tst.js:5:18:5:23 | target |
 | tst.js:2:7:2:39 | target | tst.js:12:28:12:33 | target |
@@ -1461,6 +1523,28 @@ edges
 | tst.js:460:6:460:38 | source | tst.js:467:20:467:25 | source |
 | tst.js:460:15:460:38 | documen ... .search | tst.js:460:6:460:38 | source |
 | tst.js:460:15:460:38 | documen ... .search | tst.js:460:6:460:38 | source |
+| tst.js:471:7:471:46 | url | tst.js:473:19:473:21 | url |
+| tst.js:471:7:471:46 | url | tst.js:473:19:473:21 | url |
+| tst.js:471:7:471:46 | url | tst.js:474:26:474:28 | url |
+| tst.js:471:7:471:46 | url | tst.js:474:26:474:28 | url |
+| tst.js:471:7:471:46 | url | tst.js:475:25:475:27 | url |
+| tst.js:471:7:471:46 | url | tst.js:475:25:475:27 | url |
+| tst.js:471:7:471:46 | url | tst.js:476:20:476:22 | url |
+| tst.js:471:7:471:46 | url | tst.js:476:20:476:22 | url |
+| tst.js:471:7:471:46 | url | tst.js:479:43:479:45 | url |
+| tst.js:471:7:471:46 | url | tst.js:481:42:481:44 | url |
+| tst.js:471:7:471:46 | url | tst.js:484:22:484:24 | url |
+| tst.js:471:7:471:46 | url | tst.js:484:22:484:24 | url |
+| tst.js:471:7:471:46 | url | tst.js:486:22:486:24 | url |
+| tst.js:471:7:471:46 | url | tst.js:486:22:486:24 | url |
+| tst.js:471:13:471:36 | documen ... .search | tst.js:471:13:471:46 | documen ... bstr(1) |
+| tst.js:471:13:471:36 | documen ... .search | tst.js:471:13:471:46 | documen ... bstr(1) |
+| tst.js:471:13:471:46 | documen ... bstr(1) | tst.js:471:7:471:46 | url |
+| tst.js:479:43:479:45 | url | tst.js:479:20:479:45 | "http:/ ... " + url |
+| tst.js:479:43:479:45 | url | tst.js:479:20:479:45 | "http:/ ... " + url |
+| tst.js:481:20:481:45 | ["http: ... ", url] | tst.js:481:20:481:55 | ["http: ... in("/") |
+| tst.js:481:20:481:45 | ["http: ... ", url] | tst.js:481:20:481:55 | ["http: ... in("/") |
+| tst.js:481:42:481:44 | url | tst.js:481:20:481:45 | ["http: ... ", url] |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
