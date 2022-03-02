@@ -453,99 +453,102 @@ module RegexExecution {
   }
 }
 
-/**
- * A data-flow node that constructs an XPath expression.
- *
- * Often, it is worthy of an alert if an XPath expression is constructed such that
- * executing it would be a security risk.
- *
- * If it is important that the XPath expression is indeed executed, then use `XPathExecution`.
- *
- * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `XPathConstruction::Range` instead.
- */
-class XPathConstruction extends DataFlow::Node {
-  XPathConstruction::Range range;
-
-  XPathConstruction() { this = range }
-
-  /** Gets the argument that specifies the XPath expressions to be constructed. */
-  DataFlow::Node getXPath() { result = range.getXPath() }
-
-  /**
-   * Gets the name of this XPath expression construction, typically the name of an executing method.
-   * This is used for nice alert messages and should include the module if possible.
-   */
-  string getName() { result = range.getName() }
-}
-
-/** Provides a class for modeling new XPath construction APIs. */
-module XPathConstruction {
+/** Provides classes for modeling XML-related APIs. */
+module XML {
   /**
    * A data-flow node that constructs an XPath expression.
    *
    * Often, it is worthy of an alert if an XPath expression is constructed such that
    * executing it would be a security risk.
    *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `XPathConstruction` instead.
+   * If it is important that the XPath expression is indeed executed, then use `XPathExecution`.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `XPathConstruction::Range` instead.
    */
-  abstract class Range extends DataFlow::Node {
+  class XPathConstruction extends DataFlow::Node {
+    XPathConstruction::Range range;
+
+    XPathConstruction() { this = range }
+
     /** Gets the argument that specifies the XPath expressions to be constructed. */
-    abstract DataFlow::Node getXPath();
+    DataFlow::Node getXPath() { result = range.getXPath() }
 
     /**
      * Gets the name of this XPath expression construction, typically the name of an executing method.
      * This is used for nice alert messages and should include the module if possible.
      */
-    abstract string getName();
+    string getName() { result = range.getName() }
   }
-}
 
-/**
- * A data-flow node that executes a xpath expression.
- *
- * If the context of interest is such that merely constructing an XPath expression
- * would be valuabe to report, then consider using `XPathConstruction`.
- *
- * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `XPathExecution::Range` instead.
- */
-class XPathExecution extends DataFlow::Node {
-  XPathExecution::Range range;
+  /** Provides a class for modeling new XPath construction APIs. */
+  module XPathConstruction {
+    /**
+     * A data-flow node that constructs an XPath expression.
+     *
+     * Often, it is worthy of an alert if an XPath expression is constructed such that
+     * executing it would be a security risk.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `XPathConstruction` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the argument that specifies the XPath expressions to be constructed. */
+      abstract DataFlow::Node getXPath();
 
-  XPathExecution() { this = range }
-
-  /** Gets the data flow node for the XPath expression being executed by this node. */
-  DataFlow::Node getXPath() { result = range.getXPath() }
+      /**
+       * Gets the name of this XPath expression construction, typically the name of an executing method.
+       * This is used for nice alert messages and should include the module if possible.
+       */
+      abstract string getName();
+    }
+  }
 
   /**
-   * Gets the name of this XPath expression execution, typically the name of an executing method.
-   * This is used for nice alert messages and should include the module if possible.
-   */
-  string getName() { result = range.getName() }
-}
-
-/** Provides classes for modeling new regular-expression execution APIs. */
-module XPathExecution {
-  /**
-   * A data-flow node that executes a XPath expression.
+   * A data-flow node that executes a xpath expression.
    *
    * If the context of interest is such that merely constructing an XPath expression
    * would be valuabe to report, then consider using `XPathConstruction`.
    *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `XPathExecution` instead.
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `XPathExecution::Range` instead.
    */
-  abstract class Range extends DataFlow::Node {
+  class XPathExecution extends DataFlow::Node {
+    XPathExecution::Range range;
+
+    XPathExecution() { this = range }
+
     /** Gets the data flow node for the XPath expression being executed by this node. */
-    abstract DataFlow::Node getXPath();
+    DataFlow::Node getXPath() { result = range.getXPath() }
 
     /**
-     * Gets the name of this xpath expression execution, typically the name of an executing method.
+     * Gets the name of this XPath expression execution, typically the name of an executing method.
      * This is used for nice alert messages and should include the module if possible.
      */
-    abstract string getName();
+    string getName() { result = range.getName() }
+  }
+
+  /** Provides classes for modeling new regular-expression execution APIs. */
+  module XPathExecution {
+    /**
+     * A data-flow node that executes a XPath expression.
+     *
+     * If the context of interest is such that merely constructing an XPath expression
+     * would be valuabe to report, then consider using `XPathConstruction`.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `XPathExecution` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the data flow node for the XPath expression being executed by this node. */
+      abstract DataFlow::Node getXPath();
+
+      /**
+       * Gets the name of this xpath expression execution, typically the name of an executing method.
+       * This is used for nice alert messages and should include the module if possible.
+       */
+      abstract string getName();
+    }
   }
 }
 

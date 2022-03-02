@@ -171,7 +171,7 @@ class XPathConstructionTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(XPathConstruction e, DataFlow::Node xpath |
+    exists(XML::XPathConstruction e, DataFlow::Node xpath |
       exists(location.getFile().getRelativePath()) and
       xpath = e.getXPath() and
       location = e.getLocation() and
@@ -189,7 +189,7 @@ class XPathExecutionTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(XPathExecution e, DataFlow::Node xpath |
+    exists(XML::XPathExecution e, DataFlow::Node xpath |
       exists(location.getFile().getRelativePath()) and
       xpath = e.getXPath() and
       location = e.getLocation() and

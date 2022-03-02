@@ -28,7 +28,7 @@ private module Libxml2 {
    *
    * See http://xmlsoft.org/python.html
    */
-  class XpathEvalCall extends XPathExecution::Range, DataFlow::CallCfgNode {
+  class XpathEvalCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
     XpathEvalCall() {
       this =
         API::moduleImport("libxml2")

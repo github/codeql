@@ -30,7 +30,7 @@ private module Lxml {
    * - https://lxml.de/apidoc/lxml.etree.html#lxml.etree.XPath
    * - https://lxml.de/apidoc/lxml.etree.html#lxml.etree.ETXPath
    */
-  private class XPathClassCall extends XPathConstruction::Range, DataFlow::CallCfgNode {
+  private class XPathClassCall extends XML::XPathConstruction::Range, DataFlow::CallCfgNode {
     XPathClassCall() {
       this = API::moduleImport("lxml").getMember("etree").getMember(["XPath", "ETXPath"]).getACall()
     }
@@ -55,7 +55,7 @@ private module Lxml {
    * - https://lxml.de/apidoc/lxml.etree.html#lxml.etree.HTML
    * - https://lxml.de/apidoc/lxml.etree.html#lxml.etree.XML
    */
-  class XPathCall extends XPathExecution::Range, DataFlow::CallCfgNode {
+  class XPathCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
     XPathCall() {
       this =
         API::moduleImport("lxml")
@@ -71,7 +71,7 @@ private module Lxml {
     override string getName() { result = "lxml.etree" }
   }
 
-  class XPathEvaluatorCall extends XPathExecution::Range, DataFlow::CallCfgNode {
+  class XPathEvaluatorCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
     XPathEvaluatorCall() {
       this =
         API::moduleImport("lxml")

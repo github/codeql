@@ -2856,7 +2856,7 @@ private module StdlibPrivate {
   /**
    * A call to a find method on a tree or an element will execute an XPath expression.
    */
-  private class ElementTreeFindCall extends XPathExecution::Range, DataFlow::CallCfgNode {
+  private class ElementTreeFindCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
     string methodName;
 
     ElementTreeFindCall() {
