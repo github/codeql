@@ -1,2 +1,47 @@
-| tests2.cpp:27:12:27:12 | call to operator<< | This operation exposes system data from $@. | tests2.cpp:27:15:27:20 | call to getenv | call to getenv |
-| tests2.cpp:28:25:28:25 | call to operator<< | This operation exposes system data from $@. | tests2.cpp:28:28:28:33 | call to getenv | call to getenv |
+edges
+| tests2.cpp:63:13:63:18 | call to getenv | tests2.cpp:63:13:63:26 | (const char *)... |
+| tests2.cpp:64:13:64:18 | call to getenv | tests2.cpp:64:13:64:26 | (const char *)... |
+| tests2.cpp:65:13:65:18 | call to getenv | tests2.cpp:65:13:65:30 | (const char *)... |
+| tests2.cpp:76:18:76:38 | call to mysql_get_client_info | tests2.cpp:79:14:79:19 | (const char *)... |
+| tests2.cpp:78:14:78:34 | call to mysql_get_client_info | tests2.cpp:78:14:78:34 | call to mysql_get_client_info |
+| tests2.cpp:78:14:78:34 | call to mysql_get_client_info | tests2.cpp:78:14:78:34 | call to mysql_get_client_info |
+| tests2.cpp:89:42:89:45 | str1 | tests2.cpp:91:14:91:17 | str1 |
+| tests2.cpp:99:8:99:15 | call to getpwuid | tests2.cpp:100:14:100:15 | pw |
+| tests2.cpp:107:3:107:4 | c1 [post update] [ptr] | tests2.cpp:109:14:109:15 | c1 [read] [ptr] |
+| tests2.cpp:107:6:107:8 | ptr [post update] | tests2.cpp:107:3:107:4 | c1 [post update] [ptr] |
+| tests2.cpp:107:12:107:17 | call to getenv | tests2.cpp:107:6:107:8 | ptr [post update] |
+| tests2.cpp:109:14:109:15 | c1 [read] [ptr] | tests2.cpp:109:14:109:19 | (const char *)... |
+nodes
+| tests2.cpp:63:13:63:18 | call to getenv | semmle.label | call to getenv |
+| tests2.cpp:63:13:63:18 | call to getenv | semmle.label | call to getenv |
+| tests2.cpp:63:13:63:26 | (const char *)... | semmle.label | (const char *)... |
+| tests2.cpp:64:13:64:18 | call to getenv | semmle.label | call to getenv |
+| tests2.cpp:64:13:64:18 | call to getenv | semmle.label | call to getenv |
+| tests2.cpp:64:13:64:26 | (const char *)... | semmle.label | (const char *)... |
+| tests2.cpp:65:13:65:18 | call to getenv | semmle.label | call to getenv |
+| tests2.cpp:65:13:65:18 | call to getenv | semmle.label | call to getenv |
+| tests2.cpp:65:13:65:30 | (const char *)... | semmle.label | (const char *)... |
+| tests2.cpp:76:18:76:38 | call to mysql_get_client_info | semmle.label | call to mysql_get_client_info |
+| tests2.cpp:78:14:78:34 | call to mysql_get_client_info | semmle.label | call to mysql_get_client_info |
+| tests2.cpp:78:14:78:34 | call to mysql_get_client_info | semmle.label | call to mysql_get_client_info |
+| tests2.cpp:79:14:79:19 | (const char *)... | semmle.label | (const char *)... |
+| tests2.cpp:89:42:89:45 | str1 | semmle.label | str1 |
+| tests2.cpp:91:14:91:17 | str1 | semmle.label | str1 |
+| tests2.cpp:99:8:99:15 | call to getpwuid | semmle.label | call to getpwuid |
+| tests2.cpp:100:14:100:15 | pw | semmle.label | pw |
+| tests2.cpp:107:3:107:4 | c1 [post update] [ptr] | semmle.label | c1 [post update] [ptr] |
+| tests2.cpp:107:6:107:8 | ptr [post update] | semmle.label | ptr [post update] |
+| tests2.cpp:107:12:107:17 | call to getenv | semmle.label | call to getenv |
+| tests2.cpp:109:14:109:15 | c1 [read] [ptr] | semmle.label | c1 [read] [ptr] |
+| tests2.cpp:109:14:109:19 | (const char *)... | semmle.label | (const char *)... |
+subpaths
+#select
+| tests2.cpp:63:13:63:18 | call to getenv | tests2.cpp:63:13:63:18 | call to getenv | tests2.cpp:63:13:63:18 | call to getenv | This operation exposes system data from $@. | tests2.cpp:63:13:63:18 | call to getenv | call to getenv |
+| tests2.cpp:64:13:64:18 | call to getenv | tests2.cpp:64:13:64:18 | call to getenv | tests2.cpp:64:13:64:18 | call to getenv | This operation exposes system data from $@. | tests2.cpp:64:13:64:18 | call to getenv | call to getenv |
+| tests2.cpp:65:13:65:18 | call to getenv | tests2.cpp:65:13:65:18 | call to getenv | tests2.cpp:65:13:65:18 | call to getenv | This operation exposes system data from $@. | tests2.cpp:65:13:65:18 | call to getenv | call to getenv |
+| tests2.cpp:78:14:78:34 | call to mysql_get_client_info | tests2.cpp:78:14:78:34 | call to mysql_get_client_info | tests2.cpp:78:14:78:34 | call to mysql_get_client_info | This operation exposes system data from $@. | tests2.cpp:78:14:78:34 | call to mysql_get_client_info | call to mysql_get_client_info |
+| tests2.cpp:78:14:78:34 | call to mysql_get_client_info | tests2.cpp:78:14:78:34 | call to mysql_get_client_info | tests2.cpp:78:14:78:34 | call to mysql_get_client_info | This operation exposes system data from $@. | tests2.cpp:78:14:78:34 | call to mysql_get_client_info | call to mysql_get_client_info |
+| tests2.cpp:79:14:79:19 | (const char *)... | tests2.cpp:76:18:76:38 | call to mysql_get_client_info | tests2.cpp:79:14:79:19 | (const char *)... | This operation exposes system data from $@. | tests2.cpp:76:18:76:38 | call to mysql_get_client_info | call to mysql_get_client_info |
+| tests2.cpp:91:14:91:17 | str1 | tests2.cpp:89:42:89:45 | str1 | tests2.cpp:91:14:91:17 | str1 | This operation exposes system data from $@. | tests2.cpp:89:42:89:45 | str1 | str1 |
+| tests2.cpp:100:14:100:15 | pw | tests2.cpp:99:8:99:15 | call to getpwuid | tests2.cpp:100:14:100:15 | pw | This operation exposes system data from $@. | tests2.cpp:99:8:99:15 | call to getpwuid | call to getpwuid |
+| tests2.cpp:109:14:109:19 | (const char *)... | tests2.cpp:107:12:107:17 | call to getenv | tests2.cpp:109:14:109:19 | (const char *)... | This operation exposes system data from $@. | tests2.cpp:107:12:107:17 | call to getenv | call to getenv |
