@@ -241,8 +241,8 @@ private module Cached {
     // For compatibility, send flow from arguments to parameters, even for
     // functions with no body.
     exists(FunctionCall call, int i |
-      sink.asExpr() = call.getArgument(i) and
-      result = resolveCall(call).getParameter(i)
+      sink.asExpr() = call.getArgument(pragma[only_bind_into](i)) and
+      result = resolveCall(call).getParameter(pragma[only_bind_into](i))
     )
     or
     // For compatibility, send flow into a `Variable` if there is flow to any
