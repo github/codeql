@@ -3130,15 +3130,10 @@ open class KotlinFileExtractor(
         val argsType = useType(argsParamType)
         val anyNType = useType(pluginContext.irBuiltIns.anyNType)
 
-        val arrayIndexerFunction = pluginContext.irBuiltIns.arrayClass.owner.declarations.find { it is IrFunction && it.name.asString() == "get" }
-
-        @Suppress("UNCHECKED_CAST")
-        val arrayIndexerFunctionId = useFunction<DbMethod>(arrayIndexerFunction as IrFunction)
-
         val dispatchIdxOffset = if (useFirstArgAsDispatch) 1 else 0
 
         for ((pIdx, pType) in parameterTypes.withIndex()) {
-            // `args[i] as Ti` is generated below for each parameter
+            // `a0[i] as Ti` is generated below for each parameter
 
             val childIdx =
                 if (pIdx == 0 && useFirstArgAsDispatch) {
@@ -3147,33 +3142,32 @@ open class KotlinFileExtractor(
                     pIdx + firstArgumentOffset - dispatchIdxOffset
                 }
 
-            // cast
+            // cast: `(Ti)a0[i]`
             val castId = tw.getFreshIdLabel<DbCastexpr>()
             val type = useType(pType)
             tw.writeExprs_castexpr(castId, type.javaResult.id, exprParentId, childIdx)
             tw.writeExprsKotlinType(castId, type.kotlinResult.id)
             extractCommonExpr(castId)
 
-            // type access
+            // type access `Ti`
             extractTypeAccess(pType, locId, funLabels.methodId, castId, 0,  enclosingStmtId)
 
-            // element access: `args.get(i)`
-            val getCallId = tw.getFreshIdLabel<DbMethodaccess>()
-            tw.writeExprs_methodaccess(getCallId, anyNType.javaResult.id, castId, 1)
-            tw.writeExprsKotlinType(getCallId, anyNType.kotlinResult.id)
-            extractCommonExpr(getCallId)
-            tw.writeCallableBinding(getCallId, arrayIndexerFunctionId)
+            // element access: `a0[i]`
+            val arrayAccessId = tw.getFreshIdLabel<DbArrayaccess>()
+            tw.writeExprs_arrayaccess(arrayAccessId, anyNType.javaResult.id, castId, 1)
+            tw.writeExprsKotlinType(arrayAccessId, anyNType.kotlinResult.id)
+            extractCommonExpr(arrayAccessId)
 
-            // parameter access:
+            // parameter access: `a0`
             val argsAccessId = tw.getFreshIdLabel<DbVaraccess>()
-            tw.writeExprs_varaccess(argsAccessId, argsType.javaResult.id, getCallId, -1)
+            tw.writeExprs_varaccess(argsAccessId, argsType.javaResult.id, arrayAccessId, 0)
             tw.writeExprsKotlinType(argsAccessId, argsType.kotlinResult.id)
             extractCommonExpr(argsAccessId)
             tw.writeVariableBinding(argsAccessId, funLabels.parameters.first().first)
 
-            // index access:
+            // index access: `i`
             val indexId = tw.getFreshIdLabel<DbIntegerliteral>()
-            tw.writeExprs_integerliteral(indexId, intType.javaResult.id, getCallId, pIdx)
+            tw.writeExprs_integerliteral(indexId, intType.javaResult.id, arrayAccessId, 1)
             tw.writeExprsKotlinType(indexId, intType.kotlinResult.id)
             extractCommonExpr(indexId)
             tw.writeNamestrings(pIdx.toString(), pIdx.toString(), indexId)
