@@ -1,11 +1,8 @@
 package com.github.codeql
 
-import com.github.codeql.utils.substituteTypeAndArguments
-import com.github.codeql.utils.substituteTypeArguments
-import com.github.codeql.utils.withQuestionMark
+import com.github.codeql.utils.*
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
 import org.jetbrains.kotlin.backend.jvm.codegen.isRawType
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
@@ -29,7 +26,7 @@ open class KotlinUsesExtractor(
     open val logger: Logger,
     open val tw: TrapWriter,
     val dependencyCollector: OdasaOutput.TrapFileManager?,
-    val externalClassExtractor: ExternalClassExtractor,
+    val externalClassExtractor: ExternalDeclExtractor,
     val primitiveTypeMapping: PrimitiveTypeMapping,
     val pluginContext: IrPluginContext,
     val globalExtensionState: KotlinExtractorGlobalState
@@ -207,11 +204,6 @@ open class KotlinUsesExtractor(
         return UseClassInstanceResult(classTypeResult, extractClass)
     }
 
-    fun isExternalDeclaration(d: IrDeclaration): Boolean {
-        return d.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
-               d.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
-    }
-
     fun isArray(t: IrSimpleType) = t.isBoxedArray || t.isPrimitiveArray()
 
     fun extractClassLaterIfExternal(c: IrClass) {
@@ -226,6 +218,38 @@ open class KotlinUsesExtractor(
             is IrFunction -> extractExternalEnclosingClassLater(parent)
             is IrFile -> logger.error("extractExternalEnclosingClassLater but no enclosing class.")
             else -> logger.error("Unrecognised extractExternalEnclosingClassLater: " + d.javaClass)
+        }
+    }
+
+    fun extractPropertyLaterIfExternalFileMember(p: IrProperty) {
+        if (isExternalFileClassMember(p)) {
+            extractExternalClassLater(p.parentAsClass)
+            dependencyCollector?.addDependency(p, externalClassExtractor.propertySignature)
+            externalClassExtractor.extractLater(p)
+        }
+    }
+
+    fun extractFieldLaterIfExternalFileMember(f: IrField) {
+        if (isExternalFileClassMember(f)) {
+            extractExternalClassLater(f.parentAsClass)
+            dependencyCollector?.addDependency(f, externalClassExtractor.fieldSignature)
+            externalClassExtractor.extractLater(f)
+        }
+    }
+
+    fun extractFunctionLaterIfExternalFileMember(f: IrFunction) {
+        if (isExternalFileClassMember(f)) {
+            extractExternalClassLater(f.parentAsClass)
+            (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
+                extractPropertyLaterIfExternalFileMember(it.owner)
+                // No need to extract the function specifically, as the property's
+                // getters and setters are extracted alongside it
+                return
+            }
+            val paramTypes = f.valueParameters.map { useType(it.type) }
+            val signature = paramTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
+            dependencyCollector?.addDependency(f, signature)
+            externalClassExtractor.extractLater(f, signature)
         }
     }
 
@@ -791,6 +815,7 @@ open class KotlinUsesExtractor(
     fun <T: DbCallable> useFunctionCommon(f: IrFunction, label: String): Label<out T> {
         val id: Label<T> = tw.getLabelFor(label)
         if (isExternalDeclaration(f)) {
+            extractFunctionLaterIfExternalFileMember(f)
             extractExternalEnclosingClassLater(f)
         }
         return id
@@ -1064,7 +1089,7 @@ open class KotlinUsesExtractor(
     }
 
     fun useField(f: IrField): Label<out DbField> =
-        tw.getLabelFor(getFieldLabel(f))
+        tw.getLabelFor<DbField>(getFieldLabel(f)).also { extractFieldLaterIfExternalFileMember(f) }
 
     fun getPropertyLabel(p: IrProperty) =
         getPropertyLabel(p, useDeclarationParent(p.parent, false))
@@ -1073,10 +1098,10 @@ open class KotlinUsesExtractor(
         "@\"property;{$parentId};${p.name.asString()}\""
 
     fun useProperty(p: IrProperty): Label<out DbKt_property> =
-        tw.getLabelFor(getPropertyLabel(p))
+        tw.getLabelFor<DbKt_property>(getPropertyLabel(p)).also { extractPropertyLaterIfExternalFileMember(p) }
 
     fun useProperty(p: IrProperty, parentId: Label<out DbElement>): Label<out DbKt_property> =
-        tw.getLabelFor(getPropertyLabel(p, parentId))
+        tw.getLabelFor<DbKt_property>(getPropertyLabel(p, parentId)).also { extractPropertyLaterIfExternalFileMember(p) }
 
     fun getEnumEntryLabel(ee: IrEnumEntry): String {
         val parentId = useDeclarationParent(ee.parent, false)

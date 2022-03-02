@@ -3,23 +3,22 @@ package com.semmle.extractor.java;
 import java.lang.reflect.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
 import com.github.codeql.Logger;
-import com.github.codeql.Severity;
-import static com.github.codeql.ClassNamesKt.getIrClassBinaryName;
+import static com.github.codeql.ClassNamesKt.getIrDeclBinaryName;
 import static com.github.codeql.ClassNamesKt.getIrClassVirtualFile;
 
 import org.jetbrains.kotlin.ir.declarations.IrClass;
 
 import com.intellij.openapi.vfs.VirtualFile;
 
+import org.jetbrains.kotlin.ir.declarations.IrDeclaration;
+import org.jetbrains.kotlin.ir.declarations.IrDeclarationWithName;
 import org.jetbrains.org.objectweb.asm.ClassVisitor;
 import org.jetbrains.org.objectweb.asm.ClassReader;
 import org.jetbrains.org.objectweb.asm.Opcodes;
@@ -134,8 +133,8 @@ public class OdasaOutput {
 			currentSpecFileEntry.getTrapFolder(), PathTransformer.std().fileAsDatabaseString(file) + ".set");
 	}
 
-	public void addDependency(IrClass sym) {
-		String path = trapFilePathForClass(sym);
+	public void addDependency(IrDeclaration sym, String signature) {
+		String path = trapFilePathForDecl(sym, signature);
 		trapDependenciesForSource.addDependency(path);
 	}
 
@@ -200,31 +199,31 @@ public class OdasaOutput {
 				PathTransformer.std().fileAsDatabaseString(file) + ".trap.gz");
 	}
 
-	private File getTrapFileForClassFile(IrClass sym) {
+	private File getTrapFileForDecl(IrDeclaration sym, String signature) {
 		if (currentSpecFileEntry == null)
 			return null;
-		return trapFileForClass(sym);
+		return trapFileForDecl(sym, signature);
 	}
 
-	private File trapFileForClass(IrClass sym) {
+	private File trapFileForDecl(IrDeclaration sym, String signature) {
 		return FileUtil.fileRelativeTo(currentSpecFileEntry.getTrapFolder(),
-				trapFilePathForClass(sym));
+				trapFilePathForDecl(sym, signature));
 	}
 
 	private final Map<String, String> memberTrapPaths = new LinkedHashMap<String, String>();
 	private static final Pattern dots = Pattern.compile(".", Pattern.LITERAL);
-	private String trapFilePathForClass(IrClass sym) {
-		String classId = getIrClassBinaryName(sym);
+	private String trapFilePathForDecl(IrDeclaration sym, String signature) {
+		String binaryName = getIrDeclBinaryName(sym, signature);
 		// TODO: Reinstate this?
 		//if (getTrackClassOrigins())
 		//  classId += "-" + StringDigestor.digest(sym.getSourceFileId());
-		String result = memberTrapPaths.get(classId);
+		String result = memberTrapPaths.get(binaryName);
 		if (result == null) {
 			result = CLASSES_DIR + "/" +
-					dots.matcher(classId).replaceAll("/") +
+					dots.matcher(binaryName).replaceAll("/") +
 					".members" +
 					".trap.gz";
-			memberTrapPaths.put(classId, result);
+			memberTrapPaths.put(binaryName, result);
 		}
 		return result;
 	}
@@ -233,8 +232,8 @@ public class OdasaOutput {
 	 * Deletion of existing trap files.
 	 */
 
-	private void deleteTrapFileAndDependencies(IrClass sym) {
-		File trap = trapFileForClass(sym);
+	private void deleteTrapFileAndDependencies(IrDeclaration sym, String signature) {
+		File trap = trapFileForDecl(sym, signature);
 		if (trap.exists()) {
 			trap.delete();
 			File depFile = new File(trap.getParentFile(), trap.getName().replace(".trap.gz", ".dep"));
@@ -258,73 +257,83 @@ public class OdasaOutput {
 		File trapFile = getTrapFileForCurrentSourceFile();
 		if (trapFile==null)
 			return null;
-		return trapWriter(trapFile, null);
+		return trapWriter(trapFile, null, null);
 	}
 
 	/**
 	 * Get a {@link TrapFileManager} to write members
-	 * about a class, or <code>null</code> if the class shouldn't be populated.
+	 * about a declaration, or <code>null</code> if the declaration shouldn't be populated.
 	 *
 	 * @param sym
-	 * 		The class's symbol, including, in particular, its fully qualified
+	 * 		The declaration's symbol, including, in particular, its fully qualified
 	 * 		binary class name.
+	 * @param signature
+	 * 		Any unique suffix needed to distinguish `sym` from other declarations with the same name.
+	 * 		For functions for example, this means its parameter signature.
 	 */
-	private TrapFileManager getMembersWriterForClass(IrClass sym) {
-		File trap = getTrapFileForClassFile(sym);
+	private TrapFileManager getMembersWriterForDecl(IrDeclaration sym, String signature) {
+		File trap = getTrapFileForDecl(sym, signature);
 		if (trap==null)
 			return null;
 		TrapClassVersion currVersion = TrapClassVersion.fromSymbol(sym, log);
+		String shortName = sym instanceof IrDeclarationWithName ? ((IrDeclarationWithName)sym).getName().asString() : "(name unknown)";
 		if (trap.exists()) {
 			// Only re-write an existing trap file if we encountered a newer version of the same class.
 			TrapClassVersion trapVersion = readVersionInfo(trap);
 			if (!currVersion.isValid()) {
-				log.warn("Not rewriting trap file for: " + sym.getName() + " " + trapVersion + " " + currVersion + " " + trap);
+				log.warn("Not rewriting trap file for: " + shortName + " " + trapVersion + " " + currVersion + " " + trap);
 			} else if (currVersion.newerThan(trapVersion)) {
-				log.trace("Rewriting trap file for: " + sym.getName() + " " + trapVersion + " " + currVersion + " " + trap);
-				deleteTrapFileAndDependencies(sym);
+				log.trace("Rewriting trap file for: " + shortName + " " + trapVersion + " " + currVersion + " " + trap);
+				deleteTrapFileAndDependencies(sym, signature);
 			} else {
 				return null;
 			}
 		} else {
-			log.trace("Writing trap file for: " + sym.getName() + " " + currVersion + " " + trap);
+			log.trace("Writing trap file for: " + shortName + " " + currVersion + " " + trap);
 		}
-		return trapWriter(trap, sym);
+		return trapWriter(trap, sym, signature);
 	}
 
-	private TrapFileManager trapWriter(File trapFile, IrClass sym) {
+	private TrapFileManager trapWriter(File trapFile, IrDeclaration sym, String signature) {
 		if (!trapFile.getName().endsWith(".trap.gz"))
 			throw new CatastrophicError("OdasaOutput only supports writing to compressed trap files");
 		String relative = FileUtil.relativePath(trapFile, currentSpecFileEntry.getTrapFolder());
 		trapFile.getParentFile().mkdirs();
 		trapsCreated.addTrap(relative);
-		return concurrentWriter(trapFile, relative, log, sym);
+		return concurrentWriter(trapFile, relative, log, sym, signature);
 	}
 
-	private TrapFileManager concurrentWriter(File trapFile, String relative, Logger log, IrClass sym) {
+	private TrapFileManager concurrentWriter(File trapFile, String relative, Logger log, IrDeclaration sym, String signature) {
 		if (trapFile.exists())
 			return null;
-		return new TrapFileManager(trapFile, relative, true, log, sym);
+		return new TrapFileManager(trapFile, relative, true, log, sym, signature);
 	}
 
 	public class TrapFileManager implements AutoCloseable {
 
 		private TrapDependencies trapDependenciesForClass;
 		private File trapFile;
-		private IrClass sym;
+		private IrDeclaration sym;
+		private String signature;
 		private boolean hasError = false;
 
-		private TrapFileManager(File trapFile, String relative, boolean concurrentCreation, Logger log, IrClass sym) {
+		private TrapFileManager(File trapFile, String relative, boolean concurrentCreation, Logger log, IrDeclaration sym, String signature) {
 			trapDependenciesForClass = new TrapDependencies(relative);
 			this.trapFile = trapFile;
 			this.sym = sym;
+			this.signature = signature;
 		}
 
 		public File getFile() {
 			return trapFile;
 		}
 
-		public void addDependency(IrClass dep) {
-			trapDependenciesForClass.addDependency(trapFilePathForClass(dep));
+		public void addDependency(IrDeclaration dep, String signature) {
+			trapDependenciesForClass.addDependency(trapFilePathForDecl(dep, signature));
+		}
+
+		public void addDependency(IrClass c) {
+			addDependency(c, "");
 		}
 
 		public void close() {
@@ -374,7 +383,7 @@ public class OdasaOutput {
 	 * previously set by a call to {@link OdasaOutput#setCurrentSourceFile(File)}.
 	 */
 	public TrapLocker getTrapLockerForCurrentSourceFile() {
-		return new TrapLocker((IrClass)null);
+		return new TrapLocker((IrClass)null, null);
 	}
 
 	/**
@@ -412,37 +421,41 @@ public class OdasaOutput {
 	 *
 	 * @return  a {@link TrapLocker} for the trap file corresponding to the given class symbol.
 	 */
-	public TrapLocker getTrapLockerForClassFile(IrClass sym) {
-		return new TrapLocker(sym);
+	public TrapLocker getTrapLockerForDecl(IrDeclaration sym, String signature) {
+		return new TrapLocker(sym, signature);
 	}
 
 	public class TrapLocker implements AutoCloseable {
-		private final IrClass sym;
+		private final IrDeclaration sym;
 		private final File trapFile;
+		private final String signature;
 		private final boolean isNonSourceTrapFile;
-		private TrapLocker(IrClass sym) {
-			this.sym = sym;
+		private TrapLocker(IrDeclaration decl, String signature) {
+			this.sym = decl;
+			this.signature = signature;
 			if (sym==null) {
 				trapFile = getTrapFileForCurrentSourceFile();
 			} else {
-				trapFile = getTrapFileForClassFile(sym);
+				trapFile = getTrapFileForDecl(sym, signature);
 			}
 			isNonSourceTrapFile = false;
 		}
 		private TrapLocker(File jarFile) {
 			sym = null;
+			signature = null;
 			trapFile = getTrapFileForJarFile(jarFile);
 			isNonSourceTrapFile = true;
 		}
 		private TrapLocker(String moduleName) {
 			sym = null;
+			signature = null;
 			trapFile = getTrapFileForModule(moduleName);
 			isNonSourceTrapFile = true;
 		}
 		public TrapFileManager getTrapFileManager() {
 			if (trapFile!=null) {
 				lockTrapFile(trapFile);
-				return getMembersWriterForClass(sym);
+				return getMembersWriterForDecl(sym, signature);
 			} else {
 				return null;
 			}
@@ -532,8 +545,10 @@ public class OdasaOutput {
 					(tcv.majorVersion == majorVersion && tcv.minorVersion == minorVersion &&
 					tcv.lastModified < lastModified);
 		}
-		private static TrapClassVersion fromSymbol(IrClass sym, Logger log) {
-			VirtualFile vf = getIrClassVirtualFile(sym);
+		private static TrapClassVersion fromSymbol(IrDeclaration sym, Logger log) {
+			VirtualFile vf = sym instanceof IrClass ? getIrClassVirtualFile((IrClass)sym) :
+					sym.getParent() instanceof IrClass ? getIrClassVirtualFile((IrClass)sym.getParent()) :
+					null;
 			if(vf == null)
 				return new TrapClassVersion(0, 0, 0, null);
 

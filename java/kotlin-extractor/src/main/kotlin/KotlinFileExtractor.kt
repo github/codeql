@@ -1,11 +1,8 @@
 package com.github.codeql
 
 import com.github.codeql.comments.CommentExtractor
-import com.github.codeql.utils.TypeSubstitution
+import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.functionN
-import com.github.codeql.utils.substituteTypeAndArguments
-import com.github.codeql.utils.substituteTypeArguments
-import com.github.codeql.utils.toRawType
 import com.github.codeql.utils.versions.getIrStubFromDescriptor
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -35,7 +32,7 @@ open class KotlinFileExtractor(
     override val tw: FileTrapWriter,
     val filePath: String,
     dependencyCollector: OdasaOutput.TrapFileManager?,
-    externalClassExtractor: ExternalClassExtractor,
+    externalClassExtractor: ExternalDeclExtractor,
     primitiveTypeMapping: PrimitiveTypeMapping,
     pluginContext: IrPluginContext,
     globalExtensionState: KotlinExtractorGlobalState
@@ -87,7 +84,7 @@ open class KotlinFileExtractor(
                     if (isExternalDeclaration(declaration)) {
                         extractExternalClassLater(declaration)
                     } else {
-                        extractClassSource(declaration)
+                        extractClassSource(declaration, true)
                     }
                 }
                 is IrFunction -> {
@@ -311,7 +308,7 @@ open class KotlinFileExtractor(
 
     private fun extractLocalTypeDeclStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         @Suppress("UNCHECKED_CAST")
-        val id = extractClassSource(c) as Label<out DbClass>
+        val id = extractClassSource(c, true) as Label<out DbClass>
         extractLocalTypeDeclStmt(id, c, callable, parent, idx)
     }
 
@@ -323,7 +320,7 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(stmtId, locId)
     }
 
-    fun extractClassSource(c: IrClass): Label<out DbClassorinterface> {
+    fun extractClassSource(c: IrClass, extractDeclarations: Boolean): Label<out DbClassorinterface> {
         with("class source", c) {
             DeclarationStackAdjuster(c).use {
 
@@ -356,7 +353,8 @@ open class KotlinFileExtractor(
                 extractEnclosingClass(c, id, locId, listOf())
 
                 c.typeParameters.mapIndexed { idx, it -> extractTypeParameter(it, idx) }
-                c.declarations.map { extractDeclaration(it) }
+                if (extractDeclarations)
+                    c.declarations.map { extractDeclaration(it) }
                 if (c.isNonCompanionObject) {
                     // For `object MyObject { ... }`, the .class has an
                     // automatically-generated `public static final MyObject INSTANCE`

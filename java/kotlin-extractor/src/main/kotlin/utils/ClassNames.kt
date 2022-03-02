@@ -1,23 +1,27 @@
 package com.github.codeql
 
 import com.intellij.openapi.vfs.StandardFileSystems
-import org.jetbrains.kotlin.ir.declarations.IrClass
-import org.jetbrains.kotlin.ir.declarations.IrDeclaration
-import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
-import org.jetbrains.kotlin.ir.declarations.IrPackageFragment
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 import org.jetbrains.kotlin.load.kotlin.VirtualFileKotlinClass
 import org.jetbrains.kotlin.load.kotlin.KotlinJvmBinarySourceElement
 
 import com.intellij.openapi.vfs.VirtualFile
+import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
 
-// Taken from Kotlin's interpreter/Utils.kt function 'internalName'
-// Translates class names into their JLS section 13.1 binary name
-fun getIrClassBinaryName(that: IrClass): String {
-  val internalName = StringBuilder(that.name.asString())
-  generateSequence(that as? IrDeclarationParent) { (it as? IrDeclaration)?.parent }
-      .drop(1)
+// Adapted from Kotlin's interpreter/Utils.kt function 'internalName'
+// Translates class names into their JLS section 13.1 binary name,
+// and declarations within them into the parent class' JLS 13.1 name as
+// specified above, followed by a `$` separator and then a unique identifier
+// for `that`, consisting of its short name followed by any supplied signature.
+fun getIrDeclBinaryName(that: IrDeclaration, signature: String): String {
+  val shortName = when(that) {
+      is IrDeclarationWithName -> that.name.asString()
+      else -> "(unknown-name)"
+  }
+  val internalName = StringBuilder(shortName + signature);
+  generateSequence(that.parent) { (it as? IrDeclaration)?.parent }
       .forEach {
           when (it) {
               is IrClass -> internalName.insert(0, it.name.asString() + "$")
@@ -29,6 +33,12 @@ fun getIrClassBinaryName(that: IrClass): String {
 
 fun getIrClassVirtualFile(irClass: IrClass): VirtualFile? {
     val cSource = irClass.source
+    // Don't emit a location for multi-file classes until we're sure we can cope with different declarations
+    // inside a class disagreeing about their source file. In particular this currently causes problems when
+    // a source-location for a declarations tries to refer to a file-id which is assumed to be declared in
+    // the class trap file.
+    if (irClass.origin == IrDeclarationOrigin.JVM_MULTIFILE_CLASS)
+        return null
     when(cSource) {
         is JavaSourceElement -> {
             val element = cSource.javaElement
@@ -40,6 +50,12 @@ fun getIrClassVirtualFile(irClass: IrClass): VirtualFile? {
             val binaryClass = cSource.binaryClass
             when(binaryClass) {
                 is VirtualFileKotlinClass -> return binaryClass.file
+            }
+        }
+        is JvmPackagePartSource -> {
+            val binaryClass = cSource.knownJvmBinaryClass
+            if (binaryClass != null && binaryClass is VirtualFileKotlinClass) {
+                return binaryClass.file
             }
         }
     }
@@ -59,5 +75,5 @@ fun getRawIrClassBinaryPath(irClass: IrClass) =
 fun getIrClassBinaryPath(irClass: IrClass): String {
   return getRawIrClassBinaryPath(irClass)
   // Otherwise, make up a fake location:
-    ?: "/!unknown-binary-location/${getIrClassBinaryName(irClass).replace(".", "/")}.class"
+    ?: "/!unknown-binary-location/${getIrDeclBinaryName(irClass, "").replace(".", "/")}.class"
 }
