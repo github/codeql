@@ -1,5 +1,5 @@
 ---
 category: minorAnalysis
 ---
-* The C# extractor now accepts an extractor option `trap.compression`, which is used to decide the compression format for TRAP files. The legal options are `brotli` (default), `gzip` or `none`.
-* The C# extractor no longer accepts `--no-brotli` or `--brotli` flags to switch between `gzip` and `brotli` as compression method for TRAP files.
+* The C# extractor now accepts an extractor option `trap.compression`, which is used to decide the compression format for TRAP files. The legal values are `brotli` (default), `gzip` or `none`.
+The option is added via `codeql database create --language=csharp -Otrap.compression=value ...`.
