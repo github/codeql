@@ -1,3 +1,16 @@
+/**
+ * @name Missing X-Frame-Options HTTP header
+ * @description If the 'X-Frame-Options' setting is not provided or specify sameorigin, a malicious user may be able to
+ *              overlay their own UI on top of the site by using an iframe.
+ * @kind problem
+ * @problem.severity error
+ * @security-severity 7.5
+ * @precision high
+ * @id java/clickjacking
+ * @tags security
+ *       external/cwe/cwe-451
+ */
+
 import java
 import semmle.code.java.frameworks.Servlets
 
