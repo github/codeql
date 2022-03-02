@@ -46,7 +46,9 @@ namespace Semmle.Extraction.CSharp
             var argsList = new List<string>(arguments);
 
             if (!string.IsNullOrEmpty(extractionOptions))
+            {
                 argsList.AddRange(extractionOptions.Split(' '));
+            }
 
             options.ParseArguments(argsList);
             return options;
