@@ -114,6 +114,10 @@ string asSourceModel(TargetAPI api, string output, string kind) {
   result = asPartialModel(api) + output + ";" + kind
 }
 
+predicate isPrimitiveTypeUsedForBulkData(Type t) {
+  t.getName().regexpMatch("byte|char|Byte|Character")
+}
+
 predicate isRelevantType(Type t) {
   not t instanceof TypeClass and
   not t instanceof EnumType and
@@ -188,8 +192,4 @@ string returnNodeAsOutput(ReturnNodeExt node) {
       or
       result = "Argument[-1]" and pos = -1
     )
-}
-
-predicate isPrimitiveTypeUsedForBulkData(Type t) {
-  t.getName().regexpMatch("byte|char|Byte|Character")
 }

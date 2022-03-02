@@ -3,6 +3,7 @@ private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dataflow.DataFlow
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
+private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.commons.Util
 
@@ -86,4 +87,71 @@ bindingset[output, kind]
 string asSourceModel(TargetAPI api, string output, string kind) {
   result = asPartialModel(api) + output + ";" + kind
 }
+
 // END SECTION.
+// TODO: Needs to be implemented property for C#.
+predicate isPrimitiveTypeUsedForBulkData(Type t) {
+  t.getName().regexpMatch("byte|char|Byte|Character")
+}
+
+// TODO: Needs to be implemented properly for C#.
+// Sample below is just rudimentary.
+// We at at least need something for Collection like type (ie IEnumerable and List)
+predicate isRelevantType(Type t) {
+  not t instanceof Enum and
+  not t instanceof SimpleType and
+  (
+    not t.(ArrayType).getElementType() instanceof SimpleType or
+    isPrimitiveTypeUsedForBulkData(t.(ArrayType).getElementType())
+  )
+}
+
+// TODO: Is this propertly implemented?
+predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(DataFlow::Content f |
+    readStep(node1, f, node2) and
+    if f instanceof DataFlow::FieldContent
+    then isRelevantType(f.(DataFlow::FieldContent).getField().getType())
+    else
+      if f instanceof DataFlow::SyntheticFieldContent
+      then isRelevantType(f.(DataFlow::SyntheticFieldContent).getField().getType())
+      else any()
+  )
+  or
+  exists(DataFlow::Content f | storeStep(node1, f, node2) | f instanceof DataFlow::ElementContent)
+}
+
+// TODO: Is this properly implemented?
+predicate isRelevantContent(DataFlow::Content f) {
+  isRelevantType(f.(DataFlow::FieldContent).getField().getType()) or
+  f instanceof DataFlow::ElementContent
+}
+
+// TODO: Needs to be improved to handle more collection types that Array.
+string parameterAccess(Parameter p) {
+  if
+    p.getType() instanceof ArrayType and
+    not isPrimitiveTypeUsedForBulkData(p.getType().(ArrayType).getElementType())
+  then result = "Argument[" + p.getPosition() + "].ArrayElement"
+  else result = "Argument[" + p.getPosition() + "]"
+}
+
+// TODO: Is this properly implemented?
+string parameterNodeAsInput(DataFlow::ParameterNode p) {
+  result = parameterAccess(p.asParameter())
+  or
+  result = "Qualifier" and p instanceof InstanceParameterNode
+}
+
+// TODO: Is this properly implemented?
+string returnNodeAsOutput(ReturnNodeExt node) {
+  if node.getKind() instanceof ValueReturnKind
+  then result = "ReturnValue"
+  else
+    exists(ParameterPosition pos | pos = node.getKind().(ParamUpdateReturnKind).getPosition() |
+      result = parameterAccess(node.getEnclosingCallable().getParameter(pos.getPosition()))
+      or
+      pos.isThisParameter() and
+      result = "Qualifier"
+    )
+}
