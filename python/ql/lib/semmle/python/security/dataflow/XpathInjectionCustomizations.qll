@@ -43,13 +43,13 @@ module XpathInjection {
    * A construction of an XPath expression, considered as a sink.
    */
   class XPathConstructionArg extends Sink {
-    XPathConstructionArg() { this = any(XPathConstruction c).getXPath() }
+    XPathConstructionArg() { this = any(XML::XPathConstruction c).getXPath() }
   }
 
   /**
    * An execution of an XPath expression, considered as a sink.
    */
   class XPathExecutionArg extends Sink {
-    XPathExecutionArg() { this = any(XPathExecution e).getXPath() }
+    XPathExecutionArg() { this = any(XML::XPathExecution e).getXPath() }
   }
 }
