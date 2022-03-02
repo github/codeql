@@ -26,13 +26,15 @@ private class GvnKindStmt extends GvnKind, TGvnKindStmt {
 }
 
 private class GvnKindDeclaration extends GvnKind, TGvnKindDeclaration {
-  private GvnKindExpr kind;
+  private int kind;
   private boolean isTargetThis;
   private Declaration d;
 
   GvnKindDeclaration() { this = TGvnKindDeclaration(kind, isTargetThis, d) }
 
-  override string toString() { result = kind.toString() + "," + isTargetThis + "," + d.toString() }
+  override string toString() {
+    result = "Expr(" + kind.toString() + ")," + isTargetThis + "," + d.toString()
+  }
 }
 
 /** Gets the declaration referenced by the expression `e`, if any. */
@@ -89,21 +91,28 @@ private class GvnStruct extends Gvn, TGvnStruct {
   override string toString() { result = "(" + head.toString() + " :: " + tail.toString() + ")" }
 }
 
+pragma[noinline]
+private predicate gvnKindDeclaration(
+  ControlFlowElement cfe, int kind, boolean isTargetThis, Declaration d
+) {
+  isTargetThis = isTargetThis(cfe) and
+  d = referenceAttribute(cfe) and
+  expressions(cfe, kind, _)
+}
+
 /**
  * Gets the `GvnKind` of the element `cfe`.
  * In case `cfe` is a reference attribute, we encode the entire declaration and whether
  * the target is semantically equivalent to `this`.
  */
 private GvnKind getGvnKind(ControlFlowElement cfe) {
-  exists(GvnKind kind |
-    kind = getKind(cfe) and
-    (
-      result = TGvnKindDeclaration(kind, isTargetThis(cfe), referenceAttribute(cfe))
-      or
-      not exists(referenceAttribute(cfe)) and
-      result = kind
-    )
+  exists(int kind, boolean isTargetThis, Declaration d |
+    gvnKindDeclaration(cfe, kind, isTargetThis, d) and
+    result = TGvnKindDeclaration(kind, isTargetThis, d)
   )
+  or
+  not exists(referenceAttribute(cfe)) and
+  result = getKind(cfe)
 }
 
 private Gvn gvnConstructed(ControlFlowElement cfe, GvnKind kind, int index) {
@@ -156,9 +165,9 @@ private module Cached {
   newtype TGvnKind =
     TGvnKindExpr(int kind) { expressions(_, kind, _) } or
     TGvnKindStmt(int kind) { statements(_, kind) } or
-    TGvnKindDeclaration(GvnKindExpr kind, boolean thisTarget, Declaration d) {
+    TGvnKindDeclaration(int kind, boolean thisTarget, Declaration d) {
       exists(Expr e |
-        d = referenceAttribute(e) and thisTarget = isTargetThis(e) and kind = getKind(e)
+        d = referenceAttribute(e) and thisTarget = isTargetThis(e) and expressions(e, kind, _)
       )
     }
 
@@ -218,15 +227,18 @@ abstract class StructuralComparisonConfiguration extends string {
    */
   abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
 
+  pragma[inline]
+  private predicate sameGvn(ControlFlowElement x, ControlFlowElement y) {
+    pragma[only_bind_into](toGvn(pragma[only_bind_out](x))) =
+      pragma[only_bind_into](toGvn(pragma[only_bind_out](y)))
+  }
+
   /**
    * Holds if elements `x` and `y` structurally equal. `x` and `y` must be
    * flagged as candidates for structural equality, that is,
    * `candidate(x, y)` must hold.
    */
-  predicate same(ControlFlowElement x, ControlFlowElement y) {
-    candidate(x, y) and
-    toGvn(x) = toGvn(y)
-  }
+  predicate same(ControlFlowElement x, ControlFlowElement y) { candidate(x, y) and sameGvn(x, y) }
 }
 
 /**
@@ -272,14 +284,17 @@ module Internal {
      */
     abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
 
+    pragma[inline]
+    private predicate sameGvn(ControlFlowElement x, ControlFlowElement y) {
+      pragma[only_bind_into](toGvn(pragma[only_bind_out](x))) =
+        pragma[only_bind_into](toGvn(pragma[only_bind_out](y)))
+    }
+
     /**
      * Holds if elements `x` and `y` structurally equal. `x` and `y` must be
      * flagged as candidates for structural equality, that is,
      * `candidate(x, y)` must hold.
      */
-    predicate same(ControlFlowElement x, ControlFlowElement y) {
-      candidate(x, y) and
-      toGvn(x) = toGvn(y)
-    }
+    predicate same(ControlFlowElement x, ControlFlowElement y) { candidate(x, y) and sameGvn(x, y) }
   }
 }
