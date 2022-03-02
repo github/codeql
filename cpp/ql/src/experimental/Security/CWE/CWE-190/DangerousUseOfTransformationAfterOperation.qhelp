@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Searching for places where data type conversion occurs late and does not affect the computational result.</p>
+<p>Search for places where the result of the multiplication is subjected to explicit conversion, not the arguments. Therefore, during the multiplication period, you can lose meaningful data.</p>
 
 
 </overview>
