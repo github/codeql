@@ -2492,9 +2492,8 @@ open class KotlinFileExtractor(
                     tw.writeStatementEnclosingExpr(idLambdaExpr, exprParent.enclosingStmt)
                     tw.writeCallableBinding(idLambdaExpr, ids.constructor)
 
-                    val typeAccessId = extractTypeAccess(fnInterfaceType, callable, idLambdaExpr, -3, e, exprParent.enclosingStmt)
                     val typeAccessArguments = if (isBigArity) listOf(types.last()) else types
-                    extractTypeArguments(typeAccessArguments, e, typeAccessId, callable, exprParent.enclosingStmt)
+                    extractTypeAccess(fnInterfaceType, typeAccessArguments, e, idLambdaExpr, -3, callable, exprParent.enclosingStmt)
 
                     // todo: fix hard coded block body of lambda
                     tw.writeLambdaKind(idLambdaExpr, 1)
@@ -2835,8 +2834,7 @@ open class KotlinFileExtractor(
             tw.writeStatementEnclosingExpr(idPropertyRef, exprParent.enclosingStmt)
             tw.writeCallableBinding(idPropertyRef, ids.constructor)
 
-            val typeAccessId = extractTypeAccess(kPropertyType, locId, callable, idPropertyRef, -3, exprParent.enclosingStmt)
-            extractTypeArguments(parameterTypes, propertyReferenceExpr, typeAccessId, callable, exprParent.enclosingStmt)
+            extractTypeAccess(kPropertyType, parameterTypes, propertyReferenceExpr, idPropertyRef, -3, callable, exprParent.enclosingStmt)
 
             helper.extractConstructorArguments(callable, idPropertyRef, exprParent.enclosingStmt)
 
@@ -2979,9 +2977,8 @@ open class KotlinFileExtractor(
             tw.writeStatementEnclosingExpr(idMemberRef, exprParent.enclosingStmt)
             tw.writeCallableBinding(idMemberRef, ids.constructor)
 
-            val typeAccessId = extractTypeAccess(fnInterfaceType, locId, callable, idMemberRef, -3, exprParent.enclosingStmt)
             val typeAccessArguments = if (isBigArity) listOf(parameterTypes.last()) else parameterTypes
-            extractTypeArguments(typeAccessArguments, functionReferenceExpr, typeAccessId, callable, exprParent.enclosingStmt)
+            extractTypeAccess(fnInterfaceType, typeAccessArguments, functionReferenceExpr, idMemberRef, -3, callable, exprParent.enclosingStmt)
 
             tw.writeMemberRefBinding(idMemberRef, targetCallableId)
 
@@ -3221,6 +3218,21 @@ open class KotlinFileExtractor(
 
     private fun extractTypeAccess(t: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, elementForLocation: IrElement, enclosingStmt: Label<out DbStmt>, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
         return extractTypeAccess(useType(t, typeContext), callable, parent, idx, elementForLocation, enclosingStmt)
+    }
+
+    private fun extractTypeAccess(
+        t: IrType,
+        typeAccessArguments: List<IrType>,
+        elementForLocation: IrElement,
+        parent: Label<out DbExprparent>,
+        idx: Int,
+        enclosingCallable: Label<out DbCallable>,
+        enclosingStmt: Label<out DbStmt>,
+        typeContext: TypeContext = TypeContext.OTHER
+    ) : Label<out DbExpr> {
+        val typeAccessId =  extractTypeAccess(useType(t, typeContext), enclosingCallable, parent, idx, elementForLocation, enclosingStmt)
+        extractTypeArguments(typeAccessArguments, elementForLocation, typeAccessId, enclosingCallable, enclosingStmt)
+        return typeAccessId
     }
 
     fun extractTypeOperatorCall(e: IrTypeOperatorCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
