@@ -70,6 +70,9 @@ open class TrapWriter (protected val loggerBase: LoggerBase, protected val lm: T
         }
     }
 
+    /**
+     * Returns a label for a fresh ID (i.e. a new label bound to `*`).
+     */
     fun <T> getFreshIdLabel(): Label<T> {
         val label: Label<T> = lm.getFreshLabel()
         writeTrap("$label = *\n")
@@ -91,9 +94,8 @@ open class TrapWriter (protected val loggerBase: LoggerBase, protected val lm: T
     fun <T> getVariableLabelFor(v: IrVariable): Label<out DbLocalvar> {
         val maybeLabel = variableLabelMapping.get(v)
         if(maybeLabel == null) {
-            val label = lm.getFreshLabel<DbLocalvar>()
+            val label = getFreshIdLabel<DbLocalvar>()
             variableLabelMapping.put(v, label)
-            writeTrap("$label = *\n")
             return label
         } else {
             return maybeLabel
@@ -134,6 +136,11 @@ open class TrapWriter (protected val loggerBase: LoggerBase, protected val lm: T
         getWholeFileLocation(unknownFileId)
     }
 
+    /**
+     * Returns the label for the file `filePath`.
+     * If `populateFileTables` is true, then this also adds rows to the
+     * `files` and `folders` tables for this file.
+     */
     fun mkFileId(filePath: String, populateFileTables: Boolean): Label<DbFile> {
         // If a file is in a jar, then the Kotlin compiler gives
         // `<jar file>!/<path within jar>` as its path. We need to split
@@ -177,10 +184,21 @@ open class TrapWriter (protected val loggerBase: LoggerBase, protected val lm: T
         bw.flush()
     }
 
+    /**
+     * Escape a string so that it can be used in a TRAP string literal,
+     * i.e. with `"` escaped as `""`.
+    */
     fun escapeTrapString(str: String) = str.replace("\"", "\"\"")
 
-    val MAX_STRLEN = 1.shl(20) // 1 megabyte
+    /**
+     * TRAP string literals are limited to 1 megabyte.
+     */
+    private val MAX_STRLEN = 1.shl(20)
 
+    /**
+     * Truncate a string, if necessary, so that it can be used as a TRAP
+     * string literal. TRAP string literals are limited to 1 megabyte.
+     */
     fun truncateString(str: String): String {
         val len = str.length
         val newLen = UTF8Util.encodablePrefixLength(str, MAX_STRLEN)
@@ -212,6 +230,10 @@ open class TrapWriter (protected val loggerBase: LoggerBase, protected val lm: T
 /**
  * A `FileTrapWriter` is used when we know which file we are extracting
  * entities from, so we can at least give the right file as a location.
+ *
+ * An ID for the file will be created, and if `populateFileTables` is
+ * true then we will also add rows to the `files` and `folders` tables
+ * for it.
  */
 open class FileTrapWriter (
     loggerBase: LoggerBase,
@@ -220,6 +242,10 @@ open class FileTrapWriter (
     val filePath: String,
     populateFileTables: Boolean
 ): TrapWriter (loggerBase, lm, bw) {
+
+    /**
+     * The ID for the file that we are extracting from.
+     */
     val fileId = mkFileId(filePath, populateFileTables)
 
     /**
@@ -244,23 +270,28 @@ open class FileTrapWriter (
         return getWholeFileLocation()
     }
     /**
-     * Gets the location of `e` as a human-readable string. Only Used by
-     * the logger, in messages it produces.
+     * Gets the location of `e` as a human-readable string. Only used in
+     * log messages and exception messages.
      */
     open fun getLocationString(e: IrElement): String {
         // We don't have a FileEntry to look up the offsets in, so all
-        // we can do is return a whole-file location. These are only
-        // for human consumption, so we omit the :0:0:0:0 so that the
-        // user knows where it came from.
+        // we can do is return a whole-file location. We omit the
+        // `:0:0:0:0` so that it is easy to distinguish from a location
+        // where we have actually determined the start/end lines/columns
+        // to be 0.
         return "file://$filePath"
     }
 }
 
 /**
- * A `FileTrapWriter` is used when not only do we know which file we
- * are extracting entities from, but we also have an `IrFileEntry`
+ * A `SourceFileTrapWriter` is used when not only do we know which file
+ * we are extracting entities from, but we also have an `IrFileEntry`
  * (from an `IrFile`) which allows us to map byte offsets to line
  * and column numbers.
+ *
+ * An ID for the file will be created, and if `populateFileTables` is
+ * true then we will also add rows to the `files` and `folders` tables
+ * for it.
  */
 class SourceFileTrapWriter (
     loggerBase: LoggerBase,
@@ -270,6 +301,10 @@ class SourceFileTrapWriter (
     populateFileTables: Boolean) :
     FileTrapWriter(loggerBase, lm, bw, irFile.path, populateFileTables) {
 
+    /**
+     * The file entry for the file that we are extracting from.
+     * Used to map offsets to line/column numbers.
+     */
     private val fileEntry = irFile.fileEntry
 
     override fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
