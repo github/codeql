@@ -54,12 +54,8 @@ module String {
   /**
    * A flow summary for the `String#%` method.
    */
-  private class FormatSummary extends SummarizedCallable {
-    private MethodCall mc;
-
-    FormatSummary() { this = "%" and mc.getMethodName() = this }
-
-    override MethodCall getACall() { result = mc }
+  private class FormatSummary extends SimpleSummarizedCallable {
+    FormatSummary() { this = "%" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = ["Receiver", "Argument[0]", "Argument[0].ArrayElement"] and
@@ -72,12 +68,8 @@ module String {
   /**
    * A flow summary for the `String#b` method.
    */
-  private class BSummary extends SummarizedCallable {
-    private MethodCall mc;
-
-    BSummary() { this = "b" and mc.getMethodName() = this }
-
-    override MethodCall getACall() { result = mc }
+  private class BSummary extends SimpleSummarizedCallable {
+    BSummary() { this = "b" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
@@ -87,12 +79,8 @@ module String {
   /**
    * A flow summary for the `String#byteslice` method.
    */
-  private class BytesliceSummary extends SummarizedCallable {
-    private MethodCall mc;
-
-    BytesliceSummary() { this = "byteslice" and mc.getMethodName() = this }
-
-    override MethodCall getACall() { result = mc }
+  private class BytesliceSummary extends SimpleSummarizedCallable {
+    BytesliceSummary() { this = "byteslice" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
@@ -102,12 +90,8 @@ module String {
   /**
    * A flow summary for `String#capitalize(!)`.
    */
-  private class CapitalizeSummary extends SummarizedCallable {
-    private MethodCall mc;
-
-    CapitalizeSummary() { this = ["capitalize", "capitalize!"] and mc.getMethodName() = this }
-
-    override MethodCall getACall() { result = mc }
+  private class CapitalizeSummary extends SimpleSummarizedCallable {
+    CapitalizeSummary() { this = ["capitalize", "capitalize!"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Receiver" and
@@ -134,12 +118,8 @@ module String {
   /**
    * A flow summary for the `String#chomp`, `String#chomp!`, `String#chop` and `String#chop!` methods.
    */
-  private class ChompSummary extends SummarizedCallable {
-    private MethodCall mc;
-
-    ChompSummary() { this = ["chomp", "chomp!", "chop", "chop!"] and mc.getMethodName() = this }
-
-    override MethodCall getACall() { result = mc }
+  private class ChompSummary extends SimpleSummarizedCallable {
+    ChompSummary() { this = ["chomp", "chomp!", "chop", "chop!"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
@@ -151,7 +131,15 @@ module String {
     }
   }
 
-  // TODO: we already have a summary for Array#clear. Check that it applies correctly to String#clear.
+  /**
+   * This is a placeholder for `String#clear`.
+   * We can't currently write this summary because there is no `DataFlow::Content` node to refer to (unlike with `Array#clear`).
+   * We need a `DataFlow::Content` node in order to override `clearsContent`.
+   */
+  private class ClearSummary extends SimpleSummarizedCallable {
+    ClearSummary() { none() }
+  }
+
   /**
    * A flow summary for `String#concat` and `String#prepend`.
    */
@@ -213,7 +201,7 @@ module String {
     bindingset[this]
     EachLineSummary() { mc.getMethodName() = ["each_line", "lines"] }
 
-    override MethodCall getACall() { result = mc }
+    final override MethodCall getACall() { result = mc }
   }
 
   /**
@@ -391,7 +379,7 @@ module String {
     bindingset[this]
     ScanSummary() { mc.getMethodName() = "scan" }
 
-    override MethodCall getACall() { result = mc }
+    final override MethodCall getACall() { result = mc }
   }
 
   private class ScanBlockSummary extends ScanSummary {
