@@ -275,14 +275,14 @@ class SourceFileTrapWriter (
     override fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
         if (startOffset == UNDEFINED_OFFSET || endOffset == UNDEFINED_OFFSET) {
             if (startOffset != endOffset) {
-                // TODO: Warn
+                loggerBase.warn(this, "Location with inconsistent offsets (start $startOffset, end $endOffset)", null)
             }
             return getWholeFileLocation()
         }
 
         if (startOffset == SYNTHETIC_OFFSET || endOffset == SYNTHETIC_OFFSET) {
             if (startOffset != endOffset) {
-                // TODO: Warn
+                loggerBase.warn(this, "Location with inconsistent offsets (start $startOffset, end $endOffset)", null)
             }
             return getWholeFileLocation()
         }
@@ -302,14 +302,14 @@ class SourceFileTrapWriter (
     override fun getLocationString(e: IrElement): String {
         if (e.startOffset == UNDEFINED_OFFSET || e.endOffset == UNDEFINED_OFFSET) {
             if (e.startOffset != e.endOffset) {
-                // TODO: Warn
+                loggerBase.warn(this, "Location with inconsistent offsets (start ${e.startOffset}, end ${e.endOffset})", null)
             }
             return "<unknown location while processing $filePath>"
         }
 
         if (e.startOffset == SYNTHETIC_OFFSET || e.endOffset == SYNTHETIC_OFFSET) {
             if (e.startOffset != e.endOffset) {
-                // TODO: Warn
+                loggerBase.warn(this, "Location with inconsistent offsets (start ${e.startOffset}, end ${e.endOffset})", null)
             }
             return "<synthetic location while processing $filePath>"
         }
