@@ -17,10 +17,15 @@ import DataFlow::PathGraph
 
 from
   XmlEntityInjection::XmlEntityInjectionConfiguration config, DataFlow::PathNode source,
-  DataFlow::PathNode sink, string kind
+  DataFlow::PathNode sink, string kinds
 where
   config.hasFlowPath(source, sink) and
-  kind = sink.getNode().(XmlEntityInjection::Sink).getVulnerableKind()
+  kinds =
+    strictconcat(string kind |
+      kind = sink.getNode().(XmlEntityInjection::Sink).getVulnerableKind()
+    |
+      kind, ", "
+    )
 select sink.getNode(), source, sink,
-  "$@ XML input is constructed from a $@ and is vulnerable to " + kind + ".", sink.getNode(),
+  "$@ XML input is constructed from a $@ and is vulnerable to: " + kinds + ".", sink.getNode(),
   "This", source.getNode(), "user-provided value"
