@@ -50,8 +50,8 @@ predicate query(Method m, RefType targetType, int selfCount, int depCount) {
     not m instanceof InitializerMethod and
     // Do not move up/down the class hierarchy
     not (
-      sourceType.getASupertype*().getSourceDeclaration() = targetType or
-      targetType.getASupertype*().getSourceDeclaration() = sourceType
+      sourceType.getAnAncestor().getSourceDeclaration() = targetType or
+      targetType.getAnAncestor().getSourceDeclaration() = sourceType
     ) and
     // Do not move between nested types
     not (sourceType.getEnclosingType*() = targetType or targetType.getEnclosingType*() = sourceType) and

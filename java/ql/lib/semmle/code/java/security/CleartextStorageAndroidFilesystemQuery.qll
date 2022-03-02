@@ -73,7 +73,7 @@ private class CloseFileMethod extends Method {
     this.hasQualifiedName("java.io", ["RandomAccessFile", "FileOutputStream", "PrintStream"],
       "close")
     or
-    this.getDeclaringType().getASupertype*().hasQualifiedName("java.io", "Writer") and
+    this.getDeclaringType().getAnAncestor().hasQualifiedName("java.io", "Writer") and
     this.hasName("close")
     or
     this.hasQualifiedName("java.nio.file", "Files", ["write", "writeString"])
@@ -93,7 +93,7 @@ private class FilesystemFlowConfig extends DataFlow::Configuration {
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // Add nested Writer constructors as extra data flow steps
     exists(ClassInstanceExpr cie |
-      cie.getConstructedType().getASupertype*().hasQualifiedName("java.io", "Writer") and
+      cie.getConstructedType().getAnAncestor().hasQualifiedName("java.io", "Writer") and
       node1.asExpr() = cie.getArgument(0) and
       node2.asExpr() = cie
     )

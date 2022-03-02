@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the `ActionController` library.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
@@ -6,6 +10,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 private import ActionView
+private import codeql.ruby.frameworks.ActionDispatch
 
 /**
  * A `ClassDeclaration` for a class that extends `ActionController::Base`.
@@ -65,10 +70,34 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
   /** Gets a call to render from within this method. */
   RenderCall getARenderCall() { result.getParent+() = this }
 
-  // TODO: model the implicit render call when a path through the method does
-  // not end at an explicit render or redirect
-  /** Gets the controller class containing this method. */
-  ActionControllerControllerClass getControllerClass() { result = controllerClass }
+  /**
+   * Gets the controller class containing this method.
+   */
+  ActionControllerControllerClass getControllerClass() {
+    // TODO: model the implicit render call when a path through the method does
+    // not end at an explicit render or redirect
+    result = controllerClass
+  }
+
+  /**
+   * Gets a route to this handler, if one exists.
+   * May return multiple results.
+   */
+  ActionDispatch::Route getARoute() {
+    exists(string name |
+      isRoute(result, name, controllerClass) and
+      isActionControllerMethod(this, name, controllerClass)
+    )
+  }
+}
+
+pragma[nomagic]
+private predicate isRoute(
+  ActionDispatch::Route route, string name, ActionControllerControllerClass controllerClass
+) {
+  route.getController() + "_controller" =
+    ActionDispatch::underscore(namespaceDeclaration(controllerClass)) and
+  name = route.getAction()
 }
 
 // A method call with a `self` receiver from within a controller class
@@ -80,6 +109,9 @@ private class ActionControllerContextCall extends MethodCall {
     this.getEnclosingModule() = controllerClass
   }
 
+  /**
+   * Gets the controller class containing this method.
+   */
   ActionControllerControllerClass getControllerClass() { result = controllerClass }
 }
 

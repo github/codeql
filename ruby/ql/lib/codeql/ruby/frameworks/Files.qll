@@ -6,7 +6,7 @@ private import ruby
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.frameworks.StandardLibrary
+private import codeql.ruby.frameworks.Core
 private import codeql.ruby.dataflow.FlowSummary
 
 private DataFlow::Node ioInstanceInstantiation() {
@@ -52,20 +52,110 @@ private DataFlow::Node fileInstance() {
   )
 }
 
-private string ioReaderClassMethodName() { result = ["binread", "foreach", "read", "readlines"] }
+abstract private class IOOrFileMethodCall extends DataFlow::CallNode {
+  // TODO: Currently this only handles class method calls.
+  // Can we infer a path argument for instance method calls?
+  // e.g. by tracing back to the instantiation of that instance
+  DataFlow::Node getAPathArgumentImpl() {
+    result = this.getArgument(0) and this.getReceiverKind() = "class"
+  }
 
-private string ioReaderInstanceMethodName() {
-  result =
-    [
-      "getbyte", "getc", "gets", "pread", "read", "read_nonblock", "readbyte", "readchar",
-      "readline", "readlines", "readpartial", "sysread"
-    ]
+  /**
+   * Holds if this call appears to read/write from/to a spawned subprocess,
+   * rather than to/from a file.
+   */
+  predicate spawnsSubprocess() {
+    pathArgSpawnsSubprocess(this.getAPathArgumentImpl().asExpr().getExpr())
+  }
+
+  /** Gets the API used to perform this call, either "IO" or "File" */
+  abstract string getAPI();
+
+  /** Gets a node representing the data read or written by this call */
+  abstract DataFlow::Node getADataNodeImpl();
+
+  /** Gets a string representation of the receiver kind, either "class" or "instance". */
+  abstract string getReceiverKind();
 }
 
-private string ioReaderMethodName(string receiverKind) {
-  receiverKind = "class" and result = ioReaderClassMethodName()
-  or
-  receiverKind = "instance" and result = ioReaderInstanceMethodName()
+/**
+ * A method call that performs a read using either the `IO` or `File` classes.
+ */
+private class IOOrFileReadMethodCall extends IOOrFileMethodCall {
+  private string api;
+  private string receiverKind;
+
+  IOOrFileReadMethodCall() {
+    exists(string methodName | methodName = this.getMethodName() |
+      // e.g. `{IO,File}.readlines("foo.txt")`
+      receiverKind = "class" and
+      methodName = ["binread", "foreach", "read", "readlines"] and
+      api = ["IO", "File"] and
+      this = API::getTopLevelMember(api).getAMethodCall(methodName)
+      or
+      // e.g. `{IO,File}.new("foo.txt", "r").getc`
+      receiverKind = "interface" and
+      (
+        methodName =
+          [
+            "getbyte", "getc", "gets", "pread", "read", "read_nonblock", "readbyte", "readchar",
+            "readline", "readlines", "readpartial", "sysread"
+          ] and
+        (
+          this.getReceiver() = ioInstance() and api = "IO"
+          or
+          this.getReceiver() = fileInstance() and api = "File"
+        )
+      )
+    )
+  }
+
+  override string getAPI() { result = api }
+
+  override DataFlow::Node getADataNodeImpl() { result = this }
+
+  override string getReceiverKind() { result = receiverKind }
+}
+
+/**
+ * A method call that performs a write using either the `IO` or `File` classes.
+ */
+private class IOOrFileWriteMethodCall extends IOOrFileMethodCall {
+  private string api;
+  private string receiverKind;
+  private DataFlow::Node dataNode;
+
+  IOOrFileWriteMethodCall() {
+    exists(string methodName | methodName = this.getMethodName() |
+      // e.g. `{IO,File}.write("foo.txt", "hello\n")`
+      receiverKind = "class" and
+      api = ["IO", "File"] and
+      this = API::getTopLevelMember(api).getAMethodCall(methodName) and
+      methodName = ["binwrite", "write"] and
+      dataNode = this.getArgument(1)
+      or
+      // e.g. `{IO,File}.new("foo.txt", "a+).puts("hello")`
+      receiverKind = "interface" and
+      (
+        this.getReceiver() = ioInstance() and api = "IO"
+        or
+        this.getReceiver() = fileInstance() and api = "File"
+      ) and
+      (
+        methodName = ["<<", "print", "putc", "puts", "syswrite", "pwrite", "write_nonblock"] and
+        dataNode = this.getArgument(0)
+        or
+        // Any argument to these methods may be written as data
+        methodName = ["printf", "write"] and dataNode = this.getArgument(_)
+      )
+    )
+  }
+
+  override string getAPI() { result = api }
+
+  override DataFlow::Node getADataNodeImpl() { result = dataNode }
+
+  override string getReceiverKind() { result = receiverKind }
 }
 
 /**
@@ -111,31 +201,31 @@ module IO {
    * This class includes only reads that use the `IO` class directly, not those
    * that use a subclass of `IO` such as `File`.
    */
-  class IOReader extends DataFlow::CallNode {
-    private string receiverKind;
-
-    IOReader() {
-      // `IO` class method calls
-      receiverKind = "class" and
-      this = API::getTopLevelMember("IO").getAMethodCall(ioReaderMethodName(receiverKind))
-      or
-      // `IO` instance method calls
-      receiverKind = "instance" and
-      exists(IOInstanceStrict ii |
-        this.getReceiver() = ii and
-        this.getMethodName() = ioReaderMethodName(receiverKind)
-      )
-      // TODO: enumeration style methods such as `each`, `foreach`, etc.
-    }
-
-    /**
-     * Gets a string representation of the receiver kind, either "class" or "instance".
-     */
-    string getReceiverKind() { result = receiverKind }
+  class IOReader extends IOOrFileReadMethodCall {
+    IOReader() { this.getAPI() = "IO" }
   }
 
   /**
-   * A `DataFlow::CallNode` that reads data from the filesystem using the `IO`
+   * A `DataFlow::CallNode` that writes data using the `IO` class. For example,
+   * the `write` and `puts` calls in:
+   *
+   * ```rb
+   * # writes the string `hello world` to the file `foo.txt`
+   * IO.write("foo.txt", "hello world")
+   *
+   * # appends the string `hello again\n` to the file `foo.txt`
+   * IO.new(IO.sysopen("foo.txt", "a")).puts("hello again")
+   * ```
+   *
+   * This class includes only writes that use the `IO` class directly, not those
+   * that use a subclass of `IO` such as `File`.
+   */
+  class IOWriter extends IOOrFileWriteMethodCall {
+    IOWriter() { this.getAPI() = "IO" }
+  }
+
+  /**
+   * A `DataFlow::CallNode` that reads data to the filesystem using the `IO`
    * or `File` classes. For example, the `IO.read` and `File#readline` calls in:
    *
    * ```rb
@@ -146,46 +236,32 @@ module IO {
    * File.new("foo.txt").readline
    * ```
    */
-  class FileReader extends DataFlow::CallNode, FileSystemReadAccess::Range {
-    private string receiverKind;
-    private string api;
+  class FileReader extends IOOrFileReadMethodCall, FileSystemReadAccess::Range {
+    FileReader() { not this.spawnsSubprocess() }
 
-    FileReader() {
-      // A viable `IOReader` that could feasibly read from the filesystem
-      api = "IO" and
-      receiverKind = this.(IOReader).getReceiverKind() and
-      not pathArgSpawnsSubprocess(this.getArgument(0).asExpr().getExpr())
-      or
-      api = "File" and
-      (
-        // `File` class method calls
-        receiverKind = "class" and
-        this = API::getTopLevelMember(api).getAMethodCall(ioReaderMethodName(receiverKind))
-        or
-        // `File` instance method calls
-        receiverKind = "instance" and
-        exists(File::FileInstance fi |
-          this.getReceiver() = fi and
-          this.getMethodName() = ioReaderMethodName(receiverKind)
-        )
-      )
-      // TODO: enumeration style methods such as `each`, `foreach`, etc.
-    }
+    override DataFlow::Node getADataNode() { result = this.getADataNodeImpl() }
 
-    // TODO: Currently this only handles class method calls.
-    // Can we infer a path argument for instance method calls?
-    // e.g. by tracing back to the instantiation of that instance
-    override DataFlow::Node getAPathArgument() {
-      result = this.getArgument(0) and receiverKind = "class"
-    }
+    override DataFlow::Node getAPathArgument() { result = this.getAPathArgumentImpl() }
+  }
 
-    // This class represents calls that return data
-    override DataFlow::Node getADataNode() { result = this }
+  /**
+   * A `DataFlow::CallNode` that reads data from the filesystem using the `IO`
+   * or `File` classes. For example, the `write` and `puts` calls in:
+   *
+   * ```rb
+   * # writes the string `hello world` to the file `foo.txt`
+   * IO.write("foo.txt", "hello world")
+   *
+   * # appends the string `hello again\n` to the file `foo.txt`
+   * File.new("foo.txt", "a").puts("hello again")
+   * ```
+   */
+  class FileWriter extends IOOrFileWriteMethodCall, FileSystemWriteAccess::Range {
+    FileWriter() { not this.spawnsSubprocess() }
 
-    /**
-     * Returns the most specific core class used for this read, `IO` or `File`
-     */
-    string getAPI() { result = api }
+    override DataFlow::Node getADataNode() { result = this.getADataNodeImpl() }
+
+    override DataFlow::Node getAPathArgument() { result = this.getAPathArgumentImpl() }
   }
 }
 
@@ -231,6 +307,10 @@ module File {
    */
   class FileModuleReader extends IO::FileReader {
     FileModuleReader() { this.getAPI() = "File" }
+
+    override DataFlow::Node getADataNode() { result = this.getADataNodeImpl() }
+
+    override DataFlow::Node getAPathArgument() { result = this.getAPathArgumentImpl() }
   }
 
   /**

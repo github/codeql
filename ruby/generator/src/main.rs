@@ -260,7 +260,7 @@ fn create_ast_node_info_table<'a>(
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::Int,
                 name: "node",
-                unique: false,
+                unique: true,
                 ql_type: ql::Type::At(ast_node_name),
                 ql_type_is_ref: true,
             },

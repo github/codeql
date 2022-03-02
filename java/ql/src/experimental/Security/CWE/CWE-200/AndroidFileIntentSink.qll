@@ -47,7 +47,7 @@ class AsyncTaskRunInBackgroundMethod extends Method {
 class ContextStartServiceMethod extends Method {
   ContextStartServiceMethod() {
     this.getName() = ["startService", "startForegroundService"] and
-    this.getDeclaringType().getASupertype*() instanceof TypeContext
+    this.getDeclaringType().getAnAncestor() instanceof TypeContext
   }
 }
 

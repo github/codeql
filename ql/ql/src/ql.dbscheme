@@ -1063,7 +1063,7 @@ case @ql_token.kind of
 
 #keyset[parent, parent_index]
 ql_ast_node_info(
-  int node: @ql_ast_node ref,
+  unique int node: @ql_ast_node ref,
   int parent: @ql_ast_node_parent ref,
   int parent_index: int ref,
   int loc: @location ref

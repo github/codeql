@@ -8,7 +8,7 @@ import semmle.code.java.frameworks.android.Android
 /** The `startActivityForResult` method of Android's `Activity` class. */
 class StartActivityForResultMethod extends Method {
   StartActivityForResultMethod() {
-    this.getDeclaringType().getASupertype*() instanceof AndroidActivity and
+    this.getDeclaringType().getAnAncestor() instanceof AndroidActivity and
     this.getName() = "startActivityForResult"
   }
 }
@@ -69,7 +69,7 @@ class AndroidFileIntentInput extends DataFlow::Node {
 /** The `onActivityForResult` method of Android `Activity` */
 class OnActivityForResultMethod extends Method {
   OnActivityForResultMethod() {
-    this.getDeclaringType().getASupertype*() instanceof AndroidActivity and
+    this.getDeclaringType().getAnAncestor() instanceof AndroidActivity and
     this.getName() = "onActivityResult"
   }
 }

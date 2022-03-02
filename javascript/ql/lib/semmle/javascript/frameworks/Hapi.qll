@@ -261,4 +261,15 @@ module Hapi {
 
     override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
   }
+
+  /**
+   * A return from a route handler.
+   */
+  private class HandlerReturn extends HTTP::ResponseSendArgument {
+    RouteHandler handler;
+
+    HandlerReturn() { this = handler.(DataFlow::FunctionNode).getAReturn().asExpr() }
+
+    override RouteHandler getRouteHandler() { result = handler }
+  }
 }

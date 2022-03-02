@@ -56,18 +56,13 @@ module Electron {
     }
   }
 
-  private DataFlow::SourceNode browserObject(DataFlow::TypeTracker t) {
-    t.start() and
-    result instanceof NewBrowserObject
-    or
-    exists(DataFlow::TypeTracker t2 | result = browserObject(t2).track(t2, t))
-  }
+  private API::Node browserObject() { result.getAnImmediateUse() instanceof NewBrowserObject }
 
   /**
    * A data flow node whose value may originate from a browser object instantiation.
    */
   private class BrowserObjectByFlow extends BrowserObject {
-    BrowserObjectByFlow() { browserObject(DataFlow::TypeTracker::end()).flowsTo(this) }
+    BrowserObjectByFlow() { browserObject().getAUse() = this }
   }
 
   /**

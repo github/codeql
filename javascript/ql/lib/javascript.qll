@@ -122,6 +122,7 @@ import semmle.javascript.frameworks.Request
 import semmle.javascript.frameworks.RxJS
 import semmle.javascript.frameworks.ServerLess
 import semmle.javascript.frameworks.ShellJS
+import semmle.javascript.frameworks.Snapdragon
 import semmle.javascript.frameworks.SystemCommandExecutors
 import semmle.javascript.frameworks.SQL
 import semmle.javascript.frameworks.SocketIO

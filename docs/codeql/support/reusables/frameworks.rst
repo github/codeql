@@ -171,6 +171,8 @@ Python built-in support
    Twisted, Web framework
    Flask-Admin, Web framework
    starlette, Asynchronous Server Gateway Interface (ASGI)
+   python-ldap, Lightweight Directory Access Protocol (LDAP)
+   ldap3, Lightweight Directory Access Protocol (LDAP)
    requests, HTTP client
    dill, Serialization
    PyYAML, Serialization

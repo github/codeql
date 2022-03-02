@@ -236,3 +236,61 @@ module TS45 {
 
 import * as Foo3 from "./something.json" assert { type: "json" };
 var foo = Foo3.foo;
+
+module TS46 {
+  class Base {}
+
+  class Derived extends Base {
+    myProp = true;
+
+    constructor() {
+      console.log("Doing something before super()");
+      super();
+    }
+  }
+
+  type Action =
+    | { kind: "NumberContents"; payload: number }
+    | { kind: "StringContents"; payload: string };
+
+  function processAction(action: Action) {
+    const { kind, payload } = action;
+    if (kind === "NumberContents") {
+      console.log(payload.toFixed()); // <- number
+    } else if (kind === "StringContents") {
+      console.log(payload.toLowerCase()); // <- string
+    }
+  }
+
+  interface TypeMap {
+    number: number;
+    string: string;
+    boolean: boolean;
+  }
+
+  type UnionRecord<P extends keyof TypeMap> = {
+    [K in P]: {
+      kind: K;
+      f: (p: TypeMap[K]) => void;
+    };
+  }[P];
+
+  function processRecord<K extends keyof TypeMap>(record: UnionRecord<K>) {
+    record.f(record.v);
+  }
+
+  processRecord({
+    kind: "string",
+    f: (val) => {
+      console.log(val.toUpperCase()); // <- string
+    },
+  });
+
+  type Func = (...args: ["a", number] | ["b", string]) => void;
+
+  const f1: Func = (kind, payload) => {
+    if (kind === "a") {
+      payload.toFixed(); // <- number
+    }
+  };
+}

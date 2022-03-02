@@ -32,12 +32,18 @@ module SummaryComponent {
   /** Gets a summary component that represents an element in an array at an unknown index. */
   SummaryComponent arrayElementUnknown() { result = SC::content(TUnknownArrayElementContent()) }
 
-  /** Gets a summary component that represents an element in an array at a known index. */
+  /**
+   * Gets a summary component that represents an element in an array at a known index.
+   *
+   * Has no result for negative indices. Wrap-around interpretation of negative indices should be
+   * handled by the caller, if modeling a function that has such behavior.
+   */
   bindingset[i]
   SummaryComponent arrayElementKnown(int i) {
     result = SC::content(TKnownArrayElementContent(i))
     or
     // `i` may be out of range
+    i >= 0 and
     not exists(TKnownArrayElementContent(i)) and
     result = arrayElementUnknown()
   }
@@ -134,10 +140,12 @@ abstract class SummarizedCallable extends LibraryCallable {
  * calls to a method with the same name are considered relevant.
  */
 abstract class SimpleSummarizedCallable extends SummarizedCallable {
-  bindingset[this]
-  SimpleSummarizedCallable() { any() }
+  MethodCall mc;
 
-  final override MethodCall getACall() { result.getMethodName() = this }
+  bindingset[this]
+  SimpleSummarizedCallable() { mc.getMethodName() = this }
+
+  final override MethodCall getACall() { result = mc }
 }
 
 private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable {

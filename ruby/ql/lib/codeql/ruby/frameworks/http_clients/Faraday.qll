@@ -1,7 +1,12 @@
+/**
+ * Provides modeling for the `Faraday` library.
+ */
+
 private import ruby
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
 
 /**
  * A call that makes an HTTP request using `Faraday`.

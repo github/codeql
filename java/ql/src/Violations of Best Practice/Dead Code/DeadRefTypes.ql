@@ -15,6 +15,13 @@ import java
 import semmle.code.java.Reflection
 
 /**
+ * Gets a transitive superType avoiding magic optimisation
+ */
+pragma[nomagic]
+cached
+private RefType getASuperTypePlus(RefType t) { hasDescendant(result, t) and result != t }
+
+/**
  * A class or interface that is not used anywhere.
  */
 predicate dead(RefType dead) {
@@ -35,7 +42,7 @@ predicate dead(RefType dead) {
   // Exclude type variables.
   not dead instanceof BoundedType and
   // Exclude JUnit tests.
-  not dead.getASupertype*().hasName("TestCase") and
+  not dead.getAnAncestor().hasName("TestCase") and
   // Exclude enum types.
   not dead instanceof EnumType and
   // Exclude anonymous classes
@@ -43,7 +50,7 @@ predicate dead(RefType dead) {
   // Exclude classes that look like they may be reflectively constructed.
   not dead.getAnAnnotation() instanceof ReflectiveAccessAnnotation and
   // Insist all source ancestors are dead as well.
-  forall(RefType t | t.fromSource() and t = dead.getASupertype+() | dead(t))
+  forall(RefType t | t.fromSource() and t = getASuperTypePlus(dead) | dead(t))
 }
 
 from RefType t, string kind

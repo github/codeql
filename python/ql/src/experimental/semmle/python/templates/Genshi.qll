@@ -5,10 +5,12 @@ import semmle.python.web.HttpRequest
 import experimental.semmle.python.templates.SSTISink
 
 /** returns the ClassValue representing `Genshi.template.TextTemplate` */
-ClassValue theGenshiTextTemplateClass() { result = Value::named("genshi.template.TextTemplate") }
+deprecated ClassValue theGenshiTextTemplateClass() {
+  result = Value::named("genshi.template.TextTemplate")
+}
 
 /** returns the ClassValue representing `Genshi.template.MarkupTemplate` */
-ClassValue theGenshiMarkupTemplateClass() {
+deprecated ClassValue theGenshiMarkupTemplateClass() {
   result = Value::named("genshi.template.MarkupTemplate")
 }
 
@@ -18,7 +20,7 @@ ClassValue theGenshiMarkupTemplateClass() {
  *  from genshi.template import TextTemplate
  *  tmpl = TextTemplate('sink')
  */
-class GenshiTextTemplateSink extends SSTISink {
+deprecated class GenshiTextTemplateSink extends SSTISink {
   override string toString() { result = "argument to genshi.template.TextTemplate()" }
 
   GenshiTextTemplateSink() {
@@ -37,7 +39,7 @@ class GenshiTextTemplateSink extends SSTISink {
  *  from genshi.template import MarkupTemplate
  *  tmpl = MarkupTemplate('sink')
  */
-class GenshiMarkupTemplateSink extends SSTISink {
+deprecated class GenshiMarkupTemplateSink extends SSTISink {
   override string toString() { result = "argument to genshi.template.MarkupTemplate()" }
 
   GenshiMarkupTemplateSink() {

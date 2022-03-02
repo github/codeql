@@ -1,8 +1,13 @@
+/**
+ * Provides modeling for the `OpenURI` library.
+ */
+
 private import ruby
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.frameworks.StandardLibrary
+private import codeql.ruby.DataFlow
+private import codeql.ruby.frameworks.Core
 
 /**
  * A call that makes an HTTP request using `OpenURI` via `URI.open` or
@@ -19,8 +24,10 @@ class OpenUriRequest extends HTTP::Client::Request::Range {
 
   OpenUriRequest() {
     requestNode =
-      [API::getTopLevelMember("URI"), API::getTopLevelMember("URI").getReturn("parse")]
-          .getReturn("open") and
+      [
+        [API::getTopLevelMember("URI"), API::getTopLevelMember("URI").getReturn("parse")]
+            .getReturn("open"), API::getTopLevelMember("OpenURI").getReturn("open_uri")
+      ] and
     requestUse = requestNode.getAnImmediateUse() and
     this = requestUse.asExpr().getExpr()
   }

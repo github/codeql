@@ -4,7 +4,7 @@ public record class RecordClass2(object Prop) { }
 
 public record class Nested(RecordClass2 Record) { }
 
-public class K
+public class RecordPatterns
 {
     private void M1()
     {

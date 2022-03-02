@@ -17,7 +17,7 @@ import javascript
  * Holds if the method name on the given container is likely to be a mistake.
  */
 predicate isSuspiciousMethodName(string name, ClassOrInterface container) {
-  name = "function"
+  name = "function" and exists(container) // suspicious in any container
   or
   // "constructor" is only suspicious outside a class.
   name = "constructor" and not container instanceof ClassDefinition
