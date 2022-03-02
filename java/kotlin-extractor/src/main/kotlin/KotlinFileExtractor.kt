@@ -1687,10 +1687,7 @@ open class KotlinFileExtractor(
     ) {
         typeArgs.forEachIndexed { argIdx, arg ->
             val mul = if (reverse) -1 else 1
-            val ta = extractTypeAccess(arg, enclosingCallable, parentExpr, argIdx * mul + startIndex, elementForLocation, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
-            if (arg is IrSimpleType) {
-                extractTypeArguments(arg.arguments.filterIsInstance<IrType>(), elementForLocation, ta, enclosingCallable, enclosingStmt)
-            }
+            extractTypeAccess(arg, enclosingCallable, parentExpr, argIdx * mul + startIndex, elementForLocation, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
         }
     }
 
@@ -1703,6 +1700,19 @@ open class KotlinFileExtractor(
         reverse: Boolean = false
     ) {
         extractTypeArguments((0 until c.typeArgumentsCount).map { c.getTypeArgument(it)!! }, c, parentExpr, enclosingCallable, enclosingStmt, startIndex, reverse)
+    }
+
+    @JvmName("extractTypeArguments1")
+    private fun extractTypeArguments(
+        typeArgs: List<IrTypeArgument>,
+        elementForLocation: IrElement,
+        parentExpr: Label<out DbExprparent>,
+        enclosingCallable: Label<out DbCallable>,
+        enclosingStmt: Label<out DbStmt>,
+        startIndex: Int = 0,
+        reverse: Boolean = false
+    ) {
+        extractTypeArguments(typeArgs.filterIsInstance<IrType>(), elementForLocation, parentExpr, enclosingCallable, enclosingStmt, startIndex, reverse)
     }
 
     private fun extractNewExpr(
@@ -3217,7 +3227,11 @@ open class KotlinFileExtractor(
     }
 
     private fun extractTypeAccess(t: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, elementForLocation: IrElement, enclosingStmt: Label<out DbStmt>, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
-        return extractTypeAccess(useType(t, typeContext), callable, parent, idx, elementForLocation, enclosingStmt)
+        val typeAccessId =  extractTypeAccess(useType(t, typeContext), callable, parent, idx, elementForLocation, enclosingStmt)
+        if (t is IrSimpleType) {
+            extractTypeArguments(t.arguments, elementForLocation, typeAccessId, callable, enclosingStmt)
+        }
+        return typeAccessId
     }
 
     private fun extractTypeAccess(
@@ -3230,7 +3244,7 @@ open class KotlinFileExtractor(
         enclosingStmt: Label<out DbStmt>,
         typeContext: TypeContext = TypeContext.OTHER
     ) : Label<out DbExpr> {
-        val typeAccessId =  extractTypeAccess(useType(t, typeContext), enclosingCallable, parent, idx, elementForLocation, enclosingStmt)
+        val typeAccessId = extractTypeAccess(useType(t, typeContext), enclosingCallable, parent, idx, elementForLocation, enclosingStmt)
         extractTypeArguments(typeAccessArguments, elementForLocation, typeAccessId, enclosingCallable, enclosingStmt)
         return typeAccessId
     }
