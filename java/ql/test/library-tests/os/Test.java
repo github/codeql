@@ -1,3 +1,5 @@
+
+import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
@@ -38,6 +40,22 @@ public class Test {
         } else {
             // Might be another version of windows
         }
+
+        if (File.pathSeparatorChar == ';') {
+            onlyOnWindows();
+        }
+
+        if (File.pathSeparator == ";") {
+            onlyOnWindows();
+        }
+
+        if (File.separatorChar == '\\') {
+            onlyOnWindows();
+        }
+
+        if (File.separator == "\\") {
+            onlyOnWindows();
+        }
     }
 
     void testUnix() {
@@ -54,6 +72,22 @@ public class Test {
         } else {
             // Reasonable assumption, maybe not 100% accurate, but it's 'good enough'
             onlyOnWindows();
+        }
+
+        if (File.pathSeparatorChar == ':') {
+            onlyOnUnix();
+        }
+
+        if (File.pathSeparator == ":") {
+            onlyOnUnix();
+        }
+
+        if (File.separatorChar == '/') {
+            onlyOnUnix();
+        }
+
+        if (File.separator == "/") {
+            onlyOnUnix();
         }
     }
 

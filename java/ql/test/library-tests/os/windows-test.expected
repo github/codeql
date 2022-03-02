@@ -1,5 +1,5 @@
 | ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1451:5:1451:84 | IS_OS_WINDOWS |
-| Test.java:18:13:18:61 | contains(...) |
-| Test.java:22:13:22:75 | contains(...) |
-| Test.java:26:13:26:75 | contains(...) |
-| Test.java:30:13:30:37 | SystemUtils.IS_OS_WINDOWS |
+| Test.java:20:13:20:61 | contains(...) |
+| Test.java:24:13:24:75 | contains(...) |
+| Test.java:28:13:28:75 | contains(...) |
+| Test.java:32:13:32:37 | SystemUtils.IS_OS_WINDOWS |

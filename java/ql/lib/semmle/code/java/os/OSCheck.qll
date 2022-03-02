@@ -67,6 +67,42 @@ private class IsWindowsFromSystemProp extends IsWindowsGuard instanceof MethodAc
   IsWindowsFromSystemProp() { isOsFromSystemProp(this, "window%") }
 }
 
+/**
+ * Holds when the Guard is an equality check between the Field `f` and the string or char constant `compareToLiteral`.
+ */
+private Guard isOsFromFieldEqualityCheck(Field f, string compareToLiteral) {
+  result
+      .isEquality(any(FieldAccess fa | fa.getField() = f),
+        any(Literal literal |
+          (literal instanceof CharacterLiteral or literal instanceof StringLiteral) and
+          literal.getValue() = compareToLiteral
+        ), _)
+}
+
+private class IsWindowsFromCharPathSeperator extends IsWindowsGuard {
+  IsWindowsFromCharPathSeperator() {
+    this = isOsFromFieldEqualityCheck(any(FieldFilePathSeparator f), ";")
+  }
+}
+
+private class IsWindowsFromCharSeperator extends IsWindowsGuard {
+  IsWindowsFromCharSeperator() {
+    this = isOsFromFieldEqualityCheck(any(FieldFileSeparator f), "\\")
+  }
+}
+
+private class IsUnixFromCharPathSeperator extends IsUnixGuard {
+  IsUnixFromCharPathSeperator() {
+    this = isOsFromFieldEqualityCheck(any(FieldFilePathSeparator f), ":")
+  }
+}
+
+private class IsUnixFromCharSeperator extends IsUnixGuard {
+  IsUnixFromCharSeperator() {
+    this = isOsFromFieldEqualityCheck(any(FieldFileSeparator f), "/")
+  }
+}
+
 private class IsUnixFromSystemProp extends IsAnyUnixGuard instanceof MethodAccess {
   IsUnixFromSystemProp() { isOsFromSystemProp(this, ["mac%", "linux%"]) }
 }
