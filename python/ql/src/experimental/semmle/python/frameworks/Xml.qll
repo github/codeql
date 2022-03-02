@@ -24,7 +24,7 @@ private module Xml {
 
     override DataFlow::Node getAnInput() { none() }
 
-    override predicate vulnerable(string kind) { none() }
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) { none() }
   }
 
   /**
@@ -57,7 +57,7 @@ private module Xml {
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
 
-    override predicate vulnerable(string kind) {
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
       exists(XML::XMLParser xmlParser |
         xmlParser = this.getArgByName("parser").getALocalSource() and xmlParser.vulnerable(kind)
       )
@@ -111,27 +111,27 @@ private module Xml {
 
     override DataFlow::Node getAnInput() { result = this.getAMethodCall("parse").getArg(0) }
 
-    override predicate vulnerable(string kind) {
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
       exists(DataFlow::MethodCallNode parse, API::Node handler, API::Node feature |
         handler = API::moduleImport("xml").getMember("sax").getMember("handler") and
         parse.calls(trackSaxFeature(this, feature), "parse") and
         parse.getArg(0) = this.getAnInput() // enough to avoid FPs?
       |
-        kind = ["XXE", "DTD retrieval"] and
+        (kind.isXxe() or kind.isDtdRetrieval()) and
         feature = handler.getMember("feature_external_ges")
         or
-        kind = ["Billion Laughs", "Quadratic Blowup"]
+        (kind.isBillionLaughs() or kind.isQuadraticBlowup())
       )
     }
 
-    predicate vulnerable(DataFlow::Node n, string kind) {
+    predicate vulnerable(DataFlow::Node n, XML::XMLVulnerabilityKind kind) {
       exists(API::Node handler, API::Node feature |
         handler = API::moduleImport("xml").getMember("sax").getMember("handler") and
         DataFlow::exprNode(trackSaxFeature(this, feature).asExpr())
             .(DataFlow::LocalSourceNode)
             .flowsTo(n)
       |
-        kind = ["XXE", "DTD retrieval"] and
+        (kind.isXxe() or kind.isDtdRetrieval()) and
         feature = handler.getMember("feature_external_ges")
       )
     }
@@ -162,14 +162,14 @@ private module Xml {
 
     override DataFlow::Node getAnInput() { none() }
 
-    override predicate vulnerable(string kind) {
-      kind = "XXE" and
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      kind.isXxe() and
       not (
         exists(this.getArgByName("resolve_entities")) or
         this.getArgByName("resolve_entities").getALocalSource().asExpr() = any(False f)
       )
       or
-      kind = ["Billion Laughs", "Quadratic Blowup"] and
+      (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
       (
         this.getArgByName("huge_tree").getALocalSource().asExpr() = any(True t) and
         not this.getArgByName("resolve_entities").getALocalSource().asExpr() = any(False f)
@@ -206,12 +206,12 @@ private module Xml {
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
 
-    override predicate vulnerable(string kind) {
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
       exists(XML::XMLParser xmlParser |
         xmlParser = this.getArgByName("parser").getALocalSource() and xmlParser.vulnerable(kind)
       )
       or
-      kind = "XXE" and not exists(this.getArgByName("parser"))
+      kind.isXxe() and not exists(this.getArgByName("parser"))
     }
   }
 
@@ -233,8 +233,8 @@ private module Xml {
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
 
-    override predicate vulnerable(string kind) {
-      kind = ["Billion Laughs", "Quadratic Blowup"] and
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
       this.getArgByName("disable_entities").getALocalSource().asExpr() = any(False f)
     }
   }
@@ -266,12 +266,13 @@ private module Xml {
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
 
-    override predicate vulnerable(string kind) {
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
       exists(XML::XMLParser xmlParser |
         xmlParser = this.getArgByName("parser").getALocalSource() and xmlParser.vulnerable(kind)
       )
       or
-      kind = ["Billion Laughs", "Quadratic Blowup"] and not exists(this.getArgByName("parser"))
+      (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
+      not exists(this.getArgByName("parser"))
     }
   }
 
@@ -300,6 +301,8 @@ private module Xml {
       result = this.getAMethodCall("register_function").getArg(0)
     }
 
-    override predicate vulnerable(string kind) { kind = ["Billion Laughs", "Quadratic Blowup"] }
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      kind.isBillionLaughs() or kind.isQuadraticBlowup()
+    }
   }
 }

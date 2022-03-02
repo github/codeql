@@ -16,6 +16,29 @@ private import experimental.semmle.python.Frameworks
 
 module XML {
   /**
+   * A kind of XML vulnerability.
+   *
+   * See https://pypi.org/project/defusedxml/#python-xml-libraries
+   */
+  class XMLVulnerabilityKind extends string {
+    XMLVulnerabilityKind() {
+      this in ["Billion Laughs", "Quadratic Blowup", "XXE", "DTD retrieval",]
+    }
+
+    /** Holds for Billion Laughs vulnerability kind. */
+    predicate isBillionLaughs() { this = "Billion Laughs" }
+
+    /** Holds for Quadratic Blowup vulnerability kind. */
+    predicate isQuadraticBlowup() { this = "Quadratic Blowup" }
+
+    /** Holds for XXE vulnerability kind. */
+    predicate isXxe() { this = "XXE" }
+
+    /** Holds for DTD retrieval vulnerability kind. */
+    predicate isDtdRetrieval() { this = "DTD retrieval" }
+  }
+
+  /**
    * A data-flow node that collects functions parsing XML.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
@@ -30,7 +53,7 @@ module XML {
     /**
      * Holds if the parsing method or the parser holding it is vulnerable to `kind`.
      */
-    predicate vulnerable(string kind) { super.vulnerable(kind) }
+    predicate vulnerable(XMLVulnerabilityKind kind) { super.vulnerable(kind) }
   }
 
   /** Provides classes for modeling XML parsing APIs. */
@@ -50,7 +73,7 @@ module XML {
       /**
        * Holds if the parsing method or the parser holding it is vulnerable to `kind`.
        */
-      abstract predicate vulnerable(string kind);
+      abstract predicate vulnerable(XMLVulnerabilityKind kind);
     }
   }
 
@@ -69,7 +92,7 @@ module XML {
     /**
      * Holds if the parser is vulnerable to `kind`.
      */
-    predicate vulnerable(string kind) { super.vulnerable(kind) }
+    predicate vulnerable(XMLVulnerabilityKind kind) { super.vulnerable(kind) }
   }
 
   /** Provides classes for modeling XML parsers. */
@@ -89,7 +112,7 @@ module XML {
       /**
        * Holds if the parser is vulnerable to `kind`.
        */
-      abstract predicate vulnerable(string kind);
+      abstract predicate vulnerable(XMLVulnerabilityKind kind);
     }
   }
 }
