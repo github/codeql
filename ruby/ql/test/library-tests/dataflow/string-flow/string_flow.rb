@@ -5,7 +5,9 @@ end
 
 def m_try_convert
     a = source "a"
-    sink String.try_convert(a) # $ hasValueFlow=a
+    b = source 1
+    sink String.try_convert(a) # $ hasTaintFlow=a
+    sink String.try_convert(b) # $ hasTaintFlow=1
 end
 
 def m_format
