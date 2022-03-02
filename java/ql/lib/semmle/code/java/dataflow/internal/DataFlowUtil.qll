@@ -154,6 +154,8 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   or
   node2.asExpr() = any(StmtExpr stmtExpr | node1.asExpr() = stmtExpr.getResultExpr())
   or
+  node2.asExpr() = any(NotNullExpr nne | node1.asExpr() = nne.getExpr())
+  or
   exists(MethodAccess ma, ValuePreservingMethod m, int argNo |
     ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)
   |
