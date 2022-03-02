@@ -64,32 +64,90 @@ private module Xml {
     }
   }
 
-  /** Gets a reference to a `parser` that has been set a `feature`. */
-  private DataFlow::Node trackSaxFeature(
-    DataFlow::TypeTracker t, DataFlow::CallCfgNode parser, API::Node feature
+  /**
+   * A call to the `setFeature` method on a XML sax parser.
+   *
+   * See https://docs.python.org/3.10/library/xml.sax.reader.html#xml.sax.xmlreader.XMLReader.setFeature
+   */
+  class SaxParserSetFeatureCall extends DataFlow::MethodCallNode {
+    SaxParserSetFeatureCall() {
+      this =
+        API::moduleImport("xml")
+            .getMember("sax")
+            .getMember("make_parser")
+            .getReturn()
+            .getMember("setFeature")
+            .getACall()
+    }
+
+    // The keyword argument names does not match documentation. I checked (with Python
+    // 3.9.5) that the names used here actually works.
+    DataFlow::Node getFeatureArg() { result in [this.getArg(0), this.getArgByName("name")] }
+
+    DataFlow::Node getStateArg() { result in [this.getArg(1), this.getArgByName("state")] }
+  }
+
+  /** Gets a back-reference to the `setFeature` state argument `arg`. */
+  private DataFlow::TypeTrackingNode saxParserSetFeatureStateArgBacktracker(
+    DataFlow::TypeBackTracker t, DataFlow::Node arg
   ) {
     t.start() and
-    exists(DataFlow::MethodCallNode featureCall |
-      featureCall = parser.getAMethodCall("setFeature") and
-      featureCall.getArg(0).getALocalSource() = feature.getAUse() and
-      featureCall.getArg(1).getALocalSource() = DataFlow::exprNode(any(True t_)) and
-      result = featureCall.getObject()
+    arg = any(SaxParserSetFeatureCall c).getStateArg() and
+    result = arg.getALocalSource()
+    or
+    exists(DataFlow::TypeBackTracker t2 |
+      result = saxParserSetFeatureStateArgBacktracker(t2, arg).backtrack(t2, t)
+    )
+  }
+
+  /** Gets a back-reference to the `setFeature` state argument `arg`. */
+  DataFlow::LocalSourceNode saxParserSetFeatureStateArgBacktracker(DataFlow::Node arg) {
+    result = saxParserSetFeatureStateArgBacktracker(DataFlow::TypeBackTracker::end(), arg)
+  }
+
+  /** Gets a reference to a XML sax parser that has `feature_external_ges` turned on */
+  private DataFlow::Node saxParserWithFeatureExternalGesTurnedOn(DataFlow::TypeTracker t) {
+    t.start() and
+    exists(SaxParserSetFeatureCall call |
+      call.getFeatureArg() =
+        API::moduleImport("xml")
+            .getMember("sax")
+            .getMember("handler")
+            .getMember("feature_external_ges")
+            .getAUse() and
+      saxParserSetFeatureStateArgBacktracker(call.getStateArg())
+          .asExpr()
+          .(BooleanLiteral)
+          .booleanValue() = true and
+      result = call.getObject()
     )
     or
     exists(DataFlow::TypeTracker t2 |
-      t = t2.smallstep(trackSaxFeature(t2, parser, feature), result)
+      t = t2.smallstep(saxParserWithFeatureExternalGesTurnedOn(t2), result)
+    ) and
+    // take account of that we can set the feature to False, which makes the parser safe again
+    not exists(SaxParserSetFeatureCall call |
+      call.getObject() = result and
+      call.getFeatureArg() =
+        API::moduleImport("xml")
+            .getMember("sax")
+            .getMember("handler")
+            .getMember("feature_external_ges")
+            .getAUse() and
+      saxParserSetFeatureStateArgBacktracker(call.getStateArg())
+          .asExpr()
+          .(BooleanLiteral)
+          .booleanValue() = false
     )
   }
 
-  /** Gets a reference to a `parser` that has been set a `feature`. */
-  DataFlow::Node trackSaxFeature(DataFlow::CallCfgNode parser, API::Node feature) {
-    result = trackSaxFeature(DataFlow::TypeTracker::end(), parser, feature)
+  /** Gets a reference to a XML sax parser that has been made unsafe for `kind`. */
+  DataFlow::Node saxParserWithFeatureExternalGesTurnedOn() {
+    result = saxParserWithFeatureExternalGesTurnedOn(DataFlow::TypeTracker::end())
   }
 
   /**
-   * Gets a call to `xml.sax.make_parser`.
-   *
-   * Given the following example:
+   * A XML parsing call with a sax parser.
    *
    * ```py
    * BadHandler = MainHandler()
@@ -99,41 +157,27 @@ private module Xml {
    * parser.parse(StringIO(xml_content))
    * parsed_xml = BadHandler._result
    * ```
-   *
-   * * `this` would be `xml.sax.make_parser()`.
-   * * `getAnInput()`'s result would be `StringIO(xml_content)`.
-   * * `vulnerable(kind)`'s `kind` would be `Billion Laughs` and `Quadratic Blowup`.
    */
-  private class XMLSaxParser extends DataFlow::CallCfgNode, XML::XMLParser::Range {
-    XMLSaxParser() {
-      this = API::moduleImport("xml").getMember("sax").getMember("make_parser").getACall()
+  private class XMLSaxParsing extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
+    XMLSaxParsing() {
+      this =
+        API::moduleImport("xml")
+            .getMember("sax")
+            .getMember("make_parser")
+            .getReturn()
+            .getMember("parse")
+            .getACall()
     }
 
-    override DataFlow::Node getAnInput() { result = this.getAMethodCall("parse").getArg(0) }
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
 
     override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
-      exists(DataFlow::MethodCallNode parse, API::Node handler, API::Node feature |
-        handler = API::moduleImport("xml").getMember("sax").getMember("handler") and
-        parse.calls(trackSaxFeature(this, feature), "parse") and
-        parse.getArg(0) = this.getAnInput() // enough to avoid FPs?
-      |
-        (kind.isXxe() or kind.isDtdRetrieval()) and
-        feature = handler.getMember("feature_external_ges")
-        or
-        (kind.isBillionLaughs() or kind.isQuadraticBlowup())
-      )
-    }
-
-    predicate vulnerable(DataFlow::Node n, XML::XMLVulnerabilityKind kind) {
-      exists(API::Node handler, API::Node feature |
-        handler = API::moduleImport("xml").getMember("sax").getMember("handler") and
-        DataFlow::exprNode(trackSaxFeature(this, feature).asExpr())
-            .(DataFlow::LocalSourceNode)
-            .flowsTo(n)
-      |
-        (kind.isXxe() or kind.isDtdRetrieval()) and
-        feature = handler.getMember("feature_external_ges")
-      )
+      // always vuln to these
+      (kind.isBillionLaughs() or kind.isQuadraticBlowup())
+      or
+      // can be vuln to other things if features has been turned on
+      this.getObject() = saxParserWithFeatureExternalGesTurnedOn() and
+      (kind.isXxe() or kind.isDtdRetrieval())
     }
   }
 
