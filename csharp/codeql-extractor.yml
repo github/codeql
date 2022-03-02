@@ -40,3 +40,4 @@ options:
       and should only be used in cases where it is not possible to build
       the code (for example if it uses inaccessible dependencies).
     type: string
+    pattern: "^(false|true)$"
