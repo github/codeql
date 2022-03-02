@@ -163,15 +163,10 @@ class ClassList extends TClassList {
   int firstIndex(ClassObjectInternal cls) { result = this.firstIndex(cls, 0) }
 
   /* Helper for firstIndex(cls), getting the first index of `cls` where result >= n */
-  pragma[noopt]
   private int firstIndex(ClassObjectInternal cls, int n) {
     this.getItem(n) = cls and result = n
     or
-    exists(int next |
-      result = this.firstIndex(cls, next) and
-      next = n + 1
-    ) and
-    exists(ClassObjectInternal item | item = this.getItem(n) | item != cls)
+    this.getItem(n) != cls and result = this.firstIndex(cls, n + 1)
   }
 
   /** Holds if the class at `n` is a duplicate of an earlier position. */
@@ -183,15 +178,10 @@ class ClassList extends TClassList {
    * Gets a class list which is the de-duplicated form of the list containing elements of
    * this list from `n` onwards.
    */
-  pragma[noopt]
   ClassList deduplicate(int n) {
     n = this.length() and result = Empty()
     or
-    exists(int next |
-      this.duplicate(n) and
-      result = this.deduplicate(next) and
-      next = n + 1
-    )
+    this.duplicate(n) and result = this.deduplicate(n + 1)
     or
     exists(ClassObjectInternal cls, ClassList tail |
       this.deduplicateCons(n, cls, tail) and
@@ -489,12 +479,10 @@ private predicate needs_reversing(ClassList lst) {
   lst = Empty()
 }
 
-pragma[noopt]
 private predicate reverse_step(ClassList lst, ClassList remainder, ClassList reversed) {
   needs_reversing(lst) and remainder = lst and reversed = Empty()
   or
-  exists(ClassObjectInternal head, ClassList tail, TClassList cons |
-    reverse_step(lst, cons, tail) and
+  exists(ClassObjectInternal head, ClassList tail |
     reversed = Cons(head, tail) and
     reverse_stepCons(lst, remainder, head, tail)
   )
