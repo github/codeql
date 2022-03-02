@@ -39,7 +39,7 @@ module XML {
   }
 
   /**
-   * A data-flow node that collects functions parsing XML.
+   * A data-flow node that parses XML.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `XMLParsing` instead.
@@ -59,7 +59,7 @@ module XML {
   /** Provides classes for modeling XML parsing APIs. */
   module XMLParsing {
     /**
-     * A data-flow node that collects functions parsing XML.
+     * A data-flow node that parses XML.
      *
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `XMLParsing` instead.
@@ -78,7 +78,7 @@ module XML {
   }
 
   /**
-   * A data-flow node that collects XML parsers.
+   * A data-flow node that constructs an XML parser.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `XMLParser` instead.
@@ -98,7 +98,7 @@ module XML {
   /** Provides classes for modeling XML parsers. */
   module XMLParser {
     /**
-     * A data-flow node that collects XML parsers.
+     * A data-flow node that constructs an XML parser.
      *
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `XMLParser` instead.
