@@ -63,10 +63,12 @@ void test1()
 	send(sock, getenv("HOME"), val(), val()); // BAD
 	send(sock, getenv("PATH"), val(), val()); // BAD
 	send(sock, getenv("USERNAME"), val(), val()); // BAD
+
 	send(sock, getenv("HARMLESS"), val(), val()); // GOOD: harmless information
 	send(sock, "HOME", val(), val()); // GOOD: not system data
 	send(sock, "PATH", val(), val()); // GOOD: not system data
 	send(sock, "USERNAME", val(), val()); // GOOD: not system data
+
 	send(sock, "HARMLESS", val(), val()); // GOOD: not system data
 
 	// tests for `mysql_get_client_info`, including via a global
