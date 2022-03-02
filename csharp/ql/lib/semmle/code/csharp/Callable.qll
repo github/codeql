@@ -255,6 +255,8 @@ class Method extends Callable, Virtualizable, Attributable, @method {
 
   override Method getOverridee() { result = Virtualizable.super.getOverridee() }
 
+  override Method getAnOverridee() { result = Virtualizable.super.getAnOverridee() }
+
   override Method getAnOverrider() { result = Virtualizable.super.getAnOverrider() }
 
   override Method getImplementee() { result = Virtualizable.super.getImplementee() }

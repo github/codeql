@@ -218,6 +218,9 @@ class Overridable extends Declaration, TOverridable {
     )
   }
 
+  /* Gets a member that is immediately (or transitively) overridden by this member, if any. */
+  Overridable getAnOverridee() { result = this.getOverridee+() }
+
   /** Gets a member that immediately overrides this member, if any. */
   Overridable getAnOverrider() { this = result.getOverridee() }
 
