@@ -3,9 +3,9 @@
  * @description Exposing sensitive system data helps
  *              an adversary learn about the system and form an
  *              attack plan.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
- * @security-severity TODO
+ * @security-severity 6.5
  * @precision medium
  * @id cpp/potential-system-data-exposure
  * @tags security
