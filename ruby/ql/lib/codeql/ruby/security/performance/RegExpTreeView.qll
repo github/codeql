@@ -398,6 +398,8 @@ class RegExpAlt extends RegExpTerm, TRegExpAlt {
   override string getAPrimaryQlClass() { result = "RegExpAlt" }
 }
 
+class RegExpCharEscape = RegExpEscape;
+
 class RegExpEscape extends RegExpNormalChar {
   RegExpEscape() { re.escapedCharacter(start, end) }
 
