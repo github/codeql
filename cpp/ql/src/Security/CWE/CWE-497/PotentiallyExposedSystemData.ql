@@ -40,7 +40,6 @@ class PotentiallyExposedSystemDataConfiguration extends TaintTracking::Configura
 
   override predicate isSink(DataFlow::Node sink) {
     exists(OutputWrite ow | ow.getASource() = sink.asExpr())
-    // TODO: eliminate duplication on remote flow sources?
   }
 }
 
