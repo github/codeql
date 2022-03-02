@@ -4,6 +4,7 @@
 
 import java
 import semmle.code.java.controlflow.Guards
+private import semmle.code.java.environment.SystemProperty
 private import semmle.code.java.frameworks.apache.Lang
 private import semmle.code.java.dataflow.DataFlow
 
@@ -40,13 +41,13 @@ abstract class IsAnyUnixGuard extends Guard { }
  */
 bindingset[osString]
 private predicate isOsFromSystemProp(MethodAccess ma, string osString) {
-  exists(MethodAccessSystemGetProperty sgpMa, Expr sgpFlowsToExpr |
-    sgpMa.hasCompileTimeConstantGetPropertyName("os.name")
+  exists(Expr systemGetPropertyExpr, Expr systemGetPropertyFlowsToExpr |
+    systemGetPropertyExpr = getSystemProperty("os.name")
   |
-    DataFlow::localExprFlow(sgpMa, sgpFlowsToExpr) and
+    DataFlow::localExprFlow(systemGetPropertyExpr, systemGetPropertyFlowsToExpr) and
     ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().toLowerCase().matches(osString) and // Call from System.getProperty to some partial match method
     (
-      sgpFlowsToExpr = ma.getQualifier()
+      systemGetPropertyFlowsToExpr = ma.getQualifier()
       or
       exists(MethodAccess caseChangeMa |
         caseChangeMa.getMethod() =
@@ -54,7 +55,7 @@ private predicate isOsFromSystemProp(MethodAccess ma, string osString) {
             m.getDeclaringType() instanceof TypeString and m.hasName(["toLowerCase", "toUpperCase"])
           )
       |
-        sgpFlowsToExpr = caseChangeMa.getQualifier() and // Call from System.getProperty to case-switching method
+        systemGetPropertyFlowsToExpr = caseChangeMa.getQualifier() and // Call from System.getProperty to case-switching method
         DataFlow::localExprFlow(caseChangeMa, ma.getQualifier()) // Call from case-switching method to some partial match method
       )
     )

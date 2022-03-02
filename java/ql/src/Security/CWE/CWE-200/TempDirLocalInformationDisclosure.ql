@@ -132,7 +132,7 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
   TempDirSystemGetPropertyToCreateConfig() { this = "TempDirSystemGetPropertyToCreateConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof MethodAccessSystemGetPropertyTempDirTainted
+    source.asExpr() instanceof ExprSystemGetPropertyTempDirTainted
   }
 
   /**
@@ -178,9 +178,9 @@ private class TempDirSystemGetPropertyDirectlyToMkdirConfig extends TaintTrackin
 
   override predicate isSource(DataFlow::Node node) {
     exists(
-      MethodAccessSystemGetPropertyTempDirTainted propertyGetMethodAccess, DataFlow::Node callSite
+      ExprSystemGetPropertyTempDirTainted propertyGetExpr, DataFlow::Node callSite
     |
-      DataFlow::localFlow(DataFlow::exprNode(propertyGetMethodAccess), callSite)
+      DataFlow::localFlow(DataFlow::exprNode(propertyGetExpr), callSite)
     |
       isFileConstructorArgument(callSite.asExpr(), node.asExpr(), 1)
     )

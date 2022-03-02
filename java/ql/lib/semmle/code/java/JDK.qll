@@ -265,6 +265,8 @@ class MethodAccessSystemGetProperty extends MethodAccess {
   /**
    * Holds if this call has a compile-time constant first argument with the value `propertyName`.
    * For example: `System.getProperty("user.dir")`.
+   *
+   * Note: Better to use `semmle.code.java.environment.SystemProperty#getSystemProperty` instead.
    */
   predicate hasCompileTimeConstantGetPropertyName(string propertyName) {
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName
