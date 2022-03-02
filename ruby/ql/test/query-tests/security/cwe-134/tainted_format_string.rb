@@ -25,7 +25,9 @@ class UsersController < ActionController::Base
     stdout.printf(params[:format]) # GOOD
     
     # Taint via string concatenation
-    
     printf("A log message: " + params[:format], arg) # BAD
+
+    # Taint via string interpolation
+    printf("A log message: #{params[:format]}", arg) # BAD
   end
 end

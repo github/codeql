@@ -29,9 +29,7 @@ module TaintedFormatString {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of remote user input, considered as a flow source for format injection. */
-  class RemoteSource extends Source {
-    RemoteSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * A format argument to a printf-like function, considered as a flow sink for format injection.
@@ -59,7 +57,7 @@ module TaintedFormatString {
     /**
      * Gets then `n`th formatted argument of this call.
      */
-    DataFlow::Node getFormatArgument(int n) { result = this.getArgument(n + 1) }
+    DataFlow::Node getFormatArgument(int n) { n > 0 and result = this.getArgument(n) }
   }
 
   /**
