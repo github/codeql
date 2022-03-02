@@ -23,10 +23,6 @@ class TargetAPI extends Callable {
   }
 }
 
-private string isExtensible(RefType ref) {
-  if ref.isFinal() then result = "false" else result = "true"
-}
-
 predicate isRelevantForModels(Callable api) {
   not isInTestFile(api.getCompilationUnit().getFile()) and
   not isJdkInternal(api.getCompilationUnit()) and
@@ -58,32 +54,24 @@ private predicate isJdkInternal(CompilationUnit cu) {
   cu.getPackage().getName() = ""
 }
 
-bindingset[input, output]
-string asTaintModel(TargetAPI api, string input, string output) {
-  result = asSummaryModel(api, input, output, "taint")
+private RefType bestTypeForModel(TargetAPI api) {
+  if exists(superImpl(api))
+  then superImpl(api).fromSource() and result = superImpl(api).getDeclaringType()
+  else result = api.getDeclaringType()
 }
 
-bindingset[input, output]
-string asValueModel(TargetAPI api, string input, string output) {
-  result = asSummaryModel(api, input, output, "value")
+private string typeAsModel(RefType type) {
+  result = type.getCompilationUnit().getPackage().getName() + ";" + type.nestedName()
 }
 
-bindingset[input, output, kind]
-string asSummaryModel(TargetAPI api, string input, string output, string kind) {
-  result =
-    asPartialModel(api) + input + ";" //
-      + output + ";" //
-      + kind
-}
+/**
+ * Returns the appropriate type name for the model. Either the type
+ * declaring the method or the supertype introducing the method.
+ */
+private string typeAsSummaryModel(TargetAPI api) { result = typeAsModel(bestTypeForModel(api)) }
 
-bindingset[input, kind]
-string asSinkModel(TargetAPI api, string input, string kind) {
-  result = asPartialModel(api) + input + ";" + kind
-}
-
-bindingset[output, kind]
-string asSourceModel(TargetAPI api, string output, string kind) {
-  result = asPartialModel(api) + output + ";" + kind
+private string isExtensible(RefType ref) {
+  if ref.isFinal() then result = "false" else result = "true"
 }
 
 /**
@@ -98,20 +86,32 @@ private string asPartialModel(TargetAPI api) {
       + /* ext + */ ";" //
 }
 
-/**
- * Returns the appropriate type name for the model. Either the type
- * declaring the method or the supertype introducing the method.
- */
-private string typeAsSummaryModel(TargetAPI api) { result = typeAsModel(bestTypeForModel(api)) }
-
-private RefType bestTypeForModel(TargetAPI api) {
-  if exists(superImpl(api))
-  then superImpl(api).fromSource() and result = superImpl(api).getDeclaringType()
-  else result = api.getDeclaringType()
+bindingset[input, output, kind]
+string asSummaryModel(TargetAPI api, string input, string output, string kind) {
+  result =
+    asPartialModel(api) + input + ";" //
+      + output + ";" //
+      + kind
 }
 
-private string typeAsModel(RefType type) {
-  result = type.getCompilationUnit().getPackage().getName() + ";" + type.nestedName()
+bindingset[input, output]
+string asTaintModel(TargetAPI api, string input, string output) {
+  result = asSummaryModel(api, input, output, "taint")
+}
+
+bindingset[input, output]
+string asValueModel(TargetAPI api, string input, string output) {
+  result = asSummaryModel(api, input, output, "value")
+}
+
+bindingset[input, kind]
+string asSinkModel(TargetAPI api, string input, string kind) {
+  result = asPartialModel(api) + input + ";" + kind
+}
+
+bindingset[output, kind]
+string asSourceModel(TargetAPI api, string output, string kind) {
+  result = asPartialModel(api) + output + ";" + kind
 }
 
 predicate isRelevantType(Type t) {
@@ -162,6 +162,17 @@ predicate isRelevantContent(DataFlow::Content f) {
   f instanceof DataFlow::MapValueContent
 }
 
+string parameterAccess(Parameter p) {
+  if
+    p.getType() instanceof Array and
+    not isPrimitiveTypeUsedForBulkData(p.getType().(Array).getElementType())
+  then result = "Argument[" + p.getPosition() + "].ArrayElement"
+  else
+    if p.getType() instanceof ContainerType
+    then result = "Argument[" + p.getPosition() + "].Element"
+    else result = "Argument[" + p.getPosition() + "]"
+}
+
 string parameterNodeAsInput(DataFlow::ParameterNode p) {
   result = parameterAccess(p.asParameter())
   or
@@ -177,17 +188,6 @@ string returnNodeAsOutput(ReturnNodeExt node) {
       or
       result = "Argument[-1]" and pos = -1
     )
-}
-
-string parameterAccess(Parameter p) {
-  if
-    p.getType() instanceof Array and
-    not isPrimitiveTypeUsedForBulkData(p.getType().(Array).getElementType())
-  then result = "Argument[" + p.getPosition() + "].ArrayElement"
-  else
-    if p.getType() instanceof ContainerType
-    then result = "Argument[" + p.getPosition() + "].Element"
-    else result = "Argument[" + p.getPosition() + "]"
 }
 
 predicate isPrimitiveTypeUsedForBulkData(Type t) {
