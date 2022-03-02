@@ -6,12 +6,6 @@ private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.commons.Util
 
-private Method superImpl(Method m) {
-  result = m.getAnOverridee() and
-  not exists(result.getAnOverridee()) and
-  not m instanceof ToStringMethod
-}
-
 private predicate isRelevantForModels(Callable api) { not api instanceof MainMethod }
 
 class TargetAPI extends Callable {
@@ -22,6 +16,7 @@ class TargetAPI extends Callable {
   }
 }
 
+// BEGIN SECTION - More or less copied from FlowSummaries.ql
 /** Gets the qualified parameter types of this callable as a comma-separated string. */
 private string parameterQualifiedTypeNamesToString(TargetAPI api) {
   result =
@@ -61,3 +56,34 @@ private string asPartialModel(TargetAPI api) {
         + /* ext + */ ";" //
   )
 }
+
+// END SECTION
+// BEGIN SECTION - Clean copy from ModelGeneratorUtils.ql
+bindingset[input, output, kind]
+string asSummaryModel(TargetAPI api, string input, string output, string kind) {
+  result =
+    asPartialModel(api) + input + ";" //
+      + output + ";" //
+      + kind
+}
+
+bindingset[input, output]
+string asTaintModel(TargetAPI api, string input, string output) {
+  result = asSummaryModel(api, input, output, "taint")
+}
+
+bindingset[input, output]
+string asValueModel(TargetAPI api, string input, string output) {
+  result = asSummaryModel(api, input, output, "value")
+}
+
+bindingset[input, kind]
+string asSinkModel(TargetAPI api, string input, string kind) {
+  result = asPartialModel(api) + input + ";" + kind
+}
+
+bindingset[output, kind]
+string asSourceModel(TargetAPI api, string output, string kind) {
+  result = asPartialModel(api) + output + ";" + kind
+}
+// END SECTION.
