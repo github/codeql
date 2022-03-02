@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.ir.types.IdSignatureValues
 import org.jetbrains.kotlin.ir.util.IdSignature
 import org.jetbrains.kotlin.name.FqName
 
-class PrimitiveTypeMapping(logger: Logger, pluginContext: IrPluginContext) {
+class PrimitiveTypeMapping(val logger: Logger, val pluginContext: IrPluginContext) {
     fun getPrimitiveInfo(s: IrSimpleType) = mapping[s.classifier.signature]
 
     data class PrimitiveTypeInfo(
@@ -17,7 +17,7 @@ class PrimitiveTypeMapping(logger: Logger, pluginContext: IrPluginContext) {
         val kotlinPackageName: String, val kotlinClassName: String
     )
 
-    private fun findClass(fqName: String, fallback: IrClass, logger: Logger, pluginContext: IrPluginContext): IrClass {
+    private fun findClass(fqName: String, fallback: IrClass): IrClass {
         val symbol = pluginContext.referenceClass(FqName(fqName))
         if(symbol == null) {
             logger.warn("Can't find $fqName")
@@ -30,34 +30,34 @@ class PrimitiveTypeMapping(logger: Logger, pluginContext: IrPluginContext) {
 
     private val mapping = {
         val kotlinByte = pluginContext.irBuiltIns.byteClass.owner
-        val javaLangByte = findClass("java.lang.Byte", kotlinByte, logger, pluginContext)
+        val javaLangByte = findClass("java.lang.Byte", kotlinByte)
         val kotlinShort = pluginContext.irBuiltIns.shortClass.owner
-        val javaLangShort = findClass("java.lang.Short", kotlinShort, logger, pluginContext)
+        val javaLangShort = findClass("java.lang.Short", kotlinShort)
         val kotlinInt = pluginContext.irBuiltIns.intClass.owner
-        val javaLangInteger = findClass("java.lang.Integer", kotlinInt, logger, pluginContext)
+        val javaLangInteger = findClass("java.lang.Integer", kotlinInt)
         val kotlinLong = pluginContext.irBuiltIns.longClass.owner
-        val javaLangLong = findClass("java.lang.Long", kotlinLong, logger, pluginContext)
+        val javaLangLong = findClass("java.lang.Long", kotlinLong)
 
-        val kotlinUByte = findClass("kotlin.UByte", kotlinByte, logger, pluginContext)
-        val kotlinUShort = findClass("kotlin.UShort", kotlinShort, logger, pluginContext)
-        val kotlinUInt = findClass("kotlin.UInt", kotlinInt, logger, pluginContext)
-        val kotlinULong = findClass("kotlin.ULong", kotlinLong, logger, pluginContext)
+        val kotlinUByte = findClass("kotlin.UByte", kotlinByte)
+        val kotlinUShort = findClass("kotlin.UShort", kotlinShort)
+        val kotlinUInt = findClass("kotlin.UInt", kotlinInt)
+        val kotlinULong = findClass("kotlin.ULong", kotlinLong)
 
         val kotlinDouble = pluginContext.irBuiltIns.doubleClass.owner
-        val javaLangDouble = findClass("java.lang.Double", kotlinDouble, logger, pluginContext)
+        val javaLangDouble = findClass("java.lang.Double", kotlinDouble)
         val kotlinFloat = pluginContext.irBuiltIns.floatClass.owner
-        val javaLangFloat = findClass("java.lang.Float", kotlinFloat, logger, pluginContext)
+        val javaLangFloat = findClass("java.lang.Float", kotlinFloat)
 
         val kotlinBoolean = pluginContext.irBuiltIns.booleanClass.owner
-        val javaLangBoolean = findClass("java.lang.Boolean", kotlinBoolean, logger, pluginContext)
+        val javaLangBoolean = findClass("java.lang.Boolean", kotlinBoolean)
 
         val kotlinChar = pluginContext.irBuiltIns.charClass.owner
-        val javaLangCharacter = findClass("java.lang.Character", kotlinChar, logger, pluginContext)
+        val javaLangCharacter = findClass("java.lang.Character", kotlinChar)
 
         val kotlinUnit = pluginContext.irBuiltIns.unitClass.owner
 
         val kotlinNothing = pluginContext.irBuiltIns.nothingClass.owner
-        val javaLangVoid = findClass("java.lang.Void", kotlinNothing, logger, pluginContext)
+        val javaLangVoid = findClass("java.lang.Void", kotlinNothing)
 
         mapOf(
             IdSignatureValues._byte to PrimitiveTypeInfo("byte", true, javaLangByte, "kotlin", "Byte"),
