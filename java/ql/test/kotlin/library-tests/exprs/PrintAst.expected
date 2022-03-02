@@ -1163,6 +1163,7 @@ funcExprs.kt:
 #   16|                     0: [ReturnStmt] return ...
 #   16|                       0: [IntegerLiteral] 5
 #   16|               -3: [TypeAccess] Function0<Integer>
+#   16|                 0: [TypeAccess] Integer
 #   17|         1: [ExprStmt] <Expr>;
 #   17|           0: [MethodAccess] functionExpression0b(...)
 #   17|             0: [LambdaExpr] ...->...
@@ -1175,6 +1176,7 @@ funcExprs.kt:
 #   17|                     0: [ReturnStmt] return ...
 #   17|                       0: [IntegerLiteral] 5
 #   17|               -3: [TypeAccess] Function0<Object>
+#   17|                 0: [TypeAccess] Object
 #   18|         2: [ExprStmt] <Expr>;
 #   18|           0: [MethodAccess] functionExpression0c(...)
 #   18|             0: [LambdaExpr] ...->...
@@ -1187,6 +1189,7 @@ funcExprs.kt:
 #   18|                     0: [ReturnStmt] return ...
 #   18|                       0: [IntegerLiteral] 5
 #   18|               -3: [TypeAccess] Function0<Object>
+#   18|                 0: [TypeAccess] Object
 #   19|         3: [ExprStmt] <Expr>;
 #   19|           0: [MethodAccess] functionExpression1a(...)
 #   19|             0: [IntegerLiteral] 5
@@ -1202,6 +1205,8 @@ funcExprs.kt:
 #   19|                     0: [ReturnStmt] return ...
 #   19|                       0: [IntegerLiteral] 5
 #   19|               -3: [TypeAccess] Function1<Integer,Integer>
+#   19|                 0: [TypeAccess] Integer
+#   19|                 1: [TypeAccess] Integer
 #   20|         4: [ExprStmt] <Expr>;
 #   20|           0: [MethodAccess] functionExpression1a(...)
 #   20|             0: [IntegerLiteral] 5
@@ -1217,6 +1222,8 @@ funcExprs.kt:
 #   20|                     0: [ReturnStmt] return ...
 #   20|                       0: [VarAccess] it
 #   20|               -3: [TypeAccess] Function1<Integer,Integer>
+#   20|                 0: [TypeAccess] Integer
+#   20|                 1: [TypeAccess] Integer
 #   21|         5: [ExprStmt] <Expr>;
 #   21|           0: [MethodAccess] functionExpression1a(...)
 #   21|             0: [IntegerLiteral] 5
@@ -1232,6 +1239,8 @@ funcExprs.kt:
 #   21|                     0: [ReturnStmt] return ...
 #   21|                       0: [IntegerLiteral] 5
 #   21|               -3: [TypeAccess] Function1<Integer,Integer>
+#   21|                 0: [TypeAccess] Integer
+#   21|                 1: [TypeAccess] Integer
 #   22|         6: [ExprStmt] <Expr>;
 #   22|           0: [MethodAccess] functionExpression1a(...)
 #   22|             0: [IntegerLiteral] 5
@@ -1252,6 +1261,8 @@ funcExprs.kt:
 #   23|                     0: [ReturnStmt] return ...
 #   23|                       0: [VarAccess] a
 #   23|               -3: [TypeAccess] Function1<Object,Object>
+#   23|                 0: [TypeAccess] Object
+#   23|                 1: [TypeAccess] Object
 #   24|         8: [ExprStmt] <Expr>;
 #   24|           0: [MethodAccess] functionExpression2(...)
 #   24|             0: [IntegerLiteral] 5
@@ -1268,6 +1279,9 @@ funcExprs.kt:
 #   24|                     0: [ReturnStmt] return ...
 #   24|                       0: [IntegerLiteral] 5
 #   24|               -3: [TypeAccess] Function2<Integer,Integer,Integer>
+#   24|                 0: [TypeAccess] Integer
+#   24|                 1: [TypeAccess] Integer
+#   24|                 2: [TypeAccess] Integer
 #   25|         9: [ExprStmt] <Expr>;
 #   25|           0: [MethodAccess] functionExpression2(...)
 #   25|             0: [IntegerLiteral] 5
@@ -1284,6 +1298,9 @@ funcExprs.kt:
 #   25|                     0: [ReturnStmt] return ...
 #   25|                       0: [IntegerLiteral] 5
 #   25|               -3: [TypeAccess] Function2<Integer,Integer,Integer>
+#   25|                 0: [TypeAccess] Integer
+#   25|                 1: [TypeAccess] Integer
+#   25|                 2: [TypeAccess] Integer
 #   26|         10: [ExprStmt] <Expr>;
 #   26|           0: [MethodAccess] functionExpression3(...)
 #   26|             0: [IntegerLiteral] 5
@@ -1302,6 +1319,9 @@ funcExprs.kt:
 #   26|                         0: [ThisAccess] this
 #   26|                         1: [VarAccess] a
 #   26|               -3: [TypeAccess] Function2<Integer,Integer,Integer>
+#   26|                 0: [TypeAccess] Integer
+#   26|                 1: [TypeAccess] Integer
+#   26|                 2: [TypeAccess] Integer
 #   27|         11: [ExprStmt] <Expr>;
 #   27|           0: [MethodAccess] functionExpression4(...)
 #   27|             0: [IntegerLiteral] 5
@@ -1327,7 +1347,13 @@ funcExprs.kt:
 #   27|                               0: [ReturnStmt] return ...
 #   27|                                 0: [DoubleLiteral] 5.0
 #   27|                         -3: [TypeAccess] Function1<Integer,Double>
+#   27|                           0: [TypeAccess] Integer
+#   27|                           1: [TypeAccess] Double
 #   27|               -3: [TypeAccess] Function1<Integer,Function1<Integer,Double>>
+#   27|                 0: [TypeAccess] Integer
+#   27|                 1: [TypeAccess] Function1<Integer,Double>
+#   27|                   0: [TypeAccess] Integer
+#   27|                   1: [TypeAccess] Double
 #   29|         12: [ExprStmt] <Expr>;
 #   29|           0: [MethodAccess] functionExpression22(...)
 #   29|             0: [IntegerLiteral] 5
@@ -1366,6 +1392,29 @@ funcExprs.kt:
 #   29|                         0: [TypeAccess] Unit
 #   29|                         1: [IntegerLiteral] 5
 #   29|               -3: [TypeAccess] Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>
+#   29|                 0: [TypeAccess] Integer
+#   29|                 1: [TypeAccess] Integer
+#   29|                 2: [TypeAccess] Integer
+#   29|                 3: [TypeAccess] Integer
+#   29|                 4: [TypeAccess] Integer
+#   29|                 5: [TypeAccess] Integer
+#   29|                 6: [TypeAccess] Integer
+#   29|                 7: [TypeAccess] Integer
+#   29|                 8: [TypeAccess] Integer
+#   29|                 9: [TypeAccess] Integer
+#   29|                 10: [TypeAccess] Integer
+#   29|                 11: [TypeAccess] Integer
+#   29|                 12: [TypeAccess] Integer
+#   29|                 13: [TypeAccess] Integer
+#   29|                 14: [TypeAccess] Integer
+#   29|                 15: [TypeAccess] Integer
+#   29|                 16: [TypeAccess] Integer
+#   29|                 17: [TypeAccess] Integer
+#   29|                 18: [TypeAccess] Integer
+#   29|                 19: [TypeAccess] Integer
+#   29|                 20: [TypeAccess] Integer
+#   29|                 21: [TypeAccess] Integer
+#   29|                 22: [TypeAccess] Unit
 #   30|         13: [ExprStmt] <Expr>;
 #   30|           0: [MethodAccess] functionExpression23(...)
 #   30|             0: [IntegerLiteral] 5
@@ -1525,6 +1574,7 @@ funcExprs.kt:
 #   30|                             0: [VarAccess] a0
 #   30|                             1: [IntegerLiteral] 22
 #   30|               -3: [TypeAccess] FunctionN<String>
+#   30|                 0: [TypeAccess] String
 #   32|         14: [ExprStmt] <Expr>;
 #   32|           0: [MethodAccess] functionExpression0a(...)
 #   32|             0: [MemberRefExpr] ...::...
@@ -2188,6 +2238,41 @@ funcExprs.kt:
 #   64|       5: [BlockStmt] { ... }
 #   64|         0: [ReturnStmt] return ...
 #   64|           0: [StringLiteral] 
+#   67|   4: [Class] Class3
+#   67|     1: [Constructor] Class3
+#   67|       5: [BlockStmt] { ... }
+#   67|         0: [SuperConstructorInvocationStmt] super(...)
+#   68|     2: [Method] call
+#   68|       5: [BlockStmt] { ... }
+#   69|         0: [ExprStmt] <Expr>;
+#   69|           0: [MethodAccess] fn(...)
+#   69|             -1: [ThisAccess] this
+#   69|             0: [LambdaExpr] ...->...
+#   69|               -4: [AnonymousClass] new Function1<Generic<Generic<Integer>>,String>(...) { ... }
+#   69|                 1: [Constructor] 
+#   69|                   5: [BlockStmt] { ... }
+#   69|                     0: [SuperConstructorInvocationStmt] super(...)
+#   69|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   69|                     0: [Parameter] a
+#   69|                   5: [BlockStmt] { ... }
+#   69|                     0: [ReturnStmt] return ...
+#   69|                       0: [StringLiteral] a
+#   69|               -3: [TypeAccess] Function1<Generic<Generic<Integer>>,String>
+#   69|                 0: [TypeAccess] Generic<Generic<Integer>>
+#   69|                   0: [TypeAccess] Generic<Integer>
+#   69|                     0: [TypeAccess] Integer
+#   69|                 1: [TypeAccess] String
+#   71|     3: [Method] fn
+#-----|       4: (Parameters)
+#   71|         0: [Parameter] f
+#   71|       5: [BlockStmt] { ... }
+#   73|     4: [Class,GenericType,ParameterizedType] Generic
+#-----|       -2: (Generic Parameters)
+#   73|         0: [TypeVariable] T
+#   73|       1: [Constructor] Generic
+#   73|         5: [BlockStmt] { ... }
+#   73|           0: [SuperConstructorInvocationStmt] super(...)
 localFunctionCalls.kt:
 #    0| [CompilationUnit] localFunctionCalls
 #    0|   1: [Class] LocalFunctionCallsKt
@@ -2308,6 +2393,8 @@ samConversion.kt:
 #    2|                               1: [IntegerLiteral] 2
 #    2|                             1: [IntegerLiteral] 0
 #    2|                   -3: [TypeAccess] Function1<Integer,Boolean>
+#    2|                     0: [TypeAccess] Integer
+#    2|                     1: [TypeAccess] Boolean
 #    4|         1: [LocalVariableDeclStmt] var ...;
 #    4|           1: [LocalVariableDeclExpr] i0
 #    4|             0: [CastExpr] (...)...
@@ -2350,6 +2437,9 @@ samConversion.kt:
 #    4|                         0: [ExprStmt] <Expr>;
 #    4|                           0: [VarAccess] INSTANCE
 #    4|                   -3: [TypeAccess] Function2<Integer,Integer,Unit>
+#    4|                     0: [TypeAccess] Integer
+#    4|                     1: [TypeAccess] Integer
+#    4|                     2: [TypeAccess] Unit
 #    5|         2: [LocalVariableDeclStmt] var ...;
 #    5|           1: [LocalVariableDeclExpr] i1
 #    5|             0: [CastExpr] (...)...
@@ -2441,6 +2531,9 @@ samConversion.kt:
 #    7|                             0: [ThisAccess] this
 #    7|                             1: [StringLiteral] 
 #    7|                   -3: [TypeAccess] Function2<String,Integer,Boolean>
+#    7|                     0: [TypeAccess] String
+#    7|                     1: [TypeAccess] Integer
+#    7|                     2: [TypeAccess] Boolean
 #    9|         4: [LocalVariableDeclStmt] var ...;
 #    9|           1: [LocalVariableDeclExpr] x
 #    9|             0: [CastExpr] (...)...
@@ -2488,6 +2581,8 @@ samConversion.kt:
 #   10|                                     1: [IntegerLiteral] 2
 #   10|                                   1: [IntegerLiteral] 0
 #    9|                         -3: [TypeAccess] Function1<Integer,Boolean>
+#    9|                           0: [TypeAccess] Integer
+#    9|                           1: [TypeAccess] Boolean
 #-----|                   1: (branch)
 #    9|                     0: [BooleanLiteral] true
 #   11|                     1: [ExprStmt] <Expr>;
@@ -2507,6 +2602,8 @@ samConversion.kt:
 #   12|                                     1: [IntegerLiteral] 2
 #   12|                                   1: [IntegerLiteral] 1
 #   11|                         -3: [TypeAccess] Function1<Integer,Boolean>
+#   11|                           0: [TypeAccess] Integer
+#   11|                           1: [TypeAccess] Boolean
 #   20|     2: [Method] fn2
 #-----|       4: (Parameters)
 #   20|         0: [Parameter] i
@@ -2981,6 +3078,7 @@ samConversion.kt:
 #   43|                                 0: [VarAccess] a0
 #   43|                                 1: [IntegerLiteral] 22
 #   43|                   -3: [TypeAccess] FunctionN<Boolean>
+#   43|                     0: [TypeAccess] Boolean
 #   16|   2: [Interface] IntPredicate
 #   17|     1: [Method] accept
 #-----|       4: (Parameters)

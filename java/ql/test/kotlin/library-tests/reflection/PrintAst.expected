@@ -327,6 +327,8 @@ reflection.kt:
 #   22|                               -1: [VarAccess] it
 #   22|                             1: [StringLiteral] p3
 #   22|                   -3: [TypeAccess] Function1<KCallable<?>,Boolean>
+#   22|                     0: [TypeAccess] KCallable<?>
+#   22|                     1: [TypeAccess] Boolean
 #   23|         15: [LocalVariableDeclStmt] var ...;
 #   23|           1: [LocalVariableDeclExpr] z0
 #   23|             0: [MethodAccess] get(...)

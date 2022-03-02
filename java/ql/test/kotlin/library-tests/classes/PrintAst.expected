@@ -441,6 +441,9 @@ local_anonymous.kt:
 #   16|                         0: [VarAccess] a
 #   16|                         1: [VarAccess] b
 #   16|               -3: [TypeAccess] Function2<Integer,Integer,Integer>
+#   16|                 0: [TypeAccess] Integer
+#   16|                 1: [TypeAccess] Integer
+#   16|                 2: [TypeAccess] Integer
 #   17|         1: [LocalVariableDeclStmt] var ...;
 #   17|           1: [LocalVariableDeclExpr] lambda2
 #   17|             0: [LambdaExpr] ...->...
@@ -458,6 +461,9 @@ local_anonymous.kt:
 #   17|                         0: [VarAccess] a
 #   17|                         1: [VarAccess] b
 #   17|               -3: [TypeAccess] Function2<Integer,Integer,Integer>
+#   17|                 0: [TypeAccess] Integer
+#   17|                 1: [TypeAccess] Integer
+#   17|                 2: [TypeAccess] Integer
 #   20|     5: [Method] fn4
 #   20|       5: [BlockStmt] { ... }
 #   21|         0: [LocalVariableDeclStmt] var ...;

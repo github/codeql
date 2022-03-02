@@ -2478,7 +2478,8 @@ open class KotlinFileExtractor(
                         e.function, // We're adding this function as a member, and changing its name to `invoke` to implement `kotlin.FunctionX<,,,>.invoke(,,)`
                         listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType))
 
-                    if (types.size > BuiltInFunctionArity.BIG_ARITY) {
+                    val isBigArity = types.size > BuiltInFunctionArity.BIG_ARITY
+                    if (isBigArity) {
                         implementFunctionNInvoke(e.function, ids, locId, parameters)
                     }
 
@@ -2491,7 +2492,9 @@ open class KotlinFileExtractor(
                     tw.writeStatementEnclosingExpr(idLambdaExpr, exprParent.enclosingStmt)
                     tw.writeCallableBinding(idLambdaExpr, ids.constructor)
 
-                    extractTypeAccess(fnInterfaceType, callable, idLambdaExpr, -3, e, exprParent.enclosingStmt)
+                    val typeAccessId = extractTypeAccess(fnInterfaceType, callable, idLambdaExpr, -3, e, exprParent.enclosingStmt)
+                    val typeAccessArguments = if (isBigArity) listOf(types.last()) else types
+                    extractTypeArguments(typeAccessArguments, e, typeAccessId, callable, exprParent.enclosingStmt)
 
                     // todo: fix hard coded block body of lambda
                     tw.writeLambdaKind(idLambdaExpr, 1)
