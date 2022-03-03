@@ -45,30 +45,32 @@ void test1()
 {
 	std::ostream cout_copy = std::cout;
 
-	std::cout << getenv("USERPROFILE"); // BAD: outputs USERPROFILE environment variable [NOT DETECTED]
-	std::cerr << getenv("USERPROFILE"); // BAD: outputs USERPROFILE environment variable [NOT DETECTED]
-	std::clog << getenv("USERPROFILE"); // BAD: outputs USERPROFILE environment variable [NOT DETECTED]
-	someotherostream << getenv("USERPROFILE"); // GOOD: not output
-	cout_copy << getenv("USERPROFILE"); // BAD: outputs USERPROFILE environment variable [NOT DETECTED]
+	std::cout << getenv("SECRET_TOKEN"); // BAD: outputs SECRET_TOKEN environment variable
+	std::cerr << getenv("SECRET_TOKEN"); // BAD: outputs SECRET_TOKEN environment variable
+	std::clog << getenv("SECRET_TOKEN"); // BAD: outputs SECRET_TOKEN environment variable
+	someotherostream << getenv("SECRET_TOKEN"); // GOOD: not output
+	cout_copy << getenv("SECRET_TOKEN"); // BAD: outputs SECRET_TOKEN environment variable [NOT DETECTED]
 
+	std::cout << getenv("USERPROFILE"); // BAD: outputs PATH environment variable [NOT DETECTED]
 	std::cout << getenv("PATH"); // BAD: outputs PATH environment variable [NOT DETECTED]
-	std::cout.write(getenv("PATH"), strlen(getenv("PATH"))); // BAD: outputs PATH environment variable [NOT DETECTED]
-	(std::cout << "PATH = ").write(getenv("PATH"), strlen(getenv("PATH"))); // BAD: outputs PATH environment variable [NOT DETECTED]
-	std::cout.write("PATH = ", 7) << getenv("PATH"); // BAD: outputs PATH environment variable [NOT DETECTED]
+
+	std::cout.write(getenv("SECRET_TOKEN"), strlen(getenv("SECRET_TOKEN"))); // BAD: outputs SECRET_TOKEN environment variable
+	(std::cout << "SECRET_TOKEN = ").write(getenv("SECRET_TOKEN"), strlen(getenv("SECRET_TOKEN"))); // BAD: outputs SECRET_TOKEN environment variable
+	std::cout.write("SECRET_TOKEN = ", 7) << getenv("SECRET_TOKEN"); // BAD: outputs SECRET_TOKEN environment variable
 }
 
-char *global_path = getenv("PATH");
+char *global_token = getenv("SECRET_TOKEN");
 char *global_other = "Hello, world!";
 
 void test2(bool cond)
 {
 	char *maybe;
 
-	maybe = cond ? global_path : global_other;
+	maybe = cond ? global_token : global_other;
 	
-	printf("path = '%s'\n", global_path); // BAD: outputs PATH environment variable [NOT DETECTED]
+	printf("token = '%s'\n", global_token); // BAD: outputs SECRET_TOKEN environment variable [NOT DETECTED]
 	printf("other = '%s'\n", global_other);
-	printf("maybe = '%s'\n", maybe); // BAD: may output PATH environment variable [NOT DETECTED]
+	printf("maybe = '%s'\n", maybe); // BAD: may output SECRET_TOKEN environment variable [NOT DETECTED]
 }
 
 void test3()
@@ -92,8 +94,8 @@ void myOtherFn(const char *msg)
 
 void test4()
 {
-	myOutputFn(getenv("PATH")); // BAD: outputs the PATH environment variable [NOT DETECTED]
-	myOtherFn(getenv("PATH")); // GOOD: does not output anything.
+	myOutputFn(getenv("SECRET_TOKEN")); // BAD: outputs the SECRET_TOKEN environment variable
+	myOtherFn(getenv("SECRET_TOKEN")); // GOOD: does not output anything.
 }
 
 void myOutputFn2(const char *msg)
@@ -125,8 +127,8 @@ void myOutputFn5(const char *msg)
 
 void test5()
 {
-	myOutputFn2(getenv("PATH")); // GOOD: myOutputFn2 doesn't actually output the parameter
-	myOutputFn3(getenv("PATH")); // BAD: outputs the PATH environment variable [NOT DETECTED]
-	myOutputFn4(getenv("PATH")); // BAD: outputs the PATH environment variable [NOT DETECTED]
-	myOutputFn5(getenv("PATH")); // BAD: outputs the PATH environment variable [NOT DETECTED]
+	myOutputFn2(getenv("SECRET_TOKEN")); // GOOD: myOutputFn2 doesn't actually output the parameter
+	myOutputFn3(getenv("SECRET_TOKEN")); // BAD: outputs the SECRET_TOKEN environment variable
+	myOutputFn4(getenv("SECRET_TOKEN")); // BAD: outputs the SECRET_TOKEN environment variable
+	myOutputFn5(getenv("SECRET_TOKEN")); // BAD: outputs the SECRET_TOKEN environment variable
 }
