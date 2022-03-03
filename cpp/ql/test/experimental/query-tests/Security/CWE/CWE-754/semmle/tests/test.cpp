@@ -51,9 +51,9 @@ int functionWork2() {
   char a[10] = "";
   int b = 1;
   int *p = &b;
-  scanf("%i", &i); // GOOD:the error can be determined by examining the initial value.
-  scanf("%s", a); // GOOD:the error can be determined by examining the initial value.
-  scanf("%i", p); // GOOD:the error can be determined by examining the initial value.
+  scanf("%i", &i); // GOOD:Argument initialized even when scanf fails.
+  scanf("%s", a); // GOOD:Argument initialized even when scanf fails.
+  scanf("%i", p); // GOOD:Argument initialized even when scanf fails.
   return i;
 }
 
@@ -65,9 +65,9 @@ int functionWork2_() {
   int b;
   b=1;
   int *p = &b;
-  scanf("%i", &i); // GOOD:the error can be determined by examining the initial value.
-  scanf("%s", a); // GOOD:the error can be determined by examining the initial value.
-  scanf("%i", p); // GOOD:the error can be determined by examining the initial value.
+  scanf("%i", &i); // GOOD:Argument initialized even when scanf fails.
+  scanf("%s", a); // GOOD:Argument initialized even when scanf fails.
+  scanf("%i", p); // GOOD:Argument initialized even when scanf fails.
   return i;
 }
 int functionWork2b() {
