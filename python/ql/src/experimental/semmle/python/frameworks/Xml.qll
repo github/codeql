@@ -329,34 +329,4 @@ private module Xml {
       (kind.isBillionLaughs() or kind.isQuadraticBlowup())
     }
   }
-
-  /**
-   * Gets a call to `xmlrpc.server.SimpleXMLRPCServer`.
-   *
-   * Given the following example:
-   *
-   * ```py
-   * server = SimpleXMLRPCServer(("127.0.0.1", 8000))
-   * server.register_function(foo, "foo")
-   * server.serve_forever()
-   * ```
-   *
-   * * `this` would be `SimpleXMLRPCServer(("127.0.0.1", 8000))`.
-   * * `getAnInput()`'s result would be `foo`.
-   * * `vulnerable(kind)`'s `kind` would be `Billion Laughs` and `Quadratic Blowup`.
-   */
-  private class XMLRPCServer extends DataFlow::CallCfgNode, XML::XMLParser::Range {
-    XMLRPCServer() {
-      this =
-        API::moduleImport("xmlrpc").getMember("server").getMember("SimpleXMLRPCServer").getACall()
-    }
-
-    override DataFlow::Node getAnInput() {
-      result = this.getAMethodCall("register_function").getArg(0)
-    }
-
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
-      kind.isBillionLaughs() or kind.isQuadraticBlowup()
-    }
-  }
 }
