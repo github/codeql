@@ -35,8 +35,8 @@ parser.close()
 
 # manual use of feed method on XMLPullParser
 parser = xml.etree.ElementTree.XMLPullParser()
-parser.feed(x) # $ MISSING: input=x vuln='Billion Laughs' vuln='Quadratic Blowup'
-parser.feed(data=x) # $ MISSING: input=x vuln='Billion Laughs' vuln='Quadratic Blowup'
+parser.feed(x) # $ input=x vuln='Billion Laughs' vuln='Quadratic Blowup'
+parser.feed(data=x) # $ input=x vuln='Billion Laughs' vuln='Quadratic Blowup'
 parser.close()
 
 # note: it's technically possible to use the thing wrapper func `fromstring` with an

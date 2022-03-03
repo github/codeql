@@ -10,22 +10,65 @@ private import semmle.python.ApiGraphs
 
 private module XmlEtree {
   /**
-   * A call to `xml.etree.ElementTree.XMLParser`.
+   * Provides models for `xml.etree` parsers
+   *
+   * See
+   * - https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.XMLParser
+   * - https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.XMLPullParser
    */
-  private class XMLEtreeParser extends DataFlow::CallCfgNode, XML::XMLParser::Range {
-    XMLEtreeParser() {
-      this =
-        API::moduleImport("xml")
-            .getMember("etree")
-            .getMember("ElementTree")
-            .getMember("XMLParser")
-            .getACall()
+  module XMLParser {
+    /**
+     * A source of instances of `xml.etree` parsers, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `XMLParser::instance()` to get references to instances of `xml.etree` parsers.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `xml.etree` parsers. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() {
+        this =
+          API::moduleImport("xml")
+              .getMember("etree")
+              .getMember("ElementTree")
+              .getMember("XMLParser")
+              .getACall()
+        or
+        this =
+          API::moduleImport("xml")
+              .getMember("etree")
+              .getMember("ElementTree")
+              .getMember("XMLPullParser")
+              .getACall()
+      }
     }
 
-    override DataFlow::Node getAnInput() { none() }
+    /** Gets a reference to an `xml.etree` parser instance. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
 
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
-      kind.isBillionLaughs() or kind.isQuadraticBlowup()
+    /** Gets a reference to an `xml.etree` parser instance. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * A call to the `feed` method of an `xml.etree` parser.
+     */
+    private class XMLEtreeParserFeedCall extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
+      XMLEtreeParserFeedCall() { this.calls(instance(), "feed") }
+
+      override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+
+      override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+        kind.isBillionLaughs() or kind.isQuadraticBlowup()
+      }
     }
   }
 
@@ -61,33 +104,8 @@ private module XmlEtree {
     }
 
     override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
-      not exists(this.getArgByName("parser")) and
-      (kind.isBillionLaughs() or kind.isQuadraticBlowup())
-      or
-      exists(XML::XMLParser xmlParser |
-        xmlParser = this.getArgByName("parser").getALocalSource() and xmlParser.vulnerable(kind)
-      )
-    }
-  }
-
-  /**
-   * A call to the `feed` method of an `xml.etree` parser.
-   */
-  private class XMLEtreeParserFeedCall extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
-    XMLEtreeParserFeedCall() {
-      this =
-        API::moduleImport("xml")
-            .getMember("etree")
-            .getMember("ElementTree")
-            .getMember("XMLParser")
-            .getReturn()
-            .getMember("feed")
-            .getACall()
-    }
-
-    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
-
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      // note: it does not matter what `xml.etree` parser you are using, you cannot
+      // change the security features anyway :|
       kind.isBillionLaughs() or kind.isQuadraticBlowup()
     }
   }
