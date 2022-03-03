@@ -30,13 +30,11 @@ namespace Summaries
             return (System.DateTime.Now.DayOfWeek == System.DayOfWeek.Monday) ? input0 : input1;
         }
 
-        // TODO: Flow is missing
         public int ReturnArrayElement(int[] input)
         {
             return input[0];
         }
 
-        // TODO: Flow is missing.
         public void AddToArray(int data, int[] target)
         {
             target[0] = data;

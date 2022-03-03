@@ -95,18 +95,18 @@ predicate isPrimitiveTypeUsedForBulkData(Type t) {
 }
 
 // TODO: Needs to be implemented properly for C#.
-// Sample below is just rudimentary.
-// We at at least need something for Collection like type (ie IEnumerable and List)
+// The implementation of this predicate needs to be language specific.
 predicate isRelevantType(Type t) {
-  not t instanceof Enum and
-  not t instanceof SimpleType and
-  (
-    not t.(ArrayType).getElementType() instanceof SimpleType or
-    isPrimitiveTypeUsedForBulkData(t.(ArrayType).getElementType())
-  )
+  not t instanceof Enum
+  // not t instanceof SimpleType
+  //   (
+  //     not t.(ArrayType).getElementType() instanceof SimpleType or
+  //     isPrimitiveTypeUsedForBulkData(t.(ArrayType).getElementType())
+  //   )
 }
 
-// TODO: Is this propertly implemented?
+// Implementation looks fine.
+// Needs to be language specific
 predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(DataFlow::Content f |
     readStep(node1, f, node2) and
@@ -121,7 +121,8 @@ predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(DataFlow::Content f | storeStep(node1, f, node2) | f instanceof DataFlow::ElementContent)
 }
 
-// TODO: Is this properly implemented?
+// Implementation looks fine.
+// Needs to be language specific.
 predicate isRelevantContent(DataFlow::Content f) {
   isRelevantType(f.(DataFlow::FieldContent).getField().getType()) or
   f instanceof DataFlow::ElementContent
@@ -132,7 +133,7 @@ string parameterAccess(Parameter p) {
   if
     p.getType() instanceof ArrayType and
     not isPrimitiveTypeUsedForBulkData(p.getType().(ArrayType).getElementType())
-  then result = "Argument[" + p.getPosition() + "].ArrayElement"
+  then result = "Argument[" + p.getPosition() + "].Element"
   else result = "Argument[" + p.getPosition() + "]"
 }
 
@@ -140,10 +141,10 @@ string parameterAccess(Parameter p) {
 string parameterNodeAsInput(DataFlow::ParameterNode p) {
   result = parameterAccess(p.asParameter())
   or
-  result = "Qualifier" and p instanceof InstanceParameterNode
+  result = "Argument[Qualifier]" and p instanceof InstanceParameterNode
 }
 
-// TODO: Is this properly implemented?
+// TODO: Can this be simplified?
 string returnNodeAsOutput(ReturnNodeExt node) {
   if node.getKind() instanceof ValueReturnKind
   then result = "ReturnValue"
@@ -152,6 +153,6 @@ string returnNodeAsOutput(ReturnNodeExt node) {
       result = parameterAccess(node.getEnclosingCallable().getParameter(pos.getPosition()))
       or
       pos.isThisParameter() and
-      result = "Qualifier"
+      result = "Argument[Qualifier]"
     )
 }

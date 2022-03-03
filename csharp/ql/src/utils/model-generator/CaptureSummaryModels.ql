@@ -32,7 +32,7 @@ string captureQualifierFlow(TargetAPI api) {
     rtn.getEnclosingCallable() = api and
     rtn.getExpr() instanceof ThisAccess
   ) and
-  result = asValueModel(api, "Qualifier", "ReturnValue")
+  result = asValueModel(api, "Argument[Qualifier]", "ReturnValue")
 }
 
 class TaintRead extends DataFlow::FlowState {
@@ -109,8 +109,8 @@ class ThroughFlowConfig extends TaintTracking::Configuration {
  * ```
  * Captured Model:
  * ```
- * <namespace>;Foo;true;returnsTainted;;Qualifier;ReturnValue;taint
- * <namespace>;Foo;true;putsTaintIntoParameter;(List);Qualifier;Argument[0];taint
+ * <namespace>;Foo;true;returnsTainted;;Argument[Qualifier];ReturnValue;taint
+ * <namespace>;Foo;true;putsTaintIntoParameter;(List);Argument[Qualifier];Argument[0];taint
  * ```
  *
  * ```

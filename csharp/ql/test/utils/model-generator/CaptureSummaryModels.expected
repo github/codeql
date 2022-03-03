@@ -1,6 +1,8 @@
+| Summaries;BasicFlow;false;AddToArray;(System.Int32,System.Int32[]);Argument[0];Argument[1].Element;taint |
+| Summaries;BasicFlow;false;ReturnArrayElement;(System.Int32[]);Argument[0].Element;ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnParam0;(System.String,System.Object);Argument[0];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnParam1;(System.String,System.Object);Argument[1];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnParamMultiple;(System.Object,System.Object);Argument[0];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnParamMultiple;(System.Object,System.Object);Argument[1];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnsInput;(System.String);Argument[0];ReturnValue;taint |
-| Summaries;BasicFlow;false;ReturnsThis;(System.Object);Qualifier;ReturnValue;value |
+| Summaries;BasicFlow;false;ReturnsThis;(System.Object);Argument[Qualifier];ReturnValue;value |
