@@ -2368,6 +2368,8 @@ samConversion.kt:
 #    2|                           1: [VarAccess] <fn>
 #    2|                   1: [FieldDeclaration] Function1<Integer,Boolean> <fn>;
 #    2|                     -1: [TypeAccess] Function1<Integer,Boolean>
+#    2|                       0: [TypeAccess] Integer
+#    2|                       1: [TypeAccess] Boolean
 #   17|                   3: [Method] accept
 #-----|                     4: (Parameters)
 #   17|                       0: [Parameter] i
@@ -2413,6 +2415,9 @@ samConversion.kt:
 #    4|                           1: [VarAccess] <fn>
 #    4|                   1: [FieldDeclaration] Function2<Integer,Integer,Unit> <fn>;
 #    4|                     -1: [TypeAccess] Function2<Integer,Integer,Unit>
+#    4|                       0: [TypeAccess] Integer
+#    4|                       1: [TypeAccess] Integer
+#    4|                       2: [TypeAccess] Unit
 #   23|                   3: [Method] fn1
 #-----|                     4: (Parameters)
 #   23|                       0: [Parameter] i
@@ -2458,6 +2463,9 @@ samConversion.kt:
 #    5|                           1: [VarAccess] <fn>
 #    5|                   1: [FieldDeclaration] Function2<Integer,Integer,Unit> <fn>;
 #    5|                     -1: [TypeAccess] Function2<Integer,Integer,Unit>
+#    5|                       0: [TypeAccess] Integer
+#    5|                       1: [TypeAccess] Integer
+#    5|                       2: [TypeAccess] Unit
 #   23|                   3: [Method] fn1
 #-----|                     4: (Parameters)
 #   23|                       0: [Parameter] i
@@ -2505,6 +2513,9 @@ samConversion.kt:
 #    7|                           1: [VarAccess] <fn>
 #    7|                   1: [FieldDeclaration] Function2<String,Integer,Boolean> <fn>;
 #    7|                     -1: [TypeAccess] Function2<String,Integer,Boolean>
+#    7|                       0: [TypeAccess] String
+#    7|                       1: [TypeAccess] Integer
+#    7|                       2: [TypeAccess] Boolean
 #   27|                   3: [ExtensionMethod] ext
 #-----|                     4: (Parameters)
 #   27|                       0: [Parameter] <this>
@@ -2552,6 +2563,8 @@ samConversion.kt:
 #    9|                           1: [VarAccess] <fn>
 #    9|                   1: [FieldDeclaration] Function1<Integer,Boolean> <fn>;
 #    9|                     -1: [TypeAccess] Function1<Integer,Boolean>
+#    9|                       0: [TypeAccess] Integer
+#    9|                       1: [TypeAccess] Boolean
 #   17|                   3: [Method] accept
 #-----|                     4: (Parameters)
 #   17|                       0: [Parameter] i
@@ -2845,6 +2858,7 @@ samConversion.kt:
 #   42|                           1: [VarAccess] <fn>
 #   42|                   2: [FieldDeclaration] FunctionN<Boolean> <fn>;
 #   42|                     -1: [TypeAccess] FunctionN<Boolean>
+#   42|                       0: [TypeAccess] Boolean
 #   42|                 -3: [TypeAccess] BigArityPredicate
 #   42|                 0: [VarAccess] a
 #   43|         2: [LocalVariableDeclStmt] var ...;
@@ -2921,6 +2935,7 @@ samConversion.kt:
 #   43|                           1: [VarAccess] <fn>
 #   43|                   2: [FieldDeclaration] FunctionN<Boolean> <fn>;
 #   43|                     -1: [TypeAccess] FunctionN<Boolean>
+#   43|                       0: [TypeAccess] Boolean
 #   43|                 -3: [TypeAccess] BigArityPredicate
 #   43|                 0: [LambdaExpr] ...->...
 #   43|                   -4: [AnonymousClass] new FunctionN<Boolean>(...) { ... }
@@ -3098,6 +3113,8 @@ samConversion.kt:
 #   46|                           1: [VarAccess] <fn>
 #   46|                   1: [FieldDeclaration] Function1<Integer,Boolean> <fn>;
 #   46|                     -1: [TypeAccess] Function1<Integer,Boolean>
+#   46|                       0: [TypeAccess] Integer
+#   46|                       1: [TypeAccess] Boolean
 #   50|                   3: [Method] fn
 #-----|                     4: (Parameters)
 #   50|                       0: [Parameter] i

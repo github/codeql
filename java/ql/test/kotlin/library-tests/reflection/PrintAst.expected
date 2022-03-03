@@ -164,6 +164,8 @@ reflection.kt:
 #   12|                         0: [VarAccess] a0
 #   12|                 1: [FieldDeclaration] KProperty1<C,Integer> <dispatchReceiver>;
 #   12|                   -1: [TypeAccess] KProperty1<C,Integer>
+#   12|                     0: [TypeAccess] C
+#   12|                     1: [TypeAccess] Integer
 #   12|               -3: [TypeAccess] Function1<C,Integer>
 #   12|                 0: [TypeAccess] C
 #   12|                 1: [TypeAccess] Integer
@@ -262,6 +264,8 @@ reflection.kt:
 #   19|                         1: [VarAccess] a1
 #   19|                 1: [FieldDeclaration] KMutableProperty1<C,Integer> <dispatchReceiver>;
 #   19|                   -1: [TypeAccess] KMutableProperty1<C,Integer>
+#   19|                     0: [TypeAccess] C
+#   19|                     1: [TypeAccess] Integer
 #   19|               -3: [TypeAccess] Function2<C,Integer,Unit>
 #   19|                 0: [TypeAccess] C
 #   19|                 1: [TypeAccess] Integer
@@ -462,6 +466,7 @@ reflection.kt:
 #   59|                         0: [VarAccess] a0
 #   59|                 1: [FieldDeclaration] Generic<Integer> <dispatchReceiver>;
 #   59|                   -1: [TypeAccess] Generic<Integer>
+#   59|                     0: [TypeAccess] Integer
 #   59|               -3: [TypeAccess] Function1<Integer,String>
 #   59|                 0: [TypeAccess] Integer
 #   59|                 1: [TypeAccess] String
@@ -512,6 +517,7 @@ reflection.kt:
 #   61|                           -1: [ThisAccess] this
 #   61|                 1: [FieldDeclaration] Generic<Integer> <extensionReceiver>;
 #   61|                   -1: [TypeAccess] Generic<Integer>
+#   61|                     0: [TypeAccess] Integer
 #   61|               -3: [TypeAccess] Function0<String>
 #   61|                 0: [TypeAccess] String
 #   61|               0: [ClassInstanceExpr] new Generic<Integer>(...)
@@ -559,6 +565,7 @@ reflection.kt:
 #   63|                           -1: [ThisAccess] this
 #   63|                 1: [FieldDeclaration] Generic<Integer> <extensionReceiver>;
 #   63|                   -1: [TypeAccess] Generic<Integer>
+#   63|                     0: [TypeAccess] Integer
 #   63|               -3: [TypeAccess] Function0<String>
 #   63|                 0: [TypeAccess] String
 #   63|               0: [ClassInstanceExpr] new Generic<Integer>(...)
@@ -609,6 +616,7 @@ reflection.kt:
 #   66|                         1: [VarAccess] <dispatchReceiver>
 #   66|                 1: [FieldDeclaration] Generic<Integer> <dispatchReceiver>;
 #   66|                   -1: [TypeAccess] Generic<Integer>
+#   66|                     0: [TypeAccess] Integer
 #   66|                 1: [Method] get
 #   66|                   5: [BlockStmt] { ... }
 #   66|                     0: [ReturnStmt] return ...
