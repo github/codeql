@@ -251,6 +251,23 @@ class TestEtree:
         assert root.text == "hello world"
 
     @staticmethod
+    def test_ok_xml_sax_parser():
+        # you _can_ pass a SAX parser to xml.etree... but it doesn't give you the output :|
+        parser = xml.sax.make_parser()
+        root = xml.etree.ElementTree.fromstring(ok_xml, parser=parser)
+        assert root == None
+
+    @staticmethod
+    def test_ok_xml_lxml_parser():
+        # this is technically possible, since parsers follow the same API, and the
+        # `fromstring` function is just a thin wrapper... seems very unlikely that
+        # anyone would do this though :|
+        parser = lxml.etree.XMLParser()
+        root = xml.etree.ElementTree.fromstring(ok_xml, parser=parser)
+        assert root.tag == "test"
+        assert root.text == "hello world"
+
+    @staticmethod
     def test_xxe_not_possible():
         parser = xml.etree.ElementTree.XMLParser()
         try:
