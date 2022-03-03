@@ -23,12 +23,15 @@ edges
 | lxml_etree.py:62:19:62:25 | ControlFlowNode for request | lxml_etree.py:62:19:62:30 | ControlFlowNode for Attribute |
 | lxml_etree.py:62:19:62:30 | ControlFlowNode for Attribute | lxml_etree.py:62:19:62:45 | ControlFlowNode for Subscript |
 | lxml_etree.py:62:19:62:45 | ControlFlowNode for Subscript | lxml_etree.py:65:34:65:44 | ControlFlowNode for xml_content |
-| lxml_etree.py:73:19:73:25 | ControlFlowNode for request | lxml_etree.py:73:19:73:30 | ControlFlowNode for Attribute |
-| lxml_etree.py:73:19:73:30 | ControlFlowNode for Attribute | lxml_etree.py:73:19:73:45 | ControlFlowNode for Subscript |
-| lxml_etree.py:73:19:73:45 | ControlFlowNode for Subscript | lxml_etree.py:76:34:76:44 | ControlFlowNode for xml_content |
-| lxml_etree.py:81:19:81:25 | ControlFlowNode for request | lxml_etree.py:81:19:81:30 | ControlFlowNode for Attribute |
-| lxml_etree.py:81:19:81:30 | ControlFlowNode for Attribute | lxml_etree.py:81:19:81:45 | ControlFlowNode for Subscript |
-| lxml_etree.py:81:19:81:45 | ControlFlowNode for Subscript | lxml_etree.py:84:34:84:44 | ControlFlowNode for xml_content |
+| lxml_etree.py:71:19:71:25 | ControlFlowNode for request | lxml_etree.py:71:19:71:30 | ControlFlowNode for Attribute |
+| lxml_etree.py:71:19:71:30 | ControlFlowNode for Attribute | lxml_etree.py:71:19:71:45 | ControlFlowNode for Subscript |
+| lxml_etree.py:71:19:71:45 | ControlFlowNode for Subscript | lxml_etree.py:74:34:74:44 | ControlFlowNode for xml_content |
+| lxml_etree.py:78:19:78:25 | ControlFlowNode for request | lxml_etree.py:78:19:78:30 | ControlFlowNode for Attribute |
+| lxml_etree.py:78:19:78:30 | ControlFlowNode for Attribute | lxml_etree.py:78:19:78:45 | ControlFlowNode for Subscript |
+| lxml_etree.py:78:19:78:45 | ControlFlowNode for Subscript | lxml_etree.py:81:34:81:44 | ControlFlowNode for xml_content |
+| lxml_etree.py:87:19:87:25 | ControlFlowNode for request | lxml_etree.py:87:19:87:30 | ControlFlowNode for Attribute |
+| lxml_etree.py:87:19:87:30 | ControlFlowNode for Attribute | lxml_etree.py:87:19:87:45 | ControlFlowNode for Subscript |
+| lxml_etree.py:87:19:87:45 | ControlFlowNode for Subscript | lxml_etree.py:90:34:90:44 | ControlFlowNode for xml_content |
 | xml_dom.py:13:19:13:25 | ControlFlowNode for request | xml_dom.py:13:19:13:30 | ControlFlowNode for Attribute |
 | xml_dom.py:13:19:13:30 | ControlFlowNode for Attribute | xml_dom.py:13:19:13:45 | ControlFlowNode for Subscript |
 | xml_dom.py:13:19:13:45 | ControlFlowNode for Subscript | xml_dom.py:15:34:15:54 | ControlFlowNode for StringIO() |
@@ -126,14 +129,18 @@ nodes
 | lxml_etree.py:62:19:62:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | lxml_etree.py:62:19:62:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | lxml_etree.py:65:34:65:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
-| lxml_etree.py:73:19:73:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| lxml_etree.py:73:19:73:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| lxml_etree.py:73:19:73:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| lxml_etree.py:76:34:76:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
-| lxml_etree.py:81:19:81:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| lxml_etree.py:81:19:81:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| lxml_etree.py:81:19:81:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| lxml_etree.py:84:34:84:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+| lxml_etree.py:71:19:71:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| lxml_etree.py:71:19:71:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| lxml_etree.py:71:19:71:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| lxml_etree.py:74:34:74:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+| lxml_etree.py:78:19:78:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| lxml_etree.py:78:19:78:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| lxml_etree.py:78:19:78:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| lxml_etree.py:81:34:81:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+| lxml_etree.py:87:19:87:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| lxml_etree.py:87:19:87:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| lxml_etree.py:87:19:87:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| lxml_etree.py:90:34:90:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
 | xml_dom.py:13:19:13:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | xml_dom.py:13:19:13:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | xml_dom.py:13:19:13:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
@@ -228,7 +235,7 @@ subpaths
 | lxml_etree.py:40:34:40:44 | ControlFlowNode for xml_content | lxml_etree.py:37:19:37:25 | ControlFlowNode for request | lxml_etree.py:40:34:40:44 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and is vulnerable to: XXE. | lxml_etree.py:40:34:40:44 | ControlFlowNode for xml_content | This | lxml_etree.py:37:19:37:25 | ControlFlowNode for request | user-provided value |
 | lxml_etree.py:47:34:47:44 | ControlFlowNode for xml_content | lxml_etree.py:44:19:44:25 | ControlFlowNode for request | lxml_etree.py:47:34:47:44 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and is vulnerable to: XXE. | lxml_etree.py:47:34:47:44 | ControlFlowNode for xml_content | This | lxml_etree.py:44:19:44:25 | ControlFlowNode for request | user-provided value |
 | lxml_etree.py:65:34:65:44 | ControlFlowNode for xml_content | lxml_etree.py:62:19:62:25 | ControlFlowNode for request | lxml_etree.py:65:34:65:44 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and is vulnerable to: XXE. | lxml_etree.py:65:34:65:44 | ControlFlowNode for xml_content | This | lxml_etree.py:62:19:62:25 | ControlFlowNode for request | user-provided value |
-| lxml_etree.py:84:34:84:44 | ControlFlowNode for xml_content | lxml_etree.py:81:19:81:25 | ControlFlowNode for request | lxml_etree.py:84:34:84:44 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup, XXE. | lxml_etree.py:84:34:84:44 | ControlFlowNode for xml_content | This | lxml_etree.py:81:19:81:25 | ControlFlowNode for request | user-provided value |
+| lxml_etree.py:81:34:81:44 | ControlFlowNode for xml_content | lxml_etree.py:78:19:78:25 | ControlFlowNode for request | lxml_etree.py:81:34:81:44 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup, XXE. | lxml_etree.py:81:34:81:44 | ControlFlowNode for xml_content | This | lxml_etree.py:78:19:78:25 | ControlFlowNode for request | user-provided value |
 | xml_dom.py:15:34:15:54 | ControlFlowNode for StringIO() | xml_dom.py:13:19:13:25 | ControlFlowNode for request | xml_dom.py:15:34:15:54 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup. | xml_dom.py:15:34:15:54 | ControlFlowNode for StringIO() | This | xml_dom.py:13:19:13:25 | ControlFlowNode for request | user-provided value |
 | xml_dom.py:21:40:21:50 | ControlFlowNode for xml_content | xml_dom.py:19:19:19:25 | ControlFlowNode for request | xml_dom.py:21:40:21:50 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup. | xml_dom.py:21:40:21:50 | ControlFlowNode for xml_content | This | xml_dom.py:19:19:19:25 | ControlFlowNode for request | user-provided value |
 | xml_dom.py:27:34:27:54 | ControlFlowNode for StringIO() | xml_dom.py:25:19:25:25 | ControlFlowNode for request | xml_dom.py:27:34:27:54 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup. | xml_dom.py:27:34:27:54 | ControlFlowNode for StringIO() | This | xml_dom.py:25:19:25:25 | ControlFlowNode for request | user-provided value |
