@@ -77,67 +77,118 @@ reflection.kt:
 #   54|         0: [ReturnStmt] return ...
 #   54|           0: [MethodAccess] toString(...)
 #   54|             -1: [ThisAccess] this
-#   79|     5: [Method] fn
+#   88|     5: [Method] fn
 #-----|       2: (Generic Parameters)
-#   79|         0: [TypeVariable] T
+#   88|         0: [TypeVariable] T
 #-----|       4: (Parameters)
-#   79|         0: [Parameter] value
-#   79|       5: [BlockStmt] { ... }
-#   81|     6: [Method] test
-#   81|       5: [BlockStmt] { ... }
-#   82|         0: [ExprStmt] <Expr>;
-#   82|           0: [MethodAccess] fn11(...)
-#   82|             -3: [TypeAccess] Class2<String>
-#   82|               0: [TypeAccess] String
-#   82|             -2: [TypeAccess] String
-#   82|             0: [StringLiteral] 
-#   82|             1: [MemberRefExpr] ...::...
-#   82|               -4: [AnonymousClass] new Function1<String,Class2<String>>(...) { ... }
-#   82|                 1: [Constructor] 
-#   82|                   5: [BlockStmt] { ... }
-#   82|                     0: [SuperConstructorInvocationStmt] super(...)
-#   82|                 1: [Method] invoke
+#   88|         0: [Parameter] value
+#   88|       5: [BlockStmt] { ... }
+#   90|     6: [Method] test
+#   90|       5: [BlockStmt] { ... }
+#   91|         0: [ExprStmt] <Expr>;
+#   91|           0: [MethodAccess] fn11(...)
+#   91|             -3: [TypeAccess] Class2<String>
+#   91|               0: [TypeAccess] String
+#   91|             -2: [TypeAccess] String
+#   91|             0: [StringLiteral] 
+#   91|             1: [MemberRefExpr] ...::...
+#   91|               -4: [AnonymousClass] new Function1<String,Class2<String>>(...) { ... }
+#   91|                 1: [Constructor] 
+#   91|                   5: [BlockStmt] { ... }
+#   91|                     0: [SuperConstructorInvocationStmt] super(...)
+#   91|                 1: [Method] invoke
 #-----|                   4: (Parameters)
-#   82|                     0: [Parameter] a0
-#   82|                   5: [BlockStmt] { ... }
-#   82|                     0: [ReturnStmt] return ...
-#   82|                       0: [ClassInstanceExpr] new Class2<String>(...)
-#   82|                         -3: [TypeAccess] Class2<String>
-#   82|                           0: [TypeAccess] String
-#   82|                         0: [VarAccess] a0
-#   82|               -3: [TypeAccess] Function1<String,Class2<String>>
-#   82|                 0: [TypeAccess] String
-#   82|                 1: [TypeAccess] Class2<String>
-#   82|                   0: [TypeAccess] String
-#   83|         1: [ExprStmt] <Expr>;
-#   83|           0: [MethodAccess] fn11(...)
-#   83|             -3: [TypeAccess] Unit
-#   83|             -2: [TypeAccess] String
-#   83|             0: [StringLiteral] 
-#   83|             1: [MemberRefExpr] ...::...
-#   83|               -4: [AnonymousClass] new Function1<String,Unit>(...) { ... }
-#   83|                 1: [Constructor] 
-#   83|                   5: [BlockStmt] { ... }
-#   83|                     0: [SuperConstructorInvocationStmt] super(...)
-#   83|                 1: [Method] invoke
+#   91|                     0: [Parameter] a0
+#   91|                   5: [BlockStmt] { ... }
+#   91|                     0: [ReturnStmt] return ...
+#   91|                       0: [ClassInstanceExpr] new Class2<String>(...)
+#   91|                         -3: [TypeAccess] Class2<String>
+#   91|                           0: [TypeAccess] String
+#   91|                         0: [VarAccess] a0
+#   91|               -3: [TypeAccess] Function1<String,Class2<String>>
+#   91|                 0: [TypeAccess] String
+#   91|                 1: [TypeAccess] Class2<String>
+#   91|                   0: [TypeAccess] String
+#   92|         1: [ExprStmt] <Expr>;
+#   92|           0: [MethodAccess] fn11(...)
+#   92|             -3: [TypeAccess] Unit
+#   92|             -2: [TypeAccess] String
+#   92|             0: [StringLiteral] 
+#   92|             1: [MemberRefExpr] ...::...
+#   92|               -4: [AnonymousClass] new Function1<String,Unit>(...) { ... }
+#   92|                 1: [Constructor] 
+#   92|                   5: [BlockStmt] { ... }
+#   92|                     0: [SuperConstructorInvocationStmt] super(...)
+#   92|                 1: [Method] invoke
 #-----|                   4: (Parameters)
-#   83|                     0: [Parameter] a0
-#   83|                   5: [BlockStmt] { ... }
-#   83|                     0: [ReturnStmt] return ...
-#   83|                       0: [MethodAccess] fn(...)
-#   83|                         -2: [TypeAccess] String
-#   83|                         0: [VarAccess] a0
-#   83|               -3: [TypeAccess] Function1<String,Unit>
-#   83|                 0: [TypeAccess] String
-#   83|                 1: [TypeAccess] Unit
-#   86|     7: [Method] fn11
+#   92|                     0: [Parameter] a0
+#   92|                   5: [BlockStmt] { ... }
+#   92|                     0: [ReturnStmt] return ...
+#   92|                       0: [MethodAccess] fn(...)
+#   92|                         -2: [TypeAccess] String
+#   92|                         0: [VarAccess] a0
+#   92|               -3: [TypeAccess] Function1<String,Unit>
+#   92|                 0: [TypeAccess] String
+#   92|                 1: [TypeAccess] Unit
+#   93|         2: [ExprStmt] <Expr>;
+#   93|           0: [MethodAccess] fn12(...)
+#   93|             -3: [TypeAccess] Inner<String>
+#   93|               0: [TypeAccess] String
+#   93|               1: [TypeAccess] Integer
+#   93|             -2: [TypeAccess] String
+#   93|             0: [StringLiteral] 
+#   93|             1: [MemberRefExpr] ...::...
+#   93|               -4: [AnonymousClass] new Function1<String,Inner<String>>(...) { ... }
+#   93|                 1: [Constructor] 
+#-----|                   4: (Parameters)
+#   93|                     0: [Parameter] <dispatchReceiver>
+#   93|                   5: [BlockStmt] { ... }
+#   93|                     0: [SuperConstructorInvocationStmt] super(...)
+#   93|                     1: [ExprStmt] <Expr>;
+#   93|                       0: [AssignExpr] ...=...
+#   93|                         0: [VarAccess] this.<dispatchReceiver>
+#   93|                           -1: [ThisAccess] this
+#   93|                         1: [VarAccess] <dispatchReceiver>
+#   93|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   93|                     0: [Parameter] a0
+#   93|                   5: [BlockStmt] { ... }
+#   93|                     0: [ReturnStmt] return ...
+#   93|                       0: [ClassInstanceExpr] new Inner<String>(...)
+#   93|                         -3: [TypeAccess] Inner<String>
+#   93|                           0: [TypeAccess] String
+#   93|                           1: [TypeAccess] Integer
+#   93|                         -2: [VarAccess] this.<dispatchReceiver>
+#   93|                           -1: [ThisAccess] this
+#   93|                         0: [VarAccess] a0
+#   93|                 1: [FieldDeclaration] Class2<Integer> <dispatchReceiver>;
+#   93|                   -1: [TypeAccess] Class2<Integer>
+#   93|                     0: [TypeAccess] Integer
+#   93|               -3: [TypeAccess] Function1<String,Inner<String>>
+#   93|                 0: [TypeAccess] String
+#   93|                 1: [TypeAccess] Inner<String>
+#   93|                   0: [TypeAccess] String
+#   93|                   1: [TypeAccess] Integer
+#   93|               0: [ClassInstanceExpr] new Class2<Integer>(...)
+#   93|                 -3: [TypeAccess] Class2<Integer>
+#   93|                   0: [TypeAccess] Integer
+#   93|                 0: [IntegerLiteral] 5
+#   96|     7: [Method] fn11
 #-----|       2: (Generic Parameters)
-#   86|         0: [TypeVariable] T
-#   86|         1: [TypeVariable] R
+#   96|         0: [TypeVariable] T
+#   96|         1: [TypeVariable] R
 #-----|       4: (Parameters)
-#   86|         0: [Parameter] l
-#   86|         1: [Parameter] transform
-#   86|       5: [BlockStmt] { ... }
+#   96|         0: [Parameter] l
+#   96|         1: [Parameter] transform
+#   96|       5: [BlockStmt] { ... }
+#   97|     8: [Method] fn12
+#-----|       2: (Generic Parameters)
+#   97|         0: [TypeVariable] T1
+#   97|         1: [TypeVariable] R
+#-----|       4: (Parameters)
+#   97|         0: [Parameter] l
+#   97|         1: [Parameter] l2
+#   97|       5: [BlockStmt] { ... }
 #    3|   2: [Class] Reflection
 #    3|     1: [Constructor] Reflection
 #    3|       5: [BlockStmt] { ... }
@@ -741,3 +792,53 @@ reflection.kt:
 #   77|     2: [FieldDeclaration] T value;
 #   77|       -1: [TypeAccess] T
 #   77|       0: [VarAccess] value
+#   79|     4: [Class,GenericType,ParameterizedType] Inner
+#-----|       -2: (Generic Parameters)
+#   79|         0: [TypeVariable] T1
+#   80|       1: [Constructor] Inner
+#-----|         4: (Parameters)
+#   80|           0: [Parameter] t
+#   80|         5: [BlockStmt] { ... }
+#   80|           0: [SuperConstructorInvocationStmt] super(...)
+#   83|     7: [Method] test
+#   83|       5: [BlockStmt] { ... }
+#   84|         0: [ExprStmt] <Expr>;
+#   84|           0: [MethodAccess] fn11(...)
+#   84|             -3: [TypeAccess] Inner<String>
+#   84|               0: [TypeAccess] String
+#   84|               1: [TypeAccess] T
+#   84|             -2: [TypeAccess] String
+#   84|             0: [StringLiteral] 
+#   84|             1: [MemberRefExpr] ...::...
+#   84|               -4: [AnonymousClass] new Function1<String,Inner<String>>(...) { ... }
+#   84|                 1: [Constructor] 
+#-----|                   4: (Parameters)
+#   84|                     0: [Parameter] <dispatchReceiver>
+#   84|                   5: [BlockStmt] { ... }
+#   84|                     0: [SuperConstructorInvocationStmt] super(...)
+#   84|                     1: [ExprStmt] <Expr>;
+#   84|                       0: [AssignExpr] ...=...
+#   84|                         0: [VarAccess] this.<dispatchReceiver>
+#   84|                           -1: [ThisAccess] this
+#   84|                         1: [VarAccess] <dispatchReceiver>
+#   84|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   84|                     0: [Parameter] a0
+#   84|                   5: [BlockStmt] { ... }
+#   84|                     0: [ReturnStmt] return ...
+#   84|                       0: [ClassInstanceExpr] new Inner<String>(...)
+#   84|                         -3: [TypeAccess] Inner<String>
+#   84|                           0: [TypeAccess] String
+#   84|                           1: [TypeAccess] T
+#   84|                         -2: [VarAccess] this.<dispatchReceiver>
+#   84|                           -1: [ThisAccess] this
+#   84|                         0: [VarAccess] a0
+#   84|                 1: [FieldDeclaration] Class2<T> <dispatchReceiver>;
+#   84|                   -1: [TypeAccess] Class2<T>
+#   84|                     0: [TypeAccess] T
+#   84|               -3: [TypeAccess] Function1<String,Inner<String>>
+#   84|                 0: [TypeAccess] String
+#   84|                 1: [TypeAccess] Inner<String>
+#   84|                   0: [TypeAccess] String
+#   84|                   1: [TypeAccess] T
+#   84|               0: [ThisAccess] this

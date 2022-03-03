@@ -74,13 +74,24 @@ class Class1 {
     }
 }
 
-class Class2<T>(val value: T) { }
+class Class2<T>(val value: T) {
+
+    inner class Inner<T1> {
+        constructor(t: T1) { }
+    }
+
+    fun test() {
+        fn11("", ::Inner)
+    }
+}
 
 fun <T> fn(value: T) { }
 
 fun test() {
     fn11("", ::Class2)
     fn11("", ::fn)
+    fn12("", Class2(5)::Inner)
 }
 
 fun <T, R> fn11(l: T, transform: (T) -> R) { }
+fun <T1, R> fn12(l: T1, l2: (T1) -> R) { }
