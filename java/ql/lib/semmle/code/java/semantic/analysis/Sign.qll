@@ -1,3 +1,5 @@
+private import semmle.code.java.semantic.SemanticExpr
+
 newtype TSign =
   TNeg() or
   TZero() or
@@ -243,38 +245,38 @@ class Sign extends TSign {
   }
 
   /** Perform `op` on this sign. */
-  Sign applyUnaryOp(TUnarySignOperation op) {
-    op = TIncOp() and result = inc()
+  Sign applyUnaryOp(Opcode op) {
+    op instanceof Opcode::AddOne and result = inc()
     or
-    op = TDecOp() and result = dec()
+    op instanceof Opcode::SubOne and result = dec()
     or
-    op = TNegOp() and result = neg()
+    op instanceof Opcode::Negate and result = neg()
     or
-    op = TBitNotOp() and result = bitnot()
+    op instanceof Opcode::BitComplement and result = bitnot()
   }
 
   /** Perform `op` on this sign and sign `s`. */
-  Sign applyBinaryOp(Sign s, TBinarySignOperation op) {
-    op = TAddOp() and result = add(s)
+  Sign applyBinaryOp(Sign s, Opcode op) {
+    op instanceof Opcode::Add and result = add(s)
     or
-    op = TSubOp() and result = sub(s)
+    op instanceof Opcode::Sub and result = sub(s)
     or
-    op = TMulOp() and result = mul(s)
+    op instanceof Opcode::Mul and result = mul(s)
     or
-    op = TDivOp() and result = div(s)
+    op instanceof Opcode::Div and result = div(s)
     or
-    op = TRemOp() and result = rem(s)
+    op instanceof Opcode::Rem and result = rem(s)
     or
-    op = TBitAndOp() and result = bitand(s)
+    op instanceof Opcode::BitAnd and result = bitand(s)
     or
-    op = TBitOrOp() and result = bitor(s)
+    op instanceof Opcode::BitOr and result = bitor(s)
     or
-    op = TBitXorOp() and result = bitxor(s)
+    op instanceof Opcode::BitXor and result = bitxor(s)
     or
-    op = TLShiftOp() and result = lshift(s)
+    op instanceof Opcode::ShiftLeft and result = lshift(s)
     or
-    op = TRShiftOp() and result = rshift(s)
+    op instanceof Opcode::ShiftRight and result = rshift(s)
     or
-    op = TURShiftOp() and result = urshift(s)
+    op instanceof Opcode::ShiftRightUnsigned and result = urshift(s)
   }
 }

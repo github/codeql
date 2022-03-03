@@ -1,5 +1,6 @@
 private import java
 private import semmle.code.java.semantic.SemanticExpr
+private import semmle.code.java.semantic.SemanticExprSpecific
 private import ArrayLengthFlow
 
 /**

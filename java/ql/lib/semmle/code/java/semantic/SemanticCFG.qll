@@ -4,6 +4,7 @@
 
 private import java
 private import SemanticExpr
+private import SemanticExprSpecific
 
 private newtype TSemBasicBlock = MkSemBasicBlock(BasicBlock block)
 
@@ -13,6 +14,8 @@ class SemBasicBlock extends TSemBasicBlock {
   SemBasicBlock() { this = MkSemBasicBlock(block) }
 
   final string toString() { result = block.toString() }
+
+  final Location getLocation() { result = block.getLocation() }
 
   final predicate bbDominates(SemBasicBlock otherBlock) {
     block.bbDominates(getJavaBasicBlock(otherBlock))

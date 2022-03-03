@@ -4,39 +4,226 @@
 
 private import java
 private import SemanticCFG
+private import SemanticSSA
 private import SemanticType
+private import SemanticExprSpecific::SemanticExprConfig as Specific
 
-private newtype TExpr = MkExpr(Expr expr) { any() }
+private newtype TOpcode =
+  TCopyValue() or
+  TLoad() or
+  TStore() or
+  TAdd() or
+  TSub() or
+  TMul() or
+  TDiv() or
+  TRem() or
+  TNegate() or
+  TShiftLeft() or
+  TShiftRight() or
+  TShiftRightUnsigned() or // TODO: Based on type
+  TBitAnd() or
+  TBitOr() or
+  TBitXor() or
+  TBitComplement() or
+  TLogicalNot() or
+  TCompareEQ() or
+  TCompareNE() or
+  TCompareLT() or
+  TCompareGT() or
+  TCompareLE() or
+  TCompareGE() or
+  TPointerAdd() or
+  TPointerSub() or
+  TPointerDiff() or
+  TConvert() or
+  TConstant() or
+  TStringConstant() or
+  TAddOne() or // TODO: Combine with `TAdd`
+  TSubOne() or // TODO: Combine with `TSub`
+  TPostInc() or // TODO: Reconnect result to merge with `TPreInc`
+  TPostDec() or // TODO: Reconnect result to merge with `TPreDec`
+  TConditional() or // TODO: Represent as flow
+  TCall() or
+  TUnknown()
 
-class SemExpr extends MkExpr {
-  Expr expr;
-
-  SemExpr() { this = MkExpr(expr) }
-
-  final string toString() { result = expr.toString() }
-
-  final Location getLocation() { result = expr.getLocation() }
-
-  final SemType getSemType() { result = getSemanticType(expr.getType()) }
-
-  final SemBasicBlock getBasicBlock() { result = getSemanticBasicBlock(expr.getBasicBlock()) }
+class Opcode extends TOpcode {
+  string toString() { result = "???" }
 }
 
-class SemLiteralExpr extends SemExpr {
-  override Literal expr;
+module Opcode {
+  class CopyValue extends Opcode, TCopyValue {
+    override string toString() { result = "CopyValue" }
+  }
+
+  class Load extends Opcode, TLoad {
+    override string toString() { result = "Load" }
+  }
+
+  class Store extends Opcode, TStore {
+    override string toString() { result = "Store" }
+  }
+
+  class Add extends Opcode, TAdd {
+    override string toString() { result = "Add" }
+  }
+
+  class Sub extends Opcode, TSub {
+    override string toString() { result = "Sub" }
+  }
+
+  class Mul extends Opcode, TMul {
+    override string toString() { result = "Mul" }
+  }
+
+  class Div extends Opcode, TDiv {
+    override string toString() { result = "Div" }
+  }
+
+  class Rem extends Opcode, TRem {
+    override string toString() { result = "Rem" }
+  }
+
+  class Negate extends Opcode, TNegate {
+    override string toString() { result = "Negate" }
+  }
+
+  class ShiftLeft extends Opcode, TShiftLeft {
+    override string toString() { result = "ShiftLeft" }
+  }
+
+  class ShiftRight extends Opcode, TShiftRight {
+    override string toString() { result = "ShiftRight" }
+  }
+
+  class ShiftRightUnsigned extends Opcode, TShiftRightUnsigned {
+    override string toString() { result = "ShiftRightUnsigned" }
+  }
+
+  class BitAnd extends Opcode, TBitAnd {
+    override string toString() { result = "BitAnd" }
+  }
+
+  class BitOr extends Opcode, TBitOr {
+    override string toString() { result = "BitOr" }
+  }
+
+  class BitXor extends Opcode, TBitXor {
+    override string toString() { result = "BitXor" }
+  }
+
+  class BitComplement extends Opcode, TBitComplement {
+    override string toString() { result = "BitComplement" }
+  }
+
+  class LogicalNot extends Opcode, TLogicalNot {
+    override string toString() { result = "LogicalNot" }
+  }
+
+  class CompareEQ extends Opcode, TCompareEQ {
+    override string toString() { result = "CompareEQ" }
+  }
+
+  class CompareNE extends Opcode, TCompareNE {
+    override string toString() { result = "CompareNE" }
+  }
+
+  class CompareLT extends Opcode, TCompareLT {
+    override string toString() { result = "CompareLT" }
+  }
+
+  class CompareLE extends Opcode, TCompareLE {
+    override string toString() { result = "CompareLE" }
+  }
+
+  class CompareGT extends Opcode, TCompareGT {
+    override string toString() { result = "CompareGT" }
+  }
+
+  class CompareGE extends Opcode, TCompareGE {
+    override string toString() { result = "CompareGE" }
+  }
+
+  class Convert extends Opcode, TConvert {
+    override string toString() { result = "Convert" }
+  }
+
+  class AddOne extends Opcode, TAddOne {
+    override string toString() { result = "AddOne" }
+  }
+
+  class SubOne extends Opcode, TSubOne {
+    override string toString() { result = "SubOne" }
+  }
+
+  class PostInc extends Opcode, TPostInc {
+    override string toString() { result = "PostInc" }
+  }
+
+  class PostDec extends Opcode, TPostDec {
+    override string toString() { result = "PostDec" }
+  }
+
+  class Conditional extends Opcode, TConditional {
+    override string toString() { result = "Conditional" }
+  }
+
+  class Constant extends Opcode, TConstant {
+    override string toString() { result = "Constant" }
+  }
+
+  class StringConstant extends Opcode, TStringConstant {
+    override string toString() { result = "StringConstant" }
+  }
+
+  class Unknown extends Opcode, TUnknown {
+    override string toString() { result = "Unknown" }
+  }
+}
+
+class SemExpr instanceof Specific::Expr {
+  final string toString() { result = Specific::exprToString(this) }
+
+  final Location getLocation() { result = Specific::getExprLocation(this) }
+
+  Opcode getOpcode() { result instanceof Opcode::Unknown }
+
+  SemType getSemType() { result = Specific::getUnknownExprType(this) }
+
+  final SemBasicBlock getBasicBlock() { result = Specific::getExprBasicBlock(this) }
+}
+
+abstract private class SemKnownExpr extends SemExpr {
+  Opcode opcode;
+  SemType type;
+
+  final override Opcode getOpcode() { result = opcode }
+
+  final override SemType getSemType() { result = type }
+}
+
+class SemLiteralExpr extends SemKnownExpr {
+  SemLiteralExpr() {
+    Specific::integerLiteral(this, type, _) and opcode instanceof Opcode::Constant
+    or
+    Specific::largeIntegerLiteral(this, type, _) and opcode instanceof Opcode::Constant
+    or
+    Specific::booleanLiteral(this, type, _) and opcode instanceof Opcode::Constant
+    or
+    Specific::floatingPointLiteral(this, type, _) and opcode instanceof Opcode::Constant
+    or
+    Specific::nullLiteral(this, type) and opcode instanceof Opcode::Constant
+    or
+    Specific::stringLiteral(this, type, _) and opcode instanceof Opcode::StringConstant
+  }
 }
 
 class SemNumericLiteralExpr extends SemLiteralExpr {
   SemNumericLiteralExpr() {
-    expr instanceof IntegerLiteral
+    Specific::integerLiteral(this, _, _)
     or
-    expr instanceof LongLiteral
+    Specific::largeIntegerLiteral(this, _, _)
     or
-    expr instanceof CharacterLiteral
-    or
-    expr instanceof FloatingPointLiteral
-    or
-    expr instanceof DoubleLiteral
+    Specific::floatingPointLiteral(this, _, _)
   }
 
   float getApproximateFloatValue() { none() }
@@ -44,246 +231,172 @@ class SemNumericLiteralExpr extends SemLiteralExpr {
 
 class SemIntegerLiteralExpr extends SemNumericLiteralExpr {
   SemIntegerLiteralExpr() {
-    expr instanceof IntegerLiteral
+    Specific::integerLiteral(this, _, _)
     or
-    expr instanceof LongLiteral
-    or
-    expr instanceof CharacterLiteral
+    Specific::largeIntegerLiteral(this, _, _)
   }
 
-  final int getIntValue() {
-    result = expr.(IntegerLiteral).getIntValue()
-    or
-    result = expr.(CharacterLiteral).getCodePointValue()
-    // To avoid changing analysis results, we don't report an exact `int` value for a `LongLiteral`,
-    // even if it fits in a 32-bit `int`.
-  }
+  final int getIntValue() { Specific::integerLiteral(this, _, result) }
 
   final override float getApproximateFloatValue() {
     result = getIntValue()
     or
-    not exists(getIntValue()) and result = expr.(LongLiteral).getValue().toFloat()
+    Specific::largeIntegerLiteral(this, _, result)
   }
 }
 
 class SemFloatingPointLiteralExpr extends SemNumericLiteralExpr {
-  SemFloatingPointLiteralExpr() {
-    expr instanceof FloatingPointLiteral
-    or
-    expr instanceof DoubleLiteral
-  }
+  float value;
 
-  final override float getApproximateFloatValue() { result = getFloatValue() }
+  SemFloatingPointLiteralExpr() { Specific::floatingPointLiteral(this, _, value) }
 
-  final float getFloatValue() {
-    result = expr.(FloatingPointLiteral).getFloatValue()
-    or
-    result = expr.(DoubleLiteral).getDoubleValue()
-  }
+  final override float getApproximateFloatValue() { result = value }
+
+  final float getFloatValue() { result = value }
 }
 
-class SemBinaryExpr extends SemExpr {
-  override BinaryExpr expr;
+class SemBinaryExpr extends SemKnownExpr {
+  SemExpr leftOperand;
+  SemExpr rightOperand;
 
-  final SemExpr getLeftOperand() { getJavaExpr(result) = expr.getLeftOperand() }
+  SemBinaryExpr() { Specific::binaryExpr(this, opcode, type, leftOperand, rightOperand) }
 
-  final SemExpr getRightOperand() { getJavaExpr(result) = expr.getRightOperand() }
+  final SemExpr getLeftOperand() { result = leftOperand }
+
+  final SemExpr getRightOperand() { result = rightOperand }
 
   final predicate hasOperands(SemExpr a, SemExpr b) {
-    expr.hasOperands(getJavaExpr(a), getJavaExpr(b))
+    a = getLeftOperand() and b = getRightOperand()
+    or
+    a = getRightOperand() and b = getLeftOperand()
   }
 
-  final SemExpr getAnOperand() { getJavaExpr(result) = expr.getAnOperand() }
+  final SemExpr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
 }
 
-class SemComparisonExpr extends SemBinaryExpr {
-  override ComparisonExpr expr;
+class SemRelationalExpr extends SemBinaryExpr {
+  SemRelationalExpr() {
+    opcode instanceof Opcode::CompareLT
+    or
+    opcode instanceof Opcode::CompareLE
+    or
+    opcode instanceof Opcode::CompareGT
+    or
+    opcode instanceof Opcode::CompareGE
+  }
 
-  final SemExpr getLesserOperand() { getJavaExpr(result) = expr.getLesserOperand() }
+  final SemExpr getLesserOperand() {
+    if opcode instanceof Opcode::CompareLT or opcode instanceof Opcode::CompareLE
+    then result = getLeftOperand()
+    else result = getRightOperand()
+  }
 
-  final SemExpr getGreaterOperand() { getJavaExpr(result) = expr.getGreaterOperand() }
+  final SemExpr getGreaterOperand() {
+    if opcode instanceof Opcode::CompareGT or opcode instanceof Opcode::CompareGE
+    then result = getLeftOperand()
+    else result = getRightOperand()
+  }
 
-  final predicate isStrict() { expr.isStrict() }
+  final predicate isStrict() {
+    opcode instanceof Opcode::CompareLT or opcode instanceof Opcode::CompareGT
+  }
 }
 
 class SemAddExpr extends SemBinaryExpr {
-  override AddExpr expr;
+  SemAddExpr() { opcode instanceof Opcode::Add }
 }
 
 class SemSubExpr extends SemBinaryExpr {
-  override SubExpr expr;
+  SemSubExpr() { opcode instanceof Opcode::Sub }
 }
 
 class SemMulExpr extends SemBinaryExpr {
-  override MulExpr expr;
+  SemMulExpr() { opcode instanceof Opcode::Mul }
 }
 
 class SemDivExpr extends SemBinaryExpr {
-  override DivExpr expr;
+  SemDivExpr() { opcode instanceof Opcode::Div }
 }
 
 class SemRemExpr extends SemBinaryExpr {
-  override RemExpr expr;
+  SemRemExpr() { opcode instanceof Opcode::Rem }
 }
 
-class SemLShiftExpr extends SemBinaryExpr {
-  override LShiftExpr expr;
+class SemShiftLeftExpr extends SemBinaryExpr {
+  SemShiftLeftExpr() { opcode instanceof Opcode::ShiftLeft }
 }
 
-class SemRShiftExpr extends SemBinaryExpr {
-  override RShiftExpr expr;
+class SemShiftRightExpr extends SemBinaryExpr {
+  SemShiftRightExpr() { opcode instanceof Opcode::ShiftRight }
 }
 
-class SemURShiftExpr extends SemBinaryExpr {
-  override URShiftExpr expr;
+class SemBitAndExpr extends SemBinaryExpr {
+  SemBitAndExpr() { opcode instanceof Opcode::BitAnd }
 }
 
-class SemAndBitwiseExpr extends SemBinaryExpr {
-  override AndBitwiseExpr expr;
+class SemBitOrExpr extends SemBinaryExpr {
+  SemBitOrExpr() { opcode instanceof Opcode::BitOr }
 }
 
-class SemOrBitwiseExpr extends SemBinaryExpr {
-  override OrBitwiseExpr expr;
+class SemBitXorExpr extends SemBinaryExpr {
+  SemBitXorExpr() { opcode instanceof Opcode::BitXor }
 }
 
-class SemCastExpr extends SemExpr {
-  override CastExpr expr;
+class SemUnaryExpr extends SemKnownExpr {
+  SemExpr operand;
 
-  final SemExpr getExpr() { getJavaExpr(result) = expr.getExpr() }
+  SemUnaryExpr() { Specific::unaryExpr(this, opcode, type, operand) }
+
+  final SemExpr getOperand() { result = operand }
 }
 
-class SemUnaryExpr extends SemExpr {
-  override UnaryExpr expr;
-
-  final SemExpr getExpr() { getJavaExpr(result) = expr.getExpr() }
+class SemConvertExpr extends SemUnaryExpr {
+  SemConvertExpr() { opcode instanceof Opcode::Convert }
 }
 
-class SemIncrementExpr extends SemUnaryExpr {
-  SemIncrementExpr() {
-    expr instanceof PreIncExpr
+class SemCopyValueExpr extends SemUnaryExpr {
+  SemCopyValueExpr() { opcode instanceof Opcode::CopyValue }
+}
+
+class SemNegateExpr extends SemUnaryExpr {
+  SemNegateExpr() { opcode instanceof Opcode::Negate }
+}
+
+class SemBitComplementExpr extends SemUnaryExpr {
+  SemBitComplementExpr() { opcode instanceof Opcode::BitComplement }
+}
+
+class SemLogicalNotExpr extends SemUnaryExpr {
+  SemLogicalNotExpr() { opcode instanceof Opcode::LogicalNot }
+}
+
+class SemAddOneExpr extends SemUnaryExpr {
+  SemAddOneExpr() { opcode instanceof Opcode::AddOne }
+}
+
+class SemSubOneExpr extends SemUnaryExpr {
+  SemSubOneExpr() { opcode instanceof Opcode::SubOne }
+}
+
+class SemLoadExpr extends SemKnownExpr {
+  SemLoadExpr() { opcode instanceof Opcode::Load and Specific::loadExpr(this, type) }
+
+  final SemSsaVariable getDef() { result = Specific::getLoadDef(this) }
+}
+
+class SemConditionalExpr extends SemKnownExpr {
+  SemExpr condition;
+  SemExpr trueResult;
+  SemExpr falseResult;
+
+  SemConditionalExpr() {
+    opcode instanceof Opcode::Conditional and
+    Specific::conditionalExpr(this, type, condition, trueResult, falseResult)
+  }
+
+  final SemExpr getBranchExpr(boolean branch) {
+    branch = true and result = trueResult
     or
-    expr instanceof PostIncExpr
+    branch = false and result = falseResult
   }
 }
-
-class SemDecrementExpr extends SemUnaryExpr {
-  SemDecrementExpr() {
-    expr instanceof PreDecExpr
-    or
-    expr instanceof PostDecExpr
-  }
-}
-
-class SemPreIncExpr extends SemIncrementExpr {
-  override PreIncExpr expr;
-}
-
-class SemPreDecExpr extends SemDecrementExpr {
-  override PreDecExpr expr;
-}
-
-class SemPostIncExpr extends SemIncrementExpr {
-  override PostIncExpr expr;
-}
-
-class SemPostDecExpr extends SemDecrementExpr {
-  override PostDecExpr expr;
-}
-
-class SemMinusExpr extends SemUnaryExpr {
-  override MinusExpr expr;
-}
-
-class SemBitNotExpr extends SemUnaryExpr {
-  override BitNotExpr expr;
-}
-
-class SemAssignment extends SemExpr {
-  override Assignment expr;
-
-  final SemExpr getDest() { getJavaExpr(result) = expr.getDest() }
-
-  final SemExpr getRhs() { getJavaExpr(result) = expr.getRhs() }
-}
-
-class SemAssignExpr extends SemAssignment {
-  override AssignExpr expr;
-}
-
-class SemAssignOp extends SemAssignment {
-  override AssignOp expr;
-
-  final SemExpr getSource() { getJavaExpr(result) = expr.getSource() }
-}
-
-class SemAssignAddExpr extends SemAssignOp {
-  override AssignAddExpr expr;
-}
-
-class SemAssignOrExpr extends SemAssignOp {
-  override AssignOrExpr expr;
-}
-
-class SemAssignSubExpr extends SemAssignOp {
-  override AssignSubExpr expr;
-}
-
-class SemAssignMulExpr extends SemAssignOp {
-  override AssignMulExpr expr;
-}
-
-class SemAssignDivExpr extends SemAssignOp {
-  override AssignDivExpr expr;
-}
-
-class SemAssignRemExpr extends SemAssignOp {
-  override AssignRemExpr expr;
-}
-
-class SemAssignLShiftExpr extends SemAssignOp {
-  override AssignLShiftExpr expr;
-}
-
-class SemAssignRShiftExpr extends SemAssignOp {
-  override AssignRShiftExpr expr;
-}
-
-class SemAssignURShiftExpr extends SemAssignOp {
-  override AssignURShiftExpr expr;
-}
-
-class SemAssignAndExpr extends SemAssignOp {
-  override AssignAndExpr expr;
-}
-
-class SemVariableAssign extends SemExpr {
-  override VariableAssign expr;
-
-  final SemExpr getSource() { getJavaExpr(result) = expr.getSource() }
-}
-
-class SemVarAccess extends SemExpr {
-  override VarAccess expr;
-}
-
-class SemVariableUpdate extends SemExpr {
-  override VariableUpdate expr;
-}
-
-class SemPlusExpr extends SemUnaryExpr {
-  override PlusExpr expr;
-}
-
-class SemConditionalExpr extends SemExpr {
-  override ConditionalExpr expr;
-
-  final SemExpr getBranchExpr(boolean branch) { getJavaExpr(result) = expr.getBranchExpr(branch) }
-}
-
-class SemNullLiteral extends SemExpr {
-  override NullLiteral expr;
-}
-
-Expr getJavaExpr(SemExpr e) { e = MkExpr(result) }
-
-SemExpr getSemanticExpr(Expr e) { e = getJavaExpr(result) }

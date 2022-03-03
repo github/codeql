@@ -5,10 +5,61 @@ private import semmle.code.java.Collections
 private import semmle.code.java.Maps
 private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 private import semmle.code.java.security.RandomDataSource
+private import semmle.code.java.semantic.SemanticExprSpecific
 private import semmle.code.java.semantic.SemanticExpr
 private import semmle.code.java.semantic.SemanticSSA
 private import semmle.code.java.semantic.SemanticType
 private import ArrayLengthFlow
+
+/**
+ * Holds if the specified expression should be excluded from the result of `ssaRead()`.
+ *
+ * This predicate is to keep the results identical to the original Java implementation. It should be
+ * removed once we hae the new implementation matching the old results exactly.
+ */
+predicate ignoreSsaReadCopy(SemExpr e) {
+  getJavaExpr(e) instanceof LocalVariableDeclExpr
+  or
+  getJavaExpr(e) instanceof PlusExpr
+  or
+  getJavaExpr(e) instanceof PostIncExpr
+  or
+  getJavaExpr(e) instanceof PostDecExpr
+}
+
+/**
+ * Holds if the specified expression should be excluded from the result of `ssaRead()`.
+ *
+ * This predicate is to keep the results identical to the original Java implementation. It should be
+ * removed once we hae the new implementation matching the old results exactly.
+ */
+predicate ignoreSsaReadArithmeticExpr(SemExpr e) { getJavaExpr(e) instanceof AssignOp }
+
+/**
+ * Holds if the specified variable should be excluded from the result of `ssaRead()`.
+ *
+ * This predicate is to keep the results identical to the original Java implementation. It should be
+ * removed once we hae the new implementation matching the old results exactly.
+ */
+predicate ignoreSsaReadAssignment(SemSsaVariable v) {
+  getJavaSsaVariable(v).(SsaExplicitUpdate).getDefiningExpr() instanceof LocalVariableDeclExpr
+}
+
+/**
+ * Adds additional results to `ssaRead()` that are specific to Java.
+ *
+ * This predicate handles propagation of offsets for post-increment and post-decrement expressions
+ * in exactly the same way as the old Java implementation. Once the new implementation matches the
+ * old one, we should remove this predicate and propagate deltas for all similar patterns, whether
+ * or not they come from a post-increment/decrement expression.
+ */
+SemExpr specificSsaRead(SemSsaVariable v, int delta) {
+  exists(SsaExplicitUpdate ssaVar | ssaVar = getJavaSsaVariable(v) |
+    result = getSemanticExpr(ssaVar.getDefiningExpr().(PostIncExpr)) and delta = 1
+    or
+    result = getSemanticExpr(ssaVar.getDefiningExpr().(PostDecExpr)) and delta = -1
+  )
+}
 
 /**
  * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
@@ -76,23 +127,6 @@ predicate additionalValueFlowStep(SemExpr dest, SemExpr src, int delta) {
     arrayLengthDef(getJavaExpr(dest), a) and
     a.getDimension(0) = getJavaExpr(src) and
     delta = 0
-  )
-}
-
-/**
- * Holds if the specified cast expression is known to not overflow or underflow.
- */
-predicate isSafeCast(SemCastExpr cast) {
-  exists(CastExpr javaCast, Type fromType, Type toType |
-    getSemanticExpr(javaCast) = cast and
-    fromType = javaCast.getExpr().getType() and
-    toType = javaCast.getType()
-  |
-    conversionCannotOverflow(getSemanticType(fromType.(BoxedType).getPrimitiveType()),
-      getSemanticType(toType))
-    or
-    conversionCannotOverflow(getSemanticType(fromType),
-      getSemanticType(toType.(BoxedType).getPrimitiveType()))
   )
 }
 

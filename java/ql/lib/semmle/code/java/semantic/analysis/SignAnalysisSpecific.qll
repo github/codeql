@@ -8,113 +8,6 @@ module Private {
   private import semmle.code.java.semantic.SemanticGuard
   private import semmle.code.java.semantic.SemanticSSA
   import Impl
-
-  /** Class to represent unary operation. */
-  class UnaryOperation extends SemUnaryExpr {
-    UnaryOperation() {
-      expr instanceof J::PreIncExpr or
-      expr instanceof J::PreDecExpr or
-      expr instanceof J::MinusExpr or
-      expr instanceof J::BitNotExpr
-    }
-
-    /** Returns the operand of this expression. */
-    SemExpr getOperand() { result = getExpr() }
-
-    /** Returns the operation representing this expression. */
-    TUnarySignOperation getOp() {
-      this instanceof SemPreIncExpr and result = TIncOp()
-      or
-      this instanceof SemPreDecExpr and result = TDecOp()
-      or
-      this instanceof SemMinusExpr and result = TNegOp()
-      or
-      this instanceof SemBitNotExpr and result = TBitNotOp()
-    }
-  }
-
-  /** Class to represent binary operation. */
-  class BinaryOperation extends SemExpr {
-    BinaryOperation() {
-      expr instanceof J::AddExpr or
-      expr instanceof J::AssignAddExpr or
-      expr instanceof J::SubExpr or
-      expr instanceof J::AssignSubExpr or
-      expr instanceof J::MulExpr or
-      expr instanceof J::AssignMulExpr or
-      expr instanceof J::DivExpr or
-      expr instanceof J::AssignDivExpr or
-      expr instanceof J::RemExpr or
-      expr instanceof J::AssignRemExpr or
-      expr instanceof J::AndBitwiseExpr or
-      expr instanceof J::AssignAndExpr or
-      expr instanceof J::OrBitwiseExpr or
-      expr instanceof J::AssignOrExpr or
-      expr instanceof J::XorBitwiseExpr or
-      expr instanceof J::AssignXorExpr or
-      expr instanceof J::LShiftExpr or
-      expr instanceof J::AssignLShiftExpr or
-      expr instanceof J::RShiftExpr or
-      expr instanceof J::AssignRShiftExpr or
-      expr instanceof J::URShiftExpr or
-      expr instanceof J::AssignURShiftExpr
-    }
-
-    /** Returns the operation representing this expression. */
-    TBinarySignOperation getOp() {
-      expr instanceof J::AddExpr and result = TAddOp()
-      or
-      expr instanceof J::AssignAddExpr and result = TAddOp()
-      or
-      expr instanceof J::SubExpr and result = TSubOp()
-      or
-      expr instanceof J::AssignSubExpr and result = TSubOp()
-      or
-      expr instanceof J::MulExpr and result = TMulOp()
-      or
-      expr instanceof J::AssignMulExpr and result = TMulOp()
-      or
-      expr instanceof J::DivExpr and result = TDivOp()
-      or
-      expr instanceof J::AssignDivExpr and result = TDivOp()
-      or
-      expr instanceof J::RemExpr and result = TRemOp()
-      or
-      expr instanceof J::AssignRemExpr and result = TRemOp()
-      or
-      expr instanceof J::AndBitwiseExpr and result = TBitAndOp()
-      or
-      expr instanceof J::AssignAndExpr and result = TBitAndOp()
-      or
-      expr instanceof J::OrBitwiseExpr and result = TBitOrOp()
-      or
-      expr instanceof J::AssignOrExpr and result = TBitOrOp()
-      or
-      expr instanceof J::XorBitwiseExpr and result = TBitXorOp()
-      or
-      expr instanceof J::AssignXorExpr and result = TBitXorOp()
-      or
-      expr instanceof J::LShiftExpr and result = TLShiftOp()
-      or
-      expr instanceof J::AssignLShiftExpr and result = TLShiftOp()
-      or
-      expr instanceof J::RShiftExpr and result = TRShiftOp()
-      or
-      expr instanceof J::AssignRShiftExpr and result = TRShiftOp()
-      or
-      expr instanceof J::URShiftExpr and result = TURShiftOp()
-      or
-      expr instanceof J::AssignURShiftExpr and result = TURShiftOp()
-    }
-
-    SemExpr getLeftOperand() {
-      result = this.(SemBinaryExpr).getLeftOperand() or result = this.(SemAssignOp).getDest()
-    }
-
-    SemExpr getRightOperand() {
-      result = this.(SemBinaryExpr).getRightOperand() or result = this.(SemAssignOp).getRhs()
-    }
-  }
 }
 
 private module Impl {
@@ -128,6 +21,7 @@ private module Impl {
   private import Sign
   private import SignAnalysisCommon
   private import semmle.code.java.semantic.SemanticExpr
+  private import semmle.code.java.semantic.SemanticExprSpecific
   private import semmle.code.java.semantic.SemanticGuard
   private import semmle.code.java.semantic.SemanticSSA
 
@@ -145,6 +39,19 @@ private module Impl {
     )
   }
 
+  Sign languageExprSign(SemExpr e) {
+    exists(VarAccess access | access = getJavaExpr(e) |
+      not exists(SsaVariable v | v.getAUse() = access) and
+      (
+        result = fieldSign(getField(access.(FieldAccess)))
+        or
+        semAnySign(result) and not access instanceof FieldAccess
+      )
+    )
+  }
+
+  predicate ignoreExprSign(SemExpr e) { getJavaExpr(e) instanceof LocalVariableDeclExpr }
+
   /**
    * Holds if `e` has type `NumericOrCharType`, but the sign of `e` is unknown.
    */
@@ -157,24 +64,19 @@ private module Impl {
       expr instanceof MethodAccess and expr.getType() instanceof NumericOrCharType
       or
       expr instanceof ClassInstanceExpr and expr.getType() instanceof NumericOrCharType
+      or
+      exists(CastExpr cast | cast = expr |
+        // TODO: Stop tracking the result if the _result_ is not numeric.
+        not cast.getExpr().getType() instanceof NumericOrCharType
+      )
     )
   }
 
-  /** Returns the underlying variable update of the explicit SSA variable `v`. */
-  SemVariableUpdate getExplicitSsaAssignment(SemSsaVariable v) {
-    result = v.(SemSsaExplicitUpdate).getDefiningExpr()
-  }
-
-  /** Returns the assignment of the variable update `def`. */
-  SemExpr getExprFromSsaAssignment(SemVariableUpdate def) {
-    result = def.(SemVariableAssign).getSource()
-    or
-    exists(SemAssignOp a | a = def and result = a)
-  }
-
   /** Holds if `def` can have any sign. */
-  predicate explicitSsaDefWithAnySign(SemVariableUpdate def) {
-    exists(EnhancedForStmt for | def = getSemanticExpr(for.getVariable()))
+  predicate explicitSsaDefWithAnySign(SemSsaExplicitUpdate def) {
+    exists(EnhancedForStmt for |
+      getJavaSsaVariable(def).(SsaExplicitUpdate).getDefiningExpr() = for.getVariable()
+    )
   }
 
   /** Gets the variable underlying the implicit SSA variable `v`. */
@@ -214,7 +116,7 @@ private module Impl {
   /** Returned an expression that is assigned to `f`. */
   private SemExpr getAssignedValueToField(Field f) {
     result = getSemanticExpr(f.getAnAssignedValue()) or
-    result = any(SemAssignOp a | a.getDest() = getSemanticExpr(f.getAnAccess()))
+    result = getSemanticExpr(any(AssignOp a | a.getDest() = f.getAnAccess()))
   }
 
   /** Holds if `f` can have any sign. */
@@ -252,17 +154,15 @@ private module Impl {
 
   /** Returns a sub expression of `e` for expression types where the sign depends on the child. */
   SemExpr getASubExprWithSameSign(SemExpr e) {
-    result = e.(SemAssignExpr).getRhs() or
-    result = e.(SemPlusExpr).getExpr() or
-    result = e.(SemPostIncExpr).getExpr() or
-    result = e.(SemPostDecExpr).getExpr() or
+    result = e.(SemCopyValueExpr).getOperand() or
     result = getSemanticExpr(getJavaExpr(e).(ChooseExpr).getAResultExpr()) or
-    result = e.(SemCastExpr).getExpr()
+    result = e.(SemConvertExpr).getOperand() or
+    result = getSemanticExpr(getJavaExpr(e).(CastExpr).getExpr()) // REVIEW: Should only apply to trackable operations
   }
 
   private Field getField(FieldAccess fa) { result = fa.getField() }
 
-  Sign getVarAccessSign(SemVarAccess access) {
+  Sign getLoadSign(SemLoadExpr access) {
     result = fieldSign(getField(getJavaExpr(access).(FieldAccess)))
     or
     semAnySign(result) and not getJavaExpr(access) instanceof FieldAccess

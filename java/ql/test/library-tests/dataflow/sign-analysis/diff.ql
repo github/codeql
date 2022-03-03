@@ -1,18 +1,34 @@
 import java
 import semmle.code.java.dataflow.SignAnalysis
 import semmle.code.java.semantic.analysis.SignAnalysisCommon
+import semmle.code.java.semantic.SemanticCFG
 import semmle.code.java.semantic.SemanticExpr
+import semmle.code.java.semantic.SemanticExprSpecific
+import semmle.code.java.semantic.SemanticSSA
+import semmle.code.java.semantic.SemanticType
+import semmle.code.java.dataflow.SSA
+import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
+import SignAnalysisCommonTest
+import SemSignAnalysisCommonTest
 
-string getSemanticSign(Expr e) {
-  result = concat(string s | s = semExprSign(getSemanticExpr(e)).toString() | s, "")
+predicate interestingLocation(Location loc) {
+  //  loc.getFile().getBaseName() = "UnsignedLongs.java" and
+  // loc.getStartLine() in [470 .. 477] and
+  any()
 }
 
-string getASTSign(Expr e) { result = concat(string s | s = exprSign(e).toString() | s, "") }
+query predicate diff_exprSign(SemExpr e, string astSign, string semSign) {
+  getJavaExpr(e).getEnclosingCallable().fromSource() and
+  interestingLocation(e.getLocation()) and
+  semSign = concat(semExprSign(e).toString(), "") and
+  astSign = concat(exprSign(getJavaExpr(e)).toString(), "") and
+  astSign != semSign
+}
 
-from Expr e, string semSign, string astSign
-where
-  e.getEnclosingCallable().fromSource() and
-  semSign = getSemanticSign(e) and
-  astSign = getASTSign(e) and
-  semSign != astSign
-select e, "AST sign was '" + astSign + "', but semantic sign was '" + semSign + "'."
+query predicate diff_ssaDefSign(SemSsaVariable v, string astSign, string semSign) {
+  getJavaBasicBlock(v.getBasicBlock()).getEnclosingCallable().fromSource() and
+  interestingLocation(v.getBasicBlock().getLocation()) and
+  semSign = concat(testSemSsaDefSign(v).toString(), "") and
+  astSign = concat(testSsaDefSign(getJavaSsaVariable(v)).toString(), "") and
+  astSign != semSign
+}

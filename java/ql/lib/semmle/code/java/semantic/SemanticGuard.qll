@@ -7,6 +7,7 @@ private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import SemanticCFG
 private import SemanticExpr
+private import SemanticExprSpecific
 private import SemanticSSA
 
 class LanguageGuard = Guard;
@@ -68,7 +69,7 @@ predicate semGuardControlsSsaRead(SemGuard guard, SemSsaReadPosition controlled,
   )
 }
 
-SemGuard semGetComparisonGuard(SemComparisonExpr e) { result = getSemanticGuard(getJavaExpr(e)) }
+SemGuard semGetComparisonGuard(SemRelationalExpr e) { result = getSemanticGuard(getJavaExpr(e)) }
 
 SemGuard getSemanticGuard(LanguageGuard guard) { result = MkSemGuard(guard) }
 

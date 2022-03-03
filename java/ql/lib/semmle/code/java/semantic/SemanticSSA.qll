@@ -8,6 +8,7 @@ private import SemanticCFG
 private import SemanticExpr
 private import SemanticType
 private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
+private import SemanticExprSpecific
 
 private newtype TSemSsaVariable = MkSemSsaVariable(SSA::SsaVariable var)
 
@@ -30,7 +31,9 @@ class SemSsaVariable extends TSemSsaVariable {
 class SemSsaExplicitUpdate extends SemSsaVariable {
   override SSA::SsaExplicitUpdate var;
 
-  final SemExpr getDefiningExpr() { result = getSemanticExpr(var.getDefiningExpr()) }
+  final SemExpr getSourceExpr() { result = getUpdateExpr(var) }
+
+  deprecated final SemExpr getDefiningExpr() { result = getSemanticExpr(var.getDefiningExpr()) }
 }
 
 class SemSsaPhiNode extends SemSsaVariable {
@@ -72,6 +75,8 @@ class SemSsaReadPosition extends TSemSsaReadPosition {
 
   final string toString() { result = pos.toString() }
 
+  Location getLocation() { none() }
+
   final predicate hasReadOfVar(SemSsaVariable var) { pos.hasReadOfVar(getJavaSsaVariable(var)) }
 }
 
@@ -82,6 +87,8 @@ class SemSsaReadPositionPhiInputEdge extends SemSsaReadPosition {
     pos.phiInput(getJavaSsaVariable(phi), getJavaSsaVariable(inp))
   }
 
+  override Location getLocation() { result = getPhiBlock().getLocation() }
+
   SemBasicBlock getOrigBlock() { result = getSemanticBasicBlock(pos.getOrigBlock()) }
 
   SemBasicBlock getPhiBlock() { result = getSemanticBasicBlock(pos.getPhiBlock()) }
@@ -89,6 +96,8 @@ class SemSsaReadPositionPhiInputEdge extends SemSsaReadPosition {
 
 class SemSsaReadPositionBlock extends SemSsaReadPosition {
   override SsaReadPositionBlock pos;
+
+  override Location getLocation() { result = getBlock().getLocation() }
 
   SemBasicBlock getBlock() { result = getSemanticBasicBlock(pos.getBlock()) }
 

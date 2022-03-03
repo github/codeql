@@ -45,9 +45,9 @@ private predicate unknownSign(SemExpr e) {
   (
     exists(SemIntegerLiteralExpr lit | lit = e and not exists(lit.getIntValue()))
     or
-    exists(SemCastExpr cast, SemType fromtyp |
+    exists(SemConvertExpr cast, SemType fromtyp |
       cast = e and
-      fromtyp = getTrackedType(cast.getExpr()) and
+      fromtyp = getTrackedType(cast.getOperand()) and
       not fromtyp instanceof SemNumericType
     )
     or
@@ -62,7 +62,7 @@ private predicate unknownSign(SemExpr e) {
 private predicate lowerBound(
   SemExpr lowerbound, SemSsaVariable v, SemSsaReadPosition pos, boolean isStrict
 ) {
-  exists(boolean testIsTrue, SemComparisonExpr comp |
+  exists(boolean testIsTrue, SemRelationalExpr comp |
     pos.hasReadOfVar(v) and
     semGuardControlsSsaRead(semGetComparisonGuard(comp), pos, testIsTrue) and
     not unknownSign(lowerbound)
@@ -86,7 +86,7 @@ private predicate lowerBound(
 private predicate upperBound(
   SemExpr upperbound, SemSsaVariable v, SemSsaReadPosition pos, boolean isStrict
 ) {
-  exists(boolean testIsTrue, SemComparisonExpr comp |
+  exists(boolean testIsTrue, SemRelationalExpr comp |
     pos.hasReadOfVar(v) and
     semGuardControlsSsaRead(semGetComparisonGuard(comp), pos, testIsTrue) and
     not unknownSign(upperbound)
@@ -191,7 +191,7 @@ private predicate hasGuard(SemSsaVariable v, SemSsaReadPosition pos, Sign s) {
  */
 pragma[noinline]
 private Sign guardedSsaSign(SemSsaVariable v, SemSsaReadPosition pos) {
-  result = ssaDefSign(v) and
+  result = semSsaDefSign(v) and
   pos.hasReadOfVar(v) and
   hasGuard(v, pos, result)
 }
@@ -202,7 +202,7 @@ private Sign guardedSsaSign(SemSsaVariable v, SemSsaReadPosition pos) {
  */
 pragma[noinline]
 private Sign unguardedSsaSign(SemSsaVariable v, SemSsaReadPosition pos) {
-  result = ssaDefSign(v) and
+  result = semSsaDefSign(v) and
   pos.hasReadOfVar(v) and
   not hasGuard(v, pos, result)
 }
@@ -224,7 +224,7 @@ private Sign guardedSsaSignOk(SemSsaVariable v, SemSsaReadPosition pos) {
 }
 
 /** Gets a possible sign for `v` at `pos`. */
-private Sign ssaSign(SemSsaVariable v, SemSsaReadPosition pos) {
+private Sign semSsaSign(SemSsaVariable v, SemSsaReadPosition pos) {
   result = unguardedSsaSign(v, pos)
   or
   result = guardedSsaSign(v, pos) and
@@ -233,62 +233,62 @@ private Sign ssaSign(SemSsaVariable v, SemSsaReadPosition pos) {
 
 /** Gets a possible sign for `v`. */
 pragma[nomagic]
-private Sign ssaDefSign(SemSsaVariable v) {
-  result = explicitSsaDefSign(v)
+private Sign semSsaDefSign(SemSsaVariable v) {
+  result = semExplicitSsaDefSign(v)
   or
   result = implicitSsaDefSign(v)
   or
   exists(SemSsaPhiNode phi, SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge |
     v = phi and
     edge.phiInput(phi, inp) and
-    result = ssaSign(inp, edge)
+    result = semSsaSign(inp, edge)
+  )
+}
+
+Sign semSsaPhiSign(SemSsaPhiNode phi) {
+  exists(SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge |
+    edge.phiInput(phi, inp) and
+    result = semSsaSign(inp, edge)
   )
 }
 
 /** Returns the sign of explicit SSA definition `v`. */
-private Sign explicitSsaDefSign(SemSsaVariable v) {
-  exists(SemVariableUpdate def | def = getExplicitSsaAssignment(v) |
-    result = semExprSign(getExprFromSsaAssignment(def))
-    or
-    semAnySign(result) and explicitSsaDefWithAnySign(def)
-    or
-    result = semExprSign(def.(SemIncrementExpr).getExpr()).inc()
-    or
-    result = semExprSign(def.(SemDecrementExpr).getExpr()).dec()
-  )
+Sign semExplicitSsaDefSign(SemSsaVariable v) {
+  semAnySign(result) and explicitSsaDefWithAnySign(v)
+  or
+  result = semExprSign(v.(SemSsaExplicitUpdate).getSourceExpr())
 }
 
 /** Gets a possible sign for `e`. */
 cached
-Sign semExprSign(SemExpr e) {
+Sign semExprSign(SemExpr e) { result = semExprSign(e, _) }
+
+Sign semExprSign(SemExpr e, string branch) {
+  not ignoreExprSign(e) and
   exists(Sign s |
     // We know exactly what the sign is. This handles constants, collection sizes, etc.
-    s = certainExprSign(e)
+    s = certainExprSign(e) and branch = "certain"
     or
     not exists(certainExprSign(e)) and
     (
       // We'll never know what the sign is.
-      semAnySign(s) and unknownSign(e)
+      semAnySign(s) and unknownSign(e) and branch = "unknown"
       or
       // Propagate via SSA
       exists(SemSsaVariable v | v.getAUse() = e |
         // Propagate the sign from the def of `v`, incorporating any inference from guards.
-        s = ssaSign(v, any(SemSsaReadPositionBlock bb | bb.getAnExpr() = e))
+        s = semSsaSign(v, any(SemSsaReadPositionBlock bb | bb.getAnExpr() = e)) and branch = "use"
         or
         // No block for this read. Just use the sign of the def.
         // REVIEW: How can this happen?
         not exists(SemSsaReadPositionBlock bb | bb.getAnExpr() = e) and
-        s = ssaDefSign(v)
+        s = semSsaDefSign(v) and
+        branch = "def only"
       )
       or
-      // A variable access without an SSA definition. Let the language give us any constraints it
-      // can.
-      exists(SemVarAccess access | access = e |
-        not exists(SemSsaVariable v | v.getAUse() = access) and
-        s = getVarAccessSign(access)
-      )
+      s = languageExprSign(e) and branch = "language" // Let the language try
       or
-      s = specificSubExprSign(e)
+      s = specificSubExprSign(e) and branch = "specific"
     )
   |
     if getTrackedType(e) instanceof SemUnsignedIntegerType and s = TNeg()
@@ -307,12 +307,12 @@ private Sign specificSubExprSign(SemExpr e) {
     div.getRightOperand().(SemFloatingPointLiteralExpr).getFloatValue() = 0
   )
   or
-  exists(UnaryOperation unary | unary = e |
-    result = semExprSign(unary.getOperand()).applyUnaryOp(unary.getOp())
+  exists(SemUnaryExpr unary | unary = e |
+    result = semExprSign(unary.getOperand()).applyUnaryOp(unary.getOpcode())
   )
   or
   exists(Sign s1, Sign s2 | binaryOpSigns(e, s1, s2) |
-    result = s1.applyBinaryOp(s2, e.(BinaryOperation).getOp())
+    result = s1.applyBinaryOp(s2, e.(SemBinaryExpr).getOpcode())
   )
 }
 
@@ -322,9 +322,9 @@ private predicate binaryOpSigns(SemExpr e, Sign lhs, Sign rhs) {
   rhs = binaryOpRhsSign(e)
 }
 
-private Sign binaryOpLhsSign(BinaryOperation e) { result = semExprSign(e.getLeftOperand()) }
+private Sign binaryOpLhsSign(SemBinaryExpr e) { result = semExprSign(e.getLeftOperand()) }
 
-private Sign binaryOpRhsSign(BinaryOperation e) { result = semExprSign(e.getRightOperand()) }
+private Sign binaryOpRhsSign(SemBinaryExpr e) { result = semExprSign(e.getRightOperand()) }
 
 /**
  * Dummy predicate that holds for any sign. This is added to improve readability
@@ -356,4 +356,8 @@ predicate semStrictlyNegative(SemExpr e) {
   semExprSign(e) = TNeg() and
   not semExprSign(e) = TPos() and
   not semExprSign(e) = TZero()
+}
+
+module SemSignAnalysisCommonTest {
+  predicate testSemSsaDefSign = semSsaDefSign/1;
 }
