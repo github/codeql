@@ -53,7 +53,7 @@ module XML {
     /**
      * Holds if this XML parsing is vulnerable to `kind`.
      */
-    predicate vulnerable(XMLVulnerabilityKind kind) { super.vulnerable(kind) }
+    predicate vulnerableTo(XMLVulnerabilityKind kind) { super.vulnerableTo(kind) }
   }
 
   /** Provides classes for modeling XML parsing APIs. */
@@ -73,7 +73,7 @@ module XML {
       /**
        * Holds if this XML parsing is vulnerable to `kind`.
        */
-      abstract predicate vulnerable(XMLVulnerabilityKind kind);
+      abstract predicate vulnerableTo(XMLVulnerabilityKind kind);
     }
   }
 }

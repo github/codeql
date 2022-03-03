@@ -58,7 +58,7 @@ module XmlEntityInjection {
 
     XMLParsingInputAsSink() { this = xmlParsing.getAnInput() }
 
-    override string getVulnerableKind() { xmlParsing.vulnerable(result) }
+    override string getVulnerableKind() { xmlParsing.vulnerableTo(result) }
   }
 
   /**

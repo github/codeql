@@ -66,7 +66,7 @@ private module XmlEtree {
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
 
-      override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
         kind.isBillionLaughs() or kind.isQuadraticBlowup()
       }
     }
@@ -103,7 +103,7 @@ private module XmlEtree {
         ]
     }
 
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
       // note: it does not matter what `xml.etree` parser you are using, you cannot
       // change the security features anyway :|
       kind.isBillionLaughs() or kind.isQuadraticBlowup()
@@ -218,7 +218,7 @@ private module SaxBasedParsing {
 
     override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("source")] }
 
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
       // always vuln to these
       (kind.isBillionLaughs() or kind.isQuadraticBlowup())
       or
@@ -251,7 +251,7 @@ private module SaxBasedParsing {
         ]
     }
 
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
       // always vuln to these
       (kind.isBillionLaughs() or kind.isQuadraticBlowup())
       or
@@ -290,7 +290,7 @@ private module SaxBasedParsing {
 
     DataFlow::Node getParserArg() { result in [this.getArg(1), this.getArgByName("parser")] }
 
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
       this.getParserArg() = saxParserWithFeatureExternalGesTurnedOn() and
       (kind.isXxe() or kind.isDtdRetrieval())
       or
@@ -317,7 +317,7 @@ private module Lxml {
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode {
       /** Holds if this instance is vulnerable to `kind`. */
-      abstract predicate vulnerable(XML::XMLVulnerabilityKind kind);
+      abstract predicate vulnerableTo(XML::XMLVulnerabilityKind kind);
     }
 
     /**
@@ -331,7 +331,7 @@ private module Lxml {
       }
 
       // NOTE: it's not possible to change settings of a parser after constructing it
-      override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
         kind.isXxe() and
         (
           // resolve_entities has default True
@@ -360,7 +360,7 @@ private module Lxml {
           API::moduleImport("lxml").getMember("etree").getMember("get_default_parser").getACall()
       }
 
-      override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
         // as highlighted by
         // https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
         // by default XXE is allow. so as long as the default parser has not been
@@ -385,7 +385,7 @@ private module Lxml {
 
     /** Gets a reference to an `lxml.etree` parser instance, that is vulnerable to `kind`. */
     DataFlow::Node instanceVulnerableTo(XML::XMLVulnerabilityKind kind) {
-      exists(InstanceSource origin | result = instance(origin) and origin.vulnerable(kind))
+      exists(InstanceSource origin | result = instance(origin) and origin.vulnerableTo(kind))
     }
 
     /**
@@ -396,7 +396,7 @@ private module Lxml {
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
 
-      override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
         this.calls(instanceVulnerableTo(kind), "feed")
       }
     }
@@ -435,7 +435,7 @@ private module Lxml {
 
     DataFlow::Node getParserArg() { result in [this.getArg(1), this.getArgByName("parser")] }
 
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
       this.getParserArg() = XMLParser::instanceVulnerableTo(kind)
       or
       kind.isXxe() and
@@ -455,7 +455,7 @@ private module Xmltodict {
       result in [this.getArg(0), this.getArgByName("xml_input")]
     }
 
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
       (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
       this.getArgByName("disable_entities").getALocalSource().asExpr() = any(False f)
     }

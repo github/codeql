@@ -22,7 +22,7 @@ class XmlParsingTest extends InlineExpectationsTest {
       )
       or
       exists(XML::XMLVulnerabilityKind kind |
-        parsing.vulnerable(kind) and
+        parsing.vulnerableTo(kind) and
         location = parsing.getLocation() and
         element = parsing.toString() and
         value = "'" + kind + "'" and
