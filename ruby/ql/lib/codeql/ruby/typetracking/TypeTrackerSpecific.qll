@@ -15,6 +15,7 @@ predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
 
 predicate jumpStep = DataFlowPrivate::jumpStep/2;
 
+/** Holds if there is a level step from `pred` to `succ`. */
 predicate levelStep(Node pred, Node succ) { none() }
 
 /**
