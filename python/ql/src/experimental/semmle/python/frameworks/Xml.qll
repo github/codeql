@@ -10,7 +10,7 @@ private import semmle.python.ApiGraphs
 
 private module XmlEtree {
   /**
-   * Gets a call to `xml.etree.ElementTree.XMLParser`.
+   * A call to `xml.etree.ElementTree.XMLParser`.
    */
   private class XMLEtreeParser extends DataFlow::CallCfgNode, XML::XMLParser::Range {
     XMLEtreeParser() {
@@ -30,22 +30,13 @@ private module XmlEtree {
   }
 
   /**
-   * Gets a call to:
-   * * `xml.etree.ElementTree.fromstring`
-   * * `xml.etree.ElementTree.fromstringlist`
-   * * `xml.etree.ElementTree.XML`
-   * * `xml.etree.ElementTree.parse`
-   *
-   * Given the following example:
-   *
-   * ```py
-   * parser = lxml.etree.XMLParser()
-   * xml.etree.ElementTree.fromstring(xml_content, parser=parser).text
-   * ```
-   *
-   * * `this` would be `xml.etree.ElementTree.fromstring(xml_content, parser=parser)`.
-   * * `getAnInput()`'s result would be `xml_content`.
-   * * `vulnerable(kind)`'s `kind` would be `XXE`.
+   * A call to either of:
+   * - `xml.etree.ElementTree.fromstring`
+   * - `xml.etree.ElementTree.fromstringlist`
+   * - `xml.etree.ElementTree.XML`
+   * - `xml.etree.ElementTree.XMLID`
+   * - `xml.etree.ElementTree.parse`
+   * - `xml.etree.ElementTree.iterparse`
    */
   private class XMLEtreeParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
     XMLEtreeParsing() {
@@ -186,16 +177,7 @@ private module SaxBasedParsing {
   }
 
   /**
-   * A XML parsing call with a sax parser.
-   *
-   * ```py
-   * BadHandler = MainHandler()
-   * parser = xml.sax.make_parser()
-   * parser.setContentHandler(BadHandler)
-   * parser.setFeature(xml.sax.handler.feature_external_ges, False)
-   * parser.parse(StringIO(xml_content))
-   * parsed_xml = BadHandler._result
-   * ```
+   * A call to the `parse` method on a SAX XML parser.
    */
   private class XMLSaxInstanceParsing extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
     XMLSaxInstanceParsing() {
@@ -346,22 +328,14 @@ private module Lxml {
   }
 
   /**
-   * Gets a call to:
-   * * `lxml.etree.fromstring`
-   * * `xml.etree.fromstringlist`
-   * * `xml.etree.XML`
-   * * `xml.etree.parse`
+   * A call to either of:
+   * - `lxml.etree.fromstring`
+   * - `lxml.etree.fromstringlist`
+   * - `lxml.etree.XML`
+   * - `lxml.etree.parse`
+   * - `lxml.etree.parseid`
    *
-   * Given the following example:
-   *
-   * ```py
-   * parser = lxml.etree.XMLParser()
-   * lxml.etree.fromstring(xml_content, parser=parser).text
-   * ```
-   *
-   * * `this` would be `lxml.etree.fromstring(xml_content, parser=parser)`.
-   * * `getAnInput()`'s result would be `xml_content`.
-   * * `vulnerable(kind)`'s `kind` would be `XXE`.
+   * See https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.fromstring
    */
   private class LXMLParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
     LXMLParsing() {
@@ -395,7 +369,7 @@ private module Lxml {
   }
 
   /**
-   * A call to the `feed` method of an `lxml.etree` parser.
+   * A call to the `feed` method of an `lxml` parser.
    */
   private class LXMLEtreeParserFeedCall extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
     LXMLEtreeParserFeedCall() {
@@ -424,17 +398,7 @@ private module Lxml {
 
 private module Xmltodict {
   /**
-   * Gets a call to `xmltodict.parse`.
-   *
-   * Given the following example:
-   *
-   * ```py
-   * xmltodict.parse(xml_content, disable_entities=False)
-   * ```
-   *
-   * * `this` would be `xmltodict.parse(xml_content, disable_entities=False)`.
-   * * `getAnInput()`'s result would be `xml_content`.
-   * * `vulnerable(kind)`'s `kind` would be `Billion Laughs` and `Quadratic Blowup`.
+   * A call to `xmltodict.parse`.
    */
   private class XMLtoDictParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
     XMLtoDictParsing() { this = API::moduleImport("xmltodict").getMember("parse").getACall() }
