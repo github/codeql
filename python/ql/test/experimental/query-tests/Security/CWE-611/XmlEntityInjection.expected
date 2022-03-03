@@ -71,25 +71,25 @@ edges
 | xml_etree.py:60:19:60:25 | ControlFlowNode for request | xml_etree.py:60:19:60:30 | ControlFlowNode for Attribute |
 | xml_etree.py:60:19:60:30 | ControlFlowNode for Attribute | xml_etree.py:60:19:60:45 | ControlFlowNode for Subscript |
 | xml_etree.py:60:19:60:45 | ControlFlowNode for Subscript | xml_etree.py:64:45:64:55 | ControlFlowNode for xml_content |
-| xml_sax_make_parser.py:31:19:31:25 | ControlFlowNode for request | xml_sax_make_parser.py:31:19:31:30 | ControlFlowNode for Attribute |
-| xml_sax_make_parser.py:31:19:31:30 | ControlFlowNode for Attribute | xml_sax_make_parser.py:31:19:31:45 | ControlFlowNode for Subscript |
-| xml_sax_make_parser.py:31:19:31:45 | ControlFlowNode for Subscript | xml_sax_make_parser.py:36:18:36:38 | ControlFlowNode for StringIO() |
-| xml_sax_make_parser.py:42:19:42:25 | ControlFlowNode for request | xml_sax_make_parser.py:42:19:42:30 | ControlFlowNode for Attribute |
-| xml_sax_make_parser.py:42:19:42:30 | ControlFlowNode for Attribute | xml_sax_make_parser.py:42:19:42:45 | ControlFlowNode for Subscript |
-| xml_sax_make_parser.py:42:19:42:45 | ControlFlowNode for Subscript | xml_sax_make_parser.py:49:18:49:38 | ControlFlowNode for StringIO() |
-| xml_sax_make_parser.py:63:19:63:25 | ControlFlowNode for request | xml_sax_make_parser.py:63:19:63:30 | ControlFlowNode for Attribute |
-| xml_sax_make_parser.py:63:19:63:30 | ControlFlowNode for Attribute | xml_sax_make_parser.py:63:19:63:45 | ControlFlowNode for Subscript |
-| xml_sax_make_parser.py:63:19:63:45 | ControlFlowNode for Subscript | xml_sax_make_parser.py:69:18:69:38 | ControlFlowNode for StringIO() |
-| xml_sax_make_parser.py:75:19:75:25 | ControlFlowNode for request | xml_sax_make_parser.py:75:19:75:30 | ControlFlowNode for Attribute |
-| xml_sax_make_parser.py:75:19:75:30 | ControlFlowNode for Attribute | xml_sax_make_parser.py:75:19:75:45 | ControlFlowNode for Subscript |
-| xml_sax_make_parser.py:75:19:75:45 | ControlFlowNode for Subscript | xml_sax_make_parser.py:79:33:79:53 | ControlFlowNode for StringIO() |
-| xml_sax_make_parser.py:86:19:86:25 | ControlFlowNode for request | xml_sax_make_parser.py:86:19:86:30 | ControlFlowNode for Attribute |
-| xml_sax_make_parser.py:86:19:86:30 | ControlFlowNode for Attribute | xml_sax_make_parser.py:86:19:86:45 | ControlFlowNode for Subscript |
-| xml_sax_make_parser.py:86:19:86:45 | ControlFlowNode for Subscript | xml_sax_make_parser.py:91:22:91:42 | ControlFlowNode for StringIO() |
-| xml_sax_make_parser.py:86:19:86:45 | ControlFlowNode for Subscript | xml_sax_make_parser.py:93:22:93:42 | ControlFlowNode for StringIO() |
-| xml_sax_make_parser.py:98:19:98:25 | ControlFlowNode for request | xml_sax_make_parser.py:98:19:98:30 | ControlFlowNode for Attribute |
-| xml_sax_make_parser.py:98:19:98:30 | ControlFlowNode for Attribute | xml_sax_make_parser.py:98:19:98:45 | ControlFlowNode for Subscript |
-| xml_sax_make_parser.py:98:19:98:45 | ControlFlowNode for Subscript | xml_sax_make_parser.py:103:18:103:38 | ControlFlowNode for StringIO() |
+| xml_sax.py:31:19:31:25 | ControlFlowNode for request | xml_sax.py:31:19:31:30 | ControlFlowNode for Attribute |
+| xml_sax.py:31:19:31:30 | ControlFlowNode for Attribute | xml_sax.py:31:19:31:45 | ControlFlowNode for Subscript |
+| xml_sax.py:31:19:31:45 | ControlFlowNode for Subscript | xml_sax.py:36:18:36:38 | ControlFlowNode for StringIO() |
+| xml_sax.py:42:19:42:25 | ControlFlowNode for request | xml_sax.py:42:19:42:30 | ControlFlowNode for Attribute |
+| xml_sax.py:42:19:42:30 | ControlFlowNode for Attribute | xml_sax.py:42:19:42:45 | ControlFlowNode for Subscript |
+| xml_sax.py:42:19:42:45 | ControlFlowNode for Subscript | xml_sax.py:49:18:49:38 | ControlFlowNode for StringIO() |
+| xml_sax.py:63:19:63:25 | ControlFlowNode for request | xml_sax.py:63:19:63:30 | ControlFlowNode for Attribute |
+| xml_sax.py:63:19:63:30 | ControlFlowNode for Attribute | xml_sax.py:63:19:63:45 | ControlFlowNode for Subscript |
+| xml_sax.py:63:19:63:45 | ControlFlowNode for Subscript | xml_sax.py:69:18:69:38 | ControlFlowNode for StringIO() |
+| xml_sax.py:75:19:75:25 | ControlFlowNode for request | xml_sax.py:75:19:75:30 | ControlFlowNode for Attribute |
+| xml_sax.py:75:19:75:30 | ControlFlowNode for Attribute | xml_sax.py:75:19:75:45 | ControlFlowNode for Subscript |
+| xml_sax.py:75:19:75:45 | ControlFlowNode for Subscript | xml_sax.py:79:33:79:53 | ControlFlowNode for StringIO() |
+| xml_sax.py:86:19:86:25 | ControlFlowNode for request | xml_sax.py:86:19:86:30 | ControlFlowNode for Attribute |
+| xml_sax.py:86:19:86:30 | ControlFlowNode for Attribute | xml_sax.py:86:19:86:45 | ControlFlowNode for Subscript |
+| xml_sax.py:86:19:86:45 | ControlFlowNode for Subscript | xml_sax.py:91:22:91:42 | ControlFlowNode for StringIO() |
+| xml_sax.py:86:19:86:45 | ControlFlowNode for Subscript | xml_sax.py:93:22:93:42 | ControlFlowNode for StringIO() |
+| xml_sax.py:98:19:98:25 | ControlFlowNode for request | xml_sax.py:98:19:98:30 | ControlFlowNode for Attribute |
+| xml_sax.py:98:19:98:30 | ControlFlowNode for Attribute | xml_sax.py:98:19:98:45 | ControlFlowNode for Subscript |
+| xml_sax.py:98:19:98:45 | ControlFlowNode for Subscript | xml_sax.py:103:18:103:38 | ControlFlowNode for StringIO() |
 | xml_to_dict.py:9:19:9:25 | ControlFlowNode for request | xml_to_dict.py:9:19:9:30 | ControlFlowNode for Attribute |
 | xml_to_dict.py:9:19:9:30 | ControlFlowNode for Attribute | xml_to_dict.py:9:19:9:45 | ControlFlowNode for Subscript |
 | xml_to_dict.py:9:19:9:45 | ControlFlowNode for Subscript | xml_to_dict.py:11:28:11:38 | ControlFlowNode for xml_content |
@@ -193,31 +193,31 @@ nodes
 | xml_etree.py:60:19:60:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | xml_etree.py:60:19:60:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | xml_etree.py:64:45:64:55 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
-| xml_sax_make_parser.py:31:19:31:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| xml_sax_make_parser.py:31:19:31:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| xml_sax_make_parser.py:31:19:31:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| xml_sax_make_parser.py:36:18:36:38 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
-| xml_sax_make_parser.py:42:19:42:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| xml_sax_make_parser.py:42:19:42:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| xml_sax_make_parser.py:42:19:42:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| xml_sax_make_parser.py:49:18:49:38 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
-| xml_sax_make_parser.py:63:19:63:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| xml_sax_make_parser.py:63:19:63:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| xml_sax_make_parser.py:63:19:63:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| xml_sax_make_parser.py:69:18:69:38 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
-| xml_sax_make_parser.py:75:19:75:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| xml_sax_make_parser.py:75:19:75:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| xml_sax_make_parser.py:75:19:75:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| xml_sax_make_parser.py:79:33:79:53 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
-| xml_sax_make_parser.py:86:19:86:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| xml_sax_make_parser.py:86:19:86:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| xml_sax_make_parser.py:86:19:86:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| xml_sax_make_parser.py:91:22:91:42 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
-| xml_sax_make_parser.py:93:22:93:42 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
-| xml_sax_make_parser.py:98:19:98:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| xml_sax_make_parser.py:98:19:98:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| xml_sax_make_parser.py:98:19:98:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| xml_sax_make_parser.py:103:18:103:38 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
+| xml_sax.py:31:19:31:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xml_sax.py:31:19:31:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xml_sax.py:31:19:31:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| xml_sax.py:36:18:36:38 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
+| xml_sax.py:42:19:42:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xml_sax.py:42:19:42:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xml_sax.py:42:19:42:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| xml_sax.py:49:18:49:38 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
+| xml_sax.py:63:19:63:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xml_sax.py:63:19:63:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xml_sax.py:63:19:63:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| xml_sax.py:69:18:69:38 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
+| xml_sax.py:75:19:75:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xml_sax.py:75:19:75:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xml_sax.py:75:19:75:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| xml_sax.py:79:33:79:53 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
+| xml_sax.py:86:19:86:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xml_sax.py:86:19:86:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xml_sax.py:86:19:86:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| xml_sax.py:91:22:91:42 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
+| xml_sax.py:93:22:93:42 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
+| xml_sax.py:98:19:98:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xml_sax.py:98:19:98:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xml_sax.py:98:19:98:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| xml_sax.py:103:18:103:38 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
 | xml_to_dict.py:9:19:9:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | xml_to_dict.py:9:19:9:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | xml_to_dict.py:9:19:9:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
@@ -250,11 +250,11 @@ subpaths
 | xml_etree.py:42:45:42:55 | ControlFlowNode for xml_content | xml_etree.py:39:19:39:25 | ControlFlowNode for request | xml_etree.py:42:45:42:55 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup. | xml_etree.py:42:45:42:55 | ControlFlowNode for xml_content | This | xml_etree.py:39:19:39:25 | ControlFlowNode for request | user-provided value |
 | xml_etree.py:49:45:49:55 | ControlFlowNode for xml_content | xml_etree.py:46:19:46:25 | ControlFlowNode for request | xml_etree.py:49:45:49:55 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and is vulnerable to: XXE. | xml_etree.py:49:45:49:55 | ControlFlowNode for xml_content | This | xml_etree.py:46:19:46:25 | ControlFlowNode for request | user-provided value |
 | xml_etree.py:56:45:56:55 | ControlFlowNode for xml_content | xml_etree.py:53:19:53:25 | ControlFlowNode for request | xml_etree.py:56:45:56:55 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and is vulnerable to: XXE. | xml_etree.py:56:45:56:55 | ControlFlowNode for xml_content | This | xml_etree.py:53:19:53:25 | ControlFlowNode for request | user-provided value |
-| xml_sax_make_parser.py:36:18:36:38 | ControlFlowNode for StringIO() | xml_sax_make_parser.py:31:19:31:25 | ControlFlowNode for request | xml_sax_make_parser.py:36:18:36:38 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup. | xml_sax_make_parser.py:36:18:36:38 | ControlFlowNode for StringIO() | This | xml_sax_make_parser.py:31:19:31:25 | ControlFlowNode for request | user-provided value |
-| xml_sax_make_parser.py:49:18:49:38 | ControlFlowNode for StringIO() | xml_sax_make_parser.py:42:19:42:25 | ControlFlowNode for request | xml_sax_make_parser.py:49:18:49:38 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup. | xml_sax_make_parser.py:49:18:49:38 | ControlFlowNode for StringIO() | This | xml_sax_make_parser.py:42:19:42:25 | ControlFlowNode for request | user-provided value |
-| xml_sax_make_parser.py:69:18:69:38 | ControlFlowNode for StringIO() | xml_sax_make_parser.py:63:19:63:25 | ControlFlowNode for request | xml_sax_make_parser.py:69:18:69:38 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, DTD retrieval, Quadratic Blowup, XXE. | xml_sax_make_parser.py:69:18:69:38 | ControlFlowNode for StringIO() | This | xml_sax_make_parser.py:63:19:63:25 | ControlFlowNode for request | user-provided value |
-| xml_sax_make_parser.py:79:33:79:53 | ControlFlowNode for StringIO() | xml_sax_make_parser.py:75:19:75:25 | ControlFlowNode for request | xml_sax_make_parser.py:79:33:79:53 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, DTD retrieval, Quadratic Blowup, XXE. | xml_sax_make_parser.py:79:33:79:53 | ControlFlowNode for StringIO() | This | xml_sax_make_parser.py:75:19:75:25 | ControlFlowNode for request | user-provided value |
-| xml_sax_make_parser.py:91:22:91:42 | ControlFlowNode for StringIO() | xml_sax_make_parser.py:86:19:86:25 | ControlFlowNode for request | xml_sax_make_parser.py:91:22:91:42 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, DTD retrieval, Quadratic Blowup, XXE. | xml_sax_make_parser.py:91:22:91:42 | ControlFlowNode for StringIO() | This | xml_sax_make_parser.py:86:19:86:25 | ControlFlowNode for request | user-provided value |
-| xml_sax_make_parser.py:93:22:93:42 | ControlFlowNode for StringIO() | xml_sax_make_parser.py:86:19:86:25 | ControlFlowNode for request | xml_sax_make_parser.py:93:22:93:42 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup. | xml_sax_make_parser.py:93:22:93:42 | ControlFlowNode for StringIO() | This | xml_sax_make_parser.py:86:19:86:25 | ControlFlowNode for request | user-provided value |
-| xml_sax_make_parser.py:103:18:103:38 | ControlFlowNode for StringIO() | xml_sax_make_parser.py:98:19:98:25 | ControlFlowNode for request | xml_sax_make_parser.py:103:18:103:38 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup. | xml_sax_make_parser.py:103:18:103:38 | ControlFlowNode for StringIO() | This | xml_sax_make_parser.py:98:19:98:25 | ControlFlowNode for request | user-provided value |
+| xml_sax.py:36:18:36:38 | ControlFlowNode for StringIO() | xml_sax.py:31:19:31:25 | ControlFlowNode for request | xml_sax.py:36:18:36:38 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup. | xml_sax.py:36:18:36:38 | ControlFlowNode for StringIO() | This | xml_sax.py:31:19:31:25 | ControlFlowNode for request | user-provided value |
+| xml_sax.py:49:18:49:38 | ControlFlowNode for StringIO() | xml_sax.py:42:19:42:25 | ControlFlowNode for request | xml_sax.py:49:18:49:38 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup. | xml_sax.py:49:18:49:38 | ControlFlowNode for StringIO() | This | xml_sax.py:42:19:42:25 | ControlFlowNode for request | user-provided value |
+| xml_sax.py:69:18:69:38 | ControlFlowNode for StringIO() | xml_sax.py:63:19:63:25 | ControlFlowNode for request | xml_sax.py:69:18:69:38 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, DTD retrieval, Quadratic Blowup, XXE. | xml_sax.py:69:18:69:38 | ControlFlowNode for StringIO() | This | xml_sax.py:63:19:63:25 | ControlFlowNode for request | user-provided value |
+| xml_sax.py:79:33:79:53 | ControlFlowNode for StringIO() | xml_sax.py:75:19:75:25 | ControlFlowNode for request | xml_sax.py:79:33:79:53 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, DTD retrieval, Quadratic Blowup, XXE. | xml_sax.py:79:33:79:53 | ControlFlowNode for StringIO() | This | xml_sax.py:75:19:75:25 | ControlFlowNode for request | user-provided value |
+| xml_sax.py:91:22:91:42 | ControlFlowNode for StringIO() | xml_sax.py:86:19:86:25 | ControlFlowNode for request | xml_sax.py:91:22:91:42 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, DTD retrieval, Quadratic Blowup, XXE. | xml_sax.py:91:22:91:42 | ControlFlowNode for StringIO() | This | xml_sax.py:86:19:86:25 | ControlFlowNode for request | user-provided value |
+| xml_sax.py:93:22:93:42 | ControlFlowNode for StringIO() | xml_sax.py:86:19:86:25 | ControlFlowNode for request | xml_sax.py:93:22:93:42 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup. | xml_sax.py:93:22:93:42 | ControlFlowNode for StringIO() | This | xml_sax.py:86:19:86:25 | ControlFlowNode for request | user-provided value |
+| xml_sax.py:103:18:103:38 | ControlFlowNode for StringIO() | xml_sax.py:98:19:98:25 | ControlFlowNode for request | xml_sax.py:103:18:103:38 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup. | xml_sax.py:103:18:103:38 | ControlFlowNode for StringIO() | This | xml_sax.py:98:19:98:25 | ControlFlowNode for request | user-provided value |
 | xml_to_dict.py:17:28:17:38 | ControlFlowNode for xml_content | xml_to_dict.py:15:19:15:25 | ControlFlowNode for request | xml_to_dict.py:17:28:17:38 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and is vulnerable to: Billion Laughs, Quadratic Blowup. | xml_to_dict.py:17:28:17:38 | ControlFlowNode for xml_content | This | xml_to_dict.py:15:19:15:25 | ControlFlowNode for request | user-provided value |
