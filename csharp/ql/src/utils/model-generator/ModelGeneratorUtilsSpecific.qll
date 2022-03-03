@@ -1,6 +1,8 @@
 import csharp
 private import semmle.code.csharp.commons.Util
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
+private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
+private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 
 private predicate isRelevantForModels(Callable api) { not api instanceof MainMethod }
 
@@ -70,4 +72,34 @@ predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
 predicate isRelevantContent(DataFlow::Content f) {
   isRelevantType(f.(DataFlow::FieldContent).getField().getType()) or
   f instanceof DataFlow::ElementContent
+}
+
+private predicate isPrimitiveTypeUsedForBulkData(Type t) {
+  t.getName().regexpMatch("byte|char|Byte|Char")
+}
+
+private string parameterAccess(Parameter p) {
+  if
+    p.getType() instanceof ArrayType and
+    not isPrimitiveTypeUsedForBulkData(p.getType().(ArrayType).getElementType())
+  then result = "Argument[" + p.getPosition() + "].Element"
+  else result = "Argument[" + p.getPosition() + "]"
+}
+
+string parameterNodeAsInput(DataFlow::ParameterNode p) {
+  result = parameterAccess(p.asParameter())
+  or
+  result = "Argument[Qualifier]" and p instanceof InstanceParameterNode
+}
+
+string returnNodeAsOutput(ReturnNodeExt node) {
+  if node.getKind() instanceof ValueReturnKind
+  then result = "ReturnValue"
+  else
+    exists(ParameterPosition pos | pos = node.getKind().(ParamUpdateReturnKind).getPosition() |
+      result = parameterAccess(node.getEnclosingCallable().getParameter(pos.getPosition()))
+      or
+      pos.isThisParameter() and
+      result = "Argument[Qualifier]"
+    )
 }
