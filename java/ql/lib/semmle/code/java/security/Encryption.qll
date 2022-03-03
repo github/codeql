@@ -17,6 +17,7 @@ class X509TrustManager extends RefType {
   X509TrustManager() { this.hasQualifiedName("javax.net.ssl", "X509TrustManager") }
 }
 
+/** The `javax.net.ssl.HttpsURLConnection` class. */
 class HttpsUrlConnection extends RefType {
   HttpsUrlConnection() { this.hasQualifiedName("javax.net.ssl", "HttpsURLConnection") }
 }

@@ -723,6 +723,7 @@ private class ExplicitlySafeXmlReaderFlowConfig extends DataFlow3::Configuration
   override int fieldFlowBranchLimit() { result = 0 }
 }
 
+/** An argument to a safe XML reader. */
 class SafeXmlReaderFlowSink extends Expr {
   SafeXmlReaderFlowSink() {
     this = any(XmlReaderParse p).getQualifier() or
@@ -767,6 +768,7 @@ class ExplicitlySafeXmlReader extends VarAccess {
     )
   }
 
+  /** Holds if `SafeXmlReaderFlowSink` detects flow from this to `sink` */
   predicate flowsTo(SafeXmlReaderFlowSink sink) {
     any(ExplicitlySafeXmlReaderFlowConfig conf)
         .hasFlow(DataFlow::exprNode(this), DataFlow::exprNode(sink))
@@ -810,6 +812,7 @@ class CreatedSafeXmlReader extends Call {
     )
   }
 
+  /** Holds if `CreatedSafeXmlReaderFlowConfig` detects flow from this to `sink` */
   predicate flowsTo(SafeXmlReaderFlowSink sink) {
     any(CreatedSafeXmlReaderFlowConfig conf)
         .hasFlow(DataFlow::exprNode(this), DataFlow::exprNode(sink))
