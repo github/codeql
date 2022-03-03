@@ -1248,7 +1248,7 @@ private module ControlFlowGraphImpl {
     )
     or
     // When expressions:
-    exists(WhenExpr whenexpr | n = whenexpr |
+    exists(WhenExpr whenexpr |
       n = whenexpr and
       result = first(whenexpr.getBranch(0)) and
       completion = NormalCompletion()
