@@ -2310,7 +2310,7 @@ module YAML {
 
     YamlComment() { this = TYamlCommemt(yamlcomment) }
 
-    override string getAPrimaryQlClass() { result = "YAMLComment" }
+    override string getAPrimaryQlClass() { result = "YamlComment" }
   }
 
   /** DEPRECATED: Alias for YamlComment */
@@ -2340,7 +2340,7 @@ module YAML {
       )
     }
 
-    override string getAPrimaryQlClass() { result = "YAMLEntry" }
+    override string getAPrimaryQlClass() { result = "YamlEntry" }
   }
 
   /** DEPRECATED: Alias for YamlEntry */
@@ -2361,7 +2361,7 @@ module YAML {
       )
     }
 
-    override string getAPrimaryQlClass() { result = "YAMLKey" }
+    override string getAPrimaryQlClass() { result = "YamlKey" }
 
     /** Gets the value of this YAML value. */
     string getNamePart(int i) {
@@ -2396,7 +2396,7 @@ module YAML {
      */
     YAMLValue getValue() { result = TYamlValue(yamllistitem.getChild()) }
 
-    override string getAPrimaryQlClass() { result = "YAMLListItem" }
+    override string getAPrimaryQlClass() { result = "YamlListItem" }
   }
 
   /** DEPRECATED: Alias for YamlListItem */

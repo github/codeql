@@ -56,7 +56,7 @@ class JsonValue extends @json_value, Locatable {
   /** If this is a boolean constant, gets its boolean value. */
   boolean getBooleanValue() { result.toString() = this.(JsonBoolean).getValue() }
 
-  override string getAPrimaryQlClass() { result = "JSONValue" }
+  override string getAPrimaryQlClass() { result = "JsonValue" }
 }
 
 /** DEPRECATED: Alias for JsonValue */
@@ -96,7 +96,7 @@ deprecated class JSONPrimitiveValue = JsonPrimitiveValue;
  * ```
  */
 class JsonNull extends @json_null, JsonPrimitiveValue {
-  override string getAPrimaryQlClass() { result = "JSONNull" }
+  override string getAPrimaryQlClass() { result = "JsonNull" }
 }
 
 /** DEPRECATED: Alias for JsonNull */
@@ -113,7 +113,7 @@ deprecated class JSONNull = JsonNull;
  * ```
  */
 class JsonBoolean extends @json_boolean, JsonPrimitiveValue {
-  override string getAPrimaryQlClass() { result = "JSONBoolean" }
+  override string getAPrimaryQlClass() { result = "JsonBoolean" }
 }
 
 /** DEPRECATED: Alias for JsonBoolean */
@@ -130,7 +130,7 @@ deprecated class JSONBoolean = JsonBoolean;
  * ```
  */
 class JsonNumber extends @json_number, JsonPrimitiveValue {
-  override string getAPrimaryQlClass() { result = "JSONNumber" }
+  override string getAPrimaryQlClass() { result = "JsonNumber" }
 }
 
 /** DEPRECATED: Alias for JsonNumber */
@@ -146,7 +146,7 @@ deprecated class JSONNumber = JsonNumber;
  * ```
  */
 class JsonString extends @json_string, JsonPrimitiveValue {
-  override string getAPrimaryQlClass() { result = "JSONString" }
+  override string getAPrimaryQlClass() { result = "JsonString" }
 }
 
 /** DEPRECATED: Alias for JsonString */
@@ -162,7 +162,7 @@ deprecated class JSONString = JsonString;
  * ```
  */
 class JsonArray extends @json_array, JsonValue {
-  override string getAPrimaryQlClass() { result = "JSONArray" }
+  override string getAPrimaryQlClass() { result = "JsonArray" }
 
   /** Gets the string value of the `i`th element of this array. */
   string getElementStringValue(int i) { result = getElementValue(i).getStringValue() }
@@ -181,7 +181,7 @@ deprecated class JSONArray = JsonArray;
  * ```
  */
 class JsonObject extends @json_object, JsonValue {
-  override string getAPrimaryQlClass() { result = "JSONObject" }
+  override string getAPrimaryQlClass() { result = "JsonObject" }
 
   /** Gets the string value of property `name` of this object. */
   string getPropStringValue(string name) { result = getPropValue(name).getStringValue() }

@@ -27,7 +27,7 @@ class JsxNode extends Expr, @jsx_element {
    */
   JsxNode getJsxParent() { this = result.getABodyElement() }
 
-  override string getAPrimaryQlClass() { result = "JSXNode" }
+  override string getAPrimaryQlClass() { result = "JsxNode" }
 }
 
 /** DEPRECATED: Alias for JsxNode */
@@ -67,7 +67,7 @@ class JsxElement extends JsxNode {
     result = getNameExpr().getFirstControlFlowNode()
   }
 
-  override string getAPrimaryQlClass() { result = "JSXElement" }
+  override string getAPrimaryQlClass() { result = "JsxElement" }
 
   /**
    * Holds if this JSX element is a HTML element.
@@ -100,7 +100,7 @@ class JsxFragment extends JsxNode {
     not exists(getABodyElement()) and result = this
   }
 
-  override string getAPrimaryQlClass() { result = "JSXFragment" }
+  override string getAPrimaryQlClass() { result = "JsxFragment" }
 }
 
 /** DEPRECATED: Alias for JsxFragment */
@@ -149,7 +149,7 @@ class JsxAttribute extends AstNode, @jsx_attribute {
 
   override string toString() { properties(this, _, _, _, result) }
 
-  override string getAPrimaryQlClass() { result = "JSXAttribute" }
+  override string getAPrimaryQlClass() { result = "JsxAttribute" }
 }
 
 /** DEPRECATED: Alias for JsxAttribute */
@@ -196,7 +196,7 @@ class JsxQualifiedName extends Expr, @jsx_qualified_name {
     result = getNamespace().getFirstControlFlowNode()
   }
 
-  override string getAPrimaryQlClass() { result = "JSXQualifiedName" }
+  override string getAPrimaryQlClass() { result = "JsxQualifiedName" }
 }
 
 /** DEPRECATED: Alias for JsxQualifiedName */
@@ -255,7 +255,7 @@ deprecated class JSXName = JsxName;
  * </pre>
  */
 class JsxEmptyExpr extends Expr, @jsx_empty_expr {
-  override string getAPrimaryQlClass() { result = "JSXEmptyExpr" }
+  override string getAPrimaryQlClass() { result = "JsxEmptyExpr" }
 }
 
 /** DEPRECATED: Alias for JsxEmptyExpr */
