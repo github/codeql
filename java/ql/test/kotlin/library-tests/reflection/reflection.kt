@@ -73,3 +73,14 @@ class Class1 {
             set(value) = Unit
     }
 }
+
+class Class2<T>(val value: T) { }
+
+fun <T> fn(value: T) { }
+
+fun test() {
+    fn11("", ::Class2)
+    fn11("", ::fn)
+}
+
+fun <T, R> fn11(l: T, transform: (T) -> R) { }

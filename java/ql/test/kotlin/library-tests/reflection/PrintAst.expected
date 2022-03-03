@@ -77,6 +77,67 @@ reflection.kt:
 #   54|         0: [ReturnStmt] return ...
 #   54|           0: [MethodAccess] toString(...)
 #   54|             -1: [ThisAccess] this
+#   79|     5: [Method] fn
+#-----|       2: (Generic Parameters)
+#   79|         0: [TypeVariable] T
+#-----|       4: (Parameters)
+#   79|         0: [Parameter] value
+#   79|       5: [BlockStmt] { ... }
+#   81|     6: [Method] test
+#   81|       5: [BlockStmt] { ... }
+#   82|         0: [ExprStmt] <Expr>;
+#   82|           0: [MethodAccess] fn11(...)
+#   82|             -3: [TypeAccess] Class2<String>
+#   82|               0: [TypeAccess] String
+#   82|             -2: [TypeAccess] String
+#   82|             0: [StringLiteral] 
+#   82|             1: [MemberRefExpr] ...::...
+#   82|               -4: [AnonymousClass] new Function1<String,Class2<String>>(...) { ... }
+#   82|                 1: [Constructor] 
+#   82|                   5: [BlockStmt] { ... }
+#   82|                     0: [SuperConstructorInvocationStmt] super(...)
+#   82|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   82|                     0: [Parameter] a0
+#   82|                   5: [BlockStmt] { ... }
+#   82|                     0: [ReturnStmt] return ...
+#   82|                       0: [ClassInstanceExpr] new Class2<T>(...)
+#   82|                         -3: [TypeAccess] Class2<T>
+#   82|                           0: [TypeAccess] String
+#   82|                         0: [VarAccess] a0
+#   82|               -3: [TypeAccess] Function1<String,Class2<String>>
+#   82|                 0: [TypeAccess] String
+#   82|                 1: [TypeAccess] Class2<String>
+#   82|                   0: [TypeAccess] String
+#   83|         1: [ExprStmt] <Expr>;
+#   83|           0: [MethodAccess] fn11(...)
+#   83|             -3: [TypeAccess] Unit
+#   83|             -2: [TypeAccess] String
+#   83|             0: [StringLiteral] 
+#   83|             1: [MemberRefExpr] ...::...
+#   83|               -4: [AnonymousClass] new Function1<String,Unit>(...) { ... }
+#   83|                 1: [Constructor] 
+#   83|                   5: [BlockStmt] { ... }
+#   83|                     0: [SuperConstructorInvocationStmt] super(...)
+#   83|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   83|                     0: [Parameter] a0
+#   83|                   5: [BlockStmt] { ... }
+#   83|                     0: [ReturnStmt] return ...
+#   83|                       0: [MethodAccess] fn(...)
+#   83|                         -2: [TypeAccess] String
+#   83|                         0: [VarAccess] a0
+#   83|               -3: [TypeAccess] Function1<String,Unit>
+#   83|                 0: [TypeAccess] String
+#   83|                 1: [TypeAccess] Unit
+#   86|     7: [Method] fn11
+#-----|       2: (Generic Parameters)
+#   86|         0: [TypeVariable] T
+#   86|         1: [TypeVariable] R
+#-----|       4: (Parameters)
+#   86|         0: [Parameter] l
+#   86|         1: [Parameter] transform
+#   86|       5: [BlockStmt] { ... }
 #    3|   2: [Class] Reflection
 #    3|     1: [Constructor] Reflection
 #    3|       5: [BlockStmt] { ... }
@@ -660,3 +721,23 @@ reflection.kt:
 #   73|         5: [BlockStmt] { ... }
 #   73|           0: [ReturnStmt] return ...
 #   73|             0: [VarAccess] INSTANCE
+#   77|   4: [Class,GenericType,ParameterizedType] Class2
+#-----|     -2: (Generic Parameters)
+#   77|       0: [TypeVariable] T
+#   77|     1: [Constructor] Class2
+#-----|       4: (Parameters)
+#   77|         0: [Parameter] value
+#   77|       5: [BlockStmt] { ... }
+#   77|         0: [SuperConstructorInvocationStmt] super(...)
+#   77|         1: [BlockStmt] { ... }
+#   77|           0: [ExprStmt] <Expr>;
+#   77|             0: [KtInitializerAssignExpr] ...=...
+#   77|               0: [VarAccess] value
+#   77|     2: [Method] getValue
+#   77|       5: [BlockStmt] { ... }
+#   77|         0: [ReturnStmt] return ...
+#   77|           0: [VarAccess] this.value
+#   77|             -1: [ThisAccess] this
+#   77|     2: [FieldDeclaration] T value;
+#   77|       -1: [TypeAccess] T
+#   77|       0: [VarAccess] value
