@@ -143,6 +143,7 @@ class TestExpectsTimeout:
 
 # ==============================================================================
 import xml.sax
+import xml.sax.handler
 
 class SimpleHandler(xml.sax.ContentHandler):
     def __init__(self):
@@ -447,3 +448,203 @@ class TestXmltodict:
 
         d = xmltodict.parse(dtd_retrieval)
         assert hit_dtd == False
+
+# ==============================================================================
+import xml.dom.minidom
+
+class TestMinidom:
+    @staticmethod
+    @expects_timeout
+    def test_billion_laughs():
+        xml.dom.minidom.parseString(billion_laughs)
+
+    @staticmethod
+    @expects_timeout
+    def test_quardratic_blowup():
+        xml.dom.minidom.parseString(quadratic_blowup)
+
+    @staticmethod
+    def test_ok_xml():
+        doc = xml.dom.minidom.parseString(ok_xml)
+        assert doc.documentElement.tagName == "test"
+        assert doc.documentElement.childNodes[0].data == "hello world"
+
+    @staticmethod
+    def test_xxe():
+        # disabled by default
+        doc = xml.dom.minidom.parseString(local_xxe)
+        assert doc.documentElement.tagName == "test"
+        assert doc.documentElement.childNodes == []
+
+        # but can be turned on
+        parser = xml.sax.make_parser()
+        parser.setFeature(xml.sax.handler.feature_external_ges, True)
+        doc = xml.dom.minidom.parseString(local_xxe, parser=parser)
+        assert doc.documentElement.tagName == "test"
+        assert doc.documentElement.childNodes[0].data == "SECRET_FLAG"
+
+        # which also works remotely
+        global hit_xxe
+        hit_xxe = False
+
+        parser = xml.sax.make_parser()
+        parser.setFeature(xml.sax.handler.feature_external_ges, True)
+        _doc = xml.dom.minidom.parseString(remote_xxe, parser=parser)
+        assert hit_xxe == True
+
+    @staticmethod
+    def test_dtd():
+        # not possible by default
+        global hit_dtd
+        hit_dtd = False
+
+        _doc = xml.dom.minidom.parseString(dtd_retrieval)
+        assert hit_dtd == False
+
+        # but can be turned on
+        parser = xml.sax.make_parser()
+        parser.setFeature(xml.sax.handler.feature_external_ges, True)
+        _doc = xml.dom.minidom.parseString(dtd_retrieval, parser=parser)
+        assert hit_dtd == True
+
+# ==============================================================================
+import xml.dom.pulldom
+
+class TestPulldom:
+    @staticmethod
+    @expects_timeout
+    def test_billion_laughs():
+        doc = xml.dom.pulldom.parseString(billion_laughs)
+        # you NEED to iterate over the items for it to take long
+        for event, node in doc:
+            pass
+
+    @staticmethod
+    @expects_timeout
+    def test_quardratic_blowup():
+        doc = xml.dom.pulldom.parseString(quadratic_blowup)
+        for event, node in doc:
+            pass
+
+    @staticmethod
+    def test_ok_xml():
+        doc = xml.dom.pulldom.parseString(ok_xml)
+        for event, node in doc:
+            if event == xml.dom.pulldom.START_ELEMENT:
+                assert node.tagName == "test"
+            elif event == xml.dom.pulldom.CHARACTERS:
+                assert node.data == "hello world"
+
+    @staticmethod
+    def test_xxe():
+        # disabled by default
+        doc = xml.dom.pulldom.parseString(local_xxe)
+        found_flag = False
+        for event, node in doc:
+            if event == xml.dom.pulldom.START_ELEMENT:
+                assert node.tagName == "test"
+            elif event == xml.dom.pulldom.CHARACTERS:
+                if node.data == "SECRET_FLAG":
+                    found_flag = True
+        assert found_flag == False
+
+        # but can be turned on
+        parser = xml.sax.make_parser()
+        parser.setFeature(xml.sax.handler.feature_external_ges, True)
+        doc = xml.dom.pulldom.parseString(local_xxe, parser=parser)
+        found_flag = False
+        for event, node in doc:
+            if event == xml.dom.pulldom.START_ELEMENT:
+                assert node.tagName == "test"
+            elif event == xml.dom.pulldom.CHARACTERS:
+                if node.data == "SECRET_FLAG":
+                    found_flag = True
+        assert found_flag == True
+
+        # which also works remotely
+        global hit_xxe
+        hit_xxe = False
+        parser = xml.sax.make_parser()
+        parser.setFeature(xml.sax.handler.feature_external_ges, True)
+        doc = xml.dom.pulldom.parseString(remote_xxe, parser=parser)
+        assert hit_xxe == False
+        for event, node in doc:
+            pass
+        assert hit_xxe == True
+
+    @staticmethod
+    def test_dtd():
+        # not possible by default
+        global hit_dtd
+        hit_dtd = False
+
+        doc = xml.dom.pulldom.parseString(dtd_retrieval)
+        for event, node in doc:
+            pass
+        assert hit_dtd == False
+
+        # but can be turned on
+        parser = xml.sax.make_parser()
+        parser.setFeature(xml.sax.handler.feature_external_ges, True)
+        doc = xml.dom.pulldom.parseString(dtd_retrieval, parser=parser)
+        for event, node in doc:
+            pass
+        assert hit_dtd == True
+
+# ==============================================================================
+import xml.parsers.expat
+
+class TestExpat:
+    # this is the underlying parser implementation used by the rest of the Python
+    # standard library. But people are probably not using this directly.
+
+    @staticmethod
+    @expects_timeout
+    def test_billion_laughs():
+        parser = xml.parsers.expat.ParserCreate()
+        parser.Parse(billion_laughs, True)
+
+    @staticmethod
+    @expects_timeout
+    def test_quardratic_blowup():
+        parser = xml.parsers.expat.ParserCreate()
+        parser.Parse(quadratic_blowup, True)
+
+    @staticmethod
+    def test_ok_xml():
+        char_data_recv = []
+        def char_data_handler(data):
+            char_data_recv.append(data)
+
+        parser = xml.parsers.expat.ParserCreate()
+        parser.CharacterDataHandler = char_data_handler
+        parser.Parse(ok_xml, True)
+
+        assert char_data_recv == ["hello world"]
+
+    @staticmethod
+    def test_xxe():
+        # not vuln by default
+        char_data_recv = []
+        def char_data_handler(data):
+            char_data_recv.append(data)
+
+        parser = xml.parsers.expat.ParserCreate()
+        parser.CharacterDataHandler = char_data_handler
+        parser.Parse(local_xxe, True)
+
+        assert char_data_recv == []
+
+        # there might be ways to make it vuln, but I did not investigate futher.
+
+    @staticmethod
+    def test_dtd():
+        # not vuln by default
+        global hit_dtd
+        hit_dtd = False
+
+        parser = xml.parsers.expat.ParserCreate()
+        parser.Parse(dtd_retrieval, True)
+        assert hit_dtd == False
+
+        # there might be ways to make it vuln, but I did not investigate futher.
