@@ -7,6 +7,7 @@ import semmle.code.java.controlflow.Guards
 private import semmle.code.java.environment.SystemProperty
 private import semmle.code.java.frameworks.apache.Lang
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.TaintTracking
 
 /**
  * A guard that checks if the current os is Windows.
@@ -20,7 +21,7 @@ abstract class IsWindowsGuard extends Guard { }
  * When True, the OS is Windows.
  * When False, the OS *may* still be Windows.
  */
-abstract class IsAnyWindowsGuard extends Guard { }
+abstract class IsSpecificWindowsVariant extends Guard { }
 
 /**
  * A guard that checks if the current OS is unix or unix-like.
@@ -34,33 +35,20 @@ abstract class IsUnixGuard extends Guard { }
  * When True, the OS is unix or unix-like.
  * When False, the OS *may* still be unix or unix-like.
  */
-abstract class IsAnyUnixGuard extends Guard { }
+abstract class IsSpecificUnixVariant extends Guard { }
 
 /**
  * Holds when `ma` compares the current OS against the string constant `osString`.
  */
 bindingset[osString]
 private predicate isOsFromSystemProp(MethodAccess ma, string osString) {
-  exists(Expr systemGetPropertyExpr, Expr systemGetPropertyFlowsToExpr |
-    systemGetPropertyExpr = getSystemProperty("os.name")
+  TaintTracking::localExprTaint(getSystemProperty("os.name"), ma.getQualifier()) and // Call from System.getProperty (or equvalent) to some partial match method
+  exists(StringPartialMatchMethod m, CompileTimeConstantExpr matchedStringConstant |
+    m = ma.getMethod() and
+    matchedStringConstant.getStringValue().toLowerCase().matches(osString)
   |
-    DataFlow::localExprFlow(systemGetPropertyExpr, systemGetPropertyFlowsToExpr) and
-    ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().toLowerCase().matches(osString) and // Call from System.getProperty to some partial match method
-    (
-      systemGetPropertyFlowsToExpr = ma.getQualifier()
-      or
-      exists(MethodAccess caseChangeMa |
-        caseChangeMa.getMethod() =
-          any(Method m |
-            m.getDeclaringType() instanceof TypeString and m.hasName(["toLowerCase", "toUpperCase"])
-          )
-      |
-        systemGetPropertyFlowsToExpr = caseChangeMa.getQualifier() and // Call from System.getProperty to case-switching method
-        DataFlow::localExprFlow(caseChangeMa, ma.getQualifier()) // Call from case-switching method to some partial match method
-      )
-    )
-  ) and
-  ma.getMethod() instanceof StringPartialMatchMethod
+    DataFlow::localExprFlow(matchedStringConstant, ma.getArgument(m.getMatchParameterIndex()))
+  )
 }
 
 private class IsWindowsFromSystemProp extends IsWindowsGuard instanceof MethodAccess {
@@ -81,7 +69,9 @@ private Guard isOsFromSystemPropertyEqualityCheck(string propertyName, string co
 }
 
 private class IsWindowsFromCharPathSeperator extends IsWindowsGuard {
-  IsWindowsFromCharPathSeperator() { this = isOsFromSystemPropertyEqualityCheck("path.separator", "\\") }
+  IsWindowsFromCharPathSeperator() {
+    this = isOsFromSystemPropertyEqualityCheck("path.separator", "\\")
+  }
 }
 
 private class IsWindowsFromCharSeperator extends IsWindowsGuard {
@@ -89,14 +79,16 @@ private class IsWindowsFromCharSeperator extends IsWindowsGuard {
 }
 
 private class IsUnixFromCharPathSeperator extends IsUnixGuard {
-  IsUnixFromCharPathSeperator() { this = isOsFromSystemPropertyEqualityCheck("path.separator", "/") }
+  IsUnixFromCharPathSeperator() {
+    this = isOsFromSystemPropertyEqualityCheck("path.separator", "/")
+  }
 }
 
 private class IsUnixFromCharSeperator extends IsUnixGuard {
   IsUnixFromCharSeperator() { this = isOsFromSystemPropertyEqualityCheck("file.separator", ":") }
 }
 
-private class IsUnixFromSystemProp extends IsAnyUnixGuard instanceof MethodAccess {
+private class IsUnixFromSystemProp extends IsSpecificUnixVariant instanceof MethodAccess {
   IsUnixFromSystemProp() { isOsFromSystemProp(this, ["mac%", "linux%"]) }
 }
 
@@ -112,16 +104,16 @@ private class IsWindowsFromApacheCommons extends IsWindowsGuard instanceof Field
   IsWindowsFromApacheCommons() { isOsFromApacheCommons(this, "IS_OS_WINDOWS") }
 }
 
-private class IsAnyWindowsFromApacheCommons extends IsAnyWindowsGuard instanceof FieldAccess {
-  IsAnyWindowsFromApacheCommons() { isOsFromApacheCommons(this, "IS_OS_WINDOWS_%") }
+private class IsSpecificWindowsVariantFromApacheCommons extends IsSpecificWindowsVariant instanceof FieldAccess {
+  IsSpecificWindowsVariantFromApacheCommons() { isOsFromApacheCommons(this, "IS_OS_WINDOWS_%") }
 }
 
 private class IsUnixFromApacheCommons extends IsUnixGuard instanceof FieldAccess {
   IsUnixFromApacheCommons() { isOsFromApacheCommons(this, "IS_OS_UNIX") }
 }
 
-private class IsAnyUnixFromApacheCommons extends IsAnyUnixGuard instanceof FieldAccess {
-  IsAnyUnixFromApacheCommons() {
+private class IsSpecificUnixVariantFromApacheCommons extends IsSpecificUnixVariant instanceof FieldAccess {
+  IsSpecificUnixVariantFromApacheCommons() {
     isOsFromApacheCommons(this,
       [
         "IS_OS_AIX", "IS_OS_HP_UX", "IS_OS_IRIX", "IS_OS_LINUX", "IS_OS_MAC%", "IS_OS_FREE_BSD",

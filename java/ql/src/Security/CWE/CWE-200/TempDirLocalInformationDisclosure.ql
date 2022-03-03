@@ -118,7 +118,7 @@ private class IsWindowsBarrierGuard extends WindowsOsBarrierGuard instanceof IsW
   override predicate checks(Expr e, boolean branch) { this.controls(e.getBasicBlock(), branch) }
 }
 
-private class IsAnyWindowsBarrierGuard extends WindowsOsBarrierGuard instanceof IsAnyWindowsGuard {
+private class IsAnyWindowsBarrierGuard extends WindowsOsBarrierGuard instanceof IsSpecificWindowsVariant {
   override predicate checks(Expr e, boolean branch) {
     branch = true and this.controls(e.getBasicBlock(), branch)
   }

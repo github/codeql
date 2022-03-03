@@ -1,5 +1,5 @@
 import default
 import semmle.code.java.os.OSCheck
 
-from IsAnyWindowsGuard isAnyWindows
+from IsSpecificWindowsVariant isAnyWindows
 select isAnyWindows

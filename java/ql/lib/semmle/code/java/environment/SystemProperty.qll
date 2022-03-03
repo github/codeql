@@ -88,7 +88,7 @@ private FieldAccess getSystemPropertyFromApacheSystemUtils(string propertyName) 
     f.hasName("JAVA_SPECIFICATION_VENDOR") and propertyName = "java.specification.vendor"
     or
     f.hasName("JAVA_UTIL_PREFS_PREFERENCES_FACTORY") and
-    propertyName = "java.util.prefs.PreferencesFactory"
+    propertyName = "java.util.prefs.PreferencesFactory" // This really does break the lowercase convention obeyed everywhere else
     or
     f.hasName("JAVA_VENDOR") and propertyName = "java.vendor"
     or

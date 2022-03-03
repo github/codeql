@@ -49,7 +49,7 @@ class StringPartialMatchMethod extends Method {
   }
 
   /**
-   * The index of the parameter that is being matched against.
+   * Gets the index of the parameter that is being matched against.
    */
   int getMatchParameterIndex() {
     if this.hasName("regionMatches")
@@ -266,7 +266,8 @@ class MethodAccessSystemGetProperty extends MethodAccess {
    * Holds if this call has a compile-time constant first argument with the value `propertyName`.
    * For example: `System.getProperty("user.dir")`.
    *
-   * Note: Better to use `semmle.code.java.environment.SystemProperty#getSystemProperty` instead.
+   * Note: Better to use `semmle.code.java.environment.SystemProperty#getSystemProperty` instead
+   * as that predicate covers more libraries' and JDK API's ways of accessing the same information
    */
   predicate hasCompileTimeConstantGetPropertyName(string propertyName) {
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName
