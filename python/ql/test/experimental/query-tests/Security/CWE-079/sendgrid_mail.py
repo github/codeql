@@ -34,11 +34,24 @@ def send_post():
     from_email = Email("test@example.com")
     to_email = To("test@example.com")
     subject = "Sending with SendGrid is Fun"
-    content = Content("text/html", request.args["html_content"])
+    html_content = Content("text/html", request.args["html_content"])
+    plain_content = Content("text/plain", request.args["plain_content"])
 
-    content = Content(MimeType.html, request.args["html_content"])
+    mail = Mail(from_email, to_email, subject, plain_content, html_content)
 
-    mail = Mail(from_email, to_email, subject, content)
+    sg = SendGridAPIClient(api_key='SENDGRID_API_KEY')
+    response = sg.client.mail.send.post(request_body=mail.get())
+
+
+@app.route("/send_post2")
+def send_post2():
+    from_email = Email("test@example.com")
+    to_email = To("test@example.com")
+    subject = "Sending with SendGrid is Fun"
+    html_content = Content(MimeType.html, request.args["html_content"])
+    plain_content = Content(MimeType.text, request.args["plain_content"])
+
+    mail = Mail(from_email, to_email, subject, plain_content, html_content)
 
     sg = SendGridAPIClient(api_key='SENDGRID_API_KEY')
     response = sg.client.mail.send.post(request_body=mail.get())

@@ -12,8 +12,8 @@ edges
 | sendgrid_mail.py:26:34:26:40 | ControlFlowNode for request | sendgrid_mail.py:26:34:26:45 | ControlFlowNode for Attribute |
 | sendgrid_mail.py:26:34:26:45 | ControlFlowNode for Attribute | sendgrid_mail.py:26:34:26:61 | ControlFlowNode for Subscript |
 | sendgrid_mail.py:26:34:26:61 | ControlFlowNode for Subscript | sendgrid_mail.py:26:22:26:62 | ControlFlowNode for HtmlContent() |
-| sendgrid_mail.py:37:36:37:42 | ControlFlowNode for request | sendgrid_mail.py:37:36:37:47 | ControlFlowNode for Attribute |
-| sendgrid_mail.py:37:36:37:47 | ControlFlowNode for Attribute | sendgrid_mail.py:37:36:37:63 | ControlFlowNode for Subscript |
+| sendgrid_mail.py:37:41:37:47 | ControlFlowNode for request | sendgrid_mail.py:37:41:37:52 | ControlFlowNode for Attribute |
+| sendgrid_mail.py:37:41:37:52 | ControlFlowNode for Attribute | sendgrid_mail.py:37:41:37:68 | ControlFlowNode for Subscript |
 | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:62 | ControlFlowNode for Attribute |
 | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:27:50:27:56 | ControlFlowNode for request |
 | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:27:50:27:61 | ControlFlowNode for Attribute |
@@ -55,9 +55,9 @@ nodes
 | sendgrid_mail.py:26:34:26:40 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | sendgrid_mail.py:26:34:26:45 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | sendgrid_mail.py:26:34:26:61 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| sendgrid_mail.py:37:36:37:42 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| sendgrid_mail.py:37:36:37:47 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| sendgrid_mail.py:37:36:37:63 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| sendgrid_mail.py:37:41:37:47 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| sendgrid_mail.py:37:41:37:52 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| sendgrid_mail.py:37:41:37:68 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | sendgrid_via_mail_send_post_request_body_bad.py:16:26:16:79 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:62 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
@@ -89,7 +89,7 @@ subpaths
 | flask_mail.py:31:24:31:43 | ControlFlowNode for Subscript | flask_mail.py:31:24:31:30 | ControlFlowNode for request | flask_mail.py:31:24:31:43 | ControlFlowNode for Subscript | Cross-site scripting vulnerability due to $@. | flask_mail.py:31:24:31:30 | ControlFlowNode for request | a user-provided value |
 | sendgrid_mail.py:14:22:14:49 | ControlFlowNode for Subscript | sendgrid_mail.py:14:22:14:28 | ControlFlowNode for request | sendgrid_mail.py:14:22:14:49 | ControlFlowNode for Subscript | Cross-site scripting vulnerability due to $@. | sendgrid_mail.py:14:22:14:28 | ControlFlowNode for request | a user-provided value |
 | sendgrid_mail.py:26:22:26:62 | ControlFlowNode for HtmlContent() | sendgrid_mail.py:26:34:26:40 | ControlFlowNode for request | sendgrid_mail.py:26:22:26:62 | ControlFlowNode for HtmlContent() | Cross-site scripting vulnerability due to $@. | sendgrid_mail.py:26:34:26:40 | ControlFlowNode for request | a user-provided value |
-| sendgrid_mail.py:37:36:37:63 | ControlFlowNode for Subscript | sendgrid_mail.py:37:36:37:42 | ControlFlowNode for request | sendgrid_mail.py:37:36:37:63 | ControlFlowNode for Subscript | Cross-site scripting vulnerability due to $@. | sendgrid_mail.py:37:36:37:42 | ControlFlowNode for request | a user-provided value |
+| sendgrid_mail.py:37:41:37:68 | ControlFlowNode for Subscript | sendgrid_mail.py:37:41:37:47 | ControlFlowNode for request | sendgrid_mail.py:37:41:37:68 | ControlFlowNode for Subscript | Cross-site scripting vulnerability due to $@. | sendgrid_mail.py:37:41:37:47 | ControlFlowNode for request | a user-provided value |
 | sendgrid_via_mail_send_post_request_body_bad.py:16:26:16:79 | ControlFlowNode for Attribute() | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:16:26:16:79 | ControlFlowNode for Attribute() | Cross-site scripting vulnerability due to $@. | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | a user-provided value |
 | sendgrid_via_mail_send_post_request_body_bad.py:27:25:27:77 | ControlFlowNode for Attribute() | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:27:25:27:77 | ControlFlowNode for Attribute() | Cross-site scripting vulnerability due to $@. | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | a user-provided value |
 | sendgrid_via_mail_send_post_request_body_bad.py:27:25:27:77 | ControlFlowNode for Attribute() | sendgrid_via_mail_send_post_request_body_bad.py:27:50:27:56 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:27:25:27:77 | ControlFlowNode for Attribute() | Cross-site scripting vulnerability due to $@. | sendgrid_via_mail_send_post_request_body_bad.py:27:50:27:56 | ControlFlowNode for request | a user-provided value |

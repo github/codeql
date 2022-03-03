@@ -51,9 +51,9 @@ private module Sendgrid {
     )
   }
 
-  private DataFlow::Node sendgridWrite(string attributeName) {
+  private DataFlow::Node sendgridWrite(DataFlow::CallCfgNode mailCall, string attributeName) {
     exists(DataFlow::AttrWrite attrWrite |
-      attrWrite.getObject().getALocalSource() = sendgridMailCall() and
+      attrWrite.getObject().getALocalSource() = mailCall and
       attrWrite.getAttributeName() = attributeName and
       result = attrWrite.getValue()
     )
@@ -86,32 +86,39 @@ private module Sendgrid {
   private class SendGridMail extends DataFlow::CallCfgNode, EmailSender::Range {
     SendGridMail() { this.getFunction() = sendgridApiSendCall() }
 
+    DataFlow::CallCfgNode getMailCall() {
+      exists(DataFlow::Node n |
+        n in [this.getArg(0), this.getArgByName("request_body")] and
+        result = [n, n.(DataFlow::MethodCallNode).getObject()].getALocalSource()
+      )
+    }
+
     override DataFlow::Node getPlainTextBody() {
       result in [
-          sendgridMailCall().getArg(3), sendgridMailCall().getArgByName("plain_text_content")
+          this.getMailCall().getArg(3), this.getMailCall().getArgByName("plain_text_content")
         ]
       or
       result in [
-          sendgridContent(sendgridMailHelper().getMember("Content").getACall(), "text/plain"),
+          sendgridContent([
+              this.getMailCall().getArg(3), this.getMailCall().getArgByName("plain_text_content")
+            ].getALocalSource(), "text/plain"),
           sendgridContent(sendgridMailInstance().getMember("add_content").getACall(), "text/plain")
         ]
       or
-      result = sendgridWrite("plain_text_content")
+      result = sendgridWrite(this.getMailCall(), "plain_text_content")
     }
 
     override DataFlow::Node getHtmlBody() {
-      result in [sendgridMailCall().getArg(4), sendgridMailCall().getArgByName("html_content")]
+      result in [this.getMailCall().getArg(4), this.getMailCall().getArgByName("html_content")]
       or
-      result = sendgridMailInstance().getMember("set_html").getACall().getArg(0)
+      result = this.getMailCall().getAMethodCall("set_html").getArg(0)
       or
-      result in [
-          sendgridContent(sendgridMailHelper().getMember("Content").getACall(),
-            ["text/html", "text/x-amp-html"]),
-          sendgridContent(sendgridMailInstance().getMember("add_content").getACall(),
-            ["text/html", "text/x-amp-html"])
-        ]
+      result =
+        sendgridContent([
+            this.getMailCall().getArg(4), this.getMailCall().getArgByName("html_content")
+          ].getALocalSource(), ["text/html", "text/x-amp-html"])
       or
-      result = sendgridWrite("html_content")
+      result = sendgridWrite(this.getMailCall(), "html_content")
       or
       exists(KeyValuePair content, Dict generalDict, KeyValuePair typePair, KeyValuePair valuePair |
         content.getKey().(StrConst).getText() = "content" and
@@ -122,7 +129,9 @@ private module Sendgrid {
         valuePair.getKey().(StrConst).getText() = "value" and
         result.asExpr() = valuePair.getValue() and
         // correlate generalDict with previously set KeyValuePairs
-        generalDict.getAnItem() in [typePair, valuePair]
+        generalDict.getAnItem() in [typePair, valuePair] and
+        [this.getArg(0), this.getArgByName("request_body")].getALocalSource().asExpr() =
+          any(Dict d | d.getAnItem() = content)
       )
       or
       exists(KeyValuePair footer, Dict generalDict, KeyValuePair enablePair, KeyValuePair htmlPair |
@@ -135,38 +144,46 @@ private module Sendgrid {
         htmlPair.getKey().(StrConst).getText() = "html" and
         result.asExpr() = htmlPair.getValue() and
         // correlate generalDict with previously set KeyValuePairs
-        generalDict.getAnItem() in [enablePair, htmlPair]
+        generalDict.getAnItem() in [enablePair, htmlPair] and
+        exists(KeyValuePair k |
+          k.getKey() =
+            [this.getArg(0), this.getArgByName("request_body")]
+                .getALocalSource()
+                .asExpr()
+                .(Dict)
+                .getAKey() and
+          k.getValue() = any(Dict d | d.getAKey() = footer.getKey())
+        )
       )
     }
 
     override DataFlow::Node getTo() {
-      result in [sendgridMailCall().getArg(1), sendgridMailCall().getArgByName("to_emails")]
+      result in [this.getMailCall().getArg(1), this.getMailCall().getArgByName("to_emails")]
       or
-      result = sendgridMailHelper().getMember("To").getACall().getArg(0)
+      result = this.getMailCall().getAMethodCall("To").getArg(0)
       or
       result =
-        sendgridMailInstance()
-            .getMember(["to", "add_to", "cc", "add_cc", "bcc", "add_bcc"])
-            .getACall()
+        this.getMailCall()
+            .getAMethodCall(["to", "add_to", "cc", "add_cc", "bcc", "add_bcc"])
             .getArg(0)
     }
 
     override DataFlow::Node getFrom() {
-      result in [sendgridMailCall().getArg(0), sendgridMailCall().getArgByName("from_email")]
+      result in [this.getMailCall().getArg(0), this.getMailCall().getArgByName("from_email")]
       or
-      result = sendgridMailHelper().getMember("Email").getACall().getArg(0)
+      result = this.getMailCall().getAMethodCall("Email").getArg(0)
       or
-      result = sendgridMailInstance().getMember(["from_email", "set_from"]).getACall().getArg(0)
+      result = this.getMailCall().getAMethodCall(["from_email", "set_from"]).getArg(0)
       or
-      result = sendgridWrite("from_email")
+      result = sendgridWrite(this.getMailCall(), "from_email")
     }
 
     override DataFlow::Node getSubject() {
-      result in [sendgridMailCall().getArg(2), sendgridMailCall().getArgByName("subject")]
+      result in [this.getMailCall().getArg(2), this.getMailCall().getArgByName("subject")]
       or
-      result = sendgridMailInstance().getMember(["subject", "set_subject"]).getACall().getArg(0)
+      result = this.getMailCall().getAMethodCall(["subject", "set_subject"]).getArg(0)
       or
-      result = sendgridWrite("subject")
+      result = sendgridWrite(this.getMailCall(), "subject")
     }
   }
 }
