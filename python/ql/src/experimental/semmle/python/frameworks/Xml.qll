@@ -293,55 +293,104 @@ private module SaxBasedParsing {
 
 private module Lxml {
   /**
-   * A call to `lxml.etree.get_default_parser`.
-   *
-   * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.get_default_parser
-   */
-  private class LXMLDefaultParser extends DataFlow::CallCfgNode, XML::XMLParser::Range {
-    LXMLDefaultParser() {
-      this = API::moduleImport("lxml").getMember("etree").getMember("get_default_parser").getACall()
-    }
-
-    override DataFlow::Node getAnInput() { none() }
-
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
-      // as highlighted by
-      // https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
-      // by default XXE is allow. so as long as the default parser has not been
-      // overridden, the result is also vuln to XXE.
-      kind.isXxe()
-      // TODO: take into account that you can override the default parser with `lxml.etree.get_default_parser`.
-    }
-  }
-
-  /**
-   * A call to `lxml.etree.XMLParser`.
+   * Provides models for `lxml.etree` parsers
    *
    * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
    */
-  private class LXMLParser extends DataFlow::CallCfgNode, XML::XMLParser::Range {
-    LXMLParser() {
-      this = API::moduleImport("lxml").getMember("etree").getMember("XMLParser").getACall()
+  module XMLParser {
+    /**
+     * A source of instances of `lxml.etree` parsers, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `XMLParser::instance()` to get references to instances of `lxml.etree` parsers.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode {
+      /** Holds if this instance is vulnerable to `kind`. */
+      abstract predicate vulnerable(XML::XMLVulnerabilityKind kind);
     }
 
-    override DataFlow::Node getAnInput() { none() }
+    /**
+     * A call to `lxml.etree.XMLParser`.
+     *
+     * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
+     */
+    private class LXMLParser extends InstanceSource, DataFlow::CallCfgNode {
+      LXMLParser() {
+        this = API::moduleImport("lxml").getMember("etree").getMember("XMLParser").getACall()
+      }
 
-    // NOTE: it's not possible to change settings of a parser after constructing it
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
-      kind.isXxe() and
-      (
-        // resolve_entities has default True
-        not exists(this.getArgByName("resolve_entities"))
+      // NOTE: it's not possible to change settings of a parser after constructing it
+      override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+        kind.isXxe() and
+        (
+          // resolve_entities has default True
+          not exists(this.getArgByName("resolve_entities"))
+          or
+          this.getArgByName("resolve_entities").getALocalSource().asExpr() = any(True t)
+        )
         or
-        this.getArgByName("resolve_entities").getALocalSource().asExpr() = any(True t)
-      )
+        (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
+        this.getArgByName("huge_tree").getALocalSource().asExpr() = any(True t)
+        or
+        kind.isDtdRetrieval() and
+        this.getArgByName("load_dtd").getALocalSource().asExpr() = any(True t) and
+        this.getArgByName("no_network").getALocalSource().asExpr() = any(False t)
+      }
+    }
+
+    /**
+     * A call to `lxml.etree.get_default_parser`.
+     *
+     * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.get_default_parser
+     */
+    private class LXMLDefaultParser extends InstanceSource, DataFlow::CallCfgNode {
+      LXMLDefaultParser() {
+        this =
+          API::moduleImport("lxml").getMember("etree").getMember("get_default_parser").getACall()
+      }
+
+      override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+        // as highlighted by
+        // https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
+        // by default XXE is allow. so as long as the default parser has not been
+        // overridden, the result is also vuln to XXE.
+        kind.isXxe()
+        // TODO: take into account that you can override the default parser with `lxml.etree.get_default_parser`.
+      }
+    }
+
+    /** Gets a reference to an `lxml.etree` parsers instance, with origin in `origin` */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t, InstanceSource origin) {
+      t.start() and
+      result = origin
       or
-      (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
-      this.getArgByName("huge_tree").getALocalSource().asExpr() = any(True t)
-      or
-      kind.isDtdRetrieval() and
-      this.getArgByName("load_dtd").getALocalSource().asExpr() = any(True t) and
-      this.getArgByName("no_network").getALocalSource().asExpr() = any(False t)
+      exists(DataFlow::TypeTracker t2 | result = instance(t2, origin).track(t2, t))
+    }
+
+    /** Gets a reference to an `lxml.etree` parsers instance, with origin in `origin` */
+    DataFlow::Node instance(InstanceSource origin) {
+      instance(DataFlow::TypeTracker::end(), origin).flowsTo(result)
+    }
+
+    /** Gets a reference to an `lxml.etree` parser instance, that is vulnerable to `kind`. */
+    DataFlow::Node instanceVulnerableTo(XML::XMLVulnerabilityKind kind) {
+      exists(InstanceSource origin | result = instance(origin) and origin.vulnerable(kind))
+    }
+
+    /**
+     * A call to the `feed` method of an `lxml` parser.
+     */
+    private class LXMLParserFeedCall extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
+      LXMLParserFeedCall() { this.calls(instance(_), "feed") }
+
+      override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+
+      override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+        this.calls(instanceVulnerableTo(kind), "feed")
+      }
     }
   }
 
@@ -376,40 +425,13 @@ private module Lxml {
         ]
     }
 
+    DataFlow::Node getParserArg() { result in [this.getArg(1), this.getArgByName("parser")] }
+
     override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
-      // TODO: This should be done with type-tracking
-      exists(XML::XMLParser xmlParser |
-        xmlParser = this.getArgByName("parser").getALocalSource() and xmlParser.vulnerable(kind)
-      )
+      this.getParserArg() = XMLParser::instanceVulnerableTo(kind)
       or
-      kind.isXxe() and not exists(this.getArgByName("parser"))
-    }
-  }
-
-  /**
-   * A call to the `feed` method of an `lxml` parser.
-   */
-  private class LXMLEtreeParserFeedCall extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
-    LXMLEtreeParserFeedCall() {
-      exists(API::Node parserInstance |
-        parserInstance =
-          API::moduleImport("lxml").getMember("etree").getMember("XMLParser").getReturn()
-        or
-        parserInstance =
-          API::moduleImport("lxml").getMember("etree").getMember("get_default_parser").getReturn()
-      |
-        this = parserInstance.getMember("feed").getACall()
-      )
-    }
-
-    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
-
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
-      // TODO: This should be done with type-tracking
-      exists(XML::XMLParser xmlParser |
-        xmlParser = this.getObject().getALocalSource() and
-        xmlParser.vulnerable(kind)
-      )
+      kind.isXxe() and
+      not exists(this.getParserArg())
     }
   }
 }

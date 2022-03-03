@@ -34,6 +34,7 @@ parser.close()
 
 # XXE-safe
 parser = lxml.etree.XMLParser(resolve_entities=False)
+lxml.etree.fromstring(x, parser) # $ input=x
 lxml.etree.fromstring(x, parser=parser) # $ input=x
 
 # XXE-vuln
