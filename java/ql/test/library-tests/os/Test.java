@@ -56,6 +56,10 @@ public class Test {
         if (File.separator == "\\") {
             onlyOnWindows();
         }
+
+        if (System.getProperty("path.separator").equals("\\")) {
+            onlyOnWindows();
+        }
     }
 
     void testUnix() {
@@ -87,6 +91,10 @@ public class Test {
         }
 
         if (File.separator == "/") {
+            onlyOnUnix();
+        }
+
+        if (System.getProperty("path.separator").equals("/")) {
             onlyOnUnix();
         }
     }

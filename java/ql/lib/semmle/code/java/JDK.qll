@@ -202,21 +202,6 @@ class TypeFile extends Class {
   TypeFile() { this.hasQualifiedName("java.io", "File") }
 }
 
-/** The field `java.io.File.separator` or `java.io.File.separatorChar` */
-class FieldFileSeparator extends Field {
-  FieldFileSeparator() {
-    this.getDeclaringType() instanceof TypeFile and this.hasName(["separator", "separatorChar"])
-  }
-}
-
-/* The field `java.io.File.pathSeparator` or `java.io.File.pathSeparatorChar` */
-class FieldFilePathSeparator extends Field {
-  FieldFilePathSeparator() {
-    this.getDeclaringType() instanceof TypeFile and
-    this.hasName(["pathSeparator", "pathSeparatorChar"])
-  }
-}
-
 // --- Standard methods ---
 /**
  * Any constructor of class `java.lang.ProcessBuilder`.

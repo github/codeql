@@ -1,14 +1,49 @@
 import java
 private import semmle.code.java.frameworks.apache.Lang
 
+/**
+ * Gets Expr that return the value of `propertyName` from `System.getProperty()`.
+ * Gets Expr that return the value of `propertyName` from `System.getProperty()`.
+ */
 Expr getSystemProperty(string propertyName) {
+  result = getSystemPropertyFromSystem(propertyName) or
+  result = getSystemPropertyFromFile(propertyName) or
+  result = getSystemPropertyFromApacheSystemUtils(propertyName) or
+  result = getSystemPropertyFromApacheFileUtils(propertyName) or
+  result = getSystemPropertyFromGuava(propertyName) or
+  result = getSystemPropertyFromOperatingSystemMXBean(propertyName) or
+  result = getSystemPropertyFromSpringProperties(propertyName)
+}
+
+private MethodAccess getSystemPropertyFromSystem(string propertyName) {
   result =
     any(MethodAccessSystemGetProperty methodAccessSystemGetProperty |
       methodAccessSystemGetProperty.hasCompileTimeConstantGetPropertyName(propertyName)
-    ) or
-  result = getSystemPropertyFromApacheSystemUtils(propertyName) or
-  result = getSystemPropertyFromApacheFileUtils(propertyName) or
-  result = getSystemPropertyFromOperatingSystemMXBean(propertyName)
+    )
+  or
+  exists(Method m | result.getMethod() = m | m.hasName("lineSeparator")) and
+  propertyName = "line.separator"
+}
+
+private FieldAccess getSystemPropertyFromFile(string propertyName) {
+  result.getField() instanceof FieldFileSeparator and propertyName = "file.separator"
+  or
+  result.getField() instanceof FieldFilePathSeparator and propertyName = "path.separator"
+}
+
+/** The field `java.io.File.separator` or `java.io.File.separatorChar` */
+private class FieldFileSeparator extends Field {
+  FieldFileSeparator() {
+    this.getDeclaringType() instanceof TypeFile and this.hasName(["separator", "separatorChar"])
+  }
+}
+
+/* The field `java.io.File.pathSeparator` or `java.io.File.pathSeparatorChar` */
+private class FieldFilePathSeparator extends Field {
+  FieldFilePathSeparator() {
+    this.getDeclaringType() instanceof TypeFile and
+    this.hasName(["pathSeparator", "pathSeparatorChar"])
+  }
 }
 
 /**
@@ -17,84 +52,84 @@ Expr getSystemProperty(string propertyName) {
  */
 private FieldAccess getSystemPropertyFromApacheSystemUtils(string propertyName) {
   exists(Field f | f = result.getField() and f.getDeclaringType() instanceof ApacheSystemUtils |
-    f.getName() = "AWT_TOOLKIT" and propertyName = "awt.toolkit"
+    f.hasName("AWT_TOOLKIT") and propertyName = "awt.toolkit"
     or
-    f.getName() = "FILE_ENCODING" and propertyName = "file.encoding"
+    f.hasName("FILE_ENCODING") and propertyName = "file.encoding"
     or
-    f.getName() = "FILE_SEPARATOR" and propertyName = "file.separator"
+    f.hasName("FILE_SEPARATOR") and propertyName = "file.separator"
     or
-    f.getName() = "JAVA_AWT_FONTS" and propertyName = "java.awt.fonts"
+    f.hasName("JAVA_AWT_FONTS") and propertyName = "java.awt.fonts"
     or
-    f.getName() = "JAVA_AWT_GRAPHICSENV" and propertyName = "java.awt.graphicsenv"
+    f.hasName("JAVA_AWT_GRAPHICSENV") and propertyName = "java.awt.graphicsenv"
     or
-    f.getName() = "JAVA_AWT_HEADLESS" and propertyName = "java.awt.headless"
+    f.hasName("JAVA_AWT_HEADLESS") and propertyName = "java.awt.headless"
     or
-    f.getName() = "JAVA_AWT_PRINTERJOB" and propertyName = "java.awt.printerjob"
+    f.hasName("JAVA_AWT_PRINTERJOB") and propertyName = "java.awt.printerjob"
     or
-    f.getName() = "JAVA_CLASS_PATH" and propertyName = "java.class.path"
+    f.hasName("JAVA_CLASS_PATH") and propertyName = "java.class.path"
     or
-    f.getName() = "JAVA_CLASS_VERSION" and propertyName = "java.class.version"
+    f.hasName("JAVA_CLASS_VERSION") and propertyName = "java.class.version"
     or
-    f.getName() = "JAVA_COMPILER" and propertyName = "java.compiler"
+    f.hasName("JAVA_COMPILER") and propertyName = "java.compiler"
     or
-    f.getName() = "JAVA_EXT_DIRS" and propertyName = "java.ext.dirs"
+    f.hasName("JAVA_EXT_DIRS") and propertyName = "java.ext.dirs"
     or
-    f.getName() = "JAVA_HOME" and propertyName = "java.home"
+    f.hasName("JAVA_HOME") and propertyName = "java.home"
     or
-    f.getName() = "JAVA_IO_TMPDIR" and propertyName = "java.io.tmpdir"
+    f.hasName("JAVA_IO_TMPDIR") and propertyName = "java.io.tmpdir"
     or
-    f.getName() = "JAVA_LIBRARY_PATH" and propertyName = "java.library.path"
+    f.hasName("JAVA_LIBRARY_PATH") and propertyName = "java.library.path"
     or
-    f.getName() = "JAVA_RUNTIME_NAME" and propertyName = "java.runtime.name"
+    f.hasName("JAVA_RUNTIME_NAME") and propertyName = "java.runtime.name"
     or
-    f.getName() = "JAVA_RUNTIME_VERSION" and propertyName = "java.runtime.version"
+    f.hasName("JAVA_RUNTIME_VERSION") and propertyName = "java.runtime.version"
     or
-    f.getName() = "JAVA_SPECIFICATION_NAME" and propertyName = "java.specification.name"
+    f.hasName("JAVA_SPECIFICATION_NAME") and propertyName = "java.specification.name"
     or
-    f.getName() = "JAVA_SPECIFICATION_VENDOR" and propertyName = "java.specification.vendor"
+    f.hasName("JAVA_SPECIFICATION_VENDOR") and propertyName = "java.specification.vendor"
     or
-    f.getName() = "JAVA_UTIL_PREFS_PREFERENCES_FACTORY" and
+    f.hasName("JAVA_UTIL_PREFS_PREFERENCES_FACTORY") and
     propertyName = "java.util.prefs.PreferencesFactory"
     or
-    f.getName() = "JAVA_VENDOR" and propertyName = "java.vendor"
+    f.hasName("JAVA_VENDOR") and propertyName = "java.vendor"
     or
-    f.getName() = "JAVA_VENDOR_URL" and propertyName = "java.vendor.url"
+    f.hasName("JAVA_VENDOR_URL") and propertyName = "java.vendor.url"
     or
-    f.getName() = "JAVA_VERSION" and propertyName = "java.version"
+    f.hasName("JAVA_VERSION") and propertyName = "java.version"
     or
-    f.getName() = "JAVA_VM_INFO" and propertyName = "java.vm.info"
+    f.hasName("JAVA_VM_INFO") and propertyName = "java.vm.info"
     or
-    f.getName() = "JAVA_VM_NAME" and propertyName = "java.vm.name"
+    f.hasName("JAVA_VM_NAME") and propertyName = "java.vm.name"
     or
-    f.getName() = "JAVA_VM_SPECIFICATION_NAME" and propertyName = "java.vm.specification.name"
+    f.hasName("JAVA_VM_SPECIFICATION_NAME") and propertyName = "java.vm.specification.name"
     or
-    f.getName() = "JAVA_VM_SPECIFICATION_VENDOR" and propertyName = "java.vm.specification.vendor"
+    f.hasName("JAVA_VM_SPECIFICATION_VENDOR") and propertyName = "java.vm.specification.vendor"
     or
-    f.getName() = "JAVA_VM_VENDOR" and propertyName = "java.vm.vendor"
+    f.hasName("JAVA_VM_VENDOR") and propertyName = "java.vm.vendor"
     or
-    f.getName() = "JAVA_VM_VERSION" and propertyName = "java.vm.version"
+    f.hasName("JAVA_VM_VERSION") and propertyName = "java.vm.version"
     or
-    f.getName() = "LINE_SEPARATOR" and propertyName = "line.separator"
+    f.hasName("LINE_SEPARATOR") and propertyName = "line.separator"
     or
-    f.getName() = "OS_ARCH" and propertyName = "os.arch"
+    f.hasName("OS_ARCH") and propertyName = "os.arch"
     or
-    f.getName() = "OS_NAME" and propertyName = "os.name"
+    f.hasName("OS_NAME") and propertyName = "os.name"
     or
-    f.getName() = "OS_VERSION" and propertyName = "os.version"
+    f.hasName("OS_VERSION") and propertyName = "os.version"
     or
-    f.getName() = "PATH_SEPARATOR" and propertyName = "path.separator"
+    f.hasName("PATH_SEPARATOR") and propertyName = "path.separator"
     or
-    f.getName() = "USER_COUNTRY" and propertyName = "user.country"
+    f.hasName("USER_COUNTRY") and propertyName = "user.country"
     or
-    f.getName() = "USER_DIR" and propertyName = "user.dir"
+    f.hasName("USER_DIR") and propertyName = "user.dir"
     or
-    f.getName() = "USER_HOME" and propertyName = "user.home"
+    f.hasName("USER_HOME") and propertyName = "user.home"
     or
-    f.getName() = "USER_LANGUAGE" and propertyName = "user.language"
+    f.hasName("USER_LANGUAGE") and propertyName = "user.language"
     or
-    f.getName() = "USER_NAME" and propertyName = "user.name"
+    f.hasName("USER_NAME") and propertyName = "user.name"
     or
-    f.getName() = "USER_TIMEZONE" and propertyName = "user.timezone"
+    f.hasName("USER_TIMEZONE") and propertyName = "user.timezone"
   )
 }
 
@@ -109,6 +144,70 @@ private MethodAccess getSystemPropertyFromApacheFileUtils(string propertyName) {
   )
 }
 
+private MethodAccess getSystemPropertyFromGuava(string propertyName) {
+  exists(EnumConstant ec |
+    ec.getDeclaringType().hasQualifiedName("com.google.common.base", "StandardSystemProperty") and
+    result.getQualifier() = ec.getAnAccess() and
+    result.getMethod().hasName("value")
+  |
+    ec.hasName("JAVA_VERSION") and propertyName = "java.version"
+    or
+    ec.hasName("JAVA_VENDOR") and propertyName = "java.vendor"
+    or
+    ec.hasName("JAVA_VENDOR_URL") and propertyName = "java.vendor.url"
+    or
+    ec.hasName("JAVA_HOME") and propertyName = "java.home"
+    or
+    ec.hasName("JAVA_VM_SPECIFICATION_VERSION") and propertyName = "java.vm.specification.version"
+    or
+    ec.hasName("JAVA_VM_SPECIFICATION_VENDOR") and propertyName = "java.vm.specification.vendor"
+    or
+    ec.hasName("JAVA_VM_SPECIFICATION_NAME") and propertyName = "java.vm.specification.name"
+    or
+    ec.hasName("JAVA_VM_VERSION") and propertyName = "java.vm.version"
+    or
+    ec.hasName("JAVA_VM_VENDOR") and propertyName = "java.vm.vendor"
+    or
+    ec.hasName("JAVA_VM_NAME") and propertyName = "java.vm.name"
+    or
+    ec.hasName("JAVA_SPECIFICATION_VERSION") and propertyName = "java.specification.version"
+    or
+    ec.hasName("JAVA_SPECIFICATION_VENDOR") and propertyName = "java.specification.vendor"
+    or
+    ec.hasName("JAVA_SPECIFICATION_NAME") and propertyName = "java.specification.name"
+    or
+    ec.hasName("JAVA_CLASS_VERSION") and propertyName = "java.class.version"
+    or
+    ec.hasName("JAVA_CLASS_PATH") and propertyName = "java.class.path"
+    or
+    ec.hasName("JAVA_LIBRARY_PATH") and propertyName = "java.library.path"
+    or
+    ec.hasName("JAVA_IO_TMPDIR") and propertyName = "java.io.tmpdir"
+    or
+    ec.hasName("JAVA_COMPILER") and propertyName = "java.compiler"
+    or
+    ec.hasName("JAVA_EXT_DIRS") and propertyName = "java.ext.dirs"
+    or
+    ec.hasName("OS_NAME") and propertyName = "os.name"
+    or
+    ec.hasName("OS_ARCH") and propertyName = "os.arch"
+    or
+    ec.hasName("OS_VERSION") and propertyName = "os.version"
+    or
+    ec.hasName("FILE_SEPARATOR") and propertyName = "file.separator"
+    or
+    ec.hasName("PATH_SEPARATOR") and propertyName = "path.separator"
+    or
+    ec.hasName("LINE_SEPARATOR") and propertyName = "line.separator"
+    or
+    ec.hasName("USER_NAME") and propertyName = "user.name"
+    or
+    ec.hasName("USER_HOME") and propertyName = "user.home"
+    or
+    ec.hasName("USER_DIR") and propertyName = "user.dir"
+  )
+}
+
 private MethodAccess getSystemPropertyFromOperatingSystemMXBean(string propertyName) {
   exists(Method m |
     m = result.getMethod() and
@@ -120,4 +219,13 @@ private MethodAccess getSystemPropertyFromOperatingSystemMXBean(string propertyN
     or
     m.getName() = "getVersion" and propertyName = "os.version"
   )
+}
+
+private MethodAccess getSystemPropertyFromSpringProperties(string propertyName) {
+  exists(Method m |
+    m = result.getMethod() and
+    m.getDeclaringType().hasQualifiedName("org.springframework.core", "SpringProperties") and
+    m.hasName("getProperty")
+  ) and
+  result.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName
 }

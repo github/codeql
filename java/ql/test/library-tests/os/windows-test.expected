@@ -3,3 +3,4 @@
 | Test.java:24:13:24:75 | contains(...) |
 | Test.java:28:13:28:75 | contains(...) |
 | Test.java:32:13:32:37 | SystemUtils.IS_OS_WINDOWS |
+| Test.java:60:13:60:61 | equals(...) |
