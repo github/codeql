@@ -86,6 +86,8 @@ class KotlinExtractorExtension(
             val logger = Logger(loggerBase, tw)
             logger.info("Extraction started")
             logger.flush()
+            logger.info("Extraction for invocation TRAP file $invocationTrapFile")
+            logger.flush()
             if (System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true") {
                 logger.info("moduleFragment:\n" + moduleFragment.dump())
             }
