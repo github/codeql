@@ -12,25 +12,25 @@ app = Flask(__name__)
 def xml_minidom_parse():
     xml_content = request.args['xml_content']
 
-    return xml.dom.minidom.parse(StringIO(xml_content)).documentElement.childNodes
+    return xml.dom.minidom.parse(StringIO(xml_content)).documentElement.childNodes # OK for XXE/DTD, NOT OK for billion laughs/quadratic
 
 @app.route("/xml_minidom_parseString")
 def xml_minidom_parseString():
     xml_content = request.args['xml_content']
 
-    return xml.dom.minidom.parseString(xml_content).documentElement.childNodes
+    return xml.dom.minidom.parseString(xml_content).documentElement.childNodes # OK for XXE/DTD, NOT OK for billion laughs/quadratic
 
 @app.route("/xml_pulldom_parse")
 def xml_pulldom_parse():
     xml_content = request.args['xml_content']
 
-    return xml.dom.pulldom.parse(StringIO(xml_content))['START_DOCUMENT'][1].documentElement.childNodes
+    return xml.dom.pulldom.parse(StringIO(xml_content))['START_DOCUMENT'][1].documentElement.childNodes # OK for XXE/DTD, NOT OK for billion laughs/quadratic
 
 @app.route("/xml_pulldom_parseString")
 def xml_pulldom_parseString():
     xml_content = request.args['xml_content']
 
-    return xml.dom.pulldom.parseString(xml_content)['START_DOCUMENT'][1].documentElement.childNodes
+    return xml.dom.pulldom.parseString(xml_content)['START_DOCUMENT'][1].documentElement.childNodes # OK for XXE/DTD, NOT OK for billion laughs/quadratic
 
 # With parsers
 
@@ -40,5 +40,4 @@ def xml_minidom_parse_xml_sax_make_parser():
 
     parser = xml.sax.make_parser()
     parser.setFeature(xml.sax.handler.feature_external_ges, True)
-    return xml.dom.minidom.parse(StringIO(xml_content), parser=parser).documentElement.childNodes
-
+    return xml.dom.minidom.parse(StringIO(xml_content), parser=parser).documentElement.childNodes # NOT OK for XXE/DTD, NOT OK for billion laughs/quadratic
