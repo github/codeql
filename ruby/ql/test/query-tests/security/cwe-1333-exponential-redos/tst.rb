@@ -85,7 +85,7 @@ bad16 = /(.|\n)*!/m
 # GOOD
 good8 = /([\w.]+)*/
 
-# BAD - we don't yet parse regexps constructed from strings
+# NOT GOOD
 bad17 = Regexp.new '(a|aa?)*b'
 
 # GOOD - not used as regexp
