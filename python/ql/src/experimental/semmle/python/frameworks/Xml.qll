@@ -182,26 +182,35 @@ private module Xml {
   }
 
   /**
-   * Gets a call to:
-   * * `lxml.etree.XMLParser`
-   * * `lxml.etree.get_default_parser`
+   * A call to `lxml.etree.get_default_parser`.
    *
-   * Given the following example:
+   * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.get_default_parser
+   */
+  private class LXMLDefaultParser extends DataFlow::CallCfgNode, XML::XMLParser::Range {
+    LXMLDefaultParser() {
+      this = API::moduleImport("lxml").getMember("etree").getMember("get_default_parser").getACall()
+    }
+
+    override DataFlow::Node getAnInput() { none() }
+
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      // as highlighted by
+      // https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
+      // by default XXE is allow. so as long as the default parser has not been
+      // overridden, the result is also vuln to XXE.
+      kind.isXxe()
+      // TODO: take into account that you can override the default parser with `lxml.etree.get_default_parser`.
+    }
+  }
+
+  /**
+   * A call to `lxml.etree.XMLParser`.
    *
-   * ```py
-   * lxml.etree.XMLParser()
-   * ```
-   *
-   * * `this` would be `lxml.etree.XMLParser(resolve_entities=False)`.
-   * * `vulnerable(kind)`'s `kind` would be `XXE`
+   * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
    */
   private class LXMLParser extends DataFlow::CallCfgNode, XML::XMLParser::Range {
     LXMLParser() {
-      this =
-        API::moduleImport("lxml")
-            .getMember("etree")
-            .getMember(["XMLParser", "get_default_parser"])
-            .getACall()
+      this = API::moduleImport("lxml").getMember("etree").getMember("XMLParser").getACall()
     }
 
     override DataFlow::Node getAnInput() { none() }
