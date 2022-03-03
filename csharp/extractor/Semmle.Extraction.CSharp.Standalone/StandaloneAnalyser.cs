@@ -14,7 +14,6 @@ namespace Semmle.Extraction.CSharp
         public void Initialize(CSharpCompilation compilationIn, CommonOptions options)
         {
             compilation = compilationIn;
-            layout = new Layout();
             extractor = new StandaloneExtractor(Logger, PathTransformer, options);
             this.options = options;
             LogExtractorInfo(Extraction.Extractor.Version);

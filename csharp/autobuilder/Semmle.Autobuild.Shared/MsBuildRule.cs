@@ -95,7 +95,7 @@ namespace Semmle.Autobuild.Shared
                     command.RunCommand("set Platform=&& type NUL", quoteExe: false);
                 }
 
-                builder.MaybeIndex(command, msBuild);
+                command.RunCommand(msBuild);
                 command.QuoteArgument(projectOrSolution.FullPath);
 
                 command.Argument("/p:UseSharedCompilation=false");
