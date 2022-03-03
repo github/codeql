@@ -27,13 +27,6 @@ class UrlConstructor extends ClassInstanceExpr {
   }
 }
 
-class UrlOpenStreamMethod extends Method {
-  UrlOpenStreamMethod() {
-    this.getDeclaringType() instanceof TypeUrl and
-    this.getName() = "openStream"
-  }
-}
-
 class RemoteUrlToOpenStreamFlowConfig extends TaintTracking::Configuration {
   RemoteUrlToOpenStreamFlowConfig() { this = "OpenStream::RemoteURLToOpenStreamFlowConfig" }
 
