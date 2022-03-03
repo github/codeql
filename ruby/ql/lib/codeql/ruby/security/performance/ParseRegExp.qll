@@ -14,7 +14,7 @@ private import codeql.ruby.ApiGraphs
 
 /**
  * A `StringlikeLiteral` containing a regular expression term, that is, either
- * a regular expression literal, a string literal used in a context where
+ * a regular expression literal, or a string literal used in a context where
  * it is parsed as regular expression.
  */
 abstract class RegExp extends AST::StringlikeLiteral {
