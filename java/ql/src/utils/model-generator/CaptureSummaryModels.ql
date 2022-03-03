@@ -12,10 +12,13 @@ import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.InstanceAccess
 import ModelGeneratorUtils
 
-string captureFlow(TargetApi api) {
-  result = captureQualifierFlow(api) or
-  result = captureThroughFlow(api)
+predicate isOwnInstanceAccess(ReturnStmt rtn) { rtn.getResult().(ThisAccess).isOwnInstanceAccess() }
+
+predicate isOwnInstanceAccessNode(ReturnNode node) {
+  node.asExpr().(ThisAccess).isOwnInstanceAccess()
 }
+
+string qualifierString() { result = "Argument[-1]" }
 
 /**
  * Capture fluent APIs that return `this`.
@@ -29,12 +32,12 @@ string captureFlow(TargetApi api) {
  * }
  * ```
  */
-string captureQualifierFlow(TargetApi api) {
+private string captureQualifierFlow(TargetApi api) {
   exists(ReturnStmt rtn |
     rtn.getEnclosingCallable() = api and
-    rtn.getResult().(ThisAccess).isOwnInstanceAccess()
+    isOwnInstanceAccess(rtn)
   ) and
-  result = asValueModel(api, "Argument[-1]", "ReturnValue")
+  result = asValueModel(api, qualifierString(), "ReturnValue")
 }
 
 class TaintRead extends DataFlow::FlowState {
@@ -56,7 +59,7 @@ class ThroughFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
     sink instanceof ReturnNodeExt and
-    not sink.(ReturnNode).asExpr().(ThisAccess).isOwnInstanceAccess() and
+    not isOwnInstanceAccessNode(sink) and
     not exists(captureQualifierFlow(sink.asExpr().getEnclosingCallable())) and
     (state instanceof TaintRead or state instanceof TaintStore)
   }
@@ -145,7 +148,7 @@ class ThroughFlowConfig extends TaintTracking::Configuration {
  * Captured Model:
  * `p;Foo;true;addToList;;Argument[0];Argument[1];taint`
  */
-string captureThroughFlow(TargetApi api) {
+private string captureThroughFlow(TargetApi api) {
   exists(
     ThroughFlowConfig config, DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, string input,
     string output
@@ -157,6 +160,11 @@ string captureThroughFlow(TargetApi api) {
     input != output and
     result = asTaintModel(api, input, output)
   )
+}
+
+private string captureFlow(TargetApi api) {
+  result = captureQualifierFlow(api) or
+  result = captureThroughFlow(api)
 }
 
 from TargetApi api, string flow
