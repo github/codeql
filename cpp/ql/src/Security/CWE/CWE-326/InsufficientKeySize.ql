@@ -32,9 +32,10 @@ class KeyStrengthFlow extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node node) {
     exists(int bits |
-    node.asInstruction().(IntegerConstantInstruction).getValue().toInt() = bits and
-    bits < getMinimumKeyStrength(_, _) and
-    bits > 0 // exclude sentinel values
+      node.asInstruction().(IntegerConstantInstruction).getValue().toInt() = bits and
+      bits < getMinimumKeyStrength(_, _) and
+      bits > 0 // exclude sentinel values
+    )
   }
 
   override predicate isSink(DataFlow::Node node) {
