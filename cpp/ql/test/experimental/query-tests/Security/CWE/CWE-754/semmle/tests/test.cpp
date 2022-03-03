@@ -48,7 +48,7 @@ int functionWork1b() {
 
 int functionWork2() {
   int i = 0;
-  char a[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  char a[10] = "";
   int b = 1;
   int *p = &b;
   scanf("%i", &i); // GOOD:the error can be determined by examining the initial value.
@@ -61,7 +61,7 @@ int functionWork2_() {
   int i;
   i = 0;
   char a[10];
-  a[0] = 0;
+  a[0] = '\0';
   int b;
   b=1;
   int *p = &b;
