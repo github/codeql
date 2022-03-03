@@ -71,7 +71,7 @@ private class IsWindowsFromSystemProp extends IsWindowsGuard instanceof MethodAc
  * Holds when the Guard is an equality check between the system property with the name `propertyName`
  * and the string or char constant `compareToLiteral`.
  */
-private Guard isOsFromFieldEqualityCheck(string propertyName, string compareToLiteral) {
+private Guard isOsFromSystemPropertyEqualityCheck(string propertyName, string compareToLiteral) {
   result
       .isEquality(getSystemProperty(propertyName),
         any(Literal literal |
@@ -81,19 +81,19 @@ private Guard isOsFromFieldEqualityCheck(string propertyName, string compareToLi
 }
 
 private class IsWindowsFromCharPathSeperator extends IsWindowsGuard {
-  IsWindowsFromCharPathSeperator() { this = isOsFromFieldEqualityCheck("path.separator", "\\") }
+  IsWindowsFromCharPathSeperator() { this = isOsFromSystemPropertyEqualityCheck("path.separator", "\\") }
 }
 
 private class IsWindowsFromCharSeperator extends IsWindowsGuard {
-  IsWindowsFromCharSeperator() { this = isOsFromFieldEqualityCheck("file.separator", ";") }
+  IsWindowsFromCharSeperator() { this = isOsFromSystemPropertyEqualityCheck("file.separator", ";") }
 }
 
 private class IsUnixFromCharPathSeperator extends IsUnixGuard {
-  IsUnixFromCharPathSeperator() { this = isOsFromFieldEqualityCheck("path.separator", "/") }
+  IsUnixFromCharPathSeperator() { this = isOsFromSystemPropertyEqualityCheck("path.separator", "/") }
 }
 
 private class IsUnixFromCharSeperator extends IsUnixGuard {
-  IsUnixFromCharSeperator() { this = isOsFromFieldEqualityCheck("file.separator", ":") }
+  IsUnixFromCharSeperator() { this = isOsFromSystemPropertyEqualityCheck("file.separator", ":") }
 }
 
 private class IsUnixFromSystemProp extends IsAnyUnixGuard instanceof MethodAccess {
