@@ -1,5 +1,6 @@
 import csharp
 private import semmle.code.csharp.commons.Util
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 
 private predicate isRelevantForModels(Callable api) { not api instanceof MainMethod }
 
@@ -48,4 +49,25 @@ string asPartialModel(TargetAPI api) {
         + "(" + parameterQualifiedTypeNamesToString(api) + ")" //
         + /* ext + */ ";" //
   )
+}
+
+predicate isRelevantType(Type t) { not t instanceof Enum }
+
+predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(DataFlow::Content f |
+    readStep(node1, f, node2) and
+    if f instanceof DataFlow::FieldContent
+    then isRelevantType(f.(DataFlow::FieldContent).getField().getType())
+    else
+      if f instanceof DataFlow::SyntheticFieldContent
+      then isRelevantType(f.(DataFlow::SyntheticFieldContent).getField().getType())
+      else any()
+  )
+  or
+  exists(DataFlow::Content f | storeStep(node1, f, node2) | f instanceof DataFlow::ElementContent)
+}
+
+predicate isRelevantContent(DataFlow::Content f) {
+  isRelevantType(f.(DataFlow::FieldContent).getField().getType()) or
+  f instanceof DataFlow::ElementContent
 }
