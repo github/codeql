@@ -153,7 +153,11 @@ private module SaxBasedParsing {
     result = saxParserSetFeatureStateArgBacktracker(DataFlow::TypeBackTracker::end(), arg)
   }
 
-  /** Gets a reference to a XML sax parser that has `feature_external_ges` turned on */
+  /**
+   * Gets a reference to a XML sax parser that has `feature_external_ges` turned on.class
+   *
+   * See https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges
+   */
   private DataFlow::Node saxParserWithFeatureExternalGesTurnedOn(DataFlow::TypeTracker t) {
     t.start() and
     exists(SaxParserSetFeatureCall call |
@@ -189,7 +193,11 @@ private module SaxBasedParsing {
     )
   }
 
-  /** Gets a reference to a XML sax parser that has been made unsafe for `kind`. */
+  /**
+   * Gets a reference to a XML sax parser that has `feature_external_ges` turned on.class
+   *
+   * See https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges
+   */
   DataFlow::Node saxParserWithFeatureExternalGesTurnedOn() {
     result = saxParserWithFeatureExternalGesTurnedOn(DataFlow::TypeTracker::end())
   }
