@@ -1033,7 +1033,7 @@ open class KotlinFileExtractor(
             @Suppress("UNCHECKED_CAST")
             tw.writeIsAnonymClass(ids.type.javaResult.id as Label<DbClass>, idNewexpr)
 
-            extractTypeAccessRecursive(pluginContext.irBuiltIns.anyType, enclosingCallable, idNewexpr, -3, callsite, enclosingStmt)
+            extractTypeAccessRecursive(pluginContext.irBuiltIns.anyType, callsite, idNewexpr, -3, enclosingCallable, enclosingStmt)
         } else {
             // Returns true if type is C<T1, T2, ...> where C is declared `class C<T1, T2, ...> { ... }`
             fun isUnspecialised(type: IrSimpleType) =
@@ -1058,7 +1058,7 @@ open class KotlinFileExtractor(
             if (dispatchReceiver != null) {
                 extractExpressionExpr(dispatchReceiver, enclosingCallable, id, -1, enclosingStmt)
             } else if(callTarget.isStaticMethodOfClass) {
-                extractTypeAccessRecursive(callTarget.parentAsClass.toRawType(), enclosingCallable, id, -1, callsite, enclosingStmt)
+                extractTypeAccessRecursive(callTarget.parentAsClass.toRawType(), callsite, id, -1, enclosingCallable, enclosingStmt)
             }
         }
 
@@ -1477,7 +1477,7 @@ open class KotlinFileExtractor(
                         tw.writeStmts_throwstmt(throwId, stmtParent.parent, stmtParent.idx, callable)
                         tw.writeHasLocation(throwId, locId)
                         val newExprId = extractNewExpr(it, null, thrownType, locId, throwId, 0, callable, throwId)
-                        extractTypeAccess(thrownType, callable, newExprId, -3, c, throwId)
+                        extractTypeAccess(thrownType, c, newExprId, -3, callable, throwId)
                     }
                 }
                 isBuiltinCallInternal(c, "illegalArgumentException") -> {
@@ -1582,7 +1582,7 @@ open class KotlinFileExtractor(
                             }
                         } else {
                             val elementType = c.type.getArrayElementType(pluginContext.irBuiltIns)
-                            extractTypeAccessRecursive(elementType, callable, id, -1, c, enclosingStmt)
+                            extractTypeAccessRecursive(elementType, c, id, -1, callable, enclosingStmt)
                         }
 
                         arg?.let {
@@ -1666,7 +1666,7 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                    extractTypeAccessRecursive(c.getTypeArgument(1)!!, callable, id, 0, c, enclosingStmt)
+                    extractTypeAccessRecursive(c.getTypeArgument(1)!!, c, id, 0, callable, enclosingStmt)
                     extractExpressionExpr(c.getValueArgument(0)!!, callable, id, 1, enclosingStmt)
                 }
                 else -> {
@@ -1699,7 +1699,7 @@ open class KotlinFileExtractor(
     ) {
         typeArgs.forEachIndexed { argIdx, arg ->
             val mul = if (reverse) -1 else 1
-            extractTypeAccessRecursive(arg, enclosingCallable, parentExpr, argIdx * mul + startIndex, location, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+            extractTypeAccessRecursive(arg, location, parentExpr, argIdx * mul + startIndex, enclosingCallable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
         }
     }
 
@@ -1828,12 +1828,12 @@ open class KotlinFileExtractor(
         }
 
         val typeAccessId =
-            extractTypeAccess(typeAccessType, callable, id, -3, e, enclosingStmt)
+            extractTypeAccess(typeAccessType, e, id, -3, callable, enclosingStmt)
 
         if (e is IrConstructorCall) {
             // Only extract type arguments relating to the constructed type, not the constructor itself:
             e.getClassTypeArguments().forEachIndexed({ argIdx, argType ->
-                extractTypeAccessRecursive(argType!!, callable, typeAccessId, argIdx, e, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+                extractTypeAccessRecursive(argType!!, e, typeAccessId, argIdx, callable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
             })
         } else {
             extractTypeArguments(e, typeAccessId, callable, enclosingStmt)
@@ -2078,7 +2078,7 @@ open class KotlinFileExtractor(
                         tw.writeStmts_catchclause(catchId, id, catchIdx, callable)
                         val catchLocId = tw.getLocation(catchClause)
                         tw.writeHasLocation(catchId, catchLocId)
-                        extractTypeAccessRecursive(catchClause.catchParameter.type, callable, catchId, -1, catchClause.catchParameter, catchId)
+                        extractTypeAccessRecursive(catchClause.catchParameter.type, catchClause.catchParameter, catchId, -1, callable, catchId)
                         extractVariableExpr(catchClause.catchParameter, callable, catchId, 0, catchId)
                         extractExpressionStmt(catchClause.result, callable, catchId, 1)
                     }
@@ -2261,7 +2261,7 @@ open class KotlinFileExtractor(
 
 
                         fun extractTypeAccess(parent: IrClass){
-                            extractTypeAccessRecursive(parent.typeWith(listOf()), callable, id, 0, locId, exprParent.enclosingStmt)
+                            extractTypeAccessRecursive(parent.typeWith(listOf()), locId, id, 0, callable, exprParent.enclosingStmt)
                         }
 
                         when(val ownerParent = owner.parent) {
@@ -2557,7 +2557,7 @@ open class KotlinFileExtractor(
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
-                    extractTypeAccessRecursive(e.classType, callable, id, 0, locId, exprParent.enclosingStmt)
+                    extractTypeAccessRecursive(e.classType, locId, id, 0, callable, exprParent.enclosingStmt)
                 }
                 is IrPropertyReference -> {
                     extractPropertyReference(e, parent, callable)
@@ -2991,7 +2991,7 @@ open class KotlinFileExtractor(
                     tw.writeExprs_newexpr(callId, callType.javaResult.id, retId, 0)
                     tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
 
-                    val typeAccessId = extractTypeAccess(callType, funLabels.methodId, callId, -3, locId, retId)
+                    val typeAccessId = extractTypeAccess(callType, locId, callId, -3, funLabels.methodId, retId)
 
                     extractTypeArguments(functionReferenceExpr, typeAccessId, funLabels.methodId, retId)
                     return callId
@@ -3196,7 +3196,7 @@ open class KotlinFileExtractor(
             extractCommonExpr(castId)
 
             // type access `Ti`
-            extractTypeAccessRecursive(pType, funLabels.methodId, castId, 0, locId, enclosingStmtId)
+            extractTypeAccessRecursive(pType, locId, castId, 0, funLabels.methodId, enclosingStmtId)
 
             // element access: `a0[i]`
             val arrayAccessId = tw.getFreshIdLabel<DbArrayaccess>()
@@ -3247,15 +3247,15 @@ open class KotlinFileExtractor(
         return id
     }
 
-    private fun extractTypeAccess(type: TypeResults, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, location: Label<DbLocation>, enclosingStmt: Label<out DbStmt>): Label<out DbExpr> {
+    private fun extractTypeAccess(type: TypeResults, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>): Label<out DbExpr> {
         val id = extractTypeAccess(type, location, parent, idx)
-        tw.writeCallableEnclosingExpr(id, callable)
+        tw.writeCallableEnclosingExpr(id, enclosingCallable)
         tw.writeStatementEnclosingExpr(id, enclosingStmt)
         return id
     }
 
-    private fun extractTypeAccess(t: TypeResults, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, elementForLocation: IrElement, enclosingStmt: Label<out DbStmt>): Label<out DbExpr> {
-        return extractTypeAccess(t, callable, parent, idx, tw.getLocation(elementForLocation), enclosingStmt)
+    private fun extractTypeAccess(t: TypeResults, elementForLocation: IrElement, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>): Label<out DbExpr> {
+        return extractTypeAccess(t, tw.getLocation(elementForLocation), parent, idx, enclosingCallable, enclosingStmt)
     }
 
     private fun extractTypeAccessRecursive(t: IrType, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
@@ -3266,16 +3266,16 @@ open class KotlinFileExtractor(
         return typeAccessId
     }
 
-    private fun extractTypeAccessRecursive(t: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, location: Label<DbLocation>, enclosingStmt: Label<out DbStmt>, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
-        val typeAccessId = extractTypeAccess(useType(t, typeContext), callable, parent, idx, location, enclosingStmt)
+    private fun extractTypeAccessRecursive(t: IrType, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
+        val typeAccessId = extractTypeAccess(useType(t, typeContext), location, parent, idx, enclosingCallable, enclosingStmt)
         if (t is IrSimpleType) {
-            extractTypeArguments(t.arguments, location, typeAccessId, callable, enclosingStmt)
+            extractTypeArguments(t.arguments, location, typeAccessId, enclosingCallable, enclosingStmt)
         }
         return typeAccessId
     }
 
-    private fun extractTypeAccessRecursive(t: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, elementForLocation: IrElement, enclosingStmt: Label<out DbStmt>, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
-        return extractTypeAccessRecursive(t, callable, parent, idx, tw.getLocation(elementForLocation), enclosingStmt, typeContext)
+    private fun extractTypeAccessRecursive(t: IrType, elementForLocation: IrElement, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
+        return extractTypeAccessRecursive(t, tw.getLocation(elementForLocation), parent, idx, enclosingCallable, enclosingStmt, typeContext)
     }
 
     private fun extractTypeAccessRecursive(
@@ -3288,7 +3288,7 @@ open class KotlinFileExtractor(
         enclosingStmt: Label<out DbStmt>,
         typeContext: TypeContext = TypeContext.OTHER
     ) : Label<out DbExpr> {
-        val typeAccessId = extractTypeAccess(useType(t, typeContext), enclosingCallable, parent, idx, elementForLocation, enclosingStmt)
+        val typeAccessId = extractTypeAccess(useType(t, typeContext), elementForLocation, parent, idx, enclosingCallable, enclosingStmt)
         extractTypeArguments(typeAccessArguments, elementForLocation, typeAccessId, enclosingCallable, enclosingStmt)
         return typeAccessId
     }
@@ -3305,7 +3305,7 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                    extractTypeAccessRecursive(e.typeOperand, callable, id, 0, e, enclosingStmt)
+                    extractTypeAccessRecursive(e.typeOperand, e, id, 0, callable, enclosingStmt)
                     extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
                 }
                 IrTypeOperator.IMPLICIT_CAST -> {
@@ -3317,7 +3317,7 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                    extractTypeAccessRecursive(e.typeOperand, callable, id, 0, e, enclosingStmt)
+                    extractTypeAccessRecursive(e.typeOperand, e, id, 0, callable, enclosingStmt)
                     extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
                 }
                 IrTypeOperator.IMPLICIT_NOTNULL -> {
@@ -3329,7 +3329,7 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                    extractTypeAccessRecursive(e.typeOperand, callable, id, 0, e, enclosingStmt)
+                    extractTypeAccessRecursive(e.typeOperand, e, id, 0, callable, enclosingStmt)
                     extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
                 }
                 IrTypeOperator.IMPLICIT_COERCION_TO_UNIT -> {
@@ -3341,7 +3341,7 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                    extractTypeAccessRecursive(e.typeOperand, callable, id, 0, e, enclosingStmt)
+                    extractTypeAccessRecursive(e.typeOperand, e, id, 0, callable, enclosingStmt)
                     extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
                 }
                 IrTypeOperator.SAFE_CAST -> {
@@ -3353,7 +3353,7 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                    extractTypeAccessRecursive(e.typeOperand, callable, id, 0, e, enclosingStmt)
+                    extractTypeAccessRecursive(e.typeOperand, e, id, 0, callable, enclosingStmt)
                     extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
                 }
                 IrTypeOperator.INSTANCEOF -> {
@@ -3366,7 +3366,7 @@ open class KotlinFileExtractor(
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, enclosingStmt)
                     extractExpressionExpr(e.argument, callable, id, 0, enclosingStmt)
-                    extractTypeAccessRecursive(e.typeOperand, callable, id, 1, e, enclosingStmt)
+                    extractTypeAccessRecursive(e.typeOperand, e, id, 1, callable, enclosingStmt)
                 }
                 IrTypeOperator.NOT_INSTANCEOF -> {
                     val id = tw.getFreshIdLabel<DbNotinstanceofexpr>()
@@ -3378,7 +3378,7 @@ open class KotlinFileExtractor(
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, enclosingStmt)
                     extractExpressionExpr(e.argument, callable, id, 0, enclosingStmt)
-                    extractTypeAccessRecursive(e.typeOperand, callable, id, 1, e, enclosingStmt)
+                    extractTypeAccessRecursive(e.typeOperand, e, id, 1, callable, enclosingStmt)
                 }
                 IrTypeOperator.SAM_CONVERSION -> {
 
@@ -3530,7 +3530,7 @@ open class KotlinFileExtractor(
                         tw.writeExprsKotlinType(arrayCreationId, at.kotlinResult.id)
                         extractCommonExpr(arrayCreationId)
 
-                        extractTypeAccessRecursive(pluginContext.irBuiltIns.anyNType, ids.function, arrayCreationId, -1, e, returnId)
+                        extractTypeAccessRecursive(pluginContext.irBuiltIns.anyNType, e, arrayCreationId, -1, ids.function, returnId)
 
                         val initId = tw.getFreshIdLabel<DbArrayinit>()
                         tw.writeExprs_arrayinit(initId, at.javaResult.id, arrayCreationId, -2)
@@ -3563,14 +3563,14 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                    extractTypeAccessRecursive(e.typeOperand, callable, id, 0, e, enclosingStmt)
+                    extractTypeAccessRecursive(e.typeOperand, e, id, 0, callable, enclosingStmt)
 
                     val idNewexpr = extractNewExpr(ids.constructor, ids.type, locId, id, 1, callable, enclosingStmt)
 
                     @Suppress("UNCHECKED_CAST")
                     tw.writeIsAnonymClass(ids.type.javaResult.id as Label<DbClass>, idNewexpr)
 
-                    extractTypeAccessRecursive(e.typeOperand, callable, idNewexpr, -3, e, enclosingStmt)
+                    extractTypeAccessRecursive(e.typeOperand, e, idNewexpr, -3, callable, enclosingStmt)
 
                     extractExpressionExpr(e.argument, callable, idNewexpr, 0, enclosingStmt)
                 }
