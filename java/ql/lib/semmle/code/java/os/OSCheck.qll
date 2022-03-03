@@ -37,7 +37,7 @@ abstract class IsUnixGuard extends Guard { }
 abstract class IsAnyUnixGuard extends Guard { }
 
 /**
- * Holds when the MethodAccess is a call to check the current OS using either the upper case `osUpperCase` or lower case `osLowerCase` string constants.
+ * Holds when `ma` compares the current OS against the string constant `osString`.
  */
 bindingset[osString]
 private predicate isOsFromSystemProp(MethodAccess ma, string osString) {

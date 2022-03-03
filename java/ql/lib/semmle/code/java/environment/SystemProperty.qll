@@ -2,7 +2,7 @@ import java
 private import semmle.code.java.frameworks.apache.Lang
 
 /**
- * Gets Expr that return the value of `propertyName` from `System.getProperty()`.
+ * Gets an expression that retrieves the value of `propertyName` from `System.getProperty()`.
  */
 Expr getSystemProperty(string propertyName) {
   result = getSystemPropertyFromSystem(propertyName) or

@@ -104,7 +104,7 @@ private class FileCreateTempFileSink extends FileCreationSink {
 }
 
 /**
- * A guard that checks whether or not the the program is running on the Windows OS.
+ * A guard that holds when the program is definitely running under some version of Windows.
  */
 abstract private class WindowsOsBarrierGuard extends DataFlow::BarrierGuard { }
 

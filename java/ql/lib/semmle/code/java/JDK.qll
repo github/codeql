@@ -52,9 +52,9 @@ class StringPartialMatchMethod extends Method {
    * The index of the parameter that is being matched against.
    */
   int getMatchParameterIndex() {
-    if not this.hasName("regionMatches")
-    then result = 0
-    else this.getParameterType(result) instanceof TypeString
+    if this.hasName("regionMatches")
+    then this.getParameterType(result) instanceof TypeString
+    else result = 0
   }
 }
 
