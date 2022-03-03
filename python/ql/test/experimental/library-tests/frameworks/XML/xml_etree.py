@@ -27,6 +27,12 @@ xml.etree.ElementTree.iterparse(source=StringIO(x)) # $ input=StringIO(..) vuln=
 parser = xml.etree.ElementTree.XMLParser()
 xml.etree.ElementTree.fromstring(x, parser=parser) # $ input=x vuln='Billion Laughs' vuln='Quadratic Blowup'
 
+# manual use of feed method
+parser = xml.etree.ElementTree.XMLParser()
+parser.feed(x) # $ input=x vuln='Billion Laughs' vuln='Quadratic Blowup'
+parser.feed(data=x) # $ input=x vuln='Billion Laughs' vuln='Quadratic Blowup'
+parser.close()
+
 # note: it's technically possible to use the thing wrapper func `fromstring` with an
 # `lxml` parser, and thereby change what vulnerabilities you are exposed to.. but it
 # seems very unlikely that anyone would do this, so we have intentionally not added any

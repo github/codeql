@@ -80,6 +80,28 @@ private module Xml {
   }
 
   /**
+   * A call to the `feed` method of an `xml.etree` parser.
+   */
+  private class XMLEtreeParserFeedCall extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
+    XMLEtreeParserFeedCall() {
+      this =
+        API::moduleImport("xml")
+            .getMember("etree")
+            .getMember("ElementTree")
+            .getMember("XMLParser")
+            .getReturn()
+            .getMember("feed")
+            .getACall()
+    }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      kind.isBillionLaughs() or kind.isQuadraticBlowup()
+    }
+  }
+
+  /**
    * A call to the `setFeature` method on a XML sax parser.
    *
    * See https://docs.python.org/3.10/library/xml.sax.reader.html#xml.sax.xmlreader.XMLReader.setFeature
@@ -322,11 +344,39 @@ private module Xml {
     }
 
     override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      // TODO: This should be done with type-tracking
       exists(XML::XMLParser xmlParser |
         xmlParser = this.getArgByName("parser").getALocalSource() and xmlParser.vulnerable(kind)
       )
       or
       kind.isXxe() and not exists(this.getArgByName("parser"))
+    }
+  }
+
+  /**
+   * A call to the `feed` method of an `lxml.etree` parser.
+   */
+  private class LXMLEtreeParserFeedCall extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
+    LXMLEtreeParserFeedCall() {
+      exists(API::Node parserInstance |
+        parserInstance =
+          API::moduleImport("lxml").getMember("etree").getMember("XMLParser").getReturn()
+        or
+        parserInstance =
+          API::moduleImport("lxml").getMember("etree").getMember("get_default_parser").getReturn()
+      |
+        this = parserInstance.getMember("feed").getACall()
+      )
+    }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      // TODO: This should be done with type-tracking
+      exists(XML::XMLParser xmlParser |
+        xmlParser = this.getObject().getALocalSource() and
+        xmlParser.vulnerable(kind)
+      )
     }
   }
 

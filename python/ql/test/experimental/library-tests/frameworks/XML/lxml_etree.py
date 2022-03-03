@@ -26,6 +26,12 @@ lxml.etree.fromstring(x, parser=parser) # $ input=x vuln='XXE'
 parser = lxml.etree.get_default_parser()
 lxml.etree.fromstring(x, parser=parser) # $ input=x vuln='XXE'
 
+# manual use of feed method
+parser = lxml.etree.XMLParser()
+parser.feed(x) # $ input=x vuln='XXE'
+parser.feed(data=x) # $ input=x vuln='XXE'
+parser.close()
+
 # XXE-safe
 parser = lxml.etree.XMLParser(resolve_entities=False)
 lxml.etree.fromstring(x, parser=parser) # $ input=x
