@@ -11,31 +11,6 @@ Method superImpl(Method m) {
   not m instanceof ToStringMethod
 }
 
-class TargetApi extends Callable {
-  TargetApi() {
-    this.isPublic() and
-    this.fromSource() and
-    (
-      this.getDeclaringType().isPublic() or
-      superImpl(this).getDeclaringType().isPublic()
-    ) and
-    isRelevantForModels(this)
-  }
-}
-
-/** DEPRECATED: Alias for TargetApi */
-deprecated class TargetAPI = TargetApi;
-
-private string isExtensible(RefType ref) {
-  if ref.isFinal() then result = "false" else result = "true"
-}
-
-predicate isRelevantForModels(Callable api) {
-  not isInTestFile(api.getCompilationUnit().getFile()) and
-  not isJdkInternal(api.getCompilationUnit()) and
-  not api instanceof MainMethod
-}
-
 private predicate isInTestFile(File file) {
   file.getAbsolutePath().matches("%src/test/%") or
   file.getAbsolutePath().matches("%/guava-tests/%") or
@@ -61,9 +36,54 @@ private predicate isJdkInternal(CompilationUnit cu) {
   cu.getPackage().getName() = ""
 }
 
-bindingset[input, output]
-string asTaintModel(TargetApi api, string input, string output) {
-  result = asSummaryModel(api, input, output, "taint")
+predicate isRelevantForModels(Callable api) {
+  not isInTestFile(api.getCompilationUnit().getFile()) and
+  not isJdkInternal(api.getCompilationUnit()) and
+  not api instanceof MainMethod
+}
+
+class TargetApi extends Callable {
+  TargetApi() {
+    this.isPublic() and
+    this.fromSource() and
+    (
+      this.getDeclaringType().isPublic() or
+      superImpl(this).getDeclaringType().isPublic()
+    ) and
+    isRelevantForModels(this)
+  }
+}
+
+private string isExtensible(RefType ref) {
+  if ref.isFinal() then result = "false" else result = "true"
+}
+
+private string typeAsModel(RefType type) {
+  result = type.getCompilationUnit().getPackage().getName() + ";" + type.nestedName()
+}
+
+private RefType bestTypeForModel(TargetApi api) {
+  if exists(superImpl(api))
+  then superImpl(api).fromSource() and result = superImpl(api).getDeclaringType()
+  else result = api.getDeclaringType()
+}
+
+/**
+ * Returns the appropriate type name for the model. Either the type
+ * declaring the method or the supertype introducing the method.
+ */
+private string typeAsSummaryModel(TargetApi api) { result = typeAsModel(bestTypeForModel(api)) }
+
+/**
+ * Computes the first 6 columns for CSV rows.
+ */
+private string asPartialModel(TargetApi api) {
+  result =
+    typeAsSummaryModel(api) + ";" //
+      + isExtensible(bestTypeForModel(api)) + ";" //
+      + api.getName() + ";" //
+      + paramsString(api) + ";" //
+      + /* ext + */ ";" //
 }
 
 bindingset[input, output]
@@ -79,6 +99,11 @@ string asSummaryModel(TargetApi api, string input, string output, string kind) {
       + kind
 }
 
+bindingset[input, output]
+string asTaintModel(TargetApi api, string input, string output) {
+  result = asSummaryModel(api, input, output, "taint")
+}
+
 bindingset[input, kind]
 string asSinkModel(TargetApi api, string input, string kind) {
   result = asPartialModel(api) + input + ";" + kind
@@ -89,32 +114,8 @@ string asSourceModel(TargetApi api, string output, string kind) {
   result = asPartialModel(api) + output + ";" + kind
 }
 
-/**
- * Computes the first 6 columns for CSV rows.
- */
-private string asPartialModel(TargetApi api) {
-  result =
-    typeAsSummaryModel(api) + ";" //
-      + isExtensible(bestTypeForModel(api)) + ";" //
-      + api.getName() + ";" //
-      + paramsString(api) + ";" //
-      + /* ext + */ ";" //
-}
-
-/**
- * Returns the appropriate type name for the model. Either the type
- * declaring the method or the supertype introducing the method.
- */
-private string typeAsSummaryModel(TargetApi api) { result = typeAsModel(bestTypeForModel(api)) }
-
-private RefType bestTypeForModel(TargetApi api) {
-  if exists(superImpl(api))
-  then superImpl(api).fromSource() and result = superImpl(api).getDeclaringType()
-  else result = api.getDeclaringType()
-}
-
-private string typeAsModel(RefType type) {
-  result = type.getCompilationUnit().getPackage().getName() + ";" + type.nestedName()
+private predicate isPrimitiveTypeUsedForBulkData(Type t) {
+  t.getName().regexpMatch("byte|char|Byte|Character")
 }
 
 predicate isRelevantType(Type t) {
@@ -165,6 +166,17 @@ predicate isRelevantContent(DataFlow::Content f) {
   f instanceof DataFlow::MapValueContent
 }
 
+private string parameterAccess(Parameter p) {
+  if
+    p.getType() instanceof Array and
+    not isPrimitiveTypeUsedForBulkData(p.getType().(Array).getElementType())
+  then result = "Argument[" + p.getPosition() + "].ArrayElement"
+  else
+    if p.getType() instanceof ContainerType
+    then result = "Argument[" + p.getPosition() + "].Element"
+    else result = "Argument[" + p.getPosition() + "]"
+}
+
 string parameterNodeAsInput(DataFlow::ParameterNode p) {
   result = parameterAccess(p.asParameter())
   or
@@ -180,19 +192,4 @@ string returnNodeAsOutput(ReturnNodeExt node) {
       or
       result = "Argument[-1]" and pos = -1
     )
-}
-
-string parameterAccess(Parameter p) {
-  if
-    p.getType() instanceof Array and
-    not isPrimitiveTypeUsedForBulkData(p.getType().(Array).getElementType())
-  then result = "Argument[" + p.getPosition() + "].ArrayElement"
-  else
-    if p.getType() instanceof ContainerType
-    then result = "Argument[" + p.getPosition() + "].Element"
-    else result = "Argument[" + p.getPosition() + "]"
-}
-
-predicate isPrimitiveTypeUsedForBulkData(Type t) {
-  t.getName().regexpMatch("byte|char|Byte|Character")
 }
