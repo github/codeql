@@ -14,6 +14,8 @@ private class RegexSinkCsv extends SinkModelCsv {
         "java.util;String;false;matches;(String);;Argument[0];regex-compile",
         "java.util;String;false;split;(String);;Argument[0];regex-compile",
         "java.util;String;false;split;(String,int);;Argument[0];regex-compile",
+        "java.util;String;false;replaceAll;(String,String);;Argument[0];regex-compile",
+        "java.util;String;false;replaceFirst;(String,String);;Argument[0];regex-compile",
         "com.google.common.base;Splitter;false;onPattern;(String);;Argument[0];regex-compile"
       ]
   }
