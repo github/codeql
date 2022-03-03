@@ -227,6 +227,10 @@ private module Xml {
       or
       (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
       this.getArgByName("huge_tree").getALocalSource().asExpr() = any(True t)
+      or
+      kind.isDtdRetrieval() and
+      this.getArgByName("load_dtd").getALocalSource().asExpr() = any(True t) and
+      this.getArgByName("no_network").getALocalSource().asExpr() = any(False t)
     }
   }
 
