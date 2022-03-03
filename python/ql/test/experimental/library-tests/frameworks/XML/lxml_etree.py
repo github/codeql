@@ -5,12 +5,19 @@ x = "some xml"
 
 # different parsing methods
 lxml.etree.fromstring(x) # $ input=x vuln='XXE'
+lxml.etree.fromstring(text=x) # $ input=x vuln='XXE'
 
 lxml.etree.fromstringlist([x]) # $ input=List vuln='XXE'
+lxml.etree.fromstringlist(strings=[x]) # $ input=List vuln='XXE'
 
 lxml.etree.XML(x) # $ input=x vuln='XXE'
+lxml.etree.XML(text=x) # $ input=x vuln='XXE'
 
-lxml.etree.parse(StringIO(x)).getroot() # $ input=StringIO(..) vuln='XXE'
+lxml.etree.parse(StringIO(x)) # $ input=StringIO(..) vuln='XXE'
+lxml.etree.parse(source=StringIO(x)) # $ input=StringIO(..) vuln='XXE'
+
+lxml.etree.parseid(StringIO(x)) # $ input=StringIO(..) vuln='XXE'
+lxml.etree.parseid(source=StringIO(x)) # $ input=StringIO(..) vuln='XXE'
 
 # With default parsers (nothing changed)
 parser = lxml.etree.XMLParser()

@@ -53,11 +53,21 @@ private module Xml {
         API::moduleImport("xml")
             .getMember("etree")
             .getMember("ElementTree")
-            .getMember(["fromstring", "fromstringlist", "XML", "parse"])
+            .getMember(["fromstring", "fromstringlist", "XML", "XMLID", "parse", "iterparse"])
             .getACall()
     }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() {
+      result in [
+          this.getArg(0),
+          // fromstring / XML / XMLID
+          this.getArgByName("text"),
+          // fromstringlist
+          this.getArgByName("sequence"),
+          // parse / iterparse
+          this.getArgByName("source"),
+        ]
+    }
 
     override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
       not exists(this.getArgByName("parser")) and
@@ -163,8 +173,8 @@ private module Xml {
    * parsed_xml = BadHandler._result
    * ```
    */
-  private class XMLSaxParsing extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
-    XMLSaxParsing() {
+  private class XMLSaxInstanceParsing extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
+    XMLSaxInstanceParsing() {
       this =
         API::moduleImport("xml")
             .getMember("sax")
@@ -174,7 +184,40 @@ private module Xml {
             .getACall()
     }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("source")] }
+
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      // always vuln to these
+      (kind.isBillionLaughs() or kind.isQuadraticBlowup())
+      or
+      // can be vuln to other things if features has been turned on
+      this.getObject() = saxParserWithFeatureExternalGesTurnedOn() and
+      (kind.isXxe() or kind.isDtdRetrieval())
+    }
+  }
+
+  /**
+   * A call to either `parse` or `parseString` from `xml.sax` module.
+   *
+   * See:
+   * - https://docs.python.org/3.10/library/xml.sax.html#xml.sax.parse
+   * - https://docs.python.org/3.10/library/xml.sax.html#xml.sax.parseString
+   */
+  private class XMLSaxParsing extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
+    XMLSaxParsing() {
+      this =
+        API::moduleImport("xml").getMember("sax").getMember(["parse", "parseString"]).getACall()
+    }
+
+    override DataFlow::Node getAnInput() {
+      result in [
+          this.getArg(0),
+          // parseString
+          this.getArgByName("string"),
+          // parse
+          this.getArgByName("source"),
+        ]
+    }
 
     override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
       // always vuln to these
@@ -262,11 +305,21 @@ private module Xml {
       this =
         API::moduleImport("lxml")
             .getMember("etree")
-            .getMember(["fromstring", "fromstringlist", "XML", "parse"])
+            .getMember(["fromstring", "fromstringlist", "XML", "parse", "parseid"])
             .getACall()
     }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() {
+      result in [
+          this.getArg(0),
+          // fromstring / XML
+          this.getArgByName("text"),
+          // fromstringlist
+          this.getArgByName("strings"),
+          // parse / parseid
+          this.getArgByName("source"),
+        ]
+    }
 
     override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
       exists(XML::XMLParser xmlParser |
@@ -293,7 +346,9 @@ private module Xml {
   private class XMLtoDictParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
     XMLtoDictParsing() { this = API::moduleImport("xmltodict").getMember("parse").getACall() }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() {
+      result in [this.getArg(0), this.getArgByName("xml_input")]
+    }
 
     override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
       (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
@@ -317,7 +372,15 @@ private module Xml {
     }
 
     override DataFlow::Node getAnInput() {
-      result in [this.getArg(0), this.getArgByName("string"), this.getArgByName("file")]
+      result in [
+          this.getArg(0),
+          // parseString
+          this.getArgByName("string"),
+          // minidom.parse
+          this.getArgByName("file"),
+          // pulldom.parse
+          this.getArgByName("stream_or_string"),
+        ]
     }
 
     DataFlow::Node getParserArg() { result in [this.getArg(1), this.getArgByName("parser")] }

@@ -10,14 +10,15 @@ class MainHandler(xml.sax.ContentHandler):
     def characters(self, data):
         self._result.append(data)
 
-    def parse(self, f):
-        xml.sax.parse(f, self) # $ MISSING: input=f vuln='Billion Laughs' vuln='Quadratic Blowup'
-        self._result
+xml.sax.parse(StringIO(x)) # $ input=StringIO(..) vuln='Billion Laughs' vuln='Quadratic Blowup'
+xml.sax.parse(source=StringIO(x)) # $ input=StringIO(..) vuln='Billion Laughs' vuln='Quadratic Blowup'
 
-MainHandler().parse(StringIO(x))
+xml.sax.parseString(x) # $ input=x vuln='Billion Laughs' vuln='Quadratic Blowup'
+xml.sax.parseString(string=x) # $ input=x vuln='Billion Laughs' vuln='Quadratic Blowup'
 
 parser = xml.sax.make_parser()
 parser.parse(StringIO(x)) # $ input=StringIO(..) vuln='Billion Laughs' vuln='Quadratic Blowup'
+parser.parse(source=StringIO(x)) # $ input=StringIO(..) vuln='Billion Laughs' vuln='Quadratic Blowup'
 
 # You can make it vuln to both XXE and DTD retrieval by setting this flag
 # see https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges
@@ -30,7 +31,6 @@ parser.setFeature(xml.sax.handler.feature_external_ges, False)
 parser.parse(StringIO(x)) # $ input=StringIO(..) vuln='Billion Laughs' vuln='Quadratic Blowup'
 
 # Forward Type Tracking test
-
 def func(cond):
     parser = xml.sax.make_parser()
     if cond:
