@@ -206,11 +206,14 @@ private module Xml {
 
     override DataFlow::Node getAnInput() { none() }
 
+    // NOTE: it's not possible to change settings of a parser after constructing it
     override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
       kind.isXxe() and
-      not (
-        exists(this.getArgByName("resolve_entities")) or
-        this.getArgByName("resolve_entities").getALocalSource().asExpr() = any(False f)
+      (
+        // resolve_entities has default True
+        not exists(this.getArgByName("resolve_entities"))
+        or
+        this.getArgByName("resolve_entities").getALocalSource().asExpr() = any(True t)
       )
       or
       (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
