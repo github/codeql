@@ -4,11 +4,6 @@
 
 import semmle.javascript.Externs
 
-/** Holds if `et` is a root interface of the DOM type hierarchy. */
-predicate isDomRootType(ExternalType et) {
-  exists(string n | n = et.getName() | n = "EventTarget" or n = "StyleSheet")
-}
-
 /** DEPRECATED: Alias for isDomRootType */
 deprecated predicate isDOMRootType = isDomRootType/1;
 
