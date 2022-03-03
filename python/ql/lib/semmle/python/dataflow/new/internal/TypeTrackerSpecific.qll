@@ -14,6 +14,8 @@ predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStep/2;
 
 predicate jumpStep = DataFlowPrivate::jumpStep/2;
 
+predicate levelStep(Node pred, Node succ) { none() }
+
 /**
  * Gets the name of a possible piece of content. For Python, this is currently only attribute names,
  * using the name of the attribute for the corresponding content.
