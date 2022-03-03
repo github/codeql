@@ -86,7 +86,7 @@ private class JdkRegexMatchMethodAccess extends RegexMatchMethodAccess {
     or
     package = "java.lang" and
     type = "String" and
-    name = ["matches", "split"] and
+    name = ["matches", "split", "replaceAll", "replaceFirst"] and
     regexArg = 0 and
     stringArg = -1
     or

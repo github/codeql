@@ -12,6 +12,8 @@ class PolyRedosTest {
         tainted.matches(reg); // $ hasPolyRedos
         tainted.split(reg); // $ hasPolyRedos
         tainted.split(reg, 7); // $ hasPolyRedos
+        tainted.replaceAll(reg, "a"); // $ hasPolyRedos
+        tainted.replaceFirst(reg, "a"); // $ hasPolyRedos
         Pattern.matches(reg, tainted); // $ hasPolyRedos
         Pattern.compile(reg).matcher(tainted).matches(); // $ hasPolyRedos
         Pattern.compile(reg).split(tainted); // $ hasPolyRedos
