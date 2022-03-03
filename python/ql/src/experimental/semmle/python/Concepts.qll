@@ -76,45 +76,6 @@ module XML {
       abstract predicate vulnerable(XMLVulnerabilityKind kind);
     }
   }
-
-  /**
-   * A data-flow node that constructs an XML parser.
-   *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `XMLParser` instead.
-   */
-  class XMLParser extends DataFlow::Node instanceof XMLParser::Range {
-    /**
-     * Gets the argument containing the content to parse.
-     */
-    DataFlow::Node getAnInput() { result = super.getAnInput() }
-
-    /**
-     * Holds if the parser is vulnerable to `kind`.
-     */
-    predicate vulnerable(XMLVulnerabilityKind kind) { super.vulnerable(kind) }
-  }
-
-  /** Provides classes for modeling XML parsers. */
-  module XMLParser {
-    /**
-     * A data-flow node that constructs an XML parser.
-     *
-     * Extend this class to model new APIs. If you want to refine existing API models,
-     * extend `XMLParser` instead.
-     */
-    abstract class Range extends DataFlow::Node {
-      /**
-       * Gets the argument containing the content to parse.
-       */
-      abstract DataFlow::Node getAnInput();
-
-      /**
-       * Holds if the parser is vulnerable to `kind`.
-       */
-      abstract predicate vulnerable(XMLVulnerabilityKind kind);
-    }
-  }
 }
 
 /** Provides classes for modeling LDAP query execution-related APIs. */

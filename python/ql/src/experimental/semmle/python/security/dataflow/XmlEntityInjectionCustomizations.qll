@@ -62,19 +62,6 @@ module XmlEntityInjection {
   }
 
   /**
-   * An input to an XML parser, considered as a flow sink.
-   *
-   * See `XML::XMLParser`
-   */
-  class XMLParserInputAsSink extends Sink {
-    XML::XMLParser xmlParser;
-
-    XMLParserInputAsSink() { this = xmlParser.getAnInput() }
-
-    override string getVulnerableKind() { xmlParser.vulnerable(result) }
-  }
-
-  /**
    * A source of remote user input, considered as a flow source.
    */
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
