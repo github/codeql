@@ -157,6 +157,11 @@ class RegExpTerm extends RegExpParent {
   /** Gets the offset at which this term ends. */
   int getEnd() { result = end }
 
+  /** Holds if this term occurs in regex `inRe` offsets `startOffset` to `endOffset`. */
+  predicate occursInRegex(Regex inRe, int startOffset, int endOffset) {
+    inRe = re and startOffset = start and endOffset = end
+  }
+
   override string toString() { result = re.getText().substring(start, end) }
 
   /**
@@ -385,18 +390,15 @@ private RegExpTerm seqChild(Regex re, int start, int end, int i) {
   re.sequence(start, end) and
   (
     i = 0 and
-    result.getRegex() = re and
-    result.getStart() = start and
     exists(int itemEnd |
       re.item(start, itemEnd) and
-      result.getEnd() = itemEnd
+      result.occursInRegex(re, start, itemEnd)
     )
     or
     i > 0 and
-    result.getRegex() = re and
     exists(int itemStart | itemStart = seqChildEnd(re, start, end, i - 1) |
-      result.getStart() = itemStart and
-      re.item(itemStart, result.getEnd())
+      re.item(itemStart, result.getEnd()) and
+      result.occursInRegex(re, itemStart, _)
     )
   )
 }
@@ -642,18 +644,15 @@ class RegExpCharacterClass extends RegExpTerm, TRegExpCharacterClass {
 
   override RegExpTerm getChild(int i) {
     i = 0 and
-    result.getRegex() = re and
     exists(int itemStart, int itemEnd |
-      result.getStart() = itemStart and
       re.charSetStart(start, itemStart) and
       re.charSetChild(start, itemStart, itemEnd) and
-      result.getEnd() = itemEnd
+      result.occursInRegex(re, itemStart, itemEnd)
     )
     or
     i > 0 and
-    result.getRegex() = re and
     exists(int itemStart | itemStart = this.getChild(i - 1).getEnd() |
-      result.getStart() = itemStart and
+      result.occursInRegex(re, itemStart, _) and
       re.charSetChild(start, itemStart, result.getEnd())
     )
   }
@@ -823,6 +822,16 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
   }
 
   override string getPrimaryQLClass() { result = "RegExpGroup" }
+
+  /** Holds if this is the `n`th numbered group of literal `lit`. */
+  predicate isNumberedGroupOfLiteral(RegExpLiteral lit, int n) {
+    lit = this.getLiteral() and n = this.getNumber()
+  }
+
+  /** Holds if this is a group with name `name` of literal `lit`. */
+  predicate isNamedGroupOfLiteral(RegExpLiteral lit, string name) {
+    lit = this.getLiteral() and name = this.getName()
+  }
 }
 
 /**
@@ -1054,11 +1063,9 @@ class RegExpBackRef extends RegExpTerm, TRegExpBackRef {
 
   /** Gets the capture group this back reference refers to. */
   RegExpGroup getGroup() {
-    result.getLiteral() = this.getLiteral() and
-    (
-      result.getNumber() = this.getNumber() or
-      result.getName() = this.getName()
-    )
+    result.isNumberedGroupOfLiteral(this.getLiteral(), this.getNumber())
+    or
+    result.isNamedGroupOfLiteral(this.getLiteral(), this.getName())
   }
 
   override RegExpTerm getChild(int i) { none() }
