@@ -56,6 +56,7 @@ track
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps with content field | type_tracker.rb:7:5:9:7 | self in field |
+| type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:14:5:14:13 | call to field= |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:14:17:14:23 | "hello" |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:15:10:15:18 | call to field |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps with content field | type_tracker.rb:14:5:14:7 | [post] var |
@@ -149,6 +150,7 @@ trackEnd
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:5:14:13 | ... = ... |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:5:14:13 | ... = ... |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:5:14:13 | __synth__0 |
+| type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:5:14:13 | call to field= |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:5:14:23 | ... |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:17:14:23 | "hello" |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:15:10:15:18 | call to field |
