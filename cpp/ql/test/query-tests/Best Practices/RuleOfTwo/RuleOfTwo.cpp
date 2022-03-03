@@ -117,12 +117,8 @@ struct HasVPV {
   }
 };
 
-// FALSE NEGATIVE: the relevant copy constructor of ProtectedVolatile is
-// accessible, so our class will get a generated copy constructor. Our query
-// thinks the copy constructor is inaccessible because it picks up the other
-// copy constructor. To fix this, our library should be changed to distinguish
-// between copy constructors and resolve overloading properly instead of
-// assuming that there is at most one.
+// NOT OK: the relevant copy constructor of ProtectedVolatile is
+// accessible, so our class will get a generated copy constructor.
 struct HasPV {
   ProtectedVolatile pv;
   HasPV& operator=(const HasPV& that) {
