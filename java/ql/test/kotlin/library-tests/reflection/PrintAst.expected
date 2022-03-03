@@ -157,7 +157,6 @@ reflection.kt:
 #   93|                       0: [ClassInstanceExpr] new Inner<String>(...)
 #   93|                         -3: [TypeAccess] Inner<String>
 #   93|                           0: [TypeAccess] String
-#   93|                           1: [TypeAccess] Integer
 #   93|                         -2: [VarAccess] this.<dispatchReceiver>
 #   93|                           -1: [ThisAccess] this
 #   93|                         0: [VarAccess] a0
@@ -168,7 +167,6 @@ reflection.kt:
 #   93|                 0: [TypeAccess] String
 #   93|                 1: [TypeAccess] Inner<String>
 #   93|                   0: [TypeAccess] String
-#   93|                   1: [TypeAccess] Integer
 #   93|               0: [ClassInstanceExpr] new Class2<Integer>(...)
 #   93|                 -3: [TypeAccess] Class2<Integer>
 #   93|                   0: [TypeAccess] Integer
@@ -829,7 +827,6 @@ reflection.kt:
 #   84|                       0: [ClassInstanceExpr] new Inner<String>(...)
 #   84|                         -3: [TypeAccess] Inner<String>
 #   84|                           0: [TypeAccess] String
-#   84|                           1: [TypeAccess] T
 #   84|                         -2: [VarAccess] this.<dispatchReceiver>
 #   84|                           -1: [ThisAccess] this
 #   84|                         0: [VarAccess] a0
@@ -840,5 +837,4 @@ reflection.kt:
 #   84|                 0: [TypeAccess] String
 #   84|                 1: [TypeAccess] Inner<String>
 #   84|                   0: [TypeAccess] String
-#   84|                   1: [TypeAccess] T
 #   84|               0: [ThisAccess] this

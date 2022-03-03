@@ -2614,7 +2614,12 @@ open class KotlinFileExtractor(
                 val callId = tw.getFreshIdLabel<DbNewexpr>()
                 tw.writeExprs_newexpr(callId, callType.javaResult.id, retId, 0)
                 tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
-                extractTypeAccessRecursive(expressionTypeArgs.first(), locId, callId, -3, labels.methodId, retId)
+
+                val typeAccessId = extractTypeAccess(callType, locId, callId, -3, labels.methodId, retId)
+                if (returnType is IrSimpleType) {
+                    // Only extract type arguments relating to the constructed type, not the constructor itself:
+                    extractTypeArguments(returnType.arguments.take(target.owner.parentAsClass.typeParameters.size).filterIsInstance<IrType>(), locId, typeAccessId, labels.methodId, retId)
+                }
                 callId
             } else {
                 var callId = tw.getFreshIdLabel<DbMethodaccess>()
@@ -2949,7 +2954,23 @@ open class KotlinFileExtractor(
             tw.writeStatementEnclosingExpr(idMemberRef, exprParent.enclosingStmt)
             tw.writeCallableBinding(idMemberRef, ids.constructor)
 
-            extractTypeAccessRecursive(fnInterfaceType, locId, idMemberRef, -3, callable, exprParent.enclosingStmt)
+            var typeAccessArguments = if (isBigArity) listOf(parameterTypes.last()) else parameterTypes
+            if (target is IrConstructorSymbol) {
+                val returnType = typeAccessArguments.last()
+
+                val typeAccessId = extractTypeAccess(useType(fnInterfaceType, TypeContext.OTHER), locId, idMemberRef, -3, callable, exprParent.enclosingStmt)
+                typeAccessArguments.dropLast(1).forEachIndexed { argIdx, arg ->
+                    extractTypeAccessRecursive(arg, locId, typeAccessId, argIdx, callable, exprParent.enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+                }
+
+                val returnTypeAccessId = extractTypeAccess(useType(returnType), locId, typeAccessId, typeAccessArguments.count() - 1, callable, exprParent.enclosingStmt)
+                if (returnType is IrSimpleType) {
+                    // Only extract type arguments relating to the constructed type, not the constructor itself:
+                    extractTypeArguments(returnType.arguments.take(target.owner.parentAsClass.typeParameters.size).filterIsInstance<IrType>(), locId, returnTypeAccessId, callable, exprParent.enclosingStmt)
+                }
+            } else {
+                extractTypeAccessRecursive(fnInterfaceType, locId, idMemberRef, -3, callable, exprParent.enclosingStmt)
+            }
 
             tw.writeMemberRefBinding(idMemberRef, targetCallableId)
 
