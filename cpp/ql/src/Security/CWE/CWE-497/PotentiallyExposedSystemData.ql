@@ -15,7 +15,7 @@
 /*
  * These queries are closely related:
  *  - `cpp/system-data-exposure`, which flags exposure of system information
- *    to a remote sink (i.e. focusses on qualiy of the sink).
+ *    to a remote sink (i.e. focusses on quality of the sink).
  *  - `cpp/potential-system-data-exposure`, which flags on exposure of the most
  *    sensitive information to a local sink (i.e. focusses on quality of the
  *    sensitive information).
@@ -48,5 +48,5 @@ from
   DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink, source, sink,
-  "This operation potentially exposes sensitive system data (a password or token) from $@.", source,
+  "This operation potentially exposes sensitive system data from $@.", source,
   source.getNode().toString()
