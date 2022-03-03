@@ -35,7 +35,7 @@ int functionWork1_() {
   return i;
 }
 
-int functionWork1b() {
+int functionWork1b(int retIndex) {
   int i;
   char a[10];
   int b;
@@ -43,6 +43,10 @@ int functionWork1b() {
   scanf("%i", &i); // BAD
   scanf("%s", a); // BAD
   scanf("%i", p); // BAD
+  if(retIndex == 0)
+    return (int)a;
+  if(retIndex == 1)
+    return *p;
   return i;
 }
 
