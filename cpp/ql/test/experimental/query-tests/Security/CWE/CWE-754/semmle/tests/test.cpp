@@ -3,7 +3,7 @@ int globalVal;
 char * globalVala;
 int * globalValp;
 char globalVala2;
-int functionWork1() {
+int functionWork1(int retIndex) {
   int i;
   char a[10];
   int b;
@@ -14,10 +14,14 @@ int functionWork1() {
     return -1;
   if (scanf("%i", p) != 1) // GOOD
     return -1;
+  if(retIndex == 0)
+    return (int)a;
+  if(retIndex == 1)
+    return *p;
   return i;
 }
 
-int functionWork1_() {
+int functionWork1_(int retIndex) {
   int i;
   char a[10];
   int b;
@@ -32,6 +36,10 @@ int functionWork1_() {
   r = scanf("%i", p);
   if (r != 1) // GOOD
     return -1;
+  if(retIndex == 0)
+    return (int)a;
+  if(retIndex == 1)
+    return *p;
   return i;
 }
 
@@ -49,8 +57,14 @@ int functionWork1b(int retIndex) {
     return *p;
   return i;
 }
-
-int functionWork2() {
+int functionWork1_() {
+  int i;
+  scanf("%i",&i); 
+  if(i<10)
+    return -1;
+  return i;
+}
+int functionWork2(int retIndex) {
   int i = 0;
   char a[10] = "";
   int b = 1;
@@ -58,10 +72,14 @@ int functionWork2() {
   scanf("%i", &i); // GOOD:Argument initialized even when scanf fails.
   scanf("%s", a); // GOOD:Argument initialized even when scanf fails.
   scanf("%i", p); // GOOD:Argument initialized even when scanf fails.
+  if(retIndex == 0)
+    return (int)a;
+  if(retIndex == 1)
+    return *p;
   return i;
 }
 
-int functionWork2_() {
+int functionWork2_(int retIndex) {
   int i;
   i = 0;
   char a[10];
@@ -72,6 +90,10 @@ int functionWork2_() {
   scanf("%i", &i); // GOOD:Argument initialized even when scanf fails.
   scanf("%s", a); // GOOD:Argument initialized even when scanf fails.
   scanf("%i", p); // GOOD:Argument initialized even when scanf fails.
+  if(retIndex == 0)
+    return (int)a;
+  if(retIndex == 1)
+    return *p;
   return i;
 }
 int functionWork2b() {
