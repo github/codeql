@@ -1,4 +1,5 @@
 | test.cpp:15:16:15:16 | Load: p | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:9:7:9:7 | x | x | test.cpp:10:3:10:13 | Store: ... = ... | here |
+| test.cpp:24:16:24:16 | Load: p | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:9:7:9:7 | x | x | test.cpp:10:3:10:13 | Store: ... = ... | here |
 | test.cpp:58:16:58:16 | Load: p | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:51:36:51:36 | y | y | test.cpp:52:3:52:13 | Store: ... = ... | here |
 | test.cpp:73:16:73:16 | Load: p | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:62:7:62:7 | x | x | test.cpp:68:3:68:13 | Store: ... = ... | here |
 | test.cpp:98:15:98:15 | Load: p | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:92:8:92:8 | s | s | test.cpp:93:3:93:15 | Store: ... = ... | here |

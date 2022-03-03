@@ -178,13 +178,10 @@ predicate blockStoresToAddress(
   globalAddress = globalAddress(store.getDestinationAddress())
 }
 
-predicate blockLoadsFromAddress(
-  IRBlock block, int index, LoadInstruction load, TGlobalAddress globalAddress
-) {
-  block.getInstruction(index) = load and
-  globalAddress = globalAddress(load.getSourceAddress())
-}
-
+/**
+ * Holds if `globalAddress` evaluates to the address of `var` (which escaped through `store` before
+ * returning through `call`) when control reaches `block`.
+ */
 predicate globalAddressPointsToStack(
   StoreInstruction store, StackVariable var, CallInstruction call, IRBlock block,
   TGlobalAddress globalAddress, boolean isCallBlock, boolean isStoreBlock
@@ -203,21 +200,55 @@ predicate globalAddressPointsToStack(
     )
     or
     isCallBlock = false and
-    exists(IRBlock mid |
-      mid.immediatelyDominates(block) and
-      // Only recurse if there is no store to `globalAddress` in `mid`.
-      globalAddressPointsToStack(store, var, call, mid, globalAddress, _, false)
+    step(store, var, call, globalAddress, _, block)
+  )
+}
+
+pragma[inline]
+int getInstructionIndex(Instruction instr, IRBlock block) { block.getInstruction(result) = instr }
+
+predicate step(
+  StoreInstruction store, StackVariable var, CallInstruction call, TGlobalAddress globalAddress,
+  IRBlock pred, IRBlock succ
+) {
+  exists(boolean isCallBlock, boolean isStoreBlock |
+    // Only recurse if there is no store to `globalAddress` in `mid`.
+    globalAddressPointsToStack(store, var, call, pred, globalAddress, isCallBlock, isStoreBlock)
+  |
+    // Post domination ensures that `block` is always executed after `mid`
+    // Domination ensures that `mid` is always executed before `block`
+    isStoreBlock = false and
+    succ.immediatelyPostDominates(pred) and
+    pred.immediatelyDominates(succ)
+    or
+    exists(CallInstruction anotherCall, int anotherCallIndex |
+      anotherCall = pred.getInstruction(anotherCallIndex) and
+      succ.getFirstInstruction() instanceof EnterFunctionInstruction and
+      succ.getEnclosingFunction() = anotherCall.getStaticCallTarget() and
+      (if isCallBlock = true then getInstructionIndex(call, _) < anotherCallIndex else any()) and
+      (
+        if isStoreBlock = true
+        then
+          forex(int storeIndex | blockStoresToAddress(pred, storeIndex, _, globalAddress) |
+            anotherCallIndex < storeIndex
+          )
+        else any()
+      )
     )
   )
 }
 
+predicate isSink(LoadInstruction load, IRBlock block, int index, TGlobalAddress globalAddress) {
+  block.getInstruction(index) = load and
+  globalAddress(load.getSourceAddress()) = globalAddress
+}
+
 from
   StoreInstruction store, StackVariable var, LoadInstruction load, CallInstruction call,
-  IRBlock block, boolean isCallBlock, TGlobalAddress address, boolean isStoreBlock
+  IRBlock block, boolean isCallBlock, TGlobalAddress address, boolean isStoreBlock, int loadIndex
 where
   globalAddressPointsToStack(store, var, call, block, address, isCallBlock, isStoreBlock) and
-  block.getAnInstruction() = load and
-  globalAddress(load.getSourceAddress()) = address and
+  isSink(load, block, loadIndex, address) and
   (
     // We know that we have a sequence:
     // (1) store to `address` -> (2) return from `f` -> (3) load from `address`.
@@ -226,22 +257,18 @@ where
     if isCallBlock = true
     then
       // If so, the load must happen after the call.
-      exists(int callIndex, int loadIndex |
-        blockLoadsFromAddress(_, loadIndex, load, _) and
-        block.getInstruction(callIndex) = call and
-        callIndex < loadIndex
-      )
+      getInstructionIndex(call, _) < loadIndex
     else any()
   ) and
-  // If there is a store to the address we need to make sure that the load we found was
-  // before that store (So that the load doesn't read an overwritten value).
-  if isStoreBlock = true
-  then
-    exists(int storeIndex, int loadIndex |
-      blockStoresToAddress(block, storeIndex, _, address) and
-      block.getInstruction(loadIndex) = load and
-      loadIndex < storeIndex
-    )
-  else any()
+  (
+    // If there is a store to the address we need to make sure that the load we found was
+    // before that store (So that the load doesn't read an overwritten value).
+    if isStoreBlock = true
+    then
+      forex(int storeIndex | blockStoresToAddress(block, storeIndex, _, address) |
+        loadIndex < storeIndex
+      )
+    else any()
+  )
 select load, "Stack variable $@ escapes $@ and is used after it has expired.", var, var.toString(),
   store, "here"
