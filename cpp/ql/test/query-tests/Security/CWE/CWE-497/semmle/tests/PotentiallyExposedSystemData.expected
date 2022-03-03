@@ -1,4 +1,11 @@
 edges
+| tests_passwd.cpp:16:8:16:15 | call to getpwnam | tests_passwd.cpp:18:29:18:31 | pwd |
+| tests_passwd.cpp:16:8:16:15 | call to getpwnam | tests_passwd.cpp:19:26:19:28 | pwd |
 nodes
+| tests_passwd.cpp:16:8:16:15 | call to getpwnam | semmle.label | call to getpwnam |
+| tests_passwd.cpp:18:29:18:31 | pwd | semmle.label | pwd |
+| tests_passwd.cpp:19:26:19:28 | pwd | semmle.label | pwd |
 subpaths
 #select
+| tests_passwd.cpp:18:29:18:31 | pwd | tests_passwd.cpp:16:8:16:15 | call to getpwnam | tests_passwd.cpp:18:29:18:31 | pwd | This operation potentially exposes sensitive system data from $@. | tests_passwd.cpp:16:8:16:15 | call to getpwnam | call to getpwnam |
+| tests_passwd.cpp:19:26:19:28 | pwd | tests_passwd.cpp:16:8:16:15 | call to getpwnam | tests_passwd.cpp:19:26:19:28 | pwd | This operation potentially exposes sensitive system data from $@. | tests_passwd.cpp:16:8:16:15 | call to getpwnam | call to getpwnam |

@@ -15,7 +15,7 @@ void test6(char *username)
 
 	pwd = getpwnam(username);
 
-	printf("pw_passwd = %s\n", pwd->pw_passwd); // BAD [NOT DETECTED]
-	printf("pw_dir = %s\n", pwd->pw_dir); // BAD [NOT DETECTED]
+	printf("pw_passwd = %s\n", pwd->pw_passwd); // BAD
+	printf("pw_dir = %s\n", pwd->pw_dir); // BAD
 	printf("sizeof(passwd) = %i\n", sizeof(passwd)); // GOOD
 }
