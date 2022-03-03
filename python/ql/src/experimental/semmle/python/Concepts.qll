@@ -51,7 +51,7 @@ module XML {
     DataFlow::Node getAnInput() { result = super.getAnInput() }
 
     /**
-     * Holds if the parsing method or the parser holding it is vulnerable to `kind`.
+     * Holds if this XML parsing is vulnerable to `kind`.
      */
     predicate vulnerable(XMLVulnerabilityKind kind) { super.vulnerable(kind) }
   }
@@ -71,7 +71,7 @@ module XML {
       abstract DataFlow::Node getAnInput();
 
       /**
-       * Holds if the parsing method or the parser holding it is vulnerable to `kind`.
+       * Holds if this XML parsing is vulnerable to `kind`.
        */
       abstract predicate vulnerable(XMLVulnerabilityKind kind);
     }
