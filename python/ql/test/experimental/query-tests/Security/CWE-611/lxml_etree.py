@@ -56,6 +56,14 @@ def lxml_parser():
     parser = lxml.etree.XMLParser(resolve_entities=False)
     return lxml.etree.fromstring(xml_content, parser=parser).text
 
+# XXE-vuln
+@app.route("/lxml_etree_fromstring-lxml.etree.XMLParser+")
+def lxml_parser():
+    xml_content = request.args['xml_content']
+
+    parser = lxml.etree.XMLParser(resolve_entities=True)
+    return lxml.etree.fromstring(xml_content, parser=parser).text
+
 # Billion laughs and quadratic blowup (huge_tree)
 
 ## Good (huge_tree=True but resolve_entities=False)
