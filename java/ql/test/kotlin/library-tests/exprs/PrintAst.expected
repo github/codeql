@@ -3079,6 +3079,49 @@ samConversion.kt:
 #   43|                                 1: [IntegerLiteral] 22
 #   43|                   -3: [TypeAccess] FunctionN<Boolean>
 #   43|                     0: [TypeAccess] Boolean
+#   46|         3: [LocalVariableDeclStmt] var ...;
+#   46|           1: [LocalVariableDeclExpr] d
+#   46|             0: [CastExpr] (...)...
+#   46|               0: [TypeAccess] SomePredicate<Integer>
+#   46|                 0: [TypeAccess] Integer
+#   46|               1: [ClassInstanceExpr] new (...)
+#   46|                 -4: [AnonymousClass] new SomePredicate<Integer>(...) { ... }
+#   46|                   1: [Constructor] 
+#-----|                     4: (Parameters)
+#   46|                       0: [Parameter] <fn>
+#   46|                     5: [BlockStmt] { ... }
+#   46|                       0: [SuperConstructorInvocationStmt] super(...)
+#   46|                       1: [ExprStmt] <Expr>;
+#   46|                         0: [AssignExpr] ...=...
+#   46|                           0: [VarAccess] this.<fn>
+#   46|                             -1: [ThisAccess] this
+#   46|                           1: [VarAccess] <fn>
+#   46|                   1: [FieldDeclaration] Function1<Integer,Boolean> <fn>;
+#   46|                     -1: [TypeAccess] Function1<Integer,Boolean>
+#   50|                   3: [Method] fn
+#-----|                     4: (Parameters)
+#   50|                       0: [Parameter] i
+#   46|                     5: [BlockStmt] { ... }
+#   46|                       0: [ReturnStmt] return ...
+#   46|                         0: [MethodAccess] invoke(...)
+#   46|                           -1: [VarAccess] <fn>
+#   46|                           0: [VarAccess] i
+#   46|                 -3: [TypeAccess] SomePredicate<Integer>
+#   46|                   0: [TypeAccess] Integer
+#   46|                 0: [LambdaExpr] ...->...
+#   46|                   -4: [AnonymousClass] new Function1<Integer,Boolean>(...) { ... }
+#   46|                     1: [Constructor] 
+#   46|                       5: [BlockStmt] { ... }
+#   46|                         0: [SuperConstructorInvocationStmt] super(...)
+#   46|                     1: [Method] invoke
+#-----|                       4: (Parameters)
+#   46|                         0: [Parameter] a
+#   46|                       5: [BlockStmt] { ... }
+#   46|                         0: [ReturnStmt] return ...
+#   46|                           0: [BooleanLiteral] true
+#   46|                   -3: [TypeAccess] Function1<Integer,Boolean>
+#   46|                     0: [TypeAccess] Integer
+#   46|                     1: [TypeAccess] Boolean
 #   16|   2: [Interface] IntPredicate
 #   17|     1: [Method] accept
 #-----|       4: (Parameters)
@@ -3119,6 +3162,12 @@ samConversion.kt:
 #   33|         20: [Parameter] i20
 #   33|         21: [Parameter] i21
 #   33|         22: [Parameter] i22
+#   49|   6: [GenericType,Interface,ParameterizedType] SomePredicate
+#-----|     -2: (Generic Parameters)
+#   49|       0: [TypeVariable] T
+#   50|     1: [Method] fn
+#-----|       4: (Parameters)
+#   50|         0: [Parameter] i
 whenExpr.kt:
 #    0| [CompilationUnit] whenExpr
 #    0|   1: [Class] WhenExprKt
