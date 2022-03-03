@@ -93,13 +93,3 @@ int functionWork2b_() {
   globalVala2 = a[0];
   return 0;
 }
-
-void functionRunner() {
-  functionWork1();
-  functionWork1_();
-  functionWork1b();
-  functionWork2();
-  functionWork2_();
-  functionWork2b();
-  functionWork2b_();
-}
