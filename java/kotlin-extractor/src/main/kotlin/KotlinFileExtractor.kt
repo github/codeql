@@ -2585,6 +2585,7 @@ open class KotlinFileExtractor(
          * param1.fn(param2, param3, ...)
          * fn(this.<extensionReceiver>, param1, param2, ...)
          * fn(param1, param2, ...)
+         * new MyType(param1, param2, ...)
          * ```
          *
          * The parameters with default argument values cover special cases:
@@ -2592,13 +2593,14 @@ open class KotlinFileExtractor(
          * - big arity function references need to call `invoke` with arguments received in an object array: `fn(param1[0] as T0, param1[1] as T1, ...)`
          */
         fun extractCallToReflectionTarget(
-            labels: FunctionLabels,
-            target: IrFunctionSymbol,
-            extractAccessToTarget: (Label<DbReturnstmt>, TypeResults) -> Label<out DbExpr>,
-            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
-            dispatchReceiverIdx: Int = -1,
-            isBigArity: Boolean = false,
-            bigArityParameterTypes: List<IrType>? = null
+            labels: FunctionLabels,         // labels of the containing function
+            target: IrFunctionSymbol,       // the target function/constructor being called
+            returnType: IrType,             // the return type of the called function. Note that `target.owner.returnType` and `returnType` doesn't match for generic functions
+            expressionTypeArgs: List<IrType>,                           // type arguments of the extracted expression
+            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,  // type arguments of the class containing the callable reference
+            dispatchReceiverIdx: Int = -1,                              // dispatch receiver index: -1 in case of functions, -2 for constructors
+            isBigArity: Boolean = false,                                // whether a big arity `invoke` is being extracted
+            bigArityParameterTypes: List<IrType>? = null                // parameter types used for the cast expressions in the big arity `invoke` invocation
         ) {
             // Return statement of generated function:
             val retId = tw.getFreshIdLabel<DbReturnstmt>()
@@ -2606,8 +2608,22 @@ open class KotlinFileExtractor(
             tw.writeHasLocation(retId, locId)
 
             // Call to target function:
-            val callType = useType(target.owner.returnType)
-            val callId = extractAccessToTarget(retId, callType)
+            val callType = useType(returnType)
+
+            val callId: Label<out DbExpr> = if (target is IrConstructorSymbol) {
+                val callId = tw.getFreshIdLabel<DbNewexpr>()
+                tw.writeExprs_newexpr(callId, callType.javaResult.id, retId, 0)
+                tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
+                extractTypeAccessRecursive(expressionTypeArgs.first(), locId, callId, -3, labels.methodId, retId)
+                callId
+            } else {
+                var callId = tw.getFreshIdLabel<DbMethodaccess>()
+                tw.writeExprs_methodaccess(callId, callType.javaResult.id, retId, 0)
+                tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
+                extractTypeArguments(expressionTypeArgs, locId, callId, labels.methodId, retId, -2, true)
+                callId
+            }
+
             writeExpressionMetadataToTrapFile(callId, labels.methodId, retId)
 
             val callableId = useFunction<DbCallable>(target.owner, classTypeArgsIncludingOuterClasses)
@@ -2751,31 +2767,24 @@ open class KotlinFileExtractor(
 
             helper.extractReceiverField(classId)
 
-            fun extractAccessToTarget(targetId: Label<DbMethod>, retId: Label<DbReturnstmt>, callType: TypeResults) : Label<out DbExpr> {
-                val callId = tw.getFreshIdLabel<DbMethodaccess>()
-                tw.writeExprs_methodaccess(callId, callType.javaResult.id, retId, 0)
-                tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
-
-                extractTypeArguments(propertyReferenceExpr, callId, targetId, retId, -2, true)
-
-                return callId
-            }
-
-            val typeArguments = (propertyReferenceExpr.dispatchReceiver?.type as? IrSimpleType)?.arguments ?:
+            val classTypeArguments = (propertyReferenceExpr.dispatchReceiver?.type as? IrSimpleType)?.arguments ?:
                 if ((getter?.owner?.dispatchReceiverParameter ?: setter?.owner?.dispatchReceiverParameter )!= null) { (kPropertyType.arguments.first() as? IrSimpleType)?.arguments } else { null }
+
+            val expressionTypeArguments = (0 until propertyReferenceExpr.typeArgumentsCount).mapNotNull { propertyReferenceExpr.getTypeArgument(it) }
 
             val idPropertyRef = tw.getFreshIdLabel<DbPropertyref>()
 
             if (getter != null) {
                 val getterParameterTypes = parameterTypes.dropLast(1)
                 val getLabels = addFunctionManual(tw.getFreshIdLabel(), "get", getterParameterTypes, parameterTypes.last(), classId, locId)
-                val getterCallableId = useFunction<DbCallable>(getter.owner, typeArguments)
+                val getterCallableId = useFunction<DbCallable>(getter.owner, classTypeArguments)
 
                 helper.extractCallToReflectionTarget(
                     getLabels,
                     getter,
-                    { r, c -> extractAccessToTarget(getLabels.methodId, r, c) },
-                    typeArguments
+                    parameterTypes.last(),
+                    expressionTypeArguments,
+                    classTypeArguments
                 )
 
                 tw.writePropertyRefGetBinding(idPropertyRef, getterCallableId)
@@ -2784,13 +2793,14 @@ open class KotlinFileExtractor(
             if (setter != null) {
                 val setLabels = addFunctionManual(tw.getFreshIdLabel(), "set", parameterTypes, pluginContext.irBuiltIns.unitType, classId, locId)
 
-                val setterCallableId = useFunction<DbCallable>(setter.owner, typeArguments)
+                val setterCallableId = useFunction<DbCallable>(setter.owner, classTypeArguments)
 
                 helper.extractCallToReflectionTarget(
                     setLabels,
                     setter,
-                    { r, c -> extractAccessToTarget(setLabels.methodId, r, c) },
-                    typeArguments
+                    pluginContext.irBuiltIns.unitType,
+                    expressionTypeArguments,
+                    classTypeArguments
                 )
 
                 tw.writePropertyRefSetBinding(idPropertyRef, setterCallableId)
@@ -2868,14 +2878,25 @@ open class KotlinFileExtractor(
                 return
             }
 
-            val typeArguments = if (target is IrConstructorSymbol) {
-                (target.owner.returnType as? IrSimpleType)?.arguments
+            val parameterTypes = type.arguments.map { it as IrType }
+
+            val dispatchReceiverIdx: Int
+            val expressionTypeArguments: List<IrType>
+            val classTypeArguments: List<IrTypeArgument>?
+
+            if (target is IrConstructorSymbol) {
+                // In case a constructor is referenced, the return type of the `KFunctionX<,,,>` is the type if the constructed type.
+                classTypeArguments = (type.arguments.last() as? IrSimpleType)?.arguments
+                expressionTypeArguments = listOf(parameterTypes.last())
+                dispatchReceiverIdx = -2
             } else {
-                (functionReferenceExpr.dispatchReceiver?.type as? IrSimpleType)?.arguments ?:
-                if (target.owner.dispatchReceiverParameter != null) { (type.arguments.first() as? IrSimpleType)?.arguments } else { null }
+                classTypeArguments = (functionReferenceExpr.dispatchReceiver?.type as? IrSimpleType)?.arguments
+                    ?: if (target.owner.dispatchReceiverParameter != null) { (type.arguments.first() as? IrSimpleType)?.arguments } else { null }
+                expressionTypeArguments = (0 until functionReferenceExpr.typeArgumentsCount).mapNotNull { functionReferenceExpr.getTypeArgument(it) }
+                dispatchReceiverIdx = -1
             }
 
-            val targetCallableId = useFunction<DbCallable>(target.owner, typeArguments)
+            val targetCallableId = useFunction<DbCallable>(target.owner, classTypeArguments)
             val locId = tw.getLocation(functionReferenceExpr)
 
             val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
@@ -2890,7 +2911,6 @@ open class KotlinFileExtractor(
 
             val helper = CallableReferenceHelper(functionReferenceExpr, locId, ids)
 
-            val parameterTypes = type.arguments.map { it as IrType }
             val fnInterfaceType = getFunctionalInterfaceTypeWithTypeArgs(type.arguments)
 
             val currentDeclaration = declarationStack.peek()
@@ -2909,31 +2929,12 @@ open class KotlinFileExtractor(
                 addFunctionInvoke(ids.function, parameterTypes.dropLast(1), parameterTypes.last(), classId, locId)
             }
 
-            val dispatchReceiverIdx: Int = if (target is IrConstructorSymbol) -2 else -1
-            fun extractAccessToTarget(retId: Label<DbReturnstmt>, callType: TypeResults) : Label<out DbExpr> {
-                if (target is IrConstructorSymbol) {
-                    val callId = tw.getFreshIdLabel<DbNewexpr>()
-                    tw.writeExprs_newexpr(callId, callType.javaResult.id, retId, 0)
-                    tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
-
-                    val typeAccessId = extractTypeAccess(callType, locId, callId, -3, funLabels.methodId, retId)
-
-                    extractTypeArguments(functionReferenceExpr, typeAccessId, funLabels.methodId, retId)
-                    return callId
-                } else {
-                    var callId = tw.getFreshIdLabel<DbMethodaccess>()
-                    tw.writeExprs_methodaccess(callId, callType.javaResult.id, retId, 0)
-                    tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
-
-                    extractTypeArguments(functionReferenceExpr, callId, funLabels.methodId, retId, -2, true)
-                    return callId
-                }
-            }
             helper.extractCallToReflectionTarget(
                 funLabels,
                 target,
-                ::extractAccessToTarget,
-                typeArguments,
+                parameterTypes.last(),
+                expressionTypeArguments,
+                classTypeArguments,
                 dispatchReceiverIdx,
                 isBigArity,
                 parameterTypes.dropLast(1))

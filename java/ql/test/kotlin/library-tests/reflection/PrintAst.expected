@@ -101,8 +101,8 @@ reflection.kt:
 #   82|                     0: [Parameter] a0
 #   82|                   5: [BlockStmt] { ... }
 #   82|                     0: [ReturnStmt] return ...
-#   82|                       0: [ClassInstanceExpr] new Class2<T>(...)
-#   82|                         -3: [TypeAccess] Class2<T>
+#   82|                       0: [ClassInstanceExpr] new Class2<String>(...)
+#   82|                         -3: [TypeAccess] Class2<String>
 #   82|                           0: [TypeAccess] String
 #   82|                         0: [VarAccess] a0
 #   82|               -3: [TypeAccess] Function1<String,Class2<String>>

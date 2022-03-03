@@ -44,7 +44,7 @@ functionReferences
 | reflection.kt:61:17:61:36 | ...::... | reflection.kt:61:17:61:36 | invoke | reflection.kt:52:1:52:52 | ext1 |
 | reflection.kt:62:17:62:34 | ...::... | reflection.kt:62:17:62:34 | invoke | reflection.kt:54:1:54:48 | ext2 |
 | reflection.kt:63:17:63:36 | ...::... | reflection.kt:63:17:63:36 | invoke | reflection.kt:54:1:54:48 | ext2 |
-| reflection.kt:82:14:82:21 | ...::... | reflection.kt:82:14:82:21 | invoke | reflection.kt:77:1:77:33 | Class2<T> |
+| reflection.kt:82:14:82:21 | ...::... | reflection.kt:82:14:82:21 | invoke | reflection.kt:77:1:77:33 | Class2<String> |
 | reflection.kt:83:14:83:17 | ...::... | reflection.kt:83:14:83:17 | invoke | reflection.kt:79:1:79:24 | fn |
 propertyGetReferences
 | reflection.kt:8:38:8:42 | ...::... | reflection.kt:8:38:8:42 | get | reflection.kt:31:9:31:23 | getP0 |
@@ -82,5 +82,5 @@ callsInsideInvocationMethods
 | reflection.kt:65:17:65:32 | ...::... | reflection.kt:65:17:65:32 | new KMutableProperty1<Generic<Integer>,Integer>(...) { ... } | reflection.kt:65:17:65:32 | set | reflection.kt:65:17:65:32 | setP2(...) | Generic<Integer>.setP2 |
 | reflection.kt:66:17:66:34 | ...::... | reflection.kt:66:17:66:34 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:66:17:66:34 | get | reflection.kt:66:17:66:34 | getP2(...) | Generic<Integer>.getP2 |
 | reflection.kt:66:17:66:34 | ...::... | reflection.kt:66:17:66:34 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:66:17:66:34 | set | reflection.kt:66:17:66:34 | setP2(...) | Generic<Integer>.setP2 |
-| reflection.kt:82:14:82:21 | ...::... | reflection.kt:82:14:82:21 | new Function1<String,Class2<String>>(...) { ... } | reflection.kt:82:14:82:21 | invoke | reflection.kt:82:14:82:21 | new Class2<T>(...) | Class2<T>.Class2<T> |
+| reflection.kt:82:14:82:21 | ...::... | reflection.kt:82:14:82:21 | new Function1<String,Class2<String>>(...) { ... } | reflection.kt:82:14:82:21 | invoke | reflection.kt:82:14:82:21 | new Class2<String>(...) | Class2<String>.Class2<String> |
 | reflection.kt:83:14:83:17 | ...::... | reflection.kt:83:14:83:17 | new Function1<String,Unit>(...) { ... } | reflection.kt:83:14:83:17 | invoke | reflection.kt:83:14:83:17 | fn(...) | ReflectionKt.fn |
