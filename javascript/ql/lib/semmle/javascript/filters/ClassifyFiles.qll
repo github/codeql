@@ -56,9 +56,7 @@ predicate isGeneratedCodeFile(File f) { isGenerated(f.getATopLevel()) }
 predicate isTestFile(File f) {
   exists(Test t | t.getFile() = f)
   or
-  exists(string stemExt | stemExt = "test" or stemExt = "spec" |
-    f = getTestFile(any(File orig), stemExt)
-  )
+  f = getATestFile(_)
   or
   f.getAbsolutePath().regexpMatch(".*/__(mocks|tests)__/.*")
 }

@@ -437,8 +437,27 @@ module DomBasedXss {
         b = phi.getAnInput().getDefinition() and
         count(phi.getAnInput()) = 2 and
         not a = b and
-        sanitizer = DataFlow::valueNode(a.getDef().getSource()) and
-        sanitizer.getAnArgument().asExpr().(VarAccess).getVariable() = b.getSourceVariable()
+        /*
+         * Performance optimisation:
+         *
+         * When join-ordering and evaluating this conjunction,
+         * it is preferable to start with the relatively small set of
+         * `sanitizer` calls, then compute the set of SSA variables accessed
+         * as the arguments of those sanitizer calls, then reason about how
+         * those variables are used in phi nodes.
+         *
+         * Use directional binding pragmas to encourage this join order,
+         * starting with `sanitizer`.
+         *
+         * Without these pragmas, the join orderer may choose the opposite order:
+         * start with all `phi` nodes, then compute the set of SSA variables involved,
+         * then the (potentially large) set of accesses to those variables,
+         * then the set of accesses used as the argument of a sanitizer call.
+         */
+
+        pragma[only_bind_out](sanitizer) = DataFlow::valueNode(a.getDef().getSource()) and
+        pragma[only_bind_out](sanitizer.getAnArgument().asExpr()) =
+          b.getSourceVariable().getAnAccess()
       |
         pred = DataFlow::ssaDefinitionNode(b) and
         succ = DataFlow::ssaDefinitionNode(phi)
