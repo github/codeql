@@ -15,7 +15,7 @@ int functionWork1(int retIndex) {
   if (scanf("%i", p) != 1) // GOOD
     return -1;
   if(retIndex == 0)
-    return (int)a;
+    return (int)*a;
   if(retIndex == 1)
     return *p;
   return i;
@@ -37,7 +37,7 @@ int functionWork1_(int retIndex) {
   if (r != 1) // GOOD
     return -1;
   if(retIndex == 0)
-    return (int)a;
+    return (int)*a;
   if(retIndex == 1)
     return *p;
   return i;
@@ -52,14 +52,14 @@ int functionWork1b(int retIndex) {
   scanf("%s", a); // BAD
   scanf("%i", p); // BAD
   if(retIndex == 0)
-    return (int)a;
+    return (int)*a;
   if(retIndex == 1)
     return *p;
   return i;
 }
 int functionWork1_() {
   int i;
-  scanf("%i",&i); 
+  scanf("%i",&i); // GOOD
   if(i<10)
     return -1;
   return i;
@@ -73,7 +73,7 @@ int functionWork2(int retIndex) {
   scanf("%s", a); // GOOD:Argument initialized even when scanf fails.
   scanf("%i", p); // GOOD:Argument initialized even when scanf fails.
   if(retIndex == 0)
-    return (int)a;
+    return (int)*a;
   if(retIndex == 1)
     return *p;
   return i;
@@ -91,7 +91,7 @@ int functionWork2_(int retIndex) {
   scanf("%s", a); // GOOD:Argument initialized even when scanf fails.
   scanf("%i", p); // GOOD:Argument initialized even when scanf fails.
   if(retIndex == 0)
-    return (int)a;
+    return (int)*a;
   if(retIndex == 1)
     return *p;
   return i;
