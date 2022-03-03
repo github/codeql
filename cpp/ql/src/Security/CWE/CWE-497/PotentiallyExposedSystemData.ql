@@ -47,6 +47,5 @@ from
   PotentiallyExposedSystemDataConfiguration config, DataFlow::PathNode source,
   DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink, source, sink,
-  "This operation potentially exposes sensitive system data from $@.", source,
-  source.getNode().toString()
+select sink, source, sink, "This operation potentially exposes sensitive system data from $@.",
+  source, source.getNode().toString()
