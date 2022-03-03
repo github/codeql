@@ -8,10 +8,10 @@ app = Flask(__name__)
 def xmltodict_parse():
     xml_content = request.args['xml_content']
 
-    return xmltodict.parse(xml_content)
+    return xmltodict.parse(xml_content) # OK
 
 @app.route("/xmltodict.parse2")
 def xmltodict_parse2():
     xml_content = request.args['xml_content']
 
-    return xmltodict.parse(xml_content, disable_entities=False)
+    return xmltodict.parse(xml_content, disable_entities=False) # NOT OK for billion laughs/quadratic
