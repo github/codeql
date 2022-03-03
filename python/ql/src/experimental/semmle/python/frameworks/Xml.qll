@@ -302,19 +302,9 @@ private module Xml {
   }
 
   /**
-   * Gets a call to:
-   * * `xml.dom.minidom.parse`
-   * * `xml.dom.pulldom.parse`
+   * A call to the `parse` or `parseString` methods from `xml.dom.minidom` or `xml.dom.pulldom`.
    *
-   * Given the following example:
-   *
-   * ```py
-   * xml.dom.minidom.parse(StringIO(xml_content)).documentElement.childNode
-   * ```
-   *
-   * * `this` would be `xml.dom.minidom.parse(StringIO(xml_content), parser=parser)`.
-   * * `getAnInput()`'s result would be `StringIO(xml_content)`.
-   * * `vulnerable(kind)`'s `kind` would be `Billion Laughs` and `Quadratic Blowup`.
+   * Both of these modules are based on SAX parsers.
    */
   private class XMLDomParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
     XMLDomParsing() {
@@ -326,15 +316,17 @@ private module Xml {
             .getACall()
     }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() {
+      result in [this.getArg(0), this.getArgByName("string"), this.getArgByName("file")]
+    }
+
+    DataFlow::Node getParserArg() { result in [this.getArg(1), this.getArgByName("parser")] }
 
     override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
-      exists(XML::XMLParser xmlParser |
-        xmlParser = this.getArgByName("parser").getALocalSource() and xmlParser.vulnerable(kind)
-      )
+      this.getParserArg() = saxParserWithFeatureExternalGesTurnedOn() and
+      (kind.isXxe() or kind.isDtdRetrieval())
       or
-      (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
-      not exists(this.getArgByName("parser"))
+      (kind.isBillionLaughs() or kind.isQuadraticBlowup())
     }
   }
 
