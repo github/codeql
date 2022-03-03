@@ -326,8 +326,8 @@ module TaintedPath {
           inputLabel.getPlatform() = Path::platformWin32() and
           // on windows, when one input is absolute, the output may also be
           // absolute, no matter the position. This is due to drive paths:
-          // path.win32.join('foo\\bar', 'D:\\fnord') => absolute ('D:\\test.txt')
-          // path.win32.join('D:\\fnord', 'foo\\bar') => absolute ('D:\\fnord\\foo\\bar')
+          // path.win32.join('bar\\..', 'D:\\fnord') => absolute ('D:\\fnord')
+          // path.win32.join('D:\\fnord', 'bar\\..') => absolute ('D:\\fnord')
           if
             inputLabel.isAbsolute() or
             exists(int n | Path::isDrivePath(this.getArgument(n).getStringValue()))
@@ -580,7 +580,9 @@ module TaintedPath {
       override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
         e = operand.asExpr() and
         exists(Path::PathLabel pathLabel | pathLabel = label |
-          outcome = polarity and pathLabel.isRelative()
+          pathLabel.getPlatform() = Path::platformPosix() and
+          outcome = polarity and
+          pathLabel.isRelative()
           or
           negatable = true and
           outcome = polarity.booleanNot() and

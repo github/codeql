@@ -2,7 +2,6 @@
   "-//Semmle//qhelp//EN"
   "qhelp.dtd">
 <qhelp>
-
   <overview>
     <p>
       Accessing files using paths constructed from user-controlled data can allow an attacker to access
@@ -24,13 +23,29 @@
     <ul>
       <li>Do not allow more than a single "." character.</li>
       <li>Do not allow directory separators such as "/" or "\" (depending on the file system).</li>
-      <li>
-        Do not rely on simply replacing problematic sequences such as "../". For example, after
-        applying this filter to ".../...//", the resulting string would still be "../".
-      </li>
+      <li>Do not rely on simply replacing problematic sequences such as "../". For example, after
+      replacing this in the string ".../...//", the result "../" would be returned.</li>
       <li>Use an allowlist of known good patterns.</li>
     </ul>
+
+    <p>On windows, beware of some pitfalls:</p>
+    <ul>
+      <li>The <code>path</code> library accepts the forward slash as path separator.</li>
+      <li>The <code>path.relative</code> method may return an absolute path, eg.:
+      <code>path.relative("foo", "C:\\baz")</code> returns <code>"C:\\baz"</code>.</li>
+      <li>
+        The <code>path.join</code> method sometimes returns an absolute path, even
+        when the first input is relative, eg.: <code>path.join("foo\\..", "C:\\foo")</code> will
+        return <code>"C:\\foo"</code>, which is absolute.
+      </li>
+      <li>
+        The <code>path.isAbsolute</code> method returns <code>true</code> for some paths
+        that are relative, even if <code>path.resolve</code> treats them as absolute. Eg.:
+        <code>path.isAbsolute("C:../../foo")</code> returns <code>true</code>.
+      </li>
+    </ul>
   </recommendation>
+
 
   <example>
     <p>
