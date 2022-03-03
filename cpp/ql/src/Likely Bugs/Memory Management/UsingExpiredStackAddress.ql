@@ -2,7 +2,7 @@
  * @name Use of expired stack-address
  * @description Accessing the stack-allocated memory of a function
  *              after it has returned can lead to memory corruption.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @security-severity 9.3
  * @precision high
@@ -238,14 +238,86 @@ predicate step(
   )
 }
 
+newtype TPathElement =
+  TStore(StoreInstruction store) { globalAddressPointsToStack(store, _, _, _, _, _, _) } or
+  TCall(CallInstruction call, IRBlock block) {
+    globalAddressPointsToStack(_, _, call, block, _, _, _)
+  } or
+  TMid(IRBlock block) { step(_, _, _, _, _, block) } or
+  TSink(LoadInstruction load, IRBlock block) {
+    exists(TGlobalAddress address |
+      globalAddressPointsToStack(_, _, _, block, address, _, _) and
+      block.getAnInstruction() = load and
+      globalAddress(load.getSourceAddress()) = address
+    )
+  }
+
+class PathElement extends TPathElement {
+  StoreInstruction asStore() { this = TStore(result) }
+
+  CallInstruction asCall(IRBlock block) { this = TCall(result, block) }
+
+  predicate isCall(IRBlock block) { exists(this.asCall(block)) }
+
+  IRBlock asMid() { this = TMid(result) }
+
+  LoadInstruction asSink(IRBlock block) { this = TSink(result, block) }
+
+  predicate isSink(IRBlock block) { exists(this.asSink(block)) }
+
+  string toString() {
+    result = [asStore().toString(), asCall(_).toString(), asMid().toString(), asSink(_).toString()]
+  }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.asStore()
+        .getLocation()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    this.asCall(_)
+        .getLocation()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    this.asMid().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    this.asSink(_)
+        .getLocation()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}
+
 predicate isSink(LoadInstruction load, IRBlock block, int index, TGlobalAddress globalAddress) {
   block.getInstruction(index) = load and
   globalAddress(load.getSourceAddress()) = globalAddress
 }
 
+query predicate edges(PathElement pred, PathElement succ) {
+  // Store -> caller
+  globalAddressPointsToStack(pred.asStore(), _, succ.asCall(_), _, _, _, _)
+  or
+  // Call -> basic block
+  pred.isCall(succ.asMid())
+  or
+  // Special case for when the caller goes directly to the load with no steps
+  // across basic blocks (i.e., caller -> sink)
+  exists(IRBlock block |
+    pred.isCall(block) and
+    succ.isSink(block)
+  )
+  or
+  // Basic block -> basic block
+  step(_, _, _, _, pred.asMid(), succ.asMid())
+  or
+  // Basic block -> load
+  succ.isSink(pred.asMid())
+}
+
 from
   StoreInstruction store, StackVariable var, LoadInstruction load, CallInstruction call,
-  IRBlock block, boolean isCallBlock, TGlobalAddress address, boolean isStoreBlock, int loadIndex
+  IRBlock block, boolean isCallBlock, TGlobalAddress address, boolean isStoreBlock,
+  PathElement source, PathElement sink, int loadIndex
 where
   globalAddressPointsToStack(store, var, call, block, address, isCallBlock, isStoreBlock) and
   isSink(load, block, loadIndex, address) and
@@ -269,6 +341,8 @@ where
         loadIndex < storeIndex
       )
     else any()
-  )
-select load, "Stack variable $@ escapes $@ and is used after it has expired.", var, var.toString(),
-  store, "here"
+  ) and
+  source.asStore() = store and
+  sink.asSink(_) = load
+select sink, source, sink, "Stack variable $@ escapes $@ and is used after it has expired.", var,
+  var.toString(), store, "here"
