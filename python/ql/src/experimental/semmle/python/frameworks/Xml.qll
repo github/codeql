@@ -24,7 +24,9 @@ private module Xml {
 
     override DataFlow::Node getAnInput() { none() }
 
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) { none() }
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      kind.isBillionLaughs() or kind.isQuadraticBlowup()
+    }
   }
 
   /**
@@ -58,6 +60,9 @@ private module Xml {
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
 
     override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      not exists(this.getArgByName("parser")) and
+      (kind.isBillionLaughs() or kind.isQuadraticBlowup())
+      or
       exists(XML::XMLParser xmlParser |
         xmlParser = this.getArgByName("parser").getALocalSource() and xmlParser.vulnerable(kind)
       )
