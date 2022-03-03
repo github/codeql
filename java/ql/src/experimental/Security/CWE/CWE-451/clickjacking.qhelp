@@ -27,7 +27,7 @@ to frame the site to pages from an allowed whitelist of trusted domains.
 This next example shows how to specify the <code>X-Frame-Options</code> header within a java application:
 </p>
 
-<sample src="XFrameOptions.java" />
+<sample src="Test.java" />
 
 </example>
 <references>
