@@ -8,7 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
-private module Xml {
+private module XmlEtree {
   /**
    * Gets a call to `xml.etree.ElementTree.XMLParser`.
    */
@@ -100,7 +100,9 @@ private module Xml {
       kind.isBillionLaughs() or kind.isQuadraticBlowup()
     }
   }
+}
 
+private module SaxBasedParsing {
   /**
    * A call to the `setFeature` method on a XML sax parser.
    *
@@ -252,6 +254,45 @@ private module Xml {
   }
 
   /**
+   * A call to the `parse` or `parseString` methods from `xml.dom.minidom` or `xml.dom.pulldom`.
+   *
+   * Both of these modules are based on SAX parsers.
+   */
+  private class XMLDomParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
+    XMLDomParsing() {
+      this =
+        API::moduleImport("xml")
+            .getMember("dom")
+            .getMember(["minidom", "pulldom"])
+            .getMember(["parse", "parseString"])
+            .getACall()
+    }
+
+    override DataFlow::Node getAnInput() {
+      result in [
+          this.getArg(0),
+          // parseString
+          this.getArgByName("string"),
+          // minidom.parse
+          this.getArgByName("file"),
+          // pulldom.parse
+          this.getArgByName("stream_or_string"),
+        ]
+    }
+
+    DataFlow::Node getParserArg() { result in [this.getArg(1), this.getArgByName("parser")] }
+
+    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
+      this.getParserArg() = saxParserWithFeatureExternalGesTurnedOn() and
+      (kind.isXxe() or kind.isDtdRetrieval())
+      or
+      (kind.isBillionLaughs() or kind.isQuadraticBlowup())
+    }
+  }
+}
+
+private module Lxml {
+  /**
    * A call to `lxml.etree.get_default_parser`.
    *
    * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.get_default_parser
@@ -379,7 +420,9 @@ private module Xml {
       )
     }
   }
+}
 
+private module Xmltodict {
   /**
    * Gets a call to `xmltodict.parse`.
    *
@@ -403,43 +446,6 @@ private module Xml {
     override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
       (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
       this.getArgByName("disable_entities").getALocalSource().asExpr() = any(False f)
-    }
-  }
-
-  /**
-   * A call to the `parse` or `parseString` methods from `xml.dom.minidom` or `xml.dom.pulldom`.
-   *
-   * Both of these modules are based on SAX parsers.
-   */
-  private class XMLDomParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
-    XMLDomParsing() {
-      this =
-        API::moduleImport("xml")
-            .getMember("dom")
-            .getMember(["minidom", "pulldom"])
-            .getMember(["parse", "parseString"])
-            .getACall()
-    }
-
-    override DataFlow::Node getAnInput() {
-      result in [
-          this.getArg(0),
-          // parseString
-          this.getArgByName("string"),
-          // minidom.parse
-          this.getArgByName("file"),
-          // pulldom.parse
-          this.getArgByName("stream_or_string"),
-        ]
-    }
-
-    DataFlow::Node getParserArg() { result in [this.getArg(1), this.getArgByName("parser")] }
-
-    override predicate vulnerable(XML::XMLVulnerabilityKind kind) {
-      this.getParserArg() = saxParserWithFeatureExternalGesTurnedOn() and
-      (kind.isXxe() or kind.isDtdRetrieval())
-      or
-      (kind.isBillionLaughs() or kind.isQuadraticBlowup())
     }
   }
 }
