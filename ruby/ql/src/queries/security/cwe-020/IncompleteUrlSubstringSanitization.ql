@@ -5,14 +5,15 @@
  * @problem.severity warning
  * @security-severity 7.8
  * @precision high
- * @id js/incomplete-url-substring-sanitization
+ * @id rb/incomplete-url-substring-sanitization
  * @tags correctness
  *       security
  *       external/cwe/cwe-020
  */
 
-import javascript
-private import semmle.javascript.dataflow.InferredTypes
+import codeql.ruby.DataFlow
+import codeql.ruby.StringOps
+import codeql.ruby.security.performance.RegExpTreeView::RegExpPatterns as RegExpPatterns
 
 /**
  * A check on a string for whether it contains a given substring, possibly with restrictions on the location of the substring.
@@ -35,7 +36,7 @@ class SomeSubstringCheck extends DataFlow::Node {
 from SomeSubstringCheck check, DataFlow::Node substring, string target, string msg
 where
   substring = check.getSubstring() and
-  substring.mayHaveStringValue(target) and
+  substring.asExpr().getExpr().getConstantValue().getString() = target and
   (
     // target contains a domain on a common TLD, and perhaps some other URL components
     target

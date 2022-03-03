@@ -1,1 +1,1 @@
-Security/CWE-020/IncompleteUrlSubstringSanitization.ql
+queries/security/cwe-020/IncompleteUrlSubstringSanitization.ql

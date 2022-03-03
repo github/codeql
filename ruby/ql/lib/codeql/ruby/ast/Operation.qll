@@ -341,6 +341,11 @@ class RelationalOperation extends ComparisonOperation, TRelationalOperation {
   /** Gets the lesser operand. */
   Expr getLesserOperand() { none() }
 
+  /**
+   * Holds if this is a comparison with `<=` or `>=`.
+   */
+  predicate isInclusive() { this instanceof LEExpr or this instanceof GEExpr }
+
   final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or

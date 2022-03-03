@@ -51,7 +51,7 @@
 
 		</p>
 
-		<sample src="examples/IncompleteUrlSubstringSanitization_BAD1.js"/>
+		<sample src="examples/IncompleteUrlSubstringSanitization_BAD1.rb"/>
 
 		<p>
 
@@ -64,7 +64,7 @@
 
 		</p>
 
-		<sample src="examples/IncompleteUrlSubstringSanitization_BAD2.js"/>
+		<sample src="examples/IncompleteUrlSubstringSanitization_BAD2.rb"/>
 
 		<p>
 
@@ -77,7 +77,7 @@
 
 		</p>
 
-		<sample src="examples/IncompleteUrlSubstringSanitization_GOOD.js"/>
+		<sample src="examples/IncompleteUrlSubstringSanitization_GOOD.rb"/>
 
 	</example>
 

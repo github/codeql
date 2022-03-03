@@ -1,76 +1,76 @@
-(function(x){
-    x.indexOf("internal") !== -1; // NOT OK, but not flagged
-    x.indexOf("localhost") !== -1; // NOT OK, but not flagged
-    x.indexOf("secure.com") !== -1; // NOT OK
-    x.indexOf("secure.net") !== -1; // NOT OK
-    x.indexOf(".secure.com") !== -1; // NOT OK
-    x.indexOf("sub.secure.") !== -1; // NOT OK, but not flagged
-    x.indexOf(".sub.secure.") !== -1; // NOT OK, but not flagged
+def test (x)
+    x.index("internal") != -1; # NOT OK, but not flagged
+    x.index("localhost") != -1; # NOT OK, but not flagged
+    x.index("secure.com") != -1; # NOT OK
+    x.index("secure.net") != -1; # NOT OK
+    x.index(".secure.com") != -1; # NOT OK
+    x.index("sub.secure.") != -1; # NOT OK, but not flagged
+    x.index(".sub.secure.") != -1; # NOT OK, but not flagged
 
-    x.indexOf("secure.com") === -1; // NOT OK
-    x.indexOf("secure.com") === 0; // NOT OK
-    x.indexOf("secure.com") >= 0; // NOT OK
+    x.index("secure.com") === -1; # NOT OK
+    x.index("secure.com") === 0; # NOT OK
+    x.index("secure.com") >= 0; # NOT OK
 
-    x.startsWith("https://secure.com"); // NOT OK
-    x.endsWith("secure.com"); // NOT OK
-    x.endsWith(".secure.com"); // OK
-    x.startsWith("secure.com/"); // OK
-    x.indexOf("secure.com/") === 0; // OK
+    x.start_with?("https://secure.com"); # NOT OK
+    x.end_with?("secure.com"); # NOT OK
+    x.end_with?(".secure.com"); # OK
+    x.start_with?("secure.com/"); # OK
+    x.index("secure.com/") === 0; # OK
 
-    x.includes("secure.com"); // NOT OK
+    x.include?("secure.com"); # NOT OK
 
-    x.indexOf("#") !== -1; // OK
-    x.indexOf(":") !== -1; // OK
-    x.indexOf(":/") !== -1; // OK
-    x.indexOf("://") !== -1; // OK
-    x.indexOf("//") !== -1; // OK
-    x.indexOf(":443") !== -1; // OK
-    x.indexOf("/some/path/") !== -1; // OK
-    x.indexOf("some/path") !== -1; // OK
-    x.indexOf("/index.html") !== -1; // OK
-    x.indexOf(":template:") !== -1; // OK
-    x.indexOf("https://secure.com") !== -1; // NOT OK
-    x.indexOf("https://secure.com:443") !== -1; // NOT OK
-    x.indexOf("https://secure.com/") !== -1; // NOT OK
+    x.index("#") != -1; # OK
+    x.index(":") != -1; # OK
+    x.index(":/") != -1; # OK
+    x.index("://") != -1; # OK
+    x.index("//") != -1; # OK
+    x.index(":443") != -1; # OK
+    x.index("/some/path/") != -1; # OK
+    x.index("some/path") != -1; # OK
+    x.index("/index.html") != -1; # OK
+    x.index(":template:") != -1; # OK
+    x.index("https://secure.com") != -1; # NOT OK
+    x.index("https://secure.com:443") != -1; # NOT OK
+    x.index("https://secure.com/") != -1; # NOT OK
 
-    x.indexOf(".cn") !== -1; // NOT OK, but not flagged
-    x.indexOf(".jpg") !== -1; // OK
-    x.indexOf("index.html") !== -1; // OK
-    x.indexOf("index.js") !== -1; // OK
-    x.indexOf("index.php") !== -1; // OK
-    x.indexOf("index.css") !== -1; // OK
+    x.index(".cn") != -1; # NOT OK, but not flagged
+    x.index(".jpg") != -1; # OK
+    x.index("index.html") != -1; # OK
+    x.index("index.js") != -1; # OK
+    x.index("index.php") != -1; # OK
+    x.index("index.css") != -1; # OK
 
-    x.indexOf("secure=true") !== -1; // OK (query param)
-    x.indexOf("&auth=") !== -1; // OK (query param)
+    x.index("secure=true") != -1; # OK (query param)
+    x.index("&auth=") != -1; # OK (query param)
 
-    x.indexOf(getCurrentDomain()) !== -1; // NOT OK, but not flagged
-    x.indexOf(location.origin) !== -1; // NOT OK, but not flagged
+    x.index(getCurrentDomain()) != -1; # NOT OK, but not flagged
+    x.index(location.origin) != -1; # NOT OK, but not flagged
 
-	x.indexOf("tar.gz") + offset; // OK
-	x.indexOf("tar.gz") - offset; // OK
+	x.index("tar.gz") + offset; # OK
+	x.index("tar.gz") - offset; # OK
 
-    x.indexOf("https://example.internal") !== -1; // NOT OK
-    x.indexOf("https://") !== -1; // OK
+    x.index("https://example.internal") != -1; # NOT OK
+    x.index("https://") != -1; # OK
 
-    x.startsWith("https://example.internal"); // NOT OK
-    x.indexOf('https://example.internal.org') !== 0; // NOT OK
-    x.indexOf('https://example.internal.org') === 0; // NOT OK
-    x.endsWith("internal.com"); // NOT OK
-    x.startsWith("https://example.internal:80"); // OK
+    x.start_with?("https://example.internal"); # NOT OK
+    x.index('https://example.internal.org') != 0; # NOT OK
+    x.index('https://example.internal.org') === 0; # NOT OK
+    x.end_with?("internal.com"); # NOT OK
+    x.start_with?("https://example.internal:80"); # OK
 
-	x.indexOf("secure.com") !== -1; // NOT OK
-	x.indexOf("secure.com") === -1; // OK
-	!(x.indexOf("secure.com") !== -1); // OK
-	!x.includes("secure.com"); // OK
+	x.index("secure.com") != -1; # NOT OK
+	x.index("secure.com") === -1; # OK
+	!(x.index("secure.com") != -1); # OK
+	!x.include?("secure.com"); # OK
 
-	if(!x.includes("secure.com")) { // NOT OK
+	if !x.include?("secure.com") # NOT OK
 
-	} else {
+	else
 		doSomeThingWithTrustedURL(x);
-    }
+    end
     
-    x.startsWith("https://secure.com/foo/bar"); // OK - a forward slash after the domain makes prefix checks safe.
-    x.indexOf("https://secure.com/foo/bar") >= 0 // NOT OK - the url can be anywhere in the string.
-    x.indexOf("https://secure.com") >= 0 // NOT OK
-    x.indexOf("https://secure.com/foo/bar-baz") >= 0 // NOT OK - the url can be anywhere in the string.
-});
+    x.start_with?("https://secure.com/foo/bar"); # OK - a forward slash after the domain makes prefix checks safe.
+    x.index("https://secure.com/foo/bar") >= 0 # NOT OK - the url can be anywhere in the string.
+    x.index("https://secure.com") >= 0 # NOT OK
+    x.index("https://secure.com/foo/bar-baz") >= 0 # NOT OK - the url can be anywhere in the string.
+end
