@@ -12842,9 +12842,9 @@ ir.cpp:
 # 1674|       getDeclarationEntry(0): (no string representation)
 # 1674|           Type = [ArrayType] int[2]
 # 1674|         getVariable().getInitializer(): [Initializer] initializer for (unnamed local variable)
-# 1674|           getExpr(): (no string representation)
+# 1674|           getExpr(): [VariableAccess] xs
 # 1674|               Type = [ArrayType] int[2]
-# 1674|               ValueCategory = prvalue
+# 1674|               ValueCategory = prvalue(load)
 # 1674|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of x0
 # 1674|           Type = [IntType] int
 #-----|         getVariable().getInitializer(): [Initializer] initializer for x0

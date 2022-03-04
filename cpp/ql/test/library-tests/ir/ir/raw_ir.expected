@@ -8680,26 +8680,25 @@ ir.cpp:
 # 1673|     r1673_9(int)           = Constant[2]                               : 
 # 1673|     mu1673_10(int)         = Store[?]                                  : &:r1673_8, r1673_9
 # 1674|     r1674_1(glval<int[2]>) = VariableAddress[(unnamed local variable)] : 
-
-# 1674|   Block 1
-# 1674|     r1674_2(int[2])       = Load                                      : ~m?
-# 1674|     mu1674_3(int[2])      = Store[(unnamed local variable)]           : &:r1674_1, r1674_2
-# 1674|     r1674_4(glval<int &>) = VariableAddress[x0]                       : 
-#-----|     r0_1(glval<int[2]>)   = VariableAddress[(unnamed local variable)] : 
-#-----|     r0_2(int *)           = Convert                                   : r0_1
-#-----|     r0_3(unsigned long)   = Constant[0]                               : 
-#-----|     r0_4(glval<int>)      = PointerAdd[4]                             : r0_2, r0_3
-#-----|     mu0_5(int &)          = Store[x0]                                 : &:r1674_4, r0_4
-# 1674|     r1674_5(glval<int &>) = VariableAddress[x1]                       : 
-#-----|     r0_6(glval<int[2]>)   = VariableAddress[(unnamed local variable)] : 
-#-----|     r0_7(int *)           = Convert                                   : r0_6
-#-----|     r0_8(unsigned long)   = Constant[1]                               : 
-#-----|     r0_9(glval<int>)      = PointerAdd[4]                             : r0_7, r0_8
-#-----|     mu0_10(int &)         = Store[x1]                                 : &:r1674_5, r0_9
-# 1675|     v1675_1(void)         = NoOp                                      : 
-# 1672|     v1672_4(void)         = ReturnVoid                                : 
-# 1672|     v1672_5(void)         = AliasedUse                                : ~m?
-# 1672|     v1672_6(void)         = ExitFunction                              : 
+# 1674|     r1674_2(glval<int[2]>) = VariableAddress[xs]                       : 
+# 1674|     r1674_3(int[2])        = Load[xs]                                  : &:r1674_2, ~m?
+# 1674|     mu1674_4(int[2])       = Store[(unnamed local variable)]           : &:r1674_1, r1674_3
+# 1674|     r1674_5(glval<int &>)  = VariableAddress[x0]                       : 
+#-----|     r0_1(glval<int[2]>)    = VariableAddress[(unnamed local variable)] : 
+#-----|     r0_2(int *)            = Convert                                   : r0_1
+#-----|     r0_3(unsigned long)    = Constant[0]                               : 
+#-----|     r0_4(glval<int>)       = PointerAdd[4]                             : r0_2, r0_3
+#-----|     mu0_5(int &)           = Store[x0]                                 : &:r1674_5, r0_4
+# 1674|     r1674_6(glval<int &>)  = VariableAddress[x1]                       : 
+#-----|     r0_6(glval<int[2]>)    = VariableAddress[(unnamed local variable)] : 
+#-----|     r0_7(int *)            = Convert                                   : r0_6
+#-----|     r0_8(unsigned long)    = Constant[1]                               : 
+#-----|     r0_9(glval<int>)       = PointerAdd[4]                             : r0_7, r0_8
+#-----|     mu0_10(int &)          = Store[x1]                                 : &:r1674_6, r0_9
+# 1675|     v1675_1(void)          = NoOp                                      : 
+# 1672|     v1672_4(void)          = ReturnVoid                                : 
+# 1672|     v1672_5(void)          = AliasedUse                                : ~m?
+# 1672|     v1672_6(void)          = ExitFunction                              : 
 
 # 1680| void CapturedLambdaMyObj::CapturedLambdaMyObj()
 # 1680|   Block 0
