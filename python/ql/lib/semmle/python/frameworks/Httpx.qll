@@ -11,7 +11,7 @@ private import semmle.python.ApiGraphs
  * Provides models for the `httpx` PyPI package.
  * see https://www.python-httpx.org/
  */
-module HttpxModel {
+private module HttpxModel {
   private class RequestCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
     string methodName;
 

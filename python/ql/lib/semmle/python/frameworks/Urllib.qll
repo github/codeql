@@ -11,7 +11,7 @@ private import semmle.python.ApiGraphs
  * Provides models for the `Urllib` PyPI package.
  * see https://docs.python.org/3.9/library/urllib.html
  */
-module Urllib {
+private module Urllib {
   /**
    * Provides models for the `urllib.request` extension library
    *

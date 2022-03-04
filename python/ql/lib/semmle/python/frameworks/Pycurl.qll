@@ -11,7 +11,7 @@ private import semmle.python.ApiGraphs
  * Provides models for the `pycurl` PyPI package.
  * see https://pycurl.io/docs/latest/
  */
-module Pycurl {
+private module Pycurl {
   /**
    * Provides models for the `pycurl.Curl` class
    *

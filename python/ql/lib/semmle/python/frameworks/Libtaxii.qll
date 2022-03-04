@@ -11,7 +11,7 @@ private import semmle.python.ApiGraphs
  * Provides models for the `libtaxii` PyPI package.
  * see https://github.com/TAXIIProject/libtaxii
  */
-module Libtaxii {
+private module Libtaxii {
   /**
    * A call to `libtaxii.common.parse`.
    * When the `allow_url` parameter value is set to `True`, there is an SSRF vulnerability..

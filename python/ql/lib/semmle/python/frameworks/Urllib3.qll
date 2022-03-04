@@ -11,7 +11,7 @@ private import semmle.python.ApiGraphs
  * Provides models for the `Urllib3` PyPI package.
  * see https://urllib3.readthedocs.io/en/stable/reference/
  */
-module Urllib3 {
+private module Urllib3 {
   /**
    * Provides models for the `urllib3.PoolManager` class
    *

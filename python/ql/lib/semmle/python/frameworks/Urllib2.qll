@@ -11,7 +11,7 @@ private import semmle.python.ApiGraphs
  * Provides models for the `urllib2` PyPI package.
  * see https://docs.python.org/2/library/urllib2.html
  */
-module Urllib2 {
+private module Urllib2 {
   /**
    * See
    * - https://docs.python.org/2/library/urllib2.html#urllib2.Request
