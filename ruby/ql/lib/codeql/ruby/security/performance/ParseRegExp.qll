@@ -8,9 +8,9 @@
 private import codeql.ruby.ast.Literal as AST
 private import codeql.Locations
 private import codeql.ruby.DataFlow
-private import codeql.ruby.TaintTracking
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.dataflow.internal.tainttrackingforlibraries.TaintTrackingImpl
 
 /**
  * A `StringlikeLiteral` containing a regular expression term, that is, either
@@ -992,25 +992,35 @@ private predicate isInterpretedAsRegExp(DataFlow::Node source) {
   // The argument of a call that coerces the argument to a regular expression.
   exists(DataFlow::CallNode mce |
     mce.getMethodName() = ["match", "match?"] and
-    source = mce.getArgument(0)
+    source = mce.getArgument(0) and
+    // exclude https://ruby-doc.org/core-2.4.0/Regexp.html#method-i-match
+    not mce.getReceiver().asExpr().getExpr() instanceof AST::RegExpLiteral
   )
 }
 
-/**
- * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
- * as a part of a regular expression.
- */
-private DataFlow::Node regExpSource(DataFlow::Node re, TypeBackTracker t) {
-  t.start() and
-  re = result and
-  isInterpretedAsRegExp(result)
-  or
-  exists(TypeBackTracker t2, DataFlow::Node succ | succ = regExpSource(re, t2) |
-    t2 = t.smallstep(result, succ)
-    or
-    TaintTracking::localTaintStep(result, succ) and
-    t = t2
-  )
+private class RegExpConfiguration extends Configuration {
+  RegExpConfiguration() { this = "RegExpConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr() =
+      any(ExprCfgNode e |
+        e.getConstantValue().isString(_) and
+        not e instanceof ExprNodes::VariableReadAccessCfgNode and
+        not e instanceof ExprNodes::ConstantReadAccessCfgNode
+      )
+  }
+
+  override predicate isSink(DataFlow::Node sink) { isInterpretedAsRegExp(sink) }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    // stop flow if `node` is receiver of
+    // https://ruby-doc.org/core-2.4.0/String.html#method-i-match
+    exists(DataFlow::CallNode mce |
+      mce.getMethodName() = ["match", "match?"] and
+      node = mce.getReceiver() and
+      mce.getArgument(0).asExpr().getExpr() instanceof AST::RegExpLiteral
+    )
+  }
 }
 
 /**
@@ -1018,4 +1028,6 @@ private DataFlow::Node regExpSource(DataFlow::Node re, TypeBackTracker t) {
  * as a part of a regular expression.
  */
 cached
-DataFlow::Node regExpSource(DataFlow::Node re) { result = regExpSource(re, TypeBackTracker::end()) }
+DataFlow::Node regExpSource(DataFlow::Node re) {
+  exists(RegExpConfiguration c | c.hasFlow(result, re))
+}
