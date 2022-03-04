@@ -211,6 +211,7 @@ module TaintedPath {
       ) {
         input = inputNode and
         output = outputNode and
+        outputLabel.getPlatform() = inputLabel.getPlatform() and
         outputLabel.isAbsolute() and
         outputLabel.isNormalized()
       }
@@ -232,7 +233,19 @@ module TaintedPath {
       ) {
         input = inputNode and
         output = outputNode and
-        outputLabel = inputLabel.toRelative().toNormalized()
+        outputLabel.getPlatform() = inputLabel.getPlatform() and
+        (
+          inputLabel.getPlatform() = Path::platformPosix() and
+          outputLabel = inputLabel.toRelative().toNormalized()
+          or
+          // relative, on win32, does not always return a normalized path, eg.,
+          // when both arguments are equal, relative will return ''
+          // (normalized would be '.').
+          // It also does not always return a relative path, eg.,
+          // relative('C:\\', 'A:\\') returns 'A:\\'.
+          inputLabel.getPlatform() = Path::platformWin32() and
+          outputLabel = inputLabel
+        )
       }
     }
 
@@ -312,7 +325,14 @@ module TaintedPath {
       ) {
         input = inputNode and
         output = outputNode and
-        outputLabel = inputLabel
+        (
+          inputLabel.getPlatform() = Path::platformWin32() and
+          outputLabel = inputLabel.toAbsolute().toNormalized()
+          or
+          // On posix platforms, this is a no-op.
+          inputLabel.getPlatform() = Path::platformPosix() and
+          outputLabel = inputLabel
+        )
       }
     }
 
@@ -365,13 +385,20 @@ module TaintedPath {
           inputNode = call.getInput() and
           outputNode = call.getOutput()
         |
-          // the 4 possible combinations of normalized + relative for `inputLabel`, and the possible values for `dstlabel` in each case.
-          inputLabel.isNonNormalized() and inputLabel.isRelative() // raw + relative -> any()
+          (
+            inputLabel.getPlatform() = Path::platformPosix() and
+            // the 4 possible combinations of normalized + relative for `inputLabel`, and the possible values for `dstlabel` in each case.
+            inputLabel.isNonNormalized() and
+            inputLabel.isRelative() // raw + relative -> any()
+            or
+            inputLabel.isNormalized() and inputLabel.isAbsolute() and outputLabel = inputLabel // normalized + absolute -> normalized + absolute
+            or
+            inputLabel.isNonNormalized() and inputLabel.isAbsolute() and outputLabel.isAbsolute() // raw + absolute -> raw/normalized + absolute
+            // normalized + relative -> none()
+          )
           or
-          inputLabel.isNormalized() and inputLabel.isAbsolute() and outputLabel = inputLabel // normalized + absolute -> normalized + absolute
-          or
-          inputLabel.isNonNormalized() and inputLabel.isAbsolute() and outputLabel.isAbsolute() // raw + absolute -> raw/normalized + absolute
-          // normalized + relative -> none()
+          // The input path might contain '..\\', and removing '../' will not do anything
+          inputLabel.getPlatform() = Path::platformWin32() and inputLabel = outputLabel
         )
       }
     }
@@ -417,7 +444,8 @@ module TaintedPath {
         output = outputNode and
         inputLabel.isAbsolute() and
         outputLabel.isAbsolute() and
-        outputLabel.isNormalized()
+        outputLabel.isNormalized() and
+        inputLabel.getPlatform() = outputLabel.getPlatform()
       }
     }
   }
@@ -486,7 +514,10 @@ module TaintedPath {
       override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
         outcome = startsWith.getPolarity() and
         e = startsWith.getBaseString().asExpr() and
-        exists(Path::PathLabel posixPath | posixPath = label |
+        exists(Path::PathLabel posixPath |
+          // can easily be bypassed on windows, because of paths like \\\\LOCALHOST\\c$\\temp\\
+          posixPath = label and posixPath.getPlatform() = Path::platformPosix()
+        |
           posixPath.isAbsolute() and
           posixPath.isNormalized()
         )
@@ -550,6 +581,7 @@ module TaintedPath {
       ContainsDotDotRegExpSanitizer() { super.getRegExp().getAMatchedString() = [".", "..", "../"] }
 
       override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+        label.(Path::PathLabel).getPlatform() = Path::platformPosix() and
         e = super.getStringOperand().asExpr() and
         outcome = super.getPolarity().booleanNot() and
         label.(Path::PathLabel).canContainDotDotSep() // can still be bypassed by normalized absolute path
@@ -599,16 +631,19 @@ module TaintedPath {
         (not member = "relative" or isDotDotSlashPrefix(startsWith.getSubstring()))
       }
 
-      override predicate blocks(boolean outcome, Expr e) {
+      override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
         // path.relative on windows may return absolute paths, eg.,
         // path.relative("C:\\foo", "C:\\bar") is "C:\\bar".
-        member = "relative" and
-        e = this.maybeGetPathSuffix(pathCall.getArgument(1)).asExpr() and
-        outcome = startsWith.getPolarity().booleanNot()
-        or
-        not member = "relative" and
-        e = this.maybeGetPathSuffix(pathCall.getArgument(0)).asExpr() and
-        outcome = startsWith.getPolarity()
+        label.(Path::PathLabel).getPlatform() = Path::platformPosix() and
+        (
+          member = "relative" and
+          e = this.maybeGetPathSuffix(pathCall.getArgument(1)).asExpr() and
+          outcome = startsWith.getPolarity().booleanNot()
+          or
+          not member = "relative" and
+          e = this.maybeGetPathSuffix(pathCall.getArgument(0)).asExpr() and
+          outcome = startsWith.getPolarity()
+        )
       }
 
       /**
