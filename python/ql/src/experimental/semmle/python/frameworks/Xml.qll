@@ -154,7 +154,7 @@ private module SaxBasedParsing {
   }
 
   /**
-   * Gets a reference to a XML sax parser that has `feature_external_ges` turned on.class
+   * Gets a reference to a XML sax parser that has `feature_external_ges` turned on.
    *
    * See https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges
    */
@@ -194,7 +194,7 @@ private module SaxBasedParsing {
   }
 
   /**
-   * Gets a reference to a XML sax parser that has `feature_external_ges` turned on.class
+   * Gets a reference to a XML sax parser that has `feature_external_ges` turned on.
    *
    * See https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges
    */
@@ -301,7 +301,7 @@ private module SaxBasedParsing {
 
 private module Lxml {
   /**
-   * Provides models for `lxml.etree` parsers
+   * Provides models for `lxml.etree` parsers.
    *
    * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
    */
