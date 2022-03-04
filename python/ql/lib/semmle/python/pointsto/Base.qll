@@ -124,7 +124,7 @@ int version_tuple_compare(Object t) {
 predicate baseless_is_new_style(ClassObject cls) {
   cls.isBuiltin()
   or
-  major_version() = 3
+  major_version() = 3 and exists(cls)
   or
   exists(cls.declaredMetaClass())
 }

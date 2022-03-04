@@ -15,7 +15,7 @@ deprecated class CallContext extends TaintTrackingContext {
       )
     )
     or
-    this.isTop()
+    this.isTop() and exists(s)
   }
 }
 

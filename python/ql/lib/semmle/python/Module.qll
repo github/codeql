@@ -196,7 +196,7 @@ private predicate isPotentialSourcePackage(Folder f) {
 private predicate isPotentialPackage(Folder f) {
   exists(f.getFile("__init__.py"))
   or
-  py_flags_versioned("options.respect_init", "False", _) and major_version() = 2
+  py_flags_versioned("options.respect_init", "False", _) and major_version() = 2 and exists(f)
 }
 
 private string moduleNameFromBase(Container file) {
