@@ -54,7 +54,7 @@ class SQLClientInfo extends SystemData {
   override predicate isSensitive() { any() }
 }
 
-private predicate sqlConnectInfo(FunctionCall source, VariableAccess use) {
+private predicate sqlConnectInfo(FunctionCall source, Expr use) {
   (
     source.getTarget().hasName("mysql_connect") or
     source.getTarget().hasName("mysql_real_connect")
