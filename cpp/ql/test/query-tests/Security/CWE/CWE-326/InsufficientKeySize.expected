@@ -1,8 +1,5 @@
 edges
 nodes
-| test.cpp:28:45:28:48 | 2048 | semmle.label | 2048 |
-| test.cpp:29:49:29:52 | 2048 | semmle.label | 2048 |
-| test.cpp:31:43:31:46 | 2048 | semmle.label | 2048 |
 | test.cpp:34:45:34:48 | 1024 | semmle.label | 1024 |
 | test.cpp:35:49:35:52 | 1024 | semmle.label | 1024 |
 | test.cpp:37:43:37:46 | 1024 | semmle.label | 1024 |
