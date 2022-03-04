@@ -4,6 +4,7 @@
 
 import Member
 import semmle.code.java.security.ExternalProcess
+private import semmle.code.java.dataflow.FlowSteps
 
 // --- Standard types ---
 /** The class `java.lang.Object`. */
@@ -249,11 +250,13 @@ class MethodSystemGetenv extends Method {
 /**
  * Any method named `getProperty` on class `java.lang.System`.
  */
-class MethodSystemGetProperty extends Method {
+class MethodSystemGetProperty extends ValuePreservingMethod {
   MethodSystemGetProperty() {
     this.hasName("getProperty") and
     this.getDeclaringType() instanceof TypeSystem
   }
+
+  override predicate returnsValue(int arg) { arg = 1 }
 }
 
 /**

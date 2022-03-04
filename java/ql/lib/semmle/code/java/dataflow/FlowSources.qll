@@ -6,6 +6,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.DefUse
+import semmle.code.java.environment.SystemProperty
 import semmle.code.java.frameworks.Jdbc
 import semmle.code.java.frameworks.Networking
 import semmle.code.java.frameworks.Properties
@@ -182,6 +183,8 @@ class EnvInput extends LocalUserInput {
     // Results from various specific methods.
     this.asExpr().(MethodAccess).getMethod() instanceof EnvReadMethod
     or
+    this.asExpr() = getSystemProperty(_)
+    or
     // Access to `System.in`.
     exists(Field f | this.asExpr() = f.getAnAccess() | f instanceof SystemIn)
     or
@@ -203,6 +206,7 @@ class EnvReadMethod extends Method {
   EnvReadMethod() {
     this instanceof MethodSystemGetenv or
     this instanceof PropertiesGetPropertyMethod or
+    this instanceof PropertiesGetMethod or
     this instanceof MethodSystemGetProperty
   }
 }

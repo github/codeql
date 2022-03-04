@@ -1,4 +1,6 @@
 import java
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.frameworks.Properties
 private import semmle.code.java.frameworks.apache.Lang
 
 /**
@@ -6,6 +8,7 @@ private import semmle.code.java.frameworks.apache.Lang
  */
 Expr getSystemProperty(string propertyName) {
   result = getSystemPropertyFromSystem(propertyName) or
+  result = getSystemPropertyFromSystemGetProperties(propertyName) or
   result = getSystemPropertyFromFile(propertyName) or
   result = getSystemPropertyFromApacheSystemUtils(propertyName) or
   result = getSystemPropertyFromApacheFileUtils(propertyName) or
@@ -15,13 +18,29 @@ Expr getSystemProperty(string propertyName) {
 }
 
 private MethodAccess getSystemPropertyFromSystem(string propertyName) {
-  result =
-    any(MethodAccessSystemGetProperty methodAccessSystemGetProperty |
-      methodAccessSystemGetProperty.hasCompileTimeConstantGetPropertyName(propertyName)
-    )
+  result.(MethodAccessSystemGetProperty).hasCompileTimeConstantGetPropertyName(propertyName)
   or
   exists(Method m | result.getMethod() = m | m.hasName("lineSeparator")) and
   propertyName = "line.separator"
+}
+
+/**
+ * A method access that retrieves the value of `propertyName` from the following methods:
+ *  - `System.getProperties().getProperty(...)`
+ *  - `System.getProperties().get(...)`
+ */
+private MethodAccess getSystemPropertyFromSystemGetProperties(string propertyName) {
+  exists(Method getMethod |
+    getMethod instanceof PropertiesGetMethod
+    or
+    getMethod instanceof PropertiesGetPropertyMethod and
+    result.getMethod() = getMethod
+  ) and
+  result.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName and
+  DataFlow::localExprFlow(any(MethodAccess m |
+      m.getMethod().getDeclaringType() instanceof TypeSystem and
+      m.getMethod().hasName("getProperties")
+    ), result.getQualifier())
 }
 
 private FieldAccess getSystemPropertyFromFile(string propertyName) {
