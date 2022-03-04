@@ -171,6 +171,9 @@ abstract class EssaDefinition extends TEssaDefinition {
   EssaVariable getVariable() { result.getDefinition() = this }
 
   abstract BasicBlock getBasicBlock();
+
+  /** Gets the name of the primary QL class for this element. */
+  string getAPrimaryQlClass() { result = "EssaDefinition" }
 }
 
 /**
@@ -216,13 +219,15 @@ class EssaEdgeRefinement extends EssaDefinition, TEssaEdgeDefinition {
   }
 
   override string getRepresentation() {
-    result = this.getAQlClass() + "(" + this.getInput().getRepresentation() + ")"
+    result = this.getAPrimaryQlClass() + "(" + this.getInput().getRepresentation() + ")"
   }
 
   /** Gets the scope of the variable defined by this definition. */
   override Scope getScope() { result = this.getPredecessor().getScope() }
 
   override BasicBlock getBasicBlock() { result = this.getSuccessor() }
+
+  override string getAPrimaryQlClass() { result = "EssaEdgeRefinement" }
 }
 
 /** A Phi-function as specified in classic SSA form. */
@@ -366,6 +371,8 @@ class PhiFunction extends EssaDefinition, TPhiFunction {
       )
     )
   }
+
+  override string getAPrimaryQlClass() { result = "PhiFunction" }
 }
 
 /**
@@ -396,7 +403,7 @@ class EssaNodeDefinition extends EssaDefinition, TEssaNodeDefinition {
 
   override Location getLocation() { result = this.getDefiningNode().getLocation() }
 
-  override string getRepresentation() { result = this.getAQlClass() }
+  override string getRepresentation() { result = this.getAPrimaryQlClass() }
 
   override Scope getScope() {
     exists(BasicBlock defb |
@@ -414,6 +421,8 @@ class EssaNodeDefinition extends EssaDefinition, TEssaNodeDefinition {
   }
 
   override BasicBlock getBasicBlock() { result = this.getDefiningNode().getBasicBlock() }
+
+  override string getAPrimaryQlClass() { result = "EssaNodeDefinition" }
 }
 
 /** A definition of an ESSA variable that takes another ESSA variable as an input. */
@@ -448,10 +457,10 @@ class EssaNodeRefinement extends EssaDefinition, TEssaNodeRefinement {
   override Location getLocation() { result = this.getDefiningNode().getLocation() }
 
   override string getRepresentation() {
-    result = this.getAQlClass() + "(" + this.getInput().getRepresentation() + ")"
+    result = this.getAPrimaryQlClass() + "(" + this.getInput().getRepresentation() + ")"
     or
     not exists(this.getInput()) and
-    result = this.getAQlClass() + "(" + this.getSourceVariable().getName() + "??)"
+    result = this.getAPrimaryQlClass() + "(" + this.getSourceVariable().getName() + "??)"
   }
 
   override Scope getScope() {
@@ -470,6 +479,8 @@ class EssaNodeRefinement extends EssaDefinition, TEssaNodeRefinement {
   }
 
   override BasicBlock getBasicBlock() { result = this.getDefiningNode().getBasicBlock() }
+
+  override string getAPrimaryQlClass() { result = "EssaNodeRefinement" }
 }
 
 pragma[noopt]
@@ -500,6 +511,8 @@ class AssignmentDefinition extends EssaNodeDefinition {
   }
 
   override string getRepresentation() { result = this.getValue().getNode().toString() }
+
+  override string getAPrimaryQlClass() { result = "AssignmentDefinition" }
 }
 
 /** Capture of a raised exception `except ExceptionType ex:` */
@@ -516,6 +529,8 @@ class ExceptionCapture extends EssaNodeDefinition {
   }
 
   override string getRepresentation() { result = "except " + this.getSourceVariable().getName() }
+
+  override string getAPrimaryQlClass() { result = "ExceptionCapture" }
 }
 
 /** An assignment to a variable as part of a multiple assignment `..., v, ... = val` */
@@ -536,6 +551,8 @@ class MultiAssignmentDefinition extends EssaNodeDefinition {
     SsaSource::multi_assignment_definition(this.getSourceVariable(), this.getDefiningNode(), index,
       lhs)
   }
+
+  override string getAPrimaryQlClass() { result = "MultiAssignmentDefinition" }
 }
 
 /** A definition of a variable in a `with` statement */
@@ -543,6 +560,8 @@ class WithDefinition extends EssaNodeDefinition {
   WithDefinition() { SsaSource::with_definition(this.getSourceVariable(), this.getDefiningNode()) }
 
   override string getRepresentation() { result = "with" }
+
+  override string getAPrimaryQlClass() { result = "WithDefinition" }
 }
 
 /** A definition of a variable via a capture pattern */
@@ -552,6 +571,8 @@ class PatternCaptureDefinition extends EssaNodeDefinition {
   }
 
   override string getRepresentation() { result = "pattern capture" }
+
+  override string getAPrimaryQlClass() { result = "PatternCaptureDefinition" }
 }
 
 /** A definition of a variable via a pattern alias */
@@ -561,6 +582,8 @@ class PatternAliasDefinition extends EssaNodeDefinition {
   }
 
   override string getRepresentation() { result = "pattern alias" }
+
+  override string getAPrimaryQlClass() { result = "PatternAliasDefinition" }
 }
 
 /** A definition of a variable by declaring it as a parameter */
@@ -594,6 +617,8 @@ class ParameterDefinition extends EssaNodeDefinition {
 
   /** Gets the `Parameter` this `ParameterDefinition` represents. */
   Parameter getParameter() { result = this.getDefiningNode().getNode() }
+
+  override string getAPrimaryQlClass() { result = "ParameterDefinition" }
 }
 
 /** A deletion of a variable `del v` */
@@ -601,6 +626,8 @@ class DeletionDefinition extends EssaNodeDefinition {
   DeletionDefinition() {
     SsaSource::deletion_definition(this.getSourceVariable(), this.getDefiningNode())
   }
+
+  override string getAPrimaryQlClass() { result = "DeletionDefinition" }
 }
 
 /**
@@ -614,6 +641,8 @@ class ScopeEntryDefinition extends EssaNodeDefinition {
   }
 
   override Scope getScope() { result.getEntryNode() = this.getDefiningNode() }
+
+  override string getAPrimaryQlClass() { result = "ScopeEntryDefinition" }
 }
 
 /** Possible redefinition of variable via `from ... import *` */
@@ -621,6 +650,8 @@ class ImportStarRefinement extends EssaNodeRefinement {
   ImportStarRefinement() {
     SsaSource::import_star_refinement(this.getSourceVariable(), _, this.getDefiningNode())
   }
+
+  override string getAPrimaryQlClass() { result = "ImportStarRefinement" }
 }
 
 /** Assignment of an attribute `obj.attr = val` */
@@ -635,12 +666,16 @@ class AttributeAssignment extends EssaNodeRefinement {
 
   override string getRepresentation() {
     result =
-      this.getAQlClass() + " '" + this.getName() + "'(" + this.getInput().getRepresentation() + ")"
+      this.getAPrimaryQlClass() + " '" + this.getName() + "'(" + this.getInput().getRepresentation()
+        + ")"
     or
     not exists(this.getInput()) and
     result =
-      this.getAQlClass() + " '" + this.getName() + "'(" + this.getSourceVariable().getName() + "??)"
+      this.getAPrimaryQlClass() + " '" + this.getName() + "'(" + this.getSourceVariable().getName() +
+        "??)"
   }
+
+  override string getAPrimaryQlClass() { result = "AttributeAssignment" }
 }
 
 /** A use of a variable as an argument, `foo(v)`, which might modify the object referred to. */
@@ -654,6 +689,8 @@ class ArgumentRefinement extends EssaNodeRefinement {
   ControlFlowNode getArgument() { result = argument }
 
   CallNode getCall() { result = this.getDefiningNode() }
+
+  override string getAPrimaryQlClass() { result = "ArgumentRefinement" }
 }
 
 /** Deletion of an attribute `del obj.attr`. */
@@ -663,6 +700,8 @@ class EssaAttributeDeletion extends EssaNodeRefinement {
   }
 
   string getName() { result = this.getDefiningNode().(AttrNode).getName() }
+
+  override string getAPrimaryQlClass() { result = "EssaAttributeDeletion" }
 }
 
 /** A pi-node (guard) with only one successor. */
@@ -690,6 +729,8 @@ class SingleSuccessorGuard extends EssaNodeRefinement {
     test = this.getDefiningNode() and
     SsaSource::test_refinement(this.getSourceVariable(), use, test)
   }
+
+  override string getAPrimaryQlClass() { result = "SingleSuccessorGuard" }
 }
 
 /**
@@ -701,11 +742,13 @@ class ImplicitSubModuleDefinition extends EssaNodeDefinition {
   ImplicitSubModuleDefinition() {
     SsaSource::init_module_submodule_defn(this.getSourceVariable(), this.getDefiningNode())
   }
+
+  override string getAPrimaryQlClass() { result = "ImplicitSubModuleDefinition" }
 }
 
 /** An implicit (possible) definition of an escaping variable at a call-site */
 class CallsiteRefinement extends EssaNodeRefinement {
-  override string toString() { result = "CallsiteRefinement" }
+  override string toString() { result = "CallSiteRefinement" }
 
   CallsiteRefinement() {
     exists(SsaSourceVariable var, ControlFlowNode defn |
@@ -718,6 +761,8 @@ class CallsiteRefinement extends EssaNodeRefinement {
   }
 
   CallNode getCall() { this.getDefiningNode() = result }
+
+  override string getAPrimaryQlClass() { result = "CallsiteRefinement" }
 }
 
 /** An implicit (possible) modification of the object referred at a method call */
@@ -728,11 +773,15 @@ class MethodCallsiteRefinement extends EssaNodeRefinement {
   }
 
   CallNode getCall() { this.getDefiningNode() = result }
+
+  override string getAPrimaryQlClass() { result = "MethodCallsiteRefinement" }
 }
 
 /** An implicit (possible) modification of `self` at a method call */
 class SelfCallsiteRefinement extends MethodCallsiteRefinement {
   SelfCallsiteRefinement() { this.getSourceVariable().(Variable).isSelf() }
+
+  override string getAPrimaryQlClass() { result = "SelfCallsiteRefinement" }
 }
 
 /** Python specific sub-class of generic EssaEdgeRefinement */
@@ -750,4 +799,6 @@ class PyEdgeRefinement extends EssaEdgeRefinement {
   }
 
   ControlFlowNode getTest() { result = this.getPredecessor().getLastNode() }
+
+  override string getAPrimaryQlClass() { result = "PyEdgeRefinement" }
 }
