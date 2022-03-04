@@ -47,7 +47,7 @@ lxml.etree.fromstring(x, parser=parser) # $ input=x vuln='Billion Laughs' vuln='
 
 # Safe for both Billion laughs and XXE
 parser = lxml.etree.XMLParser(resolve_entities=False, huge_tree=True)
-lxml.etree.fromstring(x, parser=parser) # $ input=x SPURIOUS: vuln='Billion Laughs' vuln='Quadratic Blowup'
+lxml.etree.fromstring(x, parser=parser) # $ input=x
 
 # DTD retrival vuln (also XXE)
 parser = lxml.etree.XMLParser(load_dtd=True, no_network=False)

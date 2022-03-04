@@ -341,7 +341,8 @@ private module Lxml {
         )
         or
         (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
-        this.getArgByName("huge_tree").getALocalSource().asExpr() = any(True t)
+        this.getArgByName("huge_tree").getALocalSource().asExpr() = any(True t) and
+        not this.getArgByName("resolve_entities").getALocalSource().asExpr() = any(False t)
         or
         kind.isDtdRetrieval() and
         this.getArgByName("load_dtd").getALocalSource().asExpr() = any(True t) and
