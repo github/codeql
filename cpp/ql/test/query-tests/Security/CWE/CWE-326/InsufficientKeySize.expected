@@ -1,0 +1,10 @@
+edges
+nodes
+| test.cpp:34:45:34:48 | 1024 | semmle.label | 1024 |
+| test.cpp:35:49:35:52 | 1024 | semmle.label | 1024 |
+| test.cpp:37:43:37:46 | 1024 | semmle.label | 1024 |
+subpaths
+#select
+| test.cpp:34:5:34:38 | call to EVP_PKEY_CTX_set_dsa_paramgen_bits | test.cpp:34:45:34:48 | 1024 | test.cpp:34:45:34:48 | 1024 | The key size $@ is less than the recommended key size of 2048 bits. | test.cpp:34:45:34:48 | 1024 | 1024 |
+| test.cpp:35:5:35:42 | call to EVP_PKEY_CTX_set_dh_paramgen_prime_len | test.cpp:35:49:35:52 | 1024 | test.cpp:35:49:35:52 | 1024 | The key size $@ is less than the recommended key size of 2048 bits. | test.cpp:35:49:35:52 | 1024 | 1024 |
+| test.cpp:37:5:37:36 | call to EVP_PKEY_CTX_set_rsa_keygen_bits | test.cpp:37:43:37:46 | 1024 | test.cpp:37:43:37:46 | 1024 | The key size $@ is less than the recommended key size of 2048 bits. | test.cpp:37:43:37:46 | 1024 | 1024 |
