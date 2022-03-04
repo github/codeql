@@ -27,7 +27,8 @@
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl3.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl4.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl2.qll"
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl2.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForLibraries.qll"
   ],
   "DataFlow Java/C++/C#/Python Common": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",
@@ -54,7 +55,8 @@
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking2/TaintTrackingImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking3/TaintTrackingImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking4/TaintTrackingImpl.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttrackingforlibraries/TaintTrackingImpl.qll"
   ],
   "DataFlow Java/C++/C#/Python Consistency checks": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
