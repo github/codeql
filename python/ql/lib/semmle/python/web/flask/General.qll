@@ -2,10 +2,10 @@ import python
 import semmle.python.web.Http
 import semmle.python.web.flask.Response
 
-/** The flask app class */
+/** Gets the flask app class */
 deprecated ClassValue theFlaskClass() { result = Value::named("flask.Flask") }
 
-/** The flask MethodView class */
+/** Gets the flask MethodView class */
 deprecated ClassValue theFlaskMethodViewClass() { result = Value::named("flask.views.MethodView") }
 
 deprecated ClassValue theFlaskReponseClass() { result = Value::named("flask.Response") }

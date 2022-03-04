@@ -90,16 +90,8 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
     none()
   }
 
-  /**
-   * The integer value of things that have integer values.
-   * That is, ints and bools.
-   */
   override int intValue() { none() }
 
-  /**
-   * The integer value of things that have integer values.
-   * That is, strings.
-   */
   override string strValue() { none() }
 
   override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
@@ -241,16 +233,8 @@ class SysVersionInfoObjectInternal extends TSysVersionInfo, SequenceObjectIntern
     none()
   }
 
-  /**
-   * The integer value of things that have integer values.
-   * That is, ints and bools.
-   */
   override int intValue() { none() }
 
-  /**
-   * The integer value of things that have integer values.
-   * That is, strings.
-   */
   override string strValue() { none() }
 
   override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
@@ -261,10 +245,6 @@ class SysVersionInfoObjectInternal extends TSysVersionInfo, SequenceObjectIntern
 
   override predicate subscriptUnknown() { none() }
 
-  /**
-   * Gets the length of the sequence that this "object" represents.
-   * Always returns a value for a sequence, will be -1 if object has no fixed length.
-   */
   override int length() { result = 5 }
 
   override predicate functionAndOffset(CallableObjectInternal function, int offset) { none() }

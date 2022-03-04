@@ -35,6 +35,8 @@ class ImportExpr extends ImportExpr_ {
   }
 
   /**
+   * Gets the level of this import.
+   *
    * The language specifies level as -1 if relative imports are to be tried first, 0 for absolute imports,
    * and level > 0 for explicit relative imports.
    */

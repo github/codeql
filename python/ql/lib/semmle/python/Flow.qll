@@ -155,7 +155,7 @@ class ControlFlowNode extends @py_flow_node {
   /** Whether this flow node is the first in its scope */
   predicate isEntryNode() { py_scope_flow(this, _, -1) }
 
-  /** The value that this ControlFlowNode points-to. */
+  /** Gets the value that this ControlFlowNode points-to. */
   predicate pointsTo(Value value) { this.pointsTo(_, value, _) }
 
   /** Gets the value that this ControlFlowNode points-to. */
@@ -164,10 +164,10 @@ class ControlFlowNode extends @py_flow_node {
   /** Gets a value that this ControlFlowNode may points-to. */
   Value inferredValue() { this.pointsTo(_, result, _) }
 
-  /** The value and origin that this ControlFlowNode points-to. */
+  /** Gets the value and origin that this ControlFlowNode points-to. */
   predicate pointsTo(Value value, ControlFlowNode origin) { this.pointsTo(_, value, origin) }
 
-  /** The value and origin that this ControlFlowNode points-to, given the context. */
+  /** Gets the value and origin that this ControlFlowNode points-to, given the context. */
   predicate pointsTo(Context context, Value value, ControlFlowNode origin) {
     PointsTo::pointsTo(this, context, value, origin)
   }

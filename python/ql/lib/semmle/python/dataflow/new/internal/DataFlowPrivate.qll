@@ -63,7 +63,7 @@ module syntheticPreUpdateNode {
     override Node getPreUpdateNode() { result.(SyntheticPreUpdateNode).getPostUpdateNode() = this }
 
     /**
-     * A label for this kind of node. This will figure in the textual representation of the synthesized pre-update node.
+     * Gets the label for this kind of node. This will figure in the textual representation of the synthesized pre-update node.
      *
      * There is currently only one reason for needing a pre-update node, so we always use that as the label.
      */
@@ -108,7 +108,7 @@ module syntheticPostUpdateNode {
     }
 
     /**
-     * A label for this kind of node. This will figure in the textual representation of the synthesized post-update node.
+     * Gets the label for this kind of node. This will figure in the textual representation of the synthesized post-update node.
      * We favour being an arguments as the reason for the post-update node in case multiple reasons apply.
      */
     string label() {
@@ -122,6 +122,8 @@ module syntheticPostUpdateNode {
   }
 
   /**
+   * Gets the pre-update node for this node.
+   *
    * An argument might have its value changed as a result of a call.
    * Certain arguments, such as implicit self arguments are already post-update nodes
    * and should not have an extra node synthesised.
@@ -143,7 +145,7 @@ module syntheticPostUpdateNode {
     )
   }
 
-  /** An object might have its value changed after a store. */
+  /** Gets the pre-update node associated with a store. This is used for when an object might have its value changed after a store. */
   CfgNode storePreUpdateNode() {
     exists(Attribute a |
       result.getNode() = a.getObject().getAFlowNode() and
@@ -152,7 +154,7 @@ module syntheticPostUpdateNode {
   }
 
   /**
-   * A node marking the state change of an object after a read.
+   * Gets a node marking the state change of an object after a read.
    *
    * A reverse read happens when the result of a read is modified, e.g. in
    * ```python
@@ -1617,6 +1619,8 @@ import IterableUnpacking
  */
 module MatchUnpacking {
   /**
+   * Holds when there is flow from the subject `nodeFrom` to the case `nodeTo` of a `match` statement.
+   *
    * The subject of a match flows to each top-level pattern
    * (a pattern directly under a `case` statement).
    *

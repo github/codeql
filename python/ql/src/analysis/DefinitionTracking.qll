@@ -468,9 +468,9 @@ Definition getUniqueDefinition(Expr use) {
 }
 
 /** Helper class to get suitable locations for attributes */
-class NiceLocationExpr extends @py_expr {
+class NiceLocationExpr extends Expr {
   /** Gets a textual representation of this element. */
-  string toString() { result = this.(Expr).toString() }
+  override string toString() { result = this.(Expr).toString() }
 
   /**
    * Holds if this element is at the specified location.

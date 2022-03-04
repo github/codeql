@@ -2,10 +2,10 @@ import python
 import semmle.python.web.Http
 import semmle.python.types.Extensions
 
-/** The bottle module */
+/** Gets the bottle module */
 deprecated ModuleValue theBottleModule() { result = Module::named("bottle") }
 
-/** The bottle.Bottle class */
+/** Gets the bottle.Bottle class */
 deprecated ClassValue theBottleClass() { result = theBottleModule().attr("Bottle") }
 
 /**

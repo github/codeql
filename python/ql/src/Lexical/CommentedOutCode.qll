@@ -178,7 +178,7 @@ class CommentedOutCodeBlock extends @py_comment {
   /** Gets a textual representation of this element. */
   string toString() { result = "Commented out code" }
 
-  /** Whether this commented-out code block contains the comment c */
+  /** Holds if this commented-out code block contains the comment c */
   predicate contains(Comment c) {
     this = c
     or
@@ -189,7 +189,7 @@ class CommentedOutCodeBlock extends @py_comment {
     )
   }
 
-  /** The length of this comment block (in comments) */
+  /** Gets the length of this comment block (in comments) */
   int length() { result = count(Comment c | this.contains(c)) }
 
   /**

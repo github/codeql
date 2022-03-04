@@ -22,12 +22,13 @@ class Module extends Module_, Scope, AstNode {
   }
 
   /**
+   * Gets the enclosing scope of this module (always none).
+   *
    * This method will be deprecated in the next release. Please use `getEnclosingScope()` instead.
-   * The enclosing scope of this module (always none)
    */
   override Scope getScope() { none() }
 
-  /** The enclosing scope of this module (always none) */
+  /** Gets the enclosing scope of this module (always none) */
   override Scope getEnclosingScope() { none() }
 
   /** Gets the statements forming the body of this module */

@@ -138,7 +138,7 @@ class Object extends @py_object {
   }
 
   /**
-   * The Boolean value of this object if it always evaluates to true or false.
+   * Gets the Boolean value of this object if it always evaluates to true or false.
    * For example:
    *     false for None, true for 7 and no result for int(x)
    */
@@ -358,34 +358,34 @@ class ListObject extends SequenceObject {
   }
 }
 
-/** The `builtin` module */
+/** Gets the `builtin` module */
 BuiltinModuleObject theBuiltinModuleObject() { result.asBuiltin() = Builtin::builtinModule() }
 
-/** The `sys` module */
+/** Gets the `sys` module */
 BuiltinModuleObject theSysModuleObject() { result.asBuiltin() = Builtin::special("sys") }
 
 /** DEPRECATED -- Use `Object::builtin(name)` instead. */
 deprecated Object builtin_object(string name) { result = Object::builtin(name) }
 
-/** The built-in object None */
+/** Gets the built-in object None */
 Object theNoneObject() { result.asBuiltin() = Builtin::special("None") }
 
-/** The built-in object True */
+/** Gets the built-in object True */
 Object theTrueObject() { result.asBuiltin() = Builtin::special("True") }
 
-/** The built-in object False */
+/** Gets the built-in object False */
 Object theFalseObject() { result.asBuiltin() = Builtin::special("False") }
 
-/** The NameError class */
+/** Gets the NameError class */
 Object theNameErrorType() { result = Object::builtin("NameError") }
 
-/** The StandardError class */
+/** Gets the StandardError class */
 Object theStandardErrorType() { result = Object::builtin("StandardError") }
 
-/** The IndexError class */
+/** Gets the IndexError class */
 Object theIndexErrorType() { result = Object::builtin("IndexError") }
 
-/** The LookupError class */
+/** Gets the LookupError class */
 Object theLookupErrorType() { result = Object::builtin("LookupError") }
 
 /** DEPRECATED -- Use `Object::quitter(name)` instead. */
@@ -400,13 +400,13 @@ deprecated Object theEmptyTupleObject() { result = TupleObject::empty() }
 module Object {
   Object builtin(string name) { result.asBuiltin() = Builtin::builtin(name) }
 
-  /** The named quitter object (quit or exit) in the builtin namespace */
+  /** Gets the named quitter object (quit or exit) in the builtin namespace */
   Object quitter(string name) {
     (name = "quit" or name = "exit") and
     result = builtin(name)
   }
 
-  /** The builtin object `NotImplemented`. Not be confused with `NotImplementedError`. */
+  /** Gets the builtin object `NotImplemented`. Not be confused with `NotImplementedError`. */
   Object notImplemented() { result = builtin("NotImplemented") }
 }
 

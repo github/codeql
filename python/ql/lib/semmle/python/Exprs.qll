@@ -446,6 +446,8 @@ class Unicode extends StrConst {
   }
 
   /**
+   * Gets the quoted representation fo this string.
+   *
    * The extractor puts quotes into the name of each string (to prevent "0" clashing with 0).
    * The following predicate help us match up a string/byte literals in the source
    * which the equivalent object.

@@ -112,6 +112,6 @@ class SpecialMethodCallNode extends PotentialSpecialMethodCallNode {
     )
   }
 
-  /** The method that is called. */
+  /** Gets the method that is called. */
   Value getResolvedSpecialMethod() { result = resolvedSpecialMethod }
 }

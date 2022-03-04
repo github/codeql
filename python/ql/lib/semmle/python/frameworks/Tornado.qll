@@ -354,7 +354,7 @@ private module Tornado {
   // ---------------------------------------------------------------------------
   // routing
   // ---------------------------------------------------------------------------
-  /** A sequence that defines a number of route rules */
+  /** Gets a sequence that defines a number of route rules */
   SequenceNode routeSetupRuleList() {
     exists(CallNode call | call = any(tornado::web::Application::ClassInstantiation c).asCfgNode() |
       result in [call.getArg(0), call.getArgByName("handlers")]

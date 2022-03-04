@@ -122,7 +122,7 @@ class ExtractMembersSink extends TaintSink {
 class TarFileInfoSanitizer extends Sanitizer {
   TarFileInfoSanitizer() { this = "TarInfo sanitizer" }
 
-  /** The test `if <path_sanitizing_test>:` clears taint on its `false` edge. */
+  /* The test `if <path_sanitizing_test>:` clears taint on its `false` edge. */
   override predicate sanitizingEdge(TaintKind taint, PyEdgeRefinement test) {
     taint instanceof TarFileInfo and
     clears_taint_on_false_edge(test.getTest(), test.getSense())
