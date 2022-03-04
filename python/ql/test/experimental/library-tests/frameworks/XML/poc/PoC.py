@@ -318,11 +318,21 @@ class TestLxml:
     @expects_timeout
     def test_quadratic_blowup_manually_enabled():
         parser = lxml.etree.XMLParser(huge_tree=True)
-        try:
-            _root = lxml.etree.fromstring(quadratic_blowup, parser=parser)
-            assert False
-        except lxml.etree.XMLSyntaxError as e:
-            assert "Detected an entity reference loop" in str(e)
+        root = lxml.etree.fromstring(quadratic_blowup, parser=parser)
+
+    @staticmethod
+    def test_billion_laughs_huge_tree_not_enough():
+        parser = lxml.etree.XMLParser(huge_tree=True, resolve_entities=False)
+        root = lxml.etree.fromstring(billion_laughs, parser=parser)
+        assert root.tag == "lolz"
+        assert root.text == None
+
+    @staticmethod
+    def test_quadratic_blowup_huge_tree_not_enough():
+        parser = lxml.etree.XMLParser(huge_tree=True, resolve_entities=False)
+        root = lxml.etree.fromstring(quadratic_blowup, parser=parser)
+        assert root.tag == "foo"
+        assert root.text == None
 
     @staticmethod
     def test_ok_xml():
