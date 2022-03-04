@@ -23,11 +23,9 @@ private module HttpxModel {
     override DataFlow::Node getAUrlPart() {
       result = this.getArgByName("url")
       or
-      not methodName = "request" and
-      result = this.getArg(0)
-      or
-      methodName in ["request", "stream"] and
-      result = this.getArg(1)
+      if methodName in ["request", "stream"]
+      then result = this.getArg(1)
+      else result = this.getArg(0)
     }
 
     override string getFramework() { result = "httpx" }
@@ -66,11 +64,9 @@ private module HttpxModel {
       override DataFlow::Node getAUrlPart() {
         result = this.getArgByName("url")
         or
-        not methodName = "request" and
-        result = this.getArg(0)
-        or
-        methodName in ["request", "stream"] and
-        result = this.getArg(1)
+        if methodName in ["request", "stream"]
+        then result = this.getArg(1)
+        else result = this.getArg(0)
       }
 
       override string getFramework() { result = "httpx.[Async]Client" }
