@@ -1,6 +1,9 @@
 /**
  * Provides classes modeling security-relevant aspects of the `httpx` PyPI package.
- * See https://www.python-httpx.org/
+ *
+ * See
+ * - https://pypi.org/project/httpx/
+ * - https://www.python-httpx.org/
  */
 
 private import python
@@ -9,7 +12,10 @@ private import semmle.python.ApiGraphs
 
 /**
  * Provides models for the `httpx` PyPI package.
- * see https://www.python-httpx.org/
+ *
+ * See
+ * - https://pypi.org/project/httpx/
+ * - https://www.python-httpx.org/
  */
 private module HttpxModel {
   private class RequestCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {

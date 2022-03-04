@@ -1,6 +1,9 @@
 /**
  * Provides classes modeling security-relevant aspects of the `libtaxii` PyPI package.
- * See https://github.com/TAXIIProject/libtaxii
+ *
+ * See
+ * - https://pypi.org/project/libtaxii/
+ * - https://github.com/TAXIIProject/libtaxii
  */
 
 private import python
@@ -9,7 +12,10 @@ private import semmle.python.ApiGraphs
 
 /**
  * Provides models for the `libtaxii` PyPI package.
- * see https://github.com/TAXIIProject/libtaxii
+ *
+ * See
+ * - https://pypi.org/project/libtaxii/
+ * - https://github.com/TAXIIProject/libtaxii
  */
 private module Libtaxii {
   /**
