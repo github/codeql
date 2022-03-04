@@ -738,7 +738,7 @@ class Store extends Store_ { }
 class Del extends Del_ { }
 
 /** This is an artifact of the Python grammar which includes an AugLoad context, even though it is never used. */
-library class AugLoad extends AugLoad_ { }
+class AugLoad extends AugLoad_ { }
 
 /** Augmented store context, the context of var in var += 1 */
 class AugStore extends AugStore_ { }
