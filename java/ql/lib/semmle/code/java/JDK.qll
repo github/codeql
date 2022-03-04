@@ -270,7 +270,7 @@ class MethodAccessSystemGetProperty extends MethodAccess {
    * For example: `System.getProperty("user.dir")`.
    *
    * Note: Better to use `semmle.code.java.environment.SystemProperty#getSystemProperty` instead
-   * as that predicate covers more libraries' and JDK API's ways of accessing the same information
+   * as that predicate covers ways of accessing the same information via various libraries.
    */
   predicate hasCompileTimeConstantGetPropertyName(string propertyName) {
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName
