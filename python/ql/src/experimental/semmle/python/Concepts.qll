@@ -22,7 +22,7 @@ module XML {
    */
   class XMLVulnerabilityKind extends string {
     XMLVulnerabilityKind() {
-      this in ["Billion Laughs", "Quadratic Blowup", "XXE", "DTD retrieval",]
+      this in ["Billion Laughs", "Quadratic Blowup", "XXE", "DTD retrieval"]
     }
 
     /** Holds for Billion Laughs vulnerability kind. */

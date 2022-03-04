@@ -1,17 +1,15 @@
 /**
  * @name SimpleXMLRPCServer DoS vulnerability
  * @description SimpleXMLRPCServer is vulnerable to DoS attacks from untrusted user input
- * @kind path-problem
+ * @kind problem
  * @problem.severity warning
  * @precision high
- * @id py/simple-xml-rpc-server
+ * @id py/simple-xml-rpc-server-dos
  * @tags security
  *       external/cwe/cwe-776
  */
 
 private import python
-private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.Concepts
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
