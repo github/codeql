@@ -206,3 +206,5 @@ Python built-in support
    pycryptodomex, Cryptography library
    rsa, Cryptography library
    MarkupSafe, Escaping Library
+   libxml2, XML processing library
+   lxml, XML processing library
