@@ -25,7 +25,7 @@ private module Libtaxii {
   private class ParseCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
     ParseCall() {
       this = API::moduleImport("libtaxii").getMember("common").getMember("parse").getACall() and
-      this.getArgByName("allow_url").asExpr().toString() = "True"
+      this.getArgByName("allow_url").getALocalSource().asExpr() = any(True t)
     }
 
     override DataFlow::Node getAUrlPart() { result in [this.getArg(0), this.getArgByName("s")] }
