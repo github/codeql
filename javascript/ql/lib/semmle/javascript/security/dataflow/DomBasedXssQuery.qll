@@ -123,3 +123,14 @@ class Configuration extends TaintTracking::Configuration {
     outlbl = prefixLabel()
   }
 }
+
+/**
+ * A sanitizer that blocks the `PrefixString` label when the start of the string is being tested as being of a particular prefix.
+ */
+class PrefixStringSanitizer extends SanitizerGuard, TaintTracking::LabeledSanitizerGuardNode instanceof StringOps::StartsWith {
+  override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    e = super.getBaseString().asExpr() and
+    label = prefixLabel() and
+    outcome = super.getPolarity()
+  }
+}
