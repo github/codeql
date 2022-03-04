@@ -2313,4 +2313,35 @@ module PrivateDjango {
             .getAnImmediateUse()
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // Settings
+  // ---------------------------------------------------------------------------
+  /**
+   * A custom middleware stack
+   */
+  private class DjangoSettingsMiddlewareStack extends CSRFProtectionSetting::Range {
+    List list;
+
+    DjangoSettingsMiddlewareStack() {
+      this.asExpr() = list and
+      // we look for an assignment to the `MIDDLEWARE` setting
+      exists(DataFlow::Node mw, string djangomw |
+        mw.asVar().getName() = "MIDDLEWARE" and
+        DataFlow::localFlow(this, mw)
+      |
+        // check that the list contains at least one reference to `django`
+        list.getAnElt().(StrConst).getText() = djangomw and
+        // TODO: Consider requiring `django.middleware.security.SecurityMiddleware`
+        // or something indicating that a security middleware is enabled.
+        djangomw.matches("django.%")
+      )
+    }
+
+    override boolean getVerificationSetting() {
+      if list.getAnElt().(StrConst).getText() = "django.middleware.csrf.CsrfViewMiddleware"
+      then result = true
+      else result = false
+    }
+  }
 }
