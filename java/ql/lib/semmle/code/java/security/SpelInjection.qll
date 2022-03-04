@@ -34,7 +34,7 @@ private class DefaultSpelExpressionInjectionAdditionalTaintStep extends SpelExpr
  */
 private predicate expressionParsingStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(MethodAccess ma, Method m | ma.getMethod() = m |
-    m.getDeclaringType().getASupertype*() instanceof ExpressionParser and
+    m.getDeclaringType().getAnAncestor() instanceof ExpressionParser and
     m.hasName(["parseExpression", "parseRaw"]) and
     ma.getAnArgument() = node1.asExpr() and
     node2.asExpr() = ma

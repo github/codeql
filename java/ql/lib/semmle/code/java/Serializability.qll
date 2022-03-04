@@ -24,7 +24,7 @@ abstract class DeserializableField extends Field { }
  */
 library class StandardSerializableField extends SerializableField, DeserializableField {
   StandardSerializableField() {
-    this.getDeclaringType().getASupertype*() instanceof TypeSerializable and
+    this.getDeclaringType().getAnAncestor() instanceof TypeSerializable and
     not this.isTransient()
   }
 }

@@ -7,9 +7,9 @@
  */
 
 private import ruby
-import codeql.ruby.DataFlow
-import codeql.ruby.typetracking.TypeTracker
-import codeql.ruby.ast.internal.Module
+private import codeql.ruby.DataFlow
+private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch

@@ -231,7 +231,7 @@ private module SsaImpl {
         ssaDefReachesRank(v, def, b, lastRank(v, b))
         or
         exists(BasicBlock idom |
-          bbIDominates(idom, b) and // It is sufficient to traverse the dominator graph, cf. discussion above.
+          bbIDominates(pragma[only_bind_into](idom), b) and // It is sufficient to traverse the dominator graph, cf. discussion above.
           ssaDefReachesEndOfBlock(v, def, idom) and
           not any(TrackedSsaDef other).definesAt(v, b, _)
         )
@@ -333,12 +333,12 @@ private module SsaImpl {
      */
     private predicate varBlockReaches(BaseSsaSourceVariable v, BasicBlock b1, BasicBlock b2) {
       varOccursInBlock(v, b1) and
-      b2 = b1.getABBSuccessor() and
+      pragma[only_bind_into](b2) = b1.getABBSuccessor() and
       blockPrecedesVar(v, b2)
       or
       exists(BasicBlock mid |
         varBlockReaches(v, b1, mid) and
-        b2 = mid.getABBSuccessor() and
+        pragma[only_bind_into](b2) = mid.getABBSuccessor() and
         not varOccursInBlock(v, mid) and
         blockPrecedesVar(v, b2)
       )

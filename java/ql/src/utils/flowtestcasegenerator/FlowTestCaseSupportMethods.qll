@@ -371,7 +371,7 @@ private class ListGenMethod extends GenMethod {
   override predicate appliesTo(Type t, Content c) {
     exists(GenericType list | list.hasQualifiedName("java.util", "List") |
       t.getErasure() = list.getASourceSupertype*().getErasure() or // cover things like Iterable and Collection
-      list.getAParameterizedType().getASupertype*() = t
+      list.getAParameterizedType().getAnAncestor() = t
     ) and
     c instanceof CollectionContent
   }
@@ -413,7 +413,7 @@ private class StreamGenMethod extends GenMethod {
 
   override predicate appliesTo(Type t, Content c) {
     exists(GenericType op | op.hasQualifiedName("java.util.stream", ["BaseStream", "Stream"]) |
-      op.getAParameterizedType().getASupertype*() = t
+      op.getAParameterizedType().getAnAncestor() = t
     ) and
     c instanceof CollectionContent
   }
@@ -427,7 +427,7 @@ private class OptionalGenMethod extends GenMethod {
 
   override predicate appliesTo(Type t, Content c) {
     exists(GenericType op | op.hasQualifiedName("java.util", "Optional") |
-      op.getAParameterizedType().getASupertype*() = t
+      op.getAParameterizedType().getAnAncestor() = t
     ) and
     c instanceof CollectionContent
   }
@@ -441,7 +441,7 @@ private class MapGenKeyMethod extends GenMethod {
 
   override predicate appliesTo(Type t, Content c) {
     exists(GenericType map | map.hasQualifiedName("java.util", "Map") |
-      map.getAParameterizedType().getASupertype*() = t
+      map.getAParameterizedType().getAnAncestor() = t
     ) and
     c instanceof MapKeyContent
   }
@@ -455,7 +455,7 @@ private class MapEntryGenKeyMethod extends GenMethod {
 
   override predicate appliesTo(Type t, Content c) {
     exists(GenericType map | map.hasQualifiedName("java.util", "Map$Entry") |
-      map.getAParameterizedType().getASupertype*() = t
+      map.getAParameterizedType().getAnAncestor() = t
     ) and
     c instanceof MapKeyContent
   }
@@ -474,7 +474,7 @@ private class MapGenValueMethod extends GenMethod {
 
   override predicate appliesTo(Type t, Content c) {
     exists(GenericType map | map.hasQualifiedName("java.util", "Map") |
-      map.getAParameterizedType().getASupertype*() = t
+      map.getAParameterizedType().getAnAncestor() = t
     ) and
     c instanceof MapValueContent
   }
@@ -488,7 +488,7 @@ private class MapEntryGenValueMethod extends GenMethod {
 
   override predicate appliesTo(Type t, Content c) {
     exists(GenericType map | map.hasQualifiedName("java.util", "Map$Entry") |
-      map.getAParameterizedType().getASupertype*() = t
+      map.getAParameterizedType().getAnAncestor() = t
     ) and
     c instanceof MapValueContent
   }

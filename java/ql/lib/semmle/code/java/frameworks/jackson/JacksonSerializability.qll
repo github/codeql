@@ -139,7 +139,7 @@ private class FieldReferencedJacksonDeserializableType extends JacksonDeserializ
 class JacksonSerializableField extends SerializableField {
   JacksonSerializableField() {
     exists(JacksonSerializableType superType |
-      superType = this.getDeclaringType().getASupertype*() and
+      superType = this.getDeclaringType().getAnAncestor() and
       not superType instanceof TypeObject and
       superType.fromSource()
     ) and
@@ -151,7 +151,7 @@ class JacksonSerializableField extends SerializableField {
 class JacksonDeserializableField extends DeserializableField {
   JacksonDeserializableField() {
     exists(JacksonDeserializableType superType |
-      superType = this.getDeclaringType().getASupertype*() and
+      superType = this.getDeclaringType().getAnAncestor() and
       not superType instanceof TypeObject and
       superType.fromSource()
     ) and

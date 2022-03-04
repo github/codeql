@@ -126,7 +126,7 @@ module syntheticPostUpdateNode {
    * Certain arguments, such as implicit self arguments are already post-update nodes
    * and should not have an extra node synthesised.
    */
-  ArgumentNode argumentPreUpdateNode() {
+  Node argumentPreUpdateNode() {
     result = any(FunctionCall c).getArg(_)
     or
     // Avoid argument 0 of method calls as those have read post-update nodes.
@@ -136,6 +136,11 @@ module syntheticPostUpdateNode {
     or
     // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
     exists(ClassCall c, int n | n > 0 | result = c.getArg(n))
+    or
+    // any argument of any call that we have not been able to resolve
+    exists(CallNode call | not call = any(DataFlowCall c).getNode() |
+      result.(CfgNode).getNode() in [call.getArg(_), call.getArgByName(_)]
+    )
   }
 
   /** An object might have its value changed after a store. */
@@ -704,7 +709,7 @@ newtype TDataFlowCall =
   TFunctionCall(CallNode call) { call = any(FunctionValue f).getAFunctionCall() } or
   /** Bound methods need to make room for the explicit self parameter */
   TMethodCall(CallNode call) { call = any(FunctionValue f).getAMethodCall() } or
-  TClassCall(CallNode call) { call = any(ClassValue c).getACall() } or
+  TClassCall(CallNode call) { call = any(ClassValue c | not c.isAbsent()).getACall() } or
   TSpecialCall(SpecialMethodCallNode special)
 
 /** Represents a call. */
@@ -1067,19 +1072,18 @@ predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
 }
 
 /**
- * Holds if `nodeFrom` flows into an attribute (corresponding to `c`) of `nodeTo` via an attribute assignment.
+ * Holds if `nodeFrom` flows into the attribute `c` of `nodeTo` via an attribute assignment.
  *
  * For example, in
  * ```python
  * obj.foo = x
  * ```
- * data flows from `x` to (the post-update node for) `obj` via assignment to `foo`.
+ * data flows from `x` to the attribute `foo` of  (the post-update node for) `obj`.
  */
-predicate attributeStoreStep(CfgNode nodeFrom, AttributeContent c, PostUpdateNode nodeTo) {
-  exists(AttrNode attr |
-    nodeFrom.asCfgNode() = attr.(DefinitionNode).getValue() and
-    attr.getName() = c.getAttribute() and
-    attr.getObject() = nodeTo.getPreUpdateNode().(CfgNode).getNode()
+predicate attributeStoreStep(Node nodeFrom, AttributeContent c, PostUpdateNode nodeTo) {
+  exists(AttrWrite write |
+    write.accesses(nodeTo.getPreUpdateNode(), c.getAttribute()) and
+    nodeFrom = write.getValue()
   )
 }
 
@@ -1923,21 +1927,16 @@ pragma[noinline]
 TupleElementContent small_tuple() { result.getIndex() <= 7 }
 
 /**
- * Holds if `nodeTo` is a read of an attribute (corresponding to `c`) of the object in `nodeFrom`.
+ * Holds if `nodeTo` is a read of the attribute `c` of the object `nodeFrom`.
  *
- * For example, in
+ * For example
  * ```python
  * obj.foo
  * ```
- * data flows from `obj` to `obj.foo` via a read from `foo`.
+ * is a read of the attribute `foo` from the object `obj`.
  */
-predicate attributeReadStep(CfgNode nodeFrom, AttributeContent c, CfgNode nodeTo) {
-  exists(AttrNode attr |
-    nodeFrom.asCfgNode() = attr.getObject() and
-    nodeTo.asCfgNode() = attr and
-    attr.getName() = c.getAttribute() and
-    attr.isLoad()
-  )
+predicate attributeReadStep(Node nodeFrom, AttributeContent c, AttrRead nodeTo) {
+  nodeTo.accesses(nodeFrom, c.getAttribute())
 }
 
 /**
@@ -1973,6 +1972,18 @@ predicate clearsContent(Node n, Content c) {
   kwOverflowClearStep(n, c)
   or
   matchClearStep(n, c)
+  or
+  attributeClearStep(n, c)
+}
+
+/**
+ * Holds if values stored inside attribute `c` are cleared at node `n`.
+ *
+ * In `obj.foo = x` any old value stored in `foo` is cleared at the pre-update node
+ * associated with `obj`
+ */
+predicate attributeClearStep(Node n, AttributeContent c) {
+  exists(PostUpdateNode post | post.getPreUpdateNode() = n | attributeStoreStep(_, c, post))
 }
 
 //--------
