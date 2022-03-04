@@ -47,8 +47,6 @@ private import semmle.python.frameworks.Toml
 private import semmle.python.frameworks.Tornado
 private import semmle.python.frameworks.Twisted
 private import semmle.python.frameworks.Ujson
-private import semmle.python.frameworks.Urllib
-private import semmle.python.frameworks.Urllib2
 private import semmle.python.frameworks.Urllib3
 private import semmle.python.frameworks.Yaml
 private import semmle.python.frameworks.Yarl

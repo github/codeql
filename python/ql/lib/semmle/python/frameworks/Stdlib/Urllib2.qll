@@ -1,5 +1,7 @@
 /**
- * Provides classes modeling security-relevant aspects of the `urllib2` PyPI package.
+ * Provides classes modeling security-relevant aspects of the `urllib2` module, part of
+ * the Python 2 standard library.
+ *
  * See https://docs.python.org/2/library/urllib2.html
  */
 
@@ -8,8 +10,10 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 /**
- * Provides models for the `urllib2` PyPI package.
- * see https://docs.python.org/2/library/urllib2.html
+ * Provides models for the the `urllib2` module, part of
+ * the Python 2 standard library.
+ *
+ * See https://docs.python.org/2/library/urllib2.html
  */
 private module Urllib2 {
   /**

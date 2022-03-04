@@ -1,6 +1,10 @@
 /**
- * Provides classes modeling security-relevant aspects of the `urllib` PyPI package.
- * See https://docs.python.org/3.9/library/urllib.html
+ * Provides classes modeling security-relevant aspects of the `urllib` module, part of
+ * the Python standard library.
+ *
+ * See
+ * - https://docs.python.org/2/library/urllib.html
+ * - https://docs.python.org/3/library/urllib.html
  */
 
 private import python
@@ -8,8 +12,12 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 /**
- * Provides models for the `Urllib` PyPI package.
- * see https://docs.python.org/3.9/library/urllib.html
+ * Provides models for the `urllib` module, part of
+ * the Python standard library.
+ *
+ * See
+ * - https://docs.python.org/2/library/urllib.html
+ * - https://docs.python.org/3/library/urllib.html
  */
 private module Urllib {
   /**
