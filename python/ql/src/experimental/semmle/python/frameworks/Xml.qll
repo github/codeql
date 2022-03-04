@@ -367,7 +367,7 @@ private module Lxml {
         // by default XXE is allow. so as long as the default parser has not been
         // overridden, the result is also vuln to XXE.
         kind.isXxe()
-        // TODO: take into account that you can override the default parser with `lxml.etree.get_default_parser`.
+        // TODO: take into account that you can override the default parser with `lxml.etree.set_default_parser`.
       }
     }
 
