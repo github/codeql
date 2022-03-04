@@ -29,7 +29,7 @@ private DataFlow::Node remoteFlow(DataFlow::TypeTracker t) {
     t2 = t.smallstep(prev, result)
     or
     TaintTracking::sharedTaintStep(prev, result) and
-    t = t2
+    t = t2.continue()
   )
 }
 

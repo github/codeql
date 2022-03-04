@@ -1024,7 +1024,7 @@ private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker
     t2 = t.smallstep(result, succ)
     or
     TaintTracking::sharedTaintStep(result, succ) and
-    t = t2
+    t = t2.continue()
   )
 }
 
