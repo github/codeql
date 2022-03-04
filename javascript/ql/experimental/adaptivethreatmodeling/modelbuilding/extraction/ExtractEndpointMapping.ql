@@ -19,4 +19,4 @@ where
     queryName = "XssATM.ql" and c instanceof XssATM::DomBasedXssATMConfig
   ) and
   e = c.getASinkEndpointType()
-select queryName, e.toString() as endpointType
+select queryName, e.getEncoding() as endpointTypeEncoded
