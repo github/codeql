@@ -141,14 +141,6 @@ module API {
     int getNumParameter() { result = max(int s | exists(this.getParameter(s))) + 1 }
 
     /**
-     * Gets a node representing the last parameter of the function represented by this node.
-     *
-     * This predicate may have multiple results when there are multiple invocations of this API component.
-     * Consider using `getACall()` if there is a need to distingiush between individual calls.
-     */
-    Node getLastParameter() { result = this.getParameter(this.getNumParameter() - 1) }
-
-    /**
      * Gets a node representing a subclass of the class represented by this node.
      */
     Node getASubclass() { result = this.getASuccessor(Label::subclass()) }
@@ -321,9 +313,6 @@ module API {
 
     /** Gets the API node for a parameter of this invocation. */
     Node getAParameter() { result = this.getParameter(_) }
-
-    /** Gets the API node for the last parameter of this invocation. */
-    Node getLastParameter() { result = this.getParameter(max(int i | exists(this.getArg(i)))) }
 
     /** Gets the API node for the keyword parameter `name` of this invocation. */
     Node getKeywordParameter(string name) {
