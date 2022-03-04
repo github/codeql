@@ -518,11 +518,11 @@ constants/Values.java:
 #   90|             0: [VarAccess] var_field
 #   91|         68: [LocalVariableDeclStmt] var ...;
 #   91|           0: [TypeAccess] String
-#   91|           1: [LocalVariableDeclExpr] concatinatedString
+#   91|           1: [LocalVariableDeclExpr] concatenatedString
 #   91|             0: [StringLiteral] "a" + "b"
 #   92|         69: [LocalVariableDeclStmt] var ...;
 #   92|           0: [TypeAccess] String
-#   92|           1: [LocalVariableDeclExpr] concatinatedChar
+#   92|           1: [LocalVariableDeclExpr] concatenatedChar
 #   92|             0: [AddExpr] ... + ...
 #   92|               0: [StringLiteral] "ab"
 #   92|               1: [CharacterLiteral] 'c'
