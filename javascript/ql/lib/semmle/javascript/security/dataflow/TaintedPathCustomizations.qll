@@ -12,7 +12,7 @@ module TaintedPath {
    */
   abstract class Source extends DataFlow::Node {
     /** Gets a flow label denoting the type of value for which this is a source. */
-    DataFlow::FlowLabel getAFlowLabel() { result instanceof Label::PosixPath }
+    DataFlow::FlowLabel getAFlowLabel() { result instanceof Path::PathLabel }
   }
 
   /**
@@ -20,7 +20,7 @@ module TaintedPath {
    */
   abstract class Sink extends DataFlow::Node {
     /** Gets a flow label denoting the type of value for which this is a sink. */
-    DataFlow::FlowLabel getAFlowLabel() { result instanceof Label::PosixPath }
+    DataFlow::FlowLabel getAFlowLabel() { result instanceof Path::PathLabel }
   }
 
   /**
@@ -33,12 +33,33 @@ module TaintedPath {
    */
   abstract class BarrierGuardNode extends DataFlow::LabeledBarrierGuardNode { }
 
-  module Label {
+  /**
+   * Provides implementations of path labels used in tainted path analysis.
+   */
+  module Path {
     /**
      * A flow label representing an array of path elements that may include "..".
      */
     abstract class SplitPath extends DataFlow::FlowLabel {
       SplitPath() { this = "splitPath" }
+    }
+
+    string platformPosix() { result = "posix" }
+
+    string platformWin32() { result = "win32" }
+
+    abstract class Platform extends string {
+      Platform() { this = [platformPosix(), platformWin32()] }
+
+      abstract string getSep();
+
+      DataFlow::SourceNode getExplicitImport() { result = DataFlow::moduleMember("path", this) }
+    }
+
+    class PosixPlatform extends Platform {
+      PosixPlatform() { this = platformPosix() }
+
+      override string getSep() { result = "/" }
     }
 
     /**
@@ -60,7 +81,9 @@ module TaintedPath {
      * Holds if `s` is a relative path.
      */
     bindingset[s]
-    predicate isRelative(string s) { not s.charAt(0) = "/" }
+    predicate isRelative(string s) {
+      forall(Platform p | not s.substring(0, p.getSep().length()) = p.getSep())
+    }
 
     /**
      * A flow label representing a file path.
@@ -68,17 +91,21 @@ module TaintedPath {
      * By default, there are four flow labels, representing the different combinations of
      * normalization and absoluteness.
      */
-    abstract class PosixPath extends DataFlow::FlowLabel {
+    abstract class PathLabel extends DataFlow::FlowLabel {
       Normalization normalization;
       Relativeness relativeness;
+      Platform platform;
 
-      PosixPath() { this = normalization + "-" + relativeness + "-posix-path" }
+      PathLabel() { this = normalization + "-" + relativeness + "-" + platform + "-path" }
 
       /** Gets a string indicating whether this path is normalized. */
       Normalization getNormalization() { result = normalization }
 
       /** Gets a string indicating whether this path is relative. */
       Relativeness getRelativeness() { result = relativeness }
+
+      /** Gets the platform this path is for */
+      Platform getPlatform() { result = platform }
 
       /** Holds if this path is normalized. */
       predicate isNormalized() { normalization = "normalized" }
@@ -93,31 +120,31 @@ module TaintedPath {
       predicate isAbsolute() { relativeness = "absolute" }
 
       /** Gets the path label with normalized flag set to true. */
-      PosixPath toNormalized() {
+      PathLabel toNormalized() {
         result.isNormalized() and
         result.getRelativeness() = this.getRelativeness()
       }
 
       /** Gets the path label with normalized flag set to true. */
-      PosixPath toNonNormalized() {
+      PathLabel toNonNormalized() {
         result.isNonNormalized() and
         result.getRelativeness() = this.getRelativeness()
       }
 
       /** Gets the path label with absolute flag set to true. */
-      PosixPath toAbsolute() {
+      PathLabel toAbsolute() {
         result.isAbsolute() and
         result.getNormalization() = this.getNormalization()
       }
 
       /** Gets the path label with absolute flag set to true. */
-      PosixPath toRelative() {
+      PathLabel toRelative() {
         result.isRelative() and
         result.getNormalization() = this.getNormalization()
       }
 
       /** Holds if this path may contain `../` components. */
-      predicate canContainDotDotSlash() {
+      predicate canContainDotDotSep() {
         // Absolute normalized path is the only combination that cannot contain `../`.
         not (this.isNormalized() and this.isAbsolute())
       }
@@ -151,7 +178,7 @@ module TaintedPath {
       PathTransformationNode() { this = this }
 
       abstract predicate step(
-        Label::PosixPath inputlabel, DataFlow::Node inputNode, Label::PosixPath outputlabel,
+        Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       );
 
@@ -179,7 +206,7 @@ module TaintedPath {
       }
 
       override predicate step(
-        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
         input = inputNode and
@@ -200,7 +227,7 @@ module TaintedPath {
       }
 
       override predicate step(
-        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
         input = inputNode and
@@ -235,7 +262,7 @@ module TaintedPath {
       }
 
       override predicate step(
-        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
         inputNode = input and
@@ -253,16 +280,16 @@ module TaintedPath {
       }
 
       override predicate step(
-        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
         exists(int n | inputNode = this.getArgument(n) and outputNode = this |
           n = 0 and outputLabel = inputLabel.toNormalized()
           or
           n > 0 and
-          inputLabel.canContainDotDotSlash() and
+          inputLabel.canContainDotDotSep() and
           outputLabel.isNormalized() and
-          if Label::isRelative(this.getArgument(0).getStringValue())
+          if Path::isRelative(this.getArgument(0).getStringValue())
           then outputLabel.isRelative()
           else outputLabel.isAbsolute()
         )
@@ -280,7 +307,7 @@ module TaintedPath {
       }
 
       override predicate step(
-        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
         input = inputNode and
@@ -300,7 +327,7 @@ module TaintedPath {
       }
 
       override predicate step(
-        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
         input = inputNode and
@@ -331,7 +358,7 @@ module TaintedPath {
       }
 
       override predicate step(
-        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
         exists(DotDotSlashPrefixRemovingReplace call |
@@ -383,7 +410,7 @@ module TaintedPath {
       }
 
       override predicate step(
-        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
         input = inputNode and
@@ -421,7 +448,7 @@ module TaintedPath {
         //   .startsWith("../")
         outcome = startsWith.getPolarity().booleanNot() and
         e = startsWith.getBaseString().asExpr() and
-        exists(Label::PosixPath posixPath | posixPath = label |
+        exists(Path::PathLabel posixPath | posixPath = label |
           posixPath.isNormalized() and
           posixPath.isRelative()
         )
@@ -459,7 +486,7 @@ module TaintedPath {
       override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
         outcome = startsWith.getPolarity() and
         e = startsWith.getBaseString().asExpr() and
-        exists(Label::PosixPath posixPath | posixPath = label |
+        exists(Path::PathLabel posixPath | posixPath = label |
           posixPath.isAbsolute() and
           posixPath.isNormalized()
         )
@@ -493,12 +520,12 @@ module TaintedPath {
 
       override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
         e = operand.asExpr() and
-        exists(Label::PosixPath PosixPath | PosixPath = label |
-          outcome = polarity and PosixPath.isRelative()
+        exists(Path::PathLabel pathLabel | pathLabel = label |
+          outcome = polarity and pathLabel.isRelative()
           or
           negatable = true and
           outcome = polarity.booleanNot() and
-          PosixPath.isAbsolute()
+          pathLabel.isAbsolute()
         )
       }
     }
@@ -512,7 +539,7 @@ module TaintedPath {
       override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
         e = super.getBaseString().asExpr() and
         outcome = super.getPolarity().booleanNot() and
-        label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
+        label.(Path::PathLabel).canContainDotDotSep() // can still be bypassed by normalized absolute path
       }
     }
 
@@ -525,7 +552,7 @@ module TaintedPath {
       override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
         e = super.getStringOperand().asExpr() and
         outcome = super.getPolarity().booleanNot() and
-        label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
+        label.(Path::PathLabel).canContainDotDotSep() // can still be bypassed by normalized absolute path
       }
     }
 
@@ -629,8 +656,8 @@ module TaintedPath {
       override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
         (
           onlyNormalizedAbsolutePaths = true and
-          label.(Label::PosixPath).isNormalized() and
-          label.(Label::PosixPath).isAbsolute()
+          label.(Path::PathLabel).isNormalized() and
+          label.(Path::PathLabel).isAbsolute()
           or
           onlyNormalizedAbsolutePaths = false
         ) and
@@ -704,7 +731,7 @@ module TaintedPath {
       // cancelled out against the intended root dir using path.join or similar.
       // Only flag normalized paths, as this corresponds to the output
       // of a normalizing call that had a malicious input.
-      result.(Label::PosixPath).isNormalized()
+      result.(Path::PathLabel).isNormalized()
     }
   }
 
@@ -808,8 +835,8 @@ module TaintedPath {
     isStringOperationPathStep(src, dst, srclabel, dstlabel)
     or
     // Ignore all preliminary sanitization after decoding URI components
-    srclabel instanceof Label::PosixPath and
-    dstlabel instanceof Label::PosixPath and
+    srclabel instanceof Path::PathLabel and
+    dstlabel instanceof Path::PathLabel and
     (
       TaintTracking::uriStep(src, dst)
       or
@@ -855,8 +882,8 @@ module TaintedPath {
     exists(StringSplitCall mcn | dst = mcn and mcn.getBaseString() = src |
       if mcn.getSeparator() = "/"
       then
-        srclabel.(Label::PosixPath).canContainDotDotSlash() and
-        dstlabel instanceof Label::SplitPath
+        srclabel.(Path::PathLabel).canContainDotDotSep() and
+        dstlabel instanceof Path::SplitPath
       else srclabel = dstlabel
     )
     or
@@ -866,21 +893,21 @@ module TaintedPath {
         name = "pop" or
         name = "shift"
       ) and
-      srclabel instanceof Label::SplitPath and
-      dstlabel.(Label::PosixPath).canContainDotDotSlash()
+      srclabel instanceof Path::SplitPath and
+      dstlabel.(Path::PathLabel).canContainDotDotSep()
       or
       (
         name = "slice" or
         name = "splice" or
         name = "concat"
       ) and
-      dstlabel instanceof Label::SplitPath and
-      srclabel instanceof Label::SplitPath
+      dstlabel instanceof Path::SplitPath and
+      srclabel instanceof Path::SplitPath
       or
       name = "join" and
       mcn.getArgument(0).mayHaveStringValue("/") and
-      srclabel instanceof Label::SplitPath and
-      dstlabel.(Label::PosixPath).canContainDotDotSlash()
+      srclabel instanceof Path::SplitPath and
+      dstlabel.(Path::PathLabel).canContainDotDotSep()
     )
     or
     // prefix.concat(path)
@@ -888,8 +915,8 @@ module TaintedPath {
       mcn.getMethodName() = "concat" and mcn.getAnArgument() = src
     |
       dst = mcn and
-      dstlabel instanceof Label::SplitPath and
-      srclabel instanceof Label::SplitPath
+      dstlabel instanceof Path::SplitPath and
+      srclabel instanceof Path::SplitPath
     )
     or
     // reading unknown property of split path
@@ -903,8 +930,8 @@ module TaintedPath {
         binop.getAnOperand().getIntValue() = 1 and
         binop.getAnOperand().(PropAccess).getPropertyName() = "length"
       ) and
-      srclabel instanceof Label::SplitPath and
-      dstlabel.(Label::PosixPath).canContainDotDotSlash()
+      srclabel instanceof Path::SplitPath and
+      dstlabel.(Path::PathLabel).canContainDotDotSep()
     )
     or
     exists(API::CallNode call | call = API::moduleImport("slash").getACall() |
@@ -919,7 +946,7 @@ module TaintedPath {
    * standard taint step `src -> dst` should be suppressed.
    */
   predicate isPathStep(
-    DataFlow::Node src, DataFlow::Node dst, Label::PosixPath srclabel, Label::PosixPath dstlabel
+    DataFlow::Node src, DataFlow::Node dst, Path::PathLabel srclabel, Path::PathLabel dstlabel
   ) {
     exists(PathTransformationNode ppn | ppn.getOutput() = dst and ppn.getInput() = src |
       ppn.step(srclabel, src, dstlabel, dst)
@@ -931,7 +958,7 @@ module TaintedPath {
    * standard taint step `src -> dst` should be suppressed.
    */
   private predicate isStringOperationPathStep(
-    DataFlow::Node src, DataFlow::Node dst, Label::PosixPath srclabel, Label::PosixPath dstlabel
+    DataFlow::Node src, DataFlow::Node dst, Path::PathLabel srclabel, Path::PathLabel dstlabel
   ) {
     // String concatenation - behaves like path.join() except without normalization
     exists(DataFlow::Node operator, int n | StringConcatenation::taintStep(src, dst, operator, n) |
@@ -940,10 +967,10 @@ module TaintedPath {
       srclabel = dstlabel
       or
       n > 0 and
-      srclabel.canContainDotDotSlash() and
+      srclabel.canContainDotDotSep() and
       dstlabel.isNonNormalized() and // The ../ is no longer at the beginning of the string.
       (
-        if Label::isRelative(StringConcatenation::getOperand(operator, 0).getStringValue())
+        if Path::isRelative(StringConcatenation::getOperand(operator, 0).getStringValue())
         then dstlabel.isRelative()
         else dstlabel.isAbsolute()
       )

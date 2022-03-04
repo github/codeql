@@ -11,11 +11,11 @@ import javascript
 import TaintedPathCustomizations::TaintedPath
 
 // Materialize flow labels
-private class ConcretePosixPath extends Label::PosixPath {
-  ConcretePosixPath() { this = this }
+private class ConcretePathLabel extends Path::PathLabel {
+  ConcretePathLabel() { this = this }
 }
 
-private class ConcreteSplitPath extends Label::SplitPath {
+private class ConcreteSplitPath extends Path::SplitPath {
   ConcreteSplitPath() { this = this }
 }
 

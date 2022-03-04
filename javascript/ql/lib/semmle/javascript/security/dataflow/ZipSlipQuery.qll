@@ -11,11 +11,11 @@ import javascript
 import ZipSlipCustomizations::ZipSlip
 
 // Materialize flow labels
-private class ConcretePosixPath extends TaintedPath::Label::PosixPath {
+private class ConcretePosixPath extends TaintedPath::Path::PathLabel {
   ConcretePosixPath() { this = this }
 }
 
-private class ConcreteSplitPath extends TaintedPath::Label::SplitPath {
+private class ConcreteSplitPath extends TaintedPath::Path::SplitPath {
   ConcreteSplitPath() { this = this }
 }
 
