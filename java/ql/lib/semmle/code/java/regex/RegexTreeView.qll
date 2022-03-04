@@ -246,9 +246,7 @@ class RegExpQuantifier extends RegExpTerm, TRegExpQuantifier {
 
   override RegExpTerm getChild(int i) {
     i = 0 and
-    result.getRegex() = re and
-    result.getStart() = start and
-    result.getEnd() = part_end
+    result.occursInRegex(re, start, part_end)
   }
 
   /** Holds if this term may match an unlimited number of times. */
@@ -396,9 +394,9 @@ private RegExpTerm seqChild(Regex re, int start, int end, int i) {
     )
     or
     i > 0 and
-    exists(int itemStart | itemStart = seqChildEnd(re, start, end, i - 1) |
-      re.item(itemStart, result.getEnd()) and
-      result.occursInRegex(re, itemStart, _)
+    exists(int itemStart, int itemEnd | itemStart = seqChildEnd(re, start, end, i - 1) |
+      re.item(itemStart, itemEnd) and
+      result.occursInRegex(re, itemStart, itemEnd)
     )
   )
 }
@@ -417,20 +415,17 @@ class RegExpAlt extends RegExpTerm, TRegExpAlt {
 
   override RegExpTerm getChild(int i) {
     i = 0 and
-    result.getRegex() = re and
-    result.getStart() = start and
     exists(int part_end |
       re.alternationOption(start, end, start, part_end) and
-      result.getEnd() = part_end
+      result.occursInRegex(re, start, part_end)
     )
     or
     i > 0 and
-    result.getRegex() = re and
-    exists(int part_start |
+    exists(int part_start, int part_end |
       part_start = this.getChild(i - 1).getEnd() + 1 // allow for the |
     |
-      result.getStart() = part_start and
-      re.alternationOption(start, end, part_start, result.getEnd())
+      re.alternationOption(start, end, part_start, part_end) and
+      result.occursInRegex(re, part_start, part_end)
     )
   }
 
@@ -651,9 +646,9 @@ class RegExpCharacterClass extends RegExpTerm, TRegExpCharacterClass {
     )
     or
     i > 0 and
-    exists(int itemStart | itemStart = this.getChild(i - 1).getEnd() |
-      result.occursInRegex(re, itemStart, _) and
-      re.charSetChild(start, itemStart, result.getEnd())
+    exists(int itemStart, int itemEnd | itemStart = this.getChild(i - 1).getEnd() |
+      result.occursInRegex(re, itemStart, itemEnd) and
+      re.charSetChild(start, itemStart, itemEnd)
     )
   }
 
@@ -686,14 +681,10 @@ class RegExpCharacterRange extends RegExpTerm, TRegExpCharacterRange {
 
   override RegExpTerm getChild(int i) {
     i = 0 and
-    result.getRegex() = re and
-    result.getStart() = start and
-    result.getEnd() = lower_end
+    result.occursInRegex(re, start, lower_end)
     or
     i = 1 and
-    result.getRegex() = re and
-    result.getStart() = upper_start and
-    result.getEnd() = end
+    result.occursInRegex(re, upper_start, end)
   }
 
   override string getPrimaryQLClass() { result = "RegExpCharacterRange" }
@@ -816,9 +807,10 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
   string getName() { result = re.getGroupName(start, end) }
 
   override RegExpTerm getChild(int i) {
-    result.getRegex() = re and
     i = 0 and
-    re.groupContents(start, end, result.getStart(), result.getEnd())
+    exists(int in_start, int in_end | re.groupContents(start, end, in_start, in_end) |
+      result.occursInRegex(re, in_start, in_end)
+    )
   }
 
   override string getPrimaryQLClass() { result = "RegExpGroup" }
@@ -946,9 +938,7 @@ class RegExpSubPattern extends RegExpZeroWidthMatch {
   /** Gets the lookahead term. */
   RegExpTerm getOperand() {
     exists(int in_start, int in_end | re.groupContents(start, end, in_start, in_end) |
-      result.getRegex() = re and
-      result.getStart() = in_start and
-      result.getEnd() = in_end
+      result.occursInRegex(re, in_start, in_end)
     )
   }
 }
