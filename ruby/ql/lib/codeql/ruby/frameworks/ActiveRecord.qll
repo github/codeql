@@ -483,14 +483,21 @@ private module Persistence {
    * as an `OrmWriteAccess` to avoid missing cases where the path to a
    * subsequent write is not clear.
    */
-  private class AssignAttributeCall extends DataFlow::CallNode, ActiveRecordInstanceMethodCall,
-    OrmWriteAccess::Range {
-    AssignAttributeCall() { this.asExpr().getExpr() instanceof SetterMethodCall }
+  private class AssignAttribute extends DataFlow::Node, OrmWriteAccess::Range {
+    private DataFlow::CallNode setter;
+    private ExprNodes::AssignExprCfgNode assignNode;
+
+    AssignAttribute() {
+      assignNode = this.asExpr() and
+      setter.getArgument(0) = this and
+      setter instanceof ActiveRecordInstanceMethodCall and
+      setter.asExpr().getExpr() instanceof SetterMethodCall
+    }
 
     override string getFieldNameAssignedTo(DataFlow::Node value) {
-      result + "=" = this.getMethodName() and
+      result + "=" = setter.getMethodName() and
       // match RHS
-      this.getArgument(0).asExpr().(ExprNodes::AssignExprCfgNode).getRhs() = value.asExpr()
+      assignNode.getRhs() = value.asExpr()
     }
   }
 }

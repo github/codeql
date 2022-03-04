@@ -13,4 +13,4 @@
 | app/controllers/users/users_controller.rb:20:7:20:57 | call to update_attributes | name | app/controllers/users/users_controller.rb:20:37:20:41 | "U12" |
 | app/controllers/users/users_controller.rb:20:7:20:57 | call to update_attributes | uid | app/controllers/users/users_controller.rb:20:49:20:55 | call to get_uid |
 | app/controllers/users/users_controller.rb:23:7:23:42 | call to update_attribute | name | app/controllers/users/users_controller.rb:23:37:23:41 | "U13" |
-| app/controllers/users/users_controller.rb:26:7:26:15 | call to name= | name | app/controllers/users/users_controller.rb:26:19:26:23 | "U14" |
+| app/controllers/users/users_controller.rb:26:7:26:15 | ... = ... | name | app/controllers/users/users_controller.rb:26:19:26:23 | "U14" |
