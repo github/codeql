@@ -9,8 +9,7 @@ root.find(match, namespaces=ns)  # $ getXPath=match
 root.findall(match, namespaces=ns)  # $ getXPath=match
 root.findtext(match, default=None, namespaces=ns)  # $ getXPath=match
 
-from xml.etree.ElementTree import ElementTree
-tree = ElementTree()
+tree = ET.ElementTree()
 tree.parse("index.xhtml")
 
 tree.find(match, namespaces=ns)  # $ getXPath=match
