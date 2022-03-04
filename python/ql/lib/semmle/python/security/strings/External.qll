@@ -79,18 +79,12 @@ deprecated class ExternalUrlSplitResult extends ExternalStringSequenceKind {
   override TaintKind getTaintOfAttribute(string name) {
     result = super.getTaintOfAttribute(name)
     or
-    (
-      // namedtuple field names
-      name = "scheme" or
-      name = "netloc" or
-      name = "path" or
-      name = "query" or
-      name = "fragment" or
-      // class methods
-      name = "username" or
-      name = "password" or
-      name = "hostname"
-    ) and
+    name in [
+        // namedtuple field names
+        "scheme", "netloc", "path", "query", "fragment",
+        // class methods
+        "password", "username", "hostname",
+      ] and
     result instanceof ExternalStringKind
   }
 
@@ -108,19 +102,12 @@ deprecated class ExternalUrlParseResult extends ExternalStringSequenceKind {
   override TaintKind getTaintOfAttribute(string name) {
     result = super.getTaintOfAttribute(name)
     or
-    (
-      // namedtuple field names
-      name = "scheme" or
-      name = "netloc" or
-      name = "path" or
-      name = "params" or
-      name = "query" or
-      name = "fragment" or
-      // class methods
-      name = "username" or
-      name = "password" or
-      name = "hostname"
-    ) and
+    name in [
+        // namedtuple field names
+        "scheme", "netloc", "path", "params", "query", "fragment",
+        // class methods
+        "username", "password", "hostname",
+      ] and
     result instanceof ExternalStringKind
   }
 
