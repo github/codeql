@@ -15,8 +15,17 @@ import python
 import experimental.semmle.python.security.dataflow.XmlEntityInjection
 import DataFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, string kind
-where XmlEntityInjection::xmlEntityInjectionVulnerable(source, sink, kind)
+from
+  XmlEntityInjection::XmlEntityInjectionConfiguration config, DataFlow::PathNode source,
+  DataFlow::PathNode sink, string kinds
+where
+  config.hasFlowPath(source, sink) and
+  kinds =
+    strictconcat(string kind |
+      kind = sink.getNode().(XmlEntityInjection::Sink).getVulnerableKind()
+    |
+      kind, ", "
+    )
 select sink.getNode(), source, sink,
-  "$@ XML input is constructed from a $@ and is vulnerable to " + kind + ".", sink.getNode(),
+  "$@ XML input is constructed from a $@ and is vulnerable to: " + kinds + ".", sink.getNode(),
   "This", source.getNode(), "user-provided value"

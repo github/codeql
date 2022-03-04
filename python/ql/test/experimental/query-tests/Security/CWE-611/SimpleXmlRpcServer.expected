@@ -1,0 +1,1 @@
+| xmlrpc_server.py:7:10:7:48 | ControlFlowNode for SimpleXMLRPCServer() | SimpleXMLRPCServer is vulnerable to: Billion Laughs, Quadratic Blowup. |

@@ -16,7 +16,30 @@ private import experimental.semmle.python.Frameworks
 
 module XML {
   /**
-   * A data-flow node that collects functions parsing XML.
+   * A kind of XML vulnerability.
+   *
+   * See https://pypi.org/project/defusedxml/#python-xml-libraries
+   */
+  class XMLVulnerabilityKind extends string {
+    XMLVulnerabilityKind() {
+      this in ["Billion Laughs", "Quadratic Blowup", "XXE", "DTD retrieval"]
+    }
+
+    /** Holds for Billion Laughs vulnerability kind. */
+    predicate isBillionLaughs() { this = "Billion Laughs" }
+
+    /** Holds for Quadratic Blowup vulnerability kind. */
+    predicate isQuadraticBlowup() { this = "Quadratic Blowup" }
+
+    /** Holds for XXE vulnerability kind. */
+    predicate isXxe() { this = "XXE" }
+
+    /** Holds for DTD retrieval vulnerability kind. */
+    predicate isDtdRetrieval() { this = "DTD retrieval" }
+  }
+
+  /**
+   * A data-flow node that parses XML.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `XMLParsing` instead.
@@ -28,15 +51,15 @@ module XML {
     DataFlow::Node getAnInput() { result = super.getAnInput() }
 
     /**
-     * Holds if the parsing method or the parser holding it is vulnerable to `kind`.
+     * Holds if this XML parsing is vulnerable to `kind`.
      */
-    predicate vulnerable(string kind) { super.vulnerable(kind) }
+    predicate vulnerableTo(XMLVulnerabilityKind kind) { super.vulnerableTo(kind) }
   }
 
   /** Provides classes for modeling XML parsing APIs. */
   module XMLParsing {
     /**
-     * A data-flow node that collects functions parsing XML.
+     * A data-flow node that parses XML.
      *
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `XMLParsing` instead.
@@ -48,48 +71,9 @@ module XML {
       abstract DataFlow::Node getAnInput();
 
       /**
-       * Holds if the parsing method or the parser holding it is vulnerable to `kind`.
+       * Holds if this XML parsing is vulnerable to `kind`.
        */
-      abstract predicate vulnerable(string kind);
-    }
-  }
-
-  /**
-   * A data-flow node that collects XML parsers.
-   *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `XMLParser` instead.
-   */
-  class XMLParser extends DataFlow::Node instanceof XMLParser::Range {
-    /**
-     * Gets the argument containing the content to parse.
-     */
-    DataFlow::Node getAnInput() { result = super.getAnInput() }
-
-    /**
-     * Holds if the parser is vulnerable to `kind`.
-     */
-    predicate vulnerable(string kind) { super.vulnerable(kind) }
-  }
-
-  /** Provides classes for modeling XML parsers. */
-  module XMLParser {
-    /**
-     * A data-flow node that collects XML parsers.
-     *
-     * Extend this class to model new APIs. If you want to refine existing API models,
-     * extend `XMLParser` instead.
-     */
-    abstract class Range extends DataFlow::Node {
-      /**
-       * Gets the argument containing the content to parse.
-       */
-      abstract DataFlow::Node getAnInput();
-
-      /**
-       * Holds if the parser is vulnerable to `kind`.
-       */
-      abstract predicate vulnerable(string kind);
+      abstract predicate vulnerableTo(XMLVulnerabilityKind kind);
     }
   }
 }
