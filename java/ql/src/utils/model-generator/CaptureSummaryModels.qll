@@ -1,24 +1,4 @@
-/**
- * @name Capture summary models.
- * @description Finds applicable summary models to be used by other queries.
- * @id java/utils/model-generator/summary-models
- */
-
-import java
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.internal.DataFlowImplCommon
-import semmle.code.java.dataflow.internal.DataFlowNodes
-import semmle.code.java.dataflow.internal.DataFlowPrivate
-import semmle.code.java.dataflow.InstanceAccess
-import ModelGeneratorUtils
-
-predicate isOwnInstanceAccess(ReturnStmt rtn) { rtn.getResult().(ThisAccess).isOwnInstanceAccess() }
-
-predicate isOwnInstanceAccessNode(ReturnNode node) {
-  node.asExpr().(ThisAccess).isOwnInstanceAccess()
-}
-
-string qualifierString() { result = "Argument[-1]" }
+import CaptureSummaryModelsSpecific
 
 /**
  * Capture fluent APIs that return `this`.
@@ -32,7 +12,7 @@ string qualifierString() { result = "Argument[-1]" }
  * }
  * ```
  */
-private string captureQualifierFlow(TargetAPI api) {
+string captureQualifierFlow(TargetAPI api) {
   exists(ReturnStmt rtn |
     rtn.getEnclosingCallable() = api and
     isOwnInstanceAccess(rtn)
@@ -92,63 +72,7 @@ class ThroughFlowConfig extends TaintTracking::Configuration {
   }
 }
 
-/**
- * Capture APIs that transfer taint from an input parameter to an output return
- * value or parameter.
- * Allows a sequence of read steps followed by a sequence of store steps.
- *
- * Examples:
- *
- * ```
- * public class Foo {
- *   private String tainted;
- *
- *   public String returnsTainted() {
- *     return tainted;
- *   }
- *
- *   public void putsTaintIntoParameter(List<String> foo) {
- *     foo.add(tainted);
- *   }
- * }
- * ```
- * Captured Model:
- * ```
- * p;Foo;true;returnsTainted;;Argument[-1];ReturnValue;taint
- * p;Foo;true;putsTaintIntoParameter;(List);Argument[-1];Argument[0];taint
- * ```
- *
- * ```
- * public class Foo {
- *  private String tainted;
- *  public void doSomething(String input) {
- *    tainted = input;
- *  }
- * ```
- * Captured Model:
- * `p;Foo;true;doSomething;(String);Argument[0];Argument[-1];taint`
- *
- * ```
- * public class Foo {
- *   public String returnData(String tainted) {
- *     return tainted.substring(0,10)
- *   }
- * }
- * ```
- * Captured Model:
- * `p;Foo;true;returnData;;Argument[0];ReturnValue;taint`
- *
- * ```
- * public class Foo {
- *   public void addToList(String tainted, List<String> foo) {
- *     foo.add(tainted);
- *   }
- * }
- * ```
- * Captured Model:
- * `p;Foo;true;addToList;;Argument[0];Argument[1];taint`
- */
-private string captureThroughFlow(TargetAPI api) {
+string captureThroughFlow(TargetAPI api) {
   exists(
     ThroughFlowConfig config, DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, string input,
     string output
@@ -161,12 +85,3 @@ private string captureThroughFlow(TargetAPI api) {
     result = asTaintModel(api, input, output)
   )
 }
-
-private string captureFlow(TargetAPI api) {
-  result = captureQualifierFlow(api) or
-  result = captureThroughFlow(api)
-}
-
-from TargetAPI api, string flow
-where flow = captureFlow(api)
-select flow order by flow
