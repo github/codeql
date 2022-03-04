@@ -35,6 +35,13 @@ module TaintedPath {
 
   module Label {
     /**
+     * A flow label representing an array of path elements that may include "..".
+     */
+    abstract class SplitPath extends DataFlow::FlowLabel {
+      SplitPath() { this = "splitPath" }
+    }
+
+    /**
      * A string indicating if a path is normalized, that is, whether internal `../` components
      * have been removed.
      */
@@ -50,9 +57,15 @@ module TaintedPath {
     }
 
     /**
-     * A flow label representing a Posix path.
+     * Holds if `s` is a relative path.
+     */
+    bindingset[s]
+    predicate isRelative(string s) { not s.charAt(0) = "/" }
+
+    /**
+     * A flow label representing a file path.
      *
-     * There are currently four flow labels, representing the different combinations of
+     * By default, there are four flow labels, representing the different combinations of
      * normalization and absoluteness.
      */
     abstract class PosixPath extends DataFlow::FlowLabel {
@@ -109,221 +122,6 @@ module TaintedPath {
         not (this.isNormalized() and this.isAbsolute())
       }
     }
-
-    /**
-     * A flow label representing an array of path elements that may include "..".
-     */
-    abstract class SplitPath extends DataFlow::FlowLabel {
-      SplitPath() { this = "splitPath" }
-    }
-  }
-
-  /**
-   * Holds if `s` is a relative path.
-   */
-  bindingset[s]
-  predicate isRelative(string s) { not s.charAt(0) = "/" }
-
-  /**
-   * A call that normalizes a path.
-   */
-  class NormalizingPathCall extends DataFlow::CallNode {
-    DataFlow::Node input;
-    DataFlow::Node output;
-
-    NormalizingPathCall() {
-      this = NodeJSLib::Path::moduleMember("normalize").getACall() and
-      input = this.getArgument(0) and
-      output = this
-    }
-
-    /**
-     * Gets the input path to be normalized.
-     */
-    DataFlow::Node getInput() { result = input }
-
-    /**
-     * Gets the normalized path.
-     */
-    DataFlow::Node getOutput() { result = output }
-  }
-
-  /**
-   * A call that converts a path to an absolute normalized path.
-   */
-  class ResolvingPathCall extends DataFlow::CallNode {
-    DataFlow::Node input;
-    DataFlow::Node output;
-
-    ResolvingPathCall() {
-      this = NodeJSLib::Path::moduleMember("resolve").getACall() and
-      input = this.getAnArgument() and
-      output = this
-      or
-      this = NodeJSLib::FS::moduleMember("realpathSync").getACall() and
-      input = this.getArgument(0) and
-      output = this
-      or
-      this = NodeJSLib::FS::moduleMember("realpath").getACall() and
-      input = this.getArgument(0) and
-      output = this.getCallback(1).getParameter(1)
-    }
-
-    /**
-     * Gets the input path to be normalized.
-     */
-    DataFlow::Node getInput() { result = input }
-
-    /**
-     * Gets the normalized path.
-     */
-    DataFlow::Node getOutput() { result = output }
-  }
-
-  /**
-   * A call that normalizes a path and converts it to a relative path.
-   */
-  class NormalizingRelativePathCall extends DataFlow::CallNode {
-    DataFlow::Node input;
-    DataFlow::Node output;
-
-    NormalizingRelativePathCall() {
-      this = NodeJSLib::Path::moduleMember("relative").getACall() and
-      input = this.getAnArgument() and
-      output = this
-    }
-
-    /**
-     * Gets the input path to be normalized.
-     */
-    DataFlow::Node getInput() { result = input }
-
-    /**
-     * Gets the normalized path.
-     */
-    DataFlow::Node getOutput() { result = output }
-  }
-
-  /**
-   * A call that preserves taint without changing the flow label.
-   */
-  class PreservingPathCall extends DataFlow::CallNode {
-    DataFlow::Node input;
-    DataFlow::Node output;
-
-    PreservingPathCall() {
-      this =
-        NodeJSLib::Path::moduleMember(["dirname", "toNamespacedPath", "parse", "format"]).getACall() and
-      input = this.getAnArgument() and
-      output = this
-      or
-      // non-global replace or replace of something other than /\.\./g, /[/]/g, or /[\.]/g.
-      this instanceof StringReplaceCall and
-      input = this.getReceiver() and
-      output = this and
-      not exists(RegExpLiteral literal, RegExpTerm term |
-        this.(StringReplaceCall).getRegExp().asExpr() = literal and
-        this.(StringReplaceCall).isGlobal() and
-        literal.getRoot() = term
-      |
-        term.getAMatchedString() = "/" or
-        term.getAMatchedString() = "." or
-        term.getAMatchedString() = ".."
-      ) and
-      not this instanceof DotDotSlashPrefixRemovingReplace
-    }
-
-    /**
-     * Gets the input path to be normalized.
-     */
-    DataFlow::Node getInput() { result = input }
-
-    /**
-     * Gets the normalized path.
-     */
-    DataFlow::Node getOutput() { result = output }
-  }
-
-  /**
-   * A call that removes all instances of "../" in the prefix of the string.
-   */
-  class DotDotSlashPrefixRemovingReplace extends StringReplaceCall {
-    DataFlow::Node input;
-    DataFlow::Node output;
-
-    DotDotSlashPrefixRemovingReplace() {
-      input = this.getReceiver() and
-      output = this and
-      exists(RegExpLiteral literal, RegExpTerm term |
-        this.getRegExp().asExpr() = literal and
-        (term instanceof RegExpStar or term instanceof RegExpPlus) and
-        term.getChild(0) = getADotDotSlashMatcher()
-      |
-        literal.getRoot() = term
-        or
-        exists(RegExpSequence seq | seq.getNumChild() = 2 and literal.getRoot() = seq |
-          seq.getChild(0) instanceof RegExpCaret and
-          seq.getChild(1) = term
-        )
-      )
-    }
-
-    /**
-     * Gets the input path to be sanitized.
-     */
-    DataFlow::Node getInput() { result = input }
-
-    /**
-     * Gets the path where prefix "../" has been removed.
-     */
-    DataFlow::Node getOutput() { result = output }
-  }
-
-  /**
-   * Gets a RegExpTerm that matches a variation of "../".
-   */
-  private RegExpTerm getADotDotSlashMatcher() {
-    result.getAMatchedString() = "../"
-    or
-    exists(RegExpSequence seq | seq = result |
-      seq.getChild(0).getConstantValue() = "." and
-      seq.getChild(1).getConstantValue() = "." and
-      seq.getChild(2).getAMatchedString() = "/"
-    )
-    or
-    exists(RegExpGroup group | result = group | group.getChild(0) = getADotDotSlashMatcher())
-  }
-
-  /**
-   * A call that removes all "." or ".." from a path, without also removing all forward slashes.
-   */
-  class DotRemovingReplaceCall extends StringReplaceCall {
-    DataFlow::Node input;
-    DataFlow::Node output;
-
-    DotRemovingReplaceCall() {
-      input = this.getReceiver() and
-      output = this and
-      this.isGlobal() and
-      exists(RegExpLiteral literal, RegExpTerm term |
-        this.getRegExp().asExpr() = literal and
-        literal.getRoot() = term and
-        not term.getAMatchedString() = "/"
-      |
-        term.getAMatchedString() = "." or
-        term.getAMatchedString() = ".."
-      )
-    }
-
-    /**
-     * Gets the input path to be normalized.
-     */
-    DataFlow::Node getInput() { result = input }
-
-    /**
-     * Gets the normalized path.
-     */
-    DataFlow::Node getOutput() { result = output }
   }
 
   /**
@@ -341,238 +139,504 @@ module TaintedPath {
   }
 
   /**
-   * A check of form `x.startsWith("../")` or similar.
-   *
-   * This is relevant for paths that are known to be normalized.
+   * Provides logic for tracking taint flow through `DataFlow::CallNode`s
+   * that return paths.
    */
-  class StartsWithDotDotSanitizer extends BarrierGuardNode {
-    StringOps::StartsWith startsWith;
+  module PathTransformations {
+    /** An abstract description of what kind of paths a call may return. */
+    abstract class PathTransformationNode extends DataFlow::CallNode {
+      DataFlow::Node input;
+      DataFlow::Node output;
 
-    StartsWithDotDotSanitizer() {
-      this = startsWith and
-      isDotDotSlashPrefix(startsWith.getSubstring())
-    }
+      PathTransformationNode() { this = this }
 
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      // Sanitize in the false case for:
-      //   .startsWith(".")
-      //   .startsWith("..")
-      //   .startsWith("../")
-      outcome = startsWith.getPolarity().booleanNot() and
-      e = startsWith.getBaseString().asExpr() and
-      exists(Label::PosixPath posixPath | posixPath = label |
-        posixPath.isNormalized() and
-        posixPath.isRelative()
-      )
-    }
-  }
+      abstract predicate step(
+        Label::PosixPath inputlabel, DataFlow::Node inputNode, Label::PosixPath outputlabel,
+        DataFlow::Node outputNode
+      );
 
-  /**
-   * A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch.
-   */
-  class MembershipTestBarrierGuard extends BarrierGuardNode {
-    MembershipCandidate candidate;
+      DataFlow::Node getInput() { result = input }
 
-    MembershipTestBarrierGuard() { this = candidate.getTest() }
-
-    override predicate blocks(boolean outcome, Expr e) {
-      candidate = e.flow() and
-      candidate.getTestPolarity() = outcome
-    }
-  }
-
-  /**
-   * A check of form `x.startsWith(dir)` that sanitizes normalized absolute paths, since it is then
-   * known to be in a subdirectory of `dir`.
-   */
-  class StartsWithDirSanitizer extends BarrierGuardNode {
-    StringOps::StartsWith startsWith;
-
-    StartsWithDirSanitizer() {
-      this = startsWith and
-      not isDotDotSlashPrefix(startsWith.getSubstring()) and
-      // do not confuse this with a simple isAbsolute() check
-      not startsWith.getSubstring().getStringValue() = "/"
-    }
-
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      outcome = startsWith.getPolarity() and
-      e = startsWith.getBaseString().asExpr() and
-      exists(Label::PosixPath posixPath | posixPath = label |
-        posixPath.isAbsolute() and
-        posixPath.isNormalized()
-      )
-    }
-  }
-
-  /**
-   * A call to `path.isAbsolute` as a sanitizer for relative paths in true branch,
-   * and a sanitizer for absolute paths in the false branch.
-   */
-  class IsAbsoluteSanitizer extends BarrierGuardNode {
-    DataFlow::Node operand;
-    boolean polarity;
-    boolean negatable;
-
-    IsAbsoluteSanitizer() {
-      exists(DataFlow::CallNode call | this = call |
-        call = NodeJSLib::Path::moduleMember("isAbsolute").getACall() and
-        operand = call.getArgument(0) and
-        polarity = true and
-        negatable = true
-      )
-      or
-      exists(StringOps::StartsWith startsWith, string substring | this = startsWith |
-        startsWith.getSubstring().getStringValue() = "/" + substring and
-        operand = startsWith.getBaseString() and
-        polarity = startsWith.getPolarity() and
-        if substring = "" then negatable = true else negatable = false
-      ) // !x.startsWith("/home") does not guarantee that x is not absolute
-    }
-
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      e = operand.asExpr() and
-      exists(Label::PosixPath posixPath | posixPath = label |
-        outcome = polarity and posixPath.isRelative()
-        or
-        negatable = true and
-        outcome = polarity.booleanNot() and
-        posixPath.isAbsolute()
-      )
-    }
-  }
-
-  /**
-   * An expression of form `x.includes("..")` or similar.
-   */
-  class ContainsDotDotSanitizer extends BarrierGuardNode instanceof StringOps::Includes {
-    ContainsDotDotSanitizer() { isDotDotSlashPrefix(super.getSubstring()) }
-
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      e = super.getBaseString().asExpr() and
-      outcome = super.getPolarity().booleanNot() and
-      label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
-    }
-  }
-
-  /**
-   * An expression of form `x.matches(/\.\./)` or similar.
-   */
-  class ContainsDotDotRegExpSanitizer extends BarrierGuardNode instanceof StringOps::RegExpTest {
-    ContainsDotDotRegExpSanitizer() { super.getRegExp().getAMatchedString() = [".", "..", "../"] }
-
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      e = super.getStringOperand().asExpr() and
-      outcome = super.getPolarity().booleanNot() and
-      label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
-    }
-  }
-
-  /**
-   * A sanitizer that recognizes the following pattern:
-   * ```
-   * var relative = path.relative(webroot, pathname);
-   * if(relative.startsWith(".." + path.sep) || relative == "..") {
-   *   // pathname is unsafe
-   * } else {
-   *   // pathname is safe
-   * }
-   * ```
-   *
-   * or
-   * ```
-   * var relative = path.resolve(pathname); // or path.normalize
-   * if(relative.startsWith(webroot) {
-   *   // pathname is safe
-   * } else {
-   *   // pathname is unsafe
-   * }
-   * ```
-   */
-  class RelativePathStartsWithSanitizer extends BarrierGuardNode {
-    StringOps::StartsWith startsWith;
-    DataFlow::CallNode pathCall;
-    string member;
-
-    RelativePathStartsWithSanitizer() {
-      (member = "relative" or member = "resolve" or member = "normalize") and
-      this = startsWith and
-      pathCall = NodeJSLib::Path::moduleMember(member).getACall() and
-      (
-        startsWith.getBaseString().getALocalSource() = pathCall
-        or
-        startsWith
-            .getBaseString()
-            .getALocalSource()
-            .(NormalizingPathCall)
-            .getInput()
-            .getALocalSource() = pathCall
-      ) and
-      (not member = "relative" or isDotDotSlashPrefix(startsWith.getSubstring()))
-    }
-
-    override predicate blocks(boolean outcome, Expr e) {
-      member = "relative" and
-      e = this.maybeGetPathSuffix(pathCall.getArgument(1)).asExpr() and
-      outcome = startsWith.getPolarity().booleanNot()
-      or
-      not member = "relative" and
-      e = this.maybeGetPathSuffix(pathCall.getArgument(0)).asExpr() and
-      outcome = startsWith.getPolarity()
+      DataFlow::Node getOutput() { result = output }
     }
 
     /**
-     * Gets the last argument to the given `path.join()` call,
-     * or the node itself if it is not a join call.
-     * Is used to get the suffix of the path.
+     * A call that converts a path to an absolute normalized path.
      */
-    bindingset[e]
-    private DataFlow::Node maybeGetPathSuffix(DataFlow::Node e) {
-      exists(DataFlow::CallNode call |
-        call = NodeJSLib::Path::moduleMember("join").getACall() and e = call
-      |
-        result = call.getLastArgument()
+    class ResolvingPathCall extends PathTransformationNode {
+      ResolvingPathCall() {
+        this = NodeJSLib::Path::moduleMember("resolve").getACall() and
+        input = this.getAnArgument() and
+        output = this
+        or
+        this = NodeJSLib::FS::moduleMember("realpathSync").getACall() and
+        input = this.getArgument(0) and
+        output = this
+        or
+        this = NodeJSLib::FS::moduleMember("realpath").getACall() and
+        input = this.getArgument(0) and
+        output = this.getCallback(1).getParameter(1)
+      }
+
+      override predicate step(
+        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        DataFlow::Node outputNode
+      ) {
+        input = inputNode and
+        output = outputNode and
+        outputLabel.isAbsolute() and
+        outputLabel.isNormalized()
+      }
+    }
+
+    /**
+     * A call to the path.relative method.
+     */
+    class RelativePathCall extends PathTransformationNode {
+      RelativePathCall() {
+        this = NodeJSLib::Path::moduleMember("relative").getACall() and
+        input = this.getAnArgument() and
+        output = this
+      }
+
+      override predicate step(
+        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        DataFlow::Node outputNode
+      ) {
+        input = inputNode and
+        output = outputNode and
+        outputLabel = inputLabel.toRelative().toNormalized()
+      }
+    }
+
+    /**
+     * A call that preserves taint without changing the flow label.
+     */
+    class PreservingPathCall extends PathTransformationNode {
+      PreservingPathCall() {
+        this = NodeJSLib::Path::moduleMember(["dirname", "parse", "format"]).getACall() and
+        input = this.getAnArgument() and
+        output = this
+        or
+        // non-global replace or replace of something other than /\.\./g, /[/]/g, or /[\.]/g.
+        this instanceof StringReplaceCall and
+        input = this.getReceiver() and
+        output = this and
+        not exists(RegExpLiteral literal, RegExpTerm term |
+          this.(StringReplaceCall).getRegExp().asExpr() = literal and
+          this.(StringReplaceCall).isGlobal() and
+          literal.getRoot() = term
+        |
+          term.getAMatchedString() = "/" or
+          term.getAMatchedString() = "." or
+          term.getAMatchedString() = ".."
+        ) and
+        not this instanceof DotDotSlashPrefixRemovingReplace
+      }
+
+      override predicate step(
+        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        DataFlow::Node outputNode
+      ) {
+        inputNode = input and
+        outputNode = output and
+        outputLabel = inputLabel
+      }
+    }
+
+    /** A call to the path.join method. */
+    class JoinPathCall extends PathTransformationNode {
+      JoinPathCall() {
+        this = NodeJSLib::Path::moduleMember("join").getACall() and
+        input = this.getAnArgument() and
+        output = this
+      }
+
+      override predicate step(
+        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        DataFlow::Node outputNode
+      ) {
+        exists(int n | inputNode = this.getArgument(n) and outputNode = this |
+          n = 0 and outputLabel = inputLabel.toNormalized()
+          or
+          n > 0 and
+          inputLabel.canContainDotDotSlash() and
+          outputLabel.isNormalized() and
+          if Label::isRelative(this.getArgument(0).getStringValue())
+          then outputLabel.isRelative()
+          else outputLabel.isAbsolute()
+        )
+      }
+    }
+
+    /**
+     * A call to the path.toNamespacedPath method.
+     */
+    class ToNamespacedPathCall extends PathTransformationNode {
+      ToNamespacedPathCall() {
+        this = NodeJSLib::Path::moduleMember("toNamespacedPath").getACall() and
+        input = this.getAnArgument() and
+        output = this
+      }
+
+      override predicate step(
+        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        DataFlow::Node outputNode
+      ) {
+        input = inputNode and
+        output = outputNode and
+        outputLabel = inputLabel
+      }
+    }
+
+    // /**
+    //  * A call that normalizes a path.
+    //  */
+    class NormalizingPathCall extends PathTransformationNode {
+      NormalizingPathCall() {
+        this = NodeJSLib::Path::moduleMember("normalize").getACall() and
+        input = this.getArgument(0) and
+        output = this
+      }
+
+      override predicate step(
+        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        DataFlow::Node outputNode
+      ) {
+        input = inputNode and
+        output = outputNode and
+        outputLabel = inputLabel.toNormalized()
+      }
+    }
+
+    /**
+     * A call that removes all instances of "../" in the prefix of the string.
+     */
+    class DotDotSlashPrefixRemovingReplace extends StringReplaceCall, PathTransformationNode {
+      DotDotSlashPrefixRemovingReplace() {
+        input = this.getReceiver() and
+        output = this and
+        exists(RegExpLiteral literal, RegExpTerm term |
+          this.getRegExp().asExpr() = literal and
+          (term instanceof RegExpStar or term instanceof RegExpPlus) and
+          term.getChild(0) = getADotDotSlashMatcher()
+        |
+          literal.getRoot() = term
+          or
+          exists(RegExpSequence seq | seq.getNumChild() = 2 and literal.getRoot() = seq |
+            seq.getChild(0) instanceof RegExpCaret and
+            seq.getChild(1) = term
+          )
+        )
+      }
+
+      override predicate step(
+        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        DataFlow::Node outputNode
+      ) {
+        exists(DotDotSlashPrefixRemovingReplace call |
+          inputNode = call.getInput() and
+          outputNode = call.getOutput()
+        |
+          // the 4 possible combinations of normalized + relative for `inputLabel`, and the possible values for `dstlabel` in each case.
+          inputLabel.isNonNormalized() and inputLabel.isRelative() // raw + relative -> any()
+          or
+          inputLabel.isNormalized() and inputLabel.isAbsolute() and outputLabel = inputLabel // normalized + absolute -> normalized + absolute
+          or
+          inputLabel.isNonNormalized() and inputLabel.isAbsolute() and outputLabel.isAbsolute() // raw + absolute -> raw/normalized + absolute
+          // normalized + relative -> none()
+        )
+      }
+    }
+
+    /**
+     * Gets a RegExpTerm that matches a variation of "../".
+     */
+    private RegExpTerm getADotDotSlashMatcher() {
+      result.getAMatchedString() = "../"
+      or
+      exists(RegExpSequence seq | seq = result |
+        seq.getChild(0).getConstantValue() = "." and
+        seq.getChild(1).getConstantValue() = "." and
+        seq.getChild(2).getAMatchedString() = "/"
       )
       or
-      result = e
+      exists(RegExpGroup group | result = group | group.getChild(0) = getADotDotSlashMatcher())
+    }
+
+    /**
+     * A call that removes all "." or ".." from a path, without also removing all forward slashes.
+     */
+    class DotRemovingReplaceCall extends StringReplaceCall, PathTransformationNode {
+      DotRemovingReplaceCall() {
+        input = this.getReceiver() and
+        output = this and
+        this.isGlobal() and
+        exists(RegExpLiteral literal, RegExpTerm term |
+          this.getRegExp().asExpr() = literal and
+          literal.getRoot() = term and
+          not term.getAMatchedString() = "/"
+        |
+          term.getAMatchedString() = "." or
+          term.getAMatchedString() = ".."
+        )
+      }
+
+      override predicate step(
+        Label::PosixPath inputLabel, DataFlow::Node inputNode, Label::PosixPath outputLabel,
+        DataFlow::Node outputNode
+      ) {
+        input = inputNode and
+        output = outputNode and
+        inputLabel.isAbsolute() and
+        outputLabel.isAbsolute() and
+        outputLabel.isNormalized()
+      }
     }
   }
 
-  /**
-   * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
-   */
-  private class VarAccessBarrier extends Sanitizer, DataFlow::VarAccessBarrier { }
+  import PathTransformations
 
   /**
-   * An expression of form `isInside(x, y)` or similar, where `isInside` is
-   * a library check for the relation between `x` and `y`.
+   * Provides implementations of guards usd in tainted path analysis.
    */
-  class IsInsideCheckSanitizer extends BarrierGuardNode {
-    DataFlow::Node checked;
-    boolean onlyNormalizedAbsolutePaths;
+  module Guards {
+    /**
+     * A check of form `x.startsWith("../")` or similar.
+     *
+     * This is relevant for paths that are known to be normalized.
+     */
+    class StartsWithDotDotSanitizer extends BarrierGuardNode {
+      StringOps::StartsWith startsWith;
 
-    IsInsideCheckSanitizer() {
-      exists(string name, DataFlow::CallNode check |
-        name = "path-is-inside" and onlyNormalizedAbsolutePaths = true
-        or
-        name = "is-path-inside" and onlyNormalizedAbsolutePaths = false
-      |
-        check = DataFlow::moduleImport(name).getACall() and
-        checked = check.getArgument(0) and
-        check = this
-      )
+      StartsWithDotDotSanitizer() {
+        this = startsWith and
+        isDotDotSlashPrefix(startsWith.getSubstring())
+      }
+
+      override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+        // Sanitize in the false case for:
+        //   .startsWith(".")
+        //   .startsWith("..")
+        //   .startsWith("../")
+        outcome = startsWith.getPolarity().booleanNot() and
+        e = startsWith.getBaseString().asExpr() and
+        exists(Label::PosixPath posixPath | posixPath = label |
+          posixPath.isNormalized() and
+          posixPath.isRelative()
+        )
+      }
     }
 
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      (
-        onlyNormalizedAbsolutePaths = true and
-        label.(Label::PosixPath).isNormalized() and
-        label.(Label::PosixPath).isAbsolute()
+    /**
+     * A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch.
+     */
+    class MembershipTestBarrierGuard extends BarrierGuardNode {
+      MembershipCandidate candidate;
+
+      MembershipTestBarrierGuard() { this = candidate.getTest() }
+
+      override predicate blocks(boolean outcome, Expr e) {
+        candidate = e.flow() and
+        candidate.getTestPolarity() = outcome
+      }
+    }
+
+    /**
+     * A check of form `x.startsWith(dir)` that sanitizes normalized absolute paths, since it is then
+     * known to be in a subdirectory of `dir`.
+     */
+    class StartsWithDirSanitizer extends BarrierGuardNode {
+      StringOps::StartsWith startsWith;
+
+      StartsWithDirSanitizer() {
+        this = startsWith and
+        not isDotDotSlashPrefix(startsWith.getSubstring()) and
+        // do not confuse this with a simple isAbsolute() check
+        not startsWith.getSubstring().getStringValue() = "/"
+      }
+
+      override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+        outcome = startsWith.getPolarity() and
+        e = startsWith.getBaseString().asExpr() and
+        exists(Label::PosixPath posixPath | posixPath = label |
+          posixPath.isAbsolute() and
+          posixPath.isNormalized()
+        )
+      }
+    }
+
+    /**
+     * A call to `path.isAbsolute` as a sanitizer for relative paths in true branch,
+     * and a sanitizer for absolute paths in the false branch.
+     */
+    class IsAbsoluteSanitizer extends BarrierGuardNode {
+      DataFlow::Node operand;
+      boolean polarity;
+      boolean negatable;
+
+      IsAbsoluteSanitizer() {
+        exists(DataFlow::CallNode call | this = call |
+          call = NodeJSLib::Path::moduleMember("isAbsolute").getACall() and
+          operand = call.getArgument(0) and
+          polarity = true and
+          negatable = true
+        )
         or
-        onlyNormalizedAbsolutePaths = false
-      ) and
-      e = checked.asExpr() and
-      outcome = true
+        exists(StringOps::StartsWith startsWith, string substring | this = startsWith |
+          startsWith.getSubstring().getStringValue() = "/" + substring and
+          operand = startsWith.getBaseString() and
+          polarity = startsWith.getPolarity() and
+          if substring = "" then negatable = true else negatable = false
+        ) // !x.startsWith("/home") does not guarantee that x is not absolute
+      }
+
+      override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+        e = operand.asExpr() and
+        exists(Label::PosixPath PosixPath | PosixPath = label |
+          outcome = polarity and PosixPath.isRelative()
+          or
+          negatable = true and
+          outcome = polarity.booleanNot() and
+          PosixPath.isAbsolute()
+        )
+      }
+    }
+
+    /**
+     * An expression of form `x.includes("..")` or similar.
+     */
+    class ContainsDotDotSanitizer extends BarrierGuardNode instanceof StringOps::Includes {
+      ContainsDotDotSanitizer() { isDotDotSlashPrefix(super.getSubstring()) }
+
+      override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+        e = super.getBaseString().asExpr() and
+        outcome = super.getPolarity().booleanNot() and
+        label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
+      }
+    }
+
+    /**
+     * An expression of form `x.matches(/\.\./)` or similar.
+     */
+    class ContainsDotDotRegExpSanitizer extends BarrierGuardNode instanceof StringOps::RegExpTest {
+      ContainsDotDotRegExpSanitizer() { super.getRegExp().getAMatchedString() = [".", "..", "../"] }
+
+      override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+        e = super.getStringOperand().asExpr() and
+        outcome = super.getPolarity().booleanNot() and
+        label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
+      }
+    }
+
+    /**
+     * A sanitizer that recognizes the following pattern:
+     * ```
+     * var relative = path.relative(webroot, pathname);
+     * if(relative.startsWith(".." + path.sep) || relative == "..") {
+     *   // pathname is unsafe
+     * } else {
+     *   // pathname is safe
+     * }
+     * ```
+     *
+     * or
+     * ```
+     * var relative = path.resolve(pathname); // or path.normalize
+     * if(relative.startsWith(webroot) {
+     *   // pathname is safe
+     * } else {
+     *   // pathname is unsafe
+     * }
+     * ```
+     */
+    class RelativePathStartsWithSanitizer extends BarrierGuardNode {
+      StringOps::StartsWith startsWith;
+      DataFlow::CallNode pathCall;
+      string member;
+
+      RelativePathStartsWithSanitizer() {
+        (member = "relative" or member = "resolve" or member = "normalize") and
+        this = startsWith and
+        pathCall = NodeJSLib::Path::moduleMember(member).getACall() and
+        (
+          startsWith.getBaseString().getALocalSource() = pathCall
+          or
+          startsWith
+              .getBaseString()
+              .getALocalSource()
+              .(NormalizingPathCall)
+              .getInput()
+              .getALocalSource() = pathCall
+        ) and
+        (not member = "relative" or isDotDotSlashPrefix(startsWith.getSubstring()))
+      }
+
+      override predicate blocks(boolean outcome, Expr e) {
+        // path.relative on windows may return absolute paths, eg.,
+        // path.relative("C:\\foo", "C:\\bar") is "C:\\bar".
+        member = "relative" and
+        e = this.maybeGetPathSuffix(pathCall.getArgument(1)).asExpr() and
+        outcome = startsWith.getPolarity().booleanNot()
+        or
+        not member = "relative" and
+        e = this.maybeGetPathSuffix(pathCall.getArgument(0)).asExpr() and
+        outcome = startsWith.getPolarity()
+      }
+
+      /**
+       * Gets the last argument to the given `path.join()` call,
+       * or the node itself if it is not a join call.
+       * Is used to get the suffix of the path.
+       */
+      bindingset[e]
+      private DataFlow::Node maybeGetPathSuffix(DataFlow::Node e) {
+        exists(DataFlow::CallNode call |
+          call = NodeJSLib::Path::moduleMember("join").getACall() and e = call
+        |
+          result = call.getLastArgument()
+        )
+        or
+        result = e
+      }
+    }
+
+    /**
+     * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
+     */
+    private class VarAccessBarrier extends Sanitizer, DataFlow::VarAccessBarrier { }
+
+    /**
+     * An expression of form `isInside(x, y)` or similar, where `isInside` is
+     * a library check for the relation between `x` and `y`.
+     */
+    class IsInsideCheckSanitizer extends BarrierGuardNode {
+      DataFlow::Node checked;
+      boolean onlyNormalizedAbsolutePaths;
+
+      IsInsideCheckSanitizer() {
+        exists(string name, DataFlow::CallNode check |
+          name = "path-is-inside" and onlyNormalizedAbsolutePaths = true
+          or
+          name = "is-path-inside" and onlyNormalizedAbsolutePaths = false
+        |
+          check = DataFlow::moduleImport(name).getACall() and
+          checked = check.getArgument(0) and
+          check = this
+        )
+      }
+
+      override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+        (
+          onlyNormalizedAbsolutePaths = true and
+          label.(Label::PosixPath).isNormalized() and
+          label.(Label::PosixPath).isAbsolute()
+          or
+          onlyNormalizedAbsolutePaths = false
+        ) and
+        e = checked.asExpr() and
+        outcome = true
+      }
     }
   }
 
@@ -739,7 +803,9 @@ module TaintedPath {
     DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
     DataFlow::FlowLabel dstlabel
   ) {
-    isPosixPathStep(src, dst, srclabel, dstlabel)
+    isPathStep(src, dst, srclabel, dstlabel)
+    or
+    isStringOperationPathStep(src, dst, srclabel, dstlabel)
     or
     // Ignore all preliminary sanitization after decoding URI components
     srclabel instanceof Label::PosixPath and
@@ -850,86 +916,23 @@ module TaintedPath {
 
   /**
    * Holds if we should include a step from `src -> dst` with labels `srclabel -> dstlabel`, and the
-   * standard taint step `src -> dst` should be suppresesd.
+   * standard taint step `src -> dst` should be suppressed.
    */
-  private predicate isPosixPathStep(
+  predicate isPathStep(
     DataFlow::Node src, DataFlow::Node dst, Label::PosixPath srclabel, Label::PosixPath dstlabel
   ) {
-    // path.normalize() and similar
-    exists(NormalizingPathCall call |
-      src = call.getInput() and
-      dst = call.getOutput() and
-      dstlabel = srclabel.toNormalized()
+    exists(PathTransformationNode ppn | ppn.getOutput() = dst and ppn.getInput() = src |
+      ppn.step(srclabel, src, dstlabel, dst)
     )
-    or
-    // path.resolve() and similar
-    exists(ResolvingPathCall call |
-      src = call.getInput() and
-      dst = call.getOutput() and
-      dstlabel.isAbsolute() and
-      dstlabel.isNormalized()
-    )
-    or
-    // path.relative() and similar
-    exists(NormalizingRelativePathCall call |
-      src = call.getInput() and
-      dst = call.getOutput() and
-      dstlabel.isRelative() and
-      dstlabel.isNormalized()
-    )
-    or
-    // path.dirname() and similar
-    exists(PreservingPathCall call |
-      src = call.getInput() and
-      dst = call.getOutput() and
-      srclabel = dstlabel
-    )
-    or
-    // foo.replace(/\./, "") and similar
-    exists(DotRemovingReplaceCall call |
-      src = call.getInput() and
-      dst = call.getOutput() and
-      srclabel.isAbsolute() and
-      dstlabel.isAbsolute() and
-      dstlabel.isNormalized()
-    )
-    or
-    // foo.replace(/(\.\.\/)*/, "") and similar
-    exists(DotDotSlashPrefixRemovingReplace call |
-      src = call.getInput() and
-      dst = call.getOutput()
-    |
-      // the 4 possible combinations of normalized + relative for `srclabel`, and the possible values for `dstlabel` in each case.
-      srclabel.isNonNormalized() and srclabel.isRelative() // raw + relative -> any()
-      or
-      srclabel.isNormalized() and srclabel.isAbsolute() and srclabel = dstlabel // normalized + absolute -> normalized + absolute
-      or
-      srclabel.isNonNormalized() and srclabel.isAbsolute() and dstlabel.isAbsolute() // raw + absolute -> raw/normalized + absolute
-      // normalized + relative -> none()
-    )
-    or
-    // path.join()
-    exists(DataFlow::CallNode join, int n |
-      join = NodeJSLib::Path::moduleMember("join").getACall()
-    |
-      src = join.getArgument(n) and
-      dst = join and
-      (
-        // If the initial argument is tainted, just normalize it. It can be relative or absolute.
-        n = 0 and
-        dstlabel = srclabel.toNormalized()
-        or
-        // For later arguments, the flow label depends on whether the first argument is absolute or relative.
-        // If in doubt, we assume it is absolute.
-        n > 0 and
-        srclabel.canContainDotDotSlash() and
-        dstlabel.isNormalized() and
-        if isRelative(join.getArgument(0).getStringValue())
-        then dstlabel.isRelative()
-        else dstlabel.isAbsolute()
-      )
-    )
-    or
+  }
+
+  /**
+   * Holds if we should include a step from `src -> dst` with labels `srclabel -> dstlabel`, and the
+   * standard taint step `src -> dst` should be suppressed.
+   */
+  private predicate isStringOperationPathStep(
+    DataFlow::Node src, DataFlow::Node dst, Label::PosixPath srclabel, Label::PosixPath dstlabel
+  ) {
     // String concatenation - behaves like path.join() except without normalization
     exists(DataFlow::Node operator, int n | StringConcatenation::taintStep(src, dst, operator, n) |
       // use ordinary taint flow for the first operand
@@ -940,7 +943,7 @@ module TaintedPath {
       srclabel.canContainDotDotSlash() and
       dstlabel.isNonNormalized() and // The ../ is no longer at the beginning of the string.
       (
-        if isRelative(StringConcatenation::getOperand(operator, 0).getStringValue())
+        if Label::isRelative(StringConcatenation::getOperand(operator, 0).getStringValue())
         then dstlabel.isRelative()
         else dstlabel.isAbsolute()
       )
