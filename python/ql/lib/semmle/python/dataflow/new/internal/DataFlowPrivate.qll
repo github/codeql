@@ -613,7 +613,7 @@ newtype TDataFlowCallable =
   TLambda(Function lambda) { lambda.isLambda() } or
   TModule(Module m)
 
-/** Represents a callable. */
+/** A callable. */
 abstract class DataFlowCallable extends TDataFlowCallable {
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -714,7 +714,7 @@ newtype TDataFlowCall =
   TClassCall(CallNode call) { call = any(ClassValue c | not c.isAbsent()).getACall() } or
   TSpecialCall(SpecialMethodCallNode special)
 
-/** Represents a call. */
+/** A call. */
 abstract class DataFlowCall extends TDataFlowCall {
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -739,7 +739,7 @@ abstract class DataFlowCall extends TDataFlowCall {
 }
 
 /**
- * Represents a call to a function/lambda.
+ * A call to a function/lambda.
  * This excludes calls to bound methods, classes, and special methods.
  * Bound method calls and class calls insert an argument for the explicit
  * `self` parameter, and special method calls have special argument passing.
@@ -826,7 +826,7 @@ class ClassCall extends DataFlowCall, TClassCall {
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
 }
 
-/** Represents a call to a special method. */
+/** A call to a special method. */
 class SpecialCall extends DataFlowCall, TSpecialCall {
   SpecialMethodCallNode special;
 

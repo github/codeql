@@ -2338,7 +2338,8 @@ private module StdlibPrivate {
   // sqlite3
   // ---------------------------------------------------------------------------
   /**
-   * sqlite3 implements PEP 249, providing ways to execute SQL statements against a database.
+   * A model of sqlite3 as a module that implements PEP 249, providing ways to execute SQL statements
+   * against a database.
    *
    * See https://devdocs.io/python~3.9/library/sqlite3
    */

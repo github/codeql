@@ -467,7 +467,7 @@ Definition getUniqueDefinition(Expr use) {
   not result = TLocalDefinition(use)
 }
 
-/** Helper class to get suitable locations for attributes */
+/** A helper class to get suitable locations for attributes */
 class NiceLocationExpr extends Expr {
   /** Gets a textual representation of this element. */
   override string toString() { result = this.(Expr).toString() }

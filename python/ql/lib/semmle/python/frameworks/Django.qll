@@ -1862,7 +1862,8 @@ module PrivateDjango {
   // routing modeling
   // ---------------------------------------------------------------------------
   /**
-   * In order to recognize a class as being a django view class, based on the `as_view`
+   * A class that may be a django view class. In order to recognize a class as being a django view class,
+   * based on the `as_view`
    * call, we need to be able to track such calls on _any_ class. This is provided by
    * the member predicates of this QL class.
    *
@@ -1973,7 +1974,7 @@ module PrivateDjango {
   /** Provides a class for modeling new django route handlers. */
   module DjangoRouteHandler {
     /**
-     * Extend this class to model new APIs. If you want to refine existing API models,
+     * A django route handler. Extend this class to model new APIs. If you want to refine existing API models,
      * extend `DjangoRouteHandler` instead.
      */
     abstract class Range extends Function { }

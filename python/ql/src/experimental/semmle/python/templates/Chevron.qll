@@ -8,7 +8,7 @@ import experimental.semmle.python.templates.SSTISink
 deprecated Value theChevronRenderFunc() { result = Value::named("chevron.render") }
 
 /**
- * Sink representing the `chevron.render` function call argument.
+ * A sink representing the `chevron.render` function call argument.
  *
  *  import chevron
  *  tmp = chevron.render(`sink`,{ 'key' : 'value' })

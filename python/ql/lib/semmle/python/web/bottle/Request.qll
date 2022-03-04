@@ -68,7 +68,7 @@ deprecated class UntrustedFile extends TaintKind {
 //   TO DO.. File uploads -- Should check about file uploads for other frameworks as well.
 //  Move UntrustedFile to shared location
 //
-/** Parameter to a bottle request handler function */
+/** A parameter to a bottle request handler function */
 deprecated class BottleRequestParameter extends HttpRequestTaintSource {
   BottleRequestParameter() {
     exists(BottleRoute route | route.getANamedArgument() = this.(ControlFlowNode).getNode())

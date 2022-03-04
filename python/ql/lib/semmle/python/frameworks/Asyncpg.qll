@@ -46,7 +46,7 @@ private module Asyncpg {
     }
   }
 
-  /** `Connection`s and `ConnectionPool`s provide some methods that access the file system. */
+  /** A model of `Connection` and `ConnectionPool`, which provide some methods that access the file system. */
   class FileAccessOnConnection extends FileSystemAccess::Range, DataFlow::MethodCallNode {
     string methodName;
 

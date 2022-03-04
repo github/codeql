@@ -180,7 +180,7 @@ abstract class TaintKind extends string {
 }
 
 /**
- * Alias of `TaintKind`, so the two types can be used interchangeably.
+ * An Alias of `TaintKind`, so the two types can be used interchangeably.
  */
 class FlowLabel = TaintKind;
 
@@ -561,7 +561,7 @@ module DataFlowExtension {
     ControlFlowNode getACalleeSuccessorNode(CallNode call) { none() }
   }
 
-  /** Data flow variable that modifies the basic data-flow. */
+  /** A data flow variable that modifies the basic data-flow. */
   class DataFlowVariable extends EssaVariable {
     /**
      * Gets a successor node for data-flow.
@@ -608,7 +608,7 @@ private import semmle.python.pointsto.PointsTo
  */
 module DataFlow {
   /**
-   * Generic taint kind, source and sink classes for convenience and
+   * The generic taint kind, source and sink classes for convenience and
    * compatibility with other language libraries
    */
   class Extension = DataFlowExtension::DataFlowNode;

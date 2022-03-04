@@ -134,7 +134,7 @@ private newtype TEssaDefinition =
   TPhiFunction(SsaSourceVariable v, BasicBlock b) { EssaDefinitions::phiNode(v, b) }
 
 /**
- * Definition of an extended-SSA (ESSA) variable.
+ * A definition of an extended-SSA (ESSA) variable.
  * There is exactly one definition for each variable,
  * and exactly one variable for each definition.
  */
@@ -515,7 +515,7 @@ class AssignmentDefinition extends EssaNodeDefinition {
   override string getAPrimaryQlClass() { result = "AssignmentDefinition" }
 }
 
-/** Capture of a raised exception `except ExceptionType ex:` */
+/** A capture of a raised exception `except ExceptionType ex:` */
 class ExceptionCapture extends EssaNodeDefinition {
   ExceptionCapture() {
     SsaSource::exception_capture(this.getSourceVariable(), this.getDefiningNode())
@@ -631,7 +631,7 @@ class DeletionDefinition extends EssaNodeDefinition {
 }
 
 /**
- * Definition of variable at the entry of a scope. Usually this represents the transfer of
+ * A definition of variable at the entry of a scope. Usually this represents the transfer of
  * a global or non-local variable from one scope to another.
  */
 class ScopeEntryDefinition extends EssaNodeDefinition {
@@ -645,7 +645,7 @@ class ScopeEntryDefinition extends EssaNodeDefinition {
   override string getAPrimaryQlClass() { result = "ScopeEntryDefinition" }
 }
 
-/** Possible redefinition of variable via `from ... import *` */
+/** A possible redefinition of variable via `from ... import *` */
 class ImportStarRefinement extends EssaNodeRefinement {
   ImportStarRefinement() {
     SsaSource::import_star_refinement(this.getSourceVariable(), _, this.getDefiningNode())
@@ -654,7 +654,7 @@ class ImportStarRefinement extends EssaNodeRefinement {
   override string getAPrimaryQlClass() { result = "ImportStarRefinement" }
 }
 
-/** Assignment of an attribute `obj.attr = val` */
+/** An assignment of an attribute `obj.attr = val` */
 class AttributeAssignment extends EssaNodeRefinement {
   AttributeAssignment() {
     SsaSource::attribute_assignment_refinement(this.getSourceVariable(), _, this.getDefiningNode())
@@ -693,7 +693,7 @@ class ArgumentRefinement extends EssaNodeRefinement {
   override string getAPrimaryQlClass() { result = "ArgumentRefinement" }
 }
 
-/** Deletion of an attribute `del obj.attr`. */
+/** A deletion of an attribute `del obj.attr`. */
 class EssaAttributeDeletion extends EssaNodeRefinement {
   EssaAttributeDeletion() {
     SsaSource::attribute_deletion_refinement(this.getSourceVariable(), _, this.getDefiningNode())
@@ -734,7 +734,7 @@ class SingleSuccessorGuard extends EssaNodeRefinement {
 }
 
 /**
- * Implicit definition of the names of sub-modules in a package.
+ * An implicit definition of the names of sub-modules in a package.
  * Although the interpreter does not pre-define these names, merely populating them
  * as they are imported, this is a good approximation for static analysis.
  */
@@ -784,7 +784,7 @@ class SelfCallsiteRefinement extends MethodCallsiteRefinement {
   override string getAPrimaryQlClass() { result = "SelfCallsiteRefinement" }
 }
 
-/** Python specific sub-class of generic EssaEdgeRefinement */
+/** A Python specific sub-class of generic EssaEdgeRefinement */
 class PyEdgeRefinement extends EssaEdgeRefinement {
   override string getRepresentation() {
     /*

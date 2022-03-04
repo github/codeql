@@ -315,7 +315,7 @@ class Ellipsis extends Ellipsis_ {
 }
 
 /**
- * Immutable literal expressions (except tuples).
+ * An immutable literal expression (except tuples).
  * Consists of string (both unicode and byte) literals and numeric literals.
  */
 abstract class ImmutableLiteral extends Expr {
@@ -687,7 +687,7 @@ class False extends BooleanLiteral {
   override boolean booleanValue() { result = false }
 }
 
-/** `None` */
+/** The `None` constant. */
 class None extends NameConstant {
   /* syntax: None */
   None() { name_consts(this, "None") }
@@ -730,20 +730,20 @@ class Guard extends Guard_ {
 /** A context in which an expression used */
 class ExprContext extends ExprContext_ { }
 
-/** Load context, the context of var in len(var) */
+/** The load context, the context of var in len(var) */
 class Load extends Load_ { }
 
-/** Store context, the context of var in var = 0 */
+/** The store context, the context of var in var = 0 */
 class Store extends Store_ { }
 
-/** Delete context, the context of var in del var */
+/** The delete context, the context of var in del var */
 class Del extends Del_ { }
 
-/** This is an artifact of the Python grammar which includes an AugLoad context, even though it is never used. */
+/** The context of an augmented load. This is an artifact of the Python grammar which includes an AugLoad context, even though it is never used. */
 class AugLoad extends AugLoad_ { }
 
-/** Augmented store context, the context of var in var += 1 */
+/** The augmented store context, the context of var in var += 1 */
 class AugStore extends AugStore_ { }
 
-/** Parameter context, the context of var in def f(var): pass */
+/** The parameter context, the context of var in def f(var): pass */
 class Param extends Param_ { }

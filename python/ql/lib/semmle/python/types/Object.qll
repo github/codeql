@@ -14,6 +14,8 @@ private predicate is_an_object(@py_object obj) {
 }
 
 /**
+ * An object.
+ *
  * Instances of this class represent objects in the Python program. However, since
  *  the QL database is static and Python programs are dynamic, there are necessarily a
  *  number of approximations.
@@ -217,7 +219,7 @@ private Object findByName3(string longName) {
 }
 
 /**
- * Numeric objects (ints and floats).
+ * A numeric object (int or float).
  * Includes those occurring in the source as a literal
  * or in a builtin module as a value.
  */
@@ -269,7 +271,7 @@ class NumericObject extends Object {
 }
 
 /**
- * String objects (unicode or bytes).
+ * A string object (unicode or bytes).
  * Includes those occurring in the source as a literal
  * or in a builtin module as a value.
  */
@@ -299,7 +301,7 @@ class StringObject extends Object {
 }
 
 /**
- * Sequence objects (lists and tuples)
+ * A sequence object (list or tuple)
  *  Includes those occurring in the source as a literal
  *  or in a builtin module as a value.
  */

@@ -47,7 +47,7 @@ private module Aiomysql {
   }
 
   /**
-   * Calling `execute` on a `Cursor` constructs a query.
+   * A query. Calling `execute` on a `Cursor` constructs a query.
    * See https://aiomysql.readthedocs.io/en/stable/cursors.html#Cursor.execute
    */
   class CursorExecuteCall extends SqlConstruction::Range, DataFlow::CallCfgNode {
@@ -73,7 +73,7 @@ private module Aiomysql {
   }
 
   /**
-   * Awaiting the result of calling `execute` executes the query.
+   * An awaited query. Awaiting the result of calling `execute` executes the query.
    * See https://aiomysql.readthedocs.io/en/stable/cursors.html#Cursor.execute
    */
   class AwaitedCursorExecuteCall extends SqlExecution::Range {
@@ -104,7 +104,7 @@ private module Aiomysql {
   API::Node saConnection() { result = engine().getMember("acquire").getReturn().getAwaited() }
 
   /**
-   * Calling `execute` on a `SAConnection` constructs a query.
+   * A query. Calling `execute` on a `SAConnection` constructs a query.
    * See https://aiomysql.readthedocs.io/en/stable/sa.html#aiomysql.sa.SAConnection.execute
    */
   class SAConnectionExecuteCall extends SqlConstruction::Range, DataFlow::CallCfgNode {
@@ -132,7 +132,7 @@ private module Aiomysql {
   }
 
   /**
-   * Awaiting the result of calling `execute` executes the query.
+   * An awaited query. Awaiting the result of calling `execute` executes the query.
    * See https://aiomysql.readthedocs.io/en/stable/sa.html#aiomysql.sa.SAConnection.execute
    */
   class AwaitedSAConnectionExecuteCall extends SqlExecution::Range {

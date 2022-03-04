@@ -47,7 +47,7 @@ private module Aiopg {
   }
 
   /**
-   * Calling `execute` on a `Cursor` constructs a query.
+   * A query. Calling `execute` on a `Cursor` constructs a query.
    * See https://aiopg.readthedocs.io/en/stable/core.html#aiopg.Cursor.execute
    */
   class CursorExecuteCall extends SqlConstruction::Range, DataFlow::CallCfgNode {
@@ -73,7 +73,7 @@ private module Aiopg {
   }
 
   /**
-   * Awaiting the result of calling `execute` executes the query.
+   * An awaited query. Awaiting the result of calling `execute` executes the query.
    * See https://aiopg.readthedocs.io/en/stable/core.html#aiopg.Cursor.execute
    */
   class AwaitedCursorExecuteCall extends SqlExecution::Range {
@@ -100,7 +100,7 @@ private module Aiopg {
   API::Node saConnection() { result = engine().getMember("acquire").getReturn().getAwaited() }
 
   /**
-   * Calling `execute` on a `SAConnection` constructs a query.
+   * A query. Calling `execute` on a `SAConnection` constructs a query.
    * See https://aiopg.readthedocs.io/en/stable/sa.html#aiopg.sa.SAConnection.execute
    */
   class SAConnectionExecuteCall extends SqlConstruction::Range, DataFlow::CallCfgNode {
@@ -128,7 +128,7 @@ private module Aiopg {
   }
 
   /**
-   * Awaiting the result of calling `execute` executes the query.
+   * An awaited query. Awaiting the result of calling `execute` executes the query.
    * See https://aiopg.readthedocs.io/en/stable/sa.html#aiopg.sa.SAConnection.execute
    */
   class AwaitedSAConnectionExecuteCall extends SqlExecution::Range {
