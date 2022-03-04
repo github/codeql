@@ -658,7 +658,7 @@ module API {
      */
     private predicate argumentPassing(TApiNode base, Label::ApiLabel lbl, DataFlow::Node arg) {
       exists(DataFlow::Node use, DataFlow::LocalSourceNode pred |
-        use(base, use) and pred = trackUseNode(use, _)
+        use(base, use) and pred = trackUseNode(use)
       |
         exists(int i |
           lbl = Label::parameter(i) and
