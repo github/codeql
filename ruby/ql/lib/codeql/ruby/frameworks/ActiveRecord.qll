@@ -323,7 +323,7 @@ private module Persistence {
    * A call to a method that may modify or create a model object and write it to
    * the database. Examples include `create`, `insert`, and `update`.
    */
-  abstract class ModifyAndSaveCall extends DataFlow::CallNode, OrmWriteAccess::Range {
+  abstract private class ModifyAndSaveCall extends DataFlow::CallNode, OrmWriteAccess::Range {
     /**
      * Holds if the given key-value pair is set on an object by this call.
      */
