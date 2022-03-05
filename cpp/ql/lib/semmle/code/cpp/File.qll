@@ -34,7 +34,6 @@ class Container extends Locatable, @container {
    */
   string getAbsolutePath() { none() } // overridden by subclasses
 
-  // overridden by subclasses
   /**
    * Gets the relative path of this file or folder from the root folder of the
    * analyzed source location. The relative path of the root folder itself is
