@@ -409,13 +409,6 @@ class FormatLiteral extends Literal {
   FormattingFunctionCall getUse() { result.getFormat() = this }
 
   /**
-   * Holds if the default meaning of `%s` is a `wchar_t *`, rather than
-   * a `char *` (either way, `%S` will have the opposite meaning).
-   * DEPRECATED: Use getDefaultCharType() instead.
-   */
-  deprecated predicate isWideCharDefault() { this.getUse().getTarget().isWideCharDefault() }
-
-  /**
    * Gets the default character type expected for `%s` by this format literal.  Typically
    * `char` or `wchar_t`.
    */
