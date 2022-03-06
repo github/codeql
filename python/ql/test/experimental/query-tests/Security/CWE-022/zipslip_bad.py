@@ -2,8 +2,8 @@ import zipfile
 import shutil
 
 def unzip(filename):
-  zf = zipfile.ZipFile()
-    with zf.open(filename) as zipf:
+
+   with zipfile.ZipFile(filename) as zipf:
     #BAD : This could write any file on the filesystem.
-       for entry in zipf:
-          shutil.copyfileobj(entry, "/tmp/unpack/")
+      for entry in zipf:
+          shutil.copy(entry, "/tmp/unpack/")
