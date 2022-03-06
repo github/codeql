@@ -45,36 +45,6 @@ class CopyFile extends DataFlow::Node {
   DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
 }
 
-/** Provides classes for modeling zip related APIs. */
-module ZipFile {
-  /**
-   * A data flow node for zipfile.
-   *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `ZipFile` instead.
-   */
-  abstract class Range extends DataFlow::Node {
-    /**
-     * Get the parameter value of the zip function.
-     */
-    abstract DataFlow::Node getAnInput();
-    
-  }
-}
-
-/**
- * A data flow node for zip.
- *
- * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `ZipFile::Range` instead.
- */
-class ZipFile extends DataFlow::Node {
-  ZipFile::Range range;
-
-  ZipFile() { this = range }
-
-  DataFlow::Node getAnInput() { result = range.getAnInput() }
-}
 
 /** Provides classes for modeling log related APIs. */
 module LogOutput {
