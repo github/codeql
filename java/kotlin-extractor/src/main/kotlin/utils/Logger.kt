@@ -33,6 +33,11 @@ enum class Severity(val sev: Int) {
 }
 
 open class LoggerBase(val logCounter: LogCounter) {
+    private val verbosity: Int
+    init {
+        verbosity = System.getenv("CODEQL_EXTRACTOR_KOTLIN_VERBOSITY")?.toIntOrNull() ?: 3
+    }
+
     private val logStream: Writer
     init {
         val extractorLogDir = System.getenv("CODEQL_EXTRACTOR_JAVA_LOG_DIR")
@@ -88,17 +93,35 @@ open class LoggerBase(val logCounter: LogCounter) {
         logStream.write("$ts Diagnostic($diagnosticLocStr): $locStr$fullMsg")
     }
 
+    fun trace(tw: TrapWriter, msg: String) {
+        debug(tw, msg)
+    }
+
+    fun debug(tw: TrapWriter, msg: String) {
+        if (verbosity >= 4) {
+            val fullMsg = "${timestamp()} $msg"
+            tw.writeComment(fullMsg)
+            logStream.write(fullMsg + "\n")
+        }
+    }
+
     fun info(tw: TrapWriter, msg: String) {
-        val fullMsg = "${timestamp()} $msg"
-        tw.writeComment(fullMsg)
-        logStream.write(fullMsg + "\n")
+        if (verbosity >= 3) {
+            val fullMsg = "${timestamp()} $msg"
+            tw.writeComment(fullMsg)
+            logStream.write(fullMsg + "\n")
+        }
     }
 
     fun warn(tw: TrapWriter, msg: String, extraInfo: String?) {
-        diagnostic(tw, Severity.Warn, msg, extraInfo)
+        if (verbosity >= 2) {
+            diagnostic(tw, Severity.Warn, msg, extraInfo)
+        }
     }
     fun error(tw: TrapWriter, msg: String, extraInfo: String?) {
-        diagnostic(tw, Severity.Error, msg, extraInfo)
+        if (verbosity >= 1) {
+            diagnostic(tw, Severity.Error, msg, extraInfo)
+        }
     }
 
     fun printLimitedDiagnosticCounts(tw: TrapWriter) {
@@ -140,26 +163,25 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
         loggerBase.flush()
     }
 
-    fun info(msg: String) {
-        loggerBase.info(tw, msg)
-    }
     fun trace(msg: String) {
-        if(false) {
-            info(msg)
-        }
-    }
-    fun debug(msg: String) {
-        info(msg)
+        loggerBase.trace(tw, msg)
     }
     fun trace(msg: String, exn: Exception) {
         trace(msg + "\n" + exn.stackTraceToString())
     }
-
-    fun warn(msg: String, exn: Exception) {
-        warn(msg, exn.stackTraceToString())
+    fun debug(msg: String) {
+        loggerBase.debug(tw, msg)
     }
+
+    fun info(msg: String) {
+        loggerBase.info(tw, msg)
+    }
+
     fun warn(msg: String, extraInfo: String?) {
         loggerBase.warn(tw, msg, extraInfo)
+    }
+    fun warn(msg: String, exn: Exception) {
+        warn(msg, exn.stackTraceToString())
     }
     fun warn(msg: String) {
         warn(msg, null)
