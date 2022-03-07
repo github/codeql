@@ -1753,15 +1753,12 @@ open class KotlinFileExtractor(
             type
         }
 
-        val typeAccessId =
-            extractTypeAccess(typeAccessType, locId, id, -3, callable, enclosingStmt)
-
         if (e is IrConstructorCall) {
-            // Only extract type arguments relating to the constructed type, not the constructor itself:
-            e.getClassTypeArguments().forEachIndexed({ argIdx, argType ->
-                extractTypeAccessRecursive(argType!!, locId, typeAccessId, argIdx, callable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
-            })
+            extractConstructorTypeAccess(e.type, typeAccessType, e.symbol, locId, id, -3, callable, enclosingStmt)
         } else {
+            val typeAccessId =
+                extractTypeAccess(typeAccessType, locId, id, -3, callable, enclosingStmt)
+
             extractTypeArguments(e, typeAccessId, callable, enclosingStmt)
         }
     }
@@ -2615,11 +2612,7 @@ open class KotlinFileExtractor(
                 tw.writeExprs_newexpr(callId, callType.javaResult.id, retId, 0)
                 tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
 
-                val typeAccessId = extractTypeAccess(callType, locId, callId, -3, labels.methodId, retId)
-                if (returnType is IrSimpleType) {
-                    // Only extract type arguments relating to the constructed type, not the constructor itself:
-                    extractTypeArguments(returnType.arguments.take(target.owner.parentAsClass.typeParameters.size).filterIsInstance<IrType>(), locId, typeAccessId, labels.methodId, retId)
-                }
+                extractConstructorTypeAccess(returnType, callType, target, locId, callId, -3, labels.methodId, retId)
                 callId
             } else {
                 var callId = tw.getFreshIdLabel<DbMethodaccess>()
@@ -2963,11 +2956,7 @@ open class KotlinFileExtractor(
                     extractTypeAccessRecursive(arg, locId, typeAccessId, argIdx, callable, exprParent.enclosingStmt, TypeContext.GENERIC_ARGUMENT)
                 }
 
-                val returnTypeAccessId = extractTypeAccess(useType(returnType), locId, typeAccessId, typeAccessArguments.count() - 1, callable, exprParent.enclosingStmt)
-                if (returnType is IrSimpleType) {
-                    // Only extract type arguments relating to the constructed type, not the constructor itself:
-                    extractTypeArguments(returnType.arguments.take(target.owner.parentAsClass.typeParameters.size).filterIsInstance<IrType>(), locId, returnTypeAccessId, callable, exprParent.enclosingStmt)
-                }
+                extractConstructorTypeAccess(returnType, useType(returnType), target, locId, typeAccessId, typeAccessArguments.count() - 1, callable, exprParent.enclosingStmt)
             } else {
                 extractTypeAccessRecursive(fnInterfaceType, locId, idMemberRef, -3, callable, exprParent.enclosingStmt)
             }
@@ -3179,6 +3168,28 @@ open class KotlinFileExtractor(
             argExpr?.let {
                 extractExpressionExpr(it, callable, parent, idx, enclosingStmt)
             }
+        }
+    }
+
+    /**
+     * Extracts a type access expression and its generic arguments for a constructor call.
+     * It only extracts type arguments relating to the constructed type, not the constructor itself, which makes a
+     * difference in case of nested generics.
+     */
+    private fun extractConstructorTypeAccess(
+        irType: IrType,
+        type: TypeResults,
+        target: IrFunctionSymbol,
+        locId: Label<DbLocation>,
+        parent: Label<out DbExprparent>,
+        idx: Int,
+        enclosingCallable: Label<out DbCallable>,
+        enclosingStmt: Label<out DbStmt>
+    ) {
+        val typeAccessId = extractTypeAccess(type, locId, parent, idx, enclosingCallable, enclosingStmt)
+        if (irType is IrSimpleType) {
+            extractTypeArguments(irType.arguments.take(target.owner.parentAsClass.typeParameters.size).filterIsInstance<IrType>(),
+                locId, typeAccessId, enclosingCallable, enclosingStmt)
         }
     }
 
