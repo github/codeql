@@ -964,6 +964,9 @@ class ArgumentNode extends Node instanceof ArgumentNodeImpl {
   final predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     super.argumentOf(call, pos)
   }
+
+  /** Gets the call in which this node is an argument. */
+  DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
 abstract private class ArgumentNodeImpl extends Node {
