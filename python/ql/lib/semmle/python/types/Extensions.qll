@@ -110,24 +110,3 @@ class ReModulePointToExtension extends PointsToExtension {
   pragma[noinline]
   private predicate pointsTo_helper(Context context) { context.appliesTo(this) }
 }
-
-deprecated private class BackwardCompatiblePointToExtension extends PointsToExtension instanceof CustomPointsToFact {
-  override predicate pointsTo(Context context, ObjectInternal value, ControlFlowNode origin) {
-    exists(Object obj, ClassObject cls |
-      CustomPointsToFact.super.pointsTo(context, obj, cls, origin)
-    |
-      value.getBuiltin() = obj
-      or
-      obj instanceof ControlFlowNode and
-      exists(ClassObjectInternal c |
-        c.getSource() = cls and
-        value = TUnknownInstance(c)
-      )
-    )
-    or
-    exists(ObjectInternal owner, string name |
-      PointsTo::pointsTo(this.(AttrNode).getObject(name), context, owner, _) and
-      additionalAttribute(owner, name, value, origin)
-    )
-  }
-}
