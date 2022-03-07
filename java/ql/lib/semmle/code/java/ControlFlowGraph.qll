@@ -88,16 +88,14 @@ class ControlFlowNode extends Top, @exprparent {
   /** Gets the statement containing this node, if any. */
   Stmt getEnclosingStmt() {
     result = this or
-    result = this.(Expr).getEnclosingStmt() or
-    result = this.(WhenBranch).getWhenExpr().getEnclosingStmt()
+    result = this.(Expr).getEnclosingStmt()
   }
 
   /** Gets the immediately enclosing callable whose body contains this node. */
   Callable getEnclosingCallable() {
     result = this or
     result = this.(Stmt).getEnclosingCallable() or
-    result = this.(Expr).getEnclosingCallable() or
-    result = this.(WhenBranch).getWhenExpr().getEnclosingCallable()
+    result = this.(Expr).getEnclosingCallable()
   }
 
   /** Gets an immediate successor of this node. */

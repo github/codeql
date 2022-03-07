@@ -601,7 +601,7 @@ stmts(
   int bodydecl: @callable ref
 );
 
-@stmtparent = @callable | @stmt | @switchexpr | @whenbranch | @stmtexpr;
+@stmtparent = @callable | @stmt | @switchexpr | @whenexpr| @whenbranch | @stmtexpr;
 
 case @stmt.kind of
   0 = @block
@@ -630,6 +630,7 @@ case @stmt.kind of
 | 23 = @yieldstmt
 | 24 = @errorstmt
 | 25 = @anonymousclassdeclstmt
+| 26 = @whenbranch
 ;
 
 #keyset[parent,idx]
@@ -754,13 +755,6 @@ case @expr.kind of
 
 /** Holds if this `when` expression was written as an `if` expression. */
 when_if(unique int id: @whenexpr ref);
-
-#keyset[whenid,idx]
-when_branch(
-    int id: @whenbranch,
-    int whenid: @whenexpr ref,
-    int idx: int ref
-);
 
 /** Holds if this `when` branch was written as an `else` branch. */
 when_branch_else(unique int id: @whenbranch ref);

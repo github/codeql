@@ -523,9 +523,7 @@ class AssignExpr extends Assignment, @assignexpr {
  * For example, `class X { val y = 1 }`
  */
 class KtInitializerAssignExpr extends AssignExpr {
-  KtInitializerAssignExpr() {
-    ktInitializerAssignment(this)
-  }
+  KtInitializerAssignExpr() { ktInitializerAssignment(this) }
 
   override string getAPrimaryQlClass() { result = "KtInitializerAssignExpr" }
 }
@@ -2331,7 +2329,7 @@ class Argument extends Expr {
 }
 
 /** A Kotlin `when` expression. */
-class WhenExpr extends Expr, @whenexpr {
+class WhenExpr extends Expr, StmtParent, @whenexpr {
   override string toString() { result = "when ..." }
 
   override string getHalsteadID() { result = "WhenExpr" }
@@ -2339,14 +2337,14 @@ class WhenExpr extends Expr, @whenexpr {
   override string getAPrimaryQlClass() { result = "WhenExpr" }
 
   /** Gets the `i`th branch. */
-  WhenBranch getBranch(int i) { when_branch(result, this, i) }
+  WhenBranch getBranch(int i) { result.isNthChildOf(this, i) }
 
   /** Holds if this was written as an `if` expression. */
   predicate isIf() { when_if(this) }
 }
 
 /** A Kotlin `when` branch. */
-class WhenBranch extends Top, @whenbranch {
+class WhenBranch extends Stmt, @whenbranch {
   /** Gets the condition of this branch. */
   Expr getCondition() { result.isNthChildOf(this, 0) }
 
