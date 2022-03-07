@@ -6,7 +6,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 6.5
- * @precision medium
+ * @precision high
  * @id cpp/system-data-exposure
  * @tags security
  *       external/cwe/cwe-497
