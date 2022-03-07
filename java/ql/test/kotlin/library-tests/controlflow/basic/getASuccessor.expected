@@ -27,6 +27,7 @@
 | Test.kt:11:3:16:3 | true | BooleanLiteral | Test.kt:14:10:16:3 | { ... } | BlockStmt |
 | Test.kt:11:3:16:3 | when ... | WhenExpr | Test.kt:11:3:16:3 | ... -> ... | WhenBranch |
 | Test.kt:11:7:11:7 | x | VarAccess | Test.kt:11:11:11:11 | 0 | IntegerLiteral |
+| Test.kt:11:7:11:11 | ... > ... | GTExpr | Test.kt:11:3:16:3 | ... -> ... | WhenBranch |
 | Test.kt:11:7:11:11 | ... > ... | GTExpr | Test.kt:11:14:14:3 | { ... } | BlockStmt |
 | Test.kt:11:11:11:11 | 0 | IntegerLiteral | Test.kt:11:7:11:11 | ... > ... | GTExpr |
 | Test.kt:11:14:14:3 | { ... } | BlockStmt | Test.kt:12:4:12:4 | <Expr>; | ExprStmt |
@@ -53,6 +54,7 @@
 | Test.kt:21:3:24:9 | true | BooleanLiteral | Test.kt:24:4:24:9 | INSTANCE | VarAccess |
 | Test.kt:21:3:24:9 | when ... | WhenExpr | Test.kt:21:3:24:9 | ... -> ... | WhenBranch |
 | Test.kt:21:6:21:6 | x | VarAccess | Test.kt:21:10:21:10 | 0 | IntegerLiteral |
+| Test.kt:21:6:21:10 | ... < ... | LTExpr | Test.kt:21:3:24:9 | ... -> ... | WhenBranch |
 | Test.kt:21:6:21:10 | ... < ... | LTExpr | Test.kt:22:4:22:4 | <Expr>; | ExprStmt |
 | Test.kt:21:10:21:10 | 0 | IntegerLiteral | Test.kt:21:6:21:10 | ... < ... | LTExpr |
 | Test.kt:22:4:22:4 | <Expr>; | ExprStmt | Test.kt:22:8:22:9 | 40 | LongLiteral |

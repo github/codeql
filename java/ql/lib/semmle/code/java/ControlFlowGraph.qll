@@ -88,14 +88,16 @@ class ControlFlowNode extends Top, @exprparent {
   /** Gets the statement containing this node, if any. */
   Stmt getEnclosingStmt() {
     result = this or
-    result = this.(Expr).getEnclosingStmt()
+    result = this.(Expr).getEnclosingStmt() or
+    result = this.(WhenBranch).getWhenExpr().getEnclosingStmt()
   }
 
   /** Gets the immediately enclosing callable whose body contains this node. */
   Callable getEnclosingCallable() {
     result = this or
     result = this.(Stmt).getEnclosingCallable() or
-    result = this.(Expr).getEnclosingCallable()
+    result = this.(Expr).getEnclosingCallable() or
+    result = this.(WhenBranch).getWhenExpr().getEnclosingCallable()
   }
 
   /** Gets an immediate successor of this node. */
@@ -556,9 +558,7 @@ private module ControlFlowGraphImpl {
         result = e.getArgument(index)
       )
       or
-      exists(StringTemplateExpr e | e = this |
-        result = e.getComponent(index)
-      )
+      exists(StringTemplateExpr e | e = this | result = e.getComponent(index))
       or
       index = 0 and result = this.(ClassExpr).getExpr()
       or
