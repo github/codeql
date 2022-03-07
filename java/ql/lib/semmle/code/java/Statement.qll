@@ -107,12 +107,6 @@ class IfStmt extends ConditionalStmt, @ifstmt {
   /** Gets the `then` branch of this `if` statement. */
   Stmt getThen() { result.isNthChildOf(this, 1) }
 
-  /**
-   * Gets the statement that is executed whenever the condition
-   * of this branch statement evaluates to `true`.
-   */
-  deprecated override Stmt getTrueSuccessor() { result = this.getThen() }
-
   /** Gets the `else` branch of this `if` statement. */
   Stmt getElse() { result.isNthChildOf(this, 2) }
 
@@ -159,12 +153,6 @@ class ForStmt extends ConditionalStmt, @forstmt {
 
   /** Gets the body of this `for` loop. */
   Stmt getStmt() { result.getParent() = this and result.getIndex() = 2 }
-
-  /**
-   * Gets the statement that is executed whenever the condition
-   * of this branch statement evaluates to true.
-   */
-  deprecated override Stmt getTrueSuccessor() { result = this.getStmt() }
 
   /**
    * Gets a variable that is used as an iteration variable: it is defined,
@@ -224,12 +212,6 @@ class WhileStmt extends ConditionalStmt, @whilestmt {
   /** Gets the body of this `while` loop. */
   Stmt getStmt() { result.getParent() = this }
 
-  /**
-   * Gets the statement that is executed whenever the condition
-   * of this branch statement evaluates to true.
-   */
-  deprecated override Stmt getTrueSuccessor() { result = this.getStmt() }
-
   override string pp() { result = "while (...) " + this.getStmt().pp() }
 
   override string toString() { result = "while (...)" }
@@ -246,12 +228,6 @@ class DoStmt extends ConditionalStmt, @dostmt {
 
   /** Gets the body of this `do` loop. */
   Stmt getStmt() { result.getParent() = this }
-
-  /**
-   * Gets the statement that is executed whenever the condition
-   * of this branch statement evaluates to `true`.
-   */
-  deprecated override Stmt getTrueSuccessor() { result = this.getStmt() }
 
   override string pp() { result = "do " + this.getStmt().pp() + " while (...)" }
 
