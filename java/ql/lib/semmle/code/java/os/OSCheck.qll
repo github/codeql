@@ -10,14 +10,14 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.TaintTracking
 
 /**
- * A guard that checks if the current os is Windows.
+ * A guard that checks if the current OS is Windows.
  * When True, the OS is Windows.
  * When False, the OS is not Windows.
  */
 abstract class IsWindowsGuard extends Guard { }
 
 /**
- * A guard that checks if the current OS is any Windows.
+ * A guard that checks if the current OS is a specific Windows variant.
  * When True, the OS is Windows.
  * When False, the OS *may* still be Windows.
  */
@@ -31,7 +31,7 @@ abstract class IsSpecificWindowsVariant extends Guard { }
 abstract class IsUnixGuard extends Guard { }
 
 /**
- * A guard that checks if the current OS is unix or unix-like.
+ * A guard that checks if the current OS is a specific unix or unix-like variant.
  * When True, the OS is unix or unix-like.
  * When False, the OS *may* still be unix or unix-like.
  */
@@ -42,7 +42,7 @@ abstract class IsSpecificUnixVariant extends Guard { }
  */
 bindingset[osString]
 private predicate isOsFromSystemProp(MethodAccess ma, string osString) {
-  TaintTracking::localExprTaint(getSystemProperty("os.name"), ma.getQualifier()) and // Call from System.getProperty (or equvalent) to some partial match method
+  TaintTracking::localExprTaint(getSystemProperty("os.name"), ma.getQualifier()) and // Call from System.getProperty (or equivalent) to some partial match method
   exists(StringPartialMatchMethod m, CompileTimeConstantExpr matchedStringConstant |
     m = ma.getMethod() and
     matchedStringConstant.getStringValue().toLowerCase().matches(osString)
@@ -68,24 +68,24 @@ private Guard isOsFromSystemPropertyEqualityCheck(string propertyName, string co
         ), _)
 }
 
-private class IsWindowsFromCharPathSeperator extends IsWindowsGuard {
-  IsWindowsFromCharPathSeperator() {
+private class IsWindowsFromCharPathSeparator extends IsWindowsGuard {
+  IsWindowsFromCharPathSeparator() {
     this = isOsFromSystemPropertyEqualityCheck("path.separator", "\\")
   }
 }
 
-private class IsWindowsFromCharSeperator extends IsWindowsGuard {
-  IsWindowsFromCharSeperator() { this = isOsFromSystemPropertyEqualityCheck("file.separator", ";") }
+private class IsWindowsFromCharSeparator extends IsWindowsGuard {
+  IsWindowsFromCharSeparator() { this = isOsFromSystemPropertyEqualityCheck("file.separator", ";") }
 }
 
-private class IsUnixFromCharPathSeperator extends IsUnixGuard {
-  IsUnixFromCharPathSeperator() {
+private class IsUnixFromCharPathSeparator extends IsUnixGuard {
+  IsUnixFromCharPathSeparator() {
     this = isOsFromSystemPropertyEqualityCheck("path.separator", "/")
   }
 }
 
-private class IsUnixFromCharSeperator extends IsUnixGuard {
-  IsUnixFromCharSeperator() { this = isOsFromSystemPropertyEqualityCheck("file.separator", ":") }
+private class IsUnixFromCharSeparator extends IsUnixGuard {
+  IsUnixFromCharSeparator() { this = isOsFromSystemPropertyEqualityCheck("file.separator", ":") }
 }
 
 private class IsUnixFromSystemProp extends IsSpecificUnixVariant instanceof MethodAccess {
@@ -138,12 +138,12 @@ private class IsUnixFromPosixFromFileSystem extends IsUnixGuard instanceof Metho
       m.hasName("contains")
     ) and
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "posix" and
-    exists(Method supportedFileAttribtueViewsMethod |
-      supportedFileAttribtueViewsMethod.hasName("supportedFileAttributeViews") and
-      supportedFileAttribtueViewsMethod.getDeclaringType() instanceof TypeFileSystem
+    exists(Method supportedFileAttributeViewsMethod |
+      supportedFileAttributeViewsMethod.hasName("supportedFileAttributeViews") and
+      supportedFileAttributeViewsMethod.getDeclaringType() instanceof TypeFileSystem
     |
       DataFlow::localExprFlow(any(MethodAccess ma |
-          ma.getMethod() = supportedFileAttribtueViewsMethod
+          ma.getMethod() = supportedFileAttributeViewsMethod
         ), super.getQualifier())
     )
   }

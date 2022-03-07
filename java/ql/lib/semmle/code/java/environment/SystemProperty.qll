@@ -20,7 +20,7 @@ Expr getSystemProperty(string propertyName) {
 private MethodAccess getSystemPropertyFromSystem(string propertyName) {
   result.(MethodAccessSystemGetProperty).hasCompileTimeConstantGetPropertyName(propertyName)
   or
-  exists(Method m | result.getMethod() = m | m.hasName("lineSeparator")) and
+  result.getMethod().hasName("lineSeparator") and
   propertyName = "line.separator"
 }
 
