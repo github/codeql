@@ -57,7 +57,7 @@ public class Test {
             onlyOnWindows();
         }
 
-        if (System.getProperty("path.separator").equals("\\")) {
+        if (System.getProperty("path.separator").equals(";")) {
             onlyOnWindows();
         }
     }
@@ -94,7 +94,7 @@ public class Test {
             onlyOnUnix();
         }
 
-        if (System.getProperty("path.separator").equals("/")) {
+        if (System.getProperty("path.separator").equals(":")) {
             onlyOnUnix();
         }
     }

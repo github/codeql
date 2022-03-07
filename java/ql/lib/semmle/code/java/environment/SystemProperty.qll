@@ -5,6 +5,8 @@ private import semmle.code.java.frameworks.apache.Lang
 
 /**
  * Gets an expression that retrieves the value of `propertyName` from `System.getProperty()`.
+ *
+ * Note: Expression type is not just `String`.
  */
 Expr getSystemProperty(string propertyName) {
   result = getSystemPropertyFromSystem(propertyName) or
@@ -20,8 +22,7 @@ Expr getSystemProperty(string propertyName) {
 private MethodAccess getSystemPropertyFromSystem(string propertyName) {
   result.(MethodAccessSystemGetProperty).hasCompileTimeConstantGetPropertyName(propertyName)
   or
-  result.getMethod().hasName("lineSeparator") and
-  propertyName = "line.separator"
+  result.getMethod().hasName("lineSeparator") and propertyName = "line.separator"
 }
 
 /**

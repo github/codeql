@@ -57,35 +57,45 @@ private class IsWindowsFromSystemProp extends IsWindowsGuard instanceof MethodAc
 
 /**
  * Holds when the Guard is an equality check between the system property with the name `propertyName`
- * and the string or char constant `compareToLiteral`.
+ * and the string or char constant `compareToLiteral`, and the branch evaluates to `branch`.
  */
-private Guard isOsFromSystemPropertyEqualityCheck(string propertyName, string compareToLiteral) {
+private Guard isOsFromSystemPropertyEqualityCheck(
+  string propertyName, string compareToLiteral, boolean branch
+) {
   result
       .isEquality(getSystemProperty(propertyName),
         any(Literal literal |
           (literal instanceof CharacterLiteral or literal instanceof StringLiteral) and
           literal.getValue() = compareToLiteral
-        ), _)
+        ), branch)
 }
 
 private class IsWindowsFromCharPathSeparator extends IsWindowsGuard {
   IsWindowsFromCharPathSeparator() {
-    this = isOsFromSystemPropertyEqualityCheck("path.separator", "\\")
+    this = isOsFromSystemPropertyEqualityCheck("path.separator", ";", true) or
+    this = isOsFromSystemPropertyEqualityCheck("path.separator", ":", false)
   }
 }
 
 private class IsWindowsFromCharSeparator extends IsWindowsGuard {
-  IsWindowsFromCharSeparator() { this = isOsFromSystemPropertyEqualityCheck("file.separator", ";") }
+  IsWindowsFromCharSeparator() {
+    this = isOsFromSystemPropertyEqualityCheck("file.separator", "\\", true) or
+    this = isOsFromSystemPropertyEqualityCheck("file.separator", "/", false)
+  }
 }
 
 private class IsUnixFromCharPathSeparator extends IsUnixGuard {
   IsUnixFromCharPathSeparator() {
-    this = isOsFromSystemPropertyEqualityCheck("path.separator", "/")
+    this = isOsFromSystemPropertyEqualityCheck("path.separator", ":", true) or
+    this = isOsFromSystemPropertyEqualityCheck("path.separator", ";", false)
   }
 }
 
 private class IsUnixFromCharSeparator extends IsUnixGuard {
-  IsUnixFromCharSeparator() { this = isOsFromSystemPropertyEqualityCheck("file.separator", ":") }
+  IsUnixFromCharSeparator() {
+    this = isOsFromSystemPropertyEqualityCheck("file.separator", "/", true) or
+    this = isOsFromSystemPropertyEqualityCheck("file.separator", "\\", false)
+  }
 }
 
 private class IsUnixFromSystemProp extends IsSpecificUnixVariant instanceof MethodAccess {

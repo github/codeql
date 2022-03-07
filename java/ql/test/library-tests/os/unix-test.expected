@@ -2,4 +2,8 @@
 | Test.java:66:13:66:95 | contains(...) |
 | Test.java:70:13:70:84 | contains(...) |
 | Test.java:74:13:74:34 | SystemUtils.IS_OS_UNIX |
+| Test.java:81:13:81:41 | ... == ... |
+| Test.java:85:13:85:37 | ... == ... |
+| Test.java:89:13:89:37 | ... == ... |
+| Test.java:93:13:93:33 | ... == ... |
 | Test.java:97:13:97:60 | equals(...) |

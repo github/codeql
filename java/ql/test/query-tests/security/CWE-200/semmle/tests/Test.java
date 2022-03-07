@@ -316,4 +316,32 @@ public class Test {
             Files.createDirectory(tempDirChild.toPath());
         }
     }
+
+    void vulnerableBecauseInvertedFileSeparatorCheck() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        // Oops, this check should be inverted
+        if (File.separatorChar != '\\') {
+            Files.createDirectory(tempDirChild.toPath()); // Creates with permissions 'drwxr-xr-x'
+        }
+    }
+
+    void safeBecauseFileSeparatorCheck() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        if (File.separatorChar == '\\') {
+            Files.createDirectory(tempDirChild.toPath());
+        }
+    }
+
+    void safeBecauseInvertedFileSeperatorCheck() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        if (File.separatorChar != '/') {
+            Files.createDirectory(tempDirChild.toPath());
+        }
+    }
 }

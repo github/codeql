@@ -10,6 +10,7 @@ private import semmle.code.java.dataflow.DataFlow
  * ensuring that they are visible to the taint tracking library.
  */
 private module Frameworks {
+  private import semmle.code.java.JDK
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.frameworks.android.AsyncTask
   private import semmle.code.java.frameworks.android.Intent
