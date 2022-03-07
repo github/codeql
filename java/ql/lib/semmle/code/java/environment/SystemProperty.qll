@@ -70,7 +70,7 @@ private class FieldFilePathSeparator extends Field {
  * See: https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/SystemUtils.html
  */
 private FieldAccess getSystemPropertyFromApacheSystemUtils(string propertyName) {
-  exists(Field f | f = result.getField() and f.getDeclaringType() instanceof ApacheSystemUtils |
+  exists(Field f | f = result.getField() and f.getDeclaringType() instanceof TypeApacheSystemUtils |
     f.hasName("AWT_TOOLKIT") and propertyName = "awt.toolkit"
     or
     f.hasName("FILE_ENCODING") and propertyName = "file.encoding"

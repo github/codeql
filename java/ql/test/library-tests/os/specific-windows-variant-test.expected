@@ -11,4 +11,4 @@
 | ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1584:5:1584:86 | IS_OS_WINDOWS_7 |
 | ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1596:5:1596:86 | IS_OS_WINDOWS_8 |
 | ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1608:5:1608:87 | IS_OS_WINDOWS_10 |
-| Test.java:38:13:38:40 | SystemUtils.IS_OS_WINDOWS_XP |
+| Test.java:42:13:42:40 | SystemUtils.IS_OS_WINDOWS_XP |

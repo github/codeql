@@ -40,19 +40,18 @@ abstract class IsSpecificUnixVariant extends Guard { }
 /**
  * Holds when `ma` compares the current OS against the string constant `osString`.
  */
-bindingset[osString]
 private predicate isOsFromSystemProp(MethodAccess ma, string osString) {
   TaintTracking::localExprTaint(getSystemProperty("os.name"), ma.getQualifier()) and // Call from System.getProperty (or equivalent) to some partial match method
   exists(StringPartialMatchMethod m, CompileTimeConstantExpr matchedStringConstant |
     m = ma.getMethod() and
-    matchedStringConstant.getStringValue().toLowerCase().matches(osString)
+    matchedStringConstant.getStringValue().toLowerCase() = osString
   |
     DataFlow::localExprFlow(matchedStringConstant, ma.getArgument(m.getMatchParameterIndex()))
   )
 }
 
 private class IsWindowsFromSystemProp extends IsWindowsGuard instanceof MethodAccess {
-  IsWindowsFromSystemProp() { isOsFromSystemProp(this, "window%") }
+  IsWindowsFromSystemProp() { isOsFromSystemProp(this, any(string s | s.regexpMatch("windows?"))) }
 }
 
 /**
@@ -99,13 +98,15 @@ private class IsUnixFromCharSeparator extends IsUnixGuard {
 }
 
 private class IsUnixFromSystemProp extends IsSpecificUnixVariant instanceof MethodAccess {
-  IsUnixFromSystemProp() { isOsFromSystemProp(this, ["mac%", "linux%"]) }
+  IsUnixFromSystemProp() {
+    isOsFromSystemProp(this, any(string s | s.regexpMatch(["mac.*", "linux.*"])))
+  }
 }
 
 bindingset[fieldNamePattern]
 private predicate isOsFromApacheCommons(FieldAccess fa, string fieldNamePattern) {
   exists(Field f | f = fa.getField() |
-    f.getDeclaringType() instanceof ApacheSystemUtils and
+    f.getDeclaringType() instanceof TypeApacheSystemUtils and
     f.getName().matches(fieldNamePattern)
   )
 }

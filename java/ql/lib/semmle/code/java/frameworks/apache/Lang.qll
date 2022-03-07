@@ -41,8 +41,8 @@ private class ApacheStrBuilderFluentMethod extends FluentMethod {
 /**
  * The class `org.apache.commons.lang.SystemUtils` or `org.apache.commons.lang3.SystemUtils`.
  */
-class ApacheSystemUtils extends Class {
-  ApacheSystemUtils() {
+class TypeApacheSystemUtils extends Class {
+  TypeApacheSystemUtils() {
     this.hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"], "SystemUtils")
   }
 }

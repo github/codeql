@@ -25,6 +25,10 @@ public class Test {
             onlyOnWindows();
         }
 
+        if (System.getProperty("os.name").toLowerCase().contains("window")) {
+            onlyOnWindows();
+        }
+
         if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")) {
             onlyOnWindows();
         }
