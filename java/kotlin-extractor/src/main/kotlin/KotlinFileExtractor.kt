@@ -42,10 +42,15 @@ open class KotlinFileExtractor(
 ): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState) {
 
     inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
+        val loc = tw.getLocationString(element)
         try {
-            return f()
+            val name = (element as? IrDeclarationWithName)?.name?.asString() ?: "<no name>"
+            logger.trace("Starting a $kind ($name) at $loc")
+            val result = f()
+            logger.trace("Finished a $kind ($name) at $loc")
+            return result
         } catch(exception: Exception) {
-            throw Exception("While extracting a $kind at ${tw.getLocationString(element)}", exception)
+            throw Exception("While extracting a $kind at $loc", exception)
         }
     }
 
