@@ -15,6 +15,9 @@ predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
 
 predicate jumpStep = DataFlowPrivate::jumpStep/2;
 
+/** Holds if there is a level step from `pred` to `succ`. */
+predicate levelStep(Node pred, Node succ) { none() }
+
 /**
  * Gets the name of a possible piece of content. This will usually include things like
  *
