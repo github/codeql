@@ -184,7 +184,7 @@ class PackageObject extends ModuleObject {
   Location getLocation() { none() }
 
   override predicate hasLocationInfo(string path, int bl, int bc, int el, int ec) {
-    path = this.getPath().getName() and
+    path = this.getPath().getAbsolutePath() and
     bl = 0 and
     bc = 0 and
     el = 0 and

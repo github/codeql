@@ -154,8 +154,11 @@ abstract class Container extends @container {
    */
   string toString() { result = this.getAbsolutePath() }
 
-  /** Gets the name of this container */
-  abstract string getName();
+  /**
+   * Gets the name of this container.
+   * DEPRECATED: Use `getAbsolutePath` instead.
+   */
+  deprecated string getName() { result = this.getAbsolutePath() }
 
   /**
    * Gets the relative path of this file or folder from the root folder of the
@@ -327,7 +330,7 @@ abstract class Container extends @container {
    * paths. The list of paths is composed of the paths passed to the extractor and
    * `sys.path`.
    */
-  predicate isImportRoot(int n) { this.getName() = import_path_element(n) }
+  predicate isImportRoot(int n) { this.getAbsolutePath() = import_path_element(n) }
 
   /** Holds if this folder is the root folder for the standard library. */
   predicate isStdLibRoot(int major, int minor) {
