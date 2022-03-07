@@ -11,9 +11,9 @@ namespace Semmle.Extraction
 {
     /// <summary>
     /// State that needs to be available throughout the extraction process.
-    /// There is one Context object per trap output file.
+    /// There is one `Context` object per trap output file.
     /// </summary>
-    public class Context
+    public class Context : IDisposable
     {
         /// <summary>
         /// Access various extraction functions, e.g. logger, trap writer.
@@ -24,6 +24,12 @@ namespace Semmle.Extraction
         /// Access to the trap file.
         /// </summary>
         public TrapWriter TrapWriter { get; }
+
+        /// <summary>
+        /// The context used for writing to the shared TRAP file. This object is
+        /// shared by all threads.
+        /// </summary>
+        public ContextShared ContextShared { get; }
 
         /// <summary>
         /// Holds if assembly information should be prefixed to TRAP labels.
@@ -37,14 +43,14 @@ namespace Semmle.Extraction
         // A recursion guard against writing to the trap file whilst writing an id to the trap file.
         private bool writingLabel = false;
 
-        private readonly Queue<IEntity> labelQueue = new();
+        public readonly Queue<IEntity> LabelQueue = new();
 
-        protected void DefineLabel(IEntity entity)
+        public void DefineLabel(IEntity entity)
         {
             if (writingLabel)
             {
                 // Don't define a label whilst writing a label.
-                labelQueue.Enqueue(entity);
+                LabelQueue.Enqueue(entity);
             }
             else
             {
@@ -56,10 +62,8 @@ namespace Semmle.Extraction
                 finally
                 {
                     writingLabel = false;
-                    if (labelQueue.Any())
-                    {
-                        DefineLabel(labelQueue.Dequeue());
-                    }
+                    if (LabelQueue.TryDequeue(out var next))
+                        DefineLabel(next);
                 }
             }
         }
@@ -69,7 +73,8 @@ namespace Semmle.Extraction
         {
             if (idLabelCache.ContainsKey(id))
             {
-                this.Extractor.Message(new Message("Label collision for " + id, entity.Label.ToString(), CreateLocation(entity.ReportingLocation), "", Severity.Warning));
+                if (id != "*")
+                    this.Extractor.Message(new Message("Label collision for " + id, entity.Label.ToString(), CreateLocation(entity.ReportingLocation), "", Severity.Warning));
             }
             else
             {
@@ -81,12 +86,28 @@ namespace Semmle.Extraction
         protected Label GetNewLabel() => new Label(GetNewId());
 
         internal TEntity CreateEntity<TInit, TEntity>(CachedEntityFactory<TInit, TEntity> factory, object cacheKey, TInit init)
-            where TEntity : CachedEntity =>
-                cacheKey is ISymbol s ? CreateEntity(factory, s, init, symbolEntityCache) : CreateEntity(factory, cacheKey, init, objectEntityCache);
+            where TEntity : CachedEntity
+        {
+            if (cacheKey is ISymbol s)
+            {
+                return factory.IsShared(init)
+                    ? CreateEntityShared(factory, s, init, ContextShared.SymbolEntityCacheShared)
+                    : CreateEntity(factory, s, init, symbolEntityCache);
+            }
+
+            return factory.IsShared(init)
+                ? CreateEntityShared(factory, cacheKey, init, ContextShared.ObjectEntityCacheShared)
+                : CreateEntity(factory, cacheKey, init, objectEntityCache);
+        }
 
         internal TEntity CreateEntityFromSymbol<TSymbol, TEntity>(CachedEntityFactory<TSymbol, TEntity> factory, TSymbol init)
             where TSymbol : ISymbol
-            where TEntity : CachedEntity => CreateEntity(factory, init, init, symbolEntityCache);
+            where TEntity : CachedEntity
+        {
+            return factory.IsShared(init)
+                ? CreateEntityShared(factory, init, init, ContextShared.SymbolEntityCacheShared)
+                : CreateEntity(factory, init, init, symbolEntityCache);
+        }
 
         /// <summary>
         /// Creates and populates a new entity, or returns the existing one from the cache.
@@ -126,6 +147,43 @@ namespace Semmle.Extraction
         }
 
         /// <summary>
+        /// Creates and populates a new _shared_ entity, or returns the existing one from the shared cache.
+        /// </summary>
+        /// <param name="factory">The entity factory.</param>
+        /// <param name="cacheKey">The key used for caching.</param>
+        /// <param name="init">The initializer for the entity.</param>
+        /// <param name="dictionary">The shared dictionary to use for caching.</param>
+        /// <returns>The new/existing entity.</returns>
+        private TEntity CreateEntityShared<TInit, TCacheKey, TEntity>(CachedEntityFactory<TInit, TEntity> factory, TCacheKey cacheKey, TInit init, Dictionary<TCacheKey, CachedEntity> dictionary)
+            where TCacheKey : notnull
+            where TEntity : CachedEntity
+        {
+            TEntity ret;
+            ISymbol? symbol;
+
+            lock (dictionary)
+            {
+                if (dictionary.TryGetValue(cacheKey, out var cached))
+                    return (TEntity)cached.WithContext(this);
+
+                ret = factory.Create(this, init);
+                symbol = init as ISymbol;
+
+                if (ret.TrapStackBehaviour is not (TrapStackBehaviour.NoLabel or TrapStackBehaviour.OptionalLabel))
+                    throw new InternalError(symbol, $"Tag stack behaviour {ret.TrapStackBehaviour} is not supported for shared entities");
+
+                dictionary[cacheKey] = ret;
+            }
+
+            ContextShared.DefineLabel(ret);
+            using (StackGuard)
+            {
+                this.Try(null, symbol, () => ContextShared.WithWriter(trapFile => ret.Populate(trapFile)));
+                return ret;
+            }
+        }
+
+        /// <summary>
         /// Creates a fresh label with ID "*", and set it on the
         /// supplied <paramref name="entity"/> object.
         /// </summary>
@@ -147,24 +205,25 @@ namespace Semmle.Extraction
         /// The only reason for this is so that the call stack does not
         /// grow indefinitely, causing a potential stack overflow.
         /// </summary>
-        private readonly Queue<Action> populateQueue = new Queue<Action>();
+        public readonly LinkedList<Action> PopulateQueue = new();
 
         /// <summary>
         /// Enqueue the given action to be performed later.
         /// </summary>
         /// <param name="toRun">The action to run.</param>
-        public void PopulateLater(Action a)
+        public void PopulateLater(Action a, TextWriter? trapFile = null)
         {
+            trapFile ??= TrapWriter.Writer;
             var key = GetCurrentTagStackKey();
             if (key is not null)
             {
                 // If we are currently executing with a duplication guard, then the same
                 // guard must be used for the deferred action
-                populateQueue.Enqueue(() => WithDuplicationGuard(key, a));
+                PopulateQueue.AddLast(() => ContextShared.WithWriter(trapFile, () => WithDuplicationGuard(key, a)));
             }
             else
             {
-                populateQueue.Enqueue(a);
+                PopulateQueue.AddLast(() => ContextShared.WithWriter(trapFile, a));
             }
         }
 
@@ -173,11 +232,20 @@ namespace Semmle.Extraction
         /// </summary>
         public void PopulateAll()
         {
-            while (populateQueue.Any())
+            void ProcessLabelQueue()
             {
+                if (LabelQueue.TryDequeue(out var next))
+                    DefineLabel(next);
+            }
+
+            ProcessLabelQueue();
+
+            while (PopulateQueue.First is LinkedListNode<Action> next)
+            {
+                PopulateQueue.RemoveFirst();
                 try
                 {
-                    populateQueue.Dequeue()();
+                    next.Value();
                 }
                 catch (InternalError ex)
                 {
@@ -187,14 +255,18 @@ namespace Semmle.Extraction
                 {
                     ExtractionError($"Uncaught exception. {ex.Message}", null, CreateLocation(), ex.StackTrace);
                 }
+
+                ProcessLabelQueue();
             }
         }
 
-        protected Context(Extractor extractor, TrapWriter trapWriter, bool shouldAddAssemblyTrapPrefix = false)
+        protected Context(Extractor extractor, TrapWriter trapWriter, ContextShared contextShared, bool shouldAddAssemblyTrapPrefix = false)
         {
             Extractor = extractor;
             TrapWriter = trapWriter;
+            ContextShared = contextShared;
             ShouldAddAssemblyTrapPrefix = shouldAddAssemblyTrapPrefix;
+            ContextShared.RegisterContext(this);
         }
 
         private int currentRecursiveDepth = 0;
@@ -298,7 +370,7 @@ namespace Semmle.Extraction
                     throw new InternalError("Unexpected TrapStackBehaviour");
             }
 
-            var a = duplicationGuard && IsEntityDuplicationGuarded(entity, out var loc)
+            Action a = duplicationGuard && IsEntityDuplicationGuarded(entity, out var loc)
                 ? (() =>
                 {
                     var args = new object[TrapStackSuffix.Count + 2];
@@ -308,17 +380,17 @@ namespace Semmle.Extraction
                     {
                         args[i + 2] = TrapStackSuffix[i];
                     }
-                    WithDuplicationGuard(new Key(args), () => entity.Populate(TrapWriter.Writer));
+                    WithDuplicationGuard(new Key(TrapWriter.Writer, args), () => entity.Populate(TrapWriter.Writer));
                 })
-                : (Action)(() => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer)));
+                : () => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer));
 
             if (deferred)
-                populateQueue.Enqueue(a);
+                PopulateQueue.AddLast(a);
             else
                 a();
         }
 
-        protected virtual bool IsEntityDuplicationGuarded(IEntity entity, [NotNullWhen(returnValue: true)] out Entities.Location? loc)
+        protected virtual bool IsEntityDuplicationGuarded(CachedEntity entity, [NotNullWhen(returnValue: true)] out Entities.Location? loc)
         {
             loc = null;
             return false;
@@ -488,5 +560,16 @@ namespace Semmle.Extraction
 
         public virtual Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location) =>
             CreateLocation();
+
+        /// <summary>
+        /// Explicitly remove references to enable GC for entities stored in the
+        /// compilation-wide shared cache
+        /// </summary>
+        public virtual void Dispose()
+        {
+            objectEntityCache.Clear();
+            symbolEntityCache.Clear();
+            StackGuard.Dispose();
+        }
     }
 }

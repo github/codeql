@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Semmle.Extraction.Entities;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private TupleType(Context cx, INamedTypeSymbol init) : base(cx, init)
         {
-            tupleElementsLazy = new Lazy<Field?[]>(() => Symbol.GetTupleElementsMaybeNull().Select(t => t is null ? null : Field.Create(cx, t)).ToArray());
         }
 
         // All tuple types are "local types"
@@ -59,8 +58,8 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.type_location(this, Context.CreateLocation(l));
         }
 
-        private readonly Lazy<Field?[]> tupleElementsLazy;
-        public Field?[] TupleElements => tupleElementsLazy.Value;
+        public IEnumerable<Field?> TupleElements =>
+            Symbol.GetTupleElementsMaybeNull().Select(t => t is null ? null : Field.Create(Context, t));
 
         public override IEnumerable<Type> TypeMentions =>
             TupleElements.OfType<Field>().Select(e => e.Type);

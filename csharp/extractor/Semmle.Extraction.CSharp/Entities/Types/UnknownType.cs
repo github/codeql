@@ -20,20 +20,15 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override int GetHashCode() => 98744554;
-
-        public override bool Equals(object? obj)
-        {
-            return obj is not null && obj.GetType() == typeof(UnknownType);
-        }
-
         public static Type Create(Context cx) => UnknownTypeFactory.Instance.CreateEntity(cx, typeof(UnknownType), null);
 
         private class UnknownTypeFactory : CachedEntityFactory<ITypeSymbol?, UnknownType>
         {
             public static UnknownTypeFactory Instance { get; } = new UnknownTypeFactory();
 
-            public override UnknownType Create(Context cx, ITypeSymbol? init) => new UnknownType(cx);
+            public sealed override bool IsShared(ITypeSymbol? _) => true;
+
+            public override UnknownType Create(Context cx, ITypeSymbol? _) => new UnknownType(cx);
         }
     }
 }

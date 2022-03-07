@@ -277,6 +277,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write("::");
         }
 
+
         private static void BuildFunctionPointerTypeId(this IFunctionPointerTypeSymbol funptr, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined) =>
             BuildFunctionPointerSignature(funptr, trapFile, s => s.BuildOrWriteId(cx, trapFile, symbolBeingDefined));
 
@@ -645,5 +646,75 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this INamedTypeSymbol symbol) =>
             symbol.TypeArguments.Zip(symbol.TypeArgumentNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
+
+        public static bool IsAnonymousTypeExt(this ITypeSymbol type) =>
+            type.IsAnonymousType || type.Name.Contains("__AnonymousType");
+
+        /// <summary>
+        /// Returns `true` if this symbol is an anonymous type, or if it contains
+        /// an anonymous type.
+        /// </summary>
+        public static bool ContainsAnonymousType(this ISymbol symbol) =>
+            symbol.ContainsAnonymousType(new());
+
+        private static bool ContainsAnonymousType(this ISymbol symbol, HashSet<ISymbol> seen)
+        {
+            if (seen.Contains(symbol))
+                return false;
+            else
+                seen.Add(symbol);
+
+            bool TypeContains(ITypeSymbol type, HashSet<ISymbol> seen)
+            {
+                if (type.IsAnonymousTypeExt())
+                    return true;
+
+                if (type.ContainingSymbol is IMethodSymbol method && (method.ContainingType?.ContainsAnonymousType(seen) ?? false))
+                    return true;
+
+                if (type.BaseType?.SpecialType == SpecialType.System_MulticastDelegate)
+                {
+                    var invokeMethod = ((INamedTypeSymbol)type).DelegateInvokeMethod!;
+                    return invokeMethod.ReturnType.ContainsAnonymousType(seen) || invokeMethod.Parameters.Any(p => p.Type.ContainsAnonymousType(seen));
+                }
+
+                switch (type.TypeKind)
+                {
+                    case TypeKind.Array:
+                        var array = (IArrayTypeSymbol)type;
+                        return array.ElementType.ContainsAnonymousType(seen);
+                    case TypeKind.Class:
+                    case TypeKind.Interface:
+                    case TypeKind.Struct:
+                    case TypeKind.Enum:
+                    case TypeKind.Delegate:
+                    case TypeKind.Error:
+                        var named = (INamedTypeSymbol)type;
+                        return
+                            named.IsTupleType && named.GetTupleElementsMaybeNull().Any(t => t?.Type.ContainsAnonymousType(seen) ?? false)
+                            ||
+                            named.TypeArguments.Any(t => t.ContainsAnonymousType(seen));
+                    case TypeKind.Pointer:
+                        var ptr = (IPointerTypeSymbol)type;
+                        return ptr.PointedAtType.ContainsAnonymousType(seen);
+                    default:
+                        return false;
+                }
+            }
+
+            bool MethodContains(IMethodSymbol method, HashSet<ISymbol> seen) =>
+                method.TypeArguments.Any(t => t.ContainsAnonymousType(seen))
+                ||
+                method.ReturnType.ContainsAnonymousType(seen)
+                ||
+                method.Parameters.Any(p => p.Type.ContainsAnonymousType(seen));
+
+            return
+                symbol is ITypeSymbol type && TypeContains(type, seen) ||
+                symbol is IMethodSymbol method && MethodContains(method, seen) ||
+                (symbol.ContainingType?.ContainsAnonymousType(seen) ?? false);
+        }
+
+
     }
 }

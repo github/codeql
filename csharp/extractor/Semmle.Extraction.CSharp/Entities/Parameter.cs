@@ -10,13 +10,17 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity
     {
-        protected IEntity? Parent { get; set; }
+        private readonly IEntity? parent;
+        protected IEntity Parent =>
+            parent
+            ?? Method.Create(Context, Symbol.ContainingSymbol as IMethodSymbol)
+            ?? throw new InternalError(Symbol, "Couldn't get parent of symbol.");
         protected Parameter Original { get; }
 
         protected Parameter(Context cx, IParameterSymbol init, IEntity? parent, Parameter? original)
             : base(cx, init)
         {
-            Parent = parent;
+            this.parent = parent;
             Original = original ?? this;
         }
 
@@ -69,12 +73,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
-            if (Parent is null)
-                Parent = Method.Create(Context, Symbol.ContainingSymbol as IMethodSymbol);
-
-            if (Parent is null)
-                throw new InternalError(Symbol, "Couldn't get parent of symbol.");
-
             trapFile.WriteSubId(Parent);
             trapFile.Write('_');
             trapFile.Write(Ordinal);
@@ -105,7 +103,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.ModelError(Symbol, "Inconsistent parameter declaration");
 
             var type = Type.Create(Context, Symbol.Type);
-            trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent!, Original);
+            trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent, Original);
 
             foreach (var l in Symbol.Locations)
                 trapFile.param_location(this, Context.CreateLocation(l));
@@ -126,7 +124,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     ? () => Expression.Create(Context, defaultValueSyntax.Value, this, 0)
                     : () => Expression.CreateGenerated(Context, Symbol, this, 0, Location);
 
-                Context.PopulateLater(defaultValueExpressionCreation);
+                Context.PopulateLater(defaultValueExpressionCreation, trapFile);
             }
 
             if (!IsSourceDeclaration || !Symbol.FromSource())
@@ -207,21 +205,13 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write("__arglist;type");
         }
 
-        public override int GetHashCode()
-        {
-            return 98735267;
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is not null && obj.GetType() == typeof(VarargsType);
-        }
-
         public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateEntity(cx, typeof(VarargsType), null);
 
         private class VarargsTypeFactory : CachedEntityFactory<string?, VarargsType>
         {
             public static VarargsTypeFactory Instance { get; } = new VarargsTypeFactory();
+
+            public override bool IsShared(string? init) => true;
 
             public override VarargsType Create(Context cx, string? init) => new VarargsType(cx);
         }
@@ -238,21 +228,11 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var typeKey = VarargsType.Create(Context);
             // !! Maybe originaldefinition is wrong
-            trapFile.@params(this, "", typeKey, Ordinal, Kind.None, Parent!, this);
+            trapFile.@params(this, "", typeKey, Ordinal, Kind.None, Parent, this);
             trapFile.param_location(this, GeneratedLocation.Create(Context));
         }
 
-        protected override int Ordinal => ((Method)Parent!).OriginalDefinition.Symbol.Parameters.Length;
-
-        public override int GetHashCode()
-        {
-            return 9873567;
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is not null && obj.GetType() == typeof(VarargsParam);
-        }
+        protected override int Ordinal => ((Method)Parent).OriginalDefinition.Symbol.Parameters.Length;
 
         public static VarargsParam Create(Context cx, Method method) => VarargsParamFactory.Instance.CreateEntity(cx, typeof(VarargsParam), method);
 

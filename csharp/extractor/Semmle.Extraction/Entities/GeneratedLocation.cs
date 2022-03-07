@@ -24,10 +24,6 @@ namespace Semmle.Extraction.Entities
             trapFile.Write(",0,0,0,0");
         }
 
-        public override int GetHashCode() => 98732567;
-
-        public override bool Equals(object? obj) => obj is not null && obj.GetType() == typeof(GeneratedLocation);
-
         public static GeneratedLocation Create(Context cx) => GeneratedLocationFactory.Instance.CreateEntity(cx, typeof(GeneratedLocation), null);
 
         private class GeneratedLocationFactory : CachedEntityFactory<string?, GeneratedLocation>

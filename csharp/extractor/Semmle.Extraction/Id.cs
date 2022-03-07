@@ -53,14 +53,14 @@ namespace Semmle.Extraction
         /// <summary>
         /// Creates a new key by concatenating the contents of the supplied arguments.
         /// </summary>
-        public Key(params object[] args)
+        public Key(TextWriter trapFile, params object[] args)
         {
             trapBuilder = new StringWriter();
             foreach (var arg in args)
             {
                 if (arg is IEntity entity)
                 {
-                    var key = entity.Label;
+                    var key = entity.GetLabelForWriter(trapFile);
                     trapBuilder.Write("{#");
                     trapBuilder.Write(key.Value.ToString());
                     trapBuilder.Write("}");
@@ -140,18 +140,5 @@ namespace Semmle.Extraction
         }
 
         public override int GetHashCode() => 61 * Value;
-
-        /// <summary>
-        /// Constructs a unique string for this label.
-        /// </summary>
-        /// <param name="trapFile">The trap builder used to store the result.</param>
-        public void AppendTo(System.IO.TextWriter trapFile)
-        {
-            if (!Valid)
-                throw new InvalidOperationException("Attempt to use an invalid label");
-
-            trapFile.Write('#');
-            trapFile.Write(Value);
-        }
     }
 }

@@ -9,14 +9,11 @@ namespace Semmle.Extraction.CSharp.Entities
         private ArrayType(Context cx, IArrayTypeSymbol init)
             : base(cx, init)
         {
-            elementLazy = new Lazy<Type>(() => Create(cx, Symbol.ElementType));
         }
-
-        private readonly Lazy<Type> elementLazy;
 
         public int Rank => Symbol.Rank;
 
-        public Type ElementType => elementLazy.Value;
+        public Type ElementType => Create(Context, Symbol.ElementType);
 
         public override int Dimension => 1 + ElementType.Dimension;
 

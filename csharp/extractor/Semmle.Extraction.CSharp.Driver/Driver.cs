@@ -15,6 +15,8 @@ namespace Semmle.Extraction.CSharp
 
             Console.WriteLine($"Semmle.Extraction.CSharp.Driver: called with {string.Join(", ", args)}");
 
+            // System.Threading.Thread.Sleep(10000);
+
             if (args.Length > 0 && args[0] == "--dotnetexec")
             {
                 var compilerRegEx = new Regex(@"csc\.exe|mcs\.exe|csc\.dll", RegexOptions.Compiled);

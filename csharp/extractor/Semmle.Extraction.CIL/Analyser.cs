@@ -7,9 +7,9 @@ namespace Semmle.Extraction.CIL
 {
     public static class Analyser
     {
-        private static void ExtractCIL(TracingExtractor extractor, TrapWriter trapWriter, bool extractPdbs)
+        private static void ExtractCIL(TracingExtractor extractor, TrapWriter trapWriter, bool extractPdbs, ContextShared contextShared)
         {
-            using var cilContext = new Context(extractor, trapWriter, extractor.OutputPath, extractPdbs);
+            using var cilContext = new Context(extractor, trapWriter, extractor.OutputPath, extractPdbs, contextShared);
             cilContext.Populate(new Assembly(cilContext));
             cilContext.PopulateAll();
         }
@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CIL
         /// <param name="extractPdbs">Whether to extract PDBs.</param>
         /// <param name="trapFile">The path of the trap file.</param>
         /// <param name="extracted">Whether the file was extracted (false=cached).</param>
-        public static void ExtractCIL(Layout layout, string assemblyPath, ILogger logger, CommonOptions options, out string trapFile, out bool extracted)
+        public static void ExtractCIL(Layout layout, string assemblyPath, ILogger logger, CommonOptions options, ContextShared contextShared, out string trapFile, out bool extracted)
         {
             trapFile = "";
             extracted = false;
@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CIL
                 trapFile = trapWriter.TrapFile;
                 if (!options.Cache || !System.IO.File.Exists(trapFile))
                 {
-                    ExtractCIL(extractor, trapWriter, options.PDB);
+                    ExtractCIL(extractor, trapWriter, options.PDB, contextShared);
                     extracted = true;
                 }
             }

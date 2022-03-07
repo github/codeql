@@ -99,7 +99,7 @@ namespace Semmle.Extraction.CSharp.Entities
                             TypeMention.Create(Context, bt.Type, this, baseKey);
                         }
                     }
-                });
+                }, trapFile);
             }
 
             // Visit implemented interfaces
@@ -118,7 +118,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         {
                             TypeMention.Create(Context, bt.Type, this, interfaceKey);
                         }
-                    });
+                    }, trapFile);
                 }
             }
 
@@ -339,14 +339,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 yield break;
             }
         }
-
-        public override bool Equals(object? obj)
-        {
-            var other = obj as Type;
-            return other?.GetType() == GetType() && SymbolEqualityComparer.Default.Equals(other.Symbol, Symbol);
-        }
-
-        public override int GetHashCode() => SymbolEqualityComparer.Default.GetHashCode(Symbol);
     }
 
     internal abstract class Type<T> : Type where T : ITypeSymbol

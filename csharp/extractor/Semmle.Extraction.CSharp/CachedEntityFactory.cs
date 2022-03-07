@@ -1,3 +1,5 @@
+using Microsoft.CodeAnalysis;
+
 namespace Semmle.Extraction.CSharp
 {
     /// <summary>
@@ -13,6 +15,9 @@ namespace Semmle.Extraction.CSharp
         {
             return Create((Context)cx, init);
         }
+
+        public override bool IsShared(TInit init) =>
+            base.IsShared(init) && !(init is ISymbol symbol && symbol.ContainsAnonymousType());
 
         public abstract TEntity Create(Context cx, TInit init);
     }

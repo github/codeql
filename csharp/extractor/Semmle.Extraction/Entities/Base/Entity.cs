@@ -6,14 +6,15 @@ namespace Semmle.Extraction
 {
     public abstract class Entity : IEntity
     {
-        public virtual Context Context { get; }
+        protected Context _context;
+        public virtual Context Context => _context;
 
         protected Entity(Context context)
         {
-            this.Context = context;
+            _context = context;
         }
 
-        public Label Label { get; set; }
+        public Label Label { get; set; } = new Label(-1);
 
         public abstract void WriteId(EscapingTextWriter trapFile);
 
@@ -51,20 +52,8 @@ namespace Semmle.Extraction
             trapFile.WriteLine("=*");
         }
 
-#if DEBUG_LABELS
-        /// <summary>
-        /// Generates a debug string for this entity.
-        /// </summary>
-        public string GetDebugLabel()
-        {
-            using var writer = new EscapingTextWriter();
-            writer.WriteLabel(Label.Value);
-            writer.Write('=');
-            WriteQuotedId(writer);
-            return writer.ToString();
-        }
-#endif
+        public virtual Label GetLabelForWriter(TextWriter trapFile) => Label;
 
-        public override string ToString() => Label.ToString();
+        public override string ToString() => "Label.ToString()";
     }
 }

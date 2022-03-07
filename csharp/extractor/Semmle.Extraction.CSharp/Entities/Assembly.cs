@@ -38,18 +38,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override bool NeedsPopulation => true;
-
-        public override int GetHashCode() =>
-            Symbol is null ? 91187354 : Symbol.GetHashCode();
-
-        public override bool Equals(object? obj)
-        {
-            if (obj is Assembly other && other.GetType() == typeof(Assembly))
-                return Equals(Symbol, other.Symbol);
-
-            return false;
-        }
+        public override bool NeedsPopulation => Context.IsAssemblyScope;
 
         public static Extraction.Entities.Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
 

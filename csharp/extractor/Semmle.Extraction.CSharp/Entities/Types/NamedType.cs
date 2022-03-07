@@ -13,7 +13,6 @@ namespace Semmle.Extraction.CSharp.Entities
         private NamedType(Context cx, INamedTypeSymbol init, bool constructUnderlyingTupleType)
             : base(cx, init)
         {
-            typeArgumentsLazy = new Lazy<Type[]>(() => Symbol.TypeArguments.Select(t => Create(cx, t)).ToArray());
             this.constructUnderlyingTupleType = constructUnderlyingTupleType;
         }
 
@@ -43,12 +42,13 @@ namespace Semmle.Extraction.CSharp.Entities
             if (UsesTypeRef)
                 trapFile.typeref_type((NamedTypeRef)TypeRef, this);
 
+            var typeArguments = TypeArguments.ToArray();
             if (Symbol.IsGenericType)
             {
                 if (Symbol.IsBoundNullable())
                 {
                     // An instance of Nullable<T>
-                    trapFile.nullable_underlying_type(this, TypeArguments[0].TypeRef);
+                    trapFile.nullable_underlying_type(this, typeArguments[0].TypeRef);
                 }
                 else if (Symbol.IsReallyUnbound())
                 {
@@ -67,9 +67,9 @@ namespace Semmle.Extraction.CSharp.Entities
                         : Type.Create(Context, Symbol.ConstructedFrom);
                     trapFile.constructed_generic(this, unbound.TypeRef);
 
-                    for (var i = 0; i < TypeArguments.Length; ++i)
+                    for (var i = 0; i < typeArguments.Length; ++i)
                     {
-                        trapFile.type_arguments(TypeArguments[i].TypeRef, i, this);
+                        trapFile.type_arguments(typeArguments[i].TypeRef, i, this);
                     }
                 }
             }
@@ -94,10 +94,9 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private readonly Lazy<Type[]> typeArgumentsLazy;
         private readonly bool constructUnderlyingTupleType;
 
-        public Type[] TypeArguments => typeArgumentsLazy.Value;
+        public IEnumerable<Type> TypeArguments => Symbol.TypeArguments.Select(t => Create(Context, t));
 
         public override IEnumerable<Type> TypeMentions => TypeArguments;
 
@@ -126,11 +125,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => GetLocations(Symbol).FirstOrDefault();
 
-        private bool IsAnonymousType() => Symbol.IsAnonymousType || Symbol.Name.Contains("__AnonymousType");
-
         public override void WriteId(EscapingTextWriter trapFile)
         {
-            if (IsAnonymousType())
+            if (Symbol.IsAnonymousTypeExt())
             {
                 trapFile.Write('*');
             }
@@ -143,7 +140,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public sealed override void WriteQuotedId(EscapingTextWriter trapFile)
         {
-            if (IsAnonymousType())
+            if (Symbol.IsAnonymousTypeExt())
                 trapFile.Write('*');
             else
                 base.WriteQuotedId(trapFile);
@@ -163,7 +160,7 @@ namespace Semmle.Extraction.CSharp.Entities
             public override NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, true);
         }
 
-        // Do not create typerefs of constructed generics as they are always in the current trap file.
+        // Do not create typerefs of constructed generics as they are always in the shared trap file.
         // Create typerefs for constructed error types in case they are fully defined elsewhere.
         // We cannot use `!this.NeedsPopulation` because this would not be stable as it would depend on
         // the assembly that was being extracted at the time.
@@ -174,11 +171,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
     internal class NamedTypeRef : Type<INamedTypeSymbol>
     {
-        private readonly Type referencedType;
+        private Type ReferencedType => Type.Create(Context, Symbol);
 
         public NamedTypeRef(Context cx, INamedTypeSymbol symbol) : base(cx, symbol)
         {
-            referencedType = Type.Create(cx, symbol);
         }
 
         public static NamedTypeRef Create(Context cx, INamedTypeSymbol type) =>
@@ -190,6 +186,8 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static NamedTypeRefFactory Instance { get; } = new NamedTypeRefFactory();
 
+            public override bool IsShared(INamedTypeSymbol _) => false;
+
             public override NamedTypeRef Create(Context cx, INamedTypeSymbol init) => new NamedTypeRef(cx, init);
         }
 
@@ -197,7 +195,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
-            trapFile.WriteSubId(referencedType);
+            trapFile.WriteSubId(ReferencedType);
             trapFile.Write(";typeRef");
         }
 

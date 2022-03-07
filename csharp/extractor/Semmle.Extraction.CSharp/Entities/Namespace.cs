@@ -34,22 +34,15 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";namespace");
         }
 
-        public static Namespace Create(Context cx, INamespaceSymbol ns) => NamespaceFactory.Instance.CreateEntityFromSymbol(cx, ns);
+        public static Namespace Create(Context cx, INamespaceSymbol ns) => NamespaceFactory.Instance.CreateEntity(cx, (typeof(Namespace), ns.IsGlobalNamespace ? "" : ns.ToDisplayString()), ns);
 
         private class NamespaceFactory : CachedEntityFactory<INamespaceSymbol, Namespace>
         {
             public static NamespaceFactory Instance { get; } = new NamespaceFactory();
 
+            public sealed override bool IsShared(INamespaceSymbol _) => true;
+
             public override Namespace Create(Context cx, INamespaceSymbol init) => new Namespace(cx, init);
-        }
-
-        public override int GetHashCode() => QualifiedName.GetHashCode();
-
-        private string QualifiedName => Symbol.ToDisplayString();
-
-        public override bool Equals(object? obj)
-        {
-            return obj is Namespace ns && QualifiedName == ns.QualifiedName;
         }
     }
 }

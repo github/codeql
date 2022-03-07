@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         if (!nt.Symbol.IsReferenceType)
                         {
                             Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
-                            Create(Context, nts.ElementType, this, nt.TypeArguments[0]);
+                            Create(Context, nts.ElementType, this, nt.TypeArguments.Single());
                         }
                         else
                         {
@@ -102,7 +102,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         ((GenericNameSyntax)syntax)
                             .TypeArgumentList
                             .Arguments
-                            .Zip(type.TypeMentions, (s, t) => Create(Context, s, this, t)).Enumerate());
+                            .Zip(type.TypeMentions, (s, t) => Create(Context, s, this, t)).Enumerate(), trapFile);
                     return;
                 case SyntaxKind.QualifiedName:
                     var qns = (QualifiedNameSyntax)syntax;

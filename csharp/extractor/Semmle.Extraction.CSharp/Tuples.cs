@@ -50,7 +50,7 @@ namespace Semmle.Extraction.CSharp
         internal static void commentblock(this TextWriter trapFile, CommentBlock k) =>
             trapFile.WriteTuple("commentblock", k);
 
-        internal static void commentblock_binding(this TextWriter trapFile, CommentBlock commentBlock, Label entity, CommentBinding binding) =>
+        internal static void commentblock_binding(this TextWriter trapFile, CommentBlock commentBlock, IEntity entity, CommentBinding binding) =>
             trapFile.WriteTuple("commentblock_binding", commentBlock, entity, (int)binding);
 
         internal static void commentblock_child(this TextWriter trapFile, CommentBlock commentBlock, CommentLine commentLine, int child) =>
@@ -239,7 +239,7 @@ namespace Semmle.Extraction.CSharp
         internal static void methods(this TextWriter trapFile, Method method, string name, Type declType, Type retType, Method originalDefinition) =>
             trapFile.WriteTuple("methods", method, name, declType, retType, originalDefinition);
 
-        internal static void modifiers(this TextWriter trapFile, Label entity, string modifier) =>
+        internal static void modifiers(this TextWriter trapFile, Modifier entity, string modifier) =>
             trapFile.WriteTuple("modifiers", entity, modifier);
 
         internal static void mutator_invocation_mode(this TextWriter trapFile, Expression expr, int mode) =>

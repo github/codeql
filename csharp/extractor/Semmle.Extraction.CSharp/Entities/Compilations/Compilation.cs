@@ -72,6 +72,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public void PopulatePerformance(PerformanceMetrics p)
         {
+            // Performance metrics are populated after syntax trees and assemblies
+            // have been populated,so we need to make sure that the context used
+            // for this is registered
+            ContextShared.RegisterContext(Context);
             var trapFile = Context.TrapWriter.Writer;
             var index = 0;
             foreach (var metric in p.Metrics)

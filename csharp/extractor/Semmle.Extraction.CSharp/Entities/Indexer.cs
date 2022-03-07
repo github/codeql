@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     // The expression may need to reference parameters in the getter.
                     // So we need to arrange that the expression is populated after the getter.
-                    Context.PopulateLater(() => Expression.CreateFromNode(new ExpressionNodeInfo(Context, expressionBody, this, 0).SetType(Symbol.GetAnnotatedType())));
+                    Context.PopulateLater(() => Expression.CreateFromNode(new ExpressionNodeInfo(Context, expressionBody, this, 0).SetType(Symbol.GetAnnotatedType())), trapFile);
                 }
             }
 
@@ -101,6 +101,11 @@ namespace Semmle.Extraction.CSharp.Entities
         private class IndexerFactory : CachedEntityFactory<IPropertySymbol, Indexer>
         {
             public static IndexerFactory Instance { get; } = new IndexerFactory();
+
+            public override bool IsShared(IPropertySymbol init) =>
+                base.IsShared(init) &&
+                !init.Type.ContainsAnonymousType() &&
+                !init.Parameters.Any(p => p.Type.ContainsAnonymousType());
 
             public override Indexer Create(Context cx, IPropertySymbol init) => new Indexer(cx, init);
         }
