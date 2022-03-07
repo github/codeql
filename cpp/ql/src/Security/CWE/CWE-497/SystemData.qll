@@ -311,6 +311,12 @@ class RegQuery extends SystemData {
   override Expr getAnExpr() { regQuery(this, TReturnData(result)) }
 
   override predicate isSensitive() {
-    this.(FunctionCall).getAnArgument().getValue().toLowerCase().regexpMatch(".*(pass|token|key).*")
+    exists(Expr e |
+      (
+        regQuery(this, TSubKeyName(e)) or
+        regQuery(this, TValueName(e))
+      ) and
+      e.getValue().toLowerCase().regexpMatch(".*(pass|token|key).*")
+    )
   }
 }
