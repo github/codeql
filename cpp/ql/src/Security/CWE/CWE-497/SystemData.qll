@@ -236,7 +236,15 @@ class LogonUser extends SystemData {
   override predicate isSensitive() { any() }
 }
 
-private predicate regQuery(FunctionCall source, VariableAccess use) {
+private newtype TRegQueryParameter =
+  TSubKeyName(Expr e) or
+  TValueName(Expr e) or
+  TReturnData(Expr e)
+
+/**
+ * Registry query call (`source`) with information about parameters (`param`).
+ */
+private predicate regQuery(FunctionCall source, TRegQueryParameter param) {
   // LONG WINAPI RegQueryValue(
   //   _In_        HKEY    hKey,
   //   _In_opt_    LPCTSTR lpSubKey,
@@ -244,7 +252,10 @@ private predicate regQuery(FunctionCall source, VariableAccess use) {
   //   _Inout_opt_ PLONG   lpcbValue
   // );
   source.getTarget().hasGlobalName(["RegQueryValue", "RegQueryValueA", "RegQueryValueW"]) and
-  use = source.getArgument(2)
+  (
+    param = TSubKeyName(source.getArgument(1)) or
+    param = TReturnData(source.getArgument(2))
+  )
   or
   // LONG WINAPI RegQueryMultipleValues(
   //   _In_        HKEY    hKey,
@@ -258,7 +269,7 @@ private predicate regQuery(FunctionCall source, VariableAccess use) {
       .hasGlobalName([
           "RegQueryMultipleValues", "RegQueryMultipleValuesA", "RegQueryMultipleValuesW"
         ]) and
-  use = source.getArgument(3)
+  param = TReturnData(source.getArgument(3))
   or
   // LONG WINAPI RegQueryValueEx(
   //   _In_        HKEY    hKey,
@@ -269,7 +280,10 @@ private predicate regQuery(FunctionCall source, VariableAccess use) {
   //   _Inout_opt_ LPDWORD lpcbData
   // );
   source.getTarget().hasGlobalName(["RegQueryValueEx", "RegQueryValueExA", "RegQueryValueExW"]) and
-  use = source.getArgument(4)
+  (
+    param = TValueName(source.getArgument(1)) or
+    param = TReturnData(source.getArgument(4))
+  )
   or
   // LONG WINAPI RegGetValue(
   //   _In_        HKEY    hkey,
@@ -281,7 +295,11 @@ private predicate regQuery(FunctionCall source, VariableAccess use) {
   //   _Inout_opt_ LPDWORD pcbData
   // );
   source.getTarget().hasGlobalName(["RegGetValue", "RegGetValueA", "RegGetValueW"]) and
-  use = source.getArgument(5)
+  (
+    param = TSubKeyName(source.getArgument(1)) or
+    param = TValueName(source.getArgument(2)) or
+    param = TReturnData(source.getArgument(5))
+  )
 }
 
 /**
@@ -290,7 +308,7 @@ private predicate regQuery(FunctionCall source, VariableAccess use) {
 class RegQuery extends SystemData {
   RegQuery() { regQuery(this, _) }
 
-  override Expr getAnExpr() { regQuery(this, result) }
+  override Expr getAnExpr() { regQuery(this, TReturnData(result)) }
 
   override predicate isSensitive() {
     this.(FunctionCall).getAnArgument().getValue().toLowerCase().regexpMatch(".*(pass|token|key).*")
