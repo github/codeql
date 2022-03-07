@@ -36,8 +36,8 @@ function* deprecationMessages(dir) {
         try {
           const [_, sha, time, lineNumber] = line.match(blameRegExp);
           const date = new Date(time);
-          // check if it's within the last year
-          if (date.getTime() >= Date.now() - 365 * 24 * 60 * 60 * 1000) {
+          // check if it's within the last 14 months (a year, plus 2 months for safety, in case a PR was delayed)
+          if (date.getTime() >= Date.now() - 14 * 31 * 24 * 60 * 60 * 1000) {
             continue;
           }
           const message = `${file}:${lineNumber} was last updated on ${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
