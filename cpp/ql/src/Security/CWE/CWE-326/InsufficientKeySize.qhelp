@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Using cryptographic algorithms with a small key size can leave data vulnerable to being decrypted.</p>
+
+<p>Many cryptographic algorithms provided by cryptography libraries can be configured with key sizes that are
+vulnerable to brute force attacks. Using such a key size means that an attacker may be able to easily decrypt the
+encrypted data.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that you use a strong, modern cryptographic algorithm. Use at least AES-128 or RSA-2048.</p>
+
+</recommendation>
+<example>
+
+<p>The following code shows an example of using the <code>openssl</code> library to generate an RSA key.
+When creating a key, you must specify which key size to use. The first example uses 1024 bits, which is not
+considered sufficient. The second example uses 2048 bits, which is currently considered sufficient.</p>
+
+<sample src="InsufficientKeySize.c" />
+
+</example>
+<references>
+
+<li>NIST, FIPS 140 Annex a: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf">
+Approved Security Functions</a>.</li>
+<li>NIST, SP 800-131A: <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf">
+Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
+
+<!--  LocalWords:  CWE
+ -->
+
+</references>
+</qhelp>

@@ -120,13 +120,17 @@ predicate isBaseAdditionalFlowStep(
 }
 
 /**
+ * Gets a value that is (transitively) written to `query`, where `query` is a NoSQL sink.
+ *
  * This predicate allows us to propagate data flow through property writes and array constructors
  * within a query object, enabling the security query to pick up NoSQL injection vulnerabilities
  * involving more complex queries.
  */
 DataFlow::Node getASubexpressionWithinQuery(DataFlow::Node query) {
+  any(NosqlInjectionATMConfig cfg).isEffectiveSink(query) and
   exists(DataFlow::SourceNode receiver |
-    receiver.flowsTo(getASubexpressionWithinQuery*(query.getALocalSource())) and
+    receiver = [getASubexpressionWithinQuery(query), query].getALocalSource()
+  |
     result =
       [receiver.getAPropertyWrite().getRhs(), receiver.(DataFlow::ArrayCreationNode).getAnElement()]
   )

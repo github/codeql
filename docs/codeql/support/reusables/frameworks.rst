@@ -212,3 +212,5 @@ Python built-in support
    rsa, Cryptography library
    MarkupSafe, Escaping Library
    libtaxii, TAXII utility library
+   libxml2, XML processing library
+   lxml, XML processing library

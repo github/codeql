@@ -983,7 +983,6 @@ private class ParsedStringRegExp extends RegExp {
 /**
  * Holds if `source` may be interpreted as a regular expression.
  */
-cached
 private predicate isInterpretedAsRegExp(DataFlow::Node source) {
   // The first argument to an invocation of `Regexp.new` or `Regexp.compile`.
   source = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"]).getArgument(0)
@@ -1016,4 +1015,5 @@ private DataFlow::Node regExpSource(DataFlow::Node re, TypeBackTracker t) {
  * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
  * as a part of a regular expression.
  */
+cached
 DataFlow::Node regExpSource(DataFlow::Node re) { result = regExpSource(re, TypeBackTracker::end()) }
