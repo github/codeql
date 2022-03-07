@@ -1204,9 +1204,6 @@ module TaintTracking {
     override predicate appliesTo(Configuration cfg) { any() }
   }
 
-  /** Gets a variable that is defined exactly once. */
-  private Variable singleDef() { strictcount(result.getADefinition()) = 1 }
-
   /**
    * An equality test on `e.origin` or `e.source` where `e` is a `postMessage` event object,
    * considered as a sanitizer for `e`.
