@@ -533,5 +533,13 @@
   "TaintedFormatStringCustomizations Ruby/JS": [
     "javascript/ql/lib/semmle/javascript/security/dataflow/TaintedFormatStringCustomizations.qll",
     "ruby/ql/lib/codeql/ruby/security/TaintedFormatStringCustomizations.qll"
+  ],
+  "HttpToFileAccessQuery JS/Ruby": [
+    "javascript/ql/lib/semmle/javascript/security/dataflow/HttpToFileAccessQuery.qll",
+    "ruby/ql/lib/codeql/ruby/security/HttpToFileAccessQuery.qll"
+  ],
+  "HttpToFileAccessCustomizations JS/Ruby": [
+    "javascript/ql/lib/semmle/javascript/security/dataflow/HttpToFileAccessCustomizations.qll",
+    "ruby/ql/lib/codeql/ruby/security/HttpToFileAccessCustomizations.qll"
   ]
 }

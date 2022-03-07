@@ -6,10 +6,7 @@
  * `HttpToFileAccessCustomizations` should be imported instead.
  */
 
-import ruby
-import codeql.ruby.TaintTracking
-import codeql.ruby.DataFlow
-import codeql.ruby.security.HttpToFileAccessCustomizations::HttpToFileAccess
+private import HttpToFileAccessCustomizations::HttpToFileAccess
 
 /**
  * A taint tracking configuration for writing user-controlled data to files.

@@ -6,8 +6,7 @@
  * `HttpToFileAccessCustomizations` should be imported instead.
  */
 
-import javascript
-import HttpToFileAccessCustomizations::HttpToFileAccess
+private import HttpToFileAccessCustomizations::HttpToFileAccess
 
 /**
  * A taint tracking configuration for writing user-controlled data to files.
