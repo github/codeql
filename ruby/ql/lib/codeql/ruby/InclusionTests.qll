@@ -33,6 +33,9 @@ class InclusionTest extends DataFlow::Node instanceof InclusionTest::Range {
   boolean getPolarity() { result = super.getPolarity() }
 }
 
+/**
+ * Contains classes for recognizing array and string inclusion tests.
+ */
 module InclusionTest {
   /**
    * A expression that is equivalent to `A.include?(B)` or `!A.include?(B)`.

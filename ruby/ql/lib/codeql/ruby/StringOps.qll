@@ -7,6 +7,9 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.controlflow.CfgNodes
 private import InclusionTests
 
+/**
+ * Provides classes for reasoning about string-manipulating expressions.
+ */
 module StringOps {
   /**
    * A expression that is equivalent to `A.start_with?(B)` or `!A.start_with?(B)`.
@@ -31,6 +34,9 @@ module StringOps {
     boolean getPolarity() { result = super.getPolarity() }
   }
 
+  /**
+   * Provides classes implementing prefix test expressions.
+   */
   module StartsWith {
     /**
      * A expression that is equivalent to `A.start_with?(B)` or `!A.start_with?(B)`.
@@ -133,6 +139,9 @@ module StringOps {
     boolean getPolarity() { result = super.getPolarity() }
   }
 
+  /**
+   * Provides classes implementing suffix test expressions.
+   */
   module EndsWith {
     /**
      * An expression that is equivalent to `A.end_with?(B)` or `!A.end_with?(B)`.
