@@ -122,8 +122,7 @@ class RegExpTerm extends RegExpParent {
     or
     this = TRegExpQuantifier(re, start, end)
     or
-    this = TRegExpSequence(re, start, end) and
-    exists(seqChild(re, start, end, 1)) // if a sequence does not have more than one element, it should be treated as that element instead.
+    this = TRegExpSequence(re, start, end)
     or
     this = TRegExpSpecialChar(re, start, end)
     or
@@ -219,10 +218,17 @@ class RegExpTerm extends RegExpParent {
   }
 }
 
+pragma[nomagic]
+private predicate regExpSequence(RegExp re, int start, int end) {
+  re.sequence(start, end) and
+  exists(seqChild(re, start, end, 1)) // if a sequence does not have more than one element, it should be treated as that element instead.
+}
+
+cached
 newtype TRegExpParent =
   TRegExpLiteral(RegExp re) or
   TRegExpQuantifier(RegExp re, int start, int end) { re.qualifiedItem(start, end, _, _) } or
-  TRegExpSequence(RegExp re, int start, int end) { re.sequence(start, end) } or
+  TRegExpSequence(RegExp re, int start, int end) { regExpSequence(re, start, end) } or
   TRegExpAlt(RegExp re, int start, int end) { re.alternation(start, end) } or
   TRegExpCharacterClass(RegExp re, int start, int end) { re.charSet(start, end) } or
   TRegExpCharacterRange(RegExp re, int start, int end) { re.charRange(_, start, _, _, end) } or
@@ -313,10 +319,7 @@ class RegExpRange extends RegExpQuantifier {
 }
 
 class RegExpSequence extends RegExpTerm, TRegExpSequence {
-  RegExpSequence() {
-    this = TRegExpSequence(re, start, end) and
-    exists(seqChild(re, start, end, 1)) // if a sequence does not have more than one element, it should be treated as that element instead.
-  }
+  RegExpSequence() { this = TRegExpSequence(re, start, end) }
 
   override RegExpTerm getChild(int i) { result = seqChild(re, start, end, i) }
 
