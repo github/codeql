@@ -7,7 +7,10 @@ class ZipSlipConfig extends TaintTracking::Configuration {
   ZipSlipConfig() { this = "ZipSlipConfig" }
 
   override predicate isSource(DataFlow::Node source) { 
-     source = API::moduleImport("zipfile").getMember("ZipFile").getACall() 
+    source = API::moduleImport("zipfile").getMember("ZipFile").getACall() or 
+    source = API::moduleImport("tarfile").getMember("open").getACall() or 
+    source = API::moduleImport("gzip").getMember("open").getACall() or 
+    source = API::moduleImport("bz2").getMember("open").getACall() 
   }
   
   override predicate isSink(DataFlow::Node sink) { 
