@@ -235,12 +235,12 @@ module StringOps {
    */
   class EndsWith extends DataFlow::Node instanceof EndsWith::Range {
     /**
-     * Gets the `A` in `A.startsWith(B)`.
+     * Gets the `A` in `A.endsWith(B)`.
      */
     DataFlow::Node getBaseString() { result = super.getBaseString() }
 
     /**
-     * Gets the `B` in `A.startsWith(B)`.
+     * Gets the `B` in `A.endsWith(B)`.
      */
     DataFlow::Node getSubstring() { result = super.getSubstring() }
 
