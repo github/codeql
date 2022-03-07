@@ -3,6 +3,12 @@
  * writing user-controlled data to files, as well as extension points
  * for adding your own.
  */
+
+/**
+ * Provides default sources, sinks and sanitizers for reasoning about
+ * writing user-controlled data to files, as well as extension points
+ * for adding your own.
+ */
 module HttpToFileAccess {
   import HttpToFileAccessSpecific
 
