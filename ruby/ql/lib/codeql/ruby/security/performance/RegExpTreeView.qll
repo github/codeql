@@ -60,6 +60,19 @@ module RegExpFlags {
 }
 
 /**
+ * Provides regular expression patterns.
+ */
+module RegExpPatterns {
+  /**
+   * Gets a pattern that matches common top-level domain names in lower case.
+   */
+  string commonTLD() {
+    // according to ranking by http://google.com/search?q=site:.<<TLD>>
+    result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
+  }
+}
+
+/**
  * An element containing a regular expression term, that is, either
  * a string literal (parsed as a regular expression)
  * or another regular expression term.
