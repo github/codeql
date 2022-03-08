@@ -66,6 +66,7 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
    *   S s;
    *   return &s.x; // BAD: &s.x is an address of a variable on the stack.
    * }
+   * ```
    */
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node2.asInstruction().(FieldAddressInstruction).getObjectAddressOperand() = node1.asOperand()
