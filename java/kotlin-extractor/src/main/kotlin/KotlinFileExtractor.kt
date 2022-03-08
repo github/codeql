@@ -73,6 +73,7 @@ open class KotlinFileExtractor(
             }
 
             file.declarations.map { extractDeclaration(it) }
+            extractStaticInitializer(file)
             CommentExtractor(this, file, tw.fileId).extract()
         }
     }
@@ -467,72 +468,110 @@ open class KotlinFileExtractor(
         return type
     }
 
+    private fun extractStaticInitializer(file: IrFile) {
+        with("static initializer extraction", file) {
+            extractDeclInitializers(file.declarations, true) {
+                val parentId = extractFileClass(file)
+                val clinitLabel = getFunctionLabel(
+                    file,
+                    parentId,
+                    "<clinit>",
+                    listOf(),
+                    pluginContext.irBuiltIns.unitType,
+                    extensionReceiverParameter = null,
+                    functionTypeParameters = listOf(),
+                    classTypeArgsIncludingOuterClasses = listOf()
+                )
+                val clinitId = tw.getLabelFor<DbMethod>(clinitLabel)
+                val returnType = useType(pluginContext.irBuiltIns.unitType)
+                tw.writeMethods(clinitId, "<clinit>", "<clinit>()", returnType.javaResult.id, parentId, clinitId)
+                tw.writeMethodsKotlinType(clinitId, returnType.kotlinResult.id)
+
+                val locId = tw.getWholeFileLocation()
+                tw.writeHasLocation(clinitId, locId)
+
+                // add and return body block:
+                Pair(tw.getFreshIdLabel<DbBlock>().also({
+                    tw.writeStmts_block(it, clinitId, 0, clinitId)
+                    tw.writeHasLocation(it, locId)
+                }), clinitId)
+            }
+        }
+    }
+
     private fun extractInstanceInitializerBlock(parent: StmtParent, enclosingConstructor: IrConstructor) {
         with("object initializer block", enclosingConstructor) {
             val constructorId = useFunction<DbConstructor>(enclosingConstructor)
-            val blockId by lazy {
-                tw.getFreshIdLabel<DbBlock>().also {
-                    tw.writeStmts_block(it, parent.parent, parent.idx, constructorId)
-                    val locId = tw.getLocation(enclosingConstructor)
-                    tw.writeHasLocation(it, locId)
-                }
-            }
             val enclosingClass = enclosingConstructor.parentClassOrNull
             if (enclosingClass == null) {
                 logger.warnElement("Constructor's parent is not a class", enclosingConstructor)
                 return
             }
 
-            // body content with field initializers and init blocks
-            var idx = 0
-            for (decl in enclosingClass.declarations) {
-                when (decl) {
-                    is IrProperty -> {
-                        val backingField = decl.backingField
-                        val initializer = backingField?.initializer
+            extractDeclInitializers(enclosingClass.declarations, false) {
+                Pair(tw.getFreshIdLabel<DbBlock>().also({
+                    tw.writeStmts_block(it, parent.parent, parent.idx, constructorId)
+                    val locId = tw.getLocation(enclosingConstructor)
+                    tw.writeHasLocation(it, locId)
+                }), constructorId)
+            }
+        }
+    }
 
-                        if (backingField == null || backingField.isStatic || initializer == null) {
-                            continue
-                        }
+    private fun extractDeclInitializers(declarations: List<IrDeclaration>, extractStaticInitializers: Boolean, makeEnclosingBlock: () -> Pair<Label<DbBlock>, Label<out DbCallable>>) {
+        val blockAndFunctionId by lazy {
+            makeEnclosingBlock()
+        }
 
-                        val expr = initializer.expression
+        // Extract field initializers and init blocks (the latter can only occur in object initializers)
+        var idx = 0
+        for (decl in declarations) {
+            when (decl) {
+                is IrProperty -> {
+                    val backingField = decl.backingField
+                    val initializer = backingField?.initializer
 
-                        val declLocId = tw.getLocation(decl)
-                        val stmtId = tw.getFreshIdLabel<DbExprstmt>()
-                        tw.writeStmts_exprstmt(stmtId, blockId, idx++, constructorId)
-                        tw.writeHasLocation(stmtId, declLocId)
-                        val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
-                        val type = useType(expr.type)
-                        tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, stmtId, 0)
-                        tw.writeExprsKotlinType(assignmentId, type.kotlinResult.id)
-                        tw.writeHasLocation(assignmentId, declLocId)
-                        tw.writeCallableEnclosingExpr(assignmentId, constructorId)
-                        tw.writeStatementEnclosingExpr(assignmentId, stmtId)
-                        tw.writeKtInitializerAssignment(assignmentId)
-
-                        val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-                        val lhsType = useType(backingField.type)
-                        tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, assignmentId, 0)
-                        tw.writeExprsKotlinType(lhsId, lhsType.kotlinResult.id)
-                        tw.writeHasLocation(lhsId, declLocId)
-                        tw.writeCallableEnclosingExpr(lhsId, constructorId)
-                        tw.writeStatementEnclosingExpr(lhsId, stmtId)
-                        val vId = useField(backingField)
-                        tw.writeVariableBinding(lhsId, vId)
-
-                        extractExpressionExpr(expr, constructorId, assignmentId, 1, stmtId)
+                    if (backingField == null || backingField.isStatic != extractStaticInitializers || initializer == null) {
+                        continue
                     }
-                    is IrAnonymousInitializer -> {
-                        if (decl.isStatic) {
-                            continue
-                        }
 
-                        for (stmt in decl.body.statements) {
-                            extractStatement(stmt, constructorId, blockId, idx++)
-                        }
-                    }
-                    else -> continue
+                    val expr = initializer.expression
+
+                    val declLocId = tw.getLocation(decl)
+                    val stmtId = tw.getFreshIdLabel<DbExprstmt>()
+                    tw.writeStmts_exprstmt(stmtId, blockAndFunctionId.first, idx++, blockAndFunctionId.second)
+                    tw.writeHasLocation(stmtId, declLocId)
+                    val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
+                    val type = useType(expr.type)
+                    tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, stmtId, 0)
+                    tw.writeExprsKotlinType(assignmentId, type.kotlinResult.id)
+                    tw.writeHasLocation(assignmentId, declLocId)
+                    tw.writeCallableEnclosingExpr(assignmentId, blockAndFunctionId.second)
+                    tw.writeStatementEnclosingExpr(assignmentId, stmtId)
+                    tw.writeKtInitializerAssignment(assignmentId)
+
+                    val lhsId = tw.getFreshIdLabel<DbVaraccess>()
+                    val lhsType = useType(backingField.type)
+                    tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, assignmentId, 0)
+                    tw.writeExprsKotlinType(lhsId, lhsType.kotlinResult.id)
+                    tw.writeHasLocation(lhsId, declLocId)
+                    tw.writeCallableEnclosingExpr(lhsId, blockAndFunctionId.second)
+                    tw.writeStatementEnclosingExpr(lhsId, stmtId)
+                    val vId = useField(backingField)
+                    tw.writeVariableBinding(lhsId, vId)
+
+                    extractExpressionExpr(expr, blockAndFunctionId.second, assignmentId, 1, stmtId)
                 }
+                is IrAnonymousInitializer -> {
+                    if (decl.isStatic) {
+                        continue
+                    }
+
+                    for (stmt in decl.body.statements) {
+                        extractStatement(stmt, blockAndFunctionId.second, blockAndFunctionId.first, idx++)
+                    }
+                }
+                else -> continue
             }
         }
     }
