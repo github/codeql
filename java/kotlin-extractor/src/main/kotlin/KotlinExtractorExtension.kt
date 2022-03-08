@@ -54,7 +54,10 @@ class KotlinExtractorExtension(
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         try {
             runExtractor(moduleFragment, pluginContext)
-        } catch(e: Exception) {
+        // We catch Throwable rather than Exception, as we want to
+        // continue trying to extract everything else even if we get a
+        // stack overflow or an assertion failure in one file.
+        } catch(e: Throwable) {
             // If we get an exception at the top level, then we don't
             // have many options. We just print it to stderr, and then
             // return so the rest of the compilation can complete.
@@ -269,7 +272,10 @@ private fun doFile(
                     logger.warn("Failed to rename $trapTmpFile to $trapFile")
                 }
             }
-        } catch (e: Exception) {
+        // We catch Throwable rather than Exception, as we want to
+        // continue trying to extract everything else even if we get a
+        // stack overflow or an assertion failure in one file.
+        } catch (e: Throwable) {
             logger.error("Failed to extract '$srcFilePath'. Partial TRAP file location is $trapTmpFile", e)
             fileExtractionProblems.setNonRecoverableProblem()
         }

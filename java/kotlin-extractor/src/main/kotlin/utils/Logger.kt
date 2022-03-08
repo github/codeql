@@ -166,7 +166,7 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
     fun trace(msg: String) {
         loggerBase.trace(tw, msg)
     }
-    fun trace(msg: String, exn: Exception) {
+    fun trace(msg: String, exn: Throwable) {
         trace(msg + "\n" + exn.stackTraceToString())
     }
     fun debug(msg: String) {
@@ -180,7 +180,7 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
     fun warn(msg: String, extraInfo: String?) {
         loggerBase.warn(tw, msg, extraInfo)
     }
-    fun warn(msg: String, exn: Exception) {
+    fun warn(msg: String, exn: Throwable) {
         warn(msg, exn.stackTraceToString())
     }
     fun warn(msg: String) {
@@ -193,7 +193,7 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
     fun error(msg: String) {
         error(msg, null)
     }
-    fun error(msg: String, exn: Exception) {
+    fun error(msg: String, exn: Throwable) {
         error(msg, exn.stackTraceToString())
     }
 }
