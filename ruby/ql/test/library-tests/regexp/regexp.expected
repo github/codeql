@@ -1,7 +1,7 @@
 groupName
-| regexp.rb:52:2:52:11 | (?<id>\\w+) | d |
-| regexp.rb:53:2:53:12 | (?'foo'fo+) | oo |
-| regexp.rb:57:2:57:11 | (?<qux>q+) | ux |
+| regexp.rb:52:2:52:11 | (?<id>\\w+) | id |
+| regexp.rb:53:2:53:12 | (?'foo'fo+) | foo |
+| regexp.rb:57:2:57:11 | (?<qux>q+) | qux |
 groupNumber
 | regexp.rb:46:2:46:6 | (foo) | 1 |
 | regexp.rb:47:4:47:8 | (o\|b) | 1 |
