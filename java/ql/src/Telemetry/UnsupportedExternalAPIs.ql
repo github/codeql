@@ -7,7 +7,7 @@
  */
 
 import java
-import ExternalAPI
+import ExternalApi
 import semmle.code.java.GeneratedFiles
 
 from ExternalApi api, int usages

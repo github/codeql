@@ -7,12 +7,12 @@
  */
 
 import csharp
-import ExternalAPI
+import ExternalApi
 
 from int usages, string info
 where
   usages =
-    strictcount(Call c, ExternalAPI api |
+    strictcount(Call c, ExternalApi api |
       c.getTarget() = api and
       api.getInfoPrefix() = info and
       not api.isUninteresting()

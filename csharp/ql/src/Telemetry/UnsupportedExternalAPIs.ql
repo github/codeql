@@ -7,9 +7,9 @@
  */
 
 import csharp
-import ExternalAPI
+import ExternalApi
 
-from ExternalAPI api, int usages
+from ExternalApi api, int usages
 where
   not api.isUninteresting() and
   not api.isSupported() and

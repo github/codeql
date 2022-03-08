@@ -10,21 +10,21 @@ private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
 /**
+ * A test library.
+ */
+class TestLibrary extends RefType {
+  TestLibrary() {
+    this.getNamespace()
+        .getName()
+        .matches(["NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%"])
+  }
+}
+
+/**
  * An external API from either the C# Standard Library or a 3rd party library.
  */
-class ExternalAPI extends Callable {
-  ExternalAPI() { this.fromLibrary() }
-
-  /** Holds if this API is not worth supporting */
-  predicate isUninteresting() { this.isTestLibrary() or this.isParameterlessConstructor() }
-
-  /** Holds if this API is is a constructor without parameters */
-  private predicate isParameterlessConstructor() {
-    this instanceof Constructor and this.getNumberOfParameters() = 0
-  }
-
-  /** Holds if this API is part of a common testing library or framework */
-  private predicate isTestLibrary() { this.getDeclaringType() instanceof TestLibrary }
+class ExternalApi extends Callable {
+  ExternalApi() { this.fromLibrary() }
 
   /**
    * Gets the unbound type, name and parameter types of this API.
@@ -53,7 +53,7 @@ class ExternalAPI extends Callable {
   /**
    * Gets the assembly file name, namespace and signature of this API.
    */
-  string getInfo() { result = getInfoPrefix() + "#" + getSignature() }
+  string getInfo() { result = this.getInfoPrefix() + "#" + this.getSignature() }
 
   /** Gets a node that is an input to a call to this API. */
   private DataFlow::Node getAnInput() {
@@ -78,6 +78,17 @@ class ExternalAPI extends Callable {
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }
 
+  /** Holds if this API is is a constructor without parameters */
+  private predicate isParameterlessConstructor() {
+    this instanceof Constructor and this.getNumberOfParameters() = 0
+  }
+
+  /** Holds if this API is part of a common testing library or framework */
+  private predicate isTestLibrary() { this.getDeclaringType() instanceof TestLibrary }
+
+  /** Holds if this API is not worth supporting */
+  predicate isUninteresting() { this.isTestLibrary() or this.isParameterlessConstructor() }
+
   /** Holds if this API is a known source. */
   predicate isSource() {
     this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
@@ -88,12 +99,4 @@ class ExternalAPI extends Callable {
 
   /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
   predicate isSupported() { this.hasSummary() or this.isSource() or this.isSink() }
-}
-
-private class TestLibrary extends RefType {
-  TestLibrary() {
-    this.getNamespace()
-        .getName()
-        .matches(["NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%"])
-  }
 }
