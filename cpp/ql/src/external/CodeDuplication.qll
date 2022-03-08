@@ -2,14 +2,14 @@
 
 import cpp
 
-private newtype TDuplicationOrSimilarity = MKDuplicationOrSimilarity()
+deprecated private newtype TDuplicationOrSimilarity = MKDuplicationOrSimilarity()
 
 /**
  * DEPRECATED: This class is no longer used.
  *
  * A token block used for detection of duplicate and similar code.
  */
-class Copy extends TDuplicationOrSimilarity {
+deprecated class Copy extends TDuplicationOrSimilarity {
   /** Gets the index of the token in this block starting at the location `loc`, if any. */
   int tokenStartingAt(Location loc) { none() }
 
@@ -63,7 +63,7 @@ class Copy extends TDuplicationOrSimilarity {
  *
  * A block of duplicated code.
  */
-class DuplicateBlock extends Copy {
+deprecated class DuplicateBlock extends Copy {
   override string toString() {
     result = "Duplicate code: " + this.sourceLines() + " duplicated lines."
   }
@@ -74,21 +74,29 @@ class DuplicateBlock extends Copy {
  *
  * A block of similar code.
  */
-class SimilarBlock extends Copy {
+deprecated class SimilarBlock extends Copy {
   override string toString() {
     result = "Similar code: " + this.sourceLines() + " almost duplicated lines."
   }
 }
 
-/** Gets a function with a body and a location. */
-FunctionDeclarationEntry sourceMethod() {
+/**
+ * DEPRECATED: The `CodeDuplication` library will be removed in a future release.
+ *
+ * Gets a function with a body and a location.
+ */
+deprecated FunctionDeclarationEntry sourceMethod() {
   result.isDefinition() and
   exists(result.getLocation()) and
   numlines(unresolveElement(result.getFunction()), _, _, _)
 }
 
-/** Gets the number of member functions in `c` with a body and a location. */
-int numberOfSourceMethods(Class c) {
+/**
+ * DEPRECATED: The `CodeDuplication` library will be removed in a future release.
+ *
+ * Gets the number of member functions in `c` with a body and a location.
+ */
+deprecated int numberOfSourceMethods(Class c) {
   result =
     count(FunctionDeclarationEntry m |
       m = sourceMethod() and
@@ -96,7 +104,7 @@ int numberOfSourceMethods(Class c) {
     )
 }
 
-private predicate blockCoversStatement(int equivClass, int first, int last, Stmt stmt) {
+deprecated private predicate blockCoversStatement(int equivClass, int first, int last, Stmt stmt) {
   exists(DuplicateBlock b, Location loc |
     stmt.getLocation() = loc and
     first = b.tokenStartingAt(loc) and
@@ -105,13 +113,13 @@ private predicate blockCoversStatement(int equivClass, int first, int last, Stmt
   )
 }
 
-private Stmt statementInMethod(FunctionDeclarationEntry m) {
+deprecated private Stmt statementInMethod(FunctionDeclarationEntry m) {
   result.getParent+() = m.getBlock() and
   not result.getLocation() instanceof UnknownStmtLocation and
   not result instanceof BlockStmt
 }
 
-private predicate duplicateStatement(
+deprecated private predicate duplicateStatement(
   FunctionDeclarationEntry m1, FunctionDeclarationEntry m2, Stmt s1, Stmt s2
 ) {
   exists(int equivClass, int first, int last |
@@ -125,31 +133,39 @@ private predicate duplicateStatement(
 }
 
 /**
+ * DEPRECATED: Information on duplicated statements is no longer available.
+ *
  * Holds if `m1` is a function with `total` lines, and `m2` is a function
  * that has `duplicate` lines in common with `m1`.
  */
-predicate duplicateStatements(
+deprecated predicate duplicateStatements(
   FunctionDeclarationEntry m1, FunctionDeclarationEntry m2, int duplicate, int total
 ) {
   duplicate = strictcount(Stmt s | duplicateStatement(m1, m2, s, _)) and
   total = strictcount(statementInMethod(m1))
 }
 
-/** Holds if `m` and other are identical functions. */
-predicate duplicateMethod(FunctionDeclarationEntry m, FunctionDeclarationEntry other) {
+/**
+ * DEPRECATED: Information on duplicated methods is no longer available.
+ *
+ *  Holds if `m` and other are identical functions.
+ */
+deprecated predicate duplicateMethod(FunctionDeclarationEntry m, FunctionDeclarationEntry other) {
   exists(int total | duplicateStatements(m, other, total, total))
 }
 
 /**
+ * DEPRECATED: Information on similar lines is no longer available.
+ *
  * INTERNAL: do not use.
  *
  * Holds if `line` in `f` is similar to a line somewhere else.
  */
-predicate similarLines(File f, int line) {
+deprecated predicate similarLines(File f, int line) {
   exists(SimilarBlock b | b.sourceFile() = f and line in [b.sourceStartLine() .. b.sourceEndLine()])
 }
 
-private predicate similarLinesPerEquivalenceClass(int equivClass, int lines, File f) {
+deprecated private predicate similarLinesPerEquivalenceClass(int equivClass, int lines, File f) {
   lines =
     strictsum(SimilarBlock b, int toSum |
       (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
@@ -159,7 +175,7 @@ private predicate similarLinesPerEquivalenceClass(int equivClass, int lines, Fil
     )
 }
 
-private predicate similarLinesCoveredFiles(File f, File otherFile) {
+deprecated private predicate similarLinesCoveredFiles(File f, File otherFile) {
   exists(int numLines | numLines = f.getMetrics().getNumberOfLines() |
     exists(int coveredApprox |
       coveredApprox =
@@ -175,8 +191,12 @@ private predicate similarLinesCoveredFiles(File f, File otherFile) {
   )
 }
 
-/** Holds if `coveredLines` lines of `f` are similar to lines in `otherFile`. */
-predicate similarLinesCovered(File f, int coveredLines, File otherFile) {
+/**
+ * DEPRECATED: Information on similar lines is no longer available.
+ *
+ * Holds if `coveredLines` lines of `f` are similar to lines in `otherFile`.
+ */
+deprecated predicate similarLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getMetrics().getNumberOfLines() |
     similarLinesCoveredFiles(f, otherFile) and
     exists(int notCovered |
@@ -191,17 +211,19 @@ predicate similarLinesCovered(File f, int coveredLines, File otherFile) {
 }
 
 /**
+ * DEPRECATED: Information on duplicate lines is no longer available.
+ *
  * INTERNAL: do not use.
  *
  * Holds if `line` in `f` is duplicated by a line somewhere else.
  */
-predicate duplicateLines(File f, int line) {
+deprecated predicate duplicateLines(File f, int line) {
   exists(DuplicateBlock b |
     b.sourceFile() = f and line in [b.sourceStartLine() .. b.sourceEndLine()]
   )
 }
 
-private predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, File f) {
+deprecated private predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, File f) {
   lines =
     strictsum(DuplicateBlock b, int toSum |
       (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
@@ -211,8 +233,12 @@ private predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, F
     )
 }
 
-/** Holds if `coveredLines` lines of `f` are duplicates of lines in `otherFile`. */
-predicate duplicateLinesCovered(File f, int coveredLines, File otherFile) {
+/**
+ * DEPRECATED: Information on duplicate lines is no longer available.
+ *
+ *  Holds if `coveredLines` lines of `f` are duplicates of lines in `otherFile`.
+ */
+deprecated predicate duplicateLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getMetrics().getNumberOfLines() |
     exists(int coveredApprox |
       coveredApprox =
@@ -236,8 +262,12 @@ predicate duplicateLinesCovered(File f, int coveredLines, File otherFile) {
   )
 }
 
-/** Holds if most of `f` (`percent`%) is similar to `other`. */
-predicate similarFiles(File f, File other, int percent) {
+/**
+ * DEPRECATED: Information on similar files is no longer available.
+ *
+ * Holds if most of `f` (`percent`%) is similar to `other`.
+ */
+deprecated predicate similarFiles(File f, File other, int percent) {
   exists(int covered, int total |
     similarLinesCovered(f, covered, other) and
     total = f.getMetrics().getNumberOfLines() and
@@ -247,8 +277,12 @@ predicate similarFiles(File f, File other, int percent) {
   not duplicateFiles(f, other, _)
 }
 
-/** Holds if most of `f` (`percent`%) is duplicated by `other`. */
-predicate duplicateFiles(File f, File other, int percent) {
+/**
+ * DEPRECATED: Information on duplicate files is no longer available.
+ *
+ *  Holds if most of `f` (`percent`%) is duplicated by `other`.
+ */
+deprecated predicate duplicateFiles(File f, File other, int percent) {
   exists(int covered, int total |
     duplicateLinesCovered(f, covered, other) and
     total = f.getMetrics().getNumberOfLines() and
@@ -258,10 +292,12 @@ predicate duplicateFiles(File f, File other, int percent) {
 }
 
 /**
+ * DEPRECATED: Information on duplciate classes is no longer available.
+ *
  * Holds if most member functions of `c` (`numDup` out of `total`) are
  * duplicates of member functions in `other`.
  */
-predicate mostlyDuplicateClassBase(Class c, Class other, int numDup, int total) {
+deprecated predicate mostlyDuplicateClassBase(Class c, Class other, int numDup, int total) {
   numDup =
     strictcount(FunctionDeclarationEntry m1 |
       exists(FunctionDeclarationEntry m2 |
@@ -277,11 +313,13 @@ predicate mostlyDuplicateClassBase(Class c, Class other, int numDup, int total) 
 }
 
 /**
+ * DEPRECATED: Information on duplciate classes is no longer available.
+ *
  * Holds if most member functions of `c` are duplicates of member functions in
  * `other`. Provides the human-readable `message` to describe the amount of
  * duplication.
  */
-predicate mostlyDuplicateClass(Class c, Class other, string message) {
+deprecated predicate mostlyDuplicateClass(Class c, Class other, string message) {
   exists(int numDup, int total |
     mostlyDuplicateClassBase(c, other, numDup, total) and
     (
@@ -305,21 +343,31 @@ predicate mostlyDuplicateClass(Class c, Class other, string message) {
   )
 }
 
-/** Holds if `f` and `other` are similar or duplicates. */
-predicate fileLevelDuplication(File f, File other) {
+/**
+ * DEPRECATED: Information on file duplication is no longer available.
+ *
+ * Holds if `f` and `other` are similar or duplicates.
+ */
+deprecated predicate fileLevelDuplication(File f, File other) {
   similarFiles(f, other, _) or duplicateFiles(f, other, _)
 }
 
 /**
+ * DEPRECATED: Information on class duplication is no longer available.
+ *
  * Holds if most member functions of `c` are duplicates of member functions in
  * `other`.
  */
-predicate classLevelDuplication(Class c, Class other) { mostlyDuplicateClass(c, other, _) }
+deprecated predicate classLevelDuplication(Class c, Class other) {
+  mostlyDuplicateClass(c, other, _)
+}
 
 /**
+ * DEPRECATED: The CodeDuplication library will be removed in a future release.
+ *
  * Holds if `line` in `f` should be allowed to be duplicated. This is the case
  * for `#include` directives.
  */
-predicate whitelistedLineForDuplication(File f, int line) {
+deprecated predicate whitelistedLineForDuplication(File f, int line) {
   exists(Include i | i.getFile() = f and i.getLocation().getStartLine() = line)
 }
