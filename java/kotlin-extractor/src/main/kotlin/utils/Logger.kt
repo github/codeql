@@ -57,6 +57,7 @@ open class LoggerBase(val logCounter: LogCounter) {
         val st = Exception().stackTrace
         for(x in st) {
             when(x.className) {
+                "com.github.codeql.LoggerBase",
                 "com.github.codeql.Logger",
                 "com.github.codeql.FileLogger" -> {}
                 else -> {
