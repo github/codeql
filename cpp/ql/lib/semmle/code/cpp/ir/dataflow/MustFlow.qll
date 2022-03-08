@@ -84,7 +84,7 @@ private module Cached {
 
   /**
    * Holds if `instr` is the `n`'th argument to a call to the non-virtual function `f`, and
-   * `init` is the corresponding initiazation instruction that receives the value of `instr` in `f`.
+   * `init` is the corresponding initialization instruction that receives the value of `instr` in `f`.
    */
   private predicate flowIntoParameter(
     Function f, int n, CallInstruction call, Instruction instr, InitializeParameterInstruction init
