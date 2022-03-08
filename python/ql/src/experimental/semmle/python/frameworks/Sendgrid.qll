@@ -24,23 +24,21 @@ private module Sendgrid {
   private DataFlow::CallCfgNode sendgridMailCall() { result = sendgridMailInstance().getACall() }
 
   /** Gets a reference to a `SendGridAPIClient` instance. */
-  private DataFlow::LocalSourceNode sendgridApiClient(DataFlow::TypeTracker t) {
-    t.start() and
-    result.(DataFlow::AttrRead).getObject*().getALocalSource() =
-      sendgrid().getMember("SendGridAPIClient").getReturn().getAUse()
-    or
-    exists(DataFlow::TypeTracker t2 | result = sendgridApiClient(t2).track(t2, t))
-  }
-
-  /** Gets a reference to a `SendGridAPIClient` instance use. */
-  private DataFlow::Node sendgridApiClient() {
-    sendgridApiClient(DataFlow::TypeTracker::end()).flowsTo(result)
+  private API::Node sendgridApiClient() {
+    result = sendgrid().getMember("SendGridAPIClient").getReturn()
   }
 
   /** Gets a reference to a `SendGridAPIClient` instance call with `send` or `post`. */
-  private DataFlow::Node sendgridApiSendCall() {
-    result = sendgridApiClient() and
-    result.(DataFlow::AttrRead).getAttributeName() in ["send", "post"]
+  private DataFlow::CallCfgNode sendgridApiSendCall() {
+    result = sendgridApiClient().getMember("send").getACall()
+    or
+    result =
+      sendgridApiClient()
+          .getMember("client")
+          .getMember("mail")
+          .getMember("send")
+          .getMember("post")
+          .getACall()
   }
 
   private DataFlow::Node sendgridContent(DataFlow::CallCfgNode contentCall, string mime) {
