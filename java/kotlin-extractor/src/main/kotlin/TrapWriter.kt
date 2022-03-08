@@ -1,11 +1,15 @@
 package com.github.codeql
 
+import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
+import com.github.codeql.KotlinUsesExtractor.TypeResults
 import com.github.codeql.utils.versions.FileEntry
 import java.io.BufferedWriter
 import java.io.File
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.path
+import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrFile
+import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
@@ -32,6 +36,10 @@ class TrapLabelManager {
      * key, if any.
      */
     val labelMapping: MutableMap<String, Label<*>> = mutableMapOf<String, Label<*>>()
+
+    val anonymousTypeMapping: MutableMap<IrClass, TypeResults> = mutableMapOf()
+
+    val locallyVisibleFunctionLabelMapping: MutableMap<IrFunction, LocallyVisibleFunctionLabels> = mutableMapOf()
 }
 
 /**
@@ -40,7 +48,8 @@ class TrapLabelManager {
  * instances will have different additional state, but they must all
  * share the same `TrapLabelManager` and `BufferedWriter`.
  */
-open class TrapWriter (protected val loggerBase: LoggerBase, protected val lm: TrapLabelManager, private val bw: BufferedWriter) {
+// TODO lm was `protected` before anonymousTypeMapping and locallyVisibleFunctionLabelMapping moved into it. Should we re-protect it and provide accessors?
+open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelManager, private val bw: BufferedWriter) {
     /**
      * Returns the label that is defined to be the given key, if such
      * a label exists, and `null` otherwise. Most users will want to use

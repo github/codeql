@@ -329,16 +329,14 @@ open class KotlinUsesExtractor(
             classLabelResult.shortName)
     }
 
-    private val anonymousTypeMapping: MutableMap<IrClass, TypeResults> = mutableMapOf()
-
     fun useAnonymousClass(c: IrClass): TypeResults {
-        var res = anonymousTypeMapping[c]
+        var res = tw.lm.anonymousTypeMapping[c]
         if (res == null) {
             val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
             val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
             tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
             res = TypeResults(javaResult, kotlinResult)
-            anonymousTypeMapping[c] = res
+            tw.lm.anonymousTypeMapping[c] = res
         }
 
         return res
@@ -749,8 +747,6 @@ open class KotlinUsesExtractor(
         return this.visibility == DescriptorVisibilities.LOCAL
     }
 
-    private val locallyVisibleFunctionLabelMapping: MutableMap<IrFunction, LocallyVisibleFunctionLabels> = mutableMapOf()
-
     /**
      * Class to hold labels for generated classes around local functions, lambdas, function references, and property references.
      */
@@ -775,7 +771,7 @@ open class KotlinUsesExtractor(
             logger.error("Extracting a non-local function as a local one")
         }
 
-        var res = locallyVisibleFunctionLabelMapping[f]
+        var res = tw.lm.locallyVisibleFunctionLabelMapping[f]
         if (res == null) {
             val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
             val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
@@ -786,7 +782,7 @@ open class KotlinUsesExtractor(
                 tw.getFreshIdLabel(),
                 tw.getFreshIdLabel()
             )
-            locallyVisibleFunctionLabelMapping[f] = res
+            tw.lm.locallyVisibleFunctionLabelMapping[f] = res
         }
 
         return res
