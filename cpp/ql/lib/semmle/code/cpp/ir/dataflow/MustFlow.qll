@@ -61,7 +61,7 @@ private predicate flowsFromSource(DataFlow::Node node, MustFlowConfiguration con
   )
 }
 
-/** Holds if `instr` flows to a sink. */
+/** Holds if `node` flows to a sink. */
 pragma[nomagic]
 private predicate flowsToSink(DataFlow::Node node, MustFlowConfiguration config) {
   flowsFromSource(node, pragma[only_bind_into](config)) and
