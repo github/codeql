@@ -12,13 +12,13 @@ private import semmle.python.ApiGraphs
 private module Asyncpg {
   private import semmle.python.internal.Awaited
 
-  /** Gets the `ConnectionPool` that is created when the result of `asyncpg.create_pool()` is awaited. */
+  /** Gets a `ConnectionPool` that is created when the result of `asyncpg.create_pool()` is awaited. */
   API::Node connectionPool() {
     result = API::moduleImport("asyncpg").getMember("create_pool").getReturn().getAwaited()
   }
 
   /**
-   * Gets the `Connection` that is created when
+   * Gets a `Connection` that is created when
    * - the result of `asyncpg.connect()` is awaited.
    * - the result of calling `aquire` on a `ConnectionPool` is awaited.
    */

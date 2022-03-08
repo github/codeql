@@ -447,7 +447,7 @@ ClassObject theBuiltinFunctionType() {
 /** Gets the class of Python functions */
 ClassObject thePyFunctionType() { result.asBuiltin() = Builtin::special("FunctionType") }
 
-/** Gets thGets the builtin class 'classmethod' */
+/** Gets the builtin class 'classmethod' */
 ClassObject theClassMethodType() { result.asBuiltin() = Builtin::special("ClassMethod") }
 
 /** Gets the builtin class 'staticmethod' */

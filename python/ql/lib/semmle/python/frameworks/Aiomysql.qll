@@ -15,7 +15,7 @@ private module Aiomysql {
   private import semmle.python.internal.Awaited
 
   /**
-   * Gets the `ConnectionPool` that is created when the result of `aiomysql.create_pool()` is awaited.
+   * Gets a `ConnectionPool` that is created when the result of `aiomysql.create_pool()` is awaited.
    * See https://aiomysql.readthedocs.io/en/stable/pool.html
    */
   API::Node connectionPool() {
@@ -23,7 +23,7 @@ private module Aiomysql {
   }
 
   /**
-   * Gets the `Connection` that is created when
+   * Gets a `Connection` that is created when
    * - the result of `aiomysql.connect()` is awaited.
    * - the result of calling `aquire` on a `ConnectionPool` is awaited.
    * See https://aiomysql.readthedocs.io/en/stable/connection.html#connection
@@ -35,7 +35,7 @@ private module Aiomysql {
   }
 
   /**
-   * Gets the `Cursor` that is created when
+   * Gets a `Cursor` that is created when
    * - the result of calling `cursor` on a `ConnectionPool` is awaited.
    * - the result of calling `cursor` on a `Connection` is awaited.
    * See https://aiomysql.readthedocs.io/en/stable/cursors.html
@@ -85,7 +85,7 @@ private module Aiomysql {
   }
 
   /**
-   * Gets the `Engine` that is created when the result of calling `aiomysql.sa.create_engine` is awaited.
+   * Gets an `Engine` that is created when the result of calling `aiomysql.sa.create_engine` is awaited.
    * See https://aiomysql.readthedocs.io/en/stable/sa.html#engine
    */
   API::Node engine() {
@@ -98,7 +98,7 @@ private module Aiomysql {
   }
 
   /**
-   * Gets the `SAConnection` that is created when the result of calling `aquire` on an `Engine` is awaited.
+   * Gets an `SAConnection` that is created when the result of calling `aquire` on an `Engine` is awaited.
    * See https://aiomysql.readthedocs.io/en/stable/sa.html#connection
    */
   API::Node saConnection() { result = engine().getMember("acquire").getReturn().getAwaited() }

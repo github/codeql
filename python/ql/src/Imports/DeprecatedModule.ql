@@ -13,10 +13,7 @@
 import python
 
 /**
- * Gets the name of a deprecated module (for a particular version of Python) and the name of a suggested
- * replacement.
- *
- * The module `name` was deprecated in Python version `major`.`minor`,
+ * Holds if the module `name` was deprecated in Python version `major`.`minor`,
  * and module `instead` should be used instead (or `instead = "no replacement"`)
  */
 predicate deprecated_module(string name, string instead, int major, int minor) {

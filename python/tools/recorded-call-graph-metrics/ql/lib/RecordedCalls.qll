@@ -162,7 +162,7 @@ private Builtin traverse_qualname(Builtin parent, string qualname) {
 }
 
 /**
- * Arecorded call where we can identify both the `call` and the `callee` uniquely.
+ * A recorded call where we can identify both the `call` and the `callee` uniquely.
  */
 class IdentifiedRecordedCall extends XMLRecordedCall {
   IdentifiedRecordedCall() {

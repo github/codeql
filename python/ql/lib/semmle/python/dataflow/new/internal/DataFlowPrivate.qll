@@ -1619,7 +1619,7 @@ import IterableUnpacking
  */
 module MatchUnpacking {
   /**
-   * Holds when there is flow from the subject `nodeFrom` to the case `nodeTo` of a `match` statement.
+   * Holds when there is flow from the subject `nodeFrom` to the (top-level) pattern `nodeTo` of a `match` statement.
    *
    * The subject of a match flows to each top-level pattern
    * (a pattern directly under a `case` statement).
