@@ -17,6 +17,11 @@ predicate isEscapeClass(RegExpTerm term, string clazz) {
 }
 
 /**
+ * Holds if `term` is a possessive quantifier, e.g. `a*+`.
+ */
+predicate isPossessive(RegExpQuantifier term) { term.isPossessive() }
+
+/**
  * Holds if the regular expression should not be considered.
  *
  * We make the pragmatic performance optimization to ignore regular expressions in files

@@ -253,7 +253,12 @@ class RegExpQuantifier extends RegExpTerm, TRegExpQuantifier {
   predicate mayRepeatForever() { may_repeat_forever = true }
 
   /** Gets the quantifier for this term. That is e.g "?" for "a?". */
-  string getquantifier() { result = re.getText().substring(part_end, end) }
+  string getQuantifier() { result = re.getText().substring(part_end, end) }
+
+  /** Holds if this is a possessive quantifier, e.g. a*+. */
+  predicate isPossessive() {
+    exists(string q | q = this.getQuantifier() | q.length() > 1 and q.charAt(q.length() - 1) = "+")
+  }
 
   override string getPrimaryQLClass() { result = "RegExpQuantifier" }
 }
@@ -275,7 +280,7 @@ class InfiniteRepetitionQuantifier extends RegExpQuantifier {
  * ```
  */
 class RegExpStar extends InfiniteRepetitionQuantifier {
-  RegExpStar() { this.getquantifier().charAt(0) = "*" }
+  RegExpStar() { this.getQuantifier().charAt(0) = "*" }
 
   override string getPrimaryQLClass() { result = "RegExpStar" }
 }
@@ -290,7 +295,7 @@ class RegExpStar extends InfiniteRepetitionQuantifier {
  * ```
  */
 class RegExpPlus extends InfiniteRepetitionQuantifier {
-  RegExpPlus() { this.getquantifier().charAt(0) = "+" }
+  RegExpPlus() { this.getQuantifier().charAt(0) = "+" }
 
   override string getPrimaryQLClass() { result = "RegExpPlus" }
 }
@@ -305,7 +310,7 @@ class RegExpPlus extends InfiniteRepetitionQuantifier {
  * ```
  */
 class RegExpOpt extends RegExpQuantifier {
-  RegExpOpt() { this.getquantifier().charAt(0) = "?" }
+  RegExpOpt() { this.getQuantifier().charAt(0) = "?" }
 
   override string getPrimaryQLClass() { result = "RegExpOpt" }
 }

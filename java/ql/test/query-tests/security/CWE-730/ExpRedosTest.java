@@ -418,6 +418,17 @@ class ExpRedosTest {
         "\\A(\\d|0)*x", // $ hasExpRedos
         "(\\d|0)*\\Z", // $ hasExpRedos
         "\\b(\\d|0)*x", // $ hasExpRedos
+
+        // GOOD - possessive quantifiers don't backtrack
+        "(a*+)*+b",
+        "(a*)*+b",
+        "(a*+)*b",
+
+        // BAD
+        "(a*)*b", // $ hasExpRedos
+
+        // BAD - but not detected due to the way possessive quantifiers are approximated
+        "((aa|a*+)b)*c" // $ MISSING: hasExpRedos
     };
 
     void test() {
