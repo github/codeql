@@ -156,6 +156,16 @@ class QLDoc extends TQLDoc, AstNode {
   override string getAPrimaryQlClass() { result = "QLDoc" }
 }
 
+class BlockComment extends TBlockComment, AstNode {
+  QL::BlockComment comment;
+
+  BlockComment() { this = TBlockComment(comment) }
+
+  string getContents() { result = comment.getValue() }
+
+  override string getAPrimaryQlClass() { result = "BlockComment" }
+}
+
 /**
  * The `from, where, select` part of a QL query.
  */
