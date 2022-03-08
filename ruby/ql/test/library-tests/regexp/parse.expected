@@ -181,10 +181,7 @@ regexp.rb:
 #   26| [RegExpConstant, RegExpNormalChar] -
 
 #   27| [RegExpCharacterClass] [|]
-#-----| 0 -> [RegExpAlt] |
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] |
-
-#   27| [RegExpAlt] |
 
 #   27| [RegExpConstant, RegExpNormalChar] |
 
