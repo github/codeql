@@ -23,16 +23,12 @@ term
 | regexp.rb:8:8:8:8 | d | RegExpConstant,RegExpNormalChar |
 | regexp.rb:9:2:9:2 | a | RegExpConstant,RegExpNormalChar |
 | regexp.rb:9:2:9:7 | a{4,8} | RegExpRange |
-| regexp.rb:9:4:9:7 | 4,8} | RegExpNormalChar |
 | regexp.rb:10:2:10:2 | a | RegExpConstant,RegExpNormalChar |
 | regexp.rb:10:2:10:6 | a{,8} | RegExpRange |
-| regexp.rb:10:4:10:6 | ,8} | RegExpNormalChar |
 | regexp.rb:11:2:11:2 | a | RegExpConstant,RegExpNormalChar |
 | regexp.rb:11:2:11:6 | a{3,} | InfiniteRepetitionQuantifier,RegExpRange |
-| regexp.rb:11:4:11:6 | 3,} | RegExpNormalChar |
 | regexp.rb:12:2:12:2 | a | RegExpConstant,RegExpNormalChar |
 | regexp.rb:12:2:12:5 | a{7} | RegExpRange |
-| regexp.rb:12:4:12:5 | 7} | RegExpNormalChar |
 | regexp.rb:15:2:15:4 | foo | RegExpConstant,RegExpNormalChar |
 | regexp.rb:15:2:15:8 | foo\|bar | RegExpAlt |
 | regexp.rb:15:6:15:8 | bar | RegExpConstant,RegExpNormalChar |
@@ -169,7 +165,6 @@ term
 | regexp.rb:61:2:61:11 | \\P{Digit}+ | RegExpPlus |
 | regexp.rb:62:2:62:11 | \\p{^Alnum} | RegExpNamedCharacterProperty |
 | regexp.rb:62:2:62:16 | \\p{^Alnum}{2,3} | RegExpRange |
-| regexp.rb:62:13:62:16 | 2,3} | RegExpNormalChar |
 | regexp.rb:63:2:63:15 | [a-f\\p{Digit}] | RegExpCharacterClass |
 | regexp.rb:63:2:63:16 | [a-f\\p{Digit}]+ | RegExpPlus |
 | regexp.rb:63:3:63:3 | a | RegExpConstant,RegExpNormalChar |

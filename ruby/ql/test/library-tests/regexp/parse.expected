@@ -29,28 +29,20 @@ regexp.rb:
 #    9| [RegExpRange] a{4,8}
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a
 
-#    9| [RegExpNormalChar] 4,8}
-
 #   10| [RegExpConstant, RegExpNormalChar] a
 
 #   10| [RegExpRange] a{,8}
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a
-
-#   10| [RegExpNormalChar] ,8}
 
 #   11| [RegExpConstant, RegExpNormalChar] a
 
 #   11| [InfiniteRepetitionQuantifier, RegExpRange] a{3,}
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a
 
-#   11| [RegExpNormalChar] 3,}
-
 #   12| [RegExpConstant, RegExpNormalChar] a
 
 #   12| [RegExpRange] a{7}
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a
-
-#   12| [RegExpNormalChar] 7}
 
 #   15| [RegExpConstant, RegExpNormalChar] foo
 
@@ -427,8 +419,6 @@ regexp.rb:
 
 #   62| [RegExpRange] \p{^Alnum}{2,3}
 #-----| 0 -> [RegExpNamedCharacterProperty] \p{^Alnum}
-
-#   62| [RegExpNormalChar] 2,3}
 
 #   63| [RegExpCharacterClass] [a-f\p{Digit}]
 #-----| 0 -> [RegExpCharacterRange] a-f

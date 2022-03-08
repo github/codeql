@@ -402,7 +402,8 @@ abstract class RegExp extends AST::StringlikeLiteral {
     not exists(int x, int y | this.backreference(x, y) and x <= start and y >= end) and
     not exists(int x, int y |
       this.pStyleNamedCharacterProperty(x, y, _) and x <= start and y >= end
-    )
+    ) and
+    not exists(int x, int y | this.multiples(x, y, _, _) and x <= start and y >= end)
   }
 
   predicate normalCharacter(int start, int end) {
