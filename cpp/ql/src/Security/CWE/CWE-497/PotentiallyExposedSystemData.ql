@@ -35,7 +35,7 @@ class PotentiallyExposedSystemDataConfiguration extends TaintTracking::Configura
   PotentiallyExposedSystemDataConfiguration() { this = "PotentiallyExposedSystemDataConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr() = any(SystemData sd | sd.isSensitive()).getAnExpr()
+    source = any(SystemData sd | sd.isSensitive()).getAnExpr()
   }
 
   override predicate isSink(DataFlow::Node sink) {

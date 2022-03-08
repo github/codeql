@@ -20,8 +20,8 @@ edges
 | tests_sockets.cpp:63:15:63:20 | call to getenv | tests_sockets.cpp:76:19:76:22 | path |
 | tests_sockets.cpp:63:15:63:20 | call to getenv | tests_sockets.cpp:80:20:80:23 | (const void *)... |
 | tests_sockets.cpp:63:15:63:20 | call to getenv | tests_sockets.cpp:80:20:80:23 | path |
-| tests_sysconf.cpp:36:21:36:27 | pathbuf | tests_sysconf.cpp:39:19:39:25 | (const void *)... |
-| tests_sysconf.cpp:36:21:36:27 | pathbuf | tests_sysconf.cpp:39:19:39:25 | pathbuf |
+| tests_sysconf.cpp:36:21:36:27 | confstr output argument | tests_sysconf.cpp:39:19:39:25 | (const void *)... |
+| tests_sysconf.cpp:36:21:36:27 | confstr output argument | tests_sysconf.cpp:39:19:39:25 | pathbuf |
 nodes
 | tests2.cpp:63:13:63:18 | call to getenv | semmle.label | call to getenv |
 | tests2.cpp:63:13:63:18 | call to getenv | semmle.label | call to getenv |
@@ -58,7 +58,7 @@ nodes
 | tests_sockets.cpp:76:19:76:22 | path | semmle.label | path |
 | tests_sockets.cpp:80:20:80:23 | (const void *)... | semmle.label | (const void *)... |
 | tests_sockets.cpp:80:20:80:23 | path | semmle.label | path |
-| tests_sysconf.cpp:36:21:36:27 | pathbuf | semmle.label | pathbuf |
+| tests_sysconf.cpp:36:21:36:27 | confstr output argument | semmle.label | confstr output argument |
 | tests_sysconf.cpp:39:19:39:25 | (const void *)... | semmle.label | (const void *)... |
 | tests_sysconf.cpp:39:19:39:25 | pathbuf | semmle.label | pathbuf |
 subpaths
@@ -77,4 +77,4 @@ subpaths
 | tests_sockets.cpp:43:20:43:23 | path | tests_sockets.cpp:26:15:26:20 | call to getenv | tests_sockets.cpp:43:20:43:23 | path | This operation exposes system data from $@. | tests_sockets.cpp:26:15:26:20 | call to getenv | call to getenv |
 | tests_sockets.cpp:76:19:76:22 | path | tests_sockets.cpp:63:15:63:20 | call to getenv | tests_sockets.cpp:76:19:76:22 | path | This operation exposes system data from $@. | tests_sockets.cpp:63:15:63:20 | call to getenv | call to getenv |
 | tests_sockets.cpp:80:20:80:23 | path | tests_sockets.cpp:63:15:63:20 | call to getenv | tests_sockets.cpp:80:20:80:23 | path | This operation exposes system data from $@. | tests_sockets.cpp:63:15:63:20 | call to getenv | call to getenv |
-| tests_sysconf.cpp:39:19:39:25 | pathbuf | tests_sysconf.cpp:36:21:36:27 | pathbuf | tests_sysconf.cpp:39:19:39:25 | pathbuf | This operation exposes system data from $@. | tests_sysconf.cpp:36:21:36:27 | pathbuf | pathbuf |
+| tests_sysconf.cpp:39:19:39:25 | pathbuf | tests_sysconf.cpp:36:21:36:27 | confstr output argument | tests_sysconf.cpp:39:19:39:25 | pathbuf | This operation exposes system data from $@. | tests_sysconf.cpp:36:21:36:27 | confstr output argument | confstr output argument |

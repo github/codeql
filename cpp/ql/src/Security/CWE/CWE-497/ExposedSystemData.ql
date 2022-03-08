@@ -21,9 +21,7 @@ import SystemData
 class ExposedSystemDataConfiguration extends TaintTracking::Configuration {
   ExposedSystemDataConfiguration() { this = "ExposedSystemDataConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asConvertedExpr() = any(SystemData sd).getAnExpr()
-  }
+  override predicate isSource(DataFlow::Node source) { source = any(SystemData sd).getAnExpr() }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(FunctionCall fc, FunctionInput input, int arg |

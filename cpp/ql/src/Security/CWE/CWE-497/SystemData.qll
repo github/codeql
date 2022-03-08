@@ -4,6 +4,7 @@
 
 import cpp
 import semmle.code.cpp.commons.Environment
+import semmle.code.cpp.ir.dataflow.TaintTracking
 
 /**
  * An element that should not be exposed to an adversary.
@@ -12,7 +13,7 @@ abstract class SystemData extends Element {
   /**
    * Gets an expression that is part of this `SystemData`.
    */
-  abstract Expr getAnExpr();
+  abstract DataFlow::Node getAnExpr();
 
   /**
    * Holds if this system data is considered especially sensitive (for example
@@ -33,7 +34,7 @@ class EnvData extends SystemData {
         .regexpMatch(".*(user|host|admin|root|home|path|http|ssl|snmp|sock|port|proxy|pass|token|crypt|key).*")
   }
 
-  override Expr getAnExpr() { result = this }
+  override DataFlow::Node getAnExpr() { result.asConvertedExpr() = this }
 
   override predicate isSensitive() {
     this.(EnvironmentRead)
@@ -49,7 +50,7 @@ class EnvData extends SystemData {
 class SQLClientInfo extends SystemData {
   SQLClientInfo() { this.(FunctionCall).getTarget().hasName("mysql_get_client_info") }
 
-  override Expr getAnExpr() { result = this }
+  override DataFlow::Node getAnExpr() { result.asConvertedExpr() = this }
 
   override predicate isSensitive() { any() }
 }
@@ -68,21 +69,24 @@ private predicate sqlConnectInfo(FunctionCall source, Expr use) {
 class SQLConnectInfo extends SystemData {
   SQLConnectInfo() { sqlConnectInfo(this, _) }
 
-  override Expr getAnExpr() { sqlConnectInfo(this, result) }
+  override DataFlow::Node getAnExpr() { sqlConnectInfo(this, result.asConvertedExpr()) }
 
   override predicate isSensitive() { any() }
 }
 
-private predicate posixSystemInfo(FunctionCall source, Element use) {
+private predicate posixSystemInfo(FunctionCall source, DataFlow::Node use) {
   // size_t confstr(int name, char *buf, size_t len)
   //  - various OS / system strings, such as the libc version
   // int statvfs(const char *__path, struct statvfs *__buf)
   // int fstatvfs(int __fd, struct statvfs *__buf)
+  source.getTarget().hasName(["confstr", "statvfs", "fstatvfs"]) and
+  use.asDefiningArgument() = source.getArgument(1)
+  or
   //  - various filesystem parameters
   // int uname(struct utsname *buf)
   //  - OS name and version
-  source.getTarget().hasName(["confstr", "statvfs", "fstatvfs", "uname"]) and
-  use = source.getArgument(1)
+  source.getTarget().hasName("uname") and
+  use.asDefiningArgument() = source.getArgument(0)
 }
 
 /**
@@ -91,10 +95,10 @@ private predicate posixSystemInfo(FunctionCall source, Element use) {
 class PosixSystemInfo extends SystemData {
   PosixSystemInfo() { posixSystemInfo(this, _) }
 
-  override Expr getAnExpr() { posixSystemInfo(this, result) }
+  override DataFlow::Node getAnExpr() { posixSystemInfo(this, result) }
 }
 
-private predicate posixPWInfo(FunctionCall source, Element use) {
+private predicate posixPWInfo(FunctionCall source, DataFlow::Node use) {
   // struct passwd *getpwnam(const char *name);
   // struct passwd *getpwuid(uid_t uid);
   // struct passwd *getpwent(void);
@@ -104,7 +108,7 @@ private predicate posixPWInfo(FunctionCall source, Element use) {
   source
       .getTarget()
       .hasName(["getpwnam", "getpwuid", "getpwent", "getgrnam", "getgrgid", "getgrent"]) and
-  use = source
+  use.asConvertedExpr() = source
   or
   // int getpwnam_r(const char *name, struct passwd *pwd,
   //                char *buf, size_t buflen, struct passwd **result);
@@ -115,14 +119,20 @@ private predicate posixPWInfo(FunctionCall source, Element use) {
   // int getgrnam_r(const char *name, struct group *grp,
   //                char *buf, size_t buflen, struct group **result);
   source.getTarget().hasName(["getpwnam_r", "getpwuid_r", "getgrgid_r", "getgrnam_r"]) and
-  use = source.getArgument([1, 2, 4])
+  (
+    use.asConvertedExpr() = source.getArgument([1, 2]) or
+    use.asDefiningArgument() = source.getArgument(4)
+  )
   or
   // int getpwent_r(struct passwd *pwd, char *buffer, size_t bufsize,
   //                struct passwd **result);
   // int getgrent_r(struct group *gbuf, char *buf,
   //                size_t buflen, struct group **gbufp);
   source.getTarget().hasName(["getpwent_r", "getgrent_r"]) and
-  use = source.getArgument([0, 1, 3])
+  (
+    use.asConvertedExpr() = source.getArgument([0, 1]) or
+    use.asDefiningArgument() = source.getArgument(3)
+  )
 }
 
 /**
@@ -131,15 +141,15 @@ private predicate posixPWInfo(FunctionCall source, Element use) {
 class PosixPWInfo extends SystemData {
   PosixPWInfo() { posixPWInfo(this, _) }
 
-  override Expr getAnExpr() { posixPWInfo(this, result) }
+  override DataFlow::Node getAnExpr() { posixPWInfo(this, result) }
 
   override predicate isSensitive() { any() }
 }
 
-private predicate windowsSystemInfo(FunctionCall source, Element use) {
+private predicate windowsSystemInfo(FunctionCall source, DataFlow::Node use) {
   // DWORD WINAPI GetVersion(void);
   source.getTarget().hasGlobalName("GetVersion") and
-  use = source
+  use.asConvertedExpr() = source
   or
   // BOOL WINAPI GetVersionEx(_Inout_ LPOSVERSIONINFO lpVersionInfo);
   // void WINAPI GetSystemInfo(_Out_ LPSYSTEM_INFO lpSystemInfo);
@@ -149,7 +159,7 @@ private predicate windowsSystemInfo(FunctionCall source, Element use) {
       .hasGlobalName([
           "GetVersionEx", "GetVersionExA", "GetVersionExW", "GetSystemInfo", "GetNativeSystemInfo"
         ]) and
-  use = source.getArgument(0)
+  use.asDefiningArgument() = source.getArgument(0)
 }
 
 /**
@@ -158,7 +168,7 @@ private predicate windowsSystemInfo(FunctionCall source, Element use) {
 class WindowsSystemInfo extends SystemData {
   WindowsSystemInfo() { windowsSystemInfo(this, _) }
 
-  override Expr getAnExpr() { windowsSystemInfo(this, result) }
+  override DataFlow::Node getAnExpr() { windowsSystemInfo(this, result) }
 }
 
 private predicate windowsFolderPath(FunctionCall source, Element use) {
@@ -217,7 +227,7 @@ private predicate windowsFolderPath(FunctionCall source, Element use) {
 class WindowsFolderPath extends SystemData {
   WindowsFolderPath() { windowsFolderPath(this, _) }
 
-  override Expr getAnExpr() { windowsFolderPath(this, result) }
+  override DataFlow::Node getAnExpr() { windowsFolderPath(this, result.asDefiningArgument()) }
 }
 
 private predicate logonUser(FunctionCall source, VariableAccess use) {
@@ -231,7 +241,7 @@ private predicate logonUser(FunctionCall source, VariableAccess use) {
 class LogonUser extends SystemData {
   LogonUser() { logonUser(this, _) }
 
-  override Expr getAnExpr() { logonUser(this, result) }
+  override DataFlow::Node getAnExpr() { logonUser(this, result.asConvertedExpr()) }
 
   override predicate isSensitive() { any() }
 }
@@ -313,7 +323,7 @@ private predicate regQuery(FunctionCall source, TRegQueryParameter param) {
 class RegQuery extends SystemData {
   RegQuery() { regQuery(this, _) }
 
-  override Expr getAnExpr() { regQuery(this, TReturnData(result)) }
+  override DataFlow::Node getAnExpr() { regQuery(this, TReturnData(result.asDefiningArgument())) }
 
   override predicate isSensitive() {
     exists(Expr e |
