@@ -30,7 +30,6 @@ abstract class PointsToExtension extends @py_flow_node {
  * sources of data to the points-to analysis.
  */
 
-/* Custom points-to fact with inferred class */
 /* An example */
 /** An extension representing the fact that a variable iterating over range or xrange must be an integer */
 class RangeIterationVariableFact extends PointsToExtension {
