@@ -246,7 +246,10 @@ open class KotlinUsesExtractor(
                 // getters and setters are extracted alongside it
                 return
             }
-            val paramTypes = f.valueParameters.map { useType(it.type) }
+            // Note we erase the parameter types before calling useType even though the signature should be the same
+            // in order to prevent an infinite loop through useTypeParameter -> useDeclarationParent -> useFunction
+            // -> extractFunctionLaterIfExternalFileMember, which would result for `fun <T> f(t: T) { ... }` for example.
+            val paramTypes = f.valueParameters.map { useType(erase(it.type)) }
             val signature = paramTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
             dependencyCollector?.addDependency(f, signature)
             externalClassExtractor.extractLater(f, signature)
