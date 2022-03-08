@@ -891,8 +891,28 @@ open class KotlinFileExtractor(
                     }
                 }
                 is IrLocalDelegatedProperty -> {
-                    // TODO:
-                    logger.errorElement("Unhandled IrLocalDelegatedProperty", s)
+                    val blockId = tw.getFreshIdLabel<DbBlock>()
+                    val locId = tw.getLocation(s)
+                    tw.writeStmts_block(blockId, parent, idx, callable)
+                    tw.writeHasLocation(blockId, locId)
+                    extractVariable(s.delegate, callable, blockId, 0)
+
+                    val propType = useType(s.type)
+                    val propId = tw.getFreshIdLabel<DbKt_local_delegated_property>()
+                    tw.writeKtLocalDelegatedProperties(propId, useVariable(s.delegate), propType.javaResult.id, s.name.asString())
+                    tw.writeKtLocalDelegatedPropertiesKotlinType(propId, propType.kotlinResult.id)
+
+                    // Getter:
+                    extractStatement(s.getter, callable, blockId, 1)
+                    val l = getLocallyVisibleFunctionLabels(s.getter).function
+                    tw.writeKtLocalDelegatedPropertyGetters(propId, l)
+
+                    val setter = s.setter
+                    if (setter != null) {
+                        extractStatement(setter, callable, blockId, 2)
+                        val l = getLocallyVisibleFunctionLabels(setter).function
+                        tw.writeKtLocalDelegatedPropertySetters(propId, l)
+                    }
                 }
                 else -> {
                     logger.errorElement("Unrecognised IrStatement: " + s.javaClass, s)
