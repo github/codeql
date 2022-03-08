@@ -1,0 +1,1 @@
+| test.cpp:12:8:12:12 | call to fopen | You may have forgotten to restrict access rights when working with a file. |

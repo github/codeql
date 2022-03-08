@@ -7,6 +7,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.dataflow.internal.DataFlowPublic
+private import codeql.ruby.DataFlow
 
 /**
  * A `Net::HTTP` call which initiates an HTTP request.

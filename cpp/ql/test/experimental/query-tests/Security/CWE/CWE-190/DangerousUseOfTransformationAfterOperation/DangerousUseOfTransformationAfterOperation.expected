@@ -1,0 +1,4 @@
+| test.cpp:9:8:9:12 | ... * ... | Possible signed overflow followed by offset of the pointer out of bounds. |
+| test.cpp:13:24:13:28 | ... * ... | This transformation is applied after multiplication. |
+| test.cpp:16:28:16:32 | ... * ... | This transformation is applied after multiplication. |
+| test.cpp:19:22:19:26 | ... * ... | This transformation is applied after multiplication. |

@@ -106,6 +106,12 @@ private predicate filteredNumberableInstruction(Instruction instr) {
   or
   instr instanceof FieldAddressInstruction and
   count(instr.(FieldAddressInstruction).getField()) != 1
+  or
+  instr instanceof InheritanceConversionInstruction and
+  (
+    count(instr.(InheritanceConversionInstruction).getBaseClass()) != 1 or
+    count(instr.(InheritanceConversionInstruction).getDerivedClass()) != 1
+  )
 }
 
 private predicate variableAddressValueNumber(
@@ -115,8 +121,7 @@ private predicate variableAddressValueNumber(
   // The underlying AST element is used as value-numbering key instead of the
   // `IRVariable` to work around a problem where a variable or expression with
   // multiple types gives rise to multiple `IRVariable`s.
-  instr.getIRVariable().getAST() = ast and
-  strictcount(instr.getIRVariable().getAST()) = 1
+  unique( | | instr.getIRVariable().getAST()) = ast
 }
 
 private predicate initializeParameterValueNumber(
@@ -133,8 +138,7 @@ private predicate constantValueNumber(
   ConstantInstruction instr, IRFunction irFunc, IRType type, string value
 ) {
   instr.getEnclosingIRFunction() = irFunc and
-  strictcount(instr.getResultIRType()) = 1 and
-  instr.getResultIRType() = type and
+  unique( | | instr.getResultIRType()) = type and
   instr.getValue() = value
 }
 
@@ -151,8 +155,7 @@ private predicate fieldAddressValueNumber(
   TValueNumber objectAddress
 ) {
   instr.getEnclosingIRFunction() = irFunc and
-  instr.getField() = field and
-  strictcount(instr.getField()) = 1 and
+  unique( | | instr.getField()) = field and
   tvalueNumber(instr.getObjectAddress()) = objectAddress
 }
 
@@ -195,9 +198,9 @@ private predicate inheritanceConversionValueNumber(
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getOpcode() = opcode and
-  instr.getBaseClass() = baseClass and
-  instr.getDerivedClass() = derivedClass and
-  tvalueNumber(instr.getUnary()) = operand
+  tvalueNumber(instr.getUnary()) = operand and
+  unique( | | instr.getBaseClass()) = baseClass and
+  unique( | | instr.getDerivedClass()) = derivedClass
 }
 
 private predicate loadTotalOverlapValueNumber(
