@@ -21,31 +21,6 @@ private module FlaskMail {
   /** Gets a reference to `flask_mail.Message`, `flask_sendmail.Message` and `flask.ext.sendmail.Message`. */
   private API::Node flaskMessageInstance() { result = flaskMail().getMember("Message") }
 
-  /** Gets a call to `flask_mail.Message`, `flask_sendmail.Message` and `flask.ext.sendmail.Message`. */
-  private DataFlow::CallCfgNode flaskMessageCall() { result = flaskMessageInstance().getACall() }
-
-  /**
-   * Gets a reference to an argument from `flask_mail.Message`, `flask_sendmail.Message` and `flask.ext.sendmail.Message`.
-   *
-   * Usage example:
-   *
-   * ```codeql
-   * DataFlow::Node getPlainTextBody() { result = getFlaskMailArgument(2, "body") }
-   * ```
-   */
-  bindingset[argumentPosition, argumentName]
-  private DataFlow::Node getFlaskMailArgument(int argumentPosition, string argumentName) {
-    result in [
-        flaskMessageCall().getArg(argumentPosition), flaskMessageCall().getArgByName(argumentName)
-      ]
-    or
-    exists(DataFlow::AttrWrite write |
-      write.getObject().getALocalSource() = flaskMessageCall() and
-      write.getAttributeName() = argumentName and
-      result = write.getValue()
-    )
-  }
-
   /**
    * Gets a call to `mail.send()`.
    *
@@ -75,18 +50,35 @@ private module FlaskMail {
             .getACall()
     }
 
-    override DataFlow::Node getPlainTextBody() { result = getFlaskMailArgument(2, "body") }
+    private DataFlow::CallCfgNode getMessage() { result = this.getArg(0).getALocalSource() }
 
-    override DataFlow::Node getHtmlBody() { result = getFlaskMailArgument(3, "html") }
+    bindingset[argumentPosition]
+    private DataFlow::Node getFlaskMailArgument(int argumentPosition, string argumentName) {
+      argumentPosition in [[0 .. 3], 5] and
+      argumentName in ["body", "html", "recipients", "sender", "subject"] and
+      result in [
+          this.getMessage().getArg(argumentPosition), this.getMessage().getArgByName(argumentName)
+        ]
+      or
+      exists(DataFlow::AttrWrite write |
+        write.getObject().getALocalSource() = this.getMessage() and
+        write.getAttributeName() = argumentName and
+        result = write.getValue()
+      )
+    }
+
+    override DataFlow::Node getPlainTextBody() { result = this.getFlaskMailArgument(2, "body") }
+
+    override DataFlow::Node getHtmlBody() { result = this.getFlaskMailArgument(3, "html") }
 
     override DataFlow::Node getTo() {
-      result = getFlaskMailArgument(1, "recipients")
+      result = this.getFlaskMailArgument(1, "recipients")
       or
       result = flaskMessageInstance().getMember("add_recipient").getACall().getArg(0)
     }
 
-    override DataFlow::Node getFrom() { result = getFlaskMailArgument(5, "sender") }
+    override DataFlow::Node getFrom() { result = this.getFlaskMailArgument(5, "sender") }
 
-    override DataFlow::Node getSubject() { result = getFlaskMailArgument(0, "subject") }
+    override DataFlow::Node getSubject() { result = this.getFlaskMailArgument(0, "subject") }
   }
 }
