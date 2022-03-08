@@ -94,6 +94,6 @@ private class TestLibrary extends RefType {
   TestLibrary() {
     this.getNamespace()
         .getName()
-        .matches(["NUnit.Framework%", "Microsoft.VisualStudio.TestTools.UnitTesting%"])
+        .matches(["NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%"])
   }
 }
