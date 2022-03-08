@@ -13,7 +13,9 @@ class ZipSlipConfig extends TaintTracking::Configuration {
     source = API::moduleImport("bz2").getMember("open").getACall() or
     source = API::moduleImport("bz2").getMember("BZ2File").getACall() or 
     source = API::moduleImport("gzip").getMember("GzipFile").getACall() or
-    source = API::moduleImport("gzip").getMember("open").getACall() 
+    source = API::moduleImport("gzip").getMember("open").getACall() or
+    source = API::moduleImport("lzma").getMember("open").getACall() or
+    source = API::moduleImport("lzma").getMember("LZMAFile").getACall()
   }
   
   override predicate isSink(DataFlow::Node sink) { 
