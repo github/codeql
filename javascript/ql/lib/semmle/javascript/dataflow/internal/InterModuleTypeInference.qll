@@ -380,9 +380,10 @@ private class AnalyzedExportAssign extends AnalyzedPropertyWrite, DataFlow::Valu
  */
 private class AnalyzedClosureExportAssign extends AnalyzedPropertyWrite, DataFlow::ValueNode {
   override AssignExpr astNode;
-  Closure::ClosureModule mod;
 
-  AnalyzedClosureExportAssign() { astNode.getLhs() = mod.getExportsVariable().getAReference() }
+  AnalyzedClosureExportAssign() {
+    astNode.getLhs() = any(Closure::ClosureModule mod).getExportsVariable().getAReference()
+  }
 
   override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
     baseVal = TAbstractModuleObject(astNode.getTopLevel()) and

@@ -40,7 +40,7 @@ InlineCast getAThisCast(Class c, Type type) {
   )
 }
 
-predicate usesFieldBasedInstanceof(Class c, TypeExpr type, VarDecl field, ComparisonFormula comp) {
+predicate usesFieldBasedInstanceof(Class c, TypeExpr type, FieldDecl field, ComparisonFormula comp) {
   exists(FieldAccess fieldAccess |
     c.getCharPred().getBody() = comp or
     c.getCharPred().getBody().(Conjunction).getAnOperand() = comp
@@ -50,7 +50,7 @@ predicate usesFieldBasedInstanceof(Class c, TypeExpr type, VarDecl field, Compar
     comp.getAnOperand() instanceof ThisAccess and
     comp.getAnOperand() = fieldAccess and
     fieldAccess.getDeclaration() = field and
-    field.getTypeExpr() = type
+    field.getVarDecl().getTypeExpr() = type
   ) and
   // require that there is a call to the range field that matches the name of the enclosing predicate
   exists(FieldAccess access, MemberCall call |
@@ -60,7 +60,7 @@ predicate usesFieldBasedInstanceof(Class c, TypeExpr type, VarDecl field, Compar
   )
 }
 
-FieldAccess getARangeFieldAccess(Class c, VarDecl field, string name) {
+FieldAccess getARangeFieldAccess(Class c, FieldDecl field, string name) {
   exists(MemberCall call |
     result = call.getBase() and
     result.getDeclaration() = field and

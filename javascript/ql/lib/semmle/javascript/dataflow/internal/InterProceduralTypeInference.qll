@@ -302,12 +302,11 @@ private class TypeInferredMethodWithAnalyzedReturnFlow extends CallWithNonLocalA
  * Propagates receivers into locally defined callbacks of partial invocations.
  */
 private class AnalyzedThisInPartialInvokeCallback extends AnalyzedNode, DataFlow::ThisNode {
-  DataFlow::PartialInvokeNode call;
   DataFlow::Node receiver;
 
   AnalyzedThisInPartialInvokeCallback() {
     exists(DataFlow::Node callbackArg |
-      receiver = call.getBoundReceiver(callbackArg) and
+      receiver = any(DataFlow::PartialInvokeNode call).getBoundReceiver(callbackArg) and
       getBinder().flowsTo(callbackArg)
     )
   }

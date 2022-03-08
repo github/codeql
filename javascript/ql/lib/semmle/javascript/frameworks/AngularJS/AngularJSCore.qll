@@ -149,12 +149,10 @@ DataFlow::CallNode moduleRef(AngularModule m) {
  * A call to a method from the `angular.Module` API.
  */
 class ModuleApiCall extends DataFlow::CallNode {
-  /** The module on which the method is called. */
-  AngularModule mod;
   /** The name of the called method. */
   string methodName;
 
-  ModuleApiCall() { this = moduleRef(mod).getAMethodCall(methodName) }
+  ModuleApiCall() { this = moduleRef(_).getAMethodCall(methodName) }
 
   /**
    * Gets the name of the invoked method.

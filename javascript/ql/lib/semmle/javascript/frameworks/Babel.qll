@@ -140,7 +140,6 @@ module Babel {
    */
   private class BabelRootTransformedPathExpr extends PathExpr, Expr {
     RootImportConfig plugin;
-    string rawPath;
     string prefix;
     string mappedPrefix;
     string suffix;
@@ -148,9 +147,8 @@ module Babel {
     BabelRootTransformedPathExpr() {
       this instanceof PathExpr and
       plugin.appliesTo(getTopLevel()) and
-      rawPath = getStringValue() and
-      prefix = rawPath.regexpCapture("(.)/(.*)", 1) and
-      suffix = rawPath.regexpCapture("(.)/(.*)", 2) and
+      prefix = getStringValue().regexpCapture("(.)/(.*)", 1) and
+      suffix = getStringValue().regexpCapture("(.)/(.*)", 2) and
       mappedPrefix = plugin.getRoot(prefix)
     }
 
