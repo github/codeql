@@ -54,7 +54,7 @@ module XmlEntityInjection {
    * See `XML::XMLParsing`.
    */
   class XMLParsingInputAsSink extends Sink {
-    XML::XMLParsing xmlParsing;
+    ExperimentalXML::XMLParsing xmlParsing;
 
     XMLParsingInputAsSink() { this = xmlParsing.getAnInput() }
 

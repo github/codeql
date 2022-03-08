@@ -8,6 +8,8 @@ private import semmle.python.dataflow.new.DataFlow
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
+module XML = ExperimentalXML;
+
 private module XmlEtree {
   /**
    * Provides models for `xml.etree` parsers

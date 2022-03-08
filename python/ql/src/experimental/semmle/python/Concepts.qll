@@ -14,7 +14,11 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
-module XML {
+/**
+ * Since there is both XML module in normal and experimental Concepts,
+ * we have to rename the experimental module as this.
+ */
+module ExperimentalXML {
   /**
    * A kind of XML vulnerability.
    *
