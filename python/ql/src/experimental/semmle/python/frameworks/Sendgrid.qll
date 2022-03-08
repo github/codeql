@@ -41,22 +41,6 @@ private module Sendgrid {
           .getACall()
   }
 
-  private DataFlow::Node sendgridContent(DataFlow::CallCfgNode contentCall, string mime) {
-    exists(StrConst mimeNode |
-      mimeNode.getText() = mime and
-      DataFlow::exprNode(mimeNode).(DataFlow::LocalSourceNode).flowsTo(contentCall.getArg(0)) and
-      result = contentCall.getArg(1)
-    )
-  }
-
-  private DataFlow::Node sendgridWrite(DataFlow::CallCfgNode mailCall, string attributeName) {
-    exists(DataFlow::AttrWrite attrWrite |
-      attrWrite.getObject().getALocalSource() = mailCall and
-      attrWrite.getAttributeName() = attributeName and
-      result = attrWrite.getValue()
-    )
-  }
-
   /**
    * Gets a reference to `sg.send()` and `sg.client.mail.send.post()`.
    *
@@ -82,12 +66,30 @@ private module Sendgrid {
    * * `getSubject()`'s result would be `"Sending with SendGrid is Fun"`.
    */
   private class SendGridMail extends DataFlow::CallCfgNode, EmailSender::Range {
-    SendGridMail() { this.getFunction() = sendgridApiSendCall() }
+    SendGridMail() { this = sendgridApiSendCall() }
 
-    DataFlow::CallCfgNode getMailCall() {
+    private DataFlow::CallCfgNode getMailCall() {
       exists(DataFlow::Node n |
         n in [this.getArg(0), this.getArgByName("request_body")] and
         result = [n, n.(DataFlow::MethodCallNode).getObject()].getALocalSource()
+      )
+    }
+
+    private DataFlow::Node sendgridContent(DataFlow::CallCfgNode contentCall, string mime) {
+      mime in ["text/plain", "text/html", "text/x-amp-html"] and
+      exists(StrConst mimeNode |
+        mimeNode.getText() = mime and
+        DataFlow::exprNode(mimeNode).(DataFlow::LocalSourceNode).flowsTo(contentCall.getArg(0)) and
+        result = contentCall.getArg(1)
+      )
+    }
+
+    private DataFlow::Node sendgridWrite(string attributeName) {
+      attributeName in ["plain_text_content", "html_content", "from_email", "subject"] and
+      exists(DataFlow::AttrWrite attrWrite |
+        attrWrite.getObject().getALocalSource() = this.getMailCall() and
+        attrWrite.getAttributeName() = attributeName and
+        result = attrWrite.getValue()
       )
     }
 
@@ -103,7 +105,7 @@ private module Sendgrid {
           sendgridContent(sendgridMailInstance().getMember("add_content").getACall(), "text/plain")
         ]
       or
-      result = sendgridWrite(this.getMailCall(), "plain_text_content")
+      result = sendgridWrite("plain_text_content")
     }
 
     override DataFlow::Node getHtmlBody() {
@@ -116,7 +118,7 @@ private module Sendgrid {
             this.getMailCall().getArg(4), this.getMailCall().getArgByName("html_content")
           ].getALocalSource(), ["text/html", "text/x-amp-html"])
       or
-      result = sendgridWrite(this.getMailCall(), "html_content")
+      result = sendgridWrite("html_content")
       or
       exists(KeyValuePair content, Dict generalDict, KeyValuePair typePair, KeyValuePair valuePair |
         content.getKey().(StrConst).getText() = "content" and
@@ -173,7 +175,7 @@ private module Sendgrid {
       or
       result = this.getMailCall().getAMethodCall(["from_email", "set_from"]).getArg(0)
       or
-      result = sendgridWrite(this.getMailCall(), "from_email")
+      result = sendgridWrite("from_email")
     }
 
     override DataFlow::Node getSubject() {
@@ -181,7 +183,7 @@ private module Sendgrid {
       or
       result = this.getMailCall().getAMethodCall(["subject", "set_subject"]).getArg(0)
       or
-      result = sendgridWrite(this.getMailCall(), "subject")
+      result = sendgridWrite("subject")
     }
   }
 }
