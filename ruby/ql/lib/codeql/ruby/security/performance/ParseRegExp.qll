@@ -861,6 +861,7 @@ abstract class RegExp extends AST::StringlikeLiteral {
    * Whether the text in the range start,end is an alternation
    */
   predicate alternation(int start, int end) {
+    not this.inCharSet(start) and
     this.topLevel(start, end) and
     exists(int less | this.subalternation(start, less, _) and less < end)
   }
