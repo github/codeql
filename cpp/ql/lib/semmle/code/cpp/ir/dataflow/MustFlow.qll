@@ -112,7 +112,7 @@ private module Cached {
 
   /**
    * Holds if `instr` is the qualifier to a call to the non-virtual function `f`, and
-   * `init` is the corresponding initiazation instruction that receives the value of
+   * `init` is the corresponding initialization instruction that receives the value of
    * `instr` in `f`.
    */
   pragma[noinline]
