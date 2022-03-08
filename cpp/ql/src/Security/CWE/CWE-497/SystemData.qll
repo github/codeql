@@ -236,6 +236,11 @@ class LogonUser extends SystemData {
   override predicate isSensitive() { any() }
 }
 
+/**
+ * An expression with the type of registry query parameter it is (if any).
+ * This type is used to express information about registry query parameters in
+ * the `regQuery` predicate concisely.
+ */
 private newtype TRegQueryParameter =
   TSubKeyName(Expr e) or
   TValueName(Expr e) or
