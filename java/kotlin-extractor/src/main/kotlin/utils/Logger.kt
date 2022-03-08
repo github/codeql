@@ -90,16 +90,21 @@ open class LoggerBase(val logCounter: LogCounter) {
         val locationId = mkLocationId()
         tw.writeDiagnostics(StarLabel(), "CodeQL Kotlin extractor", severity.sev, "", msg, "$ts $fullMsg", locationId)
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
-        logStream.write("$ts Diagnostic($diagnosticLocStr): $locStr$fullMsg")
+        val kind = if (severity <= Severity.WarnHigh) "WARN" else "ERROR"
+        logStream.write("$ts [$kind] Diagnostic($diagnosticLocStr): $locStr$fullMsg")
     }
 
     fun trace(tw: TrapWriter, msg: String) {
-        debug(tw, msg)
+        if (verbosity >= 4) {
+            val fullMsg = "${timestamp()} [TRACE] $msg"
+            tw.writeComment(fullMsg)
+            logStream.write(fullMsg + "\n")
+        }
     }
 
     fun debug(tw: TrapWriter, msg: String) {
         if (verbosity >= 4) {
-            val fullMsg = "${timestamp()} $msg"
+            val fullMsg = "${timestamp()} [DEBUG] $msg"
             tw.writeComment(fullMsg)
             logStream.write(fullMsg + "\n")
         }
@@ -107,7 +112,7 @@ open class LoggerBase(val logCounter: LogCounter) {
 
     fun info(tw: TrapWriter, msg: String) {
         if (verbosity >= 3) {
-            val fullMsg = "${timestamp()} $msg"
+            val fullMsg = "${timestamp()} [INFO] $msg"
             tw.writeComment(fullMsg)
             logStream.write(fullMsg + "\n")
         }
