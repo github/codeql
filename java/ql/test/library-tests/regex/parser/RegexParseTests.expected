@@ -139,3 +139,5 @@ parseFailures
 | Test.java:19:26:19:30 | \\077 | [RegExpConstant,RegExpEscape] |
 | Test.java:19:31:19:31 | 7 | [RegExpConstant,RegExpNormalChar] |
 | Test.java:19:32:19:37 | \u1337 | [RegExpConstant,RegExpNormalChar] |
+| Test.java:20:10:20:12 | [\|] | [RegExpCharacterClass] |
+| Test.java:20:11:20:11 | \| | [RegExpConstant,RegExpNormalChar] |

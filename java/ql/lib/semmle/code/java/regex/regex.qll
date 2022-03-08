@@ -807,6 +807,7 @@ abstract class RegexString extends StringLiteral {
   }
 
   private predicate topLevel(int start, int end) {
+    not this.inCharSet(start) and
     this.subalternation(start, end, _) and
     not this.isOptionDivider(end)
   }
