@@ -13,6 +13,9 @@ private import semmle.python.frameworks.PEP249
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.internal.SelfRefMixin
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+// modeling split over multiple files to keep this file from becoming too big
+private import semmle.python.frameworks.Stdlib.Urllib
+private import semmle.python.frameworks.Stdlib.Urllib2
 
 /** Provides models for the Python standard library. */
 module Stdlib {
