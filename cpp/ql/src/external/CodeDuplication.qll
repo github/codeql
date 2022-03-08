@@ -81,7 +81,7 @@ deprecated class SimilarBlock extends Copy {
 }
 
 /**
- * DEPRECATED: The CodeDuplication library will be removed in a future release.
+ * DEPRECATED: The `CodeDuplication` library will be removed in a future release.
  *
  * Gets a function with a body and a location.
  */
