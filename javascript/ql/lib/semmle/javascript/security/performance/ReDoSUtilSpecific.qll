@@ -13,6 +13,12 @@ predicate isEscapeClass(RegExpTerm term, string clazz) {
 }
 
 /**
+ * Holds if `term` is a possessive quantifier.
+ * As javascript's regexes do not support possessive quantifiers, this never holds, but is used by the shared library.
+ */
+predicate isPossessive(RegExpQuantifier term) { none() }
+
+/**
  * Holds if the regular expression should not be considered.
  *
  * For javascript we make the pragmatic performance optimization to ignore minified files.

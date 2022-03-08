@@ -610,10 +610,15 @@ State after(RegExpTerm t) {
   or
   exists(RegExpGroup grp | t = grp.getAChild() | result = after(grp))
   or
-  exists(EffectivelyStar star | t = star.getAChild() | result = before(star))
+  exists(EffectivelyStar star | t = star.getAChild() |
+    not isPossessive(star) and
+    result = before(star)
+  )
   or
   exists(EffectivelyPlus plus | t = plus.getAChild() |
-    result = before(plus) or
+    not isPossessive(plus) and
+    result = before(plus)
+    or
     result = after(plus)
   )
   or

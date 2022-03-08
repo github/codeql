@@ -34,6 +34,12 @@ predicate isExcluded(RegExpParent parent) {
 }
 
 /**
+ * Holds if `term` is a possessive quantifier.
+ * Not currently implemented, but is used by the shared library.
+ */
+predicate isPossessive(RegExpQuantifier term) { none() }
+
+/**
  * A module containing predicates for determining which flags a regular expression have.
  */
 module RegExpFlags {
