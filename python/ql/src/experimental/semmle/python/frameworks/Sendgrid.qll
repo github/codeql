@@ -99,13 +99,14 @@ private module Sendgrid {
         ]
       or
       result in [
-          sendgridContent([
+          this.sendgridContent([
               this.getMailCall().getArg(3), this.getMailCall().getArgByName("plain_text_content")
             ].getALocalSource(), "text/plain"),
-          sendgridContent(sendgridMailInstance().getMember("add_content").getACall(), "text/plain")
+          this.sendgridContent(sendgridMailInstance().getMember("add_content").getACall(),
+            "text/plain")
         ]
       or
-      result = sendgridWrite("plain_text_content")
+      result = this.sendgridWrite("plain_text_content")
     }
 
     override DataFlow::Node getHtmlBody() {
@@ -114,11 +115,11 @@ private module Sendgrid {
       result = this.getMailCall().getAMethodCall("set_html").getArg(0)
       or
       result =
-        sendgridContent([
+        this.sendgridContent([
             this.getMailCall().getArg(4), this.getMailCall().getArgByName("html_content")
           ].getALocalSource(), ["text/html", "text/x-amp-html"])
       or
-      result = sendgridWrite("html_content")
+      result = this.sendgridWrite("html_content")
       or
       exists(KeyValuePair content, Dict generalDict, KeyValuePair typePair, KeyValuePair valuePair |
         content.getKey().(StrConst).getText() = "content" and
@@ -175,7 +176,7 @@ private module Sendgrid {
       or
       result = this.getMailCall().getAMethodCall(["from_email", "set_from"]).getArg(0)
       or
-      result = sendgridWrite("from_email")
+      result = this.sendgridWrite("from_email")
     }
 
     override DataFlow::Node getSubject() {
@@ -183,7 +184,7 @@ private module Sendgrid {
       or
       result = this.getMailCall().getAMethodCall(["subject", "set_subject"]).getArg(0)
       or
-      result = sendgridWrite("subject")
+      result = this.sendgridWrite("subject")
     }
   }
 }
