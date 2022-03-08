@@ -426,7 +426,6 @@
     "python/ql/src/Lexical/CommentedOutCodeMetricOverview.inc.qhelp"
   ],
   "FLinesOfDuplicatedCodeCommon.inc.qhelp": [
-    "cpp/ql/src/Metrics/Files/FLinesOfDuplicatedCodeCommon.inc.qhelp",
     "java/ql/src/Metrics/Files/FLinesOfDuplicatedCodeCommon.inc.qhelp",
     "javascript/ql/src/Metrics/FLinesOfDuplicatedCodeCommon.inc.qhelp",
     "python/ql/src/Metrics/FLinesOfDuplicatedCodeCommon.inc.qhelp"
