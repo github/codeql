@@ -21,7 +21,7 @@ class SemBasicBlock extends TSemBasicBlock {
     block.bbDominates(getJavaBasicBlock(otherBlock))
   }
 
-  final SemExpr getAnExpr() { result = getSemanticExpr(block.getANode()) }
+  final SemExpr getAnExpr() { SemanticExprConfig::getExprBasicBlock(result) = this }
 }
 
 SemBasicBlock getSemanticBasicBlock(BasicBlock block) { result = MkSemBasicBlock(block) }

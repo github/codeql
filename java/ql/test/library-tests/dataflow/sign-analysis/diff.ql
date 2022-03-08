@@ -9,11 +9,10 @@ import semmle.code.java.semantic.SemanticType
 import semmle.code.java.dataflow.SSA
 import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 import SignAnalysisCommonTest
-import SemSignAnalysisCommonTest
 
 predicate interestingLocation(Location loc) {
-  //  loc.getFile().getBaseName() = "UnsignedLongs.java" and
-  // loc.getStartLine() in [470 .. 477] and
+  //  loc.getFile().getBaseName() = "ReplyMessage.java" and
+  //  loc.getStartLine() in [266 .. 266] and
   any()
 }
 
@@ -28,7 +27,7 @@ query predicate diff_exprSign(SemExpr e, string astSign, string semSign) {
 query predicate diff_ssaDefSign(SemSsaVariable v, string astSign, string semSign) {
   getJavaBasicBlock(v.getBasicBlock()).getEnclosingCallable().fromSource() and
   interestingLocation(v.getBasicBlock().getLocation()) and
-  semSign = concat(testSemSsaDefSign(v).toString(), "") and
+  semSign = concat(semSsaDefSign(v).toString(), "") and
   astSign = concat(testSsaDefSign(getJavaSsaVariable(v)).toString(), "") and
   astSign != semSign
 }

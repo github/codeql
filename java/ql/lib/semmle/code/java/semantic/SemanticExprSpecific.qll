@@ -10,6 +10,10 @@ private module Impl {
     TPrimaryExpr(J::Expr e) or
     TPostUpdateExpr(J::UnaryAssignExpr e) {
       e instanceof J::PostIncExpr or e instanceof J::PostDecExpr
+    } or
+    TEnhancedForInit(J::EnhancedForStmt for) or
+    TParameterInit(SSA::SsaImplicitInit init, J::Parameter param) {
+      init.isParameterDefinition(param)
     }
 
   TExpr getResultExpr(J::Expr e) { result = TPrimaryExpr(e) }
@@ -22,6 +26,8 @@ module SemanticExprConfig {
     string toString() { none() }
 
     J::Location getLocation() { none() }
+
+    J::BasicBlock getBasicBlock() { none() }
   }
 
   private class PrimaryExpr extends Expr, TPrimaryExpr {
@@ -32,6 +38,8 @@ module SemanticExprConfig {
     override string toString() { result = e.toString() }
 
     override J::Location getLocation() { result = e.getLocation() }
+
+    override J::BasicBlock getBasicBlock() { result = e.getBasicBlock() }
 
     J::Expr getExpr() { result = e }
   }
@@ -45,14 +53,43 @@ module SemanticExprConfig {
 
     override J::Location getLocation() { result = e.getLocation() }
 
+    override J::BasicBlock getBasicBlock() { result = e.getBasicBlock() }
+
     J::UnaryAssignExpr getExpr() { result = e }
+  }
+
+  private class EnhancedForInitExpr extends Expr, TEnhancedForInit {
+    J::EnhancedForStmt for;
+
+    EnhancedForInitExpr() { this = TEnhancedForInit(for) }
+
+    override string toString() { result = "init of " + for.getVariable().toString() }
+
+    override J::Location getLocation() { result = for.getVariable().getLocation() }
+
+    override J::BasicBlock getBasicBlock() { result = for.getVariable().getBasicBlock() }
+  }
+
+  private class ParameterInitExpr extends Expr, TParameterInit {
+    SSA::SsaImplicitInit init;
+    J::Parameter param;
+
+    ParameterInitExpr() { this = TParameterInit(init, param) }
+
+    override string toString() { result = "param init: " + init.toString() }
+
+    override J::Location getLocation() { result = init.getLocation() }
+
+    override J::BasicBlock getBasicBlock() { result = init.getBasicBlock() }
+
+    final J::Parameter getParameter() { result = param }
   }
 
   string exprToString(Expr e) { result = e.toString() }
 
   J::Location getExprLocation(Expr e) { result = e.getLocation() }
 
-  SemBasicBlock getExprBasicBlock(Expr e) { result.getAnExpr() = e }
+  SemBasicBlock getExprBasicBlock(Expr e) { result = getSemanticBasicBlock(e.getBasicBlock()) }
 
   predicate integerLiteral(Expr expr, SemIntegerType type, int value) {
     exists(J::Expr javaExpr | javaExpr = expr.(PrimaryExpr).getExpr() |
@@ -172,7 +209,8 @@ module SemanticExprConfig {
             assignOp instanceof J::AssignRShiftExpr and opcode instanceof Opcode::ShiftRight
             or
             // TODO: Add new opcode or add an implicit conversion
-            assignOp instanceof J::AssignURShiftExpr and opcode instanceof Opcode::ShiftRightUnsigned
+            assignOp instanceof J::AssignURShiftExpr and
+            opcode instanceof Opcode::ShiftRightUnsigned
           )
         )
       )
@@ -237,13 +275,15 @@ module SemanticExprConfig {
     )
   }
 
-  predicate loadExpr(Expr expr, SemType type) {
-    type = getSemanticType(expr.(PrimaryExpr).getExpr().(J::RValue).getType())
-  }
-
-  SemSsaVariable getLoadDef(Expr expr) {
-    exists(SSA::SsaVariable var | expr.(PrimaryExpr).getExpr() = var.getAUse() |
-      result = getSemanticSsaVariable(var)
+  predicate nullaryExpr(Expr expr, Opcode opcode, SemType type) {
+    exists(ParameterInitExpr paramInit | paramInit = expr |
+      opcode instanceof Opcode::InitializeParameter and
+      type = getSemanticType(paramInit.getParameter().getType())
+    )
+    or
+    exists(J::RValue rval | rval = expr.(PrimaryExpr).getExpr() |
+      type = getSemanticType(rval.getType()) and
+      opcode instanceof Opcode::Load
     )
   }
 
@@ -260,6 +300,10 @@ module SemanticExprConfig {
 
   SemType getUnknownExprType(Expr expr) {
     result = getSemanticType(expr.(PrimaryExpr).getExpr().getType())
+    or
+    exists(J::EnhancedForStmt for | expr = TEnhancedForInit(for) |
+      result = getSemanticType(for.getVariable().getType())
+    )
   }
 }
 
@@ -282,5 +326,12 @@ SemExpr getUpdateExpr(SSA::SsaExplicitUpdate update) {
     or
     (expr instanceof J::PostIncExpr or expr instanceof J::PostDecExpr) and
     result = TPostUpdateExpr(expr)
+    or
+    exists(J::EnhancedForStmt for |
+      for.getVariable() = expr and
+      result = TEnhancedForInit(for)
+    )
   )
 }
+
+SemExpr getEnhancedForInitExpr(J::EnhancedForStmt for) { result = TEnhancedForInit(for) }

@@ -6,7 +6,7 @@
  * three-valued domain `{negative, zero, positive}`.
  */
 
-private import SignAnalysisSpecific::Private
+private import SignAnalysisSpecific as Specific
 private import semmle.code.java.semantic.SemanticExpr
 private import semmle.code.java.semantic.SemanticGuard
 private import semmle.code.java.semantic.SemanticSSA
@@ -15,45 +15,217 @@ private import semmle.code.java.semantic.analysis.ConstantAnalysis
 private import semmle.code.java.semantic.analysis.RangeUtils
 private import Sign
 
-/** Gets the sign of `e` if this can be directly determined. */
-private Sign certainExprSign(SemExpr e) {
-  exists(int i | e.(SemConstantIntegerExpr).getIntValue() = i |
-    i < 0 and result = TNeg()
+/**
+ * An SSA definition for which the analysis can compute the sign.
+ *
+ * The actual computation of the sign is done in an override of the `getSign()` predicate. The
+ * charpred of any subclass must _not_ invoke `getSign()`, directly or indirectly. This ensures
+ * that the charpred does not introduce negative recursion. The `getSign()` predicate may be
+ * recursive.
+ */
+abstract private class SignDef instanceof SemSsaVariable {
+  final string toString() { result = super.toString() }
+
+  /** Gets the possible signs of this SSA definition. */
+  abstract Sign getSign();
+}
+
+/** An SSA definition whose sign is computed based on standard flow. */
+abstract private class FlowSignDef extends SignDef {
+  abstract override Sign getSign();
+}
+
+/** An SSA definition whose sign is determined by the sign of that definitions source expression. */
+private class ExplicitSignDef extends FlowSignDef {
+  SemSsaExplicitUpdate update;
+
+  ExplicitSignDef() { update = this }
+
+  final override Sign getSign() { result = semExprSign(update.getSourceExpr()) }
+}
+
+/** An SSA Phi definition, whose sign is the union of the signs of its inputs. */
+private class PhiSignDef extends FlowSignDef {
+  SemSsaPhiNode phi;
+
+  PhiSignDef() { phi = this }
+
+  final override Sign getSign() {
+    exists(SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge |
+      edge.phiInput(phi, inp) and
+      result = semSsaSign(inp, edge)
+    )
+  }
+}
+
+/** An SSA definition whose sign is computed by a language-specific implementation. */
+abstract class CustomSignDef extends SignDef {
+  abstract override Sign getSign();
+}
+
+/**
+ * An expression for which the analysis can compute the sign.
+ *
+ * The actual computation of the sign is done in an override of the `getSign()` predicate. The
+ * charpred of any subclass must _not_ invoke `getSign()`, directly or indirectly. This ensures
+ * that the charpred does not introduce negative recursion. The `getSign()` predicate may be
+ * recursive.
+ *
+ * Concrete implementations extend one of the following subclasses:
+ * - `ConstantSignExpr`, for expressions with a compile-time constant value.
+ * - `FlowSignExpr`, for expressions whose sign can be computed from the signs of their operands.
+ * - `CustomsignExpr`, for expressions shose sign can be computed by a language-specific
+ *   implementation.
+ *
+ * If the same expression matches more than one of the above subclasses, the sign is computed as
+ * follows:
+ * - The sign of a `ConstantSignExpr` is computed solely from `ConstantSignExpr.getSign()`,
+ *   regardless of any other subclasses.
+ * - If a non-`ConstantSignExpr` expression matches exactly one of `FlowSignExpr` or
+ *   `CustomSignExpr`, the sign is computed by that class' `getSign()` predicate.
+ * - If a non-`ConstantSignExpr` expression matches both `FlowSignExpr` and `CustomSignExpr`, the
+ *   sign is the _intersection_ of the signs of those two classes' `getSign()` predicates. Thus,
+ *   both classes have the opportunity to _restrict_ the set of possible signs, not to generate new
+ *   possible signs.
+ * - If an expression does not match any of the three subclasses, then it can have any sign.
+ *
+ * Note that the `getSign()` predicate is introduced only in subclasses of `SignExpr`.
+ */
+abstract private class SignExpr instanceof SemExpr {
+  SignExpr() { not Specific::ignoreExprSign(this) }
+
+  final string toString() { result = super.toString() }
+
+  abstract Sign getSign();
+}
+
+/** An expression whose sign is determined by its constant numeric value. */
+private class ConstantSignExpr extends SignExpr {
+  ConstantSignExpr() {
+    this instanceof SemConstantIntegerExpr or
+    exists(this.(SemNumericLiteralExpr).getApproximateFloatValue())
+  }
+
+  final override Sign getSign() {
+    exists(int i | this.(SemConstantIntegerExpr).getIntValue() = i |
+      i < 0 and result = TNeg()
+      or
+      i = 0 and result = TZero()
+      or
+      i > 0 and result = TPos()
+    )
     or
-    i = 0 and result = TZero()
-    or
-    i > 0 and result = TPos()
-  )
-  or
-  not exists(e.(SemConstantIntegerExpr).getIntValue()) and
-  (
-    exists(float f | f = e.(SemNumericLiteralExpr).getApproximateFloatValue() |
+    not exists(this.(SemConstantIntegerExpr).getIntValue()) and
+    exists(float f | f = this.(SemNumericLiteralExpr).getApproximateFloatValue() |
       f < 0 and result = TNeg()
       or
       f = 0 and result = TZero()
       or
       f > 0 and result = TPos()
     )
-    or
-    result = specificCertainExprSign(e)
-  )
+  }
 }
 
-/** Holds if the sign of `e` is too complicated to determine. */
-private predicate unknownSign(SemExpr e) {
-  not exists(certainExprSign(e)) and
-  (
-    exists(SemIntegerLiteralExpr lit | lit = e and not exists(lit.getIntValue()))
-    or
-    exists(SemConvertExpr cast, SemType fromtyp |
-      cast = e and
-      fromtyp = getTrackedType(cast.getOperand()) and
-      not fromtyp instanceof SemNumericType
-    )
-    or
-    numericExprWithUnknownSign(e)
-  )
+abstract private class NonConstantSignExpr extends SignExpr {
+  NonConstantSignExpr() { not this instanceof ConstantSignExpr }
+
+  final override Sign getSign() {
+    // The result is the _intersection_ of the signs computed from flow and by the language.
+    (result = this.(FlowSignExpr).getSignRestriction() or not this instanceof FlowSignExpr) and
+    (result = this.(CustomSignExpr).getSignRestriction() or not this instanceof CustomSignExpr)
+  }
 }
+
+/** An expression whose sign is computed from the signs of its operands. */
+abstract private class FlowSignExpr extends NonConstantSignExpr {
+  abstract Sign getSignRestriction();
+}
+
+/** An expression whose sign is computed by a language-specific implementation. */
+abstract class CustomSignExpr extends NonConstantSignExpr {
+  abstract Sign getSignRestriction();
+}
+
+/** An expression whose sign is unknown. */
+private class UnknownSignExpr extends SignExpr {
+  UnknownSignExpr() {
+    not this instanceof FlowSignExpr and
+    not this instanceof CustomSignExpr and
+    not this instanceof ConstantSignExpr and
+    (
+      // Only track numeric types.
+      getTrackedType(this) instanceof SemNumericType
+      or
+      // Unless the language says to track this expression anyway.
+      Specific::trackUnknownNonNumericExpr(this)
+    )
+  }
+
+  final override Sign getSign() { semAnySign(result) }
+}
+
+/**
+ * A `Load` expression whose sign is computed from the sign of its SSA definition, restricted by
+ * inference from any intervening guards.
+ */
+private class UseSignExpr extends FlowSignExpr {
+  SemSsaVariable v;
+
+  UseSignExpr() { v.getAUse() = this }
+
+  override Sign getSignRestriction() {
+    // Propagate via SSA
+    // Propagate the sign from the def of `v`, incorporating any inference from guards.
+    result = semSsaSign(v, any(SemSsaReadPositionBlock bb | bb.getAnExpr() = this))
+    or
+    // No block for this read. Just use the sign of the def.
+    // REVIEW: How can this happen?
+    not exists(SemSsaReadPositionBlock bb | bb.getAnExpr() = this) and
+    result = semSsaDefSign(v)
+  }
+}
+
+/** A binary expression whose sign is computed from the signs of its operands. */
+private class BinarySignExpr extends FlowSignExpr {
+  SemBinaryExpr binary;
+
+  BinarySignExpr() { binary = this }
+
+  override Sign getSignRestriction() {
+    result =
+      semExprSign(binary.getLeftOperand())
+          .applyBinaryOp(semExprSign(binary.getRightOperand()), binary.getOpcode())
+    or
+    exists(SemDivExpr div | div = binary |
+      result = semExprSign(div.getLeftOperand()) and
+      result != TZero() and
+      div.getRightOperand().(SemFloatingPointLiteralExpr).getFloatValue() = 0
+    )
+  }
+}
+
+/** A unary expression whose sign is computed from the sign of its operand. */
+private class UnarySignExpr extends FlowSignExpr {
+  SemUnaryExpr unary;
+
+  UnarySignExpr() { unary = this }
+
+  override Sign getSignRestriction() {
+    result = semExprSign(unary.getOperand()).applyUnaryOp(unary.getOpcode())
+  }
+}
+
+/**
+ * A `Convert` expression, whose sign is computed based on sign of its operand and the source and
+ * destination types.
+ */
+private class ConvertSignExpr extends UnarySignExpr {
+  override SemConvertExpr unary;
+
+  override Sign getSignRestriction() { result = semExprSign(unary.getOperand()) }
+}
+
+private predicate unknownSign(SemExpr e) { e instanceof UnknownSignExpr }
 
 /**
  * Holds if `lowerbound` is a lower bound for `v` at `pos`. This is restricted
@@ -233,98 +405,20 @@ private Sign semSsaSign(SemSsaVariable v, SemSsaReadPosition pos) {
 
 /** Gets a possible sign for `v`. */
 pragma[nomagic]
-private Sign semSsaDefSign(SemSsaVariable v) {
-  result = semExplicitSsaDefSign(v)
-  or
-  result = implicitSsaDefSign(v)
-  or
-  exists(SemSsaPhiNode phi, SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge |
-    v = phi and
-    edge.phiInput(phi, inp) and
-    result = semSsaSign(inp, edge)
-  )
-}
-
-Sign semSsaPhiSign(SemSsaPhiNode phi) {
-  exists(SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge |
-    edge.phiInput(phi, inp) and
-    result = semSsaSign(inp, edge)
-  )
-}
-
-/** Returns the sign of explicit SSA definition `v`. */
-Sign semExplicitSsaDefSign(SemSsaVariable v) {
-  semAnySign(result) and explicitSsaDefWithAnySign(v)
-  or
-  result = semExprSign(v.(SemSsaExplicitUpdate).getSourceExpr())
-}
+Sign semSsaDefSign(SemSsaVariable v) { result = v.(SignDef).getSign() }
 
 /** Gets a possible sign for `e`. */
 cached
-Sign semExprSign(SemExpr e) { result = semExprSign(e, _) }
-
-Sign semExprSign(SemExpr e, string branch) {
-  not ignoreExprSign(e) and
-  exists(Sign s |
-    // We know exactly what the sign is. This handles constants, collection sizes, etc.
-    s = certainExprSign(e) and branch = "certain"
-    or
-    not exists(certainExprSign(e)) and
-    (
-      // We'll never know what the sign is.
-      semAnySign(s) and unknownSign(e) and branch = "unknown"
-      or
-      // Propagate via SSA
-      exists(SemSsaVariable v | v.getAUse() = e |
-        // Propagate the sign from the def of `v`, incorporating any inference from guards.
-        s = semSsaSign(v, any(SemSsaReadPositionBlock bb | bb.getAnExpr() = e)) and branch = "use"
-        or
-        // No block for this read. Just use the sign of the def.
-        // REVIEW: How can this happen?
-        not exists(SemSsaReadPositionBlock bb | bb.getAnExpr() = e) and
-        s = semSsaDefSign(v) and
-        branch = "def only"
-      )
-      or
-      s = languageExprSign(e) and branch = "language" // Let the language try
-      or
-      s = specificSubExprSign(e) and branch = "specific"
-    )
-  |
-    if getTrackedType(e) instanceof SemUnsignedIntegerType and s = TNeg()
+Sign semExprSign(SemExpr e) {
+  exists(Sign s | s = e.(SignExpr).getSign() |
+    if
+      getTrackedType(e) instanceof SemUnsignedIntegerType and
+      s = TNeg() and
+      not Specific::ignoreTypeRestrictions(e)
     then result = TPos()
     else result = s
   )
 }
-
-/** Gets a possible sign for `e` from the signs of its child nodes. */
-private Sign specificSubExprSign(SemExpr e) {
-  result = semExprSign(getASubExprWithSameSign(e))
-  or
-  exists(SemDivExpr div | div = e |
-    result = semExprSign(div.getLeftOperand()) and
-    result != TZero() and
-    div.getRightOperand().(SemFloatingPointLiteralExpr).getFloatValue() = 0
-  )
-  or
-  exists(SemUnaryExpr unary | unary = e |
-    result = semExprSign(unary.getOperand()).applyUnaryOp(unary.getOpcode())
-  )
-  or
-  exists(Sign s1, Sign s2 | binaryOpSigns(e, s1, s2) |
-    result = s1.applyBinaryOp(s2, e.(SemBinaryExpr).getOpcode())
-  )
-}
-
-pragma[noinline]
-private predicate binaryOpSigns(SemExpr e, Sign lhs, Sign rhs) {
-  lhs = binaryOpLhsSign(e) and
-  rhs = binaryOpRhsSign(e)
-}
-
-private Sign binaryOpLhsSign(SemBinaryExpr e) { result = semExprSign(e.getLeftOperand()) }
-
-private Sign binaryOpRhsSign(SemBinaryExpr e) { result = semExprSign(e.getRightOperand()) }
 
 /**
  * Dummy predicate that holds for any sign. This is added to improve readability
@@ -356,8 +450,4 @@ predicate semStrictlyNegative(SemExpr e) {
   semExprSign(e) = TNeg() and
   not semExprSign(e) = TPos() and
   not semExprSign(e) = TZero()
-}
-
-module SemSignAnalysisCommonTest {
-  predicate testSemSsaDefSign = semSsaDefSign/1;
 }

@@ -19,7 +19,9 @@ class SemSsaVariable extends TSemSsaVariable {
 
   final string toString() { result = var.toString() }
 
-  final SemExpr getAUse() { result = getSemanticExpr(var.getAUse()) }
+  final Location getLocation() { result = var.getLocation() }
+
+  final SemLoadExpr getAUse() { result = getSemanticExpr(var.getAUse()) }
 
   final SemSsaSourceVariable getSourceVariable() {
     result = getSemanticSsaSourceVariable(var.getSourceVariable())

@@ -9,6 +9,7 @@ private import SemanticType
 private import SemanticExprSpecific::SemanticExprConfig as Specific
 
 private newtype TOpcode =
+  TInitializeParameter() or
   TCopyValue() or
   TLoad() or
   TStore() or
@@ -40,8 +41,6 @@ private newtype TOpcode =
   TStringConstant() or
   TAddOne() or // TODO: Combine with `TAdd`
   TSubOne() or // TODO: Combine with `TSub`
-  TPostInc() or // TODO: Reconnect result to merge with `TPreInc`
-  TPostDec() or // TODO: Reconnect result to merge with `TPreDec`
   TConditional() or // TODO: Represent as flow
   TCall() or
   TUnknown()
@@ -51,6 +50,10 @@ class Opcode extends TOpcode {
 }
 
 module Opcode {
+  class InitializeParameter extends Opcode, TInitializeParameter {
+    override string toString() { result = "InitializeParameter" }
+  }
+
   class CopyValue extends Opcode, TCopyValue {
     override string toString() { result = "CopyValue" }
   }
@@ -153,14 +156,6 @@ module Opcode {
 
   class SubOne extends Opcode, TSubOne {
     override string toString() { result = "SubOne" }
-  }
-
-  class PostInc extends Opcode, TPostInc {
-    override string toString() { result = "PostInc" }
-  }
-
-  class PostDec extends Opcode, TPostDec {
-    override string toString() { result = "PostDec" }
   }
 
   class Conditional extends Opcode, TConditional {
@@ -378,10 +373,26 @@ class SemSubOneExpr extends SemUnaryExpr {
   SemSubOneExpr() { opcode instanceof Opcode::SubOne }
 }
 
-class SemLoadExpr extends SemKnownExpr {
-  SemLoadExpr() { opcode instanceof Opcode::Load and Specific::loadExpr(this, type) }
+private class SemNullaryExpr extends SemKnownExpr {
+  SemNullaryExpr() { Specific::nullaryExpr(this, opcode, type) }
+}
 
-  final SemSsaVariable getDef() { result = Specific::getLoadDef(this) }
+class SemInitializeParameterExpr extends SemNullaryExpr {
+  SemInitializeParameterExpr() { opcode instanceof Opcode::InitializeParameter }
+}
+
+class SemLoadExpr extends SemNullaryExpr {
+  SemLoadExpr() { opcode instanceof Opcode::Load }
+
+  final SemSsaVariable getDef() { result.getAUse() = this }
+}
+
+class SemSsaLoadExpr extends SemLoadExpr {
+  SemSsaLoadExpr() { exists(getDef()) }
+}
+
+class SemNonSsaLoadExpr extends SemLoadExpr {
+  SemNonSsaLoadExpr() { not exists(getDef()) }
 }
 
 class SemConditionalExpr extends SemKnownExpr {

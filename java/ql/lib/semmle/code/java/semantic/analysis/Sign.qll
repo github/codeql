@@ -246,6 +246,8 @@ class Sign extends TSign {
 
   /** Perform `op` on this sign. */
   Sign applyUnaryOp(Opcode op) {
+    op instanceof Opcode::CopyValue and result = this
+    or
     op instanceof Opcode::AddOne and result = inc()
     or
     op instanceof Opcode::SubOne and result = dec()
