@@ -488,7 +488,7 @@ abstract class RegExp extends AST::StringlikeLiteral {
     this.group(start, end) and
     exists(int nameEnd |
       this.namedGroupStart(start, nameEnd) and
-      result = this.getText().substring(start + 4, nameEnd - 1)
+      result = this.getText().substring(start + 3, nameEnd - 1)
     )
   }
 
