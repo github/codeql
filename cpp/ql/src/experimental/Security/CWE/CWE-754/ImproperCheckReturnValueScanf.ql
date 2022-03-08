@@ -1,6 +1,6 @@
 /**
- * @name Improper check return value scanf
- * @description Using a function call without the ability to evaluate the correctness of the work can lead to unexpected results.
+ * @name Improper check of return value of scanf
+ * @description Not checking the return value of scanf and related functions may lead to undefined behavior.
  * @kind problem
  * @id cpp/improper-check-return-value-scanf
  * @problem.severity warning
@@ -27,30 +27,30 @@ int posArgumentInFunctionCall(FunctionCall fc) {
 
 /** Holds if a function argument was not initialized but used after the call. */
 predicate argumentIsNotInitializedAndIsUsed(Variable vt, FunctionCall fc) {
-  exists(Expr e0 |
-    // Fillable argument was not initialized.
-    vt instanceof LocalScopeVariable and
-    not vt.getAnAssignment().getASuccessor+() = fc and
-    (
-      not vt.hasInitializer()
-      or
-      exists(Expr e1, Variable v1 |
-        e1 = vt.getInitializer().getExpr() and
-        v1 = e1.(AddressOfExpr).getOperand().(VariableAccess).getTarget() and
-        (
-          not v1.hasInitializer() and
-          not v1.getAnAssignment().getASuccessor+() = fc
-        )
+  // Fillable argument was not initialized.
+  vt instanceof LocalScopeVariable and
+  not vt.getAnAssignment().getASuccessor+() = fc and
+  (
+    not vt.hasInitializer()
+    or
+    exists(Expr e, Variable v |
+      e = vt.getInitializer().getExpr() and
+      v = e.(AddressOfExpr).getOperand().(VariableAccess).getTarget() and
+      (
+        not v.hasInitializer() and
+        not v.getAnAssignment().getASuccessor+() = fc
       )
-    ) and
-    not exists(AssignExpr ae |
-      ae.getLValue() = vt.getAnAccess().getParent() and
-      ae.getASuccessor+() = fc
-    ) and
-    not exists(FunctionCall f0 |
-      f0.getAnArgument().getAChild() = vt.getAnAccess() and
-      f0.getASuccessor+() = fc
-    ) and
+    )
+  ) and
+  not exists(AssignExpr ae |
+    ae.getLValue() = vt.getAnAccess().getParent() and
+    ae.getASuccessor+() = fc
+  ) and
+  not exists(FunctionCall f0 |
+    f0.getAnArgument().getAChild() = vt.getAnAccess() and
+    f0.getASuccessor+() = fc
+  ) and
+  exists(Expr e0 |
     // After the call, the completed arguments are assigned or returned as the result of the operation of the upper function.
     fc.getASuccessor+() = e0 and
     (

@@ -4,7 +4,12 @@
 <qhelp>
 <overview>
 <p>Working with reading data without validation procedures and with uninitialized arguments can lead to unpredictable consequences.</p>
+</overview>
 
+<recommendation>
+<p>
+The user should check the return value of `scanf` and related functions and check that any additional argument was assigned a value before reading the additional argument.
+</p>
 </recommendation>
 <example>
 <p>The following example demonstrates erroneous and corrected work with a function call.</p>
