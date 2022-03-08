@@ -74,7 +74,7 @@ private module FlaskMail {
     override DataFlow::Node getTo() {
       result = this.getFlaskMailArgument(1, "recipients")
       or
-      result = flaskMessageInstance().getMember("add_recipient").getACall().getArg(0)
+      result = this.getMessage().getAMethodCall("add_recipient").getACall().getArg(0)
     }
 
     override DataFlow::Node getFrom() { result = this.getFlaskMailArgument(5, "sender") }
