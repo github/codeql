@@ -92,7 +92,7 @@ deprecated FunctionDeclarationEntry sourceMethod() {
 }
 
 /**
- * DEPRECATED: The CodeDuplication library will be removed in a future release.
+ * DEPRECATED: The `CodeDuplication` library will be removed in a future release.
  *
  * Gets the number of member functions in `c` with a body and a location.
  */
