@@ -117,7 +117,6 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
 private newtype TPrintAstNode =
   TElementNode(Element el) { shouldPrint(el, _) } or
   TForInitNode(ForStmt fs) { shouldPrint(fs, _) and exists(fs.getAnInit()) } or
-  TWhenBranchNode(WhenBranch wb) { shouldPrint(wb.getWhenExpr(), _) } or
   TLocalVarDeclNode(LocalVariableDeclExpr lvde) {
     shouldPrint(lvde, _) and lvde.getParent() instanceof SingleLocalVarDeclParent
   } or
@@ -358,18 +357,6 @@ final class ForStmtNode extends ExprStmtNode {
 }
 
 /**
- * A node representing a `WhenExpr`.
- */
-final class WhenExprNode extends ExprStmtNode {
-  WhenExprNode() { element instanceof WhenExpr }
-
-  override PrintAstNode getChild(int childIndex) {
-    childIndex >= 0 and
-    result.(WhenBranchNode).getWhenBranch() = element.(WhenExpr).getBranch(childIndex)
-  }
-}
-
-/**
  * An element that can be the parent of up to one `LocalVariableDeclExpr` for which we want
  * to use a synthetic node to hold the variable declaration and its `TypeAccess`.
  */
@@ -583,30 +570,6 @@ final class ForInitNode extends PrintAstNode, TForInitNode {
    * Gets the underlying `ForStmt`.
    */
   ForStmt getForStmt() { result = fs }
-}
-
-/**
- * A node representing the synthetic node of a `when` expression branch.
- */
-final class WhenBranchNode extends PrintAstNode, TWhenBranchNode {
-  WhenBranch wb;
-
-  WhenBranchNode() { this = TWhenBranchNode(wb) }
-
-  override string toString() { result = "(branch)" }
-
-  override ElementNode getChild(int childIndex) {
-    childIndex = 0 and
-    result.getElement().(Expr).isNthChildOf(wb, childIndex)
-    or
-    childIndex = 1 and
-    result.getElement().(Stmt).isNthChildOf(wb, childIndex)
-  }
-
-  /**
-   * Gets the underlying `WhenBranch`.
-   */
-  WhenBranch getWhenBranch() { result = wb }
 }
 
 /**

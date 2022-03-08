@@ -757,22 +757,22 @@ exprs.kt:
 #  113|         96: [LocalVariableDeclStmt] var ...;
 #  113|           1: [LocalVariableDeclExpr] b3
 #  113|             0: [WhenExpr] when ...
-#-----|               0: (branch)
+#  113|               0: [WhenBranch] ... -> ...
 #  113|                 0: [VarAccess] b1
 #  113|                 1: [ExprStmt] <Expr>;
 #  113|                   0: [VarAccess] b2
-#-----|               1: (branch)
+#  113|               1: [WhenBranch] ... -> ...
 #  113|                 0: [BooleanLiteral] true
 #  113|                 1: [ExprStmt] <Expr>;
 #  113|                   0: [BooleanLiteral] false
 #  114|         97: [LocalVariableDeclStmt] var ...;
 #  114|           1: [LocalVariableDeclExpr] b4
 #  114|             0: [WhenExpr] when ...
-#-----|               0: (branch)
+#  114|               0: [WhenBranch] ... -> ...
 #  114|                 0: [VarAccess] b1
 #  114|                 1: [ExprStmt] <Expr>;
 #  114|                   0: [BooleanLiteral] true
-#-----|               1: (branch)
+#  114|               1: [WhenBranch] ... -> ...
 #  114|                 0: [BooleanLiteral] true
 #  114|                 1: [ExprStmt] <Expr>;
 #  114|                   0: [VarAccess] b2
@@ -878,7 +878,7 @@ exprs.kt:
 #  150|       5: [BlockStmt] { ... }
 #  151|         0: [ExprStmt] <Expr>;
 #  151|           0: [WhenExpr] when ...
-#-----|             0: (branch)
+#  151|             0: [WhenBranch] ... -> ...
 #  151|               0: [InstanceOfExpr] ...instanceof...
 #  151|                 0: [VarAccess] x
 #  151|                 1: [TypeAccess] Subclass1
@@ -891,7 +891,7 @@ exprs.kt:
 #  154|         1: [LocalVariableDeclStmt] var ...;
 #  154|           1: [LocalVariableDeclExpr] y1
 #  154|             0: [WhenExpr] when ...
-#-----|               0: (branch)
+#  154|               0: [WhenBranch] ... -> ...
 #  154|                 0: [InstanceOfExpr] ...instanceof...
 #  154|                   0: [VarAccess] x
 #  154|                   1: [TypeAccess] Subclass1
@@ -902,7 +902,7 @@ exprs.kt:
 #  154|                       0: [BlockStmt] { ... }
 #  154|                         0: [ExprStmt] <Expr>;
 #  154|                           0: [VarAccess] x
-#-----|               1: (branch)
+#  154|               1: [WhenBranch] ... -> ...
 #  154|                 0: [BooleanLiteral] true
 #  154|                 1: [BlockStmt] { ... }
 #  154|                   0: [ExprStmt] <Expr>;
@@ -912,7 +912,7 @@ exprs.kt:
 #  155|             0: [IntegerLiteral] 1
 #  156|         3: [ExprStmt] <Expr>;
 #  156|           0: [WhenExpr] when ...
-#-----|             0: (branch)
+#  156|             0: [WhenBranch] ... -> ...
 #  156|               0: [InstanceOfExpr] ...instanceof...
 #  156|                 0: [VarAccess] x
 #  156|                 1: [TypeAccess] Subclass1
@@ -921,7 +921,7 @@ exprs.kt:
 #  156|                   0: [AssignExpr] ...=...
 #  156|                     0: [VarAccess] q
 #  156|                     1: [IntegerLiteral] 2
-#-----|             1: (branch)
+#  156|             1: [WhenBranch] ... -> ...
 #  156|               0: [BooleanLiteral] true
 #  156|               1: [BlockStmt] { ... }
 #  156|                 0: [ExprStmt] <Expr>;
@@ -938,7 +938,7 @@ exprs.kt:
 #  160|               -1: [VarAccess] p
 #  161|         1: [ExprStmt] <Expr>;
 #  161|           0: [WhenExpr] when ...
-#-----|             0: (branch)
+#  161|             0: [WhenBranch] ... -> ...
 #  161|               0: [ValueNEExpr] ... (value not-equals) ...
 #  161|                 0: [VarAccess] r
 #  161|                 1: [NullLiteral] null
@@ -2833,7 +2833,7 @@ samConversion.kt:
 #    9|                           0: [VarAccess] i
 #    9|                 -3: [TypeAccess] IntPredicate
 #    9|                 0: [WhenExpr] when ...
-#-----|                   0: (branch)
+#    9|                   0: [WhenBranch] ... -> ...
 #    9|                     0: [VarAccess] b
 #    9|                     1: [ExprStmt] <Expr>;
 #    9|                       0: [LambdaExpr] ...->...
@@ -2854,7 +2854,7 @@ samConversion.kt:
 #    9|                         -3: [TypeAccess] Function1<Integer,Boolean>
 #    9|                           0: [TypeAccess] Integer
 #    9|                           1: [TypeAccess] Boolean
-#-----|                   1: (branch)
+#    9|                   1: [WhenBranch] ... -> ...
 #    9|                     0: [BooleanLiteral] true
 #   11|                     1: [ExprStmt] <Expr>;
 #   11|                       0: [LambdaExpr] ...->...
@@ -3458,25 +3458,25 @@ whenExpr.kt:
 #    2|                   0: [VarAccess] i
 #    2|               1: [ExprStmt] <Expr>;
 #    2|                 0: [WhenExpr] when ...
-#-----|                   0: (branch)
+#    3|                   0: [WhenBranch] ... -> ...
 #    3|                     0: [ValueEQExpr] ... (value equals) ...
 #    3|                       0: [VarAccess] tmp0_subject
 #    3|                       1: [IntegerLiteral] 0
 #    3|                     1: [ExprStmt] <Expr>;
 #    3|                       0: [IntegerLiteral] 1
-#-----|                   1: (branch)
+#    4|                   1: [WhenBranch] ... -> ...
 #    4|                     0: [ValueEQExpr] ... (value equals) ...
 #    4|                       0: [VarAccess] tmp0_subject
 #    4|                       1: [IntegerLiteral] 1
 #    4|                     1: [ExprStmt] <Expr>;
 #    4|                       0: [IntegerLiteral] 2
-#-----|                   2: (branch)
+#    5|                   2: [WhenBranch] ... -> ...
 #    5|                     0: [ValueEQExpr] ... (value equals) ...
 #    5|                       0: [VarAccess] tmp0_subject
 #    5|                       1: [IntegerLiteral] 2
 #    5|                     1: [ReturnStmt] return ...
 #    5|                       0: [IntegerLiteral] 3
-#-----|                   3: (branch)
+#    6|                   3: [WhenBranch] ... -> ...
 #    6|                     0: [ValueEQExpr] ... (value equals) ...
 #    6|                       0: [VarAccess] tmp0_subject
 #    6|                       1: [IntegerLiteral] 3
@@ -3484,7 +3484,7 @@ whenExpr.kt:
 #    6|                       0: [ClassInstanceExpr] new Exception(...)
 #    6|                         -3: [TypeAccess] Exception
 #    6|                         0: [StringLiteral] No threes please
-#-----|                   4: (branch)
+#    7|                   4: [WhenBranch] ... -> ...
 #    7|                     0: [BooleanLiteral] true
 #    7|                     1: [ExprStmt] <Expr>;
 #    7|                       0: [IntegerLiteral] 999

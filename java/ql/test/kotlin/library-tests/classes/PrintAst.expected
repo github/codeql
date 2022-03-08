@@ -150,7 +150,7 @@ classes.kt:
 #   64|       5: [BlockStmt] { ... }
 #   65|         0: [ExprStmt] <Expr>;
 #   65|           0: [WhenExpr] when ...
-#-----|             0: (branch)
+#   65|             0: [WhenBranch] ... -> ...
 #   65|               0: [VarAccess] b
 #   66|               1: [ReturnStmt] return ...
 #   66|                 0: [StmtExpr] <Stmt>
@@ -163,7 +163,7 @@ classes.kt:
 #   66|                     1: [ExprStmt] <Expr>;
 #   66|                       0: [ClassInstanceExpr] new (...)
 #   66|                         -3: [TypeAccess] Object
-#-----|             1: (branch)
+#   65|             1: [WhenBranch] ... -> ...
 #   65|               0: [BooleanLiteral] true
 #   68|               1: [ReturnStmt] return ...
 #   68|                 0: [StmtExpr] <Stmt>
