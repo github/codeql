@@ -177,6 +177,11 @@ private module Cached {
     operand.getDef() = instr
   }
 
+  /**
+   * Holds if data flows from `operand` to `instr`.
+   *
+   * This predicate ignores flow through `PhiInstruction`s to create a 'must flow' relation.
+   */
   private predicate operandToInstructionStep(Operand operand, Instruction instr) {
     instr.(CopyInstruction).getSourceValueOperand() = operand
     or
