@@ -73,7 +73,7 @@ class ExternalAPI extends Callable {
   }
 
   /** Holds if this API has a supported summary. */
-  private predicate hasSummary() {
+  predicate hasSummary() {
     this.getUnboundDeclaration() = any(SummarizedCallable sc) or
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }
