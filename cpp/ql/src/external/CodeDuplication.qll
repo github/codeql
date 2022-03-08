@@ -2,7 +2,7 @@
 
 import cpp
 
-private newtype TDuplicationOrSimilarity = MKDuplicationOrSimilarity()
+deprecated private newtype TDuplicationOrSimilarity = MKDuplicationOrSimilarity()
 
 /**
  * DEPRECATED: This class is no longer used.
