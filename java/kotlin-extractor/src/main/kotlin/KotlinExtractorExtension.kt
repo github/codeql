@@ -4,10 +4,12 @@ import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.ir.IrElement
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.Stack
 import com.semmle.util.files.FileUtil
 import kotlin.system.exitProcess
 
@@ -116,6 +118,8 @@ class KotlinExtractorExtension(
     }
 }
 
+data class ExtractorContext(val kind: String, val element: IrElement)
+
 class KotlinExtractorGlobalState {
     val genericSpecialisationsExtracted = HashSet<String>()
     // These three record mappings of classes, functions and fields that should be replaced wherever they are found.
@@ -125,6 +129,7 @@ class KotlinExtractorGlobalState {
     val syntheticToRealClassMap = HashMap<IrClass, IrClass?>()
     val syntheticToRealFunctionMap = HashMap<IrSimpleFunction, IrSimpleFunction?>()
     val syntheticToRealFieldMap = HashMap<IrField, IrField?>()
+    val context = Stack<ExtractorContext>()
 }
 
 /*
