@@ -4,30 +4,12 @@
 
 private import java
 private import SemanticExpr
-private import SemanticExprSpecific
+private import SemanticCFGSpecific::SemanticCFGConfig as Specific
 
-private newtype TSemBasicBlock = MkSemBasicBlock(BasicBlock block)
+class SemBasicBlock extends Specific::BasicBlock {
+  final predicate bbDominates(SemBasicBlock otherBlock) { Specific::bbDominates(this, otherBlock) }
 
-class SemBasicBlock extends TSemBasicBlock {
-  BasicBlock block;
+  final predicate hasDominanceInformation() { Specific::hasDominanceInformation(this) }
 
-  SemBasicBlock() { this = MkSemBasicBlock(block) }
-
-  final string toString() { result = block.toString() }
-
-  final Location getLocation() { result = block.getLocation() }
-
-  final predicate bbDominates(SemBasicBlock otherBlock) {
-    block.bbDominates(getJavaBasicBlock(otherBlock))
-  }
-
-  final SemExpr getAnExpr() { SemanticExprConfig::getExprBasicBlock(result) = this }
-}
-
-SemBasicBlock getSemanticBasicBlock(BasicBlock block) { result = MkSemBasicBlock(block) }
-
-BasicBlock getJavaBasicBlock(SemBasicBlock block) { block = getSemanticBasicBlock(result) }
-
-predicate semHasDominanceInformation(SemBasicBlock bb) {
-  hasDominanceInformation(getJavaBasicBlock(bb))
+  final SemExpr getAnExpr() { result.getBasicBlock() = this }
 }

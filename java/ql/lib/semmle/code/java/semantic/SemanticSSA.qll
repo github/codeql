@@ -9,6 +9,7 @@ private import SemanticExpr
 private import SemanticType
 private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 private import SemanticExprSpecific
+private import SemanticCFGSpecific
 
 private newtype TSemSsaVariable = MkSemSsaVariable(SSA::SsaVariable var)
 
@@ -118,6 +119,6 @@ predicate semBackEdge(SemSsaPhiNode phi, SemSsaVariable inp, SemSsaReadPositionP
   // Conservatively assume that every edge is a back edge if we don't have dominance information.
   (
     phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or
-    not semHasDominanceInformation(edge.getOrigBlock())
+    not edge.getOrigBlock().hasDominanceInformation()
   )
 }

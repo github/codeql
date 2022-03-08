@@ -2,6 +2,7 @@ import java
 import semmle.code.java.dataflow.SignAnalysis
 import semmle.code.java.semantic.analysis.SignAnalysisCommon
 import semmle.code.java.semantic.SemanticCFG
+import semmle.code.java.semantic.SemanticCFGSpecific
 import semmle.code.java.semantic.SemanticExpr
 import semmle.code.java.semantic.SemanticExprSpecific
 import semmle.code.java.semantic.SemanticSSA

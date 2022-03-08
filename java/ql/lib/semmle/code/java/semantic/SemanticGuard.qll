@@ -6,6 +6,7 @@ private import java
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import SemanticCFG
+private import SemanticCFGSpecific
 private import SemanticExpr
 private import SemanticExprSpecific
 private import SemanticSSA

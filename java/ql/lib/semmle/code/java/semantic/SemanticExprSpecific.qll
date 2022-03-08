@@ -1,6 +1,7 @@
 private import java as J
 private import SemanticCFG
 private import SemanticExpr
+private import SemanticCFGSpecific
 private import SemanticSSA
 private import SemanticType
 private import semmle.code.java.dataflow.SSA as SSA
