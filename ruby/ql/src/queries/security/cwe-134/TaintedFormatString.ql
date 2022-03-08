@@ -11,6 +11,7 @@
  */
 
 import ruby
+import codeql.ruby.DataFlow
 import codeql.ruby.security.TaintedFormatStringQuery
 import DataFlow::PathGraph
 

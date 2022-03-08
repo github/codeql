@@ -8,9 +8,7 @@
  * `TaintedFormatStringCustomizations` should be imported instead.
  */
 
-import javascript
-import semmle.javascript.security.dataflow.DOM
-import TaintedFormatStringCustomizations::TaintedFormatString
+private import TaintedFormatStringCustomizations::TaintedFormatString
 
 /**
  * A taint-tracking configuration for format injections.

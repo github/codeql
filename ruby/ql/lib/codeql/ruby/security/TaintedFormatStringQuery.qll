@@ -8,10 +8,7 @@
  * `TaintedFormatStringCustomizations` should be imported instead.
  */
 
-import ruby
-import codeql.ruby.DataFlow
-import codeql.ruby.TaintTracking
-import TaintedFormatStringCustomizations::TaintedFormatString
+private import TaintedFormatStringCustomizations::TaintedFormatString
 
 /**
  * A taint-tracking configuration for format injections.
