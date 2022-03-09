@@ -71,6 +71,7 @@ predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
 
 predicate isRelevantContent(DataFlow::Content f) {
   isRelevantType(f.(DataFlow::FieldContent).getField().getType()) or
+  isRelevantType(f.(DataFlow::FieldContent).getField().getType()) or
   f instanceof DataFlow::ElementContent
 }
 
