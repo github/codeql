@@ -46,6 +46,5 @@ Alternatively, string interpolation should be used exclusively:
 
 <references>
 <li>Ruby documentation for <a href="https://docs.ruby-lang.org/en/3.1/Kernel.html#method-i-sprintf">format strings</a>.</li>
-<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/134.html">CWE-134</a>.</li>
 </references>
 </qhelp>
