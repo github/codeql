@@ -4,6 +4,8 @@ namespace Summaries;
 
 public class BasicFlow
 {
+    private string tainted;
+
     public BasicFlow ReturnThis(object input)
     {
         return this;
@@ -24,6 +26,11 @@ public class BasicFlow
         return (System.DateTime.Now.DayOfWeek == System.DayOfWeek.Monday) ? input0 : input1;
     }
 
+    public string ReturnSubstring(string s)
+    {
+        return s.Substring(0, 1);
+    }
+
     public int ReturnArrayElement(int[] input)
     {
         return input[0];
@@ -32,5 +39,20 @@ public class BasicFlow
     public void AssignToArray(int data, int[] target)
     {
         target[0] = data;
+    }
+
+    public void SetField(string s)
+    {
+        tainted = s;
+    }
+
+    public string ReturnField()
+    {
+        return tainted;
+    }
+
+    public void AssignFieldToArray(object[] target)
+    {
+        target[0] = tainted;
     }
 }
