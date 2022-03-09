@@ -208,26 +208,6 @@ predicate variadicFormatter(Function f, string type, int formatParamIndex, int o
 }
 
 /**
- * A standard function such as `vprintf` that has a format parameter
- * and a variable argument list of type `va_arg`.
- *
- * DEPRECATED: Use the four argument version instead.
- */
-deprecated predicate primitiveVariadicFormatter(TopLevelFunction f, int formatParamIndex) {
-  primitiveVariadicFormatter(f, _, formatParamIndex, _)
-}
-
-/**
- * Holds if `f` is a function such as `vprintf` that has a format parameter
- * (at `formatParamIndex`) and a variable argument list of type `va_arg`.
- *
- * DEPRECATED: Use the four argument version instead.
- */
-deprecated predicate variadicFormatter(Function f, int formatParamIndex) {
-  variadicFormatter(f, _, formatParamIndex, _)
-}
-
-/**
  * A function not in the standard library which takes a `printf`-like formatting
  * string and a variable number of arguments.
  */

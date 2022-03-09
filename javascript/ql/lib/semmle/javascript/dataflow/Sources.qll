@@ -395,7 +395,3 @@ SourceNode moduleVarNode(Module m) { result.(ModuleVarNode).getModule() = m }
 
 /** Gets the CommonJS/AMD `exports` variable for module `m`. */
 SourceNode exportsVarNode(Module m) { result.(ExportsVarNode).getModule() = m }
-
-deprecated class DefaultSourceNode extends SourceNode {
-  DefaultSourceNode() { this instanceof SourceNode::DefaultRange }
-}

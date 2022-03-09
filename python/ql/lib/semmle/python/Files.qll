@@ -2,12 +2,6 @@ import python
 
 /** A file */
 class File extends Container, @file {
-  /** DEPRECATED: Use `getAbsolutePath` instead. */
-  deprecated override string getName() { result = this.getAbsolutePath() }
-
-  /** DEPRECATED: Use `getAbsolutePath` instead. */
-  deprecated string getFullName() { result = this.getAbsolutePath() }
-
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
@@ -115,9 +109,6 @@ private predicate occupied_line(File f, int n) {
 
 /** A folder (directory) */
 class Folder extends Container, @folder {
-  /** DEPRECATED: Use `getAbsolutePath` instead. */
-  deprecated override string getName() { result = this.getAbsolutePath() }
-
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
@@ -155,9 +146,6 @@ class Folder extends Container, @folder {
  */
 abstract class Container extends @container {
   Container getParent() { containerparent(result, this) }
-
-  /** Gets a child of this container */
-  deprecated Container getChild() { containerparent(this, result) }
 
   /**
    * Gets a textual representation of the path of this container.

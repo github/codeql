@@ -190,17 +190,6 @@ private newtype TIterationDefinition =
     SsaSource::iteration_defined_variable(var, def, sequence)
   }
 
-/**
- * DEPRECATED. For backwards compatibility only.
- * A definition of a variable in a for loop `for v in ...:`
- */
-deprecated class IterationDefinition extends TIterationDefinition {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "IterationDefinition" }
-
-  ControlFlowNode getSequence() { this = TIterationDefinition_(_, _, result) }
-}
-
 /** Hold if outer contains inner, both are contained within a test and inner is a use is a plain use or an attribute lookup */
 pragma[noinline]
 predicate contains_interesting_expression_within_test(ControlFlowNode outer, ControlFlowNode inner) {

@@ -189,8 +189,6 @@ module Electron {
     abstract class Range extends NodeJSLib::NodeJSClientRequest::Range { }
   }
 
-  deprecated class CustomElectronClientRequest = ElectronClientRequest::Range;
-
   /**
    * A Node.js-style HTTP or HTTPS request made using `electron.ClientRequest`.
    */

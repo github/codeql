@@ -82,12 +82,6 @@ class BlockStmt extends Stmt, @block {
   override string getAPrimaryQlClass() { result = "BlockStmt" }
 }
 
-/**
- * DEPRECATED: This is now called `BlockStmt` to avoid confusion with
- * `BasicBlock`.
- */
-deprecated class Block = BlockStmt;
-
 /** A block with only a single statement. */
 class SingletonBlock extends BlockStmt {
   SingletonBlock() { this.getNumStmt() = 1 }
@@ -103,14 +97,6 @@ class SingletonBlock extends BlockStmt {
 abstract class ConditionalStmt extends Stmt {
   /** Gets the boolean condition of this conditional statement. */
   abstract Expr getCondition();
-
-  /**
-   * Gets the statement that is executed whenever the condition
-   * of this branch statement evaluates to `true`.
-   *
-   * DEPRECATED: use `ConditionNode.getATrueSuccessor()` instead.
-   */
-  abstract deprecated Stmt getTrueSuccessor();
 }
 
 /** An `if` statement. */

@@ -1754,20 +1754,6 @@ class ReferenceImport extends LineComment {
    * Gets the name of the attribute, i.e. "`path`" or "`types`".
    */
   string getAttributeName() { result = attribute }
-
-  /**
-   * DEPRECATED. This is no longer supported.
-   *
-   * Gets the file referenced by this import.
-   */
-  deprecated File getImportedFile() { none() }
-
-  /**
-   * DEPRECATED. This is no longer supported.
-   *
-   * Gets the top-level of the referenced file.
-   */
-  deprecated TopLevel getImportedTopLevel() { none() }
 }
 
 /**
@@ -1852,11 +1838,6 @@ class Type extends @type {
    * Gets the `i`th child of this type.
    */
   Type getChild(int i) { type_child(result, this, i) }
-
-  /**
-   * DEPRECATED. Property lookup on types is no longer supported.
-   */
-  deprecated Type getProperty(string name) { none() }
 
   /**
    * Gets the type of the string index signature on this type,
@@ -1959,21 +1940,6 @@ class Type extends @type {
    * Gets the number of constructor call signatures.
    */
   int getNumConstructorSignature() { result = count(this.getAConstructorSignature()) }
-
-  /**
-   * DEPRECATED. Method lookup on types is no longer supported.
-   */
-  deprecated FunctionCallSignatureType getMethod(string name) { none() }
-
-  /**
-   * DEPRECATED. Method lookup on types is no longer supported.
-   */
-  deprecated FunctionCallSignatureType getMethodOverload(string name, int n) { none() }
-
-  /**
-   * DEPRECATED. Method lookup on types is no longer supported.
-   */
-  deprecated FunctionCallSignatureType getAMethodOverload(string name) { none() }
 
   /**
    * Repeatedly unfolds union and intersection types and gets any of the underlying types,

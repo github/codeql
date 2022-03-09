@@ -167,20 +167,6 @@ abstract class Configuration extends string {
   }
 
   /**
-   * DEPRECATED: Use `isBarrierEdge` instead.
-   *
-   * Holds if flow from `src` to `trg` is prohibited.
-   */
-  deprecated predicate isBarrier(DataFlow::Node src, DataFlow::Node trg) { none() }
-
-  /**
-   * DEPRECATED: Use `isBarrierEdge` instead.
-   *
-   * Holds if flow with label `lbl` cannot flow from `src` to `trg`.
-   */
-  deprecated predicate isBarrier(DataFlow::Node src, DataFlow::Node trg, FlowLabel lbl) { none() }
-
-  /**
    * Holds if flow from `pred` to `succ` is prohibited.
    */
   predicate isBarrierEdge(DataFlow::Node pred, DataFlow::Node succ) { none() }
@@ -535,13 +521,6 @@ private predicate isLabeledBarrierEdge(
  */
 abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
   override predicate blocks(boolean outcome, Expr e) { none() }
-
-  /**
-   * DEPRECATED: Use `blocks(outcome, e, label)` or `sanitizes(outcome, e, label)` instead.
-   *
-   * Overriding this predicate has no effect.
-   */
-  deprecated FlowLabel getALabel() { none() }
 }
 
 /**

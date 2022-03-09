@@ -138,9 +138,6 @@ abstract class TaintKind extends string {
     exists(TaintedNode n | n.getTaintKind() = this and n.getCfgNode() = expr)
   }
 
-  /** DEPRECATED -- Use getType() instead */
-  deprecated ClassObject getClass() { none() }
-
   /**
    * Gets the class of this kind of taint.
    * For example, if this were a kind of string taint
@@ -613,32 +610,6 @@ module DataFlow {
    */
   class Extension = DataFlowExtension::DataFlowNode;
 
-  abstract deprecated class Configuration extends string {
-    bindingset[this]
-    Configuration() { this = this }
-
-    abstract predicate isSource(ControlFlowNode source);
-
-    abstract predicate isSink(ControlFlowNode sink);
-
-    private predicate hasFlowPath(TaintedNode source, TaintedNode sink) {
-      source.getConfiguration() = this and
-      this.isSource(source.getCfgNode()) and
-      this.isSink(sink.getCfgNode()) and
-      source.flowsTo(sink)
-    }
-
-    predicate hasFlow(ControlFlowNode source, ControlFlowNode sink) {
-      exists(TaintedNode psource, TaintedNode psink |
-        psource.getCfgNode() = source and
-        psink.getCfgNode() = sink and
-        this.isSource(source) and
-        this.isSink(sink) and
-        this.hasFlowPath(psource, psink)
-      )
-    }
-  }
-
   deprecated private class ConfigurationAdapter extends TaintTracking::Configuration instanceof Configuration {
     override predicate isSource(DataFlow::Node node, TaintKind kind) {
       Configuration.super.isSource(node.asCfgNode()) and
@@ -670,9 +641,6 @@ module DataFlow {
     abstract Location getLocation();
 
     AstNode asAstNode() { result = this.asCfgNode().getNode() }
-
-    /** For backwards compatibility -- Use asAstNode() instead */
-    deprecated AstNode getNode() { result = this.asAstNode() }
   }
 
   class CfgNode extends Node, TCfgNode {
@@ -705,13 +673,6 @@ module DataFlow {
     }
 
     override Location getLocation() { result = this.asVariable().getDefinition().getLocation() }
-  }
-}
-
-deprecated private class DataFlowType extends TaintKind {
-  DataFlowType() {
-    this = "Data flow" and
-    exists(DataFlow::Configuration c)
   }
 }
 

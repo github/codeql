@@ -77,15 +77,6 @@ private class Sprintf extends FormattingFunction {
     not exists(getDefinition().getFile().getRelativePath())
   }
 
-  deprecated override predicate isWideCharDefault() {
-    getParameter(getFormatParameterIndex())
-        .getType()
-        .getUnspecifiedType()
-        .(PointerType)
-        .getBaseType()
-        .getSize() > 1
-  }
-
   override int getFormatParameterIndex() {
     hasName("g_strdup_printf") and result = 0
     or
@@ -133,15 +124,6 @@ private class SnprintfImpl extends Snprintf {
     else result = getFirstFormatArgumentIndex() - 1
   }
 
-  deprecated override predicate isWideCharDefault() {
-    getParameter(getFormatParameterIndex())
-        .getType()
-        .getUnspecifiedType()
-        .(PointerType)
-        .getBaseType()
-        .getSize() > 1
-  }
-
   override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }
 
   override int getFirstFormatArgumentIndex() {
@@ -180,15 +162,6 @@ private class StringCchPrintf extends FormattingFunction {
 
   override int getFormatParameterIndex() {
     if getName().matches("%Ex") then result = 5 else result = 2
-  }
-
-  deprecated override predicate isWideCharDefault() {
-    getParameter(getFormatParameterIndex())
-        .getType()
-        .getUnspecifiedType()
-        .(PointerType)
-        .getBaseType()
-        .getSize() > 1
   }
 
   override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }

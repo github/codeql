@@ -28,76 +28,6 @@ abstract class Module extends TopLevel {
   string getAnExportedSymbol() { exists(this.getAnExportedValue(result)) }
 
   /**
-   * DEPRECATED. Use `getAnExportedValue` instead.
-   *
-   * Holds if this module explicitly exports symbol `name` at the
-   * program element `export`.
-   *
-   * Note that in some module systems (notably CommonJS and AMD)
-   * modules are arbitrary objects that export all their
-   * properties. This predicate only considers properties
-   * that are explicitly defined on the module object.
-   *
-   * Symbols defined in another module that are re-exported by
-   * this module are only sometimes considered.
-   */
-  deprecated predicate exports(string name, ASTNode export) {
-    this instanceof AmdModule and
-    exists(DataFlow::PropWrite pwn | export = pwn.getAstNode() |
-      pwn.getBase().analyze().getAValue() = this.(AmdModule).getDefine().getAModuleExportsValue() and
-      name = pwn.getPropertyName()
-    )
-    or
-    this instanceof Closure::ClosureModule and
-    exists(DataFlow::PropWrite write, Expr base |
-      write.getAstNode() = export and
-      write.writes(base.flow(), name, _) and
-      (
-        base = this.(Closure::ClosureModule).getExportsVariable().getAReference()
-        or
-        base = this.(Closure::ClosureModule).getExportsVariable().getAnAssignedExpr()
-      )
-    )
-    or
-    this instanceof NodeModule and
-    (
-      // a property write whose base is `exports` or `module.exports`
-      exists(DataFlow::PropWrite pwn | export = pwn.getAstNode() |
-        pwn.getBase() = this.(NodeModule).getAModuleExportsNode() and
-        name = pwn.getPropertyName()
-      )
-      or
-      // a re-export using spread-operator. E.g. `const foo = require("./foo"); module.exports = {bar: bar, ...foo};`
-      exists(ObjectExpr obj | obj = this.(NodeModule).getAModuleExportsNode().asExpr() |
-        obj.getAProperty()
-            .(SpreadProperty)
-            .getInit()
-            .(SpreadElement)
-            .getOperand()
-            .flow()
-            .getALocalSource()
-            .asExpr()
-            .(Import)
-            .getImportedModule()
-            .exports(name, export)
-      )
-      or
-      // an externs definition (where appropriate)
-      exists(PropAccess pacc | export = pacc |
-        pacc.getBase() = this.(NodeModule).getAModuleExportsNode().asExpr() and
-        name = pacc.getPropertyName() and
-        this.isExterns() and
-        exists(pacc.getDocumentation())
-      )
-    )
-    or
-    this instanceof ES2015Module and
-    exists(ExportDeclaration ed | ed = this.(ES2015Module).getAnExport() and ed = export |
-      ed.exportsAs(_, name)
-    )
-  }
-
-  /**
    * Get a value that is explicitly exported from this module with under `name`.
    *
    * Note that in some module systems (notably CommonJS and AMD)
@@ -273,19 +203,6 @@ abstract class Import extends ASTNode {
    * Gets the data flow node that the default import of this import is available at.
    */
   abstract DataFlow::Node getImportedModuleNode();
-}
-
-/**
- * DEPRECATED. Use `PathExpr` instead.
- *
- * A path expression that appears in a module and is resolved relative to it.
- */
-abstract deprecated class PathExprInModule extends PathExpr {
-  PathExprInModule() {
-    this.(Expr).getTopLevel() instanceof Module
-    or
-    this.(Comment).getTopLevel() instanceof Module
-  }
 }
 
 /**
