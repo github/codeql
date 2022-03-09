@@ -198,7 +198,7 @@ namespace Semmle.Autobuild.Shared
 
             SourceArchiveDir =
                 Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_SOURCE_ARCHIVE_DIR") ??
-                throw new InvalidEnvironmentException($"The environment variable CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_SOURCE_ARCHIVE_DIR or SOURCE_ARCHIVE has not been set.");
+                throw new InvalidEnvironmentException($"The environment variable CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_SOURCE_ARCHIVE_DIR has not been set.");
         }
 
         protected string TrapDir { get; }
