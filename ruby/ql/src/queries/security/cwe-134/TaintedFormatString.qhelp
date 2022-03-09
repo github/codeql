@@ -28,10 +28,10 @@ argument to <code>Kernel.printf</code> to be appended to the message:
 </p>
 <sample src="examples/tainted_format_string_bad.rb"/>
 <p>
-However, if a malicious user provides a format specified such as <code>%s</code> as their
-user name, <code>Kernel.printf</code> throw an exception that there are too few arguments
-to satisfy the format. This can result in denial of service or leaking of internal
-information to the attacker via a stack trace.
+However, if a malicious user provides a format specified such as <code>%s</code>
+as their user name, <code>Kernel.printf</code> will throw an exception as there
+are too few arguments to satisfy the format. This can result in denial of
+service or leaking of internal information to the attacker via a stack trace.
 </p>
 <p>
 Instead, the user name should be included using the <code>%s</code> specifier:
@@ -39,9 +39,9 @@ Instead, the user name should be included using the <code>%s</code> specifier:
 <sample src="examples/tainted_format_string_good.rb"/>
 
 <p>
-Alternatively, a method such as <code>Kernel.puts</code> should be used, which does not
-apply string formatting to its arguments.
+Alternatively, string interpolation should be used exclusively:
 </p>
+<sample src="examples/tainted_format_string_interpolation.rb"/>
 </example>
 
 <references>
