@@ -166,10 +166,10 @@ class CompileTimeConstantExpr extends Expr {
    *
    * The stringified version of a compile-time constant expression is the equivalent to
    * the result of calling `String.valueOf(expr)` on the expression.
-   * 
+   *
    * Note that this does not handle the following cases:
    *
-   * - mathematical computations of type `long`.
+   * - mathematical computations of type `long`, `float`, or `double`.
    */
   pragma[nomagic]
   string getStringifiedValue() {
@@ -200,11 +200,11 @@ class CompileTimeConstantExpr extends Expr {
   string getStringValue() {
     result = this.(StringLiteral).getValue()
     or
-    (
-      this.getType() instanceof TypeString and
+    this.getType() instanceof TypeString and // When the expression type is `String`
+    result =
+      // Then the resultant string is the addition of both operands stringified value, regardless of type.
       this.(AddExpr).getLeftOperand().(CompileTimeConstantExpr).getStringifiedValue() +
         this.(AddExpr).getRightOperand().(CompileTimeConstantExpr).getStringifiedValue()
-    )
     or
     // Ternary conditional, with compile-time constant condition.
     exists(ConditionalExpr ce, boolean condition |

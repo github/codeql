@@ -1,4 +1,4 @@
-import semmle.code.java.Variable
+import java
 
 from Variable v, CompileTimeConstantExpr init, RefType enclosing, string constant
 where

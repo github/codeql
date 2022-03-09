@@ -1,4 +1,4 @@
-import semmle.code.java.Variable
+import java
 
 from Variable v, Expr init, RefType enclosing
 where
