@@ -44,10 +44,6 @@ module CleartextStorage {
    * A node representing data written to a database using an ORM system.
    */
   private class OrmWriteAccessValueAsSink extends Sink {
-    //  instanceof OrmWriteAccess {
-    // TODO: we generally won't get flow from `value` to `this`
-    // Should the node be on value? Or should there be an additional flow step from
-    // value to the write node?
     OrmWriteAccessValueAsSink() {
       exists(OrmWriteAccess write, string fieldName |
         fieldName = write.getFieldNameAssignedTo(this)
