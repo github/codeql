@@ -15,6 +15,7 @@
 
 import ruby
 import codeql.ruby.security.CleartextStorageQuery
+import codeql.ruby.security.CleartextStorageCustomizations::CleartextStorage
 import codeql.ruby.DataFlow
 import DataFlow::PathGraph
 
