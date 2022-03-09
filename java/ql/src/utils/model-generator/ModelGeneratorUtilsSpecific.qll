@@ -122,21 +122,13 @@ predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
       else any()
   )
   or
-  exists(DataFlow::Content f | storeStep(node1, f, node2) |
-    f instanceof DataFlow::ArrayContent or
-    f instanceof DataFlow::CollectionContent or
-    f instanceof DataFlow::MapKeyContent or
-    f instanceof DataFlow::MapValueContent
-  )
+  exists(DataFlow::Content f | storeStep(node1, f, node2) | DataFlow::containerContent(f))
 }
 
 predicate isRelevantContent(DataFlow::Content f) {
   isRelevantType(f.(DataFlow::FieldContent).getField().getType()) or
   isRelevantType(f.(DataFlow::FieldContent).getField().getType()) or
-  f instanceof DataFlow::ArrayContent or
-  f instanceof DataFlow::CollectionContent or
-  f instanceof DataFlow::MapKeyContent or
-  f instanceof DataFlow::MapValueContent
+  DataFlow::containerContent(f)
 }
 
 private string parameterAccess(Parameter p) {
