@@ -485,10 +485,10 @@ module HTTP {
       DataFlow::Node getResponseBody() { result = super.getResponseBody() }
 
       /**
-       * Gets a node that contributes to the URL of the request.
+       * Gets a data-flow node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
-      DataFlow::Node getURL() { result = super.getURL() }
+      DataFlow::Node getAUrlPart() { result = super.getAUrlPart() }
 
       /** Gets a string that identifies the framework used for this request. */
       string getFramework() { result = super.getFramework() }
@@ -515,11 +515,11 @@ module HTTP {
         /** Gets a node which returns the body of the response */
         abstract DataFlow::Node getResponseBody();
 
-        /**
-         * Gets a node that contributes to the URL of the request.
-         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-         */
-        abstract DataFlow::Node getURL();
+      /**
+       * Gets a data-flow node that contributes to the URL of the request.
+       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+       */
+        abstract DataFlow::Node getAUrlPart();
 
         /** Gets a string that identifies the framework used for this request. */
         abstract string getFramework();
