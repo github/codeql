@@ -9,11 +9,12 @@ class Scope extends Scope_ {
   Module getEnclosingModule() { result = this.getEnclosingScope().getEnclosingModule() }
 
   /**
+   * Gets the scope enclosing this scope (modules have no enclosing scope).
+   *
    * This method will be deprecated in the next release. Please use `getEnclosingScope()` instead.
    * The reason for this is to avoid confusion around use of `x.getScope+()` where `x` might be an
    * `AstNode` or a `Variable`. Forcing the users to write `x.getScope().getEnclosingScope*()` ensures that
    * the apparent semantics and the actual semantics coincide.
-   * [ Gets the scope enclosing this scope (modules have no enclosing scope) ]
    */
   Scope getScope() { none() }
 

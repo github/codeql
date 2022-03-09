@@ -15,7 +15,7 @@ deprecated ClassValue theGenshiMarkupTemplateClass() {
 }
 
 /**
- * Sink representing the `genshi.template.TextTemplate` class instantiation argument.
+ * A sink representing the `genshi.template.TextTemplate` class instantiation argument.
  *
  *  from genshi.template import TextTemplate
  *  tmpl = TextTemplate('sink')
@@ -34,7 +34,7 @@ deprecated class GenshiTextTemplateSink extends SSTISink {
 }
 
 /**
- * Sink representing the `genshi.template.MarkupTemplate` class instantiation argument.
+ * A sink representing the `genshi.template.MarkupTemplate` class instantiation argument.
  *
  *  from genshi.template import MarkupTemplate
  *  tmpl = MarkupTemplate('sink')

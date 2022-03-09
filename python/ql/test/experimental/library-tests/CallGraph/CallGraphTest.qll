@@ -88,7 +88,7 @@ private newtype TCallGraphResolver =
   TPointsToResolver() or
   TTypeTrackerResolver()
 
-/** Describes a method of call graph resolution */
+/** A method of call graph resolution */
 abstract class CallGraphResolver extends TCallGraphResolver {
   abstract predicate callEdge(Call call, Function callable);
 

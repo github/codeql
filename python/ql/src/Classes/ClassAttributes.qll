@@ -1,7 +1,7 @@
 import python
 private import semmle.python.pointsto.PointsTo
 
-/** Helper class for UndefinedClassAttribute.ql and MaybeUndefinedClassAttribute.ql */
+/** A helper class for UndefinedClassAttribute.ql and MaybeUndefinedClassAttribute.ql */
 class CheckClass extends ClassObject {
   private predicate ofInterest() {
     not this.unknowableAttributes() and
