@@ -1,153 +1,188 @@
 delegatedProperties.kt:
 #    0| [CompilationUnit] delegatedProperties
-#   14|   1: [Class] Resource
-#   14|     1: [Constructor] Resource
-#   14|       5: [BlockStmt] { ... }
-#   14|         0: [SuperConstructorInvocationStmt] super(...)
-#   16|   2: [Class] Owner
-#   16|     1: [Constructor] Owner
-#   16|       5: [BlockStmt] { ... }
-#   16|         0: [SuperConstructorInvocationStmt] super(...)
-#   17|     2: [Method] fn
-#-----|       4: (Parameters)
-#   17|         0: [Parameter] map
-#   17|       5: [BlockStmt] { ... }
-#   18|         0: [BlockStmt] { ... }
-#   18|           0: [LocalVariableDeclStmt] var ...;
-#   18|             1: [LocalVariableDeclExpr] varResource1$delegate
-#   18|               0: [ClassInstanceExpr] new ResourceDelegate(...)
-#   18|                 -3: [TypeAccess] ResourceDelegate
-#   18|           1: [LocalTypeDeclStmt] class ...
-#   18|             0: [LocalClass] 
-#   18|               1: [Constructor] 
-#   18|                 5: [BlockStmt] { ... }
-#   18|                   0: [SuperConstructorInvocationStmt] super(...)
-#   18|               1: [Method] <get-varResource1>
-#   18|                 5: [BlockStmt] { ... }
-#   18|                   0: [ReturnStmt] return ...
-#   18|                     0: [MethodAccess] getValue(...)
-#   18|                       -1: [VarAccess] varResource1$delegate
-#    0|                       0: [NullLiteral] null
-#   18|           2: [LocalTypeDeclStmt] class ...
-#   18|             0: [LocalClass] 
-#   18|               1: [Constructor] 
-#   18|                 5: [BlockStmt] { ... }
-#   18|                   0: [SuperConstructorInvocationStmt] super(...)
-#   18|               1: [Method] <set-varResource1>
-#-----|                 4: (Parameters)
-#   18|                   0: [Parameter] value
-#   18|                 5: [BlockStmt] { ... }
-#   18|                   0: [ReturnStmt] return ...
-#   18|                     0: [MethodAccess] setValue(...)
-#   18|                       -1: [VarAccess] varResource1$delegate
-#    0|                       0: [NullLiteral] null
-#   18|                       2: [VarAccess] value
-#   19|         1: [ExprStmt] <Expr>;
-#   19|           0: [MethodAccess] println(...)
-#   19|             -1: [TypeAccess] ConsoleKt
-#   19|             0: [MethodAccess] <get-varResource1>(...)
-#   19|               -1: [ClassInstanceExpr] new (...)
-#   19|                 -3: [TypeAccess] Object
-#   20|         2: [ExprStmt] <Expr>;
-#   20|           0: [MethodAccess] <set-varResource1>(...)
-#   20|             -1: [ClassInstanceExpr] new (...)
-#   20|               -3: [TypeAccess] Object
-#   20|             0: [IntegerLiteral] 2
-#   22|         3: [BlockStmt] { ... }
-#   22|           0: [LocalVariableDeclStmt] var ...;
-#   22|             1: [LocalVariableDeclExpr] name$delegate
-#   22|               0: [VarAccess] map
-#   22|           1: [LocalTypeDeclStmt] class ...
-#   22|             0: [LocalClass] 
-#   22|               1: [Constructor] 
-#   22|                 5: [BlockStmt] { ... }
-#   22|                   0: [SuperConstructorInvocationStmt] super(...)
-#   22|               1: [Method] <get-name>
-#   22|                 5: [BlockStmt] { ... }
-#   22|                   0: [ReturnStmt] return ...
-#   22|                     0: [MethodAccess] getValue(...)
-#   22|                       -3: [TypeAccess] String
-#   22|                       -2: [TypeAccess] Object
-#   22|                       -1: [TypeAccess] MapAccessorsKt
-#   22|                       0: [VarAccess] name$delegate
+#    4|   1: [Class] ClassProp1
+#    4|     1: [Constructor] ClassProp1
+#    4|       5: [BlockStmt] { ... }
+#    4|         0: [SuperConstructorInvocationStmt] super(...)
+#    5|     2: [Method] fn
+#    5|       5: [BlockStmt] { ... }
+#    6|         0: [BlockStmt] { ... }
+#    6|           0: [LocalVariableDeclStmt] var ...;
+#    6|             1: [LocalVariableDeclExpr] prop1$delegate
+#    6|               0: [MethodAccess] lazy(...)
+#    6|                 -2: [TypeAccess] Integer
+#    6|                 -1: [TypeAccess] LazyKt
+#    6|                 0: [LambdaExpr] ...->...
+#    6|                   -4: [AnonymousClass] new Function0<Integer>(...) { ... }
+#    6|                     1: [Constructor] 
+#    6|                       5: [BlockStmt] { ... }
+#    6|                         0: [SuperConstructorInvocationStmt] super(...)
+#    6|                     1: [Method] invoke
+#    7|                       5: [BlockStmt] { ... }
+#    7|                         0: [ExprStmt] <Expr>;
+#    7|                           0: [MethodAccess] println(...)
+#    7|                             -1: [TypeAccess] ConsoleKt
+#    7|                             0: [StringLiteral] init
+#    8|                         1: [ReturnStmt] return ...
+#    8|                           0: [IntegerLiteral] 5
+#    6|                   -3: [TypeAccess] Function0<Integer>
+#    6|                     0: [TypeAccess] Integer
+#    6|           1: [LocalTypeDeclStmt] class ...
+#    6|             0: [LocalClass] 
+#    6|               1: [Constructor] 
+#    6|                 5: [BlockStmt] { ... }
+#    6|                   0: [SuperConstructorInvocationStmt] super(...)
+#    6|               1: [Method] <get-prop1>
+#    6|                 5: [BlockStmt] { ... }
+#    6|                   0: [ReturnStmt] return ...
+#    6|                     0: [MethodAccess] getValue(...)
+#    6|                       -2: [TypeAccess] Integer
+#    6|                       -1: [TypeAccess] LazyKt
+#    6|                       0: [VarAccess] prop1$delegate
 #    0|                       1: [NullLiteral] null
-#   24|         4: [LocalTypeDeclStmt] class ...
-#   24|           0: [LocalClass] 
-#   24|             1: [Constructor] 
-#   24|               5: [BlockStmt] { ... }
-#   24|                 0: [SuperConstructorInvocationStmt] super(...)
-#   24|             1: [Method] resourceDelegate
-#   24|               5: [BlockStmt] { ... }
-#   30|                 0: [ReturnStmt] return ...
-#   24|                   0: [StmtExpr] <Stmt>
-#   24|                     0: [BlockStmt] { ... }
-#   24|                       0: [LocalTypeDeclStmt] class ...
-#   24|                         0: [AnonymousClass,LocalClass] new ReadWriteProperty<Object,Integer>(...) { ... }
-#   24|                           1: [Constructor] 
-#   24|                             5: [BlockStmt] { ... }
-#   24|                               0: [SuperConstructorInvocationStmt] super(...)
-#   24|                               1: [BlockStmt] { ... }
-#   25|                                 0: [ExprStmt] <Expr>;
-#   25|                                   0: [KtInitializerAssignExpr] ...=...
-#   25|                                     0: [VarAccess] curValue
-#   25|                           2: [Method] getCurValue
+#   10|         1: [ExprStmt] <Expr>;
+#   10|           0: [MethodAccess] println(...)
+#   10|             -1: [TypeAccess] ConsoleKt
+#   10|             0: [MethodAccess] <get-prop1>(...)
+#   10|               -1: [ClassInstanceExpr] new (...)
+#   10|                 -3: [TypeAccess] Object
+#   11|         2: [ExprStmt] <Expr>;
+#   11|           0: [MethodAccess] println(...)
+#   11|             -1: [TypeAccess] ConsoleKt
+#   11|             0: [MethodAccess] <get-prop1>(...)
+#   11|               -1: [ClassInstanceExpr] new (...)
+#   11|                 -3: [TypeAccess] Object
+#   15|   2: [Class] Resource
+#   15|     1: [Constructor] Resource
+#   15|       5: [BlockStmt] { ... }
+#   15|         0: [SuperConstructorInvocationStmt] super(...)
+#   17|   3: [Class] Owner
+#   17|     1: [Constructor] Owner
+#   17|       5: [BlockStmt] { ... }
+#   17|         0: [SuperConstructorInvocationStmt] super(...)
+#   18|     2: [Method] fn
+#-----|       4: (Parameters)
+#   18|         0: [Parameter] map
+#   18|       5: [BlockStmt] { ... }
+#   19|         0: [BlockStmt] { ... }
+#   19|           0: [LocalVariableDeclStmt] var ...;
+#   19|             1: [LocalVariableDeclExpr] varResource1$delegate
+#   19|               0: [ClassInstanceExpr] new ResourceDelegate(...)
+#   19|                 -3: [TypeAccess] ResourceDelegate
+#   19|           1: [LocalTypeDeclStmt] class ...
+#   19|             0: [LocalClass] 
+#   19|               1: [Constructor] 
+#   19|                 5: [BlockStmt] { ... }
+#   19|                   0: [SuperConstructorInvocationStmt] super(...)
+#   19|               1: [Method] <get-varResource1>
+#   19|                 5: [BlockStmt] { ... }
+#   19|                   0: [ReturnStmt] return ...
+#   19|                     0: [MethodAccess] getValue(...)
+#   19|                       -1: [VarAccess] varResource1$delegate
+#    0|                       0: [NullLiteral] null
+#   19|           2: [LocalTypeDeclStmt] class ...
+#   19|             0: [LocalClass] 
+#   19|               1: [Constructor] 
+#   19|                 5: [BlockStmt] { ... }
+#   19|                   0: [SuperConstructorInvocationStmt] super(...)
+#   19|               1: [Method] <set-varResource1>
+#-----|                 4: (Parameters)
+#   19|                   0: [Parameter] value
+#   19|                 5: [BlockStmt] { ... }
+#   19|                   0: [ReturnStmt] return ...
+#   19|                     0: [MethodAccess] setValue(...)
+#   19|                       -1: [VarAccess] varResource1$delegate
+#    0|                       0: [NullLiteral] null
+#   19|                       2: [VarAccess] value
+#   20|         1: [ExprStmt] <Expr>;
+#   20|           0: [MethodAccess] println(...)
+#   20|             -1: [TypeAccess] ConsoleKt
+#   20|             0: [MethodAccess] <get-varResource1>(...)
+#   20|               -1: [ClassInstanceExpr] new (...)
+#   20|                 -3: [TypeAccess] Object
+#   21|         2: [ExprStmt] <Expr>;
+#   21|           0: [MethodAccess] <set-varResource1>(...)
+#   21|             -1: [ClassInstanceExpr] new (...)
+#   21|               -3: [TypeAccess] Object
+#   21|             0: [IntegerLiteral] 2
+#   23|         3: [BlockStmt] { ... }
+#   23|           0: [LocalVariableDeclStmt] var ...;
+#   23|             1: [LocalVariableDeclExpr] name$delegate
+#   23|               0: [VarAccess] map
+#   23|           1: [LocalTypeDeclStmt] class ...
+#   23|             0: [LocalClass] 
+#   23|               1: [Constructor] 
+#   23|                 5: [BlockStmt] { ... }
+#   23|                   0: [SuperConstructorInvocationStmt] super(...)
+#   23|               1: [Method] <get-name>
+#   23|                 5: [BlockStmt] { ... }
+#   23|                   0: [ReturnStmt] return ...
+#   23|                     0: [MethodAccess] getValue(...)
+#   23|                       -3: [TypeAccess] String
+#   23|                       -2: [TypeAccess] Object
+#   23|                       -1: [TypeAccess] MapAccessorsKt
+#   23|                       0: [VarAccess] name$delegate
+#    0|                       1: [NullLiteral] null
+#   25|         4: [LocalTypeDeclStmt] class ...
+#   25|           0: [LocalClass] 
+#   25|             1: [Constructor] 
+#   25|               5: [BlockStmt] { ... }
+#   25|                 0: [SuperConstructorInvocationStmt] super(...)
+#   25|             1: [Method] resourceDelegate
+#   25|               5: [BlockStmt] { ... }
+#   31|                 0: [ReturnStmt] return ...
+#   25|                   0: [StmtExpr] <Stmt>
+#   25|                     0: [BlockStmt] { ... }
+#   25|                       0: [LocalTypeDeclStmt] class ...
+#   25|                         0: [AnonymousClass,LocalClass] new ReadWriteProperty<Object,Integer>(...) { ... }
+#   25|                           1: [Constructor] 
 #   25|                             5: [BlockStmt] { ... }
-#   25|                               0: [ReturnStmt] return ...
-#   25|                                 0: [VarAccess] this.curValue
-#   25|                                   -1: [ThisAccess] this
-#   25|                           2: [Method] setCurValue
-#-----|                             4: (Parameters)
-#   25|                               0: [Parameter] <set-?>
-#   25|                             5: [BlockStmt] { ... }
-#   25|                               0: [ExprStmt] <Expr>;
-#   25|                                 0: [AssignExpr] ...=...
-#   25|                                   0: [VarAccess] this.curValue
-#   25|                                     -1: [ThisAccess] this
-#   25|                                   1: [VarAccess] <set-?>
-#   25|                           2: [FieldDeclaration] int curValue;
-#   25|                             -1: [TypeAccess] int
-#   25|                             0: [IntegerLiteral] 0
-#   26|                           5: [Method] getValue
-#-----|                             4: (Parameters)
-#   26|                               0: [Parameter] thisRef
-#   26|                               1: [Parameter] property
+#   25|                               0: [SuperConstructorInvocationStmt] super(...)
+#   25|                               1: [BlockStmt] { ... }
+#   26|                                 0: [ExprStmt] <Expr>;
+#   26|                                   0: [KtInitializerAssignExpr] ...=...
+#   26|                                     0: [VarAccess] curValue
+#   26|                           2: [Method] getCurValue
 #   26|                             5: [BlockStmt] { ... }
 #   26|                               0: [ReturnStmt] return ...
-#   26|                                 0: [MethodAccess] getCurValue(...)
+#   26|                                 0: [VarAccess] this.curValue
 #   26|                                   -1: [ThisAccess] this
-#   27|                           6: [Method] setValue
+#   26|                           2: [Method] setCurValue
+#-----|                             4: (Parameters)
+#   26|                               0: [Parameter] <set-?>
+#   26|                             5: [BlockStmt] { ... }
+#   26|                               0: [ExprStmt] <Expr>;
+#   26|                                 0: [AssignExpr] ...=...
+#   26|                                   0: [VarAccess] this.curValue
+#   26|                                     -1: [ThisAccess] this
+#   26|                                   1: [VarAccess] <set-?>
+#   26|                           2: [FieldDeclaration] int curValue;
+#   26|                             -1: [TypeAccess] int
+#   26|                             0: [IntegerLiteral] 0
+#   27|                           5: [Method] getValue
 #-----|                             4: (Parameters)
 #   27|                               0: [Parameter] thisRef
 #   27|                               1: [Parameter] property
-#   27|                               2: [Parameter] value
 #   27|                             5: [BlockStmt] { ... }
-#   28|                               0: [ExprStmt] <Expr>;
-#   28|                                 0: [MethodAccess] setCurValue(...)
-#   28|                                   -1: [ThisAccess] this
-#   28|                                   0: [VarAccess] value
-#   24|                       1: [ExprStmt] <Expr>;
-#   24|                         0: [ClassInstanceExpr] new (...)
-#   24|                           -3: [TypeAccess] ReadWriteProperty<Object,Integer>
-#   32|         5: [BlockStmt] { ... }
-#   32|           0: [LocalVariableDeclStmt] var ...;
-#   32|             1: [LocalVariableDeclExpr] readOnly$delegate
-#   32|               0: [MethodAccess] resourceDelegate(...)
-#   32|                 -1: [ClassInstanceExpr] new (...)
-#   32|                   -3: [TypeAccess] Object
-#   32|           1: [LocalTypeDeclStmt] class ...
-#   32|             0: [LocalClass] 
-#   32|               1: [Constructor] 
-#   32|                 5: [BlockStmt] { ... }
-#   32|                   0: [SuperConstructorInvocationStmt] super(...)
-#   32|               1: [Method] <get-readOnly>
-#   32|                 5: [BlockStmt] { ... }
-#   32|                   0: [ReturnStmt] return ...
-#   32|                     0: [MethodAccess] getValue(...)
-#   32|                       -1: [VarAccess] readOnly$delegate
-#    0|                       0: [NullLiteral] null
-#   33|         6: [BlockStmt] { ... }
+#   27|                               0: [ReturnStmt] return ...
+#   27|                                 0: [MethodAccess] getCurValue(...)
+#   27|                                   -1: [ThisAccess] this
+#   28|                           6: [Method] setValue
+#-----|                             4: (Parameters)
+#   28|                               0: [Parameter] thisRef
+#   28|                               1: [Parameter] property
+#   28|                               2: [Parameter] value
+#   28|                             5: [BlockStmt] { ... }
+#   29|                               0: [ExprStmt] <Expr>;
+#   29|                                 0: [MethodAccess] setCurValue(...)
+#   29|                                   -1: [ThisAccess] this
+#   29|                                   0: [VarAccess] value
+#   25|                       1: [ExprStmt] <Expr>;
+#   25|                         0: [ClassInstanceExpr] new (...)
+#   25|                           -3: [TypeAccess] ReadWriteProperty<Object,Integer>
+#   33|         5: [BlockStmt] { ... }
 #   33|           0: [LocalVariableDeclStmt] var ...;
-#   33|             1: [LocalVariableDeclExpr] readWrite$delegate
+#   33|             1: [LocalVariableDeclExpr] readOnly$delegate
 #   33|               0: [MethodAccess] resourceDelegate(...)
 #   33|                 -1: [ClassInstanceExpr] new (...)
 #   33|                   -3: [TypeAccess] Object
@@ -156,43 +191,60 @@ delegatedProperties.kt:
 #   33|               1: [Constructor] 
 #   33|                 5: [BlockStmt] { ... }
 #   33|                   0: [SuperConstructorInvocationStmt] super(...)
-#   33|               1: [Method] <get-readWrite>
+#   33|               1: [Method] <get-readOnly>
 #   33|                 5: [BlockStmt] { ... }
 #   33|                   0: [ReturnStmt] return ...
 #   33|                     0: [MethodAccess] getValue(...)
-#   33|                       -1: [VarAccess] readWrite$delegate
+#   33|                       -1: [VarAccess] readOnly$delegate
 #    0|                       0: [NullLiteral] null
-#   33|           2: [LocalTypeDeclStmt] class ...
-#   33|             0: [LocalClass] 
-#   33|               1: [Constructor] 
-#   33|                 5: [BlockStmt] { ... }
-#   33|                   0: [SuperConstructorInvocationStmt] super(...)
-#   33|               1: [Method] <set-readWrite>
+#   34|         6: [BlockStmt] { ... }
+#   34|           0: [LocalVariableDeclStmt] var ...;
+#   34|             1: [LocalVariableDeclExpr] readWrite$delegate
+#   34|               0: [MethodAccess] resourceDelegate(...)
+#   34|                 -1: [ClassInstanceExpr] new (...)
+#   34|                   -3: [TypeAccess] Object
+#   34|           1: [LocalTypeDeclStmt] class ...
+#   34|             0: [LocalClass] 
+#   34|               1: [Constructor] 
+#   34|                 5: [BlockStmt] { ... }
+#   34|                   0: [SuperConstructorInvocationStmt] super(...)
+#   34|               1: [Method] <get-readWrite>
+#   34|                 5: [BlockStmt] { ... }
+#   34|                   0: [ReturnStmt] return ...
+#   34|                     0: [MethodAccess] getValue(...)
+#   34|                       -1: [VarAccess] readWrite$delegate
+#    0|                       0: [NullLiteral] null
+#   34|           2: [LocalTypeDeclStmt] class ...
+#   34|             0: [LocalClass] 
+#   34|               1: [Constructor] 
+#   34|                 5: [BlockStmt] { ... }
+#   34|                   0: [SuperConstructorInvocationStmt] super(...)
+#   34|               1: [Method] <set-readWrite>
 #-----|                 4: (Parameters)
-#   33|                   0: [Parameter] value
-#   33|                 5: [BlockStmt] { ... }
-#   33|                   0: [ReturnStmt] return ...
-#   33|                     0: [MethodAccess] setValue(...)
-#   33|                       -1: [VarAccess] readWrite$delegate
+#   34|                   0: [Parameter] value
+#   34|                 5: [BlockStmt] { ... }
+#   34|                   0: [ReturnStmt] return ...
+#   34|                     0: [MethodAccess] setValue(...)
+#   34|                       -1: [VarAccess] readWrite$delegate
 #    0|                       0: [NullLiteral] null
-#   33|                       2: [VarAccess] value
-#   37|   3: [Class] ResourceDelegate
-#   37|     1: [Constructor] ResourceDelegate
-#   37|       5: [BlockStmt] { ... }
-#   37|         0: [SuperConstructorInvocationStmt] super(...)
-#   38|     2: [Method] getValue
-#-----|       4: (Parameters)
-#   38|         0: [Parameter] thisRef
-#   38|         1: [Parameter] property
+#   34|                       2: [VarAccess] value
+#   38|   4: [Class] ResourceDelegate
+#   38|     1: [Constructor] ResourceDelegate
 #   38|       5: [BlockStmt] { ... }
-#   39|         0: [ReturnStmt] return ...
-#   39|           0: [IntegerLiteral] 1
-#   41|     3: [Method] setValue
+#   38|         0: [SuperConstructorInvocationStmt] super(...)
+#   39|     2: [Method] getValue
 #-----|       4: (Parameters)
-#   41|         0: [Parameter] thisRef
-#   41|         1: [Parameter] property
-#   41|         2: [Parameter] value
-#   41|       5: [BlockStmt] { ... }
+#   39|         0: [Parameter] thisRef
+#   39|         1: [Parameter] property
+#   39|       5: [BlockStmt] { ... }
+#   40|         0: [ReturnStmt] return ...
+#   40|           0: [IntegerLiteral] 1
+#   42|     3: [Method] setValue
+#-----|       4: (Parameters)
+#   42|         0: [Parameter] thisRef
+#   42|         1: [Parameter] property
+#   42|         2: [Parameter] value
+#   42|       5: [BlockStmt] { ... }
 exprs.kt:
 #    0| [CompilationUnit] exprs
 #    0|   1: [Class] ExprsKt

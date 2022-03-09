@@ -1,16 +1,17 @@
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
-/* TODO: should uncomment after https://github.com/github/codeql-kotlin/pull/294
+
 class ClassProp1 {
-    val prop1: Int by lazy {
-        println("init")
-        5
-    }
     fun fn() {
+        val prop1: Int by lazy {
+            println("init")
+            5
+        }
+        println(prop1)
         println(prop1)
     }
 }
-*/
+
 class Resource
 
 class Owner {

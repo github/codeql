@@ -1,4 +1,5 @@
 lambdaExpr
+| delegatedProperties.kt:6:32:9:9 | ...->... | stmt body | delegatedProperties.kt:6:32:9:9 | invoke | invoke() | delegatedProperties.kt:6:32:9:9 | new Function0<Integer>(...) { ... } |
 | funcExprs.kt:16:26:16:33 | ...->... | stmt body | funcExprs.kt:16:26:16:33 | invoke | invoke() | funcExprs.kt:16:26:16:33 | new Function0<Integer>(...) { ... } |
 | funcExprs.kt:17:26:17:33 | ...->... | stmt body | funcExprs.kt:17:26:17:33 | invoke | invoke() | funcExprs.kt:17:26:17:33 | new Function0<Object>(...) { ... } |
 | funcExprs.kt:18:26:18:33 | ...->... | stmt body | funcExprs.kt:18:26:18:33 | invoke | invoke() | funcExprs.kt:18:26:18:33 | new Function0<Object>(...) { ... } |
