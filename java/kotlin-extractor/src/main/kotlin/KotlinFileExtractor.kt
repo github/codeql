@@ -40,9 +40,10 @@ open class KotlinFileExtractor(
 
     inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
         val loc = tw.getLocationString(element)
-        globalExtensionState.context.push(ExtractorContext(kind, element))
+        val context = logger.loggerBase.extractorContextStack
+        context.push(ExtractorContext(kind, element, loc))
         try {
-            val depth = globalExtensionState.context.size
+            val depth = context.size
             val depthDescription = "${"-".repeat(depth)} (${depth.toString()})"
             val name = (element as? IrDeclarationWithName)?.name?.asString() ?: "<no name>"
             logger.trace("$depthDescription: Starting a $kind ($name) at $loc")
@@ -52,7 +53,7 @@ open class KotlinFileExtractor(
         } catch(exception: Exception) {
             throw Exception("While extracting a $kind at $loc", exception)
         } finally {
-            globalExtensionState.context.pop()
+            context.pop()
         }
     }
 

@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter
 import java.io.Writer
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Stack
 import org.jetbrains.kotlin.ir.IrElement
 
 class LogCounter() {
@@ -32,7 +33,11 @@ enum class Severity(val sev: Int) {
     ErrorGlobal(8)
 }
 
+data class ExtractorContext(val kind: String, val element: IrElement, val loc: String)
+
 open class LoggerBase(val logCounter: LogCounter) {
+    val extractorContextStack = Stack<ExtractorContext>()
+
     private val verbosity: Int
     init {
         verbosity = System.getenv("CODEQL_EXTRACTOR_KOTLIN_VERBOSITY")?.toIntOrNull() ?: 3
@@ -85,7 +90,19 @@ open class LoggerBase(val logCounter: LogCounter) {
                     else -> ""
                 }
             }
-        val fullMsg = "$msg\n$extraInfoStr$suffix"
+        val fullMsgBuilder = StringBuilder()
+        fullMsgBuilder.append(msg)
+        fullMsgBuilder.append('\n')
+        fullMsgBuilder.append(extraInfoStr)
+
+        val iter = extractorContextStack.listIterator(extractorContextStack.size)
+        while (iter.hasPrevious()) {
+            val x = iter.previous()
+            fullMsgBuilder.append("  ...while extracting a ${x.kind} at ${x.loc}\n")
+        }
+        fullMsgBuilder.append(suffix)
+
+        val fullMsg = fullMsgBuilder.toString()
         val ts = timestamp()
         // We don't actually make the location until after the `return` above
         val locationId = mkLocationId()
