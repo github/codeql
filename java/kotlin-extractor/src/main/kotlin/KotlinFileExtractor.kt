@@ -736,6 +736,9 @@ open class KotlinFileExtractor(
                 if (bf != null && extractBackingField) {
                     val fieldId = extractField(bf, parentId)
                     tw.writeKtPropertyBackingFields(id, fieldId)
+                    if (p.isDelegated) {
+                        tw.writeKtPropertyDelegates(id, fieldId)
+                    }
                 }
 
                 extractVisibility(p, id, p.visibility)
