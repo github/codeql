@@ -2,7 +2,7 @@
  * @name Copy function using source size
  * @description Calling a copy operation with a size derived from the source
  *              buffer instead of the destination buffer may result in a buffer overflow.
- * @kind problem
+ * @kind path-problem
  * @id cpp/overflow-destination
  * @problem.severity warning
  * @security-severity 9.3
@@ -30,9 +30,9 @@ predicate sourceSized(FunctionCall fc, Expr src) {
   fc.getTarget().hasGlobalOrStdName(["strncpy", "strncat", "memcpy", "memmove"]) and
   exists(Expr dest, Expr size, Variable v |
     fc.getArgument(0) = dest and
-    fc.getArgument(1) = src and
+    fc.getArgument(1).getFullyConverted() = src and
     fc.getArgument(2) = size and
-    src = v.getAnAccess() and
+    src = v.getAnAccess().getFullyConverted() and
     size.getAChild+() = v.getAnAccess() and
     // exception: `dest` is also referenced in the size argument
     not exists(Variable other |
@@ -71,7 +71,7 @@ class OverflowDestinationConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sourceSized(_, sink.asExpr()) }
+  override predicate isSink(DataFlow::Node sink) { sourceSized(_, sink.asConvertedExpr()) }
 
   override predicate isSanitizer(DataFlow::Node node) {
     exists(Variable checkedVar |
@@ -91,6 +91,6 @@ from
   DataFlow::PathNode sink
 where
   conf.hasFlowPath(source, sink) and
-  sourceSized(fc, sink.getNode().asExpr())
-select fc,
+  sourceSized(fc, sink.getNode().asConvertedExpr())
+select fc, source, sink,
   "To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size."
