@@ -9,9 +9,9 @@ import CaptureSummaryModelsSpecific
  * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
  */
 string captureQualifierFlow(TargetAPI api) {
-  exists(ReturnStmt rtn |
-    rtn.getEnclosingCallable() = api and
-    isOwnInstanceAccess(rtn)
+  exists(ReturnNodeExt ret |
+    api = returnNodeEnclosingCallable(ret) and
+    isOwnInstanceAccessNode(ret)
   ) and
   result = asValueModel(api, qualifierString(), "ReturnValue")
 }

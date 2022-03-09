@@ -10,7 +10,10 @@ import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.InstanceAccess
 import ModelGeneratorUtils
 
-predicate isOwnInstanceAccess(ReturnStmt rtn) { rtn.getResult().(ThisAccess).isOwnInstanceAccess() }
+pragma[inline]
+Callable returnNodeEnclosingCallable(ReturnNodeExt ret) {
+  result = getNodeEnclosingCallable(ret).asCallable()
+}
 
 predicate isOwnInstanceAccessNode(ReturnNode node) {
   node.asExpr().(ThisAccess).isOwnInstanceAccess()
