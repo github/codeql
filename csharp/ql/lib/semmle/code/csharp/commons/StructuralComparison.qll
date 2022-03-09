@@ -14,7 +14,7 @@ private class GvnKindExpr extends GvnKind, TGvnKindExpr {
 
   GvnKindExpr() { this = TGvnKindExpr(kind) }
 
-  override string toString() { result = "Expr(" + kind.toString() + ")" }
+  override string toString() { result = "Expr(" + kind + ")" }
 }
 
 private class GvnKindStmt extends GvnKind, TGvnKindStmt {
@@ -22,7 +22,7 @@ private class GvnKindStmt extends GvnKind, TGvnKindStmt {
 
   GvnKindStmt() { this = TGvnKindStmt(kind) }
 
-  override string toString() { result = "Stmt(" + kind.toString() + ")" }
+  override string toString() { result = "Stmt(" + kind + ")" }
 }
 
 private class GvnKindDeclaration extends GvnKind, TGvnKindDeclaration {
@@ -32,9 +32,7 @@ private class GvnKindDeclaration extends GvnKind, TGvnKindDeclaration {
 
   GvnKindDeclaration() { this = TGvnKindDeclaration(kind, isTargetThis, d) }
 
-  override string toString() {
-    result = "Expr(" + kind.toString() + ")," + isTargetThis + "," + d.toString()
-  }
+  override string toString() { result = "Expr(" + kind + ")," + isTargetThis + "," + d }
 }
 
 /** Gets the declaration referenced by the expression `e`, if any. */
@@ -46,62 +44,56 @@ private Declaration referenceAttribute(Expr e) {
   result = e.(Access).getTarget()
 }
 
-/** Returns true iff the target of the expression `e` is `this`. */
+/** Gets a Boolean indicating whether the target of the expression `e` is `this`. */
 private boolean isTargetThis(Expr e) {
   result = true and e.(MemberAccess).targetIsThisInstance()
   or
   result = false and not e.(MemberAccess).targetIsThisInstance()
 }
 
-/** Gets the AST node kind of element `cfe` wrapped in the `GvnKind` type. */
-private GvnKind getKind(ControlFlowElement cfe) {
-  exists(int kind |
-    expressions(cfe, kind, _) and
-    result = TGvnKindExpr(kind)
-    or
-    statements(cfe, kind) and
-    result = TGvnKindStmt(kind)
-  )
-}
-
-/** The global value number of a control flow element. */
-abstract class Gvn extends TGvn {
+/**
+ * A global value number (GVN) for a control flow element.
+ *
+ * GVNs are used to map control flow elements to a representation that
+ * omits location information, that is, two elements that are structurally
+ * equal will be mapped to the same GVN.
+ */
+class Gvn extends TGvn {
   /** Gets the string representation of this global value number. */
-  abstract string toString();
+  string toString() { none() }
 }
 
 private class ConstantGvn extends Gvn, TConstantGvn {
   override string toString() { this = TConstantGvn(result) }
 }
 
-private class GvnBase extends Gvn, TGvnBase {
+private class GvnNil extends Gvn, TGvnNil {
   private GvnKind kind;
 
-  GvnBase() { this = TGvnBase(kind) }
+  GvnNil() { this = TGvnNil(kind) }
 
   override string toString() { result = "(kind:" + kind + ")" }
 }
 
-private class GvnStruct extends Gvn, TGvnStruct {
+private class GvnCons extends Gvn, TGvnCons {
   private Gvn head;
   private Gvn tail;
 
-  GvnStruct() { this = TGvnStruct(head, tail) }
+  GvnCons() { this = TGvnCons(head, tail) }
 
-  override string toString() { result = "(" + head.toString() + " :: " + tail.toString() + ")" }
+  override string toString() { result = "(" + head + " :: " + tail + ")" }
 }
 
 pragma[noinline]
-private predicate gvnKindDeclaration(
-  ControlFlowElement cfe, int kind, boolean isTargetThis, Declaration d
-) {
-  isTargetThis = isTargetThis(cfe) and
-  d = referenceAttribute(cfe) and
-  expressions(cfe, kind, _)
+private predicate gvnKindDeclaration(Expr e, int kind, boolean isTargetThis, Declaration d) {
+  isTargetThis = isTargetThis(e) and
+  d = referenceAttribute(e) and
+  expressions(e, kind, _)
 }
 
 /**
  * Gets the `GvnKind` of the element `cfe`.
+ *
  * In case `cfe` is a reference attribute, we encode the entire declaration and whether
  * the target is semantically equivalent to `this`.
  */
@@ -111,18 +103,24 @@ private GvnKind getGvnKind(ControlFlowElement cfe) {
     result = TGvnKindDeclaration(kind, isTargetThis, d)
   )
   or
-  not exists(referenceAttribute(cfe)) and
-  result = getKind(cfe)
+  exists(int kind |
+    not exists(referenceAttribute(cfe)) and
+    expressions(cfe, kind, _) and
+    result = TGvnKindExpr(kind)
+    or
+    statements(cfe, kind) and
+    result = TGvnKindStmt(kind)
+  )
 }
 
-private Gvn gvnConstructed(ControlFlowElement cfe, GvnKind kind, int index) {
+private Gvn toGvn(ControlFlowElement cfe, GvnKind kind, int index) {
   kind = getGvnKind(cfe) and
-  result = TGvnBase(kind) and
+  result = TGvnNil(kind) and
   index = -1
   or
   exists(Gvn head, Gvn tail |
-    gvnConstructedStruct(cfe, kind, index, head, tail) and
-    result = TGvnStruct(head, tail)
+    toGvnCons(cfe, kind, index, head, tail) and
+    result = TGvnCons(head, tail)
   )
 }
 
@@ -147,16 +145,14 @@ private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk) {
 }
 
 pragma[noinline]
-private Gvn gvnChild(ControlFlowElement cfe, int index) {
+private Gvn toGvnChild(ControlFlowElement cfe, int index) {
   result = toGvn(getRankedChild(cfe, index))
 }
 
 pragma[noinline]
-private predicate gvnConstructedStruct(
-  ControlFlowElement cfe, GvnKind kind, int index, Gvn head, Gvn tail
-) {
-  tail = gvnConstructed(cfe, kind, index - 1) and
-  head = gvnChild(cfe, index)
+private predicate toGvnCons(ControlFlowElement cfe, GvnKind kind, int index, Gvn head, Gvn tail) {
+  tail = toGvn(cfe, kind, index - 1) and
+  head = toGvnChild(cfe, index)
 }
 
 cached
@@ -171,30 +167,33 @@ private module Cached {
       )
     }
 
-  /**
-   * Type for containing the global value number of a control flow element.
-   * A global value number, can either be a constant, a kind or a structure containing multiple global value numbers.
-   * The construction of the type produces a list like structure.
-   */
   cached
   newtype TGvn =
     TConstantGvn(string s) { s = any(Expr e).getValue() } or
-    TGvnBase(GvnKind gkind) or
-    TGvnStruct(Gvn head, Gvn tail) { gvnConstructedStruct(_, _, _, head, tail) }
+    TGvnNil(GvnKind gkind) or
+    TGvnCons(Gvn head, Gvn tail) { toGvnCons(_, _, _, head, tail) }
+
+  /** Gets the global value number of the element `cfe`. */
+  cached
+  Gvn toGvnCached(ControlFlowElement cfe) {
+    result = TConstantGvn(cfe.(Expr).getValue())
+    or
+    not exists(cfe.(Expr).getValue()) and
+    exists(GvnKind kind, int index |
+      result = toGvn(cfe, kind, index - 1) and
+      index = getNumberOfActualChildren(cfe)
+    )
+  }
 }
 
 private import Cached
 
-/** Gets the global value number of the element `cfe` */
-cached
-Gvn toGvn(ControlFlowElement cfe) {
-  result = TConstantGvn(cfe.(Expr).getValue())
-  or
-  not exists(cfe.(Expr).getValue()) and
-  exists(GvnKind kind, int index |
-    result = gvnConstructed(cfe, kind, index - 1) and
-    index = getNumberOfActualChildren(cfe)
-  )
+predicate toGvn = toGvnCached/1;
+
+pragma[inline]
+private predicate sameGvn(ControlFlowElement x, ControlFlowElement y) {
+  pragma[only_bind_into](toGvn(pragma[only_bind_out](x))) =
+    pragma[only_bind_into](toGvn(pragma[only_bind_out](y)))
 }
 
 /**
@@ -226,12 +225,6 @@ abstract class StructuralComparisonConfiguration extends string {
    * half the computation time on the structural comparison.
    */
   abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
-
-  pragma[inline]
-  private predicate sameGvn(ControlFlowElement x, ControlFlowElement y) {
-    pragma[only_bind_into](toGvn(pragma[only_bind_out](x))) =
-      pragma[only_bind_into](toGvn(pragma[only_bind_out](y)))
-  }
 
   /**
    * Holds if elements `x` and `y` structurally equal. `x` and `y` must be
@@ -283,12 +276,6 @@ module Internal {
      * half the computation time on the structural comparison.
      */
     abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
-
-    pragma[inline]
-    private predicate sameGvn(ControlFlowElement x, ControlFlowElement y) {
-      pragma[only_bind_into](toGvn(pragma[only_bind_out](x))) =
-        pragma[only_bind_into](toGvn(pragma[only_bind_out](y)))
-    }
 
     /**
      * Holds if elements `x` and `y` structurally equal. `x` and `y` must be
