@@ -713,6 +713,21 @@ class Property extends Element, Modifiable, @kt_property {
   override string getAPrimaryQlClass() { result = "Property" }
 }
 
+/** A Kotlin delegated property. */
+class DelegatedProperty extends Property {
+  Variable underlying;
+
+  DelegatedProperty() { ktPropertyDelegates(this, underlying) }
+
+  /** Holds if this delegated property is declared as a local variable. */
+  predicate isLocal() { underlying instanceof LocalVariableDecl }
+
+  /** Gets the underlying local variable or field to which this property is delegating the calls. */
+  Variable getDelegatee() { result = underlying }
+
+  override string getAPrimaryQlClass() { result = "DelegatedProperty" }
+}
+
 /** A Kotlin extension function. */
 class ExtensionMethod extends Method {
   Type extendedType;
