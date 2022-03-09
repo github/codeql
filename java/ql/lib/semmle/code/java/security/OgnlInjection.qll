@@ -122,3 +122,13 @@ private class DefaultOgnlInjectionAdditionalTaintStep extends OgnlInjectionAddit
     setExpressionStep(node1, node2)
   }
 }
+
+private import semmle.code.java.frameworks.MyBatis::ProviderInjection
+
+private class MyBatisOgnlInjectionSink extends OgnlInjectionSink instanceof MyBatisInjectionSink { }
+
+private class MyBatisAbstractSQLOgnlInjectionStep extends OgnlInjectionAdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    any(MyBatisAbstractSQLStep step).step(node1, node2)
+  }
+}
