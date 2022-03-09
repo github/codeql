@@ -1,3 +1,7 @@
+/**
+ * Provides predicates related to capturing summary models of the Standard or a 3rd party library.
+ */
+
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.internal.DataFlowImplCommon
