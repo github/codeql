@@ -27,11 +27,9 @@
 | modifiers.kt:13:13:13:23 | fn | Method | public |
 | modifiers.kt:17:5:20:5 | fn2 | Method | public |
 | modifiers.kt:18:9:18:24 |  | Constructor | public |
+| modifiers.kt:18:9:18:24 |  | LocalClass | final |
+| modifiers.kt:18:9:18:24 |  | LocalClass | private |
 | modifiers.kt:18:9:18:24 | fnLocal | Method | public |
-| modifiers.kt:18:9:18:24 | new Object(...) { ... } | AnonymousClass | final |
-| modifiers.kt:18:9:18:24 | new Object(...) { ... } | AnonymousClass | private |
-| modifiers.kt:18:9:18:24 | new Object(...) { ... } | LocalClass | final |
-| modifiers.kt:18:9:18:24 | new Object(...) { ... } | LocalClass | private |
 | modifiers.kt:22:5:24:5 | fn3 | Method | public |
 | modifiers.kt:23:9:23:27 | localClass | Constructor | public |
 | modifiers.kt:23:9:23:27 | localClass | LocalClass | final |

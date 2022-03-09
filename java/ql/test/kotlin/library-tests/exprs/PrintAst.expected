@@ -2282,7 +2282,7 @@ localFunctionCalls.kt:
 #    4|           1: [LocalVariableDeclExpr] x
 #    4|             0: [IntegerLiteral] 5
 #    5|         1: [LocalTypeDeclStmt] class ...
-#    5|           0: [AnonymousClass,LocalClass] new Object(...) { ... }
+#    5|           0: [LocalClass] 
 #    5|             1: [Constructor] 
 #    5|               5: [BlockStmt] { ... }
 #    5|                 0: [SuperConstructorInvocationStmt] super(...)
@@ -2313,7 +2313,7 @@ localFunctionCalls.kt:
 #    8|             0: [VarAccess] x
 #    8|             1: [IntegerLiteral] 7
 #    9|         5: [LocalTypeDeclStmt] class ...
-#    9|           0: [AnonymousClass,LocalClass] new Object(...) { ... }
+#    9|           0: [LocalClass] 
 #    9|             1: [Constructor] 
 #    9|               5: [BlockStmt] { ... }
 #    9|                 0: [SuperConstructorInvocationStmt] super(...)

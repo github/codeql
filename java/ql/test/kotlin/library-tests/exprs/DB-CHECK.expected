@@ -1,4 +1,0 @@
-[INVALID_KEY_SET] predicate isAnonymClass(@class classid, @classinstancexpr parent): The key set {classid} does not functionally determine all fields.
-Here is a pair of tuples that agree on the key set but differ at index 1:
-Tuple 1 in row 28: (3797,3825)
-Tuple 2 in row 29: (3797,3842)

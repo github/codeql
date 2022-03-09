@@ -1038,9 +1038,6 @@ open class KotlinFileExtractor(
 
             val idNewexpr = extractNewExpr(ids.constructor, ids.type, locId, id, -1, enclosingCallable, enclosingStmt)
 
-            @Suppress("UNCHECKED_CAST")
-            tw.writeIsAnonymClass(ids.type.javaResult.id as Label<DbClass>, idNewexpr)
-
             extractTypeAccessRecursive(pluginContext.irBuiltIns.anyType, locId, idNewexpr, -3, enclosingCallable, enclosingStmt)
         } else {
             // Returns true if type is C<T1, T2, ...> where C is declared `class C<T1, T2, ...> { ... }`

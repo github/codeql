@@ -412,7 +412,7 @@ local_anonymous.kt:
 #   10|     3: [Method] fn2
 #   10|       5: [BlockStmt] { ... }
 #   11|         0: [LocalTypeDeclStmt] class ...
-#   11|           0: [AnonymousClass,LocalClass] new Object(...) { ... }
+#   11|           0: [LocalClass] 
 #   11|             1: [Constructor] 
 #   11|               5: [BlockStmt] { ... }
 #   11|                 0: [SuperConstructorInvocationStmt] super(...)
