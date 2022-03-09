@@ -111,11 +111,6 @@ deprecated string mode_from_mode_object(Value obj) {
   )
 }
 
-// importing all the frameworks that extend `RegexString`.
-private import semmle.python.frameworks.Django as Django1
-private import semmle.python.frameworks.Tornado as Tornado1
-private import semmle.python.web.django.General as Django2
-
 /** A StrConst used as a regular expression */
 abstract class RegexString extends Expr {
   RegexString() { (this instanceof Bytes or this instanceof Unicode) }
