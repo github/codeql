@@ -66,13 +66,13 @@ predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
       else any()
   )
   or
-  exists(DataFlow::Content f | storeStep(node1, f, node2) | f instanceof DataFlow::ElementContent)
+  exists(DataFlow::Content f | storeStep(node1, f, node2) | DataFlow::containerContent(f))
 }
 
 predicate isRelevantContent(DataFlow::Content f) {
   isRelevantType(f.(DataFlow::FieldContent).getField().getType()) or
   isRelevantType(f.(DataFlow::FieldContent).getField().getType()) or
-  f instanceof DataFlow::ElementContent
+  DataFlow::containerContent(f)
 }
 
 private predicate isPrimitiveTypeUsedForBulkData(Type t) {

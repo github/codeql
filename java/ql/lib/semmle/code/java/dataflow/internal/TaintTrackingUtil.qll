@@ -54,19 +54,12 @@ private module Cached {
     FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
     or
     // Treat container flow as taint for the local taint flow relation
-    exists(DataFlow::Content c | containerContent(c) |
+    exists(DataFlow::Content c | DataFlow::containerContent(c) |
       readStep(src, c, sink) or
       storeStep(src, c, sink) or
       FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink) or
       FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink)
     )
-  }
-
-  private predicate containerContent(DataFlow::Content c) {
-    c instanceof DataFlow::ArrayContent or
-    c instanceof DataFlow::CollectionContent or
-    c instanceof DataFlow::MapKeyContent or
-    c instanceof DataFlow::MapValueContent
   }
 
   /**
@@ -87,7 +80,7 @@ private module Cached {
       not sink.getTypeBound() instanceof BoxedType and
       not sink.getTypeBound() instanceof NumberType and
       (
-        containerContent(f)
+        DataFlow::containerContent(f)
         or
         f instanceof TaintInheritingContent
       )
