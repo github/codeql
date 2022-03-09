@@ -325,45 +325,32 @@ private module Persistence {
    */
   abstract private class ModifyAndSaveCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
     /**
-     * Holds if the given key-value pair is set on an object by this call.
-     */
-    abstract predicate setsKeyValuePair(ExprCfgNode key, ExprCfgNode value);
-
-    /**
      * Gets the ActiveRecord model class to which this call applies.
      */
     abstract ActiveRecordModelClass getClass();
-
-    final override DataFlow::Node getValue() {
-      exists(ExprCfgNode keyExpr, ExprCfgNode valueExpr |
-        this.setsKeyValuePair(keyExpr, valueExpr)
-      |
-        result.asExpr() = valueExpr
-      )
-    }
   }
 
   /**
    * Holds if there is a hash literal argument to `call` at `argIndex`
-   * containing a `key`-`value` pair.
+   * containing a KV pair with value `value`.
    */
-  private predicate hashArgument(
-    DataFlow::CallNode call, int argIndex, ExprCfgNode key, ExprCfgNode value
+  private predicate hashArgumentWithValue(
+    DataFlow::CallNode call, int argIndex, DataFlow::ExprNode value
   ) {
     exists(ExprNodes::HashLiteralCfgNode hash, ExprNodes::PairCfgNode pair |
       hash = call.getArgument(argIndex).asExpr() and
       pair = hash.getAKeyValuePair()
     |
-      key = pair.getKey() and value = pair.getValue()
+      value.asExpr() = pair.getValue()
     )
   }
 
   /**
-   * Holds if `call` has a keyword argument of the form `key: value`.
+   * Holds if `call` has a keyword argument of with value `value`.
    */
-  private predicate keywordArgument(DataFlow::CallNode call, ExprCfgNode key, ExprCfgNode value) {
+  private predicate keywordArgumentWithValue(DataFlow::CallNode call, DataFlow::ExprNode value) {
     exists(ExprNodes::PairCfgNode pair | pair = call.getArgument(_).asExpr() |
-      key = pair.getKey() and value = pair.getValue()
+      value.asExpr() = pair.getValue()
     )
   }
 
@@ -380,10 +367,10 @@ private module Persistence {
         ]
     }
 
-    override predicate setsKeyValuePair(ExprCfgNode key, ExprCfgNode value) {
+    override DataFlow::Node getValue() {
       // attrs as hash elements in arg0
-      hashArgument(this, 0, key, value) or
-      keywordArgument(this, key, value)
+      hashArgumentWithValue(this, 0, result) or
+      keywordArgumentWithValue(this, result)
     }
 
     override ActiveRecordModelClass getClass() { result = modelCls }
@@ -398,8 +385,8 @@ private module Persistence {
       this.getMethodName() = ["update", "update!", "upsert"]
     }
 
-    override predicate setsKeyValuePair(ExprCfgNode key, ExprCfgNode value) {
-      keywordArgument(this, key, value)
+    override DataFlow::Node getValue() {
+      keywordArgumentWithValue(this, result)
       or
       // Case where 2 array args are passed - the first an array of IDs, and the
       // second an array of hashes - each hash corresponding to an ID in the
@@ -412,7 +399,7 @@ private module Persistence {
           hash = hashesArray.getArgument(_) and
           pair = hash.getAKeyValuePair()
         |
-          key = pair.getKey() and value = pair.getValue()
+          result.asExpr() = pair.getValue()
         )
       )
     }
@@ -431,13 +418,13 @@ private module Persistence {
       arr = this.getArgument(0).asExpr()
     }
 
-    override predicate setsKeyValuePair(ExprCfgNode key, ExprCfgNode value) {
+    override DataFlow::Node getValue() {
       // attrs as hash elements of members of array arg0
       exists(ExprNodes::HashLiteralCfgNode hash, ExprNodes::PairCfgNode pair |
         hash = arr.getArgument(_) and
         pair = hash.getAKeyValuePair()
       |
-        key = pair.getKey() and value = pair.getValue()
+        result.asExpr() = pair.getValue()
       )
     }
 
@@ -451,12 +438,12 @@ private module Persistence {
       this.getMethodName() = ["update", "update!", "update_attributes", "update_attributes!"]
     }
 
-    override predicate setsKeyValuePair(ExprCfgNode key, ExprCfgNode value) {
+    override DataFlow::Node getValue() {
       // attrs as hash elements in arg0
-      hashArgument(this, 0, key, value)
+      hashArgumentWithValue(this, 0, result)
       or
       // keyword arg
-      keywordArgument(this, key, value)
+      keywordArgumentWithValue(this, result)
     }
 
     override ActiveRecordModelClass getClass() { result = this.getInstance().getClass() }
@@ -466,9 +453,9 @@ private module Persistence {
   private class UpdateAttributeCall extends ModifyAndSaveCall, ActiveRecordInstanceMethodCall {
     UpdateAttributeCall() { this.getMethodName() = "update_attribute" }
 
-    override predicate setsKeyValuePair(ExprCfgNode key, ExprCfgNode value) {
+    override DataFlow::Node getValue() {
       // e.g. `foo.update_attribute(key, value)`
-      key = this.getArgument(0).asExpr() and value = this.getArgument(1).asExpr()
+      result = this.getArgument(1)
     }
 
     override ActiveRecordModelClass getClass() { result = this.getInstance().getClass() }
