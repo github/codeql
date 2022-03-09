@@ -176,32 +176,4 @@ module Stages {
       PointsTo::AttributePointsTo::variableAttributePointsTo(_, _, _, _, _)
     }
   }
-
-  /**
-   * The `taint` stage.
-   */
-  cached
-  module Taint {
-    /**
-     * Always holds.
-     * Ensures that a predicate is evaluated as part of the DataFlow stage.
-     */
-    cached
-    predicate ref() { 1 = 1 }
-
-    private import semmle.python.dataflow.new.internal.TaintTrackingPrivate as TaintTrackingPrivate
-
-    /**
-     * DONT USE!
-     * Contains references to each predicate that use the above `ref` predicate.
-     */
-    cached
-    predicate backref() {
-      1 = 1
-      or
-      TaintTrackingPrivate::localAdditionalTaintStep(_, _)
-      or
-      TaintTrackingPrivate::defaultAdditionalTaintStep(_, _)
-    }
-  }
 }
