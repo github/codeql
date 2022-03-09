@@ -181,25 +181,21 @@ module TaintedPath {
   module PathTransformations {
     /** An abstract description of what kind of paths a call may return. */
     abstract class PathTransformationNode extends DataFlow::CallNode {
-      DataFlow::Node input;
-      DataFlow::Node output;
-
       PathTransformationNode() { this = this }
 
       abstract predicate step(
         Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       );
-
-      DataFlow::Node getInput() { result = input }
-
-      DataFlow::Node getOutput() { result = output }
     }
 
     /**
      * A call that converts a path to an absolute normalized path.
      */
     class ResolvingPathCall extends PathTransformationNode {
+      DataFlow::Node input;
+      DataFlow::Node output;
+
       ResolvingPathCall() {
         this = NodeJSLib::Path::moduleMember("resolve").getACall() and
         input = this.getAnArgument() and
@@ -224,24 +220,30 @@ module TaintedPath {
         outputLabel.isAbsolute() and
         outputLabel.isNormalized()
       }
+
+      /**
+       * Returns the input node from which steps are taken.
+       */
+      DataFlow::Node getInput() { result = input }
+
+      /**
+       * Returns the output node to which steps are taken.
+       */
+      DataFlow::Node getOutput() { result = output }
     }
 
     /**
      * A call to the path.relative method.
      */
     class RelativePathCall extends PathTransformationNode {
-      RelativePathCall() {
-        this = NodeJSLib::Path::moduleMember("relative").getACall() and
-        input = this.getAnArgument() and
-        output = this
-      }
+      RelativePathCall() { this = NodeJSLib::Path::moduleMember("relative").getACall() }
 
       override predicate step(
         Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
-        input = inputNode and
-        output = outputNode and
+        this.getAnArgument() = inputNode and
+        this = outputNode and
         outputLabel.getPlatform() = inputLabel.getPlatform() and
         (
           inputLabel.getPlatform() = Path::platformPosix() and
@@ -262,15 +264,15 @@ module TaintedPath {
      * A call that preserves taint without changing the flow label.
      */
     class PreservingPathCall extends PathTransformationNode {
+      DataFlow::Node input;
+
       PreservingPathCall() {
         this = NodeJSLib::Path::moduleMember(["dirname", "parse", "format"]).getACall() and
-        input = this.getAnArgument() and
-        output = this
+        input = this.getAnArgument()
         or
         // non-global replace or replace of something other than /\.\./g, /[/]/g, or /[\.]/g.
         this instanceof StringReplaceCall and
         input = this.getReceiver() and
-        output = this and
         not exists(RegExpLiteral literal, RegExpTerm term |
           this.(StringReplaceCall).getRegExp().asExpr() = literal and
           this.(StringReplaceCall).isGlobal() and
@@ -288,25 +290,21 @@ module TaintedPath {
         DataFlow::Node outputNode
       ) {
         inputNode = input and
-        outputNode = output and
+        outputNode = this and
         outputLabel = inputLabel
       }
     }
 
     /** A call to the path.join method. */
     class JoinPathCall extends PathTransformationNode {
-      JoinPathCall() {
-        this = NodeJSLib::Path::moduleMember("join").getACall() and
-        input = this.getAnArgument() and
-        output = this
-      }
+      JoinPathCall() { this = NodeJSLib::Path::moduleMember("join").getACall() }
 
       override predicate step(
         Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
-        outputNode = this and
-        inputNode = input and
+        this = outputNode and
+        this.getAnArgument() = inputNode and
         (
           inputLabel.getPlatform() = Path::platformPosix() and
           exists(int n | inputNode = this.getArgument(n) |
@@ -341,18 +339,14 @@ module TaintedPath {
      * A call to the path.toNamespacedPath method.
      */
     class ToNamespacedPathCall extends PathTransformationNode {
-      ToNamespacedPathCall() {
-        this = NodeJSLib::Path::moduleMember("toNamespacedPath").getACall() and
-        input = this.getAnArgument() and
-        output = this
-      }
+      ToNamespacedPathCall() { this = NodeJSLib::Path::moduleMember("toNamespacedPath").getACall() }
 
       override predicate step(
         Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
-        input = inputNode and
-        output = outputNode and
+        this.getAnArgument() = inputNode and
+        this = outputNode and
         (
           inputLabel.getPlatform() = Path::platformWin32() and
           outputLabel = inputLabel.toAbsolute().toNormalized()
@@ -368,20 +362,21 @@ module TaintedPath {
     //  * A call that normalizes a path.
     //  */
     class NormalizingPathCall extends PathTransformationNode {
-      NormalizingPathCall() {
-        this = NodeJSLib::Path::moduleMember("normalize").getACall() and
-        input = this.getArgument(0) and
-        output = this
-      }
+      NormalizingPathCall() { this = NodeJSLib::Path::moduleMember("normalize").getACall() }
 
       override predicate step(
         Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
-        input = inputNode and
-        output = outputNode and
+        getInput() = inputNode and
+        this = outputNode and
         outputLabel = inputLabel.toNormalized()
       }
+
+      /**
+       * Returns the input node from which steps are taken.
+       */
+      DataFlow::Node getInput() { result = this.getArgument(0) }
     }
 
     /**
@@ -389,8 +384,6 @@ module TaintedPath {
      */
     class DotDotSlashPrefixRemovingReplace extends StringReplaceCall, PathTransformationNode {
       DotDotSlashPrefixRemovingReplace() {
-        input = this.getReceiver() and
-        output = this and
         exists(RegExpLiteral literal, RegExpTerm term |
           this.getRegExp().asExpr() = literal and
           (term instanceof RegExpStar or term instanceof RegExpPlus) and
@@ -409,10 +402,9 @@ module TaintedPath {
         Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
-        exists(DotDotSlashPrefixRemovingReplace call |
-          inputNode = call.getInput() and
-          outputNode = call.getOutput()
-        |
+        this.getReceiver() = inputNode and
+        this = outputNode and
+        (
           (
             inputLabel.getPlatform() = Path::platformPosix() and
             // the 4 possible combinations of normalized + relative for `inputLabel`, and the possible values for `dstlabel` in each case.
@@ -451,8 +443,6 @@ module TaintedPath {
      */
     class DotRemovingReplaceCall extends StringReplaceCall, PathTransformationNode {
       DotRemovingReplaceCall() {
-        input = this.getReceiver() and
-        output = this and
         this.isGlobal() and
         exists(RegExpLiteral literal, RegExpTerm term |
           this.getRegExp().asExpr() = literal and
@@ -468,8 +458,8 @@ module TaintedPath {
         Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
-        input = inputNode and
-        output = outputNode and
+        this.getReceiver() = inputNode and
+        this = outputNode and
         inputLabel.isAbsolute() and
         outputLabel.isAbsolute() and
         outputLabel.isNormalized() and
@@ -1013,9 +1003,7 @@ module TaintedPath {
   predicate isPathStep(
     DataFlow::Node src, DataFlow::Node dst, Path::PathLabel srclabel, Path::PathLabel dstlabel
   ) {
-    exists(PathTransformationNode ppn | ppn.getOutput() = dst and ppn.getInput() = src |
-      ppn.step(srclabel, src, dstlabel, dst)
-    )
+    exists(PathTransformationNode ptn | ptn.step(srclabel, src, dstlabel, dst))
   }
 
   /**
