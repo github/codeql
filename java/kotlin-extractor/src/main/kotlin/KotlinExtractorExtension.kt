@@ -217,6 +217,12 @@ private fun doFile(
     logger.info("Extracting file $srcFilePath")
     logger.flush()
 
+    val context = logger.loggerBase.extractorContextStack
+    if (!context.empty()) {
+        logger.warn("Extractor context was not empty. It thought:")
+        context.clear()
+    }
+
     val dbSrcFilePath = Paths.get("$dbSrcDir/$srcFilePath")
     val dbSrcDirPath = dbSrcFilePath.parent
     Files.createDirectories(dbSrcDirPath)
@@ -273,6 +279,7 @@ private fun doFile(
         // stack overflow or an assertion failure in one file.
         } catch (e: Throwable) {
             logger.error("Failed to extract '$srcFilePath'. Partial TRAP file location is $trapTmpFile", e)
+            context.clear()
             fileExtractionProblems.setNonRecoverableProblem()
         }
     }
