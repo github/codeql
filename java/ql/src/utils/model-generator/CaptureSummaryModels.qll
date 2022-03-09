@@ -1,16 +1,12 @@
+/**
+ * Provides classes and predicates related to capturing summary models
+ * of the Standard or a 3rd party library.
+ */
+
 import CaptureSummaryModelsSpecific
 
 /**
- * Capture fluent APIs that return `this`.
- * Example of a fluent API:
- * ```
- * public class Foo {
- *   public Foo someAPI() {
- *    // some side-effect
- *    return this;
- *  }
- * }
- * ```
+ * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
  */
 string captureQualifierFlow(TargetApi api) {
   exists(ReturnStmt rtn |
@@ -20,14 +16,26 @@ string captureQualifierFlow(TargetApi api) {
   result = asValueModel(api, qualifierString(), "ReturnValue")
 }
 
-class TaintRead extends DataFlow::FlowState {
+/**
+ * A FlowState representing a tainted read.
+ */
+private class TaintRead extends DataFlow::FlowState {
   TaintRead() { this = "TaintRead" }
 }
 
-class TaintStore extends DataFlow::FlowState {
+/**
+ * A FlowState representing a tainted write.
+ */
+private class TaintStore extends DataFlow::FlowState {
   TaintStore() { this = "TaintStore" }
 }
 
+/**
+ * A TaintTracking Configuration used for tracking flow through APIs.
+ * The sources are the parameters of an API and the sinks are the return values (excluding `this`) and parameters.
+ *
+ * This can be used to generate Flow summaries for APIs from parameter to return.
+ */
 class ThroughFlowConfig extends TaintTracking::Configuration {
   ThroughFlowConfig() { this = "ThroughFlowConfig" }
 
@@ -72,6 +80,9 @@ class ThroughFlowConfig extends TaintTracking::Configuration {
   }
 }
 
+/**
+ * Gets the summary model(s) of `api`, if there is flow from parameters to return value or parameter.
+ */
 string captureThroughFlow(TargetApi api) {
   exists(
     ThroughFlowConfig config, DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, string input,
