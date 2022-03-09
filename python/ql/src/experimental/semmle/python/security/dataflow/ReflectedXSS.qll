@@ -9,6 +9,7 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.BarrierGuards
 import experimental.semmle.python.Concepts
+import semmle.python.Concepts
 import semmle.python.ApiGraphs
 
 /**
@@ -24,6 +25,10 @@ class ReflectedXssConfiguration extends TaintTracking::Configuration {
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof StringConstCompare
+  }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer = any(HtmlEscaping esc).getOutput()
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
