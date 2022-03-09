@@ -8,6 +8,7 @@ import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.declarations.IrFile
+import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtVisitor
@@ -93,6 +94,10 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                         if (ownerIr == file)
                             fileLabel
                         else {
+                            if (ownerIr is IrValueParameter && ownerIr.index == -1) {
+                                // Don't attribute comments to the implicit `this` parameter of a function.
+                                continue
+                            }
                             val label = fileExtractor.getLabel(ownerIr) ?: continue
                             val existingLabel = tw.getExistingLabelFor<DbTop>(label)
                             if (existingLabel == null) {
