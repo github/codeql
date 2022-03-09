@@ -201,17 +201,9 @@ class CompileTimeConstantExpr extends Expr {
     result = this.(StringLiteral).getValue()
     or
     (
-      if this.(AddExpr).getAnOperand().getType() instanceof TypeString // If either operand type is already a String:
-      then
-        // Then the stringified version of the expression can be safely used as a String will be created.
-        result =
-          this.(AddExpr).getLeftOperand().(CompileTimeConstantExpr).getStringifiedValue() +
-            this.(AddExpr).getRightOperand().(CompileTimeConstantExpr).getStringifiedValue()
-      else
-        // Adding two literals of primitive type will not result in a String.
-        result =
-          this.(AddExpr).getLeftOperand().(CompileTimeConstantExpr).getStringValue() +
-            this.(AddExpr).getRightOperand().(CompileTimeConstantExpr).getStringValue()
+      this.getType() instanceof TypeString and
+      this.(AddExpr).getLeftOperand().(CompileTimeConstantExpr).getStringifiedValue() +
+        this.(AddExpr).getRightOperand().(CompileTimeConstantExpr).getStringifiedValue()
     )
     or
     // Ternary conditional, with compile-time constant condition.

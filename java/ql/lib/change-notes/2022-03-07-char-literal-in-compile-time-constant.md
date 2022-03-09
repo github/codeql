@@ -1,5 +1,5 @@
 ---
 category: minorAnalysis
 ---
- * Add new method `CharacterLiteral.getStringifiedValue` which attempts to compute the
-   `String.valueOf` compile time constant value of the expression.
+ * Add new method `CompileTimeConstantExpr.getStringifiedValue` which attempts to compute the
+   `String.valueOf` string rendering of a constant expression.
