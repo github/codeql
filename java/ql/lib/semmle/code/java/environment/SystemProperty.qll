@@ -38,7 +38,7 @@ private MethodAccess getSystemPropertyFromSystemGetProperties(string propertyNam
     result.getMethod() = getMethod
   ) and
   result.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName and
-  DataFlow::localExprFlow(any(MethodAccess m |
+  localExprFlowPlusInitializers(any(MethodAccess m |
       m.getMethod().getDeclaringType() instanceof TypeSystem and
       m.getMethod().hasName("getProperties")
     ), result.getQualifier())
@@ -247,4 +247,26 @@ private MethodAccess getSystemPropertyFromSpringProperties(string propertyName) 
     m.hasName("getProperty")
   ) and
   result.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName
+}
+
+/**
+ * Holds if data can flow from `e1` to `e2` in zero or more
+ * local (intra-procedural) steps or via local variable intializers
+ * for final variables.
+ */
+private predicate localExprFlowPlusInitializers(Expr e1, Expr e2) {
+  localFlowPlusInitializers(DataFlow::exprNode(e1), DataFlow::exprNode(e2))
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` in zero or more
+ * local (intra-procedural) steps or via local variable intializers
+ * for final variables.
+ */
+private predicate localFlowPlusInitializers(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(Variable v | v.isFinal() and pred.asExpr() = v.getInitializer() |
+    DataFlow::localFlow(DataFlow::exprNode(v.getAnAccess()), succ)
+  )
+  or
+  DataFlow::localFlow(pred, succ)
 }
