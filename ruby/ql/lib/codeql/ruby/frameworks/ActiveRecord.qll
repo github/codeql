@@ -320,17 +320,6 @@ private class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
  */
 private module Persistence {
   /**
-   * A call to a method that may modify or create a model object and write it to
-   * the database. Examples include `create`, `insert`, and `update`.
-   */
-  abstract private class ModifyAndSaveCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
-    /**
-     * Gets the ActiveRecord model class to which this call applies.
-     */
-    abstract ActiveRecordModelClass getClass();
-  }
-
-  /**
    * Holds if there is a hash literal argument to `call` at `argIndex`
    * containing a KV pair with value `value`.
    */
@@ -355,7 +344,7 @@ private module Persistence {
   }
 
   /** A call to e.g. `User.create(name: "foo")` */
-  private class CreateLikeCall extends ModifyAndSaveCall {
+  private class CreateLikeCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
     private ActiveRecordModelClass modelCls;
 
     CreateLikeCall() {
@@ -372,12 +361,10 @@ private module Persistence {
       hashArgumentWithValue(this, 0, result) or
       keywordArgumentWithValue(this, result)
     }
-
-    override ActiveRecordModelClass getClass() { result = modelCls }
   }
 
   /** A call to e.g. `User.update(1, name: "foo")` */
-  private class UpdateLikeClassMethodCall extends ModifyAndSaveCall {
+  private class UpdateLikeClassMethodCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
     private ActiveRecordModelClass modelCls;
 
     UpdateLikeClassMethodCall() {
@@ -403,12 +390,10 @@ private module Persistence {
         )
       )
     }
-
-    override ActiveRecordModelClass getClass() { result = modelCls }
   }
 
   /** A call to e.g. `User.insert_all([{name: "foo"}, {name: "bar"}])` */
-  private class InsertAllLikeCall extends ModifyAndSaveCall {
+  private class InsertAllLikeCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
     private ExprNodes::ArrayLiteralCfgNode arr;
     private ActiveRecordModelClass modelCls;
 
@@ -427,12 +412,10 @@ private module Persistence {
         result.asExpr() = pair.getValue()
       )
     }
-
-    override ActiveRecordModelClass getClass() { result = modelCls }
   }
 
   /** A call to e.g. `user.update(name: "foo")` */
-  private class UpdateLikeInstanceMethodCall extends ModifyAndSaveCall,
+  private class UpdateLikeInstanceMethodCall extends DataFlow::CallNode, PersistentWriteAccess::Range,
     ActiveRecordInstanceMethodCall {
     UpdateLikeInstanceMethodCall() {
       this.getMethodName() = ["update", "update!", "update_attributes", "update_attributes!"]
@@ -445,20 +428,16 @@ private module Persistence {
       // keyword arg
       keywordArgumentWithValue(this, result)
     }
-
-    override ActiveRecordModelClass getClass() { result = this.getInstance().getClass() }
   }
 
   /** A call to e.g. `user.update_attribute(name, "foo")` */
-  private class UpdateAttributeCall extends ModifyAndSaveCall, ActiveRecordInstanceMethodCall {
+  private class UpdateAttributeCall extends DataFlow::CallNode, PersistentWriteAccess::Range, ActiveRecordInstanceMethodCall {
     UpdateAttributeCall() { this.getMethodName() = "update_attribute" }
 
     override DataFlow::Node getValue() {
       // e.g. `foo.update_attribute(key, value)`
       result = this.getArgument(1)
     }
-
-    override ActiveRecordModelClass getClass() { result = this.getInstance().getClass() }
   }
 
   /**
