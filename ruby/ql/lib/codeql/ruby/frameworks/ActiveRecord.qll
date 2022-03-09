@@ -415,7 +415,7 @@ private module Persistence {
   }
 
   /** A call to e.g. `user.update(name: "foo")` */
-  private class UpdateLikeInstanceMethodCall extends DataFlow::CallNode, PersistentWriteAccess::Range,
+  private class UpdateLikeInstanceMethodCall extends PersistentWriteAccess::Range,
     ActiveRecordInstanceMethodCall {
     UpdateLikeInstanceMethodCall() {
       this.getMethodName() = ["update", "update!", "update_attributes", "update_attributes!"]
@@ -431,7 +431,8 @@ private module Persistence {
   }
 
   /** A call to e.g. `user.update_attribute(name, "foo")` */
-  private class UpdateAttributeCall extends DataFlow::CallNode, PersistentWriteAccess::Range, ActiveRecordInstanceMethodCall {
+  private class UpdateAttributeCall extends PersistentWriteAccess::Range,
+    ActiveRecordInstanceMethodCall {
     UpdateAttributeCall() { this.getMethodName() = "update_attribute" }
 
     override DataFlow::Node getValue() {
@@ -446,7 +447,7 @@ private module Persistence {
    * as an `PersistentWriteAccess` to avoid missing cases where the path to a
    * subsequent write is not clear.
    */
-  private class AssignAttribute extends DataFlow::Node, PersistentWriteAccess::Range {
+  private class AssignAttribute extends PersistentWriteAccess::Range {
     private ExprNodes::AssignExprCfgNode assignNode;
 
     AssignAttribute() {
