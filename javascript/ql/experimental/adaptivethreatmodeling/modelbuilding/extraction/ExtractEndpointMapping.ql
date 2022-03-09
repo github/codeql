@@ -44,4 +44,4 @@ where
     c instanceof CodeInjectionATM::CodeInjectionATMConfig and
     endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
   )
-select queryName, endpointTypeEncoded order by encodingTypeEncoded
+select queryName, endpointTypeEncoded order by endpointTypeEncoded
