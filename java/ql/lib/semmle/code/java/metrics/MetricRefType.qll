@@ -265,7 +265,7 @@ class MetricRefType extends RefType, MetricElement {
    * Exclusions from the number of overriding methods,
    * for use with the specialization index metric.
    */
-  predicate ignoreOverride(Method c) {
+  private predicate ignoreOverride(Method c) {
     c.hasStringSignature(["equals(Object)", "hashCode()", "toString()", "finalize()", "clone()"])
   }
 

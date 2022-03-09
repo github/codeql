@@ -163,7 +163,7 @@ class ClassMetrics extends Class {
    */
 
   /** should function f be excluded from the cohesion computation? */
-  predicate ignoreLackOfCohesion(Function f) { f.isInitMethod() or f.isSpecialMethod() }
+  private predicate ignoreLackOfCohesion(Function f) { f.isInitMethod() or f.isSpecialMethod() }
 
   private predicate methodPair(Function m1, Function m2) {
     m1.getScope() = this and

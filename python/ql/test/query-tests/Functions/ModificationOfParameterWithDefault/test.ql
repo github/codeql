@@ -9,7 +9,7 @@ class ModificationOfParameterWithDefaultTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "modification" }
 
-  predicate relevant_node(DataFlow::Node sink) {
+  private predicate relevant_node(DataFlow::Node sink) {
     exists(ModificationOfParameterWithDefault::Configuration cfg | cfg.hasFlowTo(sink))
   }
 

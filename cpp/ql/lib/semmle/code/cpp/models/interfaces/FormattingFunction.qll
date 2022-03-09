@@ -47,12 +47,6 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
   override string getAPrimaryQlClass() { result = "FormattingFunction" }
 
   /**
-   * Holds if this `FormattingFunction` is in a context that supports
-   * Microsoft rules and extensions.
-   */
-  predicate isMicrosoft() { anyFileCompiledAsMicrosoft() }
-
-  /**
    * Holds if the default meaning of `%s` is a `wchar_t *`, rather than
    * a `char *` (either way, `%S` will have the opposite meaning).
    *
@@ -75,10 +69,10 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * `char` or `wchar_t`.
    */
   Type getDefaultCharType() {
-    isMicrosoft() and
+    anyFileCompiledAsMicrosoft() and
     result = getFormatCharType()
     or
-    not isMicrosoft() and
+    not anyFileCompiledAsMicrosoft() and
     result instanceof PlainCharType
   }
 

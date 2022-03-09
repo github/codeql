@@ -1743,15 +1743,15 @@ string ppReprType(DataFlowType t) { result = t.toString() }
 
 private class DataFlowNullType extends DataFlowType {
   DataFlowNullType() { this = Gvn::getGlobalValueNumber(any(NullType nt)) }
-
-  pragma[noinline]
-  predicate isConvertibleTo(DataFlowType t) {
-    defaultNullConversion(_, any(Type t0 | t = Gvn::getGlobalValueNumber(t0)))
-  }
 }
 
 private class DataFlowUnknownType extends DataFlowType {
   DataFlowUnknownType() { this = Gvn::getGlobalValueNumber(any(UnknownType ut)) }
+}
+
+pragma[noinline]
+private predicate isConvertibleToNull(DataFlowType t) {
+  defaultNullConversion(_, any(Type t0 | t = Gvn::getGlobalValueNumber(t0)))
 }
 
 /**
@@ -1766,9 +1766,9 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   or
   commonSubTypeUnifiableLeft(t2, t1)
   or
-  t1.(DataFlowNullType).isConvertibleTo(t2)
+  t1 instanceof DataFlowNullType and isConvertibleToNull(t2)
   or
-  t2.(DataFlowNullType).isConvertibleTo(t1)
+  t2 instanceof DataFlowNullType and isConvertibleToNull(t1)
   or
   t1 instanceof Gvn::TypeParameterGvnType
   or

@@ -456,12 +456,6 @@ class FormatLiteral extends Literal {
   Type getWideCharType() { result = this.getUse().getTarget().getWideCharType() }
 
   /**
-   * Holds if this `FormatLiteral` is in a context that supports
-   * Microsoft rules and extensions.
-   */
-  predicate isMicrosoft() { anyFileCompiledAsMicrosoft() }
-
-  /**
    * Gets the format string, with '%%' and '%@' replaced by '_' (to avoid processing
    * them as format specifiers).
    */
@@ -491,7 +485,7 @@ class FormatLiteral extends Literal {
   }
 
   private string getFlagRegexp() {
-    if this.isMicrosoft() then result = "[-+ #0']*" else result = "[-+ #0'I]*"
+    if anyFileCompiledAsMicrosoft() then result = "[-+ #0']*" else result = "[-+ #0'I]*"
   }
 
   private string getFieldWidthRegexp() { result = "(?:[1-9][0-9]*|\\*|\\*[0-9]+\\$)?" }
@@ -499,13 +493,13 @@ class FormatLiteral extends Literal {
   private string getPrecRegexp() { result = "(?:\\.(?:[0-9]*|\\*|\\*[0-9]+\\$))?" }
 
   private string getLengthRegexp() {
-    if this.isMicrosoft()
+    if anyFileCompiledAsMicrosoft()
     then result = "(?:hh?|ll?|L|q|j|z|t|w|I32|I64|I)?"
     else result = "(?:hh?|ll?|L|q|j|z|Z|t)?"
   }
 
   private string getConvCharRegexp() {
-    if this.isMicrosoft()
+    if anyFileCompiledAsMicrosoft()
     then result = "[aAcCdeEfFgGimnopsSuxXZ@]"
     else result = "[aAcCdeEfFgGimnopsSuxX@]"
   }
