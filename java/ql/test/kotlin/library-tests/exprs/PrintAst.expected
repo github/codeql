@@ -232,6 +232,15 @@ delegatedProperties.kt:
 #   34|                       -1: [VarAccess] readWrite$delegate
 #    0|                       0: [NullLiteral] null
 #   34|                       2: [VarAccess] value
+#   36|         7: [ExprStmt] <Expr>;
+#   36|           0: [MethodAccess] println(...)
+#   36|             -1: [TypeAccess] ConsoleKt
+#   36|             0: [MethodAccess] getVarResource0(...)
+#   36|               -1: [ThisAccess] this
+#   37|         8: [ExprStmt] <Expr>;
+#   37|           0: [MethodAccess] setVarResource0(...)
+#   37|             -1: [ThisAccess] this
+#   37|             0: [IntegerLiteral] 3
 #   40|     3: [Method] getVarResource0
 #   40|       5: [BlockStmt] { ... }
 #   40|         0: [ReturnStmt] return ...

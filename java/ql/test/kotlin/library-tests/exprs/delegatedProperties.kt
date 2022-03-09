@@ -33,8 +33,8 @@ class Owner {
         val readOnly: Int by resourceDelegate()  // ReadWriteProperty as val
         var readWrite: Int by resourceDelegate()
 
-        //println(varResource0)
-        //varResource0 = 3
+        println(varResource0)
+        varResource0 = 3
     }
 
     var varResource0: Int by ResourceDelegate()

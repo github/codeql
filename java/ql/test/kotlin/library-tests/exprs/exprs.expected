@@ -89,6 +89,13 @@
 | delegatedProperties.kt:34:31:34:48 | resourceDelegate(...) | delegatedProperties.kt:18:5:38:5 | fn | MethodAccess |
 | delegatedProperties.kt:34:31:34:48 | setValue(...) | delegatedProperties.kt:34:28:34:48 | <set-readWrite> | MethodAccess |
 | delegatedProperties.kt:34:31:34:48 | value | delegatedProperties.kt:34:28:34:48 | <set-readWrite> | VarAccess |
+| delegatedProperties.kt:36:9:36:29 | ConsoleKt | delegatedProperties.kt:18:5:38:5 | fn | TypeAccess |
+| delegatedProperties.kt:36:9:36:29 | println(...) | delegatedProperties.kt:18:5:38:5 | fn | MethodAccess |
+| delegatedProperties.kt:36:17:36:28 | getVarResource0(...) | delegatedProperties.kt:18:5:38:5 | fn | MethodAccess |
+| delegatedProperties.kt:36:17:36:28 | this | delegatedProperties.kt:18:5:38:5 | fn | ThisAccess |
+| delegatedProperties.kt:37:9:37:20 | setVarResource0(...) | delegatedProperties.kt:18:5:38:5 | fn | MethodAccess |
+| delegatedProperties.kt:37:9:37:20 | this | delegatedProperties.kt:18:5:38:5 | fn | ThisAccess |
+| delegatedProperties.kt:37:24:37:24 | 3 | delegatedProperties.kt:18:5:38:5 | fn | IntegerLiteral |
 | delegatedProperties.kt:40:5:40:47 | ...=... | delegatedProperties.kt:17:1:41:1 | Owner | KtInitializerAssignExpr |
 | delegatedProperties.kt:40:5:40:47 | varResource0$delegate | delegatedProperties.kt:17:1:41:1 | Owner | VarAccess |
 | delegatedProperties.kt:40:27:40:47 | ...::... | delegatedProperties.kt:40:27:40:47 | getVarResource0 | PropertyRefExpr |
