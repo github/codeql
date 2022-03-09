@@ -102,3 +102,40 @@ class MyBatisSqlOperationAnnotationMethod extends Method {
 class TypeParam extends Interface {
   TypeParam() { this.hasQualifiedName("org.apache.ibatis.annotations", "Param") }
 }
+
+module ProviderInjection {
+  private import semmle.code.java.dataflow.DataFlow
+
+  class MyBatisInjectionSink extends DataFlow::Node {
+    MyBatisInjectionSink() {
+      exists(Annotation a, Method m, TypeLiteral type, Class c |
+        a.getType()
+            .hasQualifiedName("org.apache.ibatis.annotations",
+              ["Select", "Delete", "Insert", "Update"] + "Provider") and
+        type = a.getValue(["type", "value"]) and
+        c.hasMethod(m, type.getTypeName().getType()) and
+        m.hasName(a.getTarget().getName()) and
+        this.asExpr() = m.getBody().getAStmt().(ReturnStmt).getResult()
+      )
+    }
+  }
+
+  class MyBatisAbstractSQLStep extends Unit {
+    predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+      exists(MethodAccess ma |
+        ma.getMethod()
+            .getDeclaringType()
+            .hasQualifiedName("org.apache.ibatis.jdbc", ["AbstractSQL", "AbstractSQL<SQL>"]) and
+        ma.getMethod()
+            .hasName([
+                "SELECT", "OFFSET_ROWS", "FETCH_FIRST_ROWS_ONLY", "OFFSET", "LIMIT", "ORDER_BY",
+                "HAVING", "GROUP_BY", "WHERE", "OUTER_JOIN", "RIGHT_OUTER_JOIN", "LEFT_OUTER_JOIN",
+                "INNER_JOIN", "JOIN", "FROM", "DELETE_FROM", "SELECT_DISTINCT", "SELECT",
+                "INTO_VALUES", "INTO_COLUMNS", "VALUES", "INSERT_INTO", "SET", "UPDATE"
+              ]) and
+        ma.getArgument([0, 1]) = node1.asExpr() and
+        ma = node2.asExpr()
+      )
+    }
+  }
+}
