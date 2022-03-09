@@ -60,7 +60,7 @@ abstract class AstNode extends AstNode_ {
   /** Whether this contains `inner` syntactically */
   predicate contains(AstNode inner) { this.getAChildNode+() = inner }
 
-  pragma[noinline]
+  pragma[nomagic]
   private predicate containsInScope(AstNode inner, Scope scope) {
     this.contains(inner) and
     not inner instanceof Scope and
