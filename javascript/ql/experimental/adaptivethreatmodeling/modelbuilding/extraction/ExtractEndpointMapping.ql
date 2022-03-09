@@ -7,7 +7,7 @@ import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomATM
 import experimental.adaptivethreatmodeling.CodeInjectionATM as CodeInjectionATM
 import experimental.adaptivethreatmodeling.AdaptiveThreatModeling
 
-from string queryName, ATMConfig c, EndpointType e
+from string queryName, ATMConfig c, int endpointTypeEncoded
 where
   (
     queryName = "Unknown" and
