@@ -897,21 +897,21 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(blockId, locId)
                     extractVariable(s.delegate, callable, blockId, 0)
 
-                    val propType = useType(s.type)
-                    val propId = tw.getFreshIdLabel<DbKt_local_delegated_property>()
-                    tw.writeKtLocalDelegatedProperties(propId, useVariable(s.delegate), propType.javaResult.id, s.name.asString())
-                    tw.writeKtLocalDelegatedPropertiesKotlinType(propId, propType.kotlinResult.id)
+                    val propId = tw.getFreshIdLabel<DbKt_property>()
+                    tw.writeKtProperties(propId, s.name.asString())
+                    tw.writeHasLocation(propId, locId)
+                    tw.writeKtPropertyDelegates(propId, useVariable(s.delegate))
 
                     // Getter:
                     extractStatement(s.getter, callable, blockId, 1)
                     val l = getLocallyVisibleFunctionLabels(s.getter).function
-                    tw.writeKtLocalDelegatedPropertyGetters(propId, l)
+                    tw.writeKtPropertyGetters(propId, l)
 
                     val setter = s.setter
                     if (setter != null) {
                         extractStatement(setter, callable, blockId, 2)
                         val l = getLocallyVisibleFunctionLabels(setter).function
-                        tw.writeKtLocalDelegatedPropertySetters(propId, l)
+                        tw.writeKtPropertySetters(propId, l)
                     }
                 }
                 else -> {

@@ -1218,24 +1218,7 @@ ktInitializerAssignment(
   unique int id: @assignexpr ref
 )
 
-ktLocalDelegatedProperties(
-  unique int id: @kt_local_delegated_property,
-  unique int variableId: @variable ref,
-  int typeId: @type ref,
-  string name: string ref
-)
-
-ktLocalDelegatedPropertiesKotlinType(
-  unique int id: @kt_local_delegated_property ref,
-  int kttypeid: @kt_type ref
-);
-
-ktLocalDelegatedPropertyGetters(
-  unique int id: @kt_local_delegated_property ref,
-  int getter: @method ref
-)
-
-ktLocalDelegatedPropertySetters(
-  unique int id: @kt_local_delegated_property ref,
-  int setter: @method ref
+ktPropertyDelegates(
+  unique int id: @kt_property ref,
+  unique int variableId: @variable ref
 )
