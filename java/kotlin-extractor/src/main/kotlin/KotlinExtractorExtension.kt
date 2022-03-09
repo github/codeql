@@ -57,11 +57,27 @@ class KotlinExtractorExtension(
         // continue trying to extract everything else even if we get a
         // stack overflow or an assertion failure in one file.
         } catch(e: Throwable) {
-            // If we get an exception at the top level, then we don't
-            // have many options. We just print it to stderr, and then
-            // return so the rest of the compilation can complete.
-            System.err.println("CodeQL Kotlin extractor: Top-level exception.")
-            e.printStackTrace(System.err)
+            // If we get an exception at the top level, then something's
+            // gone very wrong. Don't try to be too fancy, but try to
+            // log a simple message.
+            val msg = "[ERROR] CodeQL Kotlin extractor: Top-level exception."
+            // First, if we can find our log directory, then let's try
+            // making a log file there:
+            val extractorLogDir = System.getenv("CODEQL_EXTRACTOR_JAVA_LOG_DIR")
+            if (extractorLogDir != null || extractorLogDir != "") {
+                // We use a slightly different filename pattern compared
+                // to normal logs. Just the existence of a `-top` log is
+                // a sign that something's gone very wrong.
+                val logFile = File.createTempFile("kotlin-extractor-top.", ".log", File(extractorLogDir))
+                logFile.writeText(msg)
+                // Now we've got that out, let's see if we can append a stack trace too
+                logFile.appendText(e.stackTraceToString())
+            } else {
+                // We don't have much choice here except to print to
+                // stderr and hope for the best.
+                System.err.println(msg)
+                e.printStackTrace(System.err)
+            }
         }
         if (exitAfterExtraction) {
             exitProcess(0)
