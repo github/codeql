@@ -1,10 +1,15 @@
 private import java as J
+private import SemanticBound
 private import SemanticCFG
 private import SemanticExpr
-private import SemanticCFGSpecific
+private import SemanticGuard
 private import SemanticSSA
 private import SemanticType
 private import semmle.code.java.dataflow.SSA as SSA
+private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon as SsaRead
+private import semmle.code.java.dataflow.Bound as JBound
+private import semmle.code.java.controlflow.Guards as JGuards
+private import semmle.code.java.controlflow.internal.GuardsLogic as JGuardsLogic
 
 private module Impl {
   newtype TExpr =
@@ -23,12 +28,14 @@ private module Impl {
 module SemanticExprConfig {
   private import Impl
 
+  class Location = J::Location;
+
   class Expr extends TExpr {
     string toString() { none() }
 
-    J::Location getLocation() { none() }
+    Location getLocation() { none() }
 
-    J::BasicBlock getBasicBlock() { none() }
+    BasicBlock getBasicBlock() { none() }
   }
 
   private class PrimaryExpr extends Expr, TPrimaryExpr {
@@ -38,9 +45,9 @@ module SemanticExprConfig {
 
     override string toString() { result = e.toString() }
 
-    override J::Location getLocation() { result = e.getLocation() }
+    override Location getLocation() { result = e.getLocation() }
 
-    override J::BasicBlock getBasicBlock() { result = e.getBasicBlock() }
+    override BasicBlock getBasicBlock() { result = e.getBasicBlock() }
 
     J::Expr getExpr() { result = e }
   }
@@ -52,9 +59,9 @@ module SemanticExprConfig {
 
     override string toString() { result = "post-update for " + e.toString() }
 
-    override J::Location getLocation() { result = e.getLocation() }
+    override Location getLocation() { result = e.getLocation() }
 
-    override J::BasicBlock getBasicBlock() { result = e.getBasicBlock() }
+    override BasicBlock getBasicBlock() { result = e.getBasicBlock() }
 
     J::UnaryAssignExpr getExpr() { result = e }
   }
@@ -66,9 +73,9 @@ module SemanticExprConfig {
 
     override string toString() { result = "init of " + for.getVariable().toString() }
 
-    override J::Location getLocation() { result = for.getVariable().getLocation() }
+    override Location getLocation() { result = for.getVariable().getLocation() }
 
-    override J::BasicBlock getBasicBlock() { result = for.getVariable().getBasicBlock() }
+    override BasicBlock getBasicBlock() { result = for.getVariable().getBasicBlock() }
   }
 
   private class ParameterInitExpr extends Expr, TParameterInit {
@@ -79,16 +86,16 @@ module SemanticExprConfig {
 
     override string toString() { result = "param init: " + init.toString() }
 
-    override J::Location getLocation() { result = init.getLocation() }
+    override Location getLocation() { result = init.getLocation() }
 
-    override J::BasicBlock getBasicBlock() { result = init.getBasicBlock() }
+    override BasicBlock getBasicBlock() { result = init.getBasicBlock() }
 
     final J::Parameter getParameter() { result = param }
   }
 
   string exprToString(Expr e) { result = e.toString() }
 
-  J::Location getExprLocation(Expr e) { result = e.getLocation() }
+  Location getExprLocation(Expr e) { result = e.getLocation() }
 
   SemBasicBlock getExprBasicBlock(Expr e) { result = getSemanticBasicBlock(e.getBasicBlock()) }
 
@@ -306,6 +313,143 @@ module SemanticExprConfig {
       result = getSemanticType(for.getVariable().getType())
     )
   }
+
+  class BasicBlock instanceof J::BasicBlock {
+    final string toString() { result = super.toString() }
+
+    final Location getLocation() { result = super.getLocation() }
+  }
+
+  predicate bbDominates(BasicBlock dominator, BasicBlock dominated) {
+    dominator.(J::BasicBlock).bbDominates(dominated.(J::BasicBlock))
+  }
+
+  predicate hasDominanceInformation(BasicBlock block) { J::hasDominanceInformation(block) }
+
+  class SsaVariable instanceof SSA::SsaVariable {
+    final string toString() { result = super.toString() }
+
+    final Location getLocation() { result = super.getLocation() }
+  }
+
+  predicate explicitUpdate(SsaVariable v, SemType type, Expr sourceExpr) {
+    exists(SSA::SsaExplicitUpdate update | v = update |
+      type = getSemanticType(update.getSourceVariable().getType()) and
+      exists(J::Expr expr | expr = update.getDefiningExpr() |
+        (
+          expr instanceof J::Assignment or
+          expr instanceof J::PreIncExpr or
+          expr instanceof J::PreDecExpr
+        ) and
+        sourceExpr = getResultExpr(expr)
+        or
+        sourceExpr = getResultExpr(expr.(J::LocalVariableDeclExpr).getInit())
+        or
+        (expr instanceof J::PostIncExpr or expr instanceof J::PostDecExpr) and
+        sourceExpr = TPostUpdateExpr(expr)
+        or
+        exists(J::EnhancedForStmt for |
+          for.getVariable() = expr and
+          sourceExpr = TEnhancedForInit(for)
+        )
+      )
+    )
+  }
+
+  predicate phi(SsaVariable v, SemType type) {
+    type = getSemanticType(v.(SSA::SsaPhiNode).getSourceVariable().getType())
+  }
+
+  SsaVariable getAPhiInput(SsaVariable v) { result = v.(SSA::SsaPhiNode).getAPhiInput() }
+
+  Expr getAUse(SsaVariable v) { result = getResultExpr(v.(SSA::SsaVariable).getAUse()) }
+
+  BasicBlock getSsaVariableBasicBlock(SsaVariable v) {
+    result = v.(SSA::SsaVariable).getBasicBlock()
+  }
+
+  class SsaReadPosition instanceof SsaRead::SsaReadPosition {
+    final string toString() { result = super.toString() }
+
+    Location getLocation() { none() }
+  }
+
+  private class SsaReadPositionBlock extends SsaReadPosition {
+    SsaRead::SsaReadPositionBlock block;
+
+    SsaReadPositionBlock() { this = block }
+
+    final override Location getLocation() { result = block.getBlock().getLocation() }
+  }
+
+  private class SsaReadPositionPhiInputEdge extends SsaReadPosition {
+    SsaRead::SsaReadPositionPhiInputEdge edge;
+
+    SsaReadPositionPhiInputEdge() { this = edge }
+
+    final override Location getLocation() { result = edge.getPhiBlock().getLocation() }
+  }
+
+  predicate hasReadOfSsaVariable(SsaReadPosition pos, SsaVariable v) {
+    pos.(SsaRead::SsaReadPosition).hasReadOfVar(v)
+  }
+
+  predicate readBlock(SsaReadPosition pos, BasicBlock block) {
+    block = pos.(SsaRead::SsaReadPositionBlock).getBlock()
+  }
+
+  predicate phiInputEdge(SsaReadPosition pos, BasicBlock origBlock, BasicBlock phiBlock) {
+    exists(SsaRead::SsaReadPositionPhiInputEdge readBlock | readBlock = pos |
+      origBlock = readBlock.getOrigBlock() and
+      phiBlock = readBlock.getPhiBlock()
+    )
+  }
+
+  predicate phiInput(SsaReadPosition pos, SsaVariable phi, SsaVariable input) {
+    pos.(SsaRead::SsaReadPositionPhiInputEdge).phiInput(phi, input)
+  }
+
+  class Bound instanceof JBound::Bound {
+    final string toString() { result = super.toString() }
+
+    final Location getLocation() { result = super.getExpr().getLocation() }
+  }
+
+  predicate zeroBound(Bound bound) { bound instanceof JBound::ZeroBound }
+
+  predicate ssaBound(Bound bound, SsaVariable v) { v = bound.(JBound::SsaBound).getSsa() }
+
+  Expr getBoundExpr(Bound bound, int delta) {
+    result = getResultExpr(bound.(JBound::Bound).getExpr(delta))
+  }
+
+  class Guard instanceof JGuards::Guard {
+    final string toString() { result = super.toString() }
+
+    final Location getLocation() { result = super.getLocation() }
+  }
+
+  predicate guard(Guard guard, BasicBlock block) { block = guard.(JGuards::Guard).getBasicBlock() }
+
+  Expr getGuardAsExpr(Guard guard) { result = getResultExpr(guard.(J::Expr)) }
+
+  predicate equalityGuard(Guard guard, Expr e1, Expr e2, boolean polarity) {
+    guard.(JGuards::Guard).isEquality(getJavaExpr(e1), getJavaExpr(e2), polarity)
+  }
+
+  predicate guardDirectlyControlsBlock(Guard guard, BasicBlock controlled, boolean branch) {
+    guard.(JGuards::Guard).directlyControls(controlled, branch)
+  }
+
+  predicate guardHasBranchEdge(Guard guard, BasicBlock bb1, BasicBlock bb2, boolean branch) {
+    guard.(JGuards::Guard).hasBranchEdge(bb1, bb2, branch)
+  }
+
+  Guard comparisonGuard(Expr e) { result = getJavaExpr(e).(J::ComparisonExpr) }
+
+  predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2) {
+    JGuardsLogic::implies_v2(g1, b1, g2, b2)
+  }
 }
 
 private import Impl
@@ -314,25 +458,22 @@ SemExpr getSemanticExpr(J::Expr javaExpr) { result = TPrimaryExpr(javaExpr) }
 
 J::Expr getJavaExpr(SemExpr e) { e = getSemanticExpr(result) }
 
-SemExpr getUpdateExpr(SSA::SsaExplicitUpdate update) {
-  exists(J::Expr expr | expr = update.getDefiningExpr() |
-    (
-      expr instanceof J::Assignment or
-      expr instanceof J::PreIncExpr or
-      expr instanceof J::PreDecExpr
-    ) and
-    result = getResultExpr(expr)
-    or
-    result = getResultExpr(expr.(J::LocalVariableDeclExpr).getInit())
-    or
-    (expr instanceof J::PostIncExpr or expr instanceof J::PostDecExpr) and
-    result = TPostUpdateExpr(expr)
-    or
-    exists(J::EnhancedForStmt for |
-      for.getVariable() = expr and
-      result = TEnhancedForInit(for)
-    )
-  )
-}
-
 SemExpr getEnhancedForInitExpr(J::EnhancedForStmt for) { result = TEnhancedForInit(for) }
+
+SemBasicBlock getSemanticBasicBlock(J::BasicBlock block) { result = block }
+
+J::BasicBlock getJavaBasicBlock(SemBasicBlock block) { block = getSemanticBasicBlock(result) }
+
+SemSsaVariable getSemanticSsaVariable(SSA::SsaVariable v) { result = v }
+
+SSA::SsaVariable getJavaSsaVariable(SemSsaVariable v) { v = getSemanticSsaVariable(result) }
+
+SemSsaReadPosition getSemanticSsaReadPosition(SsaRead::SsaReadPosition pos) { result = pos }
+
+SemBound getSemanticBound(JBound::Bound bound) { result = bound }
+
+JBound::Bound getJavaBound(SemBound bound) { bound = getSemanticBound(result) }
+
+SemGuard getSemanticGuard(JGuards::Guard guard) { result = guard }
+
+JGuards::Guard getJavaGuard(SemGuard guard) { guard = getSemanticGuard(result) }

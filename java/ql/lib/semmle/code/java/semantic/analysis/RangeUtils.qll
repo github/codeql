@@ -65,7 +65,7 @@ SemGuard semEqFlowCond(SemSsaVariable v, SemExpr e, int delta, boolean isEq, boo
  * Holds if `v` is an `SsaExplicitUpdate` that equals `e + delta`.
  */
 predicate semSsaUpdateStep(SemSsaExplicitUpdate v, SemExpr e, int delta) {
-  exists(SemExpr defExpr | defExpr = v.getDefiningExpr() |
+  exists(SemExpr defExpr | defExpr = v.getSourceExpr() |
     defExpr.(SemCopyValueExpr).getOperand() = e and delta = 0
     or
     defExpr.(SemAddOneExpr).getOperand() = e and delta = 1
@@ -127,8 +127,8 @@ SemType getTrackedType(SemExpr e) {
  * Usually, this just `e.getType()`, but the language can override this to track immutable boxed
  * primitive types as the underlying primitive type.
  */
-SemType getTrackedTypeForSourceVariable(SemSsaSourceVariable var) {
-  result = Specific::getAlternateTypeForSourceVariable(var)
+SemType getTrackedTypeForSourceVariable(SemSsaVariable var) {
+  result = Specific::getAlternateTypeForSsaVariable(var)
   or
-  not exists(Specific::getAlternateTypeForSourceVariable(var)) and result = var.getType()
+  not exists(Specific::getAlternateTypeForSsaVariable(var)) and result = var.getType()
 }

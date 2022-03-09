@@ -2,34 +2,24 @@
  * Semantic wrapper around the shared bounds library.
  */
 
-private import semmle.code.java.dataflow.Bound
 private import SemanticExpr
+private import SemanticExprSpecific::SemanticExprConfig as Specific
 private import SemanticSSA
 
-private newtype TSemBound = MkSemBound(Bound bound)
+class SemBound instanceof Specific::Bound {
+  final string toString() { result = super.toString() }
 
-class LanguageBound = Bound;
-
-class SemBound extends TSemBound {
-  LanguageBound bound;
-
-  SemBound() { this = MkSemBound(bound) }
-
-  final string toString() { result = bound.toString() }
-
-  final SemExpr getExpr(int delta) { result = getSemanticExpr(bound.getExpr(delta)) }
+  final SemExpr getExpr(int delta) { result = Specific::getBoundExpr(this, delta) }
 }
 
 class SemZeroBound extends SemBound {
-  override ZeroBound bound;
+  SemZeroBound() { Specific::zeroBound(this) }
 }
 
 class SemSsaBound extends SemBound {
-  override SsaBound bound;
+  SemSsaVariable var;
 
-  final SemSsaVariable getSsa() { result = getSemanticSsaVariable(bound.getSsa()) }
+  SemSsaBound() { Specific::ssaBound(this, var) }
+
+  final SemSsaVariable getSsa() { result = var }
 }
-
-SemBound getSemanticBound(LanguageBound bound) { result = MkSemBound(bound) }
-
-LanguageBound getLanguageBound(SemBound bound) { bound = getSemanticBound(result) }

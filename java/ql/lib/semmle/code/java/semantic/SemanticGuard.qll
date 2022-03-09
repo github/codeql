@@ -2,45 +2,37 @@
  * Semantic interface to the guards library.
  */
 
-private import java
-private import semmle.code.java.controlflow.Guards
-private import semmle.code.java.controlflow.internal.GuardsLogic
 private import SemanticCFG
-private import SemanticCFGSpecific
 private import SemanticExpr
-private import SemanticExprSpecific
+private import SemanticExprSpecific::SemanticExprConfig as Specific
 private import SemanticSSA
 
-class LanguageGuard = Guard;
+class SemGuard instanceof Specific::Guard {
+  SemBasicBlock block;
 
-private newtype TSemGuard = MkSemGuard(LanguageGuard guard)
+  SemGuard() { Specific::guard(this, block) }
 
-class SemGuard extends TSemGuard {
-  LanguageGuard guard;
-
-  SemGuard() { this = MkSemGuard(guard) }
-
-  final string toString() { result = guard.toString() }
+  final string toString() { result = super.toString() }
 
   final predicate isEquality(SemExpr e1, SemExpr e2, boolean polarity) {
-    guard.isEquality(getJavaExpr(e1), getJavaExpr(e2), polarity)
+    Specific::equalityGuard(this, e1, e2, polarity)
   }
 
   final predicate directlyControls(SemBasicBlock controlled, boolean branch) {
-    guard.directlyControls(getJavaBasicBlock(controlled), branch)
+    Specific::guardDirectlyControlsBlock(this, controlled, branch)
   }
 
   final predicate hasBranchEdge(SemBasicBlock bb1, SemBasicBlock bb2, boolean branch) {
-    guard.hasBranchEdge(getJavaBasicBlock(bb1), getJavaBasicBlock(bb2), branch)
+    Specific::guardHasBranchEdge(this, bb1, bb2, branch)
   }
 
-  final SemBasicBlock getBasicBlock() { result = getSemanticBasicBlock(guard.getBasicBlock()) }
+  final SemBasicBlock getBasicBlock() { result = block }
 
-  final SemExpr asExpr() { result = getSemanticExpr(guard) }
+  final SemExpr asExpr() { result = Specific::getGuardAsExpr(this) }
 }
 
 predicate semImplies_v2(SemGuard g1, boolean b1, SemGuard g2, boolean b2) {
-  implies_v2(getLanguageGuard(g1), b1, getLanguageGuard(g2), b2)
+  Specific::implies_v2(g1, b1, g2, b2)
 }
 
 /**
@@ -70,8 +62,4 @@ predicate semGuardControlsSsaRead(SemGuard guard, SemSsaReadPosition controlled,
   )
 }
 
-SemGuard semGetComparisonGuard(SemRelationalExpr e) { result = getSemanticGuard(getJavaExpr(e)) }
-
-SemGuard getSemanticGuard(LanguageGuard guard) { result = MkSemGuard(guard) }
-
-LanguageGuard getLanguageGuard(SemGuard guard) { guard = getSemanticGuard(result) }
+SemGuard semGetComparisonGuard(SemRelationalExpr e) { result = Specific::comparisonGuard(e) }

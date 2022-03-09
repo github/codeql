@@ -148,6 +148,6 @@ SemType getAlternateType(SemExpr e) {
  * This predicate is commonly used in languages that support immutable "boxed" types that are
  * actually references but whose values can be tracked as the type contained in the box.
  */
-SemType getAlternateTypeForSourceVariable(SemSsaSourceVariable var) {
-  result = getSemanticType(getJavaSsaSourceVariable(var).getType().(BoxedType).getPrimitiveType())
+SemType getAlternateTypeForSsaVariable(SemSsaVariable var) {
+  result = getSemanticType(getJavaSsaVariable(var).getSourceVariable().getType().(BoxedType).getPrimitiveType())
 }

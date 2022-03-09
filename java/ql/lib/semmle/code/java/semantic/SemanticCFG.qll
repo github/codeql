@@ -4,7 +4,7 @@
 
 private import java
 private import SemanticExpr
-private import SemanticCFGSpecific::SemanticCFGConfig as Specific
+private import SemanticExprSpecific::SemanticExprConfig as Specific
 
 class SemBasicBlock extends Specific::BasicBlock {
   final predicate bbDominates(SemBasicBlock otherBlock) { Specific::bbDominates(this, otherBlock) }

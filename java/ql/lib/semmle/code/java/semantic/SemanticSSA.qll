@@ -2,113 +2,68 @@
  * Semantic interface to the SSA library.
  */
 
-private import java
-private import semmle.code.java.dataflow.SSA as SSA
 private import SemanticCFG
 private import SemanticExpr
 private import SemanticType
-private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
-private import SemanticExprSpecific
-private import SemanticCFGSpecific
+private import SemanticExprSpecific::SemanticExprConfig as Specific
 
-private newtype TSemSsaVariable = MkSemSsaVariable(SSA::SsaVariable var)
+class SemSsaVariable instanceof Specific::SsaVariable {
+  SemType type;
 
-class SemSsaVariable extends TSemSsaVariable {
-  SSA::SsaVariable var;
+  final string toString() { result = super.toString() }
 
-  SemSsaVariable() { this = MkSemSsaVariable(var) }
+  final Specific::Location getLocation() { result = super.getLocation() }
 
-  final string toString() { result = var.toString() }
+  final SemLoadExpr getAUse() { result = Specific::getAUse(this) }
 
-  final Location getLocation() { result = var.getLocation() }
+  final SemType getType() { result = type }
 
-  final SemLoadExpr getAUse() { result = getSemanticExpr(var.getAUse()) }
-
-  final SemSsaSourceVariable getSourceVariable() {
-    result = getSemanticSsaSourceVariable(var.getSourceVariable())
-  }
-
-  final SemBasicBlock getBasicBlock() { result = getSemanticBasicBlock(var.getBasicBlock()) }
+  final SemBasicBlock getBasicBlock() { result = Specific::getSsaVariableBasicBlock(this) }
 }
 
 class SemSsaExplicitUpdate extends SemSsaVariable {
-  override SSA::SsaExplicitUpdate var;
+  SemExpr sourceExpr;
 
-  final SemExpr getSourceExpr() { result = getUpdateExpr(var) }
+  SemSsaExplicitUpdate() { Specific::explicitUpdate(this, type, sourceExpr) }
 
-  deprecated final SemExpr getDefiningExpr() { result = getSemanticExpr(var.getDefiningExpr()) }
+  final SemExpr getSourceExpr() { result = sourceExpr }
 }
 
 class SemSsaPhiNode extends SemSsaVariable {
-  override SSA::SsaPhiNode var;
+  SemSsaPhiNode() { Specific::phi(this, type) }
 
-  final SemSsaVariable getAPhiInput() { result = getSemanticSsaVariable(var.getAPhiInput()) }
+  final SemSsaVariable getAPhiInput() { result = Specific::getAPhiInput(this) }
 }
 
-private newtype TSemSsaSourceVariable = MkSemSsaSourceVariable(SSA::SsaSourceVariable sourceVar)
+class SemSsaReadPosition instanceof Specific::SsaReadPosition {
+  final string toString() { result = super.toString() }
 
-class SemSsaSourceVariable extends TSemSsaSourceVariable {
-  SSA::SsaSourceVariable sourceVar;
+  final Specific::Location getLocation() { result = super.getLocation() }
 
-  SemSsaSourceVariable() { this = MkSemSsaSourceVariable(sourceVar) }
-
-  final string toString() { result = sourceVar.toString() }
-
-  final SemType getType() { result = getSemanticType(sourceVar.getType()) }
-}
-
-SemSsaVariable getSemanticSsaVariable(SSA::SsaVariable var) { result = MkSemSsaVariable(var) }
-
-SSA::SsaVariable getJavaSsaVariable(SemSsaVariable var) { var = getSemanticSsaVariable(result) }
-
-SemSsaSourceVariable getSemanticSsaSourceVariable(SSA::SsaSourceVariable var) {
-  result = MkSemSsaSourceVariable(var)
-}
-
-SSA::SsaSourceVariable getJavaSsaSourceVariable(SemSsaSourceVariable var) {
-  var = getSemanticSsaSourceVariable(result)
-}
-
-private newtype TSemSsaReadPosition = MkSemSsaReadPosition(SsaReadPosition pos)
-
-class SemSsaReadPosition extends TSemSsaReadPosition {
-  SsaReadPosition pos;
-
-  SemSsaReadPosition() { this = MkSemSsaReadPosition(pos) }
-
-  final string toString() { result = pos.toString() }
-
-  Location getLocation() { none() }
-
-  final predicate hasReadOfVar(SemSsaVariable var) { pos.hasReadOfVar(getJavaSsaVariable(var)) }
+  final predicate hasReadOfVar(SemSsaVariable var) { Specific::hasReadOfSsaVariable(this, var) }
 }
 
 class SemSsaReadPositionPhiInputEdge extends SemSsaReadPosition {
-  override SsaReadPositionPhiInputEdge pos;
+  SemBasicBlock origBlock;
+  SemBasicBlock phiBlock;
 
-  predicate phiInput(SemSsaPhiNode phi, SemSsaVariable inp) {
-    pos.phiInput(getJavaSsaVariable(phi), getJavaSsaVariable(inp))
-  }
+  SemSsaReadPositionPhiInputEdge() { Specific::phiInputEdge(this, origBlock, phiBlock) }
 
-  override Location getLocation() { result = getPhiBlock().getLocation() }
+  predicate phiInput(SemSsaPhiNode phi, SemSsaVariable inp) { Specific::phiInput(this, phi, inp) }
 
-  SemBasicBlock getOrigBlock() { result = getSemanticBasicBlock(pos.getOrigBlock()) }
+  SemBasicBlock getOrigBlock() { result = origBlock }
 
-  SemBasicBlock getPhiBlock() { result = getSemanticBasicBlock(pos.getPhiBlock()) }
+  SemBasicBlock getPhiBlock() { result = phiBlock }
 }
 
 class SemSsaReadPositionBlock extends SemSsaReadPosition {
-  override SsaReadPositionBlock pos;
+  SemBasicBlock block;
 
-  override Location getLocation() { result = getBlock().getLocation() }
+  SemSsaReadPositionBlock() { Specific::readBlock(this, block) }
 
-  SemBasicBlock getBlock() { result = getSemanticBasicBlock(pos.getBlock()) }
+  SemBasicBlock getBlock() { result = block }
 
   SemExpr getAnExpr() { result = getBlock().getAnExpr() }
-}
-
-SemSsaReadPosition getSemanticSsaReadPosition(SsaReadPosition pos) {
-  result = MkSemSsaReadPosition(pos)
 }
 
 /**

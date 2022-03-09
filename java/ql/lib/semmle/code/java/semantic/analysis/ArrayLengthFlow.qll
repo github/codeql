@@ -1,6 +1,7 @@
 private import java
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.semantic.SemanticSSA
+private import semmle.code.java.semantic.SemanticExprSpecific
 private import RangeUtils
 
 private predicate backEdge(SsaPhiNode phi0, SsaVariable v) {
