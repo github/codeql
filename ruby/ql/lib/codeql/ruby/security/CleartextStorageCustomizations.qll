@@ -41,13 +41,9 @@ module CleartextStorage {
   }
 
   /**
-   * A node representing data written to a database using an ORM system.
+   * A node representing data written to a persistent data store.
    */
-  private class OrmWriteAccessValueAsSink extends Sink {
-    OrmWriteAccessValueAsSink() {
-      exists(OrmWriteAccess write, string fieldName |
-        fieldName = write.getFieldNameAssignedTo(this)
-      )
-    }
+  private class PersistentWriteAccessAsSink extends Sink {
+    PersistentWriteAccessAsSink() { this = any(PersistentWriteAccess write).getValue() }
   }
 }
