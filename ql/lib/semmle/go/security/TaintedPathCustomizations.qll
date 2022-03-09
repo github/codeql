@@ -77,12 +77,13 @@ module TaintedPath {
   }
 
   /**
-   * A call to `filepath.Clean("/" + e)`, considered to sanitize `e` against path traversal.
+   * A call to `[file]path.Clean("/" + e)`, considered to sanitize `e` against path traversal.
    */
   class FilepathCleanSanitizer extends Sanitizer {
     FilepathCleanSanitizer() {
       exists(DataFlow::CallNode cleanCall, StringOps::Concatenation concatNode |
-        cleanCall = any(Function f | f.hasQualifiedName("path/filepath", "Clean")).getACall() and
+        cleanCall =
+          any(Function f | f.hasQualifiedName(["path", "path/filepath"], "Clean")).getACall() and
         concatNode = cleanCall.getArgument(0) and
         concatNode.getOperand(0).asExpr().(StringLit).getValue() = "/" and
         this = cleanCall.getResult()
