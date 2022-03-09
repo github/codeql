@@ -1395,35 +1395,45 @@
 | funcExprs.kt:69:12:69:22 | Integer | funcExprs.kt:68:5:70:5 | call | TypeAccess |
 | funcExprs.kt:69:12:69:22 | String | funcExprs.kt:68:5:70:5 | call | TypeAccess |
 | funcExprs.kt:69:20:69:20 | a | funcExprs.kt:69:12:69:22 | invoke | StringLiteral |
-| localFunctionCalls.kt:4:5:4:13 | x | localFunctionCalls.kt:3:1:11:1 | x | LocalVariableDeclExpr |
-| localFunctionCalls.kt:4:13:4:13 | 5 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
+| localFunctionCalls.kt:4:5:4:13 | x | localFunctionCalls.kt:3:1:12:1 | x | LocalVariableDeclExpr |
+| localFunctionCalls.kt:4:13:4:13 | 5 | localFunctionCalls.kt:3:1:12:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:5:25:5:25 | i | localFunctionCalls.kt:5:5:5:29 | a | VarAccess |
 | localFunctionCalls.kt:5:25:5:29 | ... + ... | localFunctionCalls.kt:5:5:5:29 | a | AddExpr |
 | localFunctionCalls.kt:5:29:5:29 | x | localFunctionCalls.kt:5:5:5:29 | a | VarAccess |
-| localFunctionCalls.kt:6:5:6:5 | x | localFunctionCalls.kt:3:1:11:1 | x | VarAccess |
-| localFunctionCalls.kt:6:5:6:9 | ...=... | localFunctionCalls.kt:3:1:11:1 | x | AssignExpr |
-| localFunctionCalls.kt:6:9:6:9 | 6 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
-| localFunctionCalls.kt:7:5:7:17 | <implicit coercion to unit> | localFunctionCalls.kt:3:1:11:1 | x | ImplicitCoercionToUnitExpr |
-| localFunctionCalls.kt:7:5:7:17 | Object | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
-| localFunctionCalls.kt:7:5:7:17 | String | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
-| localFunctionCalls.kt:7:5:7:17 | Unit | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
-| localFunctionCalls.kt:7:5:7:17 | a(...) | localFunctionCalls.kt:3:1:11:1 | x | MethodAccess |
-| localFunctionCalls.kt:7:5:7:17 | new (...) | localFunctionCalls.kt:3:1:11:1 | x | ClassInstanceExpr |
-| localFunctionCalls.kt:7:15:7:16 | 42 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
-| localFunctionCalls.kt:8:5:8:5 | x | localFunctionCalls.kt:3:1:11:1 | x | VarAccess |
-| localFunctionCalls.kt:8:5:8:9 | ...=... | localFunctionCalls.kt:3:1:11:1 | x | AssignExpr |
-| localFunctionCalls.kt:8:9:8:9 | 7 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
+| localFunctionCalls.kt:6:5:6:5 | x | localFunctionCalls.kt:3:1:12:1 | x | VarAccess |
+| localFunctionCalls.kt:6:5:6:9 | ...=... | localFunctionCalls.kt:3:1:12:1 | x | AssignExpr |
+| localFunctionCalls.kt:6:9:6:9 | 6 | localFunctionCalls.kt:3:1:12:1 | x | IntegerLiteral |
+| localFunctionCalls.kt:7:5:7:17 | <implicit coercion to unit> | localFunctionCalls.kt:3:1:12:1 | x | ImplicitCoercionToUnitExpr |
+| localFunctionCalls.kt:7:5:7:17 | Object | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
+| localFunctionCalls.kt:7:5:7:17 | String | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
+| localFunctionCalls.kt:7:5:7:17 | Unit | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
+| localFunctionCalls.kt:7:5:7:17 | a(...) | localFunctionCalls.kt:3:1:12:1 | x | MethodAccess |
+| localFunctionCalls.kt:7:5:7:17 | new (...) | localFunctionCalls.kt:3:1:12:1 | x | ClassInstanceExpr |
+| localFunctionCalls.kt:7:15:7:16 | 42 | localFunctionCalls.kt:3:1:12:1 | x | IntegerLiteral |
+| localFunctionCalls.kt:8:5:8:5 | x | localFunctionCalls.kt:3:1:12:1 | x | VarAccess |
+| localFunctionCalls.kt:8:5:8:9 | ...=... | localFunctionCalls.kt:3:1:12:1 | x | AssignExpr |
+| localFunctionCalls.kt:8:9:8:9 | 7 | localFunctionCalls.kt:3:1:12:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:9:34:9:34 | 5 | localFunctionCalls.kt:9:5:9:34 | f1 | IntegerLiteral |
-| localFunctionCalls.kt:10:5:10:13 | C1<Integer> | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
-| localFunctionCalls.kt:10:5:10:13 | Integer | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
-| localFunctionCalls.kt:10:5:10:13 | new C1<Integer>(...) | localFunctionCalls.kt:3:1:11:1 | x | ClassInstanceExpr |
-| localFunctionCalls.kt:10:15:10:20 | <implicit coercion to unit> | localFunctionCalls.kt:3:1:11:1 | x | ImplicitCoercionToUnitExpr |
-| localFunctionCalls.kt:10:15:10:20 | Integer | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
-| localFunctionCalls.kt:10:15:10:20 | Object | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
-| localFunctionCalls.kt:10:15:10:20 | Unit | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
-| localFunctionCalls.kt:10:15:10:20 | f1(...) | localFunctionCalls.kt:3:1:11:1 | x | MethodAccess |
-| localFunctionCalls.kt:10:15:10:20 | new (...) | localFunctionCalls.kt:3:1:11:1 | x | ClassInstanceExpr |
-| localFunctionCalls.kt:10:18:10:19 | 42 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
+| localFunctionCalls.kt:10:5:10:13 | C1<Integer> | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
+| localFunctionCalls.kt:10:5:10:13 | Integer | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
+| localFunctionCalls.kt:10:5:10:13 | new C1<Integer>(...) | localFunctionCalls.kt:3:1:12:1 | x | ClassInstanceExpr |
+| localFunctionCalls.kt:10:15:10:20 | <implicit coercion to unit> | localFunctionCalls.kt:3:1:12:1 | x | ImplicitCoercionToUnitExpr |
+| localFunctionCalls.kt:10:15:10:20 | Integer | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
+| localFunctionCalls.kt:10:15:10:20 | Object | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
+| localFunctionCalls.kt:10:15:10:20 | Unit | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
+| localFunctionCalls.kt:10:15:10:20 | f1(...) | localFunctionCalls.kt:3:1:12:1 | x | MethodAccess |
+| localFunctionCalls.kt:10:15:10:20 | new (...) | localFunctionCalls.kt:3:1:12:1 | x | ClassInstanceExpr |
+| localFunctionCalls.kt:10:18:10:19 | 42 | localFunctionCalls.kt:3:1:12:1 | x | IntegerLiteral |
+| localFunctionCalls.kt:11:5:11:13 | C1<Integer> | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
+| localFunctionCalls.kt:11:5:11:13 | Integer | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
+| localFunctionCalls.kt:11:5:11:13 | new C1<Integer>(...) | localFunctionCalls.kt:3:1:12:1 | x | ClassInstanceExpr |
+| localFunctionCalls.kt:11:15:11:20 | <implicit coercion to unit> | localFunctionCalls.kt:3:1:12:1 | x | ImplicitCoercionToUnitExpr |
+| localFunctionCalls.kt:11:15:11:20 | Integer | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
+| localFunctionCalls.kt:11:15:11:20 | Object | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
+| localFunctionCalls.kt:11:15:11:20 | Unit | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
+| localFunctionCalls.kt:11:15:11:20 | f1(...) | localFunctionCalls.kt:3:1:12:1 | x | MethodAccess |
+| localFunctionCalls.kt:11:15:11:20 | new (...) | localFunctionCalls.kt:3:1:12:1 | x | ClassInstanceExpr |
+| localFunctionCalls.kt:11:18:11:19 | 42 | localFunctionCalls.kt:3:1:12:1 | x | IntegerLiteral |
 | samConversion.kt:2:5:2:45 | isEven | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
 | samConversion.kt:2:18:2:45 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
 | samConversion.kt:2:18:2:45 | ...=... | samConversion.kt:2:18:2:45 |  | AssignExpr |

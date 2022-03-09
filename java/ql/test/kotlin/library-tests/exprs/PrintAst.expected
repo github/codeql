@@ -2337,12 +2337,23 @@ localFunctionCalls.kt:
 #   10|                 -3: [TypeAccess] C1<Integer>
 #   10|                   0: [TypeAccess] Integer
 #   10|               1: [IntegerLiteral] 42
-#   13|   2: [Class,GenericType,ParameterizedType] C1
+#   11|         7: [ExprStmt] <Expr>;
+#   11|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   11|             0: [TypeAccess] Unit
+#   11|             1: [MethodAccess] f1(...)
+#   11|               -2: [TypeAccess] Integer
+#   11|               -1: [ClassInstanceExpr] new (...)
+#   11|                 -3: [TypeAccess] Object
+#   11|               0: [ClassInstanceExpr] new C1<Integer>(...)
+#   11|                 -3: [TypeAccess] C1<Integer>
+#   11|                   0: [TypeAccess] Integer
+#   11|               1: [IntegerLiteral] 42
+#   14|   2: [Class,GenericType,ParameterizedType] C1
 #-----|     -2: (Generic Parameters)
-#   13|       0: [TypeVariable] T
-#   13|     1: [Constructor] C1
-#   13|       5: [BlockStmt] { ... }
-#   13|         0: [SuperConstructorInvocationStmt] super(...)
+#   14|       0: [TypeVariable] T
+#   14|     1: [Constructor] C1
+#   14|       5: [BlockStmt] { ... }
+#   14|         0: [SuperConstructorInvocationStmt] super(...)
 samConversion.kt:
 #    0| [CompilationUnit] samConversion
 #    0|   1: [Class] SamConversionKt
