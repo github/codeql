@@ -132,7 +132,7 @@ private class {0}{1}Csv extends {2} {{
 
 
 if generateSummaries:
-    summaryRows = runQuery("summary models", "CaptureSummaryModelsQuery.ql")
+    summaryRows = runQuery("summary models", "CaptureSummaryModels.ql")
     summaryCsv = asCsvModel("SummaryModelCsv", "summary", summaryRows)
 else:
     summaryCsv = ""
