@@ -132,6 +132,7 @@ class KotlinExtractorGlobalState {
     val syntheticToRealClassMap = HashMap<IrClass, IrClass?>()
     val syntheticToRealFunctionMap = HashMap<IrSimpleFunction, IrSimpleFunction?>()
     val syntheticToRealFieldMap = HashMap<IrField, IrField?>()
+    // TODO: This could be less global; it's really per-file
     val context = Stack<ExtractorContext>()
 }
 
