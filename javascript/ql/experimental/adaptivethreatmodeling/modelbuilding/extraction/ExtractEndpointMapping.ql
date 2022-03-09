@@ -8,6 +8,8 @@ import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionATM
 import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionATM
 import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathATM
 import experimental.adaptivethreatmodeling.XssATM as XssATM
+import experimental.adaptivethreatmodeling.StoredXssATM as StoredXssATM
+import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomATM
 import experimental.adaptivethreatmodeling.AdaptiveThreatModeling
 
 from string queryName, AtmConfig c, EndpointType e
@@ -23,6 +25,12 @@ where
     c instanceof TaintedPathATM::TaintedPathAtmConfig
     or
     queryName = "XssATM.ql" and c instanceof XssATM::DomBasedXssAtmConfig
+    or
+    queryName = "StoredXssATM.ql" and
+    c instanceof StoredXssATM::StoredXssATMConfig
+    or
+    queryName = "XssThroughDomATM.ql" and
+    c instanceof XssThroughDomATM::XssThroughDOMATMConfig
   ) and
   e = c.getASinkEndpointType()
 select queryName, e.getEncoding() as endpointTypeEncoded
