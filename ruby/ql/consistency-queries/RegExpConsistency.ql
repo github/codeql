@@ -6,3 +6,9 @@ query predicate nonUniqueChild(RegExpParent parent, int i, RegExpTerm child) {
 }
 
 query predicate cyclic(RegExpParent parent) { parent = parent.getAChild+() }
+
+query predicate nonConsecutive(RegExpParent parent, int i) {
+  exists(parent.getChild(i)) and
+  i > 0 and
+  not exists(parent.getChild(i - 1))
+}
