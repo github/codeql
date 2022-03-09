@@ -8,7 +8,10 @@ newtype TQuery =
   TNosqlInjectionQuery() or
   TSqlInjectionQuery() or
   TTaintedPathQuery() or
-  TXssQuery()
+  TXssQuery() or
+  TStoredXssQuery() or
+  TXssThroughDomQuery() or
+  TCodeInjectionQuery()
 
 abstract class Query extends TQuery {
   abstract string getName();
@@ -30,4 +33,16 @@ class TaintedPathQuery extends Query, TTaintedPathQuery {
 
 class XssQuery extends Query, TXssQuery {
   override string getName() { result = "Xss" }
+}
+
+class StoredXssQuery extends Query, TStoredXssQuery {
+  override string getName() { result = "StoredXss" }
+}
+
+class XssThroughDomQuery extends Query, TXssThroughDomQuery {
+  override string getName() { result = "XssThroughDom" }
+}
+
+class CodeInjectionQuery extends Query, TCodeInjectionQuery {
+  override string getName() { result = "CodeInjection" }
 }
