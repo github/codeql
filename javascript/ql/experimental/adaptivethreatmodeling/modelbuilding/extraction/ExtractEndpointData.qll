@@ -16,8 +16,10 @@ import experimental.adaptivethreatmodeling.EndpointTypes
 import experimental.adaptivethreatmodeling.FilteringReasons
 import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionATM
 import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionATM
+import experimental.adaptivethreatmodeling.StoredXssATM as StoredXssATM
 import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathATM
 import experimental.adaptivethreatmodeling.XssATM as XssATM
+import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomATM
 import Labels
 import NoFeaturizationRestrictionsConfig
 import Queries
@@ -29,9 +31,13 @@ AtmConfig getAtmCfg(Query query) {
   or
   query instanceof SqlInjectionQuery and result instanceof SqlInjectionATM::SqlInjectionAtmConfig
   or
-  query instanceof TaintedPathQuery and result instanceof TaintedPathATM::TaintedPathAtmConfig
+  query instanceof StoredXssQuery and result instanceof StoredXssATM::StoredXssATMConfig
   or
-  query instanceof XssQuery and result instanceof XssATM::DomBasedXssAtmConfig
+  query instanceof TaintedPathQuery and result instanceof TaintedPathATM::TaintedPathATMConfig
+  or
+  query instanceof XssQuery and result instanceof XssATM::DomBasedXssATMConfig
+  or
+  query instanceof XssThroughDomQuery and result instanceof XssThroughDomATM::XssThroughDOMATMConfig
 }
 
 /** DEPRECATED: Alias for getAtmCfg */
@@ -46,6 +52,10 @@ DataFlow::Configuration getDataFlowCfg(Query query) {
   query instanceof TaintedPathQuery and result instanceof TaintedPathATM::Configuration
   or
   query instanceof XssQuery and result instanceof XssATM::Configuration
+  or
+  query instanceof StoredXssQuery and result instanceof StoredXssATM::Configuration
+  or
+  query instanceof XssThroughDomQuery and result instanceof XssThroughDomATM::Configuration
 }
 
 /** Gets a known sink for the specified query. */
