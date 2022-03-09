@@ -1,6 +1,6 @@
 import csharp
+import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.commons.Util
-private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 
@@ -54,26 +54,6 @@ string asPartialModel(TargetAPI api) {
 }
 
 predicate isRelevantType(Type t) { not t instanceof Enum }
-
-predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(DataFlow::Content f |
-    readStep(node1, f, node2) and
-    if f instanceof DataFlow::FieldContent
-    then isRelevantType(f.(DataFlow::FieldContent).getField().getType())
-    else
-      if f instanceof DataFlow::SyntheticFieldContent
-      then isRelevantType(f.(DataFlow::SyntheticFieldContent).getField().getType())
-      else any()
-  )
-  or
-  exists(DataFlow::Content f | storeStep(node1, f, node2) | DataFlow::containerContent(f))
-}
-
-predicate isRelevantContent(DataFlow::Content f) {
-  isRelevantType(f.(DataFlow::FieldContent).getField().getType()) or
-  isRelevantType(f.(DataFlow::FieldContent).getField().getType()) or
-  DataFlow::containerContent(f)
-}
 
 private predicate isPrimitiveTypeUsedForBulkData(Type t) {
   t.getName().regexpMatch("byte|char|Byte|Char")
