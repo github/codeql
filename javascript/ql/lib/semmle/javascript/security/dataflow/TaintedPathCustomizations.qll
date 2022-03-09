@@ -47,18 +47,21 @@ module TaintedPath {
       SplitPath() { this = "splitPath" }
     }
 
+    /** Gets the string used for tracking Posix paths. */
     string platformPosix() { result = "posix" }
 
+    /** Gets the string used for tracking Windows paths. */
     string platformWin32() { result = "win32" }
 
+    /** A platform on which we track paths, eg.: `posix`. */
     abstract class Platform extends string {
       Platform() { this = [platformPosix(), platformWin32()] }
 
+      /** Gets the separator used on this platform. */
       abstract string getSep();
-
-      DataFlow::SourceNode getExplicitImport() { result = DataFlow::moduleMember("path", this) }
     }
 
+    /** An instance of `Platform` for tracking paths on Posix systems. */
     class PosixPlatform extends Platform {
       PosixPlatform() { this = platformPosix() }
 
@@ -358,9 +361,9 @@ module TaintedPath {
       }
     }
 
-    // /**
-    //  * A call that normalizes a path.
-    //  */
+    /**
+     * A call that normalizes a path.
+     */
     class NormalizingPathCall extends PathTransformationNode {
       NormalizingPathCall() { this = NodeJSLib::Path::moduleMember("normalize").getACall() }
 
