@@ -323,7 +323,7 @@ private module Persistence {
    * A call to a method that may modify or create a model object and write it to
    * the database. Examples include `create`, `insert`, and `update`.
    */
-  abstract private class ModifyAndSaveCall extends DataFlow::CallNode, OrmWriteAccess::Range {
+  abstract private class ModifyAndSaveCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
     /**
      * Holds if the given key-value pair is set on an object by this call.
      */
@@ -334,14 +334,11 @@ private module Persistence {
      */
     abstract ActiveRecordModelClass getClass();
 
-    final override string getFieldNameAssignedTo(DataFlow::Node value) {
+    final override DataFlow::Node getValue() {
       exists(ExprCfgNode keyExpr, ExprCfgNode valueExpr |
         this.setsKeyValuePair(keyExpr, valueExpr)
       |
-        keyExpr.getConstantValue().isStringOrSymbol(result) and
-        // avoid vacuous matches where the key is not a string or not a symbol
-        not result = "" and
-        value.asExpr() = valueExpr
+        result.asExpr() = valueExpr
       )
     }
   }
@@ -480,24 +477,21 @@ private module Persistence {
   /**
    * An assignment like `user.name = "foo"`. Though this does not write to the
    * database without a subsequent call to persist the object, it is considered
-   * as an `OrmWriteAccess` to avoid missing cases where the path to a
+   * as an `PersistentWriteAccess` to avoid missing cases where the path to a
    * subsequent write is not clear.
    */
-  private class AssignAttribute extends DataFlow::Node, OrmWriteAccess::Range {
-    private DataFlow::CallNode setter;
+  private class AssignAttribute extends DataFlow::Node, PersistentWriteAccess::Range {
     private ExprNodes::AssignExprCfgNode assignNode;
 
     AssignAttribute() {
-      assignNode = this.asExpr() and
-      setter.getArgument(0) = this and
-      setter instanceof ActiveRecordInstanceMethodCall and
-      setter.asExpr().getExpr() instanceof SetterMethodCall
+      exists(DataFlow::CallNode setter |
+        assignNode = this.asExpr() and
+        setter.getArgument(0) = this and
+        setter instanceof ActiveRecordInstanceMethodCall and
+        setter.asExpr().getExpr() instanceof SetterMethodCall
+      )
     }
 
-    override string getFieldNameAssignedTo(DataFlow::Node value) {
-      result + "=" = setter.getMethodName() and
-      // match RHS
-      assignNode.getRhs() = value.asExpr()
-    }
+    override DataFlow::Node getValue() { assignNode.getRhs() = result.asExpr() }
   }
 }

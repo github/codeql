@@ -1,0 +1,16 @@
+| app/controllers/users_controller.rb:5:7:5:44 | call to create! | app/controllers/users_controller.rb:5:26:5:29 | "U1" |
+| app/controllers/users_controller.rb:5:7:5:44 | call to create! | app/controllers/users_controller.rb:5:37:5:43 | call to get_uid |
+| app/controllers/users_controller.rb:6:7:6:29 | call to create | app/controllers/users_controller.rb:6:25:6:28 | "U2" |
+| app/controllers/users_controller.rb:7:7:7:31 | call to insert | app/controllers/users_controller.rb:7:26:7:29 | "U3" |
+| app/controllers/users_controller.rb:10:7:10:32 | call to update | app/controllers/users_controller.rb:10:28:10:31 | "U4" |
+| app/controllers/users_controller.rb:11:7:11:73 | call to update! | app/controllers/users_controller.rb:11:39:11:42 | "U5" |
+| app/controllers/users_controller.rb:11:7:11:73 | call to update! | app/controllers/users_controller.rb:11:53:11:56 | "U6" |
+| app/controllers/users_controller.rb:11:7:11:73 | call to update! | app/controllers/users_controller.rb:11:67:11:70 | "U7" |
+| app/controllers/users_controller.rb:14:7:14:66 | call to insert_all | app/controllers/users_controller.rb:14:31:14:34 | "U8" |
+| app/controllers/users_controller.rb:14:7:14:66 | call to insert_all | app/controllers/users_controller.rb:14:45:14:48 | "U9" |
+| app/controllers/users_controller.rb:14:7:14:66 | call to insert_all | app/controllers/users_controller.rb:14:59:14:63 | "U10" |
+| app/controllers/users_controller.rb:19:7:19:30 | call to update | app/controllers/users_controller.rb:19:25:19:29 | "U11" |
+| app/controllers/users_controller.rb:20:7:20:57 | call to update_attributes | app/controllers/users_controller.rb:20:37:20:41 | "U12" |
+| app/controllers/users_controller.rb:20:7:20:57 | call to update_attributes | app/controllers/users_controller.rb:20:49:20:55 | call to get_uid |
+| app/controllers/users_controller.rb:23:7:23:42 | call to update_attribute | app/controllers/users_controller.rb:23:37:23:41 | "U13" |
+| app/controllers/users_controller.rb:26:7:26:15 | ... = ... | app/controllers/users_controller.rb:26:19:26:23 | "U14" |
