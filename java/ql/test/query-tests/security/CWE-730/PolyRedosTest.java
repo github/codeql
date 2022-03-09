@@ -34,4 +34,42 @@ class PolyRedosTest {
         Splitter.on(";").withKeyValueSeparator(Splitter.onPattern(reg)).split(tainted); // $ hasPolyRedos
 
     }
+
+    void test2(HttpServletRequest request) {
+        String tainted = request.getParameter("inp");
+
+        Pattern p1 = Pattern.compile(".*a");
+        Pattern p2 = Pattern.compile(".*b");
+
+        p1.matcher(tainted).matches(); 
+        p2.matcher(tainted).find(); // $ hasPolyRedos
+    }
+
+    void test3(HttpServletRequest request) {
+        String tainted = request.getParameter("inp");
+
+        Pattern p1 = Pattern.compile("ab*b*");
+        Pattern p2 = Pattern.compile("cd*d*");
+
+        p1.matcher(tainted).matches(); // $ hasPolyRedos
+        p2.matcher(tainted).find(); 
+    }
+
+    void test4(HttpServletRequest request) {
+        String tainted = request.getParameter("inp");
+
+        tainted.matches(".*a");
+        tainted.replaceAll(".*b", "c"); // $ hasPolyRedos
+    }
+
+    static Pattern p3 = Pattern.compile(".*a");
+    static Pattern p4 = Pattern.compile(".*b");
+    
+
+    void test5(HttpServletRequest request) {
+        String tainted = request.getParameter("inp");
+
+        p3.asMatchPredicate().test(tainted); 
+        p4.asPredicate().test(tainted); // $ hasPolyRedos
+    }
 }

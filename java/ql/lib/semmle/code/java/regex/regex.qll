@@ -892,7 +892,9 @@ abstract class RegexString extends StringLiteral {
 
 /** A string literal used as a regular expression */
 class Regex extends RegexString {
-  Regex() { usedAsRegex(this, _) }
+  boolean matches_full_string;
+
+  Regex() { usedAsRegex(this, _, matches_full_string) }
 
   /**
    * Gets a mode (if any) of this regular expression. Can be any of:
@@ -906,8 +908,14 @@ class Regex extends RegexString {
    */
   string getAMode() {
     result != "None" and
-    usedAsRegex(this, result)
+    usedAsRegex(this, result, _)
     or
     result = this.getModeFromPrefix()
   }
+
+  /**
+   *  Holds if this regex is used to match against a full string,
+   * as though it was implicitly surrounded by ^ and $.
+   */
+  predicate matchesFullString() { matches_full_string = true }
 }

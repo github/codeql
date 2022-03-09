@@ -22,6 +22,16 @@ predicate isEscapeClass(RegExpTerm term, string clazz) {
 predicate isPossessive(RegExpQuantifier term) { term.isPossessive() }
 
 /**
+ * Holds if the regex that `term` is part of is used in a way that ignores any leading prefix of the input it's matched against.
+ */
+predicate matchesAnyPrefix(RegExpTerm term) { not term.getRegex().matchesFullString() }
+
+/**
+ * Holds if the regex that `term` is part of is used in a way that ignores any trailing suffix of the input it's matched against.
+ */
+predicate matchesAnySuffix(RegExpTerm term) { not term.getRegex().matchesFullString() }
+
+/**
  * Holds if the regular expression should not be considered.
  *
  * We make the pragmatic performance optimization to ignore regular expressions in files

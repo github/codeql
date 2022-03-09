@@ -13,16 +13,48 @@ private class RegexCompileFlowConf extends DataFlow2::Configuration {
 
   override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof StringLiteral }
 
-  override predicate isSink(DataFlow::Node node) { sinkNode(node, "regex-compile") }
+  override predicate isSink(DataFlow::Node node) {
+    sinkNode(node, ["regex-compile", "regex-compile-match", "regex-compile-find"])
+  }
 }
 
 /**
  * Holds if `s` is used as a regex, with the mode `mode` (if known).
  * If regex mode is not known, `mode` will be `"None"`.
  */
-predicate usedAsRegex(StringLiteral s, string mode) {
-  any(RegexCompileFlowConf c).hasFlow(DataFlow2::exprNode(s), _) and
-  mode = "None" // TODO: proper mode detection
+predicate usedAsRegex(StringLiteral s, string mode, boolean match_full_string) {
+  exists(DataFlow::Node sink |
+    any(RegexCompileFlowConf c).hasFlow(DataFlow2::exprNode(s), sink) and
+    mode = "None" and // TODO: proper mode detection
+    (if matchesFullString(sink) then match_full_string = true else match_full_string = false)
+  )
+}
+
+/**
+ * Holds if the regex that flows to `sink` is used to match against a full string,
+ * as though it was implicitly surrounded by ^ and $.
+ */
+private predicate matchesFullString(DataFlow::Node sink) {
+  sinkNode(sink, "regex-compile-match")
+  or
+  exists(DataFlow::Node matchSource, RegexCompileToMatchConf conf |
+    matchSource.asExpr().(MethodAccess).getAnArgument() = sink.asExpr() and
+    conf.hasFlow(matchSource, _)
+  )
+}
+
+private class RegexCompileToMatchConf extends DataFlow2::Configuration {
+  RegexCompileToMatchConf() { this = "RegexCompileToMatchConfig" }
+
+  override predicate isSource(DataFlow::Node node) { sourceNode(node, "regex-compile") }
+
+  override predicate isSink(DataFlow::Node node) { sinkNode(node, "regex-match") }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(MethodAccess ma | node2.asExpr() = ma and node1.asExpr() = ma.getQualifier() |
+      ma.getMethod().hasQualifiedName("java.util.regex", "Pattern", "matcher")
+    )
+  }
 }
 
 /**
