@@ -508,5 +508,9 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/AccessPathSyntax.qll",
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/AccessPathSyntax.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/AccessPathSyntax.qll"
+  ],
+  "IncompleteUrlSubstringSanitization": [
+    "javascript/ql/src/Security/CWE-020/IncompleteUrlSubstringSanitization.qll",
+    "ruby/ql/src/queries/security/cwe-020/IncompleteUrlSubstringSanitization.qll"
   ]
 }
