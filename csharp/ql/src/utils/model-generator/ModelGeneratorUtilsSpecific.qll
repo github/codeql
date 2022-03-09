@@ -34,7 +34,7 @@ private predicate isBaseCallableOrPrototype(TargetAPI api) {
   )
 }
 
-/** Gets a string representing, whether the summary should apply for all overrides of this. */
+/** Gets a string representing whether the summary should apply for all overrides of this. */
 private string getCallableOverride(TargetAPI api) {
   if isBaseCallableOrPrototype(api) then result = "true" else result = "false"
 }
