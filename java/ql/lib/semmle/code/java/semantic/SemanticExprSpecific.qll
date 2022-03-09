@@ -337,11 +337,13 @@ module SemanticExprConfig {
       type = getSemanticType(update.getSourceVariable().getType()) and
       exists(J::Expr expr | expr = update.getDefiningExpr() |
         (
-          expr instanceof J::Assignment or
+          expr instanceof J::AssignOp or
           expr instanceof J::PreIncExpr or
           expr instanceof J::PreDecExpr
         ) and
         sourceExpr = getResultExpr(expr)
+        or
+        sourceExpr = getResultExpr(expr.(J::AssignExpr).getSource())
         or
         sourceExpr = getResultExpr(expr.(J::LocalVariableDeclExpr).getInit())
         or

@@ -6,6 +6,7 @@
 
 private import ModulusAnalysisSpecific::Private
 private import semmle.code.java.semantic.SemanticBound
+private import semmle.code.java.semantic.SemanticCFG
 private import semmle.code.java.semantic.SemanticExpr
 private import semmle.code.java.semantic.SemanticGuard
 private import semmle.code.java.semantic.SemanticSSA
@@ -30,9 +31,9 @@ private predicate valueFlowStepSsa(SemSsaVariable v, SemSsaReadPosition pos, Sem
  * `ConstantIntegerExpr`s.
  */
 private predicate nonConstAddition(SemExpr add, SemExpr larg, SemExpr rarg) {
-  exists(AddExpr a | a = add |
-    larg = a.getLhs() and
-    rarg = a.getRhs()
+  exists(SemAddExpr a | a = add |
+    larg = a.getLeftOperand() and
+    rarg = a.getRightOperand()
   ) and
   not larg instanceof SemConstantIntegerExpr and
   not rarg instanceof SemConstantIntegerExpr
@@ -43,9 +44,9 @@ private predicate nonConstAddition(SemExpr add, SemExpr larg, SemExpr rarg) {
  * a `ConstantIntegerExpr`.
  */
 private predicate nonConstSubtraction(SemExpr sub, SemExpr larg, SemExpr rarg) {
-  exists(SubExpr s | s = sub |
-    larg = s.getLhs() and
-    rarg = s.getRhs()
+  exists(SemSubExpr s | s = sub |
+    larg = s.getLeftOperand() and
+    rarg = s.getRightOperand()
   ) and
   not rarg instanceof SemConstantIntegerExpr
 }
@@ -62,7 +63,7 @@ private SemExpr modExpr(SemExpr arg, int mod) {
   exists(SemConstantIntegerExpr c |
     mod = 2.pow([1 .. 30]) and
     c.getIntValue() = mod - 1 and
-    result.(BitwiseAndExpr).hasOperands(arg, c)
+    result.(SemBitAndExpr).hasOperands(arg, c)
   )
 }
 
@@ -107,11 +108,11 @@ private predicate andmaskFactor(int mask, int factor) {
 /** Holds if `e` is evenly divisible by `factor`. */
 private predicate evenlyDivisibleExpr(SemExpr e, int factor) {
   exists(SemConstantIntegerExpr c, int k | k = c.getIntValue() |
-    e.(MulExpr).getAnOperand() = c and factor = k.abs() and factor >= 2
+    e.(SemMulExpr).getAnOperand() = c and factor = k.abs() and factor >= 2
     or
-    e.(LShiftExpr).getRhs() = c and factor = 2.pow(k) and k > 0
+    e.(SemShiftLeftExpr).getRightOperand() = c and factor = 2.pow(k) and k > 0
     or
-    e.(BitwiseAndExpr).getAnOperand() = c and factor = max(int f | andmaskFactor(k, f))
+    e.(SemBitAndExpr).getAnOperand() = c and factor = max(int f | andmaskFactor(k, f))
   )
 }
 
@@ -223,49 +224,54 @@ private predicate ssaModulus(SemSsaVariable v, SemSsaReadPosition pos, SemBound 
  */
 cached
 predicate semExprModulus(SemExpr e, SemBound b, int val, int mod) {
-  e = b.getExpr(val) and mod = 0
-  or
-  evenlyDivisibleExpr(e, mod) and val = 0 and b instanceof SemZeroBound
-  or
-  exists(SemSsaVariable v, SemSsaReadPositionBlock bb |
-    ssaModulus(v, bb, b, val, mod) and
-    e = v.getAUse() and
-    bb.getAnExpr() = e
-  )
-  or
-  exists(SemExpr mid, int val0, int delta |
-    semExprModulus(mid, b, val0, mod) and
-    semValueFlowStep(e, mid, delta) and
-    val = remainder(val0 + delta, mod)
-  )
-  or
-  exists(SemConditionalExpr cond, int v1, int v2, int m1, int m2 |
-    cond = e and
-    condExprBranchModulus(cond, true, b, v1, m1) and
-    condExprBranchModulus(cond, false, b, v2, m2) and
-    mod = m1.gcd(m2).gcd(v1 - v2) and
-    mod != 1 and
-    val = remainder(v1, mod)
-  )
-  or
-  exists(SemBound b1, SemBound b2, int v1, int v2, int m1, int m2 |
-    addModulus(e, true, b1, v1, m1) and
-    addModulus(e, false, b2, v2, m2) and
-    mod = m1.gcd(m2) and
-    mod != 1 and
-    val = remainder(v1 + v2, mod)
-  |
-    b = b1 and b2 instanceof SemZeroBound
+  not ignoreExprModulus(e) and
+  (
+    e = b.getExpr(val) and mod = 0
     or
-    b = b2 and b1 instanceof SemZeroBound
-  )
-  or
-  exists(int v1, int v2, int m1, int m2 |
-    subModulus(e, true, b, v1, m1) and
-    subModulus(e, false, any(SemZeroBound zb), v2, m2) and
-    mod = m1.gcd(m2) and
-    mod != 1 and
-    val = remainder(v1 - v2, mod)
+    evenlyDivisibleExpr(e, mod) and
+    val = 0 and
+    b instanceof SemZeroBound
+    or
+    exists(SemSsaVariable v, SemSsaReadPositionBlock bb |
+      ssaModulus(v, bb, b, val, mod) and
+      e = v.getAUse() and
+      bb.getAnExpr() = e
+    )
+    or
+    exists(SemExpr mid, int val0, int delta |
+      semExprModulus(mid, b, val0, mod) and
+      semValueFlowStep(e, mid, delta) and
+      val = remainder(val0 + delta, mod)
+    )
+    or
+    exists(SemConditionalExpr cond, int v1, int v2, int m1, int m2 |
+      cond = e and
+      condExprBranchModulus(cond, true, b, v1, m1) and
+      condExprBranchModulus(cond, false, b, v2, m2) and
+      mod = m1.gcd(m2).gcd(v1 - v2) and
+      mod != 1 and
+      val = remainder(v1, mod)
+    )
+    or
+    exists(SemBound b1, SemBound b2, int v1, int v2, int m1, int m2 |
+      addModulus(e, true, b1, v1, m1) and
+      addModulus(e, false, b2, v2, m2) and
+      mod = m1.gcd(m2) and
+      mod != 1 and
+      val = remainder(v1 + v2, mod)
+    |
+      b = b1 and b2 instanceof SemZeroBound
+      or
+      b = b2 and b1 instanceof SemZeroBound
+    )
+    or
+    exists(int v1, int v2, int m1, int m2 |
+      subModulus(e, true, b, v1, m1) and
+      subModulus(e, false, any(SemZeroBound zb), v2, m2) and
+      mod = m1.gcd(m2) and
+      mod != 1 and
+      val = remainder(v1 - v2, mod)
+    )
   )
 }
 
@@ -289,4 +295,26 @@ private predicate subModulus(SemExpr sub, boolean isLeft, SemBound b, int val, i
     or
     semExprModulus(rarg, b, val, mod) and isLeft = false
   )
+}
+
+private predicate id(SemBasicBlock x, SemBasicBlock y) { x = y }
+
+private predicate idOf(SemBasicBlock x, int y) = equivalenceRelation(id/2)(x, y)
+
+private int getId(SemBasicBlock bb) { idOf(bb, result) }
+
+/**
+ * Holds if `inp` is an input to `phi` along `edge` and this input has index `r`
+ * in an arbitrary 1-based numbering of the input edges to `phi`.
+ */
+private predicate rankedPhiInput(
+  SemSsaPhiNode phi, SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge, int r
+) {
+  edge.phiInput(phi, inp) and
+  edge =
+    rank[r](SemSsaReadPositionPhiInputEdge e |
+      e.phiInput(phi, _)
+    |
+      e order by getId(e.getOrigBlock())
+    )
 }
