@@ -8,21 +8,41 @@ import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionATM
 import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionATM
 import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathATM
 import experimental.adaptivethreatmodeling.XssATM as XssATM
+import experimental.adaptivethreatmodeling.StoredXssATM as StoredXssATM
+import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomATM
 import experimental.adaptivethreatmodeling.AdaptiveThreatModeling
 
-from string queryName, AtmConfig c, EndpointType e
+from string queryName, ATMConfig c, int endpointTypeEncoded
 where
   (
-    queryName = "SqlInjectionATM.ql" and
-    c instanceof SqlInjectionATM::SqlInjectionAtmConfig
+    queryName = "Unknown" and
+    endpointTypeEncoded = 0
     or
-    queryName = "NosqlInjectionATM.ql" and
-    c instanceof NosqlInjectionATM::NosqlInjectionAtmConfig
+    queryName = "NotASink" and
+    endpointTypeEncoded = 0
     or
-    queryName = "TaintedPathInjectionATM.ql" and
-    c instanceof TaintedPathATM::TaintedPathAtmConfig
+    queryName = "XssSink" and
+    c instanceof XssATM::DomBasedXssATMConfig and
+    endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
     or
-    queryName = "XssATM.ql" and c instanceof XssATM::DomBasedXssAtmConfig
-  ) and
-  e = c.getASinkEndpointType()
-select queryName, e.getEncoding() as endpointTypeEncoded
+    queryName = "StoredXssSink" and
+    c instanceof StoredXssATM::StoredXssATMConfig and
+    endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
+    or
+    queryName = "XssThroughDomSink" and
+    c instanceof XssThroughDomATM::XssThroughDOMATMConfig and
+    endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
+    or
+    queryName = "SqlInjectionSink" and
+    c instanceof SqlInjectionATM::SqlInjectionATMConfig and
+    endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
+    or
+    queryName = "NosqlInjectionSink" and
+    c instanceof NosqlInjectionATM::NosqlInjectionATMConfig and
+    endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
+    or
+    queryName = "TaintedPathSink" and
+    c instanceof TaintedPathATM::TaintedPathATMConfig and
+    endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
+  )
+select queryName, endpointTypeEncoded order by endpointTypeEncoded
