@@ -196,7 +196,7 @@ module CleartextSources {
     HashLiteralPasswordSource() {
       exists(DataFlow::Node val, CfgNodes::ExprNodes::HashLiteralCfgNode lit |
         name.regexpMatch(maybePassword()) and
-        not name.regexpMatch(notSensitiveRegexp()) and
+        not nameIsNotSensitive(name) and
         // avoid safe values assigned to presumably unsafe names
         not val instanceof NonCleartextPassword and
         // hash = { name: val }
@@ -220,6 +220,7 @@ module CleartextSources {
       // avoid safe values assigned to presumably unsafe names
       not this instanceof NonCleartextPassword and
       name.regexpMatch(maybePassword()) and
+      not nameIsNotSensitive(name) and
       exists(Assignment a |
         this.asExpr().getExpr() = a.getRightOperand() and
         a.getLeftOperand().getAVariable().getName() = name
@@ -235,6 +236,7 @@ module CleartextSources {
 
     ParameterPasswordSource() {
       name.regexpMatch(maybePassword()) and
+      not nameIsNotSensitive(name) and
       not this instanceof NonCleartextPassword and
       exists(Parameter p, LocalVariable v |
         v = p.getAVariable() and
