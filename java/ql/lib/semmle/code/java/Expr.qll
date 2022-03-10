@@ -173,7 +173,7 @@ class CompileTimeConstantExpr extends Expr {
    */
   pragma[nomagic]
   string getStringifiedValue() {
-    result = getStringValue()
+    result = this.getStringValue()
     or
     result = this.(Literal).getValue()
     or
