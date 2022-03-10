@@ -25,15 +25,6 @@ class StringLabel<T>(val name: String): Label<T> {
     override fun toString(): String = "#$name"
 }
 
-/**
- * This is not really a label, but just a `*`. Used in the rare cases
- * when we only need to refer to something once, to save adding
- * unnecessary labels.
- */
-class StarLabel<T>: Label<T> {
-    override fun toString(): String = "*"
-}
-
 // TODO: Remove this and all of its uses
 fun <T> fakeLabel(): Label<T> {
     if (false) {

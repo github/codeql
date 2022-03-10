@@ -121,6 +121,7 @@ class KotlinExtractorExtension(
             moduleFragment.files.mapIndexed { index: Int, file: IrFile ->
                 val fileExtractionProblems = FileExtractionProblems(invocationExtractionProblems)
                 val fileTrapWriter = tw.makeSourceFileTrapWriter(file, true)
+                loggerBase.setFileNumber(index)
                 fileTrapWriter.writeCompilation_compiling_files(compilation, index, fileTrapWriter.fileId)
                 doFile(fileExtractionProblems, invocationTrapFile, fileTrapWriter, checkTrapIdentical, loggerBase, trapDir, srcDir, file, primitiveTypeMapping, pluginContext, globalExtensionState)
                 fileTrapWriter.writeCompilation_compiling_files_completed(compilation, index, fileExtractionProblems.extractionResult())

@@ -73,6 +73,14 @@ open class LoggerBase(val logCounter: LogCounter) {
         return null
     }
 
+    private var file_number = -1
+    private var file_number_diagnostic_number = 0
+
+    fun setFileNumber(index: Int) {
+        file_number = index
+        file_number_diagnostic_number = 0
+    }
+
     fun diagnostic(tw: TrapWriter, severity: Severity, msg: String, extraInfo: String?, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
         val diagnosticLoc = getDiagnosticLocation()
         val diagnosticLocStr = if(diagnosticLoc == null) "<unknown location>" else diagnosticLoc
@@ -106,7 +114,9 @@ open class LoggerBase(val logCounter: LogCounter) {
         val ts = timestamp()
         // We don't actually make the location until after the `return` above
         val locationId = mkLocationId()
-        tw.writeDiagnostics(StarLabel(), "CodeQL Kotlin extractor", severity.sev, "", msg, "$ts $fullMsg", locationId)
+        val diagLabel = tw.getFreshIdLabel<DbDiagnostic>()
+        tw.writeDiagnostics(diagLabel, "CodeQL Kotlin extractor", severity.sev, "", msg, "$ts $fullMsg", locationId)
+        tw.writeDiagnostic_for(diagLabel, StringLabel("compilation"), file_number, file_number_diagnostic_number++)
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
         val kind = if (severity <= Severity.WarnHigh) "WARN" else "ERROR"
         logStream.write("$ts [$kind] Diagnostic($diagnosticLocStr): $locStr$fullMsg")
