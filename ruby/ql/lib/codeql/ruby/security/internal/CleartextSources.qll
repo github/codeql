@@ -209,7 +209,7 @@ module CleartextSources {
       )
     }
 
-    override string describe() { result = "an write to " + name }
+    override string describe() { result = "a write to " + name }
   }
 
   /** An assignment that may assign a password to a variable */
