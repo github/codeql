@@ -61,9 +61,9 @@ delegatedProperties.kt:
 #   17|       5: [BlockStmt] { ... }
 #   17|         0: [SuperConstructorInvocationStmt] super(...)
 #   17|         1: [BlockStmt] { ... }
-#   40|           0: [ExprStmt] <Expr>;
-#   40|             0: [KtInitializerAssignExpr] ...=...
-#   40|               0: [VarAccess] varResource0$delegate
+#   42|           0: [ExprStmt] <Expr>;
+#   42|             0: [KtInitializerAssignExpr] ...=...
+#   42|               0: [VarAccess] varResource0$delegate
 #   18|     2: [Method] fn
 #-----|       4: (Parameters)
 #   18|         0: [Parameter] map
@@ -241,92 +241,122 @@ delegatedProperties.kt:
 #   37|           0: [MethodAccess] setVarResource0(...)
 #   37|             -1: [ThisAccess] this
 #   37|             0: [IntegerLiteral] 3
-#   40|     3: [Method] getVarResource0
-#   40|       5: [BlockStmt] { ... }
-#   40|         0: [ReturnStmt] return ...
-#   40|           0: [MethodAccess] getValue(...)
-#   40|             -1: [VarAccess] this.varResource0$delegate
-#   40|               -1: [ThisAccess] this
+#   39|         9: [BlockStmt] { ... }
+#   39|           0: [LocalVariableDeclStmt] var ...;
+#   39|             1: [LocalVariableDeclExpr] varResource2$delegate
+#   39|               0: [MethodAccess] provideDelegate(...)
+#   39|                 -1: [ClassInstanceExpr] new DelegateProvider(...)
+#   39|                   -3: [TypeAccess] DelegateProvider
+#    1|                 0: [NullLiteral] null
+#   39|           1: [LocalTypeDeclStmt] class ...
+#   39|             0: [LocalClass] 
+#   39|               1: [Constructor] 
+#   39|                 5: [BlockStmt] { ... }
+#   39|                   0: [SuperConstructorInvocationStmt] super(...)
+#   39|               1: [Method] <get-varResource2>
+#   39|                 5: [BlockStmt] { ... }
+#   39|                   0: [ReturnStmt] return ...
+#   39|                     0: [MethodAccess] getValue(...)
+#   39|                       -1: [VarAccess] varResource2$delegate
+#    0|                       0: [NullLiteral] null
+#   42|     3: [Method] getVarResource0
+#   42|       5: [BlockStmt] { ... }
+#   42|         0: [ReturnStmt] return ...
+#   42|           0: [MethodAccess] getValue(...)
+#   42|             -1: [VarAccess] this.varResource0$delegate
+#   42|               -1: [ThisAccess] this
 #    1|             0: [ThisAccess] this
-#   40|             1: [PropertyRefExpr] ...::...
-#   40|               -4: [AnonymousClass] new KMutableProperty1<Owner,Integer>(...) { ... }
-#   40|                 1: [Constructor] 
-#   40|                   5: [BlockStmt] { ... }
-#   40|                     0: [SuperConstructorInvocationStmt] super(...)
-#   40|                 1: [Method] get
+#   42|             1: [PropertyRefExpr] ...::...
+#   42|               -4: [AnonymousClass] new KMutableProperty1<Owner,Integer>(...) { ... }
+#   42|                 1: [Constructor] 
+#   42|                   5: [BlockStmt] { ... }
+#   42|                     0: [SuperConstructorInvocationStmt] super(...)
+#   42|                 1: [Method] get
 #-----|                   4: (Parameters)
-#   40|                     0: [Parameter] a0
-#   40|                   5: [BlockStmt] { ... }
-#   40|                     0: [ReturnStmt] return ...
-#   40|                       0: [MethodAccess] getVarResource0(...)
-#   40|                         -1: [VarAccess] a0
-#   40|                 1: [Method] set
+#   42|                     0: [Parameter] a0
+#   42|                   5: [BlockStmt] { ... }
+#   42|                     0: [ReturnStmt] return ...
+#   42|                       0: [MethodAccess] getVarResource0(...)
+#   42|                         -1: [VarAccess] a0
+#   42|                 1: [Method] set
 #-----|                   4: (Parameters)
-#   40|                     0: [Parameter] a0
-#   40|                     1: [Parameter] a1
-#   40|                   5: [BlockStmt] { ... }
-#   40|                     0: [ReturnStmt] return ...
-#   40|                       0: [MethodAccess] setVarResource0(...)
-#   40|                         -1: [VarAccess] a0
-#   40|                         0: [VarAccess] a1
-#   40|               -3: [TypeAccess] KMutableProperty1<Owner,Integer>
-#   40|                 0: [TypeAccess] Owner
-#   40|                 1: [TypeAccess] Integer
-#   40|     3: [Method] setVarResource0
+#   42|                     0: [Parameter] a0
+#   42|                     1: [Parameter] a1
+#   42|                   5: [BlockStmt] { ... }
+#   42|                     0: [ReturnStmt] return ...
+#   42|                       0: [MethodAccess] setVarResource0(...)
+#   42|                         -1: [VarAccess] a0
+#   42|                         0: [VarAccess] a1
+#   42|               -3: [TypeAccess] KMutableProperty1<Owner,Integer>
+#   42|                 0: [TypeAccess] Owner
+#   42|                 1: [TypeAccess] Integer
+#   42|     3: [Method] setVarResource0
 #-----|       4: (Parameters)
-#   40|         0: [Parameter] <set-?>
-#   40|       5: [BlockStmt] { ... }
-#   40|         0: [ReturnStmt] return ...
-#   40|           0: [MethodAccess] setValue(...)
-#   40|             -1: [VarAccess] this.varResource0$delegate
-#   40|               -1: [ThisAccess] this
+#   42|         0: [Parameter] <set-?>
+#   42|       5: [BlockStmt] { ... }
+#   42|         0: [ReturnStmt] return ...
+#   42|           0: [MethodAccess] setValue(...)
+#   42|             -1: [VarAccess] this.varResource0$delegate
+#   42|               -1: [ThisAccess] this
 #    1|             0: [ThisAccess] this
-#   40|             1: [PropertyRefExpr] ...::...
-#   40|               -4: [AnonymousClass] new KMutableProperty1<Owner,Integer>(...) { ... }
-#   40|                 1: [Constructor] 
-#   40|                   5: [BlockStmt] { ... }
-#   40|                     0: [SuperConstructorInvocationStmt] super(...)
-#   40|                 1: [Method] get
+#   42|             1: [PropertyRefExpr] ...::...
+#   42|               -4: [AnonymousClass] new KMutableProperty1<Owner,Integer>(...) { ... }
+#   42|                 1: [Constructor] 
+#   42|                   5: [BlockStmt] { ... }
+#   42|                     0: [SuperConstructorInvocationStmt] super(...)
+#   42|                 1: [Method] get
 #-----|                   4: (Parameters)
-#   40|                     0: [Parameter] a0
-#   40|                   5: [BlockStmt] { ... }
-#   40|                     0: [ReturnStmt] return ...
-#   40|                       0: [MethodAccess] getVarResource0(...)
-#   40|                         -1: [VarAccess] a0
-#   40|                 1: [Method] set
+#   42|                     0: [Parameter] a0
+#   42|                   5: [BlockStmt] { ... }
+#   42|                     0: [ReturnStmt] return ...
+#   42|                       0: [MethodAccess] getVarResource0(...)
+#   42|                         -1: [VarAccess] a0
+#   42|                 1: [Method] set
 #-----|                   4: (Parameters)
-#   40|                     0: [Parameter] a0
-#   40|                     1: [Parameter] a1
-#   40|                   5: [BlockStmt] { ... }
-#   40|                     0: [ReturnStmt] return ...
-#   40|                       0: [MethodAccess] setVarResource0(...)
-#   40|                         -1: [VarAccess] a0
-#   40|                         0: [VarAccess] a1
-#   40|               -3: [TypeAccess] KMutableProperty1<Owner,Integer>
-#   40|                 0: [TypeAccess] Owner
-#   40|                 1: [TypeAccess] Integer
-#   40|             2: [VarAccess] <set-?>
-#   40|     3: [FieldDeclaration] ResourceDelegate varResource0$delegate;
-#   40|       -1: [TypeAccess] ResourceDelegate
-#   40|       0: [ClassInstanceExpr] new ResourceDelegate(...)
-#   40|         -3: [TypeAccess] ResourceDelegate
-#   43|   4: [Class] ResourceDelegate
-#   43|     1: [Constructor] ResourceDelegate
-#   43|       5: [BlockStmt] { ... }
-#   43|         0: [SuperConstructorInvocationStmt] super(...)
-#   44|     2: [Method] getValue
+#   42|                     0: [Parameter] a0
+#   42|                     1: [Parameter] a1
+#   42|                   5: [BlockStmt] { ... }
+#   42|                     0: [ReturnStmt] return ...
+#   42|                       0: [MethodAccess] setVarResource0(...)
+#   42|                         -1: [VarAccess] a0
+#   42|                         0: [VarAccess] a1
+#   42|               -3: [TypeAccess] KMutableProperty1<Owner,Integer>
+#   42|                 0: [TypeAccess] Owner
+#   42|                 1: [TypeAccess] Integer
+#   42|             2: [VarAccess] <set-?>
+#   42|     3: [FieldDeclaration] ResourceDelegate varResource0$delegate;
+#   42|       -1: [TypeAccess] ResourceDelegate
+#   42|       0: [ClassInstanceExpr] new ResourceDelegate(...)
+#   42|         -3: [TypeAccess] ResourceDelegate
+#   45|   4: [Class] ResourceDelegate
+#   45|     1: [Constructor] ResourceDelegate
+#   45|       5: [BlockStmt] { ... }
+#   45|         0: [SuperConstructorInvocationStmt] super(...)
+#   46|     2: [Method] getValue
 #-----|       4: (Parameters)
-#   44|         0: [Parameter] thisRef
-#   44|         1: [Parameter] property
-#   44|       5: [BlockStmt] { ... }
-#   45|         0: [ReturnStmt] return ...
-#   45|           0: [IntegerLiteral] 1
-#   47|     3: [Method] setValue
+#   46|         0: [Parameter] thisRef
+#   46|         1: [Parameter] property
+#   46|       5: [BlockStmt] { ... }
+#   47|         0: [ReturnStmt] return ...
+#   47|           0: [IntegerLiteral] 1
+#   49|     3: [Method] setValue
 #-----|       4: (Parameters)
-#   47|         0: [Parameter] thisRef
-#   47|         1: [Parameter] property
-#   47|         2: [Parameter] value
-#   47|       5: [BlockStmt] { ... }
+#   49|         0: [Parameter] thisRef
+#   49|         1: [Parameter] property
+#   49|         2: [Parameter] value
+#   49|       5: [BlockStmt] { ... }
+#   53|   5: [Class] DelegateProvider
+#   53|     1: [Constructor] DelegateProvider
+#   53|       5: [BlockStmt] { ... }
+#   53|         0: [SuperConstructorInvocationStmt] super(...)
+#   54|     2: [Method] provideDelegate
+#-----|       4: (Parameters)
+#   54|         0: [Parameter] thisRef
+#   54|         1: [Parameter] prop
+#   54|       5: [BlockStmt] { ... }
+#   56|         0: [ReturnStmt] return ...
+#   56|           0: [ClassInstanceExpr] new ResourceDelegate(...)
+#   56|             -3: [TypeAccess] ResourceDelegate
 exprs.kt:
 #    0| [CompilationUnit] exprs
 #    0|   1: [Class] ExprsKt

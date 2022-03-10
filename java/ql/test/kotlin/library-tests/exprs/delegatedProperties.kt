@@ -35,6 +35,8 @@ class Owner {
 
         println(varResource0)
         varResource0 = 3
+
+        val varResource2: Int by DelegateProvider()
     }
 
     var varResource0: Int by ResourceDelegate()
@@ -45,5 +47,12 @@ class ResourceDelegate {
         return 1
     }
     operator fun setValue(thisRef: Owner?, property: KProperty<*>, value: Int?) {
+    }
+}
+
+class DelegateProvider {
+    operator fun provideDelegate(thisRef: Owner?, prop: KProperty<*>): ResourceDelegate {
+        // ... some logic
+        return ResourceDelegate()
     }
 }

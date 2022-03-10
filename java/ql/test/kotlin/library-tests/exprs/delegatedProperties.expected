@@ -4,22 +4,25 @@ delegatedProperties
 | delegatedProperties.kt:23:9:23:31 | name | name | local | delegatedProperties.kt:23:26:23:31 | Map<String,Object> name$delegate | delegatedProperties.kt:23:29:23:31 | map |
 | delegatedProperties.kt:33:9:33:76 | readOnly | readOnly | local | delegatedProperties.kt:33:27:33:47 | ReadWriteProperty<Object,Integer> readOnly$delegate | delegatedProperties.kt:33:30:33:47 | resourceDelegate(...) |
 | delegatedProperties.kt:34:9:34:48 | readWrite | readWrite | local | delegatedProperties.kt:34:28:34:48 | ReadWriteProperty<Object,Integer> readWrite$delegate | delegatedProperties.kt:34:31:34:48 | resourceDelegate(...) |
-| delegatedProperties.kt:40:5:40:47 | varResource0 | varResource0 | non-local | delegatedProperties.kt:40:27:40:47 | varResource0$delegate | delegatedProperties.kt:40:30:40:47 | new ResourceDelegate(...) |
+| delegatedProperties.kt:39:9:39:51 | varResource2 | varResource2 | local | delegatedProperties.kt:39:31:39:51 | ResourceDelegate varResource2$delegate | delegatedProperties.kt:39:31:39:51 | provideDelegate(...) |
+| delegatedProperties.kt:42:5:42:47 | varResource0 | varResource0 | non-local | delegatedProperties.kt:42:27:42:47 | varResource0$delegate | delegatedProperties.kt:42:30:42:47 | new ResourceDelegate(...) |
 delegatedPropertyTypes
 | delegatedProperties.kt:6:9:9:9 | prop1 | file://:0:0:0:0 | int | file://<external>/Lazy.class:0:0:0:0 | Lazy<Integer> |
-| delegatedProperties.kt:19:9:19:51 | varResource1 | file://:0:0:0:0 | int | delegatedProperties.kt:43:1:49:1 | ResourceDelegate |
+| delegatedProperties.kt:19:9:19:51 | varResource1 | file://:0:0:0:0 | int | delegatedProperties.kt:45:1:51:1 | ResourceDelegate |
 | delegatedProperties.kt:23:9:23:31 | name | file://<external>/String.class:0:0:0:0 | String | file://<external>/Map.class:0:0:0:0 | Map<String,Object> |
 | delegatedProperties.kt:33:9:33:76 | readOnly | file://:0:0:0:0 | int | file://<external>/ReadWriteProperty.class:0:0:0:0 | ReadWriteProperty<Object,Integer> |
 | delegatedProperties.kt:34:9:34:48 | readWrite | file://:0:0:0:0 | int | file://<external>/ReadWriteProperty.class:0:0:0:0 | ReadWriteProperty<Object,Integer> |
-| delegatedProperties.kt:40:5:40:47 | varResource0 | file://:0:0:0:0 | int | delegatedProperties.kt:43:1:49:1 | ResourceDelegate |
+| delegatedProperties.kt:39:9:39:51 | varResource2 | file://:0:0:0:0 | int | delegatedProperties.kt:45:1:51:1 | ResourceDelegate |
+| delegatedProperties.kt:42:5:42:47 | varResource0 | file://:0:0:0:0 | int | delegatedProperties.kt:45:1:51:1 | ResourceDelegate |
 delegatedPropertyGetters
 | delegatedProperties.kt:6:9:9:9 | prop1 | delegatedProperties.kt:6:24:9:9 | <get-prop1> |
 | delegatedProperties.kt:19:9:19:51 | varResource1 | delegatedProperties.kt:19:31:19:51 | <get-varResource1> |
 | delegatedProperties.kt:23:9:23:31 | name | delegatedProperties.kt:23:26:23:31 | <get-name> |
 | delegatedProperties.kt:33:9:33:76 | readOnly | delegatedProperties.kt:33:27:33:47 | <get-readOnly> |
 | delegatedProperties.kt:34:9:34:48 | readWrite | delegatedProperties.kt:34:28:34:48 | <get-readWrite> |
-| delegatedProperties.kt:40:5:40:47 | varResource0 | delegatedProperties.kt:40:27:40:47 | getVarResource0 |
+| delegatedProperties.kt:39:9:39:51 | varResource2 | delegatedProperties.kt:39:31:39:51 | <get-varResource2> |
+| delegatedProperties.kt:42:5:42:47 | varResource0 | delegatedProperties.kt:42:27:42:47 | getVarResource0 |
 delegatedPropertySetters
 | delegatedProperties.kt:19:9:19:51 | varResource1 | delegatedProperties.kt:19:31:19:51 | <set-varResource1> |
 | delegatedProperties.kt:34:9:34:48 | readWrite | delegatedProperties.kt:34:28:34:48 | <set-readWrite> |
-| delegatedProperties.kt:40:5:40:47 | varResource0 | delegatedProperties.kt:40:27:40:47 | setVarResource0 |
+| delegatedProperties.kt:42:5:42:47 | varResource0 | delegatedProperties.kt:42:27:42:47 | setVarResource0 |
