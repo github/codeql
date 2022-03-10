@@ -13,35 +13,26 @@
 import csharp
 import semmle.code.csharp.commons.StructuralComparison
 
-class StructuralComparisonConfig extends StructuralComparisonConfiguration {
-  StructuralComparisonConfig() { this = "UselessIsBeforeAs" }
+private predicate candidate(AsExpr ae, IsExpr ie) {
+  exists(IfStmt is, TypeAccessPatternExpr tape |
+    ie = is.getCondition().getAChild*() and
+    tape = ie.getPattern() and
+    ae.getTargetType() = tape.getTarget()
+  |
+    ae = is.getThen().getAChild*()
+    or
+    ae = is.getElse().getAChild*()
+  )
+}
 
-  override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
-    exists(IfStmt is, AsExpr ae, IsExpr ie, TypeAccessPatternExpr tape |
-      ie = is.getCondition().getAChild*() and
-      tape = ie.getPattern() and
-      ae.getTargetType() = tape.getTarget() and
-      x = ie.getExpr() and
-      y = ae.getExpr()
-    |
-      ae = is.getThen().getAChild*()
-      or
-      ae = is.getElse().getAChild*()
-    )
-  }
-
-  predicate uselessIsBeforeAs(AsExpr ae, IsExpr ie) {
-    exists(Expr x, Expr y |
-      same(x, y) and
-      ie.getExpr() = x and
-      ae.getExpr() = y
-    )
-  }
+private predicate uselessIsBeforeAs(AsExpr ae, IsExpr ie) {
+  candidate(ae, ie) and
+  sameGvn(ie.getExpr(), ae.getExpr())
 }
 
 from AsExpr ae, IsExpr ie
 where
-  exists(StructuralComparisonConfig c | c.uselessIsBeforeAs(ae, ie)) and
+  uselessIsBeforeAs(ae, ie) and
   not exists(MethodCall mc | ae = mc.getAnArgument().getAChildExpr*())
 select ae,
   "This 'as' expression performs a type test - it should be directly compared against null, rendering the 'is' $@ potentially redundant.",
