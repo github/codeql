@@ -147,7 +147,7 @@ class SourceNode extends DataFlow::Node {
    */
   DataFlow::CallNode getAChainedMethodCall(string methodName) {
     // the direct call to `getAMethodCall` is needed in case the base is not a `DataFlow::CallNode`.
-    result = [getAMethodCall*().getAMethodCall(methodName), getAMethodCall(methodName)]
+    result = [getAMethodCall+().getAMethodCall(methodName), getAMethodCall(methodName)]
   }
 
   /**
