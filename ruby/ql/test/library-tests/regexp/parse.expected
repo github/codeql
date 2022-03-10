@@ -485,3 +485,5 @@ regexp.rb:
 #   75| [RegExpNamedCharacterProperty] [:digit:]
 
 #   79| [RegExpConstant, RegExpNormalChar] abc
+
+#   82| [RegExpConstant, RegExpEscape] \u{987

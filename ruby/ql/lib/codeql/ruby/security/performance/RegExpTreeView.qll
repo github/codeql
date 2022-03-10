@@ -405,7 +405,9 @@ class RegExpEscape extends RegExpNormalChar {
     result = this.getUnicode()
   }
 
-  predicate isIdentityEscape() { not this.getUnescaped() in ["n", "r", "t"] }
+  predicate isIdentityEscape() {
+    not this.getUnescaped() in ["n", "r", "t"] and not this.isUnicode()
+  }
 
   /**
    * Gets the text for this escape. That is e.g. "\w".
