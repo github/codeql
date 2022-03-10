@@ -119,3 +119,10 @@ int functionWork3b(int i) {
   scanf("%i", &i); // BAD
   return 0;
 }
+int functionWork3() {
+  char number[] = "42";
+  int d;
+  sscanf(number, "%d", &d); // GOOD: sscanf always succeeds
+  if (d < 16)
+    return -1;
+}
