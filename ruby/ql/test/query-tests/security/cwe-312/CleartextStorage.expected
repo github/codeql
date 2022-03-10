@@ -12,6 +12,9 @@ edges
 | app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" :  | app/controllers/users_controller.rb:44:21:44:32 | new_password |
 | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" :  | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" |
 | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" :  | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" |
+| app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" :  | app/models/user.rb:5:27:5:38 | new_password |
+| app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" :  | app/models/user.rb:11:22:11:33 | new_password |
+| app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" :  | app/models/user.rb:17:21:17:32 | new_password |
 nodes
 | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" :  | semmle.label | "043697b96909e03ca907599d6420555f" :  |
 | app/controllers/users_controller.rb:5:39:5:50 | new_password | semmle.label | new_password |
@@ -33,6 +36,12 @@ nodes
 | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" :  | semmle.label | "0157af7c38cbdd24f1616de4e5321861" :  |
 | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | semmle.label | "password: #{...}\\n" |
 | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | semmle.label | "password: #{...}" |
+| app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" :  | semmle.label | "06c38c6a8a9c11a9d3b209a3193047b4" :  |
+| app/models/user.rb:5:27:5:38 | new_password | semmle.label | new_password |
+| app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" :  | semmle.label | "52652fb5c709fb6b9b5a0194af7c6067" :  |
+| app/models/user.rb:11:22:11:33 | new_password | semmle.label | new_password |
+| app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" :  | semmle.label | "f982bf2531c149a8a1444a951b12e830" :  |
+| app/models/user.rb:17:21:17:32 | new_password | semmle.label | new_password |
 subpaths
 #select
 | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" :  | app/controllers/users_controller.rb:5:39:5:50 | new_password | Sensitive data returned by $@ is stored $@. | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" | an assignment to new_password | app/controllers/users_controller.rb:5:39:5:50 | new_password | here |
@@ -48,3 +57,6 @@ subpaths
 | app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" | app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" :  | app/controllers/users_controller.rb:44:21:44:32 | new_password | Sensitive data returned by $@ is stored $@. | app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" | an assignment to new_password | app/controllers/users_controller.rb:44:21:44:32 | new_password | here |
 | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" :  | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | Sensitive data returned by $@ is stored $@. | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | an assignment to new_password | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | here |
 | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" :  | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | Sensitive data returned by $@ is stored $@. | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | an assignment to new_password | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | here |
+| app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" | app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" :  | app/models/user.rb:5:27:5:38 | new_password | Sensitive data returned by $@ is stored $@. | app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" | an assignment to new_password | app/models/user.rb:5:27:5:38 | new_password | here |
+| app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" | app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" :  | app/models/user.rb:11:22:11:33 | new_password | Sensitive data returned by $@ is stored $@. | app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" | an assignment to new_password | app/models/user.rb:11:22:11:33 | new_password | here |
+| app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" | app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" :  | app/models/user.rb:17:21:17:32 | new_password | Sensitive data returned by $@ is stored $@. | app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" | an assignment to new_password | app/models/user.rb:17:21:17:32 | new_password | here |
