@@ -178,9 +178,7 @@ class FunctionDef extends Assign {
   override string toString() { result = "FunctionDef" }
 
   /** Gets the function for this statement */
-  Function getDefinedFunction() {
-    result = f.getInnerScope() // XXX: This behaves very differently. But from inspecting the results of the previous version, that had every function in the same scope as the result.
-  }
+  Function getDefinedFunction() { result = f.getInnerScope() }
 
   override Stmt getLastStatement() { result = this.getDefinedFunction().getLastStatement() }
 }
