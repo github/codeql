@@ -4,6 +4,7 @@
  * adding your own.
  */
 
+private import ruby
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.Concepts
@@ -34,6 +35,16 @@ module CommandInjection {
     RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
 
     override string getSourceType() { result = "a user-provided value" }
+  }
+
+  /**
+   * Input to a public method, considered as a flow source.
+   * This is only correct if the codebase is a Ruby gem, rather than an application.
+   */
+  class LibraryInput extends Source {
+    LibraryInput() { exists(Method m | not m.isPrivate() | this.asParameter() = m.getAParameter()) }
+
+    override string getSourceType() { result = "user-provided input" }
   }
 
   /**
