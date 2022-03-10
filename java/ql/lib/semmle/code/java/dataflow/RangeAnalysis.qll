@@ -894,4 +894,3 @@ private predicate boundedConditionalExpr(
 ) {
   bounded(cond.getBranchExpr(branch), b, delta, upper, fromBackEdge, origdelta, reason)
 }
-
