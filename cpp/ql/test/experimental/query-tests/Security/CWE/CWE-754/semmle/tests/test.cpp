@@ -115,8 +115,8 @@ int functionWork2b_() {
   globalVala2 = a[0];
   return 0;
 }
-int functionWork3b(int i) {
-  scanf("%i", &i); // BAD
+int functionWork3b(int * i) {
+  scanf("%i", i); // BAD
   return 0;
 }
 int functionWork3() {
