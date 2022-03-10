@@ -35,11 +35,6 @@ predicate linearBoundControls(BasicBlock controlled, SsaDefinition def, StackVar
   )
 }
 
-predicate isUnboundedArrayIndex(DataFlow::Node sink, VariableAccess offsetExpr) {
-  offsetExpr = sink.asExpr().(ArrayExpr).getArrayOffset() and
-  not hasUpperBound(offsetExpr)
-}
-
 predicate readsVariable(LoadInstruction load, Variable var) {
   load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
 }
@@ -79,16 +74,21 @@ class ImproperArrayIndexValidationConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { isUnboundedArrayIndex(sink, _) }
+  override predicate isSink(DataFlow::Node sink) {
+    exists(ArrayExpr arrayExpr, VariableAccess offsetExpr |
+      offsetExpr = arrayExpr.getArrayOffset() and
+      sink.asExpr() = offsetExpr and
+      not hasUpperBound(offsetExpr)
+    )
+  }
 }
 
 from
-  VariableAccess offsetExpr, ImproperArrayIndexValidationConfig conf, DataFlow::PathNode source,
-  DataFlow::PathNode sink, string sourceType
+  ImproperArrayIndexValidationConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink,
+  string sourceType
 where
   conf.hasFlowPath(source, sink) and
-  isFlowSource(source.getNode(), sourceType) and
-  isUnboundedArrayIndex(sink.getNode(), offsetExpr)
+  isFlowSource(source.getNode(), sourceType)
 select sink.getNode(), source, sink,
   "$@ flows to here and is used in an array indexing expression, potentially causing an invalid access.",
   source.getNode(), sourceType
