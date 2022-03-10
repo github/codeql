@@ -1,4 +1,2 @@
-| test.kt:2:17:2:31 | startsWith(...) | test.kt:2:17:2:31 | StringsKt | test.kt:2:13:2:15 | url |
-| test.kt:2:17:2:31 | startsWith(...) | test.kt:2:17:2:31 | StringsKt | test.kt:2:29:2:29 | 1 |
-| test.kt:3:17:3:33 | removePrefix(...) | test.kt:3:17:3:33 | StringsKt | test.kt:3:13:3:15 | url |
-| test.kt:3:17:3:33 | removePrefix(...) | test.kt:3:17:3:33 | StringsKt | test.kt:3:31:3:31 | 2 |
+| test.kt:2:17:2:31 | startsWith(...) | test.kt:2:13:2:15 | url | test.kt:2:29:2:29 | 1 |
+| test.kt:3:17:3:33 | removePrefix(...) | test.kt:3:13:3:15 | url | test.kt:3:31:3:31 | 2 |
