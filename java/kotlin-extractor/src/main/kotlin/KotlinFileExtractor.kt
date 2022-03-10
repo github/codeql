@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
+import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
@@ -2550,7 +2551,10 @@ open class KotlinFileExtractor(
                     extractTypeAccessRecursive(e.classType, locId, id, 0, callable, exprParent.enclosingStmt)
                 }
                 is IrPropertyReference -> {
-                    extractPropertyReference(e, parent, callable)
+                    extractPropertyReference("property reference", e, e.getter, e.setter, parent, callable)
+                }
+                is IrLocalDelegatedPropertyReference -> {
+                    extractPropertyReference("local delegated property reference", e, e.getter, e.setter, parent, callable)
                 }
                 else -> {
                     logger.errorElement("Unrecognised IrExpression: " + e.javaClass, e)
@@ -2769,11 +2773,14 @@ open class KotlinFileExtractor(
     }
 
     private fun extractPropertyReference(
-        propertyReferenceExpr: IrPropertyReference,
+        exprKind: String,
+        propertyReferenceExpr: IrCallableReference<out IrSymbol>,
+        getter: IrSimpleFunctionSymbol?,
+        setter: IrSimpleFunctionSymbol?,
         parent: StmtExprParent,
         callable: Label<out DbCallable>
     ) {
-        with("property reference", propertyReferenceExpr) {
+        with(exprKind, propertyReferenceExpr) {
             /*
              * Extract generated class:
              * ```
@@ -2795,9 +2802,6 @@ open class KotlinFileExtractor(
              * - KProperty0<> vs KProperty1<,>
              * - no receiver vs dispatchReceiver vs extensionReceiver
              **/
-
-            val getter = propertyReferenceExpr.getter
-            val setter = propertyReferenceExpr.setter
 
             if (getter == null && setter == null) {
                 logger.errorElement("Expected to find getter or setter for property reference.", propertyReferenceExpr)

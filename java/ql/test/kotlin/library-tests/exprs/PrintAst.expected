@@ -40,6 +40,17 @@ delegatedProperties.kt:
 #    6|                       -1: [TypeAccess] LazyKt
 #    6|                       0: [VarAccess] prop1$delegate
 #    0|                       1: [NullLiteral] null
+#    6|                       2: [PropertyRefExpr] ...::...
+#    6|                         -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
+#    6|                           1: [Constructor] 
+#    6|                             5: [BlockStmt] { ... }
+#    6|                               0: [SuperConstructorInvocationStmt] super(...)
+#    6|                           1: [Method] get
+#    6|                             5: [BlockStmt] { ... }
+#    6|                               0: [ReturnStmt] return ...
+#    6|                                 0: [MethodAccess] <get-prop1>(...)
+#    6|                         -3: [TypeAccess] KProperty0<Integer>
+#    6|                           0: [TypeAccess] Integer
 #   10|         1: [ExprStmt] <Expr>;
 #   10|           0: [MethodAccess] println(...)
 #   10|             -1: [TypeAccess] ConsoleKt
@@ -84,6 +95,24 @@ delegatedProperties.kt:
 #   19|                     0: [MethodAccess] getValue(...)
 #   19|                       -1: [VarAccess] varResource1$delegate
 #    0|                       0: [NullLiteral] null
+#   19|                       1: [PropertyRefExpr] ...::...
+#   19|                         -4: [AnonymousClass] new KMutableProperty0<Integer>(...) { ... }
+#   19|                           1: [Constructor] 
+#   19|                             5: [BlockStmt] { ... }
+#   19|                               0: [SuperConstructorInvocationStmt] super(...)
+#   19|                           1: [Method] get
+#   19|                             5: [BlockStmt] { ... }
+#   19|                               0: [ReturnStmt] return ...
+#   19|                                 0: [MethodAccess] <get-varResource1>(...)
+#   19|                           1: [Method] set
+#-----|                             4: (Parameters)
+#   19|                               0: [Parameter] a0
+#   19|                             5: [BlockStmt] { ... }
+#   19|                               0: [ReturnStmt] return ...
+#   19|                                 0: [MethodAccess] <set-varResource1>(...)
+#   19|                                   0: [VarAccess] a0
+#   19|                         -3: [TypeAccess] KMutableProperty0<Integer>
+#   19|                           0: [TypeAccess] Integer
 #   19|           2: [LocalTypeDeclStmt] class ...
 #   19|             0: [LocalClass] 
 #   19|               1: [Constructor] 
@@ -97,6 +126,24 @@ delegatedProperties.kt:
 #   19|                     0: [MethodAccess] setValue(...)
 #   19|                       -1: [VarAccess] varResource1$delegate
 #    0|                       0: [NullLiteral] null
+#   19|                       1: [PropertyRefExpr] ...::...
+#   19|                         -4: [AnonymousClass] new KMutableProperty0<Integer>(...) { ... }
+#   19|                           1: [Constructor] 
+#   19|                             5: [BlockStmt] { ... }
+#   19|                               0: [SuperConstructorInvocationStmt] super(...)
+#   19|                           1: [Method] get
+#   19|                             5: [BlockStmt] { ... }
+#   19|                               0: [ReturnStmt] return ...
+#   19|                                 0: [MethodAccess] <get-varResource1>(...)
+#   19|                           1: [Method] set
+#-----|                             4: (Parameters)
+#   19|                               0: [Parameter] a0
+#   19|                             5: [BlockStmt] { ... }
+#   19|                               0: [ReturnStmt] return ...
+#   19|                                 0: [MethodAccess] <set-varResource1>(...)
+#   19|                                   0: [VarAccess] a0
+#   19|                         -3: [TypeAccess] KMutableProperty0<Integer>
+#   19|                           0: [TypeAccess] Integer
 #   19|                       2: [VarAccess] value
 #   20|         1: [ExprStmt] <Expr>;
 #   20|           0: [MethodAccess] println(...)
@@ -127,6 +174,17 @@ delegatedProperties.kt:
 #   23|                       -1: [TypeAccess] MapAccessorsKt
 #   23|                       0: [VarAccess] name$delegate
 #    0|                       1: [NullLiteral] null
+#   23|                       2: [PropertyRefExpr] ...::...
+#   23|                         -4: [AnonymousClass] new KProperty0<String>(...) { ... }
+#   23|                           1: [Constructor] 
+#   23|                             5: [BlockStmt] { ... }
+#   23|                               0: [SuperConstructorInvocationStmt] super(...)
+#   23|                           1: [Method] get
+#   23|                             5: [BlockStmt] { ... }
+#   23|                               0: [ReturnStmt] return ...
+#   23|                                 0: [MethodAccess] <get-name>(...)
+#   23|                         -3: [TypeAccess] KProperty0<String>
+#   23|                           0: [TypeAccess] String
 #   25|         4: [LocalTypeDeclStmt] class ...
 #   25|           0: [LocalClass] 
 #   25|             1: [Constructor] 
@@ -201,6 +259,17 @@ delegatedProperties.kt:
 #   33|                     0: [MethodAccess] getValue(...)
 #   33|                       -1: [VarAccess] readOnly$delegate
 #    0|                       0: [NullLiteral] null
+#   33|                       1: [PropertyRefExpr] ...::...
+#   33|                         -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
+#   33|                           1: [Constructor] 
+#   33|                             5: [BlockStmt] { ... }
+#   33|                               0: [SuperConstructorInvocationStmt] super(...)
+#   33|                           1: [Method] get
+#   33|                             5: [BlockStmt] { ... }
+#   33|                               0: [ReturnStmt] return ...
+#   33|                                 0: [MethodAccess] <get-readOnly>(...)
+#   33|                         -3: [TypeAccess] KProperty0<Integer>
+#   33|                           0: [TypeAccess] Integer
 #   34|         6: [BlockStmt] { ... }
 #   34|           0: [LocalVariableDeclStmt] var ...;
 #   34|             1: [LocalVariableDeclExpr] readWrite$delegate
@@ -218,6 +287,24 @@ delegatedProperties.kt:
 #   34|                     0: [MethodAccess] getValue(...)
 #   34|                       -1: [VarAccess] readWrite$delegate
 #    0|                       0: [NullLiteral] null
+#   34|                       1: [PropertyRefExpr] ...::...
+#   34|                         -4: [AnonymousClass] new KMutableProperty0<Integer>(...) { ... }
+#   34|                           1: [Constructor] 
+#   34|                             5: [BlockStmt] { ... }
+#   34|                               0: [SuperConstructorInvocationStmt] super(...)
+#   34|                           1: [Method] get
+#   34|                             5: [BlockStmt] { ... }
+#   34|                               0: [ReturnStmt] return ...
+#   34|                                 0: [MethodAccess] <get-readWrite>(...)
+#   34|                           1: [Method] set
+#-----|                             4: (Parameters)
+#   34|                               0: [Parameter] a0
+#   34|                             5: [BlockStmt] { ... }
+#   34|                               0: [ReturnStmt] return ...
+#   34|                                 0: [MethodAccess] <set-readWrite>(...)
+#   34|                                   0: [VarAccess] a0
+#   34|                         -3: [TypeAccess] KMutableProperty0<Integer>
+#   34|                           0: [TypeAccess] Integer
 #   34|           2: [LocalTypeDeclStmt] class ...
 #   34|             0: [LocalClass] 
 #   34|               1: [Constructor] 
@@ -231,6 +318,24 @@ delegatedProperties.kt:
 #   34|                     0: [MethodAccess] setValue(...)
 #   34|                       -1: [VarAccess] readWrite$delegate
 #    0|                       0: [NullLiteral] null
+#   34|                       1: [PropertyRefExpr] ...::...
+#   34|                         -4: [AnonymousClass] new KMutableProperty0<Integer>(...) { ... }
+#   34|                           1: [Constructor] 
+#   34|                             5: [BlockStmt] { ... }
+#   34|                               0: [SuperConstructorInvocationStmt] super(...)
+#   34|                           1: [Method] get
+#   34|                             5: [BlockStmt] { ... }
+#   34|                               0: [ReturnStmt] return ...
+#   34|                                 0: [MethodAccess] <get-readWrite>(...)
+#   34|                           1: [Method] set
+#-----|                             4: (Parameters)
+#   34|                               0: [Parameter] a0
+#   34|                             5: [BlockStmt] { ... }
+#   34|                               0: [ReturnStmt] return ...
+#   34|                                 0: [MethodAccess] <set-readWrite>(...)
+#   34|                                   0: [VarAccess] a0
+#   34|                         -3: [TypeAccess] KMutableProperty0<Integer>
+#   34|                           0: [TypeAccess] Integer
 #   34|                       2: [VarAccess] value
 #   36|         7: [ExprStmt] <Expr>;
 #   36|           0: [MethodAccess] println(...)
@@ -248,6 +353,17 @@ delegatedProperties.kt:
 #   39|                 -1: [ClassInstanceExpr] new DelegateProvider(...)
 #   39|                   -3: [TypeAccess] DelegateProvider
 #    1|                 0: [NullLiteral] null
+#   39|                 1: [PropertyRefExpr] ...::...
+#   39|                   -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
+#   39|                     1: [Constructor] 
+#   39|                       5: [BlockStmt] { ... }
+#   39|                         0: [SuperConstructorInvocationStmt] super(...)
+#   39|                     1: [Method] get
+#   39|                       5: [BlockStmt] { ... }
+#   39|                         0: [ReturnStmt] return ...
+#   39|                           0: [MethodAccess] <get-varResource2>(...)
+#   39|                   -3: [TypeAccess] KProperty0<Integer>
+#   39|                     0: [TypeAccess] Integer
 #   39|           1: [LocalTypeDeclStmt] class ...
 #   39|             0: [LocalClass] 
 #   39|               1: [Constructor] 
@@ -259,6 +375,17 @@ delegatedProperties.kt:
 #   39|                     0: [MethodAccess] getValue(...)
 #   39|                       -1: [VarAccess] varResource2$delegate
 #    0|                       0: [NullLiteral] null
+#   39|                       1: [PropertyRefExpr] ...::...
+#   39|                         -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
+#   39|                           1: [Constructor] 
+#   39|                             5: [BlockStmt] { ... }
+#   39|                               0: [SuperConstructorInvocationStmt] super(...)
+#   39|                           1: [Method] get
+#   39|                             5: [BlockStmt] { ... }
+#   39|                               0: [ReturnStmt] return ...
+#   39|                                 0: [MethodAccess] <get-varResource2>(...)
+#   39|                         -3: [TypeAccess] KProperty0<Integer>
+#   39|                           0: [TypeAccess] Integer
 #   42|     3: [Method] getVarResource0
 #   42|       5: [BlockStmt] { ... }
 #   42|         0: [ReturnStmt] return ...
