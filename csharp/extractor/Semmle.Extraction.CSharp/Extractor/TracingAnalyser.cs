@@ -46,7 +46,6 @@ namespace Semmle.Extraction.CSharp
         {
             if (!init)
                 throw new InternalError("EndInitialize called without BeginInitialize returning true");
-            this.layout = new Layout();
             this.options = options;
             this.compilation = compilation;
             this.extractor = new TracingExtractor(GetOutputName(compilation, commandLineArguments), Logger, PathTransformer, options);
@@ -202,8 +201,7 @@ namespace Semmle.Extraction.CSharp
                 var assemblyPath = ((TracingExtractor?)extractor).OutputPath;
                 var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
                 var assembly = compilation.Assembly;
-                var projectLayout = layout.LookupProjectOrDefault(transformedAssemblyPath);
-                var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, options.TrapCompression, discardDuplicates: false);
+                var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
                 compilationTrapFile = trapWriter;  // Dispose later
                 var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
 
