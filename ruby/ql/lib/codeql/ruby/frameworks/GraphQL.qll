@@ -221,7 +221,7 @@ private class GraphqlSchemaObjectClassMethodCall extends MethodCall {
     recvCls.getModule() = resolveConstantReadAccess(this.getReceiver())
     or
     // e.g. self.some_method(...) within a graphql Object or Interface
-    this.getReceiver() instanceof Self and
+    this.getReceiver() instanceof SelfVariableAccess and
     this.getEnclosingModule() = recvCls
   }
 
