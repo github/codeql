@@ -10,6 +10,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.ApplicationHeuristics
 
 module CommandInjection {
   /**
@@ -42,7 +43,10 @@ module CommandInjection {
    * This is only correct if the codebase is a Ruby gem, rather than an application.
    */
   class LibraryInput extends Source {
-    LibraryInput() { exists(Method m | not m.isPrivate() | this.asParameter() = m.getAParameter()) }
+    LibraryInput() {
+      Application::isGem() and
+      exists(Method m | not m.isPrivate() | this.asParameter() = m.getAParameter())
+    }
 
     override string getSourceType() { result = "user-provided input" }
   }
