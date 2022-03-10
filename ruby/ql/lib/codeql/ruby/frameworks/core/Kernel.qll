@@ -9,6 +9,8 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
+private import codeql.ruby.controlflow.CfgNodes
+private import codeql.ruby.dataflow.SSA
 
 /** Provides modeling for the `Kernel` class. */
 module Kernel {
@@ -142,6 +144,43 @@ module Kernel {
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // Kernel.spawn invokes a subshell if you provide a single string as argument
       this.getNumberOfArguments() = 1 and arg = this.getAnArgument()
+    }
+  }
+
+  /**
+   * A system command executed via the `Kernel.open` method.
+   * If the first argument passed to `Kernel.open` starts with "|" then the rest
+   * of the string will be interpreted as a shell command and executed.
+   * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-open
+   */
+  class KernelOpenCall extends SystemCommandExecution::Range, KernelMethodCall {
+    KernelOpenCall() { this.getMethodName() = "open" }
+
+    override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
+
+    // Kernel.open invokes a subshell if the argument starts with "|".
+    // If we don't know the prefix of the argument, assume it could start with "|".
+    override predicate isShellInterpreted(DataFlow::Node arg) {
+      arg = this.getAnArgument() and
+      not stringArgumentCannotStartWithPipe(arg)
+    }
+
+    predicate stringArgumentCannotStartWithPipe(DataFlow::Node arg) {
+      // open("prefix#{expr}")
+      arg.asExpr()
+          .(ExprNodes::StringlikeLiteralCfgNode)
+          .getComponent(0)
+          .getConstantValue()
+          .getString()
+          .charAt(0) != "|"
+      or
+      // arg = "prefix#{expr}"
+      // open(arg)
+      exists(Ssa::WriteDefinition d, ExprNodes::StringlikeLiteralCfgNode s |
+        d.getARead() = arg.asExpr() and d.assigns(s)
+      |
+        s.getComponent(0).getConstantValue().getString().charAt(0) != "|"
+      )
     }
   }
 

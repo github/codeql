@@ -68,6 +68,29 @@ spawn({"FOO" => "BAR"}, "echo foo", unsetenv_others: true)
 spawn({"FOO" => "BAR"}, "echo", "foo", unsetenv_others: true)
 spawn({"FOO" => "BAR"}, ["echo", "echo"], "foo", unsetenv_others: true)
 
+# GOOD
+open("foo.txt")
+open("foo.txt", "r")
+open("foo.txt", "r") { |f| f.write("hello") }
+
+# BAD
+open("| cat foo.txt")
+open("| cat foo.txt", "w")
+open("| cat foo.txt", "w") { |f| f.write("hello") }
+
+cmd = "| cat foo.txt"
+open(cmd) # BAD
+
+file = "foo.txt"
+open(file) # GOOD
+
+def open_wrapped(maybe_cmd)
+  open(maybe_cmd) # BAD - string could start with '|'
+  open("foo#{maybe_cmd}.txt") # GOOD - won't cause shell execution because string doesn't start with '|'
+  file = "foo#{maybe_cmd}.txt"
+  open(file) # GOOD - same as above
+end
+
 module MockSystem
   def system(*args)
     args

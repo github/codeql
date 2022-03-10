@@ -37,6 +37,12 @@ kernelSpawnCallExecutions
 | Kernel.rb:67:1:67:58 | call to spawn |
 | Kernel.rb:68:1:68:61 | call to spawn |
 | Kernel.rb:69:1:69:71 | call to spawn |
+kernelOpenCallExecutions
+| Kernel.rb:77:1:77:21 | call to open | Kernel.rb:77:6:77:20 | "\| cat foo.txt" |
+| Kernel.rb:78:1:78:26 | call to open | Kernel.rb:78:6:78:20 | "\| cat foo.txt" |
+| Kernel.rb:79:1:79:51 | call to open | Kernel.rb:79:6:79:20 | "\| cat foo.txt" |
+| Kernel.rb:82:1:82:9 | call to open | Kernel.rb:82:6:82:8 | cmd |
+| Kernel.rb:88:3:88:17 | call to open | Kernel.rb:88:8:88:16 | maybe_cmd |
 sendCallCodeExecutions
 | Kernel.rb:2:1:2:22 | call to send | Kernel.rb:2:6:2:12 | "raise" |
 | Kernel.rb:5:1:5:19 | call to send | Kernel.rb:5:8:5:13 | "push" |
