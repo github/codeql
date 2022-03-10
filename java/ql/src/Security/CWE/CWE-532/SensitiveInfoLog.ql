@@ -11,39 +11,10 @@
  */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.SensitiveActions
-import DataFlow
+import semmle.code.java.security.SensitiveLoggingQuery
 import PathGraph
-
-/**
- * Gets a regular expression for matching names of variables that indicate the value being held may contain sensitive information
- */
-private string getACredentialRegex() { result = "(?i).*username.*" }
-
-/** Variable keeps sensitive information judging by its name * */
-class CredentialExpr extends Expr {
-  CredentialExpr() {
-    exists(Variable v | this = v.getAnAccess() |
-      v.getName().regexpMatch([getCommonSensitiveInfoRegex(), getACredentialRegex()])
-    )
-  }
-}
-
-class LoggerConfiguration extends DataFlow::Configuration {
-  LoggerConfiguration() { this = "Logger Configuration" }
-
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
-
-  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "logging") }
-
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    TaintTracking::localTaintStep(node1, node2)
-  }
-}
 
 from LoggerConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Outputting $@ to log.", source.getNode(),
+select sink.getNode(), source, sink, "This $@ is written to a log file.", source.getNode(),
   "sensitive information"
