@@ -2,8 +2,6 @@ activeRecordModelClasses
 | ActiveRecordInjection.rb:1:1:3:3 | UserGroup |
 | ActiveRecordInjection.rb:5:1:17:3 | User |
 | ActiveRecordInjection.rb:19:1:25:3 | Admin |
-| app/models/application_record.rb:1:1:3:3 | ApplicationRecord |
-| app/models/user.rb:1:1:2:3 | User |
 activeRecordSqlExecutionRanges
 | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" |
 | ActiveRecordInjection.rb:23:16:23:24 | condition |
@@ -35,18 +33,6 @@ activeRecordModelClassMethodCalls
 | ActiveRecordInjection.rb:85:5:85:33 | call to find_by |
 | ActiveRecordInjection.rb:88:5:88:34 | call to find |
 | ActiveRecordInjection.rb:94:5:94:45 | call to delete_by |
-| app/controllers/users/users_controller.rb:5:7:5:44 | call to create! |
-| app/controllers/users/users_controller.rb:6:7:6:29 | call to create |
-| app/controllers/users/users_controller.rb:7:7:7:31 | call to insert |
-| app/controllers/users/users_controller.rb:10:7:10:32 | call to update |
-| app/controllers/users/users_controller.rb:11:7:11:73 | call to update! |
-| app/controllers/users/users_controller.rb:14:7:14:66 | call to insert_all |
-| app/controllers/users/users_controller.rb:16:14:16:25 | call to find |
-| app/controllers/users/users_controller.rb:31:7:31:15 | call to last |
-| app/controllers/users/users_controller.rb:31:7:31:18 | call to id |
-| app/controllers/users/users_controller.rb:31:7:31:22 | ... + ... |
-| app/models/application_record.rb:2:3:2:21 | call to abstract_class |
-| app/models/application_record.rb:2:3:2:21 | call to abstract_class= |
 potentiallyUnsafeSqlExecutingMethodCall
 | ActiveRecordInjection.rb:10:5:10:68 | call to find |
 | ActiveRecordInjection.rb:23:5:23:25 | call to destroy_by |
@@ -63,12 +49,5 @@ activeRecordModelInstantiations
 | ActiveRecordInjection.rb:15:5:15:40 | call to find_by | ActiveRecordInjection.rb:1:1:3:3 | UserGroup |
 | ActiveRecordInjection.rb:23:5:23:25 | self | ActiveRecordInjection.rb:19:1:25:3 | Admin |
 | ActiveRecordInjection.rb:80:7:80:40 | call to find_by | ActiveRecordInjection.rb:5:1:17:3 | User |
-| ActiveRecordInjection.rb:80:7:80:40 | call to find_by | app/models/user.rb:1:1:2:3 | User |
 | ActiveRecordInjection.rb:85:5:85:33 | call to find_by | ActiveRecordInjection.rb:5:1:17:3 | User |
-| ActiveRecordInjection.rb:85:5:85:33 | call to find_by | app/models/user.rb:1:1:2:3 | User |
 | ActiveRecordInjection.rb:88:5:88:34 | call to find | ActiveRecordInjection.rb:5:1:17:3 | User |
-| ActiveRecordInjection.rb:88:5:88:34 | call to find | app/models/user.rb:1:1:2:3 | User |
-| app/controllers/users/users_controller.rb:16:14:16:25 | call to find | ActiveRecordInjection.rb:5:1:17:3 | User |
-| app/controllers/users/users_controller.rb:16:14:16:25 | call to find | app/models/user.rb:1:1:2:3 | User |
-| app/controllers/users/users_controller.rb:31:7:31:15 | call to last | ActiveRecordInjection.rb:5:1:17:3 | User |
-| app/controllers/users/users_controller.rb:31:7:31:15 | call to last | app/models/user.rb:1:1:2:3 | User |

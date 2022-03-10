@@ -7,7 +7,6 @@ actionControllerControllerClasses
 | app/controllers/photos_controller.rb:1:1:4:3 | PhotosController |
 | app/controllers/posts_controller.rb:1:1:10:3 | PostsController |
 | app/controllers/users/notifications_controller.rb:2:3:5:5 | NotificationsController |
-| app/controllers/users/users_controller.rb:2:3:33:5 | UsersController |
 actionControllerActionMethods
 | ActiveRecordInjection.rb:32:3:57:5 | some_request_handler |
 | ActiveRecordInjection.rb:61:3:69:5 | some_other_request_handler |
@@ -23,8 +22,6 @@ actionControllerActionMethods
 | app/controllers/posts_controller.rb:5:3:6:5 | show |
 | app/controllers/posts_controller.rb:8:3:9:5 | upvote |
 | app/controllers/users/notifications_controller.rb:3:5:4:7 | mark_as_read |
-| app/controllers/users/users_controller.rb:3:5:28:7 | create_or_modify |
-| app/controllers/users/users_controller.rb:30:5:32:7 | get_uid |
 paramsCalls
 | ActiveRecordInjection.rb:35:30:35:35 | call to params |
 | ActiveRecordInjection.rb:39:29:39:34 | call to params |
