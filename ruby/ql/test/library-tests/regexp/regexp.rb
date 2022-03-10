@@ -77,3 +77,6 @@
 # Simple constant interpolation
 A = "a"
 /#{A}bc/
+
+# unicode
+/\u{9879}/
