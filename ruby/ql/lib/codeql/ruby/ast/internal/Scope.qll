@@ -184,9 +184,7 @@ abstract class ScopeImpl extends AstNode, TScopeType {
 }
 
 private class ScopeRealImpl extends ScopeImpl, TScopeReal {
-  private Scope::Range range;
-
-  ScopeRealImpl() { range = toGenerated(this) }
+  ScopeRealImpl() { exists(Scope::Range range | range = toGenerated(this)) }
 
   override Variable getAVariableImpl() { result.getDeclaringScope() = this }
 }
