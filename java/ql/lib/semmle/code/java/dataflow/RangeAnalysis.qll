@@ -725,6 +725,16 @@ private predicate boundedPhiCandValidForEdge(
   )
 }
 
+pragma[noinline]
+private predicate boundedPhiCand2(
+  SsaPhiNode phi, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
+  Reason reason
+) {
+  exists(SsaVariable inp, SsaReadPositionPhiInputEdge edge | edge.phiInput(phi, inp) |
+    boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
+  )
+}
+
 /**
  * Holds if `b + delta` is a valid bound for `phi`.
  * - `upper = true`  : `phi <= b + delta`
@@ -734,7 +744,11 @@ private predicate boundedPhi(
   SsaPhiNode phi, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
   Reason reason
 ) {
-  forex(SsaVariable inp, SsaReadPositionPhiInputEdge edge | edge.phiInput(phi, inp) |
+  // Forcibly split into an existence and a forall stage instead of using forex because otherwise
+  // for certain seminaive variants we would try to postpone restricting by `edge.phiInput(phi, inp)`
+  // until too late in the process.
+  boundedPhiCand2(phi, b, delta, upper, fromBackEdge, origdelta, reason) and
+  forall(SsaVariable inp, SsaReadPositionPhiInputEdge edge | edge.phiInput(phi, inp) |
     boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
   )
 }
