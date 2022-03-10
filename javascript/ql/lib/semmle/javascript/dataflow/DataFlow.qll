@@ -445,9 +445,8 @@ module DataFlow {
    */
   private class ReflectiveCallNode extends Node, TReflectiveCallNode {
     MethodCallExpr call;
-    string kind;
 
-    ReflectiveCallNode() { this = TReflectiveCallNode(call, kind) }
+    ReflectiveCallNode() { this = TReflectiveCallNode(call, _) }
 
     override BasicBlock getBasicBlock() { result = call.getBasicBlock() }
 

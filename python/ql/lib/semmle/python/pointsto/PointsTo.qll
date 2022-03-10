@@ -8,7 +8,7 @@ private import semmle.python.types.Builtins
 private import semmle.python.types.Extensions
 
 /* Use this version for speed */
-library class CfgOrigin extends @py_object {
+class CfgOrigin extends @py_object {
   /** Gets a textual representation of this element. */
   string toString() {
     /* Not to be displayed */
@@ -1076,7 +1076,7 @@ module InterProceduralPointsTo {
   /** Helper for default_parameter_points_to */
   pragma[noinline]
   private predicate context_for_default_value(ParameterDefinition def, PointsToContext context) {
-    context.isRuntime()
+    context.isRuntime() and exists(def)
     or
     exists(PointsToContext caller, CallNode call, PythonFunctionObjectInternal func, int n |
       context.fromCall(call, func, caller) and
@@ -2286,7 +2286,7 @@ module Types {
       func != six_add_metaclass_function() and result = false
     )
     or
-    not exists(Module m | m.getName() = "six") and result = false
+    not exists(Module m | m.getName() = "six") and result = false and exists(cls)
     or
     exists(Class pycls |
       pycls = cls.getScope() and

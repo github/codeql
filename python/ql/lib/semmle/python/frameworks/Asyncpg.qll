@@ -12,13 +12,13 @@ private import semmle.python.ApiGraphs
 private module Asyncpg {
   private import semmle.python.internal.Awaited
 
-  /** A `ConectionPool` is created when the result of `asyncpg.create_pool()` is awaited. */
+  /** Gets a `ConnectionPool` that is created when the result of `asyncpg.create_pool()` is awaited. */
   API::Node connectionPool() {
     result = API::moduleImport("asyncpg").getMember("create_pool").getReturn().getAwaited()
   }
 
   /**
-   * A `Connection` is created when
+   * Gets a `Connection` that is created when
    * - the result of `asyncpg.connect()` is awaited.
    * - the result of calling `aquire` on a `ConnectionPool` is awaited.
    */
@@ -46,7 +46,7 @@ private module Asyncpg {
     }
   }
 
-  /** `Connection`s and `ConnectionPool`s provide some methods that access the file system. */
+  /** A model of `Connection` and `ConnectionPool`, which provide some methods that access the file system. */
   class FileAccessOnConnection extends FileSystemAccess::Range, DataFlow::MethodCallNode {
     string methodName;
 

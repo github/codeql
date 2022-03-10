@@ -17,11 +17,10 @@ class CandidateTopLevel extends TopLevel {
 
 /** A string literal in a toplevel that contains at least one template literal. */
 class CandidateStringLiteral extends StringLiteral {
-  CandidateTopLevel tl;
   string v;
 
   CandidateStringLiteral() {
-    tl = this.getTopLevel() and
+    this.getTopLevel() instanceof CandidateTopLevel and
     v = this.getStringValue()
   }
 

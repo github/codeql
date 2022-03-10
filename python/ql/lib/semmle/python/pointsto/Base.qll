@@ -25,13 +25,13 @@ module BasePointsTo {
   }
 }
 
-/** The kwargs parameter (**kwargs) in a function definition is always a dict */
+/** Gets the kwargs parameter (`**kwargs`). In a function definition this is always a dict. */
 predicate kwargs_points_to(ControlFlowNode f, ClassObject cls) {
   exists(Function func | func.getKwarg() = f.getNode()) and
   cls = theDictType()
 }
 
-/** The varargs (*varargs) in a function definition is always a tuple */
+/** Gets the varargs parameter (`*varargs`). In a function definition this is always a tuple. */
 predicate varargs_points_to(ControlFlowNode f, ClassObject cls) {
   exists(Function func | func.getVararg() = f.getNode()) and
   cls = theTupleType()
@@ -124,7 +124,7 @@ int version_tuple_compare(Object t) {
 predicate baseless_is_new_style(ClassObject cls) {
   cls.isBuiltin()
   or
-  major_version() = 3
+  major_version() = 3 and exists(cls)
   or
   exists(cls.declaredMetaClass())
 }

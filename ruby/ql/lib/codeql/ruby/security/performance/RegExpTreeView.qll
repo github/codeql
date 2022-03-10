@@ -69,7 +69,7 @@ class RegExpParent extends TRegExpParent {
 
   RegExpTerm getChild(int i) { none() }
 
-  RegExpTerm getAChild() { result = this.getChild(_) }
+  final RegExpTerm getAChild() { result = this.getChild(_) }
 
   int getNumChild() { result = count(this.getAChild()) }
 

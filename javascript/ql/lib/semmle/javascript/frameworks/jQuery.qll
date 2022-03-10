@@ -284,10 +284,8 @@ private class JQueryAttr3Call extends JQueryAttributeDefinition, @call_expr {
  * the DOM element constructed by `$("<script/>")`.
  */
 private class JQueryChainedElement extends DOM::Element, InvokeExpr {
-  DOM::Element inner;
-
   JQueryChainedElement() {
-    exists(JQuery::MethodCall call | this = call.asExpr() |
+    exists(JQuery::MethodCall call, DOM::Element inner | this = call.asExpr() |
       call.getReceiver().asExpr() = inner and
       defn = inner.getDefinition()
     )

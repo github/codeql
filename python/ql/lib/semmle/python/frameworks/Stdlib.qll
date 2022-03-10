@@ -13,6 +13,9 @@ private import semmle.python.frameworks.PEP249
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.internal.SelfRefMixin
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+// modeling split over multiple files to keep this file from becoming too big
+private import semmle.python.frameworks.Stdlib.Urllib
+private import semmle.python.frameworks.Stdlib.Urllib2
 
 /** Provides models for the Python standard library. */
 module Stdlib {
@@ -2338,7 +2341,8 @@ private module StdlibPrivate {
   // sqlite3
   // ---------------------------------------------------------------------------
   /**
-   * sqlite3 implements PEP 249, providing ways to execute SQL statements against a database.
+   * A model of sqlite3 as a module that implements PEP 249, providing ways to execute SQL statements
+   * against a database.
    *
    * See https://devdocs.io/python~3.9/library/sqlite3
    */
