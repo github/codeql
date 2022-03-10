@@ -227,5 +227,4 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
     cb.getLastNode() = this.getAControlFlowNode() and
     cb.controls(controlled, s)
   }
-  // potentially very large predicate, so must be inlined
 }
