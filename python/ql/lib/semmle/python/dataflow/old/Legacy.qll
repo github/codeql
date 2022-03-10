@@ -2,7 +2,6 @@ import semmle.python.dataflow.TaintTracking
 private import semmle.python.objects.ObjectInternal
 import semmle.python.dataflow.Implementation
 
-/* For backwards compatibility -- Use `TaintTrackingContext` instead. */
 /* Backwards compatibility with config-less taint-tracking */
 private class LegacyConfiguration extends TaintTracking::Configuration {
   LegacyConfiguration() {

@@ -494,8 +494,6 @@ private EssaVariable potential_input(EssaNodeRefinement ref) {
   )
 }
 
-/* For backwards compatibility */
-/* For backwards compatibility */
 /** An assignment to a variable `v = val` */
 class AssignmentDefinition extends EssaNodeDefinition {
   AssignmentDefinition() {

@@ -119,8 +119,6 @@ module TaintTracking {
       this.(TaintTrackingImplementation).hasFlowPath(src, sink)
     }
 
-    /* Old query API */
-    /* deprecated */
     /* New query API */
     predicate hasSimpleFlow(DataFlow::Node src, DataFlow::Node sink) {
       exists(PathSource psrc, PathSink psink |
