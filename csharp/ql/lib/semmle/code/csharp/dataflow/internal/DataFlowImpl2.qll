@@ -1709,15 +1709,28 @@ private module LocalFlowBigStep {
   predicate localFlowEntry(NodeEx node, FlowState state, Configuration config) {
     Stage2::revFlow(node, state, config) and
     (
-      sourceNode(node, state, config) or
-      jumpStep(_, node, config) or
-      additionalJumpStep(_, node, config) or
-      additionalJumpStateStep(_, _, node, state, config) or
-      node instanceof ParamNodeEx or
-      node.asNode() instanceof OutNodeExt or
-      store(_, _, node, _, config) or
-      read(_, _, node, config) or
+      sourceNode(node, state, config)
+      or
+      jumpStep(_, node, config)
+      or
+      additionalJumpStep(_, node, config)
+      or
+      additionalJumpStateStep(_, _, node, state, config)
+      or
+      node instanceof ParamNodeEx
+      or
+      node.asNode() instanceof OutNodeExt
+      or
+      store(_, _, node, _, config)
+      or
+      read(_, _, node, config)
+      or
       node instanceof FlowCheckNode
+      or
+      exists(FlowState s |
+        additionalLocalStateStep(_, s, node, state, config) and
+        s != state
+      )
     )
   }
 
@@ -1737,6 +1750,9 @@ private module LocalFlowBigStep {
     or
     exists(NodeEx next, FlowState s | Stage2::revFlow(next, s, config) |
       additionalJumpStateStep(node, state, next, s, config)
+      or
+      additionalLocalStateStep(node, state, next, s, config) and
+      s != state
     )
     or
     Stage2::revFlow(node, state, config) and
@@ -1773,12 +1789,12 @@ private module LocalFlowBigStep {
     NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
     DataFlowType t, Configuration config, LocalCallContext cc
   ) {
+    state1 = pragma[only_bind_into](state2) and
     not isUnreachableInCallCached(node2.asNode(), cc.(LocalCallContextSpecificCall).getCall()) and
     (
       localFlowEntry(node1, pragma[only_bind_into](state1), pragma[only_bind_into](config)) and
       (
         localFlowStepNodeCand1(node1, node2, config) and
-        state1 = state2 and
         preservesValue = true and
         t = node1.getDataFlowType() // irrelevant dummy value
         or
@@ -1970,6 +1986,13 @@ private module Stage3 {
       or
       localStep(mid, state0, node, state, false, ap, config, localCc) and
       ap0 instanceof ApNil
+    )
+    or
+    exists(NodeEx mid, FlowState state0, ApNil nil |
+      fwdFlow(mid, pragma[only_bind_into](state0), cc, argAp, nil, pragma[only_bind_into](config)) and
+      additionalLocalStateStep(mid, state0, node, state, config) and
+      state != state0 and
+      ap = getApNil(node)
     )
     or
     exists(NodeEx mid |
@@ -2193,6 +2216,13 @@ private module Stage3 {
     exists(NodeEx mid, FlowState state0, ApNil nil |
       fwdFlow(node, pragma[only_bind_into](state), _, _, ap, pragma[only_bind_into](config)) and
       localStep(node, pragma[only_bind_into](state), mid, state0, false, _, config, _) and
+      revFlow(mid, state0, toReturn, returnAp, nil, pragma[only_bind_into](config)) and
+      ap instanceof ApNil
+    )
+    or
+    exists(NodeEx mid, FlowState state0, ApNil nil |
+      additionalLocalStateStep(node, state, mid, state0, config) and
+      state != state0 and
       revFlow(mid, state0, toReturn, returnAp, nil, pragma[only_bind_into](config)) and
       ap instanceof ApNil
     )
@@ -2800,6 +2830,13 @@ private module Stage4 {
       ap0 instanceof ApNil
     )
     or
+    exists(NodeEx mid, FlowState state0, ApNil nil |
+      fwdFlow(mid, pragma[only_bind_into](state0), cc, argAp, nil, pragma[only_bind_into](config)) and
+      additionalLocalStateStep(mid, state0, node, state, config) and
+      state != state0 and
+      ap = getApNil(node)
+    )
+    or
     exists(NodeEx mid |
       fwdFlow(mid, pragma[only_bind_into](state), _, _, ap, pragma[only_bind_into](config)) and
       jumpStep(mid, node, config) and
@@ -3021,6 +3058,13 @@ private module Stage4 {
     exists(NodeEx mid, FlowState state0, ApNil nil |
       fwdFlow(node, pragma[only_bind_into](state), _, _, ap, pragma[only_bind_into](config)) and
       localStep(node, pragma[only_bind_into](state), mid, state0, false, _, config, _) and
+      revFlow(mid, state0, toReturn, returnAp, nil, pragma[only_bind_into](config)) and
+      ap instanceof ApNil
+    )
+    or
+    exists(NodeEx mid, FlowState state0, ApNil nil |
+      additionalLocalStateStep(node, state, mid, state0, config) and
+      state != state0 and
       revFlow(mid, state0, toReturn, returnAp, nil, pragma[only_bind_into](config)) and
       ap instanceof ApNil
     )
@@ -3900,6 +3944,16 @@ private predicate pathStep(
     localFlowBigStep(midnode, state0, node, state, false, ap.getFront(), conf, localCC) and
     ap0 instanceof AccessPathNil
   )
+  or
+  exists(FlowState midstate |
+    additionalLocalStateStep(mid.getNodeEx(), midstate, node, state, mid.getConfiguration()) and
+    midstate = mid.getState() and
+    midstate != state
+  ) and
+  cc instanceof CallContextAny and
+  sc instanceof SummaryCtxNone and
+  mid.getAp() instanceof AccessPathNil and
+  ap = TAccessPathNil(node.getDataFlowType())
   or
   jumpStep(mid.getNodeEx(), node, mid.getConfiguration()) and
   state = mid.getState() and
