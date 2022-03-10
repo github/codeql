@@ -7,6 +7,7 @@
  * @id cpp/unclear-array-index-validation
  * @problem.severity warning
  * @security-severity 8.8
+ * @precision low
  * @tags security
  *       external/cwe/cwe-129
  */
