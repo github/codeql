@@ -787,16 +787,16 @@ class MemberKind extends string {
 }
 
 module MemberKind {
-  /** The kind of a method, such as `m() {}` */
+  /** Gets the kind of a method, such as `m() {}` */
   MemberKind method() { result = "method" }
 
-  /** The kind of a getter accessor, such as `get f() {}`. */
+  /** Gets the kind of a getter accessor, such as `get f() {}`. */
   MemberKind getter() { result = "getter" }
 
-  /** The kind of a setter accessor, such as `set f() {}`. */
+  /** Gets the kind of a setter accessor, such as `set f() {}`. */
   MemberKind setter() { result = "setter" }
 
-  /** The `getter` and `setter` kinds. */
+  /** Gets the `getter` and `setter` kinds. */
   MemberKind accessor() { result = getter() or result = setter() }
 
   /**

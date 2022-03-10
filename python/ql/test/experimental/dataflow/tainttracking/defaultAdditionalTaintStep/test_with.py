@@ -49,7 +49,7 @@ class Context_arg:
 def test_with_arg():
     ctx = Context_arg(TAINTED_STRING)
     with ctx as tainted:
-        ensure_tainted(tainted) # $ tainted
+        ensure_tainted(tainted) # $ MISSING: tainted
 
 
 

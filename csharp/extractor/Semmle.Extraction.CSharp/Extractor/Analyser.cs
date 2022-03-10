@@ -18,7 +18,6 @@ namespace Semmle.Extraction.CSharp
     {
         protected Extraction.Extractor? extractor;
         protected CSharpCompilation? compilation;
-        protected Layout? layout;
         protected CommonOptions? options;
 
         private readonly object progressMutex = new object();
@@ -125,8 +124,7 @@ namespace Semmle.Extraction.CSharp
 
                 var assemblyPath = r.FilePath!;
                 var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
-                var projectLayout = layout.LookupProjectOrDefault(transformedAssemblyPath);
-                using var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, options.TrapCompression, discardDuplicates: true);
+                using var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: true);
 
                 var skipExtraction = options.Cache && File.Exists(trapWriter.TrapFile);
 
@@ -178,7 +176,7 @@ namespace Semmle.Extraction.CSharp
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            CIL.Analyser.ExtractCIL(layout, r.FilePath!, Logger, options, out var trapFile, out var extracted);
+            CIL.Analyser.ExtractCIL(r.FilePath!, Logger, options, out var trapFile, out var extracted);
             stopwatch.Stop();
             ReportProgress(r.FilePath, trapFile, stopwatch.Elapsed, extracted ? AnalysisAction.Extracted : AnalysisAction.UpToDate);
         }
@@ -192,44 +190,35 @@ namespace Semmle.Extraction.CSharp
                 var sourcePath = tree.FilePath;
                 var transformedSourcePath = PathTransformer.Transform(sourcePath);
 
-                var projectLayout = layout.LookupProjectOrNull(transformedSourcePath);
-                var excluded = projectLayout is null;
-                var trapPath = excluded ? "" : projectLayout!.GetTrapPath(Logger, transformedSourcePath, options.TrapCompression);
+                var trapPath = transformedSourcePath.GetTrapPath(Logger, options.TrapCompression);
                 var upToDate = false;
 
-                if (!excluded)
+                // compilation.Clone() is used to allow symbols to be garbage collected.
+                using var trapWriter = transformedSourcePath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
+
+                upToDate = options.Fast && FileIsUpToDate(sourcePath, trapWriter.TrapFile);
+
+                if (!upToDate)
                 {
-                    // compilation.Clone() is used to allow symbols to be garbage collected.
-                    using var trapWriter = projectLayout!.CreateTrapWriter(Logger, transformedSourcePath, options.TrapCompression, discardDuplicates: false);
+                    var cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
+                    // Ensure that the file itself is populated in case the source file is totally empty
+                    var root = tree.GetRoot();
+                    Entities.File.Create(cx, root.SyntaxTree.FilePath);
 
-                    upToDate = options.Fast && FileIsUpToDate(sourcePath, trapWriter.TrapFile);
-
-                    if (!upToDate)
+                    var csNode = (CSharpSyntaxNode)root;
+                    var directiveVisitor = new DirectiveVisitor(cx);
+                    csNode.Accept(directiveVisitor);
+                    foreach (var branch in directiveVisitor.BranchesTaken)
                     {
-                        var cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
-                        // Ensure that the file itself is populated in case the source file is totally empty
-                        var root = tree.GetRoot();
-                        Entities.File.Create(cx, root.SyntaxTree.FilePath);
-
-                        var csNode = (CSharpSyntaxNode)root;
-                        var directiveVisitor = new DirectiveVisitor(cx);
-                        csNode.Accept(directiveVisitor);
-                        foreach (var branch in directiveVisitor.BranchesTaken)
-                        {
-                            cx.TrapStackSuffix.Add(branch);
-                        }
-                        csNode.Accept(new CompilationUnitVisitor(cx));
-                        cx.PopulateAll();
-                        CommentPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
-                        cx.PopulateAll();
+                        cx.TrapStackSuffix.Add(branch);
                     }
+                    csNode.Accept(new CompilationUnitVisitor(cx));
+                    cx.PopulateAll();
+                    CommentPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
+                    cx.PopulateAll();
                 }
 
-                ReportProgress(sourcePath, trapPath, stopwatch.Elapsed, excluded
-                    ? AnalysisAction.Excluded
-                    : upToDate
-                        ? AnalysisAction.UpToDate
-                        : AnalysisAction.Extracted);
+                ReportProgress(sourcePath, trapPath, stopwatch.Elapsed, upToDate ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {

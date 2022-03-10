@@ -6,6 +6,10 @@ predicate part(Regex r, int start, int end, string kind) {
   or
   r.normalCharacter(start, end) and kind = "char"
   or
+  r.escapedCharacter(start, end) and
+  kind = "char" and
+  not r.specialCharacter(start, end, _)
+  or
   r.specialCharacter(start, end, kind)
   or
   r.sequence(start, end) and kind = "sequence"

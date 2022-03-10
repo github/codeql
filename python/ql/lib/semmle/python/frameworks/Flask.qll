@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.frameworks.Werkzeug
+private import semmle.python.frameworks.Stdlib
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.security.dataflow.PathInjectionCustomizations
@@ -192,7 +193,7 @@ module Flask {
 
     FlaskViewClass() {
       this.getABase() = Views::View::subclassRef().getAUse().asExpr() and
-      api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
+      api_node.getAnImmediateUse().asExpr() = this.getParent()
     }
 
     /** Gets a function that could handle incoming requests, if any. */
@@ -217,7 +218,7 @@ module Flask {
   class FlaskMethodViewClass extends FlaskViewClass {
     FlaskMethodViewClass() {
       this.getABase() = Views::MethodView::subclassRef().getAUse().asExpr() and
-      api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
+      api_node.getAnImmediateUse().asExpr() = this.getParent()
     }
 
     override Function getARequestHandler() {
@@ -298,7 +299,7 @@ module Flask {
     override Function getARequestHandler() {
       exists(DataFlow::LocalSourceNode func_src |
         func_src.flowsTo(this.getViewArg()) and
-        func_src.asExpr().(CallableExpr) = result.getDefinition()
+        func_src.asExpr() = result.getDefinition()
       )
       or
       exists(FlaskViewClass vc |
@@ -568,5 +569,19 @@ module Flask {
     override DataFlow::Node getAPathArgument() {
       result in [this.getArg(0), this.getArgByName("filename_or_fp")]
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Logging
+  // ---------------------------------------------------------------------------
+  /**
+   * A Flask application provides a standard Python logger via the `logger` attribute.
+   *
+   * See
+   * - https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask.logger
+   * - https://flask.palletsprojects.com/en/2.0.x/logging/
+   */
+  private class FlaskLogger extends Stdlib::Logger::InstanceSource {
+    FlaskLogger() { this = FlaskApp::instance().getMember("logger").getAnImmediateUse() }
   }
 }

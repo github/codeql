@@ -1,8 +1,13 @@
+/**
+ * Provides modeling for the `OpenURI` library.
+ */
+
 private import ruby
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.frameworks.StandardLibrary
+private import codeql.ruby.DataFlow
+private import codeql.ruby.frameworks.Core
 
 /**
  * A call that makes an HTTP request using `OpenURI` via `URI.open` or

@@ -3,6 +3,7 @@ private import semmle.code.cpp.ir.implementation.IRType
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.CppType
+private import semmle.code.cpp.ir.internal.IRUtilities
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
@@ -813,7 +814,9 @@ abstract class TranslatedVariableAccess extends TranslatedNonConstantExpr {
 }
 
 class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
-  TranslatedNonFieldVariableAccess() { not expr instanceof FieldAccess }
+  TranslatedNonFieldVariableAccess() {
+    not expr instanceof FieldAccess and not isNonReferenceStructuredBinding(expr.getTarget())
+  }
 
   override Instruction getFirstInstruction() {
     if exists(this.getQualifier())
@@ -857,6 +860,71 @@ class TranslatedFieldAccess extends TranslatedVariableAccess {
   override Field getInstructionField(InstructionTag tag) {
     tag = OnlyInstructionTag() and
     result = expr.getTarget()
+  }
+}
+
+/**
+ * The IR translation of a variable access of a structured binding, where the type
+ * of the structured binding is not of a reference type, e.g., `x0` and `x1`
+ * in `auto [x0, x1] = xs` where `xs` is an array. Although the type of the
+ * structured binding is a non-reference type, the structured binding behaves
+ * like a reference. Hence, the translation requires a `VariableAddress` followed
+ * by a `Load` instead of only a `VariableAddress` as produced by
+ * `TranslatedVariableAccess`.
+ */
+class TranslatedStructuredBindingVariableAccess extends TranslatedNonConstantExpr {
+  override VariableAccess expr;
+
+  TranslatedStructuredBindingVariableAccess() { isNonReferenceStructuredBinding(expr.getTarget()) }
+
+  override Instruction getFirstInstruction() {
+    // Structured bindings cannot be qualified.
+    result = this.getInstruction(StructuredBindingAccessTag())
+  }
+
+  override TranslatedElement getChild(int id) {
+    // Structured bindings cannot be qualified.
+    none()
+  }
+
+  override Instruction getResult() { result = this.getInstruction(LoadTag()) }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = StructuredBindingAccessTag() and
+    kind instanceof GotoEdge and
+    result = this.getInstruction(LoadTag())
+    or
+    tag = LoadTag() and
+    kind instanceof GotoEdge and
+    result = this.getParent().getChildSuccessor(this)
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = StructuredBindingAccessTag() and
+    opcode instanceof Opcode::VariableAddress and
+    resultType = getTypeForGLValue(this.getLValueReferenceType())
+    or
+    tag = LoadTag() and
+    opcode instanceof Opcode::Load and
+    resultType = getTypeForPRValue(this.getLValueReferenceType())
+  }
+
+  private LValueReferenceType getLValueReferenceType() {
+    // The extractor ensures `result` exists when `isNonReferenceStructuredBinding(expr.getTarget())` holds.
+    result.getBaseType() = expr.getUnspecifiedType()
+  }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = LoadTag() and
+    operandTag instanceof AddressOperandTag and
+    result = this.getInstruction(StructuredBindingAccessTag())
+  }
+
+  override IRVariable getInstructionVariable(InstructionTag tag) {
+    tag = StructuredBindingAccessTag() and
+    result = getIRUserVariable(expr.getEnclosingFunction(), expr.getTarget())
   }
 }
 

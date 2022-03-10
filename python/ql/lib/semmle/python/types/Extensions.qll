@@ -65,7 +65,7 @@ abstract deprecated class CustomPointsToAttribute extends Object {
 }
 
 /* An example */
-/** Any variable iterating over range or xrange must be an integer */
+/** An extension representing the fact that a variable iterating over range or xrange must be an integer */
 class RangeIterationVariableFact extends PointsToExtension {
   RangeIterationVariableFact() {
     exists(For f, ControlFlowNode iterable |
@@ -87,7 +87,7 @@ class RangeIterationVariableFact extends PointsToExtension {
 }
 
 /* bottle module route constants */
-class BottleRoutePointToExtension extends PointsToExtension {
+deprecated class BottleRoutePointToExtension extends PointsToExtension {
   string name;
 
   BottleRoutePointToExtension() {

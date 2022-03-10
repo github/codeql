@@ -12,7 +12,7 @@ import experimental.adaptivethreatmodeling.EndpointFeatures as EndpointFeatures
 import experimental.adaptivethreatmodeling.EndpointTypes
 import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 
-/** The positive endpoint type for which you wish to find misclassified examples. */
+/** Gets the positive endpoint type for which you wish to find misclassified examples. */
 EndpointType getEndpointType() { result instanceof NosqlInjectionSinkType }
 
 /** Get a positive endpoint. This will be run through the classifier to determine whether it is misclassified. */

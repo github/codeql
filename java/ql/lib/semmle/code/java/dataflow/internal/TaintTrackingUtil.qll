@@ -283,7 +283,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.getName().matches("read%")
   or
   m instanceof GetterMethod and
-  m.getDeclaringType().getASubtype*() instanceof SpringUntrustedDataType and
+  m.getDeclaringType().getADescendant() instanceof SpringUntrustedDataType and
   not m.getDeclaringType() instanceof TypeObject
   or
   m.(TaintPreservingCallable).returnsTaintFrom(-1)
@@ -607,7 +607,7 @@ private SrcRefType entrypointType() {
     s instanceof DataFlow::ExplicitParameterNode and
     t = pragma[only_bind_out](s).getType() and
     not t instanceof TypeObject and
-    result = t.getASubtype*().getSourceDeclaration()
+    result = t.getADescendant().getSourceDeclaration()
   )
   or
   result = entrypointType().getAField().getType().(RefType).getSourceDeclaration()

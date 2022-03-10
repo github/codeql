@@ -161,7 +161,7 @@ class UrlOpenConnectionMethod extends Method {
 class CreateSocketMethod extends Method {
   CreateSocketMethod() {
     this.hasName("createSocket") and
-    this.getDeclaringType().getASupertype*() instanceof TypeSocketFactory
+    this.getDeclaringType().getAnAncestor() instanceof TypeSocketFactory
   }
 }
 

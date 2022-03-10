@@ -13,7 +13,7 @@ deprecated ClassValue theDjangoHttpRedirectClass() {
 }
 
 /** A class that is a Django Redirect Response (subclass of `django.http.HttpResponseRedirectBase`). */
-class DjangoRedirectResponseClass extends ClassValue {
+deprecated class DjangoRedirectResponseClass extends ClassValue {
   DjangoRedirectResponseClass() {
     exists(ClassValue redirect_base |
       // version 1.x
@@ -31,7 +31,7 @@ class DjangoRedirectResponseClass extends ClassValue {
  * A class that is a Django Response, which can contain content.
  * A subclass of `django.http.HttpResponse` that is not a `DjangoRedirectResponseClass`.
  */
-class DjangoContentResponseClass extends ClassValue {
+deprecated class DjangoContentResponseClass extends ClassValue {
   ClassValue base;
 
   DjangoContentResponseClass() {
@@ -59,7 +59,7 @@ class DjangoContentResponseClass extends ClassValue {
 }
 
 /** A class that is a Django Response, and is vulnerable to XSS. */
-class DjangoXSSVulnerableResponseClass extends DjangoContentResponseClass {
+deprecated class DjangoXSSVulnerableResponseClass extends DjangoContentResponseClass {
   DjangoXSSVulnerableResponseClass() {
     // We want to avoid FPs on subclasses that are not exposed to XSS, for example `JsonResponse`.
     // The easiest way is to disregard any subclass that has a special `__init__` method.

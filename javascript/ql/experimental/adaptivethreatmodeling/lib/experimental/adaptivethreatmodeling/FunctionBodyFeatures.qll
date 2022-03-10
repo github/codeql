@@ -134,7 +134,7 @@ int getNumCharsInFunction(Function f) {
 }
 
 /**
- * The maximum number of characters a feature can be.
+ * Gets the maximum number of characters a feature can be.
  * The evaluator string limit is 5395415 characters. We choose a limit lower than this.
  */
 private int getMaxChars() { result = 1000000 }

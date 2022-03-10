@@ -45,7 +45,7 @@ module UnsafeCodeConstruction {
   private DataFlow::Node isExecutedAsCode(DataFlow::TypeBackTracker t, CodeInjection::Sink codeSink) {
     t.start() and result = codeSink
     or
-    exists(DataFlow::TypeBackTracker t2 | t2 = t.smallstep(result, isExecutedAsCode(t, codeSink)))
+    exists(DataFlow::TypeBackTracker t2 | t2 = t.smallstep(result, isExecutedAsCode(t2, codeSink)))
   }
 
   /**

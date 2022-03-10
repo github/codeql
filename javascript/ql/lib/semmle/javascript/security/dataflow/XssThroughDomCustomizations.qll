@@ -136,7 +136,7 @@ module XssThroughDom {
    */
   module Forms {
     /**
-     * A reference to an import of `Formik`.
+     * Gets a reference to an import of `Formik`.
      */
     private DataFlow::SourceNode formik() {
       result = DataFlow::moduleImport("formik")

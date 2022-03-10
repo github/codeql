@@ -200,7 +200,7 @@ class IRBlock extends IRBlockBase {
    * post-dominate block `B`, but block `A` does post-dominate an immediate successor of block `B`.
    */
   pragma[noinline]
-  final IRBlock postPominanceFrontier() {
+  final IRBlock postDominanceFrontier() {
     this.postDominates(result.getASuccessor()) and
     not this.strictlyPostDominates(result)
   }

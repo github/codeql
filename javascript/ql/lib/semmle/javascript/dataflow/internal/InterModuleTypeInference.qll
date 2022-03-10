@@ -206,7 +206,7 @@ private class AnalyzedDestructuredImport extends AnalyzedPropertyRead {
 }
 
 /**
- * Flow analysis for `require` calls, interpreted as an implicit read of
+ * A call to `require`, interpreted as an implicit read of
  * the `module.exports` property of the imported module.
  */
 class AnalyzedRequireCall extends AnalyzedPropertyRead, DataFlow::ValueNode {
@@ -221,7 +221,8 @@ class AnalyzedRequireCall extends AnalyzedPropertyRead, DataFlow::ValueNode {
 }
 
 /**
- * Flow analysis for special TypeScript `require` calls in an import-assignment.
+ * A special TypeScript `require` call in an import-assignment,
+ * interpreted as an implicit of the `module.exports` property of the imported module.
  */
 class AnalyzedExternalModuleReference extends AnalyzedPropertyRead, DataFlow::ValueNode {
   Module required;
@@ -379,9 +380,10 @@ private class AnalyzedExportAssign extends AnalyzedPropertyWrite, DataFlow::Valu
  */
 private class AnalyzedClosureExportAssign extends AnalyzedPropertyWrite, DataFlow::ValueNode {
   override AssignExpr astNode;
-  Closure::ClosureModule mod;
 
-  AnalyzedClosureExportAssign() { astNode.getLhs() = mod.getExportsVariable().getAReference() }
+  AnalyzedClosureExportAssign() {
+    astNode.getLhs() = any(Closure::ClosureModule mod).getExportsVariable().getAReference()
+  }
 
   override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
     baseVal = TAbstractModuleObject(astNode.getTopLevel()) and

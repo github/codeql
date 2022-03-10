@@ -6,14 +6,14 @@ import javascript
 private import semmle.javascript.security.dataflow.Xss as Xss
 
 module Cheerio {
-  /** A reference to the `cheerio` function, possibly with a loaded DOM. */
+  /** Gets a reference to the `cheerio` function, possibly with a loaded DOM. */
   private API::Node cheerioApi() {
     result = API::moduleImport("cheerio")
     or
     result = cheerioApi().getMember(["load", "parseHTML"]).getReturn()
   }
 
-  /** A reference to the `cheerio` function, possibly with a loaded DOM. */
+  /** Gets a reference to the `cheerio` function, possibly with a loaded DOM. */
   DataFlow::SourceNode cheerioRef() { result = cheerioApi().getAUse() }
 
   /**
@@ -25,7 +25,7 @@ module Cheerio {
 
   module CheerioObjectCreation {
     /**
-     * Creation of a `cheerio` object.
+     * The creation of a `cheerio` object.
      */
     abstract class Range extends DataFlow::SourceNode { }
 

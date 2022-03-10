@@ -63,6 +63,7 @@ jobs:
   qltest:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         slice: ["1/2", "2/2"]
     steps:

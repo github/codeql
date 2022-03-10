@@ -14,7 +14,6 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
-
 /** Provides classes for modeling copying file related APIs. */
 module CopyFile {
   /**
@@ -44,7 +43,6 @@ class CopyFile extends DataFlow::Node {
 
   DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
 }
-
 
 /** Provides classes for modeling log related APIs. */
 module LogOutput {

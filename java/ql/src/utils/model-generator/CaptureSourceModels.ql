@@ -43,8 +43,8 @@ string captureSource(TargetAPI api) {
   exists(DataFlow::Node source, DataFlow::Node sink, FromSourceConfiguration config, string kind |
     config.hasFlow(source, sink) and
     sourceNode(source, kind) and
-    api = source.getEnclosingCallable() and
-    result = asSourceModel(api, returnNodeAsOutput(api, sink), kind)
+    api = sink.getEnclosingCallable() and
+    result = asSourceModel(api, returnNodeAsOutput(sink), kind)
   )
 }
 

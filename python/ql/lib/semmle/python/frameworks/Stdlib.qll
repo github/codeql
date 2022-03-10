@@ -13,6 +13,9 @@ private import semmle.python.frameworks.PEP249
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.internal.SelfRefMixin
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+// modeling split over multiple files to keep this file from becoming too big
+private import semmle.python.frameworks.Stdlib.Urllib
+private import semmle.python.frameworks.Stdlib.Urllib2
 
 /** Provides models for the Python standard library. */
 module Stdlib {
@@ -236,6 +239,54 @@ module Stdlib {
         none()
       }
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // logging
+  // ---------------------------------------------------------------------------
+  /**
+   * Provides models for the `logging.Logger` class and subclasses.
+   *
+   * See https://docs.python.org/3.9/library/logging.html#logging.Logger.
+   */
+  module Logger {
+    /** Gets a reference to the `logging.Logger` class or any subclass. */
+    private API::Node subclassRef() {
+      result = API::moduleImport("logging").getMember("Logger").getASubclass*()
+    }
+
+    /**
+     * A source of instances of `logging.Logger`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Logger::instance()` to get references to instances of `logging.Logger`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `logging.Logger`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+      ClassInstantiation() {
+        this = subclassRef().getACall()
+        or
+        this = API::moduleImport("logging").getMember("root").getAnImmediateUse()
+        or
+        this = API::moduleImport("logging").getMember("getLogger").getACall()
+      }
+    }
+
+    /** Gets a reference to an instance of `logging.Logger`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `logging.Logger`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
   }
 }
 
@@ -2290,7 +2341,8 @@ private module StdlibPrivate {
   // sqlite3
   // ---------------------------------------------------------------------------
   /**
-   * sqlite3 implements PEP 249, providing ways to execute SQL statements against a database.
+   * A model of sqlite3 as a module that implements PEP 249, providing ways to execute SQL statements
+   * against a database.
    *
    * See https://devdocs.io/python~3.9/library/sqlite3
    */
@@ -2643,27 +2695,6 @@ private module StdlibPrivate {
   // logging
   // ---------------------------------------------------------------------------
   /**
-   * Provides models for the `logging.Logger` class and subclasses.
-   *
-   * See https://docs.python.org/3.9/library/logging.html#logging.Logger.
-   */
-  module Logger {
-    /** Gets a reference to the `logging.Logger` class or any subclass. */
-    API::Node subclassRef() {
-      result = API::moduleImport("logging").getMember("Logger").getASubclass*()
-    }
-
-    /** Gets a reference to an instance of `logging.Logger` or any subclass. */
-    API::Node instance() {
-      result = subclassRef().getReturn()
-      or
-      result = API::moduleImport("logging").getMember("root")
-      or
-      result = API::moduleImport("logging").getMember("getLogger").getReturn()
-    }
-  }
-
-  /**
    * A call to one of the logging methods from `logging` or on a `logging.Logger`
    * subclass.
    *
@@ -2683,14 +2714,14 @@ private module StdlibPrivate {
         method = "log" and
         msgIndex = 1
       |
-        this = Logger::instance().getMember(method).getACall()
+        this.(DataFlow::MethodCallNode).calls(Stdlib::Logger::instance(), method)
         or
         this = API::moduleImport("logging").getMember(method).getACall()
       )
     }
 
     override DataFlow::Node getAnInput() {
-      result = this.getArgByName("msg")
+      result = this.getArgByName(["msg", "extra"])
       or
       result = this.getArg(any(int i | i >= msgIndex))
     }
@@ -2807,6 +2838,70 @@ private module StdlibPrivate {
     override DataFlow::Node getOutput() { result = this }
 
     override string getKind() { result = Escaping::getRegexKind() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // xml.etree.ElementTree
+  // ---------------------------------------------------------------------------
+  /**
+   * An instance of `xml.etree.ElementTree.ElementTree`.
+   *
+   * See https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.ElementTree
+   */
+  private API::Node elementTreeInstance() {
+    //parse to a tree
+    result =
+      API::moduleImport("xml")
+          .getMember("etree")
+          .getMember("ElementTree")
+          .getMember("parse")
+          .getReturn()
+    or
+    // construct a tree without parsing
+    result =
+      API::moduleImport("xml")
+          .getMember("etree")
+          .getMember("ElementTree")
+          .getMember("ElementTree")
+          .getReturn()
+  }
+
+  /**
+   * An instance of `xml.etree.ElementTree.Element`.
+   *
+   * See https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.Element
+   */
+  private API::Node elementInstance() {
+    // parse or go to the root of a tree
+    result = elementTreeInstance().getMember(["parse", "getroot"]).getReturn()
+    or
+    // parse directly to an element
+    result =
+      API::moduleImport("xml")
+          .getMember("etree")
+          .getMember("ElementTree")
+          .getMember(["fromstring", "fromstringlist", "XML"])
+          .getReturn()
+  }
+
+  /**
+   * A call to a find method on a tree or an element will execute an XPath expression.
+   */
+  private class ElementTreeFindCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
+    string methodName;
+
+    ElementTreeFindCall() {
+      methodName in ["find", "findall", "findtext"] and
+      (
+        this = elementTreeInstance().getMember(methodName).getACall()
+        or
+        this = elementInstance().getMember(methodName).getACall()
+      )
+    }
+
+    override DataFlow::Node getXPath() { result in [this.getArg(0), this.getArgByName("match")] }
+
+    override string getName() { result = "xml.etree" }
   }
 
   // ---------------------------------------------------------------------------

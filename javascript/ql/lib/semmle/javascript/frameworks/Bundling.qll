@@ -99,7 +99,7 @@ private predicate isBrowserifyDependencyMap(ObjectExpr deps) {
 }
 
 /**
- * A function that looks like a bundled module created
+ * Holds if `m` is a function that looks like a bundled module created
  * by Webpack.
  *
  * Parameters must be named either `module` or `exports`,

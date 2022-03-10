@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the `ActionController` library.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
@@ -66,10 +70,14 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
   /** Gets a call to render from within this method. */
   RenderCall getARenderCall() { result.getParent+() = this }
 
-  // TODO: model the implicit render call when a path through the method does
-  // not end at an explicit render or redirect
-  /** Gets the controller class containing this method. */
-  ActionControllerControllerClass getControllerClass() { result = controllerClass }
+  /**
+   * Gets the controller class containing this method.
+   */
+  ActionControllerControllerClass getControllerClass() {
+    // TODO: model the implicit render call when a path through the method does
+    // not end at an explicit render or redirect
+    result = controllerClass
+  }
 
   /**
    * Gets a route to this handler, if one exists.
@@ -97,10 +105,13 @@ private class ActionControllerContextCall extends MethodCall {
   private ActionControllerControllerClass controllerClass;
 
   ActionControllerContextCall() {
-    this.getReceiver() instanceof Self and
+    this.getReceiver() instanceof SelfVariableAccess and
     this.getEnclosingModule() = controllerClass
   }
 
+  /**
+   * Gets the controller class containing this method.
+   */
   ActionControllerControllerClass getControllerClass() { result = controllerClass }
 }
 

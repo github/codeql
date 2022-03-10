@@ -51,12 +51,12 @@ module CookieWrites {
   }
 
   /**
-   * The flag that indicates that a cookie is secure.
+   * Gets the flag that indicates that a cookie is secure.
    */
   string secure() { result = "secure" }
 
   /**
-   * The flag that indicates that a cookie is HttpOnly.
+   * Gets the flag that indicates that a cookie is HttpOnly.
    */
   string httpOnly() { result = "httpOnly" }
 }

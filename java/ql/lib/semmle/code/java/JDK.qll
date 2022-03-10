@@ -114,7 +114,7 @@ class TypeNumber extends RefType {
 
 /** A (reflexive, transitive) subtype of `java.lang.Number`. */
 class NumberType extends RefType {
-  NumberType() { exists(TypeNumber number | hasSubtype*(number, this)) }
+  NumberType() { exists(TypeNumber number | hasDescendant(number, this)) }
 }
 
 /** A numeric type, including both primitive and boxed types. */
@@ -436,13 +436,13 @@ class ArrayLengthField extends Field {
 
 /** A (reflexive, transitive) subtype of `java.lang.Throwable`. */
 class ThrowableType extends RefType {
-  ThrowableType() { exists(TypeThrowable throwable | hasSubtype*(throwable, this)) }
+  ThrowableType() { exists(TypeThrowable throwable | hasDescendant(throwable, this)) }
 }
 
 /** An unchecked exception. That is, a (reflexive, transitive) subtype of `java.lang.Error` or `java.lang.RuntimeException`. */
 class UncheckedThrowableType extends RefType {
   UncheckedThrowableType() {
-    exists(TypeError e | hasSubtype*(e, this)) or
-    exists(TypeRuntimeException e | hasSubtype*(e, this))
+    exists(TypeError e | hasDescendant(e, this)) or
+    exists(TypeRuntimeException e | hasDescendant(e, this))
   }
 }

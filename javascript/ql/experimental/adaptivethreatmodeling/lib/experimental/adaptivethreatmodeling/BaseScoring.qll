@@ -15,7 +15,7 @@ external predicate availableMlModels(
 ATMConfig getCfg() { any() }
 
 /**
- * Scoring information produced by a scoring model.
+ * A string containing scoring information produced by a scoring model.
  *
  * Scoring models include embedding models and endpoint scoring models.
  */

@@ -3,9 +3,9 @@
  * https://rubygems.org/gems/activesupport
  */
 
-import codeql.ruby.Concepts
-import codeql.ruby.DataFlow
-import codeql.ruby.frameworks.StandardLibrary
+private import ruby
+private import codeql.ruby.Concepts
+private import codeql.ruby.DataFlow
 
 /**
  * Modeling for `ActiveSupport`.

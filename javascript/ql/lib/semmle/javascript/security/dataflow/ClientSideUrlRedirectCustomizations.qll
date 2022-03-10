@@ -120,6 +120,7 @@ module ClientSideUrlRedirect {
   }
 
   /**
+   * The first argument to a call to `openExternal` seen as a sink for unvalidated URL redirection.
    * Improper use of openExternal can be leveraged to compromise the user's host.
    * When openExternal is used with untrusted content, it can be leveraged to execute arbitrary commands.
    */

@@ -587,7 +587,7 @@ class RemoteInterface extends Interface {
   Method getARemoteMethodImplementationUnchecked() {
     exists(SessionEJB ejb, Method rm |
       ejb = this.getAnEJB() and
-      not ejb.getASupertype*() = this and
+      not ejb.getAnAncestor() = this and
       rm = this.getARemoteMethod() and
       result = getAnInheritedMatchingMethodIgnoreThrows(ejb, rm.getSignature()) and
       not exists(inheritsMatchingMethodExceptThrows(ejb, rm))
@@ -603,7 +603,7 @@ class RemoteInterface extends Interface {
 /** Holds if type `t` is valid for use with RMI, i.e. whether it is serializable. */
 predicate isValidRmiType(Type t) {
   t instanceof PrimitiveType or
-  t.(RefType).getASupertype*() instanceof TypeSerializable
+  t.(RefType).getAnAncestor() instanceof TypeSerializable
 }
 
 /** Gets an argument or result type of method `m` that is not compatible for use with RMI. */
@@ -632,8 +632,8 @@ Type getAnRmiIncompatibleType(Method m) {
 
 /** Holds if exception `ex` is an unchecked exception. */
 private predicate uncheckedException(Exception ex) {
-  ex.getType().getASupertype*().hasQualifiedName("java.lang", "Error") or
-  ex.getType().getASupertype*().hasQualifiedName("java.lang", "RuntimeException")
+  ex.getType().getAnAncestor().hasQualifiedName("java.lang", "Error") or
+  ex.getType().getAnAncestor().hasQualifiedName("java.lang", "RuntimeException")
 }
 
 /**
@@ -997,7 +997,7 @@ TransactionAttributeAnnotation getInnermostTransactionAttributeAnnotation(Method
  */
 class SetRollbackOnlyMethod extends Method {
   SetRollbackOnlyMethod() {
-    this.getDeclaringType().getASupertype*().hasQualifiedName("javax.ejb", "EJBContext") and
+    this.getDeclaringType().getAnAncestor().hasQualifiedName("javax.ejb", "EJBContext") and
     this.getName() = "setRollbackOnly" and
     this.hasNoParameters()
   }

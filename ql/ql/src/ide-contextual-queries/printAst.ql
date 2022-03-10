@@ -13,7 +13,7 @@ import codeql_ql.printAstAst
 import codeql.IDEContextual
 
 /**
- * The source file to generate an AST from.
+ * Gets the source file to generate an AST from.
  */
 external string selectedSourceFile();
 

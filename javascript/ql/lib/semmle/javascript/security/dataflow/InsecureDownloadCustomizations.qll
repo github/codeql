@@ -136,12 +136,13 @@ module InsecureDownload {
    */
   class FileWriteSink extends Sink {
     ClientRequest request;
-    FileSystemWriteAccess write;
 
     FileWriteSink() {
-      this = request.getUrl() and
-      clientRequestResponse(DataFlow::TypeTracker::end(), request).flowsTo(write.getADataNode()) and
-      hasUnsafeExtension(write.getAPathArgument().getStringValue())
+      exists(FileSystemWriteAccess write |
+        this = request.getUrl() and
+        clientRequestResponse(DataFlow::TypeTracker::end(), request).flowsTo(write.getADataNode()) and
+        hasUnsafeExtension(write.getAPathArgument().getStringValue())
+      )
     }
 
     override DataFlow::FlowLabel getALabel() { result instanceof Label::InsecureURL }

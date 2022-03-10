@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for common XML libraries.
+ */
+
 private import codeql.ruby.Concepts
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
@@ -70,11 +74,26 @@ private newtype TFeature =
   TNONET() or
   TDTDLOAD()
 
+/**
+ * A representation of XML features that can be enabled or disabled.
+ * - `TNOENT`: Enables substitution of external entities.
+ * - `TNONET`: Disables network access.
+ * - `TDTDLOAD`: Disables loading of DTDs.
+ */
 class Feature extends TFeature {
+  /**
+   * Gets the bitmask value for this feature.
+   */
   abstract int getValue();
 
+  /**
+   * Gets the string representation of this feature.
+   */
   string toString() { result = this.getConstantName() }
 
+  /**
+   * Gets the name of this feature.
+   */
   abstract string getConstantName();
 }
 

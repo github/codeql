@@ -1,3 +1,16 @@
+## 0.0.10
+
+### New Queries
+
+* The query "LDAP query built from user-controlled sources" (`py/ldap-injection`) has been promoted from experimental to the main query pack. Its results will now appear by default. This query was originally [submitted as an experimental query by @jorgectf](https://github.com/github/codeql/pull/5443).
+* The query "Log Injection" (`py/log-injection`) has been promoted from experimental to the main query pack. Its results will now appear when `security-extended` is used. This query was originally [submitted as an experimental query by @haby0](https://github.com/github/codeql/pull/6182).
+
+## 0.0.9
+
+### Bug Fixes
+
+* The [View AST functionality](https://codeql.github.com/docs/codeql-for-visual-studio-code/exploring-the-structure-of-your-source-code/) no longer prints detailed information about regular expressions, greatly improving performance.
+
 ## 0.0.8
 
 ### Major Analysis Improvements

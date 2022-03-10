@@ -30,7 +30,7 @@ predicate isRouteHandlerUsingCookies(Routing::RouteHandler handler) {
 }
 
 /**
- * Checks if `route` is preceded by the cookie middleware `cookie`.
+ * Holds if `route` is preceded by the cookie middleware `cookie`.
  *
  * A router handler following after cookie parsing is assumed to depend on
  * cookies, and thus require CSRF protection.
@@ -135,7 +135,7 @@ API::CallNode passportAuthenticateCall() {
 }
 
 /**
- * A call of form `passport.authenticate(..., { session: false })`, implying that the incoming
+ * Gets a call of form `passport.authenticate(..., { session: false })`, implying that the incoming
  * request must carry its credentials rather than relying on cookies.
  *
  * In principle such routes should not be preceded by a cookie-parsing middleware, but to

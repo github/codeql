@@ -1,3 +1,4 @@
+WARNING: Type HttpRequestTaintSource has been deprecated and may be removed in future (HttpSources.ql:5,6-28)
 | ../../../query-tests/Security/lib/bottle.py:64:11:64:24 | LocalRequest() | bottle.request |
 | test.py:3:35:3:41 | ImportMember | bottle.request |
 | test.py:8:11:8:14 | name | externally controlled string |

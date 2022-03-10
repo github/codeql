@@ -300,7 +300,7 @@ module DOM {
     }
 
     /**
-     * A data flow node that might refer to some form.
+     * Gets a data flow node that might refer to some form.
      * Either by a read like `document.forms[0]`, or a property read from `document` with some constant property-name.
      * E.g. if `<form name="foobar">..</form>` exists, then `document.foobar` refers to that form.
      */

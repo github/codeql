@@ -376,7 +376,7 @@ private module Sqlite {
     result = API::Node::ofType("sqlite3", "Database")
   }
 
-  /** A call to a query method on a Sqlite database instance that returns the same instance. */
+  /** Gets a call to a query method on a Sqlite database instance that returns the same instance. */
   private API::Node getAChainingQueryCall() {
     result = database().getMember(["all", "each", "exec", "get", "run"]).getReturn()
   }

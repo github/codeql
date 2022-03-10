@@ -415,7 +415,7 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
   ClasslessPredicate() { this = TClasslessPredicate(pred) }
 
   /**
-   * If this predicate is an alias, gets the aliased value.
+   * Gets the aliased value if this predicate is an alias
    * E.g. for `predicate foo = Module::bar/2;` gets `Module::bar/2`.
    * The result is either a `PredicateExpr` or `HigherOrderFormula`.
    */
@@ -1672,7 +1672,7 @@ class Rank extends Aggregate {
   override string getAPrimaryQlClass() { result = "Rank" }
 
   /**
-   * The `i` in `rank[i]( | | )`.
+   * Gets the `i` in `rank[i]( | | )`.
    */
   Expr getRankExpr() { toQL(result) = this.getAggregate().getChild(1) }
 
@@ -1754,11 +1754,11 @@ class FieldAccess extends Identifier {
   FieldAccess() { resolveField(this, decl) }
 
   /** Gets the accessed field. */
-  VarDecl getDeclaration() { result = decl }
+  FieldDecl getDeclaration() { result.getVarDecl() = decl }
 
   override string getName() { result = id.getChild().(QL::VarName).getChild().getValue() }
 
-  override Type getType() { result = this.getDeclaration().getType() }
+  override Type getType() { result = decl.getType() }
 
   override string getAPrimaryQlClass() { result = "FieldAccess" }
 }

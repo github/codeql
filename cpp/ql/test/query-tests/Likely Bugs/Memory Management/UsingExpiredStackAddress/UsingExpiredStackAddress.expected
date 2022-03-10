@@ -1,0 +1,92 @@
+edges
+| test.cpp:10:3:10:13 | Store: ... = ... | test.cpp:14:3:14:9 | Call: call to escape1 |
+| test.cpp:10:3:10:13 | Store: ... = ... | test.cpp:19:3:19:9 | Call: call to escape1 |
+| test.cpp:10:3:10:13 | Store: ... = ... | test.cpp:28:3:28:9 | Call: call to escape1 |
+| test.cpp:10:3:10:13 | Store: ... = ... | test.cpp:28:3:28:9 | Call: call to escape1 |
+| test.cpp:10:3:10:13 | Store: ... = ... | test.cpp:37:3:37:9 | Call: call to escape1 |
+| test.cpp:10:3:10:13 | Store: ... = ... | test.cpp:37:3:37:9 | Call: call to escape1 |
+| test.cpp:10:3:10:13 | Store: ... = ... | test.cpp:210:3:210:9 | Call: call to escape1 |
+| test.cpp:10:3:10:13 | Store: ... = ... | test.cpp:210:3:210:9 | Call: call to escape1 |
+| test.cpp:10:3:10:13 | Store: ... = ... | test.cpp:210:3:210:9 | Call: call to escape1 |
+| test.cpp:14:3:14:9 | Call: call to escape1 | test.cpp:15:16:15:16 | Load: p |
+| test.cpp:23:5:23:11 | EnterFunction: deref_p | test.cpp:24:16:24:16 | Load: p |
+| test.cpp:28:3:28:9 | Call: call to escape1 | test.cpp:23:5:23:11 | EnterFunction: deref_p |
+| test.cpp:28:3:28:9 | Call: call to escape1 | test.cpp:24:16:24:16 | Load: p |
+| test.cpp:37:3:37:9 | Call: call to escape1 | test.cpp:32:5:32:11 | EnterFunction: deref_i |
+| test.cpp:52:3:52:13 | Store: ... = ... | test.cpp:57:3:57:27 | Call: call to store_address_of_argument |
+| test.cpp:57:3:57:27 | Call: call to store_address_of_argument | test.cpp:58:16:58:16 | Load: p |
+| test.cpp:68:3:68:13 | Store: ... = ... | test.cpp:72:3:72:39 | Call: call to address_escapes_through_pointer_arith |
+| test.cpp:68:3:68:13 | Store: ... = ... | test.cpp:78:3:78:39 | Call: call to address_escapes_through_pointer_arith |
+| test.cpp:68:3:68:13 | Store: ... = ... | test.cpp:86:5:86:41 | Call: call to address_escapes_through_pointer_arith |
+| test.cpp:72:3:72:39 | Call: call to address_escapes_through_pointer_arith | test.cpp:73:16:73:16 | Load: p |
+| test.cpp:78:3:78:39 | Call: call to address_escapes_through_pointer_arith | test.cpp:80:16:80:16 | Load: p |
+| test.cpp:93:3:93:15 | Store: ... = ... | test.cpp:97:3:97:23 | Call: call to field_address_escapes |
+| test.cpp:97:3:97:23 | Call: call to field_address_escapes | test.cpp:98:15:98:15 | Load: p |
+| test.cpp:106:3:106:14 | Store: ... = ... | test.cpp:110:3:110:26 | Call: call to escape_through_reference |
+| test.cpp:110:3:110:26 | Call: call to escape_through_reference | test.cpp:111:16:111:16 | Load: p |
+| test.cpp:136:3:136:12 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:137:3:137:16 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:139:3:139:12 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:140:3:140:16 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:141:3:141:15 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:142:3:142:19 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:144:3:144:12 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:145:3:145:16 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:146:3:146:15 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:147:3:147:19 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:148:3:148:18 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:149:3:149:22 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:151:3:151:15 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:152:3:152:19 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:153:3:153:18 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:154:3:154:22 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:155:3:155:21 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:156:3:156:25 | Store: ... = ... | test.cpp:160:3:160:23 | Call: call to escape_through_arrays |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:161:16:161:17 | Load: p1 |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:162:16:162:17 | Load: p1 |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:164:16:164:17 | Load: p2 |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:165:16:165:17 | Load: p2 |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:166:17:166:18 | Load: p2 |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:167:16:167:17 | Load: p1 |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:168:17:168:18 | Load: p1 |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:170:16:170:17 | Load: p3 |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:171:17:171:18 | Load: p3 |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:172:18:172:19 | Load: p2 |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:173:18:173:19 | Load: p2 |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:174:18:174:19 | Load: p1 |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:175:16:175:17 | Load: p1 |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:177:14:177:21 | Load: access to array |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:178:14:178:21 | Load: access to array |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:179:14:179:21 | Load: access to array |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:180:14:180:19 | Load: * ... |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:181:13:181:20 | Load: access to array |
+| test.cpp:160:3:160:23 | Call: call to escape_through_arrays | test.cpp:182:14:182:19 | Load: * ... |
+| test.cpp:201:5:201:17 | EnterFunction: maybe_deref_p | test.cpp:201:5:201:17 | VariableAddress: maybe_deref_p |
+| test.cpp:210:3:210:9 | Call: call to escape1 | test.cpp:201:5:201:17 | EnterFunction: maybe_deref_p |
+| test.cpp:210:3:210:9 | Call: call to escape1 | test.cpp:201:5:201:17 | VariableAddress: maybe_deref_p |
+#select
+| test.cpp:15:16:15:16 | Load: p | test.cpp:10:3:10:13 | Store: ... = ... | test.cpp:15:16:15:16 | Load: p | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:9:7:9:7 | x | x | test.cpp:10:3:10:13 | Store: ... = ... | here |
+| test.cpp:24:16:24:16 | Load: p | test.cpp:10:3:10:13 | Store: ... = ... | test.cpp:24:16:24:16 | Load: p | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:9:7:9:7 | x | x | test.cpp:10:3:10:13 | Store: ... = ... | here |
+| test.cpp:58:16:58:16 | Load: p | test.cpp:52:3:52:13 | Store: ... = ... | test.cpp:58:16:58:16 | Load: p | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:51:36:51:36 | y | y | test.cpp:52:3:52:13 | Store: ... = ... | here |
+| test.cpp:73:16:73:16 | Load: p | test.cpp:68:3:68:13 | Store: ... = ... | test.cpp:73:16:73:16 | Load: p | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:62:7:62:7 | x | x | test.cpp:68:3:68:13 | Store: ... = ... | here |
+| test.cpp:98:15:98:15 | Load: p | test.cpp:93:3:93:15 | Store: ... = ... | test.cpp:98:15:98:15 | Load: p | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:92:8:92:8 | s | s | test.cpp:93:3:93:15 | Store: ... = ... | here |
+| test.cpp:111:16:111:16 | Load: p | test.cpp:106:3:106:14 | Store: ... = ... | test.cpp:111:16:111:16 | Load: p | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:102:7:102:7 | x | x | test.cpp:106:3:106:14 | Store: ... = ... | here |
+| test.cpp:161:16:161:17 | Load: p1 | test.cpp:136:3:136:12 | Store: ... = ... | test.cpp:161:16:161:17 | Load: p1 | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:132:7:132:8 | b1 | b1 | test.cpp:136:3:136:12 | Store: ... = ... | here |
+| test.cpp:162:16:162:17 | Load: p1 | test.cpp:137:3:137:16 | Store: ... = ... | test.cpp:162:16:162:17 | Load: p1 | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:132:7:132:8 | b1 | b1 | test.cpp:137:3:137:16 | Store: ... = ... | here |
+| test.cpp:164:16:164:17 | Load: p2 | test.cpp:139:3:139:12 | Store: ... = ... | test.cpp:164:16:164:17 | Load: p2 | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:133:7:133:8 | b2 | b2 | test.cpp:139:3:139:12 | Store: ... = ... | here |
+| test.cpp:165:16:165:17 | Load: p2 | test.cpp:139:3:139:12 | Store: ... = ... | test.cpp:165:16:165:17 | Load: p2 | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:133:7:133:8 | b2 | b2 | test.cpp:139:3:139:12 | Store: ... = ... | here |
+| test.cpp:166:17:166:18 | Load: p2 | test.cpp:140:3:140:16 | Store: ... = ... | test.cpp:166:17:166:18 | Load: p2 | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:133:7:133:8 | b2 | b2 | test.cpp:140:3:140:16 | Store: ... = ... | here |
+| test.cpp:167:16:167:17 | Load: p1 | test.cpp:141:3:141:15 | Store: ... = ... | test.cpp:167:16:167:17 | Load: p1 | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:133:7:133:8 | b2 | b2 | test.cpp:141:3:141:15 | Store: ... = ... | here |
+| test.cpp:168:17:168:18 | Load: p1 | test.cpp:142:3:142:19 | Store: ... = ... | test.cpp:168:17:168:18 | Load: p1 | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:133:7:133:8 | b2 | b2 | test.cpp:142:3:142:19 | Store: ... = ... | here |
+| test.cpp:170:16:170:17 | Load: p3 | test.cpp:144:3:144:12 | Store: ... = ... | test.cpp:170:16:170:17 | Load: p3 | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:134:7:134:8 | b3 | b3 | test.cpp:144:3:144:12 | Store: ... = ... | here |
+| test.cpp:171:17:171:18 | Load: p3 | test.cpp:145:3:145:16 | Store: ... = ... | test.cpp:171:17:171:18 | Load: p3 | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:134:7:134:8 | b3 | b3 | test.cpp:145:3:145:16 | Store: ... = ... | here |
+| test.cpp:172:18:172:19 | Load: p2 | test.cpp:146:3:146:15 | Store: ... = ... | test.cpp:172:18:172:19 | Load: p2 | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:134:7:134:8 | b3 | b3 | test.cpp:146:3:146:15 | Store: ... = ... | here |
+| test.cpp:173:18:173:19 | Load: p2 | test.cpp:147:3:147:19 | Store: ... = ... | test.cpp:173:18:173:19 | Load: p2 | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:134:7:134:8 | b3 | b3 | test.cpp:147:3:147:19 | Store: ... = ... | here |
+| test.cpp:174:18:174:19 | Load: p1 | test.cpp:142:3:142:19 | Store: ... = ... | test.cpp:174:18:174:19 | Load: p1 | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:133:7:133:8 | b2 | b2 | test.cpp:142:3:142:19 | Store: ... = ... | here |
+| test.cpp:175:16:175:17 | Load: p1 | test.cpp:148:3:148:18 | Store: ... = ... | test.cpp:175:16:175:17 | Load: p1 | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:134:7:134:8 | b3 | b3 | test.cpp:148:3:148:18 | Store: ... = ... | here |
+| test.cpp:177:14:177:21 | Load: access to array | test.cpp:151:3:151:15 | Store: ... = ... | test.cpp:177:14:177:21 | Load: access to array | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:132:7:132:8 | b1 | b1 | test.cpp:151:3:151:15 | Store: ... = ... | here |
+| test.cpp:178:14:178:21 | Load: access to array | test.cpp:152:3:152:19 | Store: ... = ... | test.cpp:178:14:178:21 | Load: access to array | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:132:7:132:8 | b1 | b1 | test.cpp:152:3:152:19 | Store: ... = ... | here |
+| test.cpp:179:14:179:21 | Load: access to array | test.cpp:153:3:153:18 | Store: ... = ... | test.cpp:179:14:179:21 | Load: access to array | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:133:7:133:8 | b2 | b2 | test.cpp:153:3:153:18 | Store: ... = ... | here |
+| test.cpp:180:14:180:19 | Load: * ... | test.cpp:154:3:154:22 | Store: ... = ... | test.cpp:180:14:180:19 | Load: * ... | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:133:7:133:8 | b2 | b2 | test.cpp:154:3:154:22 | Store: ... = ... | here |
+| test.cpp:181:13:181:20 | Load: access to array | test.cpp:155:3:155:21 | Store: ... = ... | test.cpp:181:13:181:20 | Load: access to array | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:134:7:134:8 | b3 | b3 | test.cpp:155:3:155:21 | Store: ... = ... | here |
+| test.cpp:182:14:182:19 | Load: * ... | test.cpp:156:3:156:25 | Store: ... = ... | test.cpp:182:14:182:19 | Load: * ... | Stack variable $@ escapes $@ and is used after it has expired. | test.cpp:134:7:134:8 | b3 | b3 | test.cpp:156:3:156:25 | Store: ... = ... | here |

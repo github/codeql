@@ -172,7 +172,7 @@ query predicate edges(ASTNode pred, ASTNode succ) {
 }
 
 /**
- * A node in the `edge/2` relation above.
+ * Holds if `node` is in the `edge/2` relation above.
  */
 query predicate nodes(ASTNode node) {
   edges(node, _) or

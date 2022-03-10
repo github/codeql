@@ -1679,7 +1679,7 @@ class EnumScope extends @enum_scope, Scope {
 }
 
 /**
- * Scope induced by a declaration of form `declare module "X" {...}`.
+ * A scope induced by a declaration of form `declare module "X" {...}`.
  */
 class ExternalModuleScope extends @external_module_scope, Scope {
   override string toString() { result = "external module scope" }
@@ -2836,12 +2836,7 @@ class ConstructorCallSignatureType extends CallSignatureType, @constructor_signa
 private class PromiseTypeName extends TypeName {
   PromiseTypeName() {
     // The name must suggest it is a promise.
-    exists(string name | name = this.getName() |
-      name.matches("%Promise") or
-      name.matches("%PromiseLike") or
-      name.matches("%Thenable") or
-      name.matches("%Deferred")
-    ) and
+    this.getName().matches(["%Promise", "%PromiseLike", "%Thenable", "%Deferred"]) and
     // The `then` method should take a callback, taking an argument of type `T`.
     exists(TypeReference self, Type thenMethod | self = this.getType() |
       self.getNumTypeArgument() = 1 and

@@ -6,7 +6,7 @@ import java
 
 class SSLClass extends RefType {
   SSLClass() {
-    exists(Class c | this.getASupertype*() = c |
+    exists(Class c | this.getAnAncestor() = c |
       c.hasQualifiedName("javax.net.ssl", _) or
       c.hasQualifiedName("javax.rmi.ssl", _)
     )
@@ -67,7 +67,7 @@ class KeyPairGenerator extends RefType {
 class HostnameVerifierVerify extends Method {
   HostnameVerifierVerify() {
     this.hasName("verify") and
-    this.getDeclaringType().getASupertype*() instanceof HostnameVerifier and
+    this.getDeclaringType().getAnAncestor() instanceof HostnameVerifier and
     this.getParameterType(0) instanceof TypeString and
     this.getParameterType(1) instanceof SSLSession
   }
@@ -76,7 +76,7 @@ class HostnameVerifierVerify extends Method {
 class TrustManagerCheckMethod extends Method {
   TrustManagerCheckMethod() {
     (this.hasName("checkClientTrusted") or this.hasName("checkServerTrusted")) and
-    this.getDeclaringType().getASupertype*() instanceof X509TrustManager
+    this.getDeclaringType().getAnAncestor() instanceof X509TrustManager
   }
 }
 
@@ -105,14 +105,14 @@ class CreateSslEngineMethod extends Method {
 class SetConnectionFactoryMethod extends Method {
   SetConnectionFactoryMethod() {
     this.hasName("setSSLSocketFactory") and
-    this.getDeclaringType().getASupertype*() instanceof HttpsURLConnection
+    this.getDeclaringType().getAnAncestor() instanceof HttpsURLConnection
   }
 }
 
 class SetHostnameVerifierMethod extends Method {
   SetHostnameVerifierMethod() {
     this.hasName("setHostnameVerifier") and
-    this.getDeclaringType().getASupertype*() instanceof HttpsURLConnection
+    this.getDeclaringType().getAnAncestor() instanceof HttpsURLConnection
   }
 }
 
@@ -120,7 +120,7 @@ class SetHostnameVerifierMethod extends Method {
 class SetDefaultHostnameVerifierMethod extends Method {
   SetDefaultHostnameVerifierMethod() {
     this.hasName("setDefaultHostnameVerifier") and
-    this.getDeclaringType().getASupertype*() instanceof HttpsURLConnection
+    this.getDeclaringType().getAnAncestor() instanceof HttpsURLConnection
   }
 }
 
@@ -128,7 +128,7 @@ class SetDefaultHostnameVerifierMethod extends Method {
 class BeginHandshakeMethod extends Method {
   BeginHandshakeMethod() {
     this.hasName("beginHandshake") and
-    this.getDeclaringType().getASupertype*() instanceof SSLEngine
+    this.getDeclaringType().getAnAncestor() instanceof SSLEngine
   }
 }
 
@@ -136,7 +136,7 @@ class BeginHandshakeMethod extends Method {
 class SslWrapMethod extends Method {
   SslWrapMethod() {
     this.hasName("wrap") and
-    this.getDeclaringType().getASupertype*() instanceof SSLEngine
+    this.getDeclaringType().getAnAncestor() instanceof SSLEngine
   }
 }
 
@@ -144,7 +144,7 @@ class SslWrapMethod extends Method {
 class SslUnwrapMethod extends Method {
   SslUnwrapMethod() {
     this.hasName("unwrap") and
-    this.getDeclaringType().getASupertype*() instanceof SSLEngine
+    this.getDeclaringType().getAnAncestor() instanceof SSLEngine
   }
 }
 
@@ -152,7 +152,7 @@ class SslUnwrapMethod extends Method {
 class GetSslSessionMethod extends Method {
   GetSslSessionMethod() {
     this.hasName("getSession") and
-    this.getDeclaringType().getASupertype*() instanceof SSLSession
+    this.getDeclaringType().getAnAncestor() instanceof SSLSession
   }
 }
 

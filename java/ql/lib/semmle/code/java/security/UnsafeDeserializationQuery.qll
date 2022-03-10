@@ -240,7 +240,7 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
       (
         cie.getConstructor().getDeclaringType() instanceof JsonIoJsonReader or
         cie.getConstructor().getDeclaringType() instanceof YamlBeansReader or
-        cie.getConstructor().getDeclaringType().getASupertype*() instanceof UnsafeHessianInput or
+        cie.getConstructor().getDeclaringType().getAnAncestor() instanceof UnsafeHessianInput or
         cie.getConstructor().getDeclaringType() instanceof BurlapInput
       )
     )

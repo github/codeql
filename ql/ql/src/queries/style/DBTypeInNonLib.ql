@@ -10,10 +10,13 @@
 
 import ql
 
+/** Gets a folder that may contain raw DB types. */
+string folderWithDbTypes() { result = ["lib", "downgrades", "upgrades"] }
+
 from TypeExpr te
 where
   te.isDBType() and
-  not te.getLocation().getFile().getAbsolutePath().matches("%/lib/%") and
+  not te.getLocation().getFile().getAbsolutePath().matches("%/" + folderWithDbTypes() + "/%") and
   exists(File f | f.getAbsolutePath().matches("%/lib/%")) and
   // it is needed in one case.
   not te = any(Class c | c.getName() = "SuppressionScope").getASuperType() and

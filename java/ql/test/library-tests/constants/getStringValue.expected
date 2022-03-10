@@ -1,0 +1,3 @@
+| constants/Values.java:19:29:19:31 | '*' | * |
+| constants/Values.java:91:37:91:45 | "a" + "b" | ab |
+| constants/Values.java:92:35:92:44 | ... + ... | abc |

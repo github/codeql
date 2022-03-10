@@ -301,6 +301,91 @@ getExprType
 | tst.ts:238:11:238:14 | Foo3 | { foo: string; } |
 | tst.ts:238:11:238:18 | Foo3.foo | string |
 | tst.ts:238:16:238:18 | foo | string |
+| tst.ts:240:8:240:11 | TS46 | typeof TS46 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:241:9:241:12 | Base | Base |
+| tst.ts:243:9:243:15 | Derived | Derived |
+| tst.ts:243:25:243:28 | Base | Base |
+| tst.ts:244:5:244:10 | myProp | boolean |
+| tst.ts:244:14:244:17 | true | true |
+| tst.ts:246:5:249:5 | constru ... ;\\n    } | any |
+| tst.ts:247:7:247:13 | console | Console |
+| tst.ts:247:7:247:17 | console.log | (...data: any[]) => void |
+| tst.ts:247:7:247:51 | console ... per()") | void |
+| tst.ts:247:15:247:17 | log | (...data: any[]) => void |
+| tst.ts:247:19:247:50 | "Doing  ... uper()" | "Doing something before super()" |
+| tst.ts:248:7:248:13 | super() | void |
+| tst.ts:253:9:253:12 | kind | "NumberContents" |
+| tst.ts:253:33:253:39 | payload | number |
+| tst.ts:254:9:254:12 | kind | "StringContents" |
+| tst.ts:254:33:254:39 | payload | string |
+| tst.ts:256:12:256:24 | processAction | (action: Action) => void |
+| tst.ts:256:26:256:31 | action | Action |
+| tst.ts:257:13:257:16 | kind | "NumberContents" \| "StringContents" |
+| tst.ts:257:13:257:16 | kind | "NumberContents" \| "StringContents" |
+| tst.ts:257:19:257:25 | payload | string \| number |
+| tst.ts:257:19:257:25 | payload | string \| number |
+| tst.ts:257:31:257:36 | action | Action |
+| tst.ts:258:9:258:12 | kind | "NumberContents" \| "StringContents" |
+| tst.ts:258:9:258:33 | kind == ... ntents" | boolean |
+| tst.ts:258:18:258:33 | "NumberContents" | "NumberContents" |
+| tst.ts:259:7:259:13 | console | Console |
+| tst.ts:259:7:259:17 | console.log | (...data: any[]) => void |
+| tst.ts:259:7:259:36 | console ... ixed()) | void |
+| tst.ts:259:15:259:17 | log | (...data: any[]) => void |
+| tst.ts:259:19:259:25 | payload | number |
+| tst.ts:259:19:259:33 | payload.toFixed | (fractionDigits?: number) => string |
+| tst.ts:259:19:259:35 | payload.toFixed() | string |
+| tst.ts:259:27:259:33 | toFixed | (fractionDigits?: number) => string |
+| tst.ts:260:16:260:19 | kind | "StringContents" |
+| tst.ts:260:16:260:40 | kind == ... ntents" | boolean |
+| tst.ts:260:25:260:40 | "StringContents" | "StringContents" |
+| tst.ts:261:7:261:13 | console | Console |
+| tst.ts:261:7:261:17 | console.log | (...data: any[]) => void |
+| tst.ts:261:7:261:40 | console ... Case()) | void |
+| tst.ts:261:15:261:17 | log | (...data: any[]) => void |
+| tst.ts:261:19:261:25 | payload | string |
+| tst.ts:261:19:261:37 | payload.toLowerCase | () => string |
+| tst.ts:261:19:261:39 | payload ... rCase() | string |
+| tst.ts:261:27:261:37 | toLowerCase | () => string |
+| tst.ts:266:5:266:10 | number | number |
+| tst.ts:267:5:267:10 | string | string |
+| tst.ts:268:5:268:11 | boolean | boolean |
+| tst.ts:273:7:273:10 | kind | K |
+| tst.ts:278:12:278:24 | processRecord | <K extends keyof TypeMap>(record: UnionRecord<K... |
+| tst.ts:278:51:278:56 | record | UnionRecord<K> |
+| tst.ts:279:5:279:10 | record | UnionRecord<K> |
+| tst.ts:279:5:279:22 | record.f(record.v) | void |
+| tst.ts:279:14:279:19 | record | UnionRecord<K> |
+| tst.ts:279:14:279:21 | record.v | any |
+| tst.ts:279:21:279:21 | v | any |
+| tst.ts:282:3:282:15 | processRecord | <K extends keyof TypeMap>(record: UnionRecord<K... |
+| tst.ts:282:3:287:4 | process ... },\\n  }) | void |
+| tst.ts:282:17:287:3 | {\\n    k ...  },\\n  } | { kind: "string"; f: (p: string) => void; } |
+| tst.ts:283:5:283:8 | kind | "string" |
+| tst.ts:283:11:283:18 | "string" | "string" |
+| tst.ts:284:5:284:5 | f | (val: string) => void |
+| tst.ts:284:8:286:5 | (val) = ... g\\n    } | (val: string) => void |
+| tst.ts:284:9:284:11 | val | string |
+| tst.ts:285:7:285:13 | console | Console |
+| tst.ts:285:7:285:17 | console.log | (...data: any[]) => void |
+| tst.ts:285:7:285:36 | console ... Case()) | void |
+| tst.ts:285:15:285:17 | log | (...data: any[]) => void |
+| tst.ts:285:19:285:21 | val | string |
+| tst.ts:285:19:285:33 | val.toUpperCase | () => string |
+| tst.ts:285:19:285:35 | val.toUpperCase() | string |
+| tst.ts:285:23:285:33 | toUpperCase | () => string |
+| tst.ts:289:19:289:22 | args | ["a", number] \| ["b", string] |
+| tst.ts:291:9:291:10 | f1 | Func |
+| tst.ts:291:20:295:3 | (kind,  ...   }\\n  } | (kind: "a" \| "b", payload: string \| number) => ... |
+| tst.ts:291:21:291:24 | kind | "a" \| "b" |
+| tst.ts:291:27:291:33 | payload | string \| number |
+| tst.ts:292:9:292:12 | kind | "a" \| "b" |
+| tst.ts:292:9:292:20 | kind === "a" | boolean |
+| tst.ts:292:18:292:20 | "a" | "a" |
+| tst.ts:293:7:293:13 | payload | number |
+| tst.ts:293:7:293:21 | payload.toFixed | (fractionDigits?: number) => string |
+| tst.ts:293:7:293:23 | payload.toFixed() | string |
+| tst.ts:293:15:293:21 | toFixed | (fractionDigits?: number) => string |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
 | type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |
@@ -370,6 +455,12 @@ getTypeDefinitionType
 | tst.ts:205:10:208:3 | interfa ... ng;\\n  } | Success |
 | tst.ts:210:10:213:3 | interfa ... ng;\\n  } | Error |
 | tst.ts:222:3:234:3 | class P ...   }\\n  } | Person |
+| tst.ts:241:3:241:15 | class Base {} | Base |
+| tst.ts:243:3:250:3 | class D ...   }\\n  } | Derived |
+| tst.ts:252:3:254:50 | type Ac ... ring }; | Action |
+| tst.ts:265:3:269:3 | interfa ... an;\\n  } | TypeMap |
+| tst.ts:271:3:276:7 | type Un ...   }[P]; | UnionRecord<P> |
+| tst.ts:289:3:289:63 | type Fu ... > void; | Func |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -572,6 +663,46 @@ getTypeExprType
 | tst.ts:223:12:223:17 | string | string |
 | tst.ts:224:23:224:28 | string | string |
 | tst.ts:228:19:228:25 | unknown | unknown |
+| tst.ts:252:8:252:13 | Action | Action |
+| tst.ts:253:5:254:49 | \| { kin ... tring } | { kind: "NumberContents"; payload: number; } \| ... |
+| tst.ts:253:7:253:49 | { kind: ... umber } | { kind: "NumberContents"; payload: number; } |
+| tst.ts:253:15:253:30 | "NumberContents" | "NumberContents" |
+| tst.ts:253:42:253:47 | number | number |
+| tst.ts:254:7:254:49 | { kind: ... tring } | { kind: "StringContents"; payload: string; } |
+| tst.ts:254:15:254:30 | "StringContents" | "StringContents" |
+| tst.ts:254:42:254:47 | string | string |
+| tst.ts:256:34:256:39 | Action | Action |
+| tst.ts:265:13:265:19 | TypeMap | TypeMap |
+| tst.ts:266:13:266:18 | number | number |
+| tst.ts:267:13:267:18 | string | string |
+| tst.ts:268:14:268:20 | boolean | boolean |
+| tst.ts:271:8:271:18 | UnionRecord | UnionRecord<P> |
+| tst.ts:271:20:271:20 | P | P |
+| tst.ts:271:30:271:42 | keyof TypeMap | keyof TypeMap |
+| tst.ts:271:36:271:42 | TypeMap | TypeMap |
+| tst.ts:272:6:272:6 | K | K |
+| tst.ts:272:11:272:11 | P | P |
+| tst.ts:273:13:273:13 | K | K |
+| tst.ts:274:14:274:20 | TypeMap | TypeMap |
+| tst.ts:274:22:274:22 | K | K |
+| tst.ts:274:29:274:32 | void | void |
+| tst.ts:276:5:276:5 | P | P |
+| tst.ts:278:26:278:26 | K | K |
+| tst.ts:278:36:278:48 | keyof TypeMap | keyof TypeMap |
+| tst.ts:278:42:278:48 | TypeMap | TypeMap |
+| tst.ts:278:59:278:69 | UnionRecord | UnionRecord<P> |
+| tst.ts:278:59:278:72 | UnionRecord<K> | UnionRecord<K> |
+| tst.ts:278:71:278:71 | K | K |
+| tst.ts:289:8:289:11 | Func | Func |
+| tst.ts:289:25:289:37 | ["a", number] | ["a", number] |
+| tst.ts:289:25:289:53 | ["a", n ... string] | ["a", number] \| ["b", string] |
+| tst.ts:289:26:289:28 | "a" | "a" |
+| tst.ts:289:31:289:36 | number | number |
+| tst.ts:289:41:289:53 | ["b", string] | ["b", string] |
+| tst.ts:289:42:289:44 | "b" | "b" |
+| tst.ts:289:47:289:52 | string | string |
+| tst.ts:289:59:289:62 | void | void |
+| tst.ts:291:13:291:16 | Func | Func |
 | type_alias.ts:1:6:1:6 | B | boolean |
 | type_alias.ts:1:10:1:16 | boolean | boolean |
 | type_alias.ts:3:8:3:8 | B | boolean |
@@ -633,8 +764,11 @@ getTypeExprType
 | type_definitions.ts:22:32:22:37 | number | number |
 missingToString
 referenceDefinition
+| Action | tst.ts:252:3:254:50 | type Ac ... ring }; |
 | Alias<T> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
 | Alias<number> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
+| Base | tst.ts:241:3:241:15 | class Base {} |
+| Base | tst.ts:241:3:241:15 | class Base {} |
 | C | tst.ts:203:3:203:46 | type C  ... mber>>; |
 | C | type_definition_objects.ts:3:8:3:17 | class C {} |
 | C<T> | type_definitions.ts:8:1:10:1 | class C ...  x: T\\n} |
@@ -645,12 +779,14 @@ referenceDefinition
 | Color.red | type_definitions.ts:14:3:14:5 | red |
 | Colors | tst.ts:152:5:156:5 | interfa ... ;\\n    } |
 | Data | tst.ts:171:5:173:5 | interfa ... ;\\n    } |
+| Derived | tst.ts:243:3:250:3 | class D ...   }\\n  } |
 | E | type_definition_objects.ts:6:8:6:16 | enum E {} |
 | EnumWithOneMember | type_definitions.ts:18:26:18:31 | member |
 | Error | tst.ts:210:10:213:3 | interfa ... ng;\\n  } |
 | Foo | tst.ts:116:3:129:3 | class F ...   }\\n  } |
 | Foo | tst.ts:165:5:167:5 | interfa ... ;\\n    } |
 | Foo | tst.ts:179:3:192:3 | class F ...    \\n  } |
+| Func | tst.ts:289:3:289:63 | type Fu ... > void; |
 | HasArea | tst.ts:58:1:60:1 | interfa ... mber;\\n} |
 | I<S> | type_definitions.ts:3:1:5:1 | interfa ... x: S;\\n} |
 | I<number> | type_definitions.ts:3:1:5:1 | interfa ... x: S;\\n} |
@@ -666,6 +802,9 @@ referenceDefinition
 | Super | tst.ts:91:3:95:3 | class S ...   }\\n  } |
 | Thing | tst.ts:78:10:88:3 | class T ...   }\\n  } |
 | ThingI | tst.ts:73:3:76:3 | interfa ... n);\\n  } |
+| TypeMap | tst.ts:265:3:269:3 | interfa ... an;\\n  } |
+| UnionRecord<K> | tst.ts:271:3:276:7 | type Un ...   }[P]; |
+| UnionRecord<P> | tst.ts:271:3:276:7 | type Un ...   }[P]; |
 | ValueOrArray<T> | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; |
 | ValueOrArray<number> | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; |
 | VirtualNode | type_alias.ts:19:1:21:57 | type Vi ... ode[]]; |
@@ -713,14 +852,22 @@ abstractSignature
 unionIndex
 | 1 | 0 | 1 \| 2 |
 | 2 | 1 | 1 \| 2 |
+| "NumberContents" | 0 | "NumberContents" \| "StringContents" |
+| "StringContents" | 1 | "NumberContents" \| "StringContents" |
+| "a" | 0 | "a" \| "b" |
+| "a" | 1 | number \| "a" |
+| "b" | 1 | "a" \| "b" |
 | "bigint" | 2 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "boolean" | 2 | keyof TypeMap |
 | "boolean" | 3 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "circle" | 0 | "circle" \| "square" |
 | "function" | 7 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "number" | 1 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "number" | 1 | keyof TypeMap |
 | "object" | 6 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "square" | 1 | "circle" \| "square" |
 | "string" | 0 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "string" | 0 | keyof TypeMap |
 | "symbol" | 4 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "undefined" | 5 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | Error | 1 | Success \| Error |
@@ -736,6 +883,8 @@ unionIndex
 | TResult2 | 1 | TResult1 \| TResult2 |
 | ValueOrArray<T>[] | 1 | T \| ValueOrArray<T>[] |
 | ValueOrArray<number>[] | 1 | number \| ValueOrArray<number>[] |
+| ["a", number] | 0 | ["a", number] \| ["b", string] |
+| ["b", string] | 1 | ["a", number] \| ["b", string] |
 | [string, { [key: string]: any; }, ...VirtualNod... | 1 | VirtualNode \| { [key: string]: any; } |
 | [string, { [key: string]: any; }, ...VirtualNod... | 1 | string \| [string, { [key: string]: any; }, ...V... |
 | false | 0 | boolean |
@@ -743,6 +892,7 @@ unionIndex
 | false | 1 | number \| boolean |
 | false | 2 | string \| number \| boolean |
 | false | 2 | string \| number \| boolean \| { [property: string... |
+| number | 0 | number \| "a" |
 | number | 0 | number \| ValueOrArray<number>[] |
 | number | 0 | number \| boolean |
 | number | 1 | string \| number |
@@ -767,6 +917,8 @@ unionIndex
 | { [key: string]: any; } | 1 | string \| { [key: string]: any; } |
 | { [key: string]: any; } | 2 | VirtualNode \| { [key: string]: any; } |
 | { [property: string]: Json; } | 4 | string \| number \| boolean \| { [property: string... |
+| { kind: "NumberContents"; payload: number; } | 0 | { kind: "NumberContents"; payload: number; } \| ... |
+| { kind: "StringContents"; payload: string; } | 1 | { kind: "NumberContents"; payload: number; } \| ... |
 | { kind: "circle"; radius: number; } | 0 | { kind: "circle"; radius: number; } \| { kind: "... |
 | { kind: "square"; sideLength: number; } | 1 | { kind: "circle"; radius: number; } \| { kind: "... |
 | { myUnion: true; } | 0 | MyUnion \| { yetAnotherType: true; } |

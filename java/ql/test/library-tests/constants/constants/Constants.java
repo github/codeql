@@ -18,6 +18,7 @@ class Constants {
 		int paren = (12);
 		String string = "a string";
 		int ternary = (3 < 5) ? 1 : 2;
+		char charLiteral = 'a';
 		
 		return;
 	}

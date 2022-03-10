@@ -353,9 +353,9 @@ module FlowVar_internal {
         // indirection.
         result = def.getAUse(v)
         or
-        exists(SsaDefinition descendentDef |
-          this.getASuccessorSsaVar+() = TSsaVar(descendentDef, _) and
-          result = descendentDef.getAUse(v)
+        exists(SsaDefinition descendantDef |
+          this.getASuccessorSsaVar+() = TSsaVar(descendantDef, _) and
+          result = descendantDef.getAUse(v)
         )
       )
       or

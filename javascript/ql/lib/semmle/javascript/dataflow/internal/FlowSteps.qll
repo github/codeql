@@ -480,7 +480,7 @@ private module CachedSteps {
   }
 
   /**
-   * A step from `pred` to `succ` through a call to an identity function.
+   * Holds if there is a step from `pred` to `succ` through a call to an identity function.
    */
   cached
   predicate identityFunctionStep(DataFlow::Node pred, DataFlow::CallNode succ) {

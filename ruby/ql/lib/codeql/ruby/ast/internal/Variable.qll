@@ -366,7 +366,23 @@ private module Cached {
 
   cached
   predicate isCapturedAccess(LocalVariableAccess access) {
-    access.getVariable().getDeclaringScope() != access.getCfgScope()
+    exists(Scope scope1, Scope scope2 |
+      scope1 = access.getVariable().getDeclaringScope() and
+      scope2 = access.getCfgScope() and
+      scope1 != scope2
+    |
+      if access instanceof SelfVariableAccess
+      then
+        // ```
+        // class C
+        //   def self.m // not a captured access
+        //   end
+        // end
+        // ```
+        not scope2 instanceof Toplevel or
+        not access = any(SingletonMethod m).getObject()
+      else any()
+    )
   }
 
   cached

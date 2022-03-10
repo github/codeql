@@ -214,7 +214,8 @@ module PasswordHeuristics {
     or
     exists(string normalized | normalized = password.toLowerCase() |
       count(normalized.charAt(_)) = 1 or
-      normalized.regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth).*")
+      normalized
+          .regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth|fake|(my(token|password))|string|foo|bar|baz|qux|1234|3141|abcd).*")
     )
   }
 

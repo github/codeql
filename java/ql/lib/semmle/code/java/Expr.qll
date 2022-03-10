@@ -168,6 +168,8 @@ class CompileTimeConstantExpr extends Expr {
   string getStringValue() {
     result = this.(StringLiteral).getValue()
     or
+    result = this.(CharacterLiteral).getValue()
+    or
     result =
       this.(AddExpr).getLeftOperand().(CompileTimeConstantExpr).getStringValue() +
         this.(AddExpr).getRightOperand().(CompileTimeConstantExpr).getStringValue()
@@ -2093,7 +2095,7 @@ class Argument extends Expr {
       p.isVarargs() and
       ptyp = p.getType() and
       (
-        hasSubtype*(ptyp, typ)
+        hasDescendant(ptyp, typ)
         or
         // If the types don't match then we'll guess based on whether there are type variables involved.
         hasInstantiation(ptyp.(Array).getComponentType())

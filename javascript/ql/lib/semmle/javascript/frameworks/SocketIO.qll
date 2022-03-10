@@ -59,7 +59,7 @@ module SocketIO {
     private API::Node server() {
       result = node
       or
-      exists(API::Node pred | pred = server() |
+      exists(API::Node pred | pred = this.server() |
         // invocation of a chainable method
         exists(API::CallNode mcn, string m |
           m = "adapter" or

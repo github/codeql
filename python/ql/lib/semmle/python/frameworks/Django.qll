@@ -1862,7 +1862,8 @@ module PrivateDjango {
   // routing modeling
   // ---------------------------------------------------------------------------
   /**
-   * In order to recognize a class as being a django view class, based on the `as_view`
+   * A class that may be a django view class. In order to recognize a class as being a django view class,
+   * based on the `as_view`
    * call, we need to be able to track such calls on _any_ class. This is provided by
    * the member predicates of this QL class.
    *
@@ -1873,7 +1874,7 @@ module PrivateDjango {
     /** Gets a reference to this class. */
     private DataFlow::TypeTrackingNode getARef(DataFlow::TypeTracker t) {
       t.start() and
-      result.asExpr().(ClassExpr) = this.getParent()
+      result.asExpr() = this.getParent()
       or
       exists(DataFlow::TypeTracker t2 | result = this.getARef(t2).track(t2, t))
     }
@@ -1973,7 +1974,7 @@ module PrivateDjango {
   /** Provides a class for modeling new django route handlers. */
   module DjangoRouteHandler {
     /**
-     * Extend this class to model new APIs. If you want to refine existing API models,
+     * A django route handler. Extend this class to model new APIs. If you want to refine existing API models,
      * extend `DjangoRouteHandler` instead.
      */
     abstract class Range extends Function { }
@@ -2294,5 +2295,23 @@ module PrivateDjango {
     override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
     override string getMimetypeDefault() { none() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Logging
+  // ---------------------------------------------------------------------------
+  /**
+   * A standard Python logger instance from Django.
+   * see https://github.com/django/django/blob/stable/4.0.x/django/utils/log.py#L11
+   */
+  private class DjangoLogger extends Stdlib::Logger::InstanceSource {
+    DjangoLogger() {
+      this =
+        API::moduleImport("django")
+            .getMember("utils")
+            .getMember("log")
+            .getMember("request_logger")
+            .getAnImmediateUse()
+    }
   }
 }
