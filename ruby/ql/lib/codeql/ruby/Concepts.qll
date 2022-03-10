@@ -626,33 +626,31 @@ module OrmInstantiation {
 }
 
 /**
- * A data-flow node that may represent a write to the database in an ORM system.
+ * A data flow node that writes persistent data.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `OrmWriteAccess::Range` instead.
+ * extend `PersistentWriteAccess::Range` instead.
  */
-class OrmWriteAccess extends DataFlow::Node instanceof OrmWriteAccess::Range {
+class PersistentWriteAccess extends DataFlow::Node instanceof PersistentWriteAccess::Range {
   /**
-   * Gets the name of a field that is assigned to `value` by this write.
+   * Gets the data flow node corresponding to the written value.
    */
-  string getFieldNameAssignedTo(DataFlow::Node value) {
-    result = super.getFieldNameAssignedTo(value)
-  }
+  DataFlow::Node getValue() { result = super.getValue() }
 }
 
-/** Provides a class for modeling new ORM write access APIs. */
-module OrmWriteAccess {
+/** Provides a class for modeling new persistent write access APIs. */
+module PersistentWriteAccess {
   /**
-   * A data-flow node that may represent a write to the database in an ORM system.
+   * A data flow node that writes persistent data.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `OrmWriteAccess` instead.
+   * extend `PersistentWriteAccess` instead.
    */
   abstract class Range extends DataFlow::Node {
     /**
-     * Gets the name of a field that is assigned to `value` by this write.
+     * Gets the data flow node corresponding to the written value.
      */
-    abstract string getFieldNameAssignedTo(DataFlow::Node value);
+    abstract DataFlow::Node getValue();
   }
 }
 
