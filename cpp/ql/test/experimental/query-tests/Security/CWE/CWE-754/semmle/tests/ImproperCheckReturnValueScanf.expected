@@ -5,3 +5,4 @@
 | test.cpp:105:3:105:7 | call to scanf | Unchecked return value for call to 'scanf'. |
 | test.cpp:106:3:106:7 | call to scanf | Unchecked return value for call to 'scanf'. |
 | test.cpp:114:3:114:7 | call to scanf | Unchecked return value for call to 'scanf'. |
+| test.cpp:119:3:119:7 | call to scanf | Unchecked return value for call to 'scanf'. |
