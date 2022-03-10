@@ -63,4 +63,12 @@ class UsersController < ApplicationController
     # BAD: plaintext password stored to disk
     File.new("bar.txt", "a").puts("password: #{new_password}")
   end
+
+  def randomPasswordAssign
+    user = User.find(1)
+    random_password = SecureRandom.hex(20)
+    # GOOD: the `random_password` value here looks like the hash of an unknown password
+    user.password = random_password
+    user.save
+  end
 end
