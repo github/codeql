@@ -271,4 +271,3 @@ regExpNormalCharValue
 | regexp.rb:72:17:72:17 | f | f |
 | regexp.rb:79:2:79:4 | abc | abc |
 | regexp.rb:82:2:82:7 | \\u{987 | \u0987 |
-| regexp.rb:82:2:82:7 | \\u{987 | u{987 |
