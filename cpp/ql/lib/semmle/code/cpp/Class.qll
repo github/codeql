@@ -285,7 +285,7 @@ class Class extends UserType {
   predicate hasImplicitCopyConstructor() {
     not this.implicitCopyConstructorDeleted() and
     forall(CopyConstructor cc | cc = this.getAMemberFunction() |
-      cc.isCompilerGenerated() and not cc.isDeleted()
+      cc.isCompilerGenerated() and not cc.isDeleted() and not cc.isDefaulted()
     ) and
     (
       not this instanceof ClassTemplateInstantiation
@@ -310,7 +310,7 @@ class Class extends UserType {
   predicate hasImplicitCopyAssignmentOperator() {
     not this.implicitCopyAssignmentOperatorDeleted() and
     forall(CopyAssignmentOperator ca | ca = this.getAMemberFunction() |
-      ca.isCompilerGenerated() and not ca.isDeleted()
+      ca.isCompilerGenerated() and not ca.isDeleted() and not ca.isDefaulted()
     ) and
     (
       not this instanceof ClassTemplateInstantiation
