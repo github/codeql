@@ -14,24 +14,14 @@
 import csharp
 import semmle.code.csharp.commons.StructuralComparison
 
-class StructuralComparisonConfig extends StructuralComparisonConfiguration {
-  StructuralComparisonConfig() { this = "UselessNullCoalescingExpression" }
-
-  override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
-    exists(NullCoalescingExpr nce |
-      x.(Access) = nce.getLeftOperand() and
-      y.(Access) = nce.getRightOperand().getAChildExpr*()
-    )
-  }
-
-  NullCoalescingExpr getUselessNullCoalescingExpr() {
-    exists(AssignableAccess x |
-      result.getLeftOperand() = x and
-      forex(AssignableAccess y | same(x, y) | y instanceof AssignableRead and not y.isRefArgument())
-    )
-  }
+private predicate uselessNullCoalescingExpr(NullCoalescingExpr nce) {
+  forex(AssignableAccess y |
+    y = nce.getRightOperand().getAChildExpr*() and sameGvn(nce.getLeftOperand(), y)
+  |
+    y instanceof AssignableRead and not y.isRefArgument()
+  )
 }
 
-from StructuralComparisonConfig c, NullCoalescingExpr nce
-where nce = c.getUselessNullCoalescingExpr()
+from NullCoalescingExpr nce
+where uselessNullCoalescingExpr(nce)
 select nce, "Both operands of this null-coalescing expression access the same variable or property."
