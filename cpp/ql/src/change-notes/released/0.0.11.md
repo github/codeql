@@ -4,13 +4,13 @@
 
 * The deprecated queries `cpp/duplicate-block`, `cpp/duplicate-function`, `cpp/duplicate-class`, `cpp/duplicate-file`, `cpp/mostly-duplicate-function`,`cpp/similar-file`, `cpp/duplicated-lines-in-files` have been removed.
 
-### Deprecated Queries
+### Deprecated Predicates and Classes
 
 * The predicates and classes in the `CodeDuplication` library have been deprecated.
 
 ### New Queries
 
-- A new query titled "Use of expired stack-address" (`cpp/using-expired-stack-address`) has been added.
+* A new query titled "Use of expired stack-address" (`cpp/using-expired-stack-address`) has been added.
   This query finds accesses to expired stack-allocated memory that escaped via a global variable.
 * A new `cpp/insufficient-key-size` query has been added to the default query suite for C/C++. The query finds uses of certain cryptographic algorithms where the key size is too small to provide adequate encryption strength.
 
