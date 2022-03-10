@@ -259,8 +259,8 @@ private predicate localExprFlowPlusInitializers(Expr e1, Expr e2) {
 }
 
 /**
- * Holds if data can flow from `node1` to `node2` in zero or more
- * local (intra-procedural) steps or via local variable intializers
+ * Holds if data can flow from `pred` to `succ` in zero or more
+ * local (intra-procedural) steps or via instance or static variable intializers
  * for final variables.
  */
 private predicate localFlowPlusInitializers(DataFlow::Node pred, DataFlow::Node succ) {
