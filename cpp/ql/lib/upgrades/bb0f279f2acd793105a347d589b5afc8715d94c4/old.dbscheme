@@ -703,7 +703,7 @@ usertype_final(unique int id: @usertype ref);
 
 usertype_uuid(
     unique int id: @usertype ref,
-    string uuid: string ref
+    unique string uuid: string ref
 );
 
 mangled_name(
