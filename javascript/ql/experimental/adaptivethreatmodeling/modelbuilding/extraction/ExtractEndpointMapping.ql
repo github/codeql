@@ -16,31 +16,31 @@ where
     queryName = "NotASink" and
     endpointTypeEncoded = 0
     or
-    queryName = "Xss" and
+    queryName = "XssSink" and
     c instanceof XssATM::DomBasedXssATMConfig and
     endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
     or
-    queryName = "StoredXss" and
+    queryName = "StoredXssSink" and
     c instanceof StoredXssATM::StoredXssATMConfig and
     endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
     or
-    queryName = "XssThroughDom" and
+    queryName = "XssThroughDomSink" and
     c instanceof XssThroughDomATM::XssThroughDOMATMConfig and
     endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
     or
-    queryName = "SqlInjection" and
+    queryName = "SqlInjectionSink" and
     c instanceof SqlInjectionATM::SqlInjectionATMConfig and
     endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
     or
-    queryName = "NosqlInjection" and
+    queryName = "NosqlInjectionSink" and
     c instanceof NosqlInjectionATM::NosqlInjectionATMConfig and
     endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
     or
-    queryName = "TaintedPath" and
+    queryName = "TaintedPathSink" and
     c instanceof TaintedPathATM::TaintedPathATMConfig and
     endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
     or
-    queryName = "CodeInjection" and
+    queryName = "CodeInjectionSink" and
     c instanceof CodeInjectionATM::CodeInjectionATMConfig and
     endpointTypeEncoded = c.getASinkEndpointType().getEncoding()
   )
