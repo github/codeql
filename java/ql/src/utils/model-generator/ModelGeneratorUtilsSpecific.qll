@@ -42,6 +42,12 @@ predicate isRelevantForModels(Callable api) {
   not api instanceof MainMethod
 }
 
+/**
+ * A class of Callables that are relevant for generating summary, source and sinks models for.
+ *
+ * In the Standard library and 3rd party libraries it the Callables that can be called
+ * from outside the library itself.
+ */
 class TargetApi extends Callable {
   TargetApi() {
     this.isPublic() and
@@ -90,6 +96,10 @@ private predicate isPrimitiveTypeUsedForBulkData(Type t) {
   t.getName().regexpMatch("byte|char|Byte|Character")
 }
 
+/**
+ * Holds for type `t` for fields that are relevant as an intermediate
+ * read or write step in the data flow analysis.
+ */
 predicate isRelevantType(Type t) {
   not t instanceof TypeClass and
   not t instanceof EnumType and
@@ -122,12 +132,18 @@ private string parameterAccess(Parameter p) {
     else result = "Argument[" + p.getPosition() + "]"
 }
 
+/**
+ * Gets the model string representation of the parameter node `p`.
+ */
 string parameterNodeAsInput(DataFlow::ParameterNode p) {
   result = parameterAccess(p.asParameter())
   or
   result = "Argument[-1]" and p instanceof DataFlow::InstanceParameterNode
 }
 
+/**
+ * Gets the model string represention of the the return node `node`.
+ */
 string returnNodeAsOutput(ReturnNodeExt node) {
   if node.getKind() instanceof ValueReturnKind
   then result = "ReturnValue"
