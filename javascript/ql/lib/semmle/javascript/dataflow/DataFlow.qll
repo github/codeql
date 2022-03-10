@@ -18,7 +18,7 @@
  * modeled (except for immediately invoked functions as explained above).
  */
 
-import javascript
+private import javascript
 private import internal.CallGraphs
 private import internal.FlowSteps as FlowSteps
 private import internal.DataFlowNode
