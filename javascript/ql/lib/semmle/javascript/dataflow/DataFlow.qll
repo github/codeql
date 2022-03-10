@@ -1715,7 +1715,6 @@ module DataFlow {
   import Sources
   import TypeInference
   import Configuration
-  import TrackedNodes
   import TypeTracking
   import internal.FunctionWrapperSteps
 
