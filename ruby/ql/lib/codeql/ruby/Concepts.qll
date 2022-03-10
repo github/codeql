@@ -632,6 +632,9 @@ module OrmInstantiation {
  * extend `PersistentWriteAccess::Range` instead.
  */
 class PersistentWriteAccess extends DataFlow::Node instanceof PersistentWriteAccess::Range {
+  /**
+   * Gets the data flow node corresponding to the written value.
+   */
   DataFlow::Node getValue() { result = super.getValue() }
 }
 
