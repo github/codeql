@@ -5,8 +5,9 @@
 import javascript
 import semmle.javascript.Promises
 
+/** Provices classes for modelling NoSQL query sinks. */
 module NoSql {
-  /** An expression that is interpreted as a NoSql query. */
+  /** An expression that is interpreted as a NoSQL query. */
   abstract class Query extends Expr {
     /** Gets an expression that is interpreted as a code operator in this query. */
     DataFlow::Node getACodeOperator() { none() }
