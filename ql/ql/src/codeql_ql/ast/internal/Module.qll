@@ -20,7 +20,18 @@ private class TFileOrModule = TFile or TModule;
 
 /** A file or a module. */
 class FileOrModule extends TFileOrModule, ContainerOrModule {
-  abstract File getFile();
+  /** Gets the module for this imported module. */
+  Module asModule() { this = TModule(result) }
+
+  /** Gets the file for this file. */
+  File asFile() { this = TFile(result) }
+
+  /** Gets the file that contains this module/file. */
+  File getFile() {
+    result = this.asFile()
+    or
+    result = this.asModule().getLocation().getFile()
+  }
 }
 
 private class File_ extends FileOrModule, TFile {
@@ -43,8 +54,6 @@ private class File_ extends FileOrModule, TFile {
     endline = 0 and
     endcolumn = 0
   }
-
-  override File getFile() { result = f }
 }
 
 private class Folder_ extends ContainerOrModule, TFolder {
@@ -94,8 +103,6 @@ class Module_ extends FileOrModule, TModule {
   ) {
     m.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
-
-  override File getFile() { result = m.getLocation().getFile() }
 }
 
 private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
