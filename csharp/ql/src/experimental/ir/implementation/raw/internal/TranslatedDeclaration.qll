@@ -32,7 +32,7 @@ abstract class TranslatedLocalDeclaration extends TranslatedElement, TTranslated
   final override Language::AST getAst() { result = expr }
 
   /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = getAst() }
+  deprecated override Language::AST getAST() { result = this.getAst() }
 }
 
 /**

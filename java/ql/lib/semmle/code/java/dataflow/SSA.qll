@@ -929,7 +929,7 @@ class SsaVariable extends TSsaVariable {
   }
 
   /** DEPRECATED: Alias for getCfgNode */
-  deprecated ControlFlowNode getCFGNode() { result = getCfgNode() }
+  deprecated ControlFlowNode getCFGNode() { result = this.getCfgNode() }
 
   /** Gets a textual representation of this SSA variable. */
   string toString() { none() }

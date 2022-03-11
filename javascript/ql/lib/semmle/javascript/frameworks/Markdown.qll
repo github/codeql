@@ -24,7 +24,7 @@ module Markdown {
     predicate preservesHtml() { any() }
 
     /** DEPRECATED: Alias for preservesHtml */
-    deprecated predicate preservesHTML() { preservesHtml() }
+    deprecated predicate preservesHTML() { this.preservesHtml() }
   }
 
   private class MarkdownStepAsTaintStep extends TaintTracking::SharedTaintStep {

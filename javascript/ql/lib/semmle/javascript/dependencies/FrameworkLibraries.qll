@@ -139,7 +139,7 @@ abstract class FrameworkLibraryWithUrlRegex extends FrameworkLibrary {
   abstract string getAUrlRegex();
 
   /** DEPRECATED: Alias for getAUrlRegex */
-  deprecated string getAURLRegex() { result = getAUrlRegex() }
+  deprecated string getAURLRegex() { result = this.getAUrlRegex() }
 }
 
 /** DEPRECATED: Alias for FrameworkLibraryWithUrlRegex */
@@ -177,7 +177,7 @@ abstract class FrameworkLibraryWithGenericUrl extends FrameworkLibraryWithUrlReg
   }
 
   /** DEPRECATED: Alias for getAUrlRegex */
-  deprecated override string getAURLRegex() { result = getAUrlRegex() }
+  deprecated override string getAURLRegex() { result = this.getAUrlRegex() }
 }
 
 /** DEPRECATED: Alias for FrameworkLibraryWithGenericUrl */
@@ -950,7 +950,7 @@ private class ApplicationInsights extends FrameworkLibraryWithUrlRegex {
   override string getAUrlRegex() { result = ".*(?:^|/)ai\\.(" + semverRegex() + ")-build\\d+\\.js" }
 
   /** DEPRECATED: Alias for getAUrlRegex */
-  deprecated override string getAURLRegex() { result = getAUrlRegex() }
+  deprecated override string getAURLRegex() { result = this.getAUrlRegex() }
 }
 
 /**
@@ -971,7 +971,7 @@ private class TwitterTextClassic extends FrameworkLibraryWithUrlRegex {
   override string getAUrlRegex() { result = ".*(?:^|/)twitter_text" + variantRegex() + "\\.js" }
 
   /** DEPRECATED: Alias for getAUrlRegex */
-  deprecated override string getAURLRegex() { result = getAUrlRegex() }
+  deprecated override string getAURLRegex() { result = this.getAUrlRegex() }
 }
 
 /**

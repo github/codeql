@@ -59,7 +59,7 @@ class SpringRemotingDestinationClass extends Class {
 
   /** DEPRECATED: Alias for getRemotingDestinationXml */
   deprecated SpringRemotingDestination getRemotingDestinationXML() {
-    result = getRemotingDestinationXml()
+    result = this.getRemotingDestinationXml()
   }
 
   /**

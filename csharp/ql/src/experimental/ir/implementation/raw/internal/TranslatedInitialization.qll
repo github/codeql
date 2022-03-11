@@ -54,7 +54,7 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
   final override Language::AST getAst() { result = expr }
 
   /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = getAst() }
+  deprecated override Language::AST getAST() { result = this.getAst() }
 
   /**
    * Gets the expression that is doing the initialization.
@@ -212,7 +212,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   final override Language::AST getAst() { result = initList }
 
   /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = getAst() }
+  deprecated override Language::AST getAST() { result = this.getAst() }
 
   final override Callable getFunction() { result = initList.getEnclosingCallable() }
 
@@ -319,7 +319,7 @@ abstract class TranslatedConstructorCallFromConstructor extends TranslatedElemen
   final override Language::AST getAst() { result = call }
 
   /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = getAst() }
+  deprecated override Language::AST getAST() { result = this.getAst() }
 
   final override TranslatedElement getChild(int id) {
     id = 0 and result = this.getConstructorCall()

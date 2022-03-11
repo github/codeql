@@ -291,7 +291,7 @@ class NpmPackage extends @folder {
   PackageJson getPackageJson() { result = pkg }
 
   /** DEPRECATED: Alias for getPackageJson */
-  deprecated PackageJSON getPackageJSON() { result = getPackageJson() }
+  deprecated PackageJSON getPackageJSON() { result = this.getPackageJson() }
 
   /** Gets the name of this package. */
   string getPackageName() { result = this.getPackageJson().getPackageName() }

@@ -40,7 +40,7 @@ abstract class NpmDependency extends Dependency {
   abstract string getNpmPackageName();
 
   /** DEPRECATED: Alias for getNpmPackageName */
-  deprecated string getNPMPackageName() { result = getNpmPackageName() }
+  deprecated string getNPMPackageName() { result = this.getNpmPackageName() }
 
   /** Gets the version of the NPM package this module belongs to. */
   abstract string getVersion();
@@ -106,7 +106,7 @@ class BundledNpmDependency extends NpmDependency {
   override string getNpmPackageName() { result = this.getPackageJson().getPackageName() }
 
   /** DEPRECATED: Alias for getNpmPackageName */
-  deprecated override string getNPMPackageName() { result = getNpmPackageName() }
+  deprecated override string getNPMPackageName() { result = this.getNpmPackageName() }
 
   override string getVersion() { result = this.getPackageJson().getVersion() }
 
@@ -140,7 +140,7 @@ class ExternalNpmDependency extends NpmDependency {
   }
 
   /** DEPRECATED: Alias for getNpmPackageName */
-  deprecated override string getNPMPackageName() { result = getNpmPackageName() }
+  deprecated override string getNPMPackageName() { result = this.getNpmPackageName() }
 
   private string getVersionNumber() {
     exists(string versionRange | versionRange = this.(JsonString).getValue() |

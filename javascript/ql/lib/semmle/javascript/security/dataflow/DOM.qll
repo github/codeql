@@ -101,7 +101,7 @@ class DomMethodCallExpr extends MethodCallExpr {
   }
 
   /** DEPRECATED: Alias for interpretsArgumentsAsHtml */
-  deprecated predicate interpretsArgumentsAsHTML(Expr arg) { interpretsArgumentsAsHtml(arg) }
+  deprecated predicate interpretsArgumentsAsHTML(Expr arg) { this.interpretsArgumentsAsHtml(arg) }
 }
 
 /**
@@ -124,7 +124,7 @@ class DomPropWriteNode extends Assignment {
   }
 
   /** DEPRECATED: Alias for interpretsValueAsHtml */
-  deprecated predicate interpretsValueAsHTML() { interpretsValueAsHtml() }
+  deprecated predicate interpretsValueAsHTML() { this.interpretsValueAsHtml() }
 
   /**
    * Holds if the assigned value is interpreted as JavaScript via javascript: protocol.

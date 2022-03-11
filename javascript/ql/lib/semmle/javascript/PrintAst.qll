@@ -405,7 +405,7 @@ private module PrintJavaScript {
     JsxElement getJsxElement() { result = n }
 
     /** DEPRECATED: Alias for getJsxElement */
-    deprecated JSXElement getJSXElement() { result = getJsxElement() }
+    deprecated JSXElement getJSXElement() { result = this.getJsxElement() }
 
     override PrintAstNode getChild(int childIndex) {
       result.(ElementNode).getElement() = n.getAttribute(childIndex)
@@ -431,7 +431,7 @@ private module PrintJavaScript {
     JsxNode getJsxNode() { result = n }
 
     /** DEPRECATED: Alias for getJsxNode */
-    deprecated JSXNode getJSXNode() { result = getJsxNode() }
+    deprecated JSXNode getJSXNode() { result = this.getJsxNode() }
 
     override PrintAstNode getChild(int childIndex) {
       result.(ElementNode).getElement() = n.getBodyElement(childIndex)
