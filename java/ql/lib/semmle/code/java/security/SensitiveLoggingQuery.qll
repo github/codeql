@@ -10,7 +10,8 @@ import DataFlow
 class CredentialExpr extends Expr {
   CredentialExpr() {
     exists(Variable v | this = v.getAnAccess() |
-      v.getName().regexpMatch([getCommonSensitiveInfoRegex(), "(?i).*(username).*"])
+      v.getName().regexpMatch([getCommonSensitiveInfoRegex(), "(?i).*(username).*"]) and
+      not v.isFinal()
     )
   }
 }
