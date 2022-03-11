@@ -97,7 +97,7 @@ module Kernel {
    * ```
    * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-system
    */
-  class KernelSystemCall extends SystemCommandExecution::Range, KernelMethodCall {
+  class KernelSystemCall extends CommandExecution::Range, KernelMethodCall {
     KernelSystemCall() { this.getMethodName() = "system" }
 
     override DataFlow::Node getACommandArgument() { result = this.getArgument(_) }
@@ -113,7 +113,7 @@ module Kernel {
    * `Kernel.exec` takes the same argument forms as `Kernel.system`. See `KernelSystemCall` for details.
    * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-exec
    */
-  class KernelExecCall extends SystemCommandExecution::Range, KernelMethodCall {
+  class KernelExecCall extends CommandExecution::Range, KernelMethodCall {
     KernelExecCall() { this.getMethodName() = "exec" }
 
     override DataFlow::Node getACommandArgument() { result = this.getArgument(_) }
@@ -134,7 +134,7 @@ module Kernel {
    * spawn([env,] command... [,options]) -> pid
    * ```
    */
-  class KernelSpawnCall extends SystemCommandExecution::Range, KernelMethodCall {
+  class KernelSpawnCall extends CommandExecution::Range, KernelMethodCall {
     KernelSpawnCall() { this.getMethodName() = "spawn" }
 
     override DataFlow::Node getACommandArgument() { result = this.getArgument(_) }

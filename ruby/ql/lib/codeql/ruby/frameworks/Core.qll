@@ -24,7 +24,7 @@ import core.Regexp
  * %x/cat foo.txt/
  * ```
  */
-class SubshellLiteralExecution extends SystemCommandExecution::Range {
+class SubshellLiteralExecution extends CommandExecution::Range {
   SubshellLiteral literal;
 
   SubshellLiteralExecution() { this.asExpr().getExpr() = literal }
@@ -45,7 +45,7 @@ class SubshellLiteralExecution extends SystemCommandExecution::Range {
  * EOF
  * ```
  */
-class SubshellHeredocExecution extends SystemCommandExecution::Range {
+class SubshellHeredocExecution extends CommandExecution::Range {
   HereDoc heredoc;
 
   SubshellHeredocExecution() { this.asExpr().getExpr() = heredoc and heredoc.isSubShell() }

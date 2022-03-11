@@ -17,7 +17,7 @@ module Open3 {
    * These methods take the same argument forms as `Kernel.system`.
    * See `KernelSystemCall` for details.
    */
-  class Open3Call extends SystemCommandExecution::Range {
+  class Open3Call extends CommandExecution::Range {
     MethodCall methodCall;
 
     Open3Call() {
@@ -47,7 +47,7 @@ module Open3 {
    * Open3.pipeline([{}, "cat", "foo.txt"], "tail")
    * Open3.pipeline([["cat", "cat"], "foo.txt"], "tail")
    */
-  class Open3PipelineCall extends SystemCommandExecution::Range {
+  class Open3PipelineCall extends CommandExecution::Range {
     MethodCall methodCall;
 
     Open3PipelineCall() {
