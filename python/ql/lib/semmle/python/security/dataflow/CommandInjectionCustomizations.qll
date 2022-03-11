@@ -46,7 +46,7 @@ module CommandInjection {
    */
   class CommandExecutionAsSink extends Sink {
     CommandExecutionAsSink() {
-      this = any(SystemCommandExecution e).getACommandArgument() and
+      this = any(CommandExecution e).getACommandArgument() and
       // Since the implementation of standard library functions such `os.popen` looks like
       // ```py
       // def popen(cmd, mode="r", buffering=-1):

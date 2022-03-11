@@ -299,7 +299,7 @@ Class hierarchy
     -  ``RemoteFlowSource`` - data flow from network/remote input.
     -  ``Attributes::AttrRead`` - an attribute read as a data flow node.
     -  ``Attributes::AttrWrite`` - an attribute write as a data flow node.
-    -  ``Concepts::SystemCommandExecution`` - a data-flow node that executes an operating system command, for instance by spawning a new process.
+    -  ``Concepts::CommandExecution`` - a data-flow node that executes an operating system command, for instance by spawning a new process.
     -  ``Concepts::FileSystemAccess`` - a data flow node that performs a file system access, including reading and writing data, creating and deleting files and folders, checking and updating permissions, and so on.
     -  ``Concepts::Path::PathNormalization`` - a data-flow node that performs path normalization. This is often needed in order to safely access paths.
     -  ``Concepts::Decoding`` - a data-flow node that decodes data from a binary or textual format. A decoding (automatically) preserves taint from input to output. However, it can also be a problem in itself, for example if it allows code execution or could result in denial-of-service.

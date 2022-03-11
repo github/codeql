@@ -43,8 +43,7 @@ private module FabricV1 {
        * - https://docs.fabfile.org/en/1.14/api/core/operations.html#fabric.operations.run
        * - https://docs.fabfile.org/en/1.14/api/core/operations.html#fabric.operations.sudo
        */
-      private class FabricApiLocalRunSudoCall extends SystemCommandExecution::Range,
-        DataFlow::CallCfgNode {
+      private class FabricApiLocalRunSudoCall extends CommandExecution::Range, DataFlow::CallCfgNode {
         FabricApiLocalRunSudoCall() { this = api().getMember(["local", "run", "sudo"]).getACall() }
 
         override DataFlow::Node getACommandArgument() {
@@ -152,7 +151,7 @@ private module FabricV2 {
      * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.sudo
      * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.local
      */
-    private class FabricConnectionRunSudoLocalCall extends SystemCommandExecution::Range,
+    private class FabricConnectionRunSudoLocalCall extends CommandExecution::Range,
       DataFlow::CallCfgNode {
       FabricConnectionRunSudoLocalCall() {
         this.getFunction() = fabric::connection::Connection::instanceRunMethods()
@@ -235,7 +234,7 @@ private module FabricV2 {
        *
        * See https://docs.fabfile.org/en/2.5/api/group.html#fabric.group.Group.run
        */
-      private class FabricGroupRunCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+      private class FabricGroupRunCall extends CommandExecution::Range, DataFlow::CallCfgNode {
         FabricGroupRunCall() { this = fabric::group::Group::subclassInstanceRunMethod().getACall() }
 
         override DataFlow::Node getACommandArgument() {

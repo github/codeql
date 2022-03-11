@@ -74,7 +74,7 @@ private module Invoke {
    * - `invoke.run` or `invoke.sudo` functions (http://docs.pyinvoke.org/en/stable/api/__init__.html)
    * - `run` or `sudo` methods on a `invoke.context.Context` instance (http://docs.pyinvoke.org/en/stable/api/context.html#invoke.context.Context.run)
    */
-  private class InvokeRunCommandCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class InvokeRunCommandCall extends CommandExecution::Range, DataFlow::CallCfgNode {
     InvokeRunCommandCall() {
       this = invoke().getMember(["run", "sudo"]).getACall() or
       this.getFunction() = invoke::context::Context::instanceRunMethods()

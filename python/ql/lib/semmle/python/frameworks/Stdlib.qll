@@ -1045,7 +1045,7 @@ private module StdlibPrivate {
    * A call to `os.system`.
    * See https://docs.python.org/3/library/os.html#os.system
    */
-  private class OsSystemCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class OsSystemCall extends CommandExecution::Range, DataFlow::CallCfgNode {
     OsSystemCall() { this = os().getMember("system").getACall() }
 
     override DataFlow::Node getACommandArgument() { result = this.getArg(0) }
@@ -1059,7 +1059,7 @@ private module StdlibPrivate {
    * Although deprecated since version 2.6, they still work in 2.7.
    * See https://docs.python.org/2.7/library/os.html#os.popen2
    */
-  private class OsPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class OsPopenCall extends CommandExecution::Range, DataFlow::CallCfgNode {
     string name;
 
     OsPopenCall() {
@@ -1079,8 +1079,7 @@ private module StdlibPrivate {
    * A call to any of the `os.exec*` functions
    * See https://docs.python.org/3.8/library/os.html#os.execl
    */
-  private class OsExecCall extends SystemCommandExecution::Range, FileSystemAccess::Range,
-    DataFlow::CallCfgNode {
+  private class OsExecCall extends CommandExecution::Range, FileAccess::Range, DataFlow::CallCfgNode {
     OsExecCall() {
       exists(string name |
         name in ["execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe"] and
@@ -1097,7 +1096,7 @@ private module StdlibPrivate {
    * A call to any of the `os.spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.spawnl
    */
-  private class OsSpawnCall extends SystemCommandExecution::Range, FileSystemAccess::Range,
+  private class OsSpawnCall extends CommandExecution::Range, FileAccess::Range,
     DataFlow::CallCfgNode {
     OsSpawnCall() {
       exists(string name |
@@ -1123,7 +1122,7 @@ private module StdlibPrivate {
    * A call to any of the `os.posix_spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.posix_spawn
    */
-  private class OsPosixSpawnCall extends SystemCommandExecution::Range, FileSystemAccess::Range,
+  private class OsPosixSpawnCall extends CommandExecution::Range, FileAccess::Range,
     DataFlow::CallCfgNode {
     OsPosixSpawnCall() { this = os().getMember(["posix_spawn", "posix_spawnp"]).getACall() }
 
@@ -1156,7 +1155,7 @@ private module StdlibPrivate {
    * A call to `subprocess.Popen` or helper functions (call, check_call, check_output, run)
    * See https://docs.python.org/3.8/library/subprocess.html#subprocess.Popen
    */
-  private class SubprocessPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class SubprocessPopenCall extends CommandExecution::Range, DataFlow::CallCfgNode {
     SubprocessPopenCall() {
       exists(string name |
         name in ["Popen", "call", "check_call", "check_output", "run"] and
@@ -1363,7 +1362,7 @@ private module StdlibPrivate {
    * A call to any of the `popen.popen*` functions, or instantiation of a `popen.Popen*` class.
    * See https://docs.python.org/2.7/library/popen2.html
    */
-  private class Popen2PopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class Popen2PopenCall extends CommandExecution::Range, DataFlow::CallCfgNode {
     Popen2PopenCall() {
       exists(string name |
         name in ["popen2", "popen3", "popen4", "Popen3", "Popen4"] and
@@ -1386,7 +1385,7 @@ private module StdlibPrivate {
    * A call to the `platform.popen` function.
    * See https://docs.python.org/2.7/library/platform.html#platform.popen
    */
-  private class PlatformPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class PlatformPopenCall extends CommandExecution::Range, DataFlow::CallCfgNode {
     PlatformPopenCall() { this = platform().getMember("popen").getACall() }
 
     override DataFlow::Node getACommandArgument() {
