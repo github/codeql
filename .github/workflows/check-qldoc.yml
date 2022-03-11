@@ -1,4 +1,4 @@
-name: "Check QLdoc"
+name: "Check QLdoc coverage"
 
 on:
   pull_request:
