@@ -1541,6 +1541,25 @@ nodes
 | express.js:8:20:8:32 | req.query.bar |
 | express.js:8:20:8:32 | req.query.bar |
 | express.js:8:20:8:32 | req.query.bar |
+| handlebars.js:19:46:19:60 | req.params.path |
+| handlebars.js:19:46:19:60 | req.params.path |
+| handlebars.js:19:46:19:60 | req.params.path |
+| handlebars.js:19:46:19:60 | req.params.path |
+| handlebars.js:19:46:19:60 | req.params.path |
+| handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:23:28:23:35 | filePath |
+| handlebars.js:23:28:23:35 | filePath |
+| handlebars.js:23:28:23:35 | filePath |
+| handlebars.js:23:28:23:35 | filePath |
+| handlebars.js:23:28:23:35 | filePath |
+| handlebars.js:31:43:31:57 | req.params.name |
+| handlebars.js:31:43:31:57 | req.params.name |
+| handlebars.js:31:43:31:57 | req.params.name |
+| handlebars.js:31:43:31:57 | req.params.name |
+| handlebars.js:31:43:31:57 | req.params.name |
 | normalizedPaths.js:11:7:11:27 | path |
 | normalizedPaths.js:11:7:11:27 | path |
 | normalizedPaths.js:11:7:11:27 | path |
@@ -6414,6 +6433,30 @@ edges
 | TaintedPath.js:211:24:211:30 | req.url | TaintedPath.js:211:14:211:37 | url.par ... , true) |
 | TaintedPath.js:211:24:211:30 | req.url | TaintedPath.js:211:14:211:37 | url.par ... , true) |
 | express.js:8:20:8:32 | req.query.bar | express.js:8:20:8:32 | req.query.bar |
+| handlebars.js:19:46:19:60 | req.params.path | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:19:46:19:60 | req.params.path | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:19:46:19:60 | req.params.path | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:19:46:19:60 | req.params.path | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:19:46:19:60 | req.params.path | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:19:46:19:60 | req.params.path | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:19:46:19:60 | req.params.path | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:19:46:19:60 | req.params.path | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:22:18:22:25 | filePath | handlebars.js:23:28:23:35 | filePath |
+| handlebars.js:22:18:22:25 | filePath | handlebars.js:23:28:23:35 | filePath |
+| handlebars.js:22:18:22:25 | filePath | handlebars.js:23:28:23:35 | filePath |
+| handlebars.js:22:18:22:25 | filePath | handlebars.js:23:28:23:35 | filePath |
+| handlebars.js:22:18:22:25 | filePath | handlebars.js:23:28:23:35 | filePath |
+| handlebars.js:22:18:22:25 | filePath | handlebars.js:23:28:23:35 | filePath |
+| handlebars.js:22:18:22:25 | filePath | handlebars.js:23:28:23:35 | filePath |
+| handlebars.js:22:18:22:25 | filePath | handlebars.js:23:28:23:35 | filePath |
+| handlebars.js:31:43:31:57 | req.params.name | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:31:43:31:57 | req.params.name | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:31:43:31:57 | req.params.name | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:31:43:31:57 | req.params.name | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:31:43:31:57 | req.params.name | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:31:43:31:57 | req.params.name | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:31:43:31:57 | req.params.name | handlebars.js:22:18:22:25 | filePath |
+| handlebars.js:31:43:31:57 | req.params.name | handlebars.js:22:18:22:25 | filePath |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path |
@@ -9844,6 +9887,8 @@ edges
 | TaintedPath.js:213:45:213:48 | path | TaintedPath.js:211:24:211:30 | req.url | TaintedPath.js:213:45:213:48 | path | This path depends on $@. | TaintedPath.js:211:24:211:30 | req.url | a user-provided value |
 | TaintedPath.js:214:35:214:38 | path | TaintedPath.js:211:24:211:30 | req.url | TaintedPath.js:214:35:214:38 | path | This path depends on $@. | TaintedPath.js:211:24:211:30 | req.url | a user-provided value |
 | express.js:8:20:8:32 | req.query.bar | express.js:8:20:8:32 | req.query.bar | express.js:8:20:8:32 | req.query.bar | This path depends on $@. | express.js:8:20:8:32 | req.query.bar | a user-provided value |
+| handlebars.js:23:28:23:35 | filePath | handlebars.js:19:46:19:60 | req.params.path | handlebars.js:23:28:23:35 | filePath | This path depends on $@. | handlebars.js:19:46:19:60 | req.params.path | a user-provided value |
+| handlebars.js:23:28:23:35 | filePath | handlebars.js:31:43:31:57 | req.params.name | handlebars.js:23:28:23:35 | filePath | This path depends on $@. | handlebars.js:31:43:31:57 | req.params.name | a user-provided value |
 | normalizedPaths.js:13:19:13:22 | path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:13:19:13:22 | path | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |
 | normalizedPaths.js:14:19:14:29 | './' + path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:14:19:14:29 | './' + path | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |
 | normalizedPaths.js:15:19:15:38 | path + '/index.html' | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:15:19:15:38 | path + '/index.html' | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |
