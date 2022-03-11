@@ -1,4 +1,4 @@
-import semmle.code.java.Expr
+import java
 
 from CompileTimeConstantExpr constant, RefType tpe
 where

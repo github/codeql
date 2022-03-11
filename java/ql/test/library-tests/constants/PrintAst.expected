@@ -133,6 +133,151 @@ constants/Initializers.java:
 #   37|         0: [AssignExpr] ...=...
 #   37|           0: [VarAccess] f
 #   37|           1: [IntegerLiteral] 42
+constants/Stringified.java:
+#    0| [CompilationUnit] Stringified
+#    3|   1: [Class] Stringified
+#    4|     2: [Method] stringified
+#    4|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    4|         0: [Parameter] notConstant
+#    4|           0: [TypeAccess] String
+#    4|       5: [BlockStmt] { ... }
+#    5|         0: [LocalVariableDeclStmt] var ...;
+#    5|           0: [TypeAccess] String
+#    5|           1: [LocalVariableDeclExpr] withNotConstant
+#    5|             0: [AddExpr] ... + ...
+#    5|               0: [StringLiteral] "a"
+#    5|               1: [VarAccess] notConstant
+#    6|         1: [LocalVariableDeclStmt] var ...;
+#    6|           0: [TypeAccess] String
+#    6|           1: [LocalVariableDeclExpr] string
+#    6|             0: [StringLiteral] "a" + "b"
+#    7|         2: [LocalVariableDeclStmt] var ...;
+#    7|           0: [TypeAccess] String
+#    7|           1: [LocalVariableDeclExpr] stringWithChar
+#    7|             0: [AddExpr] ... + ...
+#    7|               0: [StringLiteral] "ab"
+#    7|               1: [CharacterLiteral] 'c'
+#    8|         3: [LocalVariableDeclStmt] var ...;
+#    8|           0: [TypeAccess] String
+#    8|           1: [LocalVariableDeclExpr] stringWithBool
+#    8|             0: [AddExpr] ... + ...
+#    8|               0: [StringLiteral] "ab"
+#    8|               1: [BooleanLiteral] true
+#    9|         4: [LocalVariableDeclStmt] var ...;
+#    9|           0: [TypeAccess] String
+#    9|           1: [LocalVariableDeclExpr] stringWithInt
+#    9|             0: [AddExpr] ... + ...
+#    9|               0: [StringLiteral] "ab"
+#    9|               1: [IntegerLiteral] 42
+#   10|         5: [LocalVariableDeclStmt] var ...;
+#   10|           0: [TypeAccess] String
+#   10|           1: [LocalVariableDeclExpr] stringWithDouble
+#   10|             0: [AddExpr] ... + ...
+#   10|               0: [StringLiteral] "ab"
+#   10|               1: [DoubleLiteral] 43.0
+#   11|         6: [LocalVariableDeclStmt] var ...;
+#   11|           0: [TypeAccess] String
+#   11|           1: [LocalVariableDeclExpr] stringWithFloat
+#   11|             0: [AddExpr] ... + ...
+#   11|               0: [StringLiteral] "ab"
+#   11|               1: [FloatingPointLiteral] 44.0f
+#   12|         7: [LocalVariableDeclStmt] var ...;
+#   12|           0: [TypeAccess] String
+#   12|           1: [LocalVariableDeclExpr] stringWithLong
+#   12|             0: [AddExpr] ... + ...
+#   12|               0: [StringLiteral] "ab"
+#   12|               1: [LongLiteral] 45L
+#   13|         8: [LocalVariableDeclStmt] var ...;
+#   13|           0: [TypeAccess] String
+#   13|           1: [LocalVariableDeclExpr] stringWithShort
+#   13|             0: [AddExpr] ... + ...
+#   13|               0: [StringLiteral] "ab"
+#   13|               1: [CastExpr] (...)...
+#   13|                 0: [TypeAccess] short
+#   13|                 1: [IntegerLiteral] 46
+#   14|         9: [LocalVariableDeclStmt] var ...;
+#   14|           0: [TypeAccess] String
+#   14|           1: [LocalVariableDeclExpr] stringWithByte
+#   14|             0: [AddExpr] ... + ...
+#   14|               0: [StringLiteral] "ab"
+#   14|               1: [CastExpr] (...)...
+#   14|                 0: [TypeAccess] byte
+#   14|                 1: [IntegerLiteral] 47
+#   15|         10: [LocalVariableDeclStmt] var ...;
+#   15|           0: [TypeAccess] String
+#   15|           1: [LocalVariableDeclExpr] charWithString
+#   15|             0: [AddExpr] ... + ...
+#   15|               0: [CharacterLiteral] 'a'
+#   15|               1: [StringLiteral] "bc"
+#   16|         11: [LocalVariableDeclStmt] var ...;
+#   16|           0: [TypeAccess] String
+#   16|           1: [LocalVariableDeclExpr] boolWithString
+#   16|             0: [AddExpr] ... + ...
+#   16|               0: [BooleanLiteral] true
+#   16|               1: [StringLiteral] "bc"
+#   17|         12: [LocalVariableDeclStmt] var ...;
+#   17|           0: [TypeAccess] String
+#   17|           1: [LocalVariableDeclExpr] intWithString
+#   17|             0: [AddExpr] ... + ...
+#   17|               0: [IntegerLiteral] 42
+#   17|               1: [StringLiteral] "bc"
+#   18|         13: [LocalVariableDeclStmt] var ...;
+#   18|           0: [TypeAccess] String
+#   18|           1: [LocalVariableDeclExpr] doubleWithString
+#   18|             0: [AddExpr] ... + ...
+#   18|               0: [DoubleLiteral] 43.0
+#   18|               1: [StringLiteral] "bc"
+#   19|         14: [LocalVariableDeclStmt] var ...;
+#   19|           0: [TypeAccess] String
+#   19|           1: [LocalVariableDeclExpr] floatWithString
+#   19|             0: [AddExpr] ... + ...
+#   19|               0: [FloatingPointLiteral] 44.0f
+#   19|               1: [StringLiteral] "bc"
+#   20|         15: [LocalVariableDeclStmt] var ...;
+#   20|           0: [TypeAccess] String
+#   20|           1: [LocalVariableDeclExpr] longWithString
+#   20|             0: [AddExpr] ... + ...
+#   20|               0: [LongLiteral] 45L
+#   20|               1: [StringLiteral] "bc"
+#   21|         16: [LocalVariableDeclStmt] var ...;
+#   21|           0: [TypeAccess] String
+#   21|           1: [LocalVariableDeclExpr] shortWithString
+#   21|             0: [AddExpr] ... + ...
+#   21|               0: [CastExpr] (...)...
+#   21|                 0: [TypeAccess] short
+#   21|                 1: [IntegerLiteral] 46
+#   21|               1: [StringLiteral] "bc"
+#   22|         17: [LocalVariableDeclStmt] var ...;
+#   22|           0: [TypeAccess] String
+#   22|           1: [LocalVariableDeclExpr] byteWithString
+#   22|             0: [AddExpr] ... + ...
+#   22|               0: [CastExpr] (...)...
+#   22|                 0: [TypeAccess] byte
+#   22|                 1: [IntegerLiteral] 47
+#   22|               1: [StringLiteral] "bc"
+#   24|         18: [LocalVariableDeclStmt] var ...;
+#   24|           0: [TypeAccess] String
+#   24|           1: [LocalVariableDeclExpr] stringWithExponent
+#   24|             0: [AddExpr] ... + ...
+#   24|               0: [StringLiteral] "a"
+#   24|               1: [DoubleLiteral] 10e1
+#   25|         19: [LocalVariableDeclStmt] var ...;
+#   25|           0: [TypeAccess] String
+#   25|           1: [LocalVariableDeclExpr] stringWithBooleanOr
+#   25|             0: [AddExpr] ... + ...
+#   25|               0: [StringLiteral] "a"
+#   25|               1: [OrLogicalExpr] ... || ...
+#   25|                 0: [BooleanLiteral] true
+#   25|                 1: [BooleanLiteral] false
+#   26|         20: [LocalVariableDeclStmt] var ...;
+#   26|           0: [TypeAccess] String
+#   26|           1: [LocalVariableDeclExpr] stringWithIntDivide
+#   26|             0: [AddExpr] ... + ...
+#   26|               0: [StringLiteral] "a"
+#   26|               1: [DivExpr] ... / ...
+#   26|                 0: [IntegerLiteral] 168
+#   26|                 1: [IntegerLiteral] 4
 constants/Values.java:
 #    0| [CompilationUnit] Values
 #    4|   1: [Class] Values
@@ -526,3 +671,9 @@ constants/Values.java:
 #   92|             0: [AddExpr] ... + ...
 #   92|               0: [StringLiteral] "ab"
 #   92|               1: [CharacterLiteral] 'c'
+#   94|         70: [LocalVariableDeclStmt] var ...;
+#   94|           0: [TypeAccess] int
+#   94|           1: [LocalVariableDeclExpr] charWithChar
+#   94|             0: [AddExpr] ... + ...
+#   94|               0: [CharacterLiteral] 'a'
+#   94|               1: [CharacterLiteral] 'b'

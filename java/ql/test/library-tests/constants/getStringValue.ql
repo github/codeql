@@ -1,9 +1,9 @@
-import semmle.code.java.Variable
+import java
 
 from Variable v, CompileTimeConstantExpr init, RefType enclosing, string constant
 where
   v.getInitializer() = init and
   init.getEnclosingCallable().getDeclaringType() = enclosing and
-  enclosing.hasQualifiedName("constants", "Values") and
+  enclosing.hasQualifiedName("constants", ["Values", "Stringified"]) and
   constant = init.getStringValue()
 select init, constant
