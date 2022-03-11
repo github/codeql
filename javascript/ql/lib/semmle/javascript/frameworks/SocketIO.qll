@@ -82,11 +82,6 @@ module SocketIO {
     }
 
     override DataFlow::SourceNode ref() { result = this.server().getAUse() }
-
-    /**
-     * DEPRECATED. Always returns `this` as a `ServerObject` now represents the origin of a server.
-     */
-    deprecated DataFlow::SourceNode getOrigin() { result = this }
   }
 
   /** A data flow node that may produce (that is, create or return) a socket.io server. */

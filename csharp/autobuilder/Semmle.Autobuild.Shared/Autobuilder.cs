@@ -190,19 +190,15 @@ namespace Semmle.Autobuild.Shared
             });
 
             CodeQLExtractorLangRoot = Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_ROOT");
-            SemmlePlatformTools = Actions.GetEnvironmentVariable("SEMMLE_PLATFORM_TOOLS");
-
             CodeQlPlatform = Actions.GetEnvironmentVariable("CODEQL_PLATFORM");
 
             TrapDir =
                 Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_TRAP_DIR") ??
-                Actions.GetEnvironmentVariable("TRAP_FOLDER") ??
-                throw new InvalidEnvironmentException($"The environment variable CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_TRAP_DIR or TRAP_FOLDER has not been set.");
+                throw new InvalidEnvironmentException($"The environment variable CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_TRAP_DIR has not been set.");
 
             SourceArchiveDir =
                 Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_SOURCE_ARCHIVE_DIR") ??
-                Actions.GetEnvironmentVariable("SOURCE_ARCHIVE") ??
-                throw new InvalidEnvironmentException($"The environment variable CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_SOURCE_ARCHIVE_DIR or SOURCE_ARCHIVE has not been set.");
+                throw new InvalidEnvironmentException($"The environment variable CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_SOURCE_ARCHIVE_DIR has not been set.");
         }
 
         protected string TrapDir { get; }
@@ -265,33 +261,8 @@ namespace Semmle.Autobuild.Shared
         public string? CodeQLExtractorLangRoot { get; }
 
         /// <summary>
-        /// Value of SEMMLE_PLATFORM_TOOLS environment variable.
-        /// </summary>
-        public string? SemmlePlatformTools { get; }
-
-        /// <summary>
         /// Value of CODEQL_PLATFORM environment variable.
         /// </summary>
         public string? CodeQlPlatform { get; }
-
-        /// <summary>
-        /// The absolute path of the odasa executable.
-        /// null if we are running in CodeQL.
-        /// </summary>
-        public string? Odasa
-        {
-            get
-            {
-                var semmleDist = Actions.GetEnvironmentVariable("SEMMLE_DIST");
-                return semmleDist is null ? null : Actions.PathCombine(semmleDist, "tools", "odasa");
-            }
-        }
-
-        /// <summary>
-        /// Construct a command that executed the given <paramref name="cmd"/> wrapped in
-        /// an <code>odasa --index</code>, unless indexing has been disabled, in which case
-        /// <paramref name="cmd"/> is run directly.
-        /// </summary>
-        public CommandBuilder MaybeIndex(CommandBuilder builder, string cmd) => Odasa is null ? builder.RunCommand(cmd) : builder.IndexCommand(Odasa, cmd);
     }
 }

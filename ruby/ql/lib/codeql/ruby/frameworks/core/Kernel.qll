@@ -27,7 +27,7 @@ module Kernel {
         or
         methodCall instanceof UnknownMethodCall and
         (
-          this.getReceiver().asExpr().getExpr() instanceof Self and
+          this.getReceiver().asExpr().getExpr() instanceof SelfVariableAccess and
           isPrivateKernelMethod(methodCall.getMethodName())
           or
           isPublicKernelMethod(methodCall.getMethodName())

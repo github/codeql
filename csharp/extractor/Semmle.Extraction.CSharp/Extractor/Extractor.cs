@@ -452,19 +452,6 @@ namespace Semmle.Extraction.CSharp
             if (!string.IsNullOrEmpty(codeQlLogDir))
                 return codeQlLogDir;
 
-            var snapshot = Environment.GetEnvironmentVariable("ODASA_SNAPSHOT");
-            if (!string.IsNullOrEmpty(snapshot))
-                return Path.Combine(snapshot, "log");
-
-            var buildErrorDir = Environment.GetEnvironmentVariable("ODASA_BUILD_ERROR_DIR");
-            if (!string.IsNullOrEmpty(buildErrorDir))
-                // Used by `qltest`
-                return buildErrorDir;
-
-            var traps = Environment.GetEnvironmentVariable("TRAP_FOLDER");
-            if (!string.IsNullOrEmpty(traps))
-                return traps;
-
             return Directory.GetCurrentDirectory();
         }
     }

@@ -24,21 +24,8 @@ class Expr extends Stmt, TExpr {
   }
 }
 
-/**
- * A reference to the current object. For example:
- * - `self == other`
- * - `self.method_name`
- * - `def self.method_name ... end`
- *
- * This also includes implicit references to the current object in method
- * calls.  For example, the method call `foo(123)` has an implicit `self`
- * receiver, and is equivalent to the explicit `self.foo(123)`.
- */
-class Self extends Expr, TSelf {
-  final override string getAPrimaryQlClass() { result = "Self" }
-
-  final override string toString() { result = "self" }
-}
+/** DEPRECATED: Use `SelfVariableAccess` instead. */
+deprecated class Self = SelfVariableAccess;
 
 /**
  * A sequence of expressions in the right-hand side of an assignment or

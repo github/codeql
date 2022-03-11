@@ -71,8 +71,6 @@ class ClientRequest extends DataFlow::InvokeNode instanceof ClientRequest::Range
   DataFlow::Node getASavePath() { result = super.getASavePath() }
 }
 
-deprecated class CustomClientRequest = ClientRequest::Range;
-
 module ClientRequest {
   /**
    * A call that performs a request to a URL.

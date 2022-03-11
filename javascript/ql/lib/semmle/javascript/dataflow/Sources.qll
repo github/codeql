@@ -146,7 +146,8 @@ class SourceNode extends DataFlow::Node {
    * that is, `o.m(...)` or `o[p](...)`.
    */
   DataFlow::CallNode getAChainedMethodCall(string methodName) {
-    result = getAMethodCall*().getAMethodCall(methodName)
+    // the direct call to `getAMethodCall` is needed in case the base is not a `DataFlow::CallNode`.
+    result = [getAMethodCall+().getAMethodCall(methodName), getAMethodCall(methodName)]
   }
 
   /**
@@ -395,7 +396,3 @@ SourceNode moduleVarNode(Module m) { result.(ModuleVarNode).getModule() = m }
 
 /** Gets the CommonJS/AMD `exports` variable for module `m`. */
 SourceNode exportsVarNode(Module m) { result.(ExportsVarNode).getModule() = m }
-
-deprecated class DefaultSourceNode extends SourceNode {
-  DefaultSourceNode() { this instanceof SourceNode::DefaultRange }
-}

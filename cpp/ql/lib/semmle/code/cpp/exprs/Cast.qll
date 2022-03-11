@@ -666,13 +666,6 @@ class TypeidOperator extends Expr, @type_id {
    */
   Type getResultType() { typeid_bind(underlyingElement(this), unresolveElement(result)) }
 
-  /**
-   * DEPRECATED: Use `getResultType()` instead.
-   *
-   * Gets the type that is returned by this typeid expression.
-   */
-  deprecated Type getSpecifiedType() { result = this.getResultType() }
-
   override string getAPrimaryQlClass() { result = "TypeidOperator" }
 
   /**
@@ -731,13 +724,6 @@ class SizeofExprOperator extends SizeofOperator {
   /** Gets the contained expression. */
   Expr getExprOperand() { result = this.getChild(0) }
 
-  /**
-   * DEPRECATED: Use `getExprOperand()` instead
-   *
-   * Gets the contained expression.
-   */
-  deprecated Expr getExpr() { result = this.getExprOperand() }
-
   override string toString() { result = "sizeof(<expr>)" }
 
   override predicate mayBeImpure() { this.getExprOperand().mayBeImpure() }
@@ -758,13 +744,6 @@ class SizeofTypeOperator extends SizeofOperator {
 
   /** Gets the contained type. */
   Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
-
-  /**
-   * DEPRECATED: Use `getTypeOperand()` instead
-   *
-   * Gets the contained type.
-   */
-  deprecated Type getSpecifiedType() { result = this.getTypeOperand() }
 
   override string toString() { result = "sizeof(" + this.getTypeOperand().getName() + ")" }
 
@@ -794,11 +773,6 @@ class AlignofExprOperator extends AlignofOperator {
    */
   Expr getExprOperand() { result = this.getChild(0) }
 
-  /**
-   * DEPRECATED: Use `getExprOperand()` instead.
-   */
-  deprecated Expr getExpr() { result = this.getExprOperand() }
-
   override string toString() { result = "alignof(<expr>)" }
 }
 
@@ -813,11 +787,6 @@ class AlignofTypeOperator extends AlignofOperator {
 
   /** Gets the contained type. */
   Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
-
-  /**
-   * DEPRECATED: Use `getTypeOperand()` instead.
-   */
-  deprecated Type getSpecifiedType() { result = this.getTypeOperand() }
 
   override string toString() { result = "alignof(" + this.getTypeOperand().getName() + ")" }
 }

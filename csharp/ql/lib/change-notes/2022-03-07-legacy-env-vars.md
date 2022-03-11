@@ -1,0 +1,15 @@
+---
+category: breaking
+---
+* The C# extractor no longer supports the following legacy environment variables:
+```
+ODASA_BUILD_ERROR_DIR
+ODASA_CSHARP_LAYOUT
+ODASA_SNAPSHOT
+SEMMLE_DIST
+SEMMLE_EXTRACTOR_OPTIONS
+SEMMLE_PLATFORM_TOOLS
+SEMMLE_PRESERVE_SYMLINKS
+SOURCE_ARCHIVE
+TRAP_FOLDER
+```

@@ -55,9 +55,6 @@ class ElementBase extends @element {
   cached
   string toString() { none() }
 
-  /** DEPRECATED: use `getAPrimaryQlClass` instead. */
-  deprecated string getCanonicalQLClass() { result = this.getAPrimaryQlClass() }
-
   /**
    * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
    */
@@ -90,13 +87,6 @@ class Element extends ElementBase {
    * The dummy file contains declarations that are built directly into the compiler.
    */
   predicate fromSource() { this.getFile().fromSource() }
-
-  /**
-   * Holds if this element may be from a library.
-   *
-   * DEPRECATED: always true.
-   */
-  deprecated predicate fromLibrary() { this.getFile().fromLibrary() }
 
   /** Gets the primary location of this element. */
   Location getLocation() { none() }

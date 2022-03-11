@@ -802,11 +802,6 @@ module NodeJSLib {
   }
 
   /**
-   * DEPRECATED Use `VmModuleMemberInvocation` instead.
-   */
-  deprecated class VmModuleMethodCall = VmModuleMemberInvocation;
-
-  /**
    * An invocation of a member from module `vm`
    */
   class VmModuleMemberInvocation extends DataFlow::InvokeNode {
@@ -863,8 +858,6 @@ module NodeJSLib {
      */
     abstract class Range extends ClientRequest::Range { }
   }
-
-  deprecated class CustomNodeJSClientRequest = NodeJSClientRequest::Range;
 
   /**
    * A model of a URL request in the Node.js `http` library.

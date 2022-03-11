@@ -61,13 +61,6 @@ class Stmt extends StmtParent, @stmt {
 
   override Location getLocation() { stmts(underlyingElement(this), _, result) }
 
-  /**
-   * Gets an int indicating the type of statement that this represents.
-   *
-   * DEPRECATED: use the subclasses of `Stmt` rather than relying on this predicate.
-   */
-  deprecated int getKind() { stmts(underlyingElement(this), result, _) }
-
   override string toString() { none() }
 
   override Function getControlFlowScope() { result = this.getEnclosingFunction() }
@@ -1231,38 +1224,6 @@ class SwitchCase extends Stmt, @stmt_switch_case {
   int getChildNum() { switch_case(_, result, underlyingElement(this)) }
 
   /**
-   * DEPRECATED: use `SwitchCase.getAStmt` or `ControlFlowNode.getASuccessor`
-   * rather than this predicate.
-   *
-   * Gets the `BlockStmt` statement immediately following this 'switch case'
-   * statement, if any.
-   *
-   * For example, for
-   * ```
-   * switch (i) {
-   * case 5:
-   *     x = 1;
-   *     break;
-   * case 6:
-   * case 7:
-   *     { x = 2; break; }
-   * default:
-   *     { x = 3; }
-   *     x = 4;
-   *     break;
-   * }
-   * ```
-   * the `case 7:` has result `{ x = 2; break; }`, `default:` has result
-   * `{ x = 3; }`, and the others have no result.
-   */
-  deprecated BlockStmt getLabelledStmt() {
-    exists(int i, Stmt parent |
-      this = parent.getChild(i) and
-      result = parent.getChild(i + 1)
-    )
-  }
-
-  /**
    * Gets the next `SwitchCase` belonging to the same 'switch'
    * statement, if any.
    *
@@ -1735,23 +1696,6 @@ class Handler extends Stmt, @stmt_handler {
    * parameter `e`, whereas `catch(...)` does not introduce a parameter.
    */
   Parameter getParameter() { result = this.getBlock().getParameter() }
-
-  override predicate mayBeImpure() { none() }
-
-  override predicate mayBeGloballyImpure() { none() }
-}
-
-/**
- * DEPRECATED: Objective-C is no longer supported.
- * The end of a 'finally' clause.
- *
- * This has no concrete representation in the source, but makes the
- * control flow graph easier to use.
- */
-deprecated class FinallyEnd extends Stmt {
-  FinallyEnd() { none() }
-
-  override string toString() { result = "<finally end>" }
 
   override predicate mayBeImpure() { none() }
 

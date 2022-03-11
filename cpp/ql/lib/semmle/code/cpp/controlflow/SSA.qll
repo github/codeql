@@ -147,15 +147,4 @@ class SsaDefinition extends ControlFlowNodeBase {
   Expr getAnUltimateDefiningValue(StackVariable v) {
     result = this.getAnUltimateSsaDefinition(v).getDefiningValue(v)
   }
-
-  /**
-   * DEPRECATED: this is the old name for `getAnUltimateDefiningValue`. The
-   * name was confusing as it seemed analogous to `getDefinition` rather than
-   * `getDefiningValue`. The SSA libraries for other languages use the name
-   * `getAnUltimateSsaDefinition` to refer to a predicate named
-   * `getAnUltimateSsaDefinition` in this class.
-   */
-  deprecated Expr getAnUltimateDefinition(StackVariable v) {
-    result = this.getAnUltimateDefiningValue(v)
-  }
 }

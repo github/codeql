@@ -7,6 +7,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
+private import codeql.ruby.dataflow.internal.DataFlowPrivate
 private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.Stdlib
@@ -100,7 +101,7 @@ class ActiveRecordModelClassMethodCall extends MethodCall {
     recvCls = this.getReceiver().(ActiveRecordModelClassMethodCall).getReceiverClass()
     or
     // e.g. self.where(...) within an ActiveRecordModelClass
-    this.getReceiver() instanceof Self and
+    this.getReceiver() instanceof SelfVariableAccess and
     this.getEnclosingModule() = recvCls
   }
 
@@ -283,14 +284,15 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
 }
 
 // A `self` reference that may resolve to an active record model object
-private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInstantiation {
+private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInstantiation,
+  SsaSelfDefinitionNode {
   private ActiveRecordModelClass cls;
 
   ActiveRecordModelClassSelfReference() {
-    exists(Self s |
-      s.getEnclosingModule() = cls and
-      s.getEnclosingMethod() = cls.getAMethod() and
-      s = this.asExpr().getExpr()
+    exists(MethodBase m |
+      m = this.getCfgScope() and
+      m.getEnclosingModule() = cls and
+      m = cls.getAMethod()
     )
   }
 
@@ -313,4 +315,152 @@ private class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
   ActiveRecordInstanceMethodCall() { this.getReceiver() = instance }
 
   ActiveRecordInstance getInstance() { result = instance }
+}
+
+/**
+ * Provides modeling relating to the `ActiveRecord::Persistence` module.
+ */
+private module Persistence {
+  /**
+   * Holds if there is a hash literal argument to `call` at `argIndex`
+   * containing a KV pair with value `value`.
+   */
+  private predicate hashArgumentWithValue(
+    DataFlow::CallNode call, int argIndex, DataFlow::ExprNode value
+  ) {
+    exists(ExprNodes::HashLiteralCfgNode hash, ExprNodes::PairCfgNode pair |
+      hash = call.getArgument(argIndex).asExpr() and
+      pair = hash.getAKeyValuePair()
+    |
+      value.asExpr() = pair.getValue()
+    )
+  }
+
+  /**
+   * Holds if `call` has a keyword argument of with value `value`.
+   */
+  private predicate keywordArgumentWithValue(DataFlow::CallNode call, DataFlow::ExprNode value) {
+    exists(ExprNodes::PairCfgNode pair | pair = call.getArgument(_).asExpr() |
+      value.asExpr() = pair.getValue()
+    )
+  }
+
+  /** A call to e.g. `User.create(name: "foo")` */
+  private class CreateLikeCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
+    private ActiveRecordModelClass modelCls;
+
+    CreateLikeCall() {
+      modelCls = this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass() and
+      this.getMethodName() =
+        [
+          "create", "create!", "create_or_find_by", "create_or_find_by!", "find_or_create_by",
+          "find_or_create_by!", "insert", "insert!"
+        ]
+    }
+
+    override DataFlow::Node getValue() {
+      // attrs as hash elements in arg0
+      hashArgumentWithValue(this, 0, result) or
+      keywordArgumentWithValue(this, result)
+    }
+  }
+
+  /** A call to e.g. `User.update(1, name: "foo")` */
+  private class UpdateLikeClassMethodCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
+    private ActiveRecordModelClass modelCls;
+
+    UpdateLikeClassMethodCall() {
+      modelCls = this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass() and
+      this.getMethodName() = ["update", "update!", "upsert"]
+    }
+
+    override DataFlow::Node getValue() {
+      keywordArgumentWithValue(this, result)
+      or
+      // Case where 2 array args are passed - the first an array of IDs, and the
+      // second an array of hashes - each hash corresponding to an ID in the
+      // first array.
+      exists(ExprNodes::ArrayLiteralCfgNode hashesArray |
+        this.getArgument(0).asExpr() instanceof ExprNodes::ArrayLiteralCfgNode and
+        hashesArray = this.getArgument(1).asExpr()
+      |
+        exists(ExprNodes::HashLiteralCfgNode hash, ExprNodes::PairCfgNode pair |
+          hash = hashesArray.getArgument(_) and
+          pair = hash.getAKeyValuePair()
+        |
+          result.asExpr() = pair.getValue()
+        )
+      )
+    }
+  }
+
+  /** A call to e.g. `User.insert_all([{name: "foo"}, {name: "bar"}])` */
+  private class InsertAllLikeCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
+    private ExprNodes::ArrayLiteralCfgNode arr;
+    private ActiveRecordModelClass modelCls;
+
+    InsertAllLikeCall() {
+      modelCls = this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass() and
+      this.getMethodName() = ["insert_all", "insert_all!", "upsert_all"] and
+      arr = this.getArgument(0).asExpr()
+    }
+
+    override DataFlow::Node getValue() {
+      // attrs as hash elements of members of array arg0
+      exists(ExprNodes::HashLiteralCfgNode hash, ExprNodes::PairCfgNode pair |
+        hash = arr.getArgument(_) and
+        pair = hash.getAKeyValuePair()
+      |
+        result.asExpr() = pair.getValue()
+      )
+    }
+  }
+
+  /** A call to e.g. `user.update(name: "foo")` */
+  private class UpdateLikeInstanceMethodCall extends PersistentWriteAccess::Range,
+    ActiveRecordInstanceMethodCall {
+    UpdateLikeInstanceMethodCall() {
+      this.getMethodName() = ["update", "update!", "update_attributes", "update_attributes!"]
+    }
+
+    override DataFlow::Node getValue() {
+      // attrs as hash elements in arg0
+      hashArgumentWithValue(this, 0, result)
+      or
+      // keyword arg
+      keywordArgumentWithValue(this, result)
+    }
+  }
+
+  /** A call to e.g. `user.update_attribute(name, "foo")` */
+  private class UpdateAttributeCall extends PersistentWriteAccess::Range,
+    ActiveRecordInstanceMethodCall {
+    UpdateAttributeCall() { this.getMethodName() = "update_attribute" }
+
+    override DataFlow::Node getValue() {
+      // e.g. `foo.update_attribute(key, value)`
+      result = this.getArgument(1)
+    }
+  }
+
+  /**
+   * An assignment like `user.name = "foo"`. Though this does not write to the
+   * database without a subsequent call to persist the object, it is considered
+   * as an `PersistentWriteAccess` to avoid missing cases where the path to a
+   * subsequent write is not clear.
+   */
+  private class AssignAttribute extends PersistentWriteAccess::Range {
+    private ExprNodes::AssignExprCfgNode assignNode;
+
+    AssignAttribute() {
+      exists(DataFlow::CallNode setter |
+        assignNode = this.asExpr() and
+        setter.getArgument(0) = this and
+        setter instanceof ActiveRecordInstanceMethodCall and
+        setter.asExpr().getExpr() instanceof SetterMethodCall
+      )
+    }
+
+    override DataFlow::Node getValue() { assignNode.getRhs() = result.asExpr() }
+  }
 }

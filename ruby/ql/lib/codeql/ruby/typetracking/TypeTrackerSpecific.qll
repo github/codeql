@@ -88,10 +88,7 @@ predicate callStep(Node nodeFrom, Node nodeTo) {
   // we model it as a call step, in order to avoid computing a potential
   // self-cross product of all calls to a function that returns one of its parameters
   // (only to later filter that flow out using `TypeTracker::append`).
-  nodeTo =
-    DataFlowPrivate::LocalFlow::getParameterDefNode(nodeFrom
-          .(DataFlowPublic::ParameterNode)
-          .getParameter())
+  DataFlowPrivate::LocalFlow::localFlowSsaParamInput(nodeFrom, nodeTo)
 }
 
 /**

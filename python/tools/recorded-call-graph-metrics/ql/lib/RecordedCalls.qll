@@ -162,7 +162,7 @@ private Builtin traverse_qualname(Builtin parent, string qualname) {
 }
 
 /**
- * Class of recorded calls where we can identify both the `call` and the `callee` uniquely.
+ * A recorded call where we can identify both the `call` and the `callee` uniquely.
  */
 class IdentifiedRecordedCall extends XMLRecordedCall {
   IdentifiedRecordedCall() {
@@ -212,14 +212,14 @@ class IdentifiedRecordedCall extends XMLRecordedCall {
 }
 
 /**
- * Class of recorded calls where we cannot identify both the `call` and the `callee` uniquely.
+ * A recorded call where we cannot identify both the `call` and the `callee` uniquely.
  */
 class UnidentifiedRecordedCall extends XMLRecordedCall {
   UnidentifiedRecordedCall() { not this instanceof IdentifiedRecordedCall }
 }
 
 /**
- * Recorded calls made from outside project folder, that can be ignored when evaluating
+ * A Recorded call made from outside the project folder. These can be ignored when evaluating
  * call-graph quality.
  */
 class IgnoredRecordedCall extends XMLRecordedCall {

@@ -1,6 +1,6 @@
 import python
 
-/** Syntactic node (Class, Function, Module, Expr, Stmt or Comprehension) corresponding to a flow node */
+/** A syntactic node (Class, Function, Module, Expr, Stmt or Comprehension) corresponding to a flow node */
 abstract class AstNode extends AstNode_ {
   /*
    * Special comment for documentation generation.
@@ -61,31 +61,31 @@ abstract class AstNode extends AstNode_ {
 }
 
 /* Parents */
-/** Internal implementation class */
+/** The parent of a `Function`. Internal implementation class */
 class FunctionParent extends FunctionParent_ { }
 
-/** Internal implementation class */
+/** The parent of an `Arguments` node. Internal implementation class */
 class ArgumentsParent extends ArgumentsParent_ { }
 
-/** Internal implementation class */
+/** The parent of an `ExprList`. Internal implementation class */
 class ExprListParent extends ExprListParent_ { }
 
-/** Internal implementation class */
+/** The parent of an `ExprContext`. Internal implementation class */
 class ExprContextParent extends ExprContextParent_ { }
 
-/** Internal implementation class */
+/** The parent of a `StmtList`. Internal implementation class */
 class StmtListParent extends StmtListParent_ { }
 
-/** Internal implementation class */
+/** The parent of a `StrList`. Internal implementation class */
 class StrListParent extends StrListParent_ { }
 
-/** Internal implementation class */
+/** The parent of an `Expr`. Internal implementation class */
 class ExprParent extends ExprParent_ { }
 
-/** Internal implementation class */
+/** The parent of a `PatternList`. Internal implementation class */
 class PatternListParent extends PatternListParent_ { }
 
-/** Internal implementation class */
+/** The parent of a `Pattern`. Internal implementation class */
 class PatternParent extends PatternParent_ { }
 
 class DictItem extends DictItem_, AstNode {
@@ -120,7 +120,7 @@ class Comprehension extends Comprehension_, AstNode {
 class BytesOrStr extends BytesOrStr_ { }
 
 /**
- * Part of a string literal formed by implicit concatenation.
+ * A part of a string literal formed by implicit concatenation.
  * For example the string literal "abc" expressed in the source as `"a" "b" "c"`
  * would be composed of three `StringPart`s.
  */

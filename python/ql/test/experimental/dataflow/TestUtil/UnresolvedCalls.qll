@@ -7,7 +7,7 @@ import TestUtilities.InlineExpectationsTest
 class UnresolvedCallExpectations extends InlineExpectationsTest {
   UnresolvedCallExpectations() { this = "UnresolvedCallExpectations" }
 
-  override string getARelevantTag() { result = ["unresolved_call"] }
+  override string getARelevantTag() { result = "unresolved_call" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
