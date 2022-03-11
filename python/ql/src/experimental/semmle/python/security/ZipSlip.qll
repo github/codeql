@@ -1,6 +1,7 @@
 import python
 import experimental.semmle.python.Concepts
 import semmle.python.dataflow.new.DataFlow
+import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.TaintTracking
 
 class ZipSlipConfig extends TaintTracking::Configuration {
