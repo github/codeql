@@ -11,7 +11,7 @@ import Declarations.UnusedVariable
  * This class provides utility predicates for reasoning about command execution calls.
  */
 private class CommandCall extends DataFlow::InvokeNode {
-  SystemCommandExecution command;
+  CommandExecution command;
 
   CommandCall() { this = command }
 

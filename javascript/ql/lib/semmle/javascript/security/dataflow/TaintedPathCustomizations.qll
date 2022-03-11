@@ -725,7 +725,7 @@ module TaintedPath {
    */
   private class ShellCwdSink extends TaintedPath::Sink {
     ShellCwdSink() {
-      exists(SystemCommandExecution sys, API::Node opts |
+      exists(CommandExecution sys, API::Node opts |
         opts.getARhs() = sys.getOptionsArg() and // assuming that an API::Node exists here.
         this = opts.getMember("cwd").getARhs()
       )

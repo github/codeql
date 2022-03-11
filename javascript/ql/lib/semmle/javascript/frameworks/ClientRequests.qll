@@ -764,7 +764,7 @@ module ClientRequest {
    * A shell execution of `curl` that downloads some file.
    */
   class CurlDownload extends ClientRequest::Range {
-    SystemCommandExecution cmd;
+    CommandExecution cmd;
 
     CurlDownload() {
       this = cmd and

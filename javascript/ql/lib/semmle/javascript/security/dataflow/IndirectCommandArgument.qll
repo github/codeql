@@ -26,7 +26,7 @@ private predicate shellCmd(Expr shell, string arg) {
  * Gets a data-flow node whose value ends up being interpreted as the command argument in `sys`
  * after a flow summarized by `t`.
  */
-private DataFlow::Node commandArgument(SystemCommandExecution sys, DataFlow::TypeBackTracker t) {
+private DataFlow::Node commandArgument(CommandExecution sys, DataFlow::TypeBackTracker t) {
   t.start() and
   result = sys.getACommandArgument()
   or
@@ -36,7 +36,7 @@ private DataFlow::Node commandArgument(SystemCommandExecution sys, DataFlow::Typ
 /**
  * Gets a data-flow node whose value ends up being interpreted as the command argument in `sys`.
  */
-private DataFlow::Node commandArgument(SystemCommandExecution sys) {
+private DataFlow::Node commandArgument(CommandExecution sys) {
   result = commandArgument(sys, DataFlow::TypeBackTracker::end())
 }
 
@@ -44,7 +44,7 @@ private DataFlow::Node commandArgument(SystemCommandExecution sys) {
  * Gets a data-flow node whose value ends up being interpreted as the argument list in `sys`
  * after a flow summarized by `t`.
  */
-private DataFlow::SourceNode argumentList(SystemCommandExecution sys, DataFlow::TypeBackTracker t) {
+private DataFlow::SourceNode argumentList(CommandExecution sys, DataFlow::TypeBackTracker t) {
   t.start() and
   result = sys.getArgumentList().getALocalSource()
   or
@@ -59,7 +59,7 @@ private DataFlow::SourceNode argumentList(SystemCommandExecution sys, DataFlow::
 /**
  * Gets a data-flow node whose value ends up being interpreted as the argument list in `sys`.
  */
-private DataFlow::SourceNode argumentList(SystemCommandExecution sys) {
+private DataFlow::SourceNode argumentList(CommandExecution sys) {
   result = argumentList(sys, DataFlow::TypeBackTracker::end())
 }
 
@@ -102,7 +102,7 @@ private DataFlow::Node argumentListElement(DataFlow::SourceNode args) {
  * childProcess.spawn("cmd.exe", ["/c"].concat(cmd), cb);
  * ```
  */
-predicate isIndirectCommandArgument(DataFlow::Node source, SystemCommandExecution sys) {
+predicate isIndirectCommandArgument(DataFlow::Node source, CommandExecution sys) {
   exists(DataFlow::ArrayCreationNode args, DataFlow::Node shell, string dashC |
     shellCmd(shell.asExpr(), dashC) and
     shell = commandArgument(sys) and

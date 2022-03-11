@@ -6,12 +6,15 @@
 
 private import javascript
 
+/** DEPRECATED: use `CommandExecution::Range` instead. */
+deprecated class SystemCommandExecution = CommandExecution::Range;
+
 /**
  * A data flow node that executes an operating system command,
  * for instance by spawning a new process.
  */
-class SystemCommandExecution extends DataFlow::Node instanceof SystemCommandExecution::Range {
-  /** Gets an argument to this execution that specifies the command. */
+class CommandExecution extends DataFlow::Node instanceof CommandExecution::Range {
+  /** Gets an argument to this execution that specifies the command or an argument to it. */
   DataFlow::Node getACommandArgument() { result = super.getACommandArgument() }
 
   /** Holds if a shell interprets `arg`. */
@@ -33,13 +36,13 @@ class SystemCommandExecution extends DataFlow::Node instanceof SystemCommandExec
 }
 
 /** Provides a class for modeling new operating system command APIs. */
-module SystemCommandExecution {
+module CommandExecution {
   /**
    * A data flow node that executes an operating system command, for instance by spawning a new
    * process.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `SystemCommandExecution` instead.
+   * extend `CommandExecution` instead.
    */
   abstract class Range extends DataFlow::Node {
     /** Gets an argument to this execution that specifies the command or an argument to it. */
@@ -55,12 +58,12 @@ module SystemCommandExecution {
     DataFlow::Node getArgumentList() { none() }
 
     /** Holds if the command execution happens synchronously. */
-    abstract predicate isSync();
+    predicate isSync() { none() }
 
     /**
      * Gets the data-flow node (if it exists) for an options argument.
      */
-    abstract DataFlow::Node getOptionsArg();
+    DataFlow::Node getOptionsArg() { none() }
   }
 }
 

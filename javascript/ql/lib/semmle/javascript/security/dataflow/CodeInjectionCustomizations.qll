@@ -257,7 +257,7 @@ module CodeInjection {
    */
   class NodeCallSink extends Sink {
     NodeCallSink() {
-      exists(SystemCommandExecution s |
+      exists(CommandExecution s |
         s.getACommandArgument().mayHaveStringValue("node")
         or
         s.getACommandArgument() =

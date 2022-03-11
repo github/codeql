@@ -716,7 +716,7 @@ module NodeJSLib {
   /**
    * A call to a method from module `child_process`.
    */
-  private class ChildProcessMethodCall extends SystemCommandExecution::Range, API::CallNode {
+  private class ChildProcessMethodCall extends CommandExecution::Range, API::CallNode {
     string methodName;
 
     ChildProcessMethodCall() {

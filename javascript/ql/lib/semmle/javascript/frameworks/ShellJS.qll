@@ -1,5 +1,5 @@
 /**
- * Models the `shelljs` library in terms of `FileSystemAccess` and `SystemCommandExecution`.
+ * Models the `shelljs` library in terms of `FileSystemAccess` and `CommandExecution`.
  */
 
 import javascript
@@ -134,7 +134,7 @@ module ShellJS {
   /**
    * A call to `shelljs.exec()` modeled as command execution.
    */
-  private class ShellJSExec extends SystemCommandExecution::Range, ShellJSCall {
+  private class ShellJSExec extends CommandExecution::Range, ShellJSCall {
     ShellJSExec() { name = "exec" }
 
     override DataFlow::Node getACommandArgument() { result = getArgument(0) }

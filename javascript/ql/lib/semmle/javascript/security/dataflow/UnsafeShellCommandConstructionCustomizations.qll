@@ -33,7 +33,7 @@ module UnsafeShellCommandConstruction {
     /**
      * Gets the dataflow node that executes the shell command.
      */
-    abstract SystemCommandExecution getCommandExecution();
+    abstract CommandExecution getCommandExecution();
 
     /**
      * Gets the node that should be highlighted for this sink.
@@ -65,9 +65,7 @@ module UnsafeShellCommandConstruction {
   /**
    * Gets a node that is later executed as a shell command in the command execution `sys`.
    */
-  private DataFlow::Node isExecutedAsShellCommand(
-    DataFlow::TypeBackTracker t, SystemCommandExecution sys
-  ) {
+  private DataFlow::Node isExecutedAsShellCommand(DataFlow::TypeBackTracker t, CommandExecution sys) {
     t.start() and result = sys.getACommandArgument() and sys.isShellInterpreted(result)
     or
     t.start() and isIndirectCommandArgument(result, sys)
@@ -87,7 +85,7 @@ module UnsafeShellCommandConstruction {
    * A string concatenation that is later executed as a shell command.
    */
   class StringConcatEndingInCommandExecutionSink extends Sink, StringOps::ConcatenationLeaf {
-    SystemCommandExecution sys;
+    CommandExecution sys;
     StringOps::ConcatenationRoot root;
 
     StringConcatEndingInCommandExecutionSink() {
@@ -100,7 +98,7 @@ module UnsafeShellCommandConstruction {
 
     override string getSinkType() { result = "String concatenation" }
 
-    override SystemCommandExecution getCommandExecution() { result = sys }
+    override CommandExecution getCommandExecution() { result = sys }
 
     override DataFlow::Node getAlertLocation() { result = root }
   }
@@ -110,7 +108,7 @@ module UnsafeShellCommandConstruction {
    */
   class ArrayAppendEndingInCommandExecutinSink extends Sink {
     DataFlow::SourceNode array;
-    SystemCommandExecution sys;
+    CommandExecution sys;
 
     ArrayAppendEndingInCommandExecutinSink() {
       this =
@@ -127,7 +125,7 @@ module UnsafeShellCommandConstruction {
 
     override string getSinkType() { result = "Array element" }
 
-    override SystemCommandExecution getCommandExecution() { result = sys }
+    override CommandExecution getCommandExecution() { result = sys }
 
     override DataFlow::Node getAlertLocation() { result = this }
   }
@@ -137,7 +135,7 @@ module UnsafeShellCommandConstruction {
    */
   class FormatedStringInCommandExecutionSink extends Sink {
     PrintfStyleCall call;
-    SystemCommandExecution sys;
+    CommandExecution sys;
 
     FormatedStringInCommandExecutionSink() {
       this = call.getFormatArgument(_) and
@@ -149,7 +147,7 @@ module UnsafeShellCommandConstruction {
 
     override string getSinkType() { result = "Formatted string" }
 
-    override SystemCommandExecution getCommandExecution() { result = sys }
+    override CommandExecution getCommandExecution() { result = sys }
 
     override DataFlow::Node getAlertLocation() { result = this }
   }
@@ -158,7 +156,7 @@ module UnsafeShellCommandConstruction {
    * Gets a node that ends up in an array that is ultimately executed as a shell script by `sys`.
    */
   private DataFlow::SourceNode endsInShellExecutedArray(
-    DataFlow::TypeBackTracker t, SystemCommandExecution sys
+    DataFlow::TypeBackTracker t, CommandExecution sys
   ) {
     t.start() and
     result = sys.getArgumentList().getALocalSource() and
@@ -180,7 +178,7 @@ module UnsafeShellCommandConstruction {
    * An argument to a command invocation where the `shell` option is set to true.
    */
   class ShellTrueCommandExecutionSink extends Sink {
-    SystemCommandExecution sys;
+    CommandExecution sys;
 
     ShellTrueCommandExecutionSink() {
       // `shell` is set to true. That means string-concatenation happens behind the scenes.
@@ -196,7 +194,7 @@ module UnsafeShellCommandConstruction {
 
     override string getSinkType() { result = "Shell argument" }
 
-    override SystemCommandExecution getCommandExecution() { result = sys }
+    override CommandExecution getCommandExecution() { result = sys }
 
     override DataFlow::Node getAlertLocation() { result = this }
   }
@@ -207,7 +205,7 @@ module UnsafeShellCommandConstruction {
    */
   class JoinedPathEndingInCommandExecutionSink extends Sink {
     DataFlow::MethodCallNode joinCall;
-    SystemCommandExecution sys;
+    CommandExecution sys;
 
     JoinedPathEndingInCommandExecutionSink() {
       this = joinCall.getAnArgument() and
@@ -217,7 +215,7 @@ module UnsafeShellCommandConstruction {
 
     override string getSinkType() { result = "Path concatenation" }
 
-    override SystemCommandExecution getCommandExecution() { result = sys }
+    override CommandExecution getCommandExecution() { result = sys }
 
     override DataFlow::Node getAlertLocation() { result = this }
   }

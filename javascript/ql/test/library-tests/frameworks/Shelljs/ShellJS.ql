@@ -7,6 +7,6 @@ query predicate test_MissingFileSystemAccess(VarAccess var) {
   not exists(FileSystemAccess access | access.getAPathArgument().asExpr() = var)
 }
 
-query predicate test_SystemCommandExecution(SystemCommandExecution exec) { any() }
+query predicate test_SystemCommandExecution(CommandExecution exec) { any() }
 
 query predicate test_FileNameSource(FileNameSource exec) { any() }

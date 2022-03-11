@@ -53,7 +53,7 @@ module ShellCommandInjectionFromEnvironment {
    * A shell command argument.
    */
   class ShellCommandSink extends Sink, DataFlow::ValueNode {
-    ShellCommandSink() { any(SystemCommandExecution sys).isShellInterpreted(this) }
+    ShellCommandSink() { any(CommandExecution sys).isShellInterpreted(this) }
   }
 
   /**

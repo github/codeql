@@ -95,7 +95,7 @@ class FileSystemAccessAsExpensiveAction extends ExpensiveAction {
 
 /** A system command execution, considered as an expensive action. */
 class SystemCommandExecutionAsExpensiveAction extends ExpensiveAction {
-  SystemCommandExecutionAsExpensiveAction() { this instanceof SystemCommandExecution }
+  SystemCommandExecutionAsExpensiveAction() { this instanceof CommandExecution }
 
   override string describe() { result = "a system command" }
 }
