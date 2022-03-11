@@ -177,9 +177,7 @@ private class TempDirSystemGetPropertyDirectlyToMkdirConfig extends TaintTrackin
   }
 
   override predicate isSource(DataFlow::Node node) {
-    exists(
-      ExprSystemGetPropertyTempDirTainted propertyGetExpr, DataFlow::Node callSite
-    |
+    exists(ExprSystemGetPropertyTempDirTainted propertyGetExpr, DataFlow::Node callSite |
       DataFlow::localFlow(DataFlow::exprNode(propertyGetExpr), callSite)
     |
       isFileConstructorArgument(callSite.asExpr(), node.asExpr(), 1)

@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates for working with java system properties.
+ */
+
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.frameworks.Properties
