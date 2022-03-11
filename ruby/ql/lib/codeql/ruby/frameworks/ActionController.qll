@@ -127,9 +127,7 @@ abstract class ParamsCall extends MethodCall {
  * ActionController parameters available via the `params` method.
  */
 class ParamsSource extends RemoteFlowSource::Range {
-  ParamsCall call;
-
-  ParamsSource() { this.asExpr().getExpr() = call }
+  ParamsSource() { this.asExpr().getExpr() instanceof ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
 }
@@ -146,9 +144,7 @@ abstract class CookiesCall extends MethodCall {
  * ActionController parameters available via the `cookies` method.
  */
 class CookiesSource extends RemoteFlowSource::Range {
-  CookiesCall call;
-
-  CookiesSource() { this.asExpr().getExpr() = call }
+  CookiesSource() { this.asExpr().getExpr() instanceof CookiesCall }
 
   override string getSourceType() { result = "ActionController::Metal#cookies" }
 }
