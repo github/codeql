@@ -49,7 +49,7 @@ class TrapLabelManager {
  * share the same `TrapLabelManager` and `BufferedWriter`.
  */
 // TODO lm was `protected` before anonymousTypeMapping and locallyVisibleFunctionLabelMapping moved into it. Should we re-protect it and provide accessors?
-open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelManager, private val bw: BufferedWriter) {
+open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelManager, private val bw: BufferedWriter, val diagnosticTrapWriter: TrapWriter?) {
     /**
      * Returns the label that is defined to be the given key, if such
      * a label exists, and `null` otherwise. Most users will want to use
@@ -212,7 +212,7 @@ open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelMa
         val len = str.length
         val newLen = UTF8Util.encodablePrefixLength(str, MAX_STRLEN)
         if (newLen < len) {
-            loggerBase.warn(this,
+            loggerBase.warn(diagnosticTrapWriter ?: this,
                 "Truncated string of length $len",
                 "Truncated string of length $len, starting '${str.take(100)}', ending '${str.takeLast(100)}'")
             return str.take(newLen)
@@ -226,14 +226,14 @@ open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelMa
      * writer etc), but using the given `filePath` for locations.
      */
     fun makeFileTrapWriter(filePath: String, populateFileTables: Boolean) =
-        FileTrapWriter(loggerBase, lm, bw, filePath, populateFileTables)
+        FileTrapWriter(loggerBase, lm, bw, diagnosticTrapWriter, filePath, populateFileTables)
 
     /**
      * Gets a FileTrapWriter like this one (using the same label manager,
      * writer etc), but using the given `IrFile` for locations.
      */
     fun makeSourceFileTrapWriter(file: IrFile, populateFileTables: Boolean) =
-        SourceFileTrapWriter(loggerBase, lm, bw, file, populateFileTables)
+        SourceFileTrapWriter(loggerBase, lm, bw, diagnosticTrapWriter, file, populateFileTables)
 }
 
 /**
@@ -248,9 +248,10 @@ open class FileTrapWriter (
     loggerBase: LoggerBase,
     lm: TrapLabelManager,
     bw: BufferedWriter,
+    diagnosticTrapWriter: TrapWriter?,
     val filePath: String,
     populateFileTables: Boolean
-): TrapWriter (loggerBase, lm, bw) {
+): TrapWriter (loggerBase, lm, bw, diagnosticTrapWriter) {
 
     /**
      * The ID for the file that we are extracting from.
@@ -306,9 +307,10 @@ class SourceFileTrapWriter (
     loggerBase: LoggerBase,
     lm: TrapLabelManager,
     bw: BufferedWriter,
+    diagnosticTrapWriter: TrapWriter?,
     irFile: IrFile,
     populateFileTables: Boolean) :
-    FileTrapWriter(loggerBase, lm, bw, irFile.path, populateFileTables) {
+    FileTrapWriter(loggerBase, lm, bw, diagnosticTrapWriter, irFile.path, populateFileTables) {
 
     /**
      * The file entry for the file that we are extracting from.
