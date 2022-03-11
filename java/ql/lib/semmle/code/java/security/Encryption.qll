@@ -245,34 +245,6 @@ string getSecureAlgorithmRegex() {
 }
 
 /**
- * DEPRECATED: Terminology has been updated. Use `getAnInsecureAlgorithmName()`
- * instead.
- */
-deprecated string algorithmBlacklist() { result = getAnInsecureAlgorithmName() }
-
-/**
- * DEPRECATED: Terminology has been updated. Use
- * `getAnInsecureHashAlgorithmName()` instead.
- */
-deprecated string hashAlgorithmBlacklist() { result = getAnInsecureHashAlgorithmName() }
-
-/**
- * DEPRECATED: Terminology has been updated. Use `getInsecureAlgorithmRegex()` instead.
- */
-deprecated string algorithmBlacklistRegex() { result = getInsecureAlgorithmRegex() }
-
-/**
- * DEPRECATED: Terminology has been updated. Use `getASecureAlgorithmName()`
- * instead.
- */
-deprecated string algorithmWhitelist() { result = getASecureAlgorithmName() }
-
-/**
- * DEPRECATED: Terminology has been updated. Use `getSecureAlgorithmRegex()` instead.
- */
-deprecated string algorithmWhitelistRegex() { result = getSecureAlgorithmRegex() }
-
-/**
  * Any use of a cryptographic element that specifies an encryption
  * algorithm. For example, methods returning ciphers, decryption methods,
  * constructors of cipher classes, etc.

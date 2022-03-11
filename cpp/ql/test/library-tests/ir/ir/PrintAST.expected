@@ -5401,7 +5401,7 @@ ir.cpp:
 #  600|   <params>: 
 #  600|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  600|         Type = [RValueReferenceType] String &&
-#  601| [ConversionConstructor] void String::String(char const*)
+#  601| [Constructor] void String::String(char const*)
 #  601|   <params>: 
 #  601|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  601|         Type = [PointerType] const char *
@@ -10630,7 +10630,7 @@ ir.cpp:
 # 1330|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] constructor_only &&
-# 1335| [ConversionConstructor] void constructor_only::constructor_only(int)
+# 1335| [Constructor] void constructor_only::constructor_only(int)
 # 1335|   <params>: 
 # 1335|     getParameter(0): [Parameter] x
 # 1335|         Type = [IntType] int

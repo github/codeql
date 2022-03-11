@@ -159,14 +159,6 @@ class Node extends TIRDataFlowNode {
   Expr asPartialDefinition() { result = this.(PartialDefinitionNode).getDefinedExpr() }
 
   /**
-   * DEPRECATED: See UninitializedNode.
-   *
-   * Gets the uninitialized local variable corresponding to this node, if
-   * any.
-   */
-  deprecated LocalVariable asUninitialized() { none() }
-
-  /**
    * Gets an upper bound on the type of this node.
    */
   IRType getTypeBound() { result = this.getType() }
@@ -561,22 +553,6 @@ class ParameterIndirectionNode extends ParameterNode {
 }
 
 /**
- * DEPRECATED: Data flow was never an accurate way to determine what
- * expressions might be uninitialized. It errs on the side of saying that
- * everything is uninitialized, and this is even worse in the IR because the IR
- * doesn't use syntactic hints to rule out variables that are definitely
- * initialized.
- *
- * The value of an uninitialized local variable, viewed as a node in a data
- * flow graph.
- */
-deprecated class UninitializedNode extends Node {
-  UninitializedNode() { none() }
-
-  LocalVariable getLocalVariable() { none() }
-}
-
-/**
  * A node associated with an object after an operation that might have
  * changed its state.
  *
@@ -724,14 +700,6 @@ InstructionNode instructionNode(Instruction instr) { result.getInstruction() = i
  * Gets the node corresponding to `operand`.
  */
 OperandNode operandNode(Operand operand) { result.getOperand() = operand }
-
-/**
- * DEPRECATED: use `definitionByReferenceNodeFromArgument` instead.
- *
- * Gets the `Node` corresponding to a definition by reference of the variable
- * that is passed as `argument` of a call.
- */
-deprecated DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
 
 /**
  * Gets the `Node` corresponding to the value of evaluating `e` or any of its

@@ -204,12 +204,6 @@ class Content extends TContent {
 
   /** Gets the location of this content. */
   Location getLocation() { none() }
-
-  /** Gets the type of the object containing this content. */
-  deprecated Gvn::GvnType getContainerType() { none() }
-
-  /** Gets the type of this content. */
-  deprecated Gvn::GvnType getType() { none() }
 }
 
 /** A reference to a field. */
@@ -224,12 +218,6 @@ class FieldContent extends Content, TFieldContent {
   override string toString() { result = "field " + f.getName() }
 
   override Location getLocation() { result = f.getLocation() }
-
-  deprecated override Gvn::GvnType getContainerType() {
-    result = Gvn::getGlobalValueNumber(f.getDeclaringType())
-  }
-
-  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
 }
 
 /** A reference to a synthetic field. */
@@ -256,12 +244,6 @@ class PropertyContent extends Content, TPropertyContent {
   override string toString() { result = "property " + p.getName() }
 
   override Location getLocation() { result = p.getLocation() }
-
-  deprecated override Gvn::GvnType getContainerType() {
-    result = Gvn::getGlobalValueNumber(p.getDeclaringType())
-  }
-
-  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(p.getType()) }
 }
 
 /** A reference to an element in a collection. */

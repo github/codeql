@@ -366,9 +366,6 @@ BuiltinModuleObject theBuiltinModuleObject() { result.asBuiltin() = Builtin::bui
 /** Gets the `sys` module */
 BuiltinModuleObject theSysModuleObject() { result.asBuiltin() = Builtin::special("sys") }
 
-/** DEPRECATED -- Use `Object::builtin(name)` instead. */
-deprecated Object builtin_object(string name) { result = Object::builtin(name) }
-
 /** Gets the built-in object None */
 Object theNoneObject() { result.asBuiltin() = Builtin::special("None") }
 
@@ -389,15 +386,6 @@ Object theIndexErrorType() { result = Object::builtin("IndexError") }
 
 /** Gets the LookupError class */
 Object theLookupErrorType() { result = Object::builtin("LookupError") }
-
-/** DEPRECATED -- Use `Object::quitter(name)` instead. */
-deprecated Object quitterObject(string name) { result = Object::quitter(name) }
-
-/** DEPRECATED -- Use `Object::notImplemented()` instead. */
-deprecated Object theNotImplementedObject() { result = Object::builtin("NotImplemented") }
-
-/** DEPRECATED -- Use `TupleObject::empty()` instead. */
-deprecated Object theEmptyTupleObject() { result = TupleObject::empty() }
 
 module Object {
   Object builtin(string name) { result.asBuiltin() = Builtin::builtin(name) }

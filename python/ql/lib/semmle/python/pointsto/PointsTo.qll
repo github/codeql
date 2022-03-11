@@ -145,24 +145,6 @@ module PointsTo {
     )
   }
 
-  deprecated predicate ssa_variable_points_to(
-    EssaVariable var, PointsToContext context, Object obj, ClassObject cls, CfgOrigin origin
-  ) {
-    exists(ObjectInternal value |
-      PointsToInternal::variablePointsTo(var, context, value, origin) and
-      cls = value.getClass().getSource()
-    |
-      obj = value.getSource()
-    )
-  }
-
-  deprecated CallNode get_a_call(Object func, PointsToContext context) {
-    exists(ObjectInternal value |
-      result = value.(Value).getACall(context) and
-      func = value.getSource()
-    )
-  }
-
   cached
   predicate moduleExports(ModuleObjectInternal mod, string name) {
     InterModulePointsTo::moduleExportsBoolean(mod, name) = true
