@@ -1475,6 +1475,11 @@ class PropertyRefExpr extends ClassInstanceExpr, @propertyref {
   Callable getGetterCallable() { propertyRefGetBinding(this, result) }
 
   /**
+   * Gets the field referenced by this property reference expression, if any.
+   */
+  Field getField() { propertyRefFieldBinding(this, result) }
+
+  /**
    * Gets the property setter referenced by this property reference expression, if any.
    */
   Callable getSetterCallable() { propertyRefSetBinding(this, result) }

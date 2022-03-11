@@ -1,3 +1,5 @@
+import java.awt.Rectangle
+
 import kotlin.reflect.*
 
 class Reflection {
@@ -64,6 +66,10 @@ class Class1 {
 
         println(Generic<Int>::p2)
         println(Generic<Int>()::p2)
+
+        println(Int::MAX_VALUE)         // Companion object and property getter
+        println(Integer::MAX_VALUE)     // Static field access, no getter
+        println(Rectangle()::height)    // Field access, no getter, with dispatch receiver
     }
 
     class Generic<T1> {

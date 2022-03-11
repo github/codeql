@@ -65,3 +65,13 @@ query predicate callsInsideInvocationMethods(
   call.getEnclosingCallable() = m and
   callee = call.getCallee().getQualifiedName()
 }
+
+query predicate fieldAccessInsideInvocationMethods(
+  ClassInstanceExpr e, AnonymousClass c, Method m, FieldAccess access
+) {
+  (e instanceof MemberRefExpr or e instanceof PropertyRefExpr) and
+  e.getAnonymousClass() = c and
+  c.getAMethod() = m and
+  m.getName() = ["invoke", "get", "set"] and
+  access.getEnclosingCallable() = m
+}

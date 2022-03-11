@@ -845,6 +845,11 @@ propertyRefGetBinding(
   int getter: @callable ref
 );
 
+propertyRefFieldBinding(
+  unique int id: @expr ref,
+  int field: @field ref
+);
+
 propertyRefSetBinding(
   unique int id: @expr ref,
   int setter: @callable ref

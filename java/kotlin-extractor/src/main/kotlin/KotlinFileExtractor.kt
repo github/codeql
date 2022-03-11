@@ -16,10 +16,7 @@ import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.backend.js.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
-import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
-import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
-import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
-import org.jetbrains.kotlin.ir.symbols.IrSymbol
+import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.name.FqName
@@ -2551,10 +2548,10 @@ open class KotlinFileExtractor(
                     extractTypeAccessRecursive(e.classType, locId, id, 0, callable, exprParent.enclosingStmt)
                 }
                 is IrPropertyReference -> {
-                    extractPropertyReference("property reference", e, e.getter, e.setter, parent, callable)
+                    extractPropertyReference("property reference", e, e.getter, e.setter, e.field, parent, callable)
                 }
                 is IrLocalDelegatedPropertyReference -> {
-                    extractPropertyReference("local delegated property reference", e, e.getter, e.setter, parent, callable)
+                    extractPropertyReference("local delegated property reference", e, e.getter, e.setter, null, parent, callable)
                 }
                 else -> {
                     logger.errorElement("Unrecognised IrExpression: " + e.javaClass, e)
@@ -2644,6 +2641,50 @@ open class KotlinFileExtractor(
             }
         }
 
+        private fun writeVariableAccessInFunctionBody(pType: TypeResults, idx: Int, variable: Label<out DbVariable>,
+                                                      parent: Label<out DbExprparent>, callable: Label<out DbCallable>, stmt: Label<out DbStmt>
+        ): Label<DbVaraccess> {
+            val pId = tw.getFreshIdLabel<DbVaraccess>()
+            tw.writeExprs_varaccess(pId, pType.javaResult.id, parent, idx)
+            tw.writeExprsKotlinType(pId, pType.kotlinResult.id)
+            tw.writeVariableBinding(pId, variable)
+            writeExpressionMetadataToTrapFile(pId, callable, stmt)
+            return pId
+        }
+
+        private fun writeFieldAccessInFunctionBody(pType: IrType, idx: Int, variable: Label<out DbField>,
+                                                   parent: Label<out DbExprparent>, callable: Label<out DbCallable>, stmt: Label<out DbStmt>) {
+            val accessId = writeVariableAccessInFunctionBody(useType(pType), idx, variable, parent, callable, stmt)
+            val thisId = tw.getFreshIdLabel<DbThisaccess>()
+            tw.writeExprs_thisaccess(thisId, ids.type.javaResult.id, accessId, -1)
+            tw.writeExprsKotlinType(thisId, ids.type.kotlinResult.id)
+            writeExpressionMetadataToTrapFile(thisId, callable, stmt)
+        }
+
+        fun extractFieldAccessToReflectionTarget(
+            labels: FunctionLabels,         // labels of the containing function
+            target: IrFieldSymbol,          // the target field being accessed
+        ) {
+            val retId = tw.getFreshIdLabel<DbReturnstmt>()
+            tw.writeStmts_returnstmt(retId, labels.blockId, 0, labels.methodId)
+            tw.writeHasLocation(retId, locId)
+
+            val fieldType = useType(target.owner.type)
+
+            var accessId = tw.getFreshIdLabel<DbVaraccess>()
+            tw.writeExprs_varaccess(accessId, fieldType.javaResult.id, retId, 0)
+            tw.writeExprsKotlinType(accessId, fieldType.kotlinResult.id)
+
+            writeExpressionMetadataToTrapFile(accessId, labels.methodId, retId)
+
+            val fieldId = useField(target.owner)
+            tw.writeVariableBinding(accessId, fieldId)
+
+            if (dispatchReceiver != null) {
+                writeFieldAccessInFunctionBody(receiverType!!, -1, dispatchFieldId!!, accessId, labels.methodId, retId)
+            }
+        }
+
         /**
          * Extracts a call to `target` inside the function identified by `labels`. Special parameters (`dispatch` and `extension`) are also handled.
          *
@@ -2700,30 +2741,9 @@ open class KotlinFileExtractor(
             @Suppress("UNCHECKED_CAST")
             tw.writeCallableBinding(callId as Label<out DbCaller>, callableId)
 
-            fun writeVariableAccessInFunctionBody(
-                pType: TypeResults,
-                idx: Int,
-                variable: Label<out DbVariable>
-            ): Label<DbVaraccess> {
-                val pId = tw.getFreshIdLabel<DbVaraccess>()
-                tw.writeExprs_varaccess(pId, pType.javaResult.id, callId, idx)
-                tw.writeExprsKotlinType(pId, pType.kotlinResult.id)
-                tw.writeVariableBinding(pId, variable)
-                writeExpressionMetadataToTrapFile(pId, labels.methodId, retId)
-                return pId
-            }
-
-            fun writeFieldAccessInFunctionBody(pType: IrType, idx: Int, variable: Label<out DbField>) {
-                val accessId = writeVariableAccessInFunctionBody(useType(pType), idx, variable)
-                val thisId = tw.getFreshIdLabel<DbThisaccess>()
-                tw.writeExprs_thisaccess(thisId, ids.type.javaResult.id, accessId, -1)
-                tw.writeExprsKotlinType(thisId, ids.type.kotlinResult.id)
-                writeExpressionMetadataToTrapFile(thisId, labels.methodId, retId)
-            }
-
             val useFirstArgAsDispatch: Boolean
             if (dispatchReceiver != null) {
-                writeFieldAccessInFunctionBody(receiverType!!, dispatchReceiverIdx, dispatchFieldId!!)
+                writeFieldAccessInFunctionBody(receiverType!!, dispatchReceiverIdx, dispatchFieldId!!, callId, labels.methodId, retId)
 
                 useFirstArgAsDispatch = false
             } else {
@@ -2732,7 +2752,7 @@ open class KotlinFileExtractor(
 
             val extensionIdxOffset: Int
             if (extensionReceiver != null) {
-                writeFieldAccessInFunctionBody(receiverType!!, 0, extensionFieldId!!)
+                writeFieldAccessInFunctionBody(receiverType!!, 0, extensionFieldId!!, callId, labels.methodId, retId)
                 extensionIdxOffset = 1
             } else {
                 extensionIdxOffset = 0
@@ -2752,7 +2772,7 @@ open class KotlinFileExtractor(
                     } else {
                         pIdx + extensionIdxOffset - dispatchIdxOffset
                     }
-                    writeVariableAccessInFunctionBody(p.second, childIdx, p.first)
+                    writeVariableAccessInFunctionBody(p.second, childIdx, p.first, callId, labels.methodId, retId)
                 }
             }
         }
@@ -2777,6 +2797,7 @@ open class KotlinFileExtractor(
         propertyReferenceExpr: IrCallableReference<out IrSymbol>,
         getter: IrSimpleFunctionSymbol?,
         setter: IrSimpleFunctionSymbol?,
+        backingField: IrFieldSymbol?,
         parent: StmtExprParent,
         callable: Label<out DbCallable>
     ) {
@@ -2802,11 +2823,6 @@ open class KotlinFileExtractor(
              * - KProperty0<> vs KProperty1<,>
              * - no receiver vs dispatchReceiver vs extensionReceiver
              **/
-
-            if (getter == null && setter == null) {
-                logger.errorElement("Expected to find getter or setter for property reference.", propertyReferenceExpr)
-                return
-            }
 
             val kPropertyType = propertyReferenceExpr.type
             if (kPropertyType !is IrSimpleType) {
@@ -2858,6 +2874,22 @@ open class KotlinFileExtractor(
                 )
 
                 tw.writePropertyRefGetBinding(idPropertyRef, getterCallableId)
+            } else {
+                // Property without a getter.
+                if (backingField == null) {
+                    logger.errorElement("Expected to find getter or backing field for property reference.", propertyReferenceExpr)
+                    return
+                }
+
+                val getterParameterTypes = parameterTypes.dropLast(1)
+                val getLabels = addFunctionManual(tw.getFreshIdLabel(), "get", getterParameterTypes, parameterTypes.last(), classId, locId)
+                val fieldId = useField(backingField.owner)
+
+                helper.extractFieldAccessToReflectionTarget(
+                    getLabels,
+                    backingField)
+
+                tw.writePropertyRefFieldBinding(idPropertyRef, fieldId)
             }
 
             if (setter != null) {
