@@ -2661,7 +2661,32 @@ open class KotlinFileExtractor(
             writeExpressionMetadataToTrapFile(thisId, callable, stmt)
         }
 
-        fun extractFieldAccessToReflectionTarget(
+        fun extractFieldWriteOfReflectionTarget(
+            labels: FunctionLabels,         // labels of the containing function
+            target: IrFieldSymbol,          // the target field being accessed)
+        ) {
+            // ...;
+            val exprStmtId = tw.getFreshIdLabel<DbExprstmt>()
+            tw.writeStmts_exprstmt(exprStmtId, labels.blockId, 0, labels.methodId)
+            tw.writeHasLocation(exprStmtId, locId)
+
+            val fieldType = useType(target.owner.type)
+
+            // ... = ...
+            val assignExprId = tw.getFreshIdLabel<DbAssignexpr>()
+            tw.writeExprs_assignexpr(assignExprId, fieldType.javaResult.id, exprStmtId, 0)
+            tw.writeExprsKotlinType(assignExprId, fieldType.kotlinResult.id)
+            writeExpressionMetadataToTrapFile(assignExprId, labels.methodId, exprStmtId)
+
+            // LHS
+            extractFieldAccess(fieldType, assignExprId, exprStmtId, labels, target)
+
+            // RHS
+            val p = labels.parameters.first()
+            writeVariableAccessInFunctionBody(p.second, 1, p.first, assignExprId, labels.methodId, exprStmtId)
+        }
+
+        fun extractFieldReturnOfReflectionTarget(
             labels: FunctionLabels,         // labels of the containing function
             target: IrFieldSymbol,          // the target field being accessed
         ) {
@@ -2670,18 +2695,27 @@ open class KotlinFileExtractor(
             tw.writeHasLocation(retId, locId)
 
             val fieldType = useType(target.owner.type)
+            extractFieldAccess(fieldType, retId, retId, labels, target)
+        }
 
+        private fun extractFieldAccess(
+            fieldType: TypeResults,
+            parent: Label<out DbExprparent>,
+            stmt: Label<out DbStmt>,
+            labels: FunctionLabels,
+            target: IrFieldSymbol
+        ) {
             var accessId = tw.getFreshIdLabel<DbVaraccess>()
-            tw.writeExprs_varaccess(accessId, fieldType.javaResult.id, retId, 0)
+            tw.writeExprs_varaccess(accessId, fieldType.javaResult.id, parent, 0)
             tw.writeExprsKotlinType(accessId, fieldType.kotlinResult.id)
 
-            writeExpressionMetadataToTrapFile(accessId, labels.methodId, retId)
+            writeExpressionMetadataToTrapFile(accessId, labels.methodId, stmt)
 
             val fieldId = useField(target.owner)
             tw.writeVariableBinding(accessId, fieldId)
 
             if (dispatchReceiver != null) {
-                writeFieldAccessInFunctionBody(receiverType!!, -1, dispatchFieldId!!, accessId, labels.methodId, retId)
+                writeFieldAccessInFunctionBody(receiverType!!, -1, dispatchFieldId!!, accessId, labels.methodId, stmt)
             }
         }
 
@@ -2885,7 +2919,7 @@ open class KotlinFileExtractor(
                 val getLabels = addFunctionManual(tw.getFreshIdLabel(), "get", getterParameterTypes, parameterTypes.last(), classId, locId)
                 val fieldId = useField(backingField.owner)
 
-                helper.extractFieldAccessToReflectionTarget(
+                helper.extractFieldReturnOfReflectionTarget(
                     getLabels,
                     backingField)
 
@@ -2906,6 +2940,17 @@ open class KotlinFileExtractor(
                 )
 
                 tw.writePropertyRefSetBinding(idPropertyRef, setterCallableId)
+            } else {
+                if (backingField != null && !backingField.owner.isFinal) {
+                    val setLabels = addFunctionManual(tw.getFreshIdLabel(), "set", parameterTypes, pluginContext.irBuiltIns.unitType, classId, locId)
+                    val fieldId = useField(backingField.owner)
+
+                    helper.extractFieldWriteOfReflectionTarget(
+                        setLabels,
+                        backingField)
+
+                    tw.writePropertyRefFieldBinding(idPropertyRef, fieldId)
+                }
             }
 
             // Add constructor (property ref) call:

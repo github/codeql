@@ -810,6 +810,16 @@ reflection.kt:
 #   72|                       0: [VarAccess] this.<dispatchReceiver>.height
 #   72|                         -1: [VarAccess] this.<dispatchReceiver>
 #   72|                           -1: [ThisAccess] this
+#   72|                 1: [Method] set
+#-----|                   4: (Parameters)
+#   72|                     0: [Parameter] a0
+#   72|                   5: [BlockStmt] { ... }
+#   72|                     0: [ExprStmt] <Expr>;
+#   72|                       0: [AssignExpr] ...=...
+#   72|                         0: [VarAccess] this.<dispatchReceiver>.height
+#   72|                           -1: [VarAccess] this.<dispatchReceiver>
+#   72|                             -1: [ThisAccess] this
+#   72|                         1: [VarAccess] a0
 #   72|               -3: [TypeAccess] KMutableProperty0<Integer>
 #   72|                 0: [TypeAccess] Integer
 #   72|               0: [ClassInstanceExpr] new Rectangle(...)

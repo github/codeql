@@ -50,6 +50,11 @@ query predicate propertyGetReferences(PropertyRefExpr e, Method m, Callable c) {
   e.getGetterCallable() = c
 }
 
+query predicate propertyFieldReferences(PropertyRefExpr e, Method m, Field f) {
+  e.asGetMethod() = m and
+  e.getField() = f
+}
+
 query predicate propertySetReferences(PropertyRefExpr e, Method m, Callable c) {
   e.asSetMethod() = m and
   e.getSetterCallable() = c
