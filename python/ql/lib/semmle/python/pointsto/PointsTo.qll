@@ -2395,7 +2395,7 @@ module Types {
     )
   }
 
-  /* Holds if type inference failed to compute the full class hierarchy for this class for the reason given. */
+  /** Holds if type inference failed to compute the full class hierarchy for this class for the reason given. */
   private predicate failedInference(ClassObjectInternal cls, string reason, int priority) {
     strictcount(cls.(PythonClassObjectInternal).getScope().getADecorator()) > 1 and
     reason = "Multiple decorators" and

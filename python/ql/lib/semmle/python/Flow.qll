@@ -299,7 +299,7 @@ class ControlFlowNode extends @py_flow_node {
     exists(BasicBlock b, int i, int j | this = b.getNode(i) and other = b.getNode(j) and i < j)
   }
 
-  /* Holds if this CFG node is a branch */
+  /** Holds if this CFG node is a branch */
   predicate isBranch() { py_true_successors(this, _) or py_false_successors(this, _) }
 
   ControlFlowNode getAChild() { result = this.getExprChild(this.getBasicBlock()) }

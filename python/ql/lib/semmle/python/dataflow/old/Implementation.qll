@@ -991,7 +991,7 @@ int iterable_unpacking_descent(SequenceNode left_parent, ControlFlowNode left_de
 }
 
 module Implementation {
-  /* A call that returns a copy (or similar) of the argument */
+  /** Holds if `tonode` is a call that returns a copy (or similar) of the argument `fromnode` */
   predicate copyCall(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getFunction().(AttrNode).getObject("copy") = fromnode
     or
