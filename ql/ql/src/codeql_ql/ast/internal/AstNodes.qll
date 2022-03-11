@@ -84,7 +84,10 @@ class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
 class TModuleRef = TImport or TModuleExpr;
 
-class TYAMLNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
+class TYamlNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
+
+/** DEPRECATED: Alias for TYamlNode */
+deprecated class TYAMLNode = TYamlNode;
 
 private QL::AstNode toQLFormula(AST::AstNode n) {
   n = TConjunction(result) or
@@ -115,7 +118,7 @@ private QL::AstNode toQLExpr(AST::AstNode n) {
   n = TDontCare(result)
 }
 
-private QL::AstNode toGenerateYAML(AST::AstNode n) {
+private QL::AstNode toGenerateYaml(AST::AstNode n) {
   n = TYamlCommemt(result) or
   n = TYamlEntry(result) or
   n = TYamlKey(result) or
@@ -132,7 +135,7 @@ QL::AstNode toQL(AST::AstNode n) {
   or
   result = toQLFormula(n)
   or
-  result = toGenerateYAML(n)
+  result = toGenerateYaml(n)
   or
   result.(QL::ParExpr).getChild() = toQL(n)
   or

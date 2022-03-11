@@ -102,7 +102,7 @@ private class BlockListBarrierGuard extends PathTraversalBarrierGuard instanceof
  * A guard that considers a string safe because it is checked for URL encoding sequences,
  * having previously been checked against a block-list of forbidden values.
  */
-private class URLEncodingBarrierGuard extends PathTraversalBarrierGuard instanceof UrlEncodingGuard {
+private class UrlEncodingBarrierGuard extends PathTraversalBarrierGuard instanceof UrlEncodingGuard {
   override predicate checks(Expr e, boolean branch) {
     e = super.getCheckedExpr() and
     branch = false and

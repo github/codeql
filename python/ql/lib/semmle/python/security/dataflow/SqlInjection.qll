@@ -39,4 +39,7 @@ module SqlInjection {
  * performance, instead use the new `SqlInjectionCustomizations.qll` file, and extend
  * its' classes.
  */
-deprecated class SQLInjectionConfiguration = SqlInjection::Configuration;
+deprecated class SqlInjectionConfiguration = SqlInjection::Configuration;
+
+/** DEPRECATED: Alias for SqlInjectionConfiguration */
+deprecated class SQLInjectionConfiguration = SqlInjectionConfiguration;

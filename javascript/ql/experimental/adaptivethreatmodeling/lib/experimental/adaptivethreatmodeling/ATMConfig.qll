@@ -28,9 +28,9 @@ import EndpointTypes
  * `isAdditionalFlowStep` with a more generalised definition of additional edges. See
  * `NosqlInjectionATM.qll` for an example of doing this.
  */
-abstract class ATMConfig extends string {
+abstract class AtmConfig extends string {
   bindingset[this]
-  ATMConfig() { any() }
+  AtmConfig() { any() }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
@@ -110,3 +110,6 @@ abstract class ATMConfig extends string {
    */
   float getScoreCutoff() { result = 0.0 }
 }
+
+/** DEPRECATED: Alias for AtmConfig */
+deprecated class ATMConfig = AtmConfig;

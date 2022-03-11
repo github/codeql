@@ -9,7 +9,7 @@ import javascript
  * `e` and checks its value for truthiness, and the return value of `e`
  * is not used for anything other than this truthiness check.
  */
-predicate isExplicitConditional(ASTNode cond, Expr e) {
+predicate isExplicitConditional(AstNode cond, Expr e) {
   e = cond.(IfStmt).getCondition()
   or
   e = cond.(LoopStmt).getTest()

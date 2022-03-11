@@ -120,13 +120,16 @@ library class HttpServletRequestGetHeaderNamesMethod extends Method {
 /**
  * The method `getRequestURL()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-class HttpServletRequestGetRequestURLMethod extends Method {
-  HttpServletRequestGetRequestURLMethod() {
+class HttpServletRequestGetRequestUrlMethod extends Method {
+  HttpServletRequestGetRequestUrlMethod() {
     this.getDeclaringType() instanceof HttpServletRequest and
     this.hasName("getRequestURL") and
     this.getNumberOfParameters() = 0
   }
 }
+
+/** DEPRECATED: Alias for HttpServletRequestGetRequestUrlMethod */
+deprecated class HttpServletRequestGetRequestURLMethod = HttpServletRequestGetRequestUrlMethod;
 
 /**
  * The method `getRequestURI()` declared in `javax.servlet.http.HttpServletRequest`.
@@ -318,8 +321,8 @@ class ServletClass extends Class {
  * Note: There are a number of other listener interfaces in the `javax.servlet` package that cannot
  * be configured in `web.xml` and therefore are not covered by this class.
  */
-class ServletWebXMLListenerType extends RefType {
-  ServletWebXMLListenerType() {
+class ServletWebXmlListenerType extends RefType {
+  ServletWebXmlListenerType() {
     this.hasQualifiedName("javax.servlet", "ServletContextAttributeListener") or
     this.hasQualifiedName("javax.servlet", "ServletContextListener") or
     this.hasQualifiedName("javax.servlet", "ServletRequestAttributeListener") or
@@ -332,6 +335,9 @@ class ServletWebXMLListenerType extends RefType {
     //  - `HttpSessionBindingListener`
   }
 }
+
+/** DEPRECATED: Alias for ServletWebXmlListenerType */
+deprecated class ServletWebXMLListenerType = ServletWebXmlListenerType;
 
 /** Holds if `m` is a request handler method (for example `doGet` or `doPost`). */
 predicate isServletRequestMethod(Method m) {

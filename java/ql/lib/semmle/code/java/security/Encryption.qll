@@ -17,9 +17,12 @@ class X509TrustManager extends RefType {
   X509TrustManager() { this.hasQualifiedName("javax.net.ssl", "X509TrustManager") }
 }
 
-class HttpsURLConnection extends RefType {
-  HttpsURLConnection() { this.hasQualifiedName("javax.net.ssl", "HttpsURLConnection") }
+class HttpsUrlConnection extends RefType {
+  HttpsUrlConnection() { this.hasQualifiedName("javax.net.ssl", "HttpsURLConnection") }
 }
+
+/** DEPRECATED: Alias for HttpsUrlConnection */
+deprecated class HttpsURLConnection = HttpsUrlConnection;
 
 class SSLSocketFactory extends RefType {
   SSLSocketFactory() { this.hasQualifiedName("javax.net.ssl", "SSLSocketFactory") }
@@ -105,22 +108,22 @@ class CreateSslEngineMethod extends Method {
 class SetConnectionFactoryMethod extends Method {
   SetConnectionFactoryMethod() {
     this.hasName("setSSLSocketFactory") and
-    this.getDeclaringType().getAnAncestor() instanceof HttpsURLConnection
+    this.getDeclaringType().getAnAncestor() instanceof HttpsUrlConnection
   }
 }
 
 class SetHostnameVerifierMethod extends Method {
   SetHostnameVerifierMethod() {
     this.hasName("setHostnameVerifier") and
-    this.getDeclaringType().getAnAncestor() instanceof HttpsURLConnection
+    this.getDeclaringType().getAnAncestor() instanceof HttpsUrlConnection
   }
 }
 
-/** The `setDefaultHostnameVerifier` method of the class `javax.net.ssl.HttpsURLConnection`. */
+/** The `setDefaultHostnameVerifier` method of the class `javax.net.ssl.HttpsUrlConnection`. */
 class SetDefaultHostnameVerifierMethod extends Method {
   SetDefaultHostnameVerifierMethod() {
     this.hasName("setDefaultHostnameVerifier") and
-    this.getDeclaringType().getAnAncestor() instanceof HttpsURLConnection
+    this.getDeclaringType().getAnAncestor() instanceof HttpsUrlConnection
   }
 }
 

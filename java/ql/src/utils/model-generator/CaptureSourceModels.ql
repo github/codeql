@@ -22,7 +22,7 @@ class FromSourceConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { sourceNode(source, _) }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(TargetAPI c |
+    exists(TargetApi c |
       sink instanceof ReturnNodeExt and
       sink.getEnclosingCallable() = c and
       c.isPublic() and
@@ -39,7 +39,7 @@ class FromSourceConfiguration extends TaintTracking::Configuration {
   }
 }
 
-string captureSource(TargetAPI api) {
+string captureSource(TargetApi api) {
   exists(DataFlow::Node source, DataFlow::Node sink, FromSourceConfiguration config, string kind |
     config.hasFlow(source, sink) and
     sourceNode(source, kind) and
@@ -48,6 +48,6 @@ string captureSource(TargetAPI api) {
   )
 }
 
-from TargetAPI api, string sink
+from TargetApi api, string sink
 where sink = captureSource(api)
 select sink order by sink

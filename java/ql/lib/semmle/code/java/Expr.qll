@@ -1668,7 +1668,10 @@ class LValue extends VarAccess {
    * (such as (`+=`), both the RHS and the LHS of the compound assignment
    * are source expressions of the assignment.
    */
-  Expr getRHS() { exists(Assignment e | e.getDest() = this and e.getSource() = result) }
+  Expr getRhs() { exists(Assignment e | e.getDest() = this and e.getSource() = result) }
+
+  /** DEPRECATED: Alias for getRhs */
+  deprecated Expr getRHS() { result = getRhs() }
 }
 
 /**

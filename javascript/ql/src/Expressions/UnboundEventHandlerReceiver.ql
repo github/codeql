@@ -83,9 +83,9 @@ private predicate isBoundInMethod(MethodDeclaration method) {
  * Gets an event handler attribute (onClick, onTouch, ...).
  */
 private DOM::AttributeDefinition getAnEventHandlerAttribute() {
-  exists(ReactComponent c, JSXNode rendered, string attributeName |
+  exists(ReactComponent c, JsxNode rendered, string attributeName |
     c.getRenderMethod().getAReturnedExpr().flow().getALocalSource().asExpr() = rendered and
-    result = rendered.getABodyElement*().(JSXElement).getAttributeByName(attributeName) and
+    result = rendered.getABodyElement*().(JsxElement).getAttributeByName(attributeName) and
     attributeName.regexpMatch("on[A-Z][a-zA-Z]+") // camelCased with 'on'-prefix
   )
 }

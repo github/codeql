@@ -21,7 +21,10 @@ module Markdown {
     /**
      * Holds if the taint-step preserves HTML.
      */
-    predicate preservesHTML() { any() }
+    predicate preservesHtml() { any() }
+
+    /** DEPRECATED: Alias for preservesHtml */
+    deprecated predicate preservesHTML() { preservesHtml() }
   }
 
   private class MarkdownStepAsTaintStep extends TaintTracking::SharedTaintStep {

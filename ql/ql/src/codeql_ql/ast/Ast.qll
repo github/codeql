@@ -2299,35 +2299,38 @@ class BindingSet extends Annotation {
  */
 module YAML {
   /** A node in a YAML file */
-  class YAMLNode extends TYAMLNode, AstNode {
+  class YAMLNode extends TYamlNode, AstNode {
     /** Holds if the predicate is a root node (has no parent) */
     predicate isRoot() { not exists(this.getParent()) }
   }
 
   /** A YAML comment. */
-  class YAMLComment extends TYamlCommemt, YAMLNode {
+  class YamlComment extends TYamlCommemt, YAMLNode {
     QL::YamlComment yamlcomment;
 
-    YAMLComment() { this = TYamlCommemt(yamlcomment) }
+    YamlComment() { this = TYamlCommemt(yamlcomment) }
 
     override string getAPrimaryQlClass() { result = "YAMLComment" }
   }
 
+  /** DEPRECATED: Alias for YamlComment */
+  deprecated class YAMLComment = YamlComment;
+
   /** A YAML entry. */
-  class YAMLEntry extends TYamlEntry, YAMLNode {
+  class YamlEntry extends TYamlEntry, YAMLNode {
     QL::YamlEntry yamle;
 
-    YAMLEntry() { this = TYamlEntry(yamle) }
+    YamlEntry() { this = TYamlEntry(yamle) }
 
     /** Gets the key of this YAML entry. */
-    YAMLKey getKey() {
+    YamlKey getKey() {
       exists(QL::YamlKeyvaluepair pair |
         pair.getParent() = yamle and
         result = TYamlKey(pair.getKey())
       )
     }
 
-    YAMLListItem getListItem() { toQL(result).getParent() = yamle }
+    YamlListItem getListItem() { toQL(result).getParent() = yamle }
 
     /** Gets the value of this YAML entry. */
     YAMLValue getValue() {
@@ -2340,11 +2343,14 @@ module YAML {
     override string getAPrimaryQlClass() { result = "YAMLEntry" }
   }
 
+  /** DEPRECATED: Alias for YamlEntry */
+  deprecated class YAMLEntry = YamlEntry;
+
   /** A YAML key. */
-  class YAMLKey extends TYamlKey, YAMLNode {
+  class YamlKey extends TYamlKey, YAMLNode {
     QL::YamlKey yamlkey;
 
-    YAMLKey() { this = TYamlKey(yamlkey) }
+    YamlKey() { this = TYamlKey(yamlkey) }
 
     /**
      * Gets the value of this YAML key.
@@ -2361,7 +2367,7 @@ module YAML {
     string getNamePart(int i) {
       i = 0 and result = yamlkey.getChild(0).(QL::SimpleId).getValue()
       or
-      exists(YAMLKey child |
+      exists(YamlKey child |
         child = TYamlKey(yamlkey.getChild(1)) and
         result = child.getNamePart(i - 1)
       )
@@ -2376,11 +2382,14 @@ module YAML {
     }
   }
 
+  /** DEPRECATED: Alias for YamlKey */
+  deprecated class YAMLKey = YamlKey;
+
   /** A YAML list item. */
-  class YAMLListItem extends TYamlListitem, YAMLNode {
+  class YamlListItem extends TYamlListitem, YAMLNode {
     QL::YamlListitem yamllistitem;
 
-    YAMLListItem() { this = TYamlListitem(yamllistitem) }
+    YamlListItem() { this = TYamlListitem(yamllistitem) }
 
     /**
      * Gets the value of this YAML list item.
@@ -2389,6 +2398,9 @@ module YAML {
 
     override string getAPrimaryQlClass() { result = "YAMLListItem" }
   }
+
+  /** DEPRECATED: Alias for YamlListItem */
+  deprecated class YAMLListItem = YamlListItem;
 
   /** A YAML value. */
   class YAMLValue extends TYamlValue, YAMLNode {
@@ -2414,7 +2426,7 @@ module YAML {
     QLPack() { this = MKQlPack(file) }
 
     private string getProperty(string name) {
-      exists(YAMLEntry entry |
+      exists(YamlEntry entry |
         entry.isRoot() and
         entry.getKey().getQualifiedName() = name and
         result = entry.getValue().getValue().trim() and
@@ -2436,8 +2448,8 @@ module YAML {
     /** Gets the file that this `QLPack` represents. */
     File getFile() { result = file }
 
-    private predicate isADependency(YAMLEntry entry) {
-      exists(YAMLEntry deps |
+    private predicate isADependency(YamlEntry entry) {
+      exists(YamlEntry deps |
         deps.getLocation().getFile() = file and entry.getLocation().getFile() = file
       |
         deps.isRoot() and
@@ -2446,7 +2458,7 @@ module YAML {
         entry.getLocation().getStartColumn() > deps.getLocation().getStartColumn()
       )
       or
-      exists(YAMLEntry prev | this.isADependency(prev) |
+      exists(YamlEntry prev | this.isADependency(prev) |
         prev.getLocation().getFile() = file and
         entry.getLocation().getFile() = file and
         entry.getLocation().getStartLine() = 1 + prev.getLocation().getStartLine() and
@@ -2455,7 +2467,7 @@ module YAML {
     }
 
     predicate hasDependency(string name, string version) {
-      exists(YAMLEntry entry | this.isADependency(entry) |
+      exists(YamlEntry entry | this.isADependency(entry) |
         entry.getKey().getQualifiedName().trim() = name and
         entry.getValue().getValue() = version
         or

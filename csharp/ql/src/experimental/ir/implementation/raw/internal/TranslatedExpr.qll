@@ -62,7 +62,10 @@ abstract class TranslatedExpr extends TranslatedExprBase {
    */
   final Type getResultType() { result = expr.getType() }
 
-  final override Language::AST getAST() { result = expr }
+  final override Language::AST getAst() { result = expr }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Language::AST getAST() { result = getAst() }
 
   final override Callable getFunction() { result = expr.getEnclosingCallable() }
 
@@ -577,9 +580,9 @@ class TranslatedArrayAccess extends TranslatedNonConstantExpr {
     result = this.getInstruction(ElementsAddressTag(0))
     or
     // The successor of an offset expression is a `PointerAdd` expression.
-    child = this.getOffsetOperand(child.getAST().getIndex()) and
-    child.getAST().getIndex() >= 0 and
-    result = this.getInstruction(PointerAddTag(child.getAST().getIndex()))
+    child = this.getOffsetOperand(child.getAst().getIndex()) and
+    child.getAst().getIndex() >= 0 and
+    result = this.getInstruction(PointerAddTag(child.getAst().getIndex()))
   }
 
   override Instruction getResult() {
@@ -2039,7 +2042,7 @@ class TranslatedObjectCreation extends TranslatedCreation {
     // Since calls are also expressions, we can't
     // use the predicate getTranslatedExpr (since that would
     // also return `this`).
-    result.getAST() = this.getAST()
+    result.getAst() = this.getAst()
   }
 
   override predicate needsLoad() { expr.getObjectType().isValueType() }

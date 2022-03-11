@@ -5,7 +5,7 @@ import semmle.code.java.frameworks.spring.SpringAbstractRef
 import semmle.code.java.frameworks.spring.SpringValue
 
 /** A `<constructor-arg>` element in a Spring XML file. */
-class SpringConstructorArg extends SpringXMLElement {
+class SpringConstructorArg extends SpringXmlElement {
   SpringConstructorArg() { this.getName() = "constructor-arg" }
 
   /** Holds if this `constructor-arg` element has an `index` attribute. */
