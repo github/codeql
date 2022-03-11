@@ -78,13 +78,9 @@ module CommandExecution {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `FileSystemAccess::Range` instead.
  */
-class FileSystemAccess extends DataFlow::Node {
-  FileSystemAccess::Range range;
-
-  FileSystemAccess() { this = range }
-
+class FileSystemAccess extends DataFlow::Node instanceof FileSystemAccess::Range {
   /** Gets an argument to this file system access that is interpreted as a path. */
-  DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
+  DataFlow::Node getAPathArgument() { result = super.getAPathArgument() }
 }
 
 /** Provides a class for modeling new file system access APIs. */
@@ -108,14 +104,12 @@ module FileSystemAccess {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `FileSystemWriteAccess::Range` instead.
  */
-class FileSystemWriteAccess extends FileSystemAccess {
-  override FileSystemWriteAccess::Range range;
-
+class FileSystemWriteAccess extends FileSystemAccess instanceof FileSystemWriteAccess::Range {
   /**
    * Gets a node that represents data to be written to the file system (possibly with
    * some transformation happening before it is written, like JSON encoding).
    */
-  DataFlow::Node getADataNode() { result = range.getADataNode() }
+  DataFlow::Node getADataNode() { result = FileSystemWriteAccess::Range.super.getADataNode() }
 }
 
 /** Provides a class for modeling new file system writes. */
