@@ -162,49 +162,17 @@ class CompileTimeConstantExpr extends Expr {
   }
 
   /**
-   * Gets the stringified value of this expression, where possible.
-   *
-   * The stringified version of a compile-time constant expression is the equivalent to
-   * the result of calling `String.valueOf(expr)` on the expression.
-   *
-   * Note that this does not handle the following cases:
-   *
-   * - mathematical computations of type `long`, `float`, or `double`.
-   */
-  pragma[nomagic]
-  string getStringifiedValue() {
-    result = this.getStringValue()
-    or
-    result = this.(Literal).getValue()
-    or
-    result = this.getBooleanValue().toString()
-    or
-    result = this.getIntValue().toString()
-    or
-    // Ternary conditional, with compile-time constant condition.
-    exists(ConditionalExpr ce, boolean condition |
-      ce = this and
-      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue() and
-      result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getStringifiedValue()
-    )
-    or
-    exists(Variable v | this = v.getAnAccess() |
-      result = v.getInitializer().(CompileTimeConstantExpr).getStringifiedValue()
-    )
-  }
-
-  /**
    * Gets the string value of this expression, where possible.
    */
   pragma[nomagic]
   string getStringValue() {
     result = this.(StringLiteral).getValue()
     or
-    this.getType() instanceof TypeString and // When the expression type is `String`
+    result = this.(CharacterLiteral).getValue()
+    or
     result =
-      // Then the resultant string is the addition of both operands stringified value, regardless of type.
-      this.(AddExpr).getLeftOperand().(CompileTimeConstantExpr).getStringifiedValue() +
-        this.(AddExpr).getRightOperand().(CompileTimeConstantExpr).getStringifiedValue()
+      this.(AddExpr).getLeftOperand().(CompileTimeConstantExpr).getStringValue() +
+        this.(AddExpr).getRightOperand().(CompileTimeConstantExpr).getStringValue()
     or
     // Ternary conditional, with compile-time constant condition.
     exists(ConditionalExpr ce, boolean condition |

@@ -90,7 +90,5 @@ class Values {
         int var_nonfinald_local = var_field; //Not constant
         String concatenatedString = "a" + "b"; //ab
         String concatenatedChar = "ab" + 'c'; //abc
-        
-        int charWithChar = 'a' + 'b'; //195
     }
 }
