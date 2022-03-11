@@ -1,25 +1,3 @@
-| constants/Stringified.java:6:25:6:33 | "a" + "b" | ab |
-| constants/Stringified.java:7:33:7:42 | ... + ... | ab99 |
-| constants/Stringified.java:7:33:7:42 | ... + ... | abc |
-| constants/Stringified.java:8:33:8:43 | ... + ... | abtrue |
-| constants/Stringified.java:9:32:9:40 | ... + ... | ab42 |
-| constants/Stringified.java:10:35:10:45 | ... + ... | ab43.0 |
-| constants/Stringified.java:11:34:11:45 | ... + ... | ab44.0 |
-| constants/Stringified.java:12:33:12:42 | ... + ... | ab45 |
-| constants/Stringified.java:13:34:13:50 | ... + ... | ab46 |
-| constants/Stringified.java:14:33:14:48 | ... + ... | ab47 |
-| constants/Stringified.java:15:33:15:42 | ... + ... | 97bc |
-| constants/Stringified.java:15:33:15:42 | ... + ... | abc |
-| constants/Stringified.java:16:33:16:43 | ... + ... | truebc |
-| constants/Stringified.java:17:32:17:40 | ... + ... | 42bc |
-| constants/Stringified.java:18:35:18:45 | ... + ... | 43.0bc |
-| constants/Stringified.java:19:34:19:45 | ... + ... | 44.0bc |
-| constants/Stringified.java:20:33:20:42 | ... + ... | 45bc |
-| constants/Stringified.java:21:34:21:50 | ... + ... | 46bc |
-| constants/Stringified.java:22:33:22:48 | ... + ... | 47bc |
-| constants/Stringified.java:24:37:24:46 | ... + ... | a100.0 |
-| constants/Stringified.java:25:38:25:58 | ... + ... | atrue |
-| constants/Stringified.java:26:38:26:52 | ... + ... | a42 |
+| constants/Values.java:19:29:19:31 | '*' | * |
 | constants/Values.java:91:37:91:45 | "a" + "b" | ab |
-| constants/Values.java:92:35:92:44 | ... + ... | ab99 |
 | constants/Values.java:92:35:92:44 | ... + ... | abc |

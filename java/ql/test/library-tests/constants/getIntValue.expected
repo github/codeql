@@ -37,4 +37,3 @@
 | constants/Values.java:86:25:86:35 | final_field | 42 |
 | constants/Values.java:87:33:87:34 | 42 | 42 |
 | constants/Values.java:88:25:88:35 | final_local | 42 |
-| constants/Values.java:94:28:94:36 | ... + ... | 195 |
