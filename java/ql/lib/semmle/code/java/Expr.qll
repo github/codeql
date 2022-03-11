@@ -168,8 +168,6 @@ class CompileTimeConstantExpr extends Expr {
   string getStringValue() {
     result = this.(StringLiteral).getValue()
     or
-    result = this.(CharacterLiteral).getValue()
-    or
     result =
       this.(AddExpr).getLeftOperand().(CompileTimeConstantExpr).getStringValue() +
         this.(AddExpr).getRightOperand().(CompileTimeConstantExpr).getStringValue()
