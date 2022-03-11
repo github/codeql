@@ -200,6 +200,8 @@ predicate sameGvn(ControlFlowElement x, ControlFlowElement y) {
 }
 
 /**
+ * DEPRECATED: Use `sameGvn` instead.
+ *
  * A configuration for performing structural comparisons of program elements
  * (expressions and statements).
  *
@@ -208,7 +210,7 @@ predicate sameGvn(ControlFlowElement x, ControlFlowElement y) {
  *
  * Each use of the library is identified by a unique string value.
  */
-abstract class StructuralComparisonConfiguration extends string {
+abstract deprecated class StructuralComparisonConfiguration extends string {
   bindingset[this]
   StructuralComparisonConfiguration() { any() }
 
