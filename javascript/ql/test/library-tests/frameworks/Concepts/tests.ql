@@ -1,10 +1,10 @@
 import javascript
 
-query DataFlow::Node getPathArgument(FileSystemAccess access) { result = access.getAPathArgument() }
+query DataFlow::Node getPathArgument(FileAccess access) { result = access.getAPathArgument() }
 
-query DataFlow::Node getReadNode(FileSystemReadAccess access) { result = access.getADataNode() }
+query DataFlow::Node getReadNode(FileReadAccess access) { result = access.getADataNode() }
 
-query DataFlow::Node getWriteNode(FileSystemWriteAccess access) { result = access.getADataNode() }
+query DataFlow::Node getWriteNode(FileWriteAccess access) { result = access.getADataNode() }
 
 query predicate fileNameSource(FileNameSource s) { any() }
 

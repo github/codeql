@@ -67,14 +67,17 @@ module CommandExecution {
   }
 }
 
+/** DEPRECATED: use `FileAccess::Range` instead. */
+deprecated class FileSystemAccess = FileAccess::Range;
+
 /**
  * A data flow node that performs a file system access, including reading and writing data,
  * creating and deleting files and folders, checking and updating permissions, and so on.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `FileSystemAccess::Range` instead.
+ * extend `FileAccess::Range` instead.
  */
-class FileSystemAccess extends DataFlow::Node instanceof FileSystemAccess::Range {
+class FileAccess extends DataFlow::Node instanceof FileAccess::Range {
   /** Gets an argument to this file system access that is interpreted as a path. */
   DataFlow::Node getAPathArgument() { result = super.getAPathArgument() }
 
@@ -99,13 +102,13 @@ class FileSystemAccess extends DataFlow::Node instanceof FileSystemAccess::Range
 }
 
 /** Provides a class for modeling new file system access APIs. */
-module FileSystemAccess {
+module FileAccess {
   /**
    * A data-flow node that performs a file system access, including reading and writing data,
    * creating and deleting files and folders, checking and updating permissions, and so on.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `FileSystemAccess` instead.
+   * extend `FileAccess` instead.
    */
   abstract class Range extends DataFlow::Node {
     /** Gets an argument to this file system access that is interpreted as a path. */
@@ -130,28 +133,31 @@ module FileSystemAccess {
   }
 }
 
+/** DEPRECATED: use `FileReadAccess::Range` instead. */
+deprecated class FileSystemReadAccess = FileReadAccess::Range;
+
 /**
  * A data flow node that reads data from the file system.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `FileSystemReadAccess::Range` instead.
+ * extend `FileReadAccess::Range` instead.
  */
-class FileSystemReadAccess extends FileSystemAccess instanceof FileSystemReadAccess::Range {
+class FileReadAccess extends FileAccess instanceof FileReadAccess::Range {
   /**
    * Gets a node that represents data read from the file system access.
    */
-  DataFlow::Node getADataNode() { result = FileSystemReadAccess::Range.super.getADataNode() }
+  DataFlow::Node getADataNode() { result = FileReadAccess::Range.super.getADataNode() }
 }
 
 /** Provides a class for modeling new file system reads. */
-module FileSystemReadAccess {
+module FileReadAccess {
   /**
    * A data flow node that reads data from the file system.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `FileSystemReadAccess` instead.
+   * extend `FileReadAccess` instead.
    */
-  abstract class Range extends FileSystemAccess::Range {
+  abstract class Range extends FileAccess::Range {
     /**
      * Gets a node that represents data read from the file system.
      */
@@ -159,26 +165,29 @@ module FileSystemReadAccess {
   }
 }
 
+/** DEPRECATED: use `FileWriteAccess::Range` instead. */
+deprecated class FileSystemWriteAccess = FileWriteAccess::Range;
+
 /**
  * A data flow node that writes data to the file system.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `FileSystemWriteAccess::Range` instead.
+ * extend `FileWriteAccess::Range` instead.
  */
-class FileSystemWriteAccess extends FileSystemAccess instanceof FileSystemWriteAccess::Range {
+class FileWriteAccess extends FileAccess instanceof FileWriteAccess::Range {
   /** Gets a node that represents data to be written to the file system. */
-  DataFlow::Node getADataNode() { result = FileSystemWriteAccess::Range.super.getADataNode() }
+  DataFlow::Node getADataNode() { result = FileWriteAccess::Range.super.getADataNode() }
 }
 
 /** Provides a class for modeling new file system writes. */
-module FileSystemWriteAccess {
+module FileWriteAccess {
   /**
    * A data flow node that writes data to the file system.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `FileSystemWriteAccess` instead.
+   * extend `FileWriteAccess` instead.
    */
-  abstract class Range extends FileSystemAccess::Range {
+  abstract class Range extends FileAccess::Range {
     /**
      * Gets a node that represents data written to the file system by this access.
      */

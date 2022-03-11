@@ -42,6 +42,6 @@ module HttpToFileAccess {
 
   /** A sink that represents file access method (write, append) argument */
   class FileAccessAsSink extends Sink {
-    FileAccessAsSink() { exists(FileSystemWriteAccess src | this = src.getADataNode()) }
+    FileAccessAsSink() { exists(FileWriteAccess src | this = src.getADataNode()) }
   }
 }

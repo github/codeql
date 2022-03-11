@@ -136,7 +136,7 @@ module InsecureDownload {
    */
   class FileWriteSink extends Sink {
     ClientRequest request;
-    FileSystemWriteAccess write;
+    FileWriteAccess write;
 
     FileWriteSink() {
       this = request.getUrl() and

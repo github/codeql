@@ -928,7 +928,7 @@ module Express {
   }
 
   /** A call to `response.sendFile`, considered as a file system access. */
-  private class ResponseSendFileAsFileSystemAccess extends FileSystemReadAccess::Range,
+  private class ResponseSendFileAsFileSystemAccess extends FileReadAccess::Range,
     DataFlow::MethodCallNode {
     ResponseSendFileAsFileSystemAccess() {
       exists(string name | name = "sendFile" or name = "sendfile" |

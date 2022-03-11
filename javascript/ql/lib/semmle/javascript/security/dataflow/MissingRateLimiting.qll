@@ -88,7 +88,7 @@ class AuthorizationCallAsExpensiveAction extends ExpensiveAction {
 
 /** A file system access, considered as an expensive action. */
 class FileSystemAccessAsExpensiveAction extends ExpensiveAction {
-  FileSystemAccessAsExpensiveAction() { this instanceof FileSystemAccess }
+  FileSystemAccessAsExpensiveAction() { this instanceof FileAccess }
 
   override string describe() { result = "a file system access" }
 }

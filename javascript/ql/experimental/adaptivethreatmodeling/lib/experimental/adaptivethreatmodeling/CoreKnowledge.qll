@@ -198,7 +198,7 @@ predicate isOtherModeledArgument(DataFlow::Node n, FilteringReason reason) {
     call = any(MembershipCandidate c).getTest() and
     reason instanceof MembershipCandidateTestReason
     or
-    call instanceof FileSystemAccess and reason instanceof FileSystemAccessReason
+    call instanceof FileAccess and reason instanceof FileSystemAccessReason
     or
     // TODO database accesses are less well defined than database query sinks, so this may cover unmodeled sinks on existing database models
     [

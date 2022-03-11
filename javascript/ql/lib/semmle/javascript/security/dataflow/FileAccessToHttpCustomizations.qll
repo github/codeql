@@ -28,7 +28,7 @@ module FileAccessToHttp {
    */
   private class FileAccessArgumentAsSource extends Source {
     FileAccessArgumentAsSource() {
-      exists(FileSystemReadAccess src | this = src.getADataNode().getALocalSource())
+      exists(FileReadAccess src | this = src.getADataNode().getALocalSource())
     }
   }
 

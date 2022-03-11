@@ -1,10 +1,10 @@
 import javascript
 
-query predicate test_FileSystemAccess(FileSystemAccess access) { any() }
+query predicate test_FileSystemAccess(FileAccess access) { any() }
 
 query predicate test_MissingFileSystemAccess(VarAccess var) {
   var.getName().matches("file%") and
-  not exists(FileSystemAccess access | access.getAPathArgument().asExpr() = var)
+  not exists(FileAccess access | access.getAPathArgument().asExpr() = var)
 }
 
 query predicate test_SystemCommandExecution(CommandExecution exec) { any() }

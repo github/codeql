@@ -126,9 +126,9 @@ System and Network
 - `ClientRequest <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/ClientRequests.qll/type.ClientRequests$ClientRequest.html>`__ -- outgoing network request
 - `DatabaseAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$DatabaseAccess.html>`__ -- query being submitted to a database
 - `FileNameSource <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$FileNameSource.html>`__ -- reference to a filename
-- `FileSystemAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$FileSystemAccess.html>`__ -- file system operation
-    - `FileSystemReadAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$FileSystemReadAccess.html>`__ -- reading the contents of a file
-    - `FileSystemWriteAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$FileSystemWriteAccess.html>`__ -- writing to the contents of a file
+- `FileAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$FileAccess.html>`__ -- file system operation
+    - `FileReadAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$FileReadAccess.html>`__ -- reading the contents of a file
+    - `FileWriteAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$FileWriteAccess.html>`__ -- writing to the contents of a file
 - `PersistentReadAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$PersistentReadAccess.html>`__ -- reading from persistent storage, like cookies
 - `PersistentWriteAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$PersistentWriteAccess.html>`__ -- writing to persistent storage
 - `CommandExecution <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$CommandExecution.html>`__ -- execution of a system command

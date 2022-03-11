@@ -145,7 +145,7 @@ private module FStream {
   /**
    * An invocation of a method defined in the `fstream` library.
    */
-  private class FStream extends FileSystemAccess::Range, DataFlow::InvokeNode {
+  private class FStream extends FileAccess::Range, DataFlow::InvokeNode {
     boolean writer;
 
     FStream() { this = getAnFStreamProperty(writer).getAnInvocation() }
@@ -161,7 +161,7 @@ private module FStream {
   /**
    * An invocation of an `fstream` method that writes to a file.
    */
-  private class FStreamWriter extends FileSystemWriteAccess::Range, FStream {
+  private class FStreamWriter extends FileWriteAccess::Range, FStream {
     FStreamWriter() { writer = true }
 
     override DataFlow::Node getADataNode() { none() }
@@ -170,7 +170,7 @@ private module FStream {
   /**
    * An invocation of an `fstream` method that reads a file.
    */
-  private class FStreamReader extends FileSystemReadAccess::Range, FStream {
+  private class FStreamReader extends FileReadAccess::Range, FStream {
     FStreamReader() { writer = false }
 
     override DataFlow::Node getADataNode() { none() }
@@ -180,7 +180,7 @@ private module FStream {
 /**
  * A call to the library `write-file-atomic`.
  */
-private class WriteFileAtomic extends FileSystemWriteAccess::Range, DataFlow::CallNode {
+private class WriteFileAtomic extends FileWriteAccess::Range, DataFlow::CallNode {
   WriteFileAtomic() {
     this = DataFlow::moduleImport("write-file-atomic").getACall()
     or
@@ -195,7 +195,7 @@ private class WriteFileAtomic extends FileSystemWriteAccess::Range, DataFlow::Ca
 /**
  * A call to the library `recursive-readdir`.
  */
-private class RecursiveReadDir extends FileSystemAccess::Range, FileNameProducer, API::CallNode {
+private class RecursiveReadDir extends FileAccess::Range, FileNameProducer, API::CallNode {
   RecursiveReadDir() { this = API::moduleImport("recursive-readdir").getACall() }
 
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
@@ -216,7 +216,7 @@ private module JSONFile {
   /**
    * A reader for JSON files.
    */
-  class JSONFileReader extends FileSystemReadAccess::Range, API::CallNode {
+  class JSONFileReader extends FileReadAccess::Range, API::CallNode {
     JSONFileReader() {
       this = API::moduleImport("jsonfile").getMember(["readFile", "readFileSync"]).getACall()
     }
@@ -241,7 +241,7 @@ private module JSONFile {
   /**
    * A writer for JSON files.
    */
-  class JSONFileWriter extends FileSystemWriteAccess::Range, DataFlow::CallNode {
+  class JSONFileWriter extends FileWriteAccess::Range, DataFlow::CallNode {
     JSONFileWriter() {
       this =
         DataFlow::moduleMember("jsonfile", any(string s | s = "writeFile" or s = "writeFileSync"))
@@ -257,7 +257,7 @@ private module JSONFile {
 /**
  * A call to the library `load-json-file`.
  */
-private class LoadJsonFile extends FileSystemReadAccess::Range, API::CallNode {
+private class LoadJsonFile extends FileReadAccess::Range, API::CallNode {
   LoadJsonFile() {
     this = API::moduleImport("load-json-file").getACall()
     or
@@ -278,7 +278,7 @@ private class LoadJsonFile extends FileSystemReadAccess::Range, API::CallNode {
 /**
  * A call to the library `write-json-file`.
  */
-private class WriteJsonFile extends FileSystemWriteAccess::Range, DataFlow::CallNode {
+private class WriteJsonFile extends FileWriteAccess::Range, DataFlow::CallNode {
   WriteJsonFile() {
     this = DataFlow::moduleImport("write-json-file").getACall()
     or
@@ -293,7 +293,7 @@ private class WriteJsonFile extends FileSystemWriteAccess::Range, DataFlow::Call
 /**
  * A call to the library `walkdir`.
  */
-private class WalkDir extends FileNameProducer, FileSystemAccess::Range, API::CallNode {
+private class WalkDir extends FileNameProducer, FileAccess::Range, API::CallNode {
   WalkDir() {
     this = API::moduleImport("walkdir").getACall()
     or
@@ -323,7 +323,7 @@ private class WalkDir extends FileNameProducer, FileSystemAccess::Range, API::Ca
 /**
  * A call to the library `globule`.
  */
-private class Globule extends FileNameProducer, FileSystemAccess::Range, DataFlow::CallNode {
+private class Globule extends FileNameProducer, FileAccess::Range, DataFlow::CallNode {
   Globule() {
     this = DataFlow::moduleMember("globule", "find").getACall()
     or
@@ -364,7 +364,7 @@ private class Globule extends FileNameProducer, FileSystemAccess::Range, DataFlo
  * A file system access made by a NodeJS library.
  * This class models multiple NodeJS libraries that access files.
  */
-private class LibraryAccess extends FileSystemAccess::Range, DataFlow::InvokeNode {
+private class LibraryAccess extends FileAccess::Range, DataFlow::InvokeNode {
   int pathArgument; // The index of the path argument.
 
   LibraryAccess() {
@@ -401,7 +401,7 @@ private class LibraryAccess extends FileSystemAccess::Range, DataFlow::InvokeNod
 /**
  * A call to the library [`chokidar`](https://www.npmjs.com/package/chokidar), where a call to `on` receives file names.
  */
-class Chokidar extends FileNameProducer, FileSystemAccess::Range, API::CallNode {
+class Chokidar extends FileNameProducer, FileAccess::Range, API::CallNode {
   Chokidar() { this = API::moduleImport("chokidar").getMember("watch").getACall() }
 
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
@@ -419,7 +419,7 @@ class Chokidar extends FileNameProducer, FileSystemAccess::Range, API::CallNode 
 /**
  * A call to the [`mkdirp`](https://www.npmjs.com/package/mkdirp) library.
  */
-private class Mkdirp extends FileSystemAccess::Range, API::CallNode {
+private class Mkdirp extends FileAccess::Range, API::CallNode {
   Mkdirp() {
     this = API::moduleImport("mkdirp").getACall()
     or

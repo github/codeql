@@ -141,6 +141,6 @@ module ZipSlip {
 
   /** A file path of a file write, as a sink for unsafe archive extraction. */
   class FileSystemWriteSink extends Sink {
-    FileSystemWriteSink() { exists(FileSystemWriteAccess fsw | fsw.getAPathArgument() = this) }
+    FileSystemWriteSink() { exists(FileWriteAccess fsw | fsw.getAPathArgument() = this) }
   }
 }

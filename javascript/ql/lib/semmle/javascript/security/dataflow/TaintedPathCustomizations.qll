@@ -616,7 +616,7 @@ module TaintedPath {
    * A path argument to a file system access.
    */
   class FsPathSink extends Sink, DataFlow::ValueNode {
-    FileSystemAccess fileSystemAccess;
+    FileAccess fileSystemAccess;
 
     FsPathSink() {
       (
