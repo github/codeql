@@ -5,7 +5,35 @@
  */
 
 private import javascript
-import ConceptsShared
+private import ConceptsShared as Shared
+
+/** DEPRECATED: use `FileAccess::Range` instead. */
+deprecated class FileSystemAccess = Shared::FileSystemAccess;
+
+class FileAccess = Shared::FileAccess;
+
+module FileAccess = Shared::FileAccess;
+
+/** DEPRECATED: use `FileReadAccess::Range` instead. */
+deprecated class FileSystemReadAccess = Shared::FileSystemReadAccess;
+
+class FileReadAccess = Shared::FileReadAccess;
+
+module FileReadAccess = Shared::FileReadAccess;
+
+/** DEPRECATED: use `FileWriteAccess::Range` instead. */
+deprecated class FileSystemWriteAccess = Shared::FileSystemWriteAccess;
+
+class FileWriteAccess = Shared::FileWriteAccess;
+
+module FileWriteAccess = Shared::FileWriteAccess;
+
+/** DEPRECATED: use `CommandExecution::Range` instead. */
+deprecated class SystemCommandExecution = Shared::SystemCommandExecution;
+
+class CommandExecution = Shared::CommandExecution;
+
+module CommandExecution = Shared::CommandExecution;
 
 /**
  * A data flow node that contains a file name or an array of file names from the local file system.
