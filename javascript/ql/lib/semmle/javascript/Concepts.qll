@@ -31,9 +31,27 @@ module FileWriteAccess = Shared::FileWriteAccess;
 /** DEPRECATED: use `CommandExecution::Range` instead. */
 deprecated class SystemCommandExecution = Shared::SystemCommandExecution;
 
-class CommandExecution = Shared::CommandExecution;
+class CommandExecution extends Shared::CommandExecution instanceof CommandExecution::Range {
+  /** Holds if the command execution happens synchronously. */
+  predicate isSync() { super.isSync() }
 
-module CommandExecution = Shared::CommandExecution;
+  /**
+   * Gets the data-flow node (if it exists) for an options argument.
+   */
+  DataFlow::Node getOptionsArg() { result = super.getOptionsArg() }
+}
+
+module CommandExecution {
+  abstract class Range extends Shared::CommandExecution::Range {
+    /** Holds if the command execution happens synchronously. */
+    abstract predicate isSync();
+
+    /**
+     * Gets the data-flow node (if it exists) for an options argument.
+     */
+    abstract DataFlow::Node getOptionsArg();
+  }
+}
 
 /**
  * A data flow node that contains a file name or an array of file names from the local file system.

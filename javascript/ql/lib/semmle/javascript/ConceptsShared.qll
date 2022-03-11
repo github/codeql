@@ -153,14 +153,6 @@ class CommandExecution extends DataFlow::Node instanceof CommandExecution::Range
    * to the command.
    */
   DataFlow::Node getArgumentList() { result = super.getArgumentList() }
-
-  /** Holds if the command execution happens synchronously. */
-  predicate isSync() { super.isSync() }
-
-  /**
-   * Gets the data-flow node (if it exists) for an options argument.
-   */
-  DataFlow::Node getOptionsArg() { result = super.getOptionsArg() }
 }
 
 /** Provides a class for modeling new operating system command APIs. */
@@ -184,13 +176,5 @@ module CommandExecution {
      * to the command.
      */
     DataFlow::Node getArgumentList() { none() }
-
-    /** Holds if the command execution happens synchronously. */
-    predicate isSync() { none() }
-
-    /**
-     * Gets the data-flow node (if it exists) for an options argument.
-     */
-    DataFlow::Node getOptionsArg() { none() }
   }
 }
