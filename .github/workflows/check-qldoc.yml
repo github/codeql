@@ -33,15 +33,15 @@ jobs:
           changed_lib_packs="$(git diff --name-only --diff-filter=ACMRT HEAD^ HEAD | { grep -o '^[a-z]*/ql/lib' || true; } | sort -u)"
           for pack_dir in ${changed_lib_packs}; do
             lang="${pack_dir%/ql/lib}"
-            gh codeql generate library-doc-coverage --output="${{ runner.temp }}/${lang}-current.txt" --dir="${pack_dir}"
+            gh codeql generate library-doc-coverage --output="${RUNNER_TEMP}/${lang}-current.txt" --dir="${pack_dir}"
           done
           git checkout HEAD^
           for pack_dir in ${changed_lib_packs}; do
             lang="${pack_dir%/ql/lib}"
-            gh codeql generate library-doc-coverage --output="${{ runner.temp }}/${lang}-baseline.txt" --dir="${pack_dir}"
-            awk -F, '{gsub(/"/,""); if ($4==0 && $6=="public") print "\""$3"\"" }' "${{ runner.temp }}/${lang}-current.txt" | sort -u > "${{ runner.temp }}/current-undocumented.txt"
-            awk -F, '{gsub(/"/,""); if ($4==0 && $6=="public") print "\""$3"\"" }' "${{ runner.temp }}/${lang}-baseline.txt" | sort -u > "${{ runner.temp }}/baseline-undocumented.txt"
-            UNDOCUMENTED="$(grep -f <(comm -13 "${{ runner.temp }}/baseline-undocumented.txt" "${{ runner.temp }}/current-undocumented.txt") "${{ runner.temp }}/${lang}-current.txt" || true)"
+            gh codeql generate library-doc-coverage --output="${RUNNER_TEMP}/${lang}-baseline.txt" --dir="${pack_dir}"
+            awk -F, '{gsub(/"/,""); if ($4==0 && $6=="public") print "\""$3"\"" }' "${RUNNER_TEMP}/${lang}-current.txt" | sort -u > "${RUNNER_TEMP}/current-undocumented.txt"
+            awk -F, '{gsub(/"/,""); if ($4==0 && $6=="public") print "\""$3"\"" }' "${RUNNER_TEMP}/${lang}-baseline.txt" | sort -u > "${RUNNER_TEMP}/baseline-undocumented.txt"
+            UNDOCUMENTED="$(grep -f <(comm -13 "${RUNNER_TEMP}/baseline-undocumented.txt" "${RUNNER_TEMP}/current-undocumented.txt") "${RUNNER_TEMP}/${lang}-current.txt" || true)"
             if [ -n "$UNDOCUMENTED" ]; then
               echo "$UNDOCUMENTED" | awk -F, '{gsub(/"/,""); print "::warning file='"${pack_dir}"'/"$1",line="$2"::Missing QLdoc for "$5, $3 }'
               EXIT_CODE=1
