@@ -531,7 +531,7 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_from_directory
    */
-  private class FlaskSendFromDirectoryCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class FlaskSendFromDirectoryCall extends FileAccess::Range, DataFlow::CallCfgNode {
     FlaskSendFromDirectoryCall() {
       this = API::moduleImport("flask").getMember("send_from_directory").getACall()
     }
@@ -563,7 +563,7 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_file
    */
-  private class FlaskSendFileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class FlaskSendFileCall extends FileAccess::Range, DataFlow::CallCfgNode {
     FlaskSendFileCall() { this = API::moduleImport("flask").getMember("send_file").getACall() }
 
     override DataFlow::Node getAPathArgument() {

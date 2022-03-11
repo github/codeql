@@ -128,7 +128,7 @@ module Werkzeug {
     }
 
     /** A call to the `save` method of a `FileStorage`. */
-    private class FileStorageSaveCall extends FileSystemAccess::Range, DataFlow::MethodCallNode {
+    private class FileStorageSaveCall extends FileAccess::Range, DataFlow::MethodCallNode {
       FileStorageSaveCall() { this.calls(instance(), "save") }
 
       override DataFlow::Node getAPathArgument() {

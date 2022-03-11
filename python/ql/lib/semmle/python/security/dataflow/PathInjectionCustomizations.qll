@@ -56,7 +56,7 @@ module PathInjection {
    * A file system access, considered as a flow sink.
    */
   class FileSystemAccessAsSink extends Sink {
-    FileSystemAccessAsSink() { this = any(FileSystemAccess e).getAPathArgument() }
+    FileSystemAccessAsSink() { this = any(FileAccess e).getAPathArgument() }
   }
 
   /**

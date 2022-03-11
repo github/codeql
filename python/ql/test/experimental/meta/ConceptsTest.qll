@@ -394,7 +394,7 @@ class FileSystemAccessTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(FileSystemAccess a, DataFlow::Node path |
+    exists(FileAccess a, DataFlow::Node path |
       path = a.getAPathArgument() and
       location = a.getLocation() and
       element = path.toString() and
@@ -411,7 +411,7 @@ class FileSystemWriteAccessTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(FileSystemWriteAccess write, DataFlow::Node data |
+    exists(FileWriteAccess write, DataFlow::Node data |
       data = write.getADataNode() and
       location = data.getLocation() and
       element = data.toString() and

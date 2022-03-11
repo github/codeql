@@ -229,7 +229,7 @@ private module FastApi {
     /**
      * A direct instantiation of a FileResponse.
      */
-    private class FileResponseInstantiation extends ResponseInstantiation, FileSystemAccess::Range {
+    private class FileResponseInstantiation extends ResponseInstantiation, FileAccess::Range {
       FileResponseInstantiation() { baseApiNode = getModeledResponseClass("FileResponse") }
 
       override DataFlow::Node getAPathArgument() {
@@ -268,7 +268,7 @@ private module FastApi {
      * `response_class` set to a `FileResponse`.
      */
     private class FastApiRequestHandlerFileResponseReturn extends FastApiRequestHandlerReturn,
-      FileSystemAccess::Range {
+      FileAccess::Range {
       FastApiRequestHandlerFileResponseReturn() {
         exists(API::Node responseClass |
           responseClass.getAUse() = routeSetup.getResponseClassArg() and

@@ -50,7 +50,7 @@ module CleartextStorage {
 
   /** The data written to a file, considered as a flow sink. */
   class FileWriteDataAsSink extends Sink {
-    FileWriteDataAsSink() { this = any(FileSystemWriteAccess write).getADataNode() }
+    FileWriteDataAsSink() { this = any(FileWriteAccess write).getADataNode() }
   }
 
   /** The data written to a cookie on a HTTP response, considered as a flow sink. */

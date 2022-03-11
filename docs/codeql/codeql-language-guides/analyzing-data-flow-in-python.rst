@@ -279,7 +279,7 @@ Predefined sources and sinks
 The data flow library contains a number of predefined sources and sinks, providing a good starting point for defining data flow based security queries.
 
 -  The class ``RemoteFlowSource`` (defined in module ``semmle.python.dataflow.new.RemoteFlowSources``) represents data flow from remote network inputs. This is useful for finding security problems in networked services.
--  The library ``Concepts`` (defined in module ``semmle.python.Concepts``) contain several subclasses of ``DataFlow::Node`` that are security relevant, such as ``FileSystemAccess`` and ``SqlExecution``.
+-  The library ``Concepts`` (defined in module ``semmle.python.Concepts``) contain several subclasses of ``DataFlow::Node`` that are security relevant, such as ``FileAccess`` and ``SqlExecution``.
 -  The module ``Attributes`` (defined in module ``semmle.python.dataflow.new.internal.Attributes``) defines ``AttrRead`` and ``AttrWrite`` which handle both ordinary and dynamic attribute access.
 
 For global flow, it is also useful to restrict sources to instances of ``LocalSourceNode``. The predefined sources generally do that.
@@ -300,7 +300,7 @@ Class hierarchy
     -  ``Attributes::AttrRead`` - an attribute read as a data flow node.
     -  ``Attributes::AttrWrite`` - an attribute write as a data flow node.
     -  ``Concepts::CommandExecution`` - a data-flow node that executes an operating system command, for instance by spawning a new process.
-    -  ``Concepts::FileSystemAccess`` - a data flow node that performs a file system access, including reading and writing data, creating and deleting files and folders, checking and updating permissions, and so on.
+    -  ``Concepts::FileAccess`` - a data flow node that performs a file system access, including reading and writing data, creating and deleting files and folders, checking and updating permissions, and so on.
     -  ``Concepts::Path::PathNormalization`` - a data-flow node that performs path normalization. This is often needed in order to safely access paths.
     -  ``Concepts::Decoding`` - a data-flow node that decodes data from a binary or textual format. A decoding (automatically) preserves taint from input to output. However, it can also be a problem in itself, for example if it allows code execution or could result in denial-of-service.
     -  ``Concepts::Encoding`` - a data-flow node that encodes data to a binary or textual format. An encoding (automatically) preserves taint from input to output.
@@ -332,7 +332,7 @@ This query shows a data flow configuration that uses all network input as data s
       }
 
       override predicate isSink(DataFlow::Node sink) {
-        sink = any(FileSystemAccess fa).getAPathArgument()
+        sink = any(FileAccess fa).getAPathArgument()
       }
     }
 

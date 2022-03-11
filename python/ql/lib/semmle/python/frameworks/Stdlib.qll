@@ -384,7 +384,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.open
      */
-    private class OsOpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsOpenCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsOpenCall() { this = os().getMember("open").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -397,7 +397,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.access
      */
-    private class OsAccessCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsAccessCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsAccessCall() { this = os().getMember("access").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -410,7 +410,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.chdir
      */
-    private class OsChdirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsChdirCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsChdirCall() { this = os().getMember("chdir").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -423,7 +423,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.chflags
      */
-    private class OsChflagsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsChflagsCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsChflagsCall() { this = os().getMember("chflags").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -436,7 +436,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.chmod
      */
-    private class OsChmodCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsChmodCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsChmodCall() { this = os().getMember("chmod").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -449,7 +449,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.chown
      */
-    private class OsChownCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsChownCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsChownCall() { this = os().getMember("chown").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -462,7 +462,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.chroot
      */
-    private class OsChrootCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsChrootCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsChrootCall() { this = os().getMember("chroot").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -475,7 +475,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.lchflags
      */
-    private class OsLchflagsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsLchflagsCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsLchflagsCall() { this = os().getMember("lchflags").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -488,7 +488,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.lchmod
      */
-    private class OsLchmodCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsLchmodCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsLchmodCall() { this = os().getMember("lchmod").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -501,7 +501,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.lchown
      */
-    private class OsLchownCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsLchownCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsLchownCall() { this = os().getMember("lchown").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -514,7 +514,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.link
      */
-    private class OsLinkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsLinkCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsLinkCall() { this = os().getMember("link").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -529,7 +529,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.listdir
      */
-    private class OsListdirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsListdirCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsListdirCall() { this = os().getMember("listdir").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -542,7 +542,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.lstat
      */
-    private class OsLstatCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsLstatCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsLstatCall() { this = os().getMember("lstat").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -555,7 +555,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.mkdir
      */
-    private class OsMkdirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsMkdirCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsMkdirCall() { this = os().getMember("mkdir").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -568,7 +568,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.makedirs
      */
-    private class OsMakedirsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsMakedirsCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsMakedirsCall() { this = os().getMember("makedirs").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -581,7 +581,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.mkfifo
      */
-    private class OsMkfifoCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsMkfifoCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsMkfifoCall() { this = os().getMember("mkfifo").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -594,7 +594,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.mknod
      */
-    private class OsMknodCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsMknodCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsMknodCall() { this = os().getMember("mknod").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -607,7 +607,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.pathconf
      */
-    private class OsPathconfCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsPathconfCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsPathconfCall() { this = os().getMember("pathconf").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -620,7 +620,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.readlink
      */
-    private class OsReadlinkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsReadlinkCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsReadlinkCall() { this = os().getMember("readlink").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -633,7 +633,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.remove
      */
-    private class OsRemoveCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsRemoveCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsRemoveCall() { this = os().getMember("remove").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -646,7 +646,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.removedirs
      */
-    private class OsRemovedirsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsRemovedirsCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsRemovedirsCall() { this = os().getMember("removedirs").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -659,7 +659,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.rename
      */
-    private class OsRenameCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsRenameCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsRenameCall() { this = os().getMember("rename").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -674,7 +674,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.renames
      */
-    private class OsRenamesCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsRenamesCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsRenamesCall() { this = os().getMember("renames").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -689,7 +689,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.replace
      */
-    private class OsReplaceCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsReplaceCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsReplaceCall() { this = os().getMember("replace").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -704,7 +704,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.rmdir
      */
-    private class OsRmdirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsRmdirCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsRmdirCall() { this = os().getMember("rmdir").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -717,7 +717,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.scandir
      */
-    private class OsScandirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsScandirCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsScandirCall() { this = os().getMember("scandir").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -730,7 +730,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.stat
      */
-    private class OsStatCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsStatCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsStatCall() { this = os().getMember("stat").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -743,7 +743,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.statvfs
      */
-    private class OsStatvfsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsStatvfsCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsStatvfsCall() { this = os().getMember("statvfs").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -756,7 +756,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.symlink
      */
-    private class OsSymlinkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsSymlinkCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsSymlinkCall() { this = os().getMember("symlink").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -771,7 +771,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.truncate
      */
-    private class OsTruncateCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsTruncateCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsTruncateCall() { this = os().getMember("truncate").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -784,7 +784,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.unlink
      */
-    private class OsUnlinkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsUnlinkCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsUnlinkCall() { this = os().getMember("unlink").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -797,7 +797,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.utime
      */
-    private class OsUtimeCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsUtimeCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsUtimeCall() { this = os().getMember("utime").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -810,7 +810,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.walk
      */
-    private class OsWalkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsWalkCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsWalkCall() { this = os().getMember("walk").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -823,7 +823,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.fwalk
      */
-    private class OsFwalkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsFwalkCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsFwalkCall() { this = os().getMember("fwalk").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -836,7 +836,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.getxattr
      */
-    private class OsGetxattrCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsGetxattrCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsGetxattrCall() { this = os().getMember("getxattr").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -849,7 +849,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.listxattr
      */
-    private class OsListxattrCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsListxattrCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsListxattrCall() { this = os().getMember("listxattr").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -862,7 +862,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.removexattr
      */
-    private class OsRemovexattrCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsRemovexattrCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsRemovexattrCall() { this = os().getMember("removexattr").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -875,7 +875,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.setxattr
      */
-    private class OsSetxattrCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsSetxattrCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsSetxattrCall() { this = os().getMember("setxattr").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -888,7 +888,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.add_dll_directory
      */
-    private class OsAdd_dll_directoryCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsAdd_dll_directoryCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsAdd_dll_directoryCall() { this = os().getMember("add_dll_directory").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -901,7 +901,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.startfile
      */
-    private class OsStartfileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    private class OsStartfileCall extends FileAccess::Range, DataFlow::CallCfgNode {
       OsStartfileCall() { this = os().getMember("startfile").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -929,7 +929,7 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/os.path.html#os.path.getsize
    * - https://docs.python.org/3/library/os.path.html#os.path.realpath
    */
-  private class OsPathProbingCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class OsPathProbingCall extends FileAccess::Range, DataFlow::CallCfgNode {
     string name;
 
     OsPathProbingCall() {
@@ -954,7 +954,7 @@ private module StdlibPrivate {
   }
 
   /** A call to `os.path.samefile` will raise an exception if an `os.stat()` call on either pathname fails. */
-  private class OsPathSamefileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class OsPathSamefileCall extends FileAccess::Range, DataFlow::CallCfgNode {
     OsPathSamefileCall() { this = os::path().getMember("samefile").getACall() }
 
     override DataFlow::Node getAPathArgument() {
@@ -1333,8 +1333,7 @@ private module StdlibPrivate {
    * So right now the best way we have of modeling this seems to be to treat the filename
    * argument as being deserialized...
    */
-  private class ShelveOpenCall extends Decoding::Range, FileSystemAccess::Range,
-    DataFlow::CallCfgNode {
+  private class ShelveOpenCall extends Decoding::Range, FileAccess::Range, DataFlow::CallCfgNode {
     ShelveOpenCall() { this = API::moduleImport("shelve").getMember("open").getACall() }
 
     override predicate mayExecuteInput() { any() }
@@ -1441,7 +1440,7 @@ private module StdlibPrivate {
    * A call to the builtin `open` function.
    * See https://docs.python.org/3/library/functions.html#open
    */
-  private class OpenCall extends FileSystemAccess::Range, Stdlib::FileLikeObject::InstanceSource,
+  private class OpenCall extends FileAccess::Range, Stdlib::FileLikeObject::InstanceSource,
     DataFlow::CallCfgNode {
     OpenCall() { this = getOpenFunctionRef().getACall() }
 
@@ -1451,7 +1450,7 @@ private module StdlibPrivate {
   }
 
   /** Gets a reference to an open file. */
-  private DataFlow::TypeTrackingNode openFile(DataFlow::TypeTracker t, FileSystemAccess openCall) {
+  private DataFlow::TypeTrackingNode openFile(DataFlow::TypeTracker t, FileAccess openCall) {
     t.start() and
     result = openCall and
     (
@@ -1464,13 +1463,13 @@ private module StdlibPrivate {
   }
 
   /** Gets a reference to an open file. */
-  private DataFlow::Node openFile(FileSystemAccess openCall) {
+  private DataFlow::Node openFile(FileAccess openCall) {
     openFile(DataFlow::TypeTracker::end(), openCall).flowsTo(result)
   }
 
   /** Gets a reference to the `write` or `writelines` method on an open file. */
   private DataFlow::TypeTrackingNode writeMethodOnOpenFile(
-    DataFlow::TypeTracker t, FileSystemAccess openCall
+    DataFlow::TypeTracker t, FileAccess openCall
   ) {
     t.startInAttr(["write", "writelines"]) and
     result = openFile(openCall)
@@ -1479,13 +1478,13 @@ private module StdlibPrivate {
   }
 
   /** Gets a reference to the `write` or `writelines` method on an open file. */
-  private DataFlow::Node writeMethodOnOpenFile(FileSystemAccess openCall) {
+  private DataFlow::Node writeMethodOnOpenFile(FileAccess openCall) {
     writeMethodOnOpenFile(DataFlow::TypeTracker::end(), openCall).flowsTo(result)
   }
 
   /** A call to the `write` or `writelines` method on an opened file, such as `open("foo", "w").write(...)`. */
-  private class WriteCallOnOpenFile extends FileSystemWriteAccess::Range, DataFlow::CallCfgNode {
-    FileSystemAccess openCall;
+  private class WriteCallOnOpenFile extends FileWriteAccess::Range, DataFlow::CallCfgNode {
+    FileAccess openCall;
 
     WriteCallOnOpenFile() { this.getFunction() = writeMethodOnOpenFile(openCall) }
 
@@ -2464,7 +2463,7 @@ private module StdlibPrivate {
   DataFlow::LocalSourceNode pathlibPath() { result = pathlibPath(DataFlow::TypeTracker::end()) }
 
   /** A file system access from a `pathlib.Path` method call. */
-  private class PathlibFileAccess extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class PathlibFileAccess extends FileAccess::Range, DataFlow::CallCfgNode {
     DataFlow::AttrRead fileAccess;
     string attrbuteName;
 
@@ -2485,7 +2484,7 @@ private module StdlibPrivate {
   }
 
   /** A file system write from a `pathlib.Path` method call. */
-  private class PathlibFileWrites extends PathlibFileAccess, FileSystemWriteAccess::Range {
+  private class PathlibFileWrites extends PathlibFileAccess, FileWriteAccess::Range {
     PathlibFileWrites() { attrbuteName in ["write_bytes", "write_text"] }
 
     override DataFlow::Node getADataNode() { result in [this.getArg(0), this.getArgByName("data")] }
@@ -2937,7 +2936,7 @@ private module StdlibPrivate {
    *
    * See https://docs.python.org/3/library/tempfile.html#tempfile.mkstemp
    */
-  private class TempfileMkstempCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class TempfileMkstempCall extends FileAccess::Range, DataFlow::CallCfgNode {
     TempfileMkstempCall() { this = API::moduleImport("tempfile").getMember("mkstemp").getACall() }
 
     override DataFlow::Node getAPathArgument() {
@@ -2953,8 +2952,7 @@ private module StdlibPrivate {
    *
    * See https://docs.python.org/3/library/tempfile.html#tempfile.NamedTemporaryFile
    */
-  private class TempfileNamedTemporaryFileCall extends FileSystemAccess::Range,
-    DataFlow::CallCfgNode {
+  private class TempfileNamedTemporaryFileCall extends FileAccess::Range, DataFlow::CallCfgNode {
     TempfileNamedTemporaryFileCall() {
       this = API::moduleImport("tempfile").getMember("NamedTemporaryFile").getACall()
     }
@@ -2972,7 +2970,7 @@ private module StdlibPrivate {
    *
    * See https://docs.python.org/3/library/tempfile.html#tempfile.TemporaryFile
    */
-  private class TempfileTemporaryFileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class TempfileTemporaryFileCall extends FileAccess::Range, DataFlow::CallCfgNode {
     TempfileTemporaryFileCall() {
       this = API::moduleImport("tempfile").getMember("TemporaryFile").getACall()
     }
@@ -2990,8 +2988,7 @@ private module StdlibPrivate {
    *
    * See https://docs.python.org/3/library/tempfile.html#tempfile.SpooledTemporaryFile
    */
-  private class TempfileSpooledTemporaryFileCall extends FileSystemAccess::Range,
-    DataFlow::CallCfgNode {
+  private class TempfileSpooledTemporaryFileCall extends FileAccess::Range, DataFlow::CallCfgNode {
     TempfileSpooledTemporaryFileCall() {
       this = API::moduleImport("tempfile").getMember("SpooledTemporaryFile").getACall()
     }
@@ -3009,7 +3006,7 @@ private module StdlibPrivate {
    *
    * See https://docs.python.org/3/library/tempfile.html#tempfile.mkdtemp
    */
-  private class TempfileMkdtempCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class TempfileMkdtempCall extends FileAccess::Range, DataFlow::CallCfgNode {
     TempfileMkdtempCall() { this = API::moduleImport("tempfile").getMember("mkdtemp").getACall() }
 
     override DataFlow::Node getAPathArgument() {
@@ -3025,8 +3022,7 @@ private module StdlibPrivate {
    *
    * See https://docs.python.org/3/library/tempfile.html#tempfile.TemporaryDirectory
    */
-  private class TempfileTemporaryDirectoryCall extends FileSystemAccess::Range,
-    DataFlow::CallCfgNode {
+  private class TempfileTemporaryDirectoryCall extends FileAccess::Range, DataFlow::CallCfgNode {
     TempfileTemporaryDirectoryCall() {
       this = API::moduleImport("tempfile").getMember("TemporaryDirectory").getACall()
     }
@@ -3050,7 +3046,7 @@ private module StdlibPrivate {
    *
    * See https://docs.python.org/3/library/shutil.html#shutil.rmtree
    */
-  private class ShutilRmtreeCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class ShutilRmtreeCall extends FileAccess::Range, DataFlow::CallCfgNode {
     ShutilRmtreeCall() { this = shutil().getMember("rmtree").getACall() }
 
     override DataFlow::Node getAPathArgument() {
@@ -3069,7 +3065,7 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/shutil.html#shutil.copytree
    * - https://docs.python.org/3/library/shutil.html#shutil.move
    */
-  private class ShutilCopyCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class ShutilCopyCall extends FileAccess::Range, DataFlow::CallCfgNode {
     ShutilCopyCall() {
       this =
         shutil()
@@ -3091,7 +3087,7 @@ private module StdlibPrivate {
 
   // TODO: once we have flow summaries, model `shutil.copyfileobj` which copies the content between its' file-like arguments.
   // See https://docs.python.org/3/library/shutil.html#shutil.copyfileobj
-  private class ShutilCopyfileobjCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class ShutilCopyfileobjCall extends FileAccess::Range, DataFlow::CallCfgNode {
     ShutilCopyfileobjCall() { this = shutil().getMember("copyfileobj").getACall() }
 
     override DataFlow::Node getAPathArgument() { none() }
@@ -3102,7 +3098,7 @@ private module StdlibPrivate {
    *
    * See https://docs.python.org/3/library/shutil.html#shutil.disk_usage
    */
-  private class ShutilDiskUsageCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class ShutilDiskUsageCall extends FileAccess::Range, DataFlow::CallCfgNode {
     ShutilDiskUsageCall() { this = shutil().getMember("disk_usage").getACall() }
 
     override DataFlow::Node getAPathArgument() {
@@ -3115,7 +3111,7 @@ private module StdlibPrivate {
    *
    * See https://docs.python.org/3/library/shutil.html#shutil.chown
    */
-  private class ShutilChownCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class ShutilChownCall extends FileAccess::Range, DataFlow::CallCfgNode {
     ShutilChownCall() { this = shutil().getMember("chown").getACall() }
 
     override DataFlow::Node getAPathArgument() {

@@ -39,7 +39,7 @@ def os_members():
 # the name of a executable, which will be looked up in the PATH environment variable,
 # which we call `file` to highlight this difference.
 #
-# These are also modeled as FileSystemAccess, although they are not super relevant for
+# These are also modeled as FileAccess, although they are not super relevant for
 # the path-injection query -- a user being able to control which program is executed
 # doesn't sound safe even if that is restricted to be within a certain directory.
 if UNKNOWN:
