@@ -16,9 +16,9 @@ query predicate fileModuleFilenameSources(File::FileModuleFilenameSource s) { an
 
 query predicate fileUtilsFilenameSources(FileUtils::FileUtilsFilenameSource s) { any() }
 
-query predicate fileSystemReadAccesses(FileSystemReadAccess a) { any() }
+query predicate fileSystemReadAccesses(FileReadAccess a) { any() }
 
-query predicate fileSystemAccesses(FileSystemAccess a) { any() }
+query predicate fileSystemAccesses(FileAccess a) { any() }
 
 query predicate fileNameSources(FileNameSource s) { any() }
 
@@ -26,4 +26,4 @@ query predicate ioWriters(IO::IOWriter r) { any() }
 
 query predicate fileWriters(IO::FileWriter r) { any() }
 
-query predicate fileSystemWriteAccesses(FileSystemWriteAccess a) { any() }
+query predicate fileSystemWriteAccesses(FileWriteAccess a) { any() }

@@ -236,7 +236,7 @@ module IO {
    * File.new("foo.txt").readline
    * ```
    */
-  class FileReader extends IOOrFileReadMethodCall, FileSystemReadAccess::Range {
+  class FileReader extends IOOrFileReadMethodCall, FileReadAccess::Range {
     FileReader() { not this.spawnsSubprocess() }
 
     override DataFlow::Node getADataNode() { result = this.getADataNodeImpl() }
@@ -256,7 +256,7 @@ module IO {
    * File.new("foo.txt", "a").puts("hello again")
    * ```
    */
-  class FileWriter extends IOOrFileWriteMethodCall, FileSystemWriteAccess::Range {
+  class FileWriter extends IOOrFileWriteMethodCall, FileWriteAccess::Range {
     FileWriter() { not this.spawnsSubprocess() }
 
     override DataFlow::Node getADataNode() { result = this.getADataNodeImpl() }
@@ -289,9 +289,9 @@ module File {
   }
 
   /**
-   * A call to `File.open`, considered as a `FileSystemAccess`.
+   * A call to `File.open`, considered as a `FileAccess`.
    */
-  class FileOpen extends DataFlow::CallNode, FileSystemAccess::Range {
+  class FileOpen extends DataFlow::CallNode, FileAccess::Range {
     FileOpen() { this = API::getTopLevelMember("File").getAMethodCall("open") }
 
     override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }

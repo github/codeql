@@ -338,6 +338,6 @@ module StoredXSS {
   }
 
   /** A file read, considered as a flow source for stored XSS. */
-  private class FileSystemReadAccessAsSource extends Source instanceof FileSystemReadAccess { }
+  private class FileSystemReadAccessAsSource extends Source instanceof FileReadAccess { }
   // TODO: Consider `FileNameSource` flowing to script tag `src` attributes and similar
 }
