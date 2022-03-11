@@ -5,6 +5,7 @@
  */
 
 private import javascript
+import ConceptsShared
 
 /**
  * A data flow node that contains a file name or an array of file names from the local file system.

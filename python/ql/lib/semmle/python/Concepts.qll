@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Frameworks
+import ConceptsShared
 
 /** Provides classes for modeling path-related APIs. */
 module Path {
