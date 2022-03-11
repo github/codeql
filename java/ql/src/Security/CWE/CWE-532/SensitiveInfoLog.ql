@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @precision medium
- * @id java/sensitiveinfo-in-logfile
+ * @id java/sensitive-log
  * @tags security
  *       external/cwe/cwe-532
  */
