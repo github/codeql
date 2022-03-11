@@ -61,7 +61,7 @@ class ThroughFlowConfig extends TaintTracking::Configuration {
     (state instanceof TaintRead or state instanceof TaintStore)
   }
 
-  override predicate isAdditionalFlowStep(
+  override predicate isAdditionalTaintStep(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
     DataFlow::FlowState state2
   ) {
