@@ -158,11 +158,11 @@ private predicate commented_out_code_block(Comment start, Comment end) {
   not commented_out_code(non_empty_following(end))
 }
 
-/* A single line comment that appears to be commented out code */
+/** A single line comment that appears to be commented out code */
 class CommentedOutCodeLine extends Comment {
   CommentedOutCodeLine() { exists(CommentedOutCodeBlock b | b.contains(this)) }
 
-  /* Whether this commented-out code line is likely to be example code embedded in a larger comment. */
+  /** Holds if this commented-out code line is likely to be example code embedded in a larger comment. */
   predicate maybeExampleCode() {
     exists(CommentedOutCodeBlock block |
       block.contains(this) and

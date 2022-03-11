@@ -6,6 +6,7 @@ cached
 newtype TAstNode =
   TTopLevel(QL::Ql file) or
   TQLDoc(QL::Qldoc qldoc) or
+  TBlockComment(QL::BlockComment comment) or
   TClasslessPredicate(QL::ClasslessPredicate pred) or
   TVarDecl(QL::VarDecl decl) or
   TFieldDecl(QL::Field field) or
@@ -145,6 +146,8 @@ QL::AstNode toQL(AST::AstNode n) {
   n = TTopLevel(result)
   or
   n = TQLDoc(result)
+  or
+  n = TBlockComment(result)
   or
   n = TClasslessPredicate(result)
   or

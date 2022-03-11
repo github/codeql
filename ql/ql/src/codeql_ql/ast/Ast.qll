@@ -156,6 +156,16 @@ class QLDoc extends TQLDoc, AstNode {
   override string getAPrimaryQlClass() { result = "QLDoc" }
 }
 
+class BlockComment extends TBlockComment, AstNode {
+  QL::BlockComment comment;
+
+  BlockComment() { this = TBlockComment(comment) }
+
+  string getContents() { result = comment.getValue() }
+
+  override string getAPrimaryQlClass() { result = "BlockComment" }
+}
+
 /**
  * The `from, where, select` part of a QL query.
  */
@@ -1867,13 +1877,13 @@ class BinOpExpr extends TBinOpExpr, Expr {
   /** Gets the left operand of the binary expression. */
   Expr getLeftOperand() { none() } // overriden in subclasses
 
-  /* Gets the right operand of the binary expression. */
+  /** Gets the right operand of the binary expression. */
   Expr getRightOperand() { none() } // overriden in subclasses
 
   /** Gets the operator of the binary expression. */
   FunctionSymbol getOperator() { none() } // overriden in subclasses
 
-  /* Gets an operand of the binary expression. */
+  /** Gets an operand of the binary expression. */
   final Expr getAnOperand() { result = this.getLeftOperand() or result = this.getRightOperand() }
 }
 

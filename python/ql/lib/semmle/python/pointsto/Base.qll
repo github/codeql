@@ -120,7 +120,7 @@ int version_tuple_compare(Object t) {
   version_tuple_value(t) > major_minor() and result = 1
 }
 
-/* Holds if `cls` is a new-style class if it were to have no explicit base classes */
+/** Holds if `cls` is a new-style class if it were to have no explicit base classes */
 predicate baseless_is_new_style(ClassObject cls) {
   cls.isBuiltin()
   or
