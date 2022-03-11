@@ -220,7 +220,7 @@ private module RestFramework {
      *
      * Use the predicate `Request::instance()` to get references to instances of `rest_framework.request.Request`.
      */
-    abstract class InstanceSource extends PrivateDjango::django::http::request::HttpRequest::InstanceSource {
+    abstract class InstanceSource extends PrivateDjango::DjangoImpl::http::request::HttpRequest::InstanceSource {
     }
 
     /** A direct instantiation of `rest_framework.request.Request`. */
@@ -307,7 +307,7 @@ private module RestFramework {
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** A direct instantiation of `rest_framework.response.Response`. */
-    private class ClassInstantiation extends PrivateDjango::django::http::response::HttpResponse::InstanceSource,
+    private class ClassInstantiation extends PrivateDjango::DjangoImpl::http::response::HttpResponse::InstanceSource,
       DataFlow::CallCfgNode {
       ClassInstantiation() { this = classRef().getACall() }
 
