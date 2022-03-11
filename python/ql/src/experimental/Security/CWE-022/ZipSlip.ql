@@ -16,9 +16,8 @@ import python
 import experimental.semmle.python.security.ZipSlip
 import DataFlow::PathGraph
 
-
-from ZipSlipConfig config, DataFlow::PathNode source,
-  DataFlow::PathNode sink
+from ZipSlipConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Extraction of zipfile from $@", source.getNode(),
   "a potentially untrusted source"
+
