@@ -318,6 +318,7 @@ private module OrmTracking {
   }
 }
 
+/** Provides default sources, sinks and sanitizers for detecting stored cross-site scripting (XSS) vulnerabilities. */
 module StoredXss {
   /** A data flow source for stored XSS vulnerabilities. */
   abstract class Source extends Shared::Source { }

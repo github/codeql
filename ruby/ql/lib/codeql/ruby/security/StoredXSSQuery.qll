@@ -11,6 +11,7 @@ import ruby
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 
+/** Provides a taint-tracking configuration for cross-site scripting vulnerabilities. */
 module StoredXss {
   import XSS::StoredXss
 
