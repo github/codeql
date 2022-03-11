@@ -62,7 +62,7 @@ predicate hasTopLevelDomainEnding(RegExpSequence seq, int i) {
   seq.getChild(i)
       .(RegExpConstant)
       .getValue()
-      .regexpMatch("(?i)" + RegExpPatterns::commonTLD() + "(:\\d+)?([/?#].*)?") and
+      .regexpMatch("(?i)" + RegExpPatterns::getACommonTld() + "(:\\d+)?([/?#].*)?") and
   isDotLike(seq.getChild(i - 1)) and
   not (i = 1 and matchesBeginningOfString(seq))
 }

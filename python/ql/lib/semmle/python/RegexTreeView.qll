@@ -50,13 +50,13 @@ newtype TRegExpParent =
   TRegExpBackRef(Regex re, int start, int end) { re.backreference(start, end) }
 
 /**
- * Provides regular expression patterns.
+ * Provides utility predicates related to regular expressions.
  */
 module RegExpPatterns {
   /**
    * Gets a pattern that matches common top-level domain names in lower case.
    */
-  string commonTLD() {
+  string getACommonTld() {
     // according to ranking by http://google.com/search?q=site:.<<TLD>>
     result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
   }
@@ -768,7 +768,7 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
   int getNumber() { result = re.getGroupNumber(start, end) }
 
   /** Holds if this is a capture group. */
-  predicate isCapture() { not exists(this.getNumber()) }
+  predicate isCapture() { exists(this.getNumber()) }
 
   /** Holds if this is a named capture group. */
   predicate isNamed() { exists(this.getName()) }
