@@ -9,7 +9,6 @@
 import javascript
 import InsecureDownloadCustomizations::InsecureDownload
 
-// Materialize flow labels
 /**
  * A taint tracking configuration for download of sensitive file through insecure connection.
  */
