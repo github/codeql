@@ -28,7 +28,7 @@ private AstNode publicApi() {
  * Gets any AstNode that directly computes a result of a query.
  * I.e. a query predicate or the from-where-select.
  */
-private AstNode queryable() {
+private AstNode queryPredicate() {
   // result = query relation that is "transitively" imported by a .ql file.
   PathProblemQuery::importsQueryRelation(result).asFile().getExtension() = "ql"
   or
@@ -36,7 +36,7 @@ private AstNode queryable() {
   result instanceof Select
   or
   // child of the above.
-  result = queryable().getAChild()
+  result = queryPredicate().getAChild()
 }
 
 AstNode hackyShouldBeTreatedAsAlive() {
@@ -64,7 +64,7 @@ private AstNode alive() {
   result = publicApi()
   or
   // 2) everything that can be an output when running a query
-  result = queryable()
+  result = queryPredicate()
   or
   // 3) A module with an import that imports another file, the import can activate a file.
   result.(Module).getAMember().(Import).getResolvedModule().getFile() !=
@@ -73,54 +73,61 @@ private AstNode alive() {
   // 4) Things that aren't really alive, but that this query treats as live.
   result = hackyShouldBeTreatedAsAlive()
   or
+  result instanceof TopLevel // toplevel is always alive.
+  or
+  // recurisve cases
+  result = aliveStep(alive())
+}
+
+private AstNode aliveStep(AstNode prev) {
   //
   // The recursive cases.
   //
-  result.getEnclosingPredicate() = alive()
+  result.getEnclosingPredicate() = prev
   or
-  result = alive().(Call).getTarget()
+  result = prev.(Call).getTarget()
   or
-  alive().(ClassPredicate).overrides(result)
+  prev.(ClassPredicate).overrides(result)
   or
-  result.(ClassPredicate).overrides(alive())
+  result.(ClassPredicate).overrides(prev)
   or
-  result = alive().(PredicateExpr).getResolvedPredicate()
+  result = prev.(PredicateExpr).getResolvedPredicate()
   or
   // if a sub-class is alive, then the super-class is alive.
-  result = alive().(Class).getASuperType().getResolvedType().(ClassType).getDeclaration()
+  result = prev.(Class).getASuperType().getResolvedType().(ClassType).getDeclaration()
   or
   // if the super class is alive and abstract, then any sub-class is alive.
-  exists(Class sup | sup = alive() and sup.isAbstract() |
+  exists(Class sup | sup = prev and sup.isAbstract() |
     sup = result.(Class).getASuperType().getResolvedType().(ClassType).getDeclaration()
   )
   or
-  result = alive().(Class).getAChild() and
+  result = prev.(Class).getAChild() and
   not result.hasAnnotation("private")
   or
-  result = alive().getAnAnnotation()
+  result = prev.getAnAnnotation()
   or
-  result = alive().getQLDoc()
+  result = prev.getQLDoc()
   or
   // any imported module is alive. We don't have to handle the "import a file"-case, those are treated as public APIs.
-  result = alive().(Import).getResolvedModule().asModule()
+  result = prev.(Import).getResolvedModule().asModule()
   or
-  result = alive().(VarDecl).getType().getDeclaration()
+  result = prev.(VarDecl).getType().getDeclaration()
   or
-  result = alive().(FieldDecl).getVarDecl()
+  result = prev.(FieldDecl).getVarDecl()
   or
-  result = alive().(InlineCast).getType().getDeclaration()
+  result = prev.(InlineCast).getType().getDeclaration()
   or
   // a class overrides some predicate, is the super-predicate is alive.
   exists(ClassPredicate pred, ClassPredicate sup |
     pred.hasAnnotation("override") and
     pred.overrides(sup) and
     result = pred.getParent() and
-    sup.getParent() = alive()
+    sup.getParent() = prev
   )
   or
   // if a class is alive, so is it's super-class
   result =
-    [alive().(Class).getASuperType(), alive().(Class).getAnInstanceofType()]
+    [prev.(Class).getASuperType(), prev.(Class).getAnInstanceofType()]
         .getResolvedType()
         .getDeclaration()
   or
@@ -128,35 +135,35 @@ private AstNode alive() {
   exists(Class clz, Class sup | result = clz |
     clz.getASuperType().getResolvedType().getDeclaration() = sup and
     sup.isAbstract() and
-    sup = alive()
+    sup = prev
   )
   or
   // a module containing something live, is also alive.
-  result.(Module).getAMember() = alive()
+  result.(Module).getAMember() = prev
   or
-  result = alive().(Module).getAlias()
+  result = prev.(Module).getAlias()
   or
-  result.(NewType).getABranch() = alive()
+  result.(NewType).getABranch() = prev
   or
-  result = alive().(TypeExpr).getAChild()
+  result = prev.(TypeExpr).getAChild()
   or
-  result = alive().(FieldAccess).getDeclaration()
+  result = prev.(FieldAccess).getDeclaration()
   or
-  result = alive().(VarDecl).getTypeExpr()
+  result = prev.(VarDecl).getTypeExpr()
   or
-  result.(Import).getParent() = alive()
+  result.(Import).getParent() = prev
   or
-  result = alive().(NewType).getABranch()
+  result = prev.(NewType).getABranch()
   or
-  result = alive().(ModuleExpr).getAChild()
+  result = prev.(ModuleExpr).getAChild()
   or
-  result = alive().(ModuleExpr).getResolvedModule().asModule()
+  result = prev.(ModuleExpr).getResolvedModule().asModule()
   or
-  result = alive().(InstanceOf).getType().getResolvedType().getDeclaration()
+  result = prev.(InstanceOf).getType().getResolvedType().getDeclaration()
   or
-  result = alive().(Annotation).getAChild()
+  result = prev.(Annotation).getAChild()
   or
-  result = alive().(Predicate).getReturnType().getDeclaration()
+  result = prev.(Predicate).getReturnType().getDeclaration()
 }
 
 private AstNode deprecated() {
@@ -188,21 +195,60 @@ private AstNode classUnion() {
   result = classUnion().(ModuleExpr).getAChild()
 }
 
+private AstNode benign() {
+  not result.getLocation().getFile().getExtension() = ["ql", "qll"] or // ignore dbscheme files
+  result instanceof BlockComment or
+  not exists(result.toString()) or // <- invalid code
+  // cached-stages pattern
+  result.(Module).getAMember().(ClasslessPredicate).getName() = "forceStage" or
+  result.(ClasslessPredicate).getName() = "forceStage" or
+  result.getLocation().getFile().getBaseName() = "Caching.qll" or
+  // sometimes contains dead code - ignore
+  result.getLocation().getFile().getRelativePath().matches("%/tutorials/%") or
+  result = classUnion()
+}
+
 private predicate isDeadInternal(AstNode node) {
   not node = alive() and
-  not node = deprecated() and
-  not node = classUnion()
+  not node = deprecated()
 }
 
 predicate isDead(AstNode node) {
   isDeadInternal(node) and
   not isDeadInternal(node.getParent()) and
-  not node instanceof BlockComment and
-  exists(node.toString()) and // <- invalid code
-  node.getLocation().getFile().getExtension() = ["ql", "qll"] and // ignore dbscheme files
-  // cached-stages pattern
-  not node.(Module).getAMember().(ClasslessPredicate).getName() = "forceStage" and
-  not node.(ClasslessPredicate).getName() = "forceStage" and
-  not node.getLocation().getFile().getBaseName() = "Caching.qll" and
-  not node.getLocation().getFile().getRelativePath().matches("%/tutorials/%") // sometimes contains dead code - ignore
+  not node = benign()
+}
+
+/**
+ * Gets an AST node that affects a query.
+ */
+private AstNode queryable() {
+  //
+  // The base cases.
+  //
+  // everything that can be an output when running a query
+  result = queryPredicate()
+  or
+  // A module with an import that imports another file, the import can activate a file.
+  result.(Module).getAMember().(Import).getResolvedModule().getFile() !=
+    result.getLocation().getFile()
+  or
+  result instanceof TopLevel // toplevel is always alive.
+  or
+  // recurisve cases
+  result = aliveStep(queryable())
+}
+
+/**
+ * Gets an AstNode that does not affect any query result.
+ * Is interresting as an quick-eval target to investigate dead code.
+ * (It is intentional that this predicate is a result of this predicate).
+ */
+AstNode unQueryable(string msg) {
+  not result = queryable() and
+  not result = deprecated() and
+  not result = benign() and
+  not result.getParent() = any(AstNode node | not node = queryable()) and
+  msg = result.getLocation().getFile().getBaseName() and
+  result.getLocation().getFile().getAbsolutePath().matches("%/javascript/%")
 }
