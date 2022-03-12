@@ -224,6 +224,7 @@ class SemOpaqueType extends SemSizedType, TSemOpaqueType {
   final override int getByteSize() { result = byteSize }
 }
 
+cached
 SemType getSemanticType(Specific::Type type) {
   exists(int byteSize |
     Specific::booleanType(type, byteSize) and result = TSemBooleanType(byteSize)

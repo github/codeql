@@ -225,61 +225,73 @@ module SemanticExprConfig {
     )
   }
 
-  predicate unaryExpr(Expr expr, Opcode opcode, SemType type, Expr operand) {
-    exists(J::Expr javaExpr | expr = TPrimaryExpr(javaExpr) |
-      type = getSemanticType(javaExpr.getType()) and
+  private predicate primaryUnaryExpr(J::Expr javaExpr, Opcode opcode, Expr operand) {
+    exists(J::UnaryExpr unary | unary = javaExpr |
+      operand = getResultExpr(unary.getExpr()) and
       (
-        exists(J::UnaryExpr unary | unary = javaExpr |
-          operand = getResultExpr(unary.getExpr()) and
-          (
-            unary instanceof J::MinusExpr and opcode instanceof Opcode::Negate
-            or
-            unary instanceof J::PlusExpr and opcode instanceof Opcode::CopyValue
-            or
-            unary instanceof J::BitNotExpr and opcode instanceof Opcode::BitComplement
-            or
-            unary instanceof J::LogNotExpr and opcode instanceof Opcode::LogicalNot
-            or
-            unary instanceof J::PreIncExpr and opcode instanceof Opcode::AddOne
-            or
-            unary instanceof J::PreDecExpr and opcode instanceof Opcode::SubOne
-            or
-            // Post-increment/decrement returns the original value. The actual increment/decrement part
-            // is a separate `Expr`.
-            unary instanceof J::PostIncExpr and opcode instanceof Opcode::CopyValue
-            or
-            unary instanceof J::PostDecExpr and opcode instanceof Opcode::CopyValue
-          )
-        )
+        unary instanceof J::MinusExpr and opcode instanceof Opcode::Negate
         or
-        exists(J::CastExpr cast | cast = javaExpr |
-          // TODO: Boolean? Null? Boxing?
-          type instanceof SemNumericType and
-          getSemanticType(cast.getExpr().getType()) instanceof SemNumericType and
-          opcode instanceof Opcode::Convert and
-          operand = getResultExpr(cast.getExpr())
-        )
+        unary instanceof J::PlusExpr and opcode instanceof Opcode::CopyValue
         or
-        exists(J::AssignExpr assign | assign = javaExpr |
-          opcode instanceof Opcode::CopyValue and
-          operand = getResultExpr(assign.getSource())
-        )
+        unary instanceof J::BitNotExpr and opcode instanceof Opcode::BitComplement
         or
-        exists(J::LocalVariableDeclExpr decl | decl = javaExpr |
-          opcode instanceof Opcode::CopyValue and
-          operand = getResultExpr(decl.getInit())
-        )
+        unary instanceof J::LogNotExpr and opcode instanceof Opcode::LogicalNot
+        or
+        unary instanceof J::PreIncExpr and opcode instanceof Opcode::AddOne
+        or
+        unary instanceof J::PreDecExpr and opcode instanceof Opcode::SubOne
+        or
+        // Post-increment/decrement returns the original value. The actual increment/decrement part
+        // is a separate `Expr`.
+        unary instanceof J::PostIncExpr and opcode instanceof Opcode::CopyValue
+        or
+        unary instanceof J::PostDecExpr and opcode instanceof Opcode::CopyValue
       )
     )
     or
-    exists(J::UnaryAssignExpr javaExpr | javaExpr = expr.(PostUpdateExpr).getExpr() |
-      type = getSemanticType(javaExpr.getType()) and
-      operand = getResultExpr(javaExpr.getExpr()) and
+    exists(J::CastExpr cast | cast = javaExpr |
+      // TODO: Boolean? Null? Boxing?
+      getSemanticType(cast.getType()) instanceof SemNumericType and
+      getSemanticType(cast.getExpr().getType()) instanceof SemNumericType and
+      opcode instanceof Opcode::Convert and
+      operand = getResultExpr(cast.getExpr())
+    )
+    or
+    exists(J::AssignExpr assign | assign = javaExpr |
+      opcode instanceof Opcode::CopyValue and
+      operand = getResultExpr(assign.getSource())
+    )
+    or
+    exists(J::LocalVariableDeclExpr decl | decl = javaExpr |
+      opcode instanceof Opcode::CopyValue and
+      operand = getResultExpr(decl.getInit())
+    )
+  }
+
+  private predicate postUpdateUnaryExpr(J::UnaryAssignExpr javaExpr, Opcode opcode, Expr operand) {
+    exists(J::UnaryAssignExpr unaryAssign | unaryAssign = javaExpr |
+      operand = getResultExpr(unaryAssign.getExpr()) and
       (
         javaExpr instanceof J::PostIncExpr and opcode instanceof Opcode::AddOne
         or
         javaExpr instanceof J::PostDecExpr and opcode instanceof Opcode::SubOne
       )
+    )
+  }
+
+  private predicate unaryExprWithoutType(Expr expr, Opcode opcode, Expr operand, J::Expr javaExpr) {
+    primaryUnaryExpr(javaExpr, opcode, operand) and
+    expr = TPrimaryExpr(javaExpr)
+    or
+    postUpdateUnaryExpr(javaExpr, opcode, operand) and
+    expr = TPostUpdateExpr(javaExpr)
+  }
+
+  predicate unaryExpr(Expr expr, Opcode opcode, SemType type, Expr operand) {
+    exists(J::Expr javaExpr, J::Type javaType |
+      unaryExprWithoutType(expr, opcode, operand, javaExpr) and
+      javaType = javaExpr.getType() and
+      type = getSemanticType(javaType)
     )
   }
 
