@@ -123,7 +123,7 @@ private predicate bestBound(SemExpr e, SemBound b, int delta, boolean upper) {
  * - `upper = false` : `v >= e + delta` or `v > e + delta`
  */
 private predicate boundCondition(
-  SemComparisonExpr comp, SemSsaVariable v, SemExpr e, int delta, boolean upper
+  SemRelationalExpr comp, SemSsaVariable v, SemExpr e, int delta, boolean upper
 ) {
   comp.getLesserOperand() = semSsaRead(v, delta) and e = comp.getGreaterOperand() and upper = true
   or
@@ -169,7 +169,7 @@ private predicate boundCondition(
  * fixed value modulo some `mod > 1`, such that the comparison can be
  * strengthened by `strengthen` when evaluating to `testIsTrue`.
  */
-private predicate modulusComparison(SemComparisonExpr comp, boolean testIsTrue, int strengthen) {
+private predicate modulusComparison(SemRelationalExpr comp, boolean testIsTrue, int strengthen) {
   exists(
     SemBound b, int v1, int v2, int mod1, int mod2, int mod, boolean resultIsStrict, int d, int k
   |
@@ -214,7 +214,7 @@ private SemGuard boundFlowCond(
   SemSsaVariable v, SemExpr e, int delta, boolean upper, boolean testIsTrue
 ) {
   exists(
-    SemComparisonExpr comp, int d1, int d2, int d3, int strengthen, boolean compIsUpper,
+    SemRelationalExpr comp, int d1, int d2, int d3, int strengthen, boolean compIsUpper,
     boolean resultIsStrict
   |
     comp = result.asExpr() and
@@ -320,7 +320,7 @@ private predicate boundFlowStepSsa(
 private predicate unequalFlowStepIntegralSsa(
   SemSsaVariable v, SemSsaReadPosition pos, SemExpr e, int delta, SemReason reason
 ) {
-  getTrackedTypeForSourceVariable(v.getSourceVariable()) instanceof SemIntegerType and
+  getTrackedTypeForSsaVariable(v) instanceof SemIntegerType and
   exists(SemGuard guard, boolean testIsTrue |
     pos.hasReadOfVar(v) and
     guard = semEqFlowCond(v, e, delta, false, testIsTrue) and
@@ -330,10 +330,23 @@ private predicate unequalFlowStepIntegralSsa(
 }
 
 /**
+ * An expression that does conversion, boxing, or unboxing
+ */
+private class ConvertOrBoxExpr extends SemUnaryExpr {
+  ConvertOrBoxExpr() {
+    this instanceof SemConvertExpr
+    or
+    this instanceof SemBoxExpr
+    or
+    this instanceof SemUnboxExpr
+  }
+}
+
+/**
  * A cast that can be ignored for the purpose of range analysis.
  */
-private class SafeCastExpr extends SemCastExpr {
-  SafeCastExpr() { conversionCannotOverflow(getTrackedType(getExpr()), getTrackedType(this)) }
+private class SafeCastExpr extends ConvertOrBoxExpr {
+  SafeCastExpr() { conversionCannotOverflow(getTrackedType(getOperand()), getTrackedType(this)) }
 }
 
 /**
@@ -358,7 +371,7 @@ private predicate typeBound(SemIntegerType typ, int lowerbound, int upperbound) 
 /**
  * A cast to a small integral type that may overflow or underflow.
  */
-private class NarrowingCastExpr extends SemCastExpr {
+private class NarrowingCastExpr extends ConvertOrBoxExpr {
   NarrowingCastExpr() {
     not this instanceof SafeCastExpr and
     typeBound(getTrackedType(this), _, _)
@@ -390,19 +403,11 @@ private predicate boundFlowStep(SemExpr e2, SemExpr e1, int delta, boolean upper
   semValueFlowStep(e2, e1, delta) and
   (upper = true or upper = false)
   or
-  e2.(SafeCastExpr).getExpr() = e1 and
+  e2.(SafeCastExpr).getOperand() = e1 and
   delta = 0 and
   (upper = true or upper = false)
   or
-  exists(SemExpr x |
-    e2.(SemAddExpr).hasOperands(e1, x)
-    or
-    exists(SemAssignAddExpr add | add = e2 |
-      add.getDest() = e1 and add.getRhs() = x
-      or
-      add.getDest() = x and add.getRhs() = e1
-    )
-  |
+  exists(SemExpr x | e2.(SemAddExpr).hasOperands(e1, x) |
     // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
     not x instanceof SemConstantIntegerExpr and
     not e1 instanceof SemConstantIntegerExpr and
@@ -425,12 +430,6 @@ private predicate boundFlowStep(SemExpr e2, SemExpr e1, int delta, boolean upper
       e2 = sub and
       sub.getLeftOperand() = e1 and
       sub.getRightOperand() = x
-    )
-    or
-    exists(SemAssignSubExpr sub |
-      e2 = sub and
-      sub.getDest() = e1 and
-      sub.getRhs() = x
     )
   |
     // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
@@ -456,26 +455,12 @@ private predicate boundFlowStep(SemExpr e2, SemExpr e1, int delta, boolean upper
   or
   e2.(SemRemExpr).getLeftOperand() = e1 and semPositive(e1) and delta = 0 and upper = true
   or
-  e2.(SemAssignRemExpr).getRhs() = e1 and semPositive(e1) and delta = -1 and upper = true
-  or
-  e2.(SemAssignRemExpr).getDest() = e1 and semPositive(e1) and delta = 0 and upper = true
-  or
-  e2.(SemAndBitwiseExpr).getAnOperand() = e1 and
+  e2.(SemBitAndExpr).getAnOperand() = e1 and
   semPositive(e1) and
   delta = 0 and
   upper = true
   or
-  e2.(SemAssignAndExpr).getSource() = e1 and
-  semPositive(e1) and
-  delta = 0 and
-  upper = true
-  or
-  e2.(SemOrBitwiseExpr).getAnOperand() = e1 and
-  semPositive(e2) and
-  delta = 0 and
-  upper = false
-  or
-  e2.(SemAssignOrExpr).getSource() = e1 and
+  e2.(SemBitOrExpr).getAnOperand() = e1 and
   semPositive(e2) and
   delta = 0 and
   upper = false
@@ -488,16 +473,8 @@ private predicate boundFlowStepMul(SemExpr e2, SemExpr e1, int factor) {
   exists(SemConstantIntegerExpr c, int k | k = c.getIntValue() and k > 0 |
     e2.(SemMulExpr).hasOperands(e1, c) and factor = k
     or
-    exists(SemAssignMulExpr e | e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = k)
-    or
-    exists(SemAssignMulExpr e | e = e2 and e.getDest() = c and e.getRhs() = e1 and factor = k)
-    or
-    exists(SemLShiftExpr e |
+    exists(SemShiftLeftExpr e |
       e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)
-    )
-    or
-    exists(SemAssignLShiftExpr e |
-      e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k)
     )
   )
 }
@@ -514,22 +491,12 @@ private predicate boundFlowStepDiv(SemExpr e2, SemExpr e1, int factor) {
       e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = k
     )
     or
-    exists(SemAssignDivExpr e | e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = k)
-    or
-    exists(SemRShiftExpr e |
+    exists(SemShiftRightExpr e |
       e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)
     )
     or
-    exists(SemAssignRShiftExpr e |
-      e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k)
-    )
-    or
-    exists(SemURShiftExpr e |
+    exists(SemShiftRightUnsignedExpr e |
       e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)
-    )
-    or
-    exists(SemAssignURShiftExpr e |
-      e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k)
     )
   )
 }
@@ -715,7 +682,11 @@ private predicate boundedPhi(
 private predicate baseBound(SemExpr e, int b, boolean upper) {
   Specific::hasConstantBound(e, b, upper)
   or
-  upper = false and b = 0 and semPositive(e.(SemAndBitwiseExpr).getAnOperand())
+  upper = false and
+  b = 0 and
+  semPositive(e.(SemBitAndExpr).getAnOperand()) and
+  // REVIEW: We let the language opt out here to preserve original results.
+  not Specific::ignoreZeroLowerBound(e)
 }
 
 /**
@@ -725,7 +696,7 @@ private predicate baseBound(SemExpr e, int b, boolean upper) {
  * `upper = false` this means that the cast will not underflow.
  */
 private predicate safeNarrowingCast(NarrowingCastExpr cast, boolean upper) {
-  exists(int bound | bounded(cast.getExpr(), any(SemZeroBound zb), bound, upper, _, _, _) |
+  exists(int bound | bounded(cast.getOperand(), any(SemZeroBound zb), bound, upper, _, _, _) |
     upper = true and bound <= cast.getUpperBound()
     or
     upper = false and bound >= cast.getLowerBound()
@@ -737,7 +708,7 @@ private predicate boundedCastExpr(
   NarrowingCastExpr cast, SemBound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
   SemReason reason
 ) {
-  bounded(cast.getExpr(), b, delta, upper, fromBackEdge, origdelta, reason)
+  bounded(cast.getOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
 }
 
 /**
@@ -749,78 +720,81 @@ private predicate bounded(
   SemExpr e, SemBound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
   SemReason reason
 ) {
-  e = b.getExpr(delta) and
-  (upper = true or upper = false) and
-  fromBackEdge = false and
-  origdelta = delta and
-  reason = TSemNoReason()
-  or
-  baseBound(e, delta, upper) and
-  b instanceof SemZeroBound and
-  fromBackEdge = false and
-  origdelta = delta and
-  reason = TSemNoReason()
-  or
-  exists(SemSsaVariable v, SemSsaReadPositionBlock bb |
-    boundedSsa(v, bb, b, delta, upper, fromBackEdge, origdelta, reason) and
-    e = v.getAUse() and
-    bb.getBlock() = e.getBasicBlock()
-  )
-  or
-  exists(SemExpr mid, int d1, int d2 |
-    boundFlowStep(e, mid, d1, upper) and
-    // Constants have easy, base-case bounds, so let's not infer any recursive bounds.
-    not e instanceof SemConstantIntegerExpr and
-    bounded(mid, b, d2, upper, fromBackEdge, origdelta, reason) and
-    // upper = true:  e <= mid + d1 <= b + d1 + d2 = b + delta
-    // upper = false: e >= mid + d1 >= b + d1 + d2 = b + delta
-    delta = d1 + d2
-  )
-  or
-  exists(SemSsaPhiNode phi |
-    boundedPhi(phi, b, delta, upper, fromBackEdge, origdelta, reason) and
-    e = phi.getAUse()
-  )
-  or
-  exists(SemExpr mid, int factor, int d |
-    boundFlowStepMul(e, mid, factor) and
-    not e instanceof SemConstantIntegerExpr and
-    bounded(mid, b, d, upper, fromBackEdge, origdelta, reason) and
-    b instanceof SemZeroBound and
-    delta = d * factor
-  )
-  or
-  exists(SemExpr mid, int factor, int d |
-    boundFlowStepDiv(e, mid, factor) and
-    not e instanceof SemConstantIntegerExpr and
-    bounded(mid, b, d, upper, fromBackEdge, origdelta, reason) and
-    b instanceof SemZeroBound and
-    d >= 0 and
-    delta = d / factor
-  )
-  or
-  exists(NarrowingCastExpr cast |
-    cast = e and
-    safeNarrowingCast(cast, upper.booleanNot()) and
-    boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)
-  )
-  or
-  exists(
-    SemConditionalExpr cond, int d1, int d2, boolean fbe1, boolean fbe2, int od1, int od2,
-    SemReason r1, SemReason r2
-  |
-    cond = e and
-    boundedConditionalExpr(cond, b, upper, true, d1, fbe1, od1, r1) and
-    boundedConditionalExpr(cond, b, upper, false, d2, fbe2, od2, r2) and
-    (
-      delta = d1 and fromBackEdge = fbe1 and origdelta = od1 and reason = r1
-      or
-      delta = d2 and fromBackEdge = fbe2 and origdelta = od2 and reason = r2
-    )
-  |
-    upper = true and delta = d1.maximum(d2)
+  not Specific::ignoreExprBound(e) and
+  (
+    e = b.getExpr(delta) and
+    (upper = true or upper = false) and
+    fromBackEdge = false and
+    origdelta = delta and
+    reason = TSemNoReason()
     or
-    upper = false and delta = d1.minimum(d2)
+    baseBound(e, delta, upper) and
+    b instanceof SemZeroBound and
+    fromBackEdge = false and
+    origdelta = delta and
+    reason = TSemNoReason()
+    or
+    exists(SemSsaVariable v, SemSsaReadPositionBlock bb |
+      boundedSsa(v, bb, b, delta, upper, fromBackEdge, origdelta, reason) and
+      e = v.getAUse() and
+      bb.getBlock() = e.getBasicBlock()
+    )
+    or
+    exists(SemExpr mid, int d1, int d2 |
+      boundFlowStep(e, mid, d1, upper) and
+      // Constants have easy, base-case bounds, so let's not infer any recursive bounds.
+      not e instanceof SemConstantIntegerExpr and
+      bounded(mid, b, d2, upper, fromBackEdge, origdelta, reason) and
+      // upper = true:  e <= mid + d1 <= b + d1 + d2 = b + delta
+      // upper = false: e >= mid + d1 >= b + d1 + d2 = b + delta
+      delta = d1 + d2
+    )
+    or
+    exists(SemSsaPhiNode phi |
+      boundedPhi(phi, b, delta, upper, fromBackEdge, origdelta, reason) and
+      e = phi.getAUse()
+    )
+    or
+    exists(SemExpr mid, int factor, int d |
+      boundFlowStepMul(e, mid, factor) and
+      not e instanceof SemConstantIntegerExpr and
+      bounded(mid, b, d, upper, fromBackEdge, origdelta, reason) and
+      b instanceof SemZeroBound and
+      delta = d * factor
+    )
+    or
+    exists(SemExpr mid, int factor, int d |
+      boundFlowStepDiv(e, mid, factor) and
+      not e instanceof SemConstantIntegerExpr and
+      bounded(mid, b, d, upper, fromBackEdge, origdelta, reason) and
+      b instanceof SemZeroBound and
+      d >= 0 and
+      delta = d / factor
+    )
+    or
+    exists(NarrowingCastExpr cast |
+      cast = e and
+      safeNarrowingCast(cast, upper.booleanNot()) and
+      boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)
+    )
+    or
+    exists(
+      SemConditionalExpr cond, int d1, int d2, boolean fbe1, boolean fbe2, int od1, int od2,
+      SemReason r1, SemReason r2
+    |
+      cond = e and
+      boundedConditionalExpr(cond, b, upper, true, d1, fbe1, od1, r1) and
+      boundedConditionalExpr(cond, b, upper, false, d2, fbe2, od2, r2) and
+      (
+        delta = d1 and fromBackEdge = fbe1 and origdelta = od1 and reason = r1
+        or
+        delta = d2 and fromBackEdge = fbe2 and origdelta = od2 and reason = r2
+      )
+    |
+      upper = true and delta = d1.maximum(d2)
+      or
+      upper = false and delta = d1.minimum(d2)
+    )
   )
 }
 

@@ -43,6 +43,8 @@ private newtype TOpcode =
   TSubOne() or // TODO: Combine with `TSub`
   TConditional() or // TODO: Represent as flow
   TCall() or
+  TBox() or
+  TUnbox() or
   TUnknown()
 
 class Opcode extends TOpcode {
@@ -168,6 +170,14 @@ module Opcode {
 
   class StringConstant extends Opcode, TStringConstant {
     override string toString() { result = "StringConstant" }
+  }
+
+  class Box extends Opcode, TBox {
+    override string toString() { result = "Box" }
+  }
+
+  class Unbox extends Opcode, TUnbox {
+    override string toString() { result = "Unbox" }
   }
 
   class Unknown extends Opcode, TUnknown {
@@ -325,6 +335,10 @@ class SemShiftRightExpr extends SemBinaryExpr {
   SemShiftRightExpr() { opcode instanceof Opcode::ShiftRight }
 }
 
+class SemShiftRightUnsignedExpr extends SemBinaryExpr {
+  SemShiftRightUnsignedExpr() { opcode instanceof Opcode::ShiftRightUnsigned }
+}
+
 class SemBitAndExpr extends SemBinaryExpr {
   SemBitAndExpr() { opcode instanceof Opcode::BitAnd }
 }
@@ -343,6 +357,14 @@ class SemUnaryExpr extends SemKnownExpr {
   SemUnaryExpr() { Specific::unaryExpr(this, opcode, type, operand) }
 
   final SemExpr getOperand() { result = operand }
+}
+
+class SemBoxExpr extends SemUnaryExpr {
+  SemBoxExpr() { opcode instanceof Opcode::Box }
+}
+
+class SemUnboxExpr extends SemUnaryExpr {
+  SemUnboxExpr() { opcode instanceof Opcode::Unbox }
 }
 
 class SemConvertExpr extends SemUnaryExpr {

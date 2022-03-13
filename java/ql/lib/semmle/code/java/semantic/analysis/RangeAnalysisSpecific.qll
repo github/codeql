@@ -28,6 +28,22 @@ predicate ignoreSsaReadCopy(SemExpr e) {
 }
 
 /**
+ * Ignore the bound on this expression.
+ *
+ * This predicate is to keep the results identical to the original Java implementation. It should be
+ * removed once we hae the new implementation matching the old results exactly.
+ */
+predicate ignoreExprBound(SemExpr e) { getJavaExpr(e) instanceof LocalVariableDeclExpr }
+
+/**
+ * Ignore any inferred zero lower bound on this expression.
+ *
+ * This predicate is to keep the results identical to the original Java implementation. It should be
+ * removed once we hae the new implementation matching the old results exactly.
+ */
+predicate ignoreZeroLowerBound(SemExpr e) { getJavaExpr(e) instanceof AssignAndExpr }
+
+/**
  * Holds if the specified expression should be excluded from the result of `ssaRead()`.
  *
  * This predicate is to keep the results identical to the original Java implementation. It should be
@@ -149,5 +165,10 @@ SemType getAlternateType(SemExpr e) {
  * actually references but whose values can be tracked as the type contained in the box.
  */
 SemType getAlternateTypeForSsaVariable(SemSsaVariable var) {
-  result = getSemanticType(getJavaSsaVariable(var).getSourceVariable().getType().(BoxedType).getPrimitiveType())
+  result =
+    getSemanticType(getJavaSsaVariable(var)
+          .getSourceVariable()
+          .getType()
+          .(BoxedType)
+          .getPrimitiveType())
 }

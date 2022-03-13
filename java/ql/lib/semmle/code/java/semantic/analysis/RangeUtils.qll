@@ -127,7 +127,7 @@ SemType getTrackedType(SemExpr e) {
  * Usually, this just `e.getType()`, but the language can override this to track immutable boxed
  * primitive types as the underlying primitive type.
  */
-SemType getTrackedTypeForSourceVariable(SemSsaVariable var) {
+SemType getTrackedTypeForSsaVariable(SemSsaVariable var) {
   result = Specific::getAlternateTypeForSsaVariable(var)
   or
   not exists(Specific::getAlternateTypeForSsaVariable(var)) and result = var.getType()

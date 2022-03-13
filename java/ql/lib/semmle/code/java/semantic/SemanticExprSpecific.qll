@@ -249,12 +249,24 @@ module SemanticExprConfig {
       )
     )
     or
-    exists(J::CastExpr cast | cast = javaExpr |
-      // TODO: Boolean? Null? Boxing?
-      getSemanticType(cast.getType()) instanceof SemNumericType and
-      getSemanticType(cast.getExpr().getType()) instanceof SemNumericType and
-      opcode instanceof Opcode::Convert and
-      operand = getResultExpr(cast.getExpr())
+    exists(J::CastExpr cast, J::Type srcType, J::Type destType |
+      cast = javaExpr and srcType = cast.getExpr().getType() and destType = cast.getType()
+    |
+      operand = getResultExpr(cast.getExpr()) and
+      (
+        // TODO: Conversions between `boolean` and numeric types should probably be comparisons
+        srcType instanceof J::PrimitiveType and
+        destType instanceof J::PrimitiveType and
+        opcode instanceof Opcode::Convert
+        or
+        srcType instanceof J::PrimitiveType and
+        destType instanceof J::RefType and
+        opcode instanceof Opcode::Box
+        or
+        srcType instanceof J::RefType and
+        destType instanceof J::PrimitiveType and
+        opcode instanceof Opcode::Unbox
+      )
     )
     or
     exists(J::AssignExpr assign | assign = javaExpr |
@@ -344,9 +356,8 @@ module SemanticExprConfig {
     final Location getLocation() { result = super.getLocation() }
   }
 
-  predicate explicitUpdate(SsaVariable v, SemType type, Expr sourceExpr) {
+  predicate explicitUpdate(SsaVariable v, Expr sourceExpr) {
     exists(SSA::SsaExplicitUpdate update | v = update |
-      type = getSemanticType(update.getSourceVariable().getType()) and
       exists(J::Expr expr | expr = update.getDefiningExpr() |
         (
           expr instanceof J::AssignOp or
@@ -370,13 +381,15 @@ module SemanticExprConfig {
     )
   }
 
-  predicate phi(SsaVariable v, SemType type) {
-    type = getSemanticType(v.(SSA::SsaPhiNode).getSourceVariable().getType())
-  }
+  predicate phi(SsaVariable v) { v instanceof SSA::SsaPhiNode }
 
   SsaVariable getAPhiInput(SsaVariable v) { result = v.(SSA::SsaPhiNode).getAPhiInput() }
 
   Expr getAUse(SsaVariable v) { result = getResultExpr(v.(SSA::SsaVariable).getAUse()) }
+
+  SemType getSsaVariableType(SsaVariable v) {
+    result = getSemanticType(v.(SSA::SsaVariable).getSourceVariable().getType())
+  }
 
   BasicBlock getSsaVariableBasicBlock(SsaVariable v) {
     result = v.(SSA::SsaVariable).getBasicBlock()

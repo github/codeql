@@ -14,6 +14,8 @@ class SemGuard instanceof Specific::Guard {
 
   final string toString() { result = super.toString() }
 
+  final Specific::Location getLocation() { result = super.getLocation() }
+
   final predicate isEquality(SemExpr e1, SemExpr e2, boolean polarity) {
     Specific::equalityGuard(this, e1, e2, polarity)
   }

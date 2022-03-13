@@ -8,15 +8,13 @@ private import SemanticType
 private import SemanticExprSpecific::SemanticExprConfig as Specific
 
 class SemSsaVariable instanceof Specific::SsaVariable {
-  SemType type;
-
   final string toString() { result = super.toString() }
 
   final Specific::Location getLocation() { result = super.getLocation() }
 
   final SemLoadExpr getAUse() { result = Specific::getAUse(this) }
 
-  final SemType getType() { result = type }
+  final SemType getType() { result = Specific::getSsaVariableType(this) }
 
   final SemBasicBlock getBasicBlock() { result = Specific::getSsaVariableBasicBlock(this) }
 }
@@ -24,13 +22,13 @@ class SemSsaVariable instanceof Specific::SsaVariable {
 class SemSsaExplicitUpdate extends SemSsaVariable {
   SemExpr sourceExpr;
 
-  SemSsaExplicitUpdate() { Specific::explicitUpdate(this, type, sourceExpr) }
+  SemSsaExplicitUpdate() { Specific::explicitUpdate(this, sourceExpr) }
 
   final SemExpr getSourceExpr() { result = sourceExpr }
 }
 
 class SemSsaPhiNode extends SemSsaVariable {
-  SemSsaPhiNode() { Specific::phi(this, type) }
+  SemSsaPhiNode() { Specific::phi(this) }
 
   final SemSsaVariable getAPhiInput() { result = Specific::getAPhiInput(this) }
 }
