@@ -73,6 +73,6 @@ private class MyBatisSqlInjectionSink extends QueryInjectionSink instanceof MyBa
 
 private class MyBatisAbstractSQLInjectionStep extends AdditionalQueryInjectionTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    any(MyBatisAbstractSQLStep step).step(node1, node2)
+    any(MyBatisAdditionalTaintStep step).step(node1, node2)
   }
 }

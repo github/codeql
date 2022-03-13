@@ -129,6 +129,6 @@ private class MyBatisOgnlInjectionSink extends OgnlInjectionSink instanceof MyBa
 
 private class MyBatisAbstractSQLOgnlInjectionStep extends OgnlInjectionAdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    any(MyBatisAbstractSQLStep step).step(node1, node2)
+    any(MyBatisAdditionalTaintStep step).step(node1, node2)
   }
 }
