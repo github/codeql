@@ -266,7 +266,7 @@ predicate definitionReaches(Variable v, VarDef def, VarUse use) {
  * Holds if the definition of local variable `v` in `def` reaches `use` along some control flow path
  * without crossing another definition of `v`.
  */
-predicate localDefinitionReaches(LocalVariable v, VarDef def, VarUse use) {
+deprecated predicate localDefinitionReaches(LocalVariable v, VarDef def, VarUse use) {
   exists(SsaExplicitDefinition ssa |
     ssa.defines(def, v) and
     ssa = getAPseudoDefinitionInput*(use.getSsaVariable().getDefinition())
@@ -274,7 +274,7 @@ predicate localDefinitionReaches(LocalVariable v, VarDef def, VarUse use) {
 }
 
 /** Holds if `nd` is a pseudo-definition and the result is one of its inputs. */
-private SsaDefinition getAPseudoDefinitionInput(SsaDefinition nd) {
+deprecated private SsaDefinition getAPseudoDefinitionInput(SsaDefinition nd) {
   result = nd.(SsaPseudoDefinition).getAnInput()
 }
 
@@ -297,7 +297,7 @@ private int nextDefAfter(BasicBlock bb, Variable v, int i, VarDef d) {
  * This is the case if there is a path from `earlier` to `later` that does not cross
  * another definition of `v`.
  */
-predicate localDefinitionOverwrites(LocalVariable v, VarDef earlier, VarDef later) {
+deprecated predicate localDefinitionOverwrites(LocalVariable v, VarDef earlier, VarDef later) {
   exists(BasicBlock bb, int i, int next | next = nextDefAfter(bb, v, i, earlier) |
     bb.defAt(next, v, later)
     or
