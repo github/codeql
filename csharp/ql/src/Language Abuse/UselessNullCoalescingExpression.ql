@@ -14,11 +14,19 @@
 import csharp
 import semmle.code.csharp.commons.StructuralComparison
 
+pragma[noinline]
+private predicate same(AssignableAccess x, AssignableAccess y) {
+  exists(NullCoalescingExpr nce |
+    x = nce.getLeftOperand() and
+    y = nce.getRightOperand().getAChildExpr*()
+  ) and
+  sameGvn(x, y)
+}
+
 private predicate uselessNullCoalescingExpr(NullCoalescingExpr nce) {
-  forex(AssignableAccess y |
-    y = nce.getRightOperand().getAChildExpr*() and sameGvn(nce.getLeftOperand(), y)
-  |
-    y instanceof AssignableRead and not y.isRefArgument()
+  exists(AssignableAccess x |
+    nce.getLeftOperand() = x and
+    forex(AssignableAccess y | same(x, y) | y instanceof AssignableRead and not y.isRefArgument())
   )
 }
 
