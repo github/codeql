@@ -148,10 +148,16 @@ private class ChooseSignExpr extends CustomSignExpr {
 private class CastSignExpr extends CustomSignExpr {
   CastExpr cast;
 
-  CastSignExpr() { cast = getJavaExpr(this) }
+  CastSignExpr() {
+    // The core already handles numeric conversions, boxing, and unboxing.
+    // We need to handle any casts between reference types that we want to track
+    // here.
+    cast = getJavaExpr(this) and
+    cast.getType() instanceof RefType and
+    cast.getExpr().getType() instanceof RefType
+  }
 
   override Sign getSignRestriction() {
-    // REVIEW: Should only apply to trackable operations
     result = semExprSign(getSemanticExpr(cast.getExpr()))
     or
     semAnySign(result) and not cast.getExpr().getType() instanceof NumericOrCharType
@@ -175,7 +181,9 @@ predicate ignoreTypeRestrictions(SemExpr e) {
  */
 predicate trackUnknownNonNumericExpr(SemExpr e) {
   // REVIEW: Only needed to match original Java results.
-  e = getEnhancedForInitExpr(_) or getJavaExpr(e) instanceof VarAccess
+  e = getEnhancedForInitExpr(_) or
+  getJavaExpr(e) instanceof VarAccess or
+  getJavaExpr(e) instanceof CastExpr
 }
 
 /**

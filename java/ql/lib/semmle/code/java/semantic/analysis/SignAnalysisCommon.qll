@@ -204,11 +204,24 @@ private class BinarySignExpr extends FlowSignExpr {
   }
 }
 
+/**
+ * A `Convert`, `Box`, or `Unbox` expression.
+ */
+private class SemCastExpr extends SemUnaryExpr {
+  SemCastExpr() {
+    this instanceof SemConvertExpr
+    or
+    this instanceof SemBoxExpr
+    or
+    this instanceof SemUnboxExpr
+  }
+}
+
 /** A unary expression whose sign is computed from the sign of its operand. */
 private class UnarySignExpr extends FlowSignExpr {
   SemUnaryExpr unary;
 
-  UnarySignExpr() { unary = this }
+  UnarySignExpr() { unary = this and not this instanceof SemCastExpr }
 
   override Sign getSignRestriction() {
     result = semExprSign(unary.getOperand()).applyUnaryOp(unary.getOpcode())
@@ -216,13 +229,43 @@ private class UnarySignExpr extends FlowSignExpr {
 }
 
 /**
- * A `Convert` expression, whose sign is computed based on sign of its operand and the source and
- * destination types.
+ * A `Convert`, `Box`, or `Unbox` expression, whose sign is computed based on
+ * the sign of its operand and the source and destination types.
  */
-private class ConvertSignExpr extends UnarySignExpr {
-  override SemConvertExpr unary;
+abstract private class CastSignExpr extends FlowSignExpr {
+  SemUnaryExpr cast;
 
-  override Sign getSignRestriction() { result = semExprSign(unary.getOperand()) }
+  CastSignExpr() { cast = this and cast instanceof SemCastExpr }
+
+  override Sign getSignRestriction() { result = semExprSign(cast.getOperand()) }
+}
+
+/**
+ * A `Convert` expression.
+ */
+private class ConvertSignExpr extends CastSignExpr {
+  override SemConvertExpr cast;
+}
+
+/**
+ * A `Box` expression.
+ */
+private class BoxSignExpr extends CastSignExpr {
+  override SemBoxExpr cast;
+}
+
+/**
+ * An `Unbox` expression.
+ */
+private class UnboxSignExpr extends CastSignExpr {
+  override SemUnboxExpr cast;
+
+  UnboxSignExpr() {
+    exists(SemType fromType | fromType = getTrackedType(cast.getOperand()) |
+      // Only numeric source types are handled here.
+      fromType instanceof SemNumericType
+    )
+  }
 }
 
 private predicate unknownSign(SemExpr e) { e instanceof UnknownSignExpr }
