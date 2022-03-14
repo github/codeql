@@ -67,7 +67,8 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   exists(Initializer init, StaticStorageDurationVariable var |
     init = var.getInitializer() and
     not var.hasDynamicInitialization() and
-    expr = init.getExpr().getFullyConverted()
+    expr = init.getExpr().getFullyConverted() and
+    not var instanceof GlobalOrNamespaceVariable
   )
   or
   // Ignore descendants of `__assume` expressions, since we translated these to `NoOp`.
@@ -117,7 +118,8 @@ private predicate ignoreExprOnly(Expr expr) {
   // should not be translated.
   exists(NewOrNewArrayExpr new | expr = new.getAllocatorCall().getArgument(0))
   or
-  not translateFunction(expr.getEnclosingFunction())
+  not translateFunction(expr.getEnclosingFunction()) and
+  not expr.getEnclosingVariable() instanceof GlobalOrNamespaceVariable
   or
   // We do not yet translate destructors properly, so for now we ignore the
   // destructor call. We do, however, translate the expression being
@@ -669,7 +671,8 @@ newtype TTranslatedElement =
     opcode = getASideEffectOpcode(call, -1)
   } or
   // The side effect that initializes newly-allocated memory.
-  TTranslatedAllocationSideEffect(AllocationExpr expr) { not ignoreSideEffects(expr) }
+  TTranslatedAllocationSideEffect(AllocationExpr expr) { not ignoreSideEffects(expr) } or
+  TTranslatedGlobalOrNamespaceVarInit(GlobalOrNamespaceVariable var) { any() }
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`

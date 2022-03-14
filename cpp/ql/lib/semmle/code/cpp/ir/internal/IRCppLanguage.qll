@@ -50,6 +50,8 @@ class AutomaticVariable = Cpp::StackVariable;
 
 class StaticVariable = Cpp::Variable;
 
+class GlobalVariable = Cpp::GlobalOrNamespaceVariable;
+
 class Parameter = Cpp::Parameter;
 
 class Field = Cpp::Field;
