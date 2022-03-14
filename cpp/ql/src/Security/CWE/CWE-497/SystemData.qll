@@ -252,14 +252,14 @@ class LogonUser extends SystemData {
  * the `regQuery` predicate concisely.
  */
 private newtype TRegQueryParameter =
-  TSubKeyName(Expr e) or
-  TValueName(Expr e) or
-  TReturnData(Expr e)
+  TSubKeyName() or
+  TValueName() or
+  TReturnData()
 
 /**
  * Registry query call (`source`) with information about parameters (`param`).
  */
-private predicate regQuery(FunctionCall source, TRegQueryParameter param) {
+private predicate regQuery(FunctionCall source, TRegQueryParameter paramType, Expr param) {
   // LONG WINAPI RegQueryValue(
   //   _In_        HKEY    hKey,
   //   _In_opt_    LPCTSTR lpSubKey,
@@ -268,8 +268,9 @@ private predicate regQuery(FunctionCall source, TRegQueryParameter param) {
   // );
   source.getTarget().hasGlobalName(["RegQueryValue", "RegQueryValueA", "RegQueryValueW"]) and
   (
-    param = TSubKeyName(source.getArgument(1)) or
-    param = TReturnData(source.getArgument(2))
+    paramType = TSubKeyName() and param = source.getArgument(1)
+    or
+    paramType = TReturnData() and param = source.getArgument(2)
   )
   or
   // LONG WINAPI RegQueryMultipleValues(
@@ -284,7 +285,8 @@ private predicate regQuery(FunctionCall source, TRegQueryParameter param) {
       .hasGlobalName([
           "RegQueryMultipleValues", "RegQueryMultipleValuesA", "RegQueryMultipleValuesW"
         ]) and
-  param = TReturnData(source.getArgument(3))
+  paramType = TReturnData() and
+  param = source.getArgument(3)
   or
   // LONG WINAPI RegQueryValueEx(
   //   _In_        HKEY    hKey,
@@ -296,8 +298,9 @@ private predicate regQuery(FunctionCall source, TRegQueryParameter param) {
   // );
   source.getTarget().hasGlobalName(["RegQueryValueEx", "RegQueryValueExA", "RegQueryValueExW"]) and
   (
-    param = TValueName(source.getArgument(1)) or
-    param = TReturnData(source.getArgument(4))
+    paramType = TValueName() and param = source.getArgument(1)
+    or
+    paramType = TReturnData() and param = source.getArgument(4)
   )
   or
   // LONG WINAPI RegGetValue(
@@ -311,9 +314,11 @@ private predicate regQuery(FunctionCall source, TRegQueryParameter param) {
   // );
   source.getTarget().hasGlobalName(["RegGetValue", "RegGetValueA", "RegGetValueW"]) and
   (
-    param = TSubKeyName(source.getArgument(1)) or
-    param = TValueName(source.getArgument(2)) or
-    param = TReturnData(source.getArgument(5))
+    paramType = TSubKeyName() and param = source.getArgument(1)
+    or
+    paramType = TValueName() and param = source.getArgument(2)
+    or
+    paramType = TReturnData() and param = source.getArgument(5)
   )
 }
 
@@ -321,15 +326,15 @@ private predicate regQuery(FunctionCall source, TRegQueryParameter param) {
  * Data read from the Windows registry.
  */
 class RegQuery extends SystemData {
-  RegQuery() { regQuery(this, _) }
+  RegQuery() { regQuery(this, _, _) }
 
-  override DataFlow::Node getAnExpr() { regQuery(this, TReturnData(result.asDefiningArgument())) }
+  override DataFlow::Node getAnExpr() { regQuery(this, TReturnData(), result.asDefiningArgument()) }
 
   override predicate isSensitive() {
     exists(Expr e |
       (
-        regQuery(this, TSubKeyName(e)) or
-        regQuery(this, TValueName(e))
+        regQuery(this, TSubKeyName(), e) or
+        regQuery(this, TValueName(), e)
       ) and
       e.getValue().toLowerCase().regexpMatch(".*(pass|token|key).*")
     )
