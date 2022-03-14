@@ -131,6 +131,8 @@ private module Frameworks {
   private import semmle.code.java.security.XPath
   private import semmle.code.java.security.XsltInjection
   private import semmle.code.java.frameworks.Jdbc
+  private import semmle.code.java.frameworks.Jdbi
+  private import semmle.code.java.frameworks.HikariCP
   private import semmle.code.java.frameworks.SpringJdbc
   private import semmle.code.java.frameworks.MyBatis
   private import semmle.code.java.frameworks.Hibernate
