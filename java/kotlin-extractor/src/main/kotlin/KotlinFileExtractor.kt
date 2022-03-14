@@ -82,7 +82,14 @@ open class KotlinFileExtractor(
     }
 
     private fun isFake(d: IrDeclarationWithVisibility): Boolean {
-        return d.isFakeOverride
+        val visibility = d.visibility
+        if (visibility is DelegatedDescriptorVisibility && visibility.delegate == Visibilities.InvisibleFake) {
+            return true
+        }
+        if (d.isFakeOverride) {
+            return true
+        }
+        return false
     }
 
     fun extractDeclaration(declaration: IrDeclaration) {
