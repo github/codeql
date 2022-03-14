@@ -269,15 +269,15 @@ private Expr getUltimateReceiver(MethodCall call) {
 
 // A call to `find`, `where`, etc. that may return active record model object(s)
 private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation, DataFlow::CallNode {
-  private MethodCall call;
   private ActiveRecordModelClass cls;
-  private Expr recv;
 
   ActiveRecordModelFinderCall() {
-    call = this.asExpr().getExpr() and
-    recv = getUltimateReceiver(call) and
-    resolveConstant(recv) = cls.getAQualifiedName() and
-    call.getMethodName() = finderMethodName()
+    exists(MethodCall call, Expr recv |
+      call = this.asExpr().getExpr() and
+      recv = getUltimateReceiver(call) and
+      resolveConstant(recv) = cls.getAQualifiedName() and
+      call.getMethodName() = finderMethodName()
+    )
   }
 
   final override ActiveRecordModelClass getClass() { result = cls }
@@ -347,10 +347,8 @@ private module Persistence {
 
   /** A call to e.g. `User.create(name: "foo")` */
   private class CreateLikeCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
-    private ActiveRecordModelClass modelCls;
-
     CreateLikeCall() {
-      modelCls = this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass() and
+      exists(this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass()) and
       this.getMethodName() =
         [
           "create", "create!", "create_or_find_by", "create_or_find_by!", "find_or_create_by",
@@ -367,10 +365,8 @@ private module Persistence {
 
   /** A call to e.g. `User.update(1, name: "foo")` */
   private class UpdateLikeClassMethodCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
-    private ActiveRecordModelClass modelCls;
-
     UpdateLikeClassMethodCall() {
-      modelCls = this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass() and
+      exists(this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass()) and
       this.getMethodName() = ["update", "update!", "upsert"]
     }
 
@@ -397,10 +393,9 @@ private module Persistence {
   /** A call to e.g. `User.insert_all([{name: "foo"}, {name: "bar"}])` */
   private class InsertAllLikeCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
     private ExprNodes::ArrayLiteralCfgNode arr;
-    private ActiveRecordModelClass modelCls;
 
     InsertAllLikeCall() {
-      modelCls = this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass() and
+      exists(this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass()) and
       this.getMethodName() = ["insert_all", "insert_all!", "upsert_all"] and
       arr = this.getArgument(0).asExpr()
     }

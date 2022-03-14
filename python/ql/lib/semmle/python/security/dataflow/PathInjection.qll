@@ -47,7 +47,7 @@ module PathInjection {
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate isBarrier(DataFlow::Node node, DataFlow::FlowState state) {
+    override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
       // Block `NotNormalized` paths here, since they change state to `NormalizedUnchecked`
       node instanceof Path::PathNormalization and
       state instanceof NotNormalized
@@ -60,7 +60,7 @@ module PathInjection {
       guard instanceof SanitizerGuard
     }
 
-    override predicate isAdditionalFlowStep(
+    override predicate isAdditionalTaintStep(
       DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
       DataFlow::FlowState stateTo
     ) {

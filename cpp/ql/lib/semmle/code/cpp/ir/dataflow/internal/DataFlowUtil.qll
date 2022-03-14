@@ -431,7 +431,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   SsaPhiNode() { this = TSsaPhiNode(phi) }
 
-  /* Get the phi node associated with this node. */
+  /** Gets the phi node associated with this node. */
   Ssa::PhiNode getPhiNode() { result = phi }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }

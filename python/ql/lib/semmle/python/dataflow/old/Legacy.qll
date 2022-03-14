@@ -2,7 +2,7 @@ import semmle.python.dataflow.TaintTracking
 private import semmle.python.objects.ObjectInternal
 import semmle.python.dataflow.Implementation
 
-/* Backwards compatibility with config-less taint-tracking */
+/** A configuration that provides backwards compatibility with config-less taint-tracking */
 private class LegacyConfiguration extends TaintTracking::Configuration {
   LegacyConfiguration() {
     /* A name that won't be accidentally chosen by users */

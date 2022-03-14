@@ -23,7 +23,7 @@ private module Tornado {
    *
    * See https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPHeaders.
    */
-  module HTTPHeaders {
+  module HttpHeaders {
     /**
      * A source of instances of `tornado.httputil.HTTPHeaders`, extend this class to model new instances.
      *
@@ -35,7 +35,7 @@ private module Tornado {
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
-    /** Gets a reference to an instance of `tornado.httputil.HTTPHeaders`. */
+    /** Gets a reference to an instance of `tornado.httputil.HttpHeaders`. */
     private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
@@ -43,7 +43,7 @@ private module Tornado {
       exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
     }
 
-    /** Gets a reference to an instance of `tornado.httputil.HTTPHeaders`. */
+    /** Gets a reference to an instance of `tornado.httputil.HttpHeaders`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     /**
@@ -61,6 +61,9 @@ private module Tornado {
       override string getAsyncMethodName() { none() }
     }
   }
+
+  /** DEPRECATED: Alias for HttpHeaders */
+  deprecated module HTTPHeaders = HttpHeaders;
 
   // ---------------------------------------------------------------------------
   // tornado
@@ -323,9 +326,9 @@ private module Tornado {
           override string getAsyncMethodName() { none() }
         }
 
-        /** An `HTTPHeaders` instance that originates from a Tornado request. */
-        private class TornadoRequestHTTPHeadersInstances extends HTTPHeaders::InstanceSource {
-          TornadoRequestHTTPHeadersInstances() {
+        /** An `HttpHeaders` instance that originates from a Tornado request. */
+        private class TornadoRequestHttpHeadersInstances extends HttpHeaders::InstanceSource {
+          TornadoRequestHttpHeadersInstances() {
             this.(DataFlow::AttrRead).accesses(instance(), "headers")
           }
         }

@@ -52,7 +52,7 @@ private import NodeModuleResolutionImpl as NodeModule
 private DataFlow::Node getAValueExportedByPackage() {
   // The base case, an export from a named `package.json` file.
   result =
-    getAnExportFromModule(any(PackageJSON pack | exists(pack.getPackageName())).getMainModule())
+    getAnExportFromModule(any(PackageJson pack | exists(pack.getPackageName())).getMainModule())
   or
   // module.exports.bar.baz = result;
   exists(DataFlow::PropWrite write |
@@ -133,7 +133,7 @@ private DataFlow::Node getAValueExportedByPackage() {
     DataFlow::globalVarRef("define").getACall().getArgument(1) = prev.getALocalUse() and
     func.getFile() =
       min(int j, File f |
-        f = NodeModule::resolveMainModule(any(PackageJSON pack | exists(pack.getPackageName())), j)
+        f = NodeModule::resolveMainModule(any(PackageJson pack | exists(pack.getPackageName())), j)
       |
         f order by j
       )

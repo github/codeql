@@ -12,7 +12,7 @@ import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.InstanceAccess
 import ModelGeneratorUtils
 
-string captureFlow(TargetAPI api) {
+string captureFlow(TargetApi api) {
   result = captureQualifierFlow(api) or
   result = captureThroughFlow(api)
 }
@@ -29,7 +29,7 @@ string captureFlow(TargetAPI api) {
  * }
  * ```
  */
-string captureQualifierFlow(TargetAPI api) {
+string captureQualifierFlow(TargetApi api) {
   exists(ReturnStmt rtn |
     rtn.getEnclosingCallable() = api and
     rtn.getResult().(ThisAccess).isOwnInstanceAccess()
@@ -50,7 +50,7 @@ class ThroughFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
     source instanceof DataFlow::ParameterNode and
-    source.getEnclosingCallable() instanceof TargetAPI and
+    source.getEnclosingCallable() instanceof TargetApi and
     state instanceof TaintRead
   }
 
@@ -61,7 +61,7 @@ class ThroughFlowConfig extends TaintTracking::Configuration {
     (state instanceof TaintRead or state instanceof TaintStore)
   }
 
-  override predicate isAdditionalFlowStep(
+  override predicate isAdditionalTaintStep(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
     DataFlow::FlowState state2
   ) {
@@ -145,7 +145,7 @@ class ThroughFlowConfig extends TaintTracking::Configuration {
  * Captured Model:
  * `p;Foo;true;addToList;;Argument[0];Argument[1];taint`
  */
-string captureThroughFlow(TargetAPI api) {
+string captureThroughFlow(TargetApi api) {
   exists(
     ThroughFlowConfig config, DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, string input,
     string output
@@ -159,6 +159,6 @@ string captureThroughFlow(TargetAPI api) {
   )
 }
 
-from TargetAPI api, string flow
+from TargetApi api, string flow
 where flow = captureFlow(api)
 select flow order by flow

@@ -35,7 +35,7 @@ where
   // the variable should be accessed somewhere; otherwise it will be flagged by UnusedVariable
   exists(v.getAnAccess()) and
   // don't flag ambient variable definitions
-  not dead.(ASTNode).isAmbient() and
+  not dead.(AstNode).isAmbient() and
   // don't flag variables with ambient uses
   not exists(LexicalAccess access |
     access.getALexicalName() = v.getADeclaration().getALexicalName() and
@@ -55,7 +55,7 @@ where
   // don't flag default inits that are later overwritten
   not (isDefaultInit(dead.getSource().(Expr).getUnderlyingValue()) and dead.isOverwritten(v)) and
   // don't flag assignments in externs
-  not dead.(ASTNode).inExternsFile() and
+  not dead.(AstNode).inExternsFile() and
   // don't flag exported variables
   not any(ES2015Module m).exportsAs(v, _) and
   // don't flag 'exports' assignments in closure modules
@@ -70,5 +70,5 @@ where
     else msg = "The value assigned to " + v.getName() + " here is unused."
   ) and
   // ignore Angular templates
-  not dead.(ASTNode).getTopLevel() instanceof Angular2::TemplateTopLevel
+  not dead.(AstNode).getTopLevel() instanceof Angular2::TemplateTopLevel
 select dead, msg

@@ -1379,7 +1379,7 @@ private module Cached {
    * true-successors and false-successors.
    */
   cached
-  predicate qlCFGSuccessor(Node n1, Node n2) {
+  predicate qlCfgSuccessor(Node n1, Node n2) {
     exists(Node memberNode, Pos memberPos |
       subEdgeIncludingDestructors(any(Pos at | at.isAt()), n1, memberNode, memberPos) and
       normalGroupMember(memberNode, memberPos, n2)
@@ -1388,23 +1388,32 @@ private module Cached {
     conditionalSuccessor(n1, _, n2)
   }
 
+  /** DEPRECATED: Alias for qlCfgSuccessor */
+  deprecated predicate qlCFGSuccessor = qlCfgSuccessor/2;
+
   /**
    * Holds if `n2` is a control-flow node such that the control-flow
    * edge `(n1, n2)` may be taken when `n1` is an expression that is true.
    */
   cached
-  predicate qlCFGTrueSuccessor(Node n1, Node n2) {
+  predicate qlCfgTrueSuccessor(Node n1, Node n2) {
     conditionalSuccessor(n1, true, n2) and
     not conditionalSuccessor(n1, false, n2)
   }
+
+  /** DEPRECATED: Alias for qlCfgTrueSuccessor */
+  deprecated predicate qlCFGTrueSuccessor = qlCfgTrueSuccessor/2;
 
   /**
    * Holds if `n2` is a control-flow node such that the control-flow
    * edge `(n1, n2)` may be taken when `n1` is an expression that is false.
    */
   cached
-  predicate qlCFGFalseSuccessor(Node n1, Node n2) {
+  predicate qlCfgFalseSuccessor(Node n1, Node n2) {
     conditionalSuccessor(n1, false, n2) and
     not conditionalSuccessor(n1, true, n2)
   }
+
+  /** DEPRECATED: Alias for qlCfgFalseSuccessor */
+  deprecated predicate qlCFGFalseSuccessor = qlCfgFalseSuccessor/2;
 }

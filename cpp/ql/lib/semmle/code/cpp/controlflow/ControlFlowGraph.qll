@@ -65,7 +65,7 @@ class ControlFlowNode extends Locatable, ControlFlowNodeBase {
    * taken when this expression is true.
    */
   ControlFlowNode getATrueSuccessor() {
-    qlCFGTrueSuccessor(this, result) and
+    qlCfgTrueSuccessor(this, result) and
     result = this.getASuccessor()
   }
 
@@ -74,7 +74,7 @@ class ControlFlowNode extends Locatable, ControlFlowNodeBase {
    * taken when this expression is false.
    */
   ControlFlowNode getAFalseSuccessor() {
-    qlCFGFalseSuccessor(this, result) and
+    qlCfgFalseSuccessor(this, result) and
     result = this.getASuccessor()
   }
 
@@ -121,7 +121,7 @@ abstract class AdditionalControlFlowEdge extends ControlFlowNodeBase {
  * `AdditionalControlFlowEdge`. Use this relation instead of `qlCFGSuccessor`.
  */
 predicate successors_extended(ControlFlowNodeBase source, ControlFlowNodeBase target) {
-  qlCFGSuccessor(source, target)
+  qlCfgSuccessor(source, target)
   or
   source.(AdditionalControlFlowEdge).getAnEdgeTarget() = target
 }

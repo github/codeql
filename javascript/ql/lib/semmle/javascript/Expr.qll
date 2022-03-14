@@ -2744,7 +2744,7 @@ class Decorator extends @decorator, Expr {
  * }
  * ```
  */
-class Decoratable extends ASTNode {
+class Decoratable extends AstNode {
   Decoratable() {
     this instanceof ClassDefinition or
     this instanceof Property or

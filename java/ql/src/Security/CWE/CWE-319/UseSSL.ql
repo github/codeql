@@ -14,8 +14,8 @@ import java
 import semmle.code.java.dataflow.TypeFlow
 import semmle.code.java.security.Encryption
 
-class URLConnection extends RefType {
-  URLConnection() {
+class UrlConnection extends RefType {
+  UrlConnection() {
     this.getAnAncestor().hasQualifiedName("java.net", "URLConnection") and
     not this.hasName("JarURLConnection")
   }
@@ -29,7 +29,7 @@ from MethodAccess m, Class c, string type
 where
   m.getQualifier().getType() = c and
   (
-    c instanceof URLConnection and type = "connection"
+    c instanceof UrlConnection and type = "connection"
     or
     c instanceof Socket and type = "socket"
   ) and

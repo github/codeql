@@ -182,8 +182,8 @@ module XML {
   /**
    * An invocation of `DOMParser.parseFromString`.
    */
-  private class DOMParserXmlParserInvocation extends XML::ParserInvocation {
-    DOMParserXmlParserInvocation() {
+  private class DomParserXmlParserInvocation extends XML::ParserInvocation {
+    DomParserXmlParserInvocation() {
       this =
         DataFlow::globalVarRef("DOMParser")
             .getAnInstantiation()
@@ -341,7 +341,7 @@ module XML {
     }
   }
 
-  private class XMLParserTaintStep extends js::TaintTracking::SharedTaintStep {
+  private class XmlParserTaintStep extends js::TaintTracking::SharedTaintStep {
     override predicate deserializeStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(XML::ParserInvocation parser |
         pred.asExpr() = parser.getSourceArgument() and

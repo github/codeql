@@ -302,13 +302,13 @@ module SourceNode {
    */
   class DefaultRange extends Range {
     DefaultRange() {
-      exists(ASTNode astNode | this = DataFlow::valueNode(astNode) |
+      exists(AstNode astNode | this = DataFlow::valueNode(astNode) |
         astNode instanceof PropAccess or
         astNode instanceof Function or
         astNode instanceof ClassDefinition or
         astNode instanceof ObjectExpr or
         astNode instanceof ArrayExpr or
-        astNode instanceof JSXNode or
+        astNode instanceof JsxNode or
         astNode instanceof GlobalVarAccess or
         astNode instanceof ExternalModuleReference or
         astNode instanceof RegExpLiteral or

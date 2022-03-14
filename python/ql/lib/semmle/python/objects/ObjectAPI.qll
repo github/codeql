@@ -18,7 +18,7 @@ private import semmle.python.types.Builtins
 
 class ObjectSource = Object;
 
-/* Aliases for scopes */
+/** An alias for Function used for scopes */
 class FunctionScope = Function;
 
 class ClassScope = Class;

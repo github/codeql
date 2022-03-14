@@ -11,7 +11,7 @@ module NextJS {
   /**
    * Gets a `package.json` that depends on the `Next.js` library.
    */
-  PackageJSON getANextPackage() { result.getDependencies().getADependency("next", _) }
+  PackageJson getANextPackage() { result.getDependencies().getADependency("next", _) }
 
   /**
    * Gets a "pages" folder in a `Next.js` application.
@@ -195,9 +195,9 @@ module NextJS {
    * The response (res) includes a set of Express.js-like methods,
    * and we therefore model the routehandler as an Express.js routehandler.
    */
-  class NextAPIRouteHandler extends DataFlow::FunctionNode, Express::RouteHandler,
+  class NextApiRouteHandler extends DataFlow::FunctionNode, Express::RouteHandler,
     HTTP::Servers::StandardRouteHandler {
-    NextAPIRouteHandler() {
+    NextApiRouteHandler() {
       exists(Module mod | mod.getFile().getParentContainer() = apiFolder() |
         this = mod.getAnExportedValue("default").getAFunctionValue()
       )
@@ -209,6 +209,9 @@ module NextJS {
       kind = "response" and result = getFunction().getParameter(1)
     }
   }
+
+  /** DEPRECATED: Alias for NextApiRouteHandler */
+  deprecated class NextAPIRouteHandler = NextApiRouteHandler;
 
   /**
    * Gets a reference to a [Next.js router](https://nextjs.org/docs/api-reference/next/router).

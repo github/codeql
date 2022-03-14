@@ -42,8 +42,8 @@ class IRFlowTest extends InlineExpectationsTest {
   }
 }
 
-class ASTFlowTest extends InlineExpectationsTest {
-  ASTFlowTest() { this = "ASTFlowTest" }
+class AstFlowTest extends InlineExpectationsTest {
+  AstFlowTest() { this = "ASTFlowTest" }
 
   override string getARelevantTag() { result = "ast" }
 
@@ -69,3 +69,6 @@ class ASTFlowTest extends InlineExpectationsTest {
     )
   }
 }
+
+/** DEPRECATED: Alias for AstFlowTest */
+deprecated class ASTFlowTest = AstFlowTest;

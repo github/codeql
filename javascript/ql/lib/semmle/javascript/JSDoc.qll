@@ -55,7 +55,7 @@ class JSDoc extends @jsdoc, Locatable {
  * }
  * </pre>
  */
-abstract class Documentable extends ASTNode {
+abstract class Documentable extends AstNode {
   /** Gets the JSDoc comment for this element, if any. */
   cached
   JSDoc getDocumentation() {
