@@ -87,11 +87,29 @@ abstract class Configuration extends string {
   /** Holds if data flow into `node` is prohibited. */
   predicate isBarrierIn(Node node) { none() }
 
+  /**
+   * Holds if data flow into `node` is prohibited when the flow state is
+   * `state`
+   */
+  predicate isBarrierIn(Node node, FlowState state) { none() }
+
   /** Holds if data flow out of `node` is prohibited. */
   predicate isBarrierOut(Node node) { none() }
 
+  /**
+   * Holds if data flow out of `node` is prohibited when the flow state is
+   * `state`
+   */
+  predicate isBarrierOut(Node node, FlowState state) { none() }
+
   /** Holds if data flow through nodes guarded by `guard` is prohibited. */
   predicate isBarrierGuard(BarrierGuard guard) { none() }
+
+  /**
+   * Holds if data flow through nodes guarded by `guard` is prohibited when
+   * the flow state is `state`
+   */
+  predicate isBarrierGuard(BarrierGuard guard, FlowState state) { none() }
 
   /**
    * Holds if the additional flow step from `node1` to `node2` must be taken
@@ -305,7 +323,7 @@ private class RetNodeEx extends NodeEx {
   ReturnKindExt getKind() { result = this.asNode().(ReturnNodeExt).getKind() }
 }
 
-private predicate inBarrier(NodeEx node, Configuration config) {
+private predicate fullInBarrier(NodeEx node, Configuration config) {
   exists(Node n |
     node.asNode() = n and
     config.isBarrierIn(n)
@@ -314,12 +332,30 @@ private predicate inBarrier(NodeEx node, Configuration config) {
   )
 }
 
-private predicate outBarrier(NodeEx node, Configuration config) {
+private predicate stateInBarrier(NodeEx node, FlowState state, Configuration config) {
+  exists(Node n |
+    node.asNode() = n and
+    config.isBarrierIn(n, state)
+  |
+    config.isSource(n, state)
+  )
+}
+
+private predicate fullOutBarrier(NodeEx node, Configuration config) {
   exists(Node n |
     node.asNode() = n and
     config.isBarrierOut(n)
   |
     config.isSink(n) or config.isSink(n, _)
+  )
+}
+
+private predicate stateOutBarrier(NodeEx node, FlowState state, Configuration config) {
+  exists(Node n |
+    node.asNode() = n and
+    config.isBarrierOut(n, state)
+  |
+    config.isSink(n, state)
   )
 }
 
@@ -348,6 +384,17 @@ private predicate stateBarrier(NodeEx node, FlowState state, Configuration confi
   exists(Node n |
     node.asNode() = n and
     config.isBarrier(n, state)
+    or
+    config.isBarrierIn(n, state) and
+    not config.isSource(n, state)
+    or
+    config.isBarrierOut(n, state) and
+    not config.isSink(n, state)
+    or
+    exists(BarrierGuard g |
+      config.isBarrierGuard(g, state) and
+      n = g.getAGuardedNode()
+    )
   )
 }
 
@@ -376,8 +423,8 @@ private predicate sinkNode(NodeEx node, FlowState state, Configuration config) {
 /** Provides the relevant barriers for a step from `node1` to `node2`. */
 pragma[inline]
 private predicate stepFilter(NodeEx node1, NodeEx node2, Configuration config) {
-  not outBarrier(node1, config) and
-  not inBarrier(node2, config) and
+  not fullOutBarrier(node1, config) and
+  not fullInBarrier(node2, config) and
   not fullBarrier(node1, config) and
   not fullBarrier(node2, config)
 }
@@ -430,6 +477,8 @@ private predicate additionalLocalStateStep(
     config.isAdditionalFlowStep(n1, s1, n2, s2) and
     getNodeEnclosingCallable(n1) = getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config) and
+    not stateOutBarrier(node1, s1, config) and
+    not stateInBarrier(node2, s2, config) and
     not stateBarrier(node1, s1, config) and
     not stateBarrier(node2, s2, config)
   )
@@ -471,6 +520,8 @@ private predicate additionalJumpStateStep(
     config.isAdditionalFlowStep(n1, s1, n2, s2) and
     getNodeEnclosingCallable(n1) != getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config) and
+    not stateOutBarrier(node1, s1, config) and
+    not stateInBarrier(node2, s2, config) and
     not stateBarrier(node1, s1, config) and
     not stateBarrier(node2, s2, config) and
     not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
@@ -870,8 +921,8 @@ private module Stage1 {
   private predicate throughFlowNodeCand(NodeEx node, Configuration config) {
     revFlow(node, true, config) and
     fwdFlow(node, true, config) and
-    not inBarrier(node, config) and
-    not outBarrier(node, config)
+    not fullInBarrier(node, config) and
+    not fullOutBarrier(node, config)
   }
 
   /** Holds if flow may return from `callable`. */
@@ -966,8 +1017,8 @@ private predicate flowOutOfCallNodeCand1(
 ) {
   viableReturnPosOutNodeCand1(call, ret.getReturnPosition(), out, config) and
   Stage1::revFlow(ret, config) and
-  not outBarrier(ret, config) and
-  not inBarrier(out, config)
+  not fullOutBarrier(ret, config) and
+  not fullInBarrier(out, config)
 }
 
 pragma[nomagic]
@@ -988,8 +1039,8 @@ private predicate flowIntoCallNodeCand1(
 ) {
   viableParamArgNodeCand1(call, p, arg, config) and
   Stage1::revFlow(p, config) and
-  not outBarrier(arg, config) and
-  not inBarrier(p, config)
+  not fullOutBarrier(arg, config) and
+  not fullInBarrier(p, config)
 }
 
 /**
