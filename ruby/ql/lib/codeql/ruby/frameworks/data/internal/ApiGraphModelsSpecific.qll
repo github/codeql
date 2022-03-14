@@ -116,8 +116,7 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
  */
 bindingset[token]
 API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token) {
-  token.getName() = "Instance" and
-  result = node.getInstance()
+  none()
 }
 
 /**
