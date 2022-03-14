@@ -19,6 +19,7 @@ private import ApiGraphModels
 
 class Unit = js::Unit;
 
+// Re-export libraries needed by ApiGraphModels.qll
 module API = js::API;
 
 import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
