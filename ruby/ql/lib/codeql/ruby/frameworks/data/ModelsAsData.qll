@@ -13,7 +13,9 @@
  *   - the string `any`, referring to any expression, or
  *   - the name of a type definition from `ModelInput::TypeModelCsv`
  *
- * The `path` part is a dot
+ * The `path` part is a dot-separated access path with the following language-specific tokens:
+ *  - `Method[x]`: a call to a method named `x`.
+ *  - `Instance`: an instance of a class, currently an alias for `Method[new].ReturnValue`.
  */
 
 private import ruby
