@@ -32,11 +32,11 @@ where
   (
     shouldBeLowerCase(node, name, kind) and
     name.regexpMatch("[^a-z].*") and
-    message = "lowercase"
+    message = "a lowercase"
     or
     shouldBeUpperCase(node, name, kind) and
     name.regexpMatch("[^A-Z].*") and
-    message = "uppercase"
+    message = "an uppercase"
   ) and
   not node.hasAnnotation("deprecated")
-select node, prettyKind(kind) + " should start with an " + message + " letter."
+select node, prettyKind(kind) + " should start with " + message + " letter."
