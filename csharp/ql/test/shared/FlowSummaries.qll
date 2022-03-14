@@ -27,7 +27,7 @@ abstract class IncludeSummarizedCallable extends RelevantSummarizedCallable {
     )
   }
 
-  /** Gets a string representing, whether the summary should apply for all overrides of this. */
+  /** Gets a string representing whether the summary should apply for all overrides of this. */
   private string getCallableOverride() {
     if this.isBaseCallableOrPrototype() then result = "true" else result = "false"
   }
