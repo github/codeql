@@ -14,5 +14,6 @@ public static void main(String[] args) {
         String password = "Pass@0rd";
 
         // GOOD: user password is never written to debug log
+        logger.debug("User password changed")
     }
 }
