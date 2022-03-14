@@ -37,7 +37,7 @@ private class DefaultRequestForgeryAdditionalTaintStep extends RequestForgeryAdd
 private class TypePropertiesRequestForgeryAdditionalTaintStep extends RequestForgeryAdditionalTaintStep {
   override predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ) {
     exists(MethodAccess ma |
-      // Properties props = new Properties();  
+      // Properties props = new Properties();
       // props.setProperty("jdbcUrl", tainted);
       // Propagate tainted value to the qualifier `props`
       ma.getMethod() instanceof PropertiesSetPropertyMethod and
