@@ -915,3 +915,74 @@ reflection.kt:
 #   90|                 1: [TypeAccess] Inner<String>
 #   90|                   0: [TypeAccess] String
 #   90|               0: [ThisAccess] this
+#  105|   8: [Class] Base1
+#  105|     1: [Constructor] Base1
+#-----|       4: (Parameters)
+#  105|         0: [Parameter] prop1
+#  105|       5: [BlockStmt] { ... }
+#  105|         0: [SuperConstructorInvocationStmt] super(...)
+#  105|         1: [BlockStmt] { ... }
+#  105|           0: [ExprStmt] <Expr>;
+#  105|             0: [KtInitializerAssignExpr] ...=...
+#  105|               0: [VarAccess] prop1
+#  105|     2: [Method] getProp1
+#  105|       5: [BlockStmt] { ... }
+#  105|         0: [ReturnStmt] return ...
+#  105|           0: [VarAccess] this.prop1
+#  105|             -1: [ThisAccess] this
+#  105|     2: [Method] setProp1
+#-----|       4: (Parameters)
+#  105|         0: [Parameter] <set-?>
+#  105|       5: [BlockStmt] { ... }
+#  105|         0: [ExprStmt] <Expr>;
+#  105|           0: [AssignExpr] ...=...
+#  105|             0: [VarAccess] this.prop1
+#  105|               -1: [ThisAccess] this
+#  105|             1: [VarAccess] <set-?>
+#  105|     2: [FieldDeclaration] int prop1;
+#  105|       -1: [TypeAccess] int
+#  105|       0: [VarAccess] prop1
+#  107|   9: [Class] Derived1
+#  107|     1: [Constructor] Derived1
+#-----|       4: (Parameters)
+#  107|         0: [Parameter] prop1
+#  107|       5: [BlockStmt] { ... }
+#  107|         0: [SuperConstructorInvocationStmt] super(...)
+#  107|           0: [VarAccess] prop1
+#  108|     2: [Method] fn
+#  108|       5: [BlockStmt] { ... }
+#  109|         0: [ExprStmt] <Expr>;
+#  109|           0: [MethodAccess] println(...)
+#  109|             -1: [TypeAccess] ConsoleKt
+#  109|             0: [PropertyRefExpr] ...::...
+#  109|               -4: [AnonymousClass] new KMutableProperty0<Integer>(...) { ... }
+#  109|                 1: [Constructor] 
+#-----|                   4: (Parameters)
+#  109|                     0: [Parameter] <dispatchReceiver>
+#  109|                   5: [BlockStmt] { ... }
+#  109|                     0: [SuperConstructorInvocationStmt] super(...)
+#  109|                     1: [ExprStmt] <Expr>;
+#  109|                       0: [AssignExpr] ...=...
+#  109|                         0: [VarAccess] this.<dispatchReceiver>
+#  109|                           -1: [ThisAccess] this
+#  109|                         1: [VarAccess] <dispatchReceiver>
+#  109|                 1: [FieldDeclaration] Derived1 <dispatchReceiver>;
+#  109|                   -1: [TypeAccess] Derived1
+#  109|                 1: [Method] get
+#  109|                   5: [BlockStmt] { ... }
+#  109|                     0: [ReturnStmt] return ...
+#  109|                       0: [MethodAccess] getProp1(...)
+#  109|                         -1: [VarAccess] this.<dispatchReceiver>
+#  109|                           -1: [ThisAccess] this
+#  109|                 1: [Method] set
+#-----|                   4: (Parameters)
+#  109|                     0: [Parameter] a0
+#  109|                   5: [BlockStmt] { ... }
+#  109|                     0: [ReturnStmt] return ...
+#  109|                       0: [MethodAccess] setProp1(...)
+#  109|                         -1: [VarAccess] this.<dispatchReceiver>
+#  109|                           -1: [ThisAccess] this
+#  109|                         0: [VarAccess] a0
+#  109|               -3: [TypeAccess] KMutableProperty0<Integer>
+#  109|                 0: [TypeAccess] Integer
+#  109|               0: [ThisAccess] this

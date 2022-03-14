@@ -2771,7 +2771,7 @@ open class KotlinFileExtractor(
 
             writeExpressionMetadataToTrapFile(callId, labels.methodId, retId)
 
-            val callableId = useFunction<DbCallable>(target.owner, classTypeArgsIncludingOuterClasses)
+            val callableId = useFunction<DbCallable>(target.owner.realOverrideTarget, classTypeArgsIncludingOuterClasses)
             @Suppress("UNCHECKED_CAST")
             tw.writeCallableBinding(callId as Label<out DbCaller>, callableId)
 
@@ -2897,7 +2897,7 @@ open class KotlinFileExtractor(
             if (getter != null) {
                 val getterParameterTypes = parameterTypes.dropLast(1)
                 val getLabels = addFunctionManual(tw.getFreshIdLabel(), "get", getterParameterTypes, parameterTypes.last(), classId, locId)
-                val getterCallableId = useFunction<DbCallable>(getter.owner, classTypeArguments)
+                val getterCallableId = useFunction<DbCallable>(getter.owner.realOverrideTarget, classTypeArguments)
 
                 helper.extractCallToReflectionTarget(
                     getLabels,
@@ -2929,7 +2929,7 @@ open class KotlinFileExtractor(
             if (setter != null) {
                 val setLabels = addFunctionManual(tw.getFreshIdLabel(), "set", parameterTypes, pluginContext.irBuiltIns.unitType, classId, locId)
 
-                val setterCallableId = useFunction<DbCallable>(setter.owner, classTypeArguments)
+                val setterCallableId = useFunction<DbCallable>(setter.owner.realOverrideTarget, classTypeArguments)
 
                 helper.extractCallToReflectionTarget(
                     setLabels,
@@ -3043,7 +3043,7 @@ open class KotlinFileExtractor(
                 dispatchReceiverIdx = -1
             }
 
-            val targetCallableId = useFunction<DbCallable>(target.owner, classTypeArguments)
+            val targetCallableId = useFunction<DbCallable>(target.owner.realOverrideTarget, classTypeArguments)
             val locId = tw.getLocation(functionReferenceExpr)
 
             val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")

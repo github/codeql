@@ -101,3 +101,11 @@ fun test() {
 
 fun <T, R> fn11(l: T, transform: (T) -> R) { }
 fun <T1, R> fn12(l: T1, l2: (T1) -> R) { }
+
+open class Base1(var prop1: Int) {}
+
+class Derived1(prop1: Int) : Base1(prop1) {
+    fun fn() {
+        println(this::prop1)
+    }
+}
