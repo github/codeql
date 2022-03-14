@@ -16,7 +16,7 @@ class CredentialExpr extends Expr {
   }
 }
 
-/* A data-flow configuration for identifying potentially-sensitive data flowing to a log output. */
+/** A data-flow configuration for identifying potentially-sensitive data flowing to a log output. */
 class SensitiveLoggerConfiguration extends TaintTracking::Configuration {
   SensitiveLoggerConfiguration() { this = "SensitiveLoggerConfiguration" }
 
