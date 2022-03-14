@@ -610,8 +610,8 @@ module PrivateDjango {
 
         /** Provides models for the `django.db.models.expressions` module. */
         module expressions {
-          /** Provides models for the `django.db.models.expressions.RawSQL` class. */
-          module RawSQL {
+          /** Provides models for the `django.db.models.expressions.RawSql` class. */
+          module RawSql {
             /**
              * Gets an reference to the `django.db.models.expressions.RawSQL` class.
              */
@@ -644,6 +644,9 @@ module PrivateDjango {
               instance(DataFlow::TypeTracker::end(), sql).flowsTo(result)
             }
           }
+
+          /** DEPRECATED: Alias for RawSql */
+          deprecated module RawSQL = RawSql;
         }
       }
     }
@@ -660,7 +663,7 @@ module PrivateDjango {
 
       ObjectsAnnotate() {
         this = django::db::models::querySetReturningMethod("annotate").getACall() and
-        django::db::models::expressions::RawSQL::instance(sql) in [
+        django::db::models::expressions::RawSql::instance(sql) in [
             this.getArg(_), this.getArgByName(_)
           ]
       }
@@ -678,7 +681,7 @@ module PrivateDjango {
 
       ObjectsAlias() {
         this = django::db::models::querySetReturningMethod("alias").getACall() and
-        django::db::models::expressions::RawSQL::instance(sql) in [
+        django::db::models::expressions::RawSql::instance(sql) in [
             this.getArg(_), this.getArgByName(_)
           ]
       }

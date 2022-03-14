@@ -7,7 +7,7 @@ import javascript
 module ReactNative {
   /** A `WebView` JSX element. */
   class WebViewElement extends DataFlow::ValueNode, DataFlow::SourceNode {
-    override JSXElement astNode;
+    override JsxElement astNode;
 
     WebViewElement() {
       DataFlow::moduleMember("react-native", "WebView").flowsToExpr(astNode.getNameExpr())

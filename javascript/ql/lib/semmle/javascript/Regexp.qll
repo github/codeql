@@ -1291,8 +1291,8 @@ module RegExp {
   /**
    * A meta character used by HTML.
    */
-  private class HTMLMetaCharacter extends MetaCharacter {
-    HTMLMetaCharacter() { this = ["<", "'", "\""] }
+  private class HtmlMetaCharacter extends MetaCharacter {
+    HtmlMetaCharacter() { this = ["<", "'", "\""] }
   }
 
   /**

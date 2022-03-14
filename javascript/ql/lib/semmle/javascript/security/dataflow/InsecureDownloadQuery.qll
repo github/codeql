@@ -10,12 +10,12 @@ import javascript
 import InsecureDownloadCustomizations::InsecureDownload
 
 // Materialize flow labels
-private class ConcreteSensitiveInsecureURL extends Label::SensitiveInsecureURL {
-  ConcreteSensitiveInsecureURL() { this = this }
+private class ConcreteSensitiveInsecureUrl extends Label::SensitiveInsecureUrl {
+  ConcreteSensitiveInsecureUrl() { this = this }
 }
 
-private class ConcreteInsecureURL extends Label::InsecureURL {
-  ConcreteInsecureURL() { this = this }
+private class ConcreteInsecureUrl extends Label::InsecureUrl {
+  ConcreteInsecureUrl() { this = this }
 }
 
 /**

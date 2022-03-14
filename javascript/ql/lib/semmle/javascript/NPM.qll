@@ -6,8 +6,8 @@ import javascript
 private import NodeModuleResolutionImpl
 
 /** A `package.json` configuration object. */
-class PackageJSON extends JSONObject {
-  PackageJSON() {
+class PackageJson extends JsonObject {
+  PackageJson() {
     this.getJsonFile().getBaseName() = "package.json" and
     this.isTopLevel()
   }
@@ -22,7 +22,7 @@ class PackageJSON extends JSONObject {
   string getDescription() { result = this.getPropStringValue("description") }
 
   /** Gets the array of keywords for this package. */
-  JSONArray getKeywords() { result = this.getPropValue("keywords") }
+  JsonArray getKeywords() { result = this.getPropValue("keywords") }
 
   /** Gets a keyword for this package. */
   string getAKeyword() { result = this.getKeywords().getElementStringValue(_) }
@@ -45,7 +45,7 @@ class PackageJSON extends JSONObject {
   }
 
   /** Gets the array of files for this package. */
-  JSONArray getFiles() { result = this.getPropValue("files") }
+  JsonArray getFiles() { result = this.getPropValue("files") }
 
   /** Gets a file for this package. */
   string getAFile() { result = this.getFiles().getElementStringValue(_) }
@@ -67,16 +67,16 @@ class PackageJSON extends JSONObject {
   }
 
   /** Gets information about the directories of this package. */
-  JSONObject getDirectories() { result = this.getPropValue("directories") }
+  JsonObject getDirectories() { result = this.getPropValue("directories") }
 
   /** Gets repository information for this package. */
   RepositoryInfo getRepository() { result = this.getPropValue("repository") }
 
   /** Gets information about the scripts of this package. */
-  JSONObject getScripts() { result = this.getPropValue("scripts") }
+  JsonObject getScripts() { result = this.getPropValue("scripts") }
 
   /** Gets configuration information for this package. */
-  JSONObject getConfig() { result = this.getPropValue("config") }
+  JsonObject getConfig() { result = this.getPropValue("config") }
 
   /** Gets the dependencies of this package. */
   PackageDependencies getDependencies() { result = this.getPropValue("dependencies") }
@@ -131,10 +131,10 @@ class PackageJSON extends JSONObject {
   PackageDependencies getEngines() { result = this.getPropValue("engines") }
 
   /** Holds if this package has strict engine requirements. */
-  predicate isEngineStrict() { this.getPropValue("engineStrict").(JSONBoolean).getValue() = "true" }
+  predicate isEngineStrict() { this.getPropValue("engineStrict").(JsonBoolean).getValue() = "true" }
 
   /** Gets information about operating systems supported by this package. */
-  JSONArray getOSs() { result = this.getPropValue("os") }
+  JsonArray getOSs() { result = this.getPropValue("os") }
 
   /** Gets an operating system supported by this package. */
   string getWhitelistedOS() {
@@ -150,7 +150,7 @@ class PackageJSON extends JSONObject {
   }
 
   /** Gets information about platforms supported by this package. */
-  JSONArray getCPUs() { result = this.getPropValue("cpu") }
+  JsonArray getCPUs() { result = this.getPropValue("cpu") }
 
   /** Gets a platform supported by this package. */
   string getWhitelistedCPU() {
@@ -166,13 +166,13 @@ class PackageJSON extends JSONObject {
   }
 
   /** Holds if this package prefers to be installed globally. */
-  predicate isPreferGlobal() { this.getPropValue("preferGlobal").(JSONBoolean).getValue() = "true" }
+  predicate isPreferGlobal() { this.getPropValue("preferGlobal").(JsonBoolean).getValue() = "true" }
 
   /** Holds if this is a private package. */
-  predicate isPrivate() { this.getPropValue("private").(JSONBoolean).getValue() = "true" }
+  predicate isPrivate() { this.getPropValue("private").(JsonBoolean).getValue() = "true" }
 
   /** Gets publishing configuration information about this package. */
-  JSONValue getPublishConfig() { result = this.getPropValue("publishConfig") }
+  JsonValue getPublishConfig() { result = this.getPropValue("publishConfig") }
 
   /**
    * Gets the main module of this package.
@@ -182,13 +182,16 @@ class PackageJSON extends JSONObject {
   }
 }
 
+/** DEPRECATED: Alias for PackageJson */
+deprecated class PackageJSON = PackageJson;
+
 /**
  * A representation of bug tracker information for an NPM package.
  */
-class BugTrackerInfo extends JSONValue {
+class BugTrackerInfo extends JsonValue {
   BugTrackerInfo() {
-    exists(PackageJSON pkg | pkg.getPropValue("bugs") = this) and
-    (this instanceof JSONObject or this instanceof JSONString)
+    exists(PackageJson pkg | pkg.getPropValue("bugs") = this) and
+    (this instanceof JsonObject or this instanceof JsonString)
   }
 
   /** Gets the bug tracker URL. */
@@ -204,13 +207,13 @@ class BugTrackerInfo extends JSONValue {
 /**
  * A representation of contributor information for an NPM package.
  */
-class ContributorInfo extends JSONValue {
+class ContributorInfo extends JsonValue {
   ContributorInfo() {
-    exists(PackageJSON pkg |
+    exists(PackageJson pkg |
       this = pkg.getPropValue("author") or
       this = pkg.getPropValue("contributors").getElementValue(_)
     ) and
-    (this instanceof JSONObject or this instanceof JSONString)
+    (this instanceof JsonObject or this instanceof JsonString)
   }
 
   /**
@@ -244,8 +247,8 @@ class ContributorInfo extends JSONValue {
 /**
  * A representation of repository information for an NPM package.
  */
-class RepositoryInfo extends JSONObject {
-  RepositoryInfo() { exists(PackageJSON pkg | this = pkg.getPropValue("repository")) }
+class RepositoryInfo extends JsonObject {
+  RepositoryInfo() { exists(PackageJson pkg | this = pkg.getPropValue("repository")) }
 
   /** Gets the repository type. */
   string getType() { result = this.getPropStringValue("type") }
@@ -257,9 +260,9 @@ class RepositoryInfo extends JSONObject {
 /**
  * A representation of package dependencies for an NPM package.
  */
-class PackageDependencies extends JSONObject {
+class PackageDependencies extends JsonObject {
   PackageDependencies() {
-    exists(PackageJSON pkg, string name |
+    exists(PackageJson pkg, string name |
       name.regexpMatch("(.+D|d)ependencies|engines") and
       this = pkg.getPropValue(name)
     )
@@ -272,11 +275,11 @@ class PackageDependencies extends JSONObject {
 /**
  * An NPM package.
  */
-class NPMPackage extends @folder {
+class NpmPackage extends @folder {
   /** The `package.json` file of this package. */
-  PackageJSON pkg;
+  PackageJson pkg;
 
-  NPMPackage() { pkg.getJsonFile().getParentContainer() = this }
+  NpmPackage() { pkg.getJsonFile().getParentContainer() = this }
 
   /** Gets a textual representation of this package. */
   string toString() { result = this.(Folder).toString() }
@@ -285,10 +288,13 @@ class NPMPackage extends @folder {
   string getPath() { result = this.(Folder).getAbsolutePath() }
 
   /** Gets the `package.json` object of this package. */
-  PackageJSON getPackageJSON() { result = pkg }
+  PackageJson getPackageJson() { result = pkg }
+
+  /** DEPRECATED: Alias for getPackageJson */
+  deprecated PackageJSON getPackageJSON() { result = this.getPackageJson() }
 
   /** Gets the name of this package. */
-  string getPackageName() { result = this.getPackageJSON().getPackageName() }
+  string getPackageName() { result = this.getPackageJson().getPackageName() }
 
   /** Gets the `node_modules` folder of this package. */
   Folder getNodeModulesFolder() {
@@ -324,6 +330,9 @@ class NPMPackage extends @folder {
    */
   predicate declaresDependency(string p, string v) { pkg.declaresDependency(p, v) }
 }
+
+/** DEPRECATED: Alias for NpmPackage */
+deprecated class NPMPackage = NpmPackage;
 
 /**
  * Gets the parent folder of `c`, provided that they belong to the same NPM

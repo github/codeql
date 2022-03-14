@@ -143,7 +143,7 @@ predicate hasNoEffect(Expr e) {
   // don't complain about declarations
   not isDeclaration(e) and
   // exclude DOM properties, which sometimes have magical auto-update properties
-  not isDOMProperty(e.(PropAccess).getPropertyName()) and
+  not isDomProperty(e.(PropAccess).getPropertyName()) and
   // exclude xUnit.js annotations
   not e instanceof XUnitAnnotation and
   // exclude common patterns that are most likely intentional

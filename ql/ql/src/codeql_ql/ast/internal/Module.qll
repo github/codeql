@@ -14,6 +14,15 @@ private class ContainerOrModule extends TContainerOrModule {
   ) {
     none()
   }
+
+  /** Gets the kind of this file/module/folder. */
+  string getKind() {
+    this = TFile(_) and result = "file"
+    or
+    this = TModule(_) and result = "module"
+    or
+    this = TFolder(_) and result = "folder"
+  }
 }
 
 private class TFileOrModule = TFile or TModule;

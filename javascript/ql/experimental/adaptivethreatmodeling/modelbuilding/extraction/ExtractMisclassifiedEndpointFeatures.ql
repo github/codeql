@@ -19,8 +19,8 @@ EndpointType getEndpointType() { result instanceof NosqlInjectionSinkType }
 DataFlow::Node getAPositiveEndpoint() { result instanceof NosqlInjection::Sink }
 
 /** An ATM configuration to find misclassified endpoints of type `getEndpointType()`. */
-class ExtractMisclassifiedEndpointsATMConfig extends ATMConfig {
-  ExtractMisclassifiedEndpointsATMConfig() { this = "ExtractMisclassifiedEndpointsATMConfig" }
+class ExtractMisclassifiedEndpointsAtmConfig extends AtmConfig {
+  ExtractMisclassifiedEndpointsAtmConfig() { this = "ExtractMisclassifiedEndpointsATMConfig" }
 
   override predicate isEffectiveSink(DataFlow::Node sinkCandidate) {
     sinkCandidate = getAPositiveEndpoint()
@@ -31,7 +31,7 @@ class ExtractMisclassifiedEndpointsATMConfig extends ATMConfig {
 
 /** Get an endpoint from `getAPositiveEndpoint()` that is incorrectly excluded from the results. */
 DataFlow::Node getAMisclassifedEndpoint() {
-  any(ExtractMisclassifiedEndpointsATMConfig config).isEffectiveSink(result) and
+  any(ExtractMisclassifiedEndpointsAtmConfig config).isEffectiveSink(result) and
   not any(ScoringResults results).shouldResultBeIncluded(_, result)
 }
 

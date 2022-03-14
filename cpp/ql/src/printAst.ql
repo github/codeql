@@ -16,7 +16,7 @@ import definitions
  */
 external string selectedSourceFile();
 
-class Cfg extends PrintASTConfiguration {
+class Cfg extends PrintAstConfiguration {
   /**
    * Holds if the AST for `func` should be printed.
    * Print All functions from the selected file.

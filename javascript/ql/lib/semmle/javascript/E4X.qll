@@ -14,7 +14,10 @@ module E4X {
    * *
    * ```
    */
-  class XMLAnyName extends Expr, @e4x_xml_anyname { }
+  class XmlAnyName extends Expr, @e4x_xml_anyname { }
+
+  /** DEPRECATED: Alias for XmlAnyName */
+  deprecated class XMLAnyName = XmlAnyName;
 
   /**
    * An E4X qualified identifier.
@@ -29,7 +32,7 @@ module E4X {
    * Note that qualified identifiers are not currently supported by the parser, so snapshots
    * will not usually contain any.
    */
-  class XMLQualifiedIdentifier extends Expr, @e4x_xml_qualident {
+  class XmlQualifiedIdentifier extends Expr, @e4x_xml_qualident {
     /**
      * Gets the left operand of this qualified identifier, which is either
      * an identifier or a wildcard.
@@ -54,6 +57,9 @@ module E4X {
     }
   }
 
+  /** DEPRECATED: Alias for XmlQualifiedIdentifier */
+  deprecated class XMLQualifiedIdentifier = XmlQualifiedIdentifier;
+
   /**
    * An E4X attribute selector.
    *
@@ -64,7 +70,7 @@ module E4X {
    * @[p]
    * ```
    */
-  class XMLAttributeSelector extends Expr, @e4x_xml_attribute_selector {
+  class XmlAttributeSelector extends Expr, @e4x_xml_attribute_selector {
     /**
      * Gets the selected attribute, which is either a static name (that is, a
      * wildcard identifier or a possibly qualified name), or an arbitrary
@@ -83,6 +89,9 @@ module E4X {
     }
   }
 
+  /** DEPRECATED: Alias for XmlAttributeSelector */
+  deprecated class XMLAttributeSelector = XmlAttributeSelector;
+
   /**
    * An E4X filter expression.
    *
@@ -92,7 +101,7 @@ module E4X {
    * employees.(@id == 0 || @id == 1)
    * ```
    */
-  class XMLFilterExpression extends Expr, @e4x_xml_filter_expression {
+  class XmlFilterExpression extends Expr, @e4x_xml_filter_expression {
     /**
      * Gets the left operand of this filter expression.
      */
@@ -108,6 +117,9 @@ module E4X {
     }
   }
 
+  /** DEPRECATED: Alias for XmlFilterExpression */
+  deprecated class XMLFilterExpression = XmlFilterExpression;
+
   /**
    * An E4X "dot-dot" expression.
    *
@@ -117,7 +129,7 @@ module E4X {
    * e..name
    * ```
    */
-  class XMLDotDotExpression extends Expr, @e4x_xml_dotdotexpr {
+  class XmlDotDotExpression extends Expr, @e4x_xml_dotdotexpr {
     /**
      * Gets the base expression of this dot-dot expression.
      */
@@ -132,4 +144,7 @@ module E4X {
       result = getBase().getFirstControlFlowNode()
     }
   }
+
+  /** DEPRECATED: Alias for XmlDotDotExpression */
+  deprecated class XMLDotDotExpression = XmlDotDotExpression;
 }
