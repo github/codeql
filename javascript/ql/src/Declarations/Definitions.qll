@@ -1,6 +1,9 @@
 import javascript
 
-/** DEPRECATED: An identifier appearing in a defining position. */
+/**
+ * DEPRECATED: Use `SsaDefinition` from `SSA.qll` instead.
+ * An identifier appearing in a defining position.
+ */
 deprecated class DefiningIdentifier extends Identifier {
   DefiningIdentifier() {
     this instanceof VarDecl or
