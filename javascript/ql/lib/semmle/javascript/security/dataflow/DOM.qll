@@ -32,15 +32,22 @@ predicate isLocation(Expr e) {
 }
 
 /**
+ * DEPRECATED: Use DOM::documentRef() instead.
  * Gets a reference to the 'document' object.
  */
-DataFlow::SourceNode document() { result = DOM::documentRef() }
+deprecated DataFlow::SourceNode document() { result = DOM::documentRef() }
 
-/** Holds if `e` could refer to the `document` object. */
-predicate isDocument(Expr e) { DOM::documentRef().flowsToExpr(e) }
+/**
+ * DEPRECATED: Use DOM::documentRef() instead.
+ * Holds if `e` could refer to the `document` object.
+ */
+deprecated predicate isDocument(Expr e) { DOM::documentRef().flowsToExpr(e) }
 
-/** Holds if `e` could refer to the document URL. */
-predicate isDocumentUrl(Expr e) { e.flow() = DOM::locationSource() }
+/**
+ * DEPRECATED: Use DOM::locationSource() instead.
+ * Holds if `e` could refer to the document URL.
+ */
+deprecated predicate isDocumentUrl(Expr e) { e.flow() = DOM::locationSource() }
 
 /** DEPRECATED: Alias for isDocumentUrl */
 deprecated predicate isDocumentURL = isDocumentUrl/1;
