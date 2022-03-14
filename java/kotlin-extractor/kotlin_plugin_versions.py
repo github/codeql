@@ -4,7 +4,8 @@ import subprocess
 many_versions = [ '1.4.32', '1.5.31', '1.6.10' ]
 
 def get_single_version():
-    versionOutput = subprocess.run(['kotlinc', '-version'], capture_output=True, text=True)
+    # TODO: "shell=True" is a workaround to get CI working on Windows
+    versionOutput = subprocess.run(['kotlinc', '-version'], capture_output=True, text=True, shell=True)
     m = re.match(r'.* kotlinc-jvm ([0-9]+\.[0-9]+\.)[0-9]+ .*', versionOutput.stderr)
     if m is None:
         raise Exception('Cannot detect version of kotlinc')
