@@ -58,18 +58,18 @@ public class MybatisSqlInjectionService {
 
 	// using providers
 	public String badSelect(String input) {
-        return sqlInjectionMapper.badSelect(input);
-    }
+		return sqlInjectionMapper.badSelect(input);
+	}
 
 	public void badDelete(String input) {
-        sqlInjectionMapper.badDelete(input);
-    }
+		sqlInjectionMapper.badDelete(input);
+	}
 
 	public void badUpdate(String input) {
-        sqlInjectionMapper.badUpdate(input);
-    }
+		sqlInjectionMapper.badUpdate(input);
+	}
 
 	public void badInsert(String input) {
-        sqlInjectionMapper.badInsert(input);
-    }
+		sqlInjectionMapper.badInsert(input);
+	}
 }

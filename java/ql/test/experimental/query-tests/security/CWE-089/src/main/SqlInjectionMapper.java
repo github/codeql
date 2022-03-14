@@ -42,21 +42,21 @@ public interface SqlInjectionMapper {
 	)
 	String badSelect(String input);
 
-    @DeleteProvider(
-            type = MyBatisProvider.class,
-            method = "badDelete"
-    )
-    void badDelete(String input);
+	@DeleteProvider(
+		type = MyBatisProvider.class,
+		method = "badDelete"
+	)
+	void badDelete(String input);
 
-    @UpdateProvider(
-            type = MyBatisProvider.class,
-            method = "badUpdate"
-    )
-    void badUpdate(String input);
+	@UpdateProvider(
+		type = MyBatisProvider.class,
+		method = "badUpdate"
+	)
+	void badUpdate(String input);
 
-    @InsertProvider(
-            type = MyBatisProvider.class,
-            method = "badInsert"
-    )
-    void badInsert(String input);
+	@InsertProvider(
+		type = MyBatisProvider.class,
+		method = "badInsert"
+	)
+	void badInsert(String input);
 }
