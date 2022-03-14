@@ -18,6 +18,7 @@ import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import DataFlow::PathGraph
+import semmle.code.cpp.security.Security
 
 predicate hasUpperBound(VariableAccess offsetExpr) {
   exists(BasicBlock controlled, StackVariable offsetVar, SsaDefinition def |
@@ -55,6 +56,15 @@ predicate nodeIsBarrierEqualityCandidate(DataFlow::Node node, Operand access, Va
 
 predicate isFlowSource(FlowSource source, string sourceType) { sourceType = source.getSourceType() }
 
+predicate predictableInstruction(Instruction instr) {
+  instr instanceof ConstantInstruction
+  or
+  instr instanceof StringConstantInstruction
+  or
+  // This could be a conversion on a string literal
+  predictableInstruction(instr.(UnaryInstruction).getUnary())
+}
+
 class ImproperArrayIndexValidationConfig extends TaintTracking::Configuration {
   ImproperArrayIndexValidationConfig() { this = "ImproperArrayIndexValidationConfig" }
 
@@ -63,6 +73,8 @@ class ImproperArrayIndexValidationConfig extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) {
     hasUpperBound(node.asExpr())
     or
+    // These barriers are ported from `DefaultTaintTracking` because this query is quite noisy
+    // otherwise.
     exists(Variable checkedVar |
       readsVariable(node.asInstruction(), checkedVar) and
       hasUpperBoundsCheck(checkedVar)
@@ -71,6 +83,27 @@ class ImproperArrayIndexValidationConfig extends TaintTracking::Configuration {
     exists(Variable checkedVar, Operand access |
       readsVariable(access.getDef(), checkedVar) and
       nodeIsBarrierEqualityCandidate(node, access, checkedVar)
+    )
+    or
+    // Don't use dataflow into binary instructions if both operands are unpredictable
+    exists(BinaryInstruction iTo |
+      iTo = node.asInstruction() and
+      not predictableInstruction(iTo.getLeft()) and
+      not predictableInstruction(iTo.getRight()) and
+      // propagate taint from either the pointer or the offset, regardless of predictability
+      not iTo instanceof PointerArithmeticInstruction
+    )
+    or
+    // don't use dataflow through calls to pure functions if two or more operands
+    // are unpredictable
+    exists(Instruction iFrom1, Instruction iFrom2, CallInstruction iTo |
+      iTo = node.asInstruction() and
+      isPureFunction(iTo.getStaticCallTarget().getName()) and
+      iFrom1 = iTo.getAnArgument() and
+      iFrom2 = iTo.getAnArgument() and
+      not predictableInstruction(iFrom1) and
+      not predictableInstruction(iFrom2) and
+      iFrom1 != iFrom2
     )
   }
 
