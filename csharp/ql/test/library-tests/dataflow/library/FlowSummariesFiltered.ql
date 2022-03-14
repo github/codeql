@@ -1,4 +1,4 @@
-import shared.FlowSummaries
+import semmle.code.csharp.dataflow.internal.FlowSummaries
 private import semmle.code.csharp.dataflow.ExternalFlow
 
 class IncludeFilteredSummarizedCallable extends IncludeSummarizedCallable {
