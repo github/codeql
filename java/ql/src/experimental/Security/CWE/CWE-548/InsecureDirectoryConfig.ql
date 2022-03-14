@@ -27,7 +27,7 @@ private class DefaultTomcatServlet extends WebServletClass {
 /**
  * The `<init-param>` element in a `web.xml` file, nested under a `<servlet>` element controlling directory listing.
  */
-class DirectoryListingInitParam extends WebXMLElement {
+class DirectoryListingInitParam extends WebXmlElement {
   DirectoryListingInitParam() {
     this.getName() = "init-param" and
     this.getAChild("param-name").getTextValue() = "listings" and

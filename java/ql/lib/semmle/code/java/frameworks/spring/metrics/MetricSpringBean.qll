@@ -2,7 +2,7 @@ import semmle.code.java.frameworks.spring.SpringBean
 import semmle.code.java.frameworks.spring.SpringBeanFile
 import semmle.code.java.frameworks.spring.SpringEntry
 
-predicate springDepends(SpringBean b1, SpringBean b2, SpringXMLElement cause) {
+predicate springDepends(SpringBean b1, SpringBean b2, SpringXmlElement cause) {
   b1 != b2 and
   b1.getBeanParent() = b2 and
   cause = b1
@@ -63,7 +63,7 @@ class MetricSpringBean extends SpringBean {
     this.getSpringBeanFile() = result.getSpringBeanFile()
   }
 
-  SpringXMLElement getBeanDependencyCause(SpringBean dependency) {
+  SpringXmlElement getBeanDependencyCause(SpringBean dependency) {
     springDepends(this, dependency, result)
   }
 }

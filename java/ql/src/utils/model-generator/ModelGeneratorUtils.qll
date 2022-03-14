@@ -11,8 +11,8 @@ Method superImpl(Method m) {
   not m instanceof ToStringMethod
 }
 
-class TargetAPI extends Callable {
-  TargetAPI() {
+class TargetApi extends Callable {
+  TargetApi() {
     this.isPublic() and
     this.fromSource() and
     (
@@ -22,6 +22,9 @@ class TargetAPI extends Callable {
     isRelevantForModels(this)
   }
 }
+
+/** DEPRECATED: Alias for TargetApi */
+deprecated class TargetAPI = TargetApi;
 
 private string isExtensible(RefType ref) {
   if ref.isFinal() then result = "false" else result = "true"
@@ -59,17 +62,17 @@ private predicate isJdkInternal(CompilationUnit cu) {
 }
 
 bindingset[input, output]
-string asTaintModel(TargetAPI api, string input, string output) {
+string asTaintModel(TargetApi api, string input, string output) {
   result = asSummaryModel(api, input, output, "taint")
 }
 
 bindingset[input, output]
-string asValueModel(TargetAPI api, string input, string output) {
+string asValueModel(TargetApi api, string input, string output) {
   result = asSummaryModel(api, input, output, "value")
 }
 
 bindingset[input, output, kind]
-string asSummaryModel(TargetAPI api, string input, string output, string kind) {
+string asSummaryModel(TargetApi api, string input, string output, string kind) {
   result =
     asPartialModel(api) + input + ";" //
       + output + ";" //
@@ -77,19 +80,19 @@ string asSummaryModel(TargetAPI api, string input, string output, string kind) {
 }
 
 bindingset[input, kind]
-string asSinkModel(TargetAPI api, string input, string kind) {
+string asSinkModel(TargetApi api, string input, string kind) {
   result = asPartialModel(api) + input + ";" + kind
 }
 
 bindingset[output, kind]
-string asSourceModel(TargetAPI api, string output, string kind) {
+string asSourceModel(TargetApi api, string output, string kind) {
   result = asPartialModel(api) + output + ";" + kind
 }
 
 /**
  * Computes the first 6 columns for CSV rows.
  */
-private string asPartialModel(TargetAPI api) {
+private string asPartialModel(TargetApi api) {
   result =
     typeAsSummaryModel(api) + ";" //
       + isExtensible(bestTypeForModel(api)) + ";" //
@@ -102,9 +105,9 @@ private string asPartialModel(TargetAPI api) {
  * Returns the appropriate type name for the model. Either the type
  * declaring the method or the supertype introducing the method.
  */
-private string typeAsSummaryModel(TargetAPI api) { result = typeAsModel(bestTypeForModel(api)) }
+private string typeAsSummaryModel(TargetApi api) { result = typeAsModel(bestTypeForModel(api)) }
 
-private RefType bestTypeForModel(TargetAPI api) {
+private RefType bestTypeForModel(TargetApi api) {
   if exists(superImpl(api))
   then superImpl(api).fromSource() and result = superImpl(api).getDeclaringType()
   else result = api.getDeclaringType()

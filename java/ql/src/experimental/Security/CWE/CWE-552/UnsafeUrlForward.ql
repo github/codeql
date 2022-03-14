@@ -23,7 +23,7 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
     not exists(MethodAccess ma, Method m | ma.getMethod() = m |
       (
         m instanceof HttpServletRequestGetRequestURIMethod or
-        m instanceof HttpServletRequestGetRequestURLMethod or
+        m instanceof HttpServletRequestGetRequestUrlMethod or
         m instanceof HttpServletRequestGetPathMethod
       ) and
       ma = source.asExpr()

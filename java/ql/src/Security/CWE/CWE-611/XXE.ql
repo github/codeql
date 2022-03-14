@@ -19,10 +19,10 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking2
 import DataFlow::PathGraph
 
-class SafeSAXSourceFlowConfig extends TaintTracking2::Configuration {
-  SafeSAXSourceFlowConfig() { this = "XmlParsers::SafeSAXSourceFlowConfig" }
+class SafeSaxSourceFlowConfig extends TaintTracking2::Configuration {
+  SafeSaxSourceFlowConfig() { this = "XmlParsers::SafeSAXSourceFlowConfig" }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSAXSource }
+  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSaxSource }
 
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(XmlParserCall parse).getSink()
@@ -33,7 +33,7 @@ class SafeSAXSourceFlowConfig extends TaintTracking2::Configuration {
 
 class UnsafeXxeSink extends DataFlow::ExprNode {
   UnsafeXxeSink() {
-    not exists(SafeSAXSourceFlowConfig safeSource | safeSource.hasFlowTo(this)) and
+    not exists(SafeSaxSourceFlowConfig safeSource | safeSource.hasFlowTo(this)) and
     exists(XmlParserCall parse |
       parse.getSink() = this.getExpr() and
       not parse.isSafe()

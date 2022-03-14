@@ -90,7 +90,7 @@ module Stdlib {
    * https://github.com/python/cpython/blob/64f54b7ccd49764b0304e076bfd79b5482988f53/Lib/http/client.py#L175
    * and https://docs.python.org/3.9/library/email.compat32-message.html#email.message.Message
    */
-  module HTTPMessage {
+  module HttpMessage {
     /**
      * A source of instances of `http.client.HTTPMessage`, extend this class to model new instances.
      *
@@ -102,7 +102,7 @@ module Stdlib {
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
-    /** Gets a reference to an instance of `http.client.HTTPMessage`. */
+    /** Gets a reference to an instance of `http.client.HttpMessage`. */
     private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
@@ -110,7 +110,7 @@ module Stdlib {
       exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
     }
 
-    /** Gets a reference to an instance of `http.client.HTTPMessage`. */
+    /** Gets a reference to an instance of `http.client.HttpMessage`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     /**
@@ -128,6 +128,9 @@ module Stdlib {
       override string getAsyncMethodName() { none() }
     }
   }
+
+  /** DEPRECATED: Alias for HttpMessage */
+  deprecated module HTTPMessage = HttpMessage;
 
   /**
    * Provides models for the `http.cookies.Morsel` class
@@ -1783,42 +1786,63 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // BaseHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `BaseHTTPServer` module. */
-  API::Node baseHTTPServer() { result = API::moduleImport("BaseHTTPServer") }
+  /** Gets a reference to the `BaseHttpServer` module. */
+  API::Node baseHttpServer() { result = API::moduleImport("BaseHTTPServer") }
 
-  /** Provides models for the `BaseHTTPServer` module. */
-  module BaseHTTPServer {
+  /** DEPRECATED: Alias for baseHttpServer */
+  deprecated API::Node baseHTTPServer() { result = baseHttpServer() }
+
+  /** Provides models for the `BaseHttpServer` module. */
+  module BaseHttpServer {
     /**
      * Provides models for the `BaseHTTPServer.BaseHTTPRequestHandler` class (Python 2 only).
      */
-    module BaseHTTPRequestHandler {
-      /** Gets a reference to the `BaseHTTPServer.BaseHTTPRequestHandler` class. */
-      API::Node classRef() { result = baseHTTPServer().getMember("BaseHTTPRequestHandler") }
+    module BaseHttpRequestHandler {
+      /** Gets a reference to the `BaseHttpServer.BaseHttpRequestHandler` class. */
+      API::Node classRef() { result = baseHttpServer().getMember("BaseHTTPRequestHandler") }
     }
+
+    /** DEPRECATED: Alias for BaseHttpRequestHandler */
+    deprecated module BaseHTTPRequestHandler = BaseHttpRequestHandler;
   }
+
+  /** DEPRECATED: Alias for BaseHttpServer */
+  deprecated module BaseHTTPServer = BaseHttpServer;
 
   // ---------------------------------------------------------------------------
   // SimpleHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `SimpleHTTPServer` module. */
-  API::Node simpleHTTPServer() { result = API::moduleImport("SimpleHTTPServer") }
+  /** Gets a reference to the `SimpleHttpServer` module. */
+  API::Node simpleHttpServer() { result = API::moduleImport("SimpleHTTPServer") }
 
-  /** Provides models for the `SimpleHTTPServer` module. */
-  module SimpleHTTPServer {
+  /** DEPRECATED: Alias for simpleHttpServer */
+  deprecated API::Node simpleHTTPServer() { result = simpleHttpServer() }
+
+  /** Provides models for the `SimpleHttpServer` module. */
+  module SimpleHttpServer {
     /**
      * Provides models for the `SimpleHTTPServer.SimpleHTTPRequestHandler` class (Python 2 only).
      */
-    module SimpleHTTPRequestHandler {
-      /** Gets a reference to the `SimpleHTTPServer.SimpleHTTPRequestHandler` class. */
-      API::Node classRef() { result = simpleHTTPServer().getMember("SimpleHTTPRequestHandler") }
+    module SimpleHttpRequestHandler {
+      /** Gets a reference to the `SimpleHttpServer.SimpleHttpRequestHandler` class. */
+      API::Node classRef() { result = simpleHttpServer().getMember("SimpleHTTPRequestHandler") }
     }
+
+    /** DEPRECATED: Alias for SimpleHttpRequestHandler */
+    deprecated module SimpleHTTPRequestHandler = SimpleHttpRequestHandler;
   }
+
+  /** DEPRECATED: Alias for SimpleHttpServer */
+  deprecated module SimpleHTTPServer = SimpleHttpServer;
 
   // ---------------------------------------------------------------------------
   // CGIHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `CGIHTTPServer` module. */
-  API::Node cgiHTTPServer() { result = API::moduleImport("CGIHTTPServer") }
+  API::Node cgiHttpServer() { result = API::moduleImport("CGIHTTPServer") }
+
+  /** DEPRECATED: Alias for cgiHttpServer */
+  deprecated API::Node cgiHTTPServer() { result = cgiHttpServer() }
 
   /** Provides models for the `CGIHTTPServer` module. */
   module CGIHTTPServer {
@@ -1827,7 +1851,7 @@ private module StdlibPrivate {
      */
     module CGIHTTPRequestHandler {
       /** Gets a reference to the `CGIHTTPServer.CGIHTTPRequestHandler` class. */
-      API::Node classRef() { result = cgiHTTPServer().getMember("CGIHTTPRequestHandler") }
+      API::Node classRef() { result = cgiHttpServer().getMember("CGIHTTPRequestHandler") }
     }
   }
 
@@ -1852,20 +1876,26 @@ private module StdlibPrivate {
        *
        * See https://docs.python.org/3.9/library/http.server.html#http.server.BaseHTTPRequestHandler.
        */
-      module BaseHTTPRequestHandler {
-        /** Gets a reference to the `http.server.BaseHTTPRequestHandler` class. */
+      module BaseHttpRequestHandler {
+        /** Gets a reference to the `http.server.BaseHttpRequestHandler` class. */
         API::Node classRef() { result = server().getMember("BaseHTTPRequestHandler") }
       }
+
+      /** DEPRECATED: Alias for BaseHttpRequestHandler */
+      deprecated module BaseHTTPRequestHandler = BaseHttpRequestHandler;
 
       /**
        * Provides models for the `http.server.SimpleHTTPRequestHandler` class (Python 3 only).
        *
        * See https://docs.python.org/3.9/library/http.server.html#http.server.SimpleHTTPRequestHandler.
        */
-      module SimpleHTTPRequestHandler {
-        /** Gets a reference to the `http.server.SimpleHTTPRequestHandler` class. */
+      module SimpleHttpRequestHandler {
+        /** Gets a reference to the `http.server.SimpleHttpRequestHandler` class. */
         API::Node classRef() { result = server().getMember("SimpleHTTPRequestHandler") }
       }
+
+      /** DEPRECATED: Alias for SimpleHttpRequestHandler */
+      deprecated module SimpleHTTPRequestHandler = SimpleHttpRequestHandler;
 
       /**
        * Provides models for the `http.server.CGIHTTPRequestHandler` class (Python 3 only).
@@ -1886,26 +1916,29 @@ private module StdlibPrivate {
    *  - https://docs.python.org/3.9/library/http.server.html#http.server.BaseHTTPRequestHandler
    *  - https://docs.python.org/2.7/library/basehttpserver.html#BaseHTTPServer.BaseHTTPRequestHandler
    */
-  private module HTTPRequestHandler {
-    /** Gets a reference to the `BaseHTTPRequestHandler` class or any subclass. */
+  private module HttpRequestHandler {
+    /** Gets a reference to the `BaseHttpRequestHandler` class or any subclass. */
     API::Node subclassRef() {
       result =
         [
           // Python 2
-          BaseHTTPServer::BaseHTTPRequestHandler::classRef(),
-          SimpleHTTPServer::SimpleHTTPRequestHandler::classRef(),
+          BaseHttpServer::BaseHttpRequestHandler::classRef(),
+          SimpleHttpServer::SimpleHttpRequestHandler::classRef(),
           CGIHTTPServer::CGIHTTPRequestHandler::classRef(),
           // Python 3
-          http::server::BaseHTTPRequestHandler::classRef(),
-          http::server::SimpleHTTPRequestHandler::classRef(),
+          http::server::BaseHttpRequestHandler::classRef(),
+          http::server::SimpleHttpRequestHandler::classRef(),
           http::server::CGIHTTPRequestHandler::classRef()
         ].getASubclass*()
     }
 
-    /** A HTTPRequestHandler class definition (most likely in project code). */
-    class HTTPRequestHandlerClassDef extends Class {
-      HTTPRequestHandlerClassDef() { this.getParent() = subclassRef().getAUse().asExpr() }
+    /** A HttpRequestHandler class definition (most likely in project code). */
+    class HttpRequestHandlerClassDef extends Class {
+      HttpRequestHandlerClassDef() { this.getParent() = subclassRef().getAUse().asExpr() }
     }
+
+    /** DEPRECATED: Alias for HttpRequestHandlerClassDef */
+    deprecated class HTTPRequestHandlerClassDef = HttpRequestHandlerClassDef;
 
     /**
      * A source of instances of the `BaseHTTPRequestHandler` class or any subclass, extend this class to model new instances.
@@ -1918,16 +1951,16 @@ private module StdlibPrivate {
      */
     abstract class InstanceSource extends DataFlow::Node { }
 
-    /** The `self` parameter in a method on the `BaseHTTPRequestHandler` class or any subclass. */
+    /** The `self` parameter in a method on the `BaseHttpRequestHandler` class or any subclass. */
     private class SelfParam extends InstanceSource, RemoteFlowSource::Range, DataFlow::ParameterNode {
       SelfParam() {
-        exists(HTTPRequestHandlerClassDef cls | cls.getAMethod().getArg(0) = this.getParameter())
+        exists(HttpRequestHandlerClassDef cls | cls.getAMethod().getArg(0) = this.getParameter())
       }
 
       override string getSourceType() { result = "stdlib HTTPRequestHandler" }
     }
 
-    /** Gets a reference to an instance of the `BaseHTTPRequestHandler` class or any subclass. */
+    /** Gets a reference to an instance of the `BaseHttpRequestHandler` class or any subclass. */
     private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
@@ -1935,7 +1968,7 @@ private module StdlibPrivate {
       exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
     }
 
-    /** Gets a reference to an instance of the `BaseHTTPRequestHandler` class or any subclass. */
+    /** Gets a reference to an instance of the `BaseHttpRequestHandler` class or any subclass. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
@@ -1956,16 +1989,16 @@ private module StdlibPrivate {
       }
     }
 
-    /** An `HTTPMessage` instance that originates from a `BaseHTTPRequestHandler` instance. */
-    private class BaseHTTPRequestHandlerHeadersInstances extends Stdlib::HTTPMessage::InstanceSource {
-      BaseHTTPRequestHandlerHeadersInstances() {
+    /** An `HttpMessage` instance that originates from a `BaseHttpRequestHandler` instance. */
+    private class BaseHttpRequestHandlerHeadersInstances extends Stdlib::HttpMessage::InstanceSource {
+      BaseHttpRequestHandlerHeadersInstances() {
         this.(DataFlow::AttrRead).accesses(instance(), "headers")
       }
     }
 
-    /** A file-like object that originates from a `BaseHTTPRequestHandler` instance. */
-    private class BaseHTTPRequestHandlerFileLikeObjectInstances extends Stdlib::FileLikeObject::InstanceSource {
-      BaseHTTPRequestHandlerFileLikeObjectInstances() {
+    /** A file-like object that originates from a `BaseHttpRequestHandler` instance. */
+    private class BaseHttpRequestHandlerFileLikeObjectInstances extends Stdlib::FileLikeObject::InstanceSource {
+      BaseHttpRequestHandlerFileLikeObjectInstances() {
         this.(DataFlow::AttrRead).accesses(instance(), "rfile")
       }
     }
@@ -1977,7 +2010,7 @@ private module StdlibPrivate {
      */
     private class RequestHandlerFunc extends HTTP::Server::RequestHandler::Range {
       RequestHandlerFunc() {
-        this = any(HTTPRequestHandlerClassDef cls).getAMethod() and
+        this = any(HttpRequestHandlerClassDef cls).getAMethod() and
         this.getName() = "do_" + HTTP::httpVerb()
       }
 
@@ -2155,8 +2188,8 @@ private module StdlibPrivate {
    * - https://docs.python.org/2.7/library/httplib.html#httplib.HTTPConnection
    * - https://docs.python.org/2.7/library/httplib.html#httplib.HTTPSConnection
    */
-  module HTTPConnection {
-    /** Gets a reference to the `http.client.HTTPConnection` class. */
+  module HttpConnection {
+    /** Gets a reference to the `http.client.HttpConnection` class. */
     private API::Node classRef() {
       exists(string className | className in ["HTTPConnection", "HTTPSConnection"] |
         // Python 3
@@ -2184,7 +2217,7 @@ private module StdlibPrivate {
       abstract DataFlow::Node getHostArgument();
     }
 
-    /** A direct instantiation of `http.client.HTTPConnection`. */
+    /** A direct instantiation of `http.client.HttpConnection`. */
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
       ClassInstantiation() { this = classRef().getACall() }
 
@@ -2212,7 +2245,7 @@ private module StdlibPrivate {
       instance(DataFlow::TypeTracker::end(), hostArg).flowsTo(result)
     }
 
-    /** A method call on a HTTPConnection that sends off a request */
+    /** A method call on a HttpConnection that sends off a request */
     private class RequestCall extends HTTP::Client::Request::Range, DataFlow::MethodCallNode {
       RequestCall() { this.calls(instance(_), ["request", "_send_request", "putrequest"]) }
 
@@ -2238,7 +2271,7 @@ private module StdlibPrivate {
 
     /** A call to the `getresponse` method. */
     private class HttpConnectionGetResponseCall extends DataFlow::MethodCallNode,
-      HTTPResponse::InstanceSource {
+      HttpResponse::InstanceSource {
       HttpConnectionGetResponseCall() { this.calls(instance(_), "getresponse") }
     }
 
@@ -2269,6 +2302,9 @@ private module StdlibPrivate {
     }
   }
 
+  /** DEPRECATED: Alias for HttpConnection */
+  deprecated module HTTPConnection = HttpConnection;
+
   /**
    * Provides models for the `http.client.HTTPResponse` class
    *
@@ -2276,8 +2312,8 @@ private module StdlibPrivate {
    * - https://docs.python.org/3.10/library/http.client.html#httpresponse-objects
    * - https://docs.python.org/3/library/http.client.html#http.client.HTTPResponse.
    */
-  module HTTPResponse {
-    /** Gets a reference to the `http.client.HTTPResponse` class. */
+  module HttpResponse {
+    /** Gets a reference to the `http.client.HttpResponse` class. */
     private API::Node classRef() {
       result = API::moduleImport("http").getMember("client").getMember("HTTPResponse")
     }
@@ -2296,12 +2332,12 @@ private module StdlibPrivate {
     abstract class InstanceSource extends Stdlib::FileLikeObject::InstanceSource,
       DataFlow::LocalSourceNode { }
 
-    /** A direct instantiation of `http.client.HTTPResponse`. */
+    /** A direct instantiation of `http.client.HttpResponse`. */
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
       ClassInstantiation() { this = classRef().getACall() }
     }
 
-    /** Gets a reference to an instance of `http.client.HTTPResponse`. */
+    /** Gets a reference to an instance of `http.client.HttpResponse`. */
     private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
@@ -2309,7 +2345,7 @@ private module StdlibPrivate {
       exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
     }
 
-    /** Gets a reference to an instance of `http.client.HTTPResponse`. */
+    /** Gets a reference to an instance of `http.client.HttpResponse`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     /**
@@ -2327,15 +2363,18 @@ private module StdlibPrivate {
       override string getAsyncMethodName() { none() }
     }
 
-    /** An attribute read that is a HTTPMessage instance. */
-    private class HTTPMessageInstances extends Stdlib::HTTPMessage::InstanceSource {
-      HTTPMessageInstances() {
+    /** An attribute read that is a HttpMessage instance. */
+    private class HttpMessageInstances extends Stdlib::HttpMessage::InstanceSource {
+      HttpMessageInstances() {
         this.(DataFlow::AttrRead).accesses(instance(), ["headers", "msg"])
         or
         this.(DataFlow::MethodCallNode).calls(instance(), "info")
       }
     }
   }
+
+  /** DEPRECATED: Alias for HttpResponse */
+  deprecated module HTTPResponse = HttpResponse;
 
   // ---------------------------------------------------------------------------
   // sqlite3

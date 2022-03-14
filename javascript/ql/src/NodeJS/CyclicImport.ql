@@ -64,7 +64,7 @@ predicate relatedModules(NodeModule m, NodeModule n) {
   n = m.getAnImportedModule() or m = n.getAnImportedModule()
 }
 
-from NodeModule m, Require r, NodeModule imported, string msg, ASTNode linktarget, string linktext
+from NodeModule m, Require r, NodeModule imported, string msg, AstNode linktarget, string linktext
 where
   r = m.getAnImport() and
   imported = r.getImportedModule() and

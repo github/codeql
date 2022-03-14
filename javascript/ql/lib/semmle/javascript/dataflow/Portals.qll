@@ -180,7 +180,7 @@ private class NpmPackagePortal extends Portal, MkNpmPackagePortal {
 private module NpmPackagePortal {
   /** Gets an import of `imported` inside package `importer`. */
   pragma[noinline]
-  private DataFlow::SourceNode getAModuleImport(NPMPackage importer, string imported) {
+  private DataFlow::SourceNode getAModuleImport(NpmPackage importer, string imported) {
     result = DataFlow::moduleImport(imported) and
     result.getTopLevel() = importer.getAModule()
   }
@@ -188,7 +188,7 @@ private module NpmPackagePortal {
   /** Gets an import of `member` from `imported` inside package `importer`. */
   pragma[noinline]
   private DataFlow::SourceNode getAModuleMemberImport(
-    NPMPackage importer, string imported, string member
+    NpmPackage importer, string imported, string member
   ) {
     result = DataFlow::moduleMember(imported, member) and
     result.getTopLevel() = importer.getAModule()
@@ -196,7 +196,7 @@ private module NpmPackagePortal {
 
   /** Holds if `imp` is an import of package `pkgName`. */
   predicate imports(DataFlow::SourceNode imp, string pkgName) {
-    exists(NPMPackage pkg |
+    exists(NpmPackage pkg |
       imp = getAModuleImport(pkg, pkgName) and
       pkgName.regexpMatch("[^./].*")
     )
@@ -204,7 +204,7 @@ private module NpmPackagePortal {
 
   /** Holds if `imp` imports `member` from package `pkgName`. */
   predicate imports(DataFlow::SourceNode imp, string pkgName, string member) {
-    exists(NPMPackage pkg |
+    exists(NpmPackage pkg |
       imp = getAModuleMemberImport(pkg, pkgName, member) and
       pkgName.regexpMatch("[^./].*")
     )
@@ -212,7 +212,7 @@ private module NpmPackagePortal {
 
   /** Gets the main module of package `pkgName`. */
   Module packageMain(string pkgName) {
-    exists(PackageJSON pkg |
+    exists(PackageJson pkg |
       // don't construct portals for private packages
       not pkg.isPrivate() and
       // don't construct portals for vendored-in packages

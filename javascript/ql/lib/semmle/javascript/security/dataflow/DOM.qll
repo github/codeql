@@ -10,13 +10,16 @@ predicate isDomRootType(ExternalType tp) {
 }
 
 /** A global variable whose declared type extends a DOM root type. */
-class DOMGlobalVariable extends GlobalVariable {
-  DOMGlobalVariable() {
+class DomGlobalVariable extends GlobalVariable {
+  DomGlobalVariable() {
     exists(ExternalVarDecl d | d.getQualifiedName() = this.getName() |
       isDomRootType(d.getTypeTag().getTypeDeclaration().getASupertype*())
     )
   }
 }
+
+/** DEPRECATED: Alias for DomGlobalVariable */
+deprecated class DOMGlobalVariable = DomGlobalVariable;
 
 /** Holds if `e` could hold a value that comes from the DOM. */
 predicate isDomValue(Expr e) { DOM::domValueRef().flowsToExpr(e) }
@@ -44,7 +47,10 @@ deprecated predicate isDocument(Expr e) { DOM::documentRef().flowsToExpr(e) }
  * DEPRECATED: Use DOM::locationSource() instead.
  * Holds if `e` could refer to the document URL.
  */
-deprecated predicate isDocumentURL(Expr e) { e.flow() = DOM::locationSource() }
+deprecated predicate isDocumentUrl(Expr e) { e.flow() = DOM::locationSource() }
+
+/** DEPRECATED: Alias for isDocumentUrl */
+deprecated predicate isDocumentURL = isDocumentUrl/1;
 
 /**
  * DEPRECATED. In most cases, a sanitizer based on this predicate can be removed, as
@@ -69,7 +75,7 @@ class DomMethodCallExpr extends MethodCallExpr {
   /**
    * Holds if `arg` is an argument that is interpreted as HTML.
    */
-  predicate interpretsArgumentsAsHTML(Expr arg) {
+  predicate interpretsArgumentsAsHtml(Expr arg) {
     exists(int argPos, string name |
       arg = this.getArgument(argPos) and
       name = this.getMethodName()
@@ -100,6 +106,9 @@ class DomMethodCallExpr extends MethodCallExpr {
       )
     )
   }
+
+  /** DEPRECATED: Alias for interpretsArgumentsAsHtml */
+  deprecated predicate interpretsArgumentsAsHTML(Expr arg) { this.interpretsArgumentsAsHtml(arg) }
 }
 
 /**
@@ -116,10 +125,13 @@ class DomPropWriteNode extends Assignment {
   /**
    * Holds if the assigned value is interpreted as HTML.
    */
-  predicate interpretsValueAsHTML() {
+  predicate interpretsValueAsHtml() {
     lhs.getPropertyName() = "innerHTML" or
     lhs.getPropertyName() = "outerHTML"
   }
+
+  /** DEPRECATED: Alias for interpretsValueAsHtml */
+  deprecated predicate interpretsValueAsHTML() { this.interpretsValueAsHtml() }
 
   /**
    * Holds if the assigned value is interpreted as JavaScript via javascript: protocol.

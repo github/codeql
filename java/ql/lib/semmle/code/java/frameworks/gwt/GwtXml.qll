@@ -5,7 +5,7 @@ import semmle.code.xml.XML
 /**
  * Holds if any `*.gwt.xml` files are included in this snapshot.
  */
-predicate isGwtXmlIncluded() { exists(GwtXmlFile webXML) }
+predicate isGwtXmlIncluded() { exists(GwtXmlFile webXml) }
 
 /** A GWT module XML file with a `.gwt.xml` suffix. */
 class GwtXmlFile extends XMLFile {

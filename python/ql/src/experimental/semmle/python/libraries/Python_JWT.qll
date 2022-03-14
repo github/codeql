@@ -2,7 +2,7 @@ private import python
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
-private module Python_JWT {
+private module Python_Jwt {
   /**
    * Gets a call to `python_jwt.process_jwt`.
    *
@@ -21,7 +21,7 @@ private module Python_JWT {
    * * `getOptions()`'s result would be `none()`.
    * * `verifiesSignature()` predicate would succeed.
    */
-  private class PythonJwtProcessCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
+  private class PythonJwtProcessCall extends DataFlow::CallCfgNode, JwtDecoding::Range {
     PythonJwtProcessCall() {
       this = API::moduleImport("python_jwt").getMember("process_jwt").getACall()
     }
