@@ -23,7 +23,7 @@ predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
  */
 predicate isRelevantContent(DataFlow::Content c) {
   isRelevantType(c.(DataFlow::FieldContent).getField().getType()) or
-  isRelevantType(c.(DataFlow::FieldContent).getField().getType()) or
+  isRelevantType(c.(DataFlow::SyntheticFieldContent).getField().getType()) or
   DataFlow::containerContent(c)
 }
 
