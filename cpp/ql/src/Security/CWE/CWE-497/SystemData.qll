@@ -247,9 +247,9 @@ class LogonUser extends SystemData {
 }
 
 /**
- * An expression with the type of registry query parameter it is (if any).
- * This type is used to express information about registry query parameters in
- * the `regQuery` predicate concisely.
+ * The type of a registry query parameter, if it is of interest to us. This
+ * is used to express information about registry query parameters in the
+ * `regQuery` predicate concisely.
  */
 private newtype TRegQueryParameter =
   TSubKeyName() or
