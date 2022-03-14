@@ -12,15 +12,15 @@ private predicate isRelevantForModels(Callable api) { not api instanceof MainMet
  * In the Standard library and 3rd party libraries it the Callables that can be called
  * from outside the library itself.
  */
-class TargetAPI extends Callable {
-  TargetAPI() {
+class TargetApi extends Callable {
+  TargetApi() {
     [this.(Modifiable), this.(Accessor).getDeclaration()].isEffectivelyPublic() and
     this.fromSource() and
     isRelevantForModels(this)
   }
 }
 
-private string parameterQualifiedTypeNamesToString(TargetAPI api) {
+private string parameterQualifiedTypeNamesToString(TargetApi api) {
   result =
     concat(Parameter p, int i |
       p = api.getParameter(i)
@@ -30,7 +30,7 @@ private string parameterQualifiedTypeNamesToString(TargetAPI api) {
 }
 
 /** Holds if the summary should apply for all overrides of this. */
-private predicate isBaseCallableOrPrototype(TargetAPI api) {
+private predicate isBaseCallableOrPrototype(TargetApi api) {
   api.getDeclaringType() instanceof Interface
   or
   exists(Modifiable m | m = [api.(Modifiable), api.(Accessor).getDeclaration()] |
@@ -41,12 +41,12 @@ private predicate isBaseCallableOrPrototype(TargetAPI api) {
 }
 
 /** Gets a string representing whether the summary should apply for all overrides of this. */
-private string getCallableOverride(TargetAPI api) {
+private string getCallableOverride(TargetApi api) {
   if isBaseCallableOrPrototype(api) then result = "true" else result = "false"
 }
 
 /** Computes the first 6 columns for CSV rows. */
-string asPartialModel(TargetAPI api) {
+string asPartialModel(TargetApi api) {
   exists(string namespace, string type |
     api.getDeclaringType().hasQualifiedName(namespace, type) and
     result =

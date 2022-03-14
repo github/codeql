@@ -31,7 +31,7 @@ predicate isRelevantContent(DataFlow::Content c) {
  * Gets the summary model for `api` with `input`, `output` and `kind`.
  */
 bindingset[input, output, kind]
-string asSummaryModel(TargetAPI api, string input, string output, string kind) {
+string asSummaryModel(TargetApi api, string input, string output, string kind) {
   result =
     asPartialModel(api) + input + ";" //
       + output + ";" //
@@ -42,7 +42,7 @@ string asSummaryModel(TargetAPI api, string input, string output, string kind) {
  * Gets the value summary model for `api` with `input` and `output`.
  */
 bindingset[input, output]
-string asValueModel(TargetAPI api, string input, string output) {
+string asValueModel(TargetApi api, string input, string output) {
   result = asSummaryModel(api, input, output, "value")
 }
 
@@ -50,7 +50,7 @@ string asValueModel(TargetAPI api, string input, string output) {
  * Gets the taint summary model for `api` with `input` and `output`.
  */
 bindingset[input, output]
-string asTaintModel(TargetAPI api, string input, string output) {
+string asTaintModel(TargetApi api, string input, string output) {
   result = asSummaryModel(api, input, output, "taint")
 }
 
@@ -58,7 +58,7 @@ string asTaintModel(TargetAPI api, string input, string output) {
  * Gets the sink model for `api` with `input` and `kind`.
  */
 bindingset[input, kind]
-string asSinkModel(TargetAPI api, string input, string kind) {
+string asSinkModel(TargetApi api, string input, string kind) {
   result = asPartialModel(api) + input + ";" + kind
 }
 
@@ -66,6 +66,6 @@ string asSinkModel(TargetAPI api, string input, string kind) {
  * Gets the source model for `api` with `output` and `kind`.
  */
 bindingset[output, kind]
-string asSourceModel(TargetAPI api, string output, string kind) {
+string asSourceModel(TargetApi api, string output, string kind) {
   result = asPartialModel(api) + output + ";" + kind
 }

@@ -73,11 +73,11 @@ private import CaptureSummaryModels
  * Captured Model:
  * ```p;Foo;true;addToList;;Argument[0];Argument[1];taint```
  */
-string captureFlow(TargetAPI api) {
+string captureFlow(TargetApi api) {
   result = captureQualifierFlow(api) or
   result = captureThroughFlow(api)
 }
 
-from TargetAPI api, string flow
+from TargetApi api, string flow
 where flow = captureFlow(api)
 select flow order by flow

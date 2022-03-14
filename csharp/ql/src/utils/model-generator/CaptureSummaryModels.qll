@@ -8,7 +8,7 @@ import CaptureSummaryModelsSpecific
 /**
  * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
  */
-string captureQualifierFlow(TargetAPI api) {
+string captureQualifierFlow(TargetApi api) {
   exists(ReturnNodeExt ret |
     api = returnNodeEnclosingCallable(ret) and
     isOwnInstanceAccessNode(ret)
@@ -41,7 +41,7 @@ class ThroughFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
     source instanceof DataFlow::ParameterNode and
-    source.getEnclosingCallable() instanceof TargetAPI and
+    source.getEnclosingCallable() instanceof TargetApi and
     state instanceof TaintRead
   }
 
@@ -52,7 +52,7 @@ class ThroughFlowConfig extends TaintTracking::Configuration {
     (state instanceof TaintRead or state instanceof TaintStore)
   }
 
-  override predicate isAdditionalFlowStep(
+  override predicate isAdditionalTaintStep(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
     DataFlow::FlowState state2
   ) {
@@ -83,7 +83,7 @@ class ThroughFlowConfig extends TaintTracking::Configuration {
 /**
  * Gets the summary model(s) of `api`, if there is flow from parameters to return value or parameter.
  */
-string captureThroughFlow(TargetAPI api) {
+string captureThroughFlow(TargetApi api) {
   exists(
     ThroughFlowConfig config, DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, string input,
     string output

@@ -81,11 +81,11 @@ private import CaptureSummaryModels
  * Captured Model:
  * ```Summaries;BasicFlow;false;AssignToArray;(System.Int32,System.Int32[]);Argument[0];Argument[1].Element;taint```
  */
-private string captureFlow(TargetAPI api) {
+private string captureFlow(TargetApi api) {
   result = captureQualifierFlow(api) or
   result = captureThroughFlow(api)
 }
 
-from TargetAPI api, string flow
+from TargetApi api, string flow
 where flow = captureFlow(api)
 select flow order by flow
