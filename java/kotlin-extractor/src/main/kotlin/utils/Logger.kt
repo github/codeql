@@ -33,7 +33,7 @@ enum class Severity(val sev: Int) {
     ErrorGlobal(8)
 }
 
-data class ExtractorContext(val kind: String, val element: IrElement, val loc: String)
+data class ExtractorContext(val kind: String, val element: IrElement, val name: String, val loc: String)
 
 open class LoggerBase(val logCounter: LogCounter) {
     val extractorContextStack = Stack<ExtractorContext>()
@@ -106,7 +106,7 @@ open class LoggerBase(val logCounter: LogCounter) {
         val iter = extractorContextStack.listIterator(extractorContextStack.size)
         while (iter.hasPrevious()) {
             val x = iter.previous()
-            fullMsgBuilder.append("  ...while extracting a ${x.kind} at ${x.loc}\n")
+            fullMsgBuilder.append("  ...while extracting a ${x.kind} (${x.name}) at ${x.loc}\n")
         }
         fullMsgBuilder.append(suffix)
 
