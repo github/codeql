@@ -1669,4 +1669,10 @@ void tuple_structured_binding_no_ref_get() {
     }
 }
 
+int global_1;
+
+int global_2 = 1;
+
+const int global_3 = 2;
+
 // semmle-extractor-options: -std=c++17 --clang
