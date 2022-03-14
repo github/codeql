@@ -31,11 +31,11 @@ from string name, AstNode node, string message, string kind
 where
   (
     shouldBeLowerCase(node, name, kind) and
-    name.regexpMatch("[A-Z].*") and
+    name.regexpMatch("[^a-z].*") and
     message = "lowercase"
     or
     shouldBeUpperCase(node, name, kind) and
-    name.regexpMatch("[a-z].*") and
+    name.regexpMatch("[^A-Z].*") and
     message = "uppercase"
   ) and
   not node.hasAnnotation("deprecated")
