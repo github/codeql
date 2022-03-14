@@ -2,166 +2,42 @@
  * Provides utility predicates for range analysis.
  */
 
-import java
-private import SSA
-private import semmle.code.java.controlflow.internal.GuardsLogic
-private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
-
-/**
- * Holds if `v` is an input to `phi` that is not along a back edge, and the
- * only other input to `phi` is a `null` value.
- *
- * Note that the declared type of `phi` is `SsaVariable` instead of
- * `SsaPhiNode` in order for the reflexive case of `nonNullSsaFwdStep*(..)` to
- * have non-`SsaPhiNode` results.
- */
-private predicate nonNullSsaFwdStep(SsaVariable v, SsaVariable phi) {
-  exists(SsaExplicitUpdate vnull, SsaPhiNode phi0 | phi0 = phi |
-    2 = strictcount(phi0.getAPhiInput()) and
-    vnull = phi0.getAPhiInput() and
-    v = phi0.getAPhiInput() and
-    not backEdge(phi0, v, _) and
-    vnull != v and
-    vnull.getDefiningExpr().(VariableAssign).getSource() instanceof NullLiteral
-  )
-}
-
-private predicate nonNullDefStep(Expr e1, Expr e2) {
-  exists(ConditionalExpr cond, boolean branch | cond = e2 |
-    cond.getBranchExpr(branch) = e1 and
-    cond.getBranchExpr(branch.booleanNot()) instanceof NullLiteral
-  )
-}
-
-/**
- * Gets the definition of `v` provided that `v` is a non-null array with an
- * explicit `ArrayCreationExpr` definition and that the definition does not go
- * through a back edge.
- */
-ArrayCreationExpr getArrayDef(SsaVariable v) {
-  exists(Expr src |
-    v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = src and
-    nonNullDefStep*(result, src)
-  )
-  or
-  exists(SsaVariable mid |
-    result = getArrayDef(mid) and
-    nonNullSsaFwdStep(mid, v)
-  )
-}
-
-/**
- * Holds if `arrlen` is a read of an array `length` field on an array that, if
- * it is non-null, is defined by `def` and that the definition can reach
- * `arrlen` without going through a back edge.
- */
-private predicate arrayLengthDef(FieldRead arrlen, ArrayCreationExpr def) {
-  exists(SsaVariable arr |
-    arrlen.getField() instanceof ArrayLengthField and
-    arrlen.getQualifier() = arr.getAUse() and
-    def = getArrayDef(arr)
-  )
-}
-
-/** An expression that always has the same integer value. */
-pragma[nomagic]
-private predicate constantIntegerExpr(Expr e, int val) {
-  e.(CompileTimeConstantExpr).getIntValue() = val
-  or
-  exists(SsaExplicitUpdate v, Expr src |
-    e = v.getAUse() and
-    src = v.getDefiningExpr().(VariableAssign).getSource() and
-    constantIntegerExpr(src, val)
-  )
-  or
-  exists(ArrayCreationExpr a |
-    arrayLengthDef(e, a) and
-    a.getFirstDimensionSize() = val
-  )
-  or
-  exists(Field a, FieldRead arrlen |
-    a.isFinal() and
-    a.getInitializer().(ArrayCreationExpr).getFirstDimensionSize() = val and
-    arrlen.getField() instanceof ArrayLengthField and
-    arrlen.getQualifier() = a.getAnAccess() and
-    e = arrlen
-  )
-}
-
-/** An expression that always has the same integer value. */
-class ConstantIntegerExpr extends Expr {
-  ConstantIntegerExpr() { constantIntegerExpr(this, _) }
-
-  /** Gets the integer value of this expression. */
-  int getIntValue() { constantIntegerExpr(this, result) }
-}
+private import semmle.code.java.semantic.SemanticCFG
+private import semmle.code.java.semantic.SemanticExpr
+private import semmle.code.java.semantic.SemanticGuard
+private import semmle.code.java.semantic.SemanticSSA
+private import RangeAnalysisSpecific as Specific
+private import ConstantAnalysis
 
 /**
  * Gets an expression that equals `v - d`.
  */
-Expr ssaRead(SsaVariable v, int delta) {
+SemExpr semSsaRead(SemSsaVariable v, int delta) {
   result = v.getAUse() and delta = 0
   or
-  exists(int d1, ConstantIntegerExpr c |
-    result.(AddExpr).hasOperands(ssaRead(v, d1), c) and
+  exists(int d1, SemConstantIntegerExpr c |
+    result.(SemAddExpr).hasOperands(semSsaRead(v, d1), c) and
     delta = d1 - c.getIntValue()
   )
   or
-  exists(SubExpr sub, int d1, ConstantIntegerExpr c |
+  exists(SemSubExpr sub, int d1, SemConstantIntegerExpr c |
     result = sub and
-    sub.getLeftOperand() = ssaRead(v, d1) and
+    sub.getLeftOperand() = semSsaRead(v, d1) and
     sub.getRightOperand() = c and
     delta = d1 + c.getIntValue()
   )
   or
-  v.(SsaExplicitUpdate).getDefiningExpr().(PreIncExpr) = result and delta = 0
+  v.(SemSsaExplicitUpdate).getDefiningExpr().(SemPreIncExpr) = result and delta = 0
   or
-  v.(SsaExplicitUpdate).getDefiningExpr().(PreDecExpr) = result and delta = 0
+  v.(SemSsaExplicitUpdate).getDefiningExpr().(SemPreDecExpr) = result and delta = 0
   or
-  v.(SsaExplicitUpdate).getDefiningExpr().(PostIncExpr) = result and delta = 1 // x++ === ++x - 1
+  v.(SemSsaExplicitUpdate).getDefiningExpr().(SemPostIncExpr) = result and delta = 1 // x++ === ++x - 1
   or
-  v.(SsaExplicitUpdate).getDefiningExpr().(PostDecExpr) = result and delta = -1 // x-- === --x + 1
+  v.(SemSsaExplicitUpdate).getDefiningExpr().(SemPostDecExpr) = result and delta = -1 // x-- === --x + 1
   or
-  v.(SsaExplicitUpdate).getDefiningExpr().(Assignment) = result and delta = 0
+  v.(SemSsaExplicitUpdate).getDefiningExpr().(SemAssignment) = result and delta = 0
   or
-  result.(AssignExpr).getSource() = ssaRead(v, delta)
-}
-
-/**
- * Holds if `inp` is an input to `phi` along a back edge.
- */
-predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
-  edge.phiInput(phi, inp) and
-  // Conservatively assume that every edge is a back edge if we don't have dominance information.
-  (
-    phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or
-    not hasDominanceInformation(edge.getOrigBlock())
-  )
-}
-
-/**
- * Holds if `guard` directly controls the position `controlled` with the
- * value `testIsTrue`.
- */
-predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-  guard.directlyControls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
-  or
-  exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
-    guard.directlyControls(controlledEdge.getOrigBlock(), testIsTrue) or
-    guard.hasBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(), testIsTrue)
-  )
-}
-
-/**
- * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
- */
-predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-  guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
-  or
-  exists(Guard guard0, boolean testIsTrue0 |
-    implies_v2(guard0, testIsTrue0, guard, testIsTrue) and
-    guardControlsSsaRead(guard0, controlled, testIsTrue0)
-  )
+  result.(SemAssignExpr).getRhs() = semSsaRead(v, delta)
 }
 
 /**
@@ -171,82 +47,138 @@ predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean 
  * - `isEq = true`  : `v == e + delta`
  * - `isEq = false` : `v != e + delta`
  */
-Guard eqFlowCond(SsaVariable v, Expr e, int delta, boolean isEq, boolean testIsTrue) {
+SemGuard semEqFlowCond(SemSsaVariable v, SemExpr e, int delta, boolean isEq, boolean testIsTrue) {
   exists(boolean eqpolarity |
-    result.isEquality(ssaRead(v, delta), e, eqpolarity) and
+    result.isEquality(semSsaRead(v, delta), e, eqpolarity) and
     (testIsTrue = true or testIsTrue = false) and
     eqpolarity.booleanXor(testIsTrue).booleanNot() = isEq
   )
   or
   exists(boolean testIsTrue0 |
-    implies_v2(result, testIsTrue, eqFlowCond(v, e, delta, isEq, testIsTrue0), testIsTrue0)
+    semImplies_v2(result, testIsTrue, semEqFlowCond(v, e, delta, isEq, testIsTrue0), testIsTrue0)
   )
 }
 
 /**
  * Holds if `v` is an `SsaExplicitUpdate` that equals `e + delta`.
  */
-predicate ssaUpdateStep(SsaExplicitUpdate v, Expr e, int delta) {
-  v.getDefiningExpr().(VariableAssign).getSource() = e and delta = 0
+predicate semSsaUpdateStep(SemSsaExplicitUpdate v, SemExpr e, int delta) {
+  v.getDefiningExpr().(SemVariableAssign).getSource() = e and delta = 0
   or
-  v.getDefiningExpr().(PostIncExpr).getExpr() = e and delta = 1
+  v.getDefiningExpr().(SemPostIncExpr).getExpr() = e and delta = 1
   or
-  v.getDefiningExpr().(PreIncExpr).getExpr() = e and delta = 1
+  v.getDefiningExpr().(SemPreIncExpr).getExpr() = e and delta = 1
   or
-  v.getDefiningExpr().(PostDecExpr).getExpr() = e and delta = -1
+  v.getDefiningExpr().(SemPostDecExpr).getExpr() = e and delta = -1
   or
-  v.getDefiningExpr().(PreDecExpr).getExpr() = e and delta = -1
+  v.getDefiningExpr().(SemPreDecExpr).getExpr() = e and delta = -1
   or
-  v.getDefiningExpr().(AssignOp) = e and delta = 0
+  v.getDefiningExpr().(SemAssignOp) = e and delta = 0
 }
 
 /**
  * Holds if `e1 + delta` equals `e2`.
  */
-predicate valueFlowStep(Expr e2, Expr e1, int delta) {
-  e2.(AssignExpr).getSource() = e1 and delta = 0
+predicate semValueFlowStep(SemExpr e2, SemExpr e1, int delta) {
+  e2.(SemAssignExpr).getRhs() = e1 and delta = 0
   or
-  e2.(PlusExpr).getExpr() = e1 and delta = 0
+  e2.(SemPlusExpr).getExpr() = e1 and delta = 0
   or
-  e2.(PostIncExpr).getExpr() = e1 and delta = 0
+  e2.(SemPostIncExpr).getExpr() = e1 and delta = 0
   or
-  e2.(PostDecExpr).getExpr() = e1 and delta = 0
+  e2.(SemPostDecExpr).getExpr() = e1 and delta = 0
   or
-  e2.(PreIncExpr).getExpr() = e1 and delta = 1
+  e2.(SemPreIncExpr).getExpr() = e1 and delta = 1
   or
-  e2.(PreDecExpr).getExpr() = e1 and delta = -1
+  e2.(SemPreDecExpr).getExpr() = e1 and delta = -1
   or
-  exists(ArrayCreationExpr a |
-    arrayLengthDef(e2, a) and
-    a.getDimension(0) = e1 and
-    delta = 0
-  )
+  Specific::additionalValueFlowStep(e2, e1, delta)
   or
-  exists(Expr x |
-    e2.(AddExpr).hasOperands(e1, x)
+  exists(SemExpr x |
+    e2.(SemAddExpr).hasOperands(e1, x)
     or
-    exists(AssignAddExpr add | add = e2 |
+    exists(SemAssignAddExpr add | add = e2 |
       add.getDest() = e1 and add.getRhs() = x
       or
       add.getDest() = x and add.getRhs() = e1
     )
   |
-    x.(ConstantIntegerExpr).getIntValue() = delta
+    x.(SemConstantIntegerExpr).getIntValue() = delta
   )
   or
-  exists(Expr x |
-    exists(SubExpr sub |
+  exists(SemExpr x |
+    exists(SemSubExpr sub |
       e2 = sub and
       sub.getLeftOperand() = e1 and
       sub.getRightOperand() = x
     )
     or
-    exists(AssignSubExpr sub |
+    exists(SemAssignSubExpr sub |
       e2 = sub and
       sub.getDest() = e1 and
       sub.getRhs() = x
     )
   |
-    x.(ConstantIntegerExpr).getIntValue() = -delta
+    x.(SemConstantIntegerExpr).getIntValue() = -delta
   )
 }
+
+/**
+ * Non-semantic interface wrappers
+ *
+ * Several types and predicates here wrap semantic types and predicates from other files. The non-
+ * semantic wrappers are included here because clients that imported `RangeUtils.qll` expect to find
+ * these here.
+ */
+private module Java {
+  private import java
+  private import SSA
+  private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
+  import ArrayLengthFlow // Public for backward compatibility
+
+  predicate ssaUpdateStep(SsaExplicitUpdate v, Expr e, int delta) {
+    semSsaUpdateStep(getSemanticSsaVariable(v), getSemanticExpr(e), delta)
+  }
+
+  LanguageGuard eqFlowCond(SsaVariable v, Expr e, int delta, boolean isEq, boolean testIsTrue) {
+    result =
+      getLanguageGuard(semEqFlowCond(getSemanticSsaVariable(v), getSemanticExpr(e), delta, isEq,
+          testIsTrue))
+  }
+
+  predicate valueFlowStep(Expr e2, Expr e1, int delta) {
+    semValueFlowStep(getSemanticExpr(e2), getSemanticExpr(e1), delta)
+  }
+
+  predicate guardControlsSsaRead(LanguageGuard guard, SsaReadPosition controlled, boolean testIsTrue) {
+    semGuardControlsSsaRead(getSemanticGuard(guard), getSemanticSsaReadPosition(controlled),
+      testIsTrue)
+  }
+
+  predicate guardDirectlyControlsSsaRead(
+    LanguageGuard guard, SsaReadPosition controlled, boolean testIsTrue
+  ) {
+    semGuardDirectlyControlsSsaRead(getSemanticGuard(guard), getSemanticSsaReadPosition(controlled),
+      testIsTrue)
+  }
+
+  Expr ssaRead(SsaVariable v, int delta) {
+    result = getJavaExpr(semSsaRead(getSemanticSsaVariable(v), delta))
+  }
+
+  predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
+    semBackEdge(getSemanticSsaVariable(phi), getSemanticSsaVariable(inp),
+      getSemanticSsaReadPosition(edge))
+  }
+
+  /** An expression that always has the same integer value. */
+  class ConstantIntegerExpr extends Expr {
+    final SemConstantIntegerExpr expr;
+
+    ConstantIntegerExpr() { expr = getSemanticExpr(this) }
+
+    final int getIntValue() { result = expr.getIntValue() }
+  }
+}
+
+import Java
