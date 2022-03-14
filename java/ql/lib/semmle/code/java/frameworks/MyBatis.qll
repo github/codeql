@@ -162,6 +162,12 @@ private class MyBatisProviderStep extends TaintTracking::AdditionalValueStep {
   }
 }
 
+private class MyBatisAbstractSQLToStringStep extends SummaryModelCsv {
+  override predicate row(string row) {
+    row = ["org.apache.ibatis.jdbc;AbstractSQL;true;toString;;;Argument[-1];ReturnValue;taint"]
+  }
+}
+
 private class MyBatisAbstractSQLMethodsStep extends SummaryModelCsv {
   override predicate row(string row) {
     row =
