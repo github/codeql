@@ -146,7 +146,7 @@ private class MyBatisProviderStep extends TaintTracking::AdditionalTaintStep {
         providerMethod.getParameter(i) = n2.asParameter()
       )
     |
-      a.getType() instanceof MyBatisProvider and      
+      a.getType() instanceof MyBatisProvider and
       ma.getMethod().getAnAnnotation() = a and
       providerMethod.getDeclaringType() =
         a.getValue(["type", "value"]).(TypeLiteral).getTypeName().getType() and
@@ -155,25 +155,13 @@ private class MyBatisProviderStep extends TaintTracking::AdditionalTaintStep {
   }
 }
 
-private class MyBatisAbstractSQLToStringStep extends TaintTracking::AdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma |
-      ma.getMethod().getDeclaringType().getSourceDeclaration() instanceof MyBatisAbstractSQL and
-      ma.getMethod().getName() = "toString" and
-      ma.getQualifier() = node1.asExpr() and
-      ma = node2.asExpr()
-    )
-  }
-}
-
-private class MyBatisAbstractSQLMethodsStep extends TaintTracking::AdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma |
-      ma.getMethod().getDeclaringType().getSourceDeclaration() instanceof MyBatisAbstractSQL and
-      ma.getMethod().getName() instanceof MyBatisAbstractSQLMethodNames and
-      ma.getArgument([0, 1]) = node1.asExpr() and
-      ma = node2.asExpr()
-    )
+private class MyBatisAbstractSQLMethodsStep extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.ibatis.jdbc;AbstractSQL;true;" + any(MyBatisAbstractSQLMethodNames m) +
+          ";;;Argument[0..1];ReturnValue;taint"
+      ]
   }
 }
 
