@@ -1959,13 +1959,12 @@ class MethodAccess extends Expr, Call, @methodaccess {
 
 /**
  * An invocation of a Kotlin `ExtensionMethod`.
- *
- * The syntactical qualifier of an extension method is its receiver (arg 0),
- * whereas the actual arguments begin at index 1.
  */
 class ExtensionMethodAccess extends MethodAccess {
   ExtensionMethodAccess() { this.getMethod() instanceof ExtensionMethod }
 
+  // The syntactic qualifier of an extension method is its receiver (arg 0),
+  // whereas the actual arguments begin at index 1.
   override Expr getQualifier() { result.isNthChildOf(this, 0) }
 
   override Expr getAnArgument() { result.getIndex() >= 1 and result.getParent() = this }
