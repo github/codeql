@@ -81,6 +81,10 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun isFake(d: IrDeclarationWithVisibility): Boolean {
+        return d.isFakeOverride
+    }
+
     fun extractDeclaration(declaration: IrDeclaration) {
         with("declaration", declaration) {
             when (declaration) {
@@ -94,7 +98,7 @@ open class KotlinFileExtractor(
                 is IrFunction -> {
                     @Suppress("UNCHECKED_CAST")
                     val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
-                    extractFunctionIfReal(declaration, parentId, true, null, listOf())
+                    extractFunction(declaration, parentId, true, null, listOf())
                 }
                 is IrAnonymousInitializer -> {
                     // Leaving this intentionally empty. init blocks are extracted during class extraction.
@@ -302,7 +306,7 @@ open class KotlinFileExtractor(
 
             c.declarations.map {
                 when(it) {
-                    is IrFunction -> extractFunctionIfReal(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
+                    is IrFunction -> extractFunction(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
                     is IrProperty -> extractProperty(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
                     else -> {}
                 }
@@ -579,15 +583,9 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunctionIfReal(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
-        with("function if real", f) {
-            if (f.origin == IrDeclarationOrigin.FAKE_OVERRIDE)
-                return
-            extractFunction(f, parentId, extractBody, typeSubstitution, classTypeArgsIncludingOuterClasses)
-        }
-    }
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null): Label<out DbCallable>? {
+        if (isFake(f)) return null
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null): Label<out DbCallable> {
         with("function", f) {
             DeclarationStackAdjuster(f).use {
 
@@ -696,13 +694,9 @@ open class KotlinFileExtractor(
 
     fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgs: List<IrTypeArgument>?) {
         with("property", p) {
-            DeclarationStackAdjuster(p).use {
+            if (isFake(p)) return
 
-                val visibility = p.visibility
-                if (visibility is DelegatedDescriptorVisibility && visibility.delegate == Visibilities.InvisibleFake ||
-                        p.isFakeOverride) {
-                    return
-                }
+            DeclarationStackAdjuster(p).use {
 
                 val id = useProperty(p, parentId)
                 val locId = tw.getLocation(p)
@@ -715,8 +709,10 @@ open class KotlinFileExtractor(
 
                 if (getter != null) {
                     @Suppress("UNCHECKED_CAST")
-                    val getterId = extractFunction(getter, parentId, extractBackingField, typeSubstitution, classTypeArgs) as Label<out DbMethod>
-                    tw.writeKtPropertyGetters(id, getterId)
+                    val getterId = extractFunction(getter, parentId, extractBackingField, typeSubstitution, classTypeArgs) as Label<out DbMethod>?
+                    if (getterId != null) {
+                        tw.writeKtPropertyGetters(id, getterId)
+                    }
                 } else {
                     if (p.modality != Modality.FINAL || !isExternalDeclaration(p)) {
                         logger.errorElement("IrProperty without a getter", p)
@@ -728,8 +724,10 @@ open class KotlinFileExtractor(
                         logger.errorElement("!isVar property with a setter", p)
                     }
                     @Suppress("UNCHECKED_CAST")
-                    val setterId = extractFunction(setter, parentId, extractBackingField, typeSubstitution, classTypeArgs) as Label<out DbMethod>
-                    tw.writeKtPropertySetters(id, setterId)
+                    val setterId = extractFunction(setter, parentId, extractBackingField, typeSubstitution, classTypeArgs) as Label<out DbMethod>?
+                    if (setterId != null) {
+                        tw.writeKtPropertySetters(id, setterId)
+                    }
                 } else {
                     if (p.isVar && !isExternalDeclaration(p)) {
                         logger.errorElement("isVar property without a setter", p)
@@ -3832,7 +3830,7 @@ open class KotlinFileExtractor(
             val id = extractGeneratedClass(ids, superTypes, tw.getLocation(localFunction), localFunction)
 
             // Extract local function as a member
-            extractFunctionIfReal(localFunction, id, true, null, listOf())
+            extractFunction(localFunction, id, true, null, listOf())
 
             return id
         }
