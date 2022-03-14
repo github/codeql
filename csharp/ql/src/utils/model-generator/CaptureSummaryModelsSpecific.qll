@@ -8,7 +8,6 @@ import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 import ModelGeneratorUtils
 
-pragma[inline]
 Callable returnNodeEnclosingCallable(ReturnNodeExt ret) { result = getNodeEnclosingCallable(ret) }
 
 predicate isOwnInstanceAccessNode(ReturnNode node) { node.asExpr() instanceof ThisAccess }

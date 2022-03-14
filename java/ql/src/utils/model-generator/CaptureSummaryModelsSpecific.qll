@@ -10,7 +10,6 @@ import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.InstanceAccess
 import ModelGeneratorUtils
 
-pragma[inline]
 Callable returnNodeEnclosingCallable(ReturnNodeExt ret) {
   result = getNodeEnclosingCallable(ret).asCallable()
 }
