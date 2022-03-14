@@ -75,14 +75,6 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
   }
 }
 
-predicate instrHasEnclosingCallable(VariableAddressInstruction var, Function f) {
-  f = var.getEnclosingFunction()
-}
-
-predicate nodeHasEnclosingCallable(DataFlow::Node node, Function f) {
-  f = node.getEnclosingCallable()
-}
-
 from
   MustFlowPathNode source, MustFlowPathNode sink, VariableAddressInstruction var,
   ReturnStackAllocatedMemoryConfig conf, Function f
@@ -91,7 +83,7 @@ where
   source.getNode().asInstruction() = var and
   // Only raise an alert if we're returning from the _same_ callable as the on that
   // declared the stack variable.
-  instrHasEnclosingCallable(var, pragma[only_bind_into](f)) and
-  nodeHasEnclosingCallable(sink.getNode(), pragma[only_bind_into](f))
+  var.getEnclosingFunction() = pragma[only_bind_into](f) and
+  sink.getNode().getEnclosingCallable() = pragma[only_bind_into](f)
 select sink.getNode(), source, sink, "May return stack-allocated memory from $@.", var.getAst(),
   var.getAst().toString()
