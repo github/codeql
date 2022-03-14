@@ -1,0 +1,1 @@
+| testcases/Bad.ql:1:1:15:9 | TopLevel | This query file is missing a `@security-severity` tag. |
