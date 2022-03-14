@@ -1022,12 +1022,11 @@ module Private {
     }
   }
 
-  /** Provides a query predicate for outputting a set of relevant flow summaries. */
-  module TestOutput {
+  module CaptureModel {
     /** A flow summary to include in the `summary/3` query predicate. */
     abstract class RelevantSummarizedCallable extends SummarizedCallable {
       /** Gets the string representation of this callable used by `summary/1`. */
-      abstract string getCallableCsv();
+      abstract string asPartialModel();
 
       /** Holds if flow is propagated between `input` and `output`. */
       predicate relevantSummary(
@@ -1036,7 +1035,10 @@ module Private {
         this.propagatesFlow(input, output, preservesValue)
       }
     }
+  }
 
+  /** Provides a query predicate for outputting a set of relevant flow summaries. */
+  module TestOutput {
     /** Render the kind in the format used in flow summaries. */
     private string renderKind(boolean preservesValue) {
       preservesValue = true and result = "value"
@@ -1051,12 +1053,12 @@ module Private {
      */
     query predicate summary(string csv) {
       exists(
-        RelevantSummarizedCallable c, SummaryComponentStack input, SummaryComponentStack output,
-        boolean preservesValue
+        CaptureModel::RelevantSummarizedCallable c, SummaryComponentStack input,
+        SummaryComponentStack output, boolean preservesValue
       |
         c.relevantSummary(input, output, preservesValue) and
         csv =
-          c.getCallableCsv() + ";;" + getComponentStackCsv(input) + ";" +
+          c.asPartialModel() + ";;" + getComponentStackCsv(input) + ";" +
             getComponentStackCsv(output) + ";" + renderKind(preservesValue)
       )
     }
