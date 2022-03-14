@@ -3,6 +3,7 @@
  * @description Writing information without explicit permissions to a shared temporary directory may disclose it to other users.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 6.5
  * @precision medium
  * @id java/local-temp-file-or-directory-information-disclosure
  * @tags security
