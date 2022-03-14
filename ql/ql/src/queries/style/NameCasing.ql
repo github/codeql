@@ -1,9 +1,9 @@
 /**
- * @name No upper case variables
+ * @name Correct casing on name declaraions
  * @description Variables/fields/predicates should be lower-case, classes/modules should be upper-case
  * @kind problem
  * @problem.severity error
- * @id ql/no-upper-case-variables
+ * @id ql/name-casing
  * @tags correctness
  * @precision very-high
  */
