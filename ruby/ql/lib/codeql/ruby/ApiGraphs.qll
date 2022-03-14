@@ -273,6 +273,13 @@ module API {
 
   /**
    * An API entry point.
+   *
+   * By default, API graph nodes are only created for nodes that come from an external
+   * library or escape into an external library. The points where values are cross the boundary
+   * between codebases are called "entry points".
+   *
+   * Anything in the global scope is considered to be an entry point, but
+   * additional entry points may be added by extending this class.
    */
   abstract class EntryPoint extends string {
     bindingset[this]
