@@ -9,7 +9,7 @@ private import CaptureSummaryModels
 /**
  * Capture fluent APIs that return `this`.
  * Example of a fluent API:
- * ```
+ * ```csharp
  * public class BasicFlow {
  *   public BasicFlow ReturnThis(object input)
  *   {
@@ -18,16 +18,14 @@ private import CaptureSummaryModels
  *   }
  * ```
  * Captured Model:
- * ```
- * Summaries;BasicFlow;false;ReturnThis;(System.Object);Argument[Qualifier];ReturnValue;value
- * ```
+ * ```Summaries;BasicFlow;false;ReturnThis;(System.Object);Argument[Qualifier];ReturnValue;value```
  * Capture APIs that transfer taint from an input parameter to an output return
  * value or parameter.
  * Allows a sequence of read steps followed by a sequence of store steps.
  *
  * Examples:
  *
- * ```
+ * ```csharp
  * public class BasicFlow {
  *   private string tainted;
  *
@@ -48,7 +46,7 @@ private import CaptureSummaryModels
  * Summaries;BasicFlow;false;AssignFieldToArray;(System.Object[]);Argument[Qualifier];Argument[0].Element;taint
  * ```
  *
- * ```
+ * ```csharp
  * public class BasicFlow {
  *   private string tainted;
  *
@@ -59,9 +57,9 @@ private import CaptureSummaryModels
  * }
  * ```
  * Captured Model:
- * `Summaries;BasicFlow;false;SetField;(System.String);Argument[0];Argument[Qualifier];taint`
+ * ```Summaries;BasicFlow;false;SetField;(System.String);Argument[0];Argument[Qualifier];taint```
  *
- * ```
+ * ```csharp
  * public class BasicFlow {
  *   public void ReturnSubstring(string s)
  *   {
@@ -70,9 +68,9 @@ private import CaptureSummaryModels
  * }
  * ```
  * Captured Model:
- * `Summaries;BasicFlow;false;ReturnSubstring;(System.String);Argument[0];ReturnValue;taint`
+ * ```Summaries;BasicFlow;false;ReturnSubstring;(System.String);Argument[0];ReturnValue;taint```
  *
- * ```
+ * ```csharp
  * public class BasicFlow {
  *    public void AssignToArray(int data, int[] target)
  *    {
@@ -81,7 +79,7 @@ private import CaptureSummaryModels
  * }
  * ```
  * Captured Model:
- * `Summaries;BasicFlow;false;AssignToArray;(System.Int32,System.Int32[]);Argument[0];Argument[1].Element;taint`
+ * ```Summaries;BasicFlow;false;AssignToArray;(System.Int32,System.Int32[]);Argument[0];Argument[1].Element;taint```
  */
 private string captureFlow(TargetAPI api) {
   result = captureQualifierFlow(api) or

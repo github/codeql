@@ -9,7 +9,7 @@ private import CaptureSummaryModels
 /**
  * Capture fluent APIs that return `this`.
  * Example of a fluent API:
- * ```
+ * ```java
  * public class Foo {
  *   public Foo someAPI() {
  *    // some side-effect
@@ -24,7 +24,7 @@ private import CaptureSummaryModels
  *
  * Examples:
  *
- * ```
+ * ```java
  * public class Foo {
  *   private String tainted;
  *
@@ -37,13 +37,13 @@ private import CaptureSummaryModels
  *   }
  * }
  * ```
- * Captured Model:
+ * Captured Models:
  * ```
  * p;Foo;true;returnsTainted;;Argument[-1];ReturnValue;taint
  * p;Foo;true;putsTaintIntoParameter;(List);Argument[-1];Argument[0];taint
  * ```
  *
- * ```
+ * ```java
  * public class Foo {
  *  private String tainted;
  *  public void doSomething(String input) {
@@ -51,9 +51,9 @@ private import CaptureSummaryModels
  *  }
  * ```
  * Captured Model:
- * `p;Foo;true;doSomething;(String);Argument[0];Argument[-1];taint`
+ * ```p;Foo;true;doSomething;(String);Argument[0];Argument[-1];taint```
  *
- * ```
+ * ```java
  * public class Foo {
  *   public String returnData(String tainted) {
  *     return tainted.substring(0,10)
@@ -61,9 +61,9 @@ private import CaptureSummaryModels
  * }
  * ```
  * Captured Model:
- * `p;Foo;true;returnData;;Argument[0];ReturnValue;taint`
+ * ```p;Foo;true;returnData;;Argument[0];ReturnValue;taint```
  *
- * ```
+ * ```java
  * public class Foo {
  *   public void addToList(String tainted, List<String> foo) {
  *     foo.add(tainted);
@@ -71,7 +71,7 @@ private import CaptureSummaryModels
  * }
  * ```
  * Captured Model:
- * `p;Foo;true;addToList;;Argument[0];Argument[1];taint`
+ * ```p;Foo;true;addToList;;Argument[0];Argument[1];taint```
  */
 string captureFlow(TargetAPI api) {
   result = captureQualifierFlow(api) or
