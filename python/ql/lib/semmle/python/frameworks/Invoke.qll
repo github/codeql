@@ -21,9 +21,6 @@ private module Invoke {
 
   /** Provides models for the `invoke` module. */
   module invoke {
-    /** Gets a reference to the `invoke.context` module. */
-    API::Node context() { result = invoke().getMember("context") }
-
     /** Provides models for the `invoke.context` module */
     module context {
       /** Provides models for the `invoke.context.Context` class */
