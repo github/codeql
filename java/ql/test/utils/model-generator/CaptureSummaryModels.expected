@@ -14,6 +14,8 @@
 | p;InnerHolder;false;getValue;();;Argument[-1];ReturnValue;taint |
 | p;InnerHolder;false;setContext;(String);;Argument[0];Argument[-1];taint |
 | p;Joiner;false;Joiner;(CharSequence);;Argument[0];Argument[-1];taint |
+| p;Joiner;false;Joiner;(CharSequence);;Argument[1];Argument[-1];taint |
+| p;Joiner;false;Joiner;(CharSequence);;Argument[2];Argument[-1];taint |
 | p;Joiner;false;Joiner;(CharSequence,CharSequence,CharSequence);;Argument[0];Argument[-1];taint |
 | p;Joiner;false;Joiner;(CharSequence,CharSequence,CharSequence);;Argument[1];Argument[-1];taint |
 | p;Joiner;false;Joiner;(CharSequence,CharSequence,CharSequence);;Argument[2];Argument[-1];taint |
@@ -25,6 +27,7 @@
 | p;MultipleImpls$Strat2;true;getValue;();;Argument[-1];ReturnValue;taint |
 | p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];Argument[-1];taint |
 | p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];ReturnValue;taint |
+| p;ParamFlow;true;addTo;(String,List);;Argument[-1];Argument[1].Element;taint |
 | p;ParamFlow;true;addTo;(String,List);;Argument[0];Argument[1].Element;taint |
 | p;ParamFlow;true;returnArrayElement;(String[]);;Argument[0].ArrayElement;ReturnValue;taint |
 | p;ParamFlow;true;returnCollectionElement;(List);;Argument[0].Element;ReturnValue;taint |
@@ -37,6 +40,7 @@
 | p;ParamFlow;true;writeChunked;(byte[],OutputStream);;Argument[0];Argument[1];taint |
 | p;ParamFlow;true;writeChunked;(char[],OutputStream);;Argument[0];Argument[1];taint |
 | p;Pojo;false;fillIn;(List);;Argument[-1];Argument[0].Element;taint |
+| p;Pojo;false;fillIn;(List);;Argument[0];Argument[0].Element;taint |
 | p;Pojo;false;getBoxedBytes;();;Argument[-1];ReturnValue;taint |
 | p;Pojo;false;getBoxedChars;();;Argument[-1];ReturnValue;taint |
 | p;Pojo;false;getByteArray;();;Argument[-1];ReturnValue;taint |
