@@ -3,6 +3,7 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.frameworks.MyBatis
 
 /**
  * A data flow sink for unvalidated user input that is used in OGNL EL evaluation.
@@ -123,12 +124,4 @@ private class DefaultOgnlInjectionAdditionalTaintStep extends OgnlInjectionAddit
   }
 }
 
-private import semmle.code.java.frameworks.MyBatis::ProviderInjection
-
 private class MyBatisOgnlInjectionSink extends OgnlInjectionSink instanceof MyBatisInjectionSink { }
-
-private class MyBatisAbstractSQLOgnlInjectionStep extends OgnlInjectionAdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    any(MyBatisAdditionalTaintStep step).step(node1, node2)
-  }
-}
