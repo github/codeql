@@ -257,16 +257,6 @@ class SyntheticFieldContent extends Content, TSyntheticFieldContent {
 }
 
 /**
- * Holds if the the content `c` is a container.
- */
-predicate containerContent(Content c) {
-  c instanceof ArrayContent or
-  c instanceof CollectionContent or
-  c instanceof MapKeyContent or
-  c instanceof MapValueContent
-}
-
-/**
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a

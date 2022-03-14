@@ -252,8 +252,3 @@ class ElementContent extends Content, TElementContent {
 
   override Location getLocation() { result instanceof EmptyLocation }
 }
-
-/**
- * Holds if the the content `c` is a container.
- */
-predicate containerContent(DataFlow::Content c) { c instanceof DataFlow::ElementContent }
