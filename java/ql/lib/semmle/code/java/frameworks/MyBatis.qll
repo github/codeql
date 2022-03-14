@@ -129,10 +129,9 @@ private class MyBatisAbstractSQLMethodNames extends string {
 
 class MyBatisInjectionSink extends DataFlow::Node {
   MyBatisInjectionSink() {
-    exists(Annotation a, Method m, TypeLiteral type, Class c |
+    exists(Annotation a, Method m |
       a.getType() instanceof MyBatisProvider and
-      type = a.getValue(["type", "value"]) and
-      c.hasMethod(m, type.getTypeName().getType()) and
+      m.getDeclaringType() = a.getValue(["type", "value"]).(TypeLiteral).getTypeName().getType() and
       m.hasName(a.getValue("method").(StringLiteral).getValue()) and
       this.asExpr() = m.getBody().getAStmt().(ReturnStmt).getResult()
     )
@@ -141,18 +140,17 @@ class MyBatisInjectionSink extends DataFlow::Node {
 
 private class MyBatisProviderStep extends TaintTracking::AdditionalTaintStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(
-      MethodAccess ma, Annotation a, Method annotatedMethod, Method providerMethod,
-      TypeLiteral type, Class c
+    exists(MethodAccess ma, Annotation a, Method providerMethod |
+      exists(int i |
+        ma.getArgument(i) = n1.asExpr() and
+        providerMethod.getParameter(i) = n2.asParameter()
+      )
     |
-      a.getType() instanceof MyBatisProvider and
-      annotatedMethod.getAnAnnotation() = a and
-      ma.getMethod() = annotatedMethod and
-      ma.getAnArgument() = n1.asExpr() and
-      type = a.getValue(["type", "value"]) and
-      providerMethod.hasName(a.getValue("method").(StringLiteral).getValue()) and
-      c.hasMethod(providerMethod, type.getTypeName().getType()) and
-      providerMethod.getAParameter() = n2.asParameter()
+      a.getType() instanceof MyBatisProvider and      
+      ma.getMethod().getAnAnnotation() = a and
+      providerMethod.getDeclaringType() =
+        a.getValue(["type", "value"]).(TypeLiteral).getTypeName().getType() and
+      providerMethod.hasName(a.getValue("method").(StringLiteral).getValue())
     )
   }
 }
