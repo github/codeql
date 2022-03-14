@@ -127,6 +127,13 @@ private class MyBatisAbstractSQLMethodNames extends string {
   }
 }
 
+/**
+ * A return statement of a method used in a MyBatis Provider.
+ *
+ * See
+ * - `MyBatisProvider`
+ * - https://mybatis.org/mybatis-3/apidocs/org/apache/ibatis/annotations/package-summary.html
+ */
 class MyBatisInjectionSink extends DataFlow::Node {
   MyBatisInjectionSink() {
     exists(Annotation a, Method m |
