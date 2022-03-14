@@ -49,7 +49,7 @@ predicate sourceSized(FunctionCall fc, Expr src) {
 }
 
 predicate readsVariable(LoadInstruction load, Variable var) {
-  load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
+  load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
 }
 
 predicate hasUpperBoundsCheck(Variable var) {

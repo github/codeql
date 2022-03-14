@@ -37,7 +37,7 @@ predicate linearBoundControls(BasicBlock controlled, SsaDefinition def, StackVar
 }
 
 predicate readsVariable(LoadInstruction load, Variable var) {
-  load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
+  load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
 }
 
 predicate hasUpperBoundsCheck(Variable var) {

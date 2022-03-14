@@ -34,7 +34,7 @@ predicate allocSink(Expr alloc, DataFlow::Node sink) {
 }
 
 predicate readsVariable(LoadInstruction load, Variable var) {
-  load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
+  load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
 }
 
 predicate hasUpperBoundsCheck(Variable var) {
