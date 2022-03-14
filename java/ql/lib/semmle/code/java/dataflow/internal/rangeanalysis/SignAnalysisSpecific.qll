@@ -3,172 +3,118 @@
  */
 module Private {
   private import java as J
-  import semmle.code.java.dataflow.RangeUtils as RU
-  private import semmle.code.java.dataflow.SSA as Ssa
-  private import semmle.code.java.controlflow.Guards as G
   private import Sign
+  private import semmle.code.java.semantic.SemanticExpr
+  private import semmle.code.java.semantic.SemanticGuard
+  private import semmle.code.java.semantic.SemanticSSA
   import Impl
 
-  class ConstantIntegerExpr = RU::ConstantIntegerExpr;
-
-  class Guard = G::Guard;
-
-  class SsaVariable = Ssa::SsaVariable;
-
-  class SsaPhiNode = Ssa::SsaPhiNode;
-
-  class VarAccess = J::VarAccess;
-
-  class FieldAccess = J::FieldAccess;
-
-  class CharacterLiteral = J::CharacterLiteral;
-
-  class IntegerLiteral = J::IntegerLiteral;
-
-  class LongLiteral = J::LongLiteral;
-
-  class CastExpr extends J::CastExpr {
-    /** Gets the source type of this cast. */
-    J::Type getSourceType() { result = this.getExpr().getType() }
-  }
-
-  class Type = J::Type;
-
-  class Expr = J::Expr;
-
-  class ComparisonExpr = J::ComparisonExpr;
-
-  class NumericOrCharType = J::NumericOrCharType;
-
-  class VariableUpdate = J::VariableUpdate;
-
-  class Field = J::Field;
-
-  class DivExpr = J::DivExpr;
-
-  /** Class to represent float and double literals. */
-  class RealLiteral extends J::Literal {
-    RealLiteral() {
-      this instanceof J::FloatingPointLiteral or
-      this instanceof J::DoubleLiteral
-    }
-  }
-
   /** Class to represent unary operation. */
-  class UnaryOperation extends J::Expr {
+  class UnaryOperation extends SemUnaryExpr {
     UnaryOperation() {
-      this instanceof J::PreIncExpr or
-      this instanceof J::PreDecExpr or
-      this instanceof J::MinusExpr or
-      this instanceof J::BitNotExpr
+      expr instanceof J::PreIncExpr or
+      expr instanceof J::PreDecExpr or
+      expr instanceof J::MinusExpr or
+      expr instanceof J::BitNotExpr
     }
 
     /** Returns the operand of this expression. */
-    Expr getOperand() {
-      result = this.(J::PreIncExpr).getExpr() or
-      result = this.(J::PreDecExpr).getExpr() or
-      result = this.(J::MinusExpr).getExpr() or
-      result = this.(J::BitNotExpr).getExpr()
-    }
+    SemExpr getOperand() { result = getExpr() }
 
     /** Returns the operation representing this expression. */
     TUnarySignOperation getOp() {
-      this instanceof J::PreIncExpr and result = TIncOp()
+      this instanceof SemPreIncExpr and result = TIncOp()
       or
-      this instanceof J::PreDecExpr and result = TDecOp()
+      this instanceof SemPreDecExpr and result = TDecOp()
       or
-      this instanceof J::MinusExpr and result = TNegOp()
+      this instanceof SemMinusExpr and result = TNegOp()
       or
-      this instanceof J::BitNotExpr and result = TBitNotOp()
+      this instanceof SemBitNotExpr and result = TBitNotOp()
     }
   }
 
   /** Class to represent binary operation. */
-  class BinaryOperation extends J::Expr {
+  class BinaryOperation extends SemExpr {
     BinaryOperation() {
-      this instanceof J::AddExpr or
-      this instanceof J::AssignAddExpr or
-      this instanceof J::SubExpr or
-      this instanceof J::AssignSubExpr or
-      this instanceof J::MulExpr or
-      this instanceof J::AssignMulExpr or
-      this instanceof J::DivExpr or
-      this instanceof J::AssignDivExpr or
-      this instanceof J::RemExpr or
-      this instanceof J::AssignRemExpr or
-      this instanceof J::AndBitwiseExpr or
-      this instanceof J::AssignAndExpr or
-      this instanceof J::OrBitwiseExpr or
-      this instanceof J::AssignOrExpr or
-      this instanceof J::XorBitwiseExpr or
-      this instanceof J::AssignXorExpr or
-      this instanceof J::LShiftExpr or
-      this instanceof J::AssignLShiftExpr or
-      this instanceof J::RShiftExpr or
-      this instanceof J::AssignRShiftExpr or
-      this instanceof J::URShiftExpr or
-      this instanceof J::AssignURShiftExpr
+      expr instanceof J::AddExpr or
+      expr instanceof J::AssignAddExpr or
+      expr instanceof J::SubExpr or
+      expr instanceof J::AssignSubExpr or
+      expr instanceof J::MulExpr or
+      expr instanceof J::AssignMulExpr or
+      expr instanceof J::DivExpr or
+      expr instanceof J::AssignDivExpr or
+      expr instanceof J::RemExpr or
+      expr instanceof J::AssignRemExpr or
+      expr instanceof J::AndBitwiseExpr or
+      expr instanceof J::AssignAndExpr or
+      expr instanceof J::OrBitwiseExpr or
+      expr instanceof J::AssignOrExpr or
+      expr instanceof J::XorBitwiseExpr or
+      expr instanceof J::AssignXorExpr or
+      expr instanceof J::LShiftExpr or
+      expr instanceof J::AssignLShiftExpr or
+      expr instanceof J::RShiftExpr or
+      expr instanceof J::AssignRShiftExpr or
+      expr instanceof J::URShiftExpr or
+      expr instanceof J::AssignURShiftExpr
     }
 
     /** Returns the operation representing this expression. */
     TBinarySignOperation getOp() {
-      this instanceof J::AddExpr and result = TAddOp()
+      expr instanceof J::AddExpr and result = TAddOp()
       or
-      this instanceof J::AssignAddExpr and result = TAddOp()
+      expr instanceof J::AssignAddExpr and result = TAddOp()
       or
-      this instanceof J::SubExpr and result = TSubOp()
+      expr instanceof J::SubExpr and result = TSubOp()
       or
-      this instanceof J::AssignSubExpr and result = TSubOp()
+      expr instanceof J::AssignSubExpr and result = TSubOp()
       or
-      this instanceof J::MulExpr and result = TMulOp()
+      expr instanceof J::MulExpr and result = TMulOp()
       or
-      this instanceof J::AssignMulExpr and result = TMulOp()
+      expr instanceof J::AssignMulExpr and result = TMulOp()
       or
-      this instanceof J::DivExpr and result = TDivOp()
+      expr instanceof J::DivExpr and result = TDivOp()
       or
-      this instanceof J::AssignDivExpr and result = TDivOp()
+      expr instanceof J::AssignDivExpr and result = TDivOp()
       or
-      this instanceof J::RemExpr and result = TRemOp()
+      expr instanceof J::RemExpr and result = TRemOp()
       or
-      this instanceof J::AssignRemExpr and result = TRemOp()
+      expr instanceof J::AssignRemExpr and result = TRemOp()
       or
-      this instanceof J::AndBitwiseExpr and result = TBitAndOp()
+      expr instanceof J::AndBitwiseExpr and result = TBitAndOp()
       or
-      this instanceof J::AssignAndExpr and result = TBitAndOp()
+      expr instanceof J::AssignAndExpr and result = TBitAndOp()
       or
-      this instanceof J::OrBitwiseExpr and result = TBitOrOp()
+      expr instanceof J::OrBitwiseExpr and result = TBitOrOp()
       or
-      this instanceof J::AssignOrExpr and result = TBitOrOp()
+      expr instanceof J::AssignOrExpr and result = TBitOrOp()
       or
-      this instanceof J::XorBitwiseExpr and result = TBitXorOp()
+      expr instanceof J::XorBitwiseExpr and result = TBitXorOp()
       or
-      this instanceof J::AssignXorExpr and result = TBitXorOp()
+      expr instanceof J::AssignXorExpr and result = TBitXorOp()
       or
-      this instanceof J::LShiftExpr and result = TLShiftOp()
+      expr instanceof J::LShiftExpr and result = TLShiftOp()
       or
-      this instanceof J::AssignLShiftExpr and result = TLShiftOp()
+      expr instanceof J::AssignLShiftExpr and result = TLShiftOp()
       or
-      this instanceof J::RShiftExpr and result = TRShiftOp()
+      expr instanceof J::RShiftExpr and result = TRShiftOp()
       or
-      this instanceof J::AssignRShiftExpr and result = TRShiftOp()
+      expr instanceof J::AssignRShiftExpr and result = TRShiftOp()
       or
-      this instanceof J::URShiftExpr and result = TURShiftOp()
+      expr instanceof J::URShiftExpr and result = TURShiftOp()
       or
-      this instanceof J::AssignURShiftExpr and result = TURShiftOp()
+      expr instanceof J::AssignURShiftExpr and result = TURShiftOp()
     }
 
-    Expr getLeftOperand() {
-      result = this.(J::BinaryExpr).getLeftOperand() or result = this.(J::AssignOp).getDest()
+    SemExpr getLeftOperand() {
+      result = this.(SemBinaryExpr).getLeftOperand() or result = this.(SemAssignOp).getDest()
     }
 
-    Expr getRightOperand() {
-      result = this.(J::BinaryExpr).getRightOperand() or result = this.(J::AssignOp).getRhs()
+    SemExpr getRightOperand() {
+      result = this.(SemBinaryExpr).getRightOperand() or result = this.(SemAssignOp).getRhs()
     }
   }
-
-  predicate ssaRead = RU::ssaRead/2;
-
-  predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
 }
 
 private module Impl {
@@ -181,111 +127,116 @@ private module Impl {
   private import semmle.code.java.Maps
   private import Sign
   private import SignAnalysisCommon
+  private import semmle.code.java.semantic.SemanticExpr
+  private import semmle.code.java.semantic.SemanticGuard
+  private import semmle.code.java.semantic.SemanticSSA
   private import SsaReadPositionCommon
-
-  class UnsignedNumericType = CharacterType;
-
-  /** Gets the character value of expression `e`. */
-  string getCharValue(Expr e) { result = e.(CharacterLiteral).getValue() }
-
-  /** Gets the constant `float` value of non-`ConstantIntegerExpr` expressions. */
-  float getNonIntegerValue(Expr e) {
-    result = e.(LongLiteral).getValue().toFloat() or
-    result = e.(FloatingPointLiteral).getValue().toFloat() or
-    result = e.(DoubleLiteral).getValue().toFloat()
-  }
 
   /**
    * Holds if `e` is an access to the size of a container (`string`, `Map`, or
    * `Collection`).
    */
-  predicate containerSizeAccess(Expr e) {
-    e.(MethodAccess).getMethod() instanceof StringLengthMethod
-    or
-    e.(MethodAccess).getMethod() instanceof CollectionSizeMethod
-    or
-    e.(MethodAccess).getMethod() instanceof MapSizeMethod
+  private predicate containerSizeAccess(SemExpr e) {
+    exists(Method method | method = getJavaExpr(e).(MethodAccess).getMethod() |
+      method instanceof StringLengthMethod
+      or
+      method instanceof CollectionSizeMethod
+      or
+      method instanceof MapSizeMethod
+    )
   }
-
-  /** Holds if `e` is by definition strictly positive. */
-  predicate positiveExpression(Expr e) { none() }
 
   /**
    * Holds if `e` has type `NumericOrCharType`, but the sign of `e` is unknown.
    */
-  predicate numericExprWithUnknownSign(Expr e) {
-    // The expression types handled in the predicate complements the expression
-    // types handled in `specificSubExprSign`.
-    e instanceof ArrayAccess and e.getType() instanceof NumericOrCharType
-    or
-    e instanceof MethodAccess and e.getType() instanceof NumericOrCharType
-    or
-    e instanceof ClassInstanceExpr and e.getType() instanceof NumericOrCharType
+  predicate numericExprWithUnknownSign(SemExpr e) {
+    exists(Expr expr | expr = getJavaExpr(e) |
+      // The expression types handled in the predicate complements the expression
+      // types handled in `specificSubExprSign`.
+      expr instanceof ArrayAccess and expr.getType() instanceof NumericOrCharType
+      or
+      expr instanceof MethodAccess and expr.getType() instanceof NumericOrCharType
+      or
+      expr instanceof ClassInstanceExpr and expr.getType() instanceof NumericOrCharType
+    )
   }
 
   /** Returns the underlying variable update of the explicit SSA variable `v`. */
-  VariableUpdate getExplicitSsaAssignment(SsaVariable v) {
-    result = v.(SsaExplicitUpdate).getDefiningExpr()
+  SemVariableUpdate getExplicitSsaAssignment(SemSsaVariable v) {
+    result = v.(SemSsaExplicitUpdate).getDefiningExpr()
   }
 
   /** Returns the assignment of the variable update `def`. */
-  Expr getExprFromSsaAssignment(VariableUpdate def) {
-    result = def.(VariableAssign).getSource()
+  SemExpr getExprFromSsaAssignment(SemVariableUpdate def) {
+    result = def.(SemVariableAssign).getSource()
     or
-    exists(AssignOp a | a = def and result = a)
+    exists(SemAssignOp a | a = def and result = a)
   }
 
   /** Holds if `def` can have any sign. */
-  predicate explicitSsaDefWithAnySign(VariableUpdate def) {
-    exists(EnhancedForStmt for | def = for.getVariable())
-  }
-
-  /** Returns the operand of the operation if `def` is a decrement. */
-  Expr getDecrementOperand(Element e) {
-    result = e.(PostDecExpr).getExpr() or result = e.(PreDecExpr).getExpr()
-  }
-
-  /** Returns the operand of the operation if `def` is an increment. */
-  Expr getIncrementOperand(Element e) {
-    result = e.(PostIncExpr).getExpr() or result = e.(PreIncExpr).getExpr()
+  predicate explicitSsaDefWithAnySign(SemVariableUpdate def) {
+    exists(EnhancedForStmt for | def = getSemanticExpr(for.getVariable()))
   }
 
   /** Gets the variable underlying the implicit SSA variable `v`. */
-  Variable getImplicitSsaDeclaration(SsaVariable v) {
+  private Variable getImplicitSsaDeclaration(SsaVariable v) {
     result = v.(SsaImplicitUpdate).getSourceVariable().getVariable() or
     result = v.(SsaImplicitInit).getSourceVariable().getVariable()
   }
 
   /** Holds if the variable underlying the implicit SSA variable `v` is not a field. */
-  predicate nonFieldImplicitSsaDefinition(SsaImplicitInit v) {
+  private predicate nonFieldImplicitSsaDefinition(SsaImplicitInit v) {
     exists(Parameter p | v.isParameterDefinition(p))
   }
 
+  /** Returns the sign of implicit SSA definition `v`. */
+  Sign implicitSsaDefSign(SemSsaVariable v) {
+    exists(SsaVariable javaVariable | javaVariable = getJavaSsaVariable(v) |
+      result = fieldSign(getImplicitSsaDeclaration(javaVariable))
+      or
+      anySign(result) and nonFieldImplicitSsaDefinition(javaVariable)
+    )
+  }
+
+  /** Gets a possible sign for `f`. */
+  private Sign fieldSign(Field f) {
+    if not fieldWithUnknownSign(f)
+    then
+      result = semExprSign(getAssignedValueToField(f))
+      or
+      fieldIncrementOperationOperand(f) and result = fieldSign(f).inc()
+      or
+      fieldDecrementOperationOperand(f) and result = fieldSign(f).dec()
+      or
+      result = specificFieldSign(f)
+    else anySign(result)
+  }
+
   /** Returned an expression that is assigned to `f`. */
-  Expr getAssignedValueToField(Field f) {
-    result = f.getAnAssignedValue() or
-    result = any(AssignOp a | a.getDest() = f.getAnAccess())
+  private SemExpr getAssignedValueToField(Field f) {
+    result = getSemanticExpr(f.getAnAssignedValue()) or
+    result = any(SemAssignOp a | a.getDest() = getSemanticExpr(f.getAnAccess()))
   }
 
   /** Holds if `f` can have any sign. */
-  predicate fieldWithUnknownSign(Field f) {
+  private predicate fieldWithUnknownSign(Field f) {
     exists(ReflectiveFieldAccess rfa | rfa.inferAccessedField() = f)
   }
 
   /** Holds if `f` is accessed in an increment operation. */
-  predicate fieldIncrementOperationOperand(Field f) {
+  private predicate fieldIncrementOperationOperand(Field f) {
     any(PostIncExpr inc).getExpr() = f.getAnAccess() or
     any(PreIncExpr inc).getExpr() = f.getAnAccess()
   }
 
   /** Holds if `f` is accessed in a decrement operation. */
-  predicate fieldDecrementOperationOperand(Field f) {
+  private predicate fieldDecrementOperationOperand(Field f) {
     any(PostDecExpr dec).getExpr() = f.getAnAccess() or
     any(PreDecExpr dec).getExpr() = f.getAnAccess()
   }
 
   /** Returns possible signs of `f` based on the declaration. */
-  Sign specificFieldSign(Field f) {
+  private Sign specificFieldSign(Field f) {
     if f.fromSource()
     then not exists(f.getInitializer()) and result = TZero()
     else
@@ -301,20 +252,25 @@ private module Impl {
   }
 
   /** Returns a sub expression of `e` for expression types where the sign depends on the child. */
-  Expr getASubExprWithSameSign(Expr e) {
-    result = e.(AssignExpr).getSource() or
-    result = e.(PlusExpr).getExpr() or
-    result = e.(PostIncExpr).getExpr() or
-    result = e.(PostDecExpr).getExpr() or
-    result = e.(ChooseExpr).getAResultExpr() or
-    result = e.(CastExpr).getExpr()
+  SemExpr getASubExprWithSameSign(SemExpr e) {
+    result = e.(SemAssignExpr).getRhs() or
+    result = e.(SemPlusExpr).getExpr() or
+    result = e.(SemPostIncExpr).getExpr() or
+    result = e.(SemPostDecExpr).getExpr() or
+    result = getSemanticExpr(getJavaExpr(e).(ChooseExpr).getAResultExpr()) or
+    result = e.(SemCastExpr).getExpr()
   }
 
-  Expr getARead(SsaVariable v) { result = v.getAUse() }
+  private Field getField(FieldAccess fa) { result = fa.getField() }
 
-  Field getField(FieldAccess fa) { result = fa.getField() }
+  Sign getVarAccessSign(SemVarAccess access) {
+    result = fieldSign(getField(getJavaExpr(access).(FieldAccess)))
+    or
+    anySign(result) and not getJavaExpr(access) instanceof FieldAccess
+  }
 
-  Expr getAnExpression(SsaReadPositionBlock bb) { result = bb.getBlock().getANode() }
-
-  Guard getComparisonGuard(ComparisonExpr ce) { result = ce }
+  Sign specificCertainExprSign(SemExpr e) {
+    containerSizeAccess(e) and
+    (result = TPos() or result = TZero())
+  }
 }
