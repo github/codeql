@@ -7,6 +7,7 @@ private import DataFlowImplCommon
 private import ControlFlowReachability
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
+private import semmle.code.csharp.dataflow.internal.FlowSummaries as FlowSummaries
 private import semmle.code.csharp.Conversion
 private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.ExprOrStmtParent
