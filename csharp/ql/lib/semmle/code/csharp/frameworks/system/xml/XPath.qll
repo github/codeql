@@ -1,6 +1,6 @@
 /** Provides classes related to the namespace `System.Xml.XPath`. */
 
-import csharp as CSharp
+private import csharp as CSharp
 private import semmle.code.csharp.frameworks.system.Xml as Xml
 
 /** Definitions relating to the `System.Xml.XPath` namespace. */
