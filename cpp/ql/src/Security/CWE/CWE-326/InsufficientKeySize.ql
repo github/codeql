@@ -4,6 +4,7 @@
  *              allow an attacker to compromise security.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id cpp/insufficient-key-size
  * @tags security
