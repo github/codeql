@@ -97,6 +97,11 @@ private class InvalidTypeModel extends ModelInput::TypeModelCsv {
       [
         "test;TooManyColumns;;;Member[Foo].Instance;too;many;columns", //
         "test;TooFewColumns", //
+        "test;X;test;Y;Method[foo].Arg[0]", //
+        "test;X;test;Y;Method[foo].Argument[0-1]", //
+        "test;X;test;Y;Method[foo].Argument[*]", //
+        "test;X;test;Y;Method[foo].Argument", //
+        "test;X;test;Y;Method[foo].Member", //
       ]
   }
 }

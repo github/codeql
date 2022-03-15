@@ -137,3 +137,29 @@ class InvokeNode extends API::MethodAccessNode {
 
 /** Gets the `InvokeNode` corresponding to a specific invocation of `node`. */
 InvokeNode getAnInvocationOf(API::Node node) { result = node }
+
+/**
+ * Holds if `name` is a valid name for an access path token in the identifying access path.
+ */
+bindingset[name]
+predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
+  name = ["Member", "Method", "Instance", "WithBlock", "WithoutBlock"]
+}
+
+/**
+ * Holds if `name` is a valid name for an access path token with no arguments, occuring
+ * in an identifying access path.
+ */
+predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
+  name = ["Instance", "WithBlock", "WithoutBlock"]
+}
+
+/**
+ * Holds if `argument` is a valid argument to an access path token with the given `name`, occurring
+ * in an identifying access path.
+ */
+bindingset[name, argument]
+predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
+  name = ["Member", "Method"] and
+  argument = any(string s)
+}
