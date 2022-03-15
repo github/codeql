@@ -92,8 +92,6 @@ class TargetApi extends Callable {
   }
 }
 
-string asPartialModel(TargetApi api) { result = api.asPartialModel() }
-
 private predicate isPrimitiveTypeUsedForBulkData(Type t) {
   t.getName().regexpMatch("byte|char|Byte|Character")
 }
