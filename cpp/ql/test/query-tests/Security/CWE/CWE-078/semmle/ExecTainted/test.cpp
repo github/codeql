@@ -199,7 +199,7 @@ void test17(FILE *f) {
 }
 
 void test18() {
-  // GOOD [FALSE POSITIVE]
+  // GOOD
   char command[1000] = "ls ", flags[1000] = "-l", filename[1000] = ".";
 
   concat(command, flags, filename);
