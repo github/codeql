@@ -42,24 +42,6 @@ predicate isRelevantForModels(Callable api) {
   not api instanceof MainMethod
 }
 
-/**
- * A class of Callables that are relevant for generating summary, source and sinks models for.
- *
- * In the Standard library and 3rd party libraries it the Callables that can be called
- * from outside the library itself.
- */
-class TargetApi extends Callable {
-  TargetApi() {
-    this.isPublic() and
-    this.fromSource() and
-    (
-      this.getDeclaringType().isPublic() or
-      superImpl(this).getDeclaringType().isPublic()
-    ) and
-    isRelevantForModels(this)
-  }
-}
-
 private string isExtensible(RefType ref) {
   if ref.isFinal() then result = "false" else result = "true"
 }
@@ -81,16 +63,39 @@ private RefType bestTypeForModel(TargetApi api) {
 private string typeAsSummaryModel(TargetApi api) { result = typeAsModel(bestTypeForModel(api)) }
 
 /**
+ * A class of Callables that are relevant for generating summary, source and sinks models for.
+ *
+ * In the Standard library and 3rd party libraries it the Callables that can be called
+ * from outside the library itself.
+ */
+class TargetApi extends Callable {
+  TargetApi() {
+    this.isPublic() and
+    this.fromSource() and
+    (
+      this.getDeclaringType().isPublic() or
+      superImpl(this).getDeclaringType().isPublic()
+    ) and
+    isRelevantForModels(this)
+  }
+
+  /**
+   * Computes the first 6 columns for CSV rows.
+   */
+  string asPartialModel() {
+    result =
+      typeAsSummaryModel(this) + ";" //
+        + isExtensible(bestTypeForModel(this)) + ";" //
+        + this.getName() + ";" //
+        + paramsString(this) + ";" //
+        + /* ext + */ ";" //
+  }
+}
+
+/**
  * Computes the first 6 columns for CSV rows.
  */
-string asPartialModel(TargetApi api) {
-  result =
-    typeAsSummaryModel(api) + ";" //
-      + isExtensible(bestTypeForModel(api)) + ";" //
-      + api.getName() + ";" //
-      + paramsString(api) + ";" //
-      + /* ext + */ ";" //
-}
+string asPartialModel(TargetApi api) { result = api.asPartialModel() }
 
 private predicate isPrimitiveTypeUsedForBulkData(Type t) {
   t.getName().regexpMatch("byte|char|Byte|Character")
