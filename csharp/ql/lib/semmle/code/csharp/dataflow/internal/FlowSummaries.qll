@@ -33,13 +33,17 @@ abstract class PublicSummarizedCallable extends RelevantSummarizedCallable {
     if this.isBaseCallableOrPrototype() then result = "true" else result = "false"
   }
 
-  /** Gets a string representing the callable in semi-colon separated format for use in flow summaries. */
+  /** Computes the first 6 columns for CSV rows. */
   final override string asPartialModel() {
     exists(string namespace, string type |
       this.getDeclaringType().hasQualifiedName(namespace, type) and
       result =
-        namespace + ";" + type + ";" + this.getCallableOverride() + ";" + this.getName() + ";" + "("
-          + this.parameterQualifiedTypeNamesToString() + ")"
+        namespace + ";" //
+          + type + ";" //
+          + this.getCallableOverride() + ";" //
+          + this.getName() + ";" //
+          + "(" + this.parameterQualifiedTypeNamesToString() + ")" //
+          + /* ext + */ ";" //
     )
   }
 }

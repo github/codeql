@@ -1061,7 +1061,7 @@ module Private {
       |
         c.relevantSummary(input, output, preservesValue) and
         csv =
-          c.asPartialModel() + ";;" + getComponentStackCsv(input) + ";" +
+          c.asPartialModel() + ";" + getComponentStackCsv(input) + ";" +
             getComponentStackCsv(output) + ";" + renderKind(preservesValue)
       )
     }
