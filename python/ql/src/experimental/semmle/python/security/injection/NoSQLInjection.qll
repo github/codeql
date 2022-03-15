@@ -19,13 +19,13 @@ module NoSqlInjection {
       state instanceof ConvertedToDict
     }
 
-    override predicate isBarrier(DataFlow::Node node, DataFlow::FlowState state) {
+    override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
       // Block `RemoteInput` paths here, since they change state to `ConvertedToDict`
       exists(Decoding decoding | decoding.getFormat() = "JSON" and node = decoding.getOutput()) and
       state instanceof RemoteInput
     }
 
-    override predicate isAdditionalFlowStep(
+    override predicate isAdditionalTaintStep(
       DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
       DataFlow::FlowState stateTo
     ) {

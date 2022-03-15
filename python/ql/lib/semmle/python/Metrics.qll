@@ -27,9 +27,9 @@ class FunctionMetrics extends Function {
    *  P = the number of connected components, which for a single function is 1.
    */
   int getCyclomaticComplexity() {
-    exists(int E, int N |
-      N = count(BasicBlock b | b = this.getABasicBlock() and b.likelyReachable()) and
-      E =
+    exists(int e, int n |
+      n = count(BasicBlock b | b = this.getABasicBlock() and b.likelyReachable()) and
+      e =
         count(BasicBlock b1, BasicBlock b2 |
           b1 = this.getABasicBlock() and
           b1.likelyReachable() and
@@ -39,7 +39,7 @@ class FunctionMetrics extends Function {
           not b1.unlikelySuccessor(b2)
         )
     |
-      result = E - N + 2
+      result = e - n + 2
     )
   }
 

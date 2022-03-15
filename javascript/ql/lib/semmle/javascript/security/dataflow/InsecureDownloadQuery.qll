@@ -22,4 +22,9 @@ class Configuration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
     sink.(Sink).getALabel() = label
   }
+
+  override predicate isBarrier(DataFlow::Node node) {
+    super.isBarrier(node) or
+    node instanceof Sanitizer
+  }
 }

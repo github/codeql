@@ -29,6 +29,24 @@ string getName(AstNode node, string kind) {
   result = node.(Module).getName() and kind = "module"
 }
 
+string prettyPluralKind(string kind) {
+  kind = "class" and result = "classes"
+  or
+  kind = "classlessPredicate" and result = "predicates"
+  or
+  kind = "classPredicate" and result = "class predicates"
+  or
+  kind = "newtypeBranch" and result = "newtype branches"
+  or
+  kind = "newtype" and result = "newtypes"
+  or
+  kind = "variable" and result = "variables"
+  or
+  kind = "field" and result = "fields"
+  or
+  kind = "module" and result = "modules"
+}
+
 /**
  * Holds if `name` seems to contain an upper-cased acronym that could be pascal-cased.
  * `name` is the name of `node`, and `kind` describes what kind of definition `node` is.
