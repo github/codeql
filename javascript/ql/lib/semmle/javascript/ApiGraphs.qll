@@ -109,7 +109,7 @@ module API {
      */
     cached
     Node getMember(string m) {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::member(m))
     }
 
@@ -119,7 +119,7 @@ module API {
      */
     cached
     Node getUnknownMember() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::unknownMember())
     }
 
@@ -129,7 +129,7 @@ module API {
      */
     cached
     Node getAMember() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getMember(_)
       or
       result = this.getUnknownMember()
@@ -148,7 +148,7 @@ module API {
      */
     cached
     Node getInstance() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::instance())
     }
 
@@ -160,7 +160,7 @@ module API {
      */
     cached
     Node getParameter(int i) {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::parameter(i))
     }
 
@@ -182,7 +182,7 @@ module API {
      */
     cached
     Node getReceiver() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::receiver())
     }
 
@@ -196,7 +196,7 @@ module API {
      */
     cached
     Node getAParameter() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getParameter(_)
       or
       result = this.getReceiver()
@@ -210,7 +210,7 @@ module API {
      */
     cached
     Node getReturn() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::return())
     }
 
@@ -220,7 +220,7 @@ module API {
      */
     cached
     Node getPromised() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::promised())
     }
 
@@ -229,7 +229,7 @@ module API {
      */
     cached
     Node getPromisedError() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::promisedError())
     }
 
@@ -892,7 +892,7 @@ module API {
      */
     cached
     predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       exists(string m |
         pred = MkRoot() and
         lbl = Label::moduleLabel(m)
@@ -1251,7 +1251,7 @@ private predicate exports(string m, string prop, DataFlow::Node rhs) {
 
 /** Gets the definition of module `m`. */
 private Module importableModule(string m) {
-  exists(NPMPackage pkg, PackageJSON json | json = pkg.getPackageJSON() and not json.isPrivate() |
+  exists(NpmPackage pkg, PackageJson json | json = pkg.getPackageJson() and not json.isPrivate() |
     result = pkg.getMainModule() and
     not result.isExterns() and
     m = pkg.getPackageName()

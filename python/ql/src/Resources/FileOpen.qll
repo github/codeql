@@ -66,7 +66,7 @@ predicate passes_open_files(Variable v, ControlFlowNode test, boolean sense) {
   )
 }
 
-/* Helper for `def_is_open` to give better join order */
+// Helper for `def_is_open` to give better join order
 private predicate passes_open_files(PyEdgeRefinement refinement) {
   passes_open_files(refinement.getSourceVariable(), refinement.getPredecessor().getLastNode(),
     refinement.getSense())

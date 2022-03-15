@@ -11,7 +11,7 @@ deprecated ClassValue theJinja2TemplateClass() { result = Value::named("jinja2.T
 deprecated Value theJinja2FromStringValue() { result = Value::named("jinja2.from_string") }
 
 /**
- * Sink representing the `jinja2.Template` class instantiation argument.
+ * A sink representing the `jinja2.Template` class instantiation argument.
  *
  *  from jinja2 import Template
  *  template = Template(`sink`)
@@ -30,7 +30,7 @@ deprecated class Jinja2TemplateSink extends SSTISink {
 }
 
 /**
- * Sink representing the `jinja2.from_string` function call argument.
+ * A sink representing the `jinja2.from_string` function call argument.
  *
  *  from jinja2 import from_string
  *  template = from_string(`sink`)

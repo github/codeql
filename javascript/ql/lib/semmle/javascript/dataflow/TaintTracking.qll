@@ -62,24 +62,6 @@ module TaintTracking {
      */
     predicate isSanitizer(DataFlow::Node node) { none() }
 
-    /**
-     * DEPRECATED: Use `isSanitizerEdge` instead.
-     *
-     * Holds if the edge from `source` to `sink` is a taint sanitizer.
-     */
-    deprecated predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) { none() }
-
-    /**
-     * DEPRECATED: Use `isSanitizerEdge` instead.
-     *
-     * Holds if the edge from `source` to `sink` is a taint sanitizer for data labelled with `lbl`.
-     */
-    deprecated predicate isSanitizer(
-      DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl
-    ) {
-      none()
-    }
-
     /** Holds if the edge from `pred` to `succ` is a taint sanitizer. */
     predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
@@ -447,9 +429,10 @@ module TaintTracking {
 
   /**
    * Holds if `pred -> succ` is a taint propagating data flow edge through a string operation.
+   * DEPRECATED: Use `stringConcatenationStep` and `stringManipulationStep` instead.
    */
   pragma[inline]
-  predicate stringStep(DataFlow::Node pred, DataFlow::Node succ) {
+  deprecated predicate stringStep(DataFlow::Node pred, DataFlow::Node succ) {
     stringConcatenationStep(pred, succ) or
     stringManipulationStep(pred, succ)
   }
@@ -570,11 +553,10 @@ module TaintTracking {
   }
 
   /**
-   * DEPRECATED. Use the predicate `TaintTracking::persistentStorageStep` instead.
-   *
    * A taint propagating data flow edge through persistent storage.
+   * Use `TaintTracking::persistentStorageStep` instead of accessing this class.
    */
-  deprecated class PersistentStorageTaintStep extends SharedTaintStep {
+  private class PersistentStorageTaintStep extends SharedTaintStep {
     override predicate persistentStorageStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(PersistentReadAccess read |
         pred = read.getAWrite().getValue() and
@@ -582,8 +564,6 @@ module TaintTracking {
       )
     }
   }
-
-  deprecated predicate arrayFunctionTaintStep = ArrayTaintTracking::arrayFunctionTaintStep/3;
 
   /**
    * A taint propagating data flow edge for assignments of the form `o[k] = v`, where
@@ -1175,9 +1155,6 @@ module TaintTracking {
     polarity = guard.asExpr().(EqualityTest).getPolarity()
   }
 
-  /** DEPRECATED. This class has been renamed to `MembershipTestSanitizer`. */
-  deprecated class StringInclusionSanitizer = MembershipTestSanitizer;
-
   /**
    * A test of form `x.length === "0"`, preventing `x` from being tainted.
    */
@@ -1199,9 +1176,6 @@ module TaintTracking {
 
     override predicate appliesTo(Configuration cfg) { any() }
   }
-
-  /** DEPRECATED. This class has been renamed to `MembershipTestSanitizer`. */
-  deprecated class InclusionSanitizer = MembershipTestSanitizer;
 
   /**
    * A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch.
@@ -1244,38 +1218,6 @@ module TaintTracking {
     override predicate appliesTo(Configuration cfg) { any() }
   }
 
-  /** Gets a variable that is defined exactly once. */
-  private Variable singleDef() { strictcount(result.getADefinition()) = 1 }
-
-  /**
-   * A check of the form `if(x == 'some-constant')`, which sanitizes `x` in its "then" branch.
-   *
-   * DEPRECATED: use `MembershipTestSanitizer` instead.
-   */
-  deprecated class ConstantComparison extends SanitizerGuardNode, DataFlow::ValueNode {
-    Expr x;
-    override EqualityTest astNode;
-
-    ConstantComparison() {
-      exists(Expr const | astNode.hasOperands(x, const) |
-        // either the other operand is a constant
-        const instanceof ConstantExpr
-        or
-        // or it's an access to a variable that probably acts as a symbolic constant
-        const = singleDef().getAnAccess()
-      )
-    }
-
-    override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = astNode.getPolarity() and x = e
-    }
-
-    /**
-     * Holds if this guard applies to the flow in `cfg`.
-     */
-    predicate appliesTo(Configuration cfg) { any() }
-  }
-
   /**
    * An equality test on `e.origin` or `e.source` where `e` is a `postMessage` event object,
    * considered as a sanitizer for `e`.
@@ -1301,8 +1243,9 @@ module TaintTracking {
 
   /**
    * Holds if taint propagates from `pred` to `succ` in one local (intra-procedural) step.
+   * DEPRECATED: Use `TaintTracking::sharedTaintStep` and `DataFlow::Node::getALocalSource()` instead.
    */
-  predicate localTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  deprecated predicate localTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     DataFlow::localFlowStep(pred, succ) or
     sharedTaintStep(pred, succ)
   }

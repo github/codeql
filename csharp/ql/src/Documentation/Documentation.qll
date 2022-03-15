@@ -26,7 +26,7 @@ class SourceMethodOrConstructor extends SourceDeclaration, Callable {
 }
 
 /** Gets an XML comment bound to this declaration. */
-XmlComment getADeclarationXmlComment(Declaration d) {
+XmlCommentLine getADeclarationXmlComment(Declaration d) {
   result = getADeclarationCommentBlock(d).getAChild()
 }
 
@@ -58,7 +58,7 @@ predicate isDocumentationNeeded(Modifiable decl) {
 }
 
 /** An XML comment containing a `<returns>` tag. */
-class ReturnsXmlComment extends XmlComment {
+class ReturnsXmlComment extends XmlCommentLine {
   ReturnsXmlComment() { this.getOpenTag(_) = "returns" }
 
   /** Holds if the element in this comment has a body at offset `offset`. */
@@ -72,7 +72,7 @@ class ReturnsXmlComment extends XmlComment {
 }
 
 /** An XML comment containing an `<exception>` tag. */
-class ExceptionXmlComment extends XmlComment {
+class ExceptionXmlComment extends XmlCommentLine {
   ExceptionXmlComment() { this.getOpenTag(_) = "exception" }
 
   /** Gets a `cref` attribute at offset `offset`, if any. */
@@ -83,7 +83,7 @@ class ExceptionXmlComment extends XmlComment {
 }
 
 /** An XML comment containing a `<param>` tag. */
-class ParamXmlComment extends XmlComment {
+class ParamXmlComment extends XmlCommentLine {
   ParamXmlComment() { this.getOpenTag(_) = "param" }
 
   /** Gets the name of this parameter at offset `offset`. */
@@ -94,7 +94,7 @@ class ParamXmlComment extends XmlComment {
 }
 
 /** An XML comment containing a `<typeparam>` tag. */
-class TypeparamXmlComment extends XmlComment {
+class TypeparamXmlComment extends XmlCommentLine {
   TypeparamXmlComment() { this.getOpenTag(_) = "typeparam" }
 
   /** Gets the `name` attribute of this element at offset `offset`. */
@@ -105,7 +105,7 @@ class TypeparamXmlComment extends XmlComment {
 }
 
 /** An XML comment containing a `<summary>` tag. */
-class SummaryXmlComment extends XmlComment {
+class SummaryXmlComment extends XmlCommentLine {
   SummaryXmlComment() { this.getOpenTag(_) = "summary" }
 
   /** Holds if the element in this comment has a body at offset `offset`. */
@@ -119,6 +119,6 @@ class SummaryXmlComment extends XmlComment {
 }
 
 /** An XML comment containing an `<inheritdoc>` tag. */
-class InheritDocXmlComment extends XmlComment {
+class InheritDocXmlComment extends XmlCommentLine {
   InheritDocXmlComment() { this.getOpenTag(_) = "inheritdoc" }
 }

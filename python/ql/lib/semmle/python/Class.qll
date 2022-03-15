@@ -85,12 +85,6 @@ class ClassDef extends Assign {
 
 /** The scope of a class. This is the scope of all the statements within the class definition */
 class Class extends Class_, Scope, AstNode {
-  /**
-   * Use getADecorator() instead of getDefinition().getADecorator()
-   * Use getMetaClass() instead of getDefinition().getMetaClass()
-   */
-  deprecated ClassExpr getDefinition() { result = this.getParent() }
-
   /** Gets a defined init method of this class */
   Function getInitMethod() { result.getScope() = this and result.isInitMethod() }
 

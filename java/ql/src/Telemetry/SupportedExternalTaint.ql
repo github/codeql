@@ -10,7 +10,7 @@ import java
 import ExternalAPI
 import semmle.code.java.GeneratedFiles
 
-from ExternalAPI api, int usages
+from ExternalApi api, int usages
 where
   not api.isUninteresting() and
   api.hasSummary() and

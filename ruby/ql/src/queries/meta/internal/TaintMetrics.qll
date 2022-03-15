@@ -25,7 +25,7 @@ DataFlow::Node relevantTaintSink(string kind) {
     or
     kind = "CommandInjection" and result instanceof CommandInjection::Sink
     or
-    kind = "XSS" and result instanceof ReflectedXSS::Sink
+    kind = "XSS" and result instanceof ReflectedXss::Sink
     or
     kind = "PathInjection" and result instanceof PathInjection::Sink
     or

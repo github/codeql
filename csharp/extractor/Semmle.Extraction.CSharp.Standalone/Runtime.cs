@@ -84,7 +84,7 @@ namespace Semmle.Extraction.CSharp.Standalone
                 foreach (var r in DesktopRuntimes)
                     yield return r;
 
-                // A bad choice if it's the self-contained runtime distributed in odasa dist.
+                // A bad choice if it's the self-contained runtime distributed in codeql dist.
                 yield return ExecutingRuntime;
             }
         }

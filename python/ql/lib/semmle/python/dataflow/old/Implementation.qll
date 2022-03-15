@@ -79,7 +79,7 @@ abstract class AttributePath extends TAttributePath {
   predicate noAttribute() { this = TNoAttribute() }
 }
 
-/** AttributePath for no attribute. */
+/** The `AttributePath` for no attribute. */
 class NoAttribute extends TNoAttribute, AttributePath {
   override string toString() { result = "no attribute" }
 
@@ -88,7 +88,7 @@ class NoAttribute extends TNoAttribute, AttributePath {
   override AttributePath fromAttribute(string name) { none() }
 }
 
-/** AttributePath for an attribute. */
+/** The `AttributePath` for an attribute. */
 class NamedAttributePath extends TAttribute, AttributePath {
   override string toString() {
     exists(string attr |
@@ -124,8 +124,8 @@ newtype TTaintTrackingNode =
   }
 
 /**
- * Class representing the (node, context, path, kind) tuple.
- *  Used for context-sensitive path-aware taint-tracking.
+ * A class representing the (node, context, path, kind) tuple.
+ * Used for context-sensitive path-aware taint-tracking.
  */
 class TaintTrackingNode extends TTaintTrackingNode {
   /** Gets a textual representation of this element. */
@@ -991,7 +991,7 @@ int iterable_unpacking_descent(SequenceNode left_parent, ControlFlowNode left_de
 }
 
 module Implementation {
-  /* A call that returns a copy (or similar) of the argument */
+  /** Holds if `tonode` is a call that returns a copy (or similar) of the argument `fromnode` */
   predicate copyCall(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getFunction().(AttrNode).getObject("copy") = fromnode
     or

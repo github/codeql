@@ -7,8 +7,32 @@
 
 private import codeql.ruby.ast.Literal as AST
 private import codeql.Locations
+private import codeql.ruby.DataFlow
+private import codeql.ruby.TaintTracking
+private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.ApiGraphs
 
-class RegExp extends AST::RegExpLiteral {
+/**
+ * A `StringlikeLiteral` containing a regular expression term, that is, either
+ * a regular expression literal, or a string literal used in a context where
+ * it is parsed as regular expression.
+ */
+abstract class RegExp extends AST::StringlikeLiteral {
+  /**
+   * Holds if this `RegExp` has the `s` flag for multi-line matching.
+   */
+  predicate isDotAll() { none() }
+
+  /**
+   * Holds if this `RegExp` has the `i` flag for case-insensitive matching.
+   */
+  predicate isIgnoreCase() { none() }
+
+  /**
+   * Gets the flags for this `RegExp`, or the empty string if it has no flags.
+   */
+  string getFlags() { result = "" }
+
   /**
    * Helper predicate for `charSetStart(int start, int end)`.
    *
@@ -378,7 +402,8 @@ class RegExp extends AST::RegExpLiteral {
     not exists(int x, int y | this.backreference(x, y) and x <= start and y >= end) and
     not exists(int x, int y |
       this.pStyleNamedCharacterProperty(x, y, _) and x <= start and y >= end
-    )
+    ) and
+    not exists(int x, int y | this.multiples(x, y, _, _) and x <= start and y >= end)
   }
 
   predicate normalCharacter(int start, int end) {
@@ -464,7 +489,7 @@ class RegExp extends AST::RegExpLiteral {
     this.group(start, end) and
     exists(int nameEnd |
       this.namedGroupStart(start, nameEnd) and
-      result = this.getText().substring(start + 4, nameEnd - 1)
+      result = this.getText().substring(start + 3, nameEnd - 1)
     )
   }
 
@@ -837,6 +862,7 @@ class RegExp extends AST::RegExpLiteral {
    * Whether the text in the range start,end is an alternation
    */
   predicate alternation(int start, int end) {
+    not this.inCharSet(start) and
     this.topLevel(start, end) and
     exists(int less | this.subalternation(start, less, _) and less < end)
   }
@@ -933,3 +959,63 @@ class RegExp extends AST::RegExpLiteral {
     this.lastPart(start, end)
   }
 }
+
+private class RegExpLiteralRegExp extends RegExp, AST::RegExpLiteral {
+  override predicate isDotAll() { this.hasMultilineFlag() }
+
+  override predicate isIgnoreCase() { this.hasCaseInsensitiveFlag() }
+
+  override string getFlags() { result = this.getFlagString() }
+}
+
+private class ParsedStringRegExp extends RegExp {
+  private DataFlow::Node parse;
+
+  ParsedStringRegExp() { this = regExpSource(parse).asExpr().getExpr() }
+
+  DataFlow::Node getAParse() { result = parse }
+
+  override predicate isDotAll() { none() }
+
+  override predicate isIgnoreCase() { none() }
+
+  override string getFlags() { none() }
+}
+
+/**
+ * Holds if `source` may be interpreted as a regular expression.
+ */
+private predicate isInterpretedAsRegExp(DataFlow::Node source) {
+  // The first argument to an invocation of `Regexp.new` or `Regexp.compile`.
+  source = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"]).getArgument(0)
+  or
+  // The argument of a call that coerces the argument to a regular expression.
+  exists(DataFlow::CallNode mce |
+    mce.getMethodName() = ["match", "match?"] and
+    source = mce.getArgument(0)
+  )
+}
+
+/**
+ * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
+ * as a part of a regular expression.
+ */
+private DataFlow::Node regExpSource(DataFlow::Node re, TypeBackTracker t) {
+  t.start() and
+  re = result and
+  isInterpretedAsRegExp(result)
+  or
+  exists(TypeBackTracker t2, DataFlow::Node succ | succ = regExpSource(re, t2) |
+    t2 = t.smallstep(result, succ)
+    or
+    TaintTracking::localTaintStep(result, succ) and
+    t = t2
+  )
+}
+
+/**
+ * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
+ * as a part of a regular expression.
+ */
+cached
+DataFlow::Node regExpSource(DataFlow::Node re) { result = regExpSource(re, TypeBackTracker::end()) }

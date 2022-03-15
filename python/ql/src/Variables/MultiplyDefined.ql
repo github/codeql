@@ -47,6 +47,8 @@ predicate simple_literal(Expr e) {
 }
 
 /**
+ * Holds if the redefinition is uninteresting.
+ *
  * A multiple definition is 'uninteresting' if it sets a variable to a
  * simple literal before reassigning it.
  * x = None

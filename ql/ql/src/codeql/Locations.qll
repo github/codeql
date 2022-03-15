@@ -28,6 +28,7 @@ class Location extends @location {
   int getNumLines() { result = getEndLine() - getStartLine() + 1 }
 
   /** Gets a textual representation of this element. */
+  cached
   string toString() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and

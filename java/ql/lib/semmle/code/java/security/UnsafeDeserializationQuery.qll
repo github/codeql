@@ -28,8 +28,8 @@ private class ObjectInputStreamReadObjectMethod extends Method {
   }
 }
 
-private class XMLDecoderReadObjectMethod extends Method {
-  XMLDecoderReadObjectMethod() {
+private class XmlDecoderReadObjectMethod extends Method {
+  XmlDecoderReadObjectMethod() {
     this.getDeclaringType().hasQualifiedName("java.beans", "XMLDecoder") and
     this.hasName("readObject")
   }
@@ -140,7 +140,7 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
           .hasQualifiedName("org.apache.commons.io.serialization", "ValidatingObjectInputStream")
     )
     or
-    m instanceof XMLDecoderReadObjectMethod and
+    m instanceof XmlDecoderReadObjectMethod and
     sink = ma.getQualifier()
     or
     m instanceof XStreamReadObjectMethod and

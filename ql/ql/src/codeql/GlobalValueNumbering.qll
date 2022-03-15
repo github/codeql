@@ -5,7 +5,7 @@ private import codeql_ql.ast.internal.Builtins
 
 private newtype TValueNumber =
   TVariableValueNumber(VarDecl var) { variableAccessValueNumber(_, var) } or
-  TFieldValueNumber(VarDecl var) { fieldAccessValueNumber(_, var) } or
+  TFieldValueNumber(FieldDecl var) { fieldAccessValueNumber(_, var) } or
   TThisValueNumber(Predicate pred) { thisAccessValueNumber(_, pred) } or
   TPredicateValueNumber(PredicateOrBuiltin pred, ValueNumberArgumentList args) {
     predicateCallValueNumber(_, pred, args)
@@ -103,7 +103,7 @@ private predicate variableAccessValueNumber(VarAccess access, VarDef var) {
   access.getDeclaration() = var
 }
 
-private predicate fieldAccessValueNumber(FieldAccess access, VarDef var) {
+private predicate fieldAccessValueNumber(FieldAccess access, FieldDecl var) {
   access.getDeclaration() = var
 }
 
@@ -179,7 +179,7 @@ private TValueNumber nonUniqueValueNumber(Expr e) {
     result = TVariableValueNumber(var)
   )
   or
-  exists(VarDecl var |
+  exists(FieldDecl var |
     fieldAccessValueNumber(e, var) and
     result = TFieldValueNumber(var)
   )

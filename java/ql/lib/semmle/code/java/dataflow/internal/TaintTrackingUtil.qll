@@ -62,13 +62,6 @@ private module Cached {
     )
   }
 
-  private predicate containerContent(DataFlow::Content c) {
-    c instanceof DataFlow::ArrayContent or
-    c instanceof DataFlow::CollectionContent or
-    c instanceof DataFlow::MapKeyContent or
-    c instanceof DataFlow::MapValueContent
-  }
-
   /**
    * Holds if taint can flow in one local step from `src` to `sink` excluding
    * local data flow steps. That is, `src` and `sink` are likely to represent

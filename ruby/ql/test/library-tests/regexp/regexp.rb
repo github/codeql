@@ -24,6 +24,7 @@
 /[]]/  # MRI gives a warning, but accepts this as matching ']'
 /[^]]/ # MRI gives a warning, but accepts this as matching anything except ']'
 /[^-]/
+/[|]/
 
 # Nested character classes
 /[[a-f]A-F]/ # BAD - not parsed correctly
@@ -76,3 +77,6 @@
 # Simple constant interpolation
 A = "a"
 /#{A}bc/
+
+# unicode
+/\u{9879}/

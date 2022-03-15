@@ -16,10 +16,10 @@ import javascript
  * Gets the `package.json` of the nearest enclosing NPM package to which
  * file `f` belongs.
  */
-PackageJSON getClosestPackageJSON(Folder f) {
-  result = f.(NPMPackage).getPackageJSON()
+PackageJson getClosestPackageJson(Folder f) {
+  result = f.(NpmPackage).getPackageJson()
   or
-  not f instanceof NPMPackage and result = getClosestPackageJSON(f.getParentContainer())
+  not f instanceof NpmPackage and result = getClosestPackageJson(f.getParentContainer())
 }
 
 from Require r, string path, string mod
@@ -35,14 +35,14 @@ where
   // import cannot be resolved statically
   not exists(r.getImportedModule()) and
   // no enclosing NPM package declares a dependency on `mod`
-  forex(NPMPackage pkg, PackageJSON pkgJSON |
-    pkg.getAModule() = r.getTopLevel() and pkgJSON = pkg.getPackageJSON()
+  forex(NpmPackage pkg, PackageJson pkgJson |
+    pkg.getAModule() = r.getTopLevel() and pkgJson = pkg.getPackageJson()
   |
-    not pkgJSON.declaresDependency(mod, _) and
-    not pkgJSON.getPeerDependencies().getADependency(mod, _) and
+    not pkgJson.declaresDependency(mod, _) and
+    not pkgJson.getPeerDependencies().getADependency(mod, _) and
     // exclude packages depending on `fbjs`, which automatically pulls in many otherwise
     // undeclared dependencies
-    not pkgJSON.declaresDependency("fbjs", _)
+    not pkgJson.declaresDependency("fbjs", _)
   )
 select r, "Module " + mod + " cannot be resolved, and is not declared as a dependency in $@.",
-  getClosestPackageJSON(r.getFile().getParentContainer()), "package.json"
+  getClosestPackageJson(r.getFile().getParentContainer()), "package.json"

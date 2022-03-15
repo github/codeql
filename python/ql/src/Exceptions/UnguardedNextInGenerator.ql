@@ -32,7 +32,11 @@ predicate guarded_not_empty_sequence(EssaVariable sequence) {
   sequence.getDefinition() instanceof EssaEdgeRefinement
 }
 
-/** The pattern `next(iter(x))` is often used where `x` is known not be empty. Check for that. */
+/**
+ * Holds if `iterator` is not exhausted.
+ *
+ * The pattern `next(iter(x))` is often used where `x` is known not be empty. Check for that.
+ */
 predicate iter_not_exhausted(EssaVariable iterator) {
   exists(EssaVariable sequence |
     call_to_iter(iterator.getDefinition().(AssignmentDefinition).getValue(), sequence) and
