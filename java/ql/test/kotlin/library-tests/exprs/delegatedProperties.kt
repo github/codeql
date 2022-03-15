@@ -56,3 +56,32 @@ class DelegateProvider {
         return ResourceDelegate()
     }
 }
+
+var topLevelInt: Int = 0
+
+class ClassWithDelegate(val anotherClassInt: Int)
+open class Base(val baseClassInt: Int)
+
+class MyClass(var memberInt: Int, val anotherClassInstance: ClassWithDelegate) : Base(memberInt) {
+    var delegatedToMember1: Int by this::memberInt
+    var delegatedToMember2: Int by MyClass::memberInt
+
+    var delegatedToExtMember1: Int by this::extDelegated
+    var delegatedToExtMember2: Int by MyClass::extDelegated
+
+    val delegatedToBaseClass1: Int by this::baseClassInt
+    val delegatedToBaseClass2: Int by Base::baseClassInt
+
+    val delegatedToAnotherClass1: Int by anotherClassInstance::anotherClassInt
+
+    var delegatedToTopLevel: Int by ::topLevelInt
+
+    val max: Int by Integer::MAX_VALUE
+
+    fun fn(){
+        var delegatedToMember3: Int by this::memberInt
+        fn()
+    }
+}
+
+var MyClass.extDelegated: Int by ::topLevelInt
