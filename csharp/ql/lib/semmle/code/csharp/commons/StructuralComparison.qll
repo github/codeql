@@ -87,7 +87,9 @@ private class GvnCons extends Gvn, TGvnCons {
 pragma[noinline]
 private predicate gvnKindDeclaration(Expr e, int kind, boolean isTargetThis, Declaration d) {
   isTargetThis = isTargetThis(e) and
-  d = referenceAttribute(e) and
+  // guard against elements with multiple declaration targets (DB inconsistency),
+  // which may result in a combinatorial explosion
+  d = unique(Declaration d0 | d0 = referenceAttribute(e) | d0) and
   expressions(e, kind, _)
 }
 

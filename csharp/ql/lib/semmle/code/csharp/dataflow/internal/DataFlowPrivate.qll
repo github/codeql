@@ -2026,3 +2026,8 @@ abstract class SyntheticField extends string {
   /** Gets the type of this synthetic field. */
   Type getType() { result instanceof ObjectType }
 }
+
+/**
+ * Holds if the the content `c` is a container.
+ */
+predicate containerContent(DataFlow::Content c) { c instanceof DataFlow::ElementContent }

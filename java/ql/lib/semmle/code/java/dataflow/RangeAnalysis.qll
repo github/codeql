@@ -726,6 +726,26 @@ private predicate boundedPhiCandValidForEdge(
 }
 
 /**
+ * Holds if `b + delta` is a valid bound for `phi`'s `rix`th input edge.
+ * - `upper = true`  : `phi <= b + delta`
+ * - `upper = false` : `phi >= b + delta`
+ */
+private predicate boundedPhiStep(
+  SsaPhiNode phi, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
+  Reason reason, int rix
+) {
+  exists(SsaVariable inp, SsaReadPositionPhiInputEdge edge |
+    rankedPhiInput(phi, inp, edge, rix) and
+    boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge) and
+    (
+      rix = 1
+      or
+      boundedPhiStep(phi, b, delta, upper, fromBackEdge, origdelta, reason, rix - 1)
+    )
+  )
+}
+
+/**
  * Holds if `b + delta` is a valid bound for `phi`.
  * - `upper = true`  : `phi <= b + delta`
  * - `upper = false` : `phi >= b + delta`
@@ -734,8 +754,9 @@ private predicate boundedPhi(
   SsaPhiNode phi, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
   Reason reason
 ) {
-  forex(SsaVariable inp, SsaReadPositionPhiInputEdge edge | edge.phiInput(phi, inp) |
-    boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
+  exists(int r |
+    boundedPhiStep(phi, b, delta, upper, fromBackEdge, origdelta, reason, r) and
+    maxPhiInputRank(phi, r)
   )
 }
 

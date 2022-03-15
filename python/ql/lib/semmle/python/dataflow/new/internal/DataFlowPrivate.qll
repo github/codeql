@@ -39,8 +39,11 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
 //--------
 predicate isExpressionNode(ControlFlowNode node) { node.getNode() instanceof Expr }
 
+/** DEPRECATED: Alias for `SyntheticPreUpdateNode` */
+deprecated module syntheticPreUpdateNode = SyntheticPreUpdateNode;
+
 /** A module collecting the different reasons for synthesising a pre-update node. */
-module syntheticPreUpdateNode {
+module SyntheticPreUpdateNode {
   class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
     NeedsSyntheticPreUpdateNode post;
 
@@ -78,10 +81,13 @@ module syntheticPreUpdateNode {
   CfgNode objectCreationNode() { result.getNode().(CallNode) = any(ClassCall c).getNode() }
 }
 
-import syntheticPreUpdateNode
+import SyntheticPreUpdateNode
+
+/** DEPRECATED: Alias for `SyntheticPostUpdateNode` */
+deprecated module syntheticPostUpdateNode = SyntheticPostUpdateNode;
 
 /** A module collecting the different reasons for synthesising a post-update node. */
-module syntheticPostUpdateNode {
+module SyntheticPostUpdateNode {
   /** A post-update node is synthesized for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
   class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
     NeedsSyntheticPostUpdateNode pre;
@@ -177,7 +183,7 @@ module syntheticPostUpdateNode {
   }
 }
 
-import syntheticPostUpdateNode
+import SyntheticPostUpdateNode
 
 class DataFlowExpr = Expr;
 

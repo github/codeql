@@ -1718,5 +1718,5 @@ module DataFlow {
   import TypeTracking
   import internal.FunctionWrapperSteps
 
-  predicate localTaintStep = TaintTracking::localTaintStep/2;
+  deprecated predicate localTaintStep = TaintTracking::localTaintStep/2;
 }
