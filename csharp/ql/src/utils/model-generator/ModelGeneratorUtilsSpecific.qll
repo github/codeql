@@ -2,7 +2,7 @@ import csharp
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.commons.Util
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
-private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
+private import semmle.code.csharp.dataflow.internal.FlowSummaries
 
 private predicate isRelevantForModels(Callable api) { not api instanceof MainMethod }
 
@@ -12,9 +12,8 @@ private predicate isRelevantForModels(Callable api) { not api instanceof MainMet
  * In the Standard library and 3rd party libraries it the Callables that can be called
  * from outside the library itself.
  */
-class TargetApi extends Callable {
+class TargetApi extends PublicSummarizedCallable {
   TargetApi() {
-    [this.(Modifiable), this.(Accessor).getDeclaration()].isEffectivelyPublic() and
     this.fromSource() and
     isRelevantForModels(this)
   }
