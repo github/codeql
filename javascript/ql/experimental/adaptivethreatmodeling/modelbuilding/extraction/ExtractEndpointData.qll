@@ -74,10 +74,7 @@ private DataFlow::Node getANotASink(NotASinkReason reason) {
  * specified query.
  */
 private DataFlow::Node getAnUnknown(Query query) {
-  (
-    getAtmCfg(query).isEffectiveSink(result) or
-    getAtmCfg(query).isEffectiveSinkWithOverridingScore(result, _, _)
-  ) and
+  getAtmCfg(query).isEffectiveSink(result) and
   not result = getASink(query) and
   // Only consider the source code for the project being analyzed.
   exists(result.getFile().getRelativePath())
