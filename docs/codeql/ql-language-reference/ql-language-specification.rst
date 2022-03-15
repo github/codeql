@@ -998,10 +998,14 @@ There are several kinds of expressions:
            |   literal
            |   variable
            |   super_expr
-           |   callwithresult
            |   postfix_cast
+           |   callwithresults
            |   aggregation
+           |   expression_pragma
            |   any
+           |   range
+           |   setliteral
+
 
 Parenthesized expressions
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1303,6 +1307,26 @@ The values of an ``any`` expression are those values of the expression for which
 
 The abbreviated cases for an ``any`` expression are interpreted in the same way as for an aggregation.
 
+Expression Pragma
+~~~~~~~~~~~~~~~~~
+
+Expression pragmas can be used to guide optimization.
+
+::
+   expression_pragma ::= "pragma" "[" expression_pragma_type "]" "(" expr ")"
+
+   expression_pragma_type ::= "only_bind_out" | "only_bind_into"
+
+The values of an expression pragma are the values of the contained expression.
+
+The type `only_bind_out` hints that uses of the result of the expression pragma should not be used to guide the evaluation of the result of the contained expression.
+When checking to see that all values are bound the compiler does not assume that if the result of the expression pragma is bound then the result of the contained 
+expression is bound.
+
+The type `only_bind_into` hints that uses of the contained expression should not be used to guide the evaluation of the result of the expression pragma.
+When checking to see that all values are bound the compiler does not assume that if the result of the contained expression is bound then the result of the 
+expression pragma is bound.
+
 Ranges
 ~~~~~~
 
@@ -1506,9 +1530,10 @@ A range check has the following syntax:
 
 ::
 
-   inrange ::= expr "in" range
+   inrange ::= expr "in" (range | setliteral)
 
-The formula is equivalent to ``expr "=" range``.
+
+The formula is equivalent to ``expr "=" range`` or ``expr "=" setliteral``.
 
 Calls
 ~~~~~
@@ -2107,7 +2132,7 @@ The complete grammar for QL is as follows:
 
    instanceof ::= expr "instanceof" type
 
-   inrange ::= expr "in" range
+   inrange ::= expr "in" (range | setliteral)
 
    call ::= predicateRef (closure)? "(" (exprs)? ")"
         |   primary "." predicateName (closure)? "(" (exprs)? ")"
@@ -2128,6 +2153,7 @@ The complete grammar for QL is as follows:
            |   postfix_cast
            |   callwithresults
            |   aggregation
+           |   expression_pragma
            |   any
            |   range
            |   setliteral
@@ -2159,6 +2185,10 @@ The complete grammar for QL is as follows:
                |   aggid ("[" expr "]")? "(" as_exprs ("order" "by" aggorderbys)? ")"
                |   "unique" "(" var_decls "|" (formula)? ("|" as_exprs)? ")"
  
+   expression_pragma ::= "pragma" "[" expression_pragma_type "]" "(" expr ")"
+
+   expression_pragma_type ::= "only_bind_out" | "only_bind_into"
+
    aggid ::= "avg" | "concat" | "count" | "max" | "min" | "rank" | "strictconcat" | "strictcount" | "strictsum" | "sum"
 
    aggorderbys ::= aggorderby ("," aggorderby)*

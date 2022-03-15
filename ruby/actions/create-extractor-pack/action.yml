@@ -9,7 +9,7 @@ runs:
           ~/.cargo/registry
           ~/.cargo/git
           ruby/target
-        key: ${{ runner.os }}-ruby-qltest-cargo-${{ hashFiles('ruby/**/Cargo.lock') }}
+        key: ${{ runner.os }}-ruby-qltest-cargo-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}
     - name: Build Extractor
       shell: bash
       run: scripts/create-extractor-pack.sh

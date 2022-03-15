@@ -28,6 +28,7 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
     guard instanceof TypeTestGuard or
     guard instanceof UnsafeJQuery::PropertyPresenceSanitizer or
+    guard instanceof UnsafeJQuery::NumberGuard or
     guard instanceof DomBasedXss::SanitizerGuard
   }
 

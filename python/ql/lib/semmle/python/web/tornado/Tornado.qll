@@ -2,11 +2,11 @@ import python
 import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 
-private ClassValue theTornadoRequestHandlerClass() {
+deprecated private ClassValue theTornadoRequestHandlerClass() {
   result = Value::named("tornado.web.RequestHandler")
 }
 
-ClassValue aTornadoRequestHandlerClass() {
+deprecated ClassValue aTornadoRequestHandlerClass() {
   result.getABaseType+() = theTornadoRequestHandlerClass()
 }
 
@@ -14,7 +14,7 @@ ClassValue aTornadoRequestHandlerClass() {
  * Holds if `node` is likely to refer to an instance of a tornado
  * `RequestHandler` class.
  */
-predicate isTornadoRequestHandlerInstance(ControlFlowNode node) {
+deprecated predicate isTornadoRequestHandlerInstance(ControlFlowNode node) {
   node.pointsTo().getClass() = aTornadoRequestHandlerClass()
   or
   /*
@@ -30,11 +30,11 @@ predicate isTornadoRequestHandlerInstance(ControlFlowNode node) {
   node.(NameNode).isSelf()
 }
 
-CallNode callToNamedTornadoRequestHandlerMethod(string name) {
+deprecated CallNode callToNamedTornadoRequestHandlerMethod(string name) {
   isTornadoRequestHandlerInstance(result.getFunction().(AttrNode).getObject(name))
 }
 
-class TornadoCookieSet extends CookieSet, CallNode {
+deprecated class TornadoCookieSet extends CookieSet, CallNode {
   TornadoCookieSet() {
     exists(ControlFlowNode f |
       f = this.getFunction().(AttrNode).getObject("set_cookie") and

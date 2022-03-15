@@ -234,13 +234,13 @@ class MetricRefType extends RefType, MetricElement {
     not this.cyclic() and result = this.getASupertype().(MetricRefType).getADepth(reference) + 1
   }
 
-  private predicate cyclic() { this.getASupertype+() = this }
+  private predicate cyclic() { this.getAStrictAncestor() = this }
 
   /** Gets the depth of inheritance metric relative to the specified reference type. */
   int getInheritanceDepth(RefType reference) { result = max(this.getADepth(reference)) }
 
   /** Gets the number of (direct or indirect) supertypes. */
-  int getNumberOfAncestors() { result = count(this.getASupertype+()) }
+  int getNumberOfAncestors() { result = count(this.getAStrictAncestor()) }
 
   /**
    * Gets the response for a type.

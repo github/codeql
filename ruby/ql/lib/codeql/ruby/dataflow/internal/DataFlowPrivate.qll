@@ -70,6 +70,20 @@ module LocalFlow {
     )
   }
 
+  /** Gets the SSA definition node corresponding to the implicit `self` parameter for `m`. */
+  private SsaDefinitionNode getSelfParameterDefNode(MethodBase m) {
+    result.getDefinition().(Ssa::SelfDefinition).getSourceVariable().getDeclaringScope() = m
+  }
+
+  /**
+   * Holds if `nodeFrom` is a parameter node, and `nodeTo` is a corresponding SSA node.
+   */
+  predicate localFlowSsaParamInput(Node nodeFrom, Node nodeTo) {
+    nodeTo = getParameterDefNode(nodeFrom.(ParameterNode).getParameter())
+    or
+    nodeTo = getSelfParameterDefNode(nodeFrom.(SelfParameterNode).getMethod())
+  }
+
   /**
    * Holds if there is a local use-use flow step from `nodeFrom` to `nodeTo`
    * involving SSA definition `def`.
@@ -114,9 +128,6 @@ module LocalFlow {
 
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     localSsaFlowStep(nodeFrom, nodeTo)
-    or
-    nodeFrom.(SelfParameterNode).getMethod() = nodeTo.asExpr().getExpr().getEnclosingCallable() and
-    nodeTo.asExpr().getExpr() instanceof Self
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
     or
@@ -236,7 +247,7 @@ private module Cached {
     or
     defaultValueFlow(nodeTo.(ParameterNode).getParameter(), nodeFrom)
     or
-    nodeTo = LocalFlow::getParameterDefNode(nodeFrom.(ParameterNode).getParameter())
+    LocalFlow::localFlowSsaParamInput(nodeFrom, nodeTo)
     or
     nodeTo.(SynthReturnNode).getAnInput() = nodeFrom
     or
@@ -253,7 +264,7 @@ private module Cached {
     or
     defaultValueFlow(nodeTo.(ParameterNode).getParameter(), nodeFrom)
     or
-    nodeTo = LocalFlow::getParameterDefNode(nodeFrom.(ParameterNode).getParameter())
+    LocalFlow::localFlowSsaParamInput(nodeFrom, nodeTo)
     or
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
     or
@@ -275,21 +286,34 @@ private module Cached {
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
   }
 
+  private predicate entrySsaDefinition(SsaDefinitionNode n) {
+    n = LocalFlow::getParameterDefNode(_)
+    or
+    exists(Ssa::Definition def | def = n.getDefinition() |
+      def instanceof Ssa::SelfDefinition
+      or
+      def instanceof Ssa::CapturedEntryDefinition
+    )
+  }
+
   cached
   predicate isLocalSourceNode(Node n) {
     n instanceof ParameterNode
     or
-    // This case should not be needed once we have proper use-use flow
-    // for `self`. At that point, the `self`s returned by `trackInstance`
-    // in `DataFlowDispatch.qll` should refer to the post-update node,
-    // and we can remove this case.
-    n.asExpr().getExpr() instanceof Self
+    n instanceof PostUpdateNodes::ExprPostUpdateNode
     or
-    not localFlowStepTypeTracker+(any(Node e |
-        e instanceof ExprNode
+    // Expressions that can't be reached from another entry definition or expression.
+    not localFlowStepTypeTracker+(any(Node n0 |
+        n0 instanceof ExprNode
         or
-        e instanceof ParameterNode
-      ), n)
+        entrySsaDefinition(n0)
+      ), n.(ExprNode))
+    or
+    // Ensure all entry SSA definitions are local sources -- for parameters, this
+    // is needed by type tracking. Note that when the parameter has a default value,
+    // it will be reachable from an expression (the default value) and therefore
+    // won't be caught by the rule above.
+    entrySsaDefinition(n)
   }
 
   cached
@@ -297,6 +321,20 @@ private module Cached {
     TKnownArrayElementContent(int i) { i in [0 .. 10] } or
     TUnknownArrayElementContent() or
     TAnyArrayElementContent()
+
+  /**
+   * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
+   */
+  cached
+  predicate exprNodeReturnedFromCached(ExprNode e, Callable c) {
+    exists(ReturningNode r |
+      nodeGetEnclosingCallable(r).asCallable() = c and
+      (
+        r.(ExplicitReturnNode).getReturningNode().getReturnedValueNode() = e.asExpr() or
+        r.(ExprReturnNode) = e
+      )
+    )
+  }
 }
 
 class TArrayElementContent = TKnownArrayElementContent or TUnknownArrayElementContent;
@@ -306,8 +344,12 @@ import Cached
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
   exists(Ssa::Definition def | def = n.(SsaDefinitionNode).getDefinition() |
-    def instanceof Ssa::PhiNode
+    def instanceof Ssa::PhiNode or
+    def instanceof Ssa::CapturedEntryDefinition or
+    def instanceof Ssa::CapturedCallDefinition
   )
+  or
+  n = LocalFlow::getParameterDefNode(_)
   or
   isDesugarNode(n.(ExprNode).getExprNode().getExpr())
   or
@@ -332,6 +374,16 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
   override Location getLocationImpl() { result = def.getLocation() }
 
   override string toStringImpl() { result = def.toString() }
+}
+
+/** An SSA definition for a `self` variable. */
+class SsaSelfDefinitionNode extends LocalSourceNode, SsaDefinitionNode {
+  private SelfVariable self;
+
+  SsaSelfDefinitionNode() { self = def.getSourceVariable() }
+
+  /** Gets the scope in which the `self` variable is declared. */
+  Scope getSelfScope() { result = self.getDeclaringScope() }
 }
 
 /**
@@ -720,13 +772,6 @@ predicate jumpStep(Node pred, Node succ) {
   or
   SsaImpl::captureFlowOut(pred.(SsaDefinitionNode).getDefinition(),
     succ.(SsaDefinitionNode).getDefinition())
-  or
-  exists(Self s, Method m |
-    s = succ.asExpr().getExpr() and
-    pred.(SelfParameterNode).getMethod() = m and
-    m = s.getEnclosingMethod() and
-    m != s.getEnclosingCallable()
-  )
   or
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
 }

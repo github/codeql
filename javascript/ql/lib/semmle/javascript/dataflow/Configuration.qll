@@ -167,20 +167,6 @@ abstract class Configuration extends string {
   }
 
   /**
-   * DEPRECATED: Use `isBarrierEdge` instead.
-   *
-   * Holds if flow from `src` to `trg` is prohibited.
-   */
-  deprecated predicate isBarrier(DataFlow::Node src, DataFlow::Node trg) { none() }
-
-  /**
-   * DEPRECATED: Use `isBarrierEdge` instead.
-   *
-   * Holds if flow with label `lbl` cannot flow from `src` to `trg`.
-   */
-  deprecated predicate isBarrier(DataFlow::Node src, DataFlow::Node trg, FlowLabel lbl) { none() }
-
-  /**
    * Holds if flow from `pred` to `succ` is prohibited.
    */
   predicate isBarrierEdge(DataFlow::Node pred, DataFlow::Node succ) { none() }
@@ -535,13 +521,6 @@ private predicate isLabeledBarrierEdge(
  */
 abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
   override predicate blocks(boolean outcome, Expr e) { none() }
-
-  /**
-   * DEPRECATED: Use `blocks(outcome, e, label)` or `sanitizes(outcome, e, label)` instead.
-   *
-   * Overriding this predicate has no effect.
-   */
-  deprecated FlowLabel getALabel() { none() }
 }
 
 /**
@@ -1800,6 +1779,22 @@ class PathNode extends TPathNode {
   ) {
     nd.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /**
+   * Gets a summary for the path node.
+   */
+  PathSummary getPathSummary() {
+    this = MkMidNode(_, _, result)
+    or
+    this = MkSinkNode(_, _) and getASuccessor(MkMidNode(_, _, result)) = this
+    or
+    this = MkSourceNode(_, _) and getASuccessor(this) = MkMidNode(_, _, result)
+  }
+
+  /**
+   * Gets a flow label for the path node.
+   */
+  FlowLabel getFlowLabel() { result = getPathSummary().getEndLabel() }
 }
 
 /** Gets the mid node corresponding to `src`. */
@@ -1871,9 +1866,6 @@ class MidPathNode extends PathNode, MkMidNode {
   PathSummary summary;
 
   MidPathNode() { this = MkMidNode(nd, cfg, summary) }
-
-  /** Gets the summary of the path underlying this path node. */
-  PathSummary getPathSummary() { result = summary }
 
   /** Holds if this path node wraps data-flow node `nd`, configuration `c` and summary `s`. */
   predicate wraps(DataFlow::Node n, DataFlow::Configuration c, PathSummary s) {

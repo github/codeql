@@ -29,9 +29,6 @@ abstract class FunctionObject extends Object {
   /** Whether this function raises an exception, the class of which cannot be inferred */
   abstract predicate raisesUnknownType();
 
-  /** Use descriptiveString() instead. */
-  deprecated string prettyString() { result = this.descriptiveString() }
-
   /** Gets a longer, more descriptive version of toString() */
   abstract string descriptiveString();
 
@@ -311,33 +308,3 @@ class BuiltinFunctionObject extends BuiltinCallable {
 
   override int maxParameters() { none() }
 }
-
-/** DEPRECATED -- Use `Object::builtin("apply")` instead. */
-deprecated Object theApplyFunction() { result = Object::builtin("apply") }
-
-/** DEPRECATED -- Use `Object::builtin("hasattr")` instead. */
-deprecated Object theHasattrFunction() { result = Object::builtin("hasattr") }
-
-/** DEPRECATED -- Use `Object::builtin("len")` instead. */
-deprecated Object theLenFunction() { result = Object::builtin("len") }
-
-/** DEPRECATED -- Use `Object::builtin("format")` instead. */
-deprecated Object theFormatFunction() { result = Object::builtin("format") }
-
-/** DEPRECATED -- Use `Object::builtin("open")` instead. */
-deprecated Object theOpenFunction() { result = Object::builtin("open") }
-
-/** DEPRECATED -- Use `Object::builtin("print")` instead. */
-deprecated Object thePrintFunction() { result = Object::builtin("print") }
-
-/** DEPRECATED -- Use `Object::builtin("input")` instead. */
-deprecated Object theInputFunction() { result = Object::builtin("input") }
-
-/** DEPRECATED -- Use `Object::builtin("locals")` instead. */
-deprecated Object theLocalsFunction() { result = Object::builtin("locals") }
-
-/** DEPRECATED -- Use `Object::builtin("globals")()` instead. */
-deprecated Object theGlobalsFunction() { result = Object::builtin("globals") }
-
-/** DEPRECATED -- Use `Object::builtin("sysExit()` instead. */
-deprecated Object theExitFunctionObject() { result = ModuleObject::named("sys").attr("exit") }

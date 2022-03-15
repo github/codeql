@@ -30,9 +30,6 @@ class Expr extends Expr_, AstNode {
   /** Whether this expression is a constant */
   predicate isConstant() { not this.isVariable() }
 
-  /** Use isParenthesized instead. */
-  deprecated override predicate isParenthesised() { this.isParenthesized() }
-
   /** Whether the parenthesized property of this expression is true. */
   predicate isParenthesized() { Expr_.super.isParenthesised() }
 
@@ -48,9 +45,6 @@ class Expr extends Expr_, AstNode {
 
   /** Gets an immediate (non-nested) sub-expression of this expression */
   Expr getASubExpression() { none() }
-
-  /** Use StrConst.getText() instead */
-  deprecated string strValue() { none() }
 
   override AstNode getAChildNode() { result = this.getASubExpression() }
 
@@ -315,7 +309,7 @@ class Ellipsis extends Ellipsis_ {
 }
 
 /**
- * Immutable literal expressions (except tuples).
+ * An immutable literal expression (except tuples).
  * Consists of string (both unicode and byte) literals and numeric literals.
  */
 abstract class ImmutableLiteral extends Expr {
@@ -446,6 +440,8 @@ class Unicode extends StrConst {
   }
 
   /**
+   * Gets the quoted representation fo this string.
+   *
    * The extractor puts quotes into the name of each string (to prevent "0" clashing with 0).
    * The following predicate help us match up a string/byte literals in the source
    * which the equivalent object.
@@ -620,8 +616,6 @@ class StrConst extends Str_, ImmutableLiteral {
     )
   }
 
-  deprecated override string strValue() { result = this.getS() }
-
   override Expr getASubExpression() { none() }
 
   override AstNode getAChildNode() { result = this.getAnImplicitlyConcatenatedPart() }
@@ -685,7 +679,7 @@ class False extends BooleanLiteral {
   override boolean booleanValue() { result = false }
 }
 
-/** `None` */
+/** The `None` constant. */
 class None extends NameConstant {
   /* syntax: None */
   None() { name_consts(this, "None") }
@@ -728,20 +722,20 @@ class Guard extends Guard_ {
 /** A context in which an expression used */
 class ExprContext extends ExprContext_ { }
 
-/** Load context, the context of var in len(var) */
+/** The load context, the context of var in len(var) */
 class Load extends Load_ { }
 
-/** Store context, the context of var in var = 0 */
+/** The store context, the context of var in var = 0 */
 class Store extends Store_ { }
 
-/** Delete context, the context of var in del var */
+/** The delete context, the context of var in del var */
 class Del extends Del_ { }
 
-/** This is an artifact of the Python grammar which includes an AugLoad context, even though it is never used. */
-library class AugLoad extends AugLoad_ { }
+/** The context of an augmented load. This is an artifact of the Python grammar which includes an AugLoad context, even though it is never used. */
+class AugLoad extends AugLoad_ { }
 
-/** Augmented store context, the context of var in var += 1 */
+/** The augmented store context, the context of var in var += 1 */
 class AugStore extends AugStore_ { }
 
-/** Parameter context, the context of var in def f(var): pass */
+/** The parameter context, the context of var in def f(var): pass */
 class Param extends Param_ { }

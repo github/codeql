@@ -65,6 +65,13 @@
 | calls/calls.rb:340:27:340:27 | 4 | 4 |
 | calls/calls.rb:340:29:340:29 | 5 | 5 |
 | calls/calls.rb:340:31:340:31 | 6 | 6 |
+| calls/calls.rb:344:5:344:5 | :x | :x |
+| calls/calls.rb:344:8:344:9 | 42 | 42 |
+| calls/calls.rb:345:5:345:5 | :x | :x |
+| calls/calls.rb:345:9:345:13 | :novar | :novar |
+| calls/calls.rb:346:5:346:5 | :X | :X |
+| calls/calls.rb:346:8:346:9 | 42 | 42 |
+| calls/calls.rb:347:5:347:5 | :X | :X |
 | constants/constants.rb:3:19:3:27 | "const_a" | const_a |
 | constants/constants.rb:6:15:6:23 | "const_b" | const_b |
 | constants/constants.rb:17:12:17:18 | "Hello" | Hello |
@@ -236,6 +243,11 @@
 | control/cases.rb:142:11:142:11 | :y | :y |
 | control/cases.rb:144:11:144:11 | :a | :a |
 | control/cases.rb:144:14:144:14 | 1 | 1 |
+| control/cases.rb:148:7:148:9 | foo | 42 |
+| control/cases.rb:155:8:155:10 | foo | 42 |
+| control/cases.rb:157:8:157:8 | 1 | 1 |
+| control/cases.rb:157:8:157:12 | ... + ... | 2 |
+| control/cases.rb:157:12:157:12 | 1 | 1 |
 | control/conditionals.rb:2:5:2:5 | 0 | 0 |
 | control/conditionals.rb:3:5:3:5 | 0 | 0 |
 | control/conditionals.rb:4:5:4:5 | 0 | 0 |
@@ -571,6 +583,13 @@
 | literals/literals.rb:162:11:162:16 | <<-BLA | \nsome text\\nand some more\n   |
 | literals/literals.rb:167:9:167:19 | <<~SQUIGGLY | \n   indented stuff\n |
 | literals/literals.rb:180:10:180:19 | <<`SCRIPT` | \n cat file.txt\n |
+| literals/literals.rb:184:5:184:6 | 42 | 42 |
+| literals/literals.rb:185:2:185:2 | :x | :x |
+| literals/literals.rb:185:2:185:2 | x | 42 |
+| literals/literals.rb:185:6:185:6 | :y | :y |
+| literals/literals.rb:185:8:185:8 | 5 | 5 |
+| literals/literals.rb:186:2:186:2 | :y | :y |
+| literals/literals.rb:186:7:186:7 | :Z | :Z |
 | misc/misc.erb:2:15:2:37 | "main_include_admin.js" | main_include_admin.js |
 | misc/misc.rb:1:7:1:11 | "bar" | bar |
 | misc/misc.rb:3:7:3:9 | foo | foo |

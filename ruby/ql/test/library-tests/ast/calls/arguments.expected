@@ -15,6 +15,16 @@ keywordArguments
 | calls.rb:249:15:249:30 | Pair | calls.rb:249:15:249:20 | call to foo | calls.rb:249:25:249:30 | call to bar |
 | calls.rb:278:5:278:13 | Pair | calls.rb:278:5:278:8 | :blah | calls.rb:278:11:278:13 | call to bar |
 | calls.rb:279:5:279:16 | Pair | calls.rb:279:5:279:8 | :blah | calls.rb:279:11:279:16 | call to bar |
+| calls.rb:344:5:344:9 | Pair | calls.rb:344:5:344:5 | :x | calls.rb:344:8:344:9 | 42 |
+| calls.rb:345:5:345:6 | Pair | calls.rb:345:5:345:5 | :x | calls.rb:345:5:345:5 | x |
+| calls.rb:345:9:345:14 | Pair | calls.rb:345:9:345:13 | :novar | calls.rb:345:9:345:13 | call to novar |
+| calls.rb:346:5:346:9 | Pair | calls.rb:346:5:346:5 | :X | calls.rb:346:8:346:9 | 42 |
+| calls.rb:347:5:347:6 | Pair | calls.rb:347:5:347:5 | :X | calls.rb:347:5:347:5 | X |
 keywordArgumentsByKeyword
 | calls.rb:278:1:278:14 | call to foo | blah | calls.rb:278:11:278:13 | call to bar |
 | calls.rb:279:1:279:17 | call to foo | blah | calls.rb:279:11:279:16 | call to bar |
+| calls.rb:344:1:344:10 | call to foo | x | calls.rb:344:8:344:9 | 42 |
+| calls.rb:345:1:345:15 | call to foo | novar | calls.rb:345:9:345:13 | call to novar |
+| calls.rb:345:1:345:15 | call to foo | x | calls.rb:345:5:345:5 | x |
+| calls.rb:346:1:346:10 | call to foo | X | calls.rb:346:8:346:9 | 42 |
+| calls.rb:347:1:347:7 | call to foo | X | calls.rb:347:5:347:5 | X |

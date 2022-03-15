@@ -23,7 +23,12 @@ and 4 are slightly different---for further details, see the sections labeled
 **Information for macOS "Catalina" (or newer) users**. If you are using macOS
 on Apple Silicon (e.g. Apple M1), ensure that the `Xcode command-line developer
 tools <https://developer.apple.com/downloads/index.action>`__ and `Rosetta 2
-<https://support.apple.com/en-us/HT211861>`__ are installed.
+<https://support.apple.com/en-us/HT211861>`__ are installed. 
+
+.. pull-quote:: Note
+
+   The CodeQL CLI is currently not compatible with non-glibc Linux 
+   distributions such as (muslc-based) Alpine Linux.
 
 For information about installing the CodeQL CLI in a CI system to create results
 to display in GitHub as code scanning alerts, see
@@ -200,7 +205,8 @@ clone and rename the repository in a single step by running
 
 The CodeQL libraries and queries for Go analysis live in the `CodeQL for Go
 repository <https://github.com/github/codeql-go/>`__. Clone a copy of this
-repository into ``codeql-home``.
+repository into ``codeql-home``, and run ``codeql-go/scripts/install-deps.sh``
+to install its dependencies.
 
 The cloned repositories should have a sibling relationship.
 For example, if the root of the cloned CodeQL repository is

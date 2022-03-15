@@ -153,6 +153,16 @@ module UnsafeJQueryPlugin {
     }
   }
 
+  /** A guard that checks whether `x` is a number. */
+  class NumberGuard extends TaintTracking::SanitizerGuardNode instanceof DataFlow::CallNode {
+    Expr x;
+    boolean polarity;
+
+    NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
+
+    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
+  }
+
   /**
    * The client-provided options object for a jQuery plugin, considered as a source for unsafe jQuery plugins.
    */
@@ -189,7 +199,7 @@ module UnsafeJQueryPlugin {
       DataFlow::PropRead finalRead
     |
       hasDefaultOption(plugin, defaultDef) and
-      defaultDef = getALikelyHTMLWrite(finalRead.getPropertyName()) and
+      defaultDef = getALikelyHtmlWrite(finalRead.getPropertyName()) and
       finalRead.flowsTo(sink) and
       sink.getTopLevel() = plugin.getTopLevel()
     )
@@ -199,7 +209,7 @@ module UnsafeJQueryPlugin {
    * Gets a property-write that writes a HTML-like constant string to `prop`.
    */
   pragma[noinline]
-  private DataFlow::PropWrite getALikelyHTMLWrite(string prop) {
+  private DataFlow::PropWrite getALikelyHtmlWrite(string prop) {
     exists(string default |
       result.getRhs().mayHaveStringValue(default) and
       default.regexpMatch("\\s*<.*") and

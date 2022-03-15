@@ -14,7 +14,11 @@
 import java
 
 private string suspicious() {
-  result = ["%password%", "%passwd%", "%account%", "%accnt%", "%trusted%"]
+  result =
+    [
+      "%password%", "%passwd%", "pwd", "%account%", "%accnt%", "%trusted%", "%refresh%token%",
+      "%secret%token"
+    ]
 }
 
 private string nonSuspicious() {
@@ -79,7 +83,7 @@ class AuthMethod extends SensitiveExecutionMethod {
       // exclude "author", but not "authorize" or "authority"
       not s.regexpMatch(".*[aA]uthors?([A-Z0-9_].*|$)")
     ) and
-    not this.getDeclaringType().getASupertype*() instanceof TypeException
+    not this.getDeclaringType().getAnAncestor() instanceof TypeException
   }
 }
 

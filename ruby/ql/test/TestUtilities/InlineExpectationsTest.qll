@@ -93,7 +93,7 @@
 private import InlineExpectationsTestPrivate
 
 /**
- * Base class for tests with inline expectations. The test extends this class to provide the actual
+ * The base class for tests with inline expectations. The test extends this class to provide the actual
  * results of the query, which are then compared with the expected results in comments to produce a
  * list of failure messages that point out where the actual results differ from the expected
  * results.
@@ -123,6 +123,17 @@ abstract class InlineExpectationsTest extends string {
    */
   abstract predicate hasActualResult(Location location, string element, string tag, string value);
 
+  /**
+   * Holds if there is an optional result on the specified location.
+   *
+   * This is similar to `hasActualResult`, but returns results that do not require a matching annotation.
+   * A failure will still arise if there is an annotation that does not match any results, but not vice versa.
+   * Override this predicate to specify optional results.
+   */
+  predicate hasOptionalResult(Location location, string element, string tag, string value) {
+    none()
+  }
+
   final predicate hasFailureMessage(FailureLocatable element, string message) {
     exists(ActualResult actualResult |
       actualResult.getTest() = this and
@@ -134,7 +145,8 @@ abstract class InlineExpectationsTest extends string {
         )
         or
         not exists(ValidExpectation expectation | expectation.matchesActualResult(actualResult)) and
-        message = "Unexpected result: " + actualResult.getExpectationText()
+        message = "Unexpected result: " + actualResult.getExpectationText() and
+        not actualResult.isOptional()
       )
     )
     or
@@ -243,9 +255,13 @@ private string expectationPattern() {
 
 private newtype TFailureLocatable =
   TActualResult(
-    InlineExpectationsTest test, Location location, string element, string tag, string value
+    InlineExpectationsTest test, Location location, string element, string tag, string value,
+    boolean optional
   ) {
-    test.hasActualResult(location, element, tag, value)
+    test.hasActualResult(location, element, tag, value) and
+    optional = false
+    or
+    test.hasOptionalResult(location, element, tag, value) and optional = true
   } or
   TValidExpectation(ExpectationComment comment, string tag, string value, string knownFailure) {
     exists(TColumn column, string tags |
@@ -277,8 +293,9 @@ class ActualResult extends FailureLocatable, TActualResult {
   string element;
   string tag;
   string value;
+  boolean optional;
 
-  ActualResult() { this = TActualResult(test, location, element, tag, value) }
+  ActualResult() { this = TActualResult(test, location, element, tag, value, optional) }
 
   override string toString() { result = element }
 
@@ -289,6 +306,8 @@ class ActualResult extends FailureLocatable, TActualResult {
   override string getTag() { result = tag }
 
   override string getValue() { result = value }
+
+  predicate isOptional() { optional = true }
 }
 
 abstract private class Expectation extends FailureLocatable {

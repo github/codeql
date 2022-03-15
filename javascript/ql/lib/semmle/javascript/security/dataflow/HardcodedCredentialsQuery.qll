@@ -19,6 +19,11 @@ class Configuration extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
+  override predicate isBarrier(DataFlow::Node node) {
+    super.isBarrier(node) or
+    node instanceof Sanitizer
+  }
+
   override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
     exists(Base64::Encode encode | src = encode.getInput() and trg = encode.getOutput())
     or

@@ -1666,7 +1666,10 @@ class LValue extends VarAccess {
    * (such as (`+=`), both the RHS and the LHS of the compound assignment
    * are source expressions of the assignment.
    */
-  Expr getRHS() { exists(Assignment e | e.getDest() = this and e.getSource() = result) }
+  Expr getRhs() { exists(Assignment e | e.getDest() = this and e.getSource() = result) }
+
+  /** DEPRECATED: Alias for getRhs */
+  deprecated Expr getRHS() { result = this.getRhs() }
 }
 
 /**
@@ -2093,7 +2096,7 @@ class Argument extends Expr {
       p.isVarargs() and
       ptyp = p.getType() and
       (
-        hasSubtype*(ptyp, typ)
+        hasDescendant(ptyp, typ)
         or
         // If the types don't match then we'll guess based on whether there are type variables involved.
         hasInstantiation(ptyp.(Array).getComponentType())

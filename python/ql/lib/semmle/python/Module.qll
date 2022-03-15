@@ -22,12 +22,13 @@ class Module extends Module_, Scope, AstNode {
   }
 
   /**
+   * Gets the enclosing scope of this module (always none).
+   *
    * This method will be deprecated in the next release. Please use `getEnclosingScope()` instead.
-   * The enclosing scope of this module (always none)
    */
   override Scope getScope() { none() }
 
-  /** The enclosing scope of this module (always none) */
+  /** Gets the enclosing scope of this module (always none) */
   override Scope getEnclosingScope() { none() }
 
   /** Gets the statements forming the body of this module */
@@ -97,12 +98,6 @@ class Module extends Module_, Scope, AstNode {
 
   /** Gets the metrics for this module */
   ModuleMetrics getMetrics() { result = this }
-
-  /**
-   * Use ModuleObject.getAnImportedModule() instead.
-   * Gets a module imported by this module
-   */
-  deprecated Module getAnImportedModule() { result.getName() = this.getAnImportedModuleName() }
 
   string getAnImportedModuleName() {
     exists(Import i | i.getEnclosingModule() = this | result = i.getAnImportedModuleName())
@@ -196,7 +191,7 @@ private predicate isPotentialSourcePackage(Folder f) {
 private predicate isPotentialPackage(Folder f) {
   exists(f.getFile("__init__.py"))
   or
-  py_flags_versioned("options.respect_init", "False", _) and major_version() = 2
+  py_flags_versioned("options.respect_init", "False", _) and major_version() = 2 and exists(f)
 }
 
 private string moduleNameFromBase(Container file) {

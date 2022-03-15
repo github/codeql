@@ -1,6 +1,6 @@
 import semmle.python.dataflow.Implementation
 
-module TaintTrackingPaths {
+deprecated module TaintTrackingPaths {
   predicate edge(TaintTrackingNode src, TaintTrackingNode dest, string label) {
     exists(TaintTrackingNode source, TaintTrackingNode sink |
       source.getConfiguration().hasFlowPath(source, sink) and
@@ -11,6 +11,6 @@ module TaintTrackingPaths {
   }
 }
 
-query predicate edges(TaintTrackingNode fromnode, TaintTrackingNode tonode) {
+deprecated query predicate edges(TaintTrackingNode fromnode, TaintTrackingNode tonode) {
   TaintTrackingPaths::edge(fromnode, tonode, _)
 }

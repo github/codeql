@@ -17,7 +17,7 @@ import RequestForgeryCustomizations::RequestForgery
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "RequestForgery" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  override predicate isSource(DataFlow::Node source) { source.(Source).isServerSide() }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 

@@ -31,6 +31,7 @@
 + semmlecode-cpp-queries/Critical/NewArrayDeleteMismatch.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Critical/NewDeleteArrayMismatch.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Critical/NewFreeMismatch.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/UsingExpiredStackAddress.ql: /Correctness/Common Errors
   # Use of Libraries
 + semmlecode-cpp-queries/Likely Bugs/Memory Management/SuspiciousCallToMemset.ql: /Correctness/Use of Libraries
 + semmlecode-cpp-queries/Likely Bugs/Memory Management/SuspiciousSizeof.ql: /Correctness/Use of Libraries

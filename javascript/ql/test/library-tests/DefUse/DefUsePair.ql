@@ -1,5 +1,5 @@
 import javascript
 
-from VarDef def, VarUse use
-where definitionReaches(_, def, use)
+from SsaVariable def, VarUse use
+where def.getAUse() = use
 select def, use

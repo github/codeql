@@ -21,3 +21,9 @@ query predicate fileSystemReadAccesses(FileSystemReadAccess a) { any() }
 query predicate fileSystemAccesses(FileSystemAccess a) { any() }
 
 query predicate fileNameSources(FileNameSource s) { any() }
+
+query predicate ioWriters(IO::IOWriter r) { any() }
+
+query predicate fileWriters(IO::FileWriter r) { any() }
+
+query predicate fileSystemWriteAccesses(FileSystemWriteAccess a) { any() }

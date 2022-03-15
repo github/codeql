@@ -164,6 +164,42 @@ class SqlExecutionTest extends InlineExpectationsTest {
   }
 }
 
+class XPathConstructionTest extends InlineExpectationsTest {
+  XPathConstructionTest() { this = "XPathConstructionTest" }
+
+  override string getARelevantTag() { result = "constructedXPath" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(XML::XPathConstruction e, DataFlow::Node xpath |
+      exists(location.getFile().getRelativePath()) and
+      xpath = e.getXPath() and
+      location = e.getLocation() and
+      element = xpath.toString() and
+      value = prettyNodeForInlineTest(xpath) and
+      tag = "constructedXPath"
+    )
+  }
+}
+
+class XPathExecutionTest extends InlineExpectationsTest {
+  XPathExecutionTest() { this = "XPathExecutionTest" }
+
+  override string getARelevantTag() { result = "getXPath" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(XML::XPathExecution e, DataFlow::Node xpath |
+      exists(location.getFile().getRelativePath()) and
+      xpath = e.getXPath() and
+      location = e.getLocation() and
+      element = xpath.toString() and
+      value = prettyNodeForInlineTest(xpath) and
+      tag = "getXPath"
+    )
+  }
+}
+
 class EscapingTest extends InlineExpectationsTest {
   EscapingTest() { this = "EscapingTest" }
 

@@ -592,12 +592,14 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
+pragma[inline]
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
 /**
  * Holds if data can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 /**

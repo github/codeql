@@ -1,3 +1,23 @@
+## 0.0.11
+
+## 0.0.10
+
+### New Queries
+
+* Added a new query, `rb/clear-text-logging-sensitive-data`. The query finds cases where sensitive information, such as user credentials, are logged as cleartext.
+
+## 0.0.9
+
+## 0.0.8
+
+### New Queries
+
+* Added a new query, `rb/weak-cookie-configuration`. The query finds cases where cookie configuration options are set to values that may make an application more vulnerable to certain attacks.
+
+### Minor Analysis Improvements
+
+* The query `rb/csrf-protection-disabled` has been extended to find calls to the Rails method `protect_from_forgery` that may weaken CSRF protection.
+
 ## 0.0.7
 
 ## 0.0.6

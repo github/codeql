@@ -52,9 +52,18 @@ jobs:
           codeql dataset import -S ql/lib/upgrades/initial/ruby.dbscheme testdb empty.trap
           codeql dataset upgrade testdb --additional-packs ql/lib
           diff -q testdb/ruby.dbscheme ql/lib/ruby.dbscheme
+      - name: Check DB downgrade scripts
+        run: |
+          echo >empty.trap
+          rm -rf testdb; codeql dataset import -S ql/lib/ruby.dbscheme testdb empty.trap
+          codeql resolve upgrades --format=lines --allow-downgrades --additional-packs downgrades \
+           --dbscheme=ql/lib/ruby.dbscheme --target-dbscheme=downgrades/initial/ruby.dbscheme |
+           xargs codeql execute upgrades testdb
+          diff -q testdb/ruby.dbscheme downgrades/initial/ruby.dbscheme
   qltest:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         slice: ["1/2", "2/2"]
     steps:

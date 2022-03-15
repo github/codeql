@@ -27,3 +27,5 @@ module.exports.safe = function (x) {
 	var y = id("safe");
 	/f*g/.test(y); // OK
 }
+
+module.exports.snapdragon = require("./snapdragon")

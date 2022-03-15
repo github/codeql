@@ -1,4 +1,4 @@
 import semmle.javascript.JSON
 
-from JSONParseError jpe
+from JsonParseError jpe
 select jpe

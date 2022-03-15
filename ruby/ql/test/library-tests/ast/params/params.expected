@@ -35,6 +35,7 @@ idParams
 | params.rb:70:48:70:48 | c | c |
 | params.rb:73:27:73:32 | wibble | wibble |
 | params.rb:77:16:77:18 | val | val |
+| params.rb:81:31:81:35 | array | array |
 blockParams
 | params.rb:46:28:46:33 | &block | block |
 | params.rb:62:29:62:34 | &block | block |
@@ -87,6 +88,8 @@ paramsInMethods
 | params.rb:62:1:64:3 | use_block_with_optional | 0 | params.rb:62:29:62:34 | &block | BlockParameter |
 | params.rb:73:1:74:3 | method_with_nil_splat | 0 | params.rb:73:27:73:32 | wibble | SimpleParameter |
 | params.rb:73:1:74:3 | method_with_nil_splat | 1 | params.rb:73:35:73:39 | **nil | HashSplatNilParameter |
+| params.rb:81:1:84:3 | anonymous_block_parameter | 0 | params.rb:81:31:81:35 | array | SimpleParameter |
+| params.rb:81:1:84:3 | anonymous_block_parameter | 1 | params.rb:81:38:81:38 | & | BlockParameter |
 paramsInBlocks
 | params.rb:9:11:11:3 | do ... end | 0 | params.rb:9:15:9:17 | key | SimpleParameter |
 | params.rb:9:11:11:3 | do ... end | 1 | params.rb:9:20:9:24 | value | SimpleParameter |
@@ -157,3 +160,5 @@ params
 | params.rb:73:35:73:39 | **nil | 1 | HashSplatNilParameter |
 | params.rb:77:16:77:18 | val | 0 | SimpleParameter |
 | params.rb:77:21:77:25 | **nil | 1 | HashSplatNilParameter |
+| params.rb:81:31:81:35 | array | 0 | SimpleParameter |
+| params.rb:81:38:81:38 | & | 1 | BlockParameter |

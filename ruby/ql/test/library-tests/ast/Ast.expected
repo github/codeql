@@ -1,28 +1,28 @@
 gems/Gemfile:
 #    1| [Toplevel] Gemfile
 #    1|   getStmt: [MethodCall] call to source
-#    1|     getReceiver: [Self, SelfVariableAccess] self
+#    1|     getReceiver: [SelfVariableAccess] self
 #    1|     getArgument: [StringLiteral] "https://rubygems.org"
 #    1|       getComponent: [StringTextComponent] https://rubygems.org
 #    3|   getStmt: [MethodCall] call to gem
-#    3|     getReceiver: [Self, SelfVariableAccess] self
+#    3|     getReceiver: [SelfVariableAccess] self
 #    3|     getArgument: [StringLiteral] "foo_gem"
 #    3|       getComponent: [StringTextComponent] foo_gem
 #    3|     getArgument: [StringLiteral] "~> 2.0"
 #    3|       getComponent: [StringTextComponent] ~> 2.0
 #    5|   getStmt: [MethodCall] call to source
-#    5|     getReceiver: [Self, SelfVariableAccess] self
+#    5|     getReceiver: [SelfVariableAccess] self
 #    5|     getArgument: [StringLiteral] "https://gems.example.com"
 #    5|       getComponent: [StringTextComponent] https://gems.example.com
 #    5|     getBlock: [DoBlock] do ... end
 #    6|       getStmt: [MethodCall] call to gem
-#    6|         getReceiver: [Self, SelfVariableAccess] self
+#    6|         getReceiver: [SelfVariableAccess] self
 #    6|         getArgument: [StringLiteral] "my_gem"
 #    6|           getComponent: [StringTextComponent] my_gem
 #    6|         getArgument: [StringLiteral] "1.0"
 #    6|           getComponent: [StringTextComponent] 1.0
 #    7|       getStmt: [MethodCall] call to gem
-#    7|         getReceiver: [Self, SelfVariableAccess] self
+#    7|         getReceiver: [SelfVariableAccess] self
 #    7|         getArgument: [StringLiteral] "another_gem"
 #    7|           getComponent: [StringTextComponent] another_gem
 #    7|         getArgument: [StringLiteral] "3.1.4"
@@ -30,20 +30,20 @@ gems/Gemfile:
 calls/calls.rb:
 #    1| [Toplevel] calls.rb
 #    2|   getStmt: [MethodCall] call to foo
-#    2|     getReceiver: [Self, SelfVariableAccess] self
+#    2|     getReceiver: [SelfVariableAccess] self
 #    5|   getStmt: [MethodCall] call to bar
 #    5|     getReceiver: [ConstantReadAccess] Foo
 #    8|   getStmt: [MethodCall] call to bar
-#    8|     getReceiver: [Self, SelfVariableAccess] self
+#    8|     getReceiver: [SelfVariableAccess] self
 #   11|   getStmt: [MethodCall] call to bar
 #   11|     getReceiver: [IntegerLiteral] 123
 #   14|   getStmt: [MethodCall] call to foo
-#   14|     getReceiver: [Self, SelfVariableAccess] self
+#   14|     getReceiver: [SelfVariableAccess] self
 #   14|     getArgument: [IntegerLiteral] 0
 #   14|     getArgument: [IntegerLiteral] 1
 #   14|     getArgument: [IntegerLiteral] 2
 #   17|   getStmt: [MethodCall] call to foo
-#   17|     getReceiver: [Self, SelfVariableAccess] self
+#   17|     getReceiver: [SelfVariableAccess] self
 #   17|     getBlock: [BraceBlock] { ... }
 #   17|       getParameter: [SimpleParameter] x
 #   17|         getDefiningAccess: [LocalVariableAccess] x
@@ -51,7 +51,7 @@ calls/calls.rb:
 #   17|         getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
 #   17|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #   20|   getStmt: [MethodCall] call to foo
-#   20|     getReceiver: [Self, SelfVariableAccess] self
+#   20|     getReceiver: [SelfVariableAccess] self
 #   20|     getBlock: [DoBlock] do ... end
 #   20|       getParameter: [SimpleParameter] x
 #   20|         getDefiningAccess: [LocalVariableAccess] x
@@ -75,33 +75,33 @@ calls/calls.rb:
 #   36|       getArgument: [IntegerLiteral] 100
 #   36|       getArgument: [IntegerLiteral] 200
 #   46|   getStmt: [MethodCall] call to foo
-#   46|     getReceiver: [Self, SelfVariableAccess] self
+#   46|     getReceiver: [SelfVariableAccess] self
 #   47|   getStmt: [MethodCall] call to foo
 #   47|     getReceiver: [ConstantReadAccess] X
 #   50|   getStmt: [ParenthesizedExpr] ( ... )
 #   50|     getStmt: [MethodCall] call to foo
-#   50|       getReceiver: [Self, SelfVariableAccess] self
+#   50|       getReceiver: [SelfVariableAccess] self
 #   51|   getStmt: [ParenthesizedExpr] ( ... )
 #   51|     getStmt: [MethodCall] call to foo
 #   51|       getReceiver: [ConstantReadAccess] X
 #   54|   getStmt: [MethodCall] call to some_func
-#   54|     getReceiver: [Self, SelfVariableAccess] self
+#   54|     getReceiver: [SelfVariableAccess] self
 #   54|     getArgument: [MethodCall] call to foo
-#   54|       getReceiver: [Self, SelfVariableAccess] self
+#   54|       getReceiver: [SelfVariableAccess] self
 #   55|   getStmt: [MethodCall] call to some_func
-#   55|     getReceiver: [Self, SelfVariableAccess] self
+#   55|     getReceiver: [SelfVariableAccess] self
 #   55|     getArgument: [MethodCall] call to foo
 #   55|       getReceiver: [ConstantReadAccess] X
 #   58|   getStmt: [ArrayLiteral] [...]
 #   58|     getElement: [MethodCall] call to foo
-#   58|       getReceiver: [Self, SelfVariableAccess] self
+#   58|       getReceiver: [SelfVariableAccess] self
 #   59|   getStmt: [ArrayLiteral] [...]
 #   59|     getElement: [MethodCall] call to foo
 #   59|       getReceiver: [ConstantReadAccess] X
 #   62|   getStmt: [AssignExpr] ... = ...
 #   62|     getAnOperand/getLeftOperand: [LocalVariableAccess] var1
 #   62|     getAnOperand/getRightOperand: [MethodCall] call to foo
-#   62|       getReceiver: [Self, SelfVariableAccess] self
+#   62|       getReceiver: [SelfVariableAccess] self
 #   63|   getStmt: [AssignExpr] ... = ...
 #   63|     getAnOperand/getLeftOperand: [LocalVariableAccess] var1
 #   63|     getAnOperand/getRightOperand: [MethodCall] call to foo
@@ -109,7 +109,7 @@ calls/calls.rb:
 #   66|   getStmt: [AssignAddExpr] ... += ...
 #   66|     getAnOperand/getLeftOperand: [LocalVariableAccess] var1
 #   66|     getAnOperand/getRightOperand: [MethodCall] call to bar
-#   66|       getReceiver: [Self, SelfVariableAccess] self
+#   66|       getReceiver: [SelfVariableAccess] self
 #   67|   getStmt: [AssignAddExpr] ... += ...
 #   67|     getAnOperand/getLeftOperand: [LocalVariableAccess] var1
 #   67|     getAnOperand/getRightOperand: [MethodCall] call to bar
@@ -118,64 +118,64 @@ calls/calls.rb:
 #   70|     getAnOperand/getLeftOperand: [LocalVariableAccess] var1
 #   70|     getAnOperand/getRightOperand: [ArgumentList] ..., ...
 #   70|       getElement: [MethodCall] call to foo
-#   70|         getReceiver: [Self, SelfVariableAccess] self
+#   70|         getReceiver: [SelfVariableAccess] self
 #   70|       getElement: [MethodCall] call to bar
 #   70|         getReceiver: [ConstantReadAccess] X
 #   73|   getStmt: [BeginExpr] begin ... 
 #   74|     getStmt: [MethodCall] call to foo
-#   74|       getReceiver: [Self, SelfVariableAccess] self
+#   74|       getReceiver: [SelfVariableAccess] self
 #   75|     getStmt: [MethodCall] call to foo
 #   75|       getReceiver: [ConstantReadAccess] X
 #   79|   getBeginBlock: [BeginBlock] BEGIN { ... }
 #   79|     getStmt: [MethodCall] call to foo
-#   79|       getReceiver: [Self, SelfVariableAccess] self
+#   79|       getReceiver: [SelfVariableAccess] self
 #   79|     getStmt: [MethodCall] call to bar
 #   79|       getReceiver: [ConstantReadAccess] X
 #   82|   getStmt: [EndBlock] END { ... }
 #   82|     getStmt: [MethodCall] call to foo
-#   82|       getReceiver: [Self, SelfVariableAccess] self
+#   82|       getReceiver: [SelfVariableAccess] self
 #   82|     getStmt: [MethodCall] call to bar
 #   82|       getReceiver: [ConstantReadAccess] X
 #   85|   getStmt: [AddExpr] ... + ...
 #   85|     getAnOperand/getLeftOperand/getReceiver: [MethodCall] call to foo
-#   85|       getReceiver: [Self, SelfVariableAccess] self
+#   85|       getReceiver: [SelfVariableAccess] self
 #   85|     getAnOperand/getArgument/getRightOperand: [MethodCall] call to bar
 #   85|       getReceiver: [ConstantReadAccess] X
 #   88|   getStmt: [NotExpr] ! ...
 #   88|     getAnOperand/getOperand/getReceiver: [MethodCall] call to foo
-#   88|       getReceiver: [Self, SelfVariableAccess] self
+#   88|       getReceiver: [SelfVariableAccess] self
 #   89|   getStmt: [ComplementExpr] ~ ...
 #   89|     getAnOperand/getOperand/getReceiver: [MethodCall] call to bar
 #   89|       getReceiver: [ConstantReadAccess] X
 #   92|   getStmt: [MethodCall] call to foo
-#   92|     getReceiver: [Self, SelfVariableAccess] self
+#   92|     getReceiver: [SelfVariableAccess] self
 #   92|     getBlock: [BraceBlock] { ... }
 #   92|       getStmt: [MethodCall] call to bar
-#   92|         getReceiver: [Self, SelfVariableAccess] self
+#   92|         getReceiver: [SelfVariableAccess] self
 #   92|       getStmt: [MethodCall] call to baz
 #   92|         getReceiver: [ConstantReadAccess] X
 #   95|   getStmt: [MethodCall] call to foo
-#   95|     getReceiver: [Self, SelfVariableAccess] self
+#   95|     getReceiver: [SelfVariableAccess] self
 #   95|     getBlock: [DoBlock] do ... end
 #   96|       getStmt: [MethodCall] call to bar
-#   96|         getReceiver: [Self, SelfVariableAccess] self
+#   96|         getReceiver: [SelfVariableAccess] self
 #   97|       getStmt: [MethodCall] call to baz
 #   97|         getReceiver: [ConstantReadAccess] X
 #  101|   getStmt: [MethodCall] call to bar
 #  101|     getReceiver: [MethodCall] call to foo
-#  101|       getReceiver: [Self, SelfVariableAccess] self
+#  101|       getReceiver: [SelfVariableAccess] self
 #  102|   getStmt: [MethodCall] call to baz
 #  102|     getReceiver: [MethodCall] call to bar
-#  102|       getReceiver: [Self, SelfVariableAccess] self
+#  102|       getReceiver: [SelfVariableAccess] self
 #  106|   getStmt: [CaseExpr] case ...
 #  106|     getValue: [MethodCall] call to foo
-#  106|       getReceiver: [Self, SelfVariableAccess] self
+#  106|       getReceiver: [SelfVariableAccess] self
 #  107|     getBranch: [WhenClause] when ...
 #  107|       getPattern: [MethodCall] call to bar
-#  107|         getReceiver: [Self, SelfVariableAccess] self
+#  107|         getReceiver: [SelfVariableAccess] self
 #  107|       getBody: [StmtSequence] then ...
 #  108|         getStmt: [MethodCall] call to baz
-#  108|           getReceiver: [Self, SelfVariableAccess] self
+#  108|           getReceiver: [SelfVariableAccess] self
 #  110|   getStmt: [CaseExpr] case ...
 #  110|     getValue: [MethodCall] call to foo
 #  110|       getReceiver: [ConstantReadAccess] X
@@ -187,20 +187,20 @@ calls/calls.rb:
 #  112|           getReceiver: [ConstantReadAccess] X
 #  116|   getStmt: [ClassDeclaration] MyClass
 #  117|     getStmt: [MethodCall] call to foo
-#  117|       getReceiver: [Self, SelfVariableAccess] self
+#  117|       getReceiver: [SelfVariableAccess] self
 #  118|     getStmt: [MethodCall] call to bar
 #  118|       getReceiver: [ConstantReadAccess] X
 #  122|   getStmt: [ClassDeclaration] MyClass
 #  122|     getSuperclassExpr: [MethodCall] call to foo
-#  122|       getReceiver: [Self, SelfVariableAccess] self
+#  122|       getReceiver: [SelfVariableAccess] self
 #  124|   getStmt: [ClassDeclaration] MyClass2
 #  124|     getSuperclassExpr: [MethodCall] call to foo
 #  124|       getReceiver: [ConstantReadAccess] X
 #  128|   getStmt: [SingletonClass] class << ...
 #  128|     getValue: [MethodCall] call to foo
-#  128|       getReceiver: [Self, SelfVariableAccess] self
+#  128|       getReceiver: [SelfVariableAccess] self
 #  129|     getStmt: [MethodCall] call to bar
-#  129|       getReceiver: [Self, SelfVariableAccess] self
+#  129|       getReceiver: [SelfVariableAccess] self
 #  131|   getStmt: [SingletonClass] class << ...
 #  131|     getValue: [MethodCall] call to foo
 #  131|       getReceiver: [ConstantReadAccess] X
@@ -208,21 +208,21 @@ calls/calls.rb:
 #  132|       getReceiver: [ConstantReadAccess] X
 #  136|   getStmt: [Method] some_method
 #  137|     getStmt: [MethodCall] call to foo
-#  137|       getReceiver: [Self, SelfVariableAccess] self
+#  137|       getReceiver: [SelfVariableAccess] self
 #  138|     getStmt: [MethodCall] call to bar
 #  138|       getReceiver: [ConstantReadAccess] X
 #  142|   getStmt: [SingletonMethod] some_method
 #  142|     getObject: [MethodCall] call to foo
-#  142|       getReceiver: [Self, SelfVariableAccess] self
+#  142|       getReceiver: [SelfVariableAccess] self
 #  143|     getStmt: [MethodCall] call to bar
-#  143|       getReceiver: [Self, SelfVariableAccess] self
+#  143|       getReceiver: [SelfVariableAccess] self
 #  144|     getStmt: [MethodCall] call to baz
 #  144|       getReceiver: [ConstantReadAccess] X
 #  148|   getStmt: [Method] method_with_keyword_param
 #  148|     getParameter: [KeywordParameter] keyword
 #  148|       getDefiningAccess: [LocalVariableAccess] keyword
 #  148|       getDefaultValue: [MethodCall] call to foo
-#  148|         getReceiver: [Self, SelfVariableAccess] self
+#  148|         getReceiver: [SelfVariableAccess] self
 #  150|   getStmt: [Method] method_with_keyword_param2
 #  150|     getParameter: [KeywordParameter] keyword
 #  150|       getDefiningAccess: [LocalVariableAccess] keyword
@@ -232,7 +232,7 @@ calls/calls.rb:
 #  154|     getParameter: [OptionalParameter] param
 #  154|       getDefiningAccess: [LocalVariableAccess] param
 #  154|       getDefaultValue: [MethodCall] call to foo
-#  154|         getReceiver: [Self, SelfVariableAccess] self
+#  154|         getReceiver: [SelfVariableAccess] self
 #  156|   getStmt: [Method] method_with_optional_param2
 #  156|     getParameter: [OptionalParameter] param
 #  156|       getDefiningAccess: [LocalVariableAccess] param
@@ -240,16 +240,16 @@ calls/calls.rb:
 #  156|         getReceiver: [ConstantReadAccess] X
 #  160|   getStmt: [ModuleDeclaration] SomeModule
 #  161|     getStmt: [MethodCall] call to foo
-#  161|       getReceiver: [Self, SelfVariableAccess] self
+#  161|       getReceiver: [SelfVariableAccess] self
 #  162|     getStmt: [MethodCall] call to bar
 #  162|       getReceiver: [ConstantReadAccess] X
 #  166|   getStmt: [TernaryIfExpr] ... ? ... : ...
 #  166|     getCondition: [MethodCall] call to foo
-#  166|       getReceiver: [Self, SelfVariableAccess] self
+#  166|       getReceiver: [SelfVariableAccess] self
 #  166|     getBranch/getThen: [MethodCall] call to bar
-#  166|       getReceiver: [Self, SelfVariableAccess] self
+#  166|       getReceiver: [SelfVariableAccess] self
 #  166|     getBranch/getElse: [MethodCall] call to baz
-#  166|       getReceiver: [Self, SelfVariableAccess] self
+#  166|       getReceiver: [SelfVariableAccess] self
 #  167|   getStmt: [TernaryIfExpr] ... ? ... : ...
 #  167|     getCondition: [MethodCall] call to foo
 #  167|       getReceiver: [ConstantReadAccess] X
@@ -259,19 +259,19 @@ calls/calls.rb:
 #  167|       getReceiver: [ConstantReadAccess] X
 #  170|   getStmt: [IfExpr] if ...
 #  170|     getCondition: [MethodCall] call to foo
-#  170|       getReceiver: [Self, SelfVariableAccess] self
+#  170|       getReceiver: [SelfVariableAccess] self
 #  170|     getBranch/getThen: [StmtSequence] then ...
 #  171|       getStmt: [MethodCall] call to wibble
-#  171|         getReceiver: [Self, SelfVariableAccess] self
+#  171|         getReceiver: [SelfVariableAccess] self
 #  172|     getBranch/getElse: [IfExpr] elsif ...
 #  172|       getCondition: [MethodCall] call to bar
-#  172|         getReceiver: [Self, SelfVariableAccess] self
+#  172|         getReceiver: [SelfVariableAccess] self
 #  172|       getBranch/getThen: [StmtSequence] then ...
 #  173|         getStmt: [MethodCall] call to wobble
-#  173|           getReceiver: [Self, SelfVariableAccess] self
+#  173|           getReceiver: [SelfVariableAccess] self
 #  174|       getBranch/getElse: [StmtSequence] else ...
 #  175|         getStmt: [MethodCall] call to wabble
-#  175|           getReceiver: [Self, SelfVariableAccess] self
+#  175|           getReceiver: [SelfVariableAccess] self
 #  177|   getStmt: [IfExpr] if ...
 #  177|     getCondition: [MethodCall] call to foo
 #  177|       getReceiver: [ConstantReadAccess] X
@@ -289,9 +289,9 @@ calls/calls.rb:
 #  182|           getReceiver: [ConstantReadAccess] X
 #  186|   getStmt: [IfModifierExpr] ... if ...
 #  186|     getBody/getBranch: [MethodCall] call to bar
-#  186|       getReceiver: [Self, SelfVariableAccess] self
+#  186|       getReceiver: [SelfVariableAccess] self
 #  186|     getCondition: [MethodCall] call to foo
-#  186|       getReceiver: [Self, SelfVariableAccess] self
+#  186|       getReceiver: [SelfVariableAccess] self
 #  187|   getStmt: [IfModifierExpr] ... if ...
 #  187|     getBody/getBranch: [MethodCall] call to bar
 #  187|       getReceiver: [ConstantReadAccess] X
@@ -299,10 +299,10 @@ calls/calls.rb:
 #  187|       getReceiver: [ConstantReadAccess] X
 #  190|   getStmt: [UnlessExpr] unless ...
 #  190|     getCondition: [MethodCall] call to foo
-#  190|       getReceiver: [Self, SelfVariableAccess] self
+#  190|       getReceiver: [SelfVariableAccess] self
 #  190|     getBranch/getThen: [StmtSequence] then ...
 #  191|       getStmt: [MethodCall] call to bar
-#  191|         getReceiver: [Self, SelfVariableAccess] self
+#  191|         getReceiver: [SelfVariableAccess] self
 #  193|   getStmt: [UnlessExpr] unless ...
 #  193|     getCondition: [MethodCall] call to foo
 #  193|       getReceiver: [ConstantReadAccess] X
@@ -311,9 +311,9 @@ calls/calls.rb:
 #  194|         getReceiver: [ConstantReadAccess] X
 #  198|   getStmt: [UnlessModifierExpr] ... unless ...
 #  198|     getBody/getBranch: [MethodCall] call to bar
-#  198|       getReceiver: [Self, SelfVariableAccess] self
+#  198|       getReceiver: [SelfVariableAccess] self
 #  198|     getCondition: [MethodCall] call to foo
-#  198|       getReceiver: [Self, SelfVariableAccess] self
+#  198|       getReceiver: [SelfVariableAccess] self
 #  199|   getStmt: [UnlessModifierExpr] ... unless ...
 #  199|     getBody/getBranch: [MethodCall] call to bar
 #  199|       getReceiver: [ConstantReadAccess] X
@@ -321,10 +321,10 @@ calls/calls.rb:
 #  199|       getReceiver: [ConstantReadAccess] X
 #  202|   getStmt: [WhileExpr] while ...
 #  202|     getCondition: [MethodCall] call to foo
-#  202|       getReceiver: [Self, SelfVariableAccess] self
+#  202|       getReceiver: [SelfVariableAccess] self
 #  202|     getBody: [StmtSequence] do ...
 #  203|       getStmt: [MethodCall] call to bar
-#  203|         getReceiver: [Self, SelfVariableAccess] self
+#  203|         getReceiver: [SelfVariableAccess] self
 #  205|   getStmt: [WhileExpr] while ...
 #  205|     getCondition: [MethodCall] call to foo
 #  205|       getReceiver: [ConstantReadAccess] X
@@ -333,9 +333,9 @@ calls/calls.rb:
 #  206|         getReceiver: [ConstantReadAccess] X
 #  210|   getStmt: [WhileModifierExpr] ... while ...
 #  210|     getBody: [MethodCall] call to bar
-#  210|       getReceiver: [Self, SelfVariableAccess] self
+#  210|       getReceiver: [SelfVariableAccess] self
 #  210|     getCondition: [MethodCall] call to foo
-#  210|       getReceiver: [Self, SelfVariableAccess] self
+#  210|       getReceiver: [SelfVariableAccess] self
 #  211|   getStmt: [WhileModifierExpr] ... while ...
 #  211|     getBody: [MethodCall] call to bar
 #  211|       getReceiver: [ConstantReadAccess] X
@@ -343,10 +343,10 @@ calls/calls.rb:
 #  211|       getReceiver: [ConstantReadAccess] X
 #  214|   getStmt: [UntilExpr] until ...
 #  214|     getCondition: [MethodCall] call to foo
-#  214|       getReceiver: [Self, SelfVariableAccess] self
+#  214|       getReceiver: [SelfVariableAccess] self
 #  214|     getBody: [StmtSequence] do ...
 #  215|       getStmt: [MethodCall] call to bar
-#  215|         getReceiver: [Self, SelfVariableAccess] self
+#  215|         getReceiver: [SelfVariableAccess] self
 #  217|   getStmt: [UntilExpr] until ...
 #  217|     getCondition: [MethodCall] call to foo
 #  217|       getReceiver: [ConstantReadAccess] X
@@ -355,9 +355,9 @@ calls/calls.rb:
 #  218|         getReceiver: [ConstantReadAccess] X
 #  222|   getStmt: [UntilModifierExpr] ... until ...
 #  222|     getBody: [MethodCall] call to bar
-#  222|       getReceiver: [Self, SelfVariableAccess] self
+#  222|       getReceiver: [SelfVariableAccess] self
 #  222|     getCondition: [MethodCall] call to foo
-#  222|       getReceiver: [Self, SelfVariableAccess] self
+#  222|       getReceiver: [SelfVariableAccess] self
 #  223|   getStmt: [UntilModifierExpr] ... until ...
 #  223|     getBody: [MethodCall] call to bar
 #  223|       getReceiver: [ConstantReadAccess] X
@@ -366,10 +366,10 @@ calls/calls.rb:
 #  226|   getStmt: [ForExpr] for ... in ...
 #  226|     getPattern: [LocalVariableAccess] x
 #  226|     getValue: [MethodCall] call to bar
-#  226|       getReceiver: [Self, SelfVariableAccess] self
+#  226|       getReceiver: [SelfVariableAccess] self
 #  226|     getBody: [StmtSequence] do ...
 #  227|       getStmt: [MethodCall] call to baz
-#  227|         getReceiver: [Self, SelfVariableAccess] self
+#  227|         getReceiver: [SelfVariableAccess] self
 #  229|   getStmt: [ForExpr] for ... in ...
 #  229|     getPattern: [LocalVariableAccess] x
 #  229|     getValue: [MethodCall] call to bar
@@ -379,9 +379,9 @@ calls/calls.rb:
 #  230|         getReceiver: [ConstantReadAccess] X
 #  234|   getStmt: [ElementReference] ...[...]
 #  234|     getReceiver: [MethodCall] call to foo
-#  234|       getReceiver: [Self, SelfVariableAccess] self
+#  234|       getReceiver: [SelfVariableAccess] self
 #  234|     getArgument: [MethodCall] call to bar
-#  234|       getReceiver: [Self, SelfVariableAccess] self
+#  234|       getReceiver: [SelfVariableAccess] self
 #  235|   getStmt: [ElementReference] ...[...]
 #  235|     getReceiver: [MethodCall] call to foo
 #  235|       getReceiver: [ConstantReadAccess] X
@@ -391,22 +391,22 @@ calls/calls.rb:
 #  238|     getComponent: [StringTextComponent] foo-
 #  238|     getComponent: [StringInterpolationComponent] #{...}
 #  238|       getStmt: [MethodCall] call to bar
-#  238|         getReceiver: [Self, SelfVariableAccess] self
+#  238|         getReceiver: [SelfVariableAccess] self
 #  238|     getComponent: [StringTextComponent] -
 #  238|     getComponent: [StringInterpolationComponent] #{...}
 #  238|       getStmt: [MethodCall] call to baz
 #  238|         getReceiver: [ConstantReadAccess] X
 #  241|   getStmt: [ConstantReadAccess] Bar
 #  241|     getScopeExpr: [MethodCall] call to foo
-#  241|       getReceiver: [Self, SelfVariableAccess] self
+#  241|       getReceiver: [SelfVariableAccess] self
 #  242|   getStmt: [ConstantReadAccess] Bar
 #  242|     getScopeExpr: [MethodCall] call to foo
 #  242|       getReceiver: [ConstantReadAccess] X
 #  245|   getStmt: [RangeLiteral] _ .. _
 #  245|     getBegin: [MethodCall] call to foo
-#  245|       getReceiver: [Self, SelfVariableAccess] self
+#  245|       getReceiver: [SelfVariableAccess] self
 #  245|     getEnd: [MethodCall] call to bar
-#  245|       getReceiver: [Self, SelfVariableAccess] self
+#  245|       getReceiver: [SelfVariableAccess] self
 #  246|   getStmt: [RangeLiteral] _ .. _
 #  246|     getBegin: [MethodCall] call to foo
 #  246|       getReceiver: [ConstantReadAccess] X
@@ -415,9 +415,9 @@ calls/calls.rb:
 #  249|   getStmt: [HashLiteral] {...}
 #  249|     getElement: [Pair] Pair
 #  249|       getKey: [MethodCall] call to foo
-#  249|         getReceiver: [Self, SelfVariableAccess] self
+#  249|         getReceiver: [SelfVariableAccess] self
 #  249|       getValue: [MethodCall] call to bar
-#  249|         getReceiver: [Self, SelfVariableAccess] self
+#  249|         getReceiver: [SelfVariableAccess] self
 #  249|     getElement: [Pair] Pair
 #  249|       getKey: [MethodCall] call to foo
 #  249|         getReceiver: [ConstantReadAccess] X
@@ -426,10 +426,10 @@ calls/calls.rb:
 #  252|   getStmt: [BeginExpr] begin ... 
 #  253|     getRescue: [RescueClause] rescue ...
 #  253|       getException: [MethodCall] call to foo
-#  253|         getReceiver: [Self, SelfVariableAccess] self
+#  253|         getReceiver: [SelfVariableAccess] self
 #  254|     getEnsure: [StmtSequence] ensure ...
 #  254|       getStmt: [MethodCall] call to bar
-#  254|         getReceiver: [Self, SelfVariableAccess] self
+#  254|         getReceiver: [SelfVariableAccess] self
 #  256|   getStmt: [BeginExpr] begin ... 
 #  257|     getRescue: [RescueClause] rescue ...
 #  257|       getException: [MethodCall] call to foo
@@ -439,52 +439,55 @@ calls/calls.rb:
 #  258|         getReceiver: [ConstantReadAccess] X
 #  262|   getStmt: [RescueModifierExpr] ... rescue ...
 #  262|     getBody: [MethodCall] call to foo
-#  262|       getReceiver: [Self, SelfVariableAccess] self
+#  262|       getReceiver: [SelfVariableAccess] self
 #  262|     getHandler: [MethodCall] call to bar
-#  262|       getReceiver: [Self, SelfVariableAccess] self
+#  262|       getReceiver: [SelfVariableAccess] self
 #  263|   getStmt: [RescueModifierExpr] ... rescue ...
 #  263|     getBody: [MethodCall] call to foo
 #  263|       getReceiver: [ConstantReadAccess] X
 #  263|     getHandler: [MethodCall] call to bar
 #  263|       getReceiver: [ConstantReadAccess] X
 #  266|   getStmt: [MethodCall] call to foo
-#  266|     getReceiver: [Self, SelfVariableAccess] self
+#  266|     getReceiver: [SelfVariableAccess] self
 #  266|     getArgument: [BlockArgument] &...
 #  266|       getValue: [MethodCall] call to bar
-#  266|         getReceiver: [Self, SelfVariableAccess] self
+#  266|         getReceiver: [SelfVariableAccess] self
 #  267|   getStmt: [MethodCall] call to foo
-#  267|     getReceiver: [Self, SelfVariableAccess] self
+#  267|     getReceiver: [SelfVariableAccess] self
 #  267|     getArgument: [BlockArgument] &...
 #  267|       getValue: [MethodCall] call to bar
 #  267|         getReceiver: [ConstantReadAccess] X
+#  268|   getStmt: [MethodCall] call to foo
+#  268|     getReceiver: [SelfVariableAccess] self
+#  268|     getArgument: [BlockArgument] &...
 #  270|   getStmt: [MethodCall] call to foo
-#  270|     getReceiver: [Self, SelfVariableAccess] self
+#  270|     getReceiver: [SelfVariableAccess] self
 #  270|     getArgument: [SplatExpr] * ...
 #  270|       getAnOperand/getOperand/getReceiver: [MethodCall] call to bar
-#  270|         getReceiver: [Self, SelfVariableAccess] self
+#  270|         getReceiver: [SelfVariableAccess] self
 #  271|   getStmt: [MethodCall] call to foo
-#  271|     getReceiver: [Self, SelfVariableAccess] self
+#  271|     getReceiver: [SelfVariableAccess] self
 #  271|     getArgument: [SplatExpr] * ...
 #  271|       getAnOperand/getOperand/getReceiver: [MethodCall] call to bar
 #  271|         getReceiver: [ConstantReadAccess] X
 #  274|   getStmt: [MethodCall] call to foo
-#  274|     getReceiver: [Self, SelfVariableAccess] self
+#  274|     getReceiver: [SelfVariableAccess] self
 #  274|     getArgument: [HashSplatExpr] ** ...
 #  274|       getAnOperand/getOperand/getReceiver: [MethodCall] call to bar
-#  274|         getReceiver: [Self, SelfVariableAccess] self
+#  274|         getReceiver: [SelfVariableAccess] self
 #  275|   getStmt: [MethodCall] call to foo
-#  275|     getReceiver: [Self, SelfVariableAccess] self
+#  275|     getReceiver: [SelfVariableAccess] self
 #  275|     getArgument: [HashSplatExpr] ** ...
 #  275|       getAnOperand/getOperand/getReceiver: [MethodCall] call to bar
 #  275|         getReceiver: [ConstantReadAccess] X
 #  278|   getStmt: [MethodCall] call to foo
-#  278|     getReceiver: [Self, SelfVariableAccess] self
+#  278|     getReceiver: [SelfVariableAccess] self
 #  278|     getArgument: [Pair] Pair
 #  278|       getKey: [SymbolLiteral] :blah
 #  278|       getValue: [MethodCall] call to bar
-#  278|         getReceiver: [Self, SelfVariableAccess] self
+#  278|         getReceiver: [SelfVariableAccess] self
 #  279|   getStmt: [MethodCall] call to foo
-#  279|     getReceiver: [Self, SelfVariableAccess] self
+#  279|     getReceiver: [SelfVariableAccess] self
 #  279|     getArgument: [Pair] Pair
 #  279|       getKey: [SymbolLiteral] :blah
 #  279|       getValue: [MethodCall] call to bar
@@ -536,37 +539,37 @@ calls/calls.rb:
 #  302|     getStmt: [Method] another_method
 #  303|       getStmt: [MethodCall] call to super
 #  303|         getReceiver: [MethodCall] call to foo
-#  303|           getReceiver: [Self, SelfVariableAccess] self
+#  303|           getReceiver: [SelfVariableAccess] self
 #  304|       getStmt: [MethodCall] call to super
-#  304|         getReceiver: [Self, SelfVariableAccess] self
+#  304|         getReceiver: [SelfVariableAccess] self
 #  305|       getStmt: [MethodCall] call to super
 #  305|         getReceiver: [SuperCall] call to super
 #  310|   getStmt: [MethodCall] call to call
 #  310|     getReceiver: [MethodCall] call to foo
-#  310|       getReceiver: [Self, SelfVariableAccess] self
+#  310|       getReceiver: [SelfVariableAccess] self
 #  311|   getStmt: [MethodCall] call to call
 #  311|     getReceiver: [MethodCall] call to foo
-#  311|       getReceiver: [Self, SelfVariableAccess] self
+#  311|       getReceiver: [SelfVariableAccess] self
 #  311|     getArgument: [IntegerLiteral] 1
 #  314|   getStmt: [AssignExpr] ... = ...
 #  314|     getAnOperand/getLeftOperand: [MethodCall] call to foo
-#  314|       getReceiver: [Self, SelfVariableAccess] self
+#  314|       getReceiver: [SelfVariableAccess] self
 #  314|     getAnOperand/getRightOperand: [IntegerLiteral] 10
 #  315|   getStmt: [AssignExpr] ... = ...
 #  315|     getAnOperand/getLeftOperand: [ElementReference] ...[...]
 #  315|       getReceiver: [MethodCall] call to foo
-#  315|         getReceiver: [Self, SelfVariableAccess] self
+#  315|         getReceiver: [SelfVariableAccess] self
 #  315|       getArgument: [IntegerLiteral] 0
 #  315|     getAnOperand/getRightOperand: [IntegerLiteral] 10
 #  316|   getStmt: [AssignExpr] ... = ...
 #  316|     getAnOperand/getLeftOperand: [DestructuredLhsExpr] (..., ...)
 #  316|       getElement: [MethodCall] call to foo
-#  316|         getReceiver: [Self, SelfVariableAccess] self
+#  316|         getReceiver: [SelfVariableAccess] self
 #  316|       getElement: [MethodCall] call to bar
-#  316|         getReceiver: [Self, SelfVariableAccess] self
+#  316|         getReceiver: [SelfVariableAccess] self
 #  316|       getElement: [ElementReference] ...[...]
 #  316|         getReceiver: [MethodCall] call to foo
-#  316|           getReceiver: [Self, SelfVariableAccess] self
+#  316|           getReceiver: [SelfVariableAccess] self
 #  316|         getArgument: [IntegerLiteral] 4
 #  316|     getAnOperand/getRightOperand: [ArrayLiteral] [...]
 #  316|       getElement: [IntegerLiteral] 1
@@ -578,7 +581,7 @@ calls/calls.rb:
 #  317|       getElement: [LocalVariableAccess] a
 #  317|       getElement: [ElementReference] ...[...]
 #  317|         getReceiver: [MethodCall] call to foo
-#  317|           getReceiver: [Self, SelfVariableAccess] self
+#  317|           getReceiver: [SelfVariableAccess] self
 #  317|         getArgument: [IntegerLiteral] 5
 #  317|     getAnOperand/getRightOperand: [ArrayLiteral] [...]
 #  317|       getElement: [IntegerLiteral] 1
@@ -586,57 +589,57 @@ calls/calls.rb:
 #  317|       getElement: [IntegerLiteral] 3
 #  318|   getStmt: [AssignAddExpr] ... += ...
 #  318|     getAnOperand/getLeftOperand: [MethodCall] call to count
-#  318|       getReceiver: [Self, SelfVariableAccess] self
+#  318|       getReceiver: [SelfVariableAccess] self
 #  318|     getAnOperand/getRightOperand: [IntegerLiteral] 1
 #  319|   getStmt: [AssignAddExpr] ... += ...
 #  319|     getAnOperand/getLeftOperand: [ElementReference] ...[...]
 #  319|       getReceiver: [MethodCall] call to foo
-#  319|         getReceiver: [Self, SelfVariableAccess] self
+#  319|         getReceiver: [SelfVariableAccess] self
 #  319|       getArgument: [IntegerLiteral] 0
 #  319|     getAnOperand/getRightOperand: [IntegerLiteral] 1
 #  320|   getStmt: [AssignMulExpr] ... *= ...
 #  320|     getAnOperand/getLeftOperand: [ElementReference] ...[...]
 #  320|       getReceiver: [MethodCall] call to bar
 #  320|         getReceiver: [MethodCall] call to foo
-#  320|           getReceiver: [Self, SelfVariableAccess] self
+#  320|           getReceiver: [SelfVariableAccess] self
 #  320|       getArgument: [IntegerLiteral] 0
 #  320|       getArgument: [MethodCall] call to baz
 #  320|         getReceiver: [MethodCall] call to foo
-#  320|           getReceiver: [Self, SelfVariableAccess] self
+#  320|           getReceiver: [SelfVariableAccess] self
 #  320|       getArgument: [AddExpr] ... + ...
 #  320|         getAnOperand/getLeftOperand/getReceiver: [MethodCall] call to boo
 #  320|           getReceiver: [MethodCall] call to foo
-#  320|             getReceiver: [Self, SelfVariableAccess] self
+#  320|             getReceiver: [SelfVariableAccess] self
 #  320|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #  320|     getAnOperand/getRightOperand: [IntegerLiteral] 2
 #  323|   getStmt: [Method] foo
 #  323|     getStmt: [MethodCall] call to bar
-#  323|       getReceiver: [Self, SelfVariableAccess] self
+#  323|       getReceiver: [SelfVariableAccess] self
 #  324|   getStmt: [Method] foo
 #  324|     getStmt: [MethodCall] call to bar
-#  324|       getReceiver: [Self, SelfVariableAccess] self
+#  324|       getReceiver: [SelfVariableAccess] self
 #  325|   getStmt: [Method] foo
 #  325|     getParameter: [SimpleParameter] x
 #  325|       getDefiningAccess: [LocalVariableAccess] x
 #  325|     getStmt: [MethodCall] call to bar
-#  325|       getReceiver: [Self, SelfVariableAccess] self
+#  325|       getReceiver: [SelfVariableAccess] self
 #  326|   getStmt: [SingletonMethod] foo
 #  326|     getObject: [ConstantReadAccess] Object
 #  326|     getStmt: [MethodCall] call to bar
-#  326|       getReceiver: [Self, SelfVariableAccess] self
+#  326|       getReceiver: [SelfVariableAccess] self
 #  327|   getStmt: [SingletonMethod] foo
 #  327|     getObject: [ConstantReadAccess] Object
 #  327|     getParameter: [SimpleParameter] x
 #  327|       getDefiningAccess: [LocalVariableAccess] x
 #  327|     getStmt: [MethodCall] call to bar
-#  327|       getReceiver: [Self, SelfVariableAccess] self
+#  327|       getReceiver: [SelfVariableAccess] self
 #  328|   getStmt: [Method] foo
 #  328|     getStmt: [RescueModifierExpr] ... rescue ...
 #  328|       getBody: [MethodCall] call to bar
-#  328|         getReceiver: [Self, SelfVariableAccess] self
+#  328|         getReceiver: [SelfVariableAccess] self
 #  328|       getHandler: [ParenthesizedExpr] ( ... )
 #  328|         getStmt: [MethodCall] call to print
-#  328|           getReceiver: [Self, SelfVariableAccess] self
+#  328|           getReceiver: [SelfVariableAccess] self
 #  328|           getArgument: [StringLiteral] "error"
 #  328|             getComponent: [StringTextComponent] error
 #  331|   getStmt: [Method] foo
@@ -650,7 +653,7 @@ calls/calls.rb:
 #  335|       getDefiningAccess: [LocalVariableAccess] b
 #  335|     getParameter: [ForwardParameter] ...
 #  336|     getStmt: [MethodCall] call to bar
-#  336|       getReceiver: [Self, SelfVariableAccess] self
+#  336|       getReceiver: [SelfVariableAccess] self
 #  336|       getArgument: [LocalVariableAccess] b
 #  336|       getArgument: [ForwardedArguments] ...
 #  340|   getStmt: [ForExpr] for ... in ...
@@ -669,10 +672,33 @@ calls/calls.rb:
 #  340|         getElement: [IntegerLiteral] 6
 #  340|     getBody: [StmtSequence] do ...
 #  341|       getStmt: [MethodCall] call to foo
-#  341|         getReceiver: [Self, SelfVariableAccess] self
+#  341|         getReceiver: [SelfVariableAccess] self
 #  341|         getArgument: [LocalVariableAccess] x
 #  341|         getArgument: [LocalVariableAccess] y
 #  341|         getArgument: [LocalVariableAccess] z
+#  344|   getStmt: [MethodCall] call to foo
+#  344|     getReceiver: [SelfVariableAccess] self
+#  344|     getArgument: [Pair] Pair
+#  344|       getKey: [SymbolLiteral] :x
+#  344|       getValue: [IntegerLiteral] 42
+#  345|   getStmt: [MethodCall] call to foo
+#  345|     getReceiver: [SelfVariableAccess] self
+#  345|     getArgument: [Pair] Pair
+#  345|       getKey: [SymbolLiteral] :x
+#  345|       getValue: [LocalVariableAccess] x
+#  345|     getArgument: [Pair] Pair
+#  345|       getKey: [SymbolLiteral] :novar
+#  345|       getValue: [MethodCall] call to novar
+#  346|   getStmt: [MethodCall] call to foo
+#  346|     getReceiver: [SelfVariableAccess] self
+#  346|     getArgument: [Pair] Pair
+#  346|       getKey: [SymbolLiteral] :X
+#  346|       getValue: [IntegerLiteral] 42
+#  347|   getStmt: [MethodCall] call to foo
+#  347|     getReceiver: [SelfVariableAccess] self
+#  347|     getArgument: [Pair] Pair
+#  347|       getKey: [SymbolLiteral] :X
+#  347|       getValue: [ConstantReadAccess] X
 control/cases.rb:
 #    1| [Toplevel] cases.rb
 #    2|   getStmt: [AssignExpr] ... = ...
@@ -721,7 +747,7 @@ control/cases.rb:
 #   21|         getStmt: [IntegerLiteral] 30
 #   26|   getStmt: [CaseExpr] case ...
 #   26|     getValue: [MethodCall] call to expr
-#   26|       getReceiver: [Self, SelfVariableAccess] self
+#   26|       getReceiver: [SelfVariableAccess] self
 #   27|     getBranch: [InClause] in ... then ...
 #   27|       getPattern: [IntegerLiteral] 5
 #   27|       getBody: [StmtSequence] then ...
@@ -730,7 +756,7 @@ control/cases.rb:
 #   28|       getStmt: [BooleanLiteral] false
 #   31|   getStmt: [CaseExpr] case ...
 #   31|     getValue: [MethodCall] call to expr
-#   31|       getReceiver: [Self, SelfVariableAccess] self
+#   31|       getReceiver: [SelfVariableAccess] self
 #   32|     getBranch: [InClause] in ... then ...
 #   32|       getPattern: [LocalVariableAccess] x
 #   32|       getCondition: [LTExpr] ... < ...
@@ -749,7 +775,7 @@ control/cases.rb:
 #   36|       getStmt: [BooleanLiteral] false
 #   39|   getStmt: [CaseExpr] case ...
 #   39|     getValue: [MethodCall] call to expr
-#   39|       getReceiver: [Self, SelfVariableAccess] self
+#   39|       getReceiver: [SelfVariableAccess] self
 #   40|     getBranch: [InClause] in ... then ...
 #   40|       getPattern: [IntegerLiteral] 5
 #   41|     getBranch: [InClause] in ... then ...
@@ -921,12 +947,12 @@ control/cases.rb:
 #   84|     getAnOperand/getRightOperand: [IntegerLiteral] 42
 #   86|   getStmt: [CaseExpr] case ...
 #   86|     getValue: [MethodCall] call to expr
-#   86|       getReceiver: [Self, SelfVariableAccess] self
+#   86|       getReceiver: [SelfVariableAccess] self
 #   87|     getBranch: [InClause] in ... then ...
 #   87|       getPattern: [IntegerLiteral] 5
 #   88|     getBranch: [InClause] in ... then ...
-#   88|       getPattern: [VariableReferencePattern] ^...
-#   88|         getVariableAccess: [LocalVariableAccess] foo
+#   88|       getPattern: [ReferencePattern] ^...
+#   88|         getExpr: [LocalVariableAccess] foo
 #   89|     getBranch: [InClause] in ... then ...
 #   89|       getPattern: [StringLiteral] "string"
 #   89|         getComponent: [StringTextComponent] string
@@ -947,10 +973,8 @@ control/cases.rb:
 #   92|         getParsed: [RegExpSequence] .*abc[0-9]
 #   92|           0: [RegExpStar] .*
 #   92|             0: [RegExpDot] .
-#   92|           1: [RegExpConstant, RegExpNormalChar] a
-#   92|           2: [RegExpConstant, RegExpNormalChar] b
-#   92|           3: [RegExpConstant, RegExpNormalChar] c
-#   92|           4: [RegExpCharacterClass] [0-9]
+#   92|           1: [RegExpConstant, RegExpNormalChar] abc
+#   92|           2: [RegExpCharacterClass] [0-9]
 #   92|             0: [RegExpCharacterRange] 0-9
 #   92|               0: [RegExpConstant, RegExpNormalChar] 0
 #   92|               1: [RegExpConstant, RegExpNormalChar] 9
@@ -980,7 +1004,7 @@ control/cases.rb:
 #  100|     getBranch: [InClause] in ... then ...
 #  100|       getPattern: [AlternativePattern] ... | ...
 #  100|         getAlternative: [NilLiteral] nil
-#  100|         getAlternative: [Self, SelfVariableAccess] self
+#  100|         getAlternative: [SelfVariableAccess] self
 #  100|         getAlternative: [BooleanLiteral] true
 #  100|         getAlternative: [BooleanLiteral] false
 #  100|         getAlternative: [LineLiteral] __LINE__
@@ -1019,18 +1043,18 @@ control/cases.rb:
 #  107|       getPattern: [LocalVariableAccess] var
 #  110|   getStmt: [CaseExpr] case ...
 #  110|     getValue: [MethodCall] call to expr
-#  110|       getReceiver: [Self, SelfVariableAccess] self
+#  110|       getReceiver: [SelfVariableAccess] self
 #  111|     getBranch: [InClause] in ... then ...
 #  111|       getPattern: [AlternativePattern] ... | ...
 #  111|         getAlternative: [IntegerLiteral] 5
-#  111|         getAlternative: [VariableReferencePattern] ^...
-#  111|           getVariableAccess: [LocalVariableAccess] foo
+#  111|         getAlternative: [ReferencePattern] ^...
+#  111|           getExpr: [LocalVariableAccess] foo
 #  111|         getAlternative: [StringLiteral] "string"
 #  111|           getComponent: [StringTextComponent] string
 #  111|         getAlternative: [LocalVariableAccess] var
 #  116|   getStmt: [CaseExpr] case ...
 #  116|     getValue: [MethodCall] call to expr
-#  116|       getReceiver: [Self, SelfVariableAccess] self
+#  116|       getReceiver: [SelfVariableAccess] self
 #  117|     getBranch: [InClause] in ... then ...
 #  117|       getPattern: [ArrayPattern] [ ..., * ]
 #  118|     getBranch: [InClause] in ... then ...
@@ -1059,7 +1083,7 @@ control/cases.rb:
 #  123|         getSuffixElement: [LocalVariableAccess] e
 #  128|   getStmt: [CaseExpr] case ...
 #  128|     getValue: [MethodCall] call to expr
-#  128|       getReceiver: [Self, SelfVariableAccess] self
+#  128|       getReceiver: [SelfVariableAccess] self
 #  129|     getBranch: [InClause] in ... then ...
 #  129|       getPattern: [FindPattern] [ *,...,* ]
 #  129|         getElement: [LocalVariableAccess] x
@@ -1080,7 +1104,7 @@ control/cases.rb:
 #  132|         getElement: [ConstantReadAccess] Bar
 #  137|   getStmt: [CaseExpr] case ...
 #  137|     getValue: [MethodCall] call to expr
-#  137|       getReceiver: [Self, SelfVariableAccess] self
+#  137|       getReceiver: [SelfVariableAccess] self
 #  138|     getBranch: [InClause] in ... then ...
 #  138|       getPattern: [HashPattern] { ..., ** }
 #  139|     getBranch: [InClause] in ... then ...
@@ -1115,6 +1139,35 @@ control/cases.rb:
 #  144|         getClass: [ConstantReadAccess] Bar
 #  144|         getKey: [SymbolLiteral] :a
 #  144|         getValue: [IntegerLiteral] 1
+#  147|   getStmt: [CaseExpr] case ...
+#  147|     getValue: [MethodCall] call to expr
+#  147|       getReceiver: [SelfVariableAccess] self
+#  148|     getBranch: [InClause] in ... then ...
+#  148|       getPattern: [ReferencePattern] ^...
+#  148|         getExpr: [LocalVariableAccess] foo
+#  149|     getBranch: [InClause] in ... then ...
+#  149|       getPattern: [ReferencePattern] ^...
+#  149|         getExpr: [GlobalVariableAccess] $foo
+#  150|     getBranch: [InClause] in ... then ...
+#  150|       getPattern: [ReferencePattern] ^...
+#  150|         getExpr: [InstanceVariableAccess] @foo
+#  151|     getBranch: [InClause] in ... then ...
+#  151|       getPattern: [ReferencePattern] ^...
+#  151|         getExpr: [ClassVariableAccess] @@foo
+#  154|   getStmt: [CaseExpr] case ...
+#  154|     getValue: [MethodCall] call to expr
+#  154|       getReceiver: [SelfVariableAccess] self
+#  155|     getBranch: [InClause] in ... then ...
+#  155|       getPattern: [ReferencePattern] ^...
+#  155|         getExpr: [LocalVariableAccess] foo
+#  156|     getBranch: [InClause] in ... then ...
+#  156|       getPattern: [ReferencePattern] ^...
+#  156|         getExpr: [InstanceVariableAccess] @foo
+#  157|     getBranch: [InClause] in ... then ...
+#  157|       getPattern: [ReferencePattern] ^...
+#  157|         getExpr: [AddExpr] ... + ...
+#  157|           getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
+#  157|           getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 modules/classes.rb:
 #    2| [Toplevel] classes.rb
 #    3|   getStmt: [ClassDeclaration] Foo
@@ -1122,7 +1175,7 @@ modules/classes.rb:
 #    7|     getSuperclassExpr: [ConstantReadAccess] BaseClass
 #   11|   getStmt: [ClassDeclaration] Baz
 #   11|     getSuperclassExpr: [MethodCall] call to superclass_for
-#   11|       getReceiver: [Self, SelfVariableAccess] self
+#   11|       getReceiver: [SelfVariableAccess] self
 #   11|       getArgument: [SymbolLiteral] :baz
 #   15|   getStmt: [ModuleDeclaration] MyModule
 #   16|   getStmt: [ClassDeclaration] MyClass
@@ -1130,16 +1183,16 @@ modules/classes.rb:
 #   20|   getStmt: [ClassDeclaration] Wibble
 #   21|     getStmt: [Method] method_a
 #   22|       getStmt: [MethodCall] call to puts
-#   22|         getReceiver: [Self, SelfVariableAccess] self
+#   22|         getReceiver: [SelfVariableAccess] self
 #   22|         getArgument: [StringLiteral] "a"
 #   22|           getComponent: [StringTextComponent] a
 #   25|     getStmt: [Method] method_b
 #   26|       getStmt: [MethodCall] call to puts
-#   26|         getReceiver: [Self, SelfVariableAccess] self
+#   26|         getReceiver: [SelfVariableAccess] self
 #   26|         getArgument: [StringLiteral] "b"
 #   26|           getComponent: [StringTextComponent] b
 #   29|     getStmt: [MethodCall] call to some_method_call
-#   29|       getReceiver: [Self, SelfVariableAccess] self
+#   29|       getReceiver: [SelfVariableAccess] self
 #   30|     getStmt: [AssignExpr] ... = ...
 #   30|       getAnOperand/getLeftOperand: [GlobalVariableAccess] $global_var
 #   30|       getAnOperand/getRightOperand: [IntegerLiteral] 123
@@ -1157,11 +1210,11 @@ modules/classes.rb:
 #   43|         getAnOperand/getArgument/getRightOperand: [SuperCall] call to super
 #   46|     getStmt: [Method] wibble
 #   47|       getStmt: [MethodCall] call to puts
-#   47|         getReceiver: [Self, SelfVariableAccess] self
+#   47|         getReceiver: [SelfVariableAccess] self
 #   47|         getArgument: [StringLiteral] "wibble"
 #   47|           getComponent: [StringTextComponent] wibble
 #   50|     getStmt: [MethodCall] call to another_method_call
-#   50|       getReceiver: [Self, SelfVariableAccess] self
+#   50|       getReceiver: [SelfVariableAccess] self
 #   51|     getStmt: [AssignExpr] ... = ...
 #   51|       getAnOperand/getLeftOperand: [GlobalVariableAccess] $global_var2
 #   51|       getAnOperand/getRightOperand: [IntegerLiteral] 456
@@ -1332,7 +1385,7 @@ constants/constants.rb:
 #   22|         getParameter: [SimpleParameter] name
 #   22|           getDefiningAccess: [LocalVariableAccess] name
 #   23|         getStmt: [MethodCall] call to puts
-#   23|           getReceiver: [Self, SelfVariableAccess] self
+#   23|           getReceiver: [SelfVariableAccess] self
 #   23|           getArgument: [StringLiteral] "#{...} #{...}"
 #   23|             getComponent: [StringInterpolationComponent] #{...}
 #   23|               getStmt: [ConstantReadAccess] GREETING
@@ -1340,7 +1393,7 @@ constants/constants.rb:
 #   23|             getComponent: [StringInterpolationComponent] #{...}
 #   23|               getStmt: [LocalVariableAccess] name
 #   28|     getStmt: [MethodCall] call to Array
-#   28|       getReceiver: [Self, SelfVariableAccess] self
+#   28|       getReceiver: [SelfVariableAccess] self
 #   28|       getArgument: [StringLiteral] "foo"
 #   28|         getComponent: [StringTextComponent] foo
 #   31|   getStmt: [ClassDeclaration] ClassD
@@ -1361,15 +1414,15 @@ constants/constants.rb:
 #   39|         getScopeExpr: [ConstantReadAccess] ModuleA
 #   39|     getAnOperand/getRightOperand: [IntegerLiteral] 1024
 #   41|   getStmt: [MethodCall] call to puts
-#   41|     getReceiver: [Self, SelfVariableAccess] self
+#   41|     getReceiver: [SelfVariableAccess] self
 #   41|     getArgument: [ConstantReadAccess] MAX_SIZE
 #   41|       getScopeExpr: [ConstantReadAccess] ModuleB
 #   41|         getScopeExpr: [ConstantReadAccess] ModuleA
 #   43|   getStmt: [MethodCall] call to puts
-#   43|     getReceiver: [Self, SelfVariableAccess] self
+#   43|     getReceiver: [SelfVariableAccess] self
 #   43|     getArgument: [ConstantReadAccess] GREETING
 #   44|   getStmt: [MethodCall] call to puts
-#   44|     getReceiver: [Self, SelfVariableAccess] self
+#   44|     getReceiver: [SelfVariableAccess] self
 #   44|     getArgument: [ConstantReadAccess] GREETING
 #   46|   getStmt: [ModuleDeclaration] ModuleB
 #   46|     getScopeExpr: [ConstantReadAccess] ModuleA
@@ -1406,7 +1459,7 @@ constants/constants.rb:
 #   65|         getScopeExpr: [ConstantReadAccess] Mod3
 #   68|   getStmt: [ModuleDeclaration] Mod4
 #   69|     getStmt: [MethodCall] call to include
-#   69|       getReceiver: [Self, SelfVariableAccess] self
+#   69|       getReceiver: [SelfVariableAccess] self
 #   69|       getArgument: [ConstantReadAccess] Mod1
 #   70|     getStmt: [ModuleDeclaration] Mod5
 #   70|       getScopeExpr: [ConstantReadAccess] Mod3
@@ -1525,7 +1578,7 @@ literals/literals.rb:
 #   66|     getComponent: [StringTextComponent] foo 
 #   66|     getComponent: [StringInterpolationComponent] #{...}
 #   66|       getStmt: [MethodCall] call to blah
-#   66|         getReceiver: [Self, SelfVariableAccess] self
+#   66|         getReceiver: [SelfVariableAccess] self
 #   66|       getStmt: [AddExpr] ... + ...
 #   66|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
 #   66|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 9
@@ -1713,7 +1766,7 @@ literals/literals.rb:
 #  118|       getValue: [IntegerLiteral] 7
 #  118|     getElement: [HashSplatExpr] ** ...
 #  118|       getAnOperand/getOperand/getReceiver: [MethodCall] call to baz
-#  118|         getReceiver: [Self, SelfVariableAccess] self
+#  118|         getReceiver: [SelfVariableAccess] self
 #  121|   getStmt: [ParenthesizedExpr] ( ... )
 #  121|     getStmt: [RangeLiteral] _ .. _
 #  121|       getBegin: [IntegerLiteral] 1
@@ -1729,7 +1782,7 @@ literals/literals.rb:
 #  124|   getStmt: [ParenthesizedExpr] ( ... )
 #  124|     getStmt: [RangeLiteral] _ .. _
 #  124|       getBegin: [MethodCall] call to start
-#  124|         getReceiver: [Self, SelfVariableAccess] self
+#  124|         getReceiver: [SelfVariableAccess] self
 #  124|       getEnd: [AddExpr] ... + ...
 #  124|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 2
 #  124|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 3
@@ -1768,47 +1821,25 @@ literals/literals.rb:
 #  133|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 4
 #  136|   getStmt: [RegExpLiteral] //
 #  137|   getStmt: [RegExpLiteral] /foo/
-#  137|     getParsed: [RegExpSequence] foo
-#  137|       0: [RegExpConstant, RegExpNormalChar] f
-#  137|       1: [RegExpConstant, RegExpNormalChar] o
-#  137|       2: [RegExpConstant, RegExpNormalChar] o
+#  137|     getParsed: [RegExpConstant, RegExpNormalChar] foo
 #  137|     getComponent: [RegExpTextComponent] foo
 #  138|   getStmt: [RegExpLiteral] /foo/
-#  138|     getParsed: [RegExpSequence] foo
-#  138|       0: [RegExpConstant, RegExpNormalChar] f
-#  138|       1: [RegExpConstant, RegExpNormalChar] o
-#  138|       2: [RegExpConstant, RegExpNormalChar] o
+#  138|     getParsed: [RegExpConstant, RegExpNormalChar] foo
 #  138|     getComponent: [RegExpTextComponent] foo
 #  139|   getStmt: [RegExpLiteral] /foo+\sbar\S/
 #  139|     getParsed: [RegExpSequence] foo+\sbar\S
-#  139|       0: [RegExpConstant, RegExpNormalChar] f
-#  139|       1: [RegExpConstant, RegExpNormalChar] o
-#  139|       2: [RegExpPlus] o+
+#  139|       0: [RegExpConstant, RegExpNormalChar] fo
+#  139|       1: [RegExpPlus] o+
 #  139|         0: [RegExpConstant, RegExpNormalChar] o
-#  139|       3: [RegExpCharacterClassEscape] \s
-#  139|       4: [RegExpConstant, RegExpNormalChar] b
-#  139|       5: [RegExpConstant, RegExpNormalChar] a
-#  139|       6: [RegExpConstant, RegExpNormalChar] r
-#  139|       7: [RegExpCharacterClassEscape] \S
+#  139|       2: [RegExpCharacterClassEscape] \s
+#  139|       3: [RegExpConstant, RegExpNormalChar] bar
+#  139|       4: [RegExpCharacterClassEscape] \S
 #  139|     getComponent: [RegExpTextComponent] foo+
 #  139|     getComponent: [RegExpEscapeSequenceComponent] \s
 #  139|     getComponent: [RegExpTextComponent] bar
 #  139|     getComponent: [RegExpEscapeSequenceComponent] \S
 #  140|   getStmt: [RegExpLiteral] /foo#{...}bar#{...}#{...}/
-#  140|     getParsed: [RegExpSequence] foo2barbarbar
-#  140|       0: [RegExpConstant, RegExpNormalChar] f
-#  140|       1: [RegExpConstant, RegExpNormalChar] o
-#  140|       2: [RegExpConstant, RegExpNormalChar] o
-#  140|       3: [RegExpConstant, RegExpNormalChar] 2
-#  140|       4: [RegExpConstant, RegExpNormalChar] b
-#  140|       5: [RegExpConstant, RegExpNormalChar] a
-#  140|       6: [RegExpConstant, RegExpNormalChar] r
-#  140|       7: [RegExpConstant, RegExpNormalChar] b
-#  140|       8: [RegExpConstant, RegExpNormalChar] a
-#  140|       9: [RegExpConstant, RegExpNormalChar] r
-#  140|       10: [RegExpConstant, RegExpNormalChar] b
-#  140|       11: [RegExpConstant, RegExpNormalChar] a
-#  140|       12: [RegExpConstant, RegExpNormalChar] r
+#  140|     getParsed: [RegExpConstant, RegExpNormalChar] foo2barbarbar
 #  140|     getComponent: [RegExpTextComponent] foo
 #  140|     getComponent: [RegExpInterpolationComponent] #{...}
 #  140|       getStmt: [AddExpr] ... + ...
@@ -1823,47 +1854,25 @@ literals/literals.rb:
 #  141|     getComponent: [RegExpTextComponent] foo
 #  142|   getStmt: [RegExpLiteral] //
 #  143|   getStmt: [RegExpLiteral] /foo/
-#  143|     getParsed: [RegExpSequence] foo
-#  143|       0: [RegExpConstant, RegExpNormalChar] f
-#  143|       1: [RegExpConstant, RegExpNormalChar] o
-#  143|       2: [RegExpConstant, RegExpNormalChar] o
+#  143|     getParsed: [RegExpConstant, RegExpNormalChar] foo
 #  143|     getComponent: [RegExpTextComponent] foo
 #  144|   getStmt: [RegExpLiteral] /foo/
-#  144|     getParsed: [RegExpSequence] foo
-#  144|       0: [RegExpConstant, RegExpNormalChar] f
-#  144|       1: [RegExpConstant, RegExpNormalChar] o
-#  144|       2: [RegExpConstant, RegExpNormalChar] o
+#  144|     getParsed: [RegExpConstant, RegExpNormalChar] foo
 #  144|     getComponent: [RegExpTextComponent] foo
 #  145|   getStmt: [RegExpLiteral] /foo+\sbar\S/
 #  145|     getParsed: [RegExpSequence] foo+\sbar\S
-#  145|       0: [RegExpConstant, RegExpNormalChar] f
-#  145|       1: [RegExpConstant, RegExpNormalChar] o
-#  145|       2: [RegExpPlus] o+
+#  145|       0: [RegExpConstant, RegExpNormalChar] fo
+#  145|       1: [RegExpPlus] o+
 #  145|         0: [RegExpConstant, RegExpNormalChar] o
-#  145|       3: [RegExpCharacterClassEscape] \s
-#  145|       4: [RegExpConstant, RegExpNormalChar] b
-#  145|       5: [RegExpConstant, RegExpNormalChar] a
-#  145|       6: [RegExpConstant, RegExpNormalChar] r
-#  145|       7: [RegExpCharacterClassEscape] \S
+#  145|       2: [RegExpCharacterClassEscape] \s
+#  145|       3: [RegExpConstant, RegExpNormalChar] bar
+#  145|       4: [RegExpCharacterClassEscape] \S
 #  145|     getComponent: [RegExpTextComponent] foo+
 #  145|     getComponent: [RegExpEscapeSequenceComponent] \s
 #  145|     getComponent: [RegExpTextComponent] bar
 #  145|     getComponent: [RegExpEscapeSequenceComponent] \S
 #  146|   getStmt: [RegExpLiteral] /foo#{...}bar#{...}#{...}/
-#  146|     getParsed: [RegExpSequence] foo2barbarbar
-#  146|       0: [RegExpConstant, RegExpNormalChar] f
-#  146|       1: [RegExpConstant, RegExpNormalChar] o
-#  146|       2: [RegExpConstant, RegExpNormalChar] o
-#  146|       3: [RegExpConstant, RegExpNormalChar] 2
-#  146|       4: [RegExpConstant, RegExpNormalChar] b
-#  146|       5: [RegExpConstant, RegExpNormalChar] a
-#  146|       6: [RegExpConstant, RegExpNormalChar] r
-#  146|       7: [RegExpConstant, RegExpNormalChar] b
-#  146|       8: [RegExpConstant, RegExpNormalChar] a
-#  146|       9: [RegExpConstant, RegExpNormalChar] r
-#  146|       10: [RegExpConstant, RegExpNormalChar] b
-#  146|       11: [RegExpConstant, RegExpNormalChar] a
-#  146|       12: [RegExpConstant, RegExpNormalChar] r
+#  146|     getParsed: [RegExpConstant, RegExpNormalChar] foo2barbarbar
 #  146|     getComponent: [RegExpTextComponent] foo
 #  146|     getComponent: [RegExpInterpolationComponent] #{...}
 #  146|       getStmt: [AddExpr] ... + ...
@@ -1891,7 +1900,7 @@ literals/literals.rb:
 #  152|     getComponent: [StringEscapeSequenceComponent] \\
 #  152|     getComponent: [StringTextComponent] foobar
 #  155|   getStmt: [MethodCall] call to run_sql
-#  155|     getReceiver: [Self, SelfVariableAccess] self
+#  155|     getReceiver: [SelfVariableAccess] self
 #  155|     getArgument: [HereDoc] <<SQL
 #  155|       getComponent: [StringTextComponent] 
 #  155|       select * from table
@@ -1901,7 +1910,7 @@ literals/literals.rb:
 #  157|       where name = 
 #  158|       getComponent: [StringInterpolationComponent] #{...}
 #  158|         getStmt: [MethodCall] call to name
-#  158|           getReceiver: [Self, SelfVariableAccess] self
+#  158|           getReceiver: [SelfVariableAccess] self
 #  158|       getComponent: [StringTextComponent] 
 #  158|       
 #  161|   getStmt: [Method] m
@@ -1926,7 +1935,7 @@ literals/literals.rb:
 #  171|        text with 
 #  172|       getComponent: [StringInterpolationComponent] #{...}
 #  172|         getStmt: [MethodCall] call to interpolation
-#  172|           getReceiver: [Self, SelfVariableAccess] self
+#  172|           getReceiver: [SelfVariableAccess] self
 #  172|       getComponent: [StringTextComponent]  !
 #  172|       
 #  176|   getStmt: [AssignExpr] ... = ...
@@ -1936,7 +1945,7 @@ literals/literals.rb:
 #  176|        text without 
 #  177|       getComponent: [StringInterpolationComponent] #{...}
 #  177|         getStmt: [MethodCall] call to interpolation
-#  177|           getReceiver: [Self, SelfVariableAccess] self
+#  177|           getReceiver: [SelfVariableAccess] self
 #  177|       getComponent: [StringTextComponent]  !
 #  177|       
 #  180|   getStmt: [AssignExpr] ... = ...
@@ -1945,6 +1954,23 @@ literals/literals.rb:
 #  180|       getComponent: [StringTextComponent] 
 #  180|        cat file.txt
 #  180|       
+#  184|   getStmt: [AssignExpr] ... = ...
+#  184|     getAnOperand/getLeftOperand: [LocalVariableAccess] x
+#  184|     getAnOperand/getRightOperand: [IntegerLiteral] 42
+#  185|   getStmt: [HashLiteral] {...}
+#  185|     getElement: [Pair] Pair
+#  185|       getKey: [SymbolLiteral] :x
+#  185|       getValue: [LocalVariableAccess] x
+#  185|     getElement: [Pair] Pair
+#  185|       getKey: [SymbolLiteral] :y
+#  185|       getValue: [IntegerLiteral] 5
+#  186|   getStmt: [HashLiteral] {...}
+#  186|     getElement: [Pair] Pair
+#  186|       getKey: [SymbolLiteral] :y
+#  186|       getValue: [MethodCall] call to y
+#  186|     getElement: [Pair] Pair
+#  186|       getKey: [SymbolLiteral] :Z
+#  186|       getValue: [ConstantReadAccess] Z
 control/loops.rb:
 #    1| [Toplevel] loops.rb
 #    2|   getStmt: [AssignExpr] ... = ...
@@ -2090,7 +2116,7 @@ control/loops.rb:
 misc/misc.erb:
 #    2| [Toplevel] misc.erb
 #    2|   getStmt: [MethodCall] call to require_asset
-#    2|     getReceiver: [Self, SelfVariableAccess] self
+#    2|     getReceiver: [SelfVariableAccess] self
 #    2|     getArgument: [StringLiteral] "main_include_admin.js"
 #    2|       getComponent: [StringTextComponent] main_include_admin.js
 misc/misc.rb:
@@ -2140,7 +2166,7 @@ modules/modules.rb:
 #    6|       getStmt: [ClassDeclaration] ClassInFooBar
 #    9|       getStmt: [Method] method_in_foo_bar
 #   12|       getStmt: [MethodCall] call to puts
-#   12|         getReceiver: [Self, SelfVariableAccess] self
+#   12|         getReceiver: [SelfVariableAccess] self
 #   12|         getArgument: [StringLiteral] "module Foo::Bar"
 #   12|           getComponent: [StringTextComponent] module Foo::Bar
 #   13|       getStmt: [AssignExpr] ... = ...
@@ -2149,7 +2175,7 @@ modules/modules.rb:
 #   16|     getStmt: [Method] method_in_foo
 #   19|     getStmt: [ClassDeclaration] ClassInFoo
 #   22|     getStmt: [MethodCall] call to puts
-#   22|       getReceiver: [Self, SelfVariableAccess] self
+#   22|       getReceiver: [SelfVariableAccess] self
 #   22|       getArgument: [StringLiteral] "module Foo"
 #   22|         getComponent: [StringTextComponent] module Foo
 #   23|     getStmt: [AssignExpr] ... = ...
@@ -2159,7 +2185,7 @@ modules/modules.rb:
 #   27|     getStmt: [Method] method_in_another_definition_of_foo
 #   30|     getStmt: [ClassDeclaration] ClassInAnotherDefinitionOfFoo
 #   33|     getStmt: [MethodCall] call to puts
-#   33|       getReceiver: [Self, SelfVariableAccess] self
+#   33|       getReceiver: [SelfVariableAccess] self
 #   33|       getArgument: [StringLiteral] "module Foo again"
 #   33|         getComponent: [StringTextComponent] module Foo again
 #   34|     getStmt: [AssignExpr] ... = ...
@@ -2169,7 +2195,7 @@ modules/modules.rb:
 #   38|     getStmt: [Method] method_a
 #   41|     getStmt: [Method] method_b
 #   44|     getStmt: [MethodCall] call to puts
-#   44|       getReceiver: [Self, SelfVariableAccess] self
+#   44|       getReceiver: [SelfVariableAccess] self
 #   44|       getArgument: [StringLiteral] "module Bar"
 #   44|         getComponent: [StringTextComponent] module Bar
 #   45|     getStmt: [AssignExpr] ... = ...
@@ -2180,7 +2206,7 @@ modules/modules.rb:
 #   49|     getStmt: [ClassDeclaration] ClassInAnotherDefinitionOfFooBar
 #   52|     getStmt: [Method] method_in_another_definition_of_foo_bar
 #   55|     getStmt: [MethodCall] call to puts
-#   55|       getReceiver: [Self, SelfVariableAccess] self
+#   55|       getReceiver: [SelfVariableAccess] self
 #   55|       getArgument: [StringLiteral] "module Foo::Bar again"
 #   55|         getComponent: [StringTextComponent] module Foo::Bar again
 #   56|     getStmt: [AssignExpr] ... = ...
@@ -2205,25 +2231,25 @@ modules/modules.rb:
 #   84|     getStmt: [ModuleDeclaration] Foo1
 #   88|   getStmt: [ModuleDeclaration] IncludeTest
 #   89|     getStmt: [MethodCall] call to include
-#   89|       getReceiver: [Self, SelfVariableAccess] self
+#   89|       getReceiver: [SelfVariableAccess] self
 #   89|       getArgument: [ConstantReadAccess] Test
 #   90|     getStmt: [MethodCall] call to module_eval
 #   90|       getReceiver: [ConstantReadAccess] Object
 #   90|       getBlock: [BraceBlock] { ... }
 #   90|         getStmt: [MethodCall] call to prepend
-#   90|           getReceiver: [Self, SelfVariableAccess] self
+#   90|           getReceiver: [SelfVariableAccess] self
 #   90|           getArgument: [ConstantReadAccess] Other
 #   91|     getStmt: [ModuleDeclaration] Y
 #   91|       getScopeExpr: [ConstantReadAccess] Foo1
 #   95|   getStmt: [ModuleDeclaration] IncludeTest2
 #   96|     getStmt: [MethodCall] call to include
-#   96|       getReceiver: [Self, SelfVariableAccess] self
+#   96|       getReceiver: [SelfVariableAccess] self
 #   96|       getArgument: [ConstantReadAccess] Test
 #   97|     getStmt: [ModuleDeclaration] Z
 #   97|       getScopeExpr: [ConstantReadAccess] Foo1
 #  101|   getStmt: [ModuleDeclaration] PrependTest
 #  102|     getStmt: [MethodCall] call to prepend
-#  102|       getReceiver: [Self, SelfVariableAccess] self
+#  102|       getReceiver: [SelfVariableAccess] self
 #  102|       getArgument: [ConstantReadAccess] Test
 #  103|     getStmt: [ModuleDeclaration] Y
 #  103|       getScopeExpr: [ConstantReadAccess] Foo2
@@ -2397,10 +2423,8 @@ operations/operations.rb:
 #   65|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] name
 #   65|     getAnOperand/getArgument/getRightOperand: [RegExpLiteral] /foo.*/
 #   65|       getParsed: [RegExpSequence] foo.*
-#   65|         0: [RegExpConstant, RegExpNormalChar] f
-#   65|         1: [RegExpConstant, RegExpNormalChar] o
-#   65|         2: [RegExpConstant, RegExpNormalChar] o
-#   65|         3: [RegExpStar] .*
+#   65|         0: [RegExpConstant, RegExpNormalChar] foo
+#   65|         1: [RegExpStar] .*
 #   65|           0: [RegExpDot] .
 #   65|       getComponent: [RegExpTextComponent] foo.*
 #   66|   getStmt: [NoRegExpMatchExpr] ... !~ ...
@@ -2409,9 +2433,7 @@ operations/operations.rb:
 #   66|       getParsed: [RegExpSequence] .*bar
 #   66|         0: [RegExpStar] .*
 #   66|           0: [RegExpDot] .
-#   66|         1: [RegExpConstant, RegExpNormalChar] b
-#   66|         2: [RegExpConstant, RegExpNormalChar] a
-#   66|         3: [RegExpConstant, RegExpNormalChar] r
+#   66|         1: [RegExpConstant, RegExpNormalChar] bar
 #   66|       getComponent: [RegExpTextComponent] .*bar
 #   69|   getStmt: [AssignAddExpr] ... += ...
 #   69|     getAnOperand/getLeftOperand: [LocalVariableAccess] x
@@ -2491,7 +2513,7 @@ params/params.rb:
 #    9|       getParameter: [SimpleParameter] value
 #    9|         getDefiningAccess: [LocalVariableAccess] value
 #   10|       getStmt: [MethodCall] call to puts
-#   10|         getReceiver: [Self, SelfVariableAccess] self
+#   10|         getReceiver: [SelfVariableAccess] self
 #   10|         getArgument: [StringLiteral] "#{...} -> #{...}"
 #   10|           getComponent: [StringInterpolationComponent] #{...}
 #   10|             getStmt: [LocalVariableAccess] key
@@ -2523,7 +2545,7 @@ params/params.rb:
 #   22|         getElement: [LocalVariableAccess] a
 #   22|         getElement: [LocalVariableAccess] b
 #   22|       getStmt: [MethodCall] call to puts
-#   22|         getReceiver: [Self, SelfVariableAccess] self
+#   22|         getReceiver: [SelfVariableAccess] self
 #   22|         getArgument: [AddExpr] ... + ...
 #   22|           getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
 #   22|           getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] b
@@ -2585,7 +2607,7 @@ params/params.rb:
 #   46|     getParameter: [BlockParameter] &block
 #   46|       getDefiningAccess: [LocalVariableAccess] block
 #   47|     getStmt: [MethodCall] call to puts
-#   47|       getReceiver: [Self, SelfVariableAccess] self
+#   47|       getReceiver: [SelfVariableAccess] self
 #   47|       getArgument: [MethodCall] call to call
 #   47|         getReceiver: [LocalVariableAccess] block
 #   47|         getArgument: [Pair] Pair
@@ -2595,7 +2617,7 @@ params/params.rb:
 #   47|           getKey: [SymbolLiteral] :foo
 #   47|           getValue: [IntegerLiteral] 3
 #   49|   getStmt: [MethodCall] call to use_block_with_keyword
-#   49|     getReceiver: [Self, SelfVariableAccess] self
+#   49|     getReceiver: [SelfVariableAccess] self
 #   49|     getBlock: [DoBlock] do ... end
 #   49|       getParameter: [KeywordParameter] xx
 #   49|         getDefiningAccess: [LocalVariableAccess] xx
@@ -2637,7 +2659,7 @@ params/params.rb:
 #   63|       getArgument: [StringLiteral] "Zeus"
 #   63|         getComponent: [StringTextComponent] Zeus
 #   65|   getStmt: [MethodCall] call to use_block_with_optional
-#   65|     getReceiver: [Self, SelfVariableAccess] self
+#   65|     getReceiver: [SelfVariableAccess] self
 #   65|     getBlock: [DoBlock] do ... end
 #   65|       getParameter: [SimpleParameter] name
 #   65|         getDefiningAccess: [LocalVariableAccess] name
@@ -2645,7 +2667,7 @@ params/params.rb:
 #   65|         getDefiningAccess: [LocalVariableAccess] age
 #   65|         getDefaultValue: [IntegerLiteral] 99
 #   66|       getStmt: [MethodCall] call to puts
-#   66|         getReceiver: [Self, SelfVariableAccess] self
+#   66|         getReceiver: [SelfVariableAccess] self
 #   66|         getArgument: [StringLiteral] "#{...} is #{...} years old"
 #   66|           getComponent: [StringInterpolationComponent] #{...}
 #   66|             getStmt: [LocalVariableAccess] name
@@ -2679,6 +2701,19 @@ params/params.rb:
 #   77|       getParameter: [SimpleParameter] val
 #   77|         getDefiningAccess: [LocalVariableAccess] val
 #   77|       getParameter: [HashSplatNilParameter] **nil
+#   81|   getStmt: [Method] anonymous_block_parameter
+#   81|     getParameter: [SimpleParameter] array
+#   81|       getDefiningAccess: [LocalVariableAccess] array
+#   81|     getParameter: [BlockParameter] &
+#   81|       getDefiningAccess: [LocalVariableAccess] __synth__0
+#   82|     getStmt: [MethodCall] call to proc
+#   82|       getReceiver: [SelfVariableAccess] self
+#   82|       getArgument: [BlockArgument] &...
+#   82|         getValue: [LocalVariableAccess] __synth__0
+#   83|     getStmt: [MethodCall] call to each
+#   83|       getReceiver: [LocalVariableAccess] array
+#   83|       getArgument: [BlockArgument] &...
+#   83|         getValue: [LocalVariableAccess] __synth__0
 erb/template.html.erb:
 #   19| [Toplevel] template.html.erb
 #   19|   getStmt: [StringLiteral] "hello world"
@@ -2754,24 +2789,24 @@ gems/lib/test.rb:
 #    1| [Toplevel] test.rb
 #    1|   getStmt: [ClassDeclaration] Foo
 #    2|     getStmt: [SingletonMethod] greet
-#    2|       getObject: [Self, SelfVariableAccess] self
+#    2|       getObject: [SelfVariableAccess] self
 #    3|       getStmt: [MethodCall] call to puts
-#    3|         getReceiver: [Self, SelfVariableAccess] self
+#    3|         getReceiver: [SelfVariableAccess] self
 #    3|         getArgument: [StringLiteral] "Hello"
 #    3|           getComponent: [StringTextComponent] Hello
 modules/toplevel.rb:
 #    1| [Toplevel] toplevel.rb
 #    1|   getStmt: [MethodCall] call to puts
-#    1|     getReceiver: [Self, SelfVariableAccess] self
+#    1|     getReceiver: [SelfVariableAccess] self
 #    1|     getArgument: [StringLiteral] "world"
 #    1|       getComponent: [StringTextComponent] world
 #    3|   getStmt: [EndBlock] END { ... }
 #    3|     getStmt: [MethodCall] call to puts
-#    3|       getReceiver: [Self, SelfVariableAccess] self
+#    3|       getReceiver: [SelfVariableAccess] self
 #    3|       getArgument: [StringLiteral] "!!!"
 #    3|         getComponent: [StringTextComponent] !!!
 #    5|   getBeginBlock: [BeginBlock] BEGIN { ... }
 #    5|     getStmt: [MethodCall] call to puts
-#    5|       getReceiver: [Self, SelfVariableAccess] self
+#    5|       getReceiver: [SelfVariableAccess] self
 #    5|       getArgument: [StringLiteral] "hello"
 #    5|         getComponent: [StringTextComponent] hello

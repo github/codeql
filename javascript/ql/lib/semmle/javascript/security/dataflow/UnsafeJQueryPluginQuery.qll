@@ -46,7 +46,8 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
     super.isSanitizerGuard(node) or
     node instanceof IsElementSanitizer or
-    node instanceof PropertyPresenceSanitizer
+    node instanceof PropertyPresenceSanitizer or
+    node instanceof NumberGuard
   }
 }
 

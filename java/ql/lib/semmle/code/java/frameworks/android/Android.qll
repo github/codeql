@@ -7,16 +7,10 @@ import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.xml.AndroidManifest
 
 /**
- * Gets a transitive superType avoiding magic optimisation
- */
-pragma[nomagic]
-private RefType getASuperTypePlus(RefType t) { result = t.getASupertype+() }
-
-/**
- * Gets a reflexive/transitive superType avoiding magic optimisation
+ * Gets a reflexive/transitive superType
  */
 pragma[inline]
-private RefType getASuperTypeStar(RefType t) { result = getASuperTypePlus(t) or result = t }
+private RefType getASuperTypeStar(RefType t) { hasDescendant(result, t) }
 
 /**
  * An Android component. That is, either an activity, a service,
@@ -177,42 +171,6 @@ private class UriModel extends SummaryModelCsv {
   }
 }
 
-private class ContentProviderSourceModels extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        // ContentInterface models are here for backwards compatibility (it was removed in API 28)
-        "android.content;ContentInterface;true;call;(String,String,String,Bundle);;Parameter[0..3];contentprovider",
-        "android.content;ContentProvider;true;call;(String,String,String,Bundle);;Parameter[0..3];contentprovider",
-        "android.content;ContentProvider;true;call;(String,String,Bundle);;Parameter[0..2];contentprovider",
-        "android.content;ContentProvider;true;delete;(Uri,String,String[]);;Parameter[0..2];contentprovider",
-        "android.content;ContentInterface;true;delete;(Uri,Bundle);;Parameter[0..1];contentprovider",
-        "android.content;ContentProvider;true;delete;(Uri,Bundle);;Parameter[0..1];contentprovider",
-        "android.content;ContentInterface;true;getType;(Uri);;Parameter[0];contentprovider",
-        "android.content;ContentProvider;true;getType;(Uri);;Parameter[0];contentprovider",
-        "android.content;ContentInterface;true;insert;(Uri,ContentValues,Bundle);;Parameter[0];contentprovider",
-        "android.content;ContentProvider;true;insert;(Uri,ContentValues,Bundle);;Parameter[0..2];contentprovider",
-        "android.content;ContentProvider;true;insert;(Uri,ContentValues);;Parameter[0..1];contentprovider",
-        "android.content;ContentInterface;true;openAssetFile;(Uri,String,CancellationSignal);;Parameter[0];contentprovider",
-        "android.content;ContentProvider;true;openAssetFile;(Uri,String,CancellationSignal);;Parameter[0];contentprovider",
-        "android.content;ContentProvider;true;openAssetFile;(Uri,String);;Parameter[0];contentprovider",
-        "android.content;ContentInterface;true;openTypedAssetFile;(Uri,String,Bundle,CancellationSignal);;Parameter[0..2];contentprovider",
-        "android.content;ContentProvider;true;openTypedAssetFile;(Uri,String,Bundle,CancellationSignal);;Parameter[0..2];contentprovider",
-        "android.content;ContentProvider;true;openTypedAssetFile;(Uri,String,Bundle);;Parameter[0..2];contentprovider",
-        "android.content;ContentInterface;true;openFile;(Uri,String,CancellationSignal);;Parameter[0];contentprovider",
-        "android.content;ContentProvider;true;openFile;(Uri,String,CancellationSignal);;Parameter[0];contentprovider",
-        "android.content;ContentProvider;true;openFile;(Uri,String);;Parameter[0];contentprovider",
-        "android.content;ContentInterface;true;query;(Uri,String[],Bundle,CancellationSignal);;Parameter[0..2];contentprovider",
-        "android.content;ContentProvider;true;query;(Uri,String[],Bundle,CancellationSignal);;Parameter[0..2];contentprovider",
-        "android.content;ContentProvider;true;query;(Uri,String[],String,String[],String);;Parameter[0..4];contentprovider",
-        "android.content;ContentProvider;true;query;(Uri,String[],String,String[],String,CancellationSignal);;Parameter[0..4];contentprovider",
-        "android.content;ContentInterface;true;update;(Uri,ContentValues,Bundle);;Parameter[0..2];contentprovider",
-        "android.content;ContentProvider;true;update;(Uri,ContentValues,Bundle);;Parameter[0..2];contentprovider",
-        "android.content;ContentProvider;true;update;(Uri,ContentValues,String,String[]);;Parameter[0..3];contentprovider"
-      ]
-  }
-}
-
 /** Interface for classes whose instances can be written to and restored from a Parcel. */
 class TypeParcelable extends Interface {
   TypeParcelable() { this.hasQualifiedName("android.os", "Parcelable") }
@@ -224,7 +182,7 @@ class TypeParcelable extends Interface {
 class CreateFromParcelMethod extends Method {
   CreateFromParcelMethod() {
     this.hasName("createFromParcel") and
-    this.getEnclosingCallable().getDeclaringType().getASupertype*() instanceof TypeParcelable
+    this.getEnclosingCallable().getDeclaringType().getAnAncestor() instanceof TypeParcelable
   }
 }
 

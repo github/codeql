@@ -92,7 +92,7 @@ Recommendations:
   See the C/C++ implementation, which makes use of this feature. Another use of
   this indirection is to hide synthesized local steps that are only relevant
   for global flow. See the C# implementation for an example of this.
-* Define `predicate localFlow(Node node1, Node node2) { localFlowStep*(node1, node2) }`.
+* Define `pragma[inline] predicate localFlow(Node node1, Node node2) { localFlowStep*(node1, node2) }`.
 * Make the local flow step relation in `simpleLocalFlowStep` follow
   def-to-first-use and use-to-next-use steps for SSA variables. Def-use steps
   also work, but the upside of `use-use` steps is that sources defined in terms

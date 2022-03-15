@@ -114,13 +114,13 @@ module API {
      * Gets a node such that there is an edge in the API graph between this node and the other
      * one, and that edge is labeled with `lbl`.
      */
-    Node getASuccessor(string lbl) { Impl::edge(this, lbl, result) }
+    Node getASuccessor(Label::ApiLabel lbl) { Impl::edge(this, lbl, result) }
 
     /**
      * Gets a node such that there is an edge in the API graph between that other node and
      * this one, and that edge is labeled with `lbl`
      */
-    Node getAPredecessor(string lbl) { this = result.getASuccessor(lbl) }
+    Node getAPredecessor(Label::ApiLabel lbl) { this = result.getASuccessor(lbl) }
 
     /**
      * Gets a node such that there is an edge in the API graph between this node and the other
@@ -174,9 +174,8 @@ module API {
       length = 0 and
       result = ""
       or
-      exists(Node pred, string lbl, string predpath |
+      exists(Node pred, Label::ApiLabel lbl, string predpath |
         Impl::edge(pred, lbl, this) and
-        lbl != "" and
         predpath = pred.getAPath(length - 1) and
         exists(string dot | if length = 1 then dot = "" else dot = "." |
           result = predpath + dot + lbl and
@@ -335,7 +334,8 @@ module API {
      *
      * For instance, `prefix_member("foo.bar", "baz", "foo.bar.baz")` would hold.
      */
-    private predicate prefix_member(TApiNode base, string member, TApiNode sub) {
+    cached
+    predicate prefix_member(TApiNode base, string member, TApiNode sub) {
       exists(string sub_str, string regexp |
         regexp = "(.+)[.]([^.]+)" and
         base = MkModuleImport(sub_str.regexpCapture(regexp, 1)) and
@@ -386,7 +386,7 @@ module API {
      * `lbl` in the API graph.
      */
     cached
-    predicate use(TApiNode base, string lbl, DataFlow::Node ref) {
+    predicate use(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
       exists(DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode pred |
         // First, we find a predecessor of the node `ref` that we want to determine. The predecessor
         // is any node that is a type-tracked use of a data flow node (`src`), which is itself a
@@ -481,7 +481,7 @@ module API {
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */
     cached
-    predicate edge(TApiNode pred, string lbl, TApiNode succ) {
+    predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
       /* There's an edge from the root node for each imported module. */
       exists(string m |
         pred = MkRoot() and
@@ -514,36 +514,126 @@ module API {
     cached
     int distanceFromRoot(TApiNode nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)
   }
-}
 
-private module Label {
-  /** Gets the edge label for the module `m`. */
-  bindingset[m]
-  bindingset[result]
-  string mod(string m) { result = "moduleImport(\"" + m + "\")" }
+  /** Provides classes modeling the various edges (labels) in the API graph. */
+  module Label {
+    /** A label in the API-graph */
+    class ApiLabel extends TLabel {
+      /** Gets a string representation of this label. */
+      string toString() { result = "???" }
+    }
 
-  /** Gets the `member` edge label for member `m`. */
-  bindingset[m]
-  bindingset[result]
-  string member(string m) { result = "getMember(\"" + m + "\")" }
+    private import LabelImpl
 
-  /** Gets the `member` edge label for the unknown member. */
-  string unknownMember() { result = "getUnknownMember()" }
+    private module LabelImpl {
+      private import semmle.python.dataflow.new.internal.Builtins
+      private import semmle.python.dataflow.new.internal.ImportStar
 
-  /** Gets the `member` edge label for the given attribute reference. */
-  string memberFromRef(DataFlow::AttrRef pr) {
-    result = member(pr.getAttributeName())
-    or
-    not exists(pr.getAttributeName()) and
-    result = unknownMember()
+      newtype TLabel =
+        MkLabelModule(string mod) { exists(Impl::MkModuleImport(mod)) } or
+        MkLabelMember(string member) {
+          member = any(DataFlow::AttrRef pr).getAttributeName() or
+          exists(Builtins::likelyBuiltin(member)) or
+          ImportStar::namePossiblyDefinedInImportStar(_, member, _) or
+          Impl::prefix_member(_, member, _)
+        } or
+        MkLabelUnknownMember() or
+        MkLabelParameter(int i) {
+          none() // TODO: Fill in when adding def nodes
+        } or
+        MkLabelReturn() or
+        MkLabelSubclass() or
+        MkLabelAwait()
+
+      /** A label for a module. */
+      class LabelModule extends ApiLabel {
+        string mod;
+
+        LabelModule() { this = MkLabelModule(mod) }
+
+        /** Gets the module associated with this label. */
+        string getMod() { result = mod }
+
+        override string toString() { result = "moduleImport(\"" + mod + "\")" }
+      }
+
+      /** A label for the member named `prop`. */
+      class LabelMember extends ApiLabel {
+        string member;
+
+        LabelMember() { this = MkLabelMember(member) }
+
+        /** Gets the property associated with this label. */
+        string getMember() { result = member }
+
+        override string toString() { result = "getMember(\"" + member + "\")" }
+      }
+
+      /** A label for a member with an unknown name. */
+      class LabelUnknownMember extends ApiLabel {
+        LabelUnknownMember() { this = MkLabelUnknownMember() }
+
+        override string toString() { result = "getUnknownMember()" }
+      }
+
+      /** A label for parameter `i`. */
+      class LabelParameter extends ApiLabel {
+        int i;
+
+        LabelParameter() { this = MkLabelParameter(i) }
+
+        override string toString() { result = "getParameter(" + i + ")" }
+
+        /** Gets the index of the parameter for this label. */
+        int getIndex() { result = i }
+      }
+
+      /** A label that gets the return value of a function. */
+      class LabelReturn extends ApiLabel {
+        LabelReturn() { this = MkLabelReturn() }
+
+        override string toString() { result = "getReturn()" }
+      }
+
+      /** A label that gets the subclass of a class. */
+      class LabelSubclass extends ApiLabel {
+        LabelSubclass() { this = MkLabelSubclass() }
+
+        override string toString() { result = "getASubclass()" }
+      }
+
+      /** A label for awaited values. */
+      class LabelAwait extends ApiLabel {
+        LabelAwait() { this = MkLabelAwait() }
+
+        override string toString() { result = "getAwaited()" }
+      }
+    }
+
+    /** Gets the edge label for the module `m`. */
+    LabelModule mod(string m) { result.getMod() = m }
+
+    /** Gets the `member` edge label for member `m`. */
+    LabelMember member(string m) { result.getMember() = m }
+
+    /** Gets the `member` edge label for the unknown member. */
+    LabelUnknownMember unknownMember() { any() }
+
+    /** Gets the `member` edge label for the given attribute reference. */
+    ApiLabel memberFromRef(DataFlow::AttrRef pr) {
+      result = member(pr.getAttributeName())
+      or
+      not exists(pr.getAttributeName()) and
+      result = unknownMember()
+    }
+
+    /** Gets the `return` edge label. */
+    LabelReturn return() { any() }
+
+    /** Gets the `subclass` edge label. */
+    LabelSubclass subclass() { any() }
+
+    /** Gets the `await` edge label. */
+    LabelAwait await() { any() }
   }
-
-  /** Gets the `return` edge label. */
-  string return() { result = "getReturn()" }
-
-  /** Gets the `subclass` edge label. */
-  string subclass() { result = "getASubclass()" }
-
-  /** Gets the `await` edge label. */
-  string await() { result = "getAwaited()" }
 }

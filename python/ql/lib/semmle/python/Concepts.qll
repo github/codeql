@@ -334,6 +334,7 @@ module CodeExecution {
 
 /**
  * A data-flow node that constructs an SQL statement.
+ *
  * Often, it is worthy of an alert if an SQL statement is constructed such that
  * executing it would be a security risk.
  *
@@ -355,11 +356,14 @@ class SqlConstruction extends DataFlow::Node {
 module SqlConstruction {
   /**
    * A data-flow node that constructs an SQL statement.
+   *
    * Often, it is worthy of an alert if an SQL statement is constructed such that
    * executing it would be a security risk.
    *
+   * If it is important that the SQL statement is indeed executed, then use `SQLExecution`.
+   *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `SqlExecution` instead.
+   * extend `SqlConstruction` instead.
    */
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the SQL statements to be constructed. */
@@ -449,6 +453,143 @@ module RegexExecution {
   }
 }
 
+/** Provides classes for modeling XML-related APIs. */
+module XML {
+  /**
+   * A data-flow node that constructs an XPath expression.
+   *
+   * Often, it is worthy of an alert if an XPath expression is constructed such that
+   * executing it would be a security risk.
+   *
+   * If it is important that the XPath expression is indeed executed, then use `XPathExecution`.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `XPathConstruction::Range` instead.
+   */
+  class XPathConstruction extends DataFlow::Node {
+    XPathConstruction::Range range;
+
+    XPathConstruction() { this = range }
+
+    /** Gets the argument that specifies the XPath expressions to be constructed. */
+    DataFlow::Node getXPath() { result = range.getXPath() }
+
+    /**
+     * Gets the name of this XPath expression construction, typically the name of an executing method.
+     * This is used for nice alert messages and should include the module if possible.
+     */
+    string getName() { result = range.getName() }
+  }
+
+  /** Provides a class for modeling new XPath construction APIs. */
+  module XPathConstruction {
+    /**
+     * A data-flow node that constructs an XPath expression.
+     *
+     * Often, it is worthy of an alert if an XPath expression is constructed such that
+     * executing it would be a security risk.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `XPathConstruction` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the argument that specifies the XPath expressions to be constructed. */
+      abstract DataFlow::Node getXPath();
+
+      /**
+       * Gets the name of this XPath expression construction, typically the name of an executing method.
+       * This is used for nice alert messages and should include the module if possible.
+       */
+      abstract string getName();
+    }
+  }
+
+  /**
+   * A data-flow node that executes a xpath expression.
+   *
+   * If the context of interest is such that merely constructing an XPath expression
+   * would be valuabe to report, then consider using `XPathConstruction`.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `XPathExecution::Range` instead.
+   */
+  class XPathExecution extends DataFlow::Node {
+    XPathExecution::Range range;
+
+    XPathExecution() { this = range }
+
+    /** Gets the data flow node for the XPath expression being executed by this node. */
+    DataFlow::Node getXPath() { result = range.getXPath() }
+
+    /**
+     * Gets the name of this XPath expression execution, typically the name of an executing method.
+     * This is used for nice alert messages and should include the module if possible.
+     */
+    string getName() { result = range.getName() }
+  }
+
+  /** Provides classes for modeling new regular-expression execution APIs. */
+  module XPathExecution {
+    /**
+     * A data-flow node that executes a XPath expression.
+     *
+     * If the context of interest is such that merely constructing an XPath expression
+     * would be valuabe to report, then consider using `XPathConstruction`.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `XPathExecution` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the data flow node for the XPath expression being executed by this node. */
+      abstract DataFlow::Node getXPath();
+
+      /**
+       * Gets the name of this xpath expression execution, typically the name of an executing method.
+       * This is used for nice alert messages and should include the module if possible.
+       */
+      abstract string getName();
+    }
+  }
+}
+
+/** Provides classes for modeling LDAP-related APIs. */
+module LDAP {
+  /**
+   * A data-flow node that executes an LDAP query.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `LDAPQuery::Range` instead.
+   */
+  class LdapExecution extends DataFlow::Node {
+    LdapExecution::Range range;
+
+    LdapExecution() { this = range }
+
+    /** Gets the argument containing the filter string. */
+    DataFlow::Node getFilter() { result = range.getFilter() }
+
+    /** Gets the argument containing the base DN. */
+    DataFlow::Node getBaseDn() { result = range.getBaseDn() }
+  }
+
+  /** Provides classes for modeling new LDAP query execution-related APIs. */
+  module LdapExecution {
+    /**
+     * A data-flow node that executes an LDAP query.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `LDAPQuery` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the argument containing the filter string. */
+      abstract DataFlow::Node getFilter();
+
+      /** Gets the argument containing the base DN. */
+      abstract DataFlow::Node getBaseDn();
+    }
+  }
+}
+
 /**
  * A data-flow node that escapes meta-characters, which could be used to prevent
  * injection attacks.
@@ -506,8 +647,20 @@ module Escaping {
   /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
   string getHtmlKind() { result = "html" }
 
-  /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
+  /** Gets the escape-kind for escaping a string so it can safely be included in a regular expression. */
   string getRegexKind() { result = "regex" }
+
+  /**
+   * Gets the escape-kind for escaping a string so it can safely be used as a
+   * distinguished name (DN) in an LDAP search.
+   */
+  string getLdapDnKind() { result = "ldap_dn" }
+
+  /**
+   * Gets the escape-kind for escaping a string so it can safely be used as a
+   * filter in an LDAP search.
+   */
+  string getLdapFilterKind() { result = "ldap_filter" }
   // TODO: If adding an XML kind, update the modeling of the `MarkupSafe` PyPI package.
   //
   // Technically it claims to escape for both HTML and XML, but for now we don't have
@@ -532,9 +685,28 @@ class RegexEscaping extends Escaping {
   RegexEscaping() { range.getKind() = Escaping::getRegexKind() }
 }
 
+/**
+ * An escape of a string so it can be safely used as a distinguished name (DN)
+ * in an LDAP search.
+ */
+class LdapDnEscaping extends Escaping {
+  LdapDnEscaping() { range.getKind() = Escaping::getLdapDnKind() }
+}
+
+/**
+ * An escape of a string so it can be safely used as a filter in an LDAP search.
+ */
+class LdapFilterEscaping extends Escaping {
+  LdapFilterEscaping() { range.getKind() = Escaping::getLdapFilterKind() }
+}
+
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
-  import semmle.python.web.HttpConstants
+  /** Gets an HTTP verb, in upper case */
+  string httpVerb() { result in ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"] }
+
+  /** Gets an HTTP verb, in lower case */
+  string httpVerbLower() { result = httpVerb().toLowerCase() }
 
   /** Provides classes for modeling HTTP servers. */
   module Server {

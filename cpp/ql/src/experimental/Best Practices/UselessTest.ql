@@ -38,6 +38,8 @@ where
   ) and
   eq.getRightOperand() instanceof Literal and
   ne.getRightOperand() instanceof Literal and
+  eq.getLeftOperand().getFullyConverted().getUnspecifiedType() =
+    ne.getLeftOperand().getFullyConverted().getUnspecifiedType() and
   nearestParent(eq) = nearestParent(ne) and
   sameExpr(eq.getLeftOperand(), ne.getLeftOperand())
 select ne, "Useless Test"

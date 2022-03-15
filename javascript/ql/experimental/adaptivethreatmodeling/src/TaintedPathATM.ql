@@ -10,6 +10,11 @@
  * @security-severity 7.5
  * @id js/ml-powered/path-injection
  * @tags experimental security
+ *       external/cwe/cwe-022
+ *       external/cwe/cwe-023
+ *       external/cwe/cwe-036
+ *       external/cwe/cwe-073
+ *       external/cwe/cwe-099
  */
 
 import ATM::ResultsInfo

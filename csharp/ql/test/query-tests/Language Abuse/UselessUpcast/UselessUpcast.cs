@@ -17,8 +17,8 @@ class A : I1, I2
 
 class B : A
 {
-    public static bool operator==(B b1, B b2) { return false; }
-    public static bool operator!=(B b1, B b2) { return true; }
+    public static bool operator ==(B b1, B b2) { return false; }
+    public static bool operator !=(B b1, B b2) { return true; }
     public void M(B b) { }
 }
 
@@ -68,11 +68,11 @@ class Tests
 
         ((I2)a).Foo(); // GOOD: Cast to an interface
 
-        o = a==(A)b; // GOOD: EQExpr
+        o = a == (A)b; // GOOD: EQExpr
 
-        o = b==(B)b; // GOOD: Operator call
+        o = b == (B)b; // GOOD: Operator call
 
-        var act = (Action) (() => { }); // GOOD
+        var act = (Action)(() => { }); // GOOD
 
         var objects = args.Select(arg => (object)arg); // GOOD
 
@@ -126,9 +126,9 @@ static class IExtensions
 
 static class StaticMethods
 {
-   public static void M1(A _) { }
-   public static void M1(B _) { }
-   public static void M2(B _) { }
+    public static void M1(A _) { }
+    public static void M1(B _) { }
+    public static void M2(B _) { }
 }
 
 class Constructors : I2
@@ -160,6 +160,14 @@ class Constructors : I2
         void M(SubSub ss)
         {
             new Sub((Sub)ss); // BAD
+        }
+    }
+
+    class Dynamic
+    {
+        void M(object o)
+        {
+            var s0 = ((dynamic)o).ToString(); // GOOD
         }
     }
 }

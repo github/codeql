@@ -217,6 +217,14 @@ allLiterals
 | literals.rb:171:9:171:15 | <<"DOC" | HereDoc | <none> |
 | literals.rb:176:9:176:15 | <<'DOC' | HereDoc | <none> |
 | literals.rb:180:10:180:19 | <<`SCRIPT` | HereDoc | \n cat file.txt\n |
+| literals.rb:184:5:184:6 | 42 | IntegerLiteral | 42 |
+| literals.rb:185:1:185:9 | {...} | HashLiteral | <none> |
+| literals.rb:185:2:185:2 | :x | SymbolLiteral | :x |
+| literals.rb:185:6:185:6 | :y | SymbolLiteral | :y |
+| literals.rb:185:8:185:8 | 5 | IntegerLiteral | 5 |
+| literals.rb:186:1:186:9 | {...} | HashLiteral | <none> |
+| literals.rb:186:2:186:2 | :y | SymbolLiteral | :y |
+| literals.rb:186:7:186:7 | :Z | SymbolLiteral | :Z |
 stringlikeLiterals
 | literals.rb:46:1:46:2 | "" |  |
 | literals.rb:47:1:47:2 | "" |  |
@@ -327,6 +335,10 @@ stringlikeLiterals
 | literals.rb:171:9:171:15 | <<"DOC" | <none> |
 | literals.rb:176:9:176:15 | <<'DOC' | <none> |
 | literals.rb:180:10:180:19 | <<`SCRIPT` | \n cat file.txt\n |
+| literals.rb:185:2:185:2 | :x | :x |
+| literals.rb:185:6:185:6 | :y | :y |
+| literals.rb:186:2:186:2 | :y | :y |
+| literals.rb:186:7:186:7 | :Z | :Z |
 stringLiterals
 | literals.rb:46:1:46:2 | "" |  |
 | literals.rb:47:1:47:2 | "" |  |
@@ -435,6 +447,10 @@ symbolLiterals
 | literals.rb:117:3:117:5 | :foo | :foo |
 | literals.rb:117:11:117:14 | :bar | :bar |
 | literals.rb:118:3:118:5 | :foo | :foo |
+| literals.rb:185:2:185:2 | :x | :x |
+| literals.rb:185:6:185:6 | :y | :y |
+| literals.rb:186:2:186:2 | :y | :y |
+| literals.rb:186:7:186:7 | :Z | :Z |
 subshellLiterals
 | literals.rb:130:1:130:7 | `ls -l` | ls -l |
 | literals.rb:131:1:131:9 | `ls -l` | ls -l |
@@ -701,6 +717,8 @@ hashLiterals
 | literals.rb:116:1:116:2 | {...} | 0 |
 | literals.rb:117:1:117:33 | {...} | 3 |
 | literals.rb:118:1:118:17 | {...} | 2 |
+| literals.rb:185:1:185:9 | {...} | 2 |
+| literals.rb:186:1:186:9 | {...} | 2 |
 hashLiteralElements
 | literals.rb:88:1:88:14 | {...} | 0 | literals.rb:88:3:88:12 | Pair | Pair |
 | literals.rb:117:1:117:33 | {...} | 0 | literals.rb:117:3:117:8 | Pair | Pair |
@@ -708,12 +726,20 @@ hashLiteralElements
 | literals.rb:117:1:117:33 | {...} | 2 | literals.rb:117:22:117:31 | Pair | Pair |
 | literals.rb:118:1:118:17 | {...} | 0 | literals.rb:118:3:118:8 | Pair | Pair |
 | literals.rb:118:1:118:17 | {...} | 1 | literals.rb:118:11:118:15 | ** ... | HashSplatExpr |
+| literals.rb:185:1:185:9 | {...} | 0 | literals.rb:185:2:185:3 | Pair | Pair |
+| literals.rb:185:1:185:9 | {...} | 1 | literals.rb:185:6:185:8 | Pair | Pair |
+| literals.rb:186:1:186:9 | {...} | 0 | literals.rb:186:2:186:3 | Pair | Pair |
+| literals.rb:186:1:186:9 | {...} | 1 | literals.rb:186:7:186:8 | Pair | Pair |
 hashLiteralKeyValuePairs
 | literals.rb:88:1:88:14 | {...} | literals.rb:88:3:88:12 | Pair | literals.rb:88:3:88:5 | :foo | literals.rb:88:8:88:12 | "bar" |
 | literals.rb:117:1:117:33 | {...} | literals.rb:117:3:117:8 | Pair | literals.rb:117:3:117:5 | :foo | literals.rb:117:8:117:8 | 1 |
 | literals.rb:117:1:117:33 | {...} | literals.rb:117:11:117:19 | Pair | literals.rb:117:11:117:14 | :bar | literals.rb:117:19:117:19 | 2 |
 | literals.rb:117:1:117:33 | {...} | literals.rb:117:22:117:31 | Pair | literals.rb:117:22:117:26 | "baz" | literals.rb:117:31:117:31 | 3 |
 | literals.rb:118:1:118:17 | {...} | literals.rb:118:3:118:8 | Pair | literals.rb:118:3:118:5 | :foo | literals.rb:118:8:118:8 | 7 |
+| literals.rb:185:1:185:9 | {...} | literals.rb:185:2:185:3 | Pair | literals.rb:185:2:185:2 | :x | literals.rb:185:2:185:2 | x |
+| literals.rb:185:1:185:9 | {...} | literals.rb:185:6:185:8 | Pair | literals.rb:185:6:185:6 | :y | literals.rb:185:8:185:8 | 5 |
+| literals.rb:186:1:186:9 | {...} | literals.rb:186:2:186:3 | Pair | literals.rb:186:2:186:2 | :y | literals.rb:186:2:186:2 | call to y |
+| literals.rb:186:1:186:9 | {...} | literals.rb:186:7:186:8 | Pair | literals.rb:186:7:186:7 | :Z | literals.rb:186:7:186:7 | Z |
 finiteRangeLiterals
 | literals.rb:121:2:121:6 | _ .. _ | literals.rb:121:2:121:2 | 1 | literals.rb:121:5:121:6 | 10 |
 | literals.rb:122:2:122:7 | _ ... _ | literals.rb:122:2:122:2 | 1 | literals.rb:122:6:122:7 | 10 |
@@ -802,6 +828,8 @@ numericLiterals
 | literals.rb:140:12:140:12 | 1 | IntegerLiteral | 1 |
 | literals.rb:146:10:146:10 | 1 | IntegerLiteral | 1 |
 | literals.rb:146:14:146:14 | 1 | IntegerLiteral | 1 |
+| literals.rb:184:5:184:6 | 42 | IntegerLiteral | 42 |
+| literals.rb:185:8:185:8 | 5 | IntegerLiteral | 5 |
 integerLiterals
 | literals.rb:10:1:10:4 | 1234 | IntegerLiteral | 1234 |
 | literals.rb:11:1:11:5 | 5_678 | IntegerLiteral | 5678 |
@@ -865,6 +893,8 @@ integerLiterals
 | literals.rb:140:12:140:12 | 1 | IntegerLiteral | 1 |
 | literals.rb:146:10:146:10 | 1 | IntegerLiteral | 1 |
 | literals.rb:146:14:146:14 | 1 | IntegerLiteral | 1 |
+| literals.rb:184:5:184:6 | 42 | IntegerLiteral | 42 |
+| literals.rb:185:8:185:8 | 5 | IntegerLiteral | 5 |
 floatLiterals
 | literals.rb:30:1:30:5 | 12.34 | FloatLiteral | 12.34 |
 | literals.rb:31:1:31:7 | 1234e-2 | FloatLiteral | 12.34 |

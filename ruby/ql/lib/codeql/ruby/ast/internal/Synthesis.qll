@@ -975,24 +975,107 @@ private module ForLoopDesugar {
  * ```
  */
 private module ImplicitHashValueSynthesis {
-  private Ruby::AstNode keyWithoutValue(HashPattern parent, int i) {
+  private Ruby::AstNode keyWithoutValue(AstNode parent, int i) {
     exists(Ruby::KeywordPattern pair |
       result = pair.getKey() and
-      result = toGenerated(parent.getKey(i)) and
+      result = toGenerated(parent.(HashPattern).getKey(i)) and
+      not exists(pair.getValue())
+    )
+    or
+    exists(Ruby::Pair pair |
+      i = 0 and
+      result = pair.getKey() and
+      pair = toGenerated(parent) and
       not exists(pair.getValue())
     )
   }
 
+  private string keyName(Ruby::AstNode key) {
+    result = key.(Ruby::String).getChild(0).(Ruby::StringContent).getValue() or
+    result = key.(Ruby::HashKeySymbol).getValue()
+  }
+
   private class ImplicitHashValueSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
-      exists(TVariableReal variable |
-        access(keyWithoutValue(parent, i), variable) and
-        child = SynthChild(LocalVariableAccessRealKind(variable))
+      exists(Ruby::AstNode key | key = keyWithoutValue(parent, i) |
+        exists(TVariableReal variable |
+          access(key, variable) and
+          child = SynthChild(LocalVariableAccessRealKind(variable))
+        )
+        or
+        not access(key, _) and
+        exists(string name | name = keyName(key) |
+          child = SynthChild(ConstantReadAccessKind(name)) or
+          child = SynthChild(MethodCallKind(name, false, 0))
+        )
       )
     }
 
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      setter = false and
+      arity = 0 and
+      name = keyName(keyWithoutValue(_, _)) and
+      not name.charAt(0).isUppercase()
+    }
+
+    final override predicate constantReadAccess(string name) {
+      name = keyName(keyWithoutValue(_, _)) and
+      name.charAt(0).isUppercase()
+    }
+
     final override predicate location(AstNode n, Location l) {
-      exists(HashPattern p, int i | n = p.getValue(i) and l = keyWithoutValue(p, i).getLocation())
+      exists(AstNode p, int i | l = keyWithoutValue(p, i).getLocation() |
+        n = p.(HashPattern).getValue(i)
+        or
+        i = 0 and n = p.(Pair).getValue()
+      )
+    }
+  }
+}
+
+/**
+ * ```rb
+ * def foo(&)
+ *   bar(&)
+ * end
+ * ```
+ * desugars to,
+ * ```rb
+ * def foo(&__synth_0)
+ *   bar(&__synth_0)
+ * end
+ * ```
+ */
+private module AnonymousBlockParameterSynth {
+  private BlockParameter anonymousBlockParameter() {
+    exists(Ruby::BlockParameter p | not exists(p.getName()) and toGenerated(result) = p)
+  }
+
+  private BlockArgument anonymousBlockArgument() {
+    exists(Ruby::BlockArgument p | not exists(p.getChild()) and toGenerated(result) = p)
+  }
+
+  private class AnonymousBlockParameterSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      i = 0 and
+      parent = anonymousBlockParameter() and
+      child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(parent, 0)))
+    }
+
+    final override predicate localVariable(AstNode n, int i) {
+      n = anonymousBlockParameter() and i = 0
+    }
+  }
+
+  private class AnonymousBlockArgumentSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      i = 0 and
+      parent = anonymousBlockArgument() and
+      exists(BlockParameter param |
+        param = anonymousBlockParameter() and
+        scopeOf(toGenerated(parent)).getEnclosingMethod() = scopeOf(toGenerated(param)) and
+        child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+      )
     }
   }
 }

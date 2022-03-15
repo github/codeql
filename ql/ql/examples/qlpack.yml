@@ -1,3 +1,4 @@
-name: codeql-ql-examples
-version: 0.0.0
-libraryPathDependencies: codeql-ql
+name: codeql/ql-examples
+groups: [ql, examples]
+dependencies:
+    codeql/ql: "*"

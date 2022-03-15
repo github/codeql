@@ -1,0 +1,7 @@
+name: codeql/javascript-experimental-atm-model
+version: 0.0.6
+groups:
+    - javascript
+    - experimental
+mlModels:
+- "resources/*.codeqlmodel"

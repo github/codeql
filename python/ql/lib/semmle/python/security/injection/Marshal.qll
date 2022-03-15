@@ -11,13 +11,15 @@ import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Untrusted
 import semmle.python.security.injection.Deserialization
 
-private FunctionObject marshalLoads() { result = ModuleObject::named("marshal").attr("loads") }
+deprecated private FunctionObject marshalLoads() {
+  result = ModuleObject::named("marshal").attr("loads")
+}
 
 /**
  * A taint sink that is potentially vulnerable to malicious marshaled objects.
  * The `vuln` in `marshal.loads(vuln)`.
  */
-class UnmarshalingNode extends DeserializationSink {
+deprecated class UnmarshalingNode extends DeserializationSink {
   override string toString() { result = "unmarshaling vulnerability" }
 
   UnmarshalingNode() {

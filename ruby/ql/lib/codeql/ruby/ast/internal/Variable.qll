@@ -116,6 +116,11 @@ private string variableNameInScope(Ruby::AstNode i, Scope::Range scope) {
       result = i.(Ruby::String).getChild(0).(Ruby::StringContent).getValue() or
       result = i.(Ruby::HashKeySymbol).getValue()
     )
+    or
+    exists(Ruby::Pair p | i = p.getKey() and not exists(p.getValue()) |
+      result = i.(Ruby::String).getChild(0).(Ruby::StringContent).getValue() or
+      result = i.(Ruby::HashKeySymbol).getValue()
+    )
   )
 }
 
@@ -307,6 +312,8 @@ private module Cached {
     i = any(Ruby::WhileModifier x).getCondition()
     or
     i = any(Ruby::WhileModifier x).getBody()
+    or
+    i = any(Ruby::ExpressionReferencePattern x).getValue()
   }
 
   pragma[nomagic]
@@ -359,7 +366,23 @@ private module Cached {
 
   cached
   predicate isCapturedAccess(LocalVariableAccess access) {
-    access.getVariable().getDeclaringScope() != access.getCfgScope()
+    exists(Scope scope1, Scope scope2 |
+      scope1 = access.getVariable().getDeclaringScope() and
+      scope2 = access.getCfgScope() and
+      scope1 != scope2
+    |
+      if access instanceof SelfVariableAccess
+      then
+        // ```
+        // class C
+        //   def self.m // not a captured access
+        //   end
+        // end
+        // ```
+        not scope2 instanceof Toplevel or
+        not access = any(SingletonMethod m).getObject()
+      else any()
+    )
   }
 
   cached
@@ -414,10 +437,10 @@ class TVariableReal =
 class TLocalVariable = TLocalVariableReal or TLocalVariableSynth or TSelfVariable;
 
 /**
- * This class only exists to avoid negative recursion warnings. Ideally,
- * we would use `VariableImpl` directly, but that results in incorrect
- * negative recursion warnings. Adding new root-defs for the predicates
- * below works around this.
+ * A "real" (i.e. non-synthesized) variable. This class only exists to
+ * avoid negative recursion warnings. Ideally, we would use `VariableImpl`
+ * directly, but that results in incorrect negative recursion warnings.
+ * Adding new root-defs for the predicates below works around this.
  */
 abstract class VariableReal extends TVariableReal {
   abstract string getNameImpl();
@@ -652,10 +675,11 @@ private class ClassVariableAccessSynth extends ClassVariableAccessRealImpl,
 abstract class SelfVariableAccessImpl extends LocalVariableAccessImpl, TSelfVariableAccess { }
 
 private class SelfVariableAccessReal extends SelfVariableAccessImpl, TSelfReal {
-  private Ruby::Self self;
   private SelfVariable var;
 
-  SelfVariableAccessReal() { this = TSelfReal(self) and var = TSelfVariable(scopeOf(self)) }
+  SelfVariableAccessReal() {
+    exists(Ruby::Self self | this = TSelfReal(self) and var = TSelfVariable(scopeOf(self)))
+  }
 
   final override SelfVariable getVariableImpl() { result = var }
 

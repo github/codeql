@@ -84,7 +84,9 @@ private module MySql {
 
     override DataFlow::Node getAResult() { result = this.getCallback(_).getParameter(1) }
 
-    override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getAQueryArgument() {
+      result = this.getArgument(0) or result = this.getOptionArgument(0, "sql")
+    }
   }
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
@@ -374,7 +376,7 @@ private module Sqlite {
     result = API::Node::ofType("sqlite3", "Database")
   }
 
-  /** A call to a query method on a Sqlite database instance that returns the same instance. */
+  /** Gets a call to a query method on a Sqlite database instance that returns the same instance. */
   private API::Node getAChainingQueryCall() {
     result = database().getMember(["all", "each", "exec", "get", "run"]).getReturn()
   }

@@ -1,0 +1,76 @@
+name: JS ML-powered queries tests
+
+on:
+  push:
+    paths:
+      - "javascript/ql/experimental/adaptivethreatmodeling/**"
+      - .github/workflows/js-ml-tests.yml
+    branches:
+      - main
+      - "rc/*"
+  pull_request:
+    paths:
+      - "javascript/ql/experimental/adaptivethreatmodeling/**"
+      - .github/workflows/js-ml-tests.yml
+
+defaults:
+  run:
+    working-directory: javascript/ql/experimental/adaptivethreatmodeling
+
+jobs:
+  qlformat:
+    name: Check QL formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./.github/actions/fetch-codeql
+
+      - name: Check QL formatting
+        run: |
+          find . "(" -name "*.ql" -or -name "*.qll" ")" -print0 | \
+            xargs -0 codeql query format --check-only
+
+  qlcompile:
+    name: Check QL compilation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./.github/actions/fetch-codeql
+
+      - name: Install pack dependencies
+        run: |
+          for pack in modelbuilding src; do
+            codeql pack install --mode verify -- "${pack}"
+          done
+
+      - name: Check QL compilation
+        run: |
+          codeql query compile \
+            --check-only \
+            --ram 5120 \
+            --additional-packs "${{ github.workspace }}" \
+            --threads=0 \
+            -- \
+            lib modelbuilding src
+
+  qltest:
+    name: Run QL tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./.github/actions/fetch-codeql
+
+      - name: Install pack dependencies
+        run: codeql pack install -- test
+
+      - name: Run QL tests
+        run: |
+          codeql test run \
+            --threads=0 \
+            --ram 5120 \
+            --additional-packs "${{ github.workspace }}" \
+            -- \
+            test

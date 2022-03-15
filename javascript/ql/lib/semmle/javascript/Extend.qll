@@ -182,6 +182,8 @@ private class CloneStep extends PreCallGraphStep {
       call = DataFlow::moduleImport(["clone", "fclone", "sort-keys", "camelcase-keys"]).getACall()
       or
       call = DataFlow::moduleMember("json-cycle", ["decycle", "retrocycle"]).getACall()
+      or
+      call = LodashUnderscore::member(["clone", "cloneDeep"]).getACall()
     |
       pred = call.getArgument(0) and
       succ = call

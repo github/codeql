@@ -40,13 +40,14 @@ namespace Semmle.Extraction.CSharp
         public static Options CreateWithEnvironment(string[] arguments)
         {
             var options = new Options();
-            var extractionOptions = Environment.GetEnvironmentVariable("SEMMLE_EXTRACTOR_OPTIONS") ??
-                Environment.GetEnvironmentVariable("LGTM_INDEX_EXTRACTOR");
+            var extractionOptions = Environment.GetEnvironmentVariable("LGTM_INDEX_EXTRACTOR");
 
             var argsList = new List<string>(arguments);
 
             if (!string.IsNullOrEmpty(extractionOptions))
+            {
                 argsList.AddRange(extractionOptions.Split(' '));
+            }
 
             options.ParseArguments(argsList);
             return options;

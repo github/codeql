@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5
- * @precision medium
+ * @precision high
  * @id cpp/cleartext-transmission
  * @tags security
  *       external/cwe/cwe-319
@@ -14,8 +14,8 @@
 import cpp
 import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.dataflow.TaintTracking
-import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.models.interfaces.FlowSource
+import semmle.code.cpp.commons.File
 import DataFlow::PathGraph
 
 /**
@@ -27,6 +27,7 @@ class SensitiveNode extends DataFlow::Node {
     this.asExpr() = any(SensitiveVariable sv).getInitializer().getExpr() or
     this.asExpr().(VariableAccess).getTarget() =
       any(SensitiveVariable sv).(GlobalOrNamespaceVariable) or
+    this.asExpr().(VariableAccess).getTarget() = any(SensitiveVariable v | v instanceof Field) or
     this.asUninitialized() instanceof SensitiveVariable or
     this.asParameter() instanceof SensitiveVariable or
     this.asExpr().(FunctionCall).getTarget() instanceof SensitiveFunction
@@ -120,24 +121,32 @@ abstract class NetworkSendRecv extends FunctionCall {
   NetworkSendRecv() {
     this.getTarget() = target and
     // exclude calls based on the socket...
-    not exists(GVN g |
-      g = globalValueNumber(target.getSocketExpr(this)) and
+    not exists(DataFlow::Node src, DataFlow::Node dest |
+      DataFlow::localFlow(src, dest) and
+      dest.asExpr() = target.getSocketExpr(this) and
       (
         // literal constant
-        globalValueNumber(any(Literal l)) = g
+        src.asExpr() instanceof Literal
         or
         // variable (such as a global) initialized to a literal constant
         exists(Variable v |
           v.getInitializer().getExpr() instanceof Literal and
-          g = globalValueNumber(v.getAnAccess())
+          src.asExpr() = v.getAnAccess()
         )
         or
         // result of a function call with literal inputs (likely constant)
+        forex(Expr arg | arg = src.asExpr().(FunctionCall).getAnArgument() | arg instanceof Literal)
+        or
+        // variable called `stdin`, `stdout` or `stderr`
+        src.asExpr().(VariableAccess).getTarget().getName() = ["stdin", "stdout", "stderr"]
+        or
+        // open of `"/dev/tty"`
         exists(FunctionCall fc |
-          forex(Expr arg | arg = fc.getAnArgument() | arg instanceof Literal) and
-          g = globalValueNumber(fc)
+          fopenCall(fc) and
+          fc.getAnArgument().getValue() = "/dev/tty" and
+          src.asExpr() = fc
         )
-        // (this is far from exhaustive)
+        // (this is not exhaustive)
       )
     )
   }
@@ -159,6 +168,16 @@ class NetworkRecv extends NetworkSendRecv {
   override Recv target;
 }
 
+pragma[noinline]
+predicate encryptionFunction(Function f) {
+  f.getName().toLowerCase().regexpMatch(".*(crypt|encode|decode|hash|securezero).*")
+}
+
+pragma[noinline]
+predicate encryptionType(UserType t) {
+  t.getName().toLowerCase().regexpMatch(".*(crypt|encode|decode|hash|securezero).*")
+}
+
 /**
  * An expression that is an argument or return value from an encryption /
  * decryption call. This is quite inclusive to minimize false positives, for
@@ -168,10 +187,7 @@ class NetworkRecv extends NetworkSendRecv {
 class Encrypted extends Expr {
   Encrypted() {
     exists(FunctionCall fc |
-      fc.getTarget()
-          .getName()
-          .toLowerCase()
-          .regexpMatch(".*(crypt|encode|decode|hash|securezero).*") and
+      encryptionFunction(fc.getTarget()) and
       (
         this = fc or
         this = fc.getAnArgument()
@@ -180,7 +196,7 @@ class Encrypted extends Expr {
     or
     exists(Type t |
       this.getType().refersTo(t) and
-      t.getName().toLowerCase().regexpMatch(".*(crypt|encode|decode|hash|securezero).*")
+      encryptionType(t)
     )
   }
 }

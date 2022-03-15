@@ -80,7 +80,7 @@ deprecated class TuplePattern extends Pattern, TTuplePattern {
 
 private class TPatternNode =
   TArrayPattern or TFindPattern or THashPattern or TAlternativePattern or TAsPattern or
-      TParenthesizedPattern or TVariableReferencePattern;
+      TParenthesizedPattern or TExpressionReferencePattern or TVariableReferencePattern;
 
 private class TPattern =
   TPatternNode or TLiteral or TLambda or TConstantAccess or TLocalVariableAccess or
@@ -404,6 +404,42 @@ class ParenthesizedPattern extends CasePattern, TParenthesizedPattern {
 }
 
 /**
+ * A variable or value reference in a pattern, i.e. `^x`, and `^(2 * x)` in the following example:
+ * ```rb
+ * x = 10
+ * case expr
+ *   in ^x then puts "ok"
+ *   in ^(2 * x) then puts "ok"
+ * end
+ * ```
+ */
+class ReferencePattern extends CasePattern, TReferencePattern {
+  private Ruby::AstNode value;
+
+  ReferencePattern() {
+    value = any(Ruby::VariableReferencePattern g | this = TVariableReferencePattern(g)).getName()
+    or
+    value =
+      any(Ruby::ExpressionReferencePattern g | this = TExpressionReferencePattern(g)).getValue()
+  }
+
+  /** Gets the value this reference pattern matches against. For example `2 * x` in `^(2 * x)` */
+  final Expr getExpr() { toGenerated(result) = value }
+
+  final override string getAPrimaryQlClass() { result = "ReferencePattern" }
+
+  final override string toString() { result = "^..." }
+
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getExpr" and result = this.getExpr()
+  }
+}
+
+/**
+ * DEPRECATED: Use `ReferencePattern` instead.
+ *
  * A variable reference in a pattern, i.e. `^x` in the following example:
  * ```rb
  * x = 10
@@ -412,21 +448,7 @@ class ParenthesizedPattern extends CasePattern, TParenthesizedPattern {
  * end
  * ```
  */
-class VariableReferencePattern extends CasePattern, TVariableReferencePattern {
-  private Ruby::VariableReferencePattern g;
-
-  VariableReferencePattern() { this = TVariableReferencePattern(g) }
-
+deprecated class VariableReferencePattern extends ReferencePattern, TVariableReferencePattern {
   /** Gets the variable access corresponding to this variable reference pattern. */
-  LocalVariableReadAccess getVariableAccess() { toGenerated(result) = g.getName() }
-
-  final override string getAPrimaryQlClass() { result = "VariableReferencePattern" }
-
-  final override string toString() { result = "^..." }
-
-  final override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
-    or
-    pred = "getVariableAccess" and result = this.getVariableAccess()
-  }
+  final VariableReadAccess getVariableAccess() { result = this.getExpr() }
 }

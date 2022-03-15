@@ -86,13 +86,6 @@ class Namespace extends NameQualifyingElement, @namespace {
   /** Holds if this namespace may be from source. */
   override predicate fromSource() { this.getADeclaration().fromSource() }
 
-  /**
-   * Holds if this namespace is in a library.
-   *
-   * DEPRECATED: never holds.
-   */
-  deprecated override predicate fromLibrary() { not this.fromSource() }
-
   /** Gets the metric namespace. */
   MetricNamespace getMetrics() { result = this }
 
@@ -232,11 +225,6 @@ class GlobalNamespace extends Namespace {
   }
 
   override Namespace getParentNamespace() { none() }
-
-  /**
-   * DEPRECATED: use `getName()`.
-   */
-  deprecated string getFullName() { result = this.getName() }
 
   override string getFriendlyName() { result = "(global namespace)" }
 }

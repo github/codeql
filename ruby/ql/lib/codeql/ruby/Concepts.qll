@@ -93,6 +93,35 @@ module FileSystemReadAccess {
 }
 
 /**
+ * A data flow node that writes data to the file system.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemWriteAccess::Range` instead.
+ */
+class FileSystemWriteAccess extends FileSystemAccess instanceof FileSystemWriteAccess::Range {
+  /**
+   * Gets a node that represents data written to the file system by this access.
+   */
+  DataFlow::Node getADataNode() { result = FileSystemWriteAccess::Range.super.getADataNode() }
+}
+
+/** Provides a class for modeling new file system writes. */
+module FileSystemWriteAccess {
+  /**
+   * A data flow node that writes data to the file system.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemWriteAccess` instead.
+   */
+  abstract class Range extends FileSystemAccess::Range {
+    /**
+     * Gets a node that represents data written to the file system by this access.
+     */
+    abstract DataFlow::Node getADataNode();
+  }
+}
+
+/**
  * A data flow node that sets the permissions for one or more files.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
@@ -593,6 +622,35 @@ module OrmInstantiation {
     /** Holds if a call to `methodName` on this instance may return a field of this ORM object. */
     bindingset[methodName]
     abstract predicate methodCallMayAccessField(string methodName);
+  }
+}
+
+/**
+ * A data flow node that writes persistent data.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `PersistentWriteAccess::Range` instead.
+ */
+class PersistentWriteAccess extends DataFlow::Node instanceof PersistentWriteAccess::Range {
+  /**
+   * Gets the data flow node corresponding to the written value.
+   */
+  DataFlow::Node getValue() { result = super.getValue() }
+}
+
+/** Provides a class for modeling new persistent write access APIs. */
+module PersistentWriteAccess {
+  /**
+   * A data flow node that writes persistent data.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `PersistentWriteAccess` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the data flow node corresponding to the written value.
+     */
+    abstract DataFlow::Node getValue();
   }
 }
 

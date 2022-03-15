@@ -18,7 +18,7 @@ class RunMethod extends Method {
   RunMethod() {
     this.hasName("run") and
     this.hasNoParameters() and
-    this.getDeclaringType().getASupertype*().hasQualifiedName("java.lang", "Thread")
+    this.getDeclaringType().getAnAncestor().hasQualifiedName("java.lang", "Thread")
   }
 }
 

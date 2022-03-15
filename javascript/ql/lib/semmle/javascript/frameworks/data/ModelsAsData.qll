@@ -21,7 +21,8 @@
  */
 
 private import javascript
-private import internal.Shared as Shared
+private import internal.ApiGraphModels as Shared
+private import internal.ApiGraphModelsSpecific as Specific
 import Shared::ModelInput as ModelInput
 import Shared::ModelOutput as ModelOutput
 
@@ -39,7 +40,7 @@ private class RemoteFlowSourceFromCsv extends RemoteFlowSource {
  */
 private predicate summaryStepNodes(DataFlow::Node pred, DataFlow::Node succ, string kind) {
   exists(API::Node predNode, API::Node succNode |
-    ModelOutput::summaryStep(predNode, succNode, kind) and
+    Specific::summaryStep(predNode, succNode, kind) and
     pred = predNode.getARhs() and
     succ = succNode.getAnImmediateUse()
   )

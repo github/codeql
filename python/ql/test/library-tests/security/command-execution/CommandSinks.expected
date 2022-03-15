@@ -1,3 +1,4 @@
+WARNING: Type CommandSink has been deprecated and may be removed in future (CommandSinks.ql:5,6-17)
 | fabric_v1_test.py:8:7:8:28 | FabricV1Commands | externally controlled string |
 | fabric_v1_test.py:9:5:9:27 | FabricV1Commands | externally controlled string |
 | fabric_v1_test.py:10:6:10:38 | FabricV1Commands | externally controlled string |

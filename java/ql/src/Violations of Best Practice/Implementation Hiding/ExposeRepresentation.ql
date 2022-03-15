@@ -18,7 +18,7 @@ import semmle.code.java.dataflow.DefUse
 predicate relevantType(RefType t) {
   t instanceof Array
   or
-  exists(RefType sup | sup = t.getASupertype*().getSourceDeclaration() |
+  exists(RefType sup | sup = t.getAnAncestor().getSourceDeclaration() |
     sup.hasQualifiedName("java.util", "Map") or
     sup.hasQualifiedName("java.util", "Collection")
   )
@@ -41,14 +41,14 @@ predicate modifyMethod(Method m) {
 }
 
 predicate storesArray(Callable c, int i, Field f) {
-  f.getDeclaringType() = c.getDeclaringType().getASupertype*().getSourceDeclaration() and
+  f.getDeclaringType() = c.getDeclaringType().getAnAncestor().getSourceDeclaration() and
   relevantType(f.getType()) and
   exists(Parameter p | p = c.getParameter(i) | f.getAnAssignedValue() = p.getAnAccess()) and
   not c.isStatic()
 }
 
 predicate returnsArray(Callable c, Field f) {
-  f.getDeclaringType() = c.getDeclaringType().getASupertype*().getSourceDeclaration() and
+  f.getDeclaringType() = c.getDeclaringType().getAnAncestor().getSourceDeclaration() and
   relevantType(f.getType()) and
   exists(ReturnStmt rs | rs.getEnclosingCallable() = c and rs.getResult() = f.getAnAccess()) and
   not c.isStatic()

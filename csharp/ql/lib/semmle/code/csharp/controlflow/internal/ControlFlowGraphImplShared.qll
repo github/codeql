@@ -214,7 +214,7 @@ abstract class SplitKind extends SplitKindBase {
   abstract string toString();
 }
 
-/** Provides the interface for implementing an entity to split on. */
+/** An interface for implementing an entity to split on. */
 abstract class SplitImpl extends Split {
   /** Gets the kind of this split. */
   abstract SplitKind getKind();

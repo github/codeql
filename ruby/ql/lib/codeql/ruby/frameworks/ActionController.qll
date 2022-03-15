@@ -1,24 +1,16 @@
+/**
+ * Provides modeling for the `ActionController` library.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ast.internal.Module
+private import codeql.ruby.ApiGraphs
 private import ActionView
-
-private class ActionControllerBaseAccess extends ConstantReadAccess {
-  ActionControllerBaseAccess() {
-    this.getName() = "Base" and
-    this.getScopeExpr().(ConstantAccess).getName() = "ActionController"
-  }
-}
-
-// ApplicationController extends ActionController::Base, but we
-// treat it separately in case the ApplicationController definition
-// is not in the database
-private class ApplicationControllerAccess extends ConstantReadAccess {
-  ApplicationControllerAccess() { this.getName() = "ApplicationController" }
-}
+private import codeql.ruby.frameworks.ActionDispatch
 
 /**
  * A `ClassDeclaration` for a class that extends `ActionController::Base`.
@@ -35,16 +27,13 @@ private class ApplicationControllerAccess extends ConstantReadAccess {
  */
 class ActionControllerControllerClass extends ClassDeclaration {
   ActionControllerControllerClass() {
-    // class FooController < ActionController::Base
-    this.getSuperclassExpr() instanceof ActionControllerBaseAccess
-    or
-    // class FooController < ApplicationController
-    this.getSuperclassExpr() instanceof ApplicationControllerAccess
-    or
-    // class BarController < FooController
-    exists(ActionControllerControllerClass other |
-      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
-    )
+    this.getSuperclassExpr() =
+      [
+        API::getTopLevelMember("ActionController").getMember("Base"),
+        // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
+        // treat it separately in case the `ApplicationController` definition is not in the database.
+        API::getTopLevelMember("ApplicationController")
+      ].getASubclass().getAUse().asExpr().getExpr()
   }
 
   /**
@@ -81,10 +70,34 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
   /** Gets a call to render from within this method. */
   RenderCall getARenderCall() { result.getParent+() = this }
 
-  // TODO: model the implicit render call when a path through the method does
-  // not end at an explicit render or redirect
-  /** Gets the controller class containing this method. */
-  ActionControllerControllerClass getControllerClass() { result = controllerClass }
+  /**
+   * Gets the controller class containing this method.
+   */
+  ActionControllerControllerClass getControllerClass() {
+    // TODO: model the implicit render call when a path through the method does
+    // not end at an explicit render or redirect
+    result = controllerClass
+  }
+
+  /**
+   * Gets a route to this handler, if one exists.
+   * May return multiple results.
+   */
+  ActionDispatch::Route getARoute() {
+    exists(string name |
+      isRoute(result, name, controllerClass) and
+      isActionControllerMethod(this, name, controllerClass)
+    )
+  }
+}
+
+pragma[nomagic]
+private predicate isRoute(
+  ActionDispatch::Route route, string name, ActionControllerControllerClass controllerClass
+) {
+  route.getController() + "_controller" =
+    ActionDispatch::underscore(namespaceDeclaration(controllerClass)) and
+  name = route.getAction()
 }
 
 // A method call with a `self` receiver from within a controller class
@@ -92,10 +105,13 @@ private class ActionControllerContextCall extends MethodCall {
   private ActionControllerControllerClass controllerClass;
 
   ActionControllerContextCall() {
-    this.getReceiver() instanceof Self and
+    this.getReceiver() instanceof SelfVariableAccess and
     this.getEnclosingModule() = controllerClass
   }
 
+  /**
+   * Gets the controller class containing this method.
+   */
   ActionControllerControllerClass getControllerClass() { result = controllerClass }
 }
 
@@ -111,9 +127,7 @@ abstract class ParamsCall extends MethodCall {
  * ActionController parameters available via the `params` method.
  */
 class ParamsSource extends RemoteFlowSource::Range {
-  ParamsCall call;
-
-  ParamsSource() { this.asExpr().getExpr() = call }
+  ParamsSource() { this.asExpr().getExpr() instanceof ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
 }
@@ -130,9 +144,7 @@ abstract class CookiesCall extends MethodCall {
  * ActionController parameters available via the `cookies` method.
  */
 class CookiesSource extends RemoteFlowSource::Range {
-  CookiesCall call;
-
-  CookiesSource() { this.asExpr().getExpr() = call }
+  CookiesSource() { this.asExpr().getExpr() instanceof CookiesCall }
 
   override string getSourceType() { result = "ActionController::Metal#cookies" }
 }

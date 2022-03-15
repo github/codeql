@@ -73,7 +73,7 @@ private module Cached {
       m = resolveConstantReadAccess(c.getReceiver())
       or
       m = enclosingModule(c).getModule() and
-      c.getReceiver() instanceof Self
+      c.getReceiver() instanceof SelfVariableAccess
     ) and
     result = resolveConstantReadAccess(c.getAnArgument())
   }
@@ -233,12 +233,17 @@ private module ResolveImpl {
 
   pragma[nomagic]
   private string resolveConstantReadAccessNonRec(ConstantReadAccess c, int priority) {
+    // ::B
     c.hasGlobalScope() and result = c.getName() and priority = 0
     or
+    // A::B
     exists(string name, string s | result = isDefinedConstantNonRec(s, name) |
       s = resolveConstantReadAccessScopeNonRec(c, priority, name)
     )
     or
+    // module A
+    //   B
+    // end
     exists(string name |
       exists(Namespace n, string qname |
         n = constantReadAccessEnclosingNameSpace(c, priority, name) and
@@ -432,7 +437,7 @@ private module ResolveImpl {
         encl = enclosingModule(this) and
         result = [qualifiedModuleNameNonRec(encl, _, _), qualifiedModuleNameRec(encl, _, _)]
       |
-        this.getReceiver() instanceof Self
+        this.getReceiver() instanceof SelfVariableAccess
         or
         not exists(this.getReceiver())
       )
