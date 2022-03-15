@@ -374,11 +374,3 @@ predicate strictlyNegative(Expr e) {
   not exprSign(e) = TPos() and
   not exprSign(e) = TZero()
 }
-
-/**
- * Expose some predicates for testing purposes without making them implicitly public to any module
- * that imports this file.
- */
-module SignAnalysisCommonTest {
-  predicate testSsaDefSign = ssaDefSign/1;
-}
