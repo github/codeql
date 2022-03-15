@@ -185,11 +185,6 @@ predicate function_can_never_return(FunctionObject func) {
   func = ModuleObject::named("sys").attr("exit")
 }
 
-private newtype TIterationDefinition =
-  TIterationDefinition_(SsaSourceVariable var, ControlFlowNode def, ControlFlowNode sequence) {
-    SsaSource::iteration_defined_variable(var, def, sequence)
-  }
-
 /** Hold if outer contains inner, both are contained within a test and inner is a use is a plain use or an attribute lookup */
 pragma[noinline]
 predicate contains_interesting_expression_within_test(ControlFlowNode outer, ControlFlowNode inner) {
