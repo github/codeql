@@ -8,7 +8,7 @@ public class Test {
     }
    
    public void unsafeXframeOption(HttpServletResponse res) {
-        res.setHeader("Access-Control-Allow-Origin", "test.com"); 
+        res.setHeader("Access-Control-Allow-Origin", "test.com"); //X-Frame-Options is missed
         res.setHeader("Access-Control-Allow-Credentials", "true"); 
     }
 }
