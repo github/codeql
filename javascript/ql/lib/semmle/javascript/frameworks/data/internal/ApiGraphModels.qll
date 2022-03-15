@@ -150,6 +150,14 @@ module ModelInput {
 private import ModelInput
 
 /**
+ * An empty class, except in specific tests.
+ *
+ * If this is non-empty, all models are parsed even if the package is not
+ * considered relevant for the current database.
+ */
+abstract class TestAllModels extends Unit { }
+
+/**
  * Append `;dummy` to the value of `s` to work around the fact that `string.split(delim,n)`
  * does not preserve empty trailing substrings.
  */
@@ -237,7 +245,11 @@ private predicate isRelevantPackage(string package) {
     summaryModel(package, _, _, _, _, _) or
     typeModel(package, _, _, _, _)
   ) and
-  Specific::isPackageUsed(package)
+  (
+    Specific::isPackageUsed(package)
+    or
+    exists(TestAllModels t)
+  )
   or
   exists(string other |
     isRelevantPackage(other) and
