@@ -190,3 +190,29 @@ class InvokeNode = API::InvokeNode;
 
 /** Gets an `InvokeNode` corresponding to an invocation of `node`. */
 InvokeNode getAnInvocationOf(API::Node node) { result = node.getAnInvocation() }
+
+/**
+ * Holds if `name` is a valid name for an access path token in the identifying access path.
+ */
+bindingset[name]
+predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
+  name = ["Member", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call"]
+}
+
+/**
+ * Holds if `name` is a valid name for an access path token with no arguments, occuring
+ * in an identifying access path.
+ */
+predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
+  name = ["Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call"]
+}
+
+/**
+ * Holds if `argument` is a valid argument to an access path token with the given `name`, occurring
+ * in an identifying access path.
+ */
+bindingset[name, argument]
+predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
+  name = ["Member"] and
+  argument = any(string s)
+}

@@ -364,6 +364,42 @@ Specific::InvokeNode getInvocationFromPath(string package, string type, AccessPa
 }
 
 /**
+ * Holds if `name` is a valid name for an access path token in the identifying access path.
+ */
+bindingset[name]
+predicate isValidTokenNameInIdentifyingAccessPath(string name) {
+  name = ["Argument", "Parameter", "ReturnValue", "WithArity"]
+  or
+  Specific::isExtraValidTokenNameInIdentifyingAccessPath(name)
+}
+
+/**
+ * Holds if `name` is a valid name for an access path token with no arguments, occuring
+ * in an identifying access path.
+ */
+bindingset[name]
+predicate isValidNoArgumentTokenInIdentifyingAccessPath(string name) {
+  name = "ReturnValue"
+  or
+  Specific::isExtraValidNoArgumentTokenInIdentifyingAccessPath(name)
+}
+
+/**
+ * Holds if `argument` is a valid argument to an access path token with the given `name`, occurring
+ * in an identifying access path.
+ */
+bindingset[name, argument]
+predicate isValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
+  name = ["Argument", "Parameter"] and
+  argument.regexpMatch("(N-|-)?\\d+(\\.\\.(N-|-)?\\d+)?")
+  or
+  name = "WithArity" and
+  argument.regexpMatch("\\d+(\\.\\.\\d+)?")
+  or
+  Specific::isExtraValidTokenArgumentInIdentifyingAccessPath(name, argument)
+}
+
+/**
  * Module providing access to the imported models in terms of API graph nodes.
  */
 module ModelOutput {
@@ -440,6 +476,28 @@ module ModelOutput {
       result =
         "CSV " + kind + " row should have " + expectedArity + " columns but has " + actualArity +
           ": " + row
+    )
+    or
+    // Check names and arguments of access path tokens
+    exists(AccessPath path, AccessPathToken token |
+      isRelevantFullPath(_, _, path) and
+      token = path.getToken(_)
+    |
+      not isValidTokenNameInIdentifyingAccessPath(token.getName()) and
+      result = "Invalid token name '" + token.getName() + "' in access path: " + path
+      or
+      isValidTokenNameInIdentifyingAccessPath(token.getName()) and
+      exists(string argument |
+        argument = token.getAnArgument() and
+        not isValidTokenArgumentInIdentifyingAccessPath(token.getName(), argument) and
+        result =
+          "Invalid argument '" + argument + "' in token '" + token + "' in access path: " + path
+      )
+      or
+      isValidTokenNameInIdentifyingAccessPath(token.getName()) and
+      token.getNumArgument() = 0 and
+      not isValidNoArgumentTokenInIdentifyingAccessPath(token.getName()) and
+      result = "Invalid token '" + token + "' is missing its arguments, in access path: " + path
     )
   }
 }

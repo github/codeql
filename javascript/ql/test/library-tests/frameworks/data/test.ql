@@ -78,8 +78,13 @@ private class InvalidTypeModel extends ModelInput::TypeModelCsv {
   override predicate row(string row) {
     row =
       [
-        "test;TooManyColumns;;;Member[Foo].Instance;too;many;columns", //
-        "test;TooFewColumns", //
+        "testlib;TooManyColumns;;;Member[Foo].Instance;too;many;columns", //
+        "testlib;TooFewColumns", //
+        "testlib;X;testlib;Y;Method[foo].Arg[0]", //
+        "testlib;X;testlib;Y;Method[foo].Argument[0-1]", //
+        "testlib;X;testlib;Y;Method[foo].Argument[*]", //
+        "testlib;X;testlib;Y;Method[foo].Argument", //
+        "testlib;X;testlib;Y;Method[foo].Member", //
       ]
   }
 }
