@@ -101,12 +101,10 @@ predicate semValueFlowStep(SemExpr e2, SemExpr e1, int delta) {
     x.(SemConstantIntegerExpr).getIntValue() = delta
   )
   or
-  exists(SemExpr x |
-    exists(SemSubExpr sub |
-      e2 = sub and
-      sub.getLeftOperand() = e1 and
-      sub.getRightOperand() = x
-    )
+  exists(SemExpr x, SemSubExpr sub |
+    e2 = sub and
+    sub.getLeftOperand() = e1 and
+    sub.getRightOperand() = x
   |
     x.(SemConstantIntegerExpr).getIntValue() = -delta
   )
