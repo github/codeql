@@ -13,6 +13,16 @@ class MethodFileCreateTempFile extends Method {
   }
 }
 
+/**
+ * All methods on the class `java.io.File` that create directories.
+ */
+class MethodFileCreatesDirs extends Method {
+  MethodFileCreatesDirs() {
+    getDeclaringType() instanceof TypeFile and
+    hasName(["mkdir", "mkdirs"])
+  }
+}
+
 private class TemporaryFileFlow extends SummaryModelCsv {
   override predicate row(string row) {
     // qualifier to return

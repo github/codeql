@@ -21,8 +21,7 @@ abstract private class MethodFileSystemFileCreation extends Method {
   MethodFileSystemFileCreation() { this.getDeclaringType() instanceof TypeFile }
 }
 
-private class MethodFileDirectoryCreation extends MethodFileSystemFileCreation {
-  MethodFileDirectoryCreation() { this.hasName(["mkdir", "mkdirs"]) }
+private class MethodFileDirectoryCreation extends MethodFileSystemFileCreation instanceof MethodFileCreatesDirs {
 }
 
 private class MethodFileFileCreation extends MethodFileSystemFileCreation {
