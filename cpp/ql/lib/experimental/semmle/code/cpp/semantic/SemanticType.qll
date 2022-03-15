@@ -258,7 +258,7 @@ predicate conversionCannotOverflow(SemNumericType fromType, SemNumericType toTyp
   fromType = toType
   or
   // Treat any cast to an FP type as safe. It can lose precision, but not overflow.
-  toType instanceof SemFloatingPointType
+  toType instanceof SemFloatingPointType and fromType = any(SemNumericType n)
   or
   exists(SemIntegerType fromInteger, SemIntegerType toInteger, int fromSize, int toSize |
     fromInteger = fromType and
