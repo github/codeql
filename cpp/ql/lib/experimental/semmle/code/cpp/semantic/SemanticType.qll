@@ -21,7 +21,7 @@ private newtype TSemType =
   }
 
 /**
- * The language-neutral type of a semantio expression,
+ * The language-neutral type of a semantic expression,
  * The interface to `SemType` and its subclasses is the same across all languages for which the IR
  * is supported, so analyses that expect to be used for multiple languages should generally use
  * `SemType` rather than a language-specific type.
