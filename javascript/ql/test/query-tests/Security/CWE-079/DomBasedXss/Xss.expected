@@ -28,7 +28,6 @@ nodes
 | angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
 | angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
 | angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
-| angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
 | angular2-client.ts:24:44:24:69 | this.ro ... .params |
 | angular2-client.ts:24:44:24:69 | this.ro ... .params |
 | angular2-client.ts:24:44:24:69 | this.ro ... .params |
@@ -80,8 +79,6 @@ nodes
 | angular2-client.ts:38:44:38:58 | this.router.url |
 | angular2-client.ts:38:44:38:58 | this.router.url |
 | angular2-client.ts:38:44:38:58 | this.router.url |
-| angular2-client.ts:38:44:38:58 | this.router.url |
-| angular2-client.ts:40:45:40:59 | this.router.url |
 | angular2-client.ts:40:45:40:59 | this.router.url |
 | angular2-client.ts:40:45:40:59 | this.router.url |
 | angular2-client.ts:40:45:40:59 | this.router.url |
@@ -298,6 +295,7 @@ nodes
 | dates.js:61:42:61:86 | dayjs.s ... (taint) |
 | dates.js:61:81:61:85 | taint |
 | dates.js:61:81:61:85 | taint |
+| event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href |
@@ -525,41 +523,28 @@ nodes
 | string-manipulations.js:4:16:4:37 | documen ... on.href |
 | string-manipulations.js:4:16:4:37 | documen ... on.href |
 | string-manipulations.js:4:16:4:37 | documen ... on.href |
-| string-manipulations.js:4:16:4:37 | documen ... on.href |
-| string-manipulations.js:5:16:5:37 | documen ... on.href |
 | string-manipulations.js:5:16:5:37 | documen ... on.href |
 | string-manipulations.js:5:16:5:37 | documen ... on.href |
 | string-manipulations.js:5:16:5:47 | documen ... lueOf() |
 | string-manipulations.js:5:16:5:47 | documen ... lueOf() |
-| string-manipulations.js:5:16:5:47 | documen ... lueOf() |
-| string-manipulations.js:6:16:6:37 | documen ... on.href |
 | string-manipulations.js:6:16:6:37 | documen ... on.href |
 | string-manipulations.js:6:16:6:37 | documen ... on.href |
 | string-manipulations.js:6:16:6:43 | documen ... f.sup() |
 | string-manipulations.js:6:16:6:43 | documen ... f.sup() |
-| string-manipulations.js:6:16:6:43 | documen ... f.sup() |
-| string-manipulations.js:7:16:7:37 | documen ... on.href |
 | string-manipulations.js:7:16:7:37 | documen ... on.href |
 | string-manipulations.js:7:16:7:37 | documen ... on.href |
 | string-manipulations.js:7:16:7:51 | documen ... rCase() |
 | string-manipulations.js:7:16:7:51 | documen ... rCase() |
-| string-manipulations.js:7:16:7:51 | documen ... rCase() |
-| string-manipulations.js:8:16:8:37 | documen ... on.href |
 | string-manipulations.js:8:16:8:37 | documen ... on.href |
 | string-manipulations.js:8:16:8:37 | documen ... on.href |
 | string-manipulations.js:8:16:8:48 | documen ... mLeft() |
 | string-manipulations.js:8:16:8:48 | documen ... mLeft() |
-| string-manipulations.js:8:16:8:48 | documen ... mLeft() |
-| string-manipulations.js:9:16:9:58 | String. ... n.href) |
 | string-manipulations.js:9:16:9:58 | String. ... n.href) |
 | string-manipulations.js:9:16:9:58 | String. ... n.href) |
 | string-manipulations.js:9:36:9:57 | documen ... on.href |
 | string-manipulations.js:9:36:9:57 | documen ... on.href |
-| string-manipulations.js:9:36:9:57 | documen ... on.href |
 | string-manipulations.js:10:16:10:45 | String( ... n.href) |
 | string-manipulations.js:10:16:10:45 | String( ... n.href) |
-| string-manipulations.js:10:16:10:45 | String( ... n.href) |
-| string-manipulations.js:10:23:10:44 | documen ... on.href |
 | string-manipulations.js:10:23:10:44 | documen ... on.href |
 | string-manipulations.js:10:23:10:44 | documen ... on.href |
 | tooltip.jsx:6:11:6:30 | source |
@@ -622,8 +607,10 @@ nodes
 | tst.js:5:18:5:23 | target |
 | tst.js:8:18:8:126 | "<OPTIO ... PTION>" |
 | tst.js:8:18:8:126 | "<OPTIO ... PTION>" |
+| tst.js:8:18:8:126 | "<OPTIO ... PTION>" |
 | tst.js:8:37:8:58 | documen ... on.href |
 | tst.js:8:37:8:58 | documen ... on.href |
+| tst.js:8:37:8:114 | documen ... t=")+8) |
 | tst.js:8:37:8:114 | documen ... t=")+8) |
 | tst.js:12:5:12:42 | '<div s ...  'px">' |
 | tst.js:12:5:12:42 | '<div s ...  'px">' |
@@ -1335,6 +1322,8 @@ edges
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
+| event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
+| event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |
@@ -1552,12 +1541,6 @@ edges
 | string-manipulations.js:5:16:5:37 | documen ... on.href | string-manipulations.js:5:16:5:47 | documen ... lueOf() |
 | string-manipulations.js:5:16:5:37 | documen ... on.href | string-manipulations.js:5:16:5:47 | documen ... lueOf() |
 | string-manipulations.js:5:16:5:37 | documen ... on.href | string-manipulations.js:5:16:5:47 | documen ... lueOf() |
-| string-manipulations.js:5:16:5:37 | documen ... on.href | string-manipulations.js:5:16:5:47 | documen ... lueOf() |
-| string-manipulations.js:5:16:5:37 | documen ... on.href | string-manipulations.js:5:16:5:47 | documen ... lueOf() |
-| string-manipulations.js:5:16:5:37 | documen ... on.href | string-manipulations.js:5:16:5:47 | documen ... lueOf() |
-| string-manipulations.js:6:16:6:37 | documen ... on.href | string-manipulations.js:6:16:6:43 | documen ... f.sup() |
-| string-manipulations.js:6:16:6:37 | documen ... on.href | string-manipulations.js:6:16:6:43 | documen ... f.sup() |
-| string-manipulations.js:6:16:6:37 | documen ... on.href | string-manipulations.js:6:16:6:43 | documen ... f.sup() |
 | string-manipulations.js:6:16:6:37 | documen ... on.href | string-manipulations.js:6:16:6:43 | documen ... f.sup() |
 | string-manipulations.js:6:16:6:37 | documen ... on.href | string-manipulations.js:6:16:6:43 | documen ... f.sup() |
 | string-manipulations.js:6:16:6:37 | documen ... on.href | string-manipulations.js:6:16:6:43 | documen ... f.sup() |
@@ -1566,12 +1549,6 @@ edges
 | string-manipulations.js:7:16:7:37 | documen ... on.href | string-manipulations.js:7:16:7:51 | documen ... rCase() |
 | string-manipulations.js:7:16:7:37 | documen ... on.href | string-manipulations.js:7:16:7:51 | documen ... rCase() |
 | string-manipulations.js:7:16:7:37 | documen ... on.href | string-manipulations.js:7:16:7:51 | documen ... rCase() |
-| string-manipulations.js:7:16:7:37 | documen ... on.href | string-manipulations.js:7:16:7:51 | documen ... rCase() |
-| string-manipulations.js:7:16:7:37 | documen ... on.href | string-manipulations.js:7:16:7:51 | documen ... rCase() |
-| string-manipulations.js:7:16:7:37 | documen ... on.href | string-manipulations.js:7:16:7:51 | documen ... rCase() |
-| string-manipulations.js:8:16:8:37 | documen ... on.href | string-manipulations.js:8:16:8:48 | documen ... mLeft() |
-| string-manipulations.js:8:16:8:37 | documen ... on.href | string-manipulations.js:8:16:8:48 | documen ... mLeft() |
-| string-manipulations.js:8:16:8:37 | documen ... on.href | string-manipulations.js:8:16:8:48 | documen ... mLeft() |
 | string-manipulations.js:8:16:8:37 | documen ... on.href | string-manipulations.js:8:16:8:48 | documen ... mLeft() |
 | string-manipulations.js:8:16:8:37 | documen ... on.href | string-manipulations.js:8:16:8:48 | documen ... mLeft() |
 | string-manipulations.js:8:16:8:37 | documen ... on.href | string-manipulations.js:8:16:8:48 | documen ... mLeft() |
@@ -1580,12 +1557,6 @@ edges
 | string-manipulations.js:9:36:9:57 | documen ... on.href | string-manipulations.js:9:16:9:58 | String. ... n.href) |
 | string-manipulations.js:9:36:9:57 | documen ... on.href | string-manipulations.js:9:16:9:58 | String. ... n.href) |
 | string-manipulations.js:9:36:9:57 | documen ... on.href | string-manipulations.js:9:16:9:58 | String. ... n.href) |
-| string-manipulations.js:9:36:9:57 | documen ... on.href | string-manipulations.js:9:16:9:58 | String. ... n.href) |
-| string-manipulations.js:9:36:9:57 | documen ... on.href | string-manipulations.js:9:16:9:58 | String. ... n.href) |
-| string-manipulations.js:9:36:9:57 | documen ... on.href | string-manipulations.js:9:16:9:58 | String. ... n.href) |
-| string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
-| string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
-| string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
@@ -1655,6 +1626,11 @@ edges
 | tst.js:2:16:2:39 | documen ... .search | tst.js:2:7:2:39 | target |
 | tst.js:8:37:8:58 | documen ... on.href | tst.js:8:37:8:114 | documen ... t=")+8) |
 | tst.js:8:37:8:58 | documen ... on.href | tst.js:8:37:8:114 | documen ... t=")+8) |
+| tst.js:8:37:8:58 | documen ... on.href | tst.js:8:37:8:114 | documen ... t=")+8) |
+| tst.js:8:37:8:58 | documen ... on.href | tst.js:8:37:8:114 | documen ... t=")+8) |
+| tst.js:8:37:8:114 | documen ... t=")+8) | tst.js:8:18:8:126 | "<OPTIO ... PTION>" |
+| tst.js:8:37:8:114 | documen ... t=")+8) | tst.js:8:18:8:126 | "<OPTIO ... PTION>" |
+| tst.js:8:37:8:114 | documen ... t=")+8) | tst.js:8:18:8:126 | "<OPTIO ... PTION>" |
 | tst.js:8:37:8:114 | documen ... t=")+8) | tst.js:8:18:8:126 | "<OPTIO ... PTION>" |
 | tst.js:8:37:8:114 | documen ... t=")+8) | tst.js:8:18:8:126 | "<OPTIO ... PTION>" |
 | tst.js:12:28:12:33 | target | tst.js:12:5:12:42 | '<div s ...  'px">' |
