@@ -116,15 +116,36 @@ private class MyBatisProvider extends RefType {
   }
 }
 
-private class MyBatisAbstractSQLMethodNames extends string {
-  MyBatisAbstractSQLMethodNames() {
-    this in [
-        "SELECT", "OFFSET_ROWS", "FETCH_FIRST_ROWS_ONLY", "OFFSET", "LIMIT", "ORDER_BY", "HAVING",
-        "GROUP_BY", "WHERE", "OUTER_JOIN", "RIGHT_OUTER_JOIN", "LEFT_OUTER_JOIN", "INNER_JOIN",
-        "JOIN", "FROM", "DELETE_FROM", "SELECT_DISTINCT", "SELECT", "INTO_VALUES", "INTO_COLUMNS",
-        "VALUES", "INSERT_INTO", "SET", "UPDATE"
-      ]
+private class MyBatisAbstractSQLMethod extends Method {
+  string taintedArgs;
+  string signature;
+
+  MyBatisAbstractSQLMethod() {
+    this.getDeclaringType().getSourceDeclaration() instanceof MyBatisAbstractSQL and
+    (
+      this.hasName([
+          "UPDATE", "SET", "INSERT_INTO", "SELECT", "OFFSET_ROWS", "LIMIT", "OFFSET",
+          "FETCH_FIRST_ROWS_ONLY", "DELETE_FROM", "INNER_JOIN", "ORDER_BY", "WHERE", "HAVING",
+          "OUTER_JOIN", "LEFT_OUTER_JOIN", "RIGHT_OUTER_JOIN", "GROUP_BY", "FROM", "SELECT_DISTINCT"
+        ]) and
+      taintedArgs = "Argument[0]" and
+      signature = "String"
+      or
+      this.hasName([
+          "SET", "INTO_COLUMNS", "INTO_VALUES", "SELECT_DISTINCT", "FROM", "JOIN", "INNER_JOIN",
+          "LEFT_OUTER_JOIN", "RIGHT_OUTER_JOIN", "OUTER_JOIN", "WHERE", "GROUP_BY", "HAVING",
+          "ORDER_BY"
+        ]) and
+      taintedArgs = "Argument[0].ArrayElement" and
+      signature = "String[]"
+      or
+      this.hasName("VALUES") and taintedArgs = "Argument[0..1]" and signature = "String,String"
+    )
   }
+
+  string getTaintedArgs() { result = taintedArgs }
+
+  string getCsvSignature() { result = signature }
 }
 
 /**
@@ -170,19 +191,18 @@ private class MyBatisAbstractSQLToStringStep extends SummaryModelCsv {
 
 private class MyBatisAbstractSQLMethodsStep extends SummaryModelCsv {
   override predicate row(string row) {
-    row =
-      [
-        "org.apache.ibatis.jdbc;AbstractSQL;true;" + any(MyBatisAbstractSQLMethodNames m) +
-          ";;;Argument[0..1];ReturnValue;taint"
-      ]
+    exists(MyBatisAbstractSQLMethod m |
+      row =
+        "org.apache.ibatis.jdbc;AbstractSQL;true;" + m.getName() + ";(" + m.getCsvSignature() +
+          ");;" + m.getTaintedArgs() + ";ReturnValue;taint"
+    )
   }
 }
 
 private class MyBatisAbstractSQLAnonymousClassStep extends TaintTracking::AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodAccess ma, ClassInstanceExpr c |
-      ma.getMethod().getDeclaringType().getSourceDeclaration() instanceof MyBatisAbstractSQL and
-      ma.getMethod().getName() instanceof MyBatisAbstractSQLMethodNames and
+      ma.getMethod() instanceof MyBatisAbstractSQLMethod and
       c.getAnonymousClass().getACallable() = ma.getCaller() and
       node1.asExpr() = ma and
       node2.asExpr() = c
