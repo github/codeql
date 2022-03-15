@@ -170,8 +170,18 @@ private MethodAccess getSystemPropertyFromApacheFileUtils(string propertyName) {
 private MethodAccess getSystemPropertyFromGuava(string propertyName) {
   exists(EnumConstant ec |
     ec.getDeclaringType().hasQualifiedName("com.google.common.base", "StandardSystemProperty") and
-    result.getQualifier() = ec.getAnAccess() and
-    result.getMethod().hasName("value")
+    // Example: `StandardSystemProperty.JAVA_IO_TMPDIR.value()`
+    (
+      localExprFlowPlusInitializers(ec.getAnAccess(), result.getQualifier()) and
+      result.getMethod().hasName("value")
+    )
+    or
+    // Example: `System.getProperty(StandardSystemProperty.JAVA_IO_TMPDIR.key())`
+    exists(MethodAccess keyMa |
+      localExprFlowPlusInitializers(ec.getAnAccess(), keyMa.getQualifier()) and
+      keyMa.getMethod().hasName("key") and
+      localExprFlowPlusInitializers(keyMa, result.(MethodAccessSystemGetProperty).getArgument(0))
+    )
   |
     ec.hasName("JAVA_VERSION") and propertyName = "java.version"
     or

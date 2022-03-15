@@ -1,6 +1,7 @@
 import java.io.File;
 import java.util.Properties;
 import org.apache.commons.lang3.SystemUtils;
+import com.google.common.base.StandardSystemProperty;
 
 public class SystemPropertyAccess {
     private static final Properties SYSTEM_PROPERTIES = System.getProperties();
@@ -20,6 +21,10 @@ public class SystemPropertyAccess {
         char separatorChar = File.separatorChar;
         String pathSeparator = File.pathSeparator;
         char pathSeparatorChar = File.pathSeparatorChar;
+        StandardSystemProperty.JAVA_VERSION.value();
+        StandardSystemProperty property = StandardSystemProperty.JAVA_VERSION;
+        property.value();
+        System.getProperty(StandardSystemProperty.JAVA_IO_TMPDIR.key());
     }
     
 }
