@@ -1,6 +1,7 @@
 import csharp
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.commons.Util
+private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 
@@ -71,7 +72,7 @@ private predicate isPrimitiveTypeUsedForBulkData(Type t) {
 
 private string parameterAccess(Parameter p) {
   if
-    p.getType() instanceof ArrayType and
+    p.getType() instanceof CollectionType and
     not isPrimitiveTypeUsedForBulkData(p.getType().(ArrayType).getElementType())
   then result = "Argument[" + p.getPosition() + "].Element"
   else result = "Argument[" + p.getPosition() + "]"
