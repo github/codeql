@@ -6,4 +6,9 @@ public class Test {
    public void safeXframeOption(HttpServletResponse response) {
         response.addHeader("X-Frame-Options", "DENY");  //GOOD
     }
+   
+   public void unsafeXframeOption(HttpServletResponse res) {
+        res.setHeader("Access-Control-Allow-Origin", "test.com"); 
+        res.setHeader("Access-Control-Allow-Credentials", "true"); 
+    }
 }
