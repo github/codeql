@@ -1,6 +1,6 @@
 ...
 try {
-  if (chackValue) throw exception();
+  if (checkValue) throw exception();
   valData->bufMyData =  new myData*[valData->sizeInt];
 	 
   } 
@@ -13,7 +13,7 @@ try {
     }
 ...
 try {
-  if (chackValue) throw exception();
+  if (checkValue) throw exception();
   valData->bufMyData =  new myData*[valData->sizeInt];
 	 
   } 

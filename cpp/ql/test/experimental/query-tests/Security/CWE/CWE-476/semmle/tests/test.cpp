@@ -151,7 +151,7 @@ void funcWork3() {
 
 void funcWork4() {
   int a;
-  myGlobalData *valData;
+  myGlobalData *valData = 0;
   try { 
 	valData = new myGlobalData;
 	cleanFunction();
@@ -167,7 +167,7 @@ void funcWork4() {
 
 void funcWork4b() {
   int a;
-  myGlobalData *valData;
+  myGlobalData *valData = 0;
   try { 
 	valData = new myGlobalData;
 	cleanFunction();
@@ -181,7 +181,7 @@ void funcWork4b() {
 }
 void funcWork5() {
   int a;
-  myGlobalData *valData;
+  myGlobalData *valData = 0;
   try { 
 	valData = new myGlobalData;
 	cleanFunction();
@@ -202,7 +202,7 @@ void funcWork5() {
 
 void funcWork5b() {
   int a;
-  myGlobalData *valData;
+  myGlobalData *valData = 0;
   try { 
 	valData = new myGlobalData;
 	cleanFunction();
@@ -220,7 +220,7 @@ void funcWork5b() {
 void funcWork6() {
   int a;
   int flagB = 0;
-  myGlobalData *valData;
+  myGlobalData *valData = 0;
   try { 
 	valData = new myGlobalData;
 	cleanFunction();

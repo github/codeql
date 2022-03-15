@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>When clearing the data in the catch block, you must be sure that the memory was allocated before the exception.</p>
+<p>When releasing memory in a catch block, be sure that the memory was allocated and has not already been released.</p>
 
 </overview>
 
