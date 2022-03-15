@@ -3,17 +3,15 @@ import semmle.code.csharp.dataflow.internal.FlowSummaryImpl
 
 /** A flow summary to include in the `summary/3` query predicate. */
 abstract class RelevantSummarizedCallable extends SummarizedCallable {
+  RelevantSummarizedCallable() {
+    [this.(Modifiable), this.(Accessor).getDeclaration()].isEffectivelyPublic()
+  }
+
   /** Holds if flow is propagated between `input` and `output`. */
   predicate relevantSummary(
     SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
   ) {
     this.propagatesFlow(input, output, preservesValue)
-  }
-}
-
-abstract class IncludeSummarizedCallable extends RelevantSummarizedCallable {
-  IncludeSummarizedCallable() {
-    [this.(Modifiable), this.(Accessor).getDeclaration()].isEffectivelyPublic()
   }
 }
 
