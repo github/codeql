@@ -37,7 +37,7 @@ private string getBoundString(SemBound b, int delta) {
   b instanceof SemZeroBound and result = delta.toString()
   or
   result =
-    strictconcat(b.(SemSsaBound).getAVariable().(IR::Instruction).getAST().toString(), ":") +
+    strictconcat(b.(SemSsaBound).getAVariable().(IR::Instruction).getAst().toString(), ":") +
       getOffsetString(delta)
 }
 
