@@ -526,8 +526,11 @@ module PrivateDjango {
   /** Gets a reference to the `django` module. */
   API::Node django() { result = API::moduleImport("django") }
 
+  /** DEPRECATED: Alias for `DjangoImpl` */
+  deprecated module django = DjangoImpl;
+
   /** Provides models for the `django` module. */
-  module django {
+  module DjangoImpl {
     // -------------------------------------------------------------------------
     // django.db
     // -------------------------------------------------------------------------
@@ -541,8 +544,11 @@ module PrivateDjango {
       DjangoDb() { this = API::moduleImport("django").getMember("db") }
     }
 
+    /** DEPRECATED: Alias for `DB` */
+    deprecated module db = DB;
+
     /** Provides models for the `django.db` module. */
-    module db {
+    module DB {
       /** Gets a reference to the `django.db.connection` object. */
       API::Node connection() { result = db().getMember("connection") }
 
@@ -557,8 +563,11 @@ module PrivateDjango {
       /** Gets a reference to the `django.db.models` module. */
       API::Node models() { result = db().getMember("models") }
 
+      /** DEPRECATED: Alias for `Models` */
+      deprecated module models = Models;
+
       /** Provides models for the `django.db.models` module. */
-      module models {
+      module Models {
         /**
          * Provides models for the `django.db.models.Model` class and subclasses.
          *
@@ -608,8 +617,11 @@ module PrivateDjango {
         /** Gets a reference to the `django.db.models.expressions` module. */
         API::Node expressions() { result = models().getMember("expressions") }
 
+        /** DEPRECATED: Alias for `Expressions` */
+        deprecated module expressions = Expressions;
+
         /** Provides models for the `django.db.models.expressions` module. */
-        module expressions {
+        module Expressions {
           /** Provides models for the `django.db.models.expressions.RawSql` class. */
           module RawSql {
             /**
@@ -662,8 +674,8 @@ module PrivateDjango {
       DataFlow::Node sql;
 
       ObjectsAnnotate() {
-        this = django::db::models::querySetReturningMethod("annotate").getACall() and
-        django::db::models::expressions::RawSql::instance(sql) in [
+        this = DjangoImpl::DB::Models::querySetReturningMethod("annotate").getACall() and
+        DjangoImpl::DB::Models::Expressions::RawSql::instance(sql) in [
             this.getArg(_), this.getArgByName(_)
           ]
       }
@@ -680,8 +692,8 @@ module PrivateDjango {
       DataFlow::Node sql;
 
       ObjectsAlias() {
-        this = django::db::models::querySetReturningMethod("alias").getACall() and
-        django::db::models::expressions::RawSql::instance(sql) in [
+        this = DjangoImpl::DB::Models::querySetReturningMethod("alias").getACall() and
+        DjangoImpl::DB::Models::Expressions::RawSql::instance(sql) in [
             this.getArg(_), this.getArgByName(_)
           ]
       }
@@ -697,7 +709,7 @@ module PrivateDjango {
      * - https://docs.djangoproject.com/en/3.1/ref/models/querysets/#raw
      */
     private class ObjectsRaw extends SqlExecution::Range, DataFlow::CallCfgNode {
-      ObjectsRaw() { this = django::db::models::querySetReturningMethod("raw").getACall() }
+      ObjectsRaw() { this = DjangoImpl::DB::Models::querySetReturningMethod("raw").getACall() }
 
       override DataFlow::Node getSql() { result = this.getArg(0) }
     }
@@ -708,7 +720,7 @@ module PrivateDjango {
      * See https://docs.djangoproject.com/en/3.1/ref/models/querysets/#extra
      */
     private class ObjectsExtra extends SqlExecution::Range, DataFlow::CallCfgNode {
-      ObjectsExtra() { this = django::db::models::querySetReturningMethod("extra").getACall() }
+      ObjectsExtra() { this = DjangoImpl::DB::Models::querySetReturningMethod("extra").getACall() }
 
       override DataFlow::Node getSql() {
         result in [
@@ -723,8 +735,11 @@ module PrivateDjango {
     /** Gets a reference to the `django.urls` module. */
     API::Node urls() { result = django().getMember("urls") }
 
+    /** DEPRECATED: Alias for `Urls` */
+    deprecated module urls = Urls;
+
     /** Provides models for the `django.urls` module */
-    module urls {
+    module Urls {
       /**
        * Gets a reference to the `django.urls.path` function.
        * See https://docs.djangoproject.com/en/3.0/ref/urls/#path
@@ -744,10 +759,16 @@ module PrivateDjango {
     /** Gets a reference to the `django.conf` module. */
     API::Node conf() { result = django().getMember("conf") }
 
+    /** DEPRECATED: Alias for `Conf` */
+    deprecated module conf = Conf;
+
     /** Provides models for the `django.conf` module */
-    module conf {
+    module Conf {
+      /** DEPRECATED: Alias for `ConfUrls` */
+      deprecated module conf_urls = ConfUrls;
+
       /** Provides models for the `django.conf.urls` module */
-      module conf_urls {
+      module ConfUrls {
         // -------------------------------------------------------------------------
         // django.conf.urls
         // -------------------------------------------------------------------------
@@ -770,16 +791,22 @@ module PrivateDjango {
     /** Gets a reference to the `django.http` module. */
     API::Node http() { result = django().getMember("http") }
 
+    /** DEPRECATED: Alias for `Http` */
+    deprecated module http = Http;
+
     /** Provides models for the `django.http` module */
-    module http {
+    module Http {
       // ---------------------------------------------------------------------------
       // django.http.request
       // ---------------------------------------------------------------------------
       /** Gets a reference to the `django.http.request` module. */
       API::Node request() { result = http().getMember("request") }
 
+      /** DEPRECATED: Alias for `Request` */
+      deprecated module request = Request;
+
       /** Provides models for the `django.http.request` module. */
-      module request {
+      module Request {
         /**
          * Provides models for the `django.http.request.HttpRequest` class
          *
@@ -860,7 +887,7 @@ module PrivateDjango {
               // special handling of the `build_absolute_uri` method, see
               // https://docs.djangoproject.com/en/3.0/ref/request-response/#django.http.HttpRequest.build_absolute_uri
               exists(DataFlow::AttrRead attr, DataFlow::CallCfgNode call, DataFlow::Node instance |
-                instance = django::http::request::HttpRequest::instance() and
+                instance = DjangoImpl::Http::Request::HttpRequest::instance() and
                 attr.getObject() = instance
               |
                 attr.getAttributeName() = "build_absolute_uri" and
@@ -937,8 +964,11 @@ module PrivateDjango {
       /** Gets a reference to the `django.http.response` module. */
       API::Node response() { result = http().getMember("response") }
 
+      /** DEPRECATED: Alias for `Response` */
+      deprecated module response = Response;
+
       /** Provides models for the `django.http.response` module */
-      module response {
+      module Response {
         /**
          * Provides models for the `django.http.response.HttpResponse` class
          *
@@ -1672,17 +1702,17 @@ module PrivateDjango {
 
         /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
         private DataFlow::TypeTrackingNode write(
-          django::http::response::HttpResponse::InstanceSource instance, DataFlow::TypeTracker t
+          DjangoImpl::Http::Response::HttpResponse::InstanceSource instance, DataFlow::TypeTracker t
         ) {
           t.startInAttr("write") and
-          instance = django::http::response::HttpResponse::instance() and
+          instance = DjangoImpl::Http::Response::HttpResponse::instance() and
           result = instance
           or
           exists(DataFlow::TypeTracker t2 | result = write(instance, t2).track(t2, t))
         }
 
         /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
-        DataFlow::Node write(django::http::response::HttpResponse::InstanceSource instance) {
+        DataFlow::Node write(DjangoImpl::Http::Response::HttpResponse::InstanceSource instance) {
           write(instance, DataFlow::TypeTracker::end()).flowsTo(result)
         }
 
@@ -1692,7 +1722,7 @@ module PrivateDjango {
          * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponse.write
          */
         class HttpResponseWriteCall extends HTTP::Server::HttpResponse::Range, DataFlow::CallCfgNode {
-          django::http::response::HttpResponse::InstanceSource instance;
+          DjangoImpl::Http::Response::HttpResponse::InstanceSource instance;
 
           HttpResponseWriteCall() { this.getFunction() = write(instance) }
 
@@ -1713,7 +1743,7 @@ module PrivateDjango {
         class DjangoResponseSetCookieCall extends HTTP::Server::CookieWrite::Range,
           DataFlow::MethodCallNode {
           DjangoResponseSetCookieCall() {
-            this.calls(django::http::response::HttpResponse::instance(), "set_cookie")
+            this.calls(DjangoImpl::Http::Response::HttpResponse::instance(), "set_cookie")
           }
 
           override DataFlow::Node getHeaderArg() { none() }
@@ -1733,7 +1763,7 @@ module PrivateDjango {
         class DjangoResponseDeleteCookieCall extends HTTP::Server::CookieWrite::Range,
           DataFlow::MethodCallNode {
           DjangoResponseDeleteCookieCall() {
-            this.calls(django::http::response::HttpResponse::instance(), "delete_cookie")
+            this.calls(DjangoImpl::Http::Response::HttpResponse::instance(), "delete_cookie")
           }
 
           override DataFlow::Node getHeaderArg() { none() }
@@ -1760,7 +1790,7 @@ module PrivateDjango {
               this.asCfgNode() = subscript
             |
               cookieLookup.getAttributeName() = "cookies" and
-              cookieLookup.getObject() = django::http::response::HttpResponse::instance() and
+              cookieLookup.getObject() = DjangoImpl::Http::Response::HttpResponse::instance() and
               exists(DataFlow::Node subscriptObj |
                 subscriptObj.asCfgNode() = subscript.getObject()
               |
@@ -1786,8 +1816,11 @@ module PrivateDjango {
     /** Gets a reference to the `django.shortcuts` module. */
     API::Node shortcuts() { result = django().getMember("shortcuts") }
 
+    /** DEPRECATED: Alias for `Shortcuts` */
+    deprecated module shortcuts = Shortcuts;
+
     /** Provides models for the `django.shortcuts` module */
-    module shortcuts {
+    module Shortcuts {
       /**
        * Gets a reference to the `django.shortcuts.redirect` function
        *
@@ -2063,7 +2096,7 @@ module PrivateDjango {
    * See https://docs.djangoproject.com/en/3.0/ref/urls/#path
    */
   private class DjangoUrlsPathCall extends DjangoRouteSetup, DataFlow::CallCfgNode {
-    DjangoUrlsPathCall() { this = django::urls::path().getACall() }
+    DjangoUrlsPathCall() { this = DjangoImpl::Urls::path().getACall() }
 
     override DataFlow::Node getUrlPatternArg() {
       result in [this.getArg(0), this.getArgByName("route")]
@@ -2146,7 +2179,7 @@ module PrivateDjango {
    */
   private class DjangoUrlsRePathCall extends DjangoRegexRouteSetup, DataFlow::CallCfgNode {
     DjangoUrlsRePathCall() {
-      this = django::urls::re_path().getACall() and
+      this = DjangoImpl::Urls::re_path().getACall() and
       // `django.conf.urls.url` (which we support directly with
       // `DjangoConfUrlsUrlCall`), is implemented in Django 2+ as backward compatibility
       // using `django.urls.re_path`. See
@@ -2176,7 +2209,7 @@ module PrivateDjango {
    * See https://docs.djangoproject.com/en/1.11/ref/urls/#django.conf.urls.url
    */
   private class DjangoConfUrlsUrlCall extends DjangoRegexRouteSetup, DataFlow::CallCfgNode {
-    DjangoConfUrlsUrlCall() { this = django::conf::conf_urls::url().getACall() }
+    DjangoConfUrlsUrlCall() { this = DjangoImpl::Conf::ConfUrls::url().getACall() }
 
     override DataFlow::Node getUrlPatternArg() {
       result in [this.getArg(0), this.getArgByName("regex")]
@@ -2189,7 +2222,7 @@ module PrivateDjango {
   // HttpRequest taint modeling
   // ---------------------------------------------------------------------------
   /** A parameter that will receive the django `HttpRequest` instance when a request handler is invoked. */
-  private class DjangoRequestHandlerRequestParam extends django::http::request::HttpRequest::InstanceSource,
+  private class DjangoRequestHandlerRequestParam extends DjangoImpl::Http::Request::HttpRequest::InstanceSource,
     RemoteFlowSource::Range, DataFlow::ParameterNode {
     DjangoRequestHandlerRequestParam() {
       this.getParameter() = any(DjangoRouteSetup setup).getARequestHandler().getRequestParam()
@@ -2206,7 +2239,7 @@ module PrivateDjango {
    *
    * See https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-display/#dynamic-filtering
    */
-  private class DjangoViewClassRequestAttributeRead extends django::http::request::HttpRequest::InstanceSource,
+  private class DjangoViewClassRequestAttributeRead extends DjangoImpl::Http::Request::HttpRequest::InstanceSource,
     RemoteFlowSource::Range, DataFlow::Node {
     DjangoViewClassRequestAttributeRead() {
       exists(DataFlow::AttrRead read | this = read |
@@ -2253,7 +2286,7 @@ module PrivateDjango {
    */
   private class DjangoShortcutsRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
-    DjangoShortcutsRedirectCall() { this = django::shortcuts::redirect().getACall() }
+    DjangoShortcutsRedirectCall() { this = DjangoImpl::Shortcuts::redirect().getACall() }
 
     /**
      * Gets the data-flow node that specifies the location of this HTTP redirect response.
