@@ -420,4 +420,26 @@ module ModelOutput {
       result = getNodeFromPath(package2, type2, path)
     )
   }
+
+  /**
+   * Gets an error message relating to an invalid CSV row in a model.
+   */
+  string getAWarning() {
+    // Check number of columns
+    exists(string row, string kind, int expectedArity, int actualArity |
+      any(SourceModelCsv csv).row(row) and kind = "source" and expectedArity = 4
+      or
+      any(SinkModelCsv csv).row(row) and kind = "sink" and expectedArity = 4
+      or
+      any(SummaryModelCsv csv).row(row) and kind = "summary" and expectedArity = 6
+      or
+      any(TypeModelCsv csv).row(row) and kind = "type" and expectedArity = 5
+    |
+      actualArity = count(row.indexOf(";")) + 1 and
+      actualArity != expectedArity and
+      result =
+        "CSV " + kind + " row should have " + expectedArity + " columns but has " + actualArity +
+          ": " + row
+    )
+  }
 }

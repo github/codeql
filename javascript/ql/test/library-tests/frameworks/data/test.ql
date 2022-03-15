@@ -73,3 +73,15 @@ class SyntaxErrorTest extends ModelInput::SinkModelCsv {
 }
 
 query predicate syntaxErrors(AccessPathSyntax::AccessPath path) { path.hasSyntaxError() }
+
+private class InvalidTypeModel extends ModelInput::TypeModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "test;TooManyColumns;;;Member[Foo].Instance;too;many;columns", //
+        "test;TooFewColumns", //
+      ]
+  }
+}
+
+query predicate warning = ModelOutput::getAWarning/0;

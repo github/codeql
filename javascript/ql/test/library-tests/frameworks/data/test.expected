@@ -88,3 +88,6 @@ syntaxErrors
 | Member[foo]Member[bar] |
 | Member[foo]] |
 | Member[foo]].Member[bar] |
+warning
+| CSV type row should have 5 columns but has 2: test;TooFewColumns |
+| CSV type row should have 5 columns but has 8: test;TooManyColumns;;;Member[Foo].Instance;too;many;columns |
