@@ -81,3 +81,6 @@ invalidOutputSpecComponent
 | summaries.rb:37:36:37:42 | tainted | summaries.rb:1:20:1:26 | "taint" :  | summaries.rb:37:36:37:42 | tainted | $@ | summaries.rb:1:20:1:26 | "taint" :  | "taint" :  |
 | summaries.rb:41:8:41:25 | call to matchedByName | summaries.rb:40:7:40:13 | "taint" :  | summaries.rb:41:8:41:25 | call to matchedByName | $@ | summaries.rb:40:7:40:13 | "taint" :  | "taint" :  |
 | summaries.rb:42:8:42:25 | call to matchedByName | summaries.rb:40:7:40:13 | "taint" :  | summaries.rb:42:8:42:25 | call to matchedByName | $@ | summaries.rb:40:7:40:13 | "taint" :  | "taint" :  |
+warning
+| CSV type row should have 5 columns but has 2: test;TooFewColumns |
+| CSV type row should have 5 columns but has 8: test;TooManyColumns;;;Member[Foo].Instance;too;many;columns |

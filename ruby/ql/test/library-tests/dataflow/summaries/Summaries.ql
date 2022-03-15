@@ -15,6 +15,8 @@ query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) 
   Private::External::invalidSpecComponent(s, c)
 }
 
+query predicate warning = ModelOutput::getAWarning/0;
+
 query predicate invalidOutputSpecComponent(SummarizedCallable sc, AccessPath s, AccessPathToken c) {
   sc.propagatesFlowExt(_, s, _) and
   c = s.getToken(_) and
@@ -85,6 +87,16 @@ private class TypeFromModel extends ModelInput::TypeModelCsv {
         "test;FooOrBar;;;Member[Foo].Instance", //
         "test;FooOrBar;;;Member[Bar].Instance", //
         "test;FooOrBar;test;FooOrBar;Method[next].ReturnValue",
+      ]
+  }
+}
+
+private class InvalidTypeModel extends ModelInput::TypeModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "test;TooManyColumns;;;Member[Foo].Instance;too;many;columns", //
+        "test;TooFewColumns", //
       ]
   }
 }
