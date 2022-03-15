@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-Web sites that do not specify the <code>X-Frame-Options</code> or specify <code>SAMEORIGIN</code> HTTP header may be vulnerable to UI
+Web sites that do not specify the <code>X-Frame-Options</code> HTTP header may be vulnerable to UI
 redress attacks ("clickjacking"). In these attacks, the vulnerable site is loaded in a frame on
 an attacker-controlled site which uses opaque or transparent layers to trick the user into
 unintentionally clicking a button or link on the vulnerable site.
@@ -16,9 +16,7 @@ unintentionally clicking a button or link on the vulnerable site.
 
 <p>
 Set the <code>X-Frame-Options</code> HTTP header to <code>DENY</code>, to instruct web browsers to
-block attempts to load the site in a frame. Alternatively, if framing is needed in certain
-circumstances, specify <code>ALLOW FROM: ...</code> to limit the ability
-to frame the site to pages from an allowed whitelist of trusted domains.
+block attempts to load the site in a frame.
 </p>
 </recommendation>
 <example>
