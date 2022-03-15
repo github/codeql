@@ -4,8 +4,8 @@
  * Provides information about the results of boosted queries for use in adaptive threat modeling (ATM).
  */
 
-private import javascript as raw
-private import raw::DataFlow as DataFlow
+private import javascript as JS
+private import JS::DataFlow as DataFlow
 import ATMConfig
 private import BaseScoring
 private import EndpointScoring as EndpointScoring

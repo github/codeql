@@ -4,7 +4,7 @@
  * Configures boosting for adaptive threat modeling (ATM).
  */
 
-private import javascript as raw
+private import javascript as JS
 import EndpointTypes
 
 /**
@@ -37,14 +37,14 @@ abstract class AtmConfig extends string {
    *
    * Holds if `source` is a known source of flow.
    */
-  predicate isKnownSource(raw::DataFlow::Node source) { none() }
+  predicate isKnownSource(JS::DataFlow::Node source) { none() }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
    *
    * Holds if `sink` is a known sink of flow.
    */
-  predicate isKnownSink(raw::DataFlow::Node sink) { none() }
+  predicate isKnownSink(JS::DataFlow::Node sink) { none() }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
@@ -52,7 +52,7 @@ abstract class AtmConfig extends string {
    * Holds if the candidate source `candidateSource` predicted by the machine learning model should be
    * an effective source, i.e. one considered as a possible source of flow in the boosted query.
    */
-  predicate isEffectiveSource(raw::DataFlow::Node candidateSource) { none() }
+  predicate isEffectiveSource(JS::DataFlow::Node candidateSource) { none() }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
@@ -60,7 +60,7 @@ abstract class AtmConfig extends string {
    * Holds if the candidate sink `candidateSink` predicted by the machine learning model should be
    * an effective sink, i.e. one considered as a possible sink of flow in the boosted query.
    */
-  predicate isEffectiveSink(raw::DataFlow::Node candidateSink) { none() }
+  predicate isEffectiveSink(JS::DataFlow::Node candidateSink) { none() }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
