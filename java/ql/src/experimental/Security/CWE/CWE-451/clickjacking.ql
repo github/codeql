@@ -24,4 +24,4 @@ private predicate hasCodeXFrameOptions(MethodAccess header) {
 
 from MethodAccess call
 where not hasCodeXFrameOptions(call) 
-select call, "Misconfigured X-Frame-Options Header."
+select call, "Configuration missing the X-Frame-Options setting."
