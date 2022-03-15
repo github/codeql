@@ -12,9 +12,9 @@ private import SemanticExprSpecific::SemanticExprConfig as Specific
  * the expression's opcode (`getOpcode()`).
  */
 class SemExpr instanceof Specific::Expr {
-  final string toString() { result = Specific::exprToString(this) }
+  final string toString() { result = super.toString() }
 
-  final Specific::Location getLocation() { result = Specific::getExprLocation(this) }
+  final Specific::Location getLocation() { result = super.getLocation() }
 
   Opcode getOpcode() { result instanceof Opcode::Unknown }
 

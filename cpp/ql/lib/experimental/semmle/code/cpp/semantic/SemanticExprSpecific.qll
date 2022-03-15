@@ -13,10 +13,6 @@ module SemanticExprConfig {
 
   class Expr = IR::Instruction;
 
-  string exprToString(Expr e) { result = e.toString() }
-
-  Location getExprLocation(Expr e) { result = e.getLocation() }
-
   SemBasicBlock getExprBasicBlock(Expr e) { result = getSemanticBasicBlock(e.getBlock()) }
 
   private predicate anyConstantExpr(Expr expr, SemType type, string value) {
