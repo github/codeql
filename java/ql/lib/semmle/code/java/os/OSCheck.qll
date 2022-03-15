@@ -69,29 +69,29 @@ private Guard isOsFromSystemPropertyEqualityCheck(
         ), branch)
 }
 
-private class IsWindowsFromCharPathSeparator extends IsWindowsGuard {
-  IsWindowsFromCharPathSeparator() {
+private class IsWindowsFromPathSeparator extends IsWindowsGuard {
+  IsWindowsFromPathSeparator() {
     this = isOsFromSystemPropertyEqualityCheck("path.separator", ";", true) or
     this = isOsFromSystemPropertyEqualityCheck("path.separator", ":", false)
   }
 }
 
-private class IsWindowsFromCharSeparator extends IsWindowsGuard {
-  IsWindowsFromCharSeparator() {
+private class IsWindowsFromFileSeparator extends IsWindowsGuard {
+  IsWindowsFromFileSeparator() {
     this = isOsFromSystemPropertyEqualityCheck("file.separator", "\\", true) or
     this = isOsFromSystemPropertyEqualityCheck("file.separator", "/", false)
   }
 }
 
-private class IsUnixFromCharPathSeparator extends IsUnixGuard {
-  IsUnixFromCharPathSeparator() {
+private class IsUnixFromPathSeparator extends IsUnixGuard {
+  IsUnixFromPathSeparator() {
     this = isOsFromSystemPropertyEqualityCheck("path.separator", ":", true) or
     this = isOsFromSystemPropertyEqualityCheck("path.separator", ";", false)
   }
 }
 
-private class IsUnixFromCharSeparator extends IsUnixGuard {
-  IsUnixFromCharSeparator() {
+private class IsUnixFromFileSeparator extends IsUnixGuard {
+  IsUnixFromFileSeparator() {
     this = isOsFromSystemPropertyEqualityCheck("file.separator", "/", true) or
     this = isOsFromSystemPropertyEqualityCheck("file.separator", "\\", false)
   }
