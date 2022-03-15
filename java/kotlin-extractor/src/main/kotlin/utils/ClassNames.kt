@@ -13,14 +13,14 @@ import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
 // Adapted from Kotlin's interpreter/Utils.kt function 'internalName'
 // Translates class names into their JLS section 13.1 binary name,
 // and declarations within them into the parent class' JLS 13.1 name as
-// specified above, followed by a `$` separator and then a unique identifier
-// for `that`, consisting of its short name followed by any supplied signature.
-fun getIrDeclBinaryName(that: IrDeclaration, signature: String): String {
+// specified above, followed by a `$` separator and then the short name
+// for `that`.
+fun getIrDeclBinaryName(that: IrDeclaration): String {
   val shortName = when(that) {
       is IrDeclarationWithName -> that.name.asString()
       else -> "(unknown-name)"
   }
-  val internalName = StringBuilder(shortName + signature);
+  val internalName = StringBuilder(shortName);
   generateSequence(that.parent) { (it as? IrDeclaration)?.parent }
       .forEach {
           when (it) {
@@ -75,5 +75,5 @@ fun getRawIrClassBinaryPath(irClass: IrClass) =
 fun getIrClassBinaryPath(irClass: IrClass): String {
   return getRawIrClassBinaryPath(irClass)
   // Otherwise, make up a fake location:
-    ?: "/!unknown-binary-location/${getIrDeclBinaryName(irClass, "").replace(".", "/")}.class"
+    ?: "/!unknown-binary-location/${getIrDeclBinaryName(irClass).replace(".", "/")}.class"
 }
