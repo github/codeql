@@ -382,7 +382,7 @@ A *fact* is a predicate or type along with a named tuple. A fact is written as t
    successor(fst: 0, snd:1)
    Tree.toString(this:@method_tree(12), result:"def println")
    Location.class(this:@location(43))
-   Location.getURL(this: @location(43), result:"file:///etc/hosts:2:0:2:12")
+   Location.getUrl(this: @location(43), result:"file:///etc/hosts:2:0:2:12")
 
 A *store* is a mutable set of facts. The store can be mutated by adding more facts to it.
 

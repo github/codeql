@@ -28,7 +28,7 @@ This list is in priority order, so that the first available mechanism is used.
 Providing URLs
 ~~~~~~~~~~~~~~
 
-A custom URL can be provided by defining a QL predicate returning ``string`` with the name ``getURL`` – note that capitalization matters, and no arguments are allowed. For example:
+A custom URL can be provided by defining a QL predicate returning ``string`` with the name ``getUrl`` – note that capitalization matters, and no arguments are allowed. For example:
 
 .. code-block:: ql
 
@@ -41,7 +41,7 @@ A custom URL can be provided by defining a QL predicate returning ``string`` wit
            result = getField(0)
        }
 
-       string getURL() {
+       string getUrl() {
            result = "http://mycompany.com/jira/" + getKey()
        }
    }
@@ -71,7 +71,7 @@ The following, less-common types of URL are valid but are not supported by LGTM 
 Providing location information
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If no ``getURL()`` member predicate is defined, a QL class is checked for the presence of a member predicate called ``hasLocationInfo(..)``. This can be understood as a convenient way of providing file URLs (see above) without constructing the long URL string in QL. ``hasLocationInfo(..)`` should be a predicate, its first column must be ``string``-typed (it corresponds to the "path" portion of a file URL), and it must have an additional 3 or 4 ``int``-typed columns, which are interpreted like a trailing group of three or four numbers on a file URL.
+If no ``getUrl()`` member predicate is defined, a QL class is checked for the presence of a member predicate called ``hasLocationInfo(..)``. This can be understood as a convenient way of providing file URLs (see above) without constructing the long URL string in QL. ``hasLocationInfo(..)`` should be a predicate, its first column must be ``string``-typed (it corresponds to the "path" portion of a file URL), and it must have an additional 3 or 4 ``int``-typed columns, which are interpreted like a trailing group of three or four numbers on a file URL.
 
 For example, let us imagine that the locations for methods provided by the extractor extend from the first character of the method name to the closing curly brace of the method body, and we want to "fix" them to ensure that only the method name is selected. The following code shows two ways of achieving this:
 
@@ -82,7 +82,7 @@ For example, let us imagine that the locations for methods provided by the extra
        Location getLocation() { result = super.getLocation() }
 
        /* First member predicate: Construct a URL for the desired location. */
-       string getURL() {
+       string getUrl() {
            exists(Location loc | loc = this.getLocation() |
                result = "file://" + loc.getFile().getFullName() +
                    ":" + loc.getStartLine() +
@@ -94,7 +94,7 @@ For example, let us imagine that the locations for methods provided by the extra
 
        /* Second member predicate: Define hasLocationInfo. This will be more
           efficient (it avoids constructing long strings), and will
-          only be used if getURL() is not defined. */
+          only be used if getUrl() is not defined. */
        predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
            exists(Location loc | loc = this.getLocation() |
                path = loc.getFile().getFullName() and
@@ -111,7 +111,7 @@ Using extracted location information
 
 Finally, if the above two predicates fail, client applications will attempt to call a predicate called ``getLocation()`` with no parameters, and try to apply one of the above two predicates to the result. This allows certain locations to be put into the database, assigned identifiers, and picked up.
 
-By convention, the return value of the ``getLocation()`` predicate should be a class called ``Location``, and it should define a version of ``hasLocationInfo(..)`` (or ``getURL()``, though the former is preferable). If the ``Location`` class does not provide either of these member predicates, then no location information will be available.
+By convention, the return value of the ``getLocation()`` predicate should be a class called ``Location``, and it should define a version of ``hasLocationInfo(..)`` (or ``getUrl()``, though the former is preferable). If the ``Location`` class does not provide either of these member predicates, then no location information will be available.
 
 The ``toString()`` predicate
 ----------------------------
