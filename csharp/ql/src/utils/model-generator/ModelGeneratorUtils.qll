@@ -33,7 +33,7 @@ predicate isRelevantContent(DataFlow::Content c) {
 bindingset[input, output, kind]
 string asSummaryModel(TargetApi api, string input, string output, string kind) {
   result =
-    asPartialModel(api) + input + ";" //
+    api.asPartialModel() + input + ";" //
       + output + ";" //
       + kind
 }
@@ -59,7 +59,7 @@ string asTaintModel(TargetApi api, string input, string output) {
  */
 bindingset[input, kind]
 string asSinkModel(TargetApi api, string input, string kind) {
-  result = asPartialModel(api) + input + ";" + kind
+  result = api.asPartialModel() + input + ";" + kind
 }
 
 /**
@@ -67,5 +67,5 @@ string asSinkModel(TargetApi api, string input, string kind) {
  */
 bindingset[output, kind]
 string asSourceModel(TargetApi api, string output, string kind) {
-  result = asPartialModel(api) + output + ";" + kind
+  result = api.asPartialModel() + output + ";" + kind
 }

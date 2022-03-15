@@ -19,9 +19,6 @@ class TargetApi extends PublicSummarizedCallable {
   }
 }
 
-/** Computes the first 6 columns for CSV rows. */
-string asPartialModel(TargetApi api) { result = api.asPartialModel() }
-
 /**
  * Holds for type `t` for fields that are relevant as an intermediate
  * read or write step in the data flow analysis.

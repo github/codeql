@@ -92,11 +92,6 @@ class TargetApi extends Callable {
   }
 }
 
-/**
- * Computes the first 6 columns for CSV rows.
- */
-string asPartialModel(TargetApi api) { result = api.asPartialModel() }
-
 private predicate isPrimitiveTypeUsedForBulkData(Type t) {
   t.getName().regexpMatch("byte|char|Byte|Character")
 }
