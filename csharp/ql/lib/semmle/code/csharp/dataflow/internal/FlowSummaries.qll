@@ -2,8 +2,8 @@ import semmle.code.csharp.dataflow.FlowSummary
 import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private::CaptureFlow
 import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private::TestOutput
 
-abstract class IncludeSummarizedCallable extends RelevantSummarizedCallable {
-  IncludeSummarizedCallable() {
+abstract class PublicSummarizedCallable extends RelevantSummarizedCallable {
+  PublicSummarizedCallable() {
     [this.(Modifiable), this.(Accessor).getDeclaration()].isEffectivelyPublic()
   }
 
