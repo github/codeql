@@ -194,18 +194,7 @@ private class MyBatisAbstractSQLMethodsStep extends SummaryModelCsv {
     exists(MyBatisAbstractSQLMethod m |
       row =
         "org.apache.ibatis.jdbc;AbstractSQL;true;" + m.getName() + ";(" + m.getCsvSignature() +
-          ");;" + m.getTaintedArgs() + ";ReturnValue;taint"
-    )
-  }
-}
-
-private class MyBatisAbstractSQLAnonymousClassStep extends TaintTracking::AdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma, ClassInstanceExpr c |
-      ma.getMethod() instanceof MyBatisAbstractSQLMethod and
-      c.getAnonymousClass().getACallable() = ma.getCaller() and
-      node1.asExpr() = ma and
-      node2.asExpr() = c
+          ");;" + m.getTaintedArgs() + ";Argument[-1];taint"
     )
   }
 }
