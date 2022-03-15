@@ -21,7 +21,7 @@ try {
   {
     for (size_t i = 0; i < valData->sizeInt; i++)
     {
-      if(delete valData->bufMyData[i])
+      if(valData->bufMyData[i])
       {
     	  delete[] valData->bufMyData[i]->buffer; // GOOD
         delete valData->bufMyData[i];
