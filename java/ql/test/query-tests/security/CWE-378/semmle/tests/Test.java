@@ -138,5 +138,16 @@ public class Test {
         temp.mkdir();
         return temp;
     }
+
+    static File vulnerable3() throws IOException {
+        File temp = File.createTempFile(
+            "test", 
+            "directory", 
+            new File(System.getProperty("java.io.tmpdir")).getAbsoluteFile()
+        );
+        temp.delete();
+        temp.mkdir();
+        return temp;
+    }
     
 }

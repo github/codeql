@@ -4,6 +4,7 @@
 
 import java
 private import semmle.code.java.environment.SystemProperty
+import semmle.code.java.security.TempFileLib
 import semmle.code.java.dataflow.FlowSources
 
 /**
@@ -11,16 +12,6 @@ import semmle.code.java.dataflow.FlowSources
  */
 class ExprSystemGetPropertyTempDirTainted extends Expr {
   ExprSystemGetPropertyTempDirTainted() { this = getSystemProperty("java.io.tmpdir") }
-}
-
-/**
- * A `java.io.File::createTempFile` method.
- */
-class MethodFileCreateTempFile extends Method {
-  MethodFileCreateTempFile() {
-    this.getDeclaringType() instanceof TypeFile and
-    this.hasName("createTempFile")
-  }
 }
 
 /**
