@@ -381,8 +381,7 @@ private predicate fullBarrier(NodeEx node, Configuration config) {
 
 pragma[nomagic]
 private predicate stateBarrier(NodeEx node, FlowState state, Configuration config) {
-  exists(Node n |
-    node.asNode() = n and
+  exists(Node n | node.asNode() = n |
     config.isBarrier(n, state)
     or
     config.isBarrierIn(n, state) and
