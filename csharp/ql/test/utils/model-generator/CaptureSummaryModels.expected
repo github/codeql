@@ -1,6 +1,3 @@
-| Summaries;BasicFlow;false;AssignFieldToArray;(System.Object[]);Argument[Qualifier];Argument[0].Element;taint |
-| Summaries;BasicFlow;false;AssignToArray;(System.Int32,System.Int32[]);Argument[0];Argument[1].Element;taint |
-| Summaries;BasicFlow;false;ReturnArrayElement;(System.Int32[]);Argument[0].Element;ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnField;();Argument[Qualifier];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnParam0;(System.String,System.Object);Argument[0];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnParam1;(System.String,System.Object);Argument[1];ReturnValue;taint |
@@ -9,3 +6,10 @@
 | Summaries;BasicFlow;false;ReturnSubstring;(System.String);Argument[0];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnThis;(System.Object);Argument[Qualifier];ReturnValue;value |
 | Summaries;BasicFlow;false;SetField;(System.String);Argument[0];Argument[Qualifier];taint |
+| Summaries;CollectionFlow;false;AddFieldToList;(System.Collections.Generic.List<System.String>);Argument[Qualifier];Argument[0].Element;taint |
+| Summaries;CollectionFlow;false;AddToList;(System.Collections.Generic.List<System.Object>,System.Object);Argument[1];Argument[0].Element;taint |
+| Summaries;CollectionFlow;false;AssignFieldToArray;(System.Object[]);Argument[Qualifier];Argument[0].Element;taint |
+| Summaries;CollectionFlow;false;AssignToArray;(System.Int32,System.Int32[]);Argument[0];Argument[1].Element;taint |
+| Summaries;CollectionFlow;false;ReturnArrayElement;(System.Int32[]);Argument[0].Element;ReturnValue;taint |
+| Summaries;CollectionFlow;false;ReturnFieldInAList;();Argument[Qualifier];ReturnValue;taint |
+| Summaries;CollectionFlow;false;ReturnListElement;(System.Collections.Generic.List<System.Object>);Argument[0].Element;ReturnValue;taint |

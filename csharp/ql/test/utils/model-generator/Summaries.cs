@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Summaries;
 
@@ -31,6 +32,21 @@ public class BasicFlow
         return s.Substring(0, 1);
     }
 
+    public void SetField(string s)
+    {
+        tainted = s;
+    }
+
+    public string ReturnField()
+    {
+        return tainted;
+    }
+}
+
+public class CollectionFlow
+{
+    private string tainted;
+
     public int ReturnArrayElement(int[] input)
     {
         return input[0];
@@ -41,18 +57,28 @@ public class BasicFlow
         target[0] = data;
     }
 
-    public void SetField(string s)
-    {
-        tainted = s;
-    }
-
-    public string ReturnField()
-    {
-        return tainted;
-    }
-
     public void AssignFieldToArray(object[] target)
     {
         target[0] = tainted;
+    }
+
+    public object ReturnListElement(List<object> input)
+    {
+        return input[0];
+    }
+
+    public void AddToList(List<object> input, object data)
+    {
+        input.Add(data);
+    }
+
+    public void AddFieldToList(List<string> input)
+    {
+        input.Add(tainted);
+    }
+
+    public List<string> ReturnFieldInAList()
+    {
+        return new List<string> { tainted };
     }
 }
