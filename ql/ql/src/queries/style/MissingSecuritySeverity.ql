@@ -15,6 +15,9 @@ predicate missingSecuritySeverity(QLDoc doc) {
     exists(string securityTag | securityTag = s.splitAt("@") |
       securityTag.matches("tags%security%")
     ) and
+    exists(string precisionTag | precisionTag = s.splitAt("@") |
+      precisionTag.matches("precision %")
+    ) and
     not exists(string securitySeverity | securitySeverity = s.splitAt("@") |
       securitySeverity.matches("security-severity %")
     )
