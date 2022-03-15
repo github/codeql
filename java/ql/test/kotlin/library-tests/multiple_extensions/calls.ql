@@ -1,6 +1,4 @@
 import java
 
-from MethodAccess ma, Expr qualifier, Argument arg
-where ma.getQualifier() = qualifier and
-      ma.getAnArgument() = arg
-select ma, qualifier, arg
+from MethodAccess ma
+select ma.getMethod().getDeclaringType().getName(), ma.getMethod().getStringSignature()
