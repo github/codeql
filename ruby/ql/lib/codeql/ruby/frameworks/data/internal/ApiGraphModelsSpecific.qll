@@ -115,9 +115,7 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
  * Gets a Ruby-specific API graph successor of `node` reachable by resolving `token`.
  */
 bindingset[token]
-API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token) {
-  none()
-}
+API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token) { none() }
 
 /**
  * Holds if `invoke` matches the Ruby-specific call site filter in `token`.
