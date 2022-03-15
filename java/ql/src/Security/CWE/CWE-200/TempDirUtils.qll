@@ -64,7 +64,7 @@ private class FileSetRedableMethodAccess extends MethodAccess {
 
 /**
  * Hold's if temporary directory's use is protected if there is an explicit call to
- * `setReadable(false, false)`, then `setRedabale(true, true)`.
+ * `setReadable(false, false)`, then `setReadable(true, true)`.
  */
 predicate isPermissionsProtectedTempDirUse(DataFlow::Node sink) {
   exists(FileSetRedableMethodAccess setReadable1, FileSetRedableMethodAccess setReadable2 |

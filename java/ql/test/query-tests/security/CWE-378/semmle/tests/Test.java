@@ -124,5 +124,19 @@ public class Test {
         }
         return temp;
     }
+
+    static File vulnerable2() throws IOException {
+        File temp = File.createTempFile("test", "directory", new File(System.getProperty("java.io.tmpdir")));
+        temp.delete();
+        temp.mkdir();
+        return temp;
+    }
+
+    static File safe10() throws IOException {
+        File temp = File.createTempFile("test", "directory", new File(System.getProperty("user.dir")));
+        temp.delete();
+        temp.mkdir();
+        return temp;
+    }
     
 }
