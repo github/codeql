@@ -249,6 +249,45 @@ class JumpReturnKind extends ReturnKind, TJumpReturnKind {
 
 class DataFlowCallable extends DotNet::Callable {
   DataFlowCallable() { this.isUnboundDeclaration() }
+
+  private string parameterQualifiedTypeNamesToString() {
+    result =
+      concat(Parameter p, int i |
+        p = this.getParameter(i)
+      |
+        p.getType().getQualifiedName(), "," order by i
+      )
+  }
+
+  /** Holds if a summary should apply for all overrides of this. */
+  predicate isBaseCallableOrPrototype() {
+    this.getDeclaringType() instanceof Interface
+    or
+    exists(Modifiable m | m = [this.(Modifiable), this.(Accessor).getDeclaration()] |
+      m.isAbstract()
+      or
+      this.getDeclaringType().(Modifiable).isAbstract() and m.(Virtualizable).isVirtual()
+    )
+  }
+
+  /** Gets a string representing whether a summary should apply for all overrides of this. */
+  private string getCallableOverride() {
+    if this.isBaseCallableOrPrototype() then result = "true" else result = "false"
+  }
+
+  /** Computes the first 6 columns for CSV rows. */
+  string asPartialModel() {
+    exists(string namespace, string type |
+      this.getDeclaringType().hasQualifiedName(namespace, type) and
+      result =
+        namespace + ";" //
+          + type + ";" //
+          + this.getCallableOverride() + ";" //
+          + this.getName() + ";" //
+          + "(" + this.parameterQualifiedTypeNamesToString() + ")" //
+          + /* ext + */ ";" //
+    )
+  }
 }
 
 /** A call relevant for data flow. */
