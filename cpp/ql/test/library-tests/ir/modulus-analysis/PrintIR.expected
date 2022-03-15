@@ -1,0 +1,630 @@
+test.cpp:
+#    6| void m(int, bool, int, int)
+#    6|   Block 0
+#    6|     v6_1(void)        = EnterFunction             : 
+#    6|         mod = 
+#    6|     m6_2(unknown)     = AliasedDefinition         : 
+#    6|         mod = 
+#    6|     m6_3(unknown)     = InitializeNonLocal        : 
+#    6|         mod = 
+#    6|     m6_4(unknown)     = Chi                       : total:m6_2, partial:m6_3
+#    6|         mod = 
+#    6|     r6_5(glval<int>)  = VariableAddress[i]        : 
+#    6|         mod = 
+#    6|     m6_6(int)         = InitializeParameter[i]    : &:r6_5
+#    6|         mod = InitializeParameter: i 0 0 (getExpr)
+#    6|     r6_7(glval<bool>) = VariableAddress[cond]     : 
+#    6|         mod = 
+#    6|     m6_8(bool)        = InitializeParameter[cond] : &:r6_7
+#    6|         mod = 
+#    6|     r6_9(glval<int>)  = VariableAddress[x]        : 
+#    6|         mod = 
+#    6|     m6_10(int)        = InitializeParameter[x]    : &:r6_9
+#    6|         mod = InitializeParameter: x 0 0 (getExpr)
+#    6|     r6_11(glval<int>) = VariableAddress[y]        : 
+#    6|         mod = 
+#    6|     m6_12(int)        = InitializeParameter[y]    : &:r6_11
+#    6|         mod = InitializeParameter: y 0 0 (getExpr)
+#    7|     r7_1(glval<int>)  = VariableAddress[eq]       : 
+#    7|         mod = 
+#    7|     r7_2(glval<int>)  = VariableAddress[i]        : 
+#    7|         mod = 
+#    7|     r7_3(int)         = Load[i]                   : &:r7_2, m6_6
+#    7|         mod = InitializeParameter: i 0 0 (getExpr, use)
+#    7|     r7_4(int)         = Constant[3]               : 
+#    7|         mod = 0 3 0 (getExpr)
+#    7|     r7_5(int)         = Add                       : r7_3, r7_4
+#    7|         mod = InitializeParameter: i 3 0 (valueFlowStep), Store: ... + ... 0 0 (getExpr)
+#    7|     m7_6(int)         = Store[eq]                 : &:r7_1, r7_5
+#    7|         mod = InitializeParameter: i 3 0 (valueFlowStep), Store: ... + ... 0 0 (getExpr, valueFlowStep)
+#    9|     r9_1(glval<int>)  = VariableAddress[mul]      : 
+#    9|         mod = 
+#    9|     r9_2(glval<int>)  = VariableAddress[eq]       : 
+#    9|         mod = 
+#    9|     r9_3(int)         = Load[eq]                  : &:r9_2, m7_6
+#    9|         mod = InitializeParameter: i 3 0 (use), Store: ... + ... 0 0 (getExpr, use)
+#    9|     r9_4(glval<int>)  = Constant[42]              : 
+#    9|         mod = 0 42 0 (getExpr)
+#    9|     r9_5(int)         = Load[?]                   : &:r9_4, ~m6_4
+#    9|         mod = 
+#    9|     r9_6(int)         = Mul                       : r9_3, r9_5
+#    9|         mod = 
+#    9|     r9_7(int)         = Constant[3]               : 
+#    9|         mod = 0 3 0 (getExpr)
+#    9|     r9_8(int)         = Add                       : r9_6, r9_7
+#    9|         mod = Store: ... + ... 0 0 (getExpr)
+#    9|     m9_9(int)         = Store[mul]                : &:r9_1, r9_8
+#    9|         mod = Store: ... + ... 0 0 (getExpr, valueFlowStep)
+#   11|     r11_1(glval<int>) = VariableAddress[seven]    : 
+#   11|         mod = 
+#   11|     r11_2(int)        = Constant[7]               : 
+#   11|         mod = 0 7 0 (getExpr)
+#   11|     m11_3(int)        = Store[seven]              : &:r11_1, r11_2
+#   11|         mod = 0 7 0 (valueFlowStep)
+#   12|     r12_1(glval<int>) = VariableAddress[mul]      : 
+#   12|         mod = 
+#   12|     r12_2(int)        = Load[mul]                 : &:r12_1, m9_9
+#   12|         mod = Store: ... + ... 0 0 (getExpr, use)
+#   12|     r12_3(glval<int>) = Constant[43]              : 
+#   12|         mod = 0 43 0 (getExpr)
+#   12|     r12_4(int)        = Load[?]                   : &:r12_3, ~m6_4
+#   12|         mod = 
+#   12|     r12_5(int)        = Rem                       : r12_2, r12_4
+#   12|         mod = 
+#   12|     r12_6(glval<int>) = VariableAddress[seven]    : 
+#   12|         mod = 
+#   12|     r12_7(int)        = Load[seven]               : &:r12_6, m11_3
+#   12|         mod = 0 7 0 (use)
+#   12|     r12_8(bool)       = CompareEQ                 : r12_5, r12_7
+#   12|         mod = 
+#   12|     v12_9(void)       = ConditionalBranch         : r12_8
+#   12|         mod = 
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#   13|   Block 1
+#   13|     r13_1(glval<unknown>) = FunctionAddress[mod] : 
+#   13|         mod = 
+#   13|     r13_2(glval<int>)     = VariableAddress[mul] : 
+#   13|         mod = 
+#   13|     r13_3(int)            = Load[mul]            : &:r13_2, m9_9
+#   13|         mod = Store: ... + ... 0 0 (getExpr, use)
+#   13|     v13_4(void)           = Call[mod]            : func:r13_1, 0:r13_3
+#   13|         mod = 
+#   13|     m13_5(unknown)        = ^CallSideEffect      : ~m6_4
+#   13|         mod = 
+#   13|     m13_6(unknown)        = Chi                  : total:m6_4, partial:m13_5
+#   13|         mod = 
+#-----|   Goto -> Block 2
+
+#   16|   Block 2
+#   16|     m16_1(unknown)     = Phi                   : from 0:~m6_4, from 1:~m13_6
+#   16|         mod = 
+#   16|     r16_2(glval<int>)  = VariableAddress[j]    : 
+#   16|         mod = 
+#   16|     r16_3(glval<bool>) = VariableAddress[cond] : 
+#   16|         mod = 
+#   16|     r16_4(bool)        = Load[cond]            : &:r16_3, m6_8
+#   16|         mod = 
+#   16|     v16_5(void)        = ConditionalBranch     : r16_4
+#   16|         mod = 
+#-----|   False -> Block 5
+#-----|   True -> Block 4
+
+#   16|   Block 3
+#   16|     m16_6(int)            = Phi                         : from 4:m16_11, from 5:m16_13
+#   16|         mod = Phi: ... ? ... : ... 0 0 (getExpr)
+#   16|     r16_7(glval<int>)     = VariableAddress[#temp16:13] : 
+#   16|         mod = 
+#   16|     r16_8(int)            = Load[#temp16:13]            : &:r16_7, m16_6
+#   16|         mod = 0 3 4 (use), Phi: ... ? ... : ... 0 0 (getExpr, use)
+#   16|     m16_9(int)            = Store[j]                    : &:r16_2, r16_8
+#   16|         mod = 0 3 4 (valueFlowStep), Phi: ... ? ... : ... 0 0 (getExpr, valueFlowStep)
+#   19|     r19_1(glval<unknown>) = FunctionAddress[mod]        : 
+#   19|         mod = 
+#   19|     r19_2(glval<int>)     = VariableAddress[j]          : 
+#   19|         mod = 
+#   19|     r19_3(int)            = Load[j]                     : &:r19_2, m16_9
+#   19|         mod = 0 3 4 (use), Phi: ... ? ... : ... 0 0 (getExpr, use)
+#   19|     v19_4(void)           = Call[mod]                   : func:r19_1, 0:r19_3
+#   19|         mod = 
+#   19|     m19_5(unknown)        = ^CallSideEffect             : ~m16_1
+#   19|         mod = 
+#   19|     m19_6(unknown)        = Chi                         : total:m16_1, partial:m19_5
+#   19|         mod = 
+#   21|     r21_1(glval<int>)     = VariableAddress[x]          : 
+#   21|         mod = 
+#   21|     r21_2(int)            = Load[x]                     : &:r21_1, m6_10
+#   21|         mod = InitializeParameter: x 0 0 (getExpr, use)
+#   21|     r21_3(glval<int>)     = Constant[42]                : 
+#   21|         mod = 0 42 0 (getExpr)
+#   21|     r21_4(int)            = Load[?]                     : &:r21_3, ~m19_6
+#   21|         mod = 
+#   21|     r21_5(int)            = Rem                         : r21_2, r21_4
+#   21|         mod = 
+#   21|     r21_6(int)            = Constant[3]                 : 
+#   21|         mod = 0 3 0 (getExpr)
+#   21|     r21_7(bool)           = CompareEQ                   : r21_5, r21_6
+#   21|         mod = 
+#   21|     v21_8(void)           = ConditionalBranch           : r21_7
+#   21|         mod = 
+#-----|   False -> Block 8
+#-----|   True -> Block 6
+
+#   17|   Block 4
+#   17|     r17_1(glval<int>)  = VariableAddress[i]          : 
+#   17|         mod = 
+#   17|     r17_2(int)         = Load[i]                     : &:r17_1, m6_6
+#   17|         mod = InitializeParameter: i 0 0 (getExpr, use)
+#   17|     r17_3(int)         = Constant[4]                 : 
+#   17|         mod = 0 4 0 (getExpr)
+#   17|     r17_4(int)         = Mul                         : r17_2, r17_3
+#   17|         mod = 0 0 4 (evenlyDivisible)
+#   17|     r17_5(int)         = Constant[3]                 : 
+#   17|         mod = 0 3 0 (getExpr)
+#   17|     r17_6(int)         = Add                         : r17_4, r17_5
+#   17|         mod = 0 3 4 (valueFlowStep)
+#   16|     r16_10(glval<int>) = VariableAddress[#temp16:13] : 
+#   16|         mod = 
+#   16|     m16_11(int)        = Store[#temp16:13]           : &:r16_10, r17_6
+#   16|         mod = 0 3 4 (valueFlowStep)
+#-----|   Goto -> Block 3
+
+#   18|   Block 5
+#   18|     r18_1(glval<int>)  = VariableAddress[i]          : 
+#   18|         mod = 
+#   18|     r18_2(int)         = Load[i]                     : &:r18_1, m6_6
+#   18|         mod = InitializeParameter: i 0 0 (getExpr, use)
+#   18|     r18_3(int)         = Constant[8]                 : 
+#   18|         mod = 0 8 0 (getExpr)
+#   18|     r18_4(int)         = Mul                         : r18_2, r18_3
+#   18|         mod = 0 0 8 (evenlyDivisible)
+#   18|     r18_5(int)         = Constant[7]                 : 
+#   18|         mod = 0 7 0 (getExpr)
+#   18|     r18_6(int)         = Add                         : r18_4, r18_5
+#   18|         mod = 0 7 8 (valueFlowStep)
+#   16|     r16_12(glval<int>) = VariableAddress[#temp16:13] : 
+#   16|         mod = 
+#   16|     m16_13(int)        = Store[#temp16:13]           : &:r16_12, r18_6
+#   16|         mod = 0 7 8 (valueFlowStep)
+#-----|   Goto -> Block 3
+
+#   21|   Block 6
+#   21|     r21_9(glval<int>)  = VariableAddress[y] : 
+#   21|         mod = 
+#   21|     r21_10(int)        = Load[y]            : &:r21_9, m6_12
+#   21|         mod = InitializeParameter: y 0 0 (getExpr, use)
+#   21|     r21_11(glval<int>) = Constant[42]       : 
+#   21|         mod = 0 42 0 (getExpr)
+#   21|     r21_12(int)        = Load[?]            : &:r21_11, ~m19_6
+#   21|         mod = 
+#   21|     r21_13(int)        = Rem                : r21_10, r21_12
+#   21|         mod = 
+#   21|     r21_14(int)        = Constant[7]        : 
+#   21|         mod = 0 7 0 (getExpr)
+#   21|     r21_15(bool)       = CompareEQ          : r21_13, r21_14
+#   21|         mod = 
+#   21|     v21_16(void)       = ConditionalBranch  : r21_15
+#   21|         mod = 
+#-----|   False -> Block 8
+#-----|   True -> Block 7
+
+#   23|   Block 7
+#   23|     r23_1(glval<unknown>) = FunctionAddress[mod] : 
+#   23|         mod = 
+#   23|     r23_2(glval<int>)     = VariableAddress[x]   : 
+#   23|         mod = 
+#   23|     r23_3(int)            = Load[x]              : &:r23_2, m6_10
+#   23|         mod = InitializeParameter: x 0 0 (getExpr, use)
+#   23|     r23_4(glval<int>)     = VariableAddress[y]   : 
+#   23|         mod = 
+#   23|     r23_5(int)            = Load[y]              : &:r23_4, m6_12
+#   23|         mod = InitializeParameter: y 0 0 (getExpr, use)
+#   23|     r23_6(int)            = Add                  : r23_3, r23_5
+#   23|         mod = 
+#   23|     v23_7(void)           = Call[mod]            : func:r23_1, 0:r23_6
+#   23|         mod = 
+#   23|     m23_8(unknown)        = ^CallSideEffect      : ~m19_6
+#   23|         mod = 
+#   23|     m23_9(unknown)        = Chi                  : total:m19_6, partial:m23_8
+#   23|         mod = 
+#-----|   Goto -> Block 8
+
+#   26|   Block 8
+#   26|     m26_1(unknown)    = Phi                : from 3:~m19_6, from 6:~m19_6, from 7:~m23_9
+#   26|         mod = 
+#   26|     r26_2(glval<int>) = VariableAddress[x] : 
+#   26|         mod = 
+#   26|     r26_3(int)        = Load[x]            : &:r26_2, m6_10
+#   26|         mod = InitializeParameter: x 0 0 (getExpr, use)
+#   26|     r26_4(glval<int>) = Constant[42]       : 
+#   26|         mod = 0 42 0 (getExpr)
+#   26|     r26_5(int)        = Load[?]            : &:r26_4, ~m26_1
+#   26|         mod = 
+#   26|     r26_6(int)        = Rem                : r26_3, r26_5
+#   26|         mod = 
+#   26|     r26_7(int)        = Constant[3]        : 
+#   26|         mod = 0 3 0 (getExpr)
+#   26|     r26_8(bool)       = CompareEQ          : r26_6, r26_7
+#   26|         mod = 
+#   26|     v26_9(void)       = ConditionalBranch  : r26_8
+#   26|         mod = 
+#-----|   False -> Block 11
+#-----|   True -> Block 9
+
+#   26|   Block 9
+#   26|     r26_10(glval<int>) = VariableAddress[y] : 
+#   26|         mod = 
+#   26|     r26_11(int)        = Load[y]            : &:r26_10, m6_12
+#   26|         mod = InitializeParameter: y 0 0 (getExpr, use)
+#   26|     r26_12(glval<int>) = Constant[42]       : 
+#   26|         mod = 0 42 0 (getExpr)
+#   26|     r26_13(int)        = Load[?]            : &:r26_12, ~m26_1
+#   26|         mod = 
+#   26|     r26_14(int)        = Rem                : r26_11, r26_13
+#   26|         mod = 
+#   26|     r26_15(int)        = Constant[7]        : 
+#   26|         mod = 0 7 0 (getExpr)
+#   26|     r26_16(bool)       = CompareEQ          : r26_14, r26_15
+#   26|         mod = 
+#   26|     v26_17(void)       = ConditionalBranch  : r26_16
+#   26|         mod = 
+#-----|   False -> Block 11
+#-----|   True -> Block 10
+
+#   28|   Block 10
+#   28|     r28_1(glval<unknown>) = FunctionAddress[mod] : 
+#   28|         mod = 
+#   28|     r28_2(glval<int>)     = VariableAddress[x]   : 
+#   28|         mod = 
+#   28|     r28_3(int)            = Load[x]              : &:r28_2, m6_10
+#   28|         mod = InitializeParameter: x 0 0 (getExpr, use)
+#   28|     r28_4(glval<int>)     = VariableAddress[y]   : 
+#   28|         mod = 
+#   28|     r28_5(int)            = Load[y]              : &:r28_4, m6_12
+#   28|         mod = InitializeParameter: y 0 0 (getExpr, use)
+#   28|     r28_6(int)            = Sub                  : r28_3, r28_5
+#   28|         mod = 
+#   28|     v28_7(void)           = Call[mod]            : func:r28_1, 0:r28_6
+#   28|         mod = 
+#   28|     m28_8(unknown)        = ^CallSideEffect      : ~m26_1
+#   28|         mod = 
+#   28|     m28_9(unknown)        = Chi                  : total:m26_1, partial:m28_8
+#   28|         mod = 
+#-----|   Goto -> Block 11
+
+#   31|   Block 11
+#   31|     m31_1(unknown)     = Phi                   : from 8:~m26_1, from 9:~m26_1, from 10:~m28_9
+#   31|         mod = 
+#   31|     r31_2(glval<bool>) = VariableAddress[cond] : 
+#   31|         mod = 
+#   31|     r31_3(bool)        = Load[cond]            : &:r31_2, m6_8
+#   31|         mod = 
+#   31|     v31_4(void)        = ConditionalBranch     : r31_3
+#   31|         mod = 
+#-----|   False -> Block 13
+#-----|   True -> Block 12
+
+#   32|   Block 12
+#   32|     r32_1(glval<int>) = VariableAddress[i] : 
+#   32|         mod = 
+#   32|     r32_2(int)        = Load[i]            : &:r32_1, m6_6
+#   32|         mod = InitializeParameter: i 0 0 (getExpr, use)
+#   32|     r32_3(int)        = Constant[4]        : 
+#   32|         mod = 0 4 0 (getExpr)
+#   32|     r32_4(int)        = Mul                : r32_2, r32_3
+#   32|         mod = 0 0 4 (evenlyDivisible)
+#   32|     r32_5(int)        = Constant[3]        : 
+#   32|         mod = 0 3 0 (getExpr)
+#   32|     r32_6(int)        = Add                : r32_4, r32_5
+#   32|         mod = 0 3 4 (valueFlowStep)
+#   32|     r32_7(glval<int>) = VariableAddress[j] : 
+#   32|         mod = 
+#   32|     m32_8(int)        = Store[j]           : &:r32_7, r32_6
+#   32|         mod = 0 3 4 (valueFlowStep)
+#-----|   Goto -> Block 14
+
+#   35|   Block 13
+#   35|     r35_1(glval<int>) = VariableAddress[i] : 
+#   35|         mod = 
+#   35|     r35_2(int)        = Load[i]            : &:r35_1, m6_6
+#   35|         mod = InitializeParameter: i 0 0 (getExpr, use)
+#   35|     r35_3(int)        = Constant[8]        : 
+#   35|         mod = 0 8 0 (getExpr)
+#   35|     r35_4(int)        = Mul                : r35_2, r35_3
+#   35|         mod = 0 0 8 (evenlyDivisible)
+#   35|     r35_5(int)        = Constant[7]        : 
+#   35|         mod = 0 7 0 (getExpr)
+#   35|     r35_6(int)        = Add                : r35_4, r35_5
+#   35|         mod = 0 7 8 (valueFlowStep)
+#   35|     r35_7(glval<int>) = VariableAddress[j] : 
+#   35|         mod = 
+#   35|     m35_8(int)        = Store[j]           : &:r35_7, r35_6
+#   35|         mod = 0 7 8 (valueFlowStep)
+#-----|   Goto -> Block 14
+
+#   37|   Block 14
+#   37|     m37_1(int)            = Phi                   : from 12:m32_8, from 13:m35_8
+#   37|         mod = Phi: call to mod 0 0 (getExpr)
+#   37|     r37_2(glval<unknown>) = FunctionAddress[mod]  : 
+#   37|         mod = 
+#   37|     r37_3(glval<int>)     = VariableAddress[j]    : 
+#   37|         mod = 
+#   37|     r37_4(int)            = Load[j]               : &:r37_3, m37_1
+#   37|         mod = 0 3 4 (use), Phi: call to mod 0 0 (getExpr, use)
+#   37|     v37_5(void)           = Call[mod]             : func:r37_2, 0:r37_4
+#   37|         mod = 
+#   37|     m37_6(unknown)        = ^CallSideEffect       : ~m31_1
+#   37|         mod = 
+#   37|     m37_7(unknown)        = Chi                   : total:m31_1, partial:m37_6
+#   37|         mod = 
+#   39|     r39_1(glval<bool>)    = VariableAddress[cond] : 
+#   39|         mod = 
+#   39|     r39_2(bool)           = Load[cond]            : &:r39_1, m6_8
+#   39|         mod = 
+#   39|     v39_3(void)           = ConditionalBranch     : r39_2
+#   39|         mod = 
+#-----|   False -> Block 16
+#-----|   True -> Block 15
+
+#   40|   Block 15
+#   40|     r40_1(glval<unknown>) = FunctionAddress[mod] : 
+#   40|         mod = 
+#   40|     r40_2(glval<int>)     = VariableAddress[j]   : 
+#   40|         mod = 
+#   40|     r40_3(int)            = Load[j]              : &:r40_2, m37_1
+#   40|         mod = 0 3 4 (use), Phi: call to mod 0 0 (getExpr, use)
+#   40|     v40_4(void)           = Call[mod]            : func:r40_1, 0:r40_3
+#   40|         mod = 
+#   40|     m40_5(unknown)        = ^CallSideEffect      : ~m37_7
+#   40|         mod = 
+#   40|     m40_6(unknown)        = Chi                  : total:m37_7, partial:m40_5
+#   40|         mod = 
+#-----|   Goto -> Block 17
+
+#   42|   Block 16
+#   42|     r42_1(glval<unknown>) = FunctionAddress[mod] : 
+#   42|         mod = 
+#   42|     r42_2(glval<int>)     = VariableAddress[j]   : 
+#   42|         mod = 
+#   42|     r42_3(int)            = Load[j]              : &:r42_2, m37_1
+#   42|         mod = 0 3 4 (use), Phi: call to mod 0 0 (getExpr, use)
+#   42|     v42_4(void)           = Call[mod]            : func:r42_1, 0:r42_3
+#   42|         mod = 
+#   42|     m42_5(unknown)        = ^CallSideEffect      : ~m37_7
+#   42|         mod = 
+#   42|     m42_6(unknown)        = Chi                  : total:m37_7, partial:m42_5
+#   42|         mod = 
+#-----|   Goto -> Block 17
+
+#   45|   Block 17
+#   45|     m45_1(unknown)    = Phi                : from 15:~m40_6, from 16:~m42_6
+#   45|         mod = 
+#   45|     r45_2(glval<int>) = VariableAddress[x] : 
+#   45|         mod = 
+#   45|     r45_3(int)        = Load[x]            : &:r45_2, m6_10
+#   45|         mod = InitializeParameter: x 0 0 (getExpr, use)
+#   45|     r45_4(int)        = Constant[15]       : 
+#   45|         mod = 0 15 0 (getExpr)
+#   45|     r45_5(int)        = BitAnd             : r45_3, r45_4
+#   45|         mod = 
+#   45|     r45_6(int)        = Constant[3]        : 
+#   45|         mod = 0 3 0 (getExpr)
+#   45|     r45_7(bool)       = CompareEQ          : r45_5, r45_6
+#   45|         mod = 
+#   45|     v45_8(void)       = ConditionalBranch  : r45_7
+#   45|         mod = 
+#-----|   False -> Block 19
+#-----|   True -> Block 18
+
+#   46|   Block 18
+#   46|     r46_1(glval<unknown>) = FunctionAddress[mod] : 
+#   46|         mod = 
+#   46|     r46_2(glval<int>)     = VariableAddress[x]   : 
+#   46|         mod = 
+#   46|     r46_3(int)            = Load[x]              : &:r46_2, m6_10
+#   46|         mod = 0 3 16 (use), InitializeParameter: x 0 0 (getExpr, use)
+#   46|     v46_4(void)           = Call[mod]            : func:r46_1, 0:r46_3
+#   46|         mod = 
+#   46|     m46_5(unknown)        = ^CallSideEffect      : ~m45_1
+#   46|         mod = 
+#   46|     m46_6(unknown)        = Chi                  : total:m45_1, partial:m46_5
+#   46|         mod = 
+#-----|   Goto -> Block 19
+
+#   48|   Block 19
+#   48|     m48_1(unknown) = Phi          : from 17:~m45_1, from 18:~m46_6
+#   48|         mod = 
+#   48|     v48_2(void)    = NoOp         : 
+#   48|         mod = 
+#    6|     v6_13(void)    = ReturnVoid   : 
+#    6|         mod = 
+#    6|     v6_14(void)    = AliasedUse   : ~m48_1
+#    6|         mod = 
+#    6|     v6_15(void)    = ExitFunction : 
+#    6|         mod = 
+
+#   50| void loops(int)
+#   50|   Block 0
+#   50|     v50_1(void)       = EnterFunction            : 
+#   50|         mod = 
+#   50|     m50_2(unknown)    = AliasedDefinition        : 
+#   50|         mod = 
+#   50|     m50_3(unknown)    = InitializeNonLocal       : 
+#   50|         mod = 
+#   50|     m50_4(unknown)    = Chi                      : total:m50_2, partial:m50_3
+#   50|         mod = 
+#   50|     r50_5(glval<int>) = VariableAddress[cap]     : 
+#   50|         mod = 
+#   50|     m50_6(int)        = InitializeParameter[cap] : &:r50_5
+#   50|         mod = InitializeParameter: cap 0 0 (getExpr)
+#   52|     r52_1(glval<int>) = VariableAddress[i]       : 
+#   52|         mod = 
+#   52|     r52_2(int)        = Constant[0]              : 
+#   52|         mod = 0 0 0 (getExpr)
+#   52|     m52_3(int)        = Store[i]                 : &:r52_1, r52_2
+#   52|         mod = 0 0 0 (valueFlowStep)
+#-----|   Goto -> Block 1
+
+#   52|   Block 1
+#   52|     m52_4(unknown)    = Phi                  : from 0:~m50_4, from 2:~m53_6
+#   52|         mod = 
+#   52|     m52_5(int)        = Phi                  : from 0:m52_3, from 2:m52_16
+#   52|         mod = Phi: i 0 0 (getExpr)
+#   52|     r52_6(glval<int>) = VariableAddress[i]   : 
+#   52|         mod = 
+#   52|     r52_7(int)        = Load[i]              : &:r52_6, m52_5
+#   52|         mod = Phi: i 0 0 (getExpr, use)
+#   52|     r52_8(glval<int>) = VariableAddress[cap] : 
+#   52|         mod = 
+#   52|     r52_9(int)        = Load[cap]            : &:r52_8, m50_6
+#   52|         mod = InitializeParameter: cap 0 0 (getExpr, use)
+#   52|     r52_10(bool)      = CompareLT            : r52_7, r52_9
+#   52|         mod = 
+#   52|     v52_11(void)      = ConditionalBranch    : r52_10
+#   52|         mod = 
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   53|   Block 2
+#   53|     r53_1(glval<unknown>) = FunctionAddress[mod] : 
+#   53|         mod = 
+#   53|     r53_2(glval<int>)     = VariableAddress[i]   : 
+#   53|         mod = 
+#   53|     r53_3(int)            = Load[i]              : &:r53_2, m52_5
+#   53|         mod = Phi: i 0 0 (getExpr, use)
+#   53|     v53_4(void)           = Call[mod]            : func:r53_1, 0:r53_3
+#   53|         mod = 
+#   53|     m53_5(unknown)        = ^CallSideEffect      : ~m52_4
+#   53|         mod = 
+#   53|     m53_6(unknown)        = Chi                  : total:m52_4, partial:m53_5
+#   53|         mod = 
+#   52|     r52_12(glval<int>)    = VariableAddress[i]   : 
+#   52|         mod = 
+#   52|     r52_13(int)           = Load[i]              : &:r52_12, m52_5
+#   52|         mod = Phi: i 0 0 (getExpr, use)
+#   52|     r52_14(int)           = Constant[1]          : 
+#   52|         mod = 0 1 0 (getExpr)
+#   52|     r52_15(int)           = Add                  : r52_13, r52_14
+#   52|         mod = Phi: i 1 0 (valueFlowStep)
+#   52|     m52_16(int)           = Store[i]             : &:r52_12, r52_15
+#   52|         mod = Phi: i 1 0 (valueFlowStep)
+#-----|   Goto (back edge) -> Block 1
+
+#   55|   Block 3
+#   55|     r55_1(glval<int>) = VariableAddress[j] : 
+#   55|         mod = 
+#   55|     r55_2(int)        = Constant[0]        : 
+#   55|         mod = 0 0 0 (getExpr)
+#   55|     m55_3(int)        = Store[j]           : &:r55_1, r55_2
+#   55|         mod = 0 0 0 (valueFlowStep)
+#-----|   Goto -> Block 4
+
+#   55|   Block 4
+#   55|     m55_4(unknown)    = Phi                  : from 3:~m52_4, from 5:~m56_6
+#   55|         mod = 
+#   55|     m55_5(int)        = Phi                  : from 3:m55_3, from 5:m55_16
+#   55|         mod = Phi: j 0 0 (getExpr)
+#   55|     r55_6(glval<int>) = VariableAddress[j]   : 
+#   55|         mod = 
+#   55|     r55_7(int)        = Load[j]              : &:r55_6, m55_5
+#   55|         mod = Phi: j 0 0 (getExpr, use)
+#   55|     r55_8(glval<int>) = VariableAddress[cap] : 
+#   55|         mod = 
+#   55|     r55_9(int)        = Load[cap]            : &:r55_8, m50_6
+#   55|         mod = InitializeParameter: cap 0 0 (getExpr, use)
+#   55|     r55_10(bool)      = CompareLT            : r55_7, r55_9
+#   55|         mod = 
+#   55|     v55_11(void)      = ConditionalBranch    : r55_10
+#   55|         mod = 
+#-----|   False -> Block 6
+#-----|   True -> Block 5
+
+#   56|   Block 5
+#   56|     r56_1(glval<unknown>) = FunctionAddress[mod] : 
+#   56|         mod = 
+#   56|     r56_2(glval<int>)     = VariableAddress[j]   : 
+#   56|         mod = 
+#   56|     r56_3(int)            = Load[j]              : &:r56_2, m55_5
+#   56|         mod = Phi: j 0 0 (getExpr, use)
+#   56|     v56_4(void)           = Call[mod]            : func:r56_1, 0:r56_3
+#   56|         mod = 
+#   56|     m56_5(unknown)        = ^CallSideEffect      : ~m55_4
+#   56|         mod = 
+#   56|     m56_6(unknown)        = Chi                  : total:m55_4, partial:m56_5
+#   56|         mod = 
+#   55|     r55_12(int)           = Constant[1]          : 
+#   55|         mod = 0 1 0 (getExpr)
+#   55|     r55_13(glval<int>)    = VariableAddress[j]   : 
+#   55|         mod = 
+#   55|     r55_14(int)           = Load[j]              : &:r55_13, m55_5
+#   55|         mod = Phi: j 0 0 (getExpr, use)
+#   55|     r55_15(int)           = Add                  : r55_14, r55_12
+#   55|         mod = Phi: j 1 0 (valueFlowStep)
+#   55|     m55_16(int)           = Store[j]             : &:r55_13, r55_15
+#   55|         mod = Phi: j 1 0 (valueFlowStep)
+#-----|   Goto (back edge) -> Block 4
+
+#   58|   Block 6
+#   58|     r58_1(glval<int>) = VariableAddress[k] : 
+#   58|         mod = 
+#   58|     r58_2(int)        = Constant[0]        : 
+#   58|         mod = 0 0 0 (getExpr)
+#   58|     m58_3(int)        = Store[k]           : &:r58_1, r58_2
+#   58|         mod = 0 0 0 (valueFlowStep)
+#-----|   Goto -> Block 7
+
+#   58|   Block 7
+#   58|     m58_4(unknown)    = Phi                  : from 6:~m55_4, from 8:~m59_6
+#   58|         mod = 
+#   58|     m58_5(int)        = Phi                  : from 6:m58_3, from 8:m58_16
+#   58|         mod = Phi: k 0 0 (getExpr)
+#   58|     r58_6(glval<int>) = VariableAddress[k]   : 
+#   58|         mod = 
+#   58|     r58_7(int)        = Load[k]              : &:r58_6, m58_5
+#   58|         mod = 0 0 3 (use), Phi: k 0 0 (getExpr, use)
+#   58|     r58_8(glval<int>) = VariableAddress[cap] : 
+#   58|         mod = 
+#   58|     r58_9(int)        = Load[cap]            : &:r58_8, m50_6
+#   58|         mod = InitializeParameter: cap 0 0 (getExpr, use)
+#   58|     r58_10(bool)      = CompareLT            : r58_7, r58_9
+#   58|         mod = 
+#   58|     v58_11(void)      = ConditionalBranch    : r58_10
+#   58|         mod = 
+#-----|   False -> Block 9
+#-----|   True -> Block 8
+
+#   59|   Block 8
+#   59|     r59_1(glval<unknown>) = FunctionAddress[mod] : 
+#   59|         mod = 
+#   59|     r59_2(glval<int>)     = VariableAddress[k]   : 
+#   59|         mod = 
+#   59|     r59_3(int)            = Load[k]              : &:r59_2, m58_5
+#   59|         mod = 0 0 3 (use), Phi: k 0 0 (getExpr, use)
+#   59|     v59_4(void)           = Call[mod]            : func:r59_1, 0:r59_3
+#   59|         mod = 
+#   59|     m59_5(unknown)        = ^CallSideEffect      : ~m58_4
+#   59|         mod = 
+#   59|     m59_6(unknown)        = Chi                  : total:m58_4, partial:m59_5
+#   59|         mod = 
+#   58|     r58_12(int)           = Constant[3]          : 
+#   58|         mod = 0 3 0 (getExpr)
+#   58|     r58_13(glval<int>)    = VariableAddress[k]   : 
+#   58|         mod = 
+#   58|     r58_14(int)           = Load[k]              : &:r58_13, m58_5
+#   58|         mod = 0 0 3 (use), Phi: k 0 0 (getExpr, use)
+#   58|     r58_15(int)           = Add                  : r58_14, r58_12
+#   58|         mod = 0 0 3 (valueFlowStep), Phi: k 3 0 (valueFlowStep)
+#   58|     m58_16(int)           = Store[k]             : &:r58_13, r58_15
+#   58|         mod = 0 0 3 (valueFlowStep), Phi: k 3 0 (valueFlowStep)
+#-----|   Goto (back edge) -> Block 7
+
+#   60|   Block 9
+#   60|     v60_1(void) = NoOp         : 
+#   60|         mod = 
+#   50|     v50_7(void) = ReturnVoid   : 
+#   50|         mod = 
+#   50|     v50_8(void) = AliasedUse   : ~m58_4
+#   50|         mod = 
+#   50|     v50_9(void) = ExitFunction : 
+#   50|         mod = 
