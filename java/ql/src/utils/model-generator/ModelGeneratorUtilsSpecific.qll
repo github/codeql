@@ -5,7 +5,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.dataflow.internal.DataFlowImplCommon
 
-Method superImpl(Method m) {
+private Method superImpl(Method m) {
   result = m.getAnOverride() and
   not exists(result.getAnOverride()) and
   not m instanceof ToStringMethod
@@ -42,26 +42,6 @@ predicate isRelevantForModels(Callable api) {
   not api instanceof MainMethod
 }
 
-private string isExtensible(RefType ref) {
-  if ref.isFinal() then result = "false" else result = "true"
-}
-
-private string typeAsModel(RefType type) {
-  result = type.getCompilationUnit().getPackage().getName() + ";" + type.nestedName()
-}
-
-private RefType bestTypeForModel(TargetApi api) {
-  if exists(superImpl(api))
-  then superImpl(api).fromSource() and result = superImpl(api).getDeclaringType()
-  else result = api.getDeclaringType()
-}
-
-/**
- * Returns the appropriate type name for the model. Either the type
- * declaring the method or the supertype introducing the method.
- */
-private string typeAsSummaryModel(TargetApi api) { result = typeAsModel(bestTypeForModel(api)) }
-
 /**
  * A class of Callables that are relevant for generating summary, source and sinks models for.
  *
@@ -79,13 +59,33 @@ class TargetApi extends Callable {
     isRelevantForModels(this)
   }
 
+  private string isExtensible(RefType ref) {
+    if ref.isFinal() then result = "false" else result = "true"
+  }
+
+  private string typeAsModel(RefType type) {
+    result = type.getCompilationUnit().getPackage().getName() + ";" + type.nestedName()
+  }
+
+  private RefType bestTypeForModel() {
+    if exists(superImpl(this))
+    then superImpl(this).fromSource() and result = superImpl(this).getDeclaringType()
+    else result = this.getDeclaringType()
+  }
+
+  /**
+   * Returns the appropriate type name for the model. Either the type
+   * declaring the method or the supertype introducing the method.
+   */
+  private string typeAsSummaryModel() { result = typeAsModel(this.bestTypeForModel()) }
+
   /**
    * Computes the first 6 columns for CSV rows.
    */
   string asPartialModel() {
     result =
-      typeAsSummaryModel(this) + ";" //
-        + isExtensible(bestTypeForModel(this)) + ";" //
+      this.typeAsSummaryModel() + ";" //
+        + isExtensible(this.bestTypeForModel()) + ";" //
         + this.getName() + ";" //
         + paramsString(this) + ";" //
         + /* ext + */ ";" //
