@@ -12,10 +12,6 @@ class CsvInjectionFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource
-    // exists(DataFlow::CallCfgNode ccn |
-    //   ccn.getFunction().asCfgNode().(NameNode).getId() = "flag" and
-    //   ccn.getArg(_) = source
-    // )
   }
 
   override predicate isSink(DataFlow::Node sink) {
