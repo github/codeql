@@ -1022,46 +1022,6 @@ module Private {
     }
   }
 
-  /** Provides a query predicate for outputting a set of relevant flow summaries. */
-  module TestOutput {
-    /** A flow summary to include in the `summary/3` query predicate. */
-    abstract class RelevantSummarizedCallable extends SummarizedCallable {
-      /** Gets the string representation of this callable used by `summary/1`. */
-      abstract string getCallableCsv();
-
-      /** Holds if flow is propagated between `input` and `output`. */
-      predicate relevantSummary(
-        SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-      ) {
-        this.propagatesFlow(input, output, preservesValue)
-      }
-    }
-
-    /** Render the kind in the format used in flow summaries. */
-    private string renderKind(boolean preservesValue) {
-      preservesValue = true and result = "value"
-      or
-      preservesValue = false and result = "taint"
-    }
-
-    /**
-     * A query predicate for outputting flow summaries in semi-colon separated format in QL tests.
-     * The syntax is: "namespace;type;overrides;name;signature;ext;inputspec;outputspec;kind",
-     * ext is hardcoded to empty.
-     */
-    query predicate summary(string csv) {
-      exists(
-        RelevantSummarizedCallable c, SummaryComponentStack input, SummaryComponentStack output,
-        boolean preservesValue
-      |
-        c.relevantSummary(input, output, preservesValue) and
-        csv =
-          c.getCallableCsv() + ";;" + getComponentStackCsv(input) + ";" +
-            getComponentStackCsv(output) + ";" + renderKind(preservesValue)
-      )
-    }
-  }
-
   /**
    * Provides query predicates for rendering the generated data flow graph for
    * a summarized callable.
