@@ -1,1 +1,2 @@
-| Test.java:11:9:11:54 | setHeader(...) | Misconfigured X-Frame-Options Header. |
+| Test.java:11:9:11:64 | setHeader(...) | Configuration missing the X-Frame-Options setting. |
+| Test.java:12:9:12:65 | setHeader(...) | Configuration missing the X-Frame-Options setting. |
