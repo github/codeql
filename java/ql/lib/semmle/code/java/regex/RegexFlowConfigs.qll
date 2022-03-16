@@ -17,6 +17,10 @@ private class RegexCompileFlowConf extends DataFlow2::Configuration {
   override predicate isSink(DataFlow::Node node) {
     sinkNode(node, ["regex-compile", "regex-compile-match", "regex-compile-find"])
   }
+
+  override predicate isBarrier(DataFlow::Node node) {
+    node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
+  }
 }
 
 /**
@@ -207,10 +211,6 @@ private class RegexMatchFlowConf extends DataFlow2::Configuration {
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(RegexAdditionalFlowStep s).step(node1, node2)
-  }
-
-  override predicate isBarrier(DataFlow::Node node) {
-    node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
   }
 }
 
