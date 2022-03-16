@@ -343,7 +343,7 @@ private predicate invocationMatchesCallSiteFilter(Specific::InvokeNode invoke, A
  * Gets the API node identified by the first `n` tokens of `path` in the given `(package, type, path)` tuple.
  */
 pragma[nomagic]
-API::Node getNodeFromPath(string package, string type, AccessPath path, int n) {
+private API::Node getNodeFromPath(string package, string type, AccessPath path, int n) {
   isRelevantFullPath(package, type, path) and
   (
     n = 0 and
