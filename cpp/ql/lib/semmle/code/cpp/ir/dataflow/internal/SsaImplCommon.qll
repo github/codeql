@@ -288,20 +288,6 @@ private module SsaDefReaches {
   }
 
   /**
-   * Holds if the SSA definition of `v` at `def` reaches uncertain SSA definition
-   * `redef` in the same basic block, without crossing another SSA definition of `v`.
-   */
-  predicate ssaDefReachesUncertainDefWithinBlock(
-    SourceVariable v, Definition def, UncertainWriteDefinition redef
-  ) {
-    exists(BasicBlock bb, int rnk, int i |
-      ssaDefReachesRank(bb, def, rnk, v) and
-      rnk = ssaRefRank(bb, i, v, SsaDef()) - 1 and
-      redef.definesAt(v, bb, i)
-    )
-  }
-
-  /**
    * Same as `ssaRefRank()`, but restricted to a particular SSA definition `def`.
    */
   int ssaDefRank(Definition def, SourceVariable v, BasicBlock bb, int i, SsaRefKind k) {

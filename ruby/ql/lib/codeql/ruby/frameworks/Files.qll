@@ -189,12 +189,6 @@ module IO {
     }
   }
 
-  // "Direct" `IO` instances, i.e. cases where there is no more specific
-  // subtype such as `File`
-  private class IOInstanceStrict extends IOInstance {
-    IOInstanceStrict() { this = ioInstance() }
-  }
-
   /**
    * A `DataFlow::CallNode` that reads data using the `IO` class. For example,
    * the `read` and `readline` calls in:

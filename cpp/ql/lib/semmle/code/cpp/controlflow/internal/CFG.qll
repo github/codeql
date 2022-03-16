@@ -448,26 +448,6 @@ private predicate skipInitializer(Initializer init) {
 }
 
 /**
- * Holds if `e` is an expression in a static initializer that must be evaluated
- * at run time. This predicate computes "is non-const" instead of "is const" in
- * order to avoid recursion through forall.
- */
-private predicate runtimeExprInStaticInitializer(Expr e) {
-  inStaticInitializer(e) and
-  if e instanceof AggregateLiteral
-  then runtimeExprInStaticInitializer(e.getAChild())
-  else not e.getFullyConverted().isConstant()
-}
-
-/** Holds if `e` is part of the initializer of a local static variable. */
-private predicate inStaticInitializer(Expr e) {
-  exists(LocalVariable local |
-    local.isStatic() and
-    e.getParent+() = local.getInitializer()
-  )
-}
-
-/**
  * Gets the `i`th child of `n` in control-flow order, where the `i`-indexes are
  * contiguous, and the first index is 0.
  */

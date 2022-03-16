@@ -13,13 +13,13 @@
  * ```
  */
 
-private import javascript as js
-private import js::DataFlow as DataFlow
+private import javascript as JS
+private import JS::DataFlow as DataFlow
 private import ApiGraphModels
 
-class Unit = js::Unit;
+class Unit = JS::Unit;
 
-module API = js::API;
+module API = JS::API;
 
 import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
 private import AccessPathSyntax

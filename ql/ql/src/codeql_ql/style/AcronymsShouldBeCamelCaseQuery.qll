@@ -27,6 +27,8 @@ string getName(AstNode node, string kind) {
   result = node.(FieldDecl).getName() and kind = "field"
   or
   result = node.(Module).getName() and kind = "module"
+  or
+  result = node.(Import).importedAs() and kind = "import"
 }
 
 string prettyPluralKind(string kind) {
@@ -45,6 +47,8 @@ string prettyPluralKind(string kind) {
   kind = "field" and result = "fields"
   or
   kind = "module" and result = "modules"
+  or
+  kind = "import" and result = "imports"
 }
 
 /**

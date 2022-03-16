@@ -36,16 +36,6 @@ class MessageDigest extends RefType {
   MessageDigest() { this.hasQualifiedName("java.security", "MessageDigest") }
 }
 
-/** The method call `MessageDigest.getInstance(...)` */
-class MDConstructor extends StaticMethodAccess {
-  MDConstructor() {
-    exists(Method m | m = this.getMethod() |
-      m.getDeclaringType() instanceof MessageDigest and
-      m.hasName("getInstance")
-    )
-  }
-}
-
 /** The method `digest()` declared in `java.security.MessageDigest`. */
 class MDDigestMethod extends Method {
   MDDigestMethod() {
