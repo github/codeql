@@ -34,7 +34,7 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
     exists(VariableAddressInstruction var, Function func |
       var = source.asInstruction() and
       func = var.getEnclosingFunction() and
-      var.getASTVariable() instanceof StackVariable and
+      var.getAstVariable() instanceof StackVariable and
       // Pointer-to-member types aren't properly handled in the dbscheme.
       not var.getResultType() instanceof PointerToMemberType and
       // Rule out FPs caused by extraction errors.
@@ -77,12 +77,13 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
 
 from
   MustFlowPathNode source, MustFlowPathNode sink, VariableAddressInstruction var,
-  ReturnStackAllocatedMemoryConfig conf
+  ReturnStackAllocatedMemoryConfig conf, Function f
 where
   conf.hasFlowPath(source, sink) and
   source.getNode().asInstruction() = var and
   // Only raise an alert if we're returning from the _same_ callable as the on that
   // declared the stack variable.
-  var.getEnclosingFunction() = sink.getNode().getEnclosingCallable()
-select sink.getNode(), source, sink, "May return stack-allocated memory from $@.", var.getAST(),
-  var.getAST().toString()
+  var.getEnclosingFunction() = pragma[only_bind_into](f) and
+  sink.getNode().getEnclosingCallable() = pragma[only_bind_into](f)
+select sink.getNode(), source, sink, "May return stack-allocated memory from $@.", var.getAst(),
+  var.getAst().toString()

@@ -518,7 +518,7 @@ module SocketIOClient {
   }
 
   /** Gets the NPM package that contains `nd`. */
-  private NPMPackage getPackage(DataFlow::SourceNode nd) { result.getAFile() = nd.getFile() }
+  private NpmPackage getPackage(DataFlow::SourceNode nd) { result.getAFile() = nd.getFile() }
 
   /**
    * A data flow node representing an API call that receives data from the server.

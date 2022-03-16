@@ -100,7 +100,7 @@ class SpringPureClass extends Class {
       // Setter method by autowiring, either in the XML or by annotation
       c = this.getAMethod().(SpringBeanAutowiredCallable)
       or
-      c = this.getAMethod().(SpringBeanXMLAutowiredSetterMethod)
+      c = this.getAMethod().(SpringBeanXmlAutowiredSetterMethod)
     )
   }
 }
@@ -189,7 +189,7 @@ class LiveSpringBean extends SpringBean {
       )
       or
       // Injected by autowired specified in XML
-      exists(SpringBeanXMLAutowiredSetterMethod setterMethod |
+      exists(SpringBeanXmlAutowiredSetterMethod setterMethod |
         // The config method must be on a live bean
         setterMethod.getDeclaringType().(SpringBeanRefType).getSpringBean() instanceof
           LiveSpringBean

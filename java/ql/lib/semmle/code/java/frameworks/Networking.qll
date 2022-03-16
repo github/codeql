@@ -4,7 +4,7 @@
 
 import semmle.code.java.Type
 
-/** The type `java.net.URLConnection`. */
+/** The type `java.net.UrlConnection`. */
 class TypeUrlConnection extends RefType {
   TypeUrlConnection() { this.hasQualifiedName("java.net", "URLConnection") }
 }
@@ -29,14 +29,17 @@ class TypeUri extends RefType {
   TypeUri() { this.hasQualifiedName("java.net", "URI") }
 }
 
-/** The method `java.net.URLConnection::getInputStream`. */
-class URLConnectionGetInputStreamMethod extends Method {
-  URLConnectionGetInputStreamMethod() {
+/** The method `java.net.UrlConnection::getInputStream`. */
+class UrlConnectionGetInputStreamMethod extends Method {
+  UrlConnectionGetInputStreamMethod() {
     this.getDeclaringType() instanceof TypeUrlConnection and
     this.hasName("getInputStream") and
     this.hasNoParameters()
   }
 }
+
+/** DEPRECATED: Alias for UrlConnectionGetInputStreamMethod */
+deprecated class URLConnectionGetInputStreamMethod = UrlConnectionGetInputStreamMethod;
 
 /** The method `java.net.Socket::getInputStream`. */
 class SocketGetInputStreamMethod extends Method {

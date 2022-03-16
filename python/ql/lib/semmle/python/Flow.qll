@@ -969,12 +969,6 @@ private module Scopes {
     scope = n.getEnclosingModule()
   }
 
-  private predicate maybe_defined(SsaVariable var) {
-    exists(var.getDefinition()) and not py_ssa_phi(var, _) and not var.getDefinition().isDelete()
-    or
-    exists(SsaVariable input | input = var.getAPhiInput() | maybe_defined(input))
-  }
-
   private predicate maybe_undefined(SsaVariable var) {
     not exists(var.getDefinition()) and not py_ssa_phi(var, _)
     or

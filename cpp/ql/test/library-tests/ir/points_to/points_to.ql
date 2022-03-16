@@ -40,7 +40,7 @@ module Raw {
   }
 }
 
-module UnaliasedSSA {
+module UnaliasedSsa {
   private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
   private import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasedSSA
 
@@ -49,8 +49,8 @@ module UnaliasedSSA {
     result = getOperandMemoryLocation(instr.getAnOperand())
   }
 
-  class UnaliasedSSAPointsToTest extends InlineExpectationsTest {
-    UnaliasedSSAPointsToTest() { this = "UnaliasedSSAPointsToTest" }
+  class UnaliasedSsaPointsToTest extends InlineExpectationsTest {
+    UnaliasedSsaPointsToTest() { this = "UnaliasedSSAPointsToTest" }
 
     override string getARelevantTag() { result = "ussa" }
 

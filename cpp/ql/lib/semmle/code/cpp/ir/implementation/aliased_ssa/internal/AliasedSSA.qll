@@ -133,7 +133,10 @@ abstract class MemoryLocation extends TMemoryLocation {
    */
   predicate isAlwaysAllocatedOnStack() { none() }
 
-  final predicate canReuseSSA() { none() }
+  final predicate canReuseSsa() { none() }
+
+  /** DEPRECATED: Alias for canReuseSsa */
+  deprecated predicate canReuseSSA() { canReuseSsa() }
 }
 
 /**
@@ -569,13 +572,16 @@ private Overlap getVariableMemoryLocationOverlap(
  * Holds if the def/use information for the result of `instr` can be reused from the previous
  * iteration of the IR.
  */
-predicate canReuseSSAForOldResult(Instruction instr) { OldSSA::canReuseSSAForMemoryResult(instr) }
+predicate canReuseSsaForOldResult(Instruction instr) { OldSSA::canReuseSsaForMemoryResult(instr) }
+
+/** DEPRECATED: Alias for canReuseSsaForOldResult */
+deprecated predicate canReuseSSAForOldResult = canReuseSsaForOldResult/1;
 
 bindingset[result, b]
 private boolean unbindBool(boolean b) { result != b.booleanNot() }
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
-  not canReuseSSAForOldResult(instr) and
+  not canReuseSsaForOldResult(instr) and
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = instr.getResultMemoryAccess() and
     (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
@@ -608,7 +614,7 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
 }
 
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
-  not canReuseSSAForOldResult(operand.getAnyDef()) and
+  not canReuseSsaForOldResult(operand.getAnyDef()) and
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = operand.getMemoryAccess() and
     (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and

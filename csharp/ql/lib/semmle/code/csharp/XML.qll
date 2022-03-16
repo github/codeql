@@ -4,11 +4,11 @@
 
 import semmle.files.FileSystem
 
-private class TXMLLocatable =
+private class TXmlLocatable =
   @xmldtd or @xmlelement or @xmlattribute or @xmlnamespace or @xmlcomment or @xmlcharacters;
 
 /** An XML element that has a location. */
-class XMLLocatable extends @xmllocatable, TXMLLocatable {
+class XMLLocatable extends @xmllocatable, TXmlLocatable {
   /** Gets the source location for this element. */
   Location getLocation() { xmllocations(this, result) }
 

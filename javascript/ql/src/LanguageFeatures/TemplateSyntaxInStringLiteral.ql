@@ -42,10 +42,10 @@ class CandidateStringLiteral extends StringLiteral {
    * Gets an ancestor node of this string literal in the AST that can be reached without
    * stepping over scope elements.
    */
-  ASTNode getIntermediate() {
+  AstNode getIntermediate() {
     result = this
     or
-    exists(ASTNode mid | mid = this.getIntermediate() |
+    exists(AstNode mid | mid = this.getIntermediate() |
       not mid instanceof ScopeElement and
       result = mid.getParent()
     )

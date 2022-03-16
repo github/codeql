@@ -22,6 +22,6 @@ where
     or
     multipleToString(ssa) and problem = "SSA variable with multiple 'toString()' results for "
   ) and
-  n = ssa.getCFGNode() and
+  n = ssa.getCfgNode() and
   v = ssa.getSourceVariable().getVariable()
 select n, problem + v

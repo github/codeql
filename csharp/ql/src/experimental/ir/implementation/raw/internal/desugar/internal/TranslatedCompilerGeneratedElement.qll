@@ -18,5 +18,8 @@ abstract class TranslatedCompilerGeneratedElement extends TranslatedElement,
 
   final override Callable getFunction() { result = generatedBy.getEnclosingCallable() }
 
-  final override Language::AST getAST() { result = generatedBy }
+  final override Language::AST getAst() { result = generatedBy }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Language::AST getAST() { result = getAst() }
 }

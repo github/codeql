@@ -98,7 +98,7 @@ class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespac
  * Note that imports and type parameters are not type definitions.  Consider using `TypeDecl` to capture
  * a wider class of type declarations.
  */
-class TypeDefinition extends ASTNode, @type_definition {
+class TypeDefinition extends AstNode, @type_definition {
   /**
    * Gets the identifier naming the type.
    */
@@ -376,7 +376,7 @@ class ConstructorTypeExpr extends FunctionTypeExpr, @constructor_typeexpr { }
 class PlainFunctionTypeExpr extends FunctionTypeExpr, @plain_function_typeexpr { }
 
 /** A possibly qualified identifier that declares or refers to a type. */
-abstract class TypeRef extends ASTNode { }
+abstract class TypeRef extends AstNode { }
 
 /** An identifier declaring a type name, that is, the name of a class, interface, type parameter, or import. */
 class TypeDecl extends Identifier, TypeRef, LexicalDecl {
@@ -1291,7 +1291,7 @@ class ExpressionWithTypeArguments extends @expression_with_type_arguments, Expr 
 /**
  * A program element that supports type parameters, that is, a function, class, interface, type alias, mapped type, or `infer` type.
  */
-class TypeParameterized extends @type_parameterized, ASTNode {
+class TypeParameterized extends @type_parameterized, AstNode {
   /** Gets the `n`th type parameter declared on this function or type. */
   TypeParameter getTypeParameter(int n) { none() } // Overridden in subtypes.
 
@@ -1394,7 +1394,7 @@ class NonNullAssertion extends Expr, @non_null_assertion {
 /**
  * A possibly qualified identifier that refers to or declares a local name for a namespace.
  */
-abstract class NamespaceRef extends ASTNode { }
+abstract class NamespaceRef extends AstNode { }
 
 /**
  * An identifier that declares a local name for a namespace, that is,
@@ -1602,7 +1602,7 @@ class EnumDeclaration extends NamespaceDefinition, @enum_declaration, AST::Value
  * enum Color { red = 1, green, blue }
  * ```
  */
-class EnumMember extends ASTNode, @enum_member {
+class EnumMember extends AstNode, @enum_member {
   /**
    * Gets the name of the enum member, such as `off` in `enum State { on, off }`.
    *

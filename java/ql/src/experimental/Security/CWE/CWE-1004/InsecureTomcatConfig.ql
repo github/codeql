@@ -17,10 +17,10 @@ private class HttpOnlyConfig extends WebContextParameter {
 
   string getParamValueElementValue() { result = this.getParamValue().getValue() }
 
-  predicate isHTTPOnlySet() { this.getParamValueElementValue().toLowerCase() = "false" }
+  predicate isHttpOnlySet() { this.getParamValueElementValue().toLowerCase() = "false" }
 }
 
 from HttpOnlyConfig config
-where config.isHTTPOnlySet()
+where config.isHttpOnlySet()
 select config,
   "httpOnly should be enabled in tomcat config file to help mitigate cross-site scripting (XSS) attacks"
