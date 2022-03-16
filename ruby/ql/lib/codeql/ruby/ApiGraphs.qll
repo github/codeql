@@ -295,7 +295,7 @@ module API {
     DataFlow::CallNode getACall() { none() }
 
     /** Gets an API-node for this entry point. */
-    API::Node getNode() { result = root().getASuccessor(Label::entryPoint(this)) }
+    API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
   }
 
   /** Gets the root node. */

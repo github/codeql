@@ -61,7 +61,7 @@ API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int
   n = 1 and
   exists(EntryPointFromAnyType entry |
     methodMatchedByName(path, entry.getName()) and
-    result = entry.getNode()
+    result = entry.getANode()
   )
 }
 
