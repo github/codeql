@@ -151,7 +151,7 @@ module NestJS {
   private API::Node validationPipe() {
     result = nestjs().getMember("ValidationPipe")
     or
-    result = any(ValidationNodeEntry e).getNode()
+    result = any(ValidationNodeEntry e).getANode()
   }
 
   /**

@@ -389,7 +389,10 @@ module API {
     abstract DataFlow::Node getARhs();
 
     /** Gets an API-node for this entry point. */
-    API::Node getNode() { result = root().getASuccessor(Label::entryPoint(this)) }
+    API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
+
+    /** DEPRECATED. Use `getANode()` instead. */
+    deprecated API::Node getNode() { result = this.getANode() }
   }
 
   /**
