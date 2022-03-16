@@ -16,10 +16,6 @@ private Expr getAssignedExpr(Stmt stmt) {
   result = stmt.stripSingletonBlocks().(ExprStmt).getExpr().(AssignExpr).getLValue()
 }
 
-private predicate ifStmt(IfStmt is) {
-  sameGvn(getAssignedExpr(is.getThen()), getAssignedExpr(is.getElse()))
-}
-
 from IfStmt is, string what
 where
   (
@@ -27,7 +23,7 @@ where
     is.getElse().stripSingletonBlocks() instanceof ReturnStmt and
     what = "return"
     or
-    ifStmt(is) and
+    sameGvn(getAssignedExpr(is.getThen()), getAssignedExpr(is.getElse())) and
     what = "write to the same variable"
   ) and
   not exists(IfStmt other | is = other.getElse())
