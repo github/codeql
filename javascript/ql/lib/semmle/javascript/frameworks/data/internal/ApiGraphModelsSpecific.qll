@@ -2,7 +2,7 @@
  * Contains the language-specific part of the models-as-data implementation found in `ApiGraphModels.qll`.
  *
  * It must export the following members:
- * ```codeql
+ * ```ql
  * class Unit // a unit type
  * module API // the API graph module
  * predicate isPackageUsed(string package)
