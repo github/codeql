@@ -11,8 +11,14 @@ private import semmle.javascript.filters.ClassifyFiles as ClassifyFiles
 private import semmle.javascript.heuristics.SyntacticHeuristics
 private import CoreKnowledge as CoreKnowledge
 
+predicate isIntermediaryDataflowNode(DataFlow::Node n) {
+  n instanceof DataFlow::ExceptionalInvocationReturnNode
+}
+
 /** Provides a set of reasons why a given data flow node should be excluded as a sink candidate. */
 string getAReasonSinkExcluded(DataFlow::Node n) {
+  isIntermediaryDataflowNode(n) and result = "intermediary dataflow node"
+  or
   isArgumentToModeledFunction(n) and result = "argument to modeled function"
   or
   isArgumentToSinklessLibrary(n) and result = "argument to sinkless library"
