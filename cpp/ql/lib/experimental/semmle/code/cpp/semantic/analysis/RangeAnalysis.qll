@@ -421,12 +421,10 @@ private predicate boundFlowStep(SemExpr e2, SemExpr e1, int delta, boolean upper
           else none()
   )
   or
-  exists(SemExpr x |
-    exists(SemSubExpr sub |
-      e2 = sub and
-      sub.getLeftOperand() = e1 and
-      sub.getRightOperand() = x
-    )
+  exists(SemExpr x, SemSubExpr sub |
+    e2 = sub and
+    sub.getLeftOperand() = e1 and
+    sub.getRightOperand() = x
   |
     // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
     not x instanceof SemConstantIntegerExpr and
