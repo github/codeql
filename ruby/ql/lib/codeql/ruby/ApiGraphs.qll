@@ -298,6 +298,11 @@ module API {
     API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
   }
 
+  // Ensure all entry points are imported from ApiGraphs.qll
+  private module ImportEntryPoints {
+    private import codeql.ruby.frameworks.data.ModelsAsData
+  }
+
   /** Gets the root node. */
   Root root() { any() }
 
