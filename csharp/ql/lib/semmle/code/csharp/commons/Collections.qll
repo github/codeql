@@ -66,6 +66,17 @@ class CollectionType extends RefType {
   }
 }
 
+/** An IEnumerable type. */
+class IEnumerableType extends RefType {
+  IEnumerableType() {
+    this.hasQualifiedName("System.Collections", "IEnumerable")
+    or
+    this.(ConstructedType)
+        .getUnboundGeneric()
+        .hasQualifiedName("System.Collections.Generic", "IEnumerable<>")
+  }
+}
+
 /** An object creation that creates an empty collection. */
 class EmptyCollectionCreation extends ObjectCreation {
   EmptyCollectionCreation() {
