@@ -50,9 +50,6 @@ AtmConfig getAtmCfg(Query query) {
   query instanceof XssQuery and result instanceof XssAtm::DomBasedXssAtmConfig
 }
 
-/** DEPRECATED: Alias for getAtmCfg */
-deprecated ATMConfig getATMCfg(Query query) { result = getAtmCfg(query) }
-
 /** Gets the ATM data flow configuration for the specified query. */
 DataFlow::Configuration getDataFlowCfg(Query query) {
   query instanceof NosqlInjectionQuery and result instanceof NosqlInjectionAtm::Configuration
