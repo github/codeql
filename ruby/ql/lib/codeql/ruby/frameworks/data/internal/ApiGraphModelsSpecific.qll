@@ -50,13 +50,13 @@ predicate isPackageUsed(string package) {
 bindingset[package, type, path]
 API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int n) {
   isRelevantFullPath(package, type, path) and
-  package = any(string s) and // Allow any package name, see `isPackageUsed`.
+  exists(package) and // Allow any package name, see `isPackageUsed`.
   type = "" and
   n = 0 and
   result = API::root()
   or
   // A row of form `;any;Method[foo]` should match any method named `foo`.
-  package = any(string s) and
+  exists(package) and
   type = "any" and
   n = 1 and
   exists(EntryPointFromAnyType entry |
@@ -164,5 +164,5 @@ predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
 bindingset[name, argument]
 predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
   name = ["Member", "Method"] and
-  argument = any(string s)
+  exists(argument)
 }

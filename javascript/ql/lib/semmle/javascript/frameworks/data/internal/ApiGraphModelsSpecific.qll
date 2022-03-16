@@ -217,5 +217,5 @@ predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
 bindingset[name, argument]
 predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
   name = ["Member"] and
-  argument = any(string s)
+  exists(argument)
 }
