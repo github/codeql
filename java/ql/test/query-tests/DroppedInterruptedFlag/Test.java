@@ -47,6 +47,19 @@ public class Test {
         }
     }
 
+    public void busyWaitIncorrect() {
+        try {
+            while(true) {
+                // do work
+                if (Thread.interrupted()) {
+                    throw new InterruptedException("Thread was interrupted!");
+                }
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Thread was interrupted!", e);
+        }
+    }
+
     public static void willSetInterruptFlag() {
         Thread.currentThread().interrupt();
     }

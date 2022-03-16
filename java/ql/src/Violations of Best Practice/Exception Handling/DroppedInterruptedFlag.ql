@@ -33,13 +33,14 @@ CatchClause catchesIE(TryStmt t) {
   )
 }
 
-predicate throwsIE(Expr e) {
-  exists(Callable c |
-    c.getAThrownExceptionType().(RefType).getADescendant() instanceof InterruptedException
-  |
-    e.(ConstructorCall).getConstructor() = c or
-    e.(MethodAccess).getMethod() = c
+Expr throwsIE() {
+  exists(Callable c | c.getAThrownExceptionType().getADescendant() instanceof InterruptedException |
+    result.(ConstructorCall).getConstructor() = c or
+    result.(MethodAccess).getMethod() = c
   )
+  or
+  result.getAnEnclosingStmt().(ThrowStmt).getThrownExceptionType().getADescendant() instanceof
+    InterruptedException
 }
 
 MethodAccess threadInterruptMethodAccess() {
@@ -60,7 +61,7 @@ Stmt stmtContainingInterrupt() {
 
 from Expr e, TryStmt t, CatchClause cc
 where
-  throwsIE(e) and
+  e = throwsIE() and
   t.getBlock() = e.getEnclosingStmt().getEnclosingStmt*() and
   cc = catchesIE(t) and
   not cc = stmtContainingInterrupt() and
