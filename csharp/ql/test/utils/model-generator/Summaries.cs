@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Summaries;
@@ -78,6 +79,26 @@ public class CollectionFlow
     }
 
     public List<string> ReturnFieldInAList()
+    {
+        return new List<string> { tainted };
+    }
+}
+
+public class IEnumerableFlow
+{
+    private string tainted;
+
+    public IEnumerable<string> ReturnIEnumerable(IEnumerable<string> input)
+    {
+        return input;
+    }
+
+    public object ReturnIEnumerableElement(IEnumerable<object> input)
+    {
+        return input.First();
+    }
+
+    public IEnumerable<string> ReturnFieldInIEnumerable()
     {
         return new List<string> { tainted };
     }

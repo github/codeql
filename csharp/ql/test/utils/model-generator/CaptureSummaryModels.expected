@@ -13,3 +13,6 @@
 | Summaries;CollectionFlow;false;ReturnArrayElement;(System.Int32[]);Argument[0].Element;ReturnValue;taint |
 | Summaries;CollectionFlow;false;ReturnFieldInAList;();Argument[Qualifier];ReturnValue;taint |
 | Summaries;CollectionFlow;false;ReturnListElement;(System.Collections.Generic.List<System.Object>);Argument[0].Element;ReturnValue;taint |
+| Summaries;IEnumerableFlow;false;ReturnFieldInIEnumerable;();Argument[Qualifier];ReturnValue;taint |
+| Summaries;IEnumerableFlow;false;ReturnIEnumerable;(System.Collections.Generic.IEnumerable<System.String>);Argument[0].Element;ReturnValue;taint |
+| Summaries;IEnumerableFlow;false;ReturnIEnumerableElement;(System.Collections.Generic.IEnumerable<System.Object>);Argument[0].Element;ReturnValue;taint |
