@@ -67,8 +67,8 @@ class IRDefaultTaintTrackingTest extends InlineExpectationsTest {
   }
 }
 
-class ASTTaintTrackingTest extends InlineExpectationsTest {
-  ASTTaintTrackingTest() { this = "ASTTaintTrackingTest" }
+class AstTaintTrackingTest extends InlineExpectationsTest {
+  AstTaintTrackingTest() { this = "ASTTaintTrackingTest" }
 
   override string getARelevantTag() { result = "ast" }
 

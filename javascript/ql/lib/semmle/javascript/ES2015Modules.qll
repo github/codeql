@@ -647,13 +647,6 @@ abstract class ReExportDeclaration extends ExportDeclaration {
   /** Gets the path of the module from which this declaration re-exports. */
   abstract ConstantString getImportedPath();
 
-  /**
-   * DEPRECATED. Use `getReExportedES2015Module()` instead.
-   *
-   * Gets the module from which this declaration re-exports.
-   */
-  deprecated ES2015Module getImportedModule() { result = getReExportedModule() }
-
   /** Gets the module from which this declaration re-exports, if it is an ES2015 module. */
   ES2015Module getReExportedES2015Module() { result = getReExportedModule() }
 

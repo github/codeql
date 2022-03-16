@@ -143,10 +143,6 @@ module DataFlow {
     override string toString() { result = p.toString() }
   }
 
-  newtype TReturnKind =
-    TNormalReturnKind() or
-    TParameterOutKind(int i) { any(Parameter p).getIndex() = i }
-
   /** A data flow node that represents the output of a call at the call site. */
   abstract class OutNode extends Node {
     /** Gets the underlying call. */

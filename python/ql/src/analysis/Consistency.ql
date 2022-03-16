@@ -259,7 +259,7 @@ predicate file_consistency(string clsname, string problem, string what) {
   exists(Container f |
     clsname = f.getAQlClass() and
     uniqueness_error(count(f.toString()), "toString", problem) and
-    what = "file " + f.getName()
+    what = "file " + f.getAbsolutePath()
   )
 }
 

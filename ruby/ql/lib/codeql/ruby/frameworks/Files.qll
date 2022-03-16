@@ -69,7 +69,10 @@ abstract private class IOOrFileMethodCall extends DataFlow::CallNode {
   }
 
   /** Gets the API used to perform this call, either "IO" or "File" */
-  abstract string getAPI();
+  abstract string getApi();
+
+  /** DEPRECATED: Alias for getApi */
+  deprecated string getAPI() { result = this.getApi() }
 
   /** Gets a node representing the data read or written by this call */
   abstract DataFlow::Node getADataNodeImpl();
@@ -110,7 +113,10 @@ private class IOOrFileReadMethodCall extends IOOrFileMethodCall {
     )
   }
 
-  override string getAPI() { result = api }
+  override string getApi() { result = api }
+
+  /** DEPRECATED: Alias for getApi */
+  deprecated override string getAPI() { result = this.getApi() }
 
   override DataFlow::Node getADataNodeImpl() { result = this }
 
@@ -151,7 +157,10 @@ private class IOOrFileWriteMethodCall extends IOOrFileMethodCall {
     )
   }
 
-  override string getAPI() { result = api }
+  override string getApi() { result = api }
+
+  /** DEPRECATED: Alias for getApi */
+  deprecated override string getAPI() { result = this.getApi() }
 
   override DataFlow::Node getADataNodeImpl() { result = dataNode }
 
@@ -180,12 +189,6 @@ module IO {
     }
   }
 
-  // "Direct" `IO` instances, i.e. cases where there is no more specific
-  // subtype such as `File`
-  private class IOInstanceStrict extends IOInstance {
-    IOInstanceStrict() { this = ioInstance() }
-  }
-
   /**
    * A `DataFlow::CallNode` that reads data using the `IO` class. For example,
    * the `read` and `readline` calls in:
@@ -202,7 +205,7 @@ module IO {
    * that use a subclass of `IO` such as `File`.
    */
   class IOReader extends IOOrFileReadMethodCall {
-    IOReader() { this.getAPI() = "IO" }
+    IOReader() { this.getApi() = "IO" }
   }
 
   /**
@@ -221,7 +224,7 @@ module IO {
    * that use a subclass of `IO` such as `File`.
    */
   class IOWriter extends IOOrFileWriteMethodCall {
-    IOWriter() { this.getAPI() = "IO" }
+    IOWriter() { this.getApi() = "IO" }
   }
 
   /**
@@ -306,7 +309,7 @@ module File {
    * ```
    */
   class FileModuleReader extends IO::FileReader {
-    FileModuleReader() { this.getAPI() = "File" }
+    FileModuleReader() { this.getApi() = "File" }
 
     override DataFlow::Node getADataNode() { result = this.getADataNodeImpl() }
 

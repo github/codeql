@@ -39,8 +39,11 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
 //--------
 predicate isExpressionNode(ControlFlowNode node) { node.getNode() instanceof Expr }
 
+/** DEPRECATED: Alias for `SyntheticPreUpdateNode` */
+deprecated module syntheticPreUpdateNode = SyntheticPreUpdateNode;
+
 /** A module collecting the different reasons for synthesising a pre-update node. */
-module syntheticPreUpdateNode {
+module SyntheticPreUpdateNode {
   class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
     NeedsSyntheticPreUpdateNode post;
 
@@ -63,7 +66,7 @@ module syntheticPreUpdateNode {
     override Node getPreUpdateNode() { result.(SyntheticPreUpdateNode).getPostUpdateNode() = this }
 
     /**
-     * A label for this kind of node. This will figure in the textual representation of the synthesized pre-update node.
+     * Gets the label for this kind of node. This will figure in the textual representation of the synthesized pre-update node.
      *
      * There is currently only one reason for needing a pre-update node, so we always use that as the label.
      */
@@ -78,10 +81,13 @@ module syntheticPreUpdateNode {
   CfgNode objectCreationNode() { result.getNode().(CallNode) = any(ClassCall c).getNode() }
 }
 
-import syntheticPreUpdateNode
+import SyntheticPreUpdateNode
+
+/** DEPRECATED: Alias for `SyntheticPostUpdateNode` */
+deprecated module syntheticPostUpdateNode = SyntheticPostUpdateNode;
 
 /** A module collecting the different reasons for synthesising a post-update node. */
-module syntheticPostUpdateNode {
+module SyntheticPostUpdateNode {
   /** A post-update node is synthesized for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
   class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
     NeedsSyntheticPostUpdateNode pre;
@@ -108,7 +114,7 @@ module syntheticPostUpdateNode {
     }
 
     /**
-     * A label for this kind of node. This will figure in the textual representation of the synthesized post-update node.
+     * Gets the label for this kind of node. This will figure in the textual representation of the synthesized post-update node.
      * We favour being an arguments as the reason for the post-update node in case multiple reasons apply.
      */
     string label() {
@@ -122,6 +128,8 @@ module syntheticPostUpdateNode {
   }
 
   /**
+   * Gets the pre-update node for this node.
+   *
    * An argument might have its value changed as a result of a call.
    * Certain arguments, such as implicit self arguments are already post-update nodes
    * and should not have an extra node synthesised.
@@ -143,7 +151,7 @@ module syntheticPostUpdateNode {
     )
   }
 
-  /** An object might have its value changed after a store. */
+  /** Gets the pre-update node associated with a store. This is used for when an object might have its value changed after a store. */
   CfgNode storePreUpdateNode() {
     exists(Attribute a |
       result.getNode() = a.getObject().getAFlowNode() and
@@ -152,7 +160,7 @@ module syntheticPostUpdateNode {
   }
 
   /**
-   * A node marking the state change of an object after a read.
+   * Gets a node marking the state change of an object after a read.
    *
    * A reverse read happens when the result of a read is modified, e.g. in
    * ```python
@@ -175,7 +183,7 @@ module syntheticPostUpdateNode {
   }
 }
 
-import syntheticPostUpdateNode
+import SyntheticPostUpdateNode
 
 class DataFlowExpr = Expr;
 
@@ -611,7 +619,7 @@ newtype TDataFlowCallable =
   TLambda(Function lambda) { lambda.isLambda() } or
   TModule(Module m)
 
-/** Represents a callable. */
+/** A callable. */
 abstract class DataFlowCallable extends TDataFlowCallable {
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -712,7 +720,7 @@ newtype TDataFlowCall =
   TClassCall(CallNode call) { call = any(ClassValue c | not c.isAbsent()).getACall() } or
   TSpecialCall(SpecialMethodCallNode special)
 
-/** Represents a call. */
+/** A call. */
 abstract class DataFlowCall extends TDataFlowCall {
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -737,7 +745,7 @@ abstract class DataFlowCall extends TDataFlowCall {
 }
 
 /**
- * Represents a call to a function/lambda.
+ * A call to a function/lambda.
  * This excludes calls to bound methods, classes, and special methods.
  * Bound method calls and class calls insert an argument for the explicit
  * `self` parameter, and special method calls have special argument passing.
@@ -824,7 +832,7 @@ class ClassCall extends DataFlowCall, TClassCall {
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
 }
 
-/** Represents a call to a special method. */
+/** A call to a special method. */
 class SpecialCall extends DataFlowCall, TSpecialCall {
   SpecialMethodCallNode special;
 
@@ -1617,6 +1625,8 @@ import IterableUnpacking
  */
 module MatchUnpacking {
   /**
+   * Holds when there is flow from the subject `nodeFrom` to the (top-level) pattern `nodeTo` of a `match` statement.
+   *
    * The subject of a match flows to each top-level pattern
    * (a pattern directly under a `case` statement).
    *

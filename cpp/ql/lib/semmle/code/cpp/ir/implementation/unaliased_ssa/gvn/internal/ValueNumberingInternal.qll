@@ -99,7 +99,7 @@ private predicate filteredNumberableInstruction(Instruction instr) {
   // count rather than strictcount to handle missing AST elements
   // separate instanceof and inline casts to avoid failed casts with a count of 0
   instr instanceof VariableAddressInstruction and
-  count(instr.(VariableAddressInstruction).getIRVariable().getAST()) != 1
+  count(instr.(VariableAddressInstruction).getIRVariable().getAst()) != 1
   or
   instr instanceof ConstantInstruction and
   count(instr.getResultIRType()) != 1
@@ -121,7 +121,7 @@ private predicate variableAddressValueNumber(
   // The underlying AST element is used as value-numbering key instead of the
   // `IRVariable` to work around a problem where a variable or expression with
   // multiple types gives rise to multiple `IRVariable`s.
-  unique( | | instr.getIRVariable().getAST()) = ast
+  unique( | | instr.getIRVariable().getAst()) = ast
 }
 
 private predicate initializeParameterValueNumber(
@@ -131,7 +131,7 @@ private predicate initializeParameterValueNumber(
   // The underlying AST element is used as value-numbering key instead of the
   // `IRVariable` to work around a problem where a variable or expression with
   // multiple types gives rise to multiple `IRVariable`s.
-  instr.getIRVariable().getAST() = var
+  instr.getIRVariable().getAst() = var
 }
 
 private predicate constantValueNumber(

@@ -1,6 +1,6 @@
 import TestUtilities.dataflow.FlowTestCommon
 
-module ASTTest {
+module AstTest {
   private import ASTConfiguration
 }
 

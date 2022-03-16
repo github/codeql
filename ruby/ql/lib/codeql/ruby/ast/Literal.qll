@@ -230,13 +230,18 @@ class StringTextComponent extends StringComponent, TStringTextComponentNonRegexp
 
   StringTextComponent() { this = TStringTextComponentNonRegexp(g) }
 
-  final override string toString() { result = g.getValue() }
+  final override string toString() { result = this.getRawText() }
 
   final override ConstantValue::ConstantStringValue getConstantValue() {
-    result.isString(g.getValue())
+    result.isString(this.getUnescapedText())
   }
 
   final override string getAPrimaryQlClass() { result = "StringTextComponent" }
+
+  /** Gets the text of this component as it appears in the source code. */
+  final string getRawText() { result = g.getValue() }
+
+  final private string getUnescapedText() { result = unescapeTextComponent(this.getRawText()) }
 }
 
 /**
@@ -247,13 +252,18 @@ class StringEscapeSequenceComponent extends StringComponent, TStringEscapeSequen
 
   StringEscapeSequenceComponent() { this = TStringEscapeSequenceComponentNonRegexp(g) }
 
-  final override string toString() { result = g.getValue() }
+  final override string toString() { result = this.getRawText() }
 
   final override ConstantValue::ConstantStringValue getConstantValue() {
-    result.isString(g.getValue())
+    result.isString(this.getUnescapedText())
   }
 
   final override string getAPrimaryQlClass() { result = "StringEscapeSequenceComponent" }
+
+  /** Gets the text of this component as it appears in the source code. */
+  final string getRawText() { result = g.getValue() }
+
+  final private string getUnescapedText() { result = unescapeEscapeSequence(this.getRawText()) }
 }
 
 /**

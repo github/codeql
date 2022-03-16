@@ -20,10 +20,4 @@ import semmle.code.cpp.dataflow.DataFlow2
 
 module TaintTracking {
   import semmle.code.cpp.dataflow.internal.tainttracking1.TaintTrackingImpl
-  private import semmle.code.cpp.dataflow.TaintTracking2
-
-  /**
-   * DEPRECATED: Use TaintTracking2::Configuration instead.
-   */
-  deprecated class Configuration2 = TaintTracking2::Configuration;
 }

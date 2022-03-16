@@ -12,8 +12,8 @@ private import semmle.code.java.dataflow.TaintTracking
 /**
  * An external API from either the Java Standard Library or a 3rd party library.
  */
-class ExternalAPI extends Callable {
-  ExternalAPI() { not this.fromSource() }
+class ExternalApi extends Callable {
+  ExternalApi() { not this.fromSource() }
 
   /** Holds if this API is not worth supporting */
   predicate isUninteresting() { this.isTestLibrary() or this.isParameterlessConstructor() }
@@ -79,6 +79,9 @@ class ExternalAPI extends Callable {
   /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
   predicate isSupported() { this.hasSummary() or this.isSource() or this.isSink() }
 }
+
+/** DEPRECATED: Alias for ExternalApi */
+deprecated class ExternalAPI = ExternalApi;
 
 private class TestLibrary extends RefType {
   TestLibrary() {

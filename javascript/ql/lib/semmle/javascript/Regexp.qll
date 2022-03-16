@@ -664,15 +664,6 @@ class RegExpNormalConstant extends RegExpConstant, @regexp_normal_constant {
 }
 
 /**
- * DEPRECATED. Use `RegExpNormalConstant` instead.
- *
- * This class used to represent an individual normal character but has been superseded by
- * `RegExpNormalConstant`, which represents a sequence of normal characters.
- * There is no longer a separate node for each individual character in a constant.
- */
-deprecated class RegExpNormalChar = RegExpNormalConstant;
-
-/**
  * A hexadecimal character escape in a regular expression.
  *
  * Example:
@@ -1306,8 +1297,8 @@ module RegExp {
   /**
    * A meta character used by HTML.
    */
-  private class HTMLMetaCharacter extends MetaCharacter {
-    HTMLMetaCharacter() { this = ["<", "'", "\""] }
+  private class HtmlMetaCharacter extends MetaCharacter {
+    HtmlMetaCharacter() { this = ["<", "'", "\""] }
   }
 
   /**

@@ -1,5 +1,6 @@
 private import codeql.ruby.ast.Literal as AST
 private import ParseRegExp
+private import codeql.NumberUtils
 import codeql.Locations
 private import codeql.ruby.DataFlow
 
@@ -82,7 +83,7 @@ class RegExpParent extends TRegExpParent {
 
   RegExpTerm getChild(int i) { none() }
 
-  RegExpTerm getAChild() { result = this.getChild(_) }
+  final RegExpTerm getAChild() { result = this.getChild(_) }
 
   int getNumChild() { result = count(this.getAChild()) }
 
@@ -254,12 +255,11 @@ newtype TRegExpParent =
 
 class RegExpQuantifier extends RegExpTerm, TRegExpQuantifier {
   int part_end;
-  boolean maybe_empty;
   boolean may_repeat_forever;
 
   RegExpQuantifier() {
     this = TRegExpQuantifier(re, start, end) and
-    re.qualifiedPart(start, part_end, end, maybe_empty, may_repeat_forever)
+    re.qualifiedPart(start, part_end, end, _, may_repeat_forever)
   }
 
   override RegExpTerm getChild(int i) {
@@ -420,7 +420,9 @@ class RegExpEscape extends RegExpNormalChar {
     result = this.getUnicode()
   }
 
-  predicate isIdentityEscape() { not this.getUnescaped() in ["n", "r", "t"] }
+  predicate isIdentityEscape() {
+    not this.getUnescaped() in ["n", "r", "t"] and not this.isUnicode()
+  }
 
   /**
    * Gets the text for this escape. That is e.g. "\w".
@@ -437,46 +439,13 @@ class RegExpEscape extends RegExpNormalChar {
    * E.g. for `\u0061` this returns "a".
    */
   private string getUnicode() {
-    exists(int codepoint | codepoint = sum(this.getHexValueFromUnicode(_)) |
-      result = codepoint.toUnicode()
-    )
-  }
-
-  /**
-   * Gets int value for the `index`th char in the hex number of the unicode escape.
-   * E.g. for `\u0061` and `index = 2` this returns 96 (the number `6` interpreted as hex).
-   */
-  private int getHexValueFromUnicode(int index) {
     this.isUnicode() and
-    exists(string hex, string char | hex = this.getText().suffix(2) |
-      char = hex.charAt(index) and
-      result = 16.pow(hex.length() - index - 1) * toHex(char)
-    )
+    result = parseHexInt(this.getText().suffix(2)).toUnicode()
   }
 
   string getUnescaped() { result = this.getText().suffix(1) }
 
   override string getAPrimaryQlClass() { result = "RegExpEscape" }
-}
-
-/**
- * Gets the hex number for the `hex` char.
- */
-private int toHex(string hex) {
-  hex = [0 .. 9].toString() and
-  result = hex.toInt()
-  or
-  result = 10 and hex = ["a", "A"]
-  or
-  result = 11 and hex = ["b", "B"]
-  or
-  result = 12 and hex = ["c", "C"]
-  or
-  result = 13 and hex = ["d", "D"]
-  or
-  result = 14 and hex = ["e", "E"]
-  or
-  result = 15 and hex = ["f", "F"]
 }
 
 /**

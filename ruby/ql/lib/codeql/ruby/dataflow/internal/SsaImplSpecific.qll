@@ -40,7 +40,7 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
   ) and
   certain = true
   or
-  SsaImpl::capturedCallWrite(bb, i, v) and
+  SsaImpl::capturedCallWrite(_, bb, i, v) and
   certain = false
 }
 

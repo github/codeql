@@ -85,7 +85,7 @@ abstract class TlsLibrary extends string {
   bindingset[this]
   TlsLibrary() { any() }
 
-  /** The name of a specific protocol version. */
+  /** Gets the name of a specific protocol version. */
   abstract string specific_version_name(ProtocolVersion version);
 
   /** Gets a name, which is a member of `version_constants`, that can be used to specify the protocol family `family`. */

@@ -1000,7 +1000,7 @@ module Internal {
   // The predicates in this module should be evaluated in the same stage as the CFG
   // construction stage. This is to avoid recomputation of pre-basic-blocks and
   // pre-SSA predicates
-  private module PreCFG {
+  private module PreCfg {
     private import semmle.code.csharp.controlflow.internal.PreBasicBlocks as PreBasicBlocks
     private import semmle.code.csharp.controlflow.internal.PreSsa
 
@@ -1414,7 +1414,7 @@ module Internal {
     }
 
     cached
-    private module CachedWithCFG {
+    private module CachedWithCfg {
       private import semmle.code.csharp.Caching
 
       cached
@@ -1719,10 +1719,10 @@ module Internal {
       }
     }
 
-    import CachedWithCFG
+    import CachedWithCfg
   }
 
-  import PreCFG
+  import PreCfg
 
   private predicate interestingDescendantCandidate(Expr e) {
     guardControls(e, _, _)

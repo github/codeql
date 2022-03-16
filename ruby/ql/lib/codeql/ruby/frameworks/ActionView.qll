@@ -61,7 +61,7 @@ private class ActionViewHtmlEscapeCall extends HtmlEscapeCall {
 // A call in a context where some commonly used `ActionView` methods are available.
 private class ActionViewContextCall extends MethodCall {
   ActionViewContextCall() {
-    this.getReceiver() instanceof Self and
+    this.getReceiver() instanceof SelfVariableAccess and
     inActionViewContext(this)
   }
 

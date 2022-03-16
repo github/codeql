@@ -17,30 +17,13 @@ import Shadowing
 import semmle.python.types.Builtins
 
 predicate allow_list(string name) {
-  /* These are rarely used and thus unlikely to be confusing */
-  name = "iter" or
-  name = "next" or
-  name = "input" or
-  name = "file" or
-  name = "apply" or
-  name = "slice" or
-  name = "buffer" or
-  name = "coerce" or
-  name = "intern" or
-  name = "exit" or
-  name = "quit" or
-  name = "license" or
-  /* These are short and/or hard to avoid */
-  name = "dir" or
-  name = "id" or
-  name = "max" or
-  name = "min" or
-  name = "sum" or
-  name = "cmp" or
-  name = "chr" or
-  name = "ord" or
-  name = "bytes" or
-  name = "_"
+  name in [
+      /* These are rarely used and thus unlikely to be confusing */
+      "iter", "next", "input", "file", "apply", "slice", "buffer", "coerce", "intern", "exit",
+      "quit", "license",
+      /* These are short and/or hard to avoid */
+      "dir", "id", "max", "min", "sum", "cmp", "chr", "ord", "bytes", "_",
+    ]
 }
 
 predicate shadows(Name d, string name, Function scope, int line) {

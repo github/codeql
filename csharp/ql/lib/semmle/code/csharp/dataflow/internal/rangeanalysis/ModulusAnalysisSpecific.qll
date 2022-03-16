@@ -43,37 +43,4 @@ module Private {
   predicate ssaUpdateStep = RU::ssaUpdateStep/3;
 
   Expr getABasicBlockExpr(BasicBlock bb) { result = bb.getANode() }
-
-  private class PhiInputEdgeBlock extends BasicBlock {
-    PhiInputEdgeBlock() { this = any(SsaReadPositionPhiInputEdge edge).getOrigBlock() }
-  }
-
-  int getId(PhiInputEdgeBlock bb) {
-    exists(CfgImpl::ControlFlowTree::Range_ t | CfgImpl::ControlFlowTree::idOf(t, result) |
-      t = bb.getFirstNode().getElement()
-      or
-      t = bb.(CS::ControlFlow::BasicBlocks::EntryBlock).getCallable()
-    )
-  }
-
-  private string getSplitString(PhiInputEdgeBlock bb) {
-    result = bb.getFirstNode().(CS::ControlFlow::Nodes::ElementNode).getSplitsString()
-    or
-    not exists(bb.getFirstNode().(CS::ControlFlow::Nodes::ElementNode).getSplitsString()) and
-    result = ""
-  }
-
-  /**
-   * Holds if `inp` is an input to `phi` along `edge` and this input has index `r`
-   * in an arbitrary 1-based numbering of the input edges to `phi`.
-   */
-  predicate rankedPhiInput(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, int r) {
-    edge.phiInput(phi, inp) and
-    edge =
-      rank[r](SsaReadPositionPhiInputEdge e |
-        e.phiInput(phi, _)
-      |
-        e order by getId(e.getOrigBlock()), getSplitString(e.getOrigBlock())
-      )
-  }
 }

@@ -6,7 +6,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 6.5
- * @precision medium
+ * @precision high
  * @id cpp/system-data-exposure
  * @tags security
  *       external/cwe/cwe-497
@@ -46,8 +46,8 @@ class EnvData extends SystemData {
 /**
  * Data originating from a call to `mysql_get_client_info()`.
  */
-class SQLClientInfo extends SystemData {
-  SQLClientInfo() { this.(FunctionCall).getTarget().hasName("mysql_get_client_info") }
+class SqlClientInfo extends SystemData {
+  SqlClientInfo() { this.(FunctionCall).getTarget().hasName("mysql_get_client_info") }
 
   override Expr getAnExpr() { result = this }
 }
@@ -63,8 +63,8 @@ private predicate sqlConnectInfo(FunctionCall source, VariableAccess use) {
 /**
  * Data passed into an SQL connect function.
  */
-class SQLConnectInfo extends SystemData {
-  SQLConnectInfo() { sqlConnectInfo(this, _) }
+class SqlConnectInfo extends SystemData {
+  SqlConnectInfo() { sqlConnectInfo(this, _) }
 
   override Expr getAnExpr() { sqlConnectInfo(this, result) }
 }
