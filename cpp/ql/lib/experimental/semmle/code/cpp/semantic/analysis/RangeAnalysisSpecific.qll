@@ -24,7 +24,7 @@ predicate ignoreExprBound(SemExpr e) { none() }
  * Ignore any inferred zero lower bound on this expression.
  *
  * This predicate is to keep the results identical to the original Java implementation. It should be
- * removed once we hae the new implementation matching the old results exactly.
+ * removed once we have the new implementation matching the old results exactly.
  */
 predicate ignoreZeroLowerBound(SemExpr e) { none() }
 
