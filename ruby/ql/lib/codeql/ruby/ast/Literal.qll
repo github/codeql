@@ -226,9 +226,19 @@ class StringComponent extends AstNode, TStringComponent {
  * ```
  */
 class StringTextComponent extends StringComponent, TStringTextComponentNonRegexp {
+  final override string getAPrimaryQlClass() { result = "StringTextComponent" }
+
+  /** Gets the text of this component as it appears in the source code. */
+  string getRawText() { none() }
+}
+
+private class StringTextComponentStringOrHeredocContent extends StringTextComponent,
+  TStringTextComponentNonRegexpStringOrHeredocContent {
   private Ruby::Token g;
 
-  StringTextComponent() { this = TStringTextComponentNonRegexp(g) }
+  StringTextComponentStringOrHeredocContent() {
+    this = TStringTextComponentNonRegexpStringOrHeredocContent(g)
+  }
 
   final override string toString() { result = this.getRawText() }
 
@@ -236,12 +246,39 @@ class StringTextComponent extends StringComponent, TStringTextComponentNonRegexp
     result.isString(this.getUnescapedText())
   }
 
-  final override string getAPrimaryQlClass() { result = "StringTextComponent" }
-
-  /** Gets the text of this component as it appears in the source code. */
-  final string getRawText() { result = g.getValue() }
+  final override string getRawText() { result = g.getValue() }
 
   final private string getUnescapedText() { result = unescapeTextComponent(this.getRawText()) }
+}
+
+private class StringTextComponentSimpleSymbol extends StringTextComponent,
+  TStringTextComponentNonRegexpSimpleSymbol {
+  private Ruby::SimpleSymbol g;
+
+  StringTextComponentSimpleSymbol() { this = TStringTextComponentNonRegexpSimpleSymbol(g) }
+
+  final override string toString() { result = getSimpleSymbolValue(g) }
+
+  final override ConstantValue::ConstantStringValue getConstantValue() {
+    result.isString(getSimpleSymbolValue(g))
+  }
+
+  final override string getRawText() { result = getSimpleSymbolValue(g) }
+}
+
+private class StringTextComponentHashKeySymbol extends StringTextComponent,
+  TStringTextComponentNonRegexpHashKeySymbol {
+  private Ruby::HashKeySymbol g;
+
+  StringTextComponentHashKeySymbol() { this = TStringTextComponentNonRegexpHashKeySymbol(g) }
+
+  final override string toString() { result = g.getValue() }
+
+  final override ConstantValue::ConstantStringValue getConstantValue() {
+    result.isString(g.getValue())
+  }
+
+  final override string getRawText() { result = g.getValue() }
 }
 
 /**
@@ -573,18 +610,6 @@ class SymbolLiteral extends StringlikeLiteral, TSymbolLiteral {
   final override string getAPrimaryQlClass() {
     not this instanceof MethodName and result = "SymbolLiteral"
   }
-}
-
-private class SimpleSymbolLiteral extends SymbolLiteral, TSimpleSymbolLiteral {
-  private Ruby::SimpleSymbol g;
-
-  SimpleSymbolLiteral() { this = TSimpleSymbolLiteral(g) }
-
-  final override ConstantValue::ConstantSymbolValue getConstantValue() {
-    result.isSymbol(getSimpleSymbolValue(g))
-  }
-
-  final override string toString() { result = g.getValue() }
 }
 
 /**

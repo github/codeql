@@ -126,11 +126,21 @@ private class RequiredFileLiteralConstantValue extends RequiredConstantValue {
   }
 }
 
-private class RequiredStringTextComponentConstantValue extends RequiredConstantValue {
+private class RequiredStringTextComponentNonRegexpStringOrHeredocContentConstantValue extends RequiredConstantValue {
   override predicate requiredString(string s) {
     s =
-      unescapeTextComponent(any(Ruby::Token t | exists(TStringTextComponentNonRegexp(t))).getValue())
+      unescapeTextComponent(any(Ruby::Token t |
+          exists(TStringTextComponentNonRegexpStringOrHeredocContent(t))
+        ).getValue())
   }
+}
+
+private class RequiredStringTextComponentNonRegexpSimpleSymbolConstantValue extends RequiredConstantValue {
+  override predicate requiredString(string s) { s = getSimpleSymbolValue(_) }
+}
+
+private class RequiredStringTextComponentNonRegexpHashKeySymbolConstantValue extends RequiredConstantValue {
+  override predicate requiredString(string s) { s = any(Ruby::HashKeySymbol h).getValue() }
 }
 
 private class RequiredStringEscapeSequenceComponentConstantValue extends RequiredConstantValue {
@@ -272,6 +282,8 @@ private class SimpleSymbolLiteral extends SymbolLiteral, TSimpleSymbolLiteral {
   }
 
   final override string toString() { result = g.getValue() }
+
+  final override StringComponent getComponent(int n) { n = 0 and toGenerated(result) = g }
 }
 
 class ComplexSymbolLiteral extends SymbolLiteral, TComplexSymbolLiteral { }
@@ -306,6 +318,8 @@ private class HashKeySymbolLiteral extends SymbolLiteral, THashKeySymbolLiteral 
   }
 
   final override string toString() { result = ":" + g.getValue() }
+
+  final override StringComponent getComponent(int n) { n = 0 and toGenerated(result) = g }
 }
 
 private class RequiredCharacterConstantValue extends RequiredConstantValue {
