@@ -43,3 +43,7 @@ def userDefinedFunction(x, y)
   sink(x.unmatchedName(t))
   sink(t.matchedByNameRcv())
 end
+
+Foo.blockArg do |x|
+  sink(x.preserveTaint("taint"))
+end

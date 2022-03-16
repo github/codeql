@@ -31,6 +31,7 @@ edges
 | summaries.rb:41:24:41:24 | t :  | summaries.rb:41:8:41:25 | call to matchedByName |
 | summaries.rb:42:24:42:24 | t :  | summaries.rb:42:8:42:25 | call to matchedByName |
 | summaries.rb:44:8:44:8 | t :  | summaries.rb:44:8:44:27 | call to matchedByNameRcv |
+| summaries.rb:48:24:48:30 | "taint" :  | summaries.rb:48:8:48:31 | call to preserveTaint |
 nodes
 | summaries.rb:1:11:1:26 | call to identity :  | semmle.label | call to identity :  |
 | summaries.rb:1:20:1:26 | "taint" :  | semmle.label | "taint" :  |
@@ -66,6 +67,8 @@ nodes
 | summaries.rb:42:24:42:24 | t :  | semmle.label | t :  |
 | summaries.rb:44:8:44:8 | t :  | semmle.label | t :  |
 | summaries.rb:44:8:44:27 | call to matchedByNameRcv | semmle.label | call to matchedByNameRcv |
+| summaries.rb:48:8:48:31 | call to preserveTaint | semmle.label | call to preserveTaint |
+| summaries.rb:48:24:48:30 | "taint" :  | semmle.label | "taint" :  |
 subpaths
 invalidSpecComponent
 invalidOutputSpecComponent
@@ -86,6 +89,7 @@ invalidOutputSpecComponent
 | summaries.rb:41:8:41:25 | call to matchedByName | summaries.rb:40:7:40:13 | "taint" :  | summaries.rb:41:8:41:25 | call to matchedByName | $@ | summaries.rb:40:7:40:13 | "taint" :  | "taint" :  |
 | summaries.rb:42:8:42:25 | call to matchedByName | summaries.rb:40:7:40:13 | "taint" :  | summaries.rb:42:8:42:25 | call to matchedByName | $@ | summaries.rb:40:7:40:13 | "taint" :  | "taint" :  |
 | summaries.rb:44:8:44:27 | call to matchedByNameRcv | summaries.rb:40:7:40:13 | "taint" :  | summaries.rb:44:8:44:27 | call to matchedByNameRcv | $@ | summaries.rb:40:7:40:13 | "taint" :  | "taint" :  |
+| summaries.rb:48:8:48:31 | call to preserveTaint | summaries.rb:48:24:48:30 | "taint" :  | summaries.rb:48:8:48:31 | call to preserveTaint | $@ | summaries.rb:48:24:48:30 | "taint" :  | "taint" :  |
 warning
 | CSV type row should have 5 columns but has 2: test;TooFewColumns |
 | CSV type row should have 5 columns but has 8: test;TooManyColumns;;;Member[Foo].Instance;too;many;columns |

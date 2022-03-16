@@ -106,6 +106,9 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   or
   token.getName() = "Instance" and
   result = node.getInstance()
+  or
+  token.getName() = "BlockArgument" and
+  result = node.getBlock()
   // Note: The "ArrayElement" token is not implemented yet, as it ultimately requires type-tracking and
   // API graphs to be aware of the steps involving ArrayElement contributed by the standard library model.
   // Type-tracking cannot summarize function calls on its own, so it doesn't benefit from synthesized callables.
@@ -143,7 +146,7 @@ InvokeNode getAnInvocationOf(API::Node node) { result = node }
  */
 bindingset[name]
 predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
-  name = ["Member", "Method", "Instance", "WithBlock", "WithoutBlock"]
+  name = ["Member", "Method", "Instance", "WithBlock", "WithoutBlock", "BlockArgument"]
 }
 
 /**
@@ -151,7 +154,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
  * in an identifying access path.
  */
 predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
-  name = ["Instance", "WithBlock", "WithoutBlock"]
+  name = ["Instance", "WithBlock", "WithoutBlock", "BlockArgument"]
 }
 
 /**
