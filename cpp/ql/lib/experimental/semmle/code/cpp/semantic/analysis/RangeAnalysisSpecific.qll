@@ -40,7 +40,7 @@ predicate ignoreSsaReadArithmeticExpr(SemExpr e) { none() }
  * Holds if the specified variable should be excluded from the result of `ssaRead()`.
  *
  * This predicate is to keep the results identical to the original Java implementation. It should be
- * removed once we hae the new implementation matching the old results exactly.
+ * removed once we have the new implementation matching the old results exactly.
  */
 predicate ignoreSsaReadAssignment(SemSsaVariable v) { none() }
 
