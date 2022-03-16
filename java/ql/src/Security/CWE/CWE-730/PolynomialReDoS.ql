@@ -12,37 +12,12 @@
  */
 
 import java
-import semmle.code.java.security.performance.SuperlinearBackTracking
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.regex.RegexTreeView
-import semmle.code.java.regex.RegexFlowConfigs
-import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.performance.PolynomialReDosQuery
 import DataFlow::PathGraph
 
-class PolynomialRedosSink extends DataFlow::Node {
-  RegExpLiteral reg;
-
-  PolynomialRedosSink() { regexMatchedAgainst(reg.getRegex(), this.asExpr()) }
-
-  RegExpTerm getRegExp() { result.getParent() = reg }
-}
-
-class PolynomialRedosConfig extends TaintTracking::Configuration {
-  PolynomialRedosConfig() { this = "PolynomialRedosConfig" }
-
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof PolynomialRedosSink }
-}
-
-from
-  PolynomialRedosConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  PolynomialRedosSink sinkNode, PolynomialBackTrackingTerm regexp
-where
-  config.hasFlowPath(source, sink) and
-  sinkNode = sink.getNode() and
-  regexp.getRootTerm() = sinkNode.getRegExp()
-select sinkNode, source, sink,
+from DataFlow::PathNode source, DataFlow::PathNode sink, PolynomialBackTrackingTerm regexp
+where hasPolynomialReDosResult(source, sink, regexp)
+select sink, source, sink,
   "This $@ that depends on $@ may run slow on strings " + regexp.getPrefixMessage() +
     "with many repetitions of '" + regexp.getPumpString() + "'.", regexp, "regular expression",
   source.getNode(), "a user-provided value"
