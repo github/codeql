@@ -1,3 +1,3 @@
 | test.cpp:63:3:71:3 | { ... } | it is possible to dereference a pointer when accessing a buffer, since it is possible to throw an exception before the memory for the bufMyData is allocated |
-| test.cpp:178:3:180:3 | { ... } | perhaps a situation of uncertainty due to the repeated call of the delete function for the variable valData |
-| test.cpp:216:3:218:3 | { ... } | perhaps a situation of uncertainty due to the repeated call of the delete function for the variable valData |
+| test.cpp:181:3:183:3 | { ... } | perhaps a situation of uncertainty due to the repeated call of the delete function for the variable valData |
+| test.cpp:219:3:221:3 | { ... } | perhaps a situation of uncertainty due to the repeated call of the delete function for the variable valData |
