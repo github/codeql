@@ -1,3 +1,4 @@
+| NoSummaries;PublicClassFlow;false;PublicReturn;(System.Int32);Argument[0];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnField;();Argument[Qualifier];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnParam0;(System.String,System.Object);Argument[0];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnParam1;(System.String,System.Object);Argument[1];ReturnValue;taint |
