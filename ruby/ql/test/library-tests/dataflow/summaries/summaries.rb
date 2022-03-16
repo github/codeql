@@ -41,4 +41,5 @@ def userDefinedFunction(x, y)
   sink(x.matchedByName(t))
   sink(y.matchedByName(t))
   sink(x.unmatchedName(t))
+  sink(t.matchedByNameRcv())
 end
