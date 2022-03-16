@@ -174,7 +174,7 @@ module ClientSideUrlRedirect {
     AttributeUrlSink() {
       // e.g. `$("<a>", {href: sink}).appendTo("body")`
       exists(DOM::AttributeDefinition attr |
-        not attr instanceof JSXAttribute and // handled more precisely in `ReactAttributeWriteUrlSink`.
+        not attr instanceof JsxAttribute and // handled more precisely in `ReactAttributeWriteUrlSink`.
         attr.getName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl()
       |
         this = attr.getValueNode()
