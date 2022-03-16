@@ -25,8 +25,8 @@
 | delegatedProperties.kt:1:9:1:12 | this | delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel | ThisAccess |
 | delegatedProperties.kt:1:9:1:12 | this | delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel | ThisAccess |
 | delegatedProperties.kt:1:9:1:12 | this | delegatedProperties.kt:79:18:79:38 | getMax | ThisAccess |
-| delegatedProperties.kt:1:9:1:12 | this | delegatedProperties.kt:87:31:87:46 | getExtDelegated | ThisAccess |
-| delegatedProperties.kt:1:9:1:12 | this | delegatedProperties.kt:87:31:87:46 | setExtDelegated | ThisAccess |
+| delegatedProperties.kt:1:9:1:12 | this | delegatedProperties.kt:87:31:87:46 | getExtDelegated | ExtensionReceiverAccess |
+| delegatedProperties.kt:1:9:1:12 | this | delegatedProperties.kt:87:31:87:46 | setExtDelegated | ExtensionReceiverAccess |
 | delegatedProperties.kt:6:24:9:9 | ...::... | delegatedProperties.kt:6:24:9:9 | <get-prop1> | PropertyRefExpr |
 | delegatedProperties.kt:6:24:9:9 | <get-prop1>(...) | delegatedProperties.kt:6:24:9:9 | get | MethodAccess |
 | delegatedProperties.kt:6:24:9:9 | Integer | delegatedProperties.kt:6:24:9:9 | <get-prop1> | TypeAccess |
@@ -1446,7 +1446,7 @@
 | funcExprs.kt:26:28:26:44 | Integer | funcExprs.kt:15:1:46:1 | call | TypeAccess |
 | funcExprs.kt:26:28:26:44 | Integer | funcExprs.kt:15:1:46:1 | call | TypeAccess |
 | funcExprs.kt:26:28:26:44 | Integer | funcExprs.kt:15:1:46:1 | call | TypeAccess |
-| funcExprs.kt:26:35:26:38 | this | funcExprs.kt:26:28:26:44 | invoke | ThisAccess |
+| funcExprs.kt:26:35:26:38 | this | funcExprs.kt:26:28:26:44 | invoke | ExtensionReceiverAccess |
 | funcExprs.kt:26:35:26:42 | ... + ... | funcExprs.kt:26:28:26:44 | invoke | AddExpr |
 | funcExprs.kt:26:42:26:42 | a | funcExprs.kt:26:28:26:44 | invoke | VarAccess |
 | funcExprs.kt:27:5:27:51 | functionExpression4(...) | funcExprs.kt:15:1:46:1 | call | MethodAccess |
@@ -2154,7 +2154,6 @@
 | samConversion.kt:7:13:7:46 | ...=... | samConversion.kt:7:13:7:46 |  | AssignExpr |
 | samConversion.kt:7:13:7:46 | <fn> | samConversion.kt:7:13:7:46 |  | VarAccess |
 | samConversion.kt:7:13:7:46 | <fn> | samConversion.kt:27:5:27:35 | ext | VarAccess |
-| samConversion.kt:7:13:7:46 | <this> | samConversion.kt:27:5:27:35 | ext | VarAccess |
 | samConversion.kt:7:13:7:46 | Boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:7:13:7:46 | Function2<String,Integer,Boolean> | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:7:13:7:46 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
@@ -2165,13 +2164,14 @@
 | samConversion.kt:7:13:7:46 | invoke(...) | samConversion.kt:27:5:27:35 | ext | MethodAccess |
 | samConversion.kt:7:13:7:46 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
 | samConversion.kt:7:13:7:46 | this | samConversion.kt:7:13:7:46 |  | ThisAccess |
+| samConversion.kt:7:13:7:46 | this | samConversion.kt:27:5:27:35 | ext | ExtensionReceiverAccess |
 | samConversion.kt:7:13:7:46 | this.<fn> | samConversion.kt:7:13:7:46 |  | VarAccess |
 | samConversion.kt:7:29:7:46 | ...->... | samConversion.kt:1:1:14:1 | main | LambdaExpr |
 | samConversion.kt:7:29:7:46 | Boolean | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:7:29:7:46 | Function2<String,Integer,Boolean> | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:7:29:7:46 | Integer | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:7:29:7:46 | String | samConversion.kt:1:1:14:1 | main | TypeAccess |
-| samConversion.kt:7:36:7:39 | this | samConversion.kt:7:29:7:46 | invoke | ThisAccess |
+| samConversion.kt:7:36:7:39 | this | samConversion.kt:7:29:7:46 | invoke | ExtensionReceiverAccess |
 | samConversion.kt:7:36:7:45 | ... (value equals) ... | samConversion.kt:7:29:7:46 | invoke | ValueEQExpr |
 | samConversion.kt:7:44:7:45 |  | samConversion.kt:7:29:7:46 | invoke | StringLiteral |
 | samConversion.kt:9:5:13:6 | x | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |

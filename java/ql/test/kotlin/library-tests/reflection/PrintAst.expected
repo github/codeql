@@ -7,10 +7,10 @@ reflection.kt:
 #   47|       5: [BlockStmt] { ... }
 #   47|         0: [ReturnStmt] return ...
 #   47|           0: [MethodAccess] get(...)
-#   47|             -1: [ThisAccess] this
+#   47|             -1: [ExtensionReceiverAccess] this
 #   47|             0: [SubExpr] ... - ...
 #   47|               0: [MethodAccess] getLength(...)
-#   47|                 -1: [ThisAccess] this
+#   47|                 -1: [ExtensionReceiverAccess] this
 #   47|               1: [IntegerLiteral] 1
 #   49|     2: [Method] fn2
 #   49|       5: [BlockStmt] { ... }
@@ -69,14 +69,14 @@ reflection.kt:
 #   54|       5: [BlockStmt] { ... }
 #   54|         0: [ReturnStmt] return ...
 #   54|           0: [MethodAccess] toString(...)
-#   54|             -1: [ThisAccess] this
+#   54|             -1: [ExtensionReceiverAccess] this
 #   56|     4: [ExtensionMethod] ext2
 #-----|       4: (Parameters)
 #   56|         0: [Parameter] <this>
 #   56|       5: [BlockStmt] { ... }
 #   56|         0: [ReturnStmt] return ...
 #   56|           0: [MethodAccess] toString(...)
-#   56|             -1: [ThisAccess] this
+#   56|             -1: [ExtensionReceiverAccess] this
 #   94|     5: [Method] fn
 #-----|       2: (Generic Parameters)
 #   94|         0: [TypeVariable] T

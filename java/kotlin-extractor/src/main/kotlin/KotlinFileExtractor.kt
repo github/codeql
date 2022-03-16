@@ -2247,7 +2247,7 @@ open class KotlinFileExtractor(
                 is IrGetValue -> {
                     val exprParent = parent.expr(e, callable)
                     val owner = e.symbol.owner
-                    if (owner is IrValueParameter && owner.index == -1) {
+                    if (owner is IrValueParameter && owner.index == -1 && !owner.isExtensionReceiver()) {
                         val id = tw.getFreshIdLabel<DbThisaccess>()
                         val type = useType(e.type)
                         val locId = tw.getLocation(e)
@@ -2294,7 +2294,10 @@ open class KotlinFileExtractor(
                         tw.writeCallableEnclosingExpr(id, callable)
                         tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
-                        val vId = useValueDeclaration(owner)
+                        val vId = if (owner is IrValueParameter && owner.isExtensionReceiver())
+                            useValueParameter(owner, useFunction(owner.parent as IrFunction))
+                        else
+                            useValueDeclaration(owner)
                         tw.writeVariableBinding(id, vId)
                     }
                 }
@@ -2568,6 +2571,11 @@ open class KotlinFileExtractor(
             }
             return
         }
+    }
+
+    private fun IrValueParameter.isExtensionReceiver(): Boolean {
+        val parentFun = parent as? IrFunction ?: return false
+        return parentFun.extensionReceiverParameter == this
     }
 
     private open inner class GeneratedClassHelper(protected val locId: Label<DbLocation>, protected val ids: GeneratedClassLabels) {

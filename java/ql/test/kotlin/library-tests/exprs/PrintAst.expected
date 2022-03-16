@@ -25,7 +25,7 @@ delegatedProperties.kt:
 #   87|             -2: [TypeAccess] Integer
 #   87|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   87|             0: [VarAccess] extDelegated$delegate
-#    1|             1: [ThisAccess] this
+#    1|             1: [ExtensionReceiverAccess] this
 #   87|             2: [PropertyRefExpr] ...::...
 #   87|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   87|                 1: [Constructor] 
@@ -60,7 +60,7 @@ delegatedProperties.kt:
 #   87|             -2: [TypeAccess] Integer
 #   87|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   87|             0: [VarAccess] extDelegated$delegate
-#    1|             1: [ThisAccess] this
+#    1|             1: [ExtensionReceiverAccess] this
 #   87|             2: [PropertyRefExpr] ...::...
 #   87|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   87|                 1: [Constructor] 
@@ -2800,7 +2800,7 @@ funcExprs.kt:
 #   26|                   5: [BlockStmt] { ... }
 #   26|                     0: [ReturnStmt] return ...
 #   26|                       0: [AddExpr] ... + ...
-#   26|                         0: [ThisAccess] this
+#   26|                         0: [ExtensionReceiverAccess] this
 #   26|                         1: [VarAccess] a
 #   26|               -3: [TypeAccess] Function2<Integer,Integer,Integer>
 #   26|                 0: [TypeAccess] Integer
@@ -4019,7 +4019,7 @@ samConversion.kt:
 #    7|                       0: [ReturnStmt] return ...
 #    7|                         0: [MethodAccess] invoke(...)
 #    7|                           -1: [VarAccess] <fn>
-#    7|                           0: [VarAccess] <this>
+#    7|                           0: [ExtensionReceiverAccess] this
 #    7|                           1: [VarAccess] i
 #    7|                 -3: [TypeAccess] InterfaceFnExt1
 #    7|                 0: [LambdaExpr] ...->...
@@ -4034,7 +4034,7 @@ samConversion.kt:
 #    7|                       5: [BlockStmt] { ... }
 #    7|                         0: [ReturnStmt] return ...
 #    7|                           0: [ValueEQExpr] ... (value equals) ...
-#    7|                             0: [ThisAccess] this
+#    7|                             0: [ExtensionReceiverAccess] this
 #    7|                             1: [StringLiteral] 
 #    7|                   -3: [TypeAccess] Function2<String,Integer,Boolean>
 #    7|                     0: [TypeAccess] String

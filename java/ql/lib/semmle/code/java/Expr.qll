@@ -1861,6 +1861,21 @@ class VarAccess extends Expr, @varaccess {
 }
 
 /**
+ * An access to an extension receiver parameter. This is a parameter access that takes the form of `this` in Kotlin.
+ */
+class ExtensionReceiverAccess extends VarAccess {
+  ExtensionReceiverAccess() {
+    exists(Parameter p |
+      this.getVariable() = p and p.getPosition() = 0 and p.getCallable() instanceof ExtensionMethod
+    )
+  }
+
+  override string getAPrimaryQlClass() { result = "ExtensionReceiverAccess" }
+
+  override string toString() { result = "this" }
+}
+
+/**
  * An l-value is a write access to a variable, which occurs as the destination of an assignment.
  */
 class LValue extends VarAccess {
