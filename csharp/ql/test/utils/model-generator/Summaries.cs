@@ -123,3 +123,43 @@ public class BulkArrayFlow
         input[0] = tainted;
     }
 }
+
+public class GenericFlow<T>
+{
+    private T tainted;
+
+    public void SetGenericField(T t)
+    {
+        tainted = t;
+    }
+
+    public T ReturnGenericField()
+    {
+        return tainted;
+    }
+
+    public void AddFieldToGenericList(List<T> input)
+    {
+        input.Add(tainted);
+    }
+
+    public List<T> ReturnFieldInGenericList()
+    {
+        return new List<T> { tainted };
+    }
+
+    public S ReturnGenericParam<S>(S input)
+    {
+        return input;
+    }
+
+    public S ReturnGenericElement<S>(List<S> input)
+    {
+        return input[0];
+    }
+
+    public void AddToGenericList<S>(List<S> input, S data)
+    {
+        input.Add(data);
+    }
+}
