@@ -22,16 +22,26 @@
  *    or the empty string if referring to the package itself.
  *    It can also be a synthetic type name defined by a type definition (see type definitions below).
  * 3. The `path` column is a `.`-separated list of "access path tokens" to resolve, starting at the node selected by `package` and `type`.
- *    The possible access path tokens are:
- *     - Member[x] : a property named `x`. May be a comma-separated list of named.
+ *
+ *    Every language supports the following tokens:
  *     - Argument[n]: the n-th argument to a call. May be a range of form `x..y` (inclusive) and/or a comma-separated list.
  *                    Additionally, `N-1` refers to the last argument, `N-2` refers to the second-last, and so on.
  *     - Parameter[n]: the n-th parameter of a callback. May be a range of form `x..y` (inclusive) and/or a comma-separated list.
  *     - ReturnValue: the value returned by a function call
- *     - Instance: the value returned by a constructor call
- *     - Awaited: the value from a resolved promise/future-like object
  *     - WithArity[n]: match a call with the given arity. May be a range of form `x..y` (inclusive) and/or a comma-separated list.
- *     - Other language-specific tokens mentioned in `ModelsAsData.qll`.
+ *
+ *    The following tokens are common and should be implemented for languages where it makes sense:
+ *     - Member[x]: a member named `x`; exactly what a "member" is depends on the language. May be a comma-separated list of names.
+ *     - Instance: an instance of a class
+ *     - Subclass: a subclass of a class
+ *     - ArrayElement: an element of array
+ *     - Element: an element of a collection-like object
+ *     - MapKey: a key in map-like object
+ *     - MapValue: a value in a map-like object
+ *     - Awaited: the value from a resolved promise/future-like object
+ *
+ *    For the time being, please consult `ApiGraphModelsSpecific.qll` to see which language-specific tokens are currently supported.
+ *
  * 4. The `input` and `output` columns specify how data enters and leaves the element selected by the
  *    first `(package, type, path)` tuple. Both strings are `.`-separated access paths
  *    of the same syntax as the `path` column.
