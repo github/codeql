@@ -638,7 +638,7 @@ module PrivateDjango {
 
           /**
            * A method call on a query-set or manager that returns a collection
-           * containing instances of a django models.
+           * containing instances of a django model.
            */
           class QuerySetMethodInstanceCollection extends DataFlow::CallCfgNode {
             API::Node modelClass;
@@ -674,7 +674,9 @@ module PrivateDjango {
               //
               // but for now, we just model a store step directly from the synthetic
               // node to the method call.
-              // extra method on query-set/manager that does _not_ return a query-set
+              //
+              // extra method on query-set/manager that does _not_ return a query-set,
+              // but a collection of instances.
               modelClass = subclassRef() and
               methodName in ["iterator", "bulk_create"] and
               this = [manager(modelClass), querySet(modelClass)].getMember(methodName).getACall()
