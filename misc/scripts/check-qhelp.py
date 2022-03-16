@@ -8,22 +8,24 @@ This takes care of:
 """
 
 import pathlib
-import tempfile
-import sys
 import subprocess
+import sys
+import tempfile
 import xml.sax
-
 
 include_cache = {}
 
+
 class IncludeHandler(xml.sax.ContentHandler):
     def __init__(self, xml):
+        super().__init__()
         self.__xml = xml
 
     def startElement(self, name, attrs):
         if name == "include":
             src = (self.__xml.parent / attrs["src"]).resolve()
             include_cache.setdefault(src, set()).add(self.__xml)
+
 
 class IgnoreErrorsHandler(xml.sax.ErrorHandler):
     def error(self, exc):
@@ -35,6 +37,7 @@ class IgnoreErrorsHandler(xml.sax.ErrorHandler):
     def warning(self, exc):
         pass
 
+
 def init_include_cache():
     if not include_cache:
         for qhelp in pathlib.Path().rglob("*.qhelp"):
@@ -45,6 +48,7 @@ def find_inc_qhelp_usages(arg):
     init_include_cache()
     return include_cache.get(arg.resolve(), ())
 
+
 def transform_inputs(args):
     for arg in args:
         arg = pathlib.Path(arg)
@@ -53,6 +57,7 @@ def transform_inputs(args):
                 yield str(qhelp)
         else:
             yield str(arg)
+
 
 affected_qhelp_files = list(transform_inputs(sys.argv[1:]))
 if not affected_qhelp_files:

@@ -29,7 +29,7 @@ class ImplicitPendingIntentStartConf extends TaintTracking::Configuration {
     any(ImplicitPendingIntentAdditionalTaintStep c).step(node1, node2)
   }
 
-  override predicate isAdditionalFlowStep(
+  override predicate isAdditionalTaintStep(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
     DataFlow::FlowState state2
   ) {

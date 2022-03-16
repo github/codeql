@@ -416,3 +416,13 @@ private class MyConsistencyConfiguration extends Consistency::ConsistencyConfigu
     n.getType() instanceof ImmutableType or n instanceof ImplicitVarargsArray
   }
 }
+
+/**
+ * Holds if the the content `c` is a container.
+ */
+predicate containerContent(Content c) {
+  c instanceof ArrayContent or
+  c instanceof CollectionContent or
+  c instanceof MapKeyContent or
+  c instanceof MapValueContent
+}

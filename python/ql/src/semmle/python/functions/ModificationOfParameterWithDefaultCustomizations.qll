@@ -81,7 +81,7 @@ module ModificationOfParameterWithDefault {
   }
 
   /**
-   * A name of a list function that modifies the list.
+   * Gets the name of a list function that modifies the list.
    * See https://docs.python.org/3/tutorial/datastructures.html#more-on-lists
    */
   string list_modifying_method() {
@@ -89,7 +89,7 @@ module ModificationOfParameterWithDefault {
   }
 
   /**
-   * A name of a dict function that modifies the dict.
+   * Gets the name of a dict function that modifies the dict.
    * See https://docs.python.org/3/library/stdtypes.html#dict
    */
   string dict_modifying_method() { result in ["clear", "pop", "popitem", "setdefault", "update"] }

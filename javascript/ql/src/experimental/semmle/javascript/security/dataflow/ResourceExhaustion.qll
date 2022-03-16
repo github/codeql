@@ -23,6 +23,11 @@ module ResourceExhaustion {
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
+    override predicate isSanitizer(DataFlow::Node node) {
+      super.isSanitizer(node) or
+      node instanceof Sanitizer
+    }
+
     override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node dst) {
       isNumericFlowStep(src, dst)
       or

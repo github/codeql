@@ -2,7 +2,7 @@
  * @name Use of expired stack-address
  * @description Accessing the stack-allocated memory of a function
  *              after it has returned can lead to memory corruption.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @security-severity 9.3
  * @precision high
@@ -19,7 +19,7 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.ir.IR
 
 predicate instructionHasVariable(VariableAddressInstruction vai, StackVariable var, Function f) {
-  var = vai.getASTVariable() and
+  var = vai.getAstVariable() and
   f = vai.getEnclosingFunction() and
   // Pointer-to-member types aren't properly handled in the dbscheme.
   not vai.getResultType() instanceof PointerToMemberType and
@@ -108,7 +108,7 @@ predicate inheritanceConversionTypes(
 
 /** Gets the HashCons value of an address computed by `instr`, if any. */
 TGlobalAddress globalAddress(Instruction instr) {
-  result = TGlobalVariable(instr.(VariableAddressInstruction).getASTVariable())
+  result = TGlobalVariable(instr.(VariableAddressInstruction).getAstVariable())
   or
   not instr instanceof LoadInstruction and
   result = globalAddress(instr.(CopyInstruction).getSourceValue())
@@ -178,13 +178,10 @@ predicate blockStoresToAddress(
   globalAddress = globalAddress(store.getDestinationAddress())
 }
 
-predicate blockLoadsFromAddress(
-  IRBlock block, int index, LoadInstruction load, TGlobalAddress globalAddress
-) {
-  block.getInstruction(index) = load and
-  globalAddress = globalAddress(load.getSourceAddress())
-}
-
+/**
+ * Holds if `globalAddress` evaluates to the address of `var` (which escaped through `store` before
+ * returning through `call`) when control reaches `block`.
+ */
 predicate globalAddressPointsToStack(
   StoreInstruction store, StackVariable var, CallInstruction call, IRBlock block,
   TGlobalAddress globalAddress, boolean isCallBlock, boolean isStoreBlock
@@ -203,21 +200,127 @@ predicate globalAddressPointsToStack(
     )
     or
     isCallBlock = false and
-    exists(IRBlock mid |
-      mid.immediatelyDominates(block) and
-      // Only recurse if there is no store to `globalAddress` in `mid`.
-      globalAddressPointsToStack(store, var, call, mid, globalAddress, _, false)
+    step(store, var, call, globalAddress, _, block)
+  )
+}
+
+pragma[inline]
+int getInstructionIndex(Instruction instr, IRBlock block) { block.getInstruction(result) = instr }
+
+predicate step(
+  StoreInstruction store, StackVariable var, CallInstruction call, TGlobalAddress globalAddress,
+  IRBlock pred, IRBlock succ
+) {
+  exists(boolean isCallBlock, boolean isStoreBlock |
+    // Only recurse if there is no store to `globalAddress` in `mid`.
+    globalAddressPointsToStack(store, var, call, pred, globalAddress, isCallBlock, isStoreBlock)
+  |
+    // Post domination ensures that `block` is always executed after `mid`
+    // Domination ensures that `mid` is always executed before `block`
+    isStoreBlock = false and
+    succ.immediatelyPostDominates(pred) and
+    pred.immediatelyDominates(succ)
+    or
+    exists(CallInstruction anotherCall, int anotherCallIndex |
+      anotherCall = pred.getInstruction(anotherCallIndex) and
+      succ.getFirstInstruction() instanceof EnterFunctionInstruction and
+      succ.getEnclosingFunction() = anotherCall.getStaticCallTarget() and
+      (if isCallBlock = true then getInstructionIndex(call, _) < anotherCallIndex else any()) and
+      (
+        if isStoreBlock = true
+        then
+          forex(int storeIndex | blockStoresToAddress(pred, storeIndex, _, globalAddress) |
+            anotherCallIndex < storeIndex
+          )
+        else any()
+      )
     )
   )
 }
 
+newtype TPathElement =
+  TStore(StoreInstruction store) { globalAddressPointsToStack(store, _, _, _, _, _, _) } or
+  TCall(CallInstruction call, IRBlock block) {
+    globalAddressPointsToStack(_, _, call, block, _, _, _)
+  } or
+  TMid(IRBlock block) { step(_, _, _, _, _, block) } or
+  TSink(LoadInstruction load, IRBlock block) {
+    exists(TGlobalAddress address |
+      globalAddressPointsToStack(_, _, _, block, address, _, _) and
+      block.getAnInstruction() = load and
+      globalAddress(load.getSourceAddress()) = address
+    )
+  }
+
+class PathElement extends TPathElement {
+  StoreInstruction asStore() { this = TStore(result) }
+
+  CallInstruction asCall(IRBlock block) { this = TCall(result, block) }
+
+  predicate isCall(IRBlock block) { exists(this.asCall(block)) }
+
+  IRBlock asMid() { this = TMid(result) }
+
+  LoadInstruction asSink(IRBlock block) { this = TSink(result, block) }
+
+  predicate isSink(IRBlock block) { exists(this.asSink(block)) }
+
+  string toString() {
+    result = [asStore().toString(), asCall(_).toString(), asMid().toString(), asSink(_).toString()]
+  }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.asStore()
+        .getLocation()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    this.asCall(_)
+        .getLocation()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    this.asMid().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    this.asSink(_)
+        .getLocation()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}
+
+predicate isSink(LoadInstruction load, IRBlock block, int index, TGlobalAddress globalAddress) {
+  block.getInstruction(index) = load and
+  globalAddress(load.getSourceAddress()) = globalAddress
+}
+
+query predicate edges(PathElement pred, PathElement succ) {
+  // Store -> caller
+  globalAddressPointsToStack(pred.asStore(), _, succ.asCall(_), _, _, _, _)
+  or
+  // Call -> basic block
+  pred.isCall(succ.asMid())
+  or
+  // Special case for when the caller goes directly to the load with no steps
+  // across basic blocks (i.e., caller -> sink)
+  exists(IRBlock block |
+    pred.isCall(block) and
+    succ.isSink(block)
+  )
+  or
+  // Basic block -> basic block
+  step(_, _, _, _, pred.asMid(), succ.asMid())
+  or
+  // Basic block -> load
+  succ.isSink(pred.asMid())
+}
+
 from
   StoreInstruction store, StackVariable var, LoadInstruction load, CallInstruction call,
-  IRBlock block, boolean isCallBlock, TGlobalAddress address, boolean isStoreBlock
+  IRBlock block, boolean isCallBlock, TGlobalAddress address, boolean isStoreBlock,
+  PathElement source, PathElement sink, int loadIndex
 where
   globalAddressPointsToStack(store, var, call, block, address, isCallBlock, isStoreBlock) and
-  block.getAnInstruction() = load and
-  globalAddress(load.getSourceAddress()) = address and
+  isSink(load, block, loadIndex, address) and
   (
     // We know that we have a sequence:
     // (1) store to `address` -> (2) return from `f` -> (3) load from `address`.
@@ -226,22 +329,20 @@ where
     if isCallBlock = true
     then
       // If so, the load must happen after the call.
-      exists(int callIndex, int loadIndex |
-        blockLoadsFromAddress(_, loadIndex, load, _) and
-        block.getInstruction(callIndex) = call and
-        callIndex < loadIndex
+      getInstructionIndex(call, _) < loadIndex
+    else any()
+  ) and
+  (
+    // If there is a store to the address we need to make sure that the load we found was
+    // before that store (So that the load doesn't read an overwritten value).
+    if isStoreBlock = true
+    then
+      forex(int storeIndex | blockStoresToAddress(block, storeIndex, _, address) |
+        loadIndex < storeIndex
       )
     else any()
   ) and
-  // If there is a store to the address we need to make sure that the load we found was
-  // before that store (So that the load doesn't read an overwritten value).
-  if isStoreBlock = true
-  then
-    exists(int storeIndex, int loadIndex |
-      blockStoresToAddress(block, storeIndex, _, address) and
-      block.getInstruction(loadIndex) = load and
-      loadIndex < storeIndex
-    )
-  else any()
-select load, "Stack variable $@ escapes $@ and is used after it has expired.", var, var.toString(),
-  store, "here"
+  source.asStore() = store and
+  sink.asSink(_) = load
+select sink, source, sink, "Stack variable $@ escapes $@ and is used after it has expired.", var,
+  var.toString(), store, "here"

@@ -88,8 +88,8 @@ module Shared {
    * A sanitizer guard that checks for the existence of HTML chars in a string.
    * E.g. `/["'&<>]/.exec(str)`.
    */
-  class ContainsHTMLGuard extends SanitizerGuard, StringOps::RegExpTest {
-    ContainsHTMLGuard() {
+  class ContainsHtmlGuard extends SanitizerGuard, StringOps::RegExpTest {
+    ContainsHtmlGuard() {
       exists(RegExpCharacterClass regExp |
         regExp = this.getRegExp() and
         forall(string s | s = ["\"", "&", "<", ">"] | regExp.getAMatchedString() = s)
@@ -101,10 +101,13 @@ module Shared {
     }
   }
 
+  /** DEPRECATED: Alias for ContainsHtmlGuard */
+  deprecated class ContainsHTMLGuard = ContainsHtmlGuard;
+
   /**
    * Holds if `str` is used in a switch-case that has cases matching HTML escaping.
    */
-  private predicate isUsedInHTMLEscapingSwitch(Expr str) {
+  private predicate isUsedInHtmlEscapingSwitch(Expr str) {
     exists(SwitchStmt switch |
       // "\"".charCodeAt(0) == 34, "&".charCodeAt(0) == 38, "<".charCodeAt(0) == 60
       forall(int c | c = [34, 38, 60] | c = switch.getACase().getExpr().getIntValue()) and
@@ -133,7 +136,7 @@ module Shared {
    * The `pragma[noinline]` is to avoid materializing a cartesian product.
    */
   pragma[noinline]
-  private SsaVariable getAPathEscapedInSwitch() { isUsedInHTMLEscapingSwitch(result.getAUse()) }
+  private SsaVariable getAPathEscapedInSwitch() { isUsedInHtmlEscapingSwitch(result.getAUse()) }
 
   /**
    * An expression that is sanitized by a switch-case.
@@ -257,11 +260,11 @@ module DomBasedXss {
   class DomSink extends Sink {
     DomSink() {
       // Call to a DOM function that inserts its argument into the DOM
-      any(DomMethodCallExpr call).interpretsArgumentsAsHTML(this.asExpr())
+      any(DomMethodCallExpr call).interpretsArgumentsAsHtml(this.asExpr())
       or
       // Assignment to a dangerous DOM property
       exists(DomPropWriteNode pw |
-        pw.interpretsValueAsHTML() and
+        pw.interpretsValueAsHtml() and
         this = DataFlow::valueNode(pw.getRhs())
       )
       or
@@ -302,7 +305,7 @@ module DomBasedXss {
   class DangerouslySetInnerHtmlSink extends Sink, DataFlow::ValueNode {
     DangerouslySetInnerHtmlSink() {
       exists(DataFlow::Node danger, DataFlow::SourceNode valueSrc |
-        exists(JSXAttribute attr |
+        exists(JsxAttribute attr |
           attr.getName() = "dangerouslySetInnerHTML" and
           attr.getValue() = danger.asExpr()
         )
@@ -323,7 +326,7 @@ module DomBasedXss {
    */
   class TooltipSink extends Sink {
     TooltipSink() {
-      exists(JSXElement el |
+      exists(JsxElement el |
         el.getAttributeByName("data-html").getStringValue() = "true" or
         el.getAttributeByName("data-html").getValue().mayHaveBooleanValue(true)
       |
@@ -446,7 +449,7 @@ module DomBasedXss {
     )
   }
 
-  private class ContainsHTMLGuard extends SanitizerGuard, Shared::ContainsHTMLGuard { }
+  private class ContainsHtmlGuard extends SanitizerGuard, Shared::ContainsHtmlGuard { }
 }
 
 /** Provides classes and predicates for the reflected XSS query. */
@@ -555,7 +558,7 @@ module ReflectedXss {
 
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
 
-  private class ContainsHTMLGuard extends SanitizerGuard, Shared::ContainsHTMLGuard { }
+  private class ContainsHtmlGuard extends SanitizerGuard, Shared::ContainsHtmlGuard { }
 }
 
 /** Provides classes and predicates for the stored XSS query. */
@@ -595,7 +598,7 @@ module StoredXss {
 
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
 
-  private class ContainsHTMLGuard extends SanitizerGuard, Shared::ContainsHTMLGuard { }
+  private class ContainsHtmlGuard extends SanitizerGuard, Shared::ContainsHtmlGuard { }
 }
 
 /** Provides classes and predicates for the XSS through DOM query. */

@@ -573,15 +573,16 @@ module ActionDispatch {
    */
   private class ResourcesRoute extends RouteImpl, TResourcesRoute {
     RouteBlock parent;
-    string resource;
     string action;
     string httpMethod;
     string pathComponent;
 
     ResourcesRoute() {
-      this = TResourcesRoute(parent, method, action) and
-      method.getArgument(0).getConstantValue().isStringOrSymbol(resource) and
-      isDefaultResourceRoute(resource, httpMethod, pathComponent, action)
+      exists(string resource |
+        this = TResourcesRoute(parent, method, action) and
+        method.getArgument(0).getConstantValue().isStringOrSymbol(resource) and
+        isDefaultResourceRoute(resource, httpMethod, pathComponent, action)
+      )
     }
 
     override string getAPrimaryQlClass() { result = "ResourcesRoute" }
@@ -610,15 +611,16 @@ module ActionDispatch {
    */
   private class SingularResourceRoute extends RouteImpl, TResourceRoute {
     RouteBlock parent;
-    string resource;
     string action;
     string httpMethod;
     string pathComponent;
 
     SingularResourceRoute() {
-      this = TResourceRoute(parent, method, action) and
-      method.getArgument(0).getConstantValue().isStringOrSymbol(resource) and
-      isDefaultSingularResourceRoute(resource, httpMethod, pathComponent, action)
+      exists(string resource |
+        this = TResourceRoute(parent, method, action) and
+        method.getArgument(0).getConstantValue().isStringOrSymbol(resource) and
+        isDefaultSingularResourceRoute(resource, httpMethod, pathComponent, action)
+      )
     }
 
     override string getAPrimaryQlClass() { result = "SingularResourceRoute" }

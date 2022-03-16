@@ -11,6 +11,7 @@
 | difference::Base | can | does NOT | have implicit copy assignment |
 | difference::OnlyAssign | can | does | have implicit copy assignment |
 | difference::OnlyCtor | can NOT | does NOT | have implicit copy assignment |
+| instantiated_explicit_ctor::Wrapper<int> | can | does | have implicit copy assignment |
 | moves::MoveAssign | can NOT | does NOT | have implicit copy assignment |
 | moves::MoveCtor | can NOT | does NOT | have implicit copy assignment |
 | private_cc::C | can | does NOT | have implicit copy assignment |

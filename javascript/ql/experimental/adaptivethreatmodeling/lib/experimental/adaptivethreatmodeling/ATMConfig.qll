@@ -28,9 +28,9 @@ import EndpointTypes
  * `isAdditionalFlowStep` with a more generalised definition of additional edges. See
  * `NosqlInjectionATM.qll` for an example of doing this.
  */
-abstract class ATMConfig extends string {
+abstract class AtmConfig extends string {
   bindingset[this]
-  ATMConfig() { any() }
+  AtmConfig() { any() }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
@@ -65,28 +65,6 @@ abstract class ATMConfig extends string {
   /**
    * EXPERIMENTAL. This API may change in the future.
    *
-   * Holds if the candidate sink `candidateSink` predicted by the machine learning model should be
-   * an effective sink that overrides the score provided by the machine learning model with the
-   * score `score` for reason `why`. The effective sinks identified by this predicate MUST be a
-   * subset of those identified by the `isEffectiveSink` predicate.
-   *
-   * For example, in the ATM external API query, we use this method to ensure the ATM external API
-   * query produces the same results as the standard external API query, but assigns flows
-   * involving sinks that are filtered out by the endpoint filters a score of 0.
-   *
-   * This predicate can be phased out once we no longer need to rely on predicates like
-   * `paddedScore` in the ATM CodeQL libraries to add scores to alert messages in a way that works
-   * with lexical sort orders.
-   */
-  predicate isEffectiveSinkWithOverridingScore(
-    raw::DataFlow::Node candidateSink, float score, string why
-  ) {
-    none()
-  }
-
-  /**
-   * EXPERIMENTAL. This API may change in the future.
-   *
    * Get an endpoint type for the sources of this query. A query may have multiple applicable
    * endpoint types for its sources.
    */
@@ -110,3 +88,6 @@ abstract class ATMConfig extends string {
    */
   float getScoreCutoff() { result = 0.0 }
 }
+
+/** DEPRECATED: Alias for AtmConfig */
+deprecated class ATMConfig = AtmConfig;

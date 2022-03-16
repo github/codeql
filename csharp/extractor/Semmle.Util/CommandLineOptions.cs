@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Semmle.Util
@@ -39,8 +40,26 @@ namespace Semmle.Util
 
     public static class OptionsExtensions
     {
-        public static void ParseArguments(this ICommandLineOptions options, IReadOnlyList<string> arguments)
+        private static string? GetExtractorOption(string name) =>
+            Environment.GetEnvironmentVariable($"CODEQL_EXTRACTOR_CSHARP_OPTION_{name.ToUpper()}");
+
+        private static List<string> GetExtractorOptions()
         {
+            var extractorOptions = new List<string>();
+
+            var trapCompression = GetExtractorOption("trap_compression");
+            if (!string.IsNullOrEmpty(trapCompression))
+            {
+                extractorOptions.Add($"--trap_compression:{trapCompression}");
+            }
+
+            return extractorOptions;
+        }
+
+        public static void ParseArguments(this ICommandLineOptions options, IReadOnlyList<string> providedArguments)
+        {
+            var arguments = GetExtractorOptions();
+            arguments.AddRange(providedArguments);
             for (var i = 0; i < arguments.Count; ++i)
             {
                 var arg = arguments[i];

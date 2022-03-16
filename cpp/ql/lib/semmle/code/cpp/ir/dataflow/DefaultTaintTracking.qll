@@ -129,11 +129,11 @@ private class FromGlobalVarTaintTrackingCfg extends TaintTracking2::Configuratio
 }
 
 private predicate readsVariable(LoadInstruction load, Variable var) {
-  load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
+  load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
 }
 
 private predicate writesVariable(StoreInstruction store, Variable var) {
-  store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() = var
+  store.getDestinationAddress().(VariableAddressInstruction).getAstVariable() = var
 }
 
 /**
@@ -241,8 +241,8 @@ private module Cached {
     // For compatibility, send flow from arguments to parameters, even for
     // functions with no body.
     exists(FunctionCall call, int i |
-      sink.asExpr() = call.getArgument(i) and
-      result = resolveCall(call).getParameter(i)
+      sink.asExpr() = call.getArgument(pragma[only_bind_into](i)) and
+      result = resolveCall(call).getParameter(pragma[only_bind_into](i))
     )
     or
     // For compatibility, send flow into a `Variable` if there is flow to any
@@ -489,9 +489,9 @@ module TaintedWithPath {
     /** Gets the element that `pathNode` wraps, if any. */
     Element getElementFromPathNode(PathNode pathNode) {
       exists(DataFlow::Node node | node = pathNode.(WrapPathNode).inner().getNode() |
-        result = node.asInstruction().getAST()
+        result = node.asInstruction().getAst()
         or
-        result = node.asOperand().getDef().getAST()
+        result = node.asOperand().getDef().getAst()
       )
       or
       result = pathNode.(EndpointPathNode).inner()

@@ -23,7 +23,7 @@ DataFlow::SourceNode react() {
  * - instances from `React.createClass`
  * - stateless functional components
  */
-abstract class ReactComponent extends ASTNode {
+abstract class ReactComponent extends AstNode {
   /**
    * Gets an instance method of this component with the given name.
    */
@@ -208,7 +208,7 @@ abstract class ReactComponent extends ASTNode {
   DataFlow::Node getACandidatePropsValue(string name) {
     getACandidatePropsSource().hasPropertyWrite(name, result)
     or
-    exists(ReactJSXElement e, JSXAttribute attr |
+    exists(ReactJsxElement e, JsxAttribute attr |
       this = e.getComponent() and
       attr = e.getAttributeByName(name) and
       result.asExpr() = attr.getValue()
@@ -247,13 +247,13 @@ abstract class ReactComponent extends ASTNode {
 /**
  * Holds if `f` always returns a JSX element or fragment, or a React element.
  */
-private predicate alwaysReturnsJSXOrReactElements(Function f) {
+private predicate alwaysReturnsJsxOrReactElements(Function f) {
   forex(Expr e |
     e.flow().(DataFlow::SourceNode).flowsToExpr(f.getAReturnedExpr()) and
     // Allow returning string constants in addition to JSX/React elemnts.
     not exists(e.getStringValue())
   |
-    e instanceof JSXNode or
+    e instanceof JsxNode or
     e instanceof ReactElementDefinition
   )
 }
@@ -271,7 +271,7 @@ class FunctionalComponent extends ReactComponent, Function {
       p.getName().regexpMatch("(?i).*props.*") or
       p instanceof ObjectPattern
     ) and
-    alwaysReturnsJSXOrReactElements(this)
+    alwaysReturnsJsxOrReactElements(this)
   }
 
   override Function getInstanceMethod(string name) { name = "render" and result = this }
@@ -420,7 +420,7 @@ private class HeuristicReactPreactComponent extends ClassDefinition, PreactCompo
   ES2015Component {
   HeuristicReactPreactComponent() {
     any(DataFlow::GlobalVarRefNode c | c.getName() = "Component").flowsToExpr(getSuperClass()) and
-    alwaysReturnsJSXOrReactElements(ClassDefinition.super.getInstanceMethod("render"))
+    alwaysReturnsJsxOrReactElements(ClassDefinition.super.getInstanceMethod("render"))
   }
 }
 
@@ -549,10 +549,10 @@ private class ReactCallbackPartialInvoke extends DataFlow::PartialInvokeNode::Ra
 /**
  * A `JSXElement` that instantiates a `ReactComponent`.
  */
-private class ReactJSXElement extends JSXElement {
+private class ReactJsxElement extends JsxElement {
   ReactComponent component;
 
-  ReactJSXElement() { component.getAComponentCreatorReference().flowsToExpr(getNameExpr()) }
+  ReactJsxElement() { component.getAComponentCreatorReference().flowsToExpr(getNameExpr()) }
 
   /**
    * Gets the component this element instantiates.
@@ -646,7 +646,7 @@ private DataFlow::Node getAContextInput(DataFlow::CallNode createContext) {
   createContext = react().getAMemberCall("createContext") and
   result = createContext.getArgument(0) // initial value
   or
-  exists(JSXElement provider |
+  exists(JsxElement provider |
     getAContextRef(createContext)
         .getAPropertyRead("Provider")
         .flowsTo(provider.getNameExpr().flow()) and

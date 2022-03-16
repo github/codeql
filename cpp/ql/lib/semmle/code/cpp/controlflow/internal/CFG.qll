@@ -448,26 +448,6 @@ private predicate skipInitializer(Initializer init) {
 }
 
 /**
- * Holds if `e` is an expression in a static initializer that must be evaluated
- * at run time. This predicate computes "is non-const" instead of "is const" in
- * order to avoid recursion through forall.
- */
-private predicate runtimeExprInStaticInitializer(Expr e) {
-  inStaticInitializer(e) and
-  if e instanceof AggregateLiteral
-  then runtimeExprInStaticInitializer(e.getAChild())
-  else not e.getFullyConverted().isConstant()
-}
-
-/** Holds if `e` is part of the initializer of a local static variable. */
-private predicate inStaticInitializer(Expr e) {
-  exists(LocalVariable local |
-    local.isStatic() and
-    e.getParent+() = local.getInitializer()
-  )
-}
-
-/**
  * Gets the `i`th child of `n` in control-flow order, where the `i`-indexes are
  * contiguous, and the first index is 0.
  */
@@ -1379,7 +1359,7 @@ private module Cached {
    * true-successors and false-successors.
    */
   cached
-  predicate qlCFGSuccessor(Node n1, Node n2) {
+  predicate qlCfgSuccessor(Node n1, Node n2) {
     exists(Node memberNode, Pos memberPos |
       subEdgeIncludingDestructors(any(Pos at | at.isAt()), n1, memberNode, memberPos) and
       normalGroupMember(memberNode, memberPos, n2)
@@ -1388,23 +1368,32 @@ private module Cached {
     conditionalSuccessor(n1, _, n2)
   }
 
+  /** DEPRECATED: Alias for qlCfgSuccessor */
+  deprecated predicate qlCFGSuccessor = qlCfgSuccessor/2;
+
   /**
    * Holds if `n2` is a control-flow node such that the control-flow
    * edge `(n1, n2)` may be taken when `n1` is an expression that is true.
    */
   cached
-  predicate qlCFGTrueSuccessor(Node n1, Node n2) {
+  predicate qlCfgTrueSuccessor(Node n1, Node n2) {
     conditionalSuccessor(n1, true, n2) and
     not conditionalSuccessor(n1, false, n2)
   }
+
+  /** DEPRECATED: Alias for qlCfgTrueSuccessor */
+  deprecated predicate qlCFGTrueSuccessor = qlCfgTrueSuccessor/2;
 
   /**
    * Holds if `n2` is a control-flow node such that the control-flow
    * edge `(n1, n2)` may be taken when `n1` is an expression that is false.
    */
   cached
-  predicate qlCFGFalseSuccessor(Node n1, Node n2) {
+  predicate qlCfgFalseSuccessor(Node n1, Node n2) {
     conditionalSuccessor(n1, false, n2) and
     not conditionalSuccessor(n1, true, n2)
   }
+
+  /** DEPRECATED: Alias for qlCfgFalseSuccessor */
+  deprecated predicate qlCFGFalseSuccessor = qlCfgFalseSuccessor/2;
 }

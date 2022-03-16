@@ -1,0 +1,8 @@
+| test.cpp:52:3:52:7 | call to scanf | Unchecked return value for call to 'scanf'. |
+| test.cpp:53:3:53:7 | call to scanf | Unchecked return value for call to 'scanf'. |
+| test.cpp:54:3:54:7 | call to scanf | Unchecked return value for call to 'scanf'. |
+| test.cpp:105:3:105:7 | call to scanf | Unchecked return value for call to 'scanf'. |
+| test.cpp:106:3:106:7 | call to scanf | Unchecked return value for call to 'scanf'. |
+| test.cpp:107:3:107:7 | call to scanf | Unchecked return value for call to 'scanf'. |
+| test.cpp:115:3:115:7 | call to scanf | Unchecked return value for call to 'scanf'. |
+| test.cpp:120:3:120:7 | call to scanf | Unchecked return value for call to 'scanf'. |

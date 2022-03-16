@@ -12,7 +12,7 @@ import java
 import semmle.code.java.security.ExternalAPIs
 import semmle.code.java.dataflow.DataFlow
 
-from ExternalAPIUsedWithUntrustedData externalAPI
-select externalAPI, count(externalAPI.getUntrustedDataNode()) as numberOfUses,
-  externalAPI.getNumberOfUntrustedSources() as numberOfUntrustedSources order by
+from ExternalApiUsedWithUntrustedData externalApi
+select externalApi, count(externalApi.getUntrustedDataNode()) as numberOfUses,
+  externalApi.getNumberOfUntrustedSources() as numberOfUntrustedSources order by
     numberOfUntrustedSources desc

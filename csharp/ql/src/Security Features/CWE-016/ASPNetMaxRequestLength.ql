@@ -14,7 +14,7 @@
 import csharp
 import semmle.code.asp.WebConfig
 
-from SystemWebXMLElement web, XMLAttribute maxReqLength
+from SystemWebXmlElement web, XMLAttribute maxReqLength
 where
   maxReqLength =
     web.getAChild(any(string s | s.toLowerCase() = "httpruntime"))

@@ -12,7 +12,7 @@ external predicate availableMlModels(
 );
 
 /** Get the ATM configuration. */
-ATMConfig getCfg() { any() }
+AtmConfig getCfg() { any() }
 
 /**
  * A string containing scoring information produced by a scoring model.

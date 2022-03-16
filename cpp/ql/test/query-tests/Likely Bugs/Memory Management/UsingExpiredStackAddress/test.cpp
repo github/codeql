@@ -21,12 +21,12 @@ int simple_field_good() {
 }
 
 int deref_p() {
-  return *s101.p;
+  return *s101.p; // BAD
 }
 
 int field_indirect_bad() {
   escape1();
-  return deref_p(); // BAD [NOT DETECTED]
+  return deref_p();
 }
 
 int deref_i() {
@@ -196,4 +196,17 @@ void test_not_escape_through_array() {
   int x20 = s1.a1[0]; // GOOD
   int x21 = s1.a2[0][1]; // GOOD
   int* x22 = s1.a3[5][2]; // GOOD
+}
+
+int maybe_deref_p(bool b) {
+  if(b) {
+    return *s101.p; // GOOD
+  } else {
+    return 0;
+  }
+}
+
+int field_indirect_maybe_bad(bool b) {
+  escape1();
+  return maybe_deref_p(b);
 }

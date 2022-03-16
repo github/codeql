@@ -233,6 +233,8 @@ module Ssa {
       )
     }
 
+    override SelfVariable getSourceVariable() { result = v }
+
     final override string toString() { result = "self (" + v.getDeclaringScope() + ")" }
 
     final override Location getLocation() { result = this.getControlFlowNode().getLocation() }
@@ -314,7 +316,7 @@ module Ssa {
     CapturedCallDefinition() {
       exists(Variable v, BasicBlock bb, int i |
         this.definesAt(v, bb, i) and
-        SsaImpl::capturedCallWrite(bb, i, v)
+        SsaImpl::capturedCallWrite(_, bb, i, v)
       )
     }
 

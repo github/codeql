@@ -201,7 +201,16 @@ class ClassVariableWriteAccess extends ClassVariableAccess, VariableWriteAccess 
 /** An access to a class variable where the value is read. */
 class ClassVariableReadAccess extends ClassVariableAccess, VariableReadAccess { }
 
-/** An access to the `self` variable */
+/**
+ * An access to the `self` variable. For example:
+ * - `self == other`
+ * - `self.method_name`
+ * - `def self.method_name ... end`
+ *
+ * This also includes implicit references to the current object in method
+ * calls.  For example, the method call `foo(123)` has an implicit `self`
+ * receiver, and is equivalent to the explicit `self.foo(123)`.
+ */
 class SelfVariableAccess extends LocalVariableAccess instanceof SelfVariableAccessImpl {
   final override string getAPrimaryQlClass() { result = "SelfVariableAccess" }
 }

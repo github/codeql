@@ -6,7 +6,7 @@ import semmle.code.java.frameworks.struts.StrutsXML
  * Gets the custom struts mapper class used for this `refType`, if any.
  */
 private string getStrutsMapperClass(RefType refType) {
-  result = getRootXMLFile(refType).getConstantValue("struts.mapper.class")
+  result = getRootXmlFile(refType).getConstantValue("struts.mapper.class")
 }
 
 /**
@@ -21,7 +21,7 @@ class Struts2ActionClass extends Class {
     or
     // If there is a struts.xml file, then any class that is specified as an action is considered
     // to be reflectively constructed.
-    exists(StrutsXMLAction strutsAction | this = strutsAction.getActionClass())
+    exists(StrutsXmlAction strutsAction | this = strutsAction.getActionClass())
     or
     // We have determined that this is an action class due to the conventions plugin.
     this instanceof Struts2ConventionActionClass
@@ -64,7 +64,7 @@ class Struts2ActionClass extends Class {
           any()
         else (
           // Use the default mapping
-          exists(StrutsXMLAction strutsAction |
+          exists(StrutsXmlAction strutsAction |
             this = strutsAction.getActionClass() and
             result = strutsAction.getActionMethod()
           )

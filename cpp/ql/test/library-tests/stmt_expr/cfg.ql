@@ -1,5 +1,4 @@
 import cpp
-import semmle.code.cpp.exprs.ObjectiveC
 
 from ControlFlowNode x, ControlFlowNode y, string entryPoint
 where

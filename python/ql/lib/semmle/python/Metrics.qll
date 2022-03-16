@@ -18,7 +18,7 @@ class FunctionMetrics extends Function {
   int getNumberOfLinesOfDocStrings() { py_docstringlines(this, result) }
 
   /**
-   * Cyclomatic complexity:
+   * Gets the cyclomatic complexity of the function:
    * The number of linearly independent paths through the source code.
    * Computed as     E - N + 2P,
    * where
@@ -27,9 +27,9 @@ class FunctionMetrics extends Function {
    *  P = the number of connected components, which for a single function is 1.
    */
   int getCyclomaticComplexity() {
-    exists(int E, int N |
-      N = count(BasicBlock b | b = this.getABasicBlock() and b.likelyReachable()) and
-      E =
+    exists(int e, int n |
+      n = count(BasicBlock b | b = this.getABasicBlock() and b.likelyReachable()) and
+      e =
         count(BasicBlock b1, BasicBlock b2 |
           b1 = this.getABasicBlock() and
           b1.likelyReachable() and
@@ -39,7 +39,7 @@ class FunctionMetrics extends Function {
           not b1.unlikelySuccessor(b2)
         )
     |
-      result = E - N + 2
+      result = e - n + 2
     )
   }
 
@@ -130,13 +130,13 @@ class ClassMetrics extends Class {
   }
 
   /**
-   * The afferent coupling of a class is the number of classes that
+   * Gets the afferent coupling of a class -- the number of classes that
    * directly depend on it.
    */
   int getAfferentCoupling() { result = count(ClassMetrics t | t.dependsOn(this)) }
 
   /**
-   * The efferent coupling of a class is the number of classes that
+   * Gets the efferent coupling of a class -- the number of classes that
    * it directly depends on.
    */
   int getEfferentCoupling() { result = count(ClassMetrics t | this.dependsOn(t)) }
@@ -273,13 +273,13 @@ class ModuleMetrics extends Module {
   int getNumberOfLinesOfDocStrings() { py_docstringlines(this, result) }
 
   /**
-   * The afferent coupling of a class is the number of classes that
+   * Gets the afferent coupling of a class -- the number of classes that
    *  directly depend on it.
    */
   int getAfferentCoupling() { result = count(ModuleMetrics t | t.dependsOn(this)) }
 
   /**
-   * The efferent coupling of a class is the number of classes that
+   * Gets the efferent coupling of a class -- the number of classes that
    *  it directly depends on.
    */
   int getEfferentCoupling() { result = count(ModuleMetrics t | this.dependsOn(t)) }

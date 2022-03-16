@@ -64,7 +64,7 @@ import javascript
  * Object.prototype.hasOwnProperty = function(p) {};
  * </pre>
  */
-abstract class ExternalDecl extends ASTNode {
+abstract class ExternalDecl extends AstNode {
   /** Gets the name of this declaration. */
   abstract string getName();
 
@@ -125,7 +125,7 @@ abstract class ExternalVarDecl extends ExternalDecl {
    *
    * The result can be either a function or an expression.
    */
-  abstract ASTNode getInit();
+  abstract AstNode getInit();
 
   /**
    * Gets a JSDoc tag associated with this declaration.
@@ -179,7 +179,7 @@ class ExternalGlobalFunctionDecl extends ExternalGlobalDecl, FunctionDeclStmt {
   /** Gets the name of this declaration. */
   override string getName() { result = FunctionDeclStmt.super.getName() }
 
-  override ASTNode getInit() { result = this }
+  override AstNode getInit() { result = this }
 }
 
 /**
@@ -336,7 +336,7 @@ class ExternalInstanceMemberDecl extends ExternalMemberDecl {
  *   function(p) {};  // external function entity
  * </pre>
  */
-class ExternalEntity extends ASTNode {
+class ExternalEntity extends AstNode {
   ExternalEntity() { exists(ExternalVarDecl d | d.getInit() = this) }
 
   /** Gets the variable declaration to which this entity belongs. */
