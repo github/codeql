@@ -480,6 +480,7 @@ abstract class RegExp extends AST::StringlikeLiteral {
   /** Gets the number of the group in start,end */
   int getGroupNumber(int start, int end) {
     this.group(start, end) and
+    not this.nonCapturingGroupStart(start, _) and
     result =
       count(int i | this.group(i, _) and i < start and not this.nonCapturingGroupStart(i, _)) + 1
   }
@@ -583,7 +584,7 @@ abstract class RegExp extends AST::StringlikeLiteral {
   private predicate nonCapturingGroupStart(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) = ":" and
+    this.getChar(start + 2) = [":", "=", "<", "!", "#"] and
     end = start + 3
   }
 
