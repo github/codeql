@@ -73,9 +73,12 @@ void funcWork1b() {
 
 void funcWork1() {
   int a;
+  int i;
   myGlobalData *valData = new myGlobalData;
   valData->sizeInt  = 10;
   valData->bufMyData =  new myData*[valData->sizeInt];
+  for (i = 0; i < valData->sizeInt; i++)
+    valData->bufMyData[i] = 0;
   try { 
   	cleanFunction();
 	throwFunction(a);
