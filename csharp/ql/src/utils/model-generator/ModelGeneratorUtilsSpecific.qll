@@ -86,6 +86,11 @@ string parameterNodeAsInput(DataFlow::ParameterNode p) {
   result = "Argument[Qualifier]" and p instanceof InstanceParameterNode
 }
 
+pragma[nomagic]
+private Parameter getParameter(ReturnNodeExt node, ParameterPosition pos) {
+  result = node.getEnclosingCallable().getParameter(pos.getPosition())
+}
+
 /**
  * Gets the model string represention of the the return node `node`.
  */
@@ -94,7 +99,7 @@ string returnNodeAsOutput(ReturnNodeExt node) {
   then result = "ReturnValue"
   else
     exists(ParameterPosition pos | pos = node.getKind().(ParamUpdateReturnKind).getPosition() |
-      result = parameterAccess(node.getEnclosingCallable().getParameter(pos.getPosition()))
+      result = parameterAccess(getParameter(node, pos))
       or
       pos.isThisParameter() and
       result = "Argument[Qualifier]"
