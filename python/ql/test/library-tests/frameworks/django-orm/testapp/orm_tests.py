@@ -200,7 +200,7 @@ def test_save9_load():
 # --------------------------------------
 
 class save10_BlogPost(models.Model):
-    # dummy contet, only has automatic `id` field
+    # dummy content, only has automatic `id` field
     pass
 
 class save10_Comment(models.Model):

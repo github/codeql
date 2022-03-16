@@ -68,7 +68,7 @@ http 'http://127.0.0.1:8000/show_age/?id=1'
 #
 # 1. We don't have any good way to determine what the validator actually does. So we
 #    don't have any way to determine if a validator would make data safe for a
-#    particular query. So we would have to blindly trust that if any validator what
+#    particular query. So we would have to blindly trust that if any validator was
 #    specified, that would mean data is always safe :| We still want to produce more
 #    results, so by default, we would want to do it this way, and live live with the FPs
 #    that arise -- if it turns out that is too troublesome, we can look more into it.
