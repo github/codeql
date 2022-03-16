@@ -163,3 +163,32 @@ public class GenericFlow<T>
         input.Add(data);
     }
 }
+
+public abstract class BaseClassFlow
+{
+    public virtual int ReturnParam(int input)
+    {
+        return input;
+    }
+}
+
+public class DerivedClass1Flow : BaseClassFlow
+{
+    public int ReturnParam1(int input0, int input1)
+    {
+        return input1;
+    }
+}
+
+public class DerivedClass2Flow : BaseClassFlow
+{
+    public override int ReturnParam(int input)
+    {
+        return input;
+    }
+
+    public int ReturnParam0(int input0, int input1)
+    {
+        return input0;
+    }
+}

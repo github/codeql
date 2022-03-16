@@ -1,4 +1,5 @@
 | NoSummaries;PublicClassFlow;false;PublicReturn;(System.Int32);Argument[0];ReturnValue;taint |
+| Summaries;BaseClassFlow;true;ReturnParam;(System.Int32);Argument[0];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnField;();Argument[Qualifier];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnParam0;(System.String,System.Object);Argument[0];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnParam1;(System.String,System.Object);Argument[1];ReturnValue;taint |
@@ -17,6 +18,9 @@
 | Summaries;CollectionFlow;false;ReturnArrayElement;(System.Int32[]);Argument[0].Element;ReturnValue;taint |
 | Summaries;CollectionFlow;false;ReturnFieldInAList;();Argument[Qualifier];ReturnValue;taint |
 | Summaries;CollectionFlow;false;ReturnListElement;(System.Collections.Generic.List<System.Object>);Argument[0].Element;ReturnValue;taint |
+| Summaries;DerivedClass1Flow;false;ReturnParam1;(System.Int32,System.Int32);Argument[1];ReturnValue;taint |
+| Summaries;DerivedClass2Flow;false;ReturnParam0;(System.Int32,System.Int32);Argument[0];ReturnValue;taint |
+| Summaries;DerivedClass2Flow;false;ReturnParam;(System.Int32);Argument[0];ReturnValue;taint |
 | Summaries;GenericFlow<>;false;AddFieldToGenericList;(System.Collections.Generic.List<T>);Argument[Qualifier];Argument[0].Element;taint |
 | Summaries;GenericFlow<>;false;AddToGenericList<>;(System.Collections.Generic.List<S>,S);Argument[1];Argument[0].Element;taint |
 | Summaries;GenericFlow<>;false;ReturnFieldInGenericList;();Argument[Qualifier];ReturnValue;taint |
