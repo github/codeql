@@ -105,8 +105,8 @@ class TypeParam extends Interface {
   TypeParam() { this.hasQualifiedName("org.apache.ibatis.annotations", "Param") }
 }
 
-private class MyBatisAbstractSQL extends RefType {
-  MyBatisAbstractSQL() { this.hasQualifiedName("org.apache.ibatis.jdbc", "AbstractSQL") }
+private class MyBatisAbstractSql extends RefType {
+  MyBatisAbstractSql() { this.hasQualifiedName("org.apache.ibatis.jdbc", "AbstractSQL") }
 }
 
 private class MyBatisProvider extends RefType {
@@ -116,12 +116,12 @@ private class MyBatisProvider extends RefType {
   }
 }
 
-private class MyBatisAbstractSQLMethod extends Method {
+private class MyBatisAbstractSqlMethod extends Method {
   string taintedArgs;
   string signature;
 
-  MyBatisAbstractSQLMethod() {
-    this.getDeclaringType().getSourceDeclaration() instanceof MyBatisAbstractSQL and
+  MyBatisAbstractSqlMethod() {
+    this.getDeclaringType().getSourceDeclaration() instanceof MyBatisAbstractSql and
     (
       this.hasName([
           "UPDATE", "SET", "INSERT_INTO", "SELECT", "OFFSET_ROWS", "LIMIT", "OFFSET",
@@ -183,15 +183,15 @@ private class MyBatisProviderStep extends TaintTracking::AdditionalValueStep {
   }
 }
 
-private class MyBatisAbstractSQLToStringStep extends SummaryModelCsv {
+private class MyBatisAbstractSqlToStringStep extends SummaryModelCsv {
   override predicate row(string row) {
-    row = ["org.apache.ibatis.jdbc;AbstractSQL;true;toString;;;Argument[-1];ReturnValue;taint"]
+    row = "org.apache.ibatis.jdbc;AbstractSQL;true;toString;;;Argument[-1];ReturnValue;taint"
   }
 }
 
-private class MyBatisAbstractSQLMethodsStep extends SummaryModelCsv {
+private class MyBatisAbstractSqlMethodsStep extends SummaryModelCsv {
   override predicate row(string row) {
-    exists(MyBatisAbstractSQLMethod m |
+    exists(MyBatisAbstractSqlMethod m |
       row =
         "org.apache.ibatis.jdbc;AbstractSQL;true;" + m.getName() + ";(" + m.getCsvSignature() +
           ");;" + m.getTaintedArgs() + ";Argument[-1];taint"
