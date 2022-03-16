@@ -2046,7 +2046,7 @@ module Csv {
   }
 
   /** Holds if the summary should apply for all overrides of this. */
-  private predicate isBaseCallableOrPrototype(DataFlowCallable c) {
+  predicate isBaseCallableOrPrototype(DataFlowCallable c) {
     c.getDeclaringType() instanceof Interface
     or
     exists(Modifiable m | m = [c.(Modifiable), c.(Accessor).getDeclaration()] |
