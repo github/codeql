@@ -72,4 +72,13 @@ class PolyRedosTest {
         p3.asMatchPredicate().test(tainted); 
         p4.asPredicate().test(tainted); // $ hasPolyRedos
     }
+
+    void test6(HttpServletRequest request) {
+        Pattern p = Pattern.compile("^a*a*$");
+
+        p.matcher(request.getParameter("inp")).matches(); // $ hasPolyRedos
+        p.matcher(request.getHeader("If-None-Match")).matches();
+        p.matcher(request.getRequestURI()).matches();
+        p.matcher(request.getCookies()[0].getName()).matches();
+    }
 }

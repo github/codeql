@@ -1,6 +1,6 @@
 import java
 import TestUtilities.InlineExpectationsTest
-import semmle.code.java.security.performance.PolynomialReDosQuery
+import semmle.code.java.security.performance.PolynomialReDoSQuery
 
 class HasPolyRedos extends InlineExpectationsTest {
   HasPolyRedos() { this = "HasPolyRedos" }
@@ -10,7 +10,7 @@ class HasPolyRedos extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasPolyRedos" and
     exists(DataFlow::PathNode source, DataFlow::PathNode sink, PolynomialBackTrackingTerm regexp |
-      hasPolynomialReDosResult(source, sink, regexp) and
+      hasPolynomialReDoSResult(source, sink, regexp) and
       location = sink.getNode().getLocation() and
       element = sink.getNode().toString() and
       value = ""

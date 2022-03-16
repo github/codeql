@@ -12,11 +12,11 @@
  */
 
 import java
-import semmle.code.java.security.performance.PolynomialReDosQuery
+import semmle.code.java.security.performance.PolynomialReDoSQuery
 import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, PolynomialBackTrackingTerm regexp
-where hasPolynomialReDosResult(source, sink, regexp)
+where hasPolynomialReDoSResult(source, sink, regexp)
 select sink, source, sink,
   "This $@ that depends on $@ may run slow on strings " + regexp.getPrefixMessage() +
     "with many repetitions of '" + regexp.getPumpString() + "'.", regexp, "regular expression",
