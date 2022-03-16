@@ -181,7 +181,10 @@ private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPat
  * Holds if a CSV summary contributed the step `pred -> succ` of the given `kind`.
  */
 predicate summaryStep(API::Node pred, API::Node succ, string kind) {
-  exists(string package, string type, string path, API::InvokeNode base, AccessPath input, AccessPath output |
+  exists(
+    string package, string type, string path, API::InvokeNode base, AccessPath input,
+    AccessPath output
+  |
     ModelOutput::relevantSummaryModel(package, type, path, input, output, kind) and
     ModelOutput::resolvedSummaryBase(package, type, path, base) and
     pred = getNodeFromInputOutputPath(base, input) and
