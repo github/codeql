@@ -104,7 +104,7 @@ module StringOps {
   }
 
   /**
-   * A expression that is equivalent to `A.include?(B)` or `!A.include?(B)`.
+   * An expression that is equivalent to `A.include?(B)` or `!A.include?(B)`.
    * Note that this class is equivalent to `InclusionTest`, which also matches
    * inclusion tests on array objects.
    */

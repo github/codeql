@@ -38,7 +38,7 @@ class InclusionTest extends DataFlow::Node instanceof InclusionTest::Range {
  */
 module InclusionTest {
   /**
-   * A expression that is equivalent to `A.include?(B)` or `!A.include?(B)`.
+   * An expression that is equivalent to `A.include?(B)` or `!A.include?(B)`.
    *
    * Note that this also includes calls to the array method named `include?`.
    */
