@@ -522,13 +522,14 @@ open class KotlinFileExtractor(
                 return
             }
 
-            extractDeclInitializers(enclosingClass.declarations, false) {
-                Pair(tw.getFreshIdLabel<DbBlock>().also({
-                    tw.writeStmts_block(it, parent.parent, parent.idx, constructorId)
-                    val locId = tw.getLocation(enclosingConstructor)
-                    tw.writeHasLocation(it, locId)
-                }), constructorId)
+            // Don't make this block lazily since we need to insert something at the given parent.idx position,
+            // and in the case where there are no initializers to emit an empty block is an acceptable filler.
+            val initBlockId = tw.getFreshIdLabel<DbBlock>().also {
+                tw.writeStmts_block(it, parent.parent, parent.idx, constructorId)
+                val locId = tw.getLocation(enclosingConstructor)
+                tw.writeHasLocation(it, locId)
             }
+            extractDeclInitializers(enclosingClass.declarations, false) { Pair(initBlockId, constructorId) }
         }
     }
 
