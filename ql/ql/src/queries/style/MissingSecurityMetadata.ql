@@ -41,7 +41,10 @@ predicate missingSecurityTag(QLDoc doc) {
 from TopLevel t, string msg
 where
   t.getLocation().getFile().getBaseName().matches("%.ql") and
-  not t.getLocation().getFile().getRelativePath().matches(["%/experimental/%", "%/examples/%"]) and
+  not t.getLocation()
+      .getFile()
+      .getRelativePath()
+      .matches("%/" + ["experimental", "examples", "test"] + "/%") and
   (
     missingSecuritySeverity(t.getQLDoc()) and
     msg = "This query file is missing a `@security-severity` tag."
