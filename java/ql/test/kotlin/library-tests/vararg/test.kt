@@ -3,6 +3,20 @@ fun sink(sunk: Int) {
     
 }
 
+open class HasVarargConstructor {
+
+  constructor(vararg xs: Int) {
+    sink(xs[xs[0]])
+  }
+
+  constructor(x: String, vararg xs: Int) : this(*xs) { }
+
+}
+
+class SuperclassHasVarargConstructor(x: Int) : HasVarargConstructor(x) {
+
+}
+
 fun funWithOnlyVarArgs(vararg xs: Int) {
     sink(xs[xs[0]])
 }
@@ -24,4 +38,9 @@ fun myFun() {
     funWithOnlyVarArgs(*array)
     funWithArgsAndVarArgs("foo", true, *array)
     funWithMiddleVarArgs("foo", *array, y = true)
+    HasVarargConstructor(51, 52, 53)
+    HasVarargConstructor("foo", 61, 62, 63)
+    SuperclassHasVarargConstructor(91)
+    HasVarargConstructor(*array)
+    HasVarargConstructor("foo", *array)
 }

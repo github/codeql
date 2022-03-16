@@ -1146,14 +1146,21 @@ open class KotlinFileExtractor(
             idxOffset = 0
         }
 
+        extractCallValueArguments(id, valueArguments, enclosingStmt, enclosingCallable, idxOffset)
+    }
+
+    private fun extractCallValueArguments(callId: Label<out DbExprparent>, call: IrFunctionAccessExpression, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) =
+        extractCallValueArguments(callId, (0 until call.valueArgumentsCount).map { call.getValueArgument(it) }, enclosingStmt, enclosingCallable, idxOffset)
+
+    private fun extractCallValueArguments(callId: Label<out DbExprparent>, valueArguments: List<IrExpression?>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) {
         var i = 0
         valueArguments.forEach { arg ->
             if(arg != null) {
                 if (arg is IrVararg) {
-                    arg.elements.forEachIndexed { varargNo, vararg -> extractVarargElement(vararg, enclosingCallable, id, i + idxOffset + varargNo, enclosingStmt) }
+                    arg.elements.forEachIndexed { varargNo, vararg -> extractVarargElement(vararg, enclosingCallable, callId, i + idxOffset + varargNo, enclosingStmt) }
                     i += arg.elements.size
                 } else {
-                    extractExpressionExpr(arg, enclosingCallable, id, (i++) + idxOffset, enclosingStmt)
+                    extractExpressionExpr(arg, enclosingCallable, callId, (i++) + idxOffset, enclosingStmt)
                 }
             }
         }
@@ -1807,12 +1814,8 @@ open class KotlinFileExtractor(
             tw.writeIsAnonymClass(type.javaResult.id as Label<DbClass>, id)
         }
 
-        for (i in 0 until e.valueArgumentsCount) {
-            val arg = e.getValueArgument(i)
-            if (arg != null) {
-                extractExpressionExpr(arg, callable, id, i, enclosingStmt)
-            }
-        }
+        extractCallValueArguments(id, e, enclosingStmt, callable, 0)
+
         val dr = e.dispatchReceiver
         if (dr != null) {
             extractExpressionExpr(dr, callable, id, -2, enclosingStmt)
@@ -2020,12 +2023,7 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(id, locId)
                     @Suppress("UNCHECKED_CAST")
                     tw.writeCallableBinding(id as Label<DbCaller>, methodId)
-                    for (i in 0 until e.valueArgumentsCount) {
-                        val arg = e.getValueArgument(i)
-                        if (arg != null) {
-                            extractExpressionExpr(arg, callable, id, i, id)
-                        }
-                    }
+                    extractCallValueArguments(id, e, id, callable, 0)
                     val dr = e.dispatchReceiver
                     if (dr != null) {
                         extractExpressionExpr(dr, callable, id, -1, id)
