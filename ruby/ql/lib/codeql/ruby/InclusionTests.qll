@@ -13,7 +13,7 @@ private import codeql.ruby.controlflow.CfgNodes
  * Examples:
  * ```
  * A.include?(B)
- * A.index(B) !== -1
+ * A.index(B) != nil
  * A.index(B) >= 0
  * ```
  */
@@ -74,7 +74,7 @@ module InclusionTest {
   }
 
   /**
-   * A check of form `A.index(B) != -1`, `A.index(B) >= 0`, or similar.
+   * A check of form `A.index(B) != nil`, `A.index(B) >= 0`, or similar.
    */
   private class Includes_IndexOfComparison extends Range, DataFlow::Node {
     private DataFlow::CallNode indexOf;
@@ -88,8 +88,11 @@ module InclusionTest {
         // one operand is of the form `whitelist.index(x)`
         indexOf.getMethodName() = "index" and
         // and the other one is 0 or -1
-        value = index.getConstantValue().getInt() and
-        value = [0, -1]
+        (
+          value = index.getConstantValue().getInt() and value = 0
+          or
+          index.getExpr() instanceof NilLiteral and value = -1
+        )
       |
         value = -1 and polarity = false and comparison.getExpr() instanceof CaseEqExpr
         or
