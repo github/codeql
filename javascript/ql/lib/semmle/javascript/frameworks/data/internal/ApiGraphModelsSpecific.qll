@@ -148,10 +148,12 @@ predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPat
  * Holds if `path` is an input or output spec for a summary with the given `base` node.
  */
 pragma[nomagic]
-private predicate relevantInputOutputPath(API::InvokeNode base, AccessPath path) {
-  ModelOutput::resolvedSummaryBase(base, path, _, _)
-  or
-  ModelOutput::resolvedSummaryBase(base, _, path, _)
+private predicate relevantInputOutputPath(API::InvokeNode base, AccessPath inputOrOutput) {
+  exists(string package, string type, string input, string output, string path |
+    ModelOutput::relevantSummaryModel(package, type, path, input, output, _) and
+    ModelOutput::resolvedSummaryBase(package, type, path, base) and
+    inputOrOutput = [input, output]
+  )
 }
 
 /**
@@ -179,8 +181,9 @@ private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPat
  * Holds if a CSV summary contributed the step `pred -> succ` of the given `kind`.
  */
 predicate summaryStep(API::Node pred, API::Node succ, string kind) {
-  exists(API::InvokeNode base, AccessPath input, AccessPath output |
-    ModelOutput::resolvedSummaryBase(base, input, output, kind) and
+  exists(string package, string type, string path, API::InvokeNode base, AccessPath input, AccessPath output |
+    ModelOutput::relevantSummaryModel(package, type, path, input, output, kind) and
+    ModelOutput::resolvedSummaryBase(package, type, path, base) and
     pred = getNodeFromInputOutputPath(base, input) and
     succ = getNodeFromInputOutputPath(base, output)
   )

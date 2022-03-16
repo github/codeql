@@ -436,26 +436,23 @@ module ModelOutput {
   }
 
   /**
-   * Holds if a relevant CSV summary row has the given `kind`, `input` and `output`.
+   * Holds if a relevant CSV summary exists for these parameters.
    */
-  predicate summaryModel(string input, string output, string kind) {
-    exists(string package |
-      isRelevantPackage(package) and
-      summaryModel(package, _, _, input, output, kind)
-    )
+  predicate relevantSummaryModel(
+    string package, string type, string path, string input, string output, string kind
+  ) {
+    isRelevantPackage(package) and
+    summaryModel(package, type, path, input, output, kind)
   }
 
   /**
-   * Holds if a summary edge with the given `input, output, kind` columns have a `package, type, path` tuple
-   * that resolves to `baseNode`.
+   * Holds if a `baseNode` is an invocation identified by the `package,type,path` part of a summary row.
    */
   predicate resolvedSummaryBase(
-    Specific::InvokeNode baseNode, AccessPath input, AccessPath output, string kind
+    string package, string type, string path, Specific::InvokeNode baseNode
   ) {
-    exists(string package, string type, AccessPath path |
-      summaryModel(package, type, path, input, output, kind) and
-      baseNode = getInvocationFromPath(package, type, path)
-    )
+    summaryModel(package, type, path, _, _, _) and
+    baseNode = getInvocationFromPath(package, type, path)
   }
 
   /**
