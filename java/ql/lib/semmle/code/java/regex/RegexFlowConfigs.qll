@@ -7,6 +7,7 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.DataFlow2
 private import semmle.code.java.dataflow.DataFlow3
 private import RegexFlowModels
+private import semmle.code.java.security.SecurityTests
 
 private class RegexCompileFlowConf extends DataFlow2::Configuration {
   RegexCompileFlowConf() { this = "RegexCompileFlowConfig" }
@@ -206,6 +207,10 @@ private class RegexMatchFlowConf extends DataFlow2::Configuration {
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(RegexAdditionalFlowStep s).step(node1, node2)
+  }
+
+  override predicate isBarrier(DataFlow::Node node) {
+    node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
   }
 }
 
