@@ -23,9 +23,9 @@ module ModelScoring {
     RelevantFeaturizationConfig() { this = "RelevantFeaturization" }
 
     override DataFlow::Node getAnEndpointToFeaturize() {
-      getCfg().isEffectiveSource(result) and any(DataFlow::Configuration cfg).hasFlow(result, _)
+      getCfg().isEffectiveSource(result)
       or
-      getCfg().isEffectiveSink(result) and any(DataFlow::Configuration cfg).hasFlow(_, result)
+      getCfg().isEffectiveSink(result)
     }
   }
 
@@ -146,7 +146,6 @@ module Debugging {
   query predicate endpointScores = ModelScoring::endpointScores/3;
 
   query predicate shouldResultBeIncluded(DataFlow::Node source, DataFlow::Node sink) {
-    any(ScoringResults scoringResults).shouldResultBeIncluded(source, sink) and
-    any(DataFlow::Configuration cfg).hasFlow(source, sink)
+    any(ScoringResults scoringResults).shouldResultBeIncluded(source, sink)
   }
 }

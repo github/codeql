@@ -34,7 +34,6 @@ module ATM {
      */
     pragma[inline]
     float getScoreForFlow(DataFlow::Node source, DataFlow::Node sink) {
-      any(DataFlow::Configuration cfg).hasFlow(source, sink) and
       shouldResultBeIncluded(source, sink) and
       result = unique(float s | s = any(ScoringResults results).getScoreForFlow(source, sink))
     }
