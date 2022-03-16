@@ -103,3 +103,23 @@ public class IEnumerableFlow
         return new List<string> { tainted };
     }
 }
+
+public class BulkArrayFlow
+{
+    private char tainted;
+
+    public void AssignToBulkArray(char[] input, char data)
+    {
+        input[0] = data;
+    }
+
+    public byte ReturnBulkArrayElement(byte[] input)
+    {
+        return input[0];
+    }
+
+    public void AssignFieldToBulkArray(char[] input)
+    {
+        input[0] = tainted;
+    }
+}
