@@ -169,26 +169,26 @@ private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
 
 private class SummarizedCallableFromModel extends SummarizedCallable {
-  string input;
-  string output;
-  string kind;
+  string package;
+  string type;
+  string path;
 
   SummarizedCallableFromModel() {
-    ModelOutput::summaryModel(input, output, kind) and
-    this = input + ";" + output + ";" + kind
+    ModelOutput::relevantSummaryModel(package, type, path, _, _, _) and
+    this = package + ";" + type + ";" + path
   }
 
   override Call getACall() {
     exists(API::MethodAccessNode base |
-      ModelOutput::resolvedSummaryBase(base, input, output, kind) and
+      ModelOutput::resolvedSummaryBase(package, type, path, base) and
       result = base.getCallNode().asExpr().getExpr()
     )
   }
 
-  override predicate propagatesFlowExt(string input_, string output_, boolean preservesValue) {
-    input_ = input and
-    output_ = output and
-    (
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    exists(string kind |
+      ModelOutput::relevantSummaryModel(package, type, path, input, output, kind)
+    |
       kind = "value" and
       preservesValue = true
       or
