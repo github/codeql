@@ -100,8 +100,6 @@ module InclusionTest {
         or
         value = -1 and polarity = true and comparison.getExpr() instanceof NEExpr
         or
-        value = 0 and polarity = false and comparison.getExpr() instanceof NEExpr
-        or
         exists(RelationalOperation op | op = comparison.getExpr() |
           exists(Expr lesser, Expr greater |
             op.getLesserOperand() = lesser and
