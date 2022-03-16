@@ -262,7 +262,7 @@ open class KotlinUsesExtractor(
             // In order to avoid excessively long signatures which can lead to trap file names longer than the filesystem
             // limit, we truncate and add a hash to preserve uniqueness if necessary.
             val signature = if (possiblyLongSignature.length > 100) {
-                possiblyLongSignature.substring(0, 42) + "#" + StringDigestor.digest(possiblyLongSignature).substring(0, 8)
+                possiblyLongSignature.substring(0, 92) + "#" + StringDigestor.digest(possiblyLongSignature).substring(0, 8)
             } else { possiblyLongSignature }
             dependencyCollector?.addDependency(f, signature)
             externalClassExtractor.extractLater(f, signature)
