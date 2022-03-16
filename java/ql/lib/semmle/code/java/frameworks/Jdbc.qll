@@ -52,3 +52,16 @@ private class SqlSinkCsv extends SinkModelCsv {
       ]
   }
 }
+
+private class SsrfSinkCsv extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        //"package;type;overrides;name;signature;ext;spec;kind"
+        "java.sql;DriverManager;false;getConnection;(String);;Argument[0];jdbc-url",
+        "java.sql;DriverManager;false;getConnection;(String,Properties);;Argument[0];jdbc-url",
+        "java.sql;DriverManager;false;getConnection;(String,String,String);;Argument[0];jdbc-url",
+        "java.sql;Driver;false;connect;(String,Properties);;Argument[0];jdbc-url"
+      ]
+  }
+}

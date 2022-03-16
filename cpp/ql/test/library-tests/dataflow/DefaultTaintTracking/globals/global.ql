@@ -27,8 +27,8 @@ class IRGlobalDefaultTaintTrackingTest extends InlineExpectationsTest {
   }
 }
 
-class ASTGlobalDefaultTaintTrackingTest extends InlineExpectationsTest {
-  ASTGlobalDefaultTaintTrackingTest() { this = "ASTGlobalDefaultTaintTrackingTest" }
+class AstGlobalDefaultTaintTrackingTest extends InlineExpectationsTest {
+  AstGlobalDefaultTaintTrackingTest() { this = "ASTGlobalDefaultTaintTrackingTest" }
 
   override string getARelevantTag() { result = "ast" }
 

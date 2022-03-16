@@ -13,7 +13,7 @@ import javascript
  * (https://kangax.github.io/compat-table/es6/) and [ECMAScript next compatibility table]
  * (https://kangax.github.io/compat-table/esnext/).
  */
-predicate isES20xxFeature(ASTNode nd, int version, string category) {
+predicate isES20xxFeature(AstNode nd, int version, string category) {
   version = 2015 and
   (
     exists(nd.(Parameter).getDefault()) and category = "default function parameters"

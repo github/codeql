@@ -100,6 +100,12 @@ edges
 | test.cpp:190:10:190:13 | Unary | test.cpp:190:10:190:13 | (reference dereference) |
 | test.cpp:190:10:190:13 | Unary | test.cpp:190:10:190:13 | (reference to) |
 | test.cpp:190:10:190:13 | pRef | test.cpp:190:10:190:13 | Unary |
+| test.cpp:225:14:225:15 | px | test.cpp:226:10:226:11 | Load |
+| test.cpp:226:10:226:11 | Load | test.cpp:226:10:226:11 | px |
+| test.cpp:226:10:226:11 | px | test.cpp:226:10:226:11 | StoreValue |
+| test.cpp:231:16:231:17 | & ... | test.cpp:225:14:225:15 | px |
+| test.cpp:231:17:231:17 | Unary | test.cpp:231:16:231:17 | & ... |
+| test.cpp:231:17:231:17 | x | test.cpp:231:17:231:17 | Unary |
 nodes
 | test.cpp:17:9:17:11 | & ... | semmle.label | & ... |
 | test.cpp:17:9:17:11 | StoreValue | semmle.label | StoreValue |
@@ -215,6 +221,13 @@ nodes
 | test.cpp:190:10:190:13 | Unary | semmle.label | Unary |
 | test.cpp:190:10:190:13 | Unary | semmle.label | Unary |
 | test.cpp:190:10:190:13 | pRef | semmle.label | pRef |
+| test.cpp:225:14:225:15 | px | semmle.label | px |
+| test.cpp:226:10:226:11 | Load | semmle.label | Load |
+| test.cpp:226:10:226:11 | StoreValue | semmle.label | StoreValue |
+| test.cpp:226:10:226:11 | px | semmle.label | px |
+| test.cpp:231:16:231:17 | & ... | semmle.label | & ... |
+| test.cpp:231:17:231:17 | Unary | semmle.label | Unary |
+| test.cpp:231:17:231:17 | x | semmle.label | x |
 #select
 | test.cpp:17:9:17:11 | StoreValue | test.cpp:17:10:17:11 | mc | test.cpp:17:9:17:11 | StoreValue | May return stack-allocated memory from $@. | test.cpp:17:10:17:11 | mc | mc |
 | test.cpp:25:9:25:11 | StoreValue | test.cpp:23:18:23:19 | mc | test.cpp:25:9:25:11 | StoreValue | May return stack-allocated memory from $@. | test.cpp:23:18:23:19 | mc | mc |

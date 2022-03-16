@@ -52,7 +52,7 @@ private class BindingUnsafeRemoteObjectConfig extends TaintTracking::Configurati
 
   override predicate isSource(DataFlow::Node source) {
     exists(ConstructorCall cc | cc = source.asExpr() |
-      hasVulnerableMethod(cc.getConstructedType().getASupertype*())
+      hasVulnerableMethod(cc.getConstructedType().getAnAncestor())
     )
   }
 

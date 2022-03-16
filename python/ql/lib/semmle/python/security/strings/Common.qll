@@ -1,6 +1,6 @@
 import python
 
-/* A call that returns a copy (or similar) of the argument */
+/** A call that returns a copy (or similar) of the argument */
 deprecated predicate copy_call(ControlFlowNode fromnode, CallNode tonode) {
   tonode.getFunction().(AttrNode).getObject("copy") = fromnode
   or

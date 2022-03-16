@@ -6,14 +6,14 @@
 private import python
 private import internal.TypeTracker as Internal
 
-/** Any string that may appear as the name of an attribute or access path. */
+/** A string that may appear as the name of an attribute or access path. */
 class AttributeName = Internal::ContentName;
 
-/** Either an attribute name, or the empty string (representing no attribute). */
+/** An attribute name, or the empty string (representing no attribute). */
 class OptionalAttributeName = Internal::OptionalContentName;
 
 /**
- * Summary of the steps needed to track a value to a given dataflow node.
+ * The summary of the steps needed to track a value to a given dataflow node.
  *
  * This can be used to track objects that implement a certain API in order to
  * recognize calls to that API. Note that type-tracking does not by itself provide a

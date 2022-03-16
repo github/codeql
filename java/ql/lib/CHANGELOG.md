@@ -1,3 +1,21 @@
+## 0.0.11
+
+### New Features
+
+* Added `hasDescendant(RefType anc, Type sub)`
+* Added `RefType.getADescendant()`
+* Added `RefType.getAStrictAncestor()`
+
+### Minor Analysis Improvements
+
+ * Add support for `CharacterLiteral` in `CompileTimeConstantExpr.getStringValue()`
+
+## 0.0.10
+
+### New Features
+
+* Added predicates `ClassOrInterface.getAPermittedSubtype` and `isSealed` exposing information about sealed classes.
+
 ## 0.0.9
 
 ## 0.0.8

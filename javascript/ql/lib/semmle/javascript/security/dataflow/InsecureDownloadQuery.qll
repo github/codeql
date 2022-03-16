@@ -9,15 +9,6 @@
 import javascript
 import InsecureDownloadCustomizations::InsecureDownload
 
-// Materialize flow labels
-private class ConcreteSensitiveInsecureURL extends Label::SensitiveInsecureURL {
-  ConcreteSensitiveInsecureURL() { this = this }
-}
-
-private class ConcreteInsecureURL extends Label::InsecureURL {
-  ConcreteInsecureURL() { this = this }
-}
-
 /**
  * A taint tracking configuration for download of sensitive file through insecure connection.
  */
@@ -30,5 +21,10 @@ class Configuration extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
     sink.(Sink).getALabel() = label
+  }
+
+  override predicate isBarrier(DataFlow::Node node) {
+    super.isBarrier(node) or
+    node instanceof Sanitizer
   }
 }

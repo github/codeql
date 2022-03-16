@@ -14,7 +14,7 @@ import python
 import DataFlow::PathGraph
 import experimental.semmle.python.security.LDAPInsecureAuth
 
-from LDAPInsecureAuthConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
+from LdapInsecureAuthConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ is authenticated insecurely.", sink.getNode(),
   "This LDAP host"

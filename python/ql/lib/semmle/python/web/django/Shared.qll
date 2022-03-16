@@ -1,17 +1,5 @@
 import python
 
-/** DEPRECATED: Use `Value::named("django.shortcuts.redirect")` instead. */
-deprecated FunctionValue redirect() { result = Value::named("django.shortcuts.redirect") }
-
-/** DEPRECATED: Use `DjangoRedirectResponseClass` instead. */
-deprecated ClassValue theDjangoHttpRedirectClass() {
-  // version 1.x
-  result = Value::named("django.http.response.HttpResponseRedirectBase")
-  or
-  // version 2.x
-  result = Value::named("django.http.HttpResponseRedirectBase")
-}
-
 /** A class that is a Django Redirect Response (subclass of `django.http.HttpResponseRedirectBase`). */
 deprecated class DjangoRedirectResponseClass extends ClassValue {
   DjangoRedirectResponseClass() {

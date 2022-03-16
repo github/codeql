@@ -2,14 +2,11 @@ import javascript
 import semmle.javascript.dataflow.InferredTypes
 import semmle.javascript.dataflow.CustomAbstractValueDefinitions
 
-class MyCustomAbstractValueDefinition extends CustomAbstractValueDefinition {
-  DataFlow::ValueNode node;
-
+class MyCustomAbstractValueDefinition extends CustomAbstractValueDefinition, AST::ValueNode {
   MyCustomAbstractValueDefinition() {
-    DataFlow::valueNode(this) = node and
-    node instanceof DataFlow::ObjectLiteralNode and
+    this.flow() instanceof DataFlow::ObjectLiteralNode and
     exists(DataFlow::PropWrite pwn |
-      pwn.writes(node, "custom", any(BooleanLiteral l | l.getValue() = "true").flow())
+      pwn.writes(this.flow(), "custom", any(BooleanLiteral l | l.getValue() = "true").flow())
     )
   }
 

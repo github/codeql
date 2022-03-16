@@ -284,10 +284,12 @@ private module Cached {
     TStringInterpolationComponentRegexp(Ruby::Interpolation g) {
       g.getParent() instanceof Ruby::Regex
     } or
-    TStringTextComponentNonRegexp(Ruby::Token g) {
+    TStringTextComponentNonRegexpStringOrHeredocContent(Ruby::Token g) {
       (g instanceof Ruby::StringContent or g instanceof Ruby::HeredocContent) and
       not g.getParent() instanceof Ruby::Regex
     } or
+    TStringTextComponentNonRegexpSimpleSymbol(Ruby::SimpleSymbol g) or
+    TStringTextComponentNonRegexpHashKeySymbol(Ruby::HashKeySymbol g) or
     TStringTextComponentRegexp(Ruby::Token g) {
       (g instanceof Ruby::StringContent or g instanceof Ruby::HeredocContent) and
       g.getParent() instanceof Ruby::Regex
@@ -511,7 +513,9 @@ private module Cached {
     n = TStringEscapeSequenceComponentRegexp(result) or
     n = TStringInterpolationComponentNonRegexp(result) or
     n = TStringInterpolationComponentRegexp(result) or
-    n = TStringTextComponentNonRegexp(result) or
+    n = TStringTextComponentNonRegexpStringOrHeredocContent(result) or
+    n = TStringTextComponentNonRegexpSimpleSymbol(result) or
+    n = TStringTextComponentNonRegexpHashKeySymbol(result) or
     n = TStringTextComponentRegexp(result) or
     n = TSubExprReal(result) or
     n = TSubshellLiteral(result) or
@@ -701,6 +705,10 @@ class TNumericLiteral = TIntegerLiteral or TFloatLiteral or TRationalLiteral or 
 class TIntegerLiteral = TIntegerLiteralReal or TIntegerLiteralSynth;
 
 class TBooleanLiteral = TTrueLiteral or TFalseLiteral;
+
+class TStringTextComponentNonRegexp =
+  TStringTextComponentNonRegexpStringOrHeredocContent or
+      TStringTextComponentNonRegexpSimpleSymbol or TStringTextComponentNonRegexpHashKeySymbol;
 
 class TStringTextComponent = TStringTextComponentNonRegexp or TStringTextComponentRegexp;
 

@@ -8,8 +8,8 @@ import java
 /**
  * A JavaEE persistence configuration XML file (persistence.xml).
  */
-class PersistenceXMLFile extends XMLFile {
-  PersistenceXMLFile() { this.getStem() = "persistence" }
+class PersistenceXmlFile extends XMLFile {
+  PersistenceXmlFile() { this.getStem() = "persistence" }
 
   /** Gets the root XML element in this `persistence.xml` file. */
   PersistenceXmlRoot getRoot() { result = this.getAChild() }
@@ -26,10 +26,13 @@ class PersistenceXMLFile extends XMLFile {
   }
 }
 
+/** DEPRECATED: Alias for PersistenceXmlFile */
+deprecated class PersistenceXMLFile = PersistenceXmlFile;
+
 /** The root `persistence` XML element in a `persistence.xml` file. */
 class PersistenceXmlRoot extends XMLElement {
   PersistenceXmlRoot() {
-    this.getParent() instanceof PersistenceXMLFile and
+    this.getParent() instanceof PersistenceXmlFile and
     this.getName() = "persistence"
   }
 

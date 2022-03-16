@@ -112,13 +112,6 @@ private predicate evenlyDivisibleExpr(Expr e, int factor) {
 }
 
 /**
- * Holds if `rix` is the number of input edges to `phi`.
- */
-private predicate maxPhiInputRank(SsaPhiNode phi, int rix) {
-  rix = max(int r | rankedPhiInput(phi, _, _, r))
-}
-
-/**
  * Gets the remainder of `val` modulo `mod`.
  *
  * For `mod = 0` the result equals `val` and for `mod > 1` the result is within

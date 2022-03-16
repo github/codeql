@@ -9,5 +9,5 @@
 import java
 
 from ThrowStmt throw
-where throw.getThrownExceptionType().getASupertype*().hasQualifiedName("com.example", "AnException")
+where throw.getThrownExceptionType().getAnAncestor().hasQualifiedName("com.example", "AnException")
 select throw, "Don't throw com.example.AnException"

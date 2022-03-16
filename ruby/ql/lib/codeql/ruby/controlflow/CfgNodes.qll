@@ -14,7 +14,7 @@ class EntryNode extends CfgNode, TEntryNode {
 
   EntryNode() { this = TEntryNode(scope) }
 
-  final override EntryBasicBlock getBasicBlock() { result = CfgNode.super.getBasicBlock() }
+  final override EntryBasicBlock getBasicBlock() { result = super.getBasicBlock() }
 
   final override Location getLocation() { result = scope.getLocation() }
 
@@ -31,7 +31,7 @@ class AnnotatedExitNode extends CfgNode, TAnnotatedExitNode {
   /** Holds if this node represent a normal exit. */
   final predicate isNormal() { normal = true }
 
-  final override AnnotatedExitBasicBlock getBasicBlock() { result = CfgNode.super.getBasicBlock() }
+  final override AnnotatedExitBasicBlock getBasicBlock() { result = super.getBasicBlock() }
 
   final override Location getLocation() { result = scope.getLocation() }
 

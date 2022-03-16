@@ -40,16 +40,6 @@ private predicate class_statement(Comment c) {
 
 private predicate triple_quote(Comment c) { c.getText().regexpMatch("#.*(\"\"\"|''').*") }
 
-private predicate triple_quoted_string_part(Comment start, Comment end) {
-  triple_quote(start) and end = start
-  or
-  exists(Comment mid |
-    triple_quoted_string_part(start, mid) and
-    end = non_empty_following(mid) and
-    not triple_quote(end)
-  )
-}
-
 private predicate maybe_code(Comment c) {
   not non_code(c) and not filler(c) and not endline_comment(c) and not file_or_url(c)
   or
@@ -158,11 +148,11 @@ private predicate commented_out_code_block(Comment start, Comment end) {
   not commented_out_code(non_empty_following(end))
 }
 
-/* A single line comment that appears to be commented out code */
+/** A single line comment that appears to be commented out code */
 class CommentedOutCodeLine extends Comment {
   CommentedOutCodeLine() { exists(CommentedOutCodeBlock b | b.contains(this)) }
 
-  /* Whether this commented-out code line is likely to be example code embedded in a larger comment. */
+  /** Holds if this commented-out code line is likely to be example code embedded in a larger comment. */
   predicate maybeExampleCode() {
     exists(CommentedOutCodeBlock block |
       block.contains(this) and
@@ -178,7 +168,7 @@ class CommentedOutCodeBlock extends @py_comment {
   /** Gets a textual representation of this element. */
   string toString() { result = "Commented out code" }
 
-  /** Whether this commented-out code block contains the comment c */
+  /** Holds if this commented-out code block contains the comment c */
   predicate contains(Comment c) {
     this = c
     or
@@ -189,7 +179,7 @@ class CommentedOutCodeBlock extends @py_comment {
     )
   }
 
-  /** The length of this comment block (in comments) */
+  /** Gets the length of this comment block (in comments) */
   int length() { result = count(Comment c | this.contains(c)) }
 
   /**

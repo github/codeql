@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics.CodeAnalysis;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction
 {
@@ -35,6 +36,20 @@ namespace Semmle.Extraction
             ITransformedPath WithSuffix(string suffix);
 
             string DatabaseId { get; }
+
+            /// <summary>
+            /// Gets the name of the trap file for this file.
+            /// </summary>
+            /// <returns>The full filepath of the trap file.</returns>
+            public string GetTrapPath(ILogger logger, TrapWriter.CompressionMode trapCompression) =>
+                TrapWriter.TrapPath(logger, Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"), this, trapCompression);
+
+            /// <summary>
+            /// Creates a trap writer for this file.
+            /// </summary>
+            /// <returns>A newly created TrapWriter.</returns>
+            public TrapWriter CreateTrapWriter(ILogger logger, TrapWriter.CompressionMode trapCompression, bool discardDuplicates) =>
+                new(logger, this, Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"), Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"), trapCompression, discardDuplicates);
         }
 
         private struct TransformedPath : ITransformedPath

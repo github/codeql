@@ -626,6 +626,35 @@ module OrmInstantiation {
 }
 
 /**
+ * A data flow node that writes persistent data.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `PersistentWriteAccess::Range` instead.
+ */
+class PersistentWriteAccess extends DataFlow::Node instanceof PersistentWriteAccess::Range {
+  /**
+   * Gets the data flow node corresponding to the written value.
+   */
+  DataFlow::Node getValue() { result = super.getValue() }
+}
+
+/** Provides a class for modeling new persistent write access APIs. */
+module PersistentWriteAccess {
+  /**
+   * A data flow node that writes persistent data.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `PersistentWriteAccess` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the data flow node corresponding to the written value.
+     */
+    abstract DataFlow::Node getValue();
+  }
+}
+
+/**
  * A data-flow node that may set or unset Cross-site request forgery protection.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,

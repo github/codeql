@@ -7,7 +7,7 @@ import lib.RecordedCalls
 
 from string text, float number, float ratio
 where
-  exists(int all_rcs | all_rcs = count(XMLRecordedCall rc) and ratio = number / all_rcs |
+  exists(int all_rcs | all_rcs = count(XmlRecordedCall rc) and ratio = number / all_rcs |
     text = "XMLRecordedCall" and number = all_rcs
     or
     text = "IdentifiedRecordedCall" and number = count(IdentifiedRecordedCall rc)

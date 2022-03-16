@@ -57,7 +57,7 @@ private class SendPendingIntent extends ImplicitPendingIntentSink {
     // implicit intents can't be started as services since API 21
     not exists(MethodAccess ma, Method m |
       ma.getMethod() = m and
-      m.getDeclaringType().getASupertype*() instanceof TypeContext and
+      m.getDeclaringType().getAnAncestor() instanceof TypeContext and
       m.getName().matches(["start%Service%", "bindService%"]) and
       this.asExpr() = ma.getArgument(0)
     )

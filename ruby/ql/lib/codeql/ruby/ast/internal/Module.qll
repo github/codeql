@@ -73,7 +73,7 @@ private module Cached {
       m = resolveConstantReadAccess(c.getReceiver())
       or
       m = enclosingModule(c).getModule() and
-      c.getReceiver() instanceof Self
+      c.getReceiver() instanceof SelfVariableAccess
     ) and
     result = resolveConstantReadAccess(c.getAnArgument())
   }
@@ -437,7 +437,7 @@ private module ResolveImpl {
         encl = enclosingModule(this) and
         result = [qualifiedModuleNameNonRec(encl, _, _), qualifiedModuleNameRec(encl, _, _)]
       |
-        this.getReceiver() instanceof Self
+        this.getReceiver() instanceof SelfVariableAccess
         or
         not exists(this.getReceiver())
       )

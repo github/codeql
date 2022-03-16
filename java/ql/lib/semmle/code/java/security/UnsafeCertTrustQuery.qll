@@ -46,7 +46,7 @@ private class SafeSslParametersFlowConfig extends DataFlow2::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma, RefType t | t instanceof SSLSocket or t instanceof SSLEngine |
       ma.getMethod().hasName("setSSLParameters") and
-      ma.getMethod().getDeclaringType().getASupertype*() = t and
+      ma.getMethod().getDeclaringType().getAnAncestor() = t and
       ma.getArgument(0) = sink.asExpr()
     )
   }

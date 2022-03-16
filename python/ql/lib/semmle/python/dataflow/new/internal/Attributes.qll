@@ -204,6 +204,8 @@ abstract class AttrRead extends AttrRef, Node, LocalSourceNode { }
 private class AttributeReadAsAttrRead extends AttrRead, CfgNode {
   override AttrNode node;
 
+  AttributeReadAsAttrRead() { node.isLoad() }
+
   override Node getObject() { result.asCfgNode() = node.getObject() }
 
   override ExprNode getAttributeNameExpr() {

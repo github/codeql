@@ -236,7 +236,7 @@ private module ControlFlowGraphImpl {
    */
   private predicate mustCatch(CatchClause c, ThrowableType thrown) {
     thrown = thrownInBody(c.getTry()) and
-    hasSubtype*(c.getACaughtType(), thrown)
+    hasDescendant(c.getACaughtType(), thrown)
   }
 
   /**
@@ -250,7 +250,7 @@ private module ControlFlowGraphImpl {
    */
   private predicate mayNotCatch(CatchClause c, ThrowableType thrown) {
     thrown = thrownInBody(c.getTry()) and
-    not hasSubtype*(c.getACaughtType(), thrown)
+    not hasDescendant(c.getACaughtType(), thrown)
   }
 
   /**

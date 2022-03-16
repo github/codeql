@@ -8,6 +8,6 @@
 
 import definitions
 
-from Locatable e, ASTNode def, string kind
+from Locatable e, AstNode def, string kind
 where def = definitionOf(e, kind)
 select e, def, kind
