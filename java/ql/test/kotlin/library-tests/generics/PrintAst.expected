@@ -75,6 +75,7 @@ generics.kt:
 #   11|     1: [Constructor] C0
 #   11|       5: [BlockStmt] { ... }
 #   11|         0: [SuperConstructorInvocationStmt] super(...)
+#   11|         1: [BlockStmt] { ... }
 #   13|   9: [Class,GenericType,ParameterizedType] C1
 #-----|     -2: (Generic Parameters)
 #   13|       0: [TypeVariable] T
@@ -116,6 +117,7 @@ generics.kt:
 #   20|     1: [Constructor] C2
 #   20|       5: [BlockStmt] { ... }
 #   20|         0: [SuperConstructorInvocationStmt] super(...)
+#   20|         1: [BlockStmt] { ... }
 #   21|     2: [Method] f4
 #-----|       2: (Generic Parameters)
 #   21|         0: [TypeVariable] P
@@ -129,6 +131,7 @@ generics.kt:
 #   36|     1: [Constructor] BoundedTest
 #   36|       5: [BlockStmt] { ... }
 #   36|         0: [SuperConstructorInvocationStmt] super(...)
+#   36|         1: [BlockStmt] { ... }
 #   38|     2: [Method] m
 #-----|       4: (Parameters)
 #   38|         0: [Parameter] s
@@ -141,6 +144,7 @@ generics.kt:
 #   42|     1: [Constructor] Outer
 #   42|       5: [BlockStmt] { ... }
 #   42|         0: [SuperConstructorInvocationStmt] super(...)
+#   42|         1: [BlockStmt] { ... }
 #   43|     2: [Class,GenericType,ParameterizedType] Inner1
 #-----|       -2: (Generic Parameters)
 #   43|         0: [TypeVariable] T3
@@ -148,6 +152,7 @@ generics.kt:
 #   43|       1: [Constructor] Inner1
 #   43|         5: [BlockStmt] { ... }
 #   43|           0: [SuperConstructorInvocationStmt] super(...)
+#   43|           1: [BlockStmt] { ... }
 #   44|       2: [Method] fn1
 #-----|         4: (Parameters)
 #   44|           0: [Parameter] t1
@@ -170,6 +175,7 @@ generics.kt:
 #   49|       1: [Constructor] Nested1
 #   49|         5: [BlockStmt] { ... }
 #   49|           0: [SuperConstructorInvocationStmt] super(...)
+#   49|           1: [BlockStmt] { ... }
 #   50|       2: [Method] fn2
 #-----|         4: (Parameters)
 #   50|           0: [Parameter] t3
@@ -187,6 +193,7 @@ generics.kt:
 #   56|     1: [Constructor] Class1
 #   56|       5: [BlockStmt] { ... }
 #   56|         0: [SuperConstructorInvocationStmt] super(...)
+#   56|         1: [BlockStmt] { ... }
 #   57|     2: [Method] fn1
 #-----|       2: (Generic Parameters)
 #   57|         0: [TypeVariable] T2
@@ -200,6 +207,7 @@ generics.kt:
 #   58|             1: [Constructor] Local
 #   58|               5: [BlockStmt] { ... }
 #   58|                 0: [SuperConstructorInvocationStmt] super(...)
+#   58|                 1: [BlockStmt] { ... }
 #   59|             2: [Method] fn2
 #-----|               2: (Generic Parameters)
 #   59|                 0: [TypeVariable] T4

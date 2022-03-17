@@ -11,6 +11,7 @@
 | test.kt:6:1:10:1 | Foo | Constructor |
 | test.kt:6:1:10:1 | super(...) | SuperConstructorInvocationStmt |
 | test.kt:6:1:10:1 | { ... } | BlockStmt |
+| test.kt:6:1:10:1 | { ... } | BlockStmt |
 | test.kt:6:11:6:11 | T | TypeVariable |
 | test.kt:7:5:9:5 | foo | Method |
 | test.kt:7:24:9:5 | { ... } | BlockStmt |

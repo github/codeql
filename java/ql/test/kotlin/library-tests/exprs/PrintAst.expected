@@ -111,6 +111,7 @@ delegatedProperties.kt:
 #    4|     1: [Constructor] ClassProp1
 #    4|       5: [BlockStmt] { ... }
 #    4|         0: [SuperConstructorInvocationStmt] super(...)
+#    4|         1: [BlockStmt] { ... }
 #    5|     2: [Method] fn
 #    5|       5: [BlockStmt] { ... }
 #    6|         0: [BlockStmt] { ... }
@@ -174,6 +175,7 @@ delegatedProperties.kt:
 #   15|     1: [Constructor] Resource
 #   15|       5: [BlockStmt] { ... }
 #   15|         0: [SuperConstructorInvocationStmt] super(...)
+#   15|         1: [BlockStmt] { ... }
 #   17|   4: [Class] Owner
 #   17|     1: [Constructor] Owner
 #   17|       5: [BlockStmt] { ... }
@@ -566,6 +568,7 @@ delegatedProperties.kt:
 #   45|     1: [Constructor] ResourceDelegate
 #   45|       5: [BlockStmt] { ... }
 #   45|         0: [SuperConstructorInvocationStmt] super(...)
+#   45|         1: [BlockStmt] { ... }
 #   46|     2: [Method] getValue
 #-----|       4: (Parameters)
 #   46|         0: [Parameter] thisRef
@@ -583,6 +586,7 @@ delegatedProperties.kt:
 #   53|     1: [Constructor] DelegateProvider
 #   53|       5: [BlockStmt] { ... }
 #   53|         0: [SuperConstructorInvocationStmt] super(...)
+#   53|         1: [BlockStmt] { ... }
 #   54|     2: [Method] provideDelegate
 #-----|       4: (Parameters)
 #   54|         0: [Parameter] thisRef
@@ -2421,14 +2425,17 @@ exprs.kt:
 #  146|     1: [Constructor] Root
 #  146|       5: [BlockStmt] { ... }
 #  146|         0: [SuperConstructorInvocationStmt] super(...)
+#  146|         1: [BlockStmt] { ... }
 #  147|   4: [Class] Subclass1
 #  147|     1: [Constructor] Subclass1
 #  147|       5: [BlockStmt] { ... }
 #  147|         0: [SuperConstructorInvocationStmt] super(...)
+#  147|         1: [BlockStmt] { ... }
 #  148|   5: [Class] Subclass2
 #  148|     1: [Constructor] Subclass2
 #  148|       5: [BlockStmt] { ... }
 #  148|         0: [SuperConstructorInvocationStmt] super(...)
+#  148|         1: [BlockStmt] { ... }
 #  168|   6: [Class] Direction
 #    0|     1: [Method] values
 #    0|     1: [Method] valueOf
@@ -2440,6 +2447,7 @@ exprs.kt:
 #  168|           0: [ClassInstanceExpr] new Enum(...)
 #  168|             -3: [TypeAccess] Unit
 #  168|               0: [TypeAccess] Direction
+#  168|         1: [BlockStmt] { ... }
 #  172|   7: [Class] Color
 #    0|     1: [Method] values
 #    0|     1: [Method] valueOf
@@ -2518,6 +2526,7 @@ exprs.kt:
 #  199|     1: [Constructor] Class2
 #  199|       5: [BlockStmt] { ... }
 #  199|         0: [SuperConstructorInvocationStmt] super(...)
+#  199|         1: [BlockStmt] { ... }
 #  200|     2: [Method] x
 #-----|       4: (Parameters)
 #  200|         0: [Parameter] aa
@@ -2573,6 +2582,7 @@ exprs.kt:
 #  218|     1: [Constructor] SomeClass1
 #  218|       5: [BlockStmt] { ... }
 #  218|         0: [SuperConstructorInvocationStmt] super(...)
+#  218|         1: [BlockStmt] { ... }
 funcExprs.kt:
 #    0| [CompilationUnit] funcExprs
 #    0|   1: [Class] FuncExprsKt
@@ -3641,6 +3651,7 @@ funcExprs.kt:
 #   48|     1: [Constructor] MyLambda
 #   48|       5: [BlockStmt] { ... }
 #   48|         0: [SuperConstructorInvocationStmt] super(...)
+#   48|         1: [BlockStmt] { ... }
 #   49|     2: [Method] invoke
 #-----|       4: (Parameters)
 #   49|         0: [Parameter] x
@@ -3651,10 +3662,12 @@ funcExprs.kt:
 #   55|     1: [Constructor] FuncRef
 #   55|       5: [BlockStmt] { ... }
 #   55|         0: [SuperConstructorInvocationStmt] super(...)
+#   55|         1: [BlockStmt] { ... }
 #   56|     2: [Class] Companion
 #   56|       1: [Constructor] Companion
 #   56|         5: [BlockStmt] { ... }
 #   56|           0: [SuperConstructorInvocationStmt] super(...)
+#   56|           1: [BlockStmt] { ... }
 #   57|       2: [Method] f0
 #   57|         5: [BlockStmt] { ... }
 #   57|           0: [ReturnStmt] return ...
@@ -3726,6 +3739,7 @@ funcExprs.kt:
 #   67|     1: [Constructor] Class3
 #   67|       5: [BlockStmt] { ... }
 #   67|         0: [SuperConstructorInvocationStmt] super(...)
+#   67|         1: [BlockStmt] { ... }
 #   68|     2: [Method] call
 #   68|       5: [BlockStmt] { ... }
 #   69|         0: [ExprStmt] <Expr>;
@@ -3757,6 +3771,7 @@ funcExprs.kt:
 #   73|       1: [Constructor] Generic
 #   73|         5: [BlockStmt] { ... }
 #   73|           0: [SuperConstructorInvocationStmt] super(...)
+#   73|           1: [BlockStmt] { ... }
 localFunctionCalls.kt:
 #    0| [CompilationUnit] localFunctionCalls
 #    0|   1: [Class] LocalFunctionCallsKt
@@ -3838,6 +3853,7 @@ localFunctionCalls.kt:
 #   14|     1: [Constructor] C1
 #   14|       5: [BlockStmt] { ... }
 #   14|         0: [SuperConstructorInvocationStmt] super(...)
+#   14|         1: [BlockStmt] { ... }
 samConversion.kt:
 #    0| [CompilationUnit] samConversion
 #    0|   1: [Class] SamConversionKt
