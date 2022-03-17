@@ -3,6 +3,7 @@
 import argparse
 import kotlin_plugin_versions
 import glob
+import platform
 import re
 import subprocess
 import shutil
@@ -24,10 +25,19 @@ kotlinc = 'kotlinc'
 javac = 'javac'
 kotlin_dependency_folder = args.dependencies
 
+def is_windows():
+    '''Whether we appear to be running on Windows'''
+    if platform.system() == 'Windows':
+        return True
+    if platform.system().startswith('CYGWIN'):
+        return True
+    return False
+
 def run_process(cmd):
     try:
         # print("Running command: " + shlex.join(cmd))
-        return subprocess.run(cmd, check=True, capture_output=True)
+        # TODO: `shell=True` is a workaround to get CI working on Windows. It breaks the build on Linux.
+        return subprocess.run(cmd, check=True, capture_output=True, shell=is_windows())
     except subprocess.CalledProcessError as e:
         print("In: " + os.getcwd(), file=sys.stderr)
         print("Command failed: " + shlex.join(cmd), file=sys.stderr)

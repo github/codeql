@@ -13,7 +13,7 @@ def is_windows():
 many_versions = [ '1.4.32', '1.5.31', '1.6.10' ]
 
 def get_single_version():
-    # TODO: `shell=True` is a workaround to get CI working on Windows. It break the build on Linux.
+    # TODO: `shell=True` is a workaround to get CI working on Windows. It breaks the build on Linux.
     versionOutput = subprocess.run(['kotlinc', '-version'], capture_output=True, text=True, shell=is_windows())
     m = re.match(r'.* kotlinc-jvm ([0-9]+\.[0-9]+\.)[0-9]+ .*', versionOutput.stderr)
     if m is None:
