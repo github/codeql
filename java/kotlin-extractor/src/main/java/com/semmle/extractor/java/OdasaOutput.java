@@ -577,7 +577,7 @@ public class OdasaOutput {
 				}
 				int asm = asmField.getInt(null);
 				ClassVisitor versionGetter = new ClassVisitor(asm) {
-					public void visit​(int version, int access, java.lang.String name, java.lang.String signature, java.lang.String superName, java.lang.String[] interfaces) {
+					public void visit(int version, int access, java.lang.String name, java.lang.String signature, java.lang.String superName, java.lang.String[] interfaces) {
 						versionStore[0] = version;
 					}
 				};
