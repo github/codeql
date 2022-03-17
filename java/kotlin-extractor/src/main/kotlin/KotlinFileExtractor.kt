@@ -3908,7 +3908,7 @@ open class KotlinFileExtractor(
 
         addModifiers(id, "final")
         addVisibilityModifierToLocalOrAnonymousClass(id)
-        extractClassSupertypes(superTypes, listOf(), id)
+        extractClassSupertypes(superTypes, listOf(), id, inReceiverContext = true)
 
         var parent: IrDeclarationParent? = currentDeclaration.parent
         while (parent != null) {
