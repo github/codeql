@@ -136,8 +136,6 @@ private predicate isDisallowedWord(CompileTimeConstantExpr word) {
 
 /** A complementary guard that protects against path traversal, by looking for the literal `..`. */
 class PathTraversalGuard extends Guard instanceof MethodAccess {
-  Expr checked;
-
   PathTraversalGuard() {
     super.getMethod().getDeclaringType() instanceof TypeString and
     super.getMethod().hasName(["contains", "indexOf"]) and
