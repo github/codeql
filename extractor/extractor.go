@@ -1456,11 +1456,11 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			}
 		case *types.Signature:
 			kind = dbscheme.SignatureType.Index()
-			parms, results := tp.Params(), tp.Results()
-			if parms != nil {
-				for i := 0; i < parms.Len(); i++ {
-					parm := parms.At(i)
-					extractComponentType(tw, lbl, i+1, "", parm.Type())
+			params, results := tp.Params(), tp.Results()
+			if params != nil {
+				for i := 0; i < params.Len(); i++ {
+					param := params.At(i)
+					extractComponentType(tw, lbl, i+1, "", param.Type())
 				}
 			}
 			if results != nil {
@@ -1608,14 +1608,14 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;tupletype", b.String()))
 		case *types.Signature:
 			var b strings.Builder
-			parms, results := tp.Params(), tp.Results()
-			if parms != nil {
-				for i := 0; i < parms.Len(); i++ {
-					parmLbl := extractType(tw, parms.At(i).Type())
+			params, results := tp.Params(), tp.Results()
+			if params != nil {
+				for i := 0; i < params.Len(); i++ {
+					paramLbl := extractType(tw, params.At(i).Type())
 					if i > 0 {
 						b.WriteString(",")
 					}
-					fmt.Fprintf(&b, "{%s}", parmLbl)
+					fmt.Fprintf(&b, "{%s}", paramLbl)
 				}
 			}
 			b.WriteString(";")
