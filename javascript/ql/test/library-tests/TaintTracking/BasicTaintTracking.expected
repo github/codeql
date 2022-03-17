@@ -172,6 +172,7 @@ typeInferenceMismatch
 | string-replace.js:3:13:3:20 | source() | string-replace.js:21:6:21:41 | safe(). ...  taint) |
 | string-replace.js:3:13:3:20 | source() | string-replace.js:22:6:22:48 | safe(). ...  taint) |
 | string-replace.js:3:13:3:20 | source() | string-replace.js:24:6:24:45 | taint.r ...  + '!') |
+| summarize-store-load-in-call.js:9:15:9:22 | source() | summarize-store-load-in-call.js:9:10:9:23 | blah(source()) |
 | thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
 | thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
