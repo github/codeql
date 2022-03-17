@@ -1207,6 +1207,12 @@ class LogNotExpr extends UnaryExpr, @lognotexpr {
   override string getAPrimaryQlClass() { result = "LogNotExpr" }
 }
 
+/**
+ * Any kind of expression that casts values from one type to another.
+ *
+ * For Java, this is only `CastExpr`, but for Kotlin it includes
+ * various other explicit or implicit casting operators.
+ */
 class CastingExpr extends Expr {
   CastingExpr() {
     this instanceof @castexpr or
