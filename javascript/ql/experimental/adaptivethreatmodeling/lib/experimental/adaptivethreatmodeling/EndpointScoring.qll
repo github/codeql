@@ -9,6 +9,7 @@ private import BaseScoring
 private import EndpointFeatures as EndpointFeatures
 private import FeaturizationConfig
 private import EndpointTypes
+private import AdaptiveThreatModeling
 
 private string getACompatibleModelChecksum() {
   availableMlModels(result, "javascript", _, "atm-endpoint-scoring")
@@ -23,9 +24,11 @@ module ModelScoring {
     RelevantFeaturizationConfig() { this = "RelevantFeaturization" }
 
     override DataFlow::Node getAnEndpointToFeaturize() {
-      getCfg().isEffectiveSource(result)
+      getCfg().isEffectiveSource(result) and
+      ATM::Optimizations::hasFlow(result, _)
       or
-      getCfg().isEffectiveSink(result)
+      getCfg().isEffectiveSink(result) and
+      ATM::Optimizations::hasFlow(_, result)
     }
   }
 
@@ -146,6 +149,7 @@ module Debugging {
   query predicate endpointScores = ModelScoring::endpointScores/3;
 
   query predicate shouldResultBeIncluded(DataFlow::Node source, DataFlow::Node sink) {
+    ATM::Optimizations::hasFlow(source, sink) and
     any(ScoringResults scoringResults).shouldResultBeIncluded(source, sink)
   }
 }
