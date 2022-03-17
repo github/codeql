@@ -109,3 +109,10 @@ class Derived1(prop1: Int) : Base1(prop1) {
         println(this::prop1)
     }
 }
+
+class LocalFn {
+    fun fn() {
+        fun fn1(i: Int) { }
+        val x: KFunction1<Int, Unit> = ::fn1
+    }
+}

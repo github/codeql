@@ -992,3 +992,37 @@ reflection.kt:
 #  109|               -3: [TypeAccess] KMutableProperty0<Integer>
 #  109|                 0: [TypeAccess] Integer
 #  109|               0: [ThisAccess] this
+#  113|   10: [Class] LocalFn
+#  113|     1: [Constructor] LocalFn
+#  113|       5: [BlockStmt] { ... }
+#  113|         0: [SuperConstructorInvocationStmt] super(...)
+#  114|     2: [Method] fn
+#  114|       5: [BlockStmt] { ... }
+#  115|         0: [LocalTypeDeclStmt] class ...
+#  115|           0: [LocalClass] 
+#  115|             1: [Constructor] 
+#  115|               5: [BlockStmt] { ... }
+#  115|                 0: [SuperConstructorInvocationStmt] super(...)
+#  115|             1: [Method] fn1
+#-----|               4: (Parameters)
+#  115|                 0: [Parameter] i
+#  115|               5: [BlockStmt] { ... }
+#  116|         1: [LocalVariableDeclStmt] var ...;
+#  116|           1: [LocalVariableDeclExpr] x
+#  116|             0: [MemberRefExpr] ...::...
+#  116|               -4: [AnonymousClass] new Function1<Integer,Unit>(...) { ... }
+#  116|                 1: [Constructor] 
+#  116|                   5: [BlockStmt] { ... }
+#  116|                     0: [SuperConstructorInvocationStmt] super(...)
+#  116|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#  116|                     0: [Parameter] a0
+#  116|                   5: [BlockStmt] { ... }
+#  116|                     0: [ReturnStmt] return ...
+#  116|                       0: [MethodAccess] fn1(...)
+#  116|                         -1: [ClassInstanceExpr] new (...)
+#  116|                           -3: [TypeAccess] Object
+#  116|                         0: [VarAccess] a0
+#  116|               -3: [TypeAccess] Function1<Integer,Unit>
+#  116|                 0: [TypeAccess] Integer
+#  116|                 1: [TypeAccess] Unit

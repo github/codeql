@@ -31,6 +31,8 @@
 | delegatedProperties.kt:6:24:9:9 | <get-prop1>(...) | delegatedProperties.kt:6:24:9:9 | get | MethodAccess |
 | delegatedProperties.kt:6:24:9:9 | Integer | delegatedProperties.kt:6:24:9:9 | <get-prop1> | TypeAccess |
 | delegatedProperties.kt:6:24:9:9 | KProperty0<Integer> | delegatedProperties.kt:6:24:9:9 | <get-prop1> | TypeAccess |
+| delegatedProperties.kt:6:24:9:9 | Object | delegatedProperties.kt:6:24:9:9 | get | TypeAccess |
+| delegatedProperties.kt:6:24:9:9 | new (...) | delegatedProperties.kt:6:24:9:9 | get | ClassInstanceExpr |
 | delegatedProperties.kt:6:24:9:9 | prop1$delegate | delegatedProperties.kt:5:5:12:5 | fn | LocalVariableDeclExpr |
 | delegatedProperties.kt:6:24:9:9 | prop1$delegate | delegatedProperties.kt:6:24:9:9 | <get-prop1> | VarAccess |
 | delegatedProperties.kt:6:27:9:9 | Integer | delegatedProperties.kt:5:5:12:5 | fn | TypeAccess |
@@ -66,8 +68,16 @@
 | delegatedProperties.kt:19:31:19:51 | Integer | delegatedProperties.kt:19:31:19:51 | <set-varResource1> | TypeAccess |
 | delegatedProperties.kt:19:31:19:51 | KMutableProperty0<Integer> | delegatedProperties.kt:19:31:19:51 | <get-varResource1> | TypeAccess |
 | delegatedProperties.kt:19:31:19:51 | KMutableProperty0<Integer> | delegatedProperties.kt:19:31:19:51 | <set-varResource1> | TypeAccess |
+| delegatedProperties.kt:19:31:19:51 | Object | delegatedProperties.kt:19:31:19:51 | get | TypeAccess |
+| delegatedProperties.kt:19:31:19:51 | Object | delegatedProperties.kt:19:31:19:51 | get | TypeAccess |
+| delegatedProperties.kt:19:31:19:51 | Object | delegatedProperties.kt:19:31:19:51 | set | TypeAccess |
+| delegatedProperties.kt:19:31:19:51 | Object | delegatedProperties.kt:19:31:19:51 | set | TypeAccess |
 | delegatedProperties.kt:19:31:19:51 | a0 | delegatedProperties.kt:19:31:19:51 | set | VarAccess |
 | delegatedProperties.kt:19:31:19:51 | a0 | delegatedProperties.kt:19:31:19:51 | set | VarAccess |
+| delegatedProperties.kt:19:31:19:51 | new (...) | delegatedProperties.kt:19:31:19:51 | get | ClassInstanceExpr |
+| delegatedProperties.kt:19:31:19:51 | new (...) | delegatedProperties.kt:19:31:19:51 | get | ClassInstanceExpr |
+| delegatedProperties.kt:19:31:19:51 | new (...) | delegatedProperties.kt:19:31:19:51 | set | ClassInstanceExpr |
+| delegatedProperties.kt:19:31:19:51 | new (...) | delegatedProperties.kt:19:31:19:51 | set | ClassInstanceExpr |
 | delegatedProperties.kt:19:31:19:51 | varResource1$delegate | delegatedProperties.kt:18:5:40:5 | fn | LocalVariableDeclExpr |
 | delegatedProperties.kt:19:31:19:51 | varResource1$delegate | delegatedProperties.kt:19:31:19:51 | <get-varResource1> | VarAccess |
 | delegatedProperties.kt:19:31:19:51 | varResource1$delegate | delegatedProperties.kt:19:31:19:51 | <set-varResource1> | VarAccess |
@@ -88,9 +98,11 @@
 | delegatedProperties.kt:23:26:23:31 | ...::... | delegatedProperties.kt:23:26:23:31 | <get-name> | PropertyRefExpr |
 | delegatedProperties.kt:23:26:23:31 | <get-name>(...) | delegatedProperties.kt:23:26:23:31 | get | MethodAccess |
 | delegatedProperties.kt:23:26:23:31 | KProperty0<String> | delegatedProperties.kt:23:26:23:31 | <get-name> | TypeAccess |
+| delegatedProperties.kt:23:26:23:31 | Object | delegatedProperties.kt:23:26:23:31 | get | TypeAccess |
 | delegatedProperties.kt:23:26:23:31 | String | delegatedProperties.kt:23:26:23:31 | <get-name> | TypeAccess |
 | delegatedProperties.kt:23:26:23:31 | name$delegate | delegatedProperties.kt:18:5:40:5 | fn | LocalVariableDeclExpr |
 | delegatedProperties.kt:23:26:23:31 | name$delegate | delegatedProperties.kt:23:26:23:31 | <get-name> | VarAccess |
+| delegatedProperties.kt:23:26:23:31 | new (...) | delegatedProperties.kt:23:26:23:31 | get | ClassInstanceExpr |
 | delegatedProperties.kt:23:29:23:31 | MapAccessorsKt | delegatedProperties.kt:23:26:23:31 | <get-name> | TypeAccess |
 | delegatedProperties.kt:23:29:23:31 | Object | delegatedProperties.kt:23:26:23:31 | <get-name> | TypeAccess |
 | delegatedProperties.kt:23:29:23:31 | String | delegatedProperties.kt:23:26:23:31 | <get-name> | TypeAccess |
@@ -118,6 +130,8 @@
 | delegatedProperties.kt:33:27:33:47 | <get-readOnly>(...) | delegatedProperties.kt:33:27:33:47 | get | MethodAccess |
 | delegatedProperties.kt:33:27:33:47 | Integer | delegatedProperties.kt:33:27:33:47 | <get-readOnly> | TypeAccess |
 | delegatedProperties.kt:33:27:33:47 | KProperty0<Integer> | delegatedProperties.kt:33:27:33:47 | <get-readOnly> | TypeAccess |
+| delegatedProperties.kt:33:27:33:47 | Object | delegatedProperties.kt:33:27:33:47 | get | TypeAccess |
+| delegatedProperties.kt:33:27:33:47 | new (...) | delegatedProperties.kt:33:27:33:47 | get | ClassInstanceExpr |
 | delegatedProperties.kt:33:27:33:47 | readOnly$delegate | delegatedProperties.kt:18:5:40:5 | fn | LocalVariableDeclExpr |
 | delegatedProperties.kt:33:27:33:47 | readOnly$delegate | delegatedProperties.kt:33:27:33:47 | <get-readOnly> | VarAccess |
 | delegatedProperties.kt:33:30:33:47 | Object | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
@@ -134,8 +148,16 @@
 | delegatedProperties.kt:34:28:34:48 | Integer | delegatedProperties.kt:34:28:34:48 | <set-readWrite> | TypeAccess |
 | delegatedProperties.kt:34:28:34:48 | KMutableProperty0<Integer> | delegatedProperties.kt:34:28:34:48 | <get-readWrite> | TypeAccess |
 | delegatedProperties.kt:34:28:34:48 | KMutableProperty0<Integer> | delegatedProperties.kt:34:28:34:48 | <set-readWrite> | TypeAccess |
+| delegatedProperties.kt:34:28:34:48 | Object | delegatedProperties.kt:34:28:34:48 | get | TypeAccess |
+| delegatedProperties.kt:34:28:34:48 | Object | delegatedProperties.kt:34:28:34:48 | get | TypeAccess |
+| delegatedProperties.kt:34:28:34:48 | Object | delegatedProperties.kt:34:28:34:48 | set | TypeAccess |
+| delegatedProperties.kt:34:28:34:48 | Object | delegatedProperties.kt:34:28:34:48 | set | TypeAccess |
 | delegatedProperties.kt:34:28:34:48 | a0 | delegatedProperties.kt:34:28:34:48 | set | VarAccess |
 | delegatedProperties.kt:34:28:34:48 | a0 | delegatedProperties.kt:34:28:34:48 | set | VarAccess |
+| delegatedProperties.kt:34:28:34:48 | new (...) | delegatedProperties.kt:34:28:34:48 | get | ClassInstanceExpr |
+| delegatedProperties.kt:34:28:34:48 | new (...) | delegatedProperties.kt:34:28:34:48 | get | ClassInstanceExpr |
+| delegatedProperties.kt:34:28:34:48 | new (...) | delegatedProperties.kt:34:28:34:48 | set | ClassInstanceExpr |
+| delegatedProperties.kt:34:28:34:48 | new (...) | delegatedProperties.kt:34:28:34:48 | set | ClassInstanceExpr |
 | delegatedProperties.kt:34:28:34:48 | readWrite$delegate | delegatedProperties.kt:18:5:40:5 | fn | LocalVariableDeclExpr |
 | delegatedProperties.kt:34:28:34:48 | readWrite$delegate | delegatedProperties.kt:34:28:34:48 | <get-readWrite> | VarAccess |
 | delegatedProperties.kt:34:28:34:48 | readWrite$delegate | delegatedProperties.kt:34:28:34:48 | <set-readWrite> | VarAccess |
@@ -160,6 +182,10 @@
 | delegatedProperties.kt:39:31:39:51 | Integer | delegatedProperties.kt:39:31:39:51 | <get-varResource2> | TypeAccess |
 | delegatedProperties.kt:39:31:39:51 | KProperty0<Integer> | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
 | delegatedProperties.kt:39:31:39:51 | KProperty0<Integer> | delegatedProperties.kt:39:31:39:51 | <get-varResource2> | TypeAccess |
+| delegatedProperties.kt:39:31:39:51 | Object | delegatedProperties.kt:39:31:39:51 | get | TypeAccess |
+| delegatedProperties.kt:39:31:39:51 | Object | delegatedProperties.kt:39:31:39:51 | get | TypeAccess |
+| delegatedProperties.kt:39:31:39:51 | new (...) | delegatedProperties.kt:39:31:39:51 | get | ClassInstanceExpr |
+| delegatedProperties.kt:39:31:39:51 | new (...) | delegatedProperties.kt:39:31:39:51 | get | ClassInstanceExpr |
 | delegatedProperties.kt:39:31:39:51 | provideDelegate(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodAccess |
 | delegatedProperties.kt:39:31:39:51 | varResource2$delegate | delegatedProperties.kt:18:5:40:5 | fn | LocalVariableDeclExpr |
 | delegatedProperties.kt:39:31:39:51 | varResource2$delegate | delegatedProperties.kt:39:31:39:51 | <get-varResource2> | VarAccess |
@@ -574,11 +600,19 @@
 | delegatedProperties.kt:82:37:82:54 | Integer | delegatedProperties.kt:82:37:82:54 | <set-delegatedToMember3> | TypeAccess |
 | delegatedProperties.kt:82:37:82:54 | KMutableProperty0<Integer> | delegatedProperties.kt:82:37:82:54 | <get-delegatedToMember3> | TypeAccess |
 | delegatedProperties.kt:82:37:82:54 | KMutableProperty0<Integer> | delegatedProperties.kt:82:37:82:54 | <set-delegatedToMember3> | TypeAccess |
+| delegatedProperties.kt:82:37:82:54 | Object | delegatedProperties.kt:82:37:82:54 | get | TypeAccess |
+| delegatedProperties.kt:82:37:82:54 | Object | delegatedProperties.kt:82:37:82:54 | get | TypeAccess |
+| delegatedProperties.kt:82:37:82:54 | Object | delegatedProperties.kt:82:37:82:54 | set | TypeAccess |
+| delegatedProperties.kt:82:37:82:54 | Object | delegatedProperties.kt:82:37:82:54 | set | TypeAccess |
 | delegatedProperties.kt:82:37:82:54 | a0 | delegatedProperties.kt:82:37:82:54 | set | VarAccess |
 | delegatedProperties.kt:82:37:82:54 | a0 | delegatedProperties.kt:82:37:82:54 | set | VarAccess |
 | delegatedProperties.kt:82:37:82:54 | delegatedToMember3$delegate | delegatedProperties.kt:81:5:84:5 | fn | LocalVariableDeclExpr |
 | delegatedProperties.kt:82:37:82:54 | delegatedToMember3$delegate | delegatedProperties.kt:82:37:82:54 | <get-delegatedToMember3> | VarAccess |
 | delegatedProperties.kt:82:37:82:54 | delegatedToMember3$delegate | delegatedProperties.kt:82:37:82:54 | <set-delegatedToMember3> | VarAccess |
+| delegatedProperties.kt:82:37:82:54 | new (...) | delegatedProperties.kt:82:37:82:54 | get | ClassInstanceExpr |
+| delegatedProperties.kt:82:37:82:54 | new (...) | delegatedProperties.kt:82:37:82:54 | get | ClassInstanceExpr |
+| delegatedProperties.kt:82:37:82:54 | new (...) | delegatedProperties.kt:82:37:82:54 | set | ClassInstanceExpr |
+| delegatedProperties.kt:82:37:82:54 | new (...) | delegatedProperties.kt:82:37:82:54 | set | ClassInstanceExpr |
 | delegatedProperties.kt:82:40:82:43 | this | delegatedProperties.kt:81:5:84:5 | fn | ThisAccess |
 | delegatedProperties.kt:82:40:82:54 | ...::... | delegatedProperties.kt:81:5:84:5 | fn | PropertyRefExpr |
 | delegatedProperties.kt:82:40:82:54 | ...=... | delegatedProperties.kt:82:40:82:54 |  | AssignExpr |
@@ -2015,7 +2049,9 @@
 | funcExprs.kt:43:26:43:32 | ...::... | funcExprs.kt:15:1:46:1 | call | MemberRefExpr |
 | funcExprs.kt:43:26:43:32 | Function0<Integer> | funcExprs.kt:15:1:46:1 | call | TypeAccess |
 | funcExprs.kt:43:26:43:32 | Integer | funcExprs.kt:15:1:46:1 | call | TypeAccess |
+| funcExprs.kt:43:26:43:32 | Object | funcExprs.kt:43:26:43:32 | invoke | TypeAccess |
 | funcExprs.kt:43:26:43:32 | local(...) | funcExprs.kt:43:26:43:32 | invoke | MethodAccess |
+| funcExprs.kt:43:26:43:32 | new (...) | funcExprs.kt:43:26:43:32 | invoke | ClassInstanceExpr |
 | funcExprs.kt:45:5:45:17 | FuncRef | funcExprs.kt:15:1:46:1 | call | TypeAccess |
 | funcExprs.kt:45:5:45:17 | fn(...) | funcExprs.kt:15:1:46:1 | call | MethodAccess |
 | funcExprs.kt:45:8:45:16 | ...::... | funcExprs.kt:15:1:46:1 | call | MemberRefExpr |

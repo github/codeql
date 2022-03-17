@@ -1075,6 +1075,17 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun extractNewExprForLocalFunction(
+        ids: LocallyVisibleFunctionLabels,
+        parent: Label<out DbExprparent>,
+        locId: Label<DbLocation>,
+        enclosingCallable: Label<out DbCallable>,
+        enclosingStmt: Label<out DbStmt>) {
+
+        val idNewexpr = extractNewExpr(ids.constructor, ids.type, locId, parent, -1, enclosingCallable, enclosingStmt)
+        extractTypeAccessRecursive(pluginContext.irBuiltIns.anyType, locId, idNewexpr, -3, enclosingCallable, enclosingStmt)
+    }
+
     fun extractRawMethodAccess(
         syntacticCallTarget: IrFunction,
         callsite: IrCall,
@@ -1107,9 +1118,7 @@ open class KotlinFileExtractor(
             val methodId = ids.function
             tw.writeCallableBinding(id, methodId)
 
-            val idNewexpr = extractNewExpr(ids.constructor, ids.type, locId, id, -1, enclosingCallable, enclosingStmt)
-
-            extractTypeAccessRecursive(pluginContext.irBuiltIns.anyType, locId, idNewexpr, -3, enclosingCallable, enclosingStmt)
+            extractNewExprForLocalFunction(ids, id, locId, enclosingCallable, enclosingStmt)
         } else {
             // Returns true if type is C<T1, T2, ...> where C is declared `class C<T1, T2, ...> { ... }`
             fun isUnspecialised(type: IrSimpleType) =
@@ -2797,7 +2806,14 @@ open class KotlinFileExtractor(
 
                 useFirstArgAsDispatch = false
             } else {
-                useFirstArgAsDispatch = target.owner.dispatchReceiverParameter != null
+                if (target.owner.isLocalFunction()) {
+                    val ids = getLocallyVisibleFunctionLabels(target.owner)
+                    extractNewExprForLocalFunction(ids, callId, locId, labels.methodId, retId)
+                    useFirstArgAsDispatch = false
+                }
+                else {
+                    useFirstArgAsDispatch = target.owner.dispatchReceiverParameter != null
+                }
             }
 
             val extensionIdxOffset: Int

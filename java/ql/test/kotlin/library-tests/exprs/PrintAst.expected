@@ -157,6 +157,8 @@ delegatedProperties.kt:
 #    6|                             5: [BlockStmt] { ... }
 #    6|                               0: [ReturnStmt] return ...
 #    6|                                 0: [MethodAccess] <get-prop1>(...)
+#    6|                                   -1: [ClassInstanceExpr] new (...)
+#    6|                                     -3: [TypeAccess] Object
 #    6|                         -3: [TypeAccess] KProperty0<Integer>
 #    6|                           0: [TypeAccess] Integer
 #   10|         1: [ExprStmt] <Expr>;
@@ -213,12 +215,16 @@ delegatedProperties.kt:
 #   19|                             5: [BlockStmt] { ... }
 #   19|                               0: [ReturnStmt] return ...
 #   19|                                 0: [MethodAccess] <get-varResource1>(...)
+#   19|                                   -1: [ClassInstanceExpr] new (...)
+#   19|                                     -3: [TypeAccess] Object
 #   19|                           1: [Method] set
 #-----|                             4: (Parameters)
 #   19|                               0: [Parameter] a0
 #   19|                             5: [BlockStmt] { ... }
 #   19|                               0: [ReturnStmt] return ...
 #   19|                                 0: [MethodAccess] <set-varResource1>(...)
+#   19|                                   -1: [ClassInstanceExpr] new (...)
+#   19|                                     -3: [TypeAccess] Object
 #   19|                                   0: [VarAccess] a0
 #   19|                         -3: [TypeAccess] KMutableProperty0<Integer>
 #   19|                           0: [TypeAccess] Integer
@@ -244,12 +250,16 @@ delegatedProperties.kt:
 #   19|                             5: [BlockStmt] { ... }
 #   19|                               0: [ReturnStmt] return ...
 #   19|                                 0: [MethodAccess] <get-varResource1>(...)
+#   19|                                   -1: [ClassInstanceExpr] new (...)
+#   19|                                     -3: [TypeAccess] Object
 #   19|                           1: [Method] set
 #-----|                             4: (Parameters)
 #   19|                               0: [Parameter] a0
 #   19|                             5: [BlockStmt] { ... }
 #   19|                               0: [ReturnStmt] return ...
 #   19|                                 0: [MethodAccess] <set-varResource1>(...)
+#   19|                                   -1: [ClassInstanceExpr] new (...)
+#   19|                                     -3: [TypeAccess] Object
 #   19|                                   0: [VarAccess] a0
 #   19|                         -3: [TypeAccess] KMutableProperty0<Integer>
 #   19|                           0: [TypeAccess] Integer
@@ -292,6 +302,8 @@ delegatedProperties.kt:
 #   23|                             5: [BlockStmt] { ... }
 #   23|                               0: [ReturnStmt] return ...
 #   23|                                 0: [MethodAccess] <get-name>(...)
+#   23|                                   -1: [ClassInstanceExpr] new (...)
+#   23|                                     -3: [TypeAccess] Object
 #   23|                         -3: [TypeAccess] KProperty0<String>
 #   23|                           0: [TypeAccess] String
 #   25|         4: [LocalTypeDeclStmt] class ...
@@ -377,6 +389,8 @@ delegatedProperties.kt:
 #   33|                             5: [BlockStmt] { ... }
 #   33|                               0: [ReturnStmt] return ...
 #   33|                                 0: [MethodAccess] <get-readOnly>(...)
+#   33|                                   -1: [ClassInstanceExpr] new (...)
+#   33|                                     -3: [TypeAccess] Object
 #   33|                         -3: [TypeAccess] KProperty0<Integer>
 #   33|                           0: [TypeAccess] Integer
 #   34|         6: [BlockStmt] { ... }
@@ -405,12 +419,16 @@ delegatedProperties.kt:
 #   34|                             5: [BlockStmt] { ... }
 #   34|                               0: [ReturnStmt] return ...
 #   34|                                 0: [MethodAccess] <get-readWrite>(...)
+#   34|                                   -1: [ClassInstanceExpr] new (...)
+#   34|                                     -3: [TypeAccess] Object
 #   34|                           1: [Method] set
 #-----|                             4: (Parameters)
 #   34|                               0: [Parameter] a0
 #   34|                             5: [BlockStmt] { ... }
 #   34|                               0: [ReturnStmt] return ...
 #   34|                                 0: [MethodAccess] <set-readWrite>(...)
+#   34|                                   -1: [ClassInstanceExpr] new (...)
+#   34|                                     -3: [TypeAccess] Object
 #   34|                                   0: [VarAccess] a0
 #   34|                         -3: [TypeAccess] KMutableProperty0<Integer>
 #   34|                           0: [TypeAccess] Integer
@@ -436,12 +454,16 @@ delegatedProperties.kt:
 #   34|                             5: [BlockStmt] { ... }
 #   34|                               0: [ReturnStmt] return ...
 #   34|                                 0: [MethodAccess] <get-readWrite>(...)
+#   34|                                   -1: [ClassInstanceExpr] new (...)
+#   34|                                     -3: [TypeAccess] Object
 #   34|                           1: [Method] set
 #-----|                             4: (Parameters)
 #   34|                               0: [Parameter] a0
 #   34|                             5: [BlockStmt] { ... }
 #   34|                               0: [ReturnStmt] return ...
 #   34|                                 0: [MethodAccess] <set-readWrite>(...)
+#   34|                                   -1: [ClassInstanceExpr] new (...)
+#   34|                                     -3: [TypeAccess] Object
 #   34|                                   0: [VarAccess] a0
 #   34|                         -3: [TypeAccess] KMutableProperty0<Integer>
 #   34|                           0: [TypeAccess] Integer
@@ -471,6 +493,8 @@ delegatedProperties.kt:
 #   39|                       5: [BlockStmt] { ... }
 #   39|                         0: [ReturnStmt] return ...
 #   39|                           0: [MethodAccess] <get-varResource2>(...)
+#   39|                             -1: [ClassInstanceExpr] new (...)
+#   39|                               -3: [TypeAccess] Object
 #   39|                   -3: [TypeAccess] KProperty0<Integer>
 #   39|                     0: [TypeAccess] Integer
 #   39|           1: [LocalTypeDeclStmt] class ...
@@ -493,6 +517,8 @@ delegatedProperties.kt:
 #   39|                             5: [BlockStmt] { ... }
 #   39|                               0: [ReturnStmt] return ...
 #   39|                                 0: [MethodAccess] <get-varResource2>(...)
+#   39|                                   -1: [ClassInstanceExpr] new (...)
+#   39|                                     -3: [TypeAccess] Object
 #   39|                         -3: [TypeAccess] KProperty0<Integer>
 #   39|                           0: [TypeAccess] Integer
 #   42|     3: [Method] getVarResource0
@@ -1440,12 +1466,16 @@ delegatedProperties.kt:
 #   82|                             5: [BlockStmt] { ... }
 #   82|                               0: [ReturnStmt] return ...
 #   82|                                 0: [MethodAccess] <get-delegatedToMember3>(...)
+#   82|                                   -1: [ClassInstanceExpr] new (...)
+#   82|                                     -3: [TypeAccess] Object
 #   82|                           1: [Method] set
 #-----|                             4: (Parameters)
 #   82|                               0: [Parameter] a0
 #   82|                             5: [BlockStmt] { ... }
 #   82|                               0: [ReturnStmt] return ...
 #   82|                                 0: [MethodAccess] <set-delegatedToMember3>(...)
+#   82|                                   -1: [ClassInstanceExpr] new (...)
+#   82|                                     -3: [TypeAccess] Object
 #   82|                                   0: [VarAccess] a0
 #   82|                         -3: [TypeAccess] KMutableProperty0<Integer>
 #   82|                           0: [TypeAccess] Integer
@@ -1473,12 +1503,16 @@ delegatedProperties.kt:
 #   82|                             5: [BlockStmt] { ... }
 #   82|                               0: [ReturnStmt] return ...
 #   82|                                 0: [MethodAccess] <get-delegatedToMember3>(...)
+#   82|                                   -1: [ClassInstanceExpr] new (...)
+#   82|                                     -3: [TypeAccess] Object
 #   82|                           1: [Method] set
 #-----|                             4: (Parameters)
 #   82|                               0: [Parameter] a0
 #   82|                             5: [BlockStmt] { ... }
 #   82|                               0: [ReturnStmt] return ...
 #   82|                                 0: [MethodAccess] <set-delegatedToMember3>(...)
+#   82|                                   -1: [ClassInstanceExpr] new (...)
+#   82|                                     -3: [TypeAccess] Object
 #   82|                                   0: [VarAccess] a0
 #   82|                         -3: [TypeAccess] KMutableProperty0<Integer>
 #   82|                           0: [TypeAccess] Integer
@@ -3617,6 +3651,8 @@ funcExprs.kt:
 #   43|                   5: [BlockStmt] { ... }
 #   43|                     0: [ReturnStmt] return ...
 #   43|                       0: [MethodAccess] local(...)
+#   43|                         -1: [ClassInstanceExpr] new (...)
+#   43|                           -3: [TypeAccess] Object
 #   43|               -3: [TypeAccess] Function0<Integer>
 #   43|                 0: [TypeAccess] Integer
 #   45|         25: [ExprStmt] <Expr>;
