@@ -9,12 +9,12 @@ on:
       - "*/ql/lib/**/*.ql"
       - "*/ql/lib/**/*.qll"
       - "!**/experimental/**"
-      - "!ql/**"
+      - "!sql/**"
       - ".github/workflows/check-change-note.yml"
 
 jobs:
   check-change-note:
-    runs-on: ubuntu-latest
+    runs-on: "Ubuntu-latest"
     steps:
       - name: Fail if no change note found. To fix, either add one, or add the `no-change-note-required` label.
         if: |
