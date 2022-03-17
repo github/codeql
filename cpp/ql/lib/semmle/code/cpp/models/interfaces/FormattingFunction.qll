@@ -97,7 +97,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
     result.getSize() > 1
     or
     not getFormatCharType().getSize() > 1 and
-    result = getAFormatterWideTypeOrDefault() // may have more than one result
+    result = pragma[only_bind_out](getAFormatterWideTypeOrDefault()) // may have more than one result
   }
 
   /**
