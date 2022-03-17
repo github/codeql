@@ -418,6 +418,90 @@ classes.kt:
 #  127|               1: [ExprStmt] <Expr>;
 #  127|                 0: [ClassInstanceExpr] new (...)
 #  127|                   -3: [TypeAccess] Object
+generic_anonymous.kt:
+#    0| [CompilationUnit] generic_anonymous
+#    0|   1: [Class] Generic_anonymousKt
+#   11|     1: [Method] stringIdentity
+#-----|       4: (Parameters)
+#   11|         0: [Parameter] s
+#   11|       5: [BlockStmt] { ... }
+#   11|         0: [ReturnStmt] return ...
+#   11|           0: [MethodAccess] get(...)
+#   11|             -1: [ClassInstanceExpr] new Generic<String>(...)
+#   11|               -3: [TypeAccess] Generic<String>
+#   11|                 0: [TypeAccess] String
+#   11|               0: [VarAccess] s
+#   13|     2: [Method] intIdentity
+#-----|       4: (Parameters)
+#   13|         0: [Parameter] i
+#   13|       5: [BlockStmt] { ... }
+#   13|         0: [ReturnStmt] return ...
+#   13|           0: [MethodAccess] get(...)
+#   13|             -1: [ClassInstanceExpr] new Generic<Integer>(...)
+#   13|               -3: [TypeAccess] Generic<Integer>
+#   13|                 0: [TypeAccess] Integer
+#   13|               0: [VarAccess] i
+#    1|   2: [Class,GenericType,ParameterizedType] Generic
+#-----|     -2: (Generic Parameters)
+#    1|       0: [TypeVariable] T
+#    1|     1: [Constructor] Generic
+#-----|       4: (Parameters)
+#    1|         0: [Parameter] t
+#    1|       5: [BlockStmt] { ... }
+#    1|         0: [SuperConstructorInvocationStmt] super(...)
+#    1|         1: [BlockStmt] { ... }
+#    1|           0: [ExprStmt] <Expr>;
+#    1|             0: [KtInitializerAssignExpr] ...=...
+#    1|               0: [VarAccess] t
+#    3|           1: [ExprStmt] <Expr>;
+#    3|             0: [KtInitializerAssignExpr] ...=...
+#    3|               0: [VarAccess] x
+#    1|     2: [Method] getT
+#    1|       5: [BlockStmt] { ... }
+#    1|         0: [ReturnStmt] return ...
+#    1|           0: [VarAccess] this.t
+#    1|             -1: [ThisAccess] this
+#    1|     2: [FieldDeclaration] T t;
+#    1|       -1: [TypeAccess] T
+#    1|       0: [VarAccess] t
+#    3|     4: [FieldDeclaration] new Object(...) { ... } x;
+#    3|       -1: [TypeAccess] new Object(...) { ... }
+#    3|         0: [TypeAccess] T
+#    3|       0: [StmtExpr] <Stmt>
+#    3|         0: [BlockStmt] { ... }
+#    3|           0: [LocalTypeDeclStmt] class ...
+#    3|             0: [AnonymousClass,LocalClass] new Object(...) { ... }
+#    3|               1: [Constructor] 
+#    3|                 5: [BlockStmt] { ... }
+#    3|                   0: [SuperConstructorInvocationStmt] super(...)
+#    3|                   1: [BlockStmt] { ... }
+#    4|                     0: [ExprStmt] <Expr>;
+#    4|                       0: [KtInitializerAssignExpr] ...=...
+#    4|                         0: [VarAccess] member
+#    4|               2: [Method] getMember
+#    4|                 5: [BlockStmt] { ... }
+#    4|                   0: [ReturnStmt] return ...
+#    4|                     0: [VarAccess] this.member
+#    4|                       -1: [ThisAccess] this
+#    4|               2: [FieldDeclaration] T member;
+#    4|                 -1: [TypeAccess] T
+#    4|                 0: [MethodAccess] getT(...)
+#    4|                   -1: [ThisAccess] Generic.this
+#    4|                     0: [TypeAccess] Generic
+#    3|           1: [ExprStmt] <Expr>;
+#    3|             0: [ClassInstanceExpr] new (...)
+#    3|               -3: [TypeAccess] Object
+#    3|     5: [Method] getX
+#    3|       5: [BlockStmt] { ... }
+#    3|         0: [ReturnStmt] return ...
+#    3|           0: [VarAccess] this.x
+#    3|             -1: [ThisAccess] this
+#    7|     6: [Method] get
+#    7|       5: [BlockStmt] { ... }
+#    7|         0: [ReturnStmt] return ...
+#    7|           0: [MethodAccess] getMember(...)
+#    7|             -1: [MethodAccess] getX(...)
+#    7|               -1: [ThisAccess] this
 local_anonymous.kt:
 #    0| [CompilationUnit] local_anonymous
 #    3|   1: [Class] Class1

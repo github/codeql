@@ -388,8 +388,10 @@ open class KotlinUsesExtractor(
     // For non-generic types it will be zero-length list.
     fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>?, hasQuestionMark: Boolean): TypeResults {
         if (c.isAnonymousObject) {
-            if (args?.isNotEmpty() == true) {
-                logger.error("Anonymous class with unexpected type arguments")
+            args?.let {
+                if (it.isNotEmpty() && !isUnspecialised(c, it)) {
+                    logger.error("Unexpected specialised instance of generic anonymous class")
+                }
             }
 
             return useAnonymousClass(c)

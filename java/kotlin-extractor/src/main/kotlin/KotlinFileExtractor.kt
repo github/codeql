@@ -1126,17 +1126,6 @@ open class KotlinFileExtractor(
 
             extractNewExprForLocalFunction(ids, id, locId, enclosingCallable, enclosingStmt)
         } else {
-            // Returns true if type is C<T1, T2, ...> where C is declared `class C<T1, T2, ...> { ... }`
-            fun isUnspecialised(type: IrSimpleType) =
-                type.classifier.owner is IrClass &&
-                        (type.classifier.owner as IrClass).typeParameters.zip(type.arguments).all { paramAndArg ->
-                            (paramAndArg.second as? IrTypeProjection)?.let {
-                                // Type arg refers to the class' own type parameter?
-                                it.variance == Variance.INVARIANT &&
-                                        it.type.classifierOrNull?.owner === paramAndArg.first
-                            } ?: false
-                        }
-
             val methodId =
                 if (drType != null && extractClassTypeArguments && drType is IrSimpleType && !isUnspecialised(drType)) {
                     if (isBigArityFunctionInvoke) {

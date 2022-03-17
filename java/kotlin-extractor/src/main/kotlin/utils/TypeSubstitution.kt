@@ -192,3 +192,18 @@ fun IrTypeArgument.withQuestionMark(b: Boolean): IrTypeArgument =
     }
 
 typealias TypeSubstitution = (IrType, KotlinUsesExtractor.TypeContext, IrPluginContext) -> IrType
+
+// Returns true if type is C<T1, T2, ...> where C is declared `class C<T1, T2, ...> { ... }`
+fun isUnspecialised(classType: IrClass, args: List<IrTypeArgument>) =
+    classType.typeParameters.zip(args).all { paramAndArg ->
+        (paramAndArg.second as? IrTypeProjection)?.let {
+            // Type arg refers to the class' own type parameter?
+            it.variance == Variance.INVARIANT &&
+                    it.type.classifierOrNull?.owner === paramAndArg.first
+        } ?: false
+    }
+
+// Returns true if type is C<T1, T2, ...> where C is declared `class C<T1, T2, ...> { ... }`
+fun isUnspecialised(type: IrSimpleType) = (type.classifier.owner as? IrClass)?.let {
+    isUnspecialised(it, type.arguments)
+} ?: false
