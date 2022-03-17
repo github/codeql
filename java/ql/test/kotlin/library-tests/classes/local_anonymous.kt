@@ -25,4 +25,12 @@ class Class1 {
         class LocalClass {}
         LocalClass()
     }
+
+    fun nullableAnonymous() = object {
+        var x = 1
+
+        fun member() {
+            val maybeThis = if (x == 1) this else null // Expression with nullable anonymous type
+        }
+    }
 }

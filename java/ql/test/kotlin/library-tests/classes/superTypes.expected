@@ -42,7 +42,7 @@
 | classes.kt:127:16:134:9 | new Object(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
 | classes.kt:129:17:131:17 | Local3 | file://<external>/Object.class:0:0:0:0 | Object |
 | classes.kt:129:17:131:17 | Local3<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
-| local_anonymous.kt:3:1:28:1 | Class1 | file://<external>/Object.class:0:0:0:0 | Object |
+| local_anonymous.kt:3:1:36:1 | Class1 | file://<external>/Object.class:0:0:0:0 | Object |
 | local_anonymous.kt:5:16:7:9 | new Object(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
 | local_anonymous.kt:11:9:11:24 |  | file://<external>/Object.class:0:0:0:0 | Object |
 | local_anonymous.kt:16:23:16:49 | new Function2<Integer,Integer,Integer>(...) { ... } | file://<external>/Function2.class:0:0:0:0 | Function2<Integer,Integer,Integer> |
@@ -52,6 +52,7 @@
 | local_anonymous.kt:21:21:21:31 | new Function1<Class1,Unit>(...) { ... } | file://<external>/Function1.class:0:0:0:0 | Function1<Class1,Unit> |
 | local_anonymous.kt:21:21:21:31 | new Function1<Class1,Unit>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference |
 | local_anonymous.kt:25:9:25:27 | LocalClass | file://<external>/Object.class:0:0:0:0 | Object |
+| local_anonymous.kt:29:31:35:5 | new Object(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
 | superChain.kt:1:1:1:33 | SuperChain1 | file://<external>/Object.class:0:0:0:0 | Object |
 | superChain.kt:1:1:1:33 | SuperChain1<T3,String> | file://<external>/Object.class:0:0:0:0 | Object |
 | superChain.kt:1:1:1:33 | SuperChain1<T5,String> | file://<external>/Object.class:0:0:0:0 | Object |

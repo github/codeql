@@ -363,18 +363,13 @@ open class KotlinUsesExtractor(
             classLabelResult.shortName)
     }
 
-    fun useAnonymousClass(c: IrClass): TypeResults {
-        var res = tw.lm.anonymousTypeMapping[c]
-        if (res == null) {
-            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
-            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
-            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
-            res = TypeResults(javaResult, kotlinResult)
-            tw.lm.anonymousTypeMapping[c] = res
+    fun useAnonymousClass(c: IrClass) =
+        tw.lm.anonymousTypeMapping.getOrPut(c) {
+            TypeResults(
+                TypeResult(tw.getFreshIdLabel<DbClass>(), "", ""),
+                TypeResult(fakeKotlinType(), "TODO", "TODO")
+            )
         }
-
-        return res
-    }
 
     fun fakeKotlinType(): Label<out DbKt_type> {
         val fakeKotlinPackageId: Label<DbPackage> = tw.getLabelFor("@\"FakeKotlinPackage\"", {
@@ -395,9 +390,6 @@ open class KotlinUsesExtractor(
         if (c.isAnonymousObject) {
             if (args?.isNotEmpty() == true) {
                 logger.error("Anonymous class with unexpected type arguments")
-            }
-            if (hasQuestionMark) {
-                logger.error("Unexpected nullable anonymous class")
             }
 
             return useAnonymousClass(c)
