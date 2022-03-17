@@ -1112,6 +1112,13 @@ open class KotlinFileExtractor(
         // type arguments at index -2, -3, ...
         extractTypeArguments(typeArguments, locId, id, enclosingCallable, enclosingStmt, -2, true)
 
+        val drType = dispatchReceiver?.type
+        val isBigArityFunctionInvoke = drType != null
+                && drType is IrSimpleType
+                && drType.isFunctionOrKFunction()
+                && callTarget.name.asString() == OperatorNameConventions.INVOKE.asString()
+                && drType.arguments.size > BuiltInFunctionArity.BIG_ARITY
+
         if (callTarget.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(callTarget)
 
@@ -1131,10 +1138,16 @@ open class KotlinFileExtractor(
                             } ?: false
                         }
 
-            val drType = dispatchReceiver?.type
             val methodId =
-                if (drType != null && extractClassTypeArguments && drType is IrSimpleType && !isUnspecialised(drType))
-                    useFunction<DbCallable>(callTarget, getDeclaringTypeArguments(callTarget, drType))
+                if (drType != null && extractClassTypeArguments && drType is IrSimpleType && !isUnspecialised(drType)) {
+                    if (isBigArityFunctionInvoke) {
+                        val interfaceType = getFunctionalInterfaceTypeWithTypeArgs(drType.arguments)
+                        val invokeMethod = findFunction(interfaceType.classOrNull!!.owner, OperatorNameConventions.INVOKE.asString())!!
+                        useFunction<DbCallable>(invokeMethod, listOf(drType.arguments.last()))
+                    } else {
+                        useFunction<DbCallable>(callTarget, getDeclaringTypeArguments(callTarget, drType))
+                    }
+                }
                 else
                     useFunction<DbCallable>(callTarget)
 
@@ -1147,15 +1160,19 @@ open class KotlinFileExtractor(
             }
         }
 
-        val idxOffset: Int
-        if (extensionReceiver != null) {
-            extractExpressionExpr(extensionReceiver, enclosingCallable, id, 0, enclosingStmt)
-            idxOffset = 1
+        val idxOffset = if (extensionReceiver != null) 1 else 0
+
+        val argParent = if (isBigArityFunctionInvoke) {
+            extractArrayCreationWithInitializer(id, valueArguments.size + idxOffset, locId, enclosingCallable, enclosingStmt)
         } else {
-            idxOffset = 0
+            id
         }
 
-        extractCallValueArguments(id, valueArguments, enclosingStmt, enclosingCallable, idxOffset)
+        if (extensionReceiver != null) {
+            extractExpressionExpr(extensionReceiver, enclosingCallable, argParent, 0, enclosingStmt)
+        }
+
+        extractCallValueArguments(argParent, valueArguments, enclosingStmt, enclosingCallable, idxOffset)
     }
 
     private fun extractCallValueArguments(callId: Label<out DbExprparent>, call: IrFunctionAccessExpression, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) =
@@ -3457,6 +3474,45 @@ open class KotlinFileExtractor(
         extractTypeArguments((0 until c.typeArgumentsCount).map { c.getTypeArgument(it)!! }, tw.getLocation(c), parentExpr, enclosingCallable, enclosingStmt, startIndex, reverse)
     }
 
+    private fun extractArrayCreationWithInitializer(
+        parent: Label<out DbExprparent>,
+        arraySize: Int,
+        locId: Label<DbLocation>,
+        enclosingCallable: Label<out DbCallable>,
+        enclosingStmt: Label<out DbStmt>
+    ) : Label<DbArrayinit> {
+
+        fun extractCommonExpr(id: Label<out DbExpr>) {
+            tw.writeHasLocation(id, locId)
+            tw.writeCallableEnclosingExpr(id, enclosingCallable)
+            tw.writeStatementEnclosingExpr(id, enclosingStmt)
+        }
+
+        val arrayCreationId = tw.getFreshIdLabel<DbArraycreationexpr>()
+        val arrayType = pluginContext.irBuiltIns.arrayClass.typeWith(pluginContext.irBuiltIns.anyNType)
+        val at = useType(arrayType)
+        tw.writeExprs_arraycreationexpr(arrayCreationId, at.javaResult.id, parent, 0)
+        tw.writeExprsKotlinType(arrayCreationId, at.kotlinResult.id)
+        extractCommonExpr(arrayCreationId)
+
+        extractTypeAccessRecursive(pluginContext.irBuiltIns.anyNType, locId, arrayCreationId, -1, enclosingCallable, enclosingStmt)
+
+        val initId = tw.getFreshIdLabel<DbArrayinit>()
+        tw.writeExprs_arrayinit(initId, at.javaResult.id, arrayCreationId, -2)
+        tw.writeExprsKotlinType(initId, at.kotlinResult.id)
+        extractCommonExpr(initId)
+
+        val dim = arraySize.toString()
+        val dimId = tw.getFreshIdLabel<DbIntegerliteral>()
+        val dimType = useType(pluginContext.irBuiltIns.intType)
+        tw.writeExprs_integerliteral(dimId, dimType.javaResult.id, arrayCreationId, 0)
+        tw.writeExprsKotlinType(dimId, dimType.kotlinResult.id)
+        extractCommonExpr(dimId)
+        tw.writeNamestrings(dim, dim, dimId)
+
+        return initId
+    }
+
     fun extractTypeOperatorCall(e: IrTypeOperatorCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
         with("type operator call", e) {
             when(e.operator) {
@@ -3587,7 +3643,7 @@ open class KotlinFileExtractor(
                     // Either Function1, ... Function22 or FunctionN type, but not Function23 or above.
                     val functionType = getFunctionalInterfaceTypeWithTypeArgs(st.arguments)
 
-                    val invokeMethod = functionType.classOrNull?.owner?.declarations?.filterIsInstance<IrFunction>()?.find { it.name.asString() == "invoke"}
+                    val invokeMethod = functionType.classOrNull?.owner?.declarations?.filterIsInstance<IrFunction>()?.find { it.name.asString() == OperatorNameConventions.INVOKE.asString()}
                     if (invokeMethod == null) {
                         logger.errorElement("Couldn't find `invoke` method on functional interface.", e)
                         return
@@ -3685,39 +3741,16 @@ open class KotlinFileExtractor(
                     }
 
                     val isBigArity = st.arguments.size > BuiltInFunctionArity.BIG_ARITY
-                    if (isBigArity) {
+                    val argParent = if (isBigArity) {
                         //<fn>.invoke(new Object[x]{vp0, vp1, vp2, ...})
-                        val arrayCreationId = tw.getFreshIdLabel<DbArraycreationexpr>()
-                        val arrayType = pluginContext.irBuiltIns.arrayClass.typeWith(pluginContext.irBuiltIns.anyNType)
-                        val at = useType(arrayType)
-                        tw.writeExprs_arraycreationexpr(arrayCreationId, at.javaResult.id, callId, 0)
-                        tw.writeExprsKotlinType(arrayCreationId, at.kotlinResult.id)
-                        extractCommonExpr(arrayCreationId)
-
-                        extractTypeAccessRecursive(pluginContext.irBuiltIns.anyNType, locId, arrayCreationId, -1, ids.function, returnId)
-
-                        val initId = tw.getFreshIdLabel<DbArrayinit>()
-                        tw.writeExprs_arrayinit(initId, at.javaResult.id, arrayCreationId, -2)
-                        tw.writeExprsKotlinType(initId, at.kotlinResult.id)
-                        extractCommonExpr(initId)
-
-                        for ((idx, vp) in parameters.withIndex()) {
-                            extractArgument(vp, idx, initId)
-                        }
-
-                        val dim = parameters.size.toString()
-                        val dimId = tw.getFreshIdLabel<DbIntegerliteral>()
-                        val dimType = useType(pluginContext.irBuiltIns.intType)
-                        tw.writeExprs_integerliteral(dimId, dimType.javaResult.id, arrayCreationId, 0)
-                        tw.writeExprsKotlinType(dimId, dimType.kotlinResult.id)
-                        extractCommonExpr(dimId)
-                        tw.writeNamestrings(dim, dim, dimId)
-
+                        extractArrayCreationWithInitializer(callId, parameters.size, locId, ids.function, returnId)
                     } else {
                         //<fn>.invoke(vp0, cp1, vp2, vp3, ...) or
-                        for ((idx, vp) in parameters.withIndex()) {
-                            extractArgument(vp, idx, callId)
-                        }
+                        callId
+                    }
+
+                    for ((idx, vp) in parameters.withIndex()) {
+                        extractArgument(vp, idx, argParent)
                     }
 
                     val id = tw.getFreshIdLabel<DbCastexpr>()

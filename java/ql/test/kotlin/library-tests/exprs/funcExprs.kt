@@ -1,16 +1,22 @@
-fun functionExpression0a(f: () -> Int) { }
-fun functionExpression0b(f: () -> Any?) { }
-fun functionExpression0c(f: () -> Any) { }
-fun functionExpression1a(x: Int, f: (Int) -> Int) { }
-fun functionExpression1b(x: Int, f: (Any?) -> Any?) { }
-fun functionExpression1c(x: Int, f: (FuncRef, Int) -> Int) { }
-fun functionExpression2(x: Int, f: (Int, Int) -> Int) { }
-fun functionExpression3(x: Int, f: Int.(Int) -> Int) { }
-fun functionExpression4(x: Int, f: (Int) -> ((Int) -> Double)) { }
+fun functionExpression0a(f: () -> Int) { f() }
+fun functionExpression0b(f: () -> Any?) { f() }
+fun functionExpression0c(f: () -> Any) { f() }
+fun functionExpression1a(x: Int, f: (Int) -> Int) { f(x) }
+fun functionExpression1b(x: Int, f: (Any?) -> Any?) { f(x) }
+fun functionExpression1c(x: Int, f: (FuncRef, Int) -> Int) { f(FuncRef(), x) }
+fun functionExpression2(x: Int, f: (Int, Int) -> Int) { f(x, x) }
+fun functionExpression3(x: Int, f: Int.(Int) -> Int) { x.f(x) }
+fun functionExpression4(x: Int, f: (Int) -> ((Int) -> Double)) { f(x)(x) }
 
-fun functionExpression22(x: Int, f: (Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int) -> Unit) {}
-fun functionExpression23(x: Int, f: (Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int) -> String) {}
-fun functionExpression23c(x: Int, f: (FuncRef, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int) -> String) {}
+fun functionExpression22(x: Int, f: (Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int) -> Unit) {
+    f(x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x)
+}
+fun functionExpression23(x: Int, f: (Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int) -> String) {
+    f(x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x)
+}
+fun functionExpression23c(x: Int, f: (FuncRef, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int) -> String) {
+    f(FuncRef(),x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x)
+}
 
 fun call() {
     functionExpression0a { -> 5 }
