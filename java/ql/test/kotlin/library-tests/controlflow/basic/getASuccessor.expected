@@ -1,8 +1,9 @@
 | Test.kt:0:0:0:0 | TestKt | Class | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:3:1:80:1 | Test | Class | file://:0:0:0:0 | <none> | <none> |
-| Test.kt:3:1:80:1 | super(...) | SuperConstructorInvocationStmt | Test.kt:3:8:80:1 | Test | Constructor |
+| Test.kt:3:1:80:1 | super(...) | SuperConstructorInvocationStmt | Test.kt:3:8:80:1 | { ... } | BlockStmt |
 | Test.kt:3:1:80:1 | { ... } | BlockStmt | Test.kt:3:1:80:1 | super(...) | SuperConstructorInvocationStmt |
 | Test.kt:3:8:80:1 | Test | Constructor | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:3:8:80:1 | { ... } | BlockStmt | Test.kt:3:8:80:1 | Test | Constructor |
 | Test.kt:4:2:79:2 | test | Method | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:4:13:79:2 | { ... } | BlockStmt | Test.kt:5:3:5:16 | var ...; | LocalVariableDeclStmt |
 | Test.kt:5:3:5:16 | int x | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |

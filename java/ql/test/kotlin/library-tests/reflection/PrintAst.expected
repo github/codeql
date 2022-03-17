@@ -191,6 +191,7 @@ reflection.kt:
 #    5|     1: [Constructor] Reflection
 #    5|       5: [BlockStmt] { ... }
 #    5|         0: [SuperConstructorInvocationStmt] super(...)
+#    5|         1: [BlockStmt] { ... }
 #    6|     2: [Method] fn
 #    6|       5: [BlockStmt] { ... }
 #    7|         0: [LocalVariableDeclStmt] var ...;
@@ -457,6 +458,7 @@ reflection.kt:
 #   28|       1: [Constructor] Ccc
 #   28|         5: [BlockStmt] { ... }
 #   28|           0: [SuperConstructorInvocationStmt] super(...)
+#   28|           1: [BlockStmt] { ... }
 #   29|       2: [Method] m
 #-----|         4: (Parameters)
 #   29|           0: [Parameter] i
@@ -526,6 +528,7 @@ reflection.kt:
 #   58|     1: [Constructor] Class1
 #   58|       5: [BlockStmt] { ... }
 #   58|         0: [SuperConstructorInvocationStmt] super(...)
+#   58|         1: [BlockStmt] { ... }
 #   59|     2: [Method] fn
 #   59|       5: [BlockStmt] { ... }
 #   60|         0: [ExprStmt] <Expr>;
@@ -830,6 +833,7 @@ reflection.kt:
 #   75|       1: [Constructor] Generic
 #   75|         5: [BlockStmt] { ... }
 #   75|           0: [SuperConstructorInvocationStmt] super(...)
+#   75|           1: [BlockStmt] { ... }
 #   76|       2: [Method] m1
 #-----|         4: (Parameters)
 #   76|           0: [Parameter] i
@@ -875,6 +879,7 @@ reflection.kt:
 #   86|           0: [Parameter] t
 #   86|         5: [BlockStmt] { ... }
 #   86|           0: [SuperConstructorInvocationStmt] super(...)
+#   86|           1: [BlockStmt] { ... }
 #   89|     7: [Method] test
 #   89|       5: [BlockStmt] { ... }
 #   90|         0: [ExprStmt] <Expr>;
@@ -949,6 +954,7 @@ reflection.kt:
 #  107|       5: [BlockStmt] { ... }
 #  107|         0: [SuperConstructorInvocationStmt] super(...)
 #  107|           0: [VarAccess] prop1
+#  107|         1: [BlockStmt] { ... }
 #  108|     2: [Method] fn
 #  108|       5: [BlockStmt] { ... }
 #  109|         0: [ExprStmt] <Expr>;
