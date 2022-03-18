@@ -2944,6 +2944,10 @@ open class KotlinFileExtractor(
             getterParameterTypes: List<IrType>,
             getterReturnType: IrType
         ) {
+            // Extracting this method is not (strictly) needed for interface member implementation.
+            // `[Mutable]PropertyReferenceX` already implements it, but its signature doesn't match the
+            // generic one, because it's a raw method implementation. Also, by adding the `invoke` explicitly,
+            // we have better data flow analysis support.
             val invokeLabels = addFunctionManual(tw.getFreshIdLabel(), OperatorNameConventions.INVOKE.asString(), getterParameterTypes, getterReturnType, classId, locId)
 
             // return this.get(a0, a1, ...)
@@ -3017,8 +3021,8 @@ open class KotlinFileExtractor(
             )
 
             val currentDeclaration = declarationStack.peek()
-            // The base class could be `Any`. `PropertyReference` is used to keep symmetry with function references.
-            val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.PropertyReference"))?.owner?.typeWith()
+            val prefix = if (kPropertyType.classOrNull!!.owner.name.asString().startsWith("KMutableProperty")) "Mutable" else ""
+            val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.${prefix}PropertyReference${kPropertyType.arguments.size - 1}"))?.owner?.typeWith()
                 ?: pluginContext.irBuiltIns.anyType
 
             val classId = extractGeneratedClass(ids, listOf(baseClass, kPropertyType), locId, currentDeclaration)
