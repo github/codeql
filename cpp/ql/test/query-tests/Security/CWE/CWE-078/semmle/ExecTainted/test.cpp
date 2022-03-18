@@ -168,6 +168,35 @@ void test15(FILE *f) {
   system(command); // GOOD: the user string was converted to an integer and back
 }
 
+void test16(FILE *f, bool use_flags) {
+  // BAD: the user string is injected directly into a command
+  char command[1000] = "mv ", flags[1000] = "-R", filename[1000];
+  fread(filename, 1, 1000, f);
+
+  if (use_flags) {
+    strncat(flags, filename, 1000);
+    strncat(command, flags, 1000);
+  } else {
+    strncat(command, filename, 1000);
+  }
+
+  execl("/bin/sh", "sh", "-c", command);
+}
+
+void test17_inner(char *command, char *flags, char *filename) {
+  strncat(flags, filename, 1000);
+  strncat(command, flags, 1000);
+}
+
+void test17(FILE *f) {
+  // BAD: the user string is injected directly into a command
+  char command[1000] = "mv ", flags[1000] = "-R", filename[1000];
+  fread(filename, 1, 1000, f);
+
+  test17_inner(command, flags, filename);
+
+  execl("/bin/sh", "sh", "-c", command);
+}
 
 // TODO: test for call context sensitivity at concatenation site
 
