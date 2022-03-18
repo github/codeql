@@ -83,6 +83,10 @@
     "java/ql/src/utils/model-generator/CaptureSummaryModels.qll",
     "csharp/ql/src/utils/model-generator/CaptureSummaryModels.qll"
   ],
+  "Model as Data Generation Java/C# - SourceModels": [
+    "java/ql/src/utils/model-generator/CaptureSourceModels.qll",
+    "csharp/ql/src/utils/model-generator/CaptureSourceModels.qll"
+  ],
   "Sign Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/Sign.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/Sign.qll"
