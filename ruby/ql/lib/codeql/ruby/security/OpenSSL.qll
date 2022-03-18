@@ -378,7 +378,7 @@ private class CipherInstantiation extends CipherCallNode {
   private CipherMode cipherMode;
 
   CipherInstantiation() {
-    exists(string cipherName |
+    exists(string cipherName | cipher.matchesName(cipherName) |
       // `OpenSSL::Cipher.new('<cipherName>')`
       this = cipherApi().getAnInstantiation() and
       cipherName = this.getStringArgument(0) and
@@ -436,8 +436,6 @@ private class CipherInstantiation extends CipherCallNode {
           cipherMode.isBlockMode(blockMode)
         )
       )
-    |
-      cipher.matchesName(cipherName)
     )
   }
 
