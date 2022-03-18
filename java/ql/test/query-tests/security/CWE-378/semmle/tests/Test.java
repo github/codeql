@@ -149,5 +149,62 @@ public class Test {
         temp.mkdir();
         return temp;
     }
+
+    static File safe11() throws IOException {
+        File temp = null;
+        if (temp == null) {
+            while (true) {
+                temp = File.createTempFile("test", "directory");
+                if (temp.delete() && temp.mkdir()) {
+                    break;
+                }
+            }
+        }
+        return temp;
+    }
+
+    File safe12temp;
+    File safe12() throws IOException {
+        if (safe12temp == null) {
+            while (true) {
+                safe12temp = File.createTempFile("test", "directory");
+                if (safe12temp.delete() && safe12temp.mkdir()) {
+                    break;
+                }
+            }
+        }
+        return safe12temp;
+    }
+
+    File safe13() throws IOException {
+        File temp = File.createTempFile("test", "directory");
+        temp.delete();
+        if (temp.mkdir()) {
+            return temp;
+        } else {
+            throw new IOException(temp.getAbsolutePath() + " could not be created");
+        }
+    }
+
+    File safe14() throws IOException {
+        File temp = File.createTempFile("test", "directory");
+        temp.delete();
+        if (temp.mkdir()) {
+            return temp;
+        } else {
+            throw new IOException(temp.getAbsolutePath());
+        }
+    }
+
+    File safe15() throws IOException {
+        File temp = File.createTempFile("test", "directory");
+        temp.delete();
+        if (temp.mkdir()) {
+            return temp;
+        } else {
+            final String absolutePath = temp.getAbsolutePath();
+            throw new IOException(absolutePath);
+        }
+    }
     
 }
