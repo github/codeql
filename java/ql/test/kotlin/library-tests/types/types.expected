@@ -785,7 +785,7 @@
 | Comparator<OffsetDateTime> | Interface, ParameterizedType |
 | Comparator<String> | Interface, ParameterizedType |
 | Comparator<T> | Interface, ParameterizedType |
-| Compiled | Class |
+| Compiled | Interface |
 | CompletionHandler | GenericType, Interface, ParameterizedType |
 | CompletionHandler<FileLock,? super A> | Interface, ParameterizedType |
 | CompletionHandler<Integer,? super A> | Interface, ParameterizedType |
@@ -1635,7 +1635,7 @@
 | PhantomReference<FileDescriptor> | Class, ParameterizedType |
 | PhantomReference<Object> | Class, ParameterizedType |
 | PhantomReference<T> | Class, ParameterizedType |
-| PolymorphicSignature | Class |
+| PolymorphicSignature | Interface |
 | Predicate | GenericType, Interface, ParameterizedType |
 | Predicate<? super E> | Interface, ParameterizedType |
 | Predicate<? super Entry<K,V>> | Interface, ParameterizedType |
@@ -1722,7 +1722,7 @@
 | S | TypeVariable |
 | ScatteringByteChannel | Interface |
 | Scope | Interface |
-| Scoped | Class |
+| Scoped | Interface |
 | ScopedAccessError | Class |
 | ScopedMemoryAccess | Class |
 | SearchEntriesTask | Class, GenericType, ParameterizedType |
