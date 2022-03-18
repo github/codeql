@@ -5,16 +5,10 @@
  */
 
 import java
-private import Telemetry.ExternalAPI
-private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.ExternalFlow
-private import ModelGeneratorUtils
-private import semmle.code.java.dataflow.internal.FlowSummaryImplSpecific
-private import semmle.code.java.dataflow.internal.FlowSummaryImpl
 private import semmle.code.java.dataflow.internal.DataFlowImplCommon
-private import semmle.code.java.dataflow.internal.DataFlowPrivate
-private import semmle.code.java.dataflow.internal.DataFlowNodes::Private
+private import ModelGeneratorUtils
 
 class FromSourceConfiguration extends TaintTracking::Configuration {
   FromSourceConfiguration() { this = "FromSourceConfiguration" }
