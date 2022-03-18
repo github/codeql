@@ -2660,8 +2660,9 @@ open class KotlinFileExtractor(
     }
 
     private open inner class GeneratedClassHelper(protected val locId: Label<DbLocation>, protected val ids: GeneratedClassLabels) {
+        protected val classId = ids.type.javaResult.id as Label<out DbClass>
 
-        protected fun writeExpressionMetadataToTrapFile(id: Label<out DbExpr>, callable: Label<out DbCallable>, stmt: Label<out DbStmt>) {
+        fun writeExpressionMetadataToTrapFile(id: Label<out DbExpr>, callable: Label<out DbCallable>, stmt: Label<out DbStmt>) {
             tw.writeHasLocation(id, locId)
             tw.writeCallableEnclosingExpr(id, callable)
             tw.writeStatementEnclosingExpr(id, stmt)
@@ -2713,7 +2714,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    private inner class CallableReferenceHelper(private val callableReferenceExpr: IrCallableReference<out IrSymbol>, locId: Label<DbLocation>, ids: GeneratedClassLabels)
+    private open inner class CallableReferenceHelper(protected val callableReferenceExpr: IrCallableReference<out IrSymbol>, locId: Label<DbLocation>, ids: GeneratedClassLabels)
         : GeneratedClassHelper(locId, ids) {
 
         private val dispatchReceiver = callableReferenceExpr.dispatchReceiver
@@ -2724,7 +2725,7 @@ open class KotlinFileExtractor(
         private val extensionFieldId: Label<DbField>? = if (extensionReceiver != null) tw.getFreshIdLabel() else null
         private val extensionParameterIndex: Int = if (dispatchReceiver != null) 1 else 0
 
-        fun extractReceiverField(classId: Label<out DbClass>) {
+        fun extractReceiverField() {
             val firstAssignmentStmtIdx = 1
 
             // only one of the following can be non-null:
@@ -2739,7 +2740,7 @@ open class KotlinFileExtractor(
             }
         }
 
-        private fun writeVariableAccessInFunctionBody(pType: TypeResults, idx: Int, variable: Label<out DbVariable>,
+        protected fun writeVariableAccessInFunctionBody(pType: TypeResults, idx: Int, variable: Label<out DbVariable>,
                                                       parent: Label<out DbExprparent>, callable: Label<out DbCallable>, stmt: Label<out DbStmt>
         ): Label<DbVaraccess> {
             val pId = tw.getFreshIdLabel<DbVaraccess>()
@@ -2753,8 +2754,12 @@ open class KotlinFileExtractor(
         private fun writeFieldAccessInFunctionBody(pType: IrType, idx: Int, variable: Label<out DbField>,
                                                    parent: Label<out DbExprparent>, callable: Label<out DbCallable>, stmt: Label<out DbStmt>) {
             val accessId = writeVariableAccessInFunctionBody(useType(pType), idx, variable, parent, callable, stmt)
+            writeThisAccess(accessId, callable, stmt)
+        }
+
+        protected fun writeThisAccess(parent: Label<out DbExprparent>, callable: Label<out DbCallable>, stmt: Label<out DbStmt>) {
             val thisId = tw.getFreshIdLabel<DbThisaccess>()
-            tw.writeExprs_thisaccess(thisId, ids.type.javaResult.id, accessId, -1)
+            tw.writeExprs_thisaccess(thisId, ids.type.javaResult.id, parent, -1)
             tw.writeExprsKotlinType(thisId, ids.type.kotlinResult.id)
             writeExpressionMetadataToTrapFile(thisId, callable, stmt)
         }
@@ -2931,6 +2936,37 @@ open class KotlinFileExtractor(
         }
     }
 
+    private inner class PropertyReferenceHelper(callableReferenceExpr: IrCallableReference<out IrSymbol>, locId: Label<DbLocation>, ids: GeneratedClassLabels)
+        : CallableReferenceHelper(callableReferenceExpr, locId, ids) {
+
+        fun extractPropertyReferenceInvoke(
+            getId: Label<DbMethod>,
+            getterParameterTypes: List<IrType>,
+            getterReturnType: IrType
+        ) {
+            val invokeLabels = addFunctionManual(tw.getFreshIdLabel(), OperatorNameConventions.INVOKE.asString(), getterParameterTypes, getterReturnType, classId, locId)
+
+            // return this.get(a0, a1, ...)
+            val retId = tw.getFreshIdLabel<DbReturnstmt>()
+            tw.writeStmts_returnstmt(retId, invokeLabels.blockId, 0, invokeLabels.methodId)
+            tw.writeHasLocation(retId, locId)
+
+            // Call to target function:
+            val callType = useType(getterReturnType)
+            var callId = tw.getFreshIdLabel<DbMethodaccess>()
+            tw.writeExprs_methodaccess(callId, callType.javaResult.id, retId, 0)
+            tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
+            this.writeExpressionMetadataToTrapFile(callId, invokeLabels.methodId, retId)
+
+            tw.writeCallableBinding(callId as Label<out DbCaller>, getId)
+
+            this.writeThisAccess(callId, invokeLabels.methodId, retId)
+            for ((pIdx, p) in invokeLabels.parameters.withIndex()) {
+                this.writeVariableAccessInFunctionBody(p.second, pIdx, p.first, callId, invokeLabels.methodId, retId)
+            }
+        }
+    }
+
     private fun extractPropertyReference(
         exprKind: String,
         propertyReferenceExpr: IrCallableReference<out IrSymbol>,
@@ -2987,10 +3023,10 @@ open class KotlinFileExtractor(
 
             val classId = extractGeneratedClass(ids, listOf(baseClass, kPropertyType), locId, currentDeclaration)
 
-            val helper = CallableReferenceHelper(propertyReferenceExpr, locId, ids)
+            val helper = PropertyReferenceHelper(propertyReferenceExpr, locId, ids)
             val parameterTypes = kPropertyType.arguments.map { it as IrType }
 
-            helper.extractReceiverField(classId)
+            helper.extractReceiverField()
 
             val classTypeArguments = (propertyReferenceExpr.dispatchReceiver?.type as? IrSimpleType)?.arguments ?:
                 if ((getter?.owner?.dispatchReceiverParameter ?: setter?.owner?.dispatchReceiverParameter )!= null) { (kPropertyType.arguments.first() as? IrSimpleType)?.arguments } else { null }
@@ -2999,20 +3035,24 @@ open class KotlinFileExtractor(
 
             val idPropertyRef = tw.getFreshIdLabel<DbPropertyref>()
 
+            val getterParameterTypes = parameterTypes.dropLast(1)
+            val getterReturnType = parameterTypes.last()
+
             if (getter != null) {
-                val getterParameterTypes = parameterTypes.dropLast(1)
-                val getLabels = addFunctionManual(tw.getFreshIdLabel(), "get", getterParameterTypes, parameterTypes.last(), classId, locId)
+                val getLabels = addFunctionManual(tw.getFreshIdLabel(), "get", getterParameterTypes, getterReturnType, classId, locId)
                 val getterCallableId = useFunction<DbCallable>(getter.owner.realOverrideTarget, classTypeArguments)
 
                 helper.extractCallToReflectionTarget(
                     getLabels,
                     getter,
-                    parameterTypes.last(),
+                    getterReturnType,
                     expressionTypeArguments,
                     classTypeArguments
                 )
 
                 tw.writePropertyRefGetBinding(idPropertyRef, getterCallableId)
+
+                helper.extractPropertyReferenceInvoke(getLabels.methodId, getterParameterTypes, getterReturnType)
             } else {
                 // Property without a getter.
                 if (backingField == null) {
@@ -3020,8 +3060,7 @@ open class KotlinFileExtractor(
                     return
                 }
 
-                val getterParameterTypes = parameterTypes.dropLast(1)
-                val getLabels = addFunctionManual(tw.getFreshIdLabel(), "get", getterParameterTypes, parameterTypes.last(), classId, locId)
+                val getLabels = addFunctionManual(tw.getFreshIdLabel(), "get", getterParameterTypes, getterReturnType, classId, locId)
                 val fieldId = useField(backingField.owner)
 
                 helper.extractFieldReturnOfReflectionTarget(
@@ -3029,6 +3068,8 @@ open class KotlinFileExtractor(
                     backingField)
 
                 tw.writePropertyRefFieldBinding(idPropertyRef, fieldId)
+
+                helper.extractPropertyReferenceInvoke(getLabels.methodId, getterParameterTypes, getterReturnType)
             }
 
             if (setter != null) {
@@ -3172,7 +3213,7 @@ open class KotlinFileExtractor(
 
             val classId = extractGeneratedClass(ids, listOf(baseClass, fnInterfaceType), locId, currentDeclaration)
 
-            helper.extractReceiverField(classId)
+            helper.extractReceiverField()
 
             val isBigArity = type.arguments.size > BuiltInFunctionArity.BIG_ARITY
             val funLabels = if (isBigArity) {

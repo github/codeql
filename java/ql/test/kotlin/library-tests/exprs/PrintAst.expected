@@ -38,6 +38,14 @@ delegatedProperties.kt:
 #   87|                     0: [ReturnStmt] return ...
 #   87|                       0: [MethodAccess] getExtDelegated(...)
 #   87|                         0: [VarAccess] a0
+#   87|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   87|                     0: [Parameter] a0
+#   87|                   5: [BlockStmt] { ... }
+#   87|                     0: [ReturnStmt] return ...
+#   87|                       0: [MethodAccess] get(...)
+#   87|                         -1: [ThisAccess] this
+#   87|                         0: [VarAccess] a0
 #   87|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   87|                     0: [Parameter] a0
@@ -73,6 +81,14 @@ delegatedProperties.kt:
 #   87|                     0: [ReturnStmt] return ...
 #   87|                       0: [MethodAccess] getExtDelegated(...)
 #   87|                         0: [VarAccess] a0
+#   87|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   87|                     0: [Parameter] a0
+#   87|                   5: [BlockStmt] { ... }
+#   87|                     0: [ReturnStmt] return ...
+#   87|                       0: [MethodAccess] get(...)
+#   87|                         -1: [ThisAccess] this
+#   87|                         0: [VarAccess] a0
 #   87|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   87|                     0: [Parameter] a0
@@ -98,6 +114,11 @@ delegatedProperties.kt:
 #   87|             5: [BlockStmt] { ... }
 #   87|               0: [ReturnStmt] return ...
 #   87|                 0: [MethodAccess] getTopLevelInt(...)
+#   87|           1: [Method] invoke
+#   87|             5: [BlockStmt] { ... }
+#   87|               0: [ReturnStmt] return ...
+#   87|                 0: [MethodAccess] get(...)
+#   87|                   -1: [ThisAccess] this
 #   87|           1: [Method] set
 #-----|             4: (Parameters)
 #   87|               0: [Parameter] a0
@@ -159,6 +180,11 @@ delegatedProperties.kt:
 #    6|                                 0: [MethodAccess] <get-prop1>(...)
 #    6|                                   -1: [ClassInstanceExpr] new (...)
 #    6|                                     -3: [TypeAccess] Object
+#    6|                           1: [Method] invoke
+#    6|                             5: [BlockStmt] { ... }
+#    6|                               0: [ReturnStmt] return ...
+#    6|                                 0: [MethodAccess] get(...)
+#    6|                                   -1: [ThisAccess] this
 #    6|                         -3: [TypeAccess] KProperty0<Integer>
 #    6|                           0: [TypeAccess] Integer
 #   10|         1: [ExprStmt] <Expr>;
@@ -217,6 +243,11 @@ delegatedProperties.kt:
 #   19|                                 0: [MethodAccess] <get-varResource1>(...)
 #   19|                                   -1: [ClassInstanceExpr] new (...)
 #   19|                                     -3: [TypeAccess] Object
+#   19|                           1: [Method] invoke
+#   19|                             5: [BlockStmt] { ... }
+#   19|                               0: [ReturnStmt] return ...
+#   19|                                 0: [MethodAccess] get(...)
+#   19|                                   -1: [ThisAccess] this
 #   19|                           1: [Method] set
 #-----|                             4: (Parameters)
 #   19|                               0: [Parameter] a0
@@ -252,6 +283,11 @@ delegatedProperties.kt:
 #   19|                                 0: [MethodAccess] <get-varResource1>(...)
 #   19|                                   -1: [ClassInstanceExpr] new (...)
 #   19|                                     -3: [TypeAccess] Object
+#   19|                           1: [Method] invoke
+#   19|                             5: [BlockStmt] { ... }
+#   19|                               0: [ReturnStmt] return ...
+#   19|                                 0: [MethodAccess] get(...)
+#   19|                                   -1: [ThisAccess] this
 #   19|                           1: [Method] set
 #-----|                             4: (Parameters)
 #   19|                               0: [Parameter] a0
@@ -304,6 +340,11 @@ delegatedProperties.kt:
 #   23|                                 0: [MethodAccess] <get-name>(...)
 #   23|                                   -1: [ClassInstanceExpr] new (...)
 #   23|                                     -3: [TypeAccess] Object
+#   23|                           1: [Method] invoke
+#   23|                             5: [BlockStmt] { ... }
+#   23|                               0: [ReturnStmt] return ...
+#   23|                                 0: [MethodAccess] get(...)
+#   23|                                   -1: [ThisAccess] this
 #   23|                         -3: [TypeAccess] KProperty0<String>
 #   23|                           0: [TypeAccess] String
 #   25|         4: [LocalTypeDeclStmt] class ...
@@ -391,6 +432,11 @@ delegatedProperties.kt:
 #   33|                                 0: [MethodAccess] <get-readOnly>(...)
 #   33|                                   -1: [ClassInstanceExpr] new (...)
 #   33|                                     -3: [TypeAccess] Object
+#   33|                           1: [Method] invoke
+#   33|                             5: [BlockStmt] { ... }
+#   33|                               0: [ReturnStmt] return ...
+#   33|                                 0: [MethodAccess] get(...)
+#   33|                                   -1: [ThisAccess] this
 #   33|                         -3: [TypeAccess] KProperty0<Integer>
 #   33|                           0: [TypeAccess] Integer
 #   34|         6: [BlockStmt] { ... }
@@ -421,6 +467,11 @@ delegatedProperties.kt:
 #   34|                                 0: [MethodAccess] <get-readWrite>(...)
 #   34|                                   -1: [ClassInstanceExpr] new (...)
 #   34|                                     -3: [TypeAccess] Object
+#   34|                           1: [Method] invoke
+#   34|                             5: [BlockStmt] { ... }
+#   34|                               0: [ReturnStmt] return ...
+#   34|                                 0: [MethodAccess] get(...)
+#   34|                                   -1: [ThisAccess] this
 #   34|                           1: [Method] set
 #-----|                             4: (Parameters)
 #   34|                               0: [Parameter] a0
@@ -456,6 +507,11 @@ delegatedProperties.kt:
 #   34|                                 0: [MethodAccess] <get-readWrite>(...)
 #   34|                                   -1: [ClassInstanceExpr] new (...)
 #   34|                                     -3: [TypeAccess] Object
+#   34|                           1: [Method] invoke
+#   34|                             5: [BlockStmt] { ... }
+#   34|                               0: [ReturnStmt] return ...
+#   34|                                 0: [MethodAccess] get(...)
+#   34|                                   -1: [ThisAccess] this
 #   34|                           1: [Method] set
 #-----|                             4: (Parameters)
 #   34|                               0: [Parameter] a0
@@ -495,6 +551,11 @@ delegatedProperties.kt:
 #   39|                           0: [MethodAccess] <get-varResource2>(...)
 #   39|                             -1: [ClassInstanceExpr] new (...)
 #   39|                               -3: [TypeAccess] Object
+#   39|                     1: [Method] invoke
+#   39|                       5: [BlockStmt] { ... }
+#   39|                         0: [ReturnStmt] return ...
+#   39|                           0: [MethodAccess] get(...)
+#   39|                             -1: [ThisAccess] this
 #   39|                   -3: [TypeAccess] KProperty0<Integer>
 #   39|                     0: [TypeAccess] Integer
 #   39|           1: [LocalTypeDeclStmt] class ...
@@ -519,6 +580,11 @@ delegatedProperties.kt:
 #   39|                                 0: [MethodAccess] <get-varResource2>(...)
 #   39|                                   -1: [ClassInstanceExpr] new (...)
 #   39|                                     -3: [TypeAccess] Object
+#   39|                           1: [Method] invoke
+#   39|                             5: [BlockStmt] { ... }
+#   39|                               0: [ReturnStmt] return ...
+#   39|                                 0: [MethodAccess] get(...)
+#   39|                                   -1: [ThisAccess] this
 #   39|                         -3: [TypeAccess] KProperty0<Integer>
 #   39|                           0: [TypeAccess] Integer
 #   42|     3: [Method] getVarResource0
@@ -540,6 +606,14 @@ delegatedProperties.kt:
 #   42|                     0: [ReturnStmt] return ...
 #   42|                       0: [MethodAccess] getVarResource0(...)
 #   42|                         -1: [VarAccess] a0
+#   42|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   42|                     0: [Parameter] a0
+#   42|                   5: [BlockStmt] { ... }
+#   42|                     0: [ReturnStmt] return ...
+#   42|                       0: [MethodAccess] get(...)
+#   42|                         -1: [ThisAccess] this
+#   42|                         0: [VarAccess] a0
 #   42|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   42|                     0: [Parameter] a0
@@ -573,6 +647,14 @@ delegatedProperties.kt:
 #   42|                     0: [ReturnStmt] return ...
 #   42|                       0: [MethodAccess] getVarResource0(...)
 #   42|                         -1: [VarAccess] a0
+#   42|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   42|                     0: [Parameter] a0
+#   42|                   5: [BlockStmt] { ... }
+#   42|                     0: [ReturnStmt] return ...
+#   42|                       0: [MethodAccess] get(...)
+#   42|                         -1: [ThisAccess] this
+#   42|                         0: [VarAccess] a0
 #   42|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   42|                     0: [Parameter] a0
@@ -745,6 +827,14 @@ delegatedProperties.kt:
 #   66|                     0: [ReturnStmt] return ...
 #   66|                       0: [MethodAccess] getDelegatedToMember1(...)
 #   66|                         -1: [VarAccess] a0
+#   66|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   66|                     0: [Parameter] a0
+#   66|                   5: [BlockStmt] { ... }
+#   66|                     0: [ReturnStmt] return ...
+#   66|                       0: [MethodAccess] get(...)
+#   66|                         -1: [ThisAccess] this
+#   66|                         0: [VarAccess] a0
 #   66|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   66|                     0: [Parameter] a0
@@ -780,6 +870,14 @@ delegatedProperties.kt:
 #   66|                     0: [ReturnStmt] return ...
 #   66|                       0: [MethodAccess] getDelegatedToMember1(...)
 #   66|                         -1: [VarAccess] a0
+#   66|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   66|                     0: [Parameter] a0
+#   66|                   5: [BlockStmt] { ... }
+#   66|                     0: [ReturnStmt] return ...
+#   66|                       0: [MethodAccess] get(...)
+#   66|                         -1: [ThisAccess] this
+#   66|                         0: [VarAccess] a0
 #   66|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   66|                     0: [Parameter] a0
@@ -816,6 +914,11 @@ delegatedProperties.kt:
 #   66|                 0: [MethodAccess] getMemberInt(...)
 #   66|                   -1: [VarAccess] this.<dispatchReceiver>
 #   66|                     -1: [ThisAccess] this
+#   66|           1: [Method] invoke
+#   66|             5: [BlockStmt] { ... }
+#   66|               0: [ReturnStmt] return ...
+#   66|                 0: [MethodAccess] get(...)
+#   66|                   -1: [ThisAccess] this
 #   66|           1: [Method] set
 #-----|             4: (Parameters)
 #   66|               0: [Parameter] a0
@@ -851,6 +954,14 @@ delegatedProperties.kt:
 #   67|                     0: [ReturnStmt] return ...
 #   67|                       0: [MethodAccess] getDelegatedToMember2(...)
 #   67|                         -1: [VarAccess] a0
+#   67|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   67|                     0: [Parameter] a0
+#   67|                   5: [BlockStmt] { ... }
+#   67|                     0: [ReturnStmt] return ...
+#   67|                       0: [MethodAccess] get(...)
+#   67|                         -1: [ThisAccess] this
+#   67|                         0: [VarAccess] a0
 #   67|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   67|                     0: [Parameter] a0
@@ -887,6 +998,14 @@ delegatedProperties.kt:
 #   67|                     0: [ReturnStmt] return ...
 #   67|                       0: [MethodAccess] getDelegatedToMember2(...)
 #   67|                         -1: [VarAccess] a0
+#   67|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   67|                     0: [Parameter] a0
+#   67|                   5: [BlockStmt] { ... }
+#   67|                     0: [ReturnStmt] return ...
+#   67|                       0: [MethodAccess] get(...)
+#   67|                         -1: [ThisAccess] this
+#   67|                         0: [VarAccess] a0
 #   67|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   67|                     0: [Parameter] a0
@@ -916,6 +1035,14 @@ delegatedProperties.kt:
 #   67|               0: [ReturnStmt] return ...
 #   67|                 0: [MethodAccess] getMemberInt(...)
 #   67|                   -1: [VarAccess] a0
+#   67|           1: [Method] invoke
+#-----|             4: (Parameters)
+#   67|               0: [Parameter] a0
+#   67|             5: [BlockStmt] { ... }
+#   67|               0: [ReturnStmt] return ...
+#   67|                 0: [MethodAccess] get(...)
+#   67|                   -1: [ThisAccess] this
+#   67|                   0: [VarAccess] a0
 #   67|           1: [Method] set
 #-----|             4: (Parameters)
 #   67|               0: [Parameter] a0
@@ -949,6 +1076,14 @@ delegatedProperties.kt:
 #   69|                     0: [ReturnStmt] return ...
 #   69|                       0: [MethodAccess] getDelegatedToExtMember1(...)
 #   69|                         -1: [VarAccess] a0
+#   69|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   69|                     0: [Parameter] a0
+#   69|                   5: [BlockStmt] { ... }
+#   69|                     0: [ReturnStmt] return ...
+#   69|                       0: [MethodAccess] get(...)
+#   69|                         -1: [ThisAccess] this
+#   69|                         0: [VarAccess] a0
 #   69|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   69|                     0: [Parameter] a0
@@ -984,6 +1119,14 @@ delegatedProperties.kt:
 #   69|                     0: [ReturnStmt] return ...
 #   69|                       0: [MethodAccess] getDelegatedToExtMember1(...)
 #   69|                         -1: [VarAccess] a0
+#   69|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   69|                     0: [Parameter] a0
+#   69|                   5: [BlockStmt] { ... }
+#   69|                     0: [ReturnStmt] return ...
+#   69|                       0: [MethodAccess] get(...)
+#   69|                         -1: [ThisAccess] this
+#   69|                         0: [VarAccess] a0
 #   69|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   69|                     0: [Parameter] a0
@@ -1020,6 +1163,11 @@ delegatedProperties.kt:
 #   69|                 0: [MethodAccess] getExtDelegated(...)
 #   69|                   0: [VarAccess] this.<extensionReceiver>
 #   69|                     -1: [ThisAccess] this
+#   69|           1: [Method] invoke
+#   69|             5: [BlockStmt] { ... }
+#   69|               0: [ReturnStmt] return ...
+#   69|                 0: [MethodAccess] get(...)
+#   69|                   -1: [ThisAccess] this
 #   69|           1: [Method] set
 #-----|             4: (Parameters)
 #   69|               0: [Parameter] a0
@@ -1055,6 +1203,14 @@ delegatedProperties.kt:
 #   70|                     0: [ReturnStmt] return ...
 #   70|                       0: [MethodAccess] getDelegatedToExtMember2(...)
 #   70|                         -1: [VarAccess] a0
+#   70|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   70|                     0: [Parameter] a0
+#   70|                   5: [BlockStmt] { ... }
+#   70|                     0: [ReturnStmt] return ...
+#   70|                       0: [MethodAccess] get(...)
+#   70|                         -1: [ThisAccess] this
+#   70|                         0: [VarAccess] a0
 #   70|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   70|                     0: [Parameter] a0
@@ -1091,6 +1247,14 @@ delegatedProperties.kt:
 #   70|                     0: [ReturnStmt] return ...
 #   70|                       0: [MethodAccess] getDelegatedToExtMember2(...)
 #   70|                         -1: [VarAccess] a0
+#   70|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   70|                     0: [Parameter] a0
+#   70|                   5: [BlockStmt] { ... }
+#   70|                     0: [ReturnStmt] return ...
+#   70|                       0: [MethodAccess] get(...)
+#   70|                         -1: [ThisAccess] this
+#   70|                         0: [VarAccess] a0
 #   70|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   70|                     0: [Parameter] a0
@@ -1119,6 +1283,14 @@ delegatedProperties.kt:
 #   70|             5: [BlockStmt] { ... }
 #   70|               0: [ReturnStmt] return ...
 #   70|                 0: [MethodAccess] getExtDelegated(...)
+#   70|                   0: [VarAccess] a0
+#   70|           1: [Method] invoke
+#-----|             4: (Parameters)
+#   70|               0: [Parameter] a0
+#   70|             5: [BlockStmt] { ... }
+#   70|               0: [ReturnStmt] return ...
+#   70|                 0: [MethodAccess] get(...)
+#   70|                   -1: [ThisAccess] this
 #   70|                   0: [VarAccess] a0
 #   70|           1: [Method] set
 #-----|             4: (Parameters)
@@ -1153,6 +1325,14 @@ delegatedProperties.kt:
 #   72|                     0: [ReturnStmt] return ...
 #   72|                       0: [MethodAccess] getDelegatedToBaseClass1(...)
 #   72|                         -1: [VarAccess] a0
+#   72|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   72|                     0: [Parameter] a0
+#   72|                   5: [BlockStmt] { ... }
+#   72|                     0: [ReturnStmt] return ...
+#   72|                       0: [MethodAccess] get(...)
+#   72|                         -1: [ThisAccess] this
+#   72|                         0: [VarAccess] a0
 #   72|               -3: [TypeAccess] KProperty1<MyClass,Integer>
 #   72|                 0: [TypeAccess] MyClass
 #   72|                 1: [TypeAccess] Integer
@@ -1179,6 +1359,11 @@ delegatedProperties.kt:
 #   72|                 0: [MethodAccess] getBaseClassInt(...)
 #   72|                   -1: [VarAccess] this.<dispatchReceiver>
 #   72|                     -1: [ThisAccess] this
+#   72|           1: [Method] invoke
+#   72|             5: [BlockStmt] { ... }
+#   72|               0: [ReturnStmt] return ...
+#   72|                 0: [MethodAccess] get(...)
+#   72|                   -1: [ThisAccess] this
 #   72|         -3: [TypeAccess] KProperty0<Integer>
 #   72|           0: [TypeAccess] Integer
 #   72|         0: [ThisAccess] MyClass.this
@@ -1205,6 +1390,14 @@ delegatedProperties.kt:
 #   73|                     0: [ReturnStmt] return ...
 #   73|                       0: [MethodAccess] getDelegatedToBaseClass2(...)
 #   73|                         -1: [VarAccess] a0
+#   73|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   73|                     0: [Parameter] a0
+#   73|                   5: [BlockStmt] { ... }
+#   73|                     0: [ReturnStmt] return ...
+#   73|                       0: [MethodAccess] get(...)
+#   73|                         -1: [ThisAccess] this
+#   73|                         0: [VarAccess] a0
 #   73|               -3: [TypeAccess] KProperty1<MyClass,Integer>
 #   73|                 0: [TypeAccess] MyClass
 #   73|                 1: [TypeAccess] Integer
@@ -1224,6 +1417,14 @@ delegatedProperties.kt:
 #   73|               0: [ReturnStmt] return ...
 #   73|                 0: [MethodAccess] getBaseClassInt(...)
 #   73|                   -1: [VarAccess] a0
+#   73|           1: [Method] invoke
+#-----|             4: (Parameters)
+#   73|               0: [Parameter] a0
+#   73|             5: [BlockStmt] { ... }
+#   73|               0: [ReturnStmt] return ...
+#   73|                 0: [MethodAccess] get(...)
+#   73|                   -1: [ThisAccess] this
+#   73|                   0: [VarAccess] a0
 #   73|         -3: [TypeAccess] KProperty1<Base,Integer>
 #   73|           0: [TypeAccess] Base
 #   73|           1: [TypeAccess] Integer
@@ -1248,6 +1449,14 @@ delegatedProperties.kt:
 #   75|                     0: [ReturnStmt] return ...
 #   75|                       0: [MethodAccess] getDelegatedToAnotherClass1(...)
 #   75|                         -1: [VarAccess] a0
+#   75|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   75|                     0: [Parameter] a0
+#   75|                   5: [BlockStmt] { ... }
+#   75|                     0: [ReturnStmt] return ...
+#   75|                       0: [MethodAccess] get(...)
+#   75|                         -1: [ThisAccess] this
+#   75|                         0: [VarAccess] a0
 #   75|               -3: [TypeAccess] KProperty1<MyClass,Integer>
 #   75|                 0: [TypeAccess] MyClass
 #   75|                 1: [TypeAccess] Integer
@@ -1274,6 +1483,11 @@ delegatedProperties.kt:
 #   75|                 0: [MethodAccess] getAnotherClassInt(...)
 #   75|                   -1: [VarAccess] this.<dispatchReceiver>
 #   75|                     -1: [ThisAccess] this
+#   75|           1: [Method] invoke
+#   75|             5: [BlockStmt] { ... }
+#   75|               0: [ReturnStmt] return ...
+#   75|                 0: [MethodAccess] get(...)
+#   75|                   -1: [ThisAccess] this
 #   75|         -3: [TypeAccess] KProperty0<Integer>
 #   75|           0: [TypeAccess] Integer
 #   75|         0: [MethodAccess] getAnotherClassInstance(...)
@@ -1300,6 +1514,14 @@ delegatedProperties.kt:
 #   77|                     0: [ReturnStmt] return ...
 #   77|                       0: [MethodAccess] getDelegatedToTopLevel(...)
 #   77|                         -1: [VarAccess] a0
+#   77|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   77|                     0: [Parameter] a0
+#   77|                   5: [BlockStmt] { ... }
+#   77|                     0: [ReturnStmt] return ...
+#   77|                       0: [MethodAccess] get(...)
+#   77|                         -1: [ThisAccess] this
+#   77|                         0: [VarAccess] a0
 #   77|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   77|                     0: [Parameter] a0
@@ -1335,6 +1557,14 @@ delegatedProperties.kt:
 #   77|                     0: [ReturnStmt] return ...
 #   77|                       0: [MethodAccess] getDelegatedToTopLevel(...)
 #   77|                         -1: [VarAccess] a0
+#   77|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   77|                     0: [Parameter] a0
+#   77|                   5: [BlockStmt] { ... }
+#   77|                     0: [ReturnStmt] return ...
+#   77|                       0: [MethodAccess] get(...)
+#   77|                         -1: [ThisAccess] this
+#   77|                         0: [VarAccess] a0
 #   77|                 1: [Method] set
 #-----|                   4: (Parameters)
 #   77|                     0: [Parameter] a0
@@ -1360,6 +1590,11 @@ delegatedProperties.kt:
 #   77|             5: [BlockStmt] { ... }
 #   77|               0: [ReturnStmt] return ...
 #   77|                 0: [MethodAccess] getTopLevelInt(...)
+#   77|           1: [Method] invoke
+#   77|             5: [BlockStmt] { ... }
+#   77|               0: [ReturnStmt] return ...
+#   77|                 0: [MethodAccess] get(...)
+#   77|                   -1: [ThisAccess] this
 #   77|           1: [Method] set
 #-----|             4: (Parameters)
 #   77|               0: [Parameter] a0
@@ -1390,6 +1625,14 @@ delegatedProperties.kt:
 #   79|                     0: [ReturnStmt] return ...
 #   79|                       0: [MethodAccess] getMax(...)
 #   79|                         -1: [VarAccess] a0
+#   79|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   79|                     0: [Parameter] a0
+#   79|                   5: [BlockStmt] { ... }
+#   79|                     0: [ReturnStmt] return ...
+#   79|                       0: [MethodAccess] get(...)
+#   79|                         -1: [ThisAccess] this
+#   79|                         0: [VarAccess] a0
 #   79|               -3: [TypeAccess] KProperty1<MyClass,Integer>
 #   79|                 0: [TypeAccess] MyClass
 #   79|                 1: [TypeAccess] Integer
@@ -1405,6 +1648,11 @@ delegatedProperties.kt:
 #   79|             5: [BlockStmt] { ... }
 #   79|               0: [ReturnStmt] return ...
 #   79|                 0: [VarAccess] MAX_VALUE
+#   79|           1: [Method] invoke
+#   79|             5: [BlockStmt] { ... }
+#   79|               0: [ReturnStmt] return ...
+#   79|                 0: [MethodAccess] get(...)
+#   79|                   -1: [ThisAccess] this
 #   79|         -3: [TypeAccess] KProperty0<Integer>
 #   79|           0: [TypeAccess] Integer
 #   81|     30: [Method] fn
@@ -1432,6 +1680,11 @@ delegatedProperties.kt:
 #   82|                         0: [MethodAccess] getMemberInt(...)
 #   82|                           -1: [VarAccess] this.<dispatchReceiver>
 #   82|                             -1: [ThisAccess] this
+#   82|                   1: [Method] invoke
+#   82|                     5: [BlockStmt] { ... }
+#   82|                       0: [ReturnStmt] return ...
+#   82|                         0: [MethodAccess] get(...)
+#   82|                           -1: [ThisAccess] this
 #   82|                   1: [Method] set
 #-----|                     4: (Parameters)
 #   82|                       0: [Parameter] a0
@@ -1468,6 +1721,11 @@ delegatedProperties.kt:
 #   82|                                 0: [MethodAccess] <get-delegatedToMember3>(...)
 #   82|                                   -1: [ClassInstanceExpr] new (...)
 #   82|                                     -3: [TypeAccess] Object
+#   82|                           1: [Method] invoke
+#   82|                             5: [BlockStmt] { ... }
+#   82|                               0: [ReturnStmt] return ...
+#   82|                                 0: [MethodAccess] get(...)
+#   82|                                   -1: [ThisAccess] this
 #   82|                           1: [Method] set
 #-----|                             4: (Parameters)
 #   82|                               0: [Parameter] a0
@@ -1505,6 +1763,11 @@ delegatedProperties.kt:
 #   82|                                 0: [MethodAccess] <get-delegatedToMember3>(...)
 #   82|                                   -1: [ClassInstanceExpr] new (...)
 #   82|                                     -3: [TypeAccess] Object
+#   82|                           1: [Method] invoke
+#   82|                             5: [BlockStmt] { ... }
+#   82|                               0: [ReturnStmt] return ...
+#   82|                                 0: [MethodAccess] get(...)
+#   82|                                   -1: [ThisAccess] this
 #   82|                           1: [Method] set
 #-----|                             4: (Parameters)
 #   82|                               0: [Parameter] a0
