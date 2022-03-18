@@ -1070,7 +1070,7 @@ open class KotlinFileExtractor(
 
         // If a path was found, repeatedly substitute types to get the corresponding specialisation of that ancestor.
         return if (!walkFrom(receiverClass)) {
-            logger.errorElement("Failed to find a class declaring ${callTarget.name}", callTarget)
+            logger.errorElement("Failed to find a class declaring ${callTarget.name} starting at ${receiverClass.name}", callTarget)
             listOf()
         } else {
             var subbedType = receiverType
