@@ -206,5 +206,21 @@ public class Test {
             throw new IOException(absolutePath);
         }
     }
+
+    File vulnerable4() throws IOException {
+        File temp = new File(System.getProperty("java.io.tmpdir"));
+        ensureDirectory(temp);
+        File workDir = File.createTempFile("test", "directory", temp);
+        if (!workDir.delete()) {
+            throw new IOException("Could not delete temp file: " + workDir.getAbsolutePath());
+        }
+        ensureDirectory(workDir);
+        return temp;
+    }
     
+    private static void ensureDirectory(File dir) throws IOException {
+        if (!dir.mkdirs() && !dir.isDirectory()) {
+            throw new IOException("Mkdirs failed to create " + dir.toString());
+        }
+    }
 }
