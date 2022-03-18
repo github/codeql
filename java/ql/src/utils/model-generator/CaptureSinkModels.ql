@@ -5,15 +5,12 @@
  */
 
 import java
-private import Telemetry.ExternalAPI
-private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.ExternalFlow
 private import ModelGeneratorUtils
-private import semmle.code.java.dataflow.internal.DataFlowNodes::Private
 
 class PropagateToSinkConfiguration extends TaintTracking::Configuration {
-  PropagateToSinkConfiguration() { this = "parameters or  flowing into sinks" }
+  PropagateToSinkConfiguration() { this = "parameters or fields flowing into sinks" }
 
   override predicate isSource(DataFlow::Node source) {
     (source.asExpr().(FieldAccess).isOwnFieldAccess() or source instanceof DataFlow::ParameterNode) and
