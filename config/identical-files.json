@@ -519,5 +519,9 @@
   "Hostname Regexp queries": [
     "javascript/ql/src/Security/CWE-020/HostnameRegexpShared.qll",
     "ruby/ql/src/queries/security/cwe-020/HostnameRegexpShared.qll"
+  ],
+  "ApiGraphModels": [
+    "javascript/ql/lib/semmle/javascript/frameworks/data/internal/ApiGraphModels.qll",
+    "ruby/ql/lib/codeql/ruby/frameworks/data/internal/ApiGraphModels.qll"
   ]
 }
