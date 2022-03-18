@@ -1256,6 +1256,12 @@ open class KotlinFileExtractor(
         result
     }
 
+    val javaUtilArrays by lazy {
+        val result = pluginContext.referenceClass(FqName("java.util.Arrays"))?.owner
+        result?.let { extractExternalClassLater(it) }
+        result
+    }
+
     fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, fName: String, hasQuestionMark: Boolean? = false): Boolean {
         val verbose = false
         fun verboseln(s: String) { if(verbose) println(s) }
@@ -1773,6 +1779,60 @@ open class KotlinFileExtractor(
                     tw.writeStatementEnclosingExpr(id, enclosingStmt)
                     extractTypeAccessRecursive(c.getTypeArgument(1)!!, locId, id, 0, callable, enclosingStmt)
                     extractExpressionExpr(c.getValueArgument(0)!!, callable, id, 1, enclosingStmt)
+                }
+                isBuiltinCallInternal(c, "dataClassArrayMemberToString") -> {
+                    val arrayArg = c.getValueArgument(0)
+                    val realArrayClass = arrayArg?.type?.classOrNull
+                    if (realArrayClass == null) {
+                        logger.errorElement("Argument to dataClassArrayMemberToString not a class", c)
+                        return
+                    }
+                    val realCallee = javaUtilArrays?.declarations?.find { decl ->
+                        decl is IrFunction && decl.name.asString() == "toString" && decl.valueParameters.size == 1 &&
+                                decl.valueParameters[0].type.classOrNull?.let { it == realArrayClass } == true
+                    } as IrFunction?
+                    if (realCallee == null) {
+                        logger.errorElement("Couldn't find a java.lang.Arrays.toString method matching class ${realArrayClass.owner.name}", c)
+                    } else {
+                        extractRawMethodAccess(
+                            realCallee,
+                            c,
+                            callable,
+                            parent,
+                            idx,
+                            enclosingStmt,
+                            listOf(arrayArg),
+                            null,
+                            null
+                        )
+                    }
+                }
+                isBuiltinCallInternal(c, "dataClassArrayMemberHashCode") -> {
+                    val arrayArg = c.getValueArgument(0)
+                    val realArrayClass = arrayArg?.type?.classOrNull
+                    if (realArrayClass == null) {
+                        logger.errorElement("Argument to dataClassArrayMemberHashCode not a class", c)
+                        return
+                    }
+                    val realCallee = javaUtilArrays?.declarations?.find { decl ->
+                        decl is IrFunction && decl.name.asString() == "hashCode" && decl.valueParameters.size == 1 &&
+                                decl.valueParameters[0].type.classOrNull?.let { it == realArrayClass } == true
+                    } as IrFunction?
+                    if (realCallee == null) {
+                        logger.errorElement("Couldn't find a java.lang.Arrays.hashCode method matching class ${realArrayClass.owner.name}", c)
+                    } else {
+                        extractRawMethodAccess(
+                            realCallee,
+                            c,
+                            callable,
+                            parent,
+                            idx,
+                            enclosingStmt,
+                            listOf(arrayArg),
+                            null,
+                            null
+                        )
+                    }
                 }
                 else -> {
                     extractMethodAccess(target, true, true)
