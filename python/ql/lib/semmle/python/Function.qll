@@ -5,11 +5,11 @@ import python
  * It is the syntactic entity that is compiled to a code object.
  */
 class Function extends Function_, Scope, AstNode {
-  /** The expression defining this function */
+  /** Gets the expression defining this function */
   CallableExpr getDefinition() { result = this.getParent() }
 
   /**
-   * The scope in which this function occurs, will be a class for a method,
+   * Gets the scope in which this function occurs. This will be a class for a method,
    * another function for nested functions, generator expressions or comprehensions,
    * or a module for a plain function.
    */
@@ -183,8 +183,8 @@ class FunctionDef extends Assign {
   override Stmt getLastStatement() { result = this.getDefinedFunction().getLastStatement() }
 }
 
+/** A function that uses 'fast' locals, stored in the frame not in a dictionary. */
 class FastLocalsFunction extends Function {
-  /** A function that uses 'fast' locals, stored in the frame not in a dictionary. */
   FastLocalsFunction() {
     not exists(ImportStar i | i.getScope() = this) and
     not exists(Exec e | e.getScope() = this)

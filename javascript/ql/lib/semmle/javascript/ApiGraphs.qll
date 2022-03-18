@@ -109,7 +109,7 @@ module API {
      */
     cached
     Node getMember(string m) {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::member(m))
     }
 
@@ -119,7 +119,7 @@ module API {
      */
     cached
     Node getUnknownMember() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::unknownMember())
     }
 
@@ -129,7 +129,7 @@ module API {
      */
     cached
     Node getAMember() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getMember(_)
       or
       result = this.getUnknownMember()
@@ -148,7 +148,7 @@ module API {
      */
     cached
     Node getInstance() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::instance())
     }
 
@@ -160,7 +160,7 @@ module API {
      */
     cached
     Node getParameter(int i) {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::parameter(i))
     }
 
@@ -182,7 +182,7 @@ module API {
      */
     cached
     Node getReceiver() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::receiver())
     }
 
@@ -196,7 +196,7 @@ module API {
      */
     cached
     Node getAParameter() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getParameter(_)
       or
       result = this.getReceiver()
@@ -210,7 +210,7 @@ module API {
      */
     cached
     Node getReturn() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::return())
     }
 
@@ -220,7 +220,7 @@ module API {
      */
     cached
     Node getPromised() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::promised())
     }
 
@@ -229,7 +229,7 @@ module API {
      */
     cached
     Node getPromisedError() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::promisedError())
     }
 
@@ -371,8 +371,12 @@ module API {
   /**
    * An API entry point.
    *
-   * Extend this class to define additional API entry points other than modules.
-   * Typical examples include global variables.
+   * By default, API graph nodes are only created for nodes that come from an external
+   * library or escape into an external library. The points where values are cross the boundary
+   * between codebases are called "entry points".
+   *
+   * Imports and exports are considered entry points by default, but additional entry points may
+   * be added by extending this class. Typical examples include global variables.
    */
   abstract class EntryPoint extends string {
     bindingset[this]
@@ -385,7 +389,10 @@ module API {
     abstract DataFlow::Node getARhs();
 
     /** Gets an API-node for this entry point. */
-    API::Node getNode() { result = root().getASuccessor(Label::entryPoint(this)) }
+    API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
+
+    /** DEPRECATED. Use `getANode()` instead. */
+    deprecated API::Node getNode() { result = this.getANode() }
   }
 
   /**
@@ -892,7 +899,7 @@ module API {
      */
     cached
     predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       exists(string m |
         pred = MkRoot() and
         lbl = Label::moduleLabel(m)
@@ -1251,7 +1258,7 @@ private predicate exports(string m, string prop, DataFlow::Node rhs) {
 
 /** Gets the definition of module `m`. */
 private Module importableModule(string m) {
-  exists(NPMPackage pkg, PackageJSON json | json = pkg.getPackageJSON() and not json.isPrivate() |
+  exists(NpmPackage pkg, PackageJson json | json = pkg.getPackageJson() and not json.isPrivate() |
     result = pkg.getMainModule() and
     not result.isExterns() and
     m = pkg.getPackageName()

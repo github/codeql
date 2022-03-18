@@ -13,11 +13,12 @@ class SimpleSource extends TaintSource {
 class MySimpleSanitizer extends Sanitizer {
   MySimpleSanitizer() { this = "MySimpleSanitizer" }
 
-  /**
+  /*
    * The test `if is_safe(arg):` sanitizes `arg` on its `true` edge.
    *
    * Can't handle `if not is_safe(arg):` :\ that's why it's called MySimpleSanitizer
    */
+
   override predicate sanitizingEdge(TaintKind taint, PyEdgeRefinement test) {
     taint instanceof ExternalStringKind and
     exists(CallNode call | test.getTest() = call and test.getSense() = true |
@@ -30,7 +31,7 @@ class MySimpleSanitizer extends Sanitizer {
 class MySanitizerHandlingNot extends Sanitizer {
   MySanitizerHandlingNot() { this = "MySanitizerHandlingNot" }
 
-  /** The test `if is_safe(arg):` sanitizes `arg` on its `true` edge. */
+  /** Holds if the test `if is_safe(arg):` sanitizes `arg` on its `true` edge. */
   override predicate sanitizingEdge(TaintKind taint, PyEdgeRefinement test) {
     taint instanceof ExternalStringKind and
     clears_taint_on_true(test.getTest(), test.getSense(), test)

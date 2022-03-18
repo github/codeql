@@ -5401,7 +5401,7 @@ ir.cpp:
 #  600|   <params>: 
 #  600|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  600|         Type = [RValueReferenceType] String &&
-#  601| [ConversionConstructor] void String::String(char const*)
+#  601| [Constructor] void String::String(char const*)
 #  601|   <params>: 
 #  601|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  601|         Type = [PointerType] const char *
@@ -10630,7 +10630,7 @@ ir.cpp:
 # 1330|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] constructor_only &&
-# 1335| [ConversionConstructor] void constructor_only::constructor_only(int)
+# 1335| [Constructor] void constructor_only::constructor_only(int)
 # 1335|   <params>: 
 # 1335|     getParameter(0): [Parameter] x
 # 1335|         Type = [IntType] int
@@ -12820,6 +12820,221 @@ ir.cpp:
 # 1668|                 Type = [IntType] int
 # 1668|                 ValueCategory = prvalue(load)
 # 1670|     getStmt(3): [ReturnStmt] return ...
+# 1672| [TopLevelFunction] void array_structured_binding_non_ref_init()
+# 1672|   <params>: 
+# 1672|   getEntryPoint(): [BlockStmt] { ... }
+# 1673|     getStmt(0): [DeclStmt] declaration
+# 1673|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of xs
+# 1673|           Type = [ArrayType] int[2]
+# 1673|         getVariable().getInitializer(): [Initializer] initializer for xs
+# 1673|           getExpr(): [ArrayAggregateLiteral] {...}
+# 1673|               Type = [ArrayType] int[2]
+# 1673|               ValueCategory = prvalue
+# 1673|             getElementExpr(0): [Literal] 1
+# 1673|                 Type = [IntType] int
+# 1673|                 Value = [Literal] 1
+# 1673|                 ValueCategory = prvalue
+# 1673|             getElementExpr(1): [Literal] 2
+# 1673|                 Type = [IntType] int
+# 1673|                 Value = [Literal] 2
+# 1673|                 ValueCategory = prvalue
+# 1674|     getStmt(1): [DeclStmt] declaration
+# 1674|       getDeclarationEntry(0): (no string representation)
+# 1674|           Type = [ArrayType] int[2]
+# 1674|         getVariable().getInitializer(): [Initializer] initializer for (unnamed local variable)
+# 1674|           getExpr(): [VariableAccess] xs
+# 1674|               Type = [ArrayType] int[2]
+# 1674|               ValueCategory = prvalue(load)
+# 1674|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of x0
+# 1674|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for x0
+#-----|           getExpr(): [ArrayExpr] access to array
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = lvalue
+#-----|             getArrayBase(): [VariableAccess] (unnamed local variable)
+#-----|                 Type = [ArrayType] int[2]
+#-----|                 ValueCategory = lvalue
+#-----|             getArrayOffset(): [Literal] 0
+#-----|                 Type = [LongType] unsigned long
+#-----|                 Value = [Literal] 0
+#-----|                 ValueCategory = prvalue
+#-----|             getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#-----|                 Type = [IntPointerType] int *
+#-----|                 ValueCategory = prvalue
+# 1674|       getDeclarationEntry(2): [VariableDeclarationEntry] definition of x1
+# 1674|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for x1
+#-----|           getExpr(): [ArrayExpr] access to array
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = lvalue
+#-----|             getArrayBase(): [VariableAccess] (unnamed local variable)
+#-----|                 Type = [ArrayType] int[2]
+#-----|                 ValueCategory = lvalue
+#-----|             getArrayOffset(): [Literal] 1
+#-----|                 Type = [LongType] unsigned long
+#-----|                 Value = [Literal] 1
+#-----|                 ValueCategory = prvalue
+#-----|             getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#-----|                 Type = [IntPointerType] int *
+#-----|                 ValueCategory = prvalue
+# 1675|     getStmt(2): [ReturnStmt] return ...
+# 1677| [CopyAssignmentOperator] CapturedLambdaMyObj& CapturedLambdaMyObj::operator=(CapturedLambdaMyObj const&)
+# 1677|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CapturedLambdaMyObj &
+# 1677| [MoveAssignmentOperator] CapturedLambdaMyObj& CapturedLambdaMyObj::operator=(CapturedLambdaMyObj&&)
+# 1677|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CapturedLambdaMyObj &&
+# 1677| [CopyConstructor] void CapturedLambdaMyObj::CapturedLambdaMyObj(CapturedLambdaMyObj const&)
+# 1677|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CapturedLambdaMyObj &
+# 1677| [MoveConstructor] void CapturedLambdaMyObj::CapturedLambdaMyObj(CapturedLambdaMyObj&&)
+# 1677|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CapturedLambdaMyObj &&
+# 1680| [Constructor] void CapturedLambdaMyObj::CapturedLambdaMyObj()
+# 1680|   <params>: 
+# 1680|   <initializations>: 
+# 1680|   getEntryPoint(): [BlockStmt] { ... }
+# 1680|     getStmt(0): [ReturnStmt] return ...
+# 1683| [TopLevelFunction] void captured_lambda(int, int&, int&&)
+# 1683|   <params>: 
+# 1683|     getParameter(0): [Parameter] x
+# 1683|         Type = [IntType] int
+# 1683|     getParameter(1): [Parameter] y
+# 1683|         Type = [LValueReferenceType] int &
+# 1683|     getParameter(2): [Parameter] z
+# 1683|         Type = [RValueReferenceType] int &&
+# 1684|   getEntryPoint(): [BlockStmt] { ... }
+# 1685|     getStmt(0): [DeclStmt] declaration
+# 1685|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of obj1
+# 1685|           Type = [LValueReferenceType] const CapturedLambdaMyObj &
+# 1685|         getVariable().getInitializer(): [Initializer] initializer for obj1
+# 1685|           getExpr(): [ConstructorCall] call to CapturedLambdaMyObj
+# 1685|               Type = [VoidType] void
+# 1685|               ValueCategory = prvalue
+# 1685|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1685|               Type = [LValueReferenceType] const CapturedLambdaMyObj &
+# 1685|               ValueCategory = prvalue
+# 1685|             getExpr(): [CStyleCast] (const CapturedLambdaMyObj)...
+# 1685|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1685|                 Type = [SpecifiedType] const CapturedLambdaMyObj
+# 1685|                 ValueCategory = lvalue
+# 1685|               getExpr(): [TemporaryObjectExpr] temporary object
+# 1685|                   Type = [Class] CapturedLambdaMyObj
+# 1685|                   ValueCategory = lvalue
+# 1686|     getStmt(1): [DeclStmt] declaration
+# 1686|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of obj2
+# 1686|           Type = [Class] CapturedLambdaMyObj
+# 1686|         getVariable().getInitializer(): [Initializer] initializer for obj2
+# 1686|           getExpr(): [ConstructorCall] call to CapturedLambdaMyObj
+# 1686|               Type = [VoidType] void
+# 1686|               ValueCategory = prvalue
+# 1688|     getStmt(2): [DeclStmt] declaration
+# 1688|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of lambda_outer
+# 1688|           Type = [Closure,LocalClass] decltype([...](...){...})
+# 1688|         getVariable().getInitializer(): [Initializer] initializer for lambda_outer
+# 1688|           getExpr(): [LambdaExpression] [...](...){...}
+# 1688|               Type = [Closure,LocalClass] decltype([...](...){...})
+# 1688|               ValueCategory = prvalue
+# 1688|             getInitializer(): [ClassAggregateLiteral] {...}
+# 1688|                 Type = [Closure,LocalClass] decltype([...](...){...})
+# 1688|                 ValueCategory = prvalue
+# 1688|               getFieldExpr(obj1): [Literal] Unknown literal
+# 1688|                   Type = [SpecifiedType] const CapturedLambdaMyObj
+# 1688|                   ValueCategory = prvalue
+# 1688|               getFieldExpr(obj2): [Literal] Unknown literal
+# 1688|                   Type = [Class] CapturedLambdaMyObj
+# 1688|                   ValueCategory = prvalue
+# 1688|               getFieldExpr(x): [VariableAccess] x
+# 1688|                   Type = [IntType] int
+# 1688|                   ValueCategory = prvalue(load)
+# 1688|               getFieldExpr(y): [VariableAccess] y
+# 1688|                   Type = [LValueReferenceType] int &
+# 1688|                   ValueCategory = prvalue(load)
+# 1688|               getFieldExpr(z): [VariableAccess] z
+# 1688|                   Type = [RValueReferenceType] int &&
+# 1688|                   ValueCategory = prvalue(load)
+# 1690|               getFieldExpr(y).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1690|                   Type = [IntType] int
+# 1690|                   ValueCategory = prvalue(load)
+# 1690|               getFieldExpr(z).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1690|                   Type = [IntType] int
+# 1690|                   ValueCategory = prvalue(load)
+# 1691|     getStmt(3): [ReturnStmt] return ...
+# 1688| [CopyAssignmentOperator] (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)& (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator=((void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25) const&)
+# 1688|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1688, col. 25 &
+# 1688| [CopyConstructor] void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::(unnamed constructor)((void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25) const&)
+# 1688|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1688, col. 25 &
+# 1688| [MoveConstructor] void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::(unnamed constructor)((void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)&&)
+# 1688|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] lambda [] type at line 1688, col. 25 &&
+# 1688| [Constructor] void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::(unnamed constructor)()
+# 1688|   <params>: 
+# 1688| [ConstMemberFunction] void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const
+# 1688|   <params>: 
+# 1688|   getEntryPoint(): [BlockStmt] { ... }
+# 1689|     getStmt(0): [DeclStmt] declaration
+# 1689|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of lambda_inner
+# 1689|           Type = [Closure,LocalClass] decltype([...](...){...})
+# 1689|         getVariable().getInitializer(): [Initializer] initializer for lambda_inner
+# 1689|           getExpr(): [LambdaExpression] [...](...){...}
+# 1689|               Type = [Closure,LocalClass] decltype([...](...){...})
+# 1689|               ValueCategory = prvalue
+# 1689|             getInitializer(): [ClassAggregateLiteral] {...}
+# 1689|                 Type = [Closure,LocalClass] decltype([...](...){...})
+# 1689|                 ValueCategory = prvalue
+# 1689|               getFieldExpr(obj1): [Literal] Unknown literal
+# 1689|                   Type = [SpecifiedType] const CapturedLambdaMyObj
+# 1689|                   ValueCategory = prvalue
+# 1689|               getFieldExpr(obj2): [Literal] Unknown literal
+# 1689|                   Type = [Class] CapturedLambdaMyObj
+# 1689|                   ValueCategory = prvalue
+# 1689|               getFieldExpr(x): [PointerFieldAccess] x
+# 1689|                   Type = [IntType] int
+# 1689|                   ValueCategory = prvalue(load)
+# 1689|                 getQualifier(): [ThisExpr] this
+# 1689|                     Type = [PointerType] const lambda [] type at line 1688, col. 25 *
+# 1689|                     ValueCategory = prvalue(load)
+# 1689|               getFieldExpr(y): [PointerFieldAccess] y
+# 1689|                   Type = [IntType] int
+# 1689|                   ValueCategory = prvalue(load)
+# 1689|                 getQualifier(): [ThisExpr] this
+# 1689|                     Type = [PointerType] const lambda [] type at line 1688, col. 25 *
+# 1689|                     ValueCategory = prvalue(load)
+# 1689|               getFieldExpr(z): [PointerFieldAccess] z
+# 1689|                   Type = [IntType] int
+# 1689|                   ValueCategory = prvalue(load)
+# 1689|                 getQualifier(): [ThisExpr] this
+# 1689|                     Type = [PointerType] const lambda [] type at line 1688, col. 25 *
+# 1689|                     ValueCategory = prvalue(load)
+# 1690|     getStmt(1): [ReturnStmt] return ...
+# 1689| [CopyAssignmentOperator] (void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)& (void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)::operator=((void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29) const&)
+# 1689|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1689, col. 29 &
+# 1689| [CopyConstructor] void (void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)::(unnamed constructor)((void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29) const&)
+# 1689|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1689, col. 29 &
+# 1689| [MoveConstructor] void (void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)::(unnamed constructor)((void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)&&)
+# 1689|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] lambda [] type at line 1689, col. 29 &&
+# 1689| [Constructor] void (void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)::(unnamed constructor)()
+# 1689|   <params>: 
+# 1689| [ConstMemberFunction] void (void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)::operator()() const
+# 1689|   <params>: 
+# 1689|   getEntryPoint(): [BlockStmt] { ... }
+# 1689|     getStmt(0): [EmptyStmt] ;
+# 1689|     getStmt(1): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

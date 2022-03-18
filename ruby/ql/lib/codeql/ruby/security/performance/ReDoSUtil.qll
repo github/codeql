@@ -119,18 +119,18 @@ class EmptyPositiveSubPatttern extends RegExpSubPattern {
  * whose root node is not a disjunction.
  */
 class RegExpRoot extends RegExpTerm {
-  RegExpParent parent;
-
   RegExpRoot() {
-    exists(RegExpAlt alt |
-      alt.isRootTerm() and
-      this = alt.getAChild() and
-      parent = alt.getParent()
+    exists(RegExpParent parent |
+      exists(RegExpAlt alt |
+        alt.isRootTerm() and
+        this = alt.getAChild() and
+        parent = alt.getParent()
+      )
+      or
+      this.isRootTerm() and
+      not this instanceof RegExpAlt and
+      parent = this.getParent()
     )
-    or
-    this.isRootTerm() and
-    not this instanceof RegExpAlt and
-    parent = this.getParent()
   }
 
   /**
@@ -466,13 +466,14 @@ private module CharacterClasses {
    * An implementation of `CharacterClass` for \d, \s, and \w.
    */
   private class PositiveCharacterClassEscape extends CharacterClass {
-    RegExpTerm cc;
     string charClass;
 
     PositiveCharacterClassEscape() {
-      isEscapeClass(cc, charClass) and
-      this = getCanonicalCharClass(cc) and
-      charClass = ["d", "s", "w"]
+      exists(RegExpTerm cc |
+        isEscapeClass(cc, charClass) and
+        this = getCanonicalCharClass(cc) and
+        charClass = ["d", "s", "w"]
+      )
     }
 
     override string getARelevantChar() {
@@ -504,13 +505,14 @@ private module CharacterClasses {
    * An implementation of `CharacterClass` for \D, \S, and \W.
    */
   private class NegativeCharacterClassEscape extends CharacterClass {
-    RegExpTerm cc;
     string charClass;
 
     NegativeCharacterClassEscape() {
-      isEscapeClass(cc, charClass) and
-      this = getCanonicalCharClass(cc) and
-      charClass = ["D", "S", "W"]
+      exists(RegExpTerm cc |
+        isEscapeClass(cc, charClass) and
+        this = getCanonicalCharClass(cc) and
+        charClass = ["D", "S", "W"]
+      )
     }
 
     override string getARelevantChar() {

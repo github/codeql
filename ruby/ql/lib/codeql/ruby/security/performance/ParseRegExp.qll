@@ -402,7 +402,8 @@ abstract class RegExp extends AST::StringlikeLiteral {
     not exists(int x, int y | this.backreference(x, y) and x <= start and y >= end) and
     not exists(int x, int y |
       this.pStyleNamedCharacterProperty(x, y, _) and x <= start and y >= end
-    )
+    ) and
+    not exists(int x, int y | this.multiples(x, y, _, _) and x <= start and y >= end)
   }
 
   predicate normalCharacter(int start, int end) {
@@ -479,6 +480,7 @@ abstract class RegExp extends AST::StringlikeLiteral {
   /** Gets the number of the group in start,end */
   int getGroupNumber(int start, int end) {
     this.group(start, end) and
+    not this.nonCapturingGroupStart(start, _) and
     result =
       count(int i | this.group(i, _) and i < start and not this.nonCapturingGroupStart(i, _)) + 1
   }
@@ -488,7 +490,7 @@ abstract class RegExp extends AST::StringlikeLiteral {
     this.group(start, end) and
     exists(int nameEnd |
       this.namedGroupStart(start, nameEnd) and
-      result = this.getText().substring(start + 4, nameEnd - 1)
+      result = this.getText().substring(start + 3, nameEnd - 1)
     )
   }
 
@@ -582,7 +584,7 @@ abstract class RegExp extends AST::StringlikeLiteral {
   private predicate nonCapturingGroupStart(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) = ":" and
+    this.getChar(start + 2) = [":", "=", "<", "!", "#"] and
     end = start + 3
   }
 
@@ -861,6 +863,7 @@ abstract class RegExp extends AST::StringlikeLiteral {
    * Whether the text in the range start,end is an alternation
    */
   predicate alternation(int start, int end) {
+    not this.inCharSet(start) and
     this.topLevel(start, end) and
     exists(int less | this.subalternation(start, less, _) and less < end)
   }

@@ -3,8 +3,8 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.XSS
 import TestUtilities.InlineExpectationsTest
 
-class XSSConfig extends TaintTracking::Configuration {
-  XSSConfig() { this = "XSSConfig" }
+class XssConfig extends TaintTracking::Configuration {
+  XssConfig() { this = "XSSConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
@@ -24,7 +24,7 @@ class XssTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "xss" and
-    exists(DataFlow::Node src, DataFlow::Node sink, XSSConfig conf | conf.hasFlow(src, sink) |
+    exists(DataFlow::Node src, DataFlow::Node sink, XssConfig conf | conf.hasFlow(src, sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

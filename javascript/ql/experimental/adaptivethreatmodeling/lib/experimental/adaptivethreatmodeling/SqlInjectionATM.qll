@@ -60,8 +60,8 @@ module SinkEndpointFilter {
   }
 }
 
-class SqlInjectionATMConfig extends ATMConfig {
-  SqlInjectionATMConfig() { this = "SqlInjectionATMConfig" }
+class SqlInjectionAtmConfig extends AtmConfig {
+  SqlInjectionAtmConfig() { this = "SqlInjectionATMConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof SqlInjection::Source }
 
@@ -73,6 +73,9 @@ class SqlInjectionATMConfig extends ATMConfig {
 
   override EndpointType getASinkEndpointType() { result instanceof SqlInjectionSinkType }
 }
+
+/** DEPRECATED: Alias for SqlInjectionAtmConfig */
+deprecated class SqlInjectionATMConfig = SqlInjectionAtmConfig;
 
 /**
  * A taint-tracking configuration for reasoning about SQL injection vulnerabilities.
@@ -86,7 +89,7 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof SqlInjection::Source }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink instanceof SqlInjection::Sink or any(SqlInjectionATMConfig cfg).isEffectiveSink(sink)
+    sink instanceof SqlInjection::Sink or any(SqlInjectionAtmConfig cfg).isEffectiveSink(sink)
   }
 
   override predicate isSanitizer(DataFlow::Node node) {

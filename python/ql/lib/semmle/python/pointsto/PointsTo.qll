@@ -8,7 +8,7 @@ private import semmle.python.types.Builtins
 private import semmle.python.types.Extensions
 
 /* Use this version for speed */
-library class CfgOrigin extends @py_object {
+class CfgOrigin extends @py_object {
   /** Gets a textual representation of this element. */
   string toString() {
     /* Not to be displayed */
@@ -142,24 +142,6 @@ module PointsTo {
       obj = value.getSource()
       or
       value.useOriginAsLegacyObject() and obj = origin
-    )
-  }
-
-  deprecated predicate ssa_variable_points_to(
-    EssaVariable var, PointsToContext context, Object obj, ClassObject cls, CfgOrigin origin
-  ) {
-    exists(ObjectInternal value |
-      PointsToInternal::variablePointsTo(var, context, value, origin) and
-      cls = value.getClass().getSource()
-    |
-      obj = value.getSource()
-    )
-  }
-
-  deprecated CallNode get_a_call(Object func, PointsToContext context) {
-    exists(ObjectInternal value |
-      result = value.(Value).getACall(context) and
-      func = value.getSource()
     )
   }
 
@@ -1076,7 +1058,7 @@ module InterProceduralPointsTo {
   /** Helper for default_parameter_points_to */
   pragma[noinline]
   private predicate context_for_default_value(ParameterDefinition def, PointsToContext context) {
-    context.isRuntime()
+    context.isRuntime() and exists(def)
     or
     exists(PointsToContext caller, CallNode call, PythonFunctionObjectInternal func, int n |
       context.fromCall(call, func, caller) and
@@ -2286,7 +2268,7 @@ module Types {
       func != six_add_metaclass_function() and result = false
     )
     or
-    not exists(Module m | m.getName() = "six") and result = false
+    not exists(Module m | m.getName() = "six") and result = false and exists(cls)
     or
     exists(Class pycls |
       pycls = cls.getScope() and
@@ -2413,7 +2395,7 @@ module Types {
     )
   }
 
-  /* Holds if type inference failed to compute the full class hierarchy for this class for the reason given. */
+  /** Holds if type inference failed to compute the full class hierarchy for this class for the reason given. */
   private predicate failedInference(ClassObjectInternal cls, string reason, int priority) {
     strictcount(cls.(PythonClassObjectInternal).getScope().getADecorator()) > 1 and
     reason = "Multiple decorators" and

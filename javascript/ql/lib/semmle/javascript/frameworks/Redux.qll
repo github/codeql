@@ -16,19 +16,19 @@ module Redux {
    */
   private module ProgramSlicing {
     /** Gets the innermost `package.json` file in a directory containing the given file. */
-    private PackageJSON getPackageJson(Container f) {
+    private PackageJson getPackageJson(Container f) {
       f = result.getFile().getParentContainer()
       or
       not exists(f.getFile("package.json")) and
       result = getPackageJson(f.getParentContainer())
     }
 
-    private predicate packageDependsOn(PackageJSON importer, PackageJSON dependency) {
+    private predicate packageDependsOn(PackageJson importer, PackageJson dependency) {
       importer.getADependenciesObject("").getADependency(dependency.getPackageName(), _)
     }
 
     /** Gets a package that can be considered an entry point for a Redux app. */
-    private PackageJSON entryPointPackage() {
+    private PackageJson entryPointPackage() {
       result = getPackageJson(any(StoreCreation c).getFile())
       or
       // Any package that imports a store-creating package is considered a potential entry point.
@@ -36,8 +36,8 @@ module Redux {
     }
 
     pragma[nomagic]
-    private predicate arePackagesInSameReduxApp(PackageJSON a, PackageJSON b) {
-      exists(PackageJSON entry |
+    private predicate arePackagesInSameReduxApp(PackageJson a, PackageJson b) {
+      exists(PackageJson entry |
         entry = entryPointPackage() and
         packageDependsOn*(entry, a) and
         packageDependsOn*(entry, b)
@@ -47,7 +47,7 @@ module Redux {
     /** Holds if the two files are considered to be part of the same Redux app. */
     pragma[inline]
     predicate areFilesInSameReduxApp(File a, File b) {
-      not exists(PackageJSON pkg)
+      not exists(PackageJson pkg)
       or
       arePackagesInSameReduxApp(getPackageJson(a), getPackageJson(b))
     }
@@ -1111,7 +1111,7 @@ module Redux {
 
     /** A heuristic call to `connect`, recognized by it taking arguments named `mapStateToProps` and `mapDispatchToProps`. */
     private class HeuristicConnectFunction extends ConnectCall {
-      HeuristicConnectFunction() { this = any(HeuristicConnectEntryPoint e).getNode().getACall() }
+      HeuristicConnectFunction() { this = any(HeuristicConnectEntryPoint e).getANode().getACall() }
 
       override API::Node getMapStateToProps() {
         result = getAParameter() and

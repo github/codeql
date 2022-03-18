@@ -300,7 +300,7 @@ test_JSXname
 | useHigherOrderComponent.jsx:5:12:5:39 | <SomeCo ... "red"/> | useHigherOrderComponent.jsx:5:13:5:25 | SomeComponent | SomeComponent | Identifier |
 | useHigherOrderComponent.jsx:11:12:11:46 | <LazyLo ... lazy"/> | useHigherOrderComponent.jsx:11:13:11:31 | LazyLoadedComponent | LazyLoadedComponent | Identifier |
 | useHigherOrderComponent.jsx:17:12:17:48 | <LazyLo ... azy2"/> | useHigherOrderComponent.jsx:17:13:17:32 | LazyLoadedComponent2 | LazyLoadedComponent2 | Identifier |
-test_JSXName_this
+test_JsxName_this
 | es5.js:4:12:4:45 | <div>He ... }</div> | es5.js:4:24:4:27 | this |
 | es5.js:20:12:20:44 | <h1>Hel ... e}</h1> | es5.js:20:24:20:27 | this |
 | es6.js:3:12:3:45 | <div>He ... }</div> | es6.js:3:24:3:27 | this |

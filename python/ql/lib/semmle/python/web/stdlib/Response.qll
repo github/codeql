@@ -18,7 +18,7 @@ deprecated private predicate is_wfile(AttrNode wfile) {
   )
 }
 
-/** Sink for `h.wfile.write` where `h` is an instance of BaseHTTPRequestHandler. */
+/** Sink for `h.wfile.write` where `h` is an instance of BaseHttpRequestHandler. */
 deprecated class StdLibWFileWriteSink extends HttpResponseTaintSink {
   StdLibWFileWriteSink() {
     exists(CallNode call |
@@ -30,7 +30,7 @@ deprecated class StdLibWFileWriteSink extends HttpResponseTaintSink {
   override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 }
 
-/** Sink for `h.wfile.writelines` where `h` is an instance of BaseHTTPRequestHandler. */
+/** Sink for `h.wfile.writelines` where `h` is an instance of BaseHttpRequestHandler. */
 deprecated class StdLibWFileWritelinesSink extends HttpResponseTaintSink {
   StdLibWFileWritelinesSink() {
     exists(CallNode call |

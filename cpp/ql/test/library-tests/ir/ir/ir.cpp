@@ -1669,4 +1669,25 @@ void tuple_structured_binding_no_ref_get() {
     }
 }
 
+void array_structured_binding_non_ref_init() {
+    int xs[2] = {1, 2};
+    auto [x0, x1] = xs;
+}
+
+class CapturedLambdaMyObj
+{
+public:
+    CapturedLambdaMyObj() {}
+};
+
+void captured_lambda(int x, int &y, int &&z)
+{
+    const auto &obj1 = CapturedLambdaMyObj();
+    auto obj2 = CapturedLambdaMyObj();
+
+    auto lambda_outer = [obj1, obj2, x, y, z](){
+        auto lambda_inner = [obj1, obj2, x, y, z](){;};
+    };
+}
+
 // semmle-extractor-options: -std=c++17 --clang
