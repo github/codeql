@@ -124,3 +124,4 @@ fieldAccessInsideInvocationMethods
 | reflection.kt:99:14:99:29 | ...::... | reflection.kt:99:14:99:29 | new Function1<String,Inner<String>>(...) { ... } | reflection.kt:99:14:99:29 | invoke | reflection.kt:99:14:99:29 | this.<dispatchReceiver> |
 | reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:109:17:109:27 | get | reflection.kt:109:17:109:27 | this.<dispatchReceiver> |
 | reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:109:17:109:27 | set | reflection.kt:109:17:109:27 | this.<dispatchReceiver> |
+memberVisibility

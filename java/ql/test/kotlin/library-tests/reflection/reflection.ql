@@ -80,3 +80,9 @@ query predicate fieldAccessInsideInvocationMethods(
   m.getName() = ["invoke", "get", "set"] and
   access.getEnclosingCallable() = m
 }
+
+query predicate memberVisibility(ClassInstanceExpr e, Method m, string modifier) {
+  (e instanceof MemberRefExpr or e instanceof PropertyRefExpr) and
+  e.getAnonymousClass().getAMethod() = m and
+  m.hasModifier(modifier)
+}
