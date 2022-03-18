@@ -120,7 +120,8 @@ open class KotlinUsesExtractor(
         if (isExternalDeclaration(cls) || clsFile == null) {
             val filePath = getIrClassBinaryPath(cls)
             val newTrapWriter = tw.makeFileTrapWriter(filePath, false)
-            val newLogger = FileLogger(logger.loggerBase, newTrapWriter)
+            val newLoggerTrapWriter = logger.tw.makeFileTrapWriter(filePath, false)
+            val newLogger = FileLogger(logger.loggerBase, newLoggerTrapWriter)
             return KotlinFileExtractor(newLogger, newTrapWriter, filePath, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState)
         }
 
@@ -129,6 +130,7 @@ open class KotlinUsesExtractor(
         }
 
         val newTrapWriter = tw.makeSourceFileTrapWriter(clsFile, false)
+        val newLoggerTrapWriter = logger.tw.makeSourceFileTrapWriter(clsFile, false)
         val newLogger = FileLogger(logger.loggerBase, newTrapWriter)
         return KotlinFileExtractor(newLogger, newTrapWriter, clsFile.path, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState)
     }
