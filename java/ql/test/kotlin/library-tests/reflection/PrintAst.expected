@@ -996,6 +996,7 @@ reflection.kt:
 #  113|     1: [Constructor] LocalFn
 #  113|       5: [BlockStmt] { ... }
 #  113|         0: [SuperConstructorInvocationStmt] super(...)
+#  113|         1: [BlockStmt] { ... }
 #  114|     2: [Method] fn
 #  114|       5: [BlockStmt] { ... }
 #  115|         0: [LocalTypeDeclStmt] class ...
