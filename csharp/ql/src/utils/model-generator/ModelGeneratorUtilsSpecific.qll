@@ -5,7 +5,7 @@ private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 
-private predicate isRelevantForModels(Callable api) { not api instanceof MainMethod }
+predicate isRelevantForModels(Callable api) { not api instanceof MainMethod }
 
 /**
  * A class of callables that are relevant generating summary, source and sinks models for.
