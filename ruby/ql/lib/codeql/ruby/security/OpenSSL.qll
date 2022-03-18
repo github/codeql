@@ -363,80 +363,134 @@ private class CipherMode extends TCipherMode {
   predicate isWeak() { isWeakBlockMode(this.getBlockMode()) }
 }
 
-// Convenience methods for getting constant value arguments in cipher instantiation
-private class CipherCallNode extends DataFlow::CallNode {
-  string getStringArgument(int i) {
-    result = super.getArgument(i).asExpr().getConstantValue().getStringOrSymbol()
-  }
+private string getStringArgument(DataFlow::CallNode call, int i) {
+  result = call.getArgument(i).asExpr().getConstantValue().getStringOrSymbol()
+}
 
-  int getIntArgument(int i) { result = super.getArgument(i).asExpr().getConstantValue().getInt() }
+private int getIntArgument(DataFlow::CallNode call, int i) {
+  result = call.getArgument(i).asExpr().getConstantValue().getInt()
+}
+
+/**
+ * Holds if `call` is a call to `OpenSSL::Cipher.new` that instantiates a
+ * `cipher` instance with mode `cipherMode`.
+ */
+private predicate cipherInstantiationGeneric(
+  DataFlow::CallNode call, OpenSSLCipher cipher, CipherMode cipherMode
+) {
+  exists(string cipherName | cipher.matchesName(cipherName) |
+    // `OpenSSL::Cipher.new('<cipherName>')`
+    call = cipherApi().getAnInstantiation() and
+    cipherName = getStringArgument(call, 0) and
+    // CBC is used by default
+    cipherMode.isBlockMode("CBC")
+  )
+}
+
+/**
+ * Holds if `call` is a call to `OpenSSL::Cipher::AES.new` or
+ * `OpenSSL::Cipher::AES{128,192,256}.new` that instantiates an AES `cipher` instance
+ * with mode `cipherMode`.
+ */
+private predicate cipherInstantiationAES(
+  DataFlow::CallNode call, OpenSSLCipher cipher, CipherMode cipherMode
+) {
+  exists(string cipherName | cipher.matchesName(cipherName) |
+    // `OpenSSL::Cipher::AES` instantiations
+    call = cipherApi().getMember("AES").getAnInstantiation() and
+    exists(string keyLength, string blockMode |
+      // `OpenSSL::Cipher::AES.new('<keyLength-blockMode>')
+      exists(string arg0 |
+        arg0 = getStringArgument(call, 0) and
+        keyLength = arg0.splitAt("-", 0) and
+        blockMode = arg0.splitAt("-", 1).toUpperCase()
+      )
+      or
+      // `OpenSSL::Cipher::AES.new(<keyLength>, '<blockMode>')`
+      keyLength = getIntArgument(call, 0).toString() and
+      blockMode = getStringArgument(call, 1).toUpperCase()
+    |
+      cipherName = "AES-" + keyLength + "-" + blockMode and
+      cipherMode.isBlockMode(blockMode)
+    )
+    or
+    // Modules for AES with specific key lengths
+    exists(string mod, string blockAlgo | mod = ["AES128", "AES192", "AES256"] |
+      call = cipherApi().getMember(mod).getAnInstantiation() and
+      // Canonical representation is `AES-<keyLength>`
+      blockAlgo = "AES-" + mod.suffix(3) and
+      exists(string blockMode |
+        if exists(getStringArgument(call, 0))
+        then
+          // `OpenSSL::Cipher::<blockAlgo>.new('<blockMode>')`
+          blockMode = getStringArgument(call, 0).toUpperCase()
+        else
+          // `OpenSSL::Cipher::<blockAlgo>.new` uses CBC by default
+          blockMode = "CBC"
+      |
+        cipherName = blockAlgo + "-" + blockMode and
+        cipherMode.isBlockMode(blockMode)
+      )
+    )
+  )
+}
+
+/**
+ * Holds if `call` is a call that instantiates an OpenSSL cipher using a module
+ * specific to a block encryption algorithm, e.g. Blowfish, DES, etc.
+ */
+private predicate cipherInstantiationSpecific(
+  DataFlow::CallNode call, OpenSSLCipher cipher, CipherMode cipherMode
+) {
+  exists(string cipherName | cipher.matchesName(cipherName) |
+    // Block ciphers with dedicated modules
+    exists(string blockAlgo | blockAlgo = ["BF", "CAST5", "DES", "IDEA", "RC2"] |
+      call = cipherApi().getMember(blockAlgo).getAnInstantiation() and
+      exists(string blockMode |
+        if exists(getStringArgument(call, 0))
+        then
+          // `OpenSSL::Cipher::<blockAlgo>.new('<blockMode>')`
+          blockMode = getStringArgument(call, 0).toUpperCase()
+        else
+          // `OpenSSL::Cipher::<blockAlgo>.new` uses CBC by default
+          blockMode = "CBC"
+      |
+        cipherName = blockAlgo + "-" + blockMode and
+        cipherMode.isBlockMode(blockMode)
+      )
+    )
+  )
+}
+
+/**
+ * Holds if `call` is a call to `OpenSSL::Cipher::RC4.new` or an RC4 `cipher`
+ * instance with mode `cipherMode`.
+ */
+private predicate cipherInstantiationRC4(
+  DataFlow::CallNode call, OpenSSLCipher cipher, CipherMode cipherMode
+) {
+  exists(string cipherName | cipher.matchesName(cipherName) |
+    // RC4 stream cipher
+    call = cipherApi().getMember("RC4").getAnInstantiation() and
+    cipherMode = TStreamCipher() and
+    (
+      if exists(getStringArgument(call, 0))
+      then cipherName = "RC4-" + getStringArgument(call, 0).toUpperCase()
+      else cipherName = "RC4"
+    )
+  )
 }
 
 /** A call to `OpenSSL::Cipher.new` or similar. */
-private class CipherInstantiation extends CipherCallNode {
+private class CipherInstantiation extends DataFlow::CallNode {
   private OpenSSLCipher cipher;
   private CipherMode cipherMode;
 
   CipherInstantiation() {
-    exists(string cipherName | cipher.matchesName(cipherName) |
-      // `OpenSSL::Cipher.new('<cipherName>')`
-      this = cipherApi().getAnInstantiation() and
-      cipherName = this.getStringArgument(0) and
-      // CBC is used by default
-      cipherMode.isBlockMode("CBC")
-      or
-      // `OpenSSL::Cipher::AES` instantiations
-      this = cipherApi().getMember("AES").getAnInstantiation() and
-      exists(string keyLength, string blockMode |
-        // `OpenSSL::Cipher::AES.new('<keyLength-blockMode>')
-        exists(string arg0 |
-          arg0 = this.getStringArgument(0) and
-          keyLength = arg0.splitAt("-", 0) and
-          blockMode = arg0.splitAt("-", 1).toUpperCase()
-        )
-        or
-        // `OpenSSL::Cipher::AES.new(<keyLength>, '<blockMode>')`
-        keyLength = this.getIntArgument(0).toString() and
-        blockMode = this.getStringArgument(1).toUpperCase()
-      |
-        cipherName = "AES-" + keyLength + "-" + blockMode and
-        cipherMode.isBlockMode(blockMode)
-      )
-      or
-      // RC4 stream cipher
-      this = cipherApi().getMember("RC4").getAnInstantiation() and
-      cipherMode = TStreamCipher() and
-      (
-        if exists(this.getStringArgument(0))
-        then cipherName = "RC4-" + this.getStringArgument(0).toUpperCase()
-        else cipherName = "RC4"
-      )
-      or
-      // Block ciphers with dedicated modules
-      exists(string mod, string blockAlgo |
-        mod = ["AES128", "AES192", "AES256", "BF", "CAST5", "DES", "IDEA", "RC2"]
-      |
-        this = cipherApi().getMember(mod).getAnInstantiation() and
-        (
-          // The `AES<keyLength>` modules are a special case in terms of naming
-          if mod = ["AES128", "AES192", "AES256"]
-          then blockAlgo = "AES-" + mod.suffix(3)
-          else blockAlgo = mod
-        ) and
-        exists(string blockMode |
-          if exists(this.getStringArgument(0))
-          then
-            // `OpenSSL::Cipher::<blockAlgo>.new('<blockMode>')`
-            blockMode = this.getStringArgument(0).toUpperCase()
-          else
-            // `OpenSSL::Cipher::<blockAlgo>.new` uses CBC by default
-            blockMode = "CBC"
-        |
-          cipherName = blockAlgo + "-" + blockMode and
-          cipherMode.isBlockMode(blockMode)
-        )
-      )
-    )
+    cipherInstantiationGeneric(this, cipher, cipherMode) or
+    cipherInstantiationAES(this, cipher, cipherMode) or
+    cipherInstantiationSpecific(this, cipher, cipherMode) or
+    cipherInstantiationRC4(this, cipher, cipherMode)
   }
 
   /** Gets the `OpenSSLCipher` associated with this instance. */
