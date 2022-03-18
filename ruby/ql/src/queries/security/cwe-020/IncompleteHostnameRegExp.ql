@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @security-severity 7.8
  * @precision high
- * @id js/incomplete-hostname-regexp
+ * @id rb/incomplete-hostname-regexp
  * @tags correctness
  *       security
  *       external/cwe/cwe-020
