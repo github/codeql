@@ -1,5 +1,5 @@
 private import codeql.ruby.AST
-private import codeql.ruby.security.performance.RegExpTreeView as RETV
+private import codeql.ruby.Regexp as RE
 private import internal.AST
 private import internal.Constant
 private import internal.Literal
@@ -594,7 +594,7 @@ class RegExpLiteral extends StringlikeLiteral, TRegExpLiteral {
   final predicate hasFreeSpacingFlag() { this.getFlagString().charAt(_) = "x" }
 
   /** Returns the root node of the parse tree of this regular expression. */
-  final RETV::RegExpTerm getParsed() { result = RETV::getParsedRegExp(this) }
+  final RE::RegExpTerm getParsed() { result = RE::getParsedRegExp(this) }
 }
 
 /**
