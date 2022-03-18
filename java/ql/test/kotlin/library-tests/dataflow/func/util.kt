@@ -1,4 +1,8 @@
 class Processor {
+    fun <R> process(f: () -> R) : R {
+        return f()
+    }
+
     fun <T, R> process(f: (T) -> R, arg: T) : R {
         return f(arg)
     }

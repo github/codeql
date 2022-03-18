@@ -1,6 +1,7 @@
 | functionReference.kt:8:59:8:65 | taint(...) | functionReference.kt:8:33:8:66 | process(...) |
 | functionReference.kt:9:78:9:84 | taint(...) | functionReference.kt:9:33:9:85 | process(...) |
 | functionReference.kt:11:55:11:61 | taint(...) | functionReference.kt:11:33:11:62 | process(...) |
+| functionReference.kt:18:24:18:30 | taint(...) | functionReference.kt:14:33:14:51 | process(...) |
 | lambda.kt:4:64:4:70 | taint(...) | lambda.kt:4:33:4:77 | process(...) |
 | lambda.kt:5:60:5:66 | taint(...) | lambda.kt:5:33:5:67 | process(...) |
 | lambda.kt:6:69:6:75 | taint(...) | lambda.kt:6:33:6:76 | process(...) |

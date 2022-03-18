@@ -10,5 +10,10 @@ class FunctionReference {
         Helper.sink(Processor().process(this::fn1, Helper.notaint()))
         Helper.sink(Processor().process(::fn2, Helper.taint()))
         Helper.sink(Processor().process(::fn2, Helper.notaint()))
+
+        Helper.sink(Processor().process(this::prop))
     }
+
+    val prop: String
+        get() = Helper.taint()
 }
