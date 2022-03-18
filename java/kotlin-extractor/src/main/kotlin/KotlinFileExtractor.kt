@@ -247,7 +247,10 @@ open class KotlinFileExtractor(
             val pkg = c.packageFqName?.asString() ?: ""
             val cls = classLabelResults.shortName
             val pkgId = extractPackage(pkg)
-            if(c.kind == ClassKind.INTERFACE) {
+            val kind = c.kind
+            // TODO: There's lots of duplication between this and extractClassSource.
+            // Can we share it?
+            if(kind == ClassKind.INTERFACE || kind == ClassKind.ANNOTATION_CLASS) {
                 @Suppress("UNCHECKED_CAST")
                 val interfaceId = id as Label<out DbInterface>
                 @Suppress("UNCHECKED_CAST")
@@ -260,8 +263,10 @@ open class KotlinFileExtractor(
                 val sourceClassId = useClassSource(c) as Label<out DbClass>
                 tw.writeClasses(classId, cls, pkgId, sourceClassId)
 
-                if (c.kind == ClassKind.ENUM_CLASS) {
+                if (kind == ClassKind.ENUM_CLASS) {
                     tw.writeIsEnumType(classId)
+                } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
+                    logger.warnElement("Unrecognised class kind $kind", c)
                 }
             }
 
@@ -348,7 +353,8 @@ open class KotlinFileExtractor(
                 val pkg = c.packageFqName?.asString() ?: ""
                 val cls = if (c.isAnonymousObject) "" else c.name.asString()
                 val pkgId = extractPackage(pkg)
-                if (c.kind == ClassKind.INTERFACE) {
+                val kind = c.kind
+                if (kind == ClassKind.INTERFACE || kind == ClassKind.ANNOTATION_CLASS) {
                     @Suppress("UNCHECKED_CAST")
                     val interfaceId = id as Label<out DbInterface>
                     tw.writeInterfaces(interfaceId, cls, pkgId, interfaceId)
@@ -357,8 +363,10 @@ open class KotlinFileExtractor(
                     val classId = id as Label<out DbClass>
                     tw.writeClasses(classId, cls, pkgId, classId)
 
-                    if (c.kind == ClassKind.ENUM_CLASS) {
+                    if (kind == ClassKind.ENUM_CLASS) {
                         tw.writeIsEnumType(classId)
+                    } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
+                        logger.warnElement("Unrecognised class kind $kind", c)
                     }
                 }
 
