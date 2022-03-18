@@ -509,7 +509,6 @@ open class KotlinUsesExtractor(
     fun useSimpleType(s: IrSimpleType, context: TypeContext): TypeResults {
         if (s.abbreviation != null) {
             // TODO: Extract this information
-            logger.error("Type alias ignored for " + s.render())
         }
         // We use this when we don't actually have an IrClass for a class
         // we want to refer to
