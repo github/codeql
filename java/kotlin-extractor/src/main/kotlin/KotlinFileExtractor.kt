@@ -3216,6 +3216,8 @@ open class KotlinFileExtractor(
         tw.writeMethodsKotlinType(methodId, rt.kotlinResult.id)
         tw.writeHasLocation(methodId, locId)
 
+        addModifiers(methodId, "public")
+
         // Block
         val blockId = tw.getFreshIdLabel<DbBlock>()
         tw.writeStmts_block(blockId, methodId, 0, methodId)
