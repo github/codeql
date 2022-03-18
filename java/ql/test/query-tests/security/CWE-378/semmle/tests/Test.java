@@ -223,4 +223,11 @@ public class Test {
             throw new IOException("Mkdirs failed to create " + dir.toString());
         }
     }
+
+    static File vulnerable5() throws IOException {
+        File temp = File.createTempFile("test", "directory", null);
+        temp.delete();
+        temp.mkdir();
+        return temp;
+    }
 }
