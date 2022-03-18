@@ -59,7 +59,7 @@
 		<p>
 
 			Address this vulnerability by escaping <code>.</code>
-			appropriately: <code>let regex = /((www|beta)\.)?example\.com/</code>.
+			appropriately: <code>let regex = /^((www|beta)\.)?example\.com/</code>.
 
 		</p>
 
