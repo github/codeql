@@ -183,7 +183,7 @@ void test16(FILE *f, bool use_flags) {
   execl("/bin/sh", "sh", "-c", command);
 }
 
-void test17_inner(char *command, char *flags, char *filename) {
+void concat(char *command, char *flags, char *filename) {
   strncat(flags, filename, 1000);
   strncat(command, flags, 1000);
 }
@@ -193,11 +193,18 @@ void test17(FILE *f) {
   char command[1000] = "mv ", flags[1000] = "-R", filename[1000];
   fread(filename, 1, 1000, f);
 
-  test17_inner(command, flags, filename);
+  concat(command, flags, filename);
 
   execl("/bin/sh", "sh", "-c", command);
 }
 
-// TODO: test for call context sensitivity at concatenation site
+void test18() {
+  // GOOD [FALSE POSITIVE]
+  char command[1000] = "ls ", flags[1000] = "-l", filename[1000] = ".";
+
+  concat(command, flags, filename);
+
+  execl("/bin/sh", "sh", "-c", command);
+}
 
 // open question: do we want to report certain sources even when they're the start of the string?
