@@ -764,7 +764,7 @@ module Logging {
 }
 
 /**
- * Provides models for cryptographic things.
+ * Provides models for cryptographic concepts.
  *
  * Note: The `CryptographicAlgorithm` class currently doesn't take weak keys into
  * consideration for the `isWeak` member predicate. So RSA is always considered
