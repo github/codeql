@@ -256,6 +256,8 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
     createJacksonTreeNodeStep(pred, succ)
     or
     intentFlowsToParcel(pred, succ)
+    or
+    byteArrayFieldFlowStep(pred, succ)
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -517,5 +519,16 @@ private predicate joddJsonParserConfiguredUnsafely(Expr parserExpr) {
   |
     config.hasFlow(getAnUnsafelyConfiguredParser(), parser) and
     not config.hasFlow(getASafelyConfiguredParser(), parser)
+  )
+}
+
+/**
+ * Holds if `fromNode` to `toNode` is a dataflow step that stores data to a byte array field.
+ */
+private predicate byteArrayFieldFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(FieldAccess access, Field field | field = access.getField() |
+    field.getType().hasName("byte[]") and
+    access = fromNode.asExpr() and
+    field.getAnAccess() = toNode.asExpr()
   )
 }
