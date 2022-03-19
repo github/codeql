@@ -17,20 +17,20 @@ class Configuration extends TaintTracking::Configuration {
   private predicate hasSanitizingSubstring(DataFlow::Node nd) {
     nd.getStringValue().regexpMatch(".*[?#].*")
     or
-    hasSanitizingSubstring(StringConcatenation::getAnOperand(nd))
+    this.hasSanitizingSubstring(StringConcatenation::getAnOperand(nd))
     or
-    hasSanitizingSubstring(nd.getAPredecessor())
+    this.hasSanitizingSubstring(nd.getAPredecessor())
   }
 
   private predicate strictSanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
     exists(DataFlow::Node operator, int n |
       StringConcatenation::taintStep(source, sink, operator, n) and
-      hasSanitizingSubstring(StringConcatenation::getOperand(operator, [0 .. n - 1]))
+      this.hasSanitizingSubstring(StringConcatenation::getOperand(operator, [0 .. n - 1]))
     )
   }
 
   override predicate isSanitizerEdge(DataFlow::Node source, DataFlow::Node sink) {
-    strictSanitizingPrefixEdge(source, sink)
+    this.strictSanitizingPrefixEdge(source, sink)
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode nd) {
@@ -41,6 +41,8 @@ class Configuration extends TaintTracking::Configuration {
 }
 
 /**
+ * A sanitizer for ternary operators.
+ *
  * This sanitizers models the next example:
  * let valid = req.params.id ? Number.isInteger(req.params.id) : false
  * if (valid) { sink(req.params.id) }
@@ -119,19 +121,19 @@ class TernaryOperatorSanitizerGuard extends TaintTracking::SanitizerGuardNode {
 }
 
 /**
- * Number.isInteger is a sanitizer guard because a number can't be used to exploit a SSRF.
+ * A call to Number.isInteger seen as a sanitizer guard because a number can't be used to exploit a SSRF.
  */
 class IntegerCheck extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
   IntegerCheck() { this = DataFlow::globalVarRef("Number").getAMemberCall("isInteger") }
 
   override predicate sanitizes(boolean outcome, Expr e) {
     outcome = true and
-    e = getArgument(0).asExpr()
+    e = this.getArgument(0).asExpr()
   }
 }
 
 /**
- * ValidatorCheck identifies if exists a call to validator's library methods.
+ * A call to validator's library methods.
  * validator is a library which has a variety of input-validation functions. We are interesed in
  * checking that source is a number (any type of number) or an alphanumeric value.
  */
@@ -149,6 +151,6 @@ class ValidatorCheck extends TaintTracking::SanitizerGuardNode, DataFlow::CallNo
 
   override predicate sanitizes(boolean outcome, Expr e) {
     outcome = true and
-    e = getArgument(0).asExpr()
+    e = this.getArgument(0).asExpr()
   }
 }

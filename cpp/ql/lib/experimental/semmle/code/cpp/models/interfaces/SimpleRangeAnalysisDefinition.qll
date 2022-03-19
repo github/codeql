@@ -37,7 +37,7 @@ abstract class SimpleRangeAnalysisDefinition extends RangeSsaDefinition {
    * dependencies. Without this information, range analysis might work for
    * simple cases but will go into infinite loops on complex code.
    *
-   * For example, when modelling the definition by reference in a call to an
+   * For example, when modeling the definition by reference in a call to an
    * overloaded `operator=`, written as `v = e`, the definition of `(this, v)`
    * depends on `e`.
    */

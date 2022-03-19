@@ -22,12 +22,14 @@ public class ServiceInfo extends ComponentInfo implements Parcelable
     public static int FLAG_SINGLE_USER = 0;
     public static int FLAG_STOP_WITH_TASK = 0;
     public static int FLAG_USE_APP_ZYGOTE = 0;
+    public static int FOREGROUND_SERVICE_TYPE_CAMERA = 0;
     public static int FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE = 0;
     public static int FOREGROUND_SERVICE_TYPE_DATA_SYNC = 0;
     public static int FOREGROUND_SERVICE_TYPE_LOCATION = 0;
     public static int FOREGROUND_SERVICE_TYPE_MANIFEST = 0;
     public static int FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK = 0;
     public static int FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION = 0;
+    public static int FOREGROUND_SERVICE_TYPE_MICROPHONE = 0;
     public static int FOREGROUND_SERVICE_TYPE_NONE = 0;
     public static int FOREGROUND_SERVICE_TYPE_PHONE_CALL = 0;
     public void dump(Printer p0, String p1){}

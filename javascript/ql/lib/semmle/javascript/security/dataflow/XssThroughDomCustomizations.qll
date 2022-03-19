@@ -88,8 +88,8 @@ module XssThroughDom {
   /**
    * A source for text from the DOM from a DOM property read or call to `getAttribute()`.
    */
-  class DOMTextSource extends Source {
-    DOMTextSource() {
+  class DomTextSource extends Source {
+    DomTextSource() {
       exists(DataFlow::PropRead read | read = this |
         read.getBase().getALocalSource() = DOM::domValueRef() and
         read.mayHavePropertyName(unsafeDomPropertyName())
@@ -102,6 +102,9 @@ module XssThroughDom {
       )
     }
   }
+
+  /** DEPRECATED: Alias for DomTextSource */
+  deprecated class DOMTextSource = DomTextSource;
 
   /**
    * A test of form `typeof x === "something"`, preventing `x` from being a string in some cases.
@@ -136,7 +139,7 @@ module XssThroughDom {
    */
   module Forms {
     /**
-     * A reference to an import of `Formik`.
+     * Gets a reference to an import of `Formik`.
      */
     private DataFlow::SourceNode formik() {
       result = DataFlow::moduleImport("formik")
@@ -149,7 +152,7 @@ module XssThroughDom {
      */
     class FormikSource extends Source {
       FormikSource() {
-        exists(JSXElement elem |
+        exists(JsxElement elem |
           formik().getAPropertyRead("Formik").flowsToExpr(elem.getNameExpr())
         |
           this =
@@ -176,7 +179,7 @@ module XssThroughDom {
      */
     class ReactFinalFormSource extends Source {
       ReactFinalFormSource() {
-        exists(JSXElement elem |
+        exists(JsxElement elem |
           DataFlow::moduleMember("react-final-form", "Form").flowsToExpr(elem.getNameExpr())
         |
           this =

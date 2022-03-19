@@ -2,6 +2,7 @@
 
 package android.graphics;
 
+import android.graphics.Insets;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -37,7 +38,9 @@ public class Rect implements Parcelable
     public static Parcelable.Creator<Rect> CREATOR = null;
     public static Rect unflattenFromString(String p0){ return null; }
     public static boolean intersects(Rect p0, Rect p1){ return false; }
+    public void inset(Insets p0){}
     public void inset(int p0, int p1){}
+    public void inset(int p0, int p1, int p2, int p3){}
     public void offset(int p0, int p1){}
     public void offsetTo(int p0, int p1){}
     public void readFromParcel(Parcel p0){}

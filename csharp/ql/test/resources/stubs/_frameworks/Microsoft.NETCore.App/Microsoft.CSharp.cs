@@ -60,19 +60,19 @@ namespace Microsoft
             // Generated from `Microsoft.CSharp.RuntimeBinder.RuntimeBinderException` in `Microsoft.CSharp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RuntimeBinderException : System.Exception
             {
-                public RuntimeBinderException(string message, System.Exception innerException) => throw null;
-                public RuntimeBinderException(string message) => throw null;
                 public RuntimeBinderException() => throw null;
                 protected RuntimeBinderException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public RuntimeBinderException(string message) => throw null;
+                public RuntimeBinderException(string message, System.Exception innerException) => throw null;
             }
 
             // Generated from `Microsoft.CSharp.RuntimeBinder.RuntimeBinderInternalCompilerException` in `Microsoft.CSharp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RuntimeBinderInternalCompilerException : System.Exception
             {
-                public RuntimeBinderInternalCompilerException(string message, System.Exception innerException) => throw null;
-                public RuntimeBinderInternalCompilerException(string message) => throw null;
                 public RuntimeBinderInternalCompilerException() => throw null;
                 protected RuntimeBinderInternalCompilerException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public RuntimeBinderInternalCompilerException(string message) => throw null;
+                public RuntimeBinderInternalCompilerException(string message, System.Exception innerException) => throw null;
             }
 
         }

@@ -1,3 +1,4 @@
+WARNING: Type HttpResponseTaintSink has been deprecated and may be removed in future (HttpResponseSinks.ql:5,6-27)
 | views_1x.py:8:25:8:63 | django.Response(...) | externally controlled string |
 | views_1x.py:12:25:12:52 | django.Response(...) | externally controlled string |
 | views_1x.py:16:25:16:53 | django.Response(...) | externally controlled string |

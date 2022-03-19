@@ -9,7 +9,6 @@ import java.util.List;
 
 public class SharedLibraryInfo implements Parcelable
 {
-    protected SharedLibraryInfo() {}
     public List<VersionedPackage> getDependentPackages(){ return null; }
     public String getName(){ return null; }
     public String toString(){ return null; }

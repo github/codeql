@@ -1,5 +1,6 @@
 # like blueprints in Flask
 # see https://fastapi.tiangolo.com/tutorial/bigger-applications/
+# see basic.py for instructions for how to run this code.
 
 from fastapi import APIRouter, FastAPI
 
@@ -30,4 +31,23 @@ app = FastAPI()
 app.include_router(outer_router, prefix="/outer")
 app.include_router(items_router)
 
-# see basic.py for instructions for how to run this code.
+# Using a custom router
+
+class MyCustomRouter(APIRouter):
+    """
+    Which automatically removes trailing slashes
+    """
+    def api_route(self, path: str, **kwargs):
+        path = path.rstrip("/")
+        return super().api_route(path, **kwargs)
+
+
+custom_router = MyCustomRouter()
+
+
+@custom_router.get("/bar/") # $ routeSetup="/bar/"
+async def items(): # $ requestHandler
+    return {"msg": "custom_router /bar/"} # $ HttpResponse
+
+
+app.include_router(custom_router)

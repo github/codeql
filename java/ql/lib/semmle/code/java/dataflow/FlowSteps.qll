@@ -103,7 +103,7 @@ private class NumberTaintPreservingCallable extends TaintPreservingCallable {
   int argument;
 
   NumberTaintPreservingCallable() {
-    this.getDeclaringType().getASupertype*().hasQualifiedName("java.lang", "Number") and
+    this.getDeclaringType().getAnAncestor().hasQualifiedName("java.lang", "Number") and
     (
       this instanceof Constructor and
       argument = 0
@@ -130,7 +130,7 @@ private class NumberTaintPreservingCallable extends TaintPreservingCallable {
  * included in this type however, then a tainted `Container` would imply that its `field` is also
  * tainted (but not vice versa).
  *
- * Note that `TaintTracking::Configuration` applies this behaviour by default to array, collection,
+ * Note that `TaintTracking::Configuration` applies this behavior by default to array, collection,
  * map-key and map-value content, so that e.g. a tainted `Map` is assumed to have tainted keys and values.
  */
 abstract class TaintInheritingContent extends DataFlow::Content { }

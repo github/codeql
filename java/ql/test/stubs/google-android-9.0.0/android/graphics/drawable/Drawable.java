@@ -47,6 +47,7 @@ abstract public class Drawable
     public abstract void setColorFilter(ColorFilter p0);
     public boolean canApplyTheme(){ return false; }
     public boolean getPadding(Rect p0){ return false; }
+    public boolean hasFocusStateSpecified(){ return false; }
     public boolean isAutoMirrored(){ return false; }
     public boolean isFilterBitmap(){ return false; }
     public boolean isProjected(){ return false; }

@@ -224,20 +224,6 @@ class BasicBlock extends ControlFlowNodeBase {
   predicate inLoop() { this.getASuccessor+() = this }
 
   /**
-   * DEPRECATED since version 1.11: this predicate does not match the standard
-   * definition of _loop header_.
-   *
-   * Holds if this basic block is in a loop of the control-flow graph and
-   * additionally has an incoming edge that is not part of any loop containing
-   * this basic block. A typical example would be the basic block that computes
-   * `x > 0` in an outermost loop `while (x > 0) { ... }`.
-   */
-  deprecated predicate isLoopHeader() {
-    this.inLoop() and
-    exists(BasicBlock pred | pred = this.getAPredecessor() and not pred = this.getASuccessor+())
-  }
-
-  /**
    * Holds if control flow may reach this basic block from a function entry
    * point or any handler of a reachable `try` statement.
    */

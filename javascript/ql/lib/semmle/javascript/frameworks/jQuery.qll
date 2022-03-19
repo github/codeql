@@ -10,18 +10,6 @@ import javascript
 predicate jquery = JQuery::dollar/0;
 
 /**
- * DEPRECATED. In most cases, `JQuery::Object` should be used instead.
- * Alternatively, if used as a base class, and the intent is to extend the model of
- * jQuery objects with more nodes, extend `JQuery::ObjectSource::Range` instead.
- *
- * An expression that may refer to a jQuery object.
- *
- * Note that this class is an over-approximation: `nd instanceof JQueryObject`
- * may hold for nodes `nd` that cannot, in fact, refer to a jQuery object.
- */
-deprecated class JQueryObject = JQueryObjectInternal;
-
-/**
  * An internal version of `JQueryObject` that may be used to retain
  * backwards compatibility without triggering a deprecation warning.
  */
@@ -81,50 +69,12 @@ private predicate neverReturnsJQuery(string name) {
 }
 
 /**
- * DEPRECATED. Use `JQuery::MethodCall` instead.
- *
- * A (possibly chained) call to a jQuery method.
- */
-deprecated class JQueryMethodCall extends CallExpr {
-  string name;
-
-  JQueryMethodCall() { name = this.flow().(JQuery::MethodCall).getMethodName() }
-
-  /**
-   * Gets the name of the jQuery method this call invokes.
-   */
-  string getMethodName() { result = name }
-
-  /**
-   * Holds if `e` is an argument that this method may interpret as HTML.
-   *
-   * Note that some jQuery methods decide whether to interpret an argument
-   * as HTML based on its syntactic shape, so this predicate and
-   * `interpretsArgumentAsSelector` below overlap.
-   */
-  predicate interpretsArgumentAsHtml(Expr e) {
-    this.flow().(JQuery::MethodCall).interpretsArgumentAsHtml(e.flow())
-  }
-
-  /**
-   * Holds if `e` is an argument that this method may interpret as a selector.
-   *
-   * Note that some jQuery methods decide whether to interpret an argument
-   * as a selector based on its syntactic shape, so this predicate and
-   * `interpretsArgumentAsHtml` above overlap.
-   */
-  predicate interpretsArgumentAsSelector(Expr e) {
-    this.flow().(JQuery::MethodCall).interpretsArgumentAsSelector(e.flow())
-  }
-}
-
-/**
  * A call to `jQuery.parseXML`.
  */
 private class JQueryParseXmlCall extends XML::ParserInvocation {
-  JQueryParseXmlCall() { flow().(JQuery::MethodCall).getMethodName() = "parseXML" }
+  JQueryParseXmlCall() { this.flow().(JQuery::MethodCall).getMethodName() = "parseXML" }
 
-  override Expr getSourceArgument() { result = getArgument(0) }
+  override Expr getSourceArgument() { result = this.getArgument(0) }
 
   override predicate resolvesEntities(XML::EntityKind kind) { kind = XML::InternalEntity() }
 }
@@ -284,10 +234,8 @@ private class JQueryAttr3Call extends JQueryAttributeDefinition, @call_expr {
  * the DOM element constructed by `$("<script/>")`.
  */
 private class JQueryChainedElement extends DOM::Element, InvokeExpr {
-  DOM::Element inner;
-
   JQueryChainedElement() {
-    exists(JQuery::MethodCall call | this = call.asExpr() |
+    exists(JQuery::MethodCall call, DOM::Element inner | this = call.asExpr() |
       call.getReceiver().asExpr() = inner and
       defn = inner.getDefinition()
     )
@@ -295,7 +243,7 @@ private class JQueryChainedElement extends DOM::Element, InvokeExpr {
 }
 
 /**
- * Classes and predicates for modelling `ClientRequest`s in JQuery.
+ * Classes and predicates for modeling `ClientRequest`s in JQuery.
  */
 private module JQueryClientRequest {
   /**
@@ -305,35 +253,35 @@ private module JQueryClientRequest {
     JQueryAjaxCall() { this = jquery().getAMemberCall("ajax") }
 
     override DataFlow::Node getUrl() {
-      result = getArgument(0) and not exists(getOptionArgument(0, _))
+      result = this.getArgument(0) and not exists(this.getOptionArgument(0, _))
       or
-      result = getOptionArgument([0 .. 1], "url")
+      result = this.getOptionArgument([0 .. 1], "url")
     }
 
     override DataFlow::Node getHost() { none() }
 
-    override DataFlow::Node getADataNode() { result = getOptionArgument([0 .. 1], "data") }
+    override DataFlow::Node getADataNode() { result = this.getOptionArgument([0 .. 1], "data") }
 
     private string getResponseType() {
-      getOptionArgument([0 .. 1], "dataType").mayHaveStringValue(result)
+      this.getOptionArgument([0 .. 1], "dataType").mayHaveStringValue(result)
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       (
-        responseType = getResponseType()
+        responseType = this.getResponseType()
         or
-        not exists(getResponseType()) and responseType = ""
+        not exists(this.getResponseType()) and responseType = ""
       ) and
       promise = false and
       (
         result =
-          getOptionArgument([0 .. 1], "success")
+          this.getOptionArgument([0 .. 1], "success")
               .getALocalSource()
               .(DataFlow::FunctionNode)
               .getParameter(0)
         or
         result =
-          getAResponseNodeFromAnXHRObject(getOptionArgument([0 .. 1],
+          getAResponseNodeFromAnXHRObject(this.getOptionArgument([0 .. 1],
               any(string method | method = "error" or method = "complete"))
                 .getALocalSource()
                 .(DataFlow::FunctionNode)
@@ -385,32 +333,27 @@ private module JQueryClientRequest {
     string name;
 
     JQueryAjaxShortHand() {
-      (
-        name = "get" or
-        name = "getJSON" or
-        name = "getScript" or
-        name = "post"
-      ) and
+      name = ["get", "getJSON", "getScript", "post"] and
       this = jquery().getAMemberCall(name)
       or
       name = "load" and
       this = JQuery::objectRef().getAMethodCall(name)
     }
 
-    override DataFlow::Node getUrl() { result = getArgument(0) }
+    override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
     override DataFlow::Node getHost() { none() }
 
     override DataFlow::Node getADataNode() {
-      result = getArgument(1) and
+      result = this.getArgument(1) and
       not name = "getScript" and // doesn't have a data-node.
       not result.getALocalSource() instanceof DataFlow::FunctionNode // looks like the success callback.
     }
 
     private string getResponseType() {
       (name = "get" or name = "post") and
-      getLastArgument().mayHaveStringValue(result) and
-      getNumArgument() > 1
+      this.getLastArgument().mayHaveStringValue(result) and
+      this.getNumArgument() > 1
       or
       name = "getJSON" and result = "json"
       or
@@ -420,14 +363,15 @@ private module JQueryClientRequest {
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       (
-        responseType = getResponseType()
+        responseType = this.getResponseType()
         or
-        not exists(getResponseType()) and responseType = ""
+        not exists(this.getResponseType()) and responseType = ""
       ) and
       promise = false and
       (
         // one of the two last arguments
-        result = getCallback([getNumArgument() - 2 .. getNumArgument() - 1]).getParameter(0)
+        result =
+          this.getCallback([this.getNumArgument() - 2 .. this.getNumArgument() - 1]).getParameter(0)
         or
         result = getAnAjaxCallbackDataNode(this)
       )
@@ -513,9 +457,9 @@ module JQuery {
       DefaultRange() {
         this.asExpr() instanceof JQueryObjectInternal
         or
-        hasUnderlyingType("JQuery")
+        this.hasUnderlyingType("JQuery")
         or
-        hasUnderlyingType("jQuery")
+        this.hasUnderlyingType("jQuery")
       }
     }
 
@@ -529,7 +473,7 @@ module JQuery {
     }
   }
 
-  /** A source of jQuery objects from the AST-based `JQueryObject` class. */
+  /** Gets a source of jQuery objects from the AST-based `JQueryObject` class. */
   private DataFlow::SourceNode legacyObjectSource() {
     result = any(JQueryObjectInternal e).flow().getALocalSource()
   }
@@ -593,11 +537,11 @@ module JQuery {
     predicate interpretsArgumentAsHtml(DataFlow::Node node) {
       // some methods interpret all their arguments as (potential) HTML
       JQuery::isMethodArgumentInterpretedAsHtml(name) and
-      node = getAnArgument()
+      node = this.getAnArgument()
       or
       // for `$, it's only the first one
       name = "$" and
-      node = getArgument(0)
+      node = this.getArgument(0)
     }
 
     /**
@@ -610,11 +554,11 @@ module JQuery {
     predicate interpretsArgumentAsSelector(DataFlow::Node node) {
       // some methods interpret all their arguments as (potential) selectors
       JQuery::isMethodArgumentInterpretedAsSelector(name) and
-      node = getAnArgument()
+      node = this.getAnArgument()
       or
       // for `$, it's only the first one
       name = "$" and
-      node = getArgument(0)
+      node = this.getArgument(0)
     }
   }
 

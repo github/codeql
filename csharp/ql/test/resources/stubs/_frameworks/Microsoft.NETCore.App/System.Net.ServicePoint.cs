@@ -52,9 +52,9 @@ namespace System
             public static bool EnableDnsRoundRobin { get => throw null; set => throw null; }
             public static System.Net.Security.EncryptionPolicy EncryptionPolicy { get => throw null; }
             public static bool Expect100Continue { get => throw null; set => throw null; }
-            public static System.Net.ServicePoint FindServicePoint(string uriString, System.Net.IWebProxy proxy) => throw null;
-            public static System.Net.ServicePoint FindServicePoint(System.Uri address, System.Net.IWebProxy proxy) => throw null;
             public static System.Net.ServicePoint FindServicePoint(System.Uri address) => throw null;
+            public static System.Net.ServicePoint FindServicePoint(System.Uri address, System.Net.IWebProxy proxy) => throw null;
+            public static System.Net.ServicePoint FindServicePoint(string uriString, System.Net.IWebProxy proxy) => throw null;
             public static int MaxServicePointIdleTime { get => throw null; set => throw null; }
             public static int MaxServicePoints { get => throw null; set => throw null; }
             public static bool ReusePort { get => throw null; set => throw null; }

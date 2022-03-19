@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -6,18 +8,28 @@ using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
+    internal enum AttributeKind
+    {
+        Default = 0,
+        Return = 1,
+        Assembly = 2,
+        Module = 3,
+    }
+
     internal class Attribute : CachedEntity<AttributeData>, IExpressionParentEntity
     {
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
         private readonly AttributeSyntax? attributeSyntax;
         private readonly IEntity entity;
+        private readonly AttributeKind kind;
 
-        private Attribute(Context cx, AttributeData attributeData, IEntity entity)
+        private Attribute(Context cx, AttributeData attributeData, IEntity entity, AttributeKind kind)
             : base(cx, attributeData)
         {
             this.attributeSyntax = attributeData.ApplicationSyntaxReference?.GetSyntax() as AttributeSyntax;
             this.entity = entity;
+            this.kind = kind;
         }
 
         public override void WriteId(EscapingTextWriter trapFile)
@@ -48,12 +60,12 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             var type = Type.Create(Context, Symbol.AttributeClass);
-            trapFile.attributes(this, type.TypeRef, entity);
+            trapFile.attributes(this, kind, type.TypeRef, entity);
             trapFile.attribute_location(this, Location);
 
             if (attributeSyntax is not null)
             {
-                if (!Context.Extractor.Standalone)
+                if (!Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone))
                 {
                     trapFile.attribute_location(this, Assembly.CreateOutputAssembly(Context));
                 }
@@ -125,26 +137,36 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public static void ExtractAttributes(Context cx, ISymbol symbol, IEntity entity)
+        private static void ExtractAttributes(Context cx, IEnumerable<AttributeData> attributes, IEntity entity, AttributeKind kind)
         {
-            foreach (var attribute in symbol.GetAttributes())
+            foreach (var attribute in attributes)
             {
-                Create(cx, attribute, entity);
+                Create(cx, attribute, entity, kind);
             }
         }
 
-        public static Attribute Create(Context cx, AttributeData attributeData, IEntity entity)
+        public static void ExtractAttributes(Context cx, ISymbol symbol, IEntity entity)
         {
-            var init = (attributeData, entity);
+            ExtractAttributes(cx, symbol.GetAttributes(), entity, AttributeKind.Default);
+            if (symbol is IMethodSymbol method)
+            {
+                ExtractAttributes(cx, method.GetReturnTypeAttributes(), entity, AttributeKind.Return);
+            }
+        }
+
+
+        public static Attribute Create(Context cx, AttributeData attributeData, IEntity entity, AttributeKind kind)
+        {
+            var init = (attributeData, entity, kind);
             return AttributeFactory.Instance.CreateEntity(cx, attributeData, init);
         }
 
-        private class AttributeFactory : CachedEntityFactory<(AttributeData attributeData, IEntity receiver), Attribute>
+        private class AttributeFactory : CachedEntityFactory<(AttributeData attributeData, IEntity receiver, AttributeKind kind), Attribute>
         {
             public static readonly AttributeFactory Instance = new AttributeFactory();
 
-            public override Attribute Create(Context cx, (AttributeData attributeData, IEntity receiver) init) =>
-                new Attribute(cx, init.attributeData, init.receiver);
+            public override Attribute Create(Context cx, (AttributeData attributeData, IEntity receiver, AttributeKind kind) init) =>
+                new Attribute(cx, init.attributeData, init.receiver, init.kind);
         }
     }
 }

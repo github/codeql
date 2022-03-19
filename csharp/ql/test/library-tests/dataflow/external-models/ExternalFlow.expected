@@ -53,6 +53,9 @@ edges
 | ExternalFlow.cs:100:20:100:20 | d : Object | ExternalFlow.cs:102:22:102:22 | access to parameter d |
 | ExternalFlow.cs:103:16:103:17 | access to local variable d1 [field Field] : Object | ExternalFlow.cs:100:20:100:20 | d : Object |
 | ExternalFlow.cs:104:18:104:19 | access to local variable d1 [field Field] : Object | ExternalFlow.cs:104:18:104:25 | access to field Field |
+| ExternalFlow.cs:111:13:111:13 | [post] access to local variable f [field MyField] : Object | ExternalFlow.cs:112:18:112:18 | access to local variable f [field MyField] : Object |
+| ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | ExternalFlow.cs:111:13:111:13 | [post] access to local variable f [field MyField] : Object |
+| ExternalFlow.cs:112:18:112:18 | access to local variable f [field MyField] : Object | ExternalFlow.cs:112:18:112:25 | access to property MyProp |
 nodes
 | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | semmle.label | call to method StepArgRes |
@@ -123,6 +126,10 @@ nodes
 | ExternalFlow.cs:103:16:103:17 | access to local variable d1 [field Field] : Object | semmle.label | access to local variable d1 [field Field] : Object |
 | ExternalFlow.cs:104:18:104:19 | access to local variable d1 [field Field] : Object | semmle.label | access to local variable d1 [field Field] : Object |
 | ExternalFlow.cs:104:18:104:25 | access to field Field | semmle.label | access to field Field |
+| ExternalFlow.cs:111:13:111:13 | [post] access to local variable f [field MyField] : Object | semmle.label | [post] access to local variable f [field MyField] : Object |
+| ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:112:18:112:18 | access to local variable f [field MyField] : Object | semmle.label | access to local variable f [field MyField] : Object |
+| ExternalFlow.cs:112:18:112:25 | access to property MyProp | semmle.label | access to property MyProp |
 subpaths
 invalidModelRow
 #select
@@ -144,3 +151,4 @@ invalidModelRow
 | ExternalFlow.cs:92:18:92:18 | (...) ... | ExternalFlow.cs:90:21:90:34 | object creation of type String : String | ExternalFlow.cs:92:18:92:18 | (...) ... | $@ | ExternalFlow.cs:90:21:90:34 | object creation of type String : String | object creation of type String : String |
 | ExternalFlow.cs:102:22:102:22 | access to parameter d | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:102:22:102:22 | access to parameter d | $@ | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:104:18:104:25 | access to field Field | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:104:18:104:25 | access to field Field | $@ | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:112:18:112:25 | access to property MyProp | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | ExternalFlow.cs:112:18:112:25 | access to property MyProp | $@ | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | object creation of type Object : Object |

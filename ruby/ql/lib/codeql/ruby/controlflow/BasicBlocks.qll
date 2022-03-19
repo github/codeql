@@ -15,7 +15,7 @@ private import SuccessorTypes
  */
 class BasicBlock extends TBasicBlockStart {
   /** Gets the scope of this basic block. */
-  CfgScope getScope() { result = this.getAPredecessor().getScope() }
+  final CfgScope getScope() { result = this.getFirstNode().getScope() }
 
   /** Gets an immediate successor of this basic block, if any. */
   BasicBlock getASuccessor() { result = this.getASuccessor(_) }
@@ -309,6 +309,17 @@ private module Cached {
         jbp order by JoinBlockPredecessors::getId(jbp), JoinBlockPredecessors::getSplitString(jbp)
       )
   }
+
+  cached
+  predicate immediatelyControls(ConditionBlock cb, BasicBlock succ, BooleanSuccessor s) {
+    succ = cb.getASuccessor(s) and
+    forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != cb | succ.dominates(pred))
+  }
+
+  cached
+  predicate controls(ConditionBlock cb, BasicBlock controlled, BooleanSuccessor s) {
+    exists(BasicBlock succ | cb.immediatelyControls(succ, s) | succ.dominates(controlled))
+  }
 }
 
 private import Cached
@@ -322,8 +333,6 @@ private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof EntryNod
  */
 class EntryBasicBlock extends BasicBlock {
   EntryBasicBlock() { entryBB(this) }
-
-  override CfgScope getScope() { this.getFirstNode() = TEntryNode(result) }
 }
 
 /**
@@ -397,10 +406,8 @@ class ConditionBlock extends BasicBlock {
    * successor of this block, and `succ` can only be reached from
    * the callable entry point by going via the `s` edge out of this basic block.
    */
-  pragma[nomagic]
   predicate immediatelyControls(BasicBlock succ, BooleanSuccessor s) {
-    succ = this.getASuccessor(s) and
-    forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != this | succ.dominates(pred))
+    immediatelyControls(this, succ, s)
   }
 
   /**
@@ -408,7 +415,5 @@ class ConditionBlock extends BasicBlock {
    * conditional value `s`. That is, `controlled` can only be reached from
    * the callable entry point by going via the `s` edge out of this basic block.
    */
-  predicate controls(BasicBlock controlled, BooleanSuccessor s) {
-    exists(BasicBlock succ | this.immediatelyControls(succ, s) | succ.dominates(controlled))
-  }
+  predicate controls(BasicBlock controlled, BooleanSuccessor s) { controls(this, controlled, s) }
 }

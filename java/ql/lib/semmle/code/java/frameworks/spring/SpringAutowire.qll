@@ -58,8 +58,8 @@ class SpringBeanPropertySetterMethod extends Method {
  *
  * Confusingly, this is a different form of autowiring to the `@Autowired` annotation.
  */
-class SpringBeanXMLAutowiredSetterMethod extends Method {
-  SpringBeanXMLAutowiredSetterMethod() {
+class SpringBeanXmlAutowiredSetterMethod extends Method {
+  SpringBeanXmlAutowiredSetterMethod() {
     // The bean as marked with some form of autowiring in the XML file.
     exists(string xmlAutowire |
       xmlAutowire = this.getDeclaringType().(SpringBeanRefType).getSpringBean().getAutowire()
@@ -99,6 +99,9 @@ class SpringBeanXMLAutowiredSetterMethod extends Method {
     )
   }
 }
+
+/** DEPRECATED: Alias for SpringBeanXmlAutowiredSetterMethod */
+deprecated class SpringBeanXMLAutowiredSetterMethod = SpringBeanXmlAutowiredSetterMethod;
 
 /**
  * A callable that is annotated with `@Autowired`.

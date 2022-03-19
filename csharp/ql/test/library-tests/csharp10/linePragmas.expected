@@ -1,0 +1,5 @@
+linespan_directives
+| LinePragmas.cs:7:1:7:45 | #line ... | 1 | 1 | 1 | 30 | LinePragmasRef1.cs:0:0:0:0 | LinePragmasRef1.cs |
+| LinePragmas.cs:9:1:9:43 | #line ... | 2 | 1 | 5 | 32 | LinePragmasRef2.cs:0:0:0:0 | LinePragmasRef2.cs |
+linespan_offset
+| LinePragmas.cs:7:1:7:45 | #line ... | 5 | LinePragmasRef1.cs:0:0:0:0 | LinePragmasRef1.cs |

@@ -19,6 +19,7 @@ package ratpack.exec;
 import ratpack.func.Action;
 import ratpack.func.Factory;
 import ratpack.func.Function;
+import ratpack.func.Pair;
 import ratpack.func.Predicate;
 
 /**
@@ -66,6 +67,14 @@ public interface Promise<T> {
 
   Promise<T> next(Action<? super T> action);
 
+  default Promise<T> nextOp(Function<? super T, ? extends Operation> function) {
+    return null;
+  }
+
+  default Promise<T> nextOpIf(Predicate<? super T> predicate, Function<? super T, ? extends Operation> function) {
+    return null;
+  }
+
   default <E extends Throwable> Promise<T> onError(Class<E> errorType, Action<? super E> errorHandler) {
     return null;
   }
@@ -79,6 +88,46 @@ public interface Promise<T> {
   }
 
   default <O> Promise<O> mapIf(Predicate<? super T> predicate, Function<? super T, ? extends O> onTrue, Function<? super T, ? extends O> onFalse) {
+    return null;
+  }
+
+  default <O> Promise<O> blockingMap(Function<? super T, ? extends O> transformer) {
+    return null;
+  }
+
+  default Promise<T> blockingOp(Action<? super T> action) {
+    return null;
+  }
+
+  default <O> Promise<O> replace(Promise<O> next) {
+    return null;
+  }
+
+  default <O> Promise<Pair<O, T>> left(Promise<O> left) {
+    return null;
+  }
+
+  default <O> Promise<Pair<O, T>> left(Function<? super T, ? extends O> leftFunction) {
+    return null;
+  }
+
+  default <O> Promise<Pair<O, T>> flatLeft(Function<? super T, ? extends Promise<O>> leftFunction) {
+    return null;
+  }
+
+  default <O> Promise<Pair<T, O>> right(Promise<O> right) {
+    return null;
+  }
+
+  default <O> Promise<Pair<T, O>> right(Function<? super T, ? extends O> rightFunction) {
+    return null;
+  }
+
+  default <O> Promise<Pair<T, O>> flatRight(Function<? super T, ? extends Promise<O>> rightFunction) {
+    return null;
+  }
+
+  default Operation flatOp(Function<? super T, ? extends Operation> function) {
     return null;
   }
 
@@ -115,6 +164,10 @@ public interface Promise<T> {
   }
 
   default Promise<T> cacheIf(Predicate<? super T> shouldCache) {
+    return null;
+  }
+
+  default Promise<T> wiretap(Action<? super Result<T>> listener) {
     return null;
   }
 

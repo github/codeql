@@ -63,7 +63,7 @@ jdk/A.java:
 jdk/SystemGetPropertyCall.java:
 #    0| [CompilationUnit] SystemGetPropertyCall
 #    3|   1: [Class] SystemGetPropertyCall
-#    4|     3: [FieldDeclaration] String USER_DIR_PROPERTY, ...;
+#    4|     3: [FieldDeclaration] String USER_DIR_PROPERTY;
 #    4|       -1: [TypeAccess] String
 #    4|       0: [StringLiteral] "user.dir"
 #    6|     4: [Method] a

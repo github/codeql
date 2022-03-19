@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities.Expressions;
 using Semmle.Extraction.Kinds;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -324,7 +325,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public void PopulateArguments(TextWriter trapFile, BaseArgumentListSyntax args, int child)
         {
-            foreach (var arg in args.Arguments)
+            PopulateArguments(trapFile, args.Arguments, child);
+        }
+
+        public void PopulateArguments(TextWriter trapFile, IEnumerable<ArgumentSyntax> args, int child)
+        {
+            foreach (var arg in args)
                 PopulateArgument(trapFile, arg, child++);
         }
 

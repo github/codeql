@@ -6,7 +6,6 @@ import java.util.function.DoubleUnaryOperator;
 
 abstract public class ColorSpace
 {
-    protected ColorSpace() {}
     public ColorSpace.Model getModel(){ return null; }
     public String getName(){ return null; }
     public String toString(){ return null; }
@@ -39,11 +38,12 @@ abstract public class ColorSpace
     public static float[] ILLUMINANT_D65 = null;
     public static float[] ILLUMINANT_D75 = null;
     public static float[] ILLUMINANT_E = null;
+    public static float[] cctToXyz(int p0){ return null; }
+    public static float[] chromaticAdaptation(ColorSpace.Adaptation p0, float[] p1, float[] p2){ return null; }
     public static int MAX_ID = 0;
     public static int MIN_ID = 0;
     static public class Connector
     {
-        protected Connector() {}
         public ColorSpace getDestination(){ return null; }
         public ColorSpace getSource(){ return null; }
         public ColorSpace.RenderIntent getRenderIntent(){ return null; }

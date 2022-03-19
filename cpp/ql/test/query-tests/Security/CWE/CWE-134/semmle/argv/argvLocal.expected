@@ -14,7 +14,6 @@ edges
 | argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array |
 | argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array indirection |
 | argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array indirection |
-| argvLocal.c:96:15:96:21 | access to array indirection | argvLocal.c:9:25:9:31 | *correct |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | (const char *)... |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | (const char *)... |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | i1 |
@@ -93,7 +92,6 @@ edges
 | argvLocal.c:107:15:107:19 | printWrapper output argument | argvLocal.c:111:15:111:17 | * ... |
 | argvLocal.c:107:15:107:19 | printWrapper output argument | argvLocal.c:111:15:111:17 | * ... |
 | argvLocal.c:107:15:107:19 | printWrapper output argument | argvLocal.c:111:15:111:17 | * ... indirection |
-| argvLocal.c:111:15:111:17 | * ... indirection | argvLocal.c:9:25:9:31 | *correct |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | (const char *)... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | (const char *)... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | i3 |
@@ -206,9 +204,6 @@ edges
 | argvLocal.c:128:15:128:16 | printWrapper output argument | argvLocal.c:132:15:132:20 | ... + ... |
 | argvLocal.c:128:15:128:16 | printWrapper output argument | argvLocal.c:132:15:132:20 | ... + ... |
 | argvLocal.c:128:15:128:16 | printWrapper output argument | argvLocal.c:132:15:132:20 | ... + ... indirection |
-| argvLocal.c:132:15:132:20 | ... + ... indirection | argvLocal.c:9:25:9:31 | *correct |
-| argvLocal.c:136:15:136:18 | -- ... indirection | argvLocal.c:9:25:9:31 | *correct |
-| argvLocal.c:145:15:145:16 | i7 indirection | argvLocal.c:9:25:9:31 | *correct |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | (const char *)... |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | (const char *)... |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
@@ -223,7 +218,6 @@ edges
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 indirection |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 indirection |
-| argvLocal.c:151:15:151:16 | i8 indirection | argvLocal.c:9:25:9:31 | *correct |
 | argvLocal.c:156:23:156:26 | argv | argvLocal.c:157:9:157:10 | (const char *)... |
 | argvLocal.c:156:23:156:26 | argv | argvLocal.c:157:9:157:10 | (const char *)... |
 | argvLocal.c:156:23:156:26 | argv | argvLocal.c:157:9:157:10 | i9 |
@@ -236,7 +230,6 @@ edges
 | argvLocal.c:156:23:156:26 | argv | argvLocal.c:158:15:158:16 | i9 |
 | argvLocal.c:156:23:156:26 | argv | argvLocal.c:158:15:158:16 | i9 indirection |
 | argvLocal.c:156:23:156:26 | argv | argvLocal.c:158:15:158:16 | i9 indirection |
-| argvLocal.c:158:15:158:16 | i9 indirection | argvLocal.c:9:25:9:31 | *correct |
 | argvLocal.c:163:22:163:25 | argv | argvLocal.c:164:9:164:11 | (const char *)... |
 | argvLocal.c:163:22:163:25 | argv | argvLocal.c:164:9:164:11 | (const char *)... |
 | argvLocal.c:163:22:163:25 | argv | argvLocal.c:164:9:164:11 | i91 |
@@ -249,7 +242,6 @@ edges
 | argvLocal.c:163:22:163:25 | argv | argvLocal.c:165:15:165:17 | i91 |
 | argvLocal.c:163:22:163:25 | argv | argvLocal.c:165:15:165:17 | i91 indirection |
 | argvLocal.c:163:22:163:25 | argv | argvLocal.c:165:15:165:17 | i91 indirection |
-| argvLocal.c:165:15:165:17 | i91 indirection | argvLocal.c:9:25:9:31 | *correct |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:9:169:20 | (char *)... |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:9:169:20 | (char *)... |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:9:169:20 | (const char *)... |
@@ -268,7 +260,6 @@ edges
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
-| argvLocal.c:170:15:170:26 | i10 indirection | argvLocal.c:9:25:9:31 | *correct |
 subpaths
 | argvLocal.c:102:15:102:16 | i1 indirection | argvLocal.c:9:25:9:31 | *correct | argvLocal.c:9:25:9:31 | ReturnIndirection | argvLocal.c:102:15:102:16 | printWrapper output argument |
 | argvLocal.c:107:15:107:19 | access to array indirection | argvLocal.c:9:25:9:31 | *correct | argvLocal.c:9:25:9:31 | ReturnIndirection | argvLocal.c:107:15:107:19 | printWrapper output argument |

@@ -7,10 +7,17 @@ import codeql.ruby.dataflow.FlowSummary
 import DataFlow::PathGraph
 import codeql.ruby.TaintTracking
 import codeql.ruby.dataflow.internal.FlowSummaryImpl
+import codeql.ruby.dataflow.internal.AccessPathSyntax
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {
   (sc.propagatesFlowExt(s, _, _) or sc.propagatesFlowExt(_, s, _)) and
   Private::External::invalidSpecComponent(s, c)
+}
+
+query predicate invalidOutputSpecComponent(SummarizedCallable sc, AccessPath s, AccessPathToken c) {
+  sc.propagatesFlowExt(_, s, _) and
+  c = s.getToken(_) and
+  c = "ArrayElement" // not allowed in output specs; use `ArrayElement[?] instead
 }
 
 private class SummarizedCallableIdentity extends SummarizedCallable {
@@ -32,10 +39,10 @@ private class SummarizedCallableApplyBlock extends SummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[0]" and
-    output = "Parameter[0] of BlockArgument" and
+    output = "BlockArgument.Parameter[0]" and
     preservesValue = true
     or
-    input = "ReturnValue of BlockArgument" and
+    input = "BlockArgument.ReturnValue" and
     output = "ReturnValue" and
     preservesValue = true
   }
@@ -48,10 +55,10 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[1]" and
-    output = "Parameter[0] of Argument[0]" and
+    output = "Argument[0].Parameter[0]" and
     preservesValue = true
     or
-    input = "ReturnValue of Argument[0]" and
+    input = "Argument[0].ReturnValue" and
     output = "ReturnValue" and
     preservesValue = true
   }
@@ -61,7 +68,7 @@ class Conf extends TaintTracking::Configuration {
   Conf() { this = "FlowSummaries" }
 
   override predicate isSource(DataFlow::Node src) {
-    src.asExpr().getExpr().(StringLiteral).getValueText() = "taint"
+    src.asExpr().getExpr().(StringLiteral).getConstantValue().isString("taint")
   }
 
   override predicate isSink(DataFlow::Node sink) {

@@ -3,16 +3,16 @@ import ruby
 query predicate allLiterals(Literal l, string pClass, string valueText) {
   pClass = l.getAPrimaryQlClass() and
   (
-    valueText = l.getValueText()
+    valueText = l.getConstantValue().toString()
     or
-    not exists(l.getValueText()) and valueText = "<none>"
+    not exists(l.getConstantValue()) and valueText = "<none>"
   )
 }
 
 query predicate stringlikeLiterals(StringlikeLiteral l, string valueText) {
-  valueText = l.getValueText()
+  valueText = l.getConstantValue().toString()
   or
-  not exists(l.getValueText()) and valueText = "<none>"
+  not exists(l.getConstantValue()) and valueText = "<none>"
 }
 
 query predicate stringLiterals(StringLiteral l, string valueText) {
@@ -21,6 +21,10 @@ query predicate stringLiterals(StringLiteral l, string valueText) {
 
 query predicate regExpLiterals(RegExpLiteral l, string valueText, string flags) {
   stringlikeLiterals(l, valueText) and flags = l.getFlagString()
+}
+
+query predicate regExpInterpolations(RegExpInterpolationComponent c, int i, Expr e, string eClass) {
+  e = c.getStmt(i) and eClass = e.getAPrimaryQlClass()
 }
 
 query predicate symbolLiterals(SymbolLiteral l, string valueText) {

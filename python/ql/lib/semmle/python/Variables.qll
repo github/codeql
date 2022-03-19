@@ -57,7 +57,7 @@ class LocalVariable extends Variable {
   override string toString() { result = "Local Variable " + this.getId() }
 
   /** Whether this variable is a parameter */
-  override predicate isParameter() { exists(Parameter p | this.getAnAccess() = p) }
+  override predicate isParameter() { this.getAnAccess() instanceof Parameter }
 
   /** Holds if this variable is the first parameter of a method. It is not necessarily called "self" */
   override predicate isSelf() {
@@ -87,7 +87,7 @@ class NameLocalVariable extends LocalVariable {
 
 /** A global (module-level) variable */
 class GlobalVariable extends Variable {
-  GlobalVariable() { exists(Module m | m = this.getScope()) }
+  GlobalVariable() { this.getScope() instanceof Module }
 
   override string toString() { result = "Global Variable " + this.getId() }
 }

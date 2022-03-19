@@ -140,3 +140,13 @@ def stackoverflow_solution():
     if os.path.commonprefix((os.path.realpath(path), STATIC_DIR)) != STATIC_DIR:
         return "not this time"
     f = open(path) # OK TODO: FP
+
+
+SAFE_FILES = ['foo', 'bar', 'baz']
+
+@app.route("/safe-set-of-files")
+def safe_set_of_files():
+    filename = request.args.get('filename', '')
+    if filename in SAFE_FILES:
+        path = os.path.join(STATIC_DIR, filename)
+        f = open(path) # OK TODO: FP

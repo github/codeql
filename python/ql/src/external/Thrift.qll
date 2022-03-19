@@ -13,9 +13,9 @@ class ThriftElement extends ExternalData {
 
   string getKind() { result = kind }
 
-  string getId() { result = getField(0) }
+  string getId() { result = this.getField(0) }
 
-  int getIndex() { result = getFieldAsInt(1) }
+  int getIndex() { result = this.getFieldAsInt(1) }
 
   ThriftElement getParent() { result.getId() = this.getField(2) }
 

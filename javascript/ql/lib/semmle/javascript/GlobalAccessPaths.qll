@@ -7,31 +7,6 @@ private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.internal.CachedStages
 
-deprecated module GlobalAccessPath {
-  /**
-   * DEPRECATED. Instead use `AccessPath::getAReferenceTo` with the result and parameter reversed.
-   */
-  pragma[inline]
-  string fromReference(DataFlow::Node node) { node = AccessPath::getAReferenceTo(result) }
-
-  /**
-   * DEPRECATED. Instead use `AccessPath::getAnAssignmentTo` with the result and parameter reversed.
-   */
-  pragma[inline]
-  string fromRhs(DataFlow::Node node) { node = AccessPath::getAnAssignmentTo(result) }
-
-  /**
-   * DEPRECATED. Use `AccessPath::getAReferenceOrAssignmentTo`.
-   */
-  pragma[inline]
-  string getAccessPath(DataFlow::Node node) {
-    result = fromReference(node)
-    or
-    not exists(fromReference(node)) and
-    result = fromRhs(node)
-  }
-}
-
 /**
  * Provides predicates for associating access paths with data flow nodes.
  *
@@ -80,7 +55,7 @@ module AccessPath {
     SsaExplicitDefinition getSsaDefinition() { result.getSourceVariable() = this }
 
     /** Gets the data flow node representing the value of this variable, if one exists. */
-    DataFlow::Node getValue() { result = getSsaDefinition().getRhsNode() }
+    DataFlow::Node getValue() { result = this.getSsaDefinition().getRhsNode() }
   }
 
   /**

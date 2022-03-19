@@ -64,7 +64,7 @@ where
     src = cse.getExpr().getType() and
     dest = cse.getType()
   ) and
-  dest = src.getASupertype+() and
+  dest = src.getAStrictAncestor() and
   not usefulUpcast(e)
 select e, "There is no need to upcast from $@ to $@ - the conversion can be done implicitly.", src,
   src.getName(), dest, dest.getName()

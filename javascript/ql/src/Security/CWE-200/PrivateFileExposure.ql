@@ -8,6 +8,7 @@
  * @id js/exposure-of-private-files
  * @tags security
  *       external/cwe/cwe-200
+ *       external/cwe/cwe-219
  *       external/cwe/cwe-548
  * @precision high
  */
@@ -68,7 +69,7 @@ DataFlow::Node getANodeModulePath(string path) {
  * Gets a folder that contains a `package.json` file.
  */
 pragma[noinline]
-Folder getAPackageJSONFolder() { result = any(PackageJSON json).getFile().getParentContainer() }
+Folder getAPackageJsonFolder() { result = any(PackageJson json).getFile().getParentContainer() }
 
 /**
  * Gets a reference to `dirname`, the home folder, the current working folder, or the root folder.
@@ -81,7 +82,7 @@ Folder getAPackageJSONFolder() { result = any(PackageJSON json).getFile().getPar
  */
 DataFlow::Node getALeakingFolder(string description) {
   exists(ModuleScope ms | result.asExpr() = ms.getVariable("__dirname").getAnAccess()) and
-  result.getFile().getParentContainer() = getAPackageJSONFolder() and
+  result.getFile().getParentContainer() = getAPackageJsonFolder() and
   (
     if result.getFile().getParentContainer().getRelativePath().trim() != ""
     then description = "the folder " + result.getFile().getParentContainer().getRelativePath()

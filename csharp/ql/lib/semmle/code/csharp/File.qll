@@ -2,6 +2,8 @@
  * Provides classes representing filesystem files and folders.
  */
 
+private import Comments
+
 /** A file or folder. */
 class Container extends @container {
   /**
@@ -180,6 +182,14 @@ class Folder extends Container, @folder {
   override string getURL() { result = "folder://" + this.getAbsolutePath() }
 }
 
+bindingset[flag]
+private predicate fileHasExtractionFlag(File f, int flag) {
+  exists(int i |
+    file_extraction_mode(f, i) and
+    i.bitAnd(flag) = flag
+  )
+}
+
 /** A file. */
 class File extends Container, @file {
   override string getAbsolutePath() { files(this, result) }
@@ -195,11 +205,21 @@ class File extends Container, @file {
 
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
+  /** Holds if this file is a QL test stub file. */
+  pragma[noinline]
+  private predicate isStub() {
+    this.extractedQlTest() and
+    this.getAbsolutePath().matches("%resources/stubs/%")
+  }
+
   /** Holds if this file contains source code. */
-  predicate fromSource() { this.getExtension() = "cs" }
+  final predicate fromSource() {
+    this.getExtension() = "cs" and
+    not this.isStub()
+  }
 
   /** Holds if this file is a library. */
-  predicate fromLibrary() {
+  final predicate fromLibrary() {
     not this.getBaseName() = "" and
     not this.fromSource()
   }
@@ -209,7 +229,12 @@ class File extends Container, @file {
    * A source file can come from a PDB and from regular extraction
    * in the same snapshot.
    */
-  predicate isPdbSourceFile() { file_extraction_mode(this, 2) }
+  predicate isPdbSourceFile() { fileHasExtractionFlag(this, 2) }
+
+  /**
+   * Holds if this file was extracted using `codeql test run`.
+   */
+  predicate extractedQlTest() { fileHasExtractionFlag(this, 4) }
 }
 
 /**
@@ -219,5 +244,5 @@ class SourceFile extends File {
   SourceFile() { this.fromSource() }
 
   /** Holds if the file was extracted without building the source code. */
-  predicate extractedStandalone() { file_extraction_mode(this, 1) }
+  predicate extractedStandalone() { fileHasExtractionFlag(this, 1) }
 }

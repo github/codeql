@@ -73,7 +73,7 @@ class Options extends string {
    *   __assume(0);
    * ```
    * (note that in this case if the hint is wrong and the expression is reached at
-   * runtime, the program's behaviour is undefined)
+   * runtime, the program's behavior is undefined)
    */
   predicate exprExits(Expr e) {
     e.(AssumeExpr).getChild(0).(CompileTimeConstantInt).getIntValue() = 0 or

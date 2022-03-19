@@ -239,7 +239,7 @@ public class ControlFlow
 
     void Goto()
     {
-        Label: if (!!(Field.Length == 0)) { }
+    Label: if (!!(Field.Length == 0)) { }
 
         if (Field.Length > 0) goto Label;
 
@@ -299,4 +299,13 @@ class NegationInConstructor
     {
         new NegationInConstructor(i: 0, b: !(i > 0) && s != null, s: "");
     }
+}
+
+class LambdaGetter
+{
+    private static Func<object, string, object> _getter => (o, n) =>
+    {
+        object x = o;
+        return x;
+    };
 }

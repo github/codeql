@@ -220,7 +220,7 @@ private module RestFramework {
      *
      * Use the predicate `Request::instance()` to get references to instances of `rest_framework.request.Request`.
      */
-    abstract class InstanceSource extends PrivateDjango::django::http::request::HttpRequest::InstanceSource {
+    abstract class InstanceSource extends PrivateDjango::DjangoImpl::Http::Request::HttpRequest::InstanceSource {
     }
 
     /** A direct instantiation of `rest_framework.request.Request`. */
@@ -307,7 +307,7 @@ private module RestFramework {
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** A direct instantiation of `rest_framework.response.Response`. */
-    private class ClassInstantiation extends PrivateDjango::django::http::response::HttpResponse::InstanceSource,
+    private class ClassInstantiation extends PrivateDjango::DjangoImpl::Http::Response::HttpResponse::InstanceSource,
       DataFlow::CallCfgNode {
       ClassInstantiation() { this = classRef().getACall() }
 
@@ -329,8 +329,8 @@ private module RestFramework {
    *
    * See https://www.django-rest-framework.org/api-guide/exceptions/#api-reference
    */
-  module APIException {
-    /** A direct instantiation of `rest_framework.exceptions.APIException` or subclass. */
+  module ApiException {
+    /** A direct instantiation of `rest_framework.exceptions.ApiException` or subclass. */
     private class ClassInstantiation extends HTTP::Server::HttpResponse::Range,
       DataFlow::CallCfgNode {
       string className;
@@ -366,4 +366,7 @@ private module RestFramework {
       override string getMimetypeDefault() { none() }
     }
   }
+
+  /** DEPRECATED: Alias for ApiException */
+  deprecated module APIException = ApiException;
 }

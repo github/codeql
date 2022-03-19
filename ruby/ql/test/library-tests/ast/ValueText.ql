@@ -1,4 +1,4 @@
 import ruby
 
 from Expr e
-select e, e.getValueText()
+select e, e.getConstantValue()

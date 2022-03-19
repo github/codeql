@@ -1406,7 +1406,8 @@ public class TypeScriptASTConverter {
     boolean hasImported = hasChild(node, "propertyName");
     Identifier imported = convertChild(node, hasImported ? "propertyName" : "name");
     Identifier local = convertChild(node, "name");
-    return new ImportSpecifier(loc, imported, local);
+    boolean isTypeOnly = node.get("isTypeOnly").getAsBoolean() == true;
+    return new ImportSpecifier(loc, imported, local, isTypeOnly);
   }
 
   private Node convertImportType(JsonObject node, SourceLocation loc) throws ParseError {

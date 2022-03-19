@@ -17,6 +17,7 @@ import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.javase.WebSocket
 import semmle.code.java.frameworks.android.Android
+import semmle.code.java.frameworks.android.OnActivityResultSource
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.play.Play
 import semmle.code.java.frameworks.spring.SpringWeb
@@ -109,7 +110,7 @@ private class MessageBodyReaderParameterSource extends RemoteFlowSource {
 }
 
 private class PlayParameterSource extends RemoteFlowSource {
-  PlayParameterSource() { exists(PlayActionMethodQueryParameter p | p = this.asParameter()) }
+  PlayParameterSource() { this.asParameter() instanceof PlayActionMethodQueryParameter }
 
   override string getSourceType() { result = "Play Query Parameters" }
 }
@@ -263,4 +264,14 @@ class ExportedAndroidContentProviderInput extends RemoteFlowSource, AndroidConte
   ExportedAndroidContentProviderInput() { declaringType.isExported() }
 
   override string getSourceType() { result = "Exported Android content provider source" }
+}
+
+/**
+ * The data Intent parameter in the `onActivityResult` method in an Activity or Fragment that
+ * calls `startActivityForResult` with an implicit Intent.
+ */
+class OnActivityResultIntentSource extends OnActivityResultIncomingIntent, RemoteFlowSource {
+  OnActivityResultIntentSource() { this.isRemoteSource() }
+
+  override string getSourceType() { result = "Android onActivityResult incoming Intent" }
 }

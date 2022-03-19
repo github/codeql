@@ -21,6 +21,6 @@ where
   (
     not m.isPublic() or
     not m.isStatic() or
-    not m.getReturnType().(RefType).getASupertype*() = junitTest
+    not m.getReturnType().(RefType).getAnAncestor() = junitTest
   )
 select m, "Bad declaration for suite method."

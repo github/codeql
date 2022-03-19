@@ -157,3 +157,11 @@ void moreTests() {
     r = r - 100; // BAD
   }
 }
+
+void guarded_test(unsigned p) {
+  unsigned data = (unsigned int)rand();
+  if (p >= data) {
+    return;
+  }
+  unsigned z = data - p; // GOOD
+}

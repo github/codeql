@@ -1,16 +1,16 @@
 /**
- * @name Supported sinks in external libraries
- * @description A list of 3rd party APIs detected as sinks. Excludes test and generated code.
- * @id java/telemetry/supported-external-api-taint
+ * @name Supported flow steps in external libraries
+ * @description A list of 3rd party APIs detected as flow steps. Excludes test and generated code.
  * @kind metric
- * @metricType callable
+ * @tags summary
+ * @id java/telemetry/supported-external-api-taint
  */
 
 import java
 import ExternalAPI
 import semmle.code.java.GeneratedFiles
 
-from ExternalAPI api, int usages
+from ExternalApi api, int usages
 where
   not api.isUninteresting() and
   api.hasSummary() and

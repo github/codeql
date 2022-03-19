@@ -16,10 +16,11 @@
 
 import ruby
 import codeql.ruby.ApiGraphs
-import codeql.ruby.frameworks.StandardLibrary
+import codeql.ruby.frameworks.core.Kernel::Kernel
 import codeql.ruby.TaintTracking
 import codeql.ruby.dataflow.BarrierGuards
 import codeql.ruby.dataflow.RemoteFlowSources
+import codeql.ruby.DataFlow
 import DataFlow::PathGraph
 
 /**

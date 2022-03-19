@@ -68,19 +68,19 @@ namespace Semmle.Extraction.CSharp
             return symbol.CanBeReferencedByName ? name : name.Substring(symbol.Name.LastIndexOf('.') + 1);
         }
 
+        private static IEnumerable<SyntaxToken> GetModifiers<T>(this ISymbol symbol, Func<T, IEnumerable<SyntaxToken>> getModifierTokens) =>
+            symbol.DeclaringSyntaxReferences
+                .Select(r => r.GetSyntax())
+                .OfType<T>()
+                .SelectMany(getModifierTokens);
+
         /// <summary>
         /// Gets the source-level modifiers belonging to this symbol, if any.
         /// </summary>
         public static IEnumerable<string> GetSourceLevelModifiers(this ISymbol symbol)
         {
-            var methodModifiers = symbol.DeclaringSyntaxReferences
-                .Select(r => r.GetSyntax())
-                .OfType<Microsoft.CodeAnalysis.CSharp.Syntax.BaseMethodDeclarationSyntax>()
-                .SelectMany(md => md.Modifiers);
-            var typeModifers = symbol.DeclaringSyntaxReferences
-                .Select(r => r.GetSyntax())
-                .OfType<Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax>()
-                .SelectMany(cd => cd.Modifiers);
+            var methodModifiers = symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.BaseMethodDeclarationSyntax>(md => md.Modifiers);
+            var typeModifers = symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax>(cd => cd.Modifiers);
             return methodModifiers.Concat(typeModifers).Select(m => m.Text);
         }
 
@@ -277,22 +277,33 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write("::");
         }
 
-        private static void BuildFunctionPointerTypeId(this IFunctionPointerTypeSymbol funptr, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined)
-        {
+        private static void BuildFunctionPointerTypeId(this IFunctionPointerTypeSymbol funptr, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined) =>
             BuildFunctionPointerSignature(funptr, trapFile, s => s.BuildOrWriteId(cx, trapFile, symbolBeingDefined));
-        }
+
+        /// <summary>
+        /// Workaround for a Roslyn bug: https://github.com/dotnet/roslyn/issues/53943
+        /// </summary>
+        public static IEnumerable<IFieldSymbol?> GetTupleElementsMaybeNull(this INamedTypeSymbol type) =>
+            type.TupleElements;
 
         private static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType)
         {
             if (!constructUnderlyingTupleType && named.IsTupleType)
             {
                 trapFile.Write('(');
-                trapFile.BuildList(",", named.TupleElements,
-                    f =>
+                trapFile.BuildList(",", named.GetTupleElementsMaybeNull(),
+                    (i, f) =>
                     {
-                        trapFile.Write((f.CorrespondingTupleField ?? f).Name);
-                        trapFile.Write(":");
-                        f.Type.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
+                        if (f is null)
+                        {
+                            trapFile.Write($"null({i})");
+                        }
+                        else
+                        {
+                            trapFile.Write((f.CorrespondingTupleField ?? f).Name);
+                            trapFile.Write(":");
+                            f.Type.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
+                        }
                     }
                     );
                 trapFile.Write(")");
@@ -456,10 +467,8 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write('>');
         }
 
-        private static void BuildFunctionPointerTypeDisplayName(this IFunctionPointerTypeSymbol funptr, Context cx, TextWriter trapFile)
-        {
+        private static void BuildFunctionPointerTypeDisplayName(this IFunctionPointerTypeSymbol funptr, Context cx, TextWriter trapFile) =>
             BuildFunctionPointerSignature(funptr, trapFile, s => s.BuildDisplayName(cx, trapFile));
-        }
 
         private static void BuildNamedTypeDisplayName(this INamedTypeSymbol namedType, Context cx, TextWriter trapFile, bool constructUnderlyingTupleType)
         {
@@ -468,8 +477,14 @@ namespace Semmle.Extraction.CSharp
                 trapFile.Write('(');
                 trapFile.BuildList(
                     ",",
-                    namedType.TupleElements.Select(f => f.Type),
-                    t => t.BuildDisplayName(cx, trapFile));
+                    namedType.GetTupleElementsMaybeNull(),
+                    (i, f) =>
+                    {
+                        if (f is null)
+                            trapFile.Write($"null({i})");
+                        else
+                            f.Type.BuildDisplayName(cx, trapFile);
+                    });
                 trapFile.Write(")");
                 return;
             }

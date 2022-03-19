@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
-    "lib": ["es2015"]
+    "module": "esnext",
+    "target": "esnext",
+    "lib": ["dom", "esnext"],
+    "resolveJsonModule": true
   }
 }

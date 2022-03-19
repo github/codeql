@@ -12,7 +12,7 @@ import semmle.code.java.frameworks.spring.SpringReplacedMethod
  */
 
 /** A `<bean>` element in a Spring XML file. */
-class SpringBean extends SpringXMLElement {
+class SpringBean extends SpringXmlElement {
   SpringBean() {
     this.getName() = "bean" and
     // Do not capture Camel beans, which are different
@@ -233,7 +233,7 @@ class SpringBean extends SpringXMLElement {
   SpringBean getBeanParent() { result.getBeanIdentifier() = this.getBeanParentName() }
 
   /** Holds if this bean has a parent bean. */
-  predicate hasBeanParent() { exists(SpringBean b | b = this.getBeanParent()) }
+  predicate hasBeanParent() { exists(this.getBeanParent()) }
 
   predicate hasBeanAncestor(SpringBean ancestor) {
     ancestor = this.getBeanParent() or
@@ -268,7 +268,7 @@ class SpringBean extends SpringXMLElement {
   /**
    * Holds if this bean element has the same bean identifier as `other`.
    */
-  override predicate isSimilar(SpringXMLElement other) {
+  override predicate isSimilar(SpringXmlElement other) {
     this.getBeanIdentifier() = other.(SpringBean).getBeanIdentifier()
   }
 

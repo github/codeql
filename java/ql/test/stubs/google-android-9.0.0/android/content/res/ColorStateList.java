@@ -11,6 +11,7 @@ public class ColorStateList implements Parcelable
 {
     protected ColorStateList() {}
     public ColorStateList withAlpha(int p0){ return null; }
+    public ColorStateList withLStar(float p0){ return null; }
     public ColorStateList(int[][] p0, int[] p1){}
     public String toString(){ return null; }
     public boolean isOpaque(){ return false; }

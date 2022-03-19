@@ -1,0 +1,4 @@
+| OpenCallMissingModeArgument.c:20:3:20:6 | call to open | A file is created here without providing a mode argument, which may leak bits from the stack. |
+| OpenCallMissingModeArgument.c:22:3:22:6 | call to open | A file is created here without providing a mode argument, which may leak bits from the stack. |
+| OpenCallMissingModeArgument.c:25:3:25:8 | call to openat | A file is created here without providing a mode argument, which may leak bits from the stack. |
+| OpenCallMissingModeArgument.c:27:3:27:8 | call to openat | A file is created here without providing a mode argument, which may leak bits from the stack. |

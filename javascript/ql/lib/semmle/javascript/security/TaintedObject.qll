@@ -79,7 +79,7 @@ module TaintedObject {
   }
 
   /**
-   * Sanitizer guard that blocks deep object taint.
+   * A sanitizer guard that blocks deep object taint.
    */
   abstract class SanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode { }
 
@@ -108,6 +108,16 @@ module TaintedObject {
       e = operand and
       label = label()
     }
+  }
+
+  /** A guard that checks whether `x` is a number. */
+  class NumberGuard extends SanitizerGuard instanceof DataFlow::CallNode {
+    Expr x;
+    boolean polarity;
+
+    NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
+
+    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
   }
 
   /**

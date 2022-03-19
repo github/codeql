@@ -159,14 +159,6 @@ class Node extends TIRDataFlowNode {
   Expr asPartialDefinition() { result = this.(PartialDefinitionNode).getDefinedExpr() }
 
   /**
-   * DEPRECATED: See UninitializedNode.
-   *
-   * Gets the uninitialized local variable corresponding to this node, if
-   * any.
-   */
-  deprecated LocalVariable asUninitialized() { none() }
-
-  /**
    * Gets an upper bound on the type of this node.
    */
   IRType getTypeBound() { result = this.getType() }
@@ -439,7 +431,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   SsaPhiNode() { this = TSsaPhiNode(phi) }
 
-  /* Get the phi node associated with this node. */
+  /** Gets the phi node associated with this node. */
   Ssa::PhiNode getPhiNode() { result = phi }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
@@ -452,7 +444,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   /** Holds if this phi node has input from the `rnk`'th write operation in block `block`. */
   final predicate hasInputAtRankInBlock(IRBlock block, int rnk) {
-    hasInputAtRankInBlock(block, rnk, _)
+    this.hasInputAtRankInBlock(block, rnk, _)
   }
 
   /**
@@ -491,19 +483,6 @@ class ExprNode extends InstructionNode {
 }
 
 /**
- * INTERNAL: do not use. Translates a parameter/argument index into a negative
- * number that denotes the index of its side effect (pointer indirection).
- */
-bindingset[index]
-int getArgumentPosOfSideEffect(int index) {
-  // -1 -> -2
-  //  0 -> -3
-  //  1 -> -4
-  // ...
-  result = -3 - index
-}
-
-/**
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph. This includes both explicit parameters such as `x` in `f(x)`
  * and implicit parameters such as `this` in `x.f()`.
@@ -525,7 +504,7 @@ class ParameterNode extends InstructionNode {
    * implicit `this` parameter is considered to have position `-1`, and
    * pointer-indirection parameters are at further negative positions.
    */
-  predicate isParameterOf(Function f, int pos) { none() } // overridden by subclasses
+  predicate isParameterOf(Function f, ParameterPosition pos) { none() } // overridden by subclasses
 }
 
 /** An explicit positional parameter, not including `this` or `...`. */
@@ -534,8 +513,8 @@ private class ExplicitParameterNode extends ParameterNode {
 
   ExplicitParameterNode() { exists(instr.getParameter()) }
 
-  override predicate isParameterOf(Function f, int pos) {
-    f.getParameter(pos) = instr.getParameter()
+  override predicate isParameterOf(Function f, ParameterPosition pos) {
+    f.getParameter(pos.(DirectPosition).getIndex()) = instr.getParameter()
   }
 
   /** Gets the `Parameter` associated with this node. */
@@ -550,8 +529,8 @@ class ThisParameterNode extends ParameterNode {
 
   ThisParameterNode() { instr.getIRVariable() instanceof IRThisVariable }
 
-  override predicate isParameterOf(Function f, int pos) {
-    pos = -1 and instr.getEnclosingFunction() = f
+  override predicate isParameterOf(Function f, ParameterPosition pos) {
+    pos.(DirectPosition).getIndex() = -1 and instr.getEnclosingFunction() = f
   }
 
   override string toString() { result = "this" }
@@ -561,32 +540,16 @@ class ThisParameterNode extends ParameterNode {
 class ParameterIndirectionNode extends ParameterNode {
   override InitializeIndirectionInstruction instr;
 
-  override predicate isParameterOf(Function f, int pos) {
+  override predicate isParameterOf(Function f, ParameterPosition pos) {
     exists(int index |
       instr.getEnclosingFunction() = f and
       instr.hasIndex(index)
     |
-      pos = getArgumentPosOfSideEffect(index)
+      pos.(IndirectionPosition).getIndex() = index
     )
   }
 
   override string toString() { result = "*" + instr.getIRVariable().toString() }
-}
-
-/**
- * DEPRECATED: Data flow was never an accurate way to determine what
- * expressions might be uninitialized. It errs on the side of saying that
- * everything is uninitialized, and this is even worse in the IR because the IR
- * doesn't use syntactic hints to rule out variables that are definitely
- * initialized.
- *
- * The value of an uninitialized local variable, viewed as a node in a data
- * flow graph.
- */
-deprecated class UninitializedNode extends Node {
-  UninitializedNode() { none() }
-
-  LocalVariable getLocalVariable() { none() }
 }
 
 /**
@@ -739,14 +702,6 @@ InstructionNode instructionNode(Instruction instr) { result.getInstruction() = i
 OperandNode operandNode(Operand operand) { result.getOperand() = operand }
 
 /**
- * DEPRECATED: use `definitionByReferenceNodeFromArgument` instead.
- *
- * Gets the `Node` corresponding to a definition by reference of the variable
- * that is passed as `argument` of a call.
- */
-deprecated DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
-
-/**
  * Gets the `Node` corresponding to the value of evaluating `e` or any of its
  * conversions. There is no result if `e` is a `Conversion`. For data flowing
  * _out of_ an expression, like when an argument is passed by reference, use
@@ -840,7 +795,10 @@ private predicate adjacentDefUseFlow(Node nodeFrom, Node nodeTo) {
   )
 }
 
-private module ReadNodeFlow {
+/**
+ * INTERNAL: Do not use.
+ */
+module ReadNodeFlow {
   /** Holds if the read node `nodeTo` should receive flow from `nodeFrom`. */
   predicate flowInto(Node nodeFrom, ReadNode nodeTo) {
     nodeTo.isInitial() and
@@ -860,7 +818,12 @@ private module ReadNodeFlow {
     )
   }
 
-  /** Holds if the read node `nodeTo` should receive flow from the read node `nodeFrom`. */
+  /**
+   * Holds if the read node `nodeTo` should receive flow from the read node `nodeFrom`.
+   *
+   * This happens when `readFrom` is _not_ the source of a `readStep`, and `nodeTo` is
+   * the `ReadNode` that represents an address that directly depends on `nodeFrom`.
+   */
   predicate flowThrough(ReadNode nodeFrom, ReadNode nodeTo) {
     not readStep(nodeFrom, _, _) and
     nodeFrom.getOuter() = nodeTo
@@ -908,11 +871,16 @@ module StoreNodeFlow {
     nodeTo.flowInto(Ssa::getDestinationAddress(instrFrom))
   }
 
-  /** Holds if the store node `nodeTo` should receive flow from `nodeFom`. */
-  predicate flowThrough(StoreNode nFrom, StoreNode nodeTo) {
+  /**
+   * Holds if the store node `nodeTo` should receive flow from `nodeFom`.
+   *
+   * This happens when `nodeFrom` is _not_ the source of a `storeStep`, and `nodeFrom` is
+   * the `Storenode` that represents an address that directly depends on `nodeTo`.
+   */
+  predicate flowThrough(StoreNode nodeFrom, StoreNode nodeTo) {
     // Flow through a post update node that doesn't need a store step.
-    not storeStep(nFrom, _, _) and
-    nodeTo.getOuter() = nFrom
+    not storeStep(nodeFrom, _, _) and
+    nodeTo.getOuter() = nodeFrom
   }
 
   /**
@@ -1032,12 +1000,14 @@ SideEffectInstruction getSideEffectFor(CallInstruction call, int argument) {
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
+pragma[inline]
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
 /**
  * Holds if data can flow from `i1` to `i2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localInstructionFlow(Instruction e1, Instruction e2) {
   localFlow(instructionNode(e1), instructionNode(e2))
 }
@@ -1046,6 +1016,7 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
  * Holds if data can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 private newtype TContent =

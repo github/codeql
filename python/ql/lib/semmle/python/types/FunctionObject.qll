@@ -29,29 +29,26 @@ abstract class FunctionObject extends Object {
   /** Whether this function raises an exception, the class of which cannot be inferred */
   abstract predicate raisesUnknownType();
 
-  /** Use descriptiveString() instead. */
-  deprecated string prettyString() { result = this.descriptiveString() }
-
   /** Gets a longer, more descriptive version of toString() */
   abstract string descriptiveString();
 
   /** Gets a call-site from where this function is called as a function */
-  CallNode getAFunctionCall() { result.getFunction().inferredValue() = theCallable() }
+  CallNode getAFunctionCall() { result.getFunction().inferredValue() = this.theCallable() }
 
   /** Gets a call-site from where this function is called as a method */
   CallNode getAMethodCall() {
     exists(BoundMethodObjectInternal bm |
       result.getFunction().inferredValue() = bm and
-      bm.getFunction() = theCallable()
+      bm.getFunction() = this.theCallable()
     )
   }
 
   /** Gets a call-site from where this function is called */
-  ControlFlowNode getACall() { result = theCallable().getACall() }
+  ControlFlowNode getACall() { result = this.theCallable().getACall() }
 
   /** Gets a call-site from where this function is called, given the `context` */
   ControlFlowNode getACall(Context caller_context) {
-    result = theCallable().getACall(caller_context)
+    result = this.theCallable().getACall(caller_context)
   }
 
   /**
@@ -59,7 +56,7 @@ abstract class FunctionObject extends Object {
    * This predicate will correctly handle `x.y()`, treating `x` as the zeroth argument.
    */
   ControlFlowNode getArgumentForCall(CallNode call, int n) {
-    result = theCallable().getArgumentForCall(call, n)
+    result = this.theCallable().getArgumentForCall(call, n)
   }
 
   /**
@@ -67,11 +64,11 @@ abstract class FunctionObject extends Object {
    * This predicate will correctly handle `x.y()`, treating `x` as the self argument.
    */
   ControlFlowNode getNamedArgumentForCall(CallNode call, string name) {
-    result = theCallable().getNamedArgumentForCall(call, name)
+    result = this.theCallable().getNamedArgumentForCall(call, name)
   }
 
   /** Whether this function never returns. This is an approximation. */
-  predicate neverReturns() { theCallable().neverReturns() }
+  predicate neverReturns() { this.theCallable().neverReturns() }
 
   /**
    * Whether this is a "normal" method, that is, it is exists as a class attribute
@@ -311,33 +308,3 @@ class BuiltinFunctionObject extends BuiltinCallable {
 
   override int maxParameters() { none() }
 }
-
-/** DEPRECATED -- Use `Object::builtin("apply")` instead. */
-deprecated Object theApplyFunction() { result = Object::builtin("apply") }
-
-/** DEPRECATED -- Use `Object::builtin("hasattr")` instead. */
-deprecated Object theHasattrFunction() { result = Object::builtin("hasattr") }
-
-/** DEPRECATED -- Use `Object::builtin("len")` instead. */
-deprecated Object theLenFunction() { result = Object::builtin("len") }
-
-/** DEPRECATED -- Use `Object::builtin("format")` instead. */
-deprecated Object theFormatFunction() { result = Object::builtin("format") }
-
-/** DEPRECATED -- Use `Object::builtin("open")` instead. */
-deprecated Object theOpenFunction() { result = Object::builtin("open") }
-
-/** DEPRECATED -- Use `Object::builtin("print")` instead. */
-deprecated Object thePrintFunction() { result = Object::builtin("print") }
-
-/** DEPRECATED -- Use `Object::builtin("input")` instead. */
-deprecated Object theInputFunction() { result = Object::builtin("input") }
-
-/** DEPRECATED -- Use `Object::builtin("locals")` instead. */
-deprecated Object theLocalsFunction() { result = Object::builtin("locals") }
-
-/** DEPRECATED -- Use `Object::builtin("globals")()` instead. */
-deprecated Object theGlobalsFunction() { result = Object::builtin("globals") }
-
-/** DEPRECATED -- Use `Object::builtin("sysExit()` instead. */
-deprecated Object theExitFunctionObject() { result = ModuleObject::named("sys").attr("exit") }

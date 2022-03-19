@@ -179,7 +179,7 @@ module InitializerSplitting {
    *
    * respectively.
    */
-  class InitializerSplit extends Split, TInitializerSplit {
+  private class InitializerSplit extends Split, TInitializerSplit {
     private Constructor c;
 
     InitializerSplit() { this = TInitializerSplit(c) }

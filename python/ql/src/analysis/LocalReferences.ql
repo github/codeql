@@ -3,7 +3,7 @@
  * @description Generates use-definition pairs that provide the data
  *              for find-references in the code viewer.
  * @kind definitions
- * @id python/ide-find-references
+ * @id py/ide-find-references
  * @tags ide-contextual-queries/local-references
  */
 

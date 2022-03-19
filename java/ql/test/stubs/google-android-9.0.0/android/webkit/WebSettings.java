@@ -15,11 +15,8 @@
  */
 package android.webkit;
 
+import java.net.CookieManager;
 import android.content.Context;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
  * Manages settings state for a WebView. When a WebView is first created, it

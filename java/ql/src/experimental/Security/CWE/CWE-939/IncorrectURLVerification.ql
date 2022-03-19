@@ -26,8 +26,8 @@ class AndroidRString extends RefType {
  */
 class Uri extends RefType {
   Uri() {
-    hasQualifiedName("android.net", "Uri") or
-    hasQualifiedName("java.net", "URL")
+    this.hasQualifiedName("android.net", "Uri") or
+    this.hasQualifiedName("java.net", "URL")
   }
 }
 
@@ -36,9 +36,9 @@ class Uri extends RefType {
  */
 class UriGetHostMethod extends Method {
   UriGetHostMethod() {
-    getDeclaringType() instanceof Uri and
-    hasName("getHost") and
-    getNumberOfParameters() = 0
+    this.getDeclaringType() instanceof Uri and
+    this.hasName("getHost") and
+    this.getNumberOfParameters() = 0
   }
 }
 

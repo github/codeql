@@ -61,8 +61,8 @@ class SpringControllerRequestMappingGetMethod extends SpringControllerGetMethod 
  */
 class JsonpBuilderExpr extends AddExpr {
   JsonpBuilderExpr() {
-    getRightOperand().(CompileTimeConstantExpr).getStringValue().regexpMatch("\\);?") and
-    getLeftOperand()
+    this.getRightOperand().(CompileTimeConstantExpr).getStringValue().regexpMatch("\\);?") and
+    this.getLeftOperand()
         .(AddExpr)
         .getLeftOperand()
         .(AddExpr)
@@ -73,11 +73,11 @@ class JsonpBuilderExpr extends AddExpr {
 
   /** Get the jsonp function name of this expression. */
   Expr getFunctionName() {
-    result = getLeftOperand().(AddExpr).getLeftOperand().(AddExpr).getLeftOperand()
+    result = this.getLeftOperand().(AddExpr).getLeftOperand().(AddExpr).getLeftOperand()
   }
 
   /** Get the json data of this expression. */
-  Expr getJsonExpr() { result = getLeftOperand().(AddExpr).getRightOperand() }
+  Expr getJsonExpr() { result = this.getLeftOperand().(AddExpr).getRightOperand() }
 }
 
 /** A data flow configuration tracing flow from remote sources to jsonp function name. */

@@ -9,17 +9,17 @@ namespace System
             // Generated from `System.Security.Claims.Claim` in `System.Security.Claims, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Claim
             {
-                public Claim(string type, string value, string valueType, string issuer, string originalIssuer, System.Security.Claims.ClaimsIdentity subject) => throw null;
-                public Claim(string type, string value, string valueType, string issuer, string originalIssuer) => throw null;
-                public Claim(string type, string value, string valueType, string issuer) => throw null;
-                public Claim(string type, string value, string valueType) => throw null;
-                public Claim(string type, string value) => throw null;
-                public Claim(System.IO.BinaryReader reader, System.Security.Claims.ClaimsIdentity subject) => throw null;
                 public Claim(System.IO.BinaryReader reader) => throw null;
-                protected Claim(System.Security.Claims.Claim other, System.Security.Claims.ClaimsIdentity subject) => throw null;
+                public Claim(System.IO.BinaryReader reader, System.Security.Claims.ClaimsIdentity subject) => throw null;
                 protected Claim(System.Security.Claims.Claim other) => throw null;
-                public virtual System.Security.Claims.Claim Clone(System.Security.Claims.ClaimsIdentity identity) => throw null;
+                protected Claim(System.Security.Claims.Claim other, System.Security.Claims.ClaimsIdentity subject) => throw null;
+                public Claim(string type, string value) => throw null;
+                public Claim(string type, string value, string valueType) => throw null;
+                public Claim(string type, string value, string valueType, string issuer) => throw null;
+                public Claim(string type, string value, string valueType, string issuer, string originalIssuer) => throw null;
+                public Claim(string type, string value, string valueType, string issuer, string originalIssuer, System.Security.Claims.ClaimsIdentity subject) => throw null;
                 public virtual System.Security.Claims.Claim Clone() => throw null;
+                public virtual System.Security.Claims.Claim Clone(System.Security.Claims.ClaimsIdentity identity) => throw null;
                 protected virtual System.Byte[] CustomSerializationData { get => throw null; }
                 public string Issuer { get => throw null; }
                 public string OriginalIssuer { get => throw null; }
@@ -133,32 +133,32 @@ namespace System
                 public virtual string AuthenticationType { get => throw null; }
                 public object BootstrapContext { get => throw null; set => throw null; }
                 public virtual System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> Claims { get => throw null; }
-                public ClaimsIdentity(string authenticationType, string nameType, string roleType) => throw null;
-                public ClaimsIdentity(string authenticationType) => throw null;
-                public ClaimsIdentity(System.Security.Principal.IIdentity identity, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims, string authenticationType, string nameType, string roleType) => throw null;
-                public ClaimsIdentity(System.Security.Principal.IIdentity identity, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims) => throw null;
-                public ClaimsIdentity(System.Security.Principal.IIdentity identity) => throw null;
-                public ClaimsIdentity(System.IO.BinaryReader reader) => throw null;
-                public ClaimsIdentity(System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims, string authenticationType, string nameType, string roleType) => throw null;
-                public ClaimsIdentity(System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims, string authenticationType) => throw null;
-                public ClaimsIdentity(System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims) => throw null;
                 public ClaimsIdentity() => throw null;
+                public ClaimsIdentity(System.IO.BinaryReader reader) => throw null;
                 protected ClaimsIdentity(System.Security.Claims.ClaimsIdentity other) => throw null;
-                protected ClaimsIdentity(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public ClaimsIdentity(System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims) => throw null;
+                public ClaimsIdentity(System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims, string authenticationType) => throw null;
+                public ClaimsIdentity(System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims, string authenticationType, string nameType, string roleType) => throw null;
+                public ClaimsIdentity(System.Security.Principal.IIdentity identity) => throw null;
+                public ClaimsIdentity(System.Security.Principal.IIdentity identity, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims) => throw null;
+                public ClaimsIdentity(System.Security.Principal.IIdentity identity, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims, string authenticationType, string nameType, string roleType) => throw null;
                 protected ClaimsIdentity(System.Runtime.Serialization.SerializationInfo info) => throw null;
+                protected ClaimsIdentity(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public ClaimsIdentity(string authenticationType) => throw null;
+                public ClaimsIdentity(string authenticationType, string nameType, string roleType) => throw null;
                 public virtual System.Security.Claims.ClaimsIdentity Clone() => throw null;
                 protected virtual System.Security.Claims.Claim CreateClaim(System.IO.BinaryReader reader) => throw null;
                 protected virtual System.Byte[] CustomSerializationData { get => throw null; }
                 public const string DefaultIssuer = default;
                 public const string DefaultNameClaimType = default;
                 public const string DefaultRoleClaimType = default;
-                public virtual System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> FindAll(string type) => throw null;
                 public virtual System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> FindAll(System.Predicate<System.Security.Claims.Claim> match) => throw null;
-                public virtual System.Security.Claims.Claim FindFirst(string type) => throw null;
+                public virtual System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> FindAll(string type) => throw null;
                 public virtual System.Security.Claims.Claim FindFirst(System.Predicate<System.Security.Claims.Claim> match) => throw null;
+                public virtual System.Security.Claims.Claim FindFirst(string type) => throw null;
                 protected virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
-                public virtual bool HasClaim(string type, string value) => throw null;
                 public virtual bool HasClaim(System.Predicate<System.Security.Claims.Claim> match) => throw null;
+                public virtual bool HasClaim(string type, string value) => throw null;
                 public virtual bool IsAuthenticated { get => throw null; }
                 public string Label { get => throw null; set => throw null; }
                 public virtual string Name { get => throw null; }
@@ -176,24 +176,24 @@ namespace System
                 public virtual void AddIdentities(System.Collections.Generic.IEnumerable<System.Security.Claims.ClaimsIdentity> identities) => throw null;
                 public virtual void AddIdentity(System.Security.Claims.ClaimsIdentity identity) => throw null;
                 public virtual System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> Claims { get => throw null; }
-                public ClaimsPrincipal(System.Security.Principal.IPrincipal principal) => throw null;
-                public ClaimsPrincipal(System.Security.Principal.IIdentity identity) => throw null;
+                public ClaimsPrincipal() => throw null;
                 public ClaimsPrincipal(System.IO.BinaryReader reader) => throw null;
                 public ClaimsPrincipal(System.Collections.Generic.IEnumerable<System.Security.Claims.ClaimsIdentity> identities) => throw null;
-                public ClaimsPrincipal() => throw null;
+                public ClaimsPrincipal(System.Security.Principal.IIdentity identity) => throw null;
+                public ClaimsPrincipal(System.Security.Principal.IPrincipal principal) => throw null;
                 protected ClaimsPrincipal(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
                 public static System.Func<System.Security.Claims.ClaimsPrincipal> ClaimsPrincipalSelector { get => throw null; set => throw null; }
                 public virtual System.Security.Claims.ClaimsPrincipal Clone() => throw null;
                 protected virtual System.Security.Claims.ClaimsIdentity CreateClaimsIdentity(System.IO.BinaryReader reader) => throw null;
                 public static System.Security.Claims.ClaimsPrincipal Current { get => throw null; }
                 protected virtual System.Byte[] CustomSerializationData { get => throw null; }
-                public virtual System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> FindAll(string type) => throw null;
                 public virtual System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> FindAll(System.Predicate<System.Security.Claims.Claim> match) => throw null;
-                public virtual System.Security.Claims.Claim FindFirst(string type) => throw null;
+                public virtual System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> FindAll(string type) => throw null;
                 public virtual System.Security.Claims.Claim FindFirst(System.Predicate<System.Security.Claims.Claim> match) => throw null;
+                public virtual System.Security.Claims.Claim FindFirst(string type) => throw null;
                 protected virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
-                public virtual bool HasClaim(string type, string value) => throw null;
                 public virtual bool HasClaim(System.Predicate<System.Security.Claims.Claim> match) => throw null;
+                public virtual bool HasClaim(string type, string value) => throw null;
                 public virtual System.Collections.Generic.IEnumerable<System.Security.Claims.ClaimsIdentity> Identities { get => throw null; }
                 public virtual System.Security.Principal.IIdentity Identity { get => throw null; }
                 public virtual bool IsInRole(string role) => throw null;
@@ -211,9 +211,9 @@ namespace System
                 public override string AuthenticationType { get => throw null; }
                 public override System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> Claims { get => throw null; }
                 public override System.Security.Claims.ClaimsIdentity Clone() => throw null;
-                public GenericIdentity(string name, string type) => throw null;
-                public GenericIdentity(string name) => throw null;
                 protected GenericIdentity(System.Security.Principal.GenericIdentity identity) => throw null;
+                public GenericIdentity(string name) => throw null;
+                public GenericIdentity(string name, string type) => throw null;
                 public override bool IsAuthenticated { get => throw null; }
                 public override string Name { get => throw null; }
             }

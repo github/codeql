@@ -172,6 +172,9 @@ class ImportSpecifier extends Expr, @import_specifier {
   VarDecl getLocal() { result = getChildExpr(1) }
 
   override string getAPrimaryQlClass() { result = "ImportSpecifier" }
+
+  /** Holds if this is declared with the `type` keyword, so only types are imported. */
+  predicate isTypeOnly() { has_type_keyword(this) }
 }
 
 /**
@@ -643,13 +646,6 @@ class ExportNamespaceSpecifier extends ExportSpecifier, @export_namespace_specif
 abstract class ReExportDeclaration extends ExportDeclaration {
   /** Gets the path of the module from which this declaration re-exports. */
   abstract ConstantString getImportedPath();
-
-  /**
-   * DEPRECATED. Use `getReExportedES2015Module()` instead.
-   *
-   * Gets the module from which this declaration re-exports.
-   */
-  deprecated ES2015Module getImportedModule() { result = getReExportedModule() }
 
   /** Gets the module from which this declaration re-exports, if it is an ES2015 module. */
   ES2015Module getReExportedES2015Module() { result = getReExportedModule() }

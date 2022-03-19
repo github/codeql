@@ -3,14 +3,19 @@
  */
 
 import javascript
+import semmle.javascript.Promises
 
-module NoSQL {
+/** Provices classes for modelling NoSQL query sinks. */
+module NoSql {
   /** An expression that is interpreted as a NoSQL query. */
   abstract class Query extends Expr {
     /** Gets an expression that is interpreted as a code operator in this query. */
     DataFlow::Node getACodeOperator() { none() }
   }
 }
+
+/** DEPRECATED: Alias for NoSql */
+deprecated module NoSQL = NoSql;
 
 /**
  * Gets a value that has been assigned to the "$where" property of an object that flows to `queryArg`.
@@ -24,34 +29,25 @@ private DataFlow::Node getADollarWhereProperty(API::Node queryArg) {
  */
 private module MongoDB {
   /**
-   * Gets an access to `mongodb.MongoClient`.
+   * Gets an access to `mongodb.MongoClient` or a database.
+   *
+   * In Mongo version 2.x, a client and a database handle were the same concept, but in 3.x
+   * they were separated. To handle everything with a single model, we treat them as the same here.
    */
-  private API::Node getAMongoClient() {
+  private API::Node getAMongoClientOrDatabase() {
     result = API::moduleImport("mongodb").getMember("MongoClient")
     or
-    result = getAMongoDbCallback().getParameter(1) and
-    not result.getAnImmediateUse().(DataFlow::ParameterNode).getName() = "db" // mongodb v2 provides a `Db` here
-  }
-
-  /** Gets an API-graph node that refers to a `connect` callback. */
-  private API::Node getAMongoDbCallback() {
-    result = getAMongoClient().getMember("connect").getLastParameter()
-  }
-
-  /**
-   * Gets an API-graph node that may refer to a MongoDB database connection.
-   */
-  private API::Node getAMongoDb() {
-    result = getAMongoClient().getMember("db").getReturn()
+    result = getAMongoClientOrDatabase().getMember("db").getReturn()
     or
-    result = getAMongoDbCallback().getParameter(1) and
-    not result.getAnImmediateUse().(DataFlow::ParameterNode).getName() = "client" // mongodb v3 provides a `Mongoclient` here
+    result = getAMongoClientOrDatabase().getMember("connect").getLastParameter().getParameter(1)
   }
 
   /** Gets a data flow node referring to a MongoDB collection. */
   private API::Node getACollection() {
     // A collection resulting from calling `Db.collection(...)`.
-    exists(API::Node collection | collection = getAMongoDb().getMember("collection").getReturn() |
+    exists(API::Node collection |
+      collection = getAMongoClientOrDatabase().getMember("collection").getReturn()
+    |
       result = collection
       or
       result = collection.getParameter(1).getParameter(0)
@@ -72,17 +68,21 @@ private module MongoDB {
       )
     }
 
-    override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
+    override DataFlow::Node getAQueryArgument() { result = this.getArgument(queryArgIdx) }
+
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
 
     DataFlow::Node getACodeOperator() {
-      result = getADollarWhereProperty(getParameter(queryArgIdx))
+      result = getADollarWhereProperty(this.getParameter(queryArgIdx))
     }
   }
 
   /**
    * An expression that is interpreted as a MongoDB query.
    */
-  class Query extends NoSQL::Query {
+  class Query extends NoSql::Query {
     QueryCall qc;
 
     Query() { this = qc.getAQueryArgument().asExpr() }
@@ -489,10 +489,7 @@ private module Mongoose {
        * Holds if Document method `name` returns a Document.
        */
       predicate returnsDocument(string name) {
-        name = "depopulate" or
-        name = "init" or
-        name = "populate" or
-        name = "overwrite"
+        name = ["depopulate", "init", "populate", "overwrite"]
       }
     }
   }
@@ -519,7 +516,7 @@ private module Mongoose {
   /**
    * An expression that is interpreted as a (part of a) MongoDB query.
    */
-  class MongoDBQueryPart extends NoSQL::Query {
+  class MongoDBQueryPart extends NoSql::Query {
     MongooseFunction f;
 
     MongoDBQueryPart() { this = f.getQueryArgument().getARhs().asExpr() }
@@ -546,12 +543,29 @@ private module Mongoose {
       // NB: the complete information is not easily accessible for deeply chained calls
       f.getQueryArgument().getARhs() = result
     }
+
+    override DataFlow::Node getAResult() {
+      result = this.getCallback(this.getNumArgument() - 1).getParameter(1)
+    }
   }
 
-  class ExplicitQueryEvaluation extends DatabaseAccess {
+  class ExplicitQueryEvaluation extends DatabaseAccess, DataFlow::CallNode {
+    string member;
+
     ExplicitQueryEvaluation() {
       // explicit execution using a Query method call
-      Query::getAMongooseQuery().getMember(["exec", "then", "catch"]).getACall() = this
+      member = ["exec", "then", "catch"] and
+      Query::getAMongooseQuery().getMember(member).getACall() = this
+    }
+
+    private int resultParamIndex() {
+      member = "then" and result = 0
+      or
+      member = "exec" and result = 1
+    }
+
+    override DataFlow::Node getAResult() {
+      result = this.getCallback(_).getParameter(this.resultParamIndex())
     }
 
     override DataFlow::Node getAQueryArgument() {
@@ -595,17 +609,21 @@ private module Minimongo {
       )
     }
 
-    override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
+    override DataFlow::Node getAQueryArgument() { result = this.getArgument(queryArgIdx) }
+
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
 
     DataFlow::Node getACodeOperator() {
-      result = getADollarWhereProperty(getParameter(queryArgIdx))
+      result = getADollarWhereProperty(this.getParameter(queryArgIdx))
     }
   }
 
   /**
    * An expression that is interpreted as a Minimongo query.
    */
-  class Query extends NoSQL::Query {
+  class Query extends NoSql::Query {
     QueryCall qc;
 
     Query() { this = qc.getAQueryArgument().asExpr() }
@@ -618,30 +636,54 @@ private module Minimongo {
  * Provides classes modeling the MarsDB library.
  */
 private module MarsDB {
+  private class MarsDBAccess extends DatabaseAccess, DataFlow::CallNode {
+    string method;
+
+    MarsDBAccess() {
+      this =
+        API::moduleImport("marsdb")
+            .getMember("Collection")
+            .getInstance()
+            .getMember(method)
+            .getACall()
+    }
+
+    string getMethod() { result = method }
+
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
+
+    override DataFlow::Node getAQueryArgument() { none() }
+  }
+
   /** A call to a MarsDB query method. */
-  private class QueryCall extends DatabaseAccess, API::CallNode {
+  private class QueryCall extends MarsDBAccess, API::CallNode {
     int queryArgIdx;
 
     QueryCall() {
       exists(string m |
-        this =
-          API::moduleImport("marsdb").getMember("Collection").getInstance().getMember(m).getACall() and
+        this.getMethod() = m and
         // implements parts of the Minimongo interface
         Minimongo::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
       )
     }
 
-    override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
+
+    override DataFlow::Node getAQueryArgument() { result = this.getArgument(queryArgIdx) }
 
     DataFlow::Node getACodeOperator() {
-      result = getADollarWhereProperty(getParameter(queryArgIdx))
+      result = getADollarWhereProperty(this.getParameter(queryArgIdx))
     }
   }
 
   /**
    * An expression that is interpreted as a MarsDB query.
    */
-  class Query extends NoSQL::Query {
+  class Query extends NoSql::Query {
     QueryCall qc;
 
     Query() { this = qc.getAQueryArgument().asExpr() }
@@ -725,12 +767,53 @@ private module Redis {
   /**
    * An expression that is interpreted as a key in a Node Redis call.
    */
-  class RedisKeyArgument extends NoSQL::Query {
+  class RedisKeyArgument extends NoSql::Query {
     RedisKeyArgument() {
       exists(string method, int argIndex |
         QuerySignatures::argumentIsAmbiguousKey(method, argIndex) and
         this = redis().getMember(method).getParameter(argIndex).getARhs().asExpr()
       )
     }
+  }
+
+  /**
+   * An access to a database through redis
+   */
+  class RedisDatabaseAccess extends DatabaseAccess, DataFlow::CallNode {
+    RedisDatabaseAccess() { this = redis().getMember(_).getACall() }
+
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
+
+    override DataFlow::Node getAQueryArgument() { none() }
+  }
+}
+
+/**
+ * Provides classes modeling the `ioredis` library.
+ *
+ * ```
+ * import Redis from 'ioredis'
+ * let client = new Redis(...)
+ * ```
+ */
+private module IoRedis {
+  /**
+   * Gets an `ioredis` client.
+   */
+  API::Node ioredis() { result = API::moduleImport("ioredis").getInstance() }
+
+  /**
+   * An access to a database through ioredis
+   */
+  class IoRedisDatabaseAccess extends DatabaseAccess, DataFlow::CallNode {
+    IoRedisDatabaseAccess() { this = ioredis().getMember(_).getACall() }
+
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
+
+    override DataFlow::Node getAQueryArgument() { none() }
   }
 }

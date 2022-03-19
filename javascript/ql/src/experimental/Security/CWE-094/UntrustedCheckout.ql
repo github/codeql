@@ -16,7 +16,7 @@ import javascript
 import experimental.semmle.javascript.Actions
 
 /**
- * Action step that doesn't contain `actor` or `label` check in `if:` or
+ * An action step that doesn't contain `actor` or `label` check in `if:` or
  * the check requires manual analysis.
  */
 class ProbableStep extends Actions::Step {
@@ -46,7 +46,7 @@ class ProbableStep extends Actions::Step {
 }
 
 /**
- * Action job that doesn't contain `actor` or `label` check in `if:` or
+ * An action job that doesn't contain `actor` or `label` check in `if:` or
  * the check requires manual analysis.
  */
 class ProbableJob extends Actions::Job {
@@ -76,7 +76,7 @@ class ProbableJob extends Actions::Job {
 }
 
 /**
- * Action step that doesn't contain `actor` or `label` check in `if:` or
+ * An action step that doesn't contain `actor` or `label` check in `if:` or
  */
 class ProbablePullRequestTarget extends Actions::On, Actions::MappingOrSequenceOrScalar {
   ProbablePullRequestTarget() {

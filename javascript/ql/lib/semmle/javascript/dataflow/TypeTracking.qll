@@ -15,7 +15,7 @@ private import semmle.javascript.internal.CachedStages
 private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)
 
 /**
- * Summary of the steps needed to track a value to a given dataflow node.
+ * A summary of the steps needed to track a value to a given dataflow node.
  *
  * This can be used to track objects that implement a certain API in order to
  * recognize calls to that API. Note that type-tracking does not by itself provide a
@@ -96,7 +96,7 @@ class TypeTracker extends TTypeTracker {
    * Holds if this is the starting point of type tracking, and the initial value is a promise.
    * The type tracking only ends after the value has been extracted from the promise.
    */
-  predicate startInPromise() { startInProp(Promises::valueProp()) }
+  predicate startInPromise() { this.startInProp(Promises::valueProp()) }
 
   /**
    * Holds if this is the starting point of type tracking
@@ -182,7 +182,7 @@ module TypeTracker {
 private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, OptionalPropertyName prop)
 
 /**
- * Summary of the steps needed to back-track a use of a value to a given dataflow node.
+ * A summary of the steps needed to back-track a use of a value to a given dataflow node.
  *
  * This can be used to track callbacks that are passed to a certain API call, and are
  * therefore expected to be called with a certain type of value.

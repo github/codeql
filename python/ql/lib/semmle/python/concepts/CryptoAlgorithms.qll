@@ -1,55 +1,10 @@
 /**
  * Provides classes modeling cryptographic algorithms, separated into strong and weak variants.
  *
- * The classification into strong and weak are based on Wikipedia, OWASP and google (2017).
+ * The classification into strong and weak are based on Wikipedia, OWASP and Google (2021).
  */
 
-/**
- * Names of cryptographic algorithms, separated into strong and weak variants.
- *
- * The names are normalized: upper-case, no spaces, dashes or underscores.
- *
- * The names are inspired by the names used in real world crypto libraries.
- *
- * The classification into strong and weak are based on Wikipedia, OWASP and google (2017).
- */
-private module AlgorithmNames {
-  predicate isStrongHashingAlgorithm(string name) {
-    name =
-      [
-        "DSA", "ED25519", "ES256", "ECDSA256", "ES384", "ECDSA384", "ES512", "ECDSA512", "SHA2",
-        "SHA224", "SHA256", "SHA384", "SHA512", "SHA3", "SHA3224", "SHA3256", "SHA3384", "SHA3512"
-      ]
-  }
-
-  predicate isWeakHashingAlgorithm(string name) {
-    name =
-      [
-        "HAVEL128", "MD2", "MD4", "MD5", "PANAMA", "RIPEMD", "RIPEMD128", "RIPEMD256", "RIPEMD160",
-        "RIPEMD320", "SHA0", "SHA1"
-      ]
-  }
-
-  predicate isStrongEncryptionAlgorithm(string name) {
-    name = ["AES", "AES128", "AES192", "AES256", "AES512", "RSA", "RABBIT", "BLOWFISH"]
-  }
-
-  predicate isWeakEncryptionAlgorithm(string name) {
-    name =
-      [
-        "DES", "3DES", "TRIPLEDES", "TDEA", "TRIPLEDEA", "ARC2", "RC2", "ARC4", "RC4", "ARCFOUR",
-        "ARC5", "RC5"
-      ]
-  }
-
-  predicate isStrongPasswordHashingAlgorithm(string name) {
-    name = ["ARGON2", "PBKDF2", "BCRYPT", "SCRYPT"]
-  }
-
-  predicate isWeakPasswordHashingAlgorithm(string name) { name = "EVPKDF" }
-}
-
-private import AlgorithmNames
+private import internal.CryptoAlgorithmNames
 
 /**
  * A cryptographic algorithm.

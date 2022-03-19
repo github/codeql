@@ -10,7 +10,6 @@
  * @id py/command-line-injection
  * @tags correctness
  *       security
- *       external/owasp/owasp-a1
  *       external/cwe/cwe-078
  *       external/cwe/cwe-088
  */

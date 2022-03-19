@@ -1,12 +1,12 @@
 /**
- * Libraries for modelling GitHub Actions workflow files written in YAML.
+ * Libraries for modeling GitHub Actions workflow files written in YAML.
  * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
  */
 
 import javascript
 
 /**
- * Libraries for modelling GitHub Actions workflow files written in YAML.
+ * Libraries for modeling GitHub Actions workflow files written in YAML.
  * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
  */
 module Actions {

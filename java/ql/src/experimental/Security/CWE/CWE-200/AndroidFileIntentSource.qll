@@ -8,7 +8,7 @@ import semmle.code.java.frameworks.android.Android
 /** The `startActivityForResult` method of Android's `Activity` class. */
 class StartActivityForResultMethod extends Method {
   StartActivityForResultMethod() {
-    this.getDeclaringType().getASupertype*() instanceof AndroidActivity and
+    this.getDeclaringType().getAnAncestor() instanceof AndroidActivity and
     this.getName() = "startActivityForResult"
   }
 }
@@ -32,9 +32,7 @@ class GetContentIntent extends ClassInstanceExpr {
 class GetContentIntentConfig extends TaintTracking2::Configuration {
   GetContentIntentConfig() { this = "GetContentIntentConfig" }
 
-  override predicate isSource(DataFlow2::Node src) {
-    exists(GetContentIntent gi | src.asExpr() = gi)
-  }
+  override predicate isSource(DataFlow2::Node src) { src.asExpr() instanceof GetContentIntent }
 
   override predicate isSink(DataFlow2::Node sink) {
     exists(MethodAccess ma |
@@ -47,7 +45,7 @@ class GetContentIntentConfig extends TaintTracking2::Configuration {
     or
     // Allow the wrapped intent created by Intent.getChooser to be consumed
     // by at the sink:
-    isSink(node) and
+    this.isSink(node) and
     allowIntentExtrasImplicitRead(node, content)
   }
 }
@@ -71,7 +69,7 @@ class AndroidFileIntentInput extends DataFlow::Node {
 /** The `onActivityForResult` method of Android `Activity` */
 class OnActivityForResultMethod extends Method {
   OnActivityForResultMethod() {
-    this.getDeclaringType().getASupertype*() instanceof AndroidActivity and
+    this.getDeclaringType().getAnAncestor() instanceof AndroidActivity and
     this.getName() = "onActivityResult"
   }
 }

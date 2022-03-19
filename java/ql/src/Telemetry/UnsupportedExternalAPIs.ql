@@ -1,16 +1,16 @@
 /**
  * @name Usage of unsupported APIs coming from external libraries
  * @description A list of 3rd party APIs used in the codebase. Excludes test and generated code.
- * @id java/telemetry/unsupported-external-api
  * @kind metric
- * @metricType callable
+ * @tags summary
+ * @id java/telemetry/unsupported-external-api
  */
 
 import java
 import ExternalAPI
 import semmle.code.java.GeneratedFiles
 
-from ExternalAPI api, int usages
+from ExternalApi api, int usages
 where
   not api.isUninteresting() and
   not api.isSupported() and

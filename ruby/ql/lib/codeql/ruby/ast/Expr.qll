@@ -1,5 +1,6 @@
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
+private import codeql.ruby.ast.Constant
 private import internal.AST
 private import internal.Expr
 private import internal.TreeSitter
@@ -10,27 +11,21 @@ private import internal.TreeSitter
  * This is the root QL class for all expressions.
  */
 class Expr extends Stmt, TExpr {
-  /** Gets the textual (constant) value of this expression, if any. */
-  string getValueText() {
-    forex(CfgNodes::ExprCfgNode n | n = this.getAControlFlowNode() | result = n.getValueText())
+  /**
+   * DEPRECATED: Use `getConstantValue` instead.
+   *
+   * Gets the textual (constant) value of this expression, if any.
+   */
+  deprecated string getValueText() { result = this.getConstantValue().toString() }
+
+  /** Gets the constant value of this expression, if any. */
+  ConstantValue getConstantValue() {
+    forex(CfgNodes::ExprCfgNode n | n = this.getAControlFlowNode() | result = n.getConstantValue())
   }
 }
 
-/**
- * A reference to the current object. For example:
- * - `self == other`
- * - `self.method_name`
- * - `def self.method_name ... end`
- *
- * This also includes implicit references to the current object in method
- * calls.  For example, the method call `foo(123)` has an implicit `self`
- * receiver, and is equivalent to the explicit `self.foo(123)`.
- */
-class Self extends Expr, TSelf {
-  final override string getAPrimaryQlClass() { result = "Self" }
-
-  final override string toString() { result = "self" }
-}
+/** DEPRECATED: Use `SelfVariableAccess` instead. */
+deprecated class Self = SelfVariableAccess;
 
 /**
  * A sequence of expressions in the right-hand side of an assignment or
@@ -58,6 +53,87 @@ class ArgumentList extends Expr, TArgumentList {
   final override string getAPrimaryQlClass() { result = "ArgumentList" }
 
   final override string toString() { result = "..., ..." }
+
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getElement" and result = this.getElement(_)
+  }
+}
+
+private class LhsExpr_ =
+  TVariableAccess or TTokenConstantAccess or TScopeResolutionConstantAccess or TMethodCall or
+      TDestructuredLhsExpr;
+
+/**
+ * A "left-hand-side" (LHS) expression. An `LhsExpr` can occur on the left-hand side of
+ * operator assignments (`AssignOperation`), on the left-hand side of assignments
+ * (`AssignExpr`), as patterns in for loops (`ForExpr`), and as exception variables
+ * in `rescue` clauses (`RescueClause`).
+ *
+ * An `LhsExpr` can be a simple variable, a constant, a call, or an element reference:
+ *
+ * ```rb
+ * var = 1
+ * var += 1
+ * E = 1
+ * foo.bar = 1
+ * foo[0] = 1
+ * rescue E => var
+ * ```
+ */
+class LhsExpr extends Expr, LhsExpr_ {
+  LhsExpr() { lhsExpr(this) }
+
+  /** Gets a variable used in (or introduced by) this LHS. */
+  Variable getAVariable() { result = this.(VariableAccess).getVariable() }
+}
+
+/**
+ * A "left-hand-side" (LHS) expression of a destructured assignment.
+ *
+ * Examples:
+ * ```rb
+ * a, self.b = value
+ * (a, b), c[3] = value
+ * a, b, *rest, c, d = value
+ * ```
+ */
+class DestructuredLhsExpr extends LhsExpr, TDestructuredLhsExpr {
+  override string getAPrimaryQlClass() { result = "DestructuredLhsExpr" }
+
+  private DestructuredLhsExprImpl getImpl() { result = toGenerated(this) }
+
+  private Ruby::AstNode getChild(int i) { result = this.getImpl().getChildNode(i) }
+
+  /** Gets the `i`th element in this destructured LHS. */
+  final Expr getElement(int i) {
+    exists(Ruby::AstNode c | c = this.getChild(i) |
+      toGenerated(result) = c.(Ruby::RestAssignment).getChild()
+      or
+      toGenerated(result) = c
+    )
+  }
+
+  /** Gets an element in this destructured LHS. */
+  final Expr getAnElement() { result = this.getElement(_) }
+
+  /**
+   * Gets the index of the element with the `*` marker on it, if it exists.
+   * In the example below the index is `2`.
+   * ```rb
+   * a, b, *rest, c, d = value
+   * ```
+   */
+  final int getRestIndex() { result = this.getImpl().getRestIndex() }
+
+  override Variable getAVariable() {
+    result = this.getElement(_).(VariableWriteAccess).getVariable()
+    or
+    result = this.getElement(_).(DestructuredLhsExpr).getAVariable()
+  }
+
+  override string toString() { result = "(..., ...)" }
 
   final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -136,7 +212,7 @@ class BodyStmt extends StmtSequence, TBodyStmt {
   final predicate hasEnsure() { exists(this.getEnsure()) }
 
   override AstNode getAChild(string pred) {
-    result = StmtSequence.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getRescue" and result = this.getRescue(_)
     or
@@ -204,17 +280,20 @@ class Pair extends Expr, TPair {
   final Expr getKey() { toGenerated(result) = g.getKey() }
 
   /**
-   * Gets the value expression of this pair. For example, the `InteralLiteral`
+   * Gets the value expression of this pair. For example, the `IntegerLiteral`
    * 123 in the following hash pair:
    * ```rb
    * { 'foo' => 123 }
    * ```
    */
-  final Expr getValue() { toGenerated(result) = g.getValue() }
+  final Expr getValue() {
+    toGenerated(result) = g.getValue() or
+    synthChild(this, 0, result)
+  }
 
   final override string toString() { result = "Pair" }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = "getKey" and result = this.getKey()
@@ -283,7 +362,7 @@ class RescueClause extends Expr, TRescueClause {
 
   final override string toString() { result = "rescue ..." }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = "getException" and result = this.getException(_)
@@ -325,7 +404,7 @@ class RescueModifierExpr extends Expr, TRescueModifierExpr {
 
   final override string toString() { result = "... rescue ..." }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = "getBody" and result = this.getBody()
@@ -375,10 +454,12 @@ class StringConcatenation extends Expr, TStringConcatenation {
    * ```
    */
   final string getConcatenatedValueText() {
-    forall(StringLiteral c | c = this.getString(_) | exists(c.getValueText())) and
+    forall(StringLiteral c | c = this.getString(_) |
+      exists(c.getConstantValue().getStringOrSymbol())
+    ) and
     result =
       concat(string valueText, int i |
-        valueText = this.getString(i).getValueText()
+        valueText = this.getString(i).getConstantValue().getStringOrSymbol()
       |
         valueText order by i
       )
@@ -386,7 +467,7 @@ class StringConcatenation extends Expr, TStringConcatenation {
 
   final override string toString() { result = "\"...\" \"...\"" }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = "getString" and result = this.getString(_)

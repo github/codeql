@@ -93,6 +93,35 @@ module FileSystemReadAccess {
 }
 
 /**
+ * A data flow node that writes data to the file system.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemWriteAccess::Range` instead.
+ */
+class FileSystemWriteAccess extends FileSystemAccess instanceof FileSystemWriteAccess::Range {
+  /**
+   * Gets a node that represents data written to the file system by this access.
+   */
+  DataFlow::Node getADataNode() { result = FileSystemWriteAccess::Range.super.getADataNode() }
+}
+
+/** Provides a class for modeling new file system writes. */
+module FileSystemWriteAccess {
+  /**
+   * A data flow node that writes data to the file system.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemWriteAccess` instead.
+   */
+  abstract class Range extends FileSystemAccess::Range {
+    /**
+     * Gets a node that represents data written to the file system by this access.
+     */
+    abstract DataFlow::Node getADataNode();
+  }
+}
+
+/**
  * A data flow node that sets the permissions for one or more files.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
@@ -239,7 +268,7 @@ module HTTP {
         string getUrlPattern() {
           exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
             this.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getValueText()
+            result = strNode.getExpr().getConstantValue().getStringOrSymbol()
           )
         }
 
@@ -364,7 +393,7 @@ module HTTP {
         string getMimetype() {
           exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
             this.getMimetypeOrContentTypeArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getValueText().splitAt(";", 0)
+            result = strNode.getExpr().getConstantValue().getStringOrSymbol().splitAt(";", 0)
           )
           or
           not exists(this.getMimetypeOrContentTypeArg()) and
@@ -597,6 +626,35 @@ module OrmInstantiation {
 }
 
 /**
+ * A data flow node that writes persistent data.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `PersistentWriteAccess::Range` instead.
+ */
+class PersistentWriteAccess extends DataFlow::Node instanceof PersistentWriteAccess::Range {
+  /**
+   * Gets the data flow node corresponding to the written value.
+   */
+  DataFlow::Node getValue() { result = super.getValue() }
+}
+
+/** Provides a class for modeling new persistent write access APIs. */
+module PersistentWriteAccess {
+  /**
+   * A data flow node that writes persistent data.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `PersistentWriteAccess` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the data flow node corresponding to the written value.
+     */
+    abstract DataFlow::Node getValue();
+  }
+}
+
+/**
  * A data-flow node that may set or unset Cross-site request forgery protection.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
@@ -642,5 +700,65 @@ module Path {
      * to safely access paths.
      */
     abstract class Range extends DataFlow::Node { }
+  }
+}
+
+/**
+ * A data-flow node that may configure behavior relating to cookie security.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `CookieSecurityConfigurationSetting::Range` instead.
+ */
+class CookieSecurityConfigurationSetting extends DataFlow::Node instanceof CookieSecurityConfigurationSetting::Range {
+  /**
+   * Gets a description of how this cookie setting may weaken application security.
+   * This predicate has no results if the setting is considered to be safe.
+   */
+  string getSecurityWarningMessage() { result = super.getSecurityWarningMessage() }
+}
+
+/** Provides a class for modeling new cookie security setting APIs. */
+module CookieSecurityConfigurationSetting {
+  /**
+   * A data-flow node that may configure behavior relating to cookie security.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `CookieSecurityConfigurationSetting` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets a description of how this cookie setting may weaken application security.
+     * This predicate has no results if the setting is considered to be safe.
+     */
+    abstract string getSecurityWarningMessage();
+  }
+}
+
+/**
+ * A data-flow node that logs data.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `Logging::Range` instead.
+ */
+class Logging extends DataFlow::Node {
+  Logging::Range range;
+
+  Logging() { this = range }
+
+  /** Gets an input that is logged. */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+}
+
+/** Provides a class for modeling new logging mechanisms. */
+module Logging {
+  /**
+   * A data-flow node that logs data.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `Logging` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an input that is logged. */
+    abstract DataFlow::Node getAnInput();
   }
 }

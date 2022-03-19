@@ -5,6 +5,7 @@
 import Expr
 import semmle.code.csharp.Callable
 private import semmle.code.csharp.frameworks.system.linq.Expressions
+private import semmle.code.csharp.TypeRef
 
 /**
  * Either an object initializer (`ObjectInitializer`) or a collection
@@ -434,6 +435,12 @@ class AnonymousFunctionExpr extends Expr, Callable, Modifiable, @anonymous_funct
  * A lambda expression, for example `(int x) => x + 1`.
  */
 class LambdaExpr extends AnonymousFunctionExpr, @lambda_expr {
+  /** Holds if this lambda expression has explicit return type. */
+  predicate hasExplicitReturnType() { lambda_expr_return_type(this, _) }
+
+  /** Gets the explicit return type of this lambda expression, if any. */
+  Type getExplicitReturnType() { lambda_expr_return_type(this, getTypeRef(result)) }
+
   override string toString() { result = "(...) => ..." }
 
   override string getAPrimaryQlClass() { result = "LambdaExpr" }

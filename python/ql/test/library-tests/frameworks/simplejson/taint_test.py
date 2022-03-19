@@ -17,22 +17,22 @@ def test():
 
     # load/dump with file-like
     tainted_filelike = StringIO()
-    simplejson.dump(tainted_obj, tainted_filelike) # $ encodeFormat=JSON encodeInput=tainted_obj
+    simplejson.dump(tainted_obj, tainted_filelike) # $ encodeFormat=JSON encodeInput=tainted_obj encodeOutput=[post]tainted_filelike
 
     tainted_filelike.seek(0)
     ensure_tainted(
-        tainted_filelike, # $ MISSING: tainted
-        simplejson.load(tainted_filelike), # $ decodeOutput=simplejson.load(..) decodeFormat=JSON decodeInput=tainted_filelike MISSING: tainted
+        tainted_filelike, # $ tainted
+        simplejson.load(tainted_filelike), # $ tainted decodeOutput=simplejson.load(..) decodeFormat=JSON decodeInput=tainted_filelike
     )
 
     # load/dump with file-like using keyword-args
     tainted_filelike = StringIO()
-    simplejson.dump(obj=tainted_obj, fp=tainted_filelike) # $ encodeFormat=JSON encodeInput=tainted_obj
+    simplejson.dump(obj=tainted_obj, fp=tainted_filelike) # $ encodeFormat=JSON encodeInput=tainted_obj encodeOutput=[post]tainted_filelike
 
     tainted_filelike.seek(0)
     ensure_tainted(
-        tainted_filelike, # $ MISSING: tainted
-        simplejson.load(fp=tainted_filelike), # $ decodeOutput=simplejson.load(..) decodeFormat=JSON decodeInput=tainted_filelike MISSING: tainted
+        tainted_filelike, # $ tainted
+        simplejson.load(fp=tainted_filelike), # $ tainted decodeOutput=simplejson.load(..) decodeFormat=JSON decodeInput=tainted_filelike
     )
 
 # To make things runable

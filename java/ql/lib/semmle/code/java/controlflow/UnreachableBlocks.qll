@@ -212,7 +212,7 @@ class UnreachableBasicBlock extends BasicBlock {
     not exists(Callable c | c.getBody() = this) and
     not this instanceof Callable and
     not exists(Annotation a | a.getAChildExpr*() = this) and
-    not exists(AssertStmt a | a = this.(Expr).getEnclosingStmt()) and
+    not this.(Expr).getEnclosingStmt() instanceof AssertStmt and
     not this instanceof CatchClause
     or
     // Switch statements with a constant comparison expression may have unreachable cases.

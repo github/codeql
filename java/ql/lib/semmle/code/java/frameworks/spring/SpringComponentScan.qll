@@ -8,8 +8,8 @@ import semmle.code.xml.WebXML
  * An element in a Spring configuration file that configures which packages are considered to be
  * "base" packages when performing the Spring component scan.
  */
-class SpringXMLComponentScan extends SpringXMLElement {
-  SpringXMLComponentScan() {
+class SpringXmlComponentScan extends SpringXmlElement {
+  SpringXmlComponentScan() {
     this.getName() = "component-scan" and
     this.getNamespace().getPrefix() = "context"
   }
@@ -22,6 +22,9 @@ class SpringXMLComponentScan extends SpringXMLElement {
    */
   string getAProfileExpr() { result = this.getSpringBeanFile().getAProfileExpr() }
 }
+
+/** DEPRECATED: Alias for SpringXmlComponentScan */
+deprecated class SpringXMLComponentScan = SpringXmlComponentScan;
 
 /**
  * An annotation of a class that configures which packages are considered to be "base" packages
@@ -59,11 +62,11 @@ class SpringBasePackage extends string {
     exists(string basePackages |
       // Interpret the contexts of the `web.xml` "contextConfigLocation" parameter as a base package,
       // but only if the appropriate context class is chosen.
-      exists(WebXMLFile webXML |
-        webXML.getContextParamValue("contextClass") =
+      exists(WebXmlFile webXml |
+        webXml.getContextParamValue("contextClass") =
           "org.springframework.web.context.support.AnnotationConfigWebApplicationContext"
       |
-        basePackages = webXML.getContextParamValue("contextConfigLocation")
+        basePackages = webXml.getContextParamValue("contextConfigLocation")
       )
       or
       exists(SpringComponent c, Annotation componentScan |
@@ -75,7 +78,7 @@ class SpringBasePackage extends string {
         c.isLive()
       )
       or
-      exists(SpringXMLComponentScan xmlComponentScan |
+      exists(SpringXmlComponentScan xmlComponentScan |
         basePackages = xmlComponentScan.getBasePackages() and
         // The component scan profile must be active, if one is specified.
         (
@@ -110,7 +113,7 @@ class SpringComponentAnnotation extends AnnotationType {
  * In order for Spring XML to be "enabled", XML must have been indexed into the snapshot, and that
  * XML must contain the appropriate Spring configuration files.
  */
-private predicate isSpringXMLEnabled() { exists(SpringXMLElement springXMLElement) }
+private predicate isSpringXmlEnabled() { exists(SpringXmlElement springXmlElement) }
 
 /**
  * A Spring component class, identified by the presence of a particular annotation.
@@ -178,7 +181,7 @@ class SpringComponent extends RefType {
     // only validate whether this class is ever picked up if XML indexing is enabled. If it's
     // enabled, then the package of this class must belong in one of the packages defined as a base
     // package.
-    not isSpringXMLEnabled()
+    not isSpringXmlEnabled()
     or
     exists(SpringBasePackage sbp |
       this.getPackage().getName().prefix(sbp.length() + 1) = sbp + "." or

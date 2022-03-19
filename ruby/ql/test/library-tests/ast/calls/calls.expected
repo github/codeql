@@ -3,6 +3,7 @@ callsWithNoReceiverArgumentsOrBlock
 | calls.rb:286:5:286:9 | call to super | super |
 | calls.rb:287:5:287:11 | call to super | super |
 | calls.rb:305:5:305:9 | call to super | super |
+| calls.rb:345:9:345:13 | call to novar | novar |
 callsWithArguments
 | calls.rb:14:1:14:11 | call to foo | foo | 0 | calls.rb:14:5:14:5 | 0 |
 | calls.rb:14:1:14:11 | call to foo | foo | 1 | calls.rb:14:8:14:8 | 1 |
@@ -22,8 +23,11 @@ callsWithArguments
 | calls.rb:85:1:85:12 | ... + ... | + | 0 | calls.rb:85:7:85:12 | call to bar |
 | calls.rb:234:1:234:8 | ...[...] | [] | 0 | calls.rb:234:5:234:7 | call to bar |
 | calls.rb:235:1:235:14 | ...[...] | [] | 0 | calls.rb:235:8:235:13 | call to bar |
+| calls.rb:249:1:249:32 | call to [] | [] | 0 | calls.rb:249:3:249:12 | Pair |
+| calls.rb:249:1:249:32 | call to [] | [] | 1 | calls.rb:249:15:249:30 | Pair |
 | calls.rb:266:1:266:9 | call to foo | foo | 0 | calls.rb:266:5:266:8 | &... |
 | calls.rb:267:1:267:12 | call to foo | foo | 0 | calls.rb:267:5:267:11 | &... |
+| calls.rb:268:1:268:6 | call to foo | foo | 0 | calls.rb:268:5:268:5 | &... |
 | calls.rb:270:1:270:9 | call to foo | foo | 0 | calls.rb:270:5:270:8 | * ... |
 | calls.rb:271:1:271:12 | call to foo | foo | 0 | calls.rb:271:5:271:11 | * ... |
 | calls.rb:274:1:274:10 | call to foo | foo | 0 | calls.rb:274:5:274:9 | ** ... |
@@ -104,6 +108,11 @@ callsWithArguments
 | calls.rb:341:3:341:13 | call to foo | foo | 0 | calls.rb:341:7:341:7 | x |
 | calls.rb:341:3:341:13 | call to foo | foo | 1 | calls.rb:341:10:341:10 | y |
 | calls.rb:341:3:341:13 | call to foo | foo | 2 | calls.rb:341:13:341:13 | z |
+| calls.rb:344:1:344:10 | call to foo | foo | 0 | calls.rb:344:5:344:9 | Pair |
+| calls.rb:345:1:345:15 | call to foo | foo | 0 | calls.rb:345:5:345:6 | Pair |
+| calls.rb:345:1:345:15 | call to foo | foo | 1 | calls.rb:345:9:345:14 | Pair |
+| calls.rb:346:1:346:10 | call to foo | foo | 0 | calls.rb:346:5:346:9 | Pair |
+| calls.rb:347:1:347:7 | call to foo | foo | 0 | calls.rb:347:5:347:6 | Pair |
 callsWithReceiver
 | calls.rb:2:1:2:5 | call to foo | calls.rb:2:1:2:5 | self |
 | calls.rb:5:1:5:10 | call to bar | calls.rb:5:1:5:3 | Foo |
@@ -248,6 +257,7 @@ callsWithReceiver
 | calls.rb:245:6:245:8 | call to bar | calls.rb:245:6:245:8 | self |
 | calls.rb:246:1:246:6 | call to foo | calls.rb:246:1:246:1 | X |
 | calls.rb:246:9:246:14 | call to bar | calls.rb:246:9:246:9 | X |
+| calls.rb:249:1:249:32 | call to [] | calls.rb:249:1:249:32 | Hash |
 | calls.rb:249:3:249:5 | call to foo | calls.rb:249:3:249:5 | self |
 | calls.rb:249:10:249:12 | call to bar | calls.rb:249:10:249:12 | self |
 | calls.rb:249:15:249:20 | call to foo | calls.rb:249:15:249:15 | X |
@@ -264,6 +274,7 @@ callsWithReceiver
 | calls.rb:266:6:266:8 | call to bar | calls.rb:266:6:266:8 | self |
 | calls.rb:267:1:267:12 | call to foo | calls.rb:267:1:267:12 | self |
 | calls.rb:267:6:267:11 | call to bar | calls.rb:267:6:267:6 | X |
+| calls.rb:268:1:268:6 | call to foo | calls.rb:268:1:268:6 | self |
 | calls.rb:270:1:270:9 | call to foo | calls.rb:270:1:270:9 | self |
 | calls.rb:270:5:270:8 | * ... | calls.rb:270:6:270:8 | call to bar |
 | calls.rb:270:6:270:8 | call to bar | calls.rb:270:6:270:8 | self |
@@ -353,6 +364,10 @@ callsWithReceiver
 | calls.rb:340:17:340:23 | call to [] | calls.rb:340:17:340:23 | Array |
 | calls.rb:340:26:340:32 | call to [] | calls.rb:340:26:340:32 | Array |
 | calls.rb:341:3:341:13 | call to foo | calls.rb:341:3:341:13 | self |
+| calls.rb:344:1:344:10 | call to foo | calls.rb:344:1:344:10 | self |
+| calls.rb:345:1:345:15 | call to foo | calls.rb:345:1:345:15 | self |
+| calls.rb:346:1:346:10 | call to foo | calls.rb:346:1:346:10 | self |
+| calls.rb:347:1:347:7 | call to foo | calls.rb:347:1:347:7 | self |
 callsWithBlock
 | calls.rb:17:1:17:17 | call to foo | calls.rb:17:5:17:17 | { ... } |
 | calls.rb:20:1:22:3 | call to foo | calls.rb:20:5:22:3 | do ... end |

@@ -12,7 +12,8 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.LibraryTypeDataFlow
+import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 import semmle.code.csharp.frameworks.system.Collections
 import semmle.code.csharp.frameworks.system.collections.Generic
 
@@ -74,14 +75,9 @@ Element getAssignmentTarget(Expr e) {
 
 Element getCollectionAssignmentTarget(Expr e) {
   // Store into collection via method
-  exists(
-    MethodCall mc, Method m, LibraryTypeDataFlow ltdf, CallableFlowSource source,
-    CallableFlowSink sink
-  |
-    m = mc.getTarget().getUnboundDeclaration() and
-    ltdf.callableFlow(source, AccessPath::empty(), sink, AccessPath::element(), m, _) and
-    e = source.getSource(mc) and
-    result.(Variable).getAnAccess() = sink.getSink(mc)
+  exists(DataFlowPrivate::PostUpdateNode postNode |
+    FlowSummaryImpl::Private::Steps::summarySetterStep(DataFlow::exprNode(e), _, postNode) and
+    result.(Variable).getAnAccess() = postNode.getPreUpdateNode().asExpr()
   )
   or
   // Array initializer

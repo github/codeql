@@ -44,7 +44,7 @@ class CfgNode extends TCfgNode {
   final predicate isCondition() { exists(this.getASuccessor(any(BooleanSuccessor bs))) }
 
   /** Gets the scope of this node. */
-  final CfgScope getScope() { result = this.getBasicBlock().getScope() }
+  final CfgScope getScope() { result = getNodeCfgScope(this) }
 
   /** Gets the basic block that this control flow node belongs to. */
   BasicBlock getBasicBlock() { result.getANode() = this }

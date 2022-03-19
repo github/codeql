@@ -1,6 +1,12 @@
+/**
+ * Provides modeling for the `RestClient` library.
+ */
+
 private import ruby
+private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
 
 /**
  * A call that makes an HTTP request using `RestClient`.
@@ -50,16 +56,16 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
     |
       // Either passed as an individual key:value argument, e.g.:
       // RestClient::Resource.new(..., verify_ssl: OpenSSL::SSL::VERIFY_NONE)
-      isVerifySslNonePair(arg.asExpr().getExpr()) and
+      isVerifySslNonePair(arg.asExpr()) and
       disablingNode = arg
       or
       // Or as a single hash argument, e.g.:
       // RestClient::Resource.new(..., { verify_ssl: OpenSSL::SSL::VERIFY_NONE })
-      exists(DataFlow::LocalSourceNode optionsNode, Pair p |
-        p = optionsNode.asExpr().getExpr().(HashLiteral).getAKeyValuePair() and
+      exists(DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p |
+        p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
         isVerifySslNonePair(p) and
         optionsNode.flowsTo(arg) and
-        disablingNode.asExpr().getExpr() = p
+        disablingNode.asExpr() = p
       )
     )
   }
@@ -68,10 +74,10 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
 }
 
 /** Holds if `p` is the pair `verify_ssl: OpenSSL::SSL::VERIFY_NONE`. */
-private predicate isVerifySslNonePair(Pair p) {
+private predicate isVerifySslNonePair(CfgNodes::ExprNodes::PairCfgNode p) {
   exists(DataFlow::Node key, DataFlow::Node value |
-    key.asExpr().getExpr() = p.getKey() and value.asExpr().getExpr() = p.getValue()
-  |
+    key.asExpr() = p.getKey() and
+    value.asExpr() = p.getValue() and
     isSslVerifyModeLiteral(key) and
     value = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse()
   )
@@ -80,7 +86,7 @@ private predicate isVerifySslNonePair(Pair p) {
 /** Holds if `node` can represent the symbol literal `:verify_ssl`. */
 private predicate isSslVerifyModeLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = "verify_ssl" and
+    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol("verify_ssl") and
     literal.flowsTo(node)
   )
 }

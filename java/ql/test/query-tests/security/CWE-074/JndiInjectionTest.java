@@ -110,7 +110,17 @@ public class JndiInjectionTest {
     LdapTemplate ctx = new LdapTemplate();
     Name name = new CompositeName().add(nameStr);
 
+    ctx.lookup(name); // $hasJndiInjection
+    ctx.lookup(name, (AttributesMapper) null); // Safe
+    ctx.lookup(name, (ContextMapper) null); // $hasJndiInjection
+    ctx.lookup(name, new String[] {}, (AttributesMapper) null); // Safe
+    ctx.lookup(name, new String[] {}, (ContextMapper) null); // $hasJndiInjection
     ctx.lookup(nameStr); // $hasJndiInjection
+    ctx.lookup(nameStr, (AttributesMapper) null); // Safe
+    ctx.lookup(nameStr, (ContextMapper) null); // $hasJndiInjection
+    ctx.lookup(nameStr, new String[] {}, (AttributesMapper) null); // Safe
+    ctx.lookup(nameStr, new String[] {}, (ContextMapper) null); // $hasJndiInjection
+    ctx.lookupContext(name); // $hasJndiInjection
     ctx.lookupContext(nameStr); // $hasJndiInjection
     ctx.findByDn(name, null); // $hasJndiInjection
     ctx.rename(name, null); // $hasJndiInjection

@@ -4,14 +4,14 @@
 
 import javascript
 
-/** Provides classes modelling concepts of GraphQL connectors. */
+/** Provides classes modeling concepts of GraphQL connectors. */
 module GraphQL {
   /** A string-valued expression that is interpreted as a GraphQL query. */
   abstract class GraphQLString extends DataFlow::Node { }
 }
 
 /**
- * Provides classes modelling the octokit packages [@octokit/core](https://npmjs.com/package/@octokit/core),
+ * Provides classes modeling the octokit packages [@octokit/core](https://npmjs.com/package/@octokit/core),
  * [@octokit/graphql](https://npmjs.com/package/@octokit/graphql), [@octokit/rest](https://npmjs.com/package/@octokit/rest),
  * and [@octokit/request](https://npmjs.com/package/@octokit/request).
  */
@@ -73,7 +73,7 @@ private module Octokit {
 }
 
 /**
- * Provides classes modelling [graphql](https://npmjs.com/package/graphql).
+ * Provides classes modeling [graphql](https://npmjs.com/package/graphql).
  */
 private module GraphQLLib {
   /** A string that is interpreted as a GraphQL query by a `graphql` package. */

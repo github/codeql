@@ -12,7 +12,12 @@ private class TypeRef extends @typeref {
 
   string toString() { result = this.getName() }
 
-  Type getReferencedType() { typeref_type(this, result) }
+  Type getReferencedType() {
+    typeref_type(this, result)
+    or
+    not typeref_type(this, _) and
+    result instanceof UnknownType
+  }
 }
 
 /**

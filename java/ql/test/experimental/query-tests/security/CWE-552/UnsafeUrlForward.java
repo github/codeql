@@ -54,6 +54,17 @@ public class UnsafeUrlForward {
 		}
 	}
 
+	@GetMapping("/bad7")
+	public void bad7(String url, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").forward(request, response);
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@GetMapping("/good1")
 	public void good1(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {

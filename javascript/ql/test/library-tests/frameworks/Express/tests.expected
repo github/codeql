@@ -18,6 +18,9 @@ test_RouteHandlerExpr_getBody
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/middleware-flow.js:13:16:13:24 | installDb | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
+| src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
+| src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:14:24:16:1 | functio ... lo");\\n} | src/params.js:14:24:16:1 | functio ... lo");\\n} |
 | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} |
@@ -46,6 +49,9 @@ test_RouteSetup
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | src/express.js:2:11:2:19 | express() | false |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:2:11:2:19 | express() | false |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:2:11:2:19 | express() | false |
+| src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:2:13:2:21 | express() | true |
+| src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | src/middleware-flow.js:2:13:2:21 | express() | false |
+| src/middleware-flow.js:39:1:43:2 | unrelat ... .db;\\n}) | src/middleware-flow.js:37:22:37:30 | express() | false |
 | src/params.js:4:1:12:2 | app.par ...    }\\n}) | src/params.js:2:11:2:19 | express() | false |
 | src/params.js:14:1:16:2 | app.get ... o");\\n}) | src/params.js:2:11:2:19 | express() | false |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | src/responseExprs.js:2:11:2:19 | express() | false |
@@ -102,6 +108,10 @@ test_RouteSetup_getLastRouteHandlerExpr
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:13:16:13:24 | installDb |
+| src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
+| src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | src/middleware-flow.js:27:23:27:32 | routers[p] |
+| src/middleware-flow.js:39:1:43:2 | unrelat ... .db;\\n}) | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
 | src/params.js:4:1:12:2 | app.par ...    }\\n}) | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:14:1:16:2 | app.get ... o");\\n}) | src/params.js:14:24:16:1 | functio ... lo");\\n} |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} |
@@ -744,6 +754,8 @@ test_RouterDefinition_getMiddlewareStackAt
 | src/express.js:2:11:2:19 | express() | src/express.js:46:10:46:19 | '/headers' | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:2:11:2:19 | express() | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:2:11:2:19 | express() | src/express.js:52:1:52:0 | exit node of <toplevel> | src/express.js:44:9:44:25 | getArrowHandler() |
+| src/middleware-flow.js:2:13:2:21 | express() | src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:13:16:13:24 | installDb |
+| src/middleware-flow.js:2:13:2:21 | express() | src/middleware-flow.js:14:2:14:1 | exit node of functio ... lDb);\\n} | src/middleware-flow.js:13:16:13:24 | installDb |
 | src/subrouter.js:2:11:2:19 | express() | src/subrouter.js:4:1:4:26 | app.use ... rotect) | src/subrouter.js:4:19:4:25 | protect |
 | src/subrouter.js:2:11:2:19 | express() | src/subrouter.js:5:1:5:3 | app | src/subrouter.js:4:19:4:25 | protect |
 | src/subrouter.js:2:11:2:19 | express() | src/subrouter.js:5:1:5:7 | app.use | src/subrouter.js:4:19:4:25 | protect |
@@ -841,6 +853,22 @@ test_isRequest
 | src/express.js:50:3:50:5 | req |
 | src/inheritedFromNode.js:4:24:4:26 | req |
 | src/inheritedFromNode.js:7:2:7:4 | req |
+| src/middleware-flow.js:5:20:5:22 | req |
+| src/middleware-flow.js:6:5:6:7 | req |
+| src/middleware-flow.js:7:5:7:7 | req |
+| src/middleware-flow.js:8:5:8:7 | req |
+| src/middleware-flow.js:17:25:17:27 | req |
+| src/middleware-flow.js:18:9:18:11 | req |
+| src/middleware-flow.js:19:9:19:11 | req |
+| src/middleware-flow.js:20:9:20:11 | req |
+| src/middleware-flow.js:23:18:23:20 | req |
+| src/middleware-flow.js:23:33:23:35 | req |
+| src/middleware-flow.js:24:18:24:20 | req |
+| src/middleware-flow.js:24:33:24:35 | req |
+| src/middleware-flow.js:39:24:39:26 | req |
+| src/middleware-flow.js:40:5:40:7 | req |
+| src/middleware-flow.js:41:5:41:7 | req |
+| src/middleware-flow.js:42:5:42:7 | req |
 | src/params.js:4:19:4:21 | req |
 | src/params.js:5:17:5:19 | req |
 | src/params.js:6:17:6:19 | req |
@@ -907,6 +935,10 @@ test_RouteSetup_getRouter
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:2:11:2:19 | express() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:2:11:2:19 | express() |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:2:11:2:19 | express() |
+| src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:2:13:2:21 | express() |
+| src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | src/middleware-flow.js:2:13:2:21 | express() |
+| src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | src/middleware-flow.js:2:13:2:21 | express() |
+| src/middleware-flow.js:39:1:43:2 | unrelat ... .db;\\n}) | src/middleware-flow.js:37:22:37:30 | express() |
 | src/params.js:4:1:12:2 | app.par ...    }\\n}) | src/params.js:2:11:2:19 | express() |
 | src/params.js:14:1:16:2 | app.get ... o");\\n}) | src/params.js:2:11:2:19 | express() |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | src/responseExprs.js:2:11:2:19 | express() |
@@ -951,6 +983,9 @@ test_StandardRouteHandler
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:2:11:2:19 | express() | src/express.js:22:39:22:41 | req | src/express.js:22:44:22:46 | res |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:2:11:2:19 | express() | src/express.js:46:31:46:33 | req | src/express.js:46:36:46:38 | res |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:2:11:2:19 | express() | src/inheritedFromNode.js:4:24:4:26 | req | src/inheritedFromNode.js:4:29:4:31 | res |
+| src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:2:13:2:21 | express() | src/middleware-flow.js:5:20:5:22 | req | src/middleware-flow.js:5:25:5:27 | res |
+| src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:2:13:2:21 | express() | src/middleware-flow.js:17:25:17:27 | req | src/middleware-flow.js:17:30:17:32 | res |
+| src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:37:22:37:30 | express() | src/middleware-flow.js:39:24:39:26 | req | src/middleware-flow.js:39:29:39:31 | res |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:2:11:2:19 | express() | src/params.js:4:19:4:21 | req | src/params.js:4:24:4:26 | res |
 | src/params.js:14:24:16:1 | functio ... lo");\\n} | src/params.js:2:11:2:19 | express() | src/params.js:14:33:14:35 | req | src/params.js:14:38:14:40 | res |
 | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:4:32:4:34 | req | src/responseExprs.js:4:37:4:40 | res1 |
@@ -1118,6 +1153,11 @@ test_ResponseExpr
 | src/inheritedFromNode.js:4:29:4:31 | res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/inheritedFromNode.js:5:2:5:4 | res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/inheritedFromNode.js:6:2:6:4 | res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/middleware-flow.js:5:25:5:27 | res | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
+| src/middleware-flow.js:17:30:17:32 | res | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
+| src/middleware-flow.js:23:23:23:25 | res | src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } |
+| src/middleware-flow.js:24:23:24:25 | res | src/middleware-flow.js:24:17:24:41 | (req, r ... q.db; } |
+| src/middleware-flow.js:39:29:39:31 | res | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
 | src/params.js:4:24:4:26 | res | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:8:9:8:11 | res | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:8:9:8:23 | res.send(value) | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
@@ -1196,6 +1236,9 @@ test_RouterDefinition_getARouteHandler
 | src/express.js:2:11:2:19 | express() | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:2:11:2:19 | express() | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/inheritedFromNode.js:2:11:2:19 | express() | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/middleware-flow.js:2:13:2:21 | express() | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
+| src/middleware-flow.js:2:13:2:21 | express() | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
+| src/middleware-flow.js:37:22:37:30 | express() | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
 | src/params.js:2:11:2:19 | express() | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:2:11:2:19 | express() | src/params.js:14:24:16:1 | functio ... lo");\\n} |
 | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} |
@@ -1293,6 +1336,9 @@ test_RouteSetup_getServer
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | src/express.js:2:11:2:19 | express() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:2:11:2:19 | express() |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:2:11:2:19 | express() |
+| src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:2:13:2:21 | express() |
+| src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | src/middleware-flow.js:2:13:2:21 | express() |
+| src/middleware-flow.js:39:1:43:2 | unrelat ... .db;\\n}) | src/middleware-flow.js:37:22:37:30 | express() |
 | src/params.js:4:1:12:2 | app.par ...    }\\n}) | src/params.js:2:11:2:19 | express() |
 | src/params.js:14:1:16:2 | app.get ... o");\\n}) | src/params.js:2:11:2:19 | express() |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | src/responseExprs.js:2:11:2:19 | express() |
@@ -1364,6 +1410,10 @@ test_RouteHandlerExpr
 | src/express.js:44:9:44:25 | getArrowHandler() | src/express.js:44:1:44:26 | app.use ... dler()) | false |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | true |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | true |
+| src/middleware-flow.js:13:16:13:24 | installDb | src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | false |
+| src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | true |
+| src/middleware-flow.js:27:23:27:32 | routers[p] | src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | true |
+| src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:39:1:43:2 | unrelat ... .db;\\n}) | true |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:4:1:12:2 | app.par ...    }\\n}) | true |
 | src/params.js:14:24:16:1 | functio ... lo");\\n} | src/params.js:14:1:16:2 | app.get ... o");\\n}) | true |
 | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | true |
@@ -1398,6 +1448,7 @@ test_RouteSetup_handlesAllRequestMethods
 | src/express3.js:12:1:12:21 | app.use ... dler()) |
 | src/express.js:39:1:39:21 | app.use ... dler()) |
 | src/express.js:44:1:44:26 | app.use ... dler()) |
+| src/middleware-flow.js:13:5:13:25 | router. ... tallDb) |
 | src/params.js:4:1:12:2 | app.par ...    }\\n}) |
 | src/route.js:4:1:5:39 | router. ... xt) {}) |
 | src/routesetups.js:3:1:4:14 | express ... ('', h) |
@@ -1421,6 +1472,8 @@ test_appCreation
 | src/express4.js:2:11:2:19 | express() |
 | src/express.js:2:11:2:19 | express() |
 | src/inheritedFromNode.js:2:11:2:19 | express() |
+| src/middleware-flow.js:2:13:2:21 | express() |
+| src/middleware-flow.js:37:22:37:30 | express() |
 | src/params.js:2:11:2:19 | express() |
 | src/params.js:4:1:12:2 | app.par ...    }\\n}) |
 | src/responseExprs.js:2:11:2:19 | express() |
@@ -1458,6 +1511,9 @@ test_RouteSetup_getRequestMethod
 | src/express.js:34:1:34:53 | app.get ... andler) | GET |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | POST |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | POST |
+| src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | GET |
+| src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | GET |
+| src/middleware-flow.js:39:1:43:2 | unrelat ... .db;\\n}) | GET |
 | src/params.js:14:1:16:2 | app.get ... o");\\n}) | GET |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | GET |
 | src/responseExprs.js:7:1:9:2 | app.get ... es2;\\n}) | GET |
@@ -1519,6 +1575,10 @@ test_RouteExpr
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:2:11:2:19 | express() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:2:11:2:19 | express() |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:2:11:2:19 | express() |
+| src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:2:13:2:21 | express() |
+| src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | src/middleware-flow.js:2:13:2:21 | express() |
+| src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | src/middleware-flow.js:2:13:2:21 | express() |
+| src/middleware-flow.js:39:1:43:2 | unrelat ... .db;\\n}) | src/middleware-flow.js:37:22:37:30 | express() |
 | src/params.js:4:1:12:2 | app.par ...    }\\n}) | src/params.js:2:11:2:19 | express() |
 | src/params.js:4:1:12:2 | app.par ...    }\\n}) | src/params.js:4:1:12:2 | app.par ...    }\\n}) |
 | src/params.js:14:1:16:2 | app.get ... o");\\n}) | src/params.js:2:11:2:19 | express() |
@@ -1637,6 +1697,11 @@ test_RouteHandler_getAResponseExpr
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:29:4:31 | res |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:5:2:5:4 | res |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:6:2:6:4 | res |
+| src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:5:25:5:27 | res |
+| src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:17:30:17:32 | res |
+| src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } | src/middleware-flow.js:23:23:23:25 | res |
+| src/middleware-flow.js:24:17:24:41 | (req, r ... q.db; } | src/middleware-flow.js:24:23:24:25 | res |
+| src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:39:29:39:31 | res |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:4:24:4:26 | res |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:8:9:8:11 | res |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:8:9:8:23 | res.send(value) |
@@ -1777,6 +1842,11 @@ test_isResponse
 | src/inheritedFromNode.js:4:29:4:31 | res |
 | src/inheritedFromNode.js:5:2:5:4 | res |
 | src/inheritedFromNode.js:6:2:6:4 | res |
+| src/middleware-flow.js:5:25:5:27 | res |
+| src/middleware-flow.js:17:30:17:32 | res |
+| src/middleware-flow.js:23:23:23:25 | res |
+| src/middleware-flow.js:24:23:24:25 | res |
+| src/middleware-flow.js:39:29:39:31 | res |
 | src/params.js:4:24:4:26 | res |
 | src/params.js:8:9:8:11 | res |
 | src/params.js:8:9:8:23 | res.send(value) |
@@ -1951,6 +2021,12 @@ test_RouteSetup_getARouteHandler
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
+| src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
+| src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } |
+| src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | src/middleware-flow.js:24:17:24:41 | (req, r ... q.db; } |
+| src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | src/middleware-flow.js:27:23:27:32 | routers[p] |
+| src/middleware-flow.js:39:1:43:2 | unrelat ... .db;\\n}) | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
 | src/params.js:4:1:12:2 | app.par ...    }\\n}) | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:14:1:16:2 | app.get ... o");\\n}) | src/params.js:14:24:16:1 | functio ... lo");\\n} |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} |
@@ -2176,6 +2252,8 @@ test_isRouterCreation
 | src/express4.js:2:11:2:19 | express() |
 | src/express.js:2:11:2:19 | express() |
 | src/inheritedFromNode.js:2:11:2:19 | express() |
+| src/middleware-flow.js:2:13:2:21 | express() |
+| src/middleware-flow.js:37:22:37:30 | express() |
 | src/params.js:2:11:2:19 | express() |
 | src/params.js:4:1:12:2 | app.par ...    }\\n}) |
 | src/responseExprs.js:2:11:2:19 | express() |
@@ -2239,6 +2317,10 @@ test_RouteSetup_getRouteHandlerExpr
 | src/express.js:44:1:44:26 | app.use ... dler()) | 0 | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | 0 | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | 0 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | 0 | src/middleware-flow.js:13:16:13:24 | installDb |
+| src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | 0 | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
+| src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | 0 | src/middleware-flow.js:27:23:27:32 | routers[p] |
+| src/middleware-flow.js:39:1:43:2 | unrelat ... .db;\\n}) | 0 | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
 | src/params.js:4:1:12:2 | app.par ...    }\\n}) | 0 | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:14:1:16:2 | app.get ... o");\\n}) | 0 | src/params.js:14:24:16:1 | functio ... lo");\\n} |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | 0 | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} |
@@ -2267,6 +2349,8 @@ test_RouterDefinition_RouterDefinition
 | src/express4.js:2:11:2:19 | express() |
 | src/express.js:2:11:2:19 | express() |
 | src/inheritedFromNode.js:2:11:2:19 | express() |
+| src/middleware-flow.js:2:13:2:21 | express() |
+| src/middleware-flow.js:37:22:37:30 | express() |
 | src/params.js:2:11:2:19 | express() |
 | src/params.js:4:1:12:2 | app.par ...    }\\n}) |
 | src/responseExprs.js:2:11:2:19 | express() |
@@ -2330,6 +2414,11 @@ test_RouteHandler
 | src/express.js:42:12:42:28 | (req, res) => f() | src/express.js:42:13:42:15 | req | src/express.js:42:18:42:20 | res |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:46:31:46:33 | req | src/express.js:46:36:46:38 | res |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:24:4:26 | req | src/inheritedFromNode.js:4:29:4:31 | res |
+| src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:5:20:5:22 | req | src/middleware-flow.js:5:25:5:27 | res |
+| src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:17:25:17:27 | req | src/middleware-flow.js:17:30:17:32 | res |
+| src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } | src/middleware-flow.js:23:18:23:20 | req | src/middleware-flow.js:23:23:23:25 | res |
+| src/middleware-flow.js:24:17:24:41 | (req, r ... q.db; } | src/middleware-flow.js:24:18:24:20 | req | src/middleware-flow.js:24:23:24:25 | res |
+| src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:39:24:39:26 | req | src/middleware-flow.js:39:29:39:31 | res |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:4:19:4:21 | req | src/params.js:4:24:4:26 | res |
 | src/params.js:14:24:16:1 | functio ... lo");\\n} | src/params.js:14:33:14:35 | req | src/params.js:14:38:14:40 | res |
 | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} | src/responseExprs.js:4:32:4:34 | req | src/responseExprs.js:4:37:4:40 | res1 |
@@ -2394,6 +2483,10 @@ test_RouteSetup_getARouteHandlerExpr
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:13:16:13:24 | installDb |
+| src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
+| src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | src/middleware-flow.js:27:23:27:32 | routers[p] |
+| src/middleware-flow.js:39:1:43:2 | unrelat ... .db;\\n}) | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
 | src/params.js:4:1:12:2 | app.par ...    }\\n}) | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:14:1:16:2 | app.get ... o");\\n}) | src/params.js:14:24:16:1 | functio ... lo");\\n} |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} |
@@ -2552,6 +2645,22 @@ test_RequestExpr
 | src/express.js:50:3:50:5 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/inheritedFromNode.js:4:24:4:26 | req | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/inheritedFromNode.js:7:2:7:4 | req | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/middleware-flow.js:5:20:5:22 | req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
+| src/middleware-flow.js:6:5:6:7 | req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
+| src/middleware-flow.js:7:5:7:7 | req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
+| src/middleware-flow.js:8:5:8:7 | req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
+| src/middleware-flow.js:17:25:17:27 | req | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
+| src/middleware-flow.js:18:9:18:11 | req | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
+| src/middleware-flow.js:19:9:19:11 | req | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
+| src/middleware-flow.js:20:9:20:11 | req | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
+| src/middleware-flow.js:23:18:23:20 | req | src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } |
+| src/middleware-flow.js:23:33:23:35 | req | src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } |
+| src/middleware-flow.js:24:18:24:20 | req | src/middleware-flow.js:24:17:24:41 | (req, r ... q.db; } |
+| src/middleware-flow.js:24:33:24:35 | req | src/middleware-flow.js:24:17:24:41 | (req, r ... q.db; } |
+| src/middleware-flow.js:39:24:39:26 | req | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
+| src/middleware-flow.js:40:5:40:7 | req | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
+| src/middleware-flow.js:41:5:41:7 | req | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
+| src/middleware-flow.js:42:5:42:7 | req | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
 | src/params.js:4:19:4:21 | req | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:5:17:5:19 | req | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:6:17:6:19 | req | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
@@ -2679,6 +2788,22 @@ test_RouteHandler_getARequestExpr
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:50:3:50:5 | req |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:24:4:26 | req |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:7:2:7:4 | req |
+| src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:5:20:5:22 | req |
+| src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:6:5:6:7 | req |
+| src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:7:5:7:7 | req |
+| src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:8:5:8:7 | req |
+| src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:17:25:17:27 | req |
+| src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:18:9:18:11 | req |
+| src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:19:9:19:11 | req |
+| src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:20:9:20:11 | req |
+| src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } | src/middleware-flow.js:23:18:23:20 | req |
+| src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } | src/middleware-flow.js:23:33:23:35 | req |
+| src/middleware-flow.js:24:17:24:41 | (req, r ... q.db; } | src/middleware-flow.js:24:18:24:20 | req |
+| src/middleware-flow.js:24:17:24:41 | (req, r ... q.db; } | src/middleware-flow.js:24:33:24:35 | req |
+| src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:39:24:39:26 | req |
+| src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:40:5:40:7 | req |
+| src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:41:5:41:7 | req |
+| src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:42:5:42:7 | req |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:4:19:4:21 | req |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:5:17:5:19 | req |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:6:17:6:19 | req |
@@ -2720,7 +2845,21 @@ getRouteHandlerContainerStep
 | src/advanced-routehandler-registration.js:155:18:155:26 | new Map() | src/advanced-routehandler-registration.js:157:27:157:56 | (req, r ... og(req) | src/advanced-routehandler-registration.js:161:14:161:38 | routesM ... nown()) |
 | src/advanced-routehandler-registration.js:155:18:155:26 | new Map() | src/advanced-routehandler-registration.js:157:27:157:56 | (req, r ... og(req) | src/advanced-routehandler-registration.js:163:14:163:32 | routesMap2.get("f") |
 | src/controllers/handler-in-bulk-require.js:1:18:1:68 | { path: ... fined } | src/controllers/handler-in-bulk-require.js:1:44:1:66 | (req, r ... defined | src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler |
+| src/middleware-flow.js:22:19:25:5 | {\\n      ... ,\\n    } | src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } | src/middleware-flow.js:27:23:27:32 | routers[p] |
+| src/middleware-flow.js:22:19:25:5 | {\\n      ... ,\\n    } | src/middleware-flow.js:24:17:24:41 | (req, r ... q.db; } | src/middleware-flow.js:27:23:27:32 | routers[p] |
 | src/route-collection.js:1:18:4:1 | {\\n  a:  ... (req)\\n} | src/route-collection.js:2:6:2:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:116:14:116:30 | importedRoutes[p] |
 | src/route-collection.js:1:18:4:1 | {\\n  a:  ... (req)\\n} | src/route-collection.js:2:6:2:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:118:14:118:29 | importedRoutes.a |
 | src/route-collection.js:1:18:4:1 | {\\n  a:  ... (req)\\n} | src/route-collection.js:3:6:3:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:116:14:116:30 | importedRoutes[p] |
 | src/route-collection.js:1:18:4:1 | {\\n  a:  ... (req)\\n} | src/route-collection.js:3:6:3:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:119:14:119:29 | importedRoutes.b |
+dbUse
+| src/middleware-flow.js:6:5:6:21 | req.db = new DB() |
+| src/middleware-flow.js:6:14:6:21 | new DB() |
+| src/middleware-flow.js:7:5:7:26 | req.dee ... ew DB() |
+| src/middleware-flow.js:7:19:7:26 | new DB() |
+| src/middleware-flow.js:8:5:8:33 | req.dee ... ew DB() |
+| src/middleware-flow.js:8:26:8:33 | new DB() |
+| src/middleware-flow.js:18:9:18:14 | req.db |
+| src/middleware-flow.js:19:9:19:19 | req.deep.db |
+| src/middleware-flow.js:20:9:20:26 | req.deep.access.db |
+| src/middleware-flow.js:23:33:23:38 | req.db |
+| src/middleware-flow.js:24:33:24:38 | req.db |

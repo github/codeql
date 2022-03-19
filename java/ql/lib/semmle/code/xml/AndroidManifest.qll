@@ -75,6 +75,13 @@ class AndroidReceiverXmlElement extends AndroidComponentXmlElement {
 }
 
 /**
+ * An XML attribute with the `android:` prefix.
+ */
+class AndroidXmlAttribute extends XMLAttribute {
+  AndroidXmlAttribute() { this.getNamespace().getPrefix() = "android" }
+}
+
+/**
  * A `<provider>` element in an Android manifest file.
  */
 class AndroidProviderXmlElement extends AndroidComponentXmlElement {
@@ -90,6 +97,14 @@ class AndroidProviderXmlElement extends AndroidComponentXmlElement {
     or
     this.getAnAttribute().(AndroidPermissionXmlAttribute).isWrite() and
     this.getAnAttribute().(AndroidPermissionXmlAttribute).isRead()
+  }
+
+  predicate grantsUriPermissions() {
+    exists(AndroidXmlAttribute attr |
+      this.getAnAttribute() = attr and
+      attr.getName() = "grantUriPermissions" and
+      attr.getValue() = "true"
+    )
   }
 }
 

@@ -503,3 +503,18 @@ function copyPlainObject2(dst, src) {
         }
     }
 }
+
+
+function usingDefineProperty(dst, src) {
+    let keys = Object.keys(src);
+    for (let i = 0; i < keys.length; ++i) {
+        let key = keys[i];
+        if (dst[key]) {
+            usingDefineProperty(dst[key], src[key]);
+        } else {
+            var descriptor = {};
+            descriptor.value = src[key]; 
+            Object.defineProperty(dst, key, descriptor);  // NOT OK
+        }
+    }
+}

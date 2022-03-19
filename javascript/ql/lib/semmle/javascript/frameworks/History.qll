@@ -1,8 +1,8 @@
-/** Provides classes and predicates modelling aspects of the [`history`](https://npmjs.org/package/history) library. */
+/** Provides classes and predicates modeling aspects of the [`history`](https://npmjs.org/package/history) library. */
 
 import javascript
 
-/** Provides classes modelling the [`history`](https://npmjs.org/package/history) library. */
+/** Provides classes modeling the [`history`](https://npmjs.org/package/history) library. */
 module History {
   /** The global variable `HistoryLibrary` as an entry point for API graphs. */
   private class HistoryGlobalEntry extends API::EntryPoint {
@@ -17,7 +17,7 @@ module History {
    * Gets a reference to the [`history`](https://npmjs.org/package/history) library.
    */
   private API::Node history() {
-    result = [API::moduleImport("history"), API::root().getASuccessor(any(HistoryGlobalEntry h))]
+    result = [API::moduleImport("history"), any(HistoryGlobalEntry h).getNode()]
   }
 
   /**

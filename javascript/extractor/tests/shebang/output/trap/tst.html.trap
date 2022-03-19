@@ -17,8 +17,8 @@ hasLocation(#20002,#20003)
 #20004=*
 js_parse_errors(#20004,#20002,"Error: Unexpected token","#!/usr/bin/node
 ")
-#20005=@"loc,{#10000},4,1,4,1"
-locations_default(#20005,#10000,4,1,4,1)
+#20005=@"loc,{#10000},4,2,4,2"
+locations_default(#20005,#10000,4,2,4,2)
 hasLocation(#20004,#20005)
 #20006=*
 lines(#20006,#20002,"","

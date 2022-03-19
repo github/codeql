@@ -24,10 +24,10 @@ class CallUsedToHandleErrors extends FunctionCall {
     not exists(this.(ControlFlowNode).getASuccessor())
     or
     // call throwing an exception
-    exists(ThrowExpr tex | tex = this.(ControlFlowNode).getASuccessor())
+    this.(ControlFlowNode).getASuccessor() instanceof ThrowExpr
     or
     // call logging a message, possibly an error
-    exists(FormattingFunction ff | ff = this.(ControlFlowNode).getASuccessor())
+    this.(ControlFlowNode).getASuccessor() instanceof FormattingFunction
     or
     // enabling recursive search
     exists(CallUsedToHandleErrors fr | getTarget() = fr.getEnclosingFunction())
@@ -37,9 +37,9 @@ class CallUsedToHandleErrors extends FunctionCall {
 /** Holds if the conditions for a call outside the wrapper function are met. */
 predicate conditionsOutsideWrapper(FunctionCall fcp) {
   fcp.getNumberOfArguments() > 0 and
-  not exists(ConditionalStmt cdtmp | fcp.getEnclosingStmt().getParentStmt*() = cdtmp) and
-  not exists(Loop lptmp | fcp.getEnclosingStmt().getParentStmt*() = lptmp) and
-  not exists(ReturnStmt rttmp | fcp.getEnclosingStmt().getParentStmt*() = rttmp) and
+  not fcp.getEnclosingStmt().getParentStmt*() instanceof ConditionalStmt and
+  not fcp.getEnclosingStmt().getParentStmt*() instanceof Loop and
+  not fcp.getEnclosingStmt().getParentStmt*() instanceof ReturnStmt and
   not exists(FunctionCall fctmp2 | fcp = fctmp2.getAnArgument().getAChild*()) and
   not exists(Assignment astmp | fcp = astmp.getRValue().getAChild*()) and
   not exists(Initializer intmp | fcp = intmp.getExpr().getAChild*()) and

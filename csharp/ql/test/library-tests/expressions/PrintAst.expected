@@ -825,6 +825,8 @@ expressions.cs:
 #  122|                   9: [TypeofExpr] typeof(...)
 #  122|                     0: [TypeAccess] access to type Y<,>
 #  122|                       0: [TypeMention] Y<T, U>
+#  122|                         1: [TypeMention] <unknown type>
+#  122|                         2: [TypeMention] <unknown type>
 #  124|           1: [LocalVariableDeclStmt] ... ...;
 #  124|             0: [LocalVariableDeclAndInitExpr] T e = ...
 #  124|               -1: [TypeMention] T

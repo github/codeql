@@ -45,31 +45,11 @@ namespace Semmle.Autobuild.Shared
             this.silent = silent;
         }
 
-        private void OdasaIndex(string odasa)
-        {
-            RunCommand(odasa, "index --auto");
-        }
-
         public CommandBuilder CallBatFile(string batFile, string? argumentsOpt = null)
         {
             NextCommand();
             arguments.Append(" CALL");
             QuoteArgument(batFile);
-            Argument(argumentsOpt);
-            return this;
-        }
-
-        /// <summary>
-        /// Perform odasa index on a given command or BAT file.
-        /// </summary>
-        /// <param name="odasa">The odasa executable.</param>
-        /// <param name="command">The command to run.</param>
-        /// <param name="argumentsOpt">Additional arguments.</param>
-        /// <returns>this for chaining calls.</returns>
-        public CommandBuilder IndexCommand(string odasa, string command, string? argumentsOpt = null)
-        {
-            OdasaIndex(odasa);
-            QuoteArgument(command);
             Argument(argumentsOpt);
             return this;
         }

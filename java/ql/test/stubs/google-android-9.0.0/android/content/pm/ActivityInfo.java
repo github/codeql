@@ -37,6 +37,7 @@ public class ActivityInfo extends ComponentInfo implements Parcelable
     public static int CONFIG_COLOR_MODE = 0;
     public static int CONFIG_DENSITY = 0;
     public static int CONFIG_FONT_SCALE = 0;
+    public static int CONFIG_FONT_WEIGHT_ADJUSTMENT = 0;
     public static int CONFIG_KEYBOARD = 0;
     public static int CONFIG_KEYBOARD_HIDDEN = 0;
     public static int CONFIG_LAYOUT_DIRECTION = 0;
@@ -66,12 +67,14 @@ public class ActivityInfo extends ComponentInfo implements Parcelable
     public static int FLAG_IMMERSIVE = 0;
     public static int FLAG_MULTIPROCESS = 0;
     public static int FLAG_NO_HISTORY = 0;
+    public static int FLAG_PREFER_MINIMAL_POST_PROCESSING = 0;
     public static int FLAG_RELINQUISH_TASK_IDENTITY = 0;
     public static int FLAG_RESUME_WHILE_PAUSING = 0;
     public static int FLAG_SINGLE_USER = 0;
     public static int FLAG_STATE_NOT_NEEDED = 0;
     public static int LAUNCH_MULTIPLE = 0;
     public static int LAUNCH_SINGLE_INSTANCE = 0;
+    public static int LAUNCH_SINGLE_INSTANCE_PER_TASK = 0;
     public static int LAUNCH_SINGLE_TASK = 0;
     public static int LAUNCH_SINGLE_TOP = 0;
     public static int PERSIST_ACROSS_REBOOTS = 0;

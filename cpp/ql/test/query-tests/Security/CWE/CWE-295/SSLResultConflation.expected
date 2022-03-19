@@ -1,0 +1,8 @@
+| test.cpp:18:9:18:38 | ... \|\| ... | This expression conflates OK and non-OK results from $@. | test.cpp:100:18:100:38 | call to SSL_get_verify_result | call to SSL_get_verify_result |
+| test.cpp:38:7:38:36 | ... \|\| ... | This expression conflates OK and non-OK results from $@. | test.cpp:36:16:36:36 | call to SSL_get_verify_result | call to SSL_get_verify_result |
+| test.cpp:54:7:54:47 | ... \|\| ... | This expression conflates OK and non-OK results from $@. | test.cpp:52:16:52:36 | call to SSL_get_verify_result | call to SSL_get_verify_result |
+| test.cpp:62:7:62:36 | ... \|\| ... | This expression conflates OK and non-OK results from $@. | test.cpp:60:16:60:36 | call to SSL_get_verify_result | call to SSL_get_verify_result |
+| test.cpp:70:7:70:36 | ... && ... | This expression conflates OK and non-OK results from $@. | test.cpp:68:16:68:36 | call to SSL_get_verify_result | call to SSL_get_verify_result |
+| test.cpp:83:7:83:40 | ... \|\| ... | This expression conflates OK and non-OK results from $@. | test.cpp:78:16:78:36 | call to SSL_get_verify_result | call to SSL_get_verify_result |
+| test.cpp:87:7:87:38 | ... \|\| ... | This expression conflates OK and non-OK results from $@. | test.cpp:7:57:7:77 | call to SSL_get_verify_result | call to SSL_get_verify_result |
+| test.cpp:107:13:107:42 | ... \|\| ... | This expression conflates OK and non-OK results from $@. | test.cpp:105:16:105:36 | call to SSL_get_verify_result | call to SSL_get_verify_result |

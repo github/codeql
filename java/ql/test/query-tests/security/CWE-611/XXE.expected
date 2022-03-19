@@ -77,6 +77,8 @@ edges
 | XPathExpressionTests.java:27:37:27:57 | getInputStream(...) : InputStream | XPathExpressionTests.java:27:21:27:58 | new InputSource(...) |
 nodes
 | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | semmle.label | getInputStream(...) |
 | DocumentBuilderTests.java:42:19:42:39 | getInputStream(...) | semmle.label | getInputStream(...) |
 | DocumentBuilderTests.java:49:19:49:39 | getInputStream(...) | semmle.label | getInputStream(...) |
 | DocumentBuilderTests.java:64:19:64:39 | getInputStream(...) | semmle.label | getInputStream(...) |
@@ -250,6 +252,8 @@ nodes
 subpaths
 #select
 | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | user input |
+| DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | user input |
+| DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | user input |
 | DocumentBuilderTests.java:42:19:42:39 | getInputStream(...) | DocumentBuilderTests.java:42:19:42:39 | getInputStream(...) | DocumentBuilderTests.java:42:19:42:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:42:19:42:39 | getInputStream(...) | user input |
 | DocumentBuilderTests.java:49:19:49:39 | getInputStream(...) | DocumentBuilderTests.java:49:19:49:39 | getInputStream(...) | DocumentBuilderTests.java:49:19:49:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:49:19:49:39 | getInputStream(...) | user input |
 | DocumentBuilderTests.java:64:19:64:39 | getInputStream(...) | DocumentBuilderTests.java:64:19:64:39 | getInputStream(...) | DocumentBuilderTests.java:64:19:64:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:64:19:64:39 | getInputStream(...) | user input |

@@ -60,7 +60,7 @@ module XML {
     }
 
     /**
-     * A document from the `libxmljs` library.
+     * Gets a document from the `libxmljs` library.
      * The API is based on https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/libxmljs/index.d.ts
      */
     private API::Node doc() {
@@ -74,7 +74,7 @@ module XML {
     }
 
     /**
-     * An `Element` from the `libxmljs` library.
+     * Gets an `Element` from the `libxmljs` library.
      */
     private API::Node element() {
       result = doc().getMember(["child", "get", "node", "root"]).getReturn()
@@ -91,7 +91,7 @@ module XML {
     }
 
     /**
-     * An `Attr` from the `libxmljs` library.
+     * Gets an `Attr` from the `libxmljs` library.
      */
     private API::Node attr() {
       result = element().getMember("attr").getReturn()
@@ -182,8 +182,8 @@ module XML {
   /**
    * An invocation of `DOMParser.parseFromString`.
    */
-  private class DOMParserXmlParserInvocation extends XML::ParserInvocation {
-    DOMParserXmlParserInvocation() {
+  private class DomParserXmlParserInvocation extends XML::ParserInvocation {
+    DomParserXmlParserInvocation() {
       this =
         DataFlow::globalVarRef("DOMParser")
             .getAnInstantiation()
@@ -341,7 +341,7 @@ module XML {
     }
   }
 
-  private class XMLParserTaintStep extends js::TaintTracking::SharedTaintStep {
+  private class XmlParserTaintStep extends js::TaintTracking::SharedTaintStep {
     override predicate deserializeStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(XML::ParserInvocation parser |
         pred.asExpr() = parser.getSourceArgument() and

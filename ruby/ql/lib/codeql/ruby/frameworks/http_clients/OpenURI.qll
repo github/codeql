@@ -1,7 +1,13 @@
+/**
+ * Provides modeling for the `OpenURI` library.
+ */
+
 private import ruby
+private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.frameworks.StandardLibrary
+private import codeql.ruby.DataFlow
+private import codeql.ruby.frameworks.Core
 
 /**
  * A call that makes an HTTP request using `OpenURI` via `URI.open` or
@@ -18,8 +24,10 @@ class OpenUriRequest extends HTTP::Client::Request::Range {
 
   OpenUriRequest() {
     requestNode =
-      [API::getTopLevelMember("URI"), API::getTopLevelMember("URI").getReturn("parse")]
-          .getReturn("open") and
+      [
+        [API::getTopLevelMember("URI"), API::getTopLevelMember("URI").getReturn("parse")]
+            .getReturn("open"), API::getTopLevelMember("OpenURI").getReturn("open_uri")
+      ] and
     requestUse = requestNode.getAnImmediateUse() and
     this = requestUse.asExpr().getExpr()
   }
@@ -32,8 +40,7 @@ class OpenUriRequest extends HTTP::Client::Request::Range {
 
   override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
     exists(DataFlow::Node arg |
-      arg.asExpr().getExpr() = requestUse.asExpr().getExpr().(MethodCall).getArgument(_)
-    |
+      arg.asExpr() = requestUse.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getAnArgument() and
       argumentDisablesValidation(arg, disablingNode)
     )
   }
@@ -68,8 +75,7 @@ class OpenUriKernelOpenRequest extends HTTP::Client::Request::Range {
   override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
     exists(DataFlow::Node arg, int i |
       i > 0 and
-      arg.asExpr().getExpr() = requestUse.asExpr().getExpr().(MethodCall).getArgument(i)
-    |
+      arg.asExpr() = requestUse.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getArgument(i) and
       argumentDisablesValidation(arg, disablingNode)
     )
   }
@@ -85,24 +91,24 @@ class OpenUriKernelOpenRequest extends HTTP::Client::Request::Range {
 private predicate argumentDisablesValidation(DataFlow::Node arg, DataFlow::Node disablingNode) {
   // Either passed as an individual key:value argument, e.g.:
   // URI.open(..., ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE)
-  isSslVerifyModeNonePair(arg.asExpr().getExpr()) and
+  isSslVerifyModeNonePair(arg.asExpr()) and
   disablingNode = arg
   or
   // Or as a single hash argument, e.g.:
   // URI.open(..., { ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE, ... })
-  exists(DataFlow::LocalSourceNode optionsNode, Pair p |
-    p = optionsNode.asExpr().getExpr().(HashLiteral).getAKeyValuePair() and
+  exists(DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p |
+    p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
     isSslVerifyModeNonePair(p) and
     optionsNode.flowsTo(arg) and
-    disablingNode.asExpr().getExpr() = p
+    disablingNode.asExpr() = p
   )
 }
 
 /** Holds if `p` is the pair `ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE`. */
-private predicate isSslVerifyModeNonePair(Pair p) {
+private predicate isSslVerifyModeNonePair(CfgNodes::ExprNodes::PairCfgNode p) {
   exists(DataFlow::Node key, DataFlow::Node value |
-    key.asExpr().getExpr() = p.getKey() and value.asExpr().getExpr() = p.getValue()
-  |
+    key.asExpr() = p.getKey() and
+    value.asExpr() = p.getValue() and
     isSslVerifyModeLiteral(key) and
     value = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse()
   )
@@ -111,7 +117,7 @@ private predicate isSslVerifyModeNonePair(Pair p) {
 /** Holds if `node` can represent the symbol literal `:ssl_verify_mode`. */
 private predicate isSslVerifyModeLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = "ssl_verify_mode" and
+    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol("ssl_verify_mode") and
     literal.flowsTo(node)
   )
 }

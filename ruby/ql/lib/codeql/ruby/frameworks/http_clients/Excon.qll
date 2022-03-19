@@ -1,6 +1,12 @@
+/**
+ * Provides modeling for the `Excon` library.
+ */
+
 private import ruby
+private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
 
 /**
  * A call that makes an HTTP request using `Excon`.
@@ -91,16 +97,16 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
 predicate argSetsVerifyPeer(DataFlow::Node arg, boolean value, DataFlow::Node kvNode) {
   // Either passed as an individual key:value argument, e.g.:
   // Excon.get(..., ssl_verify_peer: false)
-  isSslVerifyPeerPair(arg.asExpr().getExpr(), value) and
+  isSslVerifyPeerPair(arg.asExpr(), value) and
   kvNode = arg
   or
   // Or as a single hash argument, e.g.:
   // Excon.get(..., { ssl_verify_peer: false, ... })
-  exists(DataFlow::LocalSourceNode optionsNode, Pair p |
-    p = optionsNode.asExpr().getExpr().(HashLiteral).getAKeyValuePair() and
+  exists(DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p |
+    p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
     isSslVerifyPeerPair(p, value) and
     optionsNode.flowsTo(arg) and
-    kvNode.asExpr().getExpr() = p
+    kvNode.asExpr() = p
   )
 }
 
@@ -119,7 +125,7 @@ private predicate setsDefaultVerification(DataFlow::CallNode callNode, boolean v
 
 private predicate isSslVerifyPeerLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = "ssl_verify_peer" and
+    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol("ssl_verify_peer") and
     literal.flowsTo(node)
   )
 }
@@ -133,10 +139,10 @@ private predicate hasBooleanValue(DataFlow::Node node, boolean value) {
 }
 
 /** Holds if `p` is the pair `ssl_verify_peer: <value>`. */
-private predicate isSslVerifyPeerPair(Pair p, boolean value) {
+private predicate isSslVerifyPeerPair(CfgNodes::ExprNodes::PairCfgNode p, boolean value) {
   exists(DataFlow::Node key, DataFlow::Node valueNode |
-    key.asExpr().getExpr() = p.getKey() and valueNode.asExpr().getExpr() = p.getValue()
-  |
+    key.asExpr() = p.getKey() and
+    valueNode.asExpr() = p.getValue() and
     isSslVerifyPeerLiteral(key) and
     hasBooleanValue(valueNode, value)
   )

@@ -3,3 +3,4 @@
 | barrier-guards.rb:15:4:15:15 | ... != ... | barrier-guards.rb:18:5:18:7 | foo | barrier-guards.rb:15:4:15:6 | foo | false |
 | barrier-guards.rb:21:8:21:19 | ... == ... | barrier-guards.rb:24:5:24:7 | foo | barrier-guards.rb:21:8:21:10 | foo | true |
 | barrier-guards.rb:27:8:27:19 | ... != ... | barrier-guards.rb:28:5:28:7 | foo | barrier-guards.rb:27:8:27:10 | foo | false |
+| barrier-guards.rb:37:4:37:20 | call to include? | barrier-guards.rb:38:5:38:7 | foo | barrier-guards.rb:37:17:37:19 | foo | true |

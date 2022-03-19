@@ -1,6 +1,5 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,9 +23,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 symbol.ContainingType is not null && ConstructedOrParentIsConstructed(symbol.ContainingType);
         }
 
-        private static Kinds.TypeKind GetClassType(Context cx, ITypeSymbol t, bool constructUnderlyingTupleType)
+        public Kinds.TypeKind GetTypeKind(Context cx, bool constructUnderlyingTupleType)
         {
-            switch (t.SpecialType)
+            switch (Symbol.SpecialType)
             {
                 case SpecialType.System_Int32: return Kinds.TypeKind.INT;
                 case SpecialType.System_UInt32: return Kinds.TypeKind.UINT;
@@ -44,14 +43,14 @@ namespace Semmle.Extraction.CSharp.Entities
                 case SpecialType.System_Single: return Kinds.TypeKind.FLOAT;
                 case SpecialType.System_IntPtr: return Kinds.TypeKind.INT_PTR;
                 default:
-                    if (t.IsBoundNullable())
+                    if (Symbol.IsBoundNullable())
                         return Kinds.TypeKind.NULLABLE;
 
-                    switch (t.TypeKind)
+                    switch (Symbol.TypeKind)
                     {
                         case TypeKind.Class: return Kinds.TypeKind.CLASS;
                         case TypeKind.Struct:
-                            return ((INamedTypeSymbol)t).IsTupleType && !constructUnderlyingTupleType
+                            return ((INamedTypeSymbol)Symbol).IsTupleType && !constructUnderlyingTupleType
                                 ? Kinds.TypeKind.TUPLE
                                 : Kinds.TypeKind.STRUCT;
                         case TypeKind.Interface: return Kinds.TypeKind.INTERFACE;
@@ -62,7 +61,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         case TypeKind.FunctionPointer: return Kinds.TypeKind.FUNCTION_POINTER;
                         case TypeKind.Error: return Kinds.TypeKind.UNKNOWN;
                         default:
-                            cx.ModelError(t, $"Unhandled type kind '{t.TypeKind}'");
+                            cx.ModelError(Symbol, $"Unhandled type kind '{Symbol.TypeKind}'");
                             return Kinds.TypeKind.UNKNOWN;
                     }
             }
@@ -76,7 +75,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write("types(");
             trapFile.WriteColumn(this);
             trapFile.Write(',');
-            trapFile.WriteColumn((int)GetClassType(Context, Symbol, constructUnderlyingTupleType));
+            trapFile.WriteColumn((int)GetTypeKind(Context, constructUnderlyingTupleType));
             trapFile.Write(",\"");
             Symbol.BuildDisplayName(Context, trapFile, constructUnderlyingTupleType);
             trapFile.WriteLine("\")");

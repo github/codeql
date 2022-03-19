@@ -25,10 +25,10 @@ namespace System
         // Generated from `System.IO.DriveNotFoundException` in `System.IO.FileSystem.DriveInfo, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DriveNotFoundException : System.IO.IOException
         {
-            public DriveNotFoundException(string message, System.Exception innerException) => throw null;
-            public DriveNotFoundException(string message) => throw null;
             public DriveNotFoundException() => throw null;
             protected DriveNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public DriveNotFoundException(string message) => throw null;
+            public DriveNotFoundException(string message, System.Exception innerException) => throw null;
         }
 
         // Generated from `System.IO.DriveType` in `System.IO.FileSystem.DriveInfo, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

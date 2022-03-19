@@ -612,7 +612,7 @@ class ExprMissingType extends InstructionViolation {
     not instruction instanceof Opcodes::Ldvirtftn and
     not instruction instanceof Opcodes::Arglist and
     not instruction instanceof Opcodes::Refanytype and
-    instruction.getPushCount() = 1 and
+    instruction.getPushCount() >= 1 and
     count(instruction.getType()) != 1
   }
 

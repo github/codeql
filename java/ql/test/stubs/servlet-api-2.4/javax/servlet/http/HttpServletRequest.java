@@ -25,6 +25,7 @@ package javax.servlet.http;
 
 import java.util.Enumeration;
 import javax.servlet.ServletRequest;
+import javax.servlet.ServletContext;
 
 public interface HttpServletRequest extends ServletRequest {
     public String getAuthType();
@@ -52,4 +53,5 @@ public interface HttpServletRequest extends ServletRequest {
     public boolean isRequestedSessionIdFromCookie();
     public boolean isRequestedSessionIdFromURL();
     public boolean isRequestedSessionIdFromUrl();
+    public ServletContext getServletContext();
 }

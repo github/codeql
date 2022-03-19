@@ -14,7 +14,7 @@ private import semmle.javascript.security.dataflow.CommandInjectionCustomization
 abstract class HeuristicSource extends DataFlow::Node { }
 
 /**
- * An access to a password, viewed a source of remote flow.
+ * An access to a password, viewed as a source of remote flow.
  */
 private class RemoteFlowPassword extends HeuristicSource, RemoteFlowSource {
   RemoteFlowPassword() { isReadFrom(this, "(?is).*(password|passwd).*") }
@@ -26,9 +26,9 @@ private class RemoteFlowPassword extends HeuristicSource, RemoteFlowSource {
  * A use of `JSON.stringify`, viewed as a source for command-line injections
  * since it does not properly escape single quotes and dollar symbols.
  */
-private class JSONStringifyAsCommandInjectionSource extends HeuristicSource,
+private class JsonStringifyAsCommandInjectionSource extends HeuristicSource,
   CommandInjection::Source {
-  JSONStringifyAsCommandInjectionSource() { this instanceof JsonStringifyCall }
+  JsonStringifyAsCommandInjectionSource() { this instanceof JsonStringifyCall }
 
   override string getSourceType() { result = "a string from JSON.stringify" }
 }
@@ -51,4 +51,21 @@ class RemoteServerResponse extends HeuristicSource, RemoteFlowSource {
   }
 
   override string getSourceType() { result = "a response from a remote server" }
+}
+
+/**
+ * A remote flow source originating from a database access.
+ */
+private class RemoteFlowSourceFromDBAccess extends RemoteFlowSource, HeuristicSource {
+  RemoteFlowSourceFromDBAccess() {
+    this = ModelOutput::getASourceNode("database-access-result").getAUse() or
+    exists(DatabaseAccess dba | this = dba.getAResult())
+  }
+
+  override string getSourceType() { result = "Database access" }
+
+  override predicate isUserControlledObject() {
+    // NB. supported databases all might return JSON.
+    any()
+  }
 }

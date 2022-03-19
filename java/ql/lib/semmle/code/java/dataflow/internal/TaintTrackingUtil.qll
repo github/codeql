@@ -11,6 +11,7 @@ private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.frameworks.Networking
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.FlowSteps
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -20,12 +21,14 @@ private import semmle.code.java.frameworks.JaxWS
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(src, sink) }
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprTaint(Expr src, Expr sink) {
   localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))
 }
@@ -57,13 +60,6 @@ private module Cached {
       FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink) or
       FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink)
     )
-  }
-
-  private predicate containerContent(DataFlow::Content c) {
-    c instanceof DataFlow::ArrayContent or
-    c instanceof DataFlow::CollectionContent or
-    c instanceof DataFlow::MapKeyContent or
-    c instanceof DataFlow::MapValueContent
   }
 
   /**
@@ -100,6 +96,7 @@ private module Cached {
   cached
   predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     localAdditionalTaintStep(src, sink) or
+    entrypointFieldStep(src, sink) or
     any(AdditionalTaintStep a).step(src, sink)
   }
 
@@ -114,6 +111,12 @@ private module Cached {
     node.asExpr() instanceof ValidatedVariableAccess
   }
 }
+
+/**
+ * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
+ * but not in local taint.
+ */
+predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
 import Cached
 
@@ -273,7 +276,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.getName().matches("read%")
   or
   m instanceof GetterMethod and
-  m.getDeclaringType().getASubtype*() instanceof SpringUntrustedDataType and
+  m.getDeclaringType().getADescendant() instanceof SpringUntrustedDataType and
   not m.getDeclaringType() instanceof TypeObject
   or
   m.(TaintPreservingCallable).returnsTaintFrom(-1)
@@ -590,4 +593,20 @@ module StringBuilderVarModule {
 private MethodAccess callReturningSameType(Expr ref) {
   ref = result.getQualifier() and
   result.getMethod().getReturnType() = ref.getType()
+}
+
+private SrcRefType entrypointType() {
+  exists(RemoteFlowSource s, RefType t |
+    s instanceof DataFlow::ExplicitParameterNode and
+    t = pragma[only_bind_out](s).getType() and
+    not t instanceof TypeObject and
+    result = t.getADescendant().getSourceDeclaration()
+  )
+  or
+  result = entrypointType().getAField().getType().(RefType).getSourceDeclaration()
+}
+
+private predicate entrypointFieldStep(DataFlow::Node src, DataFlow::Node sink) {
+  src = DataFlow::getFieldQualifier(sink.asExpr().(FieldRead)) and
+  src.getType().(RefType).getSourceDeclaration() = entrypointType()
 }

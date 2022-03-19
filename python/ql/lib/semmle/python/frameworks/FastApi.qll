@@ -30,12 +30,15 @@ private module FastApi {
    *
    * See https://fastapi.tiangolo.com/tutorial/bigger-applications/.
    */
-  module APIRouter {
-    /** Gets a reference to an instance of `fastapi.APIRouter`. */
+  module ApiRouter {
+    /** Gets a reference to an instance of `fastapi.ApiRouter`. */
     API::Node instance() {
-      result = API::moduleImport("fastapi").getMember("APIRouter").getReturn()
+      result = API::moduleImport("fastapi").getMember("APIRouter").getASubclass*().getReturn()
     }
   }
+
+  /** DEPRECATED: Alias for ApiRouter */
+  deprecated module APIRouter = ApiRouter;
 
   // ---------------------------------------------------------------------------
   // routing modeling
@@ -54,7 +57,7 @@ private module FastApi {
       |
         this = App::instance().getMember(routeAddingMethod).getACall()
         or
-        this = APIRouter::instance().getMember(routeAddingMethod).getACall()
+        this = ApiRouter::instance().getMember(routeAddingMethod).getACall()
       )
     }
 
@@ -163,7 +166,7 @@ private module FastApi {
       exists(Class cls, API::Node base |
         base = getModeledResponseClass(_).getASubclass*() and
         cls.getABase() = base.getAUse().asExpr() and
-        responseClass.getAnImmediateUse().asExpr().(ClassExpr) = cls.getParent()
+        responseClass.getAnImmediateUse().asExpr() = cls.getParent()
       |
         exists(Assign assign | assign = cls.getAStmt() |
           assign.getATarget().(Name).getId() = "media_type" and
@@ -227,6 +230,17 @@ private module FastApi {
     }
 
     /**
+     * A direct instantiation of a FileResponse.
+     */
+    private class FileResponseInstantiation extends ResponseInstantiation, FileSystemAccess::Range {
+      FileResponseInstantiation() { baseApiNode = getModeledResponseClass("FileResponse") }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
      * An implicit response from a return of FastAPI request handler.
      */
     private class FastApiRequestHandlerReturn extends HTTP::Server::HttpResponse::Range,
@@ -256,7 +270,8 @@ private module FastApi {
      * An implicit response from a return of FastAPI request handler, that has
      * `response_class` set to a `FileResponse`.
      */
-    private class FastApiRequestHandlerFileResponseReturn extends FastApiRequestHandlerReturn {
+    private class FastApiRequestHandlerFileResponseReturn extends FastApiRequestHandlerReturn,
+      FileSystemAccess::Range {
       FastApiRequestHandlerFileResponseReturn() {
         exists(API::Node responseClass |
           responseClass.getAUse() = routeSetup.getResponseClassArg() and
@@ -265,6 +280,8 @@ private module FastApi {
       }
 
       override DataFlow::Node getBody() { none() }
+
+      override DataFlow::Node getAPathArgument() { result = this }
     }
 
     /**

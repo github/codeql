@@ -155,4 +155,4 @@ int getFieldBitOffset(Field f) {
 /**
  * Holds if the specified `Function` can be overridden in a derived class.
  */
-predicate isFunctionVirtual(Function f) { f.(CSharp::Virtualizable).isOverridableOrImplementable() }
+predicate isFunctionVirtual(Function f) { f.(CSharp::Overridable).isOverridableOrImplementable() }

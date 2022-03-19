@@ -1,4 +1,6 @@
 name: codeql/javascript-examples
-version: 0.0.3
+groups: 
+  - javascript
+  - examples
 dependencies:
   codeql/javascript-all: "*"

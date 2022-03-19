@@ -23,5 +23,5 @@ class WaitMethod extends Method {
 from MethodAccess ma
 where
   ma.getMethod() instanceof WaitMethod and
-  not exists(LoopStmt s | ma.getEnclosingStmt().getEnclosingStmt*() = s)
+  not ma.getEnclosingStmt().getEnclosingStmt*() instanceof LoopStmt
 select ma, "To avoid spurious wake-ups, 'wait' should only be called inside a loop."

@@ -2,6 +2,8 @@
 
 package android.os;
 
+import android.os.Looper;
+import android.os.Message;
 import android.util.Printer;
 
 public class Handler

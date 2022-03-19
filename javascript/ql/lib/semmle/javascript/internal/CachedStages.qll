@@ -56,9 +56,9 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      exists(any(ASTNode a).getTopLevel())
+      exists(any(AstNode a).getTopLevel())
       or
-      exists(any(ASTNode a).getParent())
+      exists(any(AstNode a).getParent())
       or
       exists(any(StmtContainer c).getEnclosingContainer())
       or
@@ -68,7 +68,15 @@ module Stages {
       or
       exists(any(Expr e).getStringValue())
       or
-      any(ASTNode node).isAmbient()
+      any(AstNode node).isAmbient()
+      or
+      exists(any(Identifier e).getName())
+      or
+      exists(any(ExprOrType e).getUnderlyingValue())
+      or
+      exists(ConstantExpr e)
+      or
+      exists(SyntacticConstants::NullConstant n)
     }
   }
 
@@ -234,6 +242,46 @@ module Stages {
   }
 
   /**
+   * The `APIStage` stage.
+   */
+  cached
+  module ApiStage {
+    /**
+     * Always holds.
+     * Ensures that a predicate is evaluated as part of the APIStage stage.
+     */
+    cached
+    predicate ref() { 1 = 1 }
+
+    /**
+     * DONT USE!
+     * Contains references to each predicate that use the above `ref` predicate.
+     */
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      exists(
+        API::moduleImport("foo")
+            .getMember("bar")
+            .getUnknownMember()
+            .getAMember()
+            .getAParameter()
+            .getPromised()
+            .getReturn()
+            .getParameter(2)
+            .getUnknownMember()
+            .getInstance()
+            .getReceiver()
+            .getPromisedError()
+      )
+    }
+  }
+
+  /** DEPRECATED: Alias for ApiStage */
+  deprecated module APIStage = ApiStage;
+
+  /**
    * The `taint` stage.
    */
   cached
@@ -262,6 +310,20 @@ module Stages {
       exists(Exports::getALibraryInputParameter())
       or
       any(RegExpTerm t).isUsedAsRegExp()
+      or
+      any(TaintTracking::AdditionalSanitizerGuardNode e).appliesTo(_)
+    }
+
+    cached
+    class DummySanitizer extends TaintTracking::AdditionalSanitizerGuardNode {
+      cached
+      DummySanitizer() { none() }
+
+      cached
+      override predicate appliesTo(TaintTracking::Configuration cfg) { none() }
+
+      cached
+      override predicate sanitizes(boolean outcome, Expr e) { none() }
     }
   }
 }

@@ -3,6 +3,7 @@
  */
 
 private import java
+private import DataFlowDispatch
 private import DataFlowPrivate
 private import DataFlowUtil
 private import FlowSummaryImpl::Private
@@ -12,9 +13,6 @@ private import semmle.code.java.dataflow.ExternalFlow
 private module FlowSummaries {
   private import semmle.code.java.dataflow.FlowSummary as F
 }
-
-/** Holds is `i` is a valid parameter position. */
-predicate parameterPosition(int i) { i in [-1 .. any(Parameter p).getPosition()] }
 
 /** Gets the parameter position of the instance parameter. */
 int instanceParameterPosition() { result = -1 }
@@ -68,9 +66,47 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
 
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
-SummaryComponent interpretComponentSpecific(string c) {
+SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   exists(Content content | parseContent(c, content) and result = SummaryComponent::content(content))
 }
+
+/** Gets the summary component for specification component `c`, if any. */
+private string getContentSpecificCsv(Content c) {
+  exists(Field f, string package, string className, string fieldName |
+    f = c.(FieldContent).getField() and
+    f.hasQualifiedName(package, className, fieldName) and
+    result = "Field[" + package + "." + className + "." + fieldName + "]"
+  )
+  or
+  exists(SyntheticField f |
+    f = c.(SyntheticFieldContent).getField() and result = "SyntheticField[" + f + "]"
+  )
+  or
+  c instanceof ArrayContent and result = "ArrayElement"
+  or
+  c instanceof CollectionContent and result = "Element"
+  or
+  c instanceof MapKeyContent and result = "MapKey"
+  or
+  c instanceof MapValueContent and result = "MapValue"
+}
+
+/** Gets the textual representation of the content in the format used for flow summaries. */
+string getComponentSpecificCsv(SummaryComponent sc) {
+  exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
+}
+
+/** Gets the textual representation of a parameter position in the format used for flow summaries. */
+string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
+
+/** Gets the textual representation of an argument position in the format used for flow summaries. */
+string getArgumentPositionCsv(ArgumentPosition pos) { result = pos.toString() }
+
+/** Holds if input specification component `c` needs a reference. */
+predicate inputNeedsReferenceSpecific(string c) { none() }
+
+/** Holds if output specification component `c` needs a reference. */
+predicate outputNeedsReferenceSpecific(string c) { none() }
 
 class SourceOrSinkElement = Top;
 
@@ -160,6 +196,14 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
   exists(FieldWrite fw |
     c = "" and
     fw.getField() = mid.asElement() and
-    n.asNode().asExpr() = fw.getRHS()
+    n.asNode().asExpr() = fw.getRhs()
   )
 }
+
+/** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
+bindingset[s]
+ArgumentPosition parseParamBody(string s) { result = AccessPath::parseInt(s) }
+
+/** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
+bindingset[s]
+ParameterPosition parseArgBody(string s) { result = AccessPath::parseInt(s) }

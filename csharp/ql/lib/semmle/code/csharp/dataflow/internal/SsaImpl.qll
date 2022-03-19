@@ -171,7 +171,8 @@ private module SourceVariableImpl {
       def.getTarget() = lv and
       lv.isRef() and
       lv = v.getAssignable() and
-      bb.getNode(i) = def.getAControlFlowNode()
+      bb.getNode(i) = def.getAControlFlowNode() and
+      not def.getAssignment() instanceof LocalVariableDeclAndInitExpr
     )
   }
 

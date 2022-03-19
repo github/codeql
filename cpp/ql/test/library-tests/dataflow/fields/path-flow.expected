@@ -10,35 +10,29 @@ edges
 | A.cpp:31:20:31:20 | c | A.cpp:23:10:23:10 | c |
 | A.cpp:31:20:31:20 | c | A.cpp:31:14:31:21 | call to B [c] |
 | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... |
-| A.cpp:43:10:43:12 | & ... | A.cpp:173:26:173:26 | o |
 | A.cpp:47:12:47:18 | new | A.cpp:48:20:48:20 | c |
 | A.cpp:48:12:48:18 | call to make [c] | A.cpp:49:10:49:10 | b [c] |
 | A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c |
 | A.cpp:48:20:48:20 | c | A.cpp:48:12:48:18 | call to make [c] |
 | A.cpp:49:10:49:10 | b [c] | A.cpp:49:13:49:13 | c |
-| A.cpp:49:13:49:13 | c | A.cpp:173:26:173:26 | o |
 | A.cpp:55:5:55:5 | ref arg b [c] | A.cpp:56:10:56:10 | b [c] |
 | A.cpp:55:12:55:19 | new | A.cpp:27:17:27:17 | c |
 | A.cpp:55:12:55:19 | new | A.cpp:55:5:55:5 | ref arg b [c] |
 | A.cpp:56:10:56:10 | b [c] | A.cpp:28:8:28:10 | this [c] |
 | A.cpp:56:10:56:10 | b [c] | A.cpp:56:13:56:15 | call to get |
-| A.cpp:56:13:56:15 | call to get | A.cpp:173:26:173:26 | o |
 | A.cpp:57:11:57:24 | call to B [c] | A.cpp:57:11:57:24 | new [c] |
 | A.cpp:57:11:57:24 | new [c] | A.cpp:28:8:28:10 | this [c] |
 | A.cpp:57:11:57:24 | new [c] | A.cpp:57:28:57:30 | call to get |
 | A.cpp:57:17:57:23 | new | A.cpp:23:10:23:10 | c |
 | A.cpp:57:17:57:23 | new | A.cpp:57:11:57:24 | call to B [c] |
-| A.cpp:57:28:57:30 | call to get | A.cpp:173:26:173:26 | o |
 | A.cpp:64:10:64:15 | call to setOnB [c] | A.cpp:66:10:66:11 | b2 [c] |
 | A.cpp:64:21:64:28 | new | A.cpp:64:10:64:15 | call to setOnB [c] |
 | A.cpp:64:21:64:28 | new | A.cpp:85:26:85:26 | c |
 | A.cpp:66:10:66:11 | b2 [c] | A.cpp:66:14:66:14 | c |
-| A.cpp:66:14:66:14 | c | A.cpp:173:26:173:26 | o |
 | A.cpp:73:10:73:19 | call to setOnBWrap [c] | A.cpp:75:10:75:11 | b2 [c] |
 | A.cpp:73:25:73:32 | new | A.cpp:73:10:73:19 | call to setOnBWrap [c] |
 | A.cpp:73:25:73:32 | new | A.cpp:78:27:78:27 | c |
 | A.cpp:75:10:75:11 | b2 [c] | A.cpp:75:14:75:14 | c |
-| A.cpp:75:14:75:14 | c | A.cpp:173:26:173:26 | o |
 | A.cpp:78:27:78:27 | c | A.cpp:81:21:81:21 | c |
 | A.cpp:81:10:81:15 | call to setOnB [c] | A.cpp:82:12:82:24 | ... ? ... : ... [c] |
 | A.cpp:81:21:81:21 | c | A.cpp:81:10:81:15 | call to setOnB [c] |
@@ -54,9 +48,7 @@ edges
 | A.cpp:103:14:103:14 | c [a] | A.cpp:107:12:107:13 | c1 [a] |
 | A.cpp:103:14:103:14 | c [a] | A.cpp:120:12:120:13 | c1 [a] |
 | A.cpp:107:12:107:13 | c1 [a] | A.cpp:107:16:107:16 | a |
-| A.cpp:107:16:107:16 | a | A.cpp:173:26:173:26 | o |
 | A.cpp:120:12:120:13 | c1 [a] | A.cpp:120:16:120:16 | a |
-| A.cpp:120:16:120:16 | a | A.cpp:173:26:173:26 | o |
 | A.cpp:124:14:124:14 | b [c] | A.cpp:131:8:131:8 | ref arg b [c] |
 | A.cpp:126:5:126:5 | ref arg b [c] | A.cpp:124:14:124:14 | b [c] |
 | A.cpp:126:5:126:5 | ref arg b [c] | A.cpp:131:8:131:8 | ref arg b [c] |
@@ -64,7 +56,6 @@ edges
 | A.cpp:126:12:126:18 | new | A.cpp:126:5:126:5 | ref arg b [c] |
 | A.cpp:131:8:131:8 | ref arg b [c] | A.cpp:132:10:132:10 | b [c] |
 | A.cpp:132:10:132:10 | b [c] | A.cpp:132:13:132:13 | c |
-| A.cpp:132:13:132:13 | c | A.cpp:173:26:173:26 | o |
 | A.cpp:140:13:140:13 | b | A.cpp:143:7:143:31 | ... = ... |
 | A.cpp:140:13:140:13 | b [c] | A.cpp:151:18:151:18 | ref arg b [c] |
 | A.cpp:142:7:142:7 | b [post update] [c] | A.cpp:140:13:140:13 | b [c] |
@@ -88,15 +79,12 @@ edges
 | A.cpp:152:10:152:10 | d [b, c] | A.cpp:152:13:152:13 | b [c] |
 | A.cpp:152:10:152:10 | d [b] | A.cpp:152:13:152:13 | b |
 | A.cpp:152:10:152:10 | d [post update] [b, c] | A.cpp:153:10:153:10 | d [b, c] |
-| A.cpp:152:13:152:13 | b | A.cpp:173:26:173:26 | o |
 | A.cpp:152:13:152:13 | b [c] | A.cpp:152:13:152:13 | ref arg b [c] |
 | A.cpp:152:13:152:13 | b [c] | A.cpp:173:26:173:26 | o [c] |
 | A.cpp:152:13:152:13 | ref arg b [c] | A.cpp:152:10:152:10 | d [post update] [b, c] |
 | A.cpp:153:10:153:10 | d [b, c] | A.cpp:153:13:153:13 | b [c] |
 | A.cpp:153:13:153:13 | b [c] | A.cpp:153:16:153:16 | c |
-| A.cpp:153:16:153:16 | c | A.cpp:173:26:173:26 | o |
 | A.cpp:154:10:154:10 | b [c] | A.cpp:154:13:154:13 | c |
-| A.cpp:154:13:154:13 | c | A.cpp:173:26:173:26 | o |
 | A.cpp:159:12:159:18 | new | A.cpp:160:29:160:29 | b |
 | A.cpp:160:18:160:60 | call to MyList [head] | A.cpp:161:38:161:39 | l1 [head] |
 | A.cpp:160:29:160:29 | b | A.cpp:160:18:160:60 | call to MyList [head] |
@@ -123,7 +111,6 @@ edges
 | A.cpp:167:47:167:50 | next [head] | A.cpp:169:12:169:12 | l [head] |
 | A.cpp:167:47:167:50 | next [next, head] | A.cpp:167:44:167:44 | l [next, head] |
 | A.cpp:169:12:169:12 | l [head] | A.cpp:169:15:169:18 | head |
-| A.cpp:169:15:169:18 | head | A.cpp:173:26:173:26 | o |
 | A.cpp:173:26:173:26 | o | A.cpp:173:26:173:26 | o |
 | A.cpp:173:26:173:26 | o [c] | A.cpp:173:26:173:26 | o [c] |
 | A.cpp:181:15:181:21 | newHead | A.cpp:183:7:183:20 | ... = ... |
@@ -182,7 +169,6 @@ edges
 | D.cpp:22:10:22:11 | b2 [box, elem] | D.cpp:22:14:22:20 | call to getBox1 [elem] |
 | D.cpp:22:14:22:20 | call to getBox1 [elem] | D.cpp:10:11:10:17 | this [elem] |
 | D.cpp:22:14:22:20 | call to getBox1 [elem] | D.cpp:22:25:22:31 | call to getElem |
-| D.cpp:22:25:22:31 | call to getElem | realistic.cpp:41:17:41:17 | o |
 | D.cpp:28:15:28:24 | new | D.cpp:30:5:30:20 | ... = ... |
 | D.cpp:30:5:30:5 | b [post update] [box, elem] | D.cpp:31:14:31:14 | b [box, elem] |
 | D.cpp:30:5:30:20 | ... = ... | D.cpp:30:8:30:10 | box [post update] [elem] |
@@ -215,20 +201,16 @@ edges
 | D.cpp:64:10:64:17 | boxfield [box, elem] | D.cpp:64:20:64:22 | box [elem] |
 | D.cpp:64:10:64:17 | this [boxfield, box, elem] | D.cpp:64:10:64:17 | boxfield [box, elem] |
 | D.cpp:64:20:64:22 | box [elem] | D.cpp:64:25:64:28 | elem |
-| D.cpp:64:25:64:28 | elem | realistic.cpp:41:17:41:17 | o |
 | E.cpp:19:27:19:27 | p [data, buffer] | E.cpp:21:10:21:10 | p [data, buffer] |
 | E.cpp:21:10:21:10 | p [data, buffer] | E.cpp:21:13:21:16 | data [buffer] |
 | E.cpp:21:13:21:16 | data [buffer] | E.cpp:21:18:21:23 | buffer |
-| E.cpp:21:18:21:23 | buffer | realistic.cpp:41:17:41:17 | o |
 | E.cpp:28:21:28:23 | ref arg raw | E.cpp:31:10:31:12 | raw |
 | E.cpp:29:21:29:21 | b [post update] [buffer] | E.cpp:32:10:32:10 | b [buffer] |
 | E.cpp:29:24:29:29 | ref arg buffer | E.cpp:29:21:29:21 | b [post update] [buffer] |
 | E.cpp:30:21:30:21 | p [post update] [data, buffer] | E.cpp:33:18:33:19 | & ... [data, buffer] |
 | E.cpp:30:23:30:26 | data [post update] [buffer] | E.cpp:30:21:30:21 | p [post update] [data, buffer] |
 | E.cpp:30:28:30:33 | ref arg buffer | E.cpp:30:23:30:26 | data [post update] [buffer] |
-| E.cpp:31:10:31:12 | raw | realistic.cpp:41:17:41:17 | o |
 | E.cpp:32:10:32:10 | b [buffer] | E.cpp:32:13:32:18 | buffer |
-| E.cpp:32:13:32:18 | buffer | realistic.cpp:41:17:41:17 | o |
 | E.cpp:33:18:33:19 | & ... [data, buffer] | E.cpp:19:27:19:27 | p [data, buffer] |
 | aliasing.cpp:8:23:8:23 | s [m1] | aliasing.cpp:25:17:25:19 | ref arg & ... [m1] |
 | aliasing.cpp:9:3:9:3 | s [post update] [m1] | aliasing.cpp:8:23:8:23 | s [m1] |
@@ -243,21 +225,17 @@ edges
 | aliasing.cpp:25:17:25:19 | ref arg & ... [m1] | aliasing.cpp:29:8:29:9 | s1 [m1] |
 | aliasing.cpp:26:19:26:20 | ref arg s2 [m1] | aliasing.cpp:30:8:30:9 | s2 [m1] |
 | aliasing.cpp:29:8:29:9 | s1 [m1] | aliasing.cpp:29:11:29:12 | m1 |
-| aliasing.cpp:29:11:29:12 | m1 | realistic.cpp:41:17:41:17 | o |
 | aliasing.cpp:30:8:30:9 | s2 [m1] | aliasing.cpp:30:11:30:12 | m1 |
-| aliasing.cpp:30:11:30:12 | m1 | realistic.cpp:41:17:41:17 | o |
 | aliasing.cpp:60:3:60:4 | s2 [post update] [m1] | aliasing.cpp:62:8:62:12 | copy2 [m1] |
 | aliasing.cpp:60:3:60:22 | ... = ... | aliasing.cpp:60:3:60:4 | s2 [post update] [m1] |
 | aliasing.cpp:60:11:60:20 | call to user_input | aliasing.cpp:60:3:60:22 | ... = ... |
 | aliasing.cpp:62:8:62:12 | copy2 [m1] | aliasing.cpp:62:14:62:15 | m1 |
-| aliasing.cpp:62:14:62:15 | m1 | realistic.cpp:41:17:41:17 | o |
 | aliasing.cpp:92:3:92:3 | w [post update] [s, m1] | aliasing.cpp:93:8:93:8 | w [s, m1] |
 | aliasing.cpp:92:3:92:23 | ... = ... | aliasing.cpp:92:5:92:5 | s [post update] [m1] |
 | aliasing.cpp:92:5:92:5 | s [post update] [m1] | aliasing.cpp:92:3:92:3 | w [post update] [s, m1] |
 | aliasing.cpp:92:12:92:21 | call to user_input | aliasing.cpp:92:3:92:23 | ... = ... |
 | aliasing.cpp:93:8:93:8 | w [s, m1] | aliasing.cpp:93:10:93:10 | s [m1] |
 | aliasing.cpp:93:10:93:10 | s [m1] | aliasing.cpp:93:12:93:13 | m1 |
-| aliasing.cpp:93:12:93:13 | m1 | realistic.cpp:41:17:41:17 | o |
 | aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:158:17:158:20 | ref arg data |
 | aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:164:17:164:20 | ref arg data |
 | aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:175:15:175:22 | ref arg & ... |
@@ -272,13 +250,11 @@ edges
 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:106:4:106:5 | pa [inner post update] |
 | aliasing.cpp:158:15:158:15 | s [post update] [data] | aliasing.cpp:159:9:159:9 | s [data] |
 | aliasing.cpp:158:17:158:20 | ref arg data | aliasing.cpp:158:15:158:15 | s [post update] [data] |
-| aliasing.cpp:159:8:159:14 | * ... | realistic.cpp:41:17:41:17 | o |
 | aliasing.cpp:159:9:159:9 | s [data] | aliasing.cpp:159:11:159:14 | data |
 | aliasing.cpp:159:11:159:14 | data | aliasing.cpp:159:8:159:14 | * ... |
 | aliasing.cpp:164:15:164:15 | s [post update] [data] | aliasing.cpp:165:8:165:8 | s [data] |
 | aliasing.cpp:164:17:164:20 | ref arg data | aliasing.cpp:164:15:164:15 | s [post update] [data] |
 | aliasing.cpp:165:8:165:8 | s [data] | aliasing.cpp:165:10:165:13 | data |
-| aliasing.cpp:165:8:165:16 | access to array | realistic.cpp:41:17:41:17 | o |
 | aliasing.cpp:165:10:165:13 | data | aliasing.cpp:165:8:165:16 | access to array |
 | aliasing.cpp:175:15:175:22 | ref arg & ... | aliasing.cpp:175:21:175:22 | m1 [inner post update] |
 | aliasing.cpp:175:16:175:17 | s2 [post update] [s, m1] | aliasing.cpp:176:8:176:9 | s2 [s, m1] |
@@ -286,33 +262,24 @@ edges
 | aliasing.cpp:175:21:175:22 | m1 [inner post update] | aliasing.cpp:175:19:175:19 | s [post update] [m1] |
 | aliasing.cpp:176:8:176:9 | s2 [s, m1] | aliasing.cpp:176:11:176:11 | s [m1] |
 | aliasing.cpp:176:11:176:11 | s [m1] | aliasing.cpp:176:13:176:14 | m1 |
-| aliasing.cpp:176:13:176:14 | m1 | realistic.cpp:41:17:41:17 | o |
 | aliasing.cpp:187:15:187:22 | ref arg & ... | aliasing.cpp:187:21:187:22 | m1 [inner post update] |
 | aliasing.cpp:187:16:187:17 | s2 [post update] [s, m1] | aliasing.cpp:189:8:189:11 | s2_2 [s, m1] |
 | aliasing.cpp:187:19:187:19 | s [post update] [m1] | aliasing.cpp:187:16:187:17 | s2 [post update] [s, m1] |
 | aliasing.cpp:187:21:187:22 | m1 [inner post update] | aliasing.cpp:187:19:187:19 | s [post update] [m1] |
 | aliasing.cpp:189:8:189:11 | s2_2 [s, m1] | aliasing.cpp:189:13:189:13 | s [m1] |
 | aliasing.cpp:189:13:189:13 | s [m1] | aliasing.cpp:189:15:189:16 | m1 |
-| aliasing.cpp:189:15:189:16 | m1 | realistic.cpp:41:17:41:17 | o |
 | aliasing.cpp:200:15:200:24 | ref arg & ... | aliasing.cpp:200:23:200:24 | m1 [inner post update] |
 | aliasing.cpp:200:16:200:18 | ps2 [post update] [s, m1] | aliasing.cpp:201:8:201:10 | ps2 [s, m1] |
 | aliasing.cpp:200:21:200:21 | s [post update] [m1] | aliasing.cpp:200:16:200:18 | ps2 [post update] [s, m1] |
 | aliasing.cpp:200:23:200:24 | m1 [inner post update] | aliasing.cpp:200:21:200:21 | s [post update] [m1] |
 | aliasing.cpp:201:8:201:10 | ps2 [s, m1] | aliasing.cpp:201:13:201:13 | s [m1] |
 | aliasing.cpp:201:13:201:13 | s [m1] | aliasing.cpp:201:15:201:16 | m1 |
-| aliasing.cpp:201:15:201:16 | m1 | realistic.cpp:41:17:41:17 | o |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:7:8:7:13 | access to array |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:8:8:8:13 | access to array |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:9:8:9:11 | * ... |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:10:8:10:15 | * ... |
-| arrays.cpp:7:8:7:13 | access to array | realistic.cpp:41:17:41:17 | o |
-| arrays.cpp:8:8:8:13 | access to array | realistic.cpp:41:17:41:17 | o |
-| arrays.cpp:9:8:9:11 | * ... | realistic.cpp:41:17:41:17 | o |
-| arrays.cpp:10:8:10:15 | * ... | realistic.cpp:41:17:41:17 | o |
 | arrays.cpp:15:14:15:23 | call to user_input | arrays.cpp:16:8:16:13 | access to array |
 | arrays.cpp:15:14:15:23 | call to user_input | arrays.cpp:17:8:17:13 | access to array |
-| arrays.cpp:16:8:16:13 | access to array | realistic.cpp:41:17:41:17 | o |
-| arrays.cpp:17:8:17:13 | access to array | realistic.cpp:41:17:41:17 | o |
 | arrays.cpp:36:3:36:3 | o [post update] [nested, arr, data] | arrays.cpp:37:8:37:8 | o [nested, arr, data] |
 | arrays.cpp:36:3:36:3 | o [post update] [nested, arr, data] | arrays.cpp:38:8:38:8 | o [nested, arr, data] |
 | arrays.cpp:36:3:36:17 | access to array [post update] [data] | arrays.cpp:36:12:36:14 | arr [inner post update] [data] |
@@ -336,7 +303,6 @@ edges
 | arrays.cpp:38:8:38:22 | access to array [data] | arrays.cpp:38:24:38:27 | data |
 | arrays.cpp:38:10:38:15 | nested [arr, data] | arrays.cpp:38:17:38:19 | arr [data] |
 | arrays.cpp:38:17:38:19 | arr [data] | arrays.cpp:38:8:38:22 | access to array [data] |
-| arrays.cpp:38:24:38:27 | data | realistic.cpp:41:17:41:17 | o |
 | arrays.cpp:42:3:42:3 | o [post update] [indirect, arr, data] | arrays.cpp:43:8:43:8 | o [indirect, arr, data] |
 | arrays.cpp:42:3:42:3 | o [post update] [indirect, arr, data] | arrays.cpp:44:8:44:8 | o [indirect, arr, data] |
 | arrays.cpp:42:3:42:20 | access to array [post update] [data] | arrays.cpp:42:15:42:17 | arr [inner post update] [data] |
@@ -360,7 +326,6 @@ edges
 | arrays.cpp:44:8:44:25 | access to array [data] | arrays.cpp:44:27:44:30 | data |
 | arrays.cpp:44:10:44:17 | indirect [arr, data] | arrays.cpp:44:20:44:22 | arr [data] |
 | arrays.cpp:44:20:44:22 | arr [data] | arrays.cpp:44:8:44:25 | access to array [data] |
-| arrays.cpp:44:27:44:30 | data | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:11:48:11:52 | value | by_reference.cpp:12:5:12:16 | ... = ... |
 | by_reference.cpp:12:5:12:5 | s [post update] [a] | by_reference.cpp:11:39:11:39 | s [a] |
 | by_reference.cpp:12:5:12:16 | ... = ... | by_reference.cpp:12:5:12:5 | s [post update] [a] |
@@ -387,23 +352,19 @@ edges
 | by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:50:3:50:3 | ref arg s [a] |
 | by_reference.cpp:51:8:51:8 | s [a] | by_reference.cpp:35:9:35:19 | this [a] |
 | by_reference.cpp:51:8:51:8 | s [a] | by_reference.cpp:51:10:51:20 | call to getDirectly |
-| by_reference.cpp:51:10:51:20 | call to getDirectly | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:56:3:56:3 | ref arg s [a] | by_reference.cpp:57:8:57:8 | s [a] |
 | by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:19:28:19:32 | value |
 | by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:56:3:56:3 | ref arg s [a] |
 | by_reference.cpp:57:8:57:8 | s [a] | by_reference.cpp:39:9:39:21 | this [a] |
 | by_reference.cpp:57:8:57:8 | s [a] | by_reference.cpp:57:10:57:22 | call to getIndirectly |
-| by_reference.cpp:57:10:57:22 | call to getIndirectly | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:62:3:62:3 | ref arg s [a] | by_reference.cpp:63:8:63:8 | s [a] |
 | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:23:34:23:38 | value |
 | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:62:3:62:3 | ref arg s [a] |
 | by_reference.cpp:63:8:63:8 | s [a] | by_reference.cpp:43:9:43:27 | this [a] |
 | by_reference.cpp:63:8:63:8 | s [a] | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
-| by_reference.cpp:63:10:63:28 | call to getThroughNonMember | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:68:17:68:18 | ref arg & ... [a] | by_reference.cpp:69:22:69:23 | & ... [a] |
 | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:11:48:11:52 | value |
 | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:68:17:68:18 | ref arg & ... [a] |
-| by_reference.cpp:69:8:69:20 | call to nonMemberGetA | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:69:22:69:23 | & ... [a] | by_reference.cpp:31:46:31:46 | s [a] |
 | by_reference.cpp:69:22:69:23 | & ... [a] | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
 | by_reference.cpp:83:31:83:35 | inner [a] | by_reference.cpp:102:21:102:39 | ref arg & ... [a] |
@@ -455,20 +416,14 @@ edges
 | by_reference.cpp:108:24:108:24 | a [inner post update] | by_reference.cpp:108:16:108:21 | pouter [post update] [a] |
 | by_reference.cpp:110:8:110:12 | outer [inner_nested, a] | by_reference.cpp:110:14:110:25 | inner_nested [a] |
 | by_reference.cpp:110:14:110:25 | inner_nested [a] | by_reference.cpp:110:27:110:27 | a |
-| by_reference.cpp:110:27:110:27 | a | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:111:8:111:12 | outer [inner_ptr, a] | by_reference.cpp:111:14:111:22 | inner_ptr [a] |
 | by_reference.cpp:111:14:111:22 | inner_ptr [a] | by_reference.cpp:111:25:111:25 | a |
-| by_reference.cpp:111:25:111:25 | a | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:112:8:112:12 | outer [a] | by_reference.cpp:112:14:112:14 | a |
-| by_reference.cpp:112:14:112:14 | a | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:114:8:114:13 | pouter [inner_nested, a] | by_reference.cpp:114:16:114:27 | inner_nested [a] |
 | by_reference.cpp:114:16:114:27 | inner_nested [a] | by_reference.cpp:114:29:114:29 | a |
-| by_reference.cpp:114:29:114:29 | a | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:115:8:115:13 | pouter [inner_ptr, a] | by_reference.cpp:115:16:115:24 | inner_ptr [a] |
 | by_reference.cpp:115:16:115:24 | inner_ptr [a] | by_reference.cpp:115:27:115:27 | a |
-| by_reference.cpp:115:27:115:27 | a | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:116:8:116:13 | pouter [a] | by_reference.cpp:116:16:116:16 | a |
-| by_reference.cpp:116:16:116:16 | a | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:122:21:122:25 | outer [post update] [inner_nested, a] | by_reference.cpp:130:8:130:12 | outer [inner_nested, a] |
 | by_reference.cpp:122:27:122:38 | ref arg inner_nested [a] | by_reference.cpp:122:21:122:25 | outer [post update] [inner_nested, a] |
 | by_reference.cpp:123:21:123:36 | ref arg * ... [a] | by_reference.cpp:123:28:123:36 | inner_ptr [inner post update] [a] |
@@ -485,20 +440,14 @@ edges
 | by_reference.cpp:128:23:128:23 | ref arg a | by_reference.cpp:128:15:128:20 | pouter [post update] [a] |
 | by_reference.cpp:130:8:130:12 | outer [inner_nested, a] | by_reference.cpp:130:14:130:25 | inner_nested [a] |
 | by_reference.cpp:130:14:130:25 | inner_nested [a] | by_reference.cpp:130:27:130:27 | a |
-| by_reference.cpp:130:27:130:27 | a | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:131:8:131:12 | outer [inner_ptr, a] | by_reference.cpp:131:14:131:22 | inner_ptr [a] |
 | by_reference.cpp:131:14:131:22 | inner_ptr [a] | by_reference.cpp:131:25:131:25 | a |
-| by_reference.cpp:131:25:131:25 | a | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:132:8:132:12 | outer [a] | by_reference.cpp:132:14:132:14 | a |
-| by_reference.cpp:132:14:132:14 | a | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:134:8:134:13 | pouter [inner_nested, a] | by_reference.cpp:134:16:134:27 | inner_nested [a] |
 | by_reference.cpp:134:16:134:27 | inner_nested [a] | by_reference.cpp:134:29:134:29 | a |
-| by_reference.cpp:134:29:134:29 | a | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:135:8:135:13 | pouter [inner_ptr, a] | by_reference.cpp:135:16:135:24 | inner_ptr [a] |
 | by_reference.cpp:135:16:135:24 | inner_ptr [a] | by_reference.cpp:135:27:135:27 | a |
-| by_reference.cpp:135:27:135:27 | a | realistic.cpp:41:17:41:17 | o |
 | by_reference.cpp:136:8:136:13 | pouter [a] | by_reference.cpp:136:16:136:16 | a |
-| by_reference.cpp:136:16:136:16 | a | realistic.cpp:41:17:41:17 | o |
 | complex.cpp:9:7:9:7 | this [a_] | complex.cpp:9:20:9:21 | this [a_] |
 | complex.cpp:9:20:9:21 | this [a_] | complex.cpp:9:20:9:21 | a_ |
 | complex.cpp:10:7:10:7 | this [b_] | complex.cpp:10:20:10:21 | this [b_] |
@@ -542,31 +491,26 @@ edges
 | complex.cpp:65:7:65:8 | b3 [inner, f, a_] | complex.cpp:40:17:40:17 | b [inner, f, a_] |
 | complex.cpp:65:7:65:8 | b3 [inner, f, b_] | complex.cpp:40:17:40:17 | b [inner, f, b_] |
 | conflated.cpp:19:19:19:21 | ref arg raw | conflated.cpp:20:8:20:10 | raw |
-| conflated.cpp:20:8:20:10 | raw | realistic.cpp:41:17:41:17 | o |
 | conflated.cpp:29:3:29:4 | pa [post update] [x] | conflated.cpp:30:8:30:9 | pa [x] |
 | conflated.cpp:29:3:29:22 | ... = ... | conflated.cpp:29:3:29:4 | pa [post update] [x] |
 | conflated.cpp:29:11:29:20 | call to user_input | conflated.cpp:29:3:29:22 | ... = ... |
 | conflated.cpp:30:8:30:9 | pa [x] | conflated.cpp:30:12:30:12 | x |
-| conflated.cpp:30:12:30:12 | x | realistic.cpp:41:17:41:17 | o |
 | conflated.cpp:36:3:36:4 | pa [post update] [x] | conflated.cpp:37:8:37:9 | pa [x] |
 | conflated.cpp:36:3:36:22 | ... = ... | conflated.cpp:36:3:36:4 | pa [post update] [x] |
 | conflated.cpp:36:11:36:20 | call to user_input | conflated.cpp:36:3:36:22 | ... = ... |
 | conflated.cpp:37:8:37:9 | pa [x] | conflated.cpp:37:12:37:12 | x |
-| conflated.cpp:37:12:37:12 | x | realistic.cpp:41:17:41:17 | o |
 | conflated.cpp:54:3:54:4 | ll [post update] [next, y] | conflated.cpp:55:8:55:9 | ll [next, y] |
 | conflated.cpp:54:3:54:28 | ... = ... | conflated.cpp:54:7:54:10 | next [post update] [y] |
 | conflated.cpp:54:7:54:10 | next [post update] [y] | conflated.cpp:54:3:54:4 | ll [post update] [next, y] |
 | conflated.cpp:54:17:54:26 | call to user_input | conflated.cpp:54:3:54:28 | ... = ... |
 | conflated.cpp:55:8:55:9 | ll [next, y] | conflated.cpp:55:12:55:15 | next [y] |
 | conflated.cpp:55:12:55:15 | next [y] | conflated.cpp:55:18:55:18 | y |
-| conflated.cpp:55:18:55:18 | y | realistic.cpp:41:17:41:17 | o |
 | conflated.cpp:60:3:60:4 | ll [post update] [next, y] | conflated.cpp:61:8:61:9 | ll [next, y] |
 | conflated.cpp:60:3:60:28 | ... = ... | conflated.cpp:60:7:60:10 | next [post update] [y] |
 | conflated.cpp:60:7:60:10 | next [post update] [y] | conflated.cpp:60:3:60:4 | ll [post update] [next, y] |
 | conflated.cpp:60:17:60:26 | call to user_input | conflated.cpp:60:3:60:28 | ... = ... |
 | conflated.cpp:61:8:61:9 | ll [next, y] | conflated.cpp:61:12:61:15 | next [y] |
 | conflated.cpp:61:12:61:15 | next [y] | conflated.cpp:61:18:61:18 | y |
-| conflated.cpp:61:18:61:18 | y | realistic.cpp:41:17:41:17 | o |
 | constructors.cpp:18:9:18:9 | this [a_] | constructors.cpp:18:22:18:23 | this [a_] |
 | constructors.cpp:18:22:18:23 | this [a_] | constructors.cpp:18:22:18:23 | a_ |
 | constructors.cpp:19:9:19:9 | this [b_] | constructors.cpp:19:22:19:23 | this [b_] |
@@ -611,21 +555,18 @@ edges
 | qualifiers.cpp:22:27:22:36 | call to user_input | qualifiers.cpp:22:5:22:38 | ... = ... |
 | qualifiers.cpp:23:10:23:14 | outer [inner, a] | qualifiers.cpp:23:16:23:20 | inner [a] |
 | qualifiers.cpp:23:16:23:20 | inner [a] | qualifiers.cpp:23:23:23:23 | a |
-| qualifiers.cpp:23:23:23:23 | a | realistic.cpp:41:17:41:17 | o |
 | qualifiers.cpp:27:5:27:9 | ref arg outer [inner, a] | qualifiers.cpp:28:10:28:14 | outer [inner, a] |
 | qualifiers.cpp:27:11:27:18 | ref arg call to getInner [a] | qualifiers.cpp:27:5:27:9 | ref arg outer [inner, a] |
 | qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:9:21:9:25 | value |
 | qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:27:11:27:18 | ref arg call to getInner [a] |
 | qualifiers.cpp:28:10:28:14 | outer [inner, a] | qualifiers.cpp:28:16:28:20 | inner [a] |
 | qualifiers.cpp:28:16:28:20 | inner [a] | qualifiers.cpp:28:23:28:23 | a |
-| qualifiers.cpp:28:23:28:23 | a | realistic.cpp:41:17:41:17 | o |
 | qualifiers.cpp:32:17:32:21 | ref arg outer [inner, a] | qualifiers.cpp:33:10:33:14 | outer [inner, a] |
 | qualifiers.cpp:32:23:32:30 | ref arg call to getInner [a] | qualifiers.cpp:32:17:32:21 | ref arg outer [inner, a] |
 | qualifiers.cpp:32:35:32:44 | call to user_input | qualifiers.cpp:12:40:12:44 | value |
 | qualifiers.cpp:32:35:32:44 | call to user_input | qualifiers.cpp:32:23:32:30 | ref arg call to getInner [a] |
 | qualifiers.cpp:33:10:33:14 | outer [inner, a] | qualifiers.cpp:33:16:33:20 | inner [a] |
 | qualifiers.cpp:33:16:33:20 | inner [a] | qualifiers.cpp:33:23:33:23 | a |
-| qualifiers.cpp:33:23:33:23 | a | realistic.cpp:41:17:41:17 | o |
 | qualifiers.cpp:37:19:37:35 | ref arg * ... [a] | qualifiers.cpp:37:26:37:33 | call to getInner [inner post update] [a] |
 | qualifiers.cpp:37:20:37:24 | ref arg outer [inner, a] | qualifiers.cpp:38:10:38:14 | outer [inner, a] |
 | qualifiers.cpp:37:26:37:33 | call to getInner [inner post update] [a] | qualifiers.cpp:37:20:37:24 | ref arg outer [inner, a] |
@@ -633,7 +574,6 @@ edges
 | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:37:19:37:35 | ref arg * ... [a] |
 | qualifiers.cpp:38:10:38:14 | outer [inner, a] | qualifiers.cpp:38:16:38:20 | inner [a] |
 | qualifiers.cpp:38:16:38:20 | inner [a] | qualifiers.cpp:38:23:38:23 | a |
-| qualifiers.cpp:38:23:38:23 | a | realistic.cpp:41:17:41:17 | o |
 | qualifiers.cpp:42:5:42:40 | ... = ... | qualifiers.cpp:42:6:42:22 | * ... [post update] [a] |
 | qualifiers.cpp:42:6:42:22 | * ... [post update] [a] | qualifiers.cpp:42:13:42:20 | call to getInner [inner post update] [a] |
 | qualifiers.cpp:42:7:42:11 | ref arg outer [inner, a] | qualifiers.cpp:43:10:43:14 | outer [inner, a] |
@@ -641,14 +581,12 @@ edges
 | qualifiers.cpp:42:29:42:38 | call to user_input | qualifiers.cpp:42:5:42:40 | ... = ... |
 | qualifiers.cpp:43:10:43:14 | outer [inner, a] | qualifiers.cpp:43:16:43:20 | inner [a] |
 | qualifiers.cpp:43:16:43:20 | inner [a] | qualifiers.cpp:43:23:43:23 | a |
-| qualifiers.cpp:43:23:43:23 | a | realistic.cpp:41:17:41:17 | o |
 | qualifiers.cpp:47:5:47:42 | ... = ... | qualifiers.cpp:47:15:47:22 | call to getInner [post update] [a] |
 | qualifiers.cpp:47:6:47:11 | ref arg & ... [inner, a] | qualifiers.cpp:48:10:48:14 | outer [inner, a] |
 | qualifiers.cpp:47:15:47:22 | call to getInner [post update] [a] | qualifiers.cpp:47:6:47:11 | ref arg & ... [inner, a] |
 | qualifiers.cpp:47:31:47:40 | call to user_input | qualifiers.cpp:47:5:47:42 | ... = ... |
 | qualifiers.cpp:48:10:48:14 | outer [inner, a] | qualifiers.cpp:48:16:48:20 | inner [a] |
 | qualifiers.cpp:48:16:48:20 | inner [a] | qualifiers.cpp:48:23:48:23 | a |
-| qualifiers.cpp:48:23:48:23 | a | realistic.cpp:41:17:41:17 | o |
 | realistic.cpp:41:17:41:17 | o | realistic.cpp:41:17:41:17 | o |
 | realistic.cpp:53:9:53:11 | foo [post update] [bar, baz, userInput, bufferLen] | realistic.cpp:61:21:61:23 | foo [bar, baz, userInput, bufferLen] |
 | realistic.cpp:53:9:53:18 | access to array [post update] [baz, userInput, bufferLen] | realistic.cpp:53:13:53:15 | bar [inner post update] [baz, userInput, bufferLen] |
@@ -756,7 +694,6 @@ edges
 | struct_init.c:31:23:31:23 | ref arg a | struct_init.c:31:14:31:21 | nestedAB [post update] [a] |
 | struct_init.c:33:8:33:12 | outer [pointerAB, a] | struct_init.c:33:14:33:22 | pointerAB [a] |
 | struct_init.c:33:14:33:22 | pointerAB [a] | struct_init.c:33:25:33:25 | a |
-| struct_init.c:33:25:33:25 | a | realistic.cpp:41:17:41:17 | o |
 | struct_init.c:36:10:36:24 | & ... [a] | struct_init.c:14:24:14:25 | ab [a] |
 | struct_init.c:36:11:36:15 | outer [nestedAB, a] | struct_init.c:36:17:36:24 | nestedAB [a] |
 | struct_init.c:36:17:36:24 | nestedAB [a] | struct_init.c:36:10:36:24 | & ... [a] |

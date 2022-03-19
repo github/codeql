@@ -56,7 +56,7 @@ module ServerSideUrlRedirect {
 
     override predicate sanitizes(boolean outcome, Expr e) {
       // `isLocalUrl(e)` sanitizes `e` if it evaluates to `true`
-      getAnArgument().asExpr() = e and
+      this.getAnArgument().asExpr() = e and
       outcome = true
     }
   }

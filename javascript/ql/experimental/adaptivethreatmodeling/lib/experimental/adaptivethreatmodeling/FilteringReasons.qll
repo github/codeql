@@ -24,12 +24,15 @@ newtype TFilteringReason =
   TMembershipCandidateTestReason() or
   TFileSystemAccessReason() or
   TDatabaseAccessReason() or
-  TDOMReason() or
+  TDomReason() or
   TNextFunctionCallReason() or
   TArgumentToArrayReason() or
   TArgumentToBuiltinGlobalVarRefReason() or
   TConstantReceiverReason() or
-  TBuiltinCallNameReason()
+  TBuiltinCallNameReason() or
+  TBase64ManipulationReason() or
+  TJQueryArgumentReason() or
+  TDojoRequireReason()
 
 /** A reason why a particular endpoint was filtered out by the endpoint filters. */
 abstract class FilteringReason extends TFilteringReason {
@@ -158,11 +161,14 @@ class DatabaseAccessReason extends NotASinkReason, TDatabaseAccessReason {
   override int getEncoding() { result = 21 }
 }
 
-class DOMReason extends NotASinkReason, TDOMReason {
+class DomReason extends NotASinkReason, TDomReason {
   override string getDescription() { result = "DOM" }
 
   override int getEncoding() { result = 22 }
 }
+
+/** DEPRECATED: Alias for DomReason */
+deprecated class DOMReason = DomReason;
 
 class NextFunctionCallReason extends NotASinkReason, TNextFunctionCallReason {
   override string getDescription() { result = "NextFunctionCall" }
@@ -193,4 +199,22 @@ class BuiltinCallNameReason extends NotASinkReason, TBuiltinCallNameReason {
   override string getDescription() { result = "BuiltinCallName" }
 
   override int getEncoding() { result = 27 }
+}
+
+class Base64ManipulationReason extends NotASinkReason, TBase64ManipulationReason {
+  override string getDescription() { result = "Base64Manipulation" }
+
+  override int getEncoding() { result = 28 }
+}
+
+class JQueryArgumentReason extends NotASinkReason, TJQueryArgumentReason {
+  override string getDescription() { result = "JQueryArgument" }
+
+  override int getEncoding() { result = 29 }
+}
+
+class DojoRequireReason extends NotASinkReason, TDojoRequireReason {
+  override string getDescription() { result = "DojoRequire" }
+
+  override int getEncoding() { result = 30 }
 }

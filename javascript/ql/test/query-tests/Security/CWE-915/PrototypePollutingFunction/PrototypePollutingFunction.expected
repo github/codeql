@@ -1320,6 +1320,48 @@ nodes
 | tests.js:502:24:502:28 | value |
 | tests.js:502:24:502:28 | value |
 | tests.js:502:24:502:28 | value |
+| tests.js:508:30:508:32 | dst |
+| tests.js:508:30:508:32 | dst |
+| tests.js:508:35:508:37 | src |
+| tests.js:508:35:508:37 | src |
+| tests.js:511:13:511:25 | key |
+| tests.js:511:13:511:25 | key |
+| tests.js:511:19:511:25 | keys[i] |
+| tests.js:511:19:511:25 | keys[i] |
+| tests.js:511:19:511:25 | keys[i] |
+| tests.js:513:33:513:35 | dst |
+| tests.js:513:33:513:35 | dst |
+| tests.js:513:33:513:40 | dst[key] |
+| tests.js:513:33:513:40 | dst[key] |
+| tests.js:513:33:513:40 | dst[key] |
+| tests.js:513:33:513:40 | dst[key] |
+| tests.js:513:37:513:39 | key |
+| tests.js:513:37:513:39 | key |
+| tests.js:513:43:513:45 | src |
+| tests.js:513:43:513:45 | src |
+| tests.js:513:43:513:50 | src[key] |
+| tests.js:513:43:513:50 | src[key] |
+| tests.js:513:43:513:50 | src[key] |
+| tests.js:513:43:513:50 | src[key] |
+| tests.js:513:43:513:50 | src[key] |
+| tests.js:513:47:513:49 | key |
+| tests.js:513:47:513:49 | key |
+| tests.js:516:32:516:34 | src |
+| tests.js:516:32:516:34 | src |
+| tests.js:516:32:516:39 | src[key] |
+| tests.js:516:32:516:39 | src[key] |
+| tests.js:516:32:516:39 | src[key] |
+| tests.js:516:32:516:39 | src[key] |
+| tests.js:516:32:516:39 | src[key] |
+| tests.js:516:32:516:39 | src[key] |
+| tests.js:516:36:516:38 | key |
+| tests.js:516:36:516:38 | key |
+| tests.js:517:35:517:37 | dst |
+| tests.js:517:35:517:37 | dst |
+| tests.js:517:35:517:37 | dst |
+| tests.js:517:40:517:42 | key |
+| tests.js:517:40:517:42 | key |
+| tests.js:517:40:517:42 | key |
 edges
 | examples/PrototypePollutingFunction.js:1:16:1:18 | dst | examples/PrototypePollutingFunction.js:5:19:5:21 | dst |
 | examples/PrototypePollutingFunction.js:1:16:1:18 | dst | examples/PrototypePollutingFunction.js:5:19:5:21 | dst |
@@ -2982,6 +3024,57 @@ edges
 | tests.js:498:25:498:27 | key | tests.js:498:21:498:28 | src[key] |
 | tests.js:500:38:500:42 | value | tests.js:494:32:494:34 | src |
 | tests.js:500:38:500:42 | value | tests.js:494:32:494:34 | src |
+| tests.js:508:30:508:32 | dst | tests.js:513:33:513:35 | dst |
+| tests.js:508:30:508:32 | dst | tests.js:513:33:513:35 | dst |
+| tests.js:508:30:508:32 | dst | tests.js:517:35:517:37 | dst |
+| tests.js:508:30:508:32 | dst | tests.js:517:35:517:37 | dst |
+| tests.js:508:30:508:32 | dst | tests.js:517:35:517:37 | dst |
+| tests.js:508:30:508:32 | dst | tests.js:517:35:517:37 | dst |
+| tests.js:508:35:508:37 | src | tests.js:513:43:513:45 | src |
+| tests.js:508:35:508:37 | src | tests.js:513:43:513:45 | src |
+| tests.js:508:35:508:37 | src | tests.js:516:32:516:34 | src |
+| tests.js:508:35:508:37 | src | tests.js:516:32:516:34 | src |
+| tests.js:511:13:511:25 | key | tests.js:513:37:513:39 | key |
+| tests.js:511:13:511:25 | key | tests.js:513:37:513:39 | key |
+| tests.js:511:13:511:25 | key | tests.js:513:47:513:49 | key |
+| tests.js:511:13:511:25 | key | tests.js:513:47:513:49 | key |
+| tests.js:511:13:511:25 | key | tests.js:516:36:516:38 | key |
+| tests.js:511:13:511:25 | key | tests.js:516:36:516:38 | key |
+| tests.js:511:13:511:25 | key | tests.js:517:40:517:42 | key |
+| tests.js:511:13:511:25 | key | tests.js:517:40:517:42 | key |
+| tests.js:511:13:511:25 | key | tests.js:517:40:517:42 | key |
+| tests.js:511:13:511:25 | key | tests.js:517:40:517:42 | key |
+| tests.js:511:19:511:25 | keys[i] | tests.js:511:13:511:25 | key |
+| tests.js:511:19:511:25 | keys[i] | tests.js:511:13:511:25 | key |
+| tests.js:511:19:511:25 | keys[i] | tests.js:511:13:511:25 | key |
+| tests.js:511:19:511:25 | keys[i] | tests.js:511:13:511:25 | key |
+| tests.js:513:33:513:35 | dst | tests.js:513:33:513:40 | dst[key] |
+| tests.js:513:33:513:35 | dst | tests.js:513:33:513:40 | dst[key] |
+| tests.js:513:33:513:40 | dst[key] | tests.js:508:30:508:32 | dst |
+| tests.js:513:33:513:40 | dst[key] | tests.js:508:30:508:32 | dst |
+| tests.js:513:33:513:40 | dst[key] | tests.js:508:30:508:32 | dst |
+| tests.js:513:33:513:40 | dst[key] | tests.js:508:30:508:32 | dst |
+| tests.js:513:37:513:39 | key | tests.js:513:33:513:40 | dst[key] |
+| tests.js:513:37:513:39 | key | tests.js:513:33:513:40 | dst[key] |
+| tests.js:513:43:513:45 | src | tests.js:513:43:513:50 | src[key] |
+| tests.js:513:43:513:45 | src | tests.js:513:43:513:50 | src[key] |
+| tests.js:513:43:513:50 | src[key] | tests.js:508:35:508:37 | src |
+| tests.js:513:43:513:50 | src[key] | tests.js:508:35:508:37 | src |
+| tests.js:513:43:513:50 | src[key] | tests.js:508:35:508:37 | src |
+| tests.js:513:43:513:50 | src[key] | tests.js:508:35:508:37 | src |
+| tests.js:513:43:513:50 | src[key] | tests.js:508:35:508:37 | src |
+| tests.js:513:43:513:50 | src[key] | tests.js:508:35:508:37 | src |
+| tests.js:513:47:513:49 | key | tests.js:513:43:513:50 | src[key] |
+| tests.js:513:47:513:49 | key | tests.js:513:43:513:50 | src[key] |
+| tests.js:516:32:516:34 | src | tests.js:516:32:516:39 | src[key] |
+| tests.js:516:32:516:34 | src | tests.js:516:32:516:39 | src[key] |
+| tests.js:516:32:516:34 | src | tests.js:516:32:516:39 | src[key] |
+| tests.js:516:32:516:34 | src | tests.js:516:32:516:39 | src[key] |
+| tests.js:516:32:516:39 | src[key] | tests.js:516:32:516:39 | src[key] |
+| tests.js:516:36:516:38 | key | tests.js:516:32:516:39 | src[key] |
+| tests.js:516:36:516:38 | key | tests.js:516:32:516:39 | src[key] |
+| tests.js:516:36:516:38 | key | tests.js:516:32:516:39 | src[key] |
+| tests.js:516:36:516:38 | key | tests.js:516:32:516:39 | src[key] |
 #select
 | examples/PrototypePollutingFunction.js:7:13:7:15 | dst | examples/PrototypePollutingFunction.js:2:14:2:16 | key | examples/PrototypePollutingFunction.js:7:13:7:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | examples/PrototypePollutingFunction.js:2:21:2:23 | src | src | examples/PrototypePollutingFunction.js:7:13:7:15 | dst | dst |
 | path-assignment.js:15:13:15:18 | target | path-assignment.js:8:19:8:25 | keys[i] | path-assignment.js:15:13:15:18 | target | The property chain $@ is recursively assigned to $@ without guarding against prototype pollution. | path-assignment.js:8:19:8:25 | keys[i] | here | path-assignment.js:15:13:15:18 | target | target |
@@ -3010,3 +3103,4 @@ edges
 | tests.js:467:30:467:32 | dst | tests.js:460:25:460:27 | key | tests.js:467:30:467:32 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:460:12:460:14 | src | src | tests.js:467:30:467:32 | dst | dst |
 | tests.js:477:13:477:15 | dst | tests.js:473:25:473:27 | key | tests.js:477:13:477:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:473:12:473:14 | src | src | tests.js:477:13:477:15 | dst | dst |
 | tests.js:489:13:489:15 | dst | tests.js:484:14:484:16 | key | tests.js:489:13:489:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:484:21:484:23 | src | src | tests.js:489:13:489:15 | dst | dst |
+| tests.js:517:35:517:37 | dst | tests.js:511:19:511:25 | keys[i] | tests.js:517:35:517:37 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:509:28:509:30 | src | src | tests.js:517:35:517:37 | dst | dst |

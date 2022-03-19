@@ -1,7 +1,9 @@
 edges
-| ServerSideRequestForgery.rb:9:32:9:37 | call to params :  | ServerSideRequestForgery.rb:10:31:10:62 | "#{...}/logins" |
+| ServerSideRequestForgery.rb:9:32:9:37 | call to params :  | ServerSideRequestForgery.rb:9:32:9:60 | ...[...] :  |
+| ServerSideRequestForgery.rb:9:32:9:60 | ...[...] :  | ServerSideRequestForgery.rb:10:31:10:62 | "#{...}/logins" |
 nodes
 | ServerSideRequestForgery.rb:9:32:9:37 | call to params :  | semmle.label | call to params :  |
+| ServerSideRequestForgery.rb:9:32:9:60 | ...[...] :  | semmle.label | ...[...] :  |
 | ServerSideRequestForgery.rb:10:31:10:62 | "#{...}/logins" | semmle.label | "#{...}/logins" |
 subpaths
 #select

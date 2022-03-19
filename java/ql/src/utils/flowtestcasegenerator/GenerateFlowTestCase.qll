@@ -85,7 +85,7 @@ SupportMethod getASupportMethod() {
 }
 
 /**
- * Returns a CSV specification of the taint-/value-propagation behaviour of a test support method (`get` or `newWith` method).
+ * Returns a CSV specification of the taint-/value-propagation behavior of a test support method (`get` or `newWith` method).
  */
 query string getASupportMethodModel() { result = getASupportMethod().getCsvModel() }
 

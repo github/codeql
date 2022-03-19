@@ -29,12 +29,14 @@ definition
 | nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self |
 | nested_scopes.rb:31:11:31:16 | ... = ... | nested_scopes.rb:31:11:31:11 | a |
 | nested_scopes.rb:40:1:40:18 | ... = ... | nested_scopes.rb:40:1:40:1 | d |
-| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:58:1 | self |
+| parameters.rb:1:1:1:1 | self (parameters.rb) | parameters.rb:1:1:62:1 | self |
+| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:62:1 | self |
 | parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x |
 | parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y |
 | parameters.rb:7:1:13:3 | self (order_pizza) | parameters.rb:7:1:13:3 | self |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client |
 | parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas |
+| parameters.rb:15:1:19:3 | self (print_map) | parameters.rb:15:1:19:3 | self |
 | parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map |
 | parameters.rb:16:12:18:5 | <captured> | parameters.rb:15:1:19:3 | self |
 | parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key |
@@ -63,11 +65,15 @@ definition
 | parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a |
 | parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b |
 | parameters.rb:53:1:53:6 | ... = ... | parameters.rb:53:1:53:1 | x |
-| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:58:1 | self |
+| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:62:1 | self |
 | parameters.rb:54:9:57:3 | <captured> | parameters.rb:53:1:53:1 | x |
 | parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y |
 | parameters.rb:54:19:54:23 | ... = ... | parameters.rb:53:1:53:1 | x |
 | parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x |
+| parameters.rb:59:1:61:3 | self (tuples_nested) | parameters.rb:59:1:61:3 | self |
+| parameters.rb:59:20:59:20 | a | parameters.rb:59:20:59:20 | a |
+| parameters.rb:59:23:59:23 | b | parameters.rb:59:23:59:23 | b |
+| parameters.rb:59:25:59:25 | c | parameters.rb:59:25:59:25 | c |
 | scopes.rb:1:1:1:15 | self (scopes.rb) | scopes.rb:1:1:49:4 | self |
 | scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self |
 | scopes.rb:4:4:4:8 | ... = ... | scopes.rb:4:4:4:4 | a |
@@ -106,6 +112,7 @@ definition
 | ssa.rb:26:3:28:5 | <captured> | ssa.rb:25:1:30:3 | self |
 | ssa.rb:26:3:28:5 | __synth__0__1 | ssa.rb:26:3:28:5 | __synth__0__1 |
 | ssa.rb:26:3:28:5 | call to each | ssa.rb:26:7:26:10 | elem |
+| ssa.rb:32:1:36:3 | self (m3) | ssa.rb:32:1:36:3 | self |
 | ssa.rb:33:16:35:5 | <captured> | ssa.rb:32:1:36:3 | self |
 | ssa.rb:33:20:33:20 | x | ssa.rb:33:20:33:20 | x |
 | ssa.rb:38:1:42:3 | self (m4) | ssa.rb:38:1:42:3 | self |
@@ -180,8 +187,8 @@ read
 | nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self | nested_scopes.rb:32:11:32:16 | self |
 | nested_scopes.rb:31:11:31:16 | ... = ... | nested_scopes.rb:31:11:31:11 | a | nested_scopes.rb:32:16:32:16 | a |
 | nested_scopes.rb:40:1:40:18 | ... = ... | nested_scopes.rb:40:1:40:1 | d | nested_scopes.rb:41:1:41:1 | d |
-| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:58:1 | self | parameters.rb:3:4:3:9 | self |
-| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:58:1 | self | parameters.rb:4:4:4:9 | self |
+| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:3:4:3:9 | self |
+| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:4:4:4:9 | self |
 | parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x | parameters.rb:3:9:3:9 | x |
 | parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y | parameters.rb:4:9:4:9 | y |
 | parameters.rb:7:1:13:3 | self (order_pizza) | parameters.rb:7:1:13:3 | self | parameters.rb:9:5:9:33 | self |
@@ -215,10 +222,14 @@ read
 | parameters.rb:49:1:51:3 | self (tuples) | parameters.rb:49:1:51:3 | self | parameters.rb:50:3:50:18 | self |
 | parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a | parameters.rb:50:11:50:11 | a |
 | parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b | parameters.rb:50:16:50:16 | b |
-| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:58:1 | self | parameters.rb:55:4:55:9 | self |
-| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:58:1 | self | parameters.rb:56:4:56:9 | self |
+| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:55:4:55:9 | self |
+| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:56:4:56:9 | self |
 | parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
 | parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
+| parameters.rb:59:1:61:3 | self (tuples_nested) | parameters.rb:59:1:61:3 | self | parameters.rb:60:3:60:23 | self |
+| parameters.rb:59:20:59:20 | a | parameters.rb:59:20:59:20 | a | parameters.rb:60:11:60:11 | a |
+| parameters.rb:59:23:59:23 | b | parameters.rb:59:23:59:23 | b | parameters.rb:60:16:60:16 | b |
+| parameters.rb:59:25:59:25 | c | parameters.rb:59:25:59:25 | c | parameters.rb:60:21:60:21 | c |
 | scopes.rb:1:1:1:15 | self (scopes.rb) | scopes.rb:1:1:49:4 | self | scopes.rb:8:1:8:6 | self |
 | scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:3:4:3:9 | self |
 | scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:3:9:3:9 | self |
@@ -339,7 +350,7 @@ firstRead
 | nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self | nested_scopes.rb:32:11:32:16 | self |
 | nested_scopes.rb:31:11:31:16 | ... = ... | nested_scopes.rb:31:11:31:11 | a | nested_scopes.rb:32:16:32:16 | a |
 | nested_scopes.rb:40:1:40:18 | ... = ... | nested_scopes.rb:40:1:40:1 | d | nested_scopes.rb:41:1:41:1 | d |
-| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:58:1 | self | parameters.rb:3:4:3:9 | self |
+| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:3:4:3:9 | self |
 | parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x | parameters.rb:3:9:3:9 | x |
 | parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y | parameters.rb:4:9:4:9 | y |
 | parameters.rb:7:1:13:3 | self (order_pizza) | parameters.rb:7:1:13:3 | self | parameters.rb:9:5:9:33 | self |
@@ -371,9 +382,13 @@ firstRead
 | parameters.rb:49:1:51:3 | self (tuples) | parameters.rb:49:1:51:3 | self | parameters.rb:50:3:50:18 | self |
 | parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a | parameters.rb:50:11:50:11 | a |
 | parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b | parameters.rb:50:16:50:16 | b |
-| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:58:1 | self | parameters.rb:55:4:55:9 | self |
+| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:55:4:55:9 | self |
 | parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
 | parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
+| parameters.rb:59:1:61:3 | self (tuples_nested) | parameters.rb:59:1:61:3 | self | parameters.rb:60:3:60:23 | self |
+| parameters.rb:59:20:59:20 | a | parameters.rb:59:20:59:20 | a | parameters.rb:60:11:60:11 | a |
+| parameters.rb:59:23:59:23 | b | parameters.rb:59:23:59:23 | b | parameters.rb:60:16:60:16 | b |
+| parameters.rb:59:25:59:25 | c | parameters.rb:59:25:59:25 | c | parameters.rb:60:21:60:21 | c |
 | scopes.rb:1:1:1:15 | self (scopes.rb) | scopes.rb:1:1:49:4 | self | scopes.rb:8:1:8:6 | self |
 | scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:3:4:3:9 | self |
 | scopes.rb:4:4:4:8 | ... = ... | scopes.rb:4:4:4:4 | a | scopes.rb:5:9:5:9 | a |
@@ -464,7 +479,7 @@ lastRead
 | nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self | nested_scopes.rb:32:11:32:16 | self |
 | nested_scopes.rb:31:11:31:16 | ... = ... | nested_scopes.rb:31:11:31:11 | a | nested_scopes.rb:32:16:32:16 | a |
 | nested_scopes.rb:40:1:40:18 | ... = ... | nested_scopes.rb:40:1:40:1 | d | nested_scopes.rb:41:1:41:1 | d |
-| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:58:1 | self | parameters.rb:4:4:4:9 | self |
+| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:4:4:4:9 | self |
 | parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x | parameters.rb:3:9:3:9 | x |
 | parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y | parameters.rb:4:9:4:9 | y |
 | parameters.rb:7:1:13:3 | self (order_pizza) | parameters.rb:7:1:13:3 | self | parameters.rb:9:5:9:33 | self |
@@ -496,9 +511,13 @@ lastRead
 | parameters.rb:49:1:51:3 | self (tuples) | parameters.rb:49:1:51:3 | self | parameters.rb:50:3:50:18 | self |
 | parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a | parameters.rb:50:11:50:11 | a |
 | parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b | parameters.rb:50:16:50:16 | b |
-| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:58:1 | self | parameters.rb:56:4:56:9 | self |
+| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:56:4:56:9 | self |
 | parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
 | parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
+| parameters.rb:59:1:61:3 | self (tuples_nested) | parameters.rb:59:1:61:3 | self | parameters.rb:60:3:60:23 | self |
+| parameters.rb:59:20:59:20 | a | parameters.rb:59:20:59:20 | a | parameters.rb:60:11:60:11 | a |
+| parameters.rb:59:23:59:23 | b | parameters.rb:59:23:59:23 | b | parameters.rb:60:16:60:16 | b |
+| parameters.rb:59:25:59:25 | c | parameters.rb:59:25:59:25 | c | parameters.rb:60:21:60:21 | c |
 | scopes.rb:1:1:1:15 | self (scopes.rb) | scopes.rb:1:1:49:4 | self | scopes.rb:8:1:8:6 | self |
 | scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:5:4:5:9 | self |
 | scopes.rb:4:4:4:8 | ... = ... | scopes.rb:4:4:4:4 | a | scopes.rb:5:9:5:9 | a |
@@ -568,11 +587,11 @@ adjacentReads
 | nested_scopes.rb:13:11:13:15 | ... = ... | nested_scopes.rb:13:11:13:11 | a | nested_scopes.rb:14:16:14:16 | a | nested_scopes.rb:15:11:15:11 | a |
 | nested_scopes.rb:27:7:29:9 | self (show) | nested_scopes.rb:27:7:29:9 | self | nested_scopes.rb:28:11:28:16 | self | nested_scopes.rb:28:16:28:16 | self |
 | nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self | nested_scopes.rb:30:16:30:19 | self | nested_scopes.rb:32:11:32:16 | self |
-| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:58:1 | self | parameters.rb:3:4:3:9 | self | parameters.rb:4:4:4:9 | self |
+| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:3:4:3:9 | self | parameters.rb:4:4:4:9 | self |
 | parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas | parameters.rb:11:14:11:19 | pizzas |
 | parameters.rb:25:1:28:3 | self (opt_param) | parameters.rb:25:1:28:3 | self | parameters.rb:26:3:26:11 | self | parameters.rb:27:3:27:11 | self |
 | parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name | parameters.rb:26:8:26:11 | name |
-| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:58:1 | self | parameters.rb:55:4:55:9 | self | parameters.rb:56:4:56:9 | self |
+| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:55:4:55:9 | self | parameters.rb:56:4:56:9 | self |
 | scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:3:4:3:9 | self | scopes.rb:3:9:3:9 | self |
 | scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:3:9:3:9 | self | scopes.rb:5:4:5:9 | self |
 | scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:10:4:10:9 | self | scopes.rb:12:4:12:9 | self |

@@ -659,4 +659,15 @@ module Consistency {
     not phiHasInputFromBlock(_, def, _) and
     not uncertainWriteDefinitionInput(_, def)
   }
+
+  query predicate notDominatedByDef(RelevantDefinition def, SourceVariable v, BasicBlock bb, int i) {
+    exists(BasicBlock bbDef, int iDef | def.definesAt(v, bbDef, iDef) |
+      ssaDefReachesReadWithinBlock(v, def, bb, i) and
+      (bb != bbDef or i < iDef)
+      or
+      ssaDefReachesRead(v, def, bb, i) and
+      not ssaDefReachesReadWithinBlock(v, def, bb, i) and
+      not def.definesAt(v, getImmediateBasicBlockDominator*(bb), _)
+    )
+  }
 }

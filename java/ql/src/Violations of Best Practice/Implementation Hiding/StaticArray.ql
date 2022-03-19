@@ -16,7 +16,7 @@ predicate nonEmptyArrayLiteralOrNull(Expr e) {
   exists(ArrayCreationExpr arr | arr = e |
     // Array initializer expressions such as `{1, 2, 3}`.
     // Array is empty if the initializer expression is empty.
-    exists(Expr arrayValue | arrayValue = arr.getInit().getAnInit())
+    exists(arr.getInit().getAnInit())
     or
     // Array creation with dimensions (but without initializers).
     // Empty if the first dimension is 0.

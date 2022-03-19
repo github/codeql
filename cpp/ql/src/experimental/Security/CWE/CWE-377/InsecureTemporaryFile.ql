@@ -92,7 +92,7 @@ where
     ) and
     exists(Variable vrtmp |
       vrtmp = fc.getArgument(0).(VariableAccess).getTarget() and
-      vrtmp = fctmp.getArgument(0).(AddressOfExpr).getAddressable().(Variable) and
+      vrtmp = fctmp.getArgument(0).(AddressOfExpr).getAddressable() and
       not vrtmp instanceof Field
     )
   ) and

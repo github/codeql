@@ -205,7 +205,7 @@ private class RefArg extends AssignableAccess {
    */
   predicate isAnalyzable(Parameter p) {
     exists(Callable callable | callable = this.getUnboundDeclarationTarget(p) |
-      not callable.(Virtualizable).isOverridableOrImplementable() and
+      not callable.(Overridable).isOverridableOrImplementable() and
       callable.hasBody()
     )
   }

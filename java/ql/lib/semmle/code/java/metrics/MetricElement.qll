@@ -43,11 +43,11 @@ class MetricElement extends Element {
     this.fromSource() and
     not this.getADependencySrc+() = this and
     (
-      not exists(MetricElement t | t = this.getADependency()) and
+      not exists(this.getADependency()) and
       result = 0
       or
       not this.getADependency().fromSource() and
-      exists(MetricElement e | this.getADependency() = e) and
+      exists(this.getADependency()) and
       result = 1
       or
       result = this.getADependency().getALevel() + 1

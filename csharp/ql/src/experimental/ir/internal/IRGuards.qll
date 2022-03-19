@@ -24,12 +24,12 @@ class GuardCondition extends Expr {
     exists(IRGuardCondition ir | this = ir.getUnconvertedResultExpression())
     or
     // no binary operators in the IR
-    exists(GuardCondition gc | this.(BinaryLogicalOperation).getAnOperand() = gc)
+    this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
     or
     // the IR short-circuits if(!x)
     // don't produce a guard condition for `y = !x` and other non-short-circuited cases
-    not exists(Instruction inst | this = inst.getAST()) and
-    exists(IRGuardCondition ir | this.(LogicalNotExpr).getOperand() = ir.getAST())
+    not exists(Instruction inst | this = inst.getAst()) and
+    exists(IRGuardCondition ir | this.(LogicalNotExpr).getOperand() = ir.getAst())
   }
 
   /**
@@ -124,7 +124,7 @@ private predicate impliesValue(
  */
 private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
   GuardConditionFromBinaryLogicalOperator() {
-    exists(GuardCondition gc | this.(BinaryLogicalOperation).getAnOperand() = gc)
+    this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
   }
 
   override predicate controls(BasicBlock controlled, boolean testIsTrue) {
@@ -172,28 +172,30 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
  */
 private class GuardConditionFromShortCircuitNot extends GuardCondition, LogicalNotExpr {
   GuardConditionFromShortCircuitNot() {
-    not exists(Instruction inst | this = inst.getAST()) and
-    exists(IRGuardCondition ir | getOperand() = ir.getAST())
+    not exists(Instruction inst | this = inst.getAst()) and
+    exists(IRGuardCondition ir | this.getOperand() = ir.getAst())
   }
 
   override predicate controls(BasicBlock controlled, boolean testIsTrue) {
-    getOperand().(GuardCondition).controls(controlled, testIsTrue.booleanNot())
+    this.getOperand().(GuardCondition).controls(controlled, testIsTrue.booleanNot())
   }
 
   override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
-    getOperand().(GuardCondition).comparesLt(left, right, k, isLessThan, testIsTrue.booleanNot())
+    this.getOperand()
+        .(GuardCondition)
+        .comparesLt(left, right, k, isLessThan, testIsTrue.booleanNot())
   }
 
   override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
-    getOperand().(GuardCondition).ensuresLt(left, right, k, block, isLessThan.booleanNot())
+    this.getOperand().(GuardCondition).ensuresLt(left, right, k, block, isLessThan.booleanNot())
   }
 
   override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
-    getOperand().(GuardCondition).comparesEq(left, right, k, areEqual, testIsTrue.booleanNot())
+    this.getOperand().(GuardCondition).comparesEq(left, right, k, areEqual, testIsTrue.booleanNot())
   }
 
   override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
-    getOperand().(GuardCondition).ensuresEq(left, right, k, block, areEqual.booleanNot())
+    this.getOperand().(GuardCondition).ensuresEq(left, right, k, block, areEqual.booleanNot())
   }
 }
 
@@ -265,7 +267,7 @@ private class GuardConditionFromIR extends GuardCondition {
   private predicate controlsBlock1(BasicBlock controlled, boolean testIsTrue) {
     exists(IRBlock irb |
       forex(IRGuardCondition inst | inst = ir | inst.controls(irb, testIsTrue)) and
-      irb.getAnInstruction().getAST().(ControlFlowElement).getAControlFlowNode().getBasicBlock() =
+      irb.getAnInstruction().getAst().(ControlFlowElement).getAControlFlowNode().getBasicBlock() =
         controlled and
       not isUnreachedBlock(irb)
     )

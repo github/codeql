@@ -9,18 +9,18 @@ class CallToObjectDefineProperty extends DataFlow::MethodCallNode {
   CallToObjectDefineProperty() {
     exists(GlobalVariable obj |
       obj.getName() = "Object" and
-      calls(DataFlow::valueNode(obj.getAnAccess()), "defineProperty")
+      this.calls(DataFlow::valueNode(obj.getAnAccess()), "defineProperty")
     )
   }
 
   /** Gets the data flow node denoting the object on which the property is defined. */
-  DataFlow::Node getBaseObject() { result = getArgument(0) }
+  DataFlow::Node getBaseObject() { result = this.getArgument(0) }
 
   /** Gets the name of the property being defined, if it can be determined. */
-  string getPropertyName() { result = getArgument(1).getStringValue() }
+  string getPropertyName() { result = this.getArgument(1).getStringValue() }
 
   /** Gets the data flow node denoting the descriptor of the property being defined. */
-  DataFlow::Node getPropertyDescriptor() { result = getArgument(2) }
+  DataFlow::Node getPropertyDescriptor() { result = this.getArgument(2) }
 
   /**
    * Holds if there is an assignment to property `name` to the
@@ -29,7 +29,7 @@ class CallToObjectDefineProperty extends DataFlow::MethodCallNode {
    */
   predicate hasPropertyAttributeWrite(string name, DataFlow::Node rhs) {
     exists(DataFlow::SourceNode descriptor |
-      descriptor.flowsTo(getPropertyDescriptor()) and
+      descriptor.flowsTo(this.getPropertyDescriptor()) and
       descriptor.hasPropertyWrite(name, rhs)
     )
   }
@@ -39,10 +39,10 @@ class CallToObjectDefineProperty extends DataFlow::MethodCallNode {
  * A direct call to `eval`.
  */
 class DirectEval extends CallExpr {
-  DirectEval() { getCallee().(GlobalVarAccess).getName() = "eval" }
+  DirectEval() { this.getCallee().(GlobalVarAccess).getName() = "eval" }
 
   /** Holds if this call could affect the value of `lv`. */
-  predicate mayAffect(LocalVariable lv) { getParent+() = lv.getScope().getScopeElement() }
+  predicate mayAffect(LocalVariable lv) { this.getParent+() = lv.getScope().getScopeElement() }
 }
 
 /**
@@ -52,15 +52,15 @@ class DirectEval extends CallExpr {
 private class ArrayIterationCallbackAsPartialInvoke extends DataFlow::PartialInvokeNode::Range,
   DataFlow::MethodCallNode {
   ArrayIterationCallbackAsPartialInvoke() {
-    getNumArgument() = 2 and
+    this.getNumArgument() = 2 and
     // Filter out library methods named 'forEach' etc
-    not DataFlow::moduleImport(_).flowsTo(getReceiver()) and
-    getMethodName() = ["filter", "forEach", "map", "some", "every"]
+    not DataFlow::moduleImport(_).flowsTo(this.getReceiver()) and
+    this.getMethodName() = ["filter", "forEach", "map", "some", "every"]
   }
 
   override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
-    callback = getArgument(0) and
-    result = getArgument(1)
+    callback = this.getArgument(0) and
+    result = this.getArgument(1)
   }
 }
 
@@ -86,48 +86,48 @@ private class IteratorExceptionStep extends DataFlow::SharedFlowStep {
  */
 class StringReplaceCall extends DataFlow::MethodCallNode {
   StringReplaceCall() {
-    getMethodName() = ["replace", "replaceAll"] and
-    (getNumArgument() = 2 or getReceiver().mayHaveStringValue(_))
+    this.getMethodName() = ["replace", "replaceAll"] and
+    (this.getNumArgument() = 2 or this.getReceiver().mayHaveStringValue(_))
   }
 
   /** Gets the regular expression passed as the first argument to `replace`, if any. */
-  DataFlow::RegExpCreationNode getRegExp() { result.flowsTo(getArgument(0)) }
+  DataFlow::RegExpCreationNode getRegExp() { result.flowsTo(this.getArgument(0)) }
 
   /** Gets a string that is being replaced by this call. */
   string getAReplacedString() {
-    result = getRegExp().getRoot().getAMatchedString() or
-    getArgument(0).mayHaveStringValue(result)
+    result = this.getRegExp().getRoot().getAMatchedString() or
+    this.getArgument(0).mayHaveStringValue(result)
   }
 
   /**
    * Gets the second argument of this call to `replace`, which is either a string
    * or a callback.
    */
-  DataFlow::Node getRawReplacement() { result = getArgument(1) }
+  DataFlow::Node getRawReplacement() { result = this.getArgument(1) }
 
   /**
    * Gets a function flowing into the second argument of this call to `replace`.
    */
-  DataFlow::FunctionNode getReplacementCallback() { result = getCallback(1) }
+  DataFlow::FunctionNode getReplacementCallback() { result = this.getCallback(1) }
 
   /**
    * Holds if this is a global replacement, that is, the first argument is a regular expression
    * with the `g` flag, or this is a call to `.replaceAll()`.
    */
-  predicate isGlobal() { getRegExp().isGlobal() or getMethodName() = "replaceAll" }
+  predicate isGlobal() { this.getRegExp().isGlobal() or this.getMethodName() = "replaceAll" }
 
   /**
    * Holds if this call to `replace` replaces `old` with `new`.
    */
   predicate replaces(string old, string new) {
     exists(string rawNew |
-      old = getAReplacedString() and
-      getRawReplacement().mayHaveStringValue(rawNew) and
+      old = this.getAReplacedString() and
+      this.getRawReplacement().mayHaveStringValue(rawNew) and
       new = rawNew.replaceAll("$&", old)
     )
     or
     exists(DataFlow::FunctionNode replacer, DataFlow::PropRead pr, DataFlow::ObjectLiteralNode map |
-      replacer = getCallback(1) and
+      replacer = this.getCallback(1) and
       replacer.getParameter(0).flowsToExpr(pr.getPropertyNameExpr()) and
       pr = map.getAPropertyRead() and
       pr.flowsTo(replacer.getAReturn()) and
@@ -143,7 +143,7 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
       DataFlow::FunctionNode replacer, ConditionGuardNode guard, EqualityTest test,
       DataFlow::Node ret
     |
-      replacer = getCallback(1) and
+      replacer = this.getCallback(1) and
       guard.getOutcome() = test.getPolarity() and
       guard.getTest() = test and
       replacer.getParameter(0).flowsToExpr(test.getAnOperand()) and
@@ -164,27 +164,31 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
 class StringSplitCall extends DataFlow::MethodCallNode {
   StringSplitCall() {
     this.getMethodName() = "split" and
-    (getNumArgument() = [1, 2] or getReceiver().mayHaveStringValue(_))
+    (this.getNumArgument() = [1, 2] or this.getReceiver().mayHaveStringValue(_))
   }
 
   /**
    * Gets a string that determines where the string is split.
    */
   string getSeparator() {
-    getArgument(0).mayHaveStringValue(result)
+    this.getArgument(0).mayHaveStringValue(result)
     or
     result =
-      getArgument(0).getALocalSource().(DataFlow::RegExpCreationNode).getRoot().getAMatchedString()
+      this.getArgument(0)
+          .getALocalSource()
+          .(DataFlow::RegExpCreationNode)
+          .getRoot()
+          .getAMatchedString()
   }
 
   /**
    * Gets the DataFlow::Node for the base string that is split.
    */
-  DataFlow::Node getBaseString() { result = getReceiver() }
+  DataFlow::Node getBaseString() { result = this.getReceiver() }
 
   /**
    * Gets a read of the `i`th element from the split string.
    */
   bindingset[i]
-  DataFlow::Node getASubstringRead(int i) { result = getAPropertyRead(i.toString()) }
+  DataFlow::Node getASubstringRead(int i) { result = this.getAPropertyRead(i.toString()) }
 }

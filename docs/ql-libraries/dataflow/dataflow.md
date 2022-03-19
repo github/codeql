@@ -92,7 +92,7 @@ Recommendations:
   See the C/C++ implementation, which makes use of this feature. Another use of
   this indirection is to hide synthesized local steps that are only relevant
   for global flow. See the C# implementation for an example of this.
-* Define `predicate localFlow(Node node1, Node node2) { localFlowStep*(node1, node2) }`.
+* Define `pragma[inline] predicate localFlow(Node node1, Node node2) { localFlowStep*(node1, node2) }`.
 * Make the local flow step relation in `simpleLocalFlowStep` follow
   def-to-first-use and use-to-next-use steps for SSA variables. Def-use steps
   also work, but the upside of `use-use` steps is that sources defined in terms
@@ -148,23 +148,31 @@ methods, constructors, lambdas, etc.). It can also be useful to represent
 `DataFlowCall` as an IPA type if implicit calls need to be modelled. The
 call-graph should be defined as a predicate:
 ```ql
+/** Gets a viable target for the call `c`. */
 DataFlowCallable viableCallable(DataFlowCall c)
 ```
 Furthermore, each `Node` must be associated with exactly one callable and this
 relation should be defined as:
 ```ql
+/** Gets the callable in which node `n` occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n)
 ```
 
 In order to connect data-flow across calls, the 4 `Node` subclasses
 `ArgumentNode`, `ParameterNode`, `ReturnNode`, and `OutNode` are used.
-Flow into callables from arguments to parameters are matched up using an
-integer position, so these two predicates must be defined:
+Flow into callables from arguments to parameters are matched up using
+language-defined classes `ParameterPosition` and `ArgumentPosition`,
+so these three predicates must be defined:
 ```ql
-ArgumentNode::argumentOf(DataFlowCall call, int pos)
-predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos)
+/** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos)
+
+/** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
+
+/** Holds if arguments at position `apos` match parameters at position `ppos`. */
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos)
 ```
-It is typical to use `pos = -1` for an implicit `this`-parameter.
 
 For most languages return-flow is simpler and merely consists of matching up a
 `ReturnNode` with the data-flow node corresponding to the value of the call,
@@ -174,8 +182,13 @@ calls and `OutNode`s:
 ```ql
 private newtype TReturnKind = TNormalReturnKind()
 
+/** Gets the kind of this return node. */
 ReturnKind ReturnNode::getKind() { any() }
 
+/**
+ * Gets a node that can read the value returned from `call` with return kind
+ * `kind`.
+ */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   result = call.getNode() and
   kind = TNormalReturnKind()

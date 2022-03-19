@@ -25,14 +25,17 @@ module SinkEndpointFilter {
    * effective sink.
    */
   string getAReasonSinkExcluded(DataFlow::Node sinkCandidate) {
-    result = StandardEndpointFilters::getAReasonSinkExcluded(sinkCandidate) and
+    result = StandardEndpointFilters::getAReasonSinkExcluded(sinkCandidate)
+    or
+    // Require path injection sink candidates to be (a) arguments to external library calls
+    // (possibly indirectly), or (b) heuristic sinks.
+    //
+    // Heuristic sinks are mostly copied from the `HeuristicTaintedPathSink` class defined within
+    // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
+    // We can't reuse the class because importing that file would cause us to treat these
+    // heuristic sinks as known sinks.
+    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(sinkCandidate) and
     not (
-      // Explicitly allow the following heuristic sinks.
-      //
-      // These are mostly copied from the `HeuristicTaintedPathSink` class defined within
-      // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
-      // We can't reuse the class because importing that file would cause us to treat these
-      // heuristic sinks as known sinks.
       isAssignedToOrConcatenatedWith(sinkCandidate, "(?i)(file|folder|dir|absolute)")
       or
       isArgTo(sinkCandidate, "(?i)(get|read)file")
@@ -51,12 +54,13 @@ module SinkEndpointFilter {
       // `isAssignedToOrConcatenatedWith` predicate call above, we also allow the noisier "path"
       // name.
       isAssignedToOrConcatenatedWith(sinkCandidate, "(?i)path")
-    )
+    ) and
+    result = "not a direct argument to a likely external library call or a heuristic sink"
   }
 }
 
-class TaintedPathATMConfig extends ATMConfig {
-  TaintedPathATMConfig() { this = "TaintedPathATMConfig" }
+class TaintedPathAtmConfig extends AtmConfig {
+  TaintedPathAtmConfig() { this = "TaintedPathATMConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof TaintedPath::Source }
 
@@ -68,6 +72,9 @@ class TaintedPathATMConfig extends ATMConfig {
 
   override EndpointType getASinkEndpointType() { result instanceof TaintedPathSinkType }
 }
+
+/** DEPRECATED: Alias for TaintedPathAtmConfig */
+deprecated class TaintedPathATMConfig = TaintedPathAtmConfig;
 
 /**
  * A taint-tracking configuration for reasoning about path injection vulnerabilities.
@@ -84,7 +91,7 @@ class Configuration extends TaintTracking::Configuration {
     label = sink.(TaintedPath::Sink).getAFlowLabel()
     or
     // Allow effective sinks to have any taint label
-    any(TaintedPathATMConfig cfg).isEffectiveSink(sink)
+    any(TaintedPathAtmConfig cfg).isEffectiveSink(sink)
   }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof TaintedPath::Sanitizer }

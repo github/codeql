@@ -17,12 +17,11 @@ class CandidateTopLevel extends TopLevel {
 
 /** A string literal in a toplevel that contains at least one template literal. */
 class CandidateStringLiteral extends StringLiteral {
-  CandidateTopLevel tl;
   string v;
 
   CandidateStringLiteral() {
-    tl = this.getTopLevel() and
-    v = getStringValue()
+    this.getTopLevel() instanceof CandidateTopLevel and
+    v = this.getStringValue()
   }
 
   /**
@@ -43,10 +42,10 @@ class CandidateStringLiteral extends StringLiteral {
    * Gets an ancestor node of this string literal in the AST that can be reached without
    * stepping over scope elements.
    */
-  ASTNode getIntermediate() {
+  AstNode getIntermediate() {
     result = this
     or
-    exists(ASTNode mid | mid = getIntermediate() |
+    exists(AstNode mid | mid = this.getIntermediate() |
       not mid instanceof ScopeElement and
       result = mid.getParent()
     )
@@ -57,7 +56,7 @@ class CandidateStringLiteral extends StringLiteral {
    */
   predicate isInScope(Scope scope) {
     scope instanceof GlobalScope or
-    getIntermediate().(ScopeElement).getScope() = scope.getAnInnerScope*()
+    this.getIntermediate().(ScopeElement).getScope() = scope.getAnInnerScope*()
   }
 }
 

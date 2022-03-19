@@ -124,8 +124,8 @@ nodes
 | Types.cs:153:42:153:45 | this access [field Field] : Object | semmle.label | this access [field Field] : Object |
 | Types.cs:153:42:153:51 | access to field Field | semmle.label | access to field Field |
 subpaths
-| Types.cs:122:30:122:30 | access to local variable a : A | Types.cs:130:34:130:34 | x : A | Types.cs:130:40:130:40 | access to parameter x : A | Types.cs:122:22:122:31 | call to method Through : A |
-| Types.cs:123:30:123:31 | access to local variable e2 : Types+E<D>.E2 | Types.cs:130:34:130:34 | x : Types+E<D>.E2 | Types.cs:130:40:130:40 | access to parameter x : Types+E<D>.E2 | Types.cs:123:22:123:32 | call to method Through : Types+E<D>.E2 |
+| Types.cs:122:30:122:30 | access to local variable a : A | Types.cs:130:34:130:34 | x : A | Types.cs:130:40:130:40 | access to parameter x : A | Types.cs:122:22:122:31 | call to method Through |
+| Types.cs:123:30:123:31 | access to local variable e2 : Types+E<D>.E2 | Types.cs:130:34:130:34 | x : Types+E<D>.E2 | Types.cs:130:40:130:40 | access to parameter x : Types+E<D>.E2 | Types.cs:123:22:123:32 | call to method Through |
 #select
 | Types.cs:23:12:23:18 | object creation of type C : C | Types.cs:23:12:23:18 | object creation of type C : C | Types.cs:50:18:50:18 | access to local variable c | $@ | Types.cs:50:18:50:18 | access to local variable c | access to local variable c |
 | Types.cs:25:12:25:18 | object creation of type C : C | Types.cs:25:12:25:18 | object creation of type C : C | Types.cs:63:33:63:36 | (...) ... | $@ | Types.cs:63:33:63:36 | (...) ... | (...) ... |

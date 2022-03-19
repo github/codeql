@@ -1,10 +1,10 @@
 typeaccesses/Arrays.java:
 #    0| [CompilationUnit] Arrays
 #    3|   1: [Class] Arrays
-#    4|     2: [FieldDeclaration] ...[] ss, ...;
+#    4|     2: [FieldDeclaration] ...[] ss;
 #    4|       -1: [ArrayTypeAccess] ...[]
 #    4|         0: [TypeAccess] String
-#    5|     3: [FieldDeclaration] ...[] sls, ...;
+#    5|     3: [FieldDeclaration] ...[] sls;
 #    5|       -1: [ArrayTypeAccess] ...[]
 #    5|         0: [TypeAccess] List<String>
 #    5|           0: [TypeAccess] String
@@ -32,7 +32,7 @@ typeaccesses/TA.java:
 #-----|     -1: (Base Types)
 #    5|       -1: [TypeAccess] ArrayList<TA>
 #    5|         0: [TypeAccess] TA
-#    6|     2: [FieldDeclaration] ArrayList<TA> field, ...;
+#    6|     2: [FieldDeclaration] ArrayList<TA> field;
 #    6|       -1: [TypeAccess] ArrayList<TA>
 #    6|         0: [TypeAccess] TA
 #    7|     3: [Method] method1

@@ -295,7 +295,7 @@ class NewInstance extends MethodAccess {
       // If we cast the result of this method, then this is either the type specified, or a
       // sub-type of that type. Make sure we exclude overly generic types such as `Object`.
       not overlyGenericType(cast.getType()) and
-      hasSubtype*(cast.getType(), result)
+      hasDescendant(cast.getType(), result)
     )
   }
 }

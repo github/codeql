@@ -26,3 +26,6 @@ documentation:
   - "**/*.qhelp"
   - "**/*.md"
   - docs/**/*
+
+"QL-for-QL": 
+  - ql/**/*

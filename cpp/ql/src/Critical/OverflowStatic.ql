@@ -103,9 +103,9 @@ class CallWithBufferSize extends FunctionCall {
     // `upperBound(e)` defaults to `exprMaxVal(e)` when `e` isn't analyzable. So to get a meaningful
     // result in this case we pick the minimum value obtainable from dataflow and range analysis.
     result =
-      upperBound(statedSizeExpr())
+      upperBound(this.statedSizeExpr())
           .minimum(min(Expr statedSizeSrc |
-              DataFlow::localExprFlow(statedSizeSrc, statedSizeExpr())
+              DataFlow::localExprFlow(statedSizeSrc, this.statedSizeExpr())
             |
               statedSizeSrc.getValue().toInt()
             ))

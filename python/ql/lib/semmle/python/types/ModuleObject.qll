@@ -43,11 +43,11 @@ abstract class ModuleObject extends Object {
   pragma[inline]
   final Object attr(string name) { result = this.getAttribute(name) }
 
-  predicate hasAttribute(string name) { theModule().hasAttribute(name) }
+  predicate hasAttribute(string name) { this.theModule().hasAttribute(name) }
 
   predicate attributeRefersTo(string name, Object obj, ControlFlowNode origin) {
     exists(ObjectInternal val, CfgOrigin valorig |
-      theModule().(ModuleObjectInternal).attribute(name, val, valorig) and
+      this.theModule().(ModuleObjectInternal).attribute(name, val, valorig) and
       obj = val.getSource() and
       origin = valorig.toCfgNode()
     )
@@ -55,7 +55,7 @@ abstract class ModuleObject extends Object {
 
   predicate attributeRefersTo(string name, Object obj, ClassObject cls, ControlFlowNode origin) {
     exists(ObjectInternal val, CfgOrigin valorig |
-      theModule().(ModuleObjectInternal).attribute(name, val, valorig) and
+      this.theModule().(ModuleObjectInternal).attribute(name, val, valorig) and
       obj = val.getSource() and
       cls = val.getClass().getSource() and
       origin = valorig.toCfgNode()
@@ -72,14 +72,7 @@ abstract class ModuleObject extends Object {
    * Whether this module "exports" `name`. That is, whether using `import *` on this module
    * will result in `name` being added to the namespace.
    */
-  predicate exports(string name) { theModule().exports(name) }
-
-  /**
-   * Whether the complete set of names "exported" by this module can be accurately determined
-   *
-   * DEPRECATED: Use ModuleValue::hasCompleteExportInfo instead
-   */
-  abstract deprecated predicate exportsComplete();
+  predicate exports(string name) { this.theModule().exports(name) }
 
   /** Gets the short name of the module. For example the short name of module x.y.z is 'z' */
   string getShortName() {
@@ -92,7 +85,7 @@ abstract class ModuleObject extends Object {
    * Whether this module is imported by 'import name'. For example on a linux system,
    * the module 'posixpath' is imported as 'os.path' or as 'posixpath'
    */
-  predicate importedAs(string name) { PointsToInternal::module_imported_as(theModule(), name) }
+  predicate importedAs(string name) { PointsToInternal::module_imported_as(this.theModule(), name) }
 
   ModuleObject getAnImportedModule() {
     result.importedAs(this.getModule().getAnImportedModuleName())
@@ -117,8 +110,6 @@ class BuiltinModuleObject extends ModuleObject {
   }
 
   override predicate hasAttribute(string name) { exists(this.asBuiltin().getMember(name)) }
-
-  deprecated override predicate exportsComplete() { any() }
 }
 
 class PythonModuleObject extends ModuleObject {
@@ -131,18 +122,6 @@ class PythonModuleObject extends ModuleObject {
   override Module getSourceModule() { result = this.getOrigin() }
 
   override Container getPath() { result = this.getModule().getFile() }
-
-  deprecated override predicate exportsComplete() {
-    exists(Module m | m = this.getModule() |
-      not exists(Call modify, Attribute attr, GlobalVariable all |
-        modify.getScope() = m and
-        modify.getFunc() = attr and
-        all.getId() = "__all__"
-      |
-        attr.getObject().(Name).uses(all)
-      )
-    )
-  }
 }
 
 /**
@@ -181,7 +160,7 @@ class PackageObject extends ModuleObject {
 
   override Object getAttribute(string name) {
     exists(ObjectInternal val |
-      theModule().(PackageObjectInternal).attribute(name, val, _) and
+      this.theModule().(PackageObjectInternal).attribute(name, val, _) and
       result = val.getSource()
     )
   }
@@ -196,12 +175,6 @@ class PackageObject extends ModuleObject {
     )
   }
 
-  deprecated override predicate exportsComplete() {
-    not exists(this.getInitModule())
-    or
-    this.getInitModule().exportsComplete()
-  }
-
   override predicate hasAttribute(string name) {
     exists(this.submodule(name))
     or
@@ -211,7 +184,7 @@ class PackageObject extends ModuleObject {
   Location getLocation() { none() }
 
   override predicate hasLocationInfo(string path, int bl, int bc, int el, int ec) {
-    path = this.getPath().getName() and
+    path = this.getPath().getAbsolutePath() and
     bl = 0 and
     bc = 0 and
     el = 0 and

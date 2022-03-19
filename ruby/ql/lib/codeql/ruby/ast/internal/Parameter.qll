@@ -44,3 +44,7 @@ class SimpleParameterSynthImpl extends SimpleParameterImpl, TSimpleParameterSynt
 
   override string getNameImpl() { result = this.getVariableImpl().getName() }
 }
+
+class DestructuredParameterImpl extends Ruby::DestructuredParameter {
+  Ruby::AstNode getChildNode(int i) { result = this.getChild(i) }
+}

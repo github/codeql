@@ -170,7 +170,7 @@ module Ssa {
     /**
      * Gets the control flow node of this SSA definition, if any. Phi nodes are
      * examples of SSA definitions without a control flow node, as they are
-     * modelled at index `-1` in the relevant basic block.
+     * modeled at index `-1` in the relevant basic block.
      */
     final ControlFlow::Node getControlFlowNode() {
       exists(ControlFlow::BasicBlock bb, int i | this.definesAt(_, bb, i) | result = bb.getNode(i))
@@ -428,11 +428,6 @@ module Ssa {
     }
 
     /**
-     * DEPRECATED: Use `definesAt/3` instead.
-     */
-    deprecated predicate definesAt(ControlFlow::BasicBlock bb, int i) { this.definesAt(_, bb, i) }
-
-    /**
      * Gets the syntax element associated with this SSA definition, if any.
      * This is either an expression, for example `x = 0`, a parameter, or a
      * callable. Phi nodes have no associated syntax element.
@@ -654,14 +649,6 @@ module Ssa {
 
     override Location getLocation() { result = this.getQualifierDefinition().getLocation() }
   }
-
-  /**
-   * An SSA definition that has no actual semantics, but simply serves to
-   * merge or filter data flow.
-   *
-   * Phi nodes are the canonical (and currently only) example.
-   */
-  deprecated class PseudoDefinition = PhiNode;
 
   /**
    * An SSA phi node, that is, a pseudo definition for a variable at a point

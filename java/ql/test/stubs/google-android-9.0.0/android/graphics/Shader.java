@@ -9,4 +9,9 @@ public class Shader
     public Shader(){}
     public boolean getLocalMatrix(Matrix p0){ return false; }
     public void setLocalMatrix(Matrix p0){}
+    static public enum TileMode
+    {
+        CLAMP, DECAL, MIRROR, REPEAT;
+        private TileMode() {}
+    }
 }

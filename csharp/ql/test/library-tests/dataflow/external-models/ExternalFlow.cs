@@ -105,6 +105,13 @@ namespace My.Qltest
             Sink(d2.Field2);
         }
 
+        void M16()
+        {
+            var f = new F();
+            f.MyProp = new object();
+            Sink(f.MyProp);
+        }
+
         object StepArgRes(object x) { return null; }
 
         void StepArgArg(object @in, object @out) { }
@@ -141,5 +148,25 @@ namespace My.Qltest
         static void Parse(string s, out int i) => throw null;
 
         static void Sink(object o) { }
+    }
+
+    public class E
+    {
+        object MyField;
+
+        public virtual object MyProp
+        {
+            get { throw null; }
+            set { throw null; }
+        }
+    }
+
+    public class F : E
+    {
+        public override object MyProp
+        {
+            get { throw null; }
+            set { throw null; }
+        }
     }
 }

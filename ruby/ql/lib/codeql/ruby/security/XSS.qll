@@ -141,7 +141,7 @@ private module Shared {
     exists(RenderCall call, Pair kvPair |
       call.getLocals().getAKeyValuePair() = kvPair and
       kvPair.getValue() = value and
-      kvPair.getKey().getValueText() = hashKey and
+      kvPair.getKey().getConstantValue().isStringOrSymbol(hashKey) and
       call.getTemplateFile() = erb
     )
   }
@@ -154,7 +154,7 @@ private module Shared {
       argNode.asExpr() = refNode.getArgument(0) and
       refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "local_assigns" and
       argNode.getALocalSource() = DataFlow::exprNode(strNode) and
-      strNode.getExpr().getValueText() = hashKey and
+      strNode.getExpr().getConstantValue().isStringOrSymbol(hashKey) and
       erb = refNode.getFile()
     )
   }
@@ -227,7 +227,7 @@ private module Shared {
       isHelperMethod(helperMethod, name, template) and
       isMethodCall(helperMethodCall.getExpr(), name, template) and
       helperMethodCall.getArgument(pragma[only_bind_into](argIdx)) = node1.asExpr() and
-      helperMethod.getParameter(pragma[only_bind_into](argIdx)) = node2.asExpr().getExpr()
+      helperMethod.getParameter(pragma[only_bind_into](argIdx)) = node2.asParameter()
     )
   }
 
@@ -245,7 +245,7 @@ private module Shared {
   /**
    * An additional step that is preserves dataflow in the context of XSS.
    */
-  predicate isAdditionalXSSFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalXssFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     isFlowFromLocals(node1, node2)
     or
     isFlowFromControllerInstanceVariable(node1, node2)
@@ -254,6 +254,9 @@ private module Shared {
     or
     isFlowFromHelperMethod(node1, node2)
   }
+
+  /** DEPRECATED: Alias for isAdditionalXssFlowStep */
+  deprecated predicate isAdditionalXSSFlowStep = isAdditionalXssFlowStep/2;
 }
 
 /**
@@ -261,42 +264,35 @@ private module Shared {
  * "reflected cross-site scripting" vulnerabilities, as well as
  * extension points for adding your own.
  */
-module ReflectedXSS {
+module ReflectedXss {
   /** A data flow source for stored XSS vulnerabilities. */
   abstract class Source extends Shared::Source { }
 
   /** A data flow sink for stored XSS vulnerabilities. */
-  abstract class Sink extends Shared::Sink { }
+  class Sink = Shared::Sink;
 
   /** A sanitizer for stored XSS vulnerabilities. */
-  abstract class Sanitizer extends Shared::Sanitizer { }
+  class Sanitizer = Shared::Sanitizer;
 
   /** A sanitizer guard for stored XSS vulnerabilities. */
-  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
-
-  // Consider all arbitrary XSS sinks to be reflected XSS sinks
-  private class AnySink extends Sink instanceof Shared::Sink { }
-
-  // Consider all arbitrary XSS sanitizers to be reflected XSS sanitizers
-  private class AnySanitizer extends Sanitizer instanceof Shared::Sanitizer { }
-
-  // Consider all arbitrary XSS sanitizer guards to be reflected XSS sanitizer guards
-  private class AnySanitizerGuard extends SanitizerGuard instanceof Shared::SanitizerGuard {
-    override predicate checks(CfgNode expr, boolean branch) {
-      Shared::SanitizerGuard.super.checks(expr, branch)
-    }
-  }
+  class SanitizerGuard = Shared::SanitizerGuard;
 
   /**
    * An additional step that is preserves dataflow in the context of reflected XSS.
    */
-  predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSFlowStep/2;
+  predicate isAdditionalXssTaintStep = Shared::isAdditionalXssFlowStep/2;
+
+  /** DEPRECATED: Alias for isAdditionalXssTaintStep */
+  deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
 
   /**
    * A source of remote user input, considered as a flow source.
    */
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
 }
+
+/** DEPRECATED: Alias for ReflectedXss */
+deprecated module ReflectedXSS = ReflectedXss;
 
 private module OrmTracking {
   /**
@@ -311,7 +307,7 @@ private module OrmTracking {
     override predicate isSink(DataFlow2::Node sink) { sink instanceof DataFlow2::CallNode }
 
     override predicate isAdditionalFlowStep(DataFlow2::Node node1, DataFlow2::Node node2) {
-      Shared::isAdditionalXSSFlowStep(node1, node2)
+      Shared::isAdditionalXssFlowStep(node1, node2)
       or
       // Propagate flow through arbitrary method calls
       node2.(DataFlow2::CallNode).getReceiver() = node1
@@ -322,36 +318,27 @@ private module OrmTracking {
   }
 }
 
-module StoredXSS {
+/** Provides default sources, sinks and sanitizers for detecting stored cross-site scripting (XSS) vulnerabilities. */
+module StoredXss {
   /** A data flow source for stored XSS vulnerabilities. */
   abstract class Source extends Shared::Source { }
 
   /** A data flow sink for stored XSS vulnerabilities. */
-  abstract class Sink extends Shared::Sink { }
+  class Sink = Shared::Sink;
 
   /** A sanitizer for stored XSS vulnerabilities. */
-  abstract class Sanitizer extends Shared::Sanitizer { }
+  class Sanitizer = Shared::Sanitizer;
 
   /** A sanitizer guard for stored XSS vulnerabilities. */
-  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
-
-  // Consider all arbitrary XSS sinks to be stored XSS sinks
-  private class AnySink extends Sink instanceof Shared::Sink { }
-
-  // Consider all arbitrary XSS sanitizers to be stored XSS sanitizers
-  private class AnySanitizer extends Sanitizer instanceof Shared::Sanitizer { }
-
-  // Consider all arbitrary XSS sanitizer guards to be stored XSS sanitizer guards
-  private class AnySanitizerGuard extends SanitizerGuard instanceof Shared::SanitizerGuard {
-    override predicate checks(CfgNode expr, boolean branch) {
-      Shared::SanitizerGuard.super.checks(expr, branch)
-    }
-  }
+  class SanitizerGuard = Shared::SanitizerGuard;
 
   /**
    * An additional step that preserves dataflow in the context of stored XSS.
    */
-  predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSFlowStep/2;
+  predicate isAdditionalXssTaintStep = Shared::isAdditionalXssFlowStep/2;
+
+  /** DEPRECATED: Alias for isAdditionalXssTaintStep */
+  deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
 
   private class OrmFieldAsSource extends Source instanceof DataFlow2::CallNode {
     OrmFieldAsSource() {
@@ -367,3 +354,6 @@ module StoredXSS {
   private class FileSystemReadAccessAsSource extends Source instanceof FileSystemReadAccess { }
   // TODO: Consider `FileNameSource` flowing to script tag `src` attributes and similar
 }
+
+/** DEPRECATED: Alias for StoredXss */
+deprecated module StoredXSS = StoredXss;

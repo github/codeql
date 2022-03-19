@@ -15,4 +15,3 @@
 | code/r_regressions.py:46:1:46:14 | ControlFlowNode for FunctionExpr | code/r_regressions.py:52:9:52:12 | ControlFlowNode for fail |
 | code/t_type.py:3:1:3:16 | ControlFlowNode for ClassExpr | code/t_type.py:6:1:6:9 | ControlFlowNode for type() |
 | code/t_type.py:3:1:3:16 | ControlFlowNode for ClassExpr | code/t_type.py:13:5:13:13 | ControlFlowNode for type() |
-| code/test_package/module2.py:5:5:5:6 | ControlFlowNode for Dict | code/j_convoluted_imports.py:25:1:25:1 | ControlFlowNode for r |

@@ -1,3 +1,3 @@
-case foo
-  in 3 then 5
-end
+# one line pattern matches
+5 in 3
+[1,2] => [x, *]

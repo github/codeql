@@ -10,6 +10,7 @@
  * @tags security
  *       correctness
  *       external/cwe/cwe-020
+ *       external/cwe/cwe-184
  */
 
 import javascript

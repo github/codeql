@@ -101,7 +101,7 @@ predicate isDeadAssignment(string name, DataFlow::PropWrite assign1, DataFlow::P
     noPropAccessBetweenInsideBasicBlock(name, assign1, assign2) or
     noPropAccessBetweenAcrossBasicBlocks(name, assign1, assign2)
   ) and
-  not isDOMProperty(name)
+  not isDomProperty(name)
 }
 
 /**

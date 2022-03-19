@@ -22,11 +22,11 @@ abstract private class ProduceCryptoCall extends MethodAccess {
 /** A method call that produces a MAC. */
 private class ProduceMacCall extends ProduceCryptoCall {
   ProduceMacCall() {
-    getMethod().getDeclaringType().hasQualifiedName("javax.crypto", "Mac") and
+    this.getMethod().getDeclaringType().hasQualifiedName("javax.crypto", "Mac") and
     (
-      getMethod().hasStringSignature(["doFinal()", "doFinal(byte[])"]) and this = output
+      this.getMethod().hasStringSignature(["doFinal()", "doFinal(byte[])"]) and this = output
       or
-      getMethod().hasStringSignature("doFinal(byte[], int)") and getArgument(0) = output
+      this.getMethod().hasStringSignature("doFinal(byte[], int)") and this.getArgument(0) = output
     )
   }
 
@@ -36,11 +36,11 @@ private class ProduceMacCall extends ProduceCryptoCall {
 /** A method call that produces a signature. */
 private class ProduceSignatureCall extends ProduceCryptoCall {
   ProduceSignatureCall() {
-    getMethod().getDeclaringType().hasQualifiedName("java.security", "Signature") and
+    this.getMethod().getDeclaringType().hasQualifiedName("java.security", "Signature") and
     (
-      getMethod().hasStringSignature("sign()") and this = output
+      this.getMethod().hasStringSignature("sign()") and this = output
       or
-      getMethod().hasStringSignature("sign(byte[], int, int)") and getArgument(0) = output
+      this.getMethod().hasStringSignature("sign(byte[], int, int)") and this.getArgument(0) = output
     )
   }
 
@@ -79,15 +79,15 @@ private class ProduceCiphertextCall extends ProduceCryptoCall {
         m.hasStringSignature(["doFinal()", "doFinal(byte[])", "doFinal(byte[], int, int)"]) and
         this = output
         or
-        m.hasStringSignature("doFinal(byte[], int)") and getArgument(0) = output
+        m.hasStringSignature("doFinal(byte[], int)") and this.getArgument(0) = output
         or
         m.hasStringSignature([
             "doFinal(byte[], int, int, byte[])", "doFinal(byte[], int, int, byte[], int)"
           ]) and
-        getArgument(3) = output
+        this.getArgument(3) = output
         or
         m.hasStringSignature("doFinal(ByteBuffer, ByteBuffer)") and
-        getArgument(1) = output
+        this.getArgument(1) = output
       )
     ) and
     exists(InitializeEncryptorConfig config |
@@ -193,18 +193,18 @@ class CryptoOperationSource extends DataFlow::Node {
 /** Methods that use a non-constant-time algorithm for comparing inputs. */
 private class NonConstantTimeEqualsCall extends MethodAccess {
   NonConstantTimeEqualsCall() {
-    getMethod()
+    this.getMethod()
         .hasQualifiedName("java.lang", "String", ["equals", "contentEquals", "equalsIgnoreCase"]) or
-    getMethod().hasQualifiedName("java.nio", "ByteBuffer", ["equals", "compareTo"])
+    this.getMethod().hasQualifiedName("java.nio", "ByteBuffer", ["equals", "compareTo"])
   }
 }
 
 /** A static method that uses a non-constant-time algorithm for comparing inputs. */
 private class NonConstantTimeComparisonCall extends StaticMethodAccess {
   NonConstantTimeComparisonCall() {
-    getMethod().hasQualifiedName("java.util", "Arrays", ["equals", "deepEquals"]) or
-    getMethod().hasQualifiedName("java.util", "Objects", "deepEquals") or
-    getMethod()
+    this.getMethod().hasQualifiedName("java.util", "Arrays", ["equals", "deepEquals"]) or
+    this.getMethod().hasQualifiedName("java.util", "Objects", "deepEquals") or
+    this.getMethod()
         .hasQualifiedName("org.apache.commons.lang3", "StringUtils",
           ["equals", "equalsAny", "equalsAnyIgnoreCase", "equalsIgnoreCase"])
   }

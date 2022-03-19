@@ -3,7 +3,7 @@
  * @description Non-HTTPS connections can be intercepted by third parties.
  * @kind path-problem
  * @problem.severity warning
- * @precision medium
+ * @precision high
  * @id cpp/non-https-url
  * @tags security
  *       external/cwe/cwe-319
@@ -12,6 +12,7 @@
 
 import cpp
 import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import DataFlow::PathGraph
 
 /**
@@ -28,6 +29,11 @@ class PrivateHostName extends string {
   }
 }
 
+pragma[nomagic]
+predicate privateHostNameFlowsToExpr(Expr e) {
+  TaintTracking::localExprTaint(any(StringLiteral p | p.getValue() instanceof PrivateHostName), e)
+}
+
 /**
  * A string containing an HTTP URL not in a private domain.
  */
@@ -38,11 +44,9 @@ class HttpStringLiteral extends StringLiteral {
       or
       exists(string tail |
         tail = s.regexpCapture("http://(.*)", 1) and not tail instanceof PrivateHostName
-      ) and
-      not TaintTracking::localExprTaint(any(StringLiteral p |
-          p.getValue() instanceof PrivateHostName
-        ), this.getParent*())
-    )
+      )
+    ) and
+    not privateHostNameFlowsToExpr(this.getParent*())
   }
 }
 
@@ -54,7 +58,12 @@ class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node src) {
     // Sources are strings containing an HTTP URL not in a private domain.
-    src.asExpr() instanceof HttpStringLiteral
+    src.asExpr() instanceof HttpStringLiteral and
+    // block taint starting at `strstr`, which is likely testing an existing URL, rather than constructing an HTTP URL.
+    not exists(FunctionCall fc |
+      fc.getTarget().getName() = ["strstr", "strcasestr"] and
+      fc.getArgument(1) = globalValueNumber(src.asExpr()).getAnExpr()
+    )
   }
 
   override predicate isSink(DataFlow::Node sink) {

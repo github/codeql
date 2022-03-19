@@ -587,7 +587,7 @@ class FieldDeclaration extends ExprParent, @fielddecl, Annotatable {
   int getNumField() { result = max(int idx | fieldDeclaredIn(_, this, idx) | idx) + 1 }
 
   override string toString() {
-    if this.getNumField() = 0
+    if this.getNumField() = 1
     then result = this.getTypeAccess() + " " + this.getField(0) + ";"
     else result = this.getTypeAccess() + " " + this.getField(0) + ", ...;"
   }

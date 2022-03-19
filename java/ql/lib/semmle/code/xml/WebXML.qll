@@ -3,13 +3,16 @@ import java
 /**
  * Holds if any `web.xml` files are included in this snapshot.
  */
-predicate isWebXMLIncluded() { exists(WebXMLFile webXML) }
+predicate isWebXmlIncluded() { exists(WebXmlFile webXml) }
+
+/** DEPRECATED: Alias for isWebXmlIncluded */
+deprecated predicate isWebXMLIncluded = isWebXmlIncluded/0;
 
 /**
  * A deployment descriptor file, typically called `web.xml`.
  */
-class WebXMLFile extends XMLFile {
-  WebXMLFile() {
+class WebXmlFile extends XMLFile {
+  WebXmlFile() {
     count(XMLElement e | e = this.getAChild()) = 1 and
     this.getAChild().getName() = "web-app"
   }
@@ -28,11 +31,14 @@ class WebXMLFile extends XMLFile {
   }
 }
 
+/** DEPRECATED: Alias for WebXmlFile */
+deprecated class WebXMLFile = WebXmlFile;
+
 /**
  * An XML element in a `WebXMLFile`.
  */
-class WebXMLElement extends XMLElement {
-  WebXMLElement() { this.getFile() instanceof WebXMLFile }
+class WebXmlElement extends XMLElement {
+  WebXmlElement() { this.getFile() instanceof WebXmlFile }
 
   /**
    * Gets the value for this element, with leading and trailing whitespace trimmed.
@@ -40,10 +46,13 @@ class WebXMLElement extends XMLElement {
   string getValue() { result = this.allCharactersString().trim() }
 }
 
+/** DEPRECATED: Alias for WebXmlElement */
+deprecated class WebXMLElement = WebXmlElement;
+
 /**
  * A `<context-param>` element in a `web.xml` file.
  */
-class WebContextParameter extends WebXMLElement {
+class WebContextParameter extends WebXmlElement {
   WebContextParameter() { this.getName() = "context-param" }
 
   /**
@@ -60,28 +69,28 @@ class WebContextParameter extends WebXMLElement {
 /**
  * A `<param-name>` element in a `web.xml` file.
  */
-class WebContextParamName extends WebXMLElement {
+class WebContextParamName extends WebXmlElement {
   WebContextParamName() { this.getName() = "param-name" }
 }
 
 /**
  * A `<param-value>` element in a `web.xml` file.
  */
-class WebContextParamValue extends WebXMLElement {
+class WebContextParamValue extends WebXmlElement {
   WebContextParamValue() { this.getName() = "param-value" }
 }
 
 /**
  * A `<filter>` element in a `web.xml` file.
  */
-class WebFilter extends WebXMLElement {
+class WebFilter extends WebXmlElement {
   WebFilter() { this.getName() = "filter" }
 }
 
 /**
  * A `<filter-class>` element in a `web.xml` file, nested under a `<filter>` element.
  */
-class WebFilterClass extends WebXMLElement {
+class WebFilterClass extends WebXmlElement {
   WebFilterClass() {
     this.getName() = "filter-class" and
     this.getParent() instanceof WebFilter
@@ -93,14 +102,14 @@ class WebFilterClass extends WebXMLElement {
 /**
  * A `<servlet>` element in a `web.xml` file.
  */
-class WebServlet extends WebXMLElement {
+class WebServlet extends WebXmlElement {
   WebServlet() { this.getName() = "servlet" }
 }
 
 /**
  * A `<servlet-class>` element in a `web.xml` file, nested under a `<servlet>` element.
  */
-class WebServletClass extends WebXMLElement {
+class WebServletClass extends WebXmlElement {
   WebServletClass() {
     this.getName() = "servlet-class" and
     this.getParent() instanceof WebServlet
@@ -112,14 +121,14 @@ class WebServletClass extends WebXMLElement {
 /**
  * A `<listener>` element in a `web.xml` file.
  */
-class WebListener extends WebXMLElement {
+class WebListener extends WebXmlElement {
   WebListener() { this.getName() = "listener" }
 }
 
 /**
  * A `<listener-class>` element in a `web.xml` file, nested under a `<listener>` element.
  */
-class WebListenerClass extends WebXMLElement {
+class WebListenerClass extends WebXmlElement {
   WebListenerClass() {
     this.getName() = "listener-class" and
     this.getParent() instanceof WebListener
@@ -134,7 +143,7 @@ class WebListenerClass extends WebXMLElement {
 /**
  * An `<error-page>` element in a `web.xml` file.
  */
-class WebErrorPage extends WebXMLElement {
+class WebErrorPage extends WebXmlElement {
   WebErrorPage() { this.getName() = "error-page" }
 
   /**
@@ -151,7 +160,7 @@ class WebErrorPage extends WebXMLElement {
 /**
  * An `<exception-type>` element in a `web.xml` file, nested under an `<error-page>` element.
  */
-class WebErrorPageType extends WebXMLElement {
+class WebErrorPageType extends WebXmlElement {
   WebErrorPageType() {
     this.getName() = "exception-type" and
     this.getParent() instanceof WebErrorPage
@@ -161,7 +170,7 @@ class WebErrorPageType extends WebXMLElement {
 /**
  * A `<location>` element in a `web.xml` file, nested under an `<error-page>` element.
  */
-class WebErrorPageLocation extends WebXMLElement {
+class WebErrorPageLocation extends WebXmlElement {
   WebErrorPageLocation() {
     this.getName() = "location" and
     this.getParent() instanceof WebErrorPage

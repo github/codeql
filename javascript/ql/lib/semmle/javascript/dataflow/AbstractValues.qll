@@ -22,7 +22,7 @@
  *     value `nonzero`;
  *
  *   - at other times, the analysis does not have enough information
- *     to precisely model the behaviour of certain program elements:
+ *     to precisely model the behavior of certain program elements:
  *     for example, the current flow analysis is intra-procedural,
  *     so it does not model parameter passing or return values, and
  *     hence has to make worst-case assumptions about the possible

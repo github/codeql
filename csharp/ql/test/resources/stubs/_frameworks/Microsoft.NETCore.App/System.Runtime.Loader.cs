@@ -29,11 +29,6 @@ namespace System
             // Generated from `System.Runtime.Loader.AssemblyLoadContext` in `System.Runtime.Loader, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AssemblyLoadContext
             {
-                public static System.Collections.Generic.IEnumerable<System.Runtime.Loader.AssemblyLoadContext> All { get => throw null; }
-                public System.Collections.Generic.IEnumerable<System.Reflection.Assembly> Assemblies { get => throw null; }
-                public AssemblyLoadContext(string name, bool isCollectible = default(bool)) => throw null;
-                protected AssemblyLoadContext(bool isCollectible) => throw null;
-                protected AssemblyLoadContext() => throw null;
                 // Generated from `System.Runtime.Loader.AssemblyLoadContext+ContextualReflectionScope` in `System.Runtime.Loader, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ContextualReflectionScope : System.IDisposable
                 {
@@ -42,10 +37,15 @@ namespace System
                 }
 
 
+                public static System.Collections.Generic.IEnumerable<System.Runtime.Loader.AssemblyLoadContext> All { get => throw null; }
+                public System.Collections.Generic.IEnumerable<System.Reflection.Assembly> Assemblies { get => throw null; }
+                protected AssemblyLoadContext() => throw null;
+                protected AssemblyLoadContext(bool isCollectible) => throw null;
+                public AssemblyLoadContext(string name, bool isCollectible = default(bool)) => throw null;
                 public static System.Runtime.Loader.AssemblyLoadContext CurrentContextualReflectionContext { get => throw null; }
                 public static System.Runtime.Loader.AssemblyLoadContext Default { get => throw null; }
-                public static System.Runtime.Loader.AssemblyLoadContext.ContextualReflectionScope EnterContextualReflection(System.Reflection.Assembly activating) => throw null;
                 public System.Runtime.Loader.AssemblyLoadContext.ContextualReflectionScope EnterContextualReflection() => throw null;
+                public static System.Runtime.Loader.AssemblyLoadContext.ContextualReflectionScope EnterContextualReflection(System.Reflection.Assembly activating) => throw null;
                 public static System.Reflection.AssemblyName GetAssemblyName(string assemblyPath) => throw null;
                 public static System.Runtime.Loader.AssemblyLoadContext GetLoadContext(System.Reflection.Assembly assembly) => throw null;
                 public bool IsCollectible { get => throw null; }
@@ -53,8 +53,8 @@ namespace System
                 public System.Reflection.Assembly LoadFromAssemblyName(System.Reflection.AssemblyName assemblyName) => throw null;
                 public System.Reflection.Assembly LoadFromAssemblyPath(string assemblyPath) => throw null;
                 public System.Reflection.Assembly LoadFromNativeImagePath(string nativeImagePath, string assemblyPath) => throw null;
-                public System.Reflection.Assembly LoadFromStream(System.IO.Stream assembly, System.IO.Stream assemblySymbols) => throw null;
                 public System.Reflection.Assembly LoadFromStream(System.IO.Stream assembly) => throw null;
+                public System.Reflection.Assembly LoadFromStream(System.IO.Stream assembly, System.IO.Stream assemblySymbols) => throw null;
                 protected virtual System.IntPtr LoadUnmanagedDll(string unmanagedDllName) => throw null;
                 protected System.IntPtr LoadUnmanagedDllFromPath(string unmanagedDllPath) => throw null;
                 public string Name { get => throw null; }

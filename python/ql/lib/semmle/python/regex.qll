@@ -198,14 +198,11 @@ abstract class RegexString extends Expr {
 
   /** Whether there is a character class, between start (inclusive) and end (exclusive) */
   predicate charSet(int start, int end) {
-    exists(int inner_start, int inner_end |
+    exists(int inner_start |
       this.char_set_start(start, inner_start) and
       not this.char_set_start(_, start)
     |
-      end = inner_end + 1 and
-      inner_end > inner_start and
-      this.nonEscapedCharAt(inner_end) = "]" and
-      not exists(int mid | this.nonEscapedCharAt(mid) = "]" | mid > inner_start and mid < inner_end)
+      end - 1 = min(int i | this.nonEscapedCharAt(i) = "]" and inner_start < i)
     )
   }
 
@@ -344,9 +341,7 @@ abstract class RegexString extends Expr {
     this.escapingChar(start) and
     this.getChar(start + 1) = "N" and
     this.getChar(start + 2) = "{" and
-    this.getChar(end - 1) = "}" and
-    end > start and
-    not exists(int i | start + 2 < i and i < end - 1 | this.getChar(i) = "}")
+    end - 1 = min(int i | start + 2 < i and this.getChar(i) = "}")
   }
 
   /**
@@ -375,7 +370,7 @@ abstract class RegexString extends Expr {
       // 32-bit hex value \Uhhhhhhhh
       this.getChar(start + 1) = "U" and end = start + 10
       or
-      escapedName(start, end)
+      this.escapedName(start, end)
       or
       // escape not handled above, update when adding a new case
       not this.getChar(start + 1) in ["x", "u", "U", "N"] and
@@ -432,16 +427,67 @@ abstract class RegexString extends Expr {
   }
 
   predicate normalCharacter(int start, int end) {
+    end = start + 1 and
     this.character(start, end) and
     not this.specialCharacter(start, end, _)
   }
 
   predicate specialCharacter(int start, int end, string char) {
+    not this.inCharSet(start) and
     this.character(start, end) and
-    end = start + 1 and
-    char = this.getChar(start) and
-    (char = "$" or char = "^" or char = ".") and
-    not this.inCharSet(start)
+    (
+      end = start + 1 and
+      char = this.getChar(start) and
+      (char = "$" or char = "^" or char = ".")
+      or
+      end = start + 2 and
+      this.escapingChar(start) and
+      char = this.getText().substring(start, end) and
+      char = ["\\A", "\\Z", "\\b", "\\B"]
+    )
+  }
+
+  /**
+   * Holds if the range [start:end) consists of only 'normal' characters.
+   */
+  predicate normalCharacterSequence(int start, int end) {
+    // a normal character inside a character set is interpreted on its own
+    this.normalCharacter(start, end) and
+    this.inCharSet(start)
+    or
+    // a maximal run of normal characters is considered as one constant
+    exists(int s, int e |
+      e = max(int i | this.normalCharacterRun(s, i)) and
+      not this.inCharSet(s)
+    |
+      // 'abc' can be considered one constant, but
+      // 'abc+' has to be broken up into 'ab' and 'c+',
+      // as the qualifier only applies to 'c'.
+      if this.qualifier(e, _, _, _)
+      then
+        end = e and start = e - 1
+        or
+        end = e - 1 and start = s and start < end
+      else (
+        end = e and
+        start = s
+      )
+    )
+  }
+
+  private predicate normalCharacterRun(int start, int end) {
+    (
+      this.normalCharacterRun(start, end - 1)
+      or
+      start = end - 1 and not this.normalCharacter(start - 1, start)
+    ) and
+    this.normalCharacter(end - 1, end)
+  }
+
+  private predicate characterItem(int start, int end) {
+    this.normalCharacterSequence(start, end) or
+    this.escapedCharacter(start, end) or
+    this.specialCharacter(start, end, _)
   }
 
   /** Whether the text in the range start,end is a group */
@@ -715,7 +761,7 @@ abstract class RegexString extends Expr {
   string getBackrefName(int start, int end) { this.named_backreference(start, end, result) }
 
   private predicate baseItem(int start, int end) {
-    this.character(start, end) and
+    this.characterItem(start, end) and
     not exists(int x, int y | this.charSet(x, y) and x <= start and y >= end)
     or
     this.group(start, end)
@@ -835,14 +881,14 @@ abstract class RegexString extends Expr {
   }
 
   private predicate item_start(int start) {
-    this.character(start, _) or
+    this.characterItem(start, _) or
     this.isGroupStart(start) or
     this.charSet(start, _) or
     this.backreference(start, _)
   }
 
   private predicate item_end(int end) {
-    this.character(_, end)
+    this.characterItem(_, end)
     or
     exists(int endm1 | this.isGroupEnd(endm1) and end = endm1 + 1)
     or
@@ -901,7 +947,8 @@ abstract class RegexString extends Expr {
     exists(int x | this.firstPart(x, end) |
       this.emptyMatchAtStartGroup(x, start) or
       this.qualifiedItem(x, start, true, _) or
-      this.specialCharacter(x, start, "^")
+      // ^ and \A match the start of the string
+      this.specialCharacter(x, start, ["^", "\\A"])
     )
     or
     exists(int y | this.firstPart(start, y) |
@@ -926,9 +973,8 @@ abstract class RegexString extends Expr {
       or
       this.qualifiedItem(end, y, true, _)
       or
-      this.specialCharacter(end, y, "$")
-      or
-      y = end + 2 and this.escapingChar(end) and this.getChar(end + 1) = "Z"
+      // $ and \Z match the end of the string.
+      this.specialCharacter(end, y, ["$", "\\Z"])
     )
     or
     exists(int x |
@@ -951,7 +997,7 @@ abstract class RegexString extends Expr {
    */
   predicate firstItem(int start, int end) {
     (
-      this.character(start, end)
+      this.characterItem(start, end)
       or
       this.qualifiedItem(start, end, _, _)
       or
@@ -966,7 +1012,7 @@ abstract class RegexString extends Expr {
    */
   predicate lastItem(int start, int end) {
     (
-      this.character(start, end)
+      this.characterItem(start, end)
       or
       this.qualifiedItem(start, end, _, _)
       or

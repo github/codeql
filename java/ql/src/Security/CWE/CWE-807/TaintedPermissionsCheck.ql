@@ -41,7 +41,7 @@ class PermissionsCheckMethodAccess extends MethodAccess, PermissionsConstruction
     )
   }
 
-  override Expr getInput() { result = getArgument(0) }
+  override Expr getInput() { result = this.getArgument(0) }
 }
 
 class WCPermissionConstruction extends ClassInstanceExpr, PermissionsConstruction {
@@ -49,7 +49,7 @@ class WCPermissionConstruction extends ClassInstanceExpr, PermissionsConstructio
     this.getConstructor().getDeclaringType() instanceof TypeShiroWCPermission
   }
 
-  override Expr getInput() { result = getArgument(0) }
+  override Expr getInput() { result = this.getArgument(0) }
 }
 
 class TaintedPermissionsCheckFlowConfig extends TaintTracking::Configuration {

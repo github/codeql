@@ -5,7 +5,7 @@ private import experimental.semmle.python.frameworks.JWT
 
 private module Authlib {
   /** Gets a reference to `authlib.jose.(jwt|JsonWebToken)` */
-  private API::Node authlibJWT() {
+  private API::Node authlibJwt() {
     result in [
         API::moduleImport("authlib").getMember("jose").getMember("jwt"),
         API::moduleImport("authlib").getMember("jose").getMember("JsonWebToken").getReturn()
@@ -13,10 +13,10 @@ private module Authlib {
   }
 
   /** Gets a reference to `jwt.encode` */
-  private API::Node authlibJWTEncode() { result = authlibJWT().getMember("encode") }
+  private API::Node authlibJwtEncode() { result = authlibJwt().getMember("encode") }
 
   /** Gets a reference to `jwt.decode` */
-  private API::Node authlibJWTDecode() { result = authlibJWT().getMember("decode") }
+  private API::Node authlibJwtDecode() { result = authlibJwt().getMember("decode") }
 
   /**
    * Gets a call to `authlib.jose.(jwt|JsonWebToken).encode`.
@@ -33,8 +33,8 @@ private module Authlib {
    * * `getAlgorithm()`'s result would be `"HS256"`.
    * * `getAlgorithmstring()`'s result would be `HS256`.
    */
-  private class AuthlibJWTEncodeCall extends DataFlow::CallCfgNode, JWTEncoding::Range {
-    AuthlibJWTEncodeCall() { this = authlibJWTEncode().getACall() }
+  private class AuthlibJwtEncodeCall extends DataFlow::CallCfgNode, JwtEncoding::Range {
+    AuthlibJwtEncodeCall() { this = authlibJwtEncode().getACall() }
 
     override DataFlow::Node getPayload() { result = this.getArg(1) }
 
@@ -50,7 +50,7 @@ private module Authlib {
 
     override string getAlgorithmString() {
       exists(StrConst str |
-        DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(getAlgorithm()) and
+        DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(this.getAlgorithm()) and
         result = str.getText()
       )
     }
@@ -69,8 +69,8 @@ private module Authlib {
    * * `getPayload()`'s result would be `token`.
    * * `getKey()`'s result would be `key`.
    */
-  private class AuthlibJWTDecodeCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
-    AuthlibJWTDecodeCall() { this = authlibJWTDecode().getACall() }
+  private class AuthlibJwtDecodeCall extends DataFlow::CallCfgNode, JwtDecoding::Range {
+    AuthlibJwtDecodeCall() { this = authlibJwtDecode().getACall() }
 
     override DataFlow::Node getPayload() { result = this.getArg(0) }
 

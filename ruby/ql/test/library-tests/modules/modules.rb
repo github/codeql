@@ -119,4 +119,3 @@ end
 
 module Test::Foo1::Bar::Baz
 end
-

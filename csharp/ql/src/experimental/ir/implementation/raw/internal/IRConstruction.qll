@@ -62,7 +62,7 @@ module Raw {
     Callable callable, Language::AST ast, TempVariableTag tag, CSharpType type
   ) {
     exists(TranslatedElement element |
-      element.getAST() = ast and
+      element.getAst() = ast and
       callable = element.getFunction() and
       element.hasTempVariable(tag, type)
     )
@@ -105,7 +105,7 @@ module Raw {
       tag = getInstructionTag(instruction) and
       (
         result = element.getInstructionVariable(tag) or
-        result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
+        result.(IRStringLiteral).getAst() = element.getInstructionStringLiteral(tag)
       )
     )
   }
@@ -357,7 +357,7 @@ private module Cached {
     exists(TranslatedElement s, GotoStmt goto |
       goto instanceof GotoStmt and
       not isStrictlyForwardGoto(goto) and
-      goto = s.getAST() and
+      goto = s.getAst() and
       exists(InstructionTag tag |
         result = s.getInstructionSuccessor(tag, kind) and
         instruction = s.getInstruction(tag)
@@ -372,8 +372,14 @@ private module Cached {
   }
 
   cached
-  Language::AST getInstructionAST(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction).getAST()
+  Language::AST getInstructionAst(Instruction instruction) {
+    result = getInstructionTranslatedElement(instruction).getAst()
+  }
+
+  /** DEPRECATED: Alias for getInstructionAst */
+  cached
+  deprecated Language::AST getInstructionAST(Instruction instruction) {
+    result = getInstructionAst(instruction)
   }
 
   cached

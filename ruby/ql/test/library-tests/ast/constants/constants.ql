@@ -18,5 +18,5 @@ query Expr lookupConst(Module m, string name) { result = M::lookupConst(m, name)
 query predicate constantValue(ConstantReadAccess a, Expr e) { e = a.getValue() }
 
 query predicate constantWriteAccessQualifiedName(ConstantWriteAccess w, string qualifiedName) {
-  w.getQualifiedName() = qualifiedName
+  w.getAQualifiedName() = qualifiedName
 }

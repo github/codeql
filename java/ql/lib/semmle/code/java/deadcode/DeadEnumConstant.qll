@@ -60,7 +60,7 @@ predicate exception(EnumConstant e) {
     )
     or
     // Entire `Enum` annotated with reflective annotation.
-    exists(ReflectiveAccessAnnotation ann | ann = t.getAnAnnotation())
+    t.getAnAnnotation() instanceof ReflectiveAccessAnnotation
   )
   or
   // Enum field annotated with reflective annotation.

@@ -1,5 +1,8 @@
 name: codeql/ruby-queries
-version: 0.0.2
+version: 0.0.12-dev
+groups: 
+  - ruby
+  - queries
 suites: codeql-suites
 defaultSuiteFile: codeql-suites/ruby-code-scanning.qls
 dependencies:

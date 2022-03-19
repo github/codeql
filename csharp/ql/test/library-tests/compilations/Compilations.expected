@@ -13,10 +13,7 @@ compilationArguments
 | compilation | 5 | /r:System.Core.dll |
 | compilation | 6 | /r:System.Runtime.dll |
 | compilation | 7 | /r:System.Console.dll |
-| compilation | 8 | --console |
-| compilation | 9 | --verbosity |
-| compilation | 10 | 2 |
-| compilation | 11 | Program.cs |
+| compilation | 8 | Program.cs |
 compilationFiles
 | compilation | 0 | Program.cs:0:0:0:0 | Program.cs |
 compilationFolder

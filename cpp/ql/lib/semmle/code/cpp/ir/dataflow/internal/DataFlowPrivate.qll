@@ -2,12 +2,20 @@ private import cpp
 private import DataFlowUtil
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
+private import DataFlowImplConsistency
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) { p.isParameterOf(c, pos) }
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+  p.isParameterOf(c, pos)
+}
+
+/** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
+  arg.argumentOf(c, pos)
+}
 
 /**
  * A data flow node that occurs as the argument of a call and is passed as-is
@@ -19,7 +27,7 @@ abstract class ArgumentNode extends OperandNode {
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
-  abstract predicate argumentOf(DataFlowCall call, int pos);
+  abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
 
   /** Gets the call in which this node is an argument. */
   DataFlowCall getCall() { this.argumentOf(result, _) }
@@ -34,7 +42,9 @@ private class PrimaryArgumentNode extends ArgumentNode {
 
   PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
 
-  override predicate argumentOf(DataFlowCall call, int pos) { op = call.getArgumentOperand(pos) }
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    op = call.getArgumentOperand(pos.(DirectPosition).getIndex())
+  }
 
   override string toString() {
     exists(Expr unconverted |
@@ -63,9 +73,9 @@ private class SideEffectArgumentNode extends ArgumentNode {
 
   SideEffectArgumentNode() { op = read.getSideEffectOperand() }
 
-  override predicate argumentOf(DataFlowCall call, int pos) {
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     read.getPrimaryInstruction() = call and
-    pos = getArgumentPosOfSideEffect(read.getIndex())
+    pos.(IndirectionPosition).getIndex() = read.getIndex()
   }
 
   override string toString() {
@@ -81,6 +91,54 @@ private class SideEffectArgumentNode extends ArgumentNode {
     )
   }
 }
+
+/** A parameter position represented by an integer. */
+class ParameterPosition = Position;
+
+/** An argument position represented by an integer. */
+class ArgumentPosition = Position;
+
+class Position extends TPosition {
+  abstract string toString();
+}
+
+class DirectPosition extends TDirectPosition {
+  int index;
+
+  DirectPosition() { this = TDirectPosition(index) }
+
+  string toString() {
+    index = -1 and
+    result = "this"
+    or
+    index != -1 and
+    result = index.toString()
+  }
+
+  int getIndex() { result = index }
+}
+
+class IndirectionPosition extends TIndirectionPosition {
+  int index;
+
+  IndirectionPosition() { this = TIndirectionPosition(index) }
+
+  string toString() {
+    index = -1 and
+    result = "this"
+    or
+    index != -1 and
+    result = index.toString()
+  }
+
+  int getIndex() { result = index }
+}
+
+newtype TPosition =
+  TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index)) } or
+  TIndirectionPosition(int index) {
+    exists(ReadSideEffectInstruction instr | instr.getIndex() = index)
+  }
 
 private newtype TReturnKind =
   TNormalReturnKind() or
@@ -285,21 +343,18 @@ class Unit extends TUnit {
   string toString() { result = "unit" }
 }
 
-/**
- * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
- * modified or its modification cannot be observed, for example if it is a
- * freshly created object that is not saved in a variable.
- *
- * This predicate is only used for consistency checks.
- */
-predicate isImmutableOrUnobservable(Node n) {
-  // The rules for whether an IR argument gets a post-update node are too
-  // complex to model here.
-  any()
-}
-
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof OperandNode and not n instanceof ArgumentNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof OperandNode and not n instanceof ArgumentNode
+  or
+  StoreNodeFlow::flowThrough(n, _) and
+  not StoreNodeFlow::flowOutOf(n, _) and
+  not StoreNodeFlow::flowInto(_, n)
+  or
+  ReadNodeFlow::flowThrough(n, _) and
+  not ReadNodeFlow::flowOutOf(n, _) and
+  not ReadNodeFlow::flowInto(_, n)
+}
 
 class LambdaCallKind = Unit;
 
@@ -320,3 +375,11 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) { none() }
+
+private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
+  override predicate argHasPostUpdateExclude(ArgumentNode n) {
+    // The rules for whether an IR argument gets a post-update node are too
+    // complex to model here.
+    any()
+  }
+}

@@ -11,19 +11,19 @@ namespace System
             {
                 protected AsymmetricAlgorithm() => throw null;
                 public void Clear() => throw null;
-                public static System.Security.Cryptography.AsymmetricAlgorithm Create(string algName) => throw null;
                 public static System.Security.Cryptography.AsymmetricAlgorithm Create() => throw null;
+                public static System.Security.Cryptography.AsymmetricAlgorithm Create(string algName) => throw null;
                 public void Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;
-                public virtual System.Byte[] ExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<System.Char> password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
                 public virtual System.Byte[] ExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<System.Byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public virtual System.Byte[] ExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<System.Char> password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
                 public virtual System.Byte[] ExportPkcs8PrivateKey() => throw null;
                 public virtual System.Byte[] ExportSubjectPublicKeyInfo() => throw null;
                 public virtual void FromXmlString(string xmlString) => throw null;
-                public virtual void ImportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<System.Char> password, System.ReadOnlySpan<System.Byte> source, out int bytesRead) => throw null;
                 public virtual void ImportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<System.Byte> passwordBytes, System.ReadOnlySpan<System.Byte> source, out int bytesRead) => throw null;
-                public virtual void ImportFromEncryptedPem(System.ReadOnlySpan<System.Char> input, System.ReadOnlySpan<System.Char> password) => throw null;
+                public virtual void ImportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<System.Char> password, System.ReadOnlySpan<System.Byte> source, out int bytesRead) => throw null;
                 public virtual void ImportFromEncryptedPem(System.ReadOnlySpan<System.Char> input, System.ReadOnlySpan<System.Byte> passwordBytes) => throw null;
+                public virtual void ImportFromEncryptedPem(System.ReadOnlySpan<System.Char> input, System.ReadOnlySpan<System.Char> password) => throw null;
                 public virtual void ImportFromPem(System.ReadOnlySpan<System.Char> input) => throw null;
                 public virtual void ImportPkcs8PrivateKey(System.ReadOnlySpan<System.Byte> source, out int bytesRead) => throw null;
                 public virtual void ImportSubjectPublicKeyInfo(System.ReadOnlySpan<System.Byte> source, out int bytesRead) => throw null;
@@ -34,8 +34,8 @@ namespace System
                 protected System.Security.Cryptography.KeySizes[] LegalKeySizesValue;
                 public virtual string SignatureAlgorithm { get => throw null; }
                 public virtual string ToXmlString(bool includePrivateParameters) => throw null;
-                public virtual bool TryExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<System.Char> password, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
                 public virtual bool TryExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<System.Byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
+                public virtual bool TryExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<System.Char> password, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
                 public virtual bool TryExportPkcs8PrivateKey(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
                 public virtual bool TryExportSubjectPublicKeyInfo(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
@@ -59,8 +59,8 @@ namespace System
                 public override bool CanSeek { get => throw null; }
                 public override bool CanWrite { get => throw null; }
                 public void Clear() => throw null;
-                public CryptoStream(System.IO.Stream stream, System.Security.Cryptography.ICryptoTransform transform, System.Security.Cryptography.CryptoStreamMode mode, bool leaveOpen) => throw null;
                 public CryptoStream(System.IO.Stream stream, System.Security.Cryptography.ICryptoTransform transform, System.Security.Cryptography.CryptoStreamMode mode) => throw null;
+                public CryptoStream(System.IO.Stream stream, System.Security.Cryptography.ICryptoTransform transform, System.Security.Cryptography.CryptoStreamMode mode, bool leaveOpen) => throw null;
                 protected override void Dispose(bool disposing) => throw null;
                 public override System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
                 public override int EndRead(System.IAsyncResult asyncResult) => throw null;
@@ -99,23 +99,23 @@ namespace System
             // Generated from `System.Security.Cryptography.CryptographicUnexpectedOperationException` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CryptographicUnexpectedOperationException : System.Security.Cryptography.CryptographicException
             {
-                public CryptographicUnexpectedOperationException(string message, System.Exception inner) => throw null;
-                public CryptographicUnexpectedOperationException(string message) => throw null;
-                public CryptographicUnexpectedOperationException(string format, string insert) => throw null;
                 public CryptographicUnexpectedOperationException() => throw null;
                 protected CryptographicUnexpectedOperationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public CryptographicUnexpectedOperationException(string message) => throw null;
+                public CryptographicUnexpectedOperationException(string message, System.Exception inner) => throw null;
+                public CryptographicUnexpectedOperationException(string format, string insert) => throw null;
             }
 
             // Generated from `System.Security.Cryptography.HMAC` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class HMAC : System.Security.Cryptography.KeyedHashAlgorithm
             {
                 protected int BlockSizeValue { get => throw null; set => throw null; }
-                public static System.Security.Cryptography.HMAC Create(string algorithmName) => throw null;
                 public static System.Security.Cryptography.HMAC Create() => throw null;
+                public static System.Security.Cryptography.HMAC Create(string algorithmName) => throw null;
                 protected override void Dispose(bool disposing) => throw null;
                 protected HMAC() => throw null;
-                protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected override void HashCore(System.Byte[] rgb, int ib, int cb) => throw null;
+                protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected override System.Byte[] HashFinal() => throw null;
                 public string HashName { get => throw null; set => throw null; }
                 public override void Initialize() => throw null;
@@ -124,23 +124,23 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.HashAlgorithm` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public abstract class HashAlgorithm : System.Security.Cryptography.ICryptoTransform, System.IDisposable
+            public abstract class HashAlgorithm : System.IDisposable, System.Security.Cryptography.ICryptoTransform
             {
                 public virtual bool CanReuseTransform { get => throw null; }
                 public virtual bool CanTransformMultipleBlocks { get => throw null; }
                 public void Clear() => throw null;
-                public System.Byte[] ComputeHash(System.IO.Stream inputStream) => throw null;
-                public System.Byte[] ComputeHash(System.Byte[] buffer, int offset, int count) => throw null;
                 public System.Byte[] ComputeHash(System.Byte[] buffer) => throw null;
+                public System.Byte[] ComputeHash(System.Byte[] buffer, int offset, int count) => throw null;
+                public System.Byte[] ComputeHash(System.IO.Stream inputStream) => throw null;
                 public System.Threading.Tasks.Task<System.Byte[]> ComputeHashAsync(System.IO.Stream inputStream, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-                public static System.Security.Cryptography.HashAlgorithm Create(string hashName) => throw null;
                 public static System.Security.Cryptography.HashAlgorithm Create() => throw null;
+                public static System.Security.Cryptography.HashAlgorithm Create(string hashName) => throw null;
                 public void Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;
                 public virtual System.Byte[] Hash { get => throw null; }
                 protected HashAlgorithm() => throw null;
-                protected virtual void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected abstract void HashCore(System.Byte[] array, int ibStart, int cbSize);
+                protected virtual void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected abstract System.Byte[] HashFinal();
                 public virtual int HashSize { get => throw null; }
                 protected int HashSizeValue;
@@ -160,12 +160,12 @@ namespace System
             {
                 public static bool operator !=(System.Security.Cryptography.HashAlgorithmName left, System.Security.Cryptography.HashAlgorithmName right) => throw null;
                 public static bool operator ==(System.Security.Cryptography.HashAlgorithmName left, System.Security.Cryptography.HashAlgorithmName right) => throw null;
-                public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Security.Cryptography.HashAlgorithmName other) => throw null;
+                public override bool Equals(object obj) => throw null;
                 public static System.Security.Cryptography.HashAlgorithmName FromOid(string oidValue) => throw null;
                 public override int GetHashCode() => throw null;
-                public HashAlgorithmName(string name) => throw null;
                 // Stub generator skipped constructor 
+                public HashAlgorithmName(string name) => throw null;
                 public static System.Security.Cryptography.HashAlgorithmName MD5 { get => throw null; }
                 public string Name { get => throw null; }
                 public static System.Security.Cryptography.HashAlgorithmName SHA1 { get => throw null; }
@@ -199,8 +199,8 @@ namespace System
             // Generated from `System.Security.Cryptography.KeyedHashAlgorithm` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class KeyedHashAlgorithm : System.Security.Cryptography.HashAlgorithm
             {
-                public static System.Security.Cryptography.KeyedHashAlgorithm Create(string algName) => throw null;
                 public static System.Security.Cryptography.KeyedHashAlgorithm Create() => throw null;
+                public static System.Security.Cryptography.KeyedHashAlgorithm Create(string algName) => throw null;
                 protected override void Dispose(bool disposing) => throw null;
                 public virtual System.Byte[] Key { get => throw null; set => throw null; }
                 protected System.Byte[] KeyValue;
@@ -242,8 +242,8 @@ namespace System
                 public virtual int BlockSize { get => throw null; set => throw null; }
                 protected int BlockSizeValue;
                 public void Clear() => throw null;
-                public static System.Security.Cryptography.SymmetricAlgorithm Create(string algName) => throw null;
                 public static System.Security.Cryptography.SymmetricAlgorithm Create() => throw null;
+                public static System.Security.Cryptography.SymmetricAlgorithm Create(string algName) => throw null;
                 public virtual System.Security.Cryptography.ICryptoTransform CreateDecryptor() => throw null;
                 public abstract System.Security.Cryptography.ICryptoTransform CreateDecryptor(System.Byte[] rgbKey, System.Byte[] rgbIV);
                 public virtual System.Security.Cryptography.ICryptoTransform CreateEncryptor() => throw null;

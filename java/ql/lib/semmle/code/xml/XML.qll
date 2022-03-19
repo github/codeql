@@ -4,20 +4,13 @@
 
 import semmle.files.FileSystem
 
-private class TXMLLocatable =
+private class TXmlLocatable =
   @xmldtd or @xmlelement or @xmlattribute or @xmlnamespace or @xmlcomment or @xmlcharacters;
 
 /** An XML element that has a location. */
-class XMLLocatable extends @xmllocatable, TXMLLocatable {
+class XMLLocatable extends @xmllocatable, TXmlLocatable {
   /** Gets the source location for this element. */
   Location getLocation() { xmllocations(this, result) }
-
-  /**
-   * DEPRECATED: Use `getLocation()` instead.
-   *
-   * Gets the source location for this element.
-   */
-  deprecated Location getALocation() { result = this.getLocation() }
 
   /**
    * Holds if this element is at the specified location.
@@ -82,21 +75,6 @@ class XMLParent extends @xmlparent {
 
   /** Gets the number of places in the body of this XML parent where text occurs. */
   int getNumberOfCharacterSets() { result = count(int pos | xmlChars(_, _, this, pos, _, _)) }
-
-  /**
-   * DEPRECATED: Internal.
-   *
-   * Append the character sequences of this XML parent from left to right, separated by a space,
-   * up to a specified (zero-based) index.
-   */
-  deprecated string charsSetUpTo(int n) {
-    n = 0 and xmlChars(_, result, this, 0, _, _)
-    or
-    n > 0 and
-    exists(string chars | xmlChars(_, chars, this, n, _, _) |
-      result = this.charsSetUpTo(n - 1) + " " + chars
-    )
-  }
 
   /**
    * Gets the result of appending all the character sequences of this XML parent from
@@ -233,7 +211,7 @@ class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
   XMLAttribute getAttribute(string name) { result.getElement() = this and result.getName() = name }
 
   /** Holds if this XML element has an attribute with the specified `name`. */
-  predicate hasAttribute(string name) { exists(XMLAttribute a | a = this.getAttribute(name)) }
+  predicate hasAttribute(string name) { exists(this.getAttribute(name)) }
 
   /** Gets the value of the attribute with the specified `name`, if any. */
   string getAttributeValue(string name) { result = this.getAttribute(name).getValue() }

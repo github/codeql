@@ -23,7 +23,7 @@ where
   source.getADependency() = d and
   // There is not a Pom file for the target of this dependency, so we assume that it was resolved by
   // a binary file in the local maven repository.
-  not exists(Pom target | target = d.getPom()) and
+  not exists(d.getPom()) and
   // In order to accurately identify whether this binary dependency is required, we must have identified
   // a Maven repository. If we have not found a repository, it's likely that it has a custom path of
   // which we are unaware, so do not report any problems.

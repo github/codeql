@@ -12,11 +12,11 @@ private import semmle.code.java.dataflow.TaintTracking
 /**
  * An external API from either the Java Standard Library or a 3rd party library.
  */
-class ExternalAPI extends Callable {
-  ExternalAPI() { not this.fromSource() }
+class ExternalApi extends Callable {
+  ExternalApi() { not this.fromSource() }
 
   /** Holds if this API is not worth supporting */
-  predicate isUninteresting() { isTestLibrary() or isParameterlessConstructor() }
+  predicate isUninteresting() { this.isTestLibrary() or this.isParameterlessConstructor() }
 
   /** Holds if this API is is a constructor without parameters */
   predicate isParameterlessConstructor() {
@@ -24,7 +24,7 @@ class ExternalAPI extends Callable {
   }
 
   /** Holds if this API is part of a common testing library or framework */
-  private predicate isTestLibrary() { getDeclaringType() instanceof TestLibrary }
+  private predicate isTestLibrary() { this.getDeclaringType() instanceof TestLibrary }
 
   /**
    * Gets information about the external API in the form expected by the CSV modeling framework.
@@ -38,7 +38,9 @@ class ExternalAPI extends Callable {
   /**
    * Gets the jar file containing this API. Normalizes the Java Runtime to "rt.jar" despite the presence of modules.
    */
-  string jarContainer() { result = containerAsJar(this.getCompilationUnit().getParentContainer*()) }
+  string jarContainer() {
+    result = this.containerAsJar(this.getCompilationUnit().getParentContainer*())
+  }
 
   private string containerAsJar(Container container) {
     if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
@@ -75,12 +77,15 @@ class ExternalAPI extends Callable {
   predicate isSink() { sinkNode(this.getAnInput(), _) }
 
   /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
-  predicate isSupported() { hasSummary() or isSource() or isSink() }
+  predicate isSupported() { this.hasSummary() or this.isSource() or this.isSink() }
 }
+
+/** DEPRECATED: Alias for ExternalApi */
+deprecated class ExternalAPI = ExternalApi;
 
 private class TestLibrary extends RefType {
   TestLibrary() {
-    getPackage()
+    this.getPackage()
         .getName()
         .matches([
             "org.junit%", "junit.%", "org.mockito%", "org.assertj%",

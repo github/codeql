@@ -95,6 +95,8 @@ nestedtypes.cs:
 #   69|               0: [TypeAccess] access to type Inner<>
 #   69|                 0: [TypeMention] Inner<U>
 #   69|                   1: [TypeMention] Outer<T>
+#   69|                     1: [TypeMention] <unknown type>
+#   69|                   2: [TypeMention] <unknown type>
 #   74|   5: [Class] Outer2<>
 #-----|     1: (Type parameters)
 #   74|       0: [TypeParameter] T

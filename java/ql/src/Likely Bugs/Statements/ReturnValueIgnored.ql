@@ -34,12 +34,12 @@ predicate isMockingMethod(Method m) {
 }
 
 predicate isReceiverClauseMethod(Method m) {
-  m.getDeclaringType().getASupertype*().hasQualifiedName("org.jmock.syntax", "ReceiverClause") and
+  m.getDeclaringType().getAnAncestor().hasQualifiedName("org.jmock.syntax", "ReceiverClause") and
   m.hasName("of")
 }
 
 predicate isCardinalityClauseMethod(Method m) {
-  m.getDeclaringType().getASupertype*().hasQualifiedName("org.jmock.syntax", "CardinalityClause") and
+  m.getDeclaringType().getAnAncestor().hasQualifiedName("org.jmock.syntax", "CardinalityClause") and
   (
     m.hasName("allowing") or
     m.hasName("ignoring") or
@@ -54,7 +54,7 @@ predicate isCardinalityClauseMethod(Method m) {
 }
 
 predicate isStubberMethod(Method m) {
-  m.getDeclaringType().getASupertype*().hasQualifiedName("org.mockito.stubbing", "Stubber") and
+  m.getDeclaringType().getAnAncestor().hasQualifiedName("org.mockito.stubbing", "Stubber") and
   (
     m.hasName("when") or
     m.hasName("doThrow") or
@@ -69,7 +69,7 @@ predicate isStubberMethod(Method m) {
  * Some mocking methods must _always_ be used as a qualifier.
  */
 predicate isMustBeQualifierMockingMethod(Method m) {
-  m.getDeclaringType().getASupertype*().hasQualifiedName("org.mockito", "Mockito") and
+  m.getDeclaringType().getAnAncestor().hasQualifiedName("org.mockito", "Mockito") and
   m.hasName("verify")
 }
 

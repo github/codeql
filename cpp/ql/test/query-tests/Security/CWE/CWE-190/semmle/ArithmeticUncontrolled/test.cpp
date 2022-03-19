@@ -224,6 +224,6 @@ void test_mod_limit()
 		unsigned int y = 100;
 		unsigned int z;
 
-		z = (x + y) % 1000; // DUBIOUS (this could overflow but the result is controlled) [REPORTED]
+		z = (x + y) % 1000; // DUBIOUS (this could overflow but the result is controlled)
 	}
 }

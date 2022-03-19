@@ -1,5 +1,5 @@
 /**
- * Classes for modelling NHibernate.
+ * Classes for modeling NHibernate.
  */
 
 import csharp

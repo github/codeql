@@ -142,7 +142,7 @@ class InsecureUrlFlowConfig extends TaintTracking::Configuration {
   /** Sink of directory context creation. */
   override predicate isSink(DataFlow::Node sink) {
     exists(ConstructorCall cc |
-      cc.getConstructedType().getASupertype*() instanceof TypeDirContext and
+      cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
       sink.asExpr() = cc.getArgument(0)
     )
   }
@@ -173,7 +173,7 @@ class BasicAuthFlowConfig extends DataFlow::Configuration {
   /** Sink of directory context creation. */
   override predicate isSink(DataFlow::Node sink) {
     exists(ConstructorCall cc |
-      cc.getConstructedType().getASupertype*() instanceof TypeDirContext and
+      cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
       sink.asExpr() = cc.getArgument(0)
     )
   }
@@ -195,7 +195,7 @@ class SSLFlowConfig extends DataFlow::Configuration {
   /** Sink of directory context creation. */
   override predicate isSink(DataFlow::Node sink) {
     exists(ConstructorCall cc |
-      cc.getConstructedType().getASupertype*() instanceof TypeDirContext and
+      cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
       sink.asExpr() = cc.getArgument(0)
     )
   }

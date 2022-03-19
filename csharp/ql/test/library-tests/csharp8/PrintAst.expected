@@ -932,8 +932,8 @@ patterns.cs:
 #   58|         10: [BreakStmt] break;
 #   59|         11: [CaseStmt] case ...:
 #   59|           0: [TupleExpr] (..., ...)
-#   59|             0: [LocalVariableDeclExpr] Int32 x
-#   59|             1: [LocalVariableDeclExpr] Int32 y
+#   59|             0: [VariablePatternExpr] Int32 x
+#   59|             1: [VariablePatternExpr] Int32 y
 #   60|         12: [BreakStmt] break;
 #   61|         13: [DefaultCase] default:
 #   62|         14: [BreakStmt] break;
@@ -1159,8 +1159,8 @@ patterns.cs:
 #  130|               2: [IntLiteral] 2
 #  131|             3: [SwitchCaseExpr] ... => ...
 #  131|               0: [TupleExpr] (..., ...)
-#  131|                 0: [LocalVariableDeclExpr] Int32 x
-#  131|                 1: [DiscardExpr] _
+#  131|                 0: [VariablePatternExpr] Int32 x
+#  131|                 1: [DiscardPatternExpr] _
 #  131|               2: [IntLiteral] 3
 #  134|       2: [TryStmt] try {...} ...
 #  135|         0: [BlockStmt] {...}

@@ -17,13 +17,13 @@ class SpecialMethod extends Method {
   predicate isMethod(string pack, string clss, string name, int numparam) {
     this.hasName(name) and
     this.getNumberOfParameters() = numparam and
-    this.getDeclaringType().getASupertype*().getSourceDeclaration().hasQualifiedName(pack, clss)
+    this.getDeclaringType().getAnAncestor().getSourceDeclaration().hasQualifiedName(pack, clss)
   }
 }
 
 predicate unboundedQueue(RefType t) {
   exists(string pack, string clss |
-    t.getASupertype*().getSourceDeclaration().hasQualifiedName(pack, clss)
+    t.getAnAncestor().getSourceDeclaration().hasQualifiedName(pack, clss)
   |
     pack = "java.util" and clss = "ArrayDeque"
     or

@@ -33,11 +33,19 @@ class Guard extends Expr {
   }
 
   /**
+   * Holds if `cfn` is guarded by this expression having value `v`.
+   *
+   * Note: This predicate is inlined.
+   */
+  pragma[inline]
+  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, AbstractValue v) {
+    guardControls(this, cfn.getBasicBlock(), v)
+  }
+
+  /**
    * Holds if basic block `bb` is guarded by this expression having value `v`.
    */
-  predicate controlsBasicBlock(BasicBlock bb, AbstractValue v) {
-    Internal::guardControls(this, bb, v)
-  }
+  predicate controlsBasicBlock(BasicBlock bb, AbstractValue v) { guardControls(this, bb, v) }
 
   /**
    * Holds if this guard is an equality test between `e1` and `e2`. If the test is
@@ -46,7 +54,7 @@ class Guard extends Expr {
    */
   predicate isEquality(Expr e1, Expr e2, boolean polarity) {
     exists(BooleanValue v |
-      this = Internal::getAnEqualityCheck(e1, v, e2) and
+      this = getAnEqualityCheck(e1, v, e2) and
       polarity = v.getValue()
     )
   }
@@ -992,7 +1000,7 @@ module Internal {
   // The predicates in this module should be evaluated in the same stage as the CFG
   // construction stage. This is to avoid recomputation of pre-basic-blocks and
   // pre-SSA predicates
-  private module PreCFG {
+  private module PreCfg {
     private import semmle.code.csharp.controlflow.internal.PreBasicBlocks as PreBasicBlocks
     private import semmle.code.csharp.controlflow.internal.PreSsa
 
@@ -1086,7 +1094,7 @@ module Internal {
      */
     private Callable customNullCheck(Parameter p, BooleanValue retVal, boolean isNull) {
       result.getReturnType() instanceof BoolType and
-      not result.(Virtualizable).isOverridableOrImplementable() and
+      not result.(Overridable).isOverridableOrImplementable() and
       p.getCallable() = result and
       not p.isParams() and
       p.getType() = any(Type t | t instanceof RefType or t instanceof NullableType) and
@@ -1406,7 +1414,7 @@ module Internal {
     }
 
     cached
-    private module CachedWithCFG {
+    private module CachedWithCfg {
       private import semmle.code.csharp.Caching
 
       cached
@@ -1711,10 +1719,10 @@ module Internal {
       }
     }
 
-    import CachedWithCFG
+    import CachedWithCfg
   }
 
-  import PreCFG
+  import PreCfg
 
   private predicate interestingDescendantCandidate(Expr e) {
     guardControls(e, _, _)

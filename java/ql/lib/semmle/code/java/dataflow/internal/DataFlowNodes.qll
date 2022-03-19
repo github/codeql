@@ -258,9 +258,9 @@ module Public {
     /** Gets the field corresponding to this node. */
     Field getField() { this = TFieldValueNode(result) }
 
-    override string toString() { result = getField().toString() }
+    override string toString() { result = this.getField().toString() }
 
-    override Location getLocation() { result = getField().getLocation() }
+    override Location getLocation() { result = this.getField().getLocation() }
   }
 
   /**
@@ -279,6 +279,21 @@ module Public {
     result.(MallocNode).getClassInstanceExpr() = call or
     explicitInstanceArgument(call, result.asExpr()) or
     implicitInstanceArgument(call, result.(ImplicitInstanceAccess).getInstanceAccess())
+  }
+
+  /** A node representing an `InstanceAccessExt`. */
+  class InstanceAccessNode extends Node {
+    InstanceAccessNode() {
+      this instanceof ImplicitInstanceAccess or this.asExpr() instanceof InstanceAccess
+    }
+
+    /** Gets the instance access corresponding to this node. */
+    InstanceAccessExt getInstanceAccess() {
+      result = this.(ImplicitInstanceAccess).getInstanceAccess() or result.isExplicit(this.asExpr())
+    }
+
+    /** Holds if this is an access to an object's own instance. */
+    predicate isOwnInstanceAccess() { this.getInstanceAccess().isOwnInstanceAccess() }
   }
 }
 
@@ -310,6 +325,8 @@ private class ImplicitExprPostUpdate extends ImplicitPostUpdateNode, TImplicitEx
 }
 
 module Private {
+  private import DataFlowDispatch
+
   /** Gets the callable in which this node occurs. */
   DataFlowCallable nodeGetEnclosingCallable(Node n) {
     result.asCallable() = n.asExpr().getEnclosingCallable() or
@@ -324,8 +341,13 @@ module Private {
   }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-  predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) {
+  predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
     p.isParameterOf(c.asCallable(), pos)
+  }
+
+  /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+  predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
+    arg.argumentOf(c, pos)
   }
 
   /**

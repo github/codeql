@@ -10,10 +10,10 @@ query predicate caseElseBranches(CaseExpr c, StmtSequence elseBranch) {
 
 query predicate caseNoElseBranches(CaseExpr c) { not exists(c.getElseBranch()) }
 
-query predicate caseWhenBranches(CaseExpr c, WhenExpr when, int pIndex, Expr p, StmtSequence body) {
-  when = c.getAWhenBranch() and
+query predicate caseWhenBranches(CaseExpr c, WhenClause when, int pIndex, Expr p, StmtSequence body) {
+  when = c.getABranch() and
   p = when.getPattern(pIndex) and
   body = when.getBody()
 }
 
-query predicate caseAllBranches(CaseExpr c, int n, Expr branch) { branch = c.getBranch(n) }
+query predicate caseAllBranches(CaseExpr c, int n, AstNode branch) { branch = c.getBranch(n) }

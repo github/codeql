@@ -1,6 +1,6 @@
 import csharp
 
-from Virtualizable v1, Virtualizable v2
+from Overridable v1, Overridable v2
 where
   v1 = v2.getAnUltimateImplementor() and
   v1.fromSource() and

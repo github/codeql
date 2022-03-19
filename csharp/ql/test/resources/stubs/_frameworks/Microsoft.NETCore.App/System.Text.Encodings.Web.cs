@@ -11,8 +11,8 @@ namespace System
                 // Generated from `System.Text.Encodings.Web.HtmlEncoder` in `System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class HtmlEncoder : System.Text.Encodings.Web.TextEncoder
                 {
-                    public static System.Text.Encodings.Web.HtmlEncoder Create(params System.Text.Unicode.UnicodeRange[] allowedRanges) => throw null;
                     public static System.Text.Encodings.Web.HtmlEncoder Create(System.Text.Encodings.Web.TextEncoderSettings settings) => throw null;
+                    public static System.Text.Encodings.Web.HtmlEncoder Create(params System.Text.Unicode.UnicodeRange[] allowedRanges) => throw null;
                     public static System.Text.Encodings.Web.HtmlEncoder Default { get => throw null; }
                     protected HtmlEncoder() => throw null;
                 }
@@ -20,8 +20,8 @@ namespace System
                 // Generated from `System.Text.Encodings.Web.JavaScriptEncoder` in `System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class JavaScriptEncoder : System.Text.Encodings.Web.TextEncoder
                 {
-                    public static System.Text.Encodings.Web.JavaScriptEncoder Create(params System.Text.Unicode.UnicodeRange[] allowedRanges) => throw null;
                     public static System.Text.Encodings.Web.JavaScriptEncoder Create(System.Text.Encodings.Web.TextEncoderSettings settings) => throw null;
+                    public static System.Text.Encodings.Web.JavaScriptEncoder Create(params System.Text.Unicode.UnicodeRange[] allowedRanges) => throw null;
                     public static System.Text.Encodings.Web.JavaScriptEncoder Default { get => throw null; }
                     protected JavaScriptEncoder() => throw null;
                     public static System.Text.Encodings.Web.JavaScriptEncoder UnsafeRelaxedJsonEscaping { get => throw null; }
@@ -30,11 +30,11 @@ namespace System
                 // Generated from `System.Text.Encodings.Web.TextEncoder` in `System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class TextEncoder
                 {
+                    public virtual System.Buffers.OperationStatus Encode(System.ReadOnlySpan<System.Char> source, System.Span<System.Char> destination, out int charsConsumed, out int charsWritten, bool isFinalBlock = default(bool)) => throw null;
+                    public virtual void Encode(System.IO.TextWriter output, System.Char[] value, int startIndex, int characterCount) => throw null;
                     public void Encode(System.IO.TextWriter output, string value) => throw null;
                     public virtual void Encode(System.IO.TextWriter output, string value, int startIndex, int characterCount) => throw null;
-                    public virtual void Encode(System.IO.TextWriter output, System.Char[] value, int startIndex, int characterCount) => throw null;
                     public virtual string Encode(string value) => throw null;
-                    public virtual System.Buffers.OperationStatus Encode(System.ReadOnlySpan<System.Char> source, System.Span<System.Char> destination, out int charsConsumed, out int charsWritten, bool isFinalBlock = default(bool)) => throw null;
                     public virtual System.Buffers.OperationStatus EncodeUtf8(System.ReadOnlySpan<System.Byte> utf8Source, System.Span<System.Byte> utf8Destination, out int bytesConsumed, out int bytesWritten, bool isFinalBlock = default(bool)) => throw null;
                     unsafe public abstract int FindFirstCharacterToEncode(System.Char* text, int textLength);
                     public virtual int FindFirstCharacterToEncodeUtf8(System.ReadOnlySpan<System.Byte> utf8Text) => throw null;
@@ -58,16 +58,16 @@ namespace System
                     public virtual void ForbidRange(System.Text.Unicode.UnicodeRange range) => throw null;
                     public virtual void ForbidRanges(params System.Text.Unicode.UnicodeRange[] ranges) => throw null;
                     public virtual System.Collections.Generic.IEnumerable<int> GetAllowedCodePoints() => throw null;
-                    public TextEncoderSettings(params System.Text.Unicode.UnicodeRange[] allowedRanges) => throw null;
-                    public TextEncoderSettings(System.Text.Encodings.Web.TextEncoderSettings other) => throw null;
                     public TextEncoderSettings() => throw null;
+                    public TextEncoderSettings(System.Text.Encodings.Web.TextEncoderSettings other) => throw null;
+                    public TextEncoderSettings(params System.Text.Unicode.UnicodeRange[] allowedRanges) => throw null;
                 }
 
                 // Generated from `System.Text.Encodings.Web.UrlEncoder` in `System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class UrlEncoder : System.Text.Encodings.Web.TextEncoder
                 {
-                    public static System.Text.Encodings.Web.UrlEncoder Create(params System.Text.Unicode.UnicodeRange[] allowedRanges) => throw null;
                     public static System.Text.Encodings.Web.UrlEncoder Create(System.Text.Encodings.Web.TextEncoderSettings settings) => throw null;
+                    public static System.Text.Encodings.Web.UrlEncoder Create(params System.Text.Unicode.UnicodeRange[] allowedRanges) => throw null;
                     public static System.Text.Encodings.Web.UrlEncoder Default { get => throw null; }
                     protected UrlEncoder() => throw null;
                 }

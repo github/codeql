@@ -14,7 +14,7 @@
 
 import python
 private import semmle.python.Concepts
-import semmle.python.security.injection.RegexInjection
+import semmle.python.security.dataflow.RegexInjection
 import DataFlow::PathGraph
 
 from

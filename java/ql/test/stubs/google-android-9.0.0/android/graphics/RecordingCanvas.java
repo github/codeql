@@ -14,6 +14,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.RenderNode;
+import android.graphics.fonts.Font;
 import android.graphics.text.MeasuredText;
 
 public class RecordingCanvas extends Canvas
@@ -75,6 +76,7 @@ public class RecordingCanvas extends Canvas
     public int getMaximumBitmapWidth(){ return 0; }
     public int getWidth(){ return 0; }
     public void disableZ(){}
+    public void drawGlyphs(int[] p0, int p1, float[] p2, int p3, int p4, Font p5, Paint p6){}
     public void drawRenderNode(RenderNode p0){}
     public void drawTextRun(MeasuredText p0, int p1, int p2, int p3, int p4, float p5, float p6, boolean p7, Paint p8){}
     public void enableZ(){}

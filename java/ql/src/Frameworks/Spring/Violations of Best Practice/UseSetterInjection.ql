@@ -14,5 +14,5 @@ import java
 import semmle.code.java.frameworks.spring.Spring
 
 from SpringBean b
-where exists(SpringConstructorArg carg | b.getASpringChild() = carg)
+where b.getASpringChild() instanceof SpringConstructorArg
 select b, "Use setter injection instead of constructor injection."

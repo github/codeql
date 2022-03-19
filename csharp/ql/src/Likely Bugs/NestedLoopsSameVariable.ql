@@ -62,7 +62,7 @@ class NestedForLoopSameVariable extends ForStmt {
 
   private predicate haveSameCondition() {
     exists(NestedForConditions config |
-      config.same(getInnerForStmt().getCondition(), getOuterForStmt().getCondition())
+      config.same(this.getInnerForStmt().getCondition(), this.getOuterForStmt().getCondition())
     )
   }
 
@@ -74,7 +74,7 @@ class NestedForLoopSameVariable extends ForStmt {
 
   /** Holds if the logic is deemed to be correct in limited circumstances. */
   predicate isSafe() {
-    haveSameUpdate() and haveSameCondition() and not exists(getAnUnguardedAccess())
+    this.haveSameUpdate() and this.haveSameCondition() and not exists(this.getAnUnguardedAccess())
   }
 
   /** Gets the result element. */
@@ -95,20 +95,20 @@ class NestedForLoopSameVariable extends ForStmt {
 
   /** Finds elements inside the outer loop that are no longer guarded by the loop invariant. */
   private ControlFlow::Node getAnUnguardedNode() {
-    hasChild(getOuterForStmt().getBody(), result.getElement()) and
+    hasChild(this.getOuterForStmt().getBody(), result.getElement()) and
     (
       result =
         this.getCondition().(ControlFlowElement).getAControlFlowExitNode().getAFalseSuccessor()
       or
-      exists(ControlFlow::Node mid | mid = getAnUnguardedNode() |
+      exists(ControlFlow::Node mid | mid = this.getAnUnguardedNode() |
         mid.getASuccessor() = result and
-        not exists(getAComparisonTest(result.getElement()))
+        not exists(this.getAComparisonTest(result.getElement()))
       )
     )
   }
 
   private VariableAccess getAnUnguardedAccess() {
-    result = getAnUnguardedNode().getElement() and
+    result = this.getAnUnguardedNode().getElement() and
     result.getTarget() = iteration
   }
 }

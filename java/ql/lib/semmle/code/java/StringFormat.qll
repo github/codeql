@@ -325,7 +325,7 @@ private predicate formatStringValue(Expr e, string fmtvalue) {
     or
     exists(Field f |
       e = f.getAnAccess() and
-      f.getDeclaringType().hasQualifiedName("java.io", "File") and
+      f.getDeclaringType() instanceof TypeFile and
       fmtvalue = "x" // dummy value
     |
       f.hasName("pathSeparator") or

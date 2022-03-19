@@ -357,7 +357,7 @@ class MockitoSettableField extends Field {
   MockitoSettableField() {
     not this.isFinal() and
     not this.isStatic() and
-    exists(MockitoMockInjectedClass injectedClass | injectedClass = this.getDeclaringType())
+    this.getDeclaringType() instanceof MockitoMockInjectedClass
   }
 
   /**

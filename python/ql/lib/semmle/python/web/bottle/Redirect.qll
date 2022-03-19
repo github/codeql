@@ -9,12 +9,12 @@ import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Basic
 import semmle.python.web.bottle.General
 
-FunctionValue bottle_redirect() { result = theBottleModule().attr("redirect") }
+deprecated FunctionValue bottle_redirect() { result = theBottleModule().attr("redirect") }
 
 /**
- * Represents an argument to the `bottle.redirect` function.
+ * An argument to the `bottle.redirect` function.
  */
-class BottleRedirect extends TaintSink {
+deprecated class BottleRedirect extends TaintSink {
   override string toString() { result = "bottle.redirect" }
 
   BottleRedirect() {

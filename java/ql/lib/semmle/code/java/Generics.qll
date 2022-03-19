@@ -101,7 +101,7 @@ class GenericInterface extends GenericType, Interface {
  */
 abstract class BoundedType extends RefType, @boundedtype {
   /** Holds if this type is bounded. */
-  predicate hasTypeBound() { exists(TypeBound tb | tb = this.getATypeBound()) }
+  predicate hasTypeBound() { exists(this.getATypeBound()) }
 
   /** Gets a type bound for this type, if any. */
   TypeBound getATypeBound() { result.getBoundedType() = this }

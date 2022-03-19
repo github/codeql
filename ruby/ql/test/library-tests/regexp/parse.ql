@@ -13,10 +13,10 @@ query predicate nodes(RETV::RegExpTerm n, string attr, string val) {
   val =
     any(int i |
       n =
-        rank[i](RETV::RegExpTerm t, string fp, int sl, int sc |
-          t.hasLocationInfo(fp, sl, sc, _, _)
+        rank[i](RETV::RegExpTerm t, string fp, int sl, int sc, int el, int ec |
+          t.hasLocationInfo(fp, sl, sc, el, ec)
         |
-          t order by fp, sl, sc
+          t order by fp, sl, sc, el, ec, t.toString()
         )
     ).toString()
 }

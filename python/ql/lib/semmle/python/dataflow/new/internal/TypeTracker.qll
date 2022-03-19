@@ -3,7 +3,7 @@
 private import TypeTrackerSpecific
 
 /**
- * Any string that may appear as the name of a piece of content. This will usually include things like:
+ * A string that may appear as the name of a piece of content. This will usually include things like:
  * - Attribute names (in Python)
  * - Property names (in JavaScript)
  *
@@ -18,7 +18,7 @@ class ContentName extends string {
   ContentName() { this = getPossibleContentName() }
 }
 
-/** Either a content name, or the empty string (representing no content). */
+/** A content name, or the empty string (representing no content). */
 class OptionalContentName extends string {
   OptionalContentName() { this instanceof ContentName or this = "" }
 }
@@ -34,7 +34,8 @@ private module Cached {
     CallStep() or
     ReturnStep() or
     StoreStep(ContentName content) or
-    LoadStep(ContentName content)
+    LoadStep(ContentName content) or
+    JumpStep()
 
   /** Gets the summary resulting from appending `step` to type-tracking summary `tt`. */
   cached
@@ -49,6 +50,9 @@ private module Cached {
       step = LoadStep(content) and result = MkTypeTracker(hasCall, "")
       or
       exists(string p | step = StoreStep(p) and content = "" and result = MkTypeTracker(hasCall, p))
+      or
+      step = JumpStep() and
+      result = MkTypeTracker(false, content)
     )
   }
 
@@ -67,6 +71,9 @@ private module Cached {
       )
       or
       step = StoreStep(content) and result = MkTypeBackTracker(hasReturn, "")
+      or
+      step = JumpStep() and
+      result = MkTypeBackTracker(false, content)
     )
   }
 
@@ -110,12 +117,17 @@ class StepSummary extends TStepSummary {
     exists(string content | this = StoreStep(content) | result = "store " + content)
     or
     exists(string content | this = LoadStep(content) | result = "load " + content)
+    or
+    this instanceof JumpStep and result = "jump"
   }
 }
 
 pragma[noinline]
 private predicate smallstepNoCall(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
   jumpStep(nodeFrom, nodeTo) and
+  summary = JumpStep()
+  or
+  levelStep(nodeFrom, nodeTo) and
   summary = LevelStep()
   or
   exists(string content |
@@ -200,7 +212,7 @@ module StepSummary {
 private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalContentName content)
 
 /**
- * Summary of the steps needed to track a value to a given dataflow node.
+ * A summary of the steps needed to track a value to a given dataflow node.
  *
  * This can be used to track objects that implement a certain API in order to
  * recognize calls to that API. Note that type-tracking does not by itself provide a
@@ -347,7 +359,7 @@ module TypeTracker {
 private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, OptionalContentName content)
 
 /**
- * Summary of the steps needed to back-track a use of a value to a given dataflow node.
+ * A summary of the steps needed to back-track a use of a value to a given dataflow node.
  *
  * This can for example be used to track callbacks that are passed to a certain API,
  * so we can model specific parameters of that callback as having a certain type.

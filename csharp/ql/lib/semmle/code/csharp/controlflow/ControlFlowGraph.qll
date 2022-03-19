@@ -241,7 +241,7 @@ module ControlFlow {
     predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
 
     /** Gets the enclosing callable of this control flow node. */
-    Callable getEnclosingCallable() { none() }
+    final Callable getEnclosingCallable() { result = getNodeCfgScope(this) }
   }
 
   /** Provides different types of control flow nodes. */
@@ -252,8 +252,6 @@ module ControlFlow {
       Callable getCallable() { this = TEntryNode(result) }
 
       override BasicBlocks::EntryBlock getBasicBlock() { result = Node.super.getBasicBlock() }
-
-      override Callable getEnclosingCallable() { result = this.getCallable() }
 
       private Assignable getAssignable() { this = TEntryNode(result) }
 
@@ -283,8 +281,6 @@ module ControlFlow {
         result = Node.super.getBasicBlock()
       }
 
-      override Callable getEnclosingCallable() { result = this.getCallable() }
-
       override Location getLocation() { result = scope.getLocation() }
 
       override string toString() {
@@ -309,8 +305,6 @@ module ControlFlow {
 
       override BasicBlocks::ExitBlock getBasicBlock() { result = Node.super.getBasicBlock() }
 
-      override Callable getEnclosingCallable() { result = this.getCallable() }
-
       override Location getLocation() { result = scope.getLocation() }
 
       override string toString() { result = "exit " + scope }
@@ -327,14 +321,7 @@ module ControlFlow {
       private Splits splits;
       private ControlFlowElement cfe;
 
-      ElementNode() { this = TElementNode(cfe, splits) }
-
-      override Callable getEnclosingCallable() {
-        result = cfe.getEnclosingCallable()
-        or
-        result =
-          this.getASplit().(Splitting::InitializerSplitting::InitializerSplit).getConstructor()
-      }
+      ElementNode() { this = TElementNode(_, cfe, splits) }
 
       override ControlFlowElement getElement() { result = cfe }
 

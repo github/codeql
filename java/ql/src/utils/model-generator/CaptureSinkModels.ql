@@ -43,15 +43,16 @@ string asInputArgument(DataFlow::Node source) {
   result = "Argument[-1]"
 }
 
-string captureSink(TargetAPI api) {
+string captureSink(TargetApi api) {
   exists(DataFlow::Node src, DataFlow::Node sink, PropagateToSinkConfiguration config, string kind |
     config.hasFlow(src, sink) and
     sinkNode(sink, kind) and
     api = src.getEnclosingCallable() and
+    not kind = "logging" and
     result = asSinkModel(api, asInputArgument(src), kind)
   )
 }
 
-from TargetAPI api, string sink
+from TargetApi api, string sink
 where sink = captureSink(api)
 select sink order by sink

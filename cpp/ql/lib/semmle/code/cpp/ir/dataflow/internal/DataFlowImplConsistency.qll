@@ -9,6 +9,31 @@ private import tainttracking1.TaintTrackingParameter::Private
 private import tainttracking1.TaintTrackingParameter::Public
 
 module Consistency {
+  private newtype TConsistencyConfiguration = MkConsistencyConfiguration()
+
+  /** A class for configuring the consistency queries. */
+  class ConsistencyConfiguration extends TConsistencyConfiguration {
+    string toString() { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `uniqueEnclosingCallable`. */
+    predicate uniqueEnclosingCallableExclude(Node n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `uniqueNodeLocation`. */
+    predicate uniqueNodeLocationExclude(Node n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `missingLocation`. */
+    predicate missingLocationExclude(Node n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `postWithInFlow`. */
+    predicate postWithInFlowExclude(Node n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `argHasPostUpdate`. */
+    predicate argHasPostUpdateExclude(ArgumentNode n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `reverseRead`. */
+    predicate reverseReadExclude(Node n) { none() }
+  }
+
   private class RelevantNode extends Node {
     RelevantNode() {
       this instanceof ArgumentNode or
@@ -33,6 +58,7 @@ module Consistency {
       n instanceof RelevantNode and
       c = count(nodeGetEnclosingCallable(n)) and
       c != 1 and
+      not any(ConsistencyConfiguration conf).uniqueEnclosingCallableExclude(n) and
       msg = "Node should have one enclosing callable but has " + c + "."
     )
   }
@@ -53,6 +79,7 @@ module Consistency {
           n.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
         ) and
       c != 1 and
+      not any(ConsistencyConfiguration conf).uniqueNodeLocationExclude(n) and
       msg = "Node should have one location but has " + c + "."
     )
   }
@@ -63,7 +90,8 @@ module Consistency {
         strictcount(Node n |
           not exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
             n.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-          )
+          ) and
+          not any(ConsistencyConfiguration conf).missingLocationExclude(n)
         ) and
       msg = "Nodes without location: " + c
     )
@@ -159,12 +187,13 @@ module Consistency {
 
   query predicate reverseRead(Node n, string msg) {
     exists(Node n2 | readStep(n, _, n2) and hasPost(n2) and not hasPost(n)) and
+    not any(ConsistencyConfiguration conf).reverseReadExclude(n) and
     msg = "Origin of readStep is missing a PostUpdateNode."
   }
 
   query predicate argHasPostUpdate(ArgumentNode n, string msg) {
     not hasPost(n) and
-    not isImmutableOrUnobservable(n) and
+    not any(ConsistencyConfiguration c).argHasPostUpdateExclude(n) and
     msg = "ArgumentNode is missing PostUpdateNode."
   }
 
@@ -177,6 +206,7 @@ module Consistency {
     isPostUpdateNode(n) and
     not clearsContent(n, _) and
     simpleLocalFlowStep(_, n) and
+    not any(ConsistencyConfiguration c).postWithInFlowExclude(n) and
     msg = "PostUpdateNode should not be the target of local flow."
   }
 }

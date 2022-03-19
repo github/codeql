@@ -98,14 +98,14 @@ predicate containerAccess(string package, string type, int p, string signature, 
 class MismatchedContainerAccess extends MethodAccess {
   MismatchedContainerAccess() {
     exists(string package, string type, int i |
-      containerAccess(package, type, _, getCallee().getSignature(), i)
+      containerAccess(package, type, _, this.getCallee().getSignature(), i)
     |
-      getCallee()
+      this.getCallee()
           .getDeclaringType()
-          .getASupertype*()
+          .getASourceSupertype*()
           .getSourceDeclaration()
           .hasQualifiedName(package, type) and
-      getCallee().getParameter(i).getType() instanceof TypeObject
+      this.getCallee().getParameter(i).getType() instanceof TypeObject
     )
   }
 
@@ -115,10 +115,10 @@ class MismatchedContainerAccess extends MethodAccess {
    */
   RefType getReceiverElementType(int i) {
     exists(RefType t, GenericType g, string package, string type, int p |
-      containerAccess(package, type, p, getCallee().getSignature(), i)
+      containerAccess(package, type, p, this.getCallee().getSignature(), i)
     |
-      t = getCallee().getDeclaringType() and
-      t.getASupertype*().getSourceDeclaration() = g and
+      t = this.getCallee().getDeclaringType() and
+      t.getAnAncestor().getSourceDeclaration() = g and
       g.hasQualifiedName(package, type) and
       indirectlyInstantiates(t, g, p, result)
     )
