@@ -1,0 +1,13 @@
+| Preconditions.java:8:9:8:31 | assertTrue(...) | true | Preconditions.java:9:9:9:18 | <Expr>; |
+| Preconditions.java:13:9:13:32 | assertTrue(...) | true | Preconditions.java:14:9:14:18 | <Expr>; |
+| Preconditions.java:18:9:18:33 | assertFalse(...) | false | Preconditions.java:19:9:19:18 | <Expr>; |
+| Preconditions.java:23:9:23:32 | assertFalse(...) | false | Preconditions.java:24:9:24:18 | <Expr>; |
+| Preconditions.java:48:9:48:15 | r(...) | true | Preconditions.java:49:9:49:18 | <Expr>; |
+| Preconditions.java:57:9:57:35 | assertTrue(...) | true | Preconditions.java:58:9:58:18 | <Expr>; |
+| Preconditions.java:62:9:62:36 | assertTrue(...) | true | Preconditions.java:63:9:63:18 | <Expr>; |
+| Preconditions.java:67:9:67:37 | assertFalse(...) | false | Preconditions.java:68:9:68:18 | <Expr>; |
+| Preconditions.java:72:9:72:36 | assertFalse(...) | false | Preconditions.java:73:9:73:18 | <Expr>; |
+| Preconditions.java:77:9:77:45 | assertTrue(...) | true | Preconditions.java:78:9:78:18 | <Expr>; |
+| Preconditions.java:82:9:82:46 | assertTrue(...) | true | Preconditions.java:83:9:83:18 | <Expr>; |
+| Preconditions.java:87:9:87:47 | assertFalse(...) | false | Preconditions.java:88:9:88:18 | <Expr>; |
+| Preconditions.java:92:9:92:46 | assertFalse(...) | false | Preconditions.java:93:9:93:18 | <Expr>; |

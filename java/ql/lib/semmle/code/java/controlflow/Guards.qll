@@ -86,7 +86,7 @@ class Guard extends ExprParent {
     or
     this instanceof SwitchCase
     or
-    conditionCheck(this, _)
+    conditionCheck(this, _, _)
   }
 
   /** Gets the immediately enclosing callable whose body contains this guard. */
