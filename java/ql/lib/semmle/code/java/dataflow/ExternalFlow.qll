@@ -138,6 +138,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.Hibernate
   private import semmle.code.java.frameworks.jOOQ
   private import semmle.code.java.frameworks.spring.SpringHttp
+  private import semmle.code.java.frameworks.RabbitMQ
 }
 
 private predicate sourceModelCsv(string row) {
