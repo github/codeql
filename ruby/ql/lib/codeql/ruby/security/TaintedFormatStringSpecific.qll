@@ -21,7 +21,7 @@ abstract class PrintfStyleCall extends DataFlow::CallNode {
   /**
    * Gets then `n`th formatted argument of this call.
    */
-  DataFlow::Node getFormatArgument(int n) { n > 0 and result = this.getArgument(n) }
+  DataFlow::Node getFormatArgument(int n) { n >= 0 and result = this.getArgument(n + 1) }
 }
 
 /**
