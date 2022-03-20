@@ -10,6 +10,11 @@ class UsersController < ActionController::Base
     printf(IO.new(1), params[:format], arg) # BAD
     Kernel.printf(IO.new(1), params[:format], arg) # BAD
 
+    printf("%s", params[:format]) # GOOD
+    Kernel.printf("%s", params[:format]) # GOOD
+    fmt = "%s"
+    printf(fmt, params[:format]) # GOOD
+
     printf(IO.new(1), params[:format]) # GOOD [FALSE POSITIVE]
     Kernel.printf(IO.new(1), params[:format]) # GOOD [FALSE POSITIVE]
     

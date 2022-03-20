@@ -8,6 +8,7 @@ import codeql.ruby.dataflow.RemoteFlowSources
 import codeql.ruby.ApiGraphs
 import codeql.ruby.TaintTracking
 private import codeql.ruby.frameworks.Files::IO
+private import codeql.ruby.controlflow.CfgNodes
 
 /**
  * A call to `printf` or `sprintf`.
@@ -39,7 +40,15 @@ class KernelPrintfCall extends PrintfStyleCall {
   // Kernel#printf supports two signatures:
   //   printf(io, string, ...)
   //   printf(string, ...)
-  override DataFlow::Node getFormatString() { result = this.getArgument([0, 1]) }
+  override DataFlow::Node getFormatString() {
+    // Because `printf` has two different signatures, we can't be sure which
+    // argument is the format string, so we use a heuristic:
+    // If the first argument has a string value, then we assume it is the format string.
+    // Otherwise we treat both the first and second args as the format string.
+    if this.getArgument(0).getExprNode().getConstantValue().isString(_)
+    then result = this.getArgument(0)
+    else result = this.getArgument([0, 1])
+  }
 }
 
 /**
