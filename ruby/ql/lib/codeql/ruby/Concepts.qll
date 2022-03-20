@@ -301,7 +301,7 @@ module HTTP {
       /**
        * Gets a string that describes the type of this input.
        *
-       *  This is typically the name of the method that gives rise to this input.
+       * This is typically the name of the method that gives rise to this input.
        */
       string getSourceType() { result = super.getSourceType() }
     }
@@ -318,7 +318,7 @@ module HTTP {
         /**
          * Gets a string that describes the type of this input.
          *
-         *  This is typically the name of the method that gives rise to this input.
+         * This is typically the name of the method that gives rise to this input.
          */
         abstract string getSourceType();
       }
