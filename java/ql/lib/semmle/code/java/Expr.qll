@@ -2,10 +2,8 @@
  * Provides classes for working with Java expressions.
  */
 
-import Member
-import Type
-import Variable
-import Statement
+import java
+import semmle.code.java.frameworks.android.Compose
 
 /** A common super-class that represents all kinds of expressions. */
 class Expr extends ExprParent, @expr {
@@ -161,6 +159,8 @@ class CompileTimeConstantExpr extends Expr {
         v.isFinal() and
         v.getInitializer().isCompileTimeConstant()
       )
+      or
+      this instanceof LiveLiteral
     )
   }
 
@@ -185,6 +185,8 @@ class CompileTimeConstantExpr extends Expr {
     exists(Variable v | this = v.getAnAccess() |
       result = v.getInitializer().(CompileTimeConstantExpr).getStringValue()
     )
+    or
+    result = this.(LiveLiteral).getValue().getStringValue()
   }
 
   /**
@@ -297,6 +299,8 @@ class CompileTimeConstantExpr extends Expr {
     exists(Variable v | this = v.getAnAccess() |
       result = v.getInitializer().(CompileTimeConstantExpr).getBooleanValue()
     )
+    or
+    result = this.(LiveLiteral).getValue().getBooleanValue()
   }
 
   /**
@@ -377,6 +381,8 @@ class CompileTimeConstantExpr extends Expr {
         result = v.getInitializer().(CompileTimeConstantExpr).getIntValue()
       )
     )
+    or
+    result = this.(LiveLiteral).getValue().getIntValue()
   }
 }
 
