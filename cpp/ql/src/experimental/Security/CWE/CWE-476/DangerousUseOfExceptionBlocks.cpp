@@ -1,30 +1,30 @@
 ...
 try {
   if (checkValue) throw exception();
-  valData->bufMyData =  new myData*[valData->sizeInt];
+  bufMyData =  new myData*[sizeInt];
 	 
   } 
   catch (...) 
   {
-    for (size_t i = 0; i < valData->sizeInt; i++)
+    for (size_t i = 0; i < sizeInt; i++)
     {
-    	delete[] valData->bufMyData[i]->buffer; // BAD
-        delete valData->bufMyData[i];
+    	delete[] bufMyData[i]->buffer; // BAD
+        delete bufMyData[i];
     }
 ...
 try {
   if (checkValue) throw exception();
-  valData->bufMyData =  new myData*[valData->sizeInt];
+  bufMyData =  new myData*[sizeInt];
 	 
   } 
   catch (...) 
   {
-    for (size_t i = 0; i < valData->sizeInt; i++)
+    for (size_t i = 0; i < sizeInt; i++)
     {
-      if(valData->bufMyData[i])
+      if(bufMyData[i])
       {
-    	  delete[] valData->bufMyData[i]->buffer; // GOOD
-        delete valData->bufMyData[i];
+    	delete[] bufMyData[i]->buffer; // GOOD
+        delete bufMyData[i];
       }
     }
 
