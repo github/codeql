@@ -525,5 +525,13 @@
   "ApiGraphModels": [
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/ApiGraphModels.qll",
     "ruby/ql/lib/codeql/ruby/frameworks/data/internal/ApiGraphModels.qll"
+  ],
+  "TaintedFormatStringQuery Ruby/JS": [
+    "javascript/ql/lib/semmle/javascript/security/dataflow/TaintedFormatStringQuery.qll",
+    "ruby/ql/lib/codeql/ruby/security/TaintedFormatStringQuery.qll"
+  ],
+  "TaintedFormatStringCustomizations Ruby/JS": [
+    "javascript/ql/lib/semmle/javascript/security/dataflow/TaintedFormatStringCustomizations.qll",
+    "ruby/ql/lib/codeql/ruby/security/TaintedFormatStringCustomizations.qll"
   ]
 }
