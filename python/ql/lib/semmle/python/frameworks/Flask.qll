@@ -331,17 +331,52 @@ module Flask {
   // flask.Request taint modeling
   // ---------------------------------------------------------------------------
   /**
+   * Helper predicate for `FlaskRequestSource`.
+   *
+   * We _could_ use `request().getAnImmediateUse()`, but that would normally resolve to
+   * the `request` part of `from flask import request`, which is not very useful for
+   * end-users... they will ALWAYS have to go at least one step into the path
+   * explanation to see where the request was used.
+   *
+   * This predicate gets a data flow node that can potential be used as the
+   * RemoteFlowSource for `flask.request`, to be filtered out further.
+   */
+  private DataFlow::Node potentialFlaskRequestSource() {
+    result = request().getAUse() and
+    not any(Import imp).contains(result.asExpr()) and
+    not exists(ControlFlowNode def | result.asVar().getSourceVariable().hasDefiningNode(def) |
+      any(Import imp).contains(def.getNode())
+    )
+  }
+
+  /**
    * A source of remote flow from a flask request.
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request
    */
   private class FlaskRequestSource extends RemoteFlowSource::Range {
     FlaskRequestSource() {
-      this = request().getAUse() and
-      not any(Import imp).contains(this.asExpr()) and
-      not exists(ControlFlowNode def | this.asVar().getSourceVariable().hasDefiningNode(def) |
-        any(Import imp).contains(def.getNode())
-      )
+      this = potentialFlaskRequestSource() and
+      // We've had problems with giving duplicate alerts because we had a
+      // RemoteFlowSource for use of `flask.request` in a function; we can greatly
+      // improve this by ensuring there is no flow into such a RemoteFlowSource from
+      // another potential source.
+      //
+      // Note that this still means that there will be two sources, and therefore two
+      // alerts, in scenarios as below:
+      // ```py
+      // @app.route(...)
+      // def my_request_hadler()
+      //     if cond:
+      //         user_controlled = request.args["foo"]
+      //     else:
+      //         user_controlled = request.args["bar"]
+      //     SINK(user_controlled)
+      // ```
+      //
+      // For a test of this, see
+      // python/ql/test/library-tests/frameworks/flask/SourceTest.ql
+      not DataFlow::localFlowStep(potentialFlaskRequestSource(), this)
     }
 
     override string getSourceType() { result = "flask.request" }
