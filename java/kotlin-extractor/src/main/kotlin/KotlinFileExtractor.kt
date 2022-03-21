@@ -434,6 +434,10 @@ open class KotlinFileExtractor(
 
                     break
                 } else if (parent is IrFile) {
+                    if (innerDeclaration is IrClass) {
+                        // We don't have to extract file class containers for classes
+                        break
+                    }
                     if (this.filePath != parent.path) {
                         logger.error("Unexpected file parent found")
                     }
