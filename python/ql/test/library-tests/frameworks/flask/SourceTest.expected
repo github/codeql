@@ -1,0 +1,51 @@
+edges
+| source_test2.py:16:17:16:23 | ControlFlowNode for request | source_test2.py:17:27:17:33 | ControlFlowNode for request |
+| source_test2.py:16:17:16:23 | ControlFlowNode for request | source_test2.py:17:27:17:38 | ControlFlowNode for Attribute |
+| source_test2.py:17:27:17:33 | ControlFlowNode for request | source_test2.py:17:27:17:38 | ControlFlowNode for Attribute |
+| source_test2.py:17:27:17:38 | ControlFlowNode for Attribute | source_test2.py:17:27:17:45 | ControlFlowNode for Subscript |
+| source_test2.py:17:27:17:45 | ControlFlowNode for Subscript | source_test2.py:18:14:18:28 | ControlFlowNode for user_controlled |
+| source_test2.py:24:27:24:39 | ControlFlowNode for Attribute | source_test2.py:24:27:24:44 | ControlFlowNode for Attribute |
+| source_test2.py:24:27:24:44 | ControlFlowNode for Attribute | source_test2.py:24:27:24:51 | ControlFlowNode for Subscript |
+| source_test2.py:24:27:24:51 | ControlFlowNode for Subscript | source_test2.py:25:14:25:28 | ControlFlowNode for user_controlled |
+| source_test.py:9:17:9:23 | ControlFlowNode for request | source_test.py:10:27:10:33 | ControlFlowNode for request |
+| source_test.py:9:17:9:23 | ControlFlowNode for request | source_test.py:10:27:10:38 | ControlFlowNode for Attribute |
+| source_test.py:10:27:10:33 | ControlFlowNode for request | source_test.py:10:27:10:38 | ControlFlowNode for Attribute |
+| source_test.py:10:27:10:38 | ControlFlowNode for Attribute | source_test.py:10:27:10:45 | ControlFlowNode for Subscript |
+| source_test.py:10:27:10:45 | ControlFlowNode for Subscript | source_test.py:11:14:11:28 | ControlFlowNode for user_controlled |
+| source_test.py:17:27:17:33 | ControlFlowNode for request | source_test.py:17:27:17:38 | ControlFlowNode for Attribute |
+| source_test.py:17:27:17:38 | ControlFlowNode for Attribute | source_test.py:17:27:17:45 | ControlFlowNode for Subscript |
+| source_test.py:17:27:17:45 | ControlFlowNode for Subscript | source_test.py:20:10:20:24 | ControlFlowNode for user_controlled |
+| source_test.py:19:27:19:33 | ControlFlowNode for request | source_test.py:19:27:19:38 | ControlFlowNode for Attribute |
+| source_test.py:19:27:19:38 | ControlFlowNode for Attribute | source_test.py:19:27:19:45 | ControlFlowNode for Subscript |
+| source_test.py:19:27:19:45 | ControlFlowNode for Subscript | source_test.py:20:10:20:24 | ControlFlowNode for user_controlled |
+nodes
+| source_test2.py:16:17:16:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| source_test2.py:17:27:17:33 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| source_test2.py:17:27:17:38 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| source_test2.py:17:27:17:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| source_test2.py:18:14:18:28 | ControlFlowNode for user_controlled | semmle.label | ControlFlowNode for user_controlled |
+| source_test2.py:24:27:24:39 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| source_test2.py:24:27:24:44 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| source_test2.py:24:27:24:51 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| source_test2.py:25:14:25:28 | ControlFlowNode for user_controlled | semmle.label | ControlFlowNode for user_controlled |
+| source_test.py:9:17:9:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| source_test.py:10:27:10:33 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| source_test.py:10:27:10:38 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| source_test.py:10:27:10:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| source_test.py:11:14:11:28 | ControlFlowNode for user_controlled | semmle.label | ControlFlowNode for user_controlled |
+| source_test.py:17:27:17:33 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| source_test.py:17:27:17:38 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| source_test.py:17:27:17:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| source_test.py:19:27:19:33 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| source_test.py:19:27:19:38 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| source_test.py:19:27:19:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| source_test.py:20:10:20:24 | ControlFlowNode for user_controlled | semmle.label | ControlFlowNode for user_controlled |
+subpaths
+#select
+| source_test2.py:18:14:18:28 | ControlFlowNode for user_controlled | source_test2.py:16:17:16:23 | ControlFlowNode for request | source_test2.py:18:14:18:28 | ControlFlowNode for user_controlled | Path text |
+| source_test2.py:18:14:18:28 | ControlFlowNode for user_controlled | source_test2.py:17:27:17:33 | ControlFlowNode for request | source_test2.py:18:14:18:28 | ControlFlowNode for user_controlled | Path text |
+| source_test2.py:25:14:25:28 | ControlFlowNode for user_controlled | source_test2.py:24:27:24:39 | ControlFlowNode for Attribute | source_test2.py:25:14:25:28 | ControlFlowNode for user_controlled | Path text |
+| source_test.py:11:14:11:28 | ControlFlowNode for user_controlled | source_test.py:9:17:9:23 | ControlFlowNode for request | source_test.py:11:14:11:28 | ControlFlowNode for user_controlled | Path text |
+| source_test.py:11:14:11:28 | ControlFlowNode for user_controlled | source_test.py:10:27:10:33 | ControlFlowNode for request | source_test.py:11:14:11:28 | ControlFlowNode for user_controlled | Path text |
+| source_test.py:20:10:20:24 | ControlFlowNode for user_controlled | source_test.py:17:27:17:33 | ControlFlowNode for request | source_test.py:20:10:20:24 | ControlFlowNode for user_controlled | Path text |
+| source_test.py:20:10:20:24 | ControlFlowNode for user_controlled | source_test.py:19:27:19:33 | ControlFlowNode for request | source_test.py:20:10:20:24 | ControlFlowNode for user_controlled | Path text |
