@@ -11,23 +11,19 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.Concepts
 
-/**
- * Provides a taint-tracking configuration for detecting "Server-side request forgery" vulnerabilities.
- *
- * This configuration has a sanitizer to limit results to cases where attacker has full control of URL.
- * See `PartialServerSideRequestForgery` for a variant without this requirement.
- *
- * You should use the `partOfFullyControlledRequest` to only select results where all
- * URL parts are fully controlled.
- */
-module FullServerSideRequestForgery {
-  import ServerSideRequestForgeryCustomizations::ServerSideRequestForgery
+import ServerSideRequestForgeryCustomizations::ServerSideRequestForgery
 
   /**
    * A taint-tracking configuration for detecting "Server-side request forgery" vulnerabilities.
+   *
+   * This configuration has a sanitizer to limit results to cases where attacker has full control of URL.
+   * See `PartialServerSideRequestForgery` for a variant without this requirement.
+   *
+   * You should use the `fullyControlledRequest` to only select results where all
+   * URL parts are fully controlled.
    */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "FullServerSideRequestForgery" }
+  class FullServerSideRequestForgeryConfiguration extends TaintTracking::Configuration {
+    FullServerSideRequestForgeryConfiguration() { this = "FullServerSideRequestForgery" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -43,33 +39,26 @@ module FullServerSideRequestForgery {
       guard instanceof SanitizerGuard
     }
   }
-}
 
 /**
  * Holds if all URL parts of `request` is fully user controlled.
  */
 predicate fullyControlledRequest(HTTP::Client::Request request) {
-  exists(FullServerSideRequestForgery::Configuration fullConfig |
+  exists(FullServerSideRequestForgeryConfiguration fullConfig |
     forall(DataFlow::Node urlPart | urlPart = request.getAUrlPart() |
       fullConfig.hasFlow(_, urlPart)
     )
   )
 }
 
-/**
- * Provides a taint-tracking configuration for detecting "Server-side request forgery" vulnerabilities.
- *
- * This configuration has results, even when the attacker does not have full control over the URL.
- * See `FullServerSideRequestForgery` for variant that has this requirement.
- */
-module PartialServerSideRequestForgery {
-  import ServerSideRequestForgeryCustomizations::ServerSideRequestForgery
-
   /**
    * A taint-tracking configuration for detecting "Server-side request forgery" vulnerabilities.
+   *
+   * This configuration has results, even when the attacker does not have full control over the URL.
+   * See `FullServerSideRequestForgeryConfiguration`, and the `fullyControlledRequest` predicate.
    */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "PartialServerSideRequestForgery" }
+  class PartialServerSideRequestForgeryConfiguration extends TaintTracking::Configuration {
+    PartialServerSideRequestForgeryConfiguration() { this = "PartialServerSideRequestForgery" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -81,4 +70,3 @@ module PartialServerSideRequestForgery {
       guard instanceof SanitizerGuard
     }
   }
-}

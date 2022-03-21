@@ -14,10 +14,6 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.dataflow.new.SensitiveDataSources
 
-/**
- * Provides a taint-tracking configuration for detecting "Clear-text storage of sensitive information".
- */
-module CleartextStorage {
   import CleartextStorageCustomizations::CleartextStorage
 
   /**
@@ -36,4 +32,3 @@ module CleartextStorage {
       node instanceof Sanitizer
     }
   }
-}

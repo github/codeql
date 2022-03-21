@@ -14,10 +14,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.dataflow.new.SensitiveDataSources
 
-/**
- * Provides a taint-tracking configuration for detecting "Clear-text logging of sensitive information".
- */
-module CleartextLogging {
+
   import CleartextLoggingCustomizations::CleartextLogging
 
   /**
@@ -36,4 +33,3 @@ module CleartextLogging {
       node instanceof Sanitizer
     }
   }
-}

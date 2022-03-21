@@ -10,10 +10,6 @@ private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 
-/**
- * Provides a taint-tracking configuration for detecting "polynomial regular expression denial of service (ReDoS)" vulnerabilities.
- */
-module PolynomialReDoS {
   import PolynomialReDoSCustomizations::PolynomialReDoS
 
   /**
@@ -32,4 +28,3 @@ module PolynomialReDoS {
       guard instanceof SanitizerGuard
     }
   }
-}

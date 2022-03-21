@@ -11,11 +11,6 @@ private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 
-/**
- * Provides a taint-tracking configuration for detecting regular expression injection
- * vulnerabilities.
- */
-module RegexInjection {
   import RegexInjectionCustomizations::RegexInjection
 
   /**
@@ -34,4 +29,3 @@ module RegexInjection {
       guard instanceof SanitizerGuard
     }
   }
-}

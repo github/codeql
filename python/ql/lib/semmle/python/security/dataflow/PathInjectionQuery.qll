@@ -11,10 +11,6 @@ private import semmle.python.Concepts
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 
-/**
- * Provides a taint-tracking configuration for detecting "path injection" vulnerabilities.
- */
-module PathInjection {
   import PathInjectionCustomizations::PathInjection
 
   /**
@@ -79,7 +75,7 @@ module PathInjection {
   class NormalizedUnchecked extends DataFlow::FlowState {
     NormalizedUnchecked() { this = "NormalizedUnchecked" }
   }
-}
+
 
 // ---------------------------------------------------------------------------
 // Old, deprecated code

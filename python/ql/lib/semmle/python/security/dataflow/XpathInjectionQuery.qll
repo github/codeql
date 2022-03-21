@@ -1,26 +1,22 @@
 /**
- * Provides a taint-tracking configuration for tracking untrusted user input used in log entries.
+ * Provides a taint-tracking configuration for detecting "Xpath Injection" vulnerabilities.
  *
  * Note, for performance reasons: only import this file if
- * `LogInjection::Configuration` is needed, otherwise
- * `LogInjectionCustomizations` should be imported instead.
+ * `XpathInjection::Configuration` is needed, otherwise
+ * `XpathInjectionCustomizations` should be imported instead.
  */
 
-import python
+private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 
-/**
- * Provides a taint-tracking configuration for tracking untrusted user input used in log entries.
- */
-module LogInjection {
-  import LogInjectionCustomizations::LogInjection
+  import XpathInjectionCustomizations::XpathInjection
 
   /**
-   * A taint-tracking configuration for tracking untrusted user input used in log entries.
+   * A taint-tracking configuration for detecting "Xpath Injection" vulnerabilities.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "LogInjection" }
+    Configuration() { this = "Xpath Injection" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -32,4 +28,3 @@ module LogInjection {
       guard instanceof SanitizerGuard
     }
   }
-}

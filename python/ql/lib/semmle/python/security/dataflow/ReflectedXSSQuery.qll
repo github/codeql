@@ -1,26 +1,22 @@
 /**
- * Provides a taint-tracking configuration for detecting "command injection" vulnerabilities.
+ * Provides a taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
  *
  * Note, for performance reasons: only import this file if
- * `CommandInjection::Configuration` is needed, otherwise
- * `CommandInjectionCustomizations` should be imported instead.
+ * `ReflectedXSS::Configuration` is needed, otherwise
+ * `ReflectedXSSCustomizations` should be imported instead.
  */
 
 private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 
-/**
- * Provides a taint-tracking configuration for detecting "command injection" vulnerabilities.
- */
-module CommandInjection {
-  import CommandInjectionCustomizations::CommandInjection
+  import ReflectedXSSCustomizations::ReflectedXss
 
   /**
-   * A taint-tracking configuration for detecting "command injection" vulnerabilities.
+   * A taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "CommandInjection" }
+    Configuration() { this = "ReflectedXSS" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -32,11 +28,13 @@ module CommandInjection {
       guard instanceof SanitizerGuard
     }
   }
-}
+
+/** DEPRECATED: Alias for ReflectedXss */
+deprecated module ReflectedXSS = ReflectedXss;
 
 /**
  * DEPRECATED: Don't extend this class for customization, since this will lead to bad
- * performance, instead use the new `CommandInjectionCustomizations.qll` file, and extend
+ * performance, instead use the new `ReflectedXSSCustomizations.qll` file, and extend
  * its' classes.
  */
-deprecated class CommandInjectionConfiguration = CommandInjection::Configuration;
+deprecated class ReflectedXssConfiguration = ReflectedXss::Configuration;

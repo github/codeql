@@ -10,10 +10,6 @@ private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 
-/**
- * Provides a taint-tracking configuration for detecting "code execution from deserialization" vulnerabilities.
- */
-module UnsafeDeserialization {
   import UnsafeDeserializationCustomizations::UnsafeDeserialization
 
   /**
@@ -32,7 +28,6 @@ module UnsafeDeserialization {
       guard instanceof SanitizerGuard
     }
   }
-}
 
 /**
  * DEPRECATED: Don't extend this class for customization, since this will lead to bad
