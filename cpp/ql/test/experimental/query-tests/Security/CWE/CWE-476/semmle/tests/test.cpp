@@ -29,12 +29,12 @@ struct myGlobalData
     myData**	bufMyData;
 };
 
-void allocData(myGlobalData * dataP) {
-    for (size_t i = 0; i < dataP->sizeInt; i++)
+void allocData(myData ** bufMyData) {
+    for (size_t i = 0; i < 10; i++)
     {
-        dataP->bufMyData[i] = new myData;
-	dataP->bufMyData[i]->sizeInt = 10;
-	dataP->bufMyData[i]->buffer = new char[dataP->bufMyData[i]->sizeInt];
+        bufMyData[i] = new myData;
+	bufMyData[i]->sizeInt = 10;
+	bufMyData[i]->buffer = new char[10];
     }
 }
 
@@ -47,68 +47,68 @@ void throwFunction2(int a) {
 }
 void funcWork1b() {
   int a;
-  myGlobalData *valData = new myGlobalData;
+  myData **bufMyData;
 
   try { 
   	cleanFunction();
 	throwFunction(a);
-	valData->sizeInt  = 10;
-        valData->bufMyData =  new myData*[valData->sizeInt];
+
+        bufMyData =  new myData*[10];
 	cleanFunction();
-	allocData(valData);
+	allocData(bufMyData);
 	cleanFunction();
 	 
   } 
   catch (...) 
   {
-    for (size_t i = 0; i < valData->sizeInt; i++)
+    for (size_t i = 0; i < 10; i++)
     {
-    	delete[] valData->bufMyData[i]->buffer; // BAD
-        delete valData->bufMyData[i];
+    	delete[] bufMyData[i]->buffer; // BAD
+        delete bufMyData[i];
     }
-    delete [] valData->bufMyData;
-    delete valData;
+    delete [] bufMyData;
+
   }
 }
 
 void funcWork1() {
   int a;
   int i;
-  myGlobalData *valData = new myGlobalData;
-  valData->sizeInt  = 10;
-  valData->bufMyData =  new myData*[valData->sizeInt];
-  for (i = 0; i < valData->sizeInt; i++)
-    valData->bufMyData[i] = 0;
+  myData **bufMyData;
+
+  bufMyData =  new myData*[10];
+  for (i = 0; i < 10; i++)
+    bufMyData[i] = 0;
   try { 
   	cleanFunction();
 	throwFunction(a);
 	cleanFunction();
-	allocData(valData);
+	allocData(bufMyData);
 	cleanFunction();
 	 
   } 
   catch (...) 
   {
-    for (size_t i = 0; i < valData->sizeInt; i++)
+    for (size_t i = 0; i < 10; i++)
     {
-	if (valData->bufMyData[i]) 
-       	    delete[] valData->bufMyData[i]->buffer; // GOOD
-        delete valData->bufMyData[i];
+	if (bufMyData[i]) 
+       	    delete[] bufMyData[i]->buffer; // GOOD
+        delete bufMyData[i];
     }
-    delete [] valData->bufMyData;
-    delete valData;
+    delete [] bufMyData;
+
   }
 }
 
 void funcWork2() {
   int a;
-  myGlobalData *valData = new myGlobalData;
-  valData->sizeInt  = 10;
-  valData->bufMyData =  new myData*[valData->sizeInt];
+  myData **bufMyData;
+
+  bufMyData =  new myData*[10];
   try { 
  	do {
 		cleanFunction();
-		allocData(valData);
+		allocData(bufMyData);
 		cleanFunction();
 		throwFunction(a);
 
@@ -118,36 +118,36 @@ void funcWork2() {
   } 
   catch (...) 
   {
-    for (size_t i = 0; i < valData->sizeInt; i++)
+    for (size_t i = 0; i < 10; i++)
     {
-    	delete[] valData->bufMyData[i]->buffer; // GOOD
-        delete valData->bufMyData[i];
+    	delete[] bufMyData[i]->buffer; // GOOD
+        delete bufMyData[i];
     }
-    delete [] valData->bufMyData;
-    delete valData;
+    delete [] bufMyData;
+
   }
 }
 void funcWork3() {
   int a;
-  myGlobalData *valData = new myGlobalData;
-  valData->sizeInt  = 10;
-  valData->bufMyData =  new myData*[valData->sizeInt];
+  myData **bufMyData;
+
+  bufMyData =  new myData*[10];
   try { 
 	cleanFunction();
-	allocData(valData);
+	allocData(bufMyData);
 	cleanFunction();
 	throwFunction(a);
  
   } 
   catch (...) 
   {
-    for (size_t i = 0; i < valData->sizeInt; i++)
+    for (size_t i = 0; i < 10; i++)
     {
-    	delete[] valData->bufMyData[i]->buffer; // GOOD
-        delete valData->bufMyData[i];
+    	delete[] bufMyData[i]->buffer; // GOOD
+        delete bufMyData[i];
     }
-    delete [] valData->bufMyData;
-    delete valData;
+    delete [] bufMyData;
+
   }
 }
 
