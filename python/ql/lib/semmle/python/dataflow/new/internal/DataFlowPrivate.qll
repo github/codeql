@@ -12,7 +12,6 @@ private import semmle.python.dataflow.new.internal.ImportStar
 //
 // This matches behavior in C#.
 private import semmle.python.Frameworks
-private import semmle.python.Concepts
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
