@@ -639,7 +639,11 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = getAst() }
 
-  final override Function getFunction() { result = initList.getEnclosingFunction() }
+  final override Declaration getFunction() {
+    result = initList.getEnclosingFunction()
+    or
+    result = initList.getEnclosingVariable().(GlobalOrNamespaceVariable)
+  }
 
   final override Instruction getFirstInstruction() { result = getInstruction(getElementIndexTag()) }
 

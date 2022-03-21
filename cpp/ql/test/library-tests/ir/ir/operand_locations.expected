@@ -7698,6 +7698,12 @@
 | smart_ptr.cpp:47:43:47:63 | Unary | r47_6 |
 | struct_init.cpp:9:13:9:25 | Left | r9_2 |
 | struct_init.cpp:9:13:9:25 | Left | r9_2 |
+| struct_init.cpp:9:31:12:1 | Right | r9_3 |
+| struct_init.cpp:9:31:12:1 | Right | r9_5 |
+| struct_init.cpp:9:31:12:1 | Unary | r9_4 |
+| struct_init.cpp:9:31:12:1 | Unary | r9_4 |
+| struct_init.cpp:9:31:12:1 | Unary | r9_6 |
+| struct_init.cpp:9:31:12:1 | Unary | r9_6 |
 | struct_init.cpp:10:5:10:21 | Address | &:r10_1 |
 | struct_init.cpp:10:5:10:21 | Address | &:r10_6 |
 | struct_init.cpp:10:7:10:9 | ChiPartial | partial:m10_4 |

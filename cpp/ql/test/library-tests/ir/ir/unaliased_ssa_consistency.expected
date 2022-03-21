@@ -11,12 +11,6 @@ unexplainedLoop
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
-| struct_init.cpp:9:13:9:25 | Left | Operand 'Left' is used on instruction 'PointerAdd: {...}' in function '$@', but is defined on instruction 'VariableAddress: infos_in_file' in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] |
-| struct_init.cpp:9:13:9:25 | Left | Operand 'Left' is used on instruction 'PointerAdd: {...}' in function '$@', but is defined on instruction 'VariableAddress: infos_in_file' in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] |
-| struct_init.cpp:9:31:12:1 | Unary | Operand 'Unary' is used on instruction 'FieldAddress: {...}' in function '$@', but is defined on instruction 'PointerAdd: {...}' in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
-| struct_init.cpp:9:31:12:1 | Unary | Operand 'Unary' is used on instruction 'FieldAddress: {...}' in function '$@', but is defined on instruction 'PointerAdd: {...}' in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
-| struct_init.cpp:9:31:12:1 | Unary | Operand 'Unary' is used on instruction 'FieldAddress: {...}' in function '$@', but is defined on instruction 'PointerAdd: {...}' in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
-| struct_init.cpp:9:31:12:1 | Unary | Operand 'Unary' is used on instruction 'FieldAddress: {...}' in function '$@', but is defined on instruction 'PointerAdd: {...}' in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
 instructionWithoutUniqueBlock
 containsLoopOfForwardEdges
 lostReachability
@@ -27,10 +21,6 @@ notMarkedAsConflated
 wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
-| struct_init.cpp:9:31:12:1 | Constant: {...} | Instruction 'Constant: {...}' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
-| struct_init.cpp:9:31:12:1 | Constant: {...} | Instruction 'Constant: {...}' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
-| struct_init.cpp:9:31:12:1 | PointerAdd: {...} | Instruction 'PointerAdd: {...}' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
-| struct_init.cpp:9:31:12:1 | PointerAdd: {...} | Instruction 'PointerAdd: {...}' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 missingCanonicalLanguageType

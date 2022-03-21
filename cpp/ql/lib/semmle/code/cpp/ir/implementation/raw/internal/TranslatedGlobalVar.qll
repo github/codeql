@@ -73,7 +73,7 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedInstructionContainer,
     result = getInstruction(InitializerVariableAddressTag())
   }
 
-  override Type getTargetType() { result = var.getType() }
+  override Type getTargetType() { result = var.getUnspecifiedType() }
 }
 
 TranslatedGlobalOrNamespaceVarInit getTranslatedVarInit(GlobalOrNamespaceVariable var) {

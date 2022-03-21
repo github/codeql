@@ -8924,23 +8924,27 @@ struct_init.cpp:
 #    9|   Block 0
 #    9|     v9_1(void)              = EnterFunction             : 
 #    9|     r9_2(glval<Info[]>)     = VariableAddress           : 
-#   10|     r10_1(glval<char *>)    = FieldAddress[name]        : 
+#    9|     r9_3(int)               = Constant[0]               : 
+#    9|     r9_4(glval<Info>)       = PointerAdd[16]            : r9_2, r9_3
+#   10|     r10_1(glval<char *>)    = FieldAddress[name]        : r9_4
 #   10|     r10_2(glval<char[2]>)   = StringConstant            : 
 #   10|     r10_3(char *)           = Convert                   : r10_2
 #   10|     mu10_4(char *)          = Store[?]                  : &:r10_1, r10_3
-#   10|     r10_5(glval<..(*)(..)>) = FieldAddress[handler]     : 
+#   10|     r10_5(glval<..(*)(..)>) = FieldAddress[handler]     : r9_4
 #   10|     r10_6(..(*)(..))        = FunctionAddress[handler1] : 
 #   10|     mu10_7(..(*)(..))       = Store[?]                  : &:r10_5, r10_6
-#   11|     r11_1(glval<char *>)    = FieldAddress[name]        : 
+#    9|     r9_5(int)               = Constant[1]               : 
+#    9|     r9_6(glval<Info>)       = PointerAdd[16]            : r9_2, r9_5
+#   11|     r11_1(glval<char *>)    = FieldAddress[name]        : r9_6
 #   11|     r11_2(glval<char[2]>)   = StringConstant            : 
 #   11|     r11_3(char *)           = Convert                   : r11_2
 #   11|     mu11_4(char *)          = Store[?]                  : &:r11_1, r11_3
-#   11|     r11_5(glval<..(*)(..)>) = FieldAddress[handler]     : 
+#   11|     r11_5(glval<..(*)(..)>) = FieldAddress[handler]     : r9_6
 #   11|     r11_6(glval<..()(..)>)  = FunctionAddress[handler2] : 
 #   11|     r11_7(..(*)(..))        = CopyValue                 : r11_6
 #   11|     mu11_8(..(*)(..))       = Store[?]                  : &:r11_5, r11_7
-#    9|     v9_3(void)              = ReturnVoid                : 
-#    9|     v9_4(void)              = ExitFunction              : 
+#    9|     v9_7(void)              = ReturnVoid                : 
+#    9|     v9_8(void)              = ExitFunction              : 
 
 #   14| Info* global_pointer
 
