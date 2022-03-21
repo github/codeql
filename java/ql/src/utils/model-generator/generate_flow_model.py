@@ -10,12 +10,16 @@ import tempfile
 
 language = "java"
 
-def printHelp():
-    print(f"""Usage:
+class Generator:
+    def __init__ (self, language):
+        self.language = language
+
+    def printHelp(self):
+        print(f"""Usage:
 python3 GenerateFlowModel.py <library-database> <outputQll> [--with-sinks] [--with-sources] [--with-summaries] [--dry-run]
 
 This generates summary, source and sink models for the code in the database.
-The files will be placed in `{language}/ql/lib/semmle/code/{language}/frameworks/<outputQll>` where
+The files will be placed in `{self.language}/ql/lib/semmle/code/{self.language}/frameworks/<outputQll>` where
 outputQll is the name (and path) of the output QLL file. Usually, models are grouped by their
 respective frameworks.
 
@@ -32,11 +36,12 @@ $ python3 GenerateFlowModel.py /tmp/dbs/my_library_db "mylibrary/Framework.qll"
 $ python3 GenerateFlowModel.py /tmp/dbs/my_library_db "mylibrary/FrameworkSinks.qll" --with-sinks
 
 Requirements: `codeql` should both appear on your path.
-""")
+    """)
 
+generator = Generator(language)
 
 if any(s == "--help" for s in sys.argv):
-    printHelp()
+    generator.printHelp()
     sys.exit(0)
 
 generateSinks = False
@@ -64,7 +69,7 @@ if not generateSinks and not generateSources and not generateSummaries:
     generateSinks = generateSources = generateSummaries = True
 
 if len(sys.argv) != 3:
-    printHelp()
+    generator.printHelp()
     sys.exit(1)
 
 codeQlRoot = subprocess.check_output(
