@@ -1933,7 +1933,6 @@ open class KotlinFileExtractor(
 
     private val loopIdMap: MutableMap<IrLoop, Label<out DbKtloopstmt>> = mutableMapOf()
 
-    // todo: add all declaration types, not only IrFunctions.
     // todo: calculating the enclosing ref type could be done through this, instead of walking up the declaration parent chain
     private val declarationStack: Stack<IrDeclaration> = Stack()
 
@@ -3955,8 +3954,6 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(superCallId, locId)
         @Suppress("UNCHECKED_CAST")
         tw.writeCallableBinding(superCallId as Label<DbCaller>, baseConstructorId)
-
-        // TODO: We might need to add an `<obinit>` function, and a call to it to match other classes
 
         addModifiers(id, "final")
         addVisibilityModifierToLocalOrAnonymousClass(id)
