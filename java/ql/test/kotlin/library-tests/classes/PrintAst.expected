@@ -78,7 +78,7 @@ classes.kt:
 #   29|       5: [BlockStmt] { ... }
 #   29|         0: [ThisConstructorInvocationStmt] this(...)
 #   34|   10: [Class] ClassSeven
-#   35|     1: [Constructor] ClassSeven
+#   35|     2: [Constructor] ClassSeven
 #-----|       4: (Parameters)
 #   35|         0: [Parameter] i
 #   35|       5: [BlockStmt] { ... }
@@ -96,12 +96,12 @@ classes.kt:
 #   36|         2: [ExprStmt] <Expr>;
 #   36|           0: [MethodAccess] f(...)
 #   36|             0: [VarAccess] i
-#   42|     2: [Method] getX
+#   42|     3: [Method] getX
 #   42|       5: [BlockStmt] { ... }
 #   42|         0: [ReturnStmt] return ...
 #   42|           0: [VarAccess] this.x
 #   42|             -1: [ThisAccess] this
-#   42|     2: [FieldDeclaration] int x;
+#   42|     3: [FieldDeclaration] int x;
 #   42|       -1: [TypeAccess] int
 #   42|       0: [IntegerLiteral] 3
 #   49|   11: [Class] Direction

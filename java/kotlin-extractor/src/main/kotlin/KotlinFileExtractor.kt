@@ -76,7 +76,7 @@ open class KotlinFileExtractor(
             }
 
             file.declarations.map { extractDeclaration(it) }
-            extractStaticInitializer(file)
+            extractStaticInitializer(file, null)
             CommentExtractor(this, file, tw.fileId).extract()
         }
     }
@@ -99,7 +99,7 @@ open class KotlinFileExtractor(
                     if (isExternalDeclaration(declaration)) {
                         extractExternalClassLater(declaration)
                     } else {
-                        extractClassSource(declaration, true)
+                        extractClassSource(declaration, true, true)
                     }
                 }
                 is IrFunction -> {
@@ -328,7 +328,7 @@ open class KotlinFileExtractor(
 
     private fun extractLocalTypeDeclStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         @Suppress("UNCHECKED_CAST")
-        val id = extractClassSource(c, true) as Label<out DbClass>
+        val id = extractClassSource(c, true, true) as Label<out DbClass>
         extractLocalTypeDeclStmt(id, c, callable, parent, idx)
     }
 
@@ -340,7 +340,7 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(stmtId, locId)
     }
 
-    fun extractClassSource(c: IrClass, extractDeclarations: Boolean): Label<out DbClassorinterface> {
+    fun extractClassSource(c: IrClass, extractDeclarations: Boolean, extractStaticInitializer: Boolean): Label<out DbClassorinterface> {
         with("class source", c) {
             DeclarationStackAdjuster(c).use {
 
@@ -376,8 +376,11 @@ open class KotlinFileExtractor(
                 extractEnclosingClass(c, id, locId, listOf())
 
                 c.typeParameters.mapIndexed { idx, it -> extractTypeParameter(it, idx) }
-                if (extractDeclarations)
+                if (extractDeclarations) {
                     c.declarations.map { extractDeclaration(it) }
+                    if (extractStaticInitializer)
+                        extractStaticInitializer(c, id)
+                }
                 if (c.isNonCompanionObject) {
                     // For `object MyObject { ... }`, the .class has an
                     // automatically-generated `public static final MyObject INSTANCE`
@@ -501,12 +504,12 @@ open class KotlinFileExtractor(
         return type
     }
 
-    private fun extractStaticInitializer(file: IrFile) {
-        with("static initializer extraction", file) {
-            extractDeclInitializers(file.declarations, true) {
-                val parentId = extractFileClass(file)
+    private fun extractStaticInitializer(container: IrDeclarationContainer, classLabel: Label<out DbClassorinterface>?) {
+        with("static initializer extraction", container) {
+            extractDeclInitializers(container.declarations, true) {
+                val parentId = classLabel ?: extractFileClass(container as IrFile)
                 val clinitLabel = getFunctionLabel(
-                    file,
+                    container,
                     parentId,
                     "<clinit>",
                     listOf(),

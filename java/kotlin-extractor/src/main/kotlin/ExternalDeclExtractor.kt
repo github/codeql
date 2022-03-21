@@ -97,7 +97,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
                                         ftw.writeHasLocation(ftw.fileId, ftw.getWholeFileLocation())
                                         ftw.writeCupackage(ftw.fileId, pkgId)
 
-                                        fileExtractor.extractClassSource(irDecl, !irDecl.isFileClass)
+                                        fileExtractor.extractClassSource(irDecl, !irDecl.isFileClass, false)
                                     } else {
                                         fileExtractor.extractDeclaration(irDecl)
                                     }
