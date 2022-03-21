@@ -1,6 +1,8 @@
 /** Provides classes for collections. */
 
 import csharp
+import semmle.code.csharp.frameworks.system.Collections
+import semmle.code.csharp.frameworks.system.collections.Generic
 
 private string modifyMethodName() {
   result =
@@ -66,15 +68,13 @@ class CollectionType extends RefType {
   }
 }
 
-/** An IEnumerable type. */
-class IEnumerableType extends RefType {
-  IEnumerableType() {
-    this.hasQualifiedName("System.Collections", "IEnumerable")
-    or
-    this.(ConstructedType)
-        .getUnboundGeneric()
-        .hasQualifiedName("System.Collections.Generic", "IEnumerable<>")
-  }
+/** Holds if `t` is a collection type. */
+predicate isCollectionType(ValueOrRefType t) {
+  not t instanceof StringType and
+  exists(ValueOrRefType base | base = t.getABaseType*() |
+    base instanceof SystemCollectionsGenericIEnumerableTInterface or
+    base instanceof SystemCollectionsIEnumerableInterface
+  )
 }
 
 /** An object creation that creates an empty collection. */

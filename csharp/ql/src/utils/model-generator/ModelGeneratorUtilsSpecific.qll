@@ -70,14 +70,9 @@ private predicate isPrimitiveTypeUsedForBulkData(Type t) {
   t.getName().regexpMatch("byte|char|Byte|Char")
 }
 
-private predicate isContainerType(Type t) {
-  t instanceof CollectionType or
-  t instanceof IEnumerableType
-}
-
 private string parameterAccess(Parameter p) {
   if
-    isContainerType(p.getType()) and
+    isCollectionType(p.getType()) and
     not isPrimitiveTypeUsedForBulkData(p.getType().(ArrayType).getElementType())
   then result = "Argument[" + p.getPosition() + "].Element"
   else result = "Argument[" + p.getPosition() + "]"
