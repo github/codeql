@@ -403,9 +403,9 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractEnclosingClass(innerClass: IrClass, innerId: Label<out DbClassorinterface>, innerLocId: Label<DbLocation>, parentClassTypeArguments: List<IrTypeArgument>) {
-        with("inner class", innerClass) {
-            var parent: IrDeclarationParent? = innerClass.parent
+    private fun extractEnclosingClass(innerDeclaration: IrDeclaration, innerId: Label<out DbClassorinterface>, innerLocId: Label<DbLocation>, parentClassTypeArguments: List<IrTypeArgument>) {
+        with("enclosing class", innerDeclaration) {
+            var parent: IrDeclarationParent? = innerDeclaration.parent
             while (parent != null) {
                 if (parent is IrClass) {
                     val parentId =
@@ -416,13 +416,13 @@ open class KotlinFileExtractor(
                             useClassInstance(parent, parentClassTypeArguments).typeResult.id
                         }
                     tw.writeEnclInReftype(innerId, parentId)
-                    if(innerClass.isCompanion) {
+                    if (innerDeclaration is IrClass && innerDeclaration.isCompanion) {
                         // If we are a companion then our parent has a
                         //     public static final ParentClass$CompanionObjectClass CompanionObjectName;
                         // that we need to fabricate here
-                        val instance = useCompanionObjectClassInstance(innerClass)
-                        if(instance != null) {
-                            val type = useSimpleTypeClass(innerClass, emptyList(), false)
+                        val instance = useCompanionObjectClassInstance(innerDeclaration)
+                        if (instance != null) {
+                            val type = useSimpleTypeClass(innerDeclaration, emptyList(), false)
                             tw.writeFields(instance.id, instance.name, type.javaResult.id, innerId, instance.id)
                             tw.writeFieldsKotlinType(instance.id, type.kotlinResult.id)
                             tw.writeHasLocation(instance.id, innerLocId)
@@ -432,6 +432,13 @@ open class KotlinFileExtractor(
                         }
                     }
 
+                    break
+                } else if (parent is IrFile) {
+                    if (this.filePath != parent.path) {
+                        logger.error("Unexpected file parent found")
+                    }
+                    val fileId = extractFileClass(parent)
+                    tw.writeEnclInReftype(innerId, fileId)
                     break
                 }
 
@@ -3955,33 +3962,7 @@ open class KotlinFileExtractor(
         addVisibilityModifierToLocalOrAnonymousClass(id)
         extractClassSupertypes(superTypes, listOf(), id, inReceiverContext = true)
 
-        var parent: IrDeclarationParent? = currentDeclaration.parent
-        while (parent != null) {
-            // todo: merge this with the implementation in `extractClassSource`
-            if (parent is IrClass) {
-                val parentId =
-                    if (parent.isAnonymousObject) {
-                        @Suppress("UNCHECKED_CAST")
-                        useAnonymousClass(parent).javaResult.id as Label<out DbClass>
-                    } else {
-                        useClassInstance(parent, listOf()).typeResult.id
-                    }
-                tw.writeEnclInReftype(id, parentId)
-
-                break
-            }
-
-            if (parent is IrFile) {
-                if (this.filePath != parent.path) {
-                    logger.error("Unexpected file parent found")
-                }
-                val fileId = extractFileClass(parent)
-                tw.writeEnclInReftype(id, fileId)
-                break
-            }
-
-            parent = (parent as? IrDeclaration)?.parent
-        }
+        extractEnclosingClass(currentDeclaration, id, locId, listOf())
 
         return id
     }
