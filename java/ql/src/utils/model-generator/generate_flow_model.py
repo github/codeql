@@ -8,8 +8,6 @@ import subprocess
 import sys
 import tempfile
 
-language = "java"
-
 class Generator:
     def __init__ (self, language):
         self.language = language
@@ -17,6 +15,7 @@ class Generator:
         self.generateSources = False
         self.generateSummaries = False
         self.dryRun = False
+
 
     def printHelp(self):
         print(f"""Usage:
@@ -57,6 +56,7 @@ Requirements: `codeql` should both appear on your path.
         self.workDir = tempfile.mkdtemp()
         os.makedirs(self.generatedFrameworks, exist_ok=True)
 
+
     @staticmethod
     def make(language):
         generator = Generator(language)
@@ -89,6 +89,7 @@ Requirements: `codeql` should both appear on your path.
         
         generator.setenvironment(sys.argv[2], sys.argv[1])
         return generator
+
 
     def runQuery(self, infoMessage, query):
         print("########## Querying " + infoMessage + "...")
@@ -147,50 +148,60 @@ private class {0}{1}Csv extends {2} {{
         return classTemplate.format(self.shortname[0].upper() + self.shortname[1:], kind.capitalize(), superclass, rows)
 
 
-generator = Generator.make(language)
+    def makeContent(self):
+        if self.generateSummaries:
+            summaryRows = self.runQuery("summary models", "CaptureSummaryModels.ql")
+            summaryCsv = self.asCsvModel("SummaryModelCsv", "summary", summaryRows)
+        else:
+            summaryCsv = ""
 
-if generator.generateSummaries:
-    summaryRows = generator.runQuery("summary models", "CaptureSummaryModels.ql")
-    summaryCsv = generator.asCsvModel("SummaryModelCsv", "summary", summaryRows)
-else:
-    summaryCsv = ""
+        if self.generateSinks:
+            sinkRows = self.runQuery("sink models", "CaptureSinkModels.ql")
+            sinkCsv = self.asCsvModel("SinkModelCsv", "sinks", sinkRows)
+        else:
+            sinkCsv = ""
 
-if generator.generateSinks:
-    sinkRows = generator.runQuery("sink models", "CaptureSinkModels.ql")
-    sinkCsv = generator.asCsvModel("SinkModelCsv", "sinks", sinkRows)
-else:
-    sinkCsv = ""
+        if self.generateSources:
+            sourceRows = self.runQuery("source models", "CaptureSourceModels.ql")
+            sourceCsv = self.asCsvModel("SourceModelCsv", "sources", sourceRows)
+        else:
+            sourceCsv = ""
 
-if generator.generateSources:
-    sourceRows = generator.runQuery("source models", "CaptureSourceModels.ql")
-    sourceCsv = generator.asCsvModel("SourceModelCsv", "sources", sourceRows)
-else:
-    sourceCsv = ""
+        return f"""
+/** Definitions of taint steps in the {self.shortname} framework */
 
-qllContents = f"""
-/** Definitions of taint steps in the {generator.shortname} framework */
-
-import {generator.language}
-private import semmle.code.{generator.language}.dataflow.ExternalFlow
+import {self.language}
+private import semmle.code.{self.language}.dataflow.ExternalFlow
 
 {sinkCsv}
 {sourceCsv}
 {summaryCsv}
 
-"""
+        """
 
-if generator.dryRun:
-    print("CSV Models generated, but not written to file.")
-    sys.exit(0)
 
-with open(generator.frameworkTarget, "w") as frameworkQll:
-    frameworkQll.write(qllContents)
+    def save(self, content):
+        with open(self.frameworkTarget, "w") as frameworkQll:
+            frameworkQll.write(content)
 
-cmd = ['codeql', 'query', 'format', '--in-place', generator.frameworkTarget]
-ret = subprocess.call(cmd)
-if ret != 0:
-    print("Failed to format query. Failed command was: " + shlex.join(cmd))
-    sys.exit(1)
+        cmd = ['codeql', 'query', 'format', '--in-place', self.frameworkTarget]
+        ret = subprocess.call(cmd)
+        if ret != 0:
+            print("Failed to format query. Failed command was: " + shlex.join(cmd))
+            sys.exit(1)
 
-print("")
-print("CSV model written to " + generator.frameworkTarget)
+        print("")
+        print("CSV model written to " + self.frameworkTarget)
+
+
+    def run(self):
+        content = self.makeContent()
+
+        if self.dryRun:
+            print("CSV Models generated, but not written to file.")
+            sys.exit(0)
+        
+        self.save(content)
+
+language = "java"
+Generator.make(language).run()
