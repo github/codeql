@@ -2,7 +2,7 @@
  * This module should provide a class hierarchy corresponding to a parse tree of regular expressions.
  */
 
-import codeql.ruby.regexp.RegExpTreeView
+import codeql.ruby.Regexp
 import codeql.Locations
 private import codeql.ruby.ast.Literal as AST
 
