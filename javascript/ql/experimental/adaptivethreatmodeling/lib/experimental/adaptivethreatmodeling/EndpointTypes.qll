@@ -23,7 +23,7 @@ abstract class EndpointType extends TEndpointType {
 
 /** The `NotASink` class that can be predicted by endpoint scoring models. */
 class NotASinkType extends EndpointType, TNotASinkType {
-  override string getDescription() { result = "NotASink" }
+  override string getDescription() { result = "Negative" }
 
   override int getEncoding() { result = 0 }
 }
