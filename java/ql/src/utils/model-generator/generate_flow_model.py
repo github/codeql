@@ -11,7 +11,7 @@ import tempfile
 
 def printHelp():
     print("""Usage:
-python3 GenerateFlowModel.py <library-database> <outputQll> [--with-sinks] [--with-sources] [--with-summaries]
+python3 GenerateFlowModel.py <library-database> <outputQll> [--with-sinks] [--with-sources] [--with-summaries] [--dry-run]
 
 This generates summary, source and sink models for the code in the database.
 The files will be placed in `java/ql/lib/semmle/code/java/frameworks/<outputQll>` where
@@ -23,6 +23,8 @@ Which models are generated is controlled by the flags:
     --with-sources
     --with-summaries
 If none of these flags are specified, all models are generated.
+
+    --dry-run: Only run the queries, but don't write to file.
 
 Example invocations:
 $ python3 GenerateFlowModel.py /tmp/dbs/apache_commons-codec_45649c8 "apache/Codec.qll"
@@ -39,6 +41,8 @@ if any(s == "--help" for s in sys.argv):
 generateSinks = False
 generateSources = False
 generateSummaries = False
+dryRun = False
+
 if "--with-sinks" in sys.argv:
     sys.argv.remove("--with-sinks")
     generateSinks = True
@@ -50,6 +54,10 @@ if "--with-sources" in sys.argv:
 if "--with-summaries" in sys.argv:
     sys.argv.remove("--with-summaries")
     generateSummaries = True
+
+if "--dry-run" in sys.argv:
+    sys.argv.remove("--dry-run")
+    dryRun = True
 
 if not generateSinks and not generateSources and not generateSummaries:
     generateSinks = generateSources = generateSummaries = True
@@ -164,6 +172,10 @@ private import semmle.code.java.dataflow.ExternalFlow
 
 qllContents = qllTemplate.format(shortname, sinkCsv, sourceCsv, summaryCsv)
 
+
+if dryRun:
+    print("CSV Models generated, but not written to file.")
+    sys.exit(0)
 
 with open(frameworkTarget, "w") as frameworkQll:
     frameworkQll.write(qllContents)
