@@ -8,13 +8,14 @@ import subprocess
 import sys
 import tempfile
 
+language = "java"
 
 def printHelp():
-    print("""Usage:
+    print(f"""Usage:
 python3 GenerateFlowModel.py <library-database> <outputQll> [--with-sinks] [--with-sources] [--with-summaries] [--dry-run]
 
 This generates summary, source and sink models for the code in the database.
-The files will be placed in `java/ql/lib/semmle/code/java/frameworks/<outputQll>` where
+The files will be placed in `{language}/ql/lib/semmle/code/{language}/frameworks/<outputQll>` where
 outputQll is the name (and path) of the output QLL file. Usually, models are grouped by their
 respective frameworks.
 
@@ -27,8 +28,8 @@ If none of these flags are specified, all models are generated.
     --dry-run: Only run the queries, but don't write to file.
 
 Example invocations:
-$ python3 GenerateFlowModel.py /tmp/dbs/apache_commons-codec_45649c8 "apache/Codec.qll"
-$ python3 GenerateFlowModel.py /tmp/dbs/jdk15_db "javase/jdk_sinks.qll" --with-sinks
+$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db "mylibrary/Framework.qll"
+$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db "mylibrary/FrameworkSinks.qll" --with-sinks
 
 Requirements: `codeql` should both appear on your path.
 """)
@@ -74,7 +75,7 @@ if not targetQll.endswith(".qll"):
 filename = os.path.basename(targetQll)
 shortname = filename[:-4]
 generatedFrameworks = os.path.join(
-    codeQlRoot, "java/ql/lib/semmle/code/java/frameworks/")
+    codeQlRoot, f"{language}/ql/lib/semmle/code/{language}/frameworks/")
 frameworkTarget = os.path.join(generatedFrameworks, targetQll)
 
 workDir = tempfile.mkdtemp()
@@ -157,21 +158,17 @@ if generateSources:
 else:
     sourceCsv = ""
 
-qllTemplate = """
-/** Definitions of taint steps in the {0} framework */
+qllContents = f"""
+/** Definitions of taint steps in the {shortname} framework */
 
-import java
-private import semmle.code.java.dataflow.ExternalFlow
+import {language}
+private import semmle.code.{language}.dataflow.ExternalFlow
 
-{1}
-{2}
-{3}
+{sinkCsv}
+{sourceCsv}
+{summaryCsv}
 
 """
-
-
-qllContents = qllTemplate.format(shortname, sinkCsv, sourceCsv, summaryCsv)
-
 
 if dryRun:
     print("CSV Models generated, but not written to file.")
