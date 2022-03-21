@@ -1,25 +1,13 @@
-/**
- * Provides a taint-tracking configuration for detecting "code execution from deserialization" vulnerabilities.
- *
- * Note, for performance reasons: only import this file if
- * `UnsafeDeserialization::Configuration` is needed, otherwise
- * `UnsafeDeserializationCustomizations` should be imported instead.
- */
+/** DEPRECATED. Import `UnsafeDeserializationQuery` instead. */
 
 private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 
-/**
- * Provides a taint-tracking configuration for detecting "code execution from deserialization" vulnerabilities.
- */
-module UnsafeDeserialization {
+/** DEPRECATED. Import `UnsafeDeserializationQuery` instead. */
+deprecated module UnsafeDeserialization {
   import UnsafeDeserializationQuery // ignore-query-import
 }
 
-/**
- * DEPRECATED: Don't extend this class for customization, since this will lead to bad
- * performance, instead use the new `UnsafeDeserializationCustomizations.qll` file, and extend
- * its' classes.
- */
+/** DEPRECATED. Import `UnsafeDeserializationQuery` instead. */
 deprecated class UnsafeDeserializationConfiguration = UnsafeDeserialization::Configuration;
