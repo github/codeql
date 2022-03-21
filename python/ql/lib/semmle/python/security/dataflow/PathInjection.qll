@@ -18,7 +18,6 @@ module PathInjection {
   import PathInjectionQuery // ignore-query-import
 }
 
-
 // ---------------------------------------------------------------------------
 // Old, deprecated code
 // ---------------------------------------------------------------------------

@@ -13,22 +13,21 @@ private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.dataflow.new.SensitiveDataSources
+import CleartextStorageCustomizations::CleartextStorage
 
-  import CleartextStorageCustomizations::CleartextStorage
+/**
+ * A taint-tracking configuration for detecting "Clear-text storage of sensitive information".
+ */
+class Configuration extends TaintTracking::Configuration {
+  Configuration() { this = "CleartextStorage" }
 
-  /**
-   * A taint-tracking configuration for detecting "Clear-text storage of sensitive information".
-   */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "CleartextStorage" }
+  override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node)
-      or
-      node instanceof Sanitizer
-    }
+  override predicate isSanitizer(DataFlow::Node node) {
+    super.isSanitizer(node)
+    or
+    node instanceof Sanitizer
   }
+}
