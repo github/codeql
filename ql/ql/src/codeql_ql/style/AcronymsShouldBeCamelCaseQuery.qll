@@ -27,6 +27,28 @@ string getName(AstNode node, string kind) {
   result = node.(FieldDecl).getName() and kind = "field"
   or
   result = node.(Module).getName() and kind = "module"
+  or
+  result = node.(Import).importedAs() and kind = "import"
+}
+
+string prettyPluralKind(string kind) {
+  kind = "class" and result = "classes"
+  or
+  kind = "classlessPredicate" and result = "predicates"
+  or
+  kind = "classPredicate" and result = "class predicates"
+  or
+  kind = "newtypeBranch" and result = "newtype branches"
+  or
+  kind = "newtype" and result = "newtypes"
+  or
+  kind = "variable" and result = "variables"
+  or
+  kind = "field" and result = "fields"
+  or
+  kind = "module" and result = "modules"
+  or
+  kind = "import" and result = "imports"
 }
 
 /**

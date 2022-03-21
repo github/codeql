@@ -4,6 +4,7 @@
  *              information to be leaked to an attacker more easily.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision medium
  * @id java/sensitive-log
  * @tags security

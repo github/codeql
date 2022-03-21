@@ -308,7 +308,7 @@ private module StdlibPrivate {
   API::Node os() { result = API::moduleImport("os") }
 
   /** Provides models for the `os` module. */
-  module os {
+  module OS {
     /** Gets a reference to the `os.path` module. */
     API::Node path() {
       result = os().getMember("path")
@@ -323,7 +323,7 @@ private module StdlibPrivate {
     }
 
     /** Provides models for the `os.path` module */
-    module path {
+    module OsPath {
       /** Gets a reference to the `os.path.join` function. */
       API::Node join() { result = path().getMember("join") }
     }
@@ -945,7 +945,7 @@ private module StdlibPrivate {
           // these raise errors if the file does not exist
           "getatime", "getmtime", "getctime", "getsize"
         ] and
-      this = os::path().getMember(name).getACall()
+      this = OS::path().getMember(name).getACall()
     }
 
     override DataFlow::Node getAPathArgument() {
@@ -961,7 +961,7 @@ private module StdlibPrivate {
 
   /** A call to `os.path.samefile` will raise an exception if an `os.stat()` call on either pathname fails. */
   private class OsPathSamefileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
-    OsPathSamefileCall() { this = os::path().getMember("samefile").getACall() }
+    OsPathSamefileCall() { this = OS::path().getMember("samefile").getACall() }
 
     override DataFlow::Node getAPathArgument() {
       result in [
@@ -995,7 +995,7 @@ private module StdlibPrivate {
 
     OsPathComputation() {
       methodName = pathComputation() and
-      this = os::path().getMember(methodName).getACall()
+      this = OS::path().getMember(methodName).getACall()
     }
 
     DataFlow::Node getPathArg() {
@@ -1022,7 +1022,7 @@ private module StdlibPrivate {
    * See https://docs.python.org/3/library/os.path.html#os.path.normpath
    */
   private class OsPathNormpathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
-    OsPathNormpathCall() { this = os::path().getMember("normpath").getACall() }
+    OsPathNormpathCall() { this = OS::path().getMember("normpath").getACall() }
 
     override DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
@@ -1032,7 +1032,7 @@ private module StdlibPrivate {
    * See https://docs.python.org/3/library/os.path.html#os.path.abspath
    */
   private class OsPathAbspathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
-    OsPathAbspathCall() { this = os::path().getMember("abspath").getACall() }
+    OsPathAbspathCall() { this = OS::path().getMember("abspath").getACall() }
 
     override DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
@@ -1042,7 +1042,7 @@ private module StdlibPrivate {
    * See https://docs.python.org/3/library/os.path.html#os.path.realpath
    */
   private class OsPathRealpathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
-    OsPathRealpathCall() { this = os::path().getMember("realpath").getACall() }
+    OsPathRealpathCall() { this = OS::path().getMember("realpath").getACall() }
 
     override DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
@@ -1143,7 +1143,7 @@ private module StdlibPrivate {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       exists(CallNode call |
         nodeTo.asCfgNode() = call and
-        call = os::path::join().getACall().asCfgNode() and
+        call = OS::OsPath::join().getACall().asCfgNode() and
         call.getAnArg() = nodeFrom.asCfgNode()
       )
       // TODO: Handle pathlib (like we do for os.path.join)
@@ -1662,7 +1662,7 @@ private module StdlibPrivate {
   API::Node cgi() { result = API::moduleImport("cgi") }
 
   /** Provides models for the `cgi` module. */
-  module cgi {
+  module Cgi {
     /**
      * Provides models for the `cgi.FieldStorage` class
      *
@@ -1862,7 +1862,7 @@ private module StdlibPrivate {
   API::Node http() { result = API::moduleImport("http") }
 
   /** Provides models for the `http` module. */
-  module http {
+  module Http {
     // -------------------------------------------------------------------------
     // http.server
     // -------------------------------------------------------------------------
@@ -1870,7 +1870,7 @@ private module StdlibPrivate {
     API::Node server() { result = http().getMember("server") }
 
     /** Provides models for the `http.server` module */
-    module server {
+    module Server {
       /**
        * Provides models for the `http.server.BaseHTTPRequestHandler` class (Python 3 only).
        *
@@ -1926,9 +1926,9 @@ private module StdlibPrivate {
           SimpleHttpServer::SimpleHttpRequestHandler::classRef(),
           CGIHTTPServer::CGIHTTPRequestHandler::classRef(),
           // Python 3
-          http::server::BaseHttpRequestHandler::classRef(),
-          http::server::SimpleHttpRequestHandler::classRef(),
-          http::server::CGIHTTPRequestHandler::classRef()
+          Http::Server::BaseHttpRequestHandler::classRef(),
+          Http::Server::SimpleHttpRequestHandler::classRef(),
+          Http::Server::CGIHTTPRequestHandler::classRef()
         ].getASubclass*()
     }
 

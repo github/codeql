@@ -17,7 +17,7 @@ module History {
    * Gets a reference to the [`history`](https://npmjs.org/package/history) library.
    */
   private API::Node history() {
-    result = [API::moduleImport("history"), any(HistoryGlobalEntry h).getNode()]
+    result = [API::moduleImport("history"), any(HistoryGlobalEntry h).getANode()]
   }
 
   /**

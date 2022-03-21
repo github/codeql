@@ -35,7 +35,7 @@ module Vue {
   API::Node vueLibrary() {
     result = API::moduleImport("vue")
     or
-    result = any(GlobalVueEntryPoint e).getNode()
+    result = any(GlobalVueEntryPoint e).getANode()
   }
 
   /**
@@ -51,7 +51,7 @@ module Vue {
     or
     result = vueLibrary().getMember("component").getReturn()
     or
-    result = any(VueFileImportEntryPoint e).getNode()
+    result = any(VueFileImportEntryPoint e).getANode()
   }
 
   /**

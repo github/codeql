@@ -466,3 +466,25 @@ function domMethods() {
   let cell = row.insertCell();
   cell.innerHTML = source; // NOT OK
 }
+
+function urlStuff() {
+  var url = document.location.search.substr(1);
+
+  $("<a>", {href: url}).appendTo("body"); // NOT OK
+  $("#foo").attr("href", url); // NOT OK
+  $("#foo").attr({href: url}); // NOT OK
+  $("<img>", {src: url}).appendTo("body"); // NOT OK
+  $("<a>", {href: win.location.href}).appendTo("body"); // OK
+
+  $("<img>", {src: "http://google.com/" + url}).appendTo("body"); // OK
+
+  $("<img>", {src: ["http://google.com", url].join("/")}).appendTo("body"); // OK
+
+  if (url.startsWith("https://")) {
+    $("<img>", {src: url}).appendTo("body"); // OK
+  } else {
+    $("<img>", {src: url}).appendTo("body"); // NOT OK
+  }
+
+  window.open(location.hash.substr(1)); // OK - any JavaScript is executed in another context
+}

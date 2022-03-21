@@ -72,7 +72,7 @@ private module Tornado {
   API::Node tornado() { result = API::moduleImport("tornado") }
 
   /** Provides models for the `tornado` module. */
-  module tornado {
+  module TornadoModule {
     // -------------------------------------------------------------------------
     // tornado.web
     // -------------------------------------------------------------------------
@@ -80,7 +80,7 @@ private module Tornado {
     API::Node web() { result = tornado().getMember("web") }
 
     /** Provides models for the `tornado.web` module */
-    module web {
+    module Web {
       /**
        * Provides models for the `tornado.web.RequestHandler` class and subclasses.
        *
@@ -199,7 +199,7 @@ private module Tornado {
           override string getAsyncMethodName() { none() }
         }
 
-        private class RequestAttrAccess extends tornado::httputil::HttpServerRequest::InstanceSource {
+        private class RequestAttrAccess extends TornadoModule::HttpUtil::HttpServerRequest::InstanceSource {
           RequestAttrAccess() {
             this.(DataFlow::AttrRead).getObject() = instance() and
             this.(DataFlow::AttrRead).getAttributeName() = "request"
@@ -263,7 +263,7 @@ private module Tornado {
     API::Node httputil() { result = tornado().getMember("httputil") }
 
     /** Provides models for the `tornado.httputil` module */
-    module httputil {
+    module HttpUtil {
       /**
        * Provides models for the `tornado.httputil.HttpServerRequest` class
        *
@@ -359,12 +359,14 @@ private module Tornado {
   // ---------------------------------------------------------------------------
   /** Gets a sequence that defines a number of route rules */
   SequenceNode routeSetupRuleList() {
-    exists(CallNode call | call = any(tornado::web::Application::ClassInstantiation c).asCfgNode() |
+    exists(CallNode call |
+      call = any(TornadoModule::Web::Application::ClassInstantiation c).asCfgNode()
+    |
       result in [call.getArg(0), call.getArgByName("handlers")]
     )
     or
     exists(CallNode call |
-      call.getFunction() = tornado::web::Application::add_handlers().asCfgNode()
+      call.getFunction() = TornadoModule::Web::Application::add_handlers().asCfgNode()
     |
       result in [call.getArg(1), call.getArgByName("host_handlers")]
     )
@@ -406,7 +408,7 @@ private module Tornado {
     override DataFlow::Node getUrlPatternArg() { result.asCfgNode() = node.getElement(0) }
 
     override Function getARequestHandler() {
-      exists(tornado::web::RequestHandler::RequestHandlerClass cls |
+      exists(TornadoModule::Web::RequestHandler::RequestHandlerClass cls |
         cls.getARef().asCfgNode() = node.getElement(1) and
         result = cls.getARequestHandler()
       )
@@ -437,7 +439,7 @@ private module Tornado {
   /** A request handler defined in a tornado RequestHandler class, that has no known route. */
   private class TornadoRequestHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range {
     TornadoRequestHandlerWithoutKnownRoute() {
-      exists(tornado::web::RequestHandler::RequestHandlerClass cls |
+      exists(TornadoModule::Web::RequestHandler::RequestHandlerClass cls |
         cls.getARequestHandler() = this
       ) and
       not exists(TornadoRouteSetup setup | setup.getARequestHandler() = this)
@@ -465,7 +467,7 @@ private module Tornado {
   private class TornadoRequestHandlerRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
     TornadoRequestHandlerRedirectCall() {
-      this.getFunction() = tornado::web::RequestHandler::redirectMethod()
+      this.getFunction() = TornadoModule::Web::RequestHandler::redirectMethod()
     }
 
     override DataFlow::Node getRedirectLocation() {
@@ -487,7 +489,7 @@ private module Tornado {
   private class TornadoRequestHandlerWriteCall extends HTTP::Server::HttpResponse::Range,
     DataFlow::CallCfgNode {
     TornadoRequestHandlerWriteCall() {
-      this.getFunction() = tornado::web::RequestHandler::writeMethod()
+      this.getFunction() = TornadoModule::Web::RequestHandler::writeMethod()
     }
 
     override DataFlow::Node getBody() { result in [this.getArg(0), this.getArgByName("chunk")] }
@@ -505,7 +507,7 @@ private module Tornado {
   class TornadoRequestHandlerSetCookieCall extends HTTP::Server::CookieWrite::Range,
     DataFlow::MethodCallNode {
     TornadoRequestHandlerSetCookieCall() {
-      this.calls(tornado::web::RequestHandler::instance(), "set_cookie")
+      this.calls(TornadoModule::Web::RequestHandler::instance(), "set_cookie")
     }
 
     override DataFlow::Node getHeaderArg() { none() }

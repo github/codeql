@@ -9,15 +9,6 @@
 import javascript
 import InsecureDownloadCustomizations::InsecureDownload
 
-// Materialize flow labels
-private class ConcreteSensitiveInsecureUrl extends Label::SensitiveInsecureUrl {
-  ConcreteSensitiveInsecureUrl() { this = this }
-}
-
-private class ConcreteInsecureUrl extends Label::InsecureUrl {
-  ConcreteInsecureUrl() { this = this }
-}
-
 /**
  * A taint tracking configuration for download of sensitive file through insecure connection.
  */

@@ -794,6 +794,20 @@ module ExprNodes {
     final override VariableWriteAccess getExpr() { result = ExprCfgNode.super.getExpr() }
   }
 
+  /** A control-flow node that wraps a `ConstantReadAccess` AST expression. */
+  class ConstantReadAccessCfgNode extends ExprCfgNode {
+    override ConstantReadAccess e;
+
+    final override ConstantReadAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+  }
+
+  /** A control-flow node that wraps a `ConstantWriteAccess` AST expression. */
+  class ConstantWriteAccessCfgNode extends ExprCfgNode {
+    override ConstantWriteAccess e;
+
+    final override ConstantWriteAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+  }
+
   /** A control-flow node that wraps a `InstanceVariableWriteAccess` AST expression. */
   class InstanceVariableWriteAccessCfgNode extends ExprCfgNode {
     override InstanceVariableWriteAccess e;
