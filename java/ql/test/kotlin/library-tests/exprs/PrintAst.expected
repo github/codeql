@@ -4219,6 +4219,56 @@ funcExprs.kt:
 #   79|         5: [BlockStmt] { ... }
 #   79|           0: [SuperConstructorInvocationStmt] super(...)
 #   79|           1: [BlockStmt] { ... }
+kFunctionInvoke.kt:
+#    0| [CompilationUnit] kFunctionInvoke
+#    0|   1: [Class] KFunctionInvokeKt
+#    7|     1: [Method] useRef
+#-----|       4: (Parameters)
+#    7|         0: [Parameter] a
+#    7|         1: [Parameter] s
+#    7|       5: [BlockStmt] { ... }
+#    8|         0: [LocalVariableDeclStmt] var ...;
+#    8|           1: [LocalVariableDeclExpr] toCall
+#    8|             0: [MemberRefExpr] ...::...
+#    8|               -4: [AnonymousClass] new Function1<String,Unit>(...) { ... }
+#    8|                 1: [Constructor] 
+#-----|                   4: (Parameters)
+#    8|                     0: [Parameter] <dispatchReceiver>
+#    8|                   5: [BlockStmt] { ... }
+#    8|                     0: [SuperConstructorInvocationStmt] super(...)
+#    8|                     1: [ExprStmt] <Expr>;
+#    8|                       0: [AssignExpr] ...=...
+#    8|                         0: [VarAccess] this.<dispatchReceiver>
+#    8|                           -1: [ThisAccess] this
+#    8|                         1: [VarAccess] <dispatchReceiver>
+#    8|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#    8|                     0: [Parameter] a0
+#    8|                   5: [BlockStmt] { ... }
+#    8|                     0: [ReturnStmt] return ...
+#    8|                       0: [MethodAccess] f(...)
+#    8|                         -1: [VarAccess] this.<dispatchReceiver>
+#    8|                           -1: [ThisAccess] this
+#    8|                         0: [VarAccess] a0
+#    8|                 1: [FieldDeclaration] A <dispatchReceiver>;
+#    8|                   -1: [TypeAccess] A
+#    8|               -3: [TypeAccess] Function1<String,Unit>
+#    8|                 0: [TypeAccess] String
+#    8|                 1: [TypeAccess] Unit
+#    8|               0: [VarAccess] a
+#    9|         1: [ExprStmt] <Expr>;
+#    9|           0: [MethodAccess] invoke(...)
+#    9|             -1: [VarAccess] toCall
+#    9|             0: [VarAccess] s
+#    3|   2: [Class] A
+#    3|     1: [Constructor] A
+#    3|       5: [BlockStmt] { ... }
+#    3|         0: [SuperConstructorInvocationStmt] super(...)
+#    3|         1: [BlockStmt] { ... }
+#    4|     2: [Method] f
+#-----|       4: (Parameters)
+#    4|         0: [Parameter] s
+#    4|       5: [BlockStmt] { ... }
 localFunctionCalls.kt:
 #    0| [CompilationUnit] localFunctionCalls
 #    0|   1: [Class] LocalFunctionCallsKt

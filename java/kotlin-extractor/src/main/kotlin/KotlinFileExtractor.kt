@@ -1131,11 +1131,13 @@ open class KotlinFileExtractor(
         extractTypeArguments(typeArguments, locId, id, enclosingCallable, enclosingStmt, -2, true)
 
         val drType = dispatchReceiver?.type
-        val isBigArityFunctionInvoke = drType != null
+
+        val isFunctionInvoke = drType != null
                 && drType is IrSimpleType
                 && drType.isFunctionOrKFunction()
                 && callTarget.name.asString() == OperatorNameConventions.INVOKE.asString()
-                && drType.arguments.size > BuiltInFunctionArity.BIG_ARITY
+        val isBigArityFunctionInvoke = isFunctionInvoke
+                && (drType as IrSimpleType).arguments.size > BuiltInFunctionArity.BIG_ARITY
 
         if (callTarget.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(callTarget)
@@ -1147,12 +1149,19 @@ open class KotlinFileExtractor(
         } else {
             val methodId =
                 if (drType != null && extractClassTypeArguments && drType is IrSimpleType && !isUnspecialised(drType)) {
-                    if (isBigArityFunctionInvoke) {
-                        val interfaceType = getFunctionalInterfaceTypeWithTypeArgs(drType.arguments)
-                        val invokeMethod = findFunction(interfaceType.classOrNull!!.owner, OperatorNameConventions.INVOKE.asString())!!
-                        useFunction<DbCallable>(invokeMethod, listOf(drType.arguments.last()))
+
+                    val extractionMethod = if (isFunctionInvoke) {
+                        val interfaceType = getFunctionalInterfaceTypeWithTypeArgs(drType.arguments).classOrNull!!.owner
+                        val substituted = getJavaEquivalentClass(interfaceType) ?: interfaceType
+                        findFunction(substituted, OperatorNameConventions.INVOKE.asString())!!
                     } else {
-                        useFunction<DbCallable>(callTarget, getDeclaringTypeArguments(callTarget, drType))
+                        callTarget
+                    }
+
+                    if (isBigArityFunctionInvoke) {
+                        useFunction<DbCallable>(extractionMethod, listOf(drType.arguments.last()))
+                    } else {
+                        useFunction<DbCallable>(extractionMethod, getDeclaringTypeArguments(callTarget, drType))
                     }
                 }
                 else

@@ -34,5 +34,6 @@ memberRefExprs
 | funcExprs.kt:46:30:46:41 | ...::... | funcExprs.kt:46:30:46:41 | invoke | invoke(java.lang.Object[]) | funcExprs.kt:46:30:46:41 | new FunctionN<String>(...) { ... } |
 | funcExprs.kt:49:26:49:32 | ...::... | funcExprs.kt:49:26:49:32 | invoke | invoke() | funcExprs.kt:49:26:49:32 | new Function0<Integer>(...) { ... } |
 | funcExprs.kt:51:8:51:16 | ...::... | funcExprs.kt:51:8:51:16 | invoke | invoke() | funcExprs.kt:51:8:51:16 | new Function0<FuncRef>(...) { ... } |
+| kFunctionInvoke.kt:8:44:8:47 | ...::... | kFunctionInvoke.kt:8:44:8:47 | invoke | invoke(java.lang.String) | kFunctionInvoke.kt:8:44:8:47 | new Function1<String,Unit>(...) { ... } |
 | samConversion.kt:5:27:5:31 | ...::... | samConversion.kt:5:27:5:31 | invoke | invoke(int,int) | samConversion.kt:5:27:5:31 | new Function2<Integer,Integer,Unit>(...) { ... } |
 | samConversion.kt:41:13:41:16 | ...::... | samConversion.kt:41:13:41:16 | invoke | invoke(java.lang.Object[]) | samConversion.kt:41:13:41:16 | new FunctionN<Boolean>(...) { ... } |

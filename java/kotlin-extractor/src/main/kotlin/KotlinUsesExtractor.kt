@@ -195,7 +195,14 @@ open class KotlinUsesExtractor(
 
         val extractClass = substituteClass ?: c
 
-        val classTypeResult = addClassLabel(extractClass, typeArgs, inReceiverContext)
+        // `KFunction1<T1,T2>` is substituted by `KFunction<T>`. The last type argument is the return type.
+        val extractedTypeArgs = if (c.symbol.isKFunction() && typeArgs != null && typeArgs.isNotEmpty()) {
+            listOf(typeArgs.last())
+        } else {
+            typeArgs
+        }
+
+        val classTypeResult = addClassLabel(extractClass, extractedTypeArgs, inReceiverContext)
 
         // Extract both the Kotlin and equivalent Java classes, so that we have database entries
         // for both even if all internal references to the Kotlin type are substituted.

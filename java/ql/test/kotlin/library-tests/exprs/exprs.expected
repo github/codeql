@@ -2311,6 +2311,24 @@
 | funcExprs.kt:75:12:75:22 | Integer | funcExprs.kt:74:5:76:5 | call | TypeAccess |
 | funcExprs.kt:75:12:75:22 | String | funcExprs.kt:74:5:76:5 | call | TypeAccess |
 | funcExprs.kt:75:20:75:20 | a | funcExprs.kt:75:12:75:22 | invoke | StringLiteral |
+| kFunctionInvoke.kt:8:5:8:47 | toCall | kFunctionInvoke.kt:7:1:10:1 | useRef | LocalVariableDeclExpr |
+| kFunctionInvoke.kt:8:44:8:44 | a | kFunctionInvoke.kt:7:1:10:1 | useRef | VarAccess |
+| kFunctionInvoke.kt:8:44:8:47 | ...::... | kFunctionInvoke.kt:7:1:10:1 | useRef | MemberRefExpr |
+| kFunctionInvoke.kt:8:44:8:47 | ...=... | kFunctionInvoke.kt:8:44:8:47 |  | AssignExpr |
+| kFunctionInvoke.kt:8:44:8:47 | <dispatchReceiver> | kFunctionInvoke.kt:8:44:8:47 |  | VarAccess |
+| kFunctionInvoke.kt:8:44:8:47 | A | file://:0:0:0:0 | <none> | TypeAccess |
+| kFunctionInvoke.kt:8:44:8:47 | Function1<String,Unit> | kFunctionInvoke.kt:7:1:10:1 | useRef | TypeAccess |
+| kFunctionInvoke.kt:8:44:8:47 | String | kFunctionInvoke.kt:7:1:10:1 | useRef | TypeAccess |
+| kFunctionInvoke.kt:8:44:8:47 | Unit | kFunctionInvoke.kt:7:1:10:1 | useRef | TypeAccess |
+| kFunctionInvoke.kt:8:44:8:47 | a0 | kFunctionInvoke.kt:8:44:8:47 | invoke | VarAccess |
+| kFunctionInvoke.kt:8:44:8:47 | f(...) | kFunctionInvoke.kt:8:44:8:47 | invoke | MethodAccess |
+| kFunctionInvoke.kt:8:44:8:47 | this | kFunctionInvoke.kt:8:44:8:47 |  | ThisAccess |
+| kFunctionInvoke.kt:8:44:8:47 | this | kFunctionInvoke.kt:8:44:8:47 | invoke | ThisAccess |
+| kFunctionInvoke.kt:8:44:8:47 | this.<dispatchReceiver> | kFunctionInvoke.kt:8:44:8:47 |  | VarAccess |
+| kFunctionInvoke.kt:8:44:8:47 | this.<dispatchReceiver> | kFunctionInvoke.kt:8:44:8:47 | invoke | VarAccess |
+| kFunctionInvoke.kt:9:5:9:10 | toCall | kFunctionInvoke.kt:7:1:10:1 | useRef | VarAccess |
+| kFunctionInvoke.kt:9:5:9:13 | invoke(...) | kFunctionInvoke.kt:7:1:10:1 | useRef | MethodAccess |
+| kFunctionInvoke.kt:9:12:9:12 | s | kFunctionInvoke.kt:7:1:10:1 | useRef | VarAccess |
 | localFunctionCalls.kt:4:5:4:13 | x | localFunctionCalls.kt:3:1:12:1 | x | LocalVariableDeclExpr |
 | localFunctionCalls.kt:4:13:4:13 | 5 | localFunctionCalls.kt:3:1:12:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:5:25:5:25 | i | localFunctionCalls.kt:5:5:5:29 | a | VarAccess |
