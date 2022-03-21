@@ -92,12 +92,12 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * snapshots there may be multiple results where we can't tell which is correct for a
    * particular function.
    */
-  Type getWideCharType() {
+  pragma[nomagic] Type getWideCharType() {
     result = getFormatCharType() and
     result.getSize() > 1
     or
     not getFormatCharType().getSize() > 1 and
-    result = pragma[only_bind_out](getAFormatterWideTypeOrDefault()) // may have more than one result
+    result = getAFormatterWideTypeOrDefault() // may have more than one result
   }
 
   /**
