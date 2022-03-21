@@ -75,8 +75,9 @@ class ExecState extends DataFlow::FlowState {
   DataFlow::Node snd;
 
   ExecState() {
-    this = "ExecState (" + fst.getLocation() + ", " + snd.getLocation() + ")" and
-    interestingConcatenation(fst, snd)
+    this =
+      "ExecState (" + fst.getLocation() + " | " + fst + ", " + snd.getLocation() + " | " + snd + ")" and
+      interestingConcatenation(fst, snd)
   }
 
   DataFlow::Node getFstNode() { result = fst }
