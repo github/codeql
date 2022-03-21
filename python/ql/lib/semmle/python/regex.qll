@@ -319,7 +319,7 @@ abstract class RegexString extends Expr {
   /** Gets the `i`th character of this regex */
   string getChar(int i) { result = this.getText().charAt(i) }
 
-  /** Gets the `i`th character of this regex, unless it is part of an character escape sequence. */
+  /** Gets the `i`th character of this regex, unless it is part of a character escape sequence. */
   string nonEscapedCharAt(int i) {
     result = this.getText().charAt(i) and
     not exists(int x, int y | this.escapedCharacter(x, y) and i in [x .. y - 1])
