@@ -13,22 +13,20 @@ private newtype TIRFunction =
  * phases of the IR. Each instantiation of `IRFunction` extends this class.
  */
 class IRFunctionBase extends TIRFunction {
-  //Language::Function func;
-  //  IRFunctionBase() { this = TFunctionIRFunction(func) }
-  /** Gets a textual representation of this element. */
-  final string toString() {
-    result = "IR: " + any(Language::Function func | this = TFunctionIRFunction(func)).toString()
+  Language::Declaration decl;
+
+  IRFunctionBase() {
+    this = TFunctionIRFunction(decl)
     or
-    result = "IR: " + any(Language::GlobalVariable var | this = TVarInitIRFunction(var)).toString()
+    this = TVarInitIRFunction(decl)
   }
+
+  /** Gets a textual representation of this element. */
+  final string toString() { result = "IR: " + decl.toString() }
 
   /** Gets the function whose IR is represented. */
-  final Language::Function getFunction() { this = TFunctionIRFunction(result) }
+  final Language::Declaration getFunction() { result = decl }
 
   /** Gets the location of the function. */
-  final Language::Location getLocation() {
-    result = any(Language::Function func | this = TFunctionIRFunction(func)).getLocation()
-    or
-    result = any(Language::GlobalVariable var | this = TVarInitIRFunction(var)).getLocation()
-  }
+  final Language::Location getLocation() { result = decl.getLocation() }
 }

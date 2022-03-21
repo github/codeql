@@ -4658,6 +4658,7 @@
 | ir.cpp:1034:6:1034:20 | ChiTotal | total:m1034_2 |
 | ir.cpp:1034:6:1034:20 | SideEffect | m1034_3 |
 | ir.cpp:1035:15:1035:15 | Address | &:r1035_1 |
+| ir.cpp:1038:12:1038:18 | ChiTotal | total:~m? |
 | ir.cpp:1038:14:1038:14 | Address | &:r1038_5 |
 | ir.cpp:1038:14:1038:14 | Address | &:r1038_5 |
 | ir.cpp:1038:14:1038:14 | Address | &:r1038_5 |
@@ -7436,6 +7437,8 @@
 | ir.cpp:1668:17:1668:17 | Load | m1661_14 |
 | ir.cpp:1668:17:1668:17 | Load | ~m1666_6 |
 | ir.cpp:1668:17:1668:17 | StoreValue | r1668_4 |
+| ir.cpp:1674:16:1674:16 | ChiTotal | total:~m? |
+| ir.cpp:1676:22:1676:22 | ChiTotal | total:~m? |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_7 |
@@ -7679,6 +7682,7 @@
 | smart_ptr.cpp:47:43:47:63 | SideEffect | ~m47_16 |
 | smart_ptr.cpp:47:43:47:63 | Unary | r47_5 |
 | smart_ptr.cpp:47:43:47:63 | Unary | r47_6 |
+| struct_init.cpp:10:7:10:9 | ChiTotal | total:~m? |
 | struct_init.cpp:16:6:16:20 | ChiPartial | partial:m16_3 |
 | struct_init.cpp:16:6:16:20 | ChiTotal | total:m16_2 |
 | struct_init.cpp:16:6:16:20 | SideEffect | ~m17_5 |

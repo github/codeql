@@ -3,14 +3,28 @@ unexpectedOperand
 duplicateOperand
 missingPhiOperand
 missingOperandType
+| ir.cpp:1038:12:1038:18 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:1038:6:1038:8 | (lambda [] type at line 1038, col. 12) lam | (lambda [] type at line 1038, col. 12) lam |
+| ir.cpp:1674:16:1674:16 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:1674:5:1674:12 | int global_2 | int global_2 |
+| ir.cpp:1676:22:1676:22 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:1676:11:1676:18 | int const global_3 | int const global_3 |
+| struct_init.cpp:10:7:10:9 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] |
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| clang.cpp:3:5:3:13 | VariableAddress: globalInt | Instruction 'VariableAddress: globalInt' has no successors in function '$@'. | clang.cpp:3:5:3:13 | int globalInt | int globalInt |
+| ir.cpp:346:5:346:5 | VariableAddress: g | Instruction 'VariableAddress: g' has no successors in function '$@'. | ir.cpp:346:5:346:5 | int g | int g |
+| ir.cpp:1672:5:1672:12 | VariableAddress: global_1 | Instruction 'VariableAddress: global_1' has no successors in function '$@'. | ir.cpp:1672:5:1672:12 | int global_1 | int global_1 |
+| struct_init.cpp:14:7:14:20 | VariableAddress: global_pointer | Instruction 'VariableAddress: global_pointer' has no successors in function '$@'. | struct_init.cpp:14:7:14:20 | Info* global_pointer | Info* global_pointer |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
+| struct_init.cpp:9:13:9:25 | Left | Operand 'Left' is used on instruction 'PointerAdd: {...}' in function '$@', but is defined on instruction 'VariableAddress: infos_in_file' in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] |
+| struct_init.cpp:9:13:9:25 | Left | Operand 'Left' is used on instruction 'PointerAdd: {...}' in function '$@', but is defined on instruction 'VariableAddress: infos_in_file' in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] |
+| struct_init.cpp:9:31:12:1 | Unary | Operand 'Unary' is used on instruction 'FieldAddress: {...}' in function '$@', but is defined on instruction 'PointerAdd: {...}' in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
+| struct_init.cpp:9:31:12:1 | Unary | Operand 'Unary' is used on instruction 'FieldAddress: {...}' in function '$@', but is defined on instruction 'PointerAdd: {...}' in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
+| struct_init.cpp:9:31:12:1 | Unary | Operand 'Unary' is used on instruction 'FieldAddress: {...}' in function '$@', but is defined on instruction 'PointerAdd: {...}' in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
+| struct_init.cpp:9:31:12:1 | Unary | Operand 'Unary' is used on instruction 'FieldAddress: {...}' in function '$@', but is defined on instruction 'PointerAdd: {...}' in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
 instructionWithoutUniqueBlock
 containsLoopOfForwardEdges
 lostReachability
@@ -19,8 +33,20 @@ useNotDominatedByDefinition
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated
+| ir.cpp:1038:12:1038:18 | Chi: [...](...){...} | Instruction 'Chi: [...](...){...}' should not be marked as having a conflated result in function '$@'. | ir.cpp:1038:6:1038:8 | (lambda [] type at line 1038, col. 12) lam | (lambda [] type at line 1038, col. 12) lam |
+| ir.cpp:1038:12:1038:18 | Chi: [...](...){...} | Instruction 'Chi: [...](...){...}' should not be marked as having a conflated result in function '$@'. | ir.cpp:1038:6:1038:8 | (lambda [] type at line 1038, col. 12) lam | (lambda [] type at line 1038, col. 12) lam |
+| ir.cpp:1674:16:1674:16 | Chi: 1 | Instruction 'Chi: 1' should not be marked as having a conflated result in function '$@'. | ir.cpp:1674:5:1674:12 | int global_2 | int global_2 |
+| ir.cpp:1676:22:1676:22 | Chi: 2 | Instruction 'Chi: 2' should not be marked as having a conflated result in function '$@'. | ir.cpp:1676:11:1676:18 | int const global_3 | int const global_3 |
+| struct_init.cpp:10:7:10:9 | Chi: array to pointer conversion | Instruction 'Chi: array to pointer conversion' should not be marked as having a conflated result in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] |
+| struct_init.cpp:10:12:10:19 | Chi: handler1 | Instruction 'Chi: handler1' should not be marked as having a conflated result in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] |
+| struct_init.cpp:11:7:11:9 | Chi: array to pointer conversion | Instruction 'Chi: array to pointer conversion' should not be marked as having a conflated result in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] |
+| struct_init.cpp:11:12:11:20 | Chi: & ... | Instruction 'Chi: & ...' should not be marked as having a conflated result in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] |
 invalidOverlap
 nonUniqueEnclosingIRFunction
+| struct_init.cpp:9:31:12:1 | Constant: {...} | Instruction 'Constant: {...}' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
+| struct_init.cpp:9:31:12:1 | Constant: {...} | Instruction 'Constant: {...}' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
+| struct_init.cpp:9:31:12:1 | PointerAdd: {...} | Instruction 'PointerAdd: {...}' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
+| struct_init.cpp:9:31:12:1 | PointerAdd: {...} | Instruction 'PointerAdd: {...}' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 missingCanonicalLanguageType
