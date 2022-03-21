@@ -202,6 +202,3 @@ private import semmle.code.{self.language}.dataflow.ExternalFlow
             sys.exit(0)
         
         self.save(content)
-
-language = "java"
-Generator.make(language).run()
