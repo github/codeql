@@ -672,7 +672,7 @@ newtype TTranslatedElement =
   } or
   // The side effect that initializes newly-allocated memory.
   TTranslatedAllocationSideEffect(AllocationExpr expr) { not ignoreSideEffects(expr) } or
-  TTranslatedGlobalOrNamespaceVarInit(GlobalOrNamespaceVariable var) { any() }
+  TTranslatedGlobalOrNamespaceVarInit(GlobalOrNamespaceVariable var) { var.hasInitializer() }
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`

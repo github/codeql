@@ -108,13 +108,6 @@ bad_asts.cpp:
 
 clang.cpp:
 #    3| int globalInt
-#    3|   Block 0
-#    3|     v3_1(void)       = EnterFunction              : 
-#    3|     r3_2(glval<int>) = VariableAddress[globalInt] : 
-
-#    3|   Block 1
-#    3|     v3_3(void) = ReturnVoid   : 
-#    3|     v3_4(void) = ExitFunction : 
 
 #    5| int* globalIntAddress()
 #    5|   Block 0
@@ -2202,13 +2195,6 @@ ir.cpp:
 #  341|     v341_12(void)        = ExitFunction             : 
 
 #  346| int g
-#  346|   Block 0
-#  346|     v346_1(void)       = EnterFunction      : 
-#  346|     r346_2(glval<int>) = VariableAddress[g] : 
-
-#  346|   Block 1
-#  346|     v346_3(void) = ReturnVoid   : 
-#  346|     v346_4(void) = ExitFunction : 
 
 #  348| int* AddressOf()
 #  348|   Block 0
@@ -8694,13 +8680,6 @@ ir.cpp:
 # 1645|     v1645_6(void)                                     = ExitFunction                                    : 
 
 # 1672| int global_1
-# 1672|   Block 0
-# 1672|     v1672_1(void)       = EnterFunction   : 
-# 1672|     r1672_2(glval<int>) = VariableAddress : 
-
-# 1672|   Block 1
-# 1672|     v1672_3(void) = ReturnVoid   : 
-# 1672|     v1672_4(void) = ExitFunction : 
 
 # 1674| int global_2
 # 1674|   Block 0
@@ -8964,13 +8943,6 @@ struct_init.cpp:
 #    9|     v9_4(void)              = ExitFunction              : 
 
 #   14| Info* global_pointer
-#   14|   Block 0
-#   14|     v14_1(void)          = EnterFunction                   : 
-#   14|     r14_2(glval<Info *>) = VariableAddress[global_pointer] : 
-
-#   14|   Block 1
-#   14|     v14_3(void) = ReturnVoid   : 
-#   14|     v14_4(void) = ExitFunction : 
 
 #   16| void let_info_escape(Info*)
 #   16|   Block 0
