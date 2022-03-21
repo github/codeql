@@ -37,10 +37,3 @@ import semmle.python.dataflow.new.TaintTracking
       )
     }
   }
-
-/**
- * DEPRECATED: Don't extend this class for customization, since this will lead to bad
- * performance, instead use the new `StackTraceExposureCustomizations.qll` file, and extend
- * its' classes.
- */
-deprecated class StackTraceExposureConfiguration = StackTraceExposure::Configuration;

@@ -28,13 +28,3 @@ import semmle.python.dataflow.new.TaintTracking
       guard instanceof SanitizerGuard
     }
   }
-
-/** DEPRECATED: Alias for ReflectedXss */
-deprecated module ReflectedXSS = ReflectedXss;
-
-/**
- * DEPRECATED: Don't extend this class for customization, since this will lead to bad
- * performance, instead use the new `ReflectedXSSCustomizations.qll` file, and extend
- * its' classes.
- */
-deprecated class ReflectedXssConfiguration = ReflectedXss::Configuration;

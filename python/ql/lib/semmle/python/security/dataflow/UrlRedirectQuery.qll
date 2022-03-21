@@ -28,10 +28,3 @@ import semmle.python.dataflow.new.TaintTracking
       guard instanceof SanitizerGuard
     }
   }
-
-/**
- * DEPRECATED: Don't extend this class for customization, since this will lead to bad
- * performance, instead use the new `UrlRedirectCustomizations.qll` file, and extend
- * its' classes.
- */
-deprecated class UrlRedirectConfiguration = UrlRedirect::Configuration;

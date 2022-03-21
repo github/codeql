@@ -28,13 +28,3 @@ import semmle.python.dataflow.new.TaintTracking
       guard instanceof SanitizerGuard
     }
   }
-
-/**
- * DEPRECATED: Don't extend this class for customization, since this will lead to bad
- * performance, instead use the new `SqlInjectionCustomizations.qll` file, and extend
- * its' classes.
- */
-deprecated class SqlInjectionConfiguration = SqlInjection::Configuration;
-
-/** DEPRECATED: Alias for SqlInjectionConfiguration */
-deprecated class SQLInjectionConfiguration = SqlInjectionConfiguration;
