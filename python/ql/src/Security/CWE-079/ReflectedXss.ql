@@ -14,7 +14,7 @@
  */
 
 import python
-import semmle.python.security.dataflow.ReflectedXSSQuery
+import semmle.python.security.dataflow.ReflectedXssQuery
 import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink

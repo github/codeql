@@ -6,7 +6,7 @@ import semmle.python.dataflow.new.TaintTracking
 
 /** DEPRECATED. Import `ReflectedXSSQuery` instead. */
 deprecated module ReflectedXss {
-  import ReflectedXSSQuery // ignore-query-import
+  import ReflectedXssQuery // ignore-query-import
 }
 
 /** DEPRECATED. Import `ReflectedXSSQuery` instead. */
