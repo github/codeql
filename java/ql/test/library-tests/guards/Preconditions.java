@@ -45,51 +45,70 @@ public class Preconditions {
     }
 
     void test9() {
-        r(true);
-        guarded();
-    }
-
-    static void r(boolean b) {
-        Assert.assertTrue("Unified Reason", b);
-    }
-
-    void test10() {
         Assertions.assertTrue(true);
         guarded();
     }
 
-    void test11() {
+    void test10() {
         Assertions.assertTrue(false);
         guarded();
     }
 
-    void test12() {
+    void test11() {
         Assertions.assertFalse(false);
         guarded();
     }
 
-    void test13() {
+    void test12() {
         Assertions.assertFalse(true);
         guarded();
     }
 
-    void test14() {
+    void test13() {
         Assertions.assertTrue(true, "Reason");
         guarded();
     }
 
-    void test15() {
+    void test14() {
         Assertions.assertTrue(false, "Reason");
         guarded();
     }
 
-    void test16() {
+    void test15() {
         Assertions.assertFalse(false, "Reason");
         guarded();
     }
 
-    void test17() {
+    void test16() {
         Assertions.assertFalse(true, "Reason");
         guarded();
+    }
+
+    void test17() {
+        t(true);
+        guarded();
+    }
+
+    void test18() {
+        t(false);
+        guarded();
+    }
+
+    void test19() {
+        f(false);
+        guarded();
+    }
+
+    void test20() {
+        f(true);
+        guarded();
+    }
+
+    static void t(boolean b) {
+        Assert.assertTrue("Unified Reason", b);
+    }
+
+    static void f(boolean b) {
+        Assert.assertFalse("Unified Reason", b);
     }
 }

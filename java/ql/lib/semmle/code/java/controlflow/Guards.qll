@@ -189,7 +189,7 @@ private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
 private predicate preconditionBranchEdge(
   MethodAccess ma, BasicBlock bb1, BasicBlock bb2, boolean branch
 ) {
-  conditionCheck(ma, branch) and
+  conditionCheck(ma, _, branch) and
   bb1.getLastNode() = ma.getControlFlowNode() and
   bb2 = bb1.getLastNode().getANormalSuccessor()
 }
