@@ -3043,7 +3043,7 @@ open class KotlinFileExtractor(
             val getterReturnType = parameterTypes.last()
 
             if (getter != null) {
-                val getLabels = addFunctionManual(tw.getFreshIdLabel(), "get", getterParameterTypes, getterReturnType, classId, locId)
+                val getLabels = addFunctionManual(tw.getFreshIdLabel(), OperatorNameConventions.GET.asString(), getterParameterTypes, getterReturnType, classId, locId)
                 val getterCallableId = useFunction<DbCallable>(getter.owner.realOverrideTarget, classTypeArguments)
 
                 helper.extractCallToReflectionTarget(
@@ -3064,7 +3064,7 @@ open class KotlinFileExtractor(
                     return
                 }
 
-                val getLabels = addFunctionManual(tw.getFreshIdLabel(), "get", getterParameterTypes, getterReturnType, classId, locId)
+                val getLabels = addFunctionManual(tw.getFreshIdLabel(), OperatorNameConventions.GET.asString(), getterParameterTypes, getterReturnType, classId, locId)
                 val fieldId = useField(backingField.owner)
 
                 helper.extractFieldReturnOfReflectionTarget(
@@ -3077,7 +3077,7 @@ open class KotlinFileExtractor(
             }
 
             if (setter != null) {
-                val setLabels = addFunctionManual(tw.getFreshIdLabel(), "set", parameterTypes, pluginContext.irBuiltIns.unitType, classId, locId)
+                val setLabels = addFunctionManual(tw.getFreshIdLabel(), OperatorNameConventions.SET.asString(), parameterTypes, pluginContext.irBuiltIns.unitType, classId, locId)
 
                 val setterCallableId = useFunction<DbCallable>(setter.owner.realOverrideTarget, classTypeArguments)
 
@@ -3092,7 +3092,7 @@ open class KotlinFileExtractor(
                 tw.writePropertyRefSetBinding(idPropertyRef, setterCallableId)
             } else {
                 if (backingField != null && !backingField.owner.isFinal) {
-                    val setLabels = addFunctionManual(tw.getFreshIdLabel(), "set", parameterTypes, pluginContext.irBuiltIns.unitType, classId, locId)
+                    val setLabels = addFunctionManual(tw.getFreshIdLabel(), OperatorNameConventions.SET.asString(), parameterTypes, pluginContext.irBuiltIns.unitType, classId, locId)
                     val fieldId = useField(backingField.owner)
 
                     helper.extractFieldWriteOfReflectionTarget(
