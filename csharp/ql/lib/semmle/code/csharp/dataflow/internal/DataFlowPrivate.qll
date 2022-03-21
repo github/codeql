@@ -2033,7 +2033,7 @@ abstract class SyntheticField extends string {
 predicate containerContent(DataFlow::Content c) { c instanceof DataFlow::ElementContent }
 
 /**
- * Module containing predicates related to generating models as data.
+ * A module containing predicates related to generating models as data.
  */
 module Csv {
   private string parameterQualifiedTypeNamesToString(DataFlowCallable c) {
@@ -2045,7 +2045,7 @@ module Csv {
       )
   }
 
-  /** Holds if the summary should apply for all overrides of this. */
+  /** Holds if the summary should apply for all overrides of `c`. */
   predicate isBaseCallableOrPrototype(DataFlowCallable c) {
     c.getDeclaringType() instanceof Interface
     or
@@ -2056,12 +2056,12 @@ module Csv {
     )
   }
 
-  /** Gets a string representing whether the summary should apply for all overrides of this. */
+  /** Gets a string representing whether the summary should apply for all overrides of `c`. */
   private string getCallableOverride(DataFlowCallable c) {
     if isBaseCallableOrPrototype(c) then result = "true" else result = "false"
   }
 
-  /** Computes the first 6 columns for CSV rows. */
+  /** Computes the first 6 columns for CSV rows of `c`. */
   string asPartialModel(DataFlowCallable c) {
     exists(string namespace, string type |
       c.getDeclaringType().hasQualifiedName(namespace, type) and
