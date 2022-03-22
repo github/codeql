@@ -2326,15 +2326,16 @@ module PrivateDjango {
     DjangoSettingsMiddlewareStack() {
       this.asExpr() = list and
       // we look for an assignment to the `MIDDLEWARE` setting
-      exists(DataFlow::Node mw, string djangomw |
+      exists(DataFlow::Node mw |
         mw.asVar().getName() = "MIDDLEWARE" and
         DataFlow::localFlow(this, mw)
       |
-        // check that the list contains at least one reference to `django`
-        list.getAnElt().(StrConst).getText() = djangomw and
-        // TODO: Consider requiring `django.middleware.security.SecurityMiddleware`
-        // or something indicating that a security middleware is enabled.
-        djangomw.matches("django.%")
+        // it only counts as setting the CSRF protection, if the app uses authentication,
+        // so check that the list contains the django authentication middleware.
+        //
+        // This also strongly implies that we are actually looking at the `MIDDLEWARE` setting.
+        list.getAnElt().(StrConst).getText() =
+          "django.contrib.auth.middleware.AuthenticationMiddleware"
       )
     }
 
