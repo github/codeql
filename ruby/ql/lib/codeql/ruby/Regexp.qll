@@ -5,7 +5,7 @@
  * terms.
  */
 
-import regexp.internal.RegExpTreeView // re-export
+import regexp.RegExpTreeView // re-export
 private import regexp.internal.ParseRegExp
 private import codeql.ruby.ast.Literal as AST
 private import codeql.ruby.DataFlow
