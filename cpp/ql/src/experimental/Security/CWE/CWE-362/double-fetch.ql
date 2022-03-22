@@ -23,10 +23,7 @@ class CopyFromUserFunctionCall extends FunctionCall{
         and not this.getArgument(1) instanceof AddressOfExpr
     }
 
-    /*predicate hasSameArguments(CopyFromUserFunctionCall another){
-        this.getArgument(0).toString() = another.getArgument(0).toString()
-        and this.getArgument(1).toString() = another.getArgument(1).toString()
-    }*/
+   
 
     predicate hasSameArguments(CopyFromUserFunctionCall another) {
         globalValueNumber(this.getArgument(0)) = globalValueNumber(another.getArgument(0))
