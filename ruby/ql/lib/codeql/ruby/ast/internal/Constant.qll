@@ -1,5 +1,6 @@
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Literal
+private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.SSA
 private import ExprNodes
@@ -440,6 +441,23 @@ private module Cached {
     or
     result.isNil() and
     isNilExpr(e)
+  }
+
+  cached
+  Expr getConstantReadAccessValue(ConstantReadAccess read) {
+    not exists(read.getScopeExpr()) and
+    result = lookupConst(read.getEnclosingModule+().getModule(), read.getName()) and
+    // For now, we restrict the scope of top-level declarations to their file.
+    // This may remove some plausible targets, but also removes a lot of
+    // implausible targets
+    if result.getEnclosingModule() instanceof Toplevel
+    then result.getFile() = read.getFile()
+    else any()
+    or
+    read.hasGlobalScope() and
+    result = lookupConst(TResolved("Object"), read.getName())
+    or
+    result = lookupConst(resolveConstantReadAccess(read.getScopeExpr()), read.getName())
   }
 }
 
