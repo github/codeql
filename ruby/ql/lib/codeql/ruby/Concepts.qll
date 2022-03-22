@@ -485,6 +485,14 @@ module HTTP {
       DataFlow::Node getResponseBody() { result = super.getResponseBody() }
 
       /**
+       * DEPRECATED: Use `getAUrlPart` instead.
+       *
+       * Gets a node that contributes to the URL of the request.
+       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+       */
+      deprecated DataFlow::Node getURL() { result = super.getURL() }
+
+      /**
        * Gets a data-flow node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
@@ -514,6 +522,14 @@ module HTTP {
       abstract class Range extends MethodCall {
         /** Gets a node which returns the body of the response */
         abstract DataFlow::Node getResponseBody();
+
+        /**
+         * DEPRECATED: overwrite `getAUrlPart` instead.
+         *
+         * Gets a node that contributes to the URL of the request.
+         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+         */
+        deprecated DataFlow::Node getURL() { none() }
 
         /**
          * Gets a data-flow node that contributes to the URL of the request.
