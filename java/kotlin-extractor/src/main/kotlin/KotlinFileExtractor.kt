@@ -1151,6 +1151,8 @@ open class KotlinFileExtractor(
                 if (drType != null && extractClassTypeArguments && drType is IrSimpleType && !isUnspecialised(drType)) {
 
                     val extractionMethod = if (isFunctionInvoke) {
+                        // For `kotlin.FunctionX` and `kotlin.reflect.KFunctionX` interfaces, we're making sure that we
+                        // extract the call to the `invoke` method that does exist, `kotlin.jvm.functions.FunctionX::invoke`.
                         val interfaceType = getFunctionalInterfaceTypeWithTypeArgs(drType.arguments).classOrNull!!.owner
                         val substituted = getJavaEquivalentClass(interfaceType) ?: interfaceType
                         findFunction(substituted, OperatorNameConventions.INVOKE.asString())!!
@@ -1159,6 +1161,9 @@ open class KotlinFileExtractor(
                     }
 
                     if (isBigArityFunctionInvoke) {
+                        // Big arity `invoke` methods have a special implementation on JVM, they are transformed to a call to
+                        // `kotlin.jvm.functions.FunctionN<out R>::invoke(vararg args: Any?)`, so we only need to pass the type
+                        // argument for the return type. Additionally, the arguments are extracted inside an array literal below.
                         useFunction<DbCallable>(extractionMethod, listOf(drType.arguments.last()))
                     } else {
                         useFunction<DbCallable>(extractionMethod, getDeclaringTypeArguments(callTarget, drType))
