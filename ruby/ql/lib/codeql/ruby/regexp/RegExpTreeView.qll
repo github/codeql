@@ -1,6 +1,6 @@
 /** Provides a class hierarchy corresponding to a parse tree of regular expressions. */
 
-private import ParseRegExp
+private import internal.ParseRegExp
 private import codeql.NumberUtils
 private import codeql.ruby.ast.Literal as AST
 private import codeql.Locations
@@ -14,7 +14,7 @@ private import codeql.Locations
  * Otherwise, we wish to represent the term differently.
  * This avoids multiple representations of the same term.
  */
-newtype TRegExpParent =
+private newtype TRegExpParent =
   /** A string literal used as a regular expression */
   TRegExpLiteral(RegExp re) or
   /** A quantified term */
