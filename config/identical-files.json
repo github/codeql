@@ -521,6 +521,7 @@
   ],
   "Hostname Regexp queries": [
     "javascript/ql/src/Security/CWE-020/HostnameRegexpShared.qll",
+    "python/ql/src/Security/CWE-020/HostnameRegexpShared.qll",
     "ruby/ql/src/queries/security/cwe-020/HostnameRegexpShared.qll"
   ],
   "ApiGraphModels": [
