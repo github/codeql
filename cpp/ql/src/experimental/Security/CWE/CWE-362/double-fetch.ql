@@ -15,6 +15,7 @@
  */
 
 import cpp
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 class CopyFromUserFunctionCall extends FunctionCall{
     CopyFromUserFunctionCall(){
@@ -22,9 +23,14 @@ class CopyFromUserFunctionCall extends FunctionCall{
         and not this.getArgument(1) instanceof AddressOfExpr
     }
 
-    predicate hasSameArguments(CopyFromUserFunctionCall another){
+    /*predicate hasSameArguments(CopyFromUserFunctionCall another){
         this.getArgument(0).toString() = another.getArgument(0).toString()
         and this.getArgument(1).toString() = another.getArgument(1).toString()
+    }*/
+
+    predicate hasSameArguments(CopyFromUserFunctionCall another) {
+        globalValueNumber(this.getArgument(0)) = globalValueNumber(another.getArgument(0))
+        and globalValueNumber(this.getArgument(1)) = globalValueNumber(another.getArgument(1))
     }
 
 }
@@ -38,11 +44,12 @@ where
         and ifStmt.getBasicBlock().getAFalseSuccessor*() = p2.getBasicBlock()
     )
     and not exists(AssignPointerAddExpr assignPtrAdd |
-        p1.getArgument(1).toString() = assignPtrAdd.getLValue().toString()
+        globalValueNumber(p1.getArgument(1)) = globalValueNumber(assignPtrAdd.getLValue())
         and p1.getBasicBlock().getAFalseSuccessor*() = assignPtrAdd.getBasicBlock()
     )
-select
-    "first fetch", p1, "double fetch", p2
+
+select p2, "Double fetch vulnerability. First fetch was $@.", p1, p1.toString()
+
 
 
 
