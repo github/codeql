@@ -52,9 +52,8 @@ def compare_folders(folder1, folder2, output_file):
             utils.subprocess_check_output(
                 ["touch", f"{folder2}/{generated_output_csv}"])
 
-        return_md += f"\n### {lang}\n\n"
-
         if expected_files != "":
+            return_md += f"\n### {lang}\n\n"
             print("Expected files are missing", file=sys.stderr)
             return_md += f"#### Expected files are missing for {lang}\n{expected_files}\n\n"
 
@@ -66,6 +65,8 @@ def compare_folders(folder1, folder2, output_file):
 
         if cmp1 != "" or cmp2 != "":
             print("Generated file contents are not matching", file=sys.stderr)
+            if expected_files == "":
+                return_md += f"\n### {lang}\n\n"
             return_md += f"#### Generated file changes for {lang}\n\n"
             if cmp1 != "":
                 return_md += f"- Changes to {generated_output_rst}:\n```diff\n{cmp1}```\n\n"
