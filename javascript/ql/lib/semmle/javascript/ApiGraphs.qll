@@ -187,8 +187,7 @@ module API {
     }
 
     /**
-     * Gets a node representing a parameter or the receiver of the function represented by this
-     * node.
+     * Gets a node representing a parameter of the function represented by this node.
      *
      * This predicate may result in a mix of parameters from different call sites in cases where
      * there are multiple invocations of this API component.
@@ -198,8 +197,6 @@ module API {
     Node getAParameter() {
       Stages::ApiStage::ref() and
       result = this.getParameter(_)
-      or
-      result = this.getReceiver()
     }
 
     /**
