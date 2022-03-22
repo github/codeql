@@ -33,6 +33,8 @@ taintFlow
 | test.js:95:17:95:24 | source() | test.js:95:17:95:24 | source() |
 | test.js:96:17:96:24 | source() | test.js:96:17:96:24 | source() |
 | test.js:97:17:97:24 | source() | test.js:97:17:97:24 | source() |
+| test.js:102:16:102:34 | testlib.getSource() | test.js:103:8:103:13 | source |
+| test.js:102:16:102:34 | testlib.getSource() | test.js:104:8:104:24 | source.continue() |
 isSink
 | test.js:54:18:54:25 | source() | test-sink |
 | test.js:55:22:55:29 | source() | test-sink |

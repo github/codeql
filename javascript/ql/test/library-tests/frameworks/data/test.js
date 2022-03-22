@@ -97,3 +97,10 @@ function testSinks() {
   testlib.sink3(source()); // NOT OK
   testlib.sink4(source()); // OK
 }
+
+function testFlowThroughReceiver() {
+  let source = testlib.getSource();
+  sink(source); // NOT OK
+  sink(source.continue()); // NOT OK
+  sink(source.blah()); // OK
+}

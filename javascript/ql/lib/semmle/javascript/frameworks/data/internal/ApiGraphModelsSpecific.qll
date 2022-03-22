@@ -133,6 +133,10 @@ bindingset[token]
 API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathToken token) {
   token.getName() = "Instance" and
   result = node.getInstance()
+  or
+  token.getName() = "Argument" and
+  token.getAnArgument() = "this" and
+  result.getARhs() = node.(DataFlow::CallNode).getReceiver()
 }
 
 /**
