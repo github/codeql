@@ -5,7 +5,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.dataflow.internal.DataFlowImplCommon
 
-Method superImpl(Method m) {
+private Method superImpl(Method m) {
   result = m.getAnOverride() and
   not exists(result.getAnOverride()) and
   not m instanceof ToStringMethod
