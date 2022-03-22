@@ -93,8 +93,7 @@ Requirements: `codeql` should both appear on your path.
 
     def runQuery(self, infoMessage, query):
         print("########## Querying " + infoMessage + "...")
-        queryFile = os.path.join(os.path.dirname(
-            __file__), query)
+        queryFile = os.path.join(self.codeQlRoot, f"{self.language}/ql/src/utils/model-generator", query)
         resultBqrs = os.path.join(self.workDir, "out.bqrs")
         cmd = ['codeql', 'query', 'run', queryFile, '--database',
                self.database, '--output', resultBqrs, '--threads', '8']
