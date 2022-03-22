@@ -515,10 +515,10 @@ module HTTP {
         /** Gets a node which returns the body of the response */
         abstract DataFlow::Node getResponseBody();
 
-      /**
-       * Gets a data-flow node that contributes to the URL of the request.
-       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-       */
+        /**
+         * Gets a data-flow node that contributes to the URL of the request.
+         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+         */
         abstract DataFlow::Node getAUrlPart();
 
         /** Gets a string that identifies the framework used for this request. */
