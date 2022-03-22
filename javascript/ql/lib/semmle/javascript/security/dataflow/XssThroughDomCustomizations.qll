@@ -40,7 +40,7 @@ module XssThroughDom {
     abstract string getPropertyName();
   }
 
-  /* Gets a jQuery method where the receiver looks like a $("<p>" + ... ), which is benign for this query. */
+  /* Gets a jQuery method where the receiver looks like `$("<p>" + ... )`, which is benign for this query. */
   private JQuery::MethodCall benignJQueryMethod() {
     exists(DataFlow::Node prefix |
       DomBasedXss::isPrefixOfJQueryHtmlString(result
