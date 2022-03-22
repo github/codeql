@@ -8,7 +8,7 @@ private import dotnet
 private import ControlFlow::SuccessorTypes
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
-private import semmle.code.csharp.commons.StructuralComparison::Internal
+private import semmle.code.csharp.commons.StructuralComparison as SC
 private import semmle.code.csharp.controlflow.BasicBlocks
 private import semmle.code.csharp.controlflow.internal.Completion
 private import semmle.code.csharp.frameworks.System
@@ -1798,32 +1798,30 @@ module Internal {
   }
 
   /**
-   * A helper class for calculating structurally equal access/call expressions.
+   * Holds if access/call expression `e` (targeting declaration `target`)
+   * is a sub expression of a guard that controls whether basic block
+   * `bb` is reached.
    */
-  private class ConditionOnExprComparisonConfig extends InternalStructuralComparisonConfiguration {
-    ConditionOnExprComparisonConfig() { this = "ConditionOnExprComparisonConfig" }
+  pragma[noinline]
+  private predicate candidateAux(AccessOrCallExpr e, Declaration target, BasicBlock bb) {
+    target = e.getTarget() and
+    guardControlsSub(_, bb, e)
+  }
 
-    override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
-      exists(BasicBlock bb, Declaration d |
-        this.candidateAux(x, d, bb) and
-        y =
-          any(AccessOrCallExpr e |
-            e.getAControlFlowNode().getBasicBlock() = bb and
-            e.getTarget() = d
-          )
-      )
-    }
+  private predicate candidate(AccessOrCallExpr x, AccessOrCallExpr y) {
+    exists(BasicBlock bb, Declaration d |
+      candidateAux(x, d, bb) and
+      y =
+        any(AccessOrCallExpr e |
+          e.getAControlFlowNode().getBasicBlock() = bb and
+          e.getTarget() = d
+        )
+    )
+  }
 
-    /**
-     * Holds if access/call expression `e` (targeting declaration `target`)
-     * is a sub expression of a guard that controls whether basic block
-     * `bb` is reached.
-     */
-    pragma[noinline]
-    private predicate candidateAux(AccessOrCallExpr e, Declaration target, BasicBlock bb) {
-      target = e.getTarget() and
-      guardControlsSub(_, bb, e)
-    }
+  private predicate same(AccessOrCallExpr x, AccessOrCallExpr y) {
+    candidate(x, y) and
+    SC::sameGvn(x, y)
   }
 
   cached
@@ -1849,7 +1847,7 @@ module Internal {
     pragma[nomagic]
     private predicate guardControlsSubSame(Guard g, BasicBlock bb, ControlGuardDescendant sub) {
       guardControlsSub(g, bb, sub) and
-      any(ConditionOnExprComparisonConfig c).same(sub, _)
+      same(sub, _)
     }
 
     pragma[nomagic]
@@ -1862,7 +1860,7 @@ module Internal {
       guardedBB = guardedCfn.getBasicBlock() and
       guardControls(g, guardedBB, v) and
       guardControlsSubSame(g, guardedBB, sub) and
-      any(ConditionOnExprComparisonConfig c).same(sub, guarded)
+      same(sub, guarded)
     }
 
     pragma[nomagic]

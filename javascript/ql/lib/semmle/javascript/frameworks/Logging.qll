@@ -45,7 +45,7 @@ private module Console {
    */
   private API::Node console() {
     result = API::moduleImport("console") or
-    result = any(ConsoleGlobalEntry e).getNode()
+    result = any(ConsoleGlobalEntry e).getANode()
   }
 
   /**

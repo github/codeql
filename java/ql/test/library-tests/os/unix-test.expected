@@ -1,0 +1,9 @@
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1439:5:1439:81 | IS_OS_UNIX |
+| Test.java:70:13:70:95 | contains(...) |
+| Test.java:74:13:74:84 | contains(...) |
+| Test.java:78:13:78:34 | SystemUtils.IS_OS_UNIX |
+| Test.java:85:13:85:41 | ... == ... |
+| Test.java:89:13:89:37 | ... == ... |
+| Test.java:93:13:93:37 | ... == ... |
+| Test.java:97:13:97:33 | ... == ... |
+| Test.java:101:13:101:60 | equals(...) |

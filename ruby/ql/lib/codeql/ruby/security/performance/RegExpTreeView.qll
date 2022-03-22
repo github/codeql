@@ -61,6 +61,19 @@ module RegExpFlags {
 }
 
 /**
+ * Provides utility predicates related to regular expressions.
+ */
+module RegExpPatterns {
+  /**
+   * Gets a pattern that matches common top-level domain names in lower case.
+   */
+  string getACommonTld() {
+    // according to ranking by http://google.com/search?q=site:.<<TLD>>
+    result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
+  }
+}
+
+/**
  * An element containing a regular expression term, that is, either
  * a string literal (parsed as a regular expression)
  * or another regular expression term.
@@ -385,6 +398,8 @@ class RegExpAlt extends RegExpTerm, TRegExpAlt {
   override string getAPrimaryQlClass() { result = "RegExpAlt" }
 }
 
+class RegExpCharEscape = RegExpEscape;
+
 class RegExpEscape extends RegExpNormalChar {
   RegExpEscape() { re.escapedCharacter(start, end) }
 
@@ -592,6 +607,9 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
    * not a capture group.
    */
   int getNumber() { result = re.getGroupNumber(start, end) }
+
+  /** Holds if this is a capture group. */
+  predicate isCapture() { exists(this.getNumber()) }
 
   /** Holds if this is a named capture group. */
   predicate isNamed() { exists(this.getName()) }
