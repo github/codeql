@@ -42,10 +42,10 @@ private class SummarizedCallableApplyBlock extends SummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[0]" and
-    output = "BlockArgument.Parameter[0]" and
+    output = "Argument[block].Parameter[0]" and
     preservesValue = true
     or
-    input = "BlockArgument.ReturnValue" and
+    input = "Argument[block].ReturnValue" and
     output = "ReturnValue" and
     preservesValue = true
   }
@@ -75,9 +75,9 @@ private class StepsFromModel extends ModelInput::SummaryModelCsv {
         ";;Member[Foo].Method[secondArg];Argument[1];ReturnValue;taint",
         ";;Member[Foo].Method[onlyWithoutBlock].WithoutBlock;Argument[0];ReturnValue;taint",
         ";;Member[Foo].Method[onlyWithBlock].WithBlock;Argument[0];ReturnValue;taint",
-        ";;Member[Foo].Method[blockArg].BlockArgument.Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
+        ";;Member[Foo].Method[blockArg].Argument[block].Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
         ";any;Method[matchedByName];Argument[0];ReturnValue;taint",
-        ";any;Method[matchedByNameRcv];Receiver;ReturnValue;taint",
+        ";any;Method[matchedByNameRcv];Argument[self];ReturnValue;taint",
       ]
   }
 }

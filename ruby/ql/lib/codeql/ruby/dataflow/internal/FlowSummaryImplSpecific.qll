@@ -55,15 +55,14 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
 /**
  * Gets the summary component for specification component `c`, if any.
  *
- * This covers all the Ruby-specific components of a flow summary, and
- * is currently restricted to `"BlockArgument"`.
+ * This covers all the Ruby-specific components of a flow summary.
  */
 bindingset[c]
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
-  c = "Receiver" and
+  c = "Receiver" and // TODO: replace with Argument[self]
   result = FlowSummary::SummaryComponent::receiver()
   or
-  c = "BlockArgument" and
+  c = "BlockArgument" and // TODO: replace with Argument[block]
   result = FlowSummary::SummaryComponent::block()
   or
   c = "Argument[_]" and
@@ -85,7 +84,7 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
 string getComponentSpecificCsv(SummaryComponent sc) {
   sc = TArgumentSummaryComponent(any(ParameterPosition pos | pos.isBlock())) and
-  result = "BlockArgument"
+  result = "BlockArgument" // TODO: replace with Argument[block]
 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
@@ -184,6 +183,12 @@ ArgumentPosition parseParamBody(string s) {
     ParsePositions::isParsedParameterPosition(s, i) and
     result.isPositional(i)
   )
+  or
+  s = "self" and
+  result.isSelf()
+  or
+  s = "block" and
+  result.isBlock()
 }
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
@@ -192,4 +197,10 @@ ParameterPosition parseArgBody(string s) {
     ParsePositions::isParsedArgumentPosition(s, i) and
     result.isPositional(i)
   )
+  or
+  s = "self" and
+  result.isSelf()
+  or
+  s = "block" and
+  result.isBlock()
 }
