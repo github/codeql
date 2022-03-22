@@ -21,8 +21,8 @@ private class PasswordVarExpr extends VarAccess {
 }
 
 /** An expression that computes a concatenation operation. */
-private class ConctSanitizer extends Expr {
-  ConctSanitizer() {
+private class ConcatSanitizer extends Expr {
+  ConcatSanitizer() {
     this instanceof AddExpr
     or
     exists(MethodAccess ma |
@@ -35,7 +35,7 @@ private class ConctSanitizer extends Expr {
       this = ma.getArgument(0)
     )
     or
-    this.(ConditionalExpr).getAChildExpr() instanceof ConctSanitizer // useSalt?password+":"+salt:password
+    this.(ConditionalExpr).getAChildExpr() instanceof ConcatSanitizer // useSalt?password+":"+salt:password
   }
 }
 
@@ -48,7 +48,7 @@ private predicate messageDigestUpdate(Expr q, Expr a) {
   )
 }
 
-/** Configuration tracking flow from a password to a hashing method, without being concatenated with a salt. */
+/** A configuration tracking flow from a password to a hashing method, without being concatenated with a salt. */
 class PasswordToHashConfig extends TaintTracking::Configuration {
   PasswordToHashConfig() { this = "PasswordToHashConfig" }
 
@@ -56,7 +56,7 @@ class PasswordToHashConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { messageDigestUpdate(_, sink.asExpr()) }
 
-  override predicate isSanitizer(DataFlow::Node node) { node.asExpr() instanceof ConctSanitizer }
+  override predicate isSanitizer(DataFlow::Node node) { node.asExpr() instanceof ConcatSanitizer }
 }
 
 /** Holds if a password variable flows to the argument `e` of a hashing method. */
@@ -185,7 +185,7 @@ private predicate localFlowBetween(DataFlow::Node node1, DataFlow::Node node2) {
   DataFlow::localFlow(node1, node2) or DataFlow::localFlow(node2, node1)
 }
 
-/** Holds if the data flow node for `expr` is on a path from a source to a sink of the `MessageDigestUsageConfig` configuration. */
+/** Holds if the data flow node for `expr` is on a path of a MessageDigest object that is used exactly once. */
 private predicate messageDigestFlowPath(DataFlow::Node node) {
   exists(
     MessageDigestUsedOnceConfig c, DataFlow2::PathNode source, DataFlow2::PathNode sink,
