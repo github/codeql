@@ -714,8 +714,7 @@ calls/calls.rb:
 #  351|     getAnOperand/getRightOperand: [Lambda] -> { ... }
 #  351|       getParameter: [SimpleParameter] x
 #  351|         getDefiningAccess: [LocalVariableAccess] x
-#  351|       getStmt: [MethodCall] call to y
-#  351|         getReceiver: [SelfVariableAccess] self
+#  351|       getStmt: [LocalVariableAccess] y
 #  352|   getStmt: [AssignExpr] ... = ...
 #  352|     getAnOperand/getLeftOperand: [LocalVariableAccess] f
 #  352|     getAnOperand/getRightOperand: [Lambda] -> { ... }
@@ -737,8 +736,7 @@ calls/calls.rb:
 #  354|       getParameter: [SimpleParameter] x
 #  354|         getDefiningAccess: [LocalVariableAccess] x
 #  355|       getStmt: [LocalVariableAccess] x
-#  356|       getStmt: [MethodCall] call to y
-#  356|         getReceiver: [SelfVariableAccess] self
+#  356|       getStmt: [LocalVariableAccess] y
 #  357|       getStmt: [MethodCall] call to unknown_call
 #  357|         getReceiver: [SelfVariableAccess] self
 control/cases.rb:
