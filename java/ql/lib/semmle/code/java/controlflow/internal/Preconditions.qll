@@ -7,18 +7,19 @@
 import java
 
 /**
+ * DEPRECATED: Use `conditionCheckMethodArgument` instead.
  * Holds if `m` is a non-overridable method that checks that its first argument
  * is equal to `checkTrue` and throws otherwise.
  */
-predicate conditionCheckMethod(Method m, boolean checkTrue) {
-  conditionCheckMethod(m, 0, checkTrue)
+deprecated predicate conditionCheckMethod(Method m, boolean checkTrue) {
+  conditionCheckMethodArgument(m, 0, checkTrue)
 }
 
 /**
  * Holds if `m` is a non-overridable method that checks that its zero-indexed `argument`
  * is equal to `checkTrue` and throws otherwise.
  */
-predicate conditionCheckMethod(Method m, int argument, boolean checkTrue) {
+predicate conditionCheckMethodArgument(Method m, int argument, boolean checkTrue) {
   condtionCheckMethodGooglePreconditions(m, checkTrue) and argument = 0
   or
   conditionCheckMethodApacheCommonsLang3Validate(m, checkTrue) and argument = 0
@@ -29,7 +30,7 @@ predicate conditionCheckMethod(Method m, int argument, boolean checkTrue) {
     p = m.getParameter(argument) and
     not m.isOverridable() and
     m.getBody().getStmt(0).(ExprStmt).getExpr() = ma and
-    conditionCheck(ma, argIndex, ct) and
+    conditionCheckArgument(ma, argIndex, ct) and
     ma.getArgument(argIndex) = arg and
     (
       arg.(LogNotExpr).getExpr().(VarAccess).getVariable() = p and
@@ -105,15 +106,16 @@ private predicate condtionCheckMethodTestingFramework(Method m, int argument, bo
 }
 
 /**
+ * DEPRECATED: Use `conditionCheckArgument` instead.
  * Holds if `ma` is an access to a non-overridable method that checks that its
  * first argument is equal to `checkTrue` and throws otherwise.
  */
-predicate conditionCheck(MethodAccess ma, boolean checkTrue) { conditionCheck(ma, 0, checkTrue) }
+deprecated predicate conditionCheck(MethodAccess ma, boolean checkTrue) { conditionCheckArgument(ma, 0, checkTrue) }
 
 /**
  * Holds if `ma` is an access to a non-overridable method that checks that its
  * zero-indexed `argument` is equal to `checkTrue` and throws otherwise.
  */
-predicate conditionCheck(MethodAccess ma, int argument, boolean checkTrue) {
-  conditionCheckMethod(ma.getMethod().getSourceDeclaration(), argument, checkTrue)
+predicate conditionCheckArgument(MethodAccess ma, int argument, boolean checkTrue) {
+  conditionCheckMethodArgument(ma.getMethod().getSourceDeclaration(), argument, checkTrue)
 }
