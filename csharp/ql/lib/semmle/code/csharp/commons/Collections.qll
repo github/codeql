@@ -2,7 +2,6 @@
 
 import csharp
 import semmle.code.csharp.frameworks.system.Collections
-import semmle.code.csharp.frameworks.system.collections.Generic
 
 private string modifyMethodName() {
   result =
@@ -70,11 +69,8 @@ class CollectionType extends RefType {
 
 /** Holds if `t` is a collection type. */
 predicate isCollectionType(ValueOrRefType t) {
-  not t instanceof StringType and
-  exists(ValueOrRefType base | base = t.getABaseType*() |
-    base instanceof SystemCollectionsGenericIEnumerableTInterface or
-    base instanceof SystemCollectionsIEnumerableInterface
-  )
+  t.getABaseType*() instanceof SystemCollectionsIEnumerableInterface and
+  not t instanceof StringType
 }
 
 /** An object creation that creates an empty collection. */
