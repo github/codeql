@@ -391,6 +391,25 @@ module API {
         ref.asExpr() = c and
         read = c.getExpr()
       )
+      or
+      // `ref` is an unqualified constant read which refers to a constant visible from the parent scope.
+      // Because we only track constant uses, there must be a read of the parent scope in the database.
+      // E.g.
+      //
+      //   module A
+      //     class B
+      //     end
+      //     B         # `ref`
+      //   end
+      //   A           # `node`
+      //
+      exists(ExprNodes::ConstantAccessCfgNode c, ConstantReadAccess read |
+        not exists(c.getScopeExpr()) and
+        ref.asExpr() = c and
+        read = c.getExpr() and
+        resolveConstant(read) = resolveConstant(node.asExpr().getExpr()) + "::" + read.getName() and
+        lbl = Label::member(read.getName())
+      )
       // note: method calls are not handled here as there is no DataFlow::Node for the intermediate MkMethodAccessNode API node
     }
 
