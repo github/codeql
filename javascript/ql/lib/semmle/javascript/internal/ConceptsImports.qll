@@ -3,4 +3,4 @@
  * Since they are language-specific, they can't be placed directly in that file, as it is shared between languages.
  */
 
-import semmle.javascript.dataflow.DataFlow
+import semmle.javascript.dataflow.DataFlow::DataFlow as DataFlow
