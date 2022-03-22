@@ -54,17 +54,17 @@ jobs:
     - name: Generate CSV files on merge commit of the PR
       run: |
         echo "Running generator on merge"
-        PATH="$PATH:codeql-cli/codeql" python base/misc/scripts/library-coverage/generate-report.py ci merge merge
+        PATH="$PATH:codeql-cli/codeql" python merge/misc/scripts/library-coverage/generate-report.py ci merge merge
         mkdir out_merge
-        mv framework-coverage-*.csv out_merge/
-        mv framework-coverage-*.rst out_merge/
+        cp framework-coverage-*.csv out_merge/
+        cp framework-coverage-*.rst out_merge/
     - name: Generate CSV files on base commit of the PR
       run: |
         echo "Running generator on base"
         PATH="$PATH:codeql-cli/codeql" python base/misc/scripts/library-coverage/generate-report.py ci base base
         mkdir out_base
-        mv framework-coverage-*.csv out_base/
-        mv framework-coverage-*.rst out_base/
+        cp framework-coverage-*.csv out_base/
+        cp framework-coverage-*.rst out_base/
     - name: Generate diff of coverage reports
       run: |
         python base/misc/scripts/library-coverage/compare-folders.py out_base out_merge comparison.md
