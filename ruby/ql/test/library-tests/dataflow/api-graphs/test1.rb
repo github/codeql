@@ -68,3 +68,24 @@ def userDefinedFunction(x, y)
     x.customEntryPointCall(y) #$ call=CustomEntryPointCall use=CustomEntryPointCall.getReturn() rhs=CustomEntryPointCall.getParameter(0)
     x.customEntryPointUse(y) #$ use=CustomEntryPointUse
 end
+
+module M3
+    class C5
+    end
+
+    C5 #$ use=getMember("C5")
+end
+
+M3 #$ use=getMember("M3")
+
+module M4
+    module M3
+        class C5
+        end
+
+        C5 #$ use=getMember("C5")
+    end
+
+end
+
+M4::M3 #$ use=getMember("M4").getMember("M3")
