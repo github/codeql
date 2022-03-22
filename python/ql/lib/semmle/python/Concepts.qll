@@ -106,7 +106,8 @@ module FileSystemWriteAccess {
 }
 
 /**
- * A data-flow node that may set or unset Cross-site request forgery protection.
+ * A data-flow node that may set or unset Cross-site request forgery protection
+ * in a global manner.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `CSRFProtectionSetting::Range` instead.
@@ -122,7 +123,8 @@ class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSett
 /** Provides a class for modeling new CSRF protection setting APIs. */
 module CSRFProtectionSetting {
   /**
-   * A data-flow node that may set or unset Cross-site request forgery protection.
+   * A data-flow node that may set or unset Cross-site request forgery protection
+   * in a global manner.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `CSRFProtectionSetting` instead.
@@ -133,6 +135,39 @@ module CSRFProtectionSetting {
      * (`true`) or disabled (`false`) by this node.
      */
     abstract boolean getVerificationSetting();
+  }
+}
+
+/**
+ * A data-flow node that provides Cross-site request forgery protection
+ * for a specific part of an application.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `CSRFProtection::Range` instead.
+ */
+class CSRFProtection extends DataFlow::Node instanceof CSRFProtection::Range {
+  /**
+   * Gets a `Function` representing the protected interaction
+   * (probably a request handler).
+   */
+  Function getProtected() { result = super.getProtected() }
+}
+
+/** Provides a class for modeling new CSRF protection setting APIs. */
+module CSRFProtection {
+  /**
+   * A data-flow node that provides Cross-site request forgery protection
+   * for a specific part of an application.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `CSRFProtection` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets a `Function` representing the protected interaction
+     * (probably a request handler).
+     */
+    abstract Function getProtected();
   }
 }
 

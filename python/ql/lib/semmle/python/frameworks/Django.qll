@@ -2346,3 +2346,20 @@ module PrivateDjango {
     }
   }
 }
+
+private class DjangoCSRFDecorator extends CSRFProtection::Range {
+  Function function;
+
+  DjangoCSRFDecorator() {
+    this =
+      API::moduleImport("django")
+          .getMember("views")
+          .getMember("decorators")
+          .getMember("csrf")
+          .getMember("csrf_protect")
+          .getAUse() and
+    this.asExpr() = function.getADecorator()
+  }
+
+  override Function getProtected() { result = function }
+}

@@ -15,5 +15,7 @@ import python
 import semmle.python.Concepts
 
 from CSRFProtectionSetting s
-where s.getVerificationSetting() = false
+where
+  s.getVerificationSetting() = false and
+  not exists(CSRFProtection p)
 select s, "Potential CSRF vulnerability due to forgery protection being disabled or weakened."
