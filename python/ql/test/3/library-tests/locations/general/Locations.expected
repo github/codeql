@@ -44,6 +44,7 @@
 | Dict | 46 | 54 | 46 | 55 |
 | Dict | 48 | 9 | 48 | 19 |
 | DictUnpacking | 46 | 52 | 46 | 55 |
+| DjangoViewClassHelper | 4 | 1 | 4 | 8 |
 | Ellipsis | 7 | 7 | 7 | 9 |
 | Ellipsis | 50 | 14 | 50 | 16 |
 | ExceptStmt | 32 | 9 | 32 | 31 |

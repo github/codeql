@@ -3,6 +3,15 @@ private import DataFlowPublic
 import semmle.python.SpecialMethods
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+// Since we allow extra data-flow steps from modeled frameworks, we import these
+// up-front, to ensure these are included. This provides a more seamless experience from
+// a user point of view, since they don't need to know they need to import a specific
+// set of .qll files to get the same data-flow steps as they are used to seeing. This
+// also ensures that we don't end up re-evaluating data-flow because it has different
+// global steps in some configurations.
+//
+// This matches behavior in C#.
+private import semmle.python.Frameworks
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
@@ -943,6 +952,24 @@ string ppReprType(DataFlowType t) { none() }
  * taken into account.
  */
 predicate jumpStep(Node nodeFrom, Node nodeTo) {
+  jumpStepSharedWithTypeTracker(nodeFrom, nodeTo)
+  or
+  jumpStepNotSharedWithTypeTracker(nodeFrom, nodeTo)
+}
+
+/**
+ * Set of jumpSteps that are shared with type-tracker implementation.
+ *
+ * For ORM modeling we want to add jumpsteps to global dataflow, but since these are
+ * based on type-trackers, it's important that these new ORM jumsteps are not used in
+ * the type-trackers as well, as that would make evaluation of type-tracking recursive
+ * with the new jumpsteps.
+ *
+ * Holds if `pred` can flow to `succ`, by jumping from one callable to
+ * another. Additional steps specified by the configuration are *not*
+ * taken into account.
+ */
+predicate jumpStepSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
   runtimeJumpStep(nodeFrom, nodeTo)
   or
   // Read of module attribute:
@@ -954,6 +981,22 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
   or
   // Default value for parameter flows to that parameter
   defaultValueFlowStep(nodeFrom, nodeTo)
+}
+
+/**
+ * Set of jumpSteps that are NOT shared with type-tracker implementation.
+ *
+ * For ORM modeling we want to add jumpsteps to global dataflow, but since these are
+ * based on type-trackers, it's important that these new ORM jumsteps are not used in
+ * the type-trackers as well, as that would make evaluation of type-tracking recursive
+ * with the new jumpsteps.
+ *
+ * Holds if `pred` can flow to `succ`, by jumping from one callable to
+ * another. Additional steps specified by the configuration are *not*
+ * taken into account.
+ */
+predicate jumpStepNotSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
+  any(Orm::AdditionalOrmSteps es).jumpStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -999,6 +1042,51 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   kwOverflowStoreStep(nodeFrom, c, nodeTo)
   or
   matchStoreStep(nodeFrom, c, nodeTo)
+  or
+  any(Orm::AdditionalOrmSteps es).storeStep(nodeFrom, c, nodeTo)
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * Provides classes for modeling data-flow through ORM models saved in a DB.
+ */
+module Orm {
+  /**
+   * INTERNAL: Do not use.
+   *
+   * A unit class for adding additional data-flow steps for ORM models.
+   */
+  class AdditionalOrmSteps extends Unit {
+    /**
+     * Holds if data can flow from `nodeFrom` to `nodeTo` via an assignment to
+     * content `c`.
+     */
+    abstract predicate storeStep(Node nodeFrom, Content c, Node nodeTo);
+
+    /**
+     * Holds if `pred` can flow to `succ`, by jumping from one callable to
+     * another. Additional steps specified by the configuration are *not*
+     * taken into account.
+     */
+    abstract predicate jumpStep(Node nodeFrom, Node nodeTo);
+  }
+
+  /** A synthetic node representing the data for an ORM model saved in a DB. */
+  class SyntheticOrmModelNode extends Node, TSyntheticOrmModelNode {
+    Class cls;
+
+    SyntheticOrmModelNode() { this = TSyntheticOrmModelNode(cls) }
+
+    override string toString() { result = "[orm-model] " + cls.toString() }
+
+    override Scope getScope() { result = cls.getEnclosingScope() }
+
+    override Location getLocation() { result = cls.getLocation() }
+
+    /** Gets the class that defines this ORM model. */
+    Class getClass() { result = cls }
+  }
 }
 
 /** Data flows from an element of a list to the list. */
