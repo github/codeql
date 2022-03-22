@@ -17,5 +17,7 @@ import semmle.python.Concepts
 from CSRFProtectionSetting s
 where
   s.getVerificationSetting() = false and
-  not exists(CSRFProtection p)
+  not exists(CSRFProtection p) and
+  // rule out test code as this is a common place to turn off CSRF protection
+  not s.getLocation().getFile().getAbsolutePath().matches("%test%")
 select s, "Potential CSRF vulnerability due to forgery protection being disabled or weakened."
