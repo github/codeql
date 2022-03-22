@@ -501,6 +501,11 @@
     "ruby/ql/lib/codeql/ruby/security/performance/SuperlinearBackTracking.qll",
     "java/ql/lib/semmle/code/java/security/performance/SuperlinearBackTracking.qll"
   ],
+  "RegexpMatching Python/JS/Ruby": [
+    "javascript/ql/lib/semmle/javascript/security/performance/RegexpMatching.qll",
+    "python/ql/lib/semmle/python/security/performance/RegexpMatching.qll",
+    "ruby/ql/lib/codeql/ruby/security/performance/RegexpMatching.qll"
+  ],
   "BadTagFilterQuery Python/JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/BadTagFilterQuery.qll",
     "python/ql/lib/semmle/python/security/BadTagFilterQuery.qll",
