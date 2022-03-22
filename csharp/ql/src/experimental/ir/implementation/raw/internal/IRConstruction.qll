@@ -48,6 +48,9 @@ module Raw {
   predicate functionHasIR(Callable callable) { exists(getTranslatedFunction(callable)) }
 
   cached
+  predicate varHasIRFunc(Field field) { none() }
+
+  cached
   predicate hasInstruction(TranslatedElement element, InstructionTag tag) {
     element.hasInstruction(_, tag, _)
   }
