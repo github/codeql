@@ -40,6 +40,14 @@ function testPreserveTaint() {
   testlib.taintIntoCallback(source(), undefined, undefined, y => {
     sink(y); // OK - only callback 1-2 receive taint
   });
+  testlib.taintIntoCallback(source(), function(y) {
+    sink(y); // NOT OK
+    sink(this); // OK - receiver is not tainted
+  });
+  testlib.taintIntoCallbackThis(source(), function(y) {
+    sink(y); // OK - only receiver is tainted
+    sink(this); // NOT OK
+  });
 }
 
 function testSinks() {

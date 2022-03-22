@@ -120,6 +120,10 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   // API graphs do not use store/load steps for arrays
   token.getName() = ["ArrayElement", "Element"] and
   result = node.getUnknownMember()
+  or
+  token.getName() = "Parameter" and
+  token.getAnArgument() = "this" and
+  result = node.getReceiver()
 }
 
 /**
