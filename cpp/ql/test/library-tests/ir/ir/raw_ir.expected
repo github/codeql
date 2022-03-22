@@ -8844,16 +8844,13 @@ ir.cpp:
 
 # 1693| int goto_on_same_line()
 # 1693|   Block 0
-# 1693|     v1693_1(void)       = EnterFunction      : 
-# 1693|     mu1693_2(unknown)   = AliasedDefinition  : 
-# 1693|     mu1693_3(unknown)   = InitializeNonLocal : 
-# 1694|     r1694_1(glval<int>) = VariableAddress[x] : 
-# 1694|     r1694_2(int)        = Constant[42]       : 
-# 1694|     mu1694_3(int)       = Store[x]           : &:r1694_1, r1694_2
-# 1695|     v1695_1(void)       = NoOp               : 
-#-----|   Goto (back edge) -> Block 1
-
-# 1695|   Block 1
+# 1693|     v1693_1(void)       = EnterFunction            : 
+# 1693|     mu1693_2(unknown)   = AliasedDefinition        : 
+# 1693|     mu1693_3(unknown)   = InitializeNonLocal       : 
+# 1694|     r1694_1(glval<int>) = VariableAddress[x]       : 
+# 1694|     r1694_2(int)        = Constant[42]             : 
+# 1694|     mu1694_3(int)       = Store[x]                 : &:r1694_1, r1694_2
+# 1695|     v1695_1(void)       = NoOp                     : 
 # 1695|     v1695_2(void)       = NoOp                     : 
 # 1696|     r1696_1(glval<int>) = VariableAddress[#return] : 
 # 1696|     r1696_2(glval<int>) = VariableAddress[x]       : 
