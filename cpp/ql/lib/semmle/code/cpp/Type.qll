@@ -94,7 +94,8 @@ class Type extends Locatable, @type {
    * The result of this predicate will be the type itself, except in the case of a TypedefType or a Decltype,
    * in which case the result will be type which results from (possibly recursively) resolving typedefs.
    */
-  pragma[nomagic] Type getUnderlyingType() { result = this }
+  pragma[nomagic]
+  Type getUnderlyingType() { result = this }
 
   /**
    * Gets this type after specifiers have been deeply stripped and typedefs have been resolved.
