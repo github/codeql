@@ -75,7 +75,7 @@ def compile_to_jar(srcs, classpath, java_classpath, output):
 
     compile_to_dir(srcs, classpath, java_classpath, builddir)
 
-    run_process(['jar', '-c', '-f', output,
+    run_process(['jar', 'cf', output,
                  '-C', builddir, '.',
                  '-C', 'src/main/resources', 'META-INF'])
     shutil.rmtree(builddir)
