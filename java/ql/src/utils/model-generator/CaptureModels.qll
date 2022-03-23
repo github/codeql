@@ -3,9 +3,7 @@
  * and sink models of the Standard or a 3rd party library.
  */
 
-private import CaptureSummaryModelsSpecific
-private import CaptureSinkModelsSpecific
-private import CaptureSourceModelsSpecific
+private import CaptureModelsSpecific
 private import ModelGeneratorUtils
 
 /**
