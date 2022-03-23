@@ -126,6 +126,33 @@ private DataFlow::Node getParam(Method m, int arg) {
 }
 
 /**
+ * Holds if there is a state-changing flow step between `node1` and `node2` from a call to `MessageDigest.update`.
+ * `isPassword` is true if it could be for a password.
+ */
+private predicate messageDigestFlowStep(
+  DataFlow::Node node1, DataFlow::Node node2, boolean isPassword
+) {
+  exists(MethodAccess ma, int arg |
+    messageDigestUpdate(ma, arg, isPassword) and
+    node1 = getArg(ma, arg) and
+    node2.(DataFlow::PostUpdateNode).getPreUpdateNode() = node1
+  )
+}
+
+/**
+ * Holds if `node` is th qualifier of a call to `MessageDigest.digest`.
+ * `hasArg` is true if this call has an argument, and `isPassword` is true if this call could be a password.
+ */
+private predicate messageDigestSink(DataFlow::Node node, boolean hasArg, boolean isPassword) {
+  exists(MethodAccess ma |
+    ma.getMethod().hasQualifiedName("java.security", "MessageDigest", "digest") and
+    node.asExpr() = ma.getQualifier() and
+    (if ma.getNumArgument() != 0 then hasArg = true else hasArg = false) and
+    (if passwordFlow(ma.getArgument(0)) then isPassword = true else isPassword = false)
+  )
+}
+
+/**
  * A configuration for determining that a `MessageDigest` object is used at least once with a password.
  */
 private class MessageDigestUsedOnceConfig extends DataFlow2::Configuration {
@@ -137,31 +164,20 @@ private class MessageDigestUsedOnceConfig extends DataFlow2::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    exists(MethodAccess ma |
-      ma.getMethod().hasQualifiedName("java.security", "MessageDigest", "digest") and
-      sink.asExpr() = ma.getQualifier() and
-      (
-        if ma.getNumArgument() = 0
-        then state instanceof HashOne
-        else (
-          state instanceof HashZero and
-          passwordFlow(ma.getArgument(0))
-        )
-      )
-    )
+    messageDigestSink(sink, false, _) and
+    state instanceof HashOne
+    or
+    messageDigestSink(sink, true, true) and
+    state instanceof HashZero
   }
 
   override predicate isAdditionalFlowStep(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
     DataFlow::FlowState state2
   ) {
-    exists(MethodAccess ma, int arg |
-      messageDigestUpdate(ma, arg, true) and
-      node1 = getArg(ma, arg) and
-      node2.(DataFlow::PostUpdateNode).getPreUpdateNode() = node1 and
-      state1 instanceof HashZero and
-      state2 instanceof HashOne
-    )
+    messageDigestFlowStep(node1, node2, true) and
+    state1 instanceof HashZero and
+    state2 instanceof HashOne
   }
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
@@ -189,40 +205,28 @@ private class MessageDigestSaltedConfig extends DataFlow2::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    exists(MethodAccess ma |
-      ma.getMethod().hasQualifiedName("java.security", "MessageDigest", "digest") and
-      sink.asExpr() = ma.getQualifier() and
-      (
-        state instanceof HashSalted
-        or
-        state instanceof HashOne and
-        ma.getNumArgument() != 0
-      )
-    )
+    messageDigestSink(sink, _, _) and
+    state instanceof HashSalted
+    or
+    messageDigestSink(sink, true, true) and
+    state instanceof HashOne
   }
 
   override predicate isAdditionalFlowStep(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
     DataFlow::FlowState state2
   ) {
-    exists(MethodAccess ma, int arg, boolean isPassword |
-      messageDigestUpdate(ma, arg, isPassword) and
-      node1 = getArg(ma, arg) and
-      node2.(DataFlow::PostUpdateNode).getPreUpdateNode() = node1 and
-      (
-        if isPassword = true
-        then (
-          state1 instanceof HashZero and
-          state2 instanceof HashOne
-          or
-          state1 instanceof HashOne and
-          state2 instanceof HashSalted
-        ) else (
-          (state1 instanceof HashZero or state1 instanceof HashOne) and
-          state2 instanceof HashSalted
-        )
-      )
-    )
+    messageDigestFlowStep(node1, node2, true) and
+    state1 instanceof HashZero and
+    state2 instanceof HashOne
+    or
+    messageDigestFlowStep(node1, node2, true) and
+    state1 instanceof HashOne and
+    state2 instanceof HashSalted
+    or
+    messageDigestFlowStep(node1, node2, false) and
+    (state1 instanceof HashZero or state1 instanceof HashOne) and
+    state2 instanceof HashSalted
   }
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
@@ -263,10 +267,9 @@ private predicate messageDigestFlowPath(DataFlow::Node node) {
 
 /** Holds if the password variable `pw` is hashed without a salt at callsite `hash`. */
 predicate passwordHashWithoutSalt(Expr pw, Expr hash) {
-  exists(MethodAccess ma, DataFlow::Node mdNode, Expr md |
-    md = [ma.getAnArgument(), ma.getQualifier()] and
+  exists(MethodAccess ma, DataFlow::Node mdNode |
     messageDigestFlowPath(mdNode) and
-    localFlowBetween(mdNode, DataFlow::exprNode(md)) and
+    localFlowBetween(mdNode, getArg(ma, _)) and
     pw instanceof PasswordVarExpr and
     hash = ma.getAnArgument() and
     TaintTracking::localTaint(DataFlow::exprNode(pw), DataFlow::exprNode(hash))
