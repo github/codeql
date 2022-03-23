@@ -257,6 +257,8 @@ private module Cached {
       name = any(KeywordParameter kp).getName()
       or
       exists(any(Call c).getKeywordArgument(name))
+      or
+      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
     }
 
   cached
@@ -270,7 +272,11 @@ private module Cached {
       or
       FlowSummaryImplSpecific::ParsePositions::isParsedArgumentPosition(_, pos)
     } or
-    TKeywordParameterPosition(string name) { name = any(KeywordParameter kp).getName() }
+    TKeywordParameterPosition(string name) {
+      name = any(KeywordParameter kp).getName()
+      or
+      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
+    }
 }
 
 import Cached

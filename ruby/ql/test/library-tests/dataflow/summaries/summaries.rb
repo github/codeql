@@ -47,3 +47,20 @@ end
 Foo.blockArg do |x|
   sink(x.preserveTaint("taint"))
 end
+
+sink(Foo.namedArg(foo: tainted))
+sink(Foo.namedArg(tainted))
+
+Foo.intoNamedCallback(tainted, foo: ->(x) {
+  sink(x)
+})
+Foo.intoNamedParameter(tainted, ->(foo:) {
+  sink(foo)
+})
+
+Foo.startInNamedCallback(foo: ->(x) {
+  sink(x.preserveTaint("taint"))
+})
+Foo.startInNamedParameter(->(foo:) {
+  sink(foo.preserveTaint("taint"))
+})

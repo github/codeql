@@ -166,6 +166,16 @@ module ParsePositions {
     isArgBody(c) and
     i = AccessPath::parseInt(c)
   }
+
+  predicate isParsedKeywordParameterPosition(string c, string paramName) {
+    isParamBody(c) and
+    c = paramName + ":"
+  }
+
+  predicate isParsedKeywordArgumentPosition(string c, string paramName) {
+    isArgBody(c) and
+    c = paramName + ":"
+  }
 }
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
@@ -173,6 +183,11 @@ ArgumentPosition parseParamBody(string s) {
   exists(int i |
     ParsePositions::isParsedParameterPosition(s, i) and
     result.isPositional(i)
+  )
+  or
+  exists(string name |
+    ParsePositions::isParsedKeywordParameterPosition(s, name) and
+    result.isKeyword(name)
   )
   or
   s = "self" and
@@ -187,6 +202,11 @@ ParameterPosition parseArgBody(string s) {
   exists(int i |
     ParsePositions::isParsedArgumentPosition(s, i) and
     result.isPositional(i)
+  )
+  or
+  exists(string name |
+    ParsePositions::isParsedKeywordArgumentPosition(s, name) and
+    result.isKeyword(name)
   )
   or
   s = "self" and
