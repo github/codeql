@@ -4,8 +4,8 @@
  * @id csharp/utils/model-generator/summary-models
  */
 
-private import ModelGeneratorUtils
-private import CaptureModels
+private import internal.ModelGeneratorUtils
+private import internal.CaptureModels
 
 /**
  * Capture fluent APIs that return `this`.
