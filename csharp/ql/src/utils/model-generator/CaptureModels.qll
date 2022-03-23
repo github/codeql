@@ -1,9 +1,12 @@
 /**
- * Provides classes and predicates related to capturing summary models
- * of the Standard or a 3rd party library.
+ * Provides classes and predicates related to capturing summary, source,
+ * and sink models of the Standard or a 3rd party library.
  */
 
-import CaptureSummaryModelsSpecific
+private import CaptureSummaryModelsSpecific
+private import CaptureSinkModelsSpecific
+private import CaptureSourceModelsSpecific
+private import ModelGeneratorUtils
 
 /**
  * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
@@ -94,5 +97,61 @@ string captureThroughFlow(TargetApi api) {
     output = returnNodeAsOutput(returnNodeExt) and
     input != output and
     result = asTaintModel(api, input, output)
+  )
+}
+
+private class FromSourceConfiguration extends TaintTracking::Configuration {
+  FromSourceConfiguration() { this = "FromSourceConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { sourceNode(source, _) }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(TargetApi c |
+      sink instanceof ReturnNodeExt and
+      sink.getEnclosingCallable() = c
+    )
+  }
+
+  override DataFlow::FlowFeature getAFeature() {
+    result instanceof DataFlow::FeatureHasSinkCallContext
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    isRelevantTaintStep(node1, node2)
+  }
+}
+
+/**
+ * Gets the source model(s) of `api`, if there is flow from an existing known source to the return of `api`.
+ */
+string captureSource(TargetApi api) {
+  exists(DataFlow::Node source, DataFlow::Node sink, FromSourceConfiguration config, string kind |
+    config.hasFlow(source, sink) and
+    sourceNode(source, kind) and
+    api = sink.getEnclosingCallable() and
+    result = asSourceModel(api, returnNodeAsOutput(sink), kind)
+  )
+}
+
+private class PropagateToSinkConfiguration extends PropagateToSinkConfigurationSpecific {
+  PropagateToSinkConfiguration() { this = "parameters or fields flowing into sinks" }
+
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, _) }
+
+  override DataFlow::FlowFeature getAFeature() {
+    result instanceof DataFlow::FeatureHasSourceCallContext
+  }
+}
+
+/**
+ * Gets the sink model(s) of `api`, if there is flow from a parameter to an existing known sink.
+ */
+string captureSink(TargetApi api) {
+  exists(DataFlow::Node src, DataFlow::Node sink, PropagateToSinkConfiguration config, string kind |
+    config.hasFlow(src, sink) and
+    sinkNode(sink, kind) and
+    api = src.getEnclosingCallable() and
+    not kind = "logging" and
+    result = asSinkModel(api, asInputArgument(src), kind)
   )
 }
