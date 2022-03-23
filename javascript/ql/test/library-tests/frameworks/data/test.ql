@@ -33,12 +33,26 @@ class Sinks extends ModelInput::SinkModelCsv {
         "testlib;;Member[mySinkExceptLast].Argument[0..N-2];test-sink",
         "testlib;;Member[mySinkIfArityTwo].WithArity[2].Argument[0];test-sink",
         "testlib;;Member[sink1, sink2, sink3 ].Argument[0];test-sink",
+        "testlib;;Member[ClassDecorator].DecoratedClass.Instance.Member[returnValueIsSink].ReturnValue;test-sink",
+        "testlib;;Member[FieldDecoratorSink].DecoratedMember;test-sink",
+        "testlib;;Member[MethodDecorator].DecoratedMember.ReturnValue;test-sink",
+        "testlib;;Member[MethodDecoratorWithArgs].ReturnValue.DecoratedMember.ReturnValue;test-sink",
       ]
   }
 }
 
 class Sources extends ModelInput::SourceModelCsv {
-  override predicate row(string row) { row = "testlib;;Member[getSource].ReturnValue;test-source" }
+  override predicate row(string row) {
+    row =
+      [
+        "testlib;;Member[getSource].ReturnValue;test-source",
+        "testlib;;Member[ClassDecorator].DecoratedClass.Instance.Member[inputIsSource].Parameter[0];test-source",
+        "testlib;;Member[FieldDecoratorSource].DecoratedMember;test-source",
+        "testlib;;Member[ParamDecorator].DecoratedParameter;test-source",
+        "testlib;;Member[MethodDecorator].DecoratedMember.Parameter[0];test-source",
+        "testlib;;Member[MethodDecoratorWithArgs].ReturnValue.DecoratedMember.Parameter[0];test-source",
+      ]
+  }
 }
 
 class BasicTaintTracking extends TaintTracking::Configuration {
