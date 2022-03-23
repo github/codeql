@@ -348,7 +348,7 @@ foo(X:)
 
 # calls inside lambdas
 y = 1
-id = ->(x) { y }
+one = ->(x) { y }
 f = ->(x) { foo x }
 g = ->(x) { unknown_call }
 h = -> (x) do

@@ -710,7 +710,7 @@ calls/calls.rb:
 #  350|     getAnOperand/getLeftOperand: [LocalVariableAccess] y
 #  350|     getAnOperand/getRightOperand: [IntegerLiteral] 1
 #  351|   getStmt: [AssignExpr] ... = ...
-#  351|     getAnOperand/getLeftOperand: [LocalVariableAccess] id
+#  351|     getAnOperand/getLeftOperand: [LocalVariableAccess] one
 #  351|     getAnOperand/getRightOperand: [Lambda] -> { ... }
 #  351|       getParameter: [SimpleParameter] x
 #  351|         getDefiningAccess: [LocalVariableAccess] x
