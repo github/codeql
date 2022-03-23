@@ -519,6 +519,11 @@
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/AccessPathSyntax.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/AccessPathSyntax.qll"
   ],
+  "Concepts Python/Ruby/JS": [
+    "python/ql/lib/semmle/python/internal/ConceptsShared.qll",
+    "ruby/ql/lib/codeql/ruby/internal/ConceptsShared.qll",
+    "javascript/ql/lib/semmle/javascript/internal/ConceptsShared.qll"
+  ],
   "Hostname Regexp queries": [
     "javascript/ql/src/Security/CWE-020/HostnameRegexpShared.qll",
     "python/ql/src/Security/CWE-020/HostnameRegexpShared.qll",
