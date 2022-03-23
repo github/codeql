@@ -18,8 +18,8 @@ private import ExprNodes
  * It would be natural to define those predicates recursively. However, because
  * of how `newtype`s work, this results in bad performance as a result of
  * unnecessary recursion through the constructors of `TConstantValue`. Instead,
- * we define a set of predicats for each possible `ConstantValue` type, and each
- * set of predicates need to replicate logic, e.g., how a constant may be propagated
+ * we define a set of predicates for each possible `ConstantValue` type, and each
+ * set of predicates needs to replicate logic, e.g., how a constant may be propagated
  * from an assignment to a variable read.
  *
  * For each `ConstantValue` type `T`, we define three predicates:
@@ -52,29 +52,29 @@ private module Propagation {
     or
     e =
       any(UnaryOperationCfgNode unop |
-        unop.getOperator() = "-" and
+        unop.getExpr() instanceof UnaryMinusExpr and
         isInt(unop.getOperand(), -i)
         or
-        unop.getOperator() = "+" and
+        unop.getExpr() instanceof UnaryPlusExpr and
         isInt(unop.getOperand(), i)
       )
     or
-    exists(BinaryOperationCfgNode binop, string op, int left, int right |
+    exists(BinaryOperationCfgNode binop, BinaryOperation b, int left, int right |
       e = binop and
       isInt(binop.getLeftOperand(), left) and
       isInt(binop.getRightOperand(), right) and
-      op = binop.getOperator()
+      b = binop.getExpr()
     |
-      op = "+" and
+      b instanceof AddExpr and
       i = left + right
       or
-      op = "-" and
+      b instanceof SubExpr and
       i = left - right
       or
-      op = "*" and
+      b instanceof MulExpr and
       i = left * right
       or
-      op = "/" and
+      b instanceof DivExpr and
       i = left / right
     )
   }
@@ -104,16 +104,16 @@ private module Propagation {
     or
     e =
       any(UnaryOperationCfgNode unop |
-        unop.getOperator() = "-" and
+        unop.getExpr() instanceof UnaryMinusExpr and
         isFloat(unop.getOperand(), -f)
         or
-        unop.getOperator() = "+" and
+        unop.getExpr() instanceof UnaryPlusExpr and
         isFloat(unop.getOperand(), f)
       )
     or
-    exists(BinaryOperationCfgNode binop, string op, float left, float right |
+    exists(BinaryOperationCfgNode binop, BinaryOperation b, float left, float right |
       e = binop and
-      op = binop.getOperator() and
+      b = binop.getExpr() and
       exists(ExprCfgNode l, ExprCfgNode r |
         l = binop.getLeftOperand() and
         r = binop.getRightOperand()
@@ -125,16 +125,16 @@ private module Propagation {
         isFloat(l, left) and isInt(r, right)
       )
     |
-      op = "+" and
+      b instanceof AddExpr and
       f = left + right
       or
-      op = "-" and
+      b instanceof SubExpr and
       f = left - right
       or
-      op = "*" and
+      b instanceof MulExpr and
       f = left * right
       or
-      op = "/" and
+      b instanceof DivExpr and
       f = left / right
     )
   }
@@ -246,7 +246,7 @@ private module Propagation {
       e = binop and
       isString(binop.getLeftOperand(), left) and
       isString(binop.getRightOperand(), right) and
-      binop.getOperator() = "+" and
+      binop.getExpr() instanceof AddExpr and
       left.length() + right.length() <= 1000 and
       s = left + right
     )
