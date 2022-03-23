@@ -7,7 +7,7 @@ public class HashWithoutSalt {
 	// BAD - Hash without a salt.
 	public String getSHA256Hash(String password) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		byte[] messageDigest = md.digest(password.getBytes());
+		byte[] messageDigest = md.digest(password.getBytes()); // $ hasResult
 		return Base64.getEncoder().encodeToString(messageDigest);
 	}
 
@@ -22,7 +22,7 @@ public class HashWithoutSalt {
 	// BAD - Hash without a salt.
 	public String getSHA256Hash2(String password) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		md.update(password.getBytes());
+		md.update(password.getBytes()); // $ hasResult
 		byte[] messageDigest = md.digest();
 		return Base64.getEncoder().encodeToString(messageDigest);
 	}
@@ -93,7 +93,7 @@ public class HashWithoutSalt {
 		SHA256 sha256 = new SHA256();
 		sha256.init();
 		byte[] passBytes = password.getBytes();
-		sha256.update(passBytes, 0, passBytes.length);
+		sha256.update(passBytes, 0, passBytes.length); // $ hasResult
 		return Base64.getEncoder().encodeToString(sha256.digest());
 	}
 
@@ -113,7 +113,7 @@ public class HashWithoutSalt {
 		SHA256 sha256 = new SHA256();
 		sha256.init();
 		byte[] passBytes = password.getBytes();
-		update(sha256, passBytes, 0, passBytes.length);
+		update(sha256, passBytes, 0, passBytes.length); // $ hasResult
 		return Base64.getEncoder().encodeToString(sha256.digest());
 	}
 
@@ -137,7 +137,7 @@ public class HashWithoutSalt {
 		for (int i = 0; i < 2; i++) {
 			sha512.init();
 			tmp[3] = (byte) i;
-			sha512.update(passphrase, 0, passphrase.length);
+			sha512.update(passphrase, 0, passphrase.length); // $ MISSING: hasResult
 			System.arraycopy(sha512.digest(), 0, key, i * 32, 32);
 		}
 		return Base64.getEncoder().encodeToString(key);
