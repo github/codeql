@@ -5,7 +5,7 @@
  */
 
 private import ModelGeneratorUtils
-private import CaptureSinkModels
+private import CaptureModels
 
 from TargetApi api, string sink
 where sink = captureSink(api)

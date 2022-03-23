@@ -4,7 +4,8 @@
  * @id java/utils/model-generator/summary-models
  */
 
-private import CaptureSummaryModels
+private import ModelGeneratorUtils
+private import CaptureModels
 
 /**
  * Capture fluent APIs that return `this`.
