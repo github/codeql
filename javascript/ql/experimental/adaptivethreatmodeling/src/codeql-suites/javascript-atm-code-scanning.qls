@@ -1,2 +1,5 @@
 - description: ATM boosted Code Scanning queries for JavaScript
 - queries: .
+- exclude:
+    query filename: StoredXssATM.ql
+    query filename: XssThroughDomATM.ql
