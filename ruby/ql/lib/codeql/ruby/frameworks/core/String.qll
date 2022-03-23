@@ -356,7 +356,7 @@ module String {
       output = ["ReturnValue", "Argument[self]"] and
       preservesValue = false
     }
-    // TODO: we should also clear any existing content in Receiver
+    // TODO: we should also clear any existing content in Argument[self]
   }
 
   /**
