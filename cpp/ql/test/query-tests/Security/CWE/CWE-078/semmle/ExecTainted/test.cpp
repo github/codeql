@@ -199,10 +199,25 @@ void test17(FILE *f) {
 }
 
 void test18() {
-  // GOOD [FALSE POSITIVE]
+  // GOOD
   char command[1000] = "ls ", flags[1000] = "-l", filename[1000] = ".";
 
   concat(command, flags, filename);
+
+  execl("/bin/sh", "sh", "-c", command);
+}
+
+#define CONCAT(COMMAND, FILENAME)   \
+  strncat(COMMAND, FILENAME, 1000); \
+  strncat(COMMAND, " ", 1000);      \
+  strncat(COMMAND, FILENAME, 1000);
+
+void test19(FILE *f) {
+  // BAD: the user string is injected directly into a command
+  char command[1000] = "mv ", filename[1000];
+  fread(filename, 1, 1000, f);
+
+  CONCAT(command, filename)
 
   execl("/bin/sh", "sh", "-c", command);
 }
