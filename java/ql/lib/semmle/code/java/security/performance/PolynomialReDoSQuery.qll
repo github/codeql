@@ -41,7 +41,6 @@ class PolynomialRedosConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof PolynomialRedosSink }
 
   override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
     node.getType() instanceof PrimitiveType or
     node.getType() instanceof BoxedType or
     node.asExpr().(MethodAccess).getMethod() instanceof LengthRestrictedMethod
