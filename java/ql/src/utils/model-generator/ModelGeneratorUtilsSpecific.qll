@@ -36,6 +36,9 @@ private predicate isJdkInternal(CompilationUnit cu) {
   cu.getPackage().getName() = ""
 }
 
+/**
+ * Holds if it is relevant to generate models for `api`.
+ */
 predicate isRelevantForModels(Callable api) {
   not isInTestFile(api.getCompilationUnit().getFile()) and
   not isJdkInternal(api.getCompilationUnit()) and

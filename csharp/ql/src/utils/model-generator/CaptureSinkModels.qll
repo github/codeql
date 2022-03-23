@@ -1,6 +1,6 @@
 private import CaptureSinkModelsSpecific
 
-class PropagateToSinkConfiguration extends PropagateToSinkConfigurationSpecific {
+private class PropagateToSinkConfiguration extends PropagateToSinkConfigurationSpecific {
   PropagateToSinkConfiguration() { this = "parameters or fields flowing into sinks" }
 
   override predicate isSink(DataFlow::Node sink) { sinkNode(sink, _) }
@@ -10,6 +10,9 @@ class PropagateToSinkConfiguration extends PropagateToSinkConfigurationSpecific 
   }
 }
 
+/**
+ * Gets the sink model(s) of `api`, if there is flow from a parameter to an existing known sink.
+ */
 string captureSink(TargetApi api) {
   exists(DataFlow::Node src, DataFlow::Node sink, PropagateToSinkConfiguration config, string kind |
     config.hasFlow(src, sink) and

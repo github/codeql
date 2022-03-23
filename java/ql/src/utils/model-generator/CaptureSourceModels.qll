@@ -1,7 +1,7 @@
 private import CaptureSourceModelsSpecific
 private import ModelGeneratorUtils
 
-class FromSourceConfiguration extends TaintTracking::Configuration {
+private class FromSourceConfiguration extends TaintTracking::Configuration {
   FromSourceConfiguration() { this = "FromSourceConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { sourceNode(source, _) }
@@ -22,6 +22,9 @@ class FromSourceConfiguration extends TaintTracking::Configuration {
   }
 }
 
+/**
+ * Gets the source model(s) of `api`, if there is flow from an existing known source to the return of `api`.
+ */
 string captureSource(TargetApi api) {
   exists(DataFlow::Node source, DataFlow::Node sink, FromSourceConfiguration config, string kind |
     config.hasFlow(source, sink) and

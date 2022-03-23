@@ -10,12 +10,21 @@ import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.InstanceAccess
 import ModelGeneratorUtils
 
+/**
+ * Gets the enclosing callable of `ret`.
+ */
 Callable returnNodeEnclosingCallable(ReturnNodeExt ret) {
   result = getNodeEnclosingCallable(ret).asCallable()
 }
 
+/**
+ * Holds if `node` is an own instance access.
+ */
 predicate isOwnInstanceAccessNode(ReturnNode node) {
   node.asExpr().(ThisAccess).isOwnInstanceAccess()
 }
 
+/**
+ * Gets the CSV string representation of the qualifier.
+ */
 string qualifierString() { result = "Argument[-1]" }

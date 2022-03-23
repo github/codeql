@@ -36,7 +36,7 @@ private class TaintStore extends DataFlow::FlowState {
  *
  * This can be used to generate Flow summaries for APIs from parameter to return.
  */
-class ThroughFlowConfig extends TaintTracking::Configuration {
+private class ThroughFlowConfig extends TaintTracking::Configuration {
   ThroughFlowConfig() { this = "ThroughFlowConfig" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {

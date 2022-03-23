@@ -5,6 +5,9 @@ private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 
+/**
+ * Holds if it is relevant to generate models for `api`.
+ */
 predicate isRelevantForModels(Callable api) { not api instanceof MainMethod }
 
 /**
