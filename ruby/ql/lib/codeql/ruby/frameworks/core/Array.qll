@@ -605,7 +605,10 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].ArrayElement" and
       output =
-        ["Argument[block].Parameter[0]", "ReturnValue.ArrayElement[?]", "Argument[self].ArrayElement[?]"] and
+        [
+          "Argument[block].Parameter[0]", "ReturnValue.ArrayElement[?]",
+          "Argument[self].ArrayElement[?]"
+        ] and
       preservesValue = true
     }
 
@@ -956,7 +959,10 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].ArrayElement" and
       output =
-        ["ReturnValue.ArrayElement[?]", "Argument[self].ArrayElement[?]", "Argument[block].Parameter[0]"] and
+        [
+          "ReturnValue.ArrayElement[?]", "Argument[self].ArrayElement[?]",
+          "Argument[block].Parameter[0]"
+        ] and
       preservesValue = true
     }
 
@@ -1134,7 +1140,10 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].ArrayElement" and
       output =
-        ["ReturnValue.ArrayElement[?]", "Argument[self].ArrayElement[?]", "Argument[block].Parameter[0]"] and
+        [
+          "ReturnValue.ArrayElement[?]", "Argument[self].ArrayElement[?]",
+          "Argument[block].Parameter[0]"
+        ] and
       preservesValue = true
     }
 
@@ -1298,7 +1307,10 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].ArrayElement" and
       output =
-        ["Argument[block].Parameter[0]", "Argument[self].ArrayElement[?]", "ReturnValue.ArrayElement[?]"] and
+        [
+          "Argument[block].Parameter[0]", "Argument[self].ArrayElement[?]",
+          "ReturnValue.ArrayElement[?]"
+        ] and
       preservesValue = true
     }
 
@@ -1564,7 +1576,10 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].ArrayElement" and
       output =
-        ["Argument[block].Parameter[0]", "Argument[self].ArrayElement[?]", "ReturnValue.ArrayElement[?]"] and
+        [
+          "Argument[block].Parameter[0]", "Argument[self].ArrayElement[?]",
+          "ReturnValue.ArrayElement[?]"
+        ] and
       preservesValue = true
     }
 
@@ -1597,7 +1612,10 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].ArrayElement" and
       output =
-        ["Argument[self].ArrayElement[?]", "ReturnValue.ArrayElement[?]", "Argument[block].Parameter[0]"] and
+        [
+          "Argument[self].ArrayElement[?]", "ReturnValue.ArrayElement[?]",
+          "Argument[block].Parameter[0]"
+        ] and
       preservesValue = true
     }
 
