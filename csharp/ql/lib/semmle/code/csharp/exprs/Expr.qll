@@ -715,8 +715,7 @@ class AsExpr extends Cast, @as_expr {
  *
  * For C#, this is only `CastExpr`.
  */
-class CastingExpr extends CastExpr {
-}
+class CastingExpr extends CastExpr { }
 
 /**
  * A cast expression, for example `(string) x`.
