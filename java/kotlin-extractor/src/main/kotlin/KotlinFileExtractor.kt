@@ -99,7 +99,8 @@ open class KotlinFileExtractor(
                     if (isExternalDeclaration(declaration)) {
                         extractExternalClassLater(declaration)
                     } else {
-                        extractClassSource(declaration, true, true)
+                        val extractStaticInit = declaration.declarations.none { it is IrAnonymousInitializer }
+                        extractClassSource(declaration, true, extractStaticInit)
                     }
                 }
                 is IrFunction -> {
