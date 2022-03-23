@@ -494,12 +494,6 @@ private EssaVariable potential_input(EssaNodeRefinement ref) {
   )
 }
 
-/* For backwards compatibility */
-deprecated class PyNodeDefinition = EssaNodeDefinition;
-
-/* For backwards compatibility */
-deprecated class PyNodeRefinement = EssaNodeRefinement;
-
 /** An assignment to a variable `v = val` */
 class AssignmentDefinition extends EssaNodeDefinition {
   AssignmentDefinition() {

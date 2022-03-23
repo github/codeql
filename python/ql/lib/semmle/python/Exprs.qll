@@ -30,9 +30,6 @@ class Expr extends Expr_, AstNode {
   /** Whether this expression is a constant */
   predicate isConstant() { not this.isVariable() }
 
-  /** Use isParenthesized instead. */
-  deprecated override predicate isParenthesised() { this.isParenthesized() }
-
   /** Whether the parenthesized property of this expression is true. */
   predicate isParenthesized() { Expr_.super.isParenthesised() }
 
@@ -48,9 +45,6 @@ class Expr extends Expr_, AstNode {
 
   /** Gets an immediate (non-nested) sub-expression of this expression */
   Expr getASubExpression() { none() }
-
-  /** Use StrConst.getText() instead */
-  deprecated string strValue() { none() }
 
   override AstNode getAChildNode() { result = this.getASubExpression() }
 
@@ -621,8 +615,6 @@ class StrConst extends Str_, ImmutableLiteral {
       this.getEnclosingModule().hasFromFuture("unicode_literals")
     )
   }
-
-  deprecated override string strValue() { result = this.getS() }
 
   override Expr getASubExpression() { none() }
 

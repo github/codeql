@@ -227,35 +227,4 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
     cb.getLastNode() = this.getAControlFlowNode() and
     cb.controls(controlled, s)
   }
-
-  /** DEPRECATED: Use `controlsBlock/3` instead. */
-  deprecated predicate controlsBlock(BasicBlock controlled, ConditionalSuccessor s) {
-    this.controlsBlock(controlled, s, _)
-  }
-
-  /**
-   * DEPRECATED.
-   *
-   * Holds if control flow element `controlled` is controlled by this control flow
-   * element with conditional value `s`. That is, `controlled` can only be reached
-   * from the callable entry point by going via the `s` edge out of this element.
-   *
-   * This predicate is different from
-   *
-   * ```ql
-   * exists(ConditionBlock cb |
-   *   cb.getLastNode() = this.getAControlFlowNode() |
-   *   cb.controls(controlled.getAControlFlowNode().getBasicBlock(), s)
-   * )
-   * ```
-   *
-   * as control flow splitting is taken into account.
-   */
-  // potentially very large predicate, so must be inlined
-  pragma[inline]
-  deprecated predicate controlsElement(ControlFlowElement controlled, ConditionalSuccessor s) {
-    forex(BasicBlock bb | bb = controlled.getAControlFlowNode().getBasicBlock() |
-      this.controlsBlock(bb, s)
-    )
-  }
 }

@@ -164,16 +164,6 @@ class HexLiteral extends Literal {
 class AggregateLiteral extends Expr, @aggregateliteral {
   override string getAPrimaryQlClass() { result = "AggregateLiteral" }
 
-  /**
-   * DEPRECATED: Use ClassAggregateLiteral.getFieldExpr() instead.
-   *
-   * Gets the expression within the aggregate literal that is used to initialise field `f`,
-   * if this literal is being used to initialise a class/struct instance.
-   */
-  deprecated Expr getCorrespondingExpr(Field f) {
-    result = this.(ClassAggregateLiteral).getFieldExpr(f)
-  }
-
   override predicate mayBeImpure() { this.getAChild().mayBeImpure() }
 
   override predicate mayBeGloballyImpure() { this.getAChild().mayBeGloballyImpure() }

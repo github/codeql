@@ -10,7 +10,7 @@ private import FeaturizationConfig
 /**
  * Gets a tokenized representation of the AST node for use in the `enclosingFunctionBody` feature.
  */
-string getTokenizedAstNode(ASTNode node) {
+string getTokenizedAstNode(AstNode node) {
   // e.g. `x` -> "x"
   result = node.(Identifier).getName()
   or
@@ -35,11 +35,14 @@ string getTokenizedAstNode(ASTNode node) {
 
 /** Gets an AST node within the function `f` that we should featurize. */
 pragma[inline]
-ASTNode getAnASTNodeToFeaturize(Function f) {
+AstNode getAnAstNodeToFeaturize(Function f) {
   result.getParent*() = f and
   // Don't featurize the function name as part of the function body tokens
   not result = f.getIdentifier()
 }
+
+/** DEPRECATED: Alias for getAnAstNodeToFeaturize */
+deprecated ASTNode getAnASTNodeToFeaturize(Function f) { result = getAnAstNodeToFeaturize(f) }
 
 /**
  * Gets a function that contains the endpoint.
@@ -72,7 +75,7 @@ private int getMaxNumAstNodes() { result = 1024 }
 private int getNumAstNodesInFunction(Function function) {
   // Restrict the values `function` can take on
   function = getAFunctionForEndpoint(_) and
-  result = count(getAnASTNodeToFeaturize(function))
+  result = count(getAnAstNodeToFeaturize(function))
 }
 
 /**
@@ -121,16 +124,19 @@ Function getRepresentativeFunctionForEndpoint(DataFlow::Node endpoint) {
 }
 
 /** Returns an AST node within the function `f` that an associated token feature. */
-ASTNode getAnASTNodeWithAFeature(Function f) {
+AstNode getAnAstNodeWithAFeature(Function f) {
   // Performance optimization: Restrict the set of functions to those containing an endpoint to featurize.
   f = getRepresentativeFunctionForEndpoint(any(FeaturizationConfig cfg).getAnEndpointToFeaturize()) and
-  result = getAnASTNodeToFeaturize(f)
+  result = getAnAstNodeToFeaturize(f)
 }
+
+/** DEPRECATED: Alias for getAnAstNodeWithAFeature */
+deprecated ASTNode getAnASTNodeWithAFeature(Function f) { result = getAnAstNodeWithAFeature(f) }
 
 /** Returns the number of source-code characters in a function. */
 int getNumCharsInFunction(Function f) {
   result =
-    strictsum(ASTNode node | node = getAnASTNodeWithAFeature(f) | getTokenizedAstNode(node).length())
+    strictsum(AstNode node | node = getAnAstNodeWithAFeature(f) | getTokenizedAstNode(node).length())
 }
 
 /**
@@ -149,8 +155,8 @@ string getBodyTokensFeature(Function function) {
   // large body features are replaced by the absent token.
   //
   // We count nodes instead of tokens because tokens are often not unique.
-  strictcount(ASTNode node |
-    node = getAnASTNodeToFeaturize(function) and
+  strictcount(AstNode node |
+    node = getAnAstNodeToFeaturize(function) and
     exists(getTokenizedAstNode(node))
   ) <= 256 and
   // Performance optimization: If a function has more than getMaxChars() characters in its body subtokens,
@@ -161,8 +167,8 @@ string getBodyTokensFeature(Function function) {
       // The use of a nested exists here allows us to avoid duplicates due to two AST nodes in the
       // same location featurizing to the same token. By using a nested exists, we take only unique
       // (location, token) pairs.
-      exists(ASTNode node |
-        node = getAnASTNodeToFeaturize(function) and
+      exists(AstNode node |
+        node = getAnAstNodeToFeaturize(function) and
         token = getTokenizedAstNode(node) and
         l = node.getLocation()
       )

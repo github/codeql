@@ -145,24 +145,6 @@ module PointsTo {
     )
   }
 
-  deprecated predicate ssa_variable_points_to(
-    EssaVariable var, PointsToContext context, Object obj, ClassObject cls, CfgOrigin origin
-  ) {
-    exists(ObjectInternal value |
-      PointsToInternal::variablePointsTo(var, context, value, origin) and
-      cls = value.getClass().getSource()
-    |
-      obj = value.getSource()
-    )
-  }
-
-  deprecated CallNode get_a_call(Object func, PointsToContext context) {
-    exists(ObjectInternal value |
-      result = value.(Value).getACall(context) and
-      func = value.getSource()
-    )
-  }
-
   cached
   predicate moduleExports(ModuleObjectInternal mod, string name) {
     InterModulePointsTo::moduleExportsBoolean(mod, name) = true
@@ -2413,7 +2395,7 @@ module Types {
     )
   }
 
-  /* Holds if type inference failed to compute the full class hierarchy for this class for the reason given. */
+  /** Holds if type inference failed to compute the full class hierarchy for this class for the reason given. */
   private predicate failedInference(ClassObjectInternal cls, string reason, int priority) {
     strictcount(cls.(PythonClassObjectInternal).getScope().getADecorator()) > 1 and
     reason = "Multiple decorators" and

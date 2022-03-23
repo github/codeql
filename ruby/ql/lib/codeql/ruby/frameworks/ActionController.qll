@@ -11,6 +11,7 @@ private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 private import ActionView
 private import codeql.ruby.frameworks.ActionDispatch
+private import codeql.ruby.Concepts
 
 /**
  * A `ClassDeclaration` for a class that extends `ActionController::Base`.
@@ -126,10 +127,8 @@ abstract class ParamsCall extends MethodCall {
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `params` method.
  */
-class ParamsSource extends RemoteFlowSource::Range {
-  ParamsCall call;
-
-  ParamsSource() { this.asExpr().getExpr() = call }
+class ParamsSource extends HTTP::Server::RequestInputAccess::Range {
+  ParamsSource() { this.asExpr().getExpr() instanceof ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
 }
@@ -145,10 +144,8 @@ abstract class CookiesCall extends MethodCall {
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `cookies` method.
  */
-class CookiesSource extends RemoteFlowSource::Range {
-  CookiesCall call;
-
-  CookiesSource() { this.asExpr().getExpr() = call }
+class CookiesSource extends HTTP::Server::RequestInputAccess::Range {
+  CookiesSource() { this.asExpr().getExpr() instanceof CookiesCall }
 
   override string getSourceType() { result = "ActionController::Metal#cookies" }
 }

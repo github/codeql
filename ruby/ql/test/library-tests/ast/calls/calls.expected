@@ -113,6 +113,7 @@ callsWithArguments
 | calls.rb:345:1:345:15 | call to foo | foo | 1 | calls.rb:345:9:345:14 | Pair |
 | calls.rb:346:1:346:10 | call to foo | foo | 0 | calls.rb:346:5:346:9 | Pair |
 | calls.rb:347:1:347:7 | call to foo | foo | 0 | calls.rb:347:5:347:6 | Pair |
+| calls.rb:352:13:352:17 | call to foo | foo | 0 | calls.rb:352:17:352:17 | x |
 callsWithReceiver
 | calls.rb:2:1:2:5 | call to foo | calls.rb:2:1:2:5 | self |
 | calls.rb:5:1:5:10 | call to bar | calls.rb:5:1:5:3 | Foo |
@@ -368,6 +369,9 @@ callsWithReceiver
 | calls.rb:345:1:345:15 | call to foo | calls.rb:345:1:345:15 | self |
 | calls.rb:346:1:346:10 | call to foo | calls.rb:346:1:346:10 | self |
 | calls.rb:347:1:347:7 | call to foo | calls.rb:347:1:347:7 | self |
+| calls.rb:352:13:352:17 | call to foo | calls.rb:352:13:352:17 | self |
+| calls.rb:353:13:353:24 | call to unknown_call | calls.rb:353:13:353:24 | self |
+| calls.rb:357:3:357:14 | call to unknown_call | calls.rb:357:3:357:14 | self |
 callsWithBlock
 | calls.rb:17:1:17:17 | call to foo | calls.rb:17:5:17:17 | { ... } |
 | calls.rb:20:1:22:3 | call to foo | calls.rb:20:5:22:3 | do ... end |

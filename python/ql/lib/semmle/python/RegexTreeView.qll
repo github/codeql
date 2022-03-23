@@ -445,6 +445,8 @@ class RegExpAlt extends RegExpTerm, TRegExpAlt {
   override string getPrimaryQLClass() { result = "RegExpAlt" }
 }
 
+class RegExpCharEscape = RegExpEscape;
+
 /**
  * An escaped regular expression term, that is, a regular expression
  * term starting with a backslash, which is not a backreference.
@@ -750,6 +752,9 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
    * not a capture group.
    */
   int getNumber() { result = re.getGroupNumber(start, end) }
+
+  /** Holds if this is a capture group. */
+  predicate isCapture() { exists(this.getNumber()) }
 
   /** Holds if this is a named capture group. */
   predicate isNamed() { exists(this.getName()) }

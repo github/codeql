@@ -1,0 +1,14 @@
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1463:5:1463:89 | IS_OS_WINDOWS_2000 |
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1475:5:1475:89 | IS_OS_WINDOWS_2003 |
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1487:5:1487:89 | IS_OS_WINDOWS_2008 |
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1499:5:1499:89 | IS_OS_WINDOWS_2012 |
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1511:5:1511:87 | IS_OS_WINDOWS_95 |
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1523:5:1523:87 | IS_OS_WINDOWS_98 |
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1535:5:1535:87 | IS_OS_WINDOWS_ME |
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1547:5:1547:87 | IS_OS_WINDOWS_NT |
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1559:5:1559:87 | IS_OS_WINDOWS_XP |
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1572:5:1572:90 | IS_OS_WINDOWS_VISTA |
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1584:5:1584:86 | IS_OS_WINDOWS_7 |
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1596:5:1596:86 | IS_OS_WINDOWS_8 |
+| ../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/SystemUtils.java:1608:5:1608:87 | IS_OS_WINDOWS_10 |
+| Test.java:42:13:42:40 | SystemUtils.IS_OS_WINDOWS_XP |

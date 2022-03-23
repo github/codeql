@@ -113,10 +113,6 @@ private module PartialDefinitions {
   abstract class PartialDefinition extends Expr {
     ControlFlowNode node;
 
-    abstract deprecated predicate partiallyDefines(Variable v);
-
-    abstract deprecated predicate partiallyDefinesThis(ThisExpr e);
-
     /**
      * Gets the subBasicBlock where this `PartialDefinition` is defined.
      */
@@ -189,10 +185,6 @@ private module PartialDefinitions {
       )
     }
 
-    deprecated override predicate partiallyDefines(Variable v) { v = collection }
-
-    deprecated override predicate partiallyDefinesThis(ThisExpr e) { none() }
-
     override predicate definesExpressions(Expr inner, Expr outer) {
       inner = innerDefinedExpr and
       outer = this
@@ -216,12 +208,6 @@ private module PartialDefinitions {
     Expr innerDefinedExpr;
 
     VariablePartialDefinition() { innerDefinedExpr = getInnerDefinedExpr(this, node) }
-
-    deprecated override predicate partiallyDefines(Variable v) {
-      innerDefinedExpr = v.getAnAccess()
-    }
-
-    deprecated override predicate partiallyDefinesThis(ThisExpr e) { innerDefinedExpr = e }
 
     /**
      * Holds if this partial definition may modify `inner` (or what it points

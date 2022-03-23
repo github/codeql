@@ -26,9 +26,6 @@ private newtype TSuccessorType =
 class SuccessorType extends TSuccessorType {
   /** Gets a textual representation of successor type. */
   string toString() { none() }
-
-  /** Holds if this successor type matches completion `c`. */
-  deprecated predicate matchesCompletion(Completion c) { this = c.getAMatchingSuccessorType() }
 }
 
 /** Provides different types of control flow successor types. */

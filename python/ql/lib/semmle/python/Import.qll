@@ -167,13 +167,6 @@ class Import extends Import_ {
     result = this.getAName().getValue().(ImportMember).getModule()
   }
 
-  /**
-   * Use getAnImportedModuleName(),
-   * possibly combined with ModuleObject.importedAs()
-   * Gets a module imported by this import statement
-   */
-  deprecated Module getAModule() { result.getName() = this.getAnImportedModuleName() }
-
   /** Whether this a `from ... import ...` statement */
   predicate isFromImport() { this.getAName().getValue() instanceof ImportMember }
 
@@ -217,13 +210,6 @@ class ImportStar extends ImportStar_ {
   }
 
   override string toString() { result = "from " + this.getModuleExpr().getName() + " import *" }
-
-  /**
-   * Use getAnImportedModuleName(),
-   * possibly combined with ModuleObject.importedAs()
-   * Gets the module imported by this import * statement
-   */
-  deprecated Module getTheModule() { result.getName() = this.getImportedModuleName() }
 
   override Expr getASubExpression() { result = this.getModule() }
 

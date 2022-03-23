@@ -26,6 +26,15 @@ module TaintedUrlSuffix {
    */
   FlowLabel label() { result instanceof TaintedUrlSuffixLabel }
 
+  /** Gets a remote flow source that is a tainted URL query or fragment part from `window.location`. */
+  ClientSideRemoteFlowSource source() {
+    result = DOM::locationRef().getAPropertyRead(["search", "hash"])
+    or
+    result = DOM::locationSource()
+    or
+    result.getKind().isUrl()
+  }
+
   /** Holds for `pred -> succ` is a step of form `x -> x.p` */
   private predicate isSafeLocationProp(DataFlow::PropRead read) {
     // Ignore properties that refer to the scheme, domain, port, auth, or path.

@@ -1,4 +1,5 @@
 import shared.FlowSummaries
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate::Csv
 private import semmle.code.csharp.dataflow.ExternalFlow
 
 class IncludeFilteredSummarizedCallable extends IncludeSummarizedCallable {
@@ -14,7 +15,7 @@ class IncludeFilteredSummarizedCallable extends IncludeSummarizedCallable {
   ) {
     this.propagatesFlow(input, output, preservesValue) and
     not exists(IncludeSummarizedCallable rsc |
-      rsc.isBaseCallableOrPrototype() and
+      isBaseCallableOrPrototype(rsc) and
       rsc.propagatesFlow(input, output, preservesValue) and
       this.(UnboundCallable).overridesOrImplementsUnbound(rsc)
     )

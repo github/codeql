@@ -30,7 +30,7 @@
 		<p>
 
 			Escape all meta-characters appropriately when constructing
-			regular expressions for security checks, pay special attention to the
+			regular expressions for security checks, and pay special attention to the
 			<code>.</code> meta-character.
 
 		</p>
@@ -59,7 +59,7 @@
 		<p>
 
 			Address this vulnerability by escaping <code>.</code>
-			appropriately: <code>let regex = /((www|beta)\.)?example\.com/</code>.
+			appropriately: <code>let regex = /^((www|beta)\.)?example\.com/</code>.
 
 		</p>
 

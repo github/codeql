@@ -2026,3 +2026,52 @@ abstract class SyntheticField extends string {
   /** Gets the type of this synthetic field. */
   Type getType() { result instanceof ObjectType }
 }
+
+/**
+ * Holds if the the content `c` is a container.
+ */
+predicate containerContent(DataFlow::Content c) { c instanceof DataFlow::ElementContent }
+
+/**
+ * A module containing predicates related to generating models as data.
+ */
+module Csv {
+  private string parameterQualifiedTypeNamesToString(DataFlowCallable c) {
+    result =
+      concat(Parameter p, int i |
+        p = c.getParameter(i)
+      |
+        p.getType().getQualifiedName(), "," order by i
+      )
+  }
+
+  /** Holds if the summary should apply for all overrides of `c`. */
+  predicate isBaseCallableOrPrototype(DataFlowCallable c) {
+    c.getDeclaringType() instanceof Interface
+    or
+    exists(Modifiable m | m = [c.(Modifiable), c.(Accessor).getDeclaration()] |
+      m.isAbstract()
+      or
+      c.getDeclaringType().(Modifiable).isAbstract() and m.(Virtualizable).isVirtual()
+    )
+  }
+
+  /** Gets a string representing whether the summary should apply for all overrides of `c`. */
+  private string getCallableOverride(DataFlowCallable c) {
+    if isBaseCallableOrPrototype(c) then result = "true" else result = "false"
+  }
+
+  /** Computes the first 6 columns for CSV rows of `c`. */
+  string asPartialModel(DataFlowCallable c) {
+    exists(string namespace, string type |
+      c.getDeclaringType().hasQualifiedName(namespace, type) and
+      result =
+        namespace + ";" //
+          + type + ";" //
+          + getCallableOverride(c) + ";" //
+          + c.getName() + ";" //
+          + "(" + parameterQualifiedTypeNamesToString(c) + ")" //
+          + /* ext + */ ";" //
+    )
+  }
+}

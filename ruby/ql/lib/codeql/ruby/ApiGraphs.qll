@@ -266,6 +266,41 @@ module API {
   /** A node corresponding to the method being invoked at a method call. */
   class MethodAccessNode extends Node, Impl::MkMethodAccessNode {
     override string toString() { result = "MethodAccessNode " + tryGetPath(this) }
+
+    /** Gets the call node corresponding to this method access. */
+    DataFlow::CallNode getCallNode() { this = Impl::MkMethodAccessNode(result) }
+  }
+
+  /**
+   * An API entry point.
+   *
+   * By default, API graph nodes are only created for nodes that come from an external
+   * library or escape into an external library. The points where values are cross the boundary
+   * between codebases are called "entry points".
+   *
+   * Anything in the global scope is considered to be an entry point, but
+   * additional entry points may be added by extending this class.
+   */
+  abstract class EntryPoint extends string {
+    bindingset[this]
+    EntryPoint() { any() }
+
+    /** Gets a data-flow node corresponding to a use-node for this entry point. */
+    DataFlow::LocalSourceNode getAUse() { none() }
+
+    /** Gets a data-flow node corresponding to a def-node for this entry point. */
+    DataFlow::Node getARhs() { none() }
+
+    /** Gets a call corresponding to a method access node for this entry point. */
+    DataFlow::CallNode getACall() { none() }
+
+    /** Gets an API-node for this entry point. */
+    API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
+  }
+
+  // Ensure all entry points are imported from ApiGraphs.qll
+  private module ImportEntryPoints {
+    private import codeql.ruby.frameworks.data.ModelsAsData
   }
 
   /** Gets the root node. */
@@ -324,7 +359,7 @@ module API {
 
     /**
      * Holds if `ref` is a use of a node that should have an incoming edge from the root
-     * node labeled `lbl` in the API graph.
+     * node labeled `lbl` in the API graph (not including those from API::EntryPoint).
      */
     pragma[nomagic]
     private predicate useRoot(Label::ApiLabel lbl, DataFlow::Node ref) {
@@ -371,6 +406,10 @@ module API {
       useCandFwd().flowsTo(nd.(DataFlow::CallNode).getReceiver())
       or
       parameterStep(_, defCand(), nd)
+      or
+      nd = any(EntryPoint entry).getAUse()
+      or
+      nd = any(EntryPoint entry).getACall()
     }
 
     /**
@@ -416,6 +455,8 @@ module API {
     private predicate isDef(DataFlow::Node rhs) {
       // If a call node is relevant as a use-node, treat its arguments as def-nodes
       argumentStep(_, useCandFwd(), rhs)
+      or
+      rhs = any(EntryPoint entry).getARhs()
     }
 
     /** Gets a data flow node that flows to the RHS of a def-node. */
@@ -590,6 +631,17 @@ module API {
           )
         )
       )
+      or
+      exists(EntryPoint entry |
+        pred = root() and
+        lbl = Label::entryPoint(entry)
+      |
+        succ = MkDef(entry.getARhs())
+        or
+        succ = MkUse(entry.getAUse())
+        or
+        succ = MkMethodAccessNode(entry.getACall())
+      )
     }
 
     /**
@@ -619,7 +671,8 @@ module API {
         or
         any(DataFlowDispatch::ParameterPosition c).isPositional(n)
       } or
-      MkLabelBlockParameter()
+      MkLabelBlockParameter() or
+      MkLabelEntryPoint(EntryPoint name)
   }
 
   /** Provides classes modeling the various edges (labels) in the API graph. */
@@ -710,6 +763,18 @@ module API {
 
         override string toString() { result = "getBlock()" }
       }
+
+      /** A label from the root node to a custom entry point. */
+      class LabelEntryPoint extends ApiLabel {
+        private API::EntryPoint name;
+
+        LabelEntryPoint() { this = MkLabelEntryPoint(name) }
+
+        override string toString() { result = name }
+
+        /** Gets the name of the entry point. */
+        API::EntryPoint getName() { result = name }
+      }
     }
 
     /** Gets the `member` edge label for member `m`. */
@@ -735,5 +800,8 @@ module API {
 
     /** Gets the label representing the block argument/parameter. */
     LabelBlockParameter blockParameter() { any() }
+
+    /** Gets the label for the edge from the root node to a custom entry point of the given name. */
+    LabelEntryPoint entryPoint(API::EntryPoint name) { result.getName() = name }
   }
 }

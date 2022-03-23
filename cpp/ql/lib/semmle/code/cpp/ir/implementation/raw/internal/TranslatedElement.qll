@@ -31,7 +31,7 @@ IRUserVariable getIRUserVariable(Function func, Variable var) {
 }
 
 IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
-  result.getAST() = ast and
+  result.getAst() = ast and
   result.getTag() = tag
 }
 
@@ -730,7 +730,10 @@ abstract class TranslatedElement extends TTranslatedElement {
   /**
    * Gets the AST node being translated.
    */
-  abstract Locatable getAST();
+  abstract Locatable getAst();
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated Locatable getAST() { result = getAst() }
 
   /**
    * Get the first instruction to be executed in the evaluation of this element.
@@ -929,16 +932,16 @@ abstract class TranslatedElement extends TTranslatedElement {
    */
   final IRTempVariable getTempVariable(TempVariableTag tag) {
     exists(Locatable ast |
-      result.getAST() = ast and
+      result.getAst() = ast and
       result.getTag() = tag and
-      hasTempVariableAndAST(tag, ast)
+      hasTempVariableAndAst(tag, ast)
     )
   }
 
   pragma[noinline]
-  private predicate hasTempVariableAndAST(TempVariableTag tag, Locatable ast) {
+  private predicate hasTempVariableAndAst(TempVariableTag tag, Locatable ast) {
     hasTempVariable(tag, _) and
-    ast = getAST()
+    ast = getAst()
   }
 
   /**

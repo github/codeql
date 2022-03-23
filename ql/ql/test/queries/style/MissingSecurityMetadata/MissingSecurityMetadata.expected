@@ -1,0 +1,2 @@
+| testcases/BadNoSecurity.ql:1:1:15:9 | TopLevel | This query file is missing a `@tag security`. |
+| testcases/BadNoSeverity.ql:1:1:15:9 | TopLevel | This query file is missing a `@security-severity` tag. |

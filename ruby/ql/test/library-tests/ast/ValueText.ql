@@ -1,4 +1,6 @@
 import ruby
+import codeql.ruby.controlflow.CfgNodes
 
-from Expr e
-select e, e.getConstantValue()
+query predicate exprValue(Expr e, ConstantValue v) { v = e.getConstantValue() }
+
+query predicate exprCfgNodeValue(ExprCfgNode n, ConstantValue v) { v = n.getConstantValue() }

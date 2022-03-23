@@ -45,7 +45,7 @@ private module Console {
    */
   private API::Node console() {
     result = API::moduleImport("console") or
-    result = any(ConsoleGlobalEntry e).getNode()
+    result = any(ConsoleGlobalEntry e).getANode()
   }
 
   /**
@@ -123,7 +123,7 @@ private module Winston {
 /**
  * Provides classes for working with [log4js](https://github.com/log4js-node/log4js-node).
  */
-private module log4js {
+private module Log4js {
   /**
    * A call to the log4js logging mechanism.
    */

@@ -99,12 +99,6 @@ class Module extends Module_, Scope, AstNode {
   /** Gets the metrics for this module */
   ModuleMetrics getMetrics() { result = this }
 
-  /**
-   * Use ModuleObject.getAnImportedModule() instead.
-   * Gets a module imported by this module
-   */
-  deprecated Module getAnImportedModule() { result.getName() = this.getAnImportedModuleName() }
-
   string getAnImportedModuleName() {
     exists(Import i | i.getEnclosingModule() = this | result = i.getAnImportedModuleName())
     or

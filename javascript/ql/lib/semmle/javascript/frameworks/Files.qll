@@ -212,12 +212,12 @@ private class RecursiveReadDir extends FileSystemAccess, FileNameProducer, API::
 /**
  * Classes and predicates for modeling the `jsonfile` library (https://www.npmjs.com/package/jsonfile).
  */
-private module JSONFile {
+private module JsonFile {
   /**
    * A reader for JSON files.
    */
-  class JSONFileReader extends FileSystemReadAccess, API::CallNode {
-    JSONFileReader() {
+  class JsonFileReader extends FileSystemReadAccess, API::CallNode {
+    JsonFileReader() {
       this = API::moduleImport("jsonfile").getMember(["readFile", "readFileSync"]).getACall()
     }
 
@@ -238,11 +238,14 @@ private module JSONFile {
     }
   }
 
+  /** DEPRECATED: Alias for JsonFileReader */
+  deprecated class JSONFileReader = JsonFileReader;
+
   /**
    * A writer for JSON files.
    */
-  class JSONFileWriter extends FileSystemWriteAccess, DataFlow::CallNode {
-    JSONFileWriter() {
+  class JsonFileWriter extends FileSystemWriteAccess, DataFlow::CallNode {
+    JsonFileWriter() {
       this =
         DataFlow::moduleMember("jsonfile", any(string s | s = "writeFile" or s = "writeFileSync"))
             .getACall()
@@ -252,6 +255,9 @@ private module JSONFile {
 
     override DataFlow::Node getADataNode() { result = this.getArgument(1) }
   }
+
+  /** DEPRECATED: Alias for JsonFileWriter */
+  deprecated class JSONFileWriter = JsonFileWriter;
 }
 
 /**

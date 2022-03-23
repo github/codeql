@@ -84,31 +84,3 @@ string getSecureAlgorithmRegex() {
       "(^|.*[A-Z]{2}|.*[^a-zA-Z0-9])(" + strictconcat(getASecureAlgorithmName().toLowerCase(), "|") +
       ")([^a-z0-9].*|$)"
 }
-
-/**
- * DEPRECATED: Terminology has been updated. Use `getAnInsecureAlgorithmName()`
- * instead.
- */
-deprecated string algorithmBlacklist() { result = getAnInsecureAlgorithmName() }
-
-/**
- * DEPRECATED: Terminology has been updated. Use
- * `getAnInsecureHashAlgorithmName()` instead.
- */
-deprecated string hashAlgorithmBlacklist() { result = getAnInsecureHashAlgorithmName() }
-
-/**
- * DEPRECATED: Terminology has been updated. Use `getInsecureAlgorithmRegex()` instead.
- */
-deprecated string algorithmBlacklistRegex() { result = getInsecureAlgorithmRegex() }
-
-/**
- * DEPRECATED: Terminology has been updated. Use `getASecureAlgorithmName()`
- * instead.
- */
-deprecated string algorithmWhitelist() { result = getASecureAlgorithmName() }
-
-/**
- * DEPRECATED: Terminology has been updated. Use `getSecureAlgorithmRegex()` instead.
- */
-deprecated string algorithmWhitelistRegex() { result = getSecureAlgorithmRegex() }

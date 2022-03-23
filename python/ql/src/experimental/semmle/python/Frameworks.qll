@@ -3,6 +3,7 @@
  */
 
 private import experimental.semmle.python.frameworks.Stdlib
+private import experimental.semmle.python.frameworks.Xml
 private import experimental.semmle.python.frameworks.Flask
 private import experimental.semmle.python.frameworks.Django
 private import experimental.semmle.python.frameworks.Werkzeug

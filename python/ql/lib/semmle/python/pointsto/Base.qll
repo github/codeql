@@ -120,7 +120,7 @@ int version_tuple_compare(Object t) {
   version_tuple_value(t) > major_minor() and result = 1
 }
 
-/* Holds if `cls` is a new-style class if it were to have no explicit base classes */
+/** Holds if `cls` is a new-style class if it were to have no explicit base classes */
 predicate baseless_is_new_style(ClassObject cls) {
   cls.isBuiltin()
   or
@@ -183,22 +183,6 @@ predicate function_can_never_return(FunctionObject func) {
   )
   or
   func = ModuleObject::named("sys").attr("exit")
-}
-
-private newtype TIterationDefinition =
-  TIterationDefinition_(SsaSourceVariable var, ControlFlowNode def, ControlFlowNode sequence) {
-    SsaSource::iteration_defined_variable(var, def, sequence)
-  }
-
-/**
- * DEPRECATED. For backwards compatibility only.
- * A definition of a variable in a for loop `for v in ...:`
- */
-deprecated class IterationDefinition extends TIterationDefinition {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "IterationDefinition" }
-
-  ControlFlowNode getSequence() { this = TIterationDefinition_(_, _, result) }
 }
 
 /** Hold if outer contains inner, both are contained within a test and inner is a use is a plain use or an attribute lookup */
