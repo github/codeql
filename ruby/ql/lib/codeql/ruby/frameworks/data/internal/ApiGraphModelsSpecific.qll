@@ -109,9 +109,6 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   token.getName() = "Instance" and
   result = node.getInstance()
   or
-  token.getName() = "BlockArgument" and // TODO: replace with Argument[block]
-  result = node.getBlock()
-  or
   token.getName() = "Parameter" and
   result =
     node.getASuccessor(API::Label::getLabelFromArgumentPosition(FlowSummaryImplSpecific::parseParamBody(token
@@ -158,7 +155,7 @@ InvokeNode getAnInvocationOf(API::Node node) { result = node }
  */
 bindingset[name]
 predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
-  name = ["Member", "Method", "Instance", "WithBlock", "WithoutBlock", "BlockArgument"]
+  name = ["Member", "Method", "Instance", "WithBlock", "WithoutBlock"]
 }
 
 /**
@@ -166,7 +163,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
  * in an identifying access path.
  */
 predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
-  name = ["Instance", "WithBlock", "WithoutBlock", "BlockArgument"]
+  name = ["Instance", "WithBlock", "WithoutBlock"]
 }
 
 /**

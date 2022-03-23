@@ -213,7 +213,7 @@ module String {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = false and
       input = "Receiver" and
-      output = ["BlockArgument.Parameter[0]", "ReturnValue"]
+      output = ["Argument[block].Parameter[0]", "ReturnValue"]
     }
   }
 
@@ -278,7 +278,7 @@ module String {
       // block return -> return value
       preservesValue = false and
       output = "ReturnValue" and
-      input = ["Receiver", "Argument[1]", "BlockArgument.ReturnValue"]
+      input = ["Receiver", "Argument[1]", "Argument[block].ReturnValue"]
     }
   }
 
@@ -394,7 +394,7 @@ module String {
           "ReturnValue",
           // scan(pattern) {|match, ...| block } -> str
           // Parameter[_] doesn't seem to work
-          "BlockArgument.Parameter[" + [0 .. 10] + "]"
+          "Argument[block].Parameter[" + [0 .. 10] + "]"
         ]
     }
   }
@@ -431,11 +431,11 @@ module String {
       preservesValue = false and
       (
         input = "Receiver" and
-        output = "BlockArgument.Parameter[0]"
+        output = "Argument[block].Parameter[0]"
         or
         input = "Argument[0]" and output = "ReturnValue"
         or
-        input = "BlockArgument.ReturnValue" and
+        input = "Argument[block].ReturnValue" and
         output = "ReturnValue"
       )
     }
@@ -552,10 +552,10 @@ module String {
       taintIdentityFlow(input, output, preservesValue)
       or
       input = ["Receiver", "Argument[0]"] and
-      output = "BlockArgument.Parameter[0]" and
+      output = "Argument[block].Parameter[0]" and
       preservesValue = false
       or
-      input = "BlockArgument.ReturnValue" and
+      input = "Argument[block].ReturnValue" and
       output = "ReturnValue.ArrayElement[?]" and
       preservesValue = false
     }
@@ -572,10 +572,10 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Receiver" and
-      output = "BlockArgument.Parameter[0]" and
+      output = "Argument[block].Parameter[0]" and
       preservesValue = false
       or
-      input = "BlockArgument.ReturnValue" and
+      input = "Argument[block].ReturnValue" and
       output = "ReturnValue.ArrayElement[?]" and
       preservesValue = false
     }

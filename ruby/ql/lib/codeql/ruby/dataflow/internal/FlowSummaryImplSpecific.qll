@@ -62,9 +62,6 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   c = "Receiver" and // TODO: replace with Argument[self]
   result = FlowSummary::SummaryComponent::receiver()
   or
-  c = "BlockArgument" and // TODO: replace with Argument[block]
-  result = FlowSummary::SummaryComponent::block()
-  or
   c = "Argument[_]" and
   result = FlowSummary::SummaryComponent::argument(any(ParameterPosition pos | pos.isPositional(_)))
   or
@@ -82,10 +79,7 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecificCsv(SummaryComponent sc) {
-  sc = TArgumentSummaryComponent(any(ParameterPosition pos | pos.isBlock())) and
-  result = "BlockArgument" // TODO: replace with Argument[block]
-}
+string getComponentSpecificCsv(SummaryComponent sc) { none() }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
 string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
