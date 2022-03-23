@@ -66,14 +66,8 @@ string asPartialModel(TargetApi api) {
  */
 predicate isRelevantType(Type t) { not t instanceof Enum }
 
-private predicate isPrimitiveTypeUsedForBulkData(Type t) {
-  t.getName().regexpMatch("byte|char|Byte|Char")
-}
-
 private string parameterAccess(Parameter p) {
-  if
-    isCollectionType(p.getType()) and
-    not isPrimitiveTypeUsedForBulkData(p.getType().(ArrayType).getElementType())
+  if isCollectionType(p.getType())
   then result = "Argument[" + p.getPosition() + "].Element"
   else result = "Argument[" + p.getPosition() + "]"
 }

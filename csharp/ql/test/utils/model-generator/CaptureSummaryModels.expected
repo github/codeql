@@ -8,9 +8,6 @@
 | Summaries;BasicFlow;false;ReturnSubstring;(System.String);Argument[0];ReturnValue;taint |
 | Summaries;BasicFlow;false;ReturnThis;(System.Object);Argument[Qualifier];ReturnValue;value |
 | Summaries;BasicFlow;false;SetField;(System.String);Argument[0];Argument[Qualifier];taint |
-| Summaries;BulkArrayFlow;false;AssignFieldToBulkArray;(System.Char[]);Argument[Qualifier];Argument[0];taint |
-| Summaries;BulkArrayFlow;false;AssignToBulkArray;(System.Char[],System.Char);Argument[1];Argument[0];taint |
-| Summaries;BulkArrayFlow;false;ReturnBulkArrayElement;(System.Byte[]);Argument[0];ReturnValue;taint |
 | Summaries;CollectionFlow;false;AddFieldToList;(System.Collections.Generic.List<System.String>);Argument[Qualifier];Argument[0].Element;taint |
 | Summaries;CollectionFlow;false;AddToList;(System.Collections.Generic.List<System.Object>,System.Object);Argument[1];Argument[0].Element;taint |
 | Summaries;CollectionFlow;false;AssignFieldToArray;(System.Object[]);Argument[Qualifier];Argument[0].Element;taint |
