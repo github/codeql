@@ -6,22 +6,31 @@ newtype TMaybeControlFlowNode =
 
 class MaybeControlFlowNode extends TMaybeControlFlowNode {
   abstract string toString();
+
   abstract Location getLocation();
+
   abstract string getPrimaryQlClasses();
 }
 
 class YesMaybeControlFlowNode extends MaybeControlFlowNode {
   ControlFlowNode c;
+
   YesMaybeControlFlowNode() { this = TControlFlowNode(c) }
+
   override string toString() { result = c.toString() }
+
   override Location getLocation() { result = c.getLocation() }
+
   override string getPrimaryQlClasses() { result = c.getPrimaryQlClasses() }
 }
 
 class NoMaybeControlFlowNode extends MaybeControlFlowNode {
   NoMaybeControlFlowNode() { this = TNoControlFlowNode() }
+
   override string toString() { result = "<none>" }
+
   override Location getLocation() { result.toString() = "file://:0:0:0:0" }
+
   override string getPrimaryQlClasses() { result = "<none>" }
 }
 
@@ -32,7 +41,7 @@ MaybeControlFlowNode maybeSuccessor(ControlFlowNode n) {
 }
 
 from ControlFlowNode n, MaybeControlFlowNode m
-where m = maybeSuccessor(n)
-  and n.getFile().(CompilationUnit).fromSource()
+where
+  m = maybeSuccessor(n) and
+  n.getFile().(CompilationUnit).fromSource()
 select n, n.getPrimaryQlClasses(), m, m.getPrimaryQlClasses()
-

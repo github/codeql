@@ -1,9 +1,9 @@
 import java
 
 from Expr e, int n
-where n = count(e.getType())
-  and n != 1
+where
+  n = count(e.getType()) and
+  n != 1 and
   // Java #144
-  and not e instanceof ReflectiveAccessAnnotation
+  not e instanceof ReflectiveAccessAnnotation
 select e, n
-

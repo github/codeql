@@ -700,14 +700,10 @@ class Class extends ClassOrInterface, @class {
 
 /** A Kotlin `object`. */
 class ClassObject extends Class {
-  ClassObject() {
-    class_object(this, _)
-  }
+  ClassObject() { class_object(this, _) }
 
   /** Gets the instance variable that implements this `object`. */
-  Field getInstance() {
-    class_object(this, result)
-  }
+  Field getInstance() { class_object(this, result) }
 }
 
 /** A Kotlin `companion object`. */

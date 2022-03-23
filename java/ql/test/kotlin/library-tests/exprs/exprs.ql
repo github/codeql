@@ -6,6 +6,7 @@ newtype TMaybeElement =
 
 class MaybeElement extends TMaybeElement {
   abstract string toString();
+
   abstract Location getLocation();
 }
 
@@ -13,7 +14,9 @@ class YesMaybeElement extends MaybeElement {
   Element e;
 
   YesMaybeElement() { this = TElement(e) }
+
   override string toString() { result = e.toString() }
+
   override Location getLocation() { result = e.getLocation() }
 }
 
@@ -21,6 +24,7 @@ class NoMaybeElement extends MaybeElement {
   NoMaybeElement() { this = TNoElement() }
 
   override string toString() { result = "<none>" }
+
   override Location getLocation() { none() }
 }
 

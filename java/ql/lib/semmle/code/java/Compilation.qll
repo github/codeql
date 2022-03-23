@@ -40,10 +40,14 @@ class Compilation extends @compilation {
   predicate fileCompiledSuccessful(int i) { compilation_compiling_files_completed(this, i, 0) }
 
   /** Holds if the `i`th file during this invocation had recoverable extraction errors. */
-  predicate fileCompiledRecoverableErrors(int i) { compilation_compiling_files_completed(this, i, 1) }
+  predicate fileCompiledRecoverableErrors(int i) {
+    compilation_compiling_files_completed(this, i, 1)
+  }
 
   /** Holds if the `i`th file during this invocation had non-recoverable extraction errors. */
-  predicate fileCompiledNonRecoverableErrors(int i) { compilation_compiling_files_completed(this, i, 2) }
+  predicate fileCompiledNonRecoverableErrors(int i) {
+    compilation_compiling_files_completed(this, i, 2)
+  }
 
   /**
    * Gets the amount of CPU time spent processing file number `i` in the

@@ -6,17 +6,20 @@ string paramTypeIfPresent(Callable m) {
   else result = "No parameters"
 }
 
-query predicate calls(MethodAccess ma, Callable caller, RefType callerType, Callable called, RefType calledType) {
-
+query predicate calls(
+  MethodAccess ma, Callable caller, RefType callerType, Callable called, RefType calledType
+) {
   ma.getEnclosingCallable() = caller and
   ma.getCallee() = called and
   caller.fromSource() and
   callerType = caller.getDeclaringType() and
   calledType = called.getDeclaringType()
-
 }
 
-query predicate constructors(RefType t, Constructor c, string signature, string paramType, string returnType, RefType sourceDeclType, Constructor sourceDecl) {
+query predicate constructors(
+  RefType t, Constructor c, string signature, string paramType, string returnType,
+  RefType sourceDeclType, Constructor sourceDecl
+) {
   t.getSourceDeclaration().fromSource() and
   c.getDeclaringType() = t and
   signature = c.getSignature() and
@@ -31,13 +34,13 @@ query predicate constructorCalls(ConstructorCall cc, Constructor callee) {
   callee.getSourceDeclaration().fromSource()
 }
 
-query predicate refTypes(RefType rt) {
-  rt.fromSource()
-}
+query predicate refTypes(RefType rt) { rt.fromSource() }
 
 from RefType t, Method m, Method sourceDecl, RefType sourceDeclType
-where t.getSourceDeclaration().fromSource() 
-and m.getDeclaringType() = t 
-and sourceDecl = m.getSourceDeclaration() 
-and sourceDeclType = sourceDecl.getDeclaringType()
-select t, m, m.getSignature(), paramTypeIfPresent(m), m.getReturnType().toString(), sourceDeclType, sourceDecl
+where
+  t.getSourceDeclaration().fromSource() and
+  m.getDeclaringType() = t and
+  sourceDecl = m.getSourceDeclaration() and
+  sourceDeclType = sourceDecl.getDeclaringType()
+select t, m, m.getSignature(), paramTypeIfPresent(m), m.getReturnType().toString(), sourceDeclType,
+  sourceDecl

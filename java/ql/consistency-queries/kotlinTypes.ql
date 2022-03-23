@@ -10,9 +10,9 @@ predicate badKotlinType(Element e, int i) {
 }
 
 from Element e, int i
-where // TODO: Java extractor doesn't populate these yet
-      e.getFile().isKotlinSourceFile()
-  and badKotlinType(e, i)
-  and i != 1
+where
+  // TODO: Java extractor doesn't populate these yet
+  e.getFile().isKotlinSourceFile() and
+  badKotlinType(e, i) and
+  i != 1
 select e, i
-
