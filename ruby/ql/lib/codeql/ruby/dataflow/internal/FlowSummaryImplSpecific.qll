@@ -79,10 +79,38 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
 string getComponentSpecificCsv(SummaryComponent sc) { none() }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
-string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
+string getParameterPositionCsv(ParameterPosition pos) {
+  pos.isSelf() and result = "self"
+  or
+  pos.isBlock() and result = "block"
+  or
+  exists(int i |
+    pos.isPositional(i) and
+    result = i.toString()
+  )
+  or
+  exists(string name |
+    pos.isKeyword(name) and
+    result = name + ":"
+  )
+}
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
-string getArgumentPositionCsv(ArgumentPosition pos) { result = pos.toString() }
+string getArgumentPositionCsv(ArgumentPosition pos) {
+  pos.isSelf() and result = "self"
+  or
+  pos.isBlock() and result = "block"
+  or
+  exists(int i |
+    pos.isPositional(i) and
+    result = i.toString()
+  )
+  or
+  exists(string name |
+    pos.isKeyword(name) and
+    result = name + ":"
+  )
+}
 
 /** Holds if input specification component `c` needs a reference. */
 predicate inputNeedsReferenceSpecific(string c) { none() }
