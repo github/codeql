@@ -24,6 +24,9 @@ predicate isOwnInstanceAccessNode(ReturnNode node) { node.asExpr() instanceof Th
  */
 string qualifierString() { result = "Argument[Qualifier]" }
 
+/**
+ * Language specific parts of the `PropagateToSinkConfiguration`.
+ */
 class PropagateToSinkConfigurationSpecific extends TaintTracking::Configuration {
   PropagateToSinkConfigurationSpecific() { this = "parameters or fields flowing into sinks" }
 
@@ -34,6 +37,9 @@ class PropagateToSinkConfigurationSpecific extends TaintTracking::Configuration 
   }
 }
 
+/**
+ * Gets the CSV input string representation of `source`.
+ */
 string asInputArgument(DataFlow::Node source) {
   exists(int pos |
     pos = source.(DataFlow::ParameterNode).getParameter().getPosition() and
@@ -41,5 +47,5 @@ string asInputArgument(DataFlow::Node source) {
   )
   or
   source.asExpr() instanceof FieldAccess and
-  result = "Argument[Qualifier]"
+  result = qualifierString()
 }

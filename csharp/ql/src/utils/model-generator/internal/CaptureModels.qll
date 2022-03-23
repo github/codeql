@@ -98,6 +98,13 @@ string captureThroughFlow(TargetApi api) {
   )
 }
 
+/**
+ * A TaintTracking Configuration used for tracking flow through APIs.
+ * The sources are the already known existing sources and the sinks are the API return nodes.
+ *
+ * This can be used to generate Source summaries for an API, if the API expose an already known source
+ * via its return (then the API itself becomes a source).
+ */
 private class FromSourceConfiguration extends TaintTracking::Configuration {
   FromSourceConfiguration() { this = "FromSourceConfiguration" }
 
@@ -131,6 +138,13 @@ string captureSource(TargetApi api) {
   )
 }
 
+/**
+ * A TaintTracking Configuration used for tracking flow through APIs.
+ * The sources are the parameters of the API and the fields of the enclosing type.
+ *
+ * This can be used to generate Sink summaries for APIs, if the API propgates a parameter (or enclosing type field)
+ * into an existing known sink (then the API itself becomes a sink).
+ */
 private class PropagateToSinkConfiguration extends PropagateToSinkConfigurationSpecific {
   PropagateToSinkConfiguration() { this = "parameters or fields flowing into sinks" }
 
