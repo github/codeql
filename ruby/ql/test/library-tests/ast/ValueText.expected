@@ -73,6 +73,7 @@ exprValue
 | calls/calls.rb:346:5:346:5 | :X | :X |
 | calls/calls.rb:346:8:346:9 | 42 | 42 |
 | calls/calls.rb:347:5:347:5 | :X | :X |
+| calls/calls.rb:350:5:350:5 | 1 | 1 |
 | constants/constants.rb:3:19:3:27 | "const_a" | const_a |
 | constants/constants.rb:6:15:6:23 | "const_b" | const_b |
 | constants/constants.rb:17:12:17:18 | "Hello" | Hello |
@@ -927,6 +928,7 @@ exprCfgNodeValue
 | calls/calls.rb:346:5:346:5 | :X | :X |
 | calls/calls.rb:346:8:346:9 | 42 | 42 |
 | calls/calls.rb:347:5:347:5 | :X | :X |
+| calls/calls.rb:350:5:350:5 | 1 | 1 |
 | constants/constants.rb:3:19:3:27 | "const_a" | const_a |
 | constants/constants.rb:6:15:6:23 | "const_b" | const_b |
 | constants/constants.rb:17:12:17:18 | "Hello" | Hello |

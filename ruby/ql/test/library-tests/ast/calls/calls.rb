@@ -345,3 +345,14 @@ foo(x: 42)
 foo(x:, novar:)
 foo(X: 42)
 foo(X:)
+
+# calls inside lambdas
+y = 1
+id = ->(x) { y }
+f = ->(x) { foo x }
+g = ->(x) { unknown_call }
+h = -> (x) do
+  x
+  y
+  unknown_call
+end
