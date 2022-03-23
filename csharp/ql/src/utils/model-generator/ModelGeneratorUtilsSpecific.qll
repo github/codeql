@@ -1,6 +1,7 @@
 import csharp
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.commons.Util
+private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 
@@ -28,14 +29,8 @@ predicate asPartialModel = Csv::asPartialModel/1;
  */
 predicate isRelevantType(Type t) { not t instanceof Enum }
 
-private predicate isPrimitiveTypeUsedForBulkData(Type t) {
-  t.getName().regexpMatch("byte|char|Byte|Char")
-}
-
 private string parameterAccess(Parameter p) {
-  if
-    p.getType() instanceof ArrayType and
-    not isPrimitiveTypeUsedForBulkData(p.getType().(ArrayType).getElementType())
+  if isCollectionType(p.getType())
   then result = "Argument[" + p.getPosition() + "].Element"
   else result = "Argument[" + p.getPosition() + "]"
 }
