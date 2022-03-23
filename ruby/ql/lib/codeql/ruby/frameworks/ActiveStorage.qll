@@ -24,7 +24,7 @@ private class Summaries extends ModelInput::SummaryModelCsv {
     row =
       [
         "activestorage;;Member[ActiveStorage].Member[Filename].Method[new];Argument[0];ReturnValue;taint",
-        "activestorage;;Member[ActiveStorage].Member[Filename].Instance.Method[sanitized];Receiver;ReturnValue;taint",
+        "activestorage;;Member[ActiveStorage].Member[Filename].Instance.Method[sanitized];Argument[self];ReturnValue;taint",
       ]
   }
 }

@@ -17,7 +17,7 @@ module String {
    * Taint-preserving (but not value-preserving) flow from the receiver to the return value.
    */
   private predicate taintIdentityFlow(string input, string output, boolean preservesValue) {
-    input = "Receiver" and
+    input = "Argument[self]" and
     output = "ReturnValue" and
     preservesValue = false
   }
@@ -58,7 +58,7 @@ module String {
     FormatSummary() { this = "%" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["Receiver", "Argument[0]", "Argument[0].ArrayElement"] and
+      input = ["Argument[self]", "Argument[0]", "Argument[0].ArrayElement"] and
       output = "ReturnValue" and
       preservesValue = false
     }
@@ -94,7 +94,7 @@ module String {
     CapitalizeSummary() { this = ["capitalize", "capitalize!"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Receiver" and
+      input = "Argument[self]" and
       preservesValue = false and
       output = "ReturnValue"
     }
@@ -125,9 +125,9 @@ module String {
       taintIdentityFlow(input, output, preservesValue)
       or
       this = ["chomp!", "chop!"] and
-      input = "Receiver" and
+      input = "Argument[self]" and
       preservesValue = false and
-      output = "Receiver"
+      output = "Argument[self]"
     }
   }
 
@@ -152,8 +152,8 @@ module String {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["Receiver", "Argument[_]"] and
-      output = ["ReturnValue", "Receiver"] and
+      input = ["Argument[self]", "Argument[_]"] and
+      output = ["ReturnValue", "Argument[self]"] and
       preservesValue = false
     }
   }
@@ -212,7 +212,7 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = false and
-      input = "Receiver" and
+      input = "Argument[self]" and
       output = ["Argument[block].Parameter[0]", "ReturnValue"]
     }
   }
@@ -225,7 +225,7 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = false and
-      input = "Receiver" and
+      input = "Argument[self]" and
       output = "ReturnValue.ArrayElement[?]"
     }
   }
@@ -278,7 +278,7 @@ module String {
       // block return -> return value
       preservesValue = false and
       output = "ReturnValue" and
-      input = ["Receiver", "Argument[1]", "Argument[block].ReturnValue"]
+      input = ["Argument[self]", "Argument[1]", "Argument[block].ReturnValue"]
     }
   }
 
@@ -339,7 +339,7 @@ module String {
     PartitionSummary() { this = ["partition", "rpartition"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Receiver" and
+      input = "Argument[self]" and
       output = "ReturnValue.ArrayElement[" + [0, 1, 2] + "]" and
       preservesValue = false
     }
@@ -353,7 +353,7 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and
-      output = ["ReturnValue", "Receiver"] and
+      output = ["ReturnValue", "Argument[self]"] and
       preservesValue = false
     }
     // TODO: we should also clear any existing content in Receiver
@@ -386,7 +386,7 @@ module String {
     ScanBlockSummary() { this = "scan_with_block" and exists(mc.getBlock()) }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Receiver" and
+      input = "Argument[self]" and
       preservesValue = false and
       output =
         [
@@ -404,7 +404,7 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       // scan(pattern) -> array
-      input = "Receiver" and
+      input = "Argument[self]" and
       output = "ReturnValue.ArrayElement[?]" and
       preservesValue = false
     }
@@ -430,7 +430,7 @@ module String {
       or
       preservesValue = false and
       (
-        input = "Receiver" and
+        input = "Argument[self]" and
         output = "Argument[block].Parameter[0]"
         or
         input = "Argument[0]" and output = "ReturnValue"
@@ -471,7 +471,7 @@ module String {
     ShellSplitSummary() { this = "shellsplit" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Receiver" and
+      input = "Argument[self]" and
       output = "ReturnValue.ArrayElement[?]" and
       preservesValue = false
     }
@@ -551,7 +551,7 @@ module String {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
       or
-      input = ["Receiver", "Argument[0]"] and
+      input = ["Argument[self]", "Argument[0]"] and
       output = "Argument[block].Parameter[0]" and
       preservesValue = false
       or
@@ -571,7 +571,7 @@ module String {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Receiver" and
+      input = "Argument[self]" and
       output = "Argument[block].Parameter[0]" and
       preservesValue = false
       or

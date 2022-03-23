@@ -59,9 +59,6 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
  */
 bindingset[c]
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
-  c = "Receiver" and // TODO: replace with Argument[self]
-  result = FlowSummary::SummaryComponent::receiver()
-  or
   c = "Argument[_]" and
   result = FlowSummary::SummaryComponent::argument(any(ParameterPosition pos | pos.isPositional(_)))
   or
