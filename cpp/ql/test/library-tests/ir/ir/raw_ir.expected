@@ -49,6 +49,38 @@ bad_asts.cpp:
 #   14|     v14_5(void)           = AliasedUse                      : ~m?
 #   14|     v14_6(void)           = ExitFunction                    : 
 
+#   19| void Bad::Point::Point(Bad::Point const&)
+#   19|   Block 0
+#   19|     v19_1(void)            = EnterFunction                                : 
+#   19|     mu19_2(unknown)        = AliasedDefinition                            : 
+#   19|     mu19_3(unknown)        = InitializeNonLocal                           : 
+#   19|     r19_4(glval<unknown>)  = VariableAddress[#this]                       : 
+#   19|     mu19_5(glval<Point>)   = InitializeParameter[#this]                   : &:r19_4
+#   19|     r19_6(glval<Point>)    = Load[#this]                                  : &:r19_4, ~m?
+#   19|     mu19_7(Point)          = InitializeIndirection[#this]                 : &:r19_6
+#-----|     r0_1(glval<Point &>)   = VariableAddress[(unnamed parameter 0)]       : 
+#-----|     mu0_2(Point &)         = InitializeParameter[(unnamed parameter 0)]   : &:r0_1
+#-----|     r0_3(Point &)          = Load[(unnamed parameter 0)]                  : &:r0_1, ~m?
+#-----|     mu0_4(unknown)         = InitializeIndirection[(unnamed parameter 0)] : &:r0_3
+#   19|     r19_8(glval<int>)      = FieldAddress[x]                              : mu19_5
+#   19|     r19_9(glval<Point &>)  = VariableAddress[(unnamed parameter 0)]       : 
+#   19|     r19_10(Point &)        = Load[(unnamed parameter 0)]                  : &:r19_9, ~m?
+#   19|     r19_11(glval<int>)     = FieldAddress[x]                              : r19_10
+#   19|     r19_12(int)            = Load[?]                                      : &:r19_11, ~m?
+#   19|     mu19_13(int)           = Store[?]                                     : &:r19_8, r19_12
+#   19|     r19_14(glval<int>)     = FieldAddress[y]                              : mu19_5
+#   19|     r19_15(glval<Point &>) = VariableAddress[(unnamed parameter 0)]       : 
+#   19|     r19_16(Point &)        = Load[(unnamed parameter 0)]                  : &:r19_15, ~m?
+#   19|     r19_17(glval<int>)     = FieldAddress[y]                              : r19_16
+#   19|     r19_18(int)            = Load[?]                                      : &:r19_17, ~m?
+#   19|     mu19_19(int)           = Store[?]                                     : &:r19_14, r19_18
+#   19|     v19_20(void)           = NoOp                                         : 
+#   19|     v19_21(void)           = ReturnIndirection[#this]                     : &:r19_6, ~m?
+#-----|     v0_5(void)             = ReturnIndirection[(unnamed parameter 0)]     : &:r0_3, ~m?
+#   19|     v19_22(void)           = ReturnVoid                                   : 
+#   19|     v19_23(void)           = AliasedUse                                   : ~m?
+#   19|     v19_24(void)           = ExitFunction                                 : 
+
 #   22| void Bad::Point::Point()
 #   22|   Block 0
 #   22|     v22_1(void)           = EnterFunction                : 
@@ -8029,6 +8061,74 @@ ir.cpp:
 # 1486|     v1486_16(void) = AliasedUse               : ~m?
 # 1486|     v1486_17(void) = ExitFunction             : 
 
+# 1486| void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct(StructuredBindingDataMemberStruct const&)
+# 1486|   Block 0
+# 1486|     v1486_1(void)                                            = EnterFunction                                : 
+# 1486|     mu1486_2(unknown)                                        = AliasedDefinition                            : 
+# 1486|     mu1486_3(unknown)                                        = InitializeNonLocal                           : 
+# 1486|     r1486_4(glval<unknown>)                                  = VariableAddress[#this]                       : 
+# 1486|     mu1486_5(glval<StructuredBindingDataMemberStruct>)       = InitializeParameter[#this]                   : &:r1486_4
+# 1486|     r1486_6(glval<StructuredBindingDataMemberStruct>)        = Load[#this]                                  : &:r1486_4, ~m?
+# 1486|     mu1486_7(StructuredBindingDataMemberStruct)              = InitializeIndirection[#this]                 : &:r1486_6
+#-----|     r0_1(glval<StructuredBindingDataMemberStruct &>)         = VariableAddress[(unnamed parameter 0)]       : 
+#-----|     mu0_2(StructuredBindingDataMemberStruct &)               = InitializeParameter[(unnamed parameter 0)]   : &:r0_1
+#-----|     r0_3(StructuredBindingDataMemberStruct &)                = Load[(unnamed parameter 0)]                  : &:r0_1, ~m?
+#-----|     mu0_4(unknown)                                           = InitializeIndirection[(unnamed parameter 0)] : &:r0_3
+# 1486|     r1486_8(glval<int>)                                      = FieldAddress[i]                              : mu1486_5
+# 1486|     r1486_9(glval<StructuredBindingDataMemberStruct &>)      = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_10(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_9, ~m?
+# 1486|     r1486_11(glval<int>)                                     = FieldAddress[i]                              : r1486_10
+# 1486|     r1486_12(int)                                            = Load[?]                                      : &:r1486_11, ~m?
+# 1486|     mu1486_13(int)                                           = Store[?]                                     : &:r1486_8, r1486_12
+# 1486|     r1486_14(glval<double>)                                  = FieldAddress[d]                              : mu1486_5
+# 1486|     r1486_15(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_16(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_15, ~m?
+# 1486|     r1486_17(glval<double>)                                  = FieldAddress[d]                              : r1486_16
+# 1486|     r1486_18(double)                                         = Load[?]                                      : &:r1486_17, ~m?
+# 1486|     mu1486_19(double)                                        = Store[?]                                     : &:r1486_14, r1486_18
+# 1486|     r1486_20(glval<unsigned int>)                            = FieldAddress[b]                              : mu1486_5
+# 1486|     r1486_21(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_22(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_21, ~m?
+# 1486|     r1486_23(glval<unsigned int>)                            = FieldAddress[b]                              : r1486_22
+# 1486|     r1486_24(unsigned int)                                   = Load[?]                                      : &:r1486_23, ~m?
+# 1486|     mu1486_25(unsigned int)                                  = Store[?]                                     : &:r1486_20, r1486_24
+# 1486|     r1486_26(glval<int &>)                                   = FieldAddress[r]                              : mu1486_5
+# 1486|     r1486_27(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_28(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_27, ~m?
+# 1486|     r1486_29(glval<int &>)                                   = FieldAddress[r]                              : r1486_28
+# 1486|     r1486_30(int &)                                          = Load[?]                                      : &:r1486_29, ~m?
+# 1486|     mu1486_31(int &)                                         = Store[?]                                     : &:r1486_26, r1486_30
+# 1486|     r1486_32(glval<int *>)                                   = FieldAddress[p]                              : mu1486_5
+# 1486|     r1486_33(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_34(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_33, ~m?
+# 1486|     r1486_35(glval<int *>)                                   = FieldAddress[p]                              : r1486_34
+# 1486|     r1486_36(int *)                                          = Load[?]                                      : &:r1486_35, ~m?
+# 1486|     mu1486_37(int *)                                         = Store[?]                                     : &:r1486_32, r1486_36
+# 1486|     r1486_38(glval<int[2]>)                                  = FieldAddress[xs]                             : mu1486_5
+# 1486|     r1486_39(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_40(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_39, ~m?
+# 1486|     r1486_41(glval<int[2]>)                                  = FieldAddress[xs]                             : r1486_40
+# 1486|     r1486_42(int[2])                                         = Load[?]                                      : &:r1486_41, ~m?
+# 1486|     mu1486_43(int[2])                                        = Store[?]                                     : &:r1486_38, r1486_42
+# 1486|     r1486_44(glval<int &>)                                   = FieldAddress[r_alt]                          : mu1486_5
+# 1486|     r1486_45(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_46(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_45, ~m?
+# 1486|     r1486_47(glval<int &>)                                   = FieldAddress[r_alt]                          : r1486_46
+# 1486|     r1486_48(int &)                                          = Load[?]                                      : &:r1486_47, ~m?
+# 1486|     mu1486_49(int &)                                         = Store[?]                                     : &:r1486_44, r1486_48
+# 1486|     r1486_50(glval<StructuredBindingDataMemberMemberStruct>) = FieldAddress[m]                              : mu1486_5
+# 1486|     r1486_51(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_52(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_51, ~m?
+# 1486|     r1486_53(glval<StructuredBindingDataMemberMemberStruct>) = FieldAddress[m]                              : r1486_52
+# 1486|     r1486_54(StructuredBindingDataMemberMemberStruct)        = Load[?]                                      : &:r1486_53, ~m?
+# 1486|     mu1486_55(StructuredBindingDataMemberMemberStruct)       = Store[?]                                     : &:r1486_50, r1486_54
+# 1486|     v1486_56(void)                                           = NoOp                                         : 
+# 1486|     v1486_57(void)                                           = ReturnIndirection[#this]                     : &:r1486_6, ~m?
+#-----|     v0_5(void)                                               = ReturnIndirection[(unnamed parameter 0)]     : &:r0_3, ~m?
+# 1486|     v1486_58(void)                                           = ReturnVoid                                   : 
+# 1486|     v1486_59(void)                                           = AliasedUse                                   : ~m?
+# 1486|     v1486_60(void)                                           = ExitFunction                                 : 
+
 # 1499| void data_member_structured_binding()
 # 1499|   Block 0
 # 1499|     v1499_1(void)                                              = EnterFunction                                      : 
@@ -8208,6 +8308,44 @@ ir.cpp:
 # 1539|     v1539_10(void)                                = ReturnVoid                   : 
 # 1539|     v1539_11(void)                                = AliasedUse                   : ~m?
 # 1539|     v1539_12(void)                                = ExitFunction                 : 
+
+# 1539| void StructuredBindingTupleRefGet::StructuredBindingTupleRefGet(StructuredBindingTupleRefGet const&)
+# 1539|   Block 0
+# 1539|     v1539_1(void)                                   = EnterFunction                                : 
+# 1539|     mu1539_2(unknown)                               = AliasedDefinition                            : 
+# 1539|     mu1539_3(unknown)                               = InitializeNonLocal                           : 
+# 1539|     r1539_4(glval<unknown>)                         = VariableAddress[#this]                       : 
+# 1539|     mu1539_5(glval<StructuredBindingTupleRefGet>)   = InitializeParameter[#this]                   : &:r1539_4
+# 1539|     r1539_6(glval<StructuredBindingTupleRefGet>)    = Load[#this]                                  : &:r1539_4, ~m?
+# 1539|     mu1539_7(StructuredBindingTupleRefGet)          = InitializeIndirection[#this]                 : &:r1539_6
+#-----|     r0_1(glval<StructuredBindingTupleRefGet &>)     = VariableAddress[(unnamed parameter 0)]       : 
+#-----|     mu0_2(StructuredBindingTupleRefGet &)           = InitializeParameter[(unnamed parameter 0)]   : &:r0_1
+#-----|     r0_3(StructuredBindingTupleRefGet &)            = Load[(unnamed parameter 0)]                  : &:r0_1, ~m?
+#-----|     mu0_4(unknown)                                  = InitializeIndirection[(unnamed parameter 0)] : &:r0_3
+# 1539|     r1539_8(glval<int>)                             = FieldAddress[i]                              : mu1539_5
+# 1539|     r1539_9(glval<StructuredBindingTupleRefGet &>)  = VariableAddress[(unnamed parameter 0)]       : 
+# 1539|     r1539_10(StructuredBindingTupleRefGet &)        = Load[(unnamed parameter 0)]                  : &:r1539_9, ~m?
+# 1539|     r1539_11(glval<int>)                            = FieldAddress[i]                              : r1539_10
+# 1539|     r1539_12(int)                                   = Load[?]                                      : &:r1539_11, ~m?
+# 1539|     mu1539_13(int)                                  = Store[?]                                     : &:r1539_8, r1539_12
+# 1539|     r1539_14(glval<double>)                         = FieldAddress[d]                              : mu1539_5
+# 1539|     r1539_15(glval<StructuredBindingTupleRefGet &>) = VariableAddress[(unnamed parameter 0)]       : 
+# 1539|     r1539_16(StructuredBindingTupleRefGet &)        = Load[(unnamed parameter 0)]                  : &:r1539_15, ~m?
+# 1539|     r1539_17(glval<double>)                         = FieldAddress[d]                              : r1539_16
+# 1539|     r1539_18(double)                                = Load[?]                                      : &:r1539_17, ~m?
+# 1539|     mu1539_19(double)                               = Store[?]                                     : &:r1539_14, r1539_18
+# 1539|     r1539_20(glval<int &>)                          = FieldAddress[r]                              : mu1539_5
+# 1539|     r1539_21(glval<StructuredBindingTupleRefGet &>) = VariableAddress[(unnamed parameter 0)]       : 
+# 1539|     r1539_22(StructuredBindingTupleRefGet &)        = Load[(unnamed parameter 0)]                  : &:r1539_21, ~m?
+# 1539|     r1539_23(glval<int &>)                          = FieldAddress[r]                              : r1539_22
+# 1539|     r1539_24(int &)                                 = Load[?]                                      : &:r1539_23, ~m?
+# 1539|     mu1539_25(int &)                                = Store[?]                                     : &:r1539_20, r1539_24
+# 1539|     v1539_26(void)                                  = NoOp                                         : 
+# 1539|     v1539_27(void)                                  = ReturnIndirection[#this]                     : &:r1539_6, ~m?
+#-----|     v0_5(void)                                      = ReturnIndirection[(unnamed parameter 0)]     : &:r0_3, ~m?
+# 1539|     v1539_28(void)                                  = ReturnVoid                                   : 
+# 1539|     v1539_29(void)                                  = AliasedUse                                   : ~m?
+# 1539|     v1539_30(void)                                  = ExitFunction                                 : 
 
 # 1567| std::tuple_element<int 0, StructuredBindingTupleRefGet>::type& StructuredBindingTupleRefGet::get<int 0>()
 # 1567|   Block 0
