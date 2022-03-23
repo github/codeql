@@ -52,9 +52,9 @@ void do_sink()
 	sink(global4); // $ MISSING: ast,ir
 	sink(global5);
 	sink(global6);
-	sink(global7); // $ MISSING: ast,ir
-	sink(global8); // $ MISSING: ast,ir
-	sink(global9); // $ MISSING: ast,ir
+	sink(global7); // $ ir MISSING: ast
+	sink(global8); // $ ir MISSING: ast
+	sink(global9); // $ ir MISSING: ast
 	sink(global10);
 }
 
