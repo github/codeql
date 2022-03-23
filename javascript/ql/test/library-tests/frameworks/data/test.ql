@@ -38,9 +38,7 @@ class Sinks extends ModelInput::SinkModelCsv {
 }
 
 class Sources extends ModelInput::SourceModelCsv {
-  override predicate row(string row) {
-    row = "testlib;;Member[getSource].ReturnValue;test-source"
-  }
+  override predicate row(string row) { row = "testlib;;Member[getSource].ReturnValue;test-source" }
 }
 
 class BasicTaintTracking extends TaintTracking::Configuration {
