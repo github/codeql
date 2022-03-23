@@ -2340,7 +2340,12 @@ module PrivateDjango {
     }
 
     override boolean getVerificationSetting() {
-      if list.getAnElt().(StrConst).getText() = "django.middleware.csrf.CsrfViewMiddleware"
+      if
+        list.getAnElt().(StrConst).getText() in [
+            "django.middleware.csrf.CsrfViewMiddleware",
+            // see https://github.com/mozilla/django-session-csrf
+            "session_csrf.CsrfMiddleware"
+          ]
       then result = true
       else result = false
     }
