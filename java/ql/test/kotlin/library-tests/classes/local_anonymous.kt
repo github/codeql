@@ -34,3 +34,12 @@ class Class1 {
         }
     }
 }
+
+interface Interface2 {}
+class Class2 {
+     var i = object: Interface2 {
+        init {
+            var answer: String = "42" // Local variable in anonymous class initializer
+        }
+    }
+}

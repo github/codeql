@@ -58,6 +58,8 @@
 | local_anonymous.kt:21:21:21:31 | new Function1<Class1,Unit>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference |
 | local_anonymous.kt:25:9:25:27 | LocalClass | file://<external>/Object.class:0:0:0:0 | Object |
 | local_anonymous.kt:29:31:35:5 | new Object(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
+| local_anonymous.kt:39:1:45:1 | Class2 | file://<external>/Object.class:0:0:0:0 | Object |
+| local_anonymous.kt:40:14:44:5 | new Interface2(...) { ... } | local_anonymous.kt:38:1:38:23 | Interface2 |
 | superChain.kt:1:1:1:33 | SuperChain1 | file://<external>/Object.class:0:0:0:0 | Object |
 | superChain.kt:1:1:1:33 | SuperChain1<T3,String> | file://<external>/Object.class:0:0:0:0 | Object |
 | superChain.kt:1:1:1:33 | SuperChain1<T5,String> | file://<external>/Object.class:0:0:0:0 | Object |

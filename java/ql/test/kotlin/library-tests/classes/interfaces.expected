@@ -3,3 +3,4 @@
 | classes.kt:59:1:59:23 | Interface1 |
 | classes.kt:60:1:60:23 | Interface2 |
 | classes.kt:61:1:61:26 | Interface3 |
+| local_anonymous.kt:38:1:38:23 | Interface2 |

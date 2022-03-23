@@ -662,6 +662,45 @@ local_anonymous.kt:
 #   29|               1: [ExprStmt] <Expr>;
 #   29|                 0: [ClassInstanceExpr] new (...)
 #   29|                   -3: [TypeAccess] Object
+#   38|   2: [Interface] Interface2
+#   39|   3: [Class] Class2
+#   39|     1: [Constructor] Class2
+#   39|       5: [BlockStmt] { ... }
+#   39|         0: [SuperConstructorInvocationStmt] super(...)
+#   39|         1: [BlockStmt] { ... }
+#   40|           0: [ExprStmt] <Expr>;
+#   40|             0: [KtInitializerAssignExpr] ...=...
+#   40|               0: [VarAccess] i
+#   40|     2: [Method] getI
+#   40|       5: [BlockStmt] { ... }
+#   40|         0: [ReturnStmt] return ...
+#   40|           0: [VarAccess] this.i
+#   40|             -1: [ThisAccess] this
+#   40|     2: [Method] setI
+#-----|       4: (Parameters)
+#   40|         0: [Parameter] <set-?>
+#   40|       5: [BlockStmt] { ... }
+#   40|         0: [ExprStmt] <Expr>;
+#   40|           0: [AssignExpr] ...=...
+#   40|             0: [VarAccess] this.i
+#   40|               -1: [ThisAccess] this
+#   40|             1: [VarAccess] <set-?>
+#   40|     2: [FieldDeclaration] Interface2 i;
+#   40|       -1: [TypeAccess] Interface2
+#   40|       0: [StmtExpr] <Stmt>
+#   40|         0: [BlockStmt] { ... }
+#   40|           0: [LocalTypeDeclStmt] class ...
+#   40|             0: [AnonymousClass,LocalClass] new Interface2(...) { ... }
+#   40|               1: [Constructor] 
+#   40|                 5: [BlockStmt] { ... }
+#   40|                   0: [SuperConstructorInvocationStmt] super(...)
+#   40|                   1: [BlockStmt] { ... }
+#   42|                     0: [LocalVariableDeclStmt] var ...;
+#   42|                       1: [LocalVariableDeclExpr] answer
+#   42|                         0: [StringLiteral] 42
+#   40|           1: [ExprStmt] <Expr>;
+#   40|             0: [ClassInstanceExpr] new (...)
+#   40|               -3: [TypeAccess] Interface2
 superChain.kt:
 #    0| [CompilationUnit] superChain
 #    1|   1: [Class,GenericType,ParameterizedType] SuperChain1

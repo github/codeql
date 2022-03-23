@@ -328,8 +328,9 @@ open class KotlinFileExtractor(
     }
 
     private fun extractLocalTypeDeclStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+        val extractStaticInit = c.declarations.none { it is IrAnonymousInitializer }
         @Suppress("UNCHECKED_CAST")
-        val id = extractClassSource(c, true, true) as Label<out DbClass>
+        val id = extractClassSource(c, true, extractStaticInit) as Label<out DbClass>
         extractLocalTypeDeclStmt(id, c, callable, parent, idx)
     }
 
