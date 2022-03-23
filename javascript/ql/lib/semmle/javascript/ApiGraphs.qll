@@ -187,8 +187,7 @@ module API {
     }
 
     /**
-     * Gets a node representing a parameter or the receiver of the function represented by this
-     * node.
+     * Gets a node representing a parameter of the function represented by this node.
      *
      * This predicate may result in a mix of parameters from different call sites in cases where
      * there are multiple invocations of this API component.
@@ -198,8 +197,6 @@ module API {
     Node getAParameter() {
       Stages::ApiStage::ref() and
       result = this.getParameter(_)
-      or
-      result = this.getReceiver()
     }
 
     /**
@@ -561,9 +558,10 @@ module API {
           rhs = f.getExceptionalReturn()
         )
         or
-        exists(int i |
-          lbl = Label::parameter(i) and
-          argumentPassing(base, i, rhs)
+        exists(int i | argumentPassing(base, i, rhs) |
+          lbl = Label::parameter(i)
+          or
+          i = -1 and lbl = Label::receiver()
         )
         or
         exists(DataFlow::SourceNode src, DataFlow::PropWrite pw |
@@ -1096,8 +1094,8 @@ module API {
      */
     LabelParameter parameter(int i) { result.getIndex() = i }
 
-    /** Gets the `parameter` edge label for the receiver. */
-    LabelParameter receiver() { result = parameter(-1) }
+    /** Gets the edge label for the receiver. */
+    LabelReceiver receiver() { any() }
 
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
@@ -1132,12 +1130,13 @@ module API {
         MkLabelUnknownMember() or
         MkLabelParameter(int i) {
           i =
-            [-1 .. max(int args |
+            [0 .. max(int args |
                 args = any(InvokeExpr invk).getNumArgument() or
                 args = any(Function f).getNumParameter()
               )] or
           i = [0 .. 10]
         } or
+        MkLabelReceiver() or
         MkLabelReturn() or
         MkLabelPromised() or
         MkLabelPromisedError() or
@@ -1224,6 +1223,11 @@ module API {
 
         /** Gets the index of the parameter for this label. */
         int getIndex() { result = i }
+      }
+
+      /** A label for the receiver of call, that is, the value passed as `this`. */
+      class LabelReceiver extends ApiLabel, MkLabelReceiver {
+        override string toString() { result = "receiver" }
       }
     }
   }
