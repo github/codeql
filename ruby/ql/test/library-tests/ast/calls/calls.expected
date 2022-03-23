@@ -47,10 +47,10 @@ callsWithArguments
 | calls.rb:293:5:293:33 | call to super | super | 1 | calls.rb:293:14:293:14 | 7 |
 | calls.rb:293:23:293:29 | ... + ... | + | 0 | calls.rb:293:27:293:29 | 200 |
 | calls.rb:311:1:311:7 | call to call | call | 0 | calls.rb:311:6:311:6 | 1 |
-| calls.rb:314:1:314:8 | call to foo= | foo= | 0 | calls.rb:314:1:314:8 | ... = ... |
+| calls.rb:314:1:314:8 | call to foo= | foo= | 0 | calls.rb:314:12:314:13 | ... = ... |
 | calls.rb:315:1:315:6 | ...[...] | [] | 0 | calls.rb:315:5:315:5 | 0 |
 | calls.rb:315:1:315:6 | call to []= | []= | 0 | calls.rb:315:5:315:5 | 0 |
-| calls.rb:315:1:315:6 | call to []= | []= | 1 | calls.rb:315:1:315:6 | ... = ... |
+| calls.rb:315:1:315:6 | call to []= | []= | 1 | calls.rb:315:10:315:11 | ... = ... |
 | calls.rb:316:1:316:8 | call to [] | [] | 0 | calls.rb:316:1:316:8 | 0 |
 | calls.rb:316:1:316:8 | call to foo= | foo= | 0 | calls.rb:316:1:316:8 | ... = ... |
 | calls.rb:316:12:316:19 | call to [] | [] | 0 | calls.rb:316:12:316:19 | _ .. _ |
