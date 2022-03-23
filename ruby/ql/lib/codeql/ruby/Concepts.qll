@@ -490,7 +490,7 @@ module HTTP {
        * Gets a node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
-      deprecated DataFlow::Node getURL() { result = super.getURL() }
+      deprecated DataFlow::Node getURL() { result = super.getURL() or result = super.getAUrlPart() }
 
       /**
        * Gets a data-flow node that contributes to the URL of the request.
