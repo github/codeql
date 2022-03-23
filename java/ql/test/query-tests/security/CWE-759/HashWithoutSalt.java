@@ -80,6 +80,7 @@ public class HashWithoutSalt {
 	// GOOD - Invoking a wrapper implementation through qualifier with a salt.
 	public String getWrapperSHA256Hash(String password) throws NoSuchAlgorithmException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 		SHA256 sha256 = new SHA256();
+		sha256.init();
 		byte[] salt = getSalt();
 		byte[] passBytes = password.getBytes();
 		sha256.update(passBytes, 0, passBytes.length);
@@ -90,6 +91,7 @@ public class HashWithoutSalt {
 	// BAD - Invoking a wrapper implementation through qualifier without a salt.
 	public String getWrapperSHA256Hash2(String password) throws NoSuchAlgorithmException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 		SHA256 sha256 = new SHA256();
+		sha256.init();
 		byte[] passBytes = password.getBytes();
 		sha256.update(passBytes, 0, passBytes.length);
 		return Base64.getEncoder().encodeToString(sha256.digest());
@@ -98,6 +100,7 @@ public class HashWithoutSalt {
 	// GOOD - Invoking a wrapper implementation through qualifier and argument with a salt.
 	public String getWrapperSHA256Hash3(String password) throws NoSuchAlgorithmException {
 		SHA256 sha256 = new SHA256();
+		sha256.init();
 		byte[] salt = getSalt();
 		byte[] passBytes = password.getBytes();
 		sha256.update(passBytes, 0, passBytes.length);
@@ -108,6 +111,7 @@ public class HashWithoutSalt {
 	// BAD - Invoking a wrapper implementation through argument without a salt.
 	public String getWrapperSHA256Hash4(String password) throws NoSuchAlgorithmException {
 		SHA256 sha256 = new SHA256();
+		sha256.init();
 		byte[] passBytes = password.getBytes();
 		update(sha256, passBytes, 0, passBytes.length);
 		return Base64.getEncoder().encodeToString(sha256.digest());
@@ -116,6 +120,7 @@ public class HashWithoutSalt {
 	// GOOD - Invoking a wrapper implementation through argument with a salt.
 	public String getWrapperSHA256Hash5(String password) throws NoSuchAlgorithmException {
 		SHA256 sha256 = new SHA256();
+		sha256.init();
 		byte[] salt = getSalt();
 		byte[] passBytes = password.getBytes();
 		update(sha256, passBytes, 0, passBytes.length);
