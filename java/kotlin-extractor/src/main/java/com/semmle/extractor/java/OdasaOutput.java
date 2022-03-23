@@ -552,7 +552,7 @@ public class OdasaOutput {
 					sym.getParent() instanceof IrClass ? getIrClassVirtualFile((IrClass)sym.getParent()) :
 					null;
 			if(vf == null)
-				return new TrapClassVersion(0, 0, 0, null);
+				return new TrapClassVersion(-1, 0, 0, null);
 
 			final int[] versionStore = new int[1];
 
@@ -587,11 +587,11 @@ public class OdasaOutput {
 			}
 			catch(IllegalAccessException e) {
 				log.warn("Failed to read class file version information", e);
-				return new TrapClassVersion(0, 0, 0, null);
+				return new TrapClassVersion(-1, 0, 0, null);
 			}
 			catch(IOException e) {
 				log.warn("Failed to read class file version information", e);
-				return new TrapClassVersion(0, 0, 0, null);
+				return new TrapClassVersion(-1, 0, 0, null);
 			}
 		}
 		private boolean isValid() {
