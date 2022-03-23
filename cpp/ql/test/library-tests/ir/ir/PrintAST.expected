@@ -13035,6 +13035,23 @@ ir.cpp:
 # 1689|   getEntryPoint(): [BlockStmt] { ... }
 # 1689|     getStmt(0): [EmptyStmt] ;
 # 1689|     getStmt(1): [ReturnStmt] return ...
+# 1693| [TopLevelFunction] int goto_on_same_line()
+# 1693|   <params>: 
+# 1693|   getEntryPoint(): [BlockStmt] { ... }
+# 1694|     getStmt(0): [DeclStmt] declaration
+# 1694|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1694|           Type = [IntType] int
+# 1694|         getVariable().getInitializer(): [Initializer] initializer for x
+# 1694|           getExpr(): [Literal] 42
+# 1694|               Type = [IntType] int
+# 1694|               Value = [Literal] 42
+# 1694|               ValueCategory = prvalue
+# 1695|     getStmt(1): [GotoStmt] goto ...
+# 1695|     getStmt(2): [LabelStmt] label ...:
+# 1696|     getStmt(3): [ReturnStmt] return ...
+# 1696|       getExpr(): [VariableAccess] x
+# 1696|           Type = [IntType] int
+# 1696|           ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
