@@ -110,9 +110,9 @@ module FileSystemWriteAccess {
  * in a global manner.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `CSRFProtectionSetting::Range` instead.
+ * extend `CsrfProtectionSetting::Range` instead.
  */
-class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSetting::Range {
+class CsrfProtectionSetting extends DataFlow::Node instanceof CsrfProtectionSetting::Range {
   /**
    * Gets the boolean value corresponding to if CSRF protection is enabled
    * (`true`) or disabled (`false`) by this node.
@@ -121,13 +121,13 @@ class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSett
 }
 
 /** Provides a class for modeling new CSRF protection setting APIs. */
-module CSRFProtectionSetting {
+module CsrfProtectionSetting {
   /**
    * A data-flow node that may set or unset Cross-site request forgery protection
    * in a global manner.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `CSRFProtectionSetting` instead.
+   * extend `CsrfProtectionSetting` instead.
    */
   abstract class Range extends DataFlow::Node {
     /**
@@ -143,9 +143,9 @@ module CSRFProtectionSetting {
  * for a specific part of an application.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `CSRFProtection::Range` instead.
+ * extend `CsrfLocalProtection::Range` instead.
  */
-class CSRFProtection extends DataFlow::Node instanceof CSRFProtection::Range {
+class CsrfLocalProtection extends DataFlow::Node instanceof CsrfLocalProtection::Range {
   /**
    * Gets a `Function` representing the protected interaction
    * (probably a request handler).
@@ -154,13 +154,13 @@ class CSRFProtection extends DataFlow::Node instanceof CSRFProtection::Range {
 }
 
 /** Provides a class for modeling new CSRF protection setting APIs. */
-module CSRFProtection {
+module CsrfLocalProtection {
   /**
    * A data-flow node that provides Cross-site request forgery protection
    * for a specific part of an application.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `CSRFProtection` instead.
+   * extend `CsrfLocalProtection` instead.
    */
   abstract class Range extends DataFlow::Node {
     /**

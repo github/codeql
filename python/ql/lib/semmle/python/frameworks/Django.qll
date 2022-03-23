@@ -2320,7 +2320,7 @@ module PrivateDjango {
   /**
    * A custom middleware stack
    */
-  private class DjangoSettingsMiddlewareStack extends CSRFProtectionSetting::Range {
+  private class DjangoSettingsMiddlewareStack extends CsrfProtectionSetting::Range {
     List list;
 
     DjangoSettingsMiddlewareStack() {
@@ -2345,21 +2345,21 @@ module PrivateDjango {
       else result = false
     }
   }
-}
 
-private class DjangoCSRFDecorator extends CSRFProtection::Range {
-  Function function;
+  private class DjangoCsrfDecorator extends CsrfLocalProtection::Range {
+    Function function;
 
-  DjangoCSRFDecorator() {
-    this =
-      API::moduleImport("django")
-          .getMember("views")
-          .getMember("decorators")
-          .getMember("csrf")
-          .getMember("csrf_protect")
-          .getAUse() and
-    this.asExpr() = function.getADecorator()
+    DjangoCsrfDecorator() {
+      this =
+        API::moduleImport("django")
+            .getMember("views")
+            .getMember("decorators")
+            .getMember("csrf")
+            .getMember("csrf_protect")
+            .getAUse() and
+      this.asExpr() = function.getADecorator()
+    }
+
+    override Function getProtected() { result = function }
   }
-
-  override Function getProtected() { result = function }
 }
