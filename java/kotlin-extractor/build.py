@@ -42,9 +42,9 @@ def run_process(cmd):
         print("In: " + os.getcwd(), file=sys.stderr)
         print("Command failed: " + shlex.join(cmd), file=sys.stderr)
         print("stdout output:\n" + e.stdout.decode(encoding='UTF-8',
-              errors='strict'), file=sys.stderr)
+              errors='replace'), file=sys.stderr)
         print("stderr output:\n" + e.stderr.decode(encoding='UTF-8',
-              errors='strict'), file=sys.stderr)
+              errors='replace'), file=sys.stderr)
         raise e
 
 
