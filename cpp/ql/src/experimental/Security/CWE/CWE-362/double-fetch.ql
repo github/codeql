@@ -23,8 +23,10 @@ class CopyFromUserFunctionCall extends FunctionCall {
     not this.getArgument(1) instanceof AddressOfExpr
   }
 
-  predicate hasSameArguments(CopyFromUserFunctionCall another) {
-    globalValueNumber(this.getArgument(0)) = globalValueNumber(another.getArgument(0)) and
+  //root cause of double-fetech issue is read from
+  //the same user mode memory twice, so it makes
+  //sense that only check user mode pointer
+  predicate readFromSameUserModePointer(CopyFromUserFunctionCall another) {
     globalValueNumber(this.getArgument(1)) = globalValueNumber(another.getArgument(1))
   }
 }
@@ -32,7 +34,7 @@ class CopyFromUserFunctionCall extends FunctionCall {
 from CopyFromUserFunctionCall p1, CopyFromUserFunctionCall p2
 where
   not p1 = p2 and
-  p1.hasSameArguments(p2) and
+  p1.readFromSameUserModePointer(p2) and
   exists(IfStmt ifStmt |
     p1.getBasicBlock().getAFalseSuccessor*() = ifStmt.getBasicBlock() and
     ifStmt.getBasicBlock().getAFalseSuccessor*() = p2.getBasicBlock()
