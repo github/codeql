@@ -118,7 +118,7 @@ class CustomJsonResponse(JsonResponse):
     def __init__(self, banner, content, *args, **kwargs):
         super().__init__(content, *args, content_type="text/html", **kwargs)
 
-@csrf_protect
+@csrf_protect  # $CsrfLocalProtection=safe__custom_json_response
 def safe__custom_json_response(request):
     return CustomJsonResponse("ACME Responses", {"foo": request.GET.get("foo")})  # $HttpResponse mimetype=application/json MISSING: responseBody=Dict SPURIOUS: responseBody="ACME Responses"
 

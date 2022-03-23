@@ -503,3 +503,35 @@ class HttpClientRequestTest extends InlineExpectationsTest {
     )
   }
 }
+
+class CsrfProtectionSettingTest extends InlineExpectationsTest {
+  CsrfProtectionSettingTest() { this = "CsrfProtectionSettingTest" }
+
+  override string getARelevantTag() { result = "CsrfProtectionSetting" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(CsrfProtectionSetting setting |
+      location = setting.getLocation() and
+      element = setting.toString() and
+      value = setting.getVerificationSetting().toString() and
+      tag = "CsrfProtectionSetting"
+    )
+  }
+}
+
+class CsrfLocalProtectionTest extends InlineExpectationsTest {
+  CsrfLocalProtectionTest() { this = "CsrfLocalProtectionTest" }
+
+  override string getARelevantTag() { result = "CsrfLocalProtection" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(CsrfLocalProtection p |
+      location = p.getLocation() and
+      element = p.toString() and
+      value = p.getProtected().getName().toString() and
+      tag = "CsrfLocalProtection"
+    )
+  }
+}
