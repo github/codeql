@@ -6,14 +6,14 @@
  * @problem.severity error
  * @security-severity 9.1
  * @precision high
- * @id js/xxe
+ * @id py/xxe
  * @tags security
  *       external/cwe/cwe-611
  *       external/cwe/cwe-827
  */
 
-import javascript
-import semmle.javascript.security.dataflow.XxeQuery
+import python
+import experimental.semmle.python.security.dataflow.XxeQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

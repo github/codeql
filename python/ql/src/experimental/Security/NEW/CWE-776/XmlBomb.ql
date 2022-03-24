@@ -6,14 +6,14 @@
  * @problem.severity warning
  * @security-severity 7.5
  * @precision high
- * @id js/xml-bomb
+ * @id py/xml-bomb
  * @tags security
  *       external/cwe/cwe-776
  *       external/cwe/cwe-400
  */
 
-import javascript
-import semmle.javascript.security.dataflow.XmlBombQuery
+import python
+import experimental.semmle.python.security.dataflow.XmlBombQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

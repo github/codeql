@@ -1,12 +1,18 @@
 /**
- * Provides default sources, sinks and sanitizers for reasoning about
- * XML External Entity (XXE) vulnerabilities, as well as extension
- * points for adding your own.
+ * Provides default sources, sinks and sanitizers for detecting
+ * "XML External Entity (XXE)"
+ * vulnerabilities, as well as extension points for adding your own.
  */
 
-import javascript
-import semmle.javascript.security.dataflow.DOM
+private import python
+private import semmle.python.dataflow.new.DataFlow
+private import experimental.semmle.python.Concepts
+private import semmle.python.dataflow.new.RemoteFlowSources
 
+/**
+ * Provides default sources, sinks and sanitizers for detecting "XML External Entity (XXE)"
+ * vulnerabilities, as well as extension points for adding your own.
+ */
 module Xxe {
   /**
    * A data flow source for XXE vulnerabilities.
@@ -29,23 +35,15 @@ module Xxe {
   }
 
   /**
-   * An access to `document.location`, considered as a flow source for XXE vulnerabilities.
-   */
-  class LocationAsSource extends Source, DataFlow::ValueNode {
-    LocationAsSource() { isLocation(astNode) }
-  }
-
-  /**
    * A call to an XML parser that performs external entity expansion, viewed
    * as a data flow sink for XXE vulnerabilities.
    */
-  class XmlParsingWithExternalEntityResolution extends Sink, DataFlow::ValueNode {
+  class XmlParsingWithExternalEntityResolution extends Sink {
     XmlParsingWithExternalEntityResolution() {
-      exists(XML::ParserInvocation parse | astNode = parse.getSourceArgument() |
-        parse.resolvesEntities(XML::ExternalEntity(_))
-        or
-        parse.resolvesEntities(XML::ParameterEntity(true)) and
-        parse.resolvesEntities(XML::InternalEntity())
+      exists(ExperimentalXML::XMLParsing parsing, ExperimentalXML::XMLVulnerabilityKind kind |
+        kind.isXxe() and
+        parsing.vulnerableTo(kind) and
+        this = parsing.getAnInput()
       )
     }
   }

@@ -1,17 +1,18 @@
 /**
- * Provides a taint tracking configuration for reasoning about XML
- * External Entity (XXE) vulnerabilities.
+ * Provides a taint-tracking configuration for detecting "XML External Entity (XXE)" vulnerabilities.
  *
  * Note, for performance reasons: only import this file if
- * `Xxe::Configuration` is needed, otherwise `XxeCustomizations`
- * should be imported instead.
+ * `Configuration` is needed, otherwise
+ * `XxeCustomizations` should be imported instead.
  */
 
-import javascript
+import python
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.dataflow.new.TaintTracking
 import XxeCustomizations::Xxe
 
 /**
- * A taint-tracking configuration for reasoning about XXE vulnerabilities.
+ * A taint-tracking configuration for detecting "XML External Entity (XXE)" vulnerabilities.
  */
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "Xxe" }
