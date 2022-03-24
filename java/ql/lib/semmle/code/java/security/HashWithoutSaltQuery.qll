@@ -20,7 +20,7 @@ private class PasswordVarExpr extends VarAccess {
   }
 }
 
-/** An expression that computes a concatenation operation. */
+/** An expression that may form part of a concatenation operation. */
 private class ConcatSanitizer extends Expr {
   ConcatSanitizer() {
     this instanceof AddExpr
@@ -127,7 +127,7 @@ private DataFlow::Node getParam(Method m, int arg) {
 
 /**
  * Holds if there is a state-changing flow step between `node1` and `node2` from a call to `MessageDigest.update`.
- * `isPassword` is true if it could be for a password.
+ * `isPassword` is true if the newly-added data is likely a password.
  */
 private predicate messageDigestFlowStep(
   DataFlow::Node node1, DataFlow::Node node2, boolean isPassword
@@ -140,7 +140,7 @@ private predicate messageDigestFlowStep(
 }
 
 /**
- * Holds if `node` is th qualifier of a call to `MessageDigest.digest`.
+ * Holds if `node` is the qualifier of a call to `MessageDigest.digest`.
  * `hasArg` is true if this call has an argument, and `isPassword` is true if this call could be a password.
  */
 private predicate messageDigestSink(DataFlow::Node node, boolean hasArg, boolean isPassword) {
@@ -193,8 +193,8 @@ private class MessageDigestUsedOnceConfig extends DataFlow2::Configuration {
 }
 
 /**
- * A configuration that a `MessageDigest` object is salted; i.e. it is used more than once
- * or used with a non password.
+ * A configuration that identifies flow in which a `MessageDigest` object is salted; i.e. it is used more than once
+ * or used with a non-password input.
  */
 private class MessageDigestSaltedConfig extends DataFlow2::Configuration {
   MessageDigestSaltedConfig() { this = "MessageDigestSaltedConfig" }
