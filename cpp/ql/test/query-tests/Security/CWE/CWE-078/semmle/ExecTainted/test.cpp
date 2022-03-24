@@ -168,7 +168,58 @@ void test15(FILE *f) {
   system(command); // GOOD: the user string was converted to an integer and back
 }
 
+void test16(FILE *f, bool use_flags) {
+  // BAD: the user string is injected directly into a command
+  char command[1000] = "mv ", flags[1000] = "-R", filename[1000];
+  fread(filename, 1, 1000, f);
 
-// TODO: test for call context sensitivity at concatenation site
+  if (use_flags) {
+    strncat(flags, filename, 1000);
+    strncat(command, flags, 1000);
+  } else {
+    strncat(command, filename, 1000);
+  }
+
+  execl("/bin/sh", "sh", "-c", command);
+}
+
+void concat(char *command, char *flags, char *filename) {
+  strncat(flags, filename, 1000);
+  strncat(command, flags, 1000);
+}
+
+void test17(FILE *f) {
+  // BAD: the user string is injected directly into a command
+  char command[1000] = "mv ", flags[1000] = "-R", filename[1000];
+  fread(filename, 1, 1000, f);
+
+  concat(command, flags, filename);
+
+  execl("/bin/sh", "sh", "-c", command);
+}
+
+void test18() {
+  // GOOD
+  char command[1000] = "ls ", flags[1000] = "-l", filename[1000] = ".";
+
+  concat(command, flags, filename);
+
+  execl("/bin/sh", "sh", "-c", command);
+}
+
+#define CONCAT(COMMAND, FILENAME)   \
+  strncat(COMMAND, FILENAME, 1000); \
+  strncat(COMMAND, " ", 1000);      \
+  strncat(COMMAND, FILENAME, 1000);
+
+void test19(FILE *f) {
+  // BAD: the user string is injected directly into a command
+  char command[1000] = "mv ", filename[1000];
+  fread(filename, 1, 1000, f);
+
+  CONCAT(command, filename)
+
+  execl("/bin/sh", "sh", "-c", command);
+}
 
 // open question: do we want to report certain sources even when they're the start of the string?

@@ -3,7 +3,6 @@ edges
 | tests.cpp:33:34:33:39 | call to getenv | tests.cpp:38:39:38:49 | environment indirection |
 | tests.cpp:38:25:38:36 | strncat output argument | tests.cpp:26:15:26:23 | ReturnValue |
 | tests.cpp:38:39:38:49 | environment indirection | tests.cpp:38:25:38:36 | strncat output argument |
-| tests.cpp:38:39:38:49 | environment indirection | tests.cpp:38:25:38:36 | strncat output argument |
 | tests.cpp:51:12:51:20 | call to badSource | tests.cpp:53:16:53:19 | data indirection |
 nodes
 | tests.cpp:26:15:26:23 | ReturnValue | semmle.label | ReturnValue |

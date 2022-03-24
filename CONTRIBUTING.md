@@ -36,7 +36,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
     For details, see the [guide on query metadata](docs/query-metadata-style-guide.md).
 
-    Make sure the `select` statement is compatible with the query `@kind`. See [About CodeQL queries](https://help.semmle.com/QL/learn-ql/writing-queries/introduction-to-queries.html#select-clause) on help.semmle.com.
+    Make sure the `select` statement is compatible with the query `@kind`. See [About CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/about-codeql-queries/#select-clause) on codeql.github.com.
 
 3. **Formatting**
 
