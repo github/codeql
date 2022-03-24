@@ -361,11 +361,7 @@ class TestLxml:
         hit_xxe = False
 
         parser = lxml.etree.XMLParser()
-        try:
-            root = lxml.etree.fromstring(remote_xxe, parser=parser)
-            assert False
-        except lxml.etree.XMLSyntaxError as e:
-            assert "Failure to process entity remote_xxe" in str(e)
+        root = lxml.etree.fromstring(remote_xxe, parser=parser)
         assert hit_xxe == False
 
     @staticmethod
