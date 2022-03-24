@@ -106,11 +106,7 @@ private DataFlow::Node getArg(MethodAccess ma, int arg) {
   result.asExpr() = ma.getArgument(arg)
   or
   arg = -1 and
-  result.asExpr() = ma.getQualifier()
-  or
-  arg = -1 and
-  not ma.hasQualifier() and
-  result.(DataFlow::InstanceAccessNode).getInstanceAccess().isImplicitMethodQualifier(ma)
+  result = DataFlow::getInstanceArgument(ma)
 }
 
 /** Gets the `arg`th parameter of `m`, where -1 is the qualifier, or a field read of the qualifier. */
