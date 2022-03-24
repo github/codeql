@@ -38,8 +38,20 @@ predicate isRelevantSinkKind(string kind) { any() }
 class PropagateToSinkConfigurationSpecific extends TaintTracking::Configuration {
   PropagateToSinkConfigurationSpecific() { this = "parameters or fields flowing into sinks" }
 
+  private predicate isRelevantMemberAccess(DataFlow::Node node) {
+    exists(MemberAccess access | access = node.asExpr() |
+      access.hasThisQualifier() and
+      access.getTarget().isEffectivelyPublic() and
+      (
+        access instanceof FieldAccess
+        or
+        access.getTarget().(Property).getSetter().isPublic()
+      )
+    )
+  }
+
   override predicate isSource(DataFlow::Node source) {
-    (source.asExpr() instanceof FieldAccess or source instanceof DataFlow::ParameterNode) and
+    (isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode) and
     source.getEnclosingCallable().(Modifiable).isEffectivelyPublic() and
     isRelevantForModels(source.getEnclosingCallable())
   }
@@ -54,7 +66,7 @@ string asInputArgument(DataFlow::Node source) {
     result = "Argument[" + pos + "]"
   )
   or
-  source.asExpr() instanceof FieldAccess and
+  source.asExpr() instanceof FieldOrPropertyAccess and
   result = qualifierString()
 }
 

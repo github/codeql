@@ -5,7 +5,12 @@ namespace Sinks;
 
 public class NewSinks
 {
-    private string tainted;
+    private string privateTainted;
+    public string tainted;
+
+    private string PrivateTaintedProp { get; set; }
+    public string TaintedProp { get; set; }
+    public string PrivateSetTaintedProp { get; private set; }
 
     // New sink
     public void WrapResponseWrite(object o)
@@ -35,4 +40,31 @@ public class NewSinks
         response.WriteFile(tainted);
     }
 
+    // NOT new sink as field is private
+    public void WrapPrivateFieldResponseWriteFile()
+    {
+        var response = new HttpResponse();
+        response.WriteFile(privateTainted);
+    }
+
+    // New sink
+    public void WrapPropResponseWriteFile()
+    {
+        var response = new HttpResponse();
+        response.WriteFile(TaintedProp);
+    }
+
+    // NOT new sink as property is private
+    public void WrapPrivatePropResponseWriteFile()
+    {
+        var response = new HttpResponse();
+        response.WriteFile(PrivateTaintedProp);
+    }
+
+    // NOT new sink as property setter is private
+    public void WrapPropPrivateSetResponseWriteFile()
+    {
+        var response = new HttpResponse();
+        response.WriteFile(PrivateSetTaintedProp);
+    }
 }
