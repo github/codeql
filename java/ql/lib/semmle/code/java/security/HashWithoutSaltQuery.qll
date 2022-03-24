@@ -181,13 +181,33 @@ private class MessageDigestUsedOnceConfig extends DataFlow2::Configuration {
   }
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
-    // allow arbitrary implicit field read steps to allow wrapper methods that may go through fields to work
+    // Allow arbitrary implicit field read steps to allow wrapper methods that may go through fields to work.
+    // For example, in a case like:
+    // ```
+    // class Sha256 {
+    //   MessageDigest md;
+    //   Sha256() { md = MessageDigest.getInstance("SHA256"); }
+    //   void update(byte[] bs) { md.update(bs); }
+    //   byte[] digest() { return md.digest(); }
+    // }
+    //
+    // byte[] getHash(String password) {
+    //   Sha256 sha256 = new Sha256();
+    //   sha256.update(password.getBytes());
+    //   return sha256.digest();
+    // }
+    // ```
+    // then the method `Sha256.update` is considered a wrapper method around `MessageDigest.update`;
+    // but as it acts on a field of its class then the access path of the `sha256` node includes that field.
+    // Since flow state changing steps don't work through access paths, we strip the access path by adding implicit reads.
     this.isAdditionalFlowStep(node, _, _, _) and
     c instanceof DataFlow::FieldContent
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // allow arbitrary field reads to balance out the implicit reads added above
+    // Allow arbitrary field reads to balance out the implicit reads added above.
+    // For example, in the example above, after the call to `update`, there is flow to the `sha256` node
+    // at state `HashOne` with an empty accss path; which we would like to be able to follow through to the field `sha256.md`.
     exists(FieldRead fr | node1 = DataFlow::getFieldQualifier(fr) and node2.asExpr() = fr)
   }
 }
@@ -230,13 +250,14 @@ private class MessageDigestSaltedConfig extends DataFlow2::Configuration {
   }
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
-    // allow arbitrary implicit field read steps to allow wrapper methods that may go through fields to work
+    // Allow arbitrary implicit field read steps to allow wrapper methods that may go through fields to work.
+    // See the comment in `MessageDigestUsedOnceConfig.allowImplicitRead` for an example of why this is necassary.
     this.isAdditionalFlowStep(node, _, _, _) and
     c instanceof DataFlow::FieldContent
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // allow flow through arbitrary field reads to balance out the implicit reads added above
+    // Allow flow through arbitrary field reads to balance out the implicit reads added above
     exists(FieldRead fr | node1 = DataFlow::getFieldQualifier(fr) and node2.asExpr() = fr)
   }
 }
