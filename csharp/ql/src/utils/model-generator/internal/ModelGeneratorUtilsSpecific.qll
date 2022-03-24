@@ -8,7 +8,10 @@ private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 /**
  * Holds if it is relevant to generate models for `api`.
  */
-predicate isRelevantForModels(Callable api) { not api instanceof Util::MainMethod }
+predicate isRelevantForModels(Callable api) {
+  [api.(Modifiable), api.(Accessor).getDeclaration()].isEffectivelyPublic() and
+  not api instanceof Util::MainMethod
+}
 
 /**
  * A class of callables that are relevant generating summary, source and sinks models for.
@@ -18,7 +21,6 @@ predicate isRelevantForModels(Callable api) { not api instanceof Util::MainMetho
  */
 class TargetApi extends DataFlowCallable {
   TargetApi() {
-    [this.(Modifiable), this.(Accessor).getDeclaration()].isEffectivelyPublic() and
     this.fromSource() and
     isRelevantForModels(this)
   }

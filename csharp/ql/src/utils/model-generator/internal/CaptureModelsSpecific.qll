@@ -52,7 +52,6 @@ class PropagateToSinkConfigurationSpecific extends TaintTracking::Configuration 
 
   override predicate isSource(DataFlow::Node source) {
     (isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode) and
-    source.getEnclosingCallable().(Modifiable).isEffectivelyPublic() and
     isRelevantForModels(source.getEnclosingCallable())
   }
 }
