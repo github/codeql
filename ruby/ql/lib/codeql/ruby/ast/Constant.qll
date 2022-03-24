@@ -8,30 +8,37 @@ private import internal.TreeSitter
 /** A constant value. */
 class ConstantValue extends TConstantValue {
   /** Gets a textual representation of this constant value. */
-  final string toString() {
-    result = this.getInt().toString()
+  final string toString() { this.hasValueWithType(result, _) }
+
+  /** Gets a string describing the type of this constant value. */
+  string getValueType() { this.hasValueWithType(_, result) }
+
+  private predicate hasValueWithType(string value, string type) {
+    value = this.getInt().toString() and type = "int"
     or
-    result = this.getFloat().toString()
+    value = this.getFloat().toString() and type = "float"
     or
     exists(int numerator, int denominator |
       this.isRational(numerator, denominator) and
-      result = numerator + "/" + denominator
+      value = numerator + "/" + denominator and
+      type = "rational"
     )
     or
     exists(float real, float imaginary |
       this.isComplex(real, imaginary) and
-      result = real + "+" + imaginary + "i"
+      value = real + "+" + imaginary + "i" and
+      type = "complex"
     )
     or
-    result = this.getString()
+    value = this.getString() and type = "string"
     or
-    result = ":" + this.getSymbol()
+    value = ":" + this.getSymbol() and type = "symbol"
     or
-    result = this.getRegExp()
+    value = this.getRegExp() and type = "regexp"
     or
-    result = this.getBoolean().toString()
+    value = this.getBoolean().toString() and type = "boolean"
     or
-    this.isNil() and result = "nil"
+    this.isNil() and value = "nil" and type = "nil"
   }
 
   /** Gets the integer value, if this is an integer. */
