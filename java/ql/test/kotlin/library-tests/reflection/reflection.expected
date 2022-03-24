@@ -40,16 +40,16 @@ functionReferences
 | reflection.kt:7:49:7:54 | ...::... | reflection.kt:7:49:7:54 | invoke | reflection.kt:29:9:29:33 | m |
 | reflection.kt:14:38:14:44 | ...::... | reflection.kt:14:38:14:44 | invoke | file://<external>/KProperty1.class:0:0:0:0 | get |
 | reflection.kt:21:44:21:50 | ...::... | reflection.kt:21:44:21:50 | invoke | file://<external>/KMutableProperty1.class:0:0:0:0 | set |
-| reflection.kt:60:17:60:32 | ...::... | reflection.kt:60:17:60:32 | invoke | reflection.kt:76:9:76:38 | m1 |
-| reflection.kt:61:17:61:34 | ...::... | reflection.kt:61:17:61:34 | invoke | reflection.kt:76:9:76:38 | m1 |
+| reflection.kt:60:17:60:32 | ...::... | reflection.kt:60:17:60:32 | invoke | file://<external>/Class1$Generic.class:0:0:0:0 | m1 |
+| reflection.kt:61:17:61:34 | ...::... | reflection.kt:61:17:61:34 | invoke | file://<external>/Class1$Generic.class:0:0:0:0 | m1 |
 | reflection.kt:62:17:62:34 | ...::... | reflection.kt:62:17:62:34 | invoke | reflection.kt:54:1:54:52 | ext1 |
 | reflection.kt:63:17:63:36 | ...::... | reflection.kt:63:17:63:36 | invoke | reflection.kt:54:1:54:52 | ext1 |
 | reflection.kt:64:17:64:34 | ...::... | reflection.kt:64:17:64:34 | invoke | reflection.kt:56:1:56:48 | ext2 |
 | reflection.kt:65:17:65:36 | ...::... | reflection.kt:65:17:65:36 | invoke | reflection.kt:56:1:56:48 | ext2 |
-| reflection.kt:90:18:90:24 | ...::... | reflection.kt:90:18:90:24 | invoke | reflection.kt:86:9:86:30 | Inner<String> |
-| reflection.kt:97:14:97:21 | ...::... | reflection.kt:97:14:97:21 | invoke | reflection.kt:83:1:92:1 | Class2<String> |
+| reflection.kt:90:18:90:24 | ...::... | reflection.kt:90:18:90:24 | invoke | file://<external>/Class2$Inner.class:0:0:0:0 | Inner<String> |
+| reflection.kt:97:14:97:21 | ...::... | reflection.kt:97:14:97:21 | invoke | file://<external>/Class2.class:0:0:0:0 | Class2<String> |
 | reflection.kt:98:14:98:17 | ...::... | reflection.kt:98:14:98:17 | invoke | reflection.kt:94:1:94:24 | fn |
-| reflection.kt:99:14:99:29 | ...::... | reflection.kt:99:14:99:29 | invoke | reflection.kt:86:9:86:30 | Inner<String> |
+| reflection.kt:99:14:99:29 | ...::... | reflection.kt:99:14:99:29 | invoke | file://<external>/Class2$Inner.class:0:0:0:0 | Inner<String> |
 | reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | invoke | reflection.kt:115:9:115:27 | fn1 |
 propertyGetReferences
 | reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | get | reflection.kt:33:9:33:23 | getP0 |
@@ -58,8 +58,8 @@ propertyGetReferences
 | reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | get | reflection.kt:34:9:34:23 | getP1 |
 | reflection.kt:50:13:50:28 | ...::... | reflection.kt:50:13:50:28 | get | reflection.kt:47:5:47:28 | getLastChar |
 | reflection.kt:51:13:51:28 | ...::... | reflection.kt:51:13:51:28 | get | reflection.kt:47:5:47:28 | getLastChar |
-| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | get | reflection.kt:78:13:78:24 | getP2 |
-| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | get | reflection.kt:78:13:78:24 | getP2 |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | get | file://<external>/Class1$Generic.class:0:0:0:0 | getP2 |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | get | file://<external>/Class1$Generic.class:0:0:0:0 | getP2 |
 | reflection.kt:70:17:70:30 | ...::... | reflection.kt:70:17:70:30 | get | file://<external>/IntCompanionObject.class:0:0:0:0 | getMAX_VALUE |
 | reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | get | reflection.kt:105:18:105:31 | getProp1 |
 propertyFieldReferences
@@ -68,8 +68,8 @@ propertyFieldReferences
 propertySetReferences
 | reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | set | reflection.kt:34:9:34:23 | setP1 |
 | reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | set | reflection.kt:34:9:34:23 | setP1 |
-| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | set | reflection.kt:79:13:79:29 | setP2 |
-| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | set | reflection.kt:79:13:79:29 | setP2 |
+| reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | set | file://<external>/Class1$Generic.class:0:0:0:0 | setP2 |
+| reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | set | file://<external>/Class1$Generic.class:0:0:0:0 | setP2 |
 | reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | set | reflection.kt:105:18:105:31 | setProp1 |
 callsInsideInvocationMethods
 | reflection.kt:7:49:7:54 | ...::... | reflection.kt:7:49:7:54 | new Function2<Ccc,Integer,Double>(...) { ... } | reflection.kt:7:49:7:54 | invoke | reflection.kt:7:49:7:54 | m(...) | Ccc.m |

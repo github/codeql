@@ -287,20 +287,28 @@ open class KotlinFileExtractor(
             extractClassModifiers(c, id)
             extractClassSupertypes(c, id, if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses))
 
-            val locId = if (argsIncludingOuterClasses != null && argsIncludingOuterClasses.isNotEmpty()) {
-                val binaryPath = getIrClassBinaryPath(c)
-                val newTrapWriter = tw.makeFileTrapWriter(binaryPath, true)
-                newTrapWriter.getWholeFileLocation()
-            } else {
-                tw.getLocation(c)
-            }
-
+            val locId = getLocation(c, argsIncludingOuterClasses)
             tw.writeHasLocation(id, locId)
 
             // Extract the outer <-> inner class relationship, passing on any type arguments in excess to this class' parameters.
             extractEnclosingClass(c, id, locId, argsIncludingOuterClasses?.drop(c.typeParameters.size) ?: listOf())
 
             return id
+        }
+    }
+
+    private fun getLocation(decl: IrDeclaration, typeArgs: List<IrTypeArgument>?): Label<DbLocation> {
+        return if (typeArgs != null && typeArgs.isNotEmpty()) {
+            val c = getContainingClassOrSelf(decl)
+            if (c == null) {
+                tw.getLocation(decl)
+            } else {
+                val binaryPath = getIrClassBinaryPath(c)
+                val newTrapWriter = tw.makeFileTrapWriter(binaryPath, true)
+                newTrapWriter.getWholeFileLocation()
+            }
+        } else {
+            tw.getLocation(decl)
         }
     }
 
@@ -630,8 +638,6 @@ open class KotlinFileExtractor(
 
                 getFunctionTypeParameters(f).mapIndexed { idx, tp -> extractTypeParameter(tp, idx) }
 
-                val locId = tw.getLocation(f)
-
                 val id =
                     if (idOverride != null)
                         idOverride
@@ -686,6 +692,7 @@ open class KotlinFileExtractor(
                     tw.writeMethodsKotlinType(methodId, returnType.kotlinResult.id)
                 }
 
+                val locId = getLocation(f, classTypeArgsIncludingOuterClasses)
                 tw.writeHasLocation(id, locId)
                 val body = f.body
                 if (body != null && extractBody) {

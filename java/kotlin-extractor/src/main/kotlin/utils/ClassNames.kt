@@ -8,6 +8,7 @@ import org.jetbrains.kotlin.load.kotlin.KotlinJvmBinarySourceElement
 
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.util.parentClassOrNull
 import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
 
 // Adapted from Kotlin's interpreter/Utils.kt function 'internalName'
@@ -76,4 +77,11 @@ fun getIrClassBinaryPath(irClass: IrClass): String {
   return getRawIrClassBinaryPath(irClass)
   // Otherwise, make up a fake location:
     ?: "/!unknown-binary-location/${getIrDeclBinaryName(irClass).replace(".", "/")}.class"
+}
+
+fun getContainingClassOrSelf(decl: IrDeclaration): IrClass? {
+    return when(decl) {
+        is IrClass -> decl
+        else -> decl.parentClassOrNull
+    }
 }

@@ -22,6 +22,6 @@ callableLocations
 | B.fn | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 |
 | B.fn | generics.kt:4:5:10:5 | generics.kt:4:5:10:5 |
 | B<Integer>.fn | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 |
-| B<Object>.fn | generics.kt:4:5:10:5 | generics.kt:4:5:10:5 |
+| B<Object>.fn | file:///!unknown-binary-location/main/B.class:0:0:0:0 | file:///!unknown-binary-location/main/B.class:0:0:0:0 |
+| B<String>.fn | file:///!unknown-binary-location/main/B.class:0:0:0:0 | file:///!unknown-binary-location/main/B.class:0:0:0:0 |
 | B<String>.fn | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 |
-| B<String>.fn | generics.kt:4:5:10:5 | generics.kt:4:5:10:5 |

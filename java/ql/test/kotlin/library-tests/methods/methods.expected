@@ -16,7 +16,6 @@ methods
 | methods.kt:5:1:19:1 | Class | methods.kt:17:14:17:33 | internalFun | internalFun() | internal |
 | methods.kt:5:1:19:1 | Class | methods.kt:18:5:18:36 | noExplicitVisibilityFun | noExplicitVisibilityFun() | public |
 constructors
-| file:///!unknown-binary-location/foo/bar/C1.class:0:0:0:0 | C1<Integer> | methods5.kt:13:1:13:14 | C1<Integer> | C1<Integer>() |
 | methods2.kt:7:1:10:1 | Class2 | methods2.kt:7:1:10:1 | Class2 | Class2() |
 | methods3.kt:5:1:7:1 | Class3 | methods3.kt:5:1:7:1 | Class3 | Class3() |
 | methods4.kt:3:1:11:1 | NestedTest | methods4.kt:3:1:11:1 | NestedTest | NestedTest() |

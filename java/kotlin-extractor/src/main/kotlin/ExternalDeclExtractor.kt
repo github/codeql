@@ -8,7 +8,6 @@ import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.isFileClass
 import org.jetbrains.kotlin.ir.util.packageFqName
-import org.jetbrains.kotlin.ir.util.parentAsClass
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
 import java.io.File
 import java.util.ArrayList
@@ -63,10 +62,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
                             val trapFile = manager.file
                             val trapTmpFile = File.createTempFile("${trapFile.nameWithoutExtension}.", ".${trapFile.extension}.tmp", trapFile.parentFile)
 
-                            val containingClass = when(irDecl) {
-                                is IrClass -> irDecl
-                                else -> irDecl.parentClassOrNull
-                            }
+                            val containingClass = getContainingClassOrSelf(irDecl)
                             if (containingClass == null) {
                                 logger.warnElement("Unable to get containing class", irDecl)
                                 return
