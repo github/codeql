@@ -128,21 +128,21 @@ open class KotlinUsesExtractor(
     private fun withFileOfClass(cls: IrClass): KotlinFileExtractor {
         val clsFile = cls.fileOrNull
 
-        if (isExternalDeclaration(cls) || clsFile == null) {
+        if (this is KotlinFileExtractor && this.filePath == clsFile?.path) {
+            return this
+        }
+
+        if (clsFile == null || isExternalDeclaration(cls)) {
             val filePath = getIrClassBinaryPath(cls)
-            val newTrapWriter = tw.makeFileTrapWriter(filePath, false)
+            val newTrapWriter = tw.makeFileTrapWriter(filePath, globalExtensionState.extractedClassFilePaths.add(filePath))
             val newLoggerTrapWriter = logger.tw.makeFileTrapWriter(filePath, false)
             val newLogger = FileLogger(logger.loggerBase, newLoggerTrapWriter)
             return KotlinFileExtractor(newLogger, newTrapWriter, filePath, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState)
         }
 
-        if (this is KotlinFileExtractor && this.filePath == clsFile.path) {
-            return this
-        }
-
         val newTrapWriter = tw.makeSourceFileTrapWriter(clsFile, false)
         val newLoggerTrapWriter = logger.tw.makeSourceFileTrapWriter(clsFile, false)
-        val newLogger = FileLogger(logger.loggerBase, newTrapWriter)
+        val newLogger = FileLogger(logger.loggerBase, newLoggerTrapWriter)
         return KotlinFileExtractor(newLogger, newTrapWriter, clsFile.path, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState)
     }
 
