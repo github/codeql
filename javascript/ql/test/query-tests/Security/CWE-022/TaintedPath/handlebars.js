@@ -7,10 +7,10 @@ const app = express();
 const data = {};
 
 function init() {
+    hb.registerHelper("catFile", catFile);
     data.compiledFileAccess = hb.compile("contents of file {{path}} are: {{catFile path}}")
     data.compiledBenign = hb.compile("hello, {{name}}");
     data.compiledUnknown = hb.compile(fs.readFileSync("greeting.template"));
-    hb.registerHelper("catFile", catFile);
 }
 
 init();

@@ -52,6 +52,23 @@ module TaintStep {
   /**
    * Holds if there's a step from `pred` to `succ` due to templating data being
    * passed from a templating call to a registered helper via a parameter.
+   *
+   * To establish the step, we look at the template passed to `compile`, and will
+   * only track steps from templates to helpers they actually reference.
+   *
+   * ```javascript
+   * function loudHelper(text) {
+   *   //                ^^^^ succ
+   *   return text.toUpperCase();
+   * }
+   *
+   * hb.registerHelper("loud", loudHelper);
+   *
+   * const template = hb.compile("Hello, {{loud name}}!");
+   *
+   * template({name: "user"});
+   * //              ^^^^^^ pred
+   * ```
    */
   private predicate isHandlebarsArgStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(string helperName |
