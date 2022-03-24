@@ -14,42 +14,18 @@ genericType
 | generics.kt:58:9:60:9 | Local | generics.kt:58:21:58:22 | T3 | 0 |
 parameterizedType
 | generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | V |
-| generics.kt:11:1:11:19 | C0<?> | generics.kt:11:1:11:19 | C0 | 0 | ? |
-| generics.kt:11:1:11:19 | C0<Integer> | generics.kt:11:1:11:19 | C0 | 0 | Integer |
-| generics.kt:11:1:11:19 | C0<S> | generics.kt:11:1:11:19 | C0 | 0 | S |
-| generics.kt:11:1:11:19 | C0<String> | generics.kt:11:1:11:19 | C0 | 0 | String |
-| generics.kt:11:1:11:19 | C0<U> | generics.kt:11:1:11:19 | C0 | 0 | U |
-| generics.kt:11:1:11:19 | C0<W> | generics.kt:11:1:11:19 | C0 | 0 | W |
 | generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | T |
 | generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | W |
-| generics.kt:13:1:18:1 | C1<Integer,Integer> | generics.kt:13:1:18:1 | C1 | 0 | Integer |
-| generics.kt:13:1:18:1 | C1<Integer,Integer> | generics.kt:13:1:18:1 | C1 | 1 | Integer |
-| generics.kt:13:1:18:1 | C1<String,Integer> | generics.kt:13:1:18:1 | C1 | 0 | String |
-| generics.kt:13:1:18:1 | C1<String,Integer> | generics.kt:13:1:18:1 | C1 | 1 | Integer |
-| generics.kt:13:1:18:1 | C1<String,String> | generics.kt:13:1:18:1 | C1 | 0 | String |
-| generics.kt:13:1:18:1 | C1<String,String> | generics.kt:13:1:18:1 | C1 | 1 | String |
-| generics.kt:13:1:18:1 | C1<T,W> | generics.kt:13:1:18:1 | C1 | 0 | T |
-| generics.kt:13:1:18:1 | C1<T,W> | generics.kt:13:1:18:1 | C1 | 1 | W |
-| generics.kt:13:1:18:1 | C1<U,U> | generics.kt:13:1:18:1 | C1 | 0 | U |
-| generics.kt:13:1:18:1 | C1<U,U> | generics.kt:13:1:18:1 | C1 | 1 | U |
 | generics.kt:36:1:40:1 | BoundedTest | generics.kt:36:1:40:1 | BoundedTest | 0 | T |
 | generics.kt:36:1:40:1 | BoundedTest | generics.kt:36:1:40:1 | BoundedTest | 1 | S |
 | generics.kt:42:1:54:1 | Outer | generics.kt:42:1:54:1 | Outer | 0 | T1 |
 | generics.kt:42:1:54:1 | Outer | generics.kt:42:1:54:1 | Outer | 1 | T2 |
-| generics.kt:42:1:54:1 | Outer<T1,T2> | generics.kt:42:1:54:1 | Outer | 0 | T1 |
-| generics.kt:42:1:54:1 | Outer<T1,T2> | generics.kt:42:1:54:1 | Outer | 1 | T2 |
 | generics.kt:43:5:47:5 | Inner1 | generics.kt:43:5:47:5 | Inner1 | 0 | T3 |
 | generics.kt:43:5:47:5 | Inner1 | generics.kt:43:5:47:5 | Inner1 | 1 | T4 |
-| generics.kt:43:5:47:5 | Inner1<Integer,String> | generics.kt:43:5:47:5 | Inner1 | 0 | Integer |
-| generics.kt:43:5:47:5 | Inner1<Integer,String> | generics.kt:43:5:47:5 | Inner1 | 1 | String |
 | generics.kt:49:5:53:5 | Nested1 | generics.kt:49:5:53:5 | Nested1 | 0 | T3 |
 | generics.kt:49:5:53:5 | Nested1 | generics.kt:49:5:53:5 | Nested1 | 1 | T4 |
-| generics.kt:49:5:53:5 | Nested1<Integer,String> | generics.kt:49:5:53:5 | Nested1 | 0 | Integer |
-| generics.kt:49:5:53:5 | Nested1<Integer,String> | generics.kt:49:5:53:5 | Nested1 | 1 | String |
 | generics.kt:56:1:63:1 | Class1 | generics.kt:56:1:63:1 | Class1 | 0 | T1 |
-| generics.kt:56:1:63:1 | Class1<T1> | generics.kt:56:1:63:1 | Class1 | 0 | T2 |
 | generics.kt:58:9:60:9 | Local | generics.kt:58:9:60:9 | Local | 0 | T3 |
-| generics.kt:58:9:60:9 | Local<Integer> | generics.kt:58:9:60:9 | Local | 0 | Integer |
 function
 | generics.kt:3:1:5:1 | f0 | f0(int,java.lang.Object) |
 | generics.kt:7:1:9:1 | f1 | f1(int,java.lang.Object) |
@@ -96,14 +72,14 @@ function
 genericFunction
 | generics.kt:3:1:5:1 | f0 | generics.kt:0:0:0:0 | GenericsKt | generics.kt:3:6:3:6 | S | 0 |
 | generics.kt:7:1:9:1 | f1 | generics.kt:0:0:0:0 | GenericsKt | generics.kt:7:6:7:6 | S | 0 |
+| generics.kt:15:5:17:5 | f2 | file:///!unknown-binary-location/foo/bar/C1.class:0:0:0:0 | C1<Integer,Integer> | generics.kt:15:10:15:10 | U | 0 |
+| generics.kt:15:5:17:5 | f2 | file:///!unknown-binary-location/foo/bar/C1.class:0:0:0:0 | C1<String,Integer> | generics.kt:15:10:15:10 | U | 0 |
+| generics.kt:15:5:17:5 | f2 | file:///!unknown-binary-location/foo/bar/C1.class:0:0:0:0 | C1<U,U> | generics.kt:15:10:15:10 | U | 0 |
 | generics.kt:15:5:17:5 | f2 | generics.kt:13:1:18:1 | C1 | generics.kt:15:10:15:10 | U | 0 |
-| generics.kt:15:5:17:5 | f2 | generics.kt:13:1:18:1 | C1<Integer,Integer> | generics.kt:15:10:15:10 | U | 0 |
-| generics.kt:15:5:17:5 | f2 | generics.kt:13:1:18:1 | C1<String,Integer> | generics.kt:15:10:15:10 | U | 0 |
-| generics.kt:15:5:17:5 | f2 | generics.kt:13:1:18:1 | C1<U,U> | generics.kt:15:10:15:10 | U | 0 |
 | generics.kt:21:5:21:23 | f4 | generics.kt:20:1:22:1 | C2 | generics.kt:21:10:21:10 | P | 0 |
 | generics.kt:57:5:62:5 | fn1 | generics.kt:56:1:63:1 | Class1 | generics.kt:57:10:57:11 | T2 | 0 |
+| generics.kt:59:13:59:43 | fn2 | file:///!unknown-binary-location/foo/bar/Class1$Local.class:0:0:0:0 | Local<Integer> | generics.kt:59:18:59:19 | T4 | 0 |
 | generics.kt:59:13:59:43 | fn2 | generics.kt:58:9:60:9 | Local | generics.kt:59:18:59:19 | T4 | 0 |
-| generics.kt:59:13:59:43 | fn2 | generics.kt:58:9:60:9 | Local<Integer> | generics.kt:59:18:59:19 | T4 | 0 |
 genericCall
 | generics.kt:27:17:27:22 | f2(...) | generics.kt:15:10:15:10 | U | String |
 | generics.kt:30:17:30:21 | f2(...) | generics.kt:15:10:15:10 | U | Integer |

@@ -146,7 +146,7 @@ classes.kt:
 #   61|   15: [GenericType,Interface,ParameterizedType] Interface3
 #-----|     -2: (Generic Parameters)
 #   61|       0: [TypeVariable] T
-#   63|   18: [Class] Class1
+#   63|   16: [Class] Class1
 #   63|     1: [Constructor] Class1
 #   63|       5: [BlockStmt] { ... }
 #   63|         0: [SuperConstructorInvocationStmt] super(...)
@@ -266,27 +266,27 @@ classes.kt:
 #   89|               1: [ExprStmt] <Expr>;
 #   89|                 0: [ClassInstanceExpr] new (...)
 #   89|                   -3: [TypeAccess] Interface3<Integer>
-#   93|   19: [Class] pulicClass
+#   93|   17: [Class] pulicClass
 #   93|     1: [Constructor] pulicClass
 #   93|       5: [BlockStmt] { ... }
 #   93|         0: [SuperConstructorInvocationStmt] super(...)
 #   93|         1: [BlockStmt] { ... }
-#   94|   20: [Class] privateClass
+#   94|   18: [Class] privateClass
 #   94|     1: [Constructor] privateClass
 #   94|       5: [BlockStmt] { ... }
 #   94|         0: [SuperConstructorInvocationStmt] super(...)
 #   94|         1: [BlockStmt] { ... }
-#   95|   21: [Class] internalClass
+#   95|   19: [Class] internalClass
 #   95|     1: [Constructor] internalClass
 #   95|       5: [BlockStmt] { ... }
 #   95|         0: [SuperConstructorInvocationStmt] super(...)
 #   95|         1: [BlockStmt] { ... }
-#   96|   22: [Class] noExplicitVisibilityClass
+#   96|   20: [Class] noExplicitVisibilityClass
 #   96|     1: [Constructor] noExplicitVisibilityClass
 #   96|       5: [BlockStmt] { ... }
 #   96|         0: [SuperConstructorInvocationStmt] super(...)
 #   96|         1: [BlockStmt] { ... }
-#   98|   23: [Class] nestedClassVisibilities
+#   98|   21: [Class] nestedClassVisibilities
 #   98|     1: [Constructor] nestedClassVisibilities
 #   98|       5: [BlockStmt] { ... }
 #   98|         0: [SuperConstructorInvocationStmt] super(...)
@@ -316,17 +316,17 @@ classes.kt:
 #  103|         5: [BlockStmt] { ... }
 #  103|           0: [SuperConstructorInvocationStmt] super(...)
 #  103|           1: [BlockStmt] { ... }
-#  106|   24: [Class] sealedClass
+#  106|   22: [Class] sealedClass
 #  106|     1: [Constructor] sealedClass
 #  106|       5: [BlockStmt] { ... }
 #  106|         0: [SuperConstructorInvocationStmt] super(...)
 #  106|         1: [BlockStmt] { ... }
-#  107|   25: [Class] openClass
+#  107|   23: [Class] openClass
 #  107|     1: [Constructor] openClass
 #  107|       5: [BlockStmt] { ... }
 #  107|         0: [SuperConstructorInvocationStmt] super(...)
 #  107|         1: [BlockStmt] { ... }
-#  109|   26: [Class] C1
+#  109|   24: [Class] C1
 #  109|     1: [Constructor] C1
 #  109|       5: [BlockStmt] { ... }
 #  109|         0: [SuperConstructorInvocationStmt] super(...)
@@ -711,7 +711,7 @@ superChain.kt:
 #    1|       5: [BlockStmt] { ... }
 #    1|         0: [SuperConstructorInvocationStmt] super(...)
 #    1|         1: [BlockStmt] { ... }
-#    2|   4: [Class,GenericType,ParameterizedType] SuperChain2
+#    2|   2: [Class,GenericType,ParameterizedType] SuperChain2
 #-----|     -2: (Generic Parameters)
 #    2|       0: [TypeVariable] T3
 #    2|       1: [TypeVariable] T4
@@ -719,7 +719,7 @@ superChain.kt:
 #    2|       5: [BlockStmt] { ... }
 #    2|         0: [SuperConstructorInvocationStmt] super(...)
 #    2|         1: [BlockStmt] { ... }
-#    3|   6: [Class,GenericType,ParameterizedType] SuperChain3
+#    3|   3: [Class,GenericType,ParameterizedType] SuperChain3
 #-----|     -2: (Generic Parameters)
 #    3|       0: [TypeVariable] T5
 #    3|       1: [TypeVariable] T6

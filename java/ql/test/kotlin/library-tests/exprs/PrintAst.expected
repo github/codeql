@@ -4183,11 +4183,11 @@ funcExprs.kt:
 #   70|         0: [ReturnStmt] return ...
 #   70|           0: [StringLiteral] 
 #   73|   4: [Class] Class3
-#   73|     1: [Constructor] Class3
+#   73|     3: [Constructor] Class3
 #   73|       5: [BlockStmt] { ... }
 #   73|         0: [SuperConstructorInvocationStmt] super(...)
 #   73|         1: [BlockStmt] { ... }
-#   74|     2: [Method] call
+#   74|     4: [Method] call
 #   74|       5: [BlockStmt] { ... }
 #   75|         0: [ExprStmt] <Expr>;
 #   75|           0: [MethodAccess] fn(...)
@@ -4208,11 +4208,11 @@ funcExprs.kt:
 #   75|                   0: [TypeAccess] Generic<Integer>
 #   75|                     0: [TypeAccess] Integer
 #   75|                 1: [TypeAccess] String
-#   77|     3: [Method] fn
+#   77|     5: [Method] fn
 #-----|       4: (Parameters)
 #   77|         0: [Parameter] f
 #   77|       5: [BlockStmt] { ... }
-#   79|     4: [Class,GenericType,ParameterizedType] Generic
+#   79|     6: [Class,GenericType,ParameterizedType] Generic
 #-----|       -2: (Generic Parameters)
 #   79|         0: [TypeVariable] T
 #   79|       1: [Constructor] Generic
