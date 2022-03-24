@@ -163,7 +163,7 @@ string captureSink(TargetApi api) {
     config.hasFlow(src, sink) and
     ExternalFlow::sinkNode(sink, kind) and
     api = src.getEnclosingCallable() and
-    not kind = "logging" and
+    isRelevantSinkKind(kind) and
     result = asSinkModel(api, asInputArgument(src), kind)
   )
 }

@@ -61,6 +61,12 @@ string asInputArgument(DataFlow::Node source) {
   result = qualifierString()
 }
 
+/**
+ * Holds if `kind` is a relevant sink kind for creating sink models.
+ */
+bindingset[kind]
+predicate isRelevantSinkKind(string kind) { not kind = "logging" }
+
 module DataFlowImplCommon {
   predicate store = Dfic::store/4;
 

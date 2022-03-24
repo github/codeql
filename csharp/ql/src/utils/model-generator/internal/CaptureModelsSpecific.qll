@@ -27,6 +27,12 @@ predicate isOwnInstanceAccessNode(ReturnNode node) { node.asExpr() instanceof Th
 string qualifierString() { result = "Argument[Qualifier]" }
 
 /**
+ * Holds if `kind` is a relevant sink kind for creating sink models.
+ */
+bindingset[kind]
+predicate isRelevantSinkKind(string kind) { any() }
+
+/**
  * Language specific parts of the `PropagateToSinkConfiguration`.
  */
 class PropagateToSinkConfigurationSpecific extends TaintTracking::Configuration {
