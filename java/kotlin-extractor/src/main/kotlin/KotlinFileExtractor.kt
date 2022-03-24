@@ -745,7 +745,7 @@ open class KotlinFileExtractor(
             DeclarationStackAdjuster(p).use {
 
                 val id = useProperty(p, parentId)
-                val locId = tw.getLocation(p)
+                val locId = getLocation(p, classTypeArgs)
                 tw.writeKtProperties(id, p.name.asString())
                 tw.writeHasLocation(id, locId)
 

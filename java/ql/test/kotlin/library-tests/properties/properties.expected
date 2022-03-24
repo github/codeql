@@ -19,6 +19,7 @@ fieldDeclarations
 | properties.kt:37:5:37:30 | int publicProp; | properties.kt:37:5:37:30 | publicProp | 0 |
 | properties.kt:38:5:38:34 | int internalProp; | properties.kt:38:5:38:34 | internalProp | 0 |
 | properties.kt:67:1:67:23 | int constVal; | properties.kt:67:1:67:23 | constVal | 0 |
+| properties.kt:70:5:70:16 | int prop; | properties.kt:70:5:70:16 | prop | 0 |
 #select
 | properties.kt:2:27:2:50 | constructorProp | properties.kt:2:27:2:50 | getConstructorProp | file://:0:0:0:0 | <none> | properties.kt:2:27:2:50 | constructorProp | public |
 | properties.kt:2:53:2:83 | mutableConstructorProp | properties.kt:2:53:2:83 | getMutableConstructorProp | properties.kt:2:53:2:83 | setMutableConstructorProp | properties.kt:2:53:2:83 | mutableConstructorProp | public |
@@ -44,3 +45,4 @@ fieldDeclarations
 | properties.kt:37:5:37:30 | publicProp | properties.kt:37:12:37:30 | getPublicProp | file://:0:0:0:0 | <none> | properties.kt:37:5:37:30 | publicProp | public |
 | properties.kt:38:5:38:34 | internalProp | properties.kt:38:14:38:34 | getInternalProp | file://:0:0:0:0 | <none> | properties.kt:38:5:38:34 | internalProp | internal |
 | properties.kt:67:1:67:23 | constVal | properties.kt:67:7:67:23 | getConstVal | file://:0:0:0:0 | <none> | properties.kt:67:1:67:23 | constVal | public |
+| properties.kt:70:5:70:16 | prop | properties.kt:70:5:70:16 | getProp | file://:0:0:0:0 | <none> | properties.kt:70:5:70:16 | prop | public |

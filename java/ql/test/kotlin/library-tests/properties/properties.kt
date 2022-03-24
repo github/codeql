@@ -65,3 +65,11 @@ abstract class properties(val constructorProp: Int, var mutableConstructorProp: 
 }
 
 const val constVal = 15
+
+class C<T> {
+    val prop = 1
+    fun fn() {
+        val c = C<String>()
+        println(c.prop)
+    }
+}
