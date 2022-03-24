@@ -3,6 +3,7 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.DataFlow2
+import semmle.code.java.StringFormat
 
 /**
  * Gets a regular expression for matching common names of variables
@@ -34,6 +35,13 @@ private class ConcatSanitizer extends Expr {
       ma.getMethod().hasQualifiedName("java.lang", "StringBuilder", "append") and
       this = ma.getArgument(0)
     )
+    or
+    exists(MethodAccess ma |
+      ma.getMethod().hasQualifiedName("java.io", "ByteArrayOutputStream", "write") and
+      this = ma.getArgument(0)
+    )
+    or
+    exists(FormattingCall fc | this = fc.getAnArgument())
     or
     this.(ConditionalExpr).getAChildExpr() instanceof ConcatSanitizer // useSalt?password+":"+salt:password
   }
