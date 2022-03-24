@@ -528,7 +528,6 @@ case @stmt.kind of
 | 21 = @case
 | 22 = @catchclause
 | 23 = @yieldstmt
-| 24 = @errorstmt
 ;
 
 #keyset[parent,idx]
@@ -629,7 +628,6 @@ case @expr.kind of
 | 71  = @typeannotation
 | 72  = @intersectiontypeaccess
 | 73  = @switchexpr
-| 74  = @errorexpr
 ;
 
 @classinstancexpr = @newexpr | @lambdaexpr | @memberref
