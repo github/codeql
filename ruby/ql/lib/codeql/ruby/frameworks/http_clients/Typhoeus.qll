@@ -26,7 +26,7 @@ class TyphoeusHttpRequest extends HTTP::Client::Request::Range {
     this = requestUse.asExpr().getExpr()
   }
 
-  override DataFlow::Node getURL() { result = requestUse.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = requestUse.getArgument(0) }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 

@@ -485,10 +485,18 @@ module HTTP {
       DataFlow::Node getResponseBody() { result = super.getResponseBody() }
 
       /**
+       * DEPRECATED: Use `getAUrlPart` instead.
+       *
        * Gets a node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
-      DataFlow::Node getURL() { result = super.getURL() }
+      deprecated DataFlow::Node getURL() { result = super.getURL() or result = super.getAUrlPart() }
+
+      /**
+       * Gets a data-flow node that contributes to the URL of the request.
+       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+       */
+      DataFlow::Node getAUrlPart() { result = super.getAUrlPart() }
 
       /** Gets a string that identifies the framework used for this request. */
       string getFramework() { result = super.getFramework() }
@@ -516,10 +524,18 @@ module HTTP {
         abstract DataFlow::Node getResponseBody();
 
         /**
+         * DEPRECATED: overwrite `getAUrlPart` instead.
+         *
          * Gets a node that contributes to the URL of the request.
          * Depending on the framework, a request may have multiple nodes which contribute to the URL.
          */
-        abstract DataFlow::Node getURL();
+        deprecated DataFlow::Node getURL() { none() }
+
+        /**
+         * Gets a data-flow node that contributes to the URL of the request.
+         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+         */
+        abstract DataFlow::Node getAUrlPart();
 
         /** Gets a string that identifies the framework used for this request. */
         abstract string getFramework();

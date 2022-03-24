@@ -38,7 +38,7 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
     )
   }
 
-  override DataFlow::Node getURL() {
+  override DataFlow::Node getAUrlPart() {
     result = requestUse.getKeywordArgument("url")
     or
     result = requestUse.getArgument(0) and
