@@ -27,6 +27,8 @@ class ConstantValue extends TConstantValue {
     or
     result = ":" + this.getSymbol()
     or
+    result = this.getRegExp()
+    or
     result = this.getBoolean().toString()
     or
     this.isNil() and result = "nil"
@@ -62,11 +64,31 @@ class ConstantValue extends TConstantValue {
   /** Holds if this is the symbol value `:s`. */
   predicate isSymbol(string s) { s = this.getSymbol() }
 
-  /** Gets the string or symbol value, if any. */
-  string getStringOrSymbol() { result = [this.getString(), this.getSymbol()] }
+  /** Gets the regexp value, if this is a regexp. */
+  string getRegExp() { this.isRegExpWithFlags(result, _) }
 
-  /** Holds if this is the string value `s` or the symbol value `:s`. */
-  predicate isStringOrSymbol(string s) { s = this.getStringOrSymbol() }
+  /** Holds if this is the regexp value `/s/`. */
+  predicate isRegExp(string s) { this.isRegExpWithFlags(s, _) }
+
+  /** Holds if this is the regexp value `/s/flags` . */
+  predicate isRegExpWithFlags(string s, string flags) { this = TRegExp(s, flags) }
+
+  /** DEPRECATED: Use `getStringlikeValue` instead. */
+  deprecated string getStringOrSymbol() { result = this.getStringlikeValue() }
+
+  /** DEPRECATED: Use `isStringlikeValue` instead. */
+  deprecated predicate isStringOrSymbol(string s) { s = this.getStringlikeValue() }
+
+  /** Gets the string/symbol/regexp value, if any. */
+  string getStringlikeValue() { result = [this.getString(), this.getSymbol(), this.getRegExp()] }
+
+  /**
+   * Holds if this is:
+   * - the string value `s`,
+   * - the symbol value `:s`, or
+   * - the regexp value `/s/`.
+   */
+  predicate isStringlikeValue(string s) { s = this.getStringlikeValue() }
 
   /** Gets the Boolean value, if this is a Boolean. */
   boolean getBoolean() { this = TBoolean(result) }
@@ -92,11 +114,17 @@ module ConstantValue {
   /** A constant complex value. */
   class ConstantComplexValue extends ConstantValue, TComplex { }
 
+  /** A constant string-like value. */
+  class ConstantStringlikeValue extends ConstantValue, TStringlike { }
+
   /** A constant string value. */
   class ConstantStringValue extends ConstantValue, TString { }
 
   /** A constant symbol value. */
   class ConstantSymbolValue extends ConstantValue, TSymbol { }
+
+  /** A constant regexp value. */
+  class ConstantRegExpValue extends ConstantValue, TRegExp { }
 
   /** A constant Boolean value. */
   class ConstantBooleanValue extends ConstantValue, TBoolean { }

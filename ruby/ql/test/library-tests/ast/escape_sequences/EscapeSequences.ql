@@ -21,4 +21,6 @@ query predicate stringlikeLiterals(StringlikeLiteral l, string value, string kin
   value = l.getConstantValue().getString() and kind = "string"
   or
   value = l.getConstantValue().getSymbol() and kind = "symbol"
+  or
+  value = l.getConstantValue().getRegExp() and kind = "regexp"
 }
