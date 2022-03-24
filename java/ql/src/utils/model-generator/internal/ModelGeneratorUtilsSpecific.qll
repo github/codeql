@@ -136,7 +136,7 @@ private string parameterAccess(Parameter p) {
 }
 
 /**
- * Gets the model string representation of the parameter node `p`.
+ * Gets the CSV string representation of the parameter node `p`.
  */
 string parameterNodeAsInput(DataFlow::ParameterNode p) {
   result = parameterAccess(p.asParameter())
@@ -145,7 +145,7 @@ string parameterNodeAsInput(DataFlow::ParameterNode p) {
 }
 
 /**
- * Gets the model string represention of the the return node `node`.
+ * Gets the CSV string represention of the the return node `node`.
  */
 string returnNodeAsOutput(ReturnNodeExt node) {
   if node.getKind() instanceof ValueReturnKind
