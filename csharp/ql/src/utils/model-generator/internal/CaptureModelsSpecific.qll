@@ -3,16 +3,18 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.ExternalFlow
-import semmle.code.csharp.dataflow.TaintTracking
-import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
-import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-import ModelGeneratorUtils
+private import semmle.code.csharp.dataflow.ExternalFlow as Ef
+private import semmle.code.csharp.dataflow.TaintTracking
+private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as Dfic
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
+private import ModelGeneratorUtils
 
 /**
  * Gets the enclosing callable of `ret`.
  */
-Callable returnNodeEnclosingCallable(ReturnNodeExt ret) { result = getNodeEnclosingCallable(ret) }
+Callable returnNodeEnclosingCallable(Dfic::ReturnNodeExt ret) {
+  result = Dfic::getNodeEnclosingCallable(ret)
+}
 
 /**
  * Holds if `node` is an own instance access.
@@ -48,4 +50,18 @@ string asInputArgument(DataFlow::Node source) {
   or
   source.asExpr() instanceof FieldAccess and
   result = qualifierString()
+}
+
+module DataFlowImplCommon {
+  predicate store = Dfic::store/4;
+
+  class ReturnNodeExt = Dfic::ReturnNodeExt;
+
+  class TypedContent = Dfic::TypedContent;
+}
+
+module ExternalFlow {
+  predicate sourceNode = Ef::sourceNode/2;
+
+  predicate sinkNode = Ef::sinkNode/2;
 }

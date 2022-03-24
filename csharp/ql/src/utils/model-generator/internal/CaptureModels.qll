@@ -3,14 +3,14 @@
  * and sink models of the Standard or a 3rd party library.
  */
 
-private import CaptureModelsSpecific
 private import ModelGeneratorUtils
+private import CaptureModelsSpecific
 
 /**
  * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
  */
 string captureQualifierFlow(TargetApi api) {
-  exists(ReturnNodeExt ret |
+  exists(DataFlowImplCommon::ReturnNodeExt ret |
     api = returnNodeEnclosingCallable(ret) and
     isOwnInstanceAccessNode(ret)
   ) and
@@ -47,7 +47,7 @@ private class ThroughFlowConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    sink instanceof ReturnNodeExt and
+    sink instanceof DataFlowImplCommon::ReturnNodeExt and
     not isOwnInstanceAccessNode(sink) and
     not exists(captureQualifierFlow(sink.asExpr().getEnclosingCallable())) and
     (state instanceof TaintRead or state instanceof TaintStore)
@@ -57,15 +57,15 @@ private class ThroughFlowConfig extends TaintTracking::Configuration {
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
     DataFlow::FlowState state2
   ) {
-    exists(TypedContent tc |
-      store(node1, tc, node2, _) and
+    exists(DataFlowImplCommon::TypedContent tc |
+      DataFlowImplCommon::store(node1, tc, node2, _) and
       isRelevantContent(tc.getContent()) and
       (state1 instanceof TaintRead or state1 instanceof TaintStore) and
       state2 instanceof TaintStore
     )
     or
     exists(DataFlow::Content c |
-      readStep(node1, c, node2) and
+      DataFlowPrivate::readStep(node1, c, node2) and
       isRelevantContent(c) and
       state1 instanceof TaintRead and
       state2 instanceof TaintRead
@@ -86,8 +86,8 @@ private class ThroughFlowConfig extends TaintTracking::Configuration {
  */
 string captureThroughFlow(TargetApi api) {
   exists(
-    ThroughFlowConfig config, DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, string input,
-    string output
+    ThroughFlowConfig config, DataFlow::ParameterNode p,
+    DataFlowImplCommon::ReturnNodeExt returnNodeExt, string input, string output
   |
     config.hasFlow(p, returnNodeExt) and
     returnNodeExt.getEnclosingCallable() = api and
@@ -108,11 +108,11 @@ string captureThroughFlow(TargetApi api) {
 private class FromSourceConfiguration extends TaintTracking::Configuration {
   FromSourceConfiguration() { this = "FromSourceConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { sourceNode(source, _) }
+  override predicate isSource(DataFlow::Node source) { ExternalFlow::sourceNode(source, _) }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(TargetApi c |
-      sink instanceof ReturnNodeExt and
+      sink instanceof DataFlowImplCommon::ReturnNodeExt and
       sink.getEnclosingCallable() = c
     )
   }
@@ -132,7 +132,7 @@ private class FromSourceConfiguration extends TaintTracking::Configuration {
 string captureSource(TargetApi api) {
   exists(DataFlow::Node source, DataFlow::Node sink, FromSourceConfiguration config, string kind |
     config.hasFlow(source, sink) and
-    sourceNode(source, kind) and
+    ExternalFlow::sourceNode(source, kind) and
     api = sink.getEnclosingCallable() and
     result = asSourceModel(api, returnNodeAsOutput(sink), kind)
   )
@@ -148,7 +148,7 @@ string captureSource(TargetApi api) {
 private class PropagateToSinkConfiguration extends PropagateToSinkConfigurationSpecific {
   PropagateToSinkConfiguration() { this = "parameters or fields flowing into sinks" }
 
-  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { ExternalFlow::sinkNode(sink, _) }
 
   override DataFlow::FlowFeature getAFeature() {
     result instanceof DataFlow::FeatureHasSourceCallContext
@@ -161,7 +161,7 @@ private class PropagateToSinkConfiguration extends PropagateToSinkConfigurationS
 string captureSink(TargetApi api) {
   exists(DataFlow::Node src, DataFlow::Node sink, PropagateToSinkConfiguration config, string kind |
     config.hasFlow(src, sink) and
-    sinkNode(sink, kind) and
+    ExternalFlow::sinkNode(sink, kind) and
     api = src.getEnclosingCallable() and
     not kind = "logging" and
     result = asSinkModel(api, asInputArgument(src), kind)

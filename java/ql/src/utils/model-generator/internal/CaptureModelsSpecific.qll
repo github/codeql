@@ -3,9 +3,9 @@
  */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow as Ef
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.internal.DataFlowImplCommon
+private import semmle.code.java.dataflow.internal.DataFlowImplCommon as Dfic
 import semmle.code.java.dataflow.internal.DataFlowNodes
 import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.InstanceAccess
@@ -14,8 +14,8 @@ import ModelGeneratorUtils
 /**
  * Gets the enclosing callable of `ret`.
  */
-Callable returnNodeEnclosingCallable(ReturnNodeExt ret) {
-  result = getNodeEnclosingCallable(ret).asCallable()
+Callable returnNodeEnclosingCallable(Dfic::ReturnNodeExt ret) {
+  result = Dfic::getNodeEnclosingCallable(ret).asCallable()
 }
 
 /**
@@ -59,4 +59,18 @@ string asInputArgument(DataFlow::Node source) {
   or
   source.asExpr() instanceof FieldAccess and
   result = qualifierString()
+}
+
+module DataFlowImplCommon {
+  predicate store = Dfic::store/4;
+
+  class ReturnNodeExt = Dfic::ReturnNodeExt;
+
+  class TypedContent = Dfic::TypedContent;
+}
+
+module ExternalFlow {
+  predicate sourceNode = Ef::sourceNode/2;
+
+  predicate sinkNode = Ef::sinkNode/2;
 }

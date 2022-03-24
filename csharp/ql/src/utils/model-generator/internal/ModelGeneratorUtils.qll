@@ -5,7 +5,7 @@ import ModelGeneratorUtilsSpecific
  */
 predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(DataFlow::Content f |
-    readStep(node1, f, node2) and
+    DataFlowPrivate::readStep(node1, f, node2) and
     if f instanceof DataFlow::FieldContent
     then isRelevantType(f.(DataFlow::FieldContent).getField().getType())
     else
@@ -14,7 +14,9 @@ predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
       else any()
   )
   or
-  exists(DataFlow::Content f | storeStep(node1, f, node2) | containerContent(f))
+  exists(DataFlow::Content f | DataFlowPrivate::storeStep(node1, f, node2) |
+    DataFlowPrivate::containerContent(f)
+  )
 }
 
 /**
@@ -24,7 +26,7 @@ predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
 predicate isRelevantContent(DataFlow::Content c) {
   isRelevantType(c.(DataFlow::FieldContent).getField().getType()) or
   isRelevantType(c.(DataFlow::SyntheticFieldContent).getField().getType()) or
-  containerContent(c)
+  DataFlowPrivate::containerContent(c)
 }
 
 /**

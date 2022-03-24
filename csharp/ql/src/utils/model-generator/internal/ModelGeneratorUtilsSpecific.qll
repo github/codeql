@@ -1,6 +1,6 @@
 import csharp
-import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-private import semmle.code.csharp.commons.Util
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as Dfp
+private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
@@ -8,7 +8,7 @@ private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 /**
  * Holds if it is relevant to generate models for `api`.
  */
-predicate isRelevantForModels(Callable api) { not api instanceof MainMethod }
+predicate isRelevantForModels(Callable api) { not api instanceof Util::MainMethod }
 
 /**
  * A class of callables that are relevant generating summary, source and sinks models for.
@@ -24,7 +24,7 @@ class TargetApi extends DataFlowCallable {
   }
 }
 
-predicate asPartialModel = Csv::asPartialModel/1;
+predicate asPartialModel = Dfp::Csv::asPartialModel/1;
 
 /**
  * Holds for type `t` for fields that are relevant as an intermediate
@@ -44,7 +44,7 @@ private string parameterAccess(Parameter p) {
 string parameterNodeAsInput(DataFlow::ParameterNode p) {
   result = parameterAccess(p.asParameter())
   or
-  result = "Argument[Qualifier]" and p instanceof InstanceParameterNode
+  result = "Argument[Qualifier]" and p instanceof Dfp::InstanceParameterNode
 }
 
 pragma[nomagic]
@@ -65,4 +65,12 @@ string returnNodeAsOutput(ReturnNodeExt node) {
       pos.isThisParameter() and
       result = "Argument[Qualifier]"
     )
+}
+
+module DataFlowPrivate {
+  predicate containerContent = Dfp::containerContent/1;
+
+  predicate readStep = Dfp::readStep/3;
+
+  predicate storeStep = Dfp::storeStep/3;
 }
