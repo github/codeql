@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 5.0
- * @precision low
+ * @precision high
  * @id java/hash-without-salt
  * @tags security
  *       external/cwe/cwe-759
