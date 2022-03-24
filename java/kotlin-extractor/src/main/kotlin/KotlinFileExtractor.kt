@@ -287,7 +287,14 @@ open class KotlinFileExtractor(
             extractClassModifiers(c, id)
             extractClassSupertypes(c, id, if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses))
 
-            val locId = tw.getLocation(c)
+            val locId = if (argsIncludingOuterClasses != null && argsIncludingOuterClasses.isNotEmpty()) {
+                val binaryPath = getIrClassBinaryPath(c)
+                val newTrapWriter = tw.makeFileTrapWriter(binaryPath, true)
+                newTrapWriter.getWholeFileLocation()
+            } else {
+                tw.getLocation(c)
+            }
+
             tw.writeHasLocation(id, locId)
 
             // Extract the outer <-> inner class relationship, passing on any type arguments in excess to this class' parameters.
