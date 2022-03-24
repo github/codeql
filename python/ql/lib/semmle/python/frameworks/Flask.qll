@@ -376,7 +376,7 @@ module Flask {
       //
       // For a test of this, see
       // python/ql/test/library-tests/frameworks/flask/SourceTest.ql
-      not DataFlow::localFlowStep(potentialFlaskRequestSource(), this)
+      not DataFlow::localFlow(potentialFlaskRequestSource(), this)
     }
 
     override string getSourceType() { result = "flask.request" }
