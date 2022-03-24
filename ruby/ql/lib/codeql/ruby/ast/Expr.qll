@@ -2,6 +2,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import codeql.ruby.ast.Constant
 private import internal.AST
+private import internal.Constant
 private import internal.Expr
 private import internal.TreeSitter
 
@@ -19,9 +20,7 @@ class Expr extends Stmt, TExpr {
   deprecated string getValueText() { result = this.getConstantValue().toString() }
 
   /** Gets the constant value of this expression, if any. */
-  ConstantValue getConstantValue() {
-    forex(CfgNodes::ExprCfgNode n | n = this.getAControlFlowNode() | result = n.getConstantValue())
-  }
+  ConstantValue getConstantValue() { result = getConstantValueExpr(this) }
 }
 
 /** DEPRECATED: Use `SelfVariableAccess` instead. */

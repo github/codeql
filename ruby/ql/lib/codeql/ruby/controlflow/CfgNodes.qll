@@ -4,6 +4,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.controlflow.BasicBlocks
 private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.internal.Constant
+private import codeql.ruby.ast.internal.Literal
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl
 private import internal.Splitting
@@ -101,13 +102,6 @@ class ExprCfgNode extends AstCfgNode {
   /** Gets the underlying expression. */
   Expr getExpr() { result = e }
 
-  private ExprCfgNode getSource() {
-    exists(Ssa::WriteDefinition def |
-      def.assigns(result) and
-      this = def.getARead()
-    )
-  }
-
   /**
    * DEPRECATED: Use `getConstantValue` instead.
    *
@@ -116,8 +110,7 @@ class ExprCfgNode extends AstCfgNode {
   deprecated string getValueText() { result = this.getConstantValue().toString() }
 
   /** Gets the constant value of this expression, if any. */
-  cached
-  ConstantValue getConstantValue() { result = this.getSource().getConstantValue() }
+  ConstantValue getConstantValue() { result = getConstantValue(this) }
 }
 
 /** A control-flow node that wraps a return-like statement. */
@@ -142,11 +135,8 @@ class StringComponentCfgNode extends AstCfgNode {
 }
 
 /** A control-flow node that wraps a `RegExpComponent` AST expression. */
-class RegExpComponentCfgNode extends AstCfgNode {
-  RegExpComponentCfgNode() { this.getNode() instanceof RegExpComponent }
-
-  /** Gets the constant value of this regex component. */
-  ConstantValue getConstantValue() { result = this.getNode().(RegExpComponent).getConstantValue() }
+class RegExpComponentCfgNode extends StringComponentCfgNode {
+  RegExpComponentCfgNode() { e instanceof RegExpComponent }
 }
 
 private AstNode desugar(AstNode n) {
@@ -232,8 +222,6 @@ module ExprNodes {
     override LiteralChildMapping e;
 
     override Literal getExpr() { result = super.getExpr() }
-
-    override ConstantValue getConstantValue() { result = e.getConstantValue() }
   }
 
   private class AssignExprChildMapping extends ExprChildMapping, AssignExpr {
@@ -263,29 +251,11 @@ module ExprNodes {
 
     override Operation getExpr() { result = super.getExpr() }
 
+    /** Gets the operator of this operation. */
+    string getOperator() { result = this.getExpr().getOperator() }
+
     /** Gets an operand of this operation. */
     final ExprCfgNode getAnOperand() { e.hasCfgChild(e.getAnOperand(), this, result) }
-  }
-
-  private predicate unaryConstFold(UnaryOperationCfgNode unop, string op, ConstantValue value) {
-    value = unop.getOperand().getConstantValue() and
-    op = unop.getExpr().getOperator()
-  }
-
-  private class RequiredUnaryConstantValue extends RequiredConstantValue {
-    override predicate requiredInt(int i) {
-      exists(ConstantValue value |
-        unaryConstFold(_, "-", value) and
-        i = -value.getInt()
-      )
-    }
-
-    override predicate requiredFloat(float f) {
-      exists(ConstantValue value |
-        unaryConstFold(_, "-", value) and
-        f = -value.getFloat()
-      )
-    }
   }
 
   /** A control-flow node that wraps a `UnaryOperation` AST expression. */
@@ -298,93 +268,6 @@ module ExprNodes {
 
     /** Gets the operand of this unary operation. */
     final ExprCfgNode getOperand() { e.hasCfgChild(uo.getOperand(), this, result) }
-
-    final override ConstantValue getConstantValue() {
-      // TODO: Implement support for complex numbers and rational numbers
-      exists(string op, ConstantValue value | unaryConstFold(this, op, value) |
-        op = "+" and
-        result = value
-        or
-        op = "-" and
-        (
-          result.isInt(-value.getInt())
-          or
-          result.isFloat(-value.getFloat())
-        )
-      )
-    }
-  }
-
-  private predicate binaryConstFold(
-    BinaryOperationCfgNode binop, string op, ConstantValue left, ConstantValue right
-  ) {
-    left = binop.getLeftOperand().getConstantValue() and
-    right = binop.getRightOperand().getConstantValue() and
-    op = binop.getExpr().getOperator()
-  }
-
-  private class RequiredBinaryConstantValue extends RequiredConstantValue {
-    override predicate requiredInt(int i) {
-      exists(string op, ConstantValue left, ConstantValue right |
-        binaryConstFold(_, op, left, right)
-      |
-        op = "+" and
-        i = left.getInt() + right.getInt()
-        or
-        op = "-" and
-        i = left.getInt() - right.getInt()
-        or
-        op = "*" and
-        i = left.getInt() * right.getInt()
-        or
-        op = "/" and
-        i = left.getInt() / right.getInt()
-      )
-    }
-
-    override predicate requiredFloat(float f) {
-      exists(string op, ConstantValue left, ConstantValue right |
-        binaryConstFold(_, op, left, right)
-      |
-        op = "+" and
-        f =
-          [
-            left.getFloat() + right.getFloat(), left.getInt() + right.getFloat(),
-            left.getFloat() + right.getInt()
-          ]
-        or
-        op = "-" and
-        f =
-          [
-            left.getFloat() - right.getFloat(), left.getInt() - right.getFloat(),
-            left.getFloat() - right.getInt()
-          ]
-        or
-        op = "*" and
-        f =
-          [
-            left.getFloat() * right.getFloat(), left.getInt() * right.getFloat(),
-            left.getFloat() * right.getInt()
-          ]
-        or
-        op = "/" and
-        f =
-          [
-            left.getFloat() / right.getFloat(), left.getInt() / right.getFloat(),
-            left.getFloat() / right.getInt()
-          ]
-      )
-    }
-
-    override predicate requiredString(string s) {
-      exists(string op, ConstantValue left, ConstantValue right |
-        binaryConstFold(_, op, left, right)
-      |
-        op = "+" and
-        s = left.getString() + right.getString() and
-        s.length() <= 10000
-      )
-    }
   }
 
   /** A control-flow node that wraps a `BinaryOperation` AST expression. */
@@ -400,59 +283,6 @@ module ExprNodes {
 
     /** Gets the right operand of this binary operation. */
     final ExprCfgNode getRightOperand() { e.hasCfgChild(bo.getRightOperand(), this, result) }
-
-    final override ConstantValue getConstantValue() {
-      // TODO: Implement support for complex numbers and rational numbers
-      exists(string op, ConstantValue left, ConstantValue right |
-        binaryConstFold(this, op, left, right)
-      |
-        op = "+" and
-        (
-          result.isInt(left.getInt() + right.getInt())
-          or
-          result
-              .isFloat([
-                  left.getFloat() + right.getFloat(), left.getInt() + right.getFloat(),
-                  left.getFloat() + right.getInt()
-                ])
-          or
-          result.isString(left.getString() + right.getString())
-        )
-        or
-        op = "-" and
-        (
-          result.isInt(left.getInt() - right.getInt())
-          or
-          result
-              .isFloat([
-                  left.getFloat() - right.getFloat(), left.getInt() - right.getFloat(),
-                  left.getFloat() - right.getInt()
-                ])
-        )
-        or
-        op = "*" and
-        (
-          result.isInt(left.getInt() * right.getInt())
-          or
-          result
-              .isFloat([
-                  left.getFloat() * right.getFloat(), left.getInt() * right.getFloat(),
-                  left.getFloat() * right.getInt()
-                ])
-        )
-        or
-        op = "/" and
-        (
-          result.isInt(left.getInt() / right.getInt())
-          or
-          result
-              .isFloat([
-                  left.getFloat() / right.getFloat(), left.getInt() / right.getFloat(),
-                  left.getFloat() / right.getInt()
-                ])
-        )
-      )
-    }
   }
 
   private class BlockArgumentChildMapping extends ExprChildMapping, BlockArgument {
@@ -722,8 +552,6 @@ module ExprNodes {
 
     /** Gets the scope expression. */
     final ExprCfgNode getScopeExpr() { e.hasCfgChild(e.getScopeExpr(), this, result) }
-
-    override ConstantValue getConstantValue() { result = this.getExpr().getConstantValue() }
   }
 
   private class StmtSequenceChildMapping extends ExprChildMapping, StmtSequence {
@@ -819,11 +647,8 @@ module ExprNodes {
   class StringInterpolationComponentCfgNode extends StringComponentCfgNode, StmtSequenceCfgNode {
     StringInterpolationComponentCfgNode() { this.getNode() instanceof StringInterpolationComponent }
 
-    // If last statement in the interpolation is a constant or local variable read,
-    // we attempt to look up its string value.
-    // If there's a result, we return that as the string value of the interpolation.
     final override ConstantValue getConstantValue() {
-      result = this.getLastStmt().getConstantValue()
+      result = StmtSequenceCfgNode.super.getConstantValue()
     }
   }
 
@@ -831,10 +656,8 @@ module ExprNodes {
   class RegExpInterpolationComponentCfgNode extends RegExpComponentCfgNode, StmtSequenceCfgNode {
     RegExpInterpolationComponentCfgNode() { this.getNode() instanceof RegExpInterpolationComponent }
 
-    // If last statement in the interpolation is a constant or local variable read,
-    // attempt to look up its definition and return the definition's `getConstantValue()`.
     final override ConstantValue getConstantValue() {
-      result = this.getLastStmt().getConstantValue()
+      result = StmtSequenceCfgNode.super.getConstantValue()
     }
   }
 
@@ -842,56 +665,17 @@ module ExprNodes {
     override predicate relevantChild(AstNode n) { n = this.getComponent(_) }
   }
 
-  pragma[nomagic]
-  private string getStringComponentCfgNodeValue(StringComponentCfgNode c) {
-    result = c.getConstantValue().toString()
-  }
-
-  // 0 components results in the empty string
-  // if all interpolations have a known string value, we will get a result
-  language[monotonicAggregates]
-  private string getStringlikeLiteralCfgNodeValue(StringlikeLiteralCfgNode n) {
-    result =
-      concat(StringComponentCfgNode c, int i |
-        c = n.getComponent(i)
-      |
-        getStringComponentCfgNodeValue(c) order by i
-      )
-  }
-
-  private class RequiredStringlikeLiteralConstantValue extends RequiredConstantValue {
-    override predicate requiredString(string s) {
-      exists(StringlikeLiteralCfgNode n |
-        s = getStringlikeLiteralCfgNodeValue(n) and
-        not n.getExpr() instanceof SymbolLiteral
-      )
-    }
-
-    override predicate requiredSymbol(string s) {
-      exists(StringlikeLiteralCfgNode n |
-        s = getStringlikeLiteralCfgNodeValue(n) and
-        n.getExpr() instanceof SymbolLiteral
-      )
-    }
-  }
-
   /** A control-flow node that wraps a `StringlikeLiteral` AST expression. */
   class StringlikeLiteralCfgNode extends ExprCfgNode {
     override StringlikeLiteralChildMapping e;
 
-    final override StringlikeLiteral getExpr() { result = super.getExpr() }
+    override StringlikeLiteral getExpr() { result = super.getExpr() }
 
     /** Gets the `n`th component of this `StringlikeLiteral` */
     StringComponentCfgNode getComponent(int n) { e.hasCfgChild(e.getComponent(n), this, result) }
 
     /** Gets a component of this `StringlikeLiteral` */
     StringComponentCfgNode getAComponent() { result = this.getComponent(_) }
-
-    final override ConstantValue getConstantValue() {
-      if this.getExpr() instanceof SymbolLiteral
-      then result.isSymbol(getStringlikeLiteralCfgNodeValue(this))
-      else result.isString(getStringlikeLiteralCfgNodeValue(this))
-    }
   }
 
   /** A control-flow node that wraps a `StringLiteral` AST expression. */
@@ -901,40 +685,15 @@ module ExprNodes {
     final override StringLiteral getExpr() { result = super.getExpr() }
   }
 
-  private class RegExpLiteralChildMapping extends ExprChildMapping, RegExpLiteral {
-    override predicate relevantChild(AstNode n) { n = this.getComponent(_) }
-  }
-
-  pragma[nomagic]
-  private string getRegExpComponentCfgNodeValue(RegExpComponentCfgNode c) {
-    result = c.getConstantValue().toString()
-  }
-
-  language[monotonicAggregates]
-  private string getRegExpLiteralCfgNodeValue(RegExpLiteralCfgNode n) {
-    result =
-      concat(RegExpComponentCfgNode c, int i |
-        c = n.getComponent(i)
-      |
-        getRegExpComponentCfgNodeValue(c) order by i
-      )
-  }
-
-  private class RequiredRexExpLiteralConstantValue extends RequiredConstantValue {
-    override predicate requiredString(string s) { s = getRegExpLiteralCfgNodeValue(_) }
-  }
-
   /** A control-flow node that wraps a `RegExpLiteral` AST expression. */
-  class RegExpLiteralCfgNode extends ExprCfgNode {
-    override RegExpLiteralChildMapping e;
+  class RegExpLiteralCfgNode extends StringlikeLiteralCfgNode {
+    RegExpLiteralCfgNode() { e instanceof RegExpLiteral }
 
-    RegExpComponentCfgNode getComponent(int n) { e.hasCfgChild(e.getComponent(n), this, result) }
+    final override RegExpComponentCfgNode getComponent(int n) { result = super.getComponent(n) }
+
+    final override RegExpComponentCfgNode getAComponent() { result = super.getAComponent() }
 
     final override RegExpLiteral getExpr() { result = super.getExpr() }
-
-    final override ConstantValue::ConstantStringValue getConstantValue() {
-      result.isString(getRegExpLiteralCfgNodeValue(this))
-    }
   }
 
   /** A control-flow node that wraps a `ComparisonOperation` AST expression. */
