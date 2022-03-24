@@ -1071,7 +1071,10 @@ open class KotlinUsesExtractor(
             }
 
             if (owner is IrClass) {
-                return withQuestionMark((classifier as IrClassSymbol).typeWith(), t.hasQuestionMark)
+                return if (t.arguments.isNotEmpty())
+                    t.addAnnotations(listOf(RawTypeAnnotation.annotationConstructor))
+                else
+                    t
             }
         }
         return t

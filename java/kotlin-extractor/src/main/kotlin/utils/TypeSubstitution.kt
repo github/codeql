@@ -127,7 +127,7 @@ fun IrType.substituteTypeAndArguments(substitutionMap: Map<IrTypeParameterSymbol
         } ?: this
     } ?: this
 
-private object RawTypeAnnotation {
+object RawTypeAnnotation {
     // Much of this is taken from JvmGeneratorExtensionsImpl.kt, which is not easily accessible in plugin context.
     // The constants "kotlin.internal.ir" and "RawType" could be referred to symbolically, but they move package
     // between different versions of the Kotlin compiler.
