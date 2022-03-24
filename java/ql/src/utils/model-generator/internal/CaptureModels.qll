@@ -3,8 +3,8 @@
  * and sink models of the Standard or a 3rd party library.
  */
 
-private import CaptureModelsSpecific
 private import ModelGeneratorUtils
+private import CaptureModelsSpecific
 
 /**
  * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
@@ -65,7 +65,7 @@ private class ThroughFlowConfig extends TaintTracking::Configuration {
     )
     or
     exists(DataFlow::Content c |
-      readStep(node1, c, node2) and
+      DataFlowPrivate::readStep(node1, c, node2) and
       isRelevantContent(c) and
       state1 instanceof TaintRead and
       state2 instanceof TaintRead

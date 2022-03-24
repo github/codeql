@@ -3,13 +3,13 @@
  */
 
 import java
-private import semmle.code.java.dataflow.ExternalFlow as Ef
 import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.ExternalFlow as Ef
 private import semmle.code.java.dataflow.internal.DataFlowImplCommon as Dfic
-import semmle.code.java.dataflow.internal.DataFlowNodes
-import semmle.code.java.dataflow.internal.DataFlowPrivate
-import semmle.code.java.dataflow.InstanceAccess
-import ModelGeneratorUtils
+private import semmle.code.java.dataflow.internal.DataFlowNodes
+private import semmle.code.java.dataflow.internal.DataFlowPrivate
+private import semmle.code.java.dataflow.InstanceAccess
+private import ModelGeneratorUtils
 
 /**
  * Gets the enclosing callable of `ret`.
