@@ -57,14 +57,13 @@ private class WebViewRef extends Element {
     this.(Variable).getType().(RefType).getASourceSupertype*() instanceof TypeWebView
   }
 
-  /** Gets an access to this WebView. */
-  Expr getAnAccess() {
-    exists(ThisAccess t | t.getType() = this and result = t |
-      t.isOwnInstanceAccess() or
-      t.isEnclosingInstanceAccess(this)
+  /** Gets an access to this WebView as a data flow node. */
+  DataFlow::Node getAnAccess() {
+    exists(DataFlow::InstanceAccessNode t | t.getType() = this and result = t |
+      t.isOwnInstanceAccess() or t.getInstanceAccess().isEnclosingInstanceAccess(this)
     )
     or
-    result = this.(Variable).getAnAccess()
+    result = DataFlow::exprNode(this.(Variable).getAnAccess())
   }
 }
 
@@ -80,20 +79,25 @@ private Expr getUnderlyingExpr(Expr e) {
  * Holds if a `WebViewLoadUrlMethod` is called on `webview`
  * with `urlArg` as its first argument.
  */
-private predicate webViewLoadUrl(Argument urlArg, Expr webview) {
+private predicate webViewLoadUrl(Argument urlArg, DataFlow::Node webview) {
   exists(MethodAccess loadUrl |
     loadUrl.getArgument(0) = urlArg and
     loadUrl.getMethod() instanceof WebViewLoadUrlMethod
   |
-    getUnderlyingExpr(loadUrl.getQualifier()) = webview
+    webview = DataFlow::exprNode(getUnderlyingExpr(loadUrl.getQualifier()))
+    or
+    webview = DataFlow::getInstanceArgument(loadUrl)
     or
     // `webview` is received as a parameter of an event method in a custom `WebViewClient`,
     // so we need to find WebViews that use that specific `WebViewClient`.
     exists(WebViewClientEventMethod eventMethod, MethodAccess setWebClient |
       setWebClient.getMethod() instanceof WebViewSetWebViewClientMethod and
       setWebClient.getArgument(0).getType() = eventMethod.getDeclaringType() and
-      getUnderlyingExpr(setWebClient.getQualifier()) = webview and
       getUnderlyingExpr(loadUrl.getQualifier()) = eventMethod.getWebViewParameter().getAnAccess()
+    |
+      webview = DataFlow::exprNode(getUnderlyingExpr(setWebClient.getQualifier()))
+      or
+      webview = DataFlow::getInstanceArgument(setWebClient)
     )
   )
 }
