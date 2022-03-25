@@ -67,14 +67,6 @@ private class WebViewRef extends Element {
   }
 }
 
-private Expr getUnderlyingExpr(Expr e) {
-  if e instanceof CastExpr or e instanceof UnaryExpr
-  then
-    result = getUnderlyingExpr(e.(CastExpr).getExpr()) or
-    result = getUnderlyingExpr(e.(UnaryExpr).getExpr())
-  else result = e
-}
-
 /**
  * Holds if a `WebViewLoadUrlMethod` is called on `webview`
  * with `urlArg` as its first argument.
@@ -84,8 +76,6 @@ private predicate webViewLoadUrl(Argument urlArg, DataFlow::Node webview) {
     loadUrl.getArgument(0) = urlArg and
     loadUrl.getMethod() instanceof WebViewLoadUrlMethod
   |
-    webview = DataFlow::exprNode(getUnderlyingExpr(loadUrl.getQualifier()))
-    or
     webview = DataFlow::getInstanceArgument(loadUrl)
     or
     // `webview` is received as a parameter of an event method in a custom `WebViewClient`,
@@ -93,10 +83,8 @@ private predicate webViewLoadUrl(Argument urlArg, DataFlow::Node webview) {
     exists(WebViewClientEventMethod eventMethod, MethodAccess setWebClient |
       setWebClient.getMethod() instanceof WebViewSetWebViewClientMethod and
       setWebClient.getArgument(0).getType() = eventMethod.getDeclaringType() and
-      getUnderlyingExpr(loadUrl.getQualifier()) = eventMethod.getWebViewParameter().getAnAccess()
+      loadUrl.getQualifier() = eventMethod.getWebViewParameter().getAnAccess()
     |
-      webview = DataFlow::exprNode(getUnderlyingExpr(setWebClient.getQualifier()))
-      or
       webview = DataFlow::getInstanceArgument(setWebClient)
     )
   )
