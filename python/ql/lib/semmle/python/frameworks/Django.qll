@@ -2337,7 +2337,8 @@ module PrivateDjango {
         // Notice that this does not ensure that this is not a FP, since the authentication
         // middleware might be unused.
         //
-        // This also strongly implies that we are actually looking at the `MIDDLEWARE` setting.
+        // This also strongly implies that `mw` is in fact a Django middleware setting and
+        // not just a variable named `MIDDLEWARE`.
         list.getAnElt().(StrConst).getText() =
           "django.contrib.auth.middleware.AuthenticationMiddleware"
       )
