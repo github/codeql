@@ -77,35 +77,6 @@ class ShouldOverrideUrlLoading extends Method {
   }
 }
 
-/**
- * Holds if `webview` is a `WebView` and its option `setJavascriptEnabled`
- * has been set to `true` via a `WebSettings` object obtained from it.
- */
-predicate isJSEnabled(DataFlow::Node webview) {
-  webview.getType().(RefType).getASupertype*() instanceof TypeWebView and
-  exists(MethodAccess allowJs, MethodAccess settings |
-    allowJs.getMethod() instanceof AllowJavaScriptMethod and
-    allowJs.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true and
-    settings.getMethod() instanceof WebViewGetSettingsMethod and
-    DataFlow::localExprFlow(settings, allowJs.getQualifier()) and
-    DataFlow::localFlow(webview, DataFlow::getInstanceArgument(settings))
-  )
-}
-
-/**
- * Holds if `webview` is a `WebView` and its options `setAllowUniversalAccessFromFileURLs` or
- * `setAllowFileAccessFromFileURLs` have been set to `true`.
- */
-predicate isAllowFileAccessEnabled(DataFlow::Node webview) {
-  exists(MethodAccess allowFileAccess, MethodAccess settings |
-    allowFileAccess.getMethod() instanceof CrossOriginAccessMethod and
-    allowFileAccess.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true and
-    settings.getMethod() instanceof WebViewGetSettingsMethod and
-    DataFlow::localExprFlow(settings, allowFileAccess.getQualifier()) and
-    DataFlow::localFlow(webview, DataFlow::getInstanceArgument(settings))
-  )
-}
-
 private class WebkitSourceModels extends SourceModelCsv {
   override predicate row(string row) {
     row =
