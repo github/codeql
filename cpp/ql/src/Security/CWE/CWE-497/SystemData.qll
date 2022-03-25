@@ -7,7 +7,7 @@ import semmle.code.cpp.commons.Environment
 import semmle.code.cpp.ir.dataflow.TaintTracking
 
 /**
- * An element that should not be exposed to an adversary.
+ * An element that should not be exposed to a malicious user.
  */
 abstract class SystemData extends Element {
   /**

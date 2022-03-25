@@ -1,7 +1,7 @@
 /**
  * @name Exposure of system data to an unauthorized control sphere
  * @description Exposing system data or debugging information helps
- *              an adversary learn about the system and form an
+ *              a malicious user learn about the system and form an
  *              attack plan.
  * @kind path-problem
  * @problem.severity warning
