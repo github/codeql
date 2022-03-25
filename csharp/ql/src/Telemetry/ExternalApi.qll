@@ -1,9 +1,11 @@
 /** Provides classes and predicates related to handling APIs from external libraries. */
 
 private import csharp
+private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.dataflow.DataFlow
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary
+private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 private import semmle.code.csharp.dataflow.TaintTracking
@@ -57,20 +59,25 @@ class ExternalApi extends DataFlowDispatch::DataFlowCallable {
   string getInfo() { result = this.getInfoPrefix() + "#" + this.getSignature() }
 
   /** Gets a node that is an input to a call to this API. */
-  private DataFlow::Node getAnInput() {
-    exists(Call call | call.getTarget().getUnboundDeclaration() = this |
-      result.asExpr() = call.getAnArgument()
+  private ArgumentNode getAnInput() {
+    exists(DispatchCall call |
+      result.getCall().(DataFlowDispatch::NonDelegateDataFlowCall).getDispatchCall() = call
+    |
+      this = call.getADynamicTarget().getUnboundDeclaration()
+      or
+      this = call.getAStaticTarget().getUnboundDeclaration()
     )
-    or
-    result.(ArgumentNode).getCall().getEnclosingCallable() = this
   }
 
   /** Gets a node that is an output from a call to this API. */
   private DataFlow::Node getAnOutput() {
-    exists(Call call | call.getTarget().getUnboundDeclaration() = this | result.asExpr() = call)
-    or
-    result.(PostUpdateNode).getPreUpdateNode().(ArgumentNode).getCall().getEnclosingCallable() =
-      this
+    exists(DataFlowDispatch::NonDelegateDataFlowCall call, DataFlowImplCommon::ReturnKindExt ret |
+      result = ret.getAnOutNode(call)
+    |
+      this = call.getDispatchCall().getADynamicTarget().getUnboundDeclaration()
+      or
+      this = call.getDispatchCall().getAStaticTarget().getUnboundDeclaration()
+    )
   }
 
   /** Holds if this API has a supported summary. */
@@ -79,15 +86,15 @@ class ExternalApi extends DataFlowDispatch::DataFlowCallable {
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }
 
-  /** Holds if this API is is a constructor without parameters */
+  /** Holds if this API is is a constructor without parameters. */
   private predicate isParameterlessConstructor() {
     this instanceof Constructor and this.getNumberOfParameters() = 0
   }
 
-  /** Holds if this API is part of a common testing library or framework */
+  /** Holds if this API is part of a common testing library or framework. */
   private predicate isTestLibrary() { this.getDeclaringType() instanceof TestLibrary }
 
-  /** Holds if this API is not worth supporting */
+  /** Holds if this API is not worth supporting. */
   predicate isUninteresting() { this.isTestLibrary() or this.isParameterlessConstructor() }
 
   /** Holds if this API is a known source. */

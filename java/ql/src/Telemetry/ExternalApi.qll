@@ -75,15 +75,15 @@ class ExternalApi extends Callable {
     TaintTracking::localAdditionalTaintStep(this.getAnInput(), _)
   }
 
-  /** Holds if this API is is a constructor without parameters */
+  /** Holds if this API is is a constructor without parameters. */
   private predicate isParameterlessConstructor() {
     this instanceof Constructor and this.getNumberOfParameters() = 0
   }
 
-  /** Holds if this API is part of a common testing library or framework */
+  /** Holds if this API is part of a common testing library or framework. */
   private predicate isTestLibrary() { this.getDeclaringType() instanceof TestLibrary }
 
-  /** Holds if this API is not worth supporting */
+  /** Holds if this API is not worth supporting. */
   predicate isUninteresting() { this.isTestLibrary() or this.isParameterlessConstructor() }
 
   /** Holds if this API is a known source. */
