@@ -504,17 +504,17 @@ struct person_info
 void tests2(person_info *pi)
 {
 	// direct cases
-	send(val(), pi->social_security_number, strlen(pi->social_security_number), val()); // BAD [NOT DETECTED]
+	send(val(), pi->social_security_number, strlen(pi->social_security_number), val()); // BAD
 	send(val(), pi->socialSecurityNo, strlen(pi->socialSecurityNo), val()); // BAD [NOT DETECTED]
-	send(val(), pi->homePostCode, strlen(pi->homePostCode), val()); // BAD [NOT DETECTED]
+	send(val(), pi->homePostCode, strlen(pi->homePostCode), val()); // BAD
 	send(val(), pi->my_zip_code, strlen(pi->my_zip_code), val()); // BAD [NOT DETECTED]
-	send(val(), pi->telephone, strlen(pi->telephone), val()); // BAD [NOT DETECTED]
-	send(val(), pi->mobile_phone_number, strlen(pi->mobile_phone_number), val()); // BAD [NOT DETECTED]
-	send(val(), pi->email, strlen(pi->email), val()); // BAD [NOT DETECTED]
+	send(val(), pi->telephone, strlen(pi->telephone), val()); // BAD
+	send(val(), pi->mobile_phone_number, strlen(pi->mobile_phone_number), val()); // BAD
+	send(val(), pi->email, strlen(pi->email), val()); // BAD
 	send(val(), pi->my_credit_card_number, strlen(pi->my_credit_card_number), val()); // BAD [NOT DETECTED]
 	send(val(), pi->my_bank_account_no, strlen(pi->my_bank_account_no), val()); // BAD [NOT DETECTED]
-	send(val(), pi->employerName, strlen(pi->employerName), val()); // BAD [NOT DETECTED]
-	send(val(), pi->medical_info, strlen(pi->medical_info), val()); // BAD [NOT DETECTED]
+	send(val(), pi->employerName, strlen(pi->employerName), val()); // BAD
+	send(val(), pi->medical_info, strlen(pi->medical_info), val()); // BAD
 	send(val(), pi->license_key, strlen(pi->license_key), val()); // BAD [NOT DETECTED]
 	send(val(), pi->license_key_hash, strlen(pi->license_key_hash), val()); // GOOD
 	send(val(), pi->my_zip_file, strlen(pi->my_zip_file), val()); // GOOD
@@ -524,13 +524,13 @@ void tests2(person_info *pi)
 		char buffer[1024];
 
 		snprintf(buffer, 1024, "lat = %f\n", pi->my_latitude);
-		send(val(), buffer, strlen(buffer), val()); // BAD [NOT DETECTED]
+		send(val(), buffer, strlen(buffer), val()); // BAD
 	}
 	{
 		char buffer[1024];
 
 		snprintf(buffer, 1024, "long = %f\n", pi->home_longitude);
-		send(val(), buffer, strlen(buffer), val()); // BAD [NOT DETECTED]
+		send(val(), buffer, strlen(buffer), val()); // BAD
 	}
 	{
 		char buffer[1024];
