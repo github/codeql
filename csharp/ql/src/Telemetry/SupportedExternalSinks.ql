@@ -1,6 +1,6 @@
 /**
  * @name Supported sinks in external libraries
- * @description A list of 3rd party APIs detected as sinks. Excludes test and generated code.
+ * @description A list of 3rd party APIs detected as sinks. Excludes APIs exposed by test libraries.
  * @kind metric
  * @tags summary
  * @id csharp/telemetry/supported-external-api-sinks
