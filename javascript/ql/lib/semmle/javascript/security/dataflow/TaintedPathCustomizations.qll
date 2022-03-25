@@ -371,7 +371,7 @@ module TaintedPath {
         Path::PathLabel inputLabel, DataFlow::Node inputNode, Path::PathLabel outputLabel,
         DataFlow::Node outputNode
       ) {
-        getInput() = inputNode and
+        this.getInput() = inputNode and
         this = outputNode and
         outputLabel = inputLabel.toNormalized()
       }
