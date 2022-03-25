@@ -1,25 +1,4 @@
 failures
-| summaries.rb:2:6:2:12 | tainted | Unexpected result: hasValueFlow=tainted |
-| summaries.rb:5:8:5:8 | x | Unexpected result: hasValueFlow=tainted |
-| summaries.rb:9:6:9:13 | tainted2 | Unexpected result: hasValueFlow=tainted |
-| summaries.rb:12:8:12:8 | x | Unexpected result: hasValueFlow=tainted |
-| summaries.rb:18:6:18:13 | tainted3 | Unexpected result: hasValueFlow=tainted |
-| summaries.rb:21:6:21:13 | tainted4 | Unexpected result: hasTaintFlow=tainted |
-| summaries.rb:27:6:27:13 | tainted5 | Unexpected result: hasTaintFlow=tainted |
-| summaries.rb:30:6:30:42 | call to onlyWithBlock | Unexpected result: hasTaintFlow=tainted |
-| summaries.rb:31:6:31:34 | call to onlyWithoutBlock | Unexpected result: hasTaintFlow=tainted |
-| summaries.rb:34:16:34:22 | tainted | Unexpected result: hasValueFlow=tainted |
-| summaries.rb:35:16:35:22 | tainted | Unexpected result: hasValueFlow=tainted |
-| summaries.rb:36:21:36:27 | tainted | Unexpected result: hasValueFlow=tainted |
-| summaries.rb:37:36:37:42 | tainted | Unexpected result: hasValueFlow=tainted |
-| summaries.rb:41:8:41:25 | call to matchedByName | Unexpected result: hasTaintFlow=t |
-| summaries.rb:42:8:42:25 | call to matchedByName | Unexpected result: hasTaintFlow=t |
-| summaries.rb:44:8:44:27 | call to matchedByNameRcv | Unexpected result: hasTaintFlow=t |
-| summaries.rb:48:8:48:42 | call to preserveTaint | Unexpected result: hasTaintFlow=blockArg |
-| summaries.rb:51:6:51:31 | call to namedArg | Unexpected result: hasTaintFlow=tainted |
-| summaries.rb:55:8:55:8 | x | Unexpected result: hasTaintFlow=tainted |
-| summaries.rb:62:8:62:54 | call to preserveTaint | Unexpected result: hasTaintFlow=startInNamedCallback |
-| summaries.rb:65:8:65:57 | call to preserveTaint | Unexpected result: hasTaintFlow=startInNamedParameter |
 invalidSpecComponent
 invalidOutputSpecComponent
 warning
