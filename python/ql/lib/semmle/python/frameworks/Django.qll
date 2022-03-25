@@ -2330,8 +2330,12 @@ module PrivateDjango {
         mw.asVar().getName() = "MIDDLEWARE" and
         DataFlow::localFlow(this, mw)
       |
-        // it only counts as setting the CSRF protection, if the app uses authentication,
-        // so check that the list contains the django authentication middleware.
+        // To only include results where CSRF protection matters, we only care about CSRF
+        // protection when the django authentication middleware is enabled.
+        // Since an active session cookie is exactly what would allow an attacker to perform
+        // a CSRF attack.
+        // Notice that this does not ensure that this is not a FP, since the authentication
+        // middleware might be unused.
         //
         // This also strongly implies that we are actually looking at the `MIDDLEWARE` setting.
         list.getAnElt().(StrConst).getText() =

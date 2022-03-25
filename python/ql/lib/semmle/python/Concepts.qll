@@ -106,7 +106,7 @@ module FileSystemWriteAccess {
 }
 
 /**
- * A data-flow node that may set or unset Cross-site request forgery protection
+ * A data-flow node that enables or disables Cross-site request forgery protection
  * in a global manner.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
