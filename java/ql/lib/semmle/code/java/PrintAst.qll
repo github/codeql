@@ -73,8 +73,6 @@ private predicate isNotNeeded(Element el) {
     // simply comparing their getLocation() doesn't work as they have distinct but equivalent locations
   )
   or
-  exists(Callable c | el = c and c.getSourceDeclaration() != c)
-  or
   isNotNeeded(el.(Expr).getParent*().(Annotation).getAnnotatedElement())
   or
   isNotNeeded(el.(Parameter).getCallable())
@@ -700,7 +698,7 @@ final class GenericTypeNode extends PrintAstNode, TGenericTypeNode {
 final class GenericCallableNode extends PrintAstNode, TGenericCallableNode {
   GenericCallable c;
 
-  GenericCallableNode() { this = TGenericCallableNode(c) and not isNotNeeded(c) }
+  GenericCallableNode() { this = TGenericCallableNode(c) }
 
   override string toString() { result = "(Generic Parameters)" }
 
