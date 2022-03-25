@@ -3,9 +3,8 @@
  */
 
 import java
-private import semmle.code.java.frameworks.android.WebView
 private import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.frameworks.android.WebView
 
 /**
  * A sink that represents a method that fetches a web resource in Android.

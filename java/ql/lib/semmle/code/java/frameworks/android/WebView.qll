@@ -1,5 +1,4 @@
 import java
-private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 
 /** The class `android.webkit.WebView`. */
