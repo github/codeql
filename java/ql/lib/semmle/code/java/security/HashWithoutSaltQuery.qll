@@ -291,12 +291,12 @@ private predicate messageDigestFlowPath(DataFlow::Node node) {
 }
 
 /** Holds if the password variable `pw` is hashed without a salt at callsite `hash`. */
-predicate passwordHashWithoutSalt(Expr pw, Expr hash) {
-  exists(MethodAccess ma, DataFlow::Node mdNode |
+predicate passwordHashWithoutSalt(Variable pw, Expr hash) {
+  exists(MethodAccess ma, DataFlow::Node mdNode, PasswordVarExpr pwve |
     messageDigestFlowPath(mdNode) and
     localFlowBetween(mdNode, getArg(ma, _)) and
-    pw instanceof PasswordVarExpr and
+    pwve = pw.getAnAccess() and
     hash = ma.getAnArgument() and
-    TaintTracking::localTaint(DataFlow::exprNode(pw), DataFlow::exprNode(hash))
+    TaintTracking::localTaint(DataFlow::exprNode(pwve), DataFlow::exprNode(hash))
   )
 }

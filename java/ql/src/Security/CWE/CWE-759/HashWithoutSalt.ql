@@ -14,6 +14,6 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.HashWithoutSaltQuery
 
-from Expr pw, Expr hash
+from Variable pw, Expr hash
 where passwordHashWithoutSalt(pw, hash)
 select hash, "$@ is hashed without a salt.", pw, "This password"
