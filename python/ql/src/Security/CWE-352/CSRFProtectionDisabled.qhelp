@@ -47,7 +47,7 @@
 
     <p>
       The protecting middleware was probably commented out during a testing phase, when server-side token generation was not set up.
-      Simply commenting it back in (or remove the custom middleware stack) will enable CSRF protection.
+      Simply commenting it back in will enable CSRF protection.
     </p>
 
   </example>
