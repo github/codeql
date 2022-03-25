@@ -511,7 +511,7 @@ class CsrfProtectionSettingTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(CsrfProtectionSetting setting |
+    exists(HTTP::Server::CsrfProtectionSetting setting |
       location = setting.getLocation() and
       element = setting.toString() and
       value = setting.getVerificationSetting().toString() and
@@ -527,7 +527,7 @@ class CsrfLocalProtectionSettingTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(CsrfLocalProtectionSetting p |
+    exists(HTTP::Server::CsrfLocalProtectionSetting p |
       location = p.getLocation() and
       element = p.toString() and
       value = p.getRequestHandler().getName().toString() and

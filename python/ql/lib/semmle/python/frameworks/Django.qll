@@ -2320,7 +2320,7 @@ module PrivateDjango {
   /**
    * A custom middleware stack
    */
-  private class DjangoSettingsMiddlewareStack extends CsrfProtectionSetting::Range {
+  private class DjangoSettingsMiddlewareStack extends HTTP::Server::CsrfProtectionSetting::Range {
     List list;
 
     DjangoSettingsMiddlewareStack() {
@@ -2356,7 +2356,7 @@ module PrivateDjango {
     }
   }
 
-  private class DjangoCsrfDecorator extends CsrfLocalProtectionSetting::Range {
+  private class DjangoCsrfDecorator extends HTTP::Server::CsrfLocalProtectionSetting::Range {
     string decoratorName;
     Function function;
 
