@@ -1,6 +1,8 @@
 import python
 deprecated import semmle.python.objects.ObjectInternal as OI
 private import semmle.python.ApiGraphs
+// Need to import since frameworks can extend the abstract `RegexString`
+private import semmle.python.Frameworks
 
 /**
  * Gets the positional argument index containing the regular expression flags for the member of the
