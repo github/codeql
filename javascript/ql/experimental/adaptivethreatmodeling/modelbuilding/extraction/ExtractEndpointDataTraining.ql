@@ -11,8 +11,9 @@ query predicate endpoints(
   DataFlow::Node endpoint, string queryName, string key, string value, string valueType
 ) {
   ExtractEndpointData::endpoints(endpoint, queryName, key, value, valueType) and
-  // only select endpoints that are either Sink or NotASink
-  ExtractEndpointData::endpoints(endpoint, queryName, "sinkLabel", ["Sink", "NotASink"], "string") and
+  // only select endpoints that are either Sink, NotASink or Unknown
+  ExtractEndpointData::endpoints(endpoint, queryName, "sinkLabel", ["Sink", "NotASink", "Unknown"],
+    "string") and
   // do not select endpoints filtered out by end-to-end evaluation
   ExtractEndpointData::endpoints(endpoint, queryName, "isExcludedFromEndToEndEvaluation", "false",
     "boolean") and
