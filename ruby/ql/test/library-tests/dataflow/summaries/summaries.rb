@@ -1,4 +1,4 @@
-tainted = identity "taint"
+tainted = identity source("tainted")
 sink tainted
 
 tainted2 = apply_block tainted do |x|
@@ -37,7 +37,7 @@ Bar.new.next.method(tainted)
 Bar.new.next.next.next.next.method(tainted)
 
 def userDefinedFunction(x, y)
-  t = "taint"
+  t = source("t")
   sink(x.matchedByName(t))
   sink(y.matchedByName(t))
   sink(x.unmatchedName(t))
@@ -45,7 +45,7 @@ def userDefinedFunction(x, y)
 end
 
 Foo.blockArg do |x|
-  sink(x.preserveTaint("taint"))
+  sink(x.preserveTaint(source("blockArg")))
 end
 
 sink(Foo.namedArg(foo: tainted))
@@ -59,8 +59,8 @@ Foo.intoNamedParameter(tainted, ->(foo:) {
 })
 
 Foo.startInNamedCallback(foo: ->(x) {
-  sink(x.preserveTaint("taint"))
+  sink(x.preserveTaint(source("startInNamedCallback")))
 })
 Foo.startInNamedParameter(->(foo:) {
-  sink(foo.preserveTaint("taint"))
+  sink(foo.preserveTaint(source("startInNamedParameter")))
 })

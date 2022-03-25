@@ -4,11 +4,11 @@
 
 import ruby
 import codeql.ruby.dataflow.FlowSummary
-import DataFlow::PathGraph
 import codeql.ruby.TaintTracking
 import codeql.ruby.dataflow.internal.FlowSummaryImpl
 import codeql.ruby.dataflow.internal.AccessPathSyntax
 import codeql.ruby.frameworks.data.ModelsAsData
+import TestUtilities.InlineFlowTest
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {
   (sc.propagatesFlowExt(s, _, _) or sc.propagatesFlowExt(_, s, _)) and
@@ -117,23 +117,18 @@ private class SinkFromModel extends ModelInput::SinkModelCsv {
   override predicate row(string row) { row = "test;FooOrBar;Method[method].Argument[0];test-sink" }
 }
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "FlowSummaries" }
-
-  override predicate isSource(DataFlow::Node src) {
-    src.asExpr().getExpr().(StringLiteral).getConstantValue().isString("taint")
-  }
-
+class CustomValueSink extends DefaultValueFlowConf {
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall mc |
-      mc.getMethodName() = "sink" and
-      mc.getAnArgument() = sink.asExpr().getExpr()
-    )
+    super.isSink(sink)
     or
     sink = ModelOutput::getASinkNode("test-sink").getARhs()
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf
-where conf.hasFlowPath(source, sink)
-select sink, source, sink, "$@", source, source.toString()
+class CustomTaintSink extends DefaultTaintFlowConf {
+  override predicate isSink(DataFlow::Node sink) {
+    super.isSink(sink)
+    or
+    sink = ModelOutput::getASinkNode("test-sink").getARhs()
+  }
+}
