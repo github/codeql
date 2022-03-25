@@ -77,7 +77,7 @@ private Expr getUnderlyingExpr(Expr e) {
 }
 
 /**
- * Holds if `WebViewLoadUrlMethod` is called on `webview`
+ * Holds if a `WebViewLoadUrlMethod` is called on `webview`
  * with `urlArg` as its first argument.
  */
 private predicate webViewLoadUrl(Argument urlArg, Expr webview) {

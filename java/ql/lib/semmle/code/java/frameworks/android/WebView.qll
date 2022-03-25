@@ -83,14 +83,12 @@ class ShouldOverrideUrlLoading extends Method {
  */
 predicate isJSEnabled(Expr webview) {
   webview.getType().(RefType).getASupertype*() instanceof TypeWebView and
-  exists(MethodAccess allowJs |
+  exists(MethodAccess allowJs, MethodAccess settings |
     allowJs.getMethod() instanceof AllowJavaScriptMethod and
     allowJs.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true and
-    exists(MethodAccess settings |
-      settings.getMethod() instanceof WebViewGetSettingsMethod and
-      DataFlow::localExprFlow(settings, allowJs.getQualifier()) and
-      DataFlow::localExprFlow(webview, settings.getQualifier())
-    )
+    settings.getMethod() instanceof WebViewGetSettingsMethod and
+    DataFlow::localExprFlow(settings, allowJs.getQualifier()) and
+    DataFlow::localExprFlow(webview, settings.getQualifier())
   )
 }
 
@@ -99,14 +97,12 @@ predicate isJSEnabled(Expr webview) {
  * `setAllowFileAccessFromFileURLs` have been set to `true`.
  */
 predicate isAllowFileAccessEnabled(Expr webview) {
-  exists(MethodAccess allowFileAccess |
+  exists(MethodAccess allowFileAccess, MethodAccess settings |
     allowFileAccess.getMethod() instanceof CrossOriginAccessMethod and
     allowFileAccess.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true and
-    exists(MethodAccess settings |
-      settings.getMethod() instanceof WebViewGetSettingsMethod and
-      DataFlow::localExprFlow(settings, allowFileAccess.getQualifier()) and
-      DataFlow::localExprFlow(webview, settings.getQualifier())
-    )
+    settings.getMethod() instanceof WebViewGetSettingsMethod and
+    DataFlow::localExprFlow(settings, allowFileAccess.getQualifier()) and
+    DataFlow::localExprFlow(webview, settings.getQualifier())
   )
 }
 
