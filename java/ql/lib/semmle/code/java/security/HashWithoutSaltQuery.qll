@@ -274,7 +274,7 @@ private predicate localFlowBetween(DataFlow::Node node1, DataFlow::Node node2) {
 /** Holds if `node` is a midpoint on a flow path from a source to a sink of `conf`. */
 private predicate flowPathMidPoint(DataFlow2::Configuration conf, DataFlow::Node node) {
   exists(DataFlow2::PathNode source, DataFlow2::PathNode sink, DataFlow2::PathNode mid |
-    conf.hasFlowPath(source, sink) and
+    conf.hasFlowPath(pragma[only_bind_into](source), pragma[only_bind_into](sink)) and
     source.getASuccessor*() = mid and
     mid.getASuccessor*() = sink and
     node = mid.getNode()
