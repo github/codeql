@@ -484,12 +484,14 @@ calls/calls.rb:
 #  278|     getReceiver: [SelfVariableAccess] self
 #  278|     getArgument: [Pair] Pair
 #  278|       getKey: [SymbolLiteral] :blah
+#  278|         getComponent: [StringTextComponent] blah
 #  278|       getValue: [MethodCall] call to bar
 #  278|         getReceiver: [SelfVariableAccess] self
 #  279|   getStmt: [MethodCall] call to foo
 #  279|     getReceiver: [SelfVariableAccess] self
 #  279|     getArgument: [Pair] Pair
 #  279|       getKey: [SymbolLiteral] :blah
+#  279|         getComponent: [StringTextComponent] blah
 #  279|       getValue: [MethodCall] call to bar
 #  279|         getReceiver: [ConstantReadAccess] X
 #  284|   getStmt: [ClassDeclaration] MyClass
@@ -680,25 +682,63 @@ calls/calls.rb:
 #  344|     getReceiver: [SelfVariableAccess] self
 #  344|     getArgument: [Pair] Pair
 #  344|       getKey: [SymbolLiteral] :x
+#  344|         getComponent: [StringTextComponent] x
 #  344|       getValue: [IntegerLiteral] 42
 #  345|   getStmt: [MethodCall] call to foo
 #  345|     getReceiver: [SelfVariableAccess] self
 #  345|     getArgument: [Pair] Pair
 #  345|       getKey: [SymbolLiteral] :x
+#  345|         getComponent: [StringTextComponent] x
 #  345|       getValue: [LocalVariableAccess] x
 #  345|     getArgument: [Pair] Pair
 #  345|       getKey: [SymbolLiteral] :novar
+#  345|         getComponent: [StringTextComponent] novar
 #  345|       getValue: [MethodCall] call to novar
 #  346|   getStmt: [MethodCall] call to foo
 #  346|     getReceiver: [SelfVariableAccess] self
 #  346|     getArgument: [Pair] Pair
 #  346|       getKey: [SymbolLiteral] :X
+#  346|         getComponent: [StringTextComponent] X
 #  346|       getValue: [IntegerLiteral] 42
 #  347|   getStmt: [MethodCall] call to foo
 #  347|     getReceiver: [SelfVariableAccess] self
 #  347|     getArgument: [Pair] Pair
 #  347|       getKey: [SymbolLiteral] :X
+#  347|         getComponent: [StringTextComponent] X
 #  347|       getValue: [ConstantReadAccess] X
+#  350|   getStmt: [AssignExpr] ... = ...
+#  350|     getAnOperand/getLeftOperand: [LocalVariableAccess] y
+#  350|     getAnOperand/getRightOperand: [IntegerLiteral] 1
+#  351|   getStmt: [AssignExpr] ... = ...
+#  351|     getAnOperand/getLeftOperand: [LocalVariableAccess] one
+#  351|     getAnOperand/getRightOperand: [Lambda] -> { ... }
+#  351|       getParameter: [SimpleParameter] x
+#  351|         getDefiningAccess: [LocalVariableAccess] x
+#  351|       getStmt: [LocalVariableAccess] y
+#  352|   getStmt: [AssignExpr] ... = ...
+#  352|     getAnOperand/getLeftOperand: [LocalVariableAccess] f
+#  352|     getAnOperand/getRightOperand: [Lambda] -> { ... }
+#  352|       getParameter: [SimpleParameter] x
+#  352|         getDefiningAccess: [LocalVariableAccess] x
+#  352|       getStmt: [MethodCall] call to foo
+#  352|         getReceiver: [SelfVariableAccess] self
+#  352|         getArgument: [LocalVariableAccess] x
+#  353|   getStmt: [AssignExpr] ... = ...
+#  353|     getAnOperand/getLeftOperand: [LocalVariableAccess] g
+#  353|     getAnOperand/getRightOperand: [Lambda] -> { ... }
+#  353|       getParameter: [SimpleParameter] x
+#  353|         getDefiningAccess: [LocalVariableAccess] x
+#  353|       getStmt: [MethodCall] call to unknown_call
+#  353|         getReceiver: [SelfVariableAccess] self
+#  354|   getStmt: [AssignExpr] ... = ...
+#  354|     getAnOperand/getLeftOperand: [LocalVariableAccess] h
+#  354|     getAnOperand/getRightOperand: [Lambda] -> { ... }
+#  354|       getParameter: [SimpleParameter] x
+#  354|         getDefiningAccess: [LocalVariableAccess] x
+#  355|       getStmt: [LocalVariableAccess] x
+#  356|       getStmt: [LocalVariableAccess] y
+#  357|       getStmt: [MethodCall] call to unknown_call
+#  357|         getReceiver: [SelfVariableAccess] self
 control/cases.rb:
 #    1| [Toplevel] cases.rb
 #    2|   getStmt: [AssignExpr] ... = ...
@@ -826,33 +866,42 @@ control/cases.rb:
 #   52|     getBranch: [InClause] in ... then ...
 #   52|       getPattern: [HashPattern] { ..., ** }
 #   52|         getKey: [SymbolLiteral] :a
+#   52|           getComponent: [StringTextComponent] a
 #   52|         getValue: [LocalVariableAccess] a
 #   53|     getBranch: [InClause] in ... then ...
 #   53|       getPattern: [HashPattern] { ..., ** }
 #   53|         getKey: [SymbolLiteral] :a
+#   53|           getComponent: [StringTextComponent] a
 #   53|         getValue: [IntegerLiteral] 5
 #   54|     getBranch: [InClause] in ... then ...
 #   54|       getPattern: [HashPattern] { ..., ** }
 #   54|         getKey: [SymbolLiteral] :a
+#   54|           getComponent: [StringTextComponent] a
 #   54|         getValue: [IntegerLiteral] 5
 #   55|     getBranch: [InClause] in ... then ...
 #   55|       getPattern: [HashPattern] { ..., ** }
 #   55|         getKey: [SymbolLiteral] :a
+#   55|           getComponent: [StringTextComponent] a
 #   55|         getValue: [IntegerLiteral] 5
 #   55|         getKey: [SymbolLiteral] :b
+#   55|           getComponent: [StringTextComponent] b
 #   55|         getValue: [LocalVariableAccess] b
 #   56|     getBranch: [InClause] in ... then ...
 #   56|       getPattern: [HashPattern] { ..., ** }
 #   56|         getKey: [SymbolLiteral] :a
+#   56|           getComponent: [StringTextComponent] a
 #   56|         getValue: [IntegerLiteral] 5
 #   56|         getKey: [SymbolLiteral] :b
+#   56|           getComponent: [StringTextComponent] b
 #   56|         getValue: [LocalVariableAccess] b
 #   56|         getRestVariableAccess: [LocalVariableAccess] map
 #   57|     getBranch: [InClause] in ... then ...
 #   57|       getPattern: [HashPattern] { ..., ** }
 #   57|         getKey: [SymbolLiteral] :a
+#   57|           getComponent: [StringTextComponent] a
 #   57|         getValue: [IntegerLiteral] 5
 #   57|         getKey: [SymbolLiteral] :b
+#   57|           getComponent: [StringTextComponent] b
 #   57|         getValue: [LocalVariableAccess] b
 #   58|     getBranch: [InClause] in ... then ...
 #   58|       getPattern: [HashPattern] { ..., ** }
@@ -908,33 +957,42 @@ control/cases.rb:
 #   71|     getBranch: [InClause] in ... then ...
 #   71|       getPattern: [HashPattern] { ..., ** }
 #   71|         getKey: [SymbolLiteral] :a
+#   71|           getComponent: [StringTextComponent] a
 #   71|         getValue: [LocalVariableAccess] a
 #   72|     getBranch: [InClause] in ... then ...
 #   72|       getPattern: [HashPattern] { ..., ** }
 #   72|         getKey: [SymbolLiteral] :a
+#   72|           getComponent: [StringTextComponent] a
 #   72|         getValue: [IntegerLiteral] 5
 #   73|     getBranch: [InClause] in ... then ...
 #   73|       getPattern: [HashPattern] { ..., ** }
 #   73|         getKey: [SymbolLiteral] :a
+#   73|           getComponent: [StringTextComponent] a
 #   73|         getValue: [IntegerLiteral] 5
 #   74|     getBranch: [InClause] in ... then ...
 #   74|       getPattern: [HashPattern] { ..., ** }
 #   74|         getKey: [SymbolLiteral] :a
+#   74|           getComponent: [StringTextComponent] a
 #   74|         getValue: [IntegerLiteral] 5
 #   74|         getKey: [SymbolLiteral] :b
+#   74|           getComponent: [StringTextComponent] b
 #   74|         getValue: [LocalVariableAccess] b
 #   75|     getBranch: [InClause] in ... then ...
 #   75|       getPattern: [HashPattern] { ..., ** }
 #   75|         getKey: [SymbolLiteral] :a
+#   75|           getComponent: [StringTextComponent] a
 #   75|         getValue: [IntegerLiteral] 5
 #   75|         getKey: [SymbolLiteral] :b
+#   75|           getComponent: [StringTextComponent] b
 #   75|         getValue: [LocalVariableAccess] b
 #   75|         getRestVariableAccess: [LocalVariableAccess] map
 #   76|     getBranch: [InClause] in ... then ...
 #   76|       getPattern: [HashPattern] { ..., ** }
 #   76|         getKey: [SymbolLiteral] :a
+#   76|           getComponent: [StringTextComponent] a
 #   76|         getValue: [IntegerLiteral] 5
 #   76|         getKey: [SymbolLiteral] :b
+#   76|           getComponent: [StringTextComponent] b
 #   76|         getValue: [LocalVariableAccess] b
 #   77|     getBranch: [InClause] in ... then ...
 #   77|       getPattern: [HashPattern] { ..., ** }
@@ -1019,6 +1077,7 @@ control/cases.rb:
 #  101|           getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 10
 #  102|     getBranch: [InClause] in ... then ...
 #  102|       getPattern: [SymbolLiteral] :foo
+#  102|         getComponent: [StringTextComponent] foo
 #  103|     getBranch: [InClause] in ... then ...
 #  103|       getPattern: [SymbolLiteral] :"foo bar"
 #  103|         getComponent: [StringTextComponent] foo bar
@@ -1110,26 +1169,31 @@ control/cases.rb:
 #  139|     getBranch: [InClause] in ... then ...
 #  139|       getPattern: [HashPattern] { ..., ** }
 #  139|         getKey: [SymbolLiteral] :x
+#  139|           getComponent: [StringTextComponent] x
 #  139|         getValue: [LocalVariableAccess] x
 #  140|     getBranch: [InClause] in ... then ...
 #  140|       getPattern: [HashPattern] { ..., ** }
 #  140|         getClass: [ConstantReadAccess] Bar
 #  140|           getScopeExpr: [ConstantReadAccess] Foo
 #  140|         getKey: [SymbolLiteral] :x
+#  140|           getComponent: [StringTextComponent] x
 #  140|         getValue: [IntegerLiteral] 1
 #  141|     getBranch: [InClause] in ... then ...
 #  141|       getPattern: [HashPattern] { ..., ** }
 #  141|         getClass: [ConstantReadAccess] Bar
 #  141|           getScopeExpr: [ConstantReadAccess] Foo
 #  141|         getKey: [SymbolLiteral] :x
+#  141|           getComponent: [StringTextComponent] x
 #  141|         getValue: [IntegerLiteral] 1
 #  141|         getKey: [SymbolLiteral] :a
+#  141|           getComponent: [StringTextComponent] a
 #  141|         getValue: [LocalVariableAccess] a
 #  141|         getRestVariableAccess: [LocalVariableAccess] rest
 #  142|     getBranch: [InClause] in ... then ...
 #  142|       getPattern: [HashPattern] { ..., ** }
 #  142|         getClass: [ConstantReadAccess] Foo
 #  142|         getKey: [SymbolLiteral] :y
+#  142|           getComponent: [StringTextComponent] y
 #  142|         getValue: [LocalVariableAccess] y
 #  143|     getBranch: [InClause] in ... then ...
 #  143|       getPattern: [HashPattern] { ..., ** }
@@ -1138,6 +1202,7 @@ control/cases.rb:
 #  144|       getPattern: [HashPattern] { ..., ** }
 #  144|         getClass: [ConstantReadAccess] Bar
 #  144|         getKey: [SymbolLiteral] :a
+#  144|           getComponent: [StringTextComponent] a
 #  144|         getValue: [IntegerLiteral] 1
 #  147|   getStmt: [CaseExpr] case ...
 #  147|     getValue: [MethodCall] call to expr
@@ -1177,6 +1242,7 @@ modules/classes.rb:
 #   11|     getSuperclassExpr: [MethodCall] call to superclass_for
 #   11|       getReceiver: [SelfVariableAccess] self
 #   11|       getArgument: [SymbolLiteral] :baz
+#   11|         getComponent: [StringTextComponent] baz
 #   15|   getStmt: [ModuleDeclaration] MyModule
 #   16|   getStmt: [ClassDeclaration] MyClass
 #   16|     getScopeExpr: [ConstantReadAccess] MyModule
@@ -1799,6 +1865,7 @@ literals/literals.rb:
 #   94|   getStmt: [CharacterLiteral] ?\C-\M-a
 #   97|   getStmt: [SymbolLiteral] :""
 #   98|   getStmt: [SymbolLiteral] :hello
+#   98|     getComponent: [StringTextComponent] hello
 #   99|   getStmt: [SymbolLiteral] :"foo bar"
 #   99|     getComponent: [StringTextComponent] foo bar
 #  100|   getStmt: [SymbolLiteral] :"bar baz"
@@ -1806,6 +1873,7 @@ literals/literals.rb:
 #  101|   getStmt: [HashLiteral] {...}
 #  101|     getElement: [Pair] Pair
 #  101|       getKey: [SymbolLiteral] :foo
+#  101|         getComponent: [StringTextComponent] foo
 #  101|       getValue: [StringLiteral] "bar"
 #  101|         getComponent: [StringTextComponent] bar
 #  102|   getStmt: [SymbolLiteral] :"wibble"
@@ -1942,9 +2010,11 @@ literals/literals.rb:
 #  130|   getStmt: [HashLiteral] {...}
 #  130|     getElement: [Pair] Pair
 #  130|       getKey: [SymbolLiteral] :foo
+#  130|         getComponent: [StringTextComponent] foo
 #  130|       getValue: [IntegerLiteral] 1
 #  130|     getElement: [Pair] Pair
 #  130|       getKey: [SymbolLiteral] :bar
+#  130|         getComponent: [StringTextComponent] bar
 #  130|       getValue: [IntegerLiteral] 2
 #  130|     getElement: [Pair] Pair
 #  130|       getKey: [StringLiteral] "baz"
@@ -1953,6 +2023,7 @@ literals/literals.rb:
 #  131|   getStmt: [HashLiteral] {...}
 #  131|     getElement: [Pair] Pair
 #  131|       getKey: [SymbolLiteral] :foo
+#  131|         getComponent: [StringTextComponent] foo
 #  131|       getValue: [IntegerLiteral] 7
 #  131|     getElement: [HashSplatExpr] ** ...
 #  131|       getAnOperand/getOperand/getReceiver: [MethodCall] call to baz
@@ -2150,16 +2221,20 @@ literals/literals.rb:
 #  198|   getStmt: [HashLiteral] {...}
 #  198|     getElement: [Pair] Pair
 #  198|       getKey: [SymbolLiteral] :x
+#  198|         getComponent: [StringTextComponent] x
 #  198|       getValue: [LocalVariableAccess] x
 #  198|     getElement: [Pair] Pair
 #  198|       getKey: [SymbolLiteral] :y
+#  198|         getComponent: [StringTextComponent] y
 #  198|       getValue: [IntegerLiteral] 5
 #  199|   getStmt: [HashLiteral] {...}
 #  199|     getElement: [Pair] Pair
 #  199|       getKey: [SymbolLiteral] :y
+#  199|         getComponent: [StringTextComponent] y
 #  199|       getValue: [MethodCall] call to y
 #  199|     getElement: [Pair] Pair
 #  199|       getKey: [SymbolLiteral] :Z
+#  199|         getComponent: [StringTextComponent] Z
 #  199|       getValue: [ConstantReadAccess] Z
 control/loops.rb:
 #    1| [Toplevel] loops.rb
@@ -2209,9 +2284,11 @@ control/loops.rb:
 #   22|     getValue: [HashLiteral] {...}
 #   22|       getElement: [Pair] Pair
 #   22|         getKey: [SymbolLiteral] :foo
+#   22|           getComponent: [StringTextComponent] foo
 #   22|         getValue: [IntegerLiteral] 0
 #   22|       getElement: [Pair] Pair
 #   22|         getKey: [SymbolLiteral] :bar
+#   22|           getComponent: [StringTextComponent] bar
 #   22|         getValue: [IntegerLiteral] 1
 #   22|     getBody: [StmtSequence] do ...
 #   23|       getStmt: [AssignAddExpr] ... += ...
@@ -2227,9 +2304,11 @@ control/loops.rb:
 #   28|     getValue: [HashLiteral] {...}
 #   28|       getElement: [Pair] Pair
 #   28|         getKey: [SymbolLiteral] :foo
+#   28|           getComponent: [StringTextComponent] foo
 #   28|         getValue: [IntegerLiteral] 0
 #   28|       getElement: [Pair] Pair
 #   28|         getKey: [SymbolLiteral] :bar
+#   28|           getComponent: [StringTextComponent] bar
 #   28|         getValue: [IntegerLiteral] 1
 #   28|     getBody: [StmtSequence] do ...
 #   29|       getStmt: [AssignAddExpr] ... += ...
@@ -2318,6 +2397,7 @@ misc/misc.rb:
 #    3|   getStmt: [UndefStmt] undef ...
 #    3|     getMethodName: [MethodName] foo
 #    3|     getMethodName: [MethodName] :foo
+#    3|       getComponent: [StringTextComponent] foo
 #    3|     getMethodName: [MethodName] foo=
 #    3|     getMethodName: [MethodName] []
 #    3|     getMethodName: [MethodName] []=
@@ -2335,6 +2415,7 @@ misc/misc.rb:
 #    7|   getStmt: [AliasStmt] alias ...
 #    7|     getNewName: [MethodName] new
 #    7|     getOldName: [MethodName] :old
+#    7|       getComponent: [StringTextComponent] old
 #    8|   getStmt: [AliasStmt] alias ...
 #    8|     getNewName: [MethodName] foo=
 #    8|     getOldName: [MethodName] []=
@@ -2531,14 +2612,17 @@ operations/operations.rb:
 #   29|             getElement: [IntegerLiteral] 2
 #   29|         getElement: [Pair] Pair
 #   29|           getKey: [SymbolLiteral] :a
+#   29|             getComponent: [StringTextComponent] a
 #   29|           getValue: [IntegerLiteral] 3
 #   29|         getElement: [HashSplatExpr] ** ...
 #   29|           getAnOperand/getOperand/getReceiver: [HashLiteral] {...}
 #   29|             getElement: [Pair] Pair
 #   29|               getKey: [SymbolLiteral] :b
+#   29|                 getComponent: [StringTextComponent] b
 #   29|               getValue: [IntegerLiteral] 4
 #   29|             getElement: [Pair] Pair
 #   29|               getKey: [SymbolLiteral] :c
+#   29|                 getComponent: [StringTextComponent] c
 #   29|               getValue: [IntegerLiteral] 5
 #   32|   getStmt: [AddExpr] ... + ...
 #   32|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] w
@@ -2802,9 +2886,11 @@ params/params.rb:
 #   47|         getReceiver: [LocalVariableAccess] block
 #   47|         getArgument: [Pair] Pair
 #   47|           getKey: [SymbolLiteral] :bar
+#   47|             getComponent: [StringTextComponent] bar
 #   47|           getValue: [IntegerLiteral] 2
 #   47|         getArgument: [Pair] Pair
 #   47|           getKey: [SymbolLiteral] :foo
+#   47|             getComponent: [StringTextComponent] foo
 #   47|           getValue: [IntegerLiteral] 3
 #   49|   getStmt: [MethodCall] call to use_block_with_keyword
 #   49|     getReceiver: [SelfVariableAccess] self

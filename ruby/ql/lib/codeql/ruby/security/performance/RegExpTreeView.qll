@@ -61,6 +61,19 @@ module RegExpFlags {
 }
 
 /**
+ * Provides utility predicates related to regular expressions.
+ */
+module RegExpPatterns {
+  /**
+   * Gets a pattern that matches common top-level domain names in lower case.
+   */
+  string getACommonTld() {
+    // according to ranking by http://google.com/search?q=site:.<<TLD>>
+    result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
+  }
+}
+
+/**
  * An element containing a regular expression term, that is, either
  * a string literal (parsed as a regular expression)
  * or another regular expression term.
@@ -177,15 +190,21 @@ class RegExpTerm extends RegExpParent {
 
   Location getLocation() { result = re.getLocation() }
 
+  pragma[noinline]
+  private predicate componentHasLocationInfo(
+    int i, string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    re.getComponent(i)
+        .getLocation()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     exists(int re_start, int re_end |
-      re.getComponent(0).getLocation().hasLocationInfo(filepath, startline, re_start, _, _) and
-      re.getComponent(re.getNumberOfComponents() - 1)
-          .getLocation()
-          .hasLocationInfo(filepath, _, _, endline, re_end)
-    |
+      this.componentHasLocationInfo(0, filepath, startline, re_start, _, _) and
+      this.componentHasLocationInfo(re.getNumberOfComponents() - 1, filepath, _, _, endline, re_end) and
       startcolumn = re_start + start and
       endcolumn = re_start + end - 1
     )
@@ -384,6 +403,8 @@ class RegExpAlt extends RegExpTerm, TRegExpAlt {
 
   override string getAPrimaryQlClass() { result = "RegExpAlt" }
 }
+
+class RegExpCharEscape = RegExpEscape;
 
 class RegExpEscape extends RegExpNormalChar {
   RegExpEscape() { re.escapedCharacter(start, end) }
@@ -592,6 +613,9 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
    * not a capture group.
    */
   int getNumber() { result = re.getGroupNumber(start, end) }
+
+  /** Holds if this is a capture group. */
+  predicate isCapture() { exists(this.getNumber()) }
 
   /** Holds if this is a named capture group. */
   predicate isNamed() { exists(this.getName()) }

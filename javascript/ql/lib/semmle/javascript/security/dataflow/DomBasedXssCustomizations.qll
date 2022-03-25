@@ -12,4 +12,14 @@ module DomBasedXss {
   class RemoteFlowSourceAsSource extends Source {
     RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
   }
+
+  /**
+   * A flow-label representing tainted values where the prefix is attacker controlled.
+   */
+  class PrefixString extends DataFlow::FlowLabel {
+    PrefixString() { this = "PrefixString" }
+  }
+
+  /** Gets the flow-label representing tainted values where the prefix is attacker controlled. */
+  PrefixString prefixLabel() { any() }
 }

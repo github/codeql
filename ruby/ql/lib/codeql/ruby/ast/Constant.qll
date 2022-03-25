@@ -224,23 +224,7 @@ class ConstantReadAccess extends ConstantAccess {
    *
    * the value being read at `M::CONST` is `"const"`.
    */
-  Expr getValue() {
-    not exists(this.getScopeExpr()) and
-    result = lookupConst(this.getEnclosingModule+().getModule(), this.getName()) and
-    // For now, we restrict the scope of top-level declarations to their file.
-    // This may remove some plausible targets, but also removes a lot of
-    // implausible targets
-    if result.getEnclosingModule() instanceof Toplevel
-    then result.getFile() = this.getFile()
-    else any()
-    or
-    this.hasGlobalScope() and
-    result = lookupConst(TResolved("Object"), this.getName())
-    or
-    result = lookupConst(resolveConstantReadAccess(this.getScopeExpr()), this.getName())
-  }
-
-  final override ConstantValue getConstantValue() { result = this.getValue().getConstantValue() }
+  Expr getValue() { result = getConstantReadAccessValue(this) }
 
   final override string getAPrimaryQlClass() { result = "ConstantReadAccess" }
 }

@@ -514,8 +514,10 @@ stringComponents
 | literals.rb:82:1:82:14 | "foo #{...}" | StringLiteral | 1 | literals.rb:82:6:82:13 | #{...} | StringInterpolationComponent |
 | literals.rb:83:1:83:14 | "foo #{...}" | StringLiteral | 0 | literals.rb:83:2:83:5 | foo  | StringTextComponent |
 | literals.rb:83:1:83:14 | "foo #{...}" | StringLiteral | 1 | literals.rb:83:6:83:13 | #{...} | StringInterpolationComponent |
+| literals.rb:98:1:98:6 | :hello | SymbolLiteral | 0 | literals.rb:98:1:98:6 | hello | StringTextComponent |
 | literals.rb:99:1:99:10 | :"foo bar" | SymbolLiteral | 0 | literals.rb:99:3:99:9 | foo bar | StringTextComponent |
 | literals.rb:100:1:100:10 | :"bar baz" | SymbolLiteral | 0 | literals.rb:100:3:100:9 | bar baz | StringTextComponent |
+| literals.rb:101:3:101:5 | :foo | SymbolLiteral | 0 | literals.rb:101:3:101:5 | foo | StringTextComponent |
 | literals.rb:101:8:101:12 | "bar" | StringLiteral | 0 | literals.rb:101:9:101:11 | bar | StringTextComponent |
 | literals.rb:102:1:102:10 | :"wibble" | SymbolLiteral | 0 | literals.rb:102:4:102:9 | wibble | StringTextComponent |
 | literals.rb:103:1:103:17 | :"wibble wobble" | SymbolLiteral | 0 | literals.rb:103:4:103:16 | wibble wobble | StringTextComponent |
@@ -565,7 +567,10 @@ stringComponents
 | literals.rb:126:22:126:27 | :"#{bar}" | SymbolLiteral | 0 | literals.rb:126:22:126:27 | #{bar} | StringTextComponent |
 | literals.rb:126:29:126:34 | :"#{BAR}" | SymbolLiteral | 0 | literals.rb:126:29:126:34 | #{BAR} | StringTextComponent |
 | literals.rb:126:36:126:38 | :"baz" | SymbolLiteral | 0 | literals.rb:126:36:126:38 | baz | StringTextComponent |
+| literals.rb:130:3:130:5 | :foo | SymbolLiteral | 0 | literals.rb:130:3:130:5 | foo | StringTextComponent |
+| literals.rb:130:11:130:14 | :bar | SymbolLiteral | 0 | literals.rb:130:11:130:14 | bar | StringTextComponent |
 | literals.rb:130:22:130:26 | "baz" | StringLiteral | 0 | literals.rb:130:23:130:25 | baz | StringTextComponent |
+| literals.rb:131:3:131:5 | :foo | SymbolLiteral | 0 | literals.rb:131:3:131:5 | foo | StringTextComponent |
 | literals.rb:143:1:143:7 | `ls -l` | SubshellLiteral | 0 | literals.rb:143:2:143:6 | ls -l | StringTextComponent |
 | literals.rb:144:1:144:9 | `ls -l` | SubshellLiteral | 0 | literals.rb:144:4:144:8 | ls -l | StringTextComponent |
 | literals.rb:145:1:145:32 | `du -d #{...} #{...} #{...}` | SubshellLiteral | 0 | literals.rb:145:2:145:7 | du -d  | StringTextComponent |
@@ -626,6 +631,10 @@ stringComponents
 | literals.rb:189:9:189:15 | <<'DOC' | HereDoc | 1 | literals.rb:190:15:190:32 | #{...} | StringInterpolationComponent |
 | literals.rb:189:9:189:15 | <<'DOC' | HereDoc | 2 | literals.rb:190:33:190:35 |  !\n | StringTextComponent |
 | literals.rb:193:10:193:19 | <<`SCRIPT` | HereDoc | 0 | literals.rb:193:20:194:14 | \n cat file.txt\n | StringTextComponent |
+| literals.rb:198:2:198:2 | :x | SymbolLiteral | 0 | literals.rb:198:2:198:2 | x | StringTextComponent |
+| literals.rb:198:6:198:6 | :y | SymbolLiteral | 0 | literals.rb:198:6:198:6 | y | StringTextComponent |
+| literals.rb:199:2:199:2 | :y | SymbolLiteral | 0 | literals.rb:199:2:199:2 | y | StringTextComponent |
+| literals.rb:199:7:199:7 | :Z | SymbolLiteral | 0 | literals.rb:199:7:199:7 | Z | StringTextComponent |
 stringInterpolations
 | literals.rb:71:10:71:19 | #{...} | 0 | literals.rb:71:13:71:17 | ... + ... | AddExpr |
 | literals.rb:72:12:72:21 | #{...} | 0 | literals.rb:72:15:72:19 | ... + ... | AddExpr |

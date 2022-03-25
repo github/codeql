@@ -27,7 +27,8 @@
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl3.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl4.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl2.qll"
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl2.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForLibraries.qll"
   ],
   "DataFlow Java/C++/C#/Python Common": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",
@@ -54,7 +55,8 @@
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking2/TaintTrackingImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking3/TaintTrackingImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking4/TaintTrackingImpl.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttrackingforlibraries/TaintTrackingImpl.qll"
   ],
   "DataFlow Java/C++/C#/Python Consistency checks": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
@@ -480,11 +482,12 @@
     "python/ql/lib/semmle/python/security/performance/ReDoSUtil.qll",
     "ruby/ql/lib/codeql/ruby/security/performance/ReDoSUtil.qll"
   ],
-  "ReDoS Exponential Python/JS": [
+  "ReDoS Exponential Python/JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/performance/ExponentialBackTracking.qll",
-    "python/ql/lib/semmle/python/security/performance/ExponentialBackTracking.qll"
+    "python/ql/lib/semmle/python/security/performance/ExponentialBackTracking.qll",
+    "ruby/ql/lib/codeql/ruby/security/performance/ExponentialBackTracking.qll"
   ],
-  "ReDoS Polynomial Python/JS": [
+  "ReDoS Polynomial Python/JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
     "python/ql/lib/semmle/python/security/performance/SuperlinearBackTracking.qll",
     "ruby/ql/lib/codeql/ruby/security/performance/SuperlinearBackTracking.qll"
@@ -515,5 +518,35 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/AccessPathSyntax.qll",
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/AccessPathSyntax.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/AccessPathSyntax.qll"
+  ],
+  "Concepts Python/Ruby/JS": [
+    "python/ql/lib/semmle/python/internal/ConceptsShared.qll",
+    "ruby/ql/lib/codeql/ruby/internal/ConceptsShared.qll",
+    "javascript/ql/lib/semmle/javascript/internal/ConceptsShared.qll"
+  ],
+  "Hostname Regexp queries": [
+    "javascript/ql/src/Security/CWE-020/HostnameRegexpShared.qll",
+    "python/ql/src/Security/CWE-020/HostnameRegexpShared.qll",
+    "ruby/ql/src/queries/security/cwe-020/HostnameRegexpShared.qll"
+  ],
+  "ApiGraphModels": [
+    "javascript/ql/lib/semmle/javascript/frameworks/data/internal/ApiGraphModels.qll",
+    "ruby/ql/lib/codeql/ruby/frameworks/data/internal/ApiGraphModels.qll"
+  ],
+  "TaintedFormatStringQuery Ruby/JS": [
+    "javascript/ql/lib/semmle/javascript/security/dataflow/TaintedFormatStringQuery.qll",
+    "ruby/ql/lib/codeql/ruby/security/TaintedFormatStringQuery.qll"
+  ],
+  "TaintedFormatStringCustomizations Ruby/JS": [
+    "javascript/ql/lib/semmle/javascript/security/dataflow/TaintedFormatStringCustomizations.qll",
+    "ruby/ql/lib/codeql/ruby/security/TaintedFormatStringCustomizations.qll"
+  ],
+  "HttpToFileAccessQuery JS/Ruby": [
+    "javascript/ql/lib/semmle/javascript/security/dataflow/HttpToFileAccessQuery.qll",
+    "ruby/ql/lib/codeql/ruby/security/HttpToFileAccessQuery.qll"
+  ],
+  "HttpToFileAccessCustomizations JS/Ruby": [
+    "javascript/ql/lib/semmle/javascript/security/dataflow/HttpToFileAccessCustomizations.qll",
+    "ruby/ql/lib/codeql/ruby/security/HttpToFileAccessCustomizations.qll"
   ]
 }

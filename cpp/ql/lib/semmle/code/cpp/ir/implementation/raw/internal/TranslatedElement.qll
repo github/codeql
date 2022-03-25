@@ -154,13 +154,6 @@ private predicate ignoreSideEffects(Expr expr) {
  * around extractor bugs. Once the relevant extractor bugs are fixed, this predicate can be removed.
  */
 private predicate isInvalidFunction(Function func) {
-  exists(Literal literal |
-    // Constructor field inits within a compiler-generated copy constructor have a source expression
-    // that is a `Literal` with no value.
-    literal = func.(Constructor).getAnInitializer().(ConstructorFieldInit).getExpr() and
-    not exists(literal.getValue())
-  )
-  or
   exists(ThisExpr thisExpr |
     // An instantiation of a member function template is not treated as a `MemberFunction` if it has
     // only non-type template arguments.
