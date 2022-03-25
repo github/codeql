@@ -13,7 +13,7 @@ from int usages, string info
 where
   usages =
     strictcount(Call c, ExternalApi api |
-      c.getTarget() = api and
+      c.getTarget().getUnboundDeclaration() = api and
       api.getInfoPrefix() = info and
       not api.isUninteresting()
     )

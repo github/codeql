@@ -1,4 +1,4 @@
-| System.Private.CoreLib.dll#System#DateTime.AddYears(int) | 2 |
-| System.Private.CoreLib.dll#System#DateTime.AddDays(double) | 1 |
-| System.Private.CoreLib.dll#System#DateTime.DateTime(int, int, int) | 1 |
-| System.Private.CoreLib.dll#System#Guid.Parse(string) | 1 |
+| System.Private.CoreLib.dll#System#DateTime.AddYears(System.Int32) | 2 |
+| System.Private.CoreLib.dll#System#DateTime.AddDays(System.Double) | 1 |
+| System.Private.CoreLib.dll#System#DateTime.DateTime(System.Int32,System.Int32,System.Int32) | 1 |
+| System.Private.CoreLib.dll#System#Guid.Parse(System.String) | 1 |

@@ -2038,19 +2038,20 @@ abstract class SyntheticField extends string {
  */
 predicate containerContent(DataFlow::Content c) { c instanceof DataFlow::ElementContent }
 
+/** Gets the string representation of the parameters of `c`. */
+string parameterQualifiedTypeNamesToString(DataFlowCallable c) {
+  result =
+    concat(Parameter p, int i |
+      p = c.getParameter(i)
+    |
+      p.getType().getQualifiedName(), "," order by i
+    )
+}
+
 /**
  * A module containing predicates related to generating models as data.
  */
 module Csv {
-  private string parameterQualifiedTypeNamesToString(DataFlowCallable c) {
-    result =
-      concat(Parameter p, int i |
-        p = c.getParameter(i)
-      |
-        p.getType().getQualifiedName(), "," order by i
-      )
-  }
-
   /** Holds if the summary should apply for all overrides of `c`. */
   predicate isBaseCallableOrPrototype(DataFlowCallable c) {
     c.getDeclaringType() instanceof Interface

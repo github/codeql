@@ -5,6 +5,7 @@ private import semmle.code.csharp.dataflow.DataFlow
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
+private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 private import semmle.code.csharp.dataflow.TaintTracking
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
@@ -23,7 +24,7 @@ class TestLibrary extends RefType {
 /**
  * An external API from either the C# Standard Library or a 3rd party library.
  */
-class ExternalApi extends Callable {
+class ExternalApi extends DataFlowDispatch::DataFlowCallable {
   ExternalApi() { this.fromLibrary() }
 
   /**
@@ -32,13 +33,13 @@ class ExternalApi extends Callable {
   private string getSignature() {
     result =
       this.getDeclaringType().getUnboundDeclaration() + "." + this.getName() + "(" +
-        this.parameterTypesToString() + ")"
+        parameterQualifiedTypeNamesToString(this) + ")"
   }
 
   /**
    * Gets the namespace of this API.
    */
-  private string getNamespace() { result = this.getDeclaringType().getNamespace().toString() }
+  private string getNamespace() { this.getDeclaringType().hasQualifiedName(result, _) }
 
   /**
    * Gets the assembly file name containing this API.
@@ -74,7 +75,7 @@ class ExternalApi extends Callable {
 
   /** Holds if this API has a supported summary. */
   predicate hasSummary() {
-    this.getUnboundDeclaration() = any(SummarizedCallable sc) or
+    this instanceof SummarizedCallable or
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }
 
