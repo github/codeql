@@ -2356,20 +2356,24 @@ module PrivateDjango {
     }
   }
 
-  private class DjangoCsrfDecorator extends CsrfLocalProtection::Range {
+  private class DjangoCsrfDecorator extends CsrfLocalProtectionSetting::Range {
+    string decoratorName;
     Function function;
 
     DjangoCsrfDecorator() {
+      decoratorName in ["csrf_protect", "csrf_exempt", "requires_csrf_token", "ensure_csrf_cookie"] and
       this =
         API::moduleImport("django")
             .getMember("views")
             .getMember("decorators")
             .getMember("csrf")
-            .getMember("csrf_protect")
+            .getMember(decoratorName)
             .getAUse() and
       this.asExpr() = function.getADecorator()
     }
 
-    override Function getProtected() { result = function }
+    override Function getRequestHandler() { result = function }
+
+    override predicate csrfEnabled() { decoratorName in ["csrf_protect", "requires_csrf_token"] }
   }
 }

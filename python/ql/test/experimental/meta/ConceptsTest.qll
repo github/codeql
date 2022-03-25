@@ -520,18 +520,20 @@ class CsrfProtectionSettingTest extends InlineExpectationsTest {
   }
 }
 
-class CsrfLocalProtectionTest extends InlineExpectationsTest {
-  CsrfLocalProtectionTest() { this = "CsrfLocalProtectionTest" }
+class CsrfLocalProtectionSettingTest extends InlineExpectationsTest {
+  CsrfLocalProtectionSettingTest() { this = "CsrfLocalProtectionSettingTest" }
 
-  override string getARelevantTag() { result = "CsrfLocalProtection" }
+  override string getARelevantTag() { result = "CsrfLocalProtection" + ["Enabled", "Disabled"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(CsrfLocalProtection p |
+    exists(CsrfLocalProtectionSetting p |
       location = p.getLocation() and
       element = p.toString() and
-      value = p.getProtected().getName().toString() and
-      tag = "CsrfLocalProtection"
+      value = p.getRequestHandler().getName().toString() and
+      if p.csrfEnabled()
+      then tag = "CsrfLocalProtectionEnabled"
+      else tag = "CsrfLocalProtectionDisabled"
     )
   }
 }

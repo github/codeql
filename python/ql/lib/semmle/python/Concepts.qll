@@ -123,7 +123,7 @@ class CsrfProtectionSetting extends DataFlow::Node instanceof CsrfProtectionSett
 /** Provides a class for modeling new CSRF protection setting APIs. */
 module CsrfProtectionSetting {
   /**
-   * A data-flow node that may set or unset Cross-site request forgery protection
+   * A data-flow node that enables or disables Cross-site request forgery protection
    * in a global manner.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
@@ -139,35 +139,39 @@ module CsrfProtectionSetting {
 }
 
 /**
- * A data-flow node that provides Cross-site request forgery protection
+ * A data-flow node that enables or disables Cross-site request forgery protection
  * for a specific part of an application.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `CsrfLocalProtection::Range` instead.
+ * extend `CsrfLocalProtectionSetting::Range` instead.
  */
-class CsrfLocalProtection extends DataFlow::Node instanceof CsrfLocalProtection::Range {
+class CsrfLocalProtectionSetting extends DataFlow::Node instanceof CsrfLocalProtectionSetting::Range {
   /**
-   * Gets a `Function` representing the protected interaction
-   * (probably a request handler).
+   * Gets a request handler whose CSRF protection is changed.
    */
-  Function getProtected() { result = super.getProtected() }
+  Function getRequestHandler() { result = super.getRequestHandler() }
+
+  /** Holds if CSRF protection is enabled by this setting */
+  predicate csrfEnabled() { super.csrfEnabled() }
 }
 
 /** Provides a class for modeling new CSRF protection setting APIs. */
-module CsrfLocalProtection {
+module CsrfLocalProtectionSetting {
   /**
-   * A data-flow node that provides Cross-site request forgery protection
+   * A data-flow node that enables or disables Cross-site request forgery protection
    * for a specific part of an application.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `CsrfLocalProtection` instead.
+   * extend `CsrfLocalProtectionSetting` instead.
    */
   abstract class Range extends DataFlow::Node {
     /**
-     * Gets a `Function` representing the protected interaction
-     * (probably a request handler).
+     * Gets a request handler whose CSRF protection is changed.
      */
-    abstract Function getProtected();
+    abstract Function getRequestHandler();
+
+    /** Holds if CSRF protection is enabled by this setting */
+    abstract predicate csrfEnabled();
   }
 }
 
