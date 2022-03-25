@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class TestMissing extends Activity {
+public class OnActivityResultMissing extends Activity {
 
 	void sink(Object o) {}
 

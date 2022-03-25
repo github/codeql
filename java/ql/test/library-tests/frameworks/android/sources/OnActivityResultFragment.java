@@ -4,7 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class TestFragment extends Fragment {
+public class OnActivityResultFragment extends Fragment {
 
     void sink(Object o) {}
 

@@ -81,17 +81,17 @@ private class WebkitSourceModels extends SourceModelCsv {
   override predicate row(string row) {
     row =
       [
-        "android.webkit;WebResourceRequest;true;doUpdateVisitedHistory;;;Parameter[1];remote",
-        "android.webkit;WebResourceRequest;true;onLoadResource;;;Parameter[1];remote",
-        "android.webkit;WebResourceRequest;true;onPageCommitVisible;;;Parameter[1];remote",
-        "android.webkit;WebResourceRequest;true;onPageFinished;;;Parameter[1];remote",
-        "android.webkit;WebResourceRequest;true;onPageStarted;;;Parameter[1];remote",
-        "android.webkit;WebResourceRequest;true;onReceivedError;(WebView,int,String,String);;Parameter[3];remote",
-        "android.webkit;WebResourceRequest;true;onReceivedError;(WebView,WebResourceRequest,WebResourceError);;Parameter[1];remote",
-        "android.webkit;WebResourceRequest;true;onReceivedHttpError;;;Parameter[1];remote",
-        "android.webkit;WebResourceRequest;true;onSafeBrowsingHit;;;Parameter[1];remote",
-        "android.webkit;WebResourceRequest;true;shouldInterceptRequest;;;Parameter[1];remote",
-        "android.webkit;WebResourceRequest;true;shouldOverrideUrlLoading;;;Parameter[1];remote"
+        "android.webkit;WebViewClient;true;doUpdateVisitedHistory;;;Parameter[1];remote",
+        "android.webkit;WebViewClient;true;onLoadResource;;;Parameter[1];remote",
+        "android.webkit;WebViewClient;true;onPageCommitVisible;;;Parameter[1];remote",
+        "android.webkit;WebViewClient;true;onPageFinished;;;Parameter[1];remote",
+        "android.webkit;WebViewClient;true;onPageStarted;;;Parameter[1];remote",
+        "android.webkit;WebViewClient;true;onReceivedError;(WebView,int,String,String);;Parameter[3];remote",
+        "android.webkit;WebViewClient;true;onReceivedError;(WebView,WebResourceRequest,WebResourceError);;Parameter[1];remote",
+        "android.webkit;WebViewClient;true;onReceivedHttpError;;;Parameter[1];remote",
+        "android.webkit;WebViewClient;true;onSafeBrowsingHit;;;Parameter[1];remote",
+        "android.webkit;WebViewClient;true;shouldInterceptRequest;;;Parameter[1];remote",
+        "android.webkit;WebViewClient;true;shouldOverrideUrlLoading;;;Parameter[1];remote"
       ]
   }
 }

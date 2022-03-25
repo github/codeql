@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.FragmentTransaction;
 
-public class TestActivityAndFragment extends Activity {
+public class OnActivityResultActivityAndFragment extends Activity {
 
     private TestFragment frag;
 
