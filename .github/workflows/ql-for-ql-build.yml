@@ -181,14 +181,14 @@ jobs:
           CONF: ./ql-for-ql-config.yml
           FOLDER: ${{ matrix.folder }}
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@erik-krogh/newQl
+        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
         with:
           languages: ql
           db-location: ${{ runner.temp }}/db
           config-file: ./ql-for-ql-config.yml
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@erik-krogh/newQl
+        uses: github/codeql-action/analyze@aa93aea877e5fb8841bcb1193f672abf6e9f2980
         with: 
           category: "ql-for-ql-${{ matrix.folder }}"
       - name: Copy sarif file to CWD
