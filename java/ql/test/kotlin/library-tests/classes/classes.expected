@@ -1,4 +1,4 @@
-| classes.kt:0:0:0:0 | ClassesKt | ClassesKt |  |
+| classes.kt:0:0:0:0 | ClassesKt | ClassesKt | final, public |
 | classes.kt:2:1:2:18 | ClassOne | ClassOne | final, public |
 | classes.kt:4:1:6:1 | ClassTwo | ClassTwo | final, public |
 | classes.kt:8:1:10:1 | ClassThree | ClassThree | abstract, public |
@@ -34,7 +34,7 @@
 | classes.kt:119:13:121:13 | Local2 | C1$Local2 | final, private |
 | classes.kt:127:16:134:9 | new Object(...) { ... } | <anonymous class> | final, private |
 | classes.kt:129:17:131:17 | Local3 | C1$$Local3 | final, private |
-| generic_anonymous.kt:0:0:0:0 | Generic_anonymousKt | Generic_anonymousKt |  |
+| generic_anonymous.kt:0:0:0:0 | Generic_anonymousKt | Generic_anonymousKt | final, public |
 | generic_anonymous.kt:1:1:9:1 | Generic | Generic | final, private |
 | generic_anonymous.kt:3:19:5:3 | new Object(...) { ... } | <anonymous class> | final, private |
 | local_anonymous.kt:3:1:36:1 | Class1 | LocalAnonymous.Class1 | final, public |

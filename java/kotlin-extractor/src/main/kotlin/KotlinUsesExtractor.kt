@@ -76,6 +76,8 @@ open class KotlinUsesExtractor(
             tw.writeClasses(it, jvmName, pkgId, it)
             tw.writeFile_class(it)
             tw.writeHasLocation(it, locId)
+
+            addModifiers(it, "public", "final")
         })
         return id
     }
