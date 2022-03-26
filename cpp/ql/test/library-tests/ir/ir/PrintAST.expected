@@ -13091,6 +13091,214 @@ ir.cpp:
 # 1696|       getExpr(): [VariableAccess] x
 # 1696|           Type = [IntType] int
 # 1696|           ValueCategory = prvalue(load)
+# 1699| [CopyAssignmentOperator] TrivialLambdaClass& TrivialLambdaClass::operator=(TrivialLambdaClass const&)
+# 1699|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const TrivialLambdaClass &
+# 1699| [MoveAssignmentOperator] TrivialLambdaClass& TrivialLambdaClass::operator=(TrivialLambdaClass&&)
+# 1699|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] TrivialLambdaClass &&
+# 1701| [ConstMemberFunction] void TrivialLambdaClass::m() const
+# 1701|   <params>: 
+# 1701|   getEntryPoint(): [BlockStmt] { ... }
+# 1702|     getStmt(0): [DeclStmt] declaration
+# 1702|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l_m_outer
+# 1702|           Type = [Closure,LocalClass] decltype([...](...){...})
+# 1702|         getVariable().getInitializer(): [Initializer] initializer for l_m_outer
+# 1702|           getExpr(): [LambdaExpression] [...](...){...}
+# 1702|               Type = [Closure,LocalClass] decltype([...](...){...})
+# 1702|               ValueCategory = prvalue
+# 1702|             getInitializer(): [ClassAggregateLiteral] {...}
+# 1702|                 Type = [Closure,LocalClass] decltype([...](...){...})
+# 1702|                 ValueCategory = prvalue
+# 1702|               getFieldExpr((captured this)): [Literal] Unknown literal
+# 1702|                   Type = [SpecifiedType] const TrivialLambdaClass
+# 1702|                   ValueCategory = prvalue
+# 1709|     getStmt(1): [ReturnStmt] return ...
+# 1702| [CopyAssignmentOperator] (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)& (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator=((void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26) const&)
+# 1702|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1702, col. 26 &
+# 1702| [CopyConstructor] void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::(unnamed constructor)((void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26) const&)
+# 1702|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1702, col. 26 &
+# 1702| [MoveConstructor] void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::(unnamed constructor)((void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)&&)
+# 1702|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] lambda [] type at line 1702, col. 26 &&
+# 1702| [Constructor] void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::(unnamed constructor)()
+# 1702|   <params>: 
+# 1702| [ConstMemberFunction] void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const
+# 1702|   <params>: 
+# 1702|   getEntryPoint(): [BlockStmt] { ... }
+# 1703|     getStmt(0): [ExprStmt] ExprStmt
+# 1703|       getExpr(): [FunctionCall] call to m
+# 1703|           Type = [VoidType] void
+# 1703|           ValueCategory = prvalue
+# 1703|         getQualifier(): [AddressOfExpr] & ...
+# 1703|             Type = [PointerType] const TrivialLambdaClass *
+# 1703|             ValueCategory = prvalue
+# 1703|           getOperand(): [PointerFieldAccess] (captured this)
+# 1703|               Type = [SpecifiedType] const TrivialLambdaClass
+# 1703|               ValueCategory = lvalue
+# 1703|             getQualifier(): [ThisExpr] this
+# 1703|                 Type = [PointerType] const lambda [] type at line 1702, col. 26 *
+# 1703|                 ValueCategory = prvalue(load)
+# 1705|     getStmt(1): [DeclStmt] declaration
+# 1705|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l_m_inner
+# 1705|           Type = [Closure,LocalClass] decltype([...](...){...})
+# 1705|         getVariable().getInitializer(): [Initializer] initializer for l_m_inner
+# 1705|           getExpr(): [LambdaExpression] [...](...){...}
+# 1705|               Type = [Closure,LocalClass] decltype([...](...){...})
+# 1705|               ValueCategory = prvalue
+# 1705|             getInitializer(): [ClassAggregateLiteral] {...}
+# 1705|                 Type = [Closure,LocalClass] decltype([...](...){...})
+# 1705|                 ValueCategory = prvalue
+# 1705|               getFieldExpr((captured this)): [Literal] Unknown literal
+# 1705|                   Type = [SpecifiedType] const TrivialLambdaClass
+# 1705|                   ValueCategory = prvalue
+# 1708|     getStmt(2): [ReturnStmt] return ...
+# 1705| [CopyAssignmentOperator] (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)& (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)::operator=((void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30) const&)
+# 1705|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1705, col. 30 &
+# 1705| [CopyConstructor] void (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)::(unnamed constructor)((void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30) const&)
+# 1705|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1705, col. 30 &
+# 1705| [MoveConstructor] void (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)::(unnamed constructor)((void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)&&)
+# 1705|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] lambda [] type at line 1705, col. 30 &&
+# 1705| [Constructor] void (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)::(unnamed constructor)()
+# 1705|   <params>: 
+# 1705| [ConstMemberFunction] void (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)::operator()() const
+# 1705|   <params>: 
+# 1705|   getEntryPoint(): [BlockStmt] { ... }
+# 1706|     getStmt(0): [ExprStmt] ExprStmt
+# 1706|       getExpr(): [FunctionCall] call to m
+# 1706|           Type = [VoidType] void
+# 1706|           ValueCategory = prvalue
+# 1706|         getQualifier(): [AddressOfExpr] & ...
+# 1706|             Type = [PointerType] const TrivialLambdaClass *
+# 1706|             ValueCategory = prvalue
+# 1706|           getOperand(): [PointerFieldAccess] (captured this)
+# 1706|               Type = [SpecifiedType] const TrivialLambdaClass
+# 1706|               ValueCategory = lvalue
+# 1706|             getQualifier(): [ThisExpr] this
+# 1706|                 Type = [PointerType] const lambda [] type at line 1705, col. 30 *
+# 1706|                 ValueCategory = prvalue(load)
+# 1707|     getStmt(1): [ReturnStmt] return ...
+# 1712| [TopLevelFunction] void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&)
+# 1712|   <params>: 
+# 1712|     getParameter(0): [Parameter] p1
+# 1712|         Type = [Class] TrivialLambdaClass
+# 1712|     getParameter(1): [Parameter] p2
+# 1712|         Type = [LValueReferenceType] TrivialLambdaClass &
+# 1712|     getParameter(2): [Parameter] p3
+# 1712|         Type = [RValueReferenceType] TrivialLambdaClass &&
+# 1712|   getEntryPoint(): [BlockStmt] { ... }
+# 1713|     getStmt(0): [DeclStmt] declaration
+# 1713|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l1
+# 1713|           Type = [SpecifiedType] const TrivialLambdaClass
+# 1714|     getStmt(1): [DeclStmt] declaration
+# 1714|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l2
+# 1714|           Type = [LValueReferenceType] const TrivialLambdaClass &
+# 1714|         getVariable().getInitializer(): [Initializer] initializer for l2
+# 1714|           getExpr(): [Literal] 0
+# 1714|               Type = [Class] TrivialLambdaClass
+# 1714|               Value = [Literal] 0
+# 1714|               ValueCategory = prvalue
+# 1714|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1714|               Type = [LValueReferenceType] const TrivialLambdaClass &
+# 1714|               ValueCategory = prvalue
+# 1714|             getExpr(): [CStyleCast] (const TrivialLambdaClass)...
+# 1714|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1714|                 Type = [SpecifiedType] const TrivialLambdaClass
+# 1714|                 ValueCategory = lvalue
+# 1714|               getExpr(): [TemporaryObjectExpr] temporary object
+# 1714|                   Type = [Class] TrivialLambdaClass
+# 1714|                   ValueCategory = lvalue
+# 1714|                 getExpr(): [TemporaryObjectExpr] temporary object
+# 1714|                     Type = [Class] TrivialLambdaClass
+# 1714|                     ValueCategory = prvalue(load)
+# 1716|     getStmt(2): [DeclStmt] declaration
+# 1716|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l_outer1
+# 1716|           Type = [Closure,LocalClass] decltype([...](...){...})
+# 1716|         getVariable().getInitializer(): [Initializer] initializer for l_outer1
+# 1716|           getExpr(): [LambdaExpression] [...](...){...}
+# 1716|               Type = [Closure,LocalClass] decltype([...](...){...})
+# 1716|               ValueCategory = prvalue
+# 1716|             getInitializer(): [ClassAggregateLiteral] {...}
+# 1716|                 Type = [Closure,LocalClass] decltype([...](...){...})
+# 1716|                 ValueCategory = prvalue
+# 1716|               getFieldExpr(p1): [Literal] Unknown literal
+# 1716|                   Type = [Class] TrivialLambdaClass
+# 1716|                   ValueCategory = prvalue
+# 1716|               getFieldExpr(p2): [Literal] Unknown literal
+# 1716|                   Type = [Class] TrivialLambdaClass
+# 1716|                   ValueCategory = prvalue
+# 1716|               getFieldExpr(p3): [Literal] Unknown literal
+# 1716|                   Type = [Class] TrivialLambdaClass
+# 1716|                   ValueCategory = prvalue
+# 1716|               getFieldExpr(l1): [Literal] Unknown literal
+# 1716|                   Type = [SpecifiedType] const TrivialLambdaClass
+# 1716|                   ValueCategory = prvalue
+# 1716|               getFieldExpr(l2): [Literal] Unknown literal
+# 1716|                   Type = [SpecifiedType] const TrivialLambdaClass
+# 1716|                   ValueCategory = prvalue
+# 1719|     getStmt(3): [ReturnStmt] return ...
+# 1716| [CopyAssignmentOperator] (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)& (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator=((void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21) const&)
+# 1716|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1716, col. 21 &
+# 1716| [CopyConstructor] void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::(unnamed constructor)((void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21) const&)
+# 1716|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1716, col. 21 &
+# 1716| [MoveConstructor] void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::(unnamed constructor)((void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)&&)
+# 1716|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] lambda [] type at line 1716, col. 21 &&
+# 1716| [Constructor] void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::(unnamed constructor)()
+# 1716|   <params>: 
+# 1716| [ConstMemberFunction] void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const
+# 1716|   <params>: 
+# 1716|   getEntryPoint(): [BlockStmt] { ... }
+# 1717|     getStmt(0): [DeclStmt] declaration
+# 1717|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l_inner1
+# 1717|           Type = [Closure,LocalClass] decltype([...](...){...})
+# 1717|         getVariable().getInitializer(): [Initializer] initializer for l_inner1
+# 1717|           getExpr(): [LambdaExpression] [...](...){...}
+# 1717|               Type = [Closure,LocalClass] decltype([...](...){...})
+# 1717|               ValueCategory = prvalue
+# 1717|             getInitializer(): [ClassAggregateLiteral] {...}
+# 1717|                 Type = [Closure,LocalClass] decltype([...](...){...})
+# 1717|                 ValueCategory = prvalue
+# 1717|               getFieldExpr(p1): [Literal] Unknown literal
+# 1717|                   Type = [Class] TrivialLambdaClass
+# 1717|                   ValueCategory = prvalue
+# 1718|     getStmt(1): [ReturnStmt] return ...
+# 1717| [CopyAssignmentOperator] (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)& (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)::operator=((void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25) const&)
+# 1717|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1717, col. 25 &
+# 1717| [CopyConstructor] void (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)::(unnamed constructor)((void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25) const&)
+# 1717|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1717, col. 25 &
+# 1717| [MoveConstructor] void (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)::(unnamed constructor)((void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)&&)
+# 1717|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] lambda [] type at line 1717, col. 25 &&
+# 1717| [Constructor] void (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)::(unnamed constructor)()
+# 1717|   <params>: 
+# 1717| [ConstMemberFunction] void (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)::operator()() const
+# 1717|   <params>: 
+# 1717|   getEntryPoint(): [BlockStmt] { ... }
+# 1717|     getStmt(0): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

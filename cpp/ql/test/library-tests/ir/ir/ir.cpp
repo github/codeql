@@ -1696,4 +1696,26 @@ int goto_on_same_line() {
   return x;
 }
 
+class TrivialLambdaClass {
+public:
+    void m() const {
+        auto l_m_outer = [*this] {
+            m();
+
+            auto l_m_inner = [*this] {
+                m();
+            };
+        };
+    };
+};
+
+void captured_lambda2(TrivialLambdaClass p1, TrivialLambdaClass &p2, TrivialLambdaClass &&p3) {
+    const TrivialLambdaClass l1;
+    const TrivialLambdaClass &l2 = TrivialLambdaClass();
+
+    auto l_outer1 = [p1, p2, p3, l1, l2] {
+        auto l_inner1 = [p1] {};
+    };
+}
+
 // semmle-extractor-options: -std=c++17 --clang
