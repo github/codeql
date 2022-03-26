@@ -12981,12 +12981,12 @@ ir.cpp:
 # 1688|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1688|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1688|                 ValueCategory = prvalue
-# 1688|               getFieldExpr(obj1): [Literal] Unknown literal
-# 1688|                   Type = [SpecifiedType] const CapturedLambdaMyObj
-# 1688|                   ValueCategory = prvalue
-# 1688|               getFieldExpr(obj2): [Literal] Unknown literal
+# 1688|               getFieldExpr(obj1): [VariableAccess] obj1
+# 1688|                   Type = [LValueReferenceType] const CapturedLambdaMyObj &
+# 1688|                   ValueCategory = prvalue(load)
+# 1688|               getFieldExpr(obj2): [VariableAccess] obj2
 # 1688|                   Type = [Class] CapturedLambdaMyObj
-# 1688|                   ValueCategory = prvalue
+# 1688|                   ValueCategory = prvalue(load)
 # 1688|               getFieldExpr(x): [VariableAccess] x
 # 1688|                   Type = [IntType] int
 # 1688|                   ValueCategory = prvalue(load)
@@ -12996,6 +12996,9 @@ ir.cpp:
 # 1688|               getFieldExpr(z): [VariableAccess] z
 # 1688|                   Type = [RValueReferenceType] int &&
 # 1688|                   ValueCategory = prvalue(load)
+#-----|               getFieldExpr(obj1).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                   Type = [SpecifiedType] const CapturedLambdaMyObj
+#-----|                   ValueCategory = prvalue(load)
 # 1690|               getFieldExpr(y).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1690|                   Type = [IntType] int
 # 1690|                   ValueCategory = prvalue(load)
@@ -13030,12 +13033,18 @@ ir.cpp:
 # 1689|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1689|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1689|                 ValueCategory = prvalue
-# 1689|               getFieldExpr(obj1): [Literal] Unknown literal
+# 1689|               getFieldExpr(obj1): [PointerFieldAccess] obj1
 # 1689|                   Type = [SpecifiedType] const CapturedLambdaMyObj
-# 1689|                   ValueCategory = prvalue
-# 1689|               getFieldExpr(obj2): [Literal] Unknown literal
+# 1689|                   ValueCategory = prvalue(load)
+# 1689|                 getQualifier(): [ThisExpr] this
+# 1689|                     Type = [PointerType] lambda [] type at line 1689, col. 29 *
+# 1689|                     ValueCategory = prvalue(load)
+# 1689|               getFieldExpr(obj2): [PointerFieldAccess] obj2
 # 1689|                   Type = [Class] CapturedLambdaMyObj
-# 1689|                   ValueCategory = prvalue
+# 1689|                   ValueCategory = prvalue(load)
+# 1689|                 getQualifier(): [ThisExpr] this
+# 1689|                     Type = [PointerType] lambda [] type at line 1689, col. 29 *
+# 1689|                     ValueCategory = prvalue(load)
 # 1689|               getFieldExpr(x): [PointerFieldAccess] x
 # 1689|                   Type = [IntType] int
 # 1689|                   ValueCategory = prvalue(load)
@@ -13112,9 +13121,12 @@ ir.cpp:
 # 1702|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1702|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1702|                 ValueCategory = prvalue
-# 1702|               getFieldExpr((captured this)): [Literal] Unknown literal
+# 1702|               getFieldExpr((captured this)): [PointerDereferenceExpr] * ...
 # 1702|                   Type = [SpecifiedType] const TrivialLambdaClass
-# 1702|                   ValueCategory = prvalue
+# 1702|                   ValueCategory = prvalue(load)
+# 1702|                 getOperand(): [ThisExpr] this
+# 1702|                     Type = [SpecifiedType] const TrivialLambdaClass *const
+# 1702|                     ValueCategory = prvalue(load)
 # 1709|     getStmt(1): [ReturnStmt] return ...
 # 1702| [CopyAssignmentOperator] (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)& (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator=((void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26) const&)
 # 1702|   <params>: 
@@ -13156,9 +13168,12 @@ ir.cpp:
 # 1705|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1705|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1705|                 ValueCategory = prvalue
-# 1705|               getFieldExpr((captured this)): [Literal] Unknown literal
+# 1705|               getFieldExpr((captured this)): [PointerFieldAccess] (captured this)
 # 1705|                   Type = [SpecifiedType] const TrivialLambdaClass
-# 1705|                   ValueCategory = prvalue
+# 1705|                   ValueCategory = prvalue(load)
+# 1705|                 getQualifier(): [ThisExpr] this
+# 1705|                     Type = [PointerType] lambda [] type at line 1705, col. 30 *
+# 1705|                     ValueCategory = prvalue(load)
 # 1708|     getStmt(2): [ReturnStmt] return ...
 # 1705| [CopyAssignmentOperator] (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)& (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)::operator=((void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30) const&)
 # 1705|   <params>: 
@@ -13234,21 +13249,30 @@ ir.cpp:
 # 1716|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1716|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1716|                 ValueCategory = prvalue
-# 1716|               getFieldExpr(p1): [Literal] Unknown literal
+# 1716|               getFieldExpr(p1): [VariableAccess] p1
 # 1716|                   Type = [Class] TrivialLambdaClass
-# 1716|                   ValueCategory = prvalue
-# 1716|               getFieldExpr(p2): [Literal] Unknown literal
-# 1716|                   Type = [Class] TrivialLambdaClass
-# 1716|                   ValueCategory = prvalue
-# 1716|               getFieldExpr(p3): [Literal] Unknown literal
-# 1716|                   Type = [Class] TrivialLambdaClass
-# 1716|                   ValueCategory = prvalue
-# 1716|               getFieldExpr(l1): [Literal] Unknown literal
+# 1716|                   ValueCategory = prvalue(load)
+# 1716|               getFieldExpr(p2): [VariableAccess] p2
+# 1716|                   Type = [LValueReferenceType] TrivialLambdaClass &
+# 1716|                   ValueCategory = prvalue(load)
+# 1716|               getFieldExpr(p3): [VariableAccess] p3
+# 1716|                   Type = [RValueReferenceType] TrivialLambdaClass &&
+# 1716|                   ValueCategory = prvalue(load)
+# 1716|               getFieldExpr(l1): [VariableAccess] l1
 # 1716|                   Type = [SpecifiedType] const TrivialLambdaClass
-# 1716|                   ValueCategory = prvalue
-# 1716|               getFieldExpr(l2): [Literal] Unknown literal
-# 1716|                   Type = [SpecifiedType] const TrivialLambdaClass
-# 1716|                   ValueCategory = prvalue
+# 1716|                   ValueCategory = prvalue(load)
+# 1716|               getFieldExpr(l2): [VariableAccess] l2
+# 1716|                   Type = [LValueReferenceType] const TrivialLambdaClass &
+# 1716|                   ValueCategory = prvalue(load)
+#-----|               getFieldExpr(p2).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                   Type = [Class] TrivialLambdaClass
+#-----|                   ValueCategory = prvalue(load)
+#-----|               getFieldExpr(p3).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                   Type = [Class] TrivialLambdaClass
+#-----|                   ValueCategory = prvalue(load)
+#-----|               getFieldExpr(l2).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                   Type = [SpecifiedType] const TrivialLambdaClass
+#-----|                   ValueCategory = prvalue(load)
 # 1719|     getStmt(3): [ReturnStmt] return ...
 # 1716| [CopyAssignmentOperator] (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)& (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator=((void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21) const&)
 # 1716|   <params>: 
@@ -13277,9 +13301,12 @@ ir.cpp:
 # 1717|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1717|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1717|                 ValueCategory = prvalue
-# 1717|               getFieldExpr(p1): [Literal] Unknown literal
+# 1717|               getFieldExpr(p1): [PointerFieldAccess] p1
 # 1717|                   Type = [Class] TrivialLambdaClass
-# 1717|                   ValueCategory = prvalue
+# 1717|                   ValueCategory = prvalue(load)
+# 1717|                 getQualifier(): [ThisExpr] this
+# 1717|                     Type = [PointerType] lambda [] type at line 1717, col. 25 *
+# 1717|                     ValueCategory = prvalue(load)
 # 1718|     getStmt(1): [ReturnStmt] return ...
 # 1717| [CopyAssignmentOperator] (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)& (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)::operator=((void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25) const&)
 # 1717|   <params>: 
