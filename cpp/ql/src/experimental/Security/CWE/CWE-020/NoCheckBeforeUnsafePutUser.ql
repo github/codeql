@@ -17,10 +17,10 @@
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
 
-class WrtieAccessCheckMacro extends Macro {
+class WriteAccessCheckMacro extends Macro {
   VariableAccess va;
 
-  WrtieAccessCheckMacro() {
+  WriteAccessCheckMacro() {
     this.getName() = ["user_write_access_begin", "user_access_begin"] and
     va.getEnclosingElement() = this.getAnInvocation().getAnExpandedElement()
   }
@@ -43,7 +43,7 @@ class UnSafePutUserMacro extends Macro {
 
 class ExploitableUserModePtrParam extends Parameter {
   ExploitableUserModePtrParam() {
-    not exists(WrtieAccessCheckMacro writeAccessCheck |
+    not exists(WriteAccessCheckMacro writeAccessCheck |
       DataFlow::localFlow(DataFlow::parameterNode(this),
         DataFlow::exprNode(writeAccessCheck.getArgument()))
     )
