@@ -71,7 +71,7 @@ predicate depends(RefType t, RefType dep) {
       a.getAnnotatedElement().(Member).getDeclaringType() = t
     |
       usesType(a.getType(), dep) or
-      usesType(a.getAValue().getType(), dep) or
+      usesType(a.getValue(_).getType(), dep) or
       usesType(a.getAnArrayValue(_).getType(), dep)
     )
     or

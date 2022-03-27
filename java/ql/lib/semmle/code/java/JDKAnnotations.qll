@@ -19,17 +19,15 @@ class SuppressWarningsAnnotation extends Annotation {
   SuppressWarningsAnnotation() { this.getType().hasQualifiedName("java.lang", "SuppressWarnings") }
 
   /**
-   * Gets the `StringLiteral` of a warning suppressed by this annotation. To get the name of a suppressed
-   * warning, prefer `getASuppressedWarning()`. That predicate considers more cases because it does not
-   * restrict results to `StringLiteral`.
+   * DEPRECATED: This predicate restricts the results to `StringLiteral`; prefer `getASuppressedWarning()`
+   * to get the name of a suppressed warning.
+   *
+   * Gets the `StringLiteral` of a warning suppressed by this annotation.
    */
-  StringLiteral getASuppressedWarningLiteral() { result = this.getAnArrayValue("value") }
+  deprecated StringLiteral getASuppressedWarningLiteral() { result = this.getAnArrayValue("value") }
 
   /** Gets the name of a warning suppressed by this annotation. */
-  string getASuppressedWarning() {
-    // Don't use getASuppressedWarningLiteral() because that restricts results to StringLiteral
-    result = this.getAStringArrayValue("value")
-  }
+  string getASuppressedWarning() { result = this.getAStringArrayValue("value") }
 }
 
 /** A `@Target` annotation. */
@@ -37,12 +35,15 @@ class TargetAnnotation extends Annotation {
   TargetAnnotation() { this.getType().hasQualifiedName("java.lang.annotation", "Target") }
 
   /**
+   * DEPRECATED: Getting the field access expression is rarely useful. Use `getATargetElementType()`
+   * to get the name of the target element.
+   *
    * Gets a target expression within this annotation.
    *
    * For example, the field access `ElementType.FIELD` is a target expression in
    * `@Target({ElementType.FIELD, ElementType.METHOD})`.
    */
-  Expr getATargetExpression() { result = this.getAnArrayValue("value") }
+  deprecated Expr getATargetExpression() { result = this.getAnArrayValue("value") }
 
   /**
    * Gets the name of a target element type.
