@@ -63,6 +63,9 @@ class RegExpParent extends TRegExpParent {
   /** Gets the number of child terms. */
   int getNumChild() { result = count(this.getAChild()) }
 
+  /** Gets the last child term of this element. */
+  RegExpTerm getLastChild() { result = this.getChild(this.getNumChild() - 1) }
+
   /**
    * Gets the name of a primary CodeQL class to which this regular
    * expression term belongs.
