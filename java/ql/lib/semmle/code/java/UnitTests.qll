@@ -161,13 +161,13 @@ class TestNGTestMethod extends Method {
     exists(TestNGTestAnnotation testAnnotation |
       testAnnotation = this.getAnAnnotation() and
       // The data provider must have the same name as the referenced data provider
-      result.getDataProviderName() = testAnnotation.getValueString("dataProvider")
+      result.getDataProviderName() = testAnnotation.getStringValue("dataProvider")
     |
       // Either the data provider should be on the current class, or a supertype
       this.getDeclaringType().getAnAncestor() = result.getDeclaringType()
       or
       // Or the data provider class should be declared
-      result.getDeclaringType() = testAnnotation.getValueClass("dataProviderClass")
+      result.getDeclaringType() = testAnnotation.getTypeValue("dataProviderClass")
     )
   }
 }

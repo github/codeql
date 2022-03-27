@@ -60,7 +60,7 @@ class JaxbType extends Class {
       this.getAnAnnotation() = a and
       a.getType().(JaxbAnnotationType).hasName("XmlAccessorType")
     |
-      result = a.getValueEnumConstant("value")
+      result = a.getEnumConstantValue("value")
     )
   }
 

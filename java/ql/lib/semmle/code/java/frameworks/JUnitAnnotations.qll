@@ -64,5 +64,5 @@ class RunWithAnnotation extends Annotation {
   /**
    * Gets the runner that will be used.
    */
-  Type getRunner() { result = this.getValueClass("value") }
+  Type getRunner() { result = this.getTypeValue("value") }
 }

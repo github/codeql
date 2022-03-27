@@ -99,7 +99,7 @@ class RepeatableAnnotation extends Annotation {
    * Gets the annotation type which acts as _containing type_, grouping multiple
    * repeatable annotations together.
    */
-  AnnotationType getContainingType() { result = getValueClass("value") }
+  AnnotationType getContainingType() { result = getTypeValue("value") }
 }
 
 /**

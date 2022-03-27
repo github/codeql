@@ -61,14 +61,14 @@ class Annotation extends @annotation, Expr {
    * gets the enum constant used as value for that element. This includes default values in
    * case no explicit value is specified.
    */
-  EnumConstant getValueEnumConstant(string name) { result = getValue(name).(FieldRead).getField() }
+  EnumConstant getEnumConstantValue(string name) { result = getValue(name).(FieldRead).getField() }
 
   /**
    * If the value type of the annotation element with the specified `name` is `String`,
    * gets the string value used for that element. This includes default values in case no
    * explicit value is specified.
    */
-  string getValueString(string name) {
+  string getStringValue(string name) {
     // Uses CompileTimeConstantExpr instead of StringLiteral because value can
     // be read of final variable as well
     result = getValue(name).(CompileTimeConstantExpr).getStringValue()
@@ -79,7 +79,7 @@ class Annotation extends @annotation, Expr {
    * gets the int value used for that element. This includes default values in case no
    * explicit value is specified.
    */
-  int getValueInt(string name) {
+  int getIntValue(string name) {
     // Uses CompileTimeConstantExpr instead of IntegerLiteral because value can
     // be read of final variable as well
     result = getValue(name).(CompileTimeConstantExpr).getIntValue()
@@ -90,7 +90,7 @@ class Annotation extends @annotation, Expr {
    * gets the boolean value used for that element. This includes default values in case
    * no explicit value is specified.
    */
-  boolean getValueBoolean(string name) {
+  boolean getBooleanValue(string name) {
     // Uses CompileTimeConstantExpr instead of BooleanLiteral because value can
     // be read of final variable as well
     result = getValue(name).(CompileTimeConstantExpr).getBooleanValue()
@@ -101,7 +101,7 @@ class Annotation extends @annotation, Expr {
    * gets the referenced type used as value for that element. This includes default values
    * in case no explicit value is specified.
    */
-  Type getValueClass(string name) { result = getValue(name).(TypeLiteral).getReferencedType() }
+  Type getTypeValue(string name) { result = getValue(name).(TypeLiteral).getReferencedType() }
 
   /** Gets the element being annotated. */
   Element getTarget() { result = this.getAnnotatedElement() }

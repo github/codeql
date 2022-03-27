@@ -144,7 +144,7 @@ class SpringComponent extends RefType {
     if exists(this.getComponentAnnotation().getValue("value"))
     then
       // If the name has been specified in the component annotation, use that.
-      result = getComponentAnnotation().getValueString("value")
+      result = getComponentAnnotation().getStringValue("value")
     else
       // Otherwise use the name of the class, with the initial letter lower cased.
       exists(string name | name = this.getName() |
