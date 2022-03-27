@@ -27,8 +27,8 @@ class SuppressWarningsAnnotation extends Annotation {
 
   /** Gets the name of a warning suppressed by this annotation. */
   string getASuppressedWarning() {
-    // Use CompileTimeConstantExpr because that covers more than StringLiteral result of getASuppressedWarningLiteral()
-    result = this.getAnArrayValue("value").(CompileTimeConstantExpr).getStringValue()
+    // Don't use getASuppressedWarningLiteral() because that restricts results to StringLiteral
+    result = this.getAStringArrayValue("value")
   }
 }
 
@@ -42,10 +42,7 @@ class TargetAnnotation extends Annotation {
    * For example, the field access `ElementType.FIELD` is a target expression in
    * `@Target({ElementType.FIELD, ElementType.METHOD})`.
    */
-  Expr getATargetExpression() {
-    not result instanceof ArrayInit and
-    result = this.getAnArrayValue("value")
-  }
+  Expr getATargetExpression() { result = this.getAnArrayValue("value") }
 
   /**
    * Gets the name of a target element type.
@@ -53,14 +50,7 @@ class TargetAnnotation extends Annotation {
    * For example, `METHOD` is the name of a target element type in
    * `@Target({ElementType.FIELD, ElementType.METHOD})`.
    */
-  string getATargetElementType() {
-    exists(EnumConstant ec |
-      ec = this.getATargetExpression().(FieldRead).getField() and
-      ec.getDeclaringType().hasQualifiedName("java.lang.annotation", "ElementType")
-    |
-      result = ec.getName()
-    )
-  }
+  string getATargetElementType() { result = this.getAnEnumConstantArrayValue("value").getName() }
 }
 
 /** A `@Retention` annotation. */

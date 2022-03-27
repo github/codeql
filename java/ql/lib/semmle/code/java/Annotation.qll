@@ -46,13 +46,17 @@ class Annotation extends @annotation, Expr {
 
   /**
    * Gets a value of an annotation element. This includes default values in case
-   * no explicit value is specified.
+   * no explicit value is specified. For elements with an array value type this
+   * might have an `ArrayInit` as result. To properly handle array values, prefer
+   * the predicate `getAnArrayValue`.
    */
   Expr getAValue() { filteredAnnotValue(this, _, result) }
 
   /**
    * Gets the value of the annotation element with the specified `name`.
    * This includes default values in case no explicit value is specified.
+   * For elements with an array value type this might have an `ArrayInit` as result.
+   * To properly handle array values, prefer the predicate `getAnArrayValue`.
    */
   Expr getValue(string name) { filteredAnnotValue(this, this.getAnnotationElement(name), result) }
 
@@ -60,6 +64,8 @@ class Annotation extends @annotation, Expr {
    * If the value type of the annotation element with the specified `name` is an enum type,
    * gets the enum constant used as value for that element. This includes default values in
    * case no explicit value is specified.
+   *
+   * If the element value type is an enum type array, use `getAnEnumConstantArrayValue`.
    */
   EnumConstant getEnumConstantValue(string name) { result = getValue(name).(FieldRead).getField() }
 
@@ -67,6 +73,8 @@ class Annotation extends @annotation, Expr {
    * If the value type of the annotation element with the specified `name` is `String`,
    * gets the string value used for that element. This includes default values in case no
    * explicit value is specified.
+   *
+   * If the element value type is a string array, use `getAStringArrayValue`.
    */
   string getStringValue(string name) {
     // Uses CompileTimeConstantExpr instead of StringLiteral because value can
@@ -78,6 +86,8 @@ class Annotation extends @annotation, Expr {
    * If the value type of the annotation element with the specified `name` is `int`,
    * gets the int value used for that element. This includes default values in case no
    * explicit value is specified.
+   *
+   * If the element value type is an `int` array, use `getAnIntArrayValue`.
    */
   int getIntValue(string name) {
     // Uses CompileTimeConstantExpr instead of IntegerLiteral because value can
@@ -100,6 +110,8 @@ class Annotation extends @annotation, Expr {
    * If the annotation element with the specified `name` has a Java `Class` as value type,
    * gets the referenced type used as value for that element. This includes default values
    * in case no explicit value is specified.
+   *
+   * If the element value type is a `Class` array, use `getATypeArrayValue`.
    */
   Type getTypeValue(string name) { result = getValue(name).(TypeLiteral).getReferencedType() }
 
@@ -124,6 +136,50 @@ class Annotation extends @annotation, Expr {
    * DEPRECATED: Predicate has been renamed to `getAnArrayValue`
    */
   deprecated Expr getAValue(string name) { result = getAnArrayValue(name) }
+
+  /**
+   * Gets a value of the annotation element with the specified `name`, which must be declared as an enum
+   * type array. This includes default values in case no explicit value is specified.
+   *
+   * If the annotation element is defined with an array initializer, then the result will be one of the
+   * elements of that array. Otherwise, the result will be the single expression defined for the value.
+   */
+  EnumConstant getAnEnumConstantArrayValue(string name) {
+    result = this.getAnArrayValue(name).(FieldRead).getField()
+  }
+
+  /**
+   * Gets a value of the annotation element with the specified `name`, which must be declared as a string
+   * array. This includes default values in case no explicit value is specified.
+   *
+   * If the annotation element is defined with an array initializer, then the result will be one of the
+   * elements of that array. Otherwise, the result will be the single expression defined for the value.
+   */
+  string getAStringArrayValue(string name) {
+    result = this.getAnArrayValue(name).(CompileTimeConstantExpr).getStringValue()
+  }
+
+  /**
+   * Gets a value of the annotation element with the specified `name`, which must be declared as an `int`
+   * array. This includes default values in case no explicit value is specified.
+   *
+   * If the annotation element is defined with an array initializer, then the result will be one of the
+   * elements of that array. Otherwise, the result will be the single expression defined for the value.
+   */
+  int getAnIntArrayValue(string name) {
+    result = this.getAnArrayValue(name).(CompileTimeConstantExpr).getIntValue()
+  }
+
+  /**
+   * Gets a value of the annotation element with the specified `name`, which must be declared as a `Class`
+   * array. This includes default values in case no explicit value is specified.
+   *
+   * If the annotation element is defined with an array initializer, then the result will be one of the
+   * elements of that array. Otherwise, the result will be the single expression defined for the value.
+   */
+  Type getATypeArrayValue(string name) {
+    result = this.getAnArrayValue(name).(TypeLiteral).getReferencedType()
+  }
 
   /**
    * Gets the value at a given index of the annotation element with the specified `name`, which must be
