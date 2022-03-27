@@ -40,13 +40,13 @@ class SpringComponentScan extends Annotation {
    */
   string getBasePackages() {
     // "value" and "basePackages" are synonymous, and are simple strings
-    result = this.getAValue("basePackages").(StringLiteral).getValue()
+    result = this.getAnArrayValue("basePackages").(StringLiteral).getValue()
     or
-    result = this.getAValue("value").(StringLiteral).getValue()
+    result = this.getAnArrayValue("value").(StringLiteral).getValue()
     or
     exists(TypeLiteral typeLiteral |
       // Base package classes are type literals whose package should be considered a base package.
-      typeLiteral = this.getAValue("basePackageClasses")
+      typeLiteral = this.getAnArrayValue("basePackageClasses")
     |
       result = typeLiteral.getReferencedType().(RefType).getPackage().getName()
     )
@@ -203,7 +203,7 @@ class SpringComponent extends RefType {
           .getType()
           .hasQualifiedName("org.springframework.context.annotation", "Profile")
     |
-      result = profileAnnotation.getAValue("value").(StringLiteral).getValue()
+      result = profileAnnotation.getAnArrayValue("value").(StringLiteral).getValue()
     )
   }
 }

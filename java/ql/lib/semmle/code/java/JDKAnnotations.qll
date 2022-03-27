@@ -23,12 +23,12 @@ class SuppressWarningsAnnotation extends Annotation {
    * warning, prefer `getASuppressedWarning()`. That predicate considers more cases because it does not
    * restrict results to `StringLiteral`.
    */
-  StringLiteral getASuppressedWarningLiteral() { result = this.getAValue(_) }
+  StringLiteral getASuppressedWarningLiteral() { result = this.getAnArrayValue("value") }
 
   /** Gets the name of a warning suppressed by this annotation. */
   string getASuppressedWarning() {
     // Use CompileTimeConstantExpr because that covers more than StringLiteral result of getASuppressedWarningLiteral()
-    result = this.getAValue(_).(CompileTimeConstantExpr).getStringValue()
+    result = this.getAnArrayValue("value").(CompileTimeConstantExpr).getStringValue()
   }
 }
 
@@ -44,7 +44,7 @@ class TargetAnnotation extends Annotation {
    */
   Expr getATargetExpression() {
     not result instanceof ArrayInit and
-    result = this.getAValue(_)
+    result = this.getAnArrayValue("value")
   }
 
   /**

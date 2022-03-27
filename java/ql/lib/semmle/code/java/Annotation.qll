@@ -115,21 +115,25 @@ class Annotation extends @annotation, Expr {
    * Gets a value of the annotation element with the specified `name`, which must be declared as an array
    * type. This includes default values in case no explicit value is specified.
    *
-   * If the annotation element is defined with an array initializer, then the returned value will
-   * be one of the elements of that array. Otherwise, the returned value will be the single
-   * expression defined for the value.
+   * If the annotation element is defined with an array initializer, then the result will be one of the
+   * elements of that array. Otherwise, the result will be the single expression defined for the value.
    */
-  Expr getAValue(string name) { result = getAValue(name, _) }
+  Expr getAnArrayValue(string name) { result = getAnArrayValue(name, _) }
+
+  /**
+   * DEPRECATED: Predicate has been renamed to `getAnArrayValue`
+   */
+  deprecated Expr getAValue(string name) { result = getAnArrayValue(name) }
 
   /**
    * Gets the value at a given index of the annotation element with the specified `name`, which must be
    * declared as an array type. This includes default values in case no explicit value is specified.
    *
-   * If the annotation element is defined with an array initializer, then the returned value will
-   * be the elements at the given index of that array. Otherwise, if the index is 0 the returned value
-   * will be the single expression defined for the value.
+   * If the annotation element is defined with an array initializer, then the result will be the element
+   * at the given index of that array. Otherwise, the result will be the single expression defined for
+   * the value and the `index` will be 0.
    */
-  Expr getAValue(string name, int index) {
+  Expr getAnArrayValue(string name, int index) {
     this.getType().getAnnotationElement(name).getType() instanceof Array and
     exists(Expr value | value = this.getValue(name) |
       if value instanceof ArrayInit
@@ -139,6 +143,11 @@ class Annotation extends @annotation, Expr {
       )
     )
   }
+
+  /**
+   * DEPRECATED: Predicate has been renamed to `getAnArrayValue`
+   */
+  deprecated Expr getAValue(string name, int index) { result = getAnArrayValue(name, index) }
 
   override string getAPrimaryQlClass() { result = "Annotation" }
 }
@@ -204,7 +213,7 @@ class Annotatable extends Element {
       containerAnn = getADeclaredAnnotation() and
       containerAnn.getType() = t.getContainingAnnotationType()
     |
-      result = containerAnn.getAValue("value")
+      result = containerAnn.getAnArrayValue("value")
     )
   }
 

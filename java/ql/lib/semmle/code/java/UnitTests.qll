@@ -226,7 +226,7 @@ class TestNGListenersAnnotation extends TestNGAnnotation {
    * Gets a listener defined in this annotation.
    */
   TestNGListenerImpl getAListener() {
-    result = this.getAValue("value").(TypeLiteral).getReferencedType()
+    result = this.getAnArrayValue("value").(TypeLiteral).getReferencedType()
   }
 }
 
