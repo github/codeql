@@ -2133,3 +2133,41 @@ class Argument extends Expr {
     )
   }
 }
+
+/**
+ * A statement expression, as specified by JLS 17 section 14.8.
+ * The result of a statement expression, if any, is discarded.
+ *
+ * Not to be confused with `ExprStmt`; while the child of an `ExprStmt` is always
+ * a `StmtExpr`, the opposite is not true. A `StmtExpr` occurs for example also
+ * as 'init' of a `for` statement.
+ */
+class StmtExpr extends Expr {
+  StmtExpr() {
+    this = any(ExprStmt s).getExpr()
+    or
+    this = any(ForStmt s).getAnInit() and not this instanceof LocalVariableDeclExpr
+    or
+    this = any(ForStmt s).getAnUpdate()
+    or
+    // Only applies to SwitchStmt, but not to SwitchExpr, see JLS 17 section 14.11.2
+    // TODO: Possibly redundant depending on how https://github.com/github/codeql/issues/8570 is resolved
+    this = any(SwitchStmt s).getACase().getRuleExpression()
+    or
+    // TODO: Workarounds for https://github.com/github/codeql/issues/3605
+    exists(LambdaExpr lambda |
+      this = lambda.getExprBody() and
+      lambda.asMethod().getReturnType() instanceof VoidType
+    )
+    or
+    exists(MemberRefExpr memberRef, Method implicitMethod, Method overridden |
+      implicitMethod = memberRef.asMethod()
+    |
+      this.getParent().(ReturnStmt).getEnclosingCallable() = implicitMethod and
+      // asMethod() has bogus method with wrong return type as result, e.g. `run(): String` (overriding `Runnable.run(): void`)
+      // Therefore need to check the overridden method
+      implicitMethod.getSourceDeclaration().overridesOrInstantiates*(overridden) and
+      overridden.getReturnType() instanceof VoidType
+    )
+  }
+}

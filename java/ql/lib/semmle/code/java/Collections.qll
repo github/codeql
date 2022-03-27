@@ -84,7 +84,7 @@ class CollectionMutation extends MethodAccess {
   CollectionMutation() { this.getMethod() instanceof CollectionMutator }
 
   /** Holds if the result of this call is not immediately discarded. */
-  predicate resultIsChecked() { not this.getParent() instanceof ExprStmt }
+  predicate resultIsChecked() { not this instanceof StmtExpr }
 }
 
 /** A method that queries the contents of a collection without mutating it. */

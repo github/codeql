@@ -45,7 +45,7 @@ predicate unboundedQueue(RefType t) {
 
 from MethodAccess ma, SpecialMethod m
 where
-  ma.getParent() instanceof ExprStmt and
+  ma instanceof StmtExpr and
   m = ma.getMethod() and
   (
     m.isMethod("java.util", "Queue", "offer", 1) and not unboundedQueue(m.getDeclaringType())
