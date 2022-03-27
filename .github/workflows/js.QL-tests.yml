@@ -37,7 +37,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: ./.github/actions/fetch-codeql
+      - uses: ./github/actions/fetch-Code-QL
 
       - name: Install pack dependencies
         run: |
