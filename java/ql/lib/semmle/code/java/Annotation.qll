@@ -136,7 +136,7 @@ class Annotation extends @annotation, Expr {
    * If the annotation element is defined with an array initializer, then the result will be one of the
    * elements of that array. Otherwise, the result will be the single expression defined for the value.
    */
-  Expr getAnArrayValue(string name) { result = getAnArrayValue(name, _) }
+  Expr getAnArrayValue(string name) { result = getArrayValue(name, _) }
 
   /**
    * DEPRECATED: Predicate has been renamed to `getAnArrayValue`
@@ -195,7 +195,7 @@ class Annotation extends @annotation, Expr {
    * at the given index of that array. Otherwise, the result will be the single expression defined for
    * the value and the `index` will be 0.
    */
-  Expr getAnArrayValue(string name, int index) {
+  Expr getArrayValue(string name, int index) {
     this.getType().getAnnotationElement(name).getType() instanceof Array and
     exists(Expr value | value = this.getValue(name) |
       if value instanceof ArrayInit
@@ -205,11 +205,6 @@ class Annotation extends @annotation, Expr {
       )
     )
   }
-
-  /**
-   * DEPRECATED: Predicate has been renamed to `getAnArrayValue`
-   */
-  deprecated Expr getAValue(string name, int index) { result = getAnArrayValue(name, index) }
 
   override string getAPrimaryQlClass() { result = "Annotation" }
 }
