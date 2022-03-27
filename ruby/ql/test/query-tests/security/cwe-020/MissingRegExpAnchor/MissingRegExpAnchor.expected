@@ -1,0 +1,4 @@
+| missing_regexp_anchor.rb:1:1:1:17 | /www.example.com/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| missing_regexp_anchor.rb:7:1:7:21 | /https?:\\/\\/good.com/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| missing_regexp_anchor.rb:8:1:8:22 | /^https?:\\/\\/good.com/ | This hostname pattern may match any domain name, as it is missing a '\\z' or '/' at the end. |
+| missing_regexp_anchor.rb:8:1:8:22 | /^https?:\\/\\/good.com/ | This hostname pattern uses anchors such as '^' and '$', which match the start and end of a line, not the whole string. Use '\\A' and '\\z' instead. |
