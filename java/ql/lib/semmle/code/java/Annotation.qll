@@ -217,13 +217,15 @@ class Annotatable extends Element {
     )
   }
 
-  private Annotation getAnAssociatedAnnotation(AnnotationType t) {
-    result.getType() = t and
+  private Annotation getADeclaredAssociatedAnnotation(AnnotationType t) {
     // Direct or indirect annotation
-    if getADeclaredAnnotation().getType() = t or getAnIndirectAnnotation().getType() = t
-    then (
-      result = getADeclaredAnnotation() or result = getAnIndirectAnnotation()
-    ) else (
+    result.getType() = t and result = [getADeclaredAnnotation(), getAnIndirectAnnotation()]
+  }
+
+  private Annotation getAnAssociatedAnnotation(AnnotationType t) {
+    if exists(getADeclaredAssociatedAnnotation(t))
+    then result = getADeclaredAssociatedAnnotation(t)
+    else (
       // Only if neither a direct nor an indirect annotation is present look for an inherited one
       t.isInherited() and
       // @Inherited only works for classes; cast to Annotatable is necessary because predicate is private
