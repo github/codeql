@@ -317,8 +317,8 @@ module API {
       exists(Node pred, Label::ApiLabel lbl, string predpath |
         Impl::edge(pred, lbl, this) and
         predpath = pred.getAPath(length - 1) and
-        exists(string space | if length = 1 then space = "" else space = " " |
-          result = "(" + lbl + space + predpath + ")" and
+        exists(string dot | if length = 1 then dot = "" else dot = "." |
+          result = predpath + dot + lbl and
           // avoid producing strings longer than 1MB
           result.length() < 1000 * 1000
         )
