@@ -1,32 +1,26 @@
 edges
-| zipslip_bad.py:9:9:9:30 | ControlFlowNode for Attribute() | zipslip_bad.py:11:11:11:15 | SSA variable entry |
-| zipslip_bad.py:11:11:11:15 | SSA variable entry | zipslip_bad.py:12:23:12:27 | ControlFlowNode for entry |
-| zipslip_bad.py:15:9:15:27 | ControlFlowNode for Attribute() | zipslip_bad.py:17:11:17:15 | SSA variable entry |
-| zipslip_bad.py:17:11:17:15 | SSA variable entry | zipslip_bad.py:18:24:18:28 | ControlFlowNode for entry |
-| zipslip_bad.py:21:9:21:26 | ControlFlowNode for Attribute() | zipslip_bad.py:23:11:23:15 | SSA variable entry |
-| zipslip_bad.py:23:11:23:15 | SSA variable entry | zipslip_bad.py:24:27:24:31 | ControlFlowNode for entry |
-| zipslip_bad.py:27:9:27:33 | ControlFlowNode for Attribute() | zipslip_bad.py:29:11:29:15 | SSA variable entry |
-| zipslip_bad.py:29:11:29:15 | SSA variable entry | zipslip_bad.py:30:23:30:27 | ControlFlowNode for entry |
-| zipslip_bad.py:33:9:33:33 | ControlFlowNode for Attribute() | zipslip_bad.py:36:32:36:35 | ControlFlowNode for zipf |
+| zipslip_bad.py:8:10:8:31 | ControlFlowNode for Attribute() | zipslip_bad.py:10:13:10:17 | SSA variable entry |
+| zipslip_bad.py:10:13:10:17 | SSA variable entry | zipslip_bad.py:11:25:11:29 | ControlFlowNode for entry |
+| zipslip_bad.py:14:10:14:28 | ControlFlowNode for Attribute() | zipslip_bad.py:16:13:16:17 | SSA variable entry |
+| zipslip_bad.py:16:13:16:17 | SSA variable entry | zipslip_bad.py:17:26:17:30 | ControlFlowNode for entry |
+| zipslip_bad.py:20:10:20:27 | ControlFlowNode for Attribute() | zipslip_bad.py:22:13:22:17 | SSA variable entry |
+| zipslip_bad.py:22:13:22:17 | SSA variable entry | zipslip_bad.py:23:29:23:33 | ControlFlowNode for entry |
+| zipslip_bad.py:36:14:36:30 | ControlFlowNode for Attribute() | zipslip_bad.py:37:32:37:35 | ControlFlowNode for srcf |
 nodes
-| zipslip_bad.py:9:9:9:30 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipslip_bad.py:11:11:11:15 | SSA variable entry | semmle.label | SSA variable entry |
-| zipslip_bad.py:12:23:12:27 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
-| zipslip_bad.py:15:9:15:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipslip_bad.py:17:11:17:15 | SSA variable entry | semmle.label | SSA variable entry |
-| zipslip_bad.py:18:24:18:28 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
-| zipslip_bad.py:21:9:21:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipslip_bad.py:23:11:23:15 | SSA variable entry | semmle.label | SSA variable entry |
-| zipslip_bad.py:24:27:24:31 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
-| zipslip_bad.py:27:9:27:33 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipslip_bad.py:29:11:29:15 | SSA variable entry | semmle.label | SSA variable entry |
-| zipslip_bad.py:30:23:30:27 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
-| zipslip_bad.py:33:9:33:33 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipslip_bad.py:36:32:36:35 | ControlFlowNode for zipf | semmle.label | ControlFlowNode for zipf |
+| zipslip_bad.py:8:10:8:31 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| zipslip_bad.py:10:13:10:17 | SSA variable entry | semmle.label | SSA variable entry |
+| zipslip_bad.py:11:25:11:29 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
+| zipslip_bad.py:14:10:14:28 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| zipslip_bad.py:16:13:16:17 | SSA variable entry | semmle.label | SSA variable entry |
+| zipslip_bad.py:17:26:17:30 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
+| zipslip_bad.py:20:10:20:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| zipslip_bad.py:22:13:22:17 | SSA variable entry | semmle.label | SSA variable entry |
+| zipslip_bad.py:23:29:23:33 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
+| zipslip_bad.py:36:14:36:30 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| zipslip_bad.py:37:32:37:35 | ControlFlowNode for srcf | semmle.label | ControlFlowNode for srcf |
 subpaths
 #select
-| zipslip_bad.py:12:23:12:27 | ControlFlowNode for entry | zipslip_bad.py:9:9:9:30 | ControlFlowNode for Attribute() | zipslip_bad.py:12:23:12:27 | ControlFlowNode for entry | Extraction of zipfile from $@ | zipslip_bad.py:9:9:9:30 | ControlFlowNode for Attribute() | a potentially untrusted source |
-| zipslip_bad.py:18:24:18:28 | ControlFlowNode for entry | zipslip_bad.py:15:9:15:27 | ControlFlowNode for Attribute() | zipslip_bad.py:18:24:18:28 | ControlFlowNode for entry | Extraction of zipfile from $@ | zipslip_bad.py:15:9:15:27 | ControlFlowNode for Attribute() | a potentially untrusted source |
-| zipslip_bad.py:24:27:24:31 | ControlFlowNode for entry | zipslip_bad.py:21:9:21:26 | ControlFlowNode for Attribute() | zipslip_bad.py:24:27:24:31 | ControlFlowNode for entry | Extraction of zipfile from $@ | zipslip_bad.py:21:9:21:26 | ControlFlowNode for Attribute() | a potentially untrusted source |
-| zipslip_bad.py:30:23:30:27 | ControlFlowNode for entry | zipslip_bad.py:27:9:27:33 | ControlFlowNode for Attribute() | zipslip_bad.py:30:23:30:27 | ControlFlowNode for entry | Extraction of zipfile from $@ | zipslip_bad.py:27:9:27:33 | ControlFlowNode for Attribute() | a potentially untrusted source |
-| zipslip_bad.py:36:32:36:35 | ControlFlowNode for zipf | zipslip_bad.py:33:9:33:33 | ControlFlowNode for Attribute() | zipslip_bad.py:36:32:36:35 | ControlFlowNode for zipf | Extraction of zipfile from $@ | zipslip_bad.py:33:9:33:33 | ControlFlowNode for Attribute() | a potentially untrusted source |
+| zipslip_bad.py:11:25:11:29 | ControlFlowNode for entry | zipslip_bad.py:8:10:8:31 | ControlFlowNode for Attribute() | zipslip_bad.py:11:25:11:29 | ControlFlowNode for entry | Extraction of zipfile from $@ | zipslip_bad.py:8:10:8:31 | ControlFlowNode for Attribute() | a potentially untrusted source |
+| zipslip_bad.py:17:26:17:30 | ControlFlowNode for entry | zipslip_bad.py:14:10:14:28 | ControlFlowNode for Attribute() | zipslip_bad.py:17:26:17:30 | ControlFlowNode for entry | Extraction of zipfile from $@ | zipslip_bad.py:14:10:14:28 | ControlFlowNode for Attribute() | a potentially untrusted source |
+| zipslip_bad.py:23:29:23:33 | ControlFlowNode for entry | zipslip_bad.py:20:10:20:27 | ControlFlowNode for Attribute() | zipslip_bad.py:23:29:23:33 | ControlFlowNode for entry | Extraction of zipfile from $@ | zipslip_bad.py:20:10:20:27 | ControlFlowNode for Attribute() | a potentially untrusted source |
+| zipslip_bad.py:37:32:37:35 | ControlFlowNode for srcf | zipslip_bad.py:36:14:36:30 | ControlFlowNode for Attribute() | zipslip_bad.py:37:32:37:35 | ControlFlowNode for srcf | Extraction of zipfile from $@ | zipslip_bad.py:36:14:36:30 | ControlFlowNode for Attribute() | a potentially untrusted source |
