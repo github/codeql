@@ -18,12 +18,12 @@ module StringOps {
     /**
      * Gets the `A` in `A.start_with?(B)`.
      */
-    DataFlow::Node getBaseString() { result = super.getBaseString() }
+    final DataFlow::Node getBaseString() { result = super.getBaseString() }
 
     /**
      * Gets the `B` in `A.start_with?(B)`.
      */
-    DataFlow::Node getSubstring() { result = super.getSubstring() }
+    final DataFlow::Node getSubstring() { result = super.getSubstring() }
 
     /**
      * Gets the polarity of the check.
@@ -31,7 +31,7 @@ module StringOps {
      * If the polarity is `false` the check returns `true` if the string does not start
      * with the given substring.
      */
-    boolean getPolarity() { result = super.getPolarity() }
+    final boolean getPolarity() { result = super.getPolarity() }
   }
 
   /**
@@ -75,7 +75,7 @@ module StringOps {
     /**
      * An expression of form `A.index(B) == 0` or `A.index(B) != 0`.
      */
-    private class StartsWith_IndexOfEquals extends Range, DataFlow::Node {
+    private class StartsWith_IndexOfEquals extends Range {
       private DataFlow::CallNode indexOf;
       private boolean polarity;
 
@@ -83,7 +83,7 @@ module StringOps {
         exists(ExprNodes::ComparisonOperationCfgNode comparison |
           this.asExpr() = comparison and
           indexOf.getMethodName() = "index" and
-          count(indexOf.getArgument(_)) = 1 and
+          strictcount(indexOf.getArgument(_)) = 1 and
           indexOf.flowsTo(any(DataFlow::Node n | n.asExpr() = comparison.getAnOperand())) and
           comparison.getAnOperand().getConstantValue().getInt() = 0
         |
@@ -110,10 +110,10 @@ module StringOps {
    */
   class Includes extends InclusionTest {
     /** Gets the `A` in `A.include?(B)`. */
-    DataFlow::Node getBaseString() { result = super.getContainerNode() }
+    final DataFlow::Node getBaseString() { result = super.getContainerNode() }
 
     /** Gets the `B` in `A.include?(B)`. */
-    DataFlow::Node getSubstring() { result = super.getContainedNode() }
+    final DataFlow::Node getSubstring() { result = super.getContainedNode() }
   }
 
   /**
@@ -123,12 +123,12 @@ module StringOps {
     /**
      * Gets the `A` in `A.start_with?(B)`.
      */
-    DataFlow::Node getBaseString() { result = super.getBaseString() }
+    final DataFlow::Node getBaseString() { result = super.getBaseString() }
 
     /**
      * Gets the `B` in `A.start_with?(B)`.
      */
-    DataFlow::Node getSubstring() { result = super.getSubstring() }
+    final DataFlow::Node getSubstring() { result = super.getSubstring() }
 
     /**
      * Gets the polarity if the check.
@@ -136,7 +136,7 @@ module StringOps {
      * If the polarity is `false` the check returns `true` if the string does not end
      * with the given substring.
      */
-    boolean getPolarity() { result = super.getPolarity() }
+    final boolean getPolarity() { result = super.getPolarity() }
   }
 
   /**

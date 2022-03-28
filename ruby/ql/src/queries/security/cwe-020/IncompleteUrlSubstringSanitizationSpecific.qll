@@ -4,5 +4,5 @@ import codeql.ruby.security.performance.RegExpTreeView::RegExpPatterns as RegExp
 
 /** Holds if `node` may evaluate to `value` */
 predicate mayHaveStringValue(DataFlow::Node node, string value) {
-  node.asExpr().getExpr().getConstantValue().getString() = value
+  node.asExpr().getConstantValue().getString() = value
 }

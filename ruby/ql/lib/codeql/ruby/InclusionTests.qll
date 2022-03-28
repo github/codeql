@@ -19,10 +19,10 @@ private import codeql.ruby.controlflow.CfgNodes
  */
 class InclusionTest extends DataFlow::Node instanceof InclusionTest::Range {
   /** Gets the `A` in `A.include?(B)`. */
-  DataFlow::Node getContainerNode() { result = super.getContainerNode() }
+  final DataFlow::Node getContainerNode() { result = super.getContainerNode() }
 
   /** Gets the `B` in `A.include?(B)`. */
-  DataFlow::Node getContainedNode() { result = super.getContainedNode() }
+  final DataFlow::Node getContainedNode() { result = super.getContainedNode() }
 
   /**
    * Gets the polarity of the check.
@@ -30,7 +30,7 @@ class InclusionTest extends DataFlow::Node instanceof InclusionTest::Range {
    * If the polarity is `false` the check returns `true` if the container does not contain
    * the given element.
    */
-  boolean getPolarity() { result = super.getPolarity() }
+  final boolean getPolarity() { result = super.getPolarity() }
 }
 
 /**
@@ -65,7 +65,7 @@ module InclusionTest {
   private class Includes_Native extends Range, DataFlow::CallNode {
     Includes_Native() {
       this.getMethodName() = "include?" and
-      count(this.getArgument(_)) = 1
+      strictcount(this.getArgument(_)) = 1
     }
 
     override DataFlow::Node getContainerNode() { result = this.getReceiver() }
@@ -91,7 +91,7 @@ module InclusionTest {
         (
           value = index.getConstantValue().getInt() and value = 0
           or
-          index.getExpr() instanceof NilLiteral and value = -1
+          index.getConstantValue().isNil() and value = -1
         )
       |
         value = -1 and polarity = false and comparison.getExpr() instanceof CaseEqExpr
