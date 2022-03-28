@@ -7,7 +7,7 @@ cd $DIR
 
 rm -rf testdb
 
-codeql database create --language=go testdb --search-path ..
+codeql database create --language=go testdb --search-path ../build/codeql-extractor-go
 codeql dataset check testdb/db-go
 codeql query run ../ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph/ControlFlowNode_getASuccessor.ql --database=testdb --output=notracing-out.bqrs --search-path ..
 codeql bqrs decode notracing-out.bqrs --format=csv --output=notracing-out.csv
@@ -19,7 +19,7 @@ export CODEQL_EXTRACTOR_GO_BUILD_TRACING=on
 
 rm -rf testdb
 
-codeql database create --language=go testdb --search-path ..
+codeql database create --language=go testdb --search-path ../build/codeql-extractor-go
 codeql dataset check testdb/db-go
 codeql query run ../ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph/ControlFlowNode_getASuccessor.ql --database=testdb --output=tracing-out.bqrs --search-path ..
 codeql bqrs decode tracing-out.bqrs --format=csv --output=tracing-out.csv
