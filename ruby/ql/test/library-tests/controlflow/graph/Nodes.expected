@@ -199,9 +199,9 @@ positionalArguments
 | cfg.rb:197:3:197:13 | call to bar | cfg.rb:197:7:197:7 | b |
 | cfg.rb:197:3:197:13 | call to bar | cfg.rb:197:10:197:12 | ... |
 | desugar.rb:2:5:2:6 | ... + ... | desugar.rb:2:8:2:8 | 1 |
-| desugar.rb:6:3:6:13 | call to count= | desugar.rb:6:3:6:13 | ... = ... |
-| desugar.rb:10:3:10:10 | call to []= | desugar.rb:10:3:10:10 | ... = ... |
+| desugar.rb:6:3:6:13 | call to count= | desugar.rb:6:17:6:17 | ... = ... |
 | desugar.rb:10:3:10:10 | call to []= | desugar.rb:10:9:10:9 | 0 |
+| desugar.rb:10:3:10:10 | call to []= | desugar.rb:10:14:10:14 | ... = ... |
 | desugar.rb:14:3:14:13 | call to count= | desugar.rb:14:15:14:16 | __synth__1 |
 | desugar.rb:14:15:14:16 | ... + ... | desugar.rb:14:18:14:18 | 1 |
 | desugar.rb:18:3:18:28 | call to [] | desugar.rb:18:9:18:9 | __synth__1 |

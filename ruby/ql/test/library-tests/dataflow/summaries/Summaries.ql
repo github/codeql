@@ -4,11 +4,12 @@
 
 import ruby
 import codeql.ruby.dataflow.FlowSummary
-import DataFlow::PathGraph
 import codeql.ruby.TaintTracking
 import codeql.ruby.dataflow.internal.FlowSummaryImpl
 import codeql.ruby.dataflow.internal.AccessPathSyntax
 import codeql.ruby.frameworks.data.ModelsAsData
+import TestUtilities.InlineFlowTest
+import DataFlow::PathGraph
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {
   (sc.propagatesFlowExt(s, _, _) or sc.propagatesFlowExt(_, s, _)) and
@@ -42,10 +43,10 @@ private class SummarizedCallableApplyBlock extends SummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[0]" and
-    output = "BlockArgument.Parameter[0]" and
+    output = "Argument[block].Parameter[0]" and
     preservesValue = true
     or
-    input = "BlockArgument.ReturnValue" and
+    input = "Argument[block].ReturnValue" and
     output = "ReturnValue" and
     preservesValue = true
   }
@@ -75,9 +76,14 @@ private class StepsFromModel extends ModelInput::SummaryModelCsv {
         ";;Member[Foo].Method[secondArg];Argument[1];ReturnValue;taint",
         ";;Member[Foo].Method[onlyWithoutBlock].WithoutBlock;Argument[0];ReturnValue;taint",
         ";;Member[Foo].Method[onlyWithBlock].WithBlock;Argument[0];ReturnValue;taint",
-        ";;Member[Foo].Method[blockArg].BlockArgument.Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
+        ";;Member[Foo].Method[blockArg].Argument[block].Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
+        ";;Member[Foo].Method[namedArg];Argument[foo:];ReturnValue;taint",
+        ";;Member[Foo].Method[intoNamedCallback];Argument[0];Argument[foo:].Parameter[0];taint",
+        ";;Member[Foo].Method[intoNamedParameter];Argument[0];Argument[0].Parameter[foo:];taint",
+        ";;Member[Foo].Method[startInNamedCallback].Argument[foo:].Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
+        ";;Member[Foo].Method[startInNamedParameter].Argument[0].Parameter[foo:].Method[preserveTaint];Argument[0];ReturnValue;taint",
         ";any;Method[matchedByName];Argument[0];ReturnValue;taint",
-        ";any;Method[matchedByNameRcv];Receiver;ReturnValue;taint",
+        ";any;Method[matchedByNameRcv];Argument[self];ReturnValue;taint",
       ]
   }
 }
@@ -112,23 +118,22 @@ private class SinkFromModel extends ModelInput::SinkModelCsv {
   override predicate row(string row) { row = "test;FooOrBar;Method[method].Argument[0];test-sink" }
 }
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "FlowSummaries" }
-
-  override predicate isSource(DataFlow::Node src) {
-    src.asExpr().getExpr().(StringLiteral).getConstantValue().isString("taint")
-  }
-
+class CustomValueSink extends DefaultValueFlowConf {
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall mc |
-      mc.getMethodName() = "sink" and
-      mc.getAnArgument() = sink.asExpr().getExpr()
-    )
+    super.isSink(sink)
     or
     sink = ModelOutput::getASinkNode("test-sink").getARhs()
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf
+class CustomTaintSink extends DefaultTaintFlowConf {
+  override predicate isSink(DataFlow::Node sink) {
+    super.isSink(sink)
+    or
+    sink = ModelOutput::getASinkNode("test-sink").getARhs()
+  }
+}
+
+from DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Configuration conf
 where conf.hasFlowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()

@@ -352,7 +352,7 @@ Instruction getInstructionBackEdgeSuccessor(Instruction instruction, EdgeKind ki
 
 /** Holds if `goto` jumps strictly forward in the program text. */
 private predicate isStrictlyForwardGoto(GotoStmt goto) {
-  goto.getLocation().isBefore(goto.getTarget().getLocation())
+  goto.getLocation().isBefore(goto.getTarget().getLocation(), _)
 }
 
 Locatable getInstructionAst(TStageInstruction instr) {

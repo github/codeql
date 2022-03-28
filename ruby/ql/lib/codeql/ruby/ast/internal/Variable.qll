@@ -406,7 +406,11 @@ import Cached
 
 /** Holds if this scope inherits `name` from an outer scope `outer`. */
 private predicate inherits(Scope::Range scope, string name, Scope::Range outer) {
-  (scope instanceof Ruby::Block or scope instanceof Ruby::DoBlock) and
+  (
+    scope instanceof Ruby::Block or
+    scope instanceof Ruby::DoBlock or
+    scope instanceof Ruby::Lambda
+  ) and
   not scopeDefinesParameterVariable(scope, name, _) and
   (
     outer = scope.getOuterScope() and

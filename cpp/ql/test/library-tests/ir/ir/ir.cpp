@@ -1690,10 +1690,15 @@ void captured_lambda(int x, int &y, int &&z)
     };
 }
 
+int goto_on_same_line() {
+  int x = 42;
+  goto next; next:
+  return x;
+}
+
 int global_1;
 
 int global_2 = 1;
 
 const int global_3 = 2;
-
 // semmle-extractor-options: -std=c++17 --clang

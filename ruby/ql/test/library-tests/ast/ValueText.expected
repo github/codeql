@@ -73,6 +73,7 @@ exprValue
 | calls/calls.rb:346:5:346:5 | :X | :X |
 | calls/calls.rb:346:8:346:9 | 42 | 42 |
 | calls/calls.rb:347:5:347:5 | :X | :X |
+| calls/calls.rb:350:5:350:5 | 1 | 1 |
 | constants/constants.rb:3:19:3:27 | "const_a" | const_a |
 | constants/constants.rb:6:15:6:23 | "const_b" | const_b |
 | constants/constants.rb:17:12:17:18 | "Hello" | Hello |
@@ -83,6 +84,7 @@ exprValue
 | constants/constants.rb:20:14:20:19 | "Vera" | Vera |
 | constants/constants.rb:20:22:20:28 | "Chuck" | Chuck |
 | constants/constants.rb:20:31:20:36 | "Dave" | Dave |
+| constants/constants.rb:23:15:23:27 | #{...} | Helloconst_aconst_b |
 | constants/constants.rb:23:18:23:25 | GREETING | Helloconst_aconst_b |
 | constants/constants.rb:28:11:28:15 | "foo" | foo |
 | constants/constants.rb:32:16:32:17 | 42 | 42 |
@@ -379,6 +381,7 @@ exprValue
 | escape_sequences/escapes.rb:38:1:38:6 | "\\C-?" | C-? |
 | escape_sequences/escapes.rb:43:5:43:9 | "\\\\." | \\. |
 | escape_sequences/escapes.rb:44:1:44:6 | "#{...}" | \\. |
+| escape_sequences/escapes.rb:44:2:44:5 | #{...} | \\. |
 | escape_sequences/escapes.rb:44:4:44:4 | a | \\. |
 | escape_sequences/escapes.rb:48:1:48:4 | /\\n/ | \\n |
 | escape_sequences/escapes.rb:49:1:49:4 | /\\p/ | \\p |
@@ -386,7 +389,9 @@ exprValue
 | escape_sequences/escapes.rb:53:5:53:9 | "\\\\." | \\. |
 | escape_sequences/escapes.rb:54:5:54:8 | /\\./ | \\. |
 | escape_sequences/escapes.rb:55:1:55:10 | /#{...}#{...}/ | \\.\\. |
+| escape_sequences/escapes.rb:55:2:55:5 | #{...} | \\. |
 | escape_sequences/escapes.rb:55:4:55:4 | a | \\. |
+| escape_sequences/escapes.rb:55:6:55:9 | #{...} | \\. |
 | escape_sequences/escapes.rb:55:8:55:8 | b | \\. |
 | escape_sequences/escapes.rb:58:4:58:9 | "foo \\n" | foo\\n |
 | escape_sequences/escapes.rb:58:11:58:13 | "bar" | bar |
@@ -488,10 +493,12 @@ exprValue
 | literals/literals.rb:69:1:69:12 | "foo\\ bar" | foo\\ bar |
 | literals/literals.rb:70:1:70:12 | "foo\\ bar" | foo bar |
 | literals/literals.rb:71:1:71:20 | "2 + 2 = #{...}" | 2 + 2 = 4 |
+| literals/literals.rb:71:10:71:19 | #{...} | 4 |
 | literals/literals.rb:71:13:71:13 | 2 | 2 |
 | literals/literals.rb:71:13:71:17 | ... + ... | 4 |
 | literals/literals.rb:71:17:71:17 | 2 | 2 |
 | literals/literals.rb:72:1:72:22 | "3 + 4 = #{...}" | 3 + 4 = 7 |
+| literals/literals.rb:72:12:72:21 | #{...} | 7 |
 | literals/literals.rb:72:15:72:15 | 3 | 3 |
 | literals/literals.rb:72:15:72:19 | ... + ... | 7 |
 | literals/literals.rb:72:19:72:19 | 4 | 4 |
@@ -505,24 +512,30 @@ exprValue
 | literals/literals.rb:76:15:76:19 | "baz" | baz |
 | literals/literals.rb:77:1:77:5 | "foo" | foo |
 | literals/literals.rb:77:7:77:21 | "bar#{...}" | bar1 |
+| literals/literals.rb:77:11:77:20 | #{...} | 1 |
 | literals/literals.rb:77:14:77:14 | 1 | 1 |
 | literals/literals.rb:77:14:77:18 | ... * ... | 1 |
 | literals/literals.rb:77:18:77:18 | 1 | 1 |
 | literals/literals.rb:77:23:77:27 | "baz" | baz |
 | literals/literals.rb:78:1:78:35 | "foo #{...} qux" | foo bar 5 baz qux |
+| literals/literals.rb:78:6:78:30 | #{...} | bar 5 baz |
 | literals/literals.rb:78:9:78:28 | "bar #{...} baz" | bar 5 baz |
+| literals/literals.rb:78:14:78:23 | #{...} | 5 |
 | literals/literals.rb:78:17:78:17 | 2 | 2 |
 | literals/literals.rb:78:17:78:21 | ... + ... | 5 |
 | literals/literals.rb:78:21:78:21 | 3 | 3 |
 | literals/literals.rb:79:1:79:22 | "foo #{...}" | foo 10 |
+| literals/literals.rb:79:6:79:21 | #{...} | 10 |
 | literals/literals.rb:79:17:79:17 | 1 | 1 |
 | literals/literals.rb:79:17:79:19 | ... + ... | 10 |
 | literals/literals.rb:79:19:79:19 | 9 | 9 |
 | literals/literals.rb:80:7:80:11 | "bar" | bar |
 | literals/literals.rb:81:7:81:11 | "bar" | bar |
 | literals/literals.rb:82:1:82:14 | "foo #{...}" | foo bar |
+| literals/literals.rb:82:6:82:13 | #{...} | bar |
 | literals/literals.rb:82:9:82:11 | bar | bar |
 | literals/literals.rb:83:1:83:14 | "foo #{...}" | foo bar |
+| literals/literals.rb:83:6:83:13 | #{...} | bar |
 | literals/literals.rb:83:9:83:11 | BAR | bar |
 | literals/literals.rb:86:1:86:2 | ?x | ?x |
 | literals/literals.rb:87:1:87:3 | ?\\n | ?\\n |
@@ -542,10 +555,13 @@ exprValue
 | literals/literals.rb:102:1:102:10 | :"wibble" | :wibble |
 | literals/literals.rb:103:1:103:17 | :"wibble wobble" | :wibble wobble |
 | literals/literals.rb:104:1:104:30 | :"foo_#{...}_#{...}_#{...}" | :foo_4_bar_bar |
+| literals/literals.rb:104:7:104:15 | #{...} | 4 |
 | literals/literals.rb:104:10:104:10 | 2 | 2 |
 | literals/literals.rb:104:10:104:14 | ... + ... | 4 |
 | literals/literals.rb:104:14:104:14 | 2 | 2 |
+| literals/literals.rb:104:17:104:22 | #{...} | bar |
 | literals/literals.rb:104:19:104:21 | bar | bar |
+| literals/literals.rb:104:24:104:29 | #{...} | bar |
 | literals/literals.rb:104:26:104:28 | BAR | bar |
 | literals/literals.rb:105:1:105:30 | :"foo_#{ 2 + 2}_#{bar}_#{BAR}" | :foo_#{ 2 + 2}_#{bar}_#{BAR} |
 | literals/literals.rb:106:1:106:18 | :"foo_#{ 3 - 2 }" | :foo_#{ 3 - 2 } |
@@ -568,12 +584,15 @@ exprValue
 | literals/literals.rb:117:12:117:14 | "baz" | baz |
 | literals/literals.rb:118:4:118:6 | "foo" | foo |
 | literals/literals.rb:118:8:118:16 | "bar#{...}" | bar2 |
+| literals/literals.rb:118:11:118:16 | #{...} | 2 |
 | literals/literals.rb:118:13:118:13 | 1 | 1 |
 | literals/literals.rb:118:13:118:15 | ... + ... | 2 |
 | literals/literals.rb:118:15:118:15 | 1 | 1 |
 | literals/literals.rb:118:18:118:23 | "#{...}" | bar |
+| literals/literals.rb:118:18:118:23 | #{...} | bar |
 | literals/literals.rb:118:20:118:22 | bar | bar |
 | literals/literals.rb:118:25:118:30 | "#{...}" | bar |
+| literals/literals.rb:118:25:118:30 | #{...} | bar |
 | literals/literals.rb:118:27:118:29 | BAR | bar |
 | literals/literals.rb:118:32:118:34 | "baz" | baz |
 | literals/literals.rb:119:4:119:6 | "foo" | foo |
@@ -589,11 +608,14 @@ exprValue
 | literals/literals.rb:124:12:124:14 | :"baz" | :baz |
 | literals/literals.rb:125:4:125:6 | :"foo" | :foo |
 | literals/literals.rb:125:8:125:20 | :"bar#{...}" | :bar6 |
+| literals/literals.rb:125:11:125:20 | #{...} | 6 |
 | literals/literals.rb:125:14:125:14 | 2 | 2 |
 | literals/literals.rb:125:14:125:18 | ... + ... | 6 |
 | literals/literals.rb:125:18:125:18 | 4 | 4 |
+| literals/literals.rb:125:22:125:27 | #{...} | bar |
 | literals/literals.rb:125:22:125:27 | :"#{...}" | :bar |
 | literals/literals.rb:125:24:125:26 | bar | bar |
+| literals/literals.rb:125:29:125:34 | #{...} | bar |
 | literals/literals.rb:125:29:125:34 | :"#{...}" | :bar |
 | literals/literals.rb:125:31:125:33 | BAR | bar |
 | literals/literals.rb:125:36:125:38 | :"baz" | :baz |
@@ -630,12 +652,16 @@ exprValue
 | literals/literals.rb:143:1:143:7 | `ls -l` | ls -l |
 | literals/literals.rb:144:1:144:9 | `ls -l` | ls -l |
 | literals/literals.rb:145:1:145:32 | `du -d #{...} #{...} #{...}` | du -d 2 bar bar |
+| literals/literals.rb:145:8:145:17 | #{...} | 2 |
 | literals/literals.rb:145:11:145:11 | 1 | 1 |
 | literals/literals.rb:145:11:145:15 | ... + ... | 2 |
 | literals/literals.rb:145:15:145:15 | 1 | 1 |
+| literals/literals.rb:145:19:145:24 | #{...} | bar |
 | literals/literals.rb:145:21:145:23 | bar | bar |
+| literals/literals.rb:145:26:145:31 | #{...} | bar |
 | literals/literals.rb:145:28:145:30 | BAR | bar |
 | literals/literals.rb:146:1:146:20 | `du -d #{...}` | du -d 1 |
+| literals/literals.rb:146:10:146:19 | #{...} | 1 |
 | literals/literals.rb:146:13:146:13 | 5 | 5 |
 | literals/literals.rb:146:13:146:17 | ... - ... | 1 |
 | literals/literals.rb:146:17:146:17 | 4 | 4 |
@@ -644,20 +670,26 @@ exprValue
 | literals/literals.rb:151:1:151:6 | /foo/ | foo |
 | literals/literals.rb:152:1:152:13 | /foo+\\sbar\\S/ | foo+\\sbar\\S |
 | literals/literals.rb:153:1:153:30 | /foo#{...}bar#{...}#{...}/ | foo2barbarbar |
+| literals/literals.rb:153:5:153:14 | #{...} | 2 |
 | literals/literals.rb:153:8:153:8 | 1 | 1 |
 | literals/literals.rb:153:8:153:12 | ... + ... | 2 |
 | literals/literals.rb:153:12:153:12 | 1 | 1 |
+| literals/literals.rb:153:18:153:23 | #{...} | bar |
 | literals/literals.rb:153:20:153:22 | bar | bar |
+| literals/literals.rb:153:24:153:29 | #{...} | bar |
 | literals/literals.rb:153:26:153:28 | BAR | bar |
 | literals/literals.rb:155:1:155:4 | // |  |
 | literals/literals.rb:156:1:156:7 | /foo/ | foo |
 | literals/literals.rb:157:1:157:8 | /foo/ | foo |
 | literals/literals.rb:158:1:158:15 | /foo+\\sbar\\S/ | foo+\\sbar\\S |
 | literals/literals.rb:159:1:159:32 | /foo#{...}bar#{...}#{...}/ | foo2barbarbar |
+| literals/literals.rb:159:7:159:16 | #{...} | 2 |
 | literals/literals.rb:159:10:159:10 | 1 | 1 |
 | literals/literals.rb:159:10:159:14 | ... + ... | 2 |
 | literals/literals.rb:159:14:159:14 | 1 | 1 |
+| literals/literals.rb:159:20:159:25 | #{...} | bar |
 | literals/literals.rb:159:22:159:24 | bar | bar |
+| literals/literals.rb:159:26:159:31 | #{...} | bar |
 | literals/literals.rb:159:28:159:30 | BAR | bar |
 | literals/literals.rb:163:1:163:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | abcdefghijklmnopqrstuvwxyzabcdef |
 | literals/literals.rb:164:1:164:35 | "foobarfoobarfoobarfoobarfooba..." | foobarfoobarfoobarfoobarfoobarfoo |
@@ -681,6 +713,7 @@ exprValue
 | misc/misc.rb:3:24:3:25 | [] | [] |
 | misc/misc.rb:3:28:3:30 | []= | []= |
 | misc/misc.rb:4:7:4:19 | :"foo_#{...}" | :foo_bar |
+| misc/misc.rb:4:13:4:18 | #{...} | bar |
 | misc/misc.rb:4:15:4:17 | bar | bar |
 | misc/misc.rb:5:7:5:9 | nil | nil |
 | misc/misc.rb:5:12:5:15 | true | true |
@@ -694,6 +727,7 @@ exprValue
 | misc/misc.rb:9:7:9:11 | super | super |
 | misc/misc.rb:9:13:9:16 | self | self |
 | misc/misc.rb:10:7:10:17 | :"\\n#{...}" | :\nbar |
+| misc/misc.rb:10:11:10:16 | #{...} | bar |
 | misc/misc.rb:10:13:10:15 | bar | bar |
 | misc/misc.rb:10:19:10:24 | :"foo" | :foo |
 | modules/classes.rb:11:28:11:31 | :baz | :baz |
@@ -716,6 +750,7 @@ exprValue
 | modules/modules.rb:55:8:55:30 | "module Foo::Bar again" | module Foo::Bar again |
 | modules/modules.rb:56:17:56:17 | 4 | 4 |
 | modules/toplevel.rb:1:6:1:12 | "world" | world |
+| modules/toplevel.rb:3:12:3:16 | "!!!" | !!! |
 | modules/toplevel.rb:5:14:5:20 | "hello" | hello |
 | operations/operations.rb:3:5:3:5 | 0 | 0 |
 | operations/operations.rb:4:5:4:5 | 0 | 0 |
@@ -927,6 +962,7 @@ exprCfgNodeValue
 | calls/calls.rb:346:5:346:5 | :X | :X |
 | calls/calls.rb:346:8:346:9 | 42 | 42 |
 | calls/calls.rb:347:5:347:5 | :X | :X |
+| calls/calls.rb:350:5:350:5 | 1 | 1 |
 | constants/constants.rb:3:19:3:27 | "const_a" | const_a |
 | constants/constants.rb:6:15:6:23 | "const_b" | const_b |
 | constants/constants.rb:17:12:17:18 | "Hello" | Hello |

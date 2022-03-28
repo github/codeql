@@ -291,6 +291,44 @@ module HTTP {
     }
 
     /**
+     * An access to a user-controlled HTTP request input. For example, the URL or body of a request.
+     * Instances of this class automatically become `RemoteFlowSource`s.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `RequestInputAccess::Range` instead.
+     */
+    class RequestInputAccess extends DataFlow::Node instanceof RequestInputAccess::Range {
+      /**
+       * Gets a string that describes the type of this input.
+       *
+       * This is typically the name of the method that gives rise to this input.
+       */
+      string getSourceType() { result = super.getSourceType() }
+    }
+
+    /** Provides a class for modeling new HTTP request inputs. */
+    module RequestInputAccess {
+      /**
+       * An access to a user-controlled HTTP request input.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `RequestInputAccess` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets a string that describes the type of this input.
+         *
+         * This is typically the name of the method that gives rise to this input.
+         */
+        abstract string getSourceType();
+      }
+    }
+
+    private class RequestInputAccessAsRemoteFlowSource extends RemoteFlowSource::Range instanceof RequestInputAccess {
+      override string getSourceType() { result = this.(RequestInputAccess).getSourceType() }
+    }
+
+    /**
      * A function that will handle incoming HTTP requests.
      *
      * Extend this class to refine existing API models. If you want to model new APIs,
@@ -343,7 +381,7 @@ module HTTP {
     }
 
     /** A parameter that will receive parts of the url when handling an incoming request. */
-    private class RoutedParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+    private class RoutedParameter extends RequestInputAccess::Range, DataFlow::ParameterNode {
       RequestHandler handler;
 
       RoutedParameter() { this.getParameter() = handler.getARoutedParameter() }
@@ -447,10 +485,18 @@ module HTTP {
       DataFlow::Node getResponseBody() { result = super.getResponseBody() }
 
       /**
+       * DEPRECATED: Use `getAUrlPart` instead.
+       *
        * Gets a node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
-      DataFlow::Node getURL() { result = super.getURL() }
+      deprecated DataFlow::Node getURL() { result = super.getURL() or result = super.getAUrlPart() }
+
+      /**
+       * Gets a data-flow node that contributes to the URL of the request.
+       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+       */
+      DataFlow::Node getAUrlPart() { result = super.getAUrlPart() }
 
       /** Gets a string that identifies the framework used for this request. */
       string getFramework() { result = super.getFramework() }
@@ -478,10 +524,18 @@ module HTTP {
         abstract DataFlow::Node getResponseBody();
 
         /**
+         * DEPRECATED: overwrite `getAUrlPart` instead.
+         *
          * Gets a node that contributes to the URL of the request.
          * Depending on the framework, a request may have multiple nodes which contribute to the URL.
          */
-        abstract DataFlow::Node getURL();
+        deprecated DataFlow::Node getURL() { none() }
+
+        /**
+         * Gets a data-flow node that contributes to the URL of the request.
+         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+         */
+        abstract DataFlow::Node getAUrlPart();
 
         /** Gets a string that identifies the framework used for this request. */
         abstract string getFramework();

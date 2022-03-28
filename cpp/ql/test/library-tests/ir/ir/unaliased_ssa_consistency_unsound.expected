@@ -6,6 +6,9 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| bad_asts.cpp:19:10:19:10 | FieldAddress: constructor init of field x | Instruction 'FieldAddress: constructor init of field x' has no successors in function '$@'. | bad_asts.cpp:19:10:19:10 | void Bad::Point::Point(Bad::Point const&) | void Bad::Point::Point(Bad::Point const&) |
+| ir.cpp:1486:8:1486:8 | FieldAddress: constructor init of field i | Instruction 'FieldAddress: constructor init of field i' has no successors in function '$@'. | ir.cpp:1486:8:1486:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct(StructuredBindingDataMemberStruct const&) | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct(StructuredBindingDataMemberStruct const&) |
+| ir.cpp:1539:8:1539:8 | FieldAddress: constructor init of field i | Instruction 'FieldAddress: constructor init of field i' has no successors in function '$@'. | ir.cpp:1539:8:1539:8 | void StructuredBindingTupleRefGet::StructuredBindingTupleRefGet(StructuredBindingTupleRefGet const&) | void StructuredBindingTupleRefGet::StructuredBindingTupleRefGet(StructuredBindingTupleRefGet const&) |
 | ir.cpp:1688:24:1690:5 | FieldAddress: {...} | Instruction 'FieldAddress: {...}' has no successors in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
 | ir.cpp:1689:28:1689:54 | FieldAddress: {...} | Instruction 'FieldAddress: {...}' has no successors in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
 ambiguousSuccessors
