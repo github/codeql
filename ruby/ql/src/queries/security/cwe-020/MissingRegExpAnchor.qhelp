@@ -65,8 +65,6 @@
 			<code>evil.beta.example.com</code> because the regular expression is parsed
 			as <code>/(^www\.example\.com)|(beta\.example\.com)/</code>
 
-			TODO: implement this part of the query
-
 		</p>
 
 		<p>
