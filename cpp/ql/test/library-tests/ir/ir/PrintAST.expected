@@ -155,15 +155,21 @@ bad_asts.cpp:
 #   19|     getInitializer(0): [ConstructorFieldInit] constructor init of field x
 #   19|         Type = [IntType] int
 #   19|         ValueCategory = prvalue
-#   19|       getExpr(): [Literal] Unknown literal
+#   19|       getExpr(): [FieldAccess] x
 #   19|           Type = [IntType] int
-#   19|           ValueCategory = prvalue
+#   19|           ValueCategory = prvalue(load)
+#   19|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+#   19|             Type = [LValueReferenceType] const Point &
+#   19|             ValueCategory = prvalue(load)
 #   19|     getInitializer(1): [ConstructorFieldInit] constructor init of field y
 #   19|         Type = [IntType] int
 #   19|         ValueCategory = prvalue
-#   19|       getExpr(): [Literal] Unknown literal
+#   19|       getExpr(): [FieldAccess] y
 #   19|           Type = [IntType] int
-#   19|           ValueCategory = prvalue
+#   19|           ValueCategory = prvalue(load)
+#   19|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+#   19|             Type = [LValueReferenceType] const Point &
+#   19|             ValueCategory = prvalue(load)
 #   19|   getEntryPoint(): [BlockStmt] { ... }
 #   19|     getStmt(0): [ReturnStmt] return ...
 #   19| [MoveConstructor] void Bad::Point::Point(Bad::Point&&)
@@ -11645,51 +11651,75 @@ ir.cpp:
 # 1486|     getInitializer(0): [ConstructorFieldInit] constructor init of field i
 # 1486|         Type = [IntType] int
 # 1486|         ValueCategory = prvalue
-# 1486|       getExpr(): [Literal] Unknown literal
+# 1486|       getExpr(): [FieldAccess] i
 # 1486|           Type = [IntType] int
-# 1486|           ValueCategory = prvalue
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
 # 1486|     getInitializer(1): [ConstructorFieldInit] constructor init of field d
 # 1486|         Type = [DoubleType] double
 # 1486|         ValueCategory = prvalue
-# 1486|       getExpr(): [Literal] Unknown literal
+# 1486|       getExpr(): [FieldAccess] d
 # 1486|           Type = [DoubleType] double
-# 1486|           ValueCategory = prvalue
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
 # 1486|     getInitializer(2): [ConstructorFieldInit] constructor init of field b
 # 1486|         Type = [IntType] unsigned int
 # 1486|         ValueCategory = prvalue
-# 1486|       getExpr(): [Literal] Unknown literal
+# 1486|       getExpr(): [FieldAccess] b
 # 1486|           Type = [IntType] unsigned int
-# 1486|           ValueCategory = prvalue
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
 # 1486|     getInitializer(3): [ConstructorFieldInit] constructor init of field r
 # 1486|         Type = [LValueReferenceType] int &
 # 1486|         ValueCategory = prvalue
-# 1486|       getExpr(): [Literal] Unknown literal
+# 1486|       getExpr(): [FieldAccess] r
 # 1486|           Type = [LValueReferenceType] int &
-# 1486|           ValueCategory = prvalue
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
 # 1486|     getInitializer(4): [ConstructorFieldInit] constructor init of field p
 # 1486|         Type = [IntPointerType] int *
 # 1486|         ValueCategory = prvalue
-# 1486|       getExpr(): [Literal] Unknown literal
+# 1486|       getExpr(): [FieldAccess] p
 # 1486|           Type = [IntPointerType] int *
-# 1486|           ValueCategory = prvalue
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
 # 1486|     getInitializer(5): [ConstructorFieldInit] constructor init of field xs
 # 1486|         Type = [CTypedefType,NestedTypedefType] ArrayType
 # 1486|         ValueCategory = prvalue
-# 1486|       getExpr(): [Literal] Unknown literal
+# 1486|       getExpr(): [FieldAccess] xs
 # 1486|           Type = [CTypedefType,NestedTypedefType] ArrayType
-# 1486|           ValueCategory = prvalue
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
 # 1486|     getInitializer(6): [ConstructorFieldInit] constructor init of field r_alt
 # 1486|         Type = [CTypedefType,NestedTypedefType] RefType
 # 1486|         ValueCategory = prvalue
-# 1486|       getExpr(): [Literal] Unknown literal
+# 1486|       getExpr(): [FieldAccess] r_alt
 # 1486|           Type = [CTypedefType,NestedTypedefType] RefType
-# 1486|           ValueCategory = prvalue
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
 # 1486|     getInitializer(7): [ConstructorFieldInit] constructor init of field m
 # 1486|         Type = [Struct] StructuredBindingDataMemberMemberStruct
 # 1486|         ValueCategory = prvalue
-# 1486|       getExpr(): [Literal] Unknown literal
+# 1486|       getExpr(): [FieldAccess] m
 # 1486|           Type = [Struct] StructuredBindingDataMemberMemberStruct
-# 1486|           ValueCategory = prvalue
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
 # 1486|   getEntryPoint(): [BlockStmt] { ... }
 # 1486|     getStmt(0): [ReturnStmt] return ...
 # 1486| [MoveConstructor] void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct(StructuredBindingDataMemberStruct&&)
@@ -12066,21 +12096,30 @@ ir.cpp:
 # 1539|     getInitializer(0): [ConstructorFieldInit] constructor init of field i
 # 1539|         Type = [IntType] int
 # 1539|         ValueCategory = prvalue
-# 1539|       getExpr(): [Literal] Unknown literal
+# 1539|       getExpr(): [FieldAccess] i
 # 1539|           Type = [IntType] int
-# 1539|           ValueCategory = prvalue
+# 1539|           ValueCategory = prvalue(load)
+# 1539|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1539|             Type = [LValueReferenceType] const StructuredBindingTupleRefGet &
+# 1539|             ValueCategory = prvalue(load)
 # 1539|     getInitializer(1): [ConstructorFieldInit] constructor init of field d
 # 1539|         Type = [DoubleType] double
 # 1539|         ValueCategory = prvalue
-# 1539|       getExpr(): [Literal] Unknown literal
+# 1539|       getExpr(): [FieldAccess] d
 # 1539|           Type = [DoubleType] double
-# 1539|           ValueCategory = prvalue
+# 1539|           ValueCategory = prvalue(load)
+# 1539|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1539|             Type = [LValueReferenceType] const StructuredBindingTupleRefGet &
+# 1539|             ValueCategory = prvalue(load)
 # 1539|     getInitializer(2): [ConstructorFieldInit] constructor init of field r
 # 1539|         Type = [LValueReferenceType] int &
 # 1539|         ValueCategory = prvalue
-# 1539|       getExpr(): [Literal] Unknown literal
+# 1539|       getExpr(): [FieldAccess] r
 # 1539|           Type = [LValueReferenceType] int &
-# 1539|           ValueCategory = prvalue
+# 1539|           ValueCategory = prvalue(load)
+# 1539|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1539|             Type = [LValueReferenceType] const StructuredBindingTupleRefGet &
+# 1539|             ValueCategory = prvalue(load)
 # 1539|   getEntryPoint(): [BlockStmt] { ... }
 # 1539|     getStmt(0): [ReturnStmt] return ...
 # 1539| [MoveConstructor] void StructuredBindingTupleRefGet::StructuredBindingTupleRefGet(StructuredBindingTupleRefGet&&)

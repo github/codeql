@@ -552,7 +552,7 @@ class RegExpWordBoundary extends RegExpSpecialChar {
 
 /**
  * A character class escape in a regular expression.
- * That is, an escaped charachter that denotes multiple characters.
+ * That is, an escaped character that denotes multiple characters.
  *
  * Examples:
  *

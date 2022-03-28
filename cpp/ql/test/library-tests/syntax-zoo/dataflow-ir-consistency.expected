@@ -1498,6 +1498,8 @@ postWithInFlow
 | bad_asts.cpp:15:10:15:12 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | bad_asts.cpp:16:5:16:5 | s [post update] | PostUpdateNode should not be the target of local flow. |
 | bad_asts.cpp:16:5:16:5 | s [post update] | PostUpdateNode should not be the target of local flow. |
+| bad_asts.cpp:19:10:19:10 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| bad_asts.cpp:19:10:19:10 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | bad_asts.cpp:27:11:27:11 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | break_labels.c:3:9:3:14 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | break_labels.c:5:9:5:14 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
@@ -1626,11 +1628,15 @@ postWithInFlow
 | cpp11.cpp:60:15:60:16 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:65:10:65:16 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:65:19:65:45 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:65:20:65:20 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:65:35:65:43 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:77:19:77:21 | Argument this [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:77:19:77:21 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:82:11:82:14 | Argument this [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:82:11:82:14 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:82:17:82:17 | Argument this [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:82:17:82:17 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:82:17:82:17 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:82:17:82:55 | Argument this [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:82:17:82:55 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:82:17:82:55 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
