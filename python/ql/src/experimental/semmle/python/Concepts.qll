@@ -27,7 +27,11 @@ module CopyFile {
     /**
      * Gets the argument containing the path.
      */
-    abstract DataFlow::Node getAPathArgument();    
+    abstract DataFlow::Node getAPathArgument();  
+    /**
+     * Gets fsrc argument.
+     */
+    abstract DataFlow::Node getfsrcArgument();
   }
 }
 
@@ -43,6 +47,8 @@ class CopyFile extends DataFlow::Node {
   CopyFile() { this = range }
 
   DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
+  
+  DataFlow::Node getfsrcArgument() { result = range.getfsrcArgument() }
 }
 
 /** Provides classes for modeling log related APIs. */
