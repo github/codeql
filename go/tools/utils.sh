@@ -4,7 +4,7 @@ if [ -z "$SEMMLE_PLATFORM" ]
 then
     case "$OSTYPE" in
     linux*)     SEMMLE_PLATFORM="linux";;
-    darwin*)    SEMMLE_PLATFORM="osx";;
+    darwin*)    SEMMLE_PLATFORM="osx64";;
     msys*)      SEMMLE_PLATFORM="win";;
     *)          echo "This script only works on Linux, macOS and msys; OSTYPE: $OSTYPE" && exit 1
     esac
@@ -20,5 +20,5 @@ fi
 run() {
     cmd=$1
     shift
-    "$SCRIPTDIR/platform/$SEMMLE_PLATFORM/bin/$cmd$EXE" "$@"
+    "$SCRIPTDIR/$SEMMLE_PLATFORM/$cmd$EXE" "$@"
 }
