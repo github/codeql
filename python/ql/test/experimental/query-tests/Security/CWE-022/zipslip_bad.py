@@ -24,15 +24,15 @@ def unzip2(filename):
 
 def unzip3(filename):
     zf = zipfile.ZipFile(filename) 
-    filelist = zf.namelist()
+    with zf.namelist() as filelist:
     #BAD : This could write any file on the filesystem.
-    for filename in filelist:
-            shutil.copy(entry, "/tmp/unpack/")
+        for x in filelist:
+            shutil.copy(x, "/tmp/unpack/")
 
 def unzip4(filename):
     zf = zipfile.ZipFile(filename)
     filelist = zf.namelist()
-    for filename in filelist:
-        with zf.open(filename) as srcf:
-            shutil.copyfileobj(srcf, dstfile)
+    for x in filelist:
+        with zf.open(x) as srcf:
+            shutil.copyfileobj(x, dstfile)
 
