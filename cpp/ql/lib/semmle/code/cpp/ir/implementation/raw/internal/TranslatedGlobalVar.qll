@@ -7,7 +7,7 @@ private import semmle.code.cpp.ir.internal.CppType
 private import TranslatedInitialization
 private import InstructionTag
 
-class TranslatedGlobalOrNamespaceVarInit extends TranslatedInstructionContainer,
+class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
   TTranslatedGlobalOrNamespaceVarInit, InitializationContext {
   GlobalOrNamespaceVariable var;
 

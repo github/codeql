@@ -953,8 +953,11 @@ abstract class TranslatedElement extends TTranslatedElement {
   final TranslatedElement getParent() { result.getAChild() = this }
 }
 
-abstract class TranslatedInstructionContainer extends TranslatedElement {
-  TranslatedInstructionContainer() {
+/**
+ * Represents the IR translation of a root element, either a function or a global variable.
+ */
+abstract class TranslatedRootElement extends TranslatedElement {
+  TranslatedRootElement() {
     this instanceof TTranslatedFunction
     or
     this instanceof TTranslatedGlobalOrNamespaceVarInit

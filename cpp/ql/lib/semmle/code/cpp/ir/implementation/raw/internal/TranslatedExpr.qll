@@ -93,7 +93,7 @@ abstract class TranslatedExpr extends TranslatedElement {
   /**
    * Gets the `TranslatedFunction` containing this expression.
    */
-  final TranslatedInstructionContainer getEnclosingFunction() {
+  final TranslatedRootElement getEnclosingFunction() {
     result = getTranslatedFunction(expr.getEnclosingFunction())
     or
     result = getTranslatedVarInit(expr.getEnclosingVariable())
