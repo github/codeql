@@ -836,8 +836,15 @@ private predicate subEdge(Pos p1, Node n1, Node n2, Pos p2) {
     p2.nodeAt(n2, f)
   )
   or
-  // IfStmt -> condition ; { then, else } ->
+  // IfStmt -> [ init -> ] condition ; { then, else } ->
   exists(IfStmt s |
+    p1.nodeAt(n1, s) and
+    p2.nodeBefore(n2, s.getInitialization())
+    or
+    p1.nodeAfter(n1, s.getInitialization()) and
+    p2.nodeBefore(n2, s.getCondition())
+    or
+    not exists(s.getInitialization()) and
     p1.nodeAt(n1, s) and
     p2.nodeBefore(n2, s.getCondition())
     or
@@ -851,8 +858,15 @@ private predicate subEdge(Pos p1, Node n1, Node n2, Pos p2) {
     p2.nodeAfter(n2, s)
   )
   or
-  // ConstexprIfStmt -> condition ; { then, else } -> // same as IfStmt
+  // ConstexprIfStmt -> [ init -> ] condition ; { then, else } -> // same as IfStmt
   exists(ConstexprIfStmt s |
+    p1.nodeAt(n1, s) and
+    p2.nodeBefore(n2, s.getInitialization())
+    or
+    p1.nodeAfter(n1, s.getInitialization()) and
+    p2.nodeBefore(n2, s.getCondition())
+    or
+    not exists(s.getInitialization()) and
     p1.nodeAt(n1, s) and
     p2.nodeBefore(n2, s.getCondition())
     or

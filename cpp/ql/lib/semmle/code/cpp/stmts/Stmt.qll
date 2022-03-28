@@ -214,6 +214,26 @@ class IfStmt extends ConditionalStmt, @stmt_if {
   override string getAPrimaryQlClass() { result = "IfStmt" }
 
   /**
+   * Gets the initialization statement of this 'if' statement.
+   *
+   * For example, for
+   * ```
+   * if (x = y; b) { f(); }
+   * ```
+   * the result is `x = y;`.
+   *
+   * Does not hold if the initialization statement is missing or an empty statement, as in
+   * ```
+   * if (b) { f(); }
+   * ```
+   * or
+   * ```
+   * if (; b) { f(); }
+   * ```
+   */
+  Stmt getInitialization() { if_initialization(underlyingElement(this), unresolveElement(result)) }
+
+  /**
    * Gets the condition expression of this 'if' statement.
    *
    * For example, for
@@ -222,7 +242,7 @@ class IfStmt extends ConditionalStmt, @stmt_if {
    * ```
    * the result is `b`.
    */
-  Expr getCondition() { result = this.getChild(0) }
+  Expr getCondition() { result = this.getChild(1) }
 
   override Expr getControllingExpr() { result = this.getCondition() }
 
@@ -300,6 +320,28 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
   override string getAPrimaryQlClass() { result = "ConstexprIfStmt" }
 
   /**
+   * Gets the initialization statement of this 'constexpr if' statement.
+   *
+   * For example, for
+   * ```
+   * if constexpr (x = y; b) { f(); }
+   * ```
+   * the result is `x = y;`.
+   *
+   * Does not hold if the initialization statement is missing or an empty statement, as in
+   * ```
+   * if constexpr (b) { f(); }
+   * ```
+   * or
+   * ```
+   * if constexpr (; b) { f(); }
+   * ```
+   */
+  Stmt getInitialization() {
+    constexpr_if_initialization(underlyingElement(this), unresolveElement(result))
+  }
+
+  /**
    * Gets the condition expression of this 'constexpr if' statement.
    *
    * For example, for
@@ -308,7 +350,7 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
    * ```
    * the result is `b`.
    */
-  Expr getCondition() { result = this.getChild(0) }
+  Expr getCondition() { result = this.getChild(1) }
 
   override Expr getControllingExpr() { result = this.getCondition() }
 
@@ -926,7 +968,7 @@ class ForStmt extends Loop, @stmt_for {
    *
    * Does not hold if the initialization statement is an empty statement, as in
    * ```
-   * for (; i < 10; i++) { j++ }
+   * for (; i < 10; i++) { j++; }
    * ```
    */
   Stmt getInitialization() { for_initialization(underlyingElement(this), unresolveElement(result)) }
