@@ -9,9 +9,11 @@ class Steps extends ModelInput::SummaryModelCsv {
       [
         "testlib;;Member[preserveTaint];Argument[0];ReturnValue;taint",
         "testlib;;Member[taintIntoCallback];Argument[0];Argument[1..2].Parameter[0];taint",
+        "testlib;;Member[taintIntoCallbackThis];Argument[0];Argument[1..2].Parameter[this];taint",
         "testlib;;Member[preserveArgZeroAndTwo];Argument[0,2];ReturnValue;taint",
         "testlib;;Member[preserveAllButFirstArgument];Argument[1..];ReturnValue;taint",
-        "testlib;;Member[preserveAllIfCall].Call;Argument[0..];ReturnValue;taint"
+        "testlib;;Member[preserveAllIfCall].Call;Argument[0..];ReturnValue;taint",
+        "testlib;;Member[getSource].ReturnValue.Member[continue];Argument[this];ReturnValue;taint",
       ]
   }
 }
@@ -35,11 +37,17 @@ class Sinks extends ModelInput::SinkModelCsv {
   }
 }
 
+class Sources extends ModelInput::SourceModelCsv {
+  override predicate row(string row) { row = "testlib;;Member[getSource].ReturnValue;test-source" }
+}
+
 class BasicTaintTracking extends TaintTracking::Configuration {
   BasicTaintTracking() { this = "BasicTaintTracking" }
 
   override predicate isSource(DataFlow::Node source) {
     source.(DataFlow::CallNode).getCalleeName() = "source"
+    or
+    source = ModelOutput::getASourceNode("test-source").getAnImmediateUse()
   }
 
   override predicate isSink(DataFlow::Node sink) {

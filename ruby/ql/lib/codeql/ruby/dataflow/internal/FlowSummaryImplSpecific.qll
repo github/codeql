@@ -55,17 +55,10 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
 /**
  * Gets the summary component for specification component `c`, if any.
  *
- * This covers all the Ruby-specific components of a flow summary, and
- * is currently restricted to `"BlockArgument"`.
+ * This covers all the Ruby-specific components of a flow summary.
  */
 bindingset[c]
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
-  c = "Receiver" and
-  result = FlowSummary::SummaryComponent::receiver()
-  or
-  c = "BlockArgument" and
-  result = FlowSummary::SummaryComponent::block()
-  or
   c = "Argument[_]" and
   result = FlowSummary::SummaryComponent::argument(any(ParameterPosition pos | pos.isPositional(_)))
   or
@@ -83,16 +76,41 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecificCsv(SummaryComponent sc) {
-  sc = TArgumentSummaryComponent(any(ParameterPosition pos | pos.isBlock())) and
-  result = "BlockArgument"
-}
+string getComponentSpecificCsv(SummaryComponent sc) { none() }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
-string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
+string getParameterPositionCsv(ParameterPosition pos) {
+  pos.isSelf() and result = "self"
+  or
+  pos.isBlock() and result = "block"
+  or
+  exists(int i |
+    pos.isPositional(i) and
+    result = i.toString()
+  )
+  or
+  exists(string name |
+    pos.isKeyword(name) and
+    result = name + ":"
+  )
+}
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
-string getArgumentPositionCsv(ArgumentPosition pos) { result = pos.toString() }
+string getArgumentPositionCsv(ArgumentPosition pos) {
+  pos.isSelf() and result = "self"
+  or
+  pos.isBlock() and result = "block"
+  or
+  exists(int i |
+    pos.isPositional(i) and
+    result = i.toString()
+  )
+  or
+  exists(string name |
+    pos.isKeyword(name) and
+    result = name + ":"
+  )
+}
 
 /** Holds if input specification component `c` needs a reference. */
 predicate inputNeedsReferenceSpecific(string c) { none() }
@@ -176,6 +194,16 @@ module ParsePositions {
     isArgBody(c) and
     i = AccessPath::parseInt(c)
   }
+
+  predicate isParsedKeywordParameterPosition(string c, string paramName) {
+    isParamBody(c) and
+    c = paramName + ":"
+  }
+
+  predicate isParsedKeywordArgumentPosition(string c, string paramName) {
+    isArgBody(c) and
+    c = paramName + ":"
+  }
 }
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
@@ -184,6 +212,17 @@ ArgumentPosition parseParamBody(string s) {
     ParsePositions::isParsedParameterPosition(s, i) and
     result.isPositional(i)
   )
+  or
+  exists(string name |
+    ParsePositions::isParsedKeywordParameterPosition(s, name) and
+    result.isKeyword(name)
+  )
+  or
+  s = "self" and
+  result.isSelf()
+  or
+  s = "block" and
+  result.isBlock()
 }
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
@@ -192,4 +231,15 @@ ParameterPosition parseArgBody(string s) {
     ParsePositions::isParsedArgumentPosition(s, i) and
     result.isPositional(i)
   )
+  or
+  exists(string name |
+    ParsePositions::isParsedKeywordArgumentPosition(s, name) and
+    result.isKeyword(name)
+  )
+  or
+  s = "self" and
+  result.isSelf()
+  or
+  s = "block" and
+  result.isBlock()
 }
