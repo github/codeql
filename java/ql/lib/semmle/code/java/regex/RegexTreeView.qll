@@ -20,7 +20,11 @@ private newtype TRegExpParent =
   /** A sequence term */
   TRegExpSequence(Regex re, int start, int end) {
     re.sequence(start, end) and
-    exists(seqChild(re, start, end, 1)) // if a sequence does not have more than one element, it should be treated as that element instead.
+    // Only create sequence nodes for sequences with two or more children.
+    exists(int mid |
+      re.item(start, mid) and
+      re.item(mid, _)
+    )
   } or
   /** An alternation term */
   TRegExpAlt(Regex re, int start, int end) {
