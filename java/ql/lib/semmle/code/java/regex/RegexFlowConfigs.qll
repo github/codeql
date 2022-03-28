@@ -9,10 +9,16 @@ private import semmle.code.java.dataflow.DataFlow3
 private import RegexFlowModels
 private import semmle.code.java.security.SecurityTests
 
+private class ExploitableStringLiteral extends StringLiteral {
+  ExploitableStringLiteral() { this.getValue().matches(["%+%", "%*%"]) }
+}
+
 private class RegexCompileFlowConf extends DataFlow2::Configuration {
   RegexCompileFlowConf() { this = "RegexCompileFlowConfig" }
 
-  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof StringLiteral }
+  override predicate isSource(DataFlow::Node node) {
+    node.asExpr() instanceof ExploitableStringLiteral
+  }
 
   override predicate isSink(DataFlow::Node node) {
     sinkNode(node, ["regex-compile", "regex-compile-match", "regex-compile-find"])
@@ -203,7 +209,9 @@ private class GuavaRegexFlowStep extends RegexAdditionalFlowStep {
 private class RegexMatchFlowConf extends DataFlow2::Configuration {
   RegexMatchFlowConf() { this = "RegexMatchFlowConf" }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof StringLiteral }
+  override predicate isSource(DataFlow::Node src) {
+    src.asExpr() instanceof ExploitableStringLiteral
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(RegexMatchMethodAccess ma | sink.asExpr() = ma.getRegexArg())
