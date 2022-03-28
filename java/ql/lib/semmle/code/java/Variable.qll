@@ -89,6 +89,11 @@ class Parameter extends Element, @param, LocalScopeVariable {
   /** Holds if this formal parameter is a variable arity parameter. */
   predicate isVarargs() { isVarargsParam(this) }
 
+  /** Holds if this formal parameter is a parameter representing the dispatch receiver in an extension method. */
+  predicate isExtensionParameter() {
+    getPosition() = 0 and this.getCallable() instanceof ExtensionMethod
+  }
+
   /**
    * Gets an argument for this parameter in any call to the callable that declares this formal
    * parameter.
@@ -103,7 +108,20 @@ class Parameter extends Element, @param, LocalScopeVariable {
   pragma[noinline]
   private Expr getACallArgument(int i) {
     exists(Call call |
-      result = call.getArgument(i) and
+      (
+        exists(int idx |
+          (
+            idx = i and not call instanceof ExtensionMethodAccess
+            or
+            idx = i - 1 and call instanceof ExtensionMethodAccess
+          ) and
+          result = call.getArgument(idx)
+        )
+        or
+        i = 0 and
+        call instanceof ExtensionMethodAccess and
+        result = call.getQualifier()
+      ) and
       call.getCallee().getSourceDeclaration().getAParameter() = this
     )
   }
