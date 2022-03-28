@@ -32,6 +32,10 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedInstructionContainer,
     tag = EnterFunctionTag() and
     type = getVoidType()
     or
+    op instanceof Opcode::AliasedDefinition and
+    tag = AliasedDefinitionTag() and
+    type = getUnknownType()
+    or
     op instanceof Opcode::VariableAddress and
     tag = InitializerVariableAddressTag() and
     type = getTypeForGLValue(var.getType())
@@ -40,28 +44,46 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedInstructionContainer,
     tag = ReturnTag() and
     type = getVoidType()
     or
+    op instanceof Opcode::AliasedUse and
+    tag = AliasedUseTag() and
+    type = getVoidType()
+    or
     op instanceof Opcode::ExitFunction and
     tag = ExitFunctionTag() and
     type = getVoidType()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = EnterFunctionTag() and
     kind instanceof GotoEdge and
-    result = getInstruction(InitializerVariableAddressTag())
-    or
-    tag = InitializerVariableAddressTag() and
-    kind instanceof GotoEdge and
-    result = getChild(1).getFirstInstruction()
-    or
-    tag = ReturnTag() and
-    kind instanceof GotoEdge and
-    result = getInstruction(ExitFunctionTag())
+    (
+      tag = EnterFunctionTag() and
+      result = getInstruction(AliasedDefinitionTag())
+      or
+      tag = AliasedDefinitionTag() and
+      result = getInstruction(InitializerVariableAddressTag())
+      or
+      tag = InitializerVariableAddressTag() and
+      result = getChild(1).getFirstInstruction()
+      or
+      tag = ReturnTag() and
+      result = getInstruction(AliasedUseTag())
+      or
+      tag = AliasedUseTag() and
+      result = getInstruction(ExitFunctionTag())
+    )
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     child = getChild(1) and
     result = getInstruction(ReturnTag())
+  }
+
+  final override CppType getInstructionMemoryOperandType(
+    InstructionTag tag, TypedOperandTag operandTag
+  ) {
+    tag = AliasedUseTag() and
+    operandTag instanceof SideEffectOperandTag and
+    result = getUnknownType()
   }
 
   override IRUserVariable getInstructionVariable(InstructionTag tag) {

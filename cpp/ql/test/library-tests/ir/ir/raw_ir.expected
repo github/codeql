@@ -5622,14 +5622,16 @@ ir.cpp:
 
 # 1038| (lambda [] type at line 1038, col. 12) lam
 # 1038|   Block 0
-# 1038|     v1038_1(void)                             = EnterFunction   : 
-# 1038|     r1038_2(glval<decltype([...](...){...})>) = VariableAddress : 
-# 1038|     r1038_3(glval<decltype([...](...){...})>) = VariableAddress : 
-# 1038|     mu1038_4(decltype([...](...){...}))       = Uninitialized   : &:r1038_3
-# 1038|     r1038_5(decltype([...](...){...}))        = Load[?]         : &:r1038_3, ~m?
-# 1038|     mu1038_6(decltype([...](...){...}))       = Store[?]        : &:r1038_2, r1038_5
-# 1038|     v1038_7(void)                             = ReturnVoid      : 
-# 1038|     v1038_8(void)                             = ExitFunction    : 
+# 1038|     v1038_1(void)                             = EnterFunction     : 
+# 1038|     mu1038_2(unknown)                         = AliasedDefinition : 
+# 1038|     r1038_3(glval<decltype([...](...){...})>) = VariableAddress   : 
+# 1038|     r1038_4(glval<decltype([...](...){...})>) = VariableAddress   : 
+# 1038|     mu1038_5(decltype([...](...){...}))       = Uninitialized     : &:r1038_4
+# 1038|     r1038_6(decltype([...](...){...}))        = Load[?]           : &:r1038_4, ~m?
+# 1038|     mu1038_7(decltype([...](...){...}))       = Store[?]          : &:r1038_3, r1038_6
+# 1038|     v1038_8(void)                             = ReturnVoid        : 
+# 1038|     v1038_9(void)                             = AliasedUse        : ~m?
+# 1038|     v1038_10(void)                            = ExitFunction      : 
 
 # 1038| void (lambda [] type at line 1038, col. 12)::operator()() const
 # 1038|   Block 0
@@ -8861,21 +8863,25 @@ ir.cpp:
 
 # 1695| int global_2
 # 1695|   Block 0
-# 1695|     v1695_1(void)       = EnterFunction   : 
-# 1695|     r1695_2(glval<int>) = VariableAddress : 
-# 1695|     r1695_3(int)        = Constant[1]     : 
-# 1695|     mu1695_4(int)       = Store[?]        : &:r1695_2, r1695_3
-# 1695|     v1695_5(void)       = ReturnVoid      : 
-# 1695|     v1695_6(void)       = ExitFunction    : 
+# 1695|     v1695_1(void)       = EnterFunction     : 
+# 1695|     mu1695_2(unknown)   = AliasedDefinition : 
+# 1695|     r1695_3(glval<int>) = VariableAddress   : 
+# 1695|     r1695_4(int)        = Constant[1]       : 
+# 1695|     mu1695_5(int)       = Store[?]          : &:r1695_3, r1695_4
+# 1695|     v1695_6(void)       = ReturnVoid        : 
+# 1695|     v1695_7(void)       = AliasedUse        : ~m?
+# 1695|     v1695_8(void)       = ExitFunction      : 
 
 # 1697| int const global_3
 # 1697|   Block 0
-# 1697|     v1697_1(void)       = EnterFunction   : 
-# 1697|     r1697_2(glval<int>) = VariableAddress : 
-# 1697|     r1697_3(int)        = Constant[2]     : 
-# 1697|     mu1697_4(int)       = Store[?]        : &:r1697_2, r1697_3
-# 1697|     v1697_5(void)       = ReturnVoid      : 
-# 1697|     v1697_6(void)       = ExitFunction    : 
+# 1697|     v1697_1(void)       = EnterFunction     : 
+# 1697|     mu1697_2(unknown)   = AliasedDefinition : 
+# 1697|     r1697_3(glval<int>) = VariableAddress   : 
+# 1697|     r1697_4(int)        = Constant[2]       : 
+# 1697|     mu1697_5(int)       = Store[?]          : &:r1697_3, r1697_4
+# 1697|     v1697_6(void)       = ReturnVoid        : 
+# 1697|     v1697_7(void)       = AliasedUse        : ~m?
+# 1697|     v1697_8(void)       = ExitFunction      : 
 
 perf-regression.cpp:
 #    6| void Big::Big()
@@ -9101,28 +9107,30 @@ struct_init.cpp:
 #    9| Info infos_in_file[]
 #    9|   Block 0
 #    9|     v9_1(void)              = EnterFunction             : 
-#    9|     r9_2(glval<Info[]>)     = VariableAddress           : 
-#    9|     r9_3(int)               = Constant[0]               : 
-#    9|     r9_4(glval<Info>)       = PointerAdd[16]            : r9_2, r9_3
-#   10|     r10_1(glval<char *>)    = FieldAddress[name]        : r9_4
+#    9|     mu9_2(unknown)          = AliasedDefinition         : 
+#    9|     r9_3(glval<Info[]>)     = VariableAddress           : 
+#    9|     r9_4(int)               = Constant[0]               : 
+#    9|     r9_5(glval<Info>)       = PointerAdd[16]            : r9_3, r9_4
+#   10|     r10_1(glval<char *>)    = FieldAddress[name]        : r9_5
 #   10|     r10_2(glval<char[2]>)   = StringConstant            : 
 #   10|     r10_3(char *)           = Convert                   : r10_2
 #   10|     mu10_4(char *)          = Store[?]                  : &:r10_1, r10_3
-#   10|     r10_5(glval<..(*)(..)>) = FieldAddress[handler]     : r9_4
+#   10|     r10_5(glval<..(*)(..)>) = FieldAddress[handler]     : r9_5
 #   10|     r10_6(..(*)(..))        = FunctionAddress[handler1] : 
 #   10|     mu10_7(..(*)(..))       = Store[?]                  : &:r10_5, r10_6
-#    9|     r9_5(int)               = Constant[1]               : 
-#    9|     r9_6(glval<Info>)       = PointerAdd[16]            : r9_2, r9_5
-#   11|     r11_1(glval<char *>)    = FieldAddress[name]        : r9_6
+#    9|     r9_6(int)               = Constant[1]               : 
+#    9|     r9_7(glval<Info>)       = PointerAdd[16]            : r9_3, r9_6
+#   11|     r11_1(glval<char *>)    = FieldAddress[name]        : r9_7
 #   11|     r11_2(glval<char[2]>)   = StringConstant            : 
 #   11|     r11_3(char *)           = Convert                   : r11_2
 #   11|     mu11_4(char *)          = Store[?]                  : &:r11_1, r11_3
-#   11|     r11_5(glval<..(*)(..)>) = FieldAddress[handler]     : r9_6
+#   11|     r11_5(glval<..(*)(..)>) = FieldAddress[handler]     : r9_7
 #   11|     r11_6(glval<..()(..)>)  = FunctionAddress[handler2] : 
 #   11|     r11_7(..(*)(..))        = CopyValue                 : r11_6
 #   11|     mu11_8(..(*)(..))       = Store[?]                  : &:r11_5, r11_7
-#    9|     v9_7(void)              = ReturnVoid                : 
-#    9|     v9_8(void)              = ExitFunction              : 
+#    9|     v9_8(void)              = ReturnVoid                : 
+#    9|     v9_9(void)              = AliasedUse                : ~m?
+#    9|     v9_10(void)             = ExitFunction              : 
 
 #   14| Info* global_pointer
 
