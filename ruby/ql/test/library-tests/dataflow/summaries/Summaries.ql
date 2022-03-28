@@ -9,6 +9,7 @@ import codeql.ruby.dataflow.internal.FlowSummaryImpl
 import codeql.ruby.dataflow.internal.AccessPathSyntax
 import codeql.ruby.frameworks.data.ModelsAsData
 import TestUtilities.InlineFlowTest
+import DataFlow::PathGraph
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {
   (sc.propagatesFlowExt(s, _, _) or sc.propagatesFlowExt(_, s, _)) and
@@ -132,3 +133,7 @@ class CustomTaintSink extends DefaultTaintFlowConf {
     sink = ModelOutput::getASinkNode("test-sink").getARhs()
   }
 }
+
+from DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Configuration conf
+where conf.hasFlowPath(source, sink)
+select sink, source, sink, "$@", source, source.toString()
