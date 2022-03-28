@@ -10,7 +10,7 @@ def unzip(filename):
 def unzip4(filename):
     zf = zipfile.ZipFile(filename)
     filelist = zf.namelist()
-    for filename in filelist:
-        with zf.open(filename) as srcf:
+    for x in filelist:
+        with zf.open(x) as srcf:
             shutil.copyfileobj(srcf, dstfile)
 
