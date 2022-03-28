@@ -2,13 +2,15 @@ import zipfile
 import shutil
 
 def unzip(filename):
-    with zipfile.ZipFile(filename) as zipf:
+    with tarfile.open(filename) as zipf:
     #BAD : This could write any file on the filesystem.
         for entry in zipf:
-            shutil.copy(entry, "/tmp/unpack/")
+            shutil.copyfile(entry, "/tmp/unpack/")
           
-def unzip1(filename):
-    with zipfile.ZipFile(filename) as zipf:
-        for entry in zipf:
-            with open(entry, 'wb') as dstfile:
-                shutil.copyfileobj(zipf, dstfile)
+def unzip4(filename):
+    zf = zipfile.ZipFile(filename)
+    filelist = zf.namelist()
+    for filename in filelist:
+        with zf.open(filename) as srcf:
+            shutil.copyfileobj(srcf, dstfile)
+
