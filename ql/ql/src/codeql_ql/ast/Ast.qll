@@ -135,6 +135,8 @@ class TopLevel extends TTopLevel, AstNode {
     pred = directMember("getAModule") and result = this.getAModule()
     or
     pred = directMember("getANewType") and result = this.getANewType()
+    or
+    pred = directMember("getQLDoc") and result = this.getQLDoc()
   }
 
   QLDoc getQLDocFor(ModuleMember m) {
