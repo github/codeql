@@ -1399,7 +1399,7 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
   Expr getAResult() {
     result = this.getACase().getRuleExpression()
     or
-    exists(YieldStmt yield | yield.(JumpStmt).getTarget() = this and result = yield.getValue())
+    exists(YieldStmt yield | yield.getTarget() = this and result = yield.getValue())
   }
 
   /** Gets a printable representation of this expression. */
