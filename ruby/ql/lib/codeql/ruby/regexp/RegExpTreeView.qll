@@ -582,6 +582,15 @@ class RegExpWordBoundary extends RegExpSpecialChar {
 }
 
 /**
+ * A non-word boundary, that is, a regular expression term of the form `\B`.
+ */
+class RegExpNonWordBoundary extends RegExpSpecialChar {
+  RegExpNonWordBoundary() { this.getChar() = "\\B" }
+
+  override string getAPrimaryQlClass() { result = "RegExpNonWordBoundary" }
+}
+
+/**
  * A character class escape in a regular expression.
  * That is, an escaped character that denotes multiple characters.
  *
