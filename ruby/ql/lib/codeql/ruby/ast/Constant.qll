@@ -74,7 +74,7 @@ class ConstantValue extends TConstantValue {
   /** Gets the regexp value, if this is a regexp. */
   string getRegExp() { this.isRegExpWithFlags(result, _) }
 
-  /** Holds if this is the regexp value `/s/`. */
+  /** Holds if this is the regexp value `/s/`, ignoring any flags. */
   predicate isRegExp(string s) { this.isRegExpWithFlags(s, _) }
 
   /** Holds if this is the regexp value `/s/flags` . */
@@ -125,13 +125,13 @@ module ConstantValue {
   class ConstantStringlikeValue extends ConstantValue, TStringlike { }
 
   /** A constant string value. */
-  class ConstantStringValue extends ConstantValue, TString { }
+  class ConstantStringValue extends ConstantStringlikeValue, TString { }
 
   /** A constant symbol value. */
-  class ConstantSymbolValue extends ConstantValue, TSymbol { }
+  class ConstantSymbolValue extends ConstantStringlikeValue, TSymbol { }
 
   /** A constant regexp value. */
-  class ConstantRegExpValue extends ConstantValue, TRegExp { }
+  class ConstantRegExpValue extends ConstantStringlikeValue, TRegExp { }
 
   /** A constant Boolean value. */
   class ConstantBooleanValue extends ConstantValue, TBoolean { }
