@@ -1,9 +1,9 @@
 import java
 import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.internal.DataFlowPrivate as Dfp
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.dataflow.internal.DataFlowImplCommon
+import semmle.code.java.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 private Method superImpl(Method m) {
   result = m.getAnOverride() and
@@ -156,12 +156,4 @@ string returnNodeAsOutput(ReturnNodeExt node) {
       or
       result = "Argument[-1]" and pos = -1
     )
-}
-
-module DataFlowPrivate {
-  predicate containerContent = Dfp::containerContent/1;
-
-  predicate readStep = Dfp::readStep/3;
-
-  predicate storeStep = Dfp::storeStep/3;
 }

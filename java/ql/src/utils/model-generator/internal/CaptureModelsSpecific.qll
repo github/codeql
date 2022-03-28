@@ -4,18 +4,18 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.dataflow.ExternalFlow as Ef
-private import semmle.code.java.dataflow.internal.DataFlowImplCommon as Dfic
 private import semmle.code.java.dataflow.internal.DataFlowNodes
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.InstanceAccess
 private import ModelGeneratorUtils
+import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
+import semmle.code.java.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 
 /**
  * Gets the enclosing callable of `ret`.
  */
-Callable returnNodeEnclosingCallable(Dfic::ReturnNodeExt ret) {
-  result = Dfic::getNodeEnclosingCallable(ret).asCallable()
+Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
+  result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
 }
 
 /**
@@ -66,17 +66,3 @@ string asInputArgument(DataFlow::Node source) {
  */
 bindingset[kind]
 predicate isRelevantSinkKind(string kind) { not kind = "logging" }
-
-module DataFlowImplCommon {
-  predicate store = Dfic::store/4;
-
-  class ReturnNodeExt = Dfic::ReturnNodeExt;
-
-  class TypedContent = Dfic::TypedContent;
-}
-
-module ExternalFlow {
-  predicate sourceNode = Ef::sourceNode/2;
-
-  predicate sinkNode = Ef::sinkNode/2;
-}
