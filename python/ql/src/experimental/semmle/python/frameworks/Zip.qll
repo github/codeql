@@ -13,17 +13,20 @@ private module Zip {
     }
 
     override DataFlow::Node getAPathArgument() {
-      result in [this.getArg(0), this.getArgByName("src"), this.getArg(1), this.getArgByName("dst")]
+      result in [this.getArg(0), this.getArgByName("src")]
     }
+
+    override DataFlow::Node getfsrcArgument() { none() }
   }
 
   private class CopyFileobj extends DataFlow::CallCfgNode, CopyFile::Range {
     CopyFileobj() { this = API::moduleImport("shutil").getMember("copyfileobj").getACall() }
 
-    override DataFlow::Node getAPathArgument() {
-      result in [
-          this.getArg(0), this.getArgByName("fsrc"), this.getArg(1), this.getArgByName("fdst")
-        ]
+    override DataFlow::Node getfsrcArgument() {
+      result in [this.getArg(0), this.getArgByName("fsrc")]
     }
+
+    override DataFlow::Node getAPathArgument() { none() }
   }
 }
+
