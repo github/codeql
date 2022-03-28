@@ -21,13 +21,12 @@ private class ExactStringPathMatchGuard extends PathTraversalBarrierGuard instan
 }
 
 /**
- * Returns the qualifier of a method call if it's a variable access, or the qualifier of the qualifier if
- * the qualifier itself is a method call to `getPath`, which helps to reduce FPs by handling scenarios
- * such as `!uri.getPath().contains("..")`.
+ * Returns the qualifier of a method call if it's a variable access, or the qualifier of the qualifier
+ * if the qualifier itself is a method call, which helps to reduce FPs by handling scenarios such as
+ * `!uri.getPath().contains("..")`.
  */
 private Expr getRealQualifier(Expr e) {
-  e.(MethodAccess).getMethod().hasQualifiedName("android.net", "Uri", "getPath") and
-  result = e.(MethodAccess).getQualifier()
+  result = getRealQualifier(e.(MethodAccess).getQualifier())
   or
   result = e.(VarAccess)
 }
