@@ -3,28 +3,28 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Android provides a <code>WebResourceResponse</code> API, which is a <code>WebView</code> class that
-allows an Android application to behave as a web server by handling requests of popular protocols such
-as <code>http(s)</code>, <code>file</code>, as well as <code>javascript</code>; and returning a response
-(including status code, content type, content encoding, headers and the response body). Improper
-implementation with insufficient input validation can lead to leaking of sensitive configuration file
-or user data because requests could refer to paths intended to be application-private.
+<p>Android provides a <code>WebResourceResponse</code> class, which allows an Android application to behave
+as a web server by handling requests of popular protocols such as <code>http(s)</code>, <code>file</code>,
+as well as <code>javascript</code>; and returning a response (including status code, content type, content
+encoding, headers and the response body). Improper implementation with insufficient input validation can lead
+to leakage of sensitive configuration files or user data because requests could refer to paths intended to be
+application-private.
 </p>
 </overview>
 
 <recommendation>
 <p>
-Unsanitized user provided url must not be used to serve a response directly. When handling a request,
-always validate that the file path is not the receiver's protected directory. Alternatively the Android
-API <code>WebViewAssetLoader</code> can be used, which safely processes data from resources, assets or
-a predefined directory.
+Unsanitized user-provided URLs must not be used to serve a response directly. When handling a request,
+always validate that the requested file path is not in the receiver's protected directory. Alternatively
+the Android class <code>WebViewAssetLoader</code> can be used, which safely processes data from resources,
+assets or a predefined directory.
 </p>
 </recommendation>
 
 <example>
 <p>
-The following examples show a bad situation and two good situations respectively. In the bad situation, a
-response is served without path validation. In the good situation, a response is either served with path
+The following examples show a bad scenario and two good scenarios respectively. In the bad scenario, a
+response is served without path validation. In the good scenario, a response is either served with path
 validation or through the safe <code>WebViewAssetLoader</code> implementation.
 </p>
 <sample src="InsecureWebResourceResponse.java" />
@@ -32,7 +32,7 @@ validation or through the safe <code>WebViewAssetLoader</code> implementation.
 
 <references>
 <li>
-Google:
+Oversecured:
 <a href="https://blog.oversecured.com/Android-Exploring-vulnerabilities-in-WebResourceResponse/">Android: Exploring vulnerabilities in WebResourceResponse</a>.
 </li>
 <li>

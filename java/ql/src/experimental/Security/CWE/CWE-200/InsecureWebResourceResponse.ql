@@ -1,7 +1,7 @@
 /**
  * @name Insecure Android WebView Resource Response
- * @description Insecure implementation of Android WebResourceResponse intercepts malicious app requests
- *              and return arbitrary sensitive content.
+ * @description An insecure implementation of Android `WebResourceResponse` may lead to leakage of arbitrary
+ *               sensitive content.
  * @kind path-problem
  * @id java/insecure-webview-resource-response
  * @problem.severity error
@@ -29,5 +29,5 @@ class InsecureWebResourceResponseConfig extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, InsecureWebResourceResponseConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Leaking arbitrary content in Android from $@.", source.getNode(),
-  "this user input"
+select sink.getNode(), source, sink, "Leaking arbitrary content in Android from $@.",
+  source.getNode(), "this user input"

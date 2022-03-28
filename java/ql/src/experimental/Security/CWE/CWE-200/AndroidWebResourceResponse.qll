@@ -21,8 +21,7 @@ class WebResourceResponse extends RefType {
 class ShouldInterceptRequestMethod extends Method {
   ShouldInterceptRequestMethod() {
     this.hasName("shouldInterceptRequest") and
-    this.getDeclaringType().getASupertype*() instanceof TypeWebViewClient and
-    this.getReturnType() instanceof WebResourceResponse
+    this.getDeclaringType().getASupertype*() instanceof TypeWebViewClient
   }
 }
 
@@ -30,12 +29,11 @@ class ShouldInterceptRequestMethod extends Method {
 class SetWebViewClientMethodAccess extends MethodAccess {
   SetWebViewClientMethodAccess() {
     this.getMethod().hasName("setWebViewClient") and
-    this.getMethod().getDeclaringType().getASupertype*() instanceof TypeWebView and
-    this.getMethod().getParameterType(0) instanceof TypeWebViewClient
+    this.getMethod().getDeclaringType().getASupertype*() instanceof TypeWebView
   }
 }
 
-/** A sink representing a constructor call of `WebResourceResponse` in Android `WebViewClient`. */
+/** A sink representing the data argument of a call to the constructor of `WebResourceResponse`. */
 class WebResourceResponseSink extends DataFlow::Node {
   WebResourceResponseSink() {
     exists(ConstructorCall cc |
@@ -50,7 +48,8 @@ class WebResourceResponseSink extends DataFlow::Node {
 }
 
 /**
- * Value step from a fetching url call of `WebView` to `WebViewClient`.
+ * A value step from the URL argument of `WebView::loadUrl` to the URL parameter of
+ * `WebViewClient::shouldInterceptRequest`.
  */
 private class FetchUrlStep extends AdditionalValueStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
@@ -63,20 +62,20 @@ private class FetchUrlStep extends AdditionalValueStep {
         lma.getMethod() = lm and
         lma.getQualifier().getType() = sma.getQualifier().getType() and
         pred.asExpr() = lma.getArgument(0) and
-        succ.asExpr() = im.getParameter(1).getAnAccess()
+        succ.asParameter() = im.getParameter(1)
       )
     )
   }
 }
 
 /** Value/taint steps relating to url loading and file reading in an Android application. */
-private class LoadUrlSource extends SummaryModelCsv {
+private class LoadUrlSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
         "java.io;FileInputStream;true;FileInputStream;;;Argument[0];Argument[-1];taint",
-        "android.net;Uri;false;getPath;;;Argument[0];ReturnValue;value",
-        "android.webkit;WebResourceRequest;false;getUrl;;;Argument[-1];ReturnValue;value"
+        "android.net;Uri;false;getPath;;;Argument[0];ReturnValue;taint",
+        "android.webkit;WebResourceRequest;false;getUrl;;;Argument[-1];ReturnValue;taint"
       ]
   }
 }
