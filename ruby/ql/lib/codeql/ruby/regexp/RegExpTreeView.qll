@@ -750,10 +750,6 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
   /** Gets the name of this capture group, if any. */
   string getName() { result = re.getGroupName(start, end) }
 
-  predicate isCharacter() { any() }
-
-  string getValue() { result = re.getText().substring(start, end) }
-
   override RegExpTerm getChild(int i) {
     result.getRegExp() = re and
     i = 0 and
@@ -851,8 +847,6 @@ class RegExpCaret extends RegExpSpecialChar {
  */
 class RegExpZeroWidthMatch extends RegExpGroup {
   RegExpZeroWidthMatch() { re.zeroWidthMatch(start, end) }
-
-  override predicate isCharacter() { any() }
 
   override RegExpTerm getChild(int i) { none() }
 
