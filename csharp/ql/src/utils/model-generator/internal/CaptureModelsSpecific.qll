@@ -2,20 +2,25 @@
  * Provides predicates related to capturing summary models of the Standard or a 3rd party library.
  */
 
-import csharp
-private import semmle.code.csharp.dataflow.TaintTracking
+private import csharp as CS
 private import semmle.code.csharp.commons.Util as Util
-private import semmle.code.csharp.commons.Collections
+private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 import semmle.code.csharp.dataflow.ExternalFlow as ExternalFlow
 import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
+module DataFlow = CS::DataFlow;
+
+module TaintTracking = CS::TaintTracking;
+
+class Type = CS::Type;
+
 /**
  * Holds if it is relevant to generate models for `api`.
  */
-private predicate isRelevantForModels(Callable api) {
-  [api.(Modifiable), api.(Accessor).getDeclaration()].isEffectivelyPublic() and
+private predicate isRelevantForModels(CS::Callable api) {
+  [api.(CS::Modifiable), api.(CS::Accessor).getDeclaration()].isEffectivelyPublic() and
   not api instanceof Util::MainMethod
 }
 
@@ -38,10 +43,10 @@ predicate asPartialModel = DataFlowPrivate::Csv::asPartialModel/1;
  * Holds for type `t` for fields that are relevant as an intermediate
  * read or write step in the data flow analysis.
  */
-predicate isRelevantType(Type t) { not t instanceof Enum }
+predicate isRelevantType(CS::Type t) { not t instanceof CS::Enum }
 
-private string parameterAccess(Parameter p) {
-  if isCollectionType(p.getType())
+private string parameterAccess(CS::Parameter p) {
+  if Collections::isCollectionType(p.getType())
   then result = "Argument[" + p.getPosition() + "].Element"
   else result = "Argument[" + p.getPosition() + "]"
 }
@@ -56,7 +61,7 @@ string parameterNodeAsInput(DataFlow::ParameterNode p) {
 }
 
 pragma[nomagic]
-private Parameter getParameter(DataFlowImplCommon::ReturnNodeExt node, ParameterPosition pos) {
+private CS::Parameter getParameter(DataFlowImplCommon::ReturnNodeExt node, ParameterPosition pos) {
   result = node.getEnclosingCallable().getParameter(pos.getPosition())
 }
 
@@ -80,7 +85,7 @@ string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
 /**
  * Gets the enclosing callable of `ret`.
  */
-Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
+CS::Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
   result = DataFlowImplCommon::getNodeEnclosingCallable(ret)
 }
 
@@ -88,7 +93,7 @@ Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
  * Holds if `node` is an own instance access.
  */
 predicate isOwnInstanceAccessNode(DataFlowPrivate::ReturnNode node) {
-  node.asExpr() instanceof ThisAccess
+  node.asExpr() instanceof CS::ThisAccess
 }
 
 /**
@@ -105,17 +110,17 @@ predicate isRelevantSinkKind(string kind) { any() }
 /**
  * Language specific parts of the `PropagateToSinkConfiguration`.
  */
-class PropagateToSinkConfigurationSpecific extends TaintTracking::Configuration {
+class PropagateToSinkConfigurationSpecific extends CS::TaintTracking::Configuration {
   PropagateToSinkConfigurationSpecific() { this = "parameters or fields flowing into sinks" }
 
   private predicate isRelevantMemberAccess(DataFlow::Node node) {
-    exists(MemberAccess access | access = node.asExpr() |
+    exists(CS::MemberAccess access | access = node.asExpr() |
       access.hasThisQualifier() and
       access.getTarget().isEffectivelyPublic() and
       (
-        access instanceof FieldAccess
+        access instanceof CS::FieldAccess
         or
-        access.getTarget().(Property).getSetter().isPublic()
+        access.getTarget().(CS::Property).getSetter().isPublic()
       )
     )
   }
