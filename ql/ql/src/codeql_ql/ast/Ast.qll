@@ -1134,7 +1134,7 @@ class Import extends TImport, ModuleMember, ModuleRef {
    */
   string getImportString() {
     exists(string selec |
-      not exists(getQualifiedName(_)) and selec = ""
+      not exists(getSelectionName(_)) and selec = ""
       or
       selec =
         "::" + strictconcat(int i, string q | q = this.getSelectionName(i) | q, "::" order by i)

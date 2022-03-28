@@ -7,10 +7,6 @@
 
 private import codeql.ruby.ast.Literal as AST
 private import codeql.Locations
-private import codeql.ruby.DataFlow
-private import codeql.ruby.controlflow.CfgNodes
-private import codeql.ruby.ApiGraphs
-private import codeql.ruby.dataflow.internal.tainttrackingforlibraries.TaintTrackingImpl
 
 /**
  * A `StringlikeLiteral` containing a regular expression term, that is, either
@@ -116,6 +112,7 @@ abstract class RegExp extends AST::StringlikeLiteral {
     )
   }
 
+  /** Holds if a character set starts between `start` and `end`. */
   predicate charSetStart(int start, int end) {
     this.charSetStart(start) = true and
     (
@@ -145,14 +142,21 @@ abstract class RegExp extends AST::StringlikeLiteral {
     )
   }
 
-  predicate charSetToken(int charsetStart, int index, int tokenStart, int tokenEnd) {
+  /**
+   * Holds if the character set starting at `charsetStart` contains either
+   * a character or a `-` found between `start` and `end`.
+   */
+  private predicate charSetToken(int charsetStart, int index, int tokenStart, int tokenEnd) {
     tokenStart =
       rank[index](int start, int end | this.charSetToken(charsetStart, start, end) | start) and
     this.charSetToken(charsetStart, tokenStart, tokenEnd)
   }
 
-  /** Either a char or a - */
-  predicate charSetToken(int charsetStart, int start, int end) {
+  /**
+   * Holds if the character set starting at `charsetStart` contains either
+   * a character or a `-` found between `start` and `end`.
+   */
+  private predicate charSetToken(int charsetStart, int start, int end) {
     this.charSetStart(charsetStart, start) and
     (
       this.escapedCharacter(start, end)
@@ -174,6 +178,10 @@ abstract class RegExp extends AST::StringlikeLiteral {
     )
   }
 
+  /**
+   * Holds if the character set starting at `charsetStart` contains either
+   * a character or a range found between `start` and `end`.
+   */
   predicate charSetChild(int charsetStart, int start, int end) {
     this.charSetToken(charsetStart, start, end) and
     not exists(int rangeStart, int rangeEnd |
@@ -185,6 +193,11 @@ abstract class RegExp extends AST::StringlikeLiteral {
     this.charRange(charsetStart, start, _, _, end)
   }
 
+  /**
+   * Holds if the character set starting at `charset_start` contains a character range
+   * with lower bound found between `start` and `lower_end`
+   * and upper bound found between `upper_start` and `end`.
+   */
   predicate charRange(int charsetStart, int start, int lowerEnd, int upperStart, int end) {
     exists(int index |
       this.charRangeEnd(charsetStart, index) = true and
@@ -193,6 +206,13 @@ abstract class RegExp extends AST::StringlikeLiteral {
     )
   }
 
+  /**
+   * Helper predicate for `charRange`.
+   * We can determine where character ranges end by a left to right sweep.
+   *
+   * To avoid negative recursion we return a boolean. See `escaping`,
+   * the helper for `escapingChar`, for a clean use of this pattern.
+   */
   private boolean charRangeEnd(int charsetStart, int index) {
     this.charSetToken(charsetStart, index, _, _) and
     (
@@ -216,8 +236,15 @@ abstract class RegExp extends AST::StringlikeLiteral {
     )
   }
 
+  /** Holds if the character at `pos` is a "\" that is actually escaping what comes after. */
   predicate escapingChar(int pos) { this.escaping(pos) = true }
 
+  /**
+   * Helper predicate for `escapingChar`.
+   * In order to avoid negative recusrion, we return a boolean.
+   * This way, we can refer to `escaping(pos - 1).booleanNot()`
+   * rather than to a negated version of `escaping(pos)`.
+   */
   private boolean escaping(int pos) {
     pos = -1 and result = false
     or
@@ -229,8 +256,10 @@ abstract class RegExp extends AST::StringlikeLiteral {
   /** Gets the text of this regex */
   string getText() { result = this.getConstantValue().getString() }
 
+  /** Gets the `i`th character of this regex */
   string getChar(int i) { result = this.getText().charAt(i) }
 
+  /** Gets the `i`th character of this regex, unless it is part of a character escape sequence. */
   string nonEscapedCharAt(int i) {
     result = this.getText().charAt(i) and
     not exists(int x, int y | this.escapedCharacter(x, y) and i in [x .. y - 1])
@@ -242,6 +271,9 @@ abstract class RegExp extends AST::StringlikeLiteral {
 
   private predicate isGroupStart(int i) { this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i) }
 
+  /**
+   * Holds if the `i`th character could not be parsed.
+   */
   predicate failedToParse(int i) {
     exists(this.getChar(i)) and
     not exists(int start, int end |
@@ -331,6 +363,11 @@ abstract class RegExp extends AST::StringlikeLiteral {
     this.getChar(start + 3) = "^"
   }
 
+  /**
+   * Holds if an escaped character is found between `start` and `end`.
+   * Escaped characters include hex values, octal values and named escapes,
+   * but excludes backreferences.
+   */
   predicate escapedCharacter(int start, int end) {
     this.escapingChar(start) and
     not this.numberedBackreference(start, _, _) and
@@ -350,17 +387,25 @@ abstract class RegExp extends AST::StringlikeLiteral {
     )
   }
 
+  /**
+   * Holds if the character at `index` is inside a character set.
+   */
   predicate inCharSet(int index) {
     exists(int x, int y | this.charSet(x, y) and index in [x + 1 .. y - 2])
   }
 
+  /**
+   * Holds if the character at `index` is inside a posix bracket.
+   */
   predicate inPosixBracket(int index) {
     exists(int x, int y |
       this.posixStyleNamedCharacterProperty(x, y, _) and index in [x + 1 .. y - 2]
     )
   }
 
-  /** 'Simple' characters are any that don't alter the parsing of the regex. */
+  /**
+   * 'simple' characters are any that don't alter the parsing of the regex.
+   */
   private predicate simpleCharacter(int start, int end) {
     end = start + 1 and
     not this.charSet(start, _) and
@@ -391,6 +436,9 @@ abstract class RegExp extends AST::StringlikeLiteral {
     )
   }
 
+  /**
+   * Holds if a simple or escaped character is found between `start` and `end`.
+   */
   predicate character(int start, int end) {
     (
       this.simpleCharacter(start, end) and
@@ -406,12 +454,18 @@ abstract class RegExp extends AST::StringlikeLiteral {
     not exists(int x, int y | this.multiples(x, y, _, _) and x <= start and y >= end)
   }
 
+  /**
+   * Holds if a normal character is found between `start` and `end`.
+   */
   predicate normalCharacter(int start, int end) {
     end = start + 1 and
     this.character(start, end) and
     not this.specialCharacter(start, end, _)
   }
 
+  /**
+   * Holds if a special character is found between `start` and `end`.
+   */
   predicate specialCharacter(int start, int end, string char) {
     this.character(start, end) and
     not this.inCharSet(start) and
@@ -505,6 +559,7 @@ abstract class RegExp extends AST::StringlikeLiteral {
     this.positiveLookbehindAssertionGroup(start, end)
   }
 
+  /** Holds if an empty group is found between `start` and `end`. */
   predicate emptyGroup(int start, int end) {
     exists(int endm1 | end = endm1 + 1 |
       this.groupStart(start, endm1) and
@@ -538,24 +593,28 @@ abstract class RegExp extends AST::StringlikeLiteral {
     )
   }
 
+  /** Holds if a negative lookahead is found between `start` and `end` */
   predicate negativeLookaheadAssertionGroup(int start, int end) {
     exists(int inStart | this.negativeLookaheadAssertionStart(start, inStart) |
       this.groupContents(start, end, inStart, _)
     )
   }
 
+  /** Holds if a negative lookbehind is found between `start` and `end` */
   predicate negativeLookbehindAssertionGroup(int start, int end) {
     exists(int inStart | this.negativeLookbehindAssertionStart(start, inStart) |
       this.groupContents(start, end, inStart, _)
     )
   }
 
+  /** Holds if a positive lookahead is found between `start` and `end` */
   predicate positiveLookaheadAssertionGroup(int start, int end) {
     exists(int inStart | this.lookaheadAssertionStart(start, inStart) |
       this.groupContents(start, end, inStart, _)
     )
   }
 
+  /** Holds if a positive lookbehind is found between `start` and `end` */
   predicate positiveLookbehindAssertionGroup(int start, int end) {
     exists(int inStart | this.lookbehindAssertionStart(start, inStart) |
       this.groupContents(start, end, inStart, _)
@@ -661,6 +720,7 @@ abstract class RegExp extends AST::StringlikeLiteral {
     end = start + 3
   }
 
+  /** Matches the contents of a group. */
   predicate groupContents(int start, int end, int inStart, int inEnd) {
     this.groupStart(start, inStart) and
     end = inEnd + 1 and
@@ -747,6 +807,11 @@ abstract class RegExp extends AST::StringlikeLiteral {
     )
   }
 
+  /**
+   * Holds if a repetition quantifier is found between `start` and `end`,
+   * with the given lower and upper bounds. If a bound is omitted, the corresponding
+   * string is empty.
+   */
   predicate multiples(int start, int end, string lower, string upper) {
     exists(string text, string match, string inner |
       text = this.getText() and
@@ -774,6 +839,13 @@ abstract class RegExp extends AST::StringlikeLiteral {
     this.qualifiedPart(start, _, end, maybeEmpty, mayRepeatForever)
   }
 
+  /**
+   * Holds if a qualified part is found between `start` and `part_end` and the qualifier is
+   * found between `part_end` and `end`.
+   *
+   * `maybe_empty` is true if the part is optional.
+   * `may_repeat_forever` is true if the part may be repeated unboundedly.
+   */
   predicate qualifiedPart(
     int start, int partEnd, int end, boolean maybeEmpty, boolean mayRepeatForever
   ) {
@@ -781,6 +853,7 @@ abstract class RegExp extends AST::StringlikeLiteral {
     this.qualifier(partEnd, end, maybeEmpty, mayRepeatForever)
   }
 
+  /** Holds if the range `start`, `end` contains a character, a quantifier, a character set or a group. */
   predicate item(int start, int end) {
     this.qualifiedItem(start, end, _, _)
     or
@@ -959,76 +1032,4 @@ abstract class RegExp extends AST::StringlikeLiteral {
     ) and
     this.lastPart(start, end)
   }
-}
-
-private class RegExpLiteralRegExp extends RegExp, AST::RegExpLiteral {
-  override predicate isDotAll() { this.hasMultilineFlag() }
-
-  override predicate isIgnoreCase() { this.hasCaseInsensitiveFlag() }
-
-  override string getFlags() { result = this.getFlagString() }
-}
-
-private class ParsedStringRegExp extends RegExp {
-  private DataFlow::Node parse;
-
-  ParsedStringRegExp() { this = regExpSource(parse).asExpr().getExpr() }
-
-  DataFlow::Node getAParse() { result = parse }
-
-  override predicate isDotAll() { none() }
-
-  override predicate isIgnoreCase() { none() }
-
-  override string getFlags() { none() }
-}
-
-/**
- * Holds if `source` may be interpreted as a regular expression.
- */
-private predicate isInterpretedAsRegExp(DataFlow::Node source) {
-  // The first argument to an invocation of `Regexp.new` or `Regexp.compile`.
-  source = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"]).getArgument(0)
-  or
-  // The argument of a call that coerces the argument to a regular expression.
-  exists(DataFlow::CallNode mce |
-    mce.getMethodName() = ["match", "match?"] and
-    source = mce.getArgument(0) and
-    // exclude https://ruby-doc.org/core-2.4.0/Regexp.html#method-i-match
-    not mce.getReceiver().asExpr().getExpr() instanceof AST::RegExpLiteral
-  )
-}
-
-private class RegExpConfiguration extends Configuration {
-  RegExpConfiguration() { this = "RegExpConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() =
-      any(ExprCfgNode e |
-        e.getConstantValue().isString(_) and
-        not e instanceof ExprNodes::VariableReadAccessCfgNode and
-        not e instanceof ExprNodes::ConstantReadAccessCfgNode
-      )
-  }
-
-  override predicate isSink(DataFlow::Node sink) { isInterpretedAsRegExp(sink) }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    // stop flow if `node` is receiver of
-    // https://ruby-doc.org/core-2.4.0/String.html#method-i-match
-    exists(DataFlow::CallNode mce |
-      mce.getMethodName() = ["match", "match?"] and
-      node = mce.getReceiver() and
-      mce.getArgument(0).asExpr().getExpr() instanceof AST::RegExpLiteral
-    )
-  }
-}
-
-/**
- * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
- * as a part of a regular expression.
- */
-cached
-DataFlow::Node regExpSource(DataFlow::Node re) {
-  exists(RegExpConfiguration c | c.hasFlow(result, re))
 }
