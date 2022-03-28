@@ -1151,28 +1151,28 @@ module API {
         /** Gets the EntryPoint associated with this label. */
         API::EntryPoint getEntryPoint() { result = e }
 
-        override string toString() { result = e }
+        override string toString() { result = "getASuccessor(Label::entryPoint(\"" + e + "\"))" }
       }
 
       /** A label that gets a promised value. */
       class LabelPromised extends ApiLabel {
         LabelPromised() { this = MkLabelPromised() }
 
-        override string toString() { result = "promised" }
+        override string toString() { result = "getPromised()" }
       }
 
       /** A label that gets a rejected promise. */
       class LabelPromisedError extends ApiLabel {
         LabelPromisedError() { this = MkLabelPromisedError() }
 
-        override string toString() { result = "promisedError" }
+        override string toString() { result = "getPromisedError()" }
       }
 
       /** A label that gets the return value of a function. */
       class LabelReturn extends ApiLabel {
         LabelReturn() { this = MkLabelReturn() }
 
-        override string toString() { result = "return" }
+        override string toString() { result = "getReturn()" }
       }
 
       /** A label for a module. */
@@ -1184,14 +1184,15 @@ module API {
         /** Gets the module associated with this label. */
         string getMod() { result = mod }
 
-        override string toString() { result = "module " + mod }
+        // moduleImport is not neccesarilly the predicate to use, but it's close enough for most cases.
+        override string toString() { result = "moduleImport(\"" + mod + "\")" }
       }
 
       /** A label that gets an instance from a `new` call. */
       class LabelInstance extends ApiLabel {
         LabelInstance() { this = MkLabelInstance() }
 
-        override string toString() { result = "instance" }
+        override string toString() { result = "getInstance()" }
       }
 
       /** A label for the member named `prop`. */
@@ -1203,14 +1204,14 @@ module API {
         /** Gets the property associated with this label. */
         string getProperty() { result = prop }
 
-        override string toString() { result = "member " + prop }
+        override string toString() { result = "getMember(\"" + prop + "\")" }
       }
 
       /** A label for a member with an unknown name. */
       class LabelUnknownMember extends ApiLabel {
         LabelUnknownMember() { this = MkLabelUnknownMember() }
 
-        override string toString() { result = "member *" }
+        override string toString() { result = "getUnknownMember()" }
       }
 
       /** A label for parameter `i`. */
@@ -1219,7 +1220,7 @@ module API {
 
         LabelParameter() { this = MkLabelParameter(i) }
 
-        override string toString() { result = "parameter " + i }
+        override string toString() { result = "getParameter(" + i + ")" }
 
         /** Gets the index of the parameter for this label. */
         int getIndex() { result = i }
@@ -1227,7 +1228,7 @@ module API {
 
       /** A label for the receiver of call, that is, the value passed as `this`. */
       class LabelReceiver extends ApiLabel, MkLabelReceiver {
-        override string toString() { result = "receiver" }
+        override string toString() { result = "getReceiver()" }
       }
     }
   }

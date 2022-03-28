@@ -8,14 +8,14 @@ module.exports.readFile = function (f) {
             if (err)
                 rej(err);
             else
-                res(data); /* def (promised (return (member readFile (member exports (module promises))))) */
+                res(data); /* def=moduleImport("promises").getMember("exports").getMember("readFile").getReturn().getPromised() */
         });
     });
 };
 
 module.exports.readFileAndEncode = function (f) {
     return fse.readFile(f)
-        .then((data) => /* use (promised (return (member readFile (member exports (module fs-extra))))) */
-            base64.encode(data) /* def (promised (return (member readFileAndEncode (member exports (module promises))))) */
+        .then((data) => /* use=moduleImport("fs-extra").getMember("exports").getMember("readFile").getReturn().getPromised() */
+            base64.encode(data) /* def=moduleImport("promises").getMember("exports").getMember("readFileAndEncode").getReturn().getPromised() */
         );
 };
