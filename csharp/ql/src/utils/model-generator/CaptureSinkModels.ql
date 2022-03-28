@@ -4,7 +4,6 @@
  * @id csharp/utils/model-generator/sink-models
  */
 
-private import internal.ModelGeneratorUtils
 private import internal.CaptureModels
 
 from TargetApi api, string sink

@@ -4,7 +4,6 @@
  * @id java/utils/model-generator/sink-models
  */
 
-private import internal.ModelGeneratorUtils
 private import internal.CaptureModels
 
 from TargetApi api, string source

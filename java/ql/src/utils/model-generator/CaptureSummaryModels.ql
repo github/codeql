@@ -4,7 +4,6 @@
  * @id java/utils/model-generator/summary-models
  */
 
-private import internal.ModelGeneratorUtils
 private import internal.CaptureModels
 
 /**
