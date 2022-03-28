@@ -9,29 +9,30 @@ def unzip(filename):
     #BAD : This could write any file on the filesystem.
         for entry in zipf:
             shutil.move(entry, "/tmp/unpack/")
-          
+
 def unzip1(filename):
     with gzip.open(filename) as zipf:
     #BAD : This could write any file on the filesystem.
         for entry in zipf:
             shutil.copy2(entry, "/tmp/unpack/")
-          
+
 def unzip2(filename):
     with bz2.open(filename) as zipf:
     #BAD : This could write any file on the filesystem.
         for entry in zipf:
             shutil.copyfile(entry, "/tmp/unpack/")
-          
+
 def unzip3(filename):
-    with zipfile.ZipFile(filename) as zipf:
+    zf = zipfile.ZipFile(filename) 
+    filelist = zf.namelist()
     #BAD : This could write any file on the filesystem.
-        for entry in zipf:
+    for filename in filelist:
             shutil.copy(entry, "/tmp/unpack/")
 
 def unzip4(filename):
-    with zipfile.ZipFile(filename) as zipf:
-        for entry in zipf:
-            with open(entry, 'wb') as dstfile:
-                shutil.copyfileobj(zipf, dstfile)
-          
+    zf = zipfile.ZipFile(filename)
+    filelist = zf.namelist()
+    for filename in filelist:
+        with zf.open(filename) as srcf:
+            shutil.copyfileobj(srcf, dstfile)
 
