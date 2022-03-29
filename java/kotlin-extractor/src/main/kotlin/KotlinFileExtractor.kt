@@ -104,23 +104,35 @@ open class KotlinFileExtractor(
                     }
                 }
                 is IrFunction -> {
-                    val parentId = useDeclarationParent(declaration.parent, false).cast<DbReftype>()
-                    extractFunction(declaration, parentId, true, null, listOf())
+                    val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
+                    if (parentId != null) {
+                        extractFunction(declaration, parentId, true, null, listOf())
+                    }
+                    Unit
                 }
                 is IrAnonymousInitializer -> {
                     // Leaving this intentionally empty. init blocks are extracted during class extraction.
                 }
                 is IrProperty -> {
-                    val parentId = useDeclarationParent(declaration.parent, false).cast<DbReftype>()
-                    extractProperty(declaration, parentId, true, null, listOf())
+                    val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
+                    if (parentId != null) {
+                        extractProperty(declaration, parentId, true, null, listOf())
+                    }
+                    Unit
                 }
                 is IrEnumEntry -> {
-                    val parentId = useDeclarationParent(declaration.parent, false).cast<DbReftype>()
-                    extractEnumEntry(declaration, parentId)
+                    val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
+                    if (parentId != null) {
+                        extractEnumEntry(declaration, parentId)
+                    }
+                    Unit
                 }
                 is IrField -> {
-                    val parentId = useDeclarationParent(declaration.parent, false).cast<DbReftype>()
-                    extractField(declaration, parentId)
+                    val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
+                    if (parentId != null) {
+                        extractField(declaration, parentId)
+                    }
+                    Unit
                 }
                 is IrTypeAlias -> extractTypeAlias(declaration)
                 else -> logger.errorElement("Unrecognised IrDeclaration: " + declaration.javaClass, declaration)

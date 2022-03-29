@@ -640,7 +640,7 @@ open class KotlinUsesExtractor(
         canBeTopLevel: Boolean,
         classTypeArguments: List<IrTypeArgument>? = null,
         inReceiverContext: Boolean = false):
-        Label<out DbElement> =
+        Label<out DbElement>? =
         when(dp) {
             is IrFile ->
                 if(canBeTopLevel) {
@@ -653,11 +653,11 @@ open class KotlinUsesExtractor(
             is IrExternalPackageFragment -> {
                 // TODO
                 logger.error("Unhandled IrExternalPackageFragment")
-                fakeLabel()
+                null
             }
             else -> {
                 logger.error("Unrecognised IrDeclarationParent: " + dp.javaClass)
-                fakeLabel()
+                null
             }
         }
 
@@ -1105,14 +1105,26 @@ open class KotlinUsesExtractor(
     fun useField(f: IrField): Label<out DbField> =
         tw.getLabelFor<DbField>(getFieldLabel(f)).also { extractFieldLaterIfExternalFileMember(f) }
 
-    fun getPropertyLabel(p: IrProperty) =
-        getPropertyLabel(p, useDeclarationParent(p.parent, false))
+    fun getPropertyLabel(p: IrProperty): String? {
+        val parentId = useDeclarationParent(p.parent, false)
+        if (parentId == null) {
+            return null
+        } else {
+            return getPropertyLabel(p, parentId)
+        }
+    }
 
     fun getPropertyLabel(p: IrProperty, parentId: Label<out DbElement>) =
         "@\"property;{$parentId};${p.name.asString()}\""
 
-    fun useProperty(p: IrProperty): Label<out DbKt_property> =
-        tw.getLabelFor<DbKt_property>(getPropertyLabel(p)).also { extractPropertyLaterIfExternalFileMember(p) }
+    fun useProperty(p: IrProperty): Label<out DbKt_property>? {
+        val label = getPropertyLabel(p)
+        if (label == null) {
+            return null
+        } else {
+            return tw.getLabelFor<DbKt_property>(label).also { extractPropertyLaterIfExternalFileMember(p) }
+        }
+    }
 
     fun useProperty(p: IrProperty, parentId: Label<out DbElement>): Label<out DbKt_property> =
         tw.getLabelFor<DbKt_property>(getPropertyLabel(p, parentId)).also { extractPropertyLaterIfExternalFileMember(p) }
