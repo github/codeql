@@ -376,24 +376,29 @@ private module SyntacticUtilities {
   }
 
   string getSimpleAccessPath(DataFlow::Node node) {
-    result = node.asExpr().(VarAccess).getName()
-    or
-    exists(DataFlow::PropRead p |
-      p = node and
-      result = getSimpleAccessPath(p.getBase()) + "." + p.getPropertyName()
-    )
-    or
-    exists(DataFlow::MethodCallNode p |
-      p = node and
-      result = getSimpleAccessPath(p.getReceiver()) + "." + p.getMethodName() + "()"
-    )
-    or
-    exists(DataFlow::CallNode p |
-      p = node and
-      not p instanceof DataFlow::MethodCallNode and
-      result = p.getCalleeName() + "()"
-    )
+    if node.asExpr() instanceof SuperAccess
+    then result = "super"
+    else
+      if node.asExpr() instanceof ThisAccess
+      then result = "this"
+      else
+        if node.asExpr() instanceof VarAccess
+        then result = node.asExpr().(VarAccess).getName()
+        else
+          if node instanceof DataFlow::PropRead
+          then
+            result =
+              getSimpleAccessPath(node.(DataFlow::PropRead).getBase()) + "." +
+                getPropertyNameOrUnknown(node)
+          else
+            if node instanceof DataFlow::InvokeNode
+            then result = getSimpleAccessPath(node.(DataFlow::InvokeNode).getCalleeNode()) + "()"
+            else result = "?"
   }
+}
+
+string getPropertyNameOrUnknown(DataFlow::PropRead read) {
+  if exists(read.getPropertyName()) then result = read.getPropertyName() else result = "?"
 }
 
 class CalleeAccessPathSimpleFromArgumentTraversal extends EndPointFeature,
