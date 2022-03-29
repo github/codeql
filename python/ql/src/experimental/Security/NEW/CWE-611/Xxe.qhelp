@@ -66,5 +66,9 @@ Python 3 standard library:
 Python 2 standard library:
 <a href="https://docs.python.org/2/library/xml.html#xml-vulnerabilities">XML Vulnerabilities</a>.
 </li>
+<li>
+PortSwigger:
+<a href="https://portswigger.net/web-security/xxe">XML external entity (XXE) injection</a>.
+</li>
 </references>
 </qhelp>
