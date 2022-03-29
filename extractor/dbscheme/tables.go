@@ -465,6 +465,9 @@ var InterfaceTypeExpr = ExprKind.NewBranch("@interfacetypeexpr", FieldParentType
 // MapTypeExpr is the type of map type AST nodes
 var MapTypeExpr = ExprKind.NewBranch("@maptypeexpr")
 
+// TypeSetLiteralExpr is the type of type set literal type AST nodes
+var TypeSetLiteralExpr = ExprKind.NewBranch("@typesetliteralexpr")
+
 // ChanTypeExpr is the type of channel type AST nodes
 var ChanTypeExpr = NewUnionType("@chantypeexpr")
 
@@ -845,6 +848,9 @@ var ChanTypes = map[gotypes.ChanDir]*BranchType{
 
 // NamedType is the type of named types
 var NamedType = TypeKind.NewBranch("@namedtype", CompositeType)
+
+// TypeSetLiteral is the type of type set literals
+var TypeSetLiteral = TypeKind.NewBranch("@typesetliteraltype", CompositeType)
 
 // PackageType is the type of packages
 var PackageType = NewPrimaryKeyType("@package")

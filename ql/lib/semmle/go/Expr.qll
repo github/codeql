@@ -1070,6 +1070,22 @@ class MapTypeExpr extends @maptypeexpr, TypeExpr {
 }
 
 /**
+ * An expression representing a type set literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * ~string
+ * int64 | float64
+ * ```
+ */
+class TypeSetLiteralExpr extends @typesetliteralexpr, TypeExpr {
+  override string toString() { result = "type set literal" }
+
+  override string getAPrimaryQlClass() { result = "TypeSetLiteralExpr" }
+}
+
+/**
  * An expression with a (unary or binary) operator.
  *
  * Examples:
@@ -2043,6 +2059,8 @@ private predicate isTypeExprBottomUp(Expr e) {
   e instanceof @maptypeexpr
   or
   e instanceof @chantypeexpr
+  or
+  e instanceof @typesetliteralexpr
   or
   e instanceof @genericfunctioninstantiationexpr
   or

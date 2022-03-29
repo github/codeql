@@ -66,18 +66,76 @@ class Type extends @type {
 
   /**
    * Holds if this type implements interface `i`, that is, the method set of `i`
-   * is contained in the method set of this type.
+   * is contained in the method set of this type and any type restrictions are
+   * satisfied.
    */
   predicate implements(InterfaceType i) {
-    isEmptyInterface(i)
-    or
-    this.hasMethod(getExampleMethodName(i), _) and
-    forall(string m, SignatureType t | i.hasMethod(m, t) | this.hasMethod(m, t))
+    if i = any(ComparableType comparable).getUnderlyingType()
+    then this.implementsComparable()
+    else implementsNotComparable(i)
+  }
+
+  /**
+   * Holds if this type implements interface `i`, which is not the underlying
+   * type of `comparable`. This predicate is needed to avoid non-monotonic
+   * recursion.
+   */
+  private predicate implementsNotComparable(InterfaceType i) {
+    (
+      forall(TypeSetLiteralType tslit | tslit = i.getAnEmbeddedTypeSetLiteral() |
+        tslit.hasInTypeSet(this)
+      ) and
+      (
+        not i.hasMethod(_, _)
+        or
+        this.hasMethod(getExampleMethodName(i), _) and
+        forall(string m, SignatureType t | i.hasMethod(m, t) | this.hasMethod(m, t))
+      )
+    )
+  }
+
+  /**
+   * Holds if this type implements `comparable`. This includes being
+   * `comparable` itself, or the underlying type of `comparable`.
+   */
+  predicate implementsComparable() {
+    exists(Type u | u = this.getUnderlyingType() |
+      // Note that BasicType includes Invalidtype
+      u instanceof BasicType
+      or
+      u instanceof PointerType
+      or
+      u instanceof ChanType
+      or
+      u instanceof StructType and
+      forall(Type fieldtp | u.(StructType).hasField(_, fieldtp) | fieldtp.implementsComparable())
+      or
+      u instanceof ArrayType and u.(ArrayType).getElementType().implementsComparable()
+      or
+      u instanceof InterfaceType and
+      (
+        not u instanceof BasicInterfaceType and
+        if exists(u.(InterfaceType).getAnEmbeddedTypeSetLiteral())
+        then
+          forall(Type intersectionType |
+            intersectionType = u.(InterfaceType).getAnEmbeddedTypeSetLiteral().getATerm().getType() and
+            forall(TypeSetLiteralType tslit |
+              tslit = u.(InterfaceType).getAnEmbeddedTypeSetLiteral()
+            |
+              intersectionType = tslit.getATerm().getType()
+            )
+          |
+            intersectionType.implementsComparable()
+          )
+        else u.(InterfaceType).isOrEmbedsComparable()
+      )
+    )
   }
 
   /**
    * Holds if this type implements an interface that has the qualified name `pkg.name`,
-   * that is, the method set of `pkg.name` is contained in the method set of this type.
+   * that is, the method set of `pkg.name` is contained in the method set of this type
+   * and any type restrictions are satisfied.
    */
   predicate implements(string pkg, string name) {
     exists(Type t | t.hasQualifiedName(pkg, name) | this.implements(t.getUnderlyingType()))
@@ -552,33 +610,258 @@ class PointerType extends @pointertype, CompositeType {
   override string toString() { result = "pointer type" }
 }
 
-/** An interface type. */
-class InterfaceType extends @interfacetype, CompositeType {
-  /** Gets the type of method `name` of this interface type. */
-  Type getMethodType(string name) { component_types(this, _, name, result) }
+private newtype TTerm =
+  MkTerm(TypeSetLiteralType tslit, int index) { component_types(tslit, index, _, _) }
 
-  override predicate hasMethod(string m, SignatureType t) { t = this.getMethodType(m) }
+/**
+ * A term in a type set literal.
+ *
+ * Examples:
+ * ```go
+ * int
+ * ~string
+ * ```
+ */
+class Term extends TTerm {
+  boolean tilde;
+  Type tp;
+
+  Term() {
+    exists(TypeSetLiteralType tslit, int index |
+      this = MkTerm(tslit, index) and
+      (
+        component_types(tslit, index, "", tp) and
+        tilde = false
+        or
+        component_types(tslit, index, "~", tp) and
+        tilde = true
+      )
+    )
+  }
+
+  /**
+   * Holds if this term has a tilde in front of it.
+   *
+   * A tilde is used to indicate that the term refers to all types with a given
+   * underlying type.
+   */
+  predicate hasTilde() { tilde = true }
+
+  /** Gets the type of this term. */
+  Type getType() { result = tp }
+
+  /** Holds if `t` is in the type set of this term. */
+  predicate hasInTypeSet(Type t) { if tilde = false then t = tp else t.getUnderlyingType() = tp }
+
+  /** Gets a pretty-printed representation of this term. */
+  string pp() {
+    exists(string tildeStr | if tilde = true then tildeStr = "~" else tildeStr = "" |
+      result = tildeStr + tp.pp()
+    )
+  }
+
+  /** Gets a textual representation of this element. */
+  string toString() { result = "term" }
+}
+
+private Term getIntersection(Term term1, Term term2) {
+  term1.getType() = term2.getType() and
+  if term1.hasTilde() then result = term2 else result = term1
+}
+
+Term getTermInIntersection(TypeSetLiteralType a, TypeSetLiteralType b) {
+  result = getIntersection(a.getATerm(), b.getATerm())
+}
+
+/**
+ * A type set literal type, used when declaring a non-basic interface. May be a
+ * single term, consisting of either a type or a tilde followed by a type, or a
+ * union of terms.
+ *
+ *
+ * Examples:
+ *
+ * ```go
+ * int
+ * ~string
+ * int | ~string
+ * ```
+ */
+class TypeSetLiteralType extends @typesetliteraltype, CompositeType {
+  /** Gets the `i`th term in this type set literal. */
+  Term getTerm(int i) { result = MkTerm(this, i) }
+
+  /** Gets a term in this type set literal. */
+  Term getATerm() { result = getTerm(_) }
+
+  /** Holds if `t` is in the type set of this type set literal. */
+  predicate hasInTypeSet(Type t) { exists(int i | this.getTerm(i).hasInTypeSet(t)) }
+
+  /**
+   * Gets the interface type specified by just this type set literal, if it
+   * exists.
+   *
+   * This will exist in cases where the type set literal is used directly as
+   * the bound in a type parameter declaration.
+   */
+  InterfaceType getInterfaceType() {
+    this = result.getExplicitlyEmbeddedTypeSetLiteral(0) and
+    not exists(result.getExplicitlyEmbeddedTypeSetLiteral(1)) and
+    not result.hasMethod(_, _) and
+    not exists(result.getAnExplicitlyEmbeddedInterface())
+  }
 
   language[monotonicAggregates]
   override string pp() {
-    exists(string meth |
+    result = concat(Term t, int i | t = this.getTerm(i) | t.pp(), " | " order by i)
+  }
+
+  override string toString() { result = "type set literal type" }
+}
+
+/** An interface type. */
+class InterfaceType extends @interfacetype, CompositeType {
+  /** Gets the type of method `name` of this interface type. */
+  Type getMethodType(string name) {
+    exists(int i | i >= 0 | component_types(this, i, name, result))
+  }
+
+  override predicate hasMethod(string m, SignatureType t) { t = this.getMethodType(m) }
+
+  /**
+   * Holds if `tp` is an explicitly embedded type with index `index`.
+   *
+   * `tp` is either a type set literal type or its underlyign type is an
+   * interface type.
+   */
+  private predicate hasExplicitlyEmbeddedType(int index, Type tp) {
+    index >= 0 and component_types(this, -(index + 1), _, tp)
+  }
+
+  /**
+   * Gets a type whose underlying type is an interface that is explicitly
+   * embedded into this interface.
+   *
+   * Note that the methods of the embedded interface are already considered
+   * as part of the method set of this interface.
+   */
+  Type getAnExplicitlyEmbeddedInterface() {
+    hasExplicitlyEmbeddedType(_, result) and result.getUnderlyingType() instanceof InterfaceType
+  }
+
+  /**
+   * Gets a type whose underlying type is an interface that is embedded into
+   * this interface.
+   *
+   * Note that the methods of the embedded interface are already considered
+   * as part of the method set of this interface.
+   */
+  Type getAnEmbeddedInterface() {
+    result = this.getAnExplicitlyEmbeddedInterface() or
+    result =
+      this.getAnExplicitlyEmbeddedInterface()
+          .getUnderlyingType()
+          .(InterfaceType)
+          .getAnEmbeddedInterface()
+  }
+
+  /**
+   * Holds if this interface type is (the underlying type of) `comparable`, or
+   * it embeds `comparable`.
+   */
+  predicate isOrEmbedsComparable() {
+    this.getAnEmbeddedInterface() instanceof ComparableType or
+    this = any(ComparableType comparable).getUnderlyingType()
+  }
+
+  /**
+   * Gets the type set literal with index `index` from the definition of this
+   * interface type.
+   *
+   * Note that the indexing includes embedded interfaces but not methods.
+   */
+  TypeSetLiteralType getExplicitlyEmbeddedTypeSetLiteral(int index) {
+    hasExplicitlyEmbeddedType(index, result)
+  }
+
+  /**
+   * Gets a type set literal of this interface type.
+   *
+   * This includes type set literals of embedded interfaces.
+   */
+  TypeSetLiteralType getAnEmbeddedTypeSetLiteral() {
+    result = this.getExplicitlyEmbeddedTypeSetLiteral(_) or
+    result =
+      getAnExplicitlyEmbeddedInterface()
+          .getUnderlyingType()
+          .(InterfaceType)
+          .getAnEmbeddedTypeSetLiteral()
+  }
+
+  language[monotonicAggregates]
+  override string pp() {
+    exists(string comp, string sep1, string ts, string sep2, string meth |
+      // Note that the interface type underlying `comparable` will be printed
+      // as `interface { comparable }`, which is not entirely accurate, but
+      // also better than anything else I can think of.
+      (if this.isOrEmbedsComparable() then comp = " comparable" else comp = "") and
+      ts =
+        concat(TypeSetLiteralType tslit |
+          tslit = this.getAnEmbeddedTypeSetLiteral()
+        |
+          " " + tslit.pp(), ";"
+        ) and
       meth =
         concat(string name, Type tp |
           tp = this.getMethodType(name)
         |
           " " + name + " " + tp.pp(), ";" order by name
-        )
+        ) and
+      (if comp != "" and ts != "" then sep1 = ";" else sep1 = "") and
+      if
+        (comp != "" or ts != "") and
+        meth != ""
+      then sep2 = ";"
+      else sep2 = ""
     |
-      result = "interface {" + meth + " }"
+      result = "interface {" + comp + sep1 + ts + sep2 + meth + " }"
     )
   }
 
   override string toString() { result = "interface type" }
 }
 
-/** An empty interface type. */
-class EmptyInterfaceType extends InterfaceType {
+/**
+ * A basic interface type.
+ *
+ * A basic interface is an interface that does not specify any type set
+ * literals, and which does not embed any non-basic interfaces. The special
+ * interface `comparable` is not a basic interface.
+ */
+class BasicInterfaceType extends InterfaceType {
+  BasicInterfaceType() {
+    not exists(this.getAnEmbeddedTypeSetLiteral()) and
+    not this.isOrEmbedsComparable()
+  }
+
+  override string toString() { result = "basic interface type" }
+}
+
+/**
+ * An empty interface type.
+ *
+ * Note that by we have to be careful to exclude the underlying type of
+ * `comparable`. This is done by extending `BasicInterfaceType`.
+ */
+class EmptyInterfaceType extends BasicInterfaceType {
   EmptyInterfaceType() { not this.hasMethod(_, _) }
+}
+
+/**
+ * The predeclared `comparable` type.
+ */
+class ComparableType extends NamedType {
+  ComparableType() { this.getName() = "comparable" }
 }
 
 /** A tuple type. */
@@ -712,12 +995,6 @@ class NamedType extends @namedtype, CompositeType {
 class ErrorType extends Type {
   ErrorType() { this.implements(Builtin::error().getType().getUnderlyingType()) }
 }
-
-/**
- * Holds if `i` is the empty interface type, which is implemented by every type with a method set.
- */
-pragma[noinline]
-private predicate isEmptyInterface(InterfaceType i) { not i.hasMethod(_, _) }
 
 /**
  * Gets the name of a method in the method set of `i`.

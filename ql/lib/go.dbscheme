@@ -284,36 +284,37 @@ case @expr.kind of
 | 22 = @functypeexpr
 | 23 = @interfacetypeexpr
 | 24 = @maptypeexpr
-| 25 = @plusexpr
-| 26 = @minusexpr
-| 27 = @notexpr
-| 28 = @complementexpr
-| 29 = @derefexpr
-| 30 = @addressexpr
-| 31 = @arrowexpr
-| 32 = @lorexpr
-| 33 = @landexpr
-| 34 = @eqlexpr
-| 35 = @neqexpr
-| 36 = @lssexpr
-| 37 = @leqexpr
-| 38 = @gtrexpr
-| 39 = @geqexpr
-| 40 = @addexpr
-| 41 = @subexpr
-| 42 = @orexpr
-| 43 = @xorexpr
-| 44 = @mulexpr
-| 45 = @quoexpr
-| 46 = @remexpr
-| 47 = @shlexpr
-| 48 = @shrexpr
-| 49 = @andexpr
-| 50 = @andnotexpr
-| 51 = @sendchantypeexpr
-| 52 = @recvchantypeexpr
-| 53 = @sendrcvchantypeexpr
-| 54 = @errorexpr;
+| 25 = @typesetliteralexpr
+| 26 = @plusexpr
+| 27 = @minusexpr
+| 28 = @notexpr
+| 29 = @complementexpr
+| 30 = @derefexpr
+| 31 = @addressexpr
+| 32 = @arrowexpr
+| 33 = @lorexpr
+| 34 = @landexpr
+| 35 = @eqlexpr
+| 36 = @neqexpr
+| 37 = @lssexpr
+| 38 = @leqexpr
+| 39 = @gtrexpr
+| 40 = @geqexpr
+| 41 = @addexpr
+| 42 = @subexpr
+| 43 = @orexpr
+| 44 = @xorexpr
+| 45 = @mulexpr
+| 46 = @quoexpr
+| 47 = @remexpr
+| 48 = @shlexpr
+| 49 = @shrexpr
+| 50 = @andexpr
+| 51 = @andnotexpr
+| 52 = @sendchantypeexpr
+| 53 = @recvchantypeexpr
+| 54 = @sendrcvchantypeexpr
+| 55 = @errorexpr;
 
 @basiclit = @intlit | @floatlit | @imaglit | @charlit | @stringlit;
 
@@ -492,7 +493,8 @@ case @type.kind of
 | 35 = @sendchantype
 | 36 = @recvchantype
 | 37 = @sendrcvchantype
-| 38 = @namedtype;
+| 38 = @namedtype
+| 39 = @typesetliteraltype;
 
 @basictype = @booltype | @numerictype | @stringtype | @literaltype | @invalidtype | @unsafepointertype;
 
@@ -516,7 +518,7 @@ case @type.kind of
              | @stringliteraltype | @nilliteraltype;
 
 @compositetype = @typeparamtype | @containertype | @structtype | @pointertype | @interfacetype | @tupletype
-               | @signaturetype | @namedtype;
+               | @signaturetype | @namedtype | @typesetliteraltype;
 
 @containertype = @arraytype | @slicetype | @maptype | @chantype;
 

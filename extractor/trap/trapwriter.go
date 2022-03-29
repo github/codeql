@@ -5,6 +5,7 @@ import (
 	"compress/gzip"
 	"errors"
 	"fmt"
+	"go/ast"
 	"go/types"
 	"io/ioutil"
 	"os"
@@ -17,13 +18,14 @@ import (
 
 // A Writer provides methods for writing data to a TRAP file
 type Writer struct {
-	zip          *gzip.Writer
-	w            *bufio.Writer
-	file         *os.File
-	Labeler      *Labeler
-	path         string
-	trapFilePath string
-	Package      *packages.Package
+	zip           *gzip.Writer
+	w             *bufio.Writer
+	file          *os.File
+	Labeler       *Labeler
+	path          string
+	trapFilePath  string
+	Package       *packages.Package
+	TypesOverride map[ast.Expr]types.Type
 }
 
 func FileFor(path string) (string, error) {
@@ -61,6 +63,7 @@ func NewWriter(path string, pkg *packages.Package) (*Writer, error) {
 		path,
 		trapFilePath,
 		pkg,
+		make(map[ast.Expr]types.Type),
 	}
 	tw.Labeler = newLabeler(tw)
 	return tw, nil

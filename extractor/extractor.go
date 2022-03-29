@@ -877,7 +877,7 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		if expr == nil {
 			return
 		}
-		if _, ok := tw.Package.TypesInfo.TypeOf(expr.X).Underlying().(*types.Signature); ok {
+		if _, ok := typeOf(tw, expr.X).Underlying().(*types.Signature); ok {
 			kind = dbscheme.GenericFunctionInstantiationExpr.Index()
 		} else {
 			// Can't distinguish between actual index expressions (into a map,
@@ -891,7 +891,7 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		if expr == nil {
 			return
 		}
-		if _, ok := tw.Package.TypesInfo.TypeOf(expr.X).Underlying().(*types.Signature); ok {
+		if _, ok := typeOf(tw, expr.X).Underlying().(*types.Signature); ok {
 			kind = dbscheme.GenericFunctionInstantiationExpr.Index()
 		} else {
 			kind = dbscheme.GenericTypeInstantiationExpr.Index()
@@ -941,23 +941,34 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		if expr == nil {
 			return
 		}
-		tp := dbscheme.UnaryExprs[expr.Op]
-		if tp == nil {
-			log.Fatalf("unsupported unary operator %s", expr.Op)
+		if expr.Op == token.TILDE {
+			kind = dbscheme.TypeSetLiteralExpr.Index()
+		} else {
+			tp := dbscheme.UnaryExprs[expr.Op]
+			if tp == nil {
+				log.Fatalf("unsupported unary operator %s", expr.Op)
+			}
+			kind = tp.Index()
 		}
-		kind = tp.Index()
 		extractExpr(tw, expr.X, lbl, 0)
 	case *ast.BinaryExpr:
 		if expr == nil {
 			return
 		}
-		tp := dbscheme.BinaryExprs[expr.Op]
-		if tp == nil {
-			log.Fatalf("unsupported binary operator %s", expr.Op)
+		_, isUnionType := typeOf(tw, expr).(*types.Union)
+		if expr.Op == token.OR && isUnionType {
+			kind = dbscheme.TypeSetLiteralExpr.Index()
+			n := flattenBinaryExprTree(tw, expr.X, lbl, 0)
+			flattenBinaryExprTree(tw, expr.Y, lbl, n)
+		} else {
+			tp := dbscheme.BinaryExprs[expr.Op]
+			if tp == nil {
+				log.Fatalf("unsupported binary operator %s", expr.Op)
+			}
+			kind = tp.Index()
+			extractExpr(tw, expr.X, lbl, 0)
+			extractExpr(tw, expr.Y, lbl, 1)
 		}
-		kind = tp.Index()
-		extractExpr(tw, expr.X, lbl, 0)
-		extractExpr(tw, expr.Y, lbl, 1)
 	case *ast.ArrayType:
 		if expr == nil {
 			return
@@ -984,6 +995,9 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 			return
 		}
 		kind = dbscheme.InterfaceTypeExpr.Index()
+		// expr.Methods contains methods, embedded interfaces and type set
+		// literals.
+		overrideTypesOfTypeSetLiterals(tw, expr.Methods)
 		extractFields(tw, expr.Methods, lbl, 0, 1)
 	case *ast.MapType:
 		if expr == nil {
@@ -1027,7 +1041,7 @@ func extractExprs(tw *trap.Writer, exprs []ast.Expr, parent trap.Label, idx int,
 // extractTypeOf looks up the type of `expr`, extracts it if it hasn't previously been
 // extracted, and associates it with `expr` in the `type_of` table
 func extractTypeOf(tw *trap.Writer, expr ast.Expr, lbl trap.Label) {
-	tp := tw.Package.TypesInfo.TypeOf(expr)
+	tp := typeOf(tw, expr)
 	if tp != nil {
 		tplbl := extractType(tw, tp)
 		dbscheme.TypeOfTable.Emit(tw, lbl, tplbl)
@@ -1421,6 +1435,13 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 
 				extractComponentType(tw, lbl, i, meth.Name(), meth.Type())
 			}
+			for i := 0; i < tp.NumEmbeddeds(); i++ {
+				component := tp.EmbeddedType(i)
+				if isNonUnionTypeSetLiteral(component) {
+					component = createUnionFromType(component)
+				}
+				extractComponentType(tw, lbl, -(i + 1), "", component)
+			}
 		case *types.Tuple:
 			kind = dbscheme.TupleType.Index()
 			for i := 0; i < tp.Len(); i++ {
@@ -1485,6 +1506,16 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 		case *types.TypeParam:
 			kind = dbscheme.TypeParamType.Index()
 			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), extractType(tw, tp.Constraint()))
+		case *types.Union:
+			kind = dbscheme.TypeSetLiteral.Index()
+			for i := 0; i < tp.Len(); i++ {
+				term := tp.Term(i)
+				tildeStr := ""
+				if term.Tilde() {
+					tildeStr = "~"
+				}
+				extractComponentType(tw, lbl, i, tildeStr, term.Type())
+			}
 		default:
 			log.Fatalf("unexpected type %T", tp)
 		}
@@ -1544,6 +1575,19 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 				}
 				fmt.Fprintf(&b, "%s,{%s}", meth.Id(), methLbl)
 			}
+			b.WriteString(";")
+			for i := 0; i < tp.NumEmbeddeds(); i++ {
+				if i > 0 {
+					b.WriteString(",")
+				}
+				fmt.Fprintf(&b, "{%s}", extractType(tw, tp.EmbeddedType(i)))
+			}
+			// We note whether the interface is comparable so that we can
+			// distinguish the underlying type of `comparable` from an
+			// empty interface.
+			if tp.IsComparable() {
+				b.WriteString(";comparable")
+			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;interfacetype", b.String()))
 		case *types.Tuple:
 			var b strings.Builder
@@ -1600,8 +1644,20 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};namedtype", entitylbl))
 		case *types.TypeParam:
-			constraint := extractType(tw, tp.Constraint())
-			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s},{%s};typeparamtype", tp.Obj().Name(), constraint))
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s},{%s};typeparamtype", tp.Obj().Name(), extractType(tw, tp.Constraint())))
+		case *types.Union:
+			var b strings.Builder
+			for i := 0; i < tp.Len(); i++ {
+				compLbl := extractType(tw, tp.Term(i).Type())
+				if i > 0 {
+					b.WriteString("|")
+				}
+				if tp.Term(i).Tilde() {
+					b.WriteString("~")
+				}
+				fmt.Fprintf(&b, "{%s}", compLbl)
+			}
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;typesetliteraltype", b.String()))
 		default:
 			log.Fatalf("(getTypeLabel) unexpected type %T", tp)
 		}
@@ -1685,4 +1741,60 @@ func extractNumLines(tw *trap.Writer, fileName string, ast *ast.File) {
 	}
 
 	dbscheme.NumlinesTable.Emit(tw, tw.Labeler.FileLabel(), lineCount, linesOfCode, linesOfComments)
+}
+
+// For a type `t` which is the type of a field of an interface type, return
+// whether `t` a type set literal which is not a union type. Note that a field
+// of an interface must be a method signature, an embedded interface type or a
+// type set literal.
+func isNonUnionTypeSetLiteral(t types.Type) bool {
+	switch t.Underlying().(type) {
+	case *types.Interface, *types.Union, *types.Signature:
+		return false
+	default:
+		return true
+	}
+}
+
+// Given a type `t`, return a union with a single term that is `t` without a
+// tilde.
+func createUnionFromType(t types.Type) *types.Union {
+	return types.NewUnion([]*types.Term{types.NewTerm(false, t)})
+}
+
+// Go through a `FieldList` and update the types of all type set literals which
+// are not already union types to be union types. We do this by changing the
+// types stored in `tw.Package.TypesInfo.Types`.
+func overrideTypesOfTypeSetLiterals(tw *trap.Writer, fields *ast.FieldList) {
+	if fields == nil || fields.List == nil {
+		return
+	}
+	for i := 0; i < len(fields.List); i++ {
+		x := fields.List[i].Type
+		if _, alreadyOverridden := tw.TypesOverride[x]; !alreadyOverridden {
+			xtp := typeOf(tw, x)
+			if isNonUnionTypeSetLiteral(xtp) {
+				tw.TypesOverride[x] = createUnionFromType(xtp)
+			}
+		}
+	}
+}
+
+func typeOf(tw *trap.Writer, e ast.Expr) types.Type {
+	if val, ok := tw.TypesOverride[e]; ok {
+		return val
+	}
+	return tw.Package.TypesInfo.TypeOf(e)
+}
+
+func flattenBinaryExprTree(tw *trap.Writer, e ast.Expr, parent trap.Label, idx int) int {
+	binaryexpr, ok := e.(*ast.BinaryExpr)
+	if ok {
+		idx = flattenBinaryExprTree(tw, binaryexpr.X, parent, idx)
+		idx = flattenBinaryExprTree(tw, binaryexpr.Y, parent, idx)
+	} else {
+		extractExpr(tw, e, parent, idx)
+		idx = idx + 1
+	}
+	return idx
 }
