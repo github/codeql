@@ -20,7 +20,7 @@ class WebResourceResponse extends RefType {
   WebResourceResponse() { this.hasQualifiedName("android.webkit", "WebResourceResponse") }
 }
 
-/** The `shouldInterceptRequest` method of Android's `WebViewClient` class. */
+/** The `shouldInterceptRequest` method of a class implementing `WebViewClient`. */
 class ShouldInterceptRequestMethod extends Method {
   ShouldInterceptRequestMethod() {
     this.hasName("shouldInterceptRequest") and
@@ -28,7 +28,7 @@ class ShouldInterceptRequestMethod extends Method {
   }
 }
 
-/** A method call to `setWebViewClient` of `WebView`. */
+/** A method call to `WebView.setWebViewClient`. */
 class SetWebViewClientMethodAccess extends MethodAccess {
   SetWebViewClientMethodAccess() {
     this.getMethod().hasName("setWebViewClient") and
@@ -75,7 +75,6 @@ private class LoadUrlSummaries extends SummaryModelCsv {
     row =
       [
         "java.io;FileInputStream;true;FileInputStream;;;Argument[0];Argument[-1];taint",
-        "android.net;Uri;false;getPath;;;Argument[0];ReturnValue;taint",
         "android.webkit;WebResourceRequest;false;getUrl;;;Argument[-1];ReturnValue;taint"
       ]
   }

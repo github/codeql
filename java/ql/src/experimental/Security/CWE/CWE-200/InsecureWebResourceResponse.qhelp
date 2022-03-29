@@ -5,7 +5,7 @@
 <overview>
 <p>Android provides a <code>WebResourceResponse</code> class, which allows an Android application to behave
 as a web server by handling requests of popular protocols such as <code>http(s)</code>, <code>file</code>,
-as well as <code>javascript</code>; and returning a response (including status code, content type, content
+as well as <code>javascript</code> and returning a response (including status code, content type, content
 encoding, headers and the response body). Improper implementation with insufficient input validation can lead
 to leakage of sensitive configuration files or user data because requests could refer to paths intended to be
 application-private.
