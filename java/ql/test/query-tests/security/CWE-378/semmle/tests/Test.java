@@ -215,7 +215,7 @@ public class Test {
             throw new IOException("Could not delete temp file: " + workDir.getAbsolutePath());
         }
         ensureDirectory(workDir);
-        return temp;
+        return workDir;
     }
     
     private static void ensureDirectory(File dir) throws IOException {
@@ -229,5 +229,52 @@ public class Test {
         temp.delete();
         temp.mkdir();
         return temp;
+    }
+
+    File vulnerable6() throws IOException {
+        File temp = new File(System.getProperty("java.io.tmpdir"));
+        ensureDirectoryReversed(temp);
+        File workDir = File.createTempFile("test", "directory", temp);
+        if (!workDir.delete()) {
+            throw new IOException("Could not delete temp file: " + workDir.getAbsolutePath());
+        }
+        ensureDirectoryReversed(workDir);
+        return workDir;
+    }
+
+    private static void ensureDirectoryReversed(File dir) throws IOException {
+        // If the directory already exists, don't create it. If it's not, create it.
+        // Note: this is still vulnerable because the race condition still exists
+        if (!(dir.isDirectory() || dir.mkdirs())) {
+            throw new IOException("Mkdirs failed to create " + dir.toString());
+        }
+    }
+
+    File vulnerable7() throws IOException {
+        File temp = new File(System.getProperty("java.io.tmpdir"));
+        mkdirsWrapper(temp);
+        File workDir = File.createTempFile("test", "directory", temp);
+        workDir.delete();
+        mkdirsWrapper(workDir);
+        return workDir;
+    }
+
+    static void mkdirsWrapper(File file) {
+        file.mkdirs();
+    }
+
+    File safe16() throws IOException {
+        File temp = new File(System.getProperty("java.io.tmpdir"));
+        mkdirsWrapperSafe(temp);
+        File workDir = File.createTempFile("test", "directory", temp);
+        workDir.delete();
+        mkdirsWrapperSafe(workDir);
+        return workDir;
+    }
+
+    static void mkdirsWrapperSafe(File file) throws IOException {
+        if(!file.mkdirs()) {
+            throw new IOException("Mkdirs failed to create " + file.toString());
+        }
     }
 }
