@@ -55,15 +55,13 @@ private class FetchUrlStep extends AdditionalValueStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(
       // webview.loadUrl(url) -> webview.setWebViewClient(new WebViewClient() { shouldInterceptRequest(view, url) });
-      WebViewLoadUrlMethod lm, ShouldInterceptRequestMethod im, SetWebViewClientMethodAccess sma
+      MethodAccess lma, ShouldInterceptRequestMethod im, SetWebViewClientMethodAccess sma
     |
       sma.getArgument(0).getType() = im.getDeclaringType().getASupertype*() and
-      exists(MethodAccess lma |
-        lma.getMethod() = lm and
-        lma.getQualifier().getType() = sma.getQualifier().getType() and
-        pred.asExpr() = lma.getArgument(0) and
-        succ.asParameter() = im.getParameter(1)
-      )
+      lma.getMethod() instanceof WebViewLoadUrlMethod and
+      lma.getQualifier().getType() = sma.getQualifier().getType() and
+      pred.asExpr() = lma.getArgument(0) and
+      succ.asParameter() = im.getParameter(1)
     )
   }
 }
