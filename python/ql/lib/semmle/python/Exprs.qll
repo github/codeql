@@ -189,7 +189,16 @@ class Call extends Call_ {
    */
   Keyword getKeyword(int index) {
     result = this.getNamedArg(index) and
-    not exists(DictUnpacking d, int lower | d = this.getNamedArg(lower) and lower < index)
+    (
+      not exists(this.getMinimumUnpackingIndex())
+      or
+      index <= this.getMinimumUnpackingIndex()
+    )
+  }
+
+  /** Gets the minimum index (if any) at which a dictionary unpacking (`**foo`) occurs in this call. */
+  private int getMinimumUnpackingIndex() {
+    result = min(int i | this.getNamedArg(i) instanceof DictUnpacking)
   }
 
   /**
