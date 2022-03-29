@@ -3116,6 +3116,64 @@ private module StdlibPrivate {
       result in [this.getArg(0), this.getArgByName("path")]
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // io
+  // ---------------------------------------------------------------------------
+  /**
+   * Provides models for the `io.StringIO`/`io.BytesIO` classes
+   *
+   * See https://docs.python.org/3.10/library/io.html#io.StringIO.
+   */
+  module StringIO {
+    /** Gets a reference to the `io.StringIO` class. */
+    private API::Node classRef() {
+      result = API::moduleImport("io").getMember(["StringIO", "BytesIO"])
+    }
+
+    /**
+     * A source of instances of `io.StringIO`/`io.BytesIO`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `StringIO::instance()` to get references to instances of `io.StringIO`.
+     */
+    abstract class InstanceSource extends Stdlib::FileLikeObject::InstanceSource { }
+
+    /** A direct instantiation of `io.StringIO`/`io.BytesIO`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+
+      DataFlow::Node getInitialValue() {
+        result = this.getArg(0)
+        or
+        // `initial_value` for StringIO, `initial_bytes` for BytesIO
+        result = this.getArgByName(["initial_value", "initial_bytes"])
+      }
+    }
+
+    /** Gets a reference to an instance of `io.StringIO`/`io.BytesIO`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `io.StringIO`/`io.BytesIO`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Extra taint propagation for `io.StringIO`/`io.BytesIO`.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        nodeTo.(ClassInstantiation).getInitialValue() = nodeFrom
+      }
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
