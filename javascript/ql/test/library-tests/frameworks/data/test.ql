@@ -37,6 +37,7 @@ class Sinks extends ModelInput::SinkModelCsv {
         "testlib;;Member[FieldDecoratorSink].DecoratedMember;test-sink",
         "testlib;;Member[MethodDecorator].DecoratedMember.ReturnValue;test-sink",
         "testlib;;Member[MethodDecoratorWithArgs].ReturnValue.DecoratedMember.ReturnValue;test-sink",
+        "testlib;;Member[ParamDecoratorSink].DecoratedParameter;test-sink",
       ]
   }
 }
@@ -48,7 +49,7 @@ class Sources extends ModelInput::SourceModelCsv {
         "testlib;;Member[getSource].ReturnValue;test-source",
         "testlib;;Member[ClassDecorator].DecoratedClass.Instance.Member[inputIsSource].Parameter[0];test-source",
         "testlib;;Member[FieldDecoratorSource].DecoratedMember;test-source",
-        "testlib;;Member[ParamDecorator].DecoratedParameter;test-source",
+        "testlib;;Member[ParamDecoratorSource].DecoratedParameter;test-source",
         "testlib;;Member[MethodDecorator].DecoratedMember.Parameter[0];test-source",
         "testlib;;Member[MethodDecoratorWithArgs].ReturnValue.DecoratedMember.Parameter[0];test-source",
       ]
