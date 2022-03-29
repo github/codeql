@@ -19,13 +19,6 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
   (
     exists(EndPointFeature f | f.getEncoding() = featureName and result = f.getValue(endpoint))
     or
-    result =
-      strictconcat(DataFlow::CallNode call, string component |
-        component = getACallBasedTokenFeatureComponent(endpoint, call, featureName)
-      |
-        component, " "
-      )
-    or
     // The access path of the function being called, both with and without structural info, if the
     // function being called originates from an external API. For example, the endpoint here:
     //
@@ -53,52 +46,6 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
         |
           accessPath, " "
         )
-    )
-  )
-}
-
-/**
- * Gets a value of the function-call-related token-based feature named `featureName` associated
- * with the function call `call` and the endpoint `endpoint`.
- *
- * This may in general report multiple strings, each containing a space-separated list of tokens.
- *
- * **Technical details:** This predicate can have multiple values per endpoint and feature name. As
- * a result, the results from this predicate must be concatenated together.  However concatenating
- * other features like the function body tokens is expensive, so for performance reasons we separate
- * out this predicate from those other features.
- */
-private string getACallBasedTokenFeatureComponent(
-  DataFlow::Node endpoint, DataFlow::CallNode call, string featureName
-) {
-  // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
-  endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
-  // Features for endpoints that are an argument to a function call.
-  endpoint = call.getAnArgument() and
-  (
-    // The name of the function being called, e.g. in a call `Artist.findOne(...)`, this is `findOne`.
-    featureName = "calleeName" and result = call.getCalleeName()
-    or
-    // The name of the receiver of the call, e.g. in a call `Artist.findOne(...)`, this is `Artist`.
-    featureName = "receiverName" and result = call.getReceiver().asExpr().(VarRef).getName()
-    or
-    // The argument index of the endpoint, e.g. in `f(a, endpoint, b)`, this is 1.
-    featureName = "argumentIndex" and
-    result = any(int argIndex | call.getArgument(argIndex) = endpoint).toString()
-    or
-    // The name of the API that the function being called originates from, if the function being
-    // called originates from an external API. For example, the endpoint here:
-    //
-    // ```js
-    // const mongoose = require('mongoose'),
-    //   User = mongoose.model('User', null);
-    // User.findOne(ENDPOINT);
-    // ```
-    //
-    // would have a callee API name of `mongoose`.
-    featureName = "calleeApiName" and
-    exists(API::Node apiNode |
-      AccessPaths::accessPaths(apiNode, false, _, result) and call = apiNode.getInducingNode()
     )
   )
 }
@@ -321,8 +268,10 @@ class CalleeName extends EndPointFeature, TCalleeName {
   override string getEncoding() { result = "calleeName" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // TODO implement
-    none()
+    // The name of the function being called, e.g. in a call `Artist.findOne(...)`, this is `findOne`.
+    exists(DataFlow::CallNode call | endpoint = call.getAnArgument() |
+      result = strictconcat(string component | component = call.getCalleeName() | component, " ")
+    )
   }
 }
 
@@ -330,8 +279,15 @@ class ReceiverName extends EndPointFeature, TReceiverName {
   override string getEncoding() { result = "receiverName" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // TODO implement
-    none()
+    // The name of the receiver of the call, e.g. in a call `Artist.findOne(...)`, this is `Artist`.
+    exists(DataFlow::CallNode call | endpoint = call.getAnArgument() |
+      result =
+        strictconcat(string component |
+          component = call.getReceiver().asExpr().(VarRef).getName()
+        |
+          component, " "
+        )
+    )
   }
 }
 
@@ -339,8 +295,15 @@ class ArgumentIndex extends EndPointFeature, TArgumentIndex {
   override string getEncoding() { result = "argumentIndex" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // TODO implement
-    none()
+    // The argument index of the endpoint, e.g. in `f(a, endpoint, b)`, this is 1.
+    exists(DataFlow::CallNode call | endpoint = call.getAnArgument() |
+      result =
+        strictconcat(string component |
+          component = any(int argIndex | call.getArgument(argIndex) = endpoint).toString()
+        |
+          component, " "
+        )
+    )
   }
 }
 
@@ -348,8 +311,26 @@ class CalleeApiName extends EndPointFeature, TCalleeApiName {
   override string getEncoding() { result = "calleeApiName" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // TODO implement
-    none()
+    // The name of the API that the function being called originates from, if the function being
+    // called originates from an external API. For example, the endpoint here:
+    //
+    // ```js
+    // const mongoose = require('mongoose'),
+    //   User = mongoose.model('User', null);
+    // User.findOne(ENDPOINT);
+    // ```
+    //
+    // would have a callee API name of `mongoose`.
+    exists(API::Node apiNode |
+      endpoint = apiNode.getInducingNode().(DataFlow::CallNode).getAnArgument()
+    |
+      result =
+        strictconcat(string component |
+          AccessPaths::accessPaths(apiNode, false, _, component)
+        |
+          component, " "
+        )
+    )
   }
 }
 
@@ -357,8 +338,13 @@ class CalleeAccessPath extends EndPointFeature, TCalleeAccessPath {
   override string getEncoding() { result = "calleeAccessPath" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // TODO implement
-    none()
+    result =
+      concat(API::Node node, string accessPath |
+        node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
+        AccessPaths::accessPaths(node, false, accessPath, _)
+      |
+        accessPath, " "
+      )
   }
 }
 
@@ -367,8 +353,13 @@ class CalleeAccessPathWithStructuralInfo extends EndPointFeature,
   override string getEncoding() { result = "calleeAccessPathWithStructuralInfo" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // TODO implement
-    none()
+    result =
+      concat(API::Node node, string accessPath |
+        node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
+        AccessPaths::accessPaths(node, true, accessPath, _)
+      |
+        accessPath, " "
+      )
   }
 }
 
