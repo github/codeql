@@ -10,7 +10,7 @@ private import RegexFlowModels
 private import semmle.code.java.security.SecurityTests
 
 private class ExploitableStringLiteral extends StringLiteral {
-  ExploitableStringLiteral() { this.getValue().matches(["%+%", "%*%"]) }
+  ExploitableStringLiteral() { this.getValue().matches(["%+%", "%*%", "%{%}%"]) }
 }
 
 private class RegexCompileFlowConf extends DataFlow2::Configuration {
@@ -32,6 +32,9 @@ private class RegexCompileFlowConf extends DataFlow2::Configuration {
 /**
  * Holds if `s` is used as a regex, with the mode `mode` (if known).
  * If regex mode is not known, `mode` will be `"None"`.
+ *
+ * As an optimisation, only regexes containing an infinite repitition quatifier (`+`, `*`, or `{x,}`)
+ * and therefore may be relevant for ReDoS queries are considered.
  */
 predicate usedAsRegex(StringLiteral s, string mode, boolean match_full_string) {
   exists(DataFlow::Node sink |
@@ -224,6 +227,9 @@ private class RegexMatchFlowConf extends DataFlow2::Configuration {
 
 /**
  * Holds if the string literal `regex` is a regular expression that is matched against the expression `str`.
+ *
+ * As an optimisation, only regexes containing an infinite repitition quatifier (`+`, `*`, or `{x,}`)
+ * and therefore may be relevant for ReDoS queries are considered.
  */
 predicate regexMatchedAgainst(StringLiteral regex, Expr str) {
   exists(

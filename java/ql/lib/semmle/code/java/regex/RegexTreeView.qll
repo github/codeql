@@ -71,7 +71,12 @@ class RegExpParent extends TRegExpParent {
   abstract Regex getRegex();
 }
 
-/** A string literal used as a regular expression */
+/**
+ * A string literal used as a regular expression.
+ *
+ * As an optimisation, only regexes containing an infinite repitition quatifier (`+`, `*`, or `{x,}`)
+ * and therefore may be relevant for ReDoS queries are considered.
+ */
 class RegExpLiteral extends TRegExpLiteral, RegExpParent {
   Regex re;
 
