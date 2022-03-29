@@ -34,7 +34,7 @@ module Raw {
 
   cached
   predicate functionHasIR(Function func) { exists(getTranslatedFunction(func)) }
-  
+
   cached
   predicate varHasIRFunc(GlobalOrNamespaceVariable var) { any() } // TODO: restrict?
 

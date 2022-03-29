@@ -9,9 +9,7 @@ class OpaqueTypeTag = CSharp::ValueOrRefType;
 class Function = CSharp::Callable;
 
 class GlobalVariable extends CSharp::Field {
-  GlobalVariable() {
-    this.isStatic()
-  }
+  GlobalVariable() { this.isStatic() }
 }
 
 class Declaration = CSharp::Declaration;
