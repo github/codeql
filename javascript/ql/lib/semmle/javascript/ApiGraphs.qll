@@ -847,8 +847,8 @@ module API {
      * Since fields do not have their own data-flow nodes, we generate a node for each read or write.
      * For property writes, the right-hand side becomes a def-node and property reads become use-nodes.
      *
-     * For accessors this predicate computes each use of the accessor. 
-     * The return value inside the accessor is computed by the `decoratorRhsEdge` predicate. 
+     * For accessors this predicate computes each use of the accessor.
+     * The return value inside the accessor is computed by the `decoratorRhsEdge` predicate.
      */
     private predicate decoratorPropEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::PropRef ref) {
       exists(MemberDefinition fieldLike, DataFlow::ClassNode cls |
