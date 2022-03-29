@@ -1036,13 +1036,13 @@ open class KotlinUsesExtractor(
         }
     }
 
-    fun useValueDeclaration(d: IrValueDeclaration): Label<out DbVariable> =
+    fun useValueDeclaration(d: IrValueDeclaration): Label<out DbVariable>? =
         when(d) {
             is IrValueParameter -> useValueParameter(d, null)
             is IrVariable -> useVariable(d)
             else -> {
                 logger.error("Unrecognised IrValueDeclaration: " + d.javaClass)
-                fakeLabel()
+                null
             }
         }
 

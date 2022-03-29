@@ -2401,7 +2401,9 @@ open class KotlinFileExtractor(
                             useValueParameter(owner, useFunction(owner.parent as IrFunction))
                         else
                             useValueDeclaration(owner)
-                        tw.writeVariableBinding(id, vId)
+                        if (vId != null) {
+                            tw.writeVariableBinding(id, vId)
+                        }
                     }
                 }
                 is IrGetField -> {
@@ -2489,7 +2491,9 @@ open class KotlinFileExtractor(
                             tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, id, 0)
                             tw.writeExprsKotlinType(lhsId, lhsType.kotlinResult.id)
                             val vId = useValueDeclaration(e.symbol.owner)
-                            tw.writeVariableBinding(lhsId, vId)
+                            if (vId != null) {
+                                tw.writeVariableBinding(lhsId, vId)
+                            }
                             extractExpressionExpr(inPlaceUpdateRhs ?: rhsValue, callable, id, 1, exprParent.enclosingStmt)
                         }
                         is IrSetField -> {
