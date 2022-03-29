@@ -813,12 +813,6 @@ module API {
         lbl = Label::decoratedMember() and
         ref = DataFlow::valueNode(method.getBody())
       )
-      or
-      exists(Parameter param |
-        useNodeFlowsToDecorator(base, param.getADecorator()) and
-        lbl = Label::decoratedParameter() and
-        ref = DataFlow::parameterNode(param)
-      )
     }
 
     /** Holds if `ref` is a use that should have an incoming edge from `base` labelled `lbl`, induced by a decorator. */
@@ -828,6 +822,12 @@ module API {
           [accessor.getADecorator(), accessor.getCorrespondingGetter().getADecorator()]) and
         lbl = Label::decoratedMember() and
         ref = DataFlow::parameterNode(accessor.getBody().getParameter(0))
+      )
+      or
+      exists(Parameter param |
+        useNodeFlowsToDecorator(base, param.getADecorator()) and
+        lbl = Label::decoratedParameter() and
+        ref = DataFlow::parameterNode(param)
       )
     }
 
