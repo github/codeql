@@ -794,7 +794,7 @@ module API {
     }
 
     /**
-     * Holds if `ref` is both a use and def-node that should an incoming edge from `base` labelled `lbl`.
+     * Holds if `ref` corresponds to both a use and def-node that should have an incoming edge from `base` labelled `lbl`.
      *
      * This happens because the decorated value escapes into the decorator function, and is then replaced
      * by the function's return value. In the JS analysis we generally assume decorators return their input,
@@ -847,8 +847,8 @@ module API {
      * Since fields do not have their own data-flow nodes, we generate a node for each read or write.
      * For property writes, the right-hand side becomes a def-node and property reads become use-nodes.
      *
-     * For accessors, we generate nodes both internally in the accessor, and for each use of the accessor. This
-     * predicate only gets the uses.
+     * For accessors this predicate computes each use of the accessor. 
+     * The return value inside the accessor is computed by the `decoratorRhsEdge` predicate. 
      */
     private predicate decoratorPropEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::PropRef ref) {
       exists(MemberDefinition fieldLike, DataFlow::ClassNode cls |
