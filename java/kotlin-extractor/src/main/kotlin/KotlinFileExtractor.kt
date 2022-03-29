@@ -175,7 +175,7 @@ open class KotlinFileExtractor(
             tp.superTypes.forEachIndexed { boundIdx, bound ->
                 if(!(bound.isAny() || bound.isNullableAny())) {
                     tw.getLabelFor<DbTypebound>("@\"bound;$boundIdx;{$id}\"") {
-                        tw.writeTypeBounds(it, useType(bound).javaResult.id as Label<out DbReftype>, boundIdx, id)
+                        tw.writeTypeBounds(it, useType(bound).javaResult.id.cast<DbReftype>(), boundIdx, id)
                     }
                 }
             }
@@ -380,7 +380,7 @@ open class KotlinFileExtractor(
 
                 extractEnclosingClass(c, id, locId, listOf())
 
-                c.typeParameters.mapIndexed { idx, it -> extractTypeParameter(it, idx) }
+                c.typeParameters.mapIndexed { idx, param -> extractTypeParameter(param, idx) }
                 if (extractDeclarations) {
                     c.declarations.map { extractDeclaration(it) }
                     if (extractStaticInitializer)
@@ -665,13 +665,13 @@ open class KotlinFileExtractor(
                         else -> f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString()
                     }
                     val constrId = id.cast<DbConstructor>()
-                    tw.writeConstrs(constrId, shortName, "$shortName$paramsSignature", unitType.javaResult.id, parentId, sourceDeclaration as Label<DbConstructor>)
+                    tw.writeConstrs(constrId, shortName, "$shortName$paramsSignature", unitType.javaResult.id, parentId, sourceDeclaration.cast<DbConstructor>())
                     tw.writeConstrsKotlinType(constrId, unitType.kotlinResult.id)
                 } else {
                     val returnType = useType(substReturnType, TypeContext.RETURN)
                     val shortName = getFunctionShortName(f)
                     val methodId = id.cast<DbMethod>()
-                    tw.writeMethods(methodId, shortName, "$shortName$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration as Label<DbMethod>)
+                    tw.writeMethods(methodId, shortName, "$shortName$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration.cast<DbMethod>())
                     tw.writeMethodsKotlinType(methodId, returnType.kotlinResult.id)
                 }
 
@@ -934,14 +934,14 @@ open class KotlinFileExtractor(
 
                     // Getter:
                     extractStatement(s.getter, callable, blockId, 1)
-                    val l = getLocallyVisibleFunctionLabels(s.getter).function
-                    tw.writeKtPropertyGetters(propId, l)
+                    val getterLabel = getLocallyVisibleFunctionLabels(s.getter).function
+                    tw.writeKtPropertyGetters(propId, getterLabel)
 
                     val setter = s.setter
                     if (setter != null) {
                         extractStatement(setter, callable, blockId, 2)
-                        val l = getLocallyVisibleFunctionLabels(setter).function
-                        tw.writeKtPropertySetters(propId, l)
+                        val setterLabel = getLocallyVisibleFunctionLabels(setter).function
+                        tw.writeKtPropertySetters(propId, setterLabel)
                     }
                 }
                 else -> {
@@ -2008,16 +2008,16 @@ open class KotlinFileExtractor(
                     updateRhs.getValueArgument(0)
                 } else null
             } else null
-        } ?: null
+        }
     }
 
     fun writeUpdateInPlaceExpr(origin: IrStatementOrigin, tw: TrapWriter, id: Label<DbAssignexpr>, type: TypeResults, exprParent: ExprParent): Boolean {
         when(origin) {
-            IrStatementOrigin.PLUSEQ -> tw.writeExprs_assignaddexpr(id as Label<DbAssignaddexpr>, type.javaResult.id, exprParent.parent, exprParent.idx)
-            IrStatementOrigin.MINUSEQ -> tw.writeExprs_assignsubexpr(id as Label<DbAssignsubexpr>, type.javaResult.id, exprParent.parent, exprParent.idx)
-            IrStatementOrigin.MULTEQ -> tw.writeExprs_assignmulexpr(id as Label<DbAssignmulexpr>, type.javaResult.id, exprParent.parent, exprParent.idx)
-            IrStatementOrigin.DIVEQ -> tw.writeExprs_assigndivexpr(id as Label<DbAssigndivexpr>, type.javaResult.id, exprParent.parent, exprParent.idx)
-            IrStatementOrigin.PERCEQ -> tw.writeExprs_assignremexpr(id as Label<DbAssignremexpr>, type.javaResult.id, exprParent.parent, exprParent.idx)
+            IrStatementOrigin.PLUSEQ -> tw.writeExprs_assignaddexpr(id.cast<DbAssignaddexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
+            IrStatementOrigin.MINUSEQ -> tw.writeExprs_assignsubexpr(id.cast<DbAssignsubexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
+            IrStatementOrigin.MULTEQ -> tw.writeExprs_assignmulexpr(id.cast<DbAssignmulexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
+            IrStatementOrigin.DIVEQ -> tw.writeExprs_assigndivexpr(id.cast<DbAssigndivexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
+            IrStatementOrigin.PERCEQ -> tw.writeExprs_assignremexpr(id.cast<DbAssignremexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
             else -> return false
         }
         return true
@@ -2686,7 +2686,7 @@ open class KotlinFileExtractor(
     }
 
     private open inner class GeneratedClassHelper(protected val locId: Label<DbLocation>, protected val ids: GeneratedClassLabels) {
-        protected val classId = ids.type.javaResult.id as Label<out DbClass>
+        protected val classId = ids.type.javaResult.id.cast<DbClass>()
 
         fun writeExpressionMetadataToTrapFile(id: Label<out DbExpr>, callable: Label<out DbCallable>, stmt: Label<out DbStmt>) {
             tw.writeHasLocation(id, locId)
@@ -2710,20 +2710,20 @@ open class KotlinFileExtractor(
             stmtIdx: Int
         ) {
             val paramId = tw.getFreshIdLabel<DbParam>()
-            val paramType = extractValueParameter(paramId, paramType, paramName, locId, ids.constructor, paramIdx, null, paramId, false)
+            val paramTypeRes = extractValueParameter(paramId, paramType, paramName, locId, ids.constructor, paramIdx, null, paramId, false)
 
             val assignmentStmtId = tw.getFreshIdLabel<DbExprstmt>()
             tw.writeStmts_exprstmt(assignmentStmtId, ids.constructorBlock, stmtIdx, ids.constructor)
             tw.writeHasLocation(assignmentStmtId, locId)
 
             val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
-            tw.writeExprs_assignexpr(assignmentId, paramType.javaResult.id, assignmentStmtId, 0)
-            tw.writeExprsKotlinType(assignmentId, paramType.kotlinResult.id)
+            tw.writeExprs_assignexpr(assignmentId, paramTypeRes.javaResult.id, assignmentStmtId, 0)
+            tw.writeExprsKotlinType(assignmentId, paramTypeRes.kotlinResult.id)
             writeExpressionMetadataToTrapFile(assignmentId, ids.constructor, assignmentStmtId)
 
             val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-            tw.writeExprs_varaccess(lhsId, paramType.javaResult.id, assignmentId, 0)
-            tw.writeExprsKotlinType(lhsId, paramType.kotlinResult.id)
+            tw.writeExprs_varaccess(lhsId, paramTypeRes.javaResult.id, assignmentId, 0)
+            tw.writeExprsKotlinType(lhsId, paramTypeRes.kotlinResult.id)
             tw.writeVariableBinding(lhsId, fieldId)
             writeExpressionMetadataToTrapFile(lhsId, ids.constructor, assignmentStmtId)
 
@@ -2733,8 +2733,8 @@ open class KotlinFileExtractor(
             writeExpressionMetadataToTrapFile(thisId, ids.constructor, assignmentStmtId)
 
             val rhsId = tw.getFreshIdLabel<DbVaraccess>()
-            tw.writeExprs_varaccess(rhsId, paramType.javaResult.id, assignmentId, 1)
-            tw.writeExprsKotlinType(rhsId, paramType.kotlinResult.id)
+            tw.writeExprs_varaccess(rhsId, paramTypeRes.javaResult.id, assignmentId, 1)
+            tw.writeExprsKotlinType(rhsId, paramTypeRes.kotlinResult.id)
             tw.writeVariableBinding(rhsId, paramId)
             writeExpressionMetadataToTrapFile(rhsId, ids.constructor, assignmentStmtId)
         }
