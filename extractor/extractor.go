@@ -363,6 +363,15 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 		obj := scope.Lookup(name)
 		lbl, exists := tw.Labeler.ScopedObjectID(obj, func() trap.Label { return extractType(tw, obj.Type()) })
 		if !exists {
+			if funcObj, ok := obj.(*types.Func); ok {
+				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).TypeParams(), lbl)
+				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).RecvTypeParams(), lbl)
+			}
+			if typeNameObj, ok := obj.(*types.TypeName); ok {
+				if tp, ok := typeNameObj.Type().(*types.Named); ok {
+					populateTypeParamParents(tw, tp.TypeParams(), lbl)
+				}
+			}
 			extractObject(tw, obj, lbl)
 		}
 
@@ -378,10 +387,14 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
 	// get the receiver type of the method
 	recvtyp := meth.Type().(*types.Signature).Recv().Type()
-	recvlbl := extractType(tw, recvtyp) // ensure receiver type has been extracted
+	// ensure receiver type has been extracted
+	recvlbl := extractType(tw, recvtyp)
+
 	// if the method label does not exist, extract it
 	methlbl, exists := tw.Labeler.MethodID(meth, recvlbl)
 	if !exists {
+		populateTypeParamParents(tw, meth.Type().(*types.Signature).TypeParams(), methlbl)
+		populateTypeParamParents(tw, meth.Type().(*types.Signature).RecvTypeParams(), methlbl)
 		extractObject(tw, meth, methlbl)
 	}
 
@@ -1512,7 +1525,12 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			}
 		case *types.TypeParam:
 			kind = dbscheme.TypeParamType.Index()
-			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), extractType(tw, tp.Constraint()))
+			parentlbl, exists := tw.TypeParamParent[tp]
+			if !exists {
+				log.Fatalf("Parent of type parameter does not exist: %s", tp.String())
+			}
+			constraintLabel := extractType(tw, tp.Constraint())
+			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), constraintLabel, parentlbl, tp.Index())
 		case *types.Union:
 			kind = dbscheme.TypeSetLiteral.Index()
 			for i := 0; i < tp.Len(); i++ {
@@ -1651,7 +1669,8 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};namedtype", entitylbl))
 		case *types.TypeParam:
-			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s},{%s};typeparamtype", tp.Obj().Name(), extractType(tw, tp.Constraint())))
+			parentlbl := tw.TypeParamParent[tp]
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%s;typeparamtype", parentlbl, tp.Obj().Name()))
 		case *types.Union:
 			var b strings.Builder
 			for i := 0; i < tp.Len(); i++ {
@@ -1826,5 +1845,14 @@ func extractTypeParamDecls(tw *trap.Writer, fields *ast.FieldList, parent trap.L
 		extractExpr(tw, field.Type, lbl, 0)
 		extractDoc(tw, field.Doc, lbl)
 		idx += 1
+	}
+}
+
+// populateTypeParamParents sets `parentlbl` as the parent of the elements of `typeparams`
+func populateTypeParamParents(tw *trap.Writer, typeparams *types.TypeParamList, parentlbl trap.Label) {
+	if typeparams != nil {
+		for idx := 0; idx < typeparams.Len(); idx++ {
+			tw.TypeParamParent[typeparams.At(idx)] = parentlbl
+		}
 	}
 }

@@ -18,14 +18,15 @@ import (
 
 // A Writer provides methods for writing data to a TRAP file
 type Writer struct {
-	zip           *gzip.Writer
-	w             *bufio.Writer
-	file          *os.File
-	Labeler       *Labeler
-	path          string
-	trapFilePath  string
-	Package       *packages.Package
-	TypesOverride map[ast.Expr]types.Type
+	zip             *gzip.Writer
+	w               *bufio.Writer
+	file            *os.File
+	Labeler         *Labeler
+	path            string
+	trapFilePath    string
+	Package         *packages.Package
+	TypesOverride   map[ast.Expr]types.Type
+	TypeParamParent map[*types.TypeParam]Label
 }
 
 func FileFor(path string) (string, error) {
@@ -64,6 +65,7 @@ func NewWriter(path string, pkg *packages.Package) (*Writer, error) {
 		trapFilePath,
 		pkg,
 		make(map[ast.Expr]types.Type),
+		make(map[*types.TypeParam]Label),
 	}
 	tw.Labeler = newLabeler(tw)
 	return tw, nil
