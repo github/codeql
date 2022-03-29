@@ -21,7 +21,7 @@ class XmlParsingTest extends InlineExpectationsTest {
         tag = "input"
       )
       or
-      exists(XML::XMLVulnerabilityKind kind |
+      exists(XML::XMLParsingVulnerabilityKind kind |
         parsing.vulnerableTo(kind) and
         location = parsing.getLocation() and
         element = parsing.toString() and

@@ -556,8 +556,8 @@ module XML {
    *
    * See overview of kinds at https://pypi.org/project/defusedxml/#python-xml-libraries
    */
-  class XMLVulnerabilityKind extends string {
-    XMLVulnerabilityKind() {
+  class XMLParsingVulnerabilityKind extends string {
+    XMLParsingVulnerabilityKind() {
       this in ["Billion Laughs", "Quadratic Blowup", "XXE", "DTD retrieval"]
     }
 
@@ -589,7 +589,7 @@ module XML {
     /**
      * Holds if this XML parsing is vulnerable to `kind`.
      */
-    predicate vulnerableTo(XMLVulnerabilityKind kind) { super.vulnerableTo(kind) }
+    predicate vulnerableTo(XMLParsingVulnerabilityKind kind) { super.vulnerableTo(kind) }
   }
 
   /** Provides classes for modeling XML parsing APIs. */
@@ -609,7 +609,7 @@ module XML {
       /**
        * Holds if this XML parsing is vulnerable to `kind`.
        */
-      abstract predicate vulnerableTo(XMLVulnerabilityKind kind);
+      abstract predicate vulnerableTo(XMLParsingVulnerabilityKind kind);
     }
   }
 }
