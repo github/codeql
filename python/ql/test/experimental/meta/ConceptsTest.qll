@@ -539,3 +539,30 @@ class HttpClientRequestTest extends InlineExpectationsTest {
     )
   }
 }
+
+class XmlParsingTest extends InlineExpectationsTest {
+  XmlParsingTest() { this = "XmlParsingTest" }
+
+  override string getARelevantTag() { result in ["xmlInput", "xmlVuln"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(XML::XMLParsing parsing |
+      exists(DataFlow::Node input |
+        input = parsing.getAnInput() and
+        location = input.getLocation() and
+        element = input.toString() and
+        value = prettyNodeForInlineTest(input) and
+        tag = "xmlInput"
+      )
+      or
+      exists(XML::XMLParsingVulnerabilityKind kind |
+        parsing.vulnerableTo(kind) and
+        location = parsing.getLocation() and
+        element = parsing.toString() and
+        value = "'" + kind + "'" and
+        tag = "xmlVuln"
+      )
+    )
+  }
+}
