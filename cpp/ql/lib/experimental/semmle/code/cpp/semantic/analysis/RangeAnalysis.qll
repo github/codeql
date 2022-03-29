@@ -592,7 +592,14 @@ private predicate boundedPhiInp(
   )
 }
 
-/** Holds if `boundedPhiInp(phi, inp, edge, b, delta, upper, _, _, _)`. */
+/**
+ * Holds if `b + delta` is a valid bound for `inp` when used as an input to
+ * `phi` along `edge`.
+ * - `upper = true`  : `inp <= b + delta`
+ * - `upper = false` : `inp >= b + delta`
+ *
+ * Equivalent to `boundedPhiInp(phi, inp, edge, b, delta, upper, _, _, _)`.
+ */
 pragma[noinline]
 private predicate boundedPhiInp1(
   SemSsaPhiNode phi, SemBound b, boolean upper, SemSsaVariable inp,
