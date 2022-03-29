@@ -7,13 +7,18 @@ parseFailures
 | Test.java:5:13:5:13 | Z | [RegExpConstant,RegExpNormalChar] |
 | Test.java:5:14:5:16 | \\d | [RegExpCharacterClassEscape] |
 | Test.java:6:10:6:42 | \\Q hello world [ *** \\Q ) ( \\E | [RegExpConstant,RegExpQuote] |
+| Test.java:6:10:6:43 | \\Q hello world [ *** \\Q ) ( \\E+ | [RegExpPlus] |
 | Test.java:7:10:7:23 | [\\Q hi ] \\E] | [RegExpCharacterClass] |
+| Test.java:7:10:7:24 | [\\Q hi ] \\E]+ | [RegExpPlus] |
 | Test.java:7:11:7:22 | \\Q hi ] \\E | [RegExpConstant,RegExpQuote] |
 | Test.java:8:10:8:12 | []] | [RegExpCharacterClass] |
+| Test.java:8:10:8:13 | []]+ | [RegExpPlus] |
 | Test.java:8:11:8:11 | ] | [RegExpConstant,RegExpNormalChar] |
 | Test.java:9:10:9:13 | [^]] | [RegExpCharacterClass] |
+| Test.java:9:10:9:14 | [^]]+ | [RegExpPlus] |
 | Test.java:9:12:9:12 | ] | [RegExpConstant,RegExpNormalChar] |
 | Test.java:10:10:10:20 | [abc[defg]] | [RegExpCharacterClass] |
+| Test.java:10:10:10:21 | [abc[defg]]+ | [RegExpPlus] |
 | Test.java:10:11:10:11 | a | [RegExpConstant,RegExpNormalChar] |
 | Test.java:10:12:10:12 | b | [RegExpConstant,RegExpNormalChar] |
 | Test.java:10:13:10:13 | c | [RegExpConstant,RegExpNormalChar] |
@@ -24,7 +29,7 @@ parseFailures
 | Test.java:10:18:10:18 | g | [RegExpConstant,RegExpNormalChar] |
 | Test.java:10:19:10:19 | ] | [RegExpConstant,RegExpNormalChar] |
 | Test.java:11:10:11:57 | [abc&&[\\W\\p{Lower}\\P{Space}\\N{degree sign}]] | [RegExpCharacterClass] |
-| Test.java:11:10:11:68 | [abc&&[\\W\\p{Lower}\\P{Space}\\N{degree sign}]]\\b7\\b{g}8 | [RegExpSequence] |
+| Test.java:11:10:11:69 | [abc&&[\\W\\p{Lower}\\P{Space}\\N{degree sign}]]\\b7\\b{g}8+ | [RegExpSequence] |
 | Test.java:11:11:11:11 | a | [RegExpConstant,RegExpNormalChar] |
 | Test.java:11:12:11:12 | b | [RegExpConstant,RegExpNormalChar] |
 | Test.java:11:13:11:13 | c | [RegExpConstant,RegExpNormalChar] |
@@ -40,11 +45,15 @@ parseFailures
 | Test.java:11:61:11:61 | 7 | [RegExpConstant,RegExpNormalChar] |
 | Test.java:11:62:11:67 | \\b{g} | [RegExpConstant,RegExpEscape] |
 | Test.java:11:68:11:68 | 8 | [RegExpConstant,RegExpNormalChar] |
+| Test.java:11:68:11:69 | 8+ | [RegExpPlus] |
 | Test.java:12:10:12:13 | \\cA | [RegExpConstant,RegExpEscape] |
+| Test.java:12:10:12:14 | \\cA+ | [RegExpPlus] |
 | Test.java:13:10:13:13 | \\c( | [RegExpConstant,RegExpEscape] |
+| Test.java:13:10:13:14 | \\c(+ | [RegExpPlus] |
 | Test.java:14:10:14:14 | \\c\\ | [RegExpConstant,RegExpEscape] |
-| Test.java:14:10:14:18 | \\c\\(ab) | [RegExpSequence] |
+| Test.java:14:10:14:19 | \\c\\(ab)+ | [RegExpSequence] |
 | Test.java:14:15:14:18 | (ab) | [RegExpGroup] |
+| Test.java:14:15:14:19 | (ab)+ | [RegExpPlus] |
 | Test.java:14:16:14:16 | a | [RegExpConstant,RegExpNormalChar] |
 | Test.java:14:16:14:17 | ab | [RegExpSequence] |
 | Test.java:14:17:14:17 | b | [RegExpConstant,RegExpNormalChar] |
@@ -110,7 +119,7 @@ parseFailures
 | Test.java:16:102:16:102 | u | [RegExpConstant,RegExpNormalChar] |
 | Test.java:16:102:16:108 | u{16,}+ | [RegExpQuantifier] |
 | Test.java:17:10:17:13 | (?i) | [RegExpZeroWidthMatch] |
-| Test.java:17:10:17:35 | (?i)(?=a)(?!b)(?<=c)(?<!d) | [RegExpSequence] |
+| Test.java:17:10:17:36 | (?i)(?=a)(?!b)(?<=c)(?<!d)+ | [RegExpSequence] |
 | Test.java:17:14:17:18 | (?=a) | [RegExpPositiveLookahead] |
 | Test.java:17:17:17:17 | a | [RegExpConstant,RegExpNormalChar] |
 | Test.java:17:19:17:23 | (?!b) | [RegExpNegativeLookahead] |
@@ -118,10 +127,11 @@ parseFailures
 | Test.java:17:24:17:29 | (?<=c) | [RegExpPositiveLookbehind] |
 | Test.java:17:28:17:28 | c | [RegExpConstant,RegExpNormalChar] |
 | Test.java:17:30:17:35 | (?<!d) | [RegExpNegativeLookbehind] |
+| Test.java:17:30:17:36 | (?<!d)+ | [RegExpPlus] |
 | Test.java:17:34:17:34 | d | [RegExpConstant,RegExpNormalChar] |
 | Test.java:18:10:18:10 | a | [RegExpConstant,RegExpNormalChar] |
-| Test.java:18:10:18:24 | a\|\|b\|c(d\|e\|)f\|g | [RegExpAlt] |
-| Test.java:18:12:18:24 | \|b\|c(d\|e\|)f\|g | [RegExpAlt] |
+| Test.java:18:10:18:25 | a\|\|b\|c(d\|e\|)f\|g+ | [RegExpAlt] |
+| Test.java:18:12:18:25 | \|b\|c(d\|e\|)f\|g+ | [RegExpAlt] |
 | Test.java:18:13:18:13 | b | [RegExpConstant,RegExpNormalChar] |
 | Test.java:18:15:18:15 | c | [RegExpConstant,RegExpNormalChar] |
 | Test.java:18:15:18:22 | c(d\|e\|)f | [RegExpSequence] |
@@ -131,13 +141,16 @@ parseFailures
 | Test.java:18:19:18:19 | e | [RegExpConstant,RegExpNormalChar] |
 | Test.java:18:22:18:22 | f | [RegExpConstant,RegExpNormalChar] |
 | Test.java:18:24:18:24 | g | [RegExpConstant,RegExpNormalChar] |
+| Test.java:18:24:18:25 | g+ | [RegExpPlus] |
 | Test.java:19:10:19:13 | \\01 | [RegExpConstant,RegExpEscape] |
-| Test.java:19:10:19:37 | \\018\\033\\0377\\0777\u1337 | [RegExpSequence] |
+| Test.java:19:10:19:38 | \\018\\033\\0377\\0777\u1337+ | [RegExpSequence] |
 | Test.java:19:14:19:14 | 8 | [RegExpConstant,RegExpNormalChar] |
 | Test.java:19:15:19:19 | \\033 | [RegExpConstant,RegExpEscape] |
 | Test.java:19:20:19:25 | \\0377 | [RegExpConstant,RegExpEscape] |
 | Test.java:19:26:19:30 | \\077 | [RegExpConstant,RegExpEscape] |
 | Test.java:19:31:19:31 | 7 | [RegExpConstant,RegExpNormalChar] |
 | Test.java:19:32:19:37 | \u1337 | [RegExpConstant,RegExpNormalChar] |
+| Test.java:19:32:19:38 | \u1337+ | [RegExpPlus] |
 | Test.java:20:10:20:12 | [\|] | [RegExpCharacterClass] |
+| Test.java:20:10:20:13 | [\|]+ | [RegExpPlus] |
 | Test.java:20:11:20:11 | \| | [RegExpConstant,RegExpNormalChar] |
