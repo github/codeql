@@ -294,6 +294,9 @@ class CsvWriter extends DataFlow::Node {
 
   CsvWriter() { this = range }
 
+  /**
+   * Get the parameter value of the csv writer function.
+   */
   DataFlow::Node getAnInput() { result = range.getAnInput() }
 }
 

@@ -2,6 +2,7 @@ import python
 import experimental.semmle.python.Concepts
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
+import semmle.python.dataflow.new.BarrierGuards
 import semmle.python.dataflow.new.RemoteFlowSources
 
 /**
@@ -10,11 +11,21 @@ import semmle.python.dataflow.new.RemoteFlowSources
 class CsvInjectionFlowConfig extends TaintTracking::Configuration {
   CsvInjectionFlowConfig() { this = "CsvInjectionFlowConfig" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(CsvWriter csvwriter | sink = csvwriter.getAnInput())
+  override predicate isSink(DataFlow::Node sink) { sink = any(CsvWriter cw).getAnInput() }
+
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof StartsWithCheck or
+    guard instanceof StringConstCompare
+  }
+}
+
+class StartsWithCheck extends DataFlow::BarrierGuard {
+  StartsWithCheck() { this.(CallNode).getNode().getFunc().(Attribute).getName() = "startswith" }
+
+  override predicate checks(ControlFlowNode node, boolean branch) {
+    node = this.(CallNode).getNode().getFunc().(Attribute).getObject().getAFlowNode() and
+    branch = true
   }
 }
