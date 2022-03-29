@@ -57,8 +57,7 @@ open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelMa
      * initialised.
      */
     fun <T> getExistingLabelFor(key: String): Label<T>? {
-        @Suppress("UNCHECKED_CAST")
-        return lm.labelMapping.get(key) as Label<T>?
+        return lm.labelMapping.get(key)?.cast<T>()
     }
     /**
      * Returns the label for the given key, if one exists.

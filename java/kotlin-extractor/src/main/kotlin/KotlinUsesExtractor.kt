@@ -838,8 +838,7 @@ open class KotlinUsesExtractor(
     fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null): Label<out T> {
         if (f.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(f)
-            @Suppress("UNCHECKED_CAST")
-            return ids.function as Label<out T>
+            return ids.function.cast<T>()
         } else {
             return useFunctionCommon<T>(f, getFunctionLabel(f, classTypeArgsIncludingOuterClasses))
         }
@@ -864,14 +863,12 @@ open class KotlinUsesExtractor(
         // Note this function doesn't return a signature because type arguments are never incorporated into function signatures.
         return when (arg) {
             is IrStarProjection -> {
-                @Suppress("UNCHECKED_CAST")
-                val anyTypeLabel = useType(pluginContext.irBuiltIns.anyType).javaResult.id as Label<out DbReftype>
+                val anyTypeLabel = useType(pluginContext.irBuiltIns.anyType).javaResult.id.cast<DbReftype>()
                 TypeResult(extractBoundedWildcard(1, "@\"wildcard;\"", "?", anyTypeLabel), null, "?")
             }
             is IrTypeProjection -> {
                 val boundResults = useType(arg.type, TypeContext.GENERIC_ARGUMENT)
-                @Suppress("UNCHECKED_CAST")
-                val boundLabel = boundResults.javaResult.id as Label<out DbReftype>
+                val boundLabel = boundResults.javaResult.id.cast<DbReftype>()
 
                 return if(arg.variance == Variance.INVARIANT)
                     @Suppress("UNCHECKED_CAST")
@@ -949,8 +946,7 @@ open class KotlinUsesExtractor(
 
     fun useClassSource(c: IrClass): Label<out DbClassorinterface> {
         if (c.isAnonymousObject) {
-            @Suppress("UNCHECKED_CAST")
-            return useAnonymousClass(c).javaResult.id as Label<DbClass>
+            return useAnonymousClass(c).javaResult.id.cast<DbClass>()
         }
 
         // For source classes, the label doesn't include and type arguments

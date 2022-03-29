@@ -6,7 +6,12 @@ import java.io.StringWriter
 /**
  * This represents a label (`#...`) in a TRAP file.
  */
-interface Label<T>
+interface Label<T> {
+    fun <U> cast(): Label<U> {
+        @Suppress("UNCHECKED_CAST")
+        return this as Label<U>
+    }
+}
 
 /**
  * The label `#i`, e.g. `#123`. Most labels we generate are of this
