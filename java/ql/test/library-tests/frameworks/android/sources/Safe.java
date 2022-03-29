@@ -4,18 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class OnActivityResult extends Activity {
+public class Safe extends Activity {
 
 	void sink(Object o) {}
 
 	public void onCreate(Bundle saved) {
-		Intent implicitIntent = new Intent("SOME_ACTION");
-		startActivityForResult(implicitIntent, 0);
+		Intent explicitIntent = new Intent(this, Activity.class);
+		startActivityForResult(explicitIntent, 0);
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		sink(requestCode); // safe
 		sink(resultCode); // safe
-		sink(data); // $ hasValueFlow
+		sink(data); // Safe
 	}
 }

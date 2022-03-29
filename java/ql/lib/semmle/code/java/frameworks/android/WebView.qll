@@ -1,5 +1,4 @@
 import java
-private import semmle.code.java.dataflow.ExternalFlow
 
 /** The class `android.webkit.WebView`. */
 class TypeWebView extends Class {
@@ -73,34 +72,5 @@ class ShouldOverrideUrlLoading extends Method {
   ShouldOverrideUrlLoading() {
     this.getDeclaringType().getASupertype*() instanceof TypeWebViewClient and
     this.hasName("shouldOverrideUrlLoading")
-  }
-}
-
-private class WebkitSourceModels extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "android.webkit;WebViewClient;true;doUpdateVisitedHistory;;;Parameter[1];remote",
-        "android.webkit;WebViewClient;true;onLoadResource;;;Parameter[1];remote",
-        "android.webkit;WebViewClient;true;onPageCommitVisible;;;Parameter[1];remote",
-        "android.webkit;WebViewClient;true;onPageFinished;;;Parameter[1];remote",
-        "android.webkit;WebViewClient;true;onPageStarted;;;Parameter[1];remote",
-        "android.webkit;WebViewClient;true;onReceivedError;(WebView,int,String,String);;Parameter[3];remote",
-        "android.webkit;WebViewClient;true;onReceivedError;(WebView,WebResourceRequest,WebResourceError);;Parameter[1];remote",
-        "android.webkit;WebViewClient;true;onReceivedHttpError;;;Parameter[1];remote",
-        "android.webkit;WebViewClient;true;onSafeBrowsingHit;;;Parameter[1];remote",
-        "android.webkit;WebViewClient;true;shouldInterceptRequest;;;Parameter[1];remote",
-        "android.webkit;WebViewClient;true;shouldOverrideUrlLoading;;;Parameter[1];remote"
-      ]
-  }
-}
-
-private class WebkitSummaryModels extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "android.webkit;WebResourceRequest;true;getRequestHeaders;;;Argument[-1];ReturnValue;taint",
-        "android.webkit;WebResourceRequest;true;getUrl;;;Argument[-1];ReturnValue;taint"
-      ]
   }
 }

@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class OnActivityResultSafe extends Activity {
+public class Safe2 extends Activity {
 
 	void sink(Object o) {}
 
 	public void onCreate(Bundle saved) {
-		Intent explicitIntent = new Intent(this, Activity.class);
-		startActivityForResult(explicitIntent, 0);
+		// activityForResult not called
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
