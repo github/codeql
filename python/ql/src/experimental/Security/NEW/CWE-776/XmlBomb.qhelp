@@ -25,26 +25,32 @@ to take a very long time or use large amounts of memory. This is sometimes calle
 <recommendation>
 <p>
 The safest way to prevent XML bomb attacks is to disable entity expansion when parsing untrusted
-data. How this is done depends on the library being used. Note that some libraries, such as
-recent versions of <code>libxmljs</code> (though not its SAX parser API), disable entity expansion
-by default, so unless you have explicitly enabled entity expansion, no further action is needed.
+data. Whether this can be done depends on the library being used. Note that some libraries, such as
+<code>lxml</code>, have measures enabled by default to prevent such DoS XML attacks, so
+unless you have explicitly set <code>huge_tree</code> to <code>True</code>, no further action is needed.
+</p>
+
+<p>
+We recommend using the <a href="https://pypi.org/project/defusedxml/">defusedxml</a>
+PyPI package, which has been created to prevent XML attacks (both XXE and XML bombs).
 </p>
 </recommendation>
 
 <example>
 <p>
-The following example uses the XML parser provided by the <code>node-expat</code> package to
-parse a string <code>xmlSrc</code>. If that string is from an untrusted source, this code may be
-vulnerable to a DoS attack, since <code>node-expat</code> expands internal entities by default:
+The following example uses the <code>xml.etree</code> XML parser provided by the Python standard library to
+parse a string <code>xml_src</code>. That string is from an untrusted source, so this code is be
+vulnerable to a DoS attack, since the <code>xml.etree</code> XML parser expands internal entities by default:
 </p>
-<sample src="examples/XmlBomb.js"/>
+<sample src="examples/XmlBombBad.py"/>
 
 <p>
-At the time of writing, <code>node-expat</code> does not provide a way of controlling entity
-expansion, but the example could be rewritten to use the <code>sax</code> package instead,
-which only expands standard entities such as <code>&amp;amp;</code>:
+It is not possible to guard against internal entity expansion with
+<code>xml.etree</code>, so to guard against these attacks, the following example uses
+the <a href="https://pypi.org/project/defusedxml/">defusedxml</a>
+PyPI package instead, which is not exposed to such internal entity expansion attacks.
 </p>
-<sample src="examples/XmlBombGood.js"/>
+<sample src="examples/XmlBombGood.py"/>
 </example>
 
 <references>
@@ -55,6 +61,14 @@ Wikipedia:
 <li>
 Bryan Sullivan:
 <a href="https://msdn.microsoft.com/en-us/magazine/ee335713.aspx">Security Briefs - XML Denial of Service Attacks and Defenses</a>.
+</li>
+<li>
+Python 3 standard library:
+<a href="https://docs.python.org/3/library/xml.html#xml-vulnerabilities">XML Vulnerabilities</a>.
+</li>
+<li>
+Python 2 standard library:
+<a href="https://docs.python.org/2/library/xml.html#xml-vulnerabilities">XML Vulnerabilities</a>.
 </li>
 </references>
 </qhelp>
