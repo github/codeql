@@ -12,24 +12,28 @@
 
 import cpp
 
-/** A string for `match` that identifies strings that look like they represent private data. */
+/**
+ * A string for `regexpMatch` that identifies strings that look like they
+ * represent private data.
+ */
 private string privateNames() {
   result =
-    [
+    ".*(" +
       // Inspired by the list on https://cwe.mitre.org/data/definitions/359.html
       // Government identifiers, such as Social Security Numbers
-      "%social%security%",
+      "social.*security|" +
       // Contact information, such as home addresses and telephone numbers
-      "%postcode%", "%zipcode%", "%telephone%",
+      "postcode|zipcode|telephone|" +
       // Geographic location - where the user is (or was)
-      "%latitude%", "%longitude%",
+      "latitude|longitude|" +
       // Financial data - such as credit card numbers, salary, bank accounts, and debts
-      "%credit%card%", "%salary%", "%bank%account%",
+      "credit.*card|salary|bank.*account|" +
       // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
-      "%email%", "%mobile%", "%employer%",
+      "email|mobile|employer|" +
       // Health - medical conditions, insurance status, prescription records
-      "%medical%"
-    ]
+      "medical" +
+      // ---
+      ").*"
 }
 
 /**
@@ -37,7 +41,7 @@ private string privateNames() {
  */
 class PrivateDataVariable extends Variable {
   PrivateDataVariable() {
-    this.getName().toLowerCase().matches(privateNames()) and
+    this.getName().toLowerCase().regexpMatch(privateNames()) and
     not this.getUnspecifiedType() instanceof IntegralType
   }
 }
@@ -47,7 +51,7 @@ class PrivateDataVariable extends Variable {
  */
 class PrivateDataFunction extends Function {
   PrivateDataFunction() {
-    this.getName().toLowerCase().matches(privateNames()) and
+    this.getName().toLowerCase().regexpMatch(privateNames()) and
     not this.getUnspecifiedType() instanceof IntegralType
   }
 }
