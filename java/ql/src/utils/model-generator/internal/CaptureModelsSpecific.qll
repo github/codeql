@@ -2,29 +2,33 @@
  * Provides predicates related to capturing summary models of the Standard or a 3rd party library.
  */
 
-import java
+private import java as J
 private import semmle.code.java.dataflow.internal.DataFlowNodes
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
-private import semmle.code.java.dataflow.InstanceAccess
-private import semmle.code.java.dataflow.internal.ContainerFlow
-import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.internal.ContainerFlow as ContainerFlow
 import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
 import semmle.code.java.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 import semmle.code.java.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
-private Method superImpl(Method m) {
+module DataFlow = J::DataFlow;
+
+module TaintTracking = J::TaintTracking;
+
+class Type = J::Type;
+
+private J::Method superImpl(J::Method m) {
   result = m.getAnOverride() and
   not exists(result.getAnOverride()) and
-  not m instanceof ToStringMethod
+  not m instanceof J::ToStringMethod
 }
 
-private predicate isInTestFile(File file) {
+private predicate isInTestFile(J::File file) {
   file.getAbsolutePath().matches("%src/test/%") or
   file.getAbsolutePath().matches("%/guava-tests/%") or
   file.getAbsolutePath().matches("%/guava-testlib/%")
 }
 
-private predicate isJdkInternal(CompilationUnit cu) {
+private predicate isJdkInternal(J::CompilationUnit cu) {
   cu.getPackage().getName().matches("org.graalvm%") or
   cu.getPackage().getName().matches("com.sun%") or
   cu.getPackage().getName().matches("javax.swing%") or
@@ -46,10 +50,10 @@ private predicate isJdkInternal(CompilationUnit cu) {
 /**
  * Holds if it is relevant to generate models for `api`.
  */
-private predicate isRelevantForModels(Callable api) {
+private predicate isRelevantForModels(J::Callable api) {
   not isInTestFile(api.getCompilationUnit().getFile()) and
   not isJdkInternal(api.getCompilationUnit()) and
-  not api instanceof MainMethod
+  not api instanceof J::MainMethod
 }
 
 /**
@@ -58,7 +62,7 @@ private predicate isRelevantForModels(Callable api) {
  * In the Standard library and 3rd party libraries it the Callables that can be called
  * from outside the library itself.
  */
-class TargetApiSpecific extends Callable {
+class TargetApiSpecific extends J::Callable {
   TargetApiSpecific() {
     this.isPublic() and
     this.fromSource() and
@@ -70,15 +74,15 @@ class TargetApiSpecific extends Callable {
   }
 }
 
-private string isExtensible(RefType ref) {
+private string isExtensible(J::RefType ref) {
   if ref.isFinal() then result = "false" else result = "true"
 }
 
-private string typeAsModel(RefType type) {
+private string typeAsModel(J::RefType type) {
   result = type.getCompilationUnit().getPackage().getName() + ";" + type.nestedName()
 }
 
-private RefType bestTypeForModel(TargetApiSpecific api) {
+private J::RefType bestTypeForModel(TargetApiSpecific api) {
   if exists(superImpl(api))
   then superImpl(api).fromSource() and result = superImpl(api).getDeclaringType()
   else result = api.getDeclaringType()
@@ -104,7 +108,7 @@ string asPartialModel(TargetApiSpecific api) {
       + /* ext + */ ";" //
 }
 
-private predicate isPrimitiveTypeUsedForBulkData(Type t) {
+private predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
   t.getName().regexpMatch("byte|char|Byte|Character")
 }
 
@@ -112,34 +116,34 @@ private predicate isPrimitiveTypeUsedForBulkData(Type t) {
  * Holds for type `t` for fields that are relevant as an intermediate
  * read or write step in the data flow analysis.
  */
-predicate isRelevantType(Type t) {
-  not t instanceof TypeClass and
-  not t instanceof EnumType and
-  not t instanceof PrimitiveType and
-  not t instanceof BoxedType and
-  not t.(RefType).getAnAncestor().hasQualifiedName("java.lang", "Number") and
-  not t.(RefType).getAnAncestor().hasQualifiedName("java.nio.charset", "Charset") and
+predicate isRelevantType(J::Type t) {
+  not t instanceof J::TypeClass and
+  not t instanceof J::EnumType and
+  not t instanceof J::PrimitiveType and
+  not t instanceof J::BoxedType and
+  not t.(J::RefType).getAnAncestor().hasQualifiedName("java.lang", "Number") and
+  not t.(J::RefType).getAnAncestor().hasQualifiedName("java.nio.charset", "Charset") and
   (
-    not t.(Array).getElementType() instanceof PrimitiveType or
-    isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
+    not t.(J::Array).getElementType() instanceof J::PrimitiveType or
+    isPrimitiveTypeUsedForBulkData(t.(J::Array).getElementType())
   ) and
   (
-    not t.(Array).getElementType() instanceof BoxedType or
-    isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
+    not t.(J::Array).getElementType() instanceof J::BoxedType or
+    isPrimitiveTypeUsedForBulkData(t.(J::Array).getElementType())
   ) and
   (
-    not t.(CollectionType).getElementType() instanceof BoxedType or
-    isPrimitiveTypeUsedForBulkData(t.(CollectionType).getElementType())
+    not t.(ContainerFlow::CollectionType).getElementType() instanceof J::BoxedType or
+    isPrimitiveTypeUsedForBulkData(t.(ContainerFlow::CollectionType).getElementType())
   )
 }
 
-private string parameterAccess(Parameter p) {
+private string parameterAccess(J::Parameter p) {
   if
-    p.getType() instanceof Array and
-    not isPrimitiveTypeUsedForBulkData(p.getType().(Array).getElementType())
+    p.getType() instanceof J::Array and
+    not isPrimitiveTypeUsedForBulkData(p.getType().(J::Array).getElementType())
   then result = "Argument[" + p.getPosition() + "].ArrayElement"
   else
-    if p.getType() instanceof ContainerType
+    if p.getType() instanceof ContainerFlow::ContainerType
     then result = "Argument[" + p.getPosition() + "].Element"
     else result = "Argument[" + p.getPosition() + "]"
 }
@@ -172,7 +176,7 @@ string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
 /**
  * Gets the enclosing callable of `ret`.
  */
-Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
+J::Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
   result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
 }
 
@@ -180,7 +184,7 @@ Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
  * Holds if `node` is an own instance access.
  */
 predicate isOwnInstanceAccessNode(ReturnNode node) {
-  node.asExpr().(ThisAccess).isOwnInstanceAccess()
+  node.asExpr().(J::ThisAccess).isOwnInstanceAccess()
 }
 
 /**
@@ -195,11 +199,14 @@ class PropagateToSinkConfigurationSpecific extends TaintTracking::Configuration 
   PropagateToSinkConfigurationSpecific() { this = "parameters or fields flowing into sinks" }
 
   override predicate isSource(DataFlow::Node source) {
-    (source.asExpr().(FieldAccess).isOwnFieldAccess() or source instanceof DataFlow::ParameterNode) and
+    (
+      source.asExpr().(J::FieldAccess).isOwnFieldAccess() or
+      source instanceof DataFlow::ParameterNode
+    ) and
     source.getEnclosingCallable().isPublic() and
-    exists(RefType t |
+    exists(J::RefType t |
       t = source.getEnclosingCallable().getDeclaringType().getAnAncestor() and
-      not t instanceof TypeObject and
+      not t instanceof J::TypeObject and
       t.isPublic()
     ) and
     isRelevantForModels(source.getEnclosingCallable())
@@ -215,7 +222,7 @@ string asInputArgument(DataFlow::Node source) {
     result = "Argument[" + pos + "]"
   )
   or
-  source.asExpr() instanceof FieldAccess and
+  source.asExpr() instanceof J::FieldAccess and
   result = qualifierString()
 }
 
