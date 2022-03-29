@@ -6,13 +6,15 @@ private import java as J
 private import semmle.code.java.dataflow.internal.DataFlowNodes
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.ContainerFlow as ContainerFlow
+private import semmle.code.java.dataflow.DataFlow as Df
+private import semmle.code.java.dataflow.TaintTracking as Tt
 import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
 import semmle.code.java.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 import semmle.code.java.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
-module DataFlow = J::DataFlow;
+module DataFlow = Df::DataFlow;
 
-module TaintTracking = J::TaintTracking;
+module TaintTracking = Tt::TaintTracking;
 
 class Type = J::Type;
 

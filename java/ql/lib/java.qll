@@ -28,9 +28,6 @@ import semmle.code.java.Type
 import semmle.code.java.UnitTests
 import semmle.code.java.Variable
 import semmle.code.java.controlflow.BasicBlocks
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.SSA
 import semmle.code.java.metrics.MetricCallable
 import semmle.code.java.metrics.MetricElement
 import semmle.code.java.metrics.MetricField
