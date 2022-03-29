@@ -6,14 +6,15 @@
  * @id csharp/telemetry/external-libs
  */
 
-import csharp
-import ExternalApi
+private import csharp
+private import semmle.code.csharp.dispatch.Dispatch
+private import ExternalApi
 
 from int usages, string info
 where
   usages =
-    strictcount(Call c, ExternalApi api |
-      c.getTarget().getUnboundDeclaration() = api and
+    strictcount(DispatchCall c, ExternalApi api |
+      c = api.getACall() and
       api.getInfoPrefix() = info and
       not api.isUninteresting()
     )

@@ -27,6 +27,10 @@ private class TestLibrary extends RefType {
   }
 }
 
+private string containerAsJar(Container container) {
+  if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
+}
+
 /**
  * An external API from either the Standard Library or a 3rd party library.
  */
@@ -42,16 +46,10 @@ class ExternalApi extends Callable {
         "#" + this.getName() + paramsString(this)
   }
 
-  private string containerAsJar(Container container) {
-    if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
-  }
-
   /**
    * Gets the jar file containing this API. Normalizes the Java Runtime to "rt.jar" despite the presence of modules.
    */
-  string jarContainer() {
-    result = this.containerAsJar(this.getCompilationUnit().getParentContainer*())
-  }
+  string jarContainer() { result = containerAsJar(this.getCompilationUnit().getParentContainer*()) }
 
   /** Gets a node that is an input to a call to this API. */
   private DataFlow::Node getAnInput() {
@@ -97,3 +95,6 @@ class ExternalApi extends Callable {
   /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
   predicate isSupported() { this.hasSummary() or this.isSource() or this.isSink() }
 }
+
+/** DEPRECATED: Alias for ExternalApi */
+deprecated class ExternalAPI = ExternalApi;

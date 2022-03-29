@@ -58,15 +58,18 @@ class ExternalApi extends DataFlowDispatch::DataFlowCallable {
    */
   string getInfo() { result = this.getInfoPrefix() + "#" + this.getSignature() }
 
+  /** Gets a call to this API callable. */
+  DispatchCall getACall() {
+    exists(DataFlowDispatch::NonDelegateDataFlowCall call | call.getDispatchCall() = result |
+      this = result.getADynamicTarget().getUnboundDeclaration()
+      or
+      this = result.getAStaticTarget().getUnboundDeclaration()
+    )
+  }
+
   /** Gets a node that is an input to a call to this API. */
   private ArgumentNode getAnInput() {
-    exists(DispatchCall call |
-      result.getCall().(DataFlowDispatch::NonDelegateDataFlowCall).getDispatchCall() = call
-    |
-      this = call.getADynamicTarget().getUnboundDeclaration()
-      or
-      this = call.getAStaticTarget().getUnboundDeclaration()
-    )
+    result.getCall().(DataFlowDispatch::NonDelegateDataFlowCall).getDispatchCall() = this.getACall()
   }
 
   /** Gets a node that is an output from a call to this API. */
@@ -74,9 +77,7 @@ class ExternalApi extends DataFlowDispatch::DataFlowCallable {
     exists(DataFlowDispatch::NonDelegateDataFlowCall call, DataFlowImplCommon::ReturnKindExt ret |
       result = ret.getAnOutNode(call)
     |
-      this = call.getDispatchCall().getADynamicTarget().getUnboundDeclaration()
-      or
-      this = call.getDispatchCall().getAStaticTarget().getUnboundDeclaration()
+      this.getACall() = call.getDispatchCall()
     )
   }
 
