@@ -1,7 +1,9 @@
 consistencyIssue
+| library-tests/frameworks/data/paramDecorator.ts:11 | did not expect an alert, but found an alert for BasicTaintTracking | OK |  |
 taintFlow
 | paramDecorator.ts:6:54:6:54 | x | paramDecorator.ts:7:10:7:10 | x |
-| paramDecorator.ts:13:28:13:35 | source() | paramDecorator.ts:9:50:9:50 | x |
+| paramDecorator.ts:12:12:12:19 | source() | paramDecorator.ts:11:51:11:51 | x |
+| paramDecorator.ts:16:28:16:35 | source() | paramDecorator.ts:9:50:9:50 | x |
 | test.js:5:30:5:37 | source() | test.js:5:8:5:38 | testlib ... urce()) |
 | test.js:6:22:6:29 | source() | test.js:6:8:6:30 | preserv ... urce()) |
 | test.js:7:41:7:48 | source() | test.js:7:8:7:49 | require ... urce()) |
@@ -58,6 +60,7 @@ taintFlow
 | test.js:203:32:203:39 | source() | test.js:203:32:203:39 | source() |
 isSink
 | paramDecorator.ts:9:50:9:50 | x | test-sink |
+| paramDecorator.ts:11:51:11:51 | x | test-sink |
 | test.js:54:18:54:25 | source() | test-sink |
 | test.js:55:22:55:29 | source() | test-sink |
 | test.js:57:24:57:31 | source() | test-sink |

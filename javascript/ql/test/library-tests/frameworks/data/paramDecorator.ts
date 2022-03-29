@@ -8,6 +8,10 @@ class C {
   }
   decoratedParamSink(@testlib.ParamDecoratorSink x) { // NOT OK - though slightly weird alert location
   }
+  decoratedParamSink2(@testlib.ParamDecoratorSink x) { // OK
+    x.push(source());
+  }
 }
 
 new C().decoratedParamSink(source());
+new C().decoratedParamSink2([]);
