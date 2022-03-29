@@ -9263,28 +9263,34 @@ ir.cpp:
 
 # 1736| void CopyConstructorTestNonVirtualClass::CopyConstructorTestNonVirtualClass(CopyConstructorTestNonVirtualClass const&)
 # 1736|   Block 0
-# 1736|     v1736_1(void)                                            = EnterFunction                                                                                          : 
-# 1736|     mu1736_2(unknown)                                        = AliasedDefinition                                                                                      : 
-# 1736|     mu1736_3(unknown)                                        = InitializeNonLocal                                                                                     : 
-# 1736|     r1736_4(glval<unknown>)                                  = VariableAddress[#this]                                                                                 : 
-# 1736|     mu1736_5(glval<CopyConstructorTestNonVirtualClass>)      = InitializeParameter[#this]                                                                             : &:r1736_4
-# 1736|     r1736_6(glval<CopyConstructorTestNonVirtualClass>)       = Load[#this]                                                                                            : &:r1736_4, ~m?
-# 1736|     mu1736_7(CopyConstructorTestNonVirtualClass)             = InitializeIndirection[#this]                                                                           : &:r1736_6
-#-----|     r0_1(glval<CopyConstructorTestNonVirtualClass &>)        = VariableAddress[(unnamed parameter 0)]                                                                 : 
-#-----|     mu0_2(CopyConstructorTestNonVirtualClass &)              = InitializeParameter[(unnamed parameter 0)]                                                             : &:r0_1
-#-----|     r0_3(CopyConstructorTestNonVirtualClass &)               = Load[(unnamed parameter 0)]                                                                            : &:r0_1, ~m?
-#-----|     mu0_4(unknown)                                           = InitializeIndirection[(unnamed parameter 0)]                                                           : &:r0_3
-# 1736|     r1736_8(glval<CopyConstructorWithImplicitArgumentClass>) = ConvertToNonVirtualBase[CopyConstructorTestNonVirtualClass : CopyConstructorWithImplicitArgumentClass] : mu1736_5
-# 1736|     r1736_9(glval<unknown>)                                  = FunctionAddress[CopyConstructorWithImplicitArgumentClass]                                              : 
-# 1736|     v1736_10(void)                                           = Call[CopyConstructorWithImplicitArgumentClass]                                                         : func:r1736_9, this:r1736_8
-# 1736|     mu1736_11(unknown)                                       = ^CallSideEffect                                                                                        : ~m?
-# 1736|     mu1736_12(CopyConstructorWithImplicitArgumentClass)      = ^IndirectMayWriteSideEffect[-1]                                                                        : &:r1736_8
-# 1736|     v1736_13(void)                                           = NoOp                                                                                                   : 
-# 1736|     v1736_14(void)                                           = ReturnIndirection[#this]                                                                               : &:r1736_6, ~m?
-#-----|     v0_5(void)                                               = ReturnIndirection[(unnamed parameter 0)]                                                               : &:r0_3, ~m?
-# 1736|     v1736_15(void)                                           = ReturnVoid                                                                                             : 
-# 1736|     v1736_16(void)                                           = AliasedUse                                                                                             : ~m?
-# 1736|     v1736_17(void)                                           = ExitFunction                                                                                           : 
+# 1736|     v1736_1(void)                                             = EnterFunction                                                                                          : 
+# 1736|     mu1736_2(unknown)                                         = AliasedDefinition                                                                                      : 
+# 1736|     mu1736_3(unknown)                                         = InitializeNonLocal                                                                                     : 
+# 1736|     r1736_4(glval<unknown>)                                   = VariableAddress[#this]                                                                                 : 
+# 1736|     mu1736_5(glval<CopyConstructorTestNonVirtualClass>)       = InitializeParameter[#this]                                                                             : &:r1736_4
+# 1736|     r1736_6(glval<CopyConstructorTestNonVirtualClass>)        = Load[#this]                                                                                            : &:r1736_4, ~m?
+# 1736|     mu1736_7(CopyConstructorTestNonVirtualClass)              = InitializeIndirection[#this]                                                                           : &:r1736_6
+#-----|     r0_1(glval<CopyConstructorTestNonVirtualClass &>)         = VariableAddress[(unnamed parameter 0)]                                                                 : 
+#-----|     mu0_2(CopyConstructorTestNonVirtualClass &)               = InitializeParameter[(unnamed parameter 0)]                                                             : &:r0_1
+#-----|     r0_3(CopyConstructorTestNonVirtualClass &)                = Load[(unnamed parameter 0)]                                                                            : &:r0_1, ~m?
+#-----|     mu0_4(unknown)                                            = InitializeIndirection[(unnamed parameter 0)]                                                           : &:r0_3
+# 1736|     r1736_8(glval<CopyConstructorWithImplicitArgumentClass>)  = ConvertToNonVirtualBase[CopyConstructorTestNonVirtualClass : CopyConstructorWithImplicitArgumentClass] : mu1736_5
+# 1736|     r1736_9(glval<unknown>)                                   = FunctionAddress[CopyConstructorWithImplicitArgumentClass]                                              : 
+# 1736|     r1736_10(glval<CopyConstructorTestNonVirtualClass &>)     = VariableAddress[(unnamed parameter 0)]                                                                 : 
+# 1736|     r1736_11(CopyConstructorTestNonVirtualClass &)            = Load[(unnamed parameter 0)]                                                                            : &:r1736_10, ~m?
+# 1736|     r1736_12(glval<CopyConstructorTestNonVirtualClass>)       = CopyValue                                                                                              : r1736_11
+# 1736|     r1736_13(glval<CopyConstructorWithImplicitArgumentClass>) = ConvertToNonVirtualBase[CopyConstructorTestNonVirtualClass : CopyConstructorWithImplicitArgumentClass] : r1736_12
+# 1736|     r1736_14(CopyConstructorWithImplicitArgumentClass &)      = CopyValue                                                                                              : r1736_13
+# 1736|     v1736_15(void)                                            = Call[CopyConstructorWithImplicitArgumentClass]                                                         : func:r1736_9, this:r1736_8, 0:r1736_14
+# 1736|     mu1736_16(unknown)                                        = ^CallSideEffect                                                                                        : ~m?
+# 1736|     v1736_17(void)                                            = ^BufferReadSideEffect[0]                                                                               : &:r1736_14, ~m?
+# 1736|     mu1736_18(CopyConstructorWithImplicitArgumentClass)       = ^IndirectMayWriteSideEffect[-1]                                                                        : &:r1736_8
+# 1736|     v1736_19(void)                                            = NoOp                                                                                                   : 
+# 1736|     v1736_20(void)                                            = ReturnIndirection[#this]                                                                               : &:r1736_6, ~m?
+#-----|     v0_5(void)                                                = ReturnIndirection[(unnamed parameter 0)]                                                               : &:r0_3, ~m?
+# 1736|     v1736_21(void)                                            = ReturnVoid                                                                                             : 
+# 1736|     v1736_22(void)                                            = AliasedUse                                                                                             : ~m?
+# 1736|     v1736_23(void)                                            = ExitFunction                                                                                           : 
 
 # 1740| void CopyConstructorTestNonVirtualClass::CopyConstructorTestNonVirtualClass()
 # 1740|   Block 0
@@ -9313,28 +9319,34 @@ ir.cpp:
 
 # 1743| void CopyConstructorTestVirtualClass::CopyConstructorTestVirtualClass(CopyConstructorTestVirtualClass const&)
 # 1743|   Block 0
-# 1743|     v1743_1(void)                                            = EnterFunction                                                                                       : 
-# 1743|     mu1743_2(unknown)                                        = AliasedDefinition                                                                                   : 
-# 1743|     mu1743_3(unknown)                                        = InitializeNonLocal                                                                                  : 
-# 1743|     r1743_4(glval<unknown>)                                  = VariableAddress[#this]                                                                              : 
-# 1743|     mu1743_5(glval<CopyConstructorTestVirtualClass>)         = InitializeParameter[#this]                                                                          : &:r1743_4
-# 1743|     r1743_6(glval<CopyConstructorTestVirtualClass>)          = Load[#this]                                                                                         : &:r1743_4, ~m?
-# 1743|     mu1743_7(CopyConstructorTestVirtualClass)                = InitializeIndirection[#this]                                                                        : &:r1743_6
-#-----|     r0_1(glval<CopyConstructorTestVirtualClass &>)           = VariableAddress[(unnamed parameter 0)]                                                              : 
-#-----|     mu0_2(CopyConstructorTestVirtualClass &)                 = InitializeParameter[(unnamed parameter 0)]                                                          : &:r0_1
-#-----|     r0_3(CopyConstructorTestVirtualClass &)                  = Load[(unnamed parameter 0)]                                                                         : &:r0_1, ~m?
-#-----|     mu0_4(unknown)                                           = InitializeIndirection[(unnamed parameter 0)]                                                        : &:r0_3
-# 1743|     r1743_8(glval<CopyConstructorWithImplicitArgumentClass>) = ConvertToNonVirtualBase[CopyConstructorTestVirtualClass : CopyConstructorWithImplicitArgumentClass] : mu1743_5
-# 1743|     r1743_9(glval<unknown>)                                  = FunctionAddress[CopyConstructorWithImplicitArgumentClass]                                           : 
-# 1743|     v1743_10(void)                                           = Call[CopyConstructorWithImplicitArgumentClass]                                                      : func:r1743_9, this:r1743_8
-# 1743|     mu1743_11(unknown)                                       = ^CallSideEffect                                                                                     : ~m?
-# 1743|     mu1743_12(CopyConstructorWithImplicitArgumentClass)      = ^IndirectMayWriteSideEffect[-1]                                                                     : &:r1743_8
-# 1743|     v1743_13(void)                                           = NoOp                                                                                                : 
-# 1743|     v1743_14(void)                                           = ReturnIndirection[#this]                                                                            : &:r1743_6, ~m?
-#-----|     v0_5(void)                                               = ReturnIndirection[(unnamed parameter 0)]                                                            : &:r0_3, ~m?
-# 1743|     v1743_15(void)                                           = ReturnVoid                                                                                          : 
-# 1743|     v1743_16(void)                                           = AliasedUse                                                                                          : ~m?
-# 1743|     v1743_17(void)                                           = ExitFunction                                                                                        : 
+# 1743|     v1743_1(void)                                             = EnterFunction                                                                                       : 
+# 1743|     mu1743_2(unknown)                                         = AliasedDefinition                                                                                   : 
+# 1743|     mu1743_3(unknown)                                         = InitializeNonLocal                                                                                  : 
+# 1743|     r1743_4(glval<unknown>)                                   = VariableAddress[#this]                                                                              : 
+# 1743|     mu1743_5(glval<CopyConstructorTestVirtualClass>)          = InitializeParameter[#this]                                                                          : &:r1743_4
+# 1743|     r1743_6(glval<CopyConstructorTestVirtualClass>)           = Load[#this]                                                                                         : &:r1743_4, ~m?
+# 1743|     mu1743_7(CopyConstructorTestVirtualClass)                 = InitializeIndirection[#this]                                                                        : &:r1743_6
+#-----|     r0_1(glval<CopyConstructorTestVirtualClass &>)            = VariableAddress[(unnamed parameter 0)]                                                              : 
+#-----|     mu0_2(CopyConstructorTestVirtualClass &)                  = InitializeParameter[(unnamed parameter 0)]                                                          : &:r0_1
+#-----|     r0_3(CopyConstructorTestVirtualClass &)                   = Load[(unnamed parameter 0)]                                                                         : &:r0_1, ~m?
+#-----|     mu0_4(unknown)                                            = InitializeIndirection[(unnamed parameter 0)]                                                        : &:r0_3
+# 1743|     r1743_8(glval<CopyConstructorWithImplicitArgumentClass>)  = ConvertToNonVirtualBase[CopyConstructorTestVirtualClass : CopyConstructorWithImplicitArgumentClass] : mu1743_5
+# 1743|     r1743_9(glval<unknown>)                                   = FunctionAddress[CopyConstructorWithImplicitArgumentClass]                                           : 
+# 1743|     r1743_10(glval<CopyConstructorTestVirtualClass &>)        = VariableAddress[(unnamed parameter 0)]                                                              : 
+# 1743|     r1743_11(CopyConstructorTestVirtualClass &)               = Load[(unnamed parameter 0)]                                                                         : &:r1743_10, ~m?
+# 1743|     r1743_12(glval<CopyConstructorTestVirtualClass>)          = CopyValue                                                                                           : r1743_11
+# 1743|     r1743_13(glval<CopyConstructorWithImplicitArgumentClass>) = ConvertToVirtualBase[CopyConstructorTestVirtualClass : CopyConstructorWithImplicitArgumentClass]    : r1743_12
+# 1743|     r1743_14(CopyConstructorWithImplicitArgumentClass &)      = CopyValue                                                                                           : r1743_13
+# 1743|     v1743_15(void)                                            = Call[CopyConstructorWithImplicitArgumentClass]                                                      : func:r1743_9, this:r1743_8, 0:r1743_14
+# 1743|     mu1743_16(unknown)                                        = ^CallSideEffect                                                                                     : ~m?
+# 1743|     v1743_17(void)                                            = ^BufferReadSideEffect[0]                                                                            : &:r1743_14, ~m?
+# 1743|     mu1743_18(CopyConstructorWithImplicitArgumentClass)       = ^IndirectMayWriteSideEffect[-1]                                                                     : &:r1743_8
+# 1743|     v1743_19(void)                                            = NoOp                                                                                                : 
+# 1743|     v1743_20(void)                                            = ReturnIndirection[#this]                                                                            : &:r1743_6, ~m?
+#-----|     v0_5(void)                                                = ReturnIndirection[(unnamed parameter 0)]                                                            : &:r0_3, ~m?
+# 1743|     v1743_21(void)                                            = ReturnVoid                                                                                          : 
+# 1743|     v1743_22(void)                                            = AliasedUse                                                                                          : ~m?
+# 1743|     v1743_23(void)                                            = ExitFunction                                                                                        : 
 
 # 1747| void CopyConstructorTestVirtualClass::CopyConstructorTestVirtualClass()
 # 1747|   Block 0
