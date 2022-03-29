@@ -296,7 +296,8 @@ private newtype TEndPointFeature =
   TCalleeApiName() or
   TCalleeAccessPath() or
   TCalleeAccessPathWithStructuralInfo() or
-  TEnclosingFunctionBody()
+  TEnclosingFunctionBody() or
+  TCalleeAccessPathSimpleFromArgumentTraversal()
 
 abstract class EndPointFeature extends TEndPointFeature {
   abstract string getEncoding();
@@ -379,5 +380,49 @@ class EnclosingFunctionBody extends EndPointFeature, TEnclosingFunctionBody {
     // the order that they appear in the source code.
     result =
       FunctionBodyFeatures::getBodyTokensFeature(FunctionBodyFeatures::getRepresentativeFunctionForEndpoint(endpoint))
+  }
+}
+
+private module SyntacticUtilities {
+  Expr getANestedProperty(ObjectExpr o) {
+    exists(Expr init | init = o.getAProperty().getInit().getUnderlyingValue() |
+      result = [init, getANestedProperty(init)]
+    )
+  }
+
+  string getSimpleAccessPath(DataFlow::Node node) {
+    result = node.asExpr().(VarAccess).getName()
+    or
+    exists(DataFlow::PropRead p |
+      p = node and
+      result = getSimpleAccessPath(p.getBase()) + "." + p.getPropertyName()
+    )
+    or
+    exists(DataFlow::MethodCallNode p |
+      p = node and
+      result = getSimpleAccessPath(p.getReceiver()) + "." + p.getMethodName() + "()"
+    )
+    or
+    exists(DataFlow::CallNode p |
+      p = node and
+      not p instanceof DataFlow::MethodCallNode and
+      result = p.getCalleeName() + "()"
+    )
+  }
+}
+
+class CalleeAccessPathSimpleFromArgumentTraversal extends EndPointFeature,
+  TCalleeAccessPathSimpleFromArgumentTraversal {
+  override string getEncoding() { result = "calleeAccessPathSimpleFromArgumentTraversal" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    exists(DataFlow::InvokeNode invk |
+      result = SyntacticUtilities::getSimpleAccessPath(invk.getCalleeNode()) and
+      (
+        invk.getAnArgument() = endpoint or
+        SyntacticUtilities::getANestedProperty(invk.getAnArgument().asExpr().getUnderlyingValue())
+            .flow() = endpoint
+      )
+    )
   }
 }
