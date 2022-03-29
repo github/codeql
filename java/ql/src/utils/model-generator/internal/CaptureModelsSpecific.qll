@@ -137,6 +137,11 @@ predicate isRelevantType(J::Type t) {
   )
 }
 
+/**
+ * Gets the CSV string representation of the qualifier.
+ */
+string qualifierString() { result = "Argument[-1]" }
+
 private string parameterAccess(J::Parameter p) {
   if
     p.getType() instanceof J::Array and
@@ -154,7 +159,7 @@ private string parameterAccess(J::Parameter p) {
 string parameterNodeAsInput(DataFlow::ParameterNode p) {
   result = parameterAccess(p.asParameter())
   or
-  result = "Argument[-1]" and p instanceof DataFlow::InstanceParameterNode
+  result = qualifierString() and p instanceof DataFlow::InstanceParameterNode
 }
 
 /**
@@ -169,7 +174,7 @@ string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
     |
       result = parameterAccess(node.getEnclosingCallable().getParameter(pos))
       or
-      result = "Argument[-1]" and pos = -1
+      result = qualifierString() and pos = -1
     )
 }
 
@@ -186,11 +191,6 @@ J::Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
 predicate isOwnInstanceAccessNode(ReturnNode node) {
   node.asExpr().(J::ThisAccess).isOwnInstanceAccess()
 }
-
-/**
- * Gets the CSV string representation of the qualifier.
- */
-string qualifierString() { result = "Argument[-1]" }
 
 /**
  * Language specific parts of the `PropagateToSinkConfiguration`.

@@ -45,6 +45,11 @@ predicate asPartialModel = DataFlowPrivate::Csv::asPartialModel/1;
  */
 predicate isRelevantType(CS::Type t) { not t instanceof CS::Enum }
 
+/**
+ * Gets the CSV string representation of the qualifier.
+ */
+string qualifierString() { result = "Argument[Qualifier]" }
+
 private string parameterAccess(CS::Parameter p) {
   if Collections::isCollectionType(p.getType())
   then result = "Argument[" + p.getPosition() + "].Element"
@@ -57,7 +62,7 @@ private string parameterAccess(CS::Parameter p) {
 string parameterNodeAsInput(DataFlow::ParameterNode p) {
   result = parameterAccess(p.asParameter())
   or
-  result = "Argument[Qualifier]" and p instanceof DataFlowPrivate::InstanceParameterNode
+  result = qualifierString() and p instanceof DataFlowPrivate::InstanceParameterNode
 }
 
 pragma[nomagic]
@@ -78,7 +83,7 @@ string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
       result = parameterAccess(getParameter(node, pos))
       or
       pos.isThisParameter() and
-      result = "Argument[Qualifier]"
+      result = qualifierString()
     )
 }
 
@@ -95,17 +100,6 @@ CS::Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) 
 predicate isOwnInstanceAccessNode(DataFlowPrivate::ReturnNode node) {
   node.asExpr() instanceof CS::ThisAccess
 }
-
-/**
- * Gets the CSV string representation of the qualifier.
- */
-string qualifierString() { result = "Argument[Qualifier]" }
-
-/**
- * Holds if `kind` is a relevant sink kind for creating sink models.
- */
-bindingset[kind]
-predicate isRelevantSinkKind(string kind) { any() }
 
 private predicate isRelevantMemberAccess(DataFlow::Node node) {
   exists(CS::MemberAccess access | access = node.asExpr() |
@@ -143,3 +137,9 @@ string asInputArgument(DataFlow::Node source) {
   source.asExpr() instanceof DataFlowPrivate::FieldOrPropertyAccess and
   result = qualifierString()
 }
+
+/**
+ * Holds if `kind` is a relevant sink kind for creating sink models.
+ */
+bindingset[kind]
+predicate isRelevantSinkKind(string kind) { any() }
