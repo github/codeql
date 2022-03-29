@@ -60,11 +60,9 @@ class ExternalApi extends DataFlowDispatch::DataFlowCallable {
 
   /** Gets a call to this API callable. */
   DispatchCall getACall() {
-    exists(DataFlowDispatch::NonDelegateDataFlowCall call | call.getDispatchCall() = result |
-      this = result.getADynamicTarget().getUnboundDeclaration()
-      or
-      this = result.getAStaticTarget().getUnboundDeclaration()
-    )
+    this = result.getADynamicTarget().getUnboundDeclaration()
+    or
+    this = result.getAStaticTarget().getUnboundDeclaration()
   }
 
   /** Gets a node that is an input to a call to this API. */
