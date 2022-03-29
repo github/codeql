@@ -277,17 +277,17 @@ private class Trace extends TTrace {
       result = "Step(" + s1 + ", " + s2 + ", " + t + ")"
     )
   }
-}
 
-/**
- * Gets a string corresponding to the trace `t`.
- */
-private string concretise(Trace t) {
-  t = Nil() and result = ""
-  or
-  exists(InputSymbol s1, InputSymbol s2, Trace rest | t = Step(s1, s2, rest) |
-    result = concretise(rest) + intersect(s1, s2)
-  )
+  /** Holds if the `i`th pair of this trace is `(s1, s2)`. */
+  predicate hasPair(int i, InputSymbol s1, InputSymbol s2) {
+    this = Step(s1, s2, _) and
+    i = 0
+    or
+    exists(Trace t |
+      this = Step(_, _, t) and
+      t.hasPair(i - 1, s1, s2)
+    )
+  }
 }
 
 /**
@@ -321,14 +321,36 @@ private StatePair getAForkPair(State fork) {
   result = MkStatePair(epsilonPred*(fork), epsilonPred*(fork))
 }
 
+private class RelevantTrace extends Trace {
+  RelevantTrace() {
+    exists(State fork, StatePair q |
+      isReachableFromFork(fork, q, this, _) and
+      q = getAForkPair(fork)
+    )
+  }
+
+  /** Gets a string corresponding to this trace. */
+  // the pragma is needed for the case where `intersect(s1, s2)` has multiple values,
+  // not for recursion
+  language[monotonicAggregates]
+  string concretise() {
+    result =
+      concat(int i, InputSymbol s1, InputSymbol s2 |
+        this.hasPair(i, s1, s2)
+      |
+        intersect(s1, s2) order by i desc
+      )
+  }
+}
+
 /**
  * Holds if `fork` is a pumpable fork with word `w`.
  */
 private predicate isPumpable(State fork, string w) {
-  exists(StatePair q, Trace t |
+  exists(StatePair q, RelevantTrace t |
     isReachableFromFork(fork, q, t, _) and
     q = getAForkPair(fork) and
-    w = concretise(t)
+    w = t.concretise()
   )
 }
 
