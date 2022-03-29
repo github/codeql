@@ -9,6 +9,7 @@
  * @id cpp/cleartext-transmission
  * @tags security
  *       external/cwe/cwe-319
+ *       external/cwe/cwe-359
  */
 
 import cpp
