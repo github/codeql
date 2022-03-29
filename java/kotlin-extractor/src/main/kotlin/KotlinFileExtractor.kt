@@ -152,18 +152,22 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractTypeParameter(tp: IrTypeParameter, apparentIndex: Int): Label<out DbTypevariable> {
+    fun extractTypeParameter(tp: IrTypeParameter, apparentIndex: Int): Label<out DbTypevariable>? {
         with("type parameter", tp) {
-            val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
-
-            val parentId: Label<out DbClassorinterfaceorcallable> = when (val parent = tp.parent) {
+            val parentId: Label<out DbClassorinterfaceorcallable>? = when (val parent = tp.parent) {
                 is IrFunction -> useFunction(parent)
                 is IrClass -> useClassSource(parent)
                 else -> {
                     logger.errorElement("Unexpected type parameter parent", tp)
-                    fakeLabel()
+                    null
                 }
             }
+
+            if (parentId == null) {
+                return null
+            }
+
+            val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
 
             // Note apparentIndex does not necessarily equal `tp.index`, because at least constructor type parameters
             // have indices offset from the type parameters of the constructed class (i.e. the parameter S of
