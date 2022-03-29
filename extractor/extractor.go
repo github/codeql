@@ -1336,6 +1336,12 @@ func extractDecl(tw *trap.Writer, decl ast.Decl, parent trap.Label, idx int) {
 		extractExpr(tw, decl.Type, lbl, 1)
 		extractStmt(tw, decl.Body, lbl, 2)
 		extractDoc(tw, decl.Doc, lbl)
+		extractTypeParamDecls(tw, decl.Type.TypeParams, lbl)
+
+		// Note that we currently don't extract any kind of declaration for
+		// receiver type parameters. There isn't an explicit declaration, but
+		// we could consider the index/indices of an IndexExpr/IndexListExpr
+		// receiver as declarations.
 	default:
 		log.Fatalf("unknown declaration of type %T", decl)
 	}
@@ -1377,6 +1383,7 @@ func extractSpec(tw *trap.Writer, spec ast.Spec, parent trap.Label, idx int) {
 			kind = dbscheme.TypeDefSpecType.Index()
 		}
 		extractExpr(tw, spec.Name, lbl, 0)
+		extractTypeParamDecls(tw, spec.TypeParams, lbl)
 		extractExpr(tw, spec.Type, lbl, 1)
 		extractDoc(tw, spec.Doc, lbl)
 	}
@@ -1797,4 +1804,27 @@ func flattenBinaryExprTree(tw *trap.Writer, e ast.Expr, parent trap.Label, idx i
 		idx = idx + 1
 	}
 	return idx
+}
+
+func extractTypeParamDecls(tw *trap.Writer, fields *ast.FieldList, parent trap.Label) {
+	if fields == nil || fields.List == nil {
+		return
+	}
+
+	overrideTypesOfTypeSetLiterals(tw, fields)
+
+	idx := 0
+	for _, field := range fields.List {
+		lbl := tw.Labeler.LocalID(field)
+		dbscheme.TypeParamDeclsTable.Emit(tw, lbl, parent, idx)
+		extractNodeLocation(tw, field, lbl)
+		if field.Names != nil {
+			for i, name := range field.Names {
+				extractExpr(tw, name, lbl, i+1)
+			}
+		}
+		extractExpr(tw, field.Type, lbl, 0)
+		extractDoc(tw, field.Doc, lbl)
+		idx += 1
+	}
 }

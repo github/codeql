@@ -275,6 +275,9 @@ var StmtParentType = NewUnionType("@stmtparent", NodeType)
 // DeclParentType is the type of AST nodes that can have declarations as children
 var DeclParentType = NewUnionType("@declparent", NodeType)
 
+// TypeParamDeclParentType is the type of AST nodes that can have type parameter declarations as children
+var TypeParamDeclParentType = NewUnionType("@typeparamdeclparent", NodeType)
+
 // FuncDefType is the type of AST nodes that define functions, that is, function
 // declarations and function literals
 var FuncDefType = NewUnionType("@funcdef", StmtParentType, ExprParentType)
@@ -308,6 +311,9 @@ var StmtType = NewPrimaryKeyType("@stmt", ExprParentType, StmtParentType)
 
 // DeclType is the type of declaration AST nodes
 var DeclType = NewPrimaryKeyType("@decl", ExprParentType, StmtParentType, FieldParentType)
+
+// TypeParamDeclType is the type of type parameter declaration AST nodes
+var TypeParamDeclType = NewPrimaryKeyType("@typeparamdecl", DocumentableType, ExprParentType)
 
 // SpecType is the type of spec AST nodes
 var SpecType = NewPrimaryKeyType("@spec", ExprParentType, DocumentableType)
@@ -650,7 +656,7 @@ var TypeDeclType = DeclKind.NewBranch("@typedecl", GenDeclType)
 var VarDeclType = DeclKind.NewBranch("@vardecl", GenDeclType)
 
 // FuncDeclType is the type of function declaration AST nodes
-var FuncDeclType = DeclKind.NewBranch("@funcdecl", DocumentableType, FuncDefType)
+var FuncDeclType = DeclKind.NewBranch("@funcdecl", DocumentableType, FuncDefType, TypeParamDeclParentType)
 
 // SpecKind is a case type for distinguishing different kinds of declaration specification nodes
 var SpecKind = NewCaseType(SpecType, "kind")
@@ -662,7 +668,7 @@ var ImportSpecType = SpecKind.NewBranch("@importspec")
 var ValueSpecType = SpecKind.NewBranch("@valuespec")
 
 // TypeSpecType is the type of type declaration specification nodes
-var TypeSpecType = NewUnionType("@typespec")
+var TypeSpecType = NewUnionType("@typespec", TypeParamDeclParentType)
 
 // TypeDefSpecType is the type of type declaration specification nodes corresponding to type definitions
 var TypeDefSpecType = SpecKind.NewBranch("@typedefspec", TypeSpecType)
@@ -988,6 +994,13 @@ var ConstValuesTable = NewTable("constvalues",
 var FieldsTable = NewTable("fields",
 	EntityColumn(FieldType, "id").Key(),
 	EntityColumn(FieldParentType, "parent"),
+	IntColumn("idx"),
+)
+
+// TypeParamDeclsTable is the table defining type param declaration AST nodes
+var TypeParamDeclsTable = NewTable("typeparamdecls",
+	EntityColumn(TypeParamDeclType, "id").Key(),
+	EntityColumn(TypeParamDeclParentType, "parent"),
 	IntColumn("idx"),
 )
 

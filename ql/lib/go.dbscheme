@@ -157,6 +157,8 @@ constvalues(unique int expr: @expr ref, string value: string ref, string exact: 
 
 fields(unique int id: @field, int parent: @fieldparent ref, int idx: int ref);
 
+typeparamdecls(unique int id: @typeparamdecl, int parent: @typeparamdeclparent ref, int idx: int ref);
+
 #keyset[parent, idx]
 stmts(unique int id: @stmt, int kind: int ref, int parent: @stmtparent ref, int idx: int ref);
 
@@ -231,12 +233,12 @@ typeparam(unique int tp: @typeparamtype ref, string name: string ref, int bound:
 
 @locatable = @xmllocatable | @node | @localscope;
 
-@node = @documentable | @exprparent | @modexprparent | @fieldparent | @stmtparent | @declparent | @scopenode
-      | @comment_group | @comment;
+@node = @documentable | @exprparent | @modexprparent | @fieldparent | @stmtparent | @declparent | @typeparamdeclparent
+      | @scopenode | @comment_group | @comment;
 
-@documentable = @file | @field | @spec | @gendecl | @funcdecl | @modexpr;
+@documentable = @file | @field | @typeparamdecl | @spec | @gendecl | @funcdecl | @modexpr;
 
-@exprparent = @funcdef | @file | @expr | @field | @stmt | @decl | @spec;
+@exprparent = @funcdef | @file | @expr | @field | @stmt | @decl | @typeparamdecl | @spec;
 
 @modexprparent = @file | @modexpr;
 
@@ -245,6 +247,8 @@ typeparam(unique int tp: @typeparamtype ref, string name: string ref, int bound:
 @stmtparent = @funcdef | @stmt | @decl;
 
 @declparent = @file | @declstmt;
+
+@typeparamdeclparent = @functypeexpr | @typespec;
 
 @funcdef = @funclit | @funcdecl;
 

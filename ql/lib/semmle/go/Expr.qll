@@ -2096,6 +2096,10 @@ private predicate isTypeExprTopDown(Expr e) {
   or
   e = any(ParameterDecl pd).getTypeExpr()
   or
+  e = any(TypeParamDecl tpd).getTypeConstraintExpr()
+  or
+  e = any(TypeParamDecl tpd).getNameExpr(_)
+  or
   e = any(ReceiverDecl rd).getTypeExpr()
   or
   e = any(ResultVariableDecl rvd).getTypeExpr()
