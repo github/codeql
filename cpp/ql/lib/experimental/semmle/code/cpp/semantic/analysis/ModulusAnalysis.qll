@@ -211,10 +211,6 @@ private predicate ssaModulus(SemSsaVariable v, SemSsaReadPosition pos, SemBound 
   moduloGuardedRead(v, pos, val, mod) and b instanceof SemZeroBound
 }
 
-predicate semExprModulus(SemExpr e, SemBound b, int val, int mod) {
-  semExprModulus(e, b, val, mod, _)
-}
-
 /**
  * Holds if `e` is equal to `b + val` modulo `mod`.
  *
@@ -223,28 +219,25 @@ predicate semExprModulus(SemExpr e, SemBound b, int val, int mod) {
  * - `mod > 1`: `val` lies within the range `[0 .. mod-1]`.
  */
 cached
-predicate semExprModulus(SemExpr e, SemBound b, int val, int mod, string branch) {
+predicate semExprModulus(SemExpr e, SemBound b, int val, int mod) {
   not ignoreExprModulus(e) and
   (
-    e = b.getExpr(val) and mod = 0 and branch = "getExpr"
+    e = b.getExpr(val) and mod = 0
     or
     evenlyDivisibleExpr(e, mod) and
     val = 0 and
-    b instanceof SemZeroBound and
-    branch = "evenlyDivisible"
+    b instanceof SemZeroBound
     or
     exists(SemSsaVariable v, SemSsaReadPositionBlock bb |
       ssaModulus(v, bb, b, val, mod) and
       e = v.getAUse() and
-      bb.getAnExpr() = e and
-      branch = "use"
+      bb.getAnExpr() = e
     )
     or
     exists(SemExpr mid, int val0, int delta |
       semExprModulus(mid, b, val0, mod) and
       semValueFlowStep(e, mid, delta) and
-      val = remainder(val0 + delta, mod) and
-      branch = "valueFlowStep"
+      val = remainder(val0 + delta, mod)
     )
     or
     exists(SemConditionalExpr cond, int v1, int v2, int m1, int m2 |
@@ -253,8 +246,7 @@ predicate semExprModulus(SemExpr e, SemBound b, int val, int mod, string branch)
       condExprBranchModulus(cond, false, b, v2, m2) and
       mod = m1.gcd(m2).gcd(v1 - v2) and
       mod != 1 and
-      val = remainder(v1, mod) and
-      branch = "condExpr"
+      val = remainder(v1, mod)
     )
     or
     exists(SemBound b1, SemBound b2, int v1, int v2, int m1, int m2 |
@@ -262,8 +254,7 @@ predicate semExprModulus(SemExpr e, SemBound b, int val, int mod, string branch)
       addModulus(e, false, b2, v2, m2) and
       mod = m1.gcd(m2) and
       mod != 1 and
-      val = remainder(v1 + v2, mod) and
-      branch = "addModulus"
+      val = remainder(v1 + v2, mod)
     |
       b = b1 and b2 instanceof SemZeroBound
       or
@@ -275,8 +266,7 @@ predicate semExprModulus(SemExpr e, SemBound b, int val, int mod, string branch)
       subModulus(e, false, any(SemZeroBound zb), v2, m2) and
       mod = m1.gcd(m2) and
       mod != 1 and
-      val = remainder(v1 - v2, mod) and
-      branch = "subModulus"
+      val = remainder(v1 - v2, mod)
     )
   )
 }
