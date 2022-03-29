@@ -962,11 +962,11 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
       result.getAstNode().getFile() = this.getAstNode().getFile()
     )
     or
-    result = getAClassReferenceStep(t)
+    result = getAClassReferenceRec(t)
   }
 
   pragma[noopt]
-  private DataFlow::SourceNode getAClassReferenceStep(DataFlow::TypeTracker t) {
+  private DataFlow::SourceNode getAClassReferenceRec(DataFlow::TypeTracker t) {
     exists(DataFlow::TypeTracker t2, StepSummary summary, DataFlow::SourceNode prev |
       prev = this.getAClassReference(t2) and
       StepSummary::step(prev, result, summary) and
