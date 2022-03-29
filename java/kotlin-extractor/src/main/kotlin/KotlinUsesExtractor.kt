@@ -95,7 +95,12 @@ open class KotlinUsesExtractor(
      * `shortName` is a Java primitive name (e.g. "int"), a class short name with Java-style type arguments ("InnerClass<E>" or
      * "OuterClass<ConcreteArgument>" or "OtherClass<? extends Bound>") or an array ("componentShortName[]").
      */
-    data class TypeResult<out LabelType>(val id: Label<out LabelType>, val signature: String?, val shortName: String)
+    data class TypeResult<out LabelType>(val id: Label<out LabelType>, val signature: String?, val shortName: String) {
+        fun <U> cast(): TypeResult<U> {
+            @Suppress("UNCHECKED_CAST")
+            return this as TypeResult<U>
+        }
+    }
     data class TypeResults(val javaResult: TypeResult<DbType>, val kotlinResult: TypeResult<DbKt_type>)
 
     fun useType(t: IrType, context: TypeContext = TypeContext.OTHER) =
@@ -871,8 +876,7 @@ open class KotlinUsesExtractor(
                 val boundLabel = boundResults.javaResult.id.cast<DbReftype>()
 
                 return if(arg.variance == Variance.INVARIANT)
-                    @Suppress("UNCHECKED_CAST")
-                    boundResults.javaResult as TypeResult<DbReftype>
+                    boundResults.javaResult.cast<DbReftype>()
                 else {
                     val keyPrefix = if (arg.variance == Variance.IN_VARIANCE) "super" else "extends"
                     val wildcardKind = if (arg.variance == Variance.IN_VARIANCE) 2 else 1
