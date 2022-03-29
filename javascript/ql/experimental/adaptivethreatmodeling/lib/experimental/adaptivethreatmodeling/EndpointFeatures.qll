@@ -16,38 +16,7 @@ private import FunctionBodyFeatures as FunctionBodyFeatures
 private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
   // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
   endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
-  (
-    exists(EndPointFeature f | f.getEncoding() = featureName and result = f.getValue(endpoint))
-    or
-    // The access path of the function being called, both with and without structural info, if the
-    // function being called originates from an external API. For example, the endpoint here:
-    //
-    // ```js
-    // const mongoose = require('mongoose'),
-    //   User = mongoose.model('User', null);
-    // User.findOne(ENDPOINT);
-    // ```
-    //
-    // would have a callee access path with structural info of
-    // `mongoose member model instanceorreturn member findOne instanceorreturn`, and a callee access
-    // path without structural info of `mongoose model findOne`.
-    //
-    // These features indicate that the callee comes from (reading the access path backwards) an
-    // instance of the `findOne` member of an instance of the `model` member of the `mongoose`
-    // external library.
-    exists(AccessPaths::Boolean includeStructuralInfo |
-      featureName =
-        "calleeAccessPath" +
-          any(string x | if includeStructuralInfo = true then x = "WithStructuralInfo" else x = "") and
-      result =
-        concat(API::Node node, string accessPath |
-          node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
-          AccessPaths::accessPaths(node, includeStructuralInfo, accessPath, _)
-        |
-          accessPath, " "
-        )
-    )
-  )
+  exists(EndPointFeature f | f.getEncoding() = featureName and result = f.getValue(endpoint))
 }
 
 /**
@@ -338,6 +307,16 @@ class CalleeAccessPath extends EndPointFeature, TCalleeAccessPath {
   override string getEncoding() { result = "calleeAccessPath" }
 
   override string getValue(DataFlow::Node endpoint) {
+    // The access path of the function being called, both without structural info, if the
+    // function being called originates from an external API. For example, the endpoint here:
+    //
+    // ```js
+    // const mongoose = require('mongoose'),
+    //   User = mongoose.model('User', null);
+    // User.findOne(ENDPOINT);
+    // ```
+    //
+    // would have a callee access path without structural info of `mongoose model findOne`.
     result =
       concat(API::Node node, string accessPath |
         node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
@@ -353,6 +332,21 @@ class CalleeAccessPathWithStructuralInfo extends EndPointFeature,
   override string getEncoding() { result = "calleeAccessPathWithStructuralInfo" }
 
   override string getValue(DataFlow::Node endpoint) {
+    // The access path of the function being called, both with structural info, if the
+    // function being called originates from an external API. For example, the endpoint here:
+    //
+    // ```js
+    // const mongoose = require('mongoose'),
+    //   User = mongoose.model('User', null);
+    // User.findOne(ENDPOINT);
+    // ```
+    //
+    // would have a callee access path with structural info of
+    // `mongoose member model instanceorreturn member findOne instanceorreturn`
+    //
+    // These features indicate that the callee comes from (reading the access path backwards) an
+    // instance of the `findOne` member of an instance of the `model` member of the `mongoose`
+    // external library.
     result =
       concat(API::Node node, string accessPath |
         node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
