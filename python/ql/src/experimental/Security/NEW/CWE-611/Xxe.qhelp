@@ -15,29 +15,34 @@ and out-of-band data retrieval techniques may allow attackers to steal sensitive
 <p>
 The easiest way to prevent XXE attacks is to disable external entity handling when
 parsing untrusted data. How this is done depends on the library being used. Note that some
-libraries, such as recent versions of <code>libxml</code>, disable entity expansion by default,
+libraries, such as recent versions of the XML libraries in the standard library of Python 3,
+disable entity expansion by default,
 so unless you have explicitly enabled entity expansion, no further action needs to be taken.
+</p>
+
+<p>
+We recommend using the <a href="https://pypi.org/project/defusedxml/">defusedxml</a>
+PyPI package, which has been created to prevent XML attacks (both XXE and XML bombs).
 </p>
 </recommendation>
 
 <example>
 <p>
-The following example uses the <code>libxml</code> XML parser to parse a string <code>xmlSrc</code>.
-If that string is from an untrusted source, this code may be vulnerable to an XXE attack, since
-the parser is invoked with the <code>noent</code> option set to <code>true</code>:
+The following example uses the <code>lxml</code> XML parser to parse a string
+<code>xml_src</code>. That string is from an untrusted source, so this code is
+vulnerable to an XXE attack, since the <a href="https://lxml.de/apidoc/lxml.etree.html#lxml.etree.XMLParser">
+default parser</a> from <code>lxml.etree</code> allows local external entities to be resolved.
 </p>
-<sample src="examples/Xxe.js"/>
+<sample src="examples/XxeBad.py"/>
 
 <p>
-To guard against XXE attacks, the <code>noent</code> option should be omitted or set to
-<code>false</code>. This means that no entity expansion is undertaken at all, not even for standard
-internal entities such as <code>&amp;amp;</code> or <code>&amp;gt;</code>. If desired, these
-entities can be expanded in a separate step using utility functions provided by libraries such
-as <a href="http://underscorejs.org/#unescape">underscore</a>,
-<a href="https://lodash.com/docs/4.17.15#unescape">lodash</a> or
-<a href="https://github.com/mathiasbynens/he">he</a>.
+To guard against XXE attacks with the <code>lxml</code> library, you should create a
+parser with <code>resolve_entities</code> set to <code>false</code>. This means that no
+entity expansion is undertaken, althuogh standard predefined entities such as
+<code>&amp;gt;</code>, for writing <code>&gt;</code> inside the text of an XML element,
+are still allowed.
 </p>
-<sample src="examples/XxeGood.js"/>
+<sample src="examples/XxeGood.py"/>
 </example>
 
 <references>
@@ -52,6 +57,14 @@ Timothy Morgen:
 <li>
 Timur Yunusov, Alexey Osipov:
 <a href="https://www.slideshare.net/qqlan/bh-ready-v4">XML Out-Of-Band Data Retrieval</a>.
+</li>
+<li>
+Python 3 standard library:
+<a href="https://docs.python.org/3/library/xml.html#xml-vulnerabilities">XML Vulnerabilities</a>.
+</li>
+<li>
+Python 2 standard library:
+<a href="https://docs.python.org/2/library/xml.html#xml-vulnerabilities">XML Vulnerabilities</a>.
 </li>
 </references>
 </qhelp>
