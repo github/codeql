@@ -53,4 +53,4 @@ class ExploitableUserModePtrParam extends Parameter {
 from ExploitableUserModePtrParam p, UnSafePutUserMacro unsafePutUser
 where
   DataFlow::localFlow(DataFlow::parameterNode(p), DataFlow::exprNode(unsafePutUser.getUserModePtr()))
-select p, unsafePutUser, "potential wrtie user mode ptr without check."
+select p, "unsafe_put_user write user-mode pointer $@ without check.", p, p.toString()
