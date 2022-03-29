@@ -2,11 +2,7 @@
  * Provides an implementation of  _API graphs_, which are an abstract representation of the API
  * surface used and/or defined by a code base.
  *
- * The nodes of the API graph represent definitions and uses of API components. The edges are
- * directed and labeled; they specify how the components represented by nodes relate to each other.
- * For example, if one of the nodes represents a definition of an API function, then there
- * will be nodes corresponding to the function's parameters, which are connected to the function
- * node by edges labeled `parameter <i>`.
+ * See `API::Node` for more in-depth documentation.
  */
 
 import javascript
@@ -14,12 +10,112 @@ private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import internal.CachedStages
 
 /**
- * Provides classes and predicates for working with APIs defined or used in a database.
+ * Provides classes and predicates for working with the API boundary between the current
+ * codebase and external libraries.
+ *
+ * See `API::Node` for more in-depth documentation.
  */
 module API {
   /**
-   * An abstract representation of a definition or use of an API component such as a function
-   * exported by an npm package, a parameter of such a function, or its result.
+   * A node in the API graph, representing a value that has crossed the boundary between this
+   * codebase and an external library.
+   *
+   * ### Basic usage
+   *
+   * API graphs are typically used to identify "API calls", that is, calls to an external function
+   * whose implementation is not necessarily part of the current codebase.
+   *
+   * The most basic use of API graphs is typically as follows:
+   * 1. Start with `API::moduleImport` for the relevant library.
+   * 2. Follow up with a chain of accessors such as `getMember` describing how to get to the relevant API function.
+   * 3. Map the resulting API graph nodes to data-flow nodes, using `getAnImmediateUse` or `getARhs`.
+   *
+   * For example, a simplified way to get arguments to `underscore.extend` would be
+   * ```codeql
+   * API::moduleImport("underscore").getMember("extend").getParameter(0).getARhs()
+   * ```
+   *
+   * The most commonly used accessors are `getMember`, `getParameter`, and `getReturn`.
+   *
+   * ### API graph nodes
+   *
+   * There are two kinds of nodes in the API graphs, distinguished by who is "holding" the value:
+   * - **Use-nodes** represent values held by the current codebase, which came from an external library.
+   *   (The current codebase is "using" a value that came from the library).
+   * - **Def-nodes** represent values held by the external library, which came from this codebase.
+   *   (The current codebase "defines" the value seen by the library).
+   *
+   * API graph nodes are associated with data-flow nodes in the current codebase.
+   * (Since external libraries are not part of the database, there is no way to associate with concrete
+   * data-flow nodes from the external library).
+   * - **Use-nodes** are associated with data-flow nodes where a value enters the current codebase,
+   *   such as the return value of a call to an external function.
+   * - **Def-nodes** are associated with data-flow nodes where a value leaves the current codebase,
+   *   such as an argument passed in a call to an external function.
+   *
+   *
+   * ### Access paths and edge labels
+   *
+   * Nodes in the API graph nodes are associated with a set of access paths, describing a series of operations
+   * that may be performed to obtain that value.
+   *
+   * For example, the access path `API::moduleImport("lodash").getMember("extend")` represents the action of
+   * importing `lodash` and then accessing the member `extend` on the resulting object.
+   * It would be associated with an expression such as `require("lodash").extend`.
+   *
+   * Each edge in the graph is labelled by such an "operation". For an edge `A->B`, the type of the `A` node
+   * determines who is performing the operation, and the type of the `B` node determines who ends up holding
+   * the result:
+   * - An edge starting from a use-node describes what the current codebase is doing to a value that
+   *   came from a library.
+   * - An edge starting from a def-node describes what the external library might do to a value that
+   *   came from the current codebase.
+   * - An edge ending in a use-node means the result ends up in the current codebase (at its associated data-flow node).
+   * - An edge ending in a def-node means the result ends up in external code (its associated data-flow node is
+   *   the place where it was "last seen" in the current codebase before flowing out)
+   *
+   * Because the implementation of the external library is not visible, it is not known exactly what operations
+   * it will perform on values that flow there. Instead, the edges starting from a def-node are operations that would
+   * lead to an observable effect within the current codebase; without knowing for certain if the library will actually perform
+   * those operations. (When constructing these edge, we assume the library is somewhat well-behaved).
+   *
+   * For example, given this snippet:
+   * ```js
+   * require('foo')(x => { doSomething(x) })
+   * ```
+   * A callback is passed to the external function `foo`. We can't know if `foo` will actually invoke this callback.
+   * But _if_ the library should decide to invoke the callback, then a value will flow into the current codebase via the `x` parameter.
+   * For that reason, an edge is generated representing the argument-passing operation that might be performed by `foo`.
+   * This edge is going from the def-node associated with the callback to the use-node associated with the parameter `x`.
+   *
+   * ### Thinking in operations versus code patterns
+   *
+   * Treating edges as "operations" helps avoid a pitfall in which library models become overly specific to certain code patterns.
+   * Consider the following two equivalent calls to `foo`:
+   * ```js
+   * const foo = require('foo');
+   *
+   * foo({
+   *   myMethod(x) {...}
+   * });
+   *
+   * foo({
+   *   get myMethod() {
+   *     return function(x) {...}
+   *   }
+   * });
+   * ```
+   * If `foo` calls `myMethod` on its first parameter, either of the `myMethod` implementations will be invoked.
+   * An indeed, the access path `API::moduleImport("foo").getParameter(0).getMember("myMethod").getParameter(0)` correctly
+   * identifies both `x` parameters.
+   *
+   * Observe how `getMember("myMethod")` behaves when the member is defined via a getter. When thinking in code patterns,
+   * it might seem obvious that `getMember` should have obtained a reference the getter method itself.
+   * But when seeing it as an access to `myMethod` performed by the library, we can deduce that the relevant expression
+   * on the client side is actually the return-value of the getter.
+   *
+   * Although one may think of API graphs as a tool to find certain program elements in the codebase,
+   * it can lead to some situations where intuition does not match what works best in practice.
    */
   class Node extends Impl::TApiNode {
     /**
