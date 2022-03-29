@@ -69,6 +69,15 @@ private module XmlEtree {
       override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
         kind.isBillionLaughs() or kind.isQuadraticBlowup()
       }
+
+      override predicate mayExecuteInput() { none() }
+
+      override DataFlow::Node getOutput() {
+        exists(DataFlow::Node objRef |
+          DataFlow::localFlow(this.getObject(), objRef) and
+          result.(DataFlow::MethodCallNode).calls(objRef, "close")
+        )
+      }
     }
   }
 
@@ -108,6 +117,10 @@ private module XmlEtree {
       // change the security features anyway :|
       kind.isBillionLaughs() or kind.isQuadraticBlowup()
     }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getOutput() { result = this }
   }
 }
 
@@ -226,6 +239,15 @@ private module SaxBasedParsing {
       this.getObject() = saxParserWithFeatureExternalGesTurnedOn() and
       (kind.isXxe() or kind.isDtdRetrieval())
     }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getOutput() {
+      // note: the output of parsing with SAX is that the content handler gets the
+      // data... but we don't currently model this (it's not trivial to do, and won't
+      // really give us any value, at least not as of right now).
+      none()
+    }
   }
 
   /**
@@ -258,6 +280,15 @@ private module SaxBasedParsing {
       // can be vuln to other things if features has been turned on
       this.getObject() = saxParserWithFeatureExternalGesTurnedOn() and
       (kind.isXxe() or kind.isDtdRetrieval())
+    }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getOutput() {
+      // note: the output of parsing with SAX is that the content handler gets the
+      // data... but we don't currently model this (it's not trivial to do, and won't
+      // really give us any value, at least not as of right now).
+      none()
     }
   }
 
@@ -296,6 +327,10 @@ private module SaxBasedParsing {
       or
       (kind.isBillionLaughs() or kind.isQuadraticBlowup())
     }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getOutput() { result = this }
   }
 }
 
@@ -400,6 +435,15 @@ private module Lxml {
       override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
         this.calls(instanceVulnerableTo(kind), "feed")
       }
+
+      override predicate mayExecuteInput() { none() }
+
+      override DataFlow::Node getOutput() {
+        exists(DataFlow::Node objRef |
+          DataFlow::localFlow(this.getObject(), objRef) and
+          result.(DataFlow::MethodCallNode).calls(objRef, "close")
+        )
+      }
     }
   }
 
@@ -442,6 +486,10 @@ private module Lxml {
       kind.isXxe() and
       not exists(this.getParserArg())
     }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getOutput() { result = this }
   }
 }
 
@@ -460,5 +508,9 @@ private module Xmltodict {
       (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
       this.getArgByName("disable_entities").getALocalSource().asExpr() = any(False f)
     }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getOutput() { result = this }
   }
 }

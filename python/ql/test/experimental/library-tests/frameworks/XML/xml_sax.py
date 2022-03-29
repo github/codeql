@@ -10,41 +10,41 @@ class MainHandler(xml.sax.ContentHandler):
     def characters(self, data):
         self._result.append(data)
 
-xml.sax.parse(StringIO(x)) # $ xmlInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
-xml.sax.parse(source=StringIO(x)) # $ xmlInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
+xml.sax.parse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
+xml.sax.parse(source=StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
 
-xml.sax.parseString(x) # $ xmlInput=x xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
-xml.sax.parseString(string=x) # $ xmlInput=x xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
+xml.sax.parseString(x) # $ decodeFormat=XML decodeInput=x xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
+xml.sax.parseString(string=x) # $ decodeFormat=XML decodeInput=x xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
 
 parser = xml.sax.make_parser()
-parser.parse(StringIO(x)) # $ xmlInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
-parser.parse(source=StringIO(x)) # $ xmlInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
+parser.parse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
+parser.parse(source=StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
 
 # You can make it vuln to both XXE and DTD retrieval by setting this flag
 # see https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges
 parser = xml.sax.make_parser()
 parser.setFeature(xml.sax.handler.feature_external_ges, True)
-parser.parse(StringIO(x)) # $ xmlInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='DTD retrieval' xmlVuln='Quadratic Blowup' xmlVuln='XXE'
+parser.parse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='DTD retrieval' xmlVuln='Quadratic Blowup' xmlVuln='XXE'
 
 parser = xml.sax.make_parser()
 parser.setFeature(xml.sax.handler.feature_external_ges, False)
-parser.parse(StringIO(x)) # $ xmlInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
+parser.parse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
 
 # Forward Type Tracking test
 def func(cond):
     parser = xml.sax.make_parser()
     if cond:
         parser.setFeature(xml.sax.handler.feature_external_ges, True)
-        parser.parse(StringIO(x)) # $ xmlInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='DTD retrieval' xmlVuln='Quadratic Blowup' xmlVuln='XXE'
+        parser.parse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='DTD retrieval' xmlVuln='Quadratic Blowup' xmlVuln='XXE'
     else:
-        parser.parse(StringIO(x)) # $ xmlInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
+        parser.parse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
 
 # make it vuln, then making it safe
 # a bit of an edge-case, but is nice to be able to handle.
 parser = xml.sax.make_parser()
 parser.setFeature(xml.sax.handler.feature_external_ges, True)
 parser.setFeature(xml.sax.handler.feature_external_ges, False)
-parser.parse(StringIO(x)) # $ xmlInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
+parser.parse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
 
 def check_conditional_assignment(cond):
     parser = xml.sax.make_parser()
@@ -52,7 +52,7 @@ def check_conditional_assignment(cond):
         parser.setFeature(xml.sax.handler.feature_external_ges, True)
     else:
         parser.setFeature(xml.sax.handler.feature_external_ges, False)
-    parser.parse(StringIO(x)) # $ xmlInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='DTD retrieval' xmlVuln='Quadratic Blowup' xmlVuln='XXE'
+    parser.parse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='DTD retrieval' xmlVuln='Quadratic Blowup' xmlVuln='XXE'
 
 def check_conditional_assignment2(cond):
     parser = xml.sax.make_parser()
@@ -61,4 +61,4 @@ def check_conditional_assignment2(cond):
     else:
         flag_value = False
     parser.setFeature(xml.sax.handler.feature_external_ges, flag_value)
-    parser.parse(StringIO(x)) # $ xmlInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='DTD retrieval' xmlVuln='Quadratic Blowup' xmlVuln='XXE'
+    parser.parse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='DTD retrieval' xmlVuln='Quadratic Blowup' xmlVuln='XXE'

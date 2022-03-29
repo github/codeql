@@ -580,12 +580,7 @@ module XML {
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `XMLParsing` instead.
    */
-  class XMLParsing extends DataFlow::Node instanceof XMLParsing::Range {
-    /**
-     * Gets the argument containing the content to parse.
-     */
-    DataFlow::Node getAnInput() { result = super.getAnInput() }
-
+  class XMLParsing extends Decoding instanceof XMLParsing::Range {
     /**
      * Holds if this XML parsing is vulnerable to `kind`.
      */
@@ -600,16 +595,13 @@ module XML {
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `XMLParsing` instead.
      */
-    abstract class Range extends DataFlow::Node {
-      /**
-       * Gets the argument containing the content to parse.
-       */
-      abstract DataFlow::Node getAnInput();
-
+    abstract class Range extends Decoding::Range {
       /**
        * Holds if this XML parsing is vulnerable to `kind`.
        */
       abstract predicate vulnerableTo(XMLParsingVulnerabilityKind kind);
+
+      override string getFormat() { result = "XML" }
     }
   }
 }
