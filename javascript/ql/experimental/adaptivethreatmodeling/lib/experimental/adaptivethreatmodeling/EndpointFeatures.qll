@@ -17,18 +17,7 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
   // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
   endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
   (
-    // Features for endpoints that are contained within a function.
-    exists(Function function |
-      function = FunctionBodyFeatures::getRepresentativeFunctionForEndpoint(endpoint)
-    |
-      // The name of the function that encloses the endpoint.
-      featureName = "enclosingFunctionName" and result = FunctionNames::getNameToFeaturize(function)
-      or
-      // A feature containing natural language tokens from the function that encloses the endpoint in
-      // the order that they appear in the source code.
-      featureName = "enclosingFunctionBody" and
-      result = FunctionBodyFeatures::getBodyTokensFeature(function)
-    )
+    exists(EndPointFeature f | f.getEncoding() = featureName and result = f.getValue(endpoint))
     or
     result =
       strictconcat(DataFlow::CallNode call, string component |
@@ -163,7 +152,8 @@ private module AccessPaths {
     API::Node node, Boolean includeStructuralInfo, string accessPath, string apiName
   ) {
     //node = API::moduleImport(result)
-    node = API::moduleImport(apiName) and accessPath = apiName
+    node = API::moduleImport(apiName) and
+    accessPath = apiName
     or
     exists(API::Node previousNode, string previousAccessPath |
       previousNode.getDepth() < node.getDepth() and
@@ -284,13 +274,7 @@ private module FunctionNames {
 }
 
 /** Get a name of a supported generic token-based feature. */
-string getASupportedFeatureName() {
-  result =
-    [
-      "enclosingFunctionName", "calleeName", "receiverName", "argumentIndex", "calleeApiName",
-      "calleeAccessPath", "calleeAccessPathWithStructuralInfo", "enclosingFunctionBody"
-    ]
-}
+string getASupportedFeatureName() { result = any(EndPointFeature f).getEncoding() }
 
 /**
  * Generic token-based features for ATM.
@@ -302,4 +286,98 @@ predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string feat
   // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
   endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
   featureValue = getTokenFeature(endpoint, featureName)
+}
+
+private newtype TEndPointFeature =
+  TEnclosingFunctionName() or
+  TCalleeName() or
+  TReceiverName() or
+  TArgumentIndex() or
+  TCalleeApiName() or
+  TCalleeAccessPath() or
+  TCalleeAccessPathWithStructuralInfo() or
+  TEnclosingFunctionBody()
+
+abstract class EndPointFeature extends TEndPointFeature {
+  abstract string getEncoding();
+
+  abstract string getValue(DataFlow::Node endpoint);
+
+  string toString() { result = getEncoding() }
+}
+
+class EnclosingFunctionName extends EndPointFeature, TEnclosingFunctionName {
+  override string getEncoding() { result = "enclosingFunctionName" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    // The name of the function that encloses the endpoint.
+    result =
+      FunctionNames::getNameToFeaturize(FunctionBodyFeatures::getRepresentativeFunctionForEndpoint(endpoint))
+  }
+}
+
+class CalleeName extends EndPointFeature, TCalleeName {
+  override string getEncoding() { result = "calleeName" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    // TODO implement
+    none()
+  }
+}
+
+class ReceiverName extends EndPointFeature, TReceiverName {
+  override string getEncoding() { result = "receiverName" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    // TODO implement
+    none()
+  }
+}
+
+class ArgumentIndex extends EndPointFeature, TArgumentIndex {
+  override string getEncoding() { result = "argumentIndex" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    // TODO implement
+    none()
+  }
+}
+
+class CalleeApiName extends EndPointFeature, TCalleeApiName {
+  override string getEncoding() { result = "calleeApiName" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    // TODO implement
+    none()
+  }
+}
+
+class CalleeAccessPath extends EndPointFeature, TCalleeAccessPath {
+  override string getEncoding() { result = "calleeAccessPath" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    // TODO implement
+    none()
+  }
+}
+
+class CalleeAccessPathWithStructuralInfo extends EndPointFeature,
+  TCalleeAccessPathWithStructuralInfo {
+  override string getEncoding() { result = "calleeAccessPathWithStructuralInfo" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    // TODO implement
+    none()
+  }
+}
+
+class EnclosingFunctionBody extends EndPointFeature, TEnclosingFunctionBody {
+  override string getEncoding() { result = "enclosingFunctionBody" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    // A feature containing natural language tokens from the function that encloses the endpoint in
+    // the order that they appear in the source code.
+    result =
+      FunctionBodyFeatures::getBodyTokensFeature(FunctionBodyFeatures::getRepresentativeFunctionForEndpoint(endpoint))
+  }
 }
