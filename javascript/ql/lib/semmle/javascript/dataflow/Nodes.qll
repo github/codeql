@@ -962,7 +962,7 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
       result.getAstNode().getFile() = this.getAstNode().getFile()
     )
     or
-    result = getAClassReferenceRec(t)
+    result = this.getAClassReferenceRec(t)
   }
 
   pragma[noopt]
