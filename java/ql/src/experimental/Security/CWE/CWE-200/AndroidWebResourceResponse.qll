@@ -1,7 +1,10 @@
 /** Provides Android methods relating to web resource response. */
 
 import java
-import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.frameworks.android.WebView
 
 /**
  * The Android class `android.webkit.WebResourceRequest` for handling web requests.
