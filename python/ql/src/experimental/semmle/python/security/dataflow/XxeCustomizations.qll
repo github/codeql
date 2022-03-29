@@ -6,7 +6,8 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
-private import experimental.semmle.python.Concepts
+private import semmle.python.Concepts
+import experimental.semmle.python.frameworks.Xml // needed until modeling have been promoted
 private import semmle.python.dataflow.new.RemoteFlowSources
 
 /**
@@ -40,7 +41,7 @@ module Xxe {
    */
   class XmlParsingWithExternalEntityResolution extends Sink {
     XmlParsingWithExternalEntityResolution() {
-      exists(ExperimentalXML::XMLParsing parsing, ExperimentalXML::XMLVulnerabilityKind kind |
+      exists(XML::XMLParsing parsing, XML::XMLVulnerabilityKind kind |
         kind.isXxe() and
         parsing.vulnerableTo(kind) and
         this = parsing.getAnInput()

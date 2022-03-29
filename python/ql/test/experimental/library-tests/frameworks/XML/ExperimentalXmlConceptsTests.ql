@@ -1,5 +1,5 @@
 import python
-import experimental.semmle.python.Concepts
+import semmle.python.Concepts
 import experimental.semmle.python.frameworks.Xml
 import semmle.python.dataflow.new.DataFlow
 import TestUtilities.InlineExpectationsTest
