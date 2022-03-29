@@ -1994,7 +1994,7 @@ class ExtensionMethodAccess extends MethodAccess {
   // whereas the actual arguments begin at index 1.
   override Expr getQualifier() { result.isNthChildOf(this, 0) }
 
-  override Expr getAnArgument() { result = getArgument(_) }
+  override Expr getAnArgument() { result = this.getArgument(_) }
 
   override Expr getArgument(int index) { result = super.getArgument(index + 1) and index >= 0 }
 }
