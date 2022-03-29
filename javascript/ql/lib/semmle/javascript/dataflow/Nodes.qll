@@ -970,7 +970,7 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
     exists(DataFlow::TypeTracker t2, StepSummary summary, DataFlow::SourceNode prev |
       prev = this.getAClassReference(t2) and
       StepSummary::step(prev, result, summary) and
-      t2 = t.append(summary)
+      t = t2.append(summary)
     )
   }
 
