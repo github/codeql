@@ -1461,7 +1461,10 @@ private class InstanceFieldOrProperty extends FieldOrProperty {
   InstanceFieldOrProperty() { not this.isStatic() }
 }
 
-private class FieldOrPropertyAccess extends AssignableAccess, QualifiableExpr {
+/**
+ * An access to a field or a property.
+ */
+class FieldOrPropertyAccess extends AssignableAccess, QualifiableExpr {
   FieldOrPropertyAccess() { this.getTarget() instanceof FieldOrProperty }
 }
 
