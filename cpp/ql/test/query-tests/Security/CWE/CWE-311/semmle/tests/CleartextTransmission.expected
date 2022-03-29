@@ -226,6 +226,7 @@ nodes
 | test3.cpp:507:18:507:39 | social_security_number | semmle.label | social_security_number |
 | test3.cpp:508:18:508:33 | socialSecurityNo | semmle.label | socialSecurityNo |
 | test3.cpp:509:18:509:29 | homePostCode | semmle.label | homePostCode |
+| test3.cpp:510:18:510:28 | my_zip_code | semmle.label | my_zip_code |
 | test3.cpp:511:18:511:26 | telephone | semmle.label | telephone |
 | test3.cpp:512:18:512:36 | mobile_phone_number | semmle.label | mobile_phone_number |
 | test3.cpp:513:18:513:22 | email | semmle.label | email |
@@ -273,6 +274,7 @@ subpaths
 | test3.cpp:507:2:507:5 | call to send | test3.cpp:507:18:507:39 | social_security_number | test3.cpp:507:18:507:39 | social_security_number | This operation transmits 'social_security_number', which may contain unencrypted sensitive data from $@ | test3.cpp:507:18:507:39 | social_security_number | social_security_number |
 | test3.cpp:508:2:508:5 | call to send | test3.cpp:508:18:508:33 | socialSecurityNo | test3.cpp:508:18:508:33 | socialSecurityNo | This operation transmits 'socialSecurityNo', which may contain unencrypted sensitive data from $@ | test3.cpp:508:18:508:33 | socialSecurityNo | socialSecurityNo |
 | test3.cpp:509:2:509:5 | call to send | test3.cpp:509:18:509:29 | homePostCode | test3.cpp:509:18:509:29 | homePostCode | This operation transmits 'homePostCode', which may contain unencrypted sensitive data from $@ | test3.cpp:509:18:509:29 | homePostCode | homePostCode |
+| test3.cpp:510:2:510:5 | call to send | test3.cpp:510:18:510:28 | my_zip_code | test3.cpp:510:18:510:28 | my_zip_code | This operation transmits 'my_zip_code', which may contain unencrypted sensitive data from $@ | test3.cpp:510:18:510:28 | my_zip_code | my_zip_code |
 | test3.cpp:511:2:511:5 | call to send | test3.cpp:511:18:511:26 | telephone | test3.cpp:511:18:511:26 | telephone | This operation transmits 'telephone', which may contain unencrypted sensitive data from $@ | test3.cpp:511:18:511:26 | telephone | telephone |
 | test3.cpp:512:2:512:5 | call to send | test3.cpp:512:18:512:36 | mobile_phone_number | test3.cpp:512:18:512:36 | mobile_phone_number | This operation transmits 'mobile_phone_number', which may contain unencrypted sensitive data from $@ | test3.cpp:512:18:512:36 | mobile_phone_number | mobile_phone_number |
 | test3.cpp:513:2:513:5 | call to send | test3.cpp:513:18:513:22 | email | test3.cpp:513:18:513:22 | email | This operation transmits 'email', which may contain unencrypted sensitive data from $@ | test3.cpp:513:18:513:22 | email | email |

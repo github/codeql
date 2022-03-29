@@ -507,7 +507,7 @@ void tests2(person_info *pi)
 	send(val(), pi->social_security_number, strlen(pi->social_security_number), val()); // BAD
 	send(val(), pi->socialSecurityNo, strlen(pi->socialSecurityNo), val()); // BAD
 	send(val(), pi->homePostCode, strlen(pi->homePostCode), val()); // BAD
-	send(val(), pi->my_zip_code, strlen(pi->my_zip_code), val()); // BAD [NOT DETECTED]
+	send(val(), pi->my_zip_code, strlen(pi->my_zip_code), val()); // BAD
 	send(val(), pi->telephone, strlen(pi->telephone), val()); // BAD
 	send(val(), pi->mobile_phone_number, strlen(pi->mobile_phone_number), val()); // BAD
 	send(val(), pi->email, strlen(pi->email), val()); // BAD
