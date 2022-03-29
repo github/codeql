@@ -107,23 +107,23 @@ string qualifierString() { result = "Argument[Qualifier]" }
 bindingset[kind]
 predicate isRelevantSinkKind(string kind) { any() }
 
+private predicate isRelevantMemberAccess(DataFlow::Node node) {
+  exists(CS::MemberAccess access | access = node.asExpr() |
+    access.hasThisQualifier() and
+    access.getTarget().isEffectivelyPublic() and
+    (
+      access instanceof CS::FieldAccess
+      or
+      access.getTarget().(CS::Property).getSetter().isPublic()
+    )
+  )
+}
+
 /**
  * Language specific parts of the `PropagateToSinkConfiguration`.
  */
 class PropagateToSinkConfigurationSpecific extends CS::TaintTracking::Configuration {
   PropagateToSinkConfigurationSpecific() { this = "parameters or fields flowing into sinks" }
-
-  private predicate isRelevantMemberAccess(DataFlow::Node node) {
-    exists(CS::MemberAccess access | access = node.asExpr() |
-      access.hasThisQualifier() and
-      access.getTarget().isEffectivelyPublic() and
-      (
-        access instanceof CS::FieldAccess
-        or
-        access.getTarget().(CS::Property).getSetter().isPublic()
-      )
-    )
-  }
 
   override predicate isSource(DataFlow::Node source) {
     (isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode) and
