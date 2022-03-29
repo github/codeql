@@ -33,18 +33,19 @@ def is_windows():
         return True
     return False
 
-def run_process(cmd):
+def run_process(cmd, capture_output=False):
     try:
-        # print("Running command: " + shlex.join(cmd))
+        print("Running command: " + shlex.join(cmd))
         # TODO: `shell=True` is a workaround to get CI working on Windows. It breaks the build on Linux.
-        return subprocess.run(cmd, check=True, capture_output=True, shell=is_windows())
+        return subprocess.run(cmd, check=True, capture_output=capture_output, shell=is_windows())
     except subprocess.CalledProcessError as e:
         print("In: " + os.getcwd(), file=sys.stderr)
         print("Command failed: " + shlex.join(cmd), file=sys.stderr)
-        print("stdout output:\n" + e.stdout.decode(encoding='UTF-8',
-              errors='replace'), file=sys.stderr)
-        print("stderr output:\n" + e.stderr.decode(encoding='UTF-8',
-              errors='replace'), file=sys.stderr)
+        if capture_output:
+            print("stdout output:\n" + e.stdout.decode(encoding='UTF-8',
+                  errors='replace'), file=sys.stderr)
+            print("stderr output:\n" + e.stderr.decode(encoding='UTF-8',
+                  errors='replace'), file=sys.stderr)
         raise e
 
 
@@ -86,7 +87,7 @@ def find_sources(path):
 
 
 def get_kotlin_lib_folder():
-    x = run_process([kotlinc, '-version', '-verbose'])
+    x = run_process([kotlinc, '-version', '-verbose'], capture_output=True)
     output = x.stderr.decode(encoding='UTF-8', errors='strict')
     m = re.match(
         r'.*\nlogging: using Kotlin home directory ([^\n]+)\n.*', output)
@@ -98,7 +99,7 @@ def get_kotlin_lib_folder():
 
 
 def get_gradle_lib_folder():
-    x = run_process(['gradle', 'getHomeDir'])
+    x = run_process(['gradle', 'getHomeDir'], capture_output=True)
     output = x.stdout.decode(encoding='UTF-8', errors='strict')
     m = re.search(r'(?m)^> Task :getHomeDir\n([^\n]+)$', output)
     if m is None:
