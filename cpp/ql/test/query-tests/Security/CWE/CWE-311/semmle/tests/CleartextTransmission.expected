@@ -94,6 +94,8 @@ edges
 | test3.cpp:429:7:429:14 | password | test3.cpp:431:8:431:15 | password |
 | test3.cpp:526:44:526:54 | my_latitude | test3.cpp:527:15:527:20 | buffer |
 | test3.cpp:532:45:532:58 | home_longitude | test3.cpp:533:15:533:20 | buffer |
+| test3.cpp:551:47:551:58 | salaryString | test3.cpp:552:15:552:20 | buffer |
+| test3.cpp:556:19:556:30 | salaryString | test3.cpp:559:15:559:20 | buffer |
 | test.cpp:41:23:41:43 | cleartext password! | test.cpp:48:21:48:27 | call to encrypt |
 | test.cpp:41:23:41:43 | cleartext password! | test.cpp:48:29:48:39 | thePassword |
 | test.cpp:66:23:66:43 | cleartext password! | test.cpp:76:21:76:27 | call to encrypt |
@@ -238,6 +240,10 @@ nodes
 | test3.cpp:527:15:527:20 | buffer | semmle.label | buffer |
 | test3.cpp:532:45:532:58 | home_longitude | semmle.label | home_longitude |
 | test3.cpp:533:15:533:20 | buffer | semmle.label | buffer |
+| test3.cpp:551:47:551:58 | salaryString | semmle.label | salaryString |
+| test3.cpp:552:15:552:20 | buffer | semmle.label | buffer |
+| test3.cpp:556:19:556:30 | salaryString | semmle.label | salaryString |
+| test3.cpp:559:15:559:20 | buffer | semmle.label | buffer |
 | test.cpp:41:23:41:43 | cleartext password! | semmle.label | cleartext password! |
 | test.cpp:48:21:48:27 | call to encrypt | semmle.label | call to encrypt |
 | test.cpp:48:29:48:39 | thePassword | semmle.label | thePassword |
@@ -284,3 +290,5 @@ subpaths
 | test3.cpp:517:2:517:5 | call to send | test3.cpp:517:18:517:29 | medical_info | test3.cpp:517:18:517:29 | medical_info | This operation transmits 'medical_info', which may contain unencrypted sensitive data from $@ | test3.cpp:517:18:517:29 | medical_info | medical_info |
 | test3.cpp:527:3:527:6 | call to send | test3.cpp:526:44:526:54 | my_latitude | test3.cpp:527:15:527:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:526:44:526:54 | my_latitude | my_latitude |
 | test3.cpp:533:3:533:6 | call to send | test3.cpp:532:45:532:58 | home_longitude | test3.cpp:533:15:533:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:532:45:532:58 | home_longitude | home_longitude |
+| test3.cpp:552:3:552:6 | call to send | test3.cpp:551:47:551:58 | salaryString | test3.cpp:552:15:552:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:551:47:551:58 | salaryString | salaryString |
+| test3.cpp:559:3:559:6 | call to send | test3.cpp:556:19:556:30 | salaryString | test3.cpp:559:15:559:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:556:19:556:30 | salaryString | salaryString |

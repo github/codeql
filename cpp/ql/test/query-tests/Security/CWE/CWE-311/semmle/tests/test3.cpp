@@ -495,7 +495,7 @@ struct person_info
 	double my_latitude;
 	double home_longitude;
 	int newSalary;
-
+	char *salaryString;
 	// not sensitive
 	char *license_key_hash;
 	char *my_zip_file;
@@ -544,5 +544,18 @@ void tests2(person_info *pi)
 
 		snprintf(buffer, 1024, "salary = %i\n", sal);
 		send(val(), buffer, strlen(buffer), val()); // BAD [NOT DETECTED]
+	}
+	{
+		char buffer[1024];
+
+		snprintf(buffer, 1024, "salary = %s\n", pi->salaryString);
+		send(val(), buffer, strlen(buffer), val()); // BAD
+	}
+	{
+		char buffer[1024];
+		char *sal = pi->salaryString;
+
+		snprintf(buffer, 1024, "salary = %s\n", sal);
+		send(val(), buffer, strlen(buffer), val()); // BAD
 	}
 }
