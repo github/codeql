@@ -16,3 +16,9 @@
         bar(endpoint);
     }
 });
+
+function f(endpoint) {}
+
+const g = async () => undefined;
+
+const o = { m: () => undefined }
