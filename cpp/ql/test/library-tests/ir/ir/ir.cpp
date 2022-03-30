@@ -1701,4 +1701,9 @@ int global_1;
 int global_2 = 1;
 
 const int global_3 = 2;
+
+constructor_only global_4(1);
+
+constructor_only global_5 = constructor_only(2);
+
 // semmle-extractor-options: -std=c++17 --clang
