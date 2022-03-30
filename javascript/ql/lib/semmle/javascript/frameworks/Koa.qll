@@ -49,7 +49,7 @@ module Koa {
      * Gets an expression that contains the "context" object of
      * a route handler invocation.
      */
-    deprecated Expr getAContextExpr() { result.(ContextExpr).getRouteHandler() = this }
+    deprecated Expr getAContextExpr() { result = this.getAContextNode().asExpr() }
 
     /**
      * Gets an expression that contains the "context" object of
@@ -67,7 +67,7 @@ module Koa {
      * object of a route handler invocation.
      */
     deprecated Expr getAResponseOrContextExpr() {
-      result = this.getAResponseNode().asExpr() or result = this.getAContextExpr()
+      result = this.getAResponseOrContextNode().asExpr()
     }
 
     /**
@@ -83,9 +83,7 @@ module Koa {
      * Gets an expression that contains the context or request
      * object of a route handler invocation.
      */
-    deprecated Expr getARequestOrContextExpr() {
-      result = this.getARequestNode().asExpr() or result = this.getAContextExpr()
-    }
+    deprecated Expr getARequestOrContextExpr() { result = this.getARequestOrContextNode().asExpr() }
 
     /**
      * Gets an expression that contains the context or request
@@ -447,7 +445,7 @@ module Koa {
 
     override DataFlow::SourceNode getARouteHandler() {
       // `StandardRouteHandler` uses this predicate in it's charpred, so making this predicate return a `RouteHandler` would give an empty recursion.
-      result.flowsToExpr(this.getArgument(0).asExpr())
+      result.flowsTo(this.getArgument(0))
       or
       // For the route-handlers that does not depend on this predicate in their charpred.
       result.(RouteHandler).getARouteHandlerRegistrationObject().flowsTo(this.getArgument(0))

@@ -56,13 +56,11 @@ module Express {
   }
 
   /**
+   * DEPRECATED: Use `isRouter()` instead.
    * An expression that refers to a route.
    */
-  class RouteExpr extends DataFlow::MethodCallNode {
-    RouteExpr() { isRouter(this) }
-
-    /** Gets the router from which this route was created, if it is known. */
-    RouterDefinition getRouter() { isRouter(this, result) }
+  deprecated class RouteExpr extends MethodCallExpr {
+    RouteExpr() { isRouter(this.flow()) }
   }
 
   /**

@@ -19,29 +19,24 @@ module Hapi {
   /**
    * A Hapi route handler.
    */
-  class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
-    Function function;
-
-    RouteHandler() {
-      function = astNode and
-      exists(RouteSetup setup | this = setup.getARouteHandler())
-    }
+  class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    RouteHandler() { exists(RouteSetup setup | this = setup.getARouteHandler()) }
 
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    Parameter getRequestParameter() { result = function.getParameter(0) }
+    DataFlow::ParameterNode getRequestParameter() { result = getParameter(0) }
 
     /**
      * Gets the parameter of the route handler that contains the "request toolkit",
      * usually named `h`.
      */
-    Parameter getRequestToolkitParameter() { result = function.getParameter(1) }
+    DataFlow::ParameterNode getRequestToolkitParameter() { result = getParameter(1) }
 
     /**
      * Gets a source node referring to the request toolkit parameter, usually named `h`.
      */
-    DataFlow::SourceNode getRequestToolkit() { result = getRequestToolkitParameter().flow() }
+    DataFlow::SourceNode getRequestToolkit() { result = getRequestToolkitParameter() }
   }
 
   /**
@@ -66,7 +61,7 @@ module Hapi {
   private class RequestSource extends HTTP::Servers::RequestSource {
     RouteHandler rh;
 
-    RequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
+    RequestSource() { this = rh.getRequestParameter() }
 
     /**
      * Gets the route handler that handles this request.
