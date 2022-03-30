@@ -66,7 +66,7 @@ module Connect {
       getMethodName() = "use" and
       (
         // app.use(fun)
-        server.flowsTo(getReceiver())
+        server.ref().flowsToExpr(getReceiver())
         or
         // app.use(...).use(fun)
         this.getReceiver().(RouteSetup).getServer() = server

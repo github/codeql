@@ -221,10 +221,10 @@ module NodeJSLib {
     Expr handler;
 
     RouteSetup() {
-      server.flowsTo(this) and
+      server.ref().flowsToExpr(this) and
       handler = this.getLastArgument()
       or
-      server.flowsTo(this.getReceiver()) and
+      server.ref().flowsToExpr(this.getReceiver()) and
       this.(MethodCallExpr).getMethodName().regexpMatch("on(ce)?") and
       this.getArgument(0).getStringValue() = "request" and
       handler = this.getArgument(1)

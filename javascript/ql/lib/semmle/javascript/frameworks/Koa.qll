@@ -118,8 +118,6 @@ module Koa {
      */
     RouteHandler getRouteHandler() { result = rh }
 
-    predicate flowsTo(DataFlow::Node nd) { this.ref().flowsTo(nd) }
-
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and
       result = this
@@ -258,7 +256,7 @@ module Koa {
   class ContextExpr extends Expr {
     ContextSource src;
 
-    ContextExpr() { src.flowsTo(DataFlow::valueNode(this)) }
+    ContextExpr() { src.ref().flowsTo(DataFlow::valueNode(this)) }
 
     /**
      * Gets the route handler that provides this response.
@@ -390,7 +388,7 @@ module Koa {
 
     RouteSetup() {
       // app.use(fun)
-      server.flowsTo(this.getReceiver()) and
+      server.ref().flowsToExpr(this.getReceiver()) and
       this.getMethodName() = "use"
     }
 

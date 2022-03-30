@@ -189,7 +189,7 @@ module Hapi {
     Expr handler;
 
     RouteSetup() {
-      server.flowsTo(getReceiver()) and
+      server.ref().flowsToExpr(getReceiver()) and
       (
         // server.route({ handler: fun })
         getMethodName() = "route" and

@@ -272,10 +272,14 @@ module HTTP {
         exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
       }
 
+      /** Gets a data flow node referring to this server. */
+      DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
+
       /**
+       * DEPRECATED: Use `ref().flowsToExpr()` instead.
        * Holds if `sink` may refer to this server definition.
        */
-      predicate flowsTo(Expr sink) { this.ref(DataFlow::TypeTracker::end()).flowsToExpr(sink) }
+      deprecated predicate flowsTo(Expr sink) { this.ref().flowsToExpr(sink) }
     }
 
     /**

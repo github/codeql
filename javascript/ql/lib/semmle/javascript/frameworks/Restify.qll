@@ -144,7 +144,7 @@ module Restify {
     RouteSetup() {
       // server.get('/', fun)
       // server.head('/', fun)
-      server.flowsTo(getReceiver()) and
+      server.ref().flowsToExpr(getReceiver()) and
       getMethodName() = any(HTTP::RequestMethodName m).toLowerCase()
     }
 

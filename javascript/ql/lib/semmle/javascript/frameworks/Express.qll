@@ -43,7 +43,7 @@ module Express {
   /**
    * Holds if `e` may refer to the given `router` object.
    */
-  private predicate isRouter(Expr e, RouterDefinition router) { router.flowsTo(e) }
+  private predicate isRouter(Expr e, RouterDefinition router) { router.ref().flowsToExpr(e) } // TODO: DataFlow::Node
 
   /**
    * Holds if `e` may refer to a router object.
@@ -853,21 +853,24 @@ module Express {
     DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
 
     /**
+     * DEPRECATED: Use `ref().flowsToExpr()` instead.
      * Holds if `sink` may refer to this router.
      */
-    predicate flowsTo(Expr sink) { this.ref().flowsToExpr(sink) }
+    deprecated predicate flowsTo(Expr sink) { this.ref().flowsToExpr(sink) }
 
     /**
      * Gets a `RouteSetup` that was used for setting up a route on this router.
      */
-    private RouteSetup getARouteSetup() { this.flowsTo(result.getReceiver()) }
+    private RouteSetup getARouteSetup() { this.ref().flowsToExpr(result.getReceiver()) }
 
     /**
      * Gets a sub-router registered on this router.
      *
      * Example: `router2` for `router1.use(router2)` or `router1.use("/route2", router2)`
      */
-    RouterDefinition getASubRouter() { result.flowsTo(this.getARouteSetup().getAnArgument()) }
+    RouterDefinition getASubRouter() {
+      result.ref().flowsToExpr(this.getARouteSetup().getAnArgument())
+    }
 
     /**
      * Gets a route handler registered on this router.
