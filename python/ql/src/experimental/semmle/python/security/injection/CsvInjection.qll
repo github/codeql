@@ -21,11 +21,16 @@ class CsvInjectionFlowConfig extends TaintTracking::Configuration {
   }
 }
 
-class StartsWithCheck extends DataFlow::BarrierGuard {
-  StartsWithCheck() { this.(CallNode).getNode().getFunc().(Attribute).getName() = "startswith" }
+private class StartsWithCheck extends DataFlow::BarrierGuard {
+  Attribute attr;
+
+  StartsWithCheck() {
+    this.(CallNode).getNode().getFunc() = attr and
+    attr.getName() = "startswith"
+  }
 
   override predicate checks(ControlFlowNode node, boolean branch) {
-    node = this.(CallNode).getNode().getFunc().(Attribute).getObject().getAFlowNode() and
+    node = attr.getObject().getAFlowNode() and
     branch = true
   }
 }
