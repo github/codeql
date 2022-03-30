@@ -233,7 +233,9 @@ private newtype TEndpointFeature =
   TCalleeAccessPathWithStructuralInfo() or
   TEnclosingFunctionBody() or
   TCalleeAccessPathSimpleFromArgumentTraversal() or
-  TParameterAccessPathSimpleFromArgumentTraversal()
+  TParameterAccessPathSimpleFromArgumentTraversal() or
+  TPropertyAccessPathSimpleFromArgumentTraversal() or
+  TArgumentIndexFromArgumentTraversal()
 
 /**
  * An implementation of an endpoint feature: produces feature names and values for used in ML.
@@ -438,14 +440,25 @@ private module SyntacticUtilities {
   string getSimpleParameterAccessPath(DataFlow::Node node) {
     if exists(DataFlow::CallNode call | node = call.getArgument(_))
     then exists(DataFlow::CallNode call, int i | node = call.getArgument(i) | result = i + "")
-    else
-      if exists(ObjectExpr o | o.getAProperty().getInit().getUnderlyingValue() = node.asExpr())
-      then
-        exists(DataFlow::PropWrite w |
-          w.getRhs() = node and
-          result = getSimpleParameterAccessPath(w.getBase()) + "." + getPropertyNameOrUnknown(w)
-        )
-      else result = "?"
+    else result = getSimplePropertyAccessPath(node)
+  }
+
+  /**
+   * Computes a simple access path for how a user can refer to a value that appears in an (nested) object.
+   *
+   * Supports:
+   * - properties of (nested) objects
+   *
+   * Unknown cases and property names results in `?`.
+   */
+  string getSimplePropertyAccessPath(DataFlow::Node node) {
+    if exists(ObjectExpr o | o.getAProperty().getInit().getUnderlyingValue() = node.asExpr())
+    then
+      exists(DataFlow::PropWrite w |
+        w.getRhs() = node and
+        result = getSimpleParameterAccessPath(w.getBase()) + "." + getPropertyNameOrUnknown(w)
+      )
+    else result = "?"
   }
 
   /**
@@ -561,6 +574,57 @@ class ParameterAccessPathSimpleFromArgumentTraversal extends EndpointFeature,
         SyntacticUtilities::getANestedInitializerValue(invk.getAnArgument()
               .asExpr()
               .getUnderlyingValue()).flow() = endpoint
+      )
+    )
+  }
+}
+
+/**
+ * The feature for how a callee can refer to a the endpoint that is "contained" in a some argument to a call
+ *
+ * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
+ *
+ * This feature is intended as a superior version of the `ArgumentIndexFeature`.
+ */
+class PropertyAccessPathSimpleFromArgumentTraversal extends EndpointFeature,
+  TPropertyAccessPathSimpleFromArgumentTraversal {
+  override string getName() { result = "PropertyAccessPathSimpleFromArgumentTraversal" }
+
+  private string getValueMaybe(DataFlow::Node endpoint) {
+    exists(DataFlow::InvokeNode invk |
+      result = SyntacticUtilities::getSimpleParameterAccessPath(endpoint) and
+      SyntacticUtilities::getANestedInitializerValue(invk.getAnArgument()
+            .asExpr()
+            .getUnderlyingValue()).flow() = endpoint
+    )
+  }
+
+  override string getValue(DataFlow::Node endpoint) {
+    if exists(this.getValueMaybe(endpoint))
+    then result = this.getValueMaybe(endpoint)
+    else result = ""
+  }
+}
+
+/**
+ * The feature for how the index of an argument that "contains" and endpoint.
+ *
+ * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
+ *
+ * This feature is intended as a superior version of the `ArgumentIndexFeature`.
+ */
+class ArgumentIndexFromArgumentTraversal extends EndpointFeature,
+  TArgumentIndexFromArgumentTraversal {
+  override string getName() { result = "ArgumentIndexFromArgumentTraversal" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    exists(DataFlow::InvokeNode invk, DataFlow::Node arg, int i | arg = invk.getArgument(i) |
+      result = i + "" and
+      (
+        invk.getAnArgument() = endpoint
+        or
+        SyntacticUtilities::getANestedInitializerValue(arg.asExpr().getUnderlyingValue()).flow() =
+          endpoint
       )
     )
   }
