@@ -216,15 +216,13 @@ module Firebase {
      * A function used as a route handler.
      */
     private class RouteHandler extends Express::RouteHandler, HTTP::Servers::StandardRouteHandler,
-      DataFlow::ValueNode {
-      override Function astNode;
-
+      DataFlow::FunctionNode {
       RouteHandler() { this = any(RouteSetup setup).getARouteHandler() }
 
-      override Parameter getRouteHandlerParameter(string kind) {
-        kind = "request" and result = astNode.getParameter(0)
+      override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
+        kind = "request" and result = this.getParameter(0)
         or
-        kind = "response" and result = astNode.getParameter(1)
+        kind = "response" and result = this.getParameter(1)
       }
     }
   }

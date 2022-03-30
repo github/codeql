@@ -114,12 +114,12 @@ module NodeJSLib {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    Parameter getRequestParameter() { result = this.getFunction().getParameter(0) }
+    DataFlow::ParameterNode getRequestParameter() { result = this.getParameter(0) }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    Parameter getResponseParameter() { result = this.getFunction().getParameter(1) }
+    DataFlow::ParameterNode getResponseParameter() { result = this.getParameter(1) }
   }
 
   /**
@@ -141,7 +141,7 @@ module NodeJSLib {
   private class StandardResponseSource extends ResponseSource {
     RouteHandler rh;
 
-    StandardResponseSource() { this = DataFlow::parameterNode(rh.getResponseParameter()) }
+    StandardResponseSource() { this = rh.getResponseParameter() }
 
     /**
      * Gets the route handler that provides this response.
@@ -161,7 +161,7 @@ module NodeJSLib {
   private class StandardRequestSource extends RequestSource {
     RouteHandler rh;
 
-    StandardRequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
+    StandardRequestSource() { this = rh.getRequestParameter() }
 
     /**
      * Gets the route handler that handles this request.

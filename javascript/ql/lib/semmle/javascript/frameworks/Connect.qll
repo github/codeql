@@ -30,29 +30,31 @@ module Connect {
      *
      * `kind` is one of: "error", "request", "response", "next".
      */
-    abstract Parameter getRouteHandlerParameter(string kind);
+    abstract DataFlow::ParameterNode getRouteHandlerParameter(string kind);
 
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    override Parameter getRequestParameter() { result = getRouteHandlerParameter("request") }
+    override DataFlow::ParameterNode getRequestParameter() {
+      result = getRouteHandlerParameter("request")
+    }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    override Parameter getResponseParameter() { result = getRouteHandlerParameter("response") }
+    override DataFlow::ParameterNode getResponseParameter() {
+      result = getRouteHandlerParameter("response")
+    }
   }
 
   /**
    * A Connect route handler installed by a route setup.
    */
-  class StandardRouteHandler extends RouteHandler {
-    override Function astNode;
-
+  class StandardRouteHandler extends RouteHandler, DataFlow::FunctionNode {
     StandardRouteHandler() { this = any(RouteSetup setup).getARouteHandler() }
 
-    override Parameter getRouteHandlerParameter(string kind) {
-      result = getRouteHandlerParameter(astNode, kind)
+    override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
+      result = getRouteHandlerParameter(this, kind)
     }
   }
 

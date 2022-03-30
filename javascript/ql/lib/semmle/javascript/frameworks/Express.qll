@@ -286,14 +286,12 @@ module Express {
    * The callback given to passport in PassportRouteSetup.
    */
   private class PassportRouteHandler extends RouteHandler, HTTP::Servers::StandardRouteHandler,
-    DataFlow::ValueNode {
-    override Function astNode;
-
+    DataFlow::FunctionNode {
     PassportRouteHandler() { this = any(PassportRouteSetup setup).getARouteHandler() }
 
-    override Parameter getRouteHandlerParameter(string kind) {
+    override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
       kind = "request" and
-      result = astNode.getParameter(0)
+      result = this.getParameter(0)
     }
   }
 
@@ -478,40 +476,41 @@ module Express {
      *
      * `kind` is one of: "error", "request", "response", "next", or "parameter".
      */
-    abstract Parameter getRouteHandlerParameter(string kind); // TODO: DataFlow::ParameterNode
+    abstract DataFlow::ParameterNode getRouteHandlerParameter(string kind);
 
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    Parameter getRequestParameter() { result = this.getRouteHandlerParameter("request") } // TODO: DataFlow::ParameterNode
+    DataFlow::ParameterNode getRequestParameter() {
+      result = this.getRouteHandlerParameter("request")
+    }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    Parameter getResponseParameter() { result = this.getRouteHandlerParameter("response") } // TODO: DataFlow::ParameterNode
+    DataFlow::ParameterNode getResponseParameter() {
+      result = this.getRouteHandlerParameter("response")
+    }
 
     /**
      * Gets a request body access of this handler.
      */
-    Expr getARequestBodyAccess() {
-      result.(PropAccess).accesses(this.getARequestNode().asExpr(), "body")
-    } // TODO: DataFlow::Node
+    DataFlow::PropRead getARequestBodyAccess() { result.accesses(this.getARequestNode(), "body") }
   }
 
   /**
    * An Express route handler installed by a route setup.
    */
   class StandardRouteHandler extends RouteHandler, HTTP::Servers::StandardRouteHandler,
-    DataFlow::ValueNode {
-    override Function astNode;
+    DataFlow::FunctionNode {
     RouteSetup routeSetup;
 
     StandardRouteHandler() { this = routeSetup.getARouteHandler() }
 
-    override Parameter getRouteHandlerParameter(string kind) {
+    override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
       if routeSetup.isParameterHandler()
-      then result = getRouteParameterHandlerParameter(astNode, kind)
-      else result = getRouteHandlerParameter(astNode, kind)
+      then result = getRouteParameterHandlerParameter(this, kind)
+      else result = getRouteHandlerParameter(this, kind)
     }
   }
 
@@ -540,7 +539,7 @@ module Express {
     RouteHandler rh;
 
     ExplicitResponseSource() {
-      this = DataFlow::parameterNode(rh.getResponseParameter())
+      this = rh.getResponseParameter()
       or
       isChainableResponseMethodCall(rh, this.asExpr())
     }
@@ -570,7 +569,7 @@ module Express {
   private class ExplicitRequestSource extends RequestSource {
     RouteHandler rh;
 
-    ExplicitRequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
+    ExplicitRequestSource() { this = rh.getRequestParameter() }
 
     /**
      * Gets the route handler that handles this request.
@@ -637,7 +636,7 @@ module Express {
 
     ParamHandlerInputAccess() {
       exists(RouteSetup setup | rh = setup.getARouteHandler() |
-        this = DataFlow::parameterNode(rh.getRouteHandlerParameter("parameter"))
+        this = rh.getRouteHandlerParameter("parameter")
       )
     }
 
@@ -778,7 +777,8 @@ module Express {
    * An access to the HTTP request body.
    */
   class RequestBodyAccess extends Expr {
-    RequestBodyAccess() { any(RouteHandler h).getARequestBodyAccess() = this }
+    // TODO: DataFlow::Node
+    RequestBodyAccess() { any(RouteHandler h).getARequestBodyAccess().asExpr() = this }
   }
 
   abstract private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
@@ -1049,10 +1049,10 @@ module Express {
 
     TrackedRouteHandlerCandidateWithSetup() { this = routeSetup.getARouteHandler() }
 
-    override Parameter getRouteHandlerParameter(string kind) {
+    override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
       if routeSetup.isParameterHandler()
-      then result = getRouteParameterHandlerParameter(astNode, kind)
-      else result = getRouteHandlerParameter(astNode, kind)
+      then result = getRouteParameterHandlerParameter(this, kind)
+      else result = getRouteHandlerParameter(this, kind)
     }
   }
 

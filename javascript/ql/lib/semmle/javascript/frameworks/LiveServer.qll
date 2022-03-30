@@ -22,8 +22,8 @@ private module LiveServer {
   class RouteHandler extends Connect::RouteHandler, DataFlow::FunctionNode {
     RouteHandler() { this = any(RouteSetup setup).getARouteHandler() }
 
-    override Parameter getRouteHandlerParameter(string kind) {
-      result = ConnectExpressShared::getRouteHandlerParameter(astNode, kind)
+    override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
+      result = ConnectExpressShared::getRouteHandlerParameter(this, kind)
     }
   }
 
