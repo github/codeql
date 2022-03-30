@@ -16,7 +16,23 @@ private import FunctionBodyFeatures as FunctionBodyFeatures
 private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
   // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
   endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
-  exists(EndpointFeature f | f.getName() = featureName and result = f.getValue(endpoint))
+  exists(EndpointFeature f | f.getName() = featureName and result = f.getValue(endpoint)) and
+  isVettedFeature(featureName)
+}
+
+predicate isVettedFeature(string featureName) {
+  // allowlist of vetted features that are permitted in production
+  featureName =
+    any(EndpointFeature f |
+      f instanceof EnclosingFunctionName or
+      f instanceof CalleeName or
+      f instanceof ReceiverName or
+      f instanceof ArgumentIndex or
+      f instanceof CalleeApiName or
+      f instanceof CalleeAccessPath or
+      f instanceof CalleeAccessPathWithStructuralInfo or
+      f instanceof EnclosingFunctionBody
+    ).getName()
 }
 
 /**
@@ -190,7 +206,7 @@ private module FunctionNames {
 }
 
 /** Get a name of a supported generic token-based feature. */
-string getASupportedFeatureName() { result = any(EndpointFeature f).getName() }
+string getASupportedFeatureName() { isVettedFeature(result) }
 
 /**
  * Generic token-based features for ATM.
