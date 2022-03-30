@@ -1,4 +1,19 @@
-name: Query help preview
+# This workflow checks for any changes in .qhelp files in pull requests.
+# For any changed files, it renders them to HTML in a file called `comment.txt`.
+# It also writes the PR number to `pr.txt`.
+# These two files are uploaded as an artifact.
+
+# When this workflow completes, the workflow "Add PR comment with QHelp preview" runs.
+# It downloads the artifact and adds a comment to the PR with the rendered
+# QHelp.
+
+# The task is split like this because creating PR comments requires extra
+# permissions that we don't want to expose to PRs from external forks.
+
+# For more info see:
+# https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_run
+# https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
+name: Render QHelp changes
 
 permissions:
   contents: read
