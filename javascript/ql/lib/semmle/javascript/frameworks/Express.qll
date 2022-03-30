@@ -774,14 +774,14 @@ module Express {
   /**
    * An invocation of the `cookie` method on an HTTP response object.
    */
-  class SetCookie extends HTTP::CookieDefinition, MethodCallExpr {
+  class SetCookie extends HTTP::CookieDefinition, DataFlow::MethodCallNode {
     ResponseSource response;
 
-    SetCookie() { this = response.ref().getAMethodCall("cookie").asExpr() }
+    SetCookie() { this = response.ref().getAMethodCall("cookie") }
 
-    override Expr getNameArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getNameArgument() { result = this.getArgument(0) }
 
-    override Expr getValueArgument() { result = this.getArgument(1) }
+    override DataFlow::Node getValueArgument() { result = this.getArgument(1) }
 
     override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
   }

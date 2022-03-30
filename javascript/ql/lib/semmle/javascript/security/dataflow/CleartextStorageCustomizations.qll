@@ -52,8 +52,8 @@ module CleartextStorage {
   class CookieStorageSink extends Sink {
     CookieStorageSink() {
       exists(HTTP::CookieDefinition cookieDef |
-        this.asExpr() = cookieDef.getValueArgument() or
-        this.asExpr() = cookieDef.getHeaderArgument()
+        this = cookieDef.getValueArgument() or
+        this = cookieDef.getHeaderArgument()
       )
     }
   }

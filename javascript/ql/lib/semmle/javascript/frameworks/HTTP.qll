@@ -133,22 +133,21 @@ module HTTP {
   /**
    * An expression that sets a cookie in an HTTP response.
    */
-  abstract class CookieDefinition extends Expr {
-    // TODO: DataFlow::Node
+  abstract class CookieDefinition extends DataFlow::Node {
     /**
      * Gets the argument, if any, specifying the raw cookie header.
      */
-    Expr getHeaderArgument() { none() } // TODO: DataFlow::Node
+    DataFlow::Node getHeaderArgument() { none() }
 
     /**
      * Gets the argument, if any, specifying the cookie name.
      */
-    Expr getNameArgument() { none() } // TODO: DataFlow::Node
+    DataFlow::Node getNameArgument() { none() }
 
     /**
      * Gets the argument, if any, specifying the cookie value.
      */
-    Expr getValueArgument() { none() } // TODO: DataFlow::Node
+    DataFlow::Node getValueArgument() { none() }
 
     /** Gets the route handler that sets this cookie. */
     abstract RouteHandler getRouteHandler();
@@ -161,12 +160,12 @@ module HTTP {
     HeaderDefinition header;
 
     SetCookieHeader() {
-      this = header.asExpr() and
+      this = header and
       header.getAHeaderName() = "set-cookie"
     }
 
-    override Expr getHeaderArgument() {
-      header.(ExplicitHeaderDefinition).definesHeaderValue("set-cookie", result.flow())
+    override DataFlow::Node getHeaderArgument() {
+      header.(ExplicitHeaderDefinition).definesHeaderValue("set-cookie", result)
     }
 
     override RouteHandler getRouteHandler() { result = header.getRouteHandler() }
