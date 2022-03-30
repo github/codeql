@@ -104,7 +104,9 @@ module ClientSideUrlRedirect {
       xss = true
       or
       // An assignment to `location`
-      exists(Assignment assgn | isLocation(assgn.getTarget()) and astNode = assgn.getRhs()) and
+      exists(Assignment assgn |
+        isLocationNode(assgn.getTarget().flow()) and astNode = assgn.getRhs()
+      ) and
       xss = true
       or
       // An assignment to `location.href`, `location.protocol` or `location.hostname`

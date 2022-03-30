@@ -61,9 +61,7 @@ module CleartextStorage {
   /**
    * An expression set as a value of localStorage or sessionStorage.
    */
-  class WebStorageSink extends Sink {
-    WebStorageSink() { this.asExpr() instanceof WebStorageWrite }
-  }
+  class WebStorageSink extends Sink instanceof WebStorageWrite { }
 
   /**
    * An expression stored by AngularJS.

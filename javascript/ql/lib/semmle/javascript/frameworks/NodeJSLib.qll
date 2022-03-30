@@ -49,8 +49,7 @@ module NodeJSLib {
   /**
    * Holds if `call` is an invocation of `http.createServer` or `https.createServer`.
    */
-  predicate isCreateServer(CallExpr call) {
-    // TODO: DataFlow::Node
+  predicate isCreateServer(DataFlow::CallNode call) {
     exists(string pkg, string fn |
       pkg = "http" and fn = "createServer"
       or
@@ -61,7 +60,7 @@ module NodeJSLib {
       or
       pkg = "http2" and fn = "createSecureServer"
     |
-      call = DataFlow::moduleMember(pkg, fn).getAnInvocation().asExpr()
+      call = DataFlow::moduleMember(pkg, fn).getAnInvocation()
     )
   }
 
@@ -423,7 +422,7 @@ module NodeJSLib {
    * An expression that creates a new Node.js server.
    */
   class ServerDefinition extends HTTP::Servers::StandardServerDefinition {
-    ServerDefinition() { isCreateServer(this.asExpr()) }
+    ServerDefinition() { isCreateServer(this) }
   }
 
   /** An expression that is passed as `http.request({ auth: <expr> }, ...)`. */

@@ -143,18 +143,17 @@ class DomPropWriteNode extends Assignment {
 /**
  * A value written to web storage, like `localStorage` or `sessionStorage`.
  */
-class WebStorageWrite extends Expr {
-  // TODO: DataFlow::Node
+class WebStorageWrite extends DataFlow::Node {
   WebStorageWrite() {
     exists(DataFlow::SourceNode webStorage |
       webStorage = DataFlow::globalVarRef("localStorage") or
       webStorage = DataFlow::globalVarRef("sessionStorage")
     |
       // an assignment to `window.localStorage[someProp]`
-      this = webStorage.getAPropertyWrite().getRhs().asExpr()
+      this = webStorage.getAPropertyWrite().getRhs()
       or
       // an invocation of `window.localStorage.setItem`
-      this = webStorage.getAMethodCall("setItem").getArgument(1).asExpr()
+      this = webStorage.getAMethodCall("setItem").getArgument(1)
     )
   }
 }
