@@ -18,7 +18,7 @@ private import internal.CachedStages
 module API {
   /**
    * A node in the API graph, representing a value that has crossed the boundary between this
-   * codebase and an external library.
+   * codebase and an external library (or in general, any external codebase).
    *
    * ### Basic usage
    *
