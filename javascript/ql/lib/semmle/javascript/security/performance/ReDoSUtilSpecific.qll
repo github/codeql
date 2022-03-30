@@ -1,7 +1,5 @@
 /**
- * This module should provide a class hierarchy corresponding to a parse tree of regular expressions.
- *
- * Since the javascript extractor already provides such a hierarchy, we simply import that.
+ * Provides JavaScript-specific definitions for use in the ReDoSUtil module.
  */
 
 import javascript
