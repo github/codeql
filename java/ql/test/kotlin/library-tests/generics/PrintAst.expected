@@ -76,7 +76,7 @@ generics.kt:
 #   11|       5: [BlockStmt] { ... }
 #   11|         0: [SuperConstructorInvocationStmt] super(...)
 #   11|         1: [BlockStmt] { ... }
-#   13|   3: [Class,GenericType,ParameterizedType] C1
+#   13|   4: [Class,GenericType,ParameterizedType] C1
 #-----|     -2: (Generic Parameters)
 #   13|       0: [TypeVariable] T
 #   13|       1: [TypeVariable] W
@@ -113,7 +113,7 @@ generics.kt:
 #   16|               0: [TypeAccess] U
 #   16|               1: [TypeAccess] U
 #   16|             0: [VarAccess] u
-#   20|   4: [Class] C2
+#   20|   6: [Class] C2
 #   20|     1: [Constructor] C2
 #   20|       5: [BlockStmt] { ... }
 #   20|         0: [SuperConstructorInvocationStmt] super(...)
@@ -124,7 +124,7 @@ generics.kt:
 #-----|       4: (Parameters)
 #   21|         0: [Parameter] p
 #   21|       5: [BlockStmt] { ... }
-#   36|   5: [Class,GenericType,ParameterizedType] BoundedTest
+#   36|   7: [Class,GenericType,ParameterizedType] BoundedTest
 #-----|     -2: (Generic Parameters)
 #   36|       0: [TypeVariable] T
 #   36|       1: [TypeVariable] S
@@ -137,7 +137,7 @@ generics.kt:
 #   38|         0: [Parameter] s
 #   38|         1: [Parameter] t
 #   38|       5: [BlockStmt] { ... }
-#   42|   6: [Class,GenericType,ParameterizedType] Outer
+#   42|   8: [Class,GenericType,ParameterizedType] Outer
 #-----|     -2: (Generic Parameters)
 #   42|       0: [TypeVariable] T1
 #   42|       1: [TypeVariable] T2
@@ -187,7 +187,7 @@ generics.kt:
 #   51|                 -3: [TypeAccess] Nested1<Integer,String>
 #   51|                   0: [TypeAccess] Integer
 #   51|                   1: [TypeAccess] String
-#   56|   7: [Class,GenericType,ParameterizedType] Class1
+#   56|   9: [Class,GenericType,ParameterizedType] Class1
 #-----|     -2: (Generic Parameters)
 #   56|       0: [TypeVariable] T1
 #   56|     1: [Constructor] Class1

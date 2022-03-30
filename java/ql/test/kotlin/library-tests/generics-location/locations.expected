@@ -1,6 +1,6 @@
 classLocations
+| main.A | A.class:0:0:0:0 | A.class:0:0:0:0 |
 | main.A | A.java:3:14:3:14 | A.java:3:14:3:14 |
-| main.A | file:///!unknown-binary-location/main/A.class:0:0:0:0 | file:///!unknown-binary-location/main/A.class:0:0:0:0 |
 | main.A<Integer> | A.class:0:0:0:0 | A.class:0:0:0:0 |
 | main.A<Object> | file:///!unknown-binary-location/main/A.class:0:0:0:0 | file:///!unknown-binary-location/main/A.class:0:0:0:0 |
 | main.A<String> | A.class:0:0:0:0 | A.class:0:0:0:0 |
@@ -14,7 +14,6 @@ classLocations
 callableLocations
 | A.fn | A.class:0:0:0:0 | A.class:0:0:0:0 |
 | A.fn | A.java:4:17:4:18 | A.java:4:17:4:18 |
-| A.fn | file:///!unknown-binary-location/main/A.class:0:0:0:0 | file:///!unknown-binary-location/main/A.class:0:0:0:0 |
 | A<Integer>.fn | A.class:0:0:0:0 | A.class:0:0:0:0 |
 | A<Object>.fn | file:///!unknown-binary-location/main/A.class:0:0:0:0 | file:///!unknown-binary-location/main/A.class:0:0:0:0 |
 | A<String>.fn | A.class:0:0:0:0 | A.class:0:0:0:0 |

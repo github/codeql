@@ -957,7 +957,7 @@ reflection.kt:
 #   86|         5: [BlockStmt] { ... }
 #   86|           0: [SuperConstructorInvocationStmt] super(...)
 #   86|           1: [BlockStmt] { ... }
-#   89|     7: [Method] test
+#   89|     8: [Method] test
 #   89|       5: [BlockStmt] { ... }
 #   90|         0: [ExprStmt] <Expr>;
 #   90|           0: [MethodAccess] fn11(...)
@@ -998,7 +998,7 @@ reflection.kt:
 #   90|                 1: [TypeAccess] Inner<String>
 #   90|                   0: [TypeAccess] String
 #   90|               0: [ThisAccess] this
-#  105|   5: [Class] Base1
+#  105|   6: [Class] Base1
 #  105|     1: [Constructor] Base1
 #-----|       4: (Parameters)
 #  105|         0: [Parameter] prop1
@@ -1025,7 +1025,7 @@ reflection.kt:
 #  105|     2: [FieldDeclaration] int prop1;
 #  105|       -1: [TypeAccess] int
 #  105|       0: [VarAccess] prop1
-#  107|   6: [Class] Derived1
+#  107|   7: [Class] Derived1
 #  107|     1: [Constructor] Derived1
 #-----|       4: (Parameters)
 #  107|         0: [Parameter] prop1
@@ -1075,7 +1075,7 @@ reflection.kt:
 #  109|               -3: [TypeAccess] KMutableProperty0<Integer>
 #  109|                 0: [TypeAccess] Integer
 #  109|               0: [ThisAccess] this
-#  113|   7: [Class] LocalFn
+#  113|   8: [Class] LocalFn
 #  113|     1: [Constructor] LocalFn
 #  113|       5: [BlockStmt] { ... }
 #  113|         0: [SuperConstructorInvocationStmt] super(...)
