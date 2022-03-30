@@ -9,10 +9,10 @@ module Koa {
   /**
    * An expression that creates a new Koa application.
    */
-  class AppDefinition extends HTTP::Servers::StandardServerDefinition, InvokeExpr {
+  class AppDefinition extends HTTP::Servers::StandardServerDefinition, DataFlow::InvokeNode {
     AppDefinition() {
       // `app = new Koa()` / `app = Koa()`
-      this = DataFlow::moduleImport("koa").getAnInvocation().asExpr()
+      this = DataFlow::moduleImport("koa").getAnInvocation()
     }
   }
 
@@ -401,7 +401,7 @@ module Koa {
       result.(RouteHandler).getARouteHandlerRegistrationObject().flowsToExpr(this.getArgument(0))
     }
 
-    override Expr getServer() { result = server }
+    override Expr getServer() { result = server.asExpr() }
   }
 
   /**

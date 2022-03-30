@@ -199,7 +199,10 @@ module Express {
       )
     }
 
-    override Expr getServer() { result.(Application).getARouteHandler() = this.getARouteHandler() }
+    override Expr getServer() {
+      any(DataFlow::Node n | n.asExpr() = result).(Application).getARouteHandler() =
+        this.getARouteHandler()
+    }
 
     /**
      * Gets the HTTP request type this is registered for, if any.
@@ -823,13 +826,13 @@ module Express {
    * An Express server application.
    */
   private class Application extends HTTP::ServerDefinition {
-    Application() { this = appCreation().asExpr() }
+    Application() { this = appCreation() }
 
     /**
      * Gets a route handler of the application, regardless of nesting.
      */
     override HTTP::RouteHandler getARouteHandler() {
-      result = this.(RouterDefinition).getASubRouter*().getARouteHandler()
+      result = this.asExpr().(RouterDefinition).getASubRouter*().getARouteHandler()
     }
   }
 
@@ -837,6 +840,7 @@ module Express {
    * An Express router.
    */
   class RouterDefinition extends InvokeExpr {
+    // TODO: DataFlow::Node
     RouterDefinition() { this = routerCreation().asExpr() }
 
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {

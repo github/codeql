@@ -9,10 +9,10 @@ module Restify {
   /**
    * An expression that creates a new Restify server.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, CallExpr {
+  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, DataFlow::CallNode {
     ServerDefinition() {
       // `server = restify.createServer()`
-      this = DataFlow::moduleMember("restify", "createServer").getACall().asExpr()
+      this = DataFlow::moduleMember("restify", "createServer").getACall()
     }
   }
 
@@ -154,6 +154,6 @@ module Restify {
 
     override DataFlow::SourceNode getARouteHandler() { result.flowsToExpr(getArgument(1)) }
 
-    override Expr getServer() { result = server }
+    override Expr getServer() { result = server.asExpr() }
   }
 }

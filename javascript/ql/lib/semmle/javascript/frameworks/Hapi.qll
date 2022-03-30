@@ -9,10 +9,10 @@ module Hapi {
   /**
    * An expression that creates a new Hapi server.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, NewExpr {
+  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, DataFlow::NewNode {
     ServerDefinition() {
       // `server = new Hapi.Server()`
-      this = DataFlow::moduleMember("hapi", "Server").getAnInstantiation().asExpr()
+      this = DataFlow::moduleMember("hapi", "Server").getAnInstantiation()
     }
   }
 
@@ -219,7 +219,7 @@ module Hapi {
 
     Expr getRouteHandlerExpr() { result = handler }
 
-    override Expr getServer() { result = server }
+    override Expr getServer() { result = server.asExpr() }
   }
 
   /**

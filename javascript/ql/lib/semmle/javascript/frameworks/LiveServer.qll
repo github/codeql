@@ -10,9 +10,9 @@ private module LiveServer {
    * An expression that imports the live-server package, seen as a server-definition.
    */
   class ServerDefinition extends HTTP::Servers::StandardServerDefinition {
-    ServerDefinition() { this = DataFlow::moduleImport("live-server").asExpr() }
+    ServerDefinition() { this = DataFlow::moduleImport("live-server") }
 
-    API::Node getImportNode() { result.asSource().asExpr() = this }
+    API::Node getImportNode() { result.asSource() = this }
   }
 
   /**
@@ -49,6 +49,6 @@ private module LiveServer {
       )
     }
 
-    override Expr getServer() { result = server }
+    override Expr getServer() { result = server.asExpr() }
   }
 }

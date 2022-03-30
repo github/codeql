@@ -18,9 +18,7 @@ module Fastify {
    * A standard way to create a Fastify server.
    */
   class StandardServerDefinition extends ServerDefinition {
-    StandardServerDefinition() {
-      this = DataFlow::moduleImport("fastify").getAnInvocation().asExpr()
-    }
+    StandardServerDefinition() { this = DataFlow::moduleImport("fastify").getAnInvocation() }
   }
 
   /** Gets a data flow node referring to a fastify server. */
@@ -139,7 +137,7 @@ module Fastify {
     string methodName;
 
     RouteSetup() {
-      this = server(server.flow()).getAMethodCall(methodName).asExpr() and
+      this = server(server).getAMethodCall(methodName).asExpr() and
       methodName = ["route", "get", "head", "post", "put", "delete", "options", "patch"]
     }
 
@@ -154,7 +152,7 @@ module Fastify {
       exists(DataFlow::TypeBackTracker t2 | result = this.getARouteHandler(t2).backtrack(t2, t))
     }
 
-    override Expr getServer() { result = server }
+    override Expr getServer() { result = server.asExpr() }
 
     /** Gets an argument that represents a route handler being registered. */
     DataFlow::Node getARouteHandlerExpr() {

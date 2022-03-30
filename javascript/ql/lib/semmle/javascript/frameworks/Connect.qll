@@ -10,10 +10,10 @@ module Connect {
   /**
    * An expression that creates a new Connect server.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, CallExpr {
+  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, DataFlow::CallNode {
     ServerDefinition() {
       // `app = connect()`
-      this = DataFlow::moduleImport("connect").getAnInvocation().asExpr()
+      this = DataFlow::moduleImport("connect").getAnInvocation()
     }
   }
 
@@ -69,7 +69,7 @@ module Connect {
         server.ref().flowsToExpr(getReceiver())
         or
         // app.use(...).use(fun)
-        this.getReceiver().(RouteSetup).getServer() = server
+        this.getReceiver().(RouteSetup).getServer() = server.asExpr()
       )
     }
 
@@ -84,7 +84,7 @@ module Connect {
       exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
     }
 
-    override Expr getServer() { result = server }
+    override Expr getServer() { result = server.asExpr() }
 
     /** Gets an argument that represents a route handler being registered. */
     Expr getARouteHandlerExpr() { result = getAnArgument() }
