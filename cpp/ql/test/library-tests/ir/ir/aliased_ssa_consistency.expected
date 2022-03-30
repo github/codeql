@@ -8,6 +8,7 @@ sideEffectWithoutPrimary
 instructionWithoutSuccessor
 | ir.cpp:1688:24:1690:5 | FieldAddress: {...} | Instruction 'FieldAddress: {...}' has no successors in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
 | ir.cpp:1689:28:1689:54 | FieldAddress: {...} | Instruction 'FieldAddress: {...}' has no successors in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
+| ir.cpp:1709:7:1709:19 | VariableAddress: global_string | Instruction 'VariableAddress: global_string' has no successors in function '$@'. | ir.cpp:1709:7:1709:19 | char* global_string | char* global_string |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
