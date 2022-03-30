@@ -290,9 +290,15 @@ module NodeJSLib {
     override DataFlow::Node getServer() { result = server }
 
     /**
+     * DEPRECATED: Use `getRouteHandlerNode` instead.
      * Gets the expression for the handler registered by this setup.
      */
-    Expr getRouteHandlerExpr() { result = handler.asExpr() } // TODO: DataFlow::Node
+    deprecated Expr getRouteHandlerExpr() { result = handler.asExpr() }
+
+    /**
+     * Gets the expression for the handler registered by this setup.
+     */
+    DataFlow::Node getRouteHandlerNode() { result = handler }
   }
 
   abstract private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {

@@ -231,7 +231,7 @@ module Hapi {
     pragma[noinline]
     private DataFlow::Node getRouteHandler() { result = handler }
 
-    Expr getRouteHandlerExpr() { result = handler.asExpr() } // TODO: DataFlow::Node
+    deprecated Expr getRouteHandlerExpr() { result = handler.asExpr() }
 
     override DataFlow::Node getServer() { result = server }
   }

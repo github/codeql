@@ -147,15 +147,21 @@ module Fastify {
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = this.getARouteHandlerExpr().getALocalSource()
+      result = this.getARouteHandlerNode().getALocalSource()
       or
       exists(DataFlow::TypeBackTracker t2 | result = this.getARouteHandler(t2).backtrack(t2, t))
     }
 
     override DataFlow::SourceNode getServer() { result = server }
 
-    /** Gets an argument that represents a route handler being registered. */
-    DataFlow::Node getARouteHandlerExpr() {
+    /**
+     * DEPRECATED: Use `getARouteHandlerNode` instead.
+     * Gets an argument that represents a route handler being registered.
+     */
+    deprecated DataFlow::Node getARouteHandlerExpr() { result = this.getARouteHandlerNode() }
+
+    /**  Gets an argument that represents a route handler being registered. */
+    DataFlow::Node getARouteHandlerNode() {
       if methodName = "route"
       then result = this.getOptionArgument(0, getNthHandlerName(_))
       else result = this.getLastArgument()

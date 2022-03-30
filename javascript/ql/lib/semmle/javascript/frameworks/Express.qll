@@ -157,30 +157,56 @@ module Express {
     predicate isUseCall() { this.getMethodName() = "use" }
 
     /**
+     * DEPRECATED: Use `getRouteHandlerNode` instead.
      * Gets the `n`th handler registered by this setup, with 0 being the first.
      *
      * This differs from `getARouteHandler` in that the argument expression is
      * returned, not its dataflow source.
      */
-    Expr getRouteHandlerExpr(int index) {
-      // TODO: DataFlow::Node
+    deprecated Expr getRouteHandlerExpr(int index) { result = getRouteHandlerNode(index).asExpr() }
+
+    /**
+     * Gets the `n`th handler registered by this setup, with 0 being the first.
+     *
+     * This differs from `getARouteHandler` in that the argument expression is
+     * returned, not its dataflow source.
+     */
+    DataFlow::Node getRouteHandlerNode(int index) {
       // The first argument is a URI pattern if it is a string. If it could possibly be
       // a function, we consider it to be a route handler, otherwise a URI pattern.
       exists(AnalyzedNode firstArg | firstArg = this.getArgument(0).analyze() |
         if firstArg.getAType() = TTFunction()
-        then result = this.getArgument(index).asExpr()
+        then result = this.getArgument(index)
         else (
-          index >= 0 and result = this.getArgument(index + 1).asExpr()
+          index >= 0 and result = this.getArgument(index + 1)
         )
       )
     }
 
-    /** Gets an argument that represents a route handler being registered. */
-    Expr getARouteHandlerExpr() { result = this.getRouteHandlerExpr(_) }
+    /**
+     * DEPRECATED: Use `getARouteHandlerNode` instead.
+     * Gets an argument that represents a route handler being registered.
+     */
+    deprecated Expr getARouteHandlerExpr() { result = this.getRouteHandlerExpr(_) }
 
-    /** Gets the last argument representing a route handler being registered. */
-    Expr getLastRouteHandlerExpr() {
+    /**
+     * Gets an argument that represents a route handler being registered.
+     */
+    DataFlow::Node getARouteHandlerNode() { result = this.getRouteHandlerNode(_) }
+
+    /**
+     * DEPRECATED: Use `getLastRouteHandlerExpr` instead.
+     * Gets the last argument representing a route handler being registered.
+     */
+    deprecated Expr getLastRouteHandlerExpr() {
       result = max(int i | | this.getRouteHandlerExpr(i) order by i)
+    }
+
+    /**
+     * Gets the last argument representing a route handler being registered.
+     */
+    DataFlow::Node getLastRouteHandlerNode() {
+      result = max(int i | | this.getRouteHandlerNode(i) order by i)
     }
 
     override DataFlow::SourceNode getARouteHandler() {
@@ -189,7 +215,7 @@ module Express {
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = this.getARouteHandlerExpr().flow().getALocalSource()
+      result = this.getARouteHandlerNode().getALocalSource()
       or
       exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ |
         succ = this.getARouteHandler(t2)
@@ -284,10 +310,11 @@ module Express {
    * a function that flows into such an argument.
    */
   class RouteHandlerExpr extends Expr {
+    // TODO: DataFlow::Node
     RouteSetup setup;
     int index;
 
-    RouteHandlerExpr() { this = setup.getRouteHandlerExpr(index) }
+    RouteHandlerExpr() { this = setup.getRouteHandlerNode(index).asExpr() }
 
     /**
      * Gets the setup call that registers this route handler.
@@ -310,7 +337,7 @@ module Express {
      */
     predicate isLastHandler() {
       not setup.isUseCall() and
-      not exists(setup.getRouteHandlerExpr(index + 1))
+      not exists(setup.getRouteHandlerNode(index + 1))
     }
 
     /**
@@ -339,7 +366,7 @@ module Express {
       index = 0 and
       result = setup.getRouter().getMiddlewareStackAt(setup.asExpr().getAPredecessor())
       or
-      index > 0 and result = setup.getRouteHandlerExpr(index - 1)
+      index > 0 and result = setup.getRouteHandlerNode(index - 1).asExpr()
       or
       // Outside the router's original container, use the flow-insensitive model of its middleware stack.
       // Its state is not tracked to CFG nodes outside its original container.
@@ -920,11 +947,14 @@ module Express {
      * If `node` is not in the same container where `router` was defined, the predicate has no result.
      */
     Express::RouteHandlerExpr getMiddlewareStackAt(ControlFlowNode node) {
+      // TODO: DataFlow::Node?
       if
         exists(Express::RouteSetup setup | node = setup.asExpr() and setup.getRouter() = this |
           setup.isUseCall()
         )
-      then result = node.(AST::ValueNode).flow().(Express::RouteSetup).getLastRouteHandlerExpr()
+      then
+        result =
+          node.(AST::ValueNode).flow().(Express::RouteSetup).getLastRouteHandlerNode().asExpr()
       else result = this.getMiddlewareStackAt(node.getAPredecessor())
     }
 

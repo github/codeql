@@ -79,15 +79,23 @@ module Connect {
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = getARouteHandlerExpr().flow().getALocalSource()
+      result = getARouteHandlerNode().getALocalSource()
       or
       exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
     }
 
     override DataFlow::Node getServer() { result = server }
 
-    /** Gets an argument that represents a route handler being registered. */
-    Expr getARouteHandlerExpr() { result = getAnArgument().asExpr() } // TODO: DataFlow::Node
+    /**
+     * DEPRECATED: Use `getARouteHandlerNode` instead.
+     * Gets an argument that represents a route handler being registered.
+     */
+    deprecated Expr getARouteHandlerExpr() { result = getARouteHandlerNode().asExpr() }
+
+    /**
+     * Gets an argument that represents a route handler being registered.
+     */
+    DataFlow::Node getARouteHandlerNode() { result = getAnArgument() }
   }
 
   /** An expression that is passed as `basicAuthConnect(<user>, <password>)`. */
