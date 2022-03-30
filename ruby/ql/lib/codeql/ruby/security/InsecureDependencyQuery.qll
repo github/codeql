@@ -1,3 +1,7 @@
+/**
+ * Provides predicates for reasoning about insecure dependency configurations.
+ */
+
 private import ruby
 
 /**
