@@ -24,7 +24,7 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
   override Instruction getFirstInstruction() { result = this.getInstruction(EnterFunctionTag()) }
 
   override TranslatedElement getChild(int n) {
-    n = 1 and result = getTranslatedInitialization(var.getInitializer().getExpr())
+    n = 1 and result = getTranslatedInitialization(var.getInitializer().getExpr().getFullyConverted())
   }
 
   override predicate hasInstruction(Opcode op, InstructionTag tag, CppType type) {

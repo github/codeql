@@ -49,18 +49,18 @@ module Raw {
   }
 
   cached
-  predicate hasTempVariable(Function func, Locatable ast, TempVariableTag tag, CppType type) {
+  predicate hasTempVariable(Declaration decl, Locatable ast, TempVariableTag tag, CppType type) {
     exists(TranslatedElement element |
       element.getAst() = ast and
-      func = element.getFunction() and
+      decl = element.getFunction() and
       element.hasTempVariable(tag, type)
     )
   }
 
   cached
-  predicate hasStringLiteral(Function func, Locatable ast, CppType type, StringLiteral literal) {
+  predicate hasStringLiteral(Declaration decl, Locatable ast, CppType type, StringLiteral literal) {
     literal = ast and
-    literal.getEnclosingFunction() = func and
+    literal.getEnclosingDeclaration() = decl and
     getTypeForPRValue(literal.getType()) = type
   }
 

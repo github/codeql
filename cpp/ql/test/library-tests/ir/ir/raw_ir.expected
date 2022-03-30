@@ -9070,19 +9070,16 @@ ir.cpp:
 
 # 1709| char* global_string
 # 1709|   Block 0
-# 1709|     v1709_1(void)          = EnterFunction     : 
-# 1709|     mu1709_2(unknown)      = AliasedDefinition : 
-# 1709|     r1709_3(glval<char *>) = VariableAddress   : 
-
-# 1709|   Block 1
-# 1709|     v1709_4(void) = ReturnVoid   : 
-# 1709|     v1709_5(void) = AliasedUse   : ~m?
-# 1709|     v1709_6(void) = ExitFunction : 
-
-# 1709|   Block 2
-# 1709|     r1709_7(glval<char[14]>) = StringConstant : 
-# 1709|     r1709_8(char *)          = Convert        : r1709_7
-# 1709|     r1709_9(char *)          = Convert        : r1709_8
+# 1709|     v1709_1(void)            = EnterFunction     : 
+# 1709|     mu1709_2(unknown)        = AliasedDefinition : 
+# 1709|     r1709_3(glval<char *>)   = VariableAddress   : 
+# 1709|     r1709_4(glval<char[14]>) = StringConstant    : 
+# 1709|     r1709_5(char *)          = Convert           : r1709_4
+# 1709|     r1709_6(char *)          = Convert           : r1709_5
+# 1709|     mu1709_7(char *)         = Store[?]          : &:r1709_3, r1709_6
+# 1709|     v1709_8(void)            = ReturnVoid        : 
+# 1709|     v1709_9(void)            = AliasedUse        : ~m?
+# 1709|     v1709_10(void)           = ExitFunction      : 
 
 perf-regression.cpp:
 #    6| void Big::Big()
