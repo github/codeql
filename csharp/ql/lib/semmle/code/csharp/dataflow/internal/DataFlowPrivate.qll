@@ -2078,7 +2078,7 @@ module Csv {
           + type + ";" //
           + getCallableOverride(c) + ";" //
           + name + ";" //
-          + "(" + parameterQualifiedTypeNamesToString(c) + ")" //
+          + "(" + parameterQualifiedTypeNamesToString(c) + ")" + ";" //
           + /* ext + */ ";" //
     )
   }
