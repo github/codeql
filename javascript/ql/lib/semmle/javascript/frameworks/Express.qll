@@ -298,6 +298,7 @@ module Express {
   }
 
   /**
+   * DEPRECATED: Use `RouteHandlerNode` instead.
    * An expression used as an Express route handler, such as `submitHandler` below:
    * ```
    * app.post('/submit', submitHandler)
@@ -306,12 +307,56 @@ module Express {
    * Unlike `RouterHandler`, this is the argument passed to a setup, as opposed to
    * a function that flows into such an argument.
    */
-  class RouteHandlerExpr extends Expr {
-    // TODO: DataFlow::Node
+  deprecated class RouteHandlerExpr extends Expr {
+    RouteHandlerNode node;
+
+    RouteHandlerExpr() { this.flow() = node }
+
+    /** Gets the setup call that registers this route handler. */
+    deprecated RouteSetup getSetup() { result = node.getSetup() }
+
+    /** Gets the function body of this handler, if it is defined locally. */
+    deprecated RouteHandler getBody() { result = node.getBody() }
+
+    /** Holds if this is not followed by more handlers. */
+    deprecated predicate isLastHandler() { node.isLastHandler() }
+
+    /** Gets a route handler that immediately precedes this in the route stack. */
+    deprecated Express::RouteHandlerExpr getPreviousMiddleware() {
+      result = node.getPreviousMiddleware().asExpr()
+    }
+
+    /** Gets a route handler that may follow immediately after this one in its route stack. */
+    deprecated Express::RouteHandlerExpr getNextMiddleware() {
+      result = node.getNextMiddleware().asExpr()
+    }
+
+    /**
+     * Gets a route handler that precedes this one (not necessarily immediately), may handle
+     * same request method, and matches on the same path or a prefix.
+     */
+    deprecated Express::RouteHandlerExpr getAMatchingAncestor() {
+      result = node.getAMatchingAncestor().asExpr()
+    }
+
+    /** Gets the router being registered as a sub-router here, if any. */
+    deprecated RouterDefinition getAsSubRouter() { result = node.getAsSubRouter() }
+  }
+
+  /**
+   * An expression used as an Express route handler, such as `submitHandler` below:
+   * ```
+   * app.post('/submit', submitHandler)
+   * ```
+   *
+   * Unlike `RouterHandler`, this is the argument passed to a setup, as opposed to
+   * a function that flows into such an argument.
+   */
+  class RouteHandlerNode extends DataFlow::Node {
     RouteSetup setup;
     int index;
 
-    RouteHandlerExpr() { this = setup.getRouteHandlerNode(index).asExpr() }
+    RouteHandlerNode() { this = setup.getRouteHandlerNode(index) }
 
     /**
      * Gets the setup call that registers this route handler.
@@ -322,7 +367,7 @@ module Express {
      * Gets the function body of this handler, if it is defined locally.
      */
     RouteHandler getBody() {
-      exists(DataFlow::SourceNode source | source = this.flow().getALocalSource() |
+      exists(DataFlow::SourceNode source | source = this.getALocalSource() |
         result = source
         or
         DataFlow::functionOneWayForwardingStep(result.(DataFlow::SourceNode).getALocalUse(), source)
@@ -359,11 +404,11 @@ module Express {
      * In this case, the previous from `foo` is `auth` although they do not act on the
      * same requests.
      */
-    Express::RouteHandlerExpr getPreviousMiddleware() {
+    Express::RouteHandlerNode getPreviousMiddleware() {
       index = 0 and
       result = setup.getRouter().getMiddlewareStackAt(setup.asExpr().getAPredecessor())
       or
-      index > 0 and result = setup.getRouteHandlerNode(index - 1).asExpr()
+      index > 0 and result = setup.getRouteHandlerNode(index - 1)
       or
       // Outside the router's original container, use the flow-insensitive model of its middleware stack.
       // Its state is not tracked to CFG nodes outside its original container.
@@ -377,7 +422,7 @@ module Express {
     /**
      * Gets a route handler that may follow immediately after this one in its route stack.
      */
-    Express::RouteHandlerExpr getNextMiddleware() { result.getPreviousMiddleware() = this }
+    Express::RouteHandlerNode getNextMiddleware() { result.getPreviousMiddleware() = this }
 
     /**
      * Gets a route handler that precedes this one (not necessarily immediately), may handle
@@ -390,7 +435,7 @@ module Express {
      * router installs a route handler `r1` on a path that matches the path of a route handler
      * `r2` installed on a subrouter, `r1` will not be recognized as an ancestor of `r2`.
      */
-    Express::RouteHandlerExpr getAMatchingAncestor() {
+    Express::RouteHandlerNode getAMatchingAncestor() {
       result = this.getPreviousMiddleware+() and
       exists(RouteSetup resSetup | resSetup = result.getSetup() |
         // check whether request methods are compatible
@@ -407,7 +452,7 @@ module Express {
       or
       // if this is a sub-router, any previously installed middleware for the same
       // request method will necessarily match
-      exists(RouteHandlerExpr outer |
+      exists(RouteHandlerNode outer |
         setup.getRouter() = outer.getAsSubRouter() and
         outer.getSetup().handlesSameRequestMethodAs(setup) and
         result = outer.getAMatchingAncestor()
@@ -417,7 +462,7 @@ module Express {
     /**
      * Gets the router being registered as a sub-router here, if any.
      */
-    RouterDefinition getAsSubRouter() { isRouter(this.flow(), result) }
+    RouterDefinition getAsSubRouter() { isRouter(this, result) }
   }
 
   /**
@@ -934,22 +979,19 @@ module Express {
      *
      * If `node` is not in the same container where `router` was defined, the predicate has no result.
      */
-    Express::RouteHandlerExpr getMiddlewareStackAt(ControlFlowNode node) {
-      // TODO: DataFlow::Node?
+    Express::RouteHandlerNode getMiddlewareStackAt(ControlFlowNode node) {
       if
         exists(Express::RouteSetup setup | node = setup.asExpr() and setup.getRouter() = this |
           setup.isUseCall()
         )
-      then
-        result =
-          node.(AST::ValueNode).flow().(Express::RouteSetup).getLastRouteHandlerNode().asExpr()
+      then result = node.(AST::ValueNode).flow().(Express::RouteSetup).getLastRouteHandlerNode()
       else result = this.getMiddlewareStackAt(node.getAPredecessor())
     }
 
     /**
      * Gets the final middleware registered on this router.
      */
-    Express::RouteHandlerExpr getMiddlewareStack() {
+    Express::RouteHandlerNode getMiddlewareStack() {
       result = this.getMiddlewareStackAt(this.getContainer().getExit())
     }
   }
