@@ -517,9 +517,10 @@ module Express {
   /**
    * Holds if `call` is a chainable method call on the response object of `handler`.
    */
-  private predicate isChainableResponseMethodCall(RouteHandler handler, MethodCallExpr call) {
-    // TODO: DataFlow::MethodCallNode
-    exists(string name | call.calls(handler.getAResponseNode().asExpr(), name) |
+  private predicate isChainableResponseMethodCall(
+    RouteHandler handler, DataFlow::MethodCallNode call
+  ) {
+    exists(string name | call.calls(handler.getAResponseNode(), name) |
       name =
         [
           "append", "attachment", "location", "send", "sendStatus", "set", "status", "type", "vary",
@@ -541,7 +542,7 @@ module Express {
     ExplicitResponseSource() {
       this = rh.getResponseParameter()
       or
-      isChainableResponseMethodCall(rh, this.asExpr())
+      isChainableResponseMethodCall(rh, this)
     }
 
     /**
@@ -766,23 +767,22 @@ module Express {
   /**
    * Holds if `e` is an HTTP request object.
    */
-  predicate isRequest(Expr e) { any(RouteHandler rh).getARequestNode().asExpr() = e } // TODO: DataFlow::Node
+  predicate isRequest(DataFlow::Node e) { any(RouteHandler rh).getARequestNode() = e }
 
   /**
    * Holds if `e` is an HTTP response object.
    */
-  predicate isResponse(Expr e) { any(RouteHandler rh).getAResponseNode().asExpr() = e } // TODO: DataFlow::Node
+  predicate isResponse(DataFlow::Node e) { any(RouteHandler rh).getAResponseNode() = e }
 
   /**
    * An access to the HTTP request body.
    */
-  class RequestBodyAccess extends Expr {
-    // TODO: DataFlow::Node
-    RequestBodyAccess() { any(RouteHandler h).getARequestBodyAccess().asExpr() = this }
+  class RequestBodyAccess extends DataFlow::Node {
+    RequestBodyAccess() { any(RouteHandler h).getARequestBodyAccess() = this }
   }
 
   abstract private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
-    HeaderDefinition() { isResponse(this.getReceiver().asExpr()) }
+    HeaderDefinition() { isResponse(this.getReceiver()) }
 
     override RouteHandler getRouteHandler() { this.getReceiver() = result.getAResponseNode() }
   }
