@@ -179,7 +179,7 @@ module ClientSideUrlRedirect {
       )
       or
       // e.g. node.setAttribute("href", sink)
-      any(DomMethodCallExpr call).interpretsArgumentsAsUrl(this.asExpr())
+      any(DomMethodCallNode call).interpretsArgumentsAsUrl(this)
     }
 
     override predicate isXssSink() { any() }
@@ -191,9 +191,9 @@ module ClientSideUrlRedirect {
    */
   class AttributeWriteUrlSink extends ScriptUrlSink, DataFlow::ValueNode {
     AttributeWriteUrlSink() {
-      exists(DomPropWriteNode pw |
+      exists(DomPropertyWrite pw |
         pw.interpretsValueAsJavaScriptUrl() and
-        this = DataFlow::valueNode(pw.getRhs())
+        this = pw.getRhs()
       )
     }
 
