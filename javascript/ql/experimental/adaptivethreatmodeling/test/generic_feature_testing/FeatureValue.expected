@@ -1,66 +1,92 @@
+| test.html:2:61:2:68 | endpoint | ArgumentIndexFromArgumentTraversal | 0 |
 | test.html:2:61:2:68 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0 |
+| test.html:2:61:2:68 | endpoint | PropertyAccessPathSimpleFromArgumentTraversal |  |
 | test.html:2:61:2:68 | endpoint | argumentIndex | 0 |
 | test.html:2:61:2:68 | endpoint | calleeAccessPath |  |
 | test.html:2:61:2:68 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | $event.target.files.item |
 | test.html:2:61:2:68 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.html:2:61:2:68 | endpoint | calleeName | item |
+| test.js:2:7:2:14 | endpoint | ArgumentIndexFromArgumentTraversal | 0 |
 | test.js:2:7:2:14 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0 |
+| test.js:2:7:2:14 | endpoint | PropertyAccessPathSimpleFromArgumentTraversal |  |
 | test.js:2:7:2:14 | endpoint | argumentIndex | 0 |
 | test.js:2:7:2:14 | endpoint | calleeAccessPath |  |
 | test.js:2:7:2:14 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | f |
 | test.js:2:7:2:14 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:2:7:2:14 | endpoint | calleeName | f |
+| test.js:3:11:3:18 | endpoint | ArgumentIndexFromArgumentTraversal | 0 |
 | test.js:3:11:3:18 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0.p |
+| test.js:3:11:3:18 | endpoint | PropertyAccessPathSimpleFromArgumentTraversal | 0.p |
 | test.js:3:11:3:18 | endpoint | calleeAccessPath |  |
 | test.js:3:11:3:18 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | f |
 | test.js:3:11:3:18 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:4:15:4:22 | endpoint | ArgumentIndexFromArgumentTraversal | 0 |
 | test.js:4:15:4:22 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0.p.q |
+| test.js:4:15:4:22 | endpoint | PropertyAccessPathSimpleFromArgumentTraversal | 0.p.q |
 | test.js:4:15:4:22 | endpoint | calleeAccessPath |  |
 | test.js:4:15:4:22 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | f |
 | test.js:4:15:4:22 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:5:9:5:16 | endpoint | ArgumentIndexFromArgumentTraversal | 0 |
 | test.js:5:9:5:16 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0 |
+| test.js:5:9:5:16 | endpoint | PropertyAccessPathSimpleFromArgumentTraversal |  |
 | test.js:5:9:5:16 | endpoint | argumentIndex | 0 |
 | test.js:5:9:5:16 | endpoint | calleeAccessPath |  |
 | test.js:5:9:5:16 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | o.m |
 | test.js:5:9:5:16 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:5:9:5:16 | endpoint | calleeName | m |
 | test.js:5:9:5:16 | endpoint | receiverName | o |
+| test.js:6:13:6:20 | endpoint | ArgumentIndexFromArgumentTraversal | 0 |
 | test.js:6:13:6:20 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0.p |
+| test.js:6:13:6:20 | endpoint | PropertyAccessPathSimpleFromArgumentTraversal | 0.p |
 | test.js:6:13:6:20 | endpoint | calleeAccessPath |  |
 | test.js:6:13:6:20 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | o.m |
 | test.js:6:13:6:20 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:7:17:7:24 | endpoint | ArgumentIndexFromArgumentTraversal | 0 |
 | test.js:7:17:7:24 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0.p.q |
+| test.js:7:17:7:24 | endpoint | PropertyAccessPathSimpleFromArgumentTraversal | 0.p.q |
 | test.js:7:17:7:24 | endpoint | calleeAccessPath |  |
 | test.js:7:17:7:24 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | o.m |
 | test.js:7:17:7:24 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:8:11:8:18 | endpoint | ArgumentIndexFromArgumentTraversal | 0 |
 | test.js:8:11:8:18 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | ? |
+| test.js:8:11:8:18 | endpoint | PropertyAccessPathSimpleFromArgumentTraversal |  |
 | test.js:8:11:8:18 | endpoint | calleeAccessPath |  |
 | test.js:8:11:8:18 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | F |
 | test.js:8:11:8:18 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:9:17:9:24 | endpoint | ArgumentIndexFromArgumentTraversal | 0 |
 | test.js:9:17:9:24 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0 |
+| test.js:9:17:9:24 | endpoint | PropertyAccessPathSimpleFromArgumentTraversal |  |
 | test.js:9:17:9:24 | endpoint | argumentIndex | 0 |
 | test.js:9:17:9:24 | endpoint | calleeAccessPath |  |
 | test.js:9:17:9:24 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | o.m().m().m |
 | test.js:9:17:9:24 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:9:17:9:24 | endpoint | calleeName | m |
+| test.js:10:9:10:16 | endpoint | ArgumentIndexFromArgumentTraversal | 0 |
 | test.js:10:9:10:16 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0 |
+| test.js:10:9:10:16 | endpoint | PropertyAccessPathSimpleFromArgumentTraversal |  |
 | test.js:10:9:10:16 | endpoint | argumentIndex | 0 |
 | test.js:10:9:10:16 | endpoint | calleeAccessPath |  |
 | test.js:10:9:10:16 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | f() |
 | test.js:10:9:10:16 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:11:12:11:19 | endpoint | ArgumentIndexFromArgumentTraversal | 0 |
 | test.js:11:12:11:19 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0 |
+| test.js:11:12:11:19 | endpoint | PropertyAccessPathSimpleFromArgumentTraversal |  |
 | test.js:11:12:11:19 | endpoint | argumentIndex | 0 |
 | test.js:11:12:11:19 | endpoint | calleeAccessPath |  |
 | test.js:11:12:11:19 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | o.?.m |
 | test.js:11:12:11:19 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:11:12:11:19 | endpoint | calleeName | m |
+| test.js:12:16:12:23 | endpoint | ArgumentIndexFromArgumentTraversal | 0 |
 | test.js:12:16:12:23 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0 |
+| test.js:12:16:12:23 | endpoint | PropertyAccessPathSimpleFromArgumentTraversal |  |
 | test.js:12:16:12:23 | endpoint | argumentIndex | 0 |
 | test.js:12:16:12:23 | endpoint | calleeAccessPath |  |
 | test.js:12:16:12:23 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | o.m.?.p.m |
 | test.js:12:16:12:23 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:12:16:12:23 | endpoint | calleeName | m |
+| test.js:13:15:13:22 | endpoint | ArgumentIndexFromArgumentTraversal | 0 |
 | test.js:13:15:13:22 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0 |
+| test.js:13:15:13:22 | endpoint | PropertyAccessPathSimpleFromArgumentTraversal |  |
 | test.js:13:15:13:22 | endpoint | argumentIndex | 0 |
 | test.js:13:15:13:22 | endpoint | calleeAccessPath |  |
 | test.js:13:15:13:22 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | (await p) |
