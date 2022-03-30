@@ -106,7 +106,7 @@ module API {
    * });
    * ```
    * If `foo` calls `myMethod` on its first parameter, either of the `myMethod` implementations will be invoked.
-   * An indeed, the access path `API::moduleImport("foo").getParameter(0).getMember("myMethod").getParameter(0)` correctly
+   * And indeed, the access path `API::moduleImport("foo").getParameter(0).getMember("myMethod").getParameter(0)` correctly
    * identifies both `x` parameters.
    *
    * Observe how `getMember("myMethod")` behaves when the member is defined via a getter. When thinking in code patterns,
