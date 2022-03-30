@@ -219,7 +219,7 @@ predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string feat
 }
 
 /**
- * See EndpointFeauture
+ * See EndpointFeature
  */
 private newtype TEndpointFeature =
   TEnclosingFunctionName() or
@@ -234,7 +234,9 @@ private newtype TEndpointFeature =
   TCalleeImports() or
   TCalleeFlexibleAccessPath() or
   TInputAccessPathFromCallee() or
-  TInputArgumentIndex()
+  TInputArgumentIndex() or
+  TContextFunctionInterfacesInFile() or
+  TContextSurroundingFunctionParametersInFile()
 
 /**
  * An implementation of an endpoint feature: produces feature names and values for used in ML.
@@ -441,6 +443,30 @@ class FileImports extends EndpointFeature, TFileImports {
 }
 
 /**
+ * The feature for the function parameters of the functions that enclose an endpoint.
+ */
+class ContextSurroundingFunctionParametersInFile extends EndpointFeature,
+  TContextSurroundingFunctionParametersInFile {
+  override string getName() { result = "contextSurroundingFunctionParametersInFile" }
+
+  Function getRelevantFunction(DataFlow::Node endpoint) {
+    result = endpoint.asExpr().getEnclosingFunction*()
+  }
+
+  override string getValue(DataFlow::Node endpoint) {
+    result =
+      concat(string functionParameterLine, Function f |
+        f = getRelevantFunction(endpoint) and
+        functionParameterLine = SyntacticUtilities::getFunctionParametersFeatureComponent(f)
+      |
+        functionParameterLine, "\n"
+        order by
+          f.getLocation().getStartLine(), f.getLocation().getStartColumn()
+      )
+  }
+}
+
+/**
  * The feature for the imports used in the callee of an invocation.
  *
  * ### Example
@@ -475,6 +501,18 @@ class CalleeImports extends EndpointFeature, TCalleeImports {
   }
 }
 
+/*
+ * The feature for the interfaces of all named functions in the same file as the endpoint.
+ */
+
+class ContextFunctionInterfacesInFile extends EndpointFeature, TContextFunctionInterfacesInFile {
+  override string getName() { result = "contextFunctionInterfacesInFile" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    result = SyntacticUtilities::getFunctionInterfacesForFile(endpoint.getFile())
+  }
+}
+
 /**
  * Syntactic utilities for feature value computation.
  */
@@ -482,6 +520,54 @@ private module SyntacticUtilities {
   /** Gets an import located in `file`. */
   string getImportPathForFile(File file) {
     result = any(Import imp | imp.getFile() = file).getImportedPath().getValue()
+  }
+
+  /**
+   * Gets the feature component for the parameters of a function.
+   *
+   * ```javascript
+   * function f(a, b, c) { // will return "(a, b, c)" for this function
+   *  return a + b + c;
+   * }
+   *
+   * async function g(a) { // will return "(a)" for this function
+   *   return 2*a
+   * };
+   *
+   * const h = (b) => 3*b; // will return "(b)" for this function
+   * ```
+   */
+  string getFunctionParametersFeatureComponent(Function f) {
+    result =
+      "(" +
+        concat(string parameter, int i |
+          parameter = f.getParameter(i).getName()
+        |
+          parameter, ", " order by i
+        ) + ")"
+  }
+
+  /**
+   * Gets the function interfaces of all named functions in a file, concatenated together.
+   *
+   * ```javascript
+   * // Will return: "f(a, b, c)\ng(x, y, z)\nh(u, v)" for this file.
+   * function f(a, b, c) { ... }
+   *
+   * function g(x, y, z) {
+   *   function h(u, v) { ... }
+   *   ...
+   * }
+   */
+  string getFunctionInterfacesForFile(File file) {
+    result =
+      concat(Function func, string line |
+        func.getFile() = file and
+        exists(func.getName()) and
+        line = func.getName() + getFunctionParametersFeatureComponent(func)
+      |
+        line, "\n" order by line
+      )
   }
 
   /**
