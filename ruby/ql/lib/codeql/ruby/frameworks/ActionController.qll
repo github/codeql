@@ -11,6 +11,7 @@ private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 private import ActionView
 private import codeql.ruby.frameworks.ActionDispatch
+private import codeql.ruby.Concepts
 
 /**
  * A `ClassDeclaration` for a class that extends `ActionController::Base`.
@@ -126,7 +127,7 @@ abstract class ParamsCall extends MethodCall {
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `params` method.
  */
-class ParamsSource extends RemoteFlowSource::Range {
+class ParamsSource extends HTTP::Server::RequestInputAccess::Range {
   ParamsSource() { this.asExpr().getExpr() instanceof ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
@@ -143,7 +144,7 @@ abstract class CookiesCall extends MethodCall {
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `cookies` method.
  */
-class CookiesSource extends RemoteFlowSource::Range {
+class CookiesSource extends HTTP::Server::RequestInputAccess::Range {
   CookiesSource() { this.asExpr().getExpr() instanceof CookiesCall }
 
   override string getSourceType() { result = "ActionController::Metal#cookies" }
@@ -188,7 +189,7 @@ class RedirectToCall extends ActionControllerContextCall {
   /** Gets the `ActionControllerActionMethod` to redirect to, if any */
   ActionControllerActionMethod getRedirectActionMethod() {
     exists(string methodName |
-      this.getKeywordArgument("action").getConstantValue().isStringOrSymbol(methodName) and
+      this.getKeywordArgument("action").getConstantValue().isStringlikeValue(methodName) and
       methodName = result.getName() and
       result.getEnclosingModule() = this.getControllerClass()
     )
@@ -224,7 +225,7 @@ pragma[nomagic]
 private predicate actionControllerHasHelperMethodCall(ActionControllerControllerClass c, string name) {
   exists(MethodCall mc |
     mc.getMethodName() = "helper_method" and
-    mc.getAnArgument().getConstantValue().isStringOrSymbol(name) and
+    mc.getAnArgument().getConstantValue().isStringlikeValue(name) and
     mc.getEnclosingModule() = c
   )
 }
@@ -316,7 +317,7 @@ class ActionControllerSkipForgeryProtectionCall extends CSRFProtectionSetting::R
       call.getMethodName() = "skip_forgery_protection"
       or
       call.getMethodName() = "skip_before_action" and
-      call.getAnArgument().getConstantValue().isStringOrSymbol("verify_authenticity_token")
+      call.getAnArgument().getConstantValue().isStringlikeValue("verify_authenticity_token")
     )
   }
 

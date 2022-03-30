@@ -2,6 +2,5 @@ char* path = getenv("PATH");
 
 //...
 
-fprintf(stderr, "A required executable file could not be found.  " \
-                "Please ensure that the software has been installed " \
-                "correctly or contact a system administrator.\n");
+message = "An internal error has occurred. Please try again or contact a system administrator.\n";
+send(socket, message, strlen(message), 0);

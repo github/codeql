@@ -203,6 +203,7 @@ class EnvReadMethod extends Method {
   EnvReadMethod() {
     this instanceof MethodSystemGetenv or
     this instanceof PropertiesGetPropertyMethod or
+    this instanceof PropertiesGetMethod or
     this instanceof MethodSystemGetProperty
   }
 }

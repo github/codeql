@@ -1,7 +1,7 @@
 import bar from 'foo';
 
 let boundbar = bar.bind(
-    "receiver", // def (parameter -1 (member default (member exports (module foo))))
+    "receiver", // def (receiver (member default (member exports (module foo))))
     "firstarg"  // def (parameter 0 (member default (member exports (module foo))))
 );
 boundbar(
@@ -9,7 +9,7 @@ boundbar(
 )
 
 let boundbar2 = boundbar.bind(
-    "ignored", // !def (parameter -1 (member default (member exports (module foo))))
+    "ignored", // !def (receiver (member default (member exports (module foo))))
     "othersecondarg" // def (parameter 1 (member default (member exports (module foo))))
 )
 boundbar2(

@@ -94,7 +94,17 @@ class DomMethodCallExpr extends MethodCallExpr {
       name = "createElement" and argPos = 0
       or
       name = "appendChild" and argPos = 0
-      or
+    )
+  }
+
+  /**
+   * Holds if `arg` is an argument that is used as an URL.
+   */
+  predicate interpretsArgumentsAsURL(Expr arg) {
+    exists(int argPos, string name |
+      arg = this.getArgument(argPos) and
+      name = this.getMethodName()
+    |
       (
         name = "setAttribute" and argPos = 1
         or

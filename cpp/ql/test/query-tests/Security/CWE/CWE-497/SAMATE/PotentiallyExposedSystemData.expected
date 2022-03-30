@@ -1,0 +1,8 @@
+edges
+| tests.c:57:21:57:28 | password | tests.c:70:70:70:77 | array to pointer conversion |
+nodes
+| tests.c:57:21:57:28 | password | semmle.label | password |
+| tests.c:70:70:70:77 | array to pointer conversion | semmle.label | array to pointer conversion |
+subpaths
+#select
+| tests.c:70:70:70:77 | array to pointer conversion | tests.c:57:21:57:28 | password | tests.c:70:70:70:77 | array to pointer conversion | This operation potentially exposes sensitive system data from $@. | tests.c:57:21:57:28 | password | password |

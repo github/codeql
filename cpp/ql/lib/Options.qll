@@ -39,7 +39,7 @@ class CustomOptions extends Options {
    *
    * By default, this holds for `exit`, `_exit`, `abort`, `__assert_fail`,
    * `longjmp`, `error`, `__builtin_unreachable` and any function with a
-   * `noreturn` attribute.
+   * `noreturn` attribute or specifier.
    */
   override predicate exits(Function f) { Options.super.exits(f) }
 

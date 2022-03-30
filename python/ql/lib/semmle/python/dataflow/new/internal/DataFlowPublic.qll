@@ -87,7 +87,20 @@ newtype TNode =
   /**
    * A synthetic node representing element content in a star pattern.
    */
-  TStarPatternElementNode(MatchStarPattern target)
+  TStarPatternElementNode(MatchStarPattern target) or
+  /**
+   * INTERNAL: Do not use.
+   *
+   * A synthetic node representing the data for an ORM model saved in a DB.
+   */
+  // TODO: Limiting the classes here to the ones that are actually ORM models was
+  // non-trivial, since that logic is based on API::Node results, and trying to do this
+  // causes non-monotonic recursion, and makes the API graph evaluation recursive with
+  // data-flow, which might do bad things for performance.
+  //
+  // So for now we live with having these synthetic ORM nodes for _all_ classes, which
+  // is a bit wasteful, but we don't think it will hurt too much.
+  TSyntheticOrmModelNode(Class cls)
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
