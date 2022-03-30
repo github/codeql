@@ -110,7 +110,7 @@ module API {
    * identifies both `x` parameters.
    *
    * Observe how `getMember("myMethod")` behaves when the member is defined via a getter. When thinking in code patterns,
-   * it might seem obvious that `getMember` should have obtained a reference the getter method itself.
+   * it might seem obvious that `getMember` should have obtained a reference to the getter method itself.
    * But when seeing it as an access to `myMethod` performed by the library, we can deduce that the relevant expression
    * on the client side is actually the return-value of the getter.
    *
