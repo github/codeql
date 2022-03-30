@@ -229,9 +229,16 @@ private module Propagation {
     }
 
     pragma[nomagic]
-    string getNonSymbolValue() {
+    string getStringValue() {
       result = this.getValue() and
-      not this.getExpr() instanceof SymbolLiteral
+      not this.getExpr() instanceof SymbolLiteral and
+      not this.getExpr() instanceof RegExpLiteral
+    }
+
+    pragma[nomagic]
+    string getRegExpValue(string flags) {
+      result = this.getValue() and
+      flags = this.getExpr().(RegExpLiteral).getFlagString()
     }
   }
 
@@ -251,7 +258,7 @@ private module Propagation {
       s = left + right
     )
     or
-    s = e.(StringlikeLiteralWithInterpolationCfgNode).getNonSymbolValue()
+    s = e.(StringlikeLiteralWithInterpolationCfgNode).getStringValue()
     or
     // If last statement in the interpolation is a constant or local variable read,
     // we attempt to look up its string value.
@@ -267,13 +274,15 @@ private module Propagation {
     exists(ExprCfgNode last | last = e.(RegExpInterpolationComponentCfgNode).getLastStmt() |
       isInt(last, any(int i | s = i.toString())) or
       isFloat(last, any(float f | s = f.toString())) or
-      isString(last, s)
+      isString(last, s) or
+      isRegExp(last, s, _) // Note: we lose the flags for interpolated regexps here.
     )
   }
 
   private predicate isStringExprNoCfg(Expr e, string s) {
     s = e.(StringlikeLiteralImpl).getStringValue() and
-    not e instanceof SymbolLiteral
+    not e instanceof SymbolLiteral and
+    not e instanceof RegExpLiteral
     or
     s = e.(EncodingLiteralImpl).getValue()
     or
@@ -317,6 +326,31 @@ private module Propagation {
     isSymbolExpr(e.(ConstantReadAccess).getValue(), s)
     or
     forex(ExprCfgNode n | n = e.getAControlFlowNode() | isSymbol(n, s))
+  }
+
+  predicate isRegExp(ExprCfgNode e, string s, string flags) {
+    isRegExpExprNoCfg(e.getExpr(), s, flags)
+    or
+    isRegExpExpr(e.getExpr().(ConstantReadAccess).getValue(), s, flags)
+    or
+    isRegExp(getSource(e), s, flags)
+    or
+    s = e.(StringlikeLiteralWithInterpolationCfgNode).getRegExpValue(flags)
+  }
+
+  private predicate isRegExpExprNoCfg(Expr e, string s, string flags) {
+    s = e.(StringlikeLiteralImpl).getStringValue() and
+    e.(RegExpLiteral).getFlagString() = flags
+    or
+    isRegExpExprNoCfg(e.(ConstantReadAccess).getValue(), s, flags)
+  }
+
+  predicate isRegExpExpr(Expr e, string s, string flags) {
+    isRegExpExprNoCfg(e, s, flags)
+    or
+    isRegExpExpr(e.(ConstantReadAccess).getValue(), s, flags)
+    or
+    forex(ExprCfgNode n | n = e.getAControlFlowNode() | isRegExp(n, s, flags))
   }
 
   predicate isBoolean(ExprCfgNode e, boolean b) {
@@ -388,8 +422,17 @@ private module Cached {
       s = any(StringComponentImpl c).getValue()
     } or
     TSymbol(string s) { isString(_, s) or isSymbolExpr(_, s) } or
+    TRegExp(string s, string flags) {
+      isRegExp(_, s, flags)
+      or
+      isRegExpExpr(_, s, flags)
+      or
+      s = any(StringComponentImpl c).getValue() and flags = ""
+    } or
     TBoolean(boolean b) { b in [false, true] } or
     TNil()
+
+  class TStringlike = TString or TSymbol or TRegExp;
 
   cached
   ConstantValue getConstantValue(ExprCfgNode n) {
@@ -410,6 +453,8 @@ private module Cached {
     result.isString(any(string s | isString(n, s)))
     or
     result.isSymbol(any(string s | isSymbol(n, s)))
+    or
+    exists(string s, string flags | isRegExp(n, s, flags) and result = TRegExp(s, flags))
     or
     result.isBoolean(any(boolean b | isBoolean(n, b)))
     or
@@ -436,6 +481,8 @@ private module Cached {
     result.isString(any(string s | isStringExpr(e, s)))
     or
     result.isSymbol(any(string s | isSymbolExpr(e, s)))
+    or
+    exists(string s, string flags | isRegExpExpr(e, s, flags) and result = TRegExp(s, flags))
     or
     result.isBoolean(any(boolean b | isBooleanExpr(e, b)))
     or
