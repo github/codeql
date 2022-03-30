@@ -117,7 +117,7 @@ module HTTP {
   /**
    * An expression whose value is sent as (part of) the body of an HTTP response.
    */
-  abstract class ResponseBody extends Expr {
+  abstract class ResponseBody extends DataFlow::Node {
     /**
      * Gets the route handler that sends this expression.
      */

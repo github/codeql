@@ -270,7 +270,7 @@ module Hapi {
   private class HandlerReturn extends HTTP::ResponseSendArgument {
     RouteHandler handler;
 
-    HandlerReturn() { this = handler.(DataFlow::FunctionNode).getAReturn().asExpr() }
+    HandlerReturn() { this = handler.(DataFlow::FunctionNode).getAReturn() }
 
     override RouteHandler getRouteHandler() { result = handler }
   }

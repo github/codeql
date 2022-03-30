@@ -340,9 +340,9 @@ module Fastify {
     RouteHandler rh;
 
     ResponseSendArgument() {
-      this = rh.getAResponseSource().ref().getAMethodCall("send").getArgument(0).asExpr()
+      this = rh.getAResponseSource().ref().getAMethodCall("send").getArgument(0)
       or
-      this = rh.(DataFlow::FunctionNode).getAReturn().asExpr()
+      this = rh.(DataFlow::FunctionNode).getAReturn()
     }
 
     override RouteHandler getRouteHandler() { result = rh }

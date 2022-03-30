@@ -349,10 +349,10 @@ module NestJS {
 
     ReturnValueAsResponseSend() {
       handler.isReturnValueReflected() and
-      this = handler.getAReturn().asExpr() and
+      this = handler.getAReturn() and
       // Only returned strings are sinks
       not exists(Type type |
-        type = getType() and
+        type = this.asExpr().getType() and
         not isStringType(type.unfold())
       )
     }

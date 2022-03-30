@@ -104,7 +104,7 @@ private module Micro {
 
     MicroSendArgument() {
       send = moduleMember("micro", ["send", "sendError"]).getACall() and
-      this = send.getLastArgument().asExpr()
+      this = send.getLastArgument()
     }
 
     override HTTP::RouteHandler getRouteHandler() {

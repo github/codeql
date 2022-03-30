@@ -363,9 +363,9 @@ module NodeJSLib {
     HTTP::RouteHandler rh;
 
     ResponseSendArgument() {
-      exists(MethodCallExpr mce, string m | m = "write" or m = "end" |
-        mce.calls(any(ResponseExpr e | e.getRouteHandler() = rh), m) and
-        this = mce.getArgument(0) and
+      exists(DataFlow::MethodCallNode mcn, string m | m = "write" or m = "end" |
+        mcn.calls(any(ResponseExpr e | e.getRouteHandler() = rh).flow(), m) and
+        this = mcn.getArgument(0) and
         // don't mistake callback functions as data
         not this.analyze().getAValue() instanceof AbstractFunction
       )

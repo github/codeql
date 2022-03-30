@@ -766,7 +766,7 @@ module Express {
   private class ResponseSendArgument extends HTTP::ResponseSendArgument {
     ResponseSource response;
 
-    ResponseSendArgument() { this = response.ref().getAMethodCall("send").getArgument(0).asExpr() }
+    ResponseSendArgument() { this = response.ref().getAMethodCall("send").getArgument(0) }
 
     override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
   }
@@ -794,7 +794,7 @@ module Express {
     TemplateObjectInput obj;
 
     TemplateInput() {
-      obj.getALocalSource().(DataFlow::ObjectLiteralNode).hasPropertyWrite(_, this.flow())
+      obj.getALocalSource().(DataFlow::ObjectLiteralNode).hasPropertyWrite(_, this)
     }
 
     override RouteHandler getRouteHandler() { result = obj.getRouteHandler() }
