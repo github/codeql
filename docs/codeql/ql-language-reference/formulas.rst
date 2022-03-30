@@ -331,6 +331,7 @@ The following query selects files that are not HTML files.
 
 You can use these keywords to write a conditional formula. This is another way to simplify
 notation: ``if A then B else C`` is the same as writing ``(A and B) or ((not A) and C)``.
+``if A then B else any()`` can also be represented as `A implies B`.
 
 **Example**
 
@@ -399,7 +400,10 @@ With the following definition, an integer is in the class ``OneTwoThree`` if it 
 ===========
 
 You can use the keyword ``implies`` between two formulas. The resulting formula is called an 
-implication. This is just a simplified notation: ``A implies B`` is the same as writing ``(not A) or B``.
+implication. This is just a simplified notation:
+
+* ``A implies B`` is the same as writing ``(not A) or B``.
+* ``A implies B`` is the same as writing ``if A then B else any()``.
 
 **Example**
 
