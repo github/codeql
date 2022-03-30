@@ -40,28 +40,25 @@ module Express {
     )
   }
 
-  /**
-   * Holds if `e` may refer to the given `router` object.
-   */
-  private predicate isRouter(Expr e, RouterDefinition router) { router.ref().flowsToExpr(e) } // TODO: DataFlow::Node
+  /** Holds if `e` may refer to the given `router` object. */
+  private predicate isRouter(DataFlow::Node e, RouterDefinition router) { router.ref().flowsTo(e) }
 
   /**
    * Holds if `e` may refer to a router object.
    */
-  private predicate isRouter(Expr e) {
-    // TODO: DataFlow::Node
+  private predicate isRouter(DataFlow::Node e) {
     isRouter(e, _)
     or
-    e.getType().hasUnderlyingType("express", "Router")
+    e.asExpr().getType().hasUnderlyingType("express", "Router")
     or
     // created by `webpack-dev-server`
-    WebpackDevServer::webpackDevServerApp().flowsToExpr(e)
+    WebpackDevServer::webpackDevServerApp().flowsTo(e)
   }
 
   /**
    * An expression that refers to a route.
    */
-  class RouteExpr extends MethodCallExpr {
+  class RouteExpr extends DataFlow::MethodCallNode {
     RouteExpr() { isRouter(this) }
 
     /** Gets the router from which this route was created, if it is known. */
@@ -143,7 +140,7 @@ module Express {
    */
   class RouteSetup extends HTTP::Servers::StandardRouteSetup, DataFlow::MethodCallNode {
     RouteSetup() {
-      isRouter(this.getReceiver().asExpr()) and
+      isRouter(this.getReceiver()) and
       this.getMethodName() = routeSetupMethodName()
     }
 
@@ -151,7 +148,7 @@ module Express {
     string getPath() { this.getArgument(0).mayHaveStringValue(result) }
 
     /** Gets the router on which handlers are being registered. */
-    RouterDefinition getRouter() { isRouter(this.getReceiver().asExpr(), result) }
+    RouterDefinition getRouter() { isRouter(this.getReceiver(), result) }
 
     /** Holds if this is a call `use`, such as `app.use(handler)`. */
     predicate isUseCall() { this.getMethodName() = "use" }
@@ -420,7 +417,7 @@ module Express {
     /**
      * Gets the router being registered as a sub-router here, if any.
      */
-    RouterDefinition getAsSubRouter() { isRouter(this, result) }
+    RouterDefinition getAsSubRouter() { isRouter(this.flow(), result) }
   }
 
   /**
