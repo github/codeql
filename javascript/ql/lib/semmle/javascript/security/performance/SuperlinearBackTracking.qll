@@ -255,17 +255,6 @@ class Trace extends TTrace {
 }
 
 /**
- * Gets a string corresponding to the trace `t`.
- */
-string concretise(Trace t) {
-  t = Nil() and result = ""
-  or
-  exists(InputSymbol s1, InputSymbol s2, InputSymbol s3, Trace rest | t = Step(s1, s2, s3, rest) |
-    result = concretise(rest) + getAThreewayIntersect(s1, s2, s3)
-  )
-}
-
-/**
  * Holds if there exists a transition from `r` to `q` in the product automaton.
  * Notice that the arguments are flipped, and thus the direction is backwards.
  */
@@ -332,6 +321,39 @@ StateTuple getAnEndTuple(State pivot, State succ) {
   result = MkStateTuple(pivot, succ, succ)
 }
 
+private class RelevantTrace extends Trace {
+  RelevantTrace() {
+    exists(State pivot, State succ, StateTuple q |
+      isReachableFromStartTuple(pivot, succ, q, this, _) and
+      q = getAnEndTuple(pivot, succ)
+    )
+  }
+
+  private Trace getSuffix(int i) {
+    i = 0 and
+    result = this
+    or
+    this.getSuffix(i - 1) = Step(_, _, _, result)
+  }
+
+  private predicate hasTuple(int i, InputSymbol s1, InputSymbol s2, InputSymbol s3) {
+    this.getSuffix(i) = Step(s1, s2, s3, _)
+  }
+
+  /** Gets a string corresponding to this trace. */
+  // the pragma is needed for the case where `getAThreewayIntersect(s1, s2, s3)` has multiple values,
+  // not for recursion
+  language[monotonicAggregates]
+  string concretise() {
+    result =
+      concat(int i, InputSymbol s1, InputSymbol s2, InputSymbol s3 |
+        this.hasTuple(i, s1, s2, s3)
+      |
+        getAThreewayIntersect(s1, s2, s3) order by i desc
+      )
+  }
+}
+
 /**
  * Holds if matching repetitions of `pump` can:
  * 1) Transition from `pivot` back to `pivot`.
@@ -345,10 +367,10 @@ StateTuple getAnEndTuple(State pivot, State succ) {
  * available in the `hasReDoSResult` predicate.
  */
 predicate isPumpable(State pivot, State succ, string pump) {
-  exists(StateTuple q, Trace t |
+  exists(StateTuple q, RelevantTrace t |
     isReachableFromStartTuple(pivot, succ, q, t, _) and
     q = getAnEndTuple(pivot, succ) and
-    pump = concretise(t)
+    pump = t.concretise()
   )
 }
 

@@ -277,17 +277,6 @@ private class Trace extends TTrace {
       result = "Step(" + s1 + ", " + s2 + ", " + t + ")"
     )
   }
-
-  /** Holds if the `i`th pair of this trace is `(s1, s2)`. */
-  predicate hasPair(int i, InputSymbol s1, InputSymbol s2) {
-    this = Step(s1, s2, _) and
-    i = 0
-    or
-    exists(Trace t |
-      this = Step(_, _, t) and
-      t.hasPair(i - 1, s1, s2)
-    )
-  }
 }
 
 /**
@@ -329,6 +318,17 @@ private class RelevantTrace extends Trace {
     )
   }
 
+  private Trace getSuffix(int i) {
+    i = 0 and
+    result = this
+    or
+    this.getSuffix(i - 1) = Step(_, _, result)
+  }
+
+  private predicate hasTuple(int i, InputSymbol s1, InputSymbol s2) {
+    this.getSuffix(i) = Step(s1, s2, _)
+  }
+
   /** Gets a string corresponding to this trace. */
   // the pragma is needed for the case where `intersect(s1, s2)` has multiple values,
   // not for recursion
@@ -336,7 +336,7 @@ private class RelevantTrace extends Trace {
   string concretise() {
     result =
       concat(int i, InputSymbol s1, InputSymbol s2 |
-        this.hasPair(i, s1, s2)
+        this.hasTuple(i, s1, s2)
       |
         intersect(s1, s2) order by i desc
       )
