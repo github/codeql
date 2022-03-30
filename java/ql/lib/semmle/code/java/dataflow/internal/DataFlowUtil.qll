@@ -90,8 +90,8 @@ predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)
  * for final variables.
  */
 pragma[inline]
-predicate localExprFlowPlusInitializers(Expr e1, Expr e2) {
-  localFlowPlusInitializers(exprNode(e1), exprNode(e2))
+predicate localExprOrInitializerFlow(Expr e1, Expr e2) {
+  localOrInitializerFlow(exprNode(e1), exprNode(e2))
 }
 
 /**
@@ -100,7 +100,7 @@ predicate localExprFlowPlusInitializers(Expr e1, Expr e2) {
  * for final variables.
  */
 pragma[inline]
-predicate localFlowPlusInitializers(Node pred, Node succ) {
+predicate localOrInitializerFlow(Node pred, Node succ) {
   exists(Variable v | v.isFinal() and pred.asExpr() = v.getInitializer() |
     localFlow(exprNode(v.getAnAccess()), succ)
   )

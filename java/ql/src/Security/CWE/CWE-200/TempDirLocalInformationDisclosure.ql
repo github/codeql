@@ -205,7 +205,7 @@ class MethodAccessInsecureFileCreateTempFile extends MethodAccessInsecureFileCre
       this.getNumArgument() = 2
       or
       // The default temporary directory is used when the last argument of `File.createTempFile(string, string, File)` is `null`
-      DataFlow::localExprFlowPlusInitializers(any(NullLiteral n), this.getArgument(2))
+      DataFlow::localExprOrInitializerFlow(any(NullLiteral n), this.getArgument(2))
     )
   }
 

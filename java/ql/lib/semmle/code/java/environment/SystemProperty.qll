@@ -42,7 +42,7 @@ private MethodAccess getSystemPropertyFromSystemGetProperties(string propertyNam
     result.getMethod() = getMethod
   ) and
   result.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName and
-  DataFlow::localExprFlowPlusInitializers(any(MethodAccess m |
+  DataFlow::localExprOrInitializerFlow(any(MethodAccess m |
       m.getMethod().getDeclaringType() instanceof TypeSystem and
       m.getMethod().hasName("getProperties")
     ), result.getQualifier())
@@ -172,15 +172,16 @@ private MethodAccess getSystemPropertyFromGuava(string propertyName) {
     ec.getDeclaringType().hasQualifiedName("com.google.common.base", "StandardSystemProperty") and
     // Example: `StandardSystemProperty.JAVA_IO_TMPDIR.value()`
     (
-      DataFlow::localExprFlowPlusInitializers(ec.getAnAccess(), result.getQualifier()) and
+      DataFlow::localExprOrInitializerFlow(ec.getAnAccess(), result.getQualifier()) and
       result.getMethod().hasName("value")
     )
     or
     // Example: `System.getProperty(StandardSystemProperty.JAVA_IO_TMPDIR.key())`
     exists(MethodAccess keyMa |
-      DataFlow::localExprFlowPlusInitializers(ec.getAnAccess(), keyMa.getQualifier()) and
+      DataFlow::localExprOrInitializerFlow(ec.getAnAccess(), keyMa.getQualifier()) and
       keyMa.getMethod().hasName("key") and
-      DataFlow::localExprFlowPlusInitializers(keyMa, result.(MethodAccessSystemGetProperty).getArgument(0))
+      DataFlow::localExprOrInitializerFlow(keyMa,
+        result.(MethodAccessSystemGetProperty).getArgument(0))
     )
   |
     ec.hasName("JAVA_VERSION") and propertyName = "java.version"
