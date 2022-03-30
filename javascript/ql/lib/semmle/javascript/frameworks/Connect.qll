@@ -108,22 +108,24 @@ module Connect {
     override string getCredentialsKind() { result = kind }
   }
 
-  class RequestExpr = NodeJSLib::RequestExpr;
+  deprecated class RequestExpr = NodeJSLib::RequestExpr;
+
+  class RequestNode = NodeJSLib::RequestNode;
 
   /**
    * An access to a user-controlled Connect request input.
    */
-  private class RequestInputAccess extends HTTP::RequestInputAccess {
-    RequestExpr request;
+  private class RequestInputAccess extends HTTP::RequestInputAccess instanceof DataFlow::MethodCallNode {
+    RequestNode request;
     string kind;
 
     RequestInputAccess() {
       request.getRouteHandler() instanceof StandardRouteHandler and
-      exists(PropAccess cookies |
+      exists(DataFlow::PropRead cookies |
         // `req.cookies.get(<name>)`
         kind = "cookie" and
         cookies.accesses(request, "cookies") and
-        this.asExpr().(MethodCallExpr).calls(cookies, "get")
+        super.calls(cookies, "get")
       )
     }
 

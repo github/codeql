@@ -18,7 +18,7 @@ query predicate test_HeaderDefinition_defines(HTTP::HeaderDefinition hd, string 
   hd.defines(name, value) and hd.getRouteHandler() instanceof Connect::RouteHandler
 }
 
-query predicate test_ResponseExpr(HTTP::ResponseExpr e, HTTP::RouteHandler res) {
+query predicate test_ResponseExpr(HTTP::ResponseNode e, HTTP::RouteHandler res) {
   res = e.getRouteHandler()
 }
 
@@ -36,8 +36,8 @@ query predicate test_HeaderDefinition_getAHeaderName(HTTP::HeaderDefinition hd, 
 
 query predicate test_ServerDefinition(Connect::ServerDefinition s) { any() }
 
-query predicate test_RouteHandler_getAResponseExpr(Connect::RouteHandler rh, HTTP::ResponseExpr res) {
-  res = rh.getAResponseExpr()
+query predicate test_RouteHandler_getAResponseExpr(Connect::RouteHandler rh, HTTP::ResponseNode res) {
+  res = rh.getAResponseNode()
 }
 
 query predicate test_RouteSetup_getARouteHandler(Connect::RouteSetup r, DataFlow::SourceNode res) {
@@ -48,7 +48,7 @@ query predicate test_RouteHandler(Connect::RouteHandler rh, DataFlow::Node res) 
   res = rh.getServer()
 }
 
-query predicate test_RequestExpr(HTTP::RequestExpr e, HTTP::RouteHandler res) {
+query predicate test_RequestExpr(HTTP::RequestNode e, HTTP::RouteHandler res) {
   res = e.getRouteHandler()
 }
 
@@ -56,6 +56,6 @@ query predicate test_Credentials(Connect::Credentials cr, string res) {
   res = cr.getCredentialsKind()
 }
 
-query predicate test_RouteHandler_getARequestExpr(Connect::RouteHandler rh, HTTP::RequestExpr res) {
-  res = rh.getARequestExpr()
+query predicate test_RouteHandler_getARequestExpr(Connect::RouteHandler rh, HTTP::RequestNode res) {
+  res = rh.getARequestNode()
 }

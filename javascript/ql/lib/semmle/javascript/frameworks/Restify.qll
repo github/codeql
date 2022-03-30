@@ -68,41 +68,55 @@ module Restify {
     override RouteHandler getRouteHandler() { result = rh }
   }
 
-  // TODO: DataFlow::Node
   /**
+   * DEPRECATED: Use `ResponseNode` instead.
    * A Node.js HTTP response provided by Restify.
    */
-  class ResponseExpr extends NodeJSLib::ResponseExpr {
+  deprecated class ResponseExpr extends NodeJSLib::ResponseExpr {
     ResponseExpr() { src instanceof ResponseSource }
   }
 
-  // TODO: DataFlow::Node
+  /**
+   * A Node.js HTTP response provided by Restify.
+   */
+  class ResponseNode extends NodeJSLib::ResponseNode {
+    ResponseNode() { src instanceof ResponseSource }
+  }
+
+  /**
+   * DEPRECATED: Use `RequestNode` instead.
+   * A Node.js HTTP request provided by Restify.
+   */
+  deprecated class RequestExpr extends NodeJSLib::RequestExpr {
+    RequestExpr() { src instanceof RequestSource }
+  }
+
   /**
    * A Node.js HTTP request provided by Restify.
    */
-  class RequestExpr extends NodeJSLib::RequestExpr {
-    RequestExpr() { src instanceof RequestSource }
+  class RequestNode extends NodeJSLib::RequestNode {
+    RequestNode() { src instanceof RequestSource }
   }
 
   /**
    * An access to a user-controlled Restify request input.
    */
   private class RequestInputAccess extends HTTP::RequestInputAccess {
-    RequestExpr request;
+    RequestNode request;
     string kind;
 
     RequestInputAccess() {
-      exists(MethodCallExpr query |
+      exists(DataFlow::MethodCallNode query |
         // `request.getQuery().<name>`
         kind = "parameter" and
         query.calls(request, "getQuery") and
-        this.asExpr().(PropAccess).accesses(query, _)
+        this.(DataFlow::PropRead).accesses(query, _)
       )
       or
       exists(string methodName |
         // `request.href()` or `request.getPath()`
         kind = "url" and
-        this.asExpr().(MethodCallExpr).calls(request, methodName)
+        this.(DataFlow::MethodCallNode).calls(request, methodName)
       |
         methodName = "href" or
         methodName = "getPath"
@@ -110,13 +124,12 @@ module Restify {
       or
       // `request.getContentType()`, `request.userAgent()`, `request.trailer(...)`, `request.header(...)`
       kind = "header" and
-      this.asExpr()
-          .(MethodCallExpr)
+      this.(DataFlow::MethodCallNode)
           .calls(request, ["getContentType", "userAgent", "trailer", "header"])
       or
       // `req.cookies
       kind = "cookie" and
-      this.asExpr().(PropAccess).accesses(request, "cookies")
+      this.(DataFlow::PropRead).accesses(request, "cookies")
     }
 
     override RouteHandler getRouteHandler() { result = request.getRouteHandler() }
@@ -130,13 +143,11 @@ module Restify {
   private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
     HeaderDefinition() {
       // response.header('Cache-Control', 'no-cache')
-      this.getReceiver().asExpr() instanceof ResponseExpr and
+      this.getReceiver() instanceof ResponseNode and
       this.getMethodName() = "header"
     }
 
-    override RouteHandler getRouteHandler() {
-      this.getReceiver().asExpr() = result.getAResponseExpr()
-    }
+    override RouteHandler getRouteHandler() { this.getReceiver() = result.getAResponseNode() }
   }
 
   /**

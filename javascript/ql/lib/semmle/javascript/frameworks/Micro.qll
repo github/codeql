@@ -62,11 +62,19 @@ private module Micro {
     override HTTP::RouteHandler getRouteHandler() { result = h }
   }
 
-  class MicroRequestExpr extends NodeJSLib::RequestExpr {
+  deprecated class MicroRequestExpr extends NodeJSLib::RequestExpr {
     override MicroRequestSource src;
   }
 
-  class MicroReseponseExpr extends NodeJSLib::ResponseExpr {
+  class MicroRequestNode extends NodeJSLib::RequestNode {
+    override MicroRequestSource src;
+  }
+
+  deprecated class MicroReseponseExpr extends NodeJSLib::ResponseExpr {
+    override MicroResponseSource src;
+  }
+
+  class MicroResponseNode extends NodeJSLib::ResponseNode {
     override MicroResponseSource src;
   }
 

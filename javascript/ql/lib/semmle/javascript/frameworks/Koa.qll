@@ -27,7 +27,7 @@ module Koa {
       this.calls(rh.getAResponseOrContextExpr().flow(), "set")
       or
       // ctx.response.header('Cache-Control', 'no-cache')
-      this.calls(rh.getAResponseExpr().flow(), "header")
+      this.calls(rh.getAResponseNode(), "header")
     }
 
     override RouteHandler getRouteHandler() { result = rh }
@@ -60,7 +60,7 @@ module Koa {
      */
     Expr getAResponseOrContextExpr() {
       // TODO: DataFlow::Node
-      result = this.getAResponseExpr() or result = this.getAContextExpr()
+      result = this.getAResponseNode().asExpr() or result = this.getAContextExpr()
     }
 
     /**
@@ -68,7 +68,8 @@ module Koa {
      * object of a route handler invocation.
      */
     Expr getARequestOrContextExpr() {
-      result = this.getARequestExpr() or result = this.getAContextExpr()
+      // TODO: DataFlow::Node
+      result = this.getARequestNode().asExpr() or result = this.getAContextExpr()
     }
 
     /**
@@ -266,16 +267,32 @@ module Koa {
   }
 
   /**
+   * DEPRECATED: Use `RequestNode` instead.
    * An expression that may hold a Koa request object.
    */
-  class RequestExpr extends HTTP::Servers::StandardRequestExpr {
+  deprecated class RequestExpr extends HTTP::Servers::StandardRequestExpr {
+    RequestExpr() { this.flow() instanceof RequestNode }
+  }
+
+  /**
+   * An expression that may hold a Koa request object.
+   */
+  class RequestNode extends HTTP::Servers::StandardRequestNode {
     override RequestSource src;
+  }
+
+  /**
+   * DEPRECATED: Use `ResponseNode` instead.
+   * An expression that may hold a Koa response object.
+   */
+  deprecated class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
+    ResponseExpr() { this.flow() instanceof ResponseNode }
   }
 
   /**
    * An expression that may hold a Koa response object.
    */
-  class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
+  class ResponseNode extends HTTP::Servers::StandardResponseNode {
     override ResponseSource src;
   }
 
@@ -311,7 +328,7 @@ module Koa {
         this.asExpr().(PropAccess).accesses(e, "params")
         or
         // `ctx.request.body`
-        e instanceof RequestExpr and
+        e.flow() instanceof RequestNode and
         kind = "body" and
         this.asExpr().(PropAccess).accesses(e, "body")
         or

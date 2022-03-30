@@ -208,16 +208,30 @@ module HTTP {
     final Servers::ResponseSource getAResponseSource() { result.getRouteHandler() = this }
 
     /**
+     * DEPRECATED: Use `getARequestNode()` instead.
      * Gets an expression that contains a request object handled
      * by this handler.
      */
-    RequestExpr getARequestExpr() { result.getRouteHandler() = this } // TODO: DataFlow::Node
+    deprecated RequestExpr getARequestExpr() { result.flow() = this.getARequestNode() }
+
+    /**
+     * Gets an expression that contains a request object handled
+     * by this handler.
+     */
+    RequestNode getARequestNode() { result.getRouteHandler() = this }
+
+    /**
+     * DEPRECATED: Use `getAResponseNode()` instead.
+     * Gets an expression that contains a response object provided
+     * by this handler.
+     */
+    deprecated ResponseExpr getAResponseExpr() { result.flow() = this.getAResponseNode() }
 
     /**
      * Gets an expression that contains a response object provided
      * by this handler.
      */
-    ResponseExpr getAResponseExpr() { result.getRouteHandler() = this } // TODO: DataFlow::Node
+    ResponseNode getAResponseNode() { result.getRouteHandler() = this }
   }
 
   /**
@@ -244,26 +258,40 @@ module HTTP {
    */
   abstract class RouteSetup extends DataFlow::Node { }
 
-  /**
-   * An expression that may contain a request object.
-   */
-  abstract class RequestExpr extends Expr {
-    // TODO: DataFlow::Node
-    /**
-     * Gets the route handler that handles this request.
-     */
+  /** A dataflow node that may contain a request object. */
+  abstract class RequestNode extends DataFlow::Node {
+    /** Gets the route handler that handles this request. */
+    abstract RouteHandler getRouteHandler();
+  }
+
+  /** An dataflow node that may contain a response object. */
+  abstract class ResponseNode extends DataFlow::Node {
+    /** Gets the route handler that handles this request. */
     abstract RouteHandler getRouteHandler();
   }
 
   /**
-   * An expression that may contain a response object.
+   * DEPRECATED: Use `RequestNode` instead.
+   * An expression that may contain a request object.
    */
-  abstract class ResponseExpr extends Expr {
-    // TODO: DataFlow::Node
+  deprecated class RequestExpr extends Expr {
+    RequestExpr() { this.flow() instanceof ResponseNode }
+
     /**
      * Gets the route handler that handles this request.
      */
-    abstract RouteHandler getRouteHandler();
+    RouteHandler getRouteHandler() { result = this.flow().(ResponseNode).getRouteHandler() }
+  }
+
+  /**
+   * DEPRECATED: Use `ResponseNode` instead.
+   * An expression that may contain a response object.
+   */
+  deprecated class ResponseExpr extends Expr {
+    /**
+     * Gets the route handler that handles this request.
+     */
+    RouteHandler getRouteHandler() { result = this.flow().(ResponseNode).getRouteHandler() }
   }
 
   /**
@@ -366,10 +394,10 @@ module HTTP {
     /**
      * A request expression arising from a request source.
      */
-    class StandardRequestExpr extends RequestExpr {
+    class StandardRequestNode extends RequestNode {
       RequestSource src;
 
-      StandardRequestExpr() { src.ref().flowsTo(DataFlow::valueNode(this)) }
+      StandardRequestNode() { src.ref().flowsTo(this) }
 
       override RouteHandler getRouteHandler() { result = src.getRouteHandler() }
     }
@@ -377,12 +405,36 @@ module HTTP {
     /**
      * A response expression arising from a response source.
      */
-    class StandardResponseExpr extends ResponseExpr {
+    class StandardResponseNode extends ResponseNode {
       ResponseSource src;
 
-      StandardResponseExpr() { src.ref().flowsTo(DataFlow::valueNode(this)) }
+      StandardResponseNode() { src.ref().flowsTo(this) }
 
       override RouteHandler getRouteHandler() { result = src.getRouteHandler() }
+    }
+
+    /**
+     * A request expression arising from a request source.
+     */
+    deprecated class StandardRequestExpr extends RequestExpr {
+      RequestSource src;
+
+      StandardRequestExpr() { src.ref().flowsToExpr(this) }
+
+      override RouteHandler getRouteHandler() { result = src.getRouteHandler() }
+    }
+
+    /**
+     * A response expression arising from a response source.
+     */
+    deprecated class StandardResponseExpr extends ResponseExpr {
+      ResponseSource src;
+
+      StandardResponseExpr() { src.ref().flowsToExpr(this) }
+
+      override RouteHandler getRouteHandler() {
+        result = this.flow().(StandardResponseNode).getRouteHandler()
+      }
     }
 
     /**
