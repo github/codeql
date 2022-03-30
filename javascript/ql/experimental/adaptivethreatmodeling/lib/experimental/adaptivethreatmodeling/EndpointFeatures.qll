@@ -16,7 +16,7 @@ private import FunctionBodyFeatures as FunctionBodyFeatures
 private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
   // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
   endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
-  exists(EndPointFeature f | f.getEncoding() = featureName and result = f.getValue(endpoint))
+  exists(EndpointFeature f | f.getName() = featureName and result = f.getValue(endpoint))
 }
 
 /**
@@ -190,7 +190,7 @@ private module FunctionNames {
 }
 
 /** Get a name of a supported generic token-based feature. */
-string getASupportedFeatureName() { result = any(EndPointFeature f).getEncoding() }
+string getASupportedFeatureName() { result = any(EndpointFeature f).getName() }
 
 /**
  * Generic token-based features for ATM.
@@ -204,7 +204,10 @@ predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string feat
   featureValue = getTokenFeature(endpoint, featureName)
 }
 
-private newtype TEndPointFeature =
+/**
+ * See EndpointFeauture
+ */
+private newtype TEndpointFeature =
   TEnclosingFunctionName() or
   TCalleeName() or
   TReceiverName() or
@@ -216,40 +219,57 @@ private newtype TEndPointFeature =
   TCalleeAccessPathSimpleFromArgumentTraversal() or
   TParameterAccessPathSimpleFromArgumentTraversal()
 
-abstract class EndPointFeature extends TEndPointFeature {
-  abstract string getEncoding();
+/**
+ * An implementation of an endpoint feature: produces feature names and values for used in ML.
+ */
+abstract class EndpointFeature extends TEndpointFeature {
+  /**
+   * Gets the name of the feature. Used by the ML model.
+   * Changes to the name of a feature requires training the model again.
+   */
+  abstract string getName();
 
+  /**
+   * Gets the value of the feature. Used by the ML model.
+   * Changes to the value of a feature requires training the model again.
+   */
   abstract string getValue(DataFlow::Node endpoint);
 
-  string toString() { result = getEncoding() }
+  string toString() { result = getName() }
 }
 
-class EnclosingFunctionName extends EndPointFeature, TEnclosingFunctionName {
-  override string getEncoding() { result = "enclosingFunctionName" }
+/**
+ * The feature for the name of the function that encloses the endpoint.
+ */
+class EnclosingFunctionName extends EndpointFeature, TEnclosingFunctionName {
+  override string getName() { result = "enclosingFunctionName" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // The name of the function that encloses the endpoint.
     result =
       FunctionNames::getNameToFeaturize(FunctionBodyFeatures::getRepresentativeFunctionForEndpoint(endpoint))
   }
 }
 
-class CalleeName extends EndPointFeature, TCalleeName {
-  override string getEncoding() { result = "calleeName" }
+/**
+ * The feature for the name of the function being called, e.g. in a call `Artist.findOne(...)`, this is `findOne`.
+ */
+class CalleeName extends EndpointFeature, TCalleeName {
+  override string getName() { result = "calleeName" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // The name of the function being called, e.g. in a call `Artist.findOne(...)`, this is `findOne`.
     exists(DataFlow::CallNode call | endpoint = call.getAnArgument() |
       result = strictconcat(string component | component = call.getCalleeName() | component, " ")
     )
   }
 }
 
-class ReceiverName extends EndPointFeature, TReceiverName {
-  override string getEncoding() { result = "receiverName" }
+/**
+ * The feature for the name of the receiver of the call, e.g. in a call `Artist.findOne(...)`, this is `Artist`.
+ */
+class ReceiverName extends EndpointFeature, TReceiverName {
+  override string getName() { result = "receiverName" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // The name of the receiver of the call, e.g. in a call `Artist.findOne(...)`, this is `Artist`.
     exists(DataFlow::CallNode call | endpoint = call.getAnArgument() |
       result =
         strictconcat(string component |
@@ -261,11 +281,13 @@ class ReceiverName extends EndPointFeature, TReceiverName {
   }
 }
 
-class ArgumentIndex extends EndPointFeature, TArgumentIndex {
-  override string getEncoding() { result = "argumentIndex" }
+/**
+ * The feature for the argument index of the endpoint, e.g. in `f(a, endpoint, b)`, this is 1.
+ */
+class ArgumentIndex extends EndpointFeature, TArgumentIndex {
+  override string getName() { result = "argumentIndex" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // The argument index of the endpoint, e.g. in `f(a, endpoint, b)`, this is 1.
     exists(DataFlow::CallNode call | endpoint = call.getAnArgument() |
       result =
         strictconcat(string component |
@@ -277,20 +299,20 @@ class ArgumentIndex extends EndPointFeature, TArgumentIndex {
   }
 }
 
-class CalleeApiName extends EndPointFeature, TCalleeApiName {
-  override string getEncoding() { result = "calleeApiName" }
+/**
+ * The feature for the name of the API that the function being called originates from, if the function being
+ * called originates from an external API. For example, the endpoint here:
+ *
+ * ```js
+ * const mongoose = require('mongoose'),
+ *   User = mongoose.model('User', null);
+ * User.findOne(ENDPOINT);
+ * ```
+ */
+class CalleeApiName extends EndpointFeature, TCalleeApiName {
+  override string getName() { result = "calleeApiName" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // The name of the API that the function being called originates from, if the function being
-    // called originates from an external API. For example, the endpoint here:
-    //
-    // ```js
-    // const mongoose = require('mongoose'),
-    //   User = mongoose.model('User', null);
-    // User.findOne(ENDPOINT);
-    // ```
-    //
-    // would have a callee API name of `mongoose`.
     exists(API::Node apiNode |
       endpoint = apiNode.getInducingNode().(DataFlow::CallNode).getAnArgument()
     |
@@ -304,20 +326,22 @@ class CalleeApiName extends EndPointFeature, TCalleeApiName {
   }
 }
 
-class CalleeAccessPath extends EndPointFeature, TCalleeAccessPath {
-  override string getEncoding() { result = "calleeAccessPath" }
+/**
+ * The access path of the function being called, both without structural info, if the
+ * function being called originates from an external API. For example, the endpoint here:
+ *
+ * ```js
+ * const mongoose = require('mongoose'),
+ *   User = mongoose.model('User', null);
+ * User.findOne(ENDPOINT);
+ * ```
+ *
+ * would have a callee access path without structural info of `mongoose model findOne`.
+ */
+class CalleeAccessPath extends EndpointFeature, TCalleeAccessPath {
+  override string getName() { result = "calleeAccessPath" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // The access path of the function being called, both without structural info, if the
-    // function being called originates from an external API. For example, the endpoint here:
-    //
-    // ```js
-    // const mongoose = require('mongoose'),
-    //   User = mongoose.model('User', null);
-    // User.findOne(ENDPOINT);
-    // ```
-    //
-    // would have a callee access path without structural info of `mongoose model findOne`.
     result =
       concat(API::Node node, string accessPath |
         node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
@@ -328,26 +352,28 @@ class CalleeAccessPath extends EndPointFeature, TCalleeAccessPath {
   }
 }
 
-class CalleeAccessPathWithStructuralInfo extends EndPointFeature,
+/**
+ * The access path of the function being called, both with structural info, if the
+ * function being called originates from an external API. For example, the endpoint here:
+ *
+ * ```js
+ * const mongoose = require('mongoose'),
+ *   User = mongoose.model('User', null);
+ * User.findOne(ENDPOINT);
+ * ```
+ *
+ * would have a callee access path with structural info of
+ * `mongoose member model instanceorreturn member findOne instanceorreturn`
+ *
+ * These features indicate that the callee comes from (reading the access path backwards) an
+ * instance of the `findOne` member of an instance of the `model` member of the `mongoose`
+ * external library.
+ */
+class CalleeAccessPathWithStructuralInfo extends EndpointFeature,
   TCalleeAccessPathWithStructuralInfo {
-  override string getEncoding() { result = "calleeAccessPathWithStructuralInfo" }
+  override string getName() { result = "calleeAccessPathWithStructuralInfo" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // The access path of the function being called, both with structural info, if the
-    // function being called originates from an external API. For example, the endpoint here:
-    //
-    // ```js
-    // const mongoose = require('mongoose'),
-    //   User = mongoose.model('User', null);
-    // User.findOne(ENDPOINT);
-    // ```
-    //
-    // would have a callee access path with structural info of
-    // `mongoose member model instanceorreturn member findOne instanceorreturn`
-    //
-    // These features indicate that the callee comes from (reading the access path backwards) an
-    // instance of the `findOne` member of an instance of the `model` member of the `mongoose`
-    // external library.
     result =
       concat(API::Node node, string accessPath |
         node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
@@ -358,24 +384,41 @@ class CalleeAccessPathWithStructuralInfo extends EndPointFeature,
   }
 }
 
-class EnclosingFunctionBody extends EndPointFeature, TEnclosingFunctionBody {
-  override string getEncoding() { result = "enclosingFunctionBody" }
+/**
+ * The feature for the natural language tokens from the function that encloses the endpoint in
+ *    the order that they appear in the source code.
+ */
+class EnclosingFunctionBody extends EndpointFeature, TEnclosingFunctionBody {
+  override string getName() { result = "enclosingFunctionBody" }
 
   override string getValue(DataFlow::Node endpoint) {
-    // A feature containing natural language tokens from the function that encloses the endpoint in
-    // the order that they appear in the source code.
     result =
       FunctionBodyFeatures::getBodyTokensFeature(FunctionBodyFeatures::getRepresentativeFunctionForEndpoint(endpoint))
   }
 }
 
+/**
+ * Syntactic utilities for feature value computation.
+ */
 private module SyntacticUtilities {
-  Expr getANestedProperty(ObjectExpr o) {
+  /**
+   * Gets a property initializer value in a an object literal or one of its nested object literals.
+   */
+  Expr getANestedInitializerValue(ObjectExpr o) {
     exists(Expr init | init = o.getAProperty().getInit().getUnderlyingValue() |
-      result = [init, getANestedProperty(init)]
+      result = [init, getANestedInitializerValue(init)]
     )
   }
 
+  /**
+   * Computes a simple access path for how a callee can refer to a value that appears in an argument to a call.
+   *
+   * Supports:
+   * - direct arguments
+   * - properties of (nested) objects that are arguments
+   *
+   * Unknown cases and property names results in `?`.
+   */
   string getSimpleParameterAccessPath(DataFlow::Node node) {
     if exists(DataFlow::CallNode call | node = call.getArgument(_))
     then exists(DataFlow::CallNode call, int i | node = call.getArgument(i) | result = i + "")
@@ -389,6 +432,16 @@ private module SyntacticUtilities {
       else result = "?"
   }
 
+  /**
+   * Computes a simple access path for a node.
+   *
+   * Supports:
+   * - variable reads (including `this` and `super`)
+   * - property reads
+   * - invocations
+   *
+   * Unknown cases and property names results in `?`.
+   */
   string getSimpleAccessPath(DataFlow::Node node) {
     if node.asExpr() instanceof SuperAccess
     then result = "super"
@@ -411,37 +464,56 @@ private module SyntacticUtilities {
   }
 }
 
+/**
+ * Gets the property name of a property reference or `?` if it is unknown.
+ */
 string getPropertyNameOrUnknown(DataFlow::PropRef ref) {
   if exists(ref.getPropertyName()) then result = ref.getPropertyName() else result = "?"
 }
 
-class CalleeAccessPathSimpleFromArgumentTraversal extends EndPointFeature,
+/**
+ * The feature for the access path of the callee node of a call that has an argument that "contains" the endpoint.
+ *
+ * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
+ *
+ * This feature is intended as a superior version of the many `Callee*` features.
+ */
+class CalleeAccessPathSimpleFromArgumentTraversal extends EndpointFeature,
   TCalleeAccessPathSimpleFromArgumentTraversal {
-  override string getEncoding() { result = "calleeAccessPathSimpleFromArgumentTraversal" }
+  override string getName() { result = "calleeAccessPathSimpleFromArgumentTraversal" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
       result = SyntacticUtilities::getSimpleAccessPath(invk.getCalleeNode()) and
       (
         invk.getAnArgument() = endpoint or
-        SyntacticUtilities::getANestedProperty(invk.getAnArgument().asExpr().getUnderlyingValue())
-            .flow() = endpoint
+        SyntacticUtilities::getANestedInitializerValue(invk.getAnArgument()
+              .asExpr()
+              .getUnderlyingValue()).flow() = endpoint
       )
     )
   }
 }
 
-class ParameterAccessPathSimpleFromArgumentTraversal extends EndPointFeature,
+/**
+ * The feature for how a callee can refer to a the endpoint that is "contained" in an argument to a call
+ *
+ * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
+ *
+ * This feature is intended as a superior version of the `ArgumentIndexFeature`.
+ */
+class ParameterAccessPathSimpleFromArgumentTraversal extends EndpointFeature,
   TParameterAccessPathSimpleFromArgumentTraversal {
-  override string getEncoding() { result = "ParameterAccessPathSimpleFromArgumentTraversal" }
+  override string getName() { result = "ParameterAccessPathSimpleFromArgumentTraversal" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
       result = SyntacticUtilities::getSimpleParameterAccessPath(endpoint) and
       (
         invk.getAnArgument() = endpoint or
-        SyntacticUtilities::getANestedProperty(invk.getAnArgument().asExpr().getUnderlyingValue())
-            .flow() = endpoint
+        SyntacticUtilities::getANestedInitializerValue(invk.getAnArgument()
+              .asExpr()
+              .getUnderlyingValue()).flow() = endpoint
       )
     )
   }
