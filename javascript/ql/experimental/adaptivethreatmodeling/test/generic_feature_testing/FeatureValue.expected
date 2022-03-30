@@ -1,0 +1,29 @@
+| test.js:2:7:2:14 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0 |
+| test.js:2:7:2:14 | endpoint | argumentIndex | 0 |
+| test.js:2:7:2:14 | endpoint | calleeAccessPath |  |
+| test.js:2:7:2:14 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | f |
+| test.js:2:7:2:14 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:2:7:2:14 | endpoint | calleeName | f |
+| test.js:3:11:3:18 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0.p |
+| test.js:3:11:3:18 | endpoint | calleeAccessPath |  |
+| test.js:3:11:3:18 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | f |
+| test.js:3:11:3:18 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:4:15:4:22 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0.p.q |
+| test.js:4:15:4:22 | endpoint | calleeAccessPath |  |
+| test.js:4:15:4:22 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | f |
+| test.js:4:15:4:22 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:5:9:5:16 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0 |
+| test.js:5:9:5:16 | endpoint | argumentIndex | 0 |
+| test.js:5:9:5:16 | endpoint | calleeAccessPath |  |
+| test.js:5:9:5:16 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | o.m |
+| test.js:5:9:5:16 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:5:9:5:16 | endpoint | calleeName | m |
+| test.js:5:9:5:16 | endpoint | receiverName | o |
+| test.js:6:13:6:20 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0.p |
+| test.js:6:13:6:20 | endpoint | calleeAccessPath |  |
+| test.js:6:13:6:20 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | o.m |
+| test.js:6:13:6:20 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:7:17:7:24 | endpoint | ParameterAccessPathSimpleFromArgumentTraversal | 0.p.q |
+| test.js:7:17:7:24 | endpoint | calleeAccessPath |  |
+| test.js:7:17:7:24 | endpoint | calleeAccessPathSimpleFromArgumentTraversal | o.m |
+| test.js:7:17:7:24 | endpoint | calleeAccessPathWithStructuralInfo |  |
