@@ -5,6 +5,7 @@
 
 import javascript
 private import semmle.javascript.internal.CachedStages
+private import Expressions.ExprHasNoEffect
 
 /**
  * An AMD `define` call.
@@ -26,7 +27,7 @@ private import semmle.javascript.internal.CachedStages
  */
 class AmdModuleDefinition extends CallExpr {
   AmdModuleDefinition() {
-    getParent() instanceof ExprStmt and
+    inVoidContext(this) and
     getCallee().(GlobalVarAccess).getName() = "define" and
     exists(int n | n = getNumArgument() |
       n = 1
