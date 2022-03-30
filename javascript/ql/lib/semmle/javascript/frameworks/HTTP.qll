@@ -56,19 +56,25 @@ module HTTP {
    * An expression that sets HTTP response headers explicitly.
    */
   abstract class ExplicitHeaderDefinition extends HeaderDefinition {
-    override string getAHeaderName() { this.definesExplicitly(result, _) }
+    override string getAHeaderName() { this.definesHeaderValue(result, _) }
 
     override predicate defines(string headerName, string headerValue) {
-      exists(Expr e |
-        this.definesExplicitly(headerName, e) and
+      exists(DataFlow::Node e |
+        this.definesHeaderValue(headerName, e) and
         headerValue = e.getStringValue()
       )
     }
 
     /**
+     * DEPRECATED: use `definesHeaderValue` instead.
      * Holds if the header with (lower-case) name `headerName` is set to the value of `headerValue`.
      */
-    abstract predicate definesExplicitly(string headerName, Expr headerValue); // TODO: DataFlow::Node.
+    deprecated predicate definesExplicitly(string headerName, Expr headerValue) {
+      this.definesHeaderValue(headerName, headerValue.flow())
+    }
+
+    /** Holds if the header with (lower-case) name `headerName` is set to the value of `headerValue`. */
+    abstract predicate definesHeaderValue(string headerName, DataFlow::Node headerValue);
 
     /**
      * DEPRECATED: Use `getNameNode()` instead.
@@ -128,20 +134,21 @@ module HTTP {
    * An expression that sets a cookie in an HTTP response.
    */
   abstract class CookieDefinition extends Expr {
+    // TODO: DataFlow::Node
     /**
      * Gets the argument, if any, specifying the raw cookie header.
      */
-    Expr getHeaderArgument() { none() }
+    Expr getHeaderArgument() { none() } // TODO: DataFlow::Node
 
     /**
      * Gets the argument, if any, specifying the cookie name.
      */
-    Expr getNameArgument() { none() }
+    Expr getNameArgument() { none() } // TODO: DataFlow::Node
 
     /**
      * Gets the argument, if any, specifying the cookie value.
      */
-    Expr getValueArgument() { none() }
+    Expr getValueArgument() { none() } // TODO: DataFlow::Node
 
     /** Gets the route handler that sets this cookie. */
     abstract RouteHandler getRouteHandler();
@@ -159,7 +166,7 @@ module HTTP {
     }
 
     override Expr getHeaderArgument() {
-      header.(ExplicitHeaderDefinition).definesExplicitly("set-cookie", result)
+      header.(ExplicitHeaderDefinition).definesHeaderValue("set-cookie", result.flow())
     }
 
     override RouteHandler getRouteHandler() { result = header.getRouteHandler() }
@@ -384,9 +391,9 @@ module HTTP {
      */
     abstract class StandardHeaderDefinition extends ExplicitHeaderDefinition,
       DataFlow::MethodCallNode {
-      override predicate definesExplicitly(string headerName, Expr headerValue) {
+      override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
         headerName = this.getNameNode().getStringValue().toLowerCase() and
-        headerValue = this.getArgument(1).asExpr()
+        headerValue = this.getArgument(1)
       }
 
       override DataFlow::Node getNameNode() { result = this.getArgument(0) }

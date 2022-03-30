@@ -41,9 +41,9 @@ module ServerSideUrlRedirect {
    * A definition of the HTTP "Location" header, considered as a sink for
    * `Configuration`.
    */
-  class LocationHeaderSink extends Sink, DataFlow::ValueNode {
+  class LocationHeaderSink extends Sink {
     LocationHeaderSink() {
-      any(HTTP::ExplicitHeaderDefinition def).definesExplicitly("location", astNode)
+      any(HTTP::ExplicitHeaderDefinition def).definesHeaderValue("location", this)
     }
   }
 

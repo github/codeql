@@ -737,9 +737,9 @@ module Express {
      */
     private DataFlow::SourceNode getAHeaderSource() { result.flowsTo(this.getArgument(0)) }
 
-    override predicate definesExplicitly(string headerName, Expr headerValue) {
+    override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
       exists(string header |
-        this.getAHeaderSource().hasPropertyWrite(header, DataFlow::valueNode(headerValue)) and
+        this.getAHeaderSource().hasPropertyWrite(header, headerValue) and
         headerName = header.toLowerCase()
       )
     }

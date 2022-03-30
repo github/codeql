@@ -280,11 +280,11 @@ module NodeJSLib {
       this.getNumArgument() >= 1
     }
 
-    override predicate definesExplicitly(string headerName, Expr headerValue) {
+    override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
       this.getNumArgument() > 1 and
       exists(DataFlow::SourceNode headers, string header |
         headers.flowsTo(this.getLastArgument()) and
-        headers.hasPropertyWrite(header, DataFlow::valueNode(headerValue)) and
+        headers.hasPropertyWrite(header, headerValue) and
         headerName = header.toLowerCase()
       )
     }
