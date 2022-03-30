@@ -277,4 +277,34 @@ public class Test {
             throw new IOException("Mkdirs failed to create " + file.toString());
         }
     }
+
+    File vulnerable8() throws IOException {
+        File temp = new File(System.getProperty("java.io.tmpdir"));
+        mkdirsWrapper2(temp);
+        File workDir = File.createTempFile("test", "directory", temp);
+        workDir.delete();
+        mkdirsWrapper2(workDir);
+        return workDir;
+    }
+
+    static void mkdirsWrapper2(File file) {
+        if (file.exists()) return;
+        file.mkdirs();
+    }
+
+    File vulnerable9() throws IOException {
+        File temp = new File(System.getProperty("java.io.tmpdir"));
+        mkdirsWrapper3(temp);
+        File workDir = File.createTempFile("test", "directory", temp);
+        workDir.delete();
+        mkdirsWrapper3(workDir);
+        return workDir;
+    }
+
+    static void mkdirsWrapper3(File file) throws IOException {
+        if (file.exists()) return; // Vulnerable path
+        if (!file.mkdirs()) {
+            throw new IOException("Mkdirs failed to create " + file.toString());
+        }
+    }
 }
