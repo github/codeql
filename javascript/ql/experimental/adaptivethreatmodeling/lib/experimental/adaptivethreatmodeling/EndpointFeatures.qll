@@ -469,20 +469,32 @@ private module SyntacticUtilities {
           if e instanceof VarAccess
           then result = e.(VarAccess).getName()
           else
-            if e instanceof AwaitExpr
-            then result = getSimpleAccessPath(e.(AwaitExpr).getOperand().flow()) + ".then()"
+            if e instanceof Import
+            then result = "import(" + getSimpleImportPath(e) + ")"
             else
-              if node instanceof DataFlow::PropRead
-              then
-                result =
-                  getSimpleAccessPath(node.(DataFlow::PropRead).getBase()) + "." +
-                    getPropertyNameOrUnknown(node)
+              if e instanceof AwaitExpr
+              then result = getSimpleAccessPath(e.(AwaitExpr).getOperand().flow()) + ".then()"
               else
-                if node instanceof DataFlow::InvokeNode
+                if node instanceof DataFlow::PropRead
                 then
-                  result = getSimpleAccessPath(node.(DataFlow::InvokeNode).getCalleeNode()) + "()"
-                else result = "?"
+                  result =
+                    getSimpleAccessPath(node.(DataFlow::PropRead).getBase()) + "." +
+                      getPropertyNameOrUnknown(node)
+                else
+                  if node instanceof DataFlow::InvokeNode
+                  then
+                    result = getSimpleAccessPath(node.(DataFlow::InvokeNode).getCalleeNode()) + "()"
+                  else result = "?"
     )
+  }
+
+  string getSimpleImportPath(Import i) {
+    if exists(i.getImportedPath().getValue())
+    then
+      exists(string p | p = i.getImportedPath().getValue() |
+        if p.matches(".%") then result = p else result = "!" // hide absolute imports from the ML training
+      )
+    else result = "?"
   }
 }
 
