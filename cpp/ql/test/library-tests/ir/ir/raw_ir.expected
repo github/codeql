@@ -9048,9 +9048,11 @@ ir.cpp:
 # 1705|     r1705_4(glval<unknown>)          = FunctionAddress[constructor_only] : 
 # 1705|     r1705_5(int)                     = Constant[1]                       : 
 # 1705|     v1705_6(void)                    = Call[constructor_only]            : func:r1705_4, this:r1705_3, 0:r1705_5
-# 1705|     v1705_7(void)                    = ReturnVoid                        : 
-# 1705|     v1705_8(void)                    = AliasedUse                        : ~m?
-# 1705|     v1705_9(void)                    = ExitFunction                      : 
+# 1705|     mu1705_7(unknown)                = ^CallSideEffect                   : ~m?
+# 1705|     mu1705_8(constructor_only)       = ^IndirectMayWriteSideEffect[-1]   : &:r1705_3
+# 1705|     v1705_9(void)                    = ReturnVoid                        : 
+# 1705|     v1705_10(void)                   = AliasedUse                        : ~m?
+# 1705|     v1705_11(void)                   = ExitFunction                      : 
 
 # 1707| constructor_only global_5
 # 1707|   Block 0
@@ -9060,9 +9062,11 @@ ir.cpp:
 # 1707|     r1707_4(glval<unknown>)          = FunctionAddress[constructor_only] : 
 # 1707|     r1707_5(int)                     = Constant[2]                       : 
 # 1707|     v1707_6(void)                    = Call[constructor_only]            : func:r1707_4, this:r1707_3, 0:r1707_5
-# 1707|     v1707_7(void)                    = ReturnVoid                        : 
-# 1707|     v1707_8(void)                    = AliasedUse                        : ~m?
-# 1707|     v1707_9(void)                    = ExitFunction                      : 
+# 1707|     mu1707_7(unknown)                = ^CallSideEffect                   : ~m?
+# 1707|     mu1707_8(constructor_only)       = ^IndirectMayWriteSideEffect[-1]   : &:r1707_3
+# 1707|     v1707_9(void)                    = ReturnVoid                        : 
+# 1707|     v1707_10(void)                   = AliasedUse                        : ~m?
+# 1707|     v1707_11(void)                   = ExitFunction                      : 
 
 perf-regression.cpp:
 #    6| void Big::Big()
