@@ -473,7 +473,7 @@ private module SyntacticUtilities {
             then result = "import(" + getSimpleImportPath(e) + ")"
             else
               if e instanceof AwaitExpr
-              then result = getSimpleAccessPath(e.(AwaitExpr).getOperand().flow()) + ".then()"
+              then result = "(await " + getSimpleAccessPath(e.(AwaitExpr).getOperand().flow()) + ")"
               else
                 if node instanceof DataFlow::PropRead
                 then
@@ -492,7 +492,7 @@ private module SyntacticUtilities {
     if exists(i.getImportedPath().getValue())
     then
       exists(string p | p = i.getImportedPath().getValue() |
-        if p.matches(".%") then result = p else result = "!" // hide absolute imports from the ML training
+        if p.matches(".%") then result = "\"p\"" else result = "!" // hide absolute imports from the ML training
       )
     else result = "?"
   }
