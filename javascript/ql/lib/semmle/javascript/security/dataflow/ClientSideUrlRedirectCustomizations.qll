@@ -121,7 +121,7 @@ module ClientSideUrlRedirect {
       // A redirection using the AngularJS `$location` service
       exists(AngularJS::ServiceReference service |
         service.getName() = "$location" and
-        this.asExpr() = service.getAMethodCall("url").getArgument(0)
+        this = service.getAMethodCall("url").getArgument(0)
       ) and
       xss = false
     }

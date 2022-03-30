@@ -31,7 +31,7 @@ module DomBasedXss {
       )
       or
       // call to an Angular method that interprets its argument as HTML
-      any(AngularJS::AngularJSCall call).interpretsArgumentAsHtml(this.asExpr())
+      any(AngularJS::AngularJSCallNode call).interpretsArgumentAsHtml(this)
       or
       // call to a WinJS function that interprets its argument as HTML
       exists(DataFlow::MethodCallNode mcn, string m |

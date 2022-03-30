@@ -67,8 +67,6 @@ module CleartextStorage {
    * An expression stored by AngularJS.
    */
   class AngularJSStorageSink extends Sink {
-    AngularJSStorageSink() {
-      any(AngularJS::AngularJSCall call).storesArgumentGlobally(this.asExpr())
-    }
+    AngularJSStorageSink() { any(AngularJS::AngularJSCallNode call).storesArgumentGlobally(this) }
   }
 }
