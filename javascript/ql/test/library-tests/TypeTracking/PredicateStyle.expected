@@ -1,0 +1,80 @@
+apiObject
+| tst.js:4:11:4:21 | new myapi() |
+| tst.js:16:10:16:21 | api.chain1() |
+| tst.js:16:10:16:30 | api.cha ... hain2() |
+| tst.js:62:40:62:51 | api.chain1() |
+| tst.js:62:40:62:60 | api.cha ... hain2() |
+| tst.js:63:38:63:49 | api.chain1() |
+| tst.js:63:38:63:58 | api.cha ... hain2() |
+| tst_conflict.js:3:11:3:21 | new myapi() |
+| tst_conflict.js:6:38:6:49 | api.chain1() |
+| tst_conflict.js:6:38:6:58 | api.cha ... hain2() |
+connection
+| type tracker with call steps | tst.js:7:15:7:18 | conn |
+| type tracker with call steps | tst.js:11:5:11:19 | this.connection |
+| type tracker with call steps | tst.js:80:16:80:19 | conn |
+| type tracker with call steps | tst.js:84:22:84:22 | x |
+| type tracker with call steps | tst.js:88:3:88:16 | innerCapture() |
+| type tracker with call steps | tst.js:89:3:89:17 | innerCall(conn) |
+| type tracker with call steps | tst.js:93:5:93:18 | innerCapture() |
+| type tracker with call steps | tst.js:103:17:103:17 | x |
+| type tracker with call steps | tst.js:104:10:106:6 | (functi ... \\n  })() |
+| type tracker with call steps | tst.js:112:10:112:14 | obj.x |
+| type tracker with call steps with property connection | tst.js:7:14:7:13 | this |
+| type tracker with call steps with property x | tst.js:111:15:111:17 | obj |
+| type tracker without call steps | client.js:1:10:1:27 | exportedConnection |
+| type tracker without call steps | tst.js:16:10:16:49 | api.cha ... ction() |
+| type tracker without call steps | tst.js:19:7:19:21 | getConnection() |
+| type tracker without call steps | tst.js:31:9:31:23 | getConnection() |
+| type tracker without call steps | tst.js:40:7:40:21 | getConnection() |
+| type tracker without call steps | tst.js:48:7:48:21 | getConnection() |
+| type tracker without call steps | tst.js:54:37:54:51 | getConnection() |
+| type tracker without call steps | tst.js:57:14:57:48 | config. ... ction') |
+| type tracker without call steps | tst.js:62:40:62:79 | api.cha ... ction() |
+| type tracker without call steps | tst.js:63:38:63:77 | api.cha ... ction() |
+| type tracker without call steps | tst.js:67:14:67:47 | MyAppli ... nection |
+| type tracker without call steps | tst.js:78:35:78:49 | getConnection() |
+| type tracker without call steps | tst.js:99:7:99:21 | getConnection() |
+| type tracker without call steps | tst.js:100:12:100:26 | getConnection() |
+| type tracker without call steps | tst.js:108:1:108:23 | shared( ... tion()) |
+| type tracker without call steps | tst.js:108:8:108:22 | getConnection() |
+| type tracker without call steps | tst.js:114:1:114:28 | getX({  ... on() }) |
+| type tracker without call steps | tst.js:114:11:114:25 | getConnection() |
+| type tracker without call steps | tst.js:118:12:118:26 | getConnection() |
+| type tracker without call steps | tst.js:120:21:120:24 | conn |
+| type tracker without call steps | tst.js:126:22:126:25 | conn |
+| type tracker without call steps | tst_conflict.js:6:38:6:77 | api.cha ... ction() |
+| type tracker without call steps with property MyApplication.namespace.connection | file://:0:0:0:0 | global access path |
+| type tracker without call steps with property conflict | tst.js:63:3:63:25 | MyAppli ... mespace |
+| type tracker without call steps with property conflict | tst_conflict.js:6:3:6:25 | MyAppli ... mespace |
+| type tracker without call steps with property connection | tst.js:62:3:62:25 | MyAppli ... mespace |
+| type tracker without call steps with property x | tst.js:114:6:114:27 | { x: ge ... ion() } |
+dataCallback
+| client.js:3:28:3:34 | x => {} |
+| tst.js:10:11:10:12 | cb |
+| tst.js:21:1:23:1 | functio ... ata);\\n} |
+| tst.js:30:26:30:27 | cb |
+| tst.js:33:17:33:26 | data => {} |
+| tst.js:37:1:39:1 | return of function getDataCurry |
+| tst.js:38:10:38:19 | data => {} |
+| tst.js:40:32:40:45 | getDataCurry() |
+| tst.js:45:1:47:1 | return of function identity |
+| tst.js:45:19:45:20 | cb |
+| tst.js:48:32:48:60 | identit ... llback) |
+| tst.js:51:1:51:37 | functio ... ata) {} |
+| tst.js:58:16:58:22 | x => {} |
+| tst.js:68:16:70:3 | data => ... a);\\n  } |
+dataValue
+| client.js:3:28:3:28 | x |
+| tst.js:21:18:21:21 | data |
+| tst.js:25:19:25:22 | data |
+| tst.js:33:17:33:20 | data |
+| tst.js:38:10:38:13 | data |
+| tst.js:51:30:51:33 | data |
+| tst.js:58:16:58:16 | x |
+| tst.js:68:16:68:19 | data |
+reexport
+| reexport/a.js:2:10:2:26 | function foo() {} | reexport/a.js:2:10:2:26 | function foo() {} |
+| reexport/a.js:2:10:2:26 | function foo() {} | reexport/test.js:3:13:3:17 | b.foo |
+| reexport/b.js:4:10:4:26 | function bar() {} | reexport/b.js:4:10:4:26 | function bar() {} |
+| reexport/b.js:4:10:4:26 | function bar() {} | reexport/test.js:4:13:4:17 | b.bar |

@@ -1,0 +1,8 @@
+| test.py | SSA Variable f1 | 3 | Exit node for Module test | 0 |
+| test.py | SSA Variable f2 | 13 | Exit node for Module test | 0 |
+| test.py | SSA Variable f3 | 23 | Exit node for Module test | 0 |
+| test.py | SSA Variable f4 | 33 | Exit node for Module test | 0 |
+| test.py | SSA Variable x | 5 | ControlFlowNode for x | 11 |
+| test.py | SSA Variable x | 21 | ControlFlowNode for x | 21 |
+| test.py | SSA Variable x | 31 | ControlFlowNode for x | 31 |
+| test.py | SSA Variable x | 40 | ControlFlowNode for x | 41 |

@@ -1,0 +1,4 @@
+| tst.js:6:2:6:12 | parsed.name |
+| tst.js:8:2:8:19 | parsed.pieceLength |
+| tst.js:14:2:14:25 | indirec ... ed.name |
+| tst.js:20:2:20:7 | t.name |

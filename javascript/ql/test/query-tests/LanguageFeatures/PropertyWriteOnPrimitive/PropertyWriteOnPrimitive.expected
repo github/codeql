@@ -1,0 +1,3 @@
+| tst.js:2:1:2:3 | (0) | Assignment to property foo of a primitive value with type number. |
+| tst.js:11:5:11:5 | s | Assignment to a property of a primitive value with type string. |
+| tst.js:17:3:17:3 | x | Assignment to property y of a primitive value with type number or string. |

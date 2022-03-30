@@ -1,0 +1,5 @@
+| UnreleasedLock.java:15:3:15:15 | lock(...) | This lock might not be unlocked or might be locked more times than it is unlocked. |
+| UnreleasedLock.java:30:3:30:15 | lock(...) | This lock might not be unlocked or might be locked more times than it is unlocked. |
+| UnreleasedLock.java:40:3:40:15 | lock(...) | This lock might not be unlocked or might be locked more times than it is unlocked. |
+| UnreleasedLock.java:50:3:50:15 | lock(...) | This lock might not be unlocked or might be locked more times than it is unlocked. |
+| UnreleasedLock.java:72:8:72:23 | tryLock(...) | This lock might not be unlocked or might be locked more times than it is unlocked. |

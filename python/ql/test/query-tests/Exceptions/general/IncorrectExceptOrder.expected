@@ -1,0 +1,1 @@
+| exceptions_test.py:64:1:64:22 | ExceptStmt | Except block for $@ is unreachable; the more general $@ for $@ will always be executed in preference. | file://:0:0:0:0 | builtin-class AttributeError | AttributeError | exceptions_test.py:62:1:62:17 | ExceptStmt | except block | file://:0:0:0:0 | builtin-class Exception | Exception |

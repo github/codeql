@@ -1,0 +1,16 @@
+| Babelrc/importPragma.jsx:2:1:2:27 | import  ... react'; | Unused import q. |
+| decorated.ts:1:1:1:126 | import  ... where'; | Unused import actionHandler. |
+| decorated.ts:4:10:4:12 | fun | Unused function fun. |
+| eval.js:10:9:10:24 | not_used_by_eval | Unused variable not_used_by_eval. |
+| eval.js:19:9:19:24 | not_used_by_eval | Unused variable not_used_by_eval. |
+| externs.js:6:5:6:13 | iAmUnused | Unused variable iAmUnused. |
+| importWithoutPragma.jsx:1:1:1:27 | import  ... react'; | Unused import h. |
+| multi-imports.js:1:1:1:29 | import  ... om 'x'; | Unused imports a, b, d. |
+| multi-imports.js:2:1:2:42 | import  ... om 'x'; | Unused imports alphabetically, ordered. |
+| namespaceImportAsType.ts:3:1:3:23 | import  ... om "z"; | Unused import Z. |
+| require-react-in-other-scope.js:2:9:2:13 | React | Unused variable React. |
+| typeoftype.ts:9:7:9:7 | y | Unused variable y. |
+| underscore.js:6:7:6:7 | e | Unused variable e. |
+| underscore.js:7:7:7:7 | f | Unused variable f. |
+| unusedShadowed.ts:1:1:1:26 | import  ... where'; | Unused import T. |
+| unusedShadowed.ts:2:1:2:31 | import  ... where'; | Unused import object. |

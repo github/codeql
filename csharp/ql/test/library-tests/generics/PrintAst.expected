@@ -1,0 +1,745 @@
+Nesting.cs:
+#    1| [Class] A<>
+#-----|   1: (Type parameters)
+#    1|     0: [TypeParameter] T1
+#    3|   5: [Method] MA1
+#    3|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#    3|       0: [Parameter] x
+#    3|         -1: [TypeMention] T1
+#    3|     4: [BlockStmt] {...}
+#    4|   6: [Method] MA2<>
+#    4|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#    4|       0: [TypeParameter] T2
+#-----|     2: (Parameters)
+#    4|       0: [Parameter] x
+#    4|         -1: [TypeMention] T1
+#    4|       1: [Parameter] y
+#    4|         -1: [TypeMention] T2
+#    4|     4: [BlockStmt] {...}
+#    6|   7: [Class] B<>
+#-----|     1: (Type parameters)
+#    6|       0: [TypeParameter] T3
+#    8|     5: [Method] MB1
+#    8|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#    8|         0: [Parameter] x
+#    8|           -1: [TypeMention] T1
+#    8|         1: [Parameter] y
+#    8|           -1: [TypeMention] T3
+#    8|       4: [BlockStmt] {...}
+#    9|     6: [Method] MB2<>
+#    9|       -1: [TypeMention] Void
+#-----|       1: (Type parameters)
+#    9|         0: [TypeParameter] T4
+#-----|       2: (Parameters)
+#    9|         0: [Parameter] x
+#    9|           -1: [TypeMention] T1
+#    9|         1: [Parameter] y
+#    9|           -1: [TypeMention] T3
+#    9|         2: [Parameter] z
+#    9|           -1: [TypeMention] T4
+#    9|       4: [BlockStmt] {...}
+#   12|   8: [Class] C
+#   14|     5: [Method] MC1
+#   14|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   14|         0: [Parameter] x
+#   14|           -1: [TypeMention] T1
+#   14|       4: [BlockStmt] {...}
+#   15|     6: [Method] MC2<>
+#   15|       -1: [TypeMention] Void
+#-----|       1: (Type parameters)
+#   15|         0: [TypeParameter] T5
+#-----|       2: (Parameters)
+#   15|         0: [Parameter] x
+#   15|           -1: [TypeMention] T1
+#   15|         1: [Parameter] y
+#   15|           -1: [TypeMention] T5
+#   15|       4: [BlockStmt] {...}
+#   17|     7: [Class] D<>
+#-----|       1: (Type parameters)
+#   17|         0: [TypeParameter] T6
+#   19|       5: [Method] MD1
+#   19|         -1: [TypeMention] Void
+#-----|         2: (Parameters)
+#   19|           0: [Parameter] x
+#   19|             -1: [TypeMention] T1
+#   19|           1: [Parameter] y
+#   19|             -1: [TypeMention] T6
+#   19|         4: [BlockStmt] {...}
+#   20|       6: [Method] MD2<>
+#   20|         -1: [TypeMention] Void
+#-----|         1: (Type parameters)
+#   20|           0: [TypeParameter] T7
+#-----|         2: (Parameters)
+#   20|           0: [Parameter] x
+#   20|             -1: [TypeMention] T1
+#   20|           1: [Parameter] y
+#   20|             -1: [TypeMention] T6
+#   20|           2: [Parameter] z
+#   20|             -1: [TypeMention] T7
+#   20|         4: [BlockStmt] {...}
+#   24|   9: [Method] Construct
+#   24|     -1: [TypeMention] Void
+#   25|     4: [BlockStmt] {...}
+#   26|       0: [LocalVariableDeclStmt] ... ...;
+#   26|         0: [LocalVariableDeclAndInitExpr] A<Int32> a1 = ...
+#   26|           -1: [TypeMention] A<int>
+#   26|           0: [LocalVariableAccess] access to local variable a1
+#   26|           1: [ObjectCreation] object creation of type A<Int32>
+#   26|             0: [TypeMention] A<int>
+#   26|               1: [TypeMention] int
+#   27|       1: [ExprStmt] ...;
+#   27|         0: [MethodCall] call to method MA1
+#   27|           -1: [LocalVariableAccess] access to local variable a1
+#   27|           0: [IntLiteral] 0
+#   28|       2: [ExprStmt] ...;
+#   28|         0: [MethodCall] call to method MA2<String>
+#   28|           -1: [LocalVariableAccess] access to local variable a1
+#   28|           0: [IntLiteral] 0
+#   28|           1: [StringLiteral] ""
+#   30|       3: [LocalVariableDeclStmt] ... ...;
+#   30|         0: [LocalVariableDeclAndInitExpr] A<String> a2 = ...
+#   30|           -1: [TypeMention] A<string>
+#   30|           0: [LocalVariableAccess] access to local variable a2
+#   30|           1: [ObjectCreation] object creation of type A<String>
+#   30|             0: [TypeMention] A<string>
+#   30|               1: [TypeMention] string
+#   31|       4: [ExprStmt] ...;
+#   31|         0: [MethodCall] call to method MA1
+#   31|           -1: [LocalVariableAccess] access to local variable a2
+#   31|           0: [StringLiteral] ""
+#   32|       5: [ExprStmt] ...;
+#   32|         0: [MethodCall] call to method MA2<Int32>
+#   32|           -1: [LocalVariableAccess] access to local variable a2
+#   32|           0: [StringLiteral] ""
+#   32|           1: [IntLiteral] 0
+#   34|       6: [LocalVariableDeclStmt] ... ...;
+#   34|         0: [LocalVariableDeclAndInitExpr] B<String> b1 = ...
+#   34|           -1: [TypeMention] B<string>
+#   34|           0: [LocalVariableAccess] access to local variable b1
+#   34|           1: [ObjectCreation] object creation of type B<String>
+#   34|             0: [TypeMention] B<string>
+#   34|               1: [TypeMention] A<int>
+#   34|                 1: [TypeMention] int
+#   34|               2: [TypeMention] string
+#   35|       7: [ExprStmt] ...;
+#   35|         0: [MethodCall] call to method MB1
+#   35|           -1: [LocalVariableAccess] access to local variable b1
+#   35|           0: [IntLiteral] 0
+#   35|           1: [StringLiteral] ""
+#   36|       8: [ExprStmt] ...;
+#   36|         0: [MethodCall] call to method MB2<Boolean>
+#   36|           -1: [LocalVariableAccess] access to local variable b1
+#   36|           0: [IntLiteral] 0
+#   36|           1: [StringLiteral] ""
+#   36|           2: [BoolLiteral] false
+#   38|       9: [LocalVariableDeclStmt] ... ...;
+#   38|         0: [LocalVariableDeclAndInitExpr] B<Int32> b2 = ...
+#   38|           -1: [TypeMention] B<int>
+#   38|           0: [LocalVariableAccess] access to local variable b2
+#   38|           1: [ObjectCreation] object creation of type B<Int32>
+#   38|             0: [TypeMention] B<int>
+#   38|               1: [TypeMention] A<string>
+#   38|                 1: [TypeMention] string
+#   38|               2: [TypeMention] int
+#   39|       10: [ExprStmt] ...;
+#   39|         0: [MethodCall] call to method MB1
+#   39|           -1: [LocalVariableAccess] access to local variable b2
+#   39|           0: [StringLiteral] ""
+#   39|           1: [IntLiteral] 0
+#   40|       11: [ExprStmt] ...;
+#   40|         0: [MethodCall] call to method MB2<Boolean>
+#   40|           -1: [LocalVariableAccess] access to local variable b2
+#   40|           0: [StringLiteral] ""
+#   40|           1: [IntLiteral] 0
+#   40|           2: [BoolLiteral] false
+#   42|       12: [LocalVariableDeclStmt] ... ...;
+#   42|         0: [LocalVariableDeclAndInitExpr] C c1 = ...
+#   42|           -1: [TypeMention] C
+#   42|           0: [LocalVariableAccess] access to local variable c1
+#   42|           1: [ObjectCreation] object creation of type C
+#   42|             0: [TypeMention] C
+#   42|               1: [TypeMention] A<int>
+#   42|                 1: [TypeMention] int
+#   43|       13: [ExprStmt] ...;
+#   43|         0: [MethodCall] call to method MC1
+#   43|           -1: [LocalVariableAccess] access to local variable c1
+#   43|           0: [IntLiteral] 0
+#   44|       14: [ExprStmt] ...;
+#   44|         0: [MethodCall] call to method MC2<Boolean>
+#   44|           -1: [LocalVariableAccess] access to local variable c1
+#   44|           0: [IntLiteral] 0
+#   44|           1: [BoolLiteral] false
+#   46|       15: [LocalVariableDeclStmt] ... ...;
+#   46|         0: [LocalVariableDeclAndInitExpr] C c2 = ...
+#   46|           -1: [TypeMention] C
+#   46|           0: [LocalVariableAccess] access to local variable c2
+#   46|           1: [ObjectCreation] object creation of type C
+#   46|             0: [TypeMention] C
+#   46|               1: [TypeMention] A<string>
+#   46|                 1: [TypeMention] string
+#   47|       16: [ExprStmt] ...;
+#   47|         0: [MethodCall] call to method MC1
+#   47|           -1: [LocalVariableAccess] access to local variable c2
+#   47|           0: [StringLiteral] ""
+#   48|       17: [ExprStmt] ...;
+#   48|         0: [MethodCall] call to method MC2<Boolean>
+#   48|           -1: [LocalVariableAccess] access to local variable c2
+#   48|           0: [StringLiteral] ""
+#   48|           1: [BoolLiteral] false
+#   50|       18: [LocalVariableDeclStmt] ... ...;
+#   50|         0: [LocalVariableDeclAndInitExpr] D<Boolean> d1 = ...
+#   50|           -1: [TypeMention] D<bool>
+#   50|           0: [LocalVariableAccess] access to local variable d1
+#   50|           1: [ObjectCreation] object creation of type D<Boolean>
+#   50|             0: [TypeMention] D<bool>
+#   50|               1: [TypeMention] C
+#   50|                 1: [TypeMention] A<int>
+#   50|                   1: [TypeMention] int
+#   50|               2: [TypeMention] bool
+#   51|       19: [ExprStmt] ...;
+#   51|         0: [MethodCall] call to method MD1
+#   51|           -1: [LocalVariableAccess] access to local variable d1
+#   51|           0: [IntLiteral] 0
+#   51|           1: [BoolLiteral] false
+#   52|       20: [ExprStmt] ...;
+#   52|         0: [MethodCall] call to method MD2<String>
+#   52|           -1: [LocalVariableAccess] access to local variable d1
+#   52|           0: [IntLiteral] 0
+#   52|           1: [BoolLiteral] false
+#   52|           2: [StringLiteral] ""
+#   54|       21: [LocalVariableDeclStmt] ... ...;
+#   54|         0: [LocalVariableDeclAndInitExpr] D<Decimal> d2 = ...
+#   54|           -1: [TypeMention] D<decimal>
+#   54|           0: [LocalVariableAccess] access to local variable d2
+#   54|           1: [ObjectCreation] object creation of type D<Decimal>
+#   54|             0: [TypeMention] D<decimal>
+#   54|               1: [TypeMention] C
+#   54|                 1: [TypeMention] A<string>
+#   54|                   1: [TypeMention] string
+#   54|               2: [TypeMention] decimal
+#   55|       22: [ExprStmt] ...;
+#   55|         0: [MethodCall] call to method MD1
+#   55|           -1: [LocalVariableAccess] access to local variable d2
+#   55|           0: [StringLiteral] ""
+#   55|           1: [DecimalLiteral] 0
+#   56|       23: [ExprStmt] ...;
+#   56|         0: [MethodCall] call to method MD2<Boolean>
+#   56|           -1: [LocalVariableAccess] access to local variable d2
+#   56|           0: [StringLiteral] ""
+#   56|           1: [DecimalLiteral] 0
+#   56|           2: [BoolLiteral] false
+generics.cs:
+#    5| [NamespaceDeclaration] namespace ... { ... }
+#    7|   1: [DelegateType] GenericDelegate<>
+#-----|     1: (Type parameters)
+#    7|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    7|       0: [Parameter] t
+#    7|         -1: [TypeMention] T
+#    9|   2: [Class] A
+#   13|   3: [Class] A<>
+#-----|     1: (Type parameters)
+#   13|       0: [TypeParameter] T
+#   16|     5: [DelegateType] GenericDelegateInGenericClass<>
+#-----|       1: (Type parameters)
+#   16|         0: [TypeParameter] U
+#-----|       2: (Parameters)
+#   16|         0: [Parameter] t
+#   16|           -1: [TypeMention] T
+#   16|         1: [Parameter] u
+#   16|           -1: [TypeMention] U
+#   18|     6: [Method] bar<>
+#   18|       -1: [TypeMention] T
+#-----|       1: (Type parameters)
+#   18|         0: [TypeParameter] X
+#-----|       2: (Parameters)
+#   18|         0: [Parameter] x
+#   18|           -1: [TypeMention] X
+#   18|         1: [Parameter] t
+#   18|           -1: [TypeMention] T
+#   18|       4: [BlockStmt] {...}
+#   18|         0: [LocalVariableDeclStmt] ... ...;
+#   18|           0: [LocalVariableDeclExpr] A<> a
+#   18|             0: [TypeMention] A<T>
+#   18|               1: [TypeMention] T
+#   18|         1: [ReturnStmt] return ...;
+#   18|           0: [ParameterAccess] access to parameter t
+#   22|   4: [Class] B<>
+#-----|     1: (Type parameters)
+#   22|       0: [TypeParameter] T
+#   25|     5: [Field] at
+#   25|       -1: [TypeMention] A<T>
+#   25|         1: [TypeMention] T
+#   27|     6: [Field] name
+#   27|       -1: [TypeMention] string
+#   29|     7: [Method] foo
+#   29|       -1: [TypeMention] Void
+#   29|       4: [BlockStmt] {...}
+#   31|     8: [Method] fooParams
+#   31|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   31|         0: [Parameter] ts
+#   31|           -1: [TypeMention] T[]
+#   31|             1: [TypeMention] T
+#   31|       4: [BlockStmt] {...}
+#   33|     9: [Method] staticFoo
+#   33|       -1: [TypeMention] Void
+#   33|       4: [BlockStmt] {...}
+#   35|     10: [Property] Name
+#   35|       -1: [TypeMention] string
+#   35|       3: [Getter] get_Name
+#   35|         4: [BlockStmt] {...}
+#   35|           0: [ReturnStmt] return ...;
+#   35|             0: [FieldAccess] access to field name
+#   35|       4: [Setter] set_Name
+#-----|         2: (Parameters)
+#   35|           0: [Parameter] value
+#   35|         4: [BlockStmt] {...}
+#   35|           0: [ExprStmt] ...;
+#   35|             0: [AssignExpr] ... = ...
+#   35|               0: [FieldAccess] access to field name
+#   35|               1: [ParameterAccess] access to parameter value
+#   37|     11: [Event] myEvent
+#   37|       -1: [TypeMention] GenericDelegate<T>
+#   37|         1: [TypeMention] T
+#   37|       3: [AddEventAccessor] add_myEvent
+#-----|         2: (Parameters)
+#   37|           0: [Parameter] value
+#   37|       4: [RemoveEventAccessor] remove_myEvent
+#-----|         2: (Parameters)
+#   37|           0: [Parameter] value
+#   39|     12: [IncrementOperator] ++
+#   39|       -1: [TypeMention] B<T>
+#   39|         1: [TypeMention] T
+#-----|       2: (Parameters)
+#   39|         0: [Parameter] a
+#   39|           -1: [TypeMention] B<T>
+#   39|             1: [TypeMention] T
+#   40|       4: [BlockStmt] {...}
+#   41|         0: [ReturnStmt] return ...;
+#   41|           0: [ObjectCreation] object creation of type B<>
+#   41|             0: [TypeMention] B<T>
+#   41|               1: [TypeMention] T
+#   44|     13: [Destructor] ~B
+#   44|       4: [BlockStmt] {...}
+#   45|     14: [Method] f<>
+#   45|       -1: [TypeMention] Void
+#-----|       1: (Type parameters)
+#   45|         0: [TypeParameter] X
+#   45|       4: [BlockStmt] {...}
+#   45|         0: [ExprStmt] ...;
+#   45|           0: [ObjectCreation] object creation of type B<X>
+#   45|             0: [TypeMention] B<X>
+#   45|               1: [TypeMention] X
+#   48|   5: [Class] Outer<,>
+#-----|     1: (Type parameters)
+#   48|       0: [TypeParameter] T1
+#   48|       1: [TypeParameter] T2
+#   51|     5: [Class] Inner<,>
+#-----|       1: (Type parameters)
+#   51|         0: [TypeParameter] U1
+#   51|         1: [TypeParameter] U2
+#   54|       5: [Field] t
+#   54|         -1: [TypeMention] T1
+#   55|       6: [Field] myFunc
+#   55|         -1: [TypeMention] Func<U1, T1>
+#   55|           1: [TypeMention] U1
+#   55|           2: [TypeMention] T1
+#   56|       7: [Method] MyMethod<,>
+#   56|         -1: [TypeMention] Void
+#-----|         1: (Type parameters)
+#   56|           0: [TypeParameter] W1
+#   56|           1: [TypeParameter] W2
+#-----|         2: (Parameters)
+#   56|           0: [Parameter] a
+#   56|             -1: [TypeMention] W1
+#   56|           1: [Parameter] b
+#   56|             -1: [TypeMention] W2
+#   56|           2: [Parameter] c
+#   56|             -1: [TypeMention] U2
+#   56|           3: [Parameter] d
+#   56|             -1: [TypeMention] T2
+#   56|         4: [ThrowExpr] throw ...
+#   56|           0: [NullLiteral] null
+#   60|   6: [Class] Grid<>
+#-----|     1: (Type parameters)
+#   60|       0: [TypeParameter] T
+#   63|     5: [Field] NumRows
+#   63|       -1: [TypeMention] int
+#   63|       1: [AssignExpr] ... = ...
+#   63|         0: [MemberConstantAccess] access to constant NumRows
+#   63|         1: [IntLiteral] 26
+#   64|     6: [Field] NumCols
+#   64|       -1: [TypeMention] int
+#   64|       1: [AssignExpr] ... = ...
+#   64|         0: [MemberConstantAccess] access to constant NumCols
+#   64|         1: [IntLiteral] 10
+#   66|     7: [Field] cells
+#   66|       -1: [TypeMention] T[,]
+#   66|         1: [TypeMention] T
+#   66|       1: [AssignExpr] ... = ...
+#   66|         0: [FieldAccess] access to field cells
+#   66|         1: [ArrayCreation] array creation of type T[,]
+#   66|           -1: [TypeMention] T[,]
+#   66|             1: [TypeMention] T
+#   66|           0: [MemberConstantAccess] access to constant NumRows
+#   66|           1: [MemberConstantAccess] access to constant NumCols
+#   68|     8: [Indexer] Item
+#   68|       -1: [TypeMention] int
+#-----|       1: (Parameters)
+#   68|         0: [Parameter] i
+#   68|           -1: [TypeMention] int
+#   70|       3: [Getter] get_Item
+#-----|         2: (Parameters)
+#   68|           0: [Parameter] i
+#   70|         4: [BlockStmt] {...}
+#   70|           0: [ReturnStmt] return ...;
+#   70|             0: [ParameterAccess] access to parameter i
+#   73|     9: [Indexer] Item
+#   73|       -1: [TypeMention] T
+#-----|       1: (Parameters)
+#   73|         0: [Parameter] c
+#   73|           -1: [TypeMention] char
+#   73|         1: [Parameter] col
+#   73|           -1: [TypeMention] int
+#   75|       3: [Getter] get_Item
+#-----|         2: (Parameters)
+#   73|           0: [Parameter] c
+#   73|           1: [Parameter] col
+#   76|         4: [BlockStmt] {...}
+#   77|           0: [ExprStmt] ...;
+#   77|             0: [AssignExpr] ... = ...
+#   77|               0: [ParameterAccess] access to parameter c
+#   77|               1: [MethodCall] call to method ToUpper
+#   77|                 -1: [TypeAccess] access to type Char
+#   77|                   0: [TypeMention] char
+#   77|                 0: [ParameterAccess] access to parameter c
+#   78|           1: [IfStmt] if (...) ...
+#   78|             0: [LogicalOrExpr] ... || ...
+#   78|               0: [LTExpr] ... < ...
+#   78|                 0: [CastExpr] (...) ...
+#   78|                   1: [ParameterAccess] access to parameter c
+#   78|                 1: [CastExpr] (...) ...
+#   78|                   1: [CharLiteral] A
+#   78|               1: [GTExpr] ... > ...
+#   78|                 0: [CastExpr] (...) ...
+#   78|                   1: [ParameterAccess] access to parameter c
+#   78|                 1: [CastExpr] (...) ...
+#   78|                   1: [CharLiteral] Z
+#   79|             1: [BlockStmt] {...}
+#   80|               0: [ThrowStmt] throw ...;
+#   80|                 0: [ObjectCreation] object creation of type ArgumentException
+#   80|                   0: [TypeMention] ArgumentException
+#   82|           2: [IfStmt] if (...) ...
+#   82|             0: [LogicalOrExpr] ... || ...
+#   82|               0: [LTExpr] ... < ...
+#   82|                 0: [ParameterAccess] access to parameter col
+#   82|                 1: [IntLiteral] 0
+#   82|               1: [GEExpr] ... >= ...
+#   82|                 0: [ParameterAccess] access to parameter col
+#   82|                 1: [MemberConstantAccess] access to constant NumCols
+#   83|             1: [BlockStmt] {...}
+#   84|               0: [ThrowStmt] throw ...;
+#   84|                 0: [ObjectCreation] object creation of type IndexOutOfRangeException
+#   84|                   0: [TypeMention] IndexOutOfRangeException
+#   86|           3: [ReturnStmt] return ...;
+#   86|             0: [ArrayAccess] access to array element
+#   86|               -1: [FieldAccess] access to field cells
+#   86|               0: [SubExpr] ... - ...
+#   86|                 0: [CastExpr] (...) ...
+#   86|                   1: [ParameterAccess] access to parameter c
+#   86|                 1: [CastExpr] (...) ...
+#   86|                   1: [CharLiteral] A
+#   86|               1: [ParameterAccess] access to parameter col
+#   88|       4: [Setter] set_Item
+#-----|         2: (Parameters)
+#   73|           0: [Parameter] c
+#   73|           1: [Parameter] col
+#   88|           2: [Parameter] value
+#   89|         4: [BlockStmt] {...}
+#   90|           0: [ExprStmt] ...;
+#   90|             0: [AssignExpr] ... = ...
+#   90|               0: [ParameterAccess] access to parameter c
+#   90|               1: [MethodCall] call to method ToUpper
+#   90|                 -1: [TypeAccess] access to type Char
+#   90|                   0: [TypeMention] char
+#   90|                 0: [ParameterAccess] access to parameter c
+#   91|           1: [IfStmt] if (...) ...
+#   91|             0: [LogicalOrExpr] ... || ...
+#   91|               0: [LTExpr] ... < ...
+#   91|                 0: [CastExpr] (...) ...
+#   91|                   1: [ParameterAccess] access to parameter c
+#   91|                 1: [CastExpr] (...) ...
+#   91|                   1: [CharLiteral] A
+#   91|               1: [GTExpr] ... > ...
+#   91|                 0: [CastExpr] (...) ...
+#   91|                   1: [ParameterAccess] access to parameter c
+#   91|                 1: [CastExpr] (...) ...
+#   91|                   1: [CharLiteral] Z
+#   92|             1: [BlockStmt] {...}
+#   93|               0: [ThrowStmt] throw ...;
+#   93|                 0: [ObjectCreation] object creation of type ArgumentException
+#   93|                   0: [TypeMention] ArgumentException
+#   95|           2: [IfStmt] if (...) ...
+#   95|             0: [LogicalOrExpr] ... || ...
+#   95|               0: [LTExpr] ... < ...
+#   95|                 0: [ParameterAccess] access to parameter col
+#   95|                 1: [IntLiteral] 0
+#   95|               1: [GEExpr] ... >= ...
+#   95|                 0: [ParameterAccess] access to parameter col
+#   95|                 1: [MemberConstantAccess] access to constant NumCols
+#   96|             1: [BlockStmt] {...}
+#   97|               0: [ThrowStmt] throw ...;
+#   97|                 0: [ObjectCreation] object creation of type IndexOutOfRangeException
+#   97|                   0: [TypeMention] IndexOutOfRangeException
+#   99|           3: [ExprStmt] ...;
+#   99|             0: [AssignExpr] ... = ...
+#   99|               0: [ArrayAccess] access to array element
+#   99|                 -1: [FieldAccess] access to field cells
+#   99|                 0: [SubExpr] ... - ...
+#   99|                   0: [CastExpr] (...) ...
+#   99|                     1: [ParameterAccess] access to parameter c
+#   99|                   1: [CastExpr] (...) ...
+#   99|                     1: [CharLiteral] A
+#   99|                 1: [ParameterAccess] access to parameter col
+#   99|               1: [ParameterAccess] access to parameter value
+#  105|   7: [Class] Test
+#  108|     5: [Method] Main
+#  108|       -1: [TypeMention] Void
+#  109|       4: [BlockStmt] {...}
+#  110|         0: [LocalVariableDeclStmt] ... ...;
+#  110|           0: [LocalVariableDeclAndInitExpr] B<String> bs = ...
+#  110|             -1: [TypeMention] B<string>
+#  110|               1: [TypeMention] string
+#  110|             0: [LocalVariableAccess] access to local variable bs
+#  110|             1: [ObjectCreation] object creation of type B<String>
+#  110|               0: [TypeMention] B<string>
+#  110|                 1: [TypeMention] string
+#  111|         1: [ExprStmt] ...;
+#  111|           0: [AssignExpr] ... = ...
+#  111|             0: [FieldAccess] access to field at
+#  111|               -1: [LocalVariableAccess] access to local variable bs
+#  111|             1: [ObjectCreation] object creation of type A<String>
+#  111|               0: [TypeMention] A<string>
+#  111|                 1: [TypeMention] string
+#  112|         2: [ExprStmt] ...;
+#  112|           0: [MethodCall] call to method foo
+#  112|             -1: [LocalVariableAccess] access to local variable bs
+#  113|         3: [ExprStmt] ...;
+#  113|           0: [MethodCall] call to method fooParams
+#  113|             -1: [LocalVariableAccess] access to local variable bs
+#  113|             0: [StringLiteral] "a"
+#  113|             1: [StringLiteral] "b"
+#  115|         4: [ExprStmt] ...;
+#  115|           0: [MethodCall] call to method staticFoo
+#  115|             -1: [TypeAccess] access to type B<Object>
+#  115|               0: [TypeMention] B<object>
+#  115|                 1: [TypeMention] object
+#  117|         5: [ExprStmt] ...;
+#  117|           0: [AssignExpr] ... = ...
+#  117|             0: [PropertyCall] access to property Name
+#  117|               -1: [LocalVariableAccess] access to local variable bs
+#  117|             1: [StringLiteral] ""
+#  118|         6: [ExprStmt] ...;
+#  118|           0: [AddEventExpr] ... += ...
+#  118|             0: [EventAccess,EventCall] access to event myEvent
+#  118|               -1: [LocalVariableAccess] access to local variable bs
+#  118|             1: [ExplicitDelegateCreation] delegate creation of type GenericDelegate<String>
+#  118|               -1: [TypeMention] GenericDelegate<string>
+#  118|                 1: [TypeMention] string
+#  118|               0: [MethodAccess] access to method f
+#  119|         7: [ExprStmt] ...;
+#  119|           0: [OperatorCall] call to operator ++
+#  119|             0: [LocalVariableAccess] access to local variable bs
+#  121|         8: [LocalVariableDeclStmt] ... ...;
+#  121|           0: [LocalVariableDeclAndInitExpr] Grid<Int32> g = ...
+#  121|             -1: [TypeMention] Grid<int>
+#  121|               1: [TypeMention] int
+#  121|             0: [LocalVariableAccess] access to local variable g
+#  121|             1: [ObjectCreation] object creation of type Grid<Int32>
+#  121|               0: [TypeMention] Grid<int>
+#  121|                 1: [TypeMention] int
+#  122|         9: [LocalVariableDeclStmt] ... ...;
+#  122|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
+#  122|             -1: [TypeMention] int
+#  122|             0: [LocalVariableAccess] access to local variable j
+#  122|             1: [IndexerCall] access to indexer
+#  122|               -1: [LocalVariableAccess] access to local variable g
+#  122|               0: [CharLiteral] e
+#  122|               1: [IntLiteral] 1
+#  124|         10: [ExprStmt] ...;
+#  124|           0: [AssignExpr] ... = ...
+#  124|             0: [FieldAccess] access to field t
+#  124|               -1: [ObjectCreation] object creation of type Inner<String,Int32>
+#  124|                 0: [TypeMention] Inner<string, int>
+#  124|                   1: [TypeMention] Outer<object, int>
+#  124|                     1: [TypeMention] object
+#  124|                     2: [TypeMention] int
+#  124|                   2: [TypeMention] string
+#  124|                   3: [TypeMention] int
+#  124|             1: [CastExpr] (...) ...
+#  124|               1: [IntLiteral] 3
+#  125|         11: [ExprStmt] ...;
+#  125|           0: [MethodCall] call to method MyMethod<Double,Int32>
+#  125|             -1: [ObjectCreation] object creation of type Inner<Object,String>
+#  125|               0: [TypeMention] Inner<object, string>
+#  125|                 1: [TypeMention] Outer<object, bool>
+#  125|                   1: [TypeMention] object
+#  125|                   2: [TypeMention] bool
+#  125|                 2: [TypeMention] object
+#  125|                 3: [TypeMention] string
+#  125|             0: [DoubleLiteral] 1
+#  125|             1: [IntLiteral] 2
+#  125|             2: [StringLiteral] "3"
+#  125|             3: [BoolLiteral] true
+#  127|         12: [ExprStmt] ...;
+#  127|           0: [MethodCall] call to method bar<Int32>
+#  127|             -1: [ObjectCreation] object creation of type A<String>
+#  127|               0: [TypeMention] A<string>
+#  127|                 1: [TypeMention] string
+#  127|             0: [IntLiteral] 2
+#  127|             1: [StringLiteral] ""
+#  128|         13: [ExprStmt] ...;
+#  128|           0: [MethodCall] call to method bar<Test>
+#  128|             -1: [ObjectCreation] object creation of type A<Int32>
+#  128|               0: [TypeMention] A<int>
+#  128|                 1: [TypeMention] int
+#  128|             0: [ObjectCreation] object creation of type Test
+#  128|               0: [TypeMention] Test
+#  128|             1: [IntLiteral] 2
+#  131|     6: [Method] f
+#  131|       -1: [TypeMention] string
+#-----|       2: (Parameters)
+#  131|         0: [Parameter] s
+#  131|           -1: [TypeMention] string
+#  131|       4: [BlockStmt] {...}
+#  131|         0: [ReturnStmt] return ...;
+#  131|           0: [ParameterAccess] access to parameter s
+#  135|   8: [Class] Subtle
+#  138|     5: [Method] fs<>
+#  138|       -1: [TypeMention] Void
+#-----|       1: (Type parameters)
+#  138|         0: [TypeParameter] X
+#-----|       2: (Parameters)
+#  138|         0: [Parameter] i
+#  138|           -1: [TypeMention] int
+#  138|       4: [BlockStmt] {...}
+#  140|     6: [Method] fs<>
+#  140|       -1: [TypeMention] Void
+#-----|       1: (Type parameters)
+#  140|         0: [TypeParameter] X
+#-----|       2: (Parameters)
+#  140|         0: [Parameter] i
+#  140|           -1: [TypeMention] int
+#  140|         1: [Parameter] j
+#  140|           -1: [TypeMention] int
+#  140|       4: [BlockStmt] {...}
+#  142|     7: [Method] fs
+#  142|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#  142|         0: [Parameter] i
+#  142|           -1: [TypeMention] int
+#  142|       4: [BlockStmt] {...}
+#  146|   9: [Class] Param<>
+#-----|     1: (Type parameters)
+#  146|       0: [TypeParameter] T
+#  148|     5: [Enum] E
+#  148|       5: [Field] x
+#  151|   10: [Class] ConstructedMethods
+#  153|     5: [Method] CM1<>
+#  153|       -1: [TypeMention] Void
+#-----|       1: (Type parameters)
+#  153|         0: [TypeParameter] T
+#  153|       4: [BlockStmt] {...}
+#  154|     8: [Method] CM2<>
+#  154|       -1: [TypeMention] T
+#-----|       1: (Type parameters)
+#  154|         0: [TypeParameter] T
+#-----|       2: (Parameters)
+#  154|         0: [Parameter] t
+#  154|           -1: [TypeMention] T
+#  154|       4: [BlockStmt] {...}
+#  154|         0: [ReturnStmt] return ...;
+#  154|           0: [ParameterAccess] access to parameter t
+#  156|     11: [Class] Class<>
+#-----|       1: (Type parameters)
+#  156|         0: [TypeParameter] T1
+#  158|       5: [Method] CM3<>
+#  158|         -1: [TypeMention] T2
+#-----|         1: (Type parameters)
+#  158|           0: [TypeParameter] T2
+#-----|         2: (Parameters)
+#  158|           0: [Parameter] t
+#  158|             -1: [TypeMention] T2
+#  158|           1: [Parameter] t1
+#  158|             -1: [TypeMention] T1
+#  158|         4: [BlockStmt] {...}
+#  158|           0: [ReturnStmt] return ...;
+#  158|             0: [ParameterAccess] access to parameter t
+#  161|     14: [Method] NonCM
+#  161|       -1: [TypeMention] Void
+#  161|       4: [BlockStmt] {...}
+#  163|     15: [Method] CM
+#  163|       -1: [TypeMention] Void
+#  164|       4: [BlockStmt] {...}
+#  165|         0: [ExprStmt] ...;
+#  165|           0: [MethodCall] call to method CM1<Int32>
+#  166|         1: [ExprStmt] ...;
+#  166|           0: [MethodCall] call to method CM1<Double>
+#  167|         2: [ExprStmt] ...;
+#  167|           0: [MethodCall] call to method CM2<Int32>
+#  167|             0: [IntLiteral] 4
+#  168|         3: [ExprStmt] ...;
+#  168|           0: [MethodCall] call to method CM2<Double>
+#  168|             0: [DoubleLiteral] 2
+#  169|         4: [ExprStmt] ...;
+#  169|           0: [MethodCall] call to method CM3<Double>
+#  169|             -1: [ObjectCreation] object creation of type Class<Int32>
+#  169|               0: [TypeMention] Class<int>
+#  169|                 1: [TypeMention] int
+#  169|             0: [DoubleLiteral] 1
+#  169|             1: [IntLiteral] 2
+#  170|         5: [ExprStmt] ...;
+#  170|           0: [MethodCall] call to method CM3<Double>
+#  170|             -1: [ObjectCreation] object creation of type Class<Double>
+#  170|               0: [TypeMention] Class<double>
+#  170|                 1: [TypeMention] double
+#  170|             0: [DoubleLiteral] 1
+#  170|             1: [DoubleLiteral] 2
+#  174|   11: [Interface] Interface<>
+#-----|     1: (Type parameters)
+#  174|       0: [TypeParameter] T
+#  176|     4: [Method] set
+#  176|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#  176|         0: [Parameter] t
+#  176|           -1: [TypeMention] T
+#  179|   12: [Class] Inheritance<>
+#-----|     1: (Type parameters)
+#  179|       0: [TypeParameter] T
+#-----|     3: (Base types)
+#  179|       1: [TypeMention] Interface<T>
+#  179|         1: [TypeMention] T
+#  181|     5: [Method] set
+#  181|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#  181|         0: [Parameter] t
+#  181|           -1: [TypeMention] T
+#  181|       4: [BlockStmt] {...}
+#  184|   13: [Class] InheritanceTest
+#  186|     5: [Field] member
+#  186|       -1: [TypeMention] Inheritance<int>
+#  186|         1: [TypeMention] int
+#  189|   14: [Interface] Interface2<,>
+#-----|     1: (Type parameters)
+#  189|       0: [TypeParameter] T1
+#  189|       1: [TypeParameter] T2
+#  191|     4: [Method] M
+#  191|       -1: [TypeMention] T2
+#-----|       2: (Parameters)
+#  191|         0: [Parameter] x
+#  191|           -1: [TypeMention] T1

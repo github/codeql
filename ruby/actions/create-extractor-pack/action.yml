@@ -1,0 +1,16 @@
+name: Build Ruby CodeQL pack
+description: Builds the Ruby CodeQL pack
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          ruby/target
+        key: ${{ runner.os }}-ruby-qltest-cargo-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}
+    - name: Build Extractor
+      shell: bash
+      run: scripts/create-extractor-pack.sh
+      working-directory: ruby

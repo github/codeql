@@ -1,0 +1,45 @@
+|  | fp_offset | <no initialiser expr> |
+|  | gp_offset | <no initialiser expr> |
+|  | overflow_arg_area | <no initialiser expr> |
+|  | reg_save_area | <no initialiser expr> |
+| addressof.c | x | 0 |
+| addressof.c | x_addr | __builtin_addressof ... |
+| extended.cpp | has_nullptr_e | 1 |
+| extended.cpp | has_nullptr_f | 1 |
+| gcc492.c | has_include | 1 |
+| gcc492.c | has_macro_include | 1 |
+| gcc492.c | has_missing_include | 0 |
+| gcc492.c | has_missing_include_next | 0 |
+| gcc492.c | has_missing_system_include | 0 |
+| gcc492.c | has_present_include | 1 |
+| h1.h | include_level_1 | 1 |
+| h2.h | include_level_2 | 2 |
+| test.cpp | has_attribute_recycle | 0 |
+| test.cpp | has_attribute_unused | 1 |
+| test.cpp | has_attribute_unused__ | 1 |
+| test.cpp | has_builtin_TRAP | 0 |
+| test.cpp | has_builtin_door | 0 |
+| test.cpp | has_builtin_trap | 1 |
+| test.cpp | has_extension_crr_xvalue_xefexences | 0 |
+| test.cpp | has_extension_cxx_rvalue_references | 1 |
+| test.cpp | has_feature_crr_xvalue_xefexences | 0 |
+| test.cpp | has_feature_cxx_rvalue_references | 1 |
+| test.cpp | has_include | 1 |
+| test.cpp | has_macro_include | 1 |
+| test.cpp | has_malformed_include | 0 |
+| test.cpp | has_missing_include | 0 |
+| test.cpp | has_missing_include_next | 0 |
+| test.cpp | has_missing_system_include | 0 |
+| test.cpp | has_nullptr__ | 1 |
+| test.cpp | has_nullptr_e | 1 |
+| test.cpp | has_nullptr_f | 1 |
+| test.cpp | has_present_include | 1 |
+| test.cpp | if_has_builtin_TRAP | 0 |
+| test.cpp | if_has_builtin_trap | 1 |
+| test.cpp | if_has_macro_include | 1 |
+| test.cpp | if_has_present_include | 1 |
+| test.cpp | include_level_0 | 0 |
+| test.cpp | objc_array_literals | 0 |
+| test.cpp | objc_boxed_expressions | 0 |
+| test.cpp | objc_dictionary_literals | 0 |
+| test.cpp | objc_made_up_thing | 0 |

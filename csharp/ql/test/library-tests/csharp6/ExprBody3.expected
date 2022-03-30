@@ -1,0 +1,2 @@
+| csharp6.cs:45:33:45:34 | == | csharp6.cs:45:71:45:74 | true |
+| csharp6.cs:46:33:46:34 | != | csharp6.cs:46:71:46:75 | false |

@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A private field where all assignments occur as part of the declaration or in a constructor
+in the same class can be <code>readonly</code>. Making a field <code>readonly</code>
+prevents unintended assignments after object initialization.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Add a <code>readonly</code> modifier to the field, unless changes to the field are
+allowed after object initialization.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the field <code>Field</code> is only assigned to in the
+constructor, but it can still be modified after object initialization.
+</p>
+<sample src="MissedReadonlyOpportunityBad.cs" />
+
+<p>
+In the revised example, the field is made <code>readonly</code>.
+</p>
+<sample src="MissedReadonlyOpportunityGood.cs" />
+
+</example>
+<references>
+
+<li>Microsoft: <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/readonly">readonly</a>.</li>
+
+</references>
+</qhelp>

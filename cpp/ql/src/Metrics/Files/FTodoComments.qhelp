@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of TODO or FIXME comments in the code.</p>
+
+<p>These comments tend to document points of ambiguity in the software's requirements. Often
+they refer to corner-cases that are not handled or potential defects. It is therefore very
+important to monitor such comments and, where appropriate, escalate comments to an
+defect-tracking system or other means of ensuring that action is taken.</p>
+
+</overview>
+<recommendation>
+
+<p>Remove unnecessary TODO/FIXME comments, and those that are no longer relevant. File tickets
+for the remaining comments in a defect-tracker, or otherwise ensure that someone is responsible
+for fixing them.</p>
+
+</recommendation>
+<references>
+
+<li>
+  <a href="http://en.wikipedia.org/wiki/Comment_%28computer_programming%29#Tags">Wikipedia: Comment tags</a>
+</li>
+<li>
+  <a href="http://www.approxion.com/?p=39">TODO or not TODO</a>
+</li>
+<li>
+  <a href="http://wordaligned.org/articles/todo">The case against TODO</a>
+</li>
+
+</references>
+</qhelp>

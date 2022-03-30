@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The following forms of <code>switch</code> statement are considered <em>trivial</em>:
+</p>
+<ol>
+  <li>No cases at all.</li>
+  <li>Just a default case.</li>
+  <li>Just one non-default case.</li>
+  <li>A default case and one non-default case.</li>
+</ol>
+
+</overview>
+<recommendation>
+<p>
+Either the <code>switch</code> statement should be replaced with a simpler control flow structure, or it should be extended
+to handle more cases. Each trivial form has a different replacement:
+</p>
+<ol>
+  <li>If there are no cases, the <code>switch</code> statement can be removed.</li>
+  <li>If there is just one default case, the <code>switch</code> keyword, the <code>default</code> keyword, and the subsequent colon can all be removed.</li>
+  <li>If there is just one non-default case, the <code>switch</code> statement can be turned into an <code>if</code> statement.</li>
+  <li>If there is one default case and one non-default case, the <code>switch</code> statement can be turned into an <code>if</code>/<code>else</code> statement.</li>
+</ol>
+
+</recommendation>
+<example>
+<sample src="AV Rule 196.cpp" />
+
+</example>
+<references>
+
+<li>
+AV Rule 196, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+
+
+</references>
+</qhelp>

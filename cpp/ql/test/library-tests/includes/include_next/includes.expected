@@ -1,0 +1,5 @@
+| a/test.h:2:1:2:22 | #include_next <test.h> | a/test.h:0:0:0:0 | a/test.h |
+| a/test.h:2:1:2:22 | #include_next <test.h> | b/test.h:0:0:0:0 | b/test.h |
+| b/loop.h:2:1:2:22 | #include_next <test.h> | a/test.h:0:0:0:0 | a/test.h |
+| b/test.h:4:1:4:17 | #include "loop.h" | b/loop.h:0:0:0:0 | b/loop.h |
+| foo.c:2:1:2:17 | #include <test.h> | a/test.h:0:0:0:0 | a/test.h |

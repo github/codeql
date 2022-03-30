@@ -1,0 +1,11 @@
+name: codeql/python-queries
+version: 0.0.12-dev
+groups: 
+  - python
+  - queries
+dependencies:
+  codeql/python-all: "*"
+  codeql/suite-helpers: "*"
+suites: codeql-suites
+extractor: python
+defaultSuiteFile: codeql-suites/python-code-scanning.qls

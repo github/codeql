@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+All JavaScript objects (including functions, classes and arrays) have a prototype,
+which is either <code>null</code> or another object. The prototype of an object
+can be set in two ways, both of which guard against attempts to assign an
+invalid prototype (such as a primitive value):
+</p>
+<ol>
+<li>Assigning a value to the object's <code>__proto__</code> property;
+    if the value is not a valid prototype, the assignment is silently ignored.</li>
+<li>Using the standard library functions <code>Object.create</code> or
+    <code>Object.setPrototypeOf</code>; invalid prototype values lead to a runtime
+    error.</li>
+</ol>
+<p>
+In summary, any attempt to set the prototype of an object to a value that is not
+an object or <code>null</code> will be ineffective and may lead to a runtime error.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Fix the prototype assignment by providing a valid prototype value.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following code attempts to create an object with prototype <code>undefined</code>,
+which will cause an error at runtime:
+</p>
+
+<sample language="javascript">
+let dict = Object.create(undefined);
+</sample>
+
+<p>
+If the intention is to create an object without a prototype object, <code>null</code>
+should be used instead:
+</p>
+
+<sample language="javascript">
+let dict = Object.create(null);
+</sample>
+</example>
+
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain">Inheritance and the prototype chain</a>.</li>
+</references>
+
+</qhelp>

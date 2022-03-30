@@ -1,0 +1,3 @@
+| tst.js:5:2:5:12 | var a = 42; | This statement is unreachable. |
+| tst.js:38:1:38:4 | f(); | This statement is unreachable. |
+| tst.js:63:2:63:3 | y; | This statement is unreachable. |

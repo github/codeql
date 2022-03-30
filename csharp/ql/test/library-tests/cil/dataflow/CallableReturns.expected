@@ -1,0 +1,93 @@
+stubs
+alwaysNull
+| System.Object Dataflow.NullMethods.ReturnsNull2() | 0: ldarg.0, 1: call Dataflow.NullMethods.ReturnsNull, 2: ret |
+| System.Object Dataflow.NullMethods.ReturnsNull() | 0: ldnull, 1: ret |
+| System.Object Dataflow.NullMethods.ReturnsNullIndirect() | 0: ldarg.0, 1: call Dataflow.NullMethods.ReturnsNull, 2: ret |
+| System.Object Dataflow.NullMethods.VirtualReturnsNull() | 0: ldnull, 1: ret |
+| System.Object Dataflow.NullMethods.get_NullProperty() | 0: ldnull, 1: ret |
+| System.Object Dataflow.NullMethods.get_VirtualNullProperty() | 0: ldnull, 1: ret |
+| System.Object System.Collections.EmptyReadOnlyDictionaryInternal.get_Item(System.Object) | 0: ldarg.1, 1: brtrue.s 6:, 2: ldstr "key", 3: call System.SR.get_ArgumentNull_Key, 4: newobj System.ArgumentNullException..ctor, 5: throw, 6: ldnull, 7: ret |
+alwaysNonNull
+| System.ArgumentException System.ThrowHelper.GetAddingDuplicateWithKeyArgumentException(System.Object) |
+| System.ArgumentException System.ThrowHelper.GetWrongKeyTypeArgumentException(System.Object,System.Type) |
+| System.ArgumentException System.ThrowHelper.GetWrongValueTypeArgumentException(System.Object,System.Type) |
+| System.Collections.Generic.KeyNotFoundException System.ThrowHelper.GetKeyNotFoundException(System.Object) |
+| System.Exception System.ThrowHelper.CreateEndOfFileException() |
+| System.Exception System.ThrowHelper.GetArraySegmentCtorValidationFailedException(System.Array,System.Int32,System.Int32) |
+| System.InvalidOperationException System.ThrowHelper.GetInvalidOperationException_EnumCurrent(System.Int32) |
+| System.Object Dataflow.NonNullMethods.ReturnsNonNull2() |
+| System.Object Dataflow.NonNullMethods.ReturnsNonNull() |
+| System.Object Dataflow.NonNullMethods.ReturnsNonNullIndirect() |
+| System.Object Dataflow.NonNullMethods.get_VirtualNonNull() |
+| System.Object Dataflow.NonNullMethods.get_VirtualNonNullProperty() |
+| System.String Dataflow.NonNullMethods.get_NonNullProperty2() |
+| System.String System.ThrowHelper.GetArgumentName(System.ExceptionArgument) |
+| System.Text.Encoder System.Text.ASCIIEncoding.GetEncoder() |
+| System.Text.Encoder System.Text.Encoding.GetEncoder() |
+| System.Text.Encoder System.Text.Latin1Encoding.GetEncoder() |
+| System.Text.Encoder System.Text.UTF7Encoding.GetEncoder() |
+| System.Text.Encoder System.Text.UTF8Encoding.GetEncoder() |
+| System.Text.Encoder System.Text.UTF32Encoding.GetEncoder() |
+| System.Text.Encoder System.Text.UnicodeEncoding.GetEncoder() |
+alwaysThrows
+| System.Object Dataflow.ThrowingMethods.AlwaysThrows() | System.InvalidOperationException | 0: newobj System.InvalidOperationException..ctor, 1: throw |
+| System.Object Dataflow.ThrowingMethods.VirtualThrows() | System.Exception | 0: newobj System.Exception..ctor, 1: throw |
+| System.Object Dataflow.ThrowingMethods.get_ThrowProperty() | System.Exception | 0: newobj System.Exception..ctor, 1: throw |
+| System.Object Dataflow.ThrowingMethods.get_VirtualThrowProperty() | System.Exception | 0: newobj System.Exception..ctor, 1: throw |
+| System.Object System.ValueTuple.get_Item(System.Int32) | System.IndexOutOfRangeException | 0: newobj System.IndexOutOfRangeException..ctor, 1: throw |
+| System.Void System.ThrowHelper.ArgumentOutOfRangeException_Enum_Value() | System.ArgumentOutOfRangeException | 0: ldstr "value", 1: call System.SR.get_ArgumentOutOfRange_Enum, 2: newobj System.ArgumentOutOfRangeException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowAddingDuplicateWithKeyArgumentException`1(!0) | System.ArgumentException | 0: ldarg.0, 1: box, 2: call System.ThrowHelper.GetAddingDuplicateWithKeyArgumentException, 3: throw |
+| System.Void System.ThrowHelper.ThrowAggregateException(System.Collections.Generic.List<System.Exception>) | System.AggregateException | 0: ldarg.0, 1: newobj System.AggregateException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowArgumentException_Argument_InvalidArrayType() | System.ArgumentException | 0: call System.SR.get_Argument_InvalidArrayType, 1: newobj System.ArgumentException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowArgumentException_BadComparer(System.Object) | System.ArgumentException | 0: call System.SR.get_Arg_BogusIComparer, 1: ldarg.0, 2: call System.SR.Format, 3: newobj System.ArgumentException..ctor, 4: throw |
+| System.Void System.ThrowHelper.ThrowArgumentException_CannotExtractScalar(System.ExceptionArgument) | System.ArgumentException | 0: ldc.i4.s 31, 1: ldarg.0, 2: call System.ThrowHelper.GetArgumentException, 3: throw |
+| System.Void System.ThrowHelper.ThrowArgumentException_DestinationTooShort() | System.ArgumentException | 0: call System.SR.get_Argument_DestinationTooShort, 1: ldstr "destination", 2: newobj System.ArgumentException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowArgumentException_HandleNotAsync(System.String) | System.ArgumentException | 0: call System.SR.get_Arg_HandleNotAsync, 1: ldarg.0, 2: newobj System.ArgumentException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowArgumentException_HandleNotSync(System.String) | System.ArgumentException | 0: call System.SR.get_Arg_HandleNotSync, 1: ldarg.0, 2: newobj System.ArgumentException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowArgumentException_InvalidHandle(System.String) | System.ArgumentException | 0: call System.SR.get_Arg_InvalidHandle, 1: ldarg.0, 2: newobj System.ArgumentException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowArgumentException_OverlapAlignmentMismatch() | System.ArgumentException | 0: call System.SR.get_Argument_OverlapAlignmentMismatch, 1: newobj System.ArgumentException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowArgumentException_TupleIncorrectType(System.Object) | System.ArgumentException | 0: call System.SR.get_ArgumentException_ValueTupleIncorrectType, 1: ldarg.0, 2: callvirt System.Object.GetType, 3: call System.SR.Format, 4: ldstr "other", 5: newobj System.ArgumentException..ctor, 6: throw |
+| System.Void System.ThrowHelper.ThrowArgumentNullException(System.ExceptionArgument) | System.ArgumentNullException | 0: ldarg.0, 1: call System.ThrowHelper.GetArgumentName, 2: newobj System.ArgumentNullException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowArgumentOutOfRangeException() | System.ArgumentOutOfRangeException | 0: newobj System.ArgumentOutOfRangeException..ctor, 1: throw |
+| System.Void System.ThrowHelper.ThrowArgumentOutOfRangeException(System.ExceptionArgument) | System.ArgumentOutOfRangeException | 0: ldarg.0, 1: call System.ThrowHelper.GetArgumentName, 2: newobj System.ArgumentOutOfRangeException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowArgumentOutOfRangeException_NeedNonNegNum(System.String) | System.ArgumentOutOfRangeException | 0: ldarg.0, 1: call System.SR.get_ArgumentOutOfRange_NeedNonNegNum, 2: newobj System.ArgumentOutOfRangeException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowArgumentOutOfRangeException_PrecisionTooLarge() | System.ArgumentOutOfRangeException | 0: ldstr "precision", 1: call System.SR.get_Argument_PrecisionTooLarge, 2: ldc.i4.s 31, 3: box, 4: call System.SR.Format, 5: newobj System.ArgumentOutOfRangeException..ctor, 6: throw |
+| System.Void System.ThrowHelper.ThrowArgumentOutOfRangeException_SymbolDoesNotFit() | System.ArgumentOutOfRangeException | 0: ldstr "symbol", 1: call System.SR.get_Argument_BadFormatSpecifier, 2: newobj System.ArgumentOutOfRangeException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowArgumentOutOfRange_BadHourMinuteSecond() | System.ArgumentOutOfRangeException | 0: ldnull, 1: call System.SR.get_ArgumentOutOfRange_BadHourMinuteSecond, 2: newobj System.ArgumentOutOfRangeException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowArgumentOutOfRange_BadYearMonthDay() | System.ArgumentOutOfRangeException | 0: ldnull, 1: call System.SR.get_ArgumentOutOfRange_BadYearMonthDay, 2: newobj System.ArgumentOutOfRangeException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowArgumentOutOfRange_DayNumber(System.Int32) | System.ArgumentOutOfRangeException | 0: ldstr "dayNumber", 1: ldarg.0, 2: box, 3: call System.SR.get_ArgumentOutOfRange_DayNumber, 4: newobj System.ArgumentOutOfRangeException..ctor, 5: throw |
+| System.Void System.ThrowHelper.ThrowArgumentOutOfRange_IndexException() | System.ArgumentOutOfRangeException | 0: ldc.i4.s 31, 1: ldc.i4.0, 2: call System.ThrowHelper.GetArgumentOutOfRangeException, 3: throw |
+| System.Void System.ThrowHelper.ThrowArgumentOutOfRange_Month(System.Int32) | System.ArgumentOutOfRangeException | 0: ldstr "month", 1: ldarg.0, 2: box, 3: call System.SR.get_ArgumentOutOfRange_Month, 4: newobj System.ArgumentOutOfRangeException..ctor, 5: throw |
+| System.Void System.ThrowHelper.ThrowArgumentOutOfRange_TimeSpanTooLong() | System.ArgumentOutOfRangeException | 0: ldnull, 1: call System.SR.get_Overflow_TimeSpanTooLong, 2: newobj System.ArgumentOutOfRangeException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowArgumentOutOfRange_Year() | System.ArgumentOutOfRangeException | 0: ldc.i4.s 31, 1: ldc.i4.4, 2: call System.ThrowHelper.GetArgumentOutOfRangeException, 3: throw |
+| System.Void System.ThrowHelper.ThrowArraySegmentCtorValidationFailedExceptions(System.Array,System.Int32,System.Int32) | System.Exception | 0: ldarg.0, 1: ldarg.1, 2: ldarg.2, 3: call System.ThrowHelper.GetArraySegmentCtorValidationFailedException, 4: throw |
+| System.Void System.ThrowHelper.ThrowArrayTypeMismatchException() | System.ArrayTypeMismatchException | 0: newobj System.ArrayTypeMismatchException..ctor, 1: throw |
+| System.Void System.ThrowHelper.ThrowCountArgumentOutOfRange_ArgumentOutOfRange_Count() | System.ArgumentOutOfRangeException | 0: ldc.i4.s 31, 1: ldc.i4.3, 2: call System.ThrowHelper.GetArgumentOutOfRangeException, 3: throw |
+| System.Void System.ThrowHelper.ThrowEndOfFileException() | System.Exception | 0: call System.ThrowHelper.CreateEndOfFileException, 1: throw |
+| System.Void System.ThrowHelper.ThrowFormatException_BadFormatSpecifier() | System.FormatException | 0: call System.SR.get_Argument_BadFormatSpecifier, 1: newobj System.FormatException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowIndexArgumentOutOfRange_NeedNonNegNumException() | System.ArgumentOutOfRangeException | 0: ldc.i4.s 31, 1: ldc.i4.s 31, 2: call System.ThrowHelper.GetArgumentOutOfRangeException, 3: throw |
+| System.Void System.ThrowHelper.ThrowIndexOutOfRangeException() | System.IndexOutOfRangeException | 0: newobj System.IndexOutOfRangeException..ctor, 1: throw |
+| System.Void System.ThrowHelper.ThrowInvalidOperationException() | System.InvalidOperationException | 0: newobj System.InvalidOperationException..ctor, 1: throw |
+| System.Void System.ThrowHelper.ThrowInvalidOperationException_ConcurrentOperationsNotSupported() | System.InvalidOperationException | 0: call System.SR.get_InvalidOperation_ConcurrentOperationsNotSupported, 1: newobj System.InvalidOperationException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowInvalidOperationException_EnumCurrent(System.Int32) | System.InvalidOperationException | 0: ldarg.0, 1: call System.ThrowHelper.GetInvalidOperationException_EnumCurrent, 2: throw |
+| System.Void System.ThrowHelper.ThrowInvalidOperationException_HandleIsNotInitialized() | System.InvalidOperationException | 0: call System.SR.get_InvalidOperation_HandleIsNotInitialized, 1: newobj System.InvalidOperationException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowInvalidOperationException_HandleIsNotPinned() | System.InvalidOperationException | 0: call System.SR.get_InvalidOperation_HandleIsNotPinned, 1: newobj System.InvalidOperationException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumEnded() | System.InvalidOperationException | 0: call System.SR.get_InvalidOperation_EnumEnded, 1: newobj System.InvalidOperationException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumFailedVersion() | System.InvalidOperationException | 0: call System.SR.get_InvalidOperation_EnumFailedVersion, 1: newobj System.InvalidOperationException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumNotStarted() | System.InvalidOperationException | 0: call System.SR.get_InvalidOperation_EnumNotStarted, 1: newobj System.InvalidOperationException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumOpCantHappen() | System.InvalidOperationException | 0: call System.SR.get_InvalidOperation_EnumOpCantHappen, 1: newobj System.InvalidOperationException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowInvalidOperationException_InvalidOperation_NoValue() | System.InvalidOperationException | 0: call System.SR.get_InvalidOperation_NoValue, 1: newobj System.InvalidOperationException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(System.Type) | System.ArgumentException | 0: call System.SR.get_Argument_InvalidTypeWithPointersNotSupported, 1: ldarg.0, 2: call System.SR.Format, 3: newobj System.ArgumentException..ctor, 4: throw |
+| System.Void System.ThrowHelper.ThrowKeyNotFoundException`1(!0) | System.Collections.Generic.KeyNotFoundException | 0: ldarg.0, 1: box, 2: call System.ThrowHelper.GetKeyNotFoundException, 3: throw |
+| System.Void System.ThrowHelper.ThrowLengthArgumentOutOfRange_ArgumentOutOfRange_NeedNonNegNum() | System.ArgumentOutOfRangeException | 0: ldc.i4.s 31, 1: ldc.i4.s 31, 2: call System.ThrowHelper.GetArgumentOutOfRangeException, 3: throw |
+| System.Void System.ThrowHelper.ThrowNotSupportedException() | System.NotSupportedException | 0: newobj System.NotSupportedException..ctor, 1: throw |
+| System.Void System.ThrowHelper.ThrowNotSupportedException_UnreadableStream() | System.NotSupportedException | 0: call System.SR.get_NotSupported_UnreadableStream, 1: newobj System.NotSupportedException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowNotSupportedException_UnseekableStream() | System.NotSupportedException | 0: call System.SR.get_NotSupported_UnseekableStream, 1: newobj System.NotSupportedException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowNotSupportedException_UnwritableStream() | System.NotSupportedException | 0: call System.SR.get_NotSupported_UnwritableStream, 1: newobj System.NotSupportedException..ctor, 2: throw |
+| System.Void System.ThrowHelper.ThrowObjectDisposedException_FileClosed() | System.ObjectDisposedException | 0: ldnull, 1: call System.SR.get_ObjectDisposed_FileClosed, 2: newobj System.ObjectDisposedException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowObjectDisposedException_StreamClosed(System.String) | System.ObjectDisposedException | 0: ldarg.0, 1: call System.SR.get_ObjectDisposed_StreamClosed, 2: newobj System.ObjectDisposedException..ctor, 3: throw |
+| System.Void System.ThrowHelper.ThrowOutOfMemoryException() | System.OutOfMemoryException | 0: newobj System.OutOfMemoryException..ctor, 1: throw |
+| System.Void System.ThrowHelper.ThrowStartIndexArgumentOutOfRange_ArgumentOutOfRange_Index() | System.ArgumentOutOfRangeException | 0: ldc.i4.8, 1: ldc.i4.0, 2: call System.ThrowHelper.GetArgumentOutOfRangeException, 3: throw |
+| System.Void System.ThrowHelper.ThrowValueArgumentOutOfRange_NeedNonNegNumException() | System.ArgumentOutOfRangeException | 0: ldc.i4.7, 1: ldc.i4.s 31, 2: call System.ThrowHelper.GetArgumentOutOfRangeException, 3: throw |
+| System.Void System.ThrowHelper.ThrowWrongKeyTypeArgumentException`1(!0,System.Type) | System.ArgumentException | 0: ldarg.0, 1: box, 2: ldarg.1, 3: call System.ThrowHelper.GetWrongKeyTypeArgumentException, 4: throw |
+| System.Void System.ThrowHelper.ThrowWrongValueTypeArgumentException`1(!0,System.Type) | System.ArgumentException | 0: ldarg.0, 1: box, 2: ldarg.1, 3: call System.ThrowHelper.GetWrongValueTypeArgumentException, 4: throw |

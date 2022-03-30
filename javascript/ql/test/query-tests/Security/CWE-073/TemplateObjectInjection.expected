@@ -1,0 +1,120 @@
+nodes
+| routes.js:2:23:2:30 | req.body |
+| routes.js:2:23:2:30 | req.body |
+| routes.js:2:23:2:30 | req.body |
+| tst2.js:6:9:6:46 | bodyParameter |
+| tst2.js:6:25:6:32 | req.body |
+| tst2.js:6:25:6:32 | req.body |
+| tst2.js:6:25:6:46 | req.bod ... rameter |
+| tst2.js:7:28:7:40 | bodyParameter |
+| tst2.js:7:28:7:40 | bodyParameter |
+| tst2.js:26:9:26:46 | bodyParameter |
+| tst2.js:26:25:26:32 | req.body |
+| tst2.js:26:25:26:32 | req.body |
+| tst2.js:26:25:26:46 | req.bod ... rameter |
+| tst2.js:27:28:27:40 | bodyParameter |
+| tst2.js:27:28:27:40 | bodyParameter |
+| tst2.js:34:9:34:46 | bodyParameter |
+| tst2.js:34:25:34:32 | req.body |
+| tst2.js:34:25:34:32 | req.body |
+| tst2.js:34:25:34:46 | req.bod ... rameter |
+| tst2.js:35:28:35:40 | bodyParameter |
+| tst2.js:35:28:35:40 | bodyParameter |
+| tst2.js:42:9:42:46 | bodyParameter |
+| tst2.js:42:25:42:32 | req.body |
+| tst2.js:42:25:42:32 | req.body |
+| tst2.js:42:25:42:46 | req.bod ... rameter |
+| tst2.js:43:28:43:40 | bodyParameter |
+| tst2.js:43:28:43:40 | bodyParameter |
+| tst2.js:51:9:51:46 | bodyParameter |
+| tst2.js:51:25:51:32 | req.body |
+| tst2.js:51:25:51:32 | req.body |
+| tst2.js:51:25:51:46 | req.bod ... rameter |
+| tst2.js:52:28:52:40 | bodyParameter |
+| tst2.js:52:28:52:40 | bodyParameter |
+| tst.js:7:9:7:46 | bodyParameter |
+| tst.js:7:25:7:32 | req.body |
+| tst.js:7:25:7:32 | req.body |
+| tst.js:7:25:7:46 | req.bod ... rameter |
+| tst.js:8:9:8:49 | queryParameter |
+| tst.js:8:9:8:49 | queryParameter |
+| tst.js:8:26:8:49 | req.que ... rameter |
+| tst.js:8:26:8:49 | req.que ... rameter |
+| tst.js:8:26:8:49 | req.que ... rameter |
+| tst.js:10:28:10:40 | bodyParameter |
+| tst.js:10:28:10:40 | bodyParameter |
+| tst.js:11:28:11:41 | queryParameter |
+| tst.js:11:28:11:41 | queryParameter |
+| tst.js:20:19:20:32 | queryParameter |
+| tst.js:20:19:20:32 | queryParameter |
+| tst.js:23:24:23:26 | obj |
+| tst.js:23:24:23:26 | obj |
+| tst.js:24:28:24:30 | obj |
+| tst.js:24:28:24:30 | obj |
+| tst.js:26:11:26:24 | str |
+| tst.js:26:17:26:19 | obj |
+| tst.js:26:17:26:24 | obj + "" |
+| tst.js:29:28:29:42 | JSON.parse(str) |
+| tst.js:29:28:29:42 | JSON.parse(str) |
+| tst.js:29:39:29:41 | str |
+edges
+| routes.js:2:23:2:30 | req.body | routes.js:2:23:2:30 | req.body |
+| tst2.js:6:9:6:46 | bodyParameter | tst2.js:7:28:7:40 | bodyParameter |
+| tst2.js:6:9:6:46 | bodyParameter | tst2.js:7:28:7:40 | bodyParameter |
+| tst2.js:6:25:6:32 | req.body | tst2.js:6:25:6:46 | req.bod ... rameter |
+| tst2.js:6:25:6:32 | req.body | tst2.js:6:25:6:46 | req.bod ... rameter |
+| tst2.js:6:25:6:46 | req.bod ... rameter | tst2.js:6:9:6:46 | bodyParameter |
+| tst2.js:26:9:26:46 | bodyParameter | tst2.js:27:28:27:40 | bodyParameter |
+| tst2.js:26:9:26:46 | bodyParameter | tst2.js:27:28:27:40 | bodyParameter |
+| tst2.js:26:25:26:32 | req.body | tst2.js:26:25:26:46 | req.bod ... rameter |
+| tst2.js:26:25:26:32 | req.body | tst2.js:26:25:26:46 | req.bod ... rameter |
+| tst2.js:26:25:26:46 | req.bod ... rameter | tst2.js:26:9:26:46 | bodyParameter |
+| tst2.js:34:9:34:46 | bodyParameter | tst2.js:35:28:35:40 | bodyParameter |
+| tst2.js:34:9:34:46 | bodyParameter | tst2.js:35:28:35:40 | bodyParameter |
+| tst2.js:34:25:34:32 | req.body | tst2.js:34:25:34:46 | req.bod ... rameter |
+| tst2.js:34:25:34:32 | req.body | tst2.js:34:25:34:46 | req.bod ... rameter |
+| tst2.js:34:25:34:46 | req.bod ... rameter | tst2.js:34:9:34:46 | bodyParameter |
+| tst2.js:42:9:42:46 | bodyParameter | tst2.js:43:28:43:40 | bodyParameter |
+| tst2.js:42:9:42:46 | bodyParameter | tst2.js:43:28:43:40 | bodyParameter |
+| tst2.js:42:25:42:32 | req.body | tst2.js:42:25:42:46 | req.bod ... rameter |
+| tst2.js:42:25:42:32 | req.body | tst2.js:42:25:42:46 | req.bod ... rameter |
+| tst2.js:42:25:42:46 | req.bod ... rameter | tst2.js:42:9:42:46 | bodyParameter |
+| tst2.js:51:9:51:46 | bodyParameter | tst2.js:52:28:52:40 | bodyParameter |
+| tst2.js:51:9:51:46 | bodyParameter | tst2.js:52:28:52:40 | bodyParameter |
+| tst2.js:51:25:51:32 | req.body | tst2.js:51:25:51:46 | req.bod ... rameter |
+| tst2.js:51:25:51:32 | req.body | tst2.js:51:25:51:46 | req.bod ... rameter |
+| tst2.js:51:25:51:46 | req.bod ... rameter | tst2.js:51:9:51:46 | bodyParameter |
+| tst.js:7:9:7:46 | bodyParameter | tst.js:10:28:10:40 | bodyParameter |
+| tst.js:7:9:7:46 | bodyParameter | tst.js:10:28:10:40 | bodyParameter |
+| tst.js:7:25:7:32 | req.body | tst.js:7:25:7:46 | req.bod ... rameter |
+| tst.js:7:25:7:32 | req.body | tst.js:7:25:7:46 | req.bod ... rameter |
+| tst.js:7:25:7:46 | req.bod ... rameter | tst.js:7:9:7:46 | bodyParameter |
+| tst.js:8:9:8:49 | queryParameter | tst.js:11:28:11:41 | queryParameter |
+| tst.js:8:9:8:49 | queryParameter | tst.js:11:28:11:41 | queryParameter |
+| tst.js:8:9:8:49 | queryParameter | tst.js:20:19:20:32 | queryParameter |
+| tst.js:8:9:8:49 | queryParameter | tst.js:20:19:20:32 | queryParameter |
+| tst.js:8:26:8:49 | req.que ... rameter | tst.js:8:9:8:49 | queryParameter |
+| tst.js:8:26:8:49 | req.que ... rameter | tst.js:8:9:8:49 | queryParameter |
+| tst.js:8:26:8:49 | req.que ... rameter | tst.js:8:9:8:49 | queryParameter |
+| tst.js:8:26:8:49 | req.que ... rameter | tst.js:8:9:8:49 | queryParameter |
+| tst.js:20:19:20:32 | queryParameter | tst.js:23:24:23:26 | obj |
+| tst.js:20:19:20:32 | queryParameter | tst.js:23:24:23:26 | obj |
+| tst.js:23:24:23:26 | obj | tst.js:24:28:24:30 | obj |
+| tst.js:23:24:23:26 | obj | tst.js:24:28:24:30 | obj |
+| tst.js:23:24:23:26 | obj | tst.js:26:17:26:19 | obj |
+| tst.js:26:11:26:24 | str | tst.js:29:39:29:41 | str |
+| tst.js:26:17:26:19 | obj | tst.js:26:17:26:24 | obj + "" |
+| tst.js:26:17:26:24 | obj + "" | tst.js:26:11:26:24 | str |
+| tst.js:29:39:29:41 | str | tst.js:29:28:29:42 | JSON.parse(str) |
+| tst.js:29:39:29:41 | str | tst.js:29:28:29:42 | JSON.parse(str) |
+#select
+| routes.js:2:23:2:30 | req.body | routes.js:2:23:2:30 | req.body | routes.js:2:23:2:30 | req.body | Template object injection due to $@. | routes.js:2:23:2:30 | req.body | user-provided value |
+| tst2.js:7:28:7:40 | bodyParameter | tst2.js:6:25:6:32 | req.body | tst2.js:7:28:7:40 | bodyParameter | Template object injection due to $@. | tst2.js:6:25:6:32 | req.body | user-provided value |
+| tst2.js:27:28:27:40 | bodyParameter | tst2.js:26:25:26:32 | req.body | tst2.js:27:28:27:40 | bodyParameter | Template object injection due to $@. | tst2.js:26:25:26:32 | req.body | user-provided value |
+| tst2.js:35:28:35:40 | bodyParameter | tst2.js:34:25:34:32 | req.body | tst2.js:35:28:35:40 | bodyParameter | Template object injection due to $@. | tst2.js:34:25:34:32 | req.body | user-provided value |
+| tst2.js:43:28:43:40 | bodyParameter | tst2.js:42:25:42:32 | req.body | tst2.js:43:28:43:40 | bodyParameter | Template object injection due to $@. | tst2.js:42:25:42:32 | req.body | user-provided value |
+| tst2.js:52:28:52:40 | bodyParameter | tst2.js:51:25:51:32 | req.body | tst2.js:52:28:52:40 | bodyParameter | Template object injection due to $@. | tst2.js:51:25:51:32 | req.body | user-provided value |
+| tst.js:10:28:10:40 | bodyParameter | tst.js:7:25:7:32 | req.body | tst.js:10:28:10:40 | bodyParameter | Template object injection due to $@. | tst.js:7:25:7:32 | req.body | user-provided value |
+| tst.js:11:28:11:41 | queryParameter | tst.js:8:26:8:49 | req.que ... rameter | tst.js:11:28:11:41 | queryParameter | Template object injection due to $@. | tst.js:8:26:8:49 | req.que ... rameter | user-provided value |
+| tst.js:24:28:24:30 | obj | tst.js:8:26:8:49 | req.que ... rameter | tst.js:24:28:24:30 | obj | Template object injection due to $@. | tst.js:8:26:8:49 | req.que ... rameter | user-provided value |
+| tst.js:29:28:29:42 | JSON.parse(str) | tst.js:8:26:8:49 | req.que ... rameter | tst.js:29:28:29:42 | JSON.parse(str) | Template object injection due to $@. | tst.js:8:26:8:49 | req.que ... rameter | user-provided value |

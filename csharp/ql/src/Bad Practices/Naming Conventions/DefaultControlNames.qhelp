@@ -1,0 +1,14 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This query identifies Windows form controls that have a default name such as <code>textBox1</code>
+. Replacing the default names with names that describe their purpose makes it much easier for other 
+developers to understand your code.</p>
+
+</overview>
+<recommendation>
+<p>Give controls meaningful names that indicate their purpose.</p>
+</recommendation>
+</qhelp>

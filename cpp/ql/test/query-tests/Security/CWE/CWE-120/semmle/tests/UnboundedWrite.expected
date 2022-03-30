@@ -1,0 +1,106 @@
+edges
+| tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | (const char *)... |
+| tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | (const char *)... |
+| tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | access to array |
+| tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | access to array |
+| tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | access to array |
+| tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | access to array |
+| tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | access to array indirection |
+| tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | access to array indirection |
+| tests.c:28:22:28:25 | argv | tests.c:31:15:31:23 | buffer100 |
+| tests.c:28:22:28:25 | argv | tests.c:31:15:31:23 | buffer100 |
+| tests.c:28:22:28:25 | argv | tests.c:31:15:31:23 | buffer100 indirection |
+| tests.c:28:22:28:25 | argv | tests.c:31:15:31:23 | buffer100 indirection |
+| tests.c:28:22:28:25 | argv | tests.c:33:21:33:29 | buffer100 |
+| tests.c:28:22:28:25 | argv | tests.c:33:21:33:29 | buffer100 |
+| tests.c:28:22:28:25 | argv | tests.c:33:21:33:29 | buffer100 indirection |
+| tests.c:28:22:28:25 | argv | tests.c:33:21:33:29 | buffer100 indirection |
+| tests.c:29:28:29:31 | argv | tests.c:29:28:29:34 | access to array |
+| tests.c:29:28:29:31 | argv | tests.c:29:28:29:34 | access to array |
+| tests.c:29:28:29:31 | argv | tests.c:29:28:29:34 | access to array |
+| tests.c:29:28:29:31 | argv | tests.c:29:28:29:34 | access to array |
+| tests.c:29:28:29:31 | argv | tests.c:29:28:29:34 | access to array indirection |
+| tests.c:29:28:29:31 | argv | tests.c:29:28:29:34 | access to array indirection |
+| tests.c:29:28:29:31 | argv | tests.c:31:15:31:23 | buffer100 |
+| tests.c:29:28:29:31 | argv | tests.c:31:15:31:23 | buffer100 |
+| tests.c:29:28:29:31 | argv | tests.c:31:15:31:23 | buffer100 indirection |
+| tests.c:29:28:29:31 | argv | tests.c:31:15:31:23 | buffer100 indirection |
+| tests.c:29:28:29:31 | argv | tests.c:33:21:33:29 | buffer100 |
+| tests.c:29:28:29:31 | argv | tests.c:33:21:33:29 | buffer100 |
+| tests.c:29:28:29:31 | argv | tests.c:33:21:33:29 | buffer100 indirection |
+| tests.c:29:28:29:31 | argv | tests.c:33:21:33:29 | buffer100 indirection |
+| tests.c:31:15:31:23 | array to pointer conversion | tests.c:31:15:31:23 | buffer100 |
+| tests.c:31:15:31:23 | array to pointer conversion | tests.c:31:15:31:23 | buffer100 indirection |
+| tests.c:31:15:31:23 | array to pointer conversion | tests.c:33:21:33:29 | buffer100 |
+| tests.c:31:15:31:23 | array to pointer conversion | tests.c:33:21:33:29 | buffer100 indirection |
+| tests.c:31:15:31:23 | buffer100 | tests.c:31:15:31:23 | buffer100 |
+| tests.c:31:15:31:23 | buffer100 | tests.c:31:15:31:23 | buffer100 indirection |
+| tests.c:31:15:31:23 | buffer100 | tests.c:33:21:33:29 | buffer100 |
+| tests.c:31:15:31:23 | buffer100 | tests.c:33:21:33:29 | buffer100 indirection |
+| tests.c:31:15:31:23 | scanf output argument | tests.c:33:21:33:29 | buffer100 |
+| tests.c:31:15:31:23 | scanf output argument | tests.c:33:21:33:29 | buffer100 indirection |
+| tests.c:33:21:33:29 | array to pointer conversion | tests.c:33:21:33:29 | buffer100 |
+| tests.c:33:21:33:29 | array to pointer conversion | tests.c:33:21:33:29 | buffer100 indirection |
+| tests.c:33:21:33:29 | buffer100 | tests.c:33:21:33:29 | buffer100 |
+| tests.c:33:21:33:29 | buffer100 | tests.c:33:21:33:29 | buffer100 indirection |
+| tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | (const char *)... |
+| tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | (const char *)... |
+| tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array |
+| tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array |
+| tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array |
+| tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array |
+| tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array indirection |
+| tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array indirection |
+subpaths
+nodes
+| tests.c:28:22:28:25 | argv | semmle.label | argv |
+| tests.c:28:22:28:25 | argv | semmle.label | argv |
+| tests.c:28:22:28:28 | (const char *)... | semmle.label | (const char *)... |
+| tests.c:28:22:28:28 | (const char *)... | semmle.label | (const char *)... |
+| tests.c:28:22:28:28 | access to array | semmle.label | access to array |
+| tests.c:28:22:28:28 | access to array | semmle.label | access to array |
+| tests.c:28:22:28:28 | access to array | semmle.label | access to array |
+| tests.c:28:22:28:28 | access to array indirection | semmle.label | access to array indirection |
+| tests.c:28:22:28:28 | access to array indirection | semmle.label | access to array indirection |
+| tests.c:29:28:29:31 | argv | semmle.label | argv |
+| tests.c:29:28:29:31 | argv | semmle.label | argv |
+| tests.c:29:28:29:34 | access to array | semmle.label | access to array |
+| tests.c:29:28:29:34 | access to array | semmle.label | access to array |
+| tests.c:29:28:29:34 | access to array | semmle.label | access to array |
+| tests.c:29:28:29:34 | access to array indirection | semmle.label | access to array indirection |
+| tests.c:29:28:29:34 | access to array indirection | semmle.label | access to array indirection |
+| tests.c:31:15:31:23 | array to pointer conversion | semmle.label | array to pointer conversion |
+| tests.c:31:15:31:23 | array to pointer conversion | semmle.label | array to pointer conversion |
+| tests.c:31:15:31:23 | buffer100 | semmle.label | buffer100 |
+| tests.c:31:15:31:23 | buffer100 | semmle.label | buffer100 |
+| tests.c:31:15:31:23 | buffer100 | semmle.label | buffer100 |
+| tests.c:31:15:31:23 | buffer100 indirection | semmle.label | buffer100 indirection |
+| tests.c:31:15:31:23 | buffer100 indirection | semmle.label | buffer100 indirection |
+| tests.c:31:15:31:23 | scanf output argument | semmle.label | scanf output argument |
+| tests.c:33:21:33:29 | array to pointer conversion | semmle.label | array to pointer conversion |
+| tests.c:33:21:33:29 | array to pointer conversion | semmle.label | array to pointer conversion |
+| tests.c:33:21:33:29 | buffer100 | semmle.label | buffer100 |
+| tests.c:33:21:33:29 | buffer100 | semmle.label | buffer100 |
+| tests.c:33:21:33:29 | buffer100 | semmle.label | buffer100 |
+| tests.c:33:21:33:29 | buffer100 indirection | semmle.label | buffer100 indirection |
+| tests.c:33:21:33:29 | buffer100 indirection | semmle.label | buffer100 indirection |
+| tests.c:34:10:34:13 | argv | semmle.label | argv |
+| tests.c:34:10:34:13 | argv | semmle.label | argv |
+| tests.c:34:10:34:16 | (const char *)... | semmle.label | (const char *)... |
+| tests.c:34:10:34:16 | (const char *)... | semmle.label | (const char *)... |
+| tests.c:34:10:34:16 | access to array | semmle.label | access to array |
+| tests.c:34:10:34:16 | access to array | semmle.label | access to array |
+| tests.c:34:10:34:16 | access to array | semmle.label | access to array |
+| tests.c:34:10:34:16 | access to array indirection | semmle.label | access to array indirection |
+| tests.c:34:10:34:16 | access to array indirection | semmle.label | access to array indirection |
+#select
+| tests.c:28:3:28:9 | call to sprintf | tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | access to array | This 'call to sprintf' with input from $@ may overflow the destination. | tests.c:28:22:28:25 | argv | argv |
+| tests.c:29:3:29:9 | call to sprintf | tests.c:29:28:29:31 | argv | tests.c:29:28:29:34 | access to array | This 'call to sprintf' with input from $@ may overflow the destination. | tests.c:29:28:29:31 | argv | argv |
+| tests.c:31:15:31:23 | buffer100 | tests.c:28:22:28:25 | argv | tests.c:31:15:31:23 | buffer100 | This 'scanf string argument' with input from $@ may overflow the destination. | tests.c:28:22:28:25 | argv | argv |
+| tests.c:31:15:31:23 | buffer100 | tests.c:29:28:29:31 | argv | tests.c:31:15:31:23 | buffer100 | This 'scanf string argument' with input from $@ may overflow the destination. | tests.c:29:28:29:31 | argv | argv |
+| tests.c:31:15:31:23 | buffer100 | tests.c:31:15:31:23 | buffer100 | tests.c:31:15:31:23 | buffer100 | This 'scanf string argument' with input from $@ may overflow the destination. | tests.c:31:15:31:23 | buffer100 | buffer100 |
+| tests.c:33:21:33:29 | buffer100 | tests.c:28:22:28:25 | argv | tests.c:33:21:33:29 | buffer100 | This 'scanf string argument' with input from $@ may overflow the destination. | tests.c:28:22:28:25 | argv | argv |
+| tests.c:33:21:33:29 | buffer100 | tests.c:29:28:29:31 | argv | tests.c:33:21:33:29 | buffer100 | This 'scanf string argument' with input from $@ may overflow the destination. | tests.c:29:28:29:31 | argv | argv |
+| tests.c:33:21:33:29 | buffer100 | tests.c:31:15:31:23 | buffer100 | tests.c:33:21:33:29 | buffer100 | This 'scanf string argument' with input from $@ may overflow the destination. | tests.c:31:15:31:23 | buffer100 | buffer100 |
+| tests.c:33:21:33:29 | buffer100 | tests.c:33:21:33:29 | buffer100 | tests.c:33:21:33:29 | buffer100 | This 'scanf string argument' with input from $@ may overflow the destination. | tests.c:33:21:33:29 | buffer100 | buffer100 |
+| tests.c:34:25:34:33 | buffer100 | tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array | This 'sscanf string argument' with input from $@ may overflow the destination. | tests.c:34:10:34:13 | argv | argv |

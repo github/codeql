@@ -1,0 +1,58 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+
+        Enabling Node.js integration in Electron web content renderers
+        (<code>BrowserWindow</code>, <code>BrowserView</code> and
+        <code>webview</code>) can result in remote native code execution
+        attacks.
+
+        The attack is realized when the renderer uses content from an
+        untrusted remote web site or a trusted site with a cross site
+        scripting vulnerability.
+
+        </p>
+  </overview>
+  
+  <recommendation>
+    <p>
+
+        Node.js integration should be disabled when loading remote web
+        sites. Always set <code>nodeIntegration</code> preference
+        to <code>false</code> before loading remote web sites, and only enable
+        it for whitelisted sites.
+
+    </p>
+
+    <p>
+
+        Note that the <code>nodeIntegration</code> property is enabled
+        by default in Electron and needs to be set to <code>false</code>
+        explicitly.
+
+    </p>
+  </recommendation>
+  
+  <example>
+
+    <p>
+
+        The following examples shows insecure and secure uses of
+        <code>BrowserWindow</code> and <code>BrowserView</code> when loading
+        remote web sites:
+
+    </p>
+
+    <sample src="examples/EnablingNodeIntegration.js"/>
+   
+  </example>
+
+  
+  <references>
+    <li>Electron Documentation: <a href="https://electronjs.org/docs/tutorial/security#2-disable-nodejs-integration-for-remote-content">Security, Native Capabilities, and Your Responsibility</a></li>
+  </references>
+</qhelp>

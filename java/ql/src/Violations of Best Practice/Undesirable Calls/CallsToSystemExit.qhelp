@@ -1,0 +1,66 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Calling one of the methods <code>System.exit</code>, <code>Runtime.halt</code>, and <code>Runtime.exit</code> 
+immediately terminates the Java Virtual Machine (JVM),
+effectively killing all threads without giving any of them a chance to
+perform cleanup actions or recover. As such, it is a dangerous thing to
+do: firstly, it can terminate the entire program inadvertently, and
+secondly, it can prevent important resources from being released or
+program state from being written to disk consistently.</p>
+
+<p>It is sometimes considered acceptable to call <code>System.exit</code>
+from a program's <code>main</code> method in order to indicate the overall exit status
+of the program. Such calls are an exception to this rule.</p>
+
+</overview>
+<recommendation>
+
+<p>It is usually preferable to use a different mechanism for reporting
+failure conditions. Consider returning a special value (perhaps
+<code>null</code>) that users of the current method check for and
+recover from appropriately. Alternatively, throw a suitable exception, which 
+unwinds the stack and allows properly written code to clean up after itself,
+while leaving other threads undisturbed.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, problem 1 shows that <code>FileOutput.write</code> tries
+to write some data to disk and terminates the JVM if this fails. This 
+leaves the partially-written file on disk without any cleanup
+code running. It would be better to either return <code>false</code> to
+indicate the failure, or let the <code>IOException</code> propagate
+upwards and be handled by a method that knows how to recover.</p>
+
+<p>Problem 2 is more subtle. In this example, there is just one entry point to
+the program (the <code>main</code> method), which constructs an
+<code>Action</code> and performs it. <code>Action.run</code> calls
+<code>System.exit</code> to indicate successful completion. Consider,
+however, how this code might be integrated in an application server that
+constructs <code>Action</code> instances and calls
+<code>run</code> on them without going through <code>main</code>.
+The fact that <code>run</code> terminates the JVM instead of returning its
+exit code as an integer makes that use-case impossible.</p>
+  
+<sample src="CallsToSystemExit.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch,
+  <em>Effective Java (second edition)</em>, p. 232.
+  Addison-Wesley, 2008.
+</li>
+<li>Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/System.html#exit(int)">System.exit(int)</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Runtime.html#halt(int)">Runtime.halt(int)</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Runtime.html#exit(int)">Runtime.exit(int)</a>.
+</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,77 @@
+name: "Ruby: Run QL Tests"
+
+on:
+  push:
+    paths:
+      - "ruby/**"
+      - .github/workflows/ruby-qltest.yml
+    branches:
+      - main
+      - "rc/*"
+  pull_request:
+    paths:
+      - "ruby/**"
+      - .github/workflows/ruby-qltest.yml
+    branches:
+      - main
+      - "rc/*"
+
+env:
+  CARGO_TERM_COLOR: always
+
+defaults:
+  run:
+    working-directory: ruby
+
+jobs:
+  qlformat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/fetch-codeql
+      - name: Check QL formatting
+        run: find ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql query format --check-only
+  qlcompile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/fetch-codeql
+      - name: Check QL compilation
+        run: |
+          codeql query compile --check-only --threads=0 --ram 5000 --warnings=error "ql/src" "ql/examples"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+  qlupgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/fetch-codeql
+      - name: Check DB upgrade scripts
+        run: |
+          echo >empty.trap
+          codeql dataset import -S ql/lib/upgrades/initial/ruby.dbscheme testdb empty.trap
+          codeql dataset upgrade testdb --additional-packs ql/lib
+          diff -q testdb/ruby.dbscheme ql/lib/ruby.dbscheme
+      - name: Check DB downgrade scripts
+        run: |
+          echo >empty.trap
+          rm -rf testdb; codeql dataset import -S ql/lib/ruby.dbscheme testdb empty.trap
+          codeql resolve upgrades --format=lines --allow-downgrades --additional-packs downgrades \
+           --dbscheme=ql/lib/ruby.dbscheme --target-dbscheme=downgrades/initial/ruby.dbscheme |
+           xargs codeql execute upgrades testdb
+          diff -q testdb/ruby.dbscheme downgrades/initial/ruby.dbscheme
+  qltest:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        slice: ["1/2", "2/2"]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/fetch-codeql
+      - uses: ./ruby/actions/create-extractor-pack
+      - name: Run QL tests
+        run: |
+          codeql test run --threads=0 --ram 5000 --slice ${{ matrix.slice }} --search-path "${{ github.workspace }}/ruby/extractor-pack" --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --consistency-queries ql/consistency-queries ql/test
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

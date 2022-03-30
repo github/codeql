@@ -1,0 +1,4 @@
+| bar.ts:1:10:1:10 | A | any |
+| bar.ts:1:10:1:10 | A | any |
+| bar.ts:1:19:1:29 | "@blah/foo" | any |
+| bar.ts:3:5:3:5 | x | A |

@@ -1,0 +1,13 @@
+| dependency/A.class:0:0:0:0 | A<B> | dependency/A.java:3:14:3:14 | A |
+| dependency/A.class:0:0:0:0 | A<B> | dependency/A.java:6:7:6:7 | B |
+| dependency/A.class:0:0:0:0 | A<F> | dependency/A.java:3:14:3:14 | A |
+| dependency/A.class:0:0:0:0 | A<F> | dependency/A.java:22:7:22:7 | F |
+| dependency/A.java:3:14:3:14 | A | dependency/A.java:3:14:3:14 | A |
+| dependency/A.java:6:7:6:7 | B | dependency/A.java:6:7:6:7 | B |
+| dependency/A.java:9:7:9:7 | C | dependency/A.java:9:7:9:7 | C |
+| dependency/A.java:14:7:14:7 | D | dependency/A.java:14:7:14:7 | D |
+| dependency/A.java:15:8:15:8 | E | dependency/A.java:15:8:15:8 | E |
+| dependency/A.java:22:7:22:7 | F | dependency/A.java:22:7:22:7 | F |
+| dependency/A.java:24:7:24:7 | G | dependency/A.java:24:7:24:7 | G |
+| dependency/A.java:26:7:26:7 | H | dependency/A.java:26:7:26:7 | H |
+| file://:0:0:0:0 | C[] | dependency/A.java:9:7:9:7 | C |

@@ -1,0 +1,68 @@
+nodes
+| closure.js:2:7:2:36 | src |
+| closure.js:2:13:2:36 | documen ... .search |
+| closure.js:2:13:2:36 | documen ... .search |
+| closure.js:4:24:4:26 | src |
+| closure.js:4:24:4:26 | src |
+| domparser.js:2:7:2:36 | src |
+| domparser.js:2:13:2:36 | documen ... .search |
+| domparser.js:2:13:2:36 | documen ... .search |
+| domparser.js:6:37:6:39 | src |
+| domparser.js:6:37:6:39 | src |
+| domparser.js:11:55:11:57 | src |
+| domparser.js:11:55:11:57 | src |
+| domparser.js:14:57:14:59 | src |
+| domparser.js:14:57:14:59 | src |
+| expat.js:6:16:6:36 | req.par ... e-xml") |
+| expat.js:6:16:6:36 | req.par ... e-xml") |
+| expat.js:6:16:6:36 | req.par ... e-xml") |
+| jquery.js:2:7:2:36 | src |
+| jquery.js:2:13:2:36 | documen ... .search |
+| jquery.js:2:13:2:36 | documen ... .search |
+| jquery.js:5:14:5:16 | src |
+| jquery.js:5:14:5:16 | src |
+| libxml.js:6:21:6:41 | req.par ... e-xml") |
+| libxml.js:6:21:6:41 | req.par ... e-xml") |
+| libxml.js:6:21:6:41 | req.par ... e-xml") |
+| libxml.noent.js:6:21:6:41 | req.par ... e-xml") |
+| libxml.noent.js:6:21:6:41 | req.par ... e-xml") |
+| libxml.noent.js:6:21:6:41 | req.par ... e-xml") |
+| libxml.sax.js:6:22:6:42 | req.par ... e-xml") |
+| libxml.sax.js:6:22:6:42 | req.par ... e-xml") |
+| libxml.sax.js:6:22:6:42 | req.par ... e-xml") |
+| libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") |
+| libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") |
+| libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") |
+edges
+| closure.js:2:7:2:36 | src | closure.js:4:24:4:26 | src |
+| closure.js:2:7:2:36 | src | closure.js:4:24:4:26 | src |
+| closure.js:2:13:2:36 | documen ... .search | closure.js:2:7:2:36 | src |
+| closure.js:2:13:2:36 | documen ... .search | closure.js:2:7:2:36 | src |
+| domparser.js:2:7:2:36 | src | domparser.js:6:37:6:39 | src |
+| domparser.js:2:7:2:36 | src | domparser.js:6:37:6:39 | src |
+| domparser.js:2:7:2:36 | src | domparser.js:11:55:11:57 | src |
+| domparser.js:2:7:2:36 | src | domparser.js:11:55:11:57 | src |
+| domparser.js:2:7:2:36 | src | domparser.js:14:57:14:59 | src |
+| domparser.js:2:7:2:36 | src | domparser.js:14:57:14:59 | src |
+| domparser.js:2:13:2:36 | documen ... .search | domparser.js:2:7:2:36 | src |
+| domparser.js:2:13:2:36 | documen ... .search | domparser.js:2:7:2:36 | src |
+| expat.js:6:16:6:36 | req.par ... e-xml") | expat.js:6:16:6:36 | req.par ... e-xml") |
+| jquery.js:2:7:2:36 | src | jquery.js:5:14:5:16 | src |
+| jquery.js:2:7:2:36 | src | jquery.js:5:14:5:16 | src |
+| jquery.js:2:13:2:36 | documen ... .search | jquery.js:2:7:2:36 | src |
+| jquery.js:2:13:2:36 | documen ... .search | jquery.js:2:7:2:36 | src |
+| libxml.js:6:21:6:41 | req.par ... e-xml") | libxml.js:6:21:6:41 | req.par ... e-xml") |
+| libxml.noent.js:6:21:6:41 | req.par ... e-xml") | libxml.noent.js:6:21:6:41 | req.par ... e-xml") |
+| libxml.sax.js:6:22:6:42 | req.par ... e-xml") | libxml.sax.js:6:22:6:42 | req.par ... e-xml") |
+| libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") | libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") |
+#select
+| closure.js:4:24:4:26 | src | closure.js:2:13:2:36 | documen ... .search | closure.js:4:24:4:26 | src | A $@ is parsed as XML without guarding against uncontrolled entity expansion. | closure.js:2:13:2:36 | documen ... .search | user-provided value |
+| domparser.js:6:37:6:39 | src | domparser.js:2:13:2:36 | documen ... .search | domparser.js:6:37:6:39 | src | A $@ is parsed as XML without guarding against uncontrolled entity expansion. | domparser.js:2:13:2:36 | documen ... .search | user-provided value |
+| domparser.js:11:55:11:57 | src | domparser.js:2:13:2:36 | documen ... .search | domparser.js:11:55:11:57 | src | A $@ is parsed as XML without guarding against uncontrolled entity expansion. | domparser.js:2:13:2:36 | documen ... .search | user-provided value |
+| domparser.js:14:57:14:59 | src | domparser.js:2:13:2:36 | documen ... .search | domparser.js:14:57:14:59 | src | A $@ is parsed as XML without guarding against uncontrolled entity expansion. | domparser.js:2:13:2:36 | documen ... .search | user-provided value |
+| expat.js:6:16:6:36 | req.par ... e-xml") | expat.js:6:16:6:36 | req.par ... e-xml") | expat.js:6:16:6:36 | req.par ... e-xml") | A $@ is parsed as XML without guarding against uncontrolled entity expansion. | expat.js:6:16:6:36 | req.par ... e-xml") | user-provided value |
+| jquery.js:5:14:5:16 | src | jquery.js:2:13:2:36 | documen ... .search | jquery.js:5:14:5:16 | src | A $@ is parsed as XML without guarding against uncontrolled entity expansion. | jquery.js:2:13:2:36 | documen ... .search | user-provided value |
+| libxml.js:6:21:6:41 | req.par ... e-xml") | libxml.js:6:21:6:41 | req.par ... e-xml") | libxml.js:6:21:6:41 | req.par ... e-xml") | A $@ is parsed as XML without guarding against uncontrolled entity expansion. | libxml.js:6:21:6:41 | req.par ... e-xml") | user-provided value |
+| libxml.noent.js:6:21:6:41 | req.par ... e-xml") | libxml.noent.js:6:21:6:41 | req.par ... e-xml") | libxml.noent.js:6:21:6:41 | req.par ... e-xml") | A $@ is parsed as XML without guarding against uncontrolled entity expansion. | libxml.noent.js:6:21:6:41 | req.par ... e-xml") | user-provided value |
+| libxml.sax.js:6:22:6:42 | req.par ... e-xml") | libxml.sax.js:6:22:6:42 | req.par ... e-xml") | libxml.sax.js:6:22:6:42 | req.par ... e-xml") | A $@ is parsed as XML without guarding against uncontrolled entity expansion. | libxml.sax.js:6:22:6:42 | req.par ... e-xml") | user-provided value |
+| libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") | libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") | libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") | A $@ is parsed as XML without guarding against uncontrolled entity expansion. | libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") | user-provided value |

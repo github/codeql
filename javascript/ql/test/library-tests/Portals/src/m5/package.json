@@ -1,0 +1,6 @@
+{
+    "name": "m5",
+    "dependencies": {
+        "base-64": "*"
+    }
+}

@@ -1,0 +1,97 @@
+getPathArgument
+| file-access.js:3:1:4:34 | fstream ... file"}) | file-access.js:4:19:4:32 | "path/to/file" |
+| file-access.js:8:1:9:24 | fstream ... o/dir") | file-access.js:9:11:9:23 | "path/to/dir" |
+| file-access.js:10:9:10:43 | fstream ... r/dir") | file-access.js:10:24:10:42 | "path/to/other/dir" |
+| file-access.js:15:1:15:60 | writeFi ... rr) {}) | file-access.js:15:17:15:28 | 'atmoic.txt' |
+| file-access.js:18:1:18:59 | writeFi ... tions]) | file-access.js:18:21:18:34 | "syncFile.txt" |
+| file-access.js:22:1:22:48 | recursi ... es) {}) | file-access.js:22:11:22:21 | "some/path" |
+| file-access.js:25:1:25:59 | jsonfil ... bj) {}) | file-access.js:25:19:25:34 | '/tmp/data.json' |
+| file-access.js:26:1:26:39 | jsonfil ... .json') | file-access.js:26:23:26:38 | '/tmp/data.json' |
+| file-access.js:28:1:28:60 | jsonfil ... rr) {}) | file-access.js:28:20:28:35 | '/tmp/data.json' |
+| file-access.js:29:1:29:45 | jsonfil ... ', obj) | file-access.js:29:24:29:39 | '/tmp/data.json' |
+| file-access.js:34:4:34:23 | pathExists('foo.js') | file-access.js:34:15:34:22 | 'foo.js' |
+| file-access.js:39:1:39:28 | rimraf( ...  => {}) | file-access.js:39:8:39:10 | "/" |
+| file-access.js:42:1:42:59 | dir.rea ... on(){}) | file-access.js:42:15:42:31 | "/some/directory" |
+| file-access.js:46:1:46:25 | vfs.src ... path"]) | file-access.js:46:9:46:24 | ["some", "path"] |
+| file-access.js:47:1:47:36 | vfs.des ... true }) | file-access.js:47:10:47:13 | './' |
+| file-access.js:51:1:51:36 | ncp("fr ... rr) {}) | file-access.js:51:5:51:10 | "from" |
+| file-access.js:51:1:51:36 | ncp("fr ... rr) {}) | file-access.js:51:13:51:16 | "to" |
+| file-access.js:56:23:56:46 | loadJso ... .json') | file-access.js:56:36:56:45 | 'foo.json' |
+| file-access.js:57:14:57:42 | loadJso ... .json') | file-access.js:57:32:57:41 | 'foo.json' |
+| file-access.js:62:5:62:42 | writeJs ...  true}) | file-access.js:62:19:62:28 | 'bar.json' |
+| file-access.js:63:2:63:60 | writeJs ... : " "}) | file-access.js:63:21:63:30 | 'bar.json' |
+| file-access.js:67:1:67:35 | readdir ... *.js'}) | file-access.js:67:10:67:12 | '.' |
+| file-access.js:70:1:72:2 | recursi ... es);\\n}) | file-access.js:70:11:70:29 | "directory/to/read" |
+| file-access.js:73:1:73:30 | recursi ... /read") | file-access.js:73:11:73:29 | "directory/to/read" |
+| file-access.js:75:1:75:29 | jsonfil ... .json') | file-access.js:75:19:75:28 | 'baz.json' |
+| file-access.js:79:2:81:3 | walk('. ... h);\\n\\t}) | file-access.js:79:7:79:11 | '../' |
+| file-access.js:82:16:82:26 | walk('../') | file-access.js:82:21:82:25 | '../' |
+| file-access.js:84:2:86:3 | walk.sy ... h);\\n\\t}) | file-access.js:84:12:84:16 | '../' |
+| file-access.js:87:14:87:29 | walk.sync('../') | file-access.js:87:24:87:28 | '../' |
+| file-access.js:88:21:88:37 | walk.async('../') | file-access.js:88:32:88:36 | '../' |
+| file-access.js:92:1:92:15 | walker('/etc/') | file-access.js:92:8:92:14 | '/etc/' |
+| tst-file-names.js:43:15:43:50 | globule ... o.js"]) | tst-file-names.js:43:40:43:49 | ["foo.js"] |
+| tst-file-names.js:44:12:44:49 | globule ... o.js"]) | tst-file-names.js:44:39:44:48 | ["foo.js"] |
+| tst-file-names.js:46:12:46:51 | globule ... .js"]}) | tst-file-names.js:46:34:46:49 | ["a.js", "b.js"] |
+| tst-file-names.js:47:12:47:52 | globule ... b.js"]) | tst-file-names.js:47:28:47:51 | ["foo/a ... /b.js"] |
+| tst-file-names.js:55:1:55:19 | chokidar.watch('.') | tst-file-names.js:55:16:55:18 | '.' |
+getReadNode
+| file-access.js:25:1:25:59 | jsonfil ... bj) {}) | file-access.js:25:52:25:54 | obj |
+| file-access.js:26:1:26:39 | jsonfil ... .json') | file-access.js:26:1:26:39 | jsonfil ... .json') |
+| file-access.js:56:23:56:46 | loadJso ... .json') | file-access.js:56:17:56:46 | await l ... .json') |
+| file-access.js:57:14:57:42 | loadJso ... .json') | file-access.js:57:14:57:42 | loadJso ... .json') |
+| file-access.js:75:1:75:29 | jsonfil ... .json') | file-access.js:75:36:75:38 | obj |
+getWriteNode
+| file-access.js:15:1:15:60 | writeFi ... rr) {}) | file-access.js:15:31:15:36 | 'Data' |
+| file-access.js:18:1:18:59 | writeFi ... tions]) | file-access.js:18:37:18:47 | "More data" |
+| file-access.js:28:1:28:60 | jsonfil ... rr) {}) | file-access.js:28:38:28:40 | obj |
+| file-access.js:29:1:29:45 | jsonfil ... ', obj) | file-access.js:29:42:29:44 | obj |
+| file-access.js:62:5:62:42 | writeJs ...  true}) | file-access.js:62:31:62:41 | {bar: true} |
+| file-access.js:63:2:63:60 | writeJs ... : " "}) | file-access.js:63:33:63:44 | {bar: false} |
+fileNameSource
+| file-access.js:22:39:22:43 | files |
+| file-access.js:70:47:70:51 | files |
+| file-access.js:73:37:73:42 | files2 |
+| file-access.js:79:23:79:26 | path |
+| file-access.js:83:30:83:37 | filename |
+| file-access.js:84:2:86:3 | walk.sy ... h);\\n\\t}) |
+| file-access.js:87:14:87:29 | walk.sync('../') |
+| file-access.js:88:15:88:37 | await w ... ('../') |
+| tst-file-names.js:7:1:7:10 | walkSync() |
+| tst-file-names.js:9:35:9:44 | stats.name |
+| tst-file-names.js:11:1:11:12 | glob.sync(_) |
+| tst-file-names.js:13:13:13:16 | name |
+| tst-file-names.js:15:22:15:25 | name |
+| tst-file-names.js:17:1:17:22 | new glo ... ).found |
+| tst-file-names.js:19:1:19:14 | globby.sync(_) |
+| tst-file-names.js:21:16:21:20 | files |
+| tst-file-names.js:23:1:23:16 | fastGlob.sync(_) |
+| tst-file-names.js:25:18:25:22 | files |
+| tst-file-names.js:27:24:27:28 | files |
+| tst-file-names.js:29:27:29:30 | file |
+| tst-file-names.js:32:34:32:38 | files |
+| tst-file-names.js:34:15:34:29 | await globby(_) |
+| tst-file-names.js:36:16:36:38 | await f ... sync(_) |
+| tst-file-names.js:38:16:38:57 | await f ...  => {}) |
+| tst-file-names.js:42:17:42:39 | globule ... /*.js') |
+| tst-file-names.js:43:15:43:50 | globule ... o.js"]) |
+| tst-file-names.js:45:12:45:42 | globule ... /*.js") |
+| tst-file-names.js:46:12:46:51 | globule ... .js"]}) |
+| tst-file-names.js:47:12:47:52 | globule ... b.js"]) |
+| tst-file-names.js:51:15:51:23 | await foo |
+| tst-file-names.js:56:22:56:25 | path |
+| tst-file-names.js:59:17:59:20 | path |
+| tst-file-names.js:62:16:62:19 | path |
+persistentReadAccess_getAWrite
+| persistence.js:3:5:3:33 | localSt ... prop1') | persistence.js:2:5:2:37 | localSt ... 1', v1) |
+| persistence.js:6:5:6:35 | session ... prop2') | persistence.js:5:5:5:39 | session ... 2', v2) |
+persistentReadAccess
+| persistence.js:3:5:3:33 | localSt ... prop1') |
+| persistence.js:6:5:6:35 | session ... prop2') |
+| persistence.js:10:5:10:33 | localSt ... prop4') |
+| persistence.js:13:5:13:35 | session ... prop5') |
+persistentWriteAccess
+| persistence.js:2:5:2:37 | localSt ... 1', v1) | persistence.js:2:35:2:36 | v1 |
+| persistence.js:5:5:5:39 | session ... 2', v2) | persistence.js:5:37:5:38 | v2 |
+| persistence.js:8:5:8:37 | localSt ... 3', v3) | persistence.js:8:35:8:36 | v3 |
+| persistence.js:12:5:12:37 | localSt ... 5', v5) | persistence.js:12:35:12:36 | v5 |

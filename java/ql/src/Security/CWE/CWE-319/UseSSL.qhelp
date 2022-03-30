@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Using a stream that is derived from a non-SSL connection or socket can result in an
+unsecured connection that is vulnerable to interception.</p>
+
+</overview>
+<recommendation>
+
+<p>Use <code>javax.net.ssl.HttpsURLConnection</code> and <code>javax.net.ssl.SSLSocket</code> instead
+of the corresponding unsecured versions in <code>java.net</code>. If necessary, downcast from an <code>HttpURLConnection</code> to
+an <code>HttpsURLConnection</code> to enforce the use of SSL. 
+In addition, when you construct a <code>java.net.URL</code>, ensure that you use the HTTPS protocol, 
+to avoid exceptions when trying to make HTTPS connections to the URL.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows two ways of opening an output stream. When the stream is opened using 
+<code>httpcon</code>, which is an <code>HttpURLConnection</code>, the connection does not use SSL, 
+and therefore is vulnerable to attack. When the stream is opened using <code>httpscon</code>, 
+the connection is a secured SSL connection.</p>
+
+<sample src="UseSSL.java" />
+
+</example>
+<references>
+
+<li>SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/SER03-J.+Do+not+serialize+unencrypted+sensitive+data">SER03-J. Do not serialize unencrypted, sensitive data</a>.</li>
+<li>Java API Specification: 
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/net/ssl/HttpsURLConnection.html">
+Class HttpsURLConnection</a>.</li>
+<li>Java API Specification: 
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/net/ssl/SSLSocket.html">
+Class SSLSocket</a>.</li>
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html">Transport Layer Protection Cheat Sheet</a>.
+</li>
+
+
+
+<!--  LocalWords:  CWE
+ -->
+
+</references>
+</qhelp>

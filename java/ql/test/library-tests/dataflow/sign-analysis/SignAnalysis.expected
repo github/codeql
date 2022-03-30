@@ -1,0 +1,5 @@
+| A.java:4:14:4:14 | x | strictlyNegative |
+| A.java:6:9:6:9 | x | positive |
+| A.java:7:14:7:14 | y | strictlyPositive |
+| A.java:14:14:14:20 | (...)... | positive |
+| A.java:15:24:15:24 | c | positive |

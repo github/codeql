@@ -1,0 +1,52 @@
+
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+
+<p>If unsanitized user input is written to a log entry, a malicious user may be able to forge new log entries.</p>
+
+<p>Forgery can occur if a user provides some input with characters that are interpreted
+when the log output is displayed. If the log is displayed as a plain text file, then new
+line characters can be used by a malicious user to create the appearance of multiple log
+entries. If the log is displayed as HTML, then arbitrary HTML may be included to spoof
+log entries.</p>
+</overview>
+
+<recommendation>
+<p>
+User input should be suitably sanitized before it is logged.
+</p>
+<p>
+If the log entries are plain text then line breaks should be removed from user input, using for example
+<code>replace(old, new)</code> or similar. Care should also be taken that user input is clearly marked
+in log entries, and that a malicious user cannot cause confusion in other ways.
+</p>
+<p>
+For log entries that will be displayed in HTML, user input should be HTML encoded before being logged, to prevent forgery and
+other forms of HTML injection.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the example, the name provided by the user is recorded using the log output function (<code>logging.info</code> or <code>app.logger.info</code>, etc.).
+In these four cases, the name provided by the user is not provided The processing is recorded. If a malicious user provides <code>Guest%0D%0AUser name: Admin</code>
+as a parameter, the log entry will be divided into two lines, the first line is <code>User name: Guest</code> code>, the second line is <code>User name: Admin</code>.
+</p>
+<sample src="LogInjectionBad.py" />
+
+<p>
+In a good example, the program uses the <code>replace</code> function to provide parameter processing to the user, and replace <code>\r\n</code> and <code>\n</code>
+with empty characters. To a certain extent, the occurrence of log injection vulnerabilities is reduced.
+</p>
+
+<sample src="LogInjectionGood.py" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Log_Injection">Log Injection</a>.</li>
+</references>
+</qhelp>

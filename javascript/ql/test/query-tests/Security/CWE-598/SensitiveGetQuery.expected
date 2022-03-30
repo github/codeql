@@ -1,0 +1,3 @@
+| tst.js:8:22:8:39 | req.query.password | $@ for GET requests uses query parameter as sensitive data. | tst.js:6:19:14:1 | (req, r ... serId\\n} | Route handler |
+| tst.js:26:22:26:42 | req.par ... sword') | $@ for GET requests uses query parameter as sensitive data. | tst.js:24:20:35:1 | (req, r ...   });\\n} | Route handler |
+| tst.js:31:24:31:40 | req.param('word') | $@ for GET requests uses query parameter as sensitive data. | tst.js:24:20:35:1 | (req, r ...   });\\n} | Route handler |

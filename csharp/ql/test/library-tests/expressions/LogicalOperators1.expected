@@ -1,0 +1,10 @@
+| 39 | 21 | 30 | expressions.cs:39:21:39:30 | ... ? ... : ... | 0 | expressions.cs:39:21:39:21 | access to parameter a |
+| 39 | 21 | 30 | expressions.cs:39:21:39:30 | ... ? ... : ... | 1 | expressions.cs:39:25:39:25 | 0 |
+| 39 | 21 | 30 | expressions.cs:39:21:39:30 | ... ? ... : ... | 2 | expressions.cs:39:29:39:30 | 42 |
+| 40 | 22 | 31 | expressions.cs:40:22:40:31 | ... \|\| ... | 0 | expressions.cs:40:22:40:22 | access to parameter b |
+| 40 | 22 | 31 | expressions.cs:40:22:40:31 | ... \|\| ... | 1 | expressions.cs:40:27:40:31 | ... > ... |
+| 41 | 20 | 25 | expressions.cs:41:20:41:25 | ... && ... | 0 | expressions.cs:41:20:41:20 | access to parameter a |
+| 41 | 20 | 25 | expressions.cs:41:20:41:25 | ... && ... | 1 | expressions.cs:41:25:41:25 | access to parameter b |
+| 41 | 20 | 31 | expressions.cs:41:20:41:31 | ... && ... | 0 | expressions.cs:41:20:41:25 | ... && ... |
+| 41 | 20 | 31 | expressions.cs:41:20:41:31 | ... && ... | 1 | expressions.cs:41:30:41:31 | !... |
+| 41 | 30 | 31 | expressions.cs:41:30:41:31 | !... | 0 | expressions.cs:41:31:41:31 | access to local variable c |

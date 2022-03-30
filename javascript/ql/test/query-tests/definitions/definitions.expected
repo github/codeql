@@ -1,0 +1,36 @@
+| b.js:3:3:3:3 | x | b.js:2:7:2:7 | x | V |
+| b.js:7:1:7:1 | f | b.js:1:1:5:1 | functio ... ar x;\\n} | M |
+| b.js:8:1:8:1 | g | a.js:2:1:2:15 | function g() {} | M |
+| client.ts:1:22:1:30 | "./tslib" | tslib.ts:1:1:10:0 | <toplevel> | I |
+| client.ts:7:19:7:19 | C | tslib.ts:1:8:3:1 | class C {\\n  m() {}\\n} | T |
+| client.ts:8:10:8:10 | C | client.ts:3:1:5:1 | class C {\\n  m() {}\\n} | T |
+| client.ts:9:16:9:16 | C | client.ts:3:1:5:1 | class C {\\n  m() {}\\n} | T |
+| client.ts:10:16:10:16 | C | tslib.ts:6:10:8:3 | class C ...  {}\\n  } | T |
+| client.ts:13:25:13:25 | C | client.ts:3:1:5:1 | class C {\\n  m() {}\\n} | T |
+| client.ts:13:35:13:35 | C | tslib.ts:1:8:3:1 | class C {\\n  m() {}\\n} | T |
+| client.ts:13:47:13:47 | C | tslib.ts:6:10:8:3 | class C ...  {}\\n  } | T |
+| client.ts:14:3:14:3 | x | client.ts:13:22:13:22 | x | V |
+| client.ts:14:5:14:5 | m | client.ts:4:3:4:8 | m() {} | M |
+| client.ts:15:3:15:3 | y | client.ts:13:28:13:28 | y | V |
+| client.ts:15:5:15:5 | m | tslib.ts:2:3:2:8 | m() {} | M |
+| client.ts:16:3:16:3 | z | client.ts:13:38:13:38 | z | V |
+| client.ts:16:5:16:5 | m | tslib.ts:7:5:7:10 | m() {} | M |
+| d.js:1:17:1:21 | './c' | c.js:1:1:1:20 | <toplevel> | I |
+| d.js:10:1:10:1 | A | d.js:7:1:9:1 | functio ... = 42;\\n} | V |
+| d.js:16:19:16:23 | Super | d.js:12:1:14:1 | class S ... () {}\\n} | V |
+| d.js:16:25:16:24 | args | d.js:16:25:16:24 | args | V |
+| d.js:20:1:20:1 | o | d.js:3:9:5:1 | {\\n  f:  ... () {}\\n} | V |
+| d.js:20:3:20:3 | f | d.js:4:3:4:18 | f: function() {} | M |
+| d.js:22:13:22:13 | A | d.js:7:1:9:1 | functio ... = 42;\\n} | M |
+| d.js:23:1:23:1 | a | d.js:22:5:22:5 | a | V |
+| d.js:23:3:23:3 | x | d.js:8:3:8:8 | this.x | M |
+| d.js:24:1:24:1 | a | d.js:22:5:22:5 | a | V |
+| d.js:24:3:24:3 | g | d.js:10:1:10:13 | A.prototype.g | M |
+| d.js:26:13:26:15 | Sub | d.js:16:1:18:1 | class S ... () {}\\n} | M |
+| d.js:27:1:27:1 | x | d.js:26:5:26:5 | x | V |
+| d.js:27:3:27:3 | m | d.js:13:3:13:3 | m | M |
+| d.js:28:1:28:1 | x | d.js:26:5:26:5 | x | V |
+| d.js:28:3:28:3 | n | d.js:17:3:17:3 | n | M |
+| tst.js:1:19:1:23 | './m' | m.js:1:1:2:0 | <toplevel> | I |
+| tst.js:3:5:3:5 | A | m.js:1:8:1:17 | class A {} | M |
+| tst.js:5:15:5:19 | './m' | m.js:1:1:2:0 | <toplevel> | I |

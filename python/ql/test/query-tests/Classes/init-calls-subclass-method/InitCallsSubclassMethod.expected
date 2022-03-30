@@ -1,0 +1,1 @@
+| init_calls_subclass.py:7:9:7:24 | Attribute() | Call to self.$@ in __init__ method, which is overridden by $@. | init_calls_subclass.py:10:5:10:26 | Function set_up | set_up | init_calls_subclass.py:19:5:19:26 | Function set_up | method Sub.set_up |

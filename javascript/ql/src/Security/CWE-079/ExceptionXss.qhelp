@@ -1,0 +1,67 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Directly writing error messages to a webpage without sanitization allows for a cross-site scripting
+vulnerability if parts of the error message can be influenced by a user.
+</p>
+</overview>
+
+<recommendation>
+<p>
+To guard against cross-site scripting, consider using contextual output encoding/escaping before
+writing user input to the page, or one of the other solutions that are mentioned in the
+references.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows an exception being written directly to the document, 
+and this exception can potentially be influenced by the page URL, 
+leaving the website vulnerable to cross-site scripting.
+</p>
+<sample src="examples/ExceptionXss.js" />
+</example>
+
+<example>
+<p>
+This second example shows an input being validated using the JSON schema validator <code>ajv</code>,
+and in case of an error, the error message is sent directly back in the response.
+</p>
+<sample src="examples/ExceptionXssAjv.js" />
+<p>
+This is unsafe, because the error message can contain parts of the input.
+For example, the input <code>{'&lt;img src=x onerror=alert(1)&gt;': 'foo'}</code> will generate the error
+<code>data/&lt;img src=x onerror=alert(1)&gt; should be number</code>, causing reflected XSS.
+</p>
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html">DOM based
+XSS Prevention Cheat Sheet</a>.
+</li>
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS
+(Cross Site Scripting) Prevention Cheat Sheet</a>.
+</li>
+<li>
+OWASP
+<a href="https://www.owasp.org/index.php/DOM_Based_XSS">DOM Based XSS</a>.
+</li>
+<li>
+OWASP
+<a href="https://www.owasp.org/index.php/Types_of_Cross-Site_Scripting">Types of Cross-Site
+Scripting</a>.
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+</li>
+</references>
+</qhelp>

@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule finds cookies with an overly broad path. Cookies with an overly broad path, such as 
+the root context path ("/"), can be accessed by all web applications on the same domain name. A 
+cookie with sensitive data, but with too broad a path, could hence be read and tampered by a less 
+secure and untrusted application.</p>
+
+</overview>
+<recommendation>
+<p>Precisely define the path of the web application for which this cookie is valid.</p>
+
+</recommendation>
+<example>
+<p>In this example the cookie will be accessible to all applications regardless of their path. Most 
+likely some of these applications are less secure than others and do not even need to access the 
+same cookies.</p>
+<sample src="CookieWithOverlyBroadPath.cs" />
+
+<p>In the following example the cookie is only accessible to the web application at the "/ebanking" 
+path.</p>
+<sample src="CookieWithOverlyBroadPathFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.web.httpcookie.path.aspx">HttpCookie.Path Property</a>.</li>
+
+</references>
+</qhelp>

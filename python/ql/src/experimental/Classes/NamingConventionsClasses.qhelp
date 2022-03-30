@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A class name that begins with a lowercase letter does not follow standard
+naming conventions. This decreases code readability. For example, <code>class background</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Write the class name beginning with an uppercase letter. For example, <code>class Background</code>.
+</p>
+
+</recommendation>
+
+<references>
+
+<li>
+  Guido van Rossum, Barry Warsaw, Nick Coghlan <em>PEP 8 -- Style Guide for Python Code</em>
+  <a href="https://www.python.org/dev/peps/pep-0008/#class-names">Python Class Names</a>
+</li>
+
+</references>
+
+</qhelp>

@@ -1,0 +1,10 @@
+graph
+{
+	node [shape=rectangle];
+
+	A -- B;
+	A -- C;
+	C -- D;
+	C -- E;
+}
+

@@ -1,0 +1,69 @@
+edges
+| test2.cpp:12:21:12:21 | v | test2.cpp:14:11:14:11 | v |
+| test2.cpp:12:21:12:21 | v | test2.cpp:14:11:14:11 | v |
+| test2.cpp:25:22:25:23 | & ... | test2.cpp:27:13:27:13 | v |
+| test2.cpp:25:22:25:23 | fscanf output argument | test2.cpp:27:13:27:13 | v |
+| test2.cpp:27:13:27:13 | v | test2.cpp:12:21:12:21 | v |
+| test5.cpp:5:5:5:17 | ReturnValue | test5.cpp:17:6:17:18 | call to getTaintedInt |
+| test5.cpp:5:5:5:17 | ReturnValue | test5.cpp:17:6:17:18 | call to getTaintedInt |
+| test5.cpp:5:5:5:17 | ReturnValue | test5.cpp:18:6:18:18 | call to getTaintedInt |
+| test5.cpp:9:7:9:9 | buf | test5.cpp:5:5:5:17 | ReturnValue |
+| test5.cpp:9:7:9:9 | gets output argument | test5.cpp:5:5:5:17 | ReturnValue |
+| test5.cpp:18:6:18:18 | call to getTaintedInt | test5.cpp:19:6:19:6 | y |
+| test5.cpp:18:6:18:18 | call to getTaintedInt | test5.cpp:19:6:19:6 | y |
+| test.c:11:29:11:32 | argv | test.c:14:15:14:28 | maxConnections |
+| test.c:11:29:11:32 | argv | test.c:14:15:14:28 | maxConnections |
+| test.c:11:29:11:32 | argv | test.c:14:15:14:28 | maxConnections |
+| test.c:11:29:11:32 | argv | test.c:14:15:14:28 | maxConnections |
+| test.c:41:17:41:20 | argv | test.c:44:7:44:10 | len2 |
+| test.c:41:17:41:20 | argv | test.c:44:7:44:10 | len2 |
+| test.c:41:17:41:20 | argv | test.c:44:7:44:10 | len2 |
+| test.c:41:17:41:20 | argv | test.c:44:7:44:10 | len2 |
+| test.c:51:17:51:20 | argv | test.c:54:7:54:10 | len3 |
+| test.c:51:17:51:20 | argv | test.c:54:7:54:10 | len3 |
+| test.c:51:17:51:20 | argv | test.c:54:7:54:10 | len3 |
+| test.c:51:17:51:20 | argv | test.c:54:7:54:10 | len3 |
+subpaths
+nodes
+| test2.cpp:12:21:12:21 | v | semmle.label | v |
+| test2.cpp:14:11:14:11 | v | semmle.label | v |
+| test2.cpp:14:11:14:11 | v | semmle.label | v |
+| test2.cpp:14:11:14:11 | v | semmle.label | v |
+| test2.cpp:25:22:25:23 | & ... | semmle.label | & ... |
+| test2.cpp:25:22:25:23 | fscanf output argument | semmle.label | fscanf output argument |
+| test2.cpp:27:13:27:13 | v | semmle.label | v |
+| test5.cpp:5:5:5:17 | ReturnValue | semmle.label | ReturnValue |
+| test5.cpp:9:7:9:9 | buf | semmle.label | buf |
+| test5.cpp:9:7:9:9 | gets output argument | semmle.label | gets output argument |
+| test5.cpp:17:6:17:18 | call to getTaintedInt | semmle.label | call to getTaintedInt |
+| test5.cpp:17:6:17:18 | call to getTaintedInt | semmle.label | call to getTaintedInt |
+| test5.cpp:17:6:17:18 | call to getTaintedInt | semmle.label | call to getTaintedInt |
+| test5.cpp:18:6:18:18 | call to getTaintedInt | semmle.label | call to getTaintedInt |
+| test5.cpp:19:6:19:6 | y | semmle.label | y |
+| test5.cpp:19:6:19:6 | y | semmle.label | y |
+| test5.cpp:19:6:19:6 | y | semmle.label | y |
+| test.c:11:29:11:32 | argv | semmle.label | argv |
+| test.c:11:29:11:32 | argv | semmle.label | argv |
+| test.c:14:15:14:28 | maxConnections | semmle.label | maxConnections |
+| test.c:14:15:14:28 | maxConnections | semmle.label | maxConnections |
+| test.c:14:15:14:28 | maxConnections | semmle.label | maxConnections |
+| test.c:41:17:41:20 | argv | semmle.label | argv |
+| test.c:41:17:41:20 | argv | semmle.label | argv |
+| test.c:44:7:44:10 | len2 | semmle.label | len2 |
+| test.c:44:7:44:10 | len2 | semmle.label | len2 |
+| test.c:44:7:44:10 | len2 | semmle.label | len2 |
+| test.c:51:17:51:20 | argv | semmle.label | argv |
+| test.c:51:17:51:20 | argv | semmle.label | argv |
+| test.c:54:7:54:10 | len3 | semmle.label | len3 |
+| test.c:54:7:54:10 | len3 | semmle.label | len3 |
+| test.c:54:7:54:10 | len3 | semmle.label | len3 |
+#select
+| test2.cpp:14:11:14:11 | v | test2.cpp:25:22:25:23 | & ... | test2.cpp:14:11:14:11 | v | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test2.cpp:25:22:25:23 | & ... | User-provided value |
+| test2.cpp:14:11:14:11 | v | test2.cpp:25:22:25:23 | & ... | test2.cpp:14:11:14:11 | v | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test2.cpp:25:22:25:23 | & ... | User-provided value |
+| test5.cpp:17:6:17:18 | call to getTaintedInt | test5.cpp:9:7:9:9 | buf | test5.cpp:17:6:17:18 | call to getTaintedInt | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test5.cpp:9:7:9:9 | buf | User-provided value |
+| test5.cpp:19:6:19:6 | y | test5.cpp:9:7:9:9 | buf | test5.cpp:19:6:19:6 | y | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test5.cpp:9:7:9:9 | buf | User-provided value |
+| test5.cpp:19:6:19:6 | y | test5.cpp:9:7:9:9 | buf | test5.cpp:19:6:19:6 | y | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test5.cpp:9:7:9:9 | buf | User-provided value |
+| test.c:14:15:14:28 | maxConnections | test.c:11:29:11:32 | argv | test.c:14:15:14:28 | maxConnections | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:11:29:11:32 | argv | User-provided value |
+| test.c:14:15:14:28 | maxConnections | test.c:11:29:11:32 | argv | test.c:14:15:14:28 | maxConnections | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:11:29:11:32 | argv | User-provided value |
+| test.c:44:7:44:10 | len2 | test.c:41:17:41:20 | argv | test.c:44:7:44:10 | len2 | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:41:17:41:20 | argv | User-provided value |
+| test.c:54:7:54:10 | len3 | test.c:51:17:51:20 | argv | test.c:54:7:54:10 | len3 | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:51:17:51:20 | argv | User-provided value |

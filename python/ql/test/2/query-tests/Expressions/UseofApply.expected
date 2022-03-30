@@ -1,0 +1,2 @@
+| UseofApply.py:19:3:19:17 | ControlFlowNode for apply() | Call to the obsolete builtin function 'apply'. |
+| expressions_test.py:2:5:2:21 | ControlFlowNode for apply() | Call to the obsolete builtin function 'apply'. |

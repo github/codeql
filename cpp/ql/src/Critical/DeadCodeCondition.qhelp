@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This query finds branching statements with conditions that always evaluate to the same value. 
+It is likely that these conditions indicate an error in the branching condition. 
+Alternatively, the conditions may have been left behind after debugging.</p>
+
+<include src="aliasAnalysisWarning.inc.qhelp" />
+</overview>
+
+<recommendation>
+<p>Check the branch condition for logic errors. Check whether it is still required.</p>
+</recommendation>
+
+<example>
+<p>This example shows two branch conditions that always evaluate to the same value. 
+The two conditions and their associated branches should be deleted. 
+This will simplify the code and make it easier to maintain.</p>
+
+<sample src="DeadCodeCondition.cpp" />
+</example>
+
+<references>
+<li>SEI CERT C++ Coding Standard <a href="https://wiki.sei.cmu.edu/confluence/display/c/MSC12-C.+Detect+and+remove+code+that+has+no+effect+or+is+never+executed">MSC12-C. Detect and remove code that has no effect or is never executed</a>.</li>
+</references>
+</qhelp>

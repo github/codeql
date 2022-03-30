@@ -1,0 +1,39 @@
+| tst.js:1:1:1:1 | implicit initialization of y |
+| tst.js:1:12:1:12 | x |
+| tst.js:3:7:3:7 | x = refine[guard: x is false](def@1:12) |
+| tst.js:3:7:3:7 | x = refine[guard: x is true](def@1:12) |
+| tst.js:4:5:4:9 | y = x |
+| tst.js:5:3:5:3 | x = phi(refine[guard: x is false]@3:7, refine[guard: x is true]@3:7) |
+| tst.js:5:3:5:3 | y = phi(def@4:5, implicitInit@1:1) |
+| tst.js:5:3:5:7 | z = y |
+| tst.js:6:10:6:10 | x = phi(phi@5:3, refine[guard: x is true]@6:10) |
+| tst.js:6:10:6:10 | x = refine[guard: x is true](phi@6:10) |
+| tst.js:6:10:6:10 | z = phi(def@5:3, def@7:5) |
+| tst.js:7:5:7:7 | z++ |
+| tst.js:11:1:11:1 | implicit initialization of x |
+| tst.js:11:12:11:12 | x |
+| tst.js:12:3:12:2 | capture variable x |
+| tst.js:15:3:15:8 | x = 42 |
+| tst.js:18:1:18:1 | implicit initialization of x |
+| tst.js:19:7:19:11 | x = 0 |
+| tst.js:20:3:20:2 | capture variable x |
+| tst.js:20:13:20:16 | iter |
+| tst.js:22:5:22:9 | capture variable x |
+| tst.js:25:7:25:18 | gen = iter() |
+| tst.js:27:3:27:5 | ++x |
+| tst.js:31:1:31:1 | implicit initialization of x |
+| tst.js:31:1:31:1 | implicit initialization of y |
+| tst.js:32:3:32:2 | capture variable x |
+| tst.js:32:3:32:2 | capture variable y |
+| tst.js:32:12:32:16 | inner |
+| tst.js:34:5:34:10 | x += y |
+| tst.js:36:7:36:11 | x = 0 |
+| tst.js:36:14:36:18 | y = 1 |
+| tst.js:37:3:37:9 | capture variable x |
+| tst.js:41:1:41:1 | implicit initialization of x |
+| tst.js:42:7:42:11 | x = 0 |
+| tst.js:42:14:42:18 | y = 1 |
+| tst.js:43:7:43:37 | inc = ( ...  */ ++x |
+| tst.js:43:13:43:12 | capture variable x |
+| tst.js:43:35:43:37 | ++x |
+| tst.js:44:3:44:11 | capture variable x |

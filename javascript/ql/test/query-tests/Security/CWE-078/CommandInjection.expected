@@ -1,0 +1,407 @@
+nodes
+| child_process-test.js:6:9:6:49 | cmd |
+| child_process-test.js:6:15:6:38 | url.par ... , true) |
+| child_process-test.js:6:15:6:44 | url.par ... ).query |
+| child_process-test.js:6:15:6:49 | url.par ... ry.path |
+| child_process-test.js:6:15:6:49 | url.par ... ry.path |
+| child_process-test.js:6:25:6:31 | req.url |
+| child_process-test.js:6:25:6:31 | req.url |
+| child_process-test.js:17:13:17:15 | cmd |
+| child_process-test.js:17:13:17:15 | cmd |
+| child_process-test.js:18:17:18:19 | cmd |
+| child_process-test.js:18:17:18:19 | cmd |
+| child_process-test.js:19:17:19:19 | cmd |
+| child_process-test.js:19:17:19:19 | cmd |
+| child_process-test.js:20:21:20:23 | cmd |
+| child_process-test.js:20:21:20:23 | cmd |
+| child_process-test.js:21:14:21:16 | cmd |
+| child_process-test.js:21:14:21:16 | cmd |
+| child_process-test.js:22:18:22:20 | cmd |
+| child_process-test.js:22:18:22:20 | cmd |
+| child_process-test.js:23:13:23:15 | cmd |
+| child_process-test.js:23:13:23:15 | cmd |
+| child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" |
+| child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" |
+| child_process-test.js:25:21:25:23 | cmd |
+| child_process-test.js:39:26:39:28 | cmd |
+| child_process-test.js:39:26:39:28 | cmd |
+| child_process-test.js:43:15:43:17 | cmd |
+| child_process-test.js:43:15:43:17 | cmd |
+| child_process-test.js:48:15:48:17 | cmd |
+| child_process-test.js:48:15:48:17 | cmd |
+| child_process-test.js:53:15:53:17 | cmd |
+| child_process-test.js:53:15:53:17 | cmd |
+| child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) |
+| child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) |
+| child_process-test.js:56:46:56:57 | ["bar", cmd] |
+| child_process-test.js:56:54:56:56 | cmd |
+| child_process-test.js:56:54:56:56 | cmd |
+| child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) |
+| child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) |
+| child_process-test.js:57:46:57:48 | cmd |
+| child_process-test.js:73:9:73:49 | cmd |
+| child_process-test.js:73:15:73:38 | url.par ... , true) |
+| child_process-test.js:73:15:73:44 | url.par ... ).query |
+| child_process-test.js:73:15:73:49 | url.par ... ry.path |
+| child_process-test.js:73:25:73:31 | req.url |
+| child_process-test.js:73:25:73:31 | req.url |
+| child_process-test.js:75:29:75:31 | cmd |
+| child_process-test.js:75:29:75:31 | cmd |
+| child_process-test.js:83:19:83:36 | req.query.fileName |
+| child_process-test.js:83:19:83:36 | req.query.fileName |
+| child_process-test.js:83:19:83:36 | req.query.fileName |
+| child_process-test.js:85:37:85:54 | req.query.fileName |
+| child_process-test.js:85:37:85:54 | req.query.fileName |
+| child_process-test.js:94:11:94:35 | "ping " ... ms.host |
+| child_process-test.js:94:11:94:35 | "ping " ... ms.host |
+| child_process-test.js:94:21:94:30 | ctx.params |
+| child_process-test.js:94:21:94:30 | ctx.params |
+| child_process-test.js:94:21:94:35 | ctx.params.host |
+| exec-sh2.js:9:17:9:23 | command |
+| exec-sh2.js:10:40:10:46 | command |
+| exec-sh2.js:10:40:10:46 | command |
+| exec-sh2.js:14:9:14:49 | cmd |
+| exec-sh2.js:14:15:14:38 | url.par ... , true) |
+| exec-sh2.js:14:15:14:44 | url.par ... ).query |
+| exec-sh2.js:14:15:14:49 | url.par ... ry.path |
+| exec-sh2.js:14:25:14:31 | req.url |
+| exec-sh2.js:14:25:14:31 | req.url |
+| exec-sh2.js:15:12:15:14 | cmd |
+| exec-sh.js:13:17:13:23 | command |
+| exec-sh.js:15:44:15:50 | command |
+| exec-sh.js:15:44:15:50 | command |
+| exec-sh.js:19:9:19:49 | cmd |
+| exec-sh.js:19:15:19:38 | url.par ... , true) |
+| exec-sh.js:19:15:19:44 | url.par ... ).query |
+| exec-sh.js:19:15:19:49 | url.par ... ry.path |
+| exec-sh.js:19:25:19:31 | req.url |
+| exec-sh.js:19:25:19:31 | req.url |
+| exec-sh.js:20:12:20:14 | cmd |
+| execSeries.js:3:20:3:22 | arr |
+| execSeries.js:6:14:6:16 | arr |
+| execSeries.js:6:14:6:21 | arr[i++] |
+| execSeries.js:13:19:13:26 | commands |
+| execSeries.js:14:13:14:20 | commands |
+| execSeries.js:14:24:14:30 | command |
+| execSeries.js:14:41:14:47 | command |
+| execSeries.js:14:41:14:47 | command |
+| execSeries.js:18:7:18:58 | cmd |
+| execSeries.js:18:13:18:47 | require ... , true) |
+| execSeries.js:18:13:18:53 | require ... ).query |
+| execSeries.js:18:13:18:58 | require ... ry.path |
+| execSeries.js:18:34:18:40 | req.url |
+| execSeries.js:18:34:18:40 | req.url |
+| execSeries.js:19:12:19:16 | [cmd] |
+| execSeries.js:19:13:19:15 | cmd |
+| form-parsers.js:9:8:9:39 | "touch  ... nalname |
+| form-parsers.js:9:8:9:39 | "touch  ... nalname |
+| form-parsers.js:9:19:9:26 | req.file |
+| form-parsers.js:9:19:9:26 | req.file |
+| form-parsers.js:9:19:9:39 | req.fil ... nalname |
+| form-parsers.js:13:3:13:11 | req.files |
+| form-parsers.js:13:3:13:11 | req.files |
+| form-parsers.js:13:21:13:24 | file |
+| form-parsers.js:14:10:14:37 | "touch  ... nalname |
+| form-parsers.js:14:10:14:37 | "touch  ... nalname |
+| form-parsers.js:14:21:14:24 | file |
+| form-parsers.js:14:21:14:37 | file.originalname |
+| form-parsers.js:24:48:24:55 | filename |
+| form-parsers.js:24:48:24:55 | filename |
+| form-parsers.js:25:10:25:28 | "touch " + filename |
+| form-parsers.js:25:10:25:28 | "touch " + filename |
+| form-parsers.js:25:21:25:28 | filename |
+| form-parsers.js:35:25:35:30 | fields |
+| form-parsers.js:35:25:35:30 | fields |
+| form-parsers.js:36:10:36:31 | "touch  ... ds.name |
+| form-parsers.js:36:10:36:31 | "touch  ... ds.name |
+| form-parsers.js:36:21:36:26 | fields |
+| form-parsers.js:36:21:36:31 | fields.name |
+| form-parsers.js:40:26:40:31 | fields |
+| form-parsers.js:40:26:40:31 | fields |
+| form-parsers.js:41:10:41:31 | "touch  ... ds.name |
+| form-parsers.js:41:10:41:31 | "touch  ... ds.name |
+| form-parsers.js:41:21:41:26 | fields |
+| form-parsers.js:41:21:41:31 | fields.name |
+| form-parsers.js:52:34:52:39 | fields |
+| form-parsers.js:52:34:52:39 | fields |
+| form-parsers.js:53:10:53:31 | "touch  ... ds.name |
+| form-parsers.js:53:10:53:31 | "touch  ... ds.name |
+| form-parsers.js:53:21:53:26 | fields |
+| form-parsers.js:53:21:53:31 | fields.name |
+| form-parsers.js:58:30:58:33 | part |
+| form-parsers.js:58:30:58:33 | part |
+| form-parsers.js:59:10:59:33 | "touch  ... ilename |
+| form-parsers.js:59:10:59:33 | "touch  ... ilename |
+| form-parsers.js:59:21:59:24 | part |
+| form-parsers.js:59:21:59:33 | part.filename |
+| lib/subLib/index.js:7:32:7:35 | name |
+| lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
+| lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
+| lib/subLib/index.js:8:22:8:25 | name |
+| other.js:5:9:5:49 | cmd |
+| other.js:5:15:5:38 | url.par ... , true) |
+| other.js:5:15:5:44 | url.par ... ).query |
+| other.js:5:15:5:49 | url.par ... ry.path |
+| other.js:5:25:5:31 | req.url |
+| other.js:5:25:5:31 | req.url |
+| other.js:7:33:7:35 | cmd |
+| other.js:7:33:7:35 | cmd |
+| other.js:8:28:8:30 | cmd |
+| other.js:8:28:8:30 | cmd |
+| other.js:9:32:9:34 | cmd |
+| other.js:9:32:9:34 | cmd |
+| other.js:10:29:10:31 | cmd |
+| other.js:10:29:10:31 | cmd |
+| other.js:11:29:11:31 | cmd |
+| other.js:11:29:11:31 | cmd |
+| other.js:12:27:12:29 | cmd |
+| other.js:12:27:12:29 | cmd |
+| other.js:14:28:14:30 | cmd |
+| other.js:14:28:14:30 | cmd |
+| other.js:15:34:15:36 | cmd |
+| other.js:15:34:15:36 | cmd |
+| other.js:16:21:16:23 | cmd |
+| other.js:16:21:16:23 | cmd |
+| other.js:17:27:17:29 | cmd |
+| other.js:17:27:17:29 | cmd |
+| other.js:18:22:18:24 | cmd |
+| other.js:18:22:18:24 | cmd |
+| other.js:19:36:19:38 | cmd |
+| other.js:19:36:19:38 | cmd |
+| other.js:22:21:22:23 | cmd |
+| other.js:22:21:22:23 | cmd |
+| other.js:23:28:23:30 | cmd |
+| other.js:23:28:23:30 | cmd |
+| other.js:26:34:26:36 | cmd |
+| other.js:26:34:26:36 | cmd |
+| other.js:28:27:28:29 | cmd |
+| other.js:28:27:28:29 | cmd |
+| other.js:30:33:30:35 | cmd |
+| other.js:30:33:30:35 | cmd |
+| other.js:34:44:34:46 | cmd |
+| other.js:34:44:34:46 | cmd |
+| third-party-command-injection.js:5:20:5:26 | command |
+| third-party-command-injection.js:5:20:5:26 | command |
+| third-party-command-injection.js:6:21:6:27 | command |
+| third-party-command-injection.js:6:21:6:27 | command |
+edges
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:17:13:17:15 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:17:13:17:15 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:18:17:18:19 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:18:17:18:19 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:19:17:19:19 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:19:17:19:19 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:20:21:20:23 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:20:21:20:23 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:21:14:21:16 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:21:14:21:16 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:22:18:22:20 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:22:18:22:20 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:23:13:23:15 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:23:13:23:15 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:25:21:25:23 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:39:26:39:28 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:39:26:39:28 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:43:15:43:17 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:43:15:43:17 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:48:15:48:17 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:48:15:48:17 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:53:15:53:17 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:53:15:53:17 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:56:54:56:56 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:56:54:56:56 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:57:46:57:48 | cmd |
+| child_process-test.js:6:15:6:38 | url.par ... , true) | child_process-test.js:6:15:6:44 | url.par ... ).query |
+| child_process-test.js:6:15:6:44 | url.par ... ).query | child_process-test.js:6:15:6:49 | url.par ... ry.path |
+| child_process-test.js:6:15:6:44 | url.par ... ).query | child_process-test.js:6:15:6:49 | url.par ... ry.path |
+| child_process-test.js:6:15:6:49 | url.par ... ry.path | child_process-test.js:6:9:6:49 | cmd |
+| child_process-test.js:6:25:6:31 | req.url | child_process-test.js:6:15:6:38 | url.par ... , true) |
+| child_process-test.js:6:25:6:31 | req.url | child_process-test.js:6:15:6:38 | url.par ... , true) |
+| child_process-test.js:25:21:25:23 | cmd | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" |
+| child_process-test.js:25:21:25:23 | cmd | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" |
+| child_process-test.js:56:46:56:57 | ["bar", cmd] | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) |
+| child_process-test.js:56:46:56:57 | ["bar", cmd] | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) |
+| child_process-test.js:56:54:56:56 | cmd | child_process-test.js:56:46:56:57 | ["bar", cmd] |
+| child_process-test.js:57:46:57:48 | cmd | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) |
+| child_process-test.js:57:46:57:48 | cmd | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) |
+| child_process-test.js:73:9:73:49 | cmd | child_process-test.js:75:29:75:31 | cmd |
+| child_process-test.js:73:9:73:49 | cmd | child_process-test.js:75:29:75:31 | cmd |
+| child_process-test.js:73:15:73:38 | url.par ... , true) | child_process-test.js:73:15:73:44 | url.par ... ).query |
+| child_process-test.js:73:15:73:44 | url.par ... ).query | child_process-test.js:73:15:73:49 | url.par ... ry.path |
+| child_process-test.js:73:15:73:49 | url.par ... ry.path | child_process-test.js:73:9:73:49 | cmd |
+| child_process-test.js:73:25:73:31 | req.url | child_process-test.js:73:15:73:38 | url.par ... , true) |
+| child_process-test.js:73:25:73:31 | req.url | child_process-test.js:73:15:73:38 | url.par ... , true) |
+| child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName |
+| child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib/index.js:7:32:7:35 | name |
+| child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib/index.js:7:32:7:35 | name |
+| child_process-test.js:94:21:94:30 | ctx.params | child_process-test.js:94:21:94:35 | ctx.params.host |
+| child_process-test.js:94:21:94:30 | ctx.params | child_process-test.js:94:21:94:35 | ctx.params.host |
+| child_process-test.js:94:21:94:35 | ctx.params.host | child_process-test.js:94:11:94:35 | "ping " ... ms.host |
+| child_process-test.js:94:21:94:35 | ctx.params.host | child_process-test.js:94:11:94:35 | "ping " ... ms.host |
+| exec-sh2.js:9:17:9:23 | command | exec-sh2.js:10:40:10:46 | command |
+| exec-sh2.js:9:17:9:23 | command | exec-sh2.js:10:40:10:46 | command |
+| exec-sh2.js:14:9:14:49 | cmd | exec-sh2.js:15:12:15:14 | cmd |
+| exec-sh2.js:14:15:14:38 | url.par ... , true) | exec-sh2.js:14:15:14:44 | url.par ... ).query |
+| exec-sh2.js:14:15:14:44 | url.par ... ).query | exec-sh2.js:14:15:14:49 | url.par ... ry.path |
+| exec-sh2.js:14:15:14:49 | url.par ... ry.path | exec-sh2.js:14:9:14:49 | cmd |
+| exec-sh2.js:14:25:14:31 | req.url | exec-sh2.js:14:15:14:38 | url.par ... , true) |
+| exec-sh2.js:14:25:14:31 | req.url | exec-sh2.js:14:15:14:38 | url.par ... , true) |
+| exec-sh2.js:15:12:15:14 | cmd | exec-sh2.js:9:17:9:23 | command |
+| exec-sh.js:13:17:13:23 | command | exec-sh.js:15:44:15:50 | command |
+| exec-sh.js:13:17:13:23 | command | exec-sh.js:15:44:15:50 | command |
+| exec-sh.js:19:9:19:49 | cmd | exec-sh.js:20:12:20:14 | cmd |
+| exec-sh.js:19:15:19:38 | url.par ... , true) | exec-sh.js:19:15:19:44 | url.par ... ).query |
+| exec-sh.js:19:15:19:44 | url.par ... ).query | exec-sh.js:19:15:19:49 | url.par ... ry.path |
+| exec-sh.js:19:15:19:49 | url.par ... ry.path | exec-sh.js:19:9:19:49 | cmd |
+| exec-sh.js:19:25:19:31 | req.url | exec-sh.js:19:15:19:38 | url.par ... , true) |
+| exec-sh.js:19:25:19:31 | req.url | exec-sh.js:19:15:19:38 | url.par ... , true) |
+| exec-sh.js:20:12:20:14 | cmd | exec-sh.js:13:17:13:23 | command |
+| execSeries.js:3:20:3:22 | arr | execSeries.js:6:14:6:16 | arr |
+| execSeries.js:6:14:6:16 | arr | execSeries.js:6:14:6:21 | arr[i++] |
+| execSeries.js:6:14:6:21 | arr[i++] | execSeries.js:14:24:14:30 | command |
+| execSeries.js:13:19:13:26 | commands | execSeries.js:14:13:14:20 | commands |
+| execSeries.js:14:13:14:20 | commands | execSeries.js:3:20:3:22 | arr |
+| execSeries.js:14:13:14:20 | commands | execSeries.js:14:24:14:30 | command |
+| execSeries.js:14:24:14:30 | command | execSeries.js:14:41:14:47 | command |
+| execSeries.js:14:24:14:30 | command | execSeries.js:14:41:14:47 | command |
+| execSeries.js:18:7:18:58 | cmd | execSeries.js:19:13:19:15 | cmd |
+| execSeries.js:18:13:18:47 | require ... , true) | execSeries.js:18:13:18:53 | require ... ).query |
+| execSeries.js:18:13:18:53 | require ... ).query | execSeries.js:18:13:18:58 | require ... ry.path |
+| execSeries.js:18:13:18:58 | require ... ry.path | execSeries.js:18:7:18:58 | cmd |
+| execSeries.js:18:34:18:40 | req.url | execSeries.js:18:13:18:47 | require ... , true) |
+| execSeries.js:18:34:18:40 | req.url | execSeries.js:18:13:18:47 | require ... , true) |
+| execSeries.js:19:12:19:16 | [cmd] | execSeries.js:13:19:13:26 | commands |
+| execSeries.js:19:13:19:15 | cmd | execSeries.js:19:12:19:16 | [cmd] |
+| form-parsers.js:9:19:9:26 | req.file | form-parsers.js:9:19:9:39 | req.fil ... nalname |
+| form-parsers.js:9:19:9:26 | req.file | form-parsers.js:9:19:9:39 | req.fil ... nalname |
+| form-parsers.js:9:19:9:39 | req.fil ... nalname | form-parsers.js:9:8:9:39 | "touch  ... nalname |
+| form-parsers.js:9:19:9:39 | req.fil ... nalname | form-parsers.js:9:8:9:39 | "touch  ... nalname |
+| form-parsers.js:13:3:13:11 | req.files | form-parsers.js:13:21:13:24 | file |
+| form-parsers.js:13:3:13:11 | req.files | form-parsers.js:13:21:13:24 | file |
+| form-parsers.js:13:21:13:24 | file | form-parsers.js:14:21:14:24 | file |
+| form-parsers.js:14:21:14:24 | file | form-parsers.js:14:21:14:37 | file.originalname |
+| form-parsers.js:14:21:14:37 | file.originalname | form-parsers.js:14:10:14:37 | "touch  ... nalname |
+| form-parsers.js:14:21:14:37 | file.originalname | form-parsers.js:14:10:14:37 | "touch  ... nalname |
+| form-parsers.js:24:48:24:55 | filename | form-parsers.js:25:21:25:28 | filename |
+| form-parsers.js:24:48:24:55 | filename | form-parsers.js:25:21:25:28 | filename |
+| form-parsers.js:25:21:25:28 | filename | form-parsers.js:25:10:25:28 | "touch " + filename |
+| form-parsers.js:25:21:25:28 | filename | form-parsers.js:25:10:25:28 | "touch " + filename |
+| form-parsers.js:35:25:35:30 | fields | form-parsers.js:36:21:36:26 | fields |
+| form-parsers.js:35:25:35:30 | fields | form-parsers.js:36:21:36:26 | fields |
+| form-parsers.js:36:21:36:26 | fields | form-parsers.js:36:21:36:31 | fields.name |
+| form-parsers.js:36:21:36:31 | fields.name | form-parsers.js:36:10:36:31 | "touch  ... ds.name |
+| form-parsers.js:36:21:36:31 | fields.name | form-parsers.js:36:10:36:31 | "touch  ... ds.name |
+| form-parsers.js:40:26:40:31 | fields | form-parsers.js:41:21:41:26 | fields |
+| form-parsers.js:40:26:40:31 | fields | form-parsers.js:41:21:41:26 | fields |
+| form-parsers.js:41:21:41:26 | fields | form-parsers.js:41:21:41:31 | fields.name |
+| form-parsers.js:41:21:41:31 | fields.name | form-parsers.js:41:10:41:31 | "touch  ... ds.name |
+| form-parsers.js:41:21:41:31 | fields.name | form-parsers.js:41:10:41:31 | "touch  ... ds.name |
+| form-parsers.js:52:34:52:39 | fields | form-parsers.js:53:21:53:26 | fields |
+| form-parsers.js:52:34:52:39 | fields | form-parsers.js:53:21:53:26 | fields |
+| form-parsers.js:53:21:53:26 | fields | form-parsers.js:53:21:53:31 | fields.name |
+| form-parsers.js:53:21:53:31 | fields.name | form-parsers.js:53:10:53:31 | "touch  ... ds.name |
+| form-parsers.js:53:21:53:31 | fields.name | form-parsers.js:53:10:53:31 | "touch  ... ds.name |
+| form-parsers.js:58:30:58:33 | part | form-parsers.js:59:21:59:24 | part |
+| form-parsers.js:58:30:58:33 | part | form-parsers.js:59:21:59:24 | part |
+| form-parsers.js:59:21:59:24 | part | form-parsers.js:59:21:59:33 | part.filename |
+| form-parsers.js:59:21:59:33 | part.filename | form-parsers.js:59:10:59:33 | "touch  ... ilename |
+| form-parsers.js:59:21:59:33 | part.filename | form-parsers.js:59:10:59:33 | "touch  ... ilename |
+| lib/subLib/index.js:7:32:7:35 | name | lib/subLib/index.js:8:22:8:25 | name |
+| lib/subLib/index.js:8:22:8:25 | name | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
+| lib/subLib/index.js:8:22:8:25 | name | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
+| other.js:5:9:5:49 | cmd | other.js:7:33:7:35 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:7:33:7:35 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:8:28:8:30 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:8:28:8:30 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:9:32:9:34 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:9:32:9:34 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:10:29:10:31 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:10:29:10:31 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:11:29:11:31 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:11:29:11:31 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:12:27:12:29 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:12:27:12:29 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:14:28:14:30 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:14:28:14:30 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:15:34:15:36 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:15:34:15:36 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:16:21:16:23 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:16:21:16:23 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:17:27:17:29 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:17:27:17:29 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:18:22:18:24 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:18:22:18:24 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:19:36:19:38 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:19:36:19:38 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:22:21:22:23 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:22:21:22:23 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:23:28:23:30 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:23:28:23:30 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:26:34:26:36 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:26:34:26:36 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:28:27:28:29 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:28:27:28:29 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:30:33:30:35 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:30:33:30:35 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:34:44:34:46 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:34:44:34:46 | cmd |
+| other.js:5:15:5:38 | url.par ... , true) | other.js:5:15:5:44 | url.par ... ).query |
+| other.js:5:15:5:44 | url.par ... ).query | other.js:5:15:5:49 | url.par ... ry.path |
+| other.js:5:15:5:49 | url.par ... ry.path | other.js:5:9:5:49 | cmd |
+| other.js:5:25:5:31 | req.url | other.js:5:15:5:38 | url.par ... , true) |
+| other.js:5:25:5:31 | req.url | other.js:5:15:5:38 | url.par ... , true) |
+| third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command |
+| third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command |
+| third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command |
+| third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command |
+#select
+| child_process-test.js:17:13:17:15 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:17:13:17:15 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:18:17:18:19 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:18:17:18:19 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:19:17:19:19 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:19:17:19:19 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:20:21:20:23 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:20:21:20:23 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:21:14:21:16 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:21:14:21:16 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:22:18:22:20 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:22:18:22:20 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:23:13:23:15 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:23:13:23:15 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:39:5:39:31 | cp.spaw ...  cmd ]) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:39:26:39:28 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:44:5:44:34 | cp.exec ... , args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:43:15:43:17 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:54:5:54:39 | cp.exec ... , args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:53:15:53:17 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:56:5:56:59 | cp.spaw ...  cmd])) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:56:5:56:59 | cp.spaw ...  cmd])) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:56:54:56:56 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:57:5:57:50 | cp.spaw ... t(cmd)) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:6:15:6:49 | url.par ... ry.path | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:57:5:57:50 | cp.spaw ... t(cmd)) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:62:5:62:39 | cp.exec ... , args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:53:15:53:17 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:67:3:67:21 | cp.spawn(cmd, args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:48:15:48:17 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:75:29:75:31 | cmd | child_process-test.js:73:25:73:31 | req.url | child_process-test.js:75:29:75:31 | cmd | This command depends on $@. | child_process-test.js:73:25:73:31 | req.url | a user-provided value |
+| child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | This command depends on $@. | child_process-test.js:83:19:83:36 | req.query.fileName | a user-provided value |
+| child_process-test.js:94:11:94:35 | "ping " ... ms.host | child_process-test.js:94:21:94:30 | ctx.params | child_process-test.js:94:11:94:35 | "ping " ... ms.host | This command depends on $@. | child_process-test.js:94:21:94:30 | ctx.params | a user-provided value |
+| exec-sh2.js:10:12:10:57 | cp.spaw ... ptions) | exec-sh2.js:14:25:14:31 | req.url | exec-sh2.js:10:40:10:46 | command | This command depends on $@. | exec-sh2.js:14:25:14:31 | req.url | a user-provided value |
+| exec-sh.js:15:12:15:61 | cp.spaw ... ptions) | exec-sh.js:19:25:19:31 | req.url | exec-sh.js:15:44:15:50 | command | This command depends on $@. | exec-sh.js:19:25:19:31 | req.url | a user-provided value |
+| execSeries.js:14:41:14:47 | command | execSeries.js:18:34:18:40 | req.url | execSeries.js:14:41:14:47 | command | This command depends on $@. | execSeries.js:18:34:18:40 | req.url | a user-provided value |
+| form-parsers.js:9:8:9:39 | "touch  ... nalname | form-parsers.js:9:19:9:26 | req.file | form-parsers.js:9:8:9:39 | "touch  ... nalname | This command depends on $@. | form-parsers.js:9:19:9:26 | req.file | a user-provided value |
+| form-parsers.js:14:10:14:37 | "touch  ... nalname | form-parsers.js:13:3:13:11 | req.files | form-parsers.js:14:10:14:37 | "touch  ... nalname | This command depends on $@. | form-parsers.js:13:3:13:11 | req.files | a user-provided value |
+| form-parsers.js:25:10:25:28 | "touch " + filename | form-parsers.js:24:48:24:55 | filename | form-parsers.js:25:10:25:28 | "touch " + filename | This command depends on $@. | form-parsers.js:24:48:24:55 | filename | a user-provided value |
+| form-parsers.js:36:10:36:31 | "touch  ... ds.name | form-parsers.js:35:25:35:30 | fields | form-parsers.js:36:10:36:31 | "touch  ... ds.name | This command depends on $@. | form-parsers.js:35:25:35:30 | fields | a user-provided value |
+| form-parsers.js:41:10:41:31 | "touch  ... ds.name | form-parsers.js:40:26:40:31 | fields | form-parsers.js:41:10:41:31 | "touch  ... ds.name | This command depends on $@. | form-parsers.js:40:26:40:31 | fields | a user-provided value |
+| form-parsers.js:53:10:53:31 | "touch  ... ds.name | form-parsers.js:52:34:52:39 | fields | form-parsers.js:53:10:53:31 | "touch  ... ds.name | This command depends on $@. | form-parsers.js:52:34:52:39 | fields | a user-provided value |
+| form-parsers.js:59:10:59:33 | "touch  ... ilename | form-parsers.js:58:30:58:33 | part | form-parsers.js:59:10:59:33 | "touch  ... ilename | This command depends on $@. | form-parsers.js:58:30:58:33 | part | a user-provided value |
+| lib/subLib/index.js:8:10:8:25 | "rm -rf " + name | child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name | This command depends on $@. | child_process-test.js:85:37:85:54 | req.query.fileName | a user-provided value |
+| other.js:7:33:7:35 | cmd | other.js:5:25:5:31 | req.url | other.js:7:33:7:35 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:8:28:8:30 | cmd | other.js:5:25:5:31 | req.url | other.js:8:28:8:30 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:9:32:9:34 | cmd | other.js:5:25:5:31 | req.url | other.js:9:32:9:34 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:10:29:10:31 | cmd | other.js:5:25:5:31 | req.url | other.js:10:29:10:31 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:11:29:11:31 | cmd | other.js:5:25:5:31 | req.url | other.js:11:29:11:31 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:12:27:12:29 | cmd | other.js:5:25:5:31 | req.url | other.js:12:27:12:29 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:14:28:14:30 | cmd | other.js:5:25:5:31 | req.url | other.js:14:28:14:30 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:15:34:15:36 | cmd | other.js:5:25:5:31 | req.url | other.js:15:34:15:36 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:16:21:16:23 | cmd | other.js:5:25:5:31 | req.url | other.js:16:21:16:23 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:17:27:17:29 | cmd | other.js:5:25:5:31 | req.url | other.js:17:27:17:29 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:18:22:18:24 | cmd | other.js:5:25:5:31 | req.url | other.js:18:22:18:24 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:19:36:19:38 | cmd | other.js:5:25:5:31 | req.url | other.js:19:36:19:38 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:22:21:22:23 | cmd | other.js:5:25:5:31 | req.url | other.js:22:21:22:23 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:23:28:23:30 | cmd | other.js:5:25:5:31 | req.url | other.js:23:28:23:30 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:26:34:26:36 | cmd | other.js:5:25:5:31 | req.url | other.js:26:34:26:36 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:28:27:28:29 | cmd | other.js:5:25:5:31 | req.url | other.js:28:27:28:29 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:30:33:30:35 | cmd | other.js:5:25:5:31 | req.url | other.js:30:33:30:35 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:34:44:34:46 | cmd | other.js:5:25:5:31 | req.url | other.js:34:44:34:46 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| third-party-command-injection.js:6:21:6:27 | command | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command | This command depends on $@. | third-party-command-injection.js:5:20:5:26 | command | a server-provided value |

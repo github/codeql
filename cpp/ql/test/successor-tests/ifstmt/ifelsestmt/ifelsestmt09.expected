@@ -1,0 +1,12 @@
+| 0 | ifelsestmt.c:19:22:27:1 | { ... } | 1 | ifelsestmt.c:20:3:25:3 | if (...) ...  |
+| 1 | ifelsestmt.c:20:3:25:3 | if (...) ...  | 1 | ifelsestmt.c:20:6:20:6 | 1 |
+| 1 | ifelsestmt.c:20:6:20:6 | 1 | 1 | ifelsestmt.c:20:9:22:3 | { ... } |
+| 1 | ifelsestmt.c:20:9:22:3 | { ... } | 2 | ifelsestmt.c:21:5:21:7 | label ...: |
+| 2 | ifelsestmt.c:21:5:21:7 | label ...: | 2 | ifelsestmt.c:21:8:21:8 | ; |
+| 2 | ifelsestmt.c:21:8:21:8 | ; | 7 | ifelsestmt.c:26:3:26:5 | label ...: |
+| 4 | ifelsestmt.c:23:8:25:3 | { ... } | 5 | ifelsestmt.c:24:5:24:7 | label ...: |
+| 5 | ifelsestmt.c:24:5:24:7 | label ...: | 5 | ifelsestmt.c:24:8:24:8 | ; |
+| 5 | ifelsestmt.c:24:8:24:8 | ; | 7 | ifelsestmt.c:26:3:26:5 | label ...: |
+| 7 | ifelsestmt.c:26:3:26:5 | label ...: | 7 | ifelsestmt.c:26:6:26:6 | ; |
+| 7 | ifelsestmt.c:26:6:26:6 | ; | 8 | ifelsestmt.c:27:1:27:1 | return ... |
+| 8 | ifelsestmt.c:27:1:27:1 | return ... | 0 | ifelsestmt.c:19:6:19:18 | always_true_1 |

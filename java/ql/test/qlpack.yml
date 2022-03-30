@@ -1,0 +1,7 @@
+name: codeql/java-tests
+groups: [java, test]
+dependencies:
+    codeql/java-all: "*"
+    codeql/java-queries: "*"
+extractor: java
+tests: .

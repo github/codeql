@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+A method that queries the contents of a collection or map (such as <code>containsKey</code>
+or <code>isEmpty</code>) is invoked on an object that is known to be empty. Such method
+calls do not return interesting results, and may indicate missing code or a logic error. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Either remove the collection/map if it is unnecessary, or ensure that it contains the
+elements it was meant to contain.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example code iterates over an array of objects to determine whether it contains
+duplicate elements. It maintains a collection <code>seen</code>, which is intended to contain
+all the elements seen so far in traversing the array. If the current element is already
+contained in that collection then the method returns <code>true</code>, indicating that a
+duplicate has been found.
+</p> 
+
+<p>
+Note, however, that no elements are ever actually added to <code>seen</code>, so the method always
+returns <code>false</code>.
+</p>
+
+<sample src="ReadOnlyContainer.java" />
+
+<p>
+To fix this problem, a statement <code>seen.add(o);</code> should be added to the end of the loop
+body to ensure that <code>seen</code> is correctly maintained.
+</p>
+
+</example>
+<references>
+
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Collection.html">Collection</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Map.html">Map</a>.
+</li>
+
+
+</references>
+</qhelp>

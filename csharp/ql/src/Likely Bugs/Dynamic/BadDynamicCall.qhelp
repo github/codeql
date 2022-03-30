@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Method calls on variables declared with type 'dynamic' are resolved at runtime rather than 
+compile-time - the actual type of the instance is determined, and an attempt is made to call a 
+method on that type with the appropriate signature. If such a method does not exist, a <code>
+RuntimeBinderException</code> is thrown.</p>
+
+<p>This rule identifies calls to instances with the <code>dynamic</code> type where it can be 
+statically determined that the call will throw a <code>RuntimeBinderException</code>.</p>
+
+</overview>
+<recommendation>
+<p>Ensure it is not possible to make a call to a dynamic instance of a type that lacks the 
+appropriate method signature for handling that call.</p>
+
+</recommendation>
+<example>
+<p>In this example the program attempts to call <code>Foo</code> on a class that doesn't have a 
+<code>Foo</code> method. This program is guaranteed to fail at runtime with a <code>
+RuntimeBinderException</code>.</p>
+<sample src="BadDynamicCall.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-gb/library/dd264741.aspx">dynamic (C# Reference)</a>.</li>
+
+
+</references>
+</qhelp>

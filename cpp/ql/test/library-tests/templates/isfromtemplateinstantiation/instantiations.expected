@@ -1,0 +1,12 @@
+| isfromtemplateinstantiation.cpp:12:24:12:24 | inner_template_function | FunctionTemplateInstantiation | file://:0:0:0:0 | long |
+| isfromtemplateinstantiation.cpp:12:24:12:24 | inner_template_function | FunctionTemplateInstantiation | file://:0:0:0:0 | short |
+| isfromtemplateinstantiation.cpp:19:24:19:24 | outer_template_function | FunctionTemplateInstantiation | file://:0:0:0:0 | long |
+| isfromtemplateinstantiation.cpp:19:24:19:24 | outer_template_function | FunctionTemplateInstantiation | file://:0:0:0:0 | short |
+| isfromtemplateinstantiation.cpp:38:26:38:26 | a_template_method | FunctionTemplateInstantiation | file://:0:0:0:0 | short |
+| isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<char> | ClassTemplateInstantiation | file://:0:0:0:0 | char |
+| isfromtemplateinstantiation.cpp:53:26:53:26 | b_template_method | FunctionTemplateInstantiation | file://:0:0:0:0 | long |
+| isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<int> | ClassTemplateInstantiation | file://:0:0:0:0 | int |
+| isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<long *> | ClassTemplateInstantiation | file://:0:0:0:0 | long * |
+| isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> | ClassTemplateInstantiation | file://:0:0:0:0 | int |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> | ClassTemplateInstantiation | file://:0:0:0:0 | long |
+| load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> | ClassTemplateInstantiation | load.cpp:3:7:3:24 | std_istream_mockup |

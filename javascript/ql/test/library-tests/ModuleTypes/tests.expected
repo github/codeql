@@ -1,0 +1,10 @@
+| commonjs.cjs:1:1:3:16 | <toplevel> | node |
+| commonjsPackage/innermjs.mjs:1:1:1:74 | <toplevel> | es2015 |
+| commonjsPackage/tst.js:1:1:1:75 | <toplevel> | node |
+| import.js:1:1:5:2 | <toplevel> | es2015 |
+| mjs.mjs:1:1:1:32 | <toplevel> | es2015 |
+| modulePackage/subdir/innercjs.cjs:1:1:1:74 | <toplevel> | node |
+| modulePackage/subdir/subfile.js:1:1:1:14 | <toplevel> | es2015 |
+| modulePackage/tst.js:1:1:1:75 | <toplevel> | es2015 |
+| require.js:1:1:7:1 | <toplevel> | node |
+| script.js:1:1:1:35 | <toplevel> | non-module |

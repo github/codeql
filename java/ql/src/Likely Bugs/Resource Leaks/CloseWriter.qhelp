@@ -1,0 +1,61 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A subclass of <code>Writer</code> or <code>OutputStream</code> that is opened for writing
+but not properly closed later may cause a resource leak.  
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that the resource is always closed to avoid a resource leak. Note that, because of exceptions,
+it is safest to close a resource properly in a <code>finally</code> block. (However, this is unnecessary for
+subclasses of <code>CharArrayWriter</code>, <code>StringWriter</code> and <code>ByteArrayOutputStream</code>.)</p>
+
+<p>For Java 7 or later, the recommended way to close resources that implement <code>java.lang.AutoCloseable</code>
+is to declare them within a <code>try-with-resources</code> statement, so that they are closed implicitly.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the resource <code>bw</code> is opened but not closed.</p>
+
+<sample src="CloseWriter.java" />
+
+<p>In the following example, the resource <code>bw</code> is opened in a <code>try</code> block and 
+later closed in a <code>finally</code> block.</p>
+
+<sample src="CloseWriterGood.java" />
+
+<p>Note that nested class instance creation expressions of <code>Writer</code>s or <code>OutputStream</code>s
+are not safe to use if the constructor of the outer expression may throw an exception. In the following
+example, the <code>OutputStreamWriter</code> may throw an exception, in which case the inner <code>FileOutputStream</code>
+is not closed.
+</p>
+
+<sample src="CloseWriterNested.java" />
+
+<p>
+In this case, the inner expression needs to be assigned to a local variable and closed separately, as shown below.
+</p>
+
+<sample src="CloseWriterNestedGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  IBM developerWorks: <a href="https://web.archive.org/web/20201109041839/http://www.ibm.com/developerworks/java/library/j-jtp03216/index.html">Java theory and practice: Good housekeeping practices</a>.
+</li>
+<li>
+  The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html">The try-with-resources Statement</a>.
+</li>
+
+
+</references>
+</qhelp>

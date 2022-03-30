@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This query finds calls to:</p>
+<ul>
+<li><code>malloc</code> that use a <code>strlen</code> for the buffer size and do not take the 
+zero terminator into consideration.</li>
+<li><code>strcat</code> or <code>strncat</code> that use buffers that are too small to contain the new string.</li>
+</ul>
+
+<p>
+The highlighted expression will cause a buffer overflow because the buffer is too small to contain
+the data being copied. Buffer overflows can result to anything from a segmentation fault to a security vulnerability (particularly 
+if the array is on stack-allocated memory).
+</p>
+
+<include src="aliasAnalysisWarning.inc.qhelp" />
+</overview>
+
+<recommendation>
+<p>
+Increase the size of the buffer being allocated.
+</p>
+</recommendation>
+
+<example>
+<p>This example includes three annotated calls that copy a string into a buffer.
+The first call to <code>malloc</code> creates a buffer that's the 
+same size as the string, leaving no space for the zero terminator 
+and causing an overflow. The second call to <code>malloc</code> 
+correctly calculates the required buffer size. The call to 
+<code>strcat</code> appends an additional string to the same buffer 
+causing a second overflow.</p>
+
+<sample src="OverflowCalculated.cpp" />
+</example>
+
+<references>
+<li><a href="http://cwe.mitre.org/data/definitions/131.html">CWE-131: Incorrect Calculation of Buffer Size</a></li>
+<li>I. Gerg. <em>An Overview and Example of the Buffer-Overflow Exploit</em>. IANewsletter vol 7 no 4. 2005.</li>
+<li>M. Donaldson. <em>Inside the Buffer Overflow Attack: Mechanism, Method &amp; Prevention</em>. SANS Institute InfoSec Reading Room. 2002.</li>
+</references>
+</qhelp>

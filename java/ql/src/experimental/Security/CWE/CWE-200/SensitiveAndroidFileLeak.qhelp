@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The Android API allows to start an activity in another mobile application and receive a result back.
+When starting an activity to retrieve a file from another application, missing input validation can
+lead to leaking of sensitive configuration file or user data because the intent could refer to paths
+which are accessible to the receiver application, but are intended to be application-private.
+</p>
+</overview>
+
+<recommendation>
+<p>
+When loading file data from an activity of another application, validate that the file path is not the receiver's
+protected directory, which is a subdirectory of the Android application directory <code>/data/data/</code>.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following examples show a bad situation and a good situation respectively. In the bad situation, a
+file is loaded without path validation. In the good situation, a file is loaded with path validation.
+</p>
+<sample src="LoadFileFromAppActivity.java" />
+</example>
+
+<references>
+<li>
+Google:
+<a href="https://developer.android.com/training/basics/intents">Android: Interacting with Other Apps</a>.
+</li>
+<li>
+CVE:
+<a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-32695">CVE-2021-32695: File Sharing Flow Initiated by a Victim Leaks Sensitive Data to a Malicious App</a>.
+</li>
+</references>
+</qhelp>

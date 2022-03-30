@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds uses of the equality operator <code>==</code> in places where the 
+assignment operator <code>=</code> would make more sense. This is a common mistake in
+C and C++, because of the similarity of the <code>=</code> and the <code>==</code> operator, 
+and the fact that expressions are valid as top-level statements.</p>
+
+<p>
+The rule flags every occurrence of an equality operator in a position where its result is discarded.
+</p>
+
+</overview>
+<recommendation>
+<p>Check to ensure that the flagged expressions are not typos. If the result of an equality test is really intended to be discarded, it should be explicitly cast to <code>void</code>.</p>
+
+</recommendation>
+<example><sample src="CompareWhereAssignMeant.cpp" />
+
+</example>
+<references>
+
+<li>
+  Tutorialspoint - The C++ Programming Language: <a href="http://www.tutorialspoint.com/cplusplus/cpp_operators.htm">Operators in C++</a>
+</li>
+<li>
+  Wikipedia: <a href="http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B#Comparison_operators.2Frelational_operators">Operators in C and C++</a>
+</li>
+
+
+
+
+
+</references>
+</qhelp>

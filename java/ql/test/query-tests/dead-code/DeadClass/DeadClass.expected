@@ -1,0 +1,5 @@
+| DeadEnumTest.java:2:15:2:22 | DeadEnum | The class DeadEnum is entirely unused. | DeadEnumTest.java:2:15:2:22 | DeadEnum | DeadEnum |
+| ExternalDeadCodeCycle.java:8:22:8:30 | DeadClass | The class DeadClass is only used from or in a dead-code cycle. | ExternalDeadCodeCycle.java:8:22:8:30 | DeadClass | DeadClass |
+| ExternalDeadRoot.java:8:22:8:30 | DeadClass | The class DeadClass is only used from dead code originating at $@. | ExternalDeadRoot.java:16:21:16:33 | outerDeadRoot | outerDeadRoot |
+| InternalDeadCodeCycle.java:4:14:4:34 | InternalDeadCodeCycle | The class InternalDeadCodeCycle is entirely unused. | InternalDeadCodeCycle.java:4:14:4:34 | InternalDeadCodeCycle | InternalDeadCodeCycle |
+| NamespaceTest.java:35:23:35:39 | NonNamespaceClass | The class NonNamespaceClass is entirely unused. | NamespaceTest.java:35:23:35:39 | NonNamespaceClass | NonNamespaceClass |

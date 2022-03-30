@@ -1,0 +1,55 @@
+| queries.cs:9:44:9:44 | call to method Add | 0 | queries.cs:9:44:9:44 | 1 |
+| queries.cs:9:47:9:47 | call to method Add | 0 | queries.cs:9:47:9:47 | 2 |
+| queries.cs:9:50:9:50 | call to method Add | 0 | queries.cs:9:50:9:50 | 3 |
+| queries.cs:10:58:10:62 | call to method Add | 0 | queries.cs:10:58:10:62 | access to local variable list1 |
+| queries.cs:10:65:10:69 | call to method Add | 0 | queries.cs:10:65:10:69 | access to local variable list1 |
+| queries.cs:14:11:14:32 | call to method Where<Int32> | 0 | queries.cs:13:11:13:25 | Int32 a = ... |
+| queries.cs:14:11:14:32 | call to method Where<Int32> | 1 | queries.cs:14:17:14:32 | ... \|\| ... |
+| queries.cs:15:11:15:29 | call to method OrderBy<Int32,Int32> | 0 | queries.cs:14:11:14:32 | call to method Where<Int32> |
+| queries.cs:15:11:15:29 | call to method OrderBy<Int32,Int32> | 1 | queries.cs:15:19:15:19 | access to local variable a |
+| queries.cs:16:11:16:22 | call to method Select<Int32,Int32> | 0 | queries.cs:15:11:15:29 | call to method OrderBy<Int32,Int32> |
+| queries.cs:16:11:16:22 | call to method Select<Int32,Int32> | 1 | queries.cs:16:18:16:22 | ... + ... |
+| queries.cs:18:21:19:38 | call to method Where<Int32> | 0 | queries.cs:18:21:18:25 | access to local variable list1 |
+| queries.cs:18:21:19:38 | call to method Where<Int32> | 1 | queries.cs:19:17:19:37 | (...) => ... |
+| queries.cs:18:21:20:25 | call to method OrderBy<Int32,Int32> | 0 | queries.cs:18:21:19:38 | call to method Where<Int32> |
+| queries.cs:18:21:20:25 | call to method OrderBy<Int32,Int32> | 1 | queries.cs:20:19:20:24 | (...) => ... |
+| queries.cs:18:21:21:28 | call to method Select<Int32,Int32> | 0 | queries.cs:18:21:20:25 | call to method OrderBy<Int32,Int32> |
+| queries.cs:18:21:21:28 | call to method Select<Int32,Int32> | 1 | queries.cs:21:18:21:27 | (...) => ... |
+| queries.cs:25:11:25:21 | call to method SelectMany<IList<Int32>,Int32,<>__AnonType0<IList,Int32>> | 0 | queries.cs:24:11:24:25 | IList<Int32> a = ... |
+| queries.cs:25:11:25:21 | call to method SelectMany<IList<Int32>,Int32,<>__AnonType0<IList,Int32>> | 1 | queries.cs:25:11:25:21 | IList<Int32> b = ... |
+| queries.cs:25:11:25:21 | call to method SelectMany<IList<Int32>,Int32,<>__AnonType0<IList,Int32>> | 2 | queries.cs:25:21:25:21 | access to local variable a |
+| queries.cs:26:11:26:26 | call to method Select<<>__AnonType0<IList,Int32>,<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>> | 0 | queries.cs:25:11:25:21 | call to method SelectMany<IList<Int32>,Int32,<>__AnonType0<IList,Int32>> |
+| queries.cs:26:11:26:26 | call to method Select<<>__AnonType0<IList,Int32>,<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>> | 1 | queries.cs:26:11:26:26 | Int32 next = ... |
+| queries.cs:26:11:26:26 | call to method Select<<>__AnonType0<IList,Int32>,<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>> | 2 | queries.cs:26:22:26:26 | ... + ... |
+| queries.cs:27:11:27:42 | call to method Join<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32,Int32,Int32> | 0 | queries.cs:26:11:26:26 | call to method Select<<>__AnonType0<IList,Int32>,<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>> |
+| queries.cs:27:11:27:42 | call to method Join<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32,Int32,Int32> | 1 | queries.cs:27:11:27:42 | IList<Int32> c = ... |
+| queries.cs:27:11:27:42 | call to method Join<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32,Int32,Int32> | 2 | queries.cs:27:21:27:25 | access to local variable list1 |
+| queries.cs:27:11:27:42 | call to method Join<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32,Int32,Int32> | 3 | queries.cs:27:30:27:33 | access to local variable next |
+| queries.cs:27:11:27:42 | call to method Join<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32,Int32,Int32> | 4 | queries.cs:27:42:27:42 | access to local variable c |
+| queries.cs:28:11:28:18 | call to method  | 0 | queries.cs:27:11:27:42 | call to method Join<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32,Int32,Int32> |
+| queries.cs:28:11:28:18 | call to method  | 1 | queries.cs:28:18:28:18 | 1 |
+| queries.cs:32:11:32:21 | call to method SelectMany<IList<Int32>,Int32,<>__AnonType0<IList,Int32>> | 0 | queries.cs:31:11:31:25 | IList<Int32> a = ... |
+| queries.cs:32:11:32:21 | call to method SelectMany<IList<Int32>,Int32,<>__AnonType0<IList,Int32>> | 1 | queries.cs:32:11:32:21 | IList<Int32> b = ... |
+| queries.cs:32:11:32:21 | call to method SelectMany<IList<Int32>,Int32,<>__AnonType0<IList,Int32>> | 2 | queries.cs:32:21:32:21 | access to local variable a |
+| queries.cs:33:11:33:26 | call to method Select<<>__AnonType0<IList,Int32>,<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>> | 0 | queries.cs:32:11:32:21 | call to method SelectMany<IList<Int32>,Int32,<>__AnonType0<IList,Int32>> |
+| queries.cs:33:11:33:26 | call to method Select<<>__AnonType0<IList,Int32>,<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>> | 1 | queries.cs:33:11:33:26 | Int32 next = ... |
+| queries.cs:33:11:33:26 | call to method Select<<>__AnonType0<IList,Int32>,<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>> | 2 | queries.cs:33:22:33:26 | ... + ... |
+| queries.cs:34:11:34:37 | call to method OrderByDescending<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32> | 0 | queries.cs:33:11:33:26 | call to method Select<<>__AnonType0<IList,Int32>,<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>> |
+| queries.cs:34:11:34:37 | call to method OrderByDescending<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32> | 1 | queries.cs:34:19:34:26 | ... * ... |
+| queries.cs:35:11:35:25 | call to method GroupBy<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32,Int32> | 0 | queries.cs:34:11:34:37 | call to method OrderByDescending<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32> |
+| queries.cs:35:11:35:25 | call to method GroupBy<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32,Int32> | 1 | queries.cs:35:17:35:17 | access to local variable b |
+| queries.cs:35:11:35:25 | call to method GroupBy<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32,Int32> | 2 | queries.cs:35:22:35:25 | access to local variable next |
+| queries.cs:41:11:41:18 | call to method Select<Object,Object> | 0 | queries.cs:40:11:40:32 | Object a = ... |
+| queries.cs:41:11:41:18 | call to method Select<Object,Object> | 1 | queries.cs:41:18:41:18 | access to local variable a |
+| queries.cs:47:11:47:18 | call to method Select<Int32,Int32> | 0 | queries.cs:46:11:46:25 | Int32 a = ... |
+| queries.cs:47:11:47:18 | call to method Select<Int32,Int32> | 1 | queries.cs:47:18:47:18 | access to local variable a |
+| queries.cs:51:11:51:18 | call to method Select<String,String> | 0 | queries.cs:50:11:50:32 | String a = ... |
+| queries.cs:51:11:51:18 | call to method Select<String,String> | 1 | queries.cs:51:18:51:18 | access to local variable a |
+| queries.cs:55:11:55:49 | call to method GroupJoin<Int32,IList<Int32>,Int32,(Int32,IEnumerable<IList<Int32>>)> | 0 | queries.cs:54:11:54:25 | Int32 a = ... |
+| queries.cs:55:11:55:49 | call to method GroupJoin<Int32,IList<Int32>,Int32,(Int32,IEnumerable<IList<Int32>>)> | 1 | queries.cs:55:11:55:49 | IList<IList<Int32>> c = ... |
+| queries.cs:55:11:55:49 | call to method GroupJoin<Int32,IList<Int32>,Int32,(Int32,IEnumerable<IList<Int32>>)> | 2 | queries.cs:55:21:55:25 | access to local variable list2 |
+| queries.cs:55:11:55:49 | call to method GroupJoin<Int32,IList<Int32>,Int32,(Int32,IEnumerable<IList<Int32>>)> | 3 | queries.cs:55:30:55:30 | access to local variable a |
+| queries.cs:55:11:55:49 | call to method GroupJoin<Int32,IList<Int32>,Int32,(Int32,IEnumerable<IList<Int32>>)> | 4 | queries.cs:55:39:55:42 | access to indexer |
+| queries.cs:55:11:55:49 | call to method GroupJoin<Int32,IList<Int32>,Int32,(Int32,IEnumerable<IList<Int32>>)> | 5 | queries.cs:55:11:55:49 | IList<IList<Int32>> d = ... |
+| queries.cs:56:11:56:22 | call to method  | 0 | queries.cs:55:11:55:49 | call to method GroupJoin<Int32,IList<Int32>,Int32,(Int32,IEnumerable<IList<Int32>>)> |
+| queries.cs:56:11:56:22 | call to method  | 1 | queries.cs:56:18:56:22 | (..., ...) |

@@ -1,0 +1,17 @@
+{
+  "author": "Joseph Kato",
+  "description": "A Vale-compatible implementation of the Microsoft Writing Style Guide.",
+  "email": "support@errata.ai",
+  "lang": "en",
+  "url": "https://github.com/errata-ai/Microsoft/releases/latest/download/Microsoft.zip",
+  "feed": "https://github.com/errata-ai/Microsoft/releases.atom",
+  "issues": "https://github.com/errata-ai/Microsoft/issues/new",
+  "license": "MIT",
+  "name": "Microsoft",
+  "sources": [
+    "https://docs.microsoft.com/en-us/style-guide/welcome/",
+    "https://github.com/MicrosoftDocs/microsoft-style-guide/blob/master/LICENSE"
+  ],
+  "vale_version": ">=1.0.0",
+  "coverage": 0.0
+}

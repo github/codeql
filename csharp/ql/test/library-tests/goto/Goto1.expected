@@ -1,0 +1,45 @@
+| goto.cs:4:17:4:20 | enter Main | goto.cs:5:5:20:5 | {...} | semmle.label | successor |
+| goto.cs:4:17:4:20 | exit Main (normal) | goto.cs:4:17:4:20 | exit Main | semmle.label | successor |
+| goto.cs:5:5:20:5 | {...} | goto.cs:6:9:8:9 | {...} | semmle.label | successor |
+| goto.cs:6:9:8:9 | {...} | goto.cs:7:13:7:14 | s1: | semmle.label | successor |
+| goto.cs:7:13:7:14 | s1: | goto.cs:7:17:7:24 | goto ...; | semmle.label | successor |
+| goto.cs:7:17:7:24 | goto ...; | goto.cs:9:9:9:10 | s2: | semmle.label | goto(s2) |
+| goto.cs:9:9:9:10 | s2: | goto.cs:9:13:9:27 | ... ...; | semmle.label | successor |
+| goto.cs:9:13:9:27 | ... ...; | goto.cs:9:24:9:26 | "5" | semmle.label | successor |
+| goto.cs:9:20:9:26 | String s = ... | goto.cs:10:9:18:9 | switch (...) {...} | semmle.label | successor |
+| goto.cs:9:24:9:26 | "5" | goto.cs:9:20:9:26 | String s = ... | semmle.label | successor |
+| goto.cs:10:9:18:9 | switch (...) {...} | goto.cs:10:17:10:17 | access to local variable s | semmle.label | successor |
+| goto.cs:10:17:10:17 | access to local variable s | goto.cs:12:13:12:22 | case ...: | semmle.label | successor |
+| goto.cs:12:13:12:22 | case ...: | goto.cs:12:18:12:21 | null | semmle.label | successor |
+| goto.cs:12:18:12:21 | null | goto.cs:12:24:12:25 | s3: | semmle.label | match |
+| goto.cs:12:18:12:21 | null | goto.cs:13:13:13:21 | case ...: | semmle.label | no-match |
+| goto.cs:12:24:12:25 | s3: | goto.cs:12:38:12:40 | "1" | semmle.label | successor |
+| goto.cs:12:28:12:41 | goto case ...; | goto.cs:13:13:13:21 | case ...: | semmle.label | goto(1) |
+| goto.cs:12:38:12:40 | "1" | goto.cs:12:28:12:41 | goto case ...; | semmle.label | successor |
+| goto.cs:13:13:13:21 | case ...: | goto.cs:13:18:13:20 | "1" | semmle.label | successor |
+| goto.cs:13:18:13:20 | "1" | goto.cs:13:23:13:24 | s4: | semmle.label | match |
+| goto.cs:13:18:13:20 | "1" | goto.cs:14:13:14:21 | case ...: | semmle.label | no-match |
+| goto.cs:13:23:13:24 | s4: | goto.cs:13:37:13:39 | "2" | semmle.label | successor |
+| goto.cs:13:27:13:40 | goto case ...; | goto.cs:14:13:14:21 | case ...: | semmle.label | goto(2) |
+| goto.cs:13:37:13:39 | "2" | goto.cs:13:27:13:40 | goto case ...; | semmle.label | successor |
+| goto.cs:14:13:14:21 | case ...: | goto.cs:14:18:14:20 | "2" | semmle.label | successor |
+| goto.cs:14:18:14:20 | "2" | goto.cs:14:23:14:24 | s5: | semmle.label | match |
+| goto.cs:14:18:14:20 | "2" | goto.cs:15:13:15:21 | case ...: | semmle.label | no-match |
+| goto.cs:14:23:14:24 | s5: | goto.cs:14:27:14:34 | goto ...; | semmle.label | successor |
+| goto.cs:14:27:14:34 | goto ...; | goto.cs:9:9:9:10 | s2: | semmle.label | goto(s2) |
+| goto.cs:15:13:15:21 | case ...: | goto.cs:15:18:15:20 | "3" | semmle.label | successor |
+| goto.cs:15:18:15:20 | "3" | goto.cs:15:23:15:24 | s6: | semmle.label | match |
+| goto.cs:15:18:15:20 | "3" | goto.cs:16:13:16:21 | case ...: | semmle.label | no-match |
+| goto.cs:15:23:15:24 | s6: | goto.cs:15:27:15:39 | goto default; | semmle.label | successor |
+| goto.cs:15:27:15:39 | goto default; | goto.cs:17:13:17:20 | default: | semmle.label | goto(default) |
+| goto.cs:16:13:16:21 | case ...: | goto.cs:16:18:16:20 | "4" | semmle.label | successor |
+| goto.cs:16:18:16:20 | "4" | goto.cs:16:23:16:24 | s7: | semmle.label | match |
+| goto.cs:16:18:16:20 | "4" | goto.cs:17:13:17:20 | default: | semmle.label | no-match |
+| goto.cs:16:23:16:24 | s7: | goto.cs:16:27:16:32 | break; | semmle.label | successor |
+| goto.cs:16:27:16:32 | break; | goto.cs:19:9:19:10 | s9: | semmle.label | break |
+| goto.cs:17:13:17:20 | default: | goto.cs:17:22:17:23 | s8: | semmle.label | successor |
+| goto.cs:17:22:17:23 | s8: | goto.cs:17:36:17:39 | null | semmle.label | successor |
+| goto.cs:17:26:17:40 | goto case ...; | goto.cs:12:13:12:22 | case ...: | semmle.label | goto(null) |
+| goto.cs:17:36:17:39 | null | goto.cs:17:26:17:40 | goto case ...; | semmle.label | successor |
+| goto.cs:19:9:19:10 | s9: | goto.cs:19:12:19:12 | ; | semmle.label | successor |
+| goto.cs:19:12:19:12 | ; | goto.cs:4:17:4:20 | exit Main (normal) | semmle.label | successor |

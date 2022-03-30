@@ -1,0 +1,7 @@
+| tst.ts:1:5:1:5 | x | x |
+| tst.ts:1:11:1:16 | __html | __html |
+| tst.ts:2:5:2:7 | __y | __y |
+| tst.ts:3:5:3:5 | z | z |
+| tst.ts:5:5:5:8 | _one | _one |
+| tst.ts:6:5:6:9 | __two | __two |
+| tst.ts:7:5:7:12 | ___three | ___three |

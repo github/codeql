@@ -1,0 +1,84 @@
+/* line 5, ../scss/hieroglyph.scss */
+ol {
+  margin-left: 1.2em;
+  margin-bottom: 1em;
+  position: relative;
+  list-style: decimal;
+}
+/* line 11, ../scss/hieroglyph.scss */
+ol li {
+  margin-bottom: 0.5em;
+}
+/* line 14, ../scss/hieroglyph.scss */
+ol li ol {
+  margin-left: 2em;
+  margin-bottom: 0;
+  list-style: decimal;
+}
+/* line 19, ../scss/hieroglyph.scss */
+ol li ol li:before {
+  font-weight: 600;
+}
+/* line 25, ../scss/hieroglyph.scss */
+ol ol {
+  margin-top: .5em;
+  list-style: decimal;
+}
+
+/* line 32, ../scss/hieroglyph.scss */
+slide.title-image {
+  padding-right: 0px;
+}
+/* line 36, ../scss/hieroglyph.scss */
+slide.title-image hgroup {
+  position: static !important;
+  margin-top: 35%;
+  padding-left: 30px;
+  background: rgba(255, 255, 255, 0.7);
+  border-top-left-radius: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -moz-border-top-left-radius: 5px;
+  -o-border-top-left-radius: 5px;
+}
+/* line 50, ../scss/hieroglyph.scss */
+slide.title-image hgroup + article {
+  background: rgba(255, 255, 255, 0.7);
+  margin-top: 0px;
+  padding-left: 30px;
+  border-bottom-left-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-bottom-left-radius: 5px;
+  -o-border-bottom-left-radius: 5px;
+}
+/* line 62, ../scss/hieroglyph.scss */
+slide.title-image h1 {
+  color: #222;
+  font-size: 3.2em;
+  line-height: 1.5em;
+  font-weight: 500;
+}
+/* line 72, ../scss/hieroglyph.scss */
+slide.title-image div.figure img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 100%;
+  min-height: 100%;
+  border-radius: 5px;
+  -o-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  z-index: -1;
+}
+/* line 87, ../scss/hieroglyph.scss */
+slide.title-image div.figure .caption {
+  color: black;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 0 5px;
+  border-bottom-left-radius: 5px;
+  border-top-right-radius: 5px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin-bottom: 0;
+}

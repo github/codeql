@@ -1,0 +1,12 @@
+#10000=@"/doctype.html;sourcefile"
+files(#10000,"/doctype.html")
+#10001=@"/;folder"
+folders(#10001,"/")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=@"global_scope"
+scopes(#20000,0)
+numlines(#10000,1,0,0)
+filetype(#10000,"html")

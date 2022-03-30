@@ -1,0 +1,19 @@
+  <slide class="{% if slide_number==1 %}title-slide segue nobackground {% endif %} {% if slide_classes %}{{ ' '.join(slide_classes) }} {% endif %}level-{{ level }}"{% if id %} id="{{ id }}"{% endif %}>
+ 
+    <hgroup>
+      <h{{ level }}>{{ title }}</h{{ level }}>
+    </hgroup>
+    
+    <article class="{{ content_classes|join(' ') }}">
+
+      {{ content }}
+
+
+{% if config.slide_numbers %}
+<div class="slide-no">{{ slide_number }}</div>
+{% endif %}
+{% if config.slide_footer %}
+<div class="slide-footer">{{ config.slide_footer }}</div>
+{% endif %}
+    </article>
+  </slide>

@@ -1,0 +1,9 @@
+| 0 | dostmt.c:25:22:30:1 | { ... } | 1 | dostmt.c:26:3:28:13 | do (...) ... |
+| 1 | dostmt.c:26:3:28:13 | do (...) ... | 1 | dostmt.c:26:6:28:3 | { ... } |
+| 1 | dostmt.c:26:6:28:3 | { ... } | 2 | dostmt.c:27:5:27:7 | label ...: |
+| 2 | dostmt.c:27:5:27:7 | label ...: | 2 | dostmt.c:27:8:27:8 | ; |
+| 2 | dostmt.c:27:8:27:8 | ; | 3 | dostmt.c:28:11:28:11 | 1 |
+| 3 | dostmt.c:28:11:28:11 | 1 | 1 | dostmt.c:26:6:28:3 | { ... } |
+| 4 | dostmt.c:29:3:29:5 | label ...: | 4 | dostmt.c:29:6:29:6 | ; |
+| 4 | dostmt.c:29:6:29:6 | ; | 5 | dostmt.c:30:1:30:1 | return ... |
+| 5 | dostmt.c:30:1:30:1 | return ... | 0 | dostmt.c:25:6:25:18 | always_true_3 |

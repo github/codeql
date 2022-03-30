@@ -1,0 +1,2 @@
+| compare.py:12:1:12:6 | Compare | Comparison of constants; use 'True' or 'False' instead. |
+| compare.py:13:1:13:6 | Compare | Comparison of constants; use 'True' or 'False' instead. |

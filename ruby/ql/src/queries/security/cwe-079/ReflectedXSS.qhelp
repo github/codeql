@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+ "-//Semmle//qhelp//EN"
+ "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+      Directly writing user input (for example, an HTTP request parameter) to a webpage,
+      without properly sanitizing the input first, allows for a cross-site scripting
+      vulnerability.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      To guard against cross-site scripting, escape user input before writing it
+      to the page. Some frameworks, such as Rails, perform this escaping
+      implicitly and by default.
+    </p>
+
+    <p>
+      Take care when using methods such as <code>html_safe</code> or
+      <code>raw</code>. They can be used to emit a string without escaping
+      it, and should only be used when the string has already been manually
+      escaped (for example, with the Rails <code>html_escape</code> method), or when
+      the content is otherwise guaranteed to be safe (such as a hard-coded string).
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      The following example is safe because the
+      <code>params[:user_name]</code> content within the output tags will be
+      HTML-escaped automatically before being emitted.
+    </p>
+    <sample src="examples/reflected_xss_safe.html.erb" />
+
+    <p>
+      However, the following example is unsafe because user-controlled input is
+      emitted without escaping, since it is marked as <code>html_safe</code>.
+    </p>
+    <sample src="examples/reflected_xss_unsafe.html.erb" />
+  </example>
+
+  <references>
+    <li>
+      OWASP:
+      <a href="https://cheatsheetseries.owasp.org/cheatsheets/Ruby_on_Rails_Cheat_Sheet.html#cross-site-scripting-xss">XSS
+        Ruby on Rails Cheatsheet</a>.
+    </li>
+    <li>
+      Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+    </li>
+  </references>
+</qhelp>

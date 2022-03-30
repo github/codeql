@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>
+    When AngularJS injects dependencies into a function that does not
+    have an explicit dependency specification, it matches up
+    dependencies with function parameters by name. This is dangerous,
+    since some source code transformations such as minification may
+    change the names of parameters. Such a renaming will break the
+    AngularJS application.
+  </p>
+</overview>
+
+<recommendation>
+  <p>
+    Do not use implicit annotations for dependency injected functions when
+    the code is minified later.
+  </p>
+</recommendation>
+
+<example>
+  <p>
+    The following example shows an AngularJS controller with implicit dependency annotations.
+  </p>
+
+  <sample src="examples/ImplicitDependency.js"/>
+
+  <p>
+    This is problematic, since the minified version of this controller could look like the following:
+  </p>
+
+  <sample src="examples/ImplicitDependency-minified.js"/>
+
+  <p>
+    This would mean that the function is dependency-injected with the dependency named "a", which does not exist, leading to a crash at runtime.
+  </p>
+
+  <p>
+    Instead, in order to support minification, specify the dependencies with explicit annotations:
+  </p>
+
+  <sample src="examples/ImplicitDependency-explicit.js"/>
+
+</example>
+
+<references>
+  <li>AngularJS Developer Guide: <a href="https://docs.angularjs.org/guide/di#implicit-annotation">Dependency Injection - Implicit Annotation</a>.</li>
+</references>
+</qhelp>

@@ -1,0 +1,5 @@
+| NoDisposeCallOnLocalIDisposable.cs:50:19:50:38 | object creation of type Timer | Disposable 'Timer' is created here but is not disposed. |
+| NoDisposeCallOnLocalIDisposable.cs:51:18:51:73 | object creation of type FileStream | Disposable 'FileStream' is created here but is not disposed. |
+| NoDisposeCallOnLocalIDisposable.cs:52:9:52:64 | object creation of type FileStream | Disposable 'FileStream' is created here but is not disposed. |
+| NoDisposeCallOnLocalIDisposable.cs:74:25:74:71 | call to method Create | Disposable 'XmlReader' is created here but is not disposed. |
+| NoDisposeCallOnLocalIDisposableBad.cs:8:22:8:56 | object creation of type FileStream | Disposable 'FileStream' is created here but is not disposed. |

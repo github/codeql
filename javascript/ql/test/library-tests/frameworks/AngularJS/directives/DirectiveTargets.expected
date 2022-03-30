@@ -1,0 +1,7 @@
+| tst.html:1:6:1:38 | ng-controller=ExampleController | ng-controller | tst.html:1:1:8:6 | <div>...</> | A |
+| tst.html:2:16:2:30 | ng-model=name | ng-model | tst.html:2:9:2:31 | <input>...</> | A |
+| tst.html:3:9:3:22 | ng-bind=name | ng-bind | tst.html:3:3:3:30 | <span>...</> | A |
+| tst.html:4:9:4:22 | ng:bind=name | ng:bind | tst.html:4:3:4:30 | <span>...</> | A |
+| tst.html:5:9:5:22 | ng_bind=name | ng_bind | tst.html:5:3:5:30 | <span>...</> | A |
+| tst.html:6:9:6:27 | data-ng-bind=name | data-ng-bind | tst.html:6:3:6:35 | <span>...</> | A |
+| tst.html:7:9:7:24 | x-ng-bind=name | x-ng-bind | tst.html:7:3:7:32 | <span>...</> | A |

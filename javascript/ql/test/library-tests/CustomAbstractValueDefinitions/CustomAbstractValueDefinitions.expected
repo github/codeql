@@ -1,0 +1,2 @@
+| tst.js:4:16:4:50 | { custo ... false } | tst.js:4:16:4:50 | { custo ... false } | false | false |
+| tst.js:5:16:5:49 | { custo ...  true } | tst.js:5:16:5:49 | { custo ...  true } | false | true |

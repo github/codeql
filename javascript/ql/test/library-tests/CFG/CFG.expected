@@ -1,0 +1,837 @@
+| arrowfn | 1 | (\\n x\\n) =>\\n x | 6 | exit node of <toplevel> |
+| arrowfn | 1 | (\\n x\\n) =>\\n x\\n; | 1 | (\\n x\\n) =>\\n x |
+| arrowfn | 1 | entry node of (\\n x\\n) =>\\n x | 2 | x |
+| arrowfn | 1 | entry node of <toplevel> | 1 | (\\n x\\n) =>\\n x\\n; |
+| arrowfn | 2 | x | 4 | x |
+| arrowfn | 4 | x | 4 | exit node of (\\n x\\n) =>\\n x |
+| classDecorators | 1 | @ClassDecorator | 16 | exit node of <toplevel> |
+| classDecorators | 1 | ClassDecorator | 1 | @ClassDecorator |
+| classDecorators | 1 | entry node of <toplevel> | 2 | C |
+| classDecorators | 2 | C | 5 | constru ... r x) {} |
+| classDecorators | 2 | class C ...  = 4;\\n} | 14 | staticField |
+| classDecorators | 3 | 123 | 3 | dummy=123; |
+| classDecorators | 3 | dummy | 3 | 123 |
+| classDecorators | 3 | dummy=123; | 11 | field |
+| classDecorators | 5 | @CtorDecorator | 5 | parameter decorators of constructor of class C |
+| classDecorators | 5 | CtorDecorator | 5 | @CtorDecorator |
+| classDecorators | 5 | constru ... r x) {} | 5 | function in constru ... r x) {} |
+| classDecorators | 5 | constru ... r x) {} | 8 | m |
+| classDecorators | 5 | entry node of constru ... r x) {} | 5 | x |
+| classDecorators | 5 | function in constru ... r x) {} | 5 | constru ... r x) {} |
+| classDecorators | 5 | parameter decorators of constructor of class C | 1 | ClassDecorator |
+| classDecorators | 5 | x | 3 | dummy |
+| classDecorators | 5 | {} | 5 | exit node of constru ... r x) {} |
+| classDecorators | 7 | @MethodDecorator | 10 | FieldDecorator |
+| classDecorators | 7 | MethodDecorator | 7 | @MethodDecorator |
+| classDecorators | 8 | @ParamDecorator | 8 | parameter decorators of method m of class C |
+| classDecorators | 8 | ParamDecorator | 8 | @ParamDecorator |
+| classDecorators | 8 | entry node of m(@Para ... r y) {} | 8 | y |
+| classDecorators | 8 | function in m(@Para ... r y) {} | 8 | m(@Para ... r y) {} |
+| classDecorators | 8 | m | 8 | function in m(@Para ... r y) {} |
+| classDecorators | 8 | m(@Para ... r y) {} | 2 | class C ...  = 4;\\n} |
+| classDecorators | 8 | parameter decorators of method m of class C | 7 | MethodDecorator |
+| classDecorators | 8 | y | 8 | {} |
+| classDecorators | 8 | {} | 8 | exit node of m(@Para ... r y) {} |
+| classDecorators | 10 | @FieldDecorator | 13 | StaticFieldDecorator |
+| classDecorators | 10 | FieldDecorator | 10 | @FieldDecorator |
+| classDecorators | 11 | 3 | 11 | field = 3; |
+| classDecorators | 11 | field | 11 | 3 |
+| classDecorators | 11 | field = 3; | 5 | {} |
+| classDecorators | 13 | @Static ... corator | 5 | CtorDecorator |
+| classDecorators | 13 | StaticFieldDecorator | 13 | @Static ... corator |
+| classDecorators | 14 | 4 | 14 | static  ... ld = 4; |
+| classDecorators | 14 | static  ... ld = 4; | 8 | ParamDecorator |
+| classDecorators | 14 | staticField | 14 | 4 |
+| classes | 1 | entry node of <toplevel> | 1 | var t; |
+| classes | 1 | t | 1 | t |
+| classes | 1 | t | 3 | A |
+| classes | 1 | var t; | 1 | t |
+| classes | 3 | A | 3 | constructor |
+| classes | 3 | class A {} | 5 | c1 |
+| classes | 3 | constructor | 3 | function in constructor() {} |
+| classes | 3 | constructor() {} | 3 | class A {} |
+| classes | 3 | entry node of () {} | 3 | {} |
+| classes | 3 | function in constructor() {} | 3 | constructor() {} |
+| classes | 3 | {} | 3 | exit node of () {} |
+| classes | 5 | ; | 6 | c2 |
+| classes | 5 | c1 | 5 | constructor |
+| classes | 5 | class c1 {} | 5 | ; |
+| classes | 5 | constructor | 5 | function in constructor() {} |
+| classes | 5 | constructor() {} | 5 | class c1 {} |
+| classes | 5 | entry node of () {} | 5 | {} |
+| classes | 5 | function in constructor() {} | 5 | constructor() {} |
+| classes | 5 | {} | 5 | exit node of () {} |
+| classes | 6 | c2 | 6 | f |
+| classes | 6 | class c2 { f() {} } | 7 | c3 |
+| classes | 6 | constructor | 6 | function in constructor() {} |
+| classes | 6 | constructor() {} | 6 | class c2 { f() {} } |
+| classes | 6 | entry node of () {} | 6 | {} |
+| classes | 6 | f | 6 | function in f() {} |
+| classes | 6 | f() {} | 6 | constructor |
+| classes | 6 | function in constructor() {} | 6 | constructor() {} |
+| classes | 6 | function in f() {} | 6 | f() {} |
+| classes | 6 | {} | 6 | exit node of () {} |
+| classes | 7 | 5 | 7 | x = 5; |
+| classes | 7 | c3 | 7 | f |
+| classes | 7 | class c ... () {} } | 8 | c4 |
+| classes | 7 | constructor | 7 | function in constructor() {} |
+| classes | 7 | constructor() {} | 7 | class c ... () {} } |
+| classes | 7 | entry node of () {} | 7 | x |
+| classes | 7 | entry node of () {} | 7 | {} |
+| classes | 7 | f | 7 | function in f() {} |
+| classes | 7 | f() {} | 7 | constructor |
+| classes | 7 | function in constructor() {} | 7 | constructor() {} |
+| classes | 7 | function in f() {} | 7 | f() {} |
+| classes | 7 | x | 7 | 5 |
+| classes | 7 | x = 5; | 7 | {} |
+| classes | 7 | {} | 7 | exit node of () {} |
+| classes | 8 | 5 | 8 | static x = 5; |
+| classes | 8 | c4 | 8 | f |
+| classes | 8 | class c ... () {} } | 8 | x |
+| classes | 8 | constructor | 8 | function in constructor() {} |
+| classes | 8 | constructor() {} | 8 | class c ... () {} } |
+| classes | 8 | entry node of () {} | 8 | {} |
+| classes | 8 | f | 8 | function in f() {} |
+| classes | 8 | f() {} | 8 | constructor |
+| classes | 8 | function in constructor() {} | 8 | constructor() {} |
+| classes | 8 | function in f() {} | 8 | f() {} |
+| classes | 8 | static x = 5; | 9 | c5 |
+| classes | 8 | x | 8 | 5 |
+| classes | 8 | {} | 8 | exit node of () {} |
+| classes | 9 | 5 | 9 | static x = 5; |
+| classes | 9 | c5 | 9 | f |
+| classes | 9 | class c ... () {} } | 9 | x |
+| classes | 9 | constructor | 9 | function in constructor() {} |
+| classes | 9 | constructor() {} | 9 | class c ... () {} } |
+| classes | 9 | entry node of () {} | 9 | {} |
+| classes | 9 | f | 9 | function in f() {} |
+| classes | 9 | f() {} | 9 | constructor |
+| classes | 9 | function in constructor() {} | 9 | constructor() {} |
+| classes | 9 | function in f() {} | 9 | f() {} |
+| classes | 9 | static x = 5; | 11 | c6 |
+| classes | 9 | x | 9 | 5 |
+| classes | 9 | {} | 9 | exit node of () {} |
+| classes | 11 | ...args | 11 | super(...args) |
+| classes | 11 | ; | 12 | c7 |
+| classes | 11 | A | 11 | constructor |
+| classes | 11 | args | 11 | ...args |
+| classes | 11 | args | 11 | { super(...args); } |
+| classes | 11 | c6 | 11 | A |
+| classes | 11 | class c ... ds A {} | 11 | ; |
+| classes | 11 | constru ... rgs); } | 11 | class c ... ds A {} |
+| classes | 11 | constructor | 11 | function in constru ... rgs); } |
+| classes | 11 | entry node of (...arg ... rgs); } | 11 | args |
+| classes | 11 | function in constru ... rgs); } | 11 | constru ... rgs); } |
+| classes | 11 | super | 11 | args |
+| classes | 11 | super(...args) | 11 | exit node of (...arg ... rgs); } |
+| classes | 11 | super(...args); | 11 | super |
+| classes | 11 | { super(...args); } | 11 | super(...args); |
+| classes | 12 | ...args | 12 | super(...args) |
+| classes | 12 | A | 12 | f |
+| classes | 12 | args | 12 | ...args |
+| classes | 12 | args | 12 | { super(...args); } |
+| classes | 12 | c7 | 12 | A |
+| classes | 12 | class c ... () {} } | 13 | c8 |
+| classes | 12 | constru ... rgs); } | 12 | class c ... () {} } |
+| classes | 12 | constructor | 12 | function in constru ... rgs); } |
+| classes | 12 | entry node of () {} | 12 | {} |
+| classes | 12 | entry node of (...arg ... rgs); } | 12 | args |
+| classes | 12 | f | 12 | function in f() {} |
+| classes | 12 | f() {} | 12 | constructor |
+| classes | 12 | function in constru ... rgs); } | 12 | constru ... rgs); } |
+| classes | 12 | function in f() {} | 12 | f() {} |
+| classes | 12 | super | 12 | args |
+| classes | 12 | super(...args) | 12 | exit node of (...arg ... rgs); } |
+| classes | 12 | super(...args); | 12 | super |
+| classes | 12 | { super(...args); } | 12 | super(...args); |
+| classes | 12 | {} | 12 | exit node of () {} |
+| classes | 13 | 5 | 13 | x = 5; |
+| classes | 13 | ...args | 13 | super(...args) |
+| classes | 13 | A | 13 | f |
+| classes | 13 | args | 13 | ...args |
+| classes | 13 | args | 13 | { super(...args); } |
+| classes | 13 | c8 | 13 | A |
+| classes | 13 | class c ... () {} } | 14 | c9 |
+| classes | 13 | constru ... rgs); } | 13 | class c ... () {} } |
+| classes | 13 | constructor | 13 | function in constru ... rgs); } |
+| classes | 13 | entry node of () {} | 13 | {} |
+| classes | 13 | entry node of (...arg ... rgs); } | 13 | args |
+| classes | 13 | f | 13 | function in f() {} |
+| classes | 13 | f() {} | 13 | constructor |
+| classes | 13 | function in constru ... rgs); } | 13 | constru ... rgs); } |
+| classes | 13 | function in f() {} | 13 | f() {} |
+| classes | 13 | super | 13 | args |
+| classes | 13 | super(...args) | 13 | x |
+| classes | 13 | super(...args); | 13 | super |
+| classes | 13 | x | 13 | 5 |
+| classes | 13 | x = 5; | 13 | exit node of (...arg ... rgs); } |
+| classes | 13 | { super(...args); } | 13 | super(...args); |
+| classes | 13 | {} | 13 | exit node of () {} |
+| classes | 14 | 5 | 14 | static x = 5; |
+| classes | 14 | ...args | 14 | super(...args) |
+| classes | 14 | A | 14 | f |
+| classes | 14 | args | 14 | ...args |
+| classes | 14 | args | 14 | { super(...args); } |
+| classes | 14 | c9 | 14 | A |
+| classes | 14 | class c ... () {} } | 14 | x |
+| classes | 14 | constru ... rgs); } | 14 | class c ... () {} } |
+| classes | 14 | constructor | 14 | function in constru ... rgs); } |
+| classes | 14 | entry node of () {} | 14 | {} |
+| classes | 14 | entry node of (...arg ... rgs); } | 14 | args |
+| classes | 14 | f | 14 | function in f() {} |
+| classes | 14 | f() {} | 14 | constructor |
+| classes | 14 | function in constru ... rgs); } | 14 | constru ... rgs); } |
+| classes | 14 | function in f() {} | 14 | f() {} |
+| classes | 14 | static x = 5; | 15 | c10 |
+| classes | 14 | super | 14 | args |
+| classes | 14 | super(...args) | 14 | exit node of (...arg ... rgs); } |
+| classes | 14 | super(...args); | 14 | super |
+| classes | 14 | x | 14 | 5 |
+| classes | 14 | { super(...args); } | 14 | super(...args); |
+| classes | 14 | {} | 14 | exit node of () {} |
+| classes | 15 | 5 | 15 | static x = 5; |
+| classes | 15 | A | 15 | f |
+| classes | 15 | c10 | 15 | A |
+| classes | 15 | class c ... () {} } | 15 | x |
+| classes | 15 | constructor | 15 | function in constructor() {} |
+| classes | 15 | constructor() {} | 15 | class c ... () {} } |
+| classes | 15 | entry node of () {} | 15 | {} |
+| classes | 15 | f | 15 | function in f() {} |
+| classes | 15 | f() {} | 15 | constructor |
+| classes | 15 | function in constructor() {} | 15 | constructor() {} |
+| classes | 15 | function in f() {} | 15 | f() {} |
+| classes | 15 | static x = 5; | 17 | t = class c {}; |
+| classes | 15 | x | 15 | 5 |
+| classes | 15 | {} | 15 | exit node of () {} |
+| classes | 17 | c | 17 | constructor |
+| classes | 17 | class c {} | 17 | t = class c {} |
+| classes | 17 | constructor | 17 | function in constructor() {} |
+| classes | 17 | constructor() {} | 17 | class c {} |
+| classes | 17 | entry node of () {} | 17 | {} |
+| classes | 17 | function in constructor() {} | 17 | constructor() {} |
+| classes | 17 | t | 17 | c |
+| classes | 17 | t = class c {} | 18 | t = cla ... () {} } |
+| classes | 17 | t = class c {}; | 17 | t |
+| classes | 17 | {} | 17 | exit node of () {} |
+| classes | 18 | c | 18 | f |
+| classes | 18 | class c { f() {} } | 18 | t = cla ... () {} } |
+| classes | 18 | constructor | 18 | function in constructor() {} |
+| classes | 18 | constructor() {} | 18 | class c { f() {} } |
+| classes | 18 | entry node of () {} | 18 | {} |
+| classes | 18 | f | 18 | function in f() {} |
+| classes | 18 | f() {} | 18 | constructor |
+| classes | 18 | function in constructor() {} | 18 | constructor() {} |
+| classes | 18 | function in f() {} | 18 | f() {} |
+| classes | 18 | t | 18 | c |
+| classes | 18 | t = cla ... () {} } | 18 | t |
+| classes | 18 | t = cla ... () {} } | 19 | t = cla ... () {} } |
+| classes | 18 | {} | 18 | exit node of () {} |
+| classes | 19 | 5 | 19 | x = 5; |
+| classes | 19 | c | 19 | f |
+| classes | 19 | class c ... () {} } | 19 | t = cla ... () {} } |
+| classes | 19 | constructor | 19 | function in constructor() {} |
+| classes | 19 | constructor() {} | 19 | class c ... () {} } |
+| classes | 19 | entry node of () {} | 19 | x |
+| classes | 19 | entry node of () {} | 19 | {} |
+| classes | 19 | f | 19 | function in f() {} |
+| classes | 19 | f() {} | 19 | constructor |
+| classes | 19 | function in constructor() {} | 19 | constructor() {} |
+| classes | 19 | function in f() {} | 19 | f() {} |
+| classes | 19 | t | 19 | c |
+| classes | 19 | t = cla ... () {} } | 19 | t |
+| classes | 19 | t = cla ... () {} } | 20 | t = cla ... () {} } |
+| classes | 19 | x | 19 | 5 |
+| classes | 19 | x = 5; | 19 | {} |
+| classes | 19 | {} | 19 | exit node of () {} |
+| classes | 20 | 5 | 20 | static x = 5; |
+| classes | 20 | c | 20 | f |
+| classes | 20 | class c ... () {} } | 20 | x |
+| classes | 20 | constructor | 20 | function in constructor() {} |
+| classes | 20 | constructor() {} | 20 | class c ... () {} } |
+| classes | 20 | entry node of () {} | 20 | {} |
+| classes | 20 | f | 20 | function in f() {} |
+| classes | 20 | f() {} | 20 | constructor |
+| classes | 20 | function in constructor() {} | 20 | constructor() {} |
+| classes | 20 | function in f() {} | 20 | f() {} |
+| classes | 20 | static x = 5; | 20 | t = cla ... () {} } |
+| classes | 20 | t | 20 | c |
+| classes | 20 | t = cla ... () {} } | 20 | t |
+| classes | 20 | t = cla ... () {} } | 21 | t = cla ... () {} } |
+| classes | 20 | x | 20 | 5 |
+| classes | 20 | {} | 20 | exit node of () {} |
+| classes | 21 | 5 | 21 | static x = 5; |
+| classes | 21 | c | 21 | f |
+| classes | 21 | class c ... () {} } | 21 | x |
+| classes | 21 | constructor | 21 | function in constructor() {} |
+| classes | 21 | constructor() {} | 21 | class c ... () {} } |
+| classes | 21 | entry node of () {} | 21 | {} |
+| classes | 21 | f | 21 | function in f() {} |
+| classes | 21 | f() {} | 21 | constructor |
+| classes | 21 | function in constructor() {} | 21 | constructor() {} |
+| classes | 21 | function in f() {} | 21 | f() {} |
+| classes | 21 | static x = 5; | 21 | t = cla ... () {} } |
+| classes | 21 | t | 21 | c |
+| classes | 21 | t = cla ... () {} } | 21 | t |
+| classes | 21 | t = cla ... () {} } | 23 | t = cla ... s A {}; |
+| classes | 21 | x | 21 | 5 |
+| classes | 21 | {} | 21 | exit node of () {} |
+| classes | 23 | ...args | 23 | super(...args) |
+| classes | 23 | A | 23 | constructor |
+| classes | 23 | args | 23 | ...args |
+| classes | 23 | args | 23 | { super(...args); } |
+| classes | 23 | c | 23 | A |
+| classes | 23 | class c extends A {} | 23 | t = cla ... ds A {} |
+| classes | 23 | constru ... rgs); } | 23 | class c extends A {} |
+| classes | 23 | constructor | 23 | function in constru ... rgs); } |
+| classes | 23 | entry node of (...arg ... rgs); } | 23 | args |
+| classes | 23 | function in constru ... rgs); } | 23 | constru ... rgs); } |
+| classes | 23 | super | 23 | args |
+| classes | 23 | super(...args) | 23 | exit node of (...arg ... rgs); } |
+| classes | 23 | super(...args); | 23 | super |
+| classes | 23 | t | 23 | c |
+| classes | 23 | t = cla ... ds A {} | 24 | t = cla ... () {} } |
+| classes | 23 | t = cla ... s A {}; | 23 | t |
+| classes | 23 | { super(...args); } | 23 | super(...args); |
+| classes | 24 | ...args | 24 | super(...args) |
+| classes | 24 | A | 24 | f |
+| classes | 24 | args | 24 | ...args |
+| classes | 24 | args | 24 | { super(...args); } |
+| classes | 24 | c | 24 | A |
+| classes | 24 | class c ... () {} } | 24 | t = cla ... () {} } |
+| classes | 24 | constru ... rgs); } | 24 | class c ... () {} } |
+| classes | 24 | constructor | 24 | function in constru ... rgs); } |
+| classes | 24 | entry node of () {} | 24 | {} |
+| classes | 24 | entry node of (...arg ... rgs); } | 24 | args |
+| classes | 24 | f | 24 | function in f() {} |
+| classes | 24 | f() {} | 24 | constructor |
+| classes | 24 | function in constru ... rgs); } | 24 | constru ... rgs); } |
+| classes | 24 | function in f() {} | 24 | f() {} |
+| classes | 24 | super | 24 | args |
+| classes | 24 | super(...args) | 24 | exit node of (...arg ... rgs); } |
+| classes | 24 | super(...args); | 24 | super |
+| classes | 24 | t | 24 | c |
+| classes | 24 | t = cla ... () {} } | 24 | t |
+| classes | 24 | t = cla ... () {} } | 25 | t = cla ... () {} } |
+| classes | 24 | { super(...args); } | 24 | super(...args); |
+| classes | 24 | {} | 24 | exit node of () {} |
+| classes | 25 | 5 | 25 | x = 5; |
+| classes | 25 | ...args | 25 | super(...args) |
+| classes | 25 | A | 25 | f |
+| classes | 25 | args | 25 | ...args |
+| classes | 25 | args | 25 | { super(...args); } |
+| classes | 25 | c | 25 | A |
+| classes | 25 | class c ... () {} } | 25 | t = cla ... () {} } |
+| classes | 25 | constru ... rgs); } | 25 | class c ... () {} } |
+| classes | 25 | constructor | 25 | function in constru ... rgs); } |
+| classes | 25 | entry node of () {} | 25 | {} |
+| classes | 25 | entry node of (...arg ... rgs); } | 25 | args |
+| classes | 25 | f | 25 | function in f() {} |
+| classes | 25 | f() {} | 25 | constructor |
+| classes | 25 | function in constru ... rgs); } | 25 | constru ... rgs); } |
+| classes | 25 | function in f() {} | 25 | f() {} |
+| classes | 25 | super | 25 | args |
+| classes | 25 | super(...args) | 25 | x |
+| classes | 25 | super(...args); | 25 | super |
+| classes | 25 | t | 25 | c |
+| classes | 25 | t = cla ... () {} } | 25 | t |
+| classes | 25 | t = cla ... () {} } | 26 | t = cla ... () {} } |
+| classes | 25 | x | 25 | 5 |
+| classes | 25 | x = 5; | 25 | exit node of (...arg ... rgs); } |
+| classes | 25 | { super(...args); } | 25 | super(...args); |
+| classes | 25 | {} | 25 | exit node of () {} |
+| classes | 26 | 5 | 26 | static x = 5; |
+| classes | 26 | ...args | 26 | super(...args) |
+| classes | 26 | A | 26 | f |
+| classes | 26 | args | 26 | ...args |
+| classes | 26 | args | 26 | { super(...args); } |
+| classes | 26 | c | 26 | A |
+| classes | 26 | class c ... () {} } | 26 | x |
+| classes | 26 | constru ... rgs); } | 26 | class c ... () {} } |
+| classes | 26 | constructor | 26 | function in constru ... rgs); } |
+| classes | 26 | entry node of () {} | 26 | {} |
+| classes | 26 | entry node of (...arg ... rgs); } | 26 | args |
+| classes | 26 | f | 26 | function in f() {} |
+| classes | 26 | f() {} | 26 | constructor |
+| classes | 26 | function in constru ... rgs); } | 26 | constru ... rgs); } |
+| classes | 26 | function in f() {} | 26 | f() {} |
+| classes | 26 | static x = 5; | 26 | t = cla ... () {} } |
+| classes | 26 | super | 26 | args |
+| classes | 26 | super(...args) | 26 | exit node of (...arg ... rgs); } |
+| classes | 26 | super(...args); | 26 | super |
+| classes | 26 | t | 26 | c |
+| classes | 26 | t = cla ... () {} } | 26 | t |
+| classes | 26 | t = cla ... () {} } | 27 | t = cla ... () {} } |
+| classes | 26 | x | 26 | 5 |
+| classes | 26 | { super(...args); } | 26 | super(...args); |
+| classes | 26 | {} | 26 | exit node of () {} |
+| classes | 27 | 5 | 27 | static x = 5; |
+| classes | 27 | A | 27 | f |
+| classes | 27 | c | 27 | A |
+| classes | 27 | class c ... () {} } | 27 | x |
+| classes | 27 | constructor | 27 | function in constructor() {} |
+| classes | 27 | constructor() {} | 27 | class c ... () {} } |
+| classes | 27 | entry node of () {} | 27 | {} |
+| classes | 27 | f | 27 | function in f() {} |
+| classes | 27 | f() {} | 27 | constructor |
+| classes | 27 | function in constructor() {} | 27 | constructor() {} |
+| classes | 27 | function in f() {} | 27 | f() {} |
+| classes | 27 | static x = 5; | 27 | t = cla ... () {} } |
+| classes | 27 | t | 27 | c |
+| classes | 27 | t = cla ... () {} } | 27 | t |
+| classes | 27 | t = cla ... () {} } | 29 | t = class {}; |
+| classes | 27 | x | 27 | 5 |
+| classes | 27 | {} | 27 | exit node of () {} |
+| classes | 29 | class {} | 29 | t = class {} |
+| classes | 29 | constructor | 29 | function in constructor() {} |
+| classes | 29 | constructor() {} | 29 | class {} |
+| classes | 29 | entry node of () {} | 29 | {} |
+| classes | 29 | function in constructor() {} | 29 | constructor() {} |
+| classes | 29 | t | 29 | constructor |
+| classes | 29 | t = class {} | 30 | t = class { f() {} } |
+| classes | 29 | t = class {}; | 29 | t |
+| classes | 29 | {} | 29 | exit node of () {} |
+| classes | 30 | class { f() {} } | 30 | t = class { f() {} } |
+| classes | 30 | constructor | 30 | function in constructor() {} |
+| classes | 30 | constructor() {} | 30 | class { f() {} } |
+| classes | 30 | entry node of () {} | 30 | {} |
+| classes | 30 | f | 30 | function in f() {} |
+| classes | 30 | f() {} | 30 | constructor |
+| classes | 30 | function in constructor() {} | 30 | constructor() {} |
+| classes | 30 | function in f() {} | 30 | f() {} |
+| classes | 30 | t | 30 | f |
+| classes | 30 | t = class { f() {} } | 30 | t |
+| classes | 30 | t = class { f() {} } | 31 | t = cla ... () {} } |
+| classes | 30 | {} | 30 | exit node of () {} |
+| classes | 31 | 5 | 31 | x = 5; |
+| classes | 31 | class { ... () {} } | 31 | t = cla ... () {} } |
+| classes | 31 | constructor | 31 | function in constructor() {} |
+| classes | 31 | constructor() {} | 31 | class { ... () {} } |
+| classes | 31 | entry node of () {} | 31 | x |
+| classes | 31 | entry node of () {} | 31 | {} |
+| classes | 31 | f | 31 | function in f() {} |
+| classes | 31 | f() {} | 31 | constructor |
+| classes | 31 | function in constructor() {} | 31 | constructor() {} |
+| classes | 31 | function in f() {} | 31 | f() {} |
+| classes | 31 | t | 31 | f |
+| classes | 31 | t = cla ... () {} } | 31 | t |
+| classes | 31 | t = cla ... () {} } | 32 | t = cla ... () {} } |
+| classes | 31 | x | 31 | 5 |
+| classes | 31 | x = 5; | 31 | {} |
+| classes | 31 | {} | 31 | exit node of () {} |
+| classes | 32 | 5 | 32 | static x = 5; |
+| classes | 32 | class { ... () {} } | 32 | x |
+| classes | 32 | constructor | 32 | function in constructor() {} |
+| classes | 32 | constructor() {} | 32 | class { ... () {} } |
+| classes | 32 | entry node of () {} | 32 | {} |
+| classes | 32 | f | 32 | function in f() {} |
+| classes | 32 | f() {} | 32 | constructor |
+| classes | 32 | function in constructor() {} | 32 | constructor() {} |
+| classes | 32 | function in f() {} | 32 | f() {} |
+| classes | 32 | static x = 5; | 32 | t = cla ... () {} } |
+| classes | 32 | t | 32 | f |
+| classes | 32 | t = cla ... () {} } | 32 | t |
+| classes | 32 | t = cla ... () {} } | 33 | t = cla ... () {} } |
+| classes | 32 | x | 32 | 5 |
+| classes | 32 | {} | 32 | exit node of () {} |
+| classes | 33 | 5 | 33 | static x = 5; |
+| classes | 33 | class { ... () {} } | 33 | x |
+| classes | 33 | constructor | 33 | function in constructor() {} |
+| classes | 33 | constructor() {} | 33 | class { ... () {} } |
+| classes | 33 | entry node of () {} | 33 | {} |
+| classes | 33 | f | 33 | function in f() {} |
+| classes | 33 | f() {} | 33 | constructor |
+| classes | 33 | function in constructor() {} | 33 | constructor() {} |
+| classes | 33 | function in f() {} | 33 | f() {} |
+| classes | 33 | static x = 5; | 33 | t = cla ... () {} } |
+| classes | 33 | t | 33 | f |
+| classes | 33 | t = cla ... () {} } | 33 | t |
+| classes | 33 | t = cla ... () {} } | 35 | t = cla ... s A {}; |
+| classes | 33 | x | 33 | 5 |
+| classes | 33 | {} | 33 | exit node of () {} |
+| classes | 35 | ...args | 35 | super(...args) |
+| classes | 35 | A | 35 | constructor |
+| classes | 35 | args | 35 | ...args |
+| classes | 35 | args | 35 | { super(...args); } |
+| classes | 35 | class extends A {} | 35 | t = cla ... ds A {} |
+| classes | 35 | constru ... rgs); } | 35 | class extends A {} |
+| classes | 35 | constructor | 35 | function in constru ... rgs); } |
+| classes | 35 | entry node of (...arg ... rgs); } | 35 | args |
+| classes | 35 | function in constru ... rgs); } | 35 | constru ... rgs); } |
+| classes | 35 | super | 35 | args |
+| classes | 35 | super(...args) | 35 | exit node of (...arg ... rgs); } |
+| classes | 35 | super(...args); | 35 | super |
+| classes | 35 | t | 35 | A |
+| classes | 35 | t = cla ... ds A {} | 36 | t = cla ... () {} } |
+| classes | 35 | t = cla ... s A {}; | 35 | t |
+| classes | 35 | { super(...args); } | 35 | super(...args); |
+| classes | 36 | ...args | 36 | super(...args) |
+| classes | 36 | A | 36 | f |
+| classes | 36 | args | 36 | ...args |
+| classes | 36 | args | 36 | { super(...args); } |
+| classes | 36 | class e ... () {} } | 36 | t = cla ... () {} } |
+| classes | 36 | constru ... rgs); } | 36 | class e ... () {} } |
+| classes | 36 | constructor | 36 | function in constru ... rgs); } |
+| classes | 36 | entry node of () {} | 36 | {} |
+| classes | 36 | entry node of (...arg ... rgs); } | 36 | args |
+| classes | 36 | f | 36 | function in f() {} |
+| classes | 36 | f() {} | 36 | constructor |
+| classes | 36 | function in constru ... rgs); } | 36 | constru ... rgs); } |
+| classes | 36 | function in f() {} | 36 | f() {} |
+| classes | 36 | super | 36 | args |
+| classes | 36 | super(...args) | 36 | exit node of (...arg ... rgs); } |
+| classes | 36 | super(...args); | 36 | super |
+| classes | 36 | t | 36 | A |
+| classes | 36 | t = cla ... () {} } | 36 | t |
+| classes | 36 | t = cla ... () {} } | 37 | t = cla ... () {} } |
+| classes | 36 | { super(...args); } | 36 | super(...args); |
+| classes | 36 | {} | 36 | exit node of () {} |
+| classes | 37 | 5 | 37 | x = 5; |
+| classes | 37 | ...args | 37 | super(...args) |
+| classes | 37 | A | 37 | f |
+| classes | 37 | args | 37 | ...args |
+| classes | 37 | args | 37 | { super(...args); } |
+| classes | 37 | class e ... () {} } | 37 | t = cla ... () {} } |
+| classes | 37 | constru ... rgs); } | 37 | class e ... () {} } |
+| classes | 37 | constructor | 37 | function in constru ... rgs); } |
+| classes | 37 | entry node of () {} | 37 | {} |
+| classes | 37 | entry node of (...arg ... rgs); } | 37 | args |
+| classes | 37 | f | 37 | function in f() {} |
+| classes | 37 | f() {} | 37 | constructor |
+| classes | 37 | function in constru ... rgs); } | 37 | constru ... rgs); } |
+| classes | 37 | function in f() {} | 37 | f() {} |
+| classes | 37 | super | 37 | args |
+| classes | 37 | super(...args) | 37 | x |
+| classes | 37 | super(...args); | 37 | super |
+| classes | 37 | t | 37 | A |
+| classes | 37 | t = cla ... () {} } | 37 | t |
+| classes | 37 | t = cla ... () {} } | 38 | t = cla ... () {} } |
+| classes | 37 | x | 37 | 5 |
+| classes | 37 | x = 5; | 37 | exit node of (...arg ... rgs); } |
+| classes | 37 | { super(...args); } | 37 | super(...args); |
+| classes | 37 | {} | 37 | exit node of () {} |
+| classes | 38 | 5 | 38 | static x = 5; |
+| classes | 38 | ...args | 38 | super(...args) |
+| classes | 38 | A | 38 | f |
+| classes | 38 | args | 38 | ...args |
+| classes | 38 | args | 38 | { super(...args); } |
+| classes | 38 | class e ... () {} } | 38 | x |
+| classes | 38 | constru ... rgs); } | 38 | class e ... () {} } |
+| classes | 38 | constructor | 38 | function in constru ... rgs); } |
+| classes | 38 | entry node of () {} | 38 | {} |
+| classes | 38 | entry node of (...arg ... rgs); } | 38 | args |
+| classes | 38 | f | 38 | function in f() {} |
+| classes | 38 | f() {} | 38 | constructor |
+| classes | 38 | function in constru ... rgs); } | 38 | constru ... rgs); } |
+| classes | 38 | function in f() {} | 38 | f() {} |
+| classes | 38 | static x = 5; | 38 | t = cla ... () {} } |
+| classes | 38 | super | 38 | args |
+| classes | 38 | super(...args) | 38 | exit node of (...arg ... rgs); } |
+| classes | 38 | super(...args); | 38 | super |
+| classes | 38 | t | 38 | A |
+| classes | 38 | t = cla ... () {} } | 38 | t |
+| classes | 38 | t = cla ... () {} } | 39 | t = cla ... () {} } |
+| classes | 38 | x | 38 | 5 |
+| classes | 38 | { super(...args); } | 38 | super(...args); |
+| classes | 38 | {} | 38 | exit node of () {} |
+| classes | 39 | 5 | 39 | static x = 5; |
+| classes | 39 | A | 39 | f |
+| classes | 39 | class e ... () {} } | 39 | x |
+| classes | 39 | constructor | 39 | function in constructor() {} |
+| classes | 39 | constructor() {} | 39 | class e ... () {} } |
+| classes | 39 | entry node of () {} | 39 | {} |
+| classes | 39 | f | 39 | function in f() {} |
+| classes | 39 | f() {} | 39 | constructor |
+| classes | 39 | function in constructor() {} | 39 | constructor() {} |
+| classes | 39 | function in f() {} | 39 | f() {} |
+| classes | 39 | static x = 5; | 39 | t = cla ... () {} } |
+| classes | 39 | t | 39 | A |
+| classes | 39 | t = cla ... () {} } | 39 | t |
+| classes | 39 | t = cla ... () {} } | 40 | exit node of <toplevel> |
+| classes | 39 | x | 39 | 5 |
+| classes | 39 | {} | 39 | exit node of () {} |
+| decorated_parameter | 1 | C | 2 | foo |
+| decorated_parameter | 1 | class C ... y) {}\\n} | 2 | A |
+| decorated_parameter | 1 | constructor | 1 | function in constructor() {} |
+| decorated_parameter | 1 | constructor() {} | 1 | class C ... y) {}\\n} |
+| decorated_parameter | 1 | entry node of () {} | 1 | {} |
+| decorated_parameter | 1 | entry node of <toplevel> | 1 | C |
+| decorated_parameter | 1 | function in constructor() {} | 1 | constructor() {} |
+| decorated_parameter | 1 | {} | 1 | exit node of () {} |
+| decorated_parameter | 2 | @A | 2 | B |
+| decorated_parameter | 2 | @B | 2 | parameter decorators of method foo of class C |
+| decorated_parameter | 2 | @C | 2 | parameter decorators of method foo of class C |
+| decorated_parameter | 2 | A | 2 | @A |
+| decorated_parameter | 2 | B | 2 | @B |
+| decorated_parameter | 2 | C | 2 | @C |
+| decorated_parameter | 2 | entry node of foo(@A  ... C y) {} | 2 | x |
+| decorated_parameter | 2 | foo | 2 | function in foo(@A  ... C y) {} |
+| decorated_parameter | 2 | foo(@A  ... C y) {} | 1 | constructor |
+| decorated_parameter | 2 | function in foo(@A  ... C y) {} | 2 | foo(@A  ... C y) {} |
+| decorated_parameter | 2 | parameter decorators of method foo of class C | 2 | C |
+| decorated_parameter | 2 | parameter decorators of method foo of class C | 4 | exit node of <toplevel> |
+| decorated_parameter | 2 | x | 2 | y |
+| decorated_parameter | 2 | y | 2 | {} |
+| decorated_parameter | 2 | {} | 2 | exit node of foo(@A  ... C y) {} |
+| destructuring | 1 | entry node of <toplevel> | 2 | f |
+| destructuring | 1 | entry node of functio ...  = p;\\n} | 3 | o |
+| destructuring | 1 | functio ...  = p;\\n} | 18 | exit node of <toplevel> |
+| destructuring | 2 | f | 1 | functio ...  = p;\\n} |
+| destructuring | 3 | o | 4 | p |
+| destructuring | 4 | p | 5 | {\\n    v ...  = p;\\n} |
+| destructuring | 5 | {\\n    v ...  = p;\\n} | 6 | var\\n    ...  } = o; |
+| destructuring | 6 | var\\n    ...  } = o; | 10 | o |
+| destructuring | 7 | {\\n      ...   } = o | 11 | var\\n    ...  ] = p; |
+| destructuring | 7 | {\\n      ... \\n     } | 8 | x |
+| destructuring | 8 | x | 8 | x |
+| destructuring | 8 | x | 9 | y |
+| destructuring | 9 | y | 7 | {\\n      ...   } = o |
+| destructuring | 9 | y | 9 | y |
+| destructuring | 10 | o | 7 | {\\n      ... \\n     } |
+| destructuring | 11 | var\\n    ...  ] = p; | 16 | p |
+| destructuring | 12 | [\\n      ...   ] = p | 17 | exit node of functio ...  = p;\\n} |
+| destructuring | 12 | [\\n      ... \\n     ] | 13 | a |
+| destructuring | 13 | a | 15 | c |
+| destructuring | 15 | c | 12 | [\\n      ...   ] = p |
+| destructuring | 16 | p | 12 | [\\n      ... \\n     ] |
+| enum | 1 | 'value' | 1 | a = 'value' |
+| enum | 1 | E | 1 | a |
+| enum | 1 | a | 1 | 'value' |
+| enum | 1 | a = 'value' | 1 | enum E  ... alue' } |
+| enum | 1 | entry node of <toplevel> | 1 | E |
+| enum | 1 | enum E  ... alue' } | 1 | exit node of <toplevel> |
+| fields | 1 | A | 2 | constructor |
+| fields | 1 | class A ... () {}\\n} | 6 | y |
+| fields | 1 | entry node of <toplevel> | 1 | A |
+| fields | 2 | constru ... or;\\n  } | 7 | f |
+| fields | 2 | constructor | 2 | function in constru ... or;\\n  } |
+| fields | 2 | entry node of () {\\n    ctor;\\n  } | 5 | x |
+| fields | 2 | function in constru ... or;\\n  } | 2 | constru ... or;\\n  } |
+| fields | 2 | {\\n    ctor;\\n  } | 3 | ctor; |
+| fields | 3 | ctor | 4 | exit node of () {\\n    ctor;\\n  } |
+| fields | 3 | ctor; | 3 | ctor |
+| fields | 5 | x | 5 | x; |
+| fields | 5 | x; | 2 | {\\n    ctor;\\n  } |
+| fields | 6 | static y; | 11 | B |
+| fields | 6 | y | 6 | static y; |
+| fields | 7 | entry node of () {} | 7 | {} |
+| fields | 7 | f | 7 | function in f() {} |
+| fields | 7 | f() {} | 8 | g |
+| fields | 7 | function in f() {} | 7 | f() {} |
+| fields | 7 | {} | 7 | exit node of () {} |
+| fields | 8 | entry node of () {} | 8 | {} |
+| fields | 8 | function in static g() {} | 8 | static g() {} |
+| fields | 8 | g | 8 | function in static g() {} |
+| fields | 8 | static g() {} | 1 | class A ... () {}\\n} |
+| fields | 8 | {} | 8 | exit node of () {} |
+| fields | 11 | A | 12 | constructor |
+| fields | 11 | B | 11 | A |
+| fields | 11 | class B ... \\n  z;\\n} | 19 | exit node of <toplevel> |
+| fields | 12 | constru ... er;\\n  } | 11 | class B ... \\n  z;\\n} |
+| fields | 12 | constructor | 12 | function in constru ... er;\\n  } |
+| fields | 12 | entry node of () {\\n   ... er;\\n  } | 12 | {\\n    b ... er;\\n  } |
+| fields | 12 | function in constru ... er;\\n  } | 12 | constru ... er;\\n  } |
+| fields | 12 | {\\n    b ... er;\\n  } | 13 | before; |
+| fields | 13 | before | 14 | super(); |
+| fields | 13 | before; | 13 | before |
+| fields | 14 | super | 14 | super() |
+| fields | 14 | super() | 17 | z |
+| fields | 14 | super(); | 14 | super |
+| fields | 15 | after | 16 | exit node of () {\\n   ... er;\\n  } |
+| fields | 15 | after; | 15 | after |
+| fields | 17 | z | 17 | z; |
+| fields | 17 | z; | 15 | after; |
+| forof | 1 | entry node of <toplevel> | 1 | f |
+| forof | 1 | entry node of functio ...     ;\\n} | 2 | {\\n    f ...     ;\\n} |
+| forof | 1 | f | 1 | functio ...     ;\\n} |
+| forof | 1 | functio ...     ;\\n} | 10 | exit node of <toplevel> |
+| forof | 2 | {\\n    f ...     ;\\n} | 7 | [] |
+| forof | 3 | for (\\n  ... )\\n    ; | 4 | var\\n        x |
+| forof | 3 | for (\\n  ... )\\n    ; | 9 | exit node of functio ...     ;\\n} |
+| forof | 4 | var\\n        x | 5 | x |
+| forof | 5 | x | 5 | x |
+| forof | 5 | x | 8 | ; |
+| forof | 7 | [] | 3 | for (\\n  ... )\\n    ; |
+| forof | 8 | ; | 3 | for (\\n  ... )\\n    ; |
+| globals | 1 | entry node of <toplevel> | 14 | g |
+| globals | 1 | var\\n x,\\n y; | 2 | x |
+| globals | 2 | x | 2 | x |
+| globals | 2 | x | 3 | y |
+| globals | 3 | y | 3 | y |
+| globals | 3 | y | 4 | {\\n    var\\n     z;\\n} |
+| globals | 4 | {\\n    var\\n     z;\\n} | 5 | var\\n     z; |
+| globals | 5 | var\\n     z; | 6 | z |
+| globals | 6 | z | 6 | z |
+| globals | 6 | z | 11 | [] |
+| globals | 8 | for (\\n  ... [])\\n  ; | 9 | var\\n  a |
+| globals | 8 | for (\\n  ... [])\\n  ; | 13 | function\\n g()\\n{\\n} |
+| globals | 9 | var\\n  a | 10 | a |
+| globals | 10 | a | 10 | a |
+| globals | 10 | a | 12 | ; |
+| globals | 11 | [] | 8 | for (\\n  ... [])\\n  ; |
+| globals | 12 | ; | 8 | for (\\n  ... [])\\n  ; |
+| globals | 13 | entry node of function\\n g()\\n{\\n} | 15 | {\\n} |
+| globals | 13 | function\\n g()\\n{\\n} | 17 | !\\nfunction\\n h()\\n{\\n}; |
+| globals | 14 | g | 1 | var\\n x,\\n y; |
+| globals | 15 | {\\n} | 16 | exit node of function\\n g()\\n{\\n} |
+| globals | 17 | !\\nfunction\\n h()\\n{\\n} | 21 | exit node of <toplevel> |
+| globals | 17 | !\\nfunction\\n h()\\n{\\n}; | 18 | function\\n h()\\n{\\n} |
+| globals | 18 | entry node of function\\n h()\\n{\\n} | 19 | h |
+| globals | 18 | function\\n h()\\n{\\n} | 17 | !\\nfunction\\n h()\\n{\\n} |
+| globals | 19 | h | 20 | {\\n} |
+| globals | 20 | {\\n} | 21 | exit node of function\\n h()\\n{\\n} |
+| mixedMembers | 1 | Mixed | 3 | constructor |
+| mixedMembers | 1 | class M ... z) {}\\n} | 6 | exit node of <toplevel> |
+| mixedMembers | 1 | entry node of <toplevel> | 1 | Mixed |
+| mixedMembers | 2 | 3 | 2 | x = 3 |
+| mixedMembers | 2 | x | 2 | 3 |
+| mixedMembers | 2 | x = 3 | 3 | {} |
+| mixedMembers | 3 | constructor | 3 | function in constructor(y) {} |
+| mixedMembers | 3 | constructor(y) {} | 4 | method |
+| mixedMembers | 3 | entry node of (y) {} | 3 | y |
+| mixedMembers | 3 | function in constructor(y) {} | 3 | constructor(y) {} |
+| mixedMembers | 3 | y | 2 | x |
+| mixedMembers | 3 | {} | 3 | exit node of (y) {} |
+| mixedMembers | 4 | entry node of (z) {} | 4 | z |
+| mixedMembers | 4 | function in method(z) {} | 4 | method(z) {} |
+| mixedMembers | 4 | method | 4 | function in method(z) {} |
+| mixedMembers | 4 | method(z) {} | 1 | class M ... z) {}\\n} |
+| mixedMembers | 4 | z | 4 | {} |
+| mixedMembers | 4 | {} | 4 | exit node of (z) {} |
+| short-circuit | 1 | a | 1 | guard: a is false |
+| short-circuit | 1 | a | 1 | guard: a is true |
+| short-circuit | 1 | a\\n&&\\nb | 1 | a |
+| short-circuit | 1 | a\\n&&\\nb\\n&&\\nc | 1 | a\\n&&\\nb |
+| short-circuit | 1 | a\\n&&\\nb\\n&&\\nc; | 1 | a\\n&&\\nb\\n&&\\nc |
+| short-circuit | 1 | entry node of <toplevel> | 1 | a\\n&&\\nb\\n&&\\nc; |
+| short-circuit | 1 | guard: a is false | 7 | x\\n\|\|\\ny\\n\|\|\\nz; |
+| short-circuit | 1 | guard: a is true | 3 | b |
+| short-circuit | 3 | b | 3 | guard: b is false |
+| short-circuit | 3 | b | 3 | guard: b is true |
+| short-circuit | 3 | guard: b is false | 7 | x\\n\|\|\\ny\\n\|\|\\nz; |
+| short-circuit | 3 | guard: b is true | 5 | c |
+| short-circuit | 5 | c | 7 | x\\n\|\|\\ny\\n\|\|\\nz; |
+| short-circuit | 7 | guard: x is false | 9 | y |
+| short-circuit | 7 | guard: x is true | 13 | (d\\n\|\|\\ne)\\n&&\\nf; |
+| short-circuit | 7 | x | 7 | guard: x is false |
+| short-circuit | 7 | x | 7 | guard: x is true |
+| short-circuit | 7 | x\\n\|\|\\ny | 7 | x |
+| short-circuit | 7 | x\\n\|\|\\ny\\n\|\|\\nz | 7 | x\\n\|\|\\ny |
+| short-circuit | 7 | x\\n\|\|\\ny\\n\|\|\\nz; | 7 | x\\n\|\|\\ny\\n\|\|\\nz |
+| short-circuit | 9 | guard: y is false | 11 | z |
+| short-circuit | 9 | guard: y is true | 13 | (d\\n\|\|\\ne)\\n&&\\nf; |
+| short-circuit | 9 | y | 9 | guard: y is false |
+| short-circuit | 9 | y | 9 | guard: y is true |
+| short-circuit | 11 | z | 13 | (d\\n\|\|\\ne)\\n&&\\nf; |
+| short-circuit | 13 | (d\\n\|\|\\ne) | 13 | d\\n\|\|\\ne |
+| short-circuit | 13 | (d\\n\|\|\\ne)\\n&&\\nf | 13 | (d\\n\|\|\\ne) |
+| short-circuit | 13 | (d\\n\|\|\\ne)\\n&&\\nf; | 13 | (d\\n\|\|\\ne)\\n&&\\nf |
+| short-circuit | 13 | d | 13 | guard: d is false |
+| short-circuit | 13 | d | 13 | guard: d is true |
+| short-circuit | 13 | d\\n\|\|\\ne | 13 | d |
+| short-circuit | 13 | guard: d is false | 15 | e |
+| short-circuit | 13 | guard: d is true | 17 | f |
+| short-circuit | 15 | e | 15 | guard: e is false |
+| short-circuit | 15 | e | 15 | guard: e is true |
+| short-circuit | 15 | guard: e is false | 17 | exit node of <toplevel> |
+| short-circuit | 15 | guard: e is true | 17 | f |
+| short-circuit | 17 | f | 17 | exit node of <toplevel> |
+| staticFields | 1 | C | 1 | constructor |
+| staticFields | 1 | class C ...  C();\\n} | 2 | instance |
+| staticFields | 1 | constructor | 1 | function in constructor() {} |
+| staticFields | 1 | constructor() {} | 1 | class C ...  C();\\n} |
+| staticFields | 1 | entry node of () {} | 1 | {} |
+| staticFields | 1 | entry node of <toplevel> | 1 | C |
+| staticFields | 1 | function in constructor() {} | 1 | constructor() {} |
+| staticFields | 1 | {} | 1 | exit node of () {} |
+| staticFields | 2 | C | 2 | new C() |
+| staticFields | 2 | instance | 2 | C |
+| staticFields | 2 | new C() | 2 | static  ... ew C(); |
+| staticFields | 2 | static  ... ew C(); | 4 | exit node of <toplevel> |
+| staticFieldsTS | 1 | C | 1 | constructor |
+| staticFieldsTS | 1 | class C ...  C();\\n} | 2 | instance |
+| staticFieldsTS | 1 | constructor | 1 | function in constructor() {} |
+| staticFieldsTS | 1 | constructor() {} | 1 | class C ...  C();\\n} |
+| staticFieldsTS | 1 | entry node of () {} | 1 | {} |
+| staticFieldsTS | 1 | entry node of <toplevel> | 1 | C |
+| staticFieldsTS | 1 | function in constructor() {} | 1 | constructor() {} |
+| staticFieldsTS | 1 | {} | 1 | exit node of () {} |
+| staticFieldsTS | 2 | C | 2 | new C() |
+| staticFieldsTS | 2 | instance | 2 | C |
+| staticFieldsTS | 2 | new C() | 2 | static  ... ew C(); |
+| staticFieldsTS | 2 | static  ... ew C(); | 5 | export  ...  D();\\n} |
+| staticFieldsTS | 5 | D | 5 | constructor |
+| staticFieldsTS | 5 | class D ...  D();\\n} | 6 | instance |
+| staticFieldsTS | 5 | constructor | 5 | function in constructor() {} |
+| staticFieldsTS | 5 | constructor() {} | 5 | class D ...  D();\\n} |
+| staticFieldsTS | 5 | entry node of () {} | 5 | {} |
+| staticFieldsTS | 5 | export  ...  D();\\n} | 5 | D |
+| staticFieldsTS | 5 | function in constructor() {} | 5 | constructor() {} |
+| staticFieldsTS | 5 | {} | 5 | exit node of () {} |
+| staticFieldsTS | 6 | D | 6 | new D() |
+| staticFieldsTS | 6 | instance | 6 | D |
+| staticFieldsTS | 6 | new D() | 6 | static  ... ew D(); |
+| staticFieldsTS | 6 | static  ... ew D(); | 9 | export  ... ;\\n  }\\n} |
+| staticFieldsTS | 9 | E | 9 | constructor |
+| staticFieldsTS | 9 | class E ... ;\\n  }\\n} | 10 | f |
+| staticFieldsTS | 9 | constructor | 9 | function in constructor() {} |
+| staticFieldsTS | 9 | constructor() {} | 9 | class E ... ;\\n  }\\n} |
+| staticFieldsTS | 9 | entry node of () {} | 9 | {} |
+| staticFieldsTS | 9 | export  ... ;\\n  }\\n} | 9 | E |
+| staticFieldsTS | 9 | function in constructor() {} | 9 | constructor() {} |
+| staticFieldsTS | 9 | {} | 9 | exit node of () {} |
+| staticFieldsTS | 10 | f | 10 | false |
+| staticFieldsTS | 10 | false | 10 | static  ...  false; |
+| staticFieldsTS | 10 | static  ...  false; | 11 | static  ... ();\\n  } |
+| staticFieldsTS | 11 | static  ... ();\\n  } | 12 | E.f = new C(); |
+| staticFieldsTS | 12 | C | 12 | new C() |
+| staticFieldsTS | 12 | E | 12 | f |
+| staticFieldsTS | 12 | E.f | 12 | C |
+| staticFieldsTS | 12 | E.f = new C() | 14 | g |
+| staticFieldsTS | 12 | E.f = new C(); | 12 | E |
+| staticFieldsTS | 12 | f | 12 | E.f |
+| staticFieldsTS | 12 | new C() | 12 | E.f = new C() |
+| staticFieldsTS | 14 | 1337 | 14 | static  ... = 1337; |
+| staticFieldsTS | 14 | g | 14 | 1337 |
+| staticFieldsTS | 14 | static  ... = 1337; | 15 | static  ... ();\\n  } |
+| staticFieldsTS | 15 | static  ... ();\\n  } | 16 | E.g = new D(); |
+| staticFieldsTS | 16 | D | 16 | new D() |
+| staticFieldsTS | 16 | E | 16 | g |
+| staticFieldsTS | 16 | E.g | 16 | D |
+| staticFieldsTS | 16 | E.g = new D() | 18 | exit node of <toplevel> |
+| staticFieldsTS | 16 | E.g = new D(); | 16 | E |
+| staticFieldsTS | 16 | g | 16 | E.g |
+| staticFieldsTS | 16 | new D() | 16 | E.g = new D() |
+| switch | 1 | entry node of <toplevel> | 14 | f |
+| switch | 1 | switch  ...   19;\\n} | 2 | x |
+| switch | 2 | x | 6 | case\\n   ...     19; |
+| switch | 4 | default:\\n    break; | 5 | break; |
+| switch | 5 | break; | 13 | functio ...     }\\n} |
+| switch | 6 | case\\n   ...     19; | 7 | 23 |
+| switch | 7 | 23 | 4 | default:\\n    break; |
+| switch | 7 | 23 | 8 | x\\n      ...     19; |
+| switch | 8 | x | 10 | 19 |
+| switch | 8 | x\\n      ...     19; | 8 | x |
+| switch | 8 | x\\n     +=\\n        19 | 13 | functio ...     }\\n} |
+| switch | 10 | 19 | 8 | x\\n     +=\\n        19 |
+| switch | 13 | entry node of functio ...     }\\n} | 15 | {\\n    s ...     }\\n} |
+| switch | 13 | functio ...     }\\n} | 31 | exit node of <toplevel> |
+| switch | 14 | f | 1 | switch  ...   19;\\n} |
+| switch | 15 | {\\n    s ...     }\\n} | 16 | switch( ... ;\\n    } |
+| switch | 16 | switch( ... ;\\n    } | 17 | x |
+| switch | 17 | x | 19 | case\\n   ...     23; |
+| switch | 19 | case\\n   ...     23; | 20 | 0 |
+| switch | 20 | 0 | 21 | return |
+| switch | 20 | 0 | 26 | case\\n   ...     56; |
+| switch | 21 | return | 31 | exit node of functio ...     }\\n} |
+| switch | 22 | 23 | 23 | default ...     42; |
+| switch | 22 | 23; | 22 | 23 |
+| switch | 23 | default ...     42; | 24 | return |
+| switch | 24 | return | 31 | exit node of functio ...     }\\n} |
+| switch | 25 | 42 | 26 | case\\n   ...     56; |
+| switch | 25 | 42; | 25 | 42 |
+| switch | 26 | case\\n   ...     56; | 27 | 1 |
+| switch | 27 | 1 | 23 | default ...     42; |
+| switch | 27 | 1 | 28 | return |
+| switch | 28 | return | 31 | exit node of functio ...     }\\n} |
+| switch | 29 | 56 | 31 | exit node of functio ...     }\\n} |
+| switch | 29 | 56; | 29 | 56 |

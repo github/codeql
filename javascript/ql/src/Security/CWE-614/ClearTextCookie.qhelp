@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Cookies that are transmitted in clear text can be intercepted by an attacker.
+If sensitive cookies are intercepted, the attacker can read the cookie and
+use it to perform actions on the user's behalf.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Always transmit sensitive cookies using SSL by setting the <code>secure</code>
+attribute on the cookie.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example stores an authentication token in a cookie that can 
+be transmitted in clear text.
+</p>
+<sample src="examples/ClearTextCookieBad.js"/>
+<p>
+To force the cookie to be transmitted using SSL, set the <code>secure</code>
+attribute on the cookie.
+</p>
+<sample src="examples/ClearTextCookieGood.js"/>
+</example>
+
+<references>
+<li>ExpressJS: <a href="https://expressjs.com/en/advanced/best-practice-security.html#use-cookies-securely">Use cookies securely</a>.</li>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html#set-cookie-flags-appropriately">Set cookie flags appropriately</a>.</li>
+<li>Mozilla: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a>.</li>
+</references>
+</qhelp>

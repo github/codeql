@@ -1,0 +1,114 @@
+| Capture.cs:6:16:6:16 | i | Capture.cs:8:17:8:17 | access to parameter i | Capture.cs:33:13:33:13 | access to parameter i |
+| Capture.cs:8:13:8:13 | x | Capture.cs:16:17:16:17 | access to local variable x | Capture.cs:17:21:17:21 | access to local variable x |
+| Capture.cs:8:13:8:13 | x | Capture.cs:45:13:45:13 | access to local variable x | Capture.cs:47:13:47:13 | access to local variable x |
+| Capture.cs:10:16:10:16 | a | Capture.cs:38:9:38:9 | access to local variable a | Capture.cs:46:12:46:12 | access to local variable a |
+| Capture.cs:65:45:65:51 | strings | Capture.cs:68:18:68:24 | access to parameter strings | Capture.cs:70:9:70:15 | access to parameter strings |
+| Consistency.cs:5:9:5:13 | Field | Consistency.cs:26:13:26:19 | access to field Field | Consistency.cs:27:13:27:19 | access to field Field |
+| Consistency.cs:25:29:25:29 | c | Consistency.cs:26:13:26:13 | access to local variable c | Consistency.cs:27:13:27:13 | access to local variable c |
+| Consistency.cs:44:11:44:11 | s | Consistency.cs:45:9:45:9 | access to local variable s | Consistency.cs:46:13:46:13 | access to local variable s |
+| Consistency.cs:51:20:51:20 | a | Consistency.cs:53:28:53:28 | access to parameter a | Consistency.cs:55:36:55:36 | access to parameter a |
+| Consistency.cs:51:20:51:20 | a | Consistency.cs:55:36:55:36 | access to parameter a | Consistency.cs:56:36:56:36 | access to parameter a |
+| DefUse.cs:3:26:3:26 | w | DefUse.cs:35:13:35:13 | access to parameter w | DefUse.cs:53:17:53:17 | access to parameter w |
+| DefUse.cs:5:13:5:13 | x | DefUse.cs:11:13:11:13 | access to local variable x | DefUse.cs:26:13:26:13 | access to local variable x |
+| DefUse.cs:5:13:5:13 | x | DefUse.cs:26:13:26:13 | access to local variable x | DefUse.cs:37:13:37:13 | access to local variable x |
+| DefUse.cs:5:13:5:13 | x | DefUse.cs:37:13:37:13 | access to local variable x | DefUse.cs:44:17:44:17 | access to local variable x |
+| DefUse.cs:5:13:5:13 | x | DefUse.cs:44:17:44:17 | access to local variable x | DefUse.cs:56:16:56:16 | access to local variable x |
+| DefUse.cs:44:13:44:13 | z | DefUse.cs:48:13:48:13 | access to local variable z | DefUse.cs:50:23:50:23 | access to local variable z |
+| DefUse.cs:97:13:97:14 | x5 | DefUse.cs:98:16:98:17 | access to local variable x5 | DefUse.cs:100:17:100:18 | access to local variable x5 |
+| DefUse.cs:97:13:97:14 | x5 | DefUse.cs:98:16:98:17 | access to local variable x5 | DefUse.cs:104:9:104:10 | access to local variable x5 |
+| DefUse.cs:97:13:97:14 | x5 | DefUse.cs:100:17:100:18 | access to local variable x5 | DefUse.cs:101:18:101:19 | access to local variable x5 |
+| DefUse.cs:122:16:122:21 | Field2 | DefUse.cs:64:13:64:18 | access to field Field2 | DefUse.cs:80:37:80:42 | access to field Field2 |
+| DefUse.cs:122:16:122:21 | Field2 | DefUse.cs:80:37:80:42 | access to field Field2 | DefUse.cs:80:37:80:42 | access to field Field2 |
+| DefUse.cs:144:22:144:22 | x | DefUse.cs:146:17:146:17 | access to local variable x | DefUse.cs:147:17:147:17 | access to local variable x |
+| DefUse.cs:152:9:152:14 | Field4 | DefUse.cs:156:13:156:18 | access to field Field4 | DefUse.cs:157:13:157:18 | access to field Field4 |
+| DefUse.cs:152:9:152:14 | Field4 | DefUse.cs:162:13:162:18 | access to field Field4 | DefUse.cs:163:13:163:18 | access to field Field4 |
+| DefUse.cs:167:23:167:23 | i | DefUse.cs:177:21:177:21 | access to parameter i | DefUse.cs:178:21:178:21 | access to parameter i |
+| Example.cs:4:9:4:13 | Field | Example.cs:14:13:14:22 | access to field Field | Example.cs:15:13:15:22 | access to field Field |
+| Example.cs:6:23:6:23 | i | Example.cs:8:22:8:22 | access to parameter i | Example.cs:10:13:10:13 | access to parameter i |
+| Example.cs:6:23:6:23 | i | Example.cs:10:13:10:13 | access to parameter i | Example.cs:11:26:11:26 | access to parameter i |
+| Example.cs:6:23:6:23 | i | Example.cs:10:13:10:13 | access to parameter i | Example.cs:12:18:12:18 | access to parameter i |
+| Fields.cs:5:18:5:19 | xs | Fields.cs:39:13:39:16 | access to field xs | Fields.cs:43:13:43:16 | access to field xs |
+| Fields.cs:5:18:5:19 | xs | Fields.cs:44:13:44:14 | access to field xs | Fields.cs:47:13:47:14 | access to field xs |
+| Fields.cs:5:18:5:19 | xs | Fields.cs:47:13:47:14 | access to field xs | Fields.cs:53:13:53:14 | access to field xs |
+| Fields.cs:5:18:5:19 | xs | Fields.cs:50:13:50:16 | access to field xs | Fields.cs:52:13:52:16 | access to field xs |
+| Fields.cs:5:18:5:19 | xs | Fields.cs:116:21:116:39 | access to field xs | Fields.cs:117:17:117:35 | access to field xs |
+| Fields.cs:30:13:30:13 | f | Fields.cs:31:19:31:19 | access to local variable f | Fields.cs:35:13:35:13 | access to local variable f |
+| Fields.cs:30:13:30:13 | f | Fields.cs:35:13:35:13 | access to local variable f | Fields.cs:38:9:38:9 | access to local variable f |
+| Fields.cs:30:13:30:13 | f | Fields.cs:38:9:38:9 | access to local variable f | Fields.cs:39:13:39:13 | access to local variable f |
+| Fields.cs:30:13:30:13 | f | Fields.cs:39:13:39:13 | access to local variable f | Fields.cs:43:13:43:13 | access to local variable f |
+| Fields.cs:30:13:30:13 | f | Fields.cs:43:13:43:13 | access to local variable f | Fields.cs:45:9:45:9 | access to local variable f |
+| Fields.cs:30:13:30:13 | f | Fields.cs:45:9:45:9 | access to local variable f | Fields.cs:46:13:46:13 | access to local variable f |
+| Fields.cs:30:13:30:13 | f | Fields.cs:50:13:50:13 | access to local variable f | Fields.cs:52:13:52:13 | access to local variable f |
+| Fields.cs:57:9:57:17 | LoopField | Fields.cs:65:24:65:32 | access to field LoopField | Fields.cs:65:24:65:32 | access to field LoopField |
+| Fields.cs:77:13:77:13 | f | Fields.cs:80:9:80:9 | access to local variable f | Fields.cs:82:19:82:19 | access to local variable f |
+| Fields.cs:77:13:77:13 | f | Fields.cs:82:19:82:19 | access to local variable f | Fields.cs:83:9:83:9 | access to local variable f |
+| Fields.cs:77:13:77:13 | f | Fields.cs:83:9:83:9 | access to local variable f | Fields.cs:85:19:85:19 | access to local variable f |
+| Fields.cs:77:13:77:13 | f | Fields.cs:85:19:85:19 | access to local variable f | Fields.cs:87:19:87:19 | access to local variable f |
+| Fields.cs:77:13:77:13 | f | Fields.cs:87:19:87:19 | access to local variable f | Fields.cs:88:9:88:9 | access to local variable f |
+| Fields.cs:77:13:77:13 | f | Fields.cs:88:9:88:9 | access to local variable f | Fields.cs:90:19:90:19 | access to local variable f |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:98:20:98:26 | access to field Field | Fields.cs:99:16:99:22 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:98:20:98:32 | access to field Field | Fields.cs:99:16:99:28 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:99:16:99:22 | access to field Field | Fields.cs:100:16:100:22 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:99:16:99:28 | access to field Field | Fields.cs:100:16:100:28 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:99:16:99:34 | access to field Field | Fields.cs:100:16:100:34 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:100:16:100:22 | access to field Field | Fields.cs:101:16:101:22 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:100:16:100:28 | access to field Field | Fields.cs:101:16:101:28 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:100:16:100:34 | access to field Field | Fields.cs:101:16:101:34 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:100:16:100:40 | access to field Field | Fields.cs:101:16:101:40 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:101:16:101:22 | access to field Field | Fields.cs:102:22:102:28 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:115:20:115:29 | access to field Field | Fields.cs:116:21:116:30 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:115:20:115:35 | access to field Field | Fields.cs:116:21:116:36 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:116:21:116:30 | access to field Field | Fields.cs:117:17:117:26 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:116:21:116:36 | access to field Field | Fields.cs:117:17:117:32 | access to field Field |
+| Fields.cs:95:19:95:19 | f | Fields.cs:97:9:97:9 | access to parameter f | Fields.cs:98:20:98:20 | access to parameter f |
+| Fields.cs:95:19:95:19 | f | Fields.cs:98:20:98:20 | access to parameter f | Fields.cs:99:16:99:16 | access to parameter f |
+| Fields.cs:95:19:95:19 | f | Fields.cs:99:16:99:16 | access to parameter f | Fields.cs:100:16:100:16 | access to parameter f |
+| Fields.cs:95:19:95:19 | f | Fields.cs:100:16:100:16 | access to parameter f | Fields.cs:101:16:101:16 | access to parameter f |
+| Fields.cs:95:19:95:19 | f | Fields.cs:101:16:101:16 | access to parameter f | Fields.cs:102:22:102:22 | access to parameter f |
+| OutRef.cs:5:9:5:13 | Field | OutRef.cs:15:13:15:17 | access to field Field | OutRef.cs:16:32:16:36 | access to field Field |
+| OutRef.cs:9:13:9:13 | j | OutRef.cs:12:13:12:13 | access to local variable j | OutRef.cs:22:29:22:29 | access to local variable j |
+| OutRef.cs:9:13:9:13 | j | OutRef.cs:23:13:23:13 | access to local variable j | OutRef.cs:24:29:24:29 | access to local variable j |
+| OutRef.cs:18:13:18:13 | t | OutRef.cs:19:32:19:32 | access to local variable t | OutRef.cs:21:13:21:13 | access to local variable t |
+| Patterns.cs:7:16:7:16 | o | Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:12:18:12:18 | access to local variable o |
+| Patterns.cs:7:16:7:16 | o | Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:20:17:20:17 | access to local variable o |
+| Patterns.cs:7:16:7:16 | o | Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:16:18:16:18 | access to local variable o |
+| Patterns.cs:7:16:7:16 | o | Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:20:17:20:17 | access to local variable o |
+| Patterns.cs:7:16:7:16 | o | Patterns.cs:16:18:16:18 | access to local variable o | Patterns.cs:20:17:20:17 | access to local variable o |
+| Patterns.cs:24:22:24:23 | i2 | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:25:47:25:48 | access to local variable i2 |
+| Properties.cs:5:18:5:19 | xs | Properties.cs:39:13:39:16 | access to property xs | Properties.cs:43:13:43:16 | access to property xs |
+| Properties.cs:5:18:5:19 | xs | Properties.cs:44:13:44:14 | access to property xs | Properties.cs:47:13:47:14 | access to property xs |
+| Properties.cs:5:18:5:19 | xs | Properties.cs:47:13:47:14 | access to property xs | Properties.cs:53:13:53:14 | access to property xs |
+| Properties.cs:5:18:5:19 | xs | Properties.cs:50:13:50:16 | access to property xs | Properties.cs:52:13:52:16 | access to property xs |
+| Properties.cs:5:18:5:19 | xs | Properties.cs:115:21:115:39 | access to property xs | Properties.cs:116:17:116:35 | access to property xs |
+| Properties.cs:30:13:30:13 | f | Properties.cs:31:19:31:19 | access to local variable f | Properties.cs:35:13:35:13 | access to local variable f |
+| Properties.cs:30:13:30:13 | f | Properties.cs:35:13:35:13 | access to local variable f | Properties.cs:38:9:38:9 | access to local variable f |
+| Properties.cs:30:13:30:13 | f | Properties.cs:38:9:38:9 | access to local variable f | Properties.cs:39:13:39:13 | access to local variable f |
+| Properties.cs:30:13:30:13 | f | Properties.cs:39:13:39:13 | access to local variable f | Properties.cs:43:13:43:13 | access to local variable f |
+| Properties.cs:30:13:30:13 | f | Properties.cs:43:13:43:13 | access to local variable f | Properties.cs:45:9:45:9 | access to local variable f |
+| Properties.cs:30:13:30:13 | f | Properties.cs:45:9:45:9 | access to local variable f | Properties.cs:46:13:46:13 | access to local variable f |
+| Properties.cs:30:13:30:13 | f | Properties.cs:50:13:50:13 | access to local variable f | Properties.cs:52:13:52:13 | access to local variable f |
+| Properties.cs:57:16:57:23 | LoopProp | Properties.cs:65:24:65:31 | access to property LoopProp | Properties.cs:65:24:65:31 | access to property LoopProp |
+| Properties.cs:73:13:73:13 | f | Properties.cs:76:9:76:9 | access to local variable f | Properties.cs:78:19:78:19 | access to local variable f |
+| Properties.cs:73:13:73:13 | f | Properties.cs:78:19:78:19 | access to local variable f | Properties.cs:79:9:79:9 | access to local variable f |
+| Properties.cs:73:13:73:13 | f | Properties.cs:79:9:79:9 | access to local variable f | Properties.cs:81:19:81:19 | access to local variable f |
+| Properties.cs:73:13:73:13 | f | Properties.cs:81:19:81:19 | access to local variable f | Properties.cs:83:19:83:19 | access to local variable f |
+| Properties.cs:73:13:73:13 | f | Properties.cs:83:19:83:19 | access to local variable f | Properties.cs:84:9:84:9 | access to local variable f |
+| Properties.cs:73:13:73:13 | f | Properties.cs:84:9:84:9 | access to local variable f | Properties.cs:86:19:86:19 | access to local variable f |
+| Properties.cs:104:16:104:20 | Props | Properties.cs:114:20:114:29 | access to field Props | Properties.cs:115:21:115:30 | access to field Props |
+| Properties.cs:104:16:104:20 | Props | Properties.cs:114:20:114:35 | access to field Props | Properties.cs:115:21:115:36 | access to field Props |
+| Properties.cs:104:16:104:20 | Props | Properties.cs:115:21:115:30 | access to field Props | Properties.cs:116:17:116:26 | access to field Props |
+| Properties.cs:104:16:104:20 | Props | Properties.cs:115:21:115:36 | access to field Props | Properties.cs:116:17:116:32 | access to field Props |
+| Splitting.cs:3:18:3:18 | b | Splitting.cs:6:13:6:13 | access to parameter b | Splitting.cs:15:13:15:13 | access to parameter b |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:13:9:13:9 | access to local variable x | Splitting.cs:14:9:14:9 | access to local variable x |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:14:9:14:9 | access to local variable x | Splitting.cs:17:13:17:13 | access to local variable x |
+| Splitting.cs:22:18:22:18 | b | Splitting.cs:25:13:25:13 | access to parameter b | Splitting.cs:35:13:35:13 | access to parameter b |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:33:9:33:9 | access to local variable x | Splitting.cs:34:9:34:9 | access to local variable x |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:34:9:34:9 | access to local variable x | Splitting.cs:37:13:37:13 | access to local variable x |
+| Splitting.cs:42:18:42:18 | b | Splitting.cs:45:13:45:13 | access to parameter b | Splitting.cs:52:13:52:13 | access to parameter b |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:54:9:54:9 | access to local variable x | Splitting.cs:55:9:55:9 | access to local variable x |
+| Test.cs:8:13:8:13 | x | Test.cs:25:16:25:16 | access to local variable x | Test.cs:25:16:25:16 | access to local variable x |
+| Test.cs:9:13:9:13 | y | Test.cs:25:20:25:20 | access to local variable y | Test.cs:31:13:31:13 | access to local variable y |
+| Test.cs:9:13:9:13 | y | Test.cs:25:20:25:20 | access to local variable y | Test.cs:43:20:43:20 | access to local variable y |
+| Test.cs:34:18:34:18 | i | Test.cs:34:25:34:25 | access to local variable i | Test.cs:36:18:36:18 | access to local variable i |
+| Test.cs:34:18:34:18 | i | Test.cs:36:18:36:18 | access to local variable i | Test.cs:34:33:34:33 | access to local variable i |
+| Tuples.cs:25:13:25:13 | t | Tuples.cs:26:17:26:17 | access to local variable t | Tuples.cs:28:13:28:13 | access to local variable t |

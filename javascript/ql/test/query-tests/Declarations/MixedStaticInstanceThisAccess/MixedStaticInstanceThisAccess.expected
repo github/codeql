@@ -1,0 +1,3 @@
+| instanceStatic.js:3:9:3:16 | this.baz | Access to instance method $@ from static method $@ is not possible through `this`. | instanceStatic.js:5:5:7:5 | baz(){\\n\\n    } | baz | instanceStatic.js:2:5:4:5 | static  ... K\\n    } | bar |
+| staticInstance.js:3:9:3:16 | this.baz | Access to static method $@ from instance method $@ is not possible through `this`. | staticInstance.js:5:5:6:5 | static baz(){\\n    } | baz | staticInstance.js:2:5:4:5 | bar(){\\n ... K\\n    } | bar |
+| tst.js:66:9:66:14 | this.f | Access to instance method $@ from static method $@ is not possible through `this`. | tst.js:60:5:62:5 | f() {\\n\\n    } | f | tst.js:65:5:67:5 | static  ... K\\n    } | test |

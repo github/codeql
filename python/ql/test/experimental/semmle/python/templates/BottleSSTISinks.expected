@@ -1,0 +1,3 @@
+WARNING: Type SSTISink has been deprecated and may be removed in future (BottleSSTISinks.ql:4,6-14)
+| Bottle.py:11:26:11:33 | argument to bottle.SimpleTemplate() |
+| Bottle.py:17:17:17:24 | argument to bottle.template() |

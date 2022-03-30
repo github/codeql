@@ -1,0 +1,63 @@
+edges
+| UnsafeRequestPath.java:20:17:20:63 | getServletPath(...) : String | UnsafeRequestPath.java:23:33:23:36 | path |
+| UnsafeServletRequestDispatch.java:23:22:23:54 | getParameter(...) : String | UnsafeServletRequestDispatch.java:32:51:32:59 | returnURL |
+| UnsafeServletRequestDispatch.java:42:22:42:54 | getParameter(...) : String | UnsafeServletRequestDispatch.java:48:56:48:64 | returnURL |
+| UnsafeServletRequestDispatch.java:71:17:71:44 | getParameter(...) : String | UnsafeServletRequestDispatch.java:76:53:76:56 | path |
+| UnsafeServletRequestDispatch.java:106:17:106:44 | getParameter(...) : String | UnsafeServletRequestDispatch.java:107:53:107:56 | path : String |
+| UnsafeServletRequestDispatch.java:107:24:107:57 | resolve(...) : Path | UnsafeServletRequestDispatch.java:107:24:107:69 | normalize(...) : Path |
+| UnsafeServletRequestDispatch.java:107:24:107:69 | normalize(...) : Path | UnsafeServletRequestDispatch.java:110:53:110:65 | requestedPath : Path |
+| UnsafeServletRequestDispatch.java:107:53:107:56 | path : String | UnsafeServletRequestDispatch.java:107:24:107:57 | resolve(...) : Path |
+| UnsafeServletRequestDispatch.java:110:53:110:65 | requestedPath : Path | UnsafeServletRequestDispatch.java:110:53:110:76 | toString(...) |
+| UnsafeUrlForward.java:13:27:13:36 | url : String | UnsafeUrlForward.java:14:27:14:29 | url |
+| UnsafeUrlForward.java:18:27:18:36 | url : String | UnsafeUrlForward.java:20:28:20:30 | url |
+| UnsafeUrlForward.java:25:21:25:30 | url : String | UnsafeUrlForward.java:26:23:26:25 | url |
+| UnsafeUrlForward.java:30:27:30:36 | url : String | UnsafeUrlForward.java:31:48:31:63 | ... + ... |
+| UnsafeUrlForward.java:30:27:30:36 | url : String | UnsafeUrlForward.java:31:61:31:63 | url |
+| UnsafeUrlForward.java:36:19:36:28 | url : String | UnsafeUrlForward.java:38:33:38:35 | url |
+| UnsafeUrlForward.java:47:19:47:28 | url : String | UnsafeUrlForward.java:49:33:49:62 | ... + ... |
+| UnsafeUrlForward.java:58:19:58:28 | url : String | UnsafeUrlForward.java:60:33:60:62 | ... + ... |
+nodes
+| UnsafeRequestPath.java:20:17:20:63 | getServletPath(...) : String | semmle.label | getServletPath(...) : String |
+| UnsafeRequestPath.java:23:33:23:36 | path | semmle.label | path |
+| UnsafeServletRequestDispatch.java:23:22:23:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeServletRequestDispatch.java:32:51:32:59 | returnURL | semmle.label | returnURL |
+| UnsafeServletRequestDispatch.java:42:22:42:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeServletRequestDispatch.java:48:56:48:64 | returnURL | semmle.label | returnURL |
+| UnsafeServletRequestDispatch.java:71:17:71:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeServletRequestDispatch.java:76:53:76:56 | path | semmle.label | path |
+| UnsafeServletRequestDispatch.java:106:17:106:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeServletRequestDispatch.java:107:24:107:57 | resolve(...) : Path | semmle.label | resolve(...) : Path |
+| UnsafeServletRequestDispatch.java:107:24:107:69 | normalize(...) : Path | semmle.label | normalize(...) : Path |
+| UnsafeServletRequestDispatch.java:107:53:107:56 | path : String | semmle.label | path : String |
+| UnsafeServletRequestDispatch.java:110:53:110:65 | requestedPath : Path | semmle.label | requestedPath : Path |
+| UnsafeServletRequestDispatch.java:110:53:110:76 | toString(...) | semmle.label | toString(...) |
+| UnsafeUrlForward.java:13:27:13:36 | url : String | semmle.label | url : String |
+| UnsafeUrlForward.java:14:27:14:29 | url | semmle.label | url |
+| UnsafeUrlForward.java:18:27:18:36 | url : String | semmle.label | url : String |
+| UnsafeUrlForward.java:20:28:20:30 | url | semmle.label | url |
+| UnsafeUrlForward.java:25:21:25:30 | url : String | semmle.label | url : String |
+| UnsafeUrlForward.java:26:23:26:25 | url | semmle.label | url |
+| UnsafeUrlForward.java:30:27:30:36 | url : String | semmle.label | url : String |
+| UnsafeUrlForward.java:31:48:31:63 | ... + ... | semmle.label | ... + ... |
+| UnsafeUrlForward.java:31:61:31:63 | url | semmle.label | url |
+| UnsafeUrlForward.java:36:19:36:28 | url : String | semmle.label | url : String |
+| UnsafeUrlForward.java:38:33:38:35 | url | semmle.label | url |
+| UnsafeUrlForward.java:47:19:47:28 | url : String | semmle.label | url : String |
+| UnsafeUrlForward.java:49:33:49:62 | ... + ... | semmle.label | ... + ... |
+| UnsafeUrlForward.java:58:19:58:28 | url : String | semmle.label | url : String |
+| UnsafeUrlForward.java:60:33:60:62 | ... + ... | semmle.label | ... + ... |
+subpaths
+#select
+| UnsafeRequestPath.java:23:33:23:36 | path | UnsafeRequestPath.java:20:17:20:63 | getServletPath(...) : String | UnsafeRequestPath.java:23:33:23:36 | path | Potentially untrusted URL forward due to $@. | UnsafeRequestPath.java:20:17:20:63 | getServletPath(...) | user-provided value |
+| UnsafeServletRequestDispatch.java:32:51:32:59 | returnURL | UnsafeServletRequestDispatch.java:23:22:23:54 | getParameter(...) : String | UnsafeServletRequestDispatch.java:32:51:32:59 | returnURL | Potentially untrusted URL forward due to $@. | UnsafeServletRequestDispatch.java:23:22:23:54 | getParameter(...) | user-provided value |
+| UnsafeServletRequestDispatch.java:48:56:48:64 | returnURL | UnsafeServletRequestDispatch.java:42:22:42:54 | getParameter(...) : String | UnsafeServletRequestDispatch.java:48:56:48:64 | returnURL | Potentially untrusted URL forward due to $@. | UnsafeServletRequestDispatch.java:42:22:42:54 | getParameter(...) | user-provided value |
+| UnsafeServletRequestDispatch.java:76:53:76:56 | path | UnsafeServletRequestDispatch.java:71:17:71:44 | getParameter(...) : String | UnsafeServletRequestDispatch.java:76:53:76:56 | path | Potentially untrusted URL forward due to $@. | UnsafeServletRequestDispatch.java:71:17:71:44 | getParameter(...) | user-provided value |
+| UnsafeServletRequestDispatch.java:110:53:110:76 | toString(...) | UnsafeServletRequestDispatch.java:106:17:106:44 | getParameter(...) : String | UnsafeServletRequestDispatch.java:110:53:110:76 | toString(...) | Potentially untrusted URL forward due to $@. | UnsafeServletRequestDispatch.java:106:17:106:44 | getParameter(...) | user-provided value |
+| UnsafeUrlForward.java:14:27:14:29 | url | UnsafeUrlForward.java:13:27:13:36 | url : String | UnsafeUrlForward.java:14:27:14:29 | url | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:13:27:13:36 | url | user-provided value |
+| UnsafeUrlForward.java:20:28:20:30 | url | UnsafeUrlForward.java:18:27:18:36 | url : String | UnsafeUrlForward.java:20:28:20:30 | url | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:18:27:18:36 | url | user-provided value |
+| UnsafeUrlForward.java:26:23:26:25 | url | UnsafeUrlForward.java:25:21:25:30 | url : String | UnsafeUrlForward.java:26:23:26:25 | url | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:25:21:25:30 | url | user-provided value |
+| UnsafeUrlForward.java:31:48:31:63 | ... + ... | UnsafeUrlForward.java:30:27:30:36 | url : String | UnsafeUrlForward.java:31:48:31:63 | ... + ... | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:30:27:30:36 | url | user-provided value |
+| UnsafeUrlForward.java:31:61:31:63 | url | UnsafeUrlForward.java:30:27:30:36 | url : String | UnsafeUrlForward.java:31:61:31:63 | url | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:30:27:30:36 | url | user-provided value |
+| UnsafeUrlForward.java:38:33:38:35 | url | UnsafeUrlForward.java:36:19:36:28 | url : String | UnsafeUrlForward.java:38:33:38:35 | url | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:36:19:36:28 | url | user-provided value |
+| UnsafeUrlForward.java:49:33:49:62 | ... + ... | UnsafeUrlForward.java:47:19:47:28 | url : String | UnsafeUrlForward.java:49:33:49:62 | ... + ... | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:47:19:47:28 | url | user-provided value |
+| UnsafeUrlForward.java:60:33:60:62 | ... + ... | UnsafeUrlForward.java:58:19:58:28 | url : String | UnsafeUrlForward.java:60:33:60:62 | ... + ... | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:58:19:58:28 | url | user-provided value |

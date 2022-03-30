@@ -1,0 +1,3 @@
+| functions_test.py:159:5:159:9 | ExprStmt | Call discards return value of function $@. The result is used in 80% of calls. | functions_test.py:12:1:12:11 | Function ok2 | ok2 |
+| functions_test.py:160:5:160:9 | ExprStmt | Call discards return value of function $@. The result is used in 80% of calls. | functions_test.py:36:1:36:11 | Function ok4 | ok4 |
+| functions_test.py:161:5:161:17 | ExprStmt | Call discards return value of function $@. The result is used in 80% of calls. | file://:0:0:0:0 | Builtin-function sorted | sorted |

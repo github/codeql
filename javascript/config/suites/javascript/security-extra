@@ -1,0 +1,3 @@
++ semmlecode-javascript-queries/Security/CWE-200/FileAccessToHttp.ql: /Security/CWE/CWE-200
++ semmlecode-javascript-queries/Security/CWE-451/MissingXFrameOptions.ql: /Security/CWE/CWE-451
++ semmlecode-javascript-queries/Security/CWE-912/HttpToFileAccess.ql: /Security/CWE/CWE-912

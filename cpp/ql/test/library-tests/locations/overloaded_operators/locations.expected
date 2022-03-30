@@ -1,0 +1,7 @@
+| test.cpp:9:5:9:36 | call to MyInt |
+| test.cpp:26:18:26:23 | call to MyInt |
+| test.cpp:42:15:42:15 | call to operator+ |
+| test.cpp:43:5:43:5 | call to operator+= |
+| test.cpp:44:3:44:3 | call to operator++ |
+| test.cpp:45:4:45:4 | call to operator++ |
+| test.cpp:46:5:46:5 | call to operator>>= |

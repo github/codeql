@@ -1,0 +1,17 @@
+| A in namespaces.ts |
+| A.C in namespaces.ts |
+| B in namespaces.ts:3 |
+| B in namespaces.ts:10 |
+| B.Bx in namespaces.ts:3 |
+| B.Bx in namespaces.ts:10 |
+| D in namespaces.ts |
+| D.F in namespaces.ts |
+| E in namespaces.ts:17 |
+| E in namespaces.ts:22 |
+| G in namespaces.ts |
+| H in namespaces.ts:27 |
+| H.I in namespaces.ts:27 |
+| X in namespaces.ts |
+| X.Y in namespaces.ts |
+| X.Y.Z in namespaces.ts |
+| namespaces.ts |

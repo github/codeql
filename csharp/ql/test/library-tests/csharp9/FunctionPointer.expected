@@ -1,0 +1,52 @@
+type
+| file://:0:0:0:0 | delegate* default<A,B> | B | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<B,A> | A | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 in,Int32 ref> | ref int | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 ref readonly> | readonly int | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<Int32*,Void*> | Void* | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<Int32> | int | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<IntPtr,IntPtr,PortableTailCallFrame*,Void> | Void | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<Object,Void> | Void | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<T,Int32> | int | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<Void*,Int32*> | int* | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<Void*,Object> | object | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | Void | StdCallCallingConvention |
+| file://:0:0:0:0 | delegate* unmanaged<Char*,IntPtr,Void> | Void | CallingConvention |
+| file://:0:0:0:0 | delegate* unmanaged<Int32,PosixSignal,Int32> | int | CallingConvention |
+| file://:0:0:0:0 | delegate* unmanaged<IntPtr,Int32> | int | CallingConvention |
+| file://:0:0:0:0 | delegate* unmanaged<IntPtr,Void> | Void | CallingConvention |
+| file://:0:0:0:0 | delegate* unmanaged<Void> | Void | CallingConvention |
+unmanagedCallingConvention
+parameter
+| file://:0:0:0:0 | delegate* default<A,B> | 0 | file://:0:0:0:0 |  | A |
+| file://:0:0:0:0 | delegate* default<B,A> | 0 | file://:0:0:0:0 |  | B |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 in,Int32 ref> | 0 | file://:0:0:0:0 |  | ref int! |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 in,Int32 ref> | 1 | file://:0:0:0:0 | `1 | out object? |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 in,Int32 ref> | 2 | file://:0:0:0:0 | `2 | readonly int! |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 ref readonly> | 0 | file://:0:0:0:0 |  | ref int! |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 ref readonly> | 1 | file://:0:0:0:0 | `1 | out object? |
+| file://:0:0:0:0 | delegate* default<Int32*,Void*> | 0 | file://:0:0:0:0 |  | int*! |
+| file://:0:0:0:0 | delegate* default<IntPtr,IntPtr,PortableTailCallFrame*,Void> | 0 | file://:0:0:0:0 |  | IntPtr! |
+| file://:0:0:0:0 | delegate* default<IntPtr,IntPtr,PortableTailCallFrame*,Void> | 1 | file://:0:0:0:0 | `1 | IntPtr! |
+| file://:0:0:0:0 | delegate* default<IntPtr,IntPtr,PortableTailCallFrame*,Void> | 2 | file://:0:0:0:0 | `2 | PortableTailCallFrame*! |
+| file://:0:0:0:0 | delegate* default<Object,Void> | 0 | file://:0:0:0:0 |  | object |
+| file://:0:0:0:0 | delegate* default<T,Int32> | 0 | file://:0:0:0:0 |  | T |
+| file://:0:0:0:0 | delegate* default<Void*,Int32*> | 0 | file://:0:0:0:0 |  | Void*! |
+| file://:0:0:0:0 | delegate* default<Void*,Object> | 0 | file://:0:0:0:0 |  | Void*! |
+| file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 0 | file://:0:0:0:0 |  | ref int! |
+| file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 1 | file://:0:0:0:0 | `1 | out object? |
+| file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 2 | file://:0:0:0:0 | `2 | T |
+| file://:0:0:0:0 | delegate* unmanaged<Char*,IntPtr,Void> | 0 | file://:0:0:0:0 |  | char*! |
+| file://:0:0:0:0 | delegate* unmanaged<Char*,IntPtr,Void> | 1 | file://:0:0:0:0 | `1 | IntPtr! |
+| file://:0:0:0:0 | delegate* unmanaged<Int32,PosixSignal,Int32> | 0 | file://:0:0:0:0 |  | int! |
+| file://:0:0:0:0 | delegate* unmanaged<Int32,PosixSignal,Int32> | 1 | file://:0:0:0:0 | `1 | PosixSignal! |
+| file://:0:0:0:0 | delegate* unmanaged<IntPtr,Int32> | 0 | file://:0:0:0:0 |  | IntPtr! |
+| file://:0:0:0:0 | delegate* unmanaged<IntPtr,Void> | 0 | file://:0:0:0:0 |  | IntPtr! |
+invocation
+| FunctionPointer.cs:17:21:17:43 | function pointer call |
+| FunctionPointer.cs:23:13:23:44 | function pointer call |
+| FunctionPointer.cs:29:29:29:57 | function pointer call |
+| FunctionPointer.cs:34:21:34:30 | function pointer call |
+casts
+| FunctionPointer.cs:39:16:39:17 | (...) ... | file://:0:0:0:0 | delegate* default<A,B> | file://:0:0:0:0 | delegate* default<B,A> |
+| FunctionPointer.cs:44:16:44:17 | (...) ... | file://:0:0:0:0 | delegate* default<Void*,Int32*> | file://:0:0:0:0 | delegate* default<Int32*,Void*> |

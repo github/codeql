@@ -1,0 +1,56 @@
+varargs/Test.java:
+#    0| [CompilationUnit] Test
+#    3|   1: [Class] Test
+#    4|     3: [Method] f
+#    4|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    4|         0: [Parameter] is
+#    4|           0: [ArrayTypeAccess] ...[]
+#    4|             0: [TypeAccess] int
+#    4|       5: [BlockStmt] { ... }
+#    5|     4: [Method] g
+#    5|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    5|         0: [Parameter] os
+#    5|           0: [ArrayTypeAccess] ...[]
+#    5|             0: [TypeAccess] Object
+#    5|       5: [BlockStmt] { ... }
+#    6|     5: [Method] h
+#    6|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    6|         0: [Parameter] s
+#    6|           0: [TypeAccess] String
+#    6|         1: [Parameter] ss
+#    6|           0: [ArrayTypeAccess] ...[]
+#    6|             0: [TypeAccess] String
+#    6|       5: [BlockStmt] { ... }
+#    8|     6: [Method] ff
+#    8|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    8|         0: [Parameter] is
+#    8|           0: [ArrayTypeAccess] ...[]
+#    8|             0: [TypeAccess] int
+#    8|       5: [BlockStmt] { ... }
+#    9|     7: [Method] gg
+#    9|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    9|         0: [Parameter] os
+#    9|           0: [ArrayTypeAccess] ...[]
+#    9|             0: [TypeAccess] Object
+#    9|       5: [BlockStmt] { ... }
+#   10|     8: [Method] hh
+#   10|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#   10|         0: [Parameter] s
+#   10|           0: [TypeAccess] String
+#   10|         1: [Parameter] ss
+#   10|           0: [ArrayTypeAccess] ...[]
+#   10|             0: [TypeAccess] String
+#   10|       5: [BlockStmt] { ... }
+#   11|     9: [BlockStmt] { ... }
+#   12|       0: [ExprStmt] <Expr>;
+#   12|         0: [MethodAccess] asList(...)
+#   12|           -1: [TypeAccess] Arrays
+#   12|           0: [IntegerLiteral] 1
+#   12|           1: [IntegerLiteral] 2
+#   12|           2: [IntegerLiteral] 3

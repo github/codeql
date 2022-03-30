@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Several DOM functions allow evaluating strings as code without using <code>eval</code> explicitly.
+They should be avoided for the same reason as <code>eval</code> itself.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+When calling <code>setTimeout</code> or <code>setInterval</code>, do not pass it a string to evaluate
+but a function.
+</p>
+
+<p>
+Instead of using <code>document.write</code> to insert raw HTML into the DOM, use a framework such as
+<a href="http://jquery.com">jQuery</a>.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, <code>setTimeout</code> is used to register a callback. The code to execute
+once the timeout expires is given as a string; this is bad practice.
+</p>
+
+<sample src="examples/PseudoEval.js" />
+
+<p>
+Instead, directly pass the function to be invoked to <code>setTimeout</code> like this:
+</p>
+
+<sample src="examples/PseudoEvalGood.js" />
+
+</example>
+<references>
+
+
+<li>D. Crockford, <i>JavaScript: The Good Parts</i>, Appendix B.3. O'Reilly, 2008.</li>
+
+
+</references>
+</qhelp>

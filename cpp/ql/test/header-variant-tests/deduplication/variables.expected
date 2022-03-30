@@ -1,0 +1,16 @@
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | C && | Variable | <none> |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | C && | Variable | <none> |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | D && | Variable | <none> |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | __va_list_tag && | Variable | <none> |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | const C & | Variable | <none> |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | const C & | Variable | <none> |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | const D & | Variable | <none> |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | const __va_list_tag & | Variable | <none> |
+| file://:0:0:0:0 | fp_offset | file://:0:0:0:0 | unsigned int | MemberVariable | __va_list_tag |
+| file://:0:0:0:0 | gp_offset | file://:0:0:0:0 | unsigned int | MemberVariable | __va_list_tag |
+| file://:0:0:0:0 | overflow_arg_area | file://:0:0:0:0 | void * | MemberVariable | __va_list_tag |
+| file://:0:0:0:0 | reg_save_area | file://:0:0:0:0 | void * | MemberVariable | __va_list_tag |
+| foo.h:7:5:7:15 | foo_defined | file://:0:0:0:0 | int | MemberVariable | C |
+| foo.h:7:5:7:15 | foo_defined | file://:0:0:0:0 | int | Variable | <none> |
+| foo.h:9:5:9:19 | foo_not_defined | file://:0:0:0:0 | int | MemberVariable | C |
+| foo.h:9:5:9:19 | foo_not_defined | file://:0:0:0:0 | int | Variable | <none> |

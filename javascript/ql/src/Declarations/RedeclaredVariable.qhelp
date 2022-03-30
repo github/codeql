@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Local variables in JavaScript are function-scoped (unlike, for instance, in Java, which uses block scope),
+and can be redeclared an arbitrary number of times. If a variable is declared twice in different blocks,
+however, this can confuse readers, since the declarations look like they refer to different variables.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+If the two declarations logically refer to the same variable, replace them with a single declaration at
+the beginning of the block. If they do not, rename one of the variables to distinguish it from the other.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following code snippet, both declarations for <code>value</code> declare the same local variable,
+although their uses are independent.
+</p>
+
+<sample src="examples/RedeclaredVariable.js" />
+
+</example>
+<references>
+
+
+<li>D. Crockford, <i>JavaScript: The Good Parts</i>, Section 4.9. O'Reilly, 2008.</li>
+
+
+</references>
+</qhelp>

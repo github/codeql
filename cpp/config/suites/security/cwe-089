@@ -1,0 +1,3 @@
+# CWE-089: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')
++ semmlecode-cpp-queries/Security/CWE/CWE-089/SqlTainted.ql: /CWE/CWE-089
+    @name Uncontrolled data in SQL query (CWE-089)

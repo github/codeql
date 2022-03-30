@@ -1,0 +1,247 @@
+records
+| Record.cs:4:1:10:1 | Person | IEquatable<Person> | Record.cs:4:1:10:1 | <Clone>$ |
+| Record.cs:12:1:18:1 | Teacher | IEquatable<Teacher> | Record.cs:12:1:18:1 | <Clone>$ |
+| Record.cs:20:1:25:1 | Student | IEquatable<Student> | Record.cs:20:1:25:1 | <Clone>$ |
+| Record.cs:27:1:27:57 | Person1 | IEquatable<Person1> | Record.cs:27:1:27:57 | <Clone>$ |
+| Record.cs:29:1:30:35 | Teacher1 | IEquatable<Teacher1> | Record.cs:29:1:30:35 | <Clone>$ |
+| Record.cs:32:1:33:35 | Student1 | IEquatable<Student1> | Record.cs:32:1:33:35 | <Clone>$ |
+| Record.cs:35:1:39:1 | Pet | IEquatable<Pet> | Record.cs:35:1:39:1 | <Clone>$ |
+| Record.cs:41:1:52:1 | Dog | IEquatable<Dog> | Record.cs:41:1:52:1 | <Clone>$ |
+| Record.cs:54:1:54:39 | R1 | IEquatable<R1> | Record.cs:54:1:54:39 | <Clone>$ |
+| Record.cs:56:1:56:48 | R2 | IEquatable<R2> | Record.cs:56:1:56:48 | <Clone>$ |
+members
+| Record.cs:4:1:10:1 | Person | Person.!=(Person, Person) | Record.cs:4:15:4:20 |
+| Record.cs:4:1:10:1 | Person | Person.<Clone>$() | no location |
+| Record.cs:4:1:10:1 | Person | Person.==(Person, Person) | Record.cs:4:15:4:20 |
+| Record.cs:4:1:10:1 | Person | Person.EqualityContract | Record.cs:4:15:4:20 |
+| Record.cs:4:1:10:1 | Person | Person.Equals(Person) | no location |
+| Record.cs:4:1:10:1 | Person | Person.Equals(object) | no location |
+| Record.cs:4:1:10:1 | Person | Person.FirstName | Record.cs:7:19:7:27 |
+| Record.cs:4:1:10:1 | Person | Person.GetHashCode() | no location |
+| Record.cs:4:1:10:1 | Person | Person.LastName | Record.cs:6:19:6:26 |
+| Record.cs:4:1:10:1 | Person | Person.Person(Person) | no location |
+| Record.cs:4:1:10:1 | Person | Person.Person(string, string) | Record.cs:9:12:9:17 |
+| Record.cs:4:1:10:1 | Person | Person.PrintMembers(StringBuilder) | no location |
+| Record.cs:4:1:10:1 | Person | Person.ToString() | no location |
+| Record.cs:4:1:10:1 | Person | System.Object.Equals(object, object) | no location |
+| Record.cs:4:1:10:1 | Person | System.Object.GetType() | no location |
+| Record.cs:4:1:10:1 | Person | System.Object.MemberwiseClone() | no location |
+| Record.cs:4:1:10:1 | Person | System.Object.Object() | no location |
+| Record.cs:4:1:10:1 | Person | System.Object.ReferenceEquals(object, object) | no location |
+| Record.cs:4:1:10:1 | Person | System.Object.~Object() | no location |
+| Record.cs:12:1:18:1 | Teacher | Person.!=(Person, Person) | Record.cs:4:15:4:20 |
+| Record.cs:12:1:18:1 | Teacher | Person.==(Person, Person) | Record.cs:4:15:4:20 |
+| Record.cs:12:1:18:1 | Teacher | Person.FirstName | Record.cs:7:19:7:27 |
+| Record.cs:12:1:18:1 | Teacher | Person.LastName | Record.cs:6:19:6:26 |
+| Record.cs:12:1:18:1 | Teacher | Person.Person(Person) | no location |
+| Record.cs:12:1:18:1 | Teacher | Person.Person(string, string) | Record.cs:9:12:9:17 |
+| Record.cs:12:1:18:1 | Teacher | System.Object.Equals(object, object) | no location |
+| Record.cs:12:1:18:1 | Teacher | System.Object.GetType() | no location |
+| Record.cs:12:1:18:1 | Teacher | System.Object.MemberwiseClone() | no location |
+| Record.cs:12:1:18:1 | Teacher | System.Object.Object() | no location |
+| Record.cs:12:1:18:1 | Teacher | System.Object.ReferenceEquals(object, object) | no location |
+| Record.cs:12:1:18:1 | Teacher | System.Object.~Object() | no location |
+| Record.cs:12:1:18:1 | Teacher | Teacher.!=(Teacher, Teacher) | Record.cs:12:15:12:21 |
+| Record.cs:12:1:18:1 | Teacher | Teacher.<Clone>$() | no location |
+| Record.cs:12:1:18:1 | Teacher | Teacher.==(Teacher, Teacher) | Record.cs:12:15:12:21 |
+| Record.cs:12:1:18:1 | Teacher | Teacher.EqualityContract | Record.cs:12:15:12:21 |
+| Record.cs:12:1:18:1 | Teacher | Teacher.Equals(Person) | no location |
+| Record.cs:12:1:18:1 | Teacher | Teacher.Equals(Teacher) | no location |
+| Record.cs:12:1:18:1 | Teacher | Teacher.Equals(object) | no location |
+| Record.cs:12:1:18:1 | Teacher | Teacher.GetHashCode() | no location |
+| Record.cs:12:1:18:1 | Teacher | Teacher.PrintMembers(StringBuilder) | no location |
+| Record.cs:12:1:18:1 | Teacher | Teacher.Subject | Record.cs:14:19:14:25 |
+| Record.cs:12:1:18:1 | Teacher | Teacher.Teacher(Teacher) | no location |
+| Record.cs:12:1:18:1 | Teacher | Teacher.Teacher(string, string, string) | Record.cs:16:12:16:18 |
+| Record.cs:12:1:18:1 | Teacher | Teacher.ToString() | no location |
+| Record.cs:20:1:25:1 | Student | Person.!=(Person, Person) | Record.cs:4:15:4:20 |
+| Record.cs:20:1:25:1 | Student | Person.==(Person, Person) | Record.cs:4:15:4:20 |
+| Record.cs:20:1:25:1 | Student | Person.FirstName | Record.cs:7:19:7:27 |
+| Record.cs:20:1:25:1 | Student | Person.LastName | Record.cs:6:19:6:26 |
+| Record.cs:20:1:25:1 | Student | Person.Person(Person) | no location |
+| Record.cs:20:1:25:1 | Student | Person.Person(string, string) | Record.cs:9:12:9:17 |
+| Record.cs:20:1:25:1 | Student | Student.!=(Student, Student) | Record.cs:20:22:20:28 |
+| Record.cs:20:1:25:1 | Student | Student.<Clone>$() | no location |
+| Record.cs:20:1:25:1 | Student | Student.==(Student, Student) | Record.cs:20:22:20:28 |
+| Record.cs:20:1:25:1 | Student | Student.EqualityContract | Record.cs:20:22:20:28 |
+| Record.cs:20:1:25:1 | Student | Student.Equals(Person) | no location |
+| Record.cs:20:1:25:1 | Student | Student.Equals(Student) | no location |
+| Record.cs:20:1:25:1 | Student | Student.Equals(object) | no location |
+| Record.cs:20:1:25:1 | Student | Student.GetHashCode() | no location |
+| Record.cs:20:1:25:1 | Student | Student.Level | Record.cs:22:16:22:20 |
+| Record.cs:20:1:25:1 | Student | Student.PrintMembers(StringBuilder) | no location |
+| Record.cs:20:1:25:1 | Student | Student.Student(Student) | no location |
+| Record.cs:20:1:25:1 | Student | Student.Student(string, string, int) | Record.cs:24:12:24:18 |
+| Record.cs:20:1:25:1 | Student | Student.ToString() | no location |
+| Record.cs:20:1:25:1 | Student | System.Object.Equals(object, object) | no location |
+| Record.cs:20:1:25:1 | Student | System.Object.GetType() | no location |
+| Record.cs:20:1:25:1 | Student | System.Object.MemberwiseClone() | no location |
+| Record.cs:20:1:25:1 | Student | System.Object.Object() | no location |
+| Record.cs:20:1:25:1 | Student | System.Object.ReferenceEquals(object, object) | no location |
+| Record.cs:20:1:25:1 | Student | System.Object.~Object() | no location |
+| Record.cs:27:1:27:57 | Person1 | Person1.!=(Person1, Person1) | Record.cs:27:15:27:21 |
+| Record.cs:27:1:27:57 | Person1 | Person1.<Clone>$() | no location |
+| Record.cs:27:1:27:57 | Person1 | Person1.==(Person1, Person1) | Record.cs:27:15:27:21 |
+| Record.cs:27:1:27:57 | Person1 | Person1.Deconstruct(out string, out string) | no location |
+| Record.cs:27:1:27:57 | Person1 | Person1.EqualityContract | Record.cs:27:15:27:21 |
+| Record.cs:27:1:27:57 | Person1 | Person1.Equals(Person1) | no location |
+| Record.cs:27:1:27:57 | Person1 | Person1.Equals(object) | no location |
+| Record.cs:27:1:27:57 | Person1 | Person1.FirstName | Record.cs:27:30:27:38 |
+| Record.cs:27:1:27:57 | Person1 | Person1.GetHashCode() | no location |
+| Record.cs:27:1:27:57 | Person1 | Person1.LastName | Record.cs:27:48:27:55 |
+| Record.cs:27:1:27:57 | Person1 | Person1.Person1(Person1) | no location |
+| Record.cs:27:1:27:57 | Person1 | Person1.Person1(string, string) | Record.cs:27:15:27:21 |
+| Record.cs:27:1:27:57 | Person1 | Person1.PrintMembers(StringBuilder) | no location |
+| Record.cs:27:1:27:57 | Person1 | Person1.ToString() | no location |
+| Record.cs:27:1:27:57 | Person1 | System.Object.Equals(object, object) | no location |
+| Record.cs:27:1:27:57 | Person1 | System.Object.GetType() | no location |
+| Record.cs:27:1:27:57 | Person1 | System.Object.MemberwiseClone() | no location |
+| Record.cs:27:1:27:57 | Person1 | System.Object.Object() | no location |
+| Record.cs:27:1:27:57 | Person1 | System.Object.ReferenceEquals(object, object) | no location |
+| Record.cs:27:1:27:57 | Person1 | System.Object.~Object() | no location |
+| Record.cs:29:1:30:35 | Teacher1 | Person1.!=(Person1, Person1) | Record.cs:27:15:27:21 |
+| Record.cs:29:1:30:35 | Teacher1 | Person1.==(Person1, Person1) | Record.cs:27:15:27:21 |
+| Record.cs:29:1:30:35 | Teacher1 | Person1.Deconstruct(out string, out string) | no location |
+| Record.cs:29:1:30:35 | Teacher1 | Person1.FirstName | Record.cs:27:30:27:38 |
+| Record.cs:29:1:30:35 | Teacher1 | Person1.LastName | Record.cs:27:48:27:55 |
+| Record.cs:29:1:30:35 | Teacher1 | Person1.Person1(Person1) | no location |
+| Record.cs:29:1:30:35 | Teacher1 | Person1.Person1(string, string) | Record.cs:27:15:27:21 |
+| Record.cs:29:1:30:35 | Teacher1 | System.Object.Equals(object, object) | no location |
+| Record.cs:29:1:30:35 | Teacher1 | System.Object.GetType() | no location |
+| Record.cs:29:1:30:35 | Teacher1 | System.Object.MemberwiseClone() | no location |
+| Record.cs:29:1:30:35 | Teacher1 | System.Object.Object() | no location |
+| Record.cs:29:1:30:35 | Teacher1 | System.Object.ReferenceEquals(object, object) | no location |
+| Record.cs:29:1:30:35 | Teacher1 | System.Object.~Object() | no location |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.!=(Teacher1, Teacher1) | Record.cs:29:15:29:22 |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.<Clone>$() | no location |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.==(Teacher1, Teacher1) | Record.cs:29:15:29:22 |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.Deconstruct(out string, out string, out string) | no location |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.EqualityContract | Record.cs:29:15:29:22 |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.Equals(Person1) | no location |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.Equals(Teacher1) | no location |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.Equals(object) | no location |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.GetHashCode() | no location |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.PrintMembers(StringBuilder) | no location |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.Subject | Record.cs:29:66:29:72 |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.Teacher1(Teacher1) | no location |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.Teacher1(string, string, string) | Record.cs:29:15:29:22 |
+| Record.cs:29:1:30:35 | Teacher1 | Teacher1.ToString() | no location |
+| Record.cs:32:1:33:35 | Student1 | Person1.!=(Person1, Person1) | Record.cs:27:15:27:21 |
+| Record.cs:32:1:33:35 | Student1 | Person1.==(Person1, Person1) | Record.cs:27:15:27:21 |
+| Record.cs:32:1:33:35 | Student1 | Person1.Deconstruct(out string, out string) | no location |
+| Record.cs:32:1:33:35 | Student1 | Person1.FirstName | Record.cs:27:30:27:38 |
+| Record.cs:32:1:33:35 | Student1 | Person1.LastName | Record.cs:27:48:27:55 |
+| Record.cs:32:1:33:35 | Student1 | Person1.Person1(Person1) | no location |
+| Record.cs:32:1:33:35 | Student1 | Person1.Person1(string, string) | Record.cs:27:15:27:21 |
+| Record.cs:32:1:33:35 | Student1 | Student1.!=(Student1, Student1) | Record.cs:32:22:32:29 |
+| Record.cs:32:1:33:35 | Student1 | Student1.<Clone>$() | no location |
+| Record.cs:32:1:33:35 | Student1 | Student1.==(Student1, Student1) | Record.cs:32:22:32:29 |
+| Record.cs:32:1:33:35 | Student1 | Student1.Deconstruct(out string, out string, out int) | no location |
+| Record.cs:32:1:33:35 | Student1 | Student1.EqualityContract | Record.cs:32:22:32:29 |
+| Record.cs:32:1:33:35 | Student1 | Student1.Equals(Person1) | no location |
+| Record.cs:32:1:33:35 | Student1 | Student1.Equals(Student1) | no location |
+| Record.cs:32:1:33:35 | Student1 | Student1.Equals(object) | no location |
+| Record.cs:32:1:33:35 | Student1 | Student1.GetHashCode() | no location |
+| Record.cs:32:1:33:35 | Student1 | Student1.Level | Record.cs:32:70:32:74 |
+| Record.cs:32:1:33:35 | Student1 | Student1.PrintMembers(StringBuilder) | no location |
+| Record.cs:32:1:33:35 | Student1 | Student1.Student1(Student1) | no location |
+| Record.cs:32:1:33:35 | Student1 | Student1.Student1(string, string, int) | Record.cs:32:22:32:29 |
+| Record.cs:32:1:33:35 | Student1 | Student1.ToString() | no location |
+| Record.cs:32:1:33:35 | Student1 | System.Object.Equals(object, object) | no location |
+| Record.cs:32:1:33:35 | Student1 | System.Object.GetType() | no location |
+| Record.cs:32:1:33:35 | Student1 | System.Object.MemberwiseClone() | no location |
+| Record.cs:32:1:33:35 | Student1 | System.Object.Object() | no location |
+| Record.cs:32:1:33:35 | Student1 | System.Object.ReferenceEquals(object, object) | no location |
+| Record.cs:32:1:33:35 | Student1 | System.Object.~Object() | no location |
+| Record.cs:35:1:39:1 | Pet | Pet.!=(Pet, Pet) | Record.cs:35:15:35:17 |
+| Record.cs:35:1:39:1 | Pet | Pet.<Clone>$() | no location |
+| Record.cs:35:1:39:1 | Pet | Pet.==(Pet, Pet) | Record.cs:35:15:35:17 |
+| Record.cs:35:1:39:1 | Pet | Pet.Deconstruct(out string) | no location |
+| Record.cs:35:1:39:1 | Pet | Pet.EqualityContract | Record.cs:35:15:35:17 |
+| Record.cs:35:1:39:1 | Pet | Pet.Equals(Pet) | no location |
+| Record.cs:35:1:39:1 | Pet | Pet.Equals(object) | no location |
+| Record.cs:35:1:39:1 | Pet | Pet.GetHashCode() | no location |
+| Record.cs:35:1:39:1 | Pet | Pet.Name | Record.cs:35:26:35:29 |
+| Record.cs:35:1:39:1 | Pet | Pet.Pet(Pet) | no location |
+| Record.cs:35:1:39:1 | Pet | Pet.Pet(string) | Record.cs:35:15:35:17 |
+| Record.cs:35:1:39:1 | Pet | Pet.PrintMembers(StringBuilder) | no location |
+| Record.cs:35:1:39:1 | Pet | Pet.ShredTheFurniture() | Record.cs:37:17:37:33 |
+| Record.cs:35:1:39:1 | Pet | Pet.ToString() | no location |
+| Record.cs:35:1:39:1 | Pet | System.Object.Equals(object, object) | no location |
+| Record.cs:35:1:39:1 | Pet | System.Object.GetType() | no location |
+| Record.cs:35:1:39:1 | Pet | System.Object.MemberwiseClone() | no location |
+| Record.cs:35:1:39:1 | Pet | System.Object.Object() | no location |
+| Record.cs:35:1:39:1 | Pet | System.Object.ReferenceEquals(object, object) | no location |
+| Record.cs:35:1:39:1 | Pet | System.Object.~Object() | no location |
+| Record.cs:41:1:52:1 | Dog | Dog.!=(Dog, Dog) | Record.cs:41:15:41:17 |
+| Record.cs:41:1:52:1 | Dog | Dog.<Clone>$() | no location |
+| Record.cs:41:1:52:1 | Dog | Dog.==(Dog, Dog) | Record.cs:41:15:41:17 |
+| Record.cs:41:1:52:1 | Dog | Dog.Deconstruct(out string) | no location |
+| Record.cs:41:1:52:1 | Dog | Dog.Dog(Dog) | no location |
+| Record.cs:41:1:52:1 | Dog | Dog.Dog(string) | Record.cs:41:15:41:17 |
+| Record.cs:41:1:52:1 | Dog | Dog.EqualityContract | Record.cs:41:15:41:17 |
+| Record.cs:41:1:52:1 | Dog | Dog.Equals(Dog) | no location |
+| Record.cs:41:1:52:1 | Dog | Dog.Equals(Pet) | no location |
+| Record.cs:41:1:52:1 | Dog | Dog.Equals(object) | no location |
+| Record.cs:41:1:52:1 | Dog | Dog.GetHashCode() | no location |
+| Record.cs:41:1:52:1 | Dog | Dog.PrintMembers(StringBuilder) | no location |
+| Record.cs:41:1:52:1 | Dog | Dog.ToString() | Record.cs:46:28:46:35 |
+| Record.cs:41:1:52:1 | Dog | Dog.WagTail() | Record.cs:43:17:43:23 |
+| Record.cs:41:1:52:1 | Dog | Pet.!=(Pet, Pet) | Record.cs:35:15:35:17 |
+| Record.cs:41:1:52:1 | Dog | Pet.==(Pet, Pet) | Record.cs:35:15:35:17 |
+| Record.cs:41:1:52:1 | Dog | Pet.Deconstruct(out string) | no location |
+| Record.cs:41:1:52:1 | Dog | Pet.Name | Record.cs:35:26:35:29 |
+| Record.cs:41:1:52:1 | Dog | Pet.Pet(Pet) | no location |
+| Record.cs:41:1:52:1 | Dog | Pet.Pet(string) | Record.cs:35:15:35:17 |
+| Record.cs:41:1:52:1 | Dog | Pet.ShredTheFurniture() | Record.cs:37:17:37:33 |
+| Record.cs:41:1:52:1 | Dog | System.Object.Equals(object, object) | no location |
+| Record.cs:41:1:52:1 | Dog | System.Object.GetType() | no location |
+| Record.cs:41:1:52:1 | Dog | System.Object.MemberwiseClone() | no location |
+| Record.cs:41:1:52:1 | Dog | System.Object.Object() | no location |
+| Record.cs:41:1:52:1 | Dog | System.Object.ReferenceEquals(object, object) | no location |
+| Record.cs:41:1:52:1 | Dog | System.Object.~Object() | no location |
+| Record.cs:54:1:54:39 | R1 | R1.!=(R1, R1) | Record.cs:54:24:54:25 |
+| Record.cs:54:1:54:39 | R1 | R1.<Clone>$() | no location |
+| Record.cs:54:1:54:39 | R1 | R1.==(R1, R1) | Record.cs:54:24:54:25 |
+| Record.cs:54:1:54:39 | R1 | R1.A | Record.cs:54:34:54:34 |
+| Record.cs:54:1:54:39 | R1 | R1.Deconstruct(out string) | no location |
+| Record.cs:54:1:54:39 | R1 | R1.EqualityContract | Record.cs:54:24:54:25 |
+| Record.cs:54:1:54:39 | R1 | R1.Equals(R1) | no location |
+| Record.cs:54:1:54:39 | R1 | R1.Equals(object) | no location |
+| Record.cs:54:1:54:39 | R1 | R1.GetHashCode() | no location |
+| Record.cs:54:1:54:39 | R1 | R1.PrintMembers(StringBuilder) | no location |
+| Record.cs:54:1:54:39 | R1 | R1.R1(R1) | no location |
+| Record.cs:54:1:54:39 | R1 | R1.R1(string) | Record.cs:54:24:54:25 |
+| Record.cs:54:1:54:39 | R1 | R1.ToString() | no location |
+| Record.cs:54:1:54:39 | R1 | System.Object.Equals(object, object) | no location |
+| Record.cs:54:1:54:39 | R1 | System.Object.GetType() | no location |
+| Record.cs:54:1:54:39 | R1 | System.Object.MemberwiseClone() | no location |
+| Record.cs:54:1:54:39 | R1 | System.Object.Object() | no location |
+| Record.cs:54:1:54:39 | R1 | System.Object.ReferenceEquals(object, object) | no location |
+| Record.cs:54:1:54:39 | R1 | System.Object.~Object() | no location |
+| Record.cs:56:1:56:48 | R2 | R1.!=(R1, R1) | Record.cs:54:24:54:25 |
+| Record.cs:56:1:56:48 | R2 | R1.==(R1, R1) | Record.cs:54:24:54:25 |
+| Record.cs:56:1:56:48 | R2 | R1.A | Record.cs:54:34:54:34 |
+| Record.cs:56:1:56:48 | R2 | R1.Deconstruct(out string) | no location |
+| Record.cs:56:1:56:48 | R2 | R1.R1(R1) | no location |
+| Record.cs:56:1:56:48 | R2 | R1.R1(string) | Record.cs:54:24:54:25 |
+| Record.cs:56:1:56:48 | R2 | R2.!=(R2, R2) | Record.cs:56:15:56:16 |
+| Record.cs:56:1:56:48 | R2 | R2.<Clone>$() | no location |
+| Record.cs:56:1:56:48 | R2 | R2.==(R2, R2) | Record.cs:56:15:56:16 |
+| Record.cs:56:1:56:48 | R2 | R2.B | Record.cs:56:35:56:35 |
+| Record.cs:56:1:56:48 | R2 | R2.Deconstruct(out string, out string) | no location |
+| Record.cs:56:1:56:48 | R2 | R2.EqualityContract | Record.cs:56:15:56:16 |
+| Record.cs:56:1:56:48 | R2 | R2.Equals(R1) | no location |
+| Record.cs:56:1:56:48 | R2 | R2.Equals(R2) | no location |
+| Record.cs:56:1:56:48 | R2 | R2.Equals(object) | no location |
+| Record.cs:56:1:56:48 | R2 | R2.GetHashCode() | no location |
+| Record.cs:56:1:56:48 | R2 | R2.PrintMembers(StringBuilder) | no location |
+| Record.cs:56:1:56:48 | R2 | R2.R2(R2) | no location |
+| Record.cs:56:1:56:48 | R2 | R2.R2(string, string) | Record.cs:56:15:56:16 |
+| Record.cs:56:1:56:48 | R2 | R2.ToString() | no location |
+| Record.cs:56:1:56:48 | R2 | System.Object.Equals(object, object) | no location |
+| Record.cs:56:1:56:48 | R2 | System.Object.GetType() | no location |
+| Record.cs:56:1:56:48 | R2 | System.Object.MemberwiseClone() | no location |
+| Record.cs:56:1:56:48 | R2 | System.Object.Object() | no location |
+| Record.cs:56:1:56:48 | R2 | System.Object.ReferenceEquals(object, object) | no location |
+| Record.cs:56:1:56:48 | R2 | System.Object.~Object() | no location |

@@ -1,0 +1,5 @@
+- description: Standard Code Scanning queries for C and C++
+- queries: .
+- apply: code-scanning-selectors.yml
+  from: codeql/suite-helpers
+- apply: codeql-suites/exclude-slow-queries.yml

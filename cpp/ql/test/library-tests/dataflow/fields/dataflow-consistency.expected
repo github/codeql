@@ -1,0 +1,157 @@
+uniqueEnclosingCallable
+| C.cpp:9:14:9:23 | 0 | Node should have one enclosing callable but has 0. |
+| C.cpp:9:14:9:23 | new | Node should have one enclosing callable but has 0. |
+| C.cpp:10:20:10:29 | 0 | Node should have one enclosing callable but has 0. |
+| C.cpp:10:20:10:29 | new | Node should have one enclosing callable but has 0. |
+| C.cpp:35:24:35:33 | 0 | Node should have one enclosing callable but has 0. |
+| C.cpp:35:24:35:33 | new | Node should have one enclosing callable but has 0. |
+uniqueType
+uniqueNodeLocation
+missingLocation
+uniqueNodeToString
+missingToString
+parameterCallable
+localFlowIsLocal
+compatibleTypesReflexive
+unreachableNodeCCtx
+localCallNodes
+postIsNotPre
+postHasUniquePre
+uniquePostUpdate
+postIsInSameCallable
+reverseRead
+argHasPostUpdate
+| A.cpp:41:15:41:21 | new | ArgumentNode is missing PostUpdateNode. |
+| A.cpp:55:12:55:19 | new | ArgumentNode is missing PostUpdateNode. |
+| A.cpp:57:11:57:24 | new | ArgumentNode is missing PostUpdateNode. |
+| A.cpp:57:17:57:23 | new | ArgumentNode is missing PostUpdateNode. |
+| A.cpp:64:21:64:28 | new | ArgumentNode is missing PostUpdateNode. |
+| A.cpp:73:25:73:32 | new | ArgumentNode is missing PostUpdateNode. |
+| A.cpp:126:12:126:18 | new | ArgumentNode is missing PostUpdateNode. |
+| A.cpp:160:32:160:59 | new | ArgumentNode is missing PostUpdateNode. |
+| D.cpp:29:24:29:40 | new | ArgumentNode is missing PostUpdateNode. |
+| D.cpp:36:24:36:40 | new | ArgumentNode is missing PostUpdateNode. |
+| D.cpp:43:24:43:40 | new | ArgumentNode is missing PostUpdateNode. |
+| D.cpp:50:24:50:40 | new | ArgumentNode is missing PostUpdateNode. |
+| D.cpp:57:25:57:41 | new | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:7:8:7:13 | access to array | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:8:8:8:13 | access to array | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:9:8:9:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:10:8:10:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:16:8:16:13 | access to array | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:17:8:17:13 | access to array | ArgumentNode is missing PostUpdateNode. |
+postWithInFlow
+| A.cpp:25:13:25:13 | c [post update] | PostUpdateNode should not be the target of local flow. |
+| A.cpp:27:28:27:28 | c [post update] | PostUpdateNode should not be the target of local flow. |
+| A.cpp:42:11:42:12 | cc [inner post update] | PostUpdateNode should not be the target of local flow. |
+| A.cpp:43:11:43:12 | ct [inner post update] | PostUpdateNode should not be the target of local flow. |
+| A.cpp:100:9:100:9 | a [post update] | PostUpdateNode should not be the target of local flow. |
+| A.cpp:142:10:142:10 | c [post update] | PostUpdateNode should not be the target of local flow. |
+| A.cpp:143:13:143:13 | b [post update] | PostUpdateNode should not be the target of local flow. |
+| A.cpp:183:7:183:10 | head [post update] | PostUpdateNode should not be the target of local flow. |
+| A.cpp:184:13:184:16 | next [post update] | PostUpdateNode should not be the target of local flow. |
+| B.cpp:35:13:35:17 | elem1 [post update] | PostUpdateNode should not be the target of local flow. |
+| B.cpp:36:13:36:17 | elem2 [post update] | PostUpdateNode should not be the target of local flow. |
+| B.cpp:46:13:46:16 | box1 [post update] | PostUpdateNode should not be the target of local flow. |
+| C.cpp:24:11:24:12 | s3 [post update] | PostUpdateNode should not be the target of local flow. |
+| D.cpp:9:21:9:24 | elem [post update] | PostUpdateNode should not be the target of local flow. |
+| D.cpp:11:29:11:32 | elem [post update] | PostUpdateNode should not be the target of local flow. |
+| D.cpp:16:21:16:23 | box [post update] | PostUpdateNode should not be the target of local flow. |
+| D.cpp:18:29:18:31 | box [post update] | PostUpdateNode should not be the target of local flow. |
+| D.cpp:30:13:30:16 | elem [post update] | PostUpdateNode should not be the target of local flow. |
+| D.cpp:44:19:44:22 | elem [post update] | PostUpdateNode should not be the target of local flow. |
+| D.cpp:57:5:57:12 | boxfield [post update] | PostUpdateNode should not be the target of local flow. |
+| D.cpp:58:20:58:23 | elem [post update] | PostUpdateNode should not be the target of local flow. |
+| E.cpp:33:19:33:19 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:9:6:9:7 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:13:5:13:6 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:17:5:17:6 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:25:18:25:19 | s1 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:37:8:37:9 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:42:6:42:7 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:49:9:49:10 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:54:6:54:7 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:60:6:60:7 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:72:5:72:6 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:79:6:79:7 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:86:5:86:6 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:92:7:92:8 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:98:5:98:6 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:106:3:106:5 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:106:4:106:5 | pa [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:111:18:111:19 | m1 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:126:15:126:16 | xs [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:136:16:136:17 | xs [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:147:16:147:16 | s [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:147:21:147:22 | m1 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:175:21:175:22 | m1 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:181:21:181:22 | m1 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:187:21:187:22 | m1 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:194:21:194:22 | m1 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:200:23:200:24 | m1 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:205:23:205:24 | m1 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:6:3:6:5 | arr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:6:3:6:8 | access to array [post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:15:3:15:10 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:15:5:15:7 | arr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:36:12:36:14 | arr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:36:19:36:22 | data [post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:37:17:37:19 | arr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:38:17:38:19 | arr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:42:15:42:17 | arr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:42:22:42:25 | data [post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:43:20:43:22 | arr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:44:20:44:22 | arr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:48:15:48:17 | ptr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:48:22:48:25 | data [post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:49:20:49:22 | ptr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:50:20:50:22 | ptr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:12:8:12:8 | a [post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:16:11:16:11 | a [post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:68:18:68:18 | s [inner post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:84:10:84:10 | a [post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:88:9:88:9 | a [post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:92:3:92:5 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:92:4:92:5 | pa [inner post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:96:3:96:4 | pa [post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:102:28:102:39 | inner_nested [inner post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:104:22:104:22 | a [inner post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:106:30:106:41 | inner_nested [inner post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:108:24:108:24 | a [inner post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:123:28:123:36 | inner_ptr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:127:30:127:38 | inner_ptr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:11:22:11:23 | a_ [post update] | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:12:22:12:23 | b_ [post update] | PostUpdateNode should not be the target of local flow. |
+| conflated.cpp:10:3:10:7 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| conflated.cpp:10:7:10:7 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
+| conflated.cpp:29:7:29:7 | x [post update] | PostUpdateNode should not be the target of local flow. |
+| conflated.cpp:36:7:36:7 | x [post update] | PostUpdateNode should not be the target of local flow. |
+| conflated.cpp:53:7:53:10 | next [post update] | PostUpdateNode should not be the target of local flow. |
+| conflated.cpp:54:13:54:13 | y [post update] | PostUpdateNode should not be the target of local flow. |
+| conflated.cpp:60:13:60:13 | y [post update] | PostUpdateNode should not be the target of local flow. |
+| constructors.cpp:20:24:20:25 | a_ [post update] | PostUpdateNode should not be the target of local flow. |
+| constructors.cpp:21:24:21:25 | b_ [post update] | PostUpdateNode should not be the target of local flow. |
+| qualifiers.cpp:9:36:9:36 | a [post update] | PostUpdateNode should not be the target of local flow. |
+| qualifiers.cpp:12:56:12:56 | a [post update] | PostUpdateNode should not be the target of local flow. |
+| qualifiers.cpp:13:57:13:57 | a [post update] | PostUpdateNode should not be the target of local flow. |
+| qualifiers.cpp:22:23:22:23 | a [post update] | PostUpdateNode should not be the target of local flow. |
+| qualifiers.cpp:37:26:37:33 | call to getInner [inner post update] | PostUpdateNode should not be the target of local flow. |
+| qualifiers.cpp:42:13:42:20 | call to getInner [inner post update] | PostUpdateNode should not be the target of local flow. |
+| qualifiers.cpp:42:25:42:25 | a [post update] | PostUpdateNode should not be the target of local flow. |
+| qualifiers.cpp:47:7:47:11 | outer [inner post update] | PostUpdateNode should not be the target of local flow. |
+| qualifiers.cpp:47:27:47:27 | a [post update] | PostUpdateNode should not be the target of local flow. |
+| realistic.cpp:49:13:49:15 | bar [inner post update] | PostUpdateNode should not be the target of local flow. |
+| realistic.cpp:49:20:49:22 | baz [post update] | PostUpdateNode should not be the target of local flow. |
+| realistic.cpp:53:13:53:15 | bar [inner post update] | PostUpdateNode should not be the target of local flow. |
+| realistic.cpp:53:35:53:43 | bufferLen [post update] | PostUpdateNode should not be the target of local flow. |
+| realistic.cpp:54:20:54:22 | bar [inner post update] | PostUpdateNode should not be the target of local flow. |
+| realistic.cpp:60:16:60:18 | ref arg dst | PostUpdateNode should not be the target of local flow. |
+| realistic.cpp:61:25:61:27 | bar [inner post update] | PostUpdateNode should not be the target of local flow. |
+| realistic.cpp:65:25:65:27 | bar [inner post update] | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:20:24:20:25 | a_ [post update] | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:21:24:21:25 | b_ [post update] | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:65:7:65:7 | i [post update] | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:83:12:83:13 | f1 [post update] | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:92:7:92:7 | i [post update] | PostUpdateNode should not be the target of local flow. |
+| struct_init.c:24:11:24:12 | ab [inner post update] | PostUpdateNode should not be the target of local flow. |
+| struct_init.c:36:17:36:24 | nestedAB [inner post update] | PostUpdateNode should not be the target of local flow. |

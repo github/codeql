@@ -1,0 +1,13 @@
+# CWE-134: Uncontrolled Format String
++ semmlecode-cpp-queries/Likely Bugs/Format/NonConstantFormat.ql: /CWE/CWE-134
+    @name Non-constant format string (CWE-134)
+# This one runs out of memory. See ODASA-608.
+#+ semmlecode-cpp-queries/PointsTo/TaintedFormatStrings.ql: /CWE/CWE-134
++ semmlecode-cpp-queries/Likely Bugs/Format/WrongNumberOfFormatArguments.ql: /CWE/CWE-134
+    @name Wrong number of arguments to formatting function (CWE-134)
++ semmlecode-cpp-queries/Likely Bugs/Format/WrongTypeFormatArguments.ql: /CWE/CWE-134
+    @name Wrong type of arguments to formatting function (CWE-134)
++ semmlecode-cpp-queries/Security/CWE/CWE-134/UncontrolledFormatString.ql: /CWE/CWE-134
+    @name Uncontrolled format string (CWE-134)
++ semmlecode-cpp-queries/Security/CWE/CWE-134/UncontrolledFormatStringThroughGlobalVar.ql: /CWE/CWE-134
+    @name Uncontrolled format string (through global variable) (CWE-134)

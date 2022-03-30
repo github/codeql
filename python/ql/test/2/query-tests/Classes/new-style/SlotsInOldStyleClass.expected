@@ -1,0 +1,1 @@
+| newstyle_test.py:4:1:4:16 | class OldStyle1 | Using __slots__ in an old style class just creates a class attribute called '__slots__' |

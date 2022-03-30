@@ -1,0 +1,21 @@
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | __va_list_tag |
+| file://:0:0:0:0 | auto |
+| file://:0:0:0:0 | d |
+| file://:0:0:0:0 | fp_offset |
+| file://:0:0:0:0 | gp_offset |
+| file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | overflow_arg_area |
+| file://:0:0:0:0 | reg_save_area |
+| test.cpp:3:24:3:24 | b<a> |
+| test.cpp:4:26:4:26 | c<<expression>> |
+| test.cpp:4:26:4:26 | c<<unnamed>> |
+| test.cpp:5:29:5:29 | e |
+| test.cpp:6:26:6:26 | (unnamed parameter 0) |
+| test.cpp:6:29:6:31 | (unnamed parameter 1) |
+| test.cpp:7:20:7:20 | f |
+| test.cpp:7:20:7:26 | f |
+| test.cpp:7:28:7:28 | (unnamed parameter 0) |
+| test.cpp:7:31:7:33 | (unnamed parameter 1) |

@@ -1,0 +1,7 @@
+| test.cpp:6:30:6:40 | sizeof(int) | Suspicious sizeof offset in a pointer arithmetic expression. The type of the pointer is $@. | file://:0:0:0:0 | int * | int * |
+| test.cpp:14:30:14:40 | sizeof(int) | Suspicious sizeof offset in a pointer arithmetic expression. The type of the pointer is $@. | file://:0:0:0:0 | int * | int * |
+| test.cpp:22:25:22:35 | sizeof(int) | Suspicious sizeof offset in a pointer arithmetic expression. The type of the pointer is $@. | file://:0:0:0:0 | int * | int * |
+| test.cpp:30:25:30:35 | sizeof(int) | Suspicious sizeof offset in a pointer arithmetic expression. The type of the pointer is $@. | file://:0:0:0:0 | int * | int * |
+| test.cpp:38:30:38:40 | sizeof(int) | Suspicious sizeof offset in a pointer arithmetic expression. The type of the pointer is $@. | file://:0:0:0:0 | int * | int * |
+| test.cpp:61:27:61:37 | sizeof(int) | Suspicious sizeof offset in a pointer arithmetic expression. The type of the pointer is $@. | file://:0:0:0:0 | int * | int * |
+| test.cpp:89:43:89:55 | sizeof(MyABC) | Suspicious sizeof offset in a pointer arithmetic expression. The type of the pointer is $@. | file://:0:0:0:0 | myInt *const | myInt *const |

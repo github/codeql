@@ -1,0 +1,40 @@
+fields/FieldTest.java:
+#    0| [CompilationUnit] FieldTest
+#    3|   1: [Class] FieldTest
+#    4|     4: [FieldDeclaration] float ff, ...;
+#    4|       -1: [TypeAccess] float
+#    4|       1: [FloatingPointLiteral] 2.3f
+#    5|     5: [FieldDeclaration] Object obj, ...;
+#    5|       -1: [TypeAccess] Object
+#    5|       0: [NullLiteral] null
+#    6|     6: [FieldDeclaration] List<> l, ...;
+#-----|       -2: (Annotations)
+#    6|         1: [Annotation] SuppressWarnings
+#    6|           1: [StringLiteral] "rawtypes"
+#    6|       -1: [TypeAccess] List<>
+#    7|     7: [FieldDeclaration] int x;
+#    7|       -1: [TypeAccess] int
+#    7|       0: [IntegerLiteral] 0
+#    8|     8: [FieldDeclaration] int y;
+#    8|       -1: [TypeAccess] int
+#    8|       0: [AssignExpr] ...=...
+#    8|         0: [VarAccess] x
+#    8|         1: [IntegerLiteral] 1
+#    9|     9: [BlockStmt] { ... }
+#   10|       0: [ExprStmt] <Expr>;
+#   10|         0: [AssignExpr] ...=...
+#   10|           0: [VarAccess] x
+#   10|           1: [IntegerLiteral] 2
+#   12|     10: [FieldDeclaration] int z;
+#   12|       -1: [TypeAccess] int
+#   12|       0: [IntegerLiteral] 0
+#   13|     11: [FieldDeclaration] int w;
+#   13|       -1: [TypeAccess] int
+#   13|       0: [AssignExpr] ...=...
+#   13|         0: [VarAccess] z
+#   13|         1: [IntegerLiteral] 1
+#   14|     12: [BlockStmt] { ... }
+#   15|       0: [ExprStmt] <Expr>;
+#   15|         0: [AssignExpr] ...=...
+#   15|           0: [VarAccess] z
+#   15|           1: [IntegerLiteral] 2

@@ -1,0 +1,74 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Double-checked locking requires that the underlying field is <code>volatile</code>,
+otherwise the program can behave incorrectly when running in multiple threads,
+for example by computing the field twice.
+</p>
+</overview>
+
+<recommendation>
+
+<p>There are several ways to make the code thread-safe:</p>
+
+<ol>
+<li>Avoid double-checked locking, and simply perform everything within the lock statement.</li>
+<li>Make the field volatile using the <code>volatile</code> keyword.</li>
+<li>Use the <code>System.Lazy</code> class, which is guaranteed to be thread-safe. 
+This can often lead to more elegant code.</li>
+<li>Use <code>System.Threading.LazyInitializer</code>.</li>
+</ol>
+
+</recommendation>
+<example>
+<p>The following code defines a property called <code>Name</code>, which calls the method
+<code>LoadNameFromDatabase</code> the first time that the property is read, and then
+caches the result. This code is efficient but will not work properly if the property 
+is accessed from multiple threads, because <code>LoadNameFromDatabase</code> could
+be called several times.</p>
+
+<sample src="UnsafeLazyInitialization1.cs"/>
+
+<p>A common solution to this is <em>double-checked locking</em>, 
+which checks whether the stored value is <code>null</code> before locking the mutex.
+This is efficient because it avoids a potentially expensive lock operation if a
+value has already been assigned to <code>name</code>.</p>
+
+<sample src="UnsafeLazyInitialization2.cs"/>
+
+<p>However this code is incorrect because the field <code>name</code> isn't
+volatile, which could result in <code>name</code> being computed twice on some systems.</p>
+
+<p>The first solution is to simply avoid double-checked locking (Recommendation 1):</p>
+<sample src="UnsafeLazyInitializationFix1.cs"/>
+
+<p>Another fix would be to make the field volatile (Recommendation 2):</p>
+<sample src="UnsafeLazyInitializationFix2.cs"/>
+
+<p>It may often be more elegant to use the class <code>System.Lazy</code>, which is
+automatically thread-safe (Recommendation 3):</p>
+<sample src="UnsafeLazyInitializationFix3.cs"/>
+
+</example>
+
+<references>
+  <li>
+    MSDN: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.lazy-1">Lazy&lt;T&gt; Class</a>.
+  </li>
+  <li>
+    MSDN: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.lazyinitializer.ensureinitialized">LazyInitializer.EnsureInitialized Method</a>.
+  </li>
+  <li>
+    MSDN: <a href="https://msdn.microsoft.com/en-us/library/ff650316.aspx">Implementing Singleton in C#</a>.
+  </li>
+  <li>
+    MSDN Magazine: <a href="https://msdn.microsoft.com/magazine/jj863136">The C# Memory Model in Theory and Practice</a>.
+  </li>
+  <li>
+    MSDN, C# Reference: <a href="https://msdn.microsoft.com/en-us/library/x13ttww7.aspx">volatile</a>.
+  </li>
+  <li>
+    Wikipedia: <a href="https://en.wikipedia.org/wiki/Double-checked_locking">Double-checked locking</a>.
+  </li>
+</references>
+</qhelp>

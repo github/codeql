@@ -1,0 +1,35 @@
+| CPP-205.cpp:0:0:0:0 | CPP-205.cpp |  |
+| CPP-205.cpp:1:20:1:20 | T |  |
+| CPP-205.cpp:1:20:1:20 | definition of T |  |
+| CPP-205.cpp:2:5:2:5 | definition of fn | function declaration entry for fn<int>(int) -> int |
+| CPP-205.cpp:2:5:2:5 | fn | function fn<int>(int) -> int |
+| CPP-205.cpp:2:5:2:6 | definition of fn | function declaration entry for fn<T>(T) -> int |
+| CPP-205.cpp:2:5:2:6 | fn | function fn<T>(T) -> int |
+| CPP-205.cpp:2:10:2:12 | definition of out | parameter declaration entry for fn<T>(T) -> int |
+| CPP-205.cpp:2:10:2:12 | definition of out | parameter declaration entry for fn<int>(int) -> int |
+| CPP-205.cpp:2:10:2:12 | out | parameter for fn<T>(T) -> int |
+| CPP-205.cpp:2:10:2:12 | out | parameter for fn<int>(int) -> int |
+| CPP-205.cpp:2:15:5:1 | { ... } |  |
+| CPP-205.cpp:2:15:5:1 | { ... } |  |
+| CPP-205.cpp:3:3:3:33 | declaration |  |
+| CPP-205.cpp:3:3:3:33 | declaration |  |
+| CPP-205.cpp:3:15:3:15 | declaration of y |  |
+| CPP-205.cpp:3:15:3:15 | y |  |
+| CPP-205.cpp:3:17:3:31 | 5 |  |
+| CPP-205.cpp:4:3:4:11 | return ... |  |
+| CPP-205.cpp:4:3:4:11 | return ... |  |
+| CPP-205.cpp:4:10:4:10 | 0 |  |
+| CPP-205.cpp:4:10:4:10 | 0 |  |
+| CPP-205.cpp:7:5:7:8 | definition of main | function declaration entry for main() -> int |
+| CPP-205.cpp:7:5:7:8 | main | function main() -> int |
+| CPP-205.cpp:7:12:9:1 | { ... } |  |
+| CPP-205.cpp:8:3:8:15 | return ... |  |
+| CPP-205.cpp:8:10:8:11 | call to fn |  |
+| CPP-205.cpp:8:13:8:13 | 0 |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | parameter for __va_list_tag::operator=(__va_list_tag &&) -> __va_list_tag & |
+| file://:0:0:0:0 | (unnamed parameter 0) | parameter for __va_list_tag::operator=(const __va_list_tag &) -> __va_list_tag & |
+| file://:0:0:0:0 | __super |  |
+| file://:0:0:0:0 | __va_list_tag |  |
+| file://:0:0:0:0 | operator= | function __va_list_tag::operator=(__va_list_tag &&) -> __va_list_tag & |
+| file://:0:0:0:0 | operator= | function __va_list_tag::operator=(const __va_list_tag &) -> __va_list_tag & |
+| file://:0:0:0:0 | y |  |

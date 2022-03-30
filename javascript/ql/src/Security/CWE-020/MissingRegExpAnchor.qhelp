@@ -1,0 +1,76 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+
+			Sanitizing untrusted input with regular expressions is a
+			common technique.  However, it is error-prone to match untrusted input
+			against regular expressions without anchors such as <code>^</code> or
+			<code>$</code>.  Malicious input can bypass such security checks by
+			embedding one of the allowed patterns in an unexpected location.
+
+		</p>
+
+		<p>
+
+			Even if the matching is not done in a security-critical
+			context, it may still cause undesirable behavior when the regular
+			expression accidentally matches.
+
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+
+			Use anchors to ensure that regular expressions match at
+			the expected locations.
+
+		</p>
+	</recommendation>
+
+	<example>
+
+		<p>
+
+			The following example code checks that a URL redirection
+			will reach the <code>example.com</code> domain, or one of its
+			subdomains, and not some malicious site.
+
+		</p>
+
+		<sample src="examples/MissingRegExpAnchor_BAD.js"/>
+
+		<p>
+
+			The check with the regular expression match is, however, easy to bypass. For example
+			by embedding <code>http://example.com/</code> in the query
+			string component: <code>http://evil-example.net/?x=http://example.com/</code>.
+
+			Address these shortcomings by using anchors in the regular expression instead:
+
+		</p>
+
+		<sample src="examples/MissingRegExpAnchor_GOOD.js"/>
+
+		<p>
+
+			A related mistake is to write a regular expression with
+			multiple alternatives, but to only include an anchor for one of the
+			alternatives. As an example, the regular expression
+			<code>/^www\.example\.com|beta\.example\.com/</code> will match the host
+			<code>evil.beta.example.com</code> because the regular expression is parsed
+			as <code>/(^www\.example\.com)|(beta\.example\.com)/</code>
+
+		</p>
+	</example>
+
+	<references>
+		<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">Regular Expressions</a></li>
+		<li>OWASP: <a href="https://www.owasp.org/index.php/Server_Side_Request_Forgery">SSRF</a></li>
+		<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
+	</references>
+</qhelp>

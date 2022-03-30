@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Directly writing user input (for example, an HTTP request parameter) to a web page,
+without properly sanitizing the input first, allows for a cross-site scripting vulnerability.</p>
+
+</overview>
+<recommendation>
+
+<p>To guard against cross-site scripting, consider using contextual output encoding/escaping before
+writing user input to the page, or one of the other solutions that are mentioned in the
+reference.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows the page parameter being written directly to the server error page,
+leaving the website vulnerable to cross-site scripting.</p>
+
+<sample src="XSS.java" />
+
+</example>
+<references>
+
+
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS
+(Cross Site Scripting) Prevention Cheat Sheet</a>.
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+</li>
+
+
+</references>
+</qhelp>

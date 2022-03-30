@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A field of immutable type that is not declared <code>final</code>, but is assigned to only in a 
+constructor or static initializer of its declaring type, may lead to defects and makes code less
+readable. This is because other parts of the code may be based on the assumption that the field has 
+a constant value, and a later modification, which includes an assignment to the field, may 
+invalidate this assumption.
+</p>
+
+</overview>
+<recommendation>
+
+<p>If a field of immutable type is assigned to only during class or instance initialization,
+you should usually declare it <code>final</code>. This forces the compiler to verify that the field 
+value cannot be changed subsequently, which can help to avoid defects and increase code readability.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.12.4">4.12.4 final Variables</a>,
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-8.html#jls-8.3.1.2">8.3.1.2 final Fields</a>.
+</li>
+
+
+</references>
+</qhelp>

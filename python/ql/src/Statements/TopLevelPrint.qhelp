@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Using <code>print</code> statements in level scope may result in surprising output at import time.
+This in turn means that other code cannot safely import the module in question if the program may only write
+real output to standard out.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Replace the <code>print</code> statements with calls to some form of logging function or use the <code>warnings</code> module.</p>
+
+</recommendation>
+<example>
+<p>In the example, importing the module may cause a message to be printed, which may interfere with the operation of the program.</p>
+
+<sample src="TopLevelPrint.py" />
+
+</example>
+<references>
+
+    <li>Python Language Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#the-print-statement">The print statement</a>.</li>
+    <li>Python Standard Library: <a href="http://docs.python.org/3/library/functions.html#print">The print function</a>.</li>
+    <li>Python tutorial: <a href="http://docs.python.org/2/tutorial/modules.html">Modules</a>.</li>
+
+
+</references>
+</qhelp>

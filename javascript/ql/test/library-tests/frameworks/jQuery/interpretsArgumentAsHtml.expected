@@ -1,0 +1,14 @@
+| tracking.js:7:5:7:24 | this.elm.html('foo') | tracking.js:7:19:7:23 | 'foo' |
+| tracking.js:14:5:14:17 | e.html('foo') | tracking.js:14:12:14:16 | 'foo' |
+| tracking.js:23:7:23:15 | $('#foo') | tracking.js:23:9:23:14 | '#foo' |
+| ts_global_types.ts:3:5:3:17 | e.html('foo') | ts_global_types.ts:3:12:3:16 | 'foo' |
+| ts_global_types.ts:7:1:7:9 | $('#foo') | ts_global_types.ts:7:3:7:8 | '#foo' |
+| ts_import.ts:5:5:5:17 | e.html('foo') | ts_import.ts:5:12:5:16 | 'foo' |
+| tst2.js:2:1:2:7 | jq("a") | tst2.js:2:4:2:6 | "a" |
+| tst.js:3:1:3:9 | $("<a/>") | tst.js:3:3:3:8 | "<a/>" |
+| tst.js:7:1:7:14 | $("<br>", doc) | tst.js:7:3:7:8 | "<br>" |
+| tst.js:11:1:11:8 | $("foo") | tst.js:11:3:11:7 | "foo" |
+| tst.js:12:1:12:8 | $("foo") | tst.js:12:3:12:7 | "foo" |
+| tst.js:12:1:12:20 | $("foo").html("foo") | tst.js:12:15:12:19 | "foo" |
+| tst.js:13:1:13:8 | $("foo") | tst.js:13:3:13:7 | "foo" |
+| tst.js:15:1:15:8 | $("foo") | tst.js:15:3:15:7 | "foo" |

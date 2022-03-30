@@ -1,0 +1,4 @@
+| statements_test.py:19:5:19:18 | AssignStmt | Left hand side of assignment contains 3 variables, but right hand side is a $@ of length 2. | statements_test.py:19:15:19:18 | statements_test.py:19 | tuple |
+| statements_test.py:169:5:169:23 | AssignStmt | Left hand side of assignment contains 3 variables, but right hand side is a $@ of length 5. | statements_test.py:169:13:169:23 | statements_test.py:169 | list |
+| statements_test.py:178:5:178:48 | AssignStmt | Left hand side of assignment contains 3 variables, but right hand side is a $@ of length 5. | statements_test.py:173:16:173:24 | statements_test.py:173 | tuple |
+| statements_test.py:178:5:178:48 | AssignStmt | Left hand side of assignment contains 3 variables, but right hand side is a $@ of length 6. | statements_test.py:175:16:175:26 | statements_test.py:175 | tuple |

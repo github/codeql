@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Comparison operations like <code>x >= y</code>
+or <code>x != y</code> will always return the same result if the
+ranges of <code>x</code> and <code>y</code> do not overlap. In some
+cases this can cause an infinite loop. In the example below the
+loop condition on line 9 is always true because the range of
+<code>i</code> is [0..5], so the loop will never terminate.</p>
+
+<p>The bounds which were deduced for the left and right operands of the
+comparison are included in the message as they often make it easier to
+understand why a result was reported. For example the message for the
+comparison <code>x >= y</code> might read: "Comparison is always false
+because x >= 5 and 3 >= y."</p>
+
+</overview>
+<recommendation>
+<p>Check the expression to see whether a different semantics was intended.</p>
+
+</recommendation>
+<example><sample src="PointlessComparison.cpp" />
+
+</example>
+<references>
+</references>
+</qhelp>

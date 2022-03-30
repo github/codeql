@@ -1,0 +1,24 @@
+| tst.js:4:1:4:16 | (function(){})() | file://:0:0:0:0 | undefined |
+| tst.js:5:1:5:25 | (functi ... n; })() | file://:0:0:0:0 | undefined |
+| tst.js:6:1:6:30 | (functi ... e; })() | file://:0:0:0:0 | true |
+| tst.js:7:1:7:57 | (functi ... e; })() | file://:0:0:0:0 | false |
+| tst.js:7:1:7:57 | (functi ... e; })() | file://:0:0:0:0 | true |
+| tst.js:8:1:8:33 | (functi ... n; })() | file://:0:0:0:0 | indefinite value (global) |
+| tst.js:11:5:11:8 | f1() | file://:0:0:0:0 | undefined |
+| tst.js:14:5:14:8 | f2() | file://:0:0:0:0 | undefined |
+| tst.js:15:5:15:8 | f2() | file://:0:0:0:0 | undefined |
+| tst.js:18:5:18:11 | o1.f3() | file://:0:0:0:0 | undefined |
+| tst.js:23:5:23:8 | f4() | tst.js:21:16:21:30 | function f5 |
+| tst.js:23:5:23:10 | f4()() | file://:0:0:0:0 | undefined |
+| tst.js:30:5:30:8 | f6() | tst.js:26:16:28:9 | function f7 |
+| tst.js:30:5:30:10 | f6()() | tst.js:27:20:27:34 | function f8 |
+| tst.js:36:5:36:9 | f10() | file://:0:0:0:0 | undefined |
+| tst.js:39:5:39:9 | f11() | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:39:5:39:9 | f11() | file://:0:0:0:0 | non-zero value |
+| tst.js:45:5:45:9 | f13() | file://:0:0:0:0 | undefined |
+| tst.js:48:5:48:9 | f14() | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:48:5:48:9 | f14() | file://:0:0:0:0 | non-zero value |
+| tst.js:61:5:61:9 | f15() | file://:0:0:0:0 | undefined |
+| tst.js:64:5:64:9 | f16() | file://:0:0:0:0 | undefined |
+| tst.js:84:17:84:22 | getF() | file://:0:0:0:0 | undefined |
+| tst.js:89:17:89:22 | getG() | file://:0:0:0:0 | undefined |

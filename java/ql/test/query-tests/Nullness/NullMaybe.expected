@@ -1,0 +1,37 @@
+| A.java:48:5:48:21 | assertNotNull_ok3 | Variable $@ may be null here because of $@ assignment. | A.java:46:5:46:61 | Object assertNotNull_ok3 | assertNotNull_ok3 | A.java:46:12:46:60 | assertNotNull_ok3 | this |
+| A.java:172:26:172:33 | do_maybe | Variable $@ may be null here because of $@ assignment. | A.java:170:5:170:25 | String do_maybe | do_maybe | A.java:173:7:173:21 | ...=... | this |
+| A.java:193:26:193:36 | while_maybe | Variable $@ may be null here because of $@ assignment. | A.java:191:5:191:28 | String while_maybe | while_maybe | A.java:194:7:194:24 | ...=... | this |
+| A.java:215:24:215:31 | if_maybe | Variable $@ may be null here because of $@ assignment. | A.java:211:5:211:25 | String if_maybe | if_maybe | A.java:213:7:213:21 | ...=... | this |
+| A.java:230:26:230:34 | for_maybe | Variable $@ may be null here because of $@ assignment. | A.java:229:10:229:30 | String for_maybe | for_maybe | A.java:229:35:229:50 | ...=... | this |
+| A.java:273:24:273:32 | for_maybe | Variable $@ may be null here because of $@ assignment. | A.java:268:5:268:63 | List<String> for_maybe | for_maybe | A.java:271:7:271:22 | ...=... | this |
+| B.java:16:5:16:9 | param | Variable $@ may be null here because of $@ null argument. | B.java:15:23:15:34 | param | param | B.java:11:13:11:16 | null | this |
+| B.java:23:5:23:9 | param | Variable $@ may be null here as suggested by $@ null guard. | B.java:19:23:19:34 | param | param | B.java:20:9:20:21 | ... != ... | this |
+| B.java:57:7:57:8 | o7 | Variable $@ may be null here because of $@ assignment. | B.java:52:5:52:34 | Object o7 | o7 | B.java:52:12:52:33 | o7 | this |
+| B.java:69:16:69:17 | xs | Variable $@ may be null here because of $@ assignment. | B.java:68:5:68:41 | int[] xs | xs | B.java:68:11:68:40 | xs | this |
+| B.java:70:24:70:25 | xs | Variable $@ may be null here because of $@ assignment. | B.java:68:5:68:41 | int[] xs | xs | B.java:68:11:68:40 | xs | this |
+| B.java:72:15:72:16 | xs | Variable $@ may be null here because of $@ assignment. | B.java:68:5:68:41 | int[] xs | xs | B.java:68:11:68:40 | xs | this |
+| B.java:75:20:75:21 | xs | Variable $@ may be null here because of $@ assignment. | B.java:68:5:68:41 | int[] xs | xs | B.java:68:11:68:40 | xs | this |
+| B.java:78:20:78:21 | xs | Variable $@ may be null here because of $@ assignment. | B.java:68:5:68:41 | int[] xs | xs | B.java:68:11:68:40 | xs | this |
+| B.java:118:5:118:7 | obj | Variable $@ may be null here as suggested by $@ null guard. | B.java:117:27:117:36 | obj | obj | B.java:119:13:119:23 | ... != ... | this |
+| B.java:133:5:133:7 | obj | Variable $@ may be null here because of $@ assignment. | B.java:128:5:128:22 | Object obj | obj | B.java:128:12:128:21 | obj | this |
+| B.java:190:7:190:7 | o | Variable $@ may be null here because of $@ assignment. | B.java:178:5:178:20 | Object o | o | B.java:186:5:186:12 | ...=... | this |
+| B.java:279:7:279:7 | a | Variable $@ may be null here because of $@ assignment. | B.java:276:5:276:19 | int[] a | a | B.java:276:11:276:18 | a | this |
+| B.java:292:7:292:7 | b | Variable $@ may be null here because of $@ assignment. | B.java:287:5:287:44 | int[] b | b | B.java:287:11:287:43 | b | this |
+| B.java:408:7:408:7 | x | Variable $@ may be null here as suggested by $@ null guard. | B.java:374:23:374:30 | x | x | B.java:375:23:375:31 | ... != ... | this |
+| C.java:9:44:9:45 | a2 | Variable $@ may be null here as suggested by $@ null guard. | C.java:6:5:6:23 | long[][] a2 | a2 | C.java:7:34:7:54 | ... != ... | this |
+| C.java:9:44:9:45 | a2 | Variable $@ may be null here because of $@ assignment. | C.java:6:5:6:23 | long[][] a2 | a2 | C.java:6:14:6:22 | a2 | this |
+| C.java:10:17:10:18 | a3 | Variable $@ may be null here as suggested by $@ null guard. | C.java:8:5:8:21 | long[] a3 | a3 | C.java:9:38:9:58 | ... != ... | this |
+| C.java:10:17:10:18 | a3 | Variable $@ may be null here because of $@ assignment. | C.java:8:5:8:21 | long[] a3 | a3 | C.java:8:12:8:20 | a3 | this |
+| C.java:21:7:21:8 | s1 | Variable $@ may be null here because of $@ assignment. | C.java:14:5:14:30 | String s1 | s1 | C.java:17:7:17:24 | ...=... | this |
+| C.java:51:7:51:11 | slice | Variable $@ may be null here because of $@ assignment. | C.java:43:5:43:30 | List<String> slice | slice | C.java:43:18:43:29 | slice | this |
+| C.java:63:7:63:9 | arr | Variable $@ may be null here as suggested by $@ null guard. | C.java:57:35:57:43 | arr | arr | C.java:60:16:60:26 | ... == ... | this |
+| C.java:100:7:100:10 | arr2 | Variable $@ may be null here because of $@ assignment. | C.java:95:5:95:22 | int[] arr2 | arr2 | C.java:95:11:95:21 | arr2 | this |
+| C.java:110:25:110:27 | obj | Variable $@ may be null here because of $@ assignment. | C.java:106:5:106:30 | Object obj | obj | C.java:118:13:118:22 | ...=... | this |
+| C.java:137:7:137:10 | obj2 | Variable $@ may be null here as suggested by $@ null guard. | C.java:131:5:131:23 | Object obj2 | obj2 | C.java:132:9:132:20 | ... != ... | this |
+| C.java:144:15:144:15 | a | Variable $@ may be null here as suggested by $@ null guard. | C.java:141:20:141:26 | a | a | C.java:142:13:142:21 | ... == ... | this |
+| C.java:188:9:188:11 | obj | Variable $@ may be null here because of $@ assignment. | C.java:181:5:181:22 | Object obj | obj | C.java:181:12:181:21 | obj | this |
+| C.java:207:9:207:11 | obj | Variable $@ may be null here because of $@ assignment. | C.java:201:5:201:22 | Object obj | obj | C.java:201:12:201:21 | obj | this |
+| C.java:219:9:219:10 | o1 | Variable $@ may be null here as suggested by $@ null guard. | C.java:212:20:212:28 | o1 | o1 | C.java:213:9:213:18 | ... == ... | this |
+| C.java:233:7:233:8 | xs | Variable $@ may be null here because of $@ assignment. | C.java:231:5:231:56 | int[] xs | xs | C.java:231:11:231:55 | xs | this |
+| F.java:11:5:11:7 | obj | Variable $@ may be null here as suggested by $@ null guard. | F.java:8:18:8:27 | obj | obj | F.java:9:9:9:19 | ... == ... | this |
+| F.java:17:5:17:7 | obj | Variable $@ may be null here as suggested by $@ null guard. | F.java:14:18:14:27 | obj | obj | F.java:15:9:15:19 | ... == ... | this |

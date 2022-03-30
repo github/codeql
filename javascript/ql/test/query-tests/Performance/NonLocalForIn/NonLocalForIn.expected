@@ -1,0 +1,5 @@
+| tst.js:14:10:14:15 | q[i++] | This loop may prevent optimization because its iteration variable is a property. |
+| tst.js:19:10:19:10 | p | This loop may prevent optimization because its iteration variable is a global variable. |
+| tst.js:24:10:24:14 | var p | This loop may prevent optimization because its iteration variable is captured. |
+| tst.js:34:14:34:14 | p | This loop may prevent optimization because its iteration variable is captured. |
+| tst.js:40:10:40:10 | p | This loop may prevent optimization because its iteration variable is a global variable. |

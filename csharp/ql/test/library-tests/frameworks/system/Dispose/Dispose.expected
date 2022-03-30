@@ -1,0 +1,7 @@
+| Dispose.cs:6:7:6:14 | Dispose1 | Dispose1.Dispose() | true |
+| Dispose.cs:11:7:11:17 | Dispose2<> | Dispose2<>.Dispose() | true |
+| Dispose.cs:11:7:11:17 | Dispose2<Int32> | Dispose2<System.Int32>.Dispose() | true |
+| Dispose.cs:17:7:17:14 | Dispose3 | Dispose3.Dispose(bool) | true |
+| Dispose.cs:22:7:22:14 | Dispose4 | Dispose2<System.Int32>.Dispose(bool) | false |
+| Dispose.cs:24:7:24:14 | Dispose5 | Dispose5.Dispose(bool) | true |
+| Dispose.cs:31:8:31:21 | Dispose1Struct | Dispose1Struct.Dispose() | true |

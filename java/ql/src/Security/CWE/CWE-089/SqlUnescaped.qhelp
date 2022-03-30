@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Even when the components of a SQL query are not fully controlled by
+a user, it is a vulnerability to concatenate those components into a
+SQL query without neutralizing special characters. Perhaps a separate
+vulnerability will allow the user to gain control of the component. As
+well, a user who cannot gain full control of an input might influence
+it enough to cause the SQL query to fail to run.</p>
+
+</overview>
+<recommendation>
+
+<include src="HowToAddress.inc.qhelp" />
+
+</recommendation>
+<example>
+
+<p>In the following example, the code runs a simple SQL query in two different ways.</p>
+
+<p>The first way involves building a query, <code>query1</code>, by concatenating the
+result of <code>getCategory</code> with some string literals. The result of 
+<code>getCategory</code> can include special characters, or
+it might be refactored later so that it may return something that contains special characters.</p>
+
+<p>The second way, which shows good practice, involves building a query, <code>query2</code>, with 
+a single string literal that includes a wildcard (<code>?</code>). The wildcard
+is then given a value by calling <code>setString</code>. This
+version is immune to injection attacks, because any special characters
+in the result of <code>getCategory</code> are not given any special
+treatment.</p>
+
+<sample src="SqlUnescaped.java" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">SQL
+Injection Prevention Cheat Sheet</a>.
+</li>
+<li>SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/IDS00-J.+Prevent+SQL+injection">IDS00-J. Prevent SQL injection</a>.</li>
+<li>The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html">Using Prepared Statements</a>.</li>
+
+
+
+<!--  LocalWords:  CWE SQL wildcard refactored untrusted
+ -->
+
+</references>
+</qhelp>

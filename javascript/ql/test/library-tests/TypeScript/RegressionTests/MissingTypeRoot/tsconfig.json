@@ -1,0 +1,6 @@
+{
+    "include": ["."],
+    "compilerOptions": {
+        "typeRoots": ["does-not-exist"]
+    }
+}

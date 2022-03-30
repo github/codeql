@@ -1,0 +1,2 @@
+| HashedButNoHash.cs:9:15:9:18 | this access | This expression is hashed, but type 'Test' only defines Equals(...) not GetHashCode(). |
+| HashedButNoHash.cs:11:15:11:18 | this access | This expression is hashed, but type 'Test' only defines Equals(...) not GetHashCode(). |

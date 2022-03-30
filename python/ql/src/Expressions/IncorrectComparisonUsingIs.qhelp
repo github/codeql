@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>When you compare two values using the <code>is</code> or <code>is not</code> operator, it is the
+object identities of the two values that is tested rather than their equality.
+ If the class of either of the values in the comparison redefines equality then the
+ <code>is</code> operator may return <code>False</code> even though the objects compare as equal.
+ Equality is defined by the <code>__eq__</code> or, in Python2, <code>__cmp__</code> method.
+ To compare two objects for equality, use the <code>==</code> or <code>!=</code> operator instead.</p>
+
+</overview>
+<recommendation>
+
+<p>When you want to compare the value of two literals, use the comparison operator <code>==</code> or
+<code>!=</code> in place of <code>is</code> or <code>is not</code>.</p>
+
+<p>If the uniqueness property or performance are important then use an object that does not redefine equality.</p>
+
+</recommendation>
+<example>
+
+<p>In the first line of the following example the programmer tests the value of <code>value</code> against
+<code>DEFAULT</code> using the <code>is</code> operator. Unfortunately, this may fail when the function
+is called with the string <code>"default"</code>.</p>
+<p>
+To function correctly, change the expression <code>value is DEFAULT</code> to <code>value == DEFAULT</code>.
+Alternatively, if the uniqueness property is desirable, then change the definition of <code>DEFAULT</code> to
+either of the alternatives below.
+</p>
+
+<sample src="IncorrectComparisonUsingIs.py" />
+
+
+</example>
+<references>
+
+     <li>Python Standard Library: <a href="http://docs.python.org/2/library/stdtypes.html#comparisons">Comparisons</a>.</li>
+
+</references>
+</qhelp>

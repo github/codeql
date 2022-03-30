@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A collection, string or array will always have size of at least zero. Checking that an object of one of these types has size greater than or equal to zero will always be true, while checking that it has size less than zero will always be false.</p>
+
+</overview>
+<recommendation>
+
+<p>For strings, it may be preferred to use the <code>System.String.IsNullOrEmpty</code> static method. In other cases, check that the <code>Count</code> or <code>Length</code> field is greater than (<b>not</b> equal to) zero.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows creation of a file guarded by comparison of a string length with zero. This can result in the attempted creation of a file with an empty name.</p>
+
+<sample src="ContainerSizeCmpZero.cs" />
+
+<p>In the following revised example, the check against zero has been replaced with a call to <code>String.IsNullOrEmpty</code>. This correctly guards against the attempted creation of a file with an empty name.</p>
+
+<sample src="ContainerSizeCmpZeroGood.cs" />
+
+</example>
+<references>
+
+
+<li>
+  MSDN Library (.NET Framework 4.5):
+
+  <a href="https://msdn.microsoft.com/en-us/library/system.string.isnullorempty(v=vs.110).aspx">String.IsNullOrEmpty Method</a>.
+</li>
+</references>
+</qhelp>

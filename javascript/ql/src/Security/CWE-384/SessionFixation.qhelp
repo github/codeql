@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Reusing a session could allow an attacker to gain unauthorized access to another account. Always
+ensure that, when a user logs in or out, the current session is abandoned so that a new
+session may be started.
+</p>
+</overview>
+
+<recommendation>
+
+<p>
+Always use <code>req.session.regenerate(...);</code> to start a new session when
+a user logs in or out.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows the previous session being used after authentication.
+This would allow a previous user to use the new user's account.
+</p>
+
+<sample src="examples/SessionFixation.js" />
+
+<p>
+This code example solves the problem by not reusing the session, and instead calling <code>req.session.regenerate()</code>
+to ensure that the session is not reused.
+</p>
+<sample src="examples/SessionFixationFixed.js" />
+
+</example>
+<references>
+<li>
+  OWASP: <a href="https://www.owasp.org/index.php/Session_fixation">Session fixation</a>
+</li>
+<li>
+  Stack Overflow: <a href="https://stackoverflow.com/questions/22209354/creating-a-new-session-after-authentication-with-passport/30468384#30468384">Creating a new session after authentication with Passport</a>
+</li>
+<li>
+  jscrambler.com: <a href="https://blog.jscrambler.com/best-practices-for-secure-session-management-in-node">Best practices for secure session management in Node</a>
+</li>
+</references>
+</qhelp>

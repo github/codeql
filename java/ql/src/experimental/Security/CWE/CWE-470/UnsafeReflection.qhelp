@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Allowing users to freely choose the name of a class to instantiate could provide means to attack a vulnerable appplication.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Create a list of classes that are allowed to load reflectively and strictly verify the input to ensure that 
+users can only instantiate classes or execute methods that ought to be allowed.
+</p>
+</recommendation>
+
+<example>
+<p>
+The <code>bad</code> method shown below illustrate class loading with <code>Class.forName</code> without any check on the particular class being instantiated. 
+The <code>good</code> methods illustrate some different ways to restrict which classes can be instantiated.
+</p>
+<sample src="UnsafeReflection.java" />
+
+</example>
+
+<references>
+
+<li>
+Unsafe use of Reflection | OWASP:
+<a href="https://owasp.org/www-community/vulnerabilities/Unsafe_use_of_Reflection">Unsafe use of Reflection</a>.
+</li>
+<li>
+Java owasp: Classes should not be loaded dynamically:
+<a href="https://rules.sonarsource.com/java/tag/owasp/RSPEC-2658">Classes should not be loaded dynamically</a>.
+</li>
+</references>
+
+</qhelp>

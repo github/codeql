@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If an LDAP query is built using string concatenation, and the
+components of the concatenation include user input, a user 
+is likely to be able to run malicious LDAP queries.</p>
+</overview>
+
+<recommendation>
+<p>If user input must be included in an LDAP query, it should be escaped to
+avoid a malicious user providing special characters that change the meaning
+of the query. If possible, use an existing library, such as the AntiXSS
+library.</p>
+</recommendation>
+
+<example>
+<p>In the following examples, the code accepts an "organization name" and a "username"
+from the user, which it uses to query LDAP to access a "type" property.</p>
+
+<p>The first example concatenates the unvalidated and unencoded user input directly
+into both the DN (Distinguished Name) and the search filter used for the LDAP query.
+A malicious user could provide special characters to change the meaning of these
+queries, and search for a completely different set of values.
+</p>
+
+<p>The second example uses the Microsoft AntiXSS library to encode the user values
+before they are included in the DN and search filters. This ensures the meaning of
+the query cannot be changed by a malicious user.</p>
+
+<sample src="LDAPInjection.cs" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html">LDAP Injection Prevention Cheat Sheet</a>.</li>
+<li>OWASP: <a href="https://www.owasp.org/index.php/Preventing_LDAP_Injection_in_Java">Preventing LDAP Injection in Java</a>.</li>
+<li>AntiXSS doc: <a href="http://www.nudoq.org/#!/Packages/AntiXSS/AntiXssLibrary/Encoder/M/LdapFilterEncode">LdapFilterEncode</a>.</li>
+<li>AntiXSS doc: <a href="http://www.nudoq.org/#!/Packages/AntiXSS/AntiXssLibrary/Encoder/M/LdapDistinguishedNameEncode">LdapDistinguishedNameEncode</a>.</li>
+</references>
+</qhelp>

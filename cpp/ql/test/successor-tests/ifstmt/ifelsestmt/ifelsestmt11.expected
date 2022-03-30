@@ -1,0 +1,15 @@
+| 0 | ifelsestmt.c:37:27:45:1 | { ... } | 1 | ifelsestmt.c:38:3:43:3 | if (...) ...  |
+| 1 | ifelsestmt.c:38:3:43:3 | if (...) ...  | 1 | ifelsestmt.c:38:6:38:6 | x |
+| 1 | ifelsestmt.c:38:6:38:6 | x | 1 | ifelsestmt.c:38:11:38:11 | y |
+| 1 | ifelsestmt.c:38:6:38:11 | ... == ... | 1 | ifelsestmt.c:38:14:40:3 | { ... } |
+| 1 | ifelsestmt.c:38:6:38:11 | ... == ... | 4 | ifelsestmt.c:41:8:43:3 | { ... } |
+| 1 | ifelsestmt.c:38:11:38:11 | y | 1 | ifelsestmt.c:38:6:38:11 | ... == ... |
+| 1 | ifelsestmt.c:38:14:40:3 | { ... } | 2 | ifelsestmt.c:39:5:39:7 | label ...: |
+| 2 | ifelsestmt.c:39:5:39:7 | label ...: | 2 | ifelsestmt.c:39:8:39:8 | ; |
+| 2 | ifelsestmt.c:39:8:39:8 | ; | 7 | ifelsestmt.c:44:3:44:5 | label ...: |
+| 4 | ifelsestmt.c:41:8:43:3 | { ... } | 5 | ifelsestmt.c:42:5:42:7 | label ...: |
+| 5 | ifelsestmt.c:42:5:42:7 | label ...: | 5 | ifelsestmt.c:42:8:42:8 | ; |
+| 5 | ifelsestmt.c:42:8:42:8 | ; | 7 | ifelsestmt.c:44:3:44:5 | label ...: |
+| 7 | ifelsestmt.c:44:3:44:5 | label ...: | 7 | ifelsestmt.c:44:6:44:6 | ; |
+| 7 | ifelsestmt.c:44:6:44:6 | ; | 8 | ifelsestmt.c:45:1:45:1 | return ... |
+| 8 | ifelsestmt.c:45:1:45:1 | return ... | 0 | ifelsestmt.c:37:6:37:11 | normal |

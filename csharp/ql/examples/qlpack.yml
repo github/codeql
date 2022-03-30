@@ -1,0 +1,6 @@
+name: codeql/csharp-examples
+groups: 
+  - csharp
+  - examples
+dependencies:
+  codeql/csharp-all: "*"

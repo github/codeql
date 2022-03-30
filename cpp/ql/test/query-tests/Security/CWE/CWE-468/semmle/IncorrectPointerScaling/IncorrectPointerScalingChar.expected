@@ -1,0 +1,4 @@
+| test.cpp:13:19:13:29 | charPointer | This pointer might have type $@ (size 4), but the pointer arithmetic here is done with type char * (size 1). | test.cpp:10:31:10:38 | test.cpp:10:31:10:38 | int |
+| test.cpp:77:17:77:17 | x | This pointer might have type $@ (size 4), but the pointer arithmetic here is done with type char * (size 1). | test.cpp:72:19:72:19 | test.cpp:72:19:72:19 | int |
+| test.cpp:119:26:119:26 | p | This pointer might have type $@ (size 8), but the pointer arithmetic here is done with type char * (size 1). | test.cpp:114:22:114:22 | test.cpp:114:22:114:22 | mystruct |
+| test.cpp:147:19:147:29 | charPointer | This pointer might have type $@ (size 4), but the pointer arithmetic here is done with type char * (size 1). | test.cpp:145:31:145:38 | test.cpp:145:31:145:38 | int |

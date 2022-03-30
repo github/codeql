@@ -1,0 +1,2 @@
+| main.cpp:3:5:3:5 | x | Poor global variable name 'x'. Prefer longer, descriptive names for globals (eg. kMyGlobalConstant, not foo). |
+| main.cpp:4:5:4:6 | ys | Poor global variable name 'ys'. Prefer longer, descriptive names for globals (eg. kMyGlobalConstant, not foo). |

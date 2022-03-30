@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+MVEL is an expression language based on Java-syntax, 
+which offers many features
+including invocation of methods available in the JVM.
+If a MVEL expression is built using attacker-controlled data, 
+and then evaluated, then it may allow attackers to run arbitrary code.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Including user input in a MVEL expression should be avoided.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following sample, the first example uses untrusted data to build a MVEL expression
+and then runs it in the default context. In the second example, the untrusted data is
+validated with a custom method that checks that the expression does not contain unexpected code
+before evaluating it.
+</p>
+<sample src="MvelExpressionEvaluation.java" />
+</example>
+
+<references>
+<li>
+  MVEL Documentation:
+  <a href="http://mvel.documentnode.com/">Language Guide for 2.0</a>.
+</li>
+<li>
+  OWASP:
+  <a href="https://owasp.org/www-community/vulnerabilities/Expression_Language_Injection">Expression Language Injection</a>.
+</li>
+</references>
+</qhelp>

@@ -1,0 +1,18 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule finds places in the code where header checking is disabled. When header checking is enabled, which is the default, the <code>\r</code> or <code>\n</code> characters found in a response header are encoded to <code>%0d</code> and <code>%0a</code>. This defeats header-injection attacks by making the injected material part of the same header line. If you disable header checking, you open potential attack vectors against your client code.</p>
+
+</overview>
+<recommendation>
+<p>Do not disable header checking.</p>
+
+</recommendation>
+<references>
+
+  <li>MSDN. <a href="http://msdn.microsoft.com/en-us/library/system.web.configuration.httpruntimesection.enableheaderchecking.aspx">HttpRuntimeSection.EnableHeaderChecking Property</a>.</li>
+
+</references>
+</qhelp>

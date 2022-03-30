@@ -1,0 +1,2 @@
+| DeadEnumConstantTest.java:8:5:8:11 | unused1 | unused1 is unused -- its value is never obtained. |
+| DeadEnumConstantTest.java:9:5:9:11 | unused2 | unused2 is unused -- its value is never obtained. |

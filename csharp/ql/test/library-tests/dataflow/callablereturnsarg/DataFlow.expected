@@ -1,0 +1,21 @@
+| CallableReturnsArg.cs:5:21:5:30 | NotNull<> | 0 | -1 |
+| CallableReturnsArg.cs:14:21:14:34 | WrapNotNull<> | 0 | -1 |
+| CallableReturnsArg.cs:26:45:26:55 | (...) => ... | 0 | -1 |
+| CallableReturnsArg.cs:28:52:28:150 | (...) => ... | 1 | -1 |
+| CallableReturnsArg.cs:30:21:30:28 | IdOut<> | 0 | 1 |
+| CallableReturnsArg.cs:30:21:30:28 | IdOut<> | 0 | -1 |
+| CallableReturnsArg.cs:36:21:36:28 | IdRef<> | 0 | 1 |
+| CallableReturnsArg.cs:36:21:36:28 | IdRef<> | 0 | -1 |
+| CallableReturnsArg.cs:56:21:56:28 | Apply<> | 2 | -1 |
+| CallableReturnsArg.cs:59:27:59:32 | (...) => ... | 0 | -1 |
+| CallableReturnsArg.cs:66:35:66:40 | (...) => ... | 0 | -1 |
+| CallableReturnsArg.cs:69:26:69:41 | ApplyPreserving2 | 0 | -1 |
+| CallableReturnsArg.cs:71:31:71:36 | (...) => ... | 0 | -1 |
+| CallableReturnsArg.cs:76:33:76:38 | (...) => ... | 0 | -1 |
+| CallableReturnsArg.cs:81:22:81:27 | (...) => ... | 0 | -1 |
+| CallableReturnsArg.cs:90:21:90:35 | ApplyWrapper<> | 2 | -1 |
+| CallableReturnsArg.cs:95:26:95:46 | ApplyNonPreservingFP1 | 0 | -1 |
+| CallableReturnsArg.cs:97:40:97:45 | (...) => ... | 0 | -1 |
+| CallableReturnsArg.cs:100:26:100:46 | ApplyNonPreservingFP2 | 0 | -1 |
+| CallableReturnsArg.cs:102:29:102:34 | (...) => ... | 0 | -1 |
+| CallableReturnsArg.cs:112:26:112:40 | ReturnNoBarrier | 0 | -1 |

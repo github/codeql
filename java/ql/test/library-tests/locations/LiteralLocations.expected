@@ -1,0 +1,6 @@
+| locations/A.class:0:0:0:0 | -42 |
+| locations/A.java:7:22:7:23 | 42 |
+| locations/A.java:9:13:9:14 | 23 |
+| locations/A.java:10:23:10:42 | "Hello, " + "world!" |
+| locations/A.java:11:23:11:47 | "Hello" + ", " + "world!" |
+| locations/A.java:12:15:12:18 | null |

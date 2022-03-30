@@ -1,0 +1,26 @@
+invalidModelRow
+summaryThroughStep
+| Steps.cs:8:24:8:27 | access to local variable arg1 | Steps.cs:8:13:8:28 | call to method StepArgRes | false |
+| Steps.cs:12:24:12:29 | access to local variable argIn1 | Steps.cs:12:32:12:38 | [post] access to local variable argOut1 | false |
+| Steps.cs:15:24:15:29 | access to local variable argIn2 | Steps.cs:15:32:15:38 | [post] access to local variable argOut2 | false |
+| Steps.cs:18:25:18:28 | access to local variable arg2 | Steps.cs:18:13:18:29 | [post] this access | false |
+| Steps.cs:20:30:20:33 | access to local variable arg3 | Steps.cs:20:13:20:16 | [post] this access | false |
+| Steps.cs:22:13:22:16 | this access | Steps.cs:22:13:22:30 | call to method StepQualRes | false |
+| Steps.cs:23:13:23:25 | this access | Steps.cs:23:13:23:25 | call to method StepQualRes | false |
+| Steps.cs:26:13:26:31 | this access | Steps.cs:26:25:26:30 | [post] access to local variable argOut | false |
+| Steps.cs:30:13:30:16 | this access | Steps.cs:30:13:30:16 | [post] this access | true |
+| Steps.cs:34:13:34:16 | this access | Steps.cs:34:13:34:16 | [post] this access | true |
+| Steps.cs:41:29:41:29 | 0 | Steps.cs:41:13:41:30 | call to method StepGeneric | true |
+| Steps.cs:42:30:42:34 | false | Steps.cs:42:13:42:35 | call to method StepGeneric2<Boolean> | true |
+| Steps.cs:44:36:44:43 | "string" | Steps.cs:44:13:44:44 | call to method StepOverride | true |
+summaryGetterStep
+| Steps.cs:28:13:28:16 | this access | Steps.cs:28:13:28:34 | call to method StepFieldGetter | Steps.cs:57:13:57:17 | field Field |
+| Steps.cs:32:13:32:16 | this access | Steps.cs:32:13:32:37 | call to method StepPropertyGetter | Steps.cs:63:13:63:20 | property Property |
+| Steps.cs:36:13:36:16 | this access | Steps.cs:36:13:36:36 | call to method StepElementGetter | file://:0:0:0:0 | element |
+summarySetterStep
+| Steps.cs:30:34:30:34 | 0 | Steps.cs:30:13:30:16 | [post] this access | Steps.cs:57:13:57:17 | field Field |
+| Steps.cs:34:37:34:37 | 0 | Steps.cs:34:13:34:16 | [post] this access | Steps.cs:63:13:63:20 | property Property |
+| Steps.cs:38:36:38:36 | 0 | Steps.cs:38:13:38:16 | [post] this access | file://:0:0:0:0 | element |
+clearsContent
+| Steps.cs:61:14:61:28 | StepFieldSetter | Steps.cs:57:13:57:17 | field Field | this |
+| Steps.cs:67:14:67:31 | StepPropertySetter | Steps.cs:63:13:63:20 | property Property | this |

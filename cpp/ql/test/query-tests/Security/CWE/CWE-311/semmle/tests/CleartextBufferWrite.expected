@@ -1,0 +1,10 @@
+edges
+| test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input |
+nodes
+| test2.cpp:110:3:110:6 | call to gets | semmle.label | call to gets |
+| test.cpp:54:17:54:20 | argv | semmle.label | argv |
+| test.cpp:58:25:58:29 | input | semmle.label | input |
+subpaths
+#select
+| test2.cpp:110:3:110:6 | call to gets | test2.cpp:110:3:110:6 | call to gets | test2.cpp:110:3:110:6 | call to gets | This write into buffer 'password' may contain unencrypted data from $@ | test2.cpp:110:3:110:6 | call to gets | user input (String read by gets) |
+| test.cpp:58:3:58:9 | call to sprintf | test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input | This write into buffer 'passwd' may contain unencrypted data from $@ | test.cpp:54:17:54:20 | argv | user input (a command-line argument) |

@@ -1,0 +1,244 @@
+edges
+| test.cpp:17:9:17:11 | & ... | test.cpp:17:9:17:11 | StoreValue |
+| test.cpp:17:10:17:11 | Unary | test.cpp:17:9:17:11 | & ... |
+| test.cpp:17:10:17:11 | mc | test.cpp:17:10:17:11 | Unary |
+| test.cpp:23:17:23:19 | & ... | test.cpp:23:17:23:19 | StoreValue |
+| test.cpp:23:17:23:19 | Store | test.cpp:25:9:25:11 | Load |
+| test.cpp:23:17:23:19 | StoreValue | test.cpp:23:17:23:19 | Store |
+| test.cpp:23:18:23:19 | Unary | test.cpp:23:17:23:19 | & ... |
+| test.cpp:23:18:23:19 | mc | test.cpp:23:18:23:19 | Unary |
+| test.cpp:25:9:25:11 | Load | test.cpp:25:9:25:11 | ptr |
+| test.cpp:25:9:25:11 | ptr | test.cpp:25:9:25:11 | StoreValue |
+| test.cpp:39:17:39:18 | (reference to) | test.cpp:39:17:39:18 | StoreValue |
+| test.cpp:39:17:39:18 | Store | test.cpp:41:10:41:12 | Load |
+| test.cpp:39:17:39:18 | StoreValue | test.cpp:39:17:39:18 | Store |
+| test.cpp:39:17:39:18 | Unary | test.cpp:39:17:39:18 | (reference to) |
+| test.cpp:39:17:39:18 | mc | test.cpp:39:17:39:18 | Unary |
+| test.cpp:41:9:41:12 | & ... | test.cpp:41:9:41:12 | StoreValue |
+| test.cpp:41:10:41:12 | (reference dereference) | test.cpp:41:10:41:12 | Unary |
+| test.cpp:41:10:41:12 | Load | test.cpp:41:10:41:12 | ref |
+| test.cpp:41:10:41:12 | Unary | test.cpp:41:9:41:12 | & ... |
+| test.cpp:41:10:41:12 | Unary | test.cpp:41:10:41:12 | (reference dereference) |
+| test.cpp:41:10:41:12 | ref | test.cpp:41:10:41:12 | Unary |
+| test.cpp:47:9:47:10 | (reference to) | test.cpp:47:9:47:10 | StoreValue |
+| test.cpp:47:9:47:10 | Unary | test.cpp:47:9:47:10 | (reference to) |
+| test.cpp:47:9:47:10 | mc | test.cpp:47:9:47:10 | Unary |
+| test.cpp:54:9:54:15 | & ... | test.cpp:54:9:54:15 | StoreValue |
+| test.cpp:54:11:54:12 | Unary | test.cpp:54:14:54:14 | a |
+| test.cpp:54:11:54:12 | mc | test.cpp:54:11:54:12 | Unary |
+| test.cpp:54:14:54:14 | Unary | test.cpp:54:9:54:15 | & ... |
+| test.cpp:54:14:54:14 | a | test.cpp:54:14:54:14 | Unary |
+| test.cpp:89:3:89:11 | Store | test.cpp:92:9:92:11 | Load |
+| test.cpp:89:9:89:11 | & ... | test.cpp:89:9:89:11 | StoreValue |
+| test.cpp:89:9:89:11 | StoreValue | test.cpp:89:3:89:11 | Store |
+| test.cpp:89:10:89:11 | Unary | test.cpp:89:9:89:11 | & ... |
+| test.cpp:89:10:89:11 | mc | test.cpp:89:10:89:11 | Unary |
+| test.cpp:92:9:92:11 | Load | test.cpp:92:9:92:11 | ptr |
+| test.cpp:92:9:92:11 | ptr | test.cpp:92:9:92:11 | StoreValue |
+| test.cpp:112:9:112:11 | Unary | test.cpp:112:9:112:11 | array to pointer conversion |
+| test.cpp:112:9:112:11 | arr | test.cpp:112:9:112:11 | Unary |
+| test.cpp:112:9:112:11 | array to pointer conversion | test.cpp:112:9:112:11 | StoreValue |
+| test.cpp:119:9:119:18 | & ... | test.cpp:119:9:119:18 | StoreValue |
+| test.cpp:119:11:119:13 | Left | test.cpp:119:11:119:17 | access to array |
+| test.cpp:119:11:119:13 | Unary | test.cpp:119:11:119:13 | array to pointer conversion |
+| test.cpp:119:11:119:13 | arr | test.cpp:119:11:119:13 | Unary |
+| test.cpp:119:11:119:13 | array to pointer conversion | test.cpp:119:11:119:13 | Left |
+| test.cpp:119:11:119:17 | Unary | test.cpp:119:9:119:18 | & ... |
+| test.cpp:119:11:119:17 | access to array | test.cpp:119:11:119:17 | Unary |
+| test.cpp:134:2:134:14 | Store | test.cpp:135:2:135:4 | Load |
+| test.cpp:134:8:134:10 | Left | test.cpp:134:8:134:14 | ... + ... |
+| test.cpp:134:8:134:10 | Unary | test.cpp:134:8:134:10 | array to pointer conversion |
+| test.cpp:134:8:134:10 | arr | test.cpp:134:8:134:10 | Unary |
+| test.cpp:134:8:134:10 | array to pointer conversion | test.cpp:134:8:134:10 | Left |
+| test.cpp:134:8:134:14 | ... + ... | test.cpp:134:8:134:14 | StoreValue |
+| test.cpp:134:8:134:14 | StoreValue | test.cpp:134:2:134:14 | Store |
+| test.cpp:135:2:135:4 | Left | test.cpp:135:2:135:6 | PointerAdd |
+| test.cpp:135:2:135:4 | Load | test.cpp:135:2:135:4 | ptr |
+| test.cpp:135:2:135:4 | ptr | test.cpp:135:2:135:4 | Left |
+| test.cpp:135:2:135:6 | PointerAdd | test.cpp:135:2:135:6 | StoreValue |
+| test.cpp:135:2:135:6 | Store | test.cpp:137:9:137:11 | Load |
+| test.cpp:135:2:135:6 | StoreValue | test.cpp:135:2:135:6 | Store |
+| test.cpp:137:9:137:11 | Load | test.cpp:137:9:137:11 | ptr |
+| test.cpp:137:9:137:11 | ptr | test.cpp:137:9:137:11 | StoreValue |
+| test.cpp:170:26:170:41 | (void *)... | test.cpp:170:26:170:41 | StoreValue |
+| test.cpp:170:26:170:41 | Store | test.cpp:171:10:171:23 | Load |
+| test.cpp:170:26:170:41 | StoreValue | test.cpp:170:26:170:41 | Store |
+| test.cpp:170:34:170:41 | & ... | test.cpp:170:34:170:41 | Unary |
+| test.cpp:170:34:170:41 | Unary | test.cpp:170:26:170:41 | (void *)... |
+| test.cpp:170:35:170:41 | Unary | test.cpp:170:34:170:41 | & ... |
+| test.cpp:170:35:170:41 | myLocal | test.cpp:170:35:170:41 | Unary |
+| test.cpp:171:10:171:23 | Load | test.cpp:171:10:171:23 | pointerToLocal |
+| test.cpp:171:10:171:23 | pointerToLocal | test.cpp:171:10:171:23 | StoreValue |
+| test.cpp:176:25:176:34 | Store | test.cpp:177:10:177:23 | Load |
+| test.cpp:176:25:176:34 | StoreValue | test.cpp:176:25:176:34 | Store |
+| test.cpp:176:25:176:34 | Unary | test.cpp:176:25:176:34 | array to pointer conversion |
+| test.cpp:176:25:176:34 | array to pointer conversion | test.cpp:176:25:176:34 | StoreValue |
+| test.cpp:176:25:176:34 | localArray | test.cpp:176:25:176:34 | Unary |
+| test.cpp:177:10:177:23 | (void *)... | test.cpp:177:10:177:23 | StoreValue |
+| test.cpp:177:10:177:23 | Load | test.cpp:177:10:177:23 | pointerToLocal |
+| test.cpp:177:10:177:23 | Unary | test.cpp:177:10:177:23 | (void *)... |
+| test.cpp:177:10:177:23 | pointerToLocal | test.cpp:177:10:177:23 | Unary |
+| test.cpp:182:21:182:27 | (reference to) | test.cpp:182:21:182:27 | StoreValue |
+| test.cpp:182:21:182:27 | Store | test.cpp:183:10:183:19 | Load |
+| test.cpp:182:21:182:27 | StoreValue | test.cpp:182:21:182:27 | Store |
+| test.cpp:182:21:182:27 | Unary | test.cpp:182:21:182:27 | (reference to) |
+| test.cpp:182:21:182:27 | myLocal | test.cpp:182:21:182:27 | Unary |
+| test.cpp:183:10:183:19 | (reference dereference) | test.cpp:183:10:183:19 | Unary |
+| test.cpp:183:10:183:19 | (reference to) | test.cpp:183:10:183:19 | StoreValue |
+| test.cpp:183:10:183:19 | Load | test.cpp:183:10:183:19 | refToLocal |
+| test.cpp:183:10:183:19 | Unary | test.cpp:183:10:183:19 | (reference dereference) |
+| test.cpp:183:10:183:19 | Unary | test.cpp:183:10:183:19 | (reference to) |
+| test.cpp:183:10:183:19 | refToLocal | test.cpp:183:10:183:19 | Unary |
+| test.cpp:189:16:189:16 | (reference to) | test.cpp:189:16:189:16 | StoreValue |
+| test.cpp:189:16:189:16 | Store | test.cpp:190:10:190:13 | Load |
+| test.cpp:189:16:189:16 | StoreValue | test.cpp:189:16:189:16 | Store |
+| test.cpp:189:16:189:16 | Unary | test.cpp:189:16:189:16 | (reference to) |
+| test.cpp:189:16:189:16 | p | test.cpp:189:16:189:16 | Unary |
+| test.cpp:190:10:190:13 | (reference dereference) | test.cpp:190:10:190:13 | Unary |
+| test.cpp:190:10:190:13 | (reference to) | test.cpp:190:10:190:13 | StoreValue |
+| test.cpp:190:10:190:13 | Load | test.cpp:190:10:190:13 | pRef |
+| test.cpp:190:10:190:13 | Unary | test.cpp:190:10:190:13 | (reference dereference) |
+| test.cpp:190:10:190:13 | Unary | test.cpp:190:10:190:13 | (reference to) |
+| test.cpp:190:10:190:13 | pRef | test.cpp:190:10:190:13 | Unary |
+| test.cpp:225:14:225:15 | px | test.cpp:226:10:226:11 | Load |
+| test.cpp:226:10:226:11 | Load | test.cpp:226:10:226:11 | px |
+| test.cpp:226:10:226:11 | px | test.cpp:226:10:226:11 | StoreValue |
+| test.cpp:231:16:231:17 | & ... | test.cpp:225:14:225:15 | px |
+| test.cpp:231:17:231:17 | Unary | test.cpp:231:16:231:17 | & ... |
+| test.cpp:231:17:231:17 | x | test.cpp:231:17:231:17 | Unary |
+nodes
+| test.cpp:17:9:17:11 | & ... | semmle.label | & ... |
+| test.cpp:17:9:17:11 | StoreValue | semmle.label | StoreValue |
+| test.cpp:17:10:17:11 | Unary | semmle.label | Unary |
+| test.cpp:17:10:17:11 | mc | semmle.label | mc |
+| test.cpp:23:17:23:19 | & ... | semmle.label | & ... |
+| test.cpp:23:17:23:19 | Store | semmle.label | Store |
+| test.cpp:23:17:23:19 | StoreValue | semmle.label | StoreValue |
+| test.cpp:23:18:23:19 | Unary | semmle.label | Unary |
+| test.cpp:23:18:23:19 | mc | semmle.label | mc |
+| test.cpp:25:9:25:11 | Load | semmle.label | Load |
+| test.cpp:25:9:25:11 | StoreValue | semmle.label | StoreValue |
+| test.cpp:25:9:25:11 | ptr | semmle.label | ptr |
+| test.cpp:39:17:39:18 | (reference to) | semmle.label | (reference to) |
+| test.cpp:39:17:39:18 | Store | semmle.label | Store |
+| test.cpp:39:17:39:18 | StoreValue | semmle.label | StoreValue |
+| test.cpp:39:17:39:18 | Unary | semmle.label | Unary |
+| test.cpp:39:17:39:18 | mc | semmle.label | mc |
+| test.cpp:41:9:41:12 | & ... | semmle.label | & ... |
+| test.cpp:41:9:41:12 | StoreValue | semmle.label | StoreValue |
+| test.cpp:41:10:41:12 | (reference dereference) | semmle.label | (reference dereference) |
+| test.cpp:41:10:41:12 | Load | semmle.label | Load |
+| test.cpp:41:10:41:12 | Unary | semmle.label | Unary |
+| test.cpp:41:10:41:12 | Unary | semmle.label | Unary |
+| test.cpp:41:10:41:12 | ref | semmle.label | ref |
+| test.cpp:47:9:47:10 | (reference to) | semmle.label | (reference to) |
+| test.cpp:47:9:47:10 | StoreValue | semmle.label | StoreValue |
+| test.cpp:47:9:47:10 | Unary | semmle.label | Unary |
+| test.cpp:47:9:47:10 | mc | semmle.label | mc |
+| test.cpp:54:9:54:15 | & ... | semmle.label | & ... |
+| test.cpp:54:9:54:15 | StoreValue | semmle.label | StoreValue |
+| test.cpp:54:11:54:12 | Unary | semmle.label | Unary |
+| test.cpp:54:11:54:12 | mc | semmle.label | mc |
+| test.cpp:54:14:54:14 | Unary | semmle.label | Unary |
+| test.cpp:54:14:54:14 | a | semmle.label | a |
+| test.cpp:89:3:89:11 | Store | semmle.label | Store |
+| test.cpp:89:9:89:11 | & ... | semmle.label | & ... |
+| test.cpp:89:9:89:11 | StoreValue | semmle.label | StoreValue |
+| test.cpp:89:10:89:11 | Unary | semmle.label | Unary |
+| test.cpp:89:10:89:11 | mc | semmle.label | mc |
+| test.cpp:92:9:92:11 | Load | semmle.label | Load |
+| test.cpp:92:9:92:11 | StoreValue | semmle.label | StoreValue |
+| test.cpp:92:9:92:11 | ptr | semmle.label | ptr |
+| test.cpp:112:9:112:11 | StoreValue | semmle.label | StoreValue |
+| test.cpp:112:9:112:11 | Unary | semmle.label | Unary |
+| test.cpp:112:9:112:11 | arr | semmle.label | arr |
+| test.cpp:112:9:112:11 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:119:9:119:18 | & ... | semmle.label | & ... |
+| test.cpp:119:9:119:18 | StoreValue | semmle.label | StoreValue |
+| test.cpp:119:11:119:13 | Left | semmle.label | Left |
+| test.cpp:119:11:119:13 | Unary | semmle.label | Unary |
+| test.cpp:119:11:119:13 | arr | semmle.label | arr |
+| test.cpp:119:11:119:13 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:119:11:119:17 | Unary | semmle.label | Unary |
+| test.cpp:119:11:119:17 | access to array | semmle.label | access to array |
+| test.cpp:134:2:134:14 | Store | semmle.label | Store |
+| test.cpp:134:8:134:10 | Left | semmle.label | Left |
+| test.cpp:134:8:134:10 | Unary | semmle.label | Unary |
+| test.cpp:134:8:134:10 | arr | semmle.label | arr |
+| test.cpp:134:8:134:10 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:134:8:134:14 | ... + ... | semmle.label | ... + ... |
+| test.cpp:134:8:134:14 | StoreValue | semmle.label | StoreValue |
+| test.cpp:135:2:135:4 | Left | semmle.label | Left |
+| test.cpp:135:2:135:4 | Load | semmle.label | Load |
+| test.cpp:135:2:135:4 | ptr | semmle.label | ptr |
+| test.cpp:135:2:135:6 | PointerAdd | semmle.label | PointerAdd |
+| test.cpp:135:2:135:6 | Store | semmle.label | Store |
+| test.cpp:135:2:135:6 | StoreValue | semmle.label | StoreValue |
+| test.cpp:137:9:137:11 | Load | semmle.label | Load |
+| test.cpp:137:9:137:11 | StoreValue | semmle.label | StoreValue |
+| test.cpp:137:9:137:11 | ptr | semmle.label | ptr |
+| test.cpp:170:26:170:41 | (void *)... | semmle.label | (void *)... |
+| test.cpp:170:26:170:41 | Store | semmle.label | Store |
+| test.cpp:170:26:170:41 | StoreValue | semmle.label | StoreValue |
+| test.cpp:170:34:170:41 | & ... | semmle.label | & ... |
+| test.cpp:170:34:170:41 | Unary | semmle.label | Unary |
+| test.cpp:170:35:170:41 | Unary | semmle.label | Unary |
+| test.cpp:170:35:170:41 | myLocal | semmle.label | myLocal |
+| test.cpp:171:10:171:23 | Load | semmle.label | Load |
+| test.cpp:171:10:171:23 | StoreValue | semmle.label | StoreValue |
+| test.cpp:171:10:171:23 | pointerToLocal | semmle.label | pointerToLocal |
+| test.cpp:176:25:176:34 | Store | semmle.label | Store |
+| test.cpp:176:25:176:34 | StoreValue | semmle.label | StoreValue |
+| test.cpp:176:25:176:34 | Unary | semmle.label | Unary |
+| test.cpp:176:25:176:34 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:176:25:176:34 | localArray | semmle.label | localArray |
+| test.cpp:177:10:177:23 | (void *)... | semmle.label | (void *)... |
+| test.cpp:177:10:177:23 | Load | semmle.label | Load |
+| test.cpp:177:10:177:23 | StoreValue | semmle.label | StoreValue |
+| test.cpp:177:10:177:23 | Unary | semmle.label | Unary |
+| test.cpp:177:10:177:23 | pointerToLocal | semmle.label | pointerToLocal |
+| test.cpp:182:21:182:27 | (reference to) | semmle.label | (reference to) |
+| test.cpp:182:21:182:27 | Store | semmle.label | Store |
+| test.cpp:182:21:182:27 | StoreValue | semmle.label | StoreValue |
+| test.cpp:182:21:182:27 | Unary | semmle.label | Unary |
+| test.cpp:182:21:182:27 | myLocal | semmle.label | myLocal |
+| test.cpp:183:10:183:19 | (reference dereference) | semmle.label | (reference dereference) |
+| test.cpp:183:10:183:19 | (reference to) | semmle.label | (reference to) |
+| test.cpp:183:10:183:19 | Load | semmle.label | Load |
+| test.cpp:183:10:183:19 | StoreValue | semmle.label | StoreValue |
+| test.cpp:183:10:183:19 | Unary | semmle.label | Unary |
+| test.cpp:183:10:183:19 | Unary | semmle.label | Unary |
+| test.cpp:183:10:183:19 | refToLocal | semmle.label | refToLocal |
+| test.cpp:189:16:189:16 | (reference to) | semmle.label | (reference to) |
+| test.cpp:189:16:189:16 | Store | semmle.label | Store |
+| test.cpp:189:16:189:16 | StoreValue | semmle.label | StoreValue |
+| test.cpp:189:16:189:16 | Unary | semmle.label | Unary |
+| test.cpp:189:16:189:16 | p | semmle.label | p |
+| test.cpp:190:10:190:13 | (reference dereference) | semmle.label | (reference dereference) |
+| test.cpp:190:10:190:13 | (reference to) | semmle.label | (reference to) |
+| test.cpp:190:10:190:13 | Load | semmle.label | Load |
+| test.cpp:190:10:190:13 | StoreValue | semmle.label | StoreValue |
+| test.cpp:190:10:190:13 | Unary | semmle.label | Unary |
+| test.cpp:190:10:190:13 | Unary | semmle.label | Unary |
+| test.cpp:190:10:190:13 | pRef | semmle.label | pRef |
+| test.cpp:225:14:225:15 | px | semmle.label | px |
+| test.cpp:226:10:226:11 | Load | semmle.label | Load |
+| test.cpp:226:10:226:11 | StoreValue | semmle.label | StoreValue |
+| test.cpp:226:10:226:11 | px | semmle.label | px |
+| test.cpp:231:16:231:17 | & ... | semmle.label | & ... |
+| test.cpp:231:17:231:17 | Unary | semmle.label | Unary |
+| test.cpp:231:17:231:17 | x | semmle.label | x |
+#select
+| test.cpp:17:9:17:11 | StoreValue | test.cpp:17:10:17:11 | mc | test.cpp:17:9:17:11 | StoreValue | May return stack-allocated memory from $@. | test.cpp:17:10:17:11 | mc | mc |
+| test.cpp:25:9:25:11 | StoreValue | test.cpp:23:18:23:19 | mc | test.cpp:25:9:25:11 | StoreValue | May return stack-allocated memory from $@. | test.cpp:23:18:23:19 | mc | mc |
+| test.cpp:41:9:41:12 | StoreValue | test.cpp:39:17:39:18 | mc | test.cpp:41:9:41:12 | StoreValue | May return stack-allocated memory from $@. | test.cpp:39:17:39:18 | mc | mc |
+| test.cpp:47:9:47:10 | StoreValue | test.cpp:47:9:47:10 | mc | test.cpp:47:9:47:10 | StoreValue | May return stack-allocated memory from $@. | test.cpp:47:9:47:10 | mc | mc |
+| test.cpp:54:9:54:15 | StoreValue | test.cpp:54:11:54:12 | mc | test.cpp:54:9:54:15 | StoreValue | May return stack-allocated memory from $@. | test.cpp:54:11:54:12 | mc | mc |
+| test.cpp:92:9:92:11 | StoreValue | test.cpp:89:10:89:11 | mc | test.cpp:92:9:92:11 | StoreValue | May return stack-allocated memory from $@. | test.cpp:89:10:89:11 | mc | mc |
+| test.cpp:112:9:112:11 | StoreValue | test.cpp:112:9:112:11 | arr | test.cpp:112:9:112:11 | StoreValue | May return stack-allocated memory from $@. | test.cpp:112:9:112:11 | arr | arr |
+| test.cpp:119:9:119:18 | StoreValue | test.cpp:119:11:119:13 | arr | test.cpp:119:9:119:18 | StoreValue | May return stack-allocated memory from $@. | test.cpp:119:11:119:13 | arr | arr |
+| test.cpp:137:9:137:11 | StoreValue | test.cpp:134:8:134:10 | arr | test.cpp:137:9:137:11 | StoreValue | May return stack-allocated memory from $@. | test.cpp:134:8:134:10 | arr | arr |
+| test.cpp:171:10:171:23 | StoreValue | test.cpp:170:35:170:41 | myLocal | test.cpp:171:10:171:23 | StoreValue | May return stack-allocated memory from $@. | test.cpp:170:35:170:41 | myLocal | myLocal |
+| test.cpp:177:10:177:23 | StoreValue | test.cpp:176:25:176:34 | localArray | test.cpp:177:10:177:23 | StoreValue | May return stack-allocated memory from $@. | test.cpp:176:25:176:34 | localArray | localArray |
+| test.cpp:183:10:183:19 | StoreValue | test.cpp:182:21:182:27 | myLocal | test.cpp:183:10:183:19 | StoreValue | May return stack-allocated memory from $@. | test.cpp:182:21:182:27 | myLocal | myLocal |
+| test.cpp:190:10:190:13 | StoreValue | test.cpp:189:16:189:16 | p | test.cpp:190:10:190:13 | StoreValue | May return stack-allocated memory from $@. | test.cpp:189:16:189:16 | p | p |

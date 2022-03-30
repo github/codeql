@@ -1,0 +1,1 @@
+require('m'); // OK: no package.json, so assume incomplete code and don't flag

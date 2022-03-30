@@ -1,0 +1,16 @@
+edges
+| Test.cs:15:31:15:59 | object creation of type X509Store : X509Store | Test.cs:18:13:18:17 | access to local variable store |
+| Test.cs:25:31:25:86 | object creation of type X509Store : X509Store | Test.cs:28:13:28:17 | access to local variable store |
+| Test.cs:70:31:70:86 | object creation of type X509Store : X509Store | Test.cs:73:13:73:17 | access to local variable store |
+nodes
+| Test.cs:15:31:15:59 | object creation of type X509Store : X509Store | semmle.label | object creation of type X509Store : X509Store |
+| Test.cs:18:13:18:17 | access to local variable store | semmle.label | access to local variable store |
+| Test.cs:25:31:25:86 | object creation of type X509Store : X509Store | semmle.label | object creation of type X509Store : X509Store |
+| Test.cs:28:13:28:17 | access to local variable store | semmle.label | access to local variable store |
+| Test.cs:70:31:70:86 | object creation of type X509Store : X509Store | semmle.label | object creation of type X509Store : X509Store |
+| Test.cs:73:13:73:17 | access to local variable store | semmle.label | access to local variable store |
+subpaths
+#select
+| Test.cs:18:13:18:17 | access to local variable store | Test.cs:15:31:15:59 | object creation of type X509Store : X509Store | Test.cs:18:13:18:17 | access to local variable store | Certificate added to the root certificate store. |
+| Test.cs:28:13:28:17 | access to local variable store | Test.cs:25:31:25:86 | object creation of type X509Store : X509Store | Test.cs:28:13:28:17 | access to local variable store | Certificate added to the root certificate store. |
+| Test.cs:73:13:73:17 | access to local variable store | Test.cs:70:31:70:86 | object creation of type X509Store : X509Store | Test.cs:73:13:73:17 | access to local variable store | Certificate added to the root certificate store. |

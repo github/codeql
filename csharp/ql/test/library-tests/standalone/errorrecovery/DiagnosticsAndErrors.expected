@@ -1,0 +1,13 @@
+compilationMessages
+extractorMessages
+| errors.cs:6:1:6:22 | Namespace not found |
+| errors.cs:22:31:22:32 | Failed to determine type |
+| errors.cs:22:31:22:40 | Failed to determine type |
+| errors.cs:22:31:22:40 | Unable to resolve target for call. (Compilation error?) |
+| errors.cs:22:38:22:39 | Failed to determine type |
+| errors.cs:55:20:55:20 | Failed to determine type |
+| errors.cs:91:45:91:45 | Failed to determine type |
+| errors.cs:91:45:91:45 | Failed to resolve name |
+| errors.cs:92:45:92:45 | Failed to determine type |
+| errors.cs:92:45:92:45 | Failed to resolve name |
+| file://:0:0:0:0 | Extracting default argument value 'object RecordNumber = default' instead of 'object RecordNumber = -1'. The latter is not supported in C#. |

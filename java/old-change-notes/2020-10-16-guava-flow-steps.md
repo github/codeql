@@ -1,0 +1,2 @@
+lgtm,codescanning
+* Some methods of the [Guava](https://guava.dev/) framework have been added as flow steps (specifically those of the [Splitter](https://guava.dev/releases/30.0-jre/api/docs/com/google/common/base/Splitter.html), [Joiner](https://guava.dev/releases/30.0-jre/api/docs/com/google/common/base/Joiner.html), and [Strings](https://guava.dev/releases/30.0-jre/api/docs/com/google/common/base/Strings.html) classes), which may lead to more results from the security queries.

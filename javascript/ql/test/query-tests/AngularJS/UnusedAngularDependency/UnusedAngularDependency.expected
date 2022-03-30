@@ -1,0 +1,5 @@
+| unused-angular-dependency.js:5:17:5:23 | unused7 | Unused dependency unused7. |
+| unused-angular-dependency.js:14:14:14:39 | ["unuse ... n() {}] | This function has 0 parameters, but 1 dependency is injected into it. |
+| unused-angular-dependency.js:16:14:16:53 | ["used2 ... d2) {}] | This function has 1 parameter, but 2 dependencies are injected into it. |
+| unused-angular-dependency.js:17:14:17:52 | ["unuse ... n() {}] | This function has 0 parameters, but 2 dependencies are injected into it. |
+| unused-angular-dependency.js:18:14:18:105 | ["used2 ...      }] | This function has 1 parameter, but 2 dependencies are injected into it. |

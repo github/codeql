@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Sensitive data that is transmitted using HTTP is vulnerable to being read by a third party. By default,
+cookies are sent via HTTP, not HTTPS.
+</p>
+</overview>
+
+<recommendation>
+<p>
+In ASP.NET case when using cookies ensure that HTTPS is used by setting the property <code>Microsoft.AspNetCore.Http.CookieOptions.Secure</code> to <code>true</code>.
+</p>
+<p>
+In ASP.NET Core case when using cookies, ensure that HTTPS is used, either via the <code>&lt;forms&gt;</code> attribute above, or
+the <code>&lt;httpCookies&gt;</code> element, with the attribute <code>requireSSL="true"</code>. It is also possible to require cookies
+to use HTTPS programmatically, by setting the property <code>System.Web.HttpCookie.Secure</code> to <code>true</code>.
+</p>
+</recommendation>
+
+<example>
+
+<p>
+In the example below <code>Microsoft.AspNetCore.Http.CookieOptions.Secure</code> is set to <code>true</code> programmatically.
+</p>
+
+<sample src="secureflagcore.cs" />
+
+<p>
+In the following example <code>CookiePolicyOptions</code> are set programmatically to configure defaults.
+</p>
+
+<sample src="cookiepolicyoptions.cs" />
+
+<p>
+In the example below <code>System.Web.HttpCookie.Secure</code> is set to <code>true</code> programmatically.
+</p>
+
+<sample src="secureflag.cs" />
+
+</example>
+
+<references>
+
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.cookieoptions.secure">CookieOptions.Secure Property,</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a> Header,</li>
+<li><a href="https://msdn.microsoft.com/en-us/library/system.web.security.formsauthentication.requiressl(v=vs.110).aspx">FormsAuthentication.RequireSSL Property,</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/1d3t3c61(v=vs.100).aspx">forms Element for authentication,</a></li>
+<li><a href="https://msdn.microsoft.com/library/ms228262%28v=vs.100%29.aspx">httpCookies Element,</a></li>
+
+</references>
+</qhelp>

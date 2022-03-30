@@ -1,0 +1,15 @@
+[package]
+name = "ruby-generator"
+version = "0.1.0"
+authors = ["GitHub"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = "3.0"
+node-types = { path = "../node-types" }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
+tree-sitter-embedded-template = "0.19"
+tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "1ebfdb288842dae5a9233e2509a135949023dd82" }

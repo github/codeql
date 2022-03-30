@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A cohesive class is one in which most methods access the same fields. A class that 
+lacks cohesion is usually one that has multiple responsibilities.
+</p>
+
+<p>
+Various measures of lack of cohesion have been proposed. A measure proposed by Hitz and Montazeri
+counts the number of strongly connected components, that is disjoint subgraphs,
+in the graph of method and attribute dependencies.
+This can be thought of as the number of possible classes that a single class could be split into.
+</p>
+
+<p>
+Values of LCOM above 1 indicate a lack of cohesion in that there are several
+disjoint subgraphs in a graph of intra-class dependencies.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Classes generally lack cohesion because they have more responsibilities
+than they should (see [Martin]). In general, the solution is to identify each 
+of the different responsibilities that the class has, and split them 
+into multiple classes, using the 'Extract Class' refactoring from [Fowler], for
+example.
+</p>
+
+
+
+</recommendation>
+<references>
+
+
+<li>
+ <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.409.4862">
+ Measuring coupling and cohesion in object-oriented systems by Martin Hitz, Behzad Montazeri (1995).</a>
+ Proceedings of International Symposium on Applied Corporate Computing</li>
+<li>
+M. Fowler, <em>Refactoring</em>, pp. 65, 122-5. Addison-Wesley, 1999.
+</li>
+<li>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/Single_responsibility_principle">The Single Responsibility Principle</a>.
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/Glossary_of_graph_theory#Strongly_connected_component">Strongly connected component</a>.
+</li>
+
+
+</references>
+</qhelp>

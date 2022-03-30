@@ -1,0 +1,2 @@
+| test.py:26:1:26:25 | class Conflict | Base classes have conflicting values for attribute 'attr': $@ and $@. | file://:Compiled Code:0:0:0:0 | int 1 | int 1 | test.py:20:13:20:16 | Tuple | Tuple |
+| test.py:26:1:26:25 | class Conflict | Base classes have conflicting values for attribute 'meth': $@ and $@. | test.py:14:5:14:19 | Function meth | Function meth | test.py:22:5:22:19 | Function meth | Function meth |

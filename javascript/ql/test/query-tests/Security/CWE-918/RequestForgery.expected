@@ -1,0 +1,197 @@
+nodes
+| serverSide.js:14:9:14:52 | tainted |
+| serverSide.js:14:19:14:42 | url.par ... , true) |
+| serverSide.js:14:19:14:48 | url.par ... ).query |
+| serverSide.js:14:19:14:52 | url.par ... ery.url |
+| serverSide.js:14:29:14:35 | req.url |
+| serverSide.js:14:29:14:35 | req.url |
+| serverSide.js:18:13:18:19 | tainted |
+| serverSide.js:18:13:18:19 | tainted |
+| serverSide.js:20:17:20:23 | tainted |
+| serverSide.js:20:17:20:23 | tainted |
+| serverSide.js:23:19:23:25 | tainted |
+| serverSide.js:23:19:23:25 | tainted |
+| serverSide.js:26:13:26:31 | "http://" + tainted |
+| serverSide.js:26:13:26:31 | "http://" + tainted |
+| serverSide.js:26:25:26:31 | tainted |
+| serverSide.js:28:13:28:42 | "http:/ ... tainted |
+| serverSide.js:28:13:28:42 | "http:/ ... tainted |
+| serverSide.js:28:36:28:42 | tainted |
+| serverSide.js:30:13:30:43 | "http:/ ... tainted |
+| serverSide.js:30:13:30:43 | "http:/ ... tainted |
+| serverSide.js:30:37:30:43 | tainted |
+| serverSide.js:34:34:34:40 | tainted |
+| serverSide.js:34:34:34:40 | tainted |
+| serverSide.js:36:16:36:31 | new Uri(tainted) |
+| serverSide.js:36:16:36:31 | new Uri(tainted) |
+| serverSide.js:36:24:36:30 | tainted |
+| serverSide.js:37:22:37:37 | new Uri(tainted) |
+| serverSide.js:37:22:37:37 | new Uri(tainted) |
+| serverSide.js:37:30:37:36 | tainted |
+| serverSide.js:41:13:41:51 | `http:/ ... inted}` |
+| serverSide.js:41:13:41:51 | `http:/ ... inted}` |
+| serverSide.js:41:43:41:49 | tainted |
+| serverSide.js:43:13:43:54 | `http:/ ... inted}` |
+| serverSide.js:43:13:43:54 | `http:/ ... inted}` |
+| serverSide.js:43:46:43:52 | tainted |
+| serverSide.js:45:13:45:56 | 'http:/ ... tainted |
+| serverSide.js:45:13:45:56 | 'http:/ ... tainted |
+| serverSide.js:45:50:45:56 | tainted |
+| serverSide.js:58:9:58:52 | tainted |
+| serverSide.js:58:19:58:42 | url.par ... , true) |
+| serverSide.js:58:19:58:48 | url.par ... ).query |
+| serverSide.js:58:19:58:52 | url.par ... ery.url |
+| serverSide.js:58:29:58:35 | req.url |
+| serverSide.js:58:29:58:35 | req.url |
+| serverSide.js:61:29:61:35 | tainted |
+| serverSide.js:61:29:61:35 | tainted |
+| serverSide.js:64:30:64:36 | tainted |
+| serverSide.js:64:30:64:36 | tainted |
+| serverSide.js:68:30:68:36 | tainted |
+| serverSide.js:68:30:68:36 | tainted |
+| serverSide.js:74:9:74:52 | tainted |
+| serverSide.js:74:19:74:42 | url.par ... , true) |
+| serverSide.js:74:19:74:48 | url.par ... ).query |
+| serverSide.js:74:19:74:52 | url.par ... ery.url |
+| serverSide.js:74:29:74:35 | req.url |
+| serverSide.js:74:29:74:35 | req.url |
+| serverSide.js:76:19:76:25 | tainted |
+| serverSide.js:76:19:76:25 | tainted |
+| serverSide.js:83:38:83:43 | param1 |
+| serverSide.js:83:38:83:43 | param1 |
+| serverSide.js:84:19:84:24 | param1 |
+| serverSide.js:84:19:84:24 | param1 |
+| serverSide.js:90:19:90:28 | ctx.params |
+| serverSide.js:90:19:90:28 | ctx.params |
+| serverSide.js:90:19:90:32 | ctx.params.foo |
+| serverSide.js:90:19:90:32 | ctx.params.foo |
+| serverSide.js:92:19:92:28 | ctx.params |
+| serverSide.js:92:19:92:28 | ctx.params |
+| serverSide.js:92:19:92:32 | ctx.params.foo |
+| serverSide.js:92:19:92:32 | ctx.params.foo |
+| serverSide.js:98:9:98:52 | tainted |
+| serverSide.js:98:19:98:42 | url.par ... , true) |
+| serverSide.js:98:19:98:48 | url.par ... ).query |
+| serverSide.js:98:19:98:52 | url.par ... ery.url |
+| serverSide.js:98:29:98:35 | req.url |
+| serverSide.js:98:29:98:35 | req.url |
+| serverSide.js:100:19:100:25 | tainted |
+| serverSide.js:100:19:100:25 | tainted |
+| serverSide.js:108:11:108:27 | url |
+| serverSide.js:108:17:108:27 | request.url |
+| serverSide.js:108:17:108:27 | request.url |
+| serverSide.js:109:27:109:29 | url |
+| serverSide.js:109:27:109:29 | url |
+| serverSide.js:115:11:115:42 | url |
+| serverSide.js:115:17:115:42 | new URL ... , base) |
+| serverSide.js:115:25:115:35 | request.url |
+| serverSide.js:115:25:115:35 | request.url |
+| serverSide.js:117:27:117:29 | url |
+| serverSide.js:117:27:117:29 | url |
+edges
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:18:13:18:19 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:18:13:18:19 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:20:17:20:23 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:20:17:20:23 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:23:19:23:25 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:23:19:23:25 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:26:25:26:31 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:28:36:28:42 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:30:37:30:43 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:34:34:34:40 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:34:34:34:40 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:36:24:36:30 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:37:30:37:36 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:41:43:41:49 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:43:46:43:52 | tainted |
+| serverSide.js:14:9:14:52 | tainted | serverSide.js:45:50:45:56 | tainted |
+| serverSide.js:14:19:14:42 | url.par ... , true) | serverSide.js:14:19:14:48 | url.par ... ).query |
+| serverSide.js:14:19:14:48 | url.par ... ).query | serverSide.js:14:19:14:52 | url.par ... ery.url |
+| serverSide.js:14:19:14:52 | url.par ... ery.url | serverSide.js:14:9:14:52 | tainted |
+| serverSide.js:14:29:14:35 | req.url | serverSide.js:14:19:14:42 | url.par ... , true) |
+| serverSide.js:14:29:14:35 | req.url | serverSide.js:14:19:14:42 | url.par ... , true) |
+| serverSide.js:26:25:26:31 | tainted | serverSide.js:26:13:26:31 | "http://" + tainted |
+| serverSide.js:26:25:26:31 | tainted | serverSide.js:26:13:26:31 | "http://" + tainted |
+| serverSide.js:28:36:28:42 | tainted | serverSide.js:28:13:28:42 | "http:/ ... tainted |
+| serverSide.js:28:36:28:42 | tainted | serverSide.js:28:13:28:42 | "http:/ ... tainted |
+| serverSide.js:30:37:30:43 | tainted | serverSide.js:30:13:30:43 | "http:/ ... tainted |
+| serverSide.js:30:37:30:43 | tainted | serverSide.js:30:13:30:43 | "http:/ ... tainted |
+| serverSide.js:36:24:36:30 | tainted | serverSide.js:36:16:36:31 | new Uri(tainted) |
+| serverSide.js:36:24:36:30 | tainted | serverSide.js:36:16:36:31 | new Uri(tainted) |
+| serverSide.js:37:30:37:36 | tainted | serverSide.js:37:22:37:37 | new Uri(tainted) |
+| serverSide.js:37:30:37:36 | tainted | serverSide.js:37:22:37:37 | new Uri(tainted) |
+| serverSide.js:41:43:41:49 | tainted | serverSide.js:41:13:41:51 | `http:/ ... inted}` |
+| serverSide.js:41:43:41:49 | tainted | serverSide.js:41:13:41:51 | `http:/ ... inted}` |
+| serverSide.js:43:46:43:52 | tainted | serverSide.js:43:13:43:54 | `http:/ ... inted}` |
+| serverSide.js:43:46:43:52 | tainted | serverSide.js:43:13:43:54 | `http:/ ... inted}` |
+| serverSide.js:45:50:45:56 | tainted | serverSide.js:45:13:45:56 | 'http:/ ... tainted |
+| serverSide.js:45:50:45:56 | tainted | serverSide.js:45:13:45:56 | 'http:/ ... tainted |
+| serverSide.js:58:9:58:52 | tainted | serverSide.js:61:29:61:35 | tainted |
+| serverSide.js:58:9:58:52 | tainted | serverSide.js:61:29:61:35 | tainted |
+| serverSide.js:58:9:58:52 | tainted | serverSide.js:64:30:64:36 | tainted |
+| serverSide.js:58:9:58:52 | tainted | serverSide.js:64:30:64:36 | tainted |
+| serverSide.js:58:9:58:52 | tainted | serverSide.js:68:30:68:36 | tainted |
+| serverSide.js:58:9:58:52 | tainted | serverSide.js:68:30:68:36 | tainted |
+| serverSide.js:58:19:58:42 | url.par ... , true) | serverSide.js:58:19:58:48 | url.par ... ).query |
+| serverSide.js:58:19:58:48 | url.par ... ).query | serverSide.js:58:19:58:52 | url.par ... ery.url |
+| serverSide.js:58:19:58:52 | url.par ... ery.url | serverSide.js:58:9:58:52 | tainted |
+| serverSide.js:58:29:58:35 | req.url | serverSide.js:58:19:58:42 | url.par ... , true) |
+| serverSide.js:58:29:58:35 | req.url | serverSide.js:58:19:58:42 | url.par ... , true) |
+| serverSide.js:74:9:74:52 | tainted | serverSide.js:76:19:76:25 | tainted |
+| serverSide.js:74:9:74:52 | tainted | serverSide.js:76:19:76:25 | tainted |
+| serverSide.js:74:19:74:42 | url.par ... , true) | serverSide.js:74:19:74:48 | url.par ... ).query |
+| serverSide.js:74:19:74:48 | url.par ... ).query | serverSide.js:74:19:74:52 | url.par ... ery.url |
+| serverSide.js:74:19:74:52 | url.par ... ery.url | serverSide.js:74:9:74:52 | tainted |
+| serverSide.js:74:29:74:35 | req.url | serverSide.js:74:19:74:42 | url.par ... , true) |
+| serverSide.js:74:29:74:35 | req.url | serverSide.js:74:19:74:42 | url.par ... , true) |
+| serverSide.js:83:38:83:43 | param1 | serverSide.js:84:19:84:24 | param1 |
+| serverSide.js:83:38:83:43 | param1 | serverSide.js:84:19:84:24 | param1 |
+| serverSide.js:83:38:83:43 | param1 | serverSide.js:84:19:84:24 | param1 |
+| serverSide.js:83:38:83:43 | param1 | serverSide.js:84:19:84:24 | param1 |
+| serverSide.js:90:19:90:28 | ctx.params | serverSide.js:90:19:90:32 | ctx.params.foo |
+| serverSide.js:90:19:90:28 | ctx.params | serverSide.js:90:19:90:32 | ctx.params.foo |
+| serverSide.js:90:19:90:28 | ctx.params | serverSide.js:90:19:90:32 | ctx.params.foo |
+| serverSide.js:90:19:90:28 | ctx.params | serverSide.js:90:19:90:32 | ctx.params.foo |
+| serverSide.js:92:19:92:28 | ctx.params | serverSide.js:92:19:92:32 | ctx.params.foo |
+| serverSide.js:92:19:92:28 | ctx.params | serverSide.js:92:19:92:32 | ctx.params.foo |
+| serverSide.js:92:19:92:28 | ctx.params | serverSide.js:92:19:92:32 | ctx.params.foo |
+| serverSide.js:92:19:92:28 | ctx.params | serverSide.js:92:19:92:32 | ctx.params.foo |
+| serverSide.js:98:9:98:52 | tainted | serverSide.js:100:19:100:25 | tainted |
+| serverSide.js:98:9:98:52 | tainted | serverSide.js:100:19:100:25 | tainted |
+| serverSide.js:98:19:98:42 | url.par ... , true) | serverSide.js:98:19:98:48 | url.par ... ).query |
+| serverSide.js:98:19:98:48 | url.par ... ).query | serverSide.js:98:19:98:52 | url.par ... ery.url |
+| serverSide.js:98:19:98:52 | url.par ... ery.url | serverSide.js:98:9:98:52 | tainted |
+| serverSide.js:98:29:98:35 | req.url | serverSide.js:98:19:98:42 | url.par ... , true) |
+| serverSide.js:98:29:98:35 | req.url | serverSide.js:98:19:98:42 | url.par ... , true) |
+| serverSide.js:108:11:108:27 | url | serverSide.js:109:27:109:29 | url |
+| serverSide.js:108:11:108:27 | url | serverSide.js:109:27:109:29 | url |
+| serverSide.js:108:17:108:27 | request.url | serverSide.js:108:11:108:27 | url |
+| serverSide.js:108:17:108:27 | request.url | serverSide.js:108:11:108:27 | url |
+| serverSide.js:115:11:115:42 | url | serverSide.js:117:27:117:29 | url |
+| serverSide.js:115:11:115:42 | url | serverSide.js:117:27:117:29 | url |
+| serverSide.js:115:17:115:42 | new URL ... , base) | serverSide.js:115:11:115:42 | url |
+| serverSide.js:115:25:115:35 | request.url | serverSide.js:115:17:115:42 | new URL ... , base) |
+| serverSide.js:115:25:115:35 | request.url | serverSide.js:115:17:115:42 | new URL ... , base) |
+#select
+| serverSide.js:18:5:18:20 | request(tainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:18:13:18:19 | tainted | The $@ of this request depends on $@. | serverSide.js:18:13:18:19 | tainted | URL | serverSide.js:14:29:14:35 | req.url | a user-provided value |
+| serverSide.js:20:5:20:24 | request.get(tainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:20:17:20:23 | tainted | The $@ of this request depends on $@. | serverSide.js:20:17:20:23 | tainted | URL | serverSide.js:14:29:14:35 | req.url | a user-provided value |
+| serverSide.js:24:5:24:20 | request(options) | serverSide.js:14:29:14:35 | req.url | serverSide.js:23:19:23:25 | tainted | The $@ of this request depends on $@. | serverSide.js:23:19:23:25 | tainted | URL | serverSide.js:14:29:14:35 | req.url | a user-provided value |
+| serverSide.js:26:5:26:32 | request ... ainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:26:13:26:31 | "http://" + tainted | The $@ of this request depends on $@. | serverSide.js:26:13:26:31 | "http://" + tainted | URL | serverSide.js:14:29:14:35 | req.url | a user-provided value |
+| serverSide.js:28:5:28:43 | request ... ainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:28:13:28:42 | "http:/ ... tainted | The $@ of this request depends on $@. | serverSide.js:28:13:28:42 | "http:/ ... tainted | URL | serverSide.js:14:29:14:35 | req.url | a user-provided value |
+| serverSide.js:30:5:30:44 | request ... ainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:30:13:30:43 | "http:/ ... tainted | The $@ of this request depends on $@. | serverSide.js:30:13:30:43 | "http:/ ... tainted | URL | serverSide.js:14:29:14:35 | req.url | a user-provided value |
+| serverSide.js:34:5:34:42 | http.ge ... inted}) | serverSide.js:14:29:14:35 | req.url | serverSide.js:34:34:34:40 | tainted | The $@ of this request depends on $@. | serverSide.js:34:34:34:40 | tainted | host | serverSide.js:14:29:14:35 | req.url | a user-provided value |
+| serverSide.js:36:5:36:32 | XhrIo.s ... inted)) | serverSide.js:14:29:14:35 | req.url | serverSide.js:36:16:36:31 | new Uri(tainted) | The $@ of this request depends on $@. | serverSide.js:36:16:36:31 | new Uri(tainted) | URL | serverSide.js:14:29:14:35 | req.url | a user-provided value |
+| serverSide.js:37:5:37:38 | new Xhr ... inted)) | serverSide.js:14:29:14:35 | req.url | serverSide.js:37:22:37:37 | new Uri(tainted) | The $@ of this request depends on $@. | serverSide.js:37:22:37:37 | new Uri(tainted) | URL | serverSide.js:14:29:14:35 | req.url | a user-provided value |
+| serverSide.js:41:5:41:52 | request ... nted}`) | serverSide.js:14:29:14:35 | req.url | serverSide.js:41:13:41:51 | `http:/ ... inted}` | The $@ of this request depends on $@. | serverSide.js:41:13:41:51 | `http:/ ... inted}` | URL | serverSide.js:14:29:14:35 | req.url | a user-provided value |
+| serverSide.js:43:5:43:55 | request ... nted}`) | serverSide.js:14:29:14:35 | req.url | serverSide.js:43:13:43:54 | `http:/ ... inted}` | The $@ of this request depends on $@. | serverSide.js:43:13:43:54 | `http:/ ... inted}` | URL | serverSide.js:14:29:14:35 | req.url | a user-provided value |
+| serverSide.js:45:5:45:57 | request ... ainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:45:13:45:56 | 'http:/ ... tainted | The $@ of this request depends on $@. | serverSide.js:45:13:45:56 | 'http:/ ... tainted | URL | serverSide.js:14:29:14:35 | req.url | a user-provided value |
+| serverSide.js:61:2:61:37 | client. ... inted}) | serverSide.js:58:29:58:35 | req.url | serverSide.js:61:29:61:35 | tainted | The $@ of this request depends on $@. | serverSide.js:61:29:61:35 | tainted | URL | serverSide.js:58:29:58:35 | req.url | a user-provided value |
+| serverSide.js:64:3:64:38 | client. ... inted}) | serverSide.js:58:29:58:35 | req.url | serverSide.js:64:30:64:36 | tainted | The $@ of this request depends on $@. | serverSide.js:64:30:64:36 | tainted | URL | serverSide.js:58:29:58:35 | req.url | a user-provided value |
+| serverSide.js:68:3:68:38 | client. ... inted}) | serverSide.js:58:29:58:35 | req.url | serverSide.js:68:30:68:36 | tainted | The $@ of this request depends on $@. | serverSide.js:68:30:68:36 | tainted | URL | serverSide.js:58:29:58:35 | req.url | a user-provided value |
+| serverSide.js:76:5:76:26 | JSDOM.f ... ainted) | serverSide.js:74:29:74:35 | req.url | serverSide.js:76:19:76:25 | tainted | The $@ of this request depends on $@. | serverSide.js:76:19:76:25 | tainted | URL | serverSide.js:74:29:74:35 | req.url | a user-provided value |
+| serverSide.js:84:5:84:25 | JSDOM.f ... param1) | serverSide.js:83:38:83:43 | param1 | serverSide.js:84:19:84:24 | param1 | The $@ of this request depends on $@. | serverSide.js:84:19:84:24 | param1 | URL | serverSide.js:83:38:83:43 | param1 | a user-provided value |
+| serverSide.js:90:5:90:33 | JSDOM.f ... ms.foo) | serverSide.js:90:19:90:28 | ctx.params | serverSide.js:90:19:90:32 | ctx.params.foo | The $@ of this request depends on $@. | serverSide.js:90:19:90:32 | ctx.params.foo | URL | serverSide.js:90:19:90:28 | ctx.params | a user-provided value |
+| serverSide.js:92:5:92:33 | JSDOM.f ... ms.foo) | serverSide.js:92:19:92:28 | ctx.params | serverSide.js:92:19:92:32 | ctx.params.foo | The $@ of this request depends on $@. | serverSide.js:92:19:92:32 | ctx.params.foo | URL | serverSide.js:92:19:92:28 | ctx.params | a user-provided value |
+| serverSide.js:100:5:100:26 | new Web ... ainted) | serverSide.js:98:29:98:35 | req.url | serverSide.js:100:19:100:25 | tainted | The $@ of this request depends on $@. | serverSide.js:100:19:100:25 | tainted | URL | serverSide.js:98:29:98:35 | req.url | a user-provided value |
+| serverSide.js:109:20:109:30 | new ws(url) | serverSide.js:108:17:108:27 | request.url | serverSide.js:109:27:109:29 | url | The $@ of this request depends on $@. | serverSide.js:109:27:109:29 | url | URL | serverSide.js:108:17:108:27 | request.url | a user-provided value |
+| serverSide.js:117:20:117:30 | new ws(url) | serverSide.js:115:25:115:35 | request.url | serverSide.js:117:27:117:29 | url | The $@ of this request depends on $@. | serverSide.js:117:27:117:29 | url | URL | serverSide.js:115:25:115:35 | request.url | a user-provided value |

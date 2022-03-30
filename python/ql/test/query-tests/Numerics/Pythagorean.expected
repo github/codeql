@@ -1,0 +1,3 @@
+| pythagorean_test.py:6:12:6:28 | sqrt() | Pythagorean calculation with sub-optimal numerics |
+| pythagorean_test.py:9:12:9:26 | sqrt() | Pythagorean calculation with sub-optimal numerics |
+| pythagorean_test.py:14:12:14:24 | sqrt() | Pythagorean calculation with sub-optimal numerics |

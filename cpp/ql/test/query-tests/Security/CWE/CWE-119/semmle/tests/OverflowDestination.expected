@@ -1,0 +1,43 @@
+edges
+| overflowdestination.cpp:27:9:27:12 | argv | overflowdestination.cpp:30:17:30:20 | (const char *)... |
+| overflowdestination.cpp:43:8:43:10 | fgets output argument | overflowdestination.cpp:46:15:46:17 | (const void *)... |
+| overflowdestination.cpp:50:52:50:54 | *src | overflowdestination.cpp:50:52:50:54 | ReturnIndirection |
+| overflowdestination.cpp:50:52:50:54 | src | overflowdestination.cpp:53:15:53:17 | (const void *)... |
+| overflowdestination.cpp:57:52:57:54 | *src | overflowdestination.cpp:64:16:64:19 | (const void *)... |
+| overflowdestination.cpp:57:52:57:54 | src | overflowdestination.cpp:64:16:64:19 | (const void *)... |
+| overflowdestination.cpp:73:8:73:10 | fgets output argument | overflowdestination.cpp:75:30:75:32 | src |
+| overflowdestination.cpp:73:8:73:10 | fgets output argument | overflowdestination.cpp:75:30:75:32 | src indirection |
+| overflowdestination.cpp:73:8:73:10 | fgets output argument | overflowdestination.cpp:76:30:76:32 | src |
+| overflowdestination.cpp:73:8:73:10 | fgets output argument | overflowdestination.cpp:76:30:76:32 | src indirection |
+| overflowdestination.cpp:75:30:75:32 | overflowdest_test2 output argument | overflowdestination.cpp:76:30:76:32 | src |
+| overflowdestination.cpp:75:30:75:32 | overflowdest_test2 output argument | overflowdestination.cpp:76:30:76:32 | src indirection |
+| overflowdestination.cpp:75:30:75:32 | src | overflowdestination.cpp:50:52:50:54 | src |
+| overflowdestination.cpp:75:30:75:32 | src indirection | overflowdestination.cpp:50:52:50:54 | *src |
+| overflowdestination.cpp:75:30:75:32 | src indirection | overflowdestination.cpp:75:30:75:32 | overflowdest_test2 output argument |
+| overflowdestination.cpp:76:30:76:32 | src | overflowdestination.cpp:57:52:57:54 | src |
+| overflowdestination.cpp:76:30:76:32 | src indirection | overflowdestination.cpp:57:52:57:54 | *src |
+nodes
+| overflowdestination.cpp:27:9:27:12 | argv | semmle.label | argv |
+| overflowdestination.cpp:30:17:30:20 | (const char *)... | semmle.label | (const char *)... |
+| overflowdestination.cpp:43:8:43:10 | fgets output argument | semmle.label | fgets output argument |
+| overflowdestination.cpp:46:15:46:17 | (const void *)... | semmle.label | (const void *)... |
+| overflowdestination.cpp:50:52:50:54 | *src | semmle.label | *src |
+| overflowdestination.cpp:50:52:50:54 | ReturnIndirection | semmle.label | ReturnIndirection |
+| overflowdestination.cpp:50:52:50:54 | src | semmle.label | src |
+| overflowdestination.cpp:53:15:53:17 | (const void *)... | semmle.label | (const void *)... |
+| overflowdestination.cpp:57:52:57:54 | *src | semmle.label | *src |
+| overflowdestination.cpp:57:52:57:54 | src | semmle.label | src |
+| overflowdestination.cpp:64:16:64:19 | (const void *)... | semmle.label | (const void *)... |
+| overflowdestination.cpp:73:8:73:10 | fgets output argument | semmle.label | fgets output argument |
+| overflowdestination.cpp:75:30:75:32 | overflowdest_test2 output argument | semmle.label | overflowdest_test2 output argument |
+| overflowdestination.cpp:75:30:75:32 | src | semmle.label | src |
+| overflowdestination.cpp:75:30:75:32 | src indirection | semmle.label | src indirection |
+| overflowdestination.cpp:76:30:76:32 | src | semmle.label | src |
+| overflowdestination.cpp:76:30:76:32 | src indirection | semmle.label | src indirection |
+subpaths
+| overflowdestination.cpp:75:30:75:32 | src indirection | overflowdestination.cpp:50:52:50:54 | *src | overflowdestination.cpp:50:52:50:54 | ReturnIndirection | overflowdestination.cpp:75:30:75:32 | overflowdest_test2 output argument |
+#select
+| overflowdestination.cpp:30:2:30:8 | call to strncpy | overflowdestination.cpp:27:9:27:12 | argv | overflowdestination.cpp:30:17:30:20 | (const char *)... | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |
+| overflowdestination.cpp:46:2:46:7 | call to memcpy | overflowdestination.cpp:43:8:43:10 | fgets output argument | overflowdestination.cpp:46:15:46:17 | (const void *)... | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |
+| overflowdestination.cpp:53:2:53:7 | call to memcpy | overflowdestination.cpp:73:8:73:10 | fgets output argument | overflowdestination.cpp:53:15:53:17 | (const void *)... | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |
+| overflowdestination.cpp:64:2:64:7 | call to memcpy | overflowdestination.cpp:73:8:73:10 | fgets output argument | overflowdestination.cpp:64:16:64:19 | (const void *)... | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |

@@ -1,0 +1,11 @@
+edges
+| LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | LogForging.cs:20:21:20:43 | ... + ... |
+| LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | LogForging.cs:26:50:26:72 | ... + ... |
+nodes
+| LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| LogForging.cs:20:21:20:43 | ... + ... | semmle.label | ... + ... |
+| LogForging.cs:26:50:26:72 | ... + ... | semmle.label | ... + ... |
+subpaths
+#select
+| LogForging.cs:20:21:20:43 | ... + ... | LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | LogForging.cs:20:21:20:43 | ... + ... | $@ flows to log entry. | LogForging.cs:17:27:17:49 | access to property QueryString | User-provided value |
+| LogForging.cs:26:50:26:72 | ... + ... | LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | LogForging.cs:26:50:26:72 | ... + ... | $@ flows to log entry. | LogForging.cs:17:27:17:49 | access to property QueryString | User-provided value |

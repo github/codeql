@@ -1,0 +1,4 @@
+<!--GOOD: Using setter injection requires only one setter for each property.-->
+<bean id="chart2" class="documentation.examples.spring.ChartMaker">
+	<property name="axisRenderer" ref="customAxis"/>
+</bean>

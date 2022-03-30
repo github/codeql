@@ -1,0 +1,78 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+
+		<p>
+
+			Calling the builtin methods
+			<code>String.prototype.split</code> and
+			<code>String.prototype.replace</code> with a string as the first
+			argument makes the methods search for that exact string. Providing a
+			regular expression instead of the string makes the methods perform a
+			regular expression search.
+
+		</p>
+
+		<p>
+
+			Calling the methods with a string that has the format of a
+			regular expression is likely a mistake because the methods will not
+			convert the string to a regular expression.
+
+		</p>
+
+	</overview>
+	<recommendation>
+
+		<p>
+
+			Call <code>String.prototype.split</code> and
+			<code>String.prototype.replace</code> with a regular expression as the
+			first argument unless you want an exact search.
+
+		</p>
+
+	</recommendation>
+	<example>
+
+		<p>
+
+			The following code snippet shows a call to
+			<code>String.prototype.replace</code>. The purpose of the call is to
+			remove all characters that are not alphanumeric.
+
+		</p>
+
+		<sample language="javascript">
+			var cleaned = input.replace("[^a-zA-Z0-9]+", "");
+		</sample>
+
+		<p>
+
+			Unfortunately, the first argument is a string and not a
+			regular expression, so the call will only remove the
+			first substring that is exactly "<code>[^a-zA-Z0-9]+</code>".
+
+		</p>
+
+		<p>
+
+			Instead, the first argument should be a regular expression
+			with the <code>global</code> flag set:
+
+		</p>
+
+		<sample language="javascript">
+			var cleaned = input.replace(/[^a-zA-Z0-9]+/g, "");
+		</sample>
+
+	</example>
+
+	<references>
+		<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split">String.prototype.split</a></li>
+		<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace">String.prototype.replace</a></li>
+	</references>
+
+</qhelp>

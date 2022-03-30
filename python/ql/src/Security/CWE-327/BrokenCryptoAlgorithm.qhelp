@@ -1,0 +1,67 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+     <overview>
+          <p>
+               Using broken or weak cryptographic algorithms can leave data
+               vulnerable to being decrypted or forged by an attacker.
+          </p>
+
+          <p>
+               Many cryptographic algorithms provided by cryptography
+               libraries are known to be weak, or flawed. Using such an
+               algorithm means that encrypted or hashed data is less
+               secure than it appears to be.
+          </p>
+
+          <p>
+               This query alerts on any use of a weak cryptographic algorithm, that is
+               not a hashing algorithm. Use of broken or weak cryptographic hash
+               functions are handled by the
+               <code>py/weak-sensitive-data-hashing</code> query.
+          </p>
+
+     </overview>
+     <recommendation>
+
+          <p>
+               Ensure that you use a strong, modern cryptographic
+               algorithm, such as AES-128 or RSA-2048.
+          </p>
+
+     </recommendation>
+     <example>
+
+          <p>
+               The following code uses the <code>pycryptodome</code>
+               library to encrypt some secret data. When you create a cipher using
+               <code>pycryptodome</code> you must specify the encryption
+               algorithm to use. The first example uses DES, which is an
+               older algorithm that is now considered weak. The second
+               example uses AES, which is a stronger modern algorithm.
+          </p>
+
+          <sample src="examples/broken_crypto.py" />
+
+          <p>
+               NOTICE: the original
+               <code><a href="https://pypi.org/project/pycrypto/">pycrypto</a></code>
+               PyPI package that provided the <code>Crypto</code> module is not longer
+               actively maintained, so you should use the
+               <code><a href="https://pypi.org/project/pycryptodome/">pycryptodome</a></code>
+               PyPI package instead (which has a compatible API).
+          </p>
+
+     </example>
+
+     <references>
+          <li>NIST, FIPS 140 Annex a: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf"> Approved Security Functions</a>.</li>
+          <li>NIST, SP 800-131A: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf"> Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
+          <li>OWASP: <a
+          href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#rule---use-strong-approved-authenticated-encryption">Rule
+          - Use strong approved cryptographic algorithms</a>.
+          </li>
+     </references>
+
+</qhelp>

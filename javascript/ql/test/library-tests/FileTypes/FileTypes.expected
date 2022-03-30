@@ -1,0 +1,14 @@
+| jsTest.js:0:0:0:0 | jsTest.js | javascript |
+| jsxTest.jsx:0:0:0:0 | jsxTest.jsx | javascript |
+| mjsTest.mjs:0:0:0:0 | mjsTest.mjs | javascript |
+| test.htm:0:0:0:0 | test.htm | html |
+| test.html:0:0:0:0 | test.html | html |
+| test.json:0:0:0:0 | test.json | json |
+| test.raml:0:0:0:0 | test.raml | yaml |
+| test.vue:0:0:0:0 | test.vue | html |
+| test.xhtm:0:0:0:0 | test.xhtm | html |
+| test.xhtml:0:0:0:0 | test.xhtml | html |
+| test.yaml:0:0:0:0 | test.yaml | yaml |
+| test.yml:0:0:0:0 | test.yml | yaml |
+| tsTest.ts:0:0:0:0 | tsTest.ts | typescript |
+| tsxTest.tsx:0:0:0:0 | tsxTest.tsx | typescript |

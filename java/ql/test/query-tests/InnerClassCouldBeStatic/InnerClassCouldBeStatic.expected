@@ -1,0 +1,22 @@
+| Classes.java:15:16:15:26 | MaybeStatic | MaybeStatic should be made static, since the enclosing instance is not used. |
+| Classes.java:20:16:20:27 | MaybeStatic1 | MaybeStatic1 could be made static, since the enclosing instance is used only in its constructor. |
+| Classes.java:27:16:27:27 | MaybeStatic2 | MaybeStatic2 could be made static, since the enclosing instance is used only in its constructor. |
+| Classes.java:40:16:40:27 | MaybeStatic3 | MaybeStatic3 should be made static, since the enclosing instance is not used. |
+| Classes.java:50:16:50:27 | MaybeStatic4 | MaybeStatic4 should be made static, since the enclosing instance is not used. |
+| Classes.java:60:16:60:27 | MaybeStatic5 | MaybeStatic5 should be made static, since the enclosing instance is not used. |
+| Classes.java:66:16:66:27 | MaybeStatic6 | MaybeStatic6 should be made static, since the enclosing instance is not used. |
+| Classes.java:72:16:72:27 | MaybeStatic7 | MaybeStatic7 should be made static, since the enclosing instance is not used. |
+| Classes.java:85:10:85:21 | MaybeStatic8 | MaybeStatic8 should be made static, since the enclosing instance is not used. |
+| Classes.java:94:15:94:26 | MaybeStatic9 | MaybeStatic9 should be made static, since the enclosing instance is not used. |
+| Classes.java:101:8:101:20 | MaybeStatic10 | MaybeStatic10 should be made static, since the enclosing instance is not used. |
+| Classes.java:111:20:111:33 | MaybeStaticToo | MaybeStaticToo should be made static, since the enclosing instance is not used. |
+| Classes.java:133:9:133:27 | NotStaticButCouldBe | NotStaticButCouldBe should be made static, since the enclosing instance is not used. |
+| Classes.java:190:16:190:29 | SadlyNotStatic | SadlyNotStatic should be made static, since the enclosing instance is not used. |
+| Classes.java:192:17:192:33 | SadlyNotStaticToo | SadlyNotStaticToo should be made static, since the enclosing instance is not used. |
+| Classes.java:206:16:206:28 | MaybeStatic11 | MaybeStatic11 should be made static, since the enclosing instance is not used. |
+| Classes.java:210:16:210:28 | MaybeStatic12 | MaybeStatic12 should be made static, since the enclosing instance is not used. |
+| Classes.java:214:16:214:28 | MaybeStatic13 | MaybeStatic13 should be made static, since the enclosing instance is not used. |
+| Classes.java:218:8:218:20 | CouldBeStatic | CouldBeStatic should be made static, since the enclosing instance is not used. |
+| Classes.java:225:9:225:22 | CouldBeStatic2 | CouldBeStatic2 should be made static, since the enclosing instance is not used. |
+| Classes.java:255:8:255:21 | CouldBeStatic3 | CouldBeStatic3 should be made static, since the enclosing instance is not used. |
+| Test.java:5:8:5:10 | Sub | Sub should be made static, since the enclosing instance is not used. |

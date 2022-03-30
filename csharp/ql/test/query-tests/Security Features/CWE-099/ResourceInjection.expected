@@ -1,0 +1,11 @@
+edges
+| ResourceInjection.cs:8:27:8:49 | access to property QueryString : NameValueCollection | ResourceInjection.cs:11:57:11:72 | access to local variable connectionString |
+| ResourceInjection.cs:8:27:8:49 | access to property QueryString : NameValueCollection | ResourceInjection.cs:13:42:13:57 | access to local variable connectionString |
+nodes
+| ResourceInjection.cs:8:27:8:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| ResourceInjection.cs:11:57:11:72 | access to local variable connectionString | semmle.label | access to local variable connectionString |
+| ResourceInjection.cs:13:42:13:57 | access to local variable connectionString | semmle.label | access to local variable connectionString |
+subpaths
+#select
+| ResourceInjection.cs:11:57:11:72 | access to local variable connectionString | ResourceInjection.cs:8:27:8:49 | access to property QueryString : NameValueCollection | ResourceInjection.cs:11:57:11:72 | access to local variable connectionString | $@ flows to here and is used in a resource descriptor. | ResourceInjection.cs:8:27:8:49 | access to property QueryString | User-provided value |
+| ResourceInjection.cs:13:42:13:57 | access to local variable connectionString | ResourceInjection.cs:8:27:8:49 | access to property QueryString : NameValueCollection | ResourceInjection.cs:13:42:13:57 | access to local variable connectionString | $@ flows to here and is used in a resource descriptor. | ResourceInjection.cs:8:27:8:49 | access to property QueryString | User-provided value |

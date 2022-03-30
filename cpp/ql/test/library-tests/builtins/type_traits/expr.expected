@@ -1,0 +1,298 @@
+| file://:0:0:0:0 | 0 |  | 0 |
+| file://:0:0:0:0 | 1 |  | 1 |
+| file://:0:0:0:0 | 2 |  | 2 |
+| ms.cpp:38:41:38:45 | 0 |  | 0 |
+| ms.cpp:88:27:88:45 | __has_assign | empty | 0 |
+| ms.cpp:88:27:88:45 | empty |  | <none> |
+| ms.cpp:89:27:89:50 | __has_assign | has_assign | 1 |
+| ms.cpp:89:27:89:50 | has_assign |  | <none> |
+| ms.cpp:91:25:91:41 | __has_copy | empty | 0 |
+| ms.cpp:91:25:91:41 | empty |  | <none> |
+| ms.cpp:92:25:92:44 | __has_copy | has_copy | 1 |
+| ms.cpp:92:25:92:44 | has_copy |  | <none> |
+| ms.cpp:94:35:94:61 | __has_nothrow_assign | empty | 1 |
+| ms.cpp:94:35:94:61 | empty |  | <none> |
+| ms.cpp:95:35:95:66 | __has_nothrow_assign | has_assign | 0 |
+| ms.cpp:95:35:95:66 | has_assign |  | <none> |
+| ms.cpp:96:35:96:74 | __has_nothrow_assign | has_nothrow_assign | 1 |
+| ms.cpp:96:35:96:74 | has_nothrow_assign |  | <none> |
+| ms.cpp:98:40:98:71 | __has_nothrow_constructor | empty | 1 |
+| ms.cpp:98:40:98:71 | empty |  | <none> |
+| ms.cpp:99:40:99:92 | __has_nothrow_constructor | no_has_nothrow_constructor | 0 |
+| ms.cpp:99:40:99:92 | no_has_nothrow_constructor |  | <none> |
+| ms.cpp:100:40:100:89 | __has_nothrow_constructor | has_nothrow_constructor | 1 |
+| ms.cpp:100:40:100:89 | has_nothrow_constructor |  | <none> |
+| ms.cpp:102:33:102:57 | __has_nothrow_copy | empty | 1 |
+| ms.cpp:102:33:102:57 | empty |  | <none> |
+| ms.cpp:103:33:103:60 | __has_nothrow_copy | has_copy | 0 |
+| ms.cpp:103:33:103:60 | has_copy |  | <none> |
+| ms.cpp:104:33:104:68 | __has_nothrow_copy | has_nothrow_copy | 1 |
+| ms.cpp:104:33:104:68 | has_nothrow_copy |  | <none> |
+| ms.cpp:106:35:106:61 | __has_trivial_assign | empty | 1 |
+| ms.cpp:106:35:106:61 | empty |  | <none> |
+| ms.cpp:107:35:107:66 | __has_trivial_assign | has_assign | 0 |
+| ms.cpp:107:35:107:66 | has_assign |  | <none> |
+| ms.cpp:109:40:109:71 | __has_trivial_constructor | empty | 1 |
+| ms.cpp:109:40:109:71 | empty |  | <none> |
+| ms.cpp:110:40:110:92 | __has_trivial_constructor | no_has_nothrow_constructor | 0 |
+| ms.cpp:110:40:110:92 | no_has_nothrow_constructor |  | <none> |
+| ms.cpp:111:40:111:89 | __has_trivial_constructor | has_nothrow_constructor | 0 |
+| ms.cpp:111:40:111:89 | has_nothrow_constructor |  | <none> |
+| ms.cpp:113:33:113:57 | __has_trivial_copy | empty | 1 |
+| ms.cpp:113:33:113:57 | empty |  | <none> |
+| ms.cpp:114:33:114:60 | __has_trivial_copy | has_copy | 0 |
+| ms.cpp:114:33:114:60 | has_copy |  | <none> |
+| ms.cpp:116:36:116:63 | __has_user_destructor | empty | 0 |
+| ms.cpp:116:36:116:63 | empty |  | <none> |
+| ms.cpp:117:36:117:77 | __has_user_destructor | has_user_destructor | 1 |
+| ms.cpp:117:36:117:77 | has_user_destructor |  | <none> |
+| ms.cpp:118:36:118:80 | __has_user_destructor | has_virtual_destructor | 1 |
+| ms.cpp:118:36:118:80 | has_virtual_destructor |  | <none> |
+| ms.cpp:120:39:120:69 | __has_virtual_destructor | empty | 0 |
+| ms.cpp:120:39:120:69 | empty |  | <none> |
+| ms.cpp:121:39:121:83 | __has_virtual_destructor | has_user_destructor | 0 |
+| ms.cpp:121:39:121:83 | has_user_destructor |  | <none> |
+| ms.cpp:122:39:122:86 | __has_virtual_destructor | has_virtual_destructor | 1 |
+| ms.cpp:122:39:122:86 | has_virtual_destructor |  | <none> |
+| ms.cpp:124:28:124:47 | __is_abstract | empty | 0 |
+| ms.cpp:124:28:124:47 | empty |  | <none> |
+| ms.cpp:125:28:125:50 | __is_abstract | abstract | 1 |
+| ms.cpp:125:28:125:50 | abstract |  | <none> |
+| ms.cpp:126:28:126:48 | __is_abstract | method | 0 |
+| ms.cpp:126:28:126:48 | method |  | <none> |
+| ms.cpp:128:27:128:45 | C1 |  | <none> |
+| ms.cpp:128:27:128:45 | C1 |  | <none> |
+| ms.cpp:128:27:128:45 | __is_base_of | C1,C1 | 1 |
+| ms.cpp:129:27:129:45 | C1 |  | <none> |
+| ms.cpp:129:27:129:45 | C2 |  | <none> |
+| ms.cpp:129:27:129:45 | __is_base_of | C1,C2 | 1 |
+| ms.cpp:130:27:130:45 | C1 |  | <none> |
+| ms.cpp:130:27:130:45 | C3 |  | <none> |
+| ms.cpp:130:27:130:45 | __is_base_of | C1,C3 | 1 |
+| ms.cpp:131:27:131:45 | C1 |  | <none> |
+| ms.cpp:131:27:131:45 | C5 |  | <none> |
+| ms.cpp:131:27:131:45 | __is_base_of | C1,C5 | 0 |
+| ms.cpp:132:27:132:45 | C2 |  | <none> |
+| ms.cpp:132:27:132:45 | C3 |  | <none> |
+| ms.cpp:132:27:132:45 | __is_base_of | C3,C2 | 0 |
+| ms.cpp:133:27:133:45 | C1 |  | <none> |
+| ms.cpp:133:27:133:45 | C3 |  | <none> |
+| ms.cpp:133:27:133:45 | __is_base_of | C3,C1 | 0 |
+| ms.cpp:134:27:134:45 | C2 |  | <none> |
+| ms.cpp:134:27:134:45 | C4 |  | <none> |
+| ms.cpp:134:27:134:45 | __is_base_of | C2,C4 | 0 |
+| ms.cpp:135:27:135:47 | __is_base_of | int,int | 0 |
+| ms.cpp:135:27:135:47 | int |  | <none> |
+| ms.cpp:135:27:135:47 | int |  | <none> |
+| ms.cpp:136:27:136:48 | __is_base_of | int,long | 0 |
+| ms.cpp:136:27:136:48 | int |  | <none> |
+| ms.cpp:136:27:136:48 | long |  | <none> |
+| ms.cpp:137:28:137:49 | __is_base_of | long,int | 0 |
+| ms.cpp:137:28:137:49 | int |  | <none> |
+| ms.cpp:137:28:137:49 | long |  | <none> |
+| ms.cpp:138:28:138:51 | __is_base_of | int,double | 0 |
+| ms.cpp:138:28:138:51 | double |  | <none> |
+| ms.cpp:138:28:138:51 | int |  | <none> |
+| ms.cpp:139:28:139:51 | __is_base_of | double,int | 0 |
+| ms.cpp:139:28:139:51 | double |  | <none> |
+| ms.cpp:139:28:139:51 | int |  | <none> |
+| ms.cpp:141:25:141:41 | __is_class | empty | 1 |
+| ms.cpp:141:25:141:41 | empty |  | <none> |
+| ms.cpp:142:25:142:43 | __is_class | an_enum | 0 |
+| ms.cpp:142:25:142:43 | an_enum |  | <none> |
+| ms.cpp:143:25:143:43 | __is_class | a_union | 0 |
+| ms.cpp:143:25:143:43 | a_union |  | <none> |
+| ms.cpp:144:25:144:44 | __is_class | a_struct | 1 |
+| ms.cpp:144:25:144:44 | a_struct |  | <none> |
+| ms.cpp:145:25:145:39 | __is_class | int | 0 |
+| ms.cpp:145:25:145:39 | int |  | <none> |
+| ms.cpp:147:34:147:59 | C1 |  | <none> |
+| ms.cpp:147:34:147:59 | C1 |  | <none> |
+| ms.cpp:147:34:147:59 | __is_convertible_to | C1,C1 | 1 |
+| ms.cpp:148:34:148:59 | C1 |  | <none> |
+| ms.cpp:148:34:148:59 | C2 |  | <none> |
+| ms.cpp:148:34:148:59 | __is_convertible_to | C1,C2 | 0 |
+| ms.cpp:149:34:149:59 | C1 |  | <none> |
+| ms.cpp:149:34:149:59 | C3 |  | <none> |
+| ms.cpp:149:34:149:59 | __is_convertible_to | C1,C3 | 0 |
+| ms.cpp:150:34:150:59 | C1 |  | <none> |
+| ms.cpp:150:34:150:59 | C5 |  | <none> |
+| ms.cpp:150:34:150:59 | __is_convertible_to | C1,C5 | 0 |
+| ms.cpp:151:34:151:59 | C2 |  | <none> |
+| ms.cpp:151:34:151:59 | C3 |  | <none> |
+| ms.cpp:151:34:151:59 | __is_convertible_to | C3,C2 | 0 |
+| ms.cpp:152:34:152:59 | C1 |  | <none> |
+| ms.cpp:152:34:152:59 | C3 |  | <none> |
+| ms.cpp:152:34:152:59 | __is_convertible_to | C3,C1 | 0 |
+| ms.cpp:153:34:153:59 | C2 |  | <none> |
+| ms.cpp:153:34:153:59 | C4 |  | <none> |
+| ms.cpp:153:34:153:59 | __is_convertible_to | C2,C4 | 0 |
+| ms.cpp:154:34:154:61 | __is_convertible_to | int,int | 1 |
+| ms.cpp:154:34:154:61 | int |  | <none> |
+| ms.cpp:154:34:154:61 | int |  | <none> |
+| ms.cpp:155:34:155:62 | __is_convertible_to | int,long | 1 |
+| ms.cpp:155:34:155:62 | int |  | <none> |
+| ms.cpp:155:34:155:62 | long |  | <none> |
+| ms.cpp:156:35:156:63 | __is_convertible_to | long,int | 1 |
+| ms.cpp:156:35:156:63 | int |  | <none> |
+| ms.cpp:156:35:156:63 | long |  | <none> |
+| ms.cpp:157:35:157:65 | __is_convertible_to | int,double | 1 |
+| ms.cpp:157:35:157:65 | double |  | <none> |
+| ms.cpp:157:35:157:65 | int |  | <none> |
+| ms.cpp:158:35:158:65 | __is_convertible_to | double,int | 1 |
+| ms.cpp:158:35:158:65 | double |  | <none> |
+| ms.cpp:158:35:158:65 | int |  | <none> |
+| ms.cpp:160:25:160:41 | __is_empty | empty | 1 |
+| ms.cpp:160:25:160:41 | empty |  | <none> |
+| ms.cpp:161:25:161:42 | __is_empty | method | 1 |
+| ms.cpp:161:25:161:42 | method |  | <none> |
+| ms.cpp:162:25:162:40 | __is_empty | data | 0 |
+| ms.cpp:162:25:162:40 | data |  | <none> |
+| ms.cpp:163:25:163:47 | __is_empty | method_data | 0 |
+| ms.cpp:163:25:163:47 | method_data |  | <none> |
+| ms.cpp:164:25:164:44 | __is_empty | abstract | 0 |
+| ms.cpp:164:25:164:44 | abstract |  | <none> |
+| ms.cpp:166:24:166:39 | __is_enum | empty | 0 |
+| ms.cpp:166:24:166:39 | empty |  | <none> |
+| ms.cpp:167:24:167:41 | __is_enum | an_enum | 1 |
+| ms.cpp:167:24:167:41 | an_enum |  | <none> |
+| ms.cpp:168:24:168:41 | __is_enum | a_union | 0 |
+| ms.cpp:168:24:168:41 | a_union |  | <none> |
+| ms.cpp:170:31:170:53 | __is_polymorphic | empty | 0 |
+| ms.cpp:170:31:170:53 | empty |  | <none> |
+| ms.cpp:171:31:171:56 | __is_polymorphic | abstract | 1 |
+| ms.cpp:171:31:171:56 | abstract |  | <none> |
+| ms.cpp:172:31:172:54 | __is_polymorphic | method | 0 |
+| ms.cpp:172:31:172:54 | method |  | <none> |
+| ms.cpp:174:25:174:41 | __is_union | empty | 0 |
+| ms.cpp:174:25:174:41 | empty |  | <none> |
+| ms.cpp:175:25:175:43 | __is_union | an_enum | 0 |
+| ms.cpp:175:25:175:43 | an_enum |  | <none> |
+| ms.cpp:176:25:176:43 | __is_union | a_union | 1 |
+| ms.cpp:176:25:176:43 | a_union |  | <none> |
+| ms.cpp:177:25:177:44 | __is_union | a_struct | 0 |
+| ms.cpp:177:25:177:44 | a_struct |  | <none> |
+| ms.cpp:178:25:178:39 | __is_union | int | 0 |
+| ms.cpp:178:25:178:39 | int |  | <none> |
+| ms.cpp:180:42:180:79 | __is_trivially_constructible | a_struct | 1 |
+| ms.cpp:180:42:180:79 | a_struct |  | <none> |
+| ms.cpp:181:42:181:76 | __is_trivially_constructible | empty | 1 |
+| ms.cpp:181:42:181:76 | empty |  | <none> |
+| ms.cpp:182:42:182:79 | __is_trivially_constructible | has_copy | 0 |
+| ms.cpp:182:42:182:79 | has_copy |  | <none> |
+| ms.cpp:184:31:184:57 | __is_destructible | a_struct | 1 |
+| ms.cpp:184:31:184:57 | a_struct |  | <none> |
+| ms.cpp:185:31:185:54 | __is_destructible | empty | 1 |
+| ms.cpp:185:31:185:54 | empty |  | <none> |
+| ms.cpp:186:31:186:57 | __is_destructible | has_copy | 1 |
+| ms.cpp:186:31:186:57 | has_copy |  | <none> |
+| ms.cpp:187:31:187:68 | __is_destructible | has_user_destructor | 0 |
+| ms.cpp:187:31:187:68 | has_user_destructor |  | <none> |
+| ms.cpp:189:39:189:73 | __is_nothrow_destructible | a_struct | 1 |
+| ms.cpp:189:39:189:73 | a_struct |  | <none> |
+| ms.cpp:190:39:190:70 | __is_nothrow_destructible | empty | 1 |
+| ms.cpp:190:39:190:70 | empty |  | <none> |
+| ms.cpp:191:39:191:73 | __is_nothrow_destructible | has_copy | 1 |
+| ms.cpp:191:39:191:73 | has_copy |  | <none> |
+| ms.cpp:192:39:192:84 | __is_nothrow_destructible | has_user_destructor | 0 |
+| ms.cpp:192:39:192:84 | has_user_destructor |  | <none> |
+| ms.cpp:193:39:193:88 | __is_nothrow_destructible | has_noexcept_destructor | 0 |
+| ms.cpp:193:39:193:88 | has_noexcept_destructor |  | <none> |
+| ms.cpp:195:41:195:77 | __is_trivially_destructible | a_struct | 1 |
+| ms.cpp:195:41:195:77 | a_struct |  | <none> |
+| ms.cpp:196:41:196:74 | __is_trivially_destructible | empty | 1 |
+| ms.cpp:196:41:196:74 | empty |  | <none> |
+| ms.cpp:197:41:197:77 | __is_trivially_destructible | has_copy | 1 |
+| ms.cpp:197:41:197:77 | has_copy |  | <none> |
+| ms.cpp:198:41:198:88 | __is_trivially_destructible | has_user_destructor | 0 |
+| ms.cpp:198:41:198:88 | has_user_destructor |  | <none> |
+| ms.cpp:199:41:199:92 | __is_trivially_destructible | has_noexcept_destructor | 0 |
+| ms.cpp:199:41:199:92 | has_noexcept_destructor |  | <none> |
+| ms.cpp:201:39:201:82 | __is_trivially_assignable | a_struct,a_struct | 1 |
+| ms.cpp:201:39:201:82 | a_struct |  | <none> |
+| ms.cpp:201:39:201:82 | a_struct |  | <none> |
+| ms.cpp:202:39:202:79 | __is_trivially_assignable | a_struct,empty | 0 |
+| ms.cpp:202:39:202:79 | a_struct |  | <none> |
+| ms.cpp:202:39:202:79 | empty |  | <none> |
+| ms.cpp:203:39:203:77 | __is_trivially_assignable | a_struct,int | 0 |
+| ms.cpp:203:39:203:77 | a_struct |  | <none> |
+| ms.cpp:203:39:203:77 | int |  | <none> |
+| ms.cpp:205:37:205:78 | __is_nothrow_assignable | a_struct,a_struct | 1 |
+| ms.cpp:205:37:205:78 | a_struct |  | <none> |
+| ms.cpp:205:37:205:78 | a_struct |  | <none> |
+| ms.cpp:206:37:206:75 | __is_nothrow_assignable | a_struct,empty | 0 |
+| ms.cpp:206:37:206:75 | a_struct |  | <none> |
+| ms.cpp:206:37:206:75 | empty |  | <none> |
+| ms.cpp:207:37:207:73 | __is_nothrow_assignable | a_struct,int | 0 |
+| ms.cpp:207:37:207:73 | a_struct |  | <none> |
+| ms.cpp:207:37:207:73 | int |  | <none> |
+| ms.cpp:209:34:209:63 | __is_standard_layout | a_struct | 1 |
+| ms.cpp:209:34:209:63 | a_struct |  | <none> |
+| ms.cpp:210:34:210:68 | __is_standard_layout | a_struct_plus | 0 |
+| ms.cpp:210:34:210:68 | a_struct_plus |  | <none> |
+| ms.cpp:212:37:212:66 | __is_trivially_copyable | empty | 1 |
+| ms.cpp:212:37:212:66 | empty |  | <none> |
+| ms.cpp:213:37:213:69 | __is_trivially_copyable | has_copy | 0 |
+| ms.cpp:213:37:213:69 | has_copy |  | <none> |
+| ms.cpp:215:31:215:54 | __is_literal_type | empty | 1 |
+| ms.cpp:215:31:215:54 | empty |  | <none> |
+| ms.cpp:216:31:216:68 | __is_literal_type | has_user_destructor | 0 |
+| ms.cpp:216:31:216:68 | has_user_destructor |  | <none> |
+| ms.cpp:218:44:218:80 | __has_trivial_move_constructor | empty | 1 |
+| ms.cpp:218:44:218:80 | empty |  | <none> |
+| ms.cpp:219:44:219:83 | __has_trivial_move_constructor | has_copy | 0 |
+| ms.cpp:219:44:219:83 | has_copy |  | <none> |
+| ms.cpp:220:44:220:94 | __has_trivial_move_constructor | has_user_destructor | 1 |
+| ms.cpp:220:44:220:94 | has_user_destructor |  | <none> |
+| ms.cpp:222:39:222:70 | __has_trivial_move_assign | empty | 1 |
+| ms.cpp:222:39:222:70 | empty |  | <none> |
+| ms.cpp:223:39:223:73 | __has_trivial_move_assign | has_copy | 1 |
+| ms.cpp:223:39:223:73 | has_copy |  | <none> |
+| ms.cpp:224:39:224:75 | __has_trivial_move_assign | has_assign | 0 |
+| ms.cpp:224:39:224:75 | has_assign |  | <none> |
+| ms.cpp:226:39:226:70 | __has_nothrow_move_assign | empty | 1 |
+| ms.cpp:226:39:226:70 | empty |  | <none> |
+| ms.cpp:227:39:227:73 | __has_nothrow_move_assign | has_copy | 1 |
+| ms.cpp:227:39:227:73 | has_copy |  | <none> |
+| ms.cpp:228:39:228:75 | __has_nothrow_move_assign | has_assign | 0 |
+| ms.cpp:228:39:228:75 | has_assign |  | <none> |
+| ms.cpp:229:39:229:83 | __has_nothrow_move_assign | has_nothrow_assign | 1 |
+| ms.cpp:229:39:229:83 | has_nothrow_assign |  | <none> |
+| ms.cpp:231:32:231:54 | __is_constructible | int | 1 |
+| ms.cpp:231:32:231:54 | int |  | <none> |
+| ms.cpp:232:32:232:60 | __is_constructible | int,float | 1 |
+| ms.cpp:232:32:232:60 | float |  | <none> |
+| ms.cpp:232:32:232:60 | int |  | <none> |
+| ms.cpp:233:32:233:66 | __is_constructible | int,float,float | 0 |
+| ms.cpp:233:32:233:66 | float |  | <none> |
+| ms.cpp:233:32:233:66 | float |  | <none> |
+| ms.cpp:233:32:233:66 | int |  | <none> |
+| ms.cpp:235:40:235:70 | __is_nothrow_constructible | int | 1 |
+| ms.cpp:235:40:235:70 | int |  | <none> |
+| ms.cpp:236:40:236:76 | __is_nothrow_constructible | int,float | 1 |
+| ms.cpp:236:40:236:76 | float |  | <none> |
+| ms.cpp:236:40:236:76 | int |  | <none> |
+| ms.cpp:237:40:237:82 | __is_nothrow_constructible | int,float,float | 0 |
+| ms.cpp:237:40:237:82 | float |  | <none> |
+| ms.cpp:237:40:237:82 | float |  | <none> |
+| ms.cpp:237:40:237:82 | int |  | <none> |
+| ms.cpp:239:29:239:50 | __has_finalizer | empty | 0 |
+| ms.cpp:239:29:239:50 | empty |  | <none> |
+| ms.cpp:241:27:241:46 | __is_delegate | empty | 0 |
+| ms.cpp:241:27:241:46 | empty |  | <none> |
+| ms.cpp:243:34:243:60 | __is_interface_class | empty | 0 |
+| ms.cpp:243:34:243:60 | empty |  | <none> |
+| ms.cpp:245:28:245:48 | __is_ref_array | empty | 0 |
+| ms.cpp:245:28:245:48 | empty |  | <none> |
+| ms.cpp:247:28:247:48 | __is_ref_class | empty | 0 |
+| ms.cpp:247:28:247:48 | empty |  | <none> |
+| ms.cpp:249:25:249:42 | __is_sealed | empty | 0 |
+| ms.cpp:249:25:249:42 | empty |  | <none> |
+| ms.cpp:251:37:251:66 | __is_simple_value_class | empty | 0 |
+| ms.cpp:251:37:251:66 | empty |  | <none> |
+| ms.cpp:253:30:253:52 | __is_value_class | empty | 0 |
+| ms.cpp:253:30:253:52 | empty |  | <none> |
+| ms.cpp:255:24:255:43 | __is_final | a_struct | 0 |
+| ms.cpp:255:24:255:43 | a_struct |  | <none> |
+| ms.cpp:256:24:256:49 | __is_final | a_final_struct | 1 |
+| ms.cpp:256:24:256:49 | a_final_struct |  | <none> |

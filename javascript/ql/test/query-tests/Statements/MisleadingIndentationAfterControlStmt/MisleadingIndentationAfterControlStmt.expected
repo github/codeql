@@ -1,0 +1,4 @@
+| tst.html:7:9:7:12 | x--; | The indentation of this statement suggests that it is controlled by $@, while in fact it is not. | tst.html:5:7:5:16 | if (x > ...    x--; | this statement |
+| tst.js:4:3:4:6 | g(); | The indentation of this statement suggests that it is controlled by $@, while in fact it is not. | tst.js:2:2:2:12 | if (cond())\\n\\t\\tf(); | this statement |
+| tst.js:25:3:25:6 | h(); | The indentation of this statement suggests that it is controlled by $@, while in fact it is not. | tst.js:21:2:21:12 | if (con ... \\n\\t\\tg(); | this statement |
+| tst.js:37:3:37:6 | g(); | The indentation of this statement suggests that it is controlled by $@, while in fact it is not. | tst.js:35:2:35:15 | while ( ... \\n\\t\\tf(); | this statement |

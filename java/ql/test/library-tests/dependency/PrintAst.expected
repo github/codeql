@@ -1,0 +1,51 @@
+dependency/A.java:
+#    0| [CompilationUnit] A
+#    3|   1: [Class,GenericType,ParameterizedType] A
+#-----|     -2: (Generic Parameters)
+#    3|       0: [TypeVariable] T
+#    6|   2: [Class] B
+#    9|   3: [Class] C
+#   10|     2: [FieldDeclaration] A<B> b;
+#   10|       -1: [TypeAccess] A<B>
+#   10|         0: [TypeAccess] B
+#   11|     3: [FieldDeclaration] ...[] c;
+#   11|       -1: [ArrayTypeAccess] ...[]
+#   11|         0: [TypeAccess] C
+#   14|   4: [Class] D
+#-----|     -1: (Base Types)
+#   14|       -1: [TypeAccess] A<B>
+#   14|         0: [TypeAccess] B
+#   15|     2: [Class] E
+#   16|       2: [Method] m
+#   16|         3: [TypeAccess] C
+#-----|         4: (Parameters)
+#   16|           0: [Parameter] f
+#   16|             0: [TypeAccess] A<F>
+#   16|               0: [TypeAccess] F
+#   16|         5: [BlockStmt] { ... }
+#   17|           0: [ReturnStmt] return ...
+#   17|             0: [NullLiteral] null
+#   22|   5: [Class] F
+#   24|   6: [Class] G
+#-----|     -1: (Base Types)
+#   24|       -1: [TypeAccess] Throwable
+#   26|   7: [Class] H
+#   27|     2: [Method] test
+#-----|       2: (Generic Parameters)
+#   27|         0: [TypeVariable] T
+#   27|           0: [TypeAccess] String
+#   27|       3: [TypeAccess] T
+#-----|       4: (Parameters)
+#   27|         0: [Parameter] t
+#   27|           0: [TypeAccess] T
+#   27|       5: [BlockStmt] { ... }
+#   27|         0: [ReturnStmt] return ...
+#   27|           0: [VarAccess] t
+#   28|     3: [Method] test2
+#   28|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#   28|         0: [Parameter] t
+#   28|           0: [TypeAccess] Collection<? extends Number>
+#   28|             0: [WildcardTypeAccess] ? ...
+#   28|               0: [TypeAccess] Number
+#   28|       5: [BlockStmt] { ... }

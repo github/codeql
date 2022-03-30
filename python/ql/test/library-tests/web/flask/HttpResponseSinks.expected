@@ -1,0 +1,17 @@
+WARNING: Type HttpResponseTaintSink has been deprecated and may be removed in future (HttpResponseSinks.ql:5,6-27)
+| test.py:8:12:8:25 | flask.routed.response | externally controlled string |
+| test.py:29:12:29:38 | flask.routed.response | externally controlled string |
+| test.py:35:16:35:37 | flask.routed.response | externally controlled string |
+| test.py:36:12:36:15 | flask.routed.response | externally controlled string |
+| test.py:41:12:41:54 | flask.routed.response | externally controlled string |
+| test.py:41:26:41:53 | flask.response.argument | externally controlled string |
+| test.py:46:12:46:62 | flask.routed.response | externally controlled string |
+| test.py:46:26:46:61 | flask.response.argument | externally controlled string |
+| test.py:50:12:50:48 | flask.routed.response | externally controlled string |
+| test.py:50:26:50:47 | flask.response.argument | externally controlled string |
+| test.py:54:12:54:53 | flask.routed.response | externally controlled string |
+| test.py:54:26:54:52 | flask.response.argument | externally controlled string |
+| test.py:60:12:60:62 | flask.routed.response | externally controlled string |
+| test.py:60:26:60:61 | flask.response.argument | externally controlled string |
+| test.py:64:12:64:58 | flask.routed.response | externally controlled string |
+| test.py:64:26:64:57 | flask.response.argument | externally controlled string |

@@ -1,0 +1,3 @@
+Framework name,URL,Namespace prefixes
+System,,System.* System
+ServiceStack,https://servicestack.net/,ServiceStack.* ServiceStack

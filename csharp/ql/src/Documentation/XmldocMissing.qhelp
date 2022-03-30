@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Public APIs (including methods, constructors, classes, structs and interfaces) should be documented
+to help make the API easier to understand and maintain. For the purpose of code maintainability, 
+it is also advisable to document non-public APIs.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Add appropriate documentation. The documentation comment should describe 
+<em>what</em> the method or constructor does rather than <em>how</em> it does it, 
+to allow for any potential implementation change that is
+invisible to users of an API. It should include the following:</p>
+<ul>
+  <li>A <code>&lt;summary&gt;</code> tag giving a brief description of the class or method</li>
+  <li><code>&lt;param&gt;</code> tags to describe all arguments to methods and constructors</li>
+  <li>A <code>&lt;returns&gt;</code> tag if the method returns a value</li>
+  <li><code>&lt;exception&gt;</code> tags for all exceptions thrown by the method</li>
+  <li><code>&lt;typeparam&gt;</code> tags for type parameters to classes and methods</li>
+  <li>A description of any preconditions or postconditions</li>
+  <li>Any other important aspects such as side-effects and thread safety</li>
+</ul>
+<p>
+Documentation for users of an API should be written using the standard documentation format.
+This can be accessed conveniently by users of an API from within standard IDEs,
+and can be transformed automatically into HTML format.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a fully documented class, illustrating the use of 
+<code>&lt;summary&gt;</code>, <code>&lt;param&gt;</code>, <code>&lt;returns&gt;</code>, 
+and <code>&lt;exception&gt;</code> tags.
+</p>
+
+<sample src="XmldocExample.cs" />
+
+</example>
+<references>
+
+<li>
+  MSDN, C# Programming Guide:
+  <a href="http://msdn.microsoft.com/en-us/library/b2s063f7.aspx">XML Documentation Comments</a>, 
+  <a href="http://msdn.microsoft.com/en-us/library/z04awywx.aspx">How to: Use the XML Documentation Features</a>,
+  <a href="http://msdn.microsoft.com/en-us/library/5ast78ax.aspx">Recommended Tags for Documentation Comments</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,7 @@
+name: codeql/java-all
+version: 0.0.12-dev
+groups: java
+dbscheme: config/semmlecode.dbscheme
+extractor: java
+library: true
+upgrades: upgrades

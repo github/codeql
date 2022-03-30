@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This query finds assignments of a non-reference instance of a derived type to a variable of the base type where the derived type has more fields than the base. 
+These assignments slice off all the fields added by the derived type, and can cause unexpected state when accessed as the derived type.</p>
+
+</overview>
+<recommendation>
+<p>Change the type of the variable at the left-hand side of the assignment to the subclass.</p>
+
+</recommendation>
+<example>
+<sample src="Slicing.cpp" />
+
+</example>
+<references>
+
+<li>
+  Wikipedia: <a href="http://en.wikipedia.org/wiki/Object_slicing">Object slicing</a>.
+</li>
+<li>
+  DevX.com: <a href="http://www.devx.com/tips/Tip/14570">Slicing in C++</a>.
+</li>
+
+
+</references>
+</qhelp>

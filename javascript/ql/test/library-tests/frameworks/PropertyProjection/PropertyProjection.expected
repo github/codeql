@@ -1,0 +1,15 @@
+| tst.js:6:1:6:17 | _.pick(o, s1, s2) | tst.js:6:8:6:8 | o | tst.js:6:11:6:12 | s1 | false |
+| tst.js:6:1:6:17 | _.pick(o, s1, s2) | tst.js:6:8:6:8 | o | tst.js:6:15:6:16 | s2 | false |
+| tst.js:7:1:7:14 | _.pickBy(o, s) | tst.js:7:10:7:10 | o | tst.js:7:13:7:13 | s | false |
+| tst.js:9:1:9:12 | R.pick(s, o) | tst.js:9:11:9:11 | o | tst.js:9:8:9:8 | s | false |
+| tst.js:10:1:10:14 | R.pickBy(s, o) | tst.js:10:13:10:13 | o | tst.js:10:10:10:10 | s | false |
+| tst.js:11:1:11:15 | R.pickAll(s, o) | tst.js:11:14:11:14 | o | tst.js:11:11:11:11 | s | false |
+| tst.js:13:1:13:11 | _.get(o, s) | tst.js:13:7:13:7 | o | tst.js:13:10:13:10 | s | true |
+| tst.js:15:1:15:12 | R.path(s, o) | tst.js:15:11:15:11 | o | tst.js:15:8:15:8 | s | true |
+| tst.js:17:1:17:16 | dottie.get(o, s) | tst.js:17:12:17:12 | o | tst.js:17:15:17:15 | s | true |
+| tst.js:19:1:19:15 | dotty.get(o, s) | tst.js:19:11:19:11 | o | tst.js:19:14:19:14 | s | true |
+| tst.js:20:1:20:18 | dotty.search(o, s) | tst.js:20:14:20:14 | o | tst.js:20:17:20:17 | s | false |
+| tst.js:27:10:27:30 | _.pick( ... ted, s) | tst.js:27:17:27:26 | notTainted | tst.js:27:29:27:29 | s | false |
+| tst.js:28:10:28:29 | _.get(notTainted, s) | tst.js:28:16:28:25 | notTainted | tst.js:28:28:28:28 | s | true |
+| tst.js:32:10:32:27 | _.pick(tainted, s) | tst.js:32:17:32:23 | tainted | tst.js:32:26:32:26 | s | false |
+| tst.js:33:10:33:26 | _.get(tainted, s) | tst.js:33:16:33:22 | tainted | tst.js:33:25:33:25 | s | true |

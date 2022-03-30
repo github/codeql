@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In JavaScript, cases in a switch statement can have arbitrary expressions as their labels.
+The interpreter does not check that these expressions are all different. At runtime,
+if two cases in a switch statement have the same label, the second case will never be
+executed. This most likely indicates a copy-paste error where the first case was copied
+and then not properly adjusted.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the two cases to find out what they were meant to check. If both the case labels
+and their statements are identical, then the second case is duplicate code
+that can be deleted. Otherwise, the second case label needs to be adjusted.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the example below, the function <code>controller</code> checks its parameter <code>msg</code>
+to determine what operation it is meant to perform. Note that the 'switch' statement has two
+cases labeled <code>'start'</code>; the second one will never be executed.
+</p>
+
+<sample src="examples/DuplicateSwitchCase.js" />
+
+<p>
+Clearly, the second case should be labeled <code>'stop'</code>:
+</p>
+
+<sample src="examples/DuplicateSwitchCaseGood.js" />
+
+</example>
+</qhelp>

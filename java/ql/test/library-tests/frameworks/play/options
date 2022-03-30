@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/playframework-2.6.x:${testdir}/../../../stubs/jackson-databind-2.12:${testdir}/../../../stubs/jackson-core-2.12:${testdir}/../../../stubs/akka-2.6.x

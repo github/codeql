@@ -1,0 +1,12 @@
+| file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | fp_offset | file://:0:0:0:0 | unsigned int | file://:0:0:0:0 | unsigned int |
+| file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | gp_offset | file://:0:0:0:0 | unsigned int | file://:0:0:0:0 | unsigned int |
+| file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | overflow_arg_area | file://:0:0:0:0 | void * | file://:0:0:0:0 | void * |
+| file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | reg_save_area | file://:0:0:0:0 | void * | file://:0:0:0:0 | void * |
+| structs.c:1:8:1:11 | pair | structs.c:2:7:2:7 | a | file://:0:0:0:0 | int | file://:0:0:0:0 | int |
+| structs.c:1:8:1:11 | pair | structs.c:3:7:3:7 | b | file://:0:0:0:0 | int | file://:0:0:0:0 | int |
+| structs.c:8:8:8:11 | rect | structs.c:9:9:9:10 | tl | file://:0:0:0:0 | pair * | file://:0:0:0:0 | pair * |
+| structs.c:8:8:8:11 | rect | structs.c:10:9:10:10 | br | file://:0:0:0:0 | pair * | file://:0:0:0:0 | pair * |
+| structs.c:13:8:13:12 | pair2 | structs.c:14:7:14:7 | a | file://:0:0:0:0 | int | file://:0:0:0:0 | int |
+| structs.c:13:8:13:12 | pair2 | structs.c:15:7:15:7 | b | file://:0:0:0:0 | int | file://:0:0:0:0 | int |
+| structs.c:20:8:20:13 | square | structs.c:21:17:21:18 | tl | file://:0:0:0:0 | pair2 * | file://:0:0:0:0 | pair2 * |
+| structs.c:20:8:20:13 | square | structs.c:22:10:22:11 | br | file://:0:0:0:0 | pair2 * | file://:0:0:0:0 | pair2 * |

@@ -1,0 +1,3 @@
+| hiding.cpp:6:17:6:17 | i | Variable i hides another variable of the same name (on $@). | hiding.cpp:4:13:4:13 | i | line 4 |
+| hiding.cpp:18:15:18:15 | k | Variable k hides another variable of the same name (on $@). | hiding.cpp:15:11:15:11 | k | line 15 |
+| hiding.cpp:38:11:38:11 | x | Variable x hides another variable of the same name (on $@). | hiding.cpp:36:9:36:9 | x | line 36 |

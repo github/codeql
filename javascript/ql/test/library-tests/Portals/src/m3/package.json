@@ -1,0 +1,8 @@
+{
+  "name": "client",
+  "private": true,
+  "dependencies": {
+    "m1": "*",
+    "m2": "*"
+  }
+}

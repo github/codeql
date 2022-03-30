@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p> A JSON Web Token (JWT) consists of three parts: header, payload, and signature.
+The <code>io.jsonwebtoken.jjwt</code> library is one of many libraries used for working with JWTs.
+It offers different methods for parsing tokens like <code>parse</code>, <code>parseClaimsJws</code>, and <code>parsePlaintextJws</code>.
+The last two correctly verify that the JWT is properly signed.
+This is done by computing the signature of the combination of header and payload and
+comparing the locally computed signature with the signature part of the JWT.
+</p>
+<p>
+Therefore it is necessary to provide the <code>JwtParser</code> with a key that is used for signature validation.
+Unfortunately the <code>parse</code> method <b>accepts</b> a JWT whose signature is empty although a signing key has been set for the parser.
+This means that an attacker can create arbitrary JWTs that will be accepted if this method is used.
+</p>
+</overview>
+<recommendation>
+
+<p>Always verify the signature by using either the <code>parseClaimsJws</code> and <code>parsePlaintextJws</code> methods or
+by overriding the <code>onPlaintextJws</code> or <code>onClaimsJws</code> of <code>JwtHandlerAdapter</code>.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows four cases where a signing key is set for a parser.
+In the first 'BAD' case the <code>parse</code> method is used, which will not validate the signature.
+The second 'BAD' case uses a <code>JwtHandlerAdapter</code> where the <code>onPlaintextJwt</code> method is overriden, so it will not validate the signature.
+The third and fourth 'GOOD' cases use <code>parseClaimsJws</code> method or override the <code>onPlaintextJws</code> method.
+</p>
+
+<sample src="MissingJWTSignatureCheck.java" />
+
+</example>
+<references>
+<li>zofrex: <a href="https://www.zofrex.com/blog/2020/10/20/alg-none-jwt-nhs-contact-tracing-app/">How I Found An alg=none JWT Vulnerability in the NHS Contact Tracing App</a>.</li>
+</references>
+</qhelp>

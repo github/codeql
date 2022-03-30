@@ -1,0 +1,28 @@
+edges
+| re_bad.py:13:22:13:28 | ControlFlowNode for request | re_bad.py:13:22:13:33 | ControlFlowNode for Attribute |
+| re_bad.py:13:22:13:33 | ControlFlowNode for Attribute | re_bad.py:13:22:13:44 | ControlFlowNode for Subscript |
+| re_bad.py:13:22:13:44 | ControlFlowNode for Subscript | re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern |
+| re_bad.py:24:22:24:28 | ControlFlowNode for request | re_bad.py:24:22:24:33 | ControlFlowNode for Attribute |
+| re_bad.py:24:22:24:33 | ControlFlowNode for Attribute | re_bad.py:24:22:24:44 | ControlFlowNode for Subscript |
+| re_bad.py:24:22:24:44 | ControlFlowNode for Subscript | re_bad.py:25:35:25:48 | ControlFlowNode for unsafe_pattern |
+| re_bad.py:36:22:36:28 | ControlFlowNode for request | re_bad.py:36:22:36:33 | ControlFlowNode for Attribute |
+| re_bad.py:36:22:36:33 | ControlFlowNode for Attribute | re_bad.py:36:22:36:44 | ControlFlowNode for Subscript |
+| re_bad.py:36:22:36:44 | ControlFlowNode for Subscript | re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern |
+nodes
+| re_bad.py:13:22:13:28 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| re_bad.py:13:22:13:33 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| re_bad.py:13:22:13:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern | semmle.label | ControlFlowNode for unsafe_pattern |
+| re_bad.py:24:22:24:28 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| re_bad.py:24:22:24:33 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| re_bad.py:24:22:24:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| re_bad.py:25:35:25:48 | ControlFlowNode for unsafe_pattern | semmle.label | ControlFlowNode for unsafe_pattern |
+| re_bad.py:36:22:36:28 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| re_bad.py:36:22:36:33 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| re_bad.py:36:22:36:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern | semmle.label | ControlFlowNode for unsafe_pattern |
+subpaths
+#select
+| re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern | re_bad.py:13:22:13:28 | ControlFlowNode for request | re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern | $@ regular expression is constructed from a $@ and executed by $@. | re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern | This | re_bad.py:13:22:13:28 | ControlFlowNode for request | user-provided value | re_bad.py:14:5:14:33 | ControlFlowNode for Attribute() | re.search |
+| re_bad.py:25:35:25:48 | ControlFlowNode for unsafe_pattern | re_bad.py:24:22:24:28 | ControlFlowNode for request | re_bad.py:25:35:25:48 | ControlFlowNode for unsafe_pattern | $@ regular expression is constructed from a $@ and executed by $@. | re_bad.py:25:35:25:48 | ControlFlowNode for unsafe_pattern | This | re_bad.py:24:22:24:28 | ControlFlowNode for request | user-provided value | re_bad.py:26:5:26:31 | ControlFlowNode for Attribute() | re.search |
+| re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern | re_bad.py:36:22:36:28 | ControlFlowNode for request | re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern | $@ regular expression is constructed from a $@ and executed by $@. | re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern | This | re_bad.py:36:22:36:28 | ControlFlowNode for request | user-provided value | re_bad.py:37:5:37:41 | ControlFlowNode for Attribute() | re.search |

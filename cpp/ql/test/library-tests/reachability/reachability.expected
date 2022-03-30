@@ -1,0 +1,29 @@
+| reachability.c:7:5:7:5 | x |
+| reachability.c:7:5:7:9 | ... = ... |
+| reachability.c:7:5:7:10 | ExprStmt |
+| reachability.c:7:9:7:9 | 2 |
+| reachability.c:13:12:15:5 | { ... } |
+| reachability.c:14:9:14:9 | x |
+| reachability.c:14:9:14:13 | ... = ... |
+| reachability.c:14:9:14:14 | ExprStmt |
+| reachability.c:14:13:14:13 | 2 |
+| reachability.c:17:12:19:5 | { ... } |
+| reachability.c:18:9:18:9 | x |
+| reachability.c:18:9:18:13 | ... = ... |
+| reachability.c:18:9:18:14 | ExprStmt |
+| reachability.c:18:13:18:13 | 1 |
+| reachability.c:24:6:24:7 | f3 |
+| reachability.c:31:5:31:5 | x |
+| reachability.c:31:5:31:9 | ... = ... |
+| reachability.c:31:5:31:10 | ExprStmt |
+| reachability.c:31:9:31:9 | 3 |
+| reachability.c:45:6:45:7 | f5 |
+| reachability.c:52:5:52:5 | x |
+| reachability.c:52:5:52:9 | ... = ... |
+| reachability.c:52:5:52:10 | ExprStmt |
+| reachability.c:52:9:52:9 | 3 |
+| reachability.c:67:6:67:7 | f7 |
+| reachability.c:74:5:74:12 | default:  |
+| reachability.c:75:9:75:15 | return ... |
+| reachability.c:79:6:79:7 | f8 |
+| reachability.c:84:5:84:11 | return ... |

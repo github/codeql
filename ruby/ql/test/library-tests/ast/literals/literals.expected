@@ -1,0 +1,954 @@
+allLiterals
+| literals.rb:2:1:2:3 | nil | NilLiteral | nil |
+| literals.rb:3:1:3:3 | NIL | NilLiteral | nil |
+| literals.rb:4:1:4:5 | false | BooleanLiteral | false |
+| literals.rb:5:1:5:5 | FALSE | BooleanLiteral | false |
+| literals.rb:6:1:6:4 | true | BooleanLiteral | true |
+| literals.rb:7:1:7:4 | TRUE | BooleanLiteral | true |
+| literals.rb:10:1:10:4 | 1234 | IntegerLiteral | 1234 |
+| literals.rb:11:1:11:5 | 5_678 | IntegerLiteral | 5678 |
+| literals.rb:12:1:12:1 | 0 | IntegerLiteral | 0 |
+| literals.rb:13:1:13:5 | 0d900 | IntegerLiteral | 0 |
+| literals.rb:14:1:14:10 | 2147483647 | IntegerLiteral | 2147483647 |
+| literals.rb:15:1:15:10 | 2147483648 | IntegerLiteral | <none> |
+| literals.rb:18:1:18:6 | 0x1234 | IntegerLiteral | 4660 |
+| literals.rb:19:1:19:6 | 0xbeef | IntegerLiteral | 48879 |
+| literals.rb:20:1:20:7 | 0xF0_0D | IntegerLiteral | 61453 |
+| literals.rb:21:1:21:22 | 0x000000000000000000ff | IntegerLiteral | 255 |
+| literals.rb:22:1:22:11 | 0x7FFF_FFFF | IntegerLiteral | 2147483647 |
+| literals.rb:23:1:23:10 | 0x80000000 | IntegerLiteral | <none> |
+| literals.rb:24:1:24:10 | 0xdeadbeef | IntegerLiteral | <none> |
+| literals.rb:25:1:25:11 | 0xF00D_face | IntegerLiteral | <none> |
+| literals.rb:28:1:28:4 | 0123 | IntegerLiteral | 83 |
+| literals.rb:29:1:29:5 | 0o234 | IntegerLiteral | 156 |
+| literals.rb:30:1:30:6 | 0O45_6 | IntegerLiteral | 302 |
+| literals.rb:31:1:31:31 | 0000000000000000000000000000010 | IntegerLiteral | 8 |
+| literals.rb:32:1:32:12 | 017777777777 | IntegerLiteral | 2147483647 |
+| literals.rb:33:1:33:12 | 020000000000 | IntegerLiteral | <none> |
+| literals.rb:36:1:36:10 | 0b10010100 | IntegerLiteral | 148 |
+| literals.rb:37:1:37:11 | 0B011_01101 | IntegerLiteral | 109 |
+| literals.rb:38:1:38:43 | 0b00000000000000000000000000000000000000011 | IntegerLiteral | 3 |
+| literals.rb:39:1:39:34 | 0b01111111111111111111111111111111 | IntegerLiteral | 2147483647 |
+| literals.rb:40:1:40:34 | 0b10000000000000000000000000000000 | IntegerLiteral | <none> |
+| literals.rb:43:1:43:5 | 12.34 | FloatLiteral | 12.34 |
+| literals.rb:44:1:44:7 | 1234e-2 | FloatLiteral | 12.34 |
+| literals.rb:45:1:45:7 | 1.234E1 | FloatLiteral | 12.34 |
+| literals.rb:48:1:48:3 | 23r | RationalLiteral | 23/1 |
+| literals.rb:49:1:49:5 | 9.85r | RationalLiteral | 985/100 |
+| literals.rb:52:1:52:2 | 2i | ComplexLiteral | 0+2i |
+| literals.rb:59:1:59:2 | "" | StringLiteral |  |
+| literals.rb:60:1:60:2 | "" | StringLiteral |  |
+| literals.rb:61:1:61:7 | "hello" | StringLiteral | hello |
+| literals.rb:62:1:62:9 | "goodbye" | StringLiteral | goodbye |
+| literals.rb:63:1:63:30 | "string with escaped \\" quote" | StringLiteral | string with escaped " quote |
+| literals.rb:64:1:64:21 | "string with " quote" | StringLiteral | string with " quote |
+| literals.rb:65:1:65:14 | "foo bar baz" | StringLiteral | foo bar baz |
+| literals.rb:66:1:66:15 | "foo bar baz" | StringLiteral | foo bar baz |
+| literals.rb:67:1:67:20 | "foo ' bar " baz'" | StringLiteral | foo ' bar " baz' |
+| literals.rb:68:1:68:20 | "FOO ' BAR " BAZ'" | StringLiteral | FOO ' BAR " BAZ' |
+| literals.rb:69:1:69:12 | "foo\\ bar" | StringLiteral | foo\\ bar |
+| literals.rb:70:1:70:12 | "foo\\ bar" | StringLiteral | foo bar |
+| literals.rb:71:1:71:20 | "2 + 2 = #{...}" | StringLiteral | 2 + 2 = 4 |
+| literals.rb:71:13:71:13 | 2 | IntegerLiteral | 2 |
+| literals.rb:71:17:71:17 | 2 | IntegerLiteral | 2 |
+| literals.rb:72:1:72:22 | "3 + 4 = #{...}" | StringLiteral | 3 + 4 = 7 |
+| literals.rb:72:15:72:15 | 3 | IntegerLiteral | 3 |
+| literals.rb:72:19:72:19 | 4 | IntegerLiteral | 4 |
+| literals.rb:73:1:73:20 | "2 + 2 = #{ 2 + 2 }" | StringLiteral | 2 + 2 = #{ 2 + 2 } |
+| literals.rb:74:1:74:22 | "3 + 4 = #{ 3 + 4 }" | StringLiteral | 3 + 4 = #{ 3 + 4 } |
+| literals.rb:75:1:75:5 | "foo" | StringLiteral | foo |
+| literals.rb:75:7:75:11 | "bar" | StringLiteral | bar |
+| literals.rb:75:13:75:17 | "baz" | StringLiteral | baz |
+| literals.rb:76:1:76:7 | "foo" | StringLiteral | foo |
+| literals.rb:76:9:76:13 | "bar" | StringLiteral | bar |
+| literals.rb:76:15:76:19 | "baz" | StringLiteral | baz |
+| literals.rb:77:1:77:5 | "foo" | StringLiteral | foo |
+| literals.rb:77:7:77:21 | "bar#{...}" | StringLiteral | bar1 |
+| literals.rb:77:14:77:14 | 1 | IntegerLiteral | 1 |
+| literals.rb:77:18:77:18 | 1 | IntegerLiteral | 1 |
+| literals.rb:77:23:77:27 | "baz" | StringLiteral | baz |
+| literals.rb:78:1:78:35 | "foo #{...} qux" | StringLiteral | foo bar 5 baz qux |
+| literals.rb:78:9:78:28 | "bar #{...} baz" | StringLiteral | bar 5 baz |
+| literals.rb:78:17:78:17 | 2 | IntegerLiteral | 2 |
+| literals.rb:78:21:78:21 | 3 | IntegerLiteral | 3 |
+| literals.rb:79:1:79:22 | "foo #{...}" | StringLiteral | foo 10 |
+| literals.rb:79:17:79:17 | 1 | IntegerLiteral | 1 |
+| literals.rb:79:19:79:19 | 9 | IntegerLiteral | 9 |
+| literals.rb:80:7:80:11 | "bar" | StringLiteral | bar |
+| literals.rb:81:7:81:11 | "bar" | StringLiteral | bar |
+| literals.rb:82:1:82:14 | "foo #{...}" | StringLiteral | foo bar |
+| literals.rb:83:1:83:14 | "foo #{...}" | StringLiteral | foo bar |
+| literals.rb:86:1:86:2 | ?x | CharacterLiteral | ?x |
+| literals.rb:87:1:87:3 | ?\\n | CharacterLiteral | ?\\n |
+| literals.rb:88:1:88:3 | ?\\s | CharacterLiteral | ?\\s |
+| literals.rb:89:1:89:3 | ?\\\\ | CharacterLiteral | ?\\\\ |
+| literals.rb:90:1:90:7 | ?\\u{58} | CharacterLiteral | ?\\u{58} |
+| literals.rb:91:1:91:5 | ?\\C-a | CharacterLiteral | ?\\C-a |
+| literals.rb:92:1:92:5 | ?\\M-a | CharacterLiteral | ?\\M-a |
+| literals.rb:93:1:93:8 | ?\\M-\\C-a | CharacterLiteral | ?\\M-\\C-a |
+| literals.rb:94:1:94:8 | ?\\C-\\M-a | CharacterLiteral | ?\\C-\\M-a |
+| literals.rb:97:1:97:3 | :"" | SymbolLiteral | : |
+| literals.rb:98:1:98:6 | :hello | SymbolLiteral | :hello |
+| literals.rb:99:1:99:10 | :"foo bar" | SymbolLiteral | :foo bar |
+| literals.rb:100:1:100:10 | :"bar baz" | SymbolLiteral | :bar baz |
+| literals.rb:101:1:101:14 | {...} | HashLiteral | <none> |
+| literals.rb:101:3:101:5 | :foo | SymbolLiteral | :foo |
+| literals.rb:101:8:101:12 | "bar" | StringLiteral | bar |
+| literals.rb:102:1:102:10 | :"wibble" | SymbolLiteral | :wibble |
+| literals.rb:103:1:103:17 | :"wibble wobble" | SymbolLiteral | :wibble wobble |
+| literals.rb:104:1:104:30 | :"foo_#{...}_#{...}_#{...}" | SymbolLiteral | :foo_4_bar_bar |
+| literals.rb:104:10:104:10 | 2 | IntegerLiteral | 2 |
+| literals.rb:104:14:104:14 | 2 | IntegerLiteral | 2 |
+| literals.rb:105:1:105:30 | :"foo_#{ 2 + 2}_#{bar}_#{BAR}" | SymbolLiteral | :foo_#{ 2 + 2}_#{bar}_#{BAR} |
+| literals.rb:106:1:106:18 | :"foo_#{ 3 - 2 }" | SymbolLiteral | :foo_#{ 3 - 2 } |
+| literals.rb:109:1:109:2 | [...] | ArrayLiteral | <none> |
+| literals.rb:110:1:110:9 | [...] | ArrayLiteral | <none> |
+| literals.rb:110:2:110:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:110:5:110:5 | 2 | IntegerLiteral | 2 |
+| literals.rb:110:8:110:8 | 3 | IntegerLiteral | 3 |
+| literals.rb:111:1:111:14 | [...] | ArrayLiteral | <none> |
+| literals.rb:111:2:111:2 | 4 | IntegerLiteral | 4 |
+| literals.rb:111:5:111:5 | 5 | IntegerLiteral | 5 |
+| literals.rb:111:8:111:9 | 12 | IntegerLiteral | 12 |
+| literals.rb:111:13:111:13 | 2 | IntegerLiteral | 2 |
+| literals.rb:112:1:112:11 | [...] | ArrayLiteral | <none> |
+| literals.rb:112:2:112:2 | 7 | IntegerLiteral | 7 |
+| literals.rb:112:5:112:10 | [...] | ArrayLiteral | <none> |
+| literals.rb:112:6:112:6 | 8 | IntegerLiteral | 8 |
+| literals.rb:112:9:112:9 | 9 | IntegerLiteral | 9 |
+| literals.rb:115:1:115:4 | %w(...) | ArrayLiteral | <none> |
+| literals.rb:116:1:116:15 | %w(...) | ArrayLiteral | <none> |
+| literals.rb:116:4:116:6 | "foo" | StringLiteral | foo |
+| literals.rb:116:8:116:10 | "bar" | StringLiteral | bar |
+| literals.rb:116:12:116:14 | "baz" | StringLiteral | baz |
+| literals.rb:117:1:117:15 | %w(...) | ArrayLiteral | <none> |
+| literals.rb:117:4:117:6 | "foo" | StringLiteral | foo |
+| literals.rb:117:8:117:10 | "bar" | StringLiteral | bar |
+| literals.rb:117:12:117:14 | "baz" | StringLiteral | baz |
+| literals.rb:118:1:118:35 | %w(...) | ArrayLiteral | <none> |
+| literals.rb:118:4:118:6 | "foo" | StringLiteral | foo |
+| literals.rb:118:8:118:16 | "bar#{...}" | StringLiteral | bar2 |
+| literals.rb:118:13:118:13 | 1 | IntegerLiteral | 1 |
+| literals.rb:118:15:118:15 | 1 | IntegerLiteral | 1 |
+| literals.rb:118:18:118:23 | "#{...}" | StringLiteral | bar |
+| literals.rb:118:25:118:30 | "#{...}" | StringLiteral | bar |
+| literals.rb:118:32:118:34 | "baz" | StringLiteral | baz |
+| literals.rb:119:1:119:35 | %w(...) | ArrayLiteral | <none> |
+| literals.rb:119:4:119:6 | "foo" | StringLiteral | foo |
+| literals.rb:119:8:119:16 | "bar#{1+1}" | StringLiteral | bar#{1+1} |
+| literals.rb:119:18:119:23 | "#{bar}" | StringLiteral | #{bar} |
+| literals.rb:119:25:119:30 | "#{BAR}" | StringLiteral | #{BAR} |
+| literals.rb:119:32:119:34 | "baz" | StringLiteral | baz |
+| literals.rb:122:1:122:4 | %i(...) | ArrayLiteral | <none> |
+| literals.rb:123:1:123:15 | %i(...) | ArrayLiteral | <none> |
+| literals.rb:123:4:123:6 | :"foo" | SymbolLiteral | :foo |
+| literals.rb:123:8:123:10 | :"bar" | SymbolLiteral | :bar |
+| literals.rb:123:12:123:14 | :"baz" | SymbolLiteral | :baz |
+| literals.rb:124:1:124:15 | %i(...) | ArrayLiteral | <none> |
+| literals.rb:124:4:124:6 | :"foo" | SymbolLiteral | :foo |
+| literals.rb:124:8:124:10 | :"bar" | SymbolLiteral | :bar |
+| literals.rb:124:12:124:14 | :"baz" | SymbolLiteral | :baz |
+| literals.rb:125:1:125:39 | %i(...) | ArrayLiteral | <none> |
+| literals.rb:125:4:125:6 | :"foo" | SymbolLiteral | :foo |
+| literals.rb:125:8:125:20 | :"bar#{...}" | SymbolLiteral | :bar6 |
+| literals.rb:125:14:125:14 | 2 | IntegerLiteral | 2 |
+| literals.rb:125:18:125:18 | 4 | IntegerLiteral | 4 |
+| literals.rb:125:22:125:27 | :"#{...}" | SymbolLiteral | :bar |
+| literals.rb:125:29:125:34 | :"#{...}" | SymbolLiteral | :bar |
+| literals.rb:125:36:125:38 | :"baz" | SymbolLiteral | :baz |
+| literals.rb:126:1:126:39 | %i(...) | ArrayLiteral | <none> |
+| literals.rb:126:4:126:6 | :"foo" | SymbolLiteral | :foo |
+| literals.rb:126:8:126:12 | :"bar#{" | SymbolLiteral | :bar#{ |
+| literals.rb:126:14:126:14 | :"2" | SymbolLiteral | :2 |
+| literals.rb:126:16:126:16 | :"+" | SymbolLiteral | :+ |
+| literals.rb:126:18:126:18 | :"4" | SymbolLiteral | :4 |
+| literals.rb:126:20:126:20 | :"}" | SymbolLiteral | :} |
+| literals.rb:126:22:126:27 | :"#{bar}" | SymbolLiteral | :#{bar} |
+| literals.rb:126:29:126:34 | :"#{BAR}" | SymbolLiteral | :#{BAR} |
+| literals.rb:126:36:126:38 | :"baz" | SymbolLiteral | :baz |
+| literals.rb:129:1:129:2 | {...} | HashLiteral | <none> |
+| literals.rb:130:1:130:33 | {...} | HashLiteral | <none> |
+| literals.rb:130:3:130:5 | :foo | SymbolLiteral | :foo |
+| literals.rb:130:8:130:8 | 1 | IntegerLiteral | 1 |
+| literals.rb:130:11:130:14 | :bar | SymbolLiteral | :bar |
+| literals.rb:130:19:130:19 | 2 | IntegerLiteral | 2 |
+| literals.rb:130:22:130:26 | "baz" | StringLiteral | baz |
+| literals.rb:130:31:130:31 | 3 | IntegerLiteral | 3 |
+| literals.rb:131:1:131:17 | {...} | HashLiteral | <none> |
+| literals.rb:131:3:131:5 | :foo | SymbolLiteral | :foo |
+| literals.rb:131:8:131:8 | 7 | IntegerLiteral | 7 |
+| literals.rb:134:2:134:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:134:2:134:6 | _ .. _ | RangeLiteral | <none> |
+| literals.rb:134:5:134:6 | 10 | IntegerLiteral | 10 |
+| literals.rb:135:2:135:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:135:2:135:7 | _ ... _ | RangeLiteral | <none> |
+| literals.rb:135:6:135:7 | 10 | IntegerLiteral | 10 |
+| literals.rb:136:2:136:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:136:2:136:7 | _ .. _ | RangeLiteral | <none> |
+| literals.rb:136:7:136:7 | 0 | IntegerLiteral | 0 |
+| literals.rb:137:2:137:11 | _ .. _ | RangeLiteral | <none> |
+| literals.rb:137:9:137:9 | 2 | IntegerLiteral | 2 |
+| literals.rb:137:11:137:11 | 3 | IntegerLiteral | 3 |
+| literals.rb:138:2:138:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:138:2:138:4 | _ .. _ | RangeLiteral | <none> |
+| literals.rb:139:2:139:4 | _ .. _ | RangeLiteral | <none> |
+| literals.rb:139:4:139:4 | 1 | IntegerLiteral | 1 |
+| literals.rb:140:2:140:2 | 0 | IntegerLiteral | 0 |
+| literals.rb:140:2:140:4 | _ .. _ | RangeLiteral | <none> |
+| literals.rb:140:6:140:6 | 1 | IntegerLiteral | 1 |
+| literals.rb:143:1:143:7 | `ls -l` | SubshellLiteral | ls -l |
+| literals.rb:144:1:144:9 | `ls -l` | SubshellLiteral | ls -l |
+| literals.rb:145:1:145:32 | `du -d #{...} #{...} #{...}` | SubshellLiteral | du -d 2 bar bar |
+| literals.rb:145:11:145:11 | 1 | IntegerLiteral | 1 |
+| literals.rb:145:15:145:15 | 1 | IntegerLiteral | 1 |
+| literals.rb:146:1:146:20 | `du -d #{...}` | SubshellLiteral | du -d 1 |
+| literals.rb:146:13:146:13 | 5 | IntegerLiteral | 5 |
+| literals.rb:146:17:146:17 | 4 | IntegerLiteral | 4 |
+| literals.rb:149:1:149:2 | // | RegExpLiteral |  |
+| literals.rb:150:1:150:5 | /foo/ | RegExpLiteral | foo |
+| literals.rb:151:1:151:6 | /foo/ | RegExpLiteral | foo |
+| literals.rb:152:1:152:13 | /foo+\\sbar\\S/ | RegExpLiteral | foo+\\sbar\\S |
+| literals.rb:153:1:153:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | foo2barbarbar |
+| literals.rb:153:8:153:8 | 1 | IntegerLiteral | 1 |
+| literals.rb:153:12:153:12 | 1 | IntegerLiteral | 1 |
+| literals.rb:154:1:154:8 | /foo/ | RegExpLiteral | <none> |
+| literals.rb:155:1:155:4 | // | RegExpLiteral |  |
+| literals.rb:156:1:156:7 | /foo/ | RegExpLiteral | foo |
+| literals.rb:157:1:157:8 | /foo/ | RegExpLiteral | foo |
+| literals.rb:158:1:158:15 | /foo+\\sbar\\S/ | RegExpLiteral | foo+\\sbar\\S |
+| literals.rb:159:1:159:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | foo2barbarbar |
+| literals.rb:159:10:159:10 | 1 | IntegerLiteral | 1 |
+| literals.rb:159:14:159:14 | 1 | IntegerLiteral | 1 |
+| literals.rb:160:1:160:10 | /foo/ | RegExpLiteral | <none> |
+| literals.rb:163:1:163:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | StringLiteral | abcdefghijklmnopqrstuvwxyzabcdef |
+| literals.rb:164:1:164:35 | "foobarfoobarfoobarfoobarfooba..." | StringLiteral | foobarfoobarfoobarfoobarfoobarfoo |
+| literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | foobar\\foobar\\foobar\\foobar\\foobar |
+| literals.rb:168:9:168:13 | <<SQL | HereDoc | \nselect * from table\n |
+| literals.rb:168:16:168:20 | <<SQL | HereDoc | <none> |
+| literals.rb:175:11:175:16 | <<-BLA | HereDoc | \nsome text\nand some more\n   |
+| literals.rb:180:9:180:19 | <<~SQUIGGLY | HereDoc | \n   indented stuff\n |
+| literals.rb:184:9:184:15 | <<"DOC" | HereDoc | <none> |
+| literals.rb:189:9:189:15 | <<'DOC' | HereDoc | <none> |
+| literals.rb:193:10:193:19 | <<`SCRIPT` | HereDoc | \n cat file.txt\n |
+| literals.rb:197:5:197:6 | 42 | IntegerLiteral | 42 |
+| literals.rb:198:1:198:9 | {...} | HashLiteral | <none> |
+| literals.rb:198:2:198:2 | :x | SymbolLiteral | :x |
+| literals.rb:198:6:198:6 | :y | SymbolLiteral | :y |
+| literals.rb:198:8:198:8 | 5 | IntegerLiteral | 5 |
+| literals.rb:199:1:199:9 | {...} | HashLiteral | <none> |
+| literals.rb:199:2:199:2 | :y | SymbolLiteral | :y |
+| literals.rb:199:7:199:7 | :Z | SymbolLiteral | :Z |
+stringlikeLiterals
+| literals.rb:59:1:59:2 | "" |  |
+| literals.rb:60:1:60:2 | "" |  |
+| literals.rb:61:1:61:7 | "hello" | hello |
+| literals.rb:62:1:62:9 | "goodbye" | goodbye |
+| literals.rb:63:1:63:30 | "string with escaped \\" quote" | string with escaped " quote |
+| literals.rb:64:1:64:21 | "string with " quote" | string with " quote |
+| literals.rb:65:1:65:14 | "foo bar baz" | foo bar baz |
+| literals.rb:66:1:66:15 | "foo bar baz" | foo bar baz |
+| literals.rb:67:1:67:20 | "foo ' bar " baz'" | foo ' bar " baz' |
+| literals.rb:68:1:68:20 | "FOO ' BAR " BAZ'" | FOO ' BAR " BAZ' |
+| literals.rb:69:1:69:12 | "foo\\ bar" | foo\\ bar |
+| literals.rb:70:1:70:12 | "foo\\ bar" | foo bar |
+| literals.rb:71:1:71:20 | "2 + 2 = #{...}" | 2 + 2 = 4 |
+| literals.rb:72:1:72:22 | "3 + 4 = #{...}" | 3 + 4 = 7 |
+| literals.rb:73:1:73:20 | "2 + 2 = #{ 2 + 2 }" | 2 + 2 = #{ 2 + 2 } |
+| literals.rb:74:1:74:22 | "3 + 4 = #{ 3 + 4 }" | 3 + 4 = #{ 3 + 4 } |
+| literals.rb:75:1:75:5 | "foo" | foo |
+| literals.rb:75:7:75:11 | "bar" | bar |
+| literals.rb:75:13:75:17 | "baz" | baz |
+| literals.rb:76:1:76:7 | "foo" | foo |
+| literals.rb:76:9:76:13 | "bar" | bar |
+| literals.rb:76:15:76:19 | "baz" | baz |
+| literals.rb:77:1:77:5 | "foo" | foo |
+| literals.rb:77:7:77:21 | "bar#{...}" | bar1 |
+| literals.rb:77:23:77:27 | "baz" | baz |
+| literals.rb:78:1:78:35 | "foo #{...} qux" | foo bar 5 baz qux |
+| literals.rb:78:9:78:28 | "bar #{...} baz" | bar 5 baz |
+| literals.rb:79:1:79:22 | "foo #{...}" | foo 10 |
+| literals.rb:80:7:80:11 | "bar" | bar |
+| literals.rb:81:7:81:11 | "bar" | bar |
+| literals.rb:82:1:82:14 | "foo #{...}" | foo bar |
+| literals.rb:83:1:83:14 | "foo #{...}" | foo bar |
+| literals.rb:97:1:97:3 | :"" | : |
+| literals.rb:98:1:98:6 | :hello | :hello |
+| literals.rb:99:1:99:10 | :"foo bar" | :foo bar |
+| literals.rb:100:1:100:10 | :"bar baz" | :bar baz |
+| literals.rb:101:3:101:5 | :foo | :foo |
+| literals.rb:101:8:101:12 | "bar" | bar |
+| literals.rb:102:1:102:10 | :"wibble" | :wibble |
+| literals.rb:103:1:103:17 | :"wibble wobble" | :wibble wobble |
+| literals.rb:104:1:104:30 | :"foo_#{...}_#{...}_#{...}" | :foo_4_bar_bar |
+| literals.rb:105:1:105:30 | :"foo_#{ 2 + 2}_#{bar}_#{BAR}" | :foo_#{ 2 + 2}_#{bar}_#{BAR} |
+| literals.rb:106:1:106:18 | :"foo_#{ 3 - 2 }" | :foo_#{ 3 - 2 } |
+| literals.rb:116:4:116:6 | "foo" | foo |
+| literals.rb:116:8:116:10 | "bar" | bar |
+| literals.rb:116:12:116:14 | "baz" | baz |
+| literals.rb:117:4:117:6 | "foo" | foo |
+| literals.rb:117:8:117:10 | "bar" | bar |
+| literals.rb:117:12:117:14 | "baz" | baz |
+| literals.rb:118:4:118:6 | "foo" | foo |
+| literals.rb:118:8:118:16 | "bar#{...}" | bar2 |
+| literals.rb:118:18:118:23 | "#{...}" | bar |
+| literals.rb:118:25:118:30 | "#{...}" | bar |
+| literals.rb:118:32:118:34 | "baz" | baz |
+| literals.rb:119:4:119:6 | "foo" | foo |
+| literals.rb:119:8:119:16 | "bar#{1+1}" | bar#{1+1} |
+| literals.rb:119:18:119:23 | "#{bar}" | #{bar} |
+| literals.rb:119:25:119:30 | "#{BAR}" | #{BAR} |
+| literals.rb:119:32:119:34 | "baz" | baz |
+| literals.rb:123:4:123:6 | :"foo" | :foo |
+| literals.rb:123:8:123:10 | :"bar" | :bar |
+| literals.rb:123:12:123:14 | :"baz" | :baz |
+| literals.rb:124:4:124:6 | :"foo" | :foo |
+| literals.rb:124:8:124:10 | :"bar" | :bar |
+| literals.rb:124:12:124:14 | :"baz" | :baz |
+| literals.rb:125:4:125:6 | :"foo" | :foo |
+| literals.rb:125:8:125:20 | :"bar#{...}" | :bar6 |
+| literals.rb:125:22:125:27 | :"#{...}" | :bar |
+| literals.rb:125:29:125:34 | :"#{...}" | :bar |
+| literals.rb:125:36:125:38 | :"baz" | :baz |
+| literals.rb:126:4:126:6 | :"foo" | :foo |
+| literals.rb:126:8:126:12 | :"bar#{" | :bar#{ |
+| literals.rb:126:14:126:14 | :"2" | :2 |
+| literals.rb:126:16:126:16 | :"+" | :+ |
+| literals.rb:126:18:126:18 | :"4" | :4 |
+| literals.rb:126:20:126:20 | :"}" | :} |
+| literals.rb:126:22:126:27 | :"#{bar}" | :#{bar} |
+| literals.rb:126:29:126:34 | :"#{BAR}" | :#{BAR} |
+| literals.rb:126:36:126:38 | :"baz" | :baz |
+| literals.rb:130:3:130:5 | :foo | :foo |
+| literals.rb:130:11:130:14 | :bar | :bar |
+| literals.rb:130:22:130:26 | "baz" | baz |
+| literals.rb:131:3:131:5 | :foo | :foo |
+| literals.rb:143:1:143:7 | `ls -l` | ls -l |
+| literals.rb:144:1:144:9 | `ls -l` | ls -l |
+| literals.rb:145:1:145:32 | `du -d #{...} #{...} #{...}` | du -d 2 bar bar |
+| literals.rb:146:1:146:20 | `du -d #{...}` | du -d 1 |
+| literals.rb:149:1:149:2 | // |  |
+| literals.rb:150:1:150:5 | /foo/ | foo |
+| literals.rb:151:1:151:6 | /foo/ | foo |
+| literals.rb:152:1:152:13 | /foo+\\sbar\\S/ | foo+\\sbar\\S |
+| literals.rb:153:1:153:30 | /foo#{...}bar#{...}#{...}/ | foo2barbarbar |
+| literals.rb:154:1:154:8 | /foo/ | <none> |
+| literals.rb:155:1:155:4 | // |  |
+| literals.rb:156:1:156:7 | /foo/ | foo |
+| literals.rb:157:1:157:8 | /foo/ | foo |
+| literals.rb:158:1:158:15 | /foo+\\sbar\\S/ | foo+\\sbar\\S |
+| literals.rb:159:1:159:32 | /foo#{...}bar#{...}#{...}/ | foo2barbarbar |
+| literals.rb:160:1:160:10 | /foo/ | <none> |
+| literals.rb:163:1:163:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | abcdefghijklmnopqrstuvwxyzabcdef |
+| literals.rb:164:1:164:35 | "foobarfoobarfoobarfoobarfooba..." | foobarfoobarfoobarfoobarfoobarfoo |
+| literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | foobar\\foobar\\foobar\\foobar\\foobar |
+| literals.rb:168:9:168:13 | <<SQL | \nselect * from table\n |
+| literals.rb:168:16:168:20 | <<SQL | <none> |
+| literals.rb:175:11:175:16 | <<-BLA | \nsome text\nand some more\n   |
+| literals.rb:180:9:180:19 | <<~SQUIGGLY | \n   indented stuff\n |
+| literals.rb:184:9:184:15 | <<"DOC" | <none> |
+| literals.rb:189:9:189:15 | <<'DOC' | <none> |
+| literals.rb:193:10:193:19 | <<`SCRIPT` | \n cat file.txt\n |
+| literals.rb:198:2:198:2 | :x | :x |
+| literals.rb:198:6:198:6 | :y | :y |
+| literals.rb:199:2:199:2 | :y | :y |
+| literals.rb:199:7:199:7 | :Z | :Z |
+stringLiterals
+| literals.rb:59:1:59:2 | "" |  |
+| literals.rb:60:1:60:2 | "" |  |
+| literals.rb:61:1:61:7 | "hello" | hello |
+| literals.rb:62:1:62:9 | "goodbye" | goodbye |
+| literals.rb:63:1:63:30 | "string with escaped \\" quote" | string with escaped " quote |
+| literals.rb:64:1:64:21 | "string with " quote" | string with " quote |
+| literals.rb:65:1:65:14 | "foo bar baz" | foo bar baz |
+| literals.rb:66:1:66:15 | "foo bar baz" | foo bar baz |
+| literals.rb:67:1:67:20 | "foo ' bar " baz'" | foo ' bar " baz' |
+| literals.rb:68:1:68:20 | "FOO ' BAR " BAZ'" | FOO ' BAR " BAZ' |
+| literals.rb:69:1:69:12 | "foo\\ bar" | foo\\ bar |
+| literals.rb:70:1:70:12 | "foo\\ bar" | foo bar |
+| literals.rb:71:1:71:20 | "2 + 2 = #{...}" | 2 + 2 = 4 |
+| literals.rb:72:1:72:22 | "3 + 4 = #{...}" | 3 + 4 = 7 |
+| literals.rb:73:1:73:20 | "2 + 2 = #{ 2 + 2 }" | 2 + 2 = #{ 2 + 2 } |
+| literals.rb:74:1:74:22 | "3 + 4 = #{ 3 + 4 }" | 3 + 4 = #{ 3 + 4 } |
+| literals.rb:75:1:75:5 | "foo" | foo |
+| literals.rb:75:7:75:11 | "bar" | bar |
+| literals.rb:75:13:75:17 | "baz" | baz |
+| literals.rb:76:1:76:7 | "foo" | foo |
+| literals.rb:76:9:76:13 | "bar" | bar |
+| literals.rb:76:15:76:19 | "baz" | baz |
+| literals.rb:77:1:77:5 | "foo" | foo |
+| literals.rb:77:7:77:21 | "bar#{...}" | bar1 |
+| literals.rb:77:23:77:27 | "baz" | baz |
+| literals.rb:78:1:78:35 | "foo #{...} qux" | foo bar 5 baz qux |
+| literals.rb:78:9:78:28 | "bar #{...} baz" | bar 5 baz |
+| literals.rb:79:1:79:22 | "foo #{...}" | foo 10 |
+| literals.rb:80:7:80:11 | "bar" | bar |
+| literals.rb:81:7:81:11 | "bar" | bar |
+| literals.rb:82:1:82:14 | "foo #{...}" | foo bar |
+| literals.rb:83:1:83:14 | "foo #{...}" | foo bar |
+| literals.rb:101:8:101:12 | "bar" | bar |
+| literals.rb:116:4:116:6 | "foo" | foo |
+| literals.rb:116:8:116:10 | "bar" | bar |
+| literals.rb:116:12:116:14 | "baz" | baz |
+| literals.rb:117:4:117:6 | "foo" | foo |
+| literals.rb:117:8:117:10 | "bar" | bar |
+| literals.rb:117:12:117:14 | "baz" | baz |
+| literals.rb:118:4:118:6 | "foo" | foo |
+| literals.rb:118:8:118:16 | "bar#{...}" | bar2 |
+| literals.rb:118:18:118:23 | "#{...}" | bar |
+| literals.rb:118:25:118:30 | "#{...}" | bar |
+| literals.rb:118:32:118:34 | "baz" | baz |
+| literals.rb:119:4:119:6 | "foo" | foo |
+| literals.rb:119:8:119:16 | "bar#{1+1}" | bar#{1+1} |
+| literals.rb:119:18:119:23 | "#{bar}" | #{bar} |
+| literals.rb:119:25:119:30 | "#{BAR}" | #{BAR} |
+| literals.rb:119:32:119:34 | "baz" | baz |
+| literals.rb:130:22:130:26 | "baz" | baz |
+| literals.rb:163:1:163:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | abcdefghijklmnopqrstuvwxyzabcdef |
+| literals.rb:164:1:164:35 | "foobarfoobarfoobarfoobarfooba..." | foobarfoobarfoobarfoobarfoobarfoo |
+| literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | foobar\\foobar\\foobar\\foobar\\foobar |
+regExpLiterals
+| literals.rb:149:1:149:2 | // |  |  |
+| literals.rb:150:1:150:5 | /foo/ | foo |  |
+| literals.rb:151:1:151:6 | /foo/ | foo | i |
+| literals.rb:152:1:152:13 | /foo+\\sbar\\S/ | foo+\\sbar\\S |  |
+| literals.rb:153:1:153:30 | /foo#{...}bar#{...}#{...}/ | foo2barbarbar |  |
+| literals.rb:154:1:154:8 | /foo/ | <none> | oxm |
+| literals.rb:155:1:155:4 | // |  |  |
+| literals.rb:156:1:156:7 | /foo/ | foo |  |
+| literals.rb:157:1:157:8 | /foo/ | foo | i |
+| literals.rb:158:1:158:15 | /foo+\\sbar\\S/ | foo+\\sbar\\S |  |
+| literals.rb:159:1:159:32 | /foo#{...}bar#{...}#{...}/ | foo2barbarbar |  |
+| literals.rb:160:1:160:10 | /foo/ | <none> | mxo |
+regExpInterpolations
+| literals.rb:153:5:153:14 | #{...} | 0 | literals.rb:153:8:153:12 | ... + ... | AddExpr |
+| literals.rb:153:18:153:23 | #{...} | 0 | literals.rb:153:20:153:22 | bar | LocalVariableAccess |
+| literals.rb:153:24:153:29 | #{...} | 0 | literals.rb:153:26:153:28 | BAR | ConstantReadAccess |
+| literals.rb:159:7:159:16 | #{...} | 0 | literals.rb:159:10:159:14 | ... + ... | AddExpr |
+| literals.rb:159:20:159:25 | #{...} | 0 | literals.rb:159:22:159:24 | bar | LocalVariableAccess |
+| literals.rb:159:26:159:31 | #{...} | 0 | literals.rb:159:28:159:30 | BAR | ConstantReadAccess |
+symbolLiterals
+| literals.rb:97:1:97:3 | :"" | : |
+| literals.rb:98:1:98:6 | :hello | :hello |
+| literals.rb:99:1:99:10 | :"foo bar" | :foo bar |
+| literals.rb:100:1:100:10 | :"bar baz" | :bar baz |
+| literals.rb:101:3:101:5 | :foo | :foo |
+| literals.rb:102:1:102:10 | :"wibble" | :wibble |
+| literals.rb:103:1:103:17 | :"wibble wobble" | :wibble wobble |
+| literals.rb:104:1:104:30 | :"foo_#{...}_#{...}_#{...}" | :foo_4_bar_bar |
+| literals.rb:105:1:105:30 | :"foo_#{ 2 + 2}_#{bar}_#{BAR}" | :foo_#{ 2 + 2}_#{bar}_#{BAR} |
+| literals.rb:106:1:106:18 | :"foo_#{ 3 - 2 }" | :foo_#{ 3 - 2 } |
+| literals.rb:123:4:123:6 | :"foo" | :foo |
+| literals.rb:123:8:123:10 | :"bar" | :bar |
+| literals.rb:123:12:123:14 | :"baz" | :baz |
+| literals.rb:124:4:124:6 | :"foo" | :foo |
+| literals.rb:124:8:124:10 | :"bar" | :bar |
+| literals.rb:124:12:124:14 | :"baz" | :baz |
+| literals.rb:125:4:125:6 | :"foo" | :foo |
+| literals.rb:125:8:125:20 | :"bar#{...}" | :bar6 |
+| literals.rb:125:22:125:27 | :"#{...}" | :bar |
+| literals.rb:125:29:125:34 | :"#{...}" | :bar |
+| literals.rb:125:36:125:38 | :"baz" | :baz |
+| literals.rb:126:4:126:6 | :"foo" | :foo |
+| literals.rb:126:8:126:12 | :"bar#{" | :bar#{ |
+| literals.rb:126:14:126:14 | :"2" | :2 |
+| literals.rb:126:16:126:16 | :"+" | :+ |
+| literals.rb:126:18:126:18 | :"4" | :4 |
+| literals.rb:126:20:126:20 | :"}" | :} |
+| literals.rb:126:22:126:27 | :"#{bar}" | :#{bar} |
+| literals.rb:126:29:126:34 | :"#{BAR}" | :#{BAR} |
+| literals.rb:126:36:126:38 | :"baz" | :baz |
+| literals.rb:130:3:130:5 | :foo | :foo |
+| literals.rb:130:11:130:14 | :bar | :bar |
+| literals.rb:131:3:131:5 | :foo | :foo |
+| literals.rb:198:2:198:2 | :x | :x |
+| literals.rb:198:6:198:6 | :y | :y |
+| literals.rb:199:2:199:2 | :y | :y |
+| literals.rb:199:7:199:7 | :Z | :Z |
+subshellLiterals
+| literals.rb:143:1:143:7 | `ls -l` | ls -l |
+| literals.rb:144:1:144:9 | `ls -l` | ls -l |
+| literals.rb:145:1:145:32 | `du -d #{...} #{...} #{...}` | du -d 2 bar bar |
+| literals.rb:146:1:146:20 | `du -d #{...}` | du -d 1 |
+stringComponents
+| literals.rb:61:1:61:7 | "hello" | StringLiteral | 0 | literals.rb:61:2:61:6 | hello | StringTextComponent |
+| literals.rb:62:1:62:9 | "goodbye" | StringLiteral | 0 | literals.rb:62:2:62:8 | goodbye | StringTextComponent |
+| literals.rb:63:1:63:30 | "string with escaped \\" quote" | StringLiteral | 0 | literals.rb:63:2:63:21 | string with escaped  | StringTextComponent |
+| literals.rb:63:1:63:30 | "string with escaped \\" quote" | StringLiteral | 1 | literals.rb:63:22:63:23 | \\" | StringEscapeSequenceComponent |
+| literals.rb:63:1:63:30 | "string with escaped \\" quote" | StringLiteral | 2 | literals.rb:63:24:63:29 |  quote | StringTextComponent |
+| literals.rb:64:1:64:21 | "string with " quote" | StringLiteral | 0 | literals.rb:64:2:64:20 | string with " quote | StringTextComponent |
+| literals.rb:65:1:65:14 | "foo bar baz" | StringLiteral | 0 | literals.rb:65:3:65:13 | foo bar baz | StringTextComponent |
+| literals.rb:66:1:66:15 | "foo bar baz" | StringLiteral | 0 | literals.rb:66:4:66:14 | foo bar baz | StringTextComponent |
+| literals.rb:67:1:67:20 | "foo ' bar " baz'" | StringLiteral | 0 | literals.rb:67:4:67:19 | foo ' bar " baz' | StringTextComponent |
+| literals.rb:68:1:68:20 | "FOO ' BAR " BAZ'" | StringLiteral | 0 | literals.rb:68:4:68:19 | FOO ' BAR " BAZ' | StringTextComponent |
+| literals.rb:69:1:69:12 | "foo\\ bar" | StringLiteral | 0 | literals.rb:69:4:69:11 | foo\\ bar | StringTextComponent |
+| literals.rb:70:1:70:12 | "foo\\ bar" | StringLiteral | 0 | literals.rb:70:4:70:6 | foo | StringTextComponent |
+| literals.rb:70:1:70:12 | "foo\\ bar" | StringLiteral | 1 | literals.rb:70:7:70:8 | \\  | StringEscapeSequenceComponent |
+| literals.rb:70:1:70:12 | "foo\\ bar" | StringLiteral | 2 | literals.rb:70:9:70:11 | bar | StringTextComponent |
+| literals.rb:71:1:71:20 | "2 + 2 = #{...}" | StringLiteral | 0 | literals.rb:71:2:71:9 | 2 + 2 =  | StringTextComponent |
+| literals.rb:71:1:71:20 | "2 + 2 = #{...}" | StringLiteral | 1 | literals.rb:71:10:71:19 | #{...} | StringInterpolationComponent |
+| literals.rb:72:1:72:22 | "3 + 4 = #{...}" | StringLiteral | 0 | literals.rb:72:4:72:11 | 3 + 4 =  | StringTextComponent |
+| literals.rb:72:1:72:22 | "3 + 4 = #{...}" | StringLiteral | 1 | literals.rb:72:12:72:21 | #{...} | StringInterpolationComponent |
+| literals.rb:73:1:73:20 | "2 + 2 = #{ 2 + 2 }" | StringLiteral | 0 | literals.rb:73:2:73:19 | 2 + 2 = #{ 2 + 2 } | StringTextComponent |
+| literals.rb:74:1:74:22 | "3 + 4 = #{ 3 + 4 }" | StringLiteral | 0 | literals.rb:74:4:74:21 | 3 + 4 = #{ 3 + 4 } | StringTextComponent |
+| literals.rb:75:1:75:5 | "foo" | StringLiteral | 0 | literals.rb:75:2:75:4 | foo | StringTextComponent |
+| literals.rb:75:7:75:11 | "bar" | StringLiteral | 0 | literals.rb:75:8:75:10 | bar | StringTextComponent |
+| literals.rb:75:13:75:17 | "baz" | StringLiteral | 0 | literals.rb:75:14:75:16 | baz | StringTextComponent |
+| literals.rb:76:1:76:7 | "foo" | StringLiteral | 0 | literals.rb:76:4:76:6 | foo | StringTextComponent |
+| literals.rb:76:9:76:13 | "bar" | StringLiteral | 0 | literals.rb:76:10:76:12 | bar | StringTextComponent |
+| literals.rb:76:15:76:19 | "baz" | StringLiteral | 0 | literals.rb:76:16:76:18 | baz | StringTextComponent |
+| literals.rb:77:1:77:5 | "foo" | StringLiteral | 0 | literals.rb:77:2:77:4 | foo | StringTextComponent |
+| literals.rb:77:7:77:21 | "bar#{...}" | StringLiteral | 0 | literals.rb:77:8:77:10 | bar | StringTextComponent |
+| literals.rb:77:7:77:21 | "bar#{...}" | StringLiteral | 1 | literals.rb:77:11:77:20 | #{...} | StringInterpolationComponent |
+| literals.rb:77:23:77:27 | "baz" | StringLiteral | 0 | literals.rb:77:24:77:26 | baz | StringTextComponent |
+| literals.rb:78:1:78:35 | "foo #{...} qux" | StringLiteral | 0 | literals.rb:78:2:78:5 | foo  | StringTextComponent |
+| literals.rb:78:1:78:35 | "foo #{...} qux" | StringLiteral | 1 | literals.rb:78:6:78:30 | #{...} | StringInterpolationComponent |
+| literals.rb:78:1:78:35 | "foo #{...} qux" | StringLiteral | 2 | literals.rb:78:31:78:34 |  qux | StringTextComponent |
+| literals.rb:78:9:78:28 | "bar #{...} baz" | StringLiteral | 0 | literals.rb:78:10:78:13 | bar  | StringTextComponent |
+| literals.rb:78:9:78:28 | "bar #{...} baz" | StringLiteral | 1 | literals.rb:78:14:78:23 | #{...} | StringInterpolationComponent |
+| literals.rb:78:9:78:28 | "bar #{...} baz" | StringLiteral | 2 | literals.rb:78:24:78:27 |  baz | StringTextComponent |
+| literals.rb:79:1:79:22 | "foo #{...}" | StringLiteral | 0 | literals.rb:79:2:79:5 | foo  | StringTextComponent |
+| literals.rb:79:1:79:22 | "foo #{...}" | StringLiteral | 1 | literals.rb:79:6:79:21 | #{...} | StringInterpolationComponent |
+| literals.rb:80:7:80:11 | "bar" | StringLiteral | 0 | literals.rb:80:8:80:10 | bar | StringTextComponent |
+| literals.rb:81:7:81:11 | "bar" | StringLiteral | 0 | literals.rb:81:8:81:10 | bar | StringTextComponent |
+| literals.rb:82:1:82:14 | "foo #{...}" | StringLiteral | 0 | literals.rb:82:2:82:5 | foo  | StringTextComponent |
+| literals.rb:82:1:82:14 | "foo #{...}" | StringLiteral | 1 | literals.rb:82:6:82:13 | #{...} | StringInterpolationComponent |
+| literals.rb:83:1:83:14 | "foo #{...}" | StringLiteral | 0 | literals.rb:83:2:83:5 | foo  | StringTextComponent |
+| literals.rb:83:1:83:14 | "foo #{...}" | StringLiteral | 1 | literals.rb:83:6:83:13 | #{...} | StringInterpolationComponent |
+| literals.rb:98:1:98:6 | :hello | SymbolLiteral | 0 | literals.rb:98:1:98:6 | hello | StringTextComponent |
+| literals.rb:99:1:99:10 | :"foo bar" | SymbolLiteral | 0 | literals.rb:99:3:99:9 | foo bar | StringTextComponent |
+| literals.rb:100:1:100:10 | :"bar baz" | SymbolLiteral | 0 | literals.rb:100:3:100:9 | bar baz | StringTextComponent |
+| literals.rb:101:3:101:5 | :foo | SymbolLiteral | 0 | literals.rb:101:3:101:5 | foo | StringTextComponent |
+| literals.rb:101:8:101:12 | "bar" | StringLiteral | 0 | literals.rb:101:9:101:11 | bar | StringTextComponent |
+| literals.rb:102:1:102:10 | :"wibble" | SymbolLiteral | 0 | literals.rb:102:4:102:9 | wibble | StringTextComponent |
+| literals.rb:103:1:103:17 | :"wibble wobble" | SymbolLiteral | 0 | literals.rb:103:4:103:16 | wibble wobble | StringTextComponent |
+| literals.rb:104:1:104:30 | :"foo_#{...}_#{...}_#{...}" | SymbolLiteral | 0 | literals.rb:104:3:104:6 | foo_ | StringTextComponent |
+| literals.rb:104:1:104:30 | :"foo_#{...}_#{...}_#{...}" | SymbolLiteral | 1 | literals.rb:104:7:104:15 | #{...} | StringInterpolationComponent |
+| literals.rb:104:1:104:30 | :"foo_#{...}_#{...}_#{...}" | SymbolLiteral | 2 | literals.rb:104:16:104:16 | _ | StringTextComponent |
+| literals.rb:104:1:104:30 | :"foo_#{...}_#{...}_#{...}" | SymbolLiteral | 3 | literals.rb:104:17:104:22 | #{...} | StringInterpolationComponent |
+| literals.rb:104:1:104:30 | :"foo_#{...}_#{...}_#{...}" | SymbolLiteral | 4 | literals.rb:104:23:104:23 | _ | StringTextComponent |
+| literals.rb:104:1:104:30 | :"foo_#{...}_#{...}_#{...}" | SymbolLiteral | 5 | literals.rb:104:24:104:29 | #{...} | StringInterpolationComponent |
+| literals.rb:105:1:105:30 | :"foo_#{ 2 + 2}_#{bar}_#{BAR}" | SymbolLiteral | 0 | literals.rb:105:3:105:29 | foo_#{ 2 + 2}_#{bar}_#{BAR} | StringTextComponent |
+| literals.rb:106:1:106:18 | :"foo_#{ 3 - 2 }" | SymbolLiteral | 0 | literals.rb:106:4:106:17 | foo_#{ 3 - 2 } | StringTextComponent |
+| literals.rb:116:4:116:6 | "foo" | StringLiteral | 0 | literals.rb:116:4:116:6 | foo | StringTextComponent |
+| literals.rb:116:8:116:10 | "bar" | StringLiteral | 0 | literals.rb:116:8:116:10 | bar | StringTextComponent |
+| literals.rb:116:12:116:14 | "baz" | StringLiteral | 0 | literals.rb:116:12:116:14 | baz | StringTextComponent |
+| literals.rb:117:4:117:6 | "foo" | StringLiteral | 0 | literals.rb:117:4:117:6 | foo | StringTextComponent |
+| literals.rb:117:8:117:10 | "bar" | StringLiteral | 0 | literals.rb:117:8:117:10 | bar | StringTextComponent |
+| literals.rb:117:12:117:14 | "baz" | StringLiteral | 0 | literals.rb:117:12:117:14 | baz | StringTextComponent |
+| literals.rb:118:4:118:6 | "foo" | StringLiteral | 0 | literals.rb:118:4:118:6 | foo | StringTextComponent |
+| literals.rb:118:8:118:16 | "bar#{...}" | StringLiteral | 0 | literals.rb:118:8:118:10 | bar | StringTextComponent |
+| literals.rb:118:8:118:16 | "bar#{...}" | StringLiteral | 1 | literals.rb:118:11:118:16 | #{...} | StringInterpolationComponent |
+| literals.rb:118:18:118:23 | "#{...}" | StringLiteral | 0 | literals.rb:118:18:118:23 | #{...} | StringInterpolationComponent |
+| literals.rb:118:25:118:30 | "#{...}" | StringLiteral | 0 | literals.rb:118:25:118:30 | #{...} | StringInterpolationComponent |
+| literals.rb:118:32:118:34 | "baz" | StringLiteral | 0 | literals.rb:118:32:118:34 | baz | StringTextComponent |
+| literals.rb:119:4:119:6 | "foo" | StringLiteral | 0 | literals.rb:119:4:119:6 | foo | StringTextComponent |
+| literals.rb:119:8:119:16 | "bar#{1+1}" | StringLiteral | 0 | literals.rb:119:8:119:16 | bar#{1+1} | StringTextComponent |
+| literals.rb:119:18:119:23 | "#{bar}" | StringLiteral | 0 | literals.rb:119:18:119:23 | #{bar} | StringTextComponent |
+| literals.rb:119:25:119:30 | "#{BAR}" | StringLiteral | 0 | literals.rb:119:25:119:30 | #{BAR} | StringTextComponent |
+| literals.rb:119:32:119:34 | "baz" | StringLiteral | 0 | literals.rb:119:32:119:34 | baz | StringTextComponent |
+| literals.rb:123:4:123:6 | :"foo" | SymbolLiteral | 0 | literals.rb:123:4:123:6 | foo | StringTextComponent |
+| literals.rb:123:8:123:10 | :"bar" | SymbolLiteral | 0 | literals.rb:123:8:123:10 | bar | StringTextComponent |
+| literals.rb:123:12:123:14 | :"baz" | SymbolLiteral | 0 | literals.rb:123:12:123:14 | baz | StringTextComponent |
+| literals.rb:124:4:124:6 | :"foo" | SymbolLiteral | 0 | literals.rb:124:4:124:6 | foo | StringTextComponent |
+| literals.rb:124:8:124:10 | :"bar" | SymbolLiteral | 0 | literals.rb:124:8:124:10 | bar | StringTextComponent |
+| literals.rb:124:12:124:14 | :"baz" | SymbolLiteral | 0 | literals.rb:124:12:124:14 | baz | StringTextComponent |
+| literals.rb:125:4:125:6 | :"foo" | SymbolLiteral | 0 | literals.rb:125:4:125:6 | foo | StringTextComponent |
+| literals.rb:125:8:125:20 | :"bar#{...}" | SymbolLiteral | 0 | literals.rb:125:8:125:10 | bar | StringTextComponent |
+| literals.rb:125:8:125:20 | :"bar#{...}" | SymbolLiteral | 1 | literals.rb:125:11:125:20 | #{...} | StringInterpolationComponent |
+| literals.rb:125:22:125:27 | :"#{...}" | SymbolLiteral | 0 | literals.rb:125:22:125:27 | #{...} | StringInterpolationComponent |
+| literals.rb:125:29:125:34 | :"#{...}" | SymbolLiteral | 0 | literals.rb:125:29:125:34 | #{...} | StringInterpolationComponent |
+| literals.rb:125:36:125:38 | :"baz" | SymbolLiteral | 0 | literals.rb:125:36:125:38 | baz | StringTextComponent |
+| literals.rb:126:4:126:6 | :"foo" | SymbolLiteral | 0 | literals.rb:126:4:126:6 | foo | StringTextComponent |
+| literals.rb:126:8:126:12 | :"bar#{" | SymbolLiteral | 0 | literals.rb:126:8:126:12 | bar#{ | StringTextComponent |
+| literals.rb:126:14:126:14 | :"2" | SymbolLiteral | 0 | literals.rb:126:14:126:14 | 2 | StringTextComponent |
+| literals.rb:126:16:126:16 | :"+" | SymbolLiteral | 0 | literals.rb:126:16:126:16 | + | StringTextComponent |
+| literals.rb:126:18:126:18 | :"4" | SymbolLiteral | 0 | literals.rb:126:18:126:18 | 4 | StringTextComponent |
+| literals.rb:126:20:126:20 | :"}" | SymbolLiteral | 0 | literals.rb:126:20:126:20 | } | StringTextComponent |
+| literals.rb:126:22:126:27 | :"#{bar}" | SymbolLiteral | 0 | literals.rb:126:22:126:27 | #{bar} | StringTextComponent |
+| literals.rb:126:29:126:34 | :"#{BAR}" | SymbolLiteral | 0 | literals.rb:126:29:126:34 | #{BAR} | StringTextComponent |
+| literals.rb:126:36:126:38 | :"baz" | SymbolLiteral | 0 | literals.rb:126:36:126:38 | baz | StringTextComponent |
+| literals.rb:130:3:130:5 | :foo | SymbolLiteral | 0 | literals.rb:130:3:130:5 | foo | StringTextComponent |
+| literals.rb:130:11:130:14 | :bar | SymbolLiteral | 0 | literals.rb:130:11:130:14 | bar | StringTextComponent |
+| literals.rb:130:22:130:26 | "baz" | StringLiteral | 0 | literals.rb:130:23:130:25 | baz | StringTextComponent |
+| literals.rb:131:3:131:5 | :foo | SymbolLiteral | 0 | literals.rb:131:3:131:5 | foo | StringTextComponent |
+| literals.rb:143:1:143:7 | `ls -l` | SubshellLiteral | 0 | literals.rb:143:2:143:6 | ls -l | StringTextComponent |
+| literals.rb:144:1:144:9 | `ls -l` | SubshellLiteral | 0 | literals.rb:144:4:144:8 | ls -l | StringTextComponent |
+| literals.rb:145:1:145:32 | `du -d #{...} #{...} #{...}` | SubshellLiteral | 0 | literals.rb:145:2:145:7 | du -d  | StringTextComponent |
+| literals.rb:145:1:145:32 | `du -d #{...} #{...} #{...}` | SubshellLiteral | 1 | literals.rb:145:8:145:17 | #{...} | StringInterpolationComponent |
+| literals.rb:145:1:145:32 | `du -d #{...} #{...} #{...}` | SubshellLiteral | 2 | literals.rb:145:18:145:18 |   | StringTextComponent |
+| literals.rb:145:1:145:32 | `du -d #{...} #{...} #{...}` | SubshellLiteral | 3 | literals.rb:145:19:145:24 | #{...} | StringInterpolationComponent |
+| literals.rb:145:1:145:32 | `du -d #{...} #{...} #{...}` | SubshellLiteral | 4 | literals.rb:145:25:145:25 |   | StringTextComponent |
+| literals.rb:145:1:145:32 | `du -d #{...} #{...} #{...}` | SubshellLiteral | 5 | literals.rb:145:26:145:31 | #{...} | StringInterpolationComponent |
+| literals.rb:146:1:146:20 | `du -d #{...}` | SubshellLiteral | 0 | literals.rb:146:4:146:9 | du -d  | StringTextComponent |
+| literals.rb:146:1:146:20 | `du -d #{...}` | SubshellLiteral | 1 | literals.rb:146:10:146:19 | #{...} | StringInterpolationComponent |
+| literals.rb:150:1:150:5 | /foo/ | RegExpLiteral | 0 | literals.rb:150:2:150:4 | foo | RegExpTextComponent |
+| literals.rb:151:1:151:6 | /foo/ | RegExpLiteral | 0 | literals.rb:151:2:151:4 | foo | RegExpTextComponent |
+| literals.rb:152:1:152:13 | /foo+\\sbar\\S/ | RegExpLiteral | 0 | literals.rb:152:2:152:5 | foo+ | RegExpTextComponent |
+| literals.rb:152:1:152:13 | /foo+\\sbar\\S/ | RegExpLiteral | 1 | literals.rb:152:6:152:7 | \\s | RegExpEscapeSequenceComponent |
+| literals.rb:152:1:152:13 | /foo+\\sbar\\S/ | RegExpLiteral | 2 | literals.rb:152:8:152:10 | bar | RegExpTextComponent |
+| literals.rb:152:1:152:13 | /foo+\\sbar\\S/ | RegExpLiteral | 3 | literals.rb:152:11:152:12 | \\S | RegExpEscapeSequenceComponent |
+| literals.rb:153:1:153:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 0 | literals.rb:153:2:153:4 | foo | RegExpTextComponent |
+| literals.rb:153:1:153:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 1 | literals.rb:153:5:153:14 | #{...} | RegExpInterpolationComponent |
+| literals.rb:153:1:153:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 2 | literals.rb:153:15:153:17 | bar | RegExpTextComponent |
+| literals.rb:153:1:153:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 3 | literals.rb:153:18:153:23 | #{...} | RegExpInterpolationComponent |
+| literals.rb:153:1:153:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 4 | literals.rb:153:24:153:29 | #{...} | RegExpInterpolationComponent |
+| literals.rb:154:1:154:8 | /foo/ | RegExpLiteral | 0 | literals.rb:154:2:154:4 | foo | RegExpTextComponent |
+| literals.rb:156:1:156:7 | /foo/ | RegExpLiteral | 0 | literals.rb:156:4:156:6 | foo | RegExpTextComponent |
+| literals.rb:157:1:157:8 | /foo/ | RegExpLiteral | 0 | literals.rb:157:4:157:6 | foo | RegExpTextComponent |
+| literals.rb:158:1:158:15 | /foo+\\sbar\\S/ | RegExpLiteral | 0 | literals.rb:158:4:158:7 | foo+ | RegExpTextComponent |
+| literals.rb:158:1:158:15 | /foo+\\sbar\\S/ | RegExpLiteral | 1 | literals.rb:158:8:158:9 | \\s | RegExpEscapeSequenceComponent |
+| literals.rb:158:1:158:15 | /foo+\\sbar\\S/ | RegExpLiteral | 2 | literals.rb:158:10:158:12 | bar | RegExpTextComponent |
+| literals.rb:158:1:158:15 | /foo+\\sbar\\S/ | RegExpLiteral | 3 | literals.rb:158:13:158:14 | \\S | RegExpEscapeSequenceComponent |
+| literals.rb:159:1:159:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 0 | literals.rb:159:4:159:6 | foo | RegExpTextComponent |
+| literals.rb:159:1:159:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 1 | literals.rb:159:7:159:16 | #{...} | RegExpInterpolationComponent |
+| literals.rb:159:1:159:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 2 | literals.rb:159:17:159:19 | bar | RegExpTextComponent |
+| literals.rb:159:1:159:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 3 | literals.rb:159:20:159:25 | #{...} | RegExpInterpolationComponent |
+| literals.rb:159:1:159:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 4 | literals.rb:159:26:159:31 | #{...} | RegExpInterpolationComponent |
+| literals.rb:160:1:160:10 | /foo/ | RegExpLiteral | 0 | literals.rb:160:4:160:6 | foo | RegExpTextComponent |
+| literals.rb:163:1:163:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | StringLiteral | 0 | literals.rb:163:2:163:33 | abcdefghijklmnopqrstuvwxyzabcdef | StringTextComponent |
+| literals.rb:164:1:164:35 | "foobarfoobarfoobarfoobarfooba..." | StringLiteral | 0 | literals.rb:164:2:164:34 | foobarfoobarfoobarfoobarfoobarfoo | StringTextComponent |
+| literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 0 | literals.rb:165:2:165:7 | foobar | StringTextComponent |
+| literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 1 | literals.rb:165:8:165:9 | \\\\ | StringEscapeSequenceComponent |
+| literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 2 | literals.rb:165:10:165:15 | foobar | StringTextComponent |
+| literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 3 | literals.rb:165:16:165:17 | \\\\ | StringEscapeSequenceComponent |
+| literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 4 | literals.rb:165:18:165:23 | foobar | StringTextComponent |
+| literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 5 | literals.rb:165:24:165:25 | \\\\ | StringEscapeSequenceComponent |
+| literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 6 | literals.rb:165:26:165:31 | foobar | StringTextComponent |
+| literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 7 | literals.rb:165:32:165:33 | \\\\ | StringEscapeSequenceComponent |
+| literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 8 | literals.rb:165:34:165:39 | foobar | StringTextComponent |
+| literals.rb:168:9:168:13 | <<SQL | HereDoc | 0 | literals.rb:168:22:169:20 | \nselect * from table\n | StringTextComponent |
+| literals.rb:168:16:168:20 | <<SQL | HereDoc | 0 | literals.rb:170:4:171:13 | \nwhere name =  | StringTextComponent |
+| literals.rb:168:16:168:20 | <<SQL | HereDoc | 1 | literals.rb:171:14:171:22 | #{...} | StringInterpolationComponent |
+| literals.rb:168:16:168:20 | <<SQL | HereDoc | 2 | literals.rb:171:23:171:23 | \n | StringTextComponent |
+| literals.rb:175:11:175:16 | <<-BLA | HereDoc | 0 | literals.rb:175:17:176:9 | \nsome text | StringTextComponent |
+| literals.rb:175:11:175:16 | <<-BLA | HereDoc | 1 | literals.rb:176:10:176:11 | \\n | StringEscapeSequenceComponent |
+| literals.rb:175:11:175:16 | <<-BLA | HereDoc | 2 | literals.rb:176:12:177:2 | and some more\n   | StringTextComponent |
+| literals.rb:180:9:180:19 | <<~SQUIGGLY | HereDoc | 0 | literals.rb:180:20:181:18 | \n   indented stuff\n | StringTextComponent |
+| literals.rb:184:9:184:15 | <<"DOC" | HereDoc | 0 | literals.rb:184:16:185:11 | \n text with  | StringTextComponent |
+| literals.rb:184:9:184:15 | <<"DOC" | HereDoc | 1 | literals.rb:185:12:185:29 | #{...} | StringInterpolationComponent |
+| literals.rb:184:9:184:15 | <<"DOC" | HereDoc | 2 | literals.rb:185:30:185:32 |  !\n | StringTextComponent |
+| literals.rb:189:9:189:15 | <<'DOC' | HereDoc | 0 | literals.rb:189:16:190:14 | \n text without  | StringTextComponent |
+| literals.rb:189:9:189:15 | <<'DOC' | HereDoc | 1 | literals.rb:190:15:190:32 | #{...} | StringInterpolationComponent |
+| literals.rb:189:9:189:15 | <<'DOC' | HereDoc | 2 | literals.rb:190:33:190:35 |  !\n | StringTextComponent |
+| literals.rb:193:10:193:19 | <<`SCRIPT` | HereDoc | 0 | literals.rb:193:20:194:14 | \n cat file.txt\n | StringTextComponent |
+| literals.rb:198:2:198:2 | :x | SymbolLiteral | 0 | literals.rb:198:2:198:2 | x | StringTextComponent |
+| literals.rb:198:6:198:6 | :y | SymbolLiteral | 0 | literals.rb:198:6:198:6 | y | StringTextComponent |
+| literals.rb:199:2:199:2 | :y | SymbolLiteral | 0 | literals.rb:199:2:199:2 | y | StringTextComponent |
+| literals.rb:199:7:199:7 | :Z | SymbolLiteral | 0 | literals.rb:199:7:199:7 | Z | StringTextComponent |
+stringInterpolations
+| literals.rb:71:10:71:19 | #{...} | 0 | literals.rb:71:13:71:17 | ... + ... | AddExpr |
+| literals.rb:72:12:72:21 | #{...} | 0 | literals.rb:72:15:72:19 | ... + ... | AddExpr |
+| literals.rb:77:11:77:20 | #{...} | 0 | literals.rb:77:14:77:18 | ... * ... | MulExpr |
+| literals.rb:78:6:78:30 | #{...} | 0 | literals.rb:78:9:78:28 | "bar #{...} baz" | StringLiteral |
+| literals.rb:78:14:78:23 | #{...} | 0 | literals.rb:78:17:78:21 | ... + ... | AddExpr |
+| literals.rb:79:6:79:21 | #{...} | 0 | literals.rb:79:9:79:14 | call to blah | MethodCall |
+| literals.rb:79:6:79:21 | #{...} | 1 | literals.rb:79:17:79:19 | ... + ... | AddExpr |
+| literals.rb:82:6:82:13 | #{...} | 0 | literals.rb:82:9:82:11 | bar | LocalVariableAccess |
+| literals.rb:83:6:83:13 | #{...} | 0 | literals.rb:83:9:83:11 | BAR | ConstantReadAccess |
+| literals.rb:104:7:104:15 | #{...} | 0 | literals.rb:104:10:104:14 | ... + ... | AddExpr |
+| literals.rb:104:17:104:22 | #{...} | 0 | literals.rb:104:19:104:21 | bar | LocalVariableAccess |
+| literals.rb:104:24:104:29 | #{...} | 0 | literals.rb:104:26:104:28 | BAR | ConstantReadAccess |
+| literals.rb:118:11:118:16 | #{...} | 0 | literals.rb:118:13:118:15 | ... + ... | AddExpr |
+| literals.rb:118:18:118:23 | #{...} | 0 | literals.rb:118:20:118:22 | bar | LocalVariableAccess |
+| literals.rb:118:25:118:30 | #{...} | 0 | literals.rb:118:27:118:29 | BAR | ConstantReadAccess |
+| literals.rb:125:11:125:20 | #{...} | 0 | literals.rb:125:14:125:18 | ... + ... | AddExpr |
+| literals.rb:125:22:125:27 | #{...} | 0 | literals.rb:125:24:125:26 | bar | LocalVariableAccess |
+| literals.rb:125:29:125:34 | #{...} | 0 | literals.rb:125:31:125:33 | BAR | ConstantReadAccess |
+| literals.rb:145:8:145:17 | #{...} | 0 | literals.rb:145:11:145:15 | ... + ... | AddExpr |
+| literals.rb:145:19:145:24 | #{...} | 0 | literals.rb:145:21:145:23 | bar | LocalVariableAccess |
+| literals.rb:145:26:145:31 | #{...} | 0 | literals.rb:145:28:145:30 | BAR | ConstantReadAccess |
+| literals.rb:146:10:146:19 | #{...} | 0 | literals.rb:146:13:146:17 | ... - ... | SubExpr |
+| literals.rb:171:14:171:22 | #{...} | 0 | literals.rb:171:17:171:20 | call to name | MethodCall |
+| literals.rb:185:12:185:29 | #{...} | 0 | literals.rb:185:15:185:27 | call to interpolation | MethodCall |
+| literals.rb:190:15:190:32 | #{...} | 0 | literals.rb:190:18:190:30 | call to interpolation | MethodCall |
+concatenatedStrings
+| literals.rb:75:1:75:17 | "..." "..." | foobarbaz | 0 | literals.rb:75:1:75:5 | "foo" |
+| literals.rb:75:1:75:17 | "..." "..." | foobarbaz | 1 | literals.rb:75:7:75:11 | "bar" |
+| literals.rb:75:1:75:17 | "..." "..." | foobarbaz | 2 | literals.rb:75:13:75:17 | "baz" |
+| literals.rb:76:1:76:19 | "..." "..." | foobarbaz | 0 | literals.rb:76:1:76:7 | "foo" |
+| literals.rb:76:1:76:19 | "..." "..." | foobarbaz | 1 | literals.rb:76:9:76:13 | "bar" |
+| literals.rb:76:1:76:19 | "..." "..." | foobarbaz | 2 | literals.rb:76:15:76:19 | "baz" |
+| literals.rb:77:1:77:27 | "..." "..." | foobar1baz | 0 | literals.rb:77:1:77:5 | "foo" |
+| literals.rb:77:1:77:27 | "..." "..." | foobar1baz | 1 | literals.rb:77:7:77:21 | "bar#{...}" |
+| literals.rb:77:1:77:27 | "..." "..." | foobar1baz | 2 | literals.rb:77:23:77:27 | "baz" |
+arrayLiterals
+| literals.rb:109:1:109:2 | [...] | 0 |
+| literals.rb:110:1:110:9 | [...] | 3 |
+| literals.rb:111:1:111:14 | [...] | 3 |
+| literals.rb:112:1:112:11 | [...] | 2 |
+| literals.rb:112:5:112:10 | [...] | 2 |
+| literals.rb:115:1:115:4 | %w(...) | 0 |
+| literals.rb:116:1:116:15 | %w(...) | 3 |
+| literals.rb:117:1:117:15 | %w(...) | 3 |
+| literals.rb:118:1:118:35 | %w(...) | 5 |
+| literals.rb:119:1:119:35 | %w(...) | 5 |
+| literals.rb:122:1:122:4 | %i(...) | 0 |
+| literals.rb:123:1:123:15 | %i(...) | 3 |
+| literals.rb:124:1:124:15 | %i(...) | 3 |
+| literals.rb:125:1:125:39 | %i(...) | 5 |
+| literals.rb:126:1:126:39 | %i(...) | 9 |
+arrayLiteralElements
+| literals.rb:110:1:110:9 | [...] | 0 | literals.rb:110:2:110:2 | 1 | IntegerLiteral |
+| literals.rb:110:1:110:9 | [...] | 1 | literals.rb:110:5:110:5 | 2 | IntegerLiteral |
+| literals.rb:110:1:110:9 | [...] | 2 | literals.rb:110:8:110:8 | 3 | IntegerLiteral |
+| literals.rb:111:1:111:14 | [...] | 0 | literals.rb:111:2:111:2 | 4 | IntegerLiteral |
+| literals.rb:111:1:111:14 | [...] | 1 | literals.rb:111:5:111:5 | 5 | IntegerLiteral |
+| literals.rb:111:1:111:14 | [...] | 2 | literals.rb:111:8:111:13 | ... / ... | DivExpr |
+| literals.rb:112:1:112:11 | [...] | 0 | literals.rb:112:2:112:2 | 7 | IntegerLiteral |
+| literals.rb:112:1:112:11 | [...] | 1 | literals.rb:112:5:112:10 | [...] | ArrayLiteral |
+| literals.rb:112:5:112:10 | [...] | 0 | literals.rb:112:6:112:6 | 8 | IntegerLiteral |
+| literals.rb:112:5:112:10 | [...] | 1 | literals.rb:112:9:112:9 | 9 | IntegerLiteral |
+| literals.rb:116:1:116:15 | %w(...) | 0 | literals.rb:116:4:116:6 | "foo" | StringLiteral |
+| literals.rb:116:1:116:15 | %w(...) | 1 | literals.rb:116:8:116:10 | "bar" | StringLiteral |
+| literals.rb:116:1:116:15 | %w(...) | 2 | literals.rb:116:12:116:14 | "baz" | StringLiteral |
+| literals.rb:117:1:117:15 | %w(...) | 0 | literals.rb:117:4:117:6 | "foo" | StringLiteral |
+| literals.rb:117:1:117:15 | %w(...) | 1 | literals.rb:117:8:117:10 | "bar" | StringLiteral |
+| literals.rb:117:1:117:15 | %w(...) | 2 | literals.rb:117:12:117:14 | "baz" | StringLiteral |
+| literals.rb:118:1:118:35 | %w(...) | 0 | literals.rb:118:4:118:6 | "foo" | StringLiteral |
+| literals.rb:118:1:118:35 | %w(...) | 1 | literals.rb:118:8:118:16 | "bar#{...}" | StringLiteral |
+| literals.rb:118:1:118:35 | %w(...) | 2 | literals.rb:118:18:118:23 | "#{...}" | StringLiteral |
+| literals.rb:118:1:118:35 | %w(...) | 3 | literals.rb:118:25:118:30 | "#{...}" | StringLiteral |
+| literals.rb:118:1:118:35 | %w(...) | 4 | literals.rb:118:32:118:34 | "baz" | StringLiteral |
+| literals.rb:119:1:119:35 | %w(...) | 0 | literals.rb:119:4:119:6 | "foo" | StringLiteral |
+| literals.rb:119:1:119:35 | %w(...) | 1 | literals.rb:119:8:119:16 | "bar#{1+1}" | StringLiteral |
+| literals.rb:119:1:119:35 | %w(...) | 2 | literals.rb:119:18:119:23 | "#{bar}" | StringLiteral |
+| literals.rb:119:1:119:35 | %w(...) | 3 | literals.rb:119:25:119:30 | "#{BAR}" | StringLiteral |
+| literals.rb:119:1:119:35 | %w(...) | 4 | literals.rb:119:32:119:34 | "baz" | StringLiteral |
+| literals.rb:123:1:123:15 | %i(...) | 0 | literals.rb:123:4:123:6 | :"foo" | SymbolLiteral |
+| literals.rb:123:1:123:15 | %i(...) | 1 | literals.rb:123:8:123:10 | :"bar" | SymbolLiteral |
+| literals.rb:123:1:123:15 | %i(...) | 2 | literals.rb:123:12:123:14 | :"baz" | SymbolLiteral |
+| literals.rb:124:1:124:15 | %i(...) | 0 | literals.rb:124:4:124:6 | :"foo" | SymbolLiteral |
+| literals.rb:124:1:124:15 | %i(...) | 1 | literals.rb:124:8:124:10 | :"bar" | SymbolLiteral |
+| literals.rb:124:1:124:15 | %i(...) | 2 | literals.rb:124:12:124:14 | :"baz" | SymbolLiteral |
+| literals.rb:125:1:125:39 | %i(...) | 0 | literals.rb:125:4:125:6 | :"foo" | SymbolLiteral |
+| literals.rb:125:1:125:39 | %i(...) | 1 | literals.rb:125:8:125:20 | :"bar#{...}" | SymbolLiteral |
+| literals.rb:125:1:125:39 | %i(...) | 2 | literals.rb:125:22:125:27 | :"#{...}" | SymbolLiteral |
+| literals.rb:125:1:125:39 | %i(...) | 3 | literals.rb:125:29:125:34 | :"#{...}" | SymbolLiteral |
+| literals.rb:125:1:125:39 | %i(...) | 4 | literals.rb:125:36:125:38 | :"baz" | SymbolLiteral |
+| literals.rb:126:1:126:39 | %i(...) | 0 | literals.rb:126:4:126:6 | :"foo" | SymbolLiteral |
+| literals.rb:126:1:126:39 | %i(...) | 1 | literals.rb:126:8:126:12 | :"bar#{" | SymbolLiteral |
+| literals.rb:126:1:126:39 | %i(...) | 2 | literals.rb:126:14:126:14 | :"2" | SymbolLiteral |
+| literals.rb:126:1:126:39 | %i(...) | 3 | literals.rb:126:16:126:16 | :"+" | SymbolLiteral |
+| literals.rb:126:1:126:39 | %i(...) | 4 | literals.rb:126:18:126:18 | :"4" | SymbolLiteral |
+| literals.rb:126:1:126:39 | %i(...) | 5 | literals.rb:126:20:126:20 | :"}" | SymbolLiteral |
+| literals.rb:126:1:126:39 | %i(...) | 6 | literals.rb:126:22:126:27 | :"#{bar}" | SymbolLiteral |
+| literals.rb:126:1:126:39 | %i(...) | 7 | literals.rb:126:29:126:34 | :"#{BAR}" | SymbolLiteral |
+| literals.rb:126:1:126:39 | %i(...) | 8 | literals.rb:126:36:126:38 | :"baz" | SymbolLiteral |
+hashLiterals
+| literals.rb:101:1:101:14 | {...} | 1 |
+| literals.rb:129:1:129:2 | {...} | 0 |
+| literals.rb:130:1:130:33 | {...} | 3 |
+| literals.rb:131:1:131:17 | {...} | 2 |
+| literals.rb:198:1:198:9 | {...} | 2 |
+| literals.rb:199:1:199:9 | {...} | 2 |
+hashLiteralElements
+| literals.rb:101:1:101:14 | {...} | 0 | literals.rb:101:3:101:12 | Pair | Pair |
+| literals.rb:130:1:130:33 | {...} | 0 | literals.rb:130:3:130:8 | Pair | Pair |
+| literals.rb:130:1:130:33 | {...} | 1 | literals.rb:130:11:130:19 | Pair | Pair |
+| literals.rb:130:1:130:33 | {...} | 2 | literals.rb:130:22:130:31 | Pair | Pair |
+| literals.rb:131:1:131:17 | {...} | 0 | literals.rb:131:3:131:8 | Pair | Pair |
+| literals.rb:131:1:131:17 | {...} | 1 | literals.rb:131:11:131:15 | ** ... | HashSplatExpr |
+| literals.rb:198:1:198:9 | {...} | 0 | literals.rb:198:2:198:3 | Pair | Pair |
+| literals.rb:198:1:198:9 | {...} | 1 | literals.rb:198:6:198:8 | Pair | Pair |
+| literals.rb:199:1:199:9 | {...} | 0 | literals.rb:199:2:199:3 | Pair | Pair |
+| literals.rb:199:1:199:9 | {...} | 1 | literals.rb:199:7:199:8 | Pair | Pair |
+hashLiteralKeyValuePairs
+| literals.rb:101:1:101:14 | {...} | literals.rb:101:3:101:12 | Pair | literals.rb:101:3:101:5 | :foo | literals.rb:101:8:101:12 | "bar" |
+| literals.rb:130:1:130:33 | {...} | literals.rb:130:3:130:8 | Pair | literals.rb:130:3:130:5 | :foo | literals.rb:130:8:130:8 | 1 |
+| literals.rb:130:1:130:33 | {...} | literals.rb:130:11:130:19 | Pair | literals.rb:130:11:130:14 | :bar | literals.rb:130:19:130:19 | 2 |
+| literals.rb:130:1:130:33 | {...} | literals.rb:130:22:130:31 | Pair | literals.rb:130:22:130:26 | "baz" | literals.rb:130:31:130:31 | 3 |
+| literals.rb:131:1:131:17 | {...} | literals.rb:131:3:131:8 | Pair | literals.rb:131:3:131:5 | :foo | literals.rb:131:8:131:8 | 7 |
+| literals.rb:198:1:198:9 | {...} | literals.rb:198:2:198:3 | Pair | literals.rb:198:2:198:2 | :x | literals.rb:198:2:198:2 | x |
+| literals.rb:198:1:198:9 | {...} | literals.rb:198:6:198:8 | Pair | literals.rb:198:6:198:6 | :y | literals.rb:198:8:198:8 | 5 |
+| literals.rb:199:1:199:9 | {...} | literals.rb:199:2:199:3 | Pair | literals.rb:199:2:199:2 | :y | literals.rb:199:2:199:2 | call to y |
+| literals.rb:199:1:199:9 | {...} | literals.rb:199:7:199:8 | Pair | literals.rb:199:7:199:7 | :Z | literals.rb:199:7:199:7 | Z |
+finiteRangeLiterals
+| literals.rb:134:2:134:6 | _ .. _ | literals.rb:134:2:134:2 | 1 | literals.rb:134:5:134:6 | 10 |
+| literals.rb:135:2:135:7 | _ ... _ | literals.rb:135:2:135:2 | 1 | literals.rb:135:6:135:7 | 10 |
+| literals.rb:136:2:136:7 | _ .. _ | literals.rb:136:2:136:2 | 1 | literals.rb:136:7:136:7 | 0 |
+| literals.rb:137:2:137:11 | _ .. _ | literals.rb:137:2:137:6 | call to start | literals.rb:137:9:137:11 | ... + ... |
+beginlessRangeLiterals
+| literals.rb:139:2:139:4 | _ .. _ | literals.rb:139:4:139:4 | 1 |
+endlessRangeLiterals
+| literals.rb:138:2:138:4 | _ .. _ | literals.rb:138:2:138:2 | 1 |
+| literals.rb:140:2:140:4 | _ .. _ | literals.rb:140:2:140:2 | 0 |
+inclusiveRangeLiterals
+| literals.rb:134:2:134:6 | _ .. _ |
+| literals.rb:136:2:136:7 | _ .. _ |
+| literals.rb:137:2:137:11 | _ .. _ |
+| literals.rb:138:2:138:4 | _ .. _ |
+| literals.rb:139:2:139:4 | _ .. _ |
+| literals.rb:140:2:140:4 | _ .. _ |
+exclusiveRangeLiterals
+| literals.rb:135:2:135:7 | _ ... _ |
+numericLiterals
+| literals.rb:10:1:10:4 | 1234 | IntegerLiteral | 1234 |
+| literals.rb:11:1:11:5 | 5_678 | IntegerLiteral | 5678 |
+| literals.rb:12:1:12:1 | 0 | IntegerLiteral | 0 |
+| literals.rb:13:1:13:5 | 0d900 | IntegerLiteral | 0 |
+| literals.rb:14:1:14:10 | 2147483647 | IntegerLiteral | 2147483647 |
+| literals.rb:15:1:15:10 | 2147483648 | IntegerLiteral | <none> |
+| literals.rb:18:1:18:6 | 0x1234 | IntegerLiteral | 4660 |
+| literals.rb:19:1:19:6 | 0xbeef | IntegerLiteral | 48879 |
+| literals.rb:20:1:20:7 | 0xF0_0D | IntegerLiteral | 61453 |
+| literals.rb:21:1:21:22 | 0x000000000000000000ff | IntegerLiteral | 255 |
+| literals.rb:22:1:22:11 | 0x7FFF_FFFF | IntegerLiteral | 2147483647 |
+| literals.rb:23:1:23:10 | 0x80000000 | IntegerLiteral | <none> |
+| literals.rb:24:1:24:10 | 0xdeadbeef | IntegerLiteral | <none> |
+| literals.rb:25:1:25:11 | 0xF00D_face | IntegerLiteral | <none> |
+| literals.rb:28:1:28:4 | 0123 | IntegerLiteral | 83 |
+| literals.rb:29:1:29:5 | 0o234 | IntegerLiteral | 156 |
+| literals.rb:30:1:30:6 | 0O45_6 | IntegerLiteral | 302 |
+| literals.rb:31:1:31:31 | 0000000000000000000000000000010 | IntegerLiteral | 8 |
+| literals.rb:32:1:32:12 | 017777777777 | IntegerLiteral | 2147483647 |
+| literals.rb:33:1:33:12 | 020000000000 | IntegerLiteral | <none> |
+| literals.rb:36:1:36:10 | 0b10010100 | IntegerLiteral | 148 |
+| literals.rb:37:1:37:11 | 0B011_01101 | IntegerLiteral | 109 |
+| literals.rb:38:1:38:43 | 0b00000000000000000000000000000000000000011 | IntegerLiteral | 3 |
+| literals.rb:39:1:39:34 | 0b01111111111111111111111111111111 | IntegerLiteral | 2147483647 |
+| literals.rb:40:1:40:34 | 0b10000000000000000000000000000000 | IntegerLiteral | <none> |
+| literals.rb:43:1:43:5 | 12.34 | FloatLiteral | 12.34 |
+| literals.rb:44:1:44:7 | 1234e-2 | FloatLiteral | 12.34 |
+| literals.rb:45:1:45:7 | 1.234E1 | FloatLiteral | 12.34 |
+| literals.rb:48:1:48:3 | 23r | RationalLiteral | 23/1 |
+| literals.rb:49:1:49:5 | 9.85r | RationalLiteral | 985/100 |
+| literals.rb:52:1:52:2 | 2i | ComplexLiteral | 0+2i |
+| literals.rb:71:13:71:13 | 2 | IntegerLiteral | 2 |
+| literals.rb:71:17:71:17 | 2 | IntegerLiteral | 2 |
+| literals.rb:72:15:72:15 | 3 | IntegerLiteral | 3 |
+| literals.rb:72:19:72:19 | 4 | IntegerLiteral | 4 |
+| literals.rb:77:14:77:14 | 1 | IntegerLiteral | 1 |
+| literals.rb:77:18:77:18 | 1 | IntegerLiteral | 1 |
+| literals.rb:78:17:78:17 | 2 | IntegerLiteral | 2 |
+| literals.rb:78:21:78:21 | 3 | IntegerLiteral | 3 |
+| literals.rb:79:17:79:17 | 1 | IntegerLiteral | 1 |
+| literals.rb:79:19:79:19 | 9 | IntegerLiteral | 9 |
+| literals.rb:104:10:104:10 | 2 | IntegerLiteral | 2 |
+| literals.rb:104:14:104:14 | 2 | IntegerLiteral | 2 |
+| literals.rb:110:2:110:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:110:5:110:5 | 2 | IntegerLiteral | 2 |
+| literals.rb:110:8:110:8 | 3 | IntegerLiteral | 3 |
+| literals.rb:111:2:111:2 | 4 | IntegerLiteral | 4 |
+| literals.rb:111:5:111:5 | 5 | IntegerLiteral | 5 |
+| literals.rb:111:8:111:9 | 12 | IntegerLiteral | 12 |
+| literals.rb:111:13:111:13 | 2 | IntegerLiteral | 2 |
+| literals.rb:112:2:112:2 | 7 | IntegerLiteral | 7 |
+| literals.rb:112:6:112:6 | 8 | IntegerLiteral | 8 |
+| literals.rb:112:9:112:9 | 9 | IntegerLiteral | 9 |
+| literals.rb:118:13:118:13 | 1 | IntegerLiteral | 1 |
+| literals.rb:118:15:118:15 | 1 | IntegerLiteral | 1 |
+| literals.rb:125:14:125:14 | 2 | IntegerLiteral | 2 |
+| literals.rb:125:18:125:18 | 4 | IntegerLiteral | 4 |
+| literals.rb:130:8:130:8 | 1 | IntegerLiteral | 1 |
+| literals.rb:130:19:130:19 | 2 | IntegerLiteral | 2 |
+| literals.rb:130:31:130:31 | 3 | IntegerLiteral | 3 |
+| literals.rb:131:8:131:8 | 7 | IntegerLiteral | 7 |
+| literals.rb:134:2:134:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:134:5:134:6 | 10 | IntegerLiteral | 10 |
+| literals.rb:135:2:135:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:135:6:135:7 | 10 | IntegerLiteral | 10 |
+| literals.rb:136:2:136:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:136:7:136:7 | 0 | IntegerLiteral | 0 |
+| literals.rb:137:9:137:9 | 2 | IntegerLiteral | 2 |
+| literals.rb:137:11:137:11 | 3 | IntegerLiteral | 3 |
+| literals.rb:138:2:138:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:139:4:139:4 | 1 | IntegerLiteral | 1 |
+| literals.rb:140:2:140:2 | 0 | IntegerLiteral | 0 |
+| literals.rb:140:6:140:6 | 1 | IntegerLiteral | 1 |
+| literals.rb:145:11:145:11 | 1 | IntegerLiteral | 1 |
+| literals.rb:145:15:145:15 | 1 | IntegerLiteral | 1 |
+| literals.rb:146:13:146:13 | 5 | IntegerLiteral | 5 |
+| literals.rb:146:17:146:17 | 4 | IntegerLiteral | 4 |
+| literals.rb:153:8:153:8 | 1 | IntegerLiteral | 1 |
+| literals.rb:153:12:153:12 | 1 | IntegerLiteral | 1 |
+| literals.rb:159:10:159:10 | 1 | IntegerLiteral | 1 |
+| literals.rb:159:14:159:14 | 1 | IntegerLiteral | 1 |
+| literals.rb:197:5:197:6 | 42 | IntegerLiteral | 42 |
+| literals.rb:198:8:198:8 | 5 | IntegerLiteral | 5 |
+integerLiterals
+| literals.rb:10:1:10:4 | 1234 | IntegerLiteral | 1234 |
+| literals.rb:11:1:11:5 | 5_678 | IntegerLiteral | 5678 |
+| literals.rb:12:1:12:1 | 0 | IntegerLiteral | 0 |
+| literals.rb:13:1:13:5 | 0d900 | IntegerLiteral | 0 |
+| literals.rb:14:1:14:10 | 2147483647 | IntegerLiteral | 2147483647 |
+| literals.rb:15:1:15:10 | 2147483648 | IntegerLiteral | <none> |
+| literals.rb:18:1:18:6 | 0x1234 | IntegerLiteral | 4660 |
+| literals.rb:19:1:19:6 | 0xbeef | IntegerLiteral | 48879 |
+| literals.rb:20:1:20:7 | 0xF0_0D | IntegerLiteral | 61453 |
+| literals.rb:21:1:21:22 | 0x000000000000000000ff | IntegerLiteral | 255 |
+| literals.rb:22:1:22:11 | 0x7FFF_FFFF | IntegerLiteral | 2147483647 |
+| literals.rb:23:1:23:10 | 0x80000000 | IntegerLiteral | <none> |
+| literals.rb:24:1:24:10 | 0xdeadbeef | IntegerLiteral | <none> |
+| literals.rb:25:1:25:11 | 0xF00D_face | IntegerLiteral | <none> |
+| literals.rb:28:1:28:4 | 0123 | IntegerLiteral | 83 |
+| literals.rb:29:1:29:5 | 0o234 | IntegerLiteral | 156 |
+| literals.rb:30:1:30:6 | 0O45_6 | IntegerLiteral | 302 |
+| literals.rb:31:1:31:31 | 0000000000000000000000000000010 | IntegerLiteral | 8 |
+| literals.rb:32:1:32:12 | 017777777777 | IntegerLiteral | 2147483647 |
+| literals.rb:33:1:33:12 | 020000000000 | IntegerLiteral | <none> |
+| literals.rb:36:1:36:10 | 0b10010100 | IntegerLiteral | 148 |
+| literals.rb:37:1:37:11 | 0B011_01101 | IntegerLiteral | 109 |
+| literals.rb:38:1:38:43 | 0b00000000000000000000000000000000000000011 | IntegerLiteral | 3 |
+| literals.rb:39:1:39:34 | 0b01111111111111111111111111111111 | IntegerLiteral | 2147483647 |
+| literals.rb:40:1:40:34 | 0b10000000000000000000000000000000 | IntegerLiteral | <none> |
+| literals.rb:71:13:71:13 | 2 | IntegerLiteral | 2 |
+| literals.rb:71:17:71:17 | 2 | IntegerLiteral | 2 |
+| literals.rb:72:15:72:15 | 3 | IntegerLiteral | 3 |
+| literals.rb:72:19:72:19 | 4 | IntegerLiteral | 4 |
+| literals.rb:77:14:77:14 | 1 | IntegerLiteral | 1 |
+| literals.rb:77:18:77:18 | 1 | IntegerLiteral | 1 |
+| literals.rb:78:17:78:17 | 2 | IntegerLiteral | 2 |
+| literals.rb:78:21:78:21 | 3 | IntegerLiteral | 3 |
+| literals.rb:79:17:79:17 | 1 | IntegerLiteral | 1 |
+| literals.rb:79:19:79:19 | 9 | IntegerLiteral | 9 |
+| literals.rb:104:10:104:10 | 2 | IntegerLiteral | 2 |
+| literals.rb:104:14:104:14 | 2 | IntegerLiteral | 2 |
+| literals.rb:110:2:110:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:110:5:110:5 | 2 | IntegerLiteral | 2 |
+| literals.rb:110:8:110:8 | 3 | IntegerLiteral | 3 |
+| literals.rb:111:2:111:2 | 4 | IntegerLiteral | 4 |
+| literals.rb:111:5:111:5 | 5 | IntegerLiteral | 5 |
+| literals.rb:111:8:111:9 | 12 | IntegerLiteral | 12 |
+| literals.rb:111:13:111:13 | 2 | IntegerLiteral | 2 |
+| literals.rb:112:2:112:2 | 7 | IntegerLiteral | 7 |
+| literals.rb:112:6:112:6 | 8 | IntegerLiteral | 8 |
+| literals.rb:112:9:112:9 | 9 | IntegerLiteral | 9 |
+| literals.rb:118:13:118:13 | 1 | IntegerLiteral | 1 |
+| literals.rb:118:15:118:15 | 1 | IntegerLiteral | 1 |
+| literals.rb:125:14:125:14 | 2 | IntegerLiteral | 2 |
+| literals.rb:125:18:125:18 | 4 | IntegerLiteral | 4 |
+| literals.rb:130:8:130:8 | 1 | IntegerLiteral | 1 |
+| literals.rb:130:19:130:19 | 2 | IntegerLiteral | 2 |
+| literals.rb:130:31:130:31 | 3 | IntegerLiteral | 3 |
+| literals.rb:131:8:131:8 | 7 | IntegerLiteral | 7 |
+| literals.rb:134:2:134:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:134:5:134:6 | 10 | IntegerLiteral | 10 |
+| literals.rb:135:2:135:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:135:6:135:7 | 10 | IntegerLiteral | 10 |
+| literals.rb:136:2:136:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:136:7:136:7 | 0 | IntegerLiteral | 0 |
+| literals.rb:137:9:137:9 | 2 | IntegerLiteral | 2 |
+| literals.rb:137:11:137:11 | 3 | IntegerLiteral | 3 |
+| literals.rb:138:2:138:2 | 1 | IntegerLiteral | 1 |
+| literals.rb:139:4:139:4 | 1 | IntegerLiteral | 1 |
+| literals.rb:140:2:140:2 | 0 | IntegerLiteral | 0 |
+| literals.rb:140:6:140:6 | 1 | IntegerLiteral | 1 |
+| literals.rb:145:11:145:11 | 1 | IntegerLiteral | 1 |
+| literals.rb:145:15:145:15 | 1 | IntegerLiteral | 1 |
+| literals.rb:146:13:146:13 | 5 | IntegerLiteral | 5 |
+| literals.rb:146:17:146:17 | 4 | IntegerLiteral | 4 |
+| literals.rb:153:8:153:8 | 1 | IntegerLiteral | 1 |
+| literals.rb:153:12:153:12 | 1 | IntegerLiteral | 1 |
+| literals.rb:159:10:159:10 | 1 | IntegerLiteral | 1 |
+| literals.rb:159:14:159:14 | 1 | IntegerLiteral | 1 |
+| literals.rb:197:5:197:6 | 42 | IntegerLiteral | 42 |
+| literals.rb:198:8:198:8 | 5 | IntegerLiteral | 5 |
+floatLiterals
+| literals.rb:43:1:43:5 | 12.34 | FloatLiteral | 12.34 |
+| literals.rb:44:1:44:7 | 1234e-2 | FloatLiteral | 12.34 |
+| literals.rb:45:1:45:7 | 1.234E1 | FloatLiteral | 12.34 |
+rationalLiterals
+| literals.rb:48:1:48:3 | 23r | RationalLiteral | 23/1 |
+| literals.rb:49:1:49:5 | 9.85r | RationalLiteral | 985/100 |
+complexLiterals
+| literals.rb:52:1:52:2 | 2i | ComplexLiteral | 0+2i |

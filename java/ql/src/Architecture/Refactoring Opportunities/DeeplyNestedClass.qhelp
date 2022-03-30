@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Classes (especially complex ones) that are nested multiple levels deep can be difficult to understand because they have access to variables
+from all of the classes that enclose them. Such classes can also be difficult to unit test. Specific exceptions are made for:
+</p>
+
+<ul>
+<li>Anonymous classes - these are generally used as a substitute for closures.</li>
+<li>Enumerations, and simple classes that contain no methods - these are unlikely to hinder readability.</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>
+The solution is to move one or more of the nested classes into a higher scope, less deeply-nested (see example below). When you move a nested class, you must:</p>
+<ul>
+<li>
+Ensure that the class can still access the required variables from its previously enclosing scopes.</li>
+<li>
+Consider the dependencies, particularly when you move a non-static nested class out of the 
+containing class. Generally, a non-static class should be refactored to depend only on
+the contents of the classes that previously enclosed it. This avoids introducing a dependency cycle where the non-static class depends on the previously-enclosing classes themselves.
+</li></ul>
+
+</recommendation>
+<example>
+<p>In the following example <code>Z1</code> is difficult to read because it is deeply nested.</p>
+
+<sample src="DeeplyNestedClass.java" />
+<p>In this example, there are no nested classes and you can clearly see which variables affect which class.</p>
+<sample src="DeeplyNestedClassFix.java" />
+
+</example>
+<references>
+
+<li>
+The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/java/javaOO/nested.html">Nested Classes</a>.
+</li>
+
+</references>
+</qhelp>

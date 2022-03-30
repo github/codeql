@@ -1,0 +1,34 @@
+| tst.js:3:5:3:28 | "".repl ... i", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:3:16:3:23 | "/foo/i" | /foo/i |
+| tst.js:4:5:4:28 | "".repl ... /", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:4:16:4:23 | "/^foo/" | /^foo/ |
+| tst.js:5:5:5:28 | "".repl ... /", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:5:16:5:23 | "/foo$/" | /foo$/ |
+| tst.js:6:5:6:27 | "".repl ... $", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:6:16:6:22 | "^foo$" | ^foo$ |
+| tst.js:7:5:7:24 | "".replace("\\s", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:7:16:7:19 | "\\s" | \\s |
+| tst.js:8:5:8:30 | "".repl ... r", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:8:16:8:25 | "foo\\sbar" | foo\\sbar |
+| tst.js:9:5:9:27 | "".repl ... s", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:9:16:9:22 | "foo\\s" | foo\\s |
+| tst.js:10:5:10:27 | "".repl ... r", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:10:16:10:22 | "\\sbar" | \\sbar |
+| tst.js:11:5:11:30 | "".repl ... r", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:11:16:11:25 | "foo\\[bar" | foo\\[bar |
+| tst.js:12:5:12:24 | "".replace("\\[", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:12:16:12:19 | "\\[" | \\[ |
+| tst.js:13:5:13:24 | "".replace("\\]", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:13:16:13:19 | "\\]" | \\] |
+| tst.js:14:5:14:24 | "".replace("\\(", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:14:16:14:19 | "\\(" | \\( |
+| tst.js:15:5:15:24 | "".replace("\\)", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:15:16:15:19 | "\\)" | \\) |
+| tst.js:16:5:16:24 | "".replace("\\*", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:16:16:16:19 | "\\*" | \\* |
+| tst.js:17:5:17:24 | "".replace("\\+", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:17:16:17:19 | "\\+" | \\+ |
+| tst.js:18:5:18:24 | "".replace("\\?", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:18:16:18:19 | "\\?" | \\? |
+| tst.js:19:5:19:24 | "".replace("\\{", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:19:16:19:19 | "\\{" | \\{ |
+| tst.js:20:5:20:24 | "".replace("\\}", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:20:16:20:19 | "\\}" | \\} |
+| tst.js:21:5:21:24 | "".replace("\\\|", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:21:16:21:19 | "\\\|" | \\\| |
+| tst.js:22:5:22:24 | "".replace("\\^", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:22:16:22:19 | "\\^" | \\^ |
+| tst.js:23:5:23:24 | "".replace("\\$", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:23:16:23:19 | "\\$" | \\$ |
+| tst.js:24:5:24:34 | "".repl ... +", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:24:16:24:29 | "[a-zA-Z123]+" | [a-zA-Z123]+ |
+| tst.js:25:5:25:28 | "".repl ... +", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:25:16:25:23 | "[a-z]+" | [a-z]+ |
+| tst.js:26:5:26:28 | "".repl ... *", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:26:16:26:23 | "[a-z]*" | [a-z]* |
+| tst.js:27:5:27:30 | "".repl ... +", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:27:16:27:25 | "[0-9_-]+" | [0-9_-]+ |
+| tst.js:28:5:28:29 | "".repl ... +", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:28:16:28:24 | "[^a-z]+" | [^a-z]+ |
+| tst.js:29:5:29:35 | "".repl ... r", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:29:16:29:30 | "foo[^a-z]+bar" | foo[^a-z]+bar |
+| tst.js:32:5:32:28 | f().rep ... /i", x) | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:32:17:32:24 | "/foo/i" | /foo/i |
+| tst.js:34:5:34:22 | f().replace(v1, x) | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:33:14:33:21 | "/foo/i" | /foo/i |
+| tst.js:35:5:35:30 | o.p.q.r ... /i", x) | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:35:19:35:26 | "/foo/i" | /foo/i |
+| tst.js:38:5:38:31 | "".repl ... $', '') | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:38:16:38:26 | '^\\s+\|\\s+$' | ^\\s+\|\\s+$ |
+| tst.js:39:5:39:36 | "".repl ... +", "") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:39:16:39:31 | "[^a-zA-Z0-9 ]+" | [^a-zA-Z0-9 ]+ |
+| tst.js:42:5:42:22 | "".split("/foo/i") | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:42:14:42:21 | "/foo/i" | /foo/i |
+| tst.js:43:5:43:25 | "".spli ... /i", x) | String argument '$@' looks like a regular expression, but it will be interpreted as a string. | tst.js:43:14:43:21 | "/foo/i" | /foo/i |

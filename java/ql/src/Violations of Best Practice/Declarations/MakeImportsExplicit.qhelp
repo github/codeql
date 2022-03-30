@@ -1,0 +1,63 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Imports can be categorized as <em>explicit</em> (for example
+<code>import java.util.List;</code>) or <em>implicit</em> (also known as
+'on-demand', for example <code>import java.util.*;</code>):</p>
+
+<ul>
+<li>Implicit imports give access to all visible types in the type (or package) that precedes
+the ".*"; types imported in this way never shadow other types.</li>
+<li>Explicit imports give access to just the named type; they can shadow other types
+that would normally be visible through an implicit import, or through the
+normal package visibility rules.</li>
+</ul>
+
+<p>It is often considered bad practice to use implicit imports. The only
+advantage to doing so is making the code more concise, and there are a number
+of disadvantages:</p>
+
+<ul>
+<li>The exact dependencies of a file are not visible at a glance.</li>
+<li>Confusing compile-time errors can be introduced if a type name
+is used that could originate from several implicit imports.</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>For readability, it is recommended to use explicit imports instead of implicit imports.
+Many modern IDEs provide automatic functionality to help achieve this, typically under the name 
+"Organize imports". They can also fold away the import declarations, and automatically
+manage imports: adding them when a particular type is auto-completed by the editor, and
+removing them when they are not necessary. This functionality makes implicit imports mainly
+redundant.</p>
+
+</recommendation>
+<example>
+
+<p>The following example uses implicit imports. This means that it is not clear to a programmer
+where the <code>List</code> type on line 5 is imported from.</p>
+
+<sample src="MakeImportsExplicit.java" />
+
+<p>To improve readability, the implicit imports should be replaced by explicit imports. For example,
+<code>import java.util.*;</code> should be replaced by <code>import java.util.List;</code> on line 1.</p>
+
+</example>
+<references>
+
+
+
+
+<li>Java Language Specification:
+    <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-6.html#jls-6.4.1">6.4.1 Shadowing</a>,
+    <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-7.html#jls-7.5.2">7.5.2 Type-Import-on-Demand Declarations</a>.</li>
+
+
+</references>
+</qhelp>

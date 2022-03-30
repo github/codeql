@@ -1,0 +1,185 @@
+nodes
+| check-domain.js:16:9:16:27 | url |
+| check-domain.js:16:15:16:27 | req.query.url |
+| check-domain.js:16:15:16:27 | req.query.url |
+| check-domain.js:17:13:17:15 | url |
+| check-domain.js:17:13:17:15 | url |
+| check-domain.js:26:15:26:27 | req.query.url |
+| check-domain.js:26:15:26:27 | req.query.url |
+| check-domain.js:26:15:26:27 | req.query.url |
+| check-middleware.js:9:13:9:43 | "test.c ... tainted |
+| check-middleware.js:9:13:9:43 | "test.c ... tainted |
+| check-middleware.js:9:27:9:43 | req.query.tainted |
+| check-middleware.js:9:27:9:43 | req.query.tainted |
+| check-path.js:19:13:19:43 | 'test.c ... tainted |
+| check-path.js:19:13:19:43 | 'test.c ... tainted |
+| check-path.js:19:27:19:43 | req.query.tainted |
+| check-path.js:19:27:19:43 | req.query.tainted |
+| check-path.js:22:13:22:63 | 'test.c ... ainted) |
+| check-path.js:22:13:22:63 | 'test.c ... ainted) |
+| check-path.js:22:27:22:63 | encodeU ... ainted) |
+| check-path.js:22:46:22:62 | req.query.tainted |
+| check-path.js:22:46:22:62 | req.query.tainted |
+| check-path.js:23:13:23:45 | `/addre ... inted}` |
+| check-path.js:23:13:23:45 | `/addre ... inted}` |
+| check-path.js:23:27:23:43 | req.query.tainted |
+| check-path.js:23:27:23:43 | req.query.tainted |
+| check-path.js:24:13:24:65 | `/addre ... nted)}` |
+| check-path.js:24:13:24:65 | `/addre ... nted)}` |
+| check-path.js:24:27:24:63 | encodeU ... ainted) |
+| check-path.js:24:46:24:62 | req.query.tainted |
+| check-path.js:24:46:24:62 | req.query.tainted |
+| check-path.js:33:15:33:45 | 'test.c ... tainted |
+| check-path.js:33:15:33:45 | 'test.c ... tainted |
+| check-path.js:33:29:33:45 | req.query.tainted |
+| check-path.js:33:29:33:45 | req.query.tainted |
+| check-path.js:37:15:37:45 | 'test.c ... tainted |
+| check-path.js:37:15:37:45 | 'test.c ... tainted |
+| check-path.js:37:29:37:45 | req.query.tainted |
+| check-path.js:37:29:37:45 | req.query.tainted |
+| check-path.js:45:13:45:44 | `${base ... inted}` |
+| check-path.js:45:13:45:44 | `${base ... inted}` |
+| check-path.js:45:26:45:42 | req.query.tainted |
+| check-path.js:45:26:45:42 | req.query.tainted |
+| check-regex.js:24:15:24:42 | baseURL ... tainted |
+| check-regex.js:24:15:24:42 | baseURL ... tainted |
+| check-regex.js:24:25:24:42 | req.params.tainted |
+| check-regex.js:24:25:24:42 | req.params.tainted |
+| check-regex.js:31:15:31:45 | "test.c ... tainted |
+| check-regex.js:31:15:31:45 | "test.c ... tainted |
+| check-regex.js:31:29:31:45 | req.query.tainted |
+| check-regex.js:31:29:31:45 | req.query.tainted |
+| check-regex.js:34:15:34:42 | baseURL ... tainted |
+| check-regex.js:34:15:34:42 | baseURL ... tainted |
+| check-regex.js:34:25:34:42 | req.params.tainted |
+| check-regex.js:34:25:34:42 | req.params.tainted |
+| check-regex.js:41:13:41:43 | "test.c ... tainted |
+| check-regex.js:41:13:41:43 | "test.c ... tainted |
+| check-regex.js:41:27:41:43 | req.query.tainted |
+| check-regex.js:41:27:41:43 | req.query.tainted |
+| check-validator.js:15:15:15:45 | "test.c ... tainted |
+| check-validator.js:15:15:15:45 | "test.c ... tainted |
+| check-validator.js:15:29:15:45 | req.query.tainted |
+| check-validator.js:15:29:15:45 | req.query.tainted |
+| check-validator.js:27:15:27:45 | "test.c ... tainted |
+| check-validator.js:27:15:27:45 | "test.c ... tainted |
+| check-validator.js:27:29:27:45 | req.query.tainted |
+| check-validator.js:27:29:27:45 | req.query.tainted |
+| check-validator.js:50:15:50:45 | "test.c ... tainted |
+| check-validator.js:50:15:50:45 | "test.c ... tainted |
+| check-validator.js:50:29:50:45 | req.query.tainted |
+| check-validator.js:50:29:50:45 | req.query.tainted |
+| check-validator.js:54:9:54:37 | numberURL |
+| check-validator.js:54:21:54:37 | req.query.tainted |
+| check-validator.js:54:21:54:37 | req.query.tainted |
+| check-validator.js:59:15:59:45 | "test.c ... tainted |
+| check-validator.js:59:15:59:45 | "test.c ... tainted |
+| check-validator.js:59:29:59:45 | req.query.tainted |
+| check-validator.js:59:29:59:45 | req.query.tainted |
+| check-validator.js:62:15:62:37 | "test.c ... mberURL |
+| check-validator.js:62:15:62:37 | "test.c ... mberURL |
+| check-validator.js:62:29:62:37 | numberURL |
+| check-validator.js:68:15:68:45 | "test.c ... tainted |
+| check-validator.js:68:15:68:45 | "test.c ... tainted |
+| check-validator.js:68:29:68:45 | req.query.tainted |
+| check-validator.js:68:29:68:45 | req.query.tainted |
+edges
+| check-domain.js:16:9:16:27 | url | check-domain.js:17:13:17:15 | url |
+| check-domain.js:16:9:16:27 | url | check-domain.js:17:13:17:15 | url |
+| check-domain.js:16:15:16:27 | req.query.url | check-domain.js:16:9:16:27 | url |
+| check-domain.js:16:15:16:27 | req.query.url | check-domain.js:16:9:16:27 | url |
+| check-domain.js:26:15:26:27 | req.query.url | check-domain.js:26:15:26:27 | req.query.url |
+| check-middleware.js:9:27:9:43 | req.query.tainted | check-middleware.js:9:13:9:43 | "test.c ... tainted |
+| check-middleware.js:9:27:9:43 | req.query.tainted | check-middleware.js:9:13:9:43 | "test.c ... tainted |
+| check-middleware.js:9:27:9:43 | req.query.tainted | check-middleware.js:9:13:9:43 | "test.c ... tainted |
+| check-middleware.js:9:27:9:43 | req.query.tainted | check-middleware.js:9:13:9:43 | "test.c ... tainted |
+| check-path.js:19:27:19:43 | req.query.tainted | check-path.js:19:13:19:43 | 'test.c ... tainted |
+| check-path.js:19:27:19:43 | req.query.tainted | check-path.js:19:13:19:43 | 'test.c ... tainted |
+| check-path.js:19:27:19:43 | req.query.tainted | check-path.js:19:13:19:43 | 'test.c ... tainted |
+| check-path.js:19:27:19:43 | req.query.tainted | check-path.js:19:13:19:43 | 'test.c ... tainted |
+| check-path.js:22:27:22:63 | encodeU ... ainted) | check-path.js:22:13:22:63 | 'test.c ... ainted) |
+| check-path.js:22:27:22:63 | encodeU ... ainted) | check-path.js:22:13:22:63 | 'test.c ... ainted) |
+| check-path.js:22:46:22:62 | req.query.tainted | check-path.js:22:27:22:63 | encodeU ... ainted) |
+| check-path.js:22:46:22:62 | req.query.tainted | check-path.js:22:27:22:63 | encodeU ... ainted) |
+| check-path.js:23:27:23:43 | req.query.tainted | check-path.js:23:13:23:45 | `/addre ... inted}` |
+| check-path.js:23:27:23:43 | req.query.tainted | check-path.js:23:13:23:45 | `/addre ... inted}` |
+| check-path.js:23:27:23:43 | req.query.tainted | check-path.js:23:13:23:45 | `/addre ... inted}` |
+| check-path.js:23:27:23:43 | req.query.tainted | check-path.js:23:13:23:45 | `/addre ... inted}` |
+| check-path.js:24:27:24:63 | encodeU ... ainted) | check-path.js:24:13:24:65 | `/addre ... nted)}` |
+| check-path.js:24:27:24:63 | encodeU ... ainted) | check-path.js:24:13:24:65 | `/addre ... nted)}` |
+| check-path.js:24:46:24:62 | req.query.tainted | check-path.js:24:27:24:63 | encodeU ... ainted) |
+| check-path.js:24:46:24:62 | req.query.tainted | check-path.js:24:27:24:63 | encodeU ... ainted) |
+| check-path.js:33:29:33:45 | req.query.tainted | check-path.js:33:15:33:45 | 'test.c ... tainted |
+| check-path.js:33:29:33:45 | req.query.tainted | check-path.js:33:15:33:45 | 'test.c ... tainted |
+| check-path.js:33:29:33:45 | req.query.tainted | check-path.js:33:15:33:45 | 'test.c ... tainted |
+| check-path.js:33:29:33:45 | req.query.tainted | check-path.js:33:15:33:45 | 'test.c ... tainted |
+| check-path.js:37:29:37:45 | req.query.tainted | check-path.js:37:15:37:45 | 'test.c ... tainted |
+| check-path.js:37:29:37:45 | req.query.tainted | check-path.js:37:15:37:45 | 'test.c ... tainted |
+| check-path.js:37:29:37:45 | req.query.tainted | check-path.js:37:15:37:45 | 'test.c ... tainted |
+| check-path.js:37:29:37:45 | req.query.tainted | check-path.js:37:15:37:45 | 'test.c ... tainted |
+| check-path.js:45:26:45:42 | req.query.tainted | check-path.js:45:13:45:44 | `${base ... inted}` |
+| check-path.js:45:26:45:42 | req.query.tainted | check-path.js:45:13:45:44 | `${base ... inted}` |
+| check-path.js:45:26:45:42 | req.query.tainted | check-path.js:45:13:45:44 | `${base ... inted}` |
+| check-path.js:45:26:45:42 | req.query.tainted | check-path.js:45:13:45:44 | `${base ... inted}` |
+| check-regex.js:24:25:24:42 | req.params.tainted | check-regex.js:24:15:24:42 | baseURL ... tainted |
+| check-regex.js:24:25:24:42 | req.params.tainted | check-regex.js:24:15:24:42 | baseURL ... tainted |
+| check-regex.js:24:25:24:42 | req.params.tainted | check-regex.js:24:15:24:42 | baseURL ... tainted |
+| check-regex.js:24:25:24:42 | req.params.tainted | check-regex.js:24:15:24:42 | baseURL ... tainted |
+| check-regex.js:31:29:31:45 | req.query.tainted | check-regex.js:31:15:31:45 | "test.c ... tainted |
+| check-regex.js:31:29:31:45 | req.query.tainted | check-regex.js:31:15:31:45 | "test.c ... tainted |
+| check-regex.js:31:29:31:45 | req.query.tainted | check-regex.js:31:15:31:45 | "test.c ... tainted |
+| check-regex.js:31:29:31:45 | req.query.tainted | check-regex.js:31:15:31:45 | "test.c ... tainted |
+| check-regex.js:34:25:34:42 | req.params.tainted | check-regex.js:34:15:34:42 | baseURL ... tainted |
+| check-regex.js:34:25:34:42 | req.params.tainted | check-regex.js:34:15:34:42 | baseURL ... tainted |
+| check-regex.js:34:25:34:42 | req.params.tainted | check-regex.js:34:15:34:42 | baseURL ... tainted |
+| check-regex.js:34:25:34:42 | req.params.tainted | check-regex.js:34:15:34:42 | baseURL ... tainted |
+| check-regex.js:41:27:41:43 | req.query.tainted | check-regex.js:41:13:41:43 | "test.c ... tainted |
+| check-regex.js:41:27:41:43 | req.query.tainted | check-regex.js:41:13:41:43 | "test.c ... tainted |
+| check-regex.js:41:27:41:43 | req.query.tainted | check-regex.js:41:13:41:43 | "test.c ... tainted |
+| check-regex.js:41:27:41:43 | req.query.tainted | check-regex.js:41:13:41:43 | "test.c ... tainted |
+| check-validator.js:15:29:15:45 | req.query.tainted | check-validator.js:15:15:15:45 | "test.c ... tainted |
+| check-validator.js:15:29:15:45 | req.query.tainted | check-validator.js:15:15:15:45 | "test.c ... tainted |
+| check-validator.js:15:29:15:45 | req.query.tainted | check-validator.js:15:15:15:45 | "test.c ... tainted |
+| check-validator.js:15:29:15:45 | req.query.tainted | check-validator.js:15:15:15:45 | "test.c ... tainted |
+| check-validator.js:27:29:27:45 | req.query.tainted | check-validator.js:27:15:27:45 | "test.c ... tainted |
+| check-validator.js:27:29:27:45 | req.query.tainted | check-validator.js:27:15:27:45 | "test.c ... tainted |
+| check-validator.js:27:29:27:45 | req.query.tainted | check-validator.js:27:15:27:45 | "test.c ... tainted |
+| check-validator.js:27:29:27:45 | req.query.tainted | check-validator.js:27:15:27:45 | "test.c ... tainted |
+| check-validator.js:50:29:50:45 | req.query.tainted | check-validator.js:50:15:50:45 | "test.c ... tainted |
+| check-validator.js:50:29:50:45 | req.query.tainted | check-validator.js:50:15:50:45 | "test.c ... tainted |
+| check-validator.js:50:29:50:45 | req.query.tainted | check-validator.js:50:15:50:45 | "test.c ... tainted |
+| check-validator.js:50:29:50:45 | req.query.tainted | check-validator.js:50:15:50:45 | "test.c ... tainted |
+| check-validator.js:54:9:54:37 | numberURL | check-validator.js:62:29:62:37 | numberURL |
+| check-validator.js:54:21:54:37 | req.query.tainted | check-validator.js:54:9:54:37 | numberURL |
+| check-validator.js:54:21:54:37 | req.query.tainted | check-validator.js:54:9:54:37 | numberURL |
+| check-validator.js:59:29:59:45 | req.query.tainted | check-validator.js:59:15:59:45 | "test.c ... tainted |
+| check-validator.js:59:29:59:45 | req.query.tainted | check-validator.js:59:15:59:45 | "test.c ... tainted |
+| check-validator.js:59:29:59:45 | req.query.tainted | check-validator.js:59:15:59:45 | "test.c ... tainted |
+| check-validator.js:59:29:59:45 | req.query.tainted | check-validator.js:59:15:59:45 | "test.c ... tainted |
+| check-validator.js:62:29:62:37 | numberURL | check-validator.js:62:15:62:37 | "test.c ... mberURL |
+| check-validator.js:62:29:62:37 | numberURL | check-validator.js:62:15:62:37 | "test.c ... mberURL |
+| check-validator.js:68:29:68:45 | req.query.tainted | check-validator.js:68:15:68:45 | "test.c ... tainted |
+| check-validator.js:68:29:68:45 | req.query.tainted | check-validator.js:68:15:68:45 | "test.c ... tainted |
+| check-validator.js:68:29:68:45 | req.query.tainted | check-validator.js:68:15:68:45 | "test.c ... tainted |
+| check-validator.js:68:29:68:45 | req.query.tainted | check-validator.js:68:15:68:45 | "test.c ... tainted |
+#select
+| check-domain.js:17:13:17:15 | url | check-domain.js:16:15:16:27 | req.query.url | check-domain.js:17:13:17:15 | url | The URL of this request depends on a user-provided value |
+| check-domain.js:26:15:26:27 | req.query.url | check-domain.js:26:15:26:27 | req.query.url | check-domain.js:26:15:26:27 | req.query.url | The URL of this request depends on a user-provided value |
+| check-middleware.js:9:13:9:43 | "test.c ... tainted | check-middleware.js:9:27:9:43 | req.query.tainted | check-middleware.js:9:13:9:43 | "test.c ... tainted | The URL of this request depends on a user-provided value |
+| check-path.js:19:13:19:43 | 'test.c ... tainted | check-path.js:19:27:19:43 | req.query.tainted | check-path.js:19:13:19:43 | 'test.c ... tainted | The URL of this request depends on a user-provided value |
+| check-path.js:22:13:22:63 | 'test.c ... ainted) | check-path.js:22:46:22:62 | req.query.tainted | check-path.js:22:13:22:63 | 'test.c ... ainted) | The URL of this request depends on a user-provided value |
+| check-path.js:23:13:23:45 | `/addre ... inted}` | check-path.js:23:27:23:43 | req.query.tainted | check-path.js:23:13:23:45 | `/addre ... inted}` | The URL of this request depends on a user-provided value |
+| check-path.js:24:13:24:65 | `/addre ... nted)}` | check-path.js:24:46:24:62 | req.query.tainted | check-path.js:24:13:24:65 | `/addre ... nted)}` | The URL of this request depends on a user-provided value |
+| check-path.js:33:15:33:45 | 'test.c ... tainted | check-path.js:33:29:33:45 | req.query.tainted | check-path.js:33:15:33:45 | 'test.c ... tainted | The URL of this request depends on a user-provided value |
+| check-path.js:37:15:37:45 | 'test.c ... tainted | check-path.js:37:29:37:45 | req.query.tainted | check-path.js:37:15:37:45 | 'test.c ... tainted | The URL of this request depends on a user-provided value |
+| check-path.js:45:13:45:44 | `${base ... inted}` | check-path.js:45:26:45:42 | req.query.tainted | check-path.js:45:13:45:44 | `${base ... inted}` | The URL of this request depends on a user-provided value |
+| check-regex.js:24:15:24:42 | baseURL ... tainted | check-regex.js:24:25:24:42 | req.params.tainted | check-regex.js:24:15:24:42 | baseURL ... tainted | The URL of this request depends on a user-provided value |
+| check-regex.js:31:15:31:45 | "test.c ... tainted | check-regex.js:31:29:31:45 | req.query.tainted | check-regex.js:31:15:31:45 | "test.c ... tainted | The URL of this request depends on a user-provided value |
+| check-regex.js:34:15:34:42 | baseURL ... tainted | check-regex.js:34:25:34:42 | req.params.tainted | check-regex.js:34:15:34:42 | baseURL ... tainted | The URL of this request depends on a user-provided value |
+| check-regex.js:41:13:41:43 | "test.c ... tainted | check-regex.js:41:27:41:43 | req.query.tainted | check-regex.js:41:13:41:43 | "test.c ... tainted | The URL of this request depends on a user-provided value |
+| check-validator.js:15:15:15:45 | "test.c ... tainted | check-validator.js:15:29:15:45 | req.query.tainted | check-validator.js:15:15:15:45 | "test.c ... tainted | The URL of this request depends on a user-provided value |
+| check-validator.js:27:15:27:45 | "test.c ... tainted | check-validator.js:27:29:27:45 | req.query.tainted | check-validator.js:27:15:27:45 | "test.c ... tainted | The URL of this request depends on a user-provided value |
+| check-validator.js:50:15:50:45 | "test.c ... tainted | check-validator.js:50:29:50:45 | req.query.tainted | check-validator.js:50:15:50:45 | "test.c ... tainted | The URL of this request depends on a user-provided value |
+| check-validator.js:59:15:59:45 | "test.c ... tainted | check-validator.js:59:29:59:45 | req.query.tainted | check-validator.js:59:15:59:45 | "test.c ... tainted | The URL of this request depends on a user-provided value |
+| check-validator.js:62:15:62:37 | "test.c ... mberURL | check-validator.js:54:21:54:37 | req.query.tainted | check-validator.js:62:15:62:37 | "test.c ... mberURL | The URL of this request depends on a user-provided value |
+| check-validator.js:68:15:68:45 | "test.c ... tainted | check-validator.js:68:29:68:45 | req.query.tainted | check-validator.js:68:15:68:45 | "test.c ... tainted | The URL of this request depends on a user-provided value |

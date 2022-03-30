@@ -1,0 +1,72 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If the number of calls that is made by a method (or constructor) to other methods is high,
+the method can be difficult to
+understand, because you have to read through all the methods that it calls
+to fully understand what it does. There are various reasons why
+a method may make a high number of calls, including:
+</p>
+
+<ul>
+<li>
+The method is simply too large in general.
+</li>
+
+<li>
+The method has too many responsibilities (see [Martin]).
+</li>
+
+<li>
+The method spends all of its time delegating rather than doing any work itself.
+</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>
+The appropriate action depends on the reason why the method
+makes a high number of calls:
+</p>
+
+<ul>
+<li>
+If the method is too large, you should refactor it into multiple smaller
+methods, using the 'Extract Method' refactoring from [Fowler], for example.
+</li>
+
+<li>
+If the method is taking on too many responsibilities, a new layer of methods
+can be introduced below the top-level method, each of which can do some of the
+original work. The top-level method then only needs to delegate to a much
+smaller number of methods, which themselves delegate to the methods lower down.
+</li>
+
+<li>
+If the method spends all of its time delegating, some of the work that is done by the
+subsidiary methods can be moved into the top-level method, and the subsidiary
+methods can be removed. This is the refactoring called 'Inline
+Method' in [Fowler].
+</li>
+</ul>
+
+
+
+</recommendation>
+<references>
+
+
+<li>
+M. Fowler, <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+<li>
+R. Martin. <em>Agile Software Development: Principles, Patterns, and Practices</em>
+Chapter 8 - SRP: The Single-Responsibility Principle. Pearson Education, 2003.
+</li>
+
+
+</references>
+</qhelp>

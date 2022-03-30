@@ -1,0 +1,9 @@
+| file://:0:0:0:0 | E<C>'s friend | loop.cpp:5:26:5:26 | E<D> |
+| file://:0:0:0:0 | E<C>'s friend | loop.cpp:10:26:10:26 | F<D> |
+| file://:0:0:0:0 | E<D>'s friend | loop.cpp:5:26:5:26 | E<C> |
+| file://:0:0:0:0 | E<D>'s friend | loop.cpp:10:26:10:26 | F<D> |
+| file://:0:0:0:0 | F<D>'s friend | loop.cpp:5:26:5:26 | E<C> |
+| file://:0:0:0:0 | F<D>'s friend | loop.cpp:5:26:5:26 | E<D> |
+| loop.cpp:6:5:6:5 | E<T>'s friend | loop.cpp:5:26:5:26 | E<T> |
+| loop.cpp:7:5:7:5 | E<T>'s friend | loop.cpp:7:36:7:36 | F<U> |
+| loop.cpp:11:5:11:5 | F<T>'s friend | loop.cpp:11:36:11:36 | E<U> |

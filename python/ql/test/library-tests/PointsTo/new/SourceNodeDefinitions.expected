@@ -1,0 +1,152 @@
+| a_simple.py:0 | Global Variable C | Entry node for Module code.a_simple | definition |
+| a_simple.py:0 | Global Variable __name__ | Entry node for Module code.a_simple | definition |
+| a_simple.py:0 | Global Variable __package__ | Entry node for Module code.a_simple | definition |
+| a_simple.py:0 | Global Variable f | Entry node for Module code.a_simple | definition |
+| a_simple.py:0 | Global Variable f1 | Entry node for Module code.a_simple | definition |
+| a_simple.py:0 | Global Variable func | Entry node for Module code.a_simple | definition |
+| a_simple.py:0 | Global Variable i1 | Entry node for Module code.a_simple | definition |
+| a_simple.py:0 | Global Variable multi_assign_and_packing | Entry node for Module code.a_simple | definition |
+| a_simple.py:0 | Global Variable multi_loop | Entry node for Module code.a_simple | definition |
+| a_simple.py:0 | Global Variable multi_loop_in_try | Entry node for Module code.a_simple | definition |
+| a_simple.py:0 | Global Variable s | Entry node for Module code.a_simple | definition |
+| a_simple.py:0 | Global Variable vararg_kwarg | Entry node for Module code.a_simple | definition |
+| a_simple.py:0 | Global Variable with_definition | Entry node for Module code.a_simple | definition |
+| a_simple.py:2 | Global Variable f1 | ControlFlowNode for f1 | definition |
+| a_simple.py:5 | Global Variable i1 | ControlFlowNode for i1 | definition |
+| a_simple.py:6 | Global Variable s | ControlFlowNode for s | definition |
+| a_simple.py:8 | Global Variable func | ControlFlowNode for func | definition |
+| a_simple.py:11 | Global Variable C | ControlFlowNode for C | definition |
+| a_simple.py:14 | Global Variable vararg_kwarg | ControlFlowNode for vararg_kwarg | definition |
+| a_simple.py:14 | Local Variable d | ControlFlowNode for d | definition |
+| a_simple.py:14 | Local Variable t | ControlFlowNode for t | definition |
+| a_simple.py:18 | Global Variable multi_loop | ControlFlowNode for multi_loop | definition |
+| a_simple.py:18 | Local Variable seq | ControlFlowNode for seq | definition |
+| a_simple.py:18 | Local Variable x | Entry node for Function multi_loop | definition |
+| a_simple.py:18 | Local Variable y | Entry node for Function multi_loop | definition |
+| a_simple.py:19 | Local Variable x | ControlFlowNode for x | definition |
+| a_simple.py:20 | Local Variable x | ControlFlowNode for x | definition |
+| a_simple.py:20 | Local Variable y | ControlFlowNode for y | definition |
+| a_simple.py:23 | Global Variable with_definition | ControlFlowNode for with_definition | definition |
+| a_simple.py:23 | Local Variable x | ControlFlowNode for x | definition |
+| a_simple.py:23 | Local Variable y | Entry node for Function with_definition | definition |
+| a_simple.py:24 | Local Variable y | ControlFlowNode for y | definition |
+| a_simple.py:27 | Global Variable multi_loop_in_try | ControlFlowNode for multi_loop_in_try | definition |
+| a_simple.py:27 | Local Variable p | Entry node for Function multi_loop_in_try | definition |
+| a_simple.py:27 | Local Variable q | Entry node for Function multi_loop_in_try | definition |
+| a_simple.py:27 | Local Variable x | ControlFlowNode for x | definition |
+| a_simple.py:29 | Local Variable p | ControlFlowNode for p | definition |
+| a_simple.py:29 | Local Variable q | ControlFlowNode for q | definition |
+| a_simple.py:34 | Global Variable f | ControlFlowNode for f | definition |
+| a_simple.py:34 | Local Variable args | ControlFlowNode for args | definition |
+| a_simple.py:34 | Local Variable kwargs | ControlFlowNode for kwargs | definition |
+| a_simple.py:38 | Global Variable multi_assign_and_packing | ControlFlowNode for multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable a | ControlFlowNode for a | definition |
+| a_simple.py:38 | Local Variable b | ControlFlowNode for b | definition |
+| a_simple.py:38 | Local Variable c | ControlFlowNode for c | definition |
+| a_simple.py:38 | Local Variable g | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable h | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable i | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable l | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable m | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable p | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable q | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable r | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable s | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable t | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable u | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable w | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable x | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable y | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable z | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:39 | Local Variable t | ControlFlowNode for t | definition |
+| a_simple.py:40 | Local Variable w | ControlFlowNode for w | definition |
+| a_simple.py:41 | Local Variable p | ControlFlowNode for p | definition |
+| a_simple.py:41 | Local Variable q | ControlFlowNode for q | definition |
+| a_simple.py:41 | Local Variable r | ControlFlowNode for r | definition |
+| a_simple.py:42 | Local Variable x | ControlFlowNode for x | definition |
+| a_simple.py:42 | Local Variable y | ControlFlowNode for y | definition |
+| a_simple.py:42 | Local Variable z | ControlFlowNode for z | definition |
+| a_simple.py:49 | Local Variable g | ControlFlowNode for g | definition |
+| a_simple.py:49 | Local Variable h | ControlFlowNode for h | definition |
+| a_simple.py:49 | Local Variable i | ControlFlowNode for i | definition |
+| a_simple.py:53 | Local Variable l | ControlFlowNode for l | definition |
+| a_simple.py:53 | Local Variable m | ControlFlowNode for m | definition |
+| a_simple.py:56 | Local Variable s | ControlFlowNode for s | definition |
+| a_simple.py:56 | Local Variable u | ControlFlowNode for u | definition |
+| b_condition.py:0 | Global Variable __name__ | Entry node for Module code.b_condition | definition |
+| b_condition.py:0 | Global Variable __package__ | Entry node for Module code.b_condition | definition |
+| b_condition.py:0 | Global Variable double_attr_check | Entry node for Module code.b_condition | definition |
+| b_condition.py:0 | Global Variable f | Entry node for Module code.b_condition | definition |
+| b_condition.py:0 | Global Variable g | Entry node for Module code.b_condition | definition |
+| b_condition.py:0 | Global Variable h | Entry node for Module code.b_condition | definition |
+| b_condition.py:0 | Global Variable k | Entry node for Module code.b_condition | definition |
+| b_condition.py:0 | Global Variable loop | Entry node for Module code.b_condition | definition |
+| b_condition.py:0 | Global Variable method_check | Entry node for Module code.b_condition | definition |
+| b_condition.py:0 | Global Variable not_or_not | Entry node for Module code.b_condition | definition |
+| b_condition.py:0 | Global Variable odasa6261 | Entry node for Module code.b_condition | definition |
+| b_condition.py:0 | Global Variable split_bool1 | Entry node for Module code.b_condition | definition |
+| b_condition.py:0 | Global Variable v2 | Entry node for Module code.b_condition | definition |
+| b_condition.py:4 | Global Variable f | ControlFlowNode for f | definition |
+| b_condition.py:4 | Local Variable x | Entry node for Function f | definition |
+| b_condition.py:4 | Local Variable y | ControlFlowNode for y | definition |
+| b_condition.py:5 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:8 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:9 | Local Variable x | ControlFlowNode for use() | refinement |
+| b_condition.py:11 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:14 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:15 | Local Variable x | ControlFlowNode for use() | refinement |
+| b_condition.py:17 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:20 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:21 | Local Variable x | ControlFlowNode for use() | refinement |
+| b_condition.py:23 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:25 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:26 | Local Variable x | ControlFlowNode for use() | refinement |
+| b_condition.py:28 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:29 | Local Variable x | ControlFlowNode for use() | refinement |
+| b_condition.py:31 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:33 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:34 | Local Variable x | ControlFlowNode for use() | refinement |
+| b_condition.py:37 | Local Variable x | ControlFlowNode for use() | refinement |
+| b_condition.py:39 | Global Variable v2 | ControlFlowNode for v2 | definition |
+| b_condition.py:41 | Global Variable v2 | ControlFlowNode for Attribute | refinement |
+| b_condition.py:50 | Global Variable g | ControlFlowNode for g | definition |
+| b_condition.py:50 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:55 | Global Variable loop | ControlFlowNode for loop | definition |
+| b_condition.py:55 | Local Variable seq | ControlFlowNode for seq | definition |
+| b_condition.py:55 | Local Variable v | Entry node for Function loop | definition |
+| b_condition.py:56 | Local Variable v | ControlFlowNode for v | definition |
+| b_condition.py:58 | Local Variable v | ControlFlowNode for use() | refinement |
+| b_condition.py:61 | Global Variable double_attr_check | ControlFlowNode for double_attr_check | definition |
+| b_condition.py:61 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:61 | Local Variable y | ControlFlowNode for y | definition |
+| b_condition.py:69 | Global Variable h | ControlFlowNode for h | definition |
+| b_condition.py:69 | Local Variable b | Entry node for Function h | definition |
+| b_condition.py:70 | Local Variable b | ControlFlowNode for b | definition |
+| b_condition.py:72 | Local Variable b | ControlFlowNode for b | definition |
+| b_condition.py:75 | Global Variable k | ControlFlowNode for k | definition |
+| b_condition.py:75 | Local Variable t | Entry node for Function k | definition |
+| b_condition.py:76 | Local Variable t | ControlFlowNode for t | definition |
+| b_condition.py:78 | Local Variable t | ControlFlowNode for t | definition |
+| b_condition.py:79 | Local Variable t | ControlFlowNode for use() | refinement |
+| b_condition.py:81 | Global Variable odasa6261 | ControlFlowNode for odasa6261 | definition |
+| b_condition.py:81 | Local Variable bar | Entry node for Function odasa6261 | definition |
+| b_condition.py:81 | Local Variable foo | ControlFlowNode for foo | definition |
+| b_condition.py:83 | Local Variable bar | ControlFlowNode for bar | definition |
+| b_condition.py:83 | Local Variable foo | Entry node for Function bar | definition |
+| b_condition.py:87 | Global Variable split_bool1 | ControlFlowNode for split_bool1 | definition |
+| b_condition.py:87 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:87 | Local Variable y | ControlFlowNode for y | definition |
+| b_condition.py:90 | Local Variable x | ControlFlowNode for UnaryExpr | refinement |
+| b_condition.py:90 | Local Variable x | ControlFlowNode for x | refinement |
+| b_condition.py:92 | Local Variable x | ControlFlowNode for x | refinement |
+| b_condition.py:93 | Local Variable y | ControlFlowNode for use() | refinement |
+| b_condition.py:95 | Local Variable y | ControlFlowNode for use() | refinement |
+| b_condition.py:96 | Local Variable y | ControlFlowNode for y | refinement |
+| b_condition.py:97 | Local Variable x | ControlFlowNode for use() | refinement |
+| b_condition.py:99 | Local Variable x | ControlFlowNode for use() | refinement |
+| b_condition.py:101 | Global Variable not_or_not | ControlFlowNode for not_or_not | definition |
+| b_condition.py:101 | Local Variable a | ControlFlowNode for a | definition |
+| b_condition.py:109 | Global Variable method_check | ControlFlowNode for method_check | definition |
+| b_condition.py:109 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:111 | Local Variable x | ControlFlowNode for use() | refinement |
+| b_condition.py:113 | Local Variable x | ControlFlowNode for use() | refinement |

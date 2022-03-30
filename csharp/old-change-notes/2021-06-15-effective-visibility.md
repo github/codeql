@@ -1,0 +1,2 @@
+lgtm,codescanning
+* The `isEffectivelyPrivate`, `isEffectivelyInternal` and `isEffectivelyPublic` predicates on `Modifiable` have been reworked to handle `private protected` and `internal protected` visibilities and explicitly implemented interfaces.

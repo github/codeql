@@ -1,0 +1,86 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+
+			When a character in a string literal or regular expression
+			literal is preceded by a backslash, it is interpreted as part of an
+			escape sequence. For example, the escape sequence <code>\n</code> in a
+			string literal corresponds to a single <code>newline</code> character,
+			and not the <code>\</code> and <code>n</code> characters.
+
+			However, not all characters change meaning when used in an
+			escape sequence. In this case, the backslash just makes the character
+			appear to mean something else, and the backslash actually has no
+			effect. For example, the escape sequence <code>\k</code> in a string
+			literal just means <code>k</code>.
+
+			Such superfluous escape sequences are usually benign, and
+			do not change the behavior of the program.
+
+		</p>
+
+		<p>
+
+			The set of characters that change meaning when in escape
+			sequences is different for regular expression literals and string
+			literals.
+
+			This can be problematic when a regular expression literal
+			is turned into a regular expression that is built from one or more
+			string literals. The problem occurs when a regular expression escape
+			sequence loses its special meaning in a string literal.
+
+		</p>
+
+	</overview>
+
+	<recommendation>
+		<p>
+
+			Ensure that the right amount of backslashes is used when
+			escaping characters in strings, template literals and regular
+			expressions.
+
+			Pay special attention to the number of backslashes when
+			rewriting a regular expression as a string literal.
+
+		</p>
+	</recommendation>
+
+	<example>
+
+		<p>
+
+			The following example code checks that a string is
+			<code>"my-marker"</code>, possibly surrounded by white space:
+
+		</p>
+
+		<sample src="examples/UselessRegExpCharacterEscape_bad_1.js"/>
+
+		<p>
+
+			However, the check does not work properly for white space
+			as the two <code>\s</code> occurrences are semantically equivalent to
+			just <code>s</code>, meaning that the check will succeed for strings
+			like <code>"smy-markers"</code> instead of <code>" my-marker
+			"</code>.
+
+			Address these shortcomings by either using a regular
+			expression literal (<code>/(^\s*)my-marker(\s*$)/</code>), or by
+			adding extra backslashes
+			(<code>'(^\\s*)my-marker(\\s*$)'</code>).
+
+		</p>
+
+	</example>
+
+	<references>
+		<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Escaping">Regular expression escape notation</a></li>
+		<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#Escape_notation">String escape notation</a></li>
+	</references>
+</qhelp>

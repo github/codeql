@@ -1,0 +1,4 @@
+| tst.js:3:4:3:9 | @param | @param tag is missing description. |
+| tst.js:3:4:3:9 | @param | @param tag is missing name. |
+| tst.js:7:4:7:9 | @param | @param tag is missing description. |
+| tst.js:11:4:11:9 | @param | @param tag is missing description. |

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../System.Data.SqlClient/4.8.2/System.Data.SqlClient.csproj" />
+    <ProjectReference Include="../../ServiceStack.Common/5.11.0/ServiceStack.Common.csproj" />
+    <ProjectReference Include="../../ServiceStack.OrmLite/5.11.0/ServiceStack.OrmLite.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

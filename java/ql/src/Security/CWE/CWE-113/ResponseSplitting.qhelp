@@ -1,0 +1,66 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Directly writing user input (for example, an HTTP request parameter) to an HTTP header
+can lead to an HTTP request-splitting or response-splitting vulnerability.</p>
+
+<p>HTTP response splitting can lead to vulnerabilities such as XSS and cache poisoning.</p>
+<p>HTTP request splitting can allow an attacker to inject an additional HTTP request into a client's outgoing socket connection.
+This can allow an attacker to perform an SSRF-like attack.</p>
+
+<p>In the context of a servlet container, if the user input includes blank lines
+and the servlet container does not escape the blank lines,
+then a remote user can cause the response to turn into two separate responses. 
+The remote user can then control one or more responses, which is also HTTP response splitting.</p>
+</overview>
+
+<recommendation>
+<p>Guard against HTTP header splitting in the same way as guarding against cross-site scripting.
+Before passing any data into HTTP headers, either check the data for special characters, or
+escape any special characters that are present.</p>
+
+<p>If the code calls Netty API's directly, ensure that the <code>validateHeaders</code> parameter is set to <code>true</code>.</p>
+</recommendation>
+
+<example>
+<p>The following example shows the 'name' parameter being written to a cookie
+in two different ways. The first way writes it directly to the cookie, and thus
+is vulnerable to response-splitting attacks. The second way first removes all special
+characters, thus avoiding the potential problem.</p>
+
+<sample src="ResponseSplitting.java" />
+</example>
+
+<example>
+<p>The following example shows the use of the library 'netty' with HTTP response-splitting verification configurations.
+The second way will verify the parameters before using them to build the HTTP response.</p>
+
+<sample src="NettyResponseSplitting.java" />
+</example>
+
+<example>
+<p>The following example shows the use of the netty library with configurations for verification of HTTP request splitting.
+The second recommended approach in the example verifies the parameters before using them to build the HTTP request.</p>
+
+<sample src="NettyRequestSplitting.java" />
+</example>
+
+<references>
+<li>
+InfosecWriters: <a href="http://www.infosecwriters.com/Papers/DCrab_HTTP_Response.pdf">HTTP response splitting</a>.
+</li>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/HTTP_Response_Splitting">HTTP Response Splitting</a>.
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/HTTP_response_splitting">HTTP response splitting</a>.
+</li>
+<li>
+CAPEC: <a href="https://capec.mitre.org/data/definitions/105.html">CAPEC-105: HTTP Request Splitting</a>
+</li>
+</references>
+</qhelp>

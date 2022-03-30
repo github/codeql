@@ -1,0 +1,18 @@
+edges
+| DisabledRevocationChecking.java:17:5:17:8 | this <.field> [post update] [flag] : Boolean | DisabledRevocationChecking.java:21:5:21:31 | this <.method> [post update] [flag] : Boolean |
+| DisabledRevocationChecking.java:17:12:17:16 | false : Boolean | DisabledRevocationChecking.java:17:5:17:8 | this <.field> [post update] [flag] : Boolean |
+| DisabledRevocationChecking.java:21:5:21:31 | this <.method> [post update] [flag] : Boolean | DisabledRevocationChecking.java:22:5:22:31 | this <.method> [flag] : Boolean |
+| DisabledRevocationChecking.java:22:5:22:31 | this <.method> [flag] : Boolean | DisabledRevocationChecking.java:25:15:25:22 | parameter this [flag] : Boolean |
+| DisabledRevocationChecking.java:25:15:25:22 | parameter this [flag] : Boolean | DisabledRevocationChecking.java:28:33:28:36 | this <.field> [flag] : Boolean |
+| DisabledRevocationChecking.java:28:33:28:36 | this <.field> [flag] : Boolean | DisabledRevocationChecking.java:28:33:28:36 | flag |
+nodes
+| DisabledRevocationChecking.java:17:5:17:8 | this <.field> [post update] [flag] : Boolean | semmle.label | this <.field> [post update] [flag] : Boolean |
+| DisabledRevocationChecking.java:17:12:17:16 | false : Boolean | semmle.label | false : Boolean |
+| DisabledRevocationChecking.java:21:5:21:31 | this <.method> [post update] [flag] : Boolean | semmle.label | this <.method> [post update] [flag] : Boolean |
+| DisabledRevocationChecking.java:22:5:22:31 | this <.method> [flag] : Boolean | semmle.label | this <.method> [flag] : Boolean |
+| DisabledRevocationChecking.java:25:15:25:22 | parameter this [flag] : Boolean | semmle.label | parameter this [flag] : Boolean |
+| DisabledRevocationChecking.java:28:33:28:36 | flag | semmle.label | flag |
+| DisabledRevocationChecking.java:28:33:28:36 | this <.field> [flag] : Boolean | semmle.label | this <.field> [flag] : Boolean |
+subpaths
+#select
+| DisabledRevocationChecking.java:17:12:17:16 | false | DisabledRevocationChecking.java:17:12:17:16 | false : Boolean | DisabledRevocationChecking.java:28:33:28:36 | flag | Revocation checking is disabled $@. | DisabledRevocationChecking.java:17:12:17:16 | false | here |

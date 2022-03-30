@@ -1,0 +1,1 @@
+| Test.qll:12:3:12:33 | ClassPredicate test | Wrong.test overrides $@ but does not have an override annotation. | Test.qll:4:3:4:40 | ClassPredicate test | Super.test |

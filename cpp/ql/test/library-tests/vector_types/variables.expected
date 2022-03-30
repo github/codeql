@@ -1,0 +1,31 @@
+| file://:0:0:0:0 | (unnamed parameter 0) | (unnamed parameter 0) | file://:0:0:0:0 | __attribute((vector_size(16))) double | 16 |
+| file://:0:0:0:0 | (unnamed parameter 0) | (unnamed parameter 0) | file://:0:0:0:0 | __attribute((vector_size(16))) float | 16 |
+| file://:0:0:0:0 | (unnamed parameter 0) | (unnamed parameter 0) | file://:0:0:0:0 | __va_list_tag && | 8 |
+| file://:0:0:0:0 | (unnamed parameter 0) | (unnamed parameter 0) | file://:0:0:0:0 | const __va_list_tag & | 8 |
+| file://:0:0:0:0 | (unnamed parameter 0) | (unnamed parameter 0) | file://:0:0:0:0 | double * | 8 |
+| file://:0:0:0:0 | (unnamed parameter 0) | (unnamed parameter 0) | file://:0:0:0:0 | float * | 8 |
+| file://:0:0:0:0 | (unnamed parameter 1) | (unnamed parameter 1) | file://:0:0:0:0 | __attribute((vector_size(16))) double | 16 |
+| file://:0:0:0:0 | (unnamed parameter 1) | (unnamed parameter 1) | file://:0:0:0:0 | __attribute((vector_size(16))) double | 16 |
+| file://:0:0:0:0 | (unnamed parameter 1) | (unnamed parameter 1) | file://:0:0:0:0 | __attribute((vector_size(16))) float | 16 |
+| file://:0:0:0:0 | (unnamed parameter 1) | (unnamed parameter 1) | file://:0:0:0:0 | __attribute((vector_size(16))) float | 16 |
+| file://:0:0:0:0 | (unnamed parameter 2) | (unnamed parameter 2) | file://:0:0:0:0 | char | 1 |
+| file://:0:0:0:0 | fp_offset | fp_offset | file://:0:0:0:0 | unsigned int | 4 |
+| file://:0:0:0:0 | gp_offset | gp_offset | file://:0:0:0:0 | unsigned int | 4 |
+| file://:0:0:0:0 | overflow_arg_area | overflow_arg_area | file://:0:0:0:0 | void * | 8 |
+| file://:0:0:0:0 | reg_save_area | reg_save_area | file://:0:0:0:0 | void * | 8 |
+| vector_types.cpp:9:21:9:21 | x | x | vector_types.cpp:6:15:6:17 | v4f | 16 |
+| vector_types.cpp:14:18:14:20 | lhs | lhs | vector_types.cpp:6:15:6:17 | v4f | 16 |
+| vector_types.cpp:14:27:14:29 | rhs | rhs | vector_types.cpp:6:15:6:17 | v4f | 16 |
+| vector_types.cpp:19:18:19:20 | lhs | lhs | vector_types.cpp:6:15:6:17 | v4f | 16 |
+| vector_types.cpp:19:27:19:29 | rhs | rhs | vector_types.cpp:6:15:6:17 | v4f | 16 |
+| vector_types.cpp:26:8:26:9 | v1 | v1 | vector_types.cpp:6:15:6:17 | v4f | 16 |
+| vector_types.cpp:27:8:27:9 | v2 | v2 | file://:0:0:0:0 | __attribute((vector_size(16))) float | 16 |
+| vector_types.cpp:31:8:31:9 | v3 | v3 | file://:0:0:0:0 | __attribute((vector_size(8))) float | 8 |
+| vector_types.cpp:32:8:32:9 | v4 | v4 | file://:0:0:0:0 | __attribute((vector_size(16))) double | 16 |
+| vector_types.cpp:33:8:33:9 | v5 | v5 | file://:0:0:0:0 | __attribute((vector_size(16))) double | 16 |
+| vector_types.cpp:34:10:34:16 | doubles | doubles | file://:0:0:0:0 | double[2] | 16 |
+| vector_types.cpp:41:14:41:16 | arg | arg | vector_types.cpp:7:14:7:17 | v16c | 16 |
+| vector_types.cpp:47:23:47:25 | dst | dst | file://:0:0:0:0 | v16i * | 8 |
+| vector_types.cpp:47:34:47:36 | src | src | file://:0:0:0:0 | v16i * | 8 |
+| vector_types.cpp:47:43:47:43 | n | n | file://:0:0:0:0 | int | 4 |
+| vector_types.cpp:57:43:57:44 | vf | vf | vector_types.cpp:55:16:55:27 | vector4float | 16 |

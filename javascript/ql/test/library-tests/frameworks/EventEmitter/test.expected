@@ -1,0 +1,37 @@
+flowSteps
+| customEmitter.js:5:20:5:24 | "bar" | customEmitter.js:6:19:6:22 | data |
+| customEmitter.js:12:21:12:25 | "baz" | customEmitter.js:13:23:13:26 | data |
+| customEmitter.js:12:21:12:25 | "baz" | customEmitter.js:22:14:22:18 | yData |
+| customEmitter.js:18:15:18:20 | "baz2" | customEmitter.js:13:23:13:26 | data |
+| customEmitter.js:21:15:21:20 | "baz3" | customEmitter.js:13:23:13:26 | data |
+| customEmitter.js:21:15:21:20 | "baz3" | customEmitter.js:22:14:22:18 | yData |
+| tst2.js:18:16:18:20 | "bar" | tst2.js:17:14:17:16 | bar |
+| tst.js:9:23:9:33 | 'FirstData' | tst.js:6:40:6:44 | first |
+| tst.js:10:24:10:35 | 'SecondData' | tst.js:7:32:7:37 | second |
+| tst.js:15:24:15:39 | 'OtherFirstData' | tst.js:14:41:14:50 | otherFirst |
+| tst.js:20:17:20:21 | "foo" | tst.js:19:16:19:18 | foo |
+| tst.js:21:17:21:21 | "bar" | tst.js:19:39:19:41 | bar |
+| tst.js:28:17:28:22 | "blab" | tst.js:25:16:25:20 | event |
+| tst.js:34:18:34:22 | "BOH" | tst.js:33:17:33:17 | x |
+| tst.js:40:20:40:27 | "yabity" | tst.js:39:19:39:19 | x |
+| tst.js:46:28:46:38 | 'FirstData' | tst.js:43:45:43:49 | first |
+| tst.js:47:29:47:40 | 'SecondData' | tst.js:44:37:44:42 | second |
+eventEmitter
+| customEmitter.js:3:1:8:1 | class M ... );\\n\\t}\\n} |
+| customEmitter.js:17:9:17:29 | new MyS ... itter() |
+| customEmitter.js:20:9:20:29 | new MyS ... itter() |
+| tst2.js:6:12:6:42 | new Con ... , opts) |
+| tst2.js:16:10:16:24 | new Connector() |
+| tst2.js:22:12:24:2 | http.re ... {});\\n}) |
+| tst2.js:22:37:22:39 | res |
+| tst2.js:25:28:25:33 | socket |
+| tst2.js:29:12:31:2 | http.re ... {});\\n}) |
+| tst2.js:29:37:29:39 | res |
+| tst2.js:32:28:32:33 | socket |
+| tst.js:3:10:3:22 | new emitter() |
+| tst.js:13:11:13:23 | new emitter() |
+| tst.js:18:11:18:23 | new emitter() |
+| tst.js:24:11:24:23 | new emitter() |
+| tst.js:32:11:32:30 | new MyEventEmitter() |
+| tst.js:38:11:38:38 | new Ext ... itter() |
+| tst.js:42:15:42:32 | require('process') |

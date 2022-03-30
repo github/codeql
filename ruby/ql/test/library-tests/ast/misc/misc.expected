@@ -1,0 +1,21 @@
+undef
+| misc.rb:3:1:3:30 | undef ... | 0 | misc.rb:3:7:3:9 | foo | foo | MethodName |
+| misc.rb:3:1:3:30 | undef ... | 1 | misc.rb:3:12:3:15 | :foo | foo | MethodName |
+| misc.rb:3:1:3:30 | undef ... | 2 | misc.rb:3:18:3:21 | foo= | foo= | MethodName |
+| misc.rb:3:1:3:30 | undef ... | 3 | misc.rb:3:24:3:25 | [] | [] | MethodName |
+| misc.rb:3:1:3:30 | undef ... | 4 | misc.rb:3:28:3:30 | []= | []= | MethodName |
+| misc.rb:4:1:4:19 | undef ... | 0 | misc.rb:4:7:4:19 | :"foo_#{...}" | foo_bar | MethodName |
+| misc.rb:5:1:5:35 | undef ... | 0 | misc.rb:5:7:5:9 | nil | nil | MethodName |
+| misc.rb:5:1:5:35 | undef ... | 1 | misc.rb:5:12:5:15 | true | true | MethodName |
+| misc.rb:5:1:5:35 | undef ... | 2 | misc.rb:5:18:5:22 | false | false | MethodName |
+| misc.rb:5:1:5:35 | undef ... | 3 | misc.rb:5:25:5:29 | super | super | MethodName |
+| misc.rb:5:1:5:35 | undef ... | 4 | misc.rb:5:32:5:35 | self | self | MethodName |
+alias
+| misc.rb:7:1:7:14 | alias ... | new | misc.rb:7:7:7:9 | new | new | MethodName |
+| misc.rb:7:1:7:14 | alias ... | old | misc.rb:7:11:7:14 | :old | old | MethodName |
+| misc.rb:8:1:8:14 | alias ... | new | misc.rb:8:7:8:10 | foo= | foo= | MethodName |
+| misc.rb:8:1:8:14 | alias ... | old | misc.rb:8:12:8:14 | []= | []= | MethodName |
+| misc.rb:9:1:9:16 | alias ... | new | misc.rb:9:7:9:11 | super | super | MethodName |
+| misc.rb:9:1:9:16 | alias ... | old | misc.rb:9:13:9:16 | self | self | MethodName |
+| misc.rb:10:1:10:24 | alias ... | new | misc.rb:10:7:10:17 | :"\\n#{...}" | \nbar | MethodName |
+| misc.rb:10:1:10:24 | alias ... | old | misc.rb:10:19:10:24 | :"foo" | foo | MethodName |

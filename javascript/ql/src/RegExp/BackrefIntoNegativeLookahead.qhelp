@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Back references can be used to refer to the result of a previously matched capture group.
+It is syntactically legal to refer from outside a negative lookahead assertion to a capture group
+nested inside that assertion, but since the regular expression can only match when the body of the
+negative lookahead assertion did <i>not</i> match, such a back reference always matches the empty
+string. This probably indicates a mistake.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Remove the back reference if it is useless, or fix the regular expression to make sure the reference
+refers to the intended capture group.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the back reference <code>\2</code> refers to the capture group
+<code>(a+)</code> inside the negative lookahead assertion <code>(?!(a+)b)</code>.
+</p>
+
+<sample src="examples/BackrefIntoNegativeLookahead.js" />
+
+<p>
+Useless back references like this can arise if a regular expression is updated inconsistently. In
+this example, for instance, the group <code>(?:d*)</code> may initially have been capturing, so
+the back reference <code>\2</code> would have referred to it instead of the capture group inside
+the negative lookahead assertion. If this is the case, the group <code>(?:d*)</code> should be
+made capturing again, that is, it should be replaced by <code>(d*)</code>.
+</p>
+
+<p>
+Note that referring to a capture group from within the same negative lookahead assertion is
+unproblematic.
+</p>
+
+</example>
+<references>
+
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Section 15.10.2.8. ECMA, 2011.</li>
+
+</references>
+</qhelp>

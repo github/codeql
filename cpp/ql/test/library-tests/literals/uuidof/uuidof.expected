@@ -1,0 +1,14 @@
+classUuids
+| uuidof.cpp:1:8:1:12 | _GUID |  |
+| uuidof.cpp:5:67:5:67 | S | 01234567-89ab-cdef-0123-456789abcdef |
+| uuidof.cpp:6:65:6:65 | T | fedcba98-7654-3210-fedc-ba9876543210 |
+| uuidof.cpp:7:29:7:33 | Templ<S> |  |
+| uuidof.cpp:7:29:7:33 | Templ<U> |  |
+uuidofOperators
+| uuidof.cpp:11:18:11:28 | __uuidof(S) | const _GUID | 01234567-89ab-cdef-0123-456789abcdef |
+| uuidof.cpp:12:22:12:32 | __uuidof(T) | const _GUID | fedcba98-7654-3210-fedc-ba9876543210 |
+| uuidof.cpp:13:23:13:33 | __uuidof(S) | const _GUID | 01234567-89ab-cdef-0123-456789abcdef |
+| uuidof.cpp:14:12:14:30 | __uuidof(S) | const _GUID | 01234567-89ab-cdef-0123-456789abcdef |
+| uuidof.cpp:15:12:15:29 | __uuidof(S) | const _GUID | 01234567-89ab-cdef-0123-456789abcdef |
+| uuidof.cpp:17:12:17:22 | __uuidof(S) | const _GUID | 01234567-89ab-cdef-0123-456789abcdef |
+| uuidof.cpp:18:12:18:22 | __uuidof(0) | const _GUID | 00000000-0000-0000-0000-000000000000 |

@@ -1,0 +1,2 @@
+| file://:0:0:0:0 | There was an error during this compilation | 4 | Error occurred | There was an error during this compilation |
+| non-existent.cpp:3:9:3:9 | declaration is incompatible with 'void S::f(int)' (declared at line 2) | 4 | not_compatible_with_previous_decl | "non-existent.cpp", line 3: error: declaration is incompatible with "void S::f(int)" (declared at line 2)\n  void S::f(char) {}\n          ^\n\n |

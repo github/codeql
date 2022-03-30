@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the amount of time (in milliseconds) spent compiling a C/C++ file, including time spent processing all files included by the pre-processor.</p>
+
+<p>Files that take too long to build usually have too many includes. </p>
+
+</overview>
+<recommendation>
+<p>Files that take a long time to build should be checked to see if they are including only the necessary files in order to reduce build time.</p>
+
+</recommendation>
+<references>
+
+<li>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/preprocessor/hash-include-directive-c-cpp">#include directive (C/C++)</a>
+</li>
+<li>
+  <a href="http://gcc.gnu.org/onlinedocs/cpp/Include-Operation.html#Include-Operation">Include operation</a>
+</li>
+<li>
+  <a href="http://www.drdobbs.com/cpp/c-compilation-speed/228701711">C++ Compilation Speed</a>
+</li>
+
+
+</references>
+</qhelp>

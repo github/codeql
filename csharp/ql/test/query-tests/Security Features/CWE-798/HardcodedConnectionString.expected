@@ -1,0 +1,20 @@
+edges
+| HardcodedCredentials.cs:47:30:47:60 | array creation of type Byte[] : Byte[] | HardcodedCredentials.cs:50:13:50:23 | access to local variable rawCertData |
+nodes
+| HardcodedCredentials.cs:15:25:15:36 | "myPa55word" | semmle.label | "myPa55word" |
+| HardcodedCredentials.cs:31:19:31:28 | "username" | semmle.label | "username" |
+| HardcodedCredentials.cs:45:39:45:53 | "myNewPa55word" | semmle.label | "myNewPa55word" |
+| HardcodedCredentials.cs:47:30:47:60 | array creation of type Byte[] : Byte[] | semmle.label | array creation of type Byte[] : Byte[] |
+| HardcodedCredentials.cs:50:13:50:23 | access to local variable rawCertData | semmle.label | access to local variable rawCertData |
+| HardcodedCredentials.cs:51:13:51:24 | "myPa55word" | semmle.label | "myPa55word" |
+| HardcodedCredentials.cs:54:48:54:63 | "Password=12345" | semmle.label | "Password=12345" |
+| HardcodedCredentials.cs:56:49:56:63 | "User Id=12345" | semmle.label | "User Id=12345" |
+| HardcodedCredentials.cs:74:31:74:42 | "myusername" | semmle.label | "myusername" |
+| HardcodedCredentials.cs:74:45:74:56 | "mypassword" | semmle.label | "mypassword" |
+| TestHardcodedCredentials.cs:21:31:21:42 | "myusername" | semmle.label | "myusername" |
+| TestHardcodedCredentials.cs:21:45:21:56 | "mypassword" | semmle.label | "mypassword" |
+| TestHardcodedCredentials.cs:26:19:26:28 | "username" | semmle.label | "username" |
+subpaths
+#select
+| HardcodedCredentials.cs:54:48:54:63 | "Password=12345" | HardcodedCredentials.cs:54:48:54:63 | "Password=12345" | HardcodedCredentials.cs:54:48:54:63 | "Password=12345" | 'ConnectionString' property includes hard-coded credentials set in $@. | HardcodedCredentials.cs:54:30:54:64 | object creation of type SqlConnection | object creation of type SqlConnection |
+| HardcodedCredentials.cs:56:49:56:63 | "User Id=12345" | HardcodedCredentials.cs:56:49:56:63 | "User Id=12345" | HardcodedCredentials.cs:56:49:56:63 | "User Id=12345" | 'ConnectionString' property includes hard-coded credentials set in $@. | HardcodedCredentials.cs:56:31:56:64 | object creation of type SqlConnection | object creation of type SqlConnection |

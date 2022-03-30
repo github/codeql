@@ -1,0 +1,16 @@
+| 0 | whilestmt.c:39:15:45:1 | { ... } | 1 | whilestmt.c:40:3:40:12 | declaration |
+| 1 | whilestmt.c:40:3:40:12 | declaration | 1 | whilestmt.c:40:10:40:11 | initializer for i |
+| 1 | whilestmt.c:40:10:40:11 | 0 | 2 | whilestmt.c:41:3:43:3 | while (...) ... |
+| 1 | whilestmt.c:40:10:40:11 | initializer for i | 1 | whilestmt.c:40:10:40:11 | 0 |
+| 2 | whilestmt.c:41:3:43:3 | while (...) ... | 2 | whilestmt.c:41:9:41:9 | i |
+| 2 | whilestmt.c:41:9:41:9 | i | 2 | whilestmt.c:41:13:41:14 | 10 |
+| 2 | whilestmt.c:41:9:41:14 | ... < ... | 2 | whilestmt.c:41:17:43:3 | { ... } |
+| 2 | whilestmt.c:41:9:41:14 | ... < ... | 5 | whilestmt.c:44:3:44:4 | label ...: |
+| 2 | whilestmt.c:41:13:41:14 | 10 | 2 | whilestmt.c:41:9:41:14 | ... < ... |
+| 2 | whilestmt.c:41:17:43:3 | { ... } | 3 | whilestmt.c:42:5:42:8 | ExprStmt |
+| 3 | whilestmt.c:42:5:42:7 | ++ ... | 2 | whilestmt.c:41:9:41:9 | i |
+| 3 | whilestmt.c:42:5:42:8 | ExprStmt | 3 | whilestmt.c:42:7:42:7 | i |
+| 3 | whilestmt.c:42:7:42:7 | i | 3 | whilestmt.c:42:5:42:7 | ++ ... |
+| 5 | whilestmt.c:44:3:44:4 | label ...: | 5 | whilestmt.c:44:5:44:5 | ; |
+| 5 | whilestmt.c:44:5:44:5 | ; | 6 | whilestmt.c:45:1:45:1 | return ... |
+| 6 | whilestmt.c:45:1:45:1 | return ... | 0 | whilestmt.c:39:6:39:11 | normal |

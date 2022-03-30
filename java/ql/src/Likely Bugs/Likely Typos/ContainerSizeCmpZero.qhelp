@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A map, collection, string or array will always have size of at least zero. Checking that an object of one of these types has size greater than or equal to zero will always be true, while checking that it has size less than zero will always be false.</p>
+
+</overview>
+<recommendation>
+
+<p>For collections, maps and strings, if the intention was to check whether the object was empty, is it preferred to use the <code>isEmpty()</code> method. For arrays, check that the <code>length</code> field is greater than (<b>not</b> equal to) zero.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows creation of a file guarded by comparison of a string length with zero. This can result in the attempted creation of a file with an empty name.</p>
+
+<sample src="ContainerSizeCmpZero.java" />
+
+<p>In the following revised example, the check against zero has been replaced with a call to <code>isEmpty()</code>. This correctly guards against the attempted creation of a file with an empty name.</p>
+
+<sample src="ContainerSizeCmpZeroGood.java" />
+
+</example>
+<references>
+
+
+<li>
+Java API Specification:
+
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Collection.html#isEmpty()">
+Collection.isEmpty()</a>,
+
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Map.html#isEmpty()">
+Map.isEmpty()</a>,
+
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#isEmpty()">
+String.isEmpty()</a>.
+</li>
+
+</references>
+</qhelp>

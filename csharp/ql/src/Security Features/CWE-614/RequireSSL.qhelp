@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Sensitive data that is transmitted using HTTP is vulnerable to being read by a third party. By default,
+web forms and cookies are sent via HTTP, not HTTPS. This setting can be changed by setting the <code>requireSSL</code>
+attribute to <code>"true"</code> in <code>Web.config</code>.
+</p>
+</overview>
+
+<recommendation>
+<p>
+When using web forms, ensure that <code>Web.config</code> contains a <code>&lt;forms&gt;</code> element
+with the attribute <code>requireSSL="true"</code>.
+</p>
+
+<p>
+When using cookies, ensure that SSL is used, either via the <code>&lt;forms&gt;</code> attribute above, or
+the <code>&lt;httpCookies&gt;</code> element, with the attribute <code>requireSSL="true"</code>. It is also possible to require cookies
+to use SSL programmatically, by setting the property <code>System.Web.HttpCookie.Secure</code> to <code>true</code>.
+</p>
+</recommendation>
+
+<example>
+
+<p>
+The following example shows where to specify <code>requireSSL="true"</code> in a <code>Web.config</code> file.
+</p>
+
+<sample src="Web.config" />
+
+</example>
+
+<references>
+
+<li>MSDN:
+    <a href="https://msdn.microsoft.com/en-us/library/system.web.httpcookie.secure(v=vs.110).aspx">HttpCookie.Secure Property</a>,
+    <a href="https://msdn.microsoft.com/en-us/library/system.web.security.formsauthentication.requiressl(v=vs.110).aspx">FormsAuthentication.RequireSSL Property</a>,
+    <a href="https://msdn.microsoft.com/en-us/library/1d3t3c61(v=vs.100).aspx">forms Element for authentication</a>,
+    <a href="https://msdn.microsoft.com/library/ms228262%28v=vs.100%29.aspx">httpCookies Element</a>.
+</li>
+
+</references>
+</qhelp>

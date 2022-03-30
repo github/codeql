@@ -1,0 +1,5 @@
+nullcoalescing
+| NullCoalescingAssignment.cs:8:9:8:18 | ... ?? ... |
+| NullableRefTypes.cs:94:17:94:25 | ... ?? ... |
+assignments
+| NullCoalescingAssignment.cs:8:9:8:18 | ... ??= ... | NullCoalescingAssignment.cs:8:9:8:18 | ... = ... |

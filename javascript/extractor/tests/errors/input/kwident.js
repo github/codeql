@@ -1,0 +1,1 @@
+var class = 23;

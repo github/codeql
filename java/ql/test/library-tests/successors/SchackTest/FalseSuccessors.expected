@@ -1,0 +1,6 @@
+| SchackTest.java:8:9:8:12 | ... == ... | SchackTest.java:10:5:10:13 | if (...) |
+| SchackTest.java:10:9:10:12 | ... == ... | SchackTest.java:12:14:15:4 | { ... } |
+| SchackTest.java:13:9:13:13 | bar(...) | SchackTest.java:16:4:16:41 | <Expr>; |
+| SchackTest.java:13:9:13:13 | bar(...) | SchackTest.java:17:5:17:17 | catch (...) |
+| SchackTest.java:13:9:13:13 | bar(...) | SchackTest.java:21:13:23:3 | { ... } |
+| SchackTest.java:27:7:27:24 | ... > ... | SchackTest.java:29:10:29:22 | random(...) |

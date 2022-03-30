@@ -1,0 +1,183 @@
+nodes
+| tst.js:2:20:2:32 | Math.random() |
+| tst.js:2:20:2:32 | Math.random() |
+| tst.js:2:20:2:32 | Math.random() |
+| tst.js:6:20:6:43 | "prefix ... andom() |
+| tst.js:6:20:6:43 | "prefix ... andom() |
+| tst.js:6:31:6:43 | Math.random() |
+| tst.js:6:31:6:43 | Math.random() |
+| tst.js:10:20:10:32 | Math.random() |
+| tst.js:10:20:10:32 | Math.random() |
+| tst.js:10:20:10:32 | Math.random() |
+| tst.js:19:9:19:36 | suffix |
+| tst.js:19:18:19:30 | Math.random() |
+| tst.js:19:18:19:30 | Math.random() |
+| tst.js:19:18:19:36 | Math.random() % 255 |
+| tst.js:20:20:20:36 | "prefix" + suffix |
+| tst.js:20:20:20:36 | "prefix" + suffix |
+| tst.js:20:31:20:36 | suffix |
+| tst.js:28:9:28:26 | pw |
+| tst.js:28:14:28:26 | Math.random() |
+| tst.js:28:14:28:26 | Math.random() |
+| tst.js:29:20:29:21 | pw |
+| tst.js:29:20:29:21 | pw |
+| tst.js:41:20:41:33 | !Math.random() |
+| tst.js:41:20:41:33 | !Math.random() |
+| tst.js:41:21:41:33 | Math.random() |
+| tst.js:41:21:41:33 | Math.random() |
+| tst.js:45:18:45:30 | Math.random() |
+| tst.js:45:18:45:30 | Math.random() |
+| tst.js:45:18:45:30 | Math.random() |
+| tst.js:50:16:50:28 | Math.random() |
+| tst.js:50:16:50:28 | Math.random() |
+| tst.js:50:16:50:28 | Math.random() |
+| tst.js:55:17:55:29 | Math.random() |
+| tst.js:55:17:55:29 | Math.random() |
+| tst.js:55:17:55:29 | Math.random() |
+| tst.js:61:17:61:34 | '' + Math.random() |
+| tst.js:61:17:61:34 | '' + Math.random() |
+| tst.js:61:22:61:34 | Math.random() |
+| tst.js:61:22:61:34 | Math.random() |
+| tst.js:66:18:66:42 | Math.fl ... ndom()) |
+| tst.js:66:18:66:42 | Math.fl ... ndom()) |
+| tst.js:66:29:66:41 | Math.random() |
+| tst.js:66:29:66:41 | Math.random() |
+| tst.js:71:9:71:48 | rand |
+| tst.js:71:16:71:48 | Math.fl ... 999999) |
+| tst.js:71:27:71:39 | Math.random() |
+| tst.js:71:27:71:39 | Math.random() |
+| tst.js:71:27:71:47 | Math.ra ... 9999999 |
+| tst.js:72:9:72:48 | concat |
+| tst.js:72:18:72:48 | ts.toSt ... tring() |
+| tst.js:72:34:72:37 | rand |
+| tst.js:72:34:72:48 | rand.toString() |
+| tst.js:73:23:73:28 | concat |
+| tst.js:73:23:73:28 | concat |
+| tst.js:77:16:77:21 | secret |
+| tst.js:77:16:77:21 | secret |
+| tst.js:80:7:80:19 | Math.random() |
+| tst.js:80:7:80:19 | Math.random() |
+| tst.js:84:19:84:31 | Math.random() |
+| tst.js:84:19:84:31 | Math.random() |
+| tst.js:84:19:84:31 | Math.random() |
+| tst.js:90:32:90:44 | Math.random() |
+| tst.js:90:32:90:44 | Math.random() |
+| tst.js:90:32:90:44 | Math.random() |
+| tst.js:95:33:95:45 | Math.random() |
+| tst.js:95:33:95:45 | Math.random() |
+| tst.js:95:33:95:45 | Math.random() |
+| tst.js:115:16:115:56 | Math.fl ... 00_000) |
+| tst.js:115:16:115:56 | Math.fl ... 00_000) |
+| tst.js:115:27:115:39 | Math.random() |
+| tst.js:115:27:115:39 | Math.random() |
+| tst.js:115:27:115:55 | Math.ra ... 000_000 |
+| tst.js:116:22:116:62 | Math.fl ... 00_000) |
+| tst.js:116:22:116:62 | Math.fl ... 00_000) |
+| tst.js:116:33:116:45 | Math.random() |
+| tst.js:116:33:116:45 | Math.random() |
+| tst.js:116:33:116:61 | Math.ra ... 000_000 |
+| tst.js:117:15:117:55 | Math.fl ... 00_000) |
+| tst.js:117:15:117:55 | Math.fl ... 00_000) |
+| tst.js:117:26:117:38 | Math.random() |
+| tst.js:117:26:117:38 | Math.random() |
+| tst.js:117:26:117:54 | Math.ra ... 000_000 |
+| tst.js:118:23:118:63 | Math.fl ... 00_000) |
+| tst.js:118:23:118:63 | Math.fl ... 00_000) |
+| tst.js:118:34:118:46 | Math.random() |
+| tst.js:118:34:118:46 | Math.random() |
+| tst.js:118:34:118:62 | Math.ra ... 000_000 |
+| tst.js:120:16:120:28 | Math.random() |
+| tst.js:120:16:120:28 | Math.random() |
+| tst.js:120:16:120:28 | Math.random() |
+| tst.js:121:18:121:30 | Math.random() |
+| tst.js:121:18:121:30 | Math.random() |
+| tst.js:121:18:121:30 | Math.random() |
+edges
+| tst.js:2:20:2:32 | Math.random() | tst.js:2:20:2:32 | Math.random() |
+| tst.js:6:31:6:43 | Math.random() | tst.js:6:20:6:43 | "prefix ... andom() |
+| tst.js:6:31:6:43 | Math.random() | tst.js:6:20:6:43 | "prefix ... andom() |
+| tst.js:6:31:6:43 | Math.random() | tst.js:6:20:6:43 | "prefix ... andom() |
+| tst.js:6:31:6:43 | Math.random() | tst.js:6:20:6:43 | "prefix ... andom() |
+| tst.js:10:20:10:32 | Math.random() | tst.js:10:20:10:32 | Math.random() |
+| tst.js:19:9:19:36 | suffix | tst.js:20:31:20:36 | suffix |
+| tst.js:19:18:19:30 | Math.random() | tst.js:19:18:19:36 | Math.random() % 255 |
+| tst.js:19:18:19:30 | Math.random() | tst.js:19:18:19:36 | Math.random() % 255 |
+| tst.js:19:18:19:36 | Math.random() % 255 | tst.js:19:9:19:36 | suffix |
+| tst.js:20:31:20:36 | suffix | tst.js:20:20:20:36 | "prefix" + suffix |
+| tst.js:20:31:20:36 | suffix | tst.js:20:20:20:36 | "prefix" + suffix |
+| tst.js:28:9:28:26 | pw | tst.js:29:20:29:21 | pw |
+| tst.js:28:9:28:26 | pw | tst.js:29:20:29:21 | pw |
+| tst.js:28:14:28:26 | Math.random() | tst.js:28:9:28:26 | pw |
+| tst.js:28:14:28:26 | Math.random() | tst.js:28:9:28:26 | pw |
+| tst.js:41:21:41:33 | Math.random() | tst.js:41:20:41:33 | !Math.random() |
+| tst.js:41:21:41:33 | Math.random() | tst.js:41:20:41:33 | !Math.random() |
+| tst.js:41:21:41:33 | Math.random() | tst.js:41:20:41:33 | !Math.random() |
+| tst.js:41:21:41:33 | Math.random() | tst.js:41:20:41:33 | !Math.random() |
+| tst.js:45:18:45:30 | Math.random() | tst.js:45:18:45:30 | Math.random() |
+| tst.js:50:16:50:28 | Math.random() | tst.js:50:16:50:28 | Math.random() |
+| tst.js:55:17:55:29 | Math.random() | tst.js:55:17:55:29 | Math.random() |
+| tst.js:61:22:61:34 | Math.random() | tst.js:61:17:61:34 | '' + Math.random() |
+| tst.js:61:22:61:34 | Math.random() | tst.js:61:17:61:34 | '' + Math.random() |
+| tst.js:61:22:61:34 | Math.random() | tst.js:61:17:61:34 | '' + Math.random() |
+| tst.js:61:22:61:34 | Math.random() | tst.js:61:17:61:34 | '' + Math.random() |
+| tst.js:66:29:66:41 | Math.random() | tst.js:66:18:66:42 | Math.fl ... ndom()) |
+| tst.js:66:29:66:41 | Math.random() | tst.js:66:18:66:42 | Math.fl ... ndom()) |
+| tst.js:66:29:66:41 | Math.random() | tst.js:66:18:66:42 | Math.fl ... ndom()) |
+| tst.js:66:29:66:41 | Math.random() | tst.js:66:18:66:42 | Math.fl ... ndom()) |
+| tst.js:71:9:71:48 | rand | tst.js:72:34:72:37 | rand |
+| tst.js:71:16:71:48 | Math.fl ... 999999) | tst.js:71:9:71:48 | rand |
+| tst.js:71:27:71:39 | Math.random() | tst.js:71:27:71:47 | Math.ra ... 9999999 |
+| tst.js:71:27:71:39 | Math.random() | tst.js:71:27:71:47 | Math.ra ... 9999999 |
+| tst.js:71:27:71:47 | Math.ra ... 9999999 | tst.js:71:16:71:48 | Math.fl ... 999999) |
+| tst.js:72:9:72:48 | concat | tst.js:73:23:73:28 | concat |
+| tst.js:72:9:72:48 | concat | tst.js:73:23:73:28 | concat |
+| tst.js:72:18:72:48 | ts.toSt ... tring() | tst.js:72:9:72:48 | concat |
+| tst.js:72:34:72:37 | rand | tst.js:72:34:72:48 | rand.toString() |
+| tst.js:72:34:72:48 | rand.toString() | tst.js:72:18:72:48 | ts.toSt ... tring() |
+| tst.js:77:16:77:21 | secret | tst.js:77:16:77:21 | secret |
+| tst.js:80:7:80:19 | Math.random() | tst.js:77:16:77:21 | secret |
+| tst.js:80:7:80:19 | Math.random() | tst.js:77:16:77:21 | secret |
+| tst.js:84:19:84:31 | Math.random() | tst.js:84:19:84:31 | Math.random() |
+| tst.js:90:32:90:44 | Math.random() | tst.js:90:32:90:44 | Math.random() |
+| tst.js:95:33:95:45 | Math.random() | tst.js:95:33:95:45 | Math.random() |
+| tst.js:115:27:115:39 | Math.random() | tst.js:115:27:115:55 | Math.ra ... 000_000 |
+| tst.js:115:27:115:39 | Math.random() | tst.js:115:27:115:55 | Math.ra ... 000_000 |
+| tst.js:115:27:115:55 | Math.ra ... 000_000 | tst.js:115:16:115:56 | Math.fl ... 00_000) |
+| tst.js:115:27:115:55 | Math.ra ... 000_000 | tst.js:115:16:115:56 | Math.fl ... 00_000) |
+| tst.js:116:33:116:45 | Math.random() | tst.js:116:33:116:61 | Math.ra ... 000_000 |
+| tst.js:116:33:116:45 | Math.random() | tst.js:116:33:116:61 | Math.ra ... 000_000 |
+| tst.js:116:33:116:61 | Math.ra ... 000_000 | tst.js:116:22:116:62 | Math.fl ... 00_000) |
+| tst.js:116:33:116:61 | Math.ra ... 000_000 | tst.js:116:22:116:62 | Math.fl ... 00_000) |
+| tst.js:117:26:117:38 | Math.random() | tst.js:117:26:117:54 | Math.ra ... 000_000 |
+| tst.js:117:26:117:38 | Math.random() | tst.js:117:26:117:54 | Math.ra ... 000_000 |
+| tst.js:117:26:117:54 | Math.ra ... 000_000 | tst.js:117:15:117:55 | Math.fl ... 00_000) |
+| tst.js:117:26:117:54 | Math.ra ... 000_000 | tst.js:117:15:117:55 | Math.fl ... 00_000) |
+| tst.js:118:34:118:46 | Math.random() | tst.js:118:34:118:62 | Math.ra ... 000_000 |
+| tst.js:118:34:118:46 | Math.random() | tst.js:118:34:118:62 | Math.ra ... 000_000 |
+| tst.js:118:34:118:62 | Math.ra ... 000_000 | tst.js:118:23:118:63 | Math.fl ... 00_000) |
+| tst.js:118:34:118:62 | Math.ra ... 000_000 | tst.js:118:23:118:63 | Math.fl ... 00_000) |
+| tst.js:120:16:120:28 | Math.random() | tst.js:120:16:120:28 | Math.random() |
+| tst.js:121:18:121:30 | Math.random() | tst.js:121:18:121:30 | Math.random() |
+#select
+| tst.js:2:20:2:32 | Math.random() | tst.js:2:20:2:32 | Math.random() | tst.js:2:20:2:32 | Math.random() | Cryptographically insecure $@ in a security context. | tst.js:2:20:2:32 | Math.random() | random value |
+| tst.js:6:20:6:43 | "prefix ... andom() | tst.js:6:31:6:43 | Math.random() | tst.js:6:20:6:43 | "prefix ... andom() | Cryptographically insecure $@ in a security context. | tst.js:6:31:6:43 | Math.random() | random value |
+| tst.js:10:20:10:32 | Math.random() | tst.js:10:20:10:32 | Math.random() | tst.js:10:20:10:32 | Math.random() | Cryptographically insecure $@ in a security context. | tst.js:10:20:10:32 | Math.random() | random value |
+| tst.js:20:20:20:36 | "prefix" + suffix | tst.js:19:18:19:30 | Math.random() | tst.js:20:20:20:36 | "prefix" + suffix | Cryptographically insecure $@ in a security context. | tst.js:19:18:19:30 | Math.random() | random value |
+| tst.js:29:20:29:21 | pw | tst.js:28:14:28:26 | Math.random() | tst.js:29:20:29:21 | pw | Cryptographically insecure $@ in a security context. | tst.js:28:14:28:26 | Math.random() | random value |
+| tst.js:41:20:41:33 | !Math.random() | tst.js:41:21:41:33 | Math.random() | tst.js:41:20:41:33 | !Math.random() | Cryptographically insecure $@ in a security context. | tst.js:41:21:41:33 | Math.random() | random value |
+| tst.js:45:18:45:30 | Math.random() | tst.js:45:18:45:30 | Math.random() | tst.js:45:18:45:30 | Math.random() | Cryptographically insecure $@ in a security context. | tst.js:45:18:45:30 | Math.random() | random value |
+| tst.js:50:16:50:28 | Math.random() | tst.js:50:16:50:28 | Math.random() | tst.js:50:16:50:28 | Math.random() | Cryptographically insecure $@ in a security context. | tst.js:50:16:50:28 | Math.random() | random value |
+| tst.js:55:17:55:29 | Math.random() | tst.js:55:17:55:29 | Math.random() | tst.js:55:17:55:29 | Math.random() | Cryptographically insecure $@ in a security context. | tst.js:55:17:55:29 | Math.random() | random value |
+| tst.js:61:17:61:34 | '' + Math.random() | tst.js:61:22:61:34 | Math.random() | tst.js:61:17:61:34 | '' + Math.random() | Cryptographically insecure $@ in a security context. | tst.js:61:22:61:34 | Math.random() | random value |
+| tst.js:66:18:66:42 | Math.fl ... ndom()) | tst.js:66:29:66:41 | Math.random() | tst.js:66:18:66:42 | Math.fl ... ndom()) | Cryptographically insecure $@ in a security context. | tst.js:66:29:66:41 | Math.random() | random value |
+| tst.js:73:23:73:28 | concat | tst.js:71:27:71:39 | Math.random() | tst.js:73:23:73:28 | concat | Cryptographically insecure $@ in a security context. | tst.js:71:27:71:39 | Math.random() | random value |
+| tst.js:77:16:77:21 | secret | tst.js:80:7:80:19 | Math.random() | tst.js:77:16:77:21 | secret | Cryptographically insecure $@ in a security context. | tst.js:80:7:80:19 | Math.random() | random value |
+| tst.js:84:19:84:31 | Math.random() | tst.js:84:19:84:31 | Math.random() | tst.js:84:19:84:31 | Math.random() | Cryptographically insecure $@ in a security context. | tst.js:84:19:84:31 | Math.random() | random value |
+| tst.js:90:32:90:44 | Math.random() | tst.js:90:32:90:44 | Math.random() | tst.js:90:32:90:44 | Math.random() | Cryptographically insecure $@ in a security context. | tst.js:90:32:90:44 | Math.random() | random value |
+| tst.js:95:33:95:45 | Math.random() | tst.js:95:33:95:45 | Math.random() | tst.js:95:33:95:45 | Math.random() | Cryptographically insecure $@ in a security context. | tst.js:95:33:95:45 | Math.random() | random value |
+| tst.js:115:16:115:56 | Math.fl ... 00_000) | tst.js:115:27:115:39 | Math.random() | tst.js:115:16:115:56 | Math.fl ... 00_000) | Cryptographically insecure $@ in a security context. | tst.js:115:27:115:39 | Math.random() | random value |
+| tst.js:116:22:116:62 | Math.fl ... 00_000) | tst.js:116:33:116:45 | Math.random() | tst.js:116:22:116:62 | Math.fl ... 00_000) | Cryptographically insecure $@ in a security context. | tst.js:116:33:116:45 | Math.random() | random value |
+| tst.js:117:15:117:55 | Math.fl ... 00_000) | tst.js:117:26:117:38 | Math.random() | tst.js:117:15:117:55 | Math.fl ... 00_000) | Cryptographically insecure $@ in a security context. | tst.js:117:26:117:38 | Math.random() | random value |
+| tst.js:118:23:118:63 | Math.fl ... 00_000) | tst.js:118:34:118:46 | Math.random() | tst.js:118:23:118:63 | Math.fl ... 00_000) | Cryptographically insecure $@ in a security context. | tst.js:118:34:118:46 | Math.random() | random value |
+| tst.js:120:16:120:28 | Math.random() | tst.js:120:16:120:28 | Math.random() | tst.js:120:16:120:28 | Math.random() | Cryptographically insecure $@ in a security context. | tst.js:120:16:120:28 | Math.random() | random value |
+| tst.js:121:18:121:30 | Math.random() | tst.js:121:18:121:30 | Math.random() | tst.js:121:18:121:30 | Math.random() | Cryptographically insecure $@ in a security context. | tst.js:121:18:121:30 | Math.random() | random value |

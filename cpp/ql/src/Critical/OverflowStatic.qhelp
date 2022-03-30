@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>When you use static arrays you must ensure that you do not exceed the size of the array during 
+write and access operations. If an operation attempts to write to or access an element that is 
+outside the range of the array then this results in a buffer overflow. Buffer overflows can lead to anything from a segmentation fault to a security vulnerability.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Check the offsets and sizes used in the highlighted operations to ensure that a buffer overflow will not occur.
+</p>
+
+</recommendation>
+<example><sample src="OverflowStatic.cpp" />
+
+
+
+</example>
+<references>
+
+<li>I. Gerg. <em>An Overview and Example of the Buffer-Overflow Exploit</em>. IANewsletter vol 7 no 4. 2005.</li>
+<li>M. Donaldson. <em>Inside the Buffer Overflow Attack: Mechanism, Method &amp; Prevention</em>. SANS Institute InfoSec Reading Room. 2002.</li>
+
+</references>
+</qhelp>

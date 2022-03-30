@@ -1,0 +1,264 @@
+| ViableCallable.cs:12:9:12:28 | call to method M<Int32> | M<> | C2<> |
+| ViableCallable.cs:12:9:12:28 | call to method M<Int32> | M<> | C3 |
+| ViableCallable.cs:12:9:12:28 | call to method M<Int32> | M<> | C4<> |
+| ViableCallable.cs:12:9:12:28 | call to method M<Int32> | M<> | C5 |
+| ViableCallable.cs:12:9:12:28 | call to method M<Int32> | M<> | C6<,> |
+| ViableCallable.cs:12:9:12:28 | call to method M<Int32> | M<> | C7<> |
+| ViableCallable.cs:14:9:14:15 | access to property Prop | set_Prop | C2<> |
+| ViableCallable.cs:14:9:14:15 | access to property Prop | set_Prop | C3 |
+| ViableCallable.cs:14:9:14:15 | access to property Prop | set_Prop | C4<> |
+| ViableCallable.cs:14:9:14:15 | access to property Prop | set_Prop | C5 |
+| ViableCallable.cs:14:9:14:15 | access to property Prop | set_Prop | C6<,> |
+| ViableCallable.cs:14:9:14:15 | access to property Prop | set_Prop | C7<> |
+| ViableCallable.cs:14:19:14:25 | access to property Prop | get_Prop | C2<> |
+| ViableCallable.cs:14:19:14:25 | access to property Prop | get_Prop | C3 |
+| ViableCallable.cs:14:19:14:25 | access to property Prop | get_Prop | C4<> |
+| ViableCallable.cs:14:19:14:25 | access to property Prop | get_Prop | C5 |
+| ViableCallable.cs:14:19:14:25 | access to property Prop | get_Prop | C6<,> |
+| ViableCallable.cs:14:19:14:25 | access to property Prop | get_Prop | C7<> |
+| ViableCallable.cs:16:9:16:23 | access to indexer | set_Item | C2<> |
+| ViableCallable.cs:16:9:16:23 | access to indexer | set_Item | C3 |
+| ViableCallable.cs:16:9:16:23 | access to indexer | set_Item | C4<> |
+| ViableCallable.cs:16:9:16:23 | access to indexer | set_Item | C5 |
+| ViableCallable.cs:16:9:16:23 | access to indexer | set_Item | C6<,> |
+| ViableCallable.cs:16:9:16:23 | access to indexer | set_Item | C7<> |
+| ViableCallable.cs:16:27:16:41 | access to indexer | get_Item | C2<> |
+| ViableCallable.cs:16:27:16:41 | access to indexer | get_Item | C3 |
+| ViableCallable.cs:16:27:16:41 | access to indexer | get_Item | C4<> |
+| ViableCallable.cs:16:27:16:41 | access to indexer | get_Item | C5 |
+| ViableCallable.cs:16:27:16:41 | access to indexer | get_Item | C6<,> |
+| ViableCallable.cs:16:27:16:41 | access to indexer | get_Item | C7<> |
+| ViableCallable.cs:18:9:18:16 | access to event Event | add_Event | C2<> |
+| ViableCallable.cs:18:9:18:16 | access to event Event | add_Event | C3 |
+| ViableCallable.cs:18:9:18:16 | access to event Event | add_Event | C4<> |
+| ViableCallable.cs:18:9:18:16 | access to event Event | add_Event | C5 |
+| ViableCallable.cs:18:9:18:16 | access to event Event | add_Event | C6<,> |
+| ViableCallable.cs:18:9:18:16 | access to event Event | add_Event | C7<> |
+| ViableCallable.cs:19:9:19:16 | access to event Event | remove_Event | C2<> |
+| ViableCallable.cs:19:9:19:16 | access to event Event | remove_Event | C3 |
+| ViableCallable.cs:19:9:19:16 | access to event Event | remove_Event | C4<> |
+| ViableCallable.cs:19:9:19:16 | access to event Event | remove_Event | C5 |
+| ViableCallable.cs:19:9:19:16 | access to event Event | remove_Event | C6<,> |
+| ViableCallable.cs:19:9:19:16 | access to event Event | remove_Event | C7<> |
+| ViableCallable.cs:22:9:22:30 | call to method M<Boolean> | M<> | C4<> |
+| ViableCallable.cs:22:9:22:30 | call to method M<Boolean> | M<> | C6<,> |
+| ViableCallable.cs:24:9:24:15 | access to property Prop | set_Prop | C4<> |
+| ViableCallable.cs:24:9:24:15 | access to property Prop | set_Prop | C6<,> |
+| ViableCallable.cs:24:19:24:25 | access to property Prop | get_Prop | C4<> |
+| ViableCallable.cs:24:19:24:25 | access to property Prop | get_Prop | C6<,> |
+| ViableCallable.cs:26:9:26:23 | access to indexer | set_Item | C4<> |
+| ViableCallable.cs:26:9:26:23 | access to indexer | set_Item | C6<,> |
+| ViableCallable.cs:26:27:26:41 | access to indexer | get_Item | C4<> |
+| ViableCallable.cs:26:27:26:41 | access to indexer | get_Item | C6<,> |
+| ViableCallable.cs:28:9:28:16 | access to event Event | add_Event | C4<> |
+| ViableCallable.cs:28:9:28:16 | access to event Event | add_Event | C6<,> |
+| ViableCallable.cs:29:9:29:16 | access to event Event | remove_Event | C4<> |
+| ViableCallable.cs:29:9:29:16 | access to event Event | remove_Event | C6<,> |
+| ViableCallable.cs:33:9:33:23 | call to method M<Int32> | M<> | C2<> |
+| ViableCallable.cs:33:9:33:23 | call to method M<Int32> | M<> | C6<,> |
+| ViableCallable.cs:35:9:35:15 | access to property Prop | set_Prop | C2<> |
+| ViableCallable.cs:35:9:35:15 | access to property Prop | set_Prop | C6<,> |
+| ViableCallable.cs:35:19:35:25 | access to property Prop | get_Prop | C2<> |
+| ViableCallable.cs:35:19:35:25 | access to property Prop | get_Prop | C6<,> |
+| ViableCallable.cs:37:9:37:13 | access to indexer | set_Item | C2<> |
+| ViableCallable.cs:37:9:37:13 | access to indexer | set_Item | C6<,> |
+| ViableCallable.cs:37:17:37:21 | access to indexer | get_Item | C2<> |
+| ViableCallable.cs:37:17:37:21 | access to indexer | get_Item | C6<,> |
+| ViableCallable.cs:39:9:39:16 | access to event Event | add_Event | C2<> |
+| ViableCallable.cs:39:9:39:16 | access to event Event | add_Event | C6<,> |
+| ViableCallable.cs:40:9:40:16 | access to event Event | remove_Event | C2<> |
+| ViableCallable.cs:40:9:40:16 | access to event Event | remove_Event | C6<,> |
+| ViableCallable.cs:44:9:44:24 | call to method M<Double> | M<> | C2<> |
+| ViableCallable.cs:44:9:44:24 | call to method M<Double> | M<> | C3 |
+| ViableCallable.cs:44:9:44:24 | call to method M<Double> | M<> | C6<,> |
+| ViableCallable.cs:46:9:46:15 | access to property Prop | set_Prop | C2<> |
+| ViableCallable.cs:46:9:46:15 | access to property Prop | set_Prop | C3 |
+| ViableCallable.cs:46:9:46:15 | access to property Prop | set_Prop | C6<,> |
+| ViableCallable.cs:46:19:46:25 | access to property Prop | get_Prop | C2<> |
+| ViableCallable.cs:46:19:46:25 | access to property Prop | get_Prop | C3 |
+| ViableCallable.cs:46:19:46:25 | access to property Prop | get_Prop | C6<,> |
+| ViableCallable.cs:48:9:48:14 | access to indexer | set_Item | C2<> |
+| ViableCallable.cs:48:9:48:14 | access to indexer | set_Item | C3 |
+| ViableCallable.cs:48:9:48:14 | access to indexer | set_Item | C6<,> |
+| ViableCallable.cs:48:18:48:23 | access to indexer | get_Item | C2<> |
+| ViableCallable.cs:48:18:48:23 | access to indexer | get_Item | C3 |
+| ViableCallable.cs:48:18:48:23 | access to indexer | get_Item | C6<,> |
+| ViableCallable.cs:50:9:50:16 | access to event Event | add_Event | C2<> |
+| ViableCallable.cs:50:9:50:16 | access to event Event | add_Event | C3 |
+| ViableCallable.cs:50:9:50:16 | access to event Event | add_Event | C6<,> |
+| ViableCallable.cs:51:9:51:16 | access to event Event | remove_Event | C2<> |
+| ViableCallable.cs:51:9:51:16 | access to event Event | remove_Event | C3 |
+| ViableCallable.cs:51:9:51:16 | access to event Event | remove_Event | C6<,> |
+| ViableCallable.cs:55:9:55:44 | call to method M<Object> | M<> | C4<> |
+| ViableCallable.cs:55:9:55:44 | call to method M<Object> | M<> | C6<,> |
+| ViableCallable.cs:57:9:57:15 | access to property Prop | set_Prop | C4<> |
+| ViableCallable.cs:57:9:57:15 | access to property Prop | set_Prop | C6<,> |
+| ViableCallable.cs:57:19:57:25 | access to property Prop | get_Prop | C4<> |
+| ViableCallable.cs:57:19:57:25 | access to property Prop | get_Prop | C6<,> |
+| ViableCallable.cs:59:9:59:17 | access to indexer | set_Item | C4<> |
+| ViableCallable.cs:59:9:59:17 | access to indexer | set_Item | C6<,> |
+| ViableCallable.cs:59:21:59:29 | access to indexer | get_Item | C4<> |
+| ViableCallable.cs:59:21:59:29 | access to indexer | get_Item | C6<,> |
+| ViableCallable.cs:61:9:61:16 | access to event Event | add_Event | C4<> |
+| ViableCallable.cs:61:9:61:16 | access to event Event | add_Event | C6<,> |
+| ViableCallable.cs:62:9:62:16 | access to event Event | remove_Event | C4<> |
+| ViableCallable.cs:62:9:62:16 | access to event Event | remove_Event | C6<,> |
+| ViableCallable.cs:66:9:66:30 | call to method M<Object> | M<> | C2<> |
+| ViableCallable.cs:66:9:66:30 | call to method M<Object> | M<> | C5 |
+| ViableCallable.cs:66:9:66:30 | call to method M<Object> | M<> | C6<,> |
+| ViableCallable.cs:68:9:68:15 | access to property Prop | set_Prop | C2<> |
+| ViableCallable.cs:68:9:68:15 | access to property Prop | set_Prop | C5 |
+| ViableCallable.cs:68:9:68:15 | access to property Prop | set_Prop | C6<,> |
+| ViableCallable.cs:68:19:68:25 | access to property Prop | get_Prop | C2<> |
+| ViableCallable.cs:68:19:68:25 | access to property Prop | get_Prop | C5 |
+| ViableCallable.cs:68:19:68:25 | access to property Prop | get_Prop | C6<,> |
+| ViableCallable.cs:70:9:70:17 | access to indexer | set_Item | C2<> |
+| ViableCallable.cs:70:9:70:17 | access to indexer | set_Item | C5 |
+| ViableCallable.cs:70:9:70:17 | access to indexer | set_Item | C6<,> |
+| ViableCallable.cs:70:21:70:29 | access to indexer | get_Item | C2<> |
+| ViableCallable.cs:70:21:70:29 | access to indexer | get_Item | C5 |
+| ViableCallable.cs:70:21:70:29 | access to indexer | get_Item | C6<,> |
+| ViableCallable.cs:72:9:72:16 | access to event Event | add_Event | C2<> |
+| ViableCallable.cs:72:9:72:16 | access to event Event | add_Event | C5 |
+| ViableCallable.cs:72:9:72:16 | access to event Event | add_Event | C6<,> |
+| ViableCallable.cs:73:9:73:16 | access to event Event | remove_Event | C2<> |
+| ViableCallable.cs:73:9:73:16 | access to event Event | remove_Event | C5 |
+| ViableCallable.cs:73:9:73:16 | access to event Event | remove_Event | C6<,> |
+| ViableCallable.cs:76:27:76:44 | object creation of type C6<T1,Boolean> | C6 | C6<,> |
+| ViableCallable.cs:77:9:77:29 | call to method M<String> | M<> | C6<,> |
+| ViableCallable.cs:79:9:79:15 | access to property Prop | set_Prop | C6<,> |
+| ViableCallable.cs:79:19:79:25 | access to property Prop | get_Prop | C6<,> |
+| ViableCallable.cs:81:9:81:17 | access to indexer | set_Item | C6<,> |
+| ViableCallable.cs:81:21:81:29 | access to indexer | get_Item | C6<,> |
+| ViableCallable.cs:83:9:83:16 | access to event Event | add_Event | C6<,> |
+| ViableCallable.cs:84:9:84:16 | access to event Event | remove_Event | C6<,> |
+| ViableCallable.cs:88:9:88:44 | dynamic call to method M | M | C8 |
+| ViableCallable.cs:88:9:88:44 | dynamic call to method M | M | C9<> |
+| ViableCallable.cs:90:9:90:15 | dynamic access to member Prop1 | set_Prop1 | C8 |
+| ViableCallable.cs:90:9:90:15 | dynamic access to member Prop1 | set_Prop1 | C9<> |
+| ViableCallable.cs:90:19:90:25 | dynamic access to member Prop1 | get_Prop1 | C8 |
+| ViableCallable.cs:90:19:90:25 | dynamic access to member Prop1 | get_Prop1 | C9<> |
+| ViableCallable.cs:92:9:92:12 | dynamic access to element | set_Item | C8 |
+| ViableCallable.cs:92:9:92:12 | dynamic access to element | set_Item | C9<> |
+| ViableCallable.cs:92:16:92:19 | dynamic access to element | get_Item | C8 |
+| ViableCallable.cs:92:16:92:19 | dynamic access to element | get_Item | C9<> |
+| ViableCallable.cs:99:9:99:15 | dynamic call to method M | M | C5 |
+| ViableCallable.cs:102:9:102:16 | access to property Prop2 | set_Prop2 | C5 |
+| ViableCallable.cs:105:9:105:17 | access to event Event2 | add_Event2 | C5 |
+| ViableCallable.cs:106:9:106:17 | access to event Event2 | remove_Event2 | C5 |
+| ViableCallable.cs:120:9:120:25 | dynamic call to method M2 | M2<> | C8 |
+| ViableCallable.cs:124:9:124:24 | dynamic call to method M2 | M2<> | C8 |
+| ViableCallable.cs:131:13:131:30 | object creation of type C6<T1,Byte> | C6 | C6<,> |
+| ViableCallable.cs:132:9:132:28 | dynamic call to method M | M<> | C6<,> |
+| ViableCallable.cs:134:9:134:14 | dynamic access to member Prop | set_Prop | C6<,> |
+| ViableCallable.cs:134:18:134:23 | dynamic access to member Prop | get_Prop | C6<,> |
+| ViableCallable.cs:136:9:136:18 | dynamic access to element | set_Item | C6<,> |
+| ViableCallable.cs:136:22:136:31 | dynamic access to element | get_Item | C6<,> |
+| ViableCallable.cs:138:9:138:52 | ... += ... | add_Event | C6<,> |
+| ViableCallable.cs:139:9:139:52 | ... -= ... | remove_Event | C6<,> |
+| ViableCallable.cs:143:9:143:14 | dynamic call to method M3 | M3 | C8 |
+| ViableCallable.cs:143:9:143:14 | dynamic call to method M3 | M3 | C9<> |
+| ViableCallable.cs:144:9:144:15 | dynamic call to method M3 | M3 | C8 |
+| ViableCallable.cs:144:9:144:15 | dynamic call to method M3 | M3 | C9<> |
+| ViableCallable.cs:145:9:145:20 | dynamic call to method M3 | M3 | C8 |
+| ViableCallable.cs:145:9:145:20 | dynamic call to method M3 | M3 | C9<> |
+| ViableCallable.cs:148:9:148:16 | dynamic call to method M3 | M3 | C8 |
+| ViableCallable.cs:148:9:148:16 | dynamic call to method M3 | M3 | C9<> |
+| ViableCallable.cs:148:9:148:16 | dynamic call to method M3 | M3 | C10 |
+| ViableCallable.cs:149:9:149:17 | dynamic call to method M3 | M3 | C8 |
+| ViableCallable.cs:149:9:149:17 | dynamic call to method M3 | M3 | C9<> |
+| ViableCallable.cs:149:9:149:17 | dynamic call to method M3 | M3 | C10 |
+| ViableCallable.cs:150:9:150:22 | dynamic call to method M3 | M3 | C8 |
+| ViableCallable.cs:150:9:150:22 | dynamic call to method M3 | M3 | C9<> |
+| ViableCallable.cs:150:9:150:22 | dynamic call to method M3 | M3 | C10 |
+| ViableCallable.cs:152:9:152:17 | dynamic access to member Prop1 | set_Prop1 | C8 |
+| ViableCallable.cs:152:9:152:17 | dynamic access to member Prop1 | set_Prop1 | C9<> |
+| ViableCallable.cs:152:9:152:17 | dynamic access to member Prop1 | set_Prop1 | C10 |
+| ViableCallable.cs:152:21:152:29 | dynamic access to member Prop1 | get_Prop1 | C8 |
+| ViableCallable.cs:152:21:152:29 | dynamic access to member Prop1 | get_Prop1 | C9<> |
+| ViableCallable.cs:152:21:152:29 | dynamic access to member Prop1 | get_Prop1 | C10 |
+| ViableCallable.cs:154:9:154:14 | dynamic access to element | set_Item | C2<> |
+| ViableCallable.cs:154:9:154:14 | dynamic access to element | set_Item | C3 |
+| ViableCallable.cs:154:9:154:14 | dynamic access to element | set_Item | C6<,> |
+| ViableCallable.cs:154:9:154:14 | dynamic access to element | set_Item | C7<> |
+| ViableCallable.cs:154:9:154:14 | dynamic access to element | set_Item | C8 |
+| ViableCallable.cs:154:9:154:14 | dynamic access to element | set_Item | C9<> |
+| ViableCallable.cs:154:9:154:14 | dynamic access to element | set_Item | C10 |
+| ViableCallable.cs:154:18:154:23 | dynamic access to element | get_Item | C2<> |
+| ViableCallable.cs:154:18:154:23 | dynamic access to element | get_Item | C3 |
+| ViableCallable.cs:154:18:154:23 | dynamic access to element | get_Item | C6<,> |
+| ViableCallable.cs:154:18:154:23 | dynamic access to element | get_Item | C7<> |
+| ViableCallable.cs:154:18:154:23 | dynamic access to element | get_Item | C8 |
+| ViableCallable.cs:154:18:154:23 | dynamic access to element | get_Item | C9<> |
+| ViableCallable.cs:154:18:154:23 | dynamic access to element | get_Item | C10 |
+| ViableCallable.cs:156:9:156:54 | ... += ... | add_Event | C2<> |
+| ViableCallable.cs:156:9:156:54 | ... += ... | add_Event | C3 |
+| ViableCallable.cs:156:9:156:54 | ... += ... | add_Event | C5 |
+| ViableCallable.cs:156:9:156:54 | ... += ... | add_Event | C6<,> |
+| ViableCallable.cs:156:9:156:54 | ... += ... | add_Event | C7<> |
+| ViableCallable.cs:156:9:156:54 | ... += ... | add_Event | C8 |
+| ViableCallable.cs:156:9:156:54 | ... += ... | add_Event | C9<> |
+| ViableCallable.cs:157:9:157:54 | ... -= ... | remove_Event | C2<> |
+| ViableCallable.cs:157:9:157:54 | ... -= ... | remove_Event | C3 |
+| ViableCallable.cs:157:9:157:54 | ... -= ... | remove_Event | C5 |
+| ViableCallable.cs:157:9:157:54 | ... -= ... | remove_Event | C6<,> |
+| ViableCallable.cs:157:9:157:54 | ... -= ... | remove_Event | C7<> |
+| ViableCallable.cs:157:9:157:54 | ... -= ... | remove_Event | C8 |
+| ViableCallable.cs:157:9:157:54 | ... -= ... | remove_Event | C9<> |
+| ViableCallable.cs:160:9:160:40 | dynamic call to method M4 | M4 | C8 |
+| ViableCallable.cs:161:9:161:38 | dynamic call to method M4 | M4 | C8 |
+| ViableCallable.cs:164:9:164:17 | dynamic access to member Prop1 | set_Prop1 | C10 |
+| ViableCallable.cs:174:9:174:15 | dynamic access to element | set_Item | C2<> |
+| ViableCallable.cs:174:9:174:15 | dynamic access to element | set_Item | C6<,> |
+| ViableCallable.cs:174:19:174:25 | dynamic access to element | get_Item | C2<> |
+| ViableCallable.cs:174:19:174:25 | dynamic access to element | get_Item | C6<,> |
+| ViableCallable.cs:178:13:178:17 | dynamic call to operator + | + | Decimal |
+| ViableCallable.cs:178:13:178:17 | dynamic call to operator + | + | Double |
+| ViableCallable.cs:178:13:178:17 | dynamic call to operator + | + | Int32 |
+| ViableCallable.cs:178:13:178:17 | dynamic call to operator + | + | Int64 |
+| ViableCallable.cs:178:13:178:17 | dynamic call to operator + | + | Single |
+| ViableCallable.cs:180:13:180:17 | dynamic call to operator - | - | Decimal |
+| ViableCallable.cs:180:13:180:17 | dynamic call to operator - | - | Double |
+| ViableCallable.cs:180:13:180:17 | dynamic call to operator - | - | Int32 |
+| ViableCallable.cs:180:13:180:17 | dynamic call to operator - | - | Int64 |
+| ViableCallable.cs:180:13:180:17 | dynamic call to operator - | - | Single |
+| ViableCallable.cs:182:13:182:18 | dynamic call to operator + | + | Decimal |
+| ViableCallable.cs:182:13:182:18 | dynamic call to operator + | + | Double |
+| ViableCallable.cs:182:13:182:18 | dynamic call to operator + | + | Int32 |
+| ViableCallable.cs:182:13:182:18 | dynamic call to operator + | + | Int64 |
+| ViableCallable.cs:182:13:182:18 | dynamic call to operator + | + | Single |
+| ViableCallable.cs:185:17:185:25 | object creation of type C10 | C10 | C10 |
+| ViableCallable.cs:186:9:186:153 | call to method InvokeMember | + | C10 |
+| ViableCallable.cs:189:9:189:143 | call to method InvokeMember | get_Prop3 | C10 |
+| ViableCallable.cs:190:9:190:149 | call to method InvokeMember | set_Prop3 | C10 |
+| ViableCallable.cs:193:9:193:146 | call to method InvokeMember | get_Item | C10 |
+| ViableCallable.cs:194:9:194:152 | call to method InvokeMember | set_Item | C10 |
+| ViableCallable.cs:198:9:198:147 | call to method InvokeMember | add_Event | C10 |
+| ViableCallable.cs:199:9:199:150 | call to method InvokeMember | remove_Event | C10 |
+| ViableCallable.cs:234:9:234:15 | call to method M<Int32> | M<> | C2<> |
+| ViableCallable.cs:234:9:234:15 | call to method M<Int32> | M<> | C3 |
+| ViableCallable.cs:234:9:234:15 | call to method M<Int32> | M<> | C4<> |
+| ViableCallable.cs:234:9:234:15 | call to method M<Int32> | M<> | C5 |
+| ViableCallable.cs:234:9:234:15 | call to method M<Int32> | M<> | C6<,> |
+| ViableCallable.cs:234:9:234:15 | call to method M<Int32> | M<> | C7<> |
+| ViableCallable.cs:283:9:283:15 | call to method M<Int32> | M<> | C6<,> |
+| ViableCallable.cs:283:9:283:15 | call to method M<Int32> | M<> | C7<> |
+| ViableCallable.cs:286:9:286:20 | call to method M<Int32> | M<> | C6<,> |
+| ViableCallable.cs:286:9:286:20 | call to method M<Int32> | M<> | C7<> |
+| ViableCallable.cs:300:9:300:15 | call to method M<Int32> | M<> | C7<> |
+| ViableCallable.cs:303:9:303:20 | call to method M<Int32> | M<> | C7<> |
+| ViableCallable.cs:306:9:306:20 | call to method M<Int32> | M<> | C6<,> |
+| ViableCallable.cs:353:9:353:14 | dynamic call to method M | M | C11 |
+| ViableCallable.cs:355:9:355:18 | dynamic object creation of type C11 | C11 | C11 |
+| ViableCallable.cs:378:9:378:13 | call to method M | M | C13 |
+| ViableCallable.cs:411:9:411:18 | call to method M<Int32> | M<> | A1 |
+| ViableCallable.cs:411:9:411:18 | call to method M<Int32> | M<> | A4 |
+| ViableCallable.cs:411:9:411:18 | call to method M<Int32> | M<> | A5 |
+| ViableCallable.cs:413:13:413:20 | object creation of type A3 | A3 | A3 |
+| ViableCallable.cs:415:9:415:19 | call to method M<Boolean> | M<> | A1 |
+| ViableCallable.cs:417:13:417:20 | object creation of type A4 | A4 | A4 |
+| ViableCallable.cs:419:9:419:21 | call to method M<String> | M<> | A4 |
+| ViableCallable.cs:423:9:423:21 | call to method M<String> | M<> | A4 |
+| ViableCallable.cs:423:9:423:21 | call to method M<String> | M<> | A5 |
+| ViableCallable.cs:478:9:478:14 | call to method M1 | M1 | C18 |
+| ViableCallable.cs:481:9:481:14 | call to method M2 | M2 | I2 |

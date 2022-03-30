@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A block of code that synchronizes on a field and updates that field while the
+lock is held is unlikely to provide the desired thread safety. Such a synchronized 
+block does not prevent multiple unsynchronized assignments to that field because it 
+obtains a lock on the object stored <i>in</i> the field rather than the field itself.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Instead of synchronizing on the field itself, consider synchronizing on a separate lock object 
+when you want to avoid simultaneous updates to the field.
+You can do this by declaring a synchronized method and using it for any field updates.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, in class A, synchronization takes place on the field that is updated in the body of the <code>setField</code> method.</p>
+
+<sample src="FutileSynchOnField.java" />
+
+<p>In class B, the recommended approach is shown, where synchronization takes place on a separate lock 
+object.</p>
+
+<sample src="FutileSynchOnFieldGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.19">The synchronized Statement</a>,
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-8.html#jls-8.4.3.6">synchronized Methods</a>.
+</li>
+<li>
+  The Java Tutorials:
+  <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html">Lock Objects</a>.
+</li>
+
+
+</references>
+</qhelp>

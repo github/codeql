@@ -1,0 +1,3 @@
+| test.py:15:5:16:28 | Commented out code | These comments appear to contain commented-out code. |
+| test.py:21:1:72:9 | Commented out code | These comments appear to contain commented-out code. |
+| test.py:78:1:85:9 | Commented out code | These comments appear to contain commented-out code. |

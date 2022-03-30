@@ -1,0 +1,6 @@
+| test.cpp:11:10:11:18 | access to array | This use of offset 'i' should follow the $@. | test.cpp:11:32:11:45 | ... < ... | range check |
+| test.cpp:15:7:15:15 | access to array | This use of offset 'i' should follow the $@. | test.cpp:15:29:15:42 | ... < ... | range check |
+| test.cpp:27:7:27:15 | access to array | This use of offset 'i' should follow the $@. | test.cpp:27:39:27:52 | ... < ... | range check |
+| test.cpp:39:8:39:16 | access to array | This use of offset 'i' should follow the $@. | test.cpp:39:30:39:47 | ... < ... | range check |
+| test.cpp:44:7:44:15 | access to array | This use of offset 'i' should follow the $@. | test.cpp:44:22:44:35 | ... < ... | range check |
+| test.cpp:47:7:47:15 | access to array | This use of offset 'i' should follow the $@. | test.cpp:47:33:47:46 | ... < ... | range check |

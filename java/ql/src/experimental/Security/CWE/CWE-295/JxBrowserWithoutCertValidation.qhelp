@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>JxBrowser is a Java library that allows to embed the Chromium browser inside Java applications.
+Versions smaller than 6.24 by default ignore any HTTPS certificate errors thereby allowing man-in-the-middle attacks.
+</p>
+</overview>
+
+<recommendation>
+<p>Do either of these:</p>
+<ul>
+  <li>Update to version 6.24 or 7.x.x as these correctly reject certificate errors by default.</li>
+  <li>Add a custom implementation of the <code>LoadHandler</code> interface whose <code>onCertificateError</code> method always returns <b>true</b> indicating that loading should be cancelled.
+  Then use the <code>setLoadHandler</code> method with your custom <code>LoadHandler</code> on every <code>Browser</code> you use.</li>
+</ul>
+</recommendation>
+
+<example>
+<p>The following two examples show two ways of using a <code>Browser</code>. In the 'BAD' case,
+all certificate errors are ignored. In the 'GOOD' case, certificate errors are rejected.</p>
+<sample src="JxBrowserWithoutCertValidation.java" />
+</example>
+
+<references>
+<li>Teamdev:
+<a href="https://jxbrowser-support.teamdev.com/release-notes/2019/v6-24.html">
+Changelog of JxBrowser 6.24</a>.</li>
+</references>
+</qhelp>

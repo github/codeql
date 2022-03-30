@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Most <code>for</code> loops either increment a variable until an upper bound is reached,
+or decrement a variable until a lower bound is reached. If, instead, the variable is
+incremented but checked against a lower bound, or decremented but checked against an
+upper bound, then the loop will either terminate immediately and never execute its
+body, or it will keep iterating indefinitely. Neither is likely to be intentional,
+and is most likely the result of a typo.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the loop carefully to check whether its test expression or update expression
+are erroneous.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, two loops are used to set all elements of an array <code>a</code>
+outside a range <code>lower</code>..<code>upper</code> to zero. However, the second loop
+contains a typo: the loop variable <code>i</code> is decremented instead of incremented,
+so <code>i</code> is counted downwards from <code>upper+1</code> to <code>0</code>, <code>-1</code>,
+<code>-2</code> and so on.
+</p>
+
+<sample src="examples/InconsistentLoopOrientation.js" />
+
+<p>
+To correct this issue, change the second loop to increment its loop variable instead:
+</p>
+
+<sample src="examples/InconsistentLoopOrientationGood.js" />
+
+</example>
+<references>
+    <li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for">for</a>.</li>
+</references>
+</qhelp>

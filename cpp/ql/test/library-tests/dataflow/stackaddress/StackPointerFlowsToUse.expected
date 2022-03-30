@@ -1,0 +1,29 @@
+| test.cpp:6:10:6:11 | & ... | file://:0:0:0:0 | int | test.cpp:6:11:6:11 | x | true |
+| test.cpp:7:10:7:11 | & ... | file://:0:0:0:0 | int | test.cpp:7:11:7:11 | x | true |
+| test.cpp:13:10:13:10 | p | file://:0:0:0:0 | int | test.cpp:12:13:12:13 | x | true |
+| test.cpp:14:10:14:10 | p | file://:0:0:0:0 | int | test.cpp:12:13:12:13 | x | true |
+| test.cpp:19:10:19:10 | q | file://:0:0:0:0 | int | test.cpp:18:12:18:12 | p | false |
+| test.cpp:20:10:20:10 | q | file://:0:0:0:0 | int | test.cpp:18:12:18:12 | p | false |
+| test.cpp:26:18:26:18 | p | file://:0:0:0:0 | int | test.cpp:25:13:25:13 | x | true |
+| test.cpp:31:10:31:10 | x | file://:0:0:0:0 | int | test.cpp:31:10:31:10 | x | true |
+| test.cpp:32:10:32:12 | ... + ... | file://:0:0:0:0 | int | test.cpp:32:10:32:10 | x | true |
+| test.cpp:33:10:33:10 | x | file://:0:0:0:0 | int | test.cpp:33:10:33:10 | x | true |
+| test.cpp:39:10:39:10 | p | file://:0:0:0:0 | int | test.cpp:38:12:38:12 | x | true |
+| test.cpp:40:10:40:12 | ... - ... | file://:0:0:0:0 | int | test.cpp:38:12:38:12 | x | true |
+| test.cpp:41:10:41:10 | p | file://:0:0:0:0 | int | test.cpp:38:12:38:12 | x | true |
+| test.cpp:47:10:47:10 | p | file://:0:0:0:0 | int | test.cpp:46:13:46:13 | x | true |
+| test.cpp:48:10:48:10 | p | file://:0:0:0:0 | int | test.cpp:46:13:46:13 | x | true |
+| test.cpp:54:10:54:10 | p | file://:0:0:0:0 | int | test.cpp:53:13:53:13 | x | true |
+| test.cpp:59:10:59:10 | q | file://:0:0:0:0 | int | test.cpp:58:12:58:12 | p | false |
+| test.cpp:60:10:60:12 | ... + ... | file://:0:0:0:0 | int | test.cpp:58:12:58:12 | p | false |
+| test.cpp:61:10:61:10 | q | file://:0:0:0:0 | int | test.cpp:58:12:58:12 | p | false |
+| test.cpp:66:18:66:18 | x | file://:0:0:0:0 | int | test.cpp:66:18:66:18 | x | true |
+| test.cpp:67:18:67:20 | ... - ... | file://:0:0:0:0 | int | test.cpp:67:18:67:18 | x | true |
+| test.cpp:78:10:78:20 | & ... | file://:0:0:0:0 | int | test.cpp:78:11:78:11 | x | true |
+| test.cpp:79:10:79:20 | & ... | file://:0:0:0:0 | int | test.cpp:79:11:79:11 | x | true |
+| test.cpp:82:10:82:25 | & ... | file://:0:0:0:0 | int | test.cpp:81:24:81:24 | x | true |
+| test.cpp:83:10:83:25 | & ... | file://:0:0:0:0 | int | test.cpp:81:24:81:24 | x | true |
+| test.cpp:87:10:87:17 | & ... | file://:0:0:0:0 | int | test.cpp:87:11:87:11 | x | false |
+| test.cpp:88:10:88:17 | & ... | file://:0:0:0:0 | int | test.cpp:88:11:88:11 | x | false |
+| test.cpp:93:18:93:21 | access to array | file://:0:0:0:0 | int[5] | test.cpp:93:18:93:18 | x | true |
+| test.cpp:98:10:98:10 | x | file://:0:0:0:0 | int[4][5] | test.cpp:98:10:98:10 | x | true |

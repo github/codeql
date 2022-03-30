@@ -1,0 +1,52 @@
+name: Run QL for QL Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ql/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "ql/**"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  qltest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Find codeql
+        id: find-codeql
+        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
+        with:
+          languages: javascript # does not matter
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ql/target
+          key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
+      - name: Build extractor
+        run: |
+          cd ql;
+          codeqlpath=$(dirname ${{ steps.find-codeql.outputs.codeql-path }});
+          env "PATH=$PATH:$codeqlpath" ./create-extractor-pack.sh
+      - name: Run QL tests
+        run: |
+          "${CODEQL}" test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}/ql/extractor-pack" --consistency-queries ql/ql/consistency-queries ql/ql/test
+        env:
+          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
+      - name: Check QL formatting
+        run: |
+          find ql/ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 "${CODEQL}" query format --check-only
+        env:
+          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
+      - name: Check QL compilation
+        run: |
+          "${CODEQL}" query compile --check-only --threads=4 --warnings=error --search-path "${{ github.workspace }}/ql/extractor-pack" "ql/ql/src" "ql/ql/examples"
+        env:
+          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}

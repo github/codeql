@@ -1,0 +1,14 @@
+| a.c:18:3:18:25 | call to myMultiplyDefinedPrintf | Format expects 1 arguments but given 2 |
+| b.c:15:3:15:25 | call to myMultiplyDefinedPrintf | Format expects 1 arguments but given 2 |
+| c.c:7:3:7:25 | call to myMultiplyDefinedPrintf | Format expects 1 arguments but given 2 |
+| custom_printf.cpp:31:5:31:12 | call to myPrintf | Format expects 2 arguments but given 3 |
+| macros.cpp:12:2:12:31 | call to printf | Format expects 2 arguments but given 3 |
+| macros.cpp:16:2:16:30 | call to printf | Format expects 2 arguments but given 3 |
+| test.c:7:2:7:7 | call to printf | Format expects 0 arguments but given 1 |
+| test.c:21:2:21:7 | call to printf | Format expects 2 arguments but given 3 |
+| test.c:27:3:27:8 | call to printf | Format expects 2 arguments but given 3 |
+| test.c:31:3:31:8 | call to printf | Format expects 1 arguments but given 3 |
+| test.c:32:3:32:8 | call to printf | Format expects 1 arguments but given 2 |
+| test.c:39:3:39:8 | call to printf | Format expects 2 arguments but given 5 |
+| test.c:40:3:40:8 | call to printf | Format expects 2 arguments but given 4 |
+| test.c:41:3:41:8 | call to printf | Format expects 2 arguments but given 3 |

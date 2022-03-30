@@ -1,0 +1,4 @@
+| main.cpp:3:1:3:20 | #include "guarded.h" | guarded.h:0:0:0:0 | guarded.h |
+| main.cpp:4:1:4:20 | #include "guarded.h" | guarded.h:0:0:0:0 | guarded.h |
+| main.cpp:5:1:5:22 | #include "unguarded.h" | unguarded.h:0:0:0:0 | unguarded.h |
+| main.cpp:6:1:6:22 | #include "unguarded.h" | unguarded.h:0:0:0:0 | unguarded.h |

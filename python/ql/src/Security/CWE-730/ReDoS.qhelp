@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+
+<qhelp>
+
+	<include src="ReDoSIntroduction.inc.qhelp" />
+
+	<example>
+		<p>
+			Consider this regular expression:
+		</p>
+		<sample language="python">
+			^_(__|.)+_$
+		</sample>
+		<p>
+			Its sub-expression <code>"(__|.)+?"</code> can match the string <code>"__"</code> either by the
+			first alternative <code>"__"</code> to the left of the <code>"|"</code> operator, or by two
+			repetitions of the second alternative <code>"."</code> to the right. Thus, a string consisting
+			of an odd number of underscores followed by some other character will cause the regular
+			expression engine to run for an exponential amount of time before rejecting the input.
+		</p>
+		<p>
+			This problem can be avoided by rewriting the regular expression to remove the ambiguity between
+			the two branches of the alternative inside the repetition:
+		</p>
+		<sample language="python">
+			^_(__|[^_])+_$
+		</sample>
+	</example>
+
+	<include src="ReDoSReferences.inc.qhelp"/>
+
+</qhelp>

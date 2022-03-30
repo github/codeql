@@ -1,0 +1,18 @@
+| test.cs:22:12:22:12 | Store: access to parameter x | test.cs:16:24:16:24 | InitializeParameter: x | 0 | false | NoReason | file://:0:0:0:0 | :0:0:0:0 |
+| test.cs:22:12:22:12 | Store: access to parameter x | test.cs:16:31:16:31 | InitializeParameter: y | 0 | false | CompareLT: ... < ... | test.cs:18:9:18:13 | test.cs:18:9:18:13 |
+| test.cs:22:12:22:12 | Store: access to parameter x | test.cs:16:31:16:31 | InitializeParameter: y | 0 | false | NoReason | file://:0:0:0:0 | :0:0:0:0 |
+| test.cs:36:12:36:12 | Store: access to parameter x | test.cs:26:24:26:24 | InitializeParameter: x | -2 | false | NoReason | file://:0:0:0:0 | :0:0:0:0 |
+| test.cs:36:12:36:12 | Store: access to parameter x | test.cs:26:31:26:31 | InitializeParameter: y | -2 | false | CompareLT: ... < ... | test.cs:28:9:28:13 | test.cs:28:9:28:13 |
+| test.cs:45:12:45:12 | Load: access to local variable i | file://:0:0:0:0 | 0 | 0 | false | NoReason | file://:0:0:0:0 | :0:0:0:0 |
+| test.cs:45:12:45:12 | Load: access to local variable i | test.cs:40:25:40:25 | InitializeParameter: x | -1 | true | CompareLT: ... < ... | test.cs:43:20:43:24 | test.cs:43:20:43:24 |
+| test.cs:49:12:49:12 | Load: access to local variable i | file://:0:0:0:0 | 0 | 1 | false | CompareGT: ... > ... | test.cs:47:20:47:24 | test.cs:47:20:47:24 |
+| test.cs:49:12:49:12 | Load: access to local variable i | test.cs:40:25:40:25 | InitializeParameter: x | 0 | true | NoReason | file://:0:0:0:0 | :0:0:0:0 |
+| test.cs:49:12:49:12 | Load: access to local variable i | test.cs:43:20:43:20 | Phi: access to local variable i | 0 | true | CompareLT: ... < ... | test.cs:43:20:43:24 | test.cs:43:20:43:24 |
+| test.cs:53:12:53:12 | Load: access to local variable i | file://:0:0:0:0 | 0 | 0 | false | NoReason | file://:0:0:0:0 | :0:0:0:0 |
+| test.cs:53:12:53:12 | Load: access to local variable i | test.cs:40:25:40:25 | InitializeParameter: x | 1 | true | CompareLT: ... < ... | test.cs:51:20:51:28 | test.cs:51:20:51:28 |
+| test.cs:53:12:53:12 | Load: access to local variable i | test.cs:43:20:43:20 | Phi: access to local variable i | 1 | true | CompareLT: ... < ... | test.cs:51:20:51:28 | test.cs:51:20:51:28 |
+| test.cs:53:12:53:12 | Load: access to local variable i | test.cs:47:20:47:20 | Phi: access to local variable i | 0 | false | CompareGT: ... > ... | test.cs:47:20:47:24 | test.cs:47:20:47:24 |
+| test.cs:62:13:62:17 | Load: access to parameter begin | test.cs:58:33:58:37 | InitializeParameter: begin | 0 | false | NoReason | file://:0:0:0:0 | :0:0:0:0 |
+| test.cs:74:14:74:14 | Load: access to parameter x | test.cs:68:32:68:32 | InitializeParameter: y | -1 | true | CompareLT: ... < ... | test.cs:72:11:72:15 | test.cs:72:11:72:15 |
+| test.cs:74:14:74:14 | Load: access to parameter x | test.cs:68:39:68:39 | InitializeParameter: z | -2 | true | CompareLT: ... < ... | test.cs:72:11:72:15 | test.cs:72:11:72:15 |
+| test.cs:81:14:81:14 | Load: access to parameter x | test.cs:68:32:68:32 | InitializeParameter: y | -1 | true | CompareLT: ... < ... | test.cs:77:9:77:13 | test.cs:77:9:77:13 |

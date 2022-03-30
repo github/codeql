@@ -1,0 +1,44 @@
+cleartextPasswordExpr
+| tst.js:1:1:1:8 | password |
+| tst.js:2:1:2:8 | PassWord |
+| tst.js:3:1:3:21 | myPassw ... eartext |
+| tst.js:4:1:4:10 | x.password |
+| tst.js:5:1:5:11 | getPassword |
+| tst.js:5:1:5:13 | getPassword() |
+| tst.js:6:1:6:13 | x.getPassword |
+| tst.js:6:1:6:15 | x.getPassword() |
+| tst.js:7:1:7:15 | get("password") |
+| tst.js:8:1:8:17 | x.get("password") |
+dummyPasswords
+|  | true |
+| XXXXXXXX | true |
+| abcdefgh | true |
+| admin | true |
+| change_me | true |
+| example_password | true |
+| hgfedcba | false |
+| insert-auth-from-gui | true |
+| root | true |
+| sOKY6ccizpmvF*32so%Q | false |
+processTermination
+| tst.js:18:1:18:3 | e() |
+| tst.js:19:1:19:6 | exit() |
+| tst.js:23:1:23:25 | require ... .exit() |
+| tst.js:24:1:24:21 | global. ... .exit() |
+sensitiveAction
+| tst.js:18:1:18:3 | e() |
+| tst.js:19:1:19:6 | exit() |
+| tst.js:23:1:23:25 | require ... .exit() |
+| tst.js:24:1:24:21 | global. ... .exit() |
+sensitiveExpr
+| tst.js:1:1:1:8 | password |
+| tst.js:2:1:2:8 | PassWord |
+| tst.js:3:1:3:21 | myPassw ... eartext |
+| tst.js:4:1:4:10 | x.password |
+| tst.js:5:1:5:11 | getPassword |
+| tst.js:5:1:5:13 | getPassword() |
+| tst.js:6:1:6:13 | x.getPassword |
+| tst.js:6:1:6:15 | x.getPassword() |
+| tst.js:7:1:7:15 | get("password") |
+| tst.js:8:1:8:17 | x.get("password") |
+| tst.js:21:1:21:6 | secret |

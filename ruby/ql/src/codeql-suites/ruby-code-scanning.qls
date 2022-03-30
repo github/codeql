@@ -1,0 +1,5 @@
+- description: Standard Code Scanning queries for Ruby
+- queries: .
+- apply: code-scanning-selectors.yml
+  from: codeql/suite-helpers
+

@@ -1,0 +1,10 @@
+global_stmt
+| GlobalStmt.cs:9:1:9:23 | ...; |
+| GlobalStmt.cs:10:1:10:23 | ...; |
+| GlobalStmt.cs:11:1:11:4 | ...; |
+| GlobalStmt.cs:13:1:15:1 | M(...) |
+globalBlock
+| GlobalStmt.cs:5:1:24:0 | {...} | GlobalStmt.cs:5:1:24:0 | <Main>$ | GlobalStmt.cs:1:1:1:0 | args | GlobalStmt.cs:5:1:24:0 | Program |
+methods
+| GlobalStmt.cs:5:1:24:0 | <Main>$ | entry |
+| GlobalStmt.cs:19:8:19:9 | M1 | non-entry |

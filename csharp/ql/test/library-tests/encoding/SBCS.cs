@@ -1,0 +1,4 @@
+class SBCS
+{
+    string sbcs = "’";
+}

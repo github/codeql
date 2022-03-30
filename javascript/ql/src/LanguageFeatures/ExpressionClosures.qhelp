@@ -1,0 +1,74 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Non-standard language extensions such as expression closures or <code>let</code> expressions should
+be avoided, since they make code harder to read or reuse.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Use standard language features instead. For instance, expression closures can be
+replaced by ECMAScript 2015 arrow functions, or alternatively by plain functions;
+<code>let</code> statements and expressions can be replaced by ECMAScript 2015
+<code>let</code> declarations; and <code>for each ... in</code> statements
+can be replaced by ECMAScript 2015 <code>for ... of</code> statements.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example uses an expression closure with <code>map</code>:
+</p>
+
+<sample src="examples/ExpressionClosures.js" />
+
+<p>
+The equivalent code using an ECMAScript 2015 arrow function is as follows:
+</p>
+
+<sample src="examples/ExpressionClosuresGood.js" />
+
+<p>
+On ECMAScript 2015 platforms, a plain function can be used instead:
+</p>
+
+<sample src="examples/ExpressionClosuresGood2.js" />
+
+<p>
+As another example, consider this use of a <code>let</code> statement:
+</p>
+
+<sample src="examples/LetStatement.js"/>
+
+<p>
+It can easily be replaced by a block-scoped <code>let</code> declaration:
+</p>
+
+<sample src="examples/LetStatementGood.js"/>
+
+<p>
+Older versions of Firefox support a postfix notation for array comprehensions:
+</p>
+
+<sample src="examples/PostfixComprehension.js"/>
+
+<p>
+This notation should be converted into the semantically equivalent prefix notation
+supported by newer browsers:
+</p>
+
+<sample src="examples/PostfixComprehensionGood.js"/>
+
+</example>
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions">Arrow functions</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Non-standard_let_extensions">Non-standard let extensions</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for_each...in">for each...in</a>.</li>
+</references>
+</qhelp>

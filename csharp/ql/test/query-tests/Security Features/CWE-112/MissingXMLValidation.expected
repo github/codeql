@@ -1,0 +1,30 @@
+edges
+| MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:16:43:16:57 | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:21:43:21:57 | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:27:43:27:57 | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:35:43:35:57 | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:45:43:45:57 | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:16:43:16:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:16:26:16:58 | object creation of type StringReader |
+| MissingXMLValidation.cs:21:43:21:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:21:26:21:58 | object creation of type StringReader |
+| MissingXMLValidation.cs:27:43:27:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:27:26:27:58 | object creation of type StringReader |
+| MissingXMLValidation.cs:35:43:35:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:35:26:35:58 | object creation of type StringReader |
+| MissingXMLValidation.cs:45:43:45:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader |
+nodes
+| MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| MissingXMLValidation.cs:16:26:16:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:16:43:16:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:21:26:21:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:21:43:21:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:27:26:27:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:27:43:27:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:35:26:35:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:35:43:35:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:45:43:45:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
+subpaths
+#select
+| MissingXMLValidation.cs:16:26:16:58 | object creation of type StringReader | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:16:26:16:58 | object creation of type StringReader | $@ flows to here and is processed as XML without validation because there is no 'XmlReaderSettings' instance specifying schema validation. | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString | User-provided value |
+| MissingXMLValidation.cs:21:26:21:58 | object creation of type StringReader | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:21:26:21:58 | object creation of type StringReader | $@ flows to here and is processed as XML without validation because the 'XmlReaderSettings' instance does not specify the 'ValidationType' as 'Schema'. | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString | User-provided value |
+| MissingXMLValidation.cs:27:26:27:58 | object creation of type StringReader | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:27:26:27:58 | object creation of type StringReader | $@ flows to here and is processed as XML without validation because the 'XmlReaderSettings' instance does not specify the 'ValidationType' as 'Schema'. | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString | User-provided value |
+| MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | $@ flows to here and is processed as XML without validation because the 'XmlReaderSettings' instance specifies 'ProcessInlineSchema'. | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString | User-provided value |
+| MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | $@ flows to here and is processed as XML without validation because the 'XmlReaderSettings' instance specifies 'ProcessSchemaLocation'. | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString | User-provided value |

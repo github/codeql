@@ -1,0 +1,10 @@
+singletonClasses
+| classes.rb:41:1:52:3 | class << ... | SingletonClass | classes.rb:41:10:41:10 | x |
+exprsInSingletonClasses
+| classes.rb:41:1:52:3 | class << ... | 0 | classes.rb:42:3:44:5 | length | Method |
+| classes.rb:41:1:52:3 | class << ... | 1 | classes.rb:46:3:48:5 | wibble | Method |
+| classes.rb:41:1:52:3 | class << ... | 2 | classes.rb:50:3:50:21 | call to another_method_call | MethodCall |
+| classes.rb:41:1:52:3 | class << ... | 3 | classes.rb:51:3:51:20 | ... = ... | AssignExpr |
+methodsInSingletonClasses
+| classes.rb:41:1:52:3 | class << ... | classes.rb:42:3:44:5 | length |
+| classes.rb:41:1:52:3 | class << ... | classes.rb:46:3:48:5 | wibble |

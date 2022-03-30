@@ -1,0 +1,113 @@
+csharp73.cs:
+#    3| [Class] StackAllocs
+#    5|   5: [Method] Fn
+#    5|     -1: [TypeMention] Void
+#    6|     4: [BlockStmt] {...}
+#    7|       0: [LocalVariableDeclStmt] ... ...;
+#    7|         0: [LocalVariableDeclAndInitExpr] Char* arr1 = ...
+#    7|           -1: [TypeMention] char*
+#    7|           0: [LocalVariableAccess] access to local variable arr1
+#    7|           1: [Stackalloc] array creation of type Char*
+#    7|             -2: [TypeMention] char*
+#    7|               1: [TypeMention] char
+#    7|             -1: [ArrayInitializer] { ..., ... }
+#    7|               0: [CharLiteral] x
+#    7|               1: [CharLiteral] y
+#    8|       1: [LocalVariableDeclStmt] ... ...;
+#    8|         0: [LocalVariableDeclAndInitExpr] Char* arr2 = ...
+#    8|           -1: [TypeMention] char*
+#    8|           0: [LocalVariableAccess] access to local variable arr2
+#    8|           1: [Stackalloc] array creation of type Char*
+#    8|             -2: [TypeMention] char*
+#    8|               1: [TypeMention] char
+#    8|             -1: [ArrayInitializer] { ..., ... }
+#    8|               0: [CharLiteral] x
+#    8|             0: [IntLiteral] 1
+#    9|       2: [LocalVariableDeclStmt] ... ...;
+#    9|         0: [LocalVariableDeclAndInitExpr] Char[] arr3 = ...
+#    9|           -1: [TypeMention] Char[]
+#    9|           0: [LocalVariableAccess] access to local variable arr3
+#    9|           1: [ArrayCreation] array creation of type Char[]
+#    9|             -2: [TypeMention] Char[]
+#    9|               1: [TypeMention] char
+#    9|             -1: [ArrayInitializer] { ..., ... }
+#    9|               0: [CharLiteral] x
+#   10|       3: [LocalVariableDeclStmt] ... ...;
+#   10|         0: [LocalVariableDeclAndInitExpr] Char* arr4 = ...
+#   10|           -1: [TypeMention] char*
+#   10|           0: [LocalVariableAccess] access to local variable arr4
+#   10|           1: [Stackalloc] array creation of type Char*
+#   10|             -1: [TypeMention] char*
+#   10|               1: [TypeMention] char
+#   10|             0: [IntLiteral] 10
+#   11|       4: [LocalVariableDeclStmt] ... ...;
+#   11|         0: [LocalVariableDeclAndInitExpr] Char[] arr5 = ...
+#   11|           -1: [TypeMention] Char[]
+#   11|           0: [LocalVariableAccess] access to local variable arr5
+#   11|           1: [ArrayCreation] array creation of type Char[]
+#   11|             -1: [TypeMention] Char[]
+#   11|               1: [TypeMention] char
+#   11|             0: [IntLiteral] 10
+#   12|       5: [LocalVariableDeclStmt] ... ...;
+#   12|         0: [LocalVariableDeclAndInitExpr] Int32* arr6 = ...
+#   12|           -1: [TypeMention] int*
+#   12|           0: [LocalVariableAccess] access to local variable arr6
+#   12|           1: [Stackalloc] array creation of type Int32*
+#   12|             -1: [ArrayInitializer] { ..., ... }
+#   12|               0: [IntLiteral] 1
+#   12|               1: [IntLiteral] 2
+#   12|               2: [IntLiteral] 3
+#   16| [Class] PinnedReference
+#   18|   5: [Method] F
+#   18|     -1: [TypeMention] Void
+#   19|     4: [BlockStmt] {...}
+#   20|       0: [LocalVariableDeclStmt] ... ...;
+#   20|         0: [LocalVariableDeclAndInitExpr] Span<Byte> buffer = ...
+#   20|           -1: [TypeMention] Span<byte>
+#   20|             1: [TypeMention] byte
+#   20|           0: [LocalVariableAccess] access to local variable buffer
+#   20|           1: [Stackalloc] array creation of type Span<Byte>
+#   20|             -1: [TypeMention] Span<byte>
+#   20|               1: [TypeMention] byte
+#   20|             0: [IntLiteral] 10
+#   22|       1: [LocalVariableDeclStmt] ... ...;
+#   22|         0: [LocalVariableDeclAndInitExpr] Span<Int32> t = ...
+#   22|           -1: [TypeMention] Span<int>
+#   22|             1: [TypeMention] int
+#   22|           0: [LocalVariableAccess] access to local variable t
+#   22|           1: [OperatorCall] call to operator implicit conversion
+#   22|             0: [ArrayCreation] array creation of type Int32[]
+#   22|               -1: [TypeMention] Int32[]
+#   22|                 1: [TypeMention] int
+#   22|               0: [IntLiteral] 10
+#   25|       2: [BlockStmt] {...}
+#   30| [Class] UnmanagedConstraint<>
+#-----|   1: (Type parameters)
+#   30|     0: [TypeParameter] T
+#   34| [Class] EnumConstraint<>
+#-----|   1: (Type parameters)
+#   34|     0: [TypeParameter] T
+#   38| [Class] DelegateConstraint<>
+#-----|   1: (Type parameters)
+#   38|     0: [TypeParameter] T
+#   42| [Class] ExpressionVariables
+#   44|   4: [InstanceConstructor] ExpressionVariables
+#-----|     2: (Parameters)
+#   44|       0: [Parameter] x
+#   44|         -1: [TypeMention] int
+#   45|     4: [BlockStmt] {...}
+#   46|       0: [ExprStmt] ...;
+#   46|         0: [AssignExpr] ... = ...
+#   46|           0: [ParameterAccess] access to parameter x
+#   46|           1: [IntLiteral] 5
+#   49|   5: [InstanceConstructor] ExpressionVariables
+#   49|     3: [ConstructorInitializer] call to constructor ExpressionVariables
+#   49|       0: [LocalVariableAccess,LocalVariableDeclExpr] Int32 x
+#   50|     4: [BlockStmt] {...}
+#   51|       0: [ExprStmt] ...;
+#   51|         0: [MethodCall] call to method WriteLine
+#   51|           -1: [TypeAccess] access to type Console
+#   51|             0: [TypeMention] Console
+#   51|           0: [InterpolatedStringExpr] $"..."
+#   51|             0: [StringLiteral] "x is "
+#   51|             1: [LocalVariableAccess] access to local variable x

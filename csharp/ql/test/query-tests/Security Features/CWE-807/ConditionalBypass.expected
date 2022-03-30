@@ -1,0 +1,53 @@
+edges
+| ConditionalBypass.cs:12:26:12:48 | access to property QueryString : NameValueCollection | ConditionalBypass.cs:16:13:16:30 | ... == ... |
+| ConditionalBypass.cs:19:34:19:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:22:13:22:23 | access to local variable adminCookie : HttpCookie |
+| ConditionalBypass.cs:19:34:19:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:27:13:27:23 | access to local variable adminCookie : HttpCookie |
+| ConditionalBypass.cs:22:13:22:23 | access to local variable adminCookie : HttpCookie | ConditionalBypass.cs:22:13:22:29 | access to property Value : String |
+| ConditionalBypass.cs:22:13:22:29 | access to property Value : String | ConditionalBypass.cs:22:13:22:45 | call to method Equals |
+| ConditionalBypass.cs:27:13:27:23 | access to local variable adminCookie : HttpCookie | ConditionalBypass.cs:27:13:27:29 | access to property Value : String |
+| ConditionalBypass.cs:27:13:27:29 | access to property Value : String | ConditionalBypass.cs:27:13:27:40 | ... == ... |
+| ConditionalBypass.cs:42:32:42:66 | call to method GetHostByAddress : IPHostEntry | ConditionalBypass.cs:44:13:44:20 | access to local variable hostInfo : IPHostEntry |
+| ConditionalBypass.cs:42:32:42:66 | call to method GetHostByAddress : IPHostEntry | ConditionalBypass.cs:49:13:49:20 | access to local variable hostInfo : IPHostEntry |
+| ConditionalBypass.cs:44:13:44:20 | access to local variable hostInfo : IPHostEntry | ConditionalBypass.cs:44:13:44:29 | access to property HostName : String |
+| ConditionalBypass.cs:44:13:44:29 | access to property HostName : String | ConditionalBypass.cs:44:13:44:46 | ... == ... |
+| ConditionalBypass.cs:49:13:49:20 | access to local variable hostInfo : IPHostEntry | ConditionalBypass.cs:49:13:49:29 | access to property HostName |
+| ConditionalBypass.cs:70:34:70:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:72:13:72:23 | access to local variable adminCookie : HttpCookie |
+| ConditionalBypass.cs:72:13:72:23 | access to local variable adminCookie : HttpCookie | ConditionalBypass.cs:72:13:72:29 | access to property Value : String |
+| ConditionalBypass.cs:72:13:72:29 | access to property Value : String | ConditionalBypass.cs:72:13:72:40 | ... == ... |
+| ConditionalBypass.cs:83:34:83:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:84:13:84:23 | access to local variable adminCookie : HttpCookie |
+| ConditionalBypass.cs:84:13:84:23 | access to local variable adminCookie : HttpCookie | ConditionalBypass.cs:84:13:84:29 | access to property Value : String |
+| ConditionalBypass.cs:84:13:84:29 | access to property Value : String | ConditionalBypass.cs:84:13:84:40 | ... == ... |
+nodes
+| ConditionalBypass.cs:12:26:12:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| ConditionalBypass.cs:16:13:16:30 | ... == ... | semmle.label | ... == ... |
+| ConditionalBypass.cs:19:34:19:52 | access to property Cookies : HttpCookieCollection | semmle.label | access to property Cookies : HttpCookieCollection |
+| ConditionalBypass.cs:22:13:22:23 | access to local variable adminCookie : HttpCookie | semmle.label | access to local variable adminCookie : HttpCookie |
+| ConditionalBypass.cs:22:13:22:29 | access to property Value : String | semmle.label | access to property Value : String |
+| ConditionalBypass.cs:22:13:22:45 | call to method Equals | semmle.label | call to method Equals |
+| ConditionalBypass.cs:27:13:27:23 | access to local variable adminCookie : HttpCookie | semmle.label | access to local variable adminCookie : HttpCookie |
+| ConditionalBypass.cs:27:13:27:29 | access to property Value : String | semmle.label | access to property Value : String |
+| ConditionalBypass.cs:27:13:27:40 | ... == ... | semmle.label | ... == ... |
+| ConditionalBypass.cs:42:32:42:66 | call to method GetHostByAddress : IPHostEntry | semmle.label | call to method GetHostByAddress : IPHostEntry |
+| ConditionalBypass.cs:44:13:44:20 | access to local variable hostInfo : IPHostEntry | semmle.label | access to local variable hostInfo : IPHostEntry |
+| ConditionalBypass.cs:44:13:44:29 | access to property HostName : String | semmle.label | access to property HostName : String |
+| ConditionalBypass.cs:44:13:44:46 | ... == ... | semmle.label | ... == ... |
+| ConditionalBypass.cs:49:13:49:20 | access to local variable hostInfo : IPHostEntry | semmle.label | access to local variable hostInfo : IPHostEntry |
+| ConditionalBypass.cs:49:13:49:29 | access to property HostName | semmle.label | access to property HostName |
+| ConditionalBypass.cs:70:34:70:52 | access to property Cookies : HttpCookieCollection | semmle.label | access to property Cookies : HttpCookieCollection |
+| ConditionalBypass.cs:72:13:72:23 | access to local variable adminCookie : HttpCookie | semmle.label | access to local variable adminCookie : HttpCookie |
+| ConditionalBypass.cs:72:13:72:29 | access to property Value : String | semmle.label | access to property Value : String |
+| ConditionalBypass.cs:72:13:72:40 | ... == ... | semmle.label | ... == ... |
+| ConditionalBypass.cs:83:34:83:52 | access to property Cookies : HttpCookieCollection | semmle.label | access to property Cookies : HttpCookieCollection |
+| ConditionalBypass.cs:84:13:84:23 | access to local variable adminCookie : HttpCookie | semmle.label | access to local variable adminCookie : HttpCookie |
+| ConditionalBypass.cs:84:13:84:29 | access to property Value : String | semmle.label | access to property Value : String |
+| ConditionalBypass.cs:84:13:84:40 | ... == ... | semmle.label | ... == ... |
+subpaths
+#select
+| ConditionalBypass.cs:17:13:17:33 | call to method login | ConditionalBypass.cs:12:26:12:48 | access to property QueryString : NameValueCollection | ConditionalBypass.cs:16:13:16:30 | ... == ... | Sensitive method may not be executed depending on $@, which flows from $@. | ConditionalBypass.cs:16:13:16:30 | ... == ... | this condition | ConditionalBypass.cs:12:26:12:48 | access to property QueryString | user input |
+| ConditionalBypass.cs:23:13:23:33 | call to method login | ConditionalBypass.cs:19:34:19:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:22:13:22:45 | call to method Equals | Sensitive method may not be executed depending on $@, which flows from $@. | ConditionalBypass.cs:22:13:22:45 | call to method Equals | this condition | ConditionalBypass.cs:19:34:19:52 | access to property Cookies | user input |
+| ConditionalBypass.cs:29:13:29:33 | call to method login | ConditionalBypass.cs:19:34:19:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:27:13:27:40 | ... == ... | Sensitive method may not be executed depending on $@, which flows from $@. | ConditionalBypass.cs:27:13:27:40 | ... == ... | this condition | ConditionalBypass.cs:19:34:19:52 | access to property Cookies | user input |
+| ConditionalBypass.cs:33:13:33:39 | call to method reCheckAuth | ConditionalBypass.cs:19:34:19:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:27:13:27:40 | ... == ... | Sensitive method may not be executed depending on $@, which flows from $@. | ConditionalBypass.cs:27:13:27:40 | ... == ... | this condition | ConditionalBypass.cs:19:34:19:52 | access to property Cookies | user input |
+| ConditionalBypass.cs:46:13:46:33 | call to method login | ConditionalBypass.cs:42:32:42:66 | call to method GetHostByAddress : IPHostEntry | ConditionalBypass.cs:44:13:44:46 | ... == ... | Sensitive method may not be executed depending on $@, which flows from $@. | ConditionalBypass.cs:44:13:44:46 | ... == ... | this condition | ConditionalBypass.cs:42:32:42:66 | call to method GetHostByAddress | user input |
+| ConditionalBypass.cs:51:13:51:33 | call to method login | ConditionalBypass.cs:42:32:42:66 | call to method GetHostByAddress : IPHostEntry | ConditionalBypass.cs:49:13:49:29 | access to property HostName | Sensitive method may not be executed depending on $@, which flows from $@. | ConditionalBypass.cs:49:13:49:29 | access to property HostName | this condition | ConditionalBypass.cs:42:32:42:66 | call to method GetHostByAddress | user input |
+| ConditionalBypass.cs:73:13:73:33 | call to method login | ConditionalBypass.cs:70:34:70:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:72:13:72:40 | ... == ... | Sensitive method may not be executed depending on $@, which flows from $@. | ConditionalBypass.cs:72:13:72:40 | ... == ... | this condition | ConditionalBypass.cs:70:34:70:52 | access to property Cookies | user input |
+| ConditionalBypass.cs:85:13:85:33 | call to method login | ConditionalBypass.cs:83:34:83:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:84:13:84:40 | ... == ... | Sensitive method may not be executed depending on $@, which flows from $@. | ConditionalBypass.cs:84:13:84:40 | ... == ... | this condition | ConditionalBypass.cs:83:34:83:52 | access to property Cookies | user input |

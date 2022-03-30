@@ -1,0 +1,2 @@
+| typedefs.cpp:6:6:6:7 | f1 | typedefs.cpp:8:15:8:18 | TYPE | CTypedefType, LocalTypedefType |
+| typedefs.cpp:6:6:6:7 | f1 | typedefs.cpp:9:9:9:9 | D | DirectAccessHolder, LocalClass, MetricClass, StructLikeClass |

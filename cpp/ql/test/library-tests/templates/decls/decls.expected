@@ -1,0 +1,21 @@
+| decls.cpp:2:19:2:20 | T1 |
+| decls.cpp:2:29:2:29 | C<T1> |
+| decls.cpp:2:29:2:29 | C<T2> |
+| decls.cpp:2:29:2:29 | C<int> |
+| decls.cpp:4:19:4:20 | T2 |
+| decls.cpp:4:28:4:28 | f |
+| decls.cpp:4:30:4:34 | (unnamed parameter 0) |
+| decls.cpp:4:30:4:34 | (unnamed parameter 0) |
+| decls.cpp:6:17:6:17 | f |
+| decls.cpp:8:18:8:18 | (unnamed template parameter) |
+| decls.cpp:8:25:8:25 | g |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | __va_list_tag |
+| file://:0:0:0:0 | auto |
+| file://:0:0:0:0 | fp_offset |
+| file://:0:0:0:0 | gp_offset |
+| file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | overflow_arg_area |
+| file://:0:0:0:0 | reg_save_area |

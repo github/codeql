@@ -1,0 +1,15 @@
+| 4 | ControlFlowNode for Subscript | builtin-class IndexError |
+| 4 | ControlFlowNode for Subscript | builtin-class KeyError |
+| 5 | ControlFlowNode for Attribute | builtin-class AttributeError |
+| 7 | ControlFlowNode for Raise | builtin-class Exception |
+| 19 | ControlFlowNode for Subscript | builtin-class IndexError |
+| 19 | ControlFlowNode for Subscript | builtin-class KeyError |
+| 20 | ControlFlowNode for Attribute | builtin-class AttributeError |
+| 22 | ControlFlowNode for Raise | builtin-class Exception |
+| 30 | ControlFlowNode for Pass | builtin-class Exception |
+| 34 | ControlFlowNode for Subscript | builtin-class IndexError |
+| 34 | ControlFlowNode for Subscript | builtin-class KeyError |
+| 35 | ControlFlowNode for Attribute | builtin-class AttributeError |
+| 37 | ControlFlowNode for Raise | builtin-class Exception |
+| 53 | ControlFlowNode for Attribute() | builtin-class OSError |
+| 54 | ControlFlowNode for Attribute() | builtin-class OSError |

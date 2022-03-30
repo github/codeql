@@ -1,0 +1,10 @@
+| AutoRest.js:1:1:5:3 | /*\\n * C ... ed.\\n */ | Microsoft (R) AutoRest Code Generator |
+| jison-lex.js:1:1:1:34 | /* gene ... .2.1 */ | jison-lex |
+| jison.js:1:1:1:38 | /* pars ... 4.13 */ | jison |
+| jsx-old.js:1:1:1:106 | // gene ... 977102) | JSX |
+| jsx.js:1:1:1:105 | // gene ... 977102) | JSX |
+| opal-test.js:1:1:1:30 | /* Gene ... 10.3 */ | Opal |
+| peg-js.js:2:3:6:5 | /*\\n   * ... /\\n   */ | PEG.js |
+| purs-bundle.js:1:1:1:34 | // Gene ...  0.11.7 | purs |
+| purs.js:1:1:1:35 | // Gene ...  0.11.7 | purs |
+| tst.dart.js:1:1:1:57 | // Gene ... mpiler. | dart2js |

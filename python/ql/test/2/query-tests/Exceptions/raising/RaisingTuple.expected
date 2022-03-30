@@ -1,0 +1,3 @@
+| test.py:8:5:8:12 | Raise | Raising $@ will result in the first element (recursively) being raised and all other elements being discarded. | test.py:7:10:7:29 | Tuple | a tuple |
+| test.py:11:5:11:32 | Raise | Raising $@ will result in the first element (recursively) being raised and all other elements being discarded. | test.py:11:12:11:31 | Tuple | a tuple |
+| test.py:15:5:15:23 | Raise | Raising $@ will result in the first element (recursively) being raised and all other elements being discarded. | test.py:14:10:14:19 | Tuple | a tuple |

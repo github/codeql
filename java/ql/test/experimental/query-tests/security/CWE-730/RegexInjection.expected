@@ -1,0 +1,73 @@
+edges
+| RegexInjection.java:13:22:13:52 | getParameter(...) : String | RegexInjection.java:16:26:16:47 | ... + ... |
+| RegexInjection.java:20:22:20:52 | getParameter(...) : String | RegexInjection.java:23:24:23:30 | pattern |
+| RegexInjection.java:27:22:27:52 | getParameter(...) : String | RegexInjection.java:30:31:30:37 | pattern |
+| RegexInjection.java:34:22:34:52 | getParameter(...) : String | RegexInjection.java:37:29:37:35 | pattern |
+| RegexInjection.java:41:22:41:52 | getParameter(...) : String | RegexInjection.java:44:34:44:40 | pattern |
+| RegexInjection.java:51:22:51:52 | getParameter(...) : String | RegexInjection.java:54:28:54:34 | pattern |
+| RegexInjection.java:58:22:58:52 | getParameter(...) : String | RegexInjection.java:61:28:61:34 | pattern |
+| RegexInjection.java:65:22:65:52 | getParameter(...) : String | RegexInjection.java:68:36:68:42 | pattern : String |
+| RegexInjection.java:68:32:68:43 | foo(...) : String | RegexInjection.java:68:26:68:52 | ... + ... |
+| RegexInjection.java:68:36:68:42 | pattern : String | RegexInjection.java:68:32:68:43 | foo(...) : String |
+| RegexInjection.java:68:36:68:42 | pattern : String | RegexInjection.java:71:14:71:23 | str : String |
+| RegexInjection.java:71:14:71:23 | str : String | RegexInjection.java:72:12:72:14 | str : String |
+| RegexInjection.java:84:22:84:52 | getParameter(...) : String | RegexInjection.java:90:26:90:47 | ... + ... |
+| RegexInjection.java:100:22:100:52 | getParameter(...) : String | RegexInjection.java:103:40:103:46 | pattern |
+| RegexInjection.java:107:22:107:52 | getParameter(...) : String | RegexInjection.java:110:42:110:48 | pattern |
+| RegexInjection.java:114:22:114:52 | getParameter(...) : String | RegexInjection.java:117:44:117:50 | pattern |
+| RegexInjection.java:121:22:121:52 | getParameter(...) : String | RegexInjection.java:124:41:124:47 | pattern |
+| RegexInjection.java:128:22:128:52 | getParameter(...) : String | RegexInjection.java:131:43:131:49 | pattern |
+| RegexInjection.java:143:22:143:52 | getParameter(...) : String | RegexInjection.java:146:45:146:51 | pattern |
+nodes
+| RegexInjection.java:13:22:13:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:16:26:16:47 | ... + ... | semmle.label | ... + ... |
+| RegexInjection.java:20:22:20:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:23:24:23:30 | pattern | semmle.label | pattern |
+| RegexInjection.java:27:22:27:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:30:31:30:37 | pattern | semmle.label | pattern |
+| RegexInjection.java:34:22:34:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:37:29:37:35 | pattern | semmle.label | pattern |
+| RegexInjection.java:41:22:41:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:44:34:44:40 | pattern | semmle.label | pattern |
+| RegexInjection.java:51:22:51:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:54:28:54:34 | pattern | semmle.label | pattern |
+| RegexInjection.java:58:22:58:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:61:28:61:34 | pattern | semmle.label | pattern |
+| RegexInjection.java:65:22:65:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:68:26:68:52 | ... + ... | semmle.label | ... + ... |
+| RegexInjection.java:68:32:68:43 | foo(...) : String | semmle.label | foo(...) : String |
+| RegexInjection.java:68:36:68:42 | pattern : String | semmle.label | pattern : String |
+| RegexInjection.java:71:14:71:23 | str : String | semmle.label | str : String |
+| RegexInjection.java:72:12:72:14 | str : String | semmle.label | str : String |
+| RegexInjection.java:84:22:84:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:90:26:90:47 | ... + ... | semmle.label | ... + ... |
+| RegexInjection.java:100:22:100:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:103:40:103:46 | pattern | semmle.label | pattern |
+| RegexInjection.java:107:22:107:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:110:42:110:48 | pattern | semmle.label | pattern |
+| RegexInjection.java:114:22:114:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:117:44:117:50 | pattern | semmle.label | pattern |
+| RegexInjection.java:121:22:121:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:124:41:124:47 | pattern | semmle.label | pattern |
+| RegexInjection.java:128:22:128:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:131:43:131:49 | pattern | semmle.label | pattern |
+| RegexInjection.java:143:22:143:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjection.java:146:45:146:51 | pattern | semmle.label | pattern |
+subpaths
+| RegexInjection.java:68:36:68:42 | pattern : String | RegexInjection.java:71:14:71:23 | str : String | RegexInjection.java:72:12:72:14 | str : String | RegexInjection.java:68:32:68:43 | foo(...) : String |
+#select
+| RegexInjection.java:16:26:16:47 | ... + ... | RegexInjection.java:13:22:13:52 | getParameter(...) : String | RegexInjection.java:16:26:16:47 | ... + ... | $@ is user controlled. | RegexInjection.java:13:22:13:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:23:24:23:30 | pattern | RegexInjection.java:20:22:20:52 | getParameter(...) : String | RegexInjection.java:23:24:23:30 | pattern | $@ is user controlled. | RegexInjection.java:20:22:20:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:30:31:30:37 | pattern | RegexInjection.java:27:22:27:52 | getParameter(...) : String | RegexInjection.java:30:31:30:37 | pattern | $@ is user controlled. | RegexInjection.java:27:22:27:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:37:29:37:35 | pattern | RegexInjection.java:34:22:34:52 | getParameter(...) : String | RegexInjection.java:37:29:37:35 | pattern | $@ is user controlled. | RegexInjection.java:34:22:34:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:44:34:44:40 | pattern | RegexInjection.java:41:22:41:52 | getParameter(...) : String | RegexInjection.java:44:34:44:40 | pattern | $@ is user controlled. | RegexInjection.java:41:22:41:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:54:28:54:34 | pattern | RegexInjection.java:51:22:51:52 | getParameter(...) : String | RegexInjection.java:54:28:54:34 | pattern | $@ is user controlled. | RegexInjection.java:51:22:51:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:61:28:61:34 | pattern | RegexInjection.java:58:22:58:52 | getParameter(...) : String | RegexInjection.java:61:28:61:34 | pattern | $@ is user controlled. | RegexInjection.java:58:22:58:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:68:26:68:52 | ... + ... | RegexInjection.java:65:22:65:52 | getParameter(...) : String | RegexInjection.java:68:26:68:52 | ... + ... | $@ is user controlled. | RegexInjection.java:65:22:65:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:90:26:90:47 | ... + ... | RegexInjection.java:84:22:84:52 | getParameter(...) : String | RegexInjection.java:90:26:90:47 | ... + ... | $@ is user controlled. | RegexInjection.java:84:22:84:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:103:40:103:46 | pattern | RegexInjection.java:100:22:100:52 | getParameter(...) : String | RegexInjection.java:103:40:103:46 | pattern | $@ is user controlled. | RegexInjection.java:100:22:100:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:110:42:110:48 | pattern | RegexInjection.java:107:22:107:52 | getParameter(...) : String | RegexInjection.java:110:42:110:48 | pattern | $@ is user controlled. | RegexInjection.java:107:22:107:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:117:44:117:50 | pattern | RegexInjection.java:114:22:114:52 | getParameter(...) : String | RegexInjection.java:117:44:117:50 | pattern | $@ is user controlled. | RegexInjection.java:114:22:114:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:124:41:124:47 | pattern | RegexInjection.java:121:22:121:52 | getParameter(...) : String | RegexInjection.java:124:41:124:47 | pattern | $@ is user controlled. | RegexInjection.java:121:22:121:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:131:43:131:49 | pattern | RegexInjection.java:128:22:128:52 | getParameter(...) : String | RegexInjection.java:131:43:131:49 | pattern | $@ is user controlled. | RegexInjection.java:128:22:128:52 | getParameter(...) | This regular expression pattern |
+| RegexInjection.java:146:45:146:51 | pattern | RegexInjection.java:143:22:143:52 | getParameter(...) : String | RegexInjection.java:146:45:146:51 | pattern | $@ is user controlled. | RegexInjection.java:143:22:143:52 | getParameter(...) | This regular expression pattern |

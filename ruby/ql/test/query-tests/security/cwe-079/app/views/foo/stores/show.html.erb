@@ -1,0 +1,84 @@
+<%# BAD: A local rendered raw as a local variable %>
+<%= raw display_text %>
+
+<%# BAD: A local rendered raw via the local_assigns hash %>
+<%= raw local_assigns[:display_text] %>
+
+<% key = :display_text %>
+<%# BAD: A local rendered raw via the locals_assigns hash %>
+<%= raw local_assigns[key] %>
+
+<ul>
+<% for key in [:display_text, :safe_text] do %>
+  <%# BAD: A local rendered raw via the locals hash %>
+  <%# TODO: we miss that `key` can take `:display_text` as a value here %>
+  <li><%= raw local_assigns[key] %></li>
+<% end %>
+</ul>
+
+<%# GOOD: A local rendered with default escaping via the local_assigns hash %>
+<%= local_assigns[display_text] %>
+
+<%# GOOD: default escaping of rendered text %>
+<%=
+  full_text = prefix + local_assigns[:display_text]
+  full_text
+%>
+
+<%# GOOD: default escaping of rendered text (from instance var) %>
+<%= @instance_text %>
+
+<%# BAD: html_safe marks string as not requiring HTML escaping %>
+<%=
+  display_text.html_safe
+%>
+
+<%# BAD: html_safe marks string as not requiring HTML escaping %>
+<%=
+  @instance_text.html_safe
+%>
+
+<%= render partial: 'foo/bars/widget', locals: { display_text: "widget_" + display_text } %>
+
+<%# BAD: user_name_handle is a helper method that returns unsanitized database content %>
+<%= user_name_handle.html_safe %>
+
+<%# BAD: Direct to a database value without escaping %>
+<%= @user.handle.html_safe %>
+
+<%# BAD: Indirect to a database value without escaping %>
+<%= @user.raw_name.html_safe %>
+
+<%# GOOD: Direct to a database value with escaping %>
+<%= @user.handle %>
+
+<%# GOOD: @safe_user_handle is manually escaped in the controller %>
+<%= @safe_user_handle %>
+
+<%# GOOD: object_id is a built-in method, not an ORM access method %>
+<%= @user.object_id.html_safe %>
+
+<%# BAD: Direct to a database value without escaping %>
+<%=
+  some_user = User.find 1
+  some_user.handle.html_safe
+%>
+
+<%# BAD: Indirect to a database value without escaping %>
+<%=
+  some_user = User.find 1
+  some_user.raw_name.html_safe
+%>
+
+<%# GOOD: Direct to a database value with escaping %>
+<%=
+  some_user = User.find 1
+  some_user.handle
+%>
+
+<%# BAD: Indirect to a database value without escaping %>
+<%# TODO: we do not detect that `display_name` can return a DB field %>
+<%= @user.display_name.html_safe %>
+
+<%# BAD: Indirect to a database value without escaping %>
+<%= @other_user_raw_name.html_safe %>

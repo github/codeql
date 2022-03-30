@@ -1,0 +1,1 @@
+semmle-extractor-options: --edg --clang --edg --clang_builtin_functions --edg --clang_vector_types --gnu_version 40600

@@ -1,0 +1,1 @@
+| Test.java:16:4:16:29 | addCookie(...) | Cookie is added to response without the 'secure' flag being set. |

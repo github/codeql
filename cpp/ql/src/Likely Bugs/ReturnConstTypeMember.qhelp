@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds member functions with a superfluous <code>const</code> qualifier
+on their return type. This might be caused by confusion about how to declare a <code>const</code>
+method. In particular, when C++11 trailing return types are used, it becomes much easier
+to mis-declare a <code>const</code> method by putting <code>const</code> on the wrong side of
+<code>-></code>.</p>
+
+</overview>
+<recommendation>
+<p>The superfluous <code>const</code> qualifier should be removed, as it serves no purpose.
+If the return type contains embedded qualifiers, then care should be taken to remove only
+the superfluous one.</p>
+<p>Alternatively, if the intention was to have a <code>const</code> method, then the qualifier
+should be moved to immediately after the argument list.</p>
+
+</recommendation>
+<example>
+<sample src="ReturnConstTypeMember.cpp" />
+
+
+
+
+</example>
+</qhelp>

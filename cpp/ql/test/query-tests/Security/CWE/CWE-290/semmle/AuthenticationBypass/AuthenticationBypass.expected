@@ -1,0 +1,46 @@
+edges
+| test.cpp:16:25:16:30 | call to getenv | test.cpp:20:14:20:20 | address |
+| test.cpp:16:25:16:30 | call to getenv | test.cpp:20:14:20:20 | address |
+| test.cpp:16:25:16:30 | call to getenv | test.cpp:20:14:20:20 | address indirection |
+| test.cpp:16:25:16:42 | (const char *)... | test.cpp:20:14:20:20 | address |
+| test.cpp:16:25:16:42 | (const char *)... | test.cpp:20:14:20:20 | address |
+| test.cpp:16:25:16:42 | (const char *)... | test.cpp:20:14:20:20 | address indirection |
+| test.cpp:27:25:27:30 | call to getenv | test.cpp:31:14:31:20 | address |
+| test.cpp:27:25:27:30 | call to getenv | test.cpp:31:14:31:20 | address |
+| test.cpp:27:25:27:30 | call to getenv | test.cpp:31:14:31:20 | address indirection |
+| test.cpp:27:25:27:42 | (const char *)... | test.cpp:31:14:31:20 | address |
+| test.cpp:27:25:27:42 | (const char *)... | test.cpp:31:14:31:20 | address |
+| test.cpp:27:25:27:42 | (const char *)... | test.cpp:31:14:31:20 | address indirection |
+| test.cpp:38:25:38:30 | call to getenv | test.cpp:42:14:42:20 | address |
+| test.cpp:38:25:38:30 | call to getenv | test.cpp:42:14:42:20 | address |
+| test.cpp:38:25:38:30 | call to getenv | test.cpp:42:14:42:20 | address indirection |
+| test.cpp:38:25:38:42 | (const char *)... | test.cpp:42:14:42:20 | address |
+| test.cpp:38:25:38:42 | (const char *)... | test.cpp:42:14:42:20 | address |
+| test.cpp:38:25:38:42 | (const char *)... | test.cpp:42:14:42:20 | address indirection |
+subpaths
+nodes
+| test.cpp:16:25:16:30 | call to getenv | semmle.label | call to getenv |
+| test.cpp:16:25:16:42 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:20:14:20:20 | address | semmle.label | address |
+| test.cpp:20:14:20:20 | address | semmle.label | address |
+| test.cpp:20:14:20:20 | address | semmle.label | address |
+| test.cpp:20:14:20:20 | address indirection | semmle.label | address indirection |
+| test.cpp:20:14:20:20 | address indirection | semmle.label | address indirection |
+| test.cpp:27:25:27:30 | call to getenv | semmle.label | call to getenv |
+| test.cpp:27:25:27:42 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:31:14:31:20 | address | semmle.label | address |
+| test.cpp:31:14:31:20 | address | semmle.label | address |
+| test.cpp:31:14:31:20 | address | semmle.label | address |
+| test.cpp:31:14:31:20 | address indirection | semmle.label | address indirection |
+| test.cpp:31:14:31:20 | address indirection | semmle.label | address indirection |
+| test.cpp:38:25:38:30 | call to getenv | semmle.label | call to getenv |
+| test.cpp:38:25:38:42 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:42:14:42:20 | address | semmle.label | address |
+| test.cpp:42:14:42:20 | address | semmle.label | address |
+| test.cpp:42:14:42:20 | address | semmle.label | address |
+| test.cpp:42:14:42:20 | address indirection | semmle.label | address indirection |
+| test.cpp:42:14:42:20 | address indirection | semmle.label | address indirection |
+#select
+| test.cpp:20:7:20:12 | call to strcmp | test.cpp:16:25:16:30 | call to getenv | test.cpp:20:14:20:20 | address | Untrusted input $@ might be vulnerable to a spoofing attack. | test.cpp:16:25:16:30 | call to getenv | call to getenv |
+| test.cpp:31:7:31:12 | call to strcmp | test.cpp:27:25:27:30 | call to getenv | test.cpp:31:14:31:20 | address | Untrusted input $@ might be vulnerable to a spoofing attack. | test.cpp:27:25:27:30 | call to getenv | call to getenv |
+| test.cpp:42:7:42:12 | call to strcmp | test.cpp:38:25:38:30 | call to getenv | test.cpp:42:14:42:20 | address | Untrusted input $@ might be vulnerable to a spoofing attack. | test.cpp:38:25:38:30 | call to getenv | call to getenv |

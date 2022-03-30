@@ -1,0 +1,1 @@
+semmle-extractor-options: -R . --filter=include:**/*.thrift --filter exclude:**/src_archive/**

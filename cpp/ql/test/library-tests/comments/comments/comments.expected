@@ -1,0 +1,35 @@
+| comments.c:2:7:2:26 | /* on secondary f */ | 1 | comments.c:2:5:2:5 | declaration of f |
+| comments.c:2:36:2:55 | /* on secondary x */ | 1 | comments.c:4:12:4:12 | declaration of i |
+| comments.c:4:14:4:33 | /* on secondary i */ | 1 | comments.c:4:12:4:12 | declaration of i |
+| comments.c:6:7:6:16 | /* on f */ | 1 | comments.c:6:5:6:5 | definition of f |
+| comments.c:6:26:6:35 | /* on x */ | 1 | comments.c:6:38:10:1 | { ... } |
+| comments.c:7:11:7:20 | /* on j */ | 1 | comments.c:7:9:7:9 | definition of j |
+| comments.c:12:7:12:16 | /* on i */ | 1 | comments.c:12:5:12:5 | definition of i |
+| comments.c:15:17:15:25 | // On f2i | 1 | comments.c:15:12:15:14 | declaration of f2i |
+| comments.c:22:1:22:9 | // On f3b | 1 | comments.c:23:13:23:15 | declaration of f3b |
+| comments.c:25:1:25:16 | // On define FOO | 1 | comments.c:26:1:26:15 | #define FOO bar |
+| comments.c:28:1:28:15 | // On undef FOO | 1 | comments.c:29:1:29:10 | #undef FOO |
+| comments.c:31:1:31:22 | // On struct my_struct | 1 | comments.c:32:8:32:16 | definition of my_struct |
+| comments.c:36:1:36:20 | // On union my_union | 1 | comments.c:37:7:37:14 | definition of my_union |
+| comments.c:42:1:43:24 | // This is a legal alternative way to achieve a \\\nmulti-line comment on j. | 1 | comments.c:44:5:44:5 | definition of j |
+| comments_99.c:2:4:2:35 | /* This is wrong for INT_MIN. */ | 1 | comments_99.c:3:4:6:15 | if (...) ...  |
+| comments_cpp.cpp:1:1:1:40 | // semmle-extractor-options: --microsoft | 1 | comments_cpp.cpp:2:1:2:27 | #define FIRST_VALUE 0x0001 |
+| comments_cpp.cpp:2:29:2:53 | // Comment on FIRST_VALUE | 1 | comments_cpp.cpp:2:1:2:27 | #define FIRST_VALUE 0x0001 |
+| comments_cpp.cpp:3:29:3:52 | // that spans two lines. | 1 | comments_cpp.cpp:4:1:4:27 | #define SECOND_VALUE 0x0002 |
+| comments_cpp.cpp:4:29:4:54 | // Comment on SECOND_VALUE | 1 | comments_cpp.cpp:4:1:4:27 | #define SECOND_VALUE 0x0002 |
+| comments_cpp.cpp:5:29:5:52 | // that spans two lines. | 1 | comments_cpp.cpp:8:1:8:18 | #ifdef __cplusplus |
+| comments_cpp.cpp:9:14:9:40 | /* comment on extern "C" */ | 1 | comments_cpp.cpp:11:1:11:6 | #endif |
+| comments_cpp.cpp:18:21:18:50 | // comment on throw bad_cast() | 1 | comments_cpp.cpp:19:1:19:5 | #else |
+| comments_cpp.cpp:20:12:20:32 | // comment on abort() | 1 | comments_cpp.cpp:21:1:21:6 | #endif |
+| comments_cpp.cpp:30:13:30:35 | // comment on operator- | 1 | comments_cpp.cpp:34:9:34:18 | declaration of operator[] |
+| comments_cpp.cpp:40:1:40:20 | // On myns namespace | 1 | comments_cpp.cpp:41:11:41:14 | myns |
+| comments_cpp.cpp:41:18:41:42 | // Also on myns namespace | 1 | comments_cpp.cpp:41:11:41:14 | myns |
+| comments_cpp.cpp:45:1:45:20 | // On class my_class | 1 | comments_cpp.cpp:46:7:46:14 | definition of my_class |
+| comments_cpp.cpp:47:5:47:22 | // On my_class_int | 1 | comments_cpp.cpp:48:9:48:20 | definition of my_class_int |
+| comments_cpp.cpp:48:23:48:45 | // Also on my_class_int | 1 | comments_cpp.cpp:48:9:48:20 | definition of my_class_int |
+| comments_cpp.cpp:51:1:51:25 | // On outer static assert | 1 | comments_cpp.cpp:52:1:52:46 | static_assert(..., "Addition is sane") |
+| comments_cpp.cpp:55:3:55:27 | // On inner static assert | 1 | comments_cpp.cpp:56:3:56:63 | static_assert(..., "Type sizes are sane") |
+| comments_cpp.cpp:56:65:56:94 | // Also on inner static assert | 1 | comments_cpp.cpp:56:3:56:63 | static_assert(..., "Type sizes are sane") |
+| comments_cpp.cpp:59:1:59:22 | // More myns namespace | 1 | comments_cpp.cpp:60:11:60:14 | myns |
+| shared.h:8:3:8:27 | /* This is a comment.  */ | 1 | shared.h:9:3:10:3 | while (...) ... |
+| shared.h:13:1:13:30 | /* This is another comment. */ | 1 | shared.h:14:12:14:20 | declaration of sharedInt |

@@ -1,0 +1,41 @@
+| file://:0:0:0:0 | operator= |  | file://:0:0:0:0 | __va_list_tag | 6 |
+| file://:0:0:0:0 | operator= |  | file://:0:0:0:0 | __va_list_tag | 6 |
+| scopes.cpp:2:7:2:7 | operator= |  | scopes.cpp:2:7:2:7 | A | 2 |
+| scopes.cpp:2:7:2:7 | operator= |  | scopes.cpp:2:7:2:7 | A | 2 |
+| scopes.cpp:7:7:7:7 | operator= |  | scopes.cpp:7:7:7:7 | B | 2 |
+| scopes.cpp:7:7:7:7 | operator= |  | scopes.cpp:7:7:7:7 | B | 2 |
+| scopes.cpp:11:7:11:7 | C | Constructor | scopes.cpp:11:7:11:7 | C | 3 |
+| scopes.cpp:11:7:11:7 | operator= |  | scopes.cpp:11:7:11:7 | C | 3 |
+| scopes.cpp:11:7:11:7 | operator= |  | scopes.cpp:11:7:11:7 | C | 3 |
+| scopes.cpp:15:7:15:7 | D | Constructor | scopes.cpp:15:7:15:7 | D | 4 |
+| scopes.cpp:15:7:15:7 | operator= |  | scopes.cpp:15:7:15:7 | D | 4 |
+| scopes.cpp:15:7:15:7 | operator= |  | scopes.cpp:15:7:15:7 | D | 4 |
+| scopes.cpp:21:10:21:10 | operator= |  | scopes.cpp:21:7:21:10 | E | 4 |
+| scopes.cpp:21:10:21:10 | operator= |  | scopes.cpp:21:7:21:10 | E | 4 |
+| scopes.cpp:25:8:25:8 | operator= |  | scopes.cpp:25:8:25:8 | G | 2 |
+| scopes.cpp:25:8:25:8 | operator= |  | scopes.cpp:25:8:25:8 | G | 2 |
+| scopes.cpp:31:13:31:13 | F | Constructor | scopes.cpp:31:7:31:13 | F | 4 |
+| scopes.cpp:31:13:31:13 | operator= |  | scopes.cpp:31:7:31:13 | F | 4 |
+| scopes.cpp:31:13:31:13 | operator= |  | scopes.cpp:31:7:31:13 | F | 4 |
+| scopes.cpp:32:8:32:27 | doubleNestedFunction |  | scopes.cpp:31:7:31:13 | F | 4 |
+| scopes.cpp:46:8:46:8 | operator= |  | scopes.cpp:46:8:46:8 | S | 4 |
+| scopes.cpp:46:8:46:8 | operator= |  | scopes.cpp:46:8:46:8 | S | 4 |
+| scopes.cpp:47:7:47:8 | af |  | scopes.cpp:46:8:46:8 | S | 4 |
+| scopes.cpp:50:7:50:8 | ag |  | scopes.cpp:46:8:46:8 | S | 4 |
+| scopes.cpp:58:7:58:7 | Name | Constructor | scopes.cpp:58:7:58:10 | Name | 4 |
+| scopes.cpp:58:7:58:7 | operator= |  | scopes.cpp:58:7:58:10 | Name | 4 |
+| scopes.cpp:58:7:58:7 | operator= |  | scopes.cpp:58:7:58:10 | Name | 4 |
+| scopes.cpp:62:7:62:7 | Table | Constructor | scopes.cpp:62:7:62:11 | Table | 8 |
+| scopes.cpp:62:7:62:7 | operator= |  | scopes.cpp:62:7:62:11 | Table | 8 |
+| scopes.cpp:66:3:66:7 | Table | Constructor | scopes.cpp:62:7:62:11 | Table | 8 |
+| scopes.cpp:67:3:67:8 | ~Table |  | scopes.cpp:62:7:62:11 | Table | 8 |
+| scopes.cpp:68:9:68:14 | lookup |  | scopes.cpp:62:7:62:11 | Table | 8 |
+| scopes.cpp:69:8:69:13 | insert |  | scopes.cpp:62:7:62:11 | Table | 8 |
+| scopes.cpp:77:8:77:8 | H | Constructor | scopes.cpp:77:8:77:8 | H<long> | 4 |
+| scopes.cpp:77:8:77:8 | H | Constructor | scopes.cpp:77:8:77:8 | H<short> | 4 |
+| scopes.cpp:77:8:77:8 | operator= |  | scopes.cpp:77:8:77:8 | H<long> | 4 |
+| scopes.cpp:77:8:77:8 | operator= |  | scopes.cpp:77:8:77:8 | H<long> | 4 |
+| scopes.cpp:77:8:77:8 | operator= |  | scopes.cpp:77:8:77:8 | H<short> | 4 |
+| scopes.cpp:77:8:77:8 | operator= |  | scopes.cpp:77:8:77:8 | H<short> | 4 |
+| scopes.cpp:95:8:95:8 | operator= |  | scopes.cpp:95:8:95:8 | I | 3 |
+| scopes.cpp:95:8:95:8 | operator= |  | scopes.cpp:95:8:95:8 | I | 3 |

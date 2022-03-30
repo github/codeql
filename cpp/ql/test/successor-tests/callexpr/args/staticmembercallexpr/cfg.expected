@@ -1,0 +1,18 @@
+| staticmembercallexpr | staticmembercallexpr.cpp:1:7:1:7 | operator= | 1 | 1 | staticmembercallexpr.cpp:1:7:1:7 | staticmembercallexpr.cpp:1:7:1:7 | staticmembercallexpr.cpp:1:7:1:7 | operator= | <none> |
+| staticmembercallexpr | staticmembercallexpr.cpp:1:7:1:7 | operator= | 1 | 1 | staticmembercallexpr.cpp:1:7:1:7 | staticmembercallexpr.cpp:1:7:1:7 | staticmembercallexpr.cpp:1:7:1:7 | operator= | <none> |
+| staticmembercallexpr | staticmembercallexpr.cpp:4:15:4:15 | g | 4 | 1 | staticmembercallexpr.cpp:4:15:4:15 | staticmembercallexpr.cpp:4:15:4:15 | staticmembercallexpr.cpp:4:15:4:15 | g | <none> |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 7 | 1 | staticmembercallexpr.cpp:7:10:11:1 | staticmembercallexpr.cpp:7:10:11:1 | staticmembercallexpr.cpp:7:10:11:1 | { ... } | 8: declaration |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 8 | 2 | staticmembercallexpr.cpp:8:2:8:16 | staticmembercallexpr.cpp:8:2:8:16 | staticmembercallexpr.cpp:8:2:8:16 | declaration | 9: declaration |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 9 | 3 | staticmembercallexpr.cpp:9:2:9:5 | staticmembercallexpr.cpp:9:2:9:5 | staticmembercallexpr.cpp:9:2:9:5 | declaration | 10: ExprStmt |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 10 | 4 | staticmembercallexpr.cpp:10:2:10:22 | staticmembercallexpr.cpp:10:2:10:22 | staticmembercallexpr.cpp:10:2:10:22 | ExprStmt | 10: i |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 10 | 5 | staticmembercallexpr.cpp:10:9:10:9 | staticmembercallexpr.cpp:10:9:10:9 | staticmembercallexpr.cpp:10:9:10:9 | i | 10: j |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 10 | 6 | staticmembercallexpr.cpp:10:13:10:13 | staticmembercallexpr.cpp:10:13:10:13 | staticmembercallexpr.cpp:10:13:10:13 | j | 10: ... + ... |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 10 | 7 | staticmembercallexpr.cpp:10:9:10:13 | staticmembercallexpr.cpp:10:9:10:13 | staticmembercallexpr.cpp:10:9:10:13 | ... + ... | 10: k |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 10 | 8 | staticmembercallexpr.cpp:10:16:10:16 | staticmembercallexpr.cpp:10:16:10:16 | staticmembercallexpr.cpp:10:16:10:16 | k | 10: l |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 10 | 9 | staticmembercallexpr.cpp:10:20:10:20 | staticmembercallexpr.cpp:10:20:10:20 | staticmembercallexpr.cpp:10:20:10:20 | l | 10: ... - ... |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 10 | 10 | staticmembercallexpr.cpp:10:16:10:20 | staticmembercallexpr.cpp:10:16:10:20 | staticmembercallexpr.cpp:10:16:10:20 | ... - ... | 10: c |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 10 | 11 | staticmembercallexpr.cpp:10:2:10:2 | staticmembercallexpr.cpp:10:2:10:2 | staticmembercallexpr.cpp:10:2:10:2 | c | 10: d |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 10 | 12 | staticmembercallexpr.cpp:10:4:10:4 | staticmembercallexpr.cpp:10:4:10:4 | staticmembercallexpr.cpp:10:4:10:4 | d | 10: call to g |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 10 | 13 | staticmembercallexpr.cpp:10:7:10:7 | staticmembercallexpr.cpp:10:7:10:7 | staticmembercallexpr.cpp:10:7:10:7 | call to g | 11: return ... |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 11 | 14 | staticmembercallexpr.cpp:11:1:11:1 | staticmembercallexpr.cpp:11:1:11:1 | staticmembercallexpr.cpp:11:1:11:1 | return ... | 11: f |
+| staticmembercallexpr | staticmembercallexpr.cpp:7:6:7:6 | f | 11 | 15 | staticmembercallexpr.cpp:7:6:7:6 | staticmembercallexpr.cpp:7:6:7:6 | staticmembercallexpr.cpp:7:6:7:6 | f | <none> |

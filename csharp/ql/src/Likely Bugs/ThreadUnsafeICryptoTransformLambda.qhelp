@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<include src="ThreadUnsafeICryptoTransformOverview.inc.qhelp" />
+</overview>
+<recommendation>
+<p>Create new instances of the object that implements or has a field of type <code>System.Security.Cryptography.ICryptoTransform</code> to avoid sharing it accross multiple threads.</p>
+
+</recommendation>
+<example>
+<p>This example demonstrates the dangers of using a shared <code>System.Security.Cryptography.ICryptoTransform</code> in a way that generates incorrect results or may raise an exception.</p>
+<sample src="ThreadUnSafeICryptoTransformLambdaBad.cs" />
+
+<p>A simple fix is to change the local variable <code>sha1</code> being captured by the lambda to be a local variable within the lambda.</p>
+<sample src="ThreadUnSafeICryptoTransformLambdaGood.cs" />
+</example>
+
+<references>
+  <li>
+    Microsoft documentation, <a href="https://docs.microsoft.com/en-us/dotnet/api/system.threadstaticattribute?view=netframework-4.7.2">ThreadStaticAttribute Class</a>.
+  </li>
+  <li>
+    Stack Overflow, <a href="https://stackoverflow.com/questions/26592596/why-does-sha1-computehash-fail-under-high-load-with-many-threads">Why does SHA1.ComputeHash fail under high load with many threads?</a>.
+  </li>
+</references>
+
+</qhelp>

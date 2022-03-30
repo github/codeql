@@ -1,0 +1,6 @@
+structs
+| structs.c:2:8:2:10 | foo |  |
+| structs.c:15:10:15:22 | MyLocalStruct | LocalStruct |
+| structs.cpp:5:10:5:23 | MyNestedStruct | NestedStruct |
+assignments
+| structs.c:10:5:10:11 | ... = ... | structs.c:10:5:10:5 | l | int | structs.c:10:11:10:11 | i | int |

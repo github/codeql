@@ -1,0 +1,67 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+			AngularJS applications use the method
+			<code>$scope.$on</code> to register event listeners for
+			the events sent out by <code>$scope.$emit</code> and
+			<code>$scope.$broadcast</code>.
+		</p>
+		<p>
+			The first argument to <code>$scope.$on</code> is the name
+			of the event to listen for. Listening for an event that
+			never gets sent means that the event listener never gets
+			invoked. This is likely an error caused by either: a
+			misspelled event name, or a missing call to
+			<code>$scope.emit</code> or <code>$scope.broadcast</code>
+			somewhere else.
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+			Only register event listeners for events that exist.
+		</p>
+	</recommendation>
+
+	<example>
+		<p>
+			The following example shows an AngularJS controller that registers a
+			cleanup function to listen for the <code>destroy</code> event.
+		</p>
+
+		<sample src="examples/DeadAngularJSEventListener.js"/>
+
+		<p>
+			This is problematic, since the <code>destroy</code> event is not
+			emitted by AngularJS, meaning that the cleanup function never gets
+			called.
+		</p>
+
+		<p>
+			Instead, the programmer should fix a typo and make the
+			<code>cleanup</code> function listen for the builtin
+			<code>$destroy</code> event:
+
+		</p>
+		<sample src="examples/DeadAngularJSEventListener_fixed.js"/>
+
+		<p>
+			Alternatively, the programmer should use
+			<code>$scope.$emit</code> or
+			<code>$scope.$broadcast</code> to send the
+			<code>destroy</code> event in another controller:
+		</p>
+		<sample src="examples/DeadAngularJSEventListener_emit.js"/>
+
+	</example>
+
+	<references>
+		<li>AngularJS Developer Guide: <a href="https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$broadcast">Events: $broadcast</a>.</li>
+		<li>AngularJS Developer Guide: <a href="https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$emit">Events: $emit</a>.</li>
+		<li>AngularJS Developer Guide: <a href="https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$on">Events: $on</a>.</li>
+	</references>
+</qhelp>

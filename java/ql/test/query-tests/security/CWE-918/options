@@ -1,0 +1,2 @@
+//semmle-extractor-options: --javac-args -source 11 -target 11 -cp ${testdir}/../../../stubs/springframework-5.3.8:${testdir}/../../../stubs/javax-ws-rs-api-2.1.1:${testdir}/../../../stubs/javax-ws-rs-api-3.0.0:${testdir}/../../../stubs/apache-http-4.4.13/:${testdir}/../../../stubs/servlet-api-2.4/:${testdir}/../../../stubs/projectreactor-3.4.3/:${testdir}/../../../stubs/postgresql-42.3.3/:${testdir}/../../../stubs/HikariCP-3.4.5/:${testdir}/../../../stubs/spring-jdbc-5.3.8/:${testdir}/../../../stubs/jdbi3-core-3.27.2/
+

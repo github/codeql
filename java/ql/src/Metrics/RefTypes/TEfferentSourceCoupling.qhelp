@@ -1,0 +1,92 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+This metric measures the number of outgoing source dependencies for
+each reference type, i.e. the number of other source types on which
+each reference type depends. Dependencies into libraries are not
+counted.
+</p>
+
+<p>
+Types that depend on many other types are quite brittle, because if any of
+their dependencies change then they may have to as well. Furthermore, the
+reason for the high number of dependencies is often that different bits of
+the class depend on different sets of other types, so it is not uncommon to
+find that classes with high efferent coupling also lack cohesion.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Efferent coupling can be reduced by splitting a class into pieces along its
+dependency fault lines. For example, consider the following very simple class:
+</p>
+
+<sample language="java">
+class X {
+    public void iUseY(Y y) {
+        y.doStuff();
+    }
+
+    public Y soDoY() {
+        return new Y();
+    }
+
+    public Z iUseZ(Z z1, Z z2) {
+        return z1.combine(z2);
+    }
+}
+</sample>
+
+<p>
+In this class, <code>X</code> depends on both <code>Y</code> and
+<code>Z</code>, but the functions that are using <code>Y</code>
+are not also using <code>Z</code>, and vice-versa. We could thus
+split the class into two, one of which depends only on <code>Y</code>
+and the other only on <code>Z</code>:
+</p>
+
+<sample language="java">
+class YX {
+    public void iUseY(Y y) {
+        y.doStuff();
+    }
+
+    public Y soDoY() {
+        return new Y();
+    }
+}
+
+class ZX {
+    public Z iUseZ(Z z1, Z z2) {
+        return z1.combine(z2);
+    }
+}
+</sample>
+
+<p>
+Whilst this is a somewhat contrived example, this sort of situation
+does tend to crop up even (or especially) in more complicated classes,
+so the general technique is quite widely applicable.
+</p>
+
+
+
+</recommendation>
+<references>
+
+
+<li>
+A. Glover. <a href="https://web.archive.org/web/20190919093358/http://7thgen.info/wiki/Code_Quality_For_Software_Architects">Code quality for software architects</a>. Published online, 2006.
+</li>
+<li>
+R. Martin. <em>Agile Software Development: Principles, Patterns and Practices</em>. Pearson, 2011.
+</li>
+
+
+</references>
+</qhelp>

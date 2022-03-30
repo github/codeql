@@ -1,0 +1,36 @@
+edges
+| test.py:21:11:21:18 | ControlFlowNode for source() | test.py:22:10:22:24 | ControlFlowNode for Attribute() |
+| test.py:29:11:29:18 | ControlFlowNode for source() | test.py:33:10:33:12 | ControlFlowNode for val |
+| test.py:40:11:40:25 | ControlFlowNode for Attribute() | test.py:41:10:41:12 | ControlFlowNode for val |
+| test.py:45:11:45:18 | ControlFlowNode for source() | test.py:40:11:40:25 | ControlFlowNode for Attribute() |
+| test.py:53:11:53:25 | ControlFlowNode for Attribute() | test.py:54:10:54:12 | ControlFlowNode for val |
+| test.py:70:11:70:18 | ControlFlowNode for source() | test.py:53:11:53:25 | ControlFlowNode for Attribute() |
+| test.py:78:11:78:14 | ControlFlowNode for bm() | test.py:79:10:79:12 | ControlFlowNode for val |
+| test.py:83:11:83:18 | ControlFlowNode for source() | test.py:78:11:78:14 | ControlFlowNode for bm() |
+| test.py:90:11:90:14 | ControlFlowNode for bm() | test.py:91:10:91:12 | ControlFlowNode for val |
+| test.py:107:11:107:18 | ControlFlowNode for source() | test.py:90:11:90:14 | ControlFlowNode for bm() |
+nodes
+| test.py:21:11:21:18 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+| test.py:22:10:22:24 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:29:11:29:18 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+| test.py:33:10:33:12 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
+| test.py:40:11:40:25 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:41:10:41:12 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
+| test.py:45:11:45:18 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+| test.py:53:11:53:25 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:54:10:54:12 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
+| test.py:70:11:70:18 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+| test.py:78:11:78:14 | ControlFlowNode for bm() | semmle.label | ControlFlowNode for bm() |
+| test.py:79:10:79:12 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
+| test.py:83:11:83:18 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+| test.py:90:11:90:14 | ControlFlowNode for bm() | semmle.label | ControlFlowNode for bm() |
+| test.py:91:10:91:12 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
+| test.py:107:11:107:18 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+subpaths
+#select
+| test.py:22:10:22:24 | ControlFlowNode for Attribute() | test.py:21:11:21:18 | ControlFlowNode for source() | test.py:22:10:22:24 | ControlFlowNode for Attribute() | test flow (naive): test_simple |
+| test.py:33:10:33:12 | ControlFlowNode for val | test.py:29:11:29:18 | ControlFlowNode for source() | test.py:33:10:33:12 | ControlFlowNode for val | test flow (naive): test_alias |
+| test.py:41:10:41:12 | ControlFlowNode for val | test.py:45:11:45:18 | ControlFlowNode for source() | test.py:41:10:41:12 | ControlFlowNode for val | test flow (naive): test_accross_functions |
+| test.py:54:10:54:12 | ControlFlowNode for val | test.py:70:11:70:18 | ControlFlowNode for source() | test.py:54:10:54:12 | ControlFlowNode for val | test flow (naive): test_deeply_nested |
+| test.py:79:10:79:12 | ControlFlowNode for val | test.py:83:11:83:18 | ControlFlowNode for source() | test.py:79:10:79:12 | ControlFlowNode for val | test flow (naive): test_pass_bound_method |
+| test.py:91:10:91:12 | ControlFlowNode for val | test.py:107:11:107:18 | ControlFlowNode for source() | test.py:91:10:91:12 | ControlFlowNode for val | test flow (naive): test_deeply_nested_bound_method |

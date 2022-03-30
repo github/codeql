@@ -1,0 +1,55 @@
+/* line 5, ../scss/io2013.scss */
+* {
+  line-height: 1.3;
+}
+
+/* line 9, ../scss/io2013.scss */
+h2 {
+  font-weight: bold;
+}
+
+/* line 12, ../scss/io2013.scss */
+h2, h3 {
+  color: #515151;
+}
+
+/* line 16, ../scss/io2013.scss */
+q, blockquote {
+  font-weight: bold;
+}
+
+/* line 20, ../scss/io2013.scss */
+slides > slide {
+  color: #515151;
+}
+/* line 24, ../scss/io2013.scss */
+slides > slide.title-slide:after {
+  content: '';
+  background: url(../../images/io2013/google-io-lockup-1.png) no-repeat 100% 50%;
+  -moz-background-size: contain;
+  -o-background-size: contain;
+  -webkit-background-size: contain;
+  background-size: contain;
+  position: absolute;
+  bottom: 80px;
+  right: 40px;
+  width: 100%;
+  height: 90px;
+}
+/* line 36, ../scss/io2013.scss */
+slides > slide.title-slide hgroup h1 {
+  font-weight: bold;
+  line-height: 1.1;
+}
+/* line 40, ../scss/io2013.scss */
+slides > slide.title-slide hgroup h2, slides > slide.title-slide hgroup p {
+  color: #515151;
+}
+/* line 43, ../scss/io2013.scss */
+slides > slide.title-slide hgroup h2 {
+  margin-top: 0.25em;
+}
+/* line 46, ../scss/io2013.scss */
+slides > slide.title-slide hgroup p {
+  margin-top: 3em;
+}

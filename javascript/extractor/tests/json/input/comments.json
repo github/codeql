@@ -1,0 +1,5 @@
+{
+  // comments aren't legal JSON
+  "hello": "world"
+  /* no, not even block comments */
+}

@@ -1,0 +1,5 @@
+using System;
+
+class C
+{
+}

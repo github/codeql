@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Using unvalidated input as part of an index into the array can cause the array access
+ to throw an <code>ArrayIndexOutOfBoundsException</code>. This is because there is no guarantee
+ that the index provided is within the bounds of the array.</p>
+
+<p>This problem occurs when user input is used as an array index, either directly or following one
+or more calculations. If the user input is unsanitized, it may be any value, which  could result in
+either a negative index, or an index which is larger than the size of the array, either of which
+would result in an <code>ArrayIndexOutOfBoundsException</code>.</p>
+</overview>
+<recommendation>
+<p>
+The index used in the array access should be checked against the bounds of the array before being
+ used. The index should be smaller than the array size, and it should not be negative.</p>
+</recommendation>
+<example>
+<p>The following program accesses an element from a fixed size constant array:</p>
+<sample src="ImproperValidationOfArrayIndex.java" />
+<p>The first access of the <code>productDescriptions</code> array uses the user-provided value as
+ the index without performing any checks. If the user provides a negative value, or a value larger
+ than the size of the array, then an <code>ArrayIndexOutOfBoundsException</code> may be thrown.</p>
+<p>The second access of the <code>productDescriptions</code> array is contained within a conditional
+ expression that verifies the user-provided value is a valid index into the array. This ensures that
+ the access operation never throws an <code>ArrayIndexOutOfBoundsException</code>.</p>
+</example>
+
+<references>
+
+<li>Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/ArrayIndexOutOfBoundsException.html">ArrayIndexOutOfBoundsException</a>.</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,62 @@
+| tst-IncompleteHostnameRegExp.js:42:13:42:65 | '^http[ ... \\/(.+)' | The escape sequence '\\/' is equivalent to just '/'. |
+| tst-SemiAnchoredRegExp.js:72:13:72:40 | '^good\\ ... \\\\.com' | The escape sequence '\\.' is equivalent to just '.'. |
+| tst-SemiAnchoredRegExp.js:109:2:109:45 | /^((\\+\| ... ?\\d\\d)/ | The escape sequence '\\:' is equivalent to just ':'. |
+| tst-escapes.js:19:8:19:11 | "\\ " | The escape sequence '\\ ' is equivalent to just ' '. |
+| tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\a' is equivalent to just 'a'. |
+| tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\e' is equivalent to just 'e'. |
+| tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\g' is equivalent to just 'g'. |
+| tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\h' is equivalent to just 'h'. |
+| tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\i' is equivalent to just 'i'. |
+| tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\j' is equivalent to just 'j'. |
+| tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\l' is equivalent to just 'l'. |
+| tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\m' is equivalent to just 'm'. |
+| tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\o' is equivalent to just 'o'. |
+| tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\q' is equivalent to just 'q'. |
+| tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\y' is equivalent to just 'y'. |
+| tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\z' is equivalent to just 'z'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\A' is equivalent to just 'A'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\C' is equivalent to just 'C'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\E' is equivalent to just 'E'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\F' is equivalent to just 'F'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\G' is equivalent to just 'G'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\H' is equivalent to just 'H'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\I' is equivalent to just 'I'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\J' is equivalent to just 'J'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\K' is equivalent to just 'K'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\L' is equivalent to just 'L'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\M' is equivalent to just 'M'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\N' is equivalent to just 'N'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\O' is equivalent to just 'O'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\Q' is equivalent to just 'Q'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\R' is equivalent to just 'R'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\T' is equivalent to just 'T'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\U' is equivalent to just 'U'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\V' is equivalent to just 'V'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\X' is equivalent to just 'X'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\Y' is equivalent to just 'Y'. |
+| tst-escapes.js:21:1:21:52 | /\\A\\B\\C ... \\X\\Y\\Z/ | The escape sequence '\\Z' is equivalent to just 'Z'. |
+| tst-escapes.js:22:1:22:28 | /\\`\\1\\2 ... \\0\\-\\=/ | The escape sequence '\\=' is equivalent to just '='. |
+| tst-escapes.js:22:1:22:28 | /\\`\\1\\2 ... \\0\\-\\=/ | The escape sequence '\\`' is equivalent to just '`'. |
+| tst-escapes.js:23:1:23:28 | /\\~\\!\\@ ... \\)\\_\\+/ | The escape sequence '\\!' is equivalent to just '!'. |
+| tst-escapes.js:23:1:23:28 | /\\~\\!\\@ ... \\)\\_\\+/ | The escape sequence '\\#' is equivalent to just '#'. |
+| tst-escapes.js:23:1:23:28 | /\\~\\!\\@ ... \\)\\_\\+/ | The escape sequence '\\%' is equivalent to just '%'. |
+| tst-escapes.js:23:1:23:28 | /\\~\\!\\@ ... \\)\\_\\+/ | The escape sequence '\\&' is equivalent to just '&'. |
+| tst-escapes.js:23:1:23:28 | /\\~\\!\\@ ... \\)\\_\\+/ | The escape sequence '\\@' is equivalent to just '@'. |
+| tst-escapes.js:23:1:23:28 | /\\~\\!\\@ ... \\)\\_\\+/ | The escape sequence '\\_' is equivalent to just '_'. |
+| tst-escapes.js:23:1:23:28 | /\\~\\!\\@ ... \\)\\_\\+/ | The escape sequence '\\~' is equivalent to just '~'. |
+| tst-escapes.js:24:1:24:15 | /\\[\\]\\'\\\\,\\.\\// | The escape sequence '\\'' is equivalent to just '''. |
+| tst-escapes.js:25:1:25:16 | /\\{\\}\\"\\\|\\<\\>\\?/ | The escape sequence '\\"' is equivalent to just '"'. |
+| tst-escapes.js:25:1:25:16 | /\\{\\}\\"\\\|\\<\\>\\?/ | The escape sequence '\\<' is equivalent to just '<'. |
+| tst-escapes.js:25:1:25:16 | /\\{\\}\\"\\\|\\<\\>\\?/ | The escape sequence '\\>' is equivalent to just '>'. |
+| tst-escapes.js:26:1:26:4 | /\\ / | The escape sequence '\\ ' is equivalent to just ' '. |
+| tst-escapes.js:29:8:29:11 | "\\a" | The escape sequence '\\a' is equivalent to just 'a'. |
+| tst-escapes.js:31:8:31:13 | "\\\\\\a" | The escape sequence '\\a' is equivalent to just 'a'. |
+| tst-escapes.js:33:8:33:15 | "\\\\\\\\\\a" | The escape sequence '\\a' is equivalent to just 'a'. |
+| tst-escapes.js:35:8:35:17 | "\\\\\\\\\\\\\\a" | The escape sequence '\\a' is equivalent to just 'a'. |
+| tst-escapes.js:37:8:37:19 | "\\\\\\\\\\\\\\\\\\a" | The escape sequence '\\a' is equivalent to just 'a'. |
+| tst-escapes.js:42:1:42:4 | "\\." | The escape sequence '\\.' is equivalent to just '.'. |
+| tst-escapes.js:48:8:48:15 | "'\\'\\\\'" | The escape sequence '\\'' is equivalent to just '''. |
+| tst-escapes.js:50:8:50:15 | '"\\"\\\\"' | The escape sequence '\\"' is equivalent to just '"'. |
+| tst-escapes.js:66:8:66:13 | "\\\\\\]" | The escape sequence '\\]' is equivalent to just ']'. |
+| tst-escapes.js:67:8:67:14 | "x\\\\\\]" | The escape sequence '\\]' is equivalent to just ']'. |
+| tst-escapes.js:71:8:71:17 | "\\\\\\\\\\\\\\]" | The escape sequence '\\]' is equivalent to just ']'. |

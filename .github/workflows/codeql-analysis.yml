@@ -1,0 +1,62 @@
+name: "Code scanning - action"
+
+on:
+  push:
+    branches:
+      - main
+      - 'rc/*'
+  pull_request:
+    branches:
+      - main
+      - 'rc/*'
+    paths:
+      - 'csharp/**'
+      - '.github/codeql/**'
+      - '.github/workflows/codeql-analysis.yml'
+  schedule:
+    - cron: '0 9 * * 1'
+
+jobs:
+  CodeQL-Build:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: read
+
+    steps:
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.101
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@main
+      # Override language selection by uncommenting this and choosing your languages
+      with:
+        languages: csharp
+        config-file: ./.github/codeql/codeql-config.yml
+
+    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
+    # If this step fails, then you should remove it and run the build manually (see below)
+    #- name: Autobuild
+    #  uses: github/codeql-action/autobuild@main
+
+    # ℹ️ Command-line programs to run using the OS shell.
+    # 📚 https://git.io/JvXDl
+
+    # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
+    #    and modify them (or add more) to build your code if your project
+    #    uses a compiled language
+
+    - run: |
+       dotnet build csharp /p:UseSharedCompilation=false
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@main

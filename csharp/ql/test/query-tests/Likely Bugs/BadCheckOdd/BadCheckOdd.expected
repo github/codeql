@@ -1,0 +1,4 @@
+| BadCheckOdd.cs:17:17:17:26 | ... == ... | Possibly invalid test for oddness. This will fail for negative numbers. |
+| BadCheckOdd.cs:19:17:19:26 | ... != ... | Possibly invalid test for evenness. This will fail for negative numbers. |
+| BadCheckOdd.cs:21:17:21:25 | ... > ... | Possibly invalid test for oddness. This will fail for negative numbers. |
+| BadCheckOdd.cs:23:17:23:27 | ... > ... | Possibly invalid test for oddness. This will fail for negative numbers. |

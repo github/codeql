@@ -1,0 +1,1 @@
+var a = new Array(10);

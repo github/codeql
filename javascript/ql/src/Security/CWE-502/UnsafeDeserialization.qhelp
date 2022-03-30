@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Deserializing untrusted data using any deserialization framework that
+allows the construction of arbitrary functions is easily exploitable
+and, in many cases, allows an attacker to execute arbitrary code.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Avoid deserialization of untrusted data if at all possible. If the
+architecture permits it, then use formats like JSON or XML that cannot
+represent functions. When using YAML or other formats that support the
+serialization and deserialization of functions, ensure that the parser
+is configured to disable deserialization of arbitrary functions.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example calls the <code>load</code> function of the popular
+<code>js-yaml</code> package on data that comes from an HTTP request and
+hence is inherently unsafe.
+</p>
+<sample src="examples/UnsafeDeserializationBad.js"/>
+<p>
+Using the <code>safeLoad</code> function instead (which does not deserialize
+YAML-encoded functions) removes the vulnerability.
+</p>
+<sample src="examples/UnsafeDeserializationGood.js" />
+</example>
+
+<references>
+
+<li>
+OWASP vulnerability description:
+<a href="https://www.owasp.org/index.php/Deserialization_of_untrusted_data">Deserialization of untrusted data</a>.
+</li>
+<li>
+OWASP guidance on deserializing objects:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html">Deserialization Cheat Sheet</a>.
+</li>
+<li>
+Neal Poole:
+<a href="https://nealpoole.com/blog/2013/06/code-execution-via-yaml-in-js-yaml-nodejs-module/">Code Execution via YAML in JS-YAML Node.js Module</a>.
+</li>
+</references>
+
+</qhelp>

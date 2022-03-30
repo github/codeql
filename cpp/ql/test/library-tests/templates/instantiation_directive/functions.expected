@@ -1,0 +1,3 @@
+| file://:0:0:0:0 | operator= | file://:0:0:0:0 | __va_list_tag && |
+| file://:0:0:0:0 | operator= | file://:0:0:0:0 | const __va_list_tag & |
+| test.cpp:2:6:2:8 | foo | test.cpp:1:19:1:19 | T |

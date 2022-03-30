@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Using the <code>Class.getResource</code> method is a common way of including
+some non-code resources with an application.</p>
+
+<p>There are problems when this is called using <code>x.getClass().getResource()</code>,
+for some variable <code>x</code>. This is not a safe way to retrieve a resource. The method 
+<code>getClass</code> returns the <em>run-time</em> class of <code>x</code> (that is, its actual, "most
+derived" class, rather than its declared type), which causes two potential problems:</p>
+
+<ul>
+<li>If the run-time type of the receiving object is a subclass of the declared type and is in
+a different package, the resource path may be interpreted differently. According to
+its contract, <code>Class.getResource</code> qualifies non-absolute paths with the
+current package name, thus potentially returning a different resource or failing to find
+the requested resource.</li>
+<li><code>Class.getResource</code> delegates finding the resource to the class loader that loaded the class.
+At run time, there is no guarantee that all subclasses of
+a particular type are loaded by the same class loader, resulting in resource lookup
+failures that are difficult to diagnose.</li>
+</ul>
+
+</overview>
+<recommendation>
+<p>Rather than using the <code>getClass</code> method, which relies on dynamic dispatch
+and run-time types, use <code>class</code> literals instead. For example, instead of calling 
+<code>getClass().getResource()</code> on an object of type <code>Foo</code>,
+call <code>Foo.class.getResource()</code>. Class literals always refer to the
+declared type they are used on, removing the dependency on run-time types.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the calls to <code>getPostalCodes</code> return different results,
+depending on which class the call is made on: the class <code>Address</code> is in the package
+<code>framework</code> and the class <code>UKAddress</code> is in the package <code>client</code>.</p>
+
+<sample src="GetClassGetResource.java" />
+
+<p>In the following corrected example, the implementation of <code>getPostalCodes</code> is changed
+so that it always calls <code>getResource</code> on the same class.</p>
+
+<sample src="GetClassGetResourceGood.java" />
+
+</example>
+<references>
+
+<li>Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html#getResource(java.lang.String)">Class.getResource()</a>.</li>
+
+
+
+</references>
+</qhelp>

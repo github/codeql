@@ -1,0 +1,184 @@
+optionalFields
+| tst.ts:113:3:113:13 | z?: number; |   z?: number; |
+| tst.ts:114:3:114:22 | readonly w?: number; |   readonly w?: number; |
+parameterFields
+| tst.ts:81:5:81:28 | private ...  number |     private private1: number, | private1 | number |
+| tst.ts:82:5:82:37 | private ...  number |     private readonly private2: number, | private2 | number |
+| tst.ts:83:5:83:32 | protect ...  number |     protected protected1: number, | protected1 | number |
+| tst.ts:84:5:84:41 | protect ...  number |     protected readonly protected2: number, | protected2 | number |
+| tst.ts:85:5:85:26 | public  ...  number |     public public1: number, | public1 | number |
+| tst.ts:86:5:86:35 | public  ...  number |     public readonly public2: number, | public2 | number |
+| tst.ts:87:5:87:29 | readonl ...  number |     readonly default1: number, | default1 | number |
+| tst.ts:90:5:90:28 | private ...  number |     private private3: number = 0, | private3 | number |
+| tst.ts:91:5:91:37 | private ...  number |     private readonly private4: number = 0, | private4 | number |
+| tst.ts:92:5:92:32 | protect ...  number |     protected protected3: number = 0, | protected3 | number |
+| tst.ts:93:5:93:41 | protect ...  number |     protected readonly protected4: number = 0, | protected4 | number |
+| tst.ts:94:5:94:26 | public  ...  number |     public public3: number = 0, | public3 | number |
+| tst.ts:95:5:95:35 | public  ...  number |     public readonly public4: number = 0, | public4 | number |
+| tst.ts:96:5:96:29 | readonl ...  number |     readonly default3: number = 0, | default3 | number |
+| tst.ts:99:5:99:20 | private private5 |     private private5 = 0, | private5 | no type |
+| tst.ts:100:5:100:29 | private ... rivate6 |     private readonly private6 = 0, | private6 | no type |
+| tst.ts:101:5:101:24 | protected protected5 |     protected protected5 = 0, | protected5 | no type |
+| tst.ts:102:5:102:33 | protect ... tected6 |     protected readonly protected6 = 0, | protected6 | no type |
+| tst.ts:103:5:103:18 | public public5 |     public public5 = 0, | public5 | no type |
+| tst.ts:104:5:104:27 | public  ... public6 |     public readonly public6 = 0, | public6 | no type |
+| tst.ts:105:5:105:21 | readonly default5 |     readonly default5 = 0, | default5 | no type |
+privateMembers
+| tst.ts:2:3:2:27 | private ... number; |   private private1: number; |
+| tst.ts:3:3:3:36 | private ... number; |   private readonly private2: number; |
+| tst.ts:4:3:4:34 | private ... number; |   private static private3: number; |
+| tst.ts:5:3:5:43 | private ... number; |   private static readonly private4: number; |
+| tst.ts:6:3:6:32 | private ... number; |   private ['cprivate1']: number; |
+| tst.ts:7:3:7:41 | private ... number; |   private readonly ['cprivate2']: number; |
+| tst.ts:8:3:8:39 | private ... number; |   private static ['cprivate3']: number; |
+| tst.ts:9:3:9:48 | private ... number; |   private static readonly ['cprivate4']: number; |
+| tst.ts:52:3:52:23 | private ... e1() {} |   private private1() {} |
+| tst.ts:53:3:53:30 | private ... e3() {} |   private static private3() {} |
+| tst.ts:54:3:54:28 | private ... ']() {} |   private ['cprivate1']() {} |
+| tst.ts:55:3:55:35 | private ... ']() {} |   private static ['cprivate3']() {} |
+| tst.ts:81:5:81:28 | private ...  number |     private private1: number, |
+| tst.ts:82:5:82:37 | private ...  number |     private readonly private2: number, |
+| tst.ts:90:5:90:28 | private ...  number |     private private3: number = 0, |
+| tst.ts:91:5:91:37 | private ...  number |     private readonly private4: number = 0, |
+| tst.ts:99:5:99:20 | private private5 |     private private5 = 0, |
+| tst.ts:100:5:100:29 | private ... rivate6 |     private readonly private6 = 0, |
+protectedMembers
+| tst.ts:11:3:11:31 | protect ... number; |   protected protected1: number; |
+| tst.ts:12:3:12:40 | protect ... number; |   protected readonly protected2: number; |
+| tst.ts:13:3:13:38 | protect ... number; |   protected static protected3: number; |
+| tst.ts:14:3:14:47 | protect ... number; |   protected static readonly protected4: number; |
+| tst.ts:15:3:15:40 | protect ... number; |   protected abstract protected5: number; |
+| tst.ts:16:3:16:49 | protect ... number; |   protected abstract readonly protected6: number; |
+| tst.ts:17:3:17:36 | protect ... number; |   protected ['cprotected1']: number; |
+| tst.ts:18:3:18:45 | protect ... number; |   protected readonly ['cprotected2']: number; |
+| tst.ts:19:3:19:43 | protect ... number; |   protected static ['cprotected3']: number; |
+| tst.ts:20:3:20:52 | protect ... number; |   protected static readonly ['cprotected4']: number; |
+| tst.ts:21:3:21:45 | protect ... number; |   protected abstract ['cprotected5']: number; |
+| tst.ts:22:3:22:54 | protect ... number; |   protected abstract readonly ['cprotected6']: number; |
+| tst.ts:57:3:57:27 | protect ... d1() {} |   protected protected1() {} |
+| tst.ts:58:3:58:34 | protect ... d3() {} |   protected static protected3() {} |
+| tst.ts:59:3:59:34 | protect ... ted5(); |   protected abstract protected5(); |
+| tst.ts:60:3:60:32 | protect ... ']() {} |   protected ['cprotected1']() {} |
+| tst.ts:61:3:61:39 | protect ... ']() {} |   protected static ['cprotected3']() {} |
+| tst.ts:62:3:62:39 | protect ... d5'](); |   protected abstract ['cprotected5'](); |
+| tst.ts:83:5:83:32 | protect ...  number |     protected protected1: number, |
+| tst.ts:84:5:84:41 | protect ...  number |     protected readonly protected2: number, |
+| tst.ts:92:5:92:32 | protect ...  number |     protected protected3: number = 0, |
+| tst.ts:93:5:93:41 | protect ...  number |     protected readonly protected4: number = 0, |
+| tst.ts:101:5:101:24 | protected protected5 |     protected protected5 = 0, |
+| tst.ts:102:5:102:33 | protect ... tected6 |     protected readonly protected6 = 0, |
+publicKeyword
+| tst.ts:24:3:24:25 | public  ... number; |   public public1: number; |
+| tst.ts:25:3:25:34 | public  ... number; |   public readonly public2: number; |
+| tst.ts:26:3:26:32 | public  ... number; |   public static public3: number; |
+| tst.ts:27:3:27:41 | public  ... number; |   public static readonly public4: number; |
+| tst.ts:28:3:28:34 | public  ... number; |   public abstract public5: number; |
+| tst.ts:29:3:29:43 | public  ... number; |   public abstract readonly public6: number; |
+| tst.ts:30:3:30:30 | public  ... number; |   public ['cpublic1']: number; |
+| tst.ts:31:3:31:39 | public  ... number; |   public readonly ['cpublic2']: number; |
+| tst.ts:32:3:32:37 | public  ... number; |   public static ['cpublic3']: number; |
+| tst.ts:33:3:33:46 | public  ... number; |   public static readonly ['cpublic4']: number; |
+| tst.ts:34:3:34:39 | public  ... number; |   public abstract ['cpublic5']: number; |
+| tst.ts:35:3:35:48 | public  ... number; |   public abstract readonly ['cpublic6']: number; |
+| tst.ts:64:3:64:21 | public public1() {} |   public public1() {} |
+| tst.ts:65:3:65:28 | public  ... c3() {} |   public static public3() {} |
+| tst.ts:66:3:66:28 | public  ... lic5(); |   public abstract public5(); |
+| tst.ts:67:3:67:26 | public  ... ']() {} |   public ['cpublic1']() {} |
+| tst.ts:68:3:68:33 | public  ... ']() {} |   public static ['cpublic3']() {} |
+| tst.ts:69:3:69:33 | public  ... c5'](); |   public abstract ['cpublic5'](); |
+| tst.ts:85:5:85:26 | public  ...  number |     public public1: number, |
+| tst.ts:86:5:86:35 | public  ...  number |     public readonly public2: number, |
+| tst.ts:94:5:94:26 | public  ...  number |     public public3: number = 0, |
+| tst.ts:95:5:95:35 | public  ...  number |     public readonly public4: number = 0, |
+| tst.ts:103:5:103:18 | public public5 |     public public5 = 0, |
+| tst.ts:104:5:104:27 | public  ... public6 |     public readonly public6 = 0, |
+publicMembers
+| tst.ts:1:27:1:26 | constructor() {} | abstract class ClassField { |
+| tst.ts:24:3:24:25 | public  ... number; |   public public1: number; |
+| tst.ts:25:3:25:34 | public  ... number; |   public readonly public2: number; |
+| tst.ts:26:3:26:32 | public  ... number; |   public static public3: number; |
+| tst.ts:27:3:27:41 | public  ... number; |   public static readonly public4: number; |
+| tst.ts:28:3:28:34 | public  ... number; |   public abstract public5: number; |
+| tst.ts:29:3:29:43 | public  ... number; |   public abstract readonly public6: number; |
+| tst.ts:30:3:30:30 | public  ... number; |   public ['cpublic1']: number; |
+| tst.ts:31:3:31:39 | public  ... number; |   public readonly ['cpublic2']: number; |
+| tst.ts:32:3:32:37 | public  ... number; |   public static ['cpublic3']: number; |
+| tst.ts:33:3:33:46 | public  ... number; |   public static readonly ['cpublic4']: number; |
+| tst.ts:34:3:34:39 | public  ... number; |   public abstract ['cpublic5']: number; |
+| tst.ts:35:3:35:48 | public  ... number; |   public abstract readonly ['cpublic6']: number; |
+| tst.ts:37:3:37:19 | default1: number; |   default1: number; |
+| tst.ts:38:3:38:28 | readonl ... number; |   readonly default2: number; |
+| tst.ts:39:3:39:26 | static  ... number; |   static default3: number; |
+| tst.ts:40:3:40:35 | static  ... number; |   static readonly default4: number; |
+| tst.ts:41:3:41:28 | abstrac ... number; |   abstract deafult5: number; |
+| tst.ts:42:3:42:37 | abstrac ... number; |   abstract readonly default6: number; |
+| tst.ts:43:3:43:24 | ['cdefa ... number; |   ['cdefault1']: number; |
+| tst.ts:44:3:44:33 | readonl ... number; |   readonly ['cdefault2']: number; |
+| tst.ts:45:3:45:31 | static  ... number; |   static ['cdefault3']: number; |
+| tst.ts:46:3:46:40 | static  ... number; |   static readonly ['cdefault4']: number; |
+| tst.ts:47:3:47:33 | abstrac ... number; |   abstract ['cdeafult5']: number; |
+| tst.ts:48:3:48:42 | abstrac ... number; |   abstract readonly ['cdefault6']: number; |
+| tst.ts:51:29:51:28 | constructor() {} | abstract class ClassMethods { |
+| tst.ts:64:3:64:21 | public public1() {} |   public public1() {} |
+| tst.ts:65:3:65:28 | public  ... c3() {} |   public static public3() {} |
+| tst.ts:66:3:66:28 | public  ... lic5(); |   public abstract public5(); |
+| tst.ts:67:3:67:26 | public  ... ']() {} |   public ['cpublic1']() {} |
+| tst.ts:68:3:68:33 | public  ... ']() {} |   public static ['cpublic3']() {} |
+| tst.ts:69:3:69:33 | public  ... c5'](); |   public abstract ['cpublic5'](); |
+| tst.ts:71:3:71:15 | default1() {} |   default1() {} |
+| tst.ts:72:3:72:22 | static default3() {} |   static default3() {} |
+| tst.ts:73:3:73:22 | abstract deafult5(); |   abstract deafult5(); |
+| tst.ts:74:3:74:20 | ['cdefault1']() {} |   ['cdefault1']() {} |
+| tst.ts:75:3:75:27 | static  ... ']() {} |   static ['cdefault3']() {} |
+| tst.ts:76:3:76:27 | abstrac ... t5'](); |   abstract ['cdeafult5'](); |
+| tst.ts:80:3:107:6 | constru ... \\n  ) {} |   constructor( |
+| tst.ts:85:5:85:26 | public  ...  number |     public public1: number, |
+| tst.ts:86:5:86:35 | public  ...  number |     public readonly public2: number, |
+| tst.ts:87:5:87:29 | readonl ...  number |     readonly default1: number, |
+| tst.ts:94:5:94:26 | public  ...  number |     public public3: number = 0, |
+| tst.ts:95:5:95:35 | public  ...  number |     public readonly public4: number = 0, |
+| tst.ts:96:5:96:29 | readonl ...  number |     readonly default3: number = 0, |
+| tst.ts:103:5:103:18 | public public5 |     public public5 = 0, |
+| tst.ts:104:5:104:27 | public  ... public6 |     public readonly public6 = 0, |
+| tst.ts:105:5:105:21 | readonly default5 |     readonly default5 = 0, |
+| tst.ts:111:3:111:12 | x: number; |   x: number; |
+| tst.ts:112:3:112:21 | readonly y: number; |   readonly y: number; |
+| tst.ts:113:3:113:13 | z?: number; |   z?: number; |
+| tst.ts:114:3:114:22 | readonly w?: number; |   readonly w?: number; |
+readonlyMembers
+| tst.ts:3:3:3:36 | private ... number; |   private readonly private2: number; |
+| tst.ts:5:3:5:43 | private ... number; |   private static readonly private4: number; |
+| tst.ts:7:3:7:41 | private ... number; |   private readonly ['cprivate2']: number; |
+| tst.ts:9:3:9:48 | private ... number; |   private static readonly ['cprivate4']: number; |
+| tst.ts:12:3:12:40 | protect ... number; |   protected readonly protected2: number; |
+| tst.ts:14:3:14:47 | protect ... number; |   protected static readonly protected4: number; |
+| tst.ts:16:3:16:49 | protect ... number; |   protected abstract readonly protected6: number; |
+| tst.ts:18:3:18:45 | protect ... number; |   protected readonly ['cprotected2']: number; |
+| tst.ts:20:3:20:52 | protect ... number; |   protected static readonly ['cprotected4']: number; |
+| tst.ts:22:3:22:54 | protect ... number; |   protected abstract readonly ['cprotected6']: number; |
+| tst.ts:25:3:25:34 | public  ... number; |   public readonly public2: number; |
+| tst.ts:27:3:27:41 | public  ... number; |   public static readonly public4: number; |
+| tst.ts:29:3:29:43 | public  ... number; |   public abstract readonly public6: number; |
+| tst.ts:31:3:31:39 | public  ... number; |   public readonly ['cpublic2']: number; |
+| tst.ts:33:3:33:46 | public  ... number; |   public static readonly ['cpublic4']: number; |
+| tst.ts:35:3:35:48 | public  ... number; |   public abstract readonly ['cpublic6']: number; |
+| tst.ts:38:3:38:28 | readonl ... number; |   readonly default2: number; |
+| tst.ts:40:3:40:35 | static  ... number; |   static readonly default4: number; |
+| tst.ts:42:3:42:37 | abstrac ... number; |   abstract readonly default6: number; |
+| tst.ts:44:3:44:33 | readonl ... number; |   readonly ['cdefault2']: number; |
+| tst.ts:46:3:46:40 | static  ... number; |   static readonly ['cdefault4']: number; |
+| tst.ts:48:3:48:42 | abstrac ... number; |   abstract readonly ['cdefault6']: number; |
+| tst.ts:82:5:82:37 | private ...  number |     private readonly private2: number, |
+| tst.ts:84:5:84:41 | protect ...  number |     protected readonly protected2: number, |
+| tst.ts:86:5:86:35 | public  ...  number |     public readonly public2: number, |
+| tst.ts:87:5:87:29 | readonl ...  number |     readonly default1: number, |
+| tst.ts:91:5:91:37 | private ...  number |     private readonly private4: number = 0, |
+| tst.ts:93:5:93:41 | protect ...  number |     protected readonly protected4: number = 0, |
+| tst.ts:95:5:95:35 | public  ...  number |     public readonly public4: number = 0, |
+| tst.ts:96:5:96:29 | readonl ...  number |     readonly default3: number = 0, |
+| tst.ts:100:5:100:29 | private ... rivate6 |     private readonly private6 = 0, |
+| tst.ts:102:5:102:33 | protect ... tected6 |     protected readonly protected6 = 0, |
+| tst.ts:104:5:104:27 | public  ... public6 |     public readonly public6 = 0, |
+| tst.ts:105:5:105:21 | readonly default5 |     readonly default5 = 0, |
+| tst.ts:112:3:112:21 | readonly y: number; |   readonly y: number; |
+| tst.ts:114:3:114:22 | readonly w?: number; |   readonly w?: number; |

@@ -1,0 +1,72 @@
+edges
+| test_cryptodome.py:0:0:0:0 | ModuleVariableNode for test_cryptodome.get_certificate | test_cryptodome.py:6:17:6:31 | ControlFlowNode for get_certificate |
+| test_cryptodome.py:0:0:0:0 | ModuleVariableNode for test_cryptodome.get_password | test_cryptodome.py:13:17:13:28 | ControlFlowNode for get_password |
+| test_cryptodome.py:0:0:0:0 | ModuleVariableNode for test_cryptodome.get_password | test_cryptodome.py:20:17:20:28 | ControlFlowNode for get_password |
+| test_cryptodome.py:2:23:2:34 | ControlFlowNode for ImportMember | test_cryptodome.py:2:23:2:34 | GSSA Variable get_password |
+| test_cryptodome.py:2:23:2:34 | GSSA Variable get_password | test_cryptodome.py:0:0:0:0 | ModuleVariableNode for test_cryptodome.get_password |
+| test_cryptodome.py:2:37:2:51 | ControlFlowNode for ImportMember | test_cryptodome.py:2:37:2:51 | GSSA Variable get_certificate |
+| test_cryptodome.py:2:37:2:51 | GSSA Variable get_certificate | test_cryptodome.py:0:0:0:0 | ModuleVariableNode for test_cryptodome.get_certificate |
+| test_cryptodome.py:6:17:6:31 | ControlFlowNode for get_certificate | test_cryptodome.py:8:19:8:27 | ControlFlowNode for dangerous |
+| test_cryptodome.py:6:17:6:33 | ControlFlowNode for get_certificate() | test_cryptodome.py:8:19:8:27 | ControlFlowNode for dangerous |
+| test_cryptodome.py:13:17:13:28 | ControlFlowNode for get_password | test_cryptodome.py:15:19:15:27 | ControlFlowNode for dangerous |
+| test_cryptodome.py:13:17:13:30 | ControlFlowNode for get_password() | test_cryptodome.py:15:19:15:27 | ControlFlowNode for dangerous |
+| test_cryptodome.py:20:17:20:28 | ControlFlowNode for get_password | test_cryptodome.py:24:19:24:27 | ControlFlowNode for dangerous |
+| test_cryptodome.py:20:17:20:30 | ControlFlowNode for get_password() | test_cryptodome.py:24:19:24:27 | ControlFlowNode for dangerous |
+| test_cryptography.py:0:0:0:0 | ModuleVariableNode for test_cryptography.get_certificate | test_cryptography.py:7:17:7:31 | ControlFlowNode for get_certificate |
+| test_cryptography.py:0:0:0:0 | ModuleVariableNode for test_cryptography.get_password | test_cryptography.py:15:17:15:28 | ControlFlowNode for get_password |
+| test_cryptography.py:0:0:0:0 | ModuleVariableNode for test_cryptography.get_password | test_cryptography.py:23:17:23:28 | ControlFlowNode for get_password |
+| test_cryptography.py:3:23:3:34 | ControlFlowNode for ImportMember | test_cryptography.py:3:23:3:34 | GSSA Variable get_password |
+| test_cryptography.py:3:23:3:34 | GSSA Variable get_password | test_cryptography.py:0:0:0:0 | ModuleVariableNode for test_cryptography.get_password |
+| test_cryptography.py:3:37:3:51 | ControlFlowNode for ImportMember | test_cryptography.py:3:37:3:51 | GSSA Variable get_certificate |
+| test_cryptography.py:3:37:3:51 | GSSA Variable get_certificate | test_cryptography.py:0:0:0:0 | ModuleVariableNode for test_cryptography.get_certificate |
+| test_cryptography.py:7:17:7:31 | ControlFlowNode for get_certificate | test_cryptography.py:9:19:9:27 | ControlFlowNode for dangerous |
+| test_cryptography.py:7:17:7:33 | ControlFlowNode for get_certificate() | test_cryptography.py:9:19:9:27 | ControlFlowNode for dangerous |
+| test_cryptography.py:15:17:15:28 | ControlFlowNode for get_password | test_cryptography.py:17:19:17:27 | ControlFlowNode for dangerous |
+| test_cryptography.py:15:17:15:30 | ControlFlowNode for get_password() | test_cryptography.py:17:19:17:27 | ControlFlowNode for dangerous |
+| test_cryptography.py:23:17:23:28 | ControlFlowNode for get_password | test_cryptography.py:27:19:27:27 | ControlFlowNode for dangerous |
+| test_cryptography.py:23:17:23:30 | ControlFlowNode for get_password() | test_cryptography.py:27:19:27:27 | ControlFlowNode for dangerous |
+nodes
+| test_cryptodome.py:0:0:0:0 | ModuleVariableNode for test_cryptodome.get_certificate | semmle.label | ModuleVariableNode for test_cryptodome.get_certificate |
+| test_cryptodome.py:0:0:0:0 | ModuleVariableNode for test_cryptodome.get_password | semmle.label | ModuleVariableNode for test_cryptodome.get_password |
+| test_cryptodome.py:2:23:2:34 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| test_cryptodome.py:2:23:2:34 | GSSA Variable get_password | semmle.label | GSSA Variable get_password |
+| test_cryptodome.py:2:37:2:51 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| test_cryptodome.py:2:37:2:51 | GSSA Variable get_certificate | semmle.label | GSSA Variable get_certificate |
+| test_cryptodome.py:6:17:6:31 | ControlFlowNode for get_certificate | semmle.label | ControlFlowNode for get_certificate |
+| test_cryptodome.py:6:17:6:33 | ControlFlowNode for get_certificate() | semmle.label | ControlFlowNode for get_certificate() |
+| test_cryptodome.py:8:19:8:27 | ControlFlowNode for dangerous | semmle.label | ControlFlowNode for dangerous |
+| test_cryptodome.py:13:17:13:28 | ControlFlowNode for get_password | semmle.label | ControlFlowNode for get_password |
+| test_cryptodome.py:13:17:13:30 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
+| test_cryptodome.py:15:19:15:27 | ControlFlowNode for dangerous | semmle.label | ControlFlowNode for dangerous |
+| test_cryptodome.py:20:17:20:28 | ControlFlowNode for get_password | semmle.label | ControlFlowNode for get_password |
+| test_cryptodome.py:20:17:20:30 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
+| test_cryptodome.py:24:19:24:27 | ControlFlowNode for dangerous | semmle.label | ControlFlowNode for dangerous |
+| test_cryptography.py:0:0:0:0 | ModuleVariableNode for test_cryptography.get_certificate | semmle.label | ModuleVariableNode for test_cryptography.get_certificate |
+| test_cryptography.py:0:0:0:0 | ModuleVariableNode for test_cryptography.get_password | semmle.label | ModuleVariableNode for test_cryptography.get_password |
+| test_cryptography.py:3:23:3:34 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| test_cryptography.py:3:23:3:34 | GSSA Variable get_password | semmle.label | GSSA Variable get_password |
+| test_cryptography.py:3:37:3:51 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| test_cryptography.py:3:37:3:51 | GSSA Variable get_certificate | semmle.label | GSSA Variable get_certificate |
+| test_cryptography.py:7:17:7:31 | ControlFlowNode for get_certificate | semmle.label | ControlFlowNode for get_certificate |
+| test_cryptography.py:7:17:7:33 | ControlFlowNode for get_certificate() | semmle.label | ControlFlowNode for get_certificate() |
+| test_cryptography.py:9:19:9:27 | ControlFlowNode for dangerous | semmle.label | ControlFlowNode for dangerous |
+| test_cryptography.py:15:17:15:28 | ControlFlowNode for get_password | semmle.label | ControlFlowNode for get_password |
+| test_cryptography.py:15:17:15:30 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
+| test_cryptography.py:17:19:17:27 | ControlFlowNode for dangerous | semmle.label | ControlFlowNode for dangerous |
+| test_cryptography.py:23:17:23:28 | ControlFlowNode for get_password | semmle.label | ControlFlowNode for get_password |
+| test_cryptography.py:23:17:23:30 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
+| test_cryptography.py:27:19:27:27 | ControlFlowNode for dangerous | semmle.label | ControlFlowNode for dangerous |
+subpaths
+#select
+| test_cryptodome.py:8:19:8:27 | ControlFlowNode for dangerous | test_cryptodome.py:2:37:2:51 | ControlFlowNode for ImportMember | test_cryptodome.py:8:19:8:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (MD5) that is insecure. | test_cryptodome.py:2:37:2:51 | ControlFlowNode for ImportMember | Sensitive data (certificate) |
+| test_cryptodome.py:8:19:8:27 | ControlFlowNode for dangerous | test_cryptodome.py:6:17:6:33 | ControlFlowNode for get_certificate() | test_cryptodome.py:8:19:8:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (MD5) that is insecure. | test_cryptodome.py:6:17:6:33 | ControlFlowNode for get_certificate() | Sensitive data (certificate) |
+| test_cryptodome.py:15:19:15:27 | ControlFlowNode for dangerous | test_cryptodome.py:2:23:2:34 | ControlFlowNode for ImportMember | test_cryptodome.py:15:19:15:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test_cryptodome.py:2:23:2:34 | ControlFlowNode for ImportMember | Sensitive data (password) |
+| test_cryptodome.py:15:19:15:27 | ControlFlowNode for dangerous | test_cryptodome.py:13:17:13:30 | ControlFlowNode for get_password() | test_cryptodome.py:15:19:15:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test_cryptodome.py:13:17:13:30 | ControlFlowNode for get_password() | Sensitive data (password) |
+| test_cryptodome.py:24:19:24:27 | ControlFlowNode for dangerous | test_cryptodome.py:2:23:2:34 | ControlFlowNode for ImportMember | test_cryptodome.py:24:19:24:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (SHA256) that is insecure for password hashing, since it is not a computationally expensive hash function. | test_cryptodome.py:2:23:2:34 | ControlFlowNode for ImportMember | Sensitive data (password) |
+| test_cryptodome.py:24:19:24:27 | ControlFlowNode for dangerous | test_cryptodome.py:20:17:20:30 | ControlFlowNode for get_password() | test_cryptodome.py:24:19:24:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (SHA256) that is insecure for password hashing, since it is not a computationally expensive hash function. | test_cryptodome.py:20:17:20:30 | ControlFlowNode for get_password() | Sensitive data (password) |
+| test_cryptography.py:9:19:9:27 | ControlFlowNode for dangerous | test_cryptography.py:3:37:3:51 | ControlFlowNode for ImportMember | test_cryptography.py:9:19:9:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (MD5) that is insecure. | test_cryptography.py:3:37:3:51 | ControlFlowNode for ImportMember | Sensitive data (certificate) |
+| test_cryptography.py:9:19:9:27 | ControlFlowNode for dangerous | test_cryptography.py:7:17:7:33 | ControlFlowNode for get_certificate() | test_cryptography.py:9:19:9:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (MD5) that is insecure. | test_cryptography.py:7:17:7:33 | ControlFlowNode for get_certificate() | Sensitive data (certificate) |
+| test_cryptography.py:17:19:17:27 | ControlFlowNode for dangerous | test_cryptography.py:3:23:3:34 | ControlFlowNode for ImportMember | test_cryptography.py:17:19:17:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test_cryptography.py:3:23:3:34 | ControlFlowNode for ImportMember | Sensitive data (password) |
+| test_cryptography.py:17:19:17:27 | ControlFlowNode for dangerous | test_cryptography.py:15:17:15:30 | ControlFlowNode for get_password() | test_cryptography.py:17:19:17:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test_cryptography.py:15:17:15:30 | ControlFlowNode for get_password() | Sensitive data (password) |
+| test_cryptography.py:27:19:27:27 | ControlFlowNode for dangerous | test_cryptography.py:3:23:3:34 | ControlFlowNode for ImportMember | test_cryptography.py:27:19:27:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (SHA256) that is insecure for password hashing, since it is not a computationally expensive hash function. | test_cryptography.py:3:23:3:34 | ControlFlowNode for ImportMember | Sensitive data (password) |
+| test_cryptography.py:27:19:27:27 | ControlFlowNode for dangerous | test_cryptography.py:23:17:23:30 | ControlFlowNode for get_password() | test_cryptography.py:27:19:27:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (SHA256) that is insecure for password hashing, since it is not a computationally expensive hash function. | test_cryptography.py:23:17:23:30 | ControlFlowNode for get_password() | Sensitive data (password) |

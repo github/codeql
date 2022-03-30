@@ -1,0 +1,16 @@
+edges
+| Program.cs:15:27:15:38 | ... + ... : Int32 | Program.cs:17:37:17:43 | access to local variable endYear |
+| Program.cs:23:31:23:34 | year : Int32 | Program.cs:26:39:26:42 | access to parameter year |
+| Program.cs:33:18:33:29 | ... - ... : Int32 | Program.cs:23:31:23:34 | year : Int32 |
+nodes
+| Program.cs:13:39:13:50 | ... - ... | semmle.label | ... - ... |
+| Program.cs:15:27:15:38 | ... + ... : Int32 | semmle.label | ... + ... : Int32 |
+| Program.cs:17:37:17:43 | access to local variable endYear | semmle.label | access to local variable endYear |
+| Program.cs:23:31:23:34 | year : Int32 | semmle.label | year : Int32 |
+| Program.cs:26:39:26:42 | access to parameter year | semmle.label | access to parameter year |
+| Program.cs:33:18:33:29 | ... - ... : Int32 | semmle.label | ... - ... : Int32 |
+subpaths
+#select
+| Program.cs:13:39:13:50 | ... - ... | Program.cs:13:39:13:50 | ... - ... | Program.cs:13:39:13:50 | ... - ... | This $@ based on a 'System.DateTime.Year' property is used in a construction of a new 'System.DateTime' object, flowing to the 'year' argument. | Program.cs:13:39:13:50 | ... - ... | arithmetic operation |
+| Program.cs:17:37:17:43 | access to local variable endYear | Program.cs:15:27:15:38 | ... + ... : Int32 | Program.cs:17:37:17:43 | access to local variable endYear | This $@ based on a 'System.DateTime.Year' property is used in a construction of a new 'System.DateTime' object, flowing to the 'year' argument. | Program.cs:15:27:15:38 | ... + ... : Int32 | arithmetic operation |
+| Program.cs:26:39:26:42 | access to parameter year | Program.cs:33:18:33:29 | ... - ... : Int32 | Program.cs:26:39:26:42 | access to parameter year | This $@ based on a 'System.DateTime.Year' property is used in a construction of a new 'System.DateTime' object, flowing to the 'year' argument. | Program.cs:33:18:33:29 | ... - ... : Int32 | arithmetic operation |

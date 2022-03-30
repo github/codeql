@@ -1,0 +1,4 @@
+| file://:0:0:0:0 | builtin-class ValueError | ValueError |
+| file://:0:0:0:0 | builtin-class bool | bool |
+| file://:0:0:0:0 | builtin-class slice | slice |
+| file://:0:0:0:0 | list object | sys.argv |

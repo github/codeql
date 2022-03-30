@@ -1,0 +1,49 @@
+name: Build framework coverage reports
+
+on:
+  workflow_dispatch:
+    inputs:
+      qlModelShaOverride:
+        description: 'github/codeql repo SHA used for looking up the CSV models'
+        required: false
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clone self (github/codeql)
+      uses: actions/checkout@v2
+      with:
+        path: script
+    - name: Clone self (github/codeql) for analysis
+      uses: actions/checkout@v2
+      with:
+        path: codeqlModels
+        ref: ${{ github.event.inputs.qlModelShaOverride || github.ref }}
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Download CodeQL CLI
+      env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+         gh release download --repo "github/codeql-cli-binaries" --pattern "codeql-linux64.zip"
+    - name: Unzip CodeQL CLI
+      run: unzip -d codeql-cli codeql-linux64.zip
+    - name: Build modeled package list
+      run: |
+        PATH="$PATH:codeql-cli/codeql" python script/misc/scripts/library-coverage/generate-report.py ci codeqlModels script
+    - name: Upload CSV package list
+      uses: actions/upload-artifact@v2
+      with:
+        name: framework-coverage-csv
+        path: framework-coverage-*.csv
+    - name: Upload RST package list
+      uses: actions/upload-artifact@v2
+      with:
+        name: framework-coverage-rst
+        path: framework-coverage-*.rst
+

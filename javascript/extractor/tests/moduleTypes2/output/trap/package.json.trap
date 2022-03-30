@@ -1,0 +1,22 @@
+#10000=@"/package.json;sourcefile"
+files(#10000,"/package.json")
+#10001=@"/;folder"
+folders(#10001,"/")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=*
+json(#20000,5,#10000,0,"{\n  ""type"": 123\n}")
+#20001=@"loc,{#10000},1,1,3,1"
+locations_default(#20001,#10000,1,1,3,1)
+json_locations(#20000,#20001)
+#20002=*
+json(#20002,2,#20000,0,"123")
+#20003=@"loc,{#10000},2,11,2,13"
+locations_default(#20003,#10000,2,11,2,13)
+json_locations(#20002,#20003)
+json_literals("123","123",#20002)
+json_properties(#20000,"type",#20002)
+numlines(#10000,3,0,0)
+filetype(#10000,"json")

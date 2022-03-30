@@ -1,0 +1,2 @@
+| CollectionTest.java:38:24:38:30 | useless | The contents of this container are never accessed. |
+| MapTest.java:38:31:38:37 | useless | The contents of this container are never accessed. |

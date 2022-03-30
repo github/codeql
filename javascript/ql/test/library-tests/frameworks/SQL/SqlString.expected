@@ -1,0 +1,73 @@
+| mssql1.js:7:40:7:72 | select  ... e id =  |
+| mssql1.js:7:75:7:79 | value |
+| mssql1.js:10:19:10:30 | 'SELECT 123' |
+| mssql2.js:5:15:5:34 | 'select 1 as number' |
+| mssql2.js:13:15:13:66 | 'create ...  table' |
+| mssql2.js:22:24:22:43 | 'select 1 as number' |
+| mssql2.js:29:30:29:81 | 'create ...  table' |
+| mssql-types.ts:7:31:7:42 | 'SELECT 123' |
+| mysql1.js:13:18:13:43 | 'SELECT ... lution' |
+| mysql1.js:18:18:22:1 | {\\n    s ... vid']\\n} |
+| mysql1.js:19:10:19:51 | 'SELECT ... r` = ?' |
+| mysql1a.js:17:18:17:43 | 'SELECT ... lution' |
+| mysql2-promise.js:14:3:14:62 | 'SELECT ... ` > 45' |
+| mysql2-promise.js:23:3:23:56 | 'SELECT ... e` > ?' |
+| mysql2-promise.js:31:19:31:39 | 'SELECT ...  users' |
+| mysql2-promise.js:32:21:32:41 | 'SELECT ...  users' |
+| mysql2-types.ts:4:16:4:36 | 'SELECT ...  users' |
+| mysql2.js:12:12:12:37 | 'SELECT ... lution' |
+| mysql2tst.js:14:3:14:62 | 'SELECT ... ` > 45' |
+| mysql2tst.js:23:3:23:56 | 'SELECT ... e` > ?' |
+| mysql2tst.js:31:19:31:39 | 'SELECT ...  users' |
+| mysql2tst.js:32:21:32:41 | 'SELECT ...  users' |
+| mysql3.js:14:20:14:52 | 'SELECT ... etable' |
+| mysql3.js:26:14:26:31 | 'SELECT something' |
+| mysql4.js:14:18:14:20 | sql |
+| mysqlImport.js:3:18:5:1 | {\\n    s ... = ?',\\n} |
+| mysqlImport.js:4:10:4:51 | 'SELECT ... r` = ?' |
+| postgres1.js:37:21:37:24 | text |
+| postgres2.js:30:16:30:41 | 'SELECT ... number' |
+| postgres2.js:43:15:43:26 | 'SELECT 123' |
+| postgres2.js:46:15:46:47 | new Cur ... users') |
+| postgres2.js:46:26:46:46 | 'SELECT ...  users' |
+| postgres3.js:15:16:15:40 | 'SELECT ... s name' |
+| postgres5.js:8:21:8:25 | query |
+| postgres-types.ts:4:18:4:29 | 'SELECT 123' |
+| postgresImport.js:4:18:4:43 | 'SELECT ... number' |
+| sequelize2.js:10:17:10:118 | 'SELECT ... Y name' |
+| sequelize2.js:12:17:15:1 | {\\n  que ... [123]\\n} |
+| sequelize2.js:13:10:13:20 | 'SELECT $1' |
+| sequelize2.js:17:31:17:41 | '123 + 345' |
+| sequelize-types.ts:7:24:7:35 | 'SELECT 123' |
+| sequelize.js:8:17:8:118 | 'SELECT ... Y name' |
+| sequelizeImport.js:3:17:3:118 | 'SELECT ... Y name' |
+| spanner2.js:5:26:5:35 | "SQL code" |
+| spanner2.js:7:35:7:44 | "SQL code" |
+| spanner-types.ts:4:12:4:23 | 'SELECT 123' |
+| spanner.js:6:8:6:17 | "SQL code" |
+| spanner.js:7:8:7:26 | { sql: "SQL code" } |
+| spanner.js:7:15:7:24 | "SQL code" |
+| spanner.js:8:25:8:34 | "SQL code" |
+| spanner.js:9:25:9:43 | { sql: "SQL code" } |
+| spanner.js:9:32:9:41 | "SQL code" |
+| spanner.js:10:14:10:23 | "SQL code" |
+| spanner.js:11:14:11:31 | { sql: "SQL code"} |
+| spanner.js:11:21:11:30 | "SQL code" |
+| spanner.js:14:10:14:19 | "SQL code" |
+| spanner.js:15:10:15:28 | { sql: "SQL code" } |
+| spanner.js:15:17:15:26 | "SQL code" |
+| spanner.js:16:16:16:25 | "SQL code" |
+| spanner.js:17:16:17:34 | { sql: "SQL code" } |
+| spanner.js:17:23:17:32 | "SQL code" |
+| spanner.js:18:16:18:25 | "SQL code" |
+| spanner.js:19:16:19:34 | { sql: "SQL code" } |
+| spanner.js:19:23:19:32 | "SQL code" |
+| spanner.js:23:12:23:23 | 'SELECT 123' |
+| spanner.js:26:12:26:38 | 'UPDATE ... = @baz' |
+| spanner.js:31:18:31:24 | queries |
+| spannerImport.js:4:8:4:17 | "SQL code" |
+| sqlite-types.ts:4:12:4:49 | "UPDATE ... id = ?" |
+| sqlite.js:7:8:7:45 | "UPDATE ... id = ?" |
+| sqlite.js:8:8:8:45 | "UPDATE ... id = ?" |
+| sqliteArray.js:6:12:6:49 | "UPDATE ... id = ?" |
+| sqliteImport.js:2:8:2:44 | "UPDATE ... id = ?" |

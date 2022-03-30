@@ -1,0 +1,2 @@
+| Test.java:16:13:16:16 | getB | This get method is unsynchronized, but the corresponding $@ is synchronized. | Test.java:12:27:12:30 | setB | set method |
+| Test.java:42:13:42:16 | getE | This get method is unsynchronized, but the corresponding $@ is synchronized. | Test.java:38:27:38:30 | setE | set method |

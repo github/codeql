@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+The absence of a matching setter method for a property that is defined in a Spring XML bean causes a validation error when the project is compiled.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Ensure that there is a setter method in the bean file that matches the property name. 
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a bean file in which there is no match for the setter method that is
+in the class.</p>
+
+<sample src="MissingSetters.xml" />
+
+<p>This is the bean class.</p>
+
+<sample src="MissingSetters.java" />
+
+<p>The property <code>transactionHelper</code> should instead have the name <code>helper</code>.</p>
+
+</example>
+<references>
+
+
+<li>
+Spring Framework Reference Documentation 3.0:
+<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-setter-injection">3.4.1.2 Setter-based dependency injection</a>.
+</li>
+
+
+</references>
+</qhelp>

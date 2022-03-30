@@ -1,0 +1,6 @@
+| SpringExporterUnsafeDeserialization.java:14:24:14:47 | unsafeRmiServiceExporter | Unsafe deserialization in a Spring exporter bean '/unsafeRmiServiceExporter' |
+| SpringExporterUnsafeDeserialization.java:24:28:24:55 | unsafeHessianServiceExporter | Unsafe deserialization in a Spring exporter bean '/unsafeHessianServiceExporter' |
+| SpringExporterUnsafeDeserialization.java:32:32:32:63 | unsafeHttpInvokerServiceExporter | Unsafe deserialization in a Spring exporter bean '/unsafeHttpInvokerServiceExporter' |
+| SpringExporterUnsafeDeserialization.java:40:41:40:88 | unsafeCustomeRemoteInvocationSerializingExporter | Unsafe deserialization in a Spring exporter bean '/unsafeCustomeRemoteInvocationSerializingExporter' |
+| SpringExporterUnsafeDeserialization.java:56:32:56:63 | unsafeHttpInvokerServiceExporter | Unsafe deserialization in a Spring exporter bean '/unsafeHttpInvokerServiceExporter' |
+| SpringExporterUnsafeDeserialization.java:68:32:68:63 | unsafeHttpInvokerServiceExporter | Unsafe deserialization in a Spring exporter bean '/unsafeHttpInvokerServiceExporter' |

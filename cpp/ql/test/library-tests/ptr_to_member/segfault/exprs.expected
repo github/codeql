@@ -1,0 +1,39 @@
+| file://:0:0:0:0 | __i | file://:0:0:0:0 | unsigned long |
+| file://:0:0:0:0 | uls | file://:0:0:0:0 | unsigned long |
+| file://:0:0:0:0 | uls | file://:0:0:0:0 | unsigned long |
+| file://:0:0:0:0 | uls | file://:0:0:0:0 | unsigned long |
+| segfault.cpp:25:46:25:65 | call to S | file://:0:0:0:0 | void |
+| segfault.cpp:25:46:25:65 | call to S | file://:0:0:0:0 | void |
+| segfault.cpp:25:48:25:55 | __second | segfault.cpp:15:7:15:11 | tuple |
+| segfault.cpp:25:48:25:55 | __second | segfault.cpp:15:7:15:11 | tuple |
+| segfault.cpp:25:48:25:55 | __second | segfault.cpp:15:7:15:11 | tuple |
+| segfault.cpp:25:58:25:64 | 0 | segfault.cpp:12:8:12:12 | index |
+| segfault.cpp:25:58:25:64 | 0 | segfault.cpp:12:8:12:12 | index |
+| segfault.cpp:25:58:25:64 | 0 | segfault.cpp:12:8:12:12 | index |
+| segfault.cpp:25:58:25:64 | temporary object | segfault.cpp:12:8:12:12 | index |
+| segfault.cpp:25:58:25:64 | temporary object | segfault.cpp:12:8:12:12 | index |
+| segfault.cpp:25:58:25:64 | temporary object | segfault.cpp:12:8:12:12 | index |
+| segfault.cpp:29:23:29:44 | 0 | file://:0:0:0:0 | ..:: * |
+| segfault.cpp:29:23:29:44 | 0 | file://:0:0:0:0 | ..:: * |
+| segfault.cpp:29:23:29:44 | constructor init of field second | file://:0:0:0:0 | ..:: * |
+| segfault.cpp:29:23:29:44 | constructor init of field second | file://:0:0:0:0 | ..:: * |
+| segfault.cpp:29:23:29:44 | constructor init of field second | segfault.cpp:21:16:21:16 | T |
+| segfault.cpp:29:30:29:37 | Unknown literal | file://:0:0:0:0 | unknown |
+| segfault.cpp:29:30:29:40 | call to expression | file://:0:0:0:0 | unknown |
+| segfault.cpp:29:39:29:39 | t | segfault.cpp:15:7:15:11 | tuple |
+| segfault.cpp:35:5:35:5 | x | file://:0:0:0:0 | S<..(*)(..)> * |
+| segfault.cpp:35:5:35:56 | ... = ... | file://:0:0:0:0 | S<..(*)(..)> * |
+| segfault.cpp:35:9:35:56 | call to S | file://:0:0:0:0 | void |
+| segfault.cpp:35:9:35:56 | new | file://:0:0:0:0 | S<..(*)(..)> * |
+| segfault.cpp:35:24:35:46 | 0 | segfault.cpp:9:8:9:28 | piecewise_construct_t |
+| segfault.cpp:35:24:35:46 | temporary object | segfault.cpp:9:8:9:28 | piecewise_construct_t |
+| segfault.cpp:35:49:35:55 | 0 | segfault.cpp:15:7:15:11 | tuple |
+| segfault.cpp:35:49:35:55 | temporary object | segfault.cpp:15:7:15:11 | tuple |
+| segfault.cpp:40:5:40:5 | x | file://:0:0:0:0 | S<int F::*> * |
+| segfault.cpp:40:5:40:54 | ... = ... | file://:0:0:0:0 | S<int F::*> * |
+| segfault.cpp:40:9:40:54 | call to S | file://:0:0:0:0 | void |
+| segfault.cpp:40:9:40:54 | new | file://:0:0:0:0 | S<int F::*> * |
+| segfault.cpp:40:22:40:44 | 0 | segfault.cpp:9:8:9:28 | piecewise_construct_t |
+| segfault.cpp:40:22:40:44 | temporary object | segfault.cpp:9:8:9:28 | piecewise_construct_t |
+| segfault.cpp:40:47:40:53 | 0 | segfault.cpp:15:7:15:11 | tuple |
+| segfault.cpp:40:47:40:53 | temporary object | segfault.cpp:15:7:15:11 | tuple |

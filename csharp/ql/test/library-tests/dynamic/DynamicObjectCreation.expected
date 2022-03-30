@@ -1,0 +1,4 @@
+| dynamic.cs:16:9:16:26 | dynamic object creation of type DynamicTest |  |
+| dynamic.cs:17:9:17:40 | dynamic object creation of type DynamicTest | { ..., ... } |
+| dynamic.cs:18:9:18:48 | dynamic object creation of type KeyValuePair<String,dynamic> |  |
+| dynamic.cs:19:9:19:75 | dynamic object creation of type KeyValuePair<String,dynamic> |  |

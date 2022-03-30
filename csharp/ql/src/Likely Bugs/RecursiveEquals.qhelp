@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Recursive calls to <code>Equals(object)</code> are often made by accident whilst trying to 
+forward to another <code>Equals</code> method with a more specific parameter type. This tends to 
+result in a stack overflow exception.</p>
+
+</overview>
+<recommendation>
+<p>The solution is to check that the argument is of the appropriate type and then cast it when 
+making the call.</p>
+
+</recommendation>
+<example>
+<p>In this example the <code>Equals(object)</code> method is called repeatedly when the programmer 
+clearly meant to pass the object to the <code>Equals(C)</code> method but forgot to cast it in order 
+to do so.</p>
+<sample src="RecursiveEquals.cs" />
+
+<p>This mistake is easily corrected by performing a cast before making the second call.</p>
+<sample src="RecursiveEqualsFix.cs" />
+</example>
+</qhelp>

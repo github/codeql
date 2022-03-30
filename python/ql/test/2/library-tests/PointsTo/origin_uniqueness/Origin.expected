@@ -1,0 +1,25 @@
+| 5 | ControlFlowNode for ImportExpr | Module module1 | test.py:5 |
+| 5 | ControlFlowNode for module1 | Module module1 | test.py:5 |
+| 6 | ControlFlowNode for ImportExpr | Module module1 | test.py:6 |
+| 6 | ControlFlowNode for ImportMember | int 1 | module1.py:2 |
+| 6 | ControlFlowNode for a | int 1 | module1.py:2 |
+| 7 | ControlFlowNode for ImportExpr | Module module2 | test.py:7 |
+| 9 | ControlFlowNode for a | int 1 | module1.py:2 |
+| 10 | ControlFlowNode for Attribute | int 2 | module1.py:3 |
+| 10 | ControlFlowNode for module1 | Module module1 | test.py:5 |
+| 11 | ControlFlowNode for x | float 1.0 | module2.py:2 |
+| 13 | ControlFlowNode for C | class C | test.py:13 |
+| 13 | ControlFlowNode for ClassExpr | class C | test.py:13 |
+| 16 | ControlFlowNode for c | class C | test.py:13 |
+| 16 | ControlFlowNode for type | builtin-class type | test.py:16 |
+| 16 | ControlFlowNode for type() | class C | test.py:13 |
+| 17 | ControlFlowNode for C | class C | test.py:13 |
+| 17 | ControlFlowNode for C() | C() | test.py:17 |
+| 18 | ControlFlowNode for t | builtin-class classobj | test.py:18 |
+| 18 | ControlFlowNode for type | builtin-class type | test.py:18 |
+| 18 | ControlFlowNode for type() | builtin-class classobj | test.py:18 |
+| 19 | ControlFlowNode for C | class C | test.py:13 |
+| 20 | ControlFlowNode for i | builtin-class int | test.py:20 |
+| 20 | ControlFlowNode for type | builtin-class type | test.py:20 |
+| 20 | ControlFlowNode for type() | builtin-class int | test.py:20 |
+| 21 | ControlFlowNode for IntegerLiteral | int 7 | test.py:21 |

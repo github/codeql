@@ -1,0 +1,25 @@
+| Excon.rb:6:3:6:34 | call to get | This request may run with $@. | Excon.rb:5:3:5:34 | call to []= | certificate validation disabled |
+| Excon.rb:12:3:12:34 | call to get | This request may run with $@. | Excon.rb:11:3:11:23 | call to ssl_verify_peer= | certificate validation disabled |
+| Excon.rb:18:3:18:34 | call to get | This request may run with $@. | Excon.rb:17:3:17:34 | call to []= | certificate validation disabled |
+| Excon.rb:24:3:24:10 | call to get | This request may run with $@. | Excon.rb:23:55:23:76 | Pair | certificate validation disabled |
+| Excon.rb:30:3:30:62 | call to get | This request may run with $@. | Excon.rb:30:36:30:57 | Pair | certificate validation disabled |
+| Faraday.rb:5:12:5:30 | call to get | This request may run with $@. | Faraday.rb:4:48:4:69 | Pair | certificate validation disabled |
+| Faraday.rb:9:12:9:30 | call to get | This request may run with $@. | Faraday.rb:8:48:8:94 | Pair | certificate validation disabled |
+| HttpClient.rb:6:1:6:33 | call to get | This request may run with $@. | HttpClient.rb:5:1:5:29 | call to verify_mode= | certificate validation disabled |
+| Httparty.rb:4:1:4:50 | call to get | This request may run with $@. | Httparty.rb:4:37:4:49 | Pair | certificate validation disabled |
+| Httparty.rb:7:1:7:55 | call to get | This request may run with $@. | Httparty.rb:7:37:7:54 | Pair | certificate validation disabled |
+| Httparty.rb:10:1:10:59 | call to get | This request may run with $@. | Httparty.rb:10:39:10:56 | Pair | certificate validation disabled |
+| Httparty.rb:13:1:13:70 | call to post | This request may run with $@. | Httparty.rb:13:57:13:69 | Pair | certificate validation disabled |
+| Httparty.rb:16:1:16:74 | call to post | This request may run with $@. | Httparty.rb:16:59:16:71 | Pair | certificate validation disabled |
+| NetHttp.rb:9:12:9:31 | call to request | This request may run with $@. | NetHttp.rb:7:20:7:44 | ... = ... | certificate validation disabled |
+| OpenURI.rb:4:1:4:78 | call to open | This request may run with $@. | OpenURI.rb:4:36:4:77 | Pair | certificate validation disabled |
+| OpenURI.rb:7:1:7:82 | call to open | This request may run with $@. | OpenURI.rb:7:38:7:79 | Pair | certificate validation disabled |
+| OpenURI.rb:11:1:11:43 | call to open | This request may run with $@. | OpenURI.rb:10:13:10:54 | Pair | certificate validation disabled |
+| OpenURI.rb:14:1:14:81 | call to open | This request may run with $@. | OpenURI.rb:14:39:14:80 | Pair | certificate validation disabled |
+| OpenURI.rb:17:1:17:85 | call to open | This request may run with $@. | OpenURI.rb:17:41:17:82 | Pair | certificate validation disabled |
+| OpenURI.rb:21:1:21:46 | call to open | This request may run with $@. | OpenURI.rb:20:13:20:54 | Pair | certificate validation disabled |
+| RestClient.rb:5:12:5:23 | call to get | This request may run with $@. | RestClient.rb:4:60:4:96 | Pair | certificate validation disabled |
+| RestClient.rb:9:12:9:23 | call to get | This request may run with $@. | RestClient.rb:8:62:8:98 | Pair | certificate validation disabled |
+| RestClient.rb:14:12:14:23 | call to get | This request may run with $@. | RestClient.rb:12:13:12:49 | Pair | certificate validation disabled |
+| Typhoeus.rb:4:1:4:62 | call to get | This request may run with $@. | Typhoeus.rb:4:41:4:61 | Pair | certificate validation disabled |
+| Typhoeus.rb:8:1:8:54 | call to post | This request may run with $@. | Typhoeus.rb:7:37:7:57 | Pair | certificate validation disabled |

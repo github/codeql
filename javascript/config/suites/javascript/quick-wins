@@ -1,0 +1,22 @@
++ semmlecode-javascript-queries/Declarations/AssignmentToConst.ql: /Quick Wins
++ semmlecode-javascript-queries/Declarations/ConflictingFunctions.ql: /Quick Wins
++ semmlecode-javascript-queries/Declarations/DefaultArgumentReferencesNestedFunction.ql: /Quick Wins
++ semmlecode-javascript-queries/Declarations/TemporalDeadZone.ql: /Quick Wins
++ semmlecode-javascript-queries/Expressions/ComparisonWithNaN.ql: /Quick Wins
++ semmlecode-javascript-queries/Expressions/DuplicateCondition.ql: /Quick Wins
++ semmlecode-javascript-queries/Expressions/DuplicateSwitchCase.ql: /Quick Wins
++ semmlecode-javascript-queries/Expressions/HeterogeneousComparison.ql: /Quick Wins
++ semmlecode-javascript-queries/Expressions/ShiftOutOfRange.ql: /Quick Wins
++ semmlecode-javascript-queries/LanguageFeatures/BadTypeof.ql: /Quick Wins
++ semmlecode-javascript-queries/LanguageFeatures/NonLinearPattern.ql: /Quick Wins
++ semmlecode-javascript-queries/RegExp/BackrefBeforeGroup.ql: /Quick Wins
++ semmlecode-javascript-queries/RegExp/BackrefIntoNegativeLookahead.ql: /Quick Wins
++ semmlecode-javascript-queries/RegExp/DuplicateCharacterInCharacterClass.ql: /Quick Wins
++ semmlecode-javascript-queries/RegExp/EmptyCharacterClass.ql: /Quick Wins
++ semmlecode-javascript-queries/RegExp/UnboundBackref.ql: /Quick Wins
++ semmlecode-javascript-queries/RegExp/UnmatchableCaret.ql: /Quick Wins
++ semmlecode-javascript-queries/RegExp/UnmatchableDollar.ql: /Quick Wins
++ semmlecode-javascript-queries/Statements/InconsistentLoopOrientation.ql: /Quick Wins
+
+# Metrics
++ semmlecode-javascript-queries/Metrics/FLinesOfCode.ql: /Quick Wins

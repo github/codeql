@@ -1,0 +1,30 @@
++ semmlecode-javascript-queries/Comments/CommentedOutCode.ql: /Maintainability/Comments
++ semmlecode-javascript-queries/Comments/TodoComments.ql: /Maintainability/Comments
++ semmlecode-javascript-queries/Declarations/DeadStoreOfGlobal.ql: /Maintainability/Declarations
++ semmlecode-javascript-queries/Declarations/DeadStoreOfLocal.ql: /Maintainability/Declarations
++ semmlecode-javascript-queries/Declarations/DeadStoreOfProperty.ql: /Maintainability/Declarations
++ semmlecode-javascript-queries/Declarations/DuplicateVarDecl.ql: /Maintainability/Declarations
++ semmlecode-javascript-queries/Declarations/UnusedParameter.ql: /Maintainability/Declarations
++ semmlecode-javascript-queries/Declarations/UnusedProperty.ql: /Maintainability/Declarations
++ semmlecode-javascript-queries/Declarations/UnusedVariable.ql: /Maintainability/Declarations
++ semmlecode-javascript-queries/Declarations/UnreachableMethodOverloads.ql: /Maintainability/Declarations
++ semmlecode-javascript-queries/Expressions/UnneededDefensiveProgramming.ql: /Maintainability/Expressions
++ semmlecode-javascript-queries/LanguageFeatures/ArgumentsCallerCallee.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/ConditionalComments.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/Eval.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/JumpFromFinally.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/SemicolonInsertion.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/SetterReturn.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/SetterIgnoresParameter.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/WithStatement.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/WrongExtensionJSON.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/Performance/NonLocalForIn.ql: /Maintainability/Performance
++ semmlecode-javascript-queries/Performance/ReassignParameterAndUseArguments.ql: /Maintainability/Performance
++ semmlecode-javascript-queries/RegExp/MalformedRegExp.ql: /Maintainability/Regular Expressions
++ semmlecode-javascript-queries/Statements/ImplicitReturn.ql: /Maintainability/Statements
++ semmlecode-javascript-queries/Statements/InconsistentReturn.ql: /Maintainability/Statements
++ semmlecode-javascript-queries/Statements/NestedLoopsSameVariable.ql: /Maintainability/Statements
++ semmlecode-javascript-queries/external/DuplicateFunction.ql: /Maintainability/Duplicate Code
++ semmlecode-javascript-queries/external/DuplicateToplevel.ql: /Maintainability/Duplicate Code
++ semmlecode-javascript-queries/external/SimilarFunction.ql: /Maintainability/Duplicate Code
++ semmlecode-javascript-queries/external/SimilarToplevel.ql: /Maintainability/Duplicate Code

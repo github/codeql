@@ -1,0 +1,13 @@
+getName
+| tst.js:16:1:19:1 | class C ... ss C"\\n} | C |
+| tst.js:21:2:23:1 | class D ... lass"\\n} | D |
+| tst.js:25:11:25:18 | class {} | E |
+| tst.js:26:11:29:1 | class G ... ss G"\\n} | G |
+| tst.js:34:9:34:16 | class {} | Foo |
+#select
+| tst.js:16:1:19:1 | class C ... ss C"\\n} | class C |
+| tst.js:21:2:23:1 | class D ... lass"\\n} | class D |
+| tst.js:22:12:22:18 | class{} | anonymous class |
+| tst.js:25:11:25:18 | class {} | class E |
+| tst.js:26:11:29:1 | class G ... ss G"\\n} | class G |
+| tst.js:34:9:34:16 | class {} | anonymous class |

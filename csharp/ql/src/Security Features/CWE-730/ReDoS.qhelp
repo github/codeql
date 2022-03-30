@@ -1,0 +1,64 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Matching user input against a regular expression which takes exponential time in the worst case can
+allow a malicious user to perform a Denial of Service ("DoS") attack by crafting input that takes a
+long time to execute.
+</p>
+<p>
+Most regular expression engines, including the C# standard library implementation, are designed to
+work with an extended regular expression syntax. Although this provides flexibility for the user,
+it can prevent the engine from constructing an efficient implementation of the matcher in all
+circumstances. In particular, the "worst case time complexity" (see the references) of certain
+regular expressions may be "exponential". This would allow a malicious user to provide some input
+which causes the regular expression to take a very long time to execute.
+</p>
+<p>
+Typically, a regular expression is vulnerable to this attack if it applies repetition to a
+sub-expression which itself is repeated, or contains overlapping options. For example,
+<code>(a+)+</code> is vulnerable to a string such as <code>aaaaaaaaaaaaaaaaaaaaaaaaaaab</code>.
+More information about the precise circumstances can be found in the references.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Modify the regular expression to avoid the exponential worst case time. If this is not possible,
+then a timeout should be used to avoid a denial of service. For C# applications, a timeout can be
+provided to the <code>Regex</code> constructor. Alternatively, apply a global timeout by setting
+the <code>REGEX_DEFAULT_MATCH_TIMEOUT</code> application domain property, using the
+<code>AppDomain.SetData</code> method.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows a HTTP request parameter that is matched against a regular expression
+which has exponential worst case performance. In the first case, it is matched without a timeout,
+which can lead to a denial of service. In the second case, a timeout is used to cancel the
+evaluation of the regular expression after 1 second.</p>
+
+<sample src="ReDoS.cs" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS">Regular expression Denial of Service - ReDoS</a>.
+</li>
+<li>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/ReDoS">ReDoS</a>.
+</li>
+<li>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/Time_complexity">Time complexity</a>.
+</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,99 @@
+bounds
+| tst.ts:13:16:13:30 | T extends Array | tst.ts:13:26:13:30 | Array |
+| tst.ts:14:18:14:32 | T extends Array | tst.ts:14:28:14:32 | Array |
+| tst.ts:17:18:17:28 | T extends S | tst.ts:17:28:17:28 | S |
+| tst.ts:17:31:17:41 | U extends S | tst.ts:17:41:17:41 | S |
+| tst.ts:24:28:24:38 | T extends S | tst.ts:24:38:24:38 | S |
+| tst.ts:24:41:24:51 | U extends S | tst.ts:24:51:24:51 | S |
+| tst.ts:45:20:45:42 | K in ke ... Decl<K> | tst.ts:45:25:45:42 | keyof ClassDecl<K> |
+classOrInterfaceTypeParameters
+| tst.ts:8:1:8:21 | class C ... l<T> {} | 0 | 1 | tst.ts:8:17:8:17 | T |
+| tst.ts:10:26:10:36 | class<T> {} | 0 | 1 | tst.ts:10:32:10:32 | T |
+| tst.ts:11:9:11:34 | class N ... r<T> {} | 0 | 1 | tst.ts:11:30:11:30 | T |
+| tst.ts:13:1:13:34 | class H ... ray> {} | 0 | 1 | tst.ts:13:16:13:30 | T extends Array |
+| tst.ts:14:1:14:36 | class H ... ray> {} | 0 | 1 | tst.ts:14:18:14:32 | T extends Array |
+| tst.ts:17:1:17:45 | class H ... s S> {} | 0 | 3 | tst.ts:17:15:17:15 | S |
+| tst.ts:17:1:17:45 | class H ... s S> {} | 1 | 3 | tst.ts:17:18:17:28 | T extends S |
+| tst.ts:17:1:17:45 | class H ... s S> {} | 2 | 3 | tst.ts:17:31:17:41 | U extends S |
+| tst.ts:21:1:21:62 | class H ... ts A {} | 0 | 2 | tst.ts:21:21:21:21 | S |
+| tst.ts:21:1:21:62 | class H ... ts A {} | 1 | 2 | tst.ts:21:24:21:24 | T |
+| tst.ts:23:1:23:29 | interfa ... l<T> {} | 0 | 1 | tst.ts:23:25:23:25 | T |
+| tst.ts:24:1:24:65 | interfa ... ds A {} | 0 | 3 | tst.ts:24:25:24:25 | S |
+| tst.ts:24:1:24:65 | interfa ... ds A {} | 1 | 3 | tst.ts:24:28:24:38 | T extends S |
+| tst.ts:24:1:24:65 | interfa ... ds A {} | 2 | 3 | tst.ts:24:41:24:51 | U extends S |
+defaults
+functionTypeParameters
+| tst.ts:27:1:27:36 | functio ... ): T {} | 0 | 1 | tst.ts:27:23:27:23 | T |
+| tst.ts:28:1:29:110 | @decora ... , U] {} | 0 | 3 | tst.ts:29:33:29:33 | S |
+| tst.ts:28:1:29:110 | @decora ... , U] {} | 1 | 3 | tst.ts:29:35:29:35 | T |
+| tst.ts:28:1:29:110 | @decora ... , U] {} | 2 | 3 | tst.ts:29:37:29:37 | U |
+| tst.ts:30:9:30:49 | functio ... ): T {} | 0 | 1 | tst.ts:30:36:30:36 | T |
+| tst.ts:31:25:31:48 | functio ... ): T {} | 0 | 1 | tst.ts:31:35:31:35 | T |
+| tst.ts:32:21:32:37 | <T>(x: T): T => x | 0 | 1 | tst.ts:32:22:32:22 | T |
+| tst.ts:34:32:34:44 | <T>(x:T) => T | 0 | 1 | tst.ts:34:33:34:33 | T |
+| tst.ts:38:3:38:21 | method<T>(x: T): T; | 0 | 1 | tst.ts:38:10:38:10 | T |
+| tst.ts:39:3:39:15 | <T>(x: T): T; | 0 | 1 | tst.ts:39:4:39:4 | T |
+| tst.ts:42:3:42:23 | method< ... ): T {} | 0 | 1 | tst.ts:42:10:42:10 | T |
+resolution
+| inferTypes.ts:2:13:2:13 | T | inferTypes.ts:2:18:2:18 | T | refers to T on type alias Unpack |
+| inferTypes.ts:2:35:2:35 | R | inferTypes.ts:2:42:2:42 | R | refers to R on 'infer' type R |
+| tst.ts:17:15:17:15 | S | tst.ts:17:28:17:28 | S | refers to S on class HasMany |
+| tst.ts:17:15:17:15 | S | tst.ts:17:41:17:41 | S | refers to S on class HasMany |
+| tst.ts:21:21:21:21 | S | tst.ts:21:45:21:45 | S | refers to S on class HasEverything |
+| tst.ts:24:25:24:25 | S | tst.ts:24:38:24:38 | S | refers to S on interface InterfaceMany |
+| tst.ts:24:25:24:25 | S | tst.ts:24:51:24:51 | S | refers to S on interface InterfaceMany |
+| tst.ts:27:23:27:23 | T | tst.ts:27:29:27:29 | T | refers to T on function functionDecl |
+| tst.ts:27:23:27:23 | T | tst.ts:27:33:27:33 | T | refers to T on function functionDecl |
+| tst.ts:29:33:29:33 | S | tst.ts:29:43:29:43 | S | refers to S on function functionWithEverything |
+| tst.ts:29:33:29:33 | S | tst.ts:29:100:29:100 | S | refers to S on function functionWithEverything |
+| tst.ts:29:35:29:35 | T | tst.ts:29:56:29:56 | T | refers to T on function functionWithEverything |
+| tst.ts:29:35:29:35 | T | tst.ts:29:103:29:103 | T | refers to T on function functionWithEverything |
+| tst.ts:29:37:29:37 | U | tst.ts:29:74:29:74 | U | refers to U on function functionWithEverything |
+| tst.ts:29:37:29:37 | U | tst.ts:29:106:29:106 | U | refers to U on function functionWithEverything |
+| tst.ts:30:36:30:36 | T | tst.ts:30:42:30:42 | T | refers to T on function namedFunctionExpr |
+| tst.ts:30:36:30:36 | T | tst.ts:30:46:30:46 | T | refers to T on function namedFunctionExpr |
+| tst.ts:31:35:31:35 | T | tst.ts:31:41:31:41 | T | refers to T on function anonymousFunction |
+| tst.ts:31:35:31:35 | T | tst.ts:31:45:31:45 | T | refers to T on function anonymousFunction |
+| tst.ts:32:22:32:22 | T | tst.ts:32:28:32:28 | T | refers to T on function arrowFunction |
+| tst.ts:32:22:32:22 | T | tst.ts:32:32:32:32 | T | refers to T on function arrowFunction |
+| tst.ts:34:33:34:33 | T | tst.ts:34:38:34:38 | T | refers to T on anonymous function type |
+| tst.ts:34:33:34:33 | T | tst.ts:34:44:34:44 | T | refers to T on anonymous function type |
+| tst.ts:38:10:38:10 | T | tst.ts:38:16:38:16 | T | refers to T on method method of interface InterfaceMembers |
+| tst.ts:38:10:38:10 | T | tst.ts:38:20:38:20 | T | refers to T on method method of interface InterfaceMembers |
+| tst.ts:39:4:39:4 | T | tst.ts:39:10:39:10 | T | refers to T on call signature of interface InterfaceMembers |
+| tst.ts:39:4:39:4 | T | tst.ts:39:14:39:14 | T | refers to T on call signature of interface InterfaceMembers |
+| tst.ts:42:10:42:10 | T | tst.ts:42:16:42:16 | T | refers to T on method method of class ClassMembers |
+| tst.ts:42:10:42:10 | T | tst.ts:42:20:42:20 | T | refers to T on method method of class ClassMembers |
+| tst.ts:45:20:45:42 | K in ke ... Decl<K> | tst.ts:45:41:45:41 | K | refers to K on mapped type |
+| tst.ts:45:20:45:42 | K in ke ... Decl<K> | tst.ts:45:46:45:46 | K | refers to K on mapped type |
+| tst.ts:46:8:46:8 | T | tst.ts:46:23:46:23 | T | refers to T on type alias Q |
+typeParameters
+| inferTypes.ts:2:13:2:13 | T | inferTypes.ts:2:13:2:13 | T | T |
+| inferTypes.ts:2:35:2:35 | R | inferTypes.ts:2:35:2:35 | R | R |
+| tst.ts:8:17:8:17 | T | tst.ts:8:17:8:17 | T | T |
+| tst.ts:10:32:10:32 | T | tst.ts:10:32:10:32 | T | T |
+| tst.ts:11:30:11:30 | T | tst.ts:11:30:11:30 | T | T |
+| tst.ts:13:16:13:30 | T extends Array | tst.ts:13:16:13:16 | T | T |
+| tst.ts:14:18:14:32 | T extends Array | tst.ts:14:18:14:18 | T | T |
+| tst.ts:17:15:17:15 | S | tst.ts:17:15:17:15 | S | S |
+| tst.ts:17:18:17:28 | T extends S | tst.ts:17:18:17:18 | T | T |
+| tst.ts:17:31:17:41 | U extends S | tst.ts:17:31:17:31 | U | U |
+| tst.ts:21:21:21:21 | S | tst.ts:21:21:21:21 | S | S |
+| tst.ts:21:24:21:24 | T | tst.ts:21:24:21:24 | T | T |
+| tst.ts:23:25:23:25 | T | tst.ts:23:25:23:25 | T | T |
+| tst.ts:24:25:24:25 | S | tst.ts:24:25:24:25 | S | S |
+| tst.ts:24:28:24:38 | T extends S | tst.ts:24:28:24:28 | T | T |
+| tst.ts:24:41:24:51 | U extends S | tst.ts:24:41:24:41 | U | U |
+| tst.ts:27:23:27:23 | T | tst.ts:27:23:27:23 | T | T |
+| tst.ts:29:33:29:33 | S | tst.ts:29:33:29:33 | S | S |
+| tst.ts:29:35:29:35 | T | tst.ts:29:35:29:35 | T | T |
+| tst.ts:29:37:29:37 | U | tst.ts:29:37:29:37 | U | U |
+| tst.ts:30:36:30:36 | T | tst.ts:30:36:30:36 | T | T |
+| tst.ts:31:35:31:35 | T | tst.ts:31:35:31:35 | T | T |
+| tst.ts:32:22:32:22 | T | tst.ts:32:22:32:22 | T | T |
+| tst.ts:34:33:34:33 | T | tst.ts:34:33:34:33 | T | T |
+| tst.ts:38:10:38:10 | T | tst.ts:38:10:38:10 | T | T |
+| tst.ts:39:4:39:4 | T | tst.ts:39:4:39:4 | T | T |
+| tst.ts:42:10:42:10 | T | tst.ts:42:10:42:10 | T | T |
+| tst.ts:45:20:45:42 | K in ke ... Decl<K> | tst.ts:45:20:45:20 | K | K |
+| tst.ts:46:8:46:8 | T | tst.ts:46:8:46:8 | T | T |

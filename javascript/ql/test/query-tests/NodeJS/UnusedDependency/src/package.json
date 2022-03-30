@@ -1,0 +1,42 @@
+{
+  "name": "test-package",
+  "version": "0.1.0",
+  "scripts": {
+      "install": "used-first-in-install-script not-really-used-in-install-script-because-of-substringOFTHIS used-middle-in-install-script used-middle-in-install-script-with-some-slashes/foo/bar used-last-in-install-script",
+    "postinstall": "./used-first-in-postinstall-script-dotslashed used-in-postinstall-script",
+    "preinstall": "used-in-preinstall-script",
+    "test": "used-in-test-script",
+    "custom": "used-in-custom-script"
+  },
+  "dependencies": {
+    "acorn": "*",
+    "esprima": "*",
+    "lodash": "*",
+    "react": "*",
+    "not_really_unused": "*",
+    "eslint-plugin-babel": "3.3.0",
+    "jade": "*",
+    "ejs": "*",
+    "used-first-in-install-script": "*",
+    "used-middle-in-install-script": "*",
+    "used-middle-in-install-script-with-some-slashes": "*",
+    "used-last-in-install-script": "*",
+    "not-really-used-in-install-script-because-of-substring": "*",
+    "used-first-in-postinstall-script-dotslashed": "*",
+    "used-in-preinstall-script": "*",
+    "used-in-postinstall-script": "*",
+    "used-in-test-script": "*",
+    "used-in-custom-script": "*",
+    "used-in-require-with-exclamation-mark-separator": "*",
+    "used-in-mjs-import": "*",
+    "used-in-mjs-require": "*",
+    "used-in-js-import": "*",
+    "used-in-js-require": "*",
+    "used-in-constant-template-require-string": "*",
+    "used-in-dynamic-template-require-string": "*",
+    "used-in-silly-template-require-string": "*"
+  },
+  "devDependencies": {
+    "who-knows-whether-this-is-used": "*"
+  }
+}

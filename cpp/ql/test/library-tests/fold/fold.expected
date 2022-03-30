@@ -1,0 +1,4 @@
+| fold.cpp:5:10:5:21 | ( pack + ... ) | + | fold.cpp:5:11:5:14 | args | <no init> |
+| fold.cpp:10:10:10:21 | ( ... * pack ) | * | fold.cpp:10:17:10:20 | args | <no init> |
+| fold.cpp:15:10:15:30 | ( pack && ... && init ) | && | fold.cpp:15:11:15:14 | args | 1 |
+| fold.cpp:20:10:20:31 | ( init \|\| ... \|\| pack ) | \|\| | fold.cpp:20:27:20:30 | args | 0 |

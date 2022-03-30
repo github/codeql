@@ -1,0 +1,61 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+JavaScript does not enforce a distinction between constructor functions and normal functions, so the same function can
+be invoked both as a constructor with <code>new</code> and as a normal function without <code>new</code>. This is
+unusual, however, and can often indicate a bug.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the function in question and all calls to it. If it is not actually meant to be invoked as a constructor,
+turn all constructor calls to it into normal function calls. If it <i>is</i> meant to be invoked as a constructor,
+either turn all normal function calls to it into constructor calls, or introduce a guard for intercepting calls
+without <code>new</code> as described below.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, <code>Point</code> is clearly meant to be a constructor function, but on line 7 it is invoked
+without <code>new</code>. This means that <code>this</code> in the function body will refer to the global object, so
+the assignments to <code>x</code> and <code>y</code> will create global variables.
+</p>
+
+<sample src="examples/InconsistentNew.js" />
+
+<p>
+The easiest way to fix this is to rewrite the call on line 7 to use <code>new</code>:
+</p>
+
+<sample src="examples/InconsistentNewGood.js" />
+
+
+<p>
+Alternatively, if you absolutely have to make it possible to call <code>Point</code> both with and without
+<code>new</code>, you could insert a guard that intercepts calls without <code>new</code> as follows:
+</p> 
+
+<sample src="examples/InconsistentNewGood2.js" />
+
+<p>
+Now, if <code>Point</code> is invoked without <code>new</code>, its <code>this</code> object (which is the global object)
+is not an instance of <code>Point</code>, so the "then" branch of the <code>if</code> statement is executed, which
+re-invokes <code>Point</code> on the same arguments, but this time with <code>new</code>.
+</p>
+
+</example>
+<references>
+
+
+<li>D. Crockford, <i>JavaScript: The Good Parts</i>, Appendix B.11. O'Reilly, 2008.</li>
+
+
+</references>
+</qhelp>

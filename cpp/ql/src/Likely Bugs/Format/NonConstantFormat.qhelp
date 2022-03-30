@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>printf</code> function, related functions like <code>sprintf</code> and <code>fprintf</code>,
+and other functions built atop <code>vprintf</code> all accept a format string as one of their arguments.
+When such format strings are literal constants, it is easy for the programmer (and static analysis tools)
+to verify that the format specifiers (such as <code>%s</code> and <code>%02x</code>) in the format string
+are compatible with the trailing arguments of the function call. When such format strings are not literal
+constants, it is more difficult to maintain the program: programmers (and static analysis tools) must
+perform non-local data-flow analysis to deduce what values the format string argument might take.</p>
+
+</overview>
+<recommendation>
+<p>If the argument passed as a format string is meant to be a plain string rather than a format string,
+then pass <code>%s</code> as the format string, and pass the original argument as the sole trailing
+argument.</p>
+
+<p>If the argument passed as a format string is a parameter to the enclosing function, then consider
+redesigning the enclosing function's API to be less brittle.</p>
+
+</recommendation>
+<example>
+<p>The following program is meant to echo its command line arguments:</p>
+<sample src="NonConstantFormat-1-bad.c" />
+<p>The above program behaves as expected in most cases, but breaks when one of its command line arguments
+contains a percent character. In such cases, the behavior of the program is undefined: it might echo
+garbage, it might crash, or it might give a malicious attacker root access. One way of addressing
+the problem is to use a constant <code>%s</code> format string, as in the following program:</p>
+<sample src="NonConstantFormat-1-good.c" />
+
+</example>
+<example>
+<p>The following program defines a <code>log_with_timestamp</code> function:</p>
+<sample src="NonConstantFormat-2-bad.c" />
+<p>In the code that is visible, the reader can verify that <code>log_with_timestamp</code> is never called
+with a log message containing a percent character, but even if all current calls are correct, this presents
+an ongoing maintenance burden to ensure that newly-introduced calls don't contain percent characters. As
+in the previous example, one solution is to make the log message a trailing argument of the function call:</p>
+<sample src="NonConstantFormat-2-ok.c" />
+<p>An alternative solution is to allow <code>log_with_timestamp</code> to accept format arguments:</p>
+<sample src="NonConstantFormat-2-good.c" />
+<p>In this formulation, the non-constant format string to <code>printf</code> has been replaced with
+a non-constant format string to <code>vprintf</code>. Semmle will no longer consider the body of
+<code>log_with_timestamp</code> to be a problem, and will instead check that every call to
+<code>log_with_timestamp</code> passes a constant format string.</p>
+
+</example>
+<references>
+
+
+<li>CERT C Coding
+Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/FIO30-C.+Exclude+user+input+from+format+strings">FIO30-C. Exclude user input from format strings</a>.</li>
+<li>M. Howard, D. Leblanc, J. Viega, <i>19 Deadly Sins of Software Security: Programming Flaws and How to Fix Them</i>.</li>
+
+
+</references>
+</qhelp>

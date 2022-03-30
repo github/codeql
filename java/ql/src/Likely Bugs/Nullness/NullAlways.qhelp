@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If a variable is dereferenced, and the variable has a <code>null</code>
+value on all possible execution paths leading to the dereferencing, the dereferencing is
+guaranteed to result in a <code>NullPointerException</code>.
+</p>
+<p>
+A variable may also be implicitly dereferenced if its type is a boxed primitive
+type, and the variable occurs in a context in which implicit unboxing occurs.
+Note that the conditional operator unboxes its second and third operands when
+one of them is a primitive type and the other is the corresponding boxed type.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that the variable does not have a <code>null</code> value when it is dereferenced.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following examples, the condition <code>!dir.exists()</code> is only
+executed if <code>dir</code> is <code>null</code>. The second example guards
+the expression correctly by using <code>&amp;&amp;</code> instead of
+<code>||</code>.
+</p>
+
+<sample src="NullAlways.java" />
+</example>
+<references>
+
+<li>
+The Java Tutorials:
+<a href="https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html">Autoboxing and Unboxing</a>.
+</li>
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.25">Conditional Operator ? :</a>.
+</li>
+
+</references>
+</qhelp>

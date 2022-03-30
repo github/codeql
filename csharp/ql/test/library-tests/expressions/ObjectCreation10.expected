@@ -1,0 +1,4 @@
+| expressions.cs:427:41:427:49 | call to method Add |
+| expressions.cs:427:43:427:43 | access to local variable i |
+| expressions.cs:427:43:427:47 | ... = ... |
+| expressions.cs:427:47:427:47 | 2 |

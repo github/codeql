@@ -1,0 +1,55 @@
+| Members.cs:3:26:3:37 | EventHandler | Types.EventHandler |
+| Members.cs:6:11:6:15 | Class | Types.Class |
+| Members.cs:9:15:9:25 | NestedClass | Types.Class.NestedClass |
+| Members.cs:12:20:12:28 | Method<> | System.String Types.Class.NestedClass.Method`1(!0) |
+| Members.cs:12:27:12:27 | T | !0 |
+| Members.cs:14:34:14:36 | get_Item | System.String Types.Class.NestedClass.get_Item(System.Int32) |
+| Members.cs:14:55:14:57 | set_Item | System.Void Types.Class.NestedClass.set_Item(System.Int32,System.String) |
+| Members.cs:18:27:18:29 | get_Prop | System.String Types.Class.NestedClass.get_Prop() |
+| Members.cs:18:32:18:34 | set_Prop | System.Void Types.Class.NestedClass.set_Prop(System.String) |
+| Members.cs:20:32:20:36 | add_Event | System.Void Types.Class.NestedClass.add_Event(Types.EventHandler) |
+| Members.cs:20:32:20:36 | remove_Event | System.Void Types.Class.NestedClass.remove_Event(Types.EventHandler) |
+| Members.cs:24:14:24:19 | Method | System.Void Types.Class.Method() |
+| Members.cs:26:30:26:32 | get_Item | System.String Types.Class.get_Item(System.Int32) |
+| Members.cs:26:51:26:53 | set_Item | System.Void Types.Class.set_Item(System.Int32,System.String) |
+| Members.cs:30:23:30:25 | get_Prop | System.String Types.Class.get_Prop() |
+| Members.cs:30:28:30:30 | set_Prop | System.Void Types.Class.set_Prop(System.String) |
+| Members.cs:32:28:32:32 | add_Event | System.Void Types.Class.add_Event(Types.EventHandler) |
+| Members.cs:32:28:32:32 | remove_Event | System.Void Types.Class.remove_Event(Types.EventHandler) |
+| Members.cs:35:20:35:25 | Class2 | Types.Class2 |
+| Members.cs:37:23:37:34 | NestedClass2 | Types.Class2.NestedClass2 |
+| Members.cs:39:28:39:36 | Method<> | System.String Types.Class2.NestedClass2.Method`1(!0) |
+| Members.cs:39:35:39:35 | T | !0 |
+| Members.cs:40:42:40:44 | get_Item | System.String Types.Class2.NestedClass2.get_Item(System.Int32) |
+| Members.cs:40:63:40:65 | set_Item | System.Void Types.Class2.NestedClass2.set_Item(System.Int32,System.String) |
+| Members.cs:42:35:42:37 | get_Prop | System.String Types.Class2.NestedClass2.get_Prop() |
+| Members.cs:42:40:42:42 | set_Prop | System.Void Types.Class2.NestedClass2.set_Prop(System.String) |
+| Members.cs:43:40:43:44 | add_Event | System.Void Types.Class2.NestedClass2.add_Event(Types.EventHandler) |
+| Members.cs:43:40:43:44 | remove_Event | System.Void Types.Class2.NestedClass2.remove_Event(Types.EventHandler) |
+| Members.cs:46:22:46:27 | Method | System.Void Types.Class2.Method() |
+| Members.cs:47:38:47:40 | get_Item | System.String Types.Class2.get_Item(System.Int32) |
+| Members.cs:47:59:47:61 | set_Item | System.Void Types.Class2.set_Item(System.Int32,System.String) |
+| Members.cs:49:31:49:33 | get_Prop | System.String Types.Class2.get_Prop() |
+| Members.cs:49:36:49:38 | set_Prop | System.Void Types.Class2.set_Prop(System.String) |
+| Members.cs:50:36:50:40 | add_Event | System.Void Types.Class2.add_Event(Types.EventHandler) |
+| Members.cs:50:36:50:40 | remove_Event | System.Void Types.Class2.remove_Event(Types.EventHandler) |
+| Members.cs:54:15:54:23 | Interface | Types.Interface |
+| Members.cs:56:14:56:19 | Method | System.Void Types.Interface.Method() |
+| Members.cs:57:30:57:32 | get_Item | System.String Types.Interface.get_Item(System.Int32) |
+| Members.cs:57:35:57:37 | set_Item | System.Void Types.Interface.set_Item(System.Int32,System.String) |
+| Members.cs:58:23:58:25 | get_Prop | System.String Types.Interface.get_Prop() |
+| Members.cs:58:28:58:30 | set_Prop | System.Void Types.Interface.set_Prop(System.String) |
+| Members.cs:59:28:59:32 | add_Event | System.Void Types.Interface.add_Event(Types.EventHandler) |
+| Members.cs:59:28:59:32 | remove_Event | System.Void Types.Interface.remove_Event(Types.EventHandler) |
+| Members.cs:62:24:62:33 | Interface2 | Types.Interface2 |
+| Members.cs:64:14:64:19 | Method | System.Void Types.Interface2.Method() |
+| Members.cs:65:30:65:32 | get_Item | System.String Types.Interface2.get_Item(System.Int32) |
+| Members.cs:65:35:65:37 | set_Item | System.Void Types.Interface2.set_Item(System.Int32,System.String) |
+| Members.cs:66:23:66:25 | get_Prop | System.String Types.Interface2.get_Prop() |
+| Members.cs:66:28:66:30 | set_Prop | System.Void Types.Interface2.set_Prop(System.String) |
+| Members.cs:67:28:67:32 | add_Event | System.Void Types.Interface2.add_Event(Types.EventHandler) |
+| Members.cs:67:28:67:32 | remove_Event | System.Void Types.Interface2.remove_Event(Types.EventHandler) |
+| Members.cs:71:10:71:13 | Enum | Types.Enum |
+| Members.cs:73:10:73:14 | Enum2 | Types.Enum2 |
+| Members.cs:76:12:76:17 | Struct | Types.Struct |
+| Members.cs:78:12:78:18 | Struct2 | Types.Struct2 |

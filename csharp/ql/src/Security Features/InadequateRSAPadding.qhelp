@@ -1,0 +1,18 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This query finds uses of RSA encryption without secure padding. Using PKCS#1 v1.5 padding can open up your application to several different attacks resulting in the exposure of the encryption key or the ability to determine plaintext from encrypted messages.</p>
+
+</overview>
+<recommendation>
+<p>Use the more secure PKCS#1 v2 (OAEP) padding.</p>
+
+</recommendation>
+<references>
+
+  <li>Wikipedia. <a href="http://en.wikipedia.org/wiki/RSA_(algorithm)#Padding_schemes">RSA. Padding Schemes</a>.</li>
+
+</references>
+</qhelp>

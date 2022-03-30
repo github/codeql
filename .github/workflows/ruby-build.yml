@@ -1,0 +1,224 @@
+name: "Ruby: Build"
+
+on:
+  push:
+    paths:
+      - "ruby/**"
+      - .github/workflows/ruby-build.yml
+    branches:
+      - main
+      - "rc/*"
+  pull_request:
+    paths:
+      - "ruby/**"
+      - .github/workflows/ruby-build.yml
+    branches:
+      - main
+      - "rc/*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Version tag to create"
+        required: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+defaults:
+  run:
+    working-directory: ruby
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install GNU tar
+        if: runner.os == 'macOS'
+        run: |
+          brew install gnu-tar
+          echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ruby/target
+          key: ${{ runner.os }}-ruby-rust-cargo-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Build
+        run: cargo build --verbose
+      - name: Run tests
+        run: cargo test --verbose
+      - name: Release build
+        run: cargo build --release
+      - name: Generate dbscheme
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: target/release/ruby-generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+      - uses: actions/upload-artifact@v2
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        with:
+          name: ruby.dbscheme
+          path: ruby/ql/lib/ruby.dbscheme
+      - uses: actions/upload-artifact@v2
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        with:
+          name: TreeSitter.qll
+          path: ruby/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+      - uses: actions/upload-artifact@v2
+        with:
+          name: extractor-${{ matrix.os }}
+          path: |
+            ruby/target/release/ruby-autobuilder
+            ruby/target/release/ruby-autobuilder.exe
+            ruby/target/release/ruby-extractor
+            ruby/target/release/ruby-extractor.exe
+          retention-days: 1
+  compile-queries:
+    runs-on: ubuntu-latest
+    env:
+      CODEQL_THREADS: 4 # TODO: remove this once it's set by the CLI
+    steps:
+      - uses: actions/checkout@v2
+      - name: Fetch CodeQL
+        run: |
+          LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | grep -v beta | sort --version-sort | tail -1)
+          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
+          unzip -q codeql-linux64.zip
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Build Query Pack
+        run: |
+          codeql/codeql pack create ql/lib --output target/packs
+          codeql/codeql pack install ql/src
+          codeql/codeql pack create ql/src --output target/packs
+          PACK_FOLDER=$(readlink -f target/packs/codeql/ruby-queries/*)
+          codeql/codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
+          (cd ql/src; find queries \( -name '*.qhelp' -o -name '*.rb' -o -name '*.erb' \) -exec bash -c 'mkdir -p "'"${PACK_FOLDER}"'/$(dirname "{}")"' \; -exec cp "{}" "${PACK_FOLDER}/{}" \;)
+      - uses: actions/upload-artifact@v2
+        with:
+          name: codeql-ruby-queries
+          path: |
+            ruby/target/packs/*
+          retention-days: 1
+
+  package:
+    runs-on: ubuntu-latest
+    needs: [build, compile-queries]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: ruby.dbscheme
+          path: ruby/ruby
+      - uses: actions/download-artifact@v2
+        with:
+          name: extractor-ubuntu-latest
+          path: ruby/linux64
+      - uses: actions/download-artifact@v2
+        with:
+          name: extractor-windows-latest
+          path: ruby/win64
+      - uses: actions/download-artifact@v2
+        with:
+          name: extractor-macos-latest
+          path: ruby/osx64
+      - run: |
+          mkdir -p ruby
+          cp -r codeql-extractor.yml tools ql/lib/ruby.dbscheme.stats ruby/
+          mkdir -p ruby/tools/{linux64,osx64,win64}
+          cp linux64/ruby-autobuilder ruby/tools/linux64/autobuilder
+          cp osx64/ruby-autobuilder ruby/tools/osx64/autobuilder
+          cp win64/ruby-autobuilder.exe ruby/tools/win64/autobuilder.exe
+          cp linux64/ruby-extractor ruby/tools/linux64/extractor
+          cp osx64/ruby-extractor ruby/tools/osx64/extractor
+          cp win64/ruby-extractor.exe ruby/tools/win64/extractor.exe
+          chmod +x ruby/tools/{linux64,osx64}/{autobuilder,extractor}
+          zip -rq codeql-ruby.zip ruby
+      - uses: actions/upload-artifact@v2
+        with:
+          name: codeql-ruby-pack
+          path: ruby/codeql-ruby.zip
+          retention-days: 1
+      - uses: actions/download-artifact@v2
+        with:
+          name: codeql-ruby-queries
+          path: ruby/qlpacks
+      - run: |
+          echo '{
+            "provide": [
+            "ruby/codeql-extractor.yml",
+            "qlpacks/*/*/*/qlpack.yml"
+            ]
+          }' > .codeqlmanifest.json
+          zip -rq codeql-ruby-bundle.zip .codeqlmanifest.json ruby qlpacks
+      - uses: actions/upload-artifact@v2
+        with:
+          name: codeql-ruby-bundle
+          path: ruby/codeql-ruby-bundle.zip
+          retention-days: 1
+
+  test:
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+    needs: [package]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: Shopify/example-ruby-app
+          ref: 67a0decc5eb550f3a9228eda53925c3afd40dfe9
+      - name: Fetch CodeQL
+        shell: bash
+        run: |
+          LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | grep -v beta | sort --version-sort | tail -1)
+          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql.zip "$LATEST"
+          unzip -q codeql.zip
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        working-directory: ${{ runner.temp }}
+      - name: Download Ruby bundle
+        uses: actions/download-artifact@v2
+        with:
+          name: codeql-ruby-bundle
+          path: ${{ runner.temp }}
+      - name: Unzip Ruby bundle
+        shell: bash
+        run: unzip -q -d "${{ runner.temp }}/ruby-bundle" "${{ runner.temp }}/codeql-ruby-bundle.zip"
+      - name: Prepare test files
+        shell: bash
+        run: |
+          echo "import ruby select count(File f)" > "test.ql"
+          echo "| 4 |" > "test.expected"
+          echo 'name: sample-tests
+          version: 0.0.0
+          dependencies:
+            codeql/ruby-all: 0.0.1
+          extractor: ruby
+          tests: .
+          ' > qlpack.yml
+      - name: Run QL test
+        shell: bash
+        run: |
+          "${{ runner.temp }}/codeql/codeql" test run --search-path "${{ runner.temp }}/ruby-bundle" --additional-packs "${{ runner.temp }}/ruby-bundle" .
+      - name: Create database
+        shell: bash
+        run: |
+          "${{ runner.temp }}/codeql/codeql" database create --search-path "${{ runner.temp }}/ruby-bundle" --language ruby --source-root . ../database
+      - name: Analyze database
+        shell: bash
+        run: |
+          "${{ runner.temp }}/codeql/codeql" database analyze --search-path "${{ runner.temp }}/ruby-bundle" --format=sarifv2.1.0 --output=out.sarif ../database ruby-code-scanning.qls

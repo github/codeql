@@ -1,0 +1,40 @@
+constructors/A.java:
+#    0| [CompilationUnit] A
+#    3|   1: [Class] A
+#    4|     3: [Constructor] A
+#    4|       5: [BlockStmt] { ... }
+#    5|         0: [ThisConstructorInvocationStmt] this(...)
+#    5|           0: [IntegerLiteral] 42
+#    8|     4: [Constructor] A
+#-----|       4: (Parameters)
+#    8|         0: [Parameter] i
+#    8|           0: [TypeAccess] int
+#    8|       5: [BlockStmt] { ... }
+#   10|     5: [Method] main
+#   10|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#   10|         0: [Parameter] args
+#   10|           0: [ArrayTypeAccess] ...[]
+#   10|             0: [TypeAccess] String
+#   10|       5: [BlockStmt] { ... }
+#   11|         0: [ExprStmt] <Expr>;
+#   11|           0: [ClassInstanceExpr] new A(...)
+#   11|             -3: [TypeAccess] A
+#   14|     6: [FieldDeclaration] String STATIC;
+#   14|       -1: [TypeAccess] String
+#   14|       0: [StringLiteral] "static string"
+#   15|     7: [FieldDeclaration] String INSTANCE;
+#   15|       -1: [TypeAccess] String
+#   15|       0: [StringLiteral] "instance string"
+#   17|     8: [BlockStmt] { ... }
+#   18|       0: [ExprStmt] <Expr>;
+#   18|         0: [MethodAccess] println(...)
+#   18|           -1: [VarAccess] System.out
+#   18|             -1: [TypeAccess] System
+#   18|           0: [StringLiteral] "<obinit>"
+#   21|     9: [BlockStmt] { ... }
+#   22|       0: [ExprStmt] <Expr>;
+#   22|         0: [MethodAccess] println(...)
+#   22|           -1: [VarAccess] System.out
+#   22|             -1: [TypeAccess] System
+#   22|           0: [StringLiteral] "<clinit>"

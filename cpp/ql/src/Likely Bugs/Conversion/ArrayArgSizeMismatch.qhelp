@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule looks for function calls where the size of the array being passed is smaller  
+than the size of the declared array parameter for the function. This is most likely going to lead
+to memory accesses that are beyond the bounds of the passed array.</p>
+
+<p>The size of the array being passed is very likely wrong as it does not match that of the function's 
+parameter.</p>
+
+</overview>
+<recommendation>
+<p>Check the array being passed to the function is correct, or modify its size to match that of the function's array parameter.</p>
+
+</recommendation>
+<example><sample src="ArrayArgSizeMismatch.cpp" />
+
+
+</example>
+</qhelp>

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>Semmle.Extraction.CIL.Driver</AssemblyName>
+    <RootNamespace>Semmle.Extraction.CIL.Driver</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Semmle.Extraction.CIL\Semmle.Extraction.CIL.csproj" />
+    <ProjectReference Include="..\Semmle.Extraction\Semmle.Extraction.csproj" />
+    <ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
+  </ItemGroup>
+
+</Project>

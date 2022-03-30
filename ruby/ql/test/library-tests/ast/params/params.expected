@@ -1,0 +1,164 @@
+idParams
+| params.rb:4:30:4:32 | foo | foo |
+| params.rb:4:35:4:37 | bar | bar |
+| params.rb:4:40:4:42 | baz | baz |
+| params.rb:9:15:9:17 | key | key |
+| params.rb:9:20:9:24 | value | value |
+| params.rb:14:11:14:13 | foo | foo |
+| params.rb:14:16:14:18 | bar | bar |
+| params.rb:30:23:30:28 | wibble | wibble |
+| params.rb:30:31:30:36 | *splat | splat |
+| params.rb:30:39:30:52 | **double_splat | double_splat |
+| params.rb:34:16:34:18 | val | val |
+| params.rb:34:21:34:26 | *splat | splat |
+| params.rb:34:29:34:42 | **double_splat | double_splat |
+| params.rb:38:26:38:26 | x | x |
+| params.rb:38:29:38:33 | *blah | blah |
+| params.rb:38:36:38:43 | **wibble | wibble |
+| params.rb:41:32:41:32 | x | x |
+| params.rb:41:35:41:37 | foo | foo |
+| params.rb:41:41:41:43 | bar | bar |
+| params.rb:46:28:46:33 | &block | block |
+| params.rb:49:28:49:29 | xx | xx |
+| params.rb:49:33:49:34 | yy | yy |
+| params.rb:53:34:53:34 | x | x |
+| params.rb:53:37:53:37 | y | y |
+| params.rb:53:41:53:41 | z | z |
+| params.rb:58:33:58:36 | val1 | val1 |
+| params.rb:58:39:58:42 | val2 | val2 |
+| params.rb:58:49:58:52 | val3 | val3 |
+| params.rb:62:29:62:34 | &block | block |
+| params.rb:65:29:65:32 | name | name |
+| params.rb:65:35:65:37 | age | age |
+| params.rb:70:35:70:35 | a | a |
+| params.rb:70:38:70:38 | b | b |
+| params.rb:70:48:70:48 | c | c |
+| params.rb:73:27:73:32 | wibble | wibble |
+| params.rb:77:16:77:18 | val | val |
+| params.rb:81:31:81:35 | array | array |
+blockParams
+| params.rb:46:28:46:33 | &block | block |
+| params.rb:62:29:62:34 | &block | block |
+patternParams
+| params.rb:17:31:17:39 | (..., ...) | params.rb:17:32:17:32 | a | 0 |
+| params.rb:17:31:17:39 | (..., ...) | params.rb:17:35:17:35 | b | 1 |
+| params.rb:17:31:17:39 | (..., ...) | params.rb:17:38:17:38 | c | 2 |
+| params.rb:22:15:22:20 | (..., ...) | params.rb:22:16:22:16 | a | 0 |
+| params.rb:22:15:22:20 | (..., ...) | params.rb:22:19:22:19 | b | 1 |
+| params.rb:25:23:25:37 | (..., ...) | params.rb:25:24:25:28 | first | 0 |
+| params.rb:25:23:25:37 | (..., ...) | params.rb:25:31:25:36 | second | 1 |
+| params.rb:25:40:25:54 | (..., ...) | params.rb:25:41:25:45 | third | 0 |
+| params.rb:25:40:25:54 | (..., ...) | params.rb:25:48:25:53 | fourth | 1 |
+splatParams
+| params.rb:30:31:30:36 | *splat | splat |
+| params.rb:34:21:34:26 | *splat | splat |
+| params.rb:38:29:38:33 | *blah | blah |
+hashSplatParams
+| params.rb:30:39:30:52 | **double_splat | double_splat |
+| params.rb:34:29:34:42 | **double_splat | double_splat |
+| params.rb:38:36:38:43 | **wibble | wibble |
+keywordParams
+| params.rb:41:35:41:37 | foo | foo | (none) |
+| params.rb:41:41:41:43 | bar | bar | 7 |
+| params.rb:49:28:49:29 | xx | xx | (none) |
+| params.rb:49:33:49:34 | yy | yy | 100 |
+| params.rb:53:37:53:37 | y | y | (none) |
+| params.rb:53:41:53:41 | z | z | 3 |
+optionalParams
+| params.rb:58:39:58:42 | val2 | val2 | params.rb:58:46:58:46 | 0 |
+| params.rb:58:49:58:52 | val3 | val3 | params.rb:58:56:58:58 | 100 |
+| params.rb:65:35:65:37 | age | age | params.rb:65:41:65:42 | 99 |
+| params.rb:70:38:70:38 | b | b | params.rb:70:42:70:45 | 1000 |
+| params.rb:70:48:70:48 | c | c | params.rb:70:52:70:53 | 20 |
+paramsInMethods
+| params.rb:4:1:5:3 | identifier_method_params | 0 | params.rb:4:30:4:32 | foo | SimpleParameter |
+| params.rb:4:1:5:3 | identifier_method_params | 1 | params.rb:4:35:4:37 | bar | SimpleParameter |
+| params.rb:4:1:5:3 | identifier_method_params | 2 | params.rb:4:40:4:42 | baz | SimpleParameter |
+| params.rb:17:1:18:3 | destructured_method_param | 0 | params.rb:17:31:17:39 | (..., ...) | DestructuredParameter |
+| params.rb:30:1:31:3 | method_with_splat | 0 | params.rb:30:23:30:28 | wibble | SimpleParameter |
+| params.rb:30:1:31:3 | method_with_splat | 1 | params.rb:30:31:30:36 | *splat | SplatParameter |
+| params.rb:30:1:31:3 | method_with_splat | 2 | params.rb:30:39:30:52 | **double_splat | HashSplatParameter |
+| params.rb:41:1:43:3 | method_with_keyword_params | 0 | params.rb:41:32:41:32 | x | SimpleParameter |
+| params.rb:41:1:43:3 | method_with_keyword_params | 1 | params.rb:41:35:41:37 | foo | KeywordParameter |
+| params.rb:41:1:43:3 | method_with_keyword_params | 2 | params.rb:41:41:41:43 | bar | KeywordParameter |
+| params.rb:46:1:48:3 | use_block_with_keyword | 0 | params.rb:46:28:46:33 | &block | BlockParameter |
+| params.rb:58:1:59:3 | method_with_optional_params | 0 | params.rb:58:33:58:36 | val1 | SimpleParameter |
+| params.rb:58:1:59:3 | method_with_optional_params | 1 | params.rb:58:39:58:42 | val2 | OptionalParameter |
+| params.rb:58:1:59:3 | method_with_optional_params | 2 | params.rb:58:49:58:52 | val3 | OptionalParameter |
+| params.rb:62:1:64:3 | use_block_with_optional | 0 | params.rb:62:29:62:34 | &block | BlockParameter |
+| params.rb:73:1:74:3 | method_with_nil_splat | 0 | params.rb:73:27:73:32 | wibble | SimpleParameter |
+| params.rb:73:1:74:3 | method_with_nil_splat | 1 | params.rb:73:35:73:39 | **nil | HashSplatNilParameter |
+| params.rb:81:1:84:3 | anonymous_block_parameter | 0 | params.rb:81:31:81:35 | array | SimpleParameter |
+| params.rb:81:1:84:3 | anonymous_block_parameter | 1 | params.rb:81:38:81:38 | & | BlockParameter |
+paramsInBlocks
+| params.rb:9:11:11:3 | do ... end | 0 | params.rb:9:15:9:17 | key | SimpleParameter |
+| params.rb:9:11:11:3 | do ... end | 1 | params.rb:9:20:9:24 | value | SimpleParameter |
+| params.rb:22:12:22:32 | { ... } | 0 | params.rb:22:15:22:20 | (..., ...) | DestructuredParameter |
+| params.rb:34:12:35:3 | do ... end | 0 | params.rb:34:16:34:18 | val | SimpleParameter |
+| params.rb:34:12:35:3 | do ... end | 1 | params.rb:34:21:34:26 | *splat | SplatParameter |
+| params.rb:34:12:35:3 | do ... end | 2 | params.rb:34:29:34:42 | **double_splat | HashSplatParameter |
+| params.rb:49:24:51:3 | do ... end | 0 | params.rb:49:28:49:29 | xx | KeywordParameter |
+| params.rb:49:24:51:3 | do ... end | 1 | params.rb:49:33:49:34 | yy | KeywordParameter |
+| params.rb:65:25:67:3 | do ... end | 0 | params.rb:65:29:65:32 | name | SimpleParameter |
+| params.rb:65:25:67:3 | do ... end | 1 | params.rb:65:35:65:37 | age | OptionalParameter |
+| params.rb:77:12:78:3 | do ... end | 0 | params.rb:77:16:77:18 | val | SimpleParameter |
+| params.rb:77:12:78:3 | do ... end | 1 | params.rb:77:21:77:25 | **nil | HashSplatNilParameter |
+paramsInLambdas
+| params.rb:14:7:14:33 | -> { ... } | 0 | params.rb:14:11:14:13 | foo | SimpleParameter |
+| params.rb:14:7:14:33 | -> { ... } | 1 | params.rb:14:16:14:18 | bar | SimpleParameter |
+| params.rb:25:19:27:1 | -> { ... } | 0 | params.rb:25:23:25:37 | (..., ...) | DestructuredParameter |
+| params.rb:25:19:27:1 | -> { ... } | 1 | params.rb:25:40:25:54 | (..., ...) | DestructuredParameter |
+| params.rb:38:22:38:47 | -> { ... } | 0 | params.rb:38:26:38:26 | x | SimpleParameter |
+| params.rb:38:22:38:47 | -> { ... } | 1 | params.rb:38:29:38:33 | *blah | SplatParameter |
+| params.rb:38:22:38:47 | -> { ... } | 2 | params.rb:38:36:38:43 | **wibble | HashSplatParameter |
+| params.rb:53:30:55:1 | -> { ... } | 0 | params.rb:53:34:53:34 | x | SimpleParameter |
+| params.rb:53:30:55:1 | -> { ... } | 1 | params.rb:53:37:53:37 | y | KeywordParameter |
+| params.rb:53:30:55:1 | -> { ... } | 2 | params.rb:53:41:53:41 | z | KeywordParameter |
+| params.rb:70:31:70:64 | -> { ... } | 0 | params.rb:70:35:70:35 | a | SimpleParameter |
+| params.rb:70:31:70:64 | -> { ... } | 1 | params.rb:70:38:70:38 | b | OptionalParameter |
+| params.rb:70:31:70:64 | -> { ... } | 2 | params.rb:70:48:70:48 | c | OptionalParameter |
+params
+| params.rb:4:30:4:32 | foo | 0 | SimpleParameter |
+| params.rb:4:35:4:37 | bar | 1 | SimpleParameter |
+| params.rb:4:40:4:42 | baz | 2 | SimpleParameter |
+| params.rb:9:15:9:17 | key | 0 | SimpleParameter |
+| params.rb:9:20:9:24 | value | 1 | SimpleParameter |
+| params.rb:14:11:14:13 | foo | 0 | SimpleParameter |
+| params.rb:14:16:14:18 | bar | 1 | SimpleParameter |
+| params.rb:17:31:17:39 | (..., ...) | 0 | DestructuredParameter |
+| params.rb:22:15:22:20 | (..., ...) | 0 | DestructuredParameter |
+| params.rb:25:23:25:37 | (..., ...) | 0 | DestructuredParameter |
+| params.rb:25:40:25:54 | (..., ...) | 1 | DestructuredParameter |
+| params.rb:30:23:30:28 | wibble | 0 | SimpleParameter |
+| params.rb:30:31:30:36 | *splat | 1 | SplatParameter |
+| params.rb:30:39:30:52 | **double_splat | 2 | HashSplatParameter |
+| params.rb:34:16:34:18 | val | 0 | SimpleParameter |
+| params.rb:34:21:34:26 | *splat | 1 | SplatParameter |
+| params.rb:34:29:34:42 | **double_splat | 2 | HashSplatParameter |
+| params.rb:38:26:38:26 | x | 0 | SimpleParameter |
+| params.rb:38:29:38:33 | *blah | 1 | SplatParameter |
+| params.rb:38:36:38:43 | **wibble | 2 | HashSplatParameter |
+| params.rb:41:32:41:32 | x | 0 | SimpleParameter |
+| params.rb:41:35:41:37 | foo | 1 | KeywordParameter |
+| params.rb:41:41:41:43 | bar | 2 | KeywordParameter |
+| params.rb:46:28:46:33 | &block | 0 | BlockParameter |
+| params.rb:49:28:49:29 | xx | 0 | KeywordParameter |
+| params.rb:49:33:49:34 | yy | 1 | KeywordParameter |
+| params.rb:53:34:53:34 | x | 0 | SimpleParameter |
+| params.rb:53:37:53:37 | y | 1 | KeywordParameter |
+| params.rb:53:41:53:41 | z | 2 | KeywordParameter |
+| params.rb:58:33:58:36 | val1 | 0 | SimpleParameter |
+| params.rb:58:39:58:42 | val2 | 1 | OptionalParameter |
+| params.rb:58:49:58:52 | val3 | 2 | OptionalParameter |
+| params.rb:62:29:62:34 | &block | 0 | BlockParameter |
+| params.rb:65:29:65:32 | name | 0 | SimpleParameter |
+| params.rb:65:35:65:37 | age | 1 | OptionalParameter |
+| params.rb:70:35:70:35 | a | 0 | SimpleParameter |
+| params.rb:70:38:70:38 | b | 1 | OptionalParameter |
+| params.rb:70:48:70:48 | c | 2 | OptionalParameter |
+| params.rb:73:27:73:32 | wibble | 0 | SimpleParameter |
+| params.rb:73:35:73:39 | **nil | 1 | HashSplatNilParameter |
+| params.rb:77:16:77:18 | val | 0 | SimpleParameter |
+| params.rb:77:21:77:25 | **nil | 1 | HashSplatNilParameter |
+| params.rb:81:31:81:35 | array | 0 | SimpleParameter |
+| params.rb:81:38:81:38 | & | 1 | BlockParameter |

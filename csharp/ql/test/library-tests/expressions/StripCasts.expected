@@ -1,0 +1,56 @@
+| FoldedLiterals.cs:11:19:11:21 | (...) ... | FoldedLiterals.cs:11:19:11:21 |   |
+| FoldedLiterals.cs:13:15:13:17 | (...) ... | FoldedLiterals.cs:13:15:13:17 |   |
+| FoldedLiterals.cs:14:19:14:21 | (...) ... | FoldedLiterals.cs:14:19:14:21 |   |
+| FoldedLiterals.cs:18:21:18:28 | (...) ... | FoldedLiterals.cs:18:28:18:28 | 1 |
+| FoldedLiterals.cs:19:20:19:27 | (...) ... | FoldedLiterals.cs:19:27:19:27 | 1 |
+| FoldedLiterals.cs:19:20:19:27 | (...) ... | FoldedLiterals.cs:19:27:19:27 | 1 |
+| FoldedLiterals.cs:20:20:20:27 | (...) ... | FoldedLiterals.cs:20:27:20:27 | 1 |
+| FoldedLiterals.cs:20:20:20:27 | (...) ... | FoldedLiterals.cs:20:27:20:27 | 1 |
+| FoldedLiterals.cs:21:20:21:27 | (...) ... | FoldedLiterals.cs:21:27:21:27 | 1 |
+| FoldedLiterals.cs:21:20:21:27 | (...) ... | FoldedLiterals.cs:21:27:21:27 | 1 |
+| FoldedLiterals.cs:24:20:24:26 | (...) ... | FoldedLiterals.cs:24:26:24:26 | 2 |
+| FoldedLiterals.cs:25:20:25:26 | (...) ... | FoldedLiterals.cs:25:26:25:26 | 2 |
+| FoldedLiterals.cs:25:20:25:26 | (...) ... | FoldedLiterals.cs:25:26:25:26 | 2 |
+| FoldedLiterals.cs:26:20:26:26 | (...) ... | FoldedLiterals.cs:26:26:26:26 | 2 |
+| FoldedLiterals.cs:26:20:26:26 | (...) ... | FoldedLiterals.cs:26:26:26:26 | 2 |
+| FoldedLiterals.cs:27:20:27:26 | (...) ... | FoldedLiterals.cs:27:26:27:26 | 2 |
+| FoldedLiterals.cs:27:20:27:26 | (...) ... | FoldedLiterals.cs:27:26:27:26 | 2 |
+| FoldedLiterals.cs:30:21:30:28 | (...) ... | FoldedLiterals.cs:30:28:30:28 | 3 |
+| FoldedLiterals.cs:31:20:31:27 | (...) ... | FoldedLiterals.cs:31:27:31:27 | 3 |
+| FoldedLiterals.cs:31:20:31:27 | (...) ... | FoldedLiterals.cs:31:27:31:27 | 3 |
+| FoldedLiterals.cs:32:20:32:27 | (...) ... | FoldedLiterals.cs:32:27:32:27 | 3 |
+| FoldedLiterals.cs:32:20:32:27 | (...) ... | FoldedLiterals.cs:32:27:32:27 | 3 |
+| FoldedLiterals.cs:33:20:33:27 | (...) ... | FoldedLiterals.cs:33:27:33:27 | 3 |
+| FoldedLiterals.cs:33:20:33:27 | (...) ... | FoldedLiterals.cs:33:27:33:27 | 3 |
+| FoldedLiterals.cs:36:22:36:30 | (...) ... | FoldedLiterals.cs:36:30:36:30 | 4 |
+| FoldedLiterals.cs:37:20:37:28 | (...) ... | FoldedLiterals.cs:37:28:37:28 | 4 |
+| FoldedLiterals.cs:37:20:37:28 | (...) ... | FoldedLiterals.cs:37:28:37:28 | 4 |
+| FoldedLiterals.cs:38:20:38:28 | (...) ... | FoldedLiterals.cs:38:28:38:28 | 4 |
+| FoldedLiterals.cs:38:20:38:28 | (...) ... | FoldedLiterals.cs:38:28:38:28 | 4 |
+| FoldedLiterals.cs:39:20:39:28 | (...) ... | FoldedLiterals.cs:39:28:39:28 | 4 |
+| FoldedLiterals.cs:39:20:39:28 | (...) ... | FoldedLiterals.cs:39:28:39:28 | 4 |
+| FoldedLiterals.cs:48:20:48:20 | (...) ... | FoldedLiterals.cs:48:20:48:20 | 6 |
+| expressions.cs:86:29:86:36 | (...) ... | expressions.cs:86:34:86:36 | 4 |
+| expressions.cs:86:39:86:45 | (...) ... | expressions.cs:86:44:86:45 | 3 |
+| expressions.cs:95:27:95:36 | ... as ... | expressions.cs:95:27:95:27 | access to parameter o |
+| expressions.cs:96:27:96:34 | (...) ... | expressions.cs:96:34:96:34 | access to parameter p |
+| expressions.cs:98:21:98:47 | (...) ... | expressions.cs:98:36:98:36 | access to parameter o |
+| expressions.cs:98:29:98:36 | (...) ... | expressions.cs:98:36:98:36 | access to parameter o |
+| expressions.cs:98:29:98:46 | ... as ... | expressions.cs:98:36:98:36 | access to parameter o |
+| expressions.cs:100:27:100:27 | (...) ... | expressions.cs:100:27:100:27 | access to local variable i |
+| expressions.cs:138:41:138:41 | (...) ... | expressions.cs:138:41:138:41 | 1 |
+| expressions.cs:138:44:138:44 | (...) ... | expressions.cs:138:44:138:44 | 2 |
+| expressions.cs:138:47:138:47 | (...) ... | expressions.cs:138:47:138:47 | 3 |
+| expressions.cs:138:50:138:50 | (...) ... | expressions.cs:138:50:138:50 | 4 |
+| expressions.cs:157:36:157:36 | (...) ... | expressions.cs:157:36:157:36 | access to local variable r |
+| expressions.cs:157:40:157:40 | (...) ... | expressions.cs:157:40:157:40 | access to local variable r |
+| expressions.cs:168:42:168:42 | (...) ... | expressions.cs:168:42:168:42 | access to parameter i |
+| expressions.cs:312:17:312:21 | (...) ... | expressions.cs:312:17:312:21 | access to parameter value |
+| expressions.cs:312:30:312:34 | (...) ... | expressions.cs:312:30:312:34 | access to parameter value |
+| expressions.cs:334:30:334:30 | (...) ... | expressions.cs:334:30:334:30 | 8 |
+| expressions.cs:414:31:414:31 | (...) ... | expressions.cs:414:31:414:31 | 1 |
+| expressions.cs:414:39:414:39 | (...) ... | expressions.cs:414:39:414:39 | 2 |
+| expressions.cs:449:41:449:53 | (...) ... | expressions.cs:449:48:449:52 | ... + ... |
+| expressions.cs:449:48:449:48 | (...) ... | expressions.cs:449:48:449:48 | access to parameter x |
+| expressions.cs:450:52:450:56 | (...) ... | expressions.cs:450:52:450:56 | ... + ... |
+| expressions.cs:452:56:452:56 | (...) ... | expressions.cs:452:56:452:56 | access to parameter x |

@@ -1,0 +1,1 @@
+| Test.java:10:3:10:22 | put(...) | Type 'A' does not define hashCode(), but is used in a hashing data-structure. |

@@ -1,0 +1,102 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+This metric measures the number of methods in reference types below this
+location in the tree. At a type level, it just measures the number of
+methods in the type itself.
+</p>
+
+<p>
+A class with too many methods is generally trying to do too much, either at
+the interface or implementation level or both. It is common for the set of 
+operations such a class provides to be diverse and wide-ranging, making it 
+difficult for readers to understand. Such
+classes often lack cohesion and are prime candidates for refactoring.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Classes have too many methods for a variety of reasons, and the appropriate
+fix is different in each case:
+</p>
+
+<ul>
+
+<li>
+The class may be too large in general, and taking on more responsibilities
+than it should (see [Martin] for more on responsibilities). In this case,
+the solution is to identify each of the different responsibilities the class
+is taking on, and split it into multiple classes, e.g. using the 'Extract
+Class' refactoring from [Fowler].
+</li>
+
+<li>
+There may be lots of duplication within the class itself, i.e. some of the
+methods may be doing overlapping things. In this case, the solution is to
+redesign the class so that each new method has a single, unique
+responsibility.
+</li>
+
+<li>
+The class may be quite small at the implementation level, but trying to
+provide its user with a wide range of 'utility' methods that don't actually
+need to be part of the class. (A classic example of this is the
+<code>std::string</code> class in the C++ Standard Library.) As [Sutter]
+observes, there are at least two key problems with this approach:
+
+<ul>
+<li>
+It may be possible to generalize some of the utility methods beyond the
+narrow context of the class in question -- by bundling them with the class,
+the class author reduces the scope for functionality reuse.
+</li>
+
+<li>
+It's usually impossible for the class author to know every possible
+operation that the user might want to perform on the class, so the public
+interface will inherently be incomplete. New utility methods will end up
+having a different syntax to the privileged public methods in the class,
+negatively impacting on code consistency.
+</li>
+</ul>
+
+To refactor a class like this, simply move its utility methods elsewhere,
+paring its public interface down to the bare minimum.
+</li>
+
+<li>
+The class may be a base class in a badly-designed inheritance hierarchy.
+Such classes have many public methods in order to support features that
+are only used by one or two of their descendants. In this situation, the
+solution is to redesign the hierarchy, possibly by refactoring it into a
+component-based architecture (see [Microsoft Patterns &amp; Practices Team]).
+</li>
+
+</ul>
+
+</recommendation>
+<references>
+
+
+<li>
+M. Fowler. <em>Refactoring</em> pp. 65, 122-5. Addison-Wesley, 1999.
+</li>
+<li>
+R. Martin. <em>Agile Software Development: Principles, Patterns, and Practices</em>
+Chapter 8 - SRP: The Single-Responsibility Principle. Pearson Education, 2003.
+</li>
+<li>
+H. Sutter. <a href="http://www.gotw.ca/gotw/084.htm">GotW #84: Monoliths "Unstrung"</a>. Published online, 2002.
+</li>
+<li>
+Microsoft Patterns &amp; Practices Team. <a href="http://msdn.microsoft.com/en-us/library/ee658117.aspx">Architectural Patterns and Styles</a> <em>Microsoft Application Architecture Guide, 2nd Edition.</em> Microsoft Press, 2009.
+</li>
+
+
+</references>
+</qhelp>

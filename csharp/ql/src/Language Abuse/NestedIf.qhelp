@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+It is unnecessary to nest <code>if</code> statements when neither of them has an 
+<code>else</code> part. The code can be written more simply by combining the statements 
+into a single <code>if</code> statement.
+</p> 
+
+</overview>
+<recommendation>
+<p>
+Combine the <code>if</code> statements into a single <code>if</code> statement.
+Combine the conditions using an <code>&amp;&amp;</code> operator.
+</p>
+
+<p>
+Be sure to check operator precedence and use brackets around each condition where necessary.
+</p>
+
+</recommendation>
+<example>
+<p>This example shows two <code>if</code> statements which are nested.</p>
+<sample src="NestedIf.cs" />
+
+<p>Since neither of the statements has an <code>else</code> part, the code can be rewritten
+as follows:</p>
+<sample src="NestedIfFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/5011f09h.aspx">if-else (C# Reference)</a>.</li>
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/6a71f45d.aspx">C# Operators</a>.</li>
+
+</references>
+</qhelp>

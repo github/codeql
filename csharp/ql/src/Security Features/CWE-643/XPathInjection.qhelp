@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If an XPath expression is built using string concatenation, and the components of the concatenation
+include user input, a user is likely to be able to create a malicious XPath expression.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If user input must be included in an XPath expression, pre-compile the query and use variable
+references to include the user input.
+</p>
+<p>
+When using the <code>System.Xml.XPath</code> API, this can be done by creating a custom subtype of
+<code>System.Xml.Xsl.XsltContext</code>, and implementing
+<code>ResolveVariable(String, String)</code> to return the user provided data. This
+custom context can be specified for a given <code>XPathExpression</code>
+using <code>XPathExpression.SetContext()</code>. For more details, see the
+"User Defined Functions and Variables" webpage in the list of references.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In the first example, the code accepts a user name specified by the user, and uses this
+unvalidated and unsanitized value in an XPath expression. This is vulnerable to the user providing
+special characters or string sequences that change the meaning of the XPath expression to search
+for different values.
+</p>
+
+<p>
+In the second example, the XPath expression is a hard-coded string that specifies some variables,
+which are safely replaced at runtime using a custom <code>XsltContext</code> that looks up the
+variables in an <code>XsltArgumentList</code>.
+</p>
+<sample src="XPathInjection.cs" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/09-Testing_for_XPath_Injection">Testing for XPath Injection</a>.</li>
+<li>OWASP: <a href="https://www.owasp.org/index.php/XPATH_Injection">XPath Injection</a>.</li>
+<li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/dd567715.aspx">User Defined Functions and Variables</a>.</li>
+</references>
+</qhelp>

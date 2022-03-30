@@ -1,0 +1,32 @@
+# editor and OS artifacts
+*~
+.DS_STORE
+*.swp
+
+# query compilation caches
+.cache
+
+# qltest projects and artifacts
+*/ql/test/**/*.testproj
+*/ql/test/**/*.actual
+
+# Visual studio temporaries, except a file used by QL4VS
+.vs/*
+!.vs/VSWorkspaceSettings.json
+
+# Byte-compiled python files
+*.pyc
+
+# python virtual environment folder 
+.venv/
+
+# It's useful (though not required) to be able to unpack codeql in the ql checkout itself
+/codeql/
+
+csharp/extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json
+
+# Avoid committing cached package components
+.codeql
+
+# Compiled class file
+*.class

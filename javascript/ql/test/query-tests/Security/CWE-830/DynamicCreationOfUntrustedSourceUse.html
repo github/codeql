@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            (function() {
+              // OK (we accept this, as a http document location is vulnerable anyway)
+              var scrpt = document.createElement('script');
+              scrpt.type = 'text/javascript';
+              scrpt.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.cdn.local/ga.js';
+
+              // OK (integrity digest present)
+              var scrpt2 = document.createElement('script');
+              scrpt2.type = 'text/javascript';
+              scrpt2.src = 'http://www.cdn.local/ga.js';
+              scrpt2.integrity = 'sha256-h0UuK3mE9taiYlB5u9vT9A0s/XDgkfVd+F4VhN/sky=';
+
+              // NOT OK (http + ternary)
+              var scrpt3 = document.createElement('script');
+              scrpt3.type = 'text/javascript';
+              scrpt3.src = ('https:' == document.location.protocol ? 'http://unsafe' : 'http://also-unsafe') + '.cdn.local/ga.js';
+
+              // NOT OK (http URL)
+              var ifrm = document.createElement('iframe');
+              ifrm.src = 'http://www.example.com/';
+
+              // OK (https URL)
+              var ifrm2 = document.createElement('iframe');
+              ifrm2.src = 'https://www.example.com/';
+
+              // NOT OK (http URL tracked through calls)
+              function getUrl(version) {
+                return 'http://www.cdn.local/'+version+'/ga.js';
+              }
+              var ifrm3 = document.createElement('iframe');
+              ifrm3.src = getUrl('v123');
+
+              // NOT OK (assignment of bad URL using setAttribute)
+              var ifrm4 = document.createElement('iframe');
+              ifrm4.setAttribute('src', 'http://www.example.local/page.html');
+
+              // OK (bad URL, but the attribute is not `src`)
+              var ifrm5 = document.createElement('iframe');
+              ifrm5.setAttribute('data-src', 'http://www.example.local/page.html');
+            })();
+          </script>
+    </head>
+    <body>
+        hello
+    </body>
+</html>

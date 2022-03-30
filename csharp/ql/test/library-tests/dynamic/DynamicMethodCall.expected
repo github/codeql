@@ -1,0 +1,2 @@
+| dynamic.cs:26:9:26:17 | dynamic call to method Bar | Bar | access to local variable d | 0 | dynamic.cs:26:15:26:16 | "" |
+| dynamic.cs:27:9:27:14 | dynamic call to method Foo | Foo |  | 0 | dynamic.cs:27:13:27:13 | access to local variable d |

@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A public class or interface that does not have a Javadoc comment makes an API more
+difficult to understand and maintain.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Public classes and interfaces should be documented to make an API usable.
+For the purpose of code maintainability, it is also advisable to document non-public
+classes and interfaces.
+</p>
+<p>
+Documentation for users of an API should be written using the standard Javadoc format.
+This can be accessed conveniently by users of an API from within standard IDEs,
+and can be transformed automatically into HTML format.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a good Javadoc comment, which clearly explains what the class does, 
+its author, and version.</p>
+<sample src="MissingJavadocTypes.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 44.
+  Addison-Wesley, 2008.
+</li>
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-javadoc.htm">Java Compiler Javadoc Preferences</a>.
+</li>
+<li>
+  Java SE Documentation:
+  <a href="https://www.oracle.com/technical-resources/articles/java/javadoc-tool.html">How to Write Doc Comments for the Javadoc Tool</a>, 
+  <a href="https://www.oracle.com/java/technologies/javase/api-specifications.html">Requirements for Writing Java API Specifications</a>.
+</li>
+
+
+</references>
+</qhelp>

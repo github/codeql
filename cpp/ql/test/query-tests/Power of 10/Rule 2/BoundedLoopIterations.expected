@@ -1,0 +1,13 @@
+| loops.cpp:24:3:24:27 | for(...;...;...) ... | The loop counter i is not always incremented in the loop body. |
+| loops.cpp:25:3:25:21 | while (...) ... | The loop counter i is not always incremented in the loop body. |
+| loops.cpp:26:3:26:32 | do (...) ... | The loop counter i is not always decremented in the loop body. |
+| loops.cpp:27:3:27:36 | while (...) ... | The loop counter i is not always decremented in the loop body. |
+| loops.cpp:28:3:28:37 | while (...) ... | This loop does not have a fixed bound. |
+| loops.cpp:29:3:29:41 | while (...) ... | This loop does not have a fixed bound. |
+| loops.cpp:30:3:30:40 | while (...) ... | This loop does not have a fixed bound. |
+| loops.cpp:31:3:31:43 | while (...) ... | This loop does not have a fixed bound. |
+| loops.cpp:32:3:32:34 | for(...;...;...) ... | This loop does not have a fixed bound. |
+| loops.cpp:33:3:33:20 | while (...) ... | This loop does not have a fixed bound. |
+| loops.cpp:37:3:37:27 | while (...) ... | The loop counter i is not always incremented in the loop body. |
+| loops.cpp:38:3:38:27 | while (...) ... | The loop counter i is not always decremented in the loop body. |
+| loops.cpp:39:3:39:31 | while (...) ... | The loop counter i is not always decremented in the loop body. |

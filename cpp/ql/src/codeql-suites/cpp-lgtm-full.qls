@@ -1,0 +1,14 @@
+- description: Standard LGTM queries for C/C++, including ones not displayed by default
+- queries: .
+- apply: lgtm-selectors.yml
+  from: codeql/suite-helpers
+- apply: codeql-suites/exclude-slow-queries.yml
+# These are only for IDE use.
+- exclude:
+    tags contain:
+      - ide-contextual-queries/local-definitions
+      - ide-contextual-queries/local-references
+- query: Metrics/Files/FLinesOfCode.ql
+- query: Metrics/Files/FLinesOfCommentedOutCode.ql
+- query: Metrics/Files/FLinesOfComments.ql
+- query: Metrics/Files/FNumberOfTests.ql

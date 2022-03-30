@@ -1,0 +1,24 @@
+xmlAttribute
+| tst.xml:3:3:3:20 | foo=bar | tst.xml:3:3:3:37 | child | foo | bar |
+xmlComment
+| tst.xml:4:3:4:21 |  a comment  |  a comment  |
+xmlElement_getAnAttribute
+| tst.xml:3:3:3:37 | child | tst.xml:3:3:3:20 | foo=bar |
+xmlElement
+| tst.xml:2:1:5:8 | root | root | tst.xml | 0 | tst.xml:0:0:0:0 | tst.xml |
+| tst.xml:3:3:3:37 | child | child | root | 0 | tst.xml:0:0:0:0 | tst.xml |
+xmlFile
+| tst.xml:0:0:0:0 | tst.xml |
+xmlLocatable
+| tst.xml:2:1:5:8 | root |
+| tst.xml:3:3:3:20 | foo=bar |
+| tst.xml:3:3:3:37 | child |
+| tst.xml:3:20:3:29 | Some text |
+| tst.xml:4:3:4:21 |  a comment  |
+xmlParent_getChild
+| root | 0 | tst.xml:3:3:3:37 | child |
+| tst.xml | 0 | tst.xml:2:1:5:8 | root |
+xmlParent_getTextValue
+| child | Some text |
+| root |  |
+| tst.xml |  |

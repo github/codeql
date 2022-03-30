@@ -1,0 +1,5 @@
+| 176.cpp:18:7:18:22 | definition of bad_get_operator | AV Rule 176: A typedef will be used when declaring function pointers. |
+| 176.cpp:24:17:24:26 | declaration of bad_meta_t | AV Rule 176: A typedef will be used when declaring function pointers. |
+| 176.cpp:31:19:31:20 | definition of op | AV Rule 176: A typedef will be used when declaring function pointers. |
+| 176.cpp:37:15:37:24 | declaration of bad_call_t | AV Rule 176: A typedef will be used when declaring function pointers. |
+| 176.cpp:42:9:42:14 | definition of bad_op | AV Rule 176: A typedef will be used when declaring function pointers. |

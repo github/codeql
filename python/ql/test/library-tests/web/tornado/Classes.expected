@@ -1,0 +1,5 @@
+WARNING: Predicate aTornadoRequestHandlerClass has been deprecated and may be removed in future (Classes.ql:6,13-40)
+| test.py:4 | class Handler1 |
+| test.py:8 | class Handler2 |
+| test.py:14 | class Handler3 |
+| test.py:23 | class DeepInheritance |

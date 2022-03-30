@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A direct call of a <code>Thread</code> object's <code>run</code> method
+does not start a separate thread. The method is executed within the current thread.
+This is an unusual use because <code>Thread.run()</code> is normally 
+intended to be called from within a separate thread. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>To execute <code>Runnable.run</code> from within a separate thread, do one of the 
+following:</p>
+
+<ul>
+    <li>Construct a <code>Thread</code> object using the <code>Runnable</code> object, and call 
+    <code>start</code> on the <code>Thread</code> object.</li>
+    <li>Define a subclass of a <code>Thread</code> object, and override the definition of its 
+    <code>run</code> method. Then construct an instance of this subclass and call <code>start</code>
+    on that instance directly.</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>In the following example, the main thread, <code>ThreadDemo</code>, calls the child thread, 
+<code>NewThread</code>, using <code>run</code>. This causes the child thread to run to
+completion before the rest of the main thread is executed, so that "Child thread activity" is 
+printed before "Main thread activity".</p>
+
+<sample src="CallsToRunnableRun.java" />
+
+<p>To enable the two threads to run concurrently, create the child thread and call 
+<code>start</code>, as shown below. This causes the main thread to
+continue while the child thread is waiting, so that "Main thread activity" is printed before 
+"Child thread activity".</p>
+
+<sample src="CallsToRunnableRunFixed.java" />
+
+</example>
+<references>
+
+
+<li>
+  The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/runthread.html">Defining and Starting a Thread</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Calling <code>System.Object</code>'s (or <code>System.ValueType</code>'s) <code>ToString</code>
+method on a value returns the fully qualified name of the type of that value. In most cases this is
+not useful, or what was intended. This rule finds explicit and implicit calls to the default
+<code>ToString</code> methods.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Override the default <code>ToString</code> method, if possible, or perform bespoke string conversion.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the default <code>ToString</code> method is invoked first on an object
+of type <code>Person</code>, and then on an integer array. The output results are
+<code>p: Bad+Person</code> and <code>ints: System.Int32[]</code>, respectively.
+</p>
+<sample src="DefaultToStringBad.cs" />
+
+<p>
+In the fixed example, the <code>ToString</code> method is overridden in the class <code>Person</code>,
+and <code>string.Join</code> is used to print the elements of the integer array (it is not possible
+to override <code>ToString</code> in that case). The output results are
+<code>p: Eric Arthur Blair</code> and <code>ints: 1, 2, 3</code>, respectively.
+</p>
+<sample src="DefaultToStringGood.cs" />
+
+</example>
+<references>
+
+<li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.object.tostring.aspx">Object.ToString Method</a>, <a href="https://msdn.microsoft.com/en-us/library/wb77sz3h(v=vs.110).aspx">ValueType.ToString Method</a>.</li>
+
+</references>
+</qhelp>

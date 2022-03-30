@@ -1,0 +1,64 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p><em>Feature envy</em> refers to situations where a method is "in the wrong place", because
+it does not use many methods or variables of its own class, but uses a whole range of methods or variables from
+some other class. This violates the principle of putting data and behavior in the
+same place, and exposes internals of the other class to the method.</p>
+
+</overview>
+<recommendation>
+
+<p>For each method that may exhibit feature envy, see if it needs to be declared in
+its present location, or if you can move it to the class it is "envious" of.
+A common example is a method that calls a large number of getters on
+another class to perform a calculation that does not rely on
+anything from its own class. In such cases, you should move the method to the class containing the data. 
+If the calculation depends on some values from the method's current class, they can either be passed as
+arguments or accessed using getters from the other class.</p>
+
+<p>If it is inappropriate to move the entire method, see if all the dependencies
+on the other class are concentrated in just one part of the method. If so, you can move them into a method
+of their own. You can then move this method to the other class and call it from the original method.</p>
+
+<p>If a class is envious of functionality defined in a superclass, perhaps the
+superclass needs to be rewritten to become more extensible and allow its subtypes to
+define new behavior without them depending so deeply on the superclass's implementation. The
+<em>template method</em> pattern may be useful in achieving this.</p>
+
+<p>Modern IDEs provide several refactorings that may be useful in addressing
+instances of feature envy, typically under the names of "Move method" and "Extract
+method".</p>
+
+<p>Occasionally, behavior can be misinterpreted as feature envy when in fact it is justified. The
+most common examples are complex design patterns like <em>visitor</em> or <em>strategy</em>, where
+the goal is to separate data from behavior.
+
+</p></recommendation>
+<example>
+<p>In the following example, the method <code>GetTotalPrice</code> is in the
+<code>Basket</code> class, but it only uses data belonging to the <code>Item</code> class.
+Therefore, it represents an instance of feature envy.
+</p>
+
+<sample src="FeatureEnvyBad.cs" />
+
+<p>In the revised example, <code>GetTotalPrice</code> is moved to the <code>Item</code> class and its
+parameter is removed.</p>
+
+<sample src="FeatureEnvyGood.cs" />
+
+</example>
+<references>
+
+<li>E. Gamma, R. Helm, R. Johnson, J. Vlissides,
+<em>Design patterns: elements of reusable object-oriented software</em>.
+Addison-Wesley Longman Publishing Co., Inc., Boston, MA, 1995.</li>
+<li>W. C. Wake, <em>Refactoring Workbook</em>, pp. 93&ndash;94. Addison-Wesley Professional, 2004.
+</li>
+</references>
+</qhelp>

@@ -1,0 +1,64 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+If a method is declared with default access (that is, not
+private, protected, nor public), it can
+only be overridden by methods in the same package. If a method of the same
+signature is defined in a subclass in a different package, it is a
+completely separate method and no overriding occurs.
+</p>
+
+<p>
+Code like this can be confusing for other programmers, who have to
+understand that there is no overriding relation, check that the
+original programmer did not intend one method to override the other, and 
+avoid mixing up the two methods by accident.
+</p>
+
+</overview>
+<recommendation>
+
+<p>In cases where there is intentionally no overriding, the best solution is to rename one or both 
+of the methods to clarify their different purposes.</p>
+
+<p>If one method is supposed to override another method that is declared with default access in
+another package, the access of the method must be changed to
+<code>public</code> or <code>protected</code>. Alternatively, the classes must be moved to
+the same package.</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, <code>PhotoResizerWidget.width</code> does not override 
+<code>Widget.width</code> because one method is in package <code>gui</code> and one method is in
+package <code>gui.extras</code>.
+</p>
+
+<sample src="OverridePackagePrivate.java" />
+
+<p>Assuming that no overriding is intentional, one or both of the methods should be renamed. For 
+example, <code>PhotoResizerWidget.width</code> would be better named 
+<code>PhotoResizerWidget.newPhotoWidth</code>.</p>
+
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-8.html#jls-8.4.8.1">8.4.8.1 Overriding (by Instance Methods)</a>.
+</li>
+
+
+</references>
+</qhelp>

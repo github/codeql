@@ -1,0 +1,15 @@
+| wrong_arguments.py:37:1:37:4 | F0() | Call to $@ with too few arguments; should be no fewer than 1. | wrong_arguments.py:4:5:4:26 | Function F0.__init__ | F0.__init__ |
+| wrong_arguments.py:38:1:38:4 | F1() | Call to $@ with too few arguments; should be no fewer than 1. | wrong_arguments.py:8:5:8:36 | Function F1.__init__ | F1.__init__ |
+| wrong_arguments.py:39:1:39:4 | F2() | Call to $@ with too few arguments; should be no fewer than 1. | wrong_arguments.py:12:5:12:30 | Function F2.__init__ | F2.__init__ |
+| wrong_arguments.py:40:1:40:4 | F3() | Call to $@ with too few arguments; should be no fewer than 1. | wrong_arguments.py:16:5:16:40 | Function F3.__init__ | F3.__init__ |
+| wrong_arguments.py:41:1:41:4 | F4() | Call to $@ with too few arguments; should be no fewer than 1. | wrong_arguments.py:20:5:20:31 | Function F4.__init__ | F4.__init__ |
+| wrong_arguments.py:42:1:42:4 | F5() | Call to $@ with too few arguments; should be no fewer than 1. | wrong_arguments.py:24:5:24:42 | Function F5.__init__ | F5.__init__ |
+| wrong_arguments.py:43:1:43:5 | F6() | Call to $@ with too few arguments; should be no fewer than 2. | wrong_arguments.py:28:5:28:30 | Function F6.__init__ | F6.__init__ |
+| wrong_arguments.py:44:1:44:7 | F7() | Call to $@ with too few arguments; should be no fewer than 3. | wrong_arguments.py:32:5:32:33 | Function F7.__init__ | F7.__init__ |
+| wrong_arguments.py:48:1:48:7 | F0() | Call to $@ with too many arguments; should be no more than 1. | wrong_arguments.py:4:5:4:26 | Function F0.__init__ | F0.__init__ |
+| wrong_arguments.py:49:1:49:9 | F1() | Call to $@ with too many arguments; should be no more than 2. | wrong_arguments.py:8:5:8:36 | Function F1.__init__ | F1.__init__ |
+| wrong_arguments.py:50:1:50:9 | F5() | Call to $@ with too many arguments; should be no more than 2. | wrong_arguments.py:24:5:24:42 | Function F5.__init__ | F5.__init__ |
+| wrong_arguments.py:51:1:51:9 | F6() | Call to $@ with too many arguments; should be no more than 2. | wrong_arguments.py:28:5:28:30 | Function F6.__init__ | F6.__init__ |
+| wrong_arguments.py:52:1:52:11 | F6() | Call to $@ with too many arguments; should be no more than 2. | wrong_arguments.py:28:5:28:30 | Function F6.__init__ | F6.__init__ |
+| wrong_arguments.py:85:1:85:12 | F6() | Call to $@ with too many arguments; should be no more than 2. | wrong_arguments.py:28:5:28:30 | Function F6.__init__ | F6.__init__ |
+| wrong_arguments.py:86:1:86:7 | F6() | Call to $@ with too many arguments; should be no more than 2. | wrong_arguments.py:28:5:28:30 | Function F6.__init__ | F6.__init__ |

@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+When a thread acquires a lock it must make sure to unlock it again;
+failing to do so can lead to deadlocks.  If a lock allows a thread to acquire
+it multiple times, for example <code>std::recursive_mutex</code>,
+then the number of locks must match the number of unlocks in order to fully
+release the lock.
+</p>
+</overview>
+
+<recommendation>
+<p>
+The best way to ensure that locks are always unlocked is to use RAII (Resource Acquisition Is Initialization). 
+That means acquiring the lock in the constructor of a class, and releasing it in its destructor. 
+A local-scoped instance of that class will then be destroyed when it leaves scope, even if an exception is thrown, 
+ensuring that the lock is released.
+</p>
+</recommendation>
+
+<example>
+
+<p>
+In this example, the mutex may not be unlocked if the function returns early.
+</p>
+
+<sample src="UnreleasedLockBad.cpp" />
+
+<p>
+In this second example, we show a simple RAII wrapper class for <code>std::mutex</code>. Using this ensures
+that even in the case of the early return, the mutex is released.
+</p>
+
+<sample src="UnreleasedLockGood.cpp" />
+
+</example>
+<references>
+
+
+</references>
+</qhelp>

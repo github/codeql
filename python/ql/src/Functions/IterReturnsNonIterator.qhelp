@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>__iter__</code> method of a class should always return an iterator.</p>
+
+<p>Iterators must implement both <code>__next__</code> and <code>__iter__</code> for Python 3, or both <code>next</code> and <code>__iter__</code> for Python 2. The <code>__iter__</code> method of the iterator must return the iterator object itself.</p>
+
+<p>Iteration in Python relies on this behavior and attempting to iterate over an instance of a class with an incorrect <code>__iter__</code> method can raise a <code>TypeError</code>.
+</p>
+
+</overview>
+<recommendation>
+<p>Make sure the value returned by <code>__iter__</code> implements the full iterator protocol.</p>
+</recommendation>
+<example>
+<p>In this example, we have implemented our own version of <code>range</code>, extending the  normal functionality with the ability to skip some elements by using the <code>skip</code> method. However, the iterator <code>MyRangeIterator</code> does not fully implement the iterator protocol (namely it is missing <code>__iter__</code>).</p>
+
+<p>Iterating over the elements in the range seems to work on the surface, for example the code <code>x = sum(my_range)</code> gives the expected result. However, if we run <code>sum(iter(my_range))</code> we get a <code>TypeError: 'MyRangeIterator' object is not iterable</code>.</p>
+
+<p>If we try to skip some elements using our custom method, for example <code>y = sum(my_range.skip({6,9}))</code>, this also raises a <code>TypeError</code>.</p>
+
+<p>The fix is to implement the <code>__iter__</code> method in <code>MyRangeIterator</code>.</p>
+
+<sample src="IterReturnsNonIterator.py" />
+
+</example>
+<references>
+
+  <li>Python Language Reference: <a href="https://docs.python.org/3/reference/datamodel.html#object.__iter__">object.__iter__</a>.</li>
+  <li>Python Standard Library: <a href="https://docs.python.org/3/library/stdtypes.html#typeiter">Iterator Types</a>.</li>
+
+</references>
+</qhelp>

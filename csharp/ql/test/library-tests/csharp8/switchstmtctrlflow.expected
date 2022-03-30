@@ -1,0 +1,200 @@
+| patterns.cs:32:10:32:25 | enter SwitchStatements | patterns.cs:33:5:96:5 | {...} | semmle.label | successor |
+| patterns.cs:32:10:32:25 | exit SwitchStatements (normal) | patterns.cs:32:10:32:25 | exit SwitchStatements | semmle.label | successor |
+| patterns.cs:33:5:96:5 | {...} | patterns.cs:34:9:34:39 | ... ...; | semmle.label | successor |
+| patterns.cs:34:9:34:39 | ... ...; | patterns.cs:34:17:34:38 | object creation of type MyStruct | semmle.label | successor |
+| patterns.cs:34:13:34:38 | MyStruct s = ... | patterns.cs:36:9:44:9 | switch (...) {...} | semmle.label | successor |
+| patterns.cs:34:17:34:38 | object creation of type MyStruct | patterns.cs:34:36:34:36 | 0 | semmle.label | successor |
+| patterns.cs:34:30:34:38 | { ..., ... } | patterns.cs:34:13:34:38 | MyStruct s = ... | semmle.label | successor |
+| patterns.cs:34:32:34:36 | ... = ... | patterns.cs:34:30:34:38 | { ..., ... } | semmle.label | successor |
+| patterns.cs:34:36:34:36 | 0 | patterns.cs:34:32:34:36 | ... = ... | semmle.label | successor |
+| patterns.cs:36:9:44:9 | switch (...) {...} | patterns.cs:36:17:36:17 | access to local variable s | semmle.label | successor |
+| patterns.cs:36:17:36:17 | access to local variable s | patterns.cs:38:13:38:47 | case ...: | semmle.label | successor |
+| patterns.cs:38:13:38:47 | case ...: | patterns.cs:38:18:38:29 | MyStruct ms1 | semmle.label | successor |
+| patterns.cs:38:18:38:29 | MyStruct ms1 | patterns.cs:38:36:38:38 | access to local variable ms1 | semmle.label | match |
+| patterns.cs:38:18:38:29 | MyStruct ms1 | patterns.cs:41:13:41:46 | case ...: | semmle.label | no-match |
+| patterns.cs:38:36:38:38 | access to local variable ms1 | patterns.cs:38:36:38:40 | access to field X | semmle.label | successor |
+| patterns.cs:38:36:38:40 | access to field X | patterns.cs:38:45:38:46 | 10 | semmle.label | successor |
+| patterns.cs:38:36:38:46 | ... == ... | patterns.cs:39:17:39:56 | ...; | semmle.label | true |
+| patterns.cs:38:36:38:46 | ... == ... | patterns.cs:41:13:41:46 | case ...: | semmle.label | false |
+| patterns.cs:38:45:38:46 | 10 | patterns.cs:38:36:38:46 | ... == ... | semmle.label | successor |
+| patterns.cs:39:17:39:55 | call to method WriteLine | patterns.cs:40:17:40:22 | break; | semmle.label | successor |
+| patterns.cs:39:17:39:56 | ...; | patterns.cs:39:35:39:54 | "Hit the breakpoint" | semmle.label | successor |
+| patterns.cs:39:35:39:54 | "Hit the breakpoint" | patterns.cs:39:17:39:55 | call to method WriteLine | semmle.label | successor |
+| patterns.cs:40:17:40:22 | break; | patterns.cs:46:9:63:9 | switch (...) {...} | semmle.label | break |
+| patterns.cs:41:13:41:46 | case ...: | patterns.cs:41:18:41:29 | MyStruct ms2 | semmle.label | successor |
+| patterns.cs:41:18:41:29 | MyStruct ms2 | patterns.cs:41:36:41:38 | access to local variable ms2 | semmle.label | match |
+| patterns.cs:41:18:41:29 | MyStruct ms2 | patterns.cs:46:9:63:9 | switch (...) {...} | semmle.label | no-match |
+| patterns.cs:41:36:41:38 | access to local variable ms2 | patterns.cs:41:36:41:40 | access to field X | semmle.label | successor |
+| patterns.cs:41:36:41:40 | access to field X | patterns.cs:41:44:41:45 | 10 | semmle.label | successor |
+| patterns.cs:41:36:41:45 | ... < ... | patterns.cs:42:17:42:59 | ...; | semmle.label | true |
+| patterns.cs:41:36:41:45 | ... < ... | patterns.cs:46:9:63:9 | switch (...) {...} | semmle.label | false |
+| patterns.cs:41:44:41:45 | 10 | patterns.cs:41:36:41:45 | ... < ... | semmle.label | successor |
+| patterns.cs:42:17:42:58 | call to method WriteLine | patterns.cs:43:17:43:22 | break; | semmle.label | successor |
+| patterns.cs:42:17:42:59 | ...; | patterns.cs:42:35:42:57 | "Missed the breakpoint" | semmle.label | successor |
+| patterns.cs:42:35:42:57 | "Missed the breakpoint" | patterns.cs:42:17:42:58 | call to method WriteLine | semmle.label | successor |
+| patterns.cs:43:17:43:22 | break; | patterns.cs:46:9:63:9 | switch (...) {...} | semmle.label | break |
+| patterns.cs:46:9:63:9 | switch (...) {...} | patterns.cs:46:17:46:17 | access to local variable s | semmle.label | successor |
+| patterns.cs:46:17:46:17 | access to local variable s | patterns.cs:48:13:48:50 | case ...: | semmle.label | successor |
+| patterns.cs:48:13:48:50 | case ...: | patterns.cs:48:18:48:25 | access to type MyStruct | semmle.label | successor |
+| patterns.cs:48:18:48:25 | access to type MyStruct | patterns.cs:48:18:48:38 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:48:18:48:25 | access to type MyStruct | patterns.cs:48:32:48:36 | Int32 x | semmle.label | match |
+| patterns.cs:48:18:48:38 | [match] { ... } | patterns.cs:48:45:48:45 | access to local variable x | semmle.label | match |
+| patterns.cs:48:18:48:38 | [no-match] { ... } | patterns.cs:51:13:51:39 | case ...: | semmle.label | no-match |
+| patterns.cs:48:27:48:38 | [match] { ... } | patterns.cs:48:18:48:38 | [match] { ... } | semmle.label | match |
+| patterns.cs:48:27:48:38 | [no-match] { ... } | patterns.cs:48:18:48:38 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:48:32:48:36 | Int32 x | patterns.cs:48:27:48:38 | [match] { ... } | semmle.label | match |
+| patterns.cs:48:32:48:36 | Int32 x | patterns.cs:48:27:48:38 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:48:45:48:45 | access to local variable x | patterns.cs:48:49:48:49 | 2 | semmle.label | successor |
+| patterns.cs:48:45:48:49 | ... > ... | patterns.cs:49:17:49:37 | ...; | semmle.label | true |
+| patterns.cs:48:45:48:49 | ... > ... | patterns.cs:51:13:51:39 | case ...: | semmle.label | false |
+| patterns.cs:48:49:48:49 | 2 | patterns.cs:48:45:48:49 | ... > ... | semmle.label | successor |
+| patterns.cs:49:17:49:36 | call to method WriteLine | patterns.cs:50:17:50:22 | break; | semmle.label | successor |
+| patterns.cs:49:17:49:37 | ...; | patterns.cs:49:35:49:35 | access to local variable x | semmle.label | successor |
+| patterns.cs:49:35:49:35 | access to local variable x | patterns.cs:49:17:49:36 | call to method WriteLine | semmle.label | successor |
+| patterns.cs:50:17:50:22 | break; | patterns.cs:65:9:73:9 | switch (...) {...} | semmle.label | break |
+| patterns.cs:51:13:51:39 | case ...: | patterns.cs:51:18:51:38 | MyStruct ms | semmle.label | successor |
+| patterns.cs:51:18:51:38 | MyStruct ms | patterns.cs:51:18:51:38 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:51:18:51:38 | MyStruct ms | patterns.cs:51:32:51:33 | 10 | semmle.label | match |
+| patterns.cs:51:18:51:38 | [match] { ... } | patterns.cs:52:17:52:56 | ...; | semmle.label | match |
+| patterns.cs:51:18:51:38 | [no-match] { ... } | patterns.cs:54:13:54:43 | case ...: | semmle.label | no-match |
+| patterns.cs:51:27:51:35 | [match] { ... } | patterns.cs:51:18:51:38 | [match] { ... } | semmle.label | match |
+| patterns.cs:51:27:51:35 | [no-match] { ... } | patterns.cs:51:18:51:38 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:51:32:51:33 | 10 | patterns.cs:51:27:51:35 | [match] { ... } | semmle.label | match |
+| patterns.cs:51:32:51:33 | 10 | patterns.cs:51:27:51:35 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:52:17:52:55 | call to method WriteLine | patterns.cs:53:17:53:22 | break; | semmle.label | successor |
+| patterns.cs:52:17:52:56 | ...; | patterns.cs:52:35:52:54 | "Hit the breakpoint" | semmle.label | successor |
+| patterns.cs:52:35:52:54 | "Hit the breakpoint" | patterns.cs:52:17:52:55 | call to method WriteLine | semmle.label | successor |
+| patterns.cs:53:17:53:22 | break; | patterns.cs:65:9:73:9 | switch (...) {...} | semmle.label | break |
+| patterns.cs:54:13:54:43 | case ...: | patterns.cs:54:23:54:28 | Int32 x2 | semmle.label | successor |
+| patterns.cs:54:18:54:30 | [match] { ... } | patterns.cs:54:18:54:30 | [match] { ... } | semmle.label | match |
+| patterns.cs:54:18:54:30 | [match] { ... } | patterns.cs:54:37:54:38 | access to local variable x2 | semmle.label | match |
+| patterns.cs:54:18:54:30 | [no-match] { ... } | patterns.cs:54:18:54:30 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:54:18:54:30 | [no-match] { ... } | patterns.cs:57:13:57:24 | case ...: | semmle.label | no-match |
+| patterns.cs:54:23:54:28 | Int32 x2 | patterns.cs:54:18:54:30 | [match] { ... } | semmle.label | match |
+| patterns.cs:54:23:54:28 | Int32 x2 | patterns.cs:54:18:54:30 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:54:37:54:38 | access to local variable x2 | patterns.cs:54:42:54:42 | 2 | semmle.label | successor |
+| patterns.cs:54:37:54:42 | ... > ... | patterns.cs:55:17:55:38 | ...; | semmle.label | true |
+| patterns.cs:54:37:54:42 | ... > ... | patterns.cs:57:13:57:24 | case ...: | semmle.label | false |
+| patterns.cs:54:42:54:42 | 2 | patterns.cs:54:37:54:42 | ... > ... | semmle.label | successor |
+| patterns.cs:55:17:55:37 | call to method WriteLine | patterns.cs:56:17:56:22 | break; | semmle.label | successor |
+| patterns.cs:55:17:55:38 | ...; | patterns.cs:55:35:55:36 | access to local variable x2 | semmle.label | successor |
+| patterns.cs:55:35:55:36 | access to local variable x2 | patterns.cs:55:17:55:37 | call to method WriteLine | semmle.label | successor |
+| patterns.cs:56:17:56:22 | break; | patterns.cs:65:9:73:9 | switch (...) {...} | semmle.label | break |
+| patterns.cs:57:13:57:24 | case ...: | patterns.cs:57:18:57:23 | ( ... ) | semmle.label | successor |
+| patterns.cs:57:18:57:23 | ( ... ) | patterns.cs:57:18:57:23 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:57:18:57:23 | ( ... ) | patterns.cs:57:19:57:19 | 1 | semmle.label | match |
+| patterns.cs:57:18:57:23 | [match] { ... } | patterns.cs:58:17:58:22 | break; | semmle.label | match |
+| patterns.cs:57:18:57:23 | [no-match] { ... } | patterns.cs:59:13:59:28 | case ...: | semmle.label | no-match |
+| patterns.cs:57:19:57:19 | 1 | patterns.cs:57:18:57:23 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:57:19:57:19 | 1 | patterns.cs:57:22:57:22 | 2 | semmle.label | match |
+| patterns.cs:57:22:57:22 | 2 | patterns.cs:57:18:57:23 | [match] { ... } | semmle.label | match |
+| patterns.cs:57:22:57:22 | 2 | patterns.cs:57:18:57:23 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:58:17:58:22 | break; | patterns.cs:65:9:73:9 | switch (...) {...} | semmle.label | break |
+| patterns.cs:59:13:59:28 | case ...: | patterns.cs:59:23:59:23 | Int32 x | semmle.label | successor |
+| patterns.cs:59:18:59:27 | (..., ...) | patterns.cs:60:17:60:22 | break; | semmle.label | match |
+| patterns.cs:59:18:59:27 | (..., ...) | patterns.cs:61:13:61:20 | default: | semmle.label | no-match |
+| patterns.cs:59:23:59:23 | Int32 x | patterns.cs:59:26:59:26 | Int32 y | semmle.label | successor |
+| patterns.cs:59:26:59:26 | Int32 y | patterns.cs:59:18:59:27 | (..., ...) | semmle.label | successor |
+| patterns.cs:60:17:60:22 | break; | patterns.cs:65:9:73:9 | switch (...) {...} | semmle.label | break |
+| patterns.cs:61:13:61:20 | default: | patterns.cs:62:17:62:22 | break; | semmle.label | successor |
+| patterns.cs:62:17:62:22 | break; | patterns.cs:65:9:73:9 | switch (...) {...} | semmle.label | break |
+| patterns.cs:65:9:73:9 | switch (...) {...} | patterns.cs:65:17:65:17 | access to local variable s | semmle.label | successor |
+| patterns.cs:65:17:65:17 | access to local variable s | patterns.cs:67:13:67:50 | case ...: | semmle.label | successor |
+| patterns.cs:67:13:67:50 | case ...: | patterns.cs:67:18:67:25 | access to type MyStruct | semmle.label | successor |
+| patterns.cs:67:18:67:25 | access to type MyStruct | patterns.cs:67:18:67:38 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:67:18:67:25 | access to type MyStruct | patterns.cs:67:32:67:36 | Int32 x | semmle.label | match |
+| patterns.cs:67:18:67:38 | [match] { ... } | patterns.cs:67:45:67:45 | access to local variable x | semmle.label | match |
+| patterns.cs:67:18:67:38 | [no-match] { ... } | patterns.cs:70:13:70:51 | case ...: | semmle.label | no-match |
+| patterns.cs:67:27:67:38 | [match] { ... } | patterns.cs:67:18:67:38 | [match] { ... } | semmle.label | match |
+| patterns.cs:67:27:67:38 | [no-match] { ... } | patterns.cs:67:18:67:38 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:67:32:67:36 | Int32 x | patterns.cs:67:27:67:38 | [match] { ... } | semmle.label | match |
+| patterns.cs:67:32:67:36 | Int32 x | patterns.cs:67:27:67:38 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:67:45:67:45 | access to local variable x | patterns.cs:67:49:67:49 | 2 | semmle.label | successor |
+| patterns.cs:67:45:67:49 | ... > ... | patterns.cs:68:17:68:37 | ...; | semmle.label | true |
+| patterns.cs:67:45:67:49 | ... > ... | patterns.cs:70:13:70:51 | case ...: | semmle.label | false |
+| patterns.cs:67:49:67:49 | 2 | patterns.cs:67:45:67:49 | ... > ... | semmle.label | successor |
+| patterns.cs:68:17:68:36 | call to method WriteLine | patterns.cs:69:17:69:22 | break; | semmle.label | successor |
+| patterns.cs:68:17:68:37 | ...; | patterns.cs:68:35:68:35 | access to local variable x | semmle.label | successor |
+| patterns.cs:68:35:68:35 | access to local variable x | patterns.cs:68:17:68:36 | call to method WriteLine | semmle.label | successor |
+| patterns.cs:69:17:69:22 | break; | patterns.cs:76:9:84:9 | switch (...) {...} | semmle.label | break |
+| patterns.cs:70:13:70:51 | case ...: | patterns.cs:70:18:70:38 | MyStruct ms | semmle.label | successor |
+| patterns.cs:70:18:70:38 | MyStruct ms | patterns.cs:70:18:70:38 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:70:18:70:38 | MyStruct ms | patterns.cs:70:32:70:33 | 10 | semmle.label | match |
+| patterns.cs:70:18:70:38 | [match] { ... } | patterns.cs:70:45:70:45 | access to local variable s | semmle.label | match |
+| patterns.cs:70:18:70:38 | [no-match] { ... } | patterns.cs:76:9:84:9 | switch (...) {...} | semmle.label | no-match |
+| patterns.cs:70:27:70:35 | [match] { ... } | patterns.cs:70:18:70:38 | [match] { ... } | semmle.label | match |
+| patterns.cs:70:27:70:35 | [no-match] { ... } | patterns.cs:70:18:70:38 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:70:32:70:33 | 10 | patterns.cs:70:27:70:35 | [match] { ... } | semmle.label | match |
+| patterns.cs:70:32:70:33 | 10 | patterns.cs:70:27:70:35 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:70:45:70:45 | access to local variable s | patterns.cs:70:45:70:47 | access to field X | semmle.label | successor |
+| patterns.cs:70:45:70:47 | access to field X | patterns.cs:70:50:70:50 | 0 | semmle.label | successor |
+| patterns.cs:70:45:70:50 | ... == ... | patterns.cs:71:17:71:56 | ...; | semmle.label | true |
+| patterns.cs:70:45:70:50 | ... == ... | patterns.cs:76:9:84:9 | switch (...) {...} | semmle.label | false |
+| patterns.cs:70:50:70:50 | 0 | patterns.cs:70:45:70:50 | ... == ... | semmle.label | successor |
+| patterns.cs:71:17:71:55 | call to method WriteLine | patterns.cs:72:17:72:22 | break; | semmle.label | successor |
+| patterns.cs:71:17:71:56 | ...; | patterns.cs:71:35:71:54 | "Hit the breakpoint" | semmle.label | successor |
+| patterns.cs:71:35:71:54 | "Hit the breakpoint" | patterns.cs:71:17:71:55 | call to method WriteLine | semmle.label | successor |
+| patterns.cs:72:17:72:22 | break; | patterns.cs:76:9:84:9 | switch (...) {...} | semmle.label | break |
+| patterns.cs:76:9:84:9 | switch (...) {...} | patterns.cs:76:17:76:28 | object creation of type Object | semmle.label | successor |
+| patterns.cs:76:17:76:28 | object creation of type Object | patterns.cs:78:13:78:43 | case ...: | semmle.label | successor |
+| patterns.cs:78:13:78:43 | case ...: | patterns.cs:78:18:78:33 | ( ... ) | semmle.label | successor |
+| patterns.cs:78:18:78:33 | ( ... ) | patterns.cs:78:18:78:33 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:78:18:78:33 | ( ... ) | patterns.cs:78:19:78:23 | Int32 x | semmle.label | match |
+| patterns.cs:78:18:78:33 | [match] { ... } | patterns.cs:78:40:78:40 | access to local variable x | semmle.label | match |
+| patterns.cs:78:18:78:33 | [no-match] { ... } | patterns.cs:80:13:80:20 | case ...: | semmle.label | no-match |
+| patterns.cs:78:19:78:23 | Int32 x | patterns.cs:78:18:78:33 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:78:19:78:23 | Int32 x | patterns.cs:78:26:78:32 | Single y | semmle.label | match |
+| patterns.cs:78:26:78:32 | Single y | patterns.cs:78:18:78:33 | [match] { ... } | semmle.label | match |
+| patterns.cs:78:26:78:32 | Single y | patterns.cs:78:18:78:33 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:78:40:78:40 | (...) ... | patterns.cs:78:42:78:42 | access to local variable y | semmle.label | successor |
+| patterns.cs:78:40:78:40 | access to local variable x | patterns.cs:78:40:78:40 | (...) ... | semmle.label | successor |
+| patterns.cs:78:40:78:42 | ... < ... | patterns.cs:79:17:79:22 | break; | semmle.label | true |
+| patterns.cs:78:40:78:42 | ... < ... | patterns.cs:80:13:80:20 | case ...: | semmle.label | false |
+| patterns.cs:78:42:78:42 | access to local variable y | patterns.cs:78:40:78:42 | ... < ... | semmle.label | successor |
+| patterns.cs:79:17:79:22 | break; | patterns.cs:86:9:89:9 | switch (...) {...} | semmle.label | break |
+| patterns.cs:80:13:80:20 | case ...: | patterns.cs:80:18:80:19 | ( ... ) | semmle.label | successor |
+| patterns.cs:80:18:80:19 | ( ... ) | patterns.cs:80:18:80:19 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:80:18:80:19 | [no-match] { ... } | patterns.cs:82:13:82:20 | case ...: | semmle.label | no-match |
+| patterns.cs:82:13:82:20 | case ...: | patterns.cs:82:18:82:19 | { ... } | semmle.label | successor |
+| patterns.cs:82:18:82:19 | [match] { ... } | patterns.cs:83:17:83:22 | break; | semmle.label | match |
+| patterns.cs:82:18:82:19 | [no-match] { ... } | patterns.cs:86:9:89:9 | switch (...) {...} | semmle.label | no-match |
+| patterns.cs:82:18:82:19 | { ... } | patterns.cs:82:18:82:19 | [match] { ... } | semmle.label | match |
+| patterns.cs:82:18:82:19 | { ... } | patterns.cs:82:18:82:19 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:83:17:83:22 | break; | patterns.cs:86:9:89:9 | switch (...) {...} | semmle.label | break |
+| patterns.cs:86:9:89:9 | switch (...) {...} | patterns.cs:86:16:86:16 | 1 | semmle.label | successor |
+| patterns.cs:86:15:86:19 | (..., ...) | patterns.cs:88:13:88:24 | case ...: | semmle.label | successor |
+| patterns.cs:86:16:86:16 | 1 | patterns.cs:86:18:86:18 | 2 | semmle.label | successor |
+| patterns.cs:86:18:86:18 | 2 | patterns.cs:86:15:86:19 | (..., ...) | semmle.label | successor |
+| patterns.cs:88:13:88:24 | case ...: | patterns.cs:88:18:88:23 | ( ... ) | semmle.label | successor |
+| patterns.cs:88:18:88:23 | ( ... ) | patterns.cs:88:18:88:23 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:88:18:88:23 | ( ... ) | patterns.cs:88:19:88:19 | 1 | semmle.label | match |
+| patterns.cs:88:18:88:23 | [match] { ... } | patterns.cs:88:26:88:31 | break; | semmle.label | match |
+| patterns.cs:88:18:88:23 | [no-match] { ... } | patterns.cs:91:9:95:9 | switch (...) {...} | semmle.label | no-match |
+| patterns.cs:88:19:88:19 | 1 | patterns.cs:88:18:88:23 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:88:19:88:19 | 1 | patterns.cs:88:22:88:22 | 2 | semmle.label | match |
+| patterns.cs:88:22:88:22 | 2 | patterns.cs:88:18:88:23 | [match] { ... } | semmle.label | match |
+| patterns.cs:88:22:88:22 | 2 | patterns.cs:88:18:88:23 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:88:26:88:31 | break; | patterns.cs:91:9:95:9 | switch (...) {...} | semmle.label | break |
+| patterns.cs:91:9:95:9 | switch (...) {...} | patterns.cs:91:17:91:17 | 1 | semmle.label | successor |
+| patterns.cs:91:16:91:20 | (..., ...) | patterns.cs:93:13:93:28 | case ...: | semmle.label | successor |
+| patterns.cs:91:17:91:17 | 1 | patterns.cs:91:19:91:19 | 2 | semmle.label | successor |
+| patterns.cs:91:19:91:19 | 2 | patterns.cs:91:16:91:20 | (..., ...) | semmle.label | successor |
+| patterns.cs:93:13:93:28 | case ...: | patterns.cs:93:18:93:27 | ( ... ) | semmle.label | successor |
+| patterns.cs:93:18:93:27 | ( ... ) | patterns.cs:93:18:93:27 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:93:18:93:27 | ( ... ) | patterns.cs:93:19:93:19 | 1 | semmle.label | match |
+| patterns.cs:93:18:93:27 | [match] { ... } | patterns.cs:93:30:93:35 | break; | semmle.label | match |
+| patterns.cs:93:18:93:27 | [no-match] { ... } | patterns.cs:94:13:94:24 | case ...: | semmle.label | no-match |
+| patterns.cs:93:19:93:19 | 1 | patterns.cs:93:18:93:27 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:93:19:93:19 | 1 | patterns.cs:93:22:93:26 | Int32 x | semmle.label | match |
+| patterns.cs:93:22:93:26 | Int32 x | patterns.cs:93:18:93:27 | [match] { ... } | semmle.label | match |
+| patterns.cs:93:22:93:26 | Int32 x | patterns.cs:93:18:93:27 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:93:30:93:35 | break; | patterns.cs:32:10:32:25 | exit SwitchStatements (normal) | semmle.label | break |
+| patterns.cs:94:13:94:24 | case ...: | patterns.cs:94:18:94:23 | ( ... ) | semmle.label | successor |
+| patterns.cs:94:18:94:23 | ( ... ) | patterns.cs:94:18:94:23 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:94:18:94:23 | ( ... ) | patterns.cs:94:19:94:19 | 2 | semmle.label | match |
+| patterns.cs:94:18:94:23 | [match] { ... } | patterns.cs:94:26:94:31 | break; | semmle.label | match |
+| patterns.cs:94:18:94:23 | [no-match] { ... } | patterns.cs:32:10:32:25 | exit SwitchStatements (normal) | semmle.label | no-match |
+| patterns.cs:94:19:94:19 | 2 | patterns.cs:94:18:94:23 | [no-match] { ... } | semmle.label | no-match |
+| patterns.cs:94:19:94:19 | 2 | patterns.cs:94:22:94:22 | _ | semmle.label | match |
+| patterns.cs:94:22:94:22 | _ | patterns.cs:94:18:94:23 | [match] { ... } | semmle.label | match |
+| patterns.cs:94:26:94:31 | break; | patterns.cs:32:10:32:25 | exit SwitchStatements (normal) | semmle.label | break |

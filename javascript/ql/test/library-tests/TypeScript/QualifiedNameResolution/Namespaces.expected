@@ -1,0 +1,33 @@
+| A in library-tests/TypeScript/QualifiedNameResolution/enums.ts |
+| A in library-tests/TypeScript/QualifiedNameResolution/export-qualified.ts |
+| A in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| A.B in library-tests/TypeScript/QualifiedNameResolution/export-qualified.ts |
+| A.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| A.E in library-tests/TypeScript/QualifiedNameResolution/enums.ts |
+| B in namespaces.ts:3 |
+| B in namespaces.ts:10 |
+| B.Bx in namespaces.ts:3 |
+| B.Bx in namespaces.ts:10 |
+| D in library-tests/TypeScript/QualifiedNameResolution/export-specifiers.ts |
+| D in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| D in library-tests/TypeScript/QualifiedNameResolution/otherlib.ts |
+| D.F in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| E in namespaces.ts:17 |
+| E in namespaces.ts:22 |
+| Foo in global scope |
+| G in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| G.J in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| Glob in global scope |
+| H in namespaces.ts:27 |
+| H.I in namespaces.ts:27 |
+| N in library-tests/TypeScript/QualifiedNameResolution/export-specifiers.ts |
+| X in global scope |
+| X in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| X.Y in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| X.Y.Z in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| Y in global scope |
+| library-tests/TypeScript/QualifiedNameResolution/export-class.ts |
+| library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| library-tests/TypeScript/QualifiedNameResolution/otherlib.ts |
+| library-tests/TypeScript/QualifiedNameResolution/reexport-all.ts |
+| library-tests/TypeScript/QualifiedNameResolution/reexport-named.ts |

@@ -1,0 +1,10 @@
+| 3 | class Base | class Base | C | class C | 5 |
+| 3 | class Base | class Base | meth | Function meth | 7 |
+| 10 | class Derived | class Base | C | class C | 5 |
+| 10 | class Derived | class Base | meth | Function meth | 7 |
+| 10 | class Derived | class Derived | C | class C | 5 |
+| 10 | class Derived | class Derived | meth | Function meth | 12 |
+| 16 | class Derived2 | class Base | C | class C | 5 |
+| 16 | class Derived2 | class Base | meth | Function meth | 7 |
+| 16 | class Derived2 | class Derived2 | C | class C | 21 |
+| 16 | class Derived2 | class Derived2 | meth | Function meth | 18 |

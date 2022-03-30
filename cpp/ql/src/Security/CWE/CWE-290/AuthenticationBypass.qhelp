@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Code which relies on an IP address or domain name for authentication can be exploited
+by an attacker who spoofs their address.</p>
+
+</overview>
+<recommendation>
+
+<p>IP address verification can be a useful part of an authentication scheme,
+but it should not be the single factor required for authentication. Make sure
+that other authentication methods are also in place.</p>
+
+</recommendation>
+<example>
+
+<p>In this example (taken from
+<a href="http://cwe.mitre.org/data/definitions/290.html">CWE-290: Authentication Bypass by Spoofing</a>),
+the client is authenticated by checking that its IP address is <code>127.0.0.1</code>. An attacker might be able to
+bypass this authentication by spoofing their IP address.</p>
+
+<sample src="AuthenticationBypass.cpp" />
+
+</example>
+<references>
+
+</references>
+</qhelp>

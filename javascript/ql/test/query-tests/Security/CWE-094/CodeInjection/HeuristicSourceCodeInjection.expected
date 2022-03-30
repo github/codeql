@@ -1,0 +1,274 @@
+nodes
+| NoSQLCodeInjection.js:18:24:18:31 | req.body |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body |
+| NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
+| NoSQLCodeInjection.js:22:24:22:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:22:24:22:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:22:36:22:43 | req.body |
+| NoSQLCodeInjection.js:22:36:22:43 | req.body |
+| NoSQLCodeInjection.js:22:36:22:48 | req.body.name |
+| angularjs.js:10:22:10:36 | location.search |
+| angularjs.js:10:22:10:36 | location.search |
+| angularjs.js:10:22:10:36 | location.search |
+| angularjs.js:13:23:13:37 | location.search |
+| angularjs.js:13:23:13:37 | location.search |
+| angularjs.js:13:23:13:37 | location.search |
+| angularjs.js:16:28:16:42 | location.search |
+| angularjs.js:16:28:16:42 | location.search |
+| angularjs.js:16:28:16:42 | location.search |
+| angularjs.js:19:22:19:36 | location.search |
+| angularjs.js:19:22:19:36 | location.search |
+| angularjs.js:19:22:19:36 | location.search |
+| angularjs.js:22:27:22:41 | location.search |
+| angularjs.js:22:27:22:41 | location.search |
+| angularjs.js:22:27:22:41 | location.search |
+| angularjs.js:25:23:25:37 | location.search |
+| angularjs.js:25:23:25:37 | location.search |
+| angularjs.js:25:23:25:37 | location.search |
+| angularjs.js:28:33:28:47 | location.search |
+| angularjs.js:28:33:28:47 | location.search |
+| angularjs.js:28:33:28:47 | location.search |
+| angularjs.js:31:28:31:42 | location.search |
+| angularjs.js:31:28:31:42 | location.search |
+| angularjs.js:31:28:31:42 | location.search |
+| angularjs.js:34:18:34:32 | location.search |
+| angularjs.js:34:18:34:32 | location.search |
+| angularjs.js:34:18:34:32 | location.search |
+| angularjs.js:40:18:40:32 | location.search |
+| angularjs.js:40:18:40:32 | location.search |
+| angularjs.js:40:18:40:32 | location.search |
+| angularjs.js:44:17:44:31 | location.search |
+| angularjs.js:44:17:44:31 | location.search |
+| angularjs.js:44:17:44:31 | location.search |
+| angularjs.js:47:16:47:30 | location.search |
+| angularjs.js:47:16:47:30 | location.search |
+| angularjs.js:47:16:47:30 | location.search |
+| angularjs.js:50:22:50:36 | location.search |
+| angularjs.js:50:22:50:36 | location.search |
+| angularjs.js:50:22:50:36 | location.search |
+| angularjs.js:53:32:53:46 | location.search |
+| angularjs.js:53:32:53:46 | location.search |
+| angularjs.js:53:32:53:46 | location.search |
+| eslint-escope-build.js:20:22:20:22 | c |
+| eslint-escope-build.js:20:22:20:22 | c |
+| eslint-escope-build.js:21:16:21:16 | c |
+| eslint-escope-build.js:21:16:21:16 | c |
+| express.js:7:24:7:69 | "return ...  + "];" |
+| express.js:7:24:7:69 | "return ...  + "];" |
+| express.js:7:44:7:62 | req.param("wobble") |
+| express.js:7:44:7:62 | req.param("wobble") |
+| express.js:9:34:9:79 | "return ...  + "];" |
+| express.js:9:34:9:79 | "return ...  + "];" |
+| express.js:9:54:9:72 | req.param("wobble") |
+| express.js:9:54:9:72 | req.param("wobble") |
+| express.js:12:8:12:53 | "return ...  + "];" |
+| express.js:12:8:12:53 | "return ...  + "];" |
+| express.js:12:28:12:46 | req.param("wobble") |
+| express.js:12:28:12:46 | req.param("wobble") |
+| express.js:15:22:15:54 | req.par ... ction") |
+| express.js:15:22:15:54 | req.par ... ction") |
+| express.js:15:22:15:54 | req.par ... ction") |
+| express.js:17:30:17:53 | req.par ... cript") |
+| express.js:17:30:17:53 | req.par ... cript") |
+| express.js:17:30:17:53 | req.par ... cript") |
+| express.js:19:37:19:70 | req.par ... odule") |
+| express.js:19:37:19:70 | req.par ... odule") |
+| express.js:19:37:19:70 | req.par ... odule") |
+| express.js:21:19:21:48 | req.par ... ntext") |
+| express.js:21:19:21:48 | req.par ... ntext") |
+| express.js:21:19:21:48 | req.par ... ntext") |
+| express.js:26:9:26:35 | taint |
+| express.js:26:17:26:35 | req.param("wobble") |
+| express.js:26:17:26:35 | req.param("wobble") |
+| express.js:27:34:27:38 | taint |
+| express.js:27:34:27:38 | taint |
+| module.js:9:16:9:29 | req.query.code |
+| module.js:9:16:9:29 | req.query.code |
+| module.js:9:16:9:29 | req.query.code |
+| module.js:11:17:11:30 | req.query.code |
+| module.js:11:17:11:30 | req.query.code |
+| module.js:11:17:11:30 | req.query.code |
+| react-native.js:7:7:7:33 | tainted |
+| react-native.js:7:17:7:33 | req.param("code") |
+| react-native.js:7:17:7:33 | req.param("code") |
+| react-native.js:8:32:8:38 | tainted |
+| react-native.js:8:32:8:38 | tainted |
+| react-native.js:10:23:10:29 | tainted |
+| react-native.js:10:23:10:29 | tainted |
+| react.js:10:56:10:77 | documen ... on.hash |
+| react.js:10:56:10:77 | documen ... on.hash |
+| react.js:10:56:10:77 | documen ... on.hash |
+| template-sinks.js:17:9:17:31 | tainted |
+| template-sinks.js:17:19:17:31 | req.query.foo |
+| template-sinks.js:17:19:17:31 | req.query.foo |
+| template-sinks.js:19:17:19:23 | tainted |
+| template-sinks.js:19:17:19:23 | tainted |
+| template-sinks.js:20:16:20:22 | tainted |
+| template-sinks.js:20:16:20:22 | tainted |
+| template-sinks.js:21:18:21:24 | tainted |
+| template-sinks.js:21:18:21:24 | tainted |
+| template-sinks.js:22:17:22:23 | tainted |
+| template-sinks.js:22:17:22:23 | tainted |
+| template-sinks.js:23:18:23:24 | tainted |
+| template-sinks.js:23:18:23:24 | tainted |
+| template-sinks.js:24:16:24:22 | tainted |
+| template-sinks.js:24:16:24:22 | tainted |
+| template-sinks.js:25:27:25:33 | tainted |
+| template-sinks.js:25:27:25:33 | tainted |
+| template-sinks.js:26:21:26:27 | tainted |
+| template-sinks.js:26:21:26:27 | tainted |
+| template-sinks.js:27:17:27:23 | tainted |
+| template-sinks.js:27:17:27:23 | tainted |
+| template-sinks.js:28:24:28:30 | tainted |
+| template-sinks.js:28:24:28:30 | tainted |
+| template-sinks.js:29:21:29:27 | tainted |
+| template-sinks.js:29:21:29:27 | tainted |
+| template-sinks.js:30:19:30:25 | tainted |
+| template-sinks.js:30:19:30:25 | tainted |
+| template-sinks.js:31:16:31:22 | tainted |
+| template-sinks.js:31:16:31:22 | tainted |
+| template-sinks.js:32:17:32:23 | tainted |
+| template-sinks.js:32:17:32:23 | tainted |
+| tst.js:2:6:2:27 | documen ... on.href |
+| tst.js:2:6:2:27 | documen ... on.href |
+| tst.js:2:6:2:83 | documen ... t=")+8) |
+| tst.js:2:6:2:83 | documen ... t=")+8) |
+| tst.js:5:12:5:33 | documen ... on.hash |
+| tst.js:5:12:5:33 | documen ... on.hash |
+| tst.js:5:12:5:33 | documen ... on.hash |
+| tst.js:14:10:14:33 | documen ... .search |
+| tst.js:14:10:14:33 | documen ... .search |
+| tst.js:14:10:14:74 | documen ... , "$1") |
+| tst.js:14:10:14:74 | documen ... , "$1") |
+| tst.js:17:21:17:42 | documen ... on.hash |
+| tst.js:17:21:17:42 | documen ... on.hash |
+| tst.js:17:21:17:42 | documen ... on.hash |
+| tst.js:20:30:20:51 | documen ... on.hash |
+| tst.js:20:30:20:51 | documen ... on.hash |
+| tst.js:20:30:20:51 | documen ... on.hash |
+| tst.js:23:6:23:46 | atob(do ... ing(1)) |
+| tst.js:23:6:23:46 | atob(do ... ing(1)) |
+| tst.js:23:11:23:32 | documen ... on.hash |
+| tst.js:23:11:23:32 | documen ... on.hash |
+| tst.js:23:11:23:45 | documen ... ring(1) |
+| tst.js:26:26:26:40 | location.search |
+| tst.js:26:26:26:40 | location.search |
+| tst.js:26:26:26:53 | locatio ... ring(1) |
+| tst.js:26:26:26:53 | locatio ... ring(1) |
+edges
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:22:36:22:43 | req.body | NoSQLCodeInjection.js:22:36:22:48 | req.body.name |
+| NoSQLCodeInjection.js:22:36:22:43 | req.body | NoSQLCodeInjection.js:22:36:22:48 | req.body.name |
+| NoSQLCodeInjection.js:22:36:22:48 | req.body.name | NoSQLCodeInjection.js:22:24:22:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:22:36:22:48 | req.body.name | NoSQLCodeInjection.js:22:24:22:48 | "name = ... dy.name |
+| angularjs.js:10:22:10:36 | location.search | angularjs.js:10:22:10:36 | location.search |
+| angularjs.js:13:23:13:37 | location.search | angularjs.js:13:23:13:37 | location.search |
+| angularjs.js:16:28:16:42 | location.search | angularjs.js:16:28:16:42 | location.search |
+| angularjs.js:19:22:19:36 | location.search | angularjs.js:19:22:19:36 | location.search |
+| angularjs.js:22:27:22:41 | location.search | angularjs.js:22:27:22:41 | location.search |
+| angularjs.js:25:23:25:37 | location.search | angularjs.js:25:23:25:37 | location.search |
+| angularjs.js:28:33:28:47 | location.search | angularjs.js:28:33:28:47 | location.search |
+| angularjs.js:31:28:31:42 | location.search | angularjs.js:31:28:31:42 | location.search |
+| angularjs.js:34:18:34:32 | location.search | angularjs.js:34:18:34:32 | location.search |
+| angularjs.js:40:18:40:32 | location.search | angularjs.js:40:18:40:32 | location.search |
+| angularjs.js:44:17:44:31 | location.search | angularjs.js:44:17:44:31 | location.search |
+| angularjs.js:47:16:47:30 | location.search | angularjs.js:47:16:47:30 | location.search |
+| angularjs.js:50:22:50:36 | location.search | angularjs.js:50:22:50:36 | location.search |
+| angularjs.js:53:32:53:46 | location.search | angularjs.js:53:32:53:46 | location.search |
+| eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
+| eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
+| eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
+| eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
+| express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" |
+| express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" |
+| express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" |
+| express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" |
+| express.js:9:54:9:72 | req.param("wobble") | express.js:9:34:9:79 | "return ...  + "];" |
+| express.js:9:54:9:72 | req.param("wobble") | express.js:9:34:9:79 | "return ...  + "];" |
+| express.js:9:54:9:72 | req.param("wobble") | express.js:9:34:9:79 | "return ...  + "];" |
+| express.js:9:54:9:72 | req.param("wobble") | express.js:9:34:9:79 | "return ...  + "];" |
+| express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" |
+| express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" |
+| express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" |
+| express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" |
+| express.js:15:22:15:54 | req.par ... ction") | express.js:15:22:15:54 | req.par ... ction") |
+| express.js:17:30:17:53 | req.par ... cript") | express.js:17:30:17:53 | req.par ... cript") |
+| express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") |
+| express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") |
+| express.js:26:9:26:35 | taint | express.js:27:34:27:38 | taint |
+| express.js:26:9:26:35 | taint | express.js:27:34:27:38 | taint |
+| express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint |
+| express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint |
+| module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code |
+| module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code |
+| react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
+| react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
+| react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted |
+| react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted |
+| react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
+| react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
+| react.js:10:56:10:77 | documen ... on.hash | react.js:10:56:10:77 | documen ... on.hash |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:19:17:19:23 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:19:17:19:23 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:20:16:20:22 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:20:16:20:22 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:21:18:21:24 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:21:18:21:24 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:22:17:22:23 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:22:17:22:23 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:23:18:23:24 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:23:18:23:24 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:24:16:24:22 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:24:16:24:22 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:25:27:25:33 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:25:27:25:33 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:26:21:26:27 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:26:21:26:27 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:27:17:27:23 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:27:17:27:23 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:28:24:28:30 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:28:24:28:30 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:29:21:29:27 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:29:21:29:27 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:30:19:30:25 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:30:19:30:25 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:31:16:31:22 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:31:16:31:22 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:32:17:32:23 | tainted |
+| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:32:17:32:23 | tainted |
+| template-sinks.js:17:19:17:31 | req.query.foo | template-sinks.js:17:9:17:31 | tainted |
+| template-sinks.js:17:19:17:31 | req.query.foo | template-sinks.js:17:9:17:31 | tainted |
+| tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) |
+| tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) |
+| tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) |
+| tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) |
+| tst.js:5:12:5:33 | documen ... on.hash | tst.js:5:12:5:33 | documen ... on.hash |
+| tst.js:14:10:14:33 | documen ... .search | tst.js:14:10:14:74 | documen ... , "$1") |
+| tst.js:14:10:14:33 | documen ... .search | tst.js:14:10:14:74 | documen ... , "$1") |
+| tst.js:14:10:14:33 | documen ... .search | tst.js:14:10:14:74 | documen ... , "$1") |
+| tst.js:14:10:14:33 | documen ... .search | tst.js:14:10:14:74 | documen ... , "$1") |
+| tst.js:17:21:17:42 | documen ... on.hash | tst.js:17:21:17:42 | documen ... on.hash |
+| tst.js:20:30:20:51 | documen ... on.hash | tst.js:20:30:20:51 | documen ... on.hash |
+| tst.js:23:11:23:32 | documen ... on.hash | tst.js:23:11:23:45 | documen ... ring(1) |
+| tst.js:23:11:23:32 | documen ... on.hash | tst.js:23:11:23:45 | documen ... ring(1) |
+| tst.js:23:11:23:45 | documen ... ring(1) | tst.js:23:6:23:46 | atob(do ... ing(1)) |
+| tst.js:23:11:23:45 | documen ... ring(1) | tst.js:23:6:23:46 | atob(do ... ing(1)) |
+| tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
+| tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
+| tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
+| tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
+#select
+| eslint-escope-build.js:21:16:21:16 | c | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c | $@ flows to here and is interpreted as code. | eslint-escope-build.js:20:22:20:22 | c | User-provided value |

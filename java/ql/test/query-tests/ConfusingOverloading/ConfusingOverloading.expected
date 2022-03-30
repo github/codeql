@@ -1,0 +1,1 @@
+| TestConfusingOverloading.java:7:8:7:11 | test | Method Sub.test(..) could be confused with overloaded method $@, since dispatch depends on static types. | TestConfusingOverloading.java:4:8:4:11 | test | Super.test |

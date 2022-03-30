@@ -1,0 +1,4 @@
+| Program.cs:60:17:60:35 | nameof(...) | Program.cs:60:24:60:34 | access to method MethodGroup |
+| Program.cs:61:13:61:50 | nameof(...) | Program.cs:61:20:61:49 | access to method MethodGroup |
+| Program.cs:167:16:167:29 | nameof(...) | Program.cs:167:23:167:28 | access to namespace System |
+| Program.cs:167:33:167:62 | nameof(...) | Program.cs:167:40:167:61 | access to namespace Tasks |

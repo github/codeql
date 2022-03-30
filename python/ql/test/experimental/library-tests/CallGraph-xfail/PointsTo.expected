@@ -1,0 +1,18 @@
+debug_missingAnnotationForCallable
+| annotation_xfail.py:10:1:10:24 | callable_not_annotated() | This call is annotated with 'callable_not_annotated', but no callable with that annotation was extracted. Please fix. |
+debug_nonUniqueAnnotationForCallable
+| annotation_xfail.py:13:1:13:17 | Function non_unique | Multiple callables are annotated with 'non_unique'. Please fix. |
+| annotation_xfail.py:17:1:17:26 | Function too_much_copy_paste | Multiple callables are annotated with 'non_unique'. Please fix. |
+debug_missingAnnotationForCall
+| annotation_xfail.py:2:1:2:24 | Function no_annotated_call | This callable is annotated with 'no_annotated_call', but no call with that annotation was extracted. Please fix. |
+expectedCallEdgeNotFound
+| call_edge_xfail.py:36:1:36:11 | xfail_foo() | call_edge_xfail.py:8:1:8:16 | Function xfail_bar |
+| call_edge_xfail.py:39:1:39:11 | xfail_baz() | call_edge_xfail.py:8:1:8:16 | Function xfail_bar |
+unexpectedCallEdgeFound
+| call_edge_xfail.py:29:1:29:6 | func() | call_edge_xfail.py:4:1:4:16 | Function xfail_foo | Call resolved to the callable named 'xfail_foo' but was not annotated as such |
+| call_edge_xfail.py:29:1:29:6 | func() | call_edge_xfail.py:8:1:8:16 | Function xfail_bar | Call resolved to the callable named 'xfail_bar' but was not annotated as such |
+| call_edge_xfail.py:30:1:30:11 | xfail_foo() | call_edge_xfail.py:4:1:4:16 | Function xfail_foo | Call resolved to the callable named 'xfail_foo' but was not annotated as such |
+| call_edge_xfail.py:31:1:31:14 | xfail_lambda() | call_edge_xfail.py:15:16:15:44 | Function lambda | Call resolved to the callable named 'xfail_lambda' but was not annotated as such |
+| call_edge_xfail.py:36:1:36:11 | xfail_foo() | call_edge_xfail.py:4:1:4:16 | Function xfail_foo | Call resolved to the callable named 'xfail_foo' but was not annotated as such |
+| call_edge_xfail.py:39:1:39:11 | xfail_baz() | call_edge_xfail.py:11:1:11:16 | Function xfail_baz | Annotated call resolved to unannotated callable |
+| call_edge_xfail.py:43:1:43:6 | func() | call_edge_xfail.py:8:1:8:16 | Function xfail_bar | Call resolved to the callable named 'xfail_bar' but was not annotated as such |

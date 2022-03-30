@@ -1,0 +1,641 @@
+definition
+| class_variables.rb:1:1:1:3 | self (class_variables.rb) | class_variables.rb:1:1:29:4 | self |
+| class_variables.rb:5:1:7:3 | self (print) | class_variables.rb:5:1:7:3 | self |
+| class_variables.rb:9:1:16:3 | self (X) | class_variables.rb:9:1:16:3 | self |
+| class_variables.rb:10:3:12:5 | self (b) | class_variables.rb:10:3:12:5 | self |
+| class_variables.rb:13:3:15:5 | self (s) | class_variables.rb:13:3:15:5 | self |
+| class_variables.rb:26:1:29:3 | self (N) | class_variables.rb:26:1:29:3 | self |
+| instance_variables.rb:1:1:1:4 | self (instance_variables.rb) | instance_variables.rb:1:1:44:4 | self |
+| instance_variables.rb:7:1:9:3 | self (print_foo) | instance_variables.rb:7:1:9:3 | self |
+| instance_variables.rb:37:3:43:5 | self (x) | instance_variables.rb:37:3:43:5 | self |
+| nested_scopes.rb:1:1:3:3 | self (a) | nested_scopes.rb:1:1:3:3 | self |
+| nested_scopes.rb:4:1:39:3 | self (C) | nested_scopes.rb:4:1:39:3 | self |
+| nested_scopes.rb:5:3:5:7 | ... = ... | nested_scopes.rb:5:3:5:3 | a |
+| nested_scopes.rb:6:3:37:5 | self (M) | nested_scopes.rb:6:3:37:5 | self |
+| nested_scopes.rb:7:5:7:9 | ... = ... | nested_scopes.rb:7:5:7:5 | a |
+| nested_scopes.rb:8:5:35:7 | self (N) | nested_scopes.rb:8:5:35:7 | self |
+| nested_scopes.rb:9:7:9:11 | ... = ... | nested_scopes.rb:9:7:9:7 | a |
+| nested_scopes.rb:10:7:26:9 | self (D) | nested_scopes.rb:10:7:26:9 | self |
+| nested_scopes.rb:11:9:11:13 | ... = ... | nested_scopes.rb:11:9:11:9 | a |
+| nested_scopes.rb:12:9:21:11 | self (show_a) | nested_scopes.rb:12:9:21:11 | self |
+| nested_scopes.rb:13:11:13:15 | ... = ... | nested_scopes.rb:13:11:13:11 | a |
+| nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:15:23:15:23 | a |
+| nested_scopes.rb:17:15:17:19 | ... = ... | nested_scopes.rb:16:29:16:29 | a |
+| nested_scopes.rb:18:23:18:36 | <captured> | nested_scopes.rb:12:9:21:11 | self |
+| nested_scopes.rb:18:23:18:36 | <captured> | nested_scopes.rb:16:29:16:29 | a |
+| nested_scopes.rb:22:9:24:11 | self (show_a2) | nested_scopes.rb:22:9:24:11 | self |
+| nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a |
+| nested_scopes.rb:27:7:29:9 | self (show) | nested_scopes.rb:27:7:29:9 | self |
+| nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self |
+| nested_scopes.rb:31:11:31:16 | ... = ... | nested_scopes.rb:31:11:31:11 | a |
+| nested_scopes.rb:40:1:40:18 | ... = ... | nested_scopes.rb:40:1:40:1 | d |
+| parameters.rb:1:1:1:1 | self (parameters.rb) | parameters.rb:1:1:62:1 | self |
+| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:62:1 | self |
+| parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x |
+| parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y |
+| parameters.rb:7:1:13:3 | self (order_pizza) | parameters.rb:7:1:13:3 | self |
+| parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas |
+| parameters.rb:15:1:19:3 | self (print_map) | parameters.rb:15:1:19:3 | self |
+| parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map |
+| parameters.rb:16:12:18:5 | <captured> | parameters.rb:15:1:19:3 | self |
+| parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key |
+| parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value |
+| parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block |
+| parameters.rb:25:1:28:3 | self (opt_param) | parameters.rb:25:1:28:3 | self |
+| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name |
+| parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size |
+| parameters.rb:30:1:32:3 | self (key_param) | parameters.rb:30:1:32:3 | self |
+| parameters.rb:30:15:30:19 | first | parameters.rb:30:15:30:19 | first |
+| parameters.rb:30:24:30:29 | middle | parameters.rb:30:24:30:29 | middle |
+| parameters.rb:30:36:30:39 | last | parameters.rb:30:36:30:39 | last |
+| parameters.rb:35:1:38:3 | <uninitialized> | parameters.rb:35:16:35:16 | b |
+| parameters.rb:35:1:38:3 | self (multi) | parameters.rb:35:1:38:3 | self |
+| parameters.rb:35:11:35:11 | a | parameters.rb:35:11:35:11 | a |
+| parameters.rb:35:16:35:20 | ... = ... | parameters.rb:35:16:35:16 | b |
+| parameters.rb:37:3:37:18 | phi | parameters.rb:35:16:35:16 | b |
+| parameters.rb:40:1:43:3 | <uninitialized> | parameters.rb:40:15:40:15 | e |
+| parameters.rb:40:1:43:3 | self (multi2) | parameters.rb:40:1:43:3 | self |
+| parameters.rb:40:12:40:12 | d | parameters.rb:40:12:40:12 | d |
+| parameters.rb:40:15:40:19 | ... = ... | parameters.rb:40:15:40:15 | e |
+| parameters.rb:42:3:42:18 | phi | parameters.rb:40:15:40:15 | e |
+| parameters.rb:45:1:47:3 | self (dup_underscore) | parameters.rb:45:1:47:3 | self |
+| parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ |
+| parameters.rb:49:1:51:3 | self (tuples) | parameters.rb:49:1:51:3 | self |
+| parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a |
+| parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b |
+| parameters.rb:53:1:53:6 | ... = ... | parameters.rb:53:1:53:1 | x |
+| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:62:1 | self |
+| parameters.rb:54:9:57:3 | <captured> | parameters.rb:53:1:53:1 | x |
+| parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y |
+| parameters.rb:54:19:54:23 | ... = ... | parameters.rb:53:1:53:1 | x |
+| parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x |
+| parameters.rb:59:1:61:3 | self (tuples_nested) | parameters.rb:59:1:61:3 | self |
+| parameters.rb:59:20:59:20 | a | parameters.rb:59:20:59:20 | a |
+| parameters.rb:59:23:59:23 | b | parameters.rb:59:23:59:23 | b |
+| parameters.rb:59:25:59:25 | c | parameters.rb:59:25:59:25 | c |
+| scopes.rb:1:1:1:15 | self (scopes.rb) | scopes.rb:1:1:49:4 | self |
+| scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self |
+| scopes.rb:4:4:4:8 | ... = ... | scopes.rb:4:4:4:4 | a |
+| scopes.rb:7:1:7:5 | ... = ... | scopes.rb:7:1:7:1 | a |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a |
+| scopes.rb:11:4:11:9 | ... = ... | scopes.rb:7:1:7:1 | a |
+| scopes.rb:13:4:13:4 | ... = ... | scopes.rb:7:1:7:1 | a |
+| scopes.rb:13:7:13:7 | ... = ... | scopes.rb:13:7:13:7 | b |
+| scopes.rb:13:10:13:15 | ... = ... | scopes.rb:13:10:13:15 | __synth__0__1 |
+| scopes.rb:13:11:13:11 | ... = ... | scopes.rb:13:11:13:11 | c |
+| scopes.rb:13:14:13:14 | ... = ... | scopes.rb:13:14:13:14 | d |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 |
+| scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x |
+| scopes.rb:29:3:29:7 | ... = ... | scopes.rb:29:3:29:3 | x |
+| scopes.rb:32:3:32:7 | ... = ... | scopes.rb:32:3:32:3 | x |
+| scopes.rb:35:3:35:7 | ... = ... | scopes.rb:35:3:35:3 | x |
+| scopes.rb:41:1:49:3 | self (M) | scopes.rb:41:1:49:3 | self |
+| scopes.rb:42:2:42:9 | ... = ... | scopes.rb:42:2:42:4 | var |
+| scopes.rb:43:2:43:13 | ... = ... | scopes.rb:43:2:43:4 | foo |
+| scopes.rb:46:5:46:13 | ... = ... | scopes.rb:46:5:46:8 | var2 |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self |
+| ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b |
+| ssa.rb:2:3:2:7 | ... = ... | ssa.rb:2:3:2:3 | i |
+| ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i |
+| ssa.rb:6:5:6:9 | ... = ... | ssa.rb:2:3:2:3 | i |
+| ssa.rb:10:5:10:9 | ... = ... | ssa.rb:2:3:2:3 | i |
+| ssa.rb:18:1:23:3 | self (m1) | ssa.rb:18:1:23:3 | self |
+| ssa.rb:18:8:18:8 | x | ssa.rb:18:8:18:8 | x |
+| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x |
+| ssa.rb:21:5:21:10 | ... = ... | ssa.rb:18:8:18:8 | x |
+| ssa.rb:25:1:30:3 | <uninitialized> | ssa.rb:26:7:26:10 | elem |
+| ssa.rb:25:1:30:3 | self (m2) | ssa.rb:25:1:30:3 | self |
+| ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements |
+| ssa.rb:26:3:28:5 | ... = ... | ssa.rb:26:7:26:10 | elem |
+| ssa.rb:26:3:28:5 | <captured> | ssa.rb:25:1:30:3 | self |
+| ssa.rb:26:3:28:5 | __synth__0__1 | ssa.rb:26:3:28:5 | __synth__0__1 |
+| ssa.rb:26:3:28:5 | call to each | ssa.rb:26:7:26:10 | elem |
+| ssa.rb:32:1:36:3 | self (m3) | ssa.rb:32:1:36:3 | self |
+| ssa.rb:33:16:35:5 | <captured> | ssa.rb:32:1:36:3 | self |
+| ssa.rb:33:20:33:20 | x | ssa.rb:33:20:33:20 | x |
+| ssa.rb:38:1:42:3 | self (m4) | ssa.rb:38:1:42:3 | self |
+| ssa.rb:40:3:40:9 | ... = ... | ssa.rb:40:3:40:4 | m3 |
+| ssa.rb:44:1:47:3 | <uninitialized> | ssa.rb:45:3:45:3 | x |
+| ssa.rb:44:1:47:3 | self (m5) | ssa.rb:44:1:47:3 | self |
+| ssa.rb:44:8:44:8 | b | ssa.rb:44:8:44:8 | b |
+| ssa.rb:45:3:45:7 | ... = ... | ssa.rb:45:3:45:3 | x |
+| ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x |
+| ssa.rb:49:1:51:3 | <uninitialized> | ssa.rb:49:14:49:14 | y |
+| ssa.rb:49:1:51:3 | self (m6) | ssa.rb:49:1:51:3 | self |
+| ssa.rb:49:14:49:19 | ... = ... | ssa.rb:49:14:49:14 | y |
+| ssa.rb:50:3:50:8 | phi | ssa.rb:49:14:49:14 | y |
+| ssa.rb:53:1:56:3 | self (m7) | ssa.rb:53:1:56:3 | self |
+| ssa.rb:53:8:53:10 | foo | ssa.rb:53:8:53:10 | foo |
+| ssa.rb:54:3:54:11 | ... = ... | ssa.rb:54:3:54:3 | x |
+| ssa.rb:58:1:62:3 | self (m8) | ssa.rb:58:1:62:3 | self |
+| ssa.rb:59:3:59:8 | ... = ... | ssa.rb:59:3:59:3 | x |
+| ssa.rb:60:3:60:9 | ... = ... | ssa.rb:59:3:59:3 | x |
+| ssa.rb:64:1:72:3 | self (m9) | ssa.rb:64:1:72:3 | self |
+| ssa.rb:64:8:64:8 | a | ssa.rb:64:8:64:8 | a |
+| ssa.rb:65:3:65:15 | ... = ... | ssa.rb:65:3:65:10 | captured |
+| ssa.rb:66:3:70:5 | call to times | ssa.rb:65:3:65:10 | captured |
+| ssa.rb:66:11:70:5 | <captured> | ssa.rb:64:1:72:3 | self |
+| ssa.rb:66:11:70:5 | <captured> | ssa.rb:65:3:65:10 | captured |
+| ssa.rb:66:15:66:15 | a | ssa.rb:66:15:66:15 | a |
+| ssa.rb:69:5:69:17 | ... = ... | ssa.rb:65:3:65:10 | captured |
+| ssa.rb:74:1:79:3 | self (m10) | ssa.rb:74:1:79:3 | self |
+| ssa.rb:75:3:75:14 | ... = ... | ssa.rb:75:3:75:10 | captured |
+| ssa.rb:76:7:78:5 | <captured> | ssa.rb:74:1:79:3 | self |
+| ssa.rb:76:7:78:5 | <captured> | ssa.rb:75:3:75:10 | captured |
+| ssa.rb:81:1:88:3 | self (m11) | ssa.rb:81:1:88:3 | self |
+| ssa.rb:82:3:82:14 | ... = ... | ssa.rb:82:3:82:10 | captured |
+| ssa.rb:83:7:87:5 | <captured> | ssa.rb:81:1:88:3 | self |
+| ssa.rb:84:10:86:8 | <captured> | ssa.rb:81:1:88:3 | self |
+| ssa.rb:84:10:86:8 | <captured> | ssa.rb:82:3:82:10 | captured |
+read
+| class_variables.rb:1:1:1:3 | self (class_variables.rb) | class_variables.rb:1:1:29:4 | self | class_variables.rb:3:1:3:5 | self |
+| class_variables.rb:5:1:7:3 | self (print) | class_variables.rb:5:1:7:3 | self | class_variables.rb:6:2:6:6 | self |
+| class_variables.rb:9:1:16:3 | self (X) | class_variables.rb:9:1:16:3 | self | class_variables.rb:13:7:13:10 | self |
+| class_variables.rb:10:3:12:5 | self (b) | class_variables.rb:10:3:12:5 | self | class_variables.rb:11:5:11:9 | self |
+| class_variables.rb:13:3:15:5 | self (s) | class_variables.rb:13:3:15:5 | self | class_variables.rb:14:4:14:8 | self |
+| class_variables.rb:26:1:29:3 | self (N) | class_variables.rb:26:1:29:3 | self | class_variables.rb:27:3:27:11 | self |
+| class_variables.rb:26:1:29:3 | self (N) | class_variables.rb:26:1:29:3 | self | class_variables.rb:28:3:28:7 | self |
+| instance_variables.rb:1:1:1:4 | self (instance_variables.rb) | instance_variables.rb:1:1:44:4 | self | instance_variables.rb:11:1:11:9 | self |
+| instance_variables.rb:1:1:1:4 | self (instance_variables.rb) | instance_variables.rb:1:1:44:4 | self | instance_variables.rb:27:1:29:1 | self |
+| instance_variables.rb:7:1:9:3 | self (print_foo) | instance_variables.rb:7:1:9:3 | self | instance_variables.rb:8:3:8:11 | self |
+| instance_variables.rb:37:3:43:5 | self (x) | instance_variables.rb:37:3:43:5 | self | instance_variables.rb:41:4:41:4 | self |
+| instance_variables.rb:37:3:43:5 | self (x) | instance_variables.rb:37:3:43:5 | self | instance_variables.rb:42:4:42:7 | self |
+| nested_scopes.rb:1:1:3:3 | self (a) | nested_scopes.rb:1:1:3:3 | self | nested_scopes.rb:2:3:2:17 | self |
+| nested_scopes.rb:4:1:39:3 | self (C) | nested_scopes.rb:4:1:39:3 | self | nested_scopes.rb:38:3:38:8 | self |
+| nested_scopes.rb:5:3:5:7 | ... = ... | nested_scopes.rb:5:3:5:3 | a | nested_scopes.rb:38:8:38:8 | a |
+| nested_scopes.rb:6:3:37:5 | self (M) | nested_scopes.rb:6:3:37:5 | self | nested_scopes.rb:36:5:36:10 | self |
+| nested_scopes.rb:7:5:7:9 | ... = ... | nested_scopes.rb:7:5:7:5 | a | nested_scopes.rb:36:10:36:10 | a |
+| nested_scopes.rb:8:5:35:7 | self (N) | nested_scopes.rb:8:5:35:7 | self | nested_scopes.rb:27:11:27:14 | self |
+| nested_scopes.rb:8:5:35:7 | self (N) | nested_scopes.rb:8:5:35:7 | self | nested_scopes.rb:30:16:30:19 | self |
+| nested_scopes.rb:8:5:35:7 | self (N) | nested_scopes.rb:8:5:35:7 | self | nested_scopes.rb:34:7:34:12 | self |
+| nested_scopes.rb:9:7:9:11 | ... = ... | nested_scopes.rb:9:7:9:7 | a | nested_scopes.rb:34:12:34:12 | a |
+| nested_scopes.rb:10:7:26:9 | self (D) | nested_scopes.rb:10:7:26:9 | self | nested_scopes.rb:25:9:25:14 | self |
+| nested_scopes.rb:11:9:11:13 | ... = ... | nested_scopes.rb:11:9:11:9 | a | nested_scopes.rb:25:14:25:14 | a |
+| nested_scopes.rb:12:9:21:11 | self (show_a) | nested_scopes.rb:12:9:21:11 | self | nested_scopes.rb:14:11:14:16 | self |
+| nested_scopes.rb:13:11:13:15 | ... = ... | nested_scopes.rb:13:11:13:11 | a | nested_scopes.rb:14:16:14:16 | a |
+| nested_scopes.rb:13:11:13:15 | ... = ... | nested_scopes.rb:13:11:13:11 | a | nested_scopes.rb:15:11:15:11 | a |
+| nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:16:13:16:13 | a |
+| nested_scopes.rb:17:15:17:19 | ... = ... | nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:18:15:18:15 | a |
+| nested_scopes.rb:18:23:18:36 | <captured> | nested_scopes.rb:12:9:21:11 | self | nested_scopes.rb:18:29:18:34 | self |
+| nested_scopes.rb:18:23:18:36 | <captured> | nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:18:34:18:34 | a |
+| nested_scopes.rb:22:9:24:11 | self (show_a2) | nested_scopes.rb:22:9:24:11 | self | nested_scopes.rb:23:11:23:16 | self |
+| nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:23:16:23:16 | a |
+| nested_scopes.rb:27:7:29:9 | self (show) | nested_scopes.rb:27:7:29:9 | self | nested_scopes.rb:28:11:28:16 | self |
+| nested_scopes.rb:27:7:29:9 | self (show) | nested_scopes.rb:27:7:29:9 | self | nested_scopes.rb:28:16:28:16 | self |
+| nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self | nested_scopes.rb:32:11:32:16 | self |
+| nested_scopes.rb:31:11:31:16 | ... = ... | nested_scopes.rb:31:11:31:11 | a | nested_scopes.rb:32:16:32:16 | a |
+| nested_scopes.rb:40:1:40:18 | ... = ... | nested_scopes.rb:40:1:40:1 | d | nested_scopes.rb:41:1:41:1 | d |
+| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:3:4:3:9 | self |
+| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:4:4:4:9 | self |
+| parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x | parameters.rb:3:9:3:9 | x |
+| parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y | parameters.rb:4:9:4:9 | y |
+| parameters.rb:7:1:13:3 | self (order_pizza) | parameters.rb:7:1:13:3 | self | parameters.rb:9:5:9:33 | self |
+| parameters.rb:7:1:13:3 | self (order_pizza) | parameters.rb:7:1:13:3 | self | parameters.rb:11:5:11:49 | self |
+| parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:9:25:9:30 | client |
+| parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:11:41:11:46 | client |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:11:14:11:19 | pizzas |
+| parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
+| parameters.rb:16:12:18:5 | <captured> | parameters.rb:15:1:19:3 | self | parameters.rb:17:5:17:28 | self |
+| parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key | parameters.rb:17:13:17:15 | key |
+| parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value | parameters.rb:17:22:17:26 | value |
+| parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
+| parameters.rb:25:1:28:3 | self (opt_param) | parameters.rb:25:1:28:3 | self | parameters.rb:26:3:26:11 | self |
+| parameters.rb:25:1:28:3 | self (opt_param) | parameters.rb:25:1:28:3 | self | parameters.rb:27:3:27:11 | self |
+| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name |
+| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
+| parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size | parameters.rb:27:8:27:11 | size |
+| parameters.rb:30:1:32:3 | self (key_param) | parameters.rb:30:1:32:3 | self | parameters.rb:31:3:31:35 | self |
+| parameters.rb:30:15:30:19 | first | parameters.rb:30:15:30:19 | first | parameters.rb:31:11:31:15 | first |
+| parameters.rb:30:24:30:29 | middle | parameters.rb:30:24:30:29 | middle | parameters.rb:31:20:31:25 | middle |
+| parameters.rb:30:36:30:39 | last | parameters.rb:30:36:30:39 | last | parameters.rb:31:30:31:33 | last |
+| parameters.rb:35:1:38:3 | self (multi) | parameters.rb:35:1:38:3 | self | parameters.rb:37:3:37:18 | self |
+| parameters.rb:35:11:35:11 | a | parameters.rb:35:11:35:11 | a | parameters.rb:37:11:37:11 | a |
+| parameters.rb:37:3:37:18 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:37:16:37:16 | b |
+| parameters.rb:40:1:43:3 | self (multi2) | parameters.rb:40:1:43:3 | self | parameters.rb:42:3:42:18 | self |
+| parameters.rb:40:12:40:12 | d | parameters.rb:40:12:40:12 | d | parameters.rb:42:11:42:11 | d |
+| parameters.rb:42:3:42:18 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:42:16:42:16 | e |
+| parameters.rb:45:1:47:3 | self (dup_underscore) | parameters.rb:45:1:47:3 | self | parameters.rb:46:3:46:8 | self |
+| parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ | parameters.rb:46:8:46:8 | _ |
+| parameters.rb:49:1:51:3 | self (tuples) | parameters.rb:49:1:51:3 | self | parameters.rb:50:3:50:18 | self |
+| parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a | parameters.rb:50:11:50:11 | a |
+| parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b | parameters.rb:50:16:50:16 | b |
+| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:55:4:55:9 | self |
+| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:56:4:56:9 | self |
+| parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
+| parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
+| parameters.rb:59:1:61:3 | self (tuples_nested) | parameters.rb:59:1:61:3 | self | parameters.rb:60:3:60:23 | self |
+| parameters.rb:59:20:59:20 | a | parameters.rb:59:20:59:20 | a | parameters.rb:60:11:60:11 | a |
+| parameters.rb:59:23:59:23 | b | parameters.rb:59:23:59:23 | b | parameters.rb:60:16:60:16 | b |
+| parameters.rb:59:25:59:25 | c | parameters.rb:59:25:59:25 | c | parameters.rb:60:21:60:21 | c |
+| scopes.rb:1:1:1:15 | self (scopes.rb) | scopes.rb:1:1:49:4 | self | scopes.rb:8:1:8:6 | self |
+| scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:3:4:3:9 | self |
+| scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:3:9:3:9 | self |
+| scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:5:4:5:9 | self |
+| scopes.rb:4:4:4:8 | ... = ... | scopes.rb:4:4:4:4 | a | scopes.rb:5:9:5:9 | a |
+| scopes.rb:7:1:7:5 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:8:6:8:6 | a |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:10:4:10:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:12:4:12:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:14:4:14:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:15:4:15:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:16:4:16:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:17:4:17:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:10:9:10:9 | a |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:11:4:11:4 | a |
+| scopes.rb:11:4:11:9 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:12:9:12:9 | a |
+| scopes.rb:13:4:13:4 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:14:9:14:9 | a |
+| scopes.rb:13:7:13:7 | ... = ... | scopes.rb:13:7:13:7 | b | scopes.rb:15:9:15:9 | b |
+| scopes.rb:13:10:13:15 | ... = ... | scopes.rb:13:10:13:15 | __synth__0__1 | scopes.rb:13:11:13:11 | __synth__0__1 |
+| scopes.rb:13:10:13:15 | ... = ... | scopes.rb:13:10:13:15 | __synth__0__1 | scopes.rb:13:14:13:14 | __synth__0__1 |
+| scopes.rb:13:11:13:11 | ... = ... | scopes.rb:13:11:13:11 | c | scopes.rb:16:9:16:9 | c |
+| scopes.rb:13:14:13:14 | ... = ... | scopes.rb:13:14:13:14 | d | scopes.rb:17:9:17:9 | d |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:4:13:4 | __synth__0 |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:7:13:7 | __synth__0 |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:10:13:15 | __synth__0 |
+| scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:28:8:28:8 | x |
+| scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:31:10:31:10 | x |
+| scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:34:7:34:7 | x |
+| scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:34:14:34:14 | x |
+| scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:37:5:37:5 | x |
+| scopes.rb:41:1:49:3 | self (M) | scopes.rb:41:1:49:3 | self | scopes.rb:45:5:45:7 | self |
+| scopes.rb:42:2:42:9 | ... = ... | scopes.rb:42:2:42:4 | var | scopes.rb:44:5:44:7 | var |
+| scopes.rb:46:5:46:13 | ... = ... | scopes.rb:46:5:46:8 | var2 | scopes.rb:47:5:47:8 | var2 |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:3:3:3:8 | self |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:4:3:4:12 | self |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:7:5:7:10 | self |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:8:5:8:14 | self |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:11:5:11:10 | self |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:12:5:12:14 | self |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:15:3:15:8 | self |
+| ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b | ssa.rb:5:6:5:6 | b |
+| ssa.rb:2:3:2:7 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:3:8:3:8 | i |
+| ssa.rb:2:3:2:7 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:4:8:4:8 | i |
+| ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i | ssa.rb:15:8:15:8 | i |
+| ssa.rb:6:5:6:9 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:7:10:7:10 | i |
+| ssa.rb:6:5:6:9 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:8:10:8:10 | i |
+| ssa.rb:10:5:10:9 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:11:10:11:10 | i |
+| ssa.rb:10:5:10:9 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:12:10:12:10 | i |
+| ssa.rb:18:1:23:3 | self (m1) | ssa.rb:18:1:23:3 | self | ssa.rb:20:5:20:10 | self |
+| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:19:9:19:9 | x |
+| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:20:10:20:10 | x |
+| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:21:5:21:5 | x |
+| ssa.rb:25:1:30:3 | self (m2) | ssa.rb:25:1:30:3 | self | ssa.rb:29:3:29:11 | self |
+| ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements | ssa.rb:26:15:26:22 | elements |
+| ssa.rb:26:3:28:5 | ... = ... | ssa.rb:26:7:26:10 | elem | ssa.rb:27:10:27:13 | elem |
+| ssa.rb:26:3:28:5 | <captured> | ssa.rb:25:1:30:3 | self | ssa.rb:27:5:27:13 | self |
+| ssa.rb:26:3:28:5 | __synth__0__1 | ssa.rb:26:3:28:5 | __synth__0__1 | ssa.rb:26:3:28:5 | __synth__0__1 |
+| ssa.rb:26:3:28:5 | call to each | ssa.rb:26:7:26:10 | elem | ssa.rb:29:8:29:11 | elem |
+| ssa.rb:33:16:35:5 | <captured> | ssa.rb:32:1:36:3 | self | ssa.rb:34:5:34:10 | self |
+| ssa.rb:33:20:33:20 | x | ssa.rb:33:20:33:20 | x | ssa.rb:34:10:34:10 | x |
+| ssa.rb:38:1:42:3 | self (m4) | ssa.rb:38:1:42:3 | self | ssa.rb:39:3:39:9 | self |
+| ssa.rb:38:1:42:3 | self (m4) | ssa.rb:38:1:42:3 | self | ssa.rb:39:8:39:9 | self |
+| ssa.rb:38:1:42:3 | self (m4) | ssa.rb:38:1:42:3 | self | ssa.rb:41:3:41:13 | self |
+| ssa.rb:40:3:40:9 | ... = ... | ssa.rb:40:3:40:4 | m3 | ssa.rb:41:8:41:9 | m3 |
+| ssa.rb:44:1:47:3 | self (m5) | ssa.rb:44:1:47:3 | self | ssa.rb:46:3:46:8 | self |
+| ssa.rb:44:8:44:8 | b | ssa.rb:44:8:44:8 | b | ssa.rb:45:12:45:12 | b |
+| ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:46:8:46:8 | x |
+| ssa.rb:49:1:51:3 | self (m6) | ssa.rb:49:1:51:3 | self | ssa.rb:50:3:50:8 | self |
+| ssa.rb:50:3:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:50:8:50:8 | y |
+| ssa.rb:53:1:56:3 | self (m7) | ssa.rb:53:1:56:3 | self | ssa.rb:55:3:55:8 | self |
+| ssa.rb:53:8:53:10 | foo | ssa.rb:53:8:53:10 | foo | ssa.rb:54:7:54:9 | foo |
+| ssa.rb:54:3:54:11 | ... = ... | ssa.rb:54:3:54:3 | x | ssa.rb:55:8:55:8 | x |
+| ssa.rb:58:1:62:3 | self (m8) | ssa.rb:58:1:62:3 | self | ssa.rb:61:3:61:8 | self |
+| ssa.rb:59:3:59:8 | ... = ... | ssa.rb:59:3:59:3 | x | ssa.rb:60:3:60:3 | x |
+| ssa.rb:60:3:60:9 | ... = ... | ssa.rb:59:3:59:3 | x | ssa.rb:61:8:61:8 | x |
+| ssa.rb:64:1:72:3 | self (m9) | ssa.rb:64:1:72:3 | self | ssa.rb:71:3:71:15 | self |
+| ssa.rb:64:8:64:8 | a | ssa.rb:64:8:64:8 | a | ssa.rb:66:3:66:3 | a |
+| ssa.rb:66:3:70:5 | call to times | ssa.rb:65:3:65:10 | captured | ssa.rb:71:8:71:15 | captured |
+| ssa.rb:66:11:70:5 | <captured> | ssa.rb:64:1:72:3 | self | ssa.rb:67:5:67:10 | self |
+| ssa.rb:66:11:70:5 | <captured> | ssa.rb:64:1:72:3 | self | ssa.rb:68:5:68:17 | self |
+| ssa.rb:66:11:70:5 | <captured> | ssa.rb:65:3:65:10 | captured | ssa.rb:68:10:68:17 | captured |
+| ssa.rb:66:11:70:5 | <captured> | ssa.rb:65:3:65:10 | captured | ssa.rb:69:5:69:12 | captured |
+| ssa.rb:66:15:66:15 | a | ssa.rb:66:15:66:15 | a | ssa.rb:67:10:67:10 | a |
+| ssa.rb:74:1:79:3 | self (m10) | ssa.rb:74:1:79:3 | self | ssa.rb:76:3:78:5 | self |
+| ssa.rb:76:7:78:5 | <captured> | ssa.rb:74:1:79:3 | self | ssa.rb:77:6:77:23 | self |
+| ssa.rb:76:7:78:5 | <captured> | ssa.rb:75:3:75:10 | captured | ssa.rb:77:15:77:22 | captured |
+| ssa.rb:81:1:88:3 | self (m11) | ssa.rb:81:1:88:3 | self | ssa.rb:83:3:87:5 | self |
+| ssa.rb:83:7:87:5 | <captured> | ssa.rb:81:1:88:3 | self | ssa.rb:84:6:86:8 | self |
+| ssa.rb:84:10:86:8 | <captured> | ssa.rb:81:1:88:3 | self | ssa.rb:85:10:85:22 | self |
+| ssa.rb:84:10:86:8 | <captured> | ssa.rb:82:3:82:10 | captured | ssa.rb:85:15:85:22 | captured |
+firstRead
+| class_variables.rb:1:1:1:3 | self (class_variables.rb) | class_variables.rb:1:1:29:4 | self | class_variables.rb:3:1:3:5 | self |
+| class_variables.rb:5:1:7:3 | self (print) | class_variables.rb:5:1:7:3 | self | class_variables.rb:6:2:6:6 | self |
+| class_variables.rb:9:1:16:3 | self (X) | class_variables.rb:9:1:16:3 | self | class_variables.rb:13:7:13:10 | self |
+| class_variables.rb:10:3:12:5 | self (b) | class_variables.rb:10:3:12:5 | self | class_variables.rb:11:5:11:9 | self |
+| class_variables.rb:13:3:15:5 | self (s) | class_variables.rb:13:3:15:5 | self | class_variables.rb:14:4:14:8 | self |
+| class_variables.rb:26:1:29:3 | self (N) | class_variables.rb:26:1:29:3 | self | class_variables.rb:27:3:27:11 | self |
+| instance_variables.rb:1:1:1:4 | self (instance_variables.rb) | instance_variables.rb:1:1:44:4 | self | instance_variables.rb:11:1:11:9 | self |
+| instance_variables.rb:7:1:9:3 | self (print_foo) | instance_variables.rb:7:1:9:3 | self | instance_variables.rb:8:3:8:11 | self |
+| instance_variables.rb:37:3:43:5 | self (x) | instance_variables.rb:37:3:43:5 | self | instance_variables.rb:41:4:41:4 | self |
+| nested_scopes.rb:1:1:3:3 | self (a) | nested_scopes.rb:1:1:3:3 | self | nested_scopes.rb:2:3:2:17 | self |
+| nested_scopes.rb:4:1:39:3 | self (C) | nested_scopes.rb:4:1:39:3 | self | nested_scopes.rb:38:3:38:8 | self |
+| nested_scopes.rb:5:3:5:7 | ... = ... | nested_scopes.rb:5:3:5:3 | a | nested_scopes.rb:38:8:38:8 | a |
+| nested_scopes.rb:6:3:37:5 | self (M) | nested_scopes.rb:6:3:37:5 | self | nested_scopes.rb:36:5:36:10 | self |
+| nested_scopes.rb:7:5:7:9 | ... = ... | nested_scopes.rb:7:5:7:5 | a | nested_scopes.rb:36:10:36:10 | a |
+| nested_scopes.rb:8:5:35:7 | self (N) | nested_scopes.rb:8:5:35:7 | self | nested_scopes.rb:27:11:27:14 | self |
+| nested_scopes.rb:9:7:9:11 | ... = ... | nested_scopes.rb:9:7:9:7 | a | nested_scopes.rb:34:12:34:12 | a |
+| nested_scopes.rb:10:7:26:9 | self (D) | nested_scopes.rb:10:7:26:9 | self | nested_scopes.rb:25:9:25:14 | self |
+| nested_scopes.rb:11:9:11:13 | ... = ... | nested_scopes.rb:11:9:11:9 | a | nested_scopes.rb:25:14:25:14 | a |
+| nested_scopes.rb:12:9:21:11 | self (show_a) | nested_scopes.rb:12:9:21:11 | self | nested_scopes.rb:14:11:14:16 | self |
+| nested_scopes.rb:13:11:13:15 | ... = ... | nested_scopes.rb:13:11:13:11 | a | nested_scopes.rb:14:16:14:16 | a |
+| nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:16:13:16:13 | a |
+| nested_scopes.rb:17:15:17:19 | ... = ... | nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:18:15:18:15 | a |
+| nested_scopes.rb:18:23:18:36 | <captured> | nested_scopes.rb:12:9:21:11 | self | nested_scopes.rb:18:29:18:34 | self |
+| nested_scopes.rb:18:23:18:36 | <captured> | nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:18:34:18:34 | a |
+| nested_scopes.rb:22:9:24:11 | self (show_a2) | nested_scopes.rb:22:9:24:11 | self | nested_scopes.rb:23:11:23:16 | self |
+| nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:23:16:23:16 | a |
+| nested_scopes.rb:27:7:29:9 | self (show) | nested_scopes.rb:27:7:29:9 | self | nested_scopes.rb:28:11:28:16 | self |
+| nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self | nested_scopes.rb:32:11:32:16 | self |
+| nested_scopes.rb:31:11:31:16 | ... = ... | nested_scopes.rb:31:11:31:11 | a | nested_scopes.rb:32:16:32:16 | a |
+| nested_scopes.rb:40:1:40:18 | ... = ... | nested_scopes.rb:40:1:40:1 | d | nested_scopes.rb:41:1:41:1 | d |
+| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:3:4:3:9 | self |
+| parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x | parameters.rb:3:9:3:9 | x |
+| parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y | parameters.rb:4:9:4:9 | y |
+| parameters.rb:7:1:13:3 | self (order_pizza) | parameters.rb:7:1:13:3 | self | parameters.rb:9:5:9:33 | self |
+| parameters.rb:7:1:13:3 | self (order_pizza) | parameters.rb:7:1:13:3 | self | parameters.rb:11:5:11:49 | self |
+| parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:9:25:9:30 | client |
+| parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:11:41:11:46 | client |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
+| parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
+| parameters.rb:16:12:18:5 | <captured> | parameters.rb:15:1:19:3 | self | parameters.rb:17:5:17:28 | self |
+| parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key | parameters.rb:17:13:17:15 | key |
+| parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value | parameters.rb:17:22:17:26 | value |
+| parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
+| parameters.rb:25:1:28:3 | self (opt_param) | parameters.rb:25:1:28:3 | self | parameters.rb:26:3:26:11 | self |
+| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name |
+| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
+| parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size | parameters.rb:27:8:27:11 | size |
+| parameters.rb:30:1:32:3 | self (key_param) | parameters.rb:30:1:32:3 | self | parameters.rb:31:3:31:35 | self |
+| parameters.rb:30:15:30:19 | first | parameters.rb:30:15:30:19 | first | parameters.rb:31:11:31:15 | first |
+| parameters.rb:30:24:30:29 | middle | parameters.rb:30:24:30:29 | middle | parameters.rb:31:20:31:25 | middle |
+| parameters.rb:30:36:30:39 | last | parameters.rb:30:36:30:39 | last | parameters.rb:31:30:31:33 | last |
+| parameters.rb:35:1:38:3 | self (multi) | parameters.rb:35:1:38:3 | self | parameters.rb:37:3:37:18 | self |
+| parameters.rb:35:11:35:11 | a | parameters.rb:35:11:35:11 | a | parameters.rb:37:11:37:11 | a |
+| parameters.rb:37:3:37:18 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:37:16:37:16 | b |
+| parameters.rb:40:1:43:3 | self (multi2) | parameters.rb:40:1:43:3 | self | parameters.rb:42:3:42:18 | self |
+| parameters.rb:40:12:40:12 | d | parameters.rb:40:12:40:12 | d | parameters.rb:42:11:42:11 | d |
+| parameters.rb:42:3:42:18 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:42:16:42:16 | e |
+| parameters.rb:45:1:47:3 | self (dup_underscore) | parameters.rb:45:1:47:3 | self | parameters.rb:46:3:46:8 | self |
+| parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ | parameters.rb:46:8:46:8 | _ |
+| parameters.rb:49:1:51:3 | self (tuples) | parameters.rb:49:1:51:3 | self | parameters.rb:50:3:50:18 | self |
+| parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a | parameters.rb:50:11:50:11 | a |
+| parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b | parameters.rb:50:16:50:16 | b |
+| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:55:4:55:9 | self |
+| parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
+| parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
+| parameters.rb:59:1:61:3 | self (tuples_nested) | parameters.rb:59:1:61:3 | self | parameters.rb:60:3:60:23 | self |
+| parameters.rb:59:20:59:20 | a | parameters.rb:59:20:59:20 | a | parameters.rb:60:11:60:11 | a |
+| parameters.rb:59:23:59:23 | b | parameters.rb:59:23:59:23 | b | parameters.rb:60:16:60:16 | b |
+| parameters.rb:59:25:59:25 | c | parameters.rb:59:25:59:25 | c | parameters.rb:60:21:60:21 | c |
+| scopes.rb:1:1:1:15 | self (scopes.rb) | scopes.rb:1:1:49:4 | self | scopes.rb:8:1:8:6 | self |
+| scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:3:4:3:9 | self |
+| scopes.rb:4:4:4:8 | ... = ... | scopes.rb:4:4:4:4 | a | scopes.rb:5:9:5:9 | a |
+| scopes.rb:7:1:7:5 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:8:6:8:6 | a |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:10:4:10:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:10:9:10:9 | a |
+| scopes.rb:11:4:11:9 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:12:9:12:9 | a |
+| scopes.rb:13:4:13:4 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:14:9:14:9 | a |
+| scopes.rb:13:7:13:7 | ... = ... | scopes.rb:13:7:13:7 | b | scopes.rb:15:9:15:9 | b |
+| scopes.rb:13:10:13:15 | ... = ... | scopes.rb:13:10:13:15 | __synth__0__1 | scopes.rb:13:11:13:11 | __synth__0__1 |
+| scopes.rb:13:11:13:11 | ... = ... | scopes.rb:13:11:13:11 | c | scopes.rb:16:9:16:9 | c |
+| scopes.rb:13:14:13:14 | ... = ... | scopes.rb:13:14:13:14 | d | scopes.rb:17:9:17:9 | d |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:4:13:4 | __synth__0 |
+| scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:28:8:28:8 | x |
+| scopes.rb:41:1:49:3 | self (M) | scopes.rb:41:1:49:3 | self | scopes.rb:45:5:45:7 | self |
+| scopes.rb:42:2:42:9 | ... = ... | scopes.rb:42:2:42:4 | var | scopes.rb:44:5:44:7 | var |
+| scopes.rb:46:5:46:13 | ... = ... | scopes.rb:46:5:46:8 | var2 | scopes.rb:47:5:47:8 | var2 |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:3:3:3:8 | self |
+| ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b | ssa.rb:5:6:5:6 | b |
+| ssa.rb:2:3:2:7 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:3:8:3:8 | i |
+| ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i | ssa.rb:15:8:15:8 | i |
+| ssa.rb:6:5:6:9 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:7:10:7:10 | i |
+| ssa.rb:10:5:10:9 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:11:10:11:10 | i |
+| ssa.rb:18:1:23:3 | self (m1) | ssa.rb:18:1:23:3 | self | ssa.rb:20:5:20:10 | self |
+| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:19:9:19:9 | x |
+| ssa.rb:25:1:30:3 | self (m2) | ssa.rb:25:1:30:3 | self | ssa.rb:29:3:29:11 | self |
+| ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements | ssa.rb:26:15:26:22 | elements |
+| ssa.rb:26:3:28:5 | ... = ... | ssa.rb:26:7:26:10 | elem | ssa.rb:27:10:27:13 | elem |
+| ssa.rb:26:3:28:5 | <captured> | ssa.rb:25:1:30:3 | self | ssa.rb:27:5:27:13 | self |
+| ssa.rb:26:3:28:5 | __synth__0__1 | ssa.rb:26:3:28:5 | __synth__0__1 | ssa.rb:26:3:28:5 | __synth__0__1 |
+| ssa.rb:26:3:28:5 | call to each | ssa.rb:26:7:26:10 | elem | ssa.rb:29:8:29:11 | elem |
+| ssa.rb:33:16:35:5 | <captured> | ssa.rb:32:1:36:3 | self | ssa.rb:34:5:34:10 | self |
+| ssa.rb:33:20:33:20 | x | ssa.rb:33:20:33:20 | x | ssa.rb:34:10:34:10 | x |
+| ssa.rb:38:1:42:3 | self (m4) | ssa.rb:38:1:42:3 | self | ssa.rb:39:3:39:9 | self |
+| ssa.rb:40:3:40:9 | ... = ... | ssa.rb:40:3:40:4 | m3 | ssa.rb:41:8:41:9 | m3 |
+| ssa.rb:44:1:47:3 | self (m5) | ssa.rb:44:1:47:3 | self | ssa.rb:46:3:46:8 | self |
+| ssa.rb:44:8:44:8 | b | ssa.rb:44:8:44:8 | b | ssa.rb:45:12:45:12 | b |
+| ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:46:8:46:8 | x |
+| ssa.rb:49:1:51:3 | self (m6) | ssa.rb:49:1:51:3 | self | ssa.rb:50:3:50:8 | self |
+| ssa.rb:50:3:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:50:8:50:8 | y |
+| ssa.rb:53:1:56:3 | self (m7) | ssa.rb:53:1:56:3 | self | ssa.rb:55:3:55:8 | self |
+| ssa.rb:53:8:53:10 | foo | ssa.rb:53:8:53:10 | foo | ssa.rb:54:7:54:9 | foo |
+| ssa.rb:54:3:54:11 | ... = ... | ssa.rb:54:3:54:3 | x | ssa.rb:55:8:55:8 | x |
+| ssa.rb:58:1:62:3 | self (m8) | ssa.rb:58:1:62:3 | self | ssa.rb:61:3:61:8 | self |
+| ssa.rb:59:3:59:8 | ... = ... | ssa.rb:59:3:59:3 | x | ssa.rb:60:3:60:3 | x |
+| ssa.rb:60:3:60:9 | ... = ... | ssa.rb:59:3:59:3 | x | ssa.rb:61:8:61:8 | x |
+| ssa.rb:64:1:72:3 | self (m9) | ssa.rb:64:1:72:3 | self | ssa.rb:71:3:71:15 | self |
+| ssa.rb:64:8:64:8 | a | ssa.rb:64:8:64:8 | a | ssa.rb:66:3:66:3 | a |
+| ssa.rb:66:3:70:5 | call to times | ssa.rb:65:3:65:10 | captured | ssa.rb:71:8:71:15 | captured |
+| ssa.rb:66:11:70:5 | <captured> | ssa.rb:64:1:72:3 | self | ssa.rb:67:5:67:10 | self |
+| ssa.rb:66:11:70:5 | <captured> | ssa.rb:65:3:65:10 | captured | ssa.rb:68:10:68:17 | captured |
+| ssa.rb:66:15:66:15 | a | ssa.rb:66:15:66:15 | a | ssa.rb:67:10:67:10 | a |
+| ssa.rb:74:1:79:3 | self (m10) | ssa.rb:74:1:79:3 | self | ssa.rb:76:3:78:5 | self |
+| ssa.rb:76:7:78:5 | <captured> | ssa.rb:74:1:79:3 | self | ssa.rb:77:6:77:23 | self |
+| ssa.rb:76:7:78:5 | <captured> | ssa.rb:75:3:75:10 | captured | ssa.rb:77:15:77:22 | captured |
+| ssa.rb:81:1:88:3 | self (m11) | ssa.rb:81:1:88:3 | self | ssa.rb:83:3:87:5 | self |
+| ssa.rb:83:7:87:5 | <captured> | ssa.rb:81:1:88:3 | self | ssa.rb:84:6:86:8 | self |
+| ssa.rb:84:10:86:8 | <captured> | ssa.rb:81:1:88:3 | self | ssa.rb:85:10:85:22 | self |
+| ssa.rb:84:10:86:8 | <captured> | ssa.rb:82:3:82:10 | captured | ssa.rb:85:15:85:22 | captured |
+lastRead
+| class_variables.rb:1:1:1:3 | self (class_variables.rb) | class_variables.rb:1:1:29:4 | self | class_variables.rb:3:1:3:5 | self |
+| class_variables.rb:5:1:7:3 | self (print) | class_variables.rb:5:1:7:3 | self | class_variables.rb:6:2:6:6 | self |
+| class_variables.rb:9:1:16:3 | self (X) | class_variables.rb:9:1:16:3 | self | class_variables.rb:13:7:13:10 | self |
+| class_variables.rb:10:3:12:5 | self (b) | class_variables.rb:10:3:12:5 | self | class_variables.rb:11:5:11:9 | self |
+| class_variables.rb:13:3:15:5 | self (s) | class_variables.rb:13:3:15:5 | self | class_variables.rb:14:4:14:8 | self |
+| class_variables.rb:26:1:29:3 | self (N) | class_variables.rb:26:1:29:3 | self | class_variables.rb:28:3:28:7 | self |
+| instance_variables.rb:1:1:1:4 | self (instance_variables.rb) | instance_variables.rb:1:1:44:4 | self | instance_variables.rb:27:1:29:1 | self |
+| instance_variables.rb:7:1:9:3 | self (print_foo) | instance_variables.rb:7:1:9:3 | self | instance_variables.rb:8:3:8:11 | self |
+| instance_variables.rb:37:3:43:5 | self (x) | instance_variables.rb:37:3:43:5 | self | instance_variables.rb:42:4:42:7 | self |
+| nested_scopes.rb:1:1:3:3 | self (a) | nested_scopes.rb:1:1:3:3 | self | nested_scopes.rb:2:3:2:17 | self |
+| nested_scopes.rb:4:1:39:3 | self (C) | nested_scopes.rb:4:1:39:3 | self | nested_scopes.rb:38:3:38:8 | self |
+| nested_scopes.rb:5:3:5:7 | ... = ... | nested_scopes.rb:5:3:5:3 | a | nested_scopes.rb:38:8:38:8 | a |
+| nested_scopes.rb:6:3:37:5 | self (M) | nested_scopes.rb:6:3:37:5 | self | nested_scopes.rb:36:5:36:10 | self |
+| nested_scopes.rb:7:5:7:9 | ... = ... | nested_scopes.rb:7:5:7:5 | a | nested_scopes.rb:36:10:36:10 | a |
+| nested_scopes.rb:8:5:35:7 | self (N) | nested_scopes.rb:8:5:35:7 | self | nested_scopes.rb:34:7:34:12 | self |
+| nested_scopes.rb:9:7:9:11 | ... = ... | nested_scopes.rb:9:7:9:7 | a | nested_scopes.rb:34:12:34:12 | a |
+| nested_scopes.rb:10:7:26:9 | self (D) | nested_scopes.rb:10:7:26:9 | self | nested_scopes.rb:25:9:25:14 | self |
+| nested_scopes.rb:11:9:11:13 | ... = ... | nested_scopes.rb:11:9:11:9 | a | nested_scopes.rb:25:14:25:14 | a |
+| nested_scopes.rb:12:9:21:11 | self (show_a) | nested_scopes.rb:12:9:21:11 | self | nested_scopes.rb:14:11:14:16 | self |
+| nested_scopes.rb:13:11:13:15 | ... = ... | nested_scopes.rb:13:11:13:11 | a | nested_scopes.rb:15:11:15:11 | a |
+| nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:16:13:16:13 | a |
+| nested_scopes.rb:17:15:17:19 | ... = ... | nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:18:15:18:15 | a |
+| nested_scopes.rb:18:23:18:36 | <captured> | nested_scopes.rb:12:9:21:11 | self | nested_scopes.rb:18:29:18:34 | self |
+| nested_scopes.rb:18:23:18:36 | <captured> | nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:18:34:18:34 | a |
+| nested_scopes.rb:22:9:24:11 | self (show_a2) | nested_scopes.rb:22:9:24:11 | self | nested_scopes.rb:23:11:23:16 | self |
+| nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:23:16:23:16 | a |
+| nested_scopes.rb:27:7:29:9 | self (show) | nested_scopes.rb:27:7:29:9 | self | nested_scopes.rb:28:16:28:16 | self |
+| nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self | nested_scopes.rb:32:11:32:16 | self |
+| nested_scopes.rb:31:11:31:16 | ... = ... | nested_scopes.rb:31:11:31:11 | a | nested_scopes.rb:32:16:32:16 | a |
+| nested_scopes.rb:40:1:40:18 | ... = ... | nested_scopes.rb:40:1:40:1 | d | nested_scopes.rb:41:1:41:1 | d |
+| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:4:4:4:9 | self |
+| parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x | parameters.rb:3:9:3:9 | x |
+| parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y | parameters.rb:4:9:4:9 | y |
+| parameters.rb:7:1:13:3 | self (order_pizza) | parameters.rb:7:1:13:3 | self | parameters.rb:9:5:9:33 | self |
+| parameters.rb:7:1:13:3 | self (order_pizza) | parameters.rb:7:1:13:3 | self | parameters.rb:11:5:11:49 | self |
+| parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:9:25:9:30 | client |
+| parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:11:41:11:46 | client |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:11:14:11:19 | pizzas |
+| parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
+| parameters.rb:16:12:18:5 | <captured> | parameters.rb:15:1:19:3 | self | parameters.rb:17:5:17:28 | self |
+| parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key | parameters.rb:17:13:17:15 | key |
+| parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value | parameters.rb:17:22:17:26 | value |
+| parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
+| parameters.rb:25:1:28:3 | self (opt_param) | parameters.rb:25:1:28:3 | self | parameters.rb:27:3:27:11 | self |
+| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
+| parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size | parameters.rb:27:8:27:11 | size |
+| parameters.rb:30:1:32:3 | self (key_param) | parameters.rb:30:1:32:3 | self | parameters.rb:31:3:31:35 | self |
+| parameters.rb:30:15:30:19 | first | parameters.rb:30:15:30:19 | first | parameters.rb:31:11:31:15 | first |
+| parameters.rb:30:24:30:29 | middle | parameters.rb:30:24:30:29 | middle | parameters.rb:31:20:31:25 | middle |
+| parameters.rb:30:36:30:39 | last | parameters.rb:30:36:30:39 | last | parameters.rb:31:30:31:33 | last |
+| parameters.rb:35:1:38:3 | self (multi) | parameters.rb:35:1:38:3 | self | parameters.rb:37:3:37:18 | self |
+| parameters.rb:35:11:35:11 | a | parameters.rb:35:11:35:11 | a | parameters.rb:37:11:37:11 | a |
+| parameters.rb:37:3:37:18 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:37:16:37:16 | b |
+| parameters.rb:40:1:43:3 | self (multi2) | parameters.rb:40:1:43:3 | self | parameters.rb:42:3:42:18 | self |
+| parameters.rb:40:12:40:12 | d | parameters.rb:40:12:40:12 | d | parameters.rb:42:11:42:11 | d |
+| parameters.rb:42:3:42:18 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:42:16:42:16 | e |
+| parameters.rb:45:1:47:3 | self (dup_underscore) | parameters.rb:45:1:47:3 | self | parameters.rb:46:3:46:8 | self |
+| parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ | parameters.rb:46:8:46:8 | _ |
+| parameters.rb:49:1:51:3 | self (tuples) | parameters.rb:49:1:51:3 | self | parameters.rb:50:3:50:18 | self |
+| parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a | parameters.rb:50:11:50:11 | a |
+| parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b | parameters.rb:50:16:50:16 | b |
+| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:56:4:56:9 | self |
+| parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
+| parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
+| parameters.rb:59:1:61:3 | self (tuples_nested) | parameters.rb:59:1:61:3 | self | parameters.rb:60:3:60:23 | self |
+| parameters.rb:59:20:59:20 | a | parameters.rb:59:20:59:20 | a | parameters.rb:60:11:60:11 | a |
+| parameters.rb:59:23:59:23 | b | parameters.rb:59:23:59:23 | b | parameters.rb:60:16:60:16 | b |
+| parameters.rb:59:25:59:25 | c | parameters.rb:59:25:59:25 | c | parameters.rb:60:21:60:21 | c |
+| scopes.rb:1:1:1:15 | self (scopes.rb) | scopes.rb:1:1:49:4 | self | scopes.rb:8:1:8:6 | self |
+| scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:5:4:5:9 | self |
+| scopes.rb:4:4:4:8 | ... = ... | scopes.rb:4:4:4:4 | a | scopes.rb:5:9:5:9 | a |
+| scopes.rb:7:1:7:5 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:8:6:8:6 | a |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:17:4:17:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:11:4:11:4 | a |
+| scopes.rb:11:4:11:9 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:12:9:12:9 | a |
+| scopes.rb:13:4:13:4 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:14:9:14:9 | a |
+| scopes.rb:13:7:13:7 | ... = ... | scopes.rb:13:7:13:7 | b | scopes.rb:15:9:15:9 | b |
+| scopes.rb:13:10:13:15 | ... = ... | scopes.rb:13:10:13:15 | __synth__0__1 | scopes.rb:13:14:13:14 | __synth__0__1 |
+| scopes.rb:13:11:13:11 | ... = ... | scopes.rb:13:11:13:11 | c | scopes.rb:16:9:16:9 | c |
+| scopes.rb:13:14:13:14 | ... = ... | scopes.rb:13:14:13:14 | d | scopes.rb:17:9:17:9 | d |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:10:13:15 | __synth__0 |
+| scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:37:5:37:5 | x |
+| scopes.rb:41:1:49:3 | self (M) | scopes.rb:41:1:49:3 | self | scopes.rb:45:5:45:7 | self |
+| scopes.rb:42:2:42:9 | ... = ... | scopes.rb:42:2:42:4 | var | scopes.rb:44:5:44:7 | var |
+| scopes.rb:46:5:46:13 | ... = ... | scopes.rb:46:5:46:8 | var2 | scopes.rb:47:5:47:8 | var2 |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:15:3:15:8 | self |
+| ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b | ssa.rb:5:6:5:6 | b |
+| ssa.rb:2:3:2:7 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:4:8:4:8 | i |
+| ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i | ssa.rb:15:8:15:8 | i |
+| ssa.rb:6:5:6:9 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:8:10:8:10 | i |
+| ssa.rb:10:5:10:9 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:12:10:12:10 | i |
+| ssa.rb:18:1:23:3 | self (m1) | ssa.rb:18:1:23:3 | self | ssa.rb:20:5:20:10 | self |
+| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:19:9:19:9 | x |
+| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:21:5:21:5 | x |
+| ssa.rb:25:1:30:3 | self (m2) | ssa.rb:25:1:30:3 | self | ssa.rb:29:3:29:11 | self |
+| ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements | ssa.rb:26:15:26:22 | elements |
+| ssa.rb:26:3:28:5 | ... = ... | ssa.rb:26:7:26:10 | elem | ssa.rb:27:10:27:13 | elem |
+| ssa.rb:26:3:28:5 | <captured> | ssa.rb:25:1:30:3 | self | ssa.rb:27:5:27:13 | self |
+| ssa.rb:26:3:28:5 | __synth__0__1 | ssa.rb:26:3:28:5 | __synth__0__1 | ssa.rb:26:3:28:5 | __synth__0__1 |
+| ssa.rb:26:3:28:5 | call to each | ssa.rb:26:7:26:10 | elem | ssa.rb:29:8:29:11 | elem |
+| ssa.rb:33:16:35:5 | <captured> | ssa.rb:32:1:36:3 | self | ssa.rb:34:5:34:10 | self |
+| ssa.rb:33:20:33:20 | x | ssa.rb:33:20:33:20 | x | ssa.rb:34:10:34:10 | x |
+| ssa.rb:38:1:42:3 | self (m4) | ssa.rb:38:1:42:3 | self | ssa.rb:41:3:41:13 | self |
+| ssa.rb:40:3:40:9 | ... = ... | ssa.rb:40:3:40:4 | m3 | ssa.rb:41:8:41:9 | m3 |
+| ssa.rb:44:1:47:3 | self (m5) | ssa.rb:44:1:47:3 | self | ssa.rb:46:3:46:8 | self |
+| ssa.rb:44:8:44:8 | b | ssa.rb:44:8:44:8 | b | ssa.rb:45:12:45:12 | b |
+| ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:46:8:46:8 | x |
+| ssa.rb:49:1:51:3 | self (m6) | ssa.rb:49:1:51:3 | self | ssa.rb:50:3:50:8 | self |
+| ssa.rb:50:3:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:50:8:50:8 | y |
+| ssa.rb:53:1:56:3 | self (m7) | ssa.rb:53:1:56:3 | self | ssa.rb:55:3:55:8 | self |
+| ssa.rb:53:8:53:10 | foo | ssa.rb:53:8:53:10 | foo | ssa.rb:54:7:54:9 | foo |
+| ssa.rb:54:3:54:11 | ... = ... | ssa.rb:54:3:54:3 | x | ssa.rb:55:8:55:8 | x |
+| ssa.rb:58:1:62:3 | self (m8) | ssa.rb:58:1:62:3 | self | ssa.rb:61:3:61:8 | self |
+| ssa.rb:59:3:59:8 | ... = ... | ssa.rb:59:3:59:3 | x | ssa.rb:60:3:60:3 | x |
+| ssa.rb:60:3:60:9 | ... = ... | ssa.rb:59:3:59:3 | x | ssa.rb:61:8:61:8 | x |
+| ssa.rb:64:1:72:3 | self (m9) | ssa.rb:64:1:72:3 | self | ssa.rb:71:3:71:15 | self |
+| ssa.rb:64:8:64:8 | a | ssa.rb:64:8:64:8 | a | ssa.rb:66:3:66:3 | a |
+| ssa.rb:66:3:70:5 | call to times | ssa.rb:65:3:65:10 | captured | ssa.rb:71:8:71:15 | captured |
+| ssa.rb:66:11:70:5 | <captured> | ssa.rb:64:1:72:3 | self | ssa.rb:68:5:68:17 | self |
+| ssa.rb:66:11:70:5 | <captured> | ssa.rb:65:3:65:10 | captured | ssa.rb:69:5:69:12 | captured |
+| ssa.rb:66:15:66:15 | a | ssa.rb:66:15:66:15 | a | ssa.rb:67:10:67:10 | a |
+| ssa.rb:74:1:79:3 | self (m10) | ssa.rb:74:1:79:3 | self | ssa.rb:76:3:78:5 | self |
+| ssa.rb:76:7:78:5 | <captured> | ssa.rb:74:1:79:3 | self | ssa.rb:77:6:77:23 | self |
+| ssa.rb:76:7:78:5 | <captured> | ssa.rb:75:3:75:10 | captured | ssa.rb:77:15:77:22 | captured |
+| ssa.rb:81:1:88:3 | self (m11) | ssa.rb:81:1:88:3 | self | ssa.rb:83:3:87:5 | self |
+| ssa.rb:83:7:87:5 | <captured> | ssa.rb:81:1:88:3 | self | ssa.rb:84:6:86:8 | self |
+| ssa.rb:84:10:86:8 | <captured> | ssa.rb:81:1:88:3 | self | ssa.rb:85:10:85:22 | self |
+| ssa.rb:84:10:86:8 | <captured> | ssa.rb:82:3:82:10 | captured | ssa.rb:85:15:85:22 | captured |
+adjacentReads
+| class_variables.rb:26:1:29:3 | self (N) | class_variables.rb:26:1:29:3 | self | class_variables.rb:27:3:27:11 | self | class_variables.rb:28:3:28:7 | self |
+| instance_variables.rb:1:1:1:4 | self (instance_variables.rb) | instance_variables.rb:1:1:44:4 | self | instance_variables.rb:11:1:11:9 | self | instance_variables.rb:27:1:29:1 | self |
+| instance_variables.rb:37:3:43:5 | self (x) | instance_variables.rb:37:3:43:5 | self | instance_variables.rb:41:4:41:4 | self | instance_variables.rb:42:4:42:7 | self |
+| nested_scopes.rb:8:5:35:7 | self (N) | nested_scopes.rb:8:5:35:7 | self | nested_scopes.rb:27:11:27:14 | self | nested_scopes.rb:30:16:30:19 | self |
+| nested_scopes.rb:8:5:35:7 | self (N) | nested_scopes.rb:8:5:35:7 | self | nested_scopes.rb:30:16:30:19 | self | nested_scopes.rb:34:7:34:12 | self |
+| nested_scopes.rb:13:11:13:15 | ... = ... | nested_scopes.rb:13:11:13:11 | a | nested_scopes.rb:14:16:14:16 | a | nested_scopes.rb:15:11:15:11 | a |
+| nested_scopes.rb:27:7:29:9 | self (show) | nested_scopes.rb:27:7:29:9 | self | nested_scopes.rb:28:11:28:16 | self | nested_scopes.rb:28:16:28:16 | self |
+| nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self | nested_scopes.rb:30:16:30:19 | self | nested_scopes.rb:32:11:32:16 | self |
+| parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:3:4:3:9 | self | parameters.rb:4:4:4:9 | self |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas | parameters.rb:11:14:11:19 | pizzas |
+| parameters.rb:25:1:28:3 | self (opt_param) | parameters.rb:25:1:28:3 | self | parameters.rb:26:3:26:11 | self | parameters.rb:27:3:27:11 | self |
+| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name | parameters.rb:26:8:26:11 | name |
+| parameters.rb:54:9:57:3 | <captured> | parameters.rb:1:1:62:1 | self | parameters.rb:55:4:55:9 | self | parameters.rb:56:4:56:9 | self |
+| scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:3:4:3:9 | self | scopes.rb:3:9:3:9 | self |
+| scopes.rb:2:9:6:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:3:9:3:9 | self | scopes.rb:5:4:5:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:10:4:10:9 | self | scopes.rb:12:4:12:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:12:4:12:9 | self | scopes.rb:14:4:14:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:14:4:14:9 | self | scopes.rb:15:4:15:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:15:4:15:9 | self | scopes.rb:16:4:16:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:1:1:49:4 | self | scopes.rb:16:4:16:9 | self | scopes.rb:17:4:17:9 | self |
+| scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:10:9:10:9 | a | scopes.rb:11:4:11:4 | a |
+| scopes.rb:13:10:13:15 | ... = ... | scopes.rb:13:10:13:15 | __synth__0__1 | scopes.rb:13:11:13:11 | __synth__0__1 | scopes.rb:13:14:13:14 | __synth__0__1 |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:4:13:4 | __synth__0 | scopes.rb:13:7:13:7 | __synth__0 |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:7:13:7 | __synth__0 | scopes.rb:13:10:13:15 | __synth__0 |
+| scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:28:8:28:8 | x | scopes.rb:31:10:31:10 | x |
+| scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:31:10:31:10 | x | scopes.rb:34:7:34:7 | x |
+| scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:34:7:34:7 | x | scopes.rb:34:14:34:14 | x |
+| scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:34:14:34:14 | x | scopes.rb:37:5:37:5 | x |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:3:3:3:8 | self | ssa.rb:4:3:4:12 | self |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:4:3:4:12 | self | ssa.rb:7:5:7:10 | self |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:4:3:4:12 | self | ssa.rb:11:5:11:10 | self |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:7:5:7:10 | self | ssa.rb:8:5:8:14 | self |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:8:5:8:14 | self | ssa.rb:15:3:15:8 | self |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:11:5:11:10 | self | ssa.rb:12:5:12:14 | self |
+| ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self | ssa.rb:12:5:12:14 | self | ssa.rb:15:3:15:8 | self |
+| ssa.rb:2:3:2:7 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:3:8:3:8 | i | ssa.rb:4:8:4:8 | i |
+| ssa.rb:6:5:6:9 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:7:10:7:10 | i | ssa.rb:8:10:8:10 | i |
+| ssa.rb:10:5:10:9 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:11:10:11:10 | i | ssa.rb:12:10:12:10 | i |
+| ssa.rb:18:1:23:3 | self (m1) | ssa.rb:18:1:23:3 | self | ssa.rb:20:5:20:10 | self | ssa.rb:20:5:20:10 | self |
+| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:19:9:19:9 | x | ssa.rb:20:10:20:10 | x |
+| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:20:10:20:10 | x | ssa.rb:21:5:21:5 | x |
+| ssa.rb:38:1:42:3 | self (m4) | ssa.rb:38:1:42:3 | self | ssa.rb:39:3:39:9 | self | ssa.rb:39:8:39:9 | self |
+| ssa.rb:38:1:42:3 | self (m4) | ssa.rb:38:1:42:3 | self | ssa.rb:39:8:39:9 | self | ssa.rb:41:3:41:13 | self |
+| ssa.rb:66:11:70:5 | <captured> | ssa.rb:64:1:72:3 | self | ssa.rb:67:5:67:10 | self | ssa.rb:68:5:68:17 | self |
+| ssa.rb:66:11:70:5 | <captured> | ssa.rb:65:3:65:10 | captured | ssa.rb:68:10:68:17 | captured | ssa.rb:69:5:69:12 | captured |
+phi
+| parameters.rb:37:3:37:18 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:35:1:38:3 | <uninitialized> |
+| parameters.rb:37:3:37:18 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:35:16:35:20 | ... = ... |
+| parameters.rb:42:3:42:18 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:40:1:43:3 | <uninitialized> |
+| parameters.rb:42:3:42:18 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:40:15:40:19 | ... = ... |
+| parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:54:9:57:3 | <captured> |
+| parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:54:19:54:23 | ... = ... |
+| ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i | ssa.rb:6:5:6:9 | ... = ... |
+| ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i | ssa.rb:10:5:10:9 | ... = ... |
+| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:18:8:18:8 | x |
+| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:21:5:21:10 | ... = ... |
+| ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:44:1:47:3 | <uninitialized> |
+| ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:45:3:45:7 | ... = ... |
+| ssa.rb:50:3:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:49:1:51:3 | <uninitialized> |
+| ssa.rb:50:3:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:49:14:49:19 | ... = ... |

@@ -1,0 +1,4 @@
+| tst.js:3:31:3:37 | cleanup | This event listener is dead, the event 'destroy' is not emitted anywhere. |
+| tst.js:6:26:6:32 | cleanup | This event listener is dead, the event 'destroy' is not emitted anywhere. |
+| tst.js:10:29:10:35 | cleanup | This event listener is dead, the event 'destroy' is not emitted anywhere. |
+| tst.js:20:27:20:33 | cleanup | This event listener is dead, the event 'bar' is not emitted anywhere. |

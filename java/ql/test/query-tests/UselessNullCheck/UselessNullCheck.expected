@@ -1,0 +1,8 @@
+| A.java:4:9:4:17 | ... == ... | This check is useless, $@ cannot be null here, since $@ always is non-null. | A.java:4:9:4:9 | o | o | A.java:3:16:3:27 | new Object(...) | new Object(...) |
+| A.java:5:9:5:17 | ... != ... | This check is useless, $@ cannot be null here, since $@ always is non-null. | A.java:5:9:5:9 | o | o | A.java:3:16:3:27 | new Object(...) | new Object(...) |
+| A.java:9:11:9:19 | ... == ... | This check is useless, $@ cannot be null here, since $@ always is non-null. | A.java:9:11:9:11 | e | e | A.java:8:23:8:23 | e | e |
+| A.java:18:11:18:19 | ... != ... | This check is useless, $@ cannot be null here, since it is guarded by $@. | A.java:18:11:18:11 | a | a | A.java:16:9:16:22 | ...instanceof... | ...instanceof... |
+| A.java:31:11:31:19 | ... != ... | This check is useless, $@ cannot be null here, since $@ always is non-null. | A.java:31:11:31:11 | x | x | A.java:29:17:29:20 | this | this |
+| A.java:40:14:40:25 | ... != ... | This check is useless, since $@ always is non-null. | A.java:40:14:40:17 | this | this | A.java:40:14:40:17 | this | this |
+| A.java:42:9:42:17 | ... != ... | This check is useless, $@ cannot be null here, since it is guarded by $@. | A.java:42:9:42:9 | x | x | A.java:39:9:39:17 | ... == ... | ... == ... |
+| A.java:52:9:52:24 | ... != ... | This check is useless, $@ cannot be null here, since $@ always is non-null. | A.java:52:9:52:16 | finalObj | finalObj | A.java:48:35:48:46 | new Object(...) | new Object(...) |

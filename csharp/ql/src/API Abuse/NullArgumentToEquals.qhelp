@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>It is common to want to check an object against <code>null</code>, but this should not be done 
+using the <code>Equals</code> method. If the object really is <code>null</code>, a <code>
+NullReferenceException</code> is thrown when attempting to call <code>Equals</code>, with 
+unexpected results.</p>
+
+</overview>
+<recommendation>
+<p>The offending call should be replaced with either <code>==</code> or <code>ReferenceEquals</code>
+ (the difference being that <code>==</code> can be overridden but <code>ReferenceEquals</code> 
+cannot).</p>
+
+</recommendation>
+<example>
+<p>In the following example, <code>IsNull</code> will throw a <code>NullReferenceException</code>
+when <code>o</code> is <code>null</code>.
+</p>
+<sample src="NullArgumentToEqualsBad.cs" />
+
+<p>In the revised example, <code>IsNull</code> will correctly return <code>true</code>
+when <code>o</code> is <code>null</code>.
+</p>
+<sample src="NullArgumentToEqualsGood.cs" />
+</example>
+<references>
+
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/bsc2ak47.aspx">Object.Equals Method (Object)</a>.</li>
+
+</references>
+</qhelp>

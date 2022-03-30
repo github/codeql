@@ -1,0 +1,70 @@
+edges
+| PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:4:12:4:24 | ...[...] :  |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:10:5:10:8 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:11:5:11:8 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:12:5:12:8 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:13:5:13:8 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:14:5:14:8 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:15:5:15:8 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:16:5:16:8 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:17:5:17:8 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:18:5:18:8 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:19:5:19:8 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:20:5:20:8 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:21:5:21:8 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:22:5:22:8 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:23:17:23:20 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:24:18:24:21 | name |
+| PolynomialReDoS.rb:27:9:27:14 | call to params :  | PolynomialReDoS.rb:27:9:27:18 | ...[...] :  |
+| PolynomialReDoS.rb:27:9:27:18 | ...[...] :  | PolynomialReDoS.rb:28:5:28:5 | a |
+| PolynomialReDoS.rb:29:9:29:14 | call to params :  | PolynomialReDoS.rb:29:9:29:18 | ...[...] :  |
+| PolynomialReDoS.rb:29:9:29:18 | ...[...] :  | PolynomialReDoS.rb:30:5:30:5 | b |
+| PolynomialReDoS.rb:31:9:31:14 | call to params :  | PolynomialReDoS.rb:31:9:31:18 | ...[...] :  |
+| PolynomialReDoS.rb:31:9:31:18 | ...[...] :  | PolynomialReDoS.rb:32:5:32:5 | c |
+nodes
+| PolynomialReDoS.rb:4:12:4:17 | call to params :  | semmle.label | call to params :  |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | semmle.label | ...[...] :  |
+| PolynomialReDoS.rb:10:5:10:8 | name | semmle.label | name |
+| PolynomialReDoS.rb:11:5:11:8 | name | semmle.label | name |
+| PolynomialReDoS.rb:12:5:12:8 | name | semmle.label | name |
+| PolynomialReDoS.rb:13:5:13:8 | name | semmle.label | name |
+| PolynomialReDoS.rb:14:5:14:8 | name | semmle.label | name |
+| PolynomialReDoS.rb:15:5:15:8 | name | semmle.label | name |
+| PolynomialReDoS.rb:16:5:16:8 | name | semmle.label | name |
+| PolynomialReDoS.rb:17:5:17:8 | name | semmle.label | name |
+| PolynomialReDoS.rb:18:5:18:8 | name | semmle.label | name |
+| PolynomialReDoS.rb:19:5:19:8 | name | semmle.label | name |
+| PolynomialReDoS.rb:20:5:20:8 | name | semmle.label | name |
+| PolynomialReDoS.rb:21:5:21:8 | name | semmle.label | name |
+| PolynomialReDoS.rb:22:5:22:8 | name | semmle.label | name |
+| PolynomialReDoS.rb:23:17:23:20 | name | semmle.label | name |
+| PolynomialReDoS.rb:24:18:24:21 | name | semmle.label | name |
+| PolynomialReDoS.rb:27:9:27:14 | call to params :  | semmle.label | call to params :  |
+| PolynomialReDoS.rb:27:9:27:18 | ...[...] :  | semmle.label | ...[...] :  |
+| PolynomialReDoS.rb:28:5:28:5 | a | semmle.label | a |
+| PolynomialReDoS.rb:29:9:29:14 | call to params :  | semmle.label | call to params :  |
+| PolynomialReDoS.rb:29:9:29:18 | ...[...] :  | semmle.label | ...[...] :  |
+| PolynomialReDoS.rb:30:5:30:5 | b | semmle.label | b |
+| PolynomialReDoS.rb:31:9:31:14 | call to params :  | semmle.label | call to params :  |
+| PolynomialReDoS.rb:31:9:31:18 | ...[...] :  | semmle.label | ...[...] :  |
+| PolynomialReDoS.rb:32:5:32:5 | c | semmle.label | c |
+subpaths
+#select
+| PolynomialReDoS.rb:10:5:10:17 | ... =~ ... | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:10:5:10:8 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:11:5:11:17 | ... !~ ... | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:11:5:11:8 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:12:5:12:15 | ...[...] | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:12:5:12:8 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:13:5:13:23 | call to gsub | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:13:5:13:8 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:14:5:14:20 | call to index | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:14:5:14:8 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:15:5:15:20 | call to match | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:15:5:15:8 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:16:5:16:21 | call to match? | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:16:5:16:8 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:17:5:17:24 | call to partition | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:17:5:17:8 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:18:5:18:21 | call to rindex | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:18:5:18:8 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:19:5:19:25 | call to rpartition | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:19:5:19:8 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:20:5:20:19 | call to scan | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:20:5:20:8 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:21:5:21:20 | call to split | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:21:5:21:8 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:22:5:22:22 | call to sub | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:22:5:22:8 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:23:5:23:20 | call to match | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:23:17:23:20 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:24:5:24:21 | call to match? | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:24:18:24:21 | name | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | a user-provided value |
+| PolynomialReDoS.rb:28:5:28:21 | call to gsub! | PolynomialReDoS.rb:27:9:27:14 | call to params :  | PolynomialReDoS.rb:28:5:28:5 | a | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:27:9:27:14 | call to params | a user-provided value |
+| PolynomialReDoS.rb:30:5:30:18 | call to slice! | PolynomialReDoS.rb:29:9:29:14 | call to params :  | PolynomialReDoS.rb:30:5:30:5 | b | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:29:9:29:14 | call to params | a user-provided value |
+| PolynomialReDoS.rb:32:5:32:20 | call to sub! | PolynomialReDoS.rb:31:9:31:14 | call to params :  | PolynomialReDoS.rb:32:5:32:5 | c | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:31:9:31:14 | call to params | a user-provided value |

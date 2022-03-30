@@ -1,0 +1,6 @@
+{
+    "name": "spread",
+    "dependencies": {
+        "something": "*"
+    }
+}

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+      "module": "commonjs",
+      "noImplicitAny": true,
+      "removeComments": true,
+      "sourceMap": false,
+      "baseUrl": "./",
+      "lib": ["es2016"],
+      "target": "es5",
+      "outDir": "build",
+      "allowJs": true,
+  },
+  "include": [
+    "src"
+  ]
+}

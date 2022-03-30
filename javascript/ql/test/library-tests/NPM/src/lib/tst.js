@@ -1,0 +1,3 @@
+alert("world");
+
+require("process");

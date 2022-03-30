@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule finds calls to methods that are dangerous to
+use. Currently, it checks for calls
+to <code>Thread.stop</code>.</p>
+
+<p>Stopping a thread with <code>Thread.stop</code> causes it to
+receive a <code>ThreadDeath</code> exception. That exception
+propagates up the stack, releasing all monitors that the thread was
+holding. In some cases the relevant code will be protected by catching
+the <code>ThreadDeath</code> exception and cleaning up, but because
+the exception can potentially be thrown from so very many locations,
+it is impractical to catch all such cases. As a result,
+calling <code>Thread.stop</code> is likely to result in corrupt
+data.</p>
+
+</overview>
+<recommendation>
+
+<p>The best solution is usually to provide an alternate communication
+mechanism for the thread that might need to be interrupted early. For
+example, Oracle gives the following example of using a volatile
+variable to communicate whether the worker thread should exit:</p>
+
+<sample src="PotentiallyDangerousFunction.java" />
+
+<p>It is also possible to use <code>Thread.interrupt</code> and to
+catch and handle <code>InterruptedException</code> when it
+occurs. However, it can be difficult to handle
+an <code>InterruptedException</code> everywhere it might occur; for
+example, the sample code above simply discards the exception rather
+than actually exiting the thread.</p>
+
+<p>Another strategy is to use message passing, for example via
+a <code>BlockingQueue</code>. In addition to passing the worker thread
+its ordinary work via such a message queue, the worker can be asked to
+exit by a particular kind of message being sent on the queue.</p>
+
+</recommendation>
+<references>
+
+<li>SEI CERT Oracle Coding Standard for Java:
+<a href="https://wiki.sei.cmu.edu/confluence/display/java/THI05-J.+Do+not+use+Thread.stop()+to+terminate+threads">THI05-J. Do
+not use Thread.stop() to terminate threads</a>.</li>
+<li>Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/doc-files/threadPrimitiveDeprecation.html">Java
+Thread Primitive Deprecation</a>.</li>
+<li>Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Thread.html#interrupt()">Thread.interrupt</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/BlockingQueue.html">BlockingQueue</a>.</li>
+
+
+</references>
+</qhelp>

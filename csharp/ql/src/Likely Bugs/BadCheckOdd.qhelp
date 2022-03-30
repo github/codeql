@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Avoid using <code>x % 2 == 1</code> or <code>x % 2 > 0</code>
+to check whether a number <code>x</code> is odd, or 
+<code>x % 2 != 1</code> to check whether it is even.
+Such code does not work for negative numbers. 
+For example, <code>-5 % 2</code> equals <code>-1</code>, not <code>1</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Consider using <code>x % 2 != 0</code> to check for odd and <code>x % 2 == 0</code> to check for even.
+</p>
+
+</recommendation>
+<example>
+<p>-9 is an odd number but this example does not detect it as one. This is because <code>-9 % 2
+</code> is -1, not 1.</p>
+<sample src="BadCheckOdd.cs" />
+
+<p>It would be better to check if the number is even and then invert that check.</p>
+<sample src="BadCheckOddGood.cs" />
+
+</example>
+<references>
+
+
+<li>
+  MSDN Library: <a href="http://msdn.microsoft.com/en-us/library/0w4e0fzs.aspx">% Operator (C# Reference)</a>.
+</li>
+<li>
+  Wikipedia: <a href="http://en.wikipedia.org/wiki/Modulo_operation#Common_pitfalls">Modulo Operation - Common pitfalls</a>.
+</li>
+
+
+</references>
+</qhelp>

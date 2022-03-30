@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>When checking the result of SSL certificate verification, accepting any error code may allow an attacker to impersonate someone who is trusted.</p>
+
+</overview>
+<recommendation>
+
+<p>When checking an SSL certificate with <code>SSL_get_verify_result</code>, only <code>X509_V_OK</code> is a success code. If there is any other result the certificate should not be accepted.</p>
+
+</recommendation>
+<example>
+
+<p>In this example the error code <code>X509_V_ERR_CERT_HAS_EXPIRED</code> is treated the same as an OK result. An expired certificate should not be accepted as it is more likely to be compromised than a valid certificate.</p>
+
+<sample src="SSLResultConflationBad.cpp" />
+
+<p>In the corrected example, only a result of <code>X509_V_OK</code> is accepted.</p>
+
+<sample src="SSLResultConflationGood.cpp" />
+
+</example>
+<references>
+
+</references>
+</qhelp>

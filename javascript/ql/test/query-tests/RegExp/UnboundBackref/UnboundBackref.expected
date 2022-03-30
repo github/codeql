@@ -1,0 +1,4 @@
+| tst.js:4:2:4:3 | \\1 | There is no capture group 1 in this regular expression. |
+| tst.js:8:13:8:14 | \\1 | There is no capture group 1 in this regular expression. |
+| tst.js:15:16:15:17 | \\2 | There is no capture group 2 in this regular expression. |
+| tst.js:16:16:16:29 | \\k<whitespace> | There is no capture group named 'whitespace' in this regular expression. |

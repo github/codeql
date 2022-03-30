@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/springframework-5.3.8:${testdir}/../../../stubs/ognl-3.2.14:${testdir}/../../../stubs/struts2-core-2.5.22

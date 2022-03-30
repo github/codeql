@@ -1,0 +1,2 @@
+| tst.ts:4:8:4:21 | UnresolvedType | unresolved | UnresolvedType |
+| tst.ts:5:8:5:19 | ResolvedType | resolved | ResolvedType |

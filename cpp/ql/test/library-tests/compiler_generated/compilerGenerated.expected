@@ -1,0 +1,19 @@
+| c.c:7:9:7:9 | (long)... | Expr |
+| c.c:8:9:8:9 | (long long)... | Expr |
+| c.c:10:1:10:1 | return ... | Stmt |
+| cpp.cpp:4:7:4:7 | MySuperClass | Function |
+| cpp.cpp:4:7:4:7 | operator= | Function |
+| cpp.cpp:6:33:6:33 | return ... | Stmt |
+| cpp.cpp:7:34:7:34 | return ... | Stmt |
+| cpp.cpp:10:7:10:7 | MyClass | Function |
+| cpp.cpp:10:7:10:7 | MyClass | Function |
+| cpp.cpp:10:7:10:7 | MyClass | Function |
+| cpp.cpp:10:7:10:7 | call to MySuperClass | Expr |
+| cpp.cpp:10:7:10:7 | call to ~MySuperClass | Expr |
+| cpp.cpp:10:7:10:7 | operator= | Function |
+| cpp.cpp:10:7:10:7 | operator= | Function |
+| cpp.cpp:10:7:10:7 | ~MyClass | Function |
+| cpp.cpp:15:5:15:12 | call to ~MyClass | Expr |
+| cpp.cpp:16:1:16:1 | return ... | Stmt |
+| file://:0:0:0:0 | operator delete | Function |
+| file://:0:0:0:0 | operator new | Function |

@@ -1,0 +1,12 @@
+| big_ints.cpp:2:8:2:8 | 2 | Operand to short-circuiting operator looks like a flag (2 = 2 ^ 1), may be typo for bitwise operator. |
+| big_ints.cpp:3:8:3:8 | 4 | Operand to short-circuiting operator looks like a flag (4 = 2 ^ 2), may be typo for bitwise operator. |
+| big_ints.cpp:4:8:4:9 | 16 | Operand to short-circuiting operator looks like a flag (16 = 2 ^ 4), may be typo for bitwise operator. |
+| big_ints.cpp:5:8:5:10 | 256 | Operand to short-circuiting operator looks like a flag (256 = 2 ^ 8), may be typo for bitwise operator. |
+| big_ints.cpp:6:8:6:14 | 65536 | Operand to short-circuiting operator looks like a flag (65536 = 2 ^ 16), may be typo for bitwise operator. |
+| big_ints.cpp:7:8:7:17 | 2147483648 | Operand to short-circuiting operator looks like a flag (2147483648 = 2 ^ 31), may be typo for bitwise operator. |
+| big_ints.cpp:8:8:8:20 | 4294967296 | Operand to short-circuiting operator looks like a flag (4294967296 = 2 ^ 32), may be typo for bitwise operator. |
+| big_ints.cpp:9:8:9:20 | 34359738368 | Operand to short-circuiting operator looks like a flag (34359738368 = 2 ^ 35), may be typo for bitwise operator. |
+| big_ints.cpp:10:8:10:22 | 1099511627776 | Operand to short-circuiting operator looks like a flag (1099511627776 = 2 ^ 40), may be typo for bitwise operator. |
+| big_ints.cpp:11:8:11:22 | 1250999896491 | Operand to short-circuiting operator is a hexadecimal literal, and therefore likely a flag; a bitwise operator may be intended. |
+| big_ints.cpp:32:2:32:2 | 4 | Operand to short-circuiting operator looks like a flag (4 = 2 ^ 2), may be typo for bitwise operator. |
+| big_ints.cpp:69:29:69:34 | 128 | Operand to short-circuiting operator looks like a flag (128 = 2 ^ 7), may be typo for bitwise operator. |

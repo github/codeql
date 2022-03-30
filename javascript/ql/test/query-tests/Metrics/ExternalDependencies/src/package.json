@@ -1,0 +1,9 @@
+{
+  "name": "mypkg",
+  "version": "0.1.0",
+  "dependencies": {
+    "lib1": "1.0.2",
+    "lib2": "^1.0.0",
+    "lib3": "*"
+  }
+}

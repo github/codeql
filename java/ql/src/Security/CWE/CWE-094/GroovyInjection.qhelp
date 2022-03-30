@@ -1,0 +1,81 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Apache Groovy is a powerful, optionally typed and dynamic language, 
+with static-typing and static compilation capabilities.
+
+It integrates smoothly with any Java program, 
+and immediately delivers to your application powerful features, 
+including scripting capabilities, Domain-Specific Language authoring, 
+runtime and compile-time meta-programming and functional programming.
+
+If a Groovy script is built using attacker-controlled data, 
+and then evaluated, then it may allow the attacker to achieve RCE.
+</p>
+</overview>
+
+<recommendation>
+<p>
+It is generally recommended to avoid using untrusted input in a Groovy evaluation.
+If this is not possible, use a sandbox solution. Developers must also take care that Groovy
+compile-time metaprogramming can also lead to RCE: it is possible to achieve RCE by compiling
+a Groovy script (see the article "Abusing Meta Programming for Unauthenticated RCE!" linked below).
+
+Groovy's <code>SecureASTCustomizer</code> allows securing source code by controlling what code constructs are permitted. 
+This is typically done when using Groovy for its scripting or domain specific language (DSL) features.
+The fundamental problem is that Groovy is a dynamic language, yet <code>SecureASTCustomizer</code> works by looking at Groovy AST statically.
+
+This makes it very easy for an attacker to bypass many of the intended checks
+(see [Groovy SecureASTCustomizer is harmful](https://kohsuke.org/2012/04/27/groovy-secureastcustomizer-is-harmful/)).
+Therefore, besides <code>SecureASTCustomizer</code>, runtime checks are also necessary before calling Groovy methods
+(see [Improved sandboxing of Groovy scripts](https://melix.github.io/blog/2015/03/sandboxing.html)).
+
+It is also possible to use a block-list method, excluding unwanted classes from being loaded by the JVM. 
+This method is not always recommended, because block-lists can be bypassed by unexpected values.
+
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses untrusted data to evaluate a Groovy script.
+</p>
+<sample src="GroovyInjectionBad.java" />
+
+<p>
+The following example uses classloader block-list approach to exclude loading dangerous classes.
+</p>
+<sample src="GroovyInjectionBlocklist.java" />
+
+</example>
+
+<references>
+<li>
+  Orange Tsai:
+  <a href="https://blog.orange.tw/2019/02/abusing-meta-programming-for-unauthenticated-rce.html">Abusing Meta Programming for Unauthenticated RCE!</a>.
+</li>
+<li>
+  Cédric Champeau:
+  <a href="https://melix.github.io/blog/2015/03/sandboxing.html">Improved sandboxing of Groovy scripts</a>.
+</li>
+<li>
+  Kohsuke Kawaguchi:
+  <a href="https://kohsuke.org/2012/04/27/groovy-secureastcustomizer-is-harmful/">Groovy SecureASTCustomizer is harmful</a>.
+</li>
+<li>
+  Welk1n:
+  <a href="https://github.com/welk1n/exploiting-groovy-in-Java/">Groovy Injection payloads</a>.
+</li>
+<li>
+  Charles Chan:
+  <a href="https://levelup.gitconnected.com/secure-groovy-script-execution-in-a-sandbox-ea39f80ee87/">Secure Groovy Script Execution in a Sandbox</a>.
+</li>
+<li>
+  Eugene:
+  <a href="https://stringconcat.com/en/scripting-and-sandboxing/">Scripting and sandboxing in a JVM environment</a>.
+</li>
+</references>
+
+</qhelp>

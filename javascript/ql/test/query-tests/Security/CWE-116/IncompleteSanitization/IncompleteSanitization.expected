@@ -1,0 +1,31 @@
+| tst.js:5:10:5:18 | s.replace | This replaces only the first occurrence of "'". |
+| tst.js:9:10:9:18 | s.replace | This replaces only the first occurrence of /'/. |
+| tst.js:13:10:13:18 | s.replace | This does not escape backslash characters in the input. |
+| tst.js:17:10:17:18 | s.replace | This does not escape backslash characters in the input. |
+| tst.js:21:10:21:18 | s.replace | This does not escape backslash characters in the input. |
+| tst.js:25:10:25:18 | s.replace | This does not escape backslash characters in the input. |
+| tst.js:29:10:29:18 | s.replace | This does not escape backslash characters in the input. |
+| tst.js:33:10:33:18 | s.replace | This replaces only the first occurrence of '\|'. |
+| tst.js:37:10:37:18 | s.replace | This does not escape backslash characters in the input. |
+| tst.js:41:10:41:18 | s.replace | This replaces only the first occurrence of "/". |
+| tst.js:45:10:45:18 | s.replace | This replaces only the first occurrence of "%25". |
+| tst.js:49:10:49:18 | s.replace | This replaces only the first occurrence of `'`. |
+| tst.js:53:10:53:18 | s.replace | This replaces only the first occurrence of "'". |
+| tst.js:57:10:57:18 | s.replace | This replaces only the first occurrence of `'`. |
+| tst.js:61:10:61:18 | s.replace | This replaces only the first occurrence of "'" + "". |
+| tst.js:65:10:65:18 | s.replace | This replaces only the first occurrence of "'". |
+| tst.js:69:10:69:18 | s.replace | This replaces only the first occurrence of "'" + "". |
+| tst.js:133:2:133:10 | s.replace | This replaces only the first occurrence of '<'. |
+| tst.js:133:2:133:27 | s.repla ... replace | This replaces only the first occurrence of '>'. |
+| tst.js:135:2:135:10 | s.replace | This replaces only the first occurrence of '['. |
+| tst.js:135:2:135:30 | s.repla ... replace | This replaces only the first occurrence of ']'. |
+| tst.js:136:2:136:10 | s.replace | This replaces only the first occurrence of '{'. |
+| tst.js:136:2:136:30 | s.repla ... replace | This replaces only the first occurrence of '}'. |
+| tst.js:140:2:140:10 | s.replace | This replaces only the first occurrence of /{/. |
+| tst.js:140:2:140:27 | s.repla ... replace | This replaces only the first occurrence of /}/. |
+| tst.js:141:2:141:10 | s.replace | This replaces only the first occurrence of ']'. |
+| tst.js:141:2:141:27 | s.repla ... replace | This replaces only the first occurrence of '['. |
+| tst.js:148:2:148:10 | x.replace | This replaces only the first occurrence of "\\n". |
+| tst.js:149:2:149:24 | x.repla ... replace | This replaces only the first occurrence of "\\n". |
+| tst.js:193:9:193:17 | s.replace | This replaces only the first occurrence of /'/. |
+| tst.js:202:10:202:18 | p.replace | This replaces only the first occurrence of "/../". |

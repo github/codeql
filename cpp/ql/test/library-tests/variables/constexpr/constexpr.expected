@@ -1,0 +1,10 @@
+| constexpr.cpp:2:15:2:27 | var_constexpr | true |
+| constexpr.cpp:3:5:3:33 | var_not_constexpr_initialised | false |
+| constexpr.cpp:4:11:4:33 | var_not_constexpr_const | false |
+| constexpr.cpp:5:5:5:21 | var_not_constexpr | false |
+| file://:0:0:0:0 | (unnamed parameter 0) | false |
+| file://:0:0:0:0 | (unnamed parameter 0) | false |
+| file://:0:0:0:0 | fp_offset | false |
+| file://:0:0:0:0 | gp_offset | false |
+| file://:0:0:0:0 | overflow_arg_area | false |
+| file://:0:0:0:0 | reg_save_area | false |

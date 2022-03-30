@@ -1,0 +1,6 @@
+[
+  {
+    "pattern": "**/*.js",
+    "allowMixedTabsAndSpaces": true
+  }
+]

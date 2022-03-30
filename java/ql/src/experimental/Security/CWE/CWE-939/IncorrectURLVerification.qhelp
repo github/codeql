@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Apps that rely on URL Parsing to verify that a given URL is pointing to a trust server may be susceptible to many different ways to get URL parsing and verification wrong, which allows an attacker to register a fake site to break the access control.</p>
+</overview>
+
+<recommendation>
+<p>Verify the whole host and domain (FQDN) or check endsWith dot+domain.</p>
+</recommendation>
+
+<example>
+<p>The following example shows two ways of verifying host domain. In the 'BAD' case,
+verification is implemented as partial domain match. In the 'GOOD' case, full domain is verified.</p>
+<sample src="IncorrectURLVerification.java" />
+</example>
+
+<references>
+<li>
+<a href="https://drive.google.com/file/d/0BwMN49Gzo3x6T1N5WGQ4TTNlMHBOb1ZRQTVEWnVBZjFUaE5N/view">Common Android app vulnerabilities from Sebastian Porst of Google</a>
+</li>
+<li>
+<a href="https://www.bugcrowd.com/resources/webinars/overview-of-common-android-app-vulnerabilities/">Common Android app vulnerabilities from bugcrowd</a>
+</li>
+</references>
+</qhelp>

@@ -1,0 +1,2 @@
+| test.py:12:1:12:24 | class C | The class 'C' does not override $@, but adds the new attribute $@. | test.py:9:5:9:28 | Function RedefineEquals.__eq__ | '__eq__' | test.py:15:9:15:14 | Attribute | a |
+| test.py:12:1:12:24 | class C | The class 'C' does not override $@, but adds the new attribute $@. | test.py:9:5:9:28 | Function RedefineEquals.__eq__ | '__eq__' | test.py:15:17:15:22 | Attribute | b |

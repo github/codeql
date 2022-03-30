@@ -1,0 +1,6 @@
+| RuleOfTwo.cpp:4:3:4:17 | CopyButNoAssign | No matching copy assignment operator in class CopyButNoAssign. It is good practice to match a copy constructor with a copy assignment operator. |
+| RuleOfTwo.cpp:10:20:10:28 | operator= | No matching copy constructor in class AssignButNoCopy. It is good practice to match a copy assignment operator with a copy constructor. |
+| RuleOfTwo.cpp:81:18:81:26 | operator= | No matching copy constructor in class MyClassFriend. It is good practice to match a copy assignment operator with a copy constructor. |
+| RuleOfTwo.cpp:144:3:144:20 | IsAProtectedAssign | No matching copy assignment operator in class IsAProtectedAssign. It is good practice to match a copy constructor with a copy assignment operator. |
+| RuleOfTwo.cpp:167:19:167:27 | operator= | No matching copy constructor in class IsAProtectedCC. It is good practice to match a copy assignment operator with a copy constructor. |
+| RuleOfTwo.cpp:312:5:312:8 | R1_C | No matching copy assignment operator in class R1_C. It is good practice to match a copy constructor with a copy assignment operator. |

@@ -1,0 +1,5 @@
+| test.cpp:8:9:8:14 | ... == ... | Function exit is unreachable because this condition is always false. |
+| test.cpp:21:9:21:14 | ... == ... | Function exit is unreachable because this condition is always false. |
+| test.cpp:62:15:62:20 | ... >= ... | Function exit is unreachable because this condition is always true. |
+| test.cpp:111:9:111:14 | ... == ... | Function exit is unreachable because this condition is always false. |
+| test.cpp:127:20:127:26 | ... > ... | Function exit is unreachable because this condition is always false. |

@@ -1,0 +1,4 @@
+| tryExcept.c:7:7:7:7 | x | tryExcept.c:14:10:14:10 | x |
+| tryExcept.c:7:13:7:14 | 0 | tryExcept.c:10:9:10:9 | y |
+| tryExcept.c:10:9:10:9 | y | tryExcept.c:10:5:10:9 | ... = ... |
+| tryExcept.c:10:9:10:9 | y | tryExcept.c:14:10:14:10 | x |

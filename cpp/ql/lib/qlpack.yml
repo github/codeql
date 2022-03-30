@@ -1,0 +1,7 @@
+name: codeql/cpp-all
+version: 0.0.12-dev
+groups: cpp
+dbscheme: semmlecode.cpp.dbscheme
+extractor: cpp
+library: true
+upgrades: upgrades

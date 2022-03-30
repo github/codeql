@@ -1,0 +1,75 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In JavaScript, equality operators (<code>==</code>, <code>!=</code>, <code>===</code>,
+<code>!==</code>) and relational operators (<code>&lt;</code>, <code>&lt;=</code>,
+<code>&gt;</code>, <code>&gt;=</code>) can be applied to values of arbitrary types.
+However, if the operands cannot be converted to a common type, the result of the comparison
+will always be trivially true (for equality) or false (for inequality).
+Such comparisons are often due to a typo or a misunderstanding of the language semantics.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Inspect the comparison carefully to check whether it is due to a typo.
+If one of the operands is a constant, replace it with a constant of the right type.
+Otherwise, introduce appropriate function calls to convert the operands to a common type.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following code attempts to check whether the global variable <code>window</code> is
+defined:
+</p>
+
+<sample src="examples/HeterogeneousComparison.js" />
+
+<p>
+However, this test is ineffective: <code>typeof</code> always returns a string, never
+<code>undefined</code>, so the <code>if</code> condition will always evaluate to
+<code>true</code>. Instead, the result of <code>typeof</code> should be compared to
+the string literal <code>"undefined"</code>:
+</p>
+
+<sample src="examples/HeterogeneousComparisonGood.js" />
+
+<p>
+As another example, consider the following code snippet, which is meant to check whether
+the string <code>"hello"</code> occurs in the string held in variable <code>text</code>.
+</p>
+
+<sample src="examples/HeterogeneousComparison2.js" />
+
+<p>
+Note, however, that the test has been mistyped: the closing parenthesis of the
+call to <code>index</code> should come before the operator <code>&gt;=</code>, not
+after it. As it stands, this code performs a greater-or-equal comparison between the
+constant string <code>"hello"</code> and the number zero, which evaluates to
+<code>false</code>. This value is then passed to <code>indexOf</code>, which converts
+it to the string <code>"false"</code> and returns the first index at which this string
+occurs in <code>text</code> (or <code>-1</code> if it does not occur at all).
+</p>
+
+<p>
+To fix this issue, the test should be rebracketed like this:
+</p>
+
+<sample src="examples/HeterogeneousComparison2Good.js" />
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators">Comparison Operators</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_when_to_use_them">Equality comparisons and when to use them</a>.</li>
+
+
+</references>
+</qhelp>

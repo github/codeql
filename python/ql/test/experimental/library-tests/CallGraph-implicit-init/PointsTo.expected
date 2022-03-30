@@ -1,0 +1,6 @@
+debug_missingAnnotationForCallable
+debug_nonUniqueAnnotationForCallable
+debug_missingAnnotationForCall
+expectedCallEdgeNotFound
+| example.py:19:1:19:7 | afunc() | foo/bar/a.py:2:1:2:12 | Function afunc |
+unexpectedCallEdgeFound

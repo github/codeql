@@ -1,0 +1,5 @@
+| file://:0:0:0:0 | operator= | <none> |
+| file://:0:0:0:0 | operator= | <none> |
+| test.cpp:2:33:2:33 | operator= | <none> |
+| test.cpp:2:33:2:33 | operator= | <none> |
+| test.cpp:7:6:7:6 | f | exclusive_locks_required |

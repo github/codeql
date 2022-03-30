@@ -1,0 +1,4 @@
+| ContainerLengthCmpOffByOne.cs:8:25:8:40 | ... <= ... | Off-by-one index comparison against length leads to possible out of bounds $@. | ContainerLengthCmpOffByOne.cs:10:31:10:37 | access to array element | access to array element |
+| ContainerLengthCmpOffByOne.cs:14:25:14:40 | ... >= ... | Off-by-one index comparison against length leads to possible out of bounds $@. | ContainerLengthCmpOffByOne.cs:16:31:16:37 | access to array element | access to array element |
+| ContainerLengthCmpOffByOne.cs:27:13:27:28 | ... <= ... | Off-by-one index comparison against length leads to possible out of bounds $@. | ContainerLengthCmpOffByOne.cs:29:31:29:37 | access to array element | access to array element |
+| ContainerLengthCmpOffByOne.cs:33:13:33:28 | ... >= ... | Off-by-one index comparison against length leads to possible out of bounds $@. | ContainerLengthCmpOffByOne.cs:35:31:35:37 | access to array element | access to array element |

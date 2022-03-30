@@ -1,0 +1,16 @@
+edges
+| UnsafeDeserializationRmi.java:17:68:17:95 | new UnsafeRemoteObjectImpl(...) : UnsafeRemoteObjectImpl | UnsafeDeserializationRmi.java:17:35:17:96 | exportObject(...) |
+nodes
+| UnsafeDeserializationRmi.java:15:33:15:60 | new UnsafeRemoteObjectImpl(...) | semmle.label | new UnsafeRemoteObjectImpl(...) |
+| UnsafeDeserializationRmi.java:16:35:16:62 | new UnsafeRemoteObjectImpl(...) | semmle.label | new UnsafeRemoteObjectImpl(...) |
+| UnsafeDeserializationRmi.java:17:35:17:96 | exportObject(...) | semmle.label | exportObject(...) |
+| UnsafeDeserializationRmi.java:17:68:17:95 | new UnsafeRemoteObjectImpl(...) : UnsafeRemoteObjectImpl | semmle.label | new UnsafeRemoteObjectImpl(...) : UnsafeRemoteObjectImpl |
+| UnsafeDeserializationRmi.java:29:31:29:58 | new UnsafeRemoteObjectImpl(...) | semmle.label | new UnsafeRemoteObjectImpl(...) |
+| UnsafeDeserializationRmi.java:30:33:30:60 | new UnsafeRemoteObjectImpl(...) | semmle.label | new UnsafeRemoteObjectImpl(...) |
+subpaths
+#select
+| UnsafeDeserializationRmi.java:15:33:15:60 | new UnsafeRemoteObjectImpl(...) | UnsafeDeserializationRmi.java:15:33:15:60 | new UnsafeRemoteObjectImpl(...) | UnsafeDeserializationRmi.java:15:33:15:60 | new UnsafeRemoteObjectImpl(...) | Unsafe deserialization in a remote object. |
+| UnsafeDeserializationRmi.java:16:35:16:62 | new UnsafeRemoteObjectImpl(...) | UnsafeDeserializationRmi.java:16:35:16:62 | new UnsafeRemoteObjectImpl(...) | UnsafeDeserializationRmi.java:16:35:16:62 | new UnsafeRemoteObjectImpl(...) | Unsafe deserialization in a remote object. |
+| UnsafeDeserializationRmi.java:17:35:17:96 | exportObject(...) | UnsafeDeserializationRmi.java:17:68:17:95 | new UnsafeRemoteObjectImpl(...) : UnsafeRemoteObjectImpl | UnsafeDeserializationRmi.java:17:35:17:96 | exportObject(...) | Unsafe deserialization in a remote object. |
+| UnsafeDeserializationRmi.java:29:31:29:58 | new UnsafeRemoteObjectImpl(...) | UnsafeDeserializationRmi.java:29:31:29:58 | new UnsafeRemoteObjectImpl(...) | UnsafeDeserializationRmi.java:29:31:29:58 | new UnsafeRemoteObjectImpl(...) | Unsafe deserialization in a remote object. |
+| UnsafeDeserializationRmi.java:30:33:30:60 | new UnsafeRemoteObjectImpl(...) | UnsafeDeserializationRmi.java:30:33:30:60 | new UnsafeRemoteObjectImpl(...) | UnsafeDeserializationRmi.java:30:33:30:60 | new UnsafeRemoteObjectImpl(...) | Unsafe deserialization in a remote object. |

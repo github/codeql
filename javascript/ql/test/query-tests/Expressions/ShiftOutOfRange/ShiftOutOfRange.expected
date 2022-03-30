@@ -1,0 +1,1 @@
+| tst.js:1:9:1:13 | 1<<40 | Shift out of range. |

@@ -1,0 +1,2 @@
+| SplitControlStructureBad.aspx:5:1:5:26 | <% ... %> | Split control structure. |
+| test.aspx:5:1:5:25 | <% ... %> | Split control structure. |

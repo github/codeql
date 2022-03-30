@@ -1,0 +1,30 @@
+blockArguments
+| calls.rb:266:5:266:8 | &... | calls.rb:266:6:266:8 | call to bar |
+| calls.rb:267:5:267:11 | &... | calls.rb:267:6:267:11 | call to bar |
+splatExpr
+| calls.rb:270:5:270:8 | * ... | calls.rb:270:6:270:8 | call to bar |
+| calls.rb:271:5:271:11 | * ... | calls.rb:271:6:271:11 | call to bar |
+| calls.rb:316:31:316:42 | * ... | calls.rb:316:31:316:42 | [...] |
+| calls.rb:317:14:317:22 | * ... | calls.rb:317:14:317:22 | [...] |
+| calls.rb:340:1:342:3 | * ... | calls.rb:340:1:342:3 | __synth__0__1 |
+hashSplatExpr
+| calls.rb:274:5:274:9 | ** ... | calls.rb:274:7:274:9 | call to bar |
+| calls.rb:275:5:275:12 | ** ... | calls.rb:275:7:275:12 | call to bar |
+keywordArguments
+| calls.rb:249:3:249:12 | Pair | calls.rb:249:3:249:5 | call to foo | calls.rb:249:10:249:12 | call to bar |
+| calls.rb:249:15:249:30 | Pair | calls.rb:249:15:249:20 | call to foo | calls.rb:249:25:249:30 | call to bar |
+| calls.rb:278:5:278:13 | Pair | calls.rb:278:5:278:8 | :blah | calls.rb:278:11:278:13 | call to bar |
+| calls.rb:279:5:279:16 | Pair | calls.rb:279:5:279:8 | :blah | calls.rb:279:11:279:16 | call to bar |
+| calls.rb:344:5:344:9 | Pair | calls.rb:344:5:344:5 | :x | calls.rb:344:8:344:9 | 42 |
+| calls.rb:345:5:345:6 | Pair | calls.rb:345:5:345:5 | :x | calls.rb:345:5:345:5 | x |
+| calls.rb:345:9:345:14 | Pair | calls.rb:345:9:345:13 | :novar | calls.rb:345:9:345:13 | call to novar |
+| calls.rb:346:5:346:9 | Pair | calls.rb:346:5:346:5 | :X | calls.rb:346:8:346:9 | 42 |
+| calls.rb:347:5:347:6 | Pair | calls.rb:347:5:347:5 | :X | calls.rb:347:5:347:5 | X |
+keywordArgumentsByKeyword
+| calls.rb:278:1:278:14 | call to foo | blah | calls.rb:278:11:278:13 | call to bar |
+| calls.rb:279:1:279:17 | call to foo | blah | calls.rb:279:11:279:16 | call to bar |
+| calls.rb:344:1:344:10 | call to foo | x | calls.rb:344:8:344:9 | 42 |
+| calls.rb:345:1:345:15 | call to foo | novar | calls.rb:345:9:345:13 | call to novar |
+| calls.rb:345:1:345:15 | call to foo | x | calls.rb:345:5:345:5 | x |
+| calls.rb:346:1:346:10 | call to foo | X | calls.rb:346:8:346:9 | 42 |
+| calls.rb:347:1:347:7 | call to foo | X | calls.rb:347:5:347:5 | X |

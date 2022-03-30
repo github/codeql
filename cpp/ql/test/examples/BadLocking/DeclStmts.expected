@@ -1,0 +1,7 @@
+| UnintendedDeclaration.cpp:44:2:44:29 | declaration | myLock | Variable |
+| UnintendedDeclaration.cpp:51:2:51:22 | declaration | myLock | Function |
+| UnintendedDeclaration.cpp:58:2:58:20 | declaration | myLock | Variable |
+| UnintendedDeclaration.cpp:65:2:65:22 | declaration | myMutex | Variable |
+| UnintendedDeclaration.cpp:72:2:72:27 | declaration | myLock | Function |
+| UnintendedDeclaration.cpp:82:3:82:34 | declaration | myLock | Variable |
+| UnintendedDeclaration.cpp:89:3:89:27 | declaration | memberMutex | Variable |

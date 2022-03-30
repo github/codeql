@@ -1,0 +1,2 @@
+| overwriting_attribute.py:5:9:5:20 | AssignStmt | Assignment overwrites attribute var, which was previously defined in subclass $@. | overwriting_attribute.py:10:9:10:20 | AssignStmt | D |
+| overwriting_attribute.py:23:9:23:20 | AssignStmt | Assignment overwrites attribute var, which was previously defined in superclass $@. | overwriting_attribute.py:17:9:17:20 | AssignStmt | E |

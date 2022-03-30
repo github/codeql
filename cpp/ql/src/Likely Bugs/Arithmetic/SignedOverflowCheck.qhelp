@@ -1,0 +1,105 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+When checking for integer overflow, you may often write tests like
+<code>a + b &lt; a</code>.  This works fine if <code>a</code> or
+<code>b</code> are unsigned integers, since any overflow in the addition
+will cause the value to simply "wrap around."  However, using
+<i>signed</i> integers is problematic because signed overflow has undefined
+behavior according to the C and C++ standards.  If the addition overflows
+and has an undefined result, the comparison will likewise be undefined;
+it may produce an unintended result, or may be deleted entirely by an
+optimizing compiler.
+</p>
+</overview>
+<recommendation>
+<p>
+Solutions to this problem can be thought of as falling into one of two
+categories:
+</p>
+
+<ol>
+<li>Rewrite the signed expression so that overflow cannot occur
+but the signedness remains.</li>
+<li>Change the variables and all their uses to be unsigned.</li>
+</ol>
+
+<p>
+The following cases all fall into the first category.
+</p>
+
+<ol>
+<li>
+Given <code>unsigned short n1, delta</code> and <code>n1 + delta &lt; n1</code>,
+it is possible to rewrite it as <code>(unsigned short)(n1 + delta)&nbsp;&lt;&nbsp;n1</code>.
+Note that <code>n1 + delta</code> does not actually overflow, due to <code>int</code> promotion.
+</li>
+
+<li>
+Given <code>unsigned short n1, delta</code> and <code>n1 + delta &lt; n1</code>,
+it is also possible to rewrite it as <code>n1 &gt; USHORT_MAX - delta</code>. The
+<code>limits.h</code> or <code>climits</code> header must then be included.
+</li>
+
+<li>
+Given <code>int n1, delta</code> and <code>n1 + delta &lt; n1</code>,
+it is possible to rewrite it as <code>n1 &gt; INT_MAX - delta</code>. It must be true
+that <code>delta &gt;= 0</code> and the <code>limits.h</code> or <code>climits</code>
+header has been included.
+</li>
+</ol>
+</recommendation>
+
+<example>
+<p>
+In the following example, even though <code>delta</code> has been declared
+<code>unsigned short</code>, C/C++ type promotion rules require that its
+type is promoted to the larger type used in the addition and comparison,
+namely a <code>signed int</code>.  Addition is performed on
+signed integers, and may have undefined behavior if an overflow occurs.
+As a result, the entire (comparison) expression may also have an undefined
+result.
+</p>
+<sample src="SignedOverflowCheck-bad1.cpp" />
+<p>
+The following example builds upon the previous one.  Instead of
+performing an addition (which could overflow), we have re-framed the
+solution so that a subtraction is used instead.  Since <code>delta</code>
+is promoted to a <code>signed int</code> and <code>INT_MAX</code> denotes
+the largest possible positive value for an <code>signed int</code>,
+the expression <code>INT_MAX - delta</code> can never be less than zero
+or more than <code>INT_MAX</code>.  Hence, any overflow and underflow
+are avoided.
+</p>
+<sample src="SignedOverflowCheck-good1.cpp" />
+<p>
+In the following example, even though both <code>n</code> and <code>delta</code>
+have been declared <code>unsigned short</code>, both are promoted to
+<code>signed int</code> prior to addition.  Because we started out with the
+narrower <code>short</code> type, the addition is guaranteed not to overflow
+and is therefore defined.  But the fact that <code>n1 + delta</code> never
+overflows means that the condition <code>n1 + delta &lt; n1</code> will never
+hold true, which likely is not what the programmer intended. (see also the
+<code>cpp/bad-addition-overflow-check</code> query).
+</p>
+<sample src="SignedOverflowCheck-bad2.cpp" />
+<p>
+The next example provides a solution to the previous one.  Even though
+<code>n1 + delta</code> does not overflow, casting it to an
+<code>unsigned short</code> truncates the addition modulo 2^16,
+so that <code>unsigned short</code> "wrap around" may now be observed.
+Furthermore, since the left-hand side is now of type <code>unsigned short</code>,
+the right-hand side does not need to be promoted to a <code>signed int</code>.
+</p>
+
+<sample src="SignedOverflowCheck-good2.cpp" />
+</example>
+<references>
+<li><a href="http://c-faq.com/expr/preservingrules.html">comp.lang.c FAQ list · Question 3.19 (Preserving rules)</a></li>
+<li><a href="https://wiki.sei.cmu.edu/confluence/display/c/INT31-C.+Ensure+that+integer+conversions+do+not+result+in+lost+or+misinterpreted+data">INT31-C. Ensure that integer conversions do not result in lost or misinterpreted data</a></li>
+<li>W. Dietz, P. Li, J. Regehr, V. Adve. <a href="https://www.cs.utah.edu/~regehr/papers/overflow12.pdf">Understanding Integer Overflow in C/C++</a></li>
+</references>
+</qhelp>

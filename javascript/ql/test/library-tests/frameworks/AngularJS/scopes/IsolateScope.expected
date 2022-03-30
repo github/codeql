@@ -1,0 +1,8 @@
+| isolate scope for directive1 | scope-access.js:1:1:9:6 | angular ... \\n    }) |
+| isolate scope for directive2 | scope-access.js:1:1:17:6 | angular ... \\n    }) |
+| isolate scope for directive3 | scope-access.js:1:1:25:6 | angular ... \\n    }) |
+| isolate scope for directive4 | scope-access.js:1:1:33:6 | angular ... \\n    }) |
+| isolate scope for directive5 | scope-access.js:1:1:42:6 | angular ... \\n    }) |
+| isolate scope for directive6 | scope-access.js:1:1:51:6 | angular ... \\n    }) |
+| isolate scope for myCustomer | dev-guide-5.js:3:1:16:2 | angular ...   };\\n}) |
+| isolate scope for myCustomer | dev-guide-6.js:3:1:16:2 | angular ...   };\\n}) |

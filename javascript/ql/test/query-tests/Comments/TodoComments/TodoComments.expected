@@ -1,0 +1,6 @@
+| fixmeTagPresence.js:11:1:11:8 | // FIXME | TODO comments should be addressed. |
+| fixmeTagPresence.js:13:1:13:10 | // [FIXME] | TODO comments should be addressed. |
+| todoTagPresence.js:11:1:11:7 | // TODO | TODO comments should be addressed. |
+| todoTagPresence.js:13:1:13:19 | // TODO Explenation | TODO comments should be addressed. |
+| todoTagPresence.js:15:1:15:9 | // [TODO] | TODO comments should be addressed. |
+| todoTagPresence.js:20:1:22:3 | /*\\n * T ... nt.\\n */ | TODO comments should be addressed. |

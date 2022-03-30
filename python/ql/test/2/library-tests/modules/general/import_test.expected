@@ -1,0 +1,15 @@
+| Module confused_elements.__init__ | 1 | ImportExpr | 1 | bottom | relative | confused_elements.a |
+| Module main | 1 | ImportExpr | -1 | top | absolute | package |
+| Module main | 2 | ImportExpr | -1 | top | absolute | helper |
+| Module main | 3 | ImportExpr | -1 | top | absolute | package |
+| Module main | 5 | ImportExpr | -1 | bottom | absolute | confused_elements |
+| Module main | 7 | ImportExpr | -1 | top | absolute | sys |
+| Module package.__init__ | 7 | ImportExpr | -1 | bottom | relative | package.helper |
+| Module package.__init__ | 10 | ImportExpr | 1 | bottom | relative | package.helper |
+| Module package.__init__ | 12 | ImportExpr | 1 | bottom | relative | package.assistant |
+| Module package.__init__ | 15 | ImportExpr | -1 | top | relative | package.helper |
+| Module package.helper | 1 | ImportExpr | 0 | bottom | absolute | __future__ |
+| Module package.helper | 2 | ImportExpr | 0 | bottom | absolute | assistant |
+| Module package.helper | 3 | ImportExpr | 0 | top | absolute | sys |
+| Module package.helper | 10 | ImportExpr | 1 | bottom | relative | package |
+| Module test_star | 1 | ImportExpr | -1 | bottom | absolute | test_package |

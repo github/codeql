@@ -1,0 +1,35 @@
+getTarget
+| Bar.qll:5:38:5:47 | PredicateCall | Bar.qll:8:3:8:31 | ClasslessPredicate snapshot |
+| Bar.qll:24:12:24:32 | MemberCall | Bar.qll:19:3:19:47 | ClassPredicate getParameter |
+| Bar.qll:26:12:26:31 | MemberCall | Bar.qll:19:3:19:47 | ClassPredicate getParameter |
+| Bar.qll:30:12:30:32 | MemberCall | Bar.qll:19:3:19:47 | ClassPredicate getParameter |
+| Baz.qll:8:18:8:44 | MemberCall | Baz.qll:4:3:4:37 | ClassPredicate getImportedPath |
+| Foo.qll:5:26:5:30 | PredicateCall | Foo.qll:3:1:3:26 | ClasslessPredicate foo |
+| Foo.qll:10:21:10:25 | PredicateCall | Foo.qll:8:3:8:28 | ClassPredicate bar |
+| Foo.qll:14:30:14:40 | MemberCall | Foo.qll:10:3:10:27 | ClassPredicate baz |
+| Foo.qll:17:27:17:42 | MemberCall | Foo.qll:8:3:8:28 | ClassPredicate bar |
+| Foo.qll:29:5:29:16 | PredicateCall | Foo.qll:20:3:20:54 | ClasslessPredicate myThing2 |
+| Foo.qll:29:5:29:16 | PredicateCall | Foo.qll:26:3:26:32 | ClasslessPredicate alias2 |
+| Foo.qll:31:5:31:12 | PredicateCall | Foo.qll:22:3:22:32 | ClasslessPredicate myThing0 |
+| Foo.qll:31:5:31:12 | PredicateCall | Foo.qll:24:3:24:32 | ClasslessPredicate alias0 |
+| Foo.qll:36:36:36:65 | MemberCall | file://:0:0:0:0 | replaceAll |
+| Foo.qll:38:39:38:67 | MemberCall | file://:0:0:0:0 | regexpCapture |
+| Overrides.qll:8:30:8:39 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
+| Overrides.qll:16:39:16:48 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
+| Overrides.qll:16:39:16:48 | MemberCall | Overrides.qll:14:12:14:43 | ClassPredicate bar |
+| Overrides.qll:24:39:24:48 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
+| Overrides.qll:24:39:24:48 | MemberCall | Overrides.qll:22:12:22:44 | ClassPredicate bar |
+| Overrides.qll:28:3:28:9 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
+| Overrides.qll:29:3:29:10 | MemberCall | Overrides.qll:8:3:8:41 | ClassPredicate baz |
+| packs/other/OtherThing.qll:5:3:5:8 | PredicateCall | packs/lib/LibThing/Foo.qll:1:1:1:30 | ClasslessPredicate foo |
+| packs/other/OtherThing.qll:6:3:6:8 | PredicateCall | packs/src/SrcThing.qll:8:1:8:30 | ClasslessPredicate bar |
+| packs/src/SrcThing.qll:4:3:4:8 | PredicateCall | packs/lib/LibThing/Foo.qll:1:1:1:30 | ClasslessPredicate foo |
+| packs/src/SrcThing.qll:5:3:5:8 | PredicateCall | packs/src/SrcThing.qll:8:1:8:30 | ClasslessPredicate bar |
+dependsOn
+| packs/other/qlpack.yml:1:1:1:4 | ql-other-pack-thing | packs/src/qlpack.yml:1:1:1:4 | ql-testing-src-pack |
+| packs/src/qlpack.yml:1:1:1:4 | ql-testing-src-pack | packs/lib/qlpack.yml:1:1:1:4 | ql-testing-lib-pack |
+exprPredicate
+| Foo.qll:24:22:24:31 | predicate | Foo.qll:22:3:22:32 | ClasslessPredicate myThing0 |
+| Foo.qll:26:22:26:31 | predicate | Foo.qll:20:3:20:54 | ClasslessPredicate myThing2 |
+| Foo.qll:47:55:47:62 | predicate | Foo.qll:42:20:42:27 | NewTypeBranch MkRoot |
+| Foo.qll:47:65:47:70 | predicate | Foo.qll:44:9:44:56 | ClasslessPredicate edge |

@@ -1,0 +1,4 @@
+| test.c:11:2:11:15 | declaration | Functions should be declared at file scope, not inside blocks. |
+| test.c:12:2:12:21 | declaration | Functions should be declared at file scope, not inside blocks. |
+| test.c:17:2:17:17 | declaration | Functions should be declared at file scope, not inside blocks. |
+| test.c:18:2:18:23 | declaration | Functions should be declared at file scope, not inside blocks. |

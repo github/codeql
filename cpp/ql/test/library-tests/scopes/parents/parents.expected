@@ -1,0 +1,20 @@
+| 0 | file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | __va_list_tag |
+| 0 | file://:0:0:0:0 | (global namespace) | parents.cpp:2:11:2:13 | foo |
+| 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | fp_offset |
+| 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | gp_offset |
+| 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | operator= |
+| 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | operator= |
+| 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | overflow_arg_area |
+| 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | reg_save_area |
+| 1 | file://:0:0:0:0 | operator= | file://:0:0:0:0 | (unnamed parameter 0) |
+| 1 | file://:0:0:0:0 | operator= | file://:0:0:0:0 | (unnamed parameter 0) |
+| 1 | parents.cpp:2:11:2:13 | foo | parents.cpp:3:13:3:15 | foo::bar |
+| 1 | parents.cpp:3:13:3:15 | foo::bar | parents.cpp:4:10:4:10 | f |
+| 1 | parents.cpp:4:10:4:10 | f | parents.cpp:4:16:4:16 | i |
+| 1 | parents.cpp:4:10:4:10 | f | parents.cpp:4:19:13:5 | { ... } |
+| 1 | parents.cpp:4:19:13:5 | { ... } | parents.cpp:5:11:5:11 | j |
+| 1 | parents.cpp:4:19:13:5 | { ... } | parents.cpp:6:11:10:7 | { ... } |
+| 1 | parents.cpp:4:19:13:5 | { ... } | parents.cpp:11:21:12:7 | { ... } |
+| 1 | parents.cpp:6:11:10:7 | { ... } | parents.cpp:7:9:9:9 | for(...;...;...) ... |
+| 1 | parents.cpp:6:11:10:7 | { ... } | parents.cpp:7:33:9:9 | { ... } |
+| 1 | parents.cpp:7:33:9:9 | { ... } | parents.cpp:8:15:8:15 | k |

@@ -1,0 +1,6 @@
+| SuspiciousPropAccess.js:4:10:4:21 | result.value | The base expression of this property access is always undefined. |
+| optional-chaining.js:3:5:3:7 | a.p | The base expression of this property access is always null. |
+| optional-chaining.js:7:5:7:7 | b.p | The base expression of this property access is always undefined. |
+| tst2.ts:19:3:19:5 | x.p | The base expression of this property access is always undefined. |
+| tst.js:32:32:32:38 | a(1)[0] | The base expression of this property access is always null. |
+| typeassertion.ts:14:3:14:9 | z.field | The base expression of this property access is always null. |
