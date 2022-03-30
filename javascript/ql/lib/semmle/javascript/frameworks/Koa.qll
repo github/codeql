@@ -24,10 +24,10 @@ module Koa {
 
     HeaderDefinition() {
       // ctx.set('Cache-Control', 'no-cache');
-      astNode.calls(rh.getAResponseOrContextExpr(), "set")
+      this.calls(rh.getAResponseOrContextExpr().flow(), "set")
       or
       // ctx.response.header('Cache-Control', 'no-cache')
-      astNode.calls(rh.getAResponseExpr(), "header")
+      this.calls(rh.getAResponseExpr().flow(), "header")
     }
 
     override RouteHandler getRouteHandler() { result = rh }
@@ -59,6 +59,7 @@ module Koa {
      * object of a route handler invocation.
      */
     Expr getAResponseOrContextExpr() {
+      // TODO: DataFlow::Node
       result = this.getAResponseExpr() or result = this.getAContextExpr()
     }
 

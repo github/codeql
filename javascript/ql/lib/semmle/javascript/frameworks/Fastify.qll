@@ -401,9 +401,9 @@ module Fastify {
 
     override RouteHandler getRouteHandler() { result = rh }
 
-    override Expr getNameExpr() {
+    override DataFlow::Node getNameNode() {
       exists(DataFlow::PropWrite write | this.getAHeaderSource().getAPropertyWrite() = write |
-        result = write.getPropertyNameExpr()
+        result = write.getPropertyNameExpr().flow()
       )
     }
   }

@@ -259,7 +259,7 @@ module NodeJSLib {
   abstract private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
     ResponseExpr r;
 
-    HeaderDefinition() { astNode.getReceiver() = r }
+    HeaderDefinition() { this.getReceiver().asExpr() = r }
 
     override HTTP::RouteHandler getRouteHandler() { result = r.getRouteHandler() }
   }
@@ -268,7 +268,7 @@ module NodeJSLib {
    * A call to the `setHeader` method of an HTTP response.
    */
   private class SetHeader extends HeaderDefinition {
-    SetHeader() { astNode.getMethodName() = "setHeader" }
+    SetHeader() { this.getMethodName() = "setHeader" }
   }
 
   /**
@@ -276,14 +276,14 @@ module NodeJSLib {
    */
   private class WriteHead extends HeaderDefinition {
     WriteHead() {
-      astNode.getMethodName() = "writeHead" and
-      astNode.getNumArgument() >= 1
+      this.getMethodName() = "writeHead" and
+      this.getNumArgument() >= 1
     }
 
     override predicate definesExplicitly(string headerName, Expr headerValue) {
-      astNode.getNumArgument() > 1 and
+      this.getNumArgument() > 1 and
       exists(DataFlow::SourceNode headers, string header |
-        headers.flowsToExpr(astNode.getLastArgument()) and
+        headers.flowsTo(this.getLastArgument()) and
         headers.hasPropertyWrite(header, DataFlow::valueNode(headerValue)) and
         headerName = header.toLowerCase()
       )

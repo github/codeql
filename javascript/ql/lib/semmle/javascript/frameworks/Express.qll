@@ -674,12 +674,12 @@ module Express {
   /**
    * Holds if `e` is an HTTP request object.
    */
-  predicate isRequest(Expr e) { any(RouteHandler rh).getARequestExpr() = e }
+  predicate isRequest(Expr e) { any(RouteHandler rh).getARequestExpr() = e } // TODO: DataFlow::Node
 
   /**
    * Holds if `e` is an HTTP response object.
    */
-  predicate isResponse(Expr e) { any(RouteHandler rh).getAResponseExpr() = e }
+  predicate isResponse(Expr e) { any(RouteHandler rh).getAResponseExpr() = e } // TODO: DataFlow::Node
 
   /**
    * An access to the HTTP request body.
@@ -689,9 +689,11 @@ module Express {
   }
 
   abstract private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
-    HeaderDefinition() { isResponse(astNode.getReceiver()) }
+    HeaderDefinition() { isResponse(this.getReceiver().asExpr()) }
 
-    override RouteHandler getRouteHandler() { astNode.getReceiver() = result.getAResponseExpr() }
+    override RouteHandler getRouteHandler() {
+      this.getReceiver().asExpr() = result.getAResponseExpr()
+    }
   }
 
   /**
@@ -713,8 +715,8 @@ module Express {
    */
   private class SetOneHeader extends HeaderDefinition {
     SetOneHeader() {
-      astNode.getMethodName() = any(string n | n = "set" or n = "header") and
-      astNode.getNumArgument() = 2
+      this.getMethodName() = any(string n | n = "set" or n = "header") and
+      this.getNumArgument() = 2
     }
   }
 
@@ -744,9 +746,9 @@ module Express {
 
     override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
 
-    override Expr getNameExpr() {
+    override DataFlow::Node getNameNode() {
       exists(DataFlow::PropWrite write | this.getAHeaderSource().getAPropertyWrite() = write |
-        result = write.getPropertyNameExpr()
+        result = write.getPropertyNameExpr().flow()
       )
     }
   }
@@ -755,7 +757,7 @@ module Express {
    * An invocation of the `append` method on an HTTP response object.
    */
   private class AppendHeader extends HeaderDefinition {
-    AppendHeader() { astNode.getMethodName() = "append" }
+    AppendHeader() { this.getMethodName() = "append" }
   }
 
   /**

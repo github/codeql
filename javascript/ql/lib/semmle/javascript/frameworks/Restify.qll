@@ -68,6 +68,7 @@ module Restify {
     override RouteHandler getRouteHandler() { result = rh }
   }
 
+  // TODO: DataFlow::Node
   /**
    * A Node.js HTTP response provided by Restify.
    */
@@ -75,6 +76,7 @@ module Restify {
     ResponseExpr() { src instanceof ResponseSource }
   }
 
+  // TODO: DataFlow::Node
   /**
    * A Node.js HTTP request provided by Restify.
    */
@@ -128,11 +130,13 @@ module Restify {
   private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
     HeaderDefinition() {
       // response.header('Cache-Control', 'no-cache')
-      astNode.getReceiver() instanceof ResponseExpr and
-      astNode.getMethodName() = "header"
+      this.getReceiver().asExpr() instanceof ResponseExpr and
+      this.getMethodName() = "header"
     }
 
-    override RouteHandler getRouteHandler() { astNode.getReceiver() = result.getAResponseExpr() }
+    override RouteHandler getRouteHandler() {
+      this.getReceiver().asExpr() = result.getAResponseExpr()
+    }
   }
 
   /**

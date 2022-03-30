@@ -68,12 +68,16 @@ module HTTP {
     /**
      * Holds if the header with (lower-case) name `headerName` is set to the value of `headerValue`.
      */
-    abstract predicate definesExplicitly(string headerName, Expr headerValue);
+    abstract predicate definesExplicitly(string headerName, Expr headerValue); // TODO: DataFlow::Node.
 
     /**
+     * DEPRECATED: Use `getNameNode()` instead.
      * Returns the expression used to compute the header name.
      */
-    abstract Expr getNameExpr();
+    deprecated Expr getNameExpr() { result = this.getNameNode().asExpr() }
+
+    /** Returns the expression used to compute the header name. */
+    abstract DataFlow::Node getNameNode();
   }
 
   /**
@@ -201,13 +205,13 @@ module HTTP {
      * Gets an expression that contains a request object handled
      * by this handler.
      */
-    RequestExpr getARequestExpr() { result.getRouteHandler() = this }
+    RequestExpr getARequestExpr() { result.getRouteHandler() = this } // TODO: DataFlow::Node
 
     /**
      * Gets an expression that contains a response object provided
      * by this handler.
      */
-    ResponseExpr getAResponseExpr() { result.getRouteHandler() = this }
+    ResponseExpr getAResponseExpr() { result.getRouteHandler() = this } // TODO: DataFlow::Node
   }
 
   /**
@@ -238,6 +242,7 @@ module HTTP {
    * An expression that may contain a request object.
    */
   abstract class RequestExpr extends Expr {
+    // TODO: DataFlow::Node
     /**
      * Gets the route handler that handles this request.
      */
@@ -248,6 +253,7 @@ module HTTP {
    * An expression that may contain a response object.
    */
   abstract class ResponseExpr extends Expr {
+    // TODO: DataFlow::Node
     /**
      * Gets the route handler that handles this request.
      */
@@ -376,15 +382,14 @@ module HTTP {
     /**
      * A standard header definition.
      */
-    abstract class StandardHeaderDefinition extends ExplicitHeaderDefinition, DataFlow::ValueNode {
-      override MethodCallExpr astNode;
-
+    abstract class StandardHeaderDefinition extends ExplicitHeaderDefinition,
+      DataFlow::MethodCallNode {
       override predicate definesExplicitly(string headerName, Expr headerValue) {
-        headerName = this.getNameExpr().getStringValue().toLowerCase() and
-        headerValue = astNode.getArgument(1)
+        headerName = this.getNameNode().getStringValue().toLowerCase() and
+        headerValue = this.getArgument(1).asExpr()
       }
 
-      override Expr getNameExpr() { result = astNode.getArgument(0) }
+      override DataFlow::Node getNameNode() { result = this.getArgument(0) }
     }
 
     /**

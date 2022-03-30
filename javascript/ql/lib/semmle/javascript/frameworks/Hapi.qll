@@ -74,6 +74,7 @@ module Hapi {
     override RouteHandler getRouteHandler() { result = rh }
   }
 
+  // TODO: DataFlow::Node
   /**
    * A Hapi response expression.
    */
@@ -81,6 +82,7 @@ module Hapi {
     override ResponseSource src;
   }
 
+  // TODO: DataFlow::Node
   /**
    * An Hapi request expression.
    */
@@ -175,7 +177,7 @@ module Hapi {
 
     HeaderDefinition() {
       // request.response.header('Cache-Control', 'no-cache')
-      astNode.calls(res, "header")
+      this.calls(res.flow(), "header")
     }
 
     override RouteHandler getRouteHandler() { result = res.getRouteHandler() }
