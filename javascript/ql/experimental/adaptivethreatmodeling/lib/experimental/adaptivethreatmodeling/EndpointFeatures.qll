@@ -213,7 +213,8 @@ private newtype TEndPointFeature =
   TCalleeAccessPath() or
   TCalleeAccessPathWithStructuralInfo() or
   TEnclosingFunctionBody() or
-  TCalleeAccessPathSimpleFromArgumentTraversal()
+  TCalleeAccessPathSimpleFromArgumentTraversal() or
+  TParameterAccessPathSimpleFromArgumentTraversal()
 
 abstract class EndPointFeature extends TEndPointFeature {
   abstract string getEncoding();
@@ -375,6 +376,19 @@ private module SyntacticUtilities {
     )
   }
 
+  string getSimpleParameterAccessPath(DataFlow::Node node) {
+    if exists(DataFlow::CallNode call | node = call.getArgument(_))
+    then exists(DataFlow::CallNode call, int i | node = call.getArgument(i) | result = i + "")
+    else
+      if exists(ObjectExpr o | o.getAProperty().getInit().getUnderlyingValue() = node.asExpr())
+      then
+        exists(DataFlow::PropWrite w |
+          w.getRhs() = node and
+          result = getSimpleParameterAccessPath(w.getBase()) + "." + getPropertyNameOrUnknown(w)
+        )
+      else result = "?"
+  }
+
   string getSimpleAccessPath(DataFlow::Node node) {
     if node.asExpr() instanceof SuperAccess
     then result = "super"
@@ -397,8 +411,8 @@ private module SyntacticUtilities {
   }
 }
 
-string getPropertyNameOrUnknown(DataFlow::PropRead read) {
-  if exists(read.getPropertyName()) then result = read.getPropertyName() else result = "?"
+string getPropertyNameOrUnknown(DataFlow::PropRef ref) {
+  if exists(ref.getPropertyName()) then result = ref.getPropertyName() else result = "?"
 }
 
 class CalleeAccessPathSimpleFromArgumentTraversal extends EndPointFeature,
@@ -408,6 +422,22 @@ class CalleeAccessPathSimpleFromArgumentTraversal extends EndPointFeature,
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
       result = SyntacticUtilities::getSimpleAccessPath(invk.getCalleeNode()) and
+      (
+        invk.getAnArgument() = endpoint or
+        SyntacticUtilities::getANestedProperty(invk.getAnArgument().asExpr().getUnderlyingValue())
+            .flow() = endpoint
+      )
+    )
+  }
+}
+
+class ParameterAccessPathSimpleFromArgumentTraversal extends EndPointFeature,
+  TParameterAccessPathSimpleFromArgumentTraversal {
+  override string getEncoding() { result = "ParameterAccessPathSimpleFromArgumentTraversal" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    exists(DataFlow::InvokeNode invk |
+      result = SyntacticUtilities::getSimpleParameterAccessPath(endpoint) and
       (
         invk.getAnArgument() = endpoint or
         SyntacticUtilities::getANestedProperty(invk.getAnArgument().asExpr().getUnderlyingValue())
