@@ -422,12 +422,14 @@ module Koa {
   /**
    * An invocation of the `redirect` method of an HTTP response object.
    */
-  private class RedirectInvocation extends HTTP::RedirectInvocation, MethodCallExpr {
+  private class RedirectInvocation extends HTTP::RedirectInvocation, DataFlow::MethodCallNode {
     RouteHandler rh;
 
-    RedirectInvocation() { this.(MethodCallExpr).calls(rh.getAResponseOrContextExpr(), "redirect") }
+    RedirectInvocation() {
+      this.asExpr().(MethodCallExpr).calls(rh.getAResponseOrContextExpr(), "redirect")
+    } // TODO: Improve this.
 
-    override Expr getUrlArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getUrlArgument() { result = this.getArgument(0) }
 
     override RouteHandler getRouteHandler() { result = rh }
   }

@@ -697,12 +697,12 @@ module Express {
   /**
    * An invocation of the `redirect` method of an HTTP response object.
    */
-  private class RedirectInvocation extends HTTP::RedirectInvocation, MethodCallExpr {
+  private class RedirectInvocation extends HTTP::RedirectInvocation, DataFlow::MethodCallNode {
     ResponseSource response;
 
-    RedirectInvocation() { this = response.ref().getAMethodCall("redirect").asExpr() }
+    RedirectInvocation() { this = response.ref().getAMethodCall("redirect") }
 
-    override Expr getUrlArgument() { result = this.getLastArgument() }
+    override DataFlow::Node getUrlArgument() { result = this.getLastArgument() }
 
     override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
   }

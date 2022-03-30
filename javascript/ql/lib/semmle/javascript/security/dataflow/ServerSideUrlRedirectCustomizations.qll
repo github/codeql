@@ -33,8 +33,8 @@ module ServerSideUrlRedirect {
   /**
    * An HTTP redirect, considered as a sink for `Configuration`.
    */
-  class RedirectSink extends Sink, DataFlow::ValueNode {
-    RedirectSink() { astNode = any(HTTP::RedirectInvocation redir).getUrlArgument() }
+  class RedirectSink extends Sink {
+    RedirectSink() { this = any(HTTP::RedirectInvocation redir).getUrlArgument() }
   }
 
   /**

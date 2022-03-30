@@ -12,9 +12,9 @@ module HTTP {
   /**
    * A function invocation that causes a redirect response to be sent.
    */
-  abstract class RedirectInvocation extends InvokeExpr {
+  abstract class RedirectInvocation extends DataFlow::CallNode {
     /** Gets the argument specifying the URL to redirect to. */
-    abstract Expr getUrlArgument();
+    abstract DataFlow::Node getUrlArgument();
 
     /** Gets the route handler this redirect occurs in. */
     abstract RouteHandler getRouteHandler();
