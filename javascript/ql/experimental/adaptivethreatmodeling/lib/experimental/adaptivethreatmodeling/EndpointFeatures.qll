@@ -453,6 +453,8 @@ private module SyntacticUtilities {
    *
    * Supports:
    * - variable reads (including `this` and `super`)
+   * - imports
+   * - await
    * - property reads
    * - invocations
    *
@@ -488,6 +490,13 @@ private module SyntacticUtilities {
     )
   }
 
+  /**
+   * Gets the imported path.
+   *
+   * XXX To avoid teaching the ML model about npm packages, only relative paths are supported
+   *
+   * Unknown paths result in `?`.
+   */
   string getSimpleImportPath(Import i) {
     if exists(i.getImportedPath().getValue())
     then
