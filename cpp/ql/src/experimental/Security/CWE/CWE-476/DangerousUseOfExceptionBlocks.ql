@@ -13,18 +13,21 @@
 
 import cpp
 
-/** Holds if the release can occur twice. in the current block of catch and above in the block of try or other block catch. */
+/** Holds if `vr` may be released in the `try` block associated with `cb`, or in a `catch` block prior to `cb`. */
 pragma[inline]
 predicate doubleCallDelete(CatchAnyBlock cb, Variable vr) {
   // Search for exceptions after freeing memory.
   exists(Expr e1 |
+    // `e1` is a delete of `vr`
     (
       e1 = vr.getAnAccess().getEnclosingStmt().(ExprStmt).getExpr().(DeleteArrayExpr) or
       e1 = vr.getAnAccess().getEnclosingStmt().(ExprStmt).getExpr().(DeleteExpr)
     ) and
     e1.getEnclosingFunction() = cb.getEnclosingFunction() and
     (
+      // `e1` occurs in the `try` block associated with `cb`
       e1.getEnclosingStmt().getParentStmt*() = cb.getTryStmt().getStmt() and
+      // `e2` is a `throw` (or a function call that may throw) that occurs in the `try` block after `e1`
       exists(Expr e2, ThrowExpr th |
         (
           e2 = th or
@@ -33,6 +36,7 @@ predicate doubleCallDelete(CatchAnyBlock cb, Variable vr) {
         e2.getEnclosingStmt().getParentStmt*() = cb.getTryStmt().getStmt() and
         e1.getASuccessor+() = e2
       ) and
+      // there is no assignment `vr = 0` in the `try` block after `e1`
       not exists(AssignExpr ae |
         ae.getLValue().(VariableAccess).getTarget() = vr and
         ae.getRValue().getValue() = "0" and
@@ -44,12 +48,14 @@ predicate doubleCallDelete(CatchAnyBlock cb, Variable vr) {
       exists(CatchBlock cbt, Expr e2, ThrowExpr th |
         e1.getEnclosingStmt().getParentStmt*() = cbt and
         exists(cbt.getParameter()) and
+        // `e2` is a `throw` (or a function call that may throw) that occurs in the `catch` block after `e1`
         (
           e2 = th or
           e2 = th.getEnclosingFunction().getACallToThisFunction()
         ) and
         e2.getEnclosingStmt().getParentStmt*() = cbt and
         e1.getASuccessor+() = e2 and
+        // there is no assignment `vr = 0` in the `catch` block after `e1`
         not exists(AssignExpr ae |
           ae.getLValue().(VariableAccess).getTarget() = vr and
           ae.getRValue().getValue() = "0" and
@@ -71,6 +77,7 @@ predicate pointerDereference(CatchAnyBlock cb, Variable vr, Variable vro) {
   // Search exceptions before allocating memory.
   exists(Expr e0, Expr e1 |
     (
+      // `e0` is a `new` expression (or equivalent function call) assigned to `vro`
       exists(AssignExpr ase |
         ase = vro.getAnAccess().getEnclosingStmt().(ExprStmt).getExpr().(AssignExpr) and
         (
@@ -90,6 +97,7 @@ predicate pointerDereference(CatchAnyBlock cb, Variable vr, Variable vro) {
         vro = ase.getLValue().getAPredecessor().(VariableAccess).getTarget()
       )
     ) and
+    // `e1` is a `new` expression (or equivalent function call) assigned to `vr`
     exists(AssignExpr ase |
       ase = vr.getAnAccess().getEnclosingStmt().(ExprStmt).getExpr().(AssignExpr) and
       (
@@ -101,6 +109,7 @@ predicate pointerDereference(CatchAnyBlock cb, Variable vr, Variable vro) {
     e0.getASuccessor*() = e1 and
     e0.getEnclosingStmt().getParentStmt*() = cb.getTryStmt().getStmt() and
     e1.getEnclosingStmt().getParentStmt*() = cb.getTryStmt().getStmt() and
+    // `e2` is a `throw` (or a function call that may throw) that occurs in the `try` block before `e0`
     exists(Expr e2, ThrowExpr th |
       (
         e2 = th or
@@ -159,7 +168,7 @@ where
     ) and
     doubleCallDelete(cb, vr) and
     msg =
-      "perhaps a situation of uncertainty due to the repeated call of the delete function for the variable "
+      "This allocation may have been released in the try block or a previous catch block."
         + vr.getName()
   )
 select cb, msg
