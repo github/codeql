@@ -9,6 +9,7 @@
     "files.watcherExclude": {
       "**/target/**": true
     },
-    "codeQL.runningQueries.memory": 2048
+    "codeQL.runningQueries.memory": 2048,
+    "codeQL.runningQueries.debug": true
   }
 }

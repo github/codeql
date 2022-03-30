@@ -1,5 +1,6 @@
 /cpp/ @github/codeql-c-analysis
 /csharp/ @github/codeql-csharp
+/go/ @github/codeql-go
 /java/ @github/codeql-java
 /javascript/ @github/codeql-javascript
 /python/ @github/codeql-python

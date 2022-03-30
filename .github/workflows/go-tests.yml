@@ -1,4 +1,4 @@
-name: CodeQL tests
+name: "Go: Run Tests"
 on: [pull_request]
 jobs:
 
@@ -38,22 +38,30 @@ jobs:
       run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
 
     - name: Build
-      run: env PATH=$PATH:$HOME/codeql make
+      run: |
+        cd go
+        env PATH=$PATH:$HOME/codeql make
 
     - name: Check that all QL and Go code is autoformatted
-      run: env PATH=$PATH:$HOME/codeql make check-formatting
+      run: |
+        cd go
+        env PATH=$PATH:$HOME/codeql make check-formatting
 
     - name: Compile qhelp files to markdown
-      run: env PATH=$PATH:$HOME/codeql QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
+      run: |
+        cd go
+        env PATH=$PATH:$HOME/codeql QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
 
     - name: Upload qhelp markdown
       uses: actions/upload-artifact@v2
       with:
         name: qhelp-markdown
-        path: qhelp-out/**/*.md
+        path: go/qhelp-out/**/*.md
 
     - name: Test
-      run: env PATH=$PATH:$HOME/codeql make test
+      run: |
+        cd go
+        env PATH=$PATH:$HOME/codeql make test
 
   test-mac:
     name: Test MacOS
@@ -90,10 +98,14 @@ jobs:
       run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
 
     - name: Build
-      run: env PATH=$PATH:$HOME/codeql make
+      run: |
+        cd go
+        env PATH=$PATH:$HOME/codeql make
 
     - name: Test
-      run: env PATH=$PATH:$HOME/codeql make test
+      run: |
+        cd go
+        env PATH=$PATH:$HOME/codeql make test
 
   test-win:
     name: Test Windows
@@ -135,9 +147,11 @@ jobs:
     - name: Build
       run: |
         $Env:Path += ";$HOME\codeql"
+        cd go
         make
 
     - name: Test
       run: |
         $Env:Path += ";$HOME\codeql"
+        cd go
         make test
