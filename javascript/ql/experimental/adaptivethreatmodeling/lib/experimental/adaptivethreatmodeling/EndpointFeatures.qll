@@ -459,24 +459,30 @@ private module SyntacticUtilities {
    * Unknown cases and property names results in `?`.
    */
   string getSimpleAccessPath(DataFlow::Node node) {
-    if node.asExpr() instanceof SuperAccess
-    then result = "super"
-    else
-      if node.asExpr() instanceof ThisAccess
-      then result = "this"
+    exists(Expr e | e = node.asExpr().getUnderlyingValue() |
+      if e instanceof SuperAccess
+      then result = "super"
       else
-        if node.asExpr() instanceof VarAccess
-        then result = node.asExpr().(VarAccess).getName()
+        if e instanceof ThisAccess
+        then result = "this"
         else
-          if node instanceof DataFlow::PropRead
-          then
-            result =
-              getSimpleAccessPath(node.(DataFlow::PropRead).getBase()) + "." +
-                getPropertyNameOrUnknown(node)
+          if e instanceof VarAccess
+          then result = e.(VarAccess).getName()
           else
-            if node instanceof DataFlow::InvokeNode
-            then result = getSimpleAccessPath(node.(DataFlow::InvokeNode).getCalleeNode()) + "()"
-            else result = "?"
+            if e instanceof AwaitExpr
+            then result = getSimpleAccessPath(e.(AwaitExpr).getOperand().flow()) + ".then()"
+            else
+              if node instanceof DataFlow::PropRead
+              then
+                result =
+                  getSimpleAccessPath(node.(DataFlow::PropRead).getBase()) + "." +
+                    getPropertyNameOrUnknown(node)
+              else
+                if node instanceof DataFlow::InvokeNode
+                then
+                  result = getSimpleAccessPath(node.(DataFlow::InvokeNode).getCalleeNode()) + "()"
+                else result = "?"
+    )
   }
 }
 
@@ -500,7 +506,11 @@ class CalleeAccessPathSimpleFromArgumentTraversal extends EndpointFeature,
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
-      result = SyntacticUtilities::getSimpleAccessPath(invk.getCalleeNode()) and
+      exists(string path |
+        path = SyntacticUtilities::getSimpleAccessPath(invk.getCalleeNode()) and
+        // collapse the unknown path to the empty string, as is convention for old features
+        if path = "?" then result = "" else result = path
+      ) and
       (
         invk.getAnArgument() = endpoint or
         SyntacticUtilities::getANestedInitializerValue(invk.getAnArgument()
