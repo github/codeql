@@ -22,7 +22,8 @@ class Type = CS::Type;
 private predicate isRelevantForModels(CS::Callable api) {
   [api.(CS::Modifiable), api.(CS::Accessor).getDeclaration()].isEffectivelyPublic() and
   not api instanceof CS::ConversionOperator and
-  not api instanceof Util::MainMethod
+  not api instanceof Util::MainMethod and
+  api.getDeclaringType().getNamespace().getQualifiedName() != ""
 }
 
 /**
