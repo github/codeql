@@ -200,6 +200,12 @@ module CallGraph {
       or
       ref = getAnInstanceMemberAssignment(cls, name) and
       result = cls.getInstanceMember(name, DataFlow::MemberKind::setter())
+      or
+      ref = cls.getAClassReference().getAPropertyRead(name) and
+      result = cls.getStaticMember(name, DataFlow::MemberKind::getter())
+      or
+      ref = cls.getAClassReference().getAPropertyWrite(name) and
+      result = cls.getStaticMember(name, DataFlow::MemberKind::setter())
     )
     or
     exists(DataFlow::ObjectLiteralNode object, string name |
