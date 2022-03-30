@@ -26,7 +26,9 @@ query predicate test_HeaderDefinition(HTTP::HeaderDefinition hd, Connect::RouteH
   rh = hd.getRouteHandler()
 }
 
-query predicate test_RouteSetup_getServer(Connect::RouteSetup rs, Expr res) { res = rs.getServer() }
+query predicate test_RouteSetup_getServer(Connect::RouteSetup rs, DataFlow::Node res) {
+  res = rs.getServer()
+}
 
 query predicate test_HeaderDefinition_getAHeaderName(HTTP::HeaderDefinition hd, string res) {
   hd.getRouteHandler() instanceof Connect::RouteHandler and res = hd.getAHeaderName()
@@ -42,7 +44,9 @@ query predicate test_RouteSetup_getARouteHandler(Connect::RouteSetup r, DataFlow
   res = r.getARouteHandler()
 }
 
-query predicate test_RouteHandler(Connect::RouteHandler rh, Expr res) { res = rh.getServer() }
+query predicate test_RouteHandler(Connect::RouteHandler rh, DataFlow::Node res) {
+  res = rh.getServer()
+}
 
 query predicate test_RequestExpr(HTTP::RequestExpr e, HTTP::RouteHandler res) {
   res = e.getRouteHandler()

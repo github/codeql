@@ -132,12 +132,12 @@ module Fastify {
   /**
    * A call to a Fastify method that sets up a route.
    */
-  class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends DataFlow::MethodCallNode, HTTP::Servers::StandardRouteSetup {
     ServerDefinition server;
     string methodName;
 
     RouteSetup() {
-      this = server(server).getAMethodCall(methodName).asExpr() and
+      this = server(server).getAMethodCall(methodName) and
       methodName = ["route", "get", "head", "post", "put", "delete", "options", "patch"]
     }
 
@@ -152,20 +152,19 @@ module Fastify {
       exists(DataFlow::TypeBackTracker t2 | result = this.getARouteHandler(t2).backtrack(t2, t))
     }
 
-    override Expr getServer() { result = server.asExpr() }
+    override DataFlow::SourceNode getServer() { result = server }
 
     /** Gets an argument that represents a route handler being registered. */
     DataFlow::Node getARouteHandlerExpr() {
       if methodName = "route"
-      then
-        result = this.flow().(DataFlow::MethodCallNode).getOptionArgument(0, getNthHandlerName(_))
-      else result = this.getLastArgument().flow()
+      then result = this.getOptionArgument(0, getNthHandlerName(_))
+      else result = this.getLastArgument()
     }
   }
 
   private class ShorthandRoutingTreeSetup extends Routing::RouteSetup::MethodCall {
     ShorthandRoutingTreeSetup() {
-      this.asExpr() instanceof RouteSetup and
+      this instanceof RouteSetup and
       not this.getMethodName() = "route"
     }
 
@@ -183,7 +182,7 @@ module Fastify {
 
   private class FullRoutingTreeSetup extends Routing::RouteSetup::MethodCall {
     FullRoutingTreeSetup() {
-      this.asExpr() instanceof RouteSetup and
+      this instanceof RouteSetup and
       this.getMethodName() = "route"
     }
 
@@ -285,13 +284,7 @@ module Fastify {
    */
   private predicate usesFastifyPlugin(RouteHandler rh, DataFlow::SourceNode plugin) {
     exists(RouteSetup setup |
-      plugin
-          .flowsTo(setup
-                .getServer()
-                .flow()
-                .(DataFlow::SourceNode)
-                .getAMethodCall("register")
-                .getArgument(0)) and // only matches the plugins that apply to all routes
+      plugin.flowsTo(setup.getServer().getAMethodCall("register").getArgument(0)) and // only matches the plugins that apply to all routes
       rh = setup.getARouteHandler()
     )
   }
@@ -301,13 +294,7 @@ module Fastify {
    */
   private predicate usesMiddleware(RouteHandler rh, DataFlow::SourceNode middleware) {
     exists(RouteSetup setup |
-      middleware
-          .flowsTo(setup
-                .getServer()
-                .flow()
-                .(DataFlow::SourceNode)
-                .getAMethodCall("use")
-                .getArgument(0)) and // only matches the middlewares that apply to all routes
+      middleware.flowsTo(setup.getServer().getAMethodCall("use").getArgument(0)) and // only matches the middlewares that apply to all routes
       rh = setup.getARouteHandler()
     )
   }

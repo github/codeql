@@ -242,7 +242,7 @@ module HTTP {
   /**
    * An expression that sets up a route on a server.
    */
-  abstract class RouteSetup extends Expr { } // TODO: DataFlow::Node
+  abstract class RouteSetup extends DataFlow::Node { }
 
   /**
    * An expression that may contain a request object.
@@ -275,9 +275,7 @@ module HTTP {
      * A standard server definition.
      */
     abstract class StandardServerDefinition extends ServerDefinition {
-      override RouteHandler getARouteHandler() {
-        result.(StandardRouteHandler).getServer() = this.asExpr()
-      }
+      override RouteHandler getARouteHandler() { result.(StandardRouteHandler).getServer() = this }
 
       private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
         t.start() and
@@ -308,8 +306,7 @@ module HTTP {
       /**
        * Gets the server this route handler is registered on.
        */
-      Expr getServer() {
-        // TODO: DataFlow::Node
+      DataFlow::Node getServer() {
         exists(StandardRouteSetup setup | setup.getARouteHandler() = this |
           result = setup.getServer()
         )
@@ -414,7 +411,7 @@ module HTTP {
       /**
        * Gets the server on which this route setup sets up routes.
        */
-      abstract Expr getServer(); // TODO: DataFlow::Node
+      abstract DataFlow::Node getServer();
     }
 
     /**

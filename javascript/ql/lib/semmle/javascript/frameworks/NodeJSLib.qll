@@ -217,16 +217,16 @@ module NodeJSLib {
     RequestExpr getRequest() { result = request }
   }
 
-  class RouteSetup extends CallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends DataFlow::CallNode, HTTP::Servers::StandardRouteSetup {
     ServerDefinition server;
-    Expr handler;
+    DataFlow::Node handler;
 
     RouteSetup() {
-      server.ref().flowsToExpr(this) and
+      server.ref() = this and
       handler = this.getLastArgument()
       or
-      server.ref().flowsToExpr(this.getReceiver()) and
-      this.(MethodCallExpr).getMethodName().regexpMatch("on(ce)?") and
+      server.ref().getAMethodCall() = this and
+      this.getCalleeName().regexpMatch("on(ce)?") and
       this.getArgument(0).getStringValue() = "request" and
       handler = this.getArgument(1)
     }
@@ -237,7 +237,7 @@ module NodeJSLib {
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = handler.flow().getALocalSource()
+      result = handler.getALocalSource()
       or
       exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ |
         succ = this.getARouteHandler(t2)
@@ -249,12 +249,12 @@ module NodeJSLib {
       )
     }
 
-    override Expr getServer() { result = server.asExpr() }
+    override DataFlow::Node getServer() { result = server }
 
     /**
      * Gets the expression for the handler registered by this setup.
      */
-    Expr getRouteHandlerExpr() { result = handler }
+    Expr getRouteHandlerExpr() { result = handler.asExpr() } // TODO: DataFlow::Node
   }
 
   abstract private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {

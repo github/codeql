@@ -30,18 +30,14 @@ private module LiveServer {
   /**
    * The call to `require("live-server").start()`, seen as a route setup.
    */
-  class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends HTTP::Servers::StandardRouteSetup instanceof API::CallNode {
     ServerDefinition server;
-    API::CallNode call;
 
-    RouteSetup() {
-      call = server.getImportNode().getMember("start").getACall() and
-      this = call.asExpr()
-    }
+    RouteSetup() { this = server.getImportNode().getMember("start").getACall() }
 
     override DataFlow::SourceNode getARouteHandler() {
       exists(DataFlow::SourceNode middleware |
-        middleware = call.getParameter(0).getMember("middleware").getAValueReachingSink()
+        middleware = super.getParameter(0).getMember("middleware").getAValueReachingSink()
       |
         result = middleware.getAMemberCall(["push", "unshift"]).getArgument(0).getAFunctionValue()
         or
@@ -49,6 +45,6 @@ private module LiveServer {
       )
     }
 
-    override Expr getServer() { result = server.asExpr() }
+    override DataFlow::Node getServer() { result = server }
   }
 }

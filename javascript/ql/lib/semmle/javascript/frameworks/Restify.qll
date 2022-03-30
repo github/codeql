@@ -142,18 +142,17 @@ module Restify {
   /**
    * A call to a Restify method that sets up a route.
    */
-  class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends DataFlow::MethodCallNode, HTTP::Servers::StandardRouteSetup {
     ServerDefinition server;
 
     RouteSetup() {
       // server.get('/', fun)
       // server.head('/', fun)
-      server.ref().flowsToExpr(getReceiver()) and
-      getMethodName() = any(HTTP::RequestMethodName m).toLowerCase()
+      server.ref().getAMethodCall(any(HTTP::RequestMethodName m).toLowerCase()) = this
     }
 
-    override DataFlow::SourceNode getARouteHandler() { result.flowsToExpr(getArgument(1)) }
+    override DataFlow::SourceNode getARouteHandler() { result.flowsTo(getArgument(1)) }
 
-    override Expr getServer() { result = server.asExpr() }
+    override DataFlow::Node getServer() { result = server }
   }
 }

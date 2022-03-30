@@ -195,10 +195,8 @@ module Firebase {
     /**
      * A call to a Firebase method that sets up a route.
      */
-    private class RouteSetup extends HTTP::Servers::StandardRouteSetup, CallExpr {
-      RouteSetup() {
-        this = namespace().getAPropertyRead("https").getAMemberCall("onRequest").asExpr()
-      }
+    private class RouteSetup extends HTTP::Servers::StandardRouteSetup, DataFlow::CallNode {
+      RouteSetup() { this = namespace().getAPropertyRead("https").getAMemberCall("onRequest") }
 
       override DataFlow::SourceNode getARouteHandler() {
         result = getARouteHandler(DataFlow::TypeBackTracker::end())
@@ -206,12 +204,12 @@ module Firebase {
 
       private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
         t.start() and
-        result = getArgument(0).flow().getALocalSource()
+        result = getArgument(0).getALocalSource()
         or
         exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
       }
 
-      override Expr getServer() { none() }
+      override DataFlow::Node getServer() { none() }
     }
 
     /**

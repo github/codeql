@@ -49,6 +49,7 @@ module Express {
    * Holds if `e` may refer to a router object.
    */
   private predicate isRouter(Expr e) {
+    // TODO: DataFlow::Node
     isRouter(e, _)
     or
     e.getType().hasUnderlyingType("express", "Router")
@@ -89,7 +90,7 @@ module Express {
   }
 
   private class RoutingTreeSetup extends Routing::RouteSetup::MethodCall {
-    RoutingTreeSetup() { this.asExpr() instanceof RouteSetup }
+    RoutingTreeSetup() { this instanceof RouteSetup }
 
     override string getRelativePath() {
       not this.getMethodName() = "param" and // do not treat parameter name as a path
@@ -140,9 +141,9 @@ module Express {
   /**
    * A call to an Express router method that sets up a route.
    */
-  class RouteSetup extends HTTP::Servers::StandardRouteSetup, MethodCallExpr {
+  class RouteSetup extends HTTP::Servers::StandardRouteSetup, DataFlow::MethodCallNode {
     RouteSetup() {
-      isRouter(this.getReceiver()) and
+      isRouter(this.getReceiver().asExpr()) and
       this.getMethodName() = routeSetupMethodName()
     }
 
@@ -150,7 +151,7 @@ module Express {
     string getPath() { this.getArgument(0).mayHaveStringValue(result) }
 
     /** Gets the router on which handlers are being registered. */
-    RouterDefinition getRouter() { isRouter(this.getReceiver(), result) }
+    RouterDefinition getRouter() { isRouter(this.getReceiver().asExpr(), result) }
 
     /** Holds if this is a call `use`, such as `app.use(handler)`. */
     predicate isUseCall() { this.getMethodName() = "use" }
@@ -162,13 +163,14 @@ module Express {
      * returned, not its dataflow source.
      */
     Expr getRouteHandlerExpr(int index) {
+      // TODO: DataFlow::Node
       // The first argument is a URI pattern if it is a string. If it could possibly be
       // a function, we consider it to be a route handler, otherwise a URI pattern.
       exists(AnalyzedNode firstArg | firstArg = this.getArgument(0).analyze() |
         if firstArg.getAType() = TTFunction()
-        then result = this.getArgument(index)
+        then result = this.getArgument(index).asExpr()
         else (
-          index >= 0 and result = this.getArgument(index + 1)
+          index >= 0 and result = this.getArgument(index + 1).asExpr()
         )
       )
     }
@@ -199,9 +201,8 @@ module Express {
       )
     }
 
-    override Expr getServer() {
-      any(DataFlow::Node n | n.asExpr() = result).(Application).getARouteHandler() =
-        this.getARouteHandler()
+    override DataFlow::Node getServer() {
+      result.(Application).getARouteHandler() = this.getARouteHandler()
     }
 
     /**
@@ -236,16 +237,16 @@ module Express {
   /**
    * A call that sets up a Passport router that includes the request object.
    */
-  private class PassportRouteSetup extends HTTP::Servers::StandardRouteSetup, CallExpr {
+  private class PassportRouteSetup extends HTTP::Servers::StandardRouteSetup, DataFlow::CallNode {
     DataFlow::ModuleImportNode importNode;
     DataFlow::FunctionNode callback;
 
     // looks for this pattern: passport.use(new Strategy({passReqToCallback: true}, callback))
     PassportRouteSetup() {
       importNode = DataFlow::moduleImport("passport") and
-      this = importNode.getAMemberCall("use").asExpr() and
+      this = importNode.getAMemberCall("use") and
       exists(DataFlow::NewNode strategy |
-        strategy.flowsToExpr(this.getArgument(0)) and
+        strategy.flowsTo(this.getArgument(0)) and
         strategy.getNumArgument() = 2 and
         // new Strategy({passReqToCallback: true}, ...)
         strategy.getOptionArgument(0, "passReqToCallback").mayHaveBooleanValue(true) and
@@ -253,7 +254,7 @@ module Express {
       )
     }
 
-    override Expr getServer() { result = importNode.asExpr() }
+    override DataFlow::Node getServer() { result = importNode }
 
     override DataFlow::SourceNode getARouteHandler() { result = callback }
   }
@@ -335,7 +336,8 @@ module Express {
      * same requests.
      */
     Express::RouteHandlerExpr getPreviousMiddleware() {
-      index = 0 and result = setup.getRouter().getMiddlewareStackAt(setup.getAPredecessor())
+      index = 0 and
+      result = setup.getRouter().getMiddlewareStackAt(setup.asExpr().getAPredecessor())
       or
       index > 0 and result = setup.getRouteHandlerExpr(index - 1)
       or
@@ -867,7 +869,7 @@ module Express {
     /**
      * Gets a `RouteSetup` that was used for setting up a route on this router.
      */
-    private RouteSetup getARouteSetup() { this.ref().flowsToExpr(result.getReceiver()) }
+    private RouteSetup getARouteSetup() { this.ref().flowsTo(result.getReceiver()) }
 
     /**
      * Gets a sub-router registered on this router.
@@ -875,7 +877,7 @@ module Express {
      * Example: `router2` for `router1.use(router2)` or `router1.use("/route2", router2)`
      */
     RouterDefinition getASubRouter() {
-      result.ref().flowsToExpr(this.getARouteSetup().getAnArgument())
+      result.ref().flowsTo(this.getARouteSetup().getAnArgument())
     }
 
     /**
@@ -884,7 +886,7 @@ module Express {
      * Example: `fun` for `router1.use(fun)` or `router.use("/route", fun)`
      */
     HTTP::RouteHandler getARouteHandler() {
-      result.(DataFlow::SourceNode).flowsToExpr(this.getARouteSetup().getAnArgument())
+      result.(DataFlow::SourceNode).flowsToExpr(this.getARouteSetup().getAnArgument().asExpr())
     }
 
     /**
@@ -904,10 +906,10 @@ module Express {
      */
     Express::RouteHandlerExpr getMiddlewareStackAt(ControlFlowNode node) {
       if
-        exists(Express::RouteSetup setup | node = setup and setup.getRouter() = this |
+        exists(Express::RouteSetup setup | node = setup.asExpr() and setup.getRouter() = this |
           setup.isUseCall()
         )
-      then result = node.(Express::RouteSetup).getLastRouteHandlerExpr()
+      then result = node.(AST::ValueNode).flow().(Express::RouteSetup).getLastRouteHandlerExpr()
       else result = this.getMiddlewareStackAt(node.getAPredecessor())
     }
 

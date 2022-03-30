@@ -59,17 +59,17 @@ module Connect {
   /**
    * A call to a Connect method that sets up a route.
    */
-  class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends DataFlow::MethodCallNode, HTTP::Servers::StandardRouteSetup {
     ServerDefinition server;
 
     RouteSetup() {
       getMethodName() = "use" and
       (
         // app.use(fun)
-        server.ref().flowsToExpr(getReceiver())
+        server.ref().getAMethodCall() = this
         or
         // app.use(...).use(fun)
-        this.getReceiver().(RouteSetup).getServer() = server.asExpr()
+        this.getReceiver().(RouteSetup).getServer() = server
       )
     }
 
@@ -84,10 +84,10 @@ module Connect {
       exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
     }
 
-    override Expr getServer() { result = server.asExpr() }
+    override DataFlow::Node getServer() { result = server }
 
     /** Gets an argument that represents a route handler being registered. */
-    Expr getARouteHandlerExpr() { result = getAnArgument() }
+    Expr getARouteHandlerExpr() { result = getAnArgument().asExpr() } // TODO: DataFlow::Node
   }
 
   /** An expression that is passed as `basicAuthConnect(<user>, <password>)`. */

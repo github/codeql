@@ -384,24 +384,23 @@ module Koa {
   /**
    * A call to a Koa method that sets up a route.
    */
-  class RouteSetup extends HTTP::Servers::StandardRouteSetup, MethodCallExpr {
+  class RouteSetup extends HTTP::Servers::StandardRouteSetup, DataFlow::MethodCallNode {
     AppDefinition server;
 
     RouteSetup() {
       // app.use(fun)
-      server.ref().flowsToExpr(this.getReceiver()) and
-      this.getMethodName() = "use"
+      server.ref().getAMethodCall("use") = this
     }
 
     override DataFlow::SourceNode getARouteHandler() {
       // `StandardRouteHandler` uses this predicate in it's charpred, so making this predicate return a `RouteHandler` would give an empty recursion.
-      result.flowsToExpr(this.getArgument(0))
+      result.flowsToExpr(this.getArgument(0).asExpr())
       or
       // For the route-handlers that does not depend on this predicate in their charpred.
-      result.(RouteHandler).getARouteHandlerRegistrationObject().flowsToExpr(this.getArgument(0))
+      result.(RouteHandler).getARouteHandlerRegistrationObject().flowsTo(this.getArgument(0))
     }
 
-    override Expr getServer() { result = server.asExpr() }
+    override DataFlow::Node getServer() { result = server }
   }
 
   /**
