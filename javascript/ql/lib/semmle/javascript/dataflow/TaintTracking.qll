@@ -546,16 +546,16 @@ module TaintTracking {
    */
   private class ComputedPropWriteTaintStep extends SharedTaintStep {
     override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(AssignExpr assgn, IndexExpr idx, DataFlow::SourceNode obj |
-        assgn.getTarget() = idx and
-        obj.flowsToExpr(idx.getBase()) and
-        not exists(idx.getPropertyName()) and
-        pred = DataFlow::valueNode(assgn.getRhs()) and
+      exists(DataFlow::PropWrite assgn, DataFlow::SourceNode obj |
+        not exists(assgn.getPropertyName()) and
+        not assgn.getWriteNode() instanceof Property and // not a write inside an object literal
+        pred = assgn.getRhs() and
+        assgn = obj.getAPropertyWrite() and
         succ = obj
       |
         obj instanceof DataFlow::ObjectLiteralNode
         or
-        obj.getAPropertyRead("length").flowsToExpr(idx.getPropertyNameExpr())
+        obj.getAPropertyRead("length").flowsToExpr(assgn.getPropertyNameExpr())
       )
     }
   }
@@ -580,8 +580,8 @@ module TaintTracking {
     override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node target) {
       exists(DataFlow::ValueNode succ | target = succ |
         // string operations that propagate taint
-        exists(string name | name = succ.getAstNode().(MethodCallExpr).getMethodName() |
-          pred.asExpr() = succ.getAstNode().(MethodCallExpr).getReceiver() and
+        exists(string name | name = succ.(DataFlow::MethodCallNode).getMethodName() |
+          pred = succ.(DataFlow::MethodCallNode).getReceiver() and
           (
             // sorted, interesting, properties of String.prototype
             name =
@@ -600,7 +600,7 @@ module TaintTracking {
             name = "join"
           )
           or
-          exists(int i | pred.asExpr() = succ.getAstNode().(MethodCallExpr).getArgument(i) |
+          exists(int i | pred = succ.(DataFlow::MethodCallNode).getArgument(i) |
             name = "concat"
             or
             name = ["replace", "replaceAll"] and i = 1
@@ -615,10 +615,10 @@ module TaintTracking {
         )
         or
         // String.fromCharCode and String.fromCodePoint
-        exists(int i, MethodCallExpr mce |
-          mce = succ.getAstNode() and
-          pred.asExpr() = mce.getArgument(i) and
-          (mce.getMethodName() = "fromCharCode" or mce.getMethodName() = "fromCodePoint")
+        exists(int i, DataFlow::MethodCallNode mcn |
+          mcn = succ and
+          pred = mcn.getArgument(i) and
+          mcn.getMethodName() = ["fromCharCode", "fromCodePoint"]
         )
         or
         // `(encode|decode)URI(Component)?` propagate taint
@@ -744,11 +744,11 @@ module TaintTracking {
    * the parameters in `input`.
    */
   predicate isUrlSearchParams(DataFlow::SourceNode params, DataFlow::Node input) {
-    exists(DataFlow::GlobalVarRefNode urlSearchParams, NewExpr newUrlSearchParams |
+    exists(DataFlow::GlobalVarRefNode urlSearchParams, DataFlow::NewNode newUrlSearchParams |
       urlSearchParams.getName() = "URLSearchParams" and
-      newUrlSearchParams = urlSearchParams.getAnInstantiation().asExpr() and
-      params.asExpr() = newUrlSearchParams and
-      input.asExpr() = newUrlSearchParams.getArgument(0)
+      newUrlSearchParams = urlSearchParams.getAnInstantiation() and
+      params = newUrlSearchParams and
+      input = newUrlSearchParams.getArgument(0)
     )
   }
 
