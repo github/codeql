@@ -3442,8 +3442,11 @@ private module StdlibPrivate {
 
   /**
    * A call to the `parse` method on a SAX XML parser.
+   *
+   * See https://docs.python.org/3/library/xml.sax.reader.html#xml.sax.xmlreader.XMLReader.parse
    */
-  private class XMLSaxInstanceParsing extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
+  private class XMLSaxInstanceParsing extends DataFlow::MethodCallNode, XML::XMLParsing::Range,
+    FileSystemAccess::Range {
     XMLSaxInstanceParsing() {
       this =
         API::moduleImport("xml")
@@ -3472,6 +3475,17 @@ private module StdlibPrivate {
       // data... but we don't currently model this (it's not trivial to do, and won't
       // really give us any value, at least not as of right now).
       none()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      // I considered whether we should try to reduce FPs from people passing file-like
+      // objects, which will not be a file system access (and couldn't cause a
+      // path-injection).
+      //
+      // I suppose that once we have proper flow-summary support for file-like objects,
+      // we can make the XXE/XML-bomb sinks allow an access-path, while the
+      // path-injection sink wouldn't, and then we will not end up with such FPs.
+      result = this.getAnInput()
     }
   }
 
@@ -3513,6 +3527,29 @@ private module StdlibPrivate {
     }
   }
 
+  /**
+   * A call to `xml.sax.parse`, which takes either a filename or a file-like object as
+   * argument. To capture the filename for path-injection, we have this subclass.
+   *
+   * See
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.parse
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.iterparse
+   */
+  private class FileAccessFromXMLSaxParsing extends XMLSaxParsing, FileSystemAccess::Range {
+    FileAccessFromXMLSaxParsing() {
+      this = API::moduleImport("xml").getMember("sax").getMember("parse").getACall()
+      // I considered whether we should try to reduce FPs from people passing file-like
+      // objects, which will not be a file system access (and couldn't cause a
+      // path-injection).
+      //
+      // I suppose that once we have proper flow-summary support for file-like objects,
+      // we can make the XXE/XML-bomb sinks allow an access-path, while the
+      // path-injection sink wouldn't, and then we will not end up with such FPs.
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
+  }
+
   // ---------------------------------------------------------------------------
   // xml.dom.*
   // ---------------------------------------------------------------------------
@@ -3520,6 +3557,10 @@ private module StdlibPrivate {
    * A call to the `parse` or `parseString` methods from `xml.dom.minidom` or `xml.dom.pulldom`.
    *
    * Both of these modules are based on SAX parsers.
+   *
+   * See
+   * - https://docs.python.org/3/library/xml.dom.minidom.html#xml.dom.minidom.parse
+   * - https://docs.python.org/3/library/xml.dom.pulldom.html#xml.dom.pulldom.parse
    */
   private class XMLDomParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
     XMLDomParsing() {
@@ -3555,6 +3596,35 @@ private module StdlibPrivate {
     override predicate mayExecuteInput() { none() }
 
     override DataFlow::Node getOutput() { result = this }
+  }
+
+  /**
+   * A call to the `parse` or `parseString` methods from `xml.dom.minidom` or
+   * `xml.dom.pulldom`, which takes either a filename or a file-like object as argument.
+   * To capture the filename for path-injection, we have this subclass.
+   *
+   * See
+   * - https://docs.python.org/3/library/xml.dom.minidom.html#xml.dom.minidom.parse
+   * - https://docs.python.org/3/library/xml.dom.pulldom.html#xml.dom.pulldom.parse
+   */
+  private class FileAccessFromXMLDomParsing extends XMLDomParsing, FileSystemAccess::Range {
+    FileAccessFromXMLDomParsing() {
+      this =
+        API::moduleImport("xml")
+            .getMember("dom")
+            .getMember(["minidom", "pulldom"])
+            .getMember("parse")
+            .getACall()
+      // I considered whether we should try to reduce FPs from people passing file-like
+      // objects, which will not be a file system access (and couldn't cause a
+      // path-injection).
+      //
+      // I suppose that once we have proper flow-summary support for file-like objects,
+      // we can make the XXE/XML-bomb sinks allow an access-path, while the
+      // path-injection sink wouldn't, and then we will not end up with such FPs.
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
   }
 }
 
