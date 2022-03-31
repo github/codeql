@@ -140,7 +140,7 @@ private module HandlebarsTaintSteps {
           compileCall.getArgument(0).mayHaveStringValue(templateText)
         |
           pred =
-            templatingCall.getAnArgument().getALocalSource().getAPropertyWrite(paramName).getRhs() and
+            templatingCall.getArgument(0).getALocalSource().getAPropertyWrite(paramName).getRhs() and
           isTemplateHelperCallArg(templateText, helperName, argIdx, paramName) and
           succ = getRegisteredHelperParam(helperName, helperFunction, argIdx)
         )
