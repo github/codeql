@@ -154,20 +154,17 @@ func (l *Labeler) ScopedObjectID(object types.Object, getTypeLabel func() Label)
 		} else {
 			// associate method receiver objects to special keys, because those can be
 			// referenced from other files via their method
-			isRecv := false
-			if namedType, ok := object.Type().(*types.Named); ok {
-				for i := 0; i < namedType.NumMethods(); i++ {
-					meth := namedType.Method(i)
-					if object == meth.Type().(*types.Signature).Recv() {
-						isRecv = true
-						methlbl, _ := l.MethodID(meth, getTypeLabel())
-						label, _ = l.ReceiverObjectID(object, methlbl)
-						break
-					}
+			meth := findMethodWithGivenReceiver(object.Type(), object)
+			if meth == nil {
+				if pointerType, ok := object.Type().(*types.Pointer); ok {
+					meth = findMethodWithGivenReceiver(pointerType.Elem(), object)
 				}
 			}
 
-			if !isRecv {
+			if meth != nil {
+				methlbl, _ := l.MethodID(meth, getTypeLabel())
+				label, _ = l.ReceiverObjectID(object, methlbl)
+			} else {
 				scopeLbl := l.ScopeID(scope, object.Pkg())
 				label = l.GlobalID(fmt.Sprintf("{%v},%s;object", scopeLbl, object.Name()))
 			}
@@ -175,6 +172,18 @@ func (l *Labeler) ScopedObjectID(object types.Object, getTypeLabel func() Label)
 		l.objectLabels[object] = label
 	}
 	return label, exists
+}
+
+func findMethodWithGivenReceiver(tp types.Type, object types.Object) *types.Func {
+	if namedType, ok := tp.(*types.Named); ok {
+		for i := 0; i < namedType.NumMethods(); i++ {
+			meth := namedType.Method(i)
+			if object == meth.Type().(*types.Signature).Recv() {
+				return meth
+			}
+		}
+	}
+	return nil
 }
 
 // ReceiverObjectID associates a label with the given object and returns it, together with a flag indicating whether
