@@ -207,3 +207,27 @@ public class OperatorFlow
     }
 
 }
+
+public class EqualsGetHashCodeNoFlow
+{
+    public readonly bool boolTainted;
+    public readonly int intTainted;
+
+    // No flow summary as this is an override of the Equals method.
+    public override bool Equals(object obj)
+    {
+        return boolTainted;
+    }
+
+    // Flow summary as this is not an override of the object Equals method.
+    public int Equals(int i)
+    {
+        return i;
+    }
+
+    // No flow summary as this is an override of the GetHashCode method.
+    public override int GetHashCode()
+    {
+        return intTainted;
+    }
+}
