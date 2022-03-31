@@ -16,11 +16,15 @@ lxml.etree.XML(text=x) # $ decodeFormat=XML decodeInput=x xmlVuln='XXE' decodeOu
 lxml.etree.XMLID(x) # $ decodeFormat=XML decodeInput=x xmlVuln='XXE' decodeOutput=lxml.etree.XMLID(..)
 lxml.etree.XMLID(text=x) # $ decodeFormat=XML decodeInput=x xmlVuln='XXE' decodeOutput=lxml.etree.XMLID(..)
 
-lxml.etree.parse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='XXE' decodeOutput=lxml.etree.parse(..)
-lxml.etree.parse(source=StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='XXE' decodeOutput=lxml.etree.parse(..)
+xml_file = 'xml_file'
+lxml.etree.parse(xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.parse(..)
+lxml.etree.parse(source=xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.parse(..)
 
-lxml.etree.parseid(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='XXE' decodeOutput=lxml.etree.parseid(..)
-lxml.etree.parseid(source=StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='XXE' decodeOutput=lxml.etree.parseid(..)
+lxml.etree.parseid(xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.parseid(..)
+lxml.etree.parseid(source=xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.parseid(..)
+
+lxml.etree.iterparse(xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..)
+lxml.etree.iterparse(source=xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..)
 
 # With default parsers (nothing changed)
 parser = lxml.etree.XMLParser()
@@ -55,3 +59,9 @@ lxml.etree.fromstring(x, parser=parser) # $ decodeFormat=XML decodeInput=x decod
 # DTD retrival vuln (also XXE)
 parser = lxml.etree.XMLParser(load_dtd=True, no_network=False)
 lxml.etree.fromstring(x, parser=parser) # $ decodeFormat=XML decodeInput=x xmlVuln='DTD retrieval' xmlVuln='XXE' decodeOutput=lxml.etree.fromstring(..)
+
+# iterparse configurations ... this doesn't use a parser argument but takes MOST (!) of
+# the normal XMLParser arguments. Specifically, it doesn't allow disabling XXE :O
+
+lxml.etree.iterparse(xml_file, huge_tree=True) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..)
+lxml.etree.iterparse(xml_file, load_dtd=True, no_network=False) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='DTD retrieval' xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..)

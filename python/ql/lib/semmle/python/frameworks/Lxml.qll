@@ -274,4 +274,34 @@ private module Lxml {
       result = this
     }
   }
+
+  /**
+   * A call to `lxml.etree.iterparse`
+   *
+   * See
+   * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.iterparse
+   */
+  private class LXMLIterparseCall extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
+    LXMLIterparseCall() {
+      this = API::moduleImport("lxml").getMember("etree").getMember("iterparse").getACall()
+    }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("source")] }
+
+    override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
+      // note that there is no `resolve_entities` argument, so it's not possible to turn off XXE :O
+      kind.isXxe()
+      or
+      (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
+      this.getArgByName("huge_tree").getALocalSource().asExpr() = any(True t)
+      or
+      kind.isDtdRetrieval() and
+      this.getArgByName("load_dtd").getALocalSource().asExpr() = any(True t) and
+      this.getArgByName("no_network").getALocalSource().asExpr() = any(False t)
+    }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getOutput() { result = this }
+  }
 }
