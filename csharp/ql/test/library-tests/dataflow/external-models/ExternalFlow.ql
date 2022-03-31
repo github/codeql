@@ -30,7 +30,8 @@ class SummaryModelTest extends SummaryModelCsv {
         "My.Qltest;D;false;Map<,>;(S[],System.Func<S,T>);;Argument[1].ReturnValue;ReturnValue.Element;value",
         "My.Qltest;D;false;Parse;(System.String,System.Int32);;Argument[0];Argument[1];taint",
         "My.Qltest;E;true;get_MyProp;();;Argument[Qualifier].Field[My.Qltest.E.MyField];ReturnValue;value",
-        "My.Qltest;E;true;set_MyProp;(System.Object);;Argument[0];Argument[Qualifier].Field[My.Qltest.E.MyField];value"
+        "My.Qltest;E;true;set_MyProp;(System.Object);;Argument[0];Argument[Qualifier].Field[My.Qltest.E.MyField];value",
+        "My.Qltest;G;false;GeneratedFlow;(System.Object);;Argument[0];ReturnValue;generated:value",
       ]
   }
 }

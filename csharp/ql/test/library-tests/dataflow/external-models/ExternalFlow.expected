@@ -56,6 +56,8 @@ edges
 | ExternalFlow.cs:111:13:111:13 | [post] access to local variable f [field MyField] : Object | ExternalFlow.cs:112:18:112:18 | access to local variable f [field MyField] : Object |
 | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | ExternalFlow.cs:111:13:111:13 | [post] access to local variable f [field MyField] : Object |
 | ExternalFlow.cs:112:18:112:18 | access to local variable f [field MyField] : Object | ExternalFlow.cs:112:18:112:25 | access to property MyProp |
+| ExternalFlow.cs:177:21:177:32 | object creation of type Object : Object | ExternalFlow.cs:178:32:178:32 | access to local variable o : Object |
+| ExternalFlow.cs:178:32:178:32 | access to local variable o : Object | ExternalFlow.cs:178:18:178:33 | call to method GeneratedFlow |
 nodes
 | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | semmle.label | call to method StepArgRes |
@@ -130,6 +132,9 @@ nodes
 | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:112:18:112:18 | access to local variable f [field MyField] : Object | semmle.label | access to local variable f [field MyField] : Object |
 | ExternalFlow.cs:112:18:112:25 | access to property MyProp | semmle.label | access to property MyProp |
+| ExternalFlow.cs:177:21:177:32 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:178:18:178:33 | call to method GeneratedFlow | semmle.label | call to method GeneratedFlow |
+| ExternalFlow.cs:178:32:178:32 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 subpaths
 invalidModelRow
 #select
@@ -152,3 +157,4 @@ invalidModelRow
 | ExternalFlow.cs:102:22:102:22 | access to parameter d | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:102:22:102:22 | access to parameter d | $@ | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:104:18:104:25 | access to field Field | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:104:18:104:25 | access to field Field | $@ | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:112:18:112:25 | access to property MyProp | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | ExternalFlow.cs:112:18:112:25 | access to property MyProp | $@ | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:178:18:178:33 | call to method GeneratedFlow | ExternalFlow.cs:177:21:177:32 | object creation of type Object : Object | ExternalFlow.cs:178:18:178:33 | call to method GeneratedFlow | $@ | ExternalFlow.cs:177:21:177:32 | object creation of type Object : Object | object creation of type Object : Object |

@@ -169,4 +169,17 @@ namespace My.Qltest
             set { throw null; }
         }
     }
+
+    public class G
+    {
+        void M1()
+        {
+            var o = new object();
+            Sink(GeneratedFlow(o));
+        }
+
+        object GeneratedFlow(object o) => throw null;
+
+        static void Sink(object o) { }
+    }
 }
