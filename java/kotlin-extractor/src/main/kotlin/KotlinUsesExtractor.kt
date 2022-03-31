@@ -43,6 +43,10 @@ open class KotlinUsesExtractor(
         return id
     }
 
+    fun useFileClassType(f: IrFile) = TypeResults(
+        TypeResult(extractFileClass(f), "", ""),
+        TypeResult(fakeKotlinType(), "", "")
+    )
 
     @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
     fun extractFileClass(f: IrFile): Label<out DbClass> {

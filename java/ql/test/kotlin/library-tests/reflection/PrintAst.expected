@@ -29,6 +29,7 @@ reflection.kt:
 #   50|                     5: [BlockStmt] { ... }
 #   50|                       0: [ReturnStmt] return ...
 #   50|                         0: [MethodAccess] getLastChar(...)
+#   50|                           -1: [TypeAccess] ReflectionKt
 #   50|                           0: [VarAccess] a0
 #   50|                   1: [Method] invoke
 #-----|                     4: (Parameters)
@@ -64,6 +65,7 @@ reflection.kt:
 #   51|                     5: [BlockStmt] { ... }
 #   51|                       0: [ReturnStmt] return ...
 #   51|                         0: [MethodAccess] getLastChar(...)
+#   51|                           -1: [TypeAccess] ReflectionKt
 #   51|                           0: [VarAccess] this.<extensionReceiver>
 #   51|                             -1: [ThisAccess] this
 #   51|                   1: [Method] invoke
@@ -103,6 +105,7 @@ reflection.kt:
 #   97|             -3: [TypeAccess] Class2<String>
 #   97|               0: [TypeAccess] String
 #   97|             -2: [TypeAccess] String
+#   97|             -1: [TypeAccess] ReflectionKt
 #   97|             0: [StringLiteral] 
 #   97|             1: [MemberRefExpr] ...::...
 #   97|               -4: [AnonymousClass] new Function1<String,Class2<String>>(...) { ... }
@@ -126,6 +129,7 @@ reflection.kt:
 #   98|           0: [MethodAccess] fn11(...)
 #   98|             -3: [TypeAccess] Unit
 #   98|             -2: [TypeAccess] String
+#   98|             -1: [TypeAccess] ReflectionKt
 #   98|             0: [StringLiteral] 
 #   98|             1: [MemberRefExpr] ...::...
 #   98|               -4: [AnonymousClass] new Function1<String,Unit>(...) { ... }
@@ -139,6 +143,7 @@ reflection.kt:
 #   98|                     0: [ReturnStmt] return ...
 #   98|                       0: [MethodAccess] fn(...)
 #   98|                         -2: [TypeAccess] String
+#   98|                         -1: [TypeAccess] ReflectionKt
 #   98|                         0: [VarAccess] a0
 #   98|               -3: [TypeAccess] Function1<String,Unit>
 #   98|                 0: [TypeAccess] String
@@ -149,6 +154,7 @@ reflection.kt:
 #   99|               0: [TypeAccess] String
 #   99|               1: [TypeAccess] Integer
 #   99|             -2: [TypeAccess] String
+#   99|             -1: [TypeAccess] ReflectionKt
 #   99|             0: [StringLiteral] 
 #   99|             1: [MemberRefExpr] ...::...
 #   99|               -4: [AnonymousClass] new Function1<String,Inner<String>>(...) { ... }
@@ -640,6 +646,7 @@ reflection.kt:
 #   62|                     0: [ReturnStmt] return ...
 #   62|                       0: [MethodAccess] ext1(...)
 #   62|                         -2: [TypeAccess] Integer
+#   62|                         -1: [TypeAccess] ReflectionKt
 #   62|                         0: [VarAccess] a0
 #   62|               -3: [TypeAccess] Function1<Generic<Integer>,String>
 #   62|                 0: [TypeAccess] Generic<Integer>
@@ -665,6 +672,7 @@ reflection.kt:
 #   63|                     0: [ReturnStmt] return ...
 #   63|                       0: [MethodAccess] ext1(...)
 #   63|                         -2: [TypeAccess] Integer
+#   63|                         -1: [TypeAccess] ReflectionKt
 #   63|                         0: [VarAccess] this.<extensionReceiver>
 #   63|                           -1: [ThisAccess] this
 #   63|                 1: [FieldDeclaration] Generic<Integer> <extensionReceiver>;
@@ -689,6 +697,7 @@ reflection.kt:
 #   64|                   5: [BlockStmt] { ... }
 #   64|                     0: [ReturnStmt] return ...
 #   64|                       0: [MethodAccess] ext2(...)
+#   64|                         -1: [TypeAccess] ReflectionKt
 #   64|                         0: [VarAccess] a0
 #   64|               -3: [TypeAccess] Function1<Generic<Integer>,String>
 #   64|                 0: [TypeAccess] Generic<Integer>
@@ -713,6 +722,7 @@ reflection.kt:
 #   65|                   5: [BlockStmt] { ... }
 #   65|                     0: [ReturnStmt] return ...
 #   65|                       0: [MethodAccess] ext2(...)
+#   65|                         -1: [TypeAccess] ReflectionKt
 #   65|                         0: [VarAccess] this.<extensionReceiver>
 #   65|                           -1: [ThisAccess] this
 #   65|                 1: [FieldDeclaration] Generic<Integer> <extensionReceiver>;
@@ -955,6 +965,7 @@ reflection.kt:
 #   90|               0: [TypeAccess] String
 #   90|               1: [TypeAccess] T
 #   90|             -2: [TypeAccess] String
+#   90|             -1: [TypeAccess] ReflectionKt
 #   90|             0: [StringLiteral] 
 #   90|             1: [MemberRefExpr] ...::...
 #   90|               -4: [AnonymousClass] new Function1<String,Inner<String>>(...) { ... }

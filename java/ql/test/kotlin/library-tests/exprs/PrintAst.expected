@@ -37,6 +37,7 @@ delegatedProperties.kt:
 #   87|                   5: [BlockStmt] { ... }
 #   87|                     0: [ReturnStmt] return ...
 #   87|                       0: [MethodAccess] getExtDelegated(...)
+#   87|                         -1: [TypeAccess] DelegatedPropertiesKt
 #   87|                         0: [VarAccess] a0
 #   87|                 1: [Method] invoke
 #-----|                   4: (Parameters)
@@ -53,6 +54,7 @@ delegatedProperties.kt:
 #   87|                   5: [BlockStmt] { ... }
 #   87|                     0: [ReturnStmt] return ...
 #   87|                       0: [MethodAccess] setExtDelegated(...)
+#   87|                         -1: [TypeAccess] DelegatedPropertiesKt
 #   87|                         0: [VarAccess] a0
 #   87|                         1: [VarAccess] a1
 #   87|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -80,6 +82,7 @@ delegatedProperties.kt:
 #   87|                   5: [BlockStmt] { ... }
 #   87|                     0: [ReturnStmt] return ...
 #   87|                       0: [MethodAccess] getExtDelegated(...)
+#   87|                         -1: [TypeAccess] DelegatedPropertiesKt
 #   87|                         0: [VarAccess] a0
 #   87|                 1: [Method] invoke
 #-----|                   4: (Parameters)
@@ -96,6 +99,7 @@ delegatedProperties.kt:
 #   87|                   5: [BlockStmt] { ... }
 #   87|                     0: [ReturnStmt] return ...
 #   87|                       0: [MethodAccess] setExtDelegated(...)
+#   87|                         -1: [TypeAccess] DelegatedPropertiesKt
 #   87|                         0: [VarAccess] a0
 #   87|                         1: [VarAccess] a1
 #   87|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -114,6 +118,7 @@ delegatedProperties.kt:
 #   87|             5: [BlockStmt] { ... }
 #   87|               0: [ReturnStmt] return ...
 #   87|                 0: [MethodAccess] getTopLevelInt(...)
+#   87|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   87|           1: [Method] invoke
 #   87|             5: [BlockStmt] { ... }
 #   87|               0: [ReturnStmt] return ...
@@ -125,6 +130,7 @@ delegatedProperties.kt:
 #   87|             5: [BlockStmt] { ... }
 #   87|               0: [ReturnStmt] return ...
 #   87|                 0: [MethodAccess] setTopLevelInt(...)
+#   87|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   87|                   0: [VarAccess] a0
 #   87|         -3: [TypeAccess] KMutableProperty0<Integer>
 #   87|           0: [TypeAccess] Integer
@@ -1161,6 +1167,7 @@ delegatedProperties.kt:
 #   69|             5: [BlockStmt] { ... }
 #   69|               0: [ReturnStmt] return ...
 #   69|                 0: [MethodAccess] getExtDelegated(...)
+#   69|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   69|                   0: [VarAccess] this.<extensionReceiver>
 #   69|                     -1: [ThisAccess] this
 #   69|           1: [Method] invoke
@@ -1174,6 +1181,7 @@ delegatedProperties.kt:
 #   69|             5: [BlockStmt] { ... }
 #   69|               0: [ReturnStmt] return ...
 #   69|                 0: [MethodAccess] setExtDelegated(...)
+#   69|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   69|                   0: [VarAccess] this.<extensionReceiver>
 #   69|                     -1: [ThisAccess] this
 #   69|                   1: [VarAccess] a0
@@ -1283,6 +1291,7 @@ delegatedProperties.kt:
 #   70|             5: [BlockStmt] { ... }
 #   70|               0: [ReturnStmt] return ...
 #   70|                 0: [MethodAccess] getExtDelegated(...)
+#   70|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   70|                   0: [VarAccess] a0
 #   70|           1: [Method] invoke
 #-----|             4: (Parameters)
@@ -1299,6 +1308,7 @@ delegatedProperties.kt:
 #   70|             5: [BlockStmt] { ... }
 #   70|               0: [ReturnStmt] return ...
 #   70|                 0: [MethodAccess] setExtDelegated(...)
+#   70|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   70|                   0: [VarAccess] a0
 #   70|                   1: [VarAccess] a1
 #   70|         -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -1590,6 +1600,7 @@ delegatedProperties.kt:
 #   77|             5: [BlockStmt] { ... }
 #   77|               0: [ReturnStmt] return ...
 #   77|                 0: [MethodAccess] getTopLevelInt(...)
+#   77|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   77|           1: [Method] invoke
 #   77|             5: [BlockStmt] { ... }
 #   77|               0: [ReturnStmt] return ...
@@ -1601,6 +1612,7 @@ delegatedProperties.kt:
 #   77|             5: [BlockStmt] { ... }
 #   77|               0: [ReturnStmt] return ...
 #   77|                 0: [MethodAccess] setTopLevelInt(...)
+#   77|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   77|                   0: [VarAccess] a0
 #   77|         -3: [TypeAccess] KMutableProperty0<Integer>
 #   77|           0: [TypeAccess] Integer
@@ -3092,6 +3104,7 @@ funcExprs.kt:
 #   21|       5: [BlockStmt] { ... }
 #   22|         0: [ExprStmt] <Expr>;
 #   22|           0: [MethodAccess] functionExpression0a(...)
+#   22|             -1: [TypeAccess] FuncExprsKt
 #   22|             0: [LambdaExpr] ...->...
 #   22|               -4: [AnonymousClass] new Function0<Integer>(...) { ... }
 #   22|                 1: [Constructor] 
@@ -3105,6 +3118,7 @@ funcExprs.kt:
 #   22|                 0: [TypeAccess] Integer
 #   23|         1: [ExprStmt] <Expr>;
 #   23|           0: [MethodAccess] functionExpression0b(...)
+#   23|             -1: [TypeAccess] FuncExprsKt
 #   23|             0: [LambdaExpr] ...->...
 #   23|               -4: [AnonymousClass] new Function0<Object>(...) { ... }
 #   23|                 1: [Constructor] 
@@ -3118,6 +3132,7 @@ funcExprs.kt:
 #   23|                 0: [TypeAccess] Object
 #   24|         2: [ExprStmt] <Expr>;
 #   24|           0: [MethodAccess] functionExpression0c(...)
+#   24|             -1: [TypeAccess] FuncExprsKt
 #   24|             0: [LambdaExpr] ...->...
 #   24|               -4: [AnonymousClass] new Function0<Object>(...) { ... }
 #   24|                 1: [Constructor] 
@@ -3131,6 +3146,7 @@ funcExprs.kt:
 #   24|                 0: [TypeAccess] Object
 #   25|         3: [ExprStmt] <Expr>;
 #   25|           0: [MethodAccess] functionExpression1a(...)
+#   25|             -1: [TypeAccess] FuncExprsKt
 #   25|             0: [IntegerLiteral] 5
 #   25|             1: [LambdaExpr] ...->...
 #   25|               -4: [AnonymousClass] new Function1<Integer,Integer>(...) { ... }
@@ -3148,6 +3164,7 @@ funcExprs.kt:
 #   25|                 1: [TypeAccess] Integer
 #   26|         4: [ExprStmt] <Expr>;
 #   26|           0: [MethodAccess] functionExpression1a(...)
+#   26|             -1: [TypeAccess] FuncExprsKt
 #   26|             0: [IntegerLiteral] 5
 #   26|             1: [LambdaExpr] ...->...
 #   26|               -4: [AnonymousClass] new Function1<Integer,Integer>(...) { ... }
@@ -3165,6 +3182,7 @@ funcExprs.kt:
 #   26|                 1: [TypeAccess] Integer
 #   27|         5: [ExprStmt] <Expr>;
 #   27|           0: [MethodAccess] functionExpression1a(...)
+#   27|             -1: [TypeAccess] FuncExprsKt
 #   27|             0: [IntegerLiteral] 5
 #   27|             1: [LambdaExpr] ...->...
 #   27|               -4: [AnonymousClass] new Function1<Integer,Integer>(...) { ... }
@@ -3182,11 +3200,13 @@ funcExprs.kt:
 #   27|                 1: [TypeAccess] Integer
 #   28|         6: [ExprStmt] <Expr>;
 #   28|           0: [MethodAccess] functionExpression1a(...)
+#   28|             -1: [TypeAccess] FuncExprsKt
 #   28|             0: [IntegerLiteral] 5
 #   28|             1: [ClassInstanceExpr] new MyLambda(...)
 #   28|               -3: [TypeAccess] MyLambda
 #   29|         7: [ExprStmt] <Expr>;
 #   29|           0: [MethodAccess] functionExpression1b(...)
+#   29|             -1: [TypeAccess] FuncExprsKt
 #   29|             0: [IntegerLiteral] 5
 #   29|             1: [LambdaExpr] ...->...
 #   29|               -4: [AnonymousClass] new Function1<Object,Object>(...) { ... }
@@ -3204,6 +3224,7 @@ funcExprs.kt:
 #   29|                 1: [TypeAccess] Object
 #   30|         8: [ExprStmt] <Expr>;
 #   30|           0: [MethodAccess] functionExpression2(...)
+#   30|             -1: [TypeAccess] FuncExprsKt
 #   30|             0: [IntegerLiteral] 5
 #   30|             1: [LambdaExpr] ...->...
 #   30|               -4: [AnonymousClass] new Function2<Integer,Integer,Integer>(...) { ... }
@@ -3223,6 +3244,7 @@ funcExprs.kt:
 #   30|                 2: [TypeAccess] Integer
 #   31|         9: [ExprStmt] <Expr>;
 #   31|           0: [MethodAccess] functionExpression2(...)
+#   31|             -1: [TypeAccess] FuncExprsKt
 #   31|             0: [IntegerLiteral] 5
 #   31|             1: [LambdaExpr] ...->...
 #   31|               -4: [AnonymousClass] new Function2<Integer,Integer,Integer>(...) { ... }
@@ -3242,6 +3264,7 @@ funcExprs.kt:
 #   31|                 2: [TypeAccess] Integer
 #   32|         10: [ExprStmt] <Expr>;
 #   32|           0: [MethodAccess] functionExpression3(...)
+#   32|             -1: [TypeAccess] FuncExprsKt
 #   32|             0: [IntegerLiteral] 5
 #   32|             1: [LambdaExpr] ...->...
 #   32|               -4: [AnonymousClass] new Function2<Integer,Integer,Integer>(...) { ... }
@@ -3263,6 +3286,7 @@ funcExprs.kt:
 #   32|                 2: [TypeAccess] Integer
 #   33|         11: [ExprStmt] <Expr>;
 #   33|           0: [MethodAccess] functionExpression4(...)
+#   33|             -1: [TypeAccess] FuncExprsKt
 #   33|             0: [IntegerLiteral] 5
 #   33|             1: [LambdaExpr] ...->...
 #   33|               -4: [AnonymousClass] new Function1<Integer,Function1<Integer,Double>>(...) { ... }
@@ -3295,6 +3319,7 @@ funcExprs.kt:
 #   33|                   1: [TypeAccess] Double
 #   35|         12: [ExprStmt] <Expr>;
 #   35|           0: [MethodAccess] functionExpression22(...)
+#   35|             -1: [TypeAccess] FuncExprsKt
 #   35|             0: [IntegerLiteral] 5
 #   35|             1: [LambdaExpr] ...->...
 #   35|               -4: [AnonymousClass] new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>(...) { ... }
@@ -3356,6 +3381,7 @@ funcExprs.kt:
 #   35|                 22: [TypeAccess] Unit
 #   36|         13: [ExprStmt] <Expr>;
 #   36|           0: [MethodAccess] functionExpression23(...)
+#   36|             -1: [TypeAccess] FuncExprsKt
 #   36|             0: [IntegerLiteral] 5
 #   36|             1: [LambdaExpr] ...->...
 #   36|               -4: [AnonymousClass] new FunctionN<String>(...) { ... }
@@ -3516,6 +3542,7 @@ funcExprs.kt:
 #   36|                 0: [TypeAccess] String
 #   38|         14: [ExprStmt] <Expr>;
 #   38|           0: [MethodAccess] functionExpression0a(...)
+#   38|             -1: [TypeAccess] FuncExprsKt
 #   38|             0: [MemberRefExpr] ...::...
 #   38|               -4: [AnonymousClass] new Function0<Integer>(...) { ... }
 #   38|                 1: [Constructor] 
@@ -3542,6 +3569,7 @@ funcExprs.kt:
 #   38|                 -3: [TypeAccess] FuncRef
 #   39|         15: [ExprStmt] <Expr>;
 #   39|           0: [MethodAccess] functionExpression0a(...)
+#   39|             -1: [TypeAccess] FuncExprsKt
 #   39|             0: [MemberRefExpr] ...::...
 #   39|               -4: [AnonymousClass] new Function0<Integer>(...) { ... }
 #   39|                 1: [Constructor] 
@@ -3567,6 +3595,7 @@ funcExprs.kt:
 #   39|               0: [VarAccess] Companion
 #   40|         16: [ExprStmt] <Expr>;
 #   40|           0: [MethodAccess] functionExpression1a(...)
+#   40|             -1: [TypeAccess] FuncExprsKt
 #   40|             0: [IntegerLiteral] 5
 #   40|             1: [MemberRefExpr] ...::...
 #   40|               -4: [AnonymousClass] new Function1<Integer,Integer>(...) { ... }
@@ -3598,6 +3627,7 @@ funcExprs.kt:
 #   40|                 -3: [TypeAccess] FuncRef
 #   41|         17: [ExprStmt] <Expr>;
 #   41|           0: [MethodAccess] functionExpression1c(...)
+#   41|             -1: [TypeAccess] FuncExprsKt
 #   41|             0: [IntegerLiteral] 5
 #   41|             1: [MemberRefExpr] ...::...
 #   41|               -4: [AnonymousClass] new Function2<FuncRef,Integer,Integer>(...) { ... }
@@ -3619,6 +3649,7 @@ funcExprs.kt:
 #   41|                 2: [TypeAccess] Integer
 #   42|         18: [ExprStmt] <Expr>;
 #   42|           0: [MethodAccess] functionExpression1a(...)
+#   42|             -1: [TypeAccess] FuncExprsKt
 #   42|             0: [IntegerLiteral] 5
 #   42|             1: [MemberRefExpr] ...::...
 #   42|               -4: [AnonymousClass] new Function1<Integer,Integer>(...) { ... }
@@ -3638,6 +3669,7 @@ funcExprs.kt:
 #   42|                   5: [BlockStmt] { ... }
 #   42|                     0: [ReturnStmt] return ...
 #   42|                       0: [MethodAccess] f3(...)
+#   42|                         -1: [TypeAccess] FuncExprsKt
 #   42|                         0: [VarAccess] this.<extensionReceiver>
 #   42|                           -1: [ThisAccess] this
 #   42|                         1: [VarAccess] a0
@@ -3649,6 +3681,7 @@ funcExprs.kt:
 #   42|               0: [IntegerLiteral] 3
 #   43|         19: [ExprStmt] <Expr>;
 #   43|           0: [MethodAccess] functionExpression3(...)
+#   43|             -1: [TypeAccess] FuncExprsKt
 #   43|             0: [IntegerLiteral] 5
 #   43|             1: [MemberRefExpr] ...::...
 #   43|               -4: [AnonymousClass] new Function2<Integer,Integer,Integer>(...) { ... }
@@ -3662,6 +3695,7 @@ funcExprs.kt:
 #   43|                   5: [BlockStmt] { ... }
 #   43|                     0: [ReturnStmt] return ...
 #   43|                       0: [MethodAccess] f3(...)
+#   43|                         -1: [TypeAccess] FuncExprsKt
 #   43|                         0: [VarAccess] a0
 #   43|                         1: [VarAccess] a1
 #   43|               -3: [TypeAccess] Function2<Integer,Integer,Integer>
@@ -3670,6 +3704,7 @@ funcExprs.kt:
 #   43|                 2: [TypeAccess] Integer
 #   44|         20: [ExprStmt] <Expr>;
 #   44|           0: [MethodAccess] functionExpression22(...)
+#   44|             -1: [TypeAccess] FuncExprsKt
 #   44|             0: [IntegerLiteral] 5
 #   44|             1: [MemberRefExpr] ...::...
 #   44|               -4: [AnonymousClass] new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>(...) { ... }
@@ -3764,6 +3799,7 @@ funcExprs.kt:
 #   44|                 -3: [TypeAccess] FuncRef
 #   45|         21: [ExprStmt] <Expr>;
 #   45|           0: [MethodAccess] functionExpression23(...)
+#   45|             -1: [TypeAccess] FuncExprsKt
 #   45|             0: [IntegerLiteral] 5
 #   45|             1: [MemberRefExpr] ...::...
 #   45|               -4: [AnonymousClass] new FunctionN<String>(...) { ... }
@@ -3908,6 +3944,7 @@ funcExprs.kt:
 #   45|                 -3: [TypeAccess] FuncRef
 #   46|         22: [ExprStmt] <Expr>;
 #   46|           0: [MethodAccess] functionExpression23c(...)
+#   46|             -1: [TypeAccess] FuncExprsKt
 #   46|             0: [IntegerLiteral] 5
 #   46|             1: [MemberRefExpr] ...::...
 #   46|               -4: [AnonymousClass] new FunctionN<String>(...) { ... }
@@ -4053,6 +4090,7 @@ funcExprs.kt:
 #   48|                   0: [IntegerLiteral] 5
 #   49|         24: [ExprStmt] <Expr>;
 #   49|           0: [MethodAccess] functionExpression0a(...)
+#   49|             -1: [TypeAccess] FuncExprsKt
 #   49|             0: [MemberRefExpr] ...::...
 #   49|               -4: [AnonymousClass] new Function0<Integer>(...) { ... }
 #   49|                 1: [Constructor] 
@@ -4069,6 +4107,7 @@ funcExprs.kt:
 #   51|         25: [ExprStmt] <Expr>;
 #   51|           0: [MethodAccess] fn(...)
 #   51|             -2: [TypeAccess] FuncRef
+#   51|             -1: [TypeAccess] FuncExprsKt
 #   51|             0: [MemberRefExpr] ...::...
 #   51|               -4: [AnonymousClass] new Function0<FuncRef>(...) { ... }
 #   51|                 1: [Constructor] 
@@ -4497,6 +4536,7 @@ samConversion.kt:
 #    5|                       5: [BlockStmt] { ... }
 #    5|                         0: [ReturnStmt] return ...
 #    5|                           0: [MethodAccess] fn2(...)
+#    5|                             -1: [TypeAccess] SamConversionKt
 #    5|                             0: [VarAccess] a0
 #    5|                             1: [VarAccess] a1
 #    5|                   -3: [TypeAccess] Function2<Integer,Integer,Unit>
@@ -4675,6 +4715,7 @@ samConversion.kt:
 #   41|                   5: [BlockStmt] { ... }
 #   41|                     0: [ReturnStmt] return ...
 #   41|                       0: [MethodAccess] ff(...)
+#   41|                         -1: [TypeAccess] SamConversionKt
 #   41|                         0: [CastExpr] (...)...
 #   41|                           0: [TypeAccess] int
 #   41|                           1: [ArrayAccess] ...[...]

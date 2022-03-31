@@ -436,6 +436,8 @@
 | delegatedProperties.kt:69:39:69:56 | ...=... | delegatedProperties.kt:69:39:69:56 |  | AssignExpr |
 | delegatedProperties.kt:69:39:69:56 | <extensionReceiver> | delegatedProperties.kt:69:39:69:56 |  | VarAccess |
 | delegatedProperties.kt:69:39:69:56 | <set-?> | delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1 | VarAccess |
+| delegatedProperties.kt:69:39:69:56 | DelegatedPropertiesKt | delegatedProperties.kt:69:39:69:56 | get | TypeAccess |
+| delegatedProperties.kt:69:39:69:56 | DelegatedPropertiesKt | delegatedProperties.kt:69:39:69:56 | set | TypeAccess |
 | delegatedProperties.kt:69:39:69:56 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:69:39:69:56 | Integer | delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1 | TypeAccess |
 | delegatedProperties.kt:69:39:69:56 | Integer | delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1 | TypeAccess |
@@ -491,6 +493,8 @@
 | delegatedProperties.kt:70:36:70:59 | this.delegatedToExtMember2$delegate | delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2 | VarAccess |
 | delegatedProperties.kt:70:39:70:59 | ...::... | delegatedProperties.kt:65:1:85:1 | MyClass | PropertyRefExpr |
 | delegatedProperties.kt:70:39:70:59 | <set-?> | delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2 | VarAccess |
+| delegatedProperties.kt:70:39:70:59 | DelegatedPropertiesKt | delegatedProperties.kt:70:39:70:59 | get | TypeAccess |
+| delegatedProperties.kt:70:39:70:59 | DelegatedPropertiesKt | delegatedProperties.kt:70:39:70:59 | set | TypeAccess |
 | delegatedProperties.kt:70:39:70:59 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:70:39:70:59 | Integer | delegatedProperties.kt:70:36:70:59 | getDelegatedToExtMember2 | TypeAccess |
 | delegatedProperties.kt:70:39:70:59 | Integer | delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2 | TypeAccess |
@@ -640,6 +644,8 @@
 | delegatedProperties.kt:77:34:77:49 | this.delegatedToTopLevel$delegate | delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel | VarAccess |
 | delegatedProperties.kt:77:37:77:49 | ...::... | delegatedProperties.kt:65:1:85:1 | MyClass | PropertyRefExpr |
 | delegatedProperties.kt:77:37:77:49 | <set-?> | delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel | VarAccess |
+| delegatedProperties.kt:77:37:77:49 | DelegatedPropertiesKt | delegatedProperties.kt:77:37:77:49 | get | TypeAccess |
+| delegatedProperties.kt:77:37:77:49 | DelegatedPropertiesKt | delegatedProperties.kt:77:37:77:49 | set | TypeAccess |
 | delegatedProperties.kt:77:37:77:49 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:77:37:77:49 | Integer | delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel | TypeAccess |
 | delegatedProperties.kt:77:37:77:49 | Integer | delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel | TypeAccess |
@@ -735,6 +741,10 @@
 | delegatedProperties.kt:87:1:87:46 | extDelegated$delegate | delegatedProperties.kt:0:0:0:0 | <clinit> | VarAccess |
 | delegatedProperties.kt:87:31:87:46 | ...::... | delegatedProperties.kt:87:31:87:46 | getExtDelegated | PropertyRefExpr |
 | delegatedProperties.kt:87:31:87:46 | ...::... | delegatedProperties.kt:87:31:87:46 | setExtDelegated | PropertyRefExpr |
+| delegatedProperties.kt:87:31:87:46 | DelegatedPropertiesKt | delegatedProperties.kt:87:31:87:46 | get | TypeAccess |
+| delegatedProperties.kt:87:31:87:46 | DelegatedPropertiesKt | delegatedProperties.kt:87:31:87:46 | get | TypeAccess |
+| delegatedProperties.kt:87:31:87:46 | DelegatedPropertiesKt | delegatedProperties.kt:87:31:87:46 | set | TypeAccess |
+| delegatedProperties.kt:87:31:87:46 | DelegatedPropertiesKt | delegatedProperties.kt:87:31:87:46 | set | TypeAccess |
 | delegatedProperties.kt:87:31:87:46 | Integer | delegatedProperties.kt:87:31:87:46 | getExtDelegated | TypeAccess |
 | delegatedProperties.kt:87:31:87:46 | Integer | delegatedProperties.kt:87:31:87:46 | setExtDelegated | TypeAccess |
 | delegatedProperties.kt:87:31:87:46 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
@@ -763,6 +773,8 @@
 | delegatedProperties.kt:87:31:87:46 | this | delegatedProperties.kt:87:31:87:46 | invoke | ThisAccess |
 | delegatedProperties.kt:87:34:87:46 | ...::... | delegatedProperties.kt:0:0:0:0 | <clinit> | PropertyRefExpr |
 | delegatedProperties.kt:87:34:87:46 | <set-?> | delegatedProperties.kt:87:31:87:46 | setExtDelegated | VarAccess |
+| delegatedProperties.kt:87:34:87:46 | DelegatedPropertiesKt | delegatedProperties.kt:87:34:87:46 | get | TypeAccess |
+| delegatedProperties.kt:87:34:87:46 | DelegatedPropertiesKt | delegatedProperties.kt:87:34:87:46 | set | TypeAccess |
 | delegatedProperties.kt:87:34:87:46 | Integer | delegatedProperties.kt:0:0:0:0 | <clinit> | TypeAccess |
 | delegatedProperties.kt:87:34:87:46 | Integer | delegatedProperties.kt:87:31:87:46 | getExtDelegated | TypeAccess |
 | delegatedProperties.kt:87:34:87:46 | Integer | delegatedProperties.kt:87:31:87:46 | setExtDelegated | TypeAccess |
@@ -1647,21 +1659,25 @@
 | funcExprs.kt:18:57:18:57 | x | funcExprs.kt:17:1:19:1 | functionExpression23c | VarAccess |
 | funcExprs.kt:18:59:18:59 | x | funcExprs.kt:17:1:19:1 | functionExpression23c | VarAccess |
 | funcExprs.kt:18:61:18:61 | x | funcExprs.kt:17:1:19:1 | functionExpression23c | VarAccess |
+| funcExprs.kt:22:5:22:33 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:22:5:22:33 | functionExpression0a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:22:26:22:33 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:22:26:22:33 | Function0<Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:22:26:22:33 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:22:31:22:31 | 5 | funcExprs.kt:22:26:22:33 | invoke | IntegerLiteral |
+| funcExprs.kt:23:5:23:33 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:23:5:23:33 | functionExpression0b(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:23:26:23:33 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:23:26:23:33 | Function0<Object> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:23:26:23:33 | Object | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:23:31:23:31 | 5 | funcExprs.kt:23:26:23:33 | invoke | IntegerLiteral |
+| funcExprs.kt:24:5:24:33 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:24:5:24:33 | functionExpression0c(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:24:26:24:33 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:24:26:24:33 | Function0<Object> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:24:26:24:33 | Object | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:24:31:24:31 | 5 | funcExprs.kt:24:26:24:33 | invoke | IntegerLiteral |
+| funcExprs.kt:25:5:25:38 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:25:5:25:38 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:25:26:25:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:25:29:25:38 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
@@ -1669,6 +1685,7 @@
 | funcExprs.kt:25:29:25:38 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:25:29:25:38 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:25:36:25:36 | 5 | funcExprs.kt:25:29:25:38 | invoke | IntegerLiteral |
+| funcExprs.kt:26:5:26:34 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:26:5:26:34 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:26:26:26:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:26:29:26:34 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
@@ -1676,6 +1693,7 @@
 | funcExprs.kt:26:29:26:34 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:26:29:26:34 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:26:31:26:32 | it | funcExprs.kt:26:29:26:34 | invoke | VarAccess |
+| funcExprs.kt:27:5:27:43 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:27:5:27:43 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:27:26:27:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:27:29:27:42 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
@@ -1683,10 +1701,12 @@
 | funcExprs.kt:27:29:27:42 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:27:29:27:42 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:27:42:27:42 | 5 | funcExprs.kt:27:29:27:42 | invoke | IntegerLiteral |
+| funcExprs.kt:28:5:28:39 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:28:5:28:39 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:28:26:28:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:28:29:28:38 | MyLambda | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:28:29:28:38 | new MyLambda(...) | funcExprs.kt:21:1:52:1 | call | ClassInstanceExpr |
+| funcExprs.kt:29:5:29:37 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:29:5:29:37 | functionExpression1b(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:29:26:29:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:29:29:29:37 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
@@ -1694,6 +1714,7 @@
 | funcExprs.kt:29:29:29:37 | Object | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:29:29:29:37 | Object | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:29:36:29:36 | a | funcExprs.kt:29:29:29:37 | invoke | VarAccess |
+| funcExprs.kt:30:5:30:51 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:30:5:30:51 | functionExpression2(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:30:25:30:25 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:30:28:30:50 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
@@ -1702,6 +1723,7 @@
 | funcExprs.kt:30:28:30:50 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:30:28:30:50 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:30:50:30:50 | 5 | funcExprs.kt:30:28:30:50 | invoke | IntegerLiteral |
+| funcExprs.kt:31:5:31:40 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:31:5:31:40 | functionExpression2(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:31:25:31:25 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:31:28:31:40 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
@@ -1710,6 +1732,7 @@
 | funcExprs.kt:31:28:31:40 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:31:28:31:40 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:31:38:31:38 | 5 | funcExprs.kt:31:28:31:40 | invoke | IntegerLiteral |
+| funcExprs.kt:32:5:32:44 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:32:5:32:44 | functionExpression3(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:32:25:32:25 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:32:28:32:44 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
@@ -1720,6 +1743,7 @@
 | funcExprs.kt:32:35:32:38 | this | funcExprs.kt:32:28:32:44 | invoke | ExtensionReceiverAccess |
 | funcExprs.kt:32:35:32:42 | ... + ... | funcExprs.kt:32:28:32:44 | invoke | AddExpr |
 | funcExprs.kt:32:42:32:42 | a | funcExprs.kt:32:28:32:44 | invoke | VarAccess |
+| funcExprs.kt:33:5:33:51 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:33:5:33:51 | functionExpression4(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:33:25:33:25 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:33:28:33:51 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
@@ -1733,6 +1757,7 @@
 | funcExprs.kt:33:37:33:47 | Function1<Integer,Double> | funcExprs.kt:33:28:33:51 | invoke | TypeAccess |
 | funcExprs.kt:33:37:33:47 | Integer | funcExprs.kt:33:28:33:51 | invoke | TypeAccess |
 | funcExprs.kt:33:44:33:46 | 5.0 | funcExprs.kt:33:37:33:47 | invoke | DoubleLiteral |
+| funcExprs.kt:35:5:35:112 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:35:5:35:112 | functionExpression22(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:35:26:35:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:35:29:35:112 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
@@ -1763,6 +1788,7 @@
 | funcExprs.kt:35:111:35:111 | 5 | funcExprs.kt:35:29:35:112 | invoke | IntegerLiteral |
 | funcExprs.kt:35:111:35:111 | <implicit coercion to unit> | funcExprs.kt:35:29:35:112 | invoke | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:35:111:35:111 | Unit | funcExprs.kt:35:29:35:112 | invoke | TypeAccess |
+| funcExprs.kt:36:5:36:117 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:36:5:36:117 | functionExpression23(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:36:26:36:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:36:29:36:117 | 0 | funcExprs.kt:36:29:36:117 | invoke | IntegerLiteral |
@@ -1886,6 +1912,7 @@
 | funcExprs.kt:36:29:36:117 | invoke(...) | funcExprs.kt:36:29:36:117 | invoke | MethodAccess |
 | funcExprs.kt:36:29:36:117 | this | funcExprs.kt:36:29:36:117 | invoke | ThisAccess |
 | funcExprs.kt:36:115:36:116 |  | funcExprs.kt:36:29:36:117 | invoke | StringLiteral |
+| funcExprs.kt:38:5:38:39 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:38:5:38:39 | functionExpression0a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:38:26:38:34 | FuncRef | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:38:26:38:34 | new FuncRef(...) | funcExprs.kt:21:1:52:1 | call | ClassInstanceExpr |
@@ -1900,6 +1927,7 @@
 | funcExprs.kt:38:26:38:38 | this | funcExprs.kt:38:26:38:38 | invoke | ThisAccess |
 | funcExprs.kt:38:26:38:38 | this.<dispatchReceiver> | funcExprs.kt:38:26:38:38 |  | VarAccess |
 | funcExprs.kt:38:26:38:38 | this.<dispatchReceiver> | funcExprs.kt:38:26:38:38 | invoke | VarAccess |
+| funcExprs.kt:39:5:39:37 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:39:5:39:37 | functionExpression0a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:39:26:39:32 | Companion | funcExprs.kt:21:1:52:1 | call | VarAccess |
 | funcExprs.kt:39:26:39:36 | ...::... | funcExprs.kt:21:1:52:1 | call | MemberRefExpr |
@@ -1913,6 +1941,7 @@
 | funcExprs.kt:39:26:39:36 | this | funcExprs.kt:39:26:39:36 | invoke | ThisAccess |
 | funcExprs.kt:39:26:39:36 | this.<dispatchReceiver> | funcExprs.kt:39:26:39:36 |  | VarAccess |
 | funcExprs.kt:39:26:39:36 | this.<dispatchReceiver> | funcExprs.kt:39:26:39:36 | invoke | VarAccess |
+| funcExprs.kt:40:5:40:42 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:40:5:40:42 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:40:26:40:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:40:29:40:37 | FuncRef | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -1930,6 +1959,7 @@
 | funcExprs.kt:40:29:40:41 | this | funcExprs.kt:40:29:40:41 | invoke | ThisAccess |
 | funcExprs.kt:40:29:40:41 | this.<dispatchReceiver> | funcExprs.kt:40:29:40:41 |  | VarAccess |
 | funcExprs.kt:40:29:40:41 | this.<dispatchReceiver> | funcExprs.kt:40:29:40:41 | invoke | VarAccess |
+| funcExprs.kt:41:5:41:40 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:41:5:41:40 | functionExpression1c(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:41:26:41:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:41:29:41:39 | ...::... | funcExprs.kt:21:1:52:1 | call | MemberRefExpr |
@@ -1940,12 +1970,14 @@
 | funcExprs.kt:41:29:41:39 | a0 | funcExprs.kt:41:29:41:39 | invoke | VarAccess |
 | funcExprs.kt:41:29:41:39 | a1 | funcExprs.kt:41:29:41:39 | invoke | VarAccess |
 | funcExprs.kt:41:29:41:39 | f1(...) | funcExprs.kt:41:29:41:39 | invoke | MethodAccess |
+| funcExprs.kt:42:5:42:34 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:42:5:42:34 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:42:26:42:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:42:29:42:29 | 3 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:42:29:42:33 | ...::... | funcExprs.kt:21:1:52:1 | call | MemberRefExpr |
 | funcExprs.kt:42:29:42:33 | ...=... | funcExprs.kt:42:29:42:33 |  | AssignExpr |
 | funcExprs.kt:42:29:42:33 | <extensionReceiver> | funcExprs.kt:42:29:42:33 |  | VarAccess |
+| funcExprs.kt:42:29:42:33 | FuncExprsKt | funcExprs.kt:42:29:42:33 | invoke | TypeAccess |
 | funcExprs.kt:42:29:42:33 | Function1<Integer,Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:42:29:42:33 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:42:29:42:33 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -1956,9 +1988,11 @@
 | funcExprs.kt:42:29:42:33 | this | funcExprs.kt:42:29:42:33 | invoke | ThisAccess |
 | funcExprs.kt:42:29:42:33 | this.<extensionReceiver> | funcExprs.kt:42:29:42:33 |  | VarAccess |
 | funcExprs.kt:42:29:42:33 | this.<extensionReceiver> | funcExprs.kt:42:29:42:33 | invoke | VarAccess |
+| funcExprs.kt:43:5:43:35 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:43:5:43:35 | functionExpression3(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:43:25:43:25 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:43:28:43:34 | ...::... | funcExprs.kt:21:1:52:1 | call | MemberRefExpr |
+| funcExprs.kt:43:28:43:34 | FuncExprsKt | funcExprs.kt:43:28:43:34 | invoke | TypeAccess |
 | funcExprs.kt:43:28:43:34 | Function2<Integer,Integer,Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:43:28:43:34 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:43:28:43:34 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -1966,6 +2000,7 @@
 | funcExprs.kt:43:28:43:34 | a0 | funcExprs.kt:43:28:43:34 | invoke | VarAccess |
 | funcExprs.kt:43:28:43:34 | a1 | funcExprs.kt:43:28:43:34 | invoke | VarAccess |
 | funcExprs.kt:43:28:43:34 | f3(...) | funcExprs.kt:43:28:43:34 | invoke | MethodAccess |
+| funcExprs.kt:44:5:44:43 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:44:5:44:43 | functionExpression22(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:44:26:44:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:44:29:44:37 | FuncRef | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -2025,6 +2060,7 @@
 | funcExprs.kt:44:29:44:42 | this | funcExprs.kt:44:29:44:42 | invoke | ThisAccess |
 | funcExprs.kt:44:29:44:42 | this.<dispatchReceiver> | funcExprs.kt:44:29:44:42 |  | VarAccess |
 | funcExprs.kt:44:29:44:42 | this.<dispatchReceiver> | funcExprs.kt:44:29:44:42 | invoke | VarAccess |
+| funcExprs.kt:45:5:45:43 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:45:5:45:43 | functionExpression23(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:45:26:45:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:45:29:45:37 | FuncRef | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -2155,6 +2191,7 @@
 | funcExprs.kt:45:29:45:42 | this | funcExprs.kt:45:29:45:42 | invoke | ThisAccess |
 | funcExprs.kt:45:29:45:42 | this.<dispatchReceiver> | funcExprs.kt:45:29:45:42 |  | VarAccess |
 | funcExprs.kt:45:29:45:42 | this.<dispatchReceiver> | funcExprs.kt:45:29:45:42 | invoke | VarAccess |
+| funcExprs.kt:46:5:46:42 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:46:5:46:42 | functionExpression23c(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:46:27:46:27 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:46:30:46:41 | 0 | funcExprs.kt:46:30:46:41 | invoke | IntegerLiteral |
@@ -2282,6 +2319,7 @@
 | funcExprs.kt:46:30:46:41 | int | funcExprs.kt:46:30:46:41 | invoke | TypeAccess |
 | funcExprs.kt:46:30:46:41 | int | funcExprs.kt:46:30:46:41 | invoke | TypeAccess |
 | funcExprs.kt:48:24:48:24 | 5 | funcExprs.kt:48:5:48:24 | local | IntegerLiteral |
+| funcExprs.kt:49:5:49:33 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:49:5:49:33 | functionExpression0a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:49:26:49:32 | ...::... | funcExprs.kt:21:1:52:1 | call | MemberRefExpr |
 | funcExprs.kt:49:26:49:32 | Function0<Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -2289,6 +2327,7 @@
 | funcExprs.kt:49:26:49:32 | Object | funcExprs.kt:49:26:49:32 | invoke | TypeAccess |
 | funcExprs.kt:49:26:49:32 | local(...) | funcExprs.kt:49:26:49:32 | invoke | MethodAccess |
 | funcExprs.kt:49:26:49:32 | new (...) | funcExprs.kt:49:26:49:32 | invoke | ClassInstanceExpr |
+| funcExprs.kt:51:5:51:17 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:51:5:51:17 | FuncRef | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:51:5:51:17 | fn(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:51:8:51:16 | ...::... | funcExprs.kt:21:1:52:1 | call | MemberRefExpr |
@@ -2436,6 +2475,7 @@
 | samConversion.kt:5:27:5:31 | Function2<Integer,Integer,Unit> | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:5:27:5:31 | Integer | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:5:27:5:31 | Integer | samConversion.kt:1:1:14:1 | main | TypeAccess |
+| samConversion.kt:5:27:5:31 | SamConversionKt | samConversion.kt:5:27:5:31 | invoke | TypeAccess |
 | samConversion.kt:5:27:5:31 | Unit | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:5:27:5:31 | a0 | samConversion.kt:5:27:5:31 | invoke | VarAccess |
 | samConversion.kt:5:27:5:31 | a1 | samConversion.kt:5:27:5:31 | invoke | VarAccess |
@@ -2575,6 +2615,7 @@
 | samConversion.kt:41:13:41:16 | ...[...] | samConversion.kt:41:13:41:16 | invoke | ArrayAccess |
 | samConversion.kt:41:13:41:16 | Boolean | samConversion.kt:40:1:47:1 | fn | TypeAccess |
 | samConversion.kt:41:13:41:16 | FunctionN<Boolean> | samConversion.kt:40:1:47:1 | fn | TypeAccess |
+| samConversion.kt:41:13:41:16 | SamConversionKt | samConversion.kt:41:13:41:16 | invoke | TypeAccess |
 | samConversion.kt:41:13:41:16 | a0 | samConversion.kt:41:13:41:16 | invoke | VarAccess |
 | samConversion.kt:41:13:41:16 | a0 | samConversion.kt:41:13:41:16 | invoke | VarAccess |
 | samConversion.kt:41:13:41:16 | a0 | samConversion.kt:41:13:41:16 | invoke | VarAccess |

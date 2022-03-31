@@ -17,5 +17,6 @@
 | test.kt:7:24:9:5 | { ... } | BlockStmt |
 | test.kt:8:9:8:20 | return ... | ReturnStmt |
 | test.kt:8:16:8:20 | T | TypeAccess |
+| test.kt:8:16:8:20 | TestKt | TypeAccess |
 | test.kt:8:16:8:20 | bar(...) | MethodAccess |
 | test.kt:8:16:8:20 | this | ThisAccess |
