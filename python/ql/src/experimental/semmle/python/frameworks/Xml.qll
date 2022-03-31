@@ -8,129 +8,13 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
-private module XmlEtree {
-  /**
-   * Provides models for `xml.etree` parsers
-   *
-   * See
-   * - https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.XMLParser
-   * - https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.XMLPullParser
-   */
-  module XMLParser {
-    /**
-     * A source of instances of `xml.etree` parsers, extend this class to model new instances.
-     *
-     * This can include instantiations of the class, return values from function
-     * calls, or a special parameter that will be set when functions are called by an external
-     * library.
-     *
-     * Use the predicate `XMLParser::instance()` to get references to instances of `xml.etree` parsers.
-     */
-    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
-
-    /** A direct instantiation of `xml.etree` parsers. */
-    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
-      ClassInstantiation() {
-        this =
-          API::moduleImport("xml")
-              .getMember("etree")
-              .getMember("ElementTree")
-              .getMember("XMLParser")
-              .getACall()
-        or
-        this =
-          API::moduleImport("xml")
-              .getMember("etree")
-              .getMember("ElementTree")
-              .getMember("XMLPullParser")
-              .getACall()
-      }
-    }
-
-    /** Gets a reference to an `xml.etree` parser instance. */
-    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
-      t.start() and
-      result instanceof InstanceSource
-      or
-      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
-    }
-
-    /** Gets a reference to an `xml.etree` parser instance. */
-    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
-
-    /**
-     * A call to the `feed` method of an `xml.etree` parser.
-     */
-    private class XMLEtreeParserFeedCall extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
-      XMLEtreeParserFeedCall() { this.calls(instance(), "feed") }
-
-      override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
-
-      override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
-        kind.isBillionLaughs() or kind.isQuadraticBlowup()
-      }
-
-      override predicate mayExecuteInput() { none() }
-
-      override DataFlow::Node getOutput() {
-        exists(DataFlow::Node objRef |
-          DataFlow::localFlow(this.getObject(), objRef) and
-          result.(DataFlow::MethodCallNode).calls(objRef, "close")
-        )
-      }
-    }
-  }
-
-  /**
-   * A call to either of:
-   * - `xml.etree.ElementTree.fromstring`
-   * - `xml.etree.ElementTree.fromstringlist`
-   * - `xml.etree.ElementTree.XML`
-   * - `xml.etree.ElementTree.XMLID`
-   * - `xml.etree.ElementTree.parse`
-   * - `xml.etree.ElementTree.iterparse`
-   */
-  private class XMLEtreeParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
-    XMLEtreeParsing() {
-      this =
-        API::moduleImport("xml")
-            .getMember("etree")
-            .getMember("ElementTree")
-            .getMember(["fromstring", "fromstringlist", "XML", "XMLID", "parse", "iterparse"])
-            .getACall()
-    }
-
-    override DataFlow::Node getAnInput() {
-      result in [
-          this.getArg(0),
-          // fromstring / XML / XMLID
-          this.getArgByName("text"),
-          // fromstringlist
-          this.getArgByName("sequence"),
-          // parse / iterparse
-          this.getArgByName("source"),
-        ]
-    }
-
-    override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
-      // note: it does not matter what `xml.etree` parser you are using, you cannot
-      // change the security features anyway :|
-      kind.isBillionLaughs() or kind.isQuadraticBlowup()
-    }
-
-    override predicate mayExecuteInput() { none() }
-
-    override DataFlow::Node getOutput() { result = this }
-  }
-}
-
 private module SaxBasedParsing {
   /**
    * A call to the `setFeature` method on a XML sax parser.
    *
    * See https://docs.python.org/3.10/library/xml.sax.reader.html#xml.sax.xmlreader.XMLReader.setFeature
    */
-  class SaxParserSetFeatureCall extends DataFlow::MethodCallNode {
+  private class SaxParserSetFeatureCall extends DataFlow::MethodCallNode {
     SaxParserSetFeatureCall() {
       this =
         API::moduleImport("xml")

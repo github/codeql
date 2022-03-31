@@ -2,7 +2,7 @@ match = "dc:title"
 ns = {'dc': 'http://purl.org/dc/elements/1.1/'}
 
 import xml.etree.ElementTree as ET
-tree = ET.parse('country_data.xml')
+tree = ET.parse('country_data.xml') # $ decodeFormat=XML decodeInput='country_data.xml' decodeOutput=ET.parse(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
 root = tree.getroot()
 
 root.find(match, namespaces=ns)  # $ getXPath=match
