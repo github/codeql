@@ -439,16 +439,17 @@ class SwitchCase extends Stmt, @case {
   /**
    * Gets the expression on the right-hand side of the arrow, if any.
    *
-   * Note this is mutually exclusive with `getRuleStatement`: it gets a value
-   * when this case is of the form `case e1 -> e2`, where `e2` is not a block.
+   * Note, this predicate gets a value when this switch case is of the form
+   * `case e1 -> e2`, where `e2` is not a block. This predicate is mutually
+   * exclusive with `getRuleStatement`.
    */
   Expr getRuleExpression() { result.getParent() = this and result.getIndex() = -1 }
 
   /**
    * Gets the statement on the right-hand side of the arrow, if any.
    *
-   * Note this is mutually exclusive with `getRuleExpression`: it gets a value
-   * when this case if of the form `case e1 -> { s1; s2; ... }`.
+   * Note, this predicate gets a value when this switch case is of the form
+   * `case e1 -> { s1; s2; ... }`. This predicate is mutually exclusive with `getRuleExpression`.
    */
   Stmt getRuleStatement() { result.getParent() = this and result.getIndex() = -1 }
 }
