@@ -3297,7 +3297,14 @@ private module StdlibPrivate {
 
     override predicate mayExecuteInput() { none() }
 
-    override DataFlow::Node getOutput() { result = this }
+    override DataFlow::Node getOutput() {
+      // Note: for `XMLID` the result of the call is a tuple with `(root, dict)`, so
+      // maybe we should not just say that the entire tuple is the decoding output... my
+      // gut feeling is that THIS instance doesn't matter too much, but that it would be
+      // nice to be able to do this in general. (this is a problem for both `lxml.etree`
+      // and `xml.etree`)
+      result = this
+    }
   }
 }
 
