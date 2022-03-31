@@ -364,7 +364,7 @@ private class CipherMode extends TCipherMode {
 }
 
 private string getStringArgument(DataFlow::CallNode call, int i) {
-  result = call.getArgument(i).asExpr().getConstantValue().getStringOrSymbol()
+  result = call.getArgument(i).asExpr().getConstantValue().getStringlikeValue()
 }
 
 private int getIntArgument(DataFlow::CallNode call, int i) {
