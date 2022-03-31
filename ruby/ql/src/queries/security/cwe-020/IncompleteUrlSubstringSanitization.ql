@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @security-severity 7.8
  * @precision high
- * @id js/incomplete-url-substring-sanitization
+ * @id rb/incomplete-url-substring-sanitization
  * @tags correctness
  *       security
  *       external/cwe/cwe-020
