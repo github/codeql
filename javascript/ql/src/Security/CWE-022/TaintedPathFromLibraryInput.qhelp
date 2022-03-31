@@ -32,7 +32,8 @@
     <li>
       When your intention is for a library parameter to refer to a path,
       express that by using a parameter name that ends with <code>Path</code>,
-      <code>file</code>, <code>dir</code>, <code>root</code>, etc.
+      <code>file</code>, <code>dir</code>, <code>root</code>, or by documenting 
+      fact using an `@param` tag in the function's documentation.
     </li>
   </ul>
 </recommendation>
