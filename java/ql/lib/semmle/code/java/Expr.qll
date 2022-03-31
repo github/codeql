@@ -1987,7 +1987,6 @@ class MethodAccess extends Expr, Call, @methodaccess {
 /**
  * An invocation of a Kotlin `ExtensionMethod`.
  */
-/*
 class ExtensionMethodAccess extends MethodAccess {
   ExtensionMethodAccess() { this.getMethod() instanceof ExtensionMethod }
 
@@ -1999,7 +1998,6 @@ class ExtensionMethodAccess extends MethodAccess {
 
   override Expr getArgument(int index) { result = super.getArgument(index + 1) and index >= 0 }
 }
-*/
 
 /** A type access is a (possibly qualified) reference to a type. */
 class TypeAccess extends Expr, Annotatable, @typeaccess {
