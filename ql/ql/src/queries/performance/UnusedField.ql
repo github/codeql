@@ -27,7 +27,7 @@ where
     c.getASuperType*() = clz and
     implClz.getASuperType*() = c and
     p = c.getDeclaration().getCharPred() and
-    exists(FieldAccess access | access.getDeclaration() = field |
+    exists(FieldAccess access | access.getName() = field.getName() |
       access.getEnclosingPredicate() = p
     )
   ) and
