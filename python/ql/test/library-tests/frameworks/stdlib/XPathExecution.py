@@ -15,3 +15,8 @@ tree.parse("index.xhtml")
 tree.find(match, namespaces=ns)  # $ getXPath=match
 tree.findall(match, namespaces=ns)  # $ getXPath=match
 tree.findtext(match, default=None, namespaces=ns)  # $ getXPath=match
+
+parser = ET.XMLParser()
+parser.feed("<foo>bar</foo>") # $ decodeFormat=XML decodeInput="<foo>bar</foo>" xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup'
+tree = parser.close() # $ decodeOutput=parser.close()
+tree.find(match, namespaces=ns)  # $ MISSING: getXPath=match
