@@ -3258,6 +3258,14 @@ private module StdlibPrivate {
    * - `xml.etree.ElementTree.XMLID`
    * - `xml.etree.ElementTree.parse`
    * - `xml.etree.ElementTree.iterparse`
+   *
+   * See
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.fromstring
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.fromstringlist
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.XML
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.XMLID
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.parse
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.iterparse
    */
   private class XMLEtreeParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
     XMLEtreeParsing() {

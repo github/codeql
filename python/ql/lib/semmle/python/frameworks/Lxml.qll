@@ -224,7 +224,12 @@ private module Lxml {
    * - `lxml.etree.parse`
    * - `lxml.etree.parseid`
    *
-   * See https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.fromstring
+   * See
+   * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.fromstring
+   * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.fromstringlist
+   * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.XML
+   * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parse
+   * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parseid
    */
   private class LXMLParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
     LXMLParsing() {
