@@ -555,6 +555,8 @@ module XML {
    * A kind of XML vulnerability.
    *
    * See overview of kinds at https://pypi.org/project/defusedxml/#python-xml-libraries
+   *
+   * See PoC at `python/PoCs/XmlParsing/PoC.py` for some tests of vulnerable XML parsing.
    */
   class XMLParsingVulnerabilityKind extends string {
     XMLParsingVulnerabilityKind() {
