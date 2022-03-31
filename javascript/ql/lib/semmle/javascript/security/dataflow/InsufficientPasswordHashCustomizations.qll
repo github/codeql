@@ -49,7 +49,7 @@ module InsufficientPasswordHash {
         application.getAlgorithm().isWeak() or
         not application.getAlgorithm() instanceof PasswordHashingAlgorithm
       |
-        this.asExpr() = application.getInput()
+        this = application.getInput()
       )
     }
   }
