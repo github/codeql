@@ -162,6 +162,7 @@ func (l *Labeler) ScopedObjectID(object types.Object, getTypeLabel func() Label)
 						isRecv = true
 						methlbl, _ := l.MethodID(meth, getTypeLabel())
 						label, _ = l.ReceiverObjectID(object, methlbl)
+						break
 					}
 				}
 			}
