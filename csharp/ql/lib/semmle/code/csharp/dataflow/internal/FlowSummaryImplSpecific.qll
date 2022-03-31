@@ -91,7 +91,7 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
-    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind) and
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, _) and
     c = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
@@ -104,7 +104,7 @@ predicate sourceElement(Element e, string output, string kind) {
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
-    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind) and
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, _) and
     e = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
@@ -117,7 +117,7 @@ predicate sinkElement(Element e, string input, string kind) {
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
-    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind) and
+    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, _) and
     e = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }

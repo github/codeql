@@ -165,7 +165,7 @@ private predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind
+  string output, string kind, boolean generated
 ) {
   exists(string row |
     sourceModel(row) and
@@ -177,14 +177,15 @@ predicate sourceModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = output and
-    row.splitAt(";", 7) = kind
+    row.splitAt(";", 7) = kind and
+    generated = false
   )
 }
 
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind
+  string input, string kind, boolean generated
 ) {
   exists(string row |
     sinkModel(row) and
@@ -196,14 +197,15 @@ predicate sinkModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = kind
+    row.splitAt(";", 7) = kind and
+    generated = false
   )
 }
 
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind
+  string input, string output, string kind, boolean generated
 ) {
   exists(string row |
     summaryModel(row) and
@@ -216,14 +218,15 @@ predicate summaryModel(
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
     row.splitAt(";", 7) = output and
-    row.splitAt(";", 8) = kind
+    row.splitAt(";", 8) = kind and
+    generated = false // We need to split the "kind" field on ":".
   )
 }
 
 private predicate relevantNamespace(string namespace) {
-  sourceModel(namespace, _, _, _, _, _, _, _) or
-  sinkModel(namespace, _, _, _, _, _, _, _) or
-  summaryModel(namespace, _, _, _, _, _, _, _, _)
+  sourceModel(namespace, _, _, _, _, _, _, _, _) or
+  sinkModel(namespace, _, _, _, _, _, _, _, _) or
+  summaryModel(namespace, _, _, _, _, _, _, _, _, _)
 }
 
 private predicate namespaceLink(string shortns, string longns) {
@@ -251,25 +254,25 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
     part = "source" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string output |
+        string ext, string output, boolean generated |
         canonicalNamespaceLink(namespace, subns) and
-        sourceModel(subns, type, subtypes, name, signature, ext, output, kind)
+        sourceModel(subns, type, subtypes, name, signature, ext, output, kind, generated)
       )
     or
     part = "sink" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input |
+        string ext, string input, boolean generated |
         canonicalNamespaceLink(namespace, subns) and
-        sinkModel(subns, type, subtypes, name, signature, ext, input, kind)
+        sinkModel(subns, type, subtypes, name, signature, ext, input, kind, generated)
       )
     or
     part = "summary" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output |
+        string ext, string input, string output, boolean generated |
         canonicalNamespaceLink(namespace, subns) and
-        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind)
+        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, generated)
       )
   )
 }
@@ -279,11 +282,11 @@ module CsvValidation {
   /** Holds if some row in a CSV-based flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
     exists(string pred, string namespace, string type, string name, string signature, string ext |
-      sourceModel(namespace, type, _, name, signature, ext, _, _) and pred = "source"
+      sourceModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "source"
       or
-      sinkModel(namespace, type, _, name, signature, ext, _, _) and pred = "sink"
+      sinkModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "sink"
       or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "summary"
+      summaryModel(namespace, type, _, name, signature, ext, _, _, _, _) and pred = "summary"
     |
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
       msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
@@ -302,9 +305,9 @@ module CsvValidation {
     )
     or
     exists(string pred, AccessPath input, string part |
-      sinkModel(_, _, _, _, _, _, input, _) and pred = "sink"
+      sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
       or
-      summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, input, _, _, _) and pred = "summary"
     |
       (
         invalidSpecComponent(input, part) and
@@ -319,9 +322,9 @@ module CsvValidation {
     )
     or
     exists(string pred, string output, string part |
-      sourceModel(_, _, _, _, _, _, output, _) and pred = "source"
+      sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
       or
-      summaryModel(_, _, _, _, _, _, _, output, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, _, output, _, _) and pred = "summary"
     |
       invalidSpecComponent(output, part) and
       not part = "" and
@@ -353,7 +356,7 @@ module CsvValidation {
     or
     exists(string row, string kind | summaryModel(row) |
       kind = row.splitAt(";", 8) and
-      not kind = ["taint", "value"] and
+      not kind = ["taint", "value", "generated:taint", "generated:value"] and
       msg = "Invalid kind \"" + kind + "\" in summary model."
     )
     or
@@ -374,9 +377,9 @@ module CsvValidation {
 private predicate elementSpec(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(namespace, type, subtypes, name, signature, ext, _, _) or
-  sinkModel(namespace, type, subtypes, name, signature, ext, _, _) or
-  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
+  sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _) or
+  sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _) or
+  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
 }
 
 private predicate elementSpec(
