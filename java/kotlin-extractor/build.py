@@ -21,10 +21,6 @@ def parse_args():
 
 args = parse_args()
 
-kotlinc = 'kotlinc'
-javac = 'javac'
-kotlin_dependency_folder = args.dependencies
-
 def is_windows():
     '''Whether we appear to be running on Windows'''
     if platform.system() == 'Windows':
@@ -33,14 +29,29 @@ def is_windows():
         return True
     return False
 
+kotlinc = 'kotlinc.bat' if is_windows() else 'kotlinc'
+javac = 'javac'
+kotlin_dependency_folder = args.dependencies
+
+def quote_for_batch(arg):
+    if ';' in arg or '=' in arg:
+        if '"' in arg:
+            raise Exception('Need to quote something containing a quote')
+        return '"' + arg + '"'
+    else:
+        return arg
+
 def run_process(cmd, capture_output=False):
+    print("Running command: " + shlex.join(cmd))
+    if is_windows():
+        cmd = ' '.join(map(quote_for_batch, cmd))
+        print("Converted to Windows command: " + cmd)
     try:
-        print("Running command: " + shlex.join(cmd))
-        # TODO: `shell=True` is a workaround to get CI working on Windows. It breaks the build on Linux.
-        return subprocess.run(cmd, check=True, capture_output=capture_output, shell=is_windows())
+        return subprocess.run(cmd, check=True, capture_output=capture_output)
     except subprocess.CalledProcessError as e:
         print("In: " + os.getcwd(), file=sys.stderr)
-        print("Command failed: " + shlex.join(cmd), file=sys.stderr)
+        shell_cmd = cmd if is_windows() else shlex.join(cmd)
+        print("Command failed: " + shell_cmd, file=sys.stderr)
         if capture_output:
             print("stdout output:\n" + e.stdout.decode(encoding='UTF-8',
                   errors='replace'), file=sys.stderr)
@@ -65,7 +76,7 @@ def compile_to_dir(srcs, classpath, java_classpath, output):
     run_process([javac,
                  '-d', output,
                  '-source', '8', '-target', '8',
-                 '-classpath', "%s:%s:%s" % (output, classpath, java_classpath)] + [s for s in srcs if s.endswith(".java")])
+                 '-classpath', os.path.pathsep.join([output, classpath, java_classpath])] + [s for s in srcs if s.endswith(".java")])
 
 
 def compile_to_jar(srcs, classpath, java_classpath, output):
@@ -123,7 +134,7 @@ def patterns_to_classpath(path, patterns):
     result = []
     for pattern in patterns:
         result += find_jar(path, pattern)
-    return ':'.join(result)
+    return os.path.pathsep.join(result)
 
 
 def transform_to_embeddable(srcs):
