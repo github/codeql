@@ -321,7 +321,22 @@ StateTuple getAnEndTuple(State pivot, State succ) {
   result = MkStateTuple(pivot, succ, succ)
 }
 
-private class RelevantTrace extends Trace {
+private predicate hasSuffix(Trace suffix, Trace t, int i) {
+  // Declaring `t` to be a `RelevantTrace` currently causes a redundant check in the
+  // recursive case, so instead we check it explicitly here.
+  t instanceof RelevantTrace and
+  i = 0 and
+  suffix = t
+  or
+  hasSuffix(Step(_, _, _, suffix), t, i - 1)
+}
+
+pragma[noinline]
+private predicate hasTuple(InputSymbol s1, InputSymbol s2, InputSymbol s3, Trace t, int i) {
+  hasSuffix(Step(s1, s2, s3, _), t, i)
+}
+
+private class RelevantTrace extends Trace, Step {
   RelevantTrace() {
     exists(State pivot, State succ, StateTuple q |
       isReachableFromStartTuple(pivot, succ, q, this, _) and
@@ -329,15 +344,12 @@ private class RelevantTrace extends Trace {
     )
   }
 
-  private Trace getSuffix(int i) {
-    i = 0 and
-    result = this
-    or
-    this.getSuffix(i - 1) = Step(_, _, _, result)
-  }
-
-  private predicate hasTuple(int i, InputSymbol s1, InputSymbol s2, InputSymbol s3) {
-    this.getSuffix(i) = Step(s1, s2, s3, _)
+  pragma[noinline]
+  private string getAThreewayIntersect(int i) {
+    exists(InputSymbol s1, InputSymbol s2, InputSymbol s3 |
+      hasTuple(s1, s2, s3, this, i) and
+      result = getAThreewayIntersect(s1, s2, s3)
+    )
   }
 
   /** Gets a string corresponding to this trace. */
@@ -346,10 +358,10 @@ private class RelevantTrace extends Trace {
   language[monotonicAggregates]
   string concretise() {
     result =
-      concat(int i, InputSymbol s1, InputSymbol s2, InputSymbol s3 |
-        this.hasTuple(i, s1, s2, s3)
+      strictconcat(int i |
+        hasTuple(_, _, _, this, i)
       |
-        getAThreewayIntersect(s1, s2, s3) order by i desc
+        this.getAThreewayIntersect(i) order by i desc
       )
   }
 }

@@ -310,7 +310,22 @@ private StatePair getAForkPair(State fork) {
   result = MkStatePair(epsilonPred*(fork), epsilonPred*(fork))
 }
 
-private class RelevantTrace extends Trace {
+private predicate hasSuffix(Trace suffix, Trace t, int i) {
+  // Declaring `t` to be a `RelevantTrace` currently causes a redundant check in the
+  // recursive case, so instead we check it explicitly here.
+  t instanceof RelevantTrace and
+  i = 0 and
+  suffix = t
+  or
+  hasSuffix(Step(_, _, suffix), t, i - 1)
+}
+
+pragma[noinline]
+private predicate hasTuple(InputSymbol s1, InputSymbol s2, Trace t, int i) {
+  hasSuffix(Step(s1, s2, _), t, i)
+}
+
+private class RelevantTrace extends Trace, Step {
   RelevantTrace() {
     exists(State fork, StatePair q |
       isReachableFromFork(fork, q, this, _) and
@@ -318,15 +333,12 @@ private class RelevantTrace extends Trace {
     )
   }
 
-  private Trace getSuffix(int i) {
-    i = 0 and
-    result = this
-    or
-    this.getSuffix(i - 1) = Step(_, _, result)
-  }
-
-  private predicate hasTuple(int i, InputSymbol s1, InputSymbol s2) {
-    this.getSuffix(i) = Step(s1, s2, _)
+  pragma[noinline]
+  private string intersect(int i) {
+    exists(InputSymbol s1, InputSymbol s2 |
+      hasTuple(s1, s2, this, i) and
+      result = intersect(s1, s2)
+    )
   }
 
   /** Gets a string corresponding to this trace. */
@@ -334,12 +346,7 @@ private class RelevantTrace extends Trace {
   // not for recursion
   language[monotonicAggregates]
   string concretise() {
-    result =
-      concat(int i, InputSymbol s1, InputSymbol s2 |
-        this.hasTuple(i, s1, s2)
-      |
-        intersect(s1, s2) order by i desc
-      )
+    result = strictconcat(int i | hasTuple(_, _, this, i) | this.intersect(i) order by i desc)
   }
 }
 
