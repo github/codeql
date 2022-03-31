@@ -13,6 +13,9 @@ lxml.etree.fromstringlist(strings=[x]) # $ decodeFormat=XML decodeInput=List xml
 lxml.etree.XML(x) # $ decodeFormat=XML decodeInput=x xmlVuln='XXE' decodeOutput=lxml.etree.XML(..)
 lxml.etree.XML(text=x) # $ decodeFormat=XML decodeInput=x xmlVuln='XXE' decodeOutput=lxml.etree.XML(..)
 
+lxml.etree.XMLID(x) # $ decodeFormat=XML decodeInput=x xmlVuln='XXE' decodeOutput=lxml.etree.XMLID(..)
+lxml.etree.XMLID(text=x) # $ decodeFormat=XML decodeInput=x xmlVuln='XXE' decodeOutput=lxml.etree.XMLID(..)
+
 lxml.etree.parse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='XXE' decodeOutput=lxml.etree.parse(..)
 lxml.etree.parse(source=StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='XXE' decodeOutput=lxml.etree.parse(..)
 

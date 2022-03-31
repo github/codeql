@@ -221,6 +221,7 @@ private module Lxml {
    * - `lxml.etree.fromstring`
    * - `lxml.etree.fromstringlist`
    * - `lxml.etree.XML`
+   * - `lxml.etree.XMLID`
    * - `lxml.etree.parse`
    * - `lxml.etree.parseid`
    *
@@ -228,6 +229,7 @@ private module Lxml {
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.fromstring
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.fromstringlist
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.XML
+   * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.XMLID
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parse
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parseid
    */
@@ -236,14 +238,14 @@ private module Lxml {
       this =
         API::moduleImport("lxml")
             .getMember("etree")
-            .getMember(["fromstring", "fromstringlist", "XML", "parse", "parseid"])
+            .getMember(["fromstring", "fromstringlist", "XML", "XMLID", "parse", "parseid"])
             .getACall()
     }
 
     override DataFlow::Node getAnInput() {
       result in [
           this.getArg(0),
-          // fromstring / XML
+          // fromstring / XML / XMLID
           this.getArgByName("text"),
           // fromstringlist
           this.getArgByName("strings"),
@@ -264,7 +266,7 @@ private module Lxml {
     override predicate mayExecuteInput() { none() }
 
     override DataFlow::Node getOutput() {
-      // Note: for `parseid` the result of the call is a tuple with `(root, dict)`, so
+      // Note: for `parseid`/XMLID the result of the call is a tuple with `(root, dict)`, so
       // maybe we should not just say that the entire tuple is the decoding output... my
       // gut feeling is that THIS instance doesn't matter too much, but that it would be
       // nice to be able to do this in general. (this is a problem for both `lxml.etree`
