@@ -3306,6 +3306,35 @@ private module StdlibPrivate {
       result = this
     }
   }
+
+  /**
+   * A call to `xml.etree.ElementTree.parse` or `xml.etree.ElementTree.iterparse`, which
+   * takes either a filename or a file-like object as argument. To capture the filename
+   * for path-injection, we have this subclass.
+   *
+   * See
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.parse
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.iterparse
+   */
+  private class FileAccessFromXMLEtreeParsing extends XMLEtreeParsing, FileSystemAccess::Range {
+    FileAccessFromXMLEtreeParsing() {
+      this =
+        API::moduleImport("xml")
+            .getMember("etree")
+            .getMember("ElementTree")
+            .getMember(["parse", "iterparse"])
+            .getACall()
+      // I considered whether we should try to reduce FPs from people passing file-like
+      // objects, which will not be a file system access (and couldn't cause a
+      // path-injection).
+      //
+      // I suppose that once we have proper flow-summary support for file-like objects,
+      // we can make the XXE/XML-bomb sinks allow an access-path, while the
+      // path-injection sink wouldn't, and then we will not end up with such FPs.
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
+  }
 }
 
 // ---------------------------------------------------------------------------

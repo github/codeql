@@ -17,14 +17,14 @@ lxml.etree.XMLID(x) # $ decodeFormat=XML decodeInput=x xmlVuln='XXE' decodeOutpu
 lxml.etree.XMLID(text=x) # $ decodeFormat=XML decodeInput=x xmlVuln='XXE' decodeOutput=lxml.etree.XMLID(..)
 
 xml_file = 'xml_file'
-lxml.etree.parse(xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.parse(..)
-lxml.etree.parse(source=xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.parse(..)
+lxml.etree.parse(xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.parse(..) getAPathArgument=xml_file
+lxml.etree.parse(source=xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.parse(..) getAPathArgument=xml_file
 
-lxml.etree.parseid(xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.parseid(..)
-lxml.etree.parseid(source=xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.parseid(..)
+lxml.etree.parseid(xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.parseid(..) getAPathArgument=xml_file
+lxml.etree.parseid(source=xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.parseid(..) getAPathArgument=xml_file
 
-lxml.etree.iterparse(xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..)
-lxml.etree.iterparse(source=xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..)
+lxml.etree.iterparse(xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..) getAPathArgument=xml_file
+lxml.etree.iterparse(source=xml_file) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..) getAPathArgument=xml_file
 
 # With default parsers (nothing changed)
 parser = lxml.etree.XMLParser()
@@ -63,5 +63,5 @@ lxml.etree.fromstring(x, parser=parser) # $ decodeFormat=XML decodeInput=x xmlVu
 # iterparse configurations ... this doesn't use a parser argument but takes MOST (!) of
 # the normal XMLParser arguments. Specifically, it doesn't allow disabling XXE :O
 
-lxml.etree.iterparse(xml_file, huge_tree=True) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..)
-lxml.etree.iterparse(xml_file, load_dtd=True, no_network=False) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='DTD retrieval' xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..)
+lxml.etree.iterparse(xml_file, huge_tree=True) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..) getAPathArgument=xml_file
+lxml.etree.iterparse(xml_file, load_dtd=True, no_network=False) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='DTD retrieval' xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..) getAPathArgument=xml_file

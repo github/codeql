@@ -276,12 +276,37 @@ private module Lxml {
   }
 
   /**
+   * A call to `lxml.etree.ElementTree.parse` or `lxml.etree.ElementTree.parseid`, which
+   * takes either a filename or a file-like object as argument. To capture the filename
+   * for path-injection, we have this subclass.
+   *
+   * See
+   * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parse
+   * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parseid
+   */
+  private class FileAccessFromLXMLParsing extends LXMLParsing, FileSystemAccess::Range {
+    FileAccessFromLXMLParsing() {
+      this = API::moduleImport("lxml").getMember("etree").getMember(["parse", "parseid"]).getACall()
+      // I considered whether we should try to reduce FPs from people passing file-like
+      // objects, which will not be a file system access (and couldn't cause a
+      // path-injection).
+      //
+      // I suppose that once we have proper flow-summary support for file-like objects,
+      // we can make the XXE/XML-bomb sinks allow an access-path, while the
+      // path-injection sink wouldn't, and then we will not end up with such FPs.
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
+  }
+
+  /**
    * A call to `lxml.etree.iterparse`
    *
    * See
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.iterparse
    */
-  private class LXMLIterparseCall extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
+  private class LXMLIterparseCall extends DataFlow::CallCfgNode, XML::XMLParsing::Range,
+    FileSystemAccess::Range {
     LXMLIterparseCall() {
       this = API::moduleImport("lxml").getMember("etree").getMember("iterparse").getACall()
     }
@@ -303,5 +328,7 @@ private module Lxml {
     override predicate mayExecuteInput() { none() }
 
     override DataFlow::Node getOutput() { result = this }
+
+    override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
   }
 }

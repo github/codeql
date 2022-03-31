@@ -16,11 +16,11 @@ xml.etree.ElementTree.XML(text=x) # $ decodeFormat=XML decodeInput=x xmlVuln='Bi
 xml.etree.ElementTree.XMLID(x) # $ decodeFormat=XML decodeInput=x xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=xml.etree.ElementTree.XMLID(..)
 xml.etree.ElementTree.XMLID(text=x) # $ decodeFormat=XML decodeInput=x xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=xml.etree.ElementTree.XMLID(..)
 
-xml.etree.ElementTree.parse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=xml.etree.ElementTree.parse(..)
-xml.etree.ElementTree.parse(source=StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=xml.etree.ElementTree.parse(..)
+xml.etree.ElementTree.parse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=xml.etree.ElementTree.parse(..) getAPathArgument=StringIO(..)
+xml.etree.ElementTree.parse(source=StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=xml.etree.ElementTree.parse(..) getAPathArgument=StringIO(..)
 
-xml.etree.ElementTree.iterparse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=xml.etree.ElementTree.iterparse(..)
-xml.etree.ElementTree.iterparse(source=StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=xml.etree.ElementTree.iterparse(..)
+xml.etree.ElementTree.iterparse(StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=xml.etree.ElementTree.iterparse(..) getAPathArgument=StringIO(..)
+xml.etree.ElementTree.iterparse(source=StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=xml.etree.ElementTree.iterparse(..) getAPathArgument=StringIO(..)
 
 
 # With parsers (no options available to disable/enable security features)

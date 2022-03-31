@@ -2,7 +2,7 @@ from lxml import etree
 from io import StringIO
 
 def test_parse():
-    tree = etree.parse(StringIO('<foo><bar></bar></foo>')) # $ decodeFormat=XML decodeInput=StringIO(..) decodeOutput=etree.parse(..) xmlVuln='XXE'
+    tree = etree.parse(StringIO('<foo><bar></bar></foo>')) # $ decodeFormat=XML decodeInput=StringIO(..) decodeOutput=etree.parse(..) xmlVuln='XXE' getAPathArgument=StringIO(..)
     r = tree.xpath('/foo/bar')  # $ getXPath='/foo/bar'
 
 def test_XPath_class():
