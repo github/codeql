@@ -57,13 +57,25 @@ private module Lxml {
    */
   class XPathCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
     XPathCall() {
-      this =
-        API::moduleImport("lxml")
-            .getMember("etree")
-            .getMember(["parse", "fromstring", "fromstringlist", "HTML", "XML"])
-            .getReturn()
-            .getMember("xpath")
-            .getACall()
+      exists(API::Node parseResult |
+        parseResult =
+          API::moduleImport("lxml")
+              .getMember("etree")
+              .getMember(["parse", "fromstring", "fromstringlist", "HTML", "XML"])
+              .getReturn()
+        or
+        // TODO: lxml.etree.parseid(<text>)[0] will contain the root element from parsing <text>
+        // but we don't really have a way to model that nicely.
+        parseResult =
+          API::moduleImport("lxml")
+              .getMember("etree")
+              .getMember("XMLParser")
+              .getReturn()
+              .getMember("close")
+              .getReturn()
+      |
+        this = parseResult.getMember("xpath").getACall()
+      )
     }
 
     override DataFlow::Node getXPath() { result in [this.getArg(0), this.getArgByName("_path")] }
