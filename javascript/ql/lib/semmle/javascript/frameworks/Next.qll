@@ -35,11 +35,10 @@ module NextJS {
    */
   Module getAModuleWithFallbackPaths() {
     result = getAPagesModule() and
-    exists(DataFlow::FunctionNode staticPaths, Expr fallback |
+    exists(DataFlow::FunctionNode staticPaths, DataFlow::Node fallback |
       staticPaths = result.getAnExportedValue("getStaticPaths").getAFunctionValue() and
-      fallback =
-        staticPaths.getAReturn().getALocalSource().getAPropertyWrite("fallback").getRhs().asExpr() and
-      not fallback.(BooleanLiteral).getValue() = "false"
+      fallback = staticPaths.getAReturn().getALocalSource().getAPropertyWrite("fallback").getRhs() and
+      not fallback.mayHaveBooleanValue(false)
     )
   }
 

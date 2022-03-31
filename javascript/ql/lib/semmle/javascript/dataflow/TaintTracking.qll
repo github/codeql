@@ -482,17 +482,13 @@ module TaintTracking {
    */
   private class HeapTaintStep extends SharedTaintStep {
     override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(Expr e, Expr f | e = succ.asExpr() and f = pred.asExpr() |
-        exists(Property prop | e.(ObjectExpr).getAProperty() = prop |
-          prop.isComputed() and f = prop.getNameExpr()
-        )
-        or
-        // spreading a tainted object into an object literal gives a tainted object
-        e.(ObjectExpr).getAProperty().(SpreadProperty).getInit().(SpreadElement).getOperand() = f
-        or
-        // spreading a tainted value into an array literal gives a tainted array
-        e.(ArrayExpr).getAnElement().(SpreadElement).getOperand() = f
-      )
+      succ.(DataFlow::ObjectLiteralNode).getAComputedPropertyName() = pred
+      or
+      // spreading a tainted object into an object literal gives a tainted object
+      succ.(DataFlow::ObjectLiteralNode).getASpreadProperty() = pred
+      or
+      // spreading a tainted value into an array literal gives a tainted array
+      succ.(DataFlow::ArrayCreationNode).getASpreadArgument() = pred
       or
       // arrays with tainted elements and objects with tainted property names are tainted
       succ.(DataFlow::ArrayCreationNode).getAnElement() = pred and

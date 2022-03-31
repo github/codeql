@@ -959,7 +959,7 @@ module Express {
      * Example: `fun` for `router1.use(fun)` or `router.use("/route", fun)`
      */
     HTTP::RouteHandler getARouteHandler() {
-      result.(DataFlow::SourceNode).flowsToExpr(this.getARouteSetup().getAnArgument().asExpr())
+      result.(DataFlow::SourceNode).flowsTo(this.getARouteSetup().getAnArgument())
     }
 
     /**

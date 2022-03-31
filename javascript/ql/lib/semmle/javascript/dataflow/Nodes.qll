@@ -562,6 +562,14 @@ class ObjectLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   DataFlow::FunctionNode getPropertySetter(string name) {
     result = astNode.getPropertyByName(name).(PropertySetter).getInit().flow()
   }
+
+  /** Gets the value of a computed property name of this object literal, such as `x` in `{[x]: 1}` */
+  DataFlow::Node getAComputedPropertyName() {
+    exists(Property prop | prop = astNode.getAProperty() |
+      prop.isComputed() and
+      result = prop.getNameExpr().flow()
+    )
+  }
 }
 
 /**

@@ -68,7 +68,7 @@ private class TrackStringsInAngularCode extends DataFlow::SourceNode::Range, Dat
  */
 private DataFlow::CallNode angularModuleCall(string name) {
   result = angular().getAMemberCall("module") and
-  result.getArgument(0).asExpr().mayHaveStringValue(name)
+  result.getArgument(0).mayHaveStringValue(name)
 }
 
 /**
@@ -280,7 +280,7 @@ abstract class CustomDirective extends DirectiveInstance {
   InjectableFunction getController() { result = this.getMember("controller") }
 
   /** Gets the template URL of this directive, if any. */
-  string getTemplateUrl() { this.getMember("templateUrl").asExpr().mayHaveStringValue(result) }
+  string getTemplateUrl() { this.getMember("templateUrl").mayHaveStringValue(result) }
 
   /**
    * Gets a template file for this directive, if any.
@@ -298,9 +298,7 @@ abstract class CustomDirective extends DirectiveInstance {
     else result = DirectiveInstance.super.getAScope()
   }
 
-  private string getRestrictionString() {
-    this.getMember("restrict").asExpr().mayHaveStringValue(result)
-  }
+  private string getRestrictionString() { this.getMember("restrict").mayHaveStringValue(result) }
 
   private predicate hasTargetType(DirectiveTargetType type) {
     not exists(this.getRestrictionString()) or
@@ -383,10 +381,12 @@ class GeneralDirective extends CustomDirective, MkCustomDirective {
   override DataFlow::FunctionNode getALinkFunction() { result = this.getLinkFunction(_) }
 
   override predicate bindsToController() {
-    this.getMemberInit("bindToController").asExpr().mayHaveBooleanValue(true)
+    this.getMemberInit("bindToController").mayHaveBooleanValue(true)
   }
 
-  override predicate hasIsolateScope() { this.getMember("scope").asExpr() instanceof ObjectExpr }
+  override predicate hasIsolateScope() {
+    this.getMember("scope") instanceof DataFlow::ObjectLiteralNode
+  }
 }
 
 /**
@@ -930,9 +930,7 @@ class RouteSetup extends DataFlow::CallNode, DependencyInjection {
     |
       result = controllerProperty
       or
-      exists(ControllerDefinition def |
-        controllerProperty.asExpr().mayHaveStringValue(def.getName())
-      |
+      exists(ControllerDefinition def | controllerProperty.mayHaveStringValue(def.getName()) |
         result = def.getAService()
       )
     )
@@ -1012,7 +1010,7 @@ private class RouteInstantiatedController extends Controller {
 
   override predicate boundTo(DOM::ElementDefinition elem) {
     exists(string url, HTML::HtmlFile template |
-      setup.getRouteParam("templateUrl").asExpr().mayHaveStringValue(url) and
+      setup.getRouteParam("templateUrl").mayHaveStringValue(url) and
       template.getAbsolutePath().regexpMatch(".*\\Q" + url + "\\E") and
       elem.getFile() = template
     )
@@ -1020,7 +1018,7 @@ private class RouteInstantiatedController extends Controller {
 
   override predicate boundToAs(DOM::ElementDefinition elem, string name) {
     this.boundTo(elem) and
-    setup.getRouteParam("controllerAs").asExpr().mayHaveStringValue(name)
+    setup.getRouteParam("controllerAs").mayHaveStringValue(name)
   }
 }
 

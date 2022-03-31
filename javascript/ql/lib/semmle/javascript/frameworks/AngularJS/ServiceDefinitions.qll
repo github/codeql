@@ -244,7 +244,7 @@ abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinit
       this = moduleRef(_).getAMethodCall(methodName) or
       this = builtinServiceRef("$provide").getAMethodCall(methodName)
     ) and
-    getArgument(0).asExpr().mayHaveStringValue(name)
+    getArgument(0).mayHaveStringValue(name)
   }
 
   override string getName() { result = name }
@@ -281,7 +281,7 @@ private predicate isCustomServiceDefinitionOnModule(
   DataFlow::Node factoryFunction
 ) {
   mce = moduleRef(_).getAMethodCall(moduleMethodName) and
-  mce.getArgument(0).asExpr().mayHaveStringValue(serviceName) and
+  mce.getArgument(0).mayHaveStringValue(serviceName) and
   factoryFunction = mce.getArgument(1)
 }
 
@@ -296,7 +296,7 @@ private predicate isCustomServiceDefinitionOnProvider(
     factoryArgument = mce.getOptionArgument(0, serviceName)
     or
     mce.getNumArgument() = 2 and
-    mce.getArgument(0).asExpr().mayHaveStringValue(serviceName) and
+    mce.getArgument(0).mayHaveStringValue(serviceName) and
     factoryArgument = mce.getArgument(1)
   )
 }
