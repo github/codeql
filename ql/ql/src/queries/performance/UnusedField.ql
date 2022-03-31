@@ -31,13 +31,6 @@ where
       access.getEnclosingPredicate() = p
     )
   ) and
-  (if clz = implClz then extraMsg = "." else extraMsg = " of any class between it and $@.") and
-  // The `implClz` does not override `field` with a more specific type.
-  not exists(FieldDecl override |
-    override = implClz.getDeclaration().getAField() and
-    override.getName() = field.getName() and
-    override.hasAnnotation("override") and
-    override.getVarDecl().getType() != field.getVarDecl().getType()
-  )
+  (if clz = implClz then extraMsg = "." else extraMsg = " of any class between it and $@.")
 select clz, "The field $@ declared in $@ is not used in the characteristic predicate" + extraMsg,
   field, field.getName(), clz, clz.getName(), implClz, implClz.getName()
