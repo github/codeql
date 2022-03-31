@@ -162,6 +162,13 @@ private predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
 
 private predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 
+bindingset[input]
+private predicate getKind(string input, string kind, boolean generated) {
+  input.splitAt(":", 0) = "generated" and kind = input.splitAt(":", 1) and generated = true
+  or
+  not input.matches("%:%") and kind = input and generated = false
+}
+
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
@@ -177,8 +184,7 @@ predicate sourceModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = output and
-    row.splitAt(";", 7) = kind and
-    generated = false
+    exists(string k | row.splitAt(";", 7) = k and getKind(k, kind, generated))
   )
 }
 
@@ -197,8 +203,7 @@ predicate sinkModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = kind and
-    generated = false
+    exists(string k | row.splitAt(";", 7) = k and getKind(k, kind, generated))
   )
 }
 
@@ -218,8 +223,7 @@ predicate summaryModel(
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
     row.splitAt(";", 7) = output and
-    row.splitAt(";", 8) = kind and
-    generated = false // We need to split the "kind" field on ":".
+    exists(string k | row.splitAt(";", 8) = k and getKind(k, kind, generated))
   )
 }
 
