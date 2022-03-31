@@ -152,12 +152,10 @@ public class Test {
 
     static File safe11() throws IOException {
         File temp = null;
-        if (temp == null) {
-            while (true) {
-                temp = File.createTempFile("test", "directory");
-                if (temp.delete() && temp.mkdir()) {
-                    break;
-                }
+        while (true) {
+            temp = File.createTempFile("test", "directory");
+            if (temp.delete() && temp.mkdir()) {
+                break;
             }
         }
         return temp;
@@ -166,12 +164,14 @@ public class Test {
     File safe12temp;
     File safe12() throws IOException {
         if (safe12temp == null) {
+            File safe = null;
             while (true) {
-                safe12temp = File.createTempFile("test", "directory");
-                if (safe12temp.delete() && safe12temp.mkdir()) {
+                safe = File.createTempFile("test", "directory");
+                if (safe.delete() && safe.mkdir()) {
                     break;
                 }
             }
+            safe12temp = safe;
         }
         return safe12temp;
     }
@@ -306,5 +306,18 @@ public class Test {
         if (!file.mkdirs()) {
             throw new IOException("Mkdirs failed to create " + file.toString());
         }
+    }
+
+    File vulnerable10() throws IOException {
+        File temp = new File(System.getProperty("java.io.tmpdir"));
+        temp.mkdirs();
+        File workDir = File.createTempFile("test", "directory", temp);
+        deleteWrapper(workDir);
+        workDir.mkdirs();
+        return workDir;
+    }
+
+    static void deleteWrapper(File file) {
+        file.delete();
     }
 }
