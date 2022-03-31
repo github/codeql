@@ -333,25 +333,3 @@ private module SaxBasedParsing {
     override DataFlow::Node getOutput() { result = this }
   }
 }
-
-private module Xmltodict {
-  /**
-   * A call to `xmltodict.parse`.
-   */
-  private class XMLtoDictParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
-    XMLtoDictParsing() { this = API::moduleImport("xmltodict").getMember("parse").getACall() }
-
-    override DataFlow::Node getAnInput() {
-      result in [this.getArg(0), this.getArgByName("xml_input")]
-    }
-
-    override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
-      (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
-      this.getArgByName("disable_entities").getALocalSource().asExpr() = any(False f)
-    }
-
-    override predicate mayExecuteInput() { none() }
-
-    override DataFlow::Node getOutput() { result = this }
-  }
-}
