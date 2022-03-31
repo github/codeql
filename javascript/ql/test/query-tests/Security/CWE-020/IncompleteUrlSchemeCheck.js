@@ -105,3 +105,26 @@ function test14(url) {
         return "about:blank";
     return url;
 }
+
+function chain1(url) {
+    return url  // NOT OK
+        .replace(/javascript:/, "")
+        .replace(/data:/, "");
+}
+
+function chain2(url) {
+    return url  // OK
+        .replace(/javascript:/, "")
+        .replace(/data:/, "")
+        .replace(/vbscript:/, "");
+}
+
+function chain3(url) {
+    url = url.replace(/javascript:/, "")
+    url = url.replace(/data:/, ""); // NOT OK
+    return url;
+}
+
+function chain4(url) {
+    return url.replace(/(javascript|data):/, ""); // NOT OK - but not flagged [INCONSISTENCY]
+}

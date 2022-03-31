@@ -1,7 +1,7 @@
 import javascript
 
 query predicate test_CallSignature(
-  CallSignature call, string declType, ASTNode body, string abstractness
+  CallSignature call, string declType, AstNode body, string abstractness
 ) {
   (if call.isAbstract() then abstractness = "abstract" else abstractness = "not abstract") and
   declType = call.getDeclaringType().describe() and
@@ -9,7 +9,7 @@ query predicate test_CallSignature(
 }
 
 query predicate test_IndexSignature(
-  IndexSignature sig, string declType, ASTNode body, string abstractness
+  IndexSignature sig, string declType, AstNode body, string abstractness
 ) {
   (if sig.isAbstract() then abstractness = "abstract" else abstractness = "not abstract") and
   declType = sig.getDeclaringType().describe() and

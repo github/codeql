@@ -37,3 +37,17 @@ private class SqlSinkCsv extends SinkModelCsv {
       ]
   }
 }
+
+private class SsrfSinkCsv extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        //"package;type;overrides;name;signature;ext;spec;kind"
+        "org.springframework.boot.jdbc;DataSourceBuilder;false;url;(String);;Argument[0];jdbc-url",
+        "org.springframework.jdbc.datasource;AbstractDriverBasedDataSource;false;setUrl;(String);;Argument[0];jdbc-url",
+        "org.springframework.jdbc.datasource;DriverManagerDataSource;false;DriverManagerDataSource;(String);;Argument[0];jdbc-url",
+        "org.springframework.jdbc.datasource;DriverManagerDataSource;false;DriverManagerDataSource;(String,String,String);;Argument[0];jdbc-url",
+        "org.springframework.jdbc.datasource;DriverManagerDataSource;false;DriverManagerDataSource;(String,Properties);;Argument[0];jdbc-url"
+      ]
+  }
+}

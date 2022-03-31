@@ -118,7 +118,7 @@ abstract class Module extends TopLevel {
  * An import in a module, which may be an ECMAScript 2015-style
  * `import` statement, a CommonJS-style `require` import, or an AMD dependency.
  */
-abstract class Import extends ASTNode {
+abstract class Import extends AstNode {
   /** Gets the module in which this import appears. */
   abstract Module getEnclosingModule();
 
@@ -211,7 +211,7 @@ abstract class Import extends ASTNode {
  * No support for importing from folders inside the other package.
  */
 private Module resolveNeighbourPackage(PathString importPath) {
-  exists(PackageJSON json | importPath = json.getPackageName() and result = json.getMainModule())
+  exists(PackageJson json | importPath = json.getPackageName() and result = json.getMainModule())
   or
   exists(string package |
     result.getFile().getParentContainer() = getPackageFolder(package) and
@@ -224,7 +224,7 @@ private Module resolveNeighbourPackage(PathString importPath) {
  */
 pragma[noinline]
 private Folder getPackageFolder(string package) {
-  exists(PackageJSON json |
+  exists(PackageJson json |
     json.getPackageName() = package and
     result = json.getFile().getParentContainer()
   )

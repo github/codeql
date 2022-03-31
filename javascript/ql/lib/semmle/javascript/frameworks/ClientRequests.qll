@@ -546,8 +546,8 @@ module ClientRequest {
    *
    * Note: Prefer to use the `ClientRequest` class as it is more general.
    */
-  class XMLHttpRequest extends ClientRequest::Range {
-    XMLHttpRequest() {
+  class XmlHttpRequest extends ClientRequest::Range {
+    XmlHttpRequest() {
       this = DataFlow::globalVarRef("XMLHttpRequest").getAnInstantiation()
       or
       // closure shim for XMLHttpRequest
@@ -617,6 +617,9 @@ module ClientRequest {
       )
     }
   }
+
+  /** DEPRECATED: Alias for XmlHttpRequest */
+  deprecated class XMLHttpRequest = XmlHttpRequest;
 
   /**
    * A model of a URL request made using the `XhrIo` class from the closure library.
@@ -788,8 +791,8 @@ module ClientRequest {
   /**
    * A model of a URL request made using `jsdom.fromUrl()`.
    */
-  class JSDOMFromUrl extends ClientRequest::Range {
-    JSDOMFromUrl() {
+  class JSDomFromUrl extends ClientRequest::Range {
+    JSDomFromUrl() {
       this = API::moduleImport("jsdom").getMember("JSDOM").getMember("fromURL").getACall()
     }
 
@@ -799,6 +802,9 @@ module ClientRequest {
 
     override DataFlow::Node getADataNode() { none() }
   }
+
+  /** DEPRECATED: Alias for JSDomFromUrl */
+  deprecated class JSDOMFromUrl = JSDomFromUrl;
 
   /**
    * Classes and predicates modeling the `apollo-client` library.

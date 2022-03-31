@@ -7,10 +7,10 @@
  */
 
 import java
-import ExternalAPI
+import ExternalApi
 import semmle.code.java.GeneratedFiles
 
-from ExternalAPI api, int usages
+from ExternalApi api, int usages
 where
   not api.isUninteresting() and
   api.isSink() and

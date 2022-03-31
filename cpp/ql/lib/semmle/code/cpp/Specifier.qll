@@ -38,7 +38,7 @@ class FunctionSpecifier extends Specifier {
 
 /**
  * A C/C++ storage class specifier: `auto`, `register`, `static`, `extern`,
- * or `mutable".
+ * or `mutable`.
  */
 class StorageClassSpecifier extends Specifier {
   StorageClassSpecifier() { this.hasName(["auto", "register", "static", "extern", "mutable"]) }

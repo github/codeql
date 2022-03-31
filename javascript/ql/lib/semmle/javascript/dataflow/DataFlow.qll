@@ -78,7 +78,7 @@ module DataFlow {
     }
 
     /** Gets the AST node corresponding to this data flow node, if any. */
-    ASTNode getAstNode() { none() }
+    AstNode getAstNode() { none() }
 
     /** Gets the basic block to which this node belongs. */
     BasicBlock getBasicBlock() { none() }
@@ -332,7 +332,7 @@ module DataFlow {
 
     override File getFile() { result = ssa.getBasicBlock().getFile() }
 
-    override ASTNode getAstNode() { none() }
+    override AstNode getAstNode() { none() }
   }
 
   /**
@@ -353,11 +353,11 @@ module DataFlow {
           .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override string toString() { result = prop.(ASTNode).toString() }
+    override string toString() { result = prop.(AstNode).toString() }
 
-    override File getFile() { result = prop.(ASTNode).getFile() }
+    override File getFile() { result = prop.(AstNode).getFile() }
 
-    override ASTNode getAstNode() { result = prop }
+    override AstNode getAstNode() { result = prop }
   }
 
   /**
@@ -382,7 +382,7 @@ module DataFlow {
 
     override File getFile() { result = pattern.getFile() }
 
-    override ASTNode getAstNode() { result = rest }
+    override AstNode getAstNode() { result = rest }
   }
 
   /**
@@ -407,7 +407,7 @@ module DataFlow {
 
     override File getFile() { result = pattern.getFile() }
 
-    override ASTNode getAstNode() { result = elt }
+    override AstNode getAstNode() { result = elt }
   }
 
   /**
@@ -436,7 +436,7 @@ module DataFlow {
 
     override File getFile() { result = arr.getFile() }
 
-    override ASTNode getAstNode() { result = elt }
+    override AstNode getAstNode() { result = elt }
   }
 
   /**
@@ -719,7 +719,7 @@ module DataFlow {
    * the JSX element it is in.
    */
   private class JsxAttributeAsPropWrite extends PropWrite, PropNode {
-    override JSXAttribute prop;
+    override JsxAttribute prop;
 
     override Node getBase() { result = valueNode(prop.getElement()) }
 
@@ -1307,7 +1307,7 @@ module DataFlow {
    * This predicate is only defined for expressions, properties, and for statements that declare
    * a function, a class, or a TypeScript namespace or enum.
    */
-  ValueNode valueNode(ASTNode nd) { result.getAstNode() = nd }
+  ValueNode valueNode(AstNode nd) { result.getAstNode() = nd }
 
   /**
    * Gets the data flow node corresponding to `e`.
@@ -1669,11 +1669,11 @@ module DataFlow {
     or
     exists(Expr e | e = nd.asExpr() and cause = "heap" |
       e instanceof PropAccess or
-      e instanceof E4X::XMLAnyName or
-      e instanceof E4X::XMLAttributeSelector or
-      e instanceof E4X::XMLDotDotExpression or
-      e instanceof E4X::XMLFilterExpression or
-      e instanceof E4X::XMLQualifiedIdentifier or
+      e instanceof E4X::XmlAnyName or
+      e instanceof E4X::XmlAttributeSelector or
+      e instanceof E4X::XmlDotDotExpression or
+      e instanceof E4X::XmlFilterExpression or
+      e instanceof E4X::XmlQualifiedIdentifier or
       e instanceof Angular2::PipeRefExpr
     )
     or
@@ -1718,5 +1718,5 @@ module DataFlow {
   import TypeTracking
   import internal.FunctionWrapperSteps
 
-  predicate localTaintStep = TaintTracking::localTaintStep/2;
+  deprecated predicate localTaintStep = TaintTracking::localTaintStep/2;
 }

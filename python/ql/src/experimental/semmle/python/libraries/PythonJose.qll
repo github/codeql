@@ -5,13 +5,13 @@ private import experimental.semmle.python.frameworks.JWT
 
 private module PythonJose {
   /** Gets a reference to `jwt` */
-  private API::Node joseJWT() { result = API::moduleImport("jose").getMember("jwt") }
+  private API::Node joseJwt() { result = API::moduleImport("jose").getMember("jwt") }
 
   /** Gets a reference to `jwt.encode` */
-  private API::Node joseJWTEncode() { result = joseJWT().getMember("encode") }
+  private API::Node joseJwtEncode() { result = joseJwt().getMember("encode") }
 
   /** Gets a reference to `jwt.decode` */
-  private API::Node joseJWTDecode() { result = joseJWT().getMember("decode") }
+  private API::Node joseJwtDecode() { result = joseJwt().getMember("decode") }
 
   /**
    * Gets a call to `jwt.encode`.
@@ -28,8 +28,8 @@ private module PythonJose {
    * * `getAlgorithm()`'s result would be `"HS256"`.
    * * `getAlgorithmstring()`'s result would be `HS256`.
    */
-  private class JoseJWTEncodeCall extends DataFlow::CallCfgNode, JWTEncoding::Range {
-    JoseJWTEncodeCall() { this = joseJWTEncode().getACall() }
+  private class JoseJwtEncodeCall extends DataFlow::CallCfgNode, JwtEncoding::Range {
+    JoseJwtEncodeCall() { this = joseJwtEncode().getACall() }
 
     override DataFlow::Node getPayload() { result = this.getArg(0) }
 
@@ -64,8 +64,8 @@ private module PythonJose {
    * * `getOptions()`'s result would be none.
    * * `verifiesSignature()` predicate would succeed.
    */
-  private class JoseJWTDecodeCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
-    JoseJWTDecodeCall() { this = joseJWTDecode().getACall() }
+  private class JoseJwtDecodeCall extends DataFlow::CallCfgNode, JwtDecoding::Range {
+    JoseJwtDecodeCall() { this = joseJwtDecode().getACall() }
 
     override DataFlow::Node getPayload() { result = this.getArg(0) }
 

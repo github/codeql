@@ -1,3 +1,9 @@
+## 0.0.11
+
+### Minor Analysis Improvements
+
+* Many queries now support structured bindings, as structured bindings are now handled in the IR translation.
+
 ## 0.0.10
 
 ### New Features
@@ -5,6 +11,7 @@
 * Added a `isStructuredBinding` predicate to the `Variable` class which holds when the variable is declared as part of a structured binding declaration.
 
 ## 0.0.9
+
 
 ## 0.0.8
 

@@ -61,7 +61,7 @@ predicate isArgumentToKnownLibrarySinkFunction(DataFlow::Node n) {
  * This corresponds to known sinks from security queries whose sources include remote flow and
  * DOM-based sources.
  */
-predicate isKnownExternalAPIQuerySink(DataFlow::Node n) {
+predicate isKnownExternalApiQuerySink(DataFlow::Node n) {
   n instanceof Xxe::Sink or
   n instanceof TaintedPath::Sink or
   n instanceof XpathInjection::Sink or
@@ -86,11 +86,14 @@ predicate isKnownExternalAPIQuerySink(DataFlow::Node n) {
   n instanceof HttpToFileAccess::Sink
 }
 
+/** DEPRECATED: Alias for isKnownExternalApiQuerySink */
+deprecated predicate isKnownExternalAPIQuerySink = isKnownExternalApiQuerySink/1;
+
 /**
  * Holds if the node `n` is a known sink in a modeled library.
  */
 predicate isKnownLibrarySink(DataFlow::Node n) {
-  isKnownExternalAPIQuerySink(n) or
+  isKnownExternalApiQuerySink(n) or
   n instanceof CleartextLogging::Sink or
   n instanceof StackTraceExposure::Sink or
   n instanceof ShellCommandInjectionFromEnvironment::Sink or
@@ -207,7 +210,7 @@ predicate isOtherModeledArgument(DataFlow::Node n, FilteringReason reason) {
       DatabaseAccess and
     reason instanceof DatabaseAccessReason
     or
-    call = DOM::domValueRef() and reason instanceof DOMReason
+    call = DOM::domValueRef() and reason instanceof DomReason
     or
     call.getCalleeName() = "next" and
     exists(DataFlow::FunctionNode f | call = f.getLastParameter().getACall()) and

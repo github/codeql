@@ -1365,27 +1365,31 @@ private predicate loadStep(
 
 /**
  * Holds if there is flow to `base.startProp`, and `base.startProp` flows to `nd.endProp` under `cfg/summary`.
+ *
+ * If `onlyRelevantInCall` is true, the `base` object will not be propagated out of return edges, because
+ * the flow that originally reached `base.startProp` used a call edge.
  */
 pragma[nomagic]
 private predicate reachableFromStoreBase(
   string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd,
-  DataFlow::Configuration cfg, PathSummary summary
+  DataFlow::Configuration cfg, PathSummary summary, boolean onlyRelevantInCall
 ) {
   exists(PathSummary s1, PathSummary s2, DataFlow::Node rhs |
-    reachableFromSource(rhs, cfg, s1)
+    reachableFromSource(rhs, cfg, s1) and
+    onlyRelevantInCall = s1.hasCall()
     or
-    reachableFromStoreBase(_, _, _, rhs, cfg, s1)
+    reachableFromStoreBase(_, _, _, rhs, cfg, s1, onlyRelevantInCall)
   |
     storeStep(rhs, nd, startProp, cfg, s2) and
     endProp = startProp and
     base = nd and
     summary =
-      MkPathSummary(false, s1.hasCall().booleanOr(s2.hasCall()), DataFlow::FlowLabel::data(),
-        DataFlow::FlowLabel::data())
+      MkPathSummary(false, s2.hasCall(), DataFlow::FlowLabel::data(), DataFlow::FlowLabel::data())
   )
   or
   exists(PathSummary newSummary, PathSummary oldSummary |
-    reachableFromStoreBaseStep(startProp, endProp, base, nd, cfg, oldSummary, newSummary) and
+    reachableFromStoreBaseStep(startProp, endProp, base, nd, cfg, oldSummary, newSummary,
+      onlyRelevantInCall) and
     summary = oldSummary.appendValuePreserving(newSummary)
   )
 }
@@ -1399,14 +1403,16 @@ private predicate reachableFromStoreBase(
 pragma[noinline]
 private predicate reachableFromStoreBaseStep(
   string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd,
-  DataFlow::Configuration cfg, PathSummary oldSummary, PathSummary newSummary
+  DataFlow::Configuration cfg, PathSummary oldSummary, PathSummary newSummary,
+  boolean onlyRelevantInCall
 ) {
   exists(DataFlow::Node mid |
-    reachableFromStoreBase(startProp, endProp, base, mid, cfg, oldSummary) and
-    flowStep(mid, cfg, nd, newSummary)
+    reachableFromStoreBase(startProp, endProp, base, mid, cfg, oldSummary, onlyRelevantInCall) and
+    flowStep(mid, cfg, nd, newSummary) and
+    onlyRelevantInCall.booleanAnd(newSummary.hasReturn()) = false
     or
     exists(string midProp |
-      reachableFromStoreBase(startProp, midProp, base, mid, cfg, oldSummary) and
+      reachableFromStoreBase(startProp, midProp, base, mid, cfg, oldSummary, onlyRelevantInCall) and
       isAdditionalLoadStoreStep(mid, nd, midProp, endProp, cfg) and
       newSummary = PathSummary::level()
     )
@@ -1446,7 +1452,7 @@ private predicate storeToLoad(
     PathSummary s1, PathSummary s2
   |
     storeStep(pred, storeBase, storeProp, cfg, s1) and
-    reachableFromStoreBase(storeProp, loadProp, storeBase, loadBase, cfg, s2) and
+    reachableFromStoreBase(storeProp, loadProp, storeBase, loadBase, cfg, s2, _) and
     oldSummary = s1.appendValuePreserving(s2) and
     loadStep(loadBase, succ, loadProp, cfg, newSummary)
   )

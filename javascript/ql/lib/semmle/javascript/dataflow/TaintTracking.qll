@@ -429,9 +429,10 @@ module TaintTracking {
 
   /**
    * Holds if `pred -> succ` is a taint propagating data flow edge through a string operation.
+   * DEPRECATED: Use `stringConcatenationStep` and `stringManipulationStep` instead.
    */
   pragma[inline]
-  predicate stringStep(DataFlow::Node pred, DataFlow::Node succ) {
+  deprecated predicate stringStep(DataFlow::Node pred, DataFlow::Node succ) {
     stringConcatenationStep(pred, succ) or
     stringManipulationStep(pred, succ)
   }
@@ -533,7 +534,10 @@ module TaintTracking {
       or
       // reading from a tainted object yields a tainted result
       succ.(DataFlow::PropRead).getBase() = pred and
-      not AccessPath::DominatingPaths::hasDominatingWrite(succ) and
+      not (
+        AccessPath::DominatingPaths::hasDominatingWrite(succ) and
+        exists(succ.(DataFlow::PropRead).getPropertyName())
+      ) and
       not isSafeClientSideUrlProperty(succ) and
       not ClassValidator::isAccessToSanitizedField(succ)
       or
@@ -1242,8 +1246,9 @@ module TaintTracking {
 
   /**
    * Holds if taint propagates from `pred` to `succ` in one local (intra-procedural) step.
+   * DEPRECATED: Use `TaintTracking::sharedTaintStep` and `DataFlow::Node::getALocalSource()` instead.
    */
-  predicate localTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  deprecated predicate localTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     DataFlow::localFlowStep(pred, succ) or
     sharedTaintStep(pred, succ)
   }

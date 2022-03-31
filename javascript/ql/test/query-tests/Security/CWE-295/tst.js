@@ -68,3 +68,10 @@ new https.Agent({
 new https.Agent({
 	rejectUnauthorized: typeof getOptions().rejectUnauthorized === 'boolean' ? getOptions().rejectUnauthorized : undefined // OK
 });
+
+function getSomeunsafeOptions() {
+    return {
+        rejectUnauthorized: false // NOT OK
+    }
+}
+new https.Agent(getSomeunsafeOptions());

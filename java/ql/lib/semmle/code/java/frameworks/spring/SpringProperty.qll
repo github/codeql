@@ -6,7 +6,7 @@ import semmle.code.java.frameworks.spring.SpringList
 import semmle.code.java.frameworks.spring.SpringValue
 
 /** A `<property>` element in Spring XML files. */
-class SpringProperty extends SpringXMLElement {
+class SpringProperty extends SpringXmlElement {
   SpringProperty() { this.getName() = "property" }
 
   override string toString() { result = this.getPropertyName() }
@@ -55,7 +55,7 @@ class SpringProperty extends SpringXMLElement {
    * Holds if this property is similar to another property.
    * Currently only checks the property name and references to beans.
    */
-  override predicate isSimilar(SpringXMLElement element) {
+  override predicate isSimilar(SpringXmlElement element) {
     exists(SpringProperty other |
       other = element and this.getPropertyName() = other.getPropertyName()
     |

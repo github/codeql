@@ -964,6 +964,9 @@ class ArgumentNode extends Node instanceof ArgumentNodeImpl {
   final predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     super.argumentOf(call, pos)
   }
+
+  /** Gets the call in which this node is an argument. */
+  DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
 abstract private class ArgumentNodeImpl extends Node {
@@ -1461,7 +1464,10 @@ private class InstanceFieldOrProperty extends FieldOrProperty {
   InstanceFieldOrProperty() { not this.isStatic() }
 }
 
-private class FieldOrPropertyAccess extends AssignableAccess, QualifiableExpr {
+/**
+ * An access to a field or a property.
+ */
+class FieldOrPropertyAccess extends AssignableAccess, QualifiableExpr {
   FieldOrPropertyAccess() { this.getTarget() instanceof FieldOrProperty }
 }
 
@@ -2025,4 +2031,54 @@ abstract class SyntheticField extends string {
 
   /** Gets the type of this synthetic field. */
   Type getType() { result instanceof ObjectType }
+}
+
+/**
+ * Holds if the the content `c` is a container.
+ */
+predicate containerContent(DataFlow::Content c) { c instanceof DataFlow::ElementContent }
+
+/** Gets the string representation of the parameters of `c`. */
+string parameterQualifiedTypeNamesToString(DataFlowCallable c) {
+  result =
+    concat(Parameter p, int i |
+      p = c.getParameter(i)
+    |
+      p.getType().getQualifiedName(), "," order by i
+    )
+}
+
+/**
+ * A module containing predicates related to generating models as data.
+ */
+module Csv {
+  /** Holds if the summary should apply for all overrides of `c`. */
+  predicate isBaseCallableOrPrototype(DataFlowCallable c) {
+    c.getDeclaringType() instanceof Interface
+    or
+    exists(Modifiable m | m = [c.(Modifiable), c.(Accessor).getDeclaration()] |
+      m.isAbstract()
+      or
+      c.getDeclaringType().(Modifiable).isAbstract() and m.(Virtualizable).isVirtual()
+    )
+  }
+
+  /** Gets a string representing whether the summary should apply for all overrides of `c`. */
+  private string getCallableOverride(DataFlowCallable c) {
+    if isBaseCallableOrPrototype(c) then result = "true" else result = "false"
+  }
+
+  /** Computes the first 6 columns for CSV rows of `c`. */
+  string asPartialModel(DataFlowCallable c) {
+    exists(string namespace, string type |
+      c.getDeclaringType().hasQualifiedName(namespace, type) and
+      result =
+        namespace + ";" //
+          + type + ";" //
+          + getCallableOverride(c) + ";" //
+          + c.getName() + ";" //
+          + "(" + parameterQualifiedTypeNamesToString(c) + ")" //
+          + /* ext + */ ";" //
+    )
+  }
 }

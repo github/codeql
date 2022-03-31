@@ -990,16 +990,22 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
 }
 
 /**
- * Provides regular expression patterns.
+ * Provides utility predicates related to regular expressions.
  */
 module RegExpPatterns {
   /**
    * Gets a pattern that matches common top-level domain names in lower case.
    */
-  string commonTLD() {
+  string getACommonTld() {
     // according to ranking by http://google.com/search?q=site:.<<TLD>>
     result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
   }
+
+  /**
+   * Gets a pattern that matches common top-level domain names in lower case.
+   * DEPRECATED: use `getACommonTld` instead
+   */
+  deprecated predicate commonTLD = getACommonTld/0;
 }
 
 /**
@@ -1291,8 +1297,8 @@ module RegExp {
   /**
    * A meta character used by HTML.
    */
-  private class HTMLMetaCharacter extends MetaCharacter {
-    HTMLMetaCharacter() { this = ["<", "'", "\""] }
+  private class HtmlMetaCharacter extends MetaCharacter {
+    HtmlMetaCharacter() { this = ["<", "'", "\""] }
   }
 
   /**

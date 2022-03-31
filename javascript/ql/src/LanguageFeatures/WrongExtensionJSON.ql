@@ -11,7 +11,7 @@
 
 import javascript
 
-from JSONValue v, File f
+from JsonValue v, File f
 where
   f = v.getFile() and
   f.getExtension().regexpMatch("(?i)jsx?") and

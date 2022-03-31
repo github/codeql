@@ -1,9 +1,5 @@
-private import ReDoSUtil
-private import RegExpTreeView
-private import codeql.Locations
-
-/*
- * This query implements the analysis described in the following two papers:
+/**
+ * This library implements the analysis described in the following two papers:
  *
  *   James Kirrage, Asiri Rathnayake, Hayo Thielecke: Static Analysis for
  *     Regular Expression Denial-of-Service Attacks. NSS 2013.
@@ -31,9 +27,9 @@ private import codeql.Locations
  * condition is equivalent to saying that `(q, q)` is reachable from `(r1, r2)`
  * in the product NFA.
  *
- * This is what the query does. It makes a simple attempt to construct a
+ * This is what the library does. It makes a simple attempt to construct a
  * prefix `v` leading into `q`, but only to improve the alert message.
- * And the query tries to prove the existence of a suffix that ensures
+ * And the library tries to prove the existence of a suffix that ensures
  * rejection. This check might fail, which can cause false positives.
  *
  * Finally, sometimes it depends on the translation whether the NFA generated
@@ -41,7 +37,7 @@ private import codeql.Locations
  * particular translation, which may result in false positives or negatives
  * relative to some particular JavaScript engine.
  *
- * More precisely, the query constructs an NFA from a regular expression `r`
+ * More precisely, the library constructs an NFA from a regular expression `r`
  * as follows:
  *
  *   * Every sub-term `t` gives rise to an NFA state `Match(t,i)`, representing
@@ -65,6 +61,8 @@ private import codeql.Locations
  *   * Lastly we ensure that any state reached by repeating `n` copies of `w` has
  *     a suffix `x` (possible empty) that is most likely __not__ accepted.
  */
+
+import ReDoSUtil
 
 /**
  * Holds if state `s` might be inside a backtracking repetition.
@@ -90,18 +88,19 @@ private class MaybeBacktrackingRepetition extends InfiniteRepetitionQuantifier {
 
 /**
  * A state in the product automaton.
- *
- * We lazily only construct those states that we are actually
- * going to need: `(q, q)` for every fork state `q`, and any
- * pair of states that can be reached from a pair that we have
- * already constructed. To cut down on the number of states,
- * we only represent states `(q1, q2)` where `q1` is lexicographically
- * no bigger than `q2`.
- *
- * States are only constructed if both states in the pair are
- * inside a repetition that might backtrack.
  */
 private newtype TStatePair =
+  /**
+   * We lazily only construct those states that we are actually
+   * going to need: `(q, q)` for every fork state `q`, and any
+   * pair of states that can be reached from a pair that we have
+   * already constructed. To cut down on the number of states,
+   * we only represent states `(q1, q2)` where `q1` is lexicographically
+   * no bigger than `q2`.
+   *
+   * States are only constructed if both states in the pair are
+   * inside a repetition that might backtrack.
+   */
   MkStatePair(State q1, State q2) {
     isFork(q1, _, _, _, _) and q2 = q1
     or

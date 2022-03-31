@@ -9,28 +9,43 @@
  * @id cpp/cleartext-transmission
  * @tags security
  *       external/cwe/cwe-319
+ *       external/cwe/cwe-359
  */
 
 import cpp
 import semmle.code.cpp.security.SensitiveExprs
+import semmle.code.cpp.security.PrivateData
 import semmle.code.cpp.dataflow.TaintTracking
 import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.commons.File
 import DataFlow::PathGraph
 
+class SourceVariable extends Variable {
+  SourceVariable() {
+    this instanceof SensitiveVariable or
+    this instanceof PrivateDataVariable
+  }
+}
+
+class SourceFunction extends Function {
+  SourceFunction() {
+    this instanceof SensitiveFunction or
+    this instanceof PrivateDataFunction
+  }
+}
+
 /**
  * A DataFlow node corresponding to a variable or function call that
  * might contain or return a password or other sensitive information.
  */
-class SensitiveNode extends DataFlow::Node {
-  SensitiveNode() {
-    this.asExpr() = any(SensitiveVariable sv).getInitializer().getExpr() or
-    this.asExpr().(VariableAccess).getTarget() =
-      any(SensitiveVariable sv).(GlobalOrNamespaceVariable) or
-    this.asExpr().(VariableAccess).getTarget() = any(SensitiveVariable v | v instanceof Field) or
-    this.asUninitialized() instanceof SensitiveVariable or
-    this.asParameter() instanceof SensitiveVariable or
-    this.asExpr().(FunctionCall).getTarget() instanceof SensitiveFunction
+class SourceNode extends DataFlow::Node {
+  SourceNode() {
+    this.asExpr() = any(SourceVariable sv).getInitializer().getExpr() or
+    this.asExpr().(VariableAccess).getTarget() = any(SourceVariable sv).(GlobalOrNamespaceVariable) or
+    this.asExpr().(VariableAccess).getTarget() = any(SourceVariable v | v instanceof Field) or
+    this.asUninitialized() instanceof SourceVariable or
+    this.asParameter() instanceof SourceVariable or
+    this.asExpr().(FunctionCall).getTarget() instanceof SourceFunction
   }
 }
 
@@ -207,7 +222,7 @@ class Encrypted extends Expr {
 class FromSensitiveConfiguration extends TaintTracking::Configuration {
   FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof SensitiveNode }
+  override predicate isSource(DataFlow::Node source) { source instanceof SourceNode }
 
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(NetworkSendRecv nsr).getDataExpr()
