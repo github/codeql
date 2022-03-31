@@ -2836,70 +2836,6 @@ private module StdlibPrivate {
   }
 
   // ---------------------------------------------------------------------------
-  // xml.etree.ElementTree
-  // ---------------------------------------------------------------------------
-  /**
-   * An instance of `xml.etree.ElementTree.ElementTree`.
-   *
-   * See https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.ElementTree
-   */
-  private API::Node elementTreeInstance() {
-    //parse to a tree
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember("parse")
-          .getReturn()
-    or
-    // construct a tree without parsing
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember("ElementTree")
-          .getReturn()
-  }
-
-  /**
-   * An instance of `xml.etree.ElementTree.Element`.
-   *
-   * See https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.Element
-   */
-  private API::Node elementInstance() {
-    // parse or go to the root of a tree
-    result = elementTreeInstance().getMember(["parse", "getroot"]).getReturn()
-    or
-    // parse directly to an element
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember(["fromstring", "fromstringlist", "XML"])
-          .getReturn()
-  }
-
-  /**
-   * A call to a find method on a tree or an element will execute an XPath expression.
-   */
-  private class ElementTreeFindCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
-    string methodName;
-
-    ElementTreeFindCall() {
-      methodName in ["find", "findall", "findtext"] and
-      (
-        this = elementTreeInstance().getMember(methodName).getACall()
-        or
-        this = elementInstance().getMember(methodName).getACall()
-      )
-    }
-
-    override DataFlow::Node getXPath() { result in [this.getArg(0), this.getArgByName("match")] }
-
-    override string getName() { result = "xml.etree" }
-  }
-
-  // ---------------------------------------------------------------------------
   // urllib
   // ---------------------------------------------------------------------------
   /**
@@ -3176,8 +3112,69 @@ private module StdlibPrivate {
   }
 
   // ---------------------------------------------------------------------------
-  // xml.etree
+  // xml.etree.ElementTree
   // ---------------------------------------------------------------------------
+  /**
+   * An instance of `xml.etree.ElementTree.ElementTree`.
+   *
+   * See https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.ElementTree
+   */
+  private API::Node elementTreeInstance() {
+    //parse to a tree
+    result =
+      API::moduleImport("xml")
+          .getMember("etree")
+          .getMember("ElementTree")
+          .getMember("parse")
+          .getReturn()
+    or
+    // construct a tree without parsing
+    result =
+      API::moduleImport("xml")
+          .getMember("etree")
+          .getMember("ElementTree")
+          .getMember("ElementTree")
+          .getReturn()
+  }
+
+  /**
+   * An instance of `xml.etree.ElementTree.Element`.
+   *
+   * See https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.Element
+   */
+  private API::Node elementInstance() {
+    // parse or go to the root of a tree
+    result = elementTreeInstance().getMember(["parse", "getroot"]).getReturn()
+    or
+    // parse directly to an element
+    result =
+      API::moduleImport("xml")
+          .getMember("etree")
+          .getMember("ElementTree")
+          .getMember(["fromstring", "fromstringlist", "XML"])
+          .getReturn()
+  }
+
+  /**
+   * A call to a find method on a tree or an element will execute an XPath expression.
+   */
+  private class ElementTreeFindCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
+    string methodName;
+
+    ElementTreeFindCall() {
+      methodName in ["find", "findall", "findtext"] and
+      (
+        this = elementTreeInstance().getMember(methodName).getACall()
+        or
+        this = elementInstance().getMember(methodName).getACall()
+      )
+    }
+
+    override DataFlow::Node getXPath() { result in [this.getArg(0), this.getArgByName("match")] }
+
+    override string getName() { result = "xml.etree" }
+  }
+
   /**
    * Provides models for `xml.etree` parsers
    *
