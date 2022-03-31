@@ -3482,7 +3482,7 @@ private module StdlibPrivate {
    * - https://docs.python.org/3.10/library/xml.sax.html#xml.sax.parse
    * - https://docs.python.org/3.10/library/xml.sax.html#xml.sax.parseString
    */
-  private class XMLSaxParsing extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
+  private class XMLSaxParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
     XMLSaxParsing() {
       this =
         API::moduleImport("xml").getMember("sax").getMember(["parse", "parseString"]).getACall()
@@ -3501,10 +3501,6 @@ private module StdlibPrivate {
     override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
       // always vuln to these
       (kind.isBillionLaughs() or kind.isQuadraticBlowup())
-      or
-      // can be vuln to other things if features has been turned on
-      this.getObject() = saxParserWithFeatureExternalGesTurnedOn() and
-      (kind.isXxe() or kind.isDtdRetrieval())
     }
 
     override predicate mayExecuteInput() { none() }
