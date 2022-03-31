@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @precision high
- * @id js/path-injection
+ * @id js/path-injection-from-library-input
  * @tags security
  *       external/cwe/cwe-022
  *       external/cwe/cwe-023
