@@ -781,19 +781,15 @@ module Cryptography {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `CryptographicOperation::Range` instead.
    */
-  class CryptographicOperation extends DataFlow::Node {
-    CryptographicOperation::Range range;
-
-    CryptographicOperation() { this = range }
-
+  class CryptographicOperation extends DataFlow::Node instanceof CryptographicOperation::Range {
     /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
-    CryptographicAlgorithm getAlgorithm() { result = range.getAlgorithm() }
+    CryptographicAlgorithm getAlgorithm() { result = super.getAlgorithm() }
 
     /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
-    DataFlow::Node getAnInput() { result = range.getAnInput() }
+    DataFlow::Node getAnInput() { result = super.getAnInput() }
 
     /** Holds if this encryption operation is known to be weak. */
-    predicate isWeak() { range.isWeak() }
+    predicate isWeak() { super.isWeak() }
   }
 
   /** Provides classes for modeling new applications of a cryptographic algorithms. */
