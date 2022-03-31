@@ -71,7 +71,7 @@ private predicate conditionCheckMethodApacheCommonsLang3Validate(Method m, boole
 }
 
 /**
- * Holds if `m` is a non-overridable testing framework methopd that checks that its first argument
+ * Holds if `m` is a non-overridable testing framework method that checks that its first argument
  * is equal to `checkTrue` and throws otherwise.
  */
 private predicate condtionCheckMethodTestingFramework(Method m, int argument, boolean checkTrue) {
@@ -110,7 +110,9 @@ private predicate condtionCheckMethodTestingFramework(Method m, int argument, bo
  * Holds if `ma` is an access to a non-overridable method that checks that its
  * first argument is equal to `checkTrue` and throws otherwise.
  */
-deprecated predicate conditionCheck(MethodAccess ma, boolean checkTrue) { conditionCheckArgument(ma, 0, checkTrue) }
+deprecated predicate conditionCheck(MethodAccess ma, boolean checkTrue) {
+  conditionCheckArgument(ma, 0, checkTrue)
+}
 
 /**
  * Holds if `ma` is an access to a non-overridable method that checks that its
