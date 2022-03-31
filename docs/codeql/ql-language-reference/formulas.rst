@@ -331,7 +331,7 @@ The following query selects files that are not HTML files.
 
 You can use these keywords to write a conditional formula. This is another way to simplify
 notation: ``if A then B else C`` is the same as writing ``(A and B) or ((not A) and C)``.
-``if A then B else any()`` can also be represented as `A implies B`.
+``if A then B else any()`` can also be represented as ``A implies B``.
 
 **Example**
 
