@@ -23,8 +23,8 @@ xml.etree.ElementTree.iterparse(StringIO(x)) # $ decodeFormat=XML decodeInput=St
 xml.etree.ElementTree.iterparse(source=StringIO(x)) # $ decodeFormat=XML decodeInput=StringIO(..) xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=xml.etree.ElementTree.iterparse(..) getAPathArgument=StringIO(..)
 
 tree = xml.etree.ElementTree.ElementTree()
-tree.parse("file.xml") # $ MISSING: decodeFormat=XML decodeInput="file.xml" xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=tree.parse(..) getAPathArgument="file.xml"
-tree.parse(source="file.xml") # $ MISSING: decodeFormat=XML decodeInput="file.xml" xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=tree.parse(..) getAPathArgument="file.xml"
+tree.parse("file.xml") # $ decodeFormat=XML decodeInput="file.xml" xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=tree.parse(..) getAPathArgument="file.xml"
+tree.parse(source="file.xml") # $ decodeFormat=XML decodeInput="file.xml" xmlVuln='Billion Laughs' xmlVuln='Quadratic Blowup' decodeOutput=tree.parse(..) getAPathArgument="file.xml"
 
 
 # With parsers (no options available to disable/enable security features)

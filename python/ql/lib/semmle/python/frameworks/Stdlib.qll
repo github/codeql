@@ -3153,6 +3153,15 @@ private module StdlibPrivate {
           .getMember("ElementTree")
           .getMember(["fromstring", "fromstringlist", "XML"])
           .getReturn()
+    or
+    result =
+      API::moduleImport("xml")
+          .getMember("etree")
+          .getMember("ElementTree")
+          .getMember("XMLParser")
+          .getReturn()
+          .getMember("close")
+          .getReturn()
   }
 
   /**
@@ -3255,6 +3264,7 @@ private module StdlibPrivate {
    * - `xml.etree.ElementTree.XMLID`
    * - `xml.etree.ElementTree.parse`
    * - `xml.etree.ElementTree.iterparse`
+   * - `parse` method on an `xml.etree.ElementTree.ElementTree` instance
    *
    * See
    * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.fromstring
@@ -3272,6 +3282,8 @@ private module StdlibPrivate {
             .getMember("ElementTree")
             .getMember(["fromstring", "fromstringlist", "XML", "XMLID", "parse", "iterparse"])
             .getACall()
+      or
+      this = elementTreeInstance().getMember("parse").getACall()
     }
 
     override DataFlow::Node getAnInput() {
@@ -3321,6 +3333,8 @@ private module StdlibPrivate {
             .getMember("ElementTree")
             .getMember(["parse", "iterparse"])
             .getACall()
+      or
+      this = elementTreeInstance().getMember("parse").getACall()
       // I considered whether we should try to reduce FPs from people passing file-like
       // objects, which will not be a file system access (and couldn't cause a
       // path-injection).
