@@ -440,18 +440,25 @@ class SwitchCase extends Stmt, @case {
    * Gets the expression on the right-hand side of the arrow, if any.
    *
    * Note, this predicate gets a value when this switch case is of the form
-   * `case e1 -> e2`, where `e2` is not a block. This predicate is mutually
-   * exclusive with `getRuleStatement`.
+   * `case e1 -> e2`, where `e2` is neither a block nor a throw statement. 
+   * This predicate is mutually exclusive with `getRuleStatement`.
    */
-  Expr getRuleExpression() { result.getParent() = this and result.getIndex() = -1 }
+  Expr getRuleExpression() { 
+    result.getParent() = this and result.getIndex() = -1
+    or
+    exists(ExprStmt es | es.getParent() = this and es.getIndex() = -1 | result = es.getExpr())
+  }
 
   /**
    * Gets the statement on the right-hand side of the arrow, if any.
    *
    * Note, this predicate gets a value when this switch case is of the form
-   * `case e1 -> { s1; s2; ... }`. This predicate is mutually exclusive with `getRuleExpression`.
+   * `case e1 -> { s1; s2; ... }` or `case e1 -> throw ...`. 
+   * This predicate is mutually exclusive with `getRuleExpression`.
    */
-  Stmt getRuleStatement() { result.getParent() = this and result.getIndex() = -1 }
+  Stmt getRuleStatement() { 
+    result.getParent() = this and result.getIndex() = -1 and not result instanceof ExprStmt
+  }
 }
 
 /** A constant `case` of a switch statement. */
