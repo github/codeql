@@ -49,9 +49,9 @@ private module HandlebarsTaintSteps {
 
   /**
    * Gets a reference to a parameter of a registered Handlebars helper.
-   * 
+   *
    * ```javascript
-   * function loudHelper(text) { 
+   * function loudHelper(text) {
    *   return text.toUpperCase();
    * }
    *
@@ -61,8 +61,7 @@ private module HandlebarsTaintSteps {
    * the `FunctionNode` representing `function loudHelper`, and return its parameter `text`.
    */
   private DataFlow::ParameterNode getRegisteredHelperParam(
-    string helperName, DataFlow::FunctionNode helperFunction,
-    int paramIndex
+    string helperName, DataFlow::FunctionNode helperFunction, int paramIndex
   ) {
     exists(DataFlow::CallNode registerHelperCall |
       registerHelperCall = any(Handlebars::Handlebars hb).getAMemberCall("registerHelper") and
@@ -72,8 +71,9 @@ private module HandlebarsTaintSteps {
     )
   }
 
-  /** Gets a `call` (which is a block wrapped inside curly braces inside the template) from `templateText`.
-   * 
+  /**
+   * Gets a `call` (which is a block wrapped inside curly braces inside the template) from `templateText`.
+   *
    * For example, `getAHelperCallFromTemplate("Hello {{loud customer}}")` will return `"loud customer"`.
    */
   bindingset[templateText]
