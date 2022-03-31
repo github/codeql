@@ -6,6 +6,7 @@ private import csharp as CS
 private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
+private import semmle.code.csharp.frameworks.System as System
 import semmle.code.csharp.dataflow.ExternalFlow as ExternalFlow
 import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
@@ -17,13 +18,24 @@ module TaintTracking = CS::TaintTracking;
 class Type = CS::Type;
 
 /**
+ * Holds if `api` is an override of `GetHashCode` or `Equals`.
+ */
+private predicate isIrrellevantObjectOveride(CS::Callable api) {
+  exists(System::SystemObjectClass c |
+    api = c.getGetHashCodeMethod().getAnOverrider*() or
+    api = c.getEqualsMethod().getAnOverrider*()
+  )
+}
+
+/**
  * Holds if it is relevant to generate models for `api`.
  */
 private predicate isRelevantForModels(CS::Callable api) {
   [api.(CS::Modifiable), api.(CS::Accessor).getDeclaration()].isEffectivelyPublic() and
+  api.getDeclaringType().getNamespace().getQualifiedName() != "" and
   not api instanceof CS::ConversionOperator and
   not api instanceof Util::MainMethod and
-  api.getDeclaringType().getNamespace().getQualifiedName() != ""
+  not isIrrellevantObjectOveride(api)
 }
 
 /**
