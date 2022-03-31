@@ -129,7 +129,7 @@ func (l *Labeler) LookupObjectID(object types.Object, typelbl Label) (Label, boo
 			}
 			label = InvalidLabel
 		} else {
-			label, exists = l.ScopedObjectID(object, typelbl)
+			label, exists = l.ScopedObjectID(object, func() Label { return typelbl })
 		}
 	}
 	return label, exists
@@ -144,7 +144,7 @@ func (l *Labeler) LookupObjectID(object types.Object, typelbl Label) (Label, boo
 // detected, we must construct a special label, as the variable can be reached
 // from several files via the method. As the type label is required to construct
 // the receiver object id, it is also required here.
-func (l *Labeler) ScopedObjectID(object types.Object, typelbl Label) (Label, bool) {
+func (l *Labeler) ScopedObjectID(object types.Object, getTypeLabel func() Label) (Label, bool) {
 	label, exists := l.objectLabels[object]
 	if !exists {
 		scope := object.Parent()
@@ -160,7 +160,7 @@ func (l *Labeler) ScopedObjectID(object types.Object, typelbl Label) (Label, boo
 					meth := namedType.Method(i)
 					if object == meth.Type().(*types.Signature).Recv() {
 						isRecv = true
-						methlbl, _ := l.MethodID(meth, typelbl)
+						methlbl, _ := l.MethodID(meth, getTypeLabel())
 						label, _ = l.ReceiverObjectID(object, methlbl)
 					}
 				}

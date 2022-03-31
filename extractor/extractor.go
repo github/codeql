@@ -361,7 +361,7 @@ func extractUniverseScope() {
 func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) {
 	for _, name := range scope.Names() {
 		obj := scope.Lookup(name)
-		lbl, exists := tw.Labeler.ScopedObjectID(obj, extractType(tw, obj.Type()))
+		lbl, exists := tw.Labeler.ScopedObjectID(obj, func() trap.Label { return extractType(tw, obj.Type()) })
 		if !exists {
 			extractObject(tw, obj, lbl)
 		}
