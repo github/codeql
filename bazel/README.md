@@ -1,2 +1,0 @@
-Please notice that any bazel targets and definitions in this repository are currently experimental and for internal use
-only.
