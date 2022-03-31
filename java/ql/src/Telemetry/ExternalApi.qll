@@ -2,7 +2,6 @@
 
 private import java
 private import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.FlowSummary
@@ -10,21 +9,33 @@ private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.TaintTracking
 
 /**
- * An external API from either the Java Standard Library or a 3rd party library.
+ * A test library.
+ */
+private class TestLibrary extends RefType {
+  TestLibrary() {
+    this.getPackage()
+        .getName()
+        .matches([
+            "org.junit%", "junit.%", "org.mockito%", "org.assertj%",
+            "com.github.tomakehurst.wiremock%", "org.hamcrest%", "org.springframework.test.%",
+            "org.springframework.mock.%", "org.springframework.boot.test.%", "reactor.test%",
+            "org.xmlunit%", "org.testcontainers.%", "org.opentest4j%", "org.mockserver%",
+            "org.powermock%", "org.skyscreamer.jsonassert%", "org.rnorth.visibleassertions",
+            "org.openqa.selenium%", "com.gargoylesoftware.htmlunit%",
+            "org.jboss.arquillian.testng%", "org.testng%"
+          ])
+  }
+}
+
+private string containerAsJar(Container container) {
+  if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
+}
+
+/**
+ * An external API from either the Standard Library or a 3rd party library.
  */
 class ExternalApi extends Callable {
   ExternalApi() { not this.fromSource() }
-
-  /** Holds if this API is not worth supporting */
-  predicate isUninteresting() { this.isTestLibrary() or this.isParameterlessConstructor() }
-
-  /** Holds if this API is is a constructor without parameters */
-  predicate isParameterlessConstructor() {
-    this instanceof Constructor and this.getNumberOfParameters() = 0
-  }
-
-  /** Holds if this API is part of a common testing library or framework */
-  private predicate isTestLibrary() { this.getDeclaringType() instanceof TestLibrary }
 
   /**
    * Gets information about the external API in the form expected by the CSV modeling framework.
@@ -38,13 +49,7 @@ class ExternalApi extends Callable {
   /**
    * Gets the jar file containing this API. Normalizes the Java Runtime to "rt.jar" despite the presence of modules.
    */
-  string jarContainer() {
-    result = this.containerAsJar(this.getCompilationUnit().getParentContainer*())
-  }
-
-  private string containerAsJar(Container container) {
-    if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
-  }
+  string jarContainer() { result = containerAsJar(this.getCompilationUnit().getParentContainer*()) }
 
   /** Gets a node that is an input to a call to this API. */
   private DataFlow::Node getAnInput() {
@@ -68,6 +73,17 @@ class ExternalApi extends Callable {
     TaintTracking::localAdditionalTaintStep(this.getAnInput(), _)
   }
 
+  /** Holds if this API is is a constructor without parameters. */
+  private predicate isParameterlessConstructor() {
+    this instanceof Constructor and this.getNumberOfParameters() = 0
+  }
+
+  /** Holds if this API is part of a common testing library or framework. */
+  private predicate isTestLibrary() { this.getDeclaringType() instanceof TestLibrary }
+
+  /** Holds if this API is not worth supporting. */
+  predicate isUninteresting() { this.isTestLibrary() or this.isParameterlessConstructor() }
+
   /** Holds if this API is a known source. */
   predicate isSource() {
     this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
@@ -82,19 +98,3 @@ class ExternalApi extends Callable {
 
 /** DEPRECATED: Alias for ExternalApi */
 deprecated class ExternalAPI = ExternalApi;
-
-private class TestLibrary extends RefType {
-  TestLibrary() {
-    this.getPackage()
-        .getName()
-        .matches([
-            "org.junit%", "junit.%", "org.mockito%", "org.assertj%",
-            "com.github.tomakehurst.wiremock%", "org.hamcrest%", "org.springframework.test.%",
-            "org.springframework.mock.%", "org.springframework.boot.test.%", "reactor.test%",
-            "org.xmlunit%", "org.testcontainers.%", "org.opentest4j%", "org.mockserver%",
-            "org.powermock%", "org.skyscreamer.jsonassert%", "org.rnorth.visibleassertions",
-            "org.openqa.selenium%", "com.gargoylesoftware.htmlunit%",
-            "org.jboss.arquillian.testng%", "org.testng%"
-          ])
-  }
-}
