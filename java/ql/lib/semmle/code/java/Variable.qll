@@ -111,16 +111,18 @@ class Parameter extends Element, @param, LocalScopeVariable {
       (
         exists(int idx |
           (
-            idx = i and not call instanceof ExtensionMethodAccess
-            or
-            idx = i - 1 and call instanceof ExtensionMethodAccess
+            idx = i //and not call instanceof ExtensionMethodAccess
+            // or
+            // idx = i - 1 and call instanceof ExtensionMethodAccess
           ) and
           result = call.getArgument(idx)
         )
+        /*
         or
         i = 0 and
         call instanceof ExtensionMethodAccess and
         result = call.getQualifier()
+        */
       ) and
       call.getCallee().getSourceDeclaration().getAParameter() = this
     )
