@@ -57,9 +57,9 @@ predicate implies_v1(Guard g1, boolean b1, Guard g2, boolean b2) {
   or
   g1.(DefaultCase).getSwitch().getAConstCase() = g2 and b1 = true and b2 = false
   or
-  exists(MethodAccess check | check = g1 |
-    conditionCheck(check, _) and
-    g2 = check.getArgument(0) and
+  exists(MethodAccess check, int argIndex | check = g1 |
+    conditionCheckArgument(check, argIndex, _) and
+    g2 = check.getArgument(argIndex) and
     b1 = [true, false] and
     b2 = b1
   )
