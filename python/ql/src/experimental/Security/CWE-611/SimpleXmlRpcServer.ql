@@ -10,14 +10,14 @@
  */
 
 private import python
-private import experimental.semmle.python.Concepts
+private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 from DataFlow::CallCfgNode call, string kinds
 where
   call = API::moduleImport("xmlrpc").getMember("server").getMember("SimpleXMLRPCServer").getACall() and
   kinds =
-    strictconcat(ExperimentalXML::XMLParsingVulnerabilityKind kind |
+    strictconcat(XML::XMLParsingVulnerabilityKind kind |
       kind.isBillionLaughs() or kind.isQuadraticBlowup()
     |
       kind, ", "
