@@ -146,9 +146,6 @@ class KotlinExtractorGlobalState {
     val syntheticToRealClassMap = HashMap<IrClass, IrClass?>()
     val syntheticToRealFunctionMap = HashMap<IrSimpleFunction, IrSimpleFunction?>()
     val syntheticToRealFieldMap = HashMap<IrField, IrField?>()
-    // This records source files (typically .class files) that have been extracted already, to save repeatedly extracting
-    // the `files` and `folders` entry for a class file every time we see it.
-    val extractedClassFilePaths = HashSet<String>()
 }
 
 /*

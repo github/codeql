@@ -11,6 +11,7 @@ import com.github.codeql.KotlinExtractorDbSchemeKt;
 import com.semmle.util.exception.CatastrophicError;
 import com.semmle.util.files.FileUtil;
 import com.semmle.util.trap.pathtransformers.PathTransformer;
+import kotlin.Unit;
 
 public class PopulateFile {
 
@@ -78,14 +79,13 @@ public class PopulateFile {
 
     public Label<DbFile> getFileLabel(File absoluteFile, boolean populateTables) {
         String databasePath = transformer.fileAsDatabaseString(absoluteFile);
-        Label result = tw.getLabelFor("@\"" + escapeKey(databasePath) + ";sourcefile" + "\"");
-        // Ensure the rewritten path is used from now on.
-
-        if(populateTables) {
-            KotlinExtractorDbSchemeKt.writeFiles(tw, result, databasePath);
-            populateParents(new File(databasePath), result);
-        }
-
+        Label result = tw.<DbFile>getLabelFor("@\"" + escapeKey(databasePath) + ";sourcefile" + "\"", label -> {
+            if(populateTables) {
+                KotlinExtractorDbSchemeKt.writeFiles(tw, label, databasePath);
+                populateParents(new File(databasePath), label);
+            }
+            return Unit.INSTANCE;
+        });
         return result;
     }
 
