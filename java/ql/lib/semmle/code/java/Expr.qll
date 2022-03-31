@@ -1990,6 +1990,12 @@ class MethodAccess extends Expr, Call, @methodaccess {
 class ExtensionMethodAccess extends MethodAccess {
   ExtensionMethodAccess() { this.getMethod() instanceof ExtensionMethod }
 
+  /**
+   * Gets the implicit qualifier of this extension method access. This expression
+   * is the qualifier of this method access in bytecode.
+   */
+  Expr getImplicitQualifier() { result.isNthChildOf(this, -1) }
+
   // The syntactic qualifier of an extension method is its receiver (arg 0),
   // whereas the actual arguments begin at index 1.
   override Expr getQualifier() { result.isNthChildOf(this, 0) }
@@ -2240,8 +2246,11 @@ private module Qualifier {
 
     /** Gets the qualifier of this member access, if any. */
     Expr getQualifier() {
-      result = this.(FieldAccess).getQualifier() or
-      result = this.(MethodAccess).getQualifier()
+      result = this.(FieldAccess).getQualifier()
+      or
+      result = this.(MethodAccess).getQualifier() and not this instanceof ExtensionMethodAccess
+      or
+      result = this.(ExtensionMethodAccess).getImplicitQualifier()
     }
   }
 

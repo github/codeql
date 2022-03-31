@@ -273,8 +273,14 @@ private module Dispatch {
     not e instanceof FunctionalExpr and result = e.getType()
   }
 
+  private Expr getQualifier(MethodAccess ma) {
+    not ma instanceof ExtensionMethodAccess and result = ma.getQualifier()
+    or
+    result = ma.(ExtensionMethodAccess).getImplicitQualifier()
+  }
+
   private predicate hasQualifierType(VirtualMethodAccess ma, RefType t, boolean exact) {
-    exists(Expr src | src = variableTrack(ma.getQualifier()) |
+    exists(Expr src | src = variableTrack(getQualifier(ma)) |
       // If we have a qualifier, then we track it through variable assignments
       // and take the type of the assigned value.
       exists(RefType srctype | srctype = getPreciseType(src) |

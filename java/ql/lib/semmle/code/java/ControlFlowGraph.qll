@@ -558,7 +558,7 @@ private module ControlFlowGraphImpl {
       or
       exists(ExtensionMethodAccess e | e = this |
         // the actual qualifier of the expression method access
-        index = -1 and result.(Expr).isNthChildOf(this, index) and not result instanceof TypeAccess
+        index = -1 and result = e.getImplicitQualifier() and not result instanceof TypeAccess
         or
         // the extension receiver
         index = 0 and result = e.getQualifier()
