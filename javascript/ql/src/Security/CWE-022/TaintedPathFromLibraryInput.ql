@@ -4,6 +4,7 @@
  *      users vulnerable to path injection attacks.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 6.0
  * @precision high
  * @id js/path-injection-from-library-input
  * @tags security
