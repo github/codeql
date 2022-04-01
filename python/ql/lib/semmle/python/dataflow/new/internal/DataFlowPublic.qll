@@ -317,11 +317,22 @@ class SourceParameterNode extends ParameterNode, CfgNode {
 SourceParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** A data flow node that represents a call argument. */
-class ArgumentNode extends Node {
-  ArgumentNode() { this = any(DataFlowSourceCall c).getArg(_) }
-
+abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
-  predicate argumentOf(DataFlowSourceCall call, int pos) { this = call.getArg(pos) }
+  abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
+}
+
+/** A data flow node that represents a call argument. */
+class ArgumentSourceNode extends ArgumentNode {
+  ArgumentSourceNode() { this = any(DataFlowSourceCall c).getArg(_) }
+
+  final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    this.sourceArgumentOf(call, pos)
+  }
+
+  predicate sourceArgumentOf(DataFlowSourceCall call, ArgumentPosition pos) {
+    this = call.getArg(pos)
+  }
 
   /** Gets the call in which this node is an argument. */
   final DataFlowSourceCall getCall() { this.argumentOf(result, _) }

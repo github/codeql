@@ -588,6 +588,54 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   override Location getLocation() { result = c.getLocation() }
 }
 
+/** A parameter for a library callable with a flow summary. */
+class SummaryParameterNode extends ParameterNode, TSummaryParameterNode {
+  private FlowSummaryImpl::Public::SummarizedCallable sc;
+  private int pos;
+
+  SummaryParameterNode() { this = TSummaryParameterNode(sc, pos) }
+
+  override predicate isParameterOf(DataFlowCallable c, int i) { sc = c and i = pos }
+
+  override DataFlowCallable getEnclosingCallable() { result = sc }
+}
+
+/** A data-flow node used to model flow summaries. */
+private class SummaryNode extends Node, TSummaryNode {
+  private FlowSummaryImpl::Public::SummarizedCallable c;
+  private FlowSummaryImpl::Private::SummaryNodeState state;
+
+  SummaryNode() { this = TSummaryNode(c, state) }
+
+  override DataFlowCallable getEnclosingCallable() { result = c }
+
+  override string toString() { result = "[summary] " + state + " in " + c }
+}
+
+private class SummaryReturnNode extends SummaryNode, ReturnNode {
+  private ReturnKind rk;
+
+  SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this, rk) }
+
+  override ReturnKind getKind() { result = rk }
+}
+
+private class SummaryArgumentNode extends SummaryNode, ArgumentNode {
+  SummaryArgumentNode() { FlowSummaryImpl::Private::summaryArgumentNode(_, this, _) }
+
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
+  }
+}
+
+private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
+  private Node pre;
+
+  SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }
+
+  override Node getPreUpdateNode() { result = pre }
+}
+
 /** Gets a viable run-time target for the call `call`. */
 DataFlowCallable viableCallable(DataFlowSourceCall call) { result = call.getCallable() }
 
@@ -603,26 +651,53 @@ class ReturnKind extends TReturnKind {
 }
 
 /** A data flow node that represents a value returned by a callable. */
-class ReturnNode extends CfgNode {
-  Return ret;
-
-  // See `TaintTrackingImplementation::returnFlowStep`
-  ReturnNode() { node = ret.getValue().getAFlowNode() }
-
+abstract class ReturnNode extends Node {
   /** Gets the kind of this return node. */
   ReturnKind getKind() { any() }
 }
 
-/** A data flow node that represents the output of a call. */
-class OutNode extends CfgNode {
-  OutNode() { node instanceof CallNode }
+/** A data flow node that represents a value returned by a callable. */
+class ReturnSourceNode extends ReturnNode, CfgNode {
+  Return ret;
+
+  // See `TaintTrackingImplementation::returnFlowStep`
+  ReturnSourceNode() { node = ret.getValue().getAFlowNode() }
+
+  override ReturnKind getKind() { any() }
+}
+
+/** A data-flow node that represents the output of a call. */
+abstract class OutNode extends Node {
+  /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
+  abstract DataFlowCall getCall(ReturnKind kind);
+}
+
+private module OutNodes {
+  /**
+   * A data-flow node that reads a value returned directly by a callable.
+   */
+  class ExprOutNode extends OutNode, ExprNode {
+    private DataFlowCall call;
+
+    ExprOutNode() { call.(DataFlowSourceCall).getNode().getNode() = this.asExpr() }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      result = call and
+      kind = kind
+    }
+  }
+
+  private class SummaryOutNode extends SummaryNode, OutNode {
+    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this, _) }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      FlowSummaryImpl::Private::summaryOutNode(result, this, kind)
+    }
+  }
 }
 
 /**
  * Gets a node that can read the value returned from `call` with return kind
  * `kind`.
  */
-OutNode getAnOutNode(DataFlowSourceCall call, ReturnKind kind) {
-  call.getNode() = result.getNode() and
-  kind = TNormalReturnKind()
-}
+OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
