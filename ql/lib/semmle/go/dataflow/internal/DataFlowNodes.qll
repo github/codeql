@@ -558,7 +558,7 @@ module Public {
 
   /** A representation of a parameter initialization. */
   abstract class ParameterNode extends DataFlow::Node {
-    /** Holds if this node initializes the `i`th parameter of `fd`. */
+    /** Holds if this node initializes the `i`th parameter of `c`. */
     abstract predicate isParameterOf(Callable c, int i);
   }
 
