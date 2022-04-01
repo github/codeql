@@ -232,10 +232,10 @@ private newtype TEndpointFeature =
   TCalleeAccessPath() or
   TCalleeAccessPathWithStructuralInfo() or
   TEnclosingFunctionBody() or
-  TCalleeAccessPathSimpleFromArgumentTraversal() or
-  TParameterAccessPathSimpleFromArgumentTraversal() or
-  TPropertyAccessPathSimpleFromArgumentTraversal() or
-  TArgumentIndexFromArgumentTraversal()
+  TCallee_AccessPath() or
+  TInput_ArgumentIndexAndAccessPathFromCallee() or
+  TInput_AccessPathFromCallee() or
+  TInput_ArgumentIndex()
 
 /**
  * An implementation of an endpoint feature: produces feature names and values for used in ML.
@@ -534,9 +534,8 @@ string getPropertyNameOrUnknown(DataFlow::PropRef ref) {
  *
  * This feature is intended as a superior version of the many `Callee*` features.
  */
-class CalleeAccessPathSimpleFromArgumentTraversal extends EndpointFeature,
-  TCalleeAccessPathSimpleFromArgumentTraversal {
-  override string getName() { result = "calleeAccessPathSimpleFromArgumentTraversal" }
+class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
+  override string getName() { result = "Callee_AccessPath" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
@@ -562,9 +561,9 @@ class CalleeAccessPathSimpleFromArgumentTraversal extends EndpointFeature,
  *
  * This feature is intended as a superior version of the `ArgumentIndexFeature`.
  */
-class ParameterAccessPathSimpleFromArgumentTraversal extends EndpointFeature,
-  TParameterAccessPathSimpleFromArgumentTraversal {
-  override string getName() { result = "ParameterAccessPathSimpleFromArgumentTraversal" }
+class Input_ArgumentIndexAndAccessPathFromCallee extends EndpointFeature,
+  TInput_ArgumentIndexAndAccessPathFromCallee {
+  override string getName() { result = "Input_ArgumentIndexAndAccessPathFromCallee" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
@@ -580,15 +579,14 @@ class ParameterAccessPathSimpleFromArgumentTraversal extends EndpointFeature,
 }
 
 /**
- * The feature for how a callee can refer to a the endpoint that is "contained" in a some argument to a call
+ * The feature for how a callee can refer to a the endpoint that is "contained" in some argument to a call
  *
  * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
  *
  * This feature is intended as a superior version of the `ArgumentIndexFeature`.
  */
-class PropertyAccessPathSimpleFromArgumentTraversal extends EndpointFeature,
-  TPropertyAccessPathSimpleFromArgumentTraversal {
-  override string getName() { result = "PropertyAccessPathSimpleFromArgumentTraversal" }
+class Input_AccessPathFromCallee extends EndpointFeature, TInput_AccessPathFromCallee {
+  override string getName() { result = "Input_AccessPathFromCallee" }
 
   private string getValueMaybe(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
@@ -613,9 +611,8 @@ class PropertyAccessPathSimpleFromArgumentTraversal extends EndpointFeature,
  *
  * This feature is intended as a superior version of the `ArgumentIndexFeature`.
  */
-class ArgumentIndexFromArgumentTraversal extends EndpointFeature,
-  TArgumentIndexFromArgumentTraversal {
-  override string getName() { result = "ArgumentIndexFromArgumentTraversal" }
+class Input_ArgumentIndex extends EndpointFeature, TInput_ArgumentIndex {
+  override string getName() { result = "Input_ArgumentIndex" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk, DataFlow::Node arg, int i | arg = invk.getArgument(i) |
