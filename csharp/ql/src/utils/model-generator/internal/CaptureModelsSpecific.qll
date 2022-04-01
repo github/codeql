@@ -22,12 +22,18 @@ class Type = CS::Type;
  * is irrelevant to the data flow analysis.
  */
 private predicate isIrrelevantOverrideOrImplementation(CS::Callable api) {
-  exists(System::SystemObjectClass c |
-    api = c.getGetHashCodeMethod().getAnOverrider*() or
-    api = c.getEqualsMethod().getAnOverrider*()
+  exists(CS::Callable exclude, CS::Method m |
+    (
+      api = m.getAnOverrider*().getUnboundDeclaration()
+      or
+      api = m.getAnUltimateImplementor().getUnboundDeclaration()
+    ) and
+    exclude = m.getUnboundDeclaration()
+  |
+    exists(System::SystemObjectClass c | exclude = [c.getGetHashCodeMethod(), c.getEqualsMethod()])
+    or
+    exists(System::SystemIEquatableTInterface i | exclude = i.getEqualsMethod())
   )
-  or
-  exists(System::IEquatableEqualsMethod equals | equals = api)
 }
 
 /**
