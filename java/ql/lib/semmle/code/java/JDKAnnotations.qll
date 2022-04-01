@@ -80,13 +80,13 @@ class RetentionAnnotation extends Annotation {
 
 /** A `@Repeatable` annotation. */
 class RepeatableAnnotation extends Annotation {
-  RepeatableAnnotation() { getType().hasQualifiedName("java.lang.annotation", "Repeatable") }
+  RepeatableAnnotation() { this.getType().hasQualifiedName("java.lang.annotation", "Repeatable") }
 
   /**
    * Gets the annotation type which acts as _containing type_, grouping multiple
    * repeatable annotations together.
    */
-  AnnotationType getContainingType() { result = getTypeValue("value") }
+  AnnotationType getContainingType() { result = this.getTypeValue("value") }
 }
 
 /**

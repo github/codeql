@@ -323,7 +323,7 @@ class SpringQualifierAnnotation extends Annotation {
   /**
    * Gets the value of the qualifier field for this qualifier.
    */
-  string getQualifierValue() { result = getStringValue("value") }
+  string getQualifierValue() { result = this.getStringValue("value") }
 
   /**
    * Gets the bean definition in an XML file that this qualifier resolves to, if any.
@@ -346,7 +346,7 @@ class SpringResourceAnnotation extends Annotation {
   /**
    * Gets the specified name value, if any.
    */
-  string getNameValue() { result = getStringValue("name") }
+  string getNameValue() { result = this.getStringValue("name") }
 
   /**
    * Gets the bean definition in an XML file that the resource resolves to, if any.
