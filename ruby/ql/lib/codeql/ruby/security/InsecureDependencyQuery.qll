@@ -59,7 +59,7 @@ private predicate hasInsecureProtocol(string s, string proto) {
 private predicate containsInsecureUrl(Expr e, string proto) {
   // Handle cases where the string as a whole has no constant value (due to interpolations)
   // but has a known prefix. E.g. "http://#{foo}"
-  exists(StringComponent c | c = e.(StringlikeLiteral).getComponent(_) |
+  exists(StringComponent c | c = e.(StringlikeLiteral).getComponent(0) |
     hasInsecureProtocol(c.getConstantValue().getString(), proto)
   )
   or
