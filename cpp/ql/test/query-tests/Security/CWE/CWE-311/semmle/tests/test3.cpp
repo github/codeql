@@ -515,7 +515,7 @@ void tests2(person_info *pi)
 	send(val(), pi->my_bank_account_no, strlen(pi->my_bank_account_no), val()); // BAD
 	send(val(), pi->employerName, strlen(pi->employerName), val()); // BAD
 	send(val(), pi->medical_info, strlen(pi->medical_info), val()); // BAD
-	send(val(), pi->license_key, strlen(pi->license_key), val()); // BAD [NOT DETECTED]
+	send(val(), pi->license_key, strlen(pi->license_key), val()); // BAD
 	send(val(), pi->license_key_hash, strlen(pi->license_key_hash), val()); // GOOD
 	send(val(), pi->my_zip_file, strlen(pi->my_zip_file), val()); // GOOD
 

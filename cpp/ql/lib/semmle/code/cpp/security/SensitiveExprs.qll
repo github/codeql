@@ -14,8 +14,8 @@ import cpp
  */
 bindingset[s]
 private predicate suspicious(string s) {
-  s.matches(["%password%", "%passwd%", "%trusted%"]) and
-  not s.matches(["%hash%", "%crypt%", "%file%", "%path%"])
+  s.regexpMatch(".*(password|passwd|accountid|account.?key|accnt.?key|license.?key|trusted).*") and
+  not s.matches(["%hash%", "%crypt%", "%file%", "%path%", "%invalid%"])
 }
 
 /**

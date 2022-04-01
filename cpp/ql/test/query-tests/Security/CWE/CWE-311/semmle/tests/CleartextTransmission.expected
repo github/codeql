@@ -236,6 +236,7 @@ nodes
 | test3.cpp:515:18:515:35 | my_bank_account_no | semmle.label | my_bank_account_no |
 | test3.cpp:516:18:516:29 | employerName | semmle.label | employerName |
 | test3.cpp:517:18:517:29 | medical_info | semmle.label | medical_info |
+| test3.cpp:518:18:518:28 | license_key | semmle.label | license_key |
 | test3.cpp:526:44:526:54 | my_latitude | semmle.label | my_latitude |
 | test3.cpp:527:15:527:20 | buffer | semmle.label | buffer |
 | test3.cpp:532:45:532:58 | home_longitude | semmle.label | home_longitude |
@@ -288,6 +289,7 @@ subpaths
 | test3.cpp:515:2:515:5 | call to send | test3.cpp:515:18:515:35 | my_bank_account_no | test3.cpp:515:18:515:35 | my_bank_account_no | This operation transmits 'my_bank_account_no', which may contain unencrypted sensitive data from $@ | test3.cpp:515:18:515:35 | my_bank_account_no | my_bank_account_no |
 | test3.cpp:516:2:516:5 | call to send | test3.cpp:516:18:516:29 | employerName | test3.cpp:516:18:516:29 | employerName | This operation transmits 'employerName', which may contain unencrypted sensitive data from $@ | test3.cpp:516:18:516:29 | employerName | employerName |
 | test3.cpp:517:2:517:5 | call to send | test3.cpp:517:18:517:29 | medical_info | test3.cpp:517:18:517:29 | medical_info | This operation transmits 'medical_info', which may contain unencrypted sensitive data from $@ | test3.cpp:517:18:517:29 | medical_info | medical_info |
+| test3.cpp:518:2:518:5 | call to send | test3.cpp:518:18:518:28 | license_key | test3.cpp:518:18:518:28 | license_key | This operation transmits 'license_key', which may contain unencrypted sensitive data from $@ | test3.cpp:518:18:518:28 | license_key | license_key |
 | test3.cpp:527:3:527:6 | call to send | test3.cpp:526:44:526:54 | my_latitude | test3.cpp:527:15:527:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:526:44:526:54 | my_latitude | my_latitude |
 | test3.cpp:533:3:533:6 | call to send | test3.cpp:532:45:532:58 | home_longitude | test3.cpp:533:15:533:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:532:45:532:58 | home_longitude | home_longitude |
 | test3.cpp:552:3:552:6 | call to send | test3.cpp:551:47:551:58 | salaryString | test3.cpp:552:15:552:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:551:47:551:58 | salaryString | salaryString |
