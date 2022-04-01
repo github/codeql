@@ -275,9 +275,12 @@ class CalleeName extends EndpointFeature, TCalleeName {
   override string getName() { result = "calleeName" }
 
   override string getValue(DataFlow::Node endpoint) {
-    exists(DataFlow::CallNode call | endpoint = call.getAnArgument() |
-      result = strictconcat(string component | component = call.getCalleeName() | component, " ")
-    )
+    result =
+      strictconcat(DataFlow::CallNode call, string component |
+        endpoint = call.getAnArgument() and component = call.getCalleeName()
+      |
+        component, " "
+      )
   }
 }
 
@@ -288,14 +291,13 @@ class ReceiverName extends EndpointFeature, TReceiverName {
   override string getName() { result = "receiverName" }
 
   override string getValue(DataFlow::Node endpoint) {
-    exists(DataFlow::CallNode call | endpoint = call.getAnArgument() |
-      result =
-        strictconcat(string component |
-          component = call.getReceiver().asExpr().(VarRef).getName()
-        |
-          component, " "
-        )
-    )
+    result =
+      strictconcat(DataFlow::CallNode call, string component |
+        endpoint = call.getAnArgument() and
+        component = call.getReceiver().asExpr().(VarRef).getName()
+      |
+        component, " "
+      )
   }
 }
 
@@ -306,14 +308,13 @@ class ArgumentIndex extends EndpointFeature, TArgumentIndex {
   override string getName() { result = "argumentIndex" }
 
   override string getValue(DataFlow::Node endpoint) {
-    exists(DataFlow::CallNode call | endpoint = call.getAnArgument() |
-      result =
-        strictconcat(string component |
-          component = any(int argIndex | call.getArgument(argIndex) = endpoint).toString()
-        |
-          component, " "
-        )
-    )
+    result =
+      strictconcat(DataFlow::CallNode call, string component |
+        endpoint = call.getAnArgument() and
+        component = any(int argIndex | call.getArgument(argIndex) = endpoint).toString()
+      |
+        component, " "
+      )
   }
 }
 
@@ -331,16 +332,13 @@ class CalleeApiName extends EndpointFeature, TCalleeApiName {
   override string getName() { result = "calleeApiName" }
 
   override string getValue(DataFlow::Node endpoint) {
-    exists(API::Node apiNode |
-      endpoint = apiNode.getInducingNode().(DataFlow::CallNode).getAnArgument()
-    |
-      result =
-        strictconcat(string component |
-          AccessPaths::accessPaths(apiNode, false, _, component)
-        |
-          component, " "
-        )
-    )
+    result =
+      strictconcat(API::Node apiNode, string component |
+        endpoint = apiNode.getInducingNode().(DataFlow::CallNode).getAnArgument() and
+        AccessPaths::accessPaths(apiNode, false, _, component)
+      |
+        component, " "
+      )
   }
 }
 
