@@ -112,14 +112,14 @@ abstract class Configuration extends string {
   predicate isBarrierGuard(BarrierGuard guard, FlowState state) { none() }
 
   /**
-   * Holds if the additional flow step from `node1` to `node2` must be taken
-   * into account in the analysis.
+   * Holds if the analysis should assume that data may flow from `node1` to `node2`
+   * in addition to the normal dataflow steps.
    */
   predicate isAdditionalFlowStep(Node node1, Node node2) { none() }
 
   /**
-   * Holds if the additional flow step from `node1` to `node2` must be taken
-   * into account in the analysis. This step is only applicable in `state1` and
+   * Holds if the analysis should assume that data may flow from `node1` to `node2`
+   * in addition to the normal dataflow steps. This step is only applicable in `state1` and
    * updates the flow state to `state2`.
    */
   predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
