@@ -43,6 +43,12 @@ gem "jwt", "1.2.3", git: "ftp://github.com/jwt/ruby-jwt" # $result=BAD
 gem "jwt", "1.2.3", git: "ftps://github.com/jwt/ruby-jwt" # GOOD
 gem "jwt", "1.2.3", git: "unknown://github.com/jwt/ruby-jwt" # GOOD
 
+gem "jwt", "1.2.3", :git => "https://github.com/jwt/ruby-jwt" # GOOD
+gem "jwt", "1.2.3", :git => "http://github.com/jwt/ruby-jwt" # $result=BAD
+gem "jwt", "1.2.3", :git => "ftp://github.com/jwt/ruby-jwt" # $result=BAD
+gem "jwt", "1.2.3", :git => "ftps://github.com/jwt/ruby-jwt" # GOOD
+gem "jwt", "1.2.3", :git => "unknown://github.com/jwt/ruby-jwt" # GOOD
+
 gem "jwt", "1.2.3", source: "https://rubygems.org" # GOOD
 gem "jwt", "1.2.3", source: "http://rubygems.org" # $result=BAD
 gem "jwt", "1.2.3", source: "ftp://rubygems.org" # $result=BAD
