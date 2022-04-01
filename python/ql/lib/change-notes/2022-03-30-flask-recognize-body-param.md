@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* The body content of those Flask `Response` objects which were constructed by explicitly referring to the `response` parameter is now detected.
+* Improved modeling of Flask `Response` objects, so passing a response body with the keyword argument `response` is now recognized.
