@@ -13,7 +13,7 @@ from
   DataFlow::Node endpoint, EndpointFeature feature1, EndpointFeature feature2, string featureValue1,
   string featureValue2
 where
-  feature1 instanceof ArgumentIndexFromArgumentTraversal and
+  feature1 instanceof Input_ArgumentIndex and
   feature2 instanceof ArgumentIndex and
   featureValue1 = getValueOrNone(feature1, endpoint) and
   featureValue2 = getValueOrNone(feature2, endpoint) and
