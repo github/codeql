@@ -108,20 +108,7 @@ class Parameter extends Element, @param, LocalScopeVariable {
   pragma[noinline]
   private Expr getACallArgument(int i) {
     exists(Call call |
-      (
-        exists(int idx |
-          (
-            idx = i and not call instanceof ExtensionMethodAccess
-            or
-            idx = i - 1 and call instanceof ExtensionMethodAccess
-          ) and
-          result = call.getArgument(idx)
-        )
-        or
-        i = 0 and
-        call instanceof ExtensionMethodAccess and
-        result = call.getQualifier()
-      ) and
+      result = call.getArgument(i) and
       call.getCallee().getSourceDeclaration().getAParameter() = this
     )
   }

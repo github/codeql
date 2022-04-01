@@ -550,21 +550,10 @@ private module ControlFlowGraphImpl {
       or
       index = 0 and result = this.(RValue).getQualifier() and not result instanceof TypeAccess
       or
-      exists(Call e | e = this and not e instanceof ExtensionMethodAccess |
+      exists(Call e | e = this |
         index = -1 and result = e.getQualifier() and not result instanceof TypeAccess
         or
         result = e.getArgument(index)
-      )
-      or
-      exists(ExtensionMethodAccess e | e = this |
-        // the actual qualifier of the expression method access
-        index = -1 and result = e.getImplicitQualifier() and not result instanceof TypeAccess
-        or
-        // the extension receiver
-        index = 0 and result = e.getQualifier()
-        or
-        // the arguments
-        result = e.getArgument(index - 1)
       )
       or
       exists(StringTemplateExpr e | e = this | result = e.getComponent(index))

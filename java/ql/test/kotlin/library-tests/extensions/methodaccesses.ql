@@ -1,7 +1,7 @@
 import java
 
-// For ExtensionMethodAccess:
-// * qualifier is the child with index 0 instead of -1
-// * arguments are children starting from index 1 instead of 0
+// For extension methods we use JVM bytecode representation:
+// * the qualifier is the dispatch receiver expression, and
+// * the extension receiver expression is the 0th argument.
 from MethodAccess ma
 select ma, ma.getQualifier(), ma.getAnArgument()

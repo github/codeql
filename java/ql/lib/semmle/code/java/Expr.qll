@@ -1984,27 +1984,6 @@ class MethodAccess extends Expr, Call, @methodaccess {
   override string getAPrimaryQlClass() { result = "MethodAccess" }
 }
 
-/**
- * An invocation of a Kotlin `ExtensionMethod`.
- */
-class ExtensionMethodAccess extends MethodAccess {
-  ExtensionMethodAccess() { this.getMethod() instanceof ExtensionMethod }
-
-  /**
-   * Gets the implicit qualifier of this extension method access. This expression
-   * is the qualifier of this method access in bytecode.
-   */
-  Expr getImplicitQualifier() { result.isNthChildOf(this, -1) }
-
-  // The syntactic qualifier of an extension method is its receiver (arg 0),
-  // whereas the actual arguments begin at index 1.
-  override Expr getQualifier() { result.isNthChildOf(this, 0) }
-
-  override Expr getAnArgument() { result = this.getArgument(_) }
-
-  override Expr getArgument(int index) { result = super.getArgument(index + 1) and index >= 0 }
-}
-
 /** A type access is a (possibly qualified) reference to a type. */
 class TypeAccess extends Expr, Annotatable, @typeaccess {
   /** Gets the qualifier of this type access, if any. */
@@ -2246,11 +2225,8 @@ private module Qualifier {
 
     /** Gets the qualifier of this member access, if any. */
     Expr getQualifier() {
-      result = this.(FieldAccess).getQualifier()
-      or
-      result = this.(MethodAccess).getQualifier() and not this instanceof ExtensionMethodAccess
-      or
-      result = this.(ExtensionMethodAccess).getImplicitQualifier()
+      result = this.(FieldAccess).getQualifier() or
+      result = this.(MethodAccess).getQualifier()
     }
   }
 

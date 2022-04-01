@@ -49,14 +49,8 @@ newtype TNode =
 
 private predicate explicitInstanceArgument(Call call, Expr instarg) {
   call instanceof MethodAccess and
-  instarg = getQualifier(call) and
+  instarg = call.getQualifier() and
   not call.getCallee().isStatic()
-}
-
-private Expr getQualifier(MethodAccess ma) {
-  not ma instanceof ExtensionMethodAccess and result = ma.getQualifier()
-  or
-  result = ma.(ExtensionMethodAccess).getImplicitQualifier()
 }
 
 private predicate implicitInstanceArgument(Call call, InstanceAccessExt ia) {
@@ -366,9 +360,6 @@ module Private {
     ArgumentNode() {
       exists(Argument arg | this.asExpr() = arg | not arg.isVararg())
       or
-      // In JVM bytecode the qualifier of an extension method call is the 0th argument
-      exists(ExtensionMethodAccess ema | this.asExpr() = ema.getQualifier())
-      or
       this instanceof ImplicitVarargsArray
       or
       this = getInstanceArgument(_)
@@ -382,20 +373,7 @@ module Private {
      */
     predicate argumentOf(DataFlowCall call, int pos) {
       exists(Argument arg | this.asExpr() = arg |
-        call.asCall() = arg.getCall() and
-        (
-          pos = arg.getPosition() and not call.asCall() instanceof ExtensionMethodAccess
-          or
-          // Shift the positions of an extension method call by 1 to make space for the qualifier at index 0.
-          pos = arg.getPosition() + 1 and call.asCall() instanceof ExtensionMethodAccess
-        )
-      )
-      or
-      // In JVM bytecode the qualifier of an extension method call is the 0th argument
-      exists(ExtensionMethodAccess ema |
-        call.asCall() = ema and
-        pos = 0 and
-        this.asExpr() = ema.getQualifier()
+        call.asCall() = arg.getCall() and pos = arg.getPosition()
       )
       or
       call.asCall() = this.(ImplicitVarargsArray).getCall() and
