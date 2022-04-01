@@ -11,4 +11,8 @@
     o[x].m(endpoint);
     o.m[x].p.m(endpoint);
     (await p)(endpoint);
+    import("foo").bar.baz(endpoint);
+    function foo() {
+        bar(endpoint);
+    }
 });
