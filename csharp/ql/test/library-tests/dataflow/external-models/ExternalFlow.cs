@@ -178,7 +178,18 @@ namespace My.Qltest
             Sink(GeneratedFlow(o));
         }
 
+        void M2()
+        {
+            var o1 = new object();
+            Sink(GeneratedFlowArgs(o1, null));
+
+            var o2 = new object();
+            Sink(GeneratedFlowArgs(null, o2));
+        }
+
         object GeneratedFlow(object o) => throw null;
+
+        object GeneratedFlowArgs(object o1, object o2) => throw null;
 
         static void Sink(object o) { }
     }
