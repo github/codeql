@@ -17,6 +17,6 @@ class CallGraphConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node node) {
     node instanceof DataFlowPrivate::OutNode
     or
-    node instanceof DataFlow::ParameterNode
+    node instanceof DataFlow::SourceParameterNode
   }
 }
