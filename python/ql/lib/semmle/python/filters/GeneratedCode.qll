@@ -41,7 +41,7 @@ private int minStmtLine(File file) {
 }
 
 pragma[nomagic]
-private predicate isBeforeCode(Comment c, File f) {
+private predicate isCommentAfterCode(Comment c, File f) {
   f = c.getLocation().getFile() and
   minStmtLine(f) < c.getLocation().getStartLine()
 }
@@ -51,7 +51,7 @@ private string comment_or_docstring(File f, boolean before_code) {
     c.getLocation().getFile() = f and
     result = c.getText()
   |
-    if isBeforeCode(c, f) then before_code = false else before_code = true
+    if isCommentAfterCode(c, f) then before_code = false else before_code = true
   )
   or
   exists(Module m | m.getFile() = f |
