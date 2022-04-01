@@ -9,6 +9,7 @@ import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * IPA type for data flow nodes.
@@ -100,7 +101,15 @@ newtype TNode =
   //
   // So for now we live with having these synthetic ORM nodes for _all_ classes, which
   // is a bit wasteful, but we don't think it will hurt too much.
-  TSyntheticOrmModelNode(Class cls)
+  TSyntheticOrmModelNode(Class cls) or
+  TSummaryNode(
+    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state
+  ) {
+    FlowSummaryImpl::Private::summaryNodeRange(c, state)
+  } or
+  TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
+    FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
+  }
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
@@ -277,21 +286,26 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends CfgNode, LocalSourceNode {
+abstract class ParameterNode extends Node {
+  /**
+   * Holds if this node is the parameter of callable `c` at the
+   * (zero-based) index `i`.
+   */
+  abstract predicate isParameterOf(DataFlowCallable c, int i);
+}
+
+class SourceParameterNode extends ParameterNode, CfgNode {
+  //, LocalSourceNode {
   ParameterDefinition def;
 
-  ParameterNode() {
+  SourceParameterNode() {
     node = def.getDefiningNode() and
     // Disregard parameters that we cannot resolve
     // TODO: Make this unnecessary
     exists(DataFlowCallable c | node = c.getParameter(_))
   }
 
-  /**
-   * Holds if this node is the parameter of callable `c` at the
-   * (zero-based) index `i`.
-   */
-  predicate isParameterOf(DataFlowCallable c, int i) { node = c.getParameter(i) }
+  override predicate isParameterOf(DataFlowCallable c, int i) { node = c.getParameter(i) }
 
   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
 
@@ -300,17 +314,17 @@ class ParameterNode extends CfgNode, LocalSourceNode {
 }
 
 /** Gets a node corresponding to parameter `p`. */
-ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+SourceParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** A data flow node that represents a call argument. */
 class ArgumentNode extends Node {
-  ArgumentNode() { this = any(DataFlowCall c).getArg(_) }
+  ArgumentNode() { this = any(DataFlowSourceCall c).getArg(_) }
 
   /** Holds if this argument occurs at the given position in the given call. */
-  predicate argumentOf(DataFlowCall call, int pos) { this = call.getArg(pos) }
+  predicate argumentOf(DataFlowSourceCall call, int pos) { this = call.getArg(pos) }
 
   /** Gets the call in which this node is an argument. */
-  final DataFlowCall getCall() { this.argumentOf(result, _) }
+  final DataFlowSourceCall getCall() { this.argumentOf(result, _) }
 }
 
 /**

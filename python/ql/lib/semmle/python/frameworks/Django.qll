@@ -2238,7 +2238,8 @@ module PrivateDjango {
    *
    * See https://docs.djangoproject.com/en/3.1/ref/forms/validation/#form-and-field-validation
    */
-  private class DjangoFormFieldValueParam extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+  private class DjangoFormFieldValueParam extends RemoteFlowSource::Range,
+    DataFlow::SourceParameterNode {
     DjangoFormFieldValueParam() {
       exists(DjangoFormFieldClass cls, Function meth |
         cls.getAMethod() = meth and
@@ -2581,7 +2582,7 @@ module PrivateDjango {
   // ---------------------------------------------------------------------------
   /** A parameter that will receive the django `HttpRequest` instance when a request handler is invoked. */
   private class DjangoRequestHandlerRequestParam extends DjangoImpl::Http::Request::HttpRequest::InstanceSource,
-    RemoteFlowSource::Range, DataFlow::ParameterNode {
+    RemoteFlowSource::Range, DataFlow::SourceParameterNode {
     DjangoRequestHandlerRequestParam() {
       this.getParameter() = any(DjangoRouteSetup setup).getARequestHandler().getRequestParam()
       or

@@ -17,10 +17,10 @@ class CallGraphConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node node) {
     node instanceof DataFlowPrivate::OutNode
     or
-    node instanceof DataFlow::ParameterNode and
+    node instanceof DataFlow::SourceParameterNode and
     // exclude parameters to the SINK-functions
     not exists(DataFlowPrivate::DataFlowCallable c |
-      node.(DataFlow::ParameterNode).isParameterOf(c, _) and
+      node.(DataFlow::SourceParameterNode).isParameterOf(c, _) and
       c.getName().matches("SINK_")
     )
   }

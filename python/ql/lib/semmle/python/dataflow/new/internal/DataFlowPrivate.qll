@@ -2,6 +2,7 @@ private import python
 private import DataFlowPublic
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+private import FlowSummaryImpl as FlowSummaryImpl
 // Since we allow extra data-flow steps from modeled frameworks, we import these
 // up-front, to ensure these are included. This provides a more seamless experience from
 // a user point of view, since they don't need to know they need to import a specific
@@ -21,7 +22,7 @@ import DataFlowDispatchPointsTo
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+predicate isParameterNode(SourceParameterNode p, DataFlowCallable c, ParameterPosition pos) {
   p.isParameterOf(c, pos)
 }
 
@@ -87,6 +88,8 @@ deprecated module syntheticPostUpdateNode = SyntheticPostUpdateNode;
 
 /** A module collecting the different reasons for synthesising a post-update node. */
 module SyntheticPostUpdateNode {
+  private import semmle.python.SpecialMethods
+
   /** A post-update node is synthesized for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
   class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
     NeedsSyntheticPostUpdateNode pre;
@@ -145,9 +148,19 @@ module SyntheticPostUpdateNode {
     exists(ClassCall c, int n | n > 0 | result = c.getArg(n))
     or
     // any argument of any call that we have not been able to resolve
-    exists(CallNode call | not call = any(DataFlowCall c).getNode() |
+    exists(CallNode call | not resolvedCall(call) |
       result.(CfgNode).getNode() in [call.getArg(_), call.getArgByName(_)]
     )
+  }
+
+  predicate resolvedCall(CallNode call) {
+    call = any(FunctionValue f).getAFunctionCall()
+    or
+    call = any(FunctionValue f).getAMethodCall()
+    or
+    call = any(ClassValue c | not c.isAbsent()).getACall()
+    or
+    call = any(SpecialMethodCallNode special)
   }
 
   /** Gets the pre-update node associated with a store. This is used for when an object might have its value changed after a store. */

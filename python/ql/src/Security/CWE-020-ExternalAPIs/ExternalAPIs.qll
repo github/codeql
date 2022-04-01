@@ -65,7 +65,7 @@ private class DefaultSafeExternalApi extends SafeExternalApi {
 
 /** A node representing data being passed to an external API through a call. */
 class ExternalApiDataNode extends DataFlow::Node {
-  DataFlowPrivate::DataFlowCall call;
+  DataFlowPrivate::DataFlowSourceCall call;
   DataFlowPrivate::DataFlowCallable callable;
   int i;
 

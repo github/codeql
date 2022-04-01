@@ -176,7 +176,7 @@ private module FabricV2 {
     }
 
     class FabricTaskFirstParamConnectionInstance extends Fabric::Connection::ConnectionClass::InstanceSource,
-      DataFlow::ParameterNode {
+      DataFlow::SourceParameterNode {
       FabricTaskFirstParamConnectionInstance() {
         exists(Function func |
           func.getADecorator() = Fabric::Tasks::task().getAUse().asExpr() and
