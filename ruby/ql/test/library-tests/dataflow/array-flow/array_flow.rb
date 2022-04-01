@@ -1604,3 +1604,10 @@ def m135
     sink c[1] # $ hasValueFlow=135.1 $ hasValueFlow=135.2
     sink c[2] # $ hasValueFlow=135.1 $ hasValueFlow=135.2
 end
+
+def m136(i)
+    a = [[0]]
+    a[i][0] = source(136.1)
+    sink(a[0][0]) # $ hasValueFlow=136.1
+    sink(a[0][1])
+end
