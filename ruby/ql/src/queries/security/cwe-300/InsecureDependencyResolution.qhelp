@@ -16,7 +16,7 @@ infect the build artifacts and execute arbitrary code on the machine building th
 </overview>
 <recommendation>
 
-<p>Always use a secure protocol, such as HTTPS or SFTP, when downloading artifacts from an URL.</p>
+<p>Always use a secure protocol, such as HTTPS or SFTP, when downloading artifacts from a URL.</p>
 
 </recommendation>
 
