@@ -2070,13 +2070,14 @@ module Csv {
 
   /** Computes the first 6 columns for CSV rows of `c`. */
   string asPartialModel(DataFlowCallable c) {
-    exists(string namespace, string type |
+    exists(string namespace, string type, string name |
       c.getDeclaringType().hasQualifiedName(namespace, type) and
+      c.hasQualifiedName(_, name) and
       result =
         namespace + ";" //
           + type + ";" //
           + getCallableOverride(c) + ";" //
-          + c.getName() + ";" //
+          + name + ";" //
           + "(" + parameterQualifiedTypeNamesToString(c) + ")" //
           + /* ext + */ ";" //
     )

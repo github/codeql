@@ -28,3 +28,5 @@
 | Summaries;IEnumerableFlow;false;ReturnFieldInIEnumerable;();Argument[Qualifier];ReturnValue;taint |
 | Summaries;IEnumerableFlow;false;ReturnIEnumerable;(System.Collections.Generic.IEnumerable<System.String>);Argument[0].Element;ReturnValue;taint |
 | Summaries;IEnumerableFlow;false;ReturnIEnumerableElement;(System.Collections.Generic.IEnumerable<System.Object>);Argument[0].Element;ReturnValue;taint |
+| Summaries;OperatorFlow;false;OperatorFlow;(System.Object);Argument[0];Argument[Qualifier];taint |
+| Summaries;OperatorFlow;false;op_Addition;(Summaries.OperatorFlow,Summaries.OperatorFlow);Argument[0];ReturnValue;taint |
