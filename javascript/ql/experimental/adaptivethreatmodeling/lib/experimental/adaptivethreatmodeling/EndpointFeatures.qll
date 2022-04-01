@@ -17,22 +17,7 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
   // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
   endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
   exists(EndpointFeature f | f.getName() = featureName and result = f.getValue(endpoint)) and
-  isVettedFeature(featureName)
-}
-
-predicate isVettedFeature(string featureName) {
-  // allowlist of vetted features that are permitted in production
-  featureName =
-    any(EndpointFeature f |
-      f instanceof EnclosingFunctionName or
-      f instanceof CalleeName or
-      f instanceof ReceiverName or
-      f instanceof ArgumentIndex or
-      f instanceof CalleeApiName or
-      f instanceof CalleeAccessPath or
-      f instanceof CalleeAccessPathWithStructuralInfo or
-      f instanceof EnclosingFunctionBody
-    ).getName()
+  featureName = getASupportedFeatureName()
 }
 
 /**
@@ -206,7 +191,20 @@ private module FunctionNames {
 }
 
 /** Get a name of a supported generic token-based feature. */
-string getASupportedFeatureName() { isVettedFeature(result) }
+string getASupportedFeatureName() {
+  // allowlist of vetted features that are permitted in production
+  result =
+    any(EndpointFeature f |
+      f instanceof EnclosingFunctionName or
+      f instanceof CalleeName or
+      f instanceof ReceiverName or
+      f instanceof ArgumentIndex or
+      f instanceof CalleeApiName or
+      f instanceof CalleeAccessPath or
+      f instanceof CalleeAccessPathWithStructuralInfo or
+      f instanceof EnclosingFunctionBody
+    ).getName()
+}
 
 /**
  * Generic token-based features for ATM.
@@ -253,7 +251,7 @@ abstract class EndpointFeature extends TEndpointFeature {
    */
   abstract string getValue(DataFlow::Node endpoint);
 
-  string toString() { result = getName() }
+  string toString() { result = this.getName() }
 }
 
 /**
@@ -456,7 +454,7 @@ private module SyntacticUtilities {
         w.getRhs() = node and
         result = getSimpleParameterAccessPath(w.getBase()) + "." + getPropertyNameOrUnknown(w)
       )
-    else result = "?"
+    else result = getUnknownSymbol()
   }
 
   /**
@@ -497,9 +495,11 @@ private module SyntacticUtilities {
                   if node instanceof DataFlow::InvokeNode
                   then
                     result = getSimpleAccessPath(node.(DataFlow::InvokeNode).getCalleeNode()) + "()"
-                  else result = "?"
+                  else result = getUnknownSymbol()
     )
   }
+
+  string getUnknownSymbol() { result = "?" }
 
   /**
    * Gets the imported path.
@@ -514,15 +514,17 @@ private module SyntacticUtilities {
       exists(string p | p = i.getImportedPath().getValue() |
         if p.matches(".%") then result = "\"p\"" else result = "!" // hide absolute imports from the ML training
       )
-    else result = "?"
+    else result = getUnknownSymbol()
   }
-}
 
-/**
- * Gets the property name of a property reference or `?` if it is unknown.
- */
-string getPropertyNameOrUnknown(DataFlow::PropRef ref) {
-  if exists(ref.getPropertyName()) then result = ref.getPropertyName() else result = "?"
+  /**
+   * Gets the property name of a property reference or `?` if it is unknown.
+   */
+  string getPropertyNameOrUnknown(DataFlow::PropRef ref) {
+    if exists(ref.getPropertyName())
+    then result = ref.getPropertyName()
+    else result = getUnknownSymbol()
+  }
 }
 
 /**
@@ -537,11 +539,9 @@ class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
-      exists(string path |
-        path = SyntacticUtilities::getSimpleAccessPath(invk.getCalleeNode()) and
-        // collapse the unknown path to the empty string, as is convention for old features
-        if path = "?" then result = "" else result = path
-      ) and
+      result = SyntacticUtilities::getSimpleAccessPath(invk.getCalleeNode()) and
+      // ignore the unknown path
+      not result = SyntacticUtilities::getUnknownSymbol() and
       (
         invk.getAnArgument() = endpoint or
         SyntacticUtilities::getANestedInitializerValue(invk.getAnArgument()
@@ -586,19 +586,13 @@ class Input_ArgumentIndexAndAccessPathFromCallee extends EndpointFeature,
 class Input_AccessPathFromCallee extends EndpointFeature, TInput_AccessPathFromCallee {
   override string getName() { result = "Input_AccessPathFromCallee" }
 
-  private string getValueMaybe(DataFlow::Node endpoint) {
+  override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
       result = SyntacticUtilities::getSimpleParameterAccessPath(endpoint) and
       SyntacticUtilities::getANestedInitializerValue(invk.getAnArgument()
             .asExpr()
             .getUnderlyingValue()).flow() = endpoint
     )
-  }
-
-  override string getValue(DataFlow::Node endpoint) {
-    if exists(this.getValueMaybe(endpoint))
-    then result = this.getValueMaybe(endpoint)
-    else result = ""
   }
 }
 
