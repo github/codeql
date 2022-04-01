@@ -59,12 +59,15 @@ class RetentionAnnotation extends Annotation {
   RetentionAnnotation() { this.getType().hasQualifiedName("java.lang.annotation", "Retention") }
 
   /**
+   * DEPRECATED: Getting the field access expression is rarely useful. Use `getRetentionPolicy()`
+   * to get the name of the retention policy.
+   *
    * Gets the retention policy expression within this annotation.
    *
    * For example, the field access `RetentionPolicy.RUNTIME` is the
    * retention policy expression in `@Retention(RetentionPolicy.RUNTIME)`.
    */
-  Expr getRetentionPolicyExpression() { result = this.getValue("value") }
+  deprecated Expr getRetentionPolicyExpression() { result = this.getValue("value") }
 
   /**
    * Gets the name of the retention policy of this annotation.
@@ -72,14 +75,7 @@ class RetentionAnnotation extends Annotation {
    * For example, `RUNTIME` is the name of the retention policy
    * in `@Retention(RetentionPolicy.RUNTIME)`.
    */
-  string getRetentionPolicy() {
-    exists(EnumConstant ec |
-      ec = this.getRetentionPolicyExpression().(FieldRead).getField() and
-      ec.getDeclaringType().hasQualifiedName("java.lang.annotation", "RetentionPolicy")
-    |
-      result = ec.getName()
-    )
-  }
+  string getRetentionPolicy() { result = this.getEnumConstantValue("value").getName() }
 }
 
 /** A `@Repeatable` annotation. */
@@ -122,11 +118,7 @@ abstract class NonReflectiveAnnotation extends Annotation { }
 
 library class StandardNonReflectiveAnnotation extends NonReflectiveAnnotation {
   StandardNonReflectiveAnnotation() {
-    exists(AnnotationType anntp | anntp = this.getType() |
-      anntp.hasQualifiedName("java.lang", "Override") or
-      anntp.hasQualifiedName("java.lang", "Deprecated") or
-      anntp.hasQualifiedName("java.lang", "SuppressWarnings") or
-      anntp.hasQualifiedName("java.lang", "SafeVarargs")
-    )
+    this.getType()
+        .hasQualifiedName("java.lang", ["Override", "Deprecated", "SuppressWarnings", "SafeVarargs"])
   }
 }
