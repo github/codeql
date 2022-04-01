@@ -18,13 +18,16 @@ module TaintTracking = CS::TaintTracking;
 class Type = CS::Type;
 
 /**
- * Holds if `api` is an override of `GetHashCode` or `Equals`.
+ * Holds if `api` is an override or an interface implementation that
+ * is irrelevant to the data flow analysis.
  */
-private predicate isIrrellevantObjectOveride(CS::Callable api) {
+private predicate isIrrelevantOverrideOrImplementation(CS::Callable api) {
   exists(System::SystemObjectClass c |
     api = c.getGetHashCodeMethod().getAnOverrider*() or
     api = c.getEqualsMethod().getAnOverrider*()
   )
+  or
+  exists(System::IEquatableEqualsMethod equals | equals = api)
 }
 
 /**
@@ -35,7 +38,7 @@ private predicate isRelevantForModels(CS::Callable api) {
   api.getDeclaringType().getNamespace().getQualifiedName() != "" and
   not api instanceof CS::ConversionOperator and
   not api instanceof Util::MainMethod and
-  not isIrrellevantObjectOveride(api)
+  not isIrrelevantOverrideOrImplementation(api)
 }
 
 /**
