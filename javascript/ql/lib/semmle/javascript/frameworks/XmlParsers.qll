@@ -330,6 +330,7 @@ module XML {
       none()
     }
 
+    pragma[noinline]
     override DataFlow::Node getAResult() {
       result =
         parser
