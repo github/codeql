@@ -12,6 +12,7 @@ import core.Module
 import core.Array
 import core.String
 import core.Regexp
+import core.IO
 
 /**
  * A system command executed via subshell literal syntax.
