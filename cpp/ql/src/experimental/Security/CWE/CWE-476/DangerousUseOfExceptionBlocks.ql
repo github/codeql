@@ -15,7 +15,7 @@ import cpp
 
 /** Holds if `vr` may be released in the `try` block associated with `cb`, or in a `catch` block prior to `cb`. */
 pragma[inline]
-predicate doubleCallDelete(CatchAnyBlock cb, Variable vr) {
+predicate doubleCallDelete(BlockStmt b, CatchAnyBlock cb, Variable vr) {
   // Search for exceptions after freeing memory.
   exists(Expr e1 |
     // `e1` is a delete of `vr`
@@ -24,50 +24,32 @@ predicate doubleCallDelete(CatchAnyBlock cb, Variable vr) {
       e1 = vr.getAnAccess().getEnclosingStmt().(ExprStmt).getExpr().(DeleteExpr)
     ) and
     e1.getEnclosingFunction() = cb.getEnclosingFunction() and
-    (
-      // `e1` occurs in the `try` block associated with `cb`
-      e1.getEnclosingStmt().getParentStmt*() = cb.getTryStmt().getStmt() and
-      // `e2` is a `throw` (or a function call that may throw) that occurs in the `try` block after `e1`
-      exists(Expr e2, ThrowExpr th |
-        (
-          e2 = th or
-          e2 = th.getEnclosingFunction().getACallToThisFunction()
-        ) and
-        e2.getEnclosingStmt().getParentStmt*() = cb.getTryStmt().getStmt() and
-        e1.getASuccessor+() = e2
+    // there is no assignment `vr = 0` in the `try` block after `e1`
+    not exists(AssignExpr ae |
+      ae.getLValue().(VariableAccess).getTarget() = vr and
+      ae.getRValue().getValue() = "0" and
+      e1.getASuccessor+() = ae and
+      ae.getEnclosingStmt().getParentStmt*() = b
+    ) and
+    // `e2` is a `throw` (or a function call that may throw) that occurs in the `try` or `catch` block after `e1`
+    exists(Expr e2, ThrowExpr th |
+      (
+        e2 = th or
+        e2 = th.getEnclosingFunction().getACallToThisFunction()
       ) and
-      // there is no assignment `vr = 0` in the `try` block after `e1`
-      not exists(AssignExpr ae |
-        ae.getLValue().(VariableAccess).getTarget() = vr and
-        ae.getRValue().getValue() = "0" and
-        e1.getASuccessor+() = ae and
-        ae.getEnclosingStmt().getParentStmt*() = cb.getTryStmt().getStmt()
-      )
+      e2.getEnclosingStmt().getParentStmt*() = b and
+      e1.getASuccessor+() = e2
+    ) and
+    e1.getEnclosingStmt().getParentStmt*() = b and
+    (
+      // Search for a situation where there is a release in the block of `try`.
+      b = cb.getTryStmt().getStmt()
       or
       // Search for a situation when there is a higher catch block that also frees memory.
-      exists(CatchBlock cbt, Expr e2, ThrowExpr th |
-        e1.getEnclosingStmt().getParentStmt*() = cbt and
-        exists(cbt.getParameter()) and
-        // `e2` is a `throw` (or a function call that may throw) that occurs in the `catch` block after `e1`
-        (
-          e2 = th or
-          e2 = th.getEnclosingFunction().getACallToThisFunction()
-        ) and
-        e2.getEnclosingStmt().getParentStmt*() = cbt and
-        e1.getASuccessor+() = e2 and
-        // there is no assignment `vr = 0` in the `catch` block after `e1`
-        not exists(AssignExpr ae |
-          ae.getLValue().(VariableAccess).getTarget() = vr and
-          ae.getRValue().getValue() = "0" and
-          e1.getASuccessor+() = ae and
-          ae.getEnclosingStmt().getParentStmt*() = cbt
-        )
-      )
+      exists(b.(CatchBlock).getParameter())
     ) and
     // Exclude the presence of a check in catch block.
-    not exists(IfStmt ifst |
-      ifst.getEnclosingStmt().getParentStmt*() = cb.getAStmt()
-    )
+    not exists(IfStmt ifst | ifst.getEnclosingStmt().getParentStmt*() = cb.getAStmt())
   )
 }
 
@@ -166,9 +148,9 @@ where
       exp.(DeleteArrayExpr).getEnclosingStmt().getParentStmt*() = cb and
       vr = exp.(DeleteArrayExpr).getExpr().(VariableAccess).getTarget()
     ) and
-    doubleCallDelete(cb, vr) and
+    doubleCallDelete(_, cb, vr) and
     msg =
-      "This allocation may have been released in the try block or a previous catch block."
-        + vr.getName()
+      "This allocation may have been released in the try block or a previous catch block." +
+        vr.getName()
   )
 select cb, msg
