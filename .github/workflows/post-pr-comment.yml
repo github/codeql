@@ -48,10 +48,10 @@ jobs:
           if [ -z "$COMMENT_ID" ]
           then
             # Create new comment
-            jq --rawfile body comment_body.txt '{"body":$body}' -n | gh api "repos/${{ github.repository }}/issues/${PR_NUMBER}/comments" -X POST --input -
+            jq --rawfile body comment_body.txt '{"body":$body}' -n | gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -X POST --input -
           else
             # Update existing comment
-            jq --rawfile body comment_body.txt '{"body":$body}' -n | gh api "repos/${{ github.repository }}/issues/comments/${COMMENT_ID}" -X PATCH --input -
+            jq --rawfile body comment_body.txt '{"body":$body}' -n | gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" -X PATCH --input -
           fi
         env:
           GITHUB_TOKEN: ${{ github.token }}
