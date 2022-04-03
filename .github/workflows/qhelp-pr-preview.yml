@@ -5,7 +5,7 @@
 # It also writes the PR number to `pr_number.txt`.
 # These three files are uploaded as an artifact.
 
-# When this workflow completes, the workflow "Add PR comment with QHelp preview" runs.
+# When this workflow completes, the workflow "Post PR comment" runs.
 # It downloads the artifact and adds a comment to the PR with the rendered
 # QHelp.
 

@@ -2,7 +2,7 @@
 # .github/workflows/qhelp-pr-preview.yml
 # See that file for more info.
 
-name: Add PR comment with QHelp preview
+name: Post PR comment
 on:
   workflow_run:
     workflows: [Render QHelp changes]
