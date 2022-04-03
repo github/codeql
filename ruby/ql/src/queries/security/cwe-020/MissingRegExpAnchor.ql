@@ -13,7 +13,8 @@
 
 import HostnameRegexpShared
 import codeql.ruby.DataFlow
-import codeql.ruby.security.performance.RegExpTreeView
+import codeql.ruby.regexp.RegExpTreeView
+import codeql.ruby.Regexp
 
 /**
  * Holds if `term` is a final term, that is, no term will match anything after this one.
