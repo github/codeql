@@ -56,7 +56,7 @@ module API {
    *
    * ### Access paths and edge labels
    *
-   * Nodes in the API graph nodes are associated with a set of access paths, describing a series of operations
+   * Nodes in the API graph are associated with a set of access paths, describing a series of operations
    * that may be performed to obtain that value.
    *
    * For example, the access path `API::moduleImport("lodash").getMember("extend")` represents the action of
@@ -77,7 +77,7 @@ module API {
    * Because the implementation of the external library is not visible, it is not known exactly what operations
    * it will perform on values that flow there. Instead, the edges starting from a def-node are operations that would
    * lead to an observable effect within the current codebase; without knowing for certain if the library will actually perform
-   * those operations. (When constructing these edge, we assume the library is somewhat well-behaved).
+   * those operations. (When constructing these edges, we assume the library is somewhat well-behaved).
    *
    * For example, given this snippet:
    * ```js
