@@ -30,15 +30,13 @@ module CleartextStorage {
    * A sensitive expression, viewed as a data flow source for cleartext storage
    * of sensitive information.
    */
-  class SensitiveExprSource extends Source, DataFlow::ValueNode {
-    override SensitiveExpr astNode;
-
+  class SensitiveExprSource extends Source instanceof SensitiveNode {
     SensitiveExprSource() {
       // storing user names or account names in plaintext isn't usually a problem
-      astNode.getClassification() != SensitiveDataClassification::id()
+      super.getClassification() != SensitiveDataClassification::id()
     }
 
-    override string describe() { result = astNode.describe() }
+    override string describe() { result = SensitiveNode.super.describe() }
   }
 
   /** A call to any function whose name suggests that it encodes or encrypts its arguments. */

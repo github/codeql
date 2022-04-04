@@ -76,7 +76,7 @@ private predicate canHaveSensitiveCookie(DataFlow::Node node) {
     HeuristicNames::nameIndicatesSensitiveData([s, getCookieName(s)], _)
   )
   or
-  node.asExpr() instanceof SensitiveExpr
+  node instanceof SensitiveNode
 }
 
 /**
