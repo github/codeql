@@ -36,6 +36,7 @@ public class MethodInheritanceA {
     private interface InterfaceWithPrivate {
         private void m() {}
         private static void staticM() {}
+        // Static methods are not inherited from interfaces
         public static void publicStaticM() {}
     }
     private interface ExtendingInterfaceWithPrivate extends InterfaceWithPrivate {}
@@ -50,19 +51,19 @@ public class MethodInheritanceA {
     private interface InterfaceWithPublic {
         void m();
     }
-    private interface ExtendingInterfaceWithPublic extends InterfaceWithPublic {}
     private interface OtherInterfaceWithPublic {
         void m();
     }
     private interface InterfaceWithDefault {
         default void m() {}
     }
-    private static class ClassWithPublic {
-        public void m() {}
-    }
     private static abstract class AbstractClassWithPublic {
         public abstract void m();
     }
+    private static class ClassWithPublic {
+        public void m() {}
+    }
+    private static class ExtendingClassWithPublic extends ClassWithPublic {}
 
     // Should inherit all methods called m()
     private abstract class AbstractInheritingClashing extends AbstractClassWithPublic implements InterfaceWithPublic, OtherInterfaceWithPublic, InterfaceWithDefault {}
@@ -70,11 +71,15 @@ public class MethodInheritanceA {
     // Should only inherit m() from ClassWithPublic
     private class InheritingClashing extends ClassWithPublic implements InterfaceWithPublic, OtherInterfaceWithPublic, InterfaceWithDefault {}
 
-    private interface MulitpleMethods {
+    // Should only inherit concrete method m() from ClassWithPublic, even though it is only
+    // transitively inherited
+    private class InheritingClashingTransitive extends ExtendingClassWithPublic implements InterfaceWithPublic, OtherInterfaceWithPublic, InterfaceWithDefault {}
+
+    private interface MultipleMethods {
         void m(int i);
         void m(Integer i);
     }
-    private interface ExtendingMulitpleMethods extends MulitpleMethods {
+    private interface ExtendingMultipleMethods extends MultipleMethods {
         @Override
         void m(int i);
 
@@ -93,26 +98,28 @@ public class MethodInheritanceA {
         }
     }
 
+    // Should only inherit OverridingBase.m()
     private static class BaseAndOverride implements OverridingBase, Base {}
 
     private interface ExtendingOverridingBase extends OverridingBase {}
-    /*
-     * JLS is imprecise here, it currently says:
-     * > There exists no method m' that is a member of the direct superclass type or a direct superinterface type of C
-     * 
-     * Based on how this code currently behaves it should be "that is a **declared or inherited** member"; otherwise
-     * if one does not consider inherited members, in this case one might expect that Base.m() is used when calling m()
-     */
+    // Should only inherit OverridingBase.m()
     private static class BaseAndExtendingOverride implements ExtendingOverridingBase, Base {}
 
+    private class ClassWithParameterized {
+        public void m(List<String> l) {}
+    }
     private class ClassWithRaw {
         public void m(List raw) {}
     }
-    private interface InterfaceWithGeneric {
-        void m(List<?> l);
+    private interface InterfaceWithParameterized {
+        void m(List<Integer> l);
     }
-    private class InheritingBoth extends ClassWithRaw implements InterfaceWithGeneric {}
-    private class OverridingBoth extends ClassWithRaw implements InterfaceWithGeneric {
+    private class InheritingSubsignature extends ClassWithRaw implements InterfaceWithParameterized {}
+    private class OverridingSubsignatureRawClass extends ClassWithRaw implements InterfaceWithParameterized {
+        @Override
+        public void m(List raw) {}
+    }
+    private class OverridingSubsignatureParameterized extends ClassWithParameterized implements InterfaceWithParameterized {
         @Override
         public void m(List raw) {}
     }

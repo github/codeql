@@ -568,7 +568,10 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
     exists(Field f | f = m |
       f = this.getAField()
       or
-      not f.isPrivate() and not this.declaresField(f.getName()) and this.getASupertype().inherits(f)
+      not f.isPrivate() and
+      (f.isPackageProtected() implies f.getDeclaringType().getPackage() = this.getPackage()) and
+      not this.declaresField(f.getName()) and
+      this.getASupertype().inherits(f)
       or
       this.getSourceDeclaration().inherits(f)
     )
@@ -578,21 +581,16 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
     // Constructors are not inherited, but this predicate also considers declared members
     m.(Constructor).getDeclaringType() = this.getSourceDeclaration()
     or
-    m.(MemberType).getDeclaringType() = this.getSourceDeclaration()
-    or
-    // Or inherits member type
-    exists(RefType declaringType, MemberType memberType |
-      declaringType = this.getSourceDeclaration().getASourceSupertype+() and
-      memberType = m and
-      memberType.getDeclaringType() = declaringType and
+    exists(MemberType memberType | memberType = m |
+      m.(MemberType).getDeclaringType() = this
+      or
       not memberType.isPrivate() and
       (memberType.isPackageProtected() implies memberType.getPackage() = this.getPackage()) and
       // And member type is not hidden by another member type with the same name (regardless of visibility)
-      not exists(RefType hidingType |
-        hidingType = this.getSourceDeclaration().getASourceSupertype*() and
-        hidingType.getASourceSupertype+() = declaringType and
-        hidingType.getAMember().(MemberType).getName() = memberType.getName()
-      )
+      not this.getAMember().(MemberType).getName() = memberType.getName() and
+      this.getASupertype().inherits(memberType)
+      or
+      this.getSourceDeclaration().inherits(memberType)
     )
   }
 

@@ -22,9 +22,9 @@ public class MemberTypeInheritanceA {
         public static class Nested {}
     }
 
-    public interface ExtendingPublicInterface extends PublicInterface {}
-    public interface ExtendingExtendingPublicInterface extends ExtendingPublicInterface {}
-    public class ImplementingPublicInterface implements PublicInterface {}
+    private interface ExtendingPublicInterface extends PublicInterface {}
+    private interface ExtendingExtendingPublicInterface extends ExtendingPublicInterface {}
+    private class ImplementingPublicInterface implements PublicInterface {}
 
     private interface OtherInterface {
         public static class Nested {}
