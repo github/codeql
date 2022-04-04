@@ -2,8 +2,8 @@ import ruby
 import TestUtilities.InlineExpectationsTest
 import codeql.ruby.security.InsecureDependencyQuery
 
-class InsecureDependencyResolutionTest extends InlineExpectationsTest {
-  InsecureDependencyResolutionTest() { this = "InsecureDependencyResolutionTest" }
+class InsecureDependencyTest extends InlineExpectationsTest {
+  InsecureDependencyTest() { this = "InsecureDependencyTest" }
 
   override string getARelevantTag() { result = "BAD" }
 
@@ -17,3 +17,7 @@ class InsecureDependencyResolutionTest extends InlineExpectationsTest {
     )
   }
 }
+
+from Expr url, string msg
+where insecureDependencyUrl(url, msg)
+select url, msg
