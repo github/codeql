@@ -559,3 +559,21 @@ void tests2(person_info *pi)
 		send(val(), buffer, strlen(buffer), val()); // BAD
 	}
 }
+
+const char *get_home_phone();
+const char *get_home();
+const char *get_home_address();
+
+void tests3()
+{
+	const char *str;
+
+	str = get_home_phone();
+	send(val(), str, strlen(str), val()); // BAD [NOT DETECTED]
+
+	str = get_home();
+	send(val(), str, strlen(str), val()); // GOOD (probably not personal info)
+
+	str = get_home_address();
+	send(val(), str, strlen(str), val()); // BAD [NOT DETECTED]
+}
