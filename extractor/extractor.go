@@ -138,7 +138,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		defer tw.Close()
 
 		scope := extractPackageScope(tw, pkg)
-		tw.ForEachObject(extractObjectType)
+		extractObjectTypes(tw)
 		lbl := tw.Labeler.GlobalID(util.EscapeTrapSpecialChars(pkg.PkgPath) + ";pkg")
 		dbscheme.PackagesTable.Emit(tw, lbl, pkg.Name, pkg.PkgPath, scope)
 
@@ -448,8 +448,31 @@ func extractObject(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 	}
 }
 
+// extractObjectTypes extracts type and receiver information for all objects
+func extractObjectTypes(tw *trap.Writer) {
+	// calling `extractType` on a named type will extract all methods defined
+	// on it, which will add new objects. Therefore we need to do this first
+	// before we loops over all objects and emit them.
+	changed := true
+	for changed {
+		changed = tw.ForEachObject(extractObjectType)
+	}
+	changed = tw.ForEachObject(emitObjectType)
+	if changed {
+		// TODO: Make this non-fatal before commiting
+		log.Fatalf("Warning: more objects were labeled while emitted object types")
+	}
+}
+
 // extractObjectType extracts type and receiver information for a given object
 func extractObjectType(tw *trap.Writer, obj types.Object, lbl trap.Label) {
+	if tp := obj.Type(); tp != nil {
+		extractType(tw, tp)
+	}
+}
+
+// emitObjectType emits the type information for a given object
+func emitObjectType(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 	if tp := obj.Type(); tp != nil {
 		dbscheme.ObjectTypesTable.Emit(tw, lbl, extractType(tw, tp))
 	}
@@ -596,7 +619,7 @@ func (extraction *Extraction) extractFile(ast *ast.File, pkg *packages.Package) 
 
 	extractFileNode(tw, ast)
 
-	tw.ForEachObject(extractObjectType)
+	extractObjectTypes(tw)
 
 	extractNumLines(tw, path, ast)
 
