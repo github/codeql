@@ -1,6 +1,7 @@
 /**
  * @name Capture summary models.
  * @description Finds applicable summary models to be used by other queries.
+ * @kind diagnostic
  * @id cs/utils/model-generator/summary-models
  */
 
