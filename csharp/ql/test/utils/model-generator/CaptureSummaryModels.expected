@@ -18,6 +18,7 @@
 | Summaries;DerivedClass1Flow;false;ReturnParam1;(System.Int32,System.Int32);Argument[1];ReturnValue;taint |
 | Summaries;DerivedClass2Flow;false;ReturnParam0;(System.Int32,System.Int32);Argument[0];ReturnValue;taint |
 | Summaries;DerivedClass2Flow;false;ReturnParam;(System.Int32);Argument[0];ReturnValue;taint |
+| Summaries;EqualsGetHashCodeNoFlow;false;Equals;(System.Int32);Argument[0];ReturnValue;taint |
 | Summaries;GenericFlow<>;false;AddFieldToGenericList;(System.Collections.Generic.List<T>);Argument[Qualifier];Argument[0].Element;taint |
 | Summaries;GenericFlow<>;false;AddToGenericList<>;(System.Collections.Generic.List<S>,S);Argument[1];Argument[0].Element;taint |
 | Summaries;GenericFlow<>;false;ReturnFieldInGenericList;();Argument[Qualifier];ReturnValue;taint |
