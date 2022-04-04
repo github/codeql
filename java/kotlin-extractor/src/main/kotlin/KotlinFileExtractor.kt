@@ -943,6 +943,10 @@ open class KotlinFileExtractor(
                         extractLocalTypeDeclStmt(classId, s, callable, parent, idx)
                         val ids = getLocallyVisibleFunctionLabels(s)
                         tw.writeKtLocalFunction(ids.function)
+
+                        if (s.origin == IrDeclarationOrigin.ADAPTER_FOR_CALLABLE_REFERENCE) {
+                            tw.writeCompiler_generated(classId, 1)
+                        }
                     } else {
                         logger.errorElement("Expected to find local function", s)
                     }

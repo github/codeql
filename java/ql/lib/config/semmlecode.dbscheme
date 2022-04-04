@@ -1222,3 +1222,9 @@ ktPropertyDelegates(
   unique int id: @kt_property ref,
   unique int variableId: @variable ref
 )
+
+compiler_generated(
+  unique int id: @top ref,
+  int kind: int ref
+  // 1: Kotlin declaring classes of adapter functions
+);

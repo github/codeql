@@ -86,3 +86,5 @@ query predicate modifiers(ClassInstanceExpr e, Method m, string modifier) {
   e.getAnonymousClass().getAMethod() = m and
   m.hasModifier(modifier)
 }
+
+query predicate compGenerated(Top t, int i) { compiler_generated(t, i) }
