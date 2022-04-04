@@ -204,12 +204,21 @@ private class ConstantAmdDependencyPathElement extends PathExpr, ConstantString 
 }
 
 /**
+ * Holds if `nd` is nested inside an AMD module definition.
+ */
+private predicate inAmdModuleDefinition(AstNode nd) {
+  nd.getParent() instanceof AmdModuleDefinition
+  or
+  inAmdModuleDefinition(nd.getParent())
+}
+
+/**
  * Holds if `def` is an AMD module definition in `tl` which is not
  * nested inside another module definition.
  */
 private predicate amdModuleTopLevel(AmdModuleDefinition def, TopLevel tl) {
   def.getTopLevel() = tl and
-  not def.getParent+() instanceof AmdModuleDefinition
+  not inAmdModuleDefinition(def)
 }
 
 /**
