@@ -379,17 +379,20 @@ var ParenExpr = ExprKind.NewBranch("@parenexpr")
 var SelectorExpr = ExprKind.NewBranch("@selectorexpr")
 
 // IndexExpr is the type of AST nodes for index expressions and generic type
-// instantiation expressions with one type argument
+// instantiation expressions with one type argument. Note that syntactically
+// unambiguous generic instantiations will be extracted as
+// `GenericTypeInstantiationExpr`.
 var IndexExpr = ExprKind.NewBranch("@indexexpr")
 
-// GenericFunctionInstantiationExpr is the type of AST nodes that represent a instantiation
+// GenericFunctionInstantiationExpr is the type of AST nodes that represent an instantiation
 // of a generic type. These correspond to some index expression AST nodes and all index
 // list expression AST nodes.
 var GenericFunctionInstantiationExpr = ExprKind.NewBranch("@genericfunctioninstantiationexpr")
 
 // GenericTypeInstantiationExpr is the type of AST nodes that represent an instantiation
 // of a generic type. These correspond to some index expression AST nodes and all index
-// list expression AST nodes.
+// list expression AST nodes. Note some syntactically ambiguous instantations are
+// extracted as an `IndexExpr` to be disambiguated in QL later.
 var GenericTypeInstantiationExpr = ExprKind.NewBranch("@generictypeinstantiationexpr")
 
 // SliceExpr is the type of slice expression AST nodes

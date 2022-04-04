@@ -363,10 +363,14 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 		obj := scope.Lookup(name)
 		lbl, exists := tw.Labeler.ScopedObjectID(obj, func() trap.Label { return extractType(tw, obj.Type()) })
 		if !exists {
+			// Populate type parameter parents for functions. Note that methods
+			// do not appear as objects in any scope, so they have to be dealt
+			// with separately in extractMethods.
 			if funcObj, ok := obj.(*types.Func); ok {
 				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).TypeParams(), lbl)
 				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).RecvTypeParams(), lbl)
 			}
+			// Populate type parameter parents for named types.
 			if typeNameObj, ok := obj.(*types.TypeName); ok {
 				if tp, ok := typeNameObj.Type().(*types.Named); ok {
 					populateTypeParamParents(tw, tp.TypeParams(), lbl)
@@ -393,6 +397,8 @@ func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
 	// if the method label does not exist, extract it
 	methlbl, exists := tw.Labeler.MethodID(meth, recvtyplbl)
 	if !exists {
+		// Populate type parameter parents for methods. They do not appear as
+		// objects in any scope, so they have to be dealt with separately here.
 		populateTypeParamParents(tw, meth.Type().(*types.Signature).TypeParams(), methlbl)
 		populateTypeParamParents(tw, meth.Type().(*types.Signature).RecvTypeParams(), methlbl)
 		extractObject(tw, meth, methlbl)
@@ -994,8 +1000,7 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		_, isUnionType := typeOf(tw, expr).(*types.Union)
 		if expr.Op == token.OR && isUnionType {
 			kind = dbscheme.TypeSetLiteralExpr.Index()
-			n := flattenBinaryExprTree(tw, expr.X, lbl, 0)
-			flattenBinaryExprTree(tw, expr.Y, lbl, n)
+			flattenBinaryExprTree(tw, expr, lbl, 0)
 		} else {
 			tp := dbscheme.BinaryExprs[expr.Op]
 			if tp == nil {
@@ -1033,7 +1038,7 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		kind = dbscheme.InterfaceTypeExpr.Index()
 		// expr.Methods contains methods, embedded interfaces and type set
 		// literals.
-		overrideTypesOfTypeSetLiterals(tw, expr.Methods)
+		makeTypeSetLiteralsUnionTyped(tw, expr.Methods)
 		extractFields(tw, expr.Methods, lbl, 0, 1)
 	case *ast.MapType:
 		if expr == nil {
@@ -1813,8 +1818,9 @@ func createUnionFromType(t types.Type) *types.Union {
 
 // Go through a `FieldList` and update the types of all type set literals which
 // are not already union types to be union types. We do this by changing the
-// types stored in `tw.Package.TypesInfo.Types`.
-func overrideTypesOfTypeSetLiterals(tw *trap.Writer, fields *ast.FieldList) {
+// types stored in `tw.Package.TypesInfo.Types`. Type set literals can only
+// occur in two places: a type parameter declaration or a type in an interface.
+func makeTypeSetLiteralsUnionTyped(tw *trap.Writer, fields *ast.FieldList) {
 	if fields == nil || fields.List == nil {
 		return
 	}
@@ -1853,7 +1859,9 @@ func extractTypeParamDecls(tw *trap.Writer, fields *ast.FieldList, parent trap.L
 		return
 	}
 
-	overrideTypesOfTypeSetLiterals(tw, fields)
+	// Type set literals can occur as the type in a type parameter declaration,
+	// so we ensure that they are union typed.
+	makeTypeSetLiteralsUnionTyped(tw, fields)
 
 	idx := 0
 	for _, field := range fields.List {
