@@ -995,7 +995,7 @@ module Express {
   }
 
   /** An expression that is passed as `expressBasicAuth({ users: { <user>: <password> }})`. */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     string kind;
 
     Credentials() {
@@ -1006,9 +1006,9 @@ module Express {
           usersSrc.flowsTo(call.getOptionArgument(0, "users")) and
           usersSrc.flowsTo(pwn.getBase())
         |
-          this = pwn.getPropertyNameExpr() and kind = "user name"
+          this = pwn.getPropertyNameExpr().flow() and kind = "user name"
           or
-          this = pwn.getRhs().asExpr() and kind = "password"
+          this = pwn.getRhs() and kind = "password"
         )
       )
     }

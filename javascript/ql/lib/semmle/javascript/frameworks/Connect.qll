@@ -101,12 +101,12 @@ module Connect {
   }
 
   /** An expression that is passed as `basicAuthConnect(<user>, <password>)`. */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     string kind;
 
     Credentials() {
-      exists(CallExpr call |
-        call = DataFlow::moduleImport("basic-auth-connect").getAnInvocation().asExpr() and
+      exists(DataFlow::CallNode call |
+        call = DataFlow::moduleImport("basic-auth-connect").getAnInvocation() and
         call.getNumArgument() = 2
       |
         this = call.getArgument(0) and kind = "user name"

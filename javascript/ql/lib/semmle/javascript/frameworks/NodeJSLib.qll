@@ -426,11 +426,10 @@ module NodeJSLib {
   }
 
   /** An expression that is passed as `http.request({ auth: <expr> }, ...)`. */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     Credentials() {
       exists(string http | http = "http" or http = "https" |
-        this =
-          DataFlow::moduleMember(http, "request").getACall().getOptionArgument(0, "auth").asExpr()
+        this = DataFlow::moduleMember(http, "request").getACall().getOptionArgument(0, "auth")
       )
     }
 
@@ -1038,11 +1037,9 @@ module NodeJSLib {
   /**
    * A data flow node that is the username passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `username` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
    */
-  private class ClientRequestLoginUsername extends CredentialsExpr {
+  private class ClientRequestLoginUsername extends CredentialsNode {
     ClientRequestLoginUsername() {
-      exists(ClientRequestLoginCallback callback |
-        this = callback.getACall().getArgument(0).asExpr()
-      )
+      exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(0))
     }
 
     override string getCredentialsKind() { result = "Node.js http(s) client login username" }
@@ -1051,11 +1048,9 @@ module NodeJSLib {
   /**
    * A data flow node that is the password passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `password` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
    */
-  private class ClientRequestLoginPassword extends CredentialsExpr {
+  private class ClientRequestLoginPassword extends CredentialsNode {
     ClientRequestLoginPassword() {
-      exists(ClientRequestLoginCallback callback |
-        this = callback.getACall().getArgument(1).asExpr()
-      )
+      exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(1))
     }
 
     override string getCredentialsKind() { result = "Node.js http(s) client login password" }

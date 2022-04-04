@@ -103,13 +103,13 @@ private module MySql {
   }
 
   /** An expression that is passed as user name or password to `mysql.createConnection`. */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     string kind;
 
     Credentials() {
       exists(API::Node callee, string prop |
         callee in [createConnection(), createPool()] and
-        this = callee.getParameter(0).getMember(prop).asSink().asExpr() and
+        this = callee.getParameter(0).getMember(prop).asSink() and
         (
           prop = "user" and kind = "user name"
           or
@@ -205,14 +205,14 @@ private module Postgres {
   }
 
   /** An expression that is passed as user name or password when creating a client or a pool. */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     string kind;
 
     Credentials() {
       exists(string prop |
-        this = [newClient(), newPool()].getParameter(0).getMember(prop).asSink().asExpr()
+        this = [newClient(), newPool()].getParameter(0).getMember(prop).asSink()
         or
-        this = pgPromise().getParameter(0).getMember(prop).asSink().asExpr()
+        this = pgPromise().getParameter(0).getMember(prop).asSink()
       |
         prop = "user" and kind = "user name"
         or
@@ -485,7 +485,7 @@ private module MsSql {
   }
 
   /** An expression that is passed as user name or password when creating a client or a pool. */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     string kind;
 
     Credentials() {
@@ -495,7 +495,7 @@ private module MsSql {
           or
           callee = mssql().getMember("ConnectionPool")
         ) and
-        this = callee.getParameter(0).getMember(prop).asSink().asExpr() and
+        this = callee.getParameter(0).getMember(prop).asSink() and
         (
           prop = "user" and kind = "user name"
           or
