@@ -574,6 +574,26 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
     )
     or
     this.hasMethod(m, _)
+    or
+    // Constructors are not inherited, but this predicate also considers declared members
+    m.(Constructor).getDeclaringType() = this.getSourceDeclaration()
+    or
+    m.(MemberType).getDeclaringType() = this.getSourceDeclaration()
+    or
+    // Or inherits member type
+    exists(RefType declaringType, MemberType memberType |
+      declaringType = this.getSourceDeclaration().getASourceSupertype+() and
+      memberType = m and
+      memberType.getDeclaringType() = declaringType and
+      not memberType.isPrivate() and
+      (memberType.isPackageProtected() implies memberType.getPackage() = this.getPackage()) and
+      // And member type is not hidden by another member type with the same name (regardless of visibility)
+      not exists(RefType hidingType |
+        hidingType = this.getSourceDeclaration().getASourceSupertype*() and
+        hidingType.getASourceSupertype+() = declaringType and
+        hidingType.getAMember().(MemberType).getName() = memberType.getName()
+      )
+    )
   }
 
   /** Holds if this is a top-level type, which is not nested inside any other types. */
