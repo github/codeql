@@ -130,9 +130,9 @@ private class ThroughFlowConfig extends TaintTracking::Configuration {
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
     DataFlow::FlowState state2
   ) {
-    exists(DataFlowImplCommon::TypedContent tc |
-      DataFlowImplCommon::store(node1, tc, node2, _) and
-      isRelevantContent(tc.getContent()) and
+    exists(DataFlow::Content c |
+      DataFlowImplCommon::storeSet(node1, c, node2, _, _) and
+      isRelevantContent(c) and
       (state1 instanceof TaintRead or state1 instanceof TaintStore) and
       state2 instanceof TaintStore
     )
