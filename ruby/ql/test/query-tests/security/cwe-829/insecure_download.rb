@@ -2,7 +2,7 @@ require "excon"
 
 def foo
     def download_tools(installer)
-        Excon.get(installer[:url]) # $BAD= (requires hash flow)
+        Excon.get(installer[:url]) # $ MISSING: BAD= (requires hash flow)
     end
 
     constants = {
