@@ -8,8 +8,8 @@
 
 			Sanitizing untrusted input with regular expressions is a
 			common technique.  However, it is error-prone to match untrusted input
-			against regular expressions without anchors such as <code>^</code> or
-			<code>$</code>.  Malicious input can bypass such security checks by
+			against regular expressions without anchors such as <code>\A</code> or
+			<code>\z</code>.  Malicious input can bypass such security checks by
 			embedding one of the allowed patterns in an unexpected location.
 
 		</p>
@@ -68,10 +68,17 @@
 		</p>
 
 		<p>
+			In Ruby the anchors <code>^</code> and <code>$</code> match the
+			start and end of a line, whereas the anchors <code>\A</code> and
+			<code>\z</code> match the start and end of the entire string.
 
-			TODO: describe the danger of using line anchors like <code>^</code>
-			or <code>$</code>.
+			Using line anchors can be dangerous, as this can allow malicious
+			input to be hidden using newlines, leading to vulnerabilities such
+			as HTTP header injection.
 
+			Unless you specifically need the line-matching behaviour of
+			<code>^</code> and <code>$</code>, you should use <code>\A</code>
+			and <code>\z</code> instead.
 		</p>
 
 	</example>
