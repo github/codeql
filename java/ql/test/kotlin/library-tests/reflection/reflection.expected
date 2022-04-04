@@ -51,6 +51,7 @@ functionReferences
 | reflection.kt:98:14:98:17 | ...::... | reflection.kt:98:14:98:17 | invoke | reflection.kt:94:1:94:24 | fn |
 | reflection.kt:99:14:99:29 | ...::... | reflection.kt:99:14:99:29 | invoke | file://<external>/Class2$Inner.class:0:0:0:0 | Inner<String> |
 | reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | invoke | reflection.kt:115:9:115:27 | fn1 |
+| reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | invoke | reflection.kt:121:1:121:13 | fn1 |
 propertyGetReferences
 | reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | get | reflection.kt:33:9:33:23 | getP0 |
 | reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | get | reflection.kt:33:9:33:23 | getP0 |
@@ -114,6 +115,7 @@ callsInsideInvocationMethods
 | reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:109:17:109:27 | set | reflection.kt:109:17:109:27 | setProp1(...) | Base1.setProp1 |
 | reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | reflection.kt:116:40:116:44 | invoke | reflection.kt:116:40:116:44 | fn1(...) | .fn1 |
 | reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | reflection.kt:116:40:116:44 | invoke | reflection.kt:116:40:116:44 | new (...) | . |
+| reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | new Function0<Unit>(...) { ... } | reflection.kt:126:9:126:13 | invoke | reflection.kt:126:9:126:13 | fn1(...) | ReflectionKt.fn1 |
 fieldAccessInsideInvocationMethods
 | reflection.kt:14:38:14:44 | ...::... | reflection.kt:14:38:14:44 | new Function1<C,Integer>(...) { ... } | reflection.kt:14:38:14:44 | invoke | reflection.kt:14:38:14:44 | this.<dispatchReceiver> |
 | reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | new KProperty0<Integer>(...) { ... } | reflection.kt:15:35:15:41 | get | reflection.kt:15:35:15:41 | this.<dispatchReceiver> |
@@ -225,3 +227,4 @@ modifiers
 | reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | set | public |
 | reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | invoke | override |
 | reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | invoke | public |
+| reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | invoke | public |

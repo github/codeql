@@ -116,3 +116,12 @@ class LocalFn {
         val x: KFunction1<Int, Unit> = ::fn1
     }
 }
+
+
+fun fn1() = 5
+
+fun fn2(f: () -> Unit) = f()
+
+fun adapted() {
+    fn2(::fn1)
+}

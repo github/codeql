@@ -206,6 +206,49 @@ reflection.kt:
 #  103|         0: [Parameter] l
 #  103|         1: [Parameter] l2
 #  103|       5: [BlockStmt] { ... }
+#  121|     9: [Method] fn1
+#  121|       5: [BlockStmt] { ... }
+#  121|         0: [ReturnStmt] return ...
+#  121|           0: [IntegerLiteral] 5
+#  123|     10: [Method] fn2
+#-----|       4: (Parameters)
+#  123|         0: [Parameter] f
+#  123|       5: [BlockStmt] { ... }
+#  123|         0: [ReturnStmt] return ...
+#  123|           0: [MethodAccess] invoke(...)
+#  123|             -1: [VarAccess] f
+#  125|     11: [Method] adapted
+#  125|       5: [BlockStmt] { ... }
+#  126|         0: [ExprStmt] <Expr>;
+#  126|           0: [MethodAccess] fn2(...)
+#  126|             -1: [TypeAccess] ReflectionKt
+#  126|             0: [StmtExpr] <Stmt>
+#  126|               0: [BlockStmt] { ... }
+#  126|                 0: [LocalTypeDeclStmt] class ...
+#  126|                   0: [LocalClass] 
+#  126|                     1: [Constructor] 
+#  126|                       5: [BlockStmt] { ... }
+#  126|                         0: [SuperConstructorInvocationStmt] super(...)
+#  126|                     1: [Method] fn1
+#  126|                       5: [BlockStmt] { ... }
+#  126|                         0: [ExprStmt] <Expr>;
+#  126|                           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  126|                             0: [TypeAccess] Unit
+#  126|                             1: [MethodAccess] fn1(...)
+#  126|                               -1: [TypeAccess] ReflectionKt
+#  126|                 1: [ExprStmt] <Expr>;
+#  126|                   0: [MemberRefExpr] ...::...
+#  126|                     -4: [AnonymousClass] new Function0<Unit>(...) { ... }
+#  126|                       1: [Constructor] 
+#  126|                         5: [BlockStmt] { ... }
+#  126|                           0: [SuperConstructorInvocationStmt] super(...)
+#  126|                       1: [Method] invoke
+#  126|                         5: [BlockStmt] { ... }
+#  126|                           0: [ReturnStmt] return ...
+#  126|                             0: [MethodAccess] fn1(...)
+#  126|                               -1: [TypeAccess] ReflectionKt
+#  126|                     -3: [TypeAccess] Function0<Unit>
+#  126|                       0: [TypeAccess] Unit
 #    5|   2: [Class] Reflection
 #    5|     1: [Constructor] Reflection
 #    5|       5: [BlockStmt] { ... }
