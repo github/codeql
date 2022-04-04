@@ -282,6 +282,8 @@ module EssaFlow {
       nodeTo = TKwOverflowNode(call, callable) and
       nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode()
     )
+    or
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
@@ -507,6 +509,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   matchStoreStep(nodeFrom, c, nodeTo)
   or
   any(Orm::AdditionalOrmSteps es).storeStep(nodeFrom, c, nodeTo)
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom, c, nodeTo)
 }
 
 /**
@@ -700,6 +704,8 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   attributeReadStep(nodeFrom, c, nodeTo)
   or
   kwUnpackReadStep(nodeFrom, c, nodeTo)
+  or
+  FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -824,6 +830,8 @@ predicate clearsContent(Node n, Content c) {
   matchClearStep(n, c)
   or
   attributeClearStep(n, c)
+  or
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
 
 /**
@@ -875,7 +883,11 @@ int accessPathLimit() { result = 5 }
 predicate forceHighPrecision(Content c) { none() }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) {
+  n instanceof SummaryNode
+  or
+  n instanceof SummaryParameterNode
+}
 
 class LambdaCallKind = Unit;
 
