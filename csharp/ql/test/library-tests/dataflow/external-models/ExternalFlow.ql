@@ -34,6 +34,8 @@ class SummaryModelTest extends SummaryModelCsv {
         "My.Qltest;G;false;GeneratedFlow;(System.Object);;Argument[0];ReturnValue;generated:value",
         "My.Qltest;G;false;GeneratedFlowArgs;(System.Object,System.Object);;Argument[0];ReturnValue;generated:value",
         "My.Qltest;G;false;GeneratedFlowArgs;(System.Object,System.Object);;Argument[1];ReturnValue;generated:value",
+        "My.Qltest;G;false;MixedFlowArgs;(System.Object,System.Object);;Argument[0];ReturnValue;generated:value",
+        "My.Qltest;G;false;MixedFlowArgs;(System.Object,System.Object);;Argument[1];ReturnValue;value",
       ]
   }
 }
