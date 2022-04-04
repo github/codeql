@@ -69,6 +69,7 @@ predicate pointerDereference(CatchAnyBlock cb, Variable vr, Variable vro) {
         vro = ase.getLValue().(VariableAccess).getTarget()
       )
       or
+      // `e0` is a `new` expression (or equivalent function call) assigned to the array element `vro`
       exists(AssignExpr ase |
         ase = vro.getAnAccess().(Qualifier).getEnclosingStmt().(ExprStmt).getExpr().(AssignExpr) and
         (
