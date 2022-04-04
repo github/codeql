@@ -569,11 +569,11 @@ void tests3()
 	const char *str;
 
 	str = get_home_phone();
-	send(val(), str, strlen(str), val()); // BAD [NOT DETECTED]
+	send(val(), str, strlen(str), val()); // BAD
 
 	str = get_home();
 	send(val(), str, strlen(str), val()); // GOOD (probably not personal info)
 
 	str = get_home_address();
-	send(val(), str, strlen(str), val()); // BAD [NOT DETECTED]
+	send(val(), str, strlen(str), val()); // BAD
 }
