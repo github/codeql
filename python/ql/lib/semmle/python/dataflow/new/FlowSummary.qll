@@ -115,3 +115,63 @@ private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
+// private module ForTesting {
+//   private class SummarizedCallableIdentity extends SummarizedCallable {
+//     SummarizedCallableIdentity() { this = "identity" }
+//     override Call getACall() { result.getFunc().(Name).getId() = this }
+//     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+//       input = "Argument[0]" and
+//       output = "ReturnValue" and
+//       preservesValue = true
+//     }
+//   }
+//   // For lambda flow to work, implement lambdaCall and lambdaCreation
+//   private class SummarizedCallableApplyLambda extends SummarizedCallable {
+//     SummarizedCallableApplyLambda() { this = "apply_lambda" }
+//     override Call getACall() { result.getFunc().(Name).getId() = this }
+//     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+//       input = "Argument[1]" and
+//       output = "Parameter[0] of Argument[0]" and
+//       preservesValue = true
+//       or
+//       input = "ReturnValue of Argument[0]" and
+//       output = "ReturnValue" and
+//       preservesValue = true
+//     }
+//   }
+//   private class SummarizedCallableReversed extends SummarizedCallable {
+//     SummarizedCallableReversed() { this = "reversed" }
+//     override Call getACall() { result.getFunc().(Name).getId() = this }
+//     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+//       input = "ListElement of Argument[0]" and
+//       output = "ListElement of ReturnValue" and
+//       preservesValue = true
+//     }
+//   }
+//   private class SummarizedCallableMap extends SummarizedCallable {
+//     SummarizedCallableMap() { this = "map" }
+//     override Call getACall() { result.getFunc().(Name).getId() = this }
+//     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+//       input = "ListElement of Argument[1]" and
+//       output = "Parameter[0] of Argument[0]" and
+//       preservesValue = true
+//       or
+//       input = "ReturnValue of Argument[0]" and
+//       output = "ListElement of ReturnValue" and
+//       preservesValue = true
+//     }
+//   }
+//   // Typetracking needs to use a local flow step not including summaries
+//   // Typetracking needs to use a call graph not including summaries
+//   // private class SummarizedCallableJsonLoads extends SummarizedCallable {
+//   //   SummarizedCallableJsonLoads() { this = "json.loads" }
+//   //   override Call getACall() {
+//   //     result = API::moduleImport("json").getMember("loads").getACall().asExpr()
+//   //   }
+//   //   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+//   //     input = "Argument[0]" and
+//   //     output = "ListElement of ReturnValue" and
+//   //     preservesValue = true
+//   //   }
+//   // }
+// }

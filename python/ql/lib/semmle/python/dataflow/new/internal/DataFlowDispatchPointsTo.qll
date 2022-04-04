@@ -365,6 +365,8 @@ class DataFlowLambda extends DataFlowCallable, TLambda {
   override FunctionValue getCallableValue() {
     result.getOrigin().getNode() = lambda.getDefinition()
   }
+
+  Expr getDefinition() { result = lambda.getDefinition() }
 }
 
 /** A class representing the scope in which a `ModuleVariableNode` appears. */
@@ -384,6 +386,24 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
   override string getName() { result = mod.getName() }
 
   override CallableValue getCallableValue() { none() }
+}
+
+class LibraryCallableValue extends DataFlowCallable, TLibraryCallable {
+  LibraryCallable callable;
+
+  LibraryCallableValue() { this = TLibraryCallable(callable) }
+
+  override string toString() { result = callable.toString() }
+
+  override CallNode getACall() { result.getNode() = callable.getACall() }
+
+  override Scope getScope() { none() }
+
+  override NameNode getParameter(int n) { none() }
+
+  override string getName() { result = callable }
+
+  override LibraryCallable asLibraryCallable() { result = callable }
 }
 
 /**
@@ -406,11 +426,15 @@ newtype TDataFlowCall =
   TMethodCall(CallNode call) { call = any(FunctionValue f).getAMethodCall() } or
   TClassCall(CallNode call) { call = any(ClassValue c | not c.isAbsent()).getACall() } or
   TSpecialCall(SpecialMethodCallNode special) or
+  /** A call to a summarized callable */
+  TLibraryCall(CallNode call) { call.getNode() = any(LibraryCallable lc).getACall() } or
+  /** A synthesized inside a summarized callable */
   TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
 
-class TDataFlowSourceCall = TFunctionCall or TMethodCall or TClassCall or TSpecialCall;
+class TDataFlowSourceCall =
+  TFunctionCall or TMethodCall or TClassCall or TSpecialCall or TLibraryCall;
 
 /** A call. */
 abstract class DataFlowCall extends TDataFlowCall {
@@ -562,6 +586,24 @@ class SpecialCall extends DataFlowSourceCall, TSpecialCall {
   }
 }
 
+class LibraryCall extends DataFlowSourceCall, TLibraryCall {
+  CallNode call;
+  LibraryCallable callable;
+
+  LibraryCall() { this = TLibraryCall(call) and call.getNode() = callable.getACall() }
+
+  override string toString() { result = call.toString() }
+
+  // TODO: Implement Python calling convention?
+  override Node getArg(int n) { result = TCfgNode(call.getArg(n)) }
+
+  override ControlFlowNode getNode() { result = call }
+
+  override DataFlowCallable getCallable() { result.asLibraryCallable() = callable }
+
+  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
+}
+
 /**
  * A synthesized call inside a callable with a flow summary.
  *
@@ -601,7 +643,7 @@ class SummaryParameterNode extends ParameterNode, TSummaryParameterNode {
 }
 
 /** A data-flow node used to model flow summaries. */
-private class SummaryNode extends Node, TSummaryNode {
+class SummaryNode extends Node, TSummaryNode {
   private FlowSummaryImpl::Public::SummarizedCallable c;
   private FlowSummaryImpl::Private::SummaryNodeState state;
 
@@ -637,7 +679,14 @@ private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
 }
 
 /** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(DataFlowSourceCall call) { result = call.getCallable() }
+DataFlowCallable viableCallable(DataFlowSourceCall call) {
+  result = call.getCallable()
+  or
+  exists(LibraryCallable callable |
+    result = TLibraryCallable(callable) and
+    call.getNode().getNode() = callable.getACall()
+  )
+}
 
 private newtype TReturnKind = TNormalReturnKind()
 
