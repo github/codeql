@@ -220,12 +220,12 @@ func (l *Labeler) FieldID(field *types.Var, idx int, structlbl Label) (Label, bo
 }
 
 // MethodID associates a label with the given method and returns it, together with a flag indicating whether
-// the method already had a label associated with it; the method must belong to `recvlbl`, since that label
+// the method already had a label associated with it; the method must belong to `recvtyplbl`, since that label
 // is used to construct the label of the method
-func (l *Labeler) MethodID(method types.Object, recvlbl Label) (Label, bool) {
+func (l *Labeler) MethodID(method types.Object, recvtyplbl Label) (Label, bool) {
 	label, exists := l.objectLabels[method]
 	if !exists {
-		label = l.GlobalID(fmt.Sprintf("{%v},%s;method", recvlbl, method.Name()))
+		label = l.GlobalID(fmt.Sprintf("{%v},%s;method", recvtyplbl, method.Name()))
 		l.objectLabels[method] = label
 	}
 	return label, exists

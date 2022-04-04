@@ -388,10 +388,10 @@ func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
 	// get the receiver type of the method
 	recvtyp := meth.Type().(*types.Signature).Recv().Type()
 	// ensure receiver type has been extracted
-	recvlbl := extractType(tw, recvtyp)
+	recvtyplbl := extractType(tw, recvtyp)
 
 	// if the method label does not exist, extract it
-	methlbl, exists := tw.Labeler.MethodID(meth, recvlbl)
+	methlbl, exists := tw.Labeler.MethodID(meth, recvtyplbl)
 	if !exists {
 		populateTypeParamParents(tw, meth.Type().(*types.Signature).TypeParams(), methlbl)
 		populateTypeParamParents(tw, meth.Type().(*types.Signature).RecvTypeParams(), methlbl)
