@@ -100,12 +100,7 @@ module InsecureDownload {
    * seen as a source for downloads of sensitive files through an insecure connection.
    */
   class SensitiveFileUrl extends Source {
-    string str;
-
-    SensitiveFileUrl() {
-      str = this.asExpr().getConstantValue().getString() and
-      hasUnsafeExtension(str)
-    }
+    SensitiveFileUrl() { hasUnsafeExtension(this.asExpr().getConstantValue().getString()) }
 
     override DataFlow::FlowState getALabel() { result instanceof Label::Sensitive }
   }
@@ -134,8 +129,9 @@ module InsecureDownload {
   }
 
   /**
-   * A response from an outgoing HTTP request, considered as a flow sink for
-   * downloading a sensitive file through an insecure connection.
+   * A response from an outgoing HTTP request.
+   * This is a sink if there are both insecure and sensitive parts of the URL.
+   * In other words, if the URL is HTTP and the extension is in `unsafeExtension()`.
    */
   private class HttpResponseAsSink extends Sink {
     private HTTP::Client::Request req;
