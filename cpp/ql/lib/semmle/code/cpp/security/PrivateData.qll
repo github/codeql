@@ -22,14 +22,16 @@ private string privateNames() {
       // Inspired by the list on https://cwe.mitre.org/data/definitions/359.html
       // Government identifiers, such as Social Security Numbers
       "social.?security|" +
-      // Contact information, such as home addresses and telephone numbers
-      "post.?code|zip.?code|telephone|" +
+      // Contact information, such as home addresses
+      "post.?code|zip.?code|" +
+      // and telephone numbers
+      "telephone|mobile|" +
       // Geographic location - where the user is (or was)
       "latitude|longitude|" +
       // Financial data - such as credit card numbers, salary, bank accounts, and debts
       "credit.?card|salary|bank.?account|" +
       // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
-      "email|mobile|employer|" +
+      "email|employer|" +
       // Health - medical conditions, insurance status, prescription records
       "medical" +
       // ---
