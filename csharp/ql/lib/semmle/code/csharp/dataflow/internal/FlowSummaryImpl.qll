@@ -881,7 +881,7 @@ module Private {
         summaryElement(this, inSpec, outSpec, kind, false)
         or
         summaryElement(this, inSpec, outSpec, kind, true) and
-        not summaryElement(this, inSpec, outSpec, kind, false)
+        not summaryElement(this, _, _, _, false)
       }
 
       override predicate propagatesFlow(
