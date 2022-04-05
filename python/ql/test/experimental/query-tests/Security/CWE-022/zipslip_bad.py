@@ -34,5 +34,5 @@ def unzip4(filename):
     filelist = zf.namelist()
     for x in filelist:
         with zf.open(x) as srcf:
-            shutil.copyfileobj(x, dstfile)
+            shutil.copyfileobj(x, "/tmp/unpack/")
 
