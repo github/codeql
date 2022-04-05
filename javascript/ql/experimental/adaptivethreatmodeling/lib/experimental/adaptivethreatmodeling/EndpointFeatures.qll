@@ -144,9 +144,9 @@ private module AccessPaths {
       not param = base.getReceiver()
     |
       result = param and
-      name = param.getAnImmediateUse().asExpr().(Parameter).getName()
+      name = param.getASource().asExpr().(Parameter).getName()
       or
-      param.getAnImmediateUse().asExpr() instanceof DestructuringPattern and
+      param.getASource().asExpr() instanceof DestructuringPattern and
       result = param.getMember(name)
     )
   }
