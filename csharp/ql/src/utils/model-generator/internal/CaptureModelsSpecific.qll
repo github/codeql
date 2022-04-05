@@ -9,9 +9,11 @@ private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.frameworks.System as System
 private import semmle.code.csharp.frameworks.system.linq.Expressions
+private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate as TaintTrackingPrivate
 import semmle.code.csharp.dataflow.ExternalFlow as ExternalFlow
 import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
-import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+import semmle.code.csharp.dataflow.internal.ContentDataFlow
 
 module DataFlow = CS::DataFlow;
 
@@ -96,15 +98,28 @@ predicate isRelevantType(CS::Type t) {
 }
 
 /**
+ * Holds if content `c` is either a field or synthetic field of a relevant type
+ * or a container like content.
+ */
+predicate isRelevantContent(DataFlow::Content c) {
+  isRelevantType(c.(DataFlow::FieldContent).getField().getType())
+  or
+  exists(CS::TrivialProperty p |
+    p = c.(DataFlow::PropertyContent).getProperty() and
+    isRelevantType(p.getType())
+  )
+  or
+  isRelevantType(c.(DataFlow::SyntheticFieldContent).getField().getType())
+  or
+  DataFlowPrivate::containerContent(c)
+}
+
+/**
  * Gets the CSV string representation of the qualifier.
  */
 string qualifierString() { result = "Argument[this]" }
 
-private string parameterAccess(CS::Parameter p) {
-  if Collections::isCollectionType(p.getType())
-  then result = "Argument[" + p.getPosition() + "].Element"
-  else result = "Argument[" + p.getPosition() + "]"
-}
+private string parameterAccess(CS::Parameter p) { result = "Argument[" + p.getPosition() + "]" }
 
 /**
  * Gets the CSV string representation of the parameter node `p`.
@@ -142,13 +157,6 @@ string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
  */
 CS::Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
   result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
-}
-
-/**
- * Holds if `node` is an own instance access.
- */
-predicate isOwnInstanceAccessNode(DataFlowPrivate::ReturnNode node) {
-  node.asExpr() instanceof CS::ThisAccess
 }
 
 private predicate isRelevantMemberAccess(DataFlow::Node node) {
@@ -199,3 +207,50 @@ predicate isRelevantSinkKind(string kind) { any() }
  */
 bindingset[kind]
 predicate isRelevantSourceKind(string kind) { not kind = "file" }
+
+string printContent(DataFlow::Content c) {
+  exists(CS::Field f |
+    f = c.(DataFlow::FieldContent).getField() and
+    if f.isEffectivelyPublic()
+    then result = "Field[" + f.getQualifiedName() + "]"
+    else result = "SyntheticField[" + f.getQualifiedName() + "]"
+  )
+  or
+  exists(CS::Property p |
+    p = c.(DataFlow::PropertyContent).getProperty() and
+    if p.isEffectivelyPublic()
+    then result = "Property[" + p.getQualifiedName() + "]"
+    else result = "SyntheticField[" + p.getQualifiedName() + "]"
+  )
+  or
+  c instanceof DataFlow::ElementContent and
+  result = "Element"
+}
+
+predicate taintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  TaintTrackingPrivate::defaultAdditionalTaintStep(nodeFrom, nodeTo) and
+  not nodeTo.asExpr() instanceof CS::ElementAccess and
+  not DataFlowPrivate::readStep(nodeFrom, DataFlowPrivate::TElementContent(), nodeTo)
+}
+
+int accessPathLimit() { result = 2 }
+
+/**
+ * Holds if the step from `node1` to `node2` should be taken into account when
+ * capturing flow sources.
+ */
+predicate isRelevantSourceTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(DataFlow::Content f |
+    DataFlowPrivate::readStep(node1, f, node2) and
+    if f instanceof DataFlow::FieldContent
+    then isRelevantType(f.(DataFlow::FieldContent).getField().getType())
+    else
+      if f instanceof DataFlow::SyntheticFieldContent
+      then isRelevantType(f.(DataFlow::SyntheticFieldContent).getField().getType())
+      else any()
+  )
+  or
+  exists(DataFlow::Content f | DataFlowPrivate::storeStep(node1, f, node2) |
+    DataFlowPrivate::containerContent(f)
+  )
+}

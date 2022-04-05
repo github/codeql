@@ -260,3 +260,33 @@ public class EqualsGetHashCodeNoFlow
         return intTainted;
     }
 }
+
+public class IDictionaryFlow
+{
+    public object ReturnIDictionaryValue(IDictionary<object, object> input, object key)
+    {
+        return input[key];
+    }
+}
+
+public class NestedFieldFlow
+{
+    public NestedFieldFlow FieldA;
+    public NestedFieldFlow FieldB;
+
+    public NestedFieldFlow Move()
+    {
+        return new NestedFieldFlow() { FieldB = this.FieldA };
+    }
+
+    public NestedFieldFlow MoveNested()
+    {
+        return new NestedFieldFlow() { FieldA = FieldB.Move() };
+    }
+
+    public NestedFieldFlow ReverseFields()
+    {
+        var x = new NestedFieldFlow() { FieldB = this.FieldA.FieldB };
+        return new NestedFieldFlow() { FieldA = x };
+    }
+}

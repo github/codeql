@@ -11,5 +11,5 @@ private import internal.CaptureModels
 private import internal.CaptureSummaryFlow
 
 from TargetApi api, string flow
-where flow = captureFlow(api) and not hasSummary(api, false)
+where flow = captureThroughFlow(api) and not hasSummary(api, false)
 select flow order by flow
