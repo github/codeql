@@ -62,9 +62,8 @@ predicate summaryElement(
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
-    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind) and
-    c.asCallable() = interpretElement(namespace, type, subtypes, name, signature, ext) and
-    generated = false
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, generated) and
+    c.asCallable() = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
 
@@ -123,9 +122,8 @@ predicate sourceElement(SourceOrSinkElement e, string output, string kind, boole
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
-    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind) and
-    e = interpretElement(namespace, type, subtypes, name, signature, ext) and
-    generated = false
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, generated) and
+    e = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
 
@@ -138,9 +136,8 @@ predicate sinkElement(SourceOrSinkElement e, string input, string kind, boolean 
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
-    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind) and
-    e = interpretElement(namespace, type, subtypes, name, signature, ext) and
-    generated = false
+    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, generated) and
+    e = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
 
