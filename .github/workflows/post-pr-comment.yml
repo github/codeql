@@ -38,7 +38,10 @@ jobs:
 
       - name: Create or update comment
         run: |
+          COMMENT_PREFIX="QHelp previews"
+          COMMENT_AUTHOR="github-actions[bot]"
           PR_NUMBER="$(grep -o '^[0-9]\+$' pr_number.txt)"
+
           # comment_id.txt may be empty if there is no existing comment
           if [ -s comment_id.txt ]
           then
@@ -50,8 +53,22 @@ jobs:
             # Create new comment
             jq --rawfile body comment_body.txt '{"body":$body}' -n | gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -X POST --input -
           else
-            # Update existing comment
-            jq --rawfile body comment_body.txt '{"body":$body}' -n | gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" -X PATCH --input -
+            # Fetch existing comment, and validate:
+            # - comment belongs to the PR with number $PR_NUMBER
+            # - comment starts with the expected prefix ("QHelp previews")
+            # - comment author is github-actions[bot]
+            FILTER="select(.issue_url | test(\"${GITHUB_REPOSITORY}/issues/${PR_NUMBER}$\")) \
+                                      | select(.body | test(\"^${COMMENT_PREFIX}\"))         \
+                                      | select(.user.login == \"${COMMENT_AUTHOR}\")           \
+                                      | .id"
+            COMMENT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" | jq "${FILTER}")
+            if [ $COMMENT_ID ]
+            then
+              # Update existing comment
+              jq --rawfile body comment_body.txt '{"body":$body}' -n | gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" -X PATCH --input -
+            else
+              echo "Comment ${COMMENT_ID} did not pass validations: not editing."
+            fi
           fi
         env:
           GITHUB_TOKEN: ${{ github.token }}
