@@ -61,9 +61,9 @@ private class GlobalApiEntryPoint extends API::EntryPoint {
     this = "GlobalApiEntryPoint:" + global
   }
 
-  override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef(global) }
+  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef(global) }
 
-  override DataFlow::Node getARhs() { none() }
+  override DataFlow::Node getASink() { none() }
 
   /** Gets the name of the global variable. */
   string getGlobal() { result = global }

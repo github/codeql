@@ -140,11 +140,11 @@ module NestJS {
   private class ValidationNodeEntry extends API::EntryPoint {
     ValidationNodeEntry() { this = "ValidationNodeEntry" }
 
-    override DataFlow::SourceNode getAUse() {
+    override DataFlow::SourceNode getASource() {
       result.(DataFlow::ClassNode).getName() = "ValidationPipe"
     }
 
-    override DataFlow::Node getARhs() { none() }
+    override DataFlow::Node getASink() { none() }
   }
 
   /** Gets an API node referring to the constructor of `ValidationPipe` */

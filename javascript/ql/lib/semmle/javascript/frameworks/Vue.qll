@@ -9,9 +9,9 @@ module Vue {
   private class GlobalVueEntryPoint extends API::EntryPoint {
     GlobalVueEntryPoint() { this = "VueEntryPoint" }
 
-    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("Vue") }
+    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("Vue") }
 
-    override DataFlow::Node getARhs() { none() }
+    override DataFlow::Node getASink() { none() }
   }
 
   /**
@@ -22,9 +22,9 @@ module Vue {
   private class VueExportEntryPoint extends API::EntryPoint {
     VueExportEntryPoint() { this = "VueExportEntryPoint" }
 
-    override DataFlow::SourceNode getAUse() { none() }
+    override DataFlow::SourceNode getASource() { none() }
 
-    override DataFlow::Node getARhs() {
+    override DataFlow::Node getASink() {
       result = any(SingleFileComponent c).getModule().getDefaultOrBulkExport()
     }
   }
@@ -484,14 +484,14 @@ module Vue {
   private class VueFileImportEntryPoint extends API::EntryPoint {
     VueFileImportEntryPoint() { this = "VueFileImportEntryPoint" }
 
-    override DataFlow::SourceNode getAUse() {
+    override DataFlow::SourceNode getASource() {
       exists(Import imprt |
         imprt.getImportedPath().resolve() instanceof VueFile and
         result = imprt.getImportedModuleNode()
       )
     }
 
-    override DataFlow::Node getARhs() { none() }
+    override DataFlow::Node getASink() { none() }
   }
 
   /**

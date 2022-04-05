@@ -8,9 +8,9 @@ module History {
   private class HistoryGlobalEntry extends API::EntryPoint {
     HistoryGlobalEntry() { this = "HistoryLibrary" }
 
-    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("HistoryLibrary") }
+    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("HistoryLibrary") }
 
-    override DataFlow::Node getARhs() { none() }
+    override DataFlow::Node getASink() { none() }
   }
 
   /**

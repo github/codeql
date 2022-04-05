@@ -14,9 +14,9 @@ module TrustedTypes {
   private class TrustedTypesEntry extends API::EntryPoint {
     TrustedTypesEntry() { this = "TrustedTypesEntry" }
 
-    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("trustedTypes") }
+    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("trustedTypes") }
 
-    override DataFlow::Node getARhs() { none() }
+    override DataFlow::Node getASink() { none() }
   }
 
   private API::Node trustedTypesObj() { result = any(TrustedTypesEntry entry).getANode() }

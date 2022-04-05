@@ -35,9 +35,9 @@ private module Console {
   private class ConsoleGlobalEntry extends API::EntryPoint {
     ConsoleGlobalEntry() { this = "ConsoleGlobalEntry" }
 
-    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("console") }
+    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("console") }
 
-    override DataFlow::Node getARhs() { none() }
+    override DataFlow::Node getASink() { none() }
   }
 
   /**

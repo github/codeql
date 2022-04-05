@@ -562,11 +562,17 @@ module API {
     bindingset[this]
     EntryPoint() { any() }
 
-    /** Gets a data-flow node that uses this entry point. */
-    abstract DataFlow::SourceNode getAUse();
+    /** DEPRECATED. This predicate has been renamed to `getASource`. */
+    deprecated DataFlow::SourceNode getAUse() { none() }
 
-    /** Gets a data-flow node that defines this entry point. */
-    abstract DataFlow::Node getARhs();
+    /** DEPRECATED. This predicate has been renamed to `getASink`. */
+    deprecated DataFlow::SourceNode getARhs() { none() }
+
+    /** Gets a data-flow node where a value enters the current codebase through this entry-point. */
+    abstract DataFlow::SourceNode getASource();
+
+    /** Gets a data-flow node where a value leaves the current codebase through this entry-point. */
+    abstract DataFlow::Node getASink();
 
     /** Gets an API-node for this entry point. */
     API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
@@ -684,7 +690,7 @@ module API {
         base = MkRoot() and
         exists(EntryPoint e |
           lbl = Label::entryPoint(e) and
-          rhs = e.getARhs()
+          rhs = e.getASink()
         )
         or
         exists(string m, string prop |
@@ -861,7 +867,7 @@ module API {
         base = MkRoot() and
         exists(EntryPoint e |
           lbl = Label::entryPoint(e) and
-          ref = e.getAUse()
+          ref = e.getASource()
         )
         or
         // property reads
