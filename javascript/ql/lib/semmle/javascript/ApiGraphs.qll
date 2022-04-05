@@ -569,10 +569,10 @@ module API {
     deprecated DataFlow::SourceNode getARhs() { none() }
 
     /** Gets a data-flow node where a value enters the current codebase through this entry-point. */
-    abstract DataFlow::SourceNode getASource();
+    DataFlow::SourceNode getASource() { none() }
 
     /** Gets a data-flow node where a value leaves the current codebase through this entry-point. */
-    abstract DataFlow::Node getASink();
+    DataFlow::Node getASink() { none() }
 
     /** Gets an API-node for this entry point. */
     API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }

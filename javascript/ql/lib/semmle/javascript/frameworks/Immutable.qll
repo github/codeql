@@ -17,8 +17,6 @@ private module Immutable {
     ImmutableGlobalEntry() { this = "ImmutableGlobalEntry" }
 
     override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("Immutable") }
-
-    override DataFlow::Node getASink() { none() }
   }
 
   /**

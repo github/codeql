@@ -9,8 +9,6 @@ module History {
     HistoryGlobalEntry() { this = "HistoryLibrary" }
 
     override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("HistoryLibrary") }
-
-    override DataFlow::Node getASink() { none() }
   }
 
   /**

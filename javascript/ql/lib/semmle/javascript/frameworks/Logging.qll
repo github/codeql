@@ -36,8 +36,6 @@ private module Console {
     ConsoleGlobalEntry() { this = "ConsoleGlobalEntry" }
 
     override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("console") }
-
-    override DataFlow::Node getASink() { none() }
   }
 
   /**

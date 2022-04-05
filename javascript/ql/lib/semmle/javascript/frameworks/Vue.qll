@@ -10,8 +10,6 @@ module Vue {
     GlobalVueEntryPoint() { this = "VueEntryPoint" }
 
     override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("Vue") }
-
-    override DataFlow::Node getASink() { none() }
   }
 
   /**
@@ -21,8 +19,6 @@ module Vue {
    */
   private class VueExportEntryPoint extends API::EntryPoint {
     VueExportEntryPoint() { this = "VueExportEntryPoint" }
-
-    override DataFlow::SourceNode getASource() { none() }
 
     override DataFlow::Node getASink() {
       result = any(SingleFileComponent c).getModule().getDefaultOrBulkExport()
@@ -490,8 +486,6 @@ module Vue {
         result = imprt.getImportedModuleNode()
       )
     }
-
-    override DataFlow::Node getASink() { none() }
   }
 
   /**

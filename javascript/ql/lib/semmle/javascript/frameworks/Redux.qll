@@ -1096,8 +1096,6 @@ module Redux {
     private class HeuristicConnectEntryPoint extends API::EntryPoint {
       HeuristicConnectEntryPoint() { this = "react-redux-connect" }
 
-      override DataFlow::Node getASink() { none() }
-
       override DataFlow::SourceNode getASource() {
         exists(DataFlow::CallNode call |
           call.getAnArgument().asExpr().(Identifier).getName() =

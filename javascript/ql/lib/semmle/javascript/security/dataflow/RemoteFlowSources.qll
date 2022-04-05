@@ -165,8 +165,6 @@ private class ExternalRemoteFlowSourceSpecEntryPoint extends API::EntryPoint {
   string getName() { result = name }
 
   override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef(name) }
-
-  override DataFlow::Node getASink() { none() }
 }
 
 /**

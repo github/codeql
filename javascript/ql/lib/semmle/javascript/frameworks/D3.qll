@@ -10,8 +10,6 @@ module D3 {
     D3GlobalEntry() { this = "D3GlobalEntry" }
 
     override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("d3") }
-
-    override DataFlow::Node getASink() { none() }
   }
 
   /** Gets an API node referring to the `d3` module. */

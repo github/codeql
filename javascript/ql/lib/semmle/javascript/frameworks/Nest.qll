@@ -143,8 +143,6 @@ module NestJS {
     override DataFlow::SourceNode getASource() {
       result.(DataFlow::ClassNode).getName() = "ValidationPipe"
     }
-
-    override DataFlow::Node getASink() { none() }
   }
 
   /** Gets an API node referring to the constructor of `ValidationPipe` */

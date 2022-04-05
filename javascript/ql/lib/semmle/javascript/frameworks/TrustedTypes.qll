@@ -15,8 +15,6 @@ module TrustedTypes {
     TrustedTypesEntry() { this = "TrustedTypesEntry" }
 
     override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("trustedTypes") }
-
-    override DataFlow::Node getASink() { none() }
   }
 
   private API::Node trustedTypesObj() { result = any(TrustedTypesEntry entry).getANode() }

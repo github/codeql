@@ -660,8 +660,6 @@ module Templating {
     override DataFlow::SourceNode getASource() {
       result = any(TemplatePlaceholderTag tag).getInnerTopLevel().getAVariableUse("include")
     }
-
-    override DataFlow::Node getASink() { none() }
   }
 
   /**
