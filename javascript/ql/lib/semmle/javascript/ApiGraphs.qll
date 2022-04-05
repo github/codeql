@@ -207,8 +207,10 @@ module API {
     DataFlow::Node getASink() { Impl::rhs(this, result) }
 
     /**
-     * Gets a data-flow node that may interprocedurally flow to the right-hand side of a definition
-     * of the API component represented by this node.
+     * Get a data-flow node that transitively flows to an external library (or in general, any external codebase).
+     *
+     * This is similar to `getASink()` but additionally includes nodes that transitively reach a sink by data flow.
+     * See `getASink()` for examples.
      */
     DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.getASink()) }
 
