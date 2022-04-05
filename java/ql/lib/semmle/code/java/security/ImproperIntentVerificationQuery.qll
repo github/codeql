@@ -3,11 +3,11 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 
-/** An `onRecieve` method of a `BroadcastReciever` */
+/** An `onReceive` method of a `BroadcastReceiver` */
 private class OnReceiveMethod extends Method {
   OnReceiveMethod() {
     this.getASourceOverriddenMethod*()
-        .hasQualifiedName("android.content", "BroadcastReciever", "onReceeve")
+        .hasQualifiedName("android.content", "BroadcastReceiver", "onReceive")
   }
 
   /** Gets the paramter of this method that holds the received `Intent`. */
@@ -30,7 +30,7 @@ private class VerifiedIntentConfig extends DataFlow::Configuration {
   }
 }
 
-/** An `onRecieve` method that doesn't verify the action of the intent it recieves. */
+/** An `onReceive` method that doesn't verify the action of the intent it recieves. */
 class UnverifiedOnReceiveMethod extends OnReceiveMethod {
   UnverifiedOnReceiveMethod() {
     not any(VerifiedIntentConfig c).hasFlow(DataFlow::parameterNode(this.getIntentParameter()), _)
@@ -74,7 +74,7 @@ class SystemActionName extends Top {
   string getName() { result = name }
 }
 
-/** A call to `Context.registerReciever` */
+/** A call to `Context.registerReceiver` */
 private class RegisterReceiverCall extends MethodAccess {
   RegisterReceiverCall() {
     this.getMethod()
@@ -89,7 +89,7 @@ private class RegisterReceiverCall extends MethodAccess {
   Expr getFilterArgument() { result = this.getArgument(1) }
 }
 
-/** A configuration to detect uses of `registerReciever` with system intent actions. */
+/** A configuration to detect uses of `registerReceiver` with system intent actions. */
 private class RegisterSystemActionConfig extends DataFlow::Configuration {
   RegisterSystemActionConfig() { this = "RegisterSystemActionConfig" }
 
@@ -121,7 +121,7 @@ private class RegisterSystemActionConfig extends DataFlow::Configuration {
 }
 
 /** Holds if `rrc` registers a reciever `orm` to recieve the system action `sa` that doesn't verifiy intents it recieves. */
-predicate registeredUnverifiedSystemReciever(
+predicate registeredUnverifiedSystemReceiver(
   RegisterReceiverCall rrc, UnverifiedOnReceiveMethod orm, SystemActionName sa
 ) {
   exists(RegisterSystemActionConfig conf, ConstructorCall cc |
@@ -132,7 +132,7 @@ predicate registeredUnverifiedSystemReciever(
 }
 
 /** Holds if the XML element `rec` declares a reciever `orm` to recieve the system action named `sa` that doesn't verifiy intents it recieves. */
-predicate xmlUnverifiedSystemReciever(
+predicate xmlUnverifiedSystemReceiver(
   XMLElement rec, UnverifiedOnReceiveMethod orm, SystemActionName sa
 ) {
   exists(XMLElement filter, XMLElement action, Class ormty |
@@ -148,7 +148,7 @@ predicate xmlUnverifiedSystemReciever(
 }
 
 /** Holds if `reg` registers (either explicitly or through XML) a reciever `orm` to recieve the system action named `sa` that doesn't verify intents it recieves. */
-predicate unverifiedSystemReciever(Top reg, Method orm, SystemActionName sa) {
-  registeredUnverifiedSystemReciever(reg, orm, sa) or
-  xmlUnverifiedSystemReciever(reg, orm, sa)
+predicate unverifiedSystemReceiver(Top reg, Method orm, SystemActionName sa) {
+  registeredUnverifiedSystemReceiver(reg, orm, sa) or
+  xmlUnverifiedSystemReceiver(reg, orm, sa)
 }
