@@ -67,7 +67,7 @@ module ClientSideUrlRedirect {
       methodName = StringOps::substringMethodName() and
       // exclude `location.href.substring(0, ...)` and similar, which can
       // never refer to the query string
-      not mcn.getArgument(0).asExpr().(NumberLiteral).getIntValue() = 0
+      not mcn.getArgument(0).getIntValue() = 0
     )
     or
     exists(DataFlow::MethodCallNode mcn |
