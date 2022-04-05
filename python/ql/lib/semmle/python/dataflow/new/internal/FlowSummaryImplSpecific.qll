@@ -54,10 +54,12 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
 /**
  * Gets the summary component for specification component `c`, if any.
  *
- * This covers all the Python-specific components of a flow summary, and
- * is currently empty.
+ * This covers all the Python-specific components of a flow summary.
  */
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
+  c = "Argument[_]" and // Ruby has this
+  result = FlowSummary::SummaryComponent::argument(any(ParameterPosition pos | pos.isPositional(_)))
+  or
   c = "ListElement" and
   result = FlowSummary::SummaryComponent::listElement()
 }
