@@ -206,7 +206,7 @@ class DomPropertyWrite extends DataFlow::Node instanceof DataFlow::PropWrite {
   }
 
   /**
-   * Gets the data flow node corresponding to the value being written,
+   * Gets the data flow node corresponding to the value being written.
    */
   DataFlow::Node getRhs() { result = super.getRhs() }
 }
