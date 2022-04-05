@@ -28,11 +28,11 @@ module API {
    * The most basic use of API graphs is typically as follows:
    * 1. Start with `API::moduleImport` for the relevant library.
    * 2. Follow up with a chain of accessors such as `getMember` describing how to get to the relevant API function.
-   * 3. Map the resulting API graph nodes to data-flow nodes, using `getAnImmediateUse` or `getARhs`.
+   * 3. Map the resulting API graph nodes to data-flow nodes, using `getASource` or `getASink`.
    *
    * For example, a simplified way to get arguments to `underscore.extend` would be
    * ```codeql
-   * API::moduleImport("underscore").getMember("extend").getParameter(0).getARhs()
+   * API::moduleImport("underscore").getMember("extend").getParameter(0).getASink()
    * ```
    *
    * The most commonly used accessors are `getMember`, `getParameter`, and `getReturn`.
