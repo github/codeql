@@ -93,7 +93,7 @@ DataFlowCallable viableCallable(CallExpr ma) {
     else
       if isInterfaceMethodCall(call)
       then result = getRestrictedInterfaceTarget(call)
-      else result = call.getACalleeIncludingExternals()
+      else result.asCallable() = call.getACalleeIncludingExternals()
   )
 }
 
