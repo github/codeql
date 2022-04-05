@@ -509,6 +509,13 @@ Element interpretElement(
   )
 }
 
+/**
+ * Holds if `c` has a `generated` summary.
+ */
+predicate hasSummary(DataFlowCallable c, boolean generated) {
+  summaryElement(c, _, _, _, generated)
+}
+
 cached
 private module Cached {
   /**
