@@ -282,11 +282,7 @@ module XML {
 
     override DataFlow::Node getAResult() {
       result =
-        parser
-            .getReturn()
-            .getMember(any(string s | s.matches("on%")))
-            .getAParameter()
-            .getASource()
+        parser.getReturn().getMember(any(string s | s.matches("on%"))).getAParameter().getASource()
     }
   }
 

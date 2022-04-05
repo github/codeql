@@ -208,8 +208,7 @@ module XssThroughDom {
         exists(API::Node useForm |
           useForm = API::moduleImport("react-hook-form").getMember("useForm").getReturn()
         |
-          this =
-            useForm.getMember("handleSubmit").getParameter(0).getParameter(0).getASource()
+          this = useForm.getMember("handleSubmit").getParameter(0).getParameter(0).getASource()
           or
           this = useForm.getMember("getValues").getACall()
         )

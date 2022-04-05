@@ -29,7 +29,9 @@ module ParseTorrent {
   }
 
   /** Gets a data flow node referring to a parsed torrent. */
-  DataFlow::SourceNode parsedTorrentRef() { result = any(ParsedTorrent t).asApiNode().getAValueReachableFromSource() }
+  DataFlow::SourceNode parsedTorrentRef() {
+    result = any(ParsedTorrent t).asApiNode().getAValueReachableFromSource()
+  }
 
   /**
    * An access to user-controlled torrent information.

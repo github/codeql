@@ -440,7 +440,8 @@ private module MsSql {
     override TaggedTemplateExpr astNode;
 
     QueryTemplateExpr() {
-      mssql().getMember("query").getAValueReachableFromSource() = DataFlow::valueNode(astNode.getTag())
+      mssql().getMember("query").getAValueReachableFromSource() =
+        DataFlow::valueNode(astNode.getTag())
     }
 
     override DataFlow::Node getAResult() {

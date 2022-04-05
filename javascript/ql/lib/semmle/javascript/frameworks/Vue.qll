@@ -700,11 +700,7 @@ module Vue {
               .getASource()
         or
         result =
-          router
-              .getParameter(0)
-              .getMember("scrollBehavior")
-              .getParameter([0, 1])
-              .getASource()
+          router.getParameter(0).getMember("scrollBehavior").getParameter([0, 1]).getASource()
       )
       or
       result = routeConfig().getMember("beforeEnter").getParameter([0, 1]).getASource()

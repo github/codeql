@@ -88,7 +88,8 @@ module Vuex {
     pragma[noinline]
     string getNamespace() {
       getNumArgument() = 2 and
-      result = appendToNamespace(namespace, getParameter(0).getAValueReachingSink().getStringValue())
+      result =
+        appendToNamespace(namespace, getParameter(0).getAValueReachingSink().getStringValue())
       or
       getNumArgument() = 1 and
       result = namespace
@@ -303,9 +304,7 @@ module Vuex {
   }
 
   /** Gets a value that refers to the given access path of the state. */
-  DataFlow::Node stateMutationSucc(string path) {
-    result = stateRefByAccessPath(path).getASource()
-  }
+  DataFlow::Node stateMutationSucc(string path) { result = stateRefByAccessPath(path).getASource() }
 
   /** Holds if `pred -> succ` is a step from state mutation to state access. */
   predicate stateMutationStep(DataFlow::Node pred, DataFlow::Node succ) {
