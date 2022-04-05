@@ -68,7 +68,7 @@ class BasicTaintTracking extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     sink = any(DataFlow::CallNode call | call.getCalleeName() = "sink").getAnArgument()
     or
-    sink = ModelOutput::getASinkNode("test-sink").getARhs()
+    sink = ModelOutput::getASinkNode("test-sink").getASink()
   }
 }
 
@@ -77,7 +77,7 @@ query predicate taintFlow(DataFlow::Node source, DataFlow::Node sink) {
 }
 
 query predicate isSink(DataFlow::Node node, string kind) {
-  node = ModelOutput::getASinkNode(kind).getARhs()
+  node = ModelOutput::getASinkNode(kind).getASink()
 }
 
 class SyntaxErrorTest extends ModelInput::SinkModelCsv {

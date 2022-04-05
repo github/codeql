@@ -187,26 +187,36 @@ module API {
     InvokeNode getAnInvocation() { result = this.getACall() or result = this.getAnInstantiation() }
 
     /**
-     * Gets a data-flow node corresponding to the right-hand side of a definition of the API
-     * component represented by this node.
+     * Get a data-flow node where this value leaves the current codebase and flows into an
+     * external library (or in general, any external codebase).
      *
-     * For example, in the assignment `exports.plusOne = (x) => x+1`, the function expression
-     * `(x) => x+1` is the right-hand side of the  definition of the member `plusOne` of
-     * the enclosing module, and the expression `x+1` is the right-had side of the definition of
-     * its result.
+     * Concretely, this is either an argument passed to a call to external code,
+     * or the right-hand side of a property write on an object flows into such a call.
      *
-     * Note that for parameters, it is the arguments flowing into that parameter that count as
-     * right-hand sides of the definition, not the declaration of the parameter itself.
-     * Consequently, in `require('fs').readFileSync(file)`, `file` is the right-hand
-     * side of a definition of the first parameter of `readFileSync` from the `fs` module.
+     * For example:
+     * ```js
+     * // 'x' is matched by API::moduleImport("foo").getParameter(0).getASink()
+     * require('foo')(x);
+     *
+     * // 'x' is matched by API::moduleImport("foo").getParameter(0).getMember("prop").getASink()
+     * require('foo')({
+     *   prop: x
+     * });
+     * ```
      */
-    DataFlow::Node getARhs() { Impl::rhs(this, result) }
+    DataFlow::Node getASink() { Impl::rhs(this, result) }
 
     /**
      * Gets a data-flow node that may interprocedurally flow to the right-hand side of a definition
      * of the API component represented by this node.
      */
-    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.getARhs()) }
+    DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.getASink()) }
+
+    /** DEPRECATED. This predicate has been renamed to `getASink`. */
+    deprecated DataFlow::Node getARhs() { result = this.getASink() }
+
+    /** DEPRECATED. This predicate has been renamed to `getAValueReachingSink`. */
+    deprecated DataFlow::Node getAValueReachingRhs() { result = this.getAValueReachingSink() }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -441,7 +451,7 @@ module API {
      * In other words, the value of a use of `that` may flow into the right-hand side of a
      * definition of this node.
      */
-    predicate refersTo(Node that) { this.getARhs() = that.getAValueReachableFromSource() }
+    predicate refersTo(Node that) { this.getASink() = that.getAValueReachableFromSource() }
 
     /**
      * Gets the data-flow node that gives rise to this node, if any.
@@ -1301,7 +1311,7 @@ module API {
      * Gets an API node where a RHS of the node is the `i`th argument to this call.
      */
     pragma[noinline]
-    private Node getAParameterCandidate(int i) { result.getARhs() = this.getArgument(i) }
+    private Node getAParameterCandidate(int i) { result.getASink() = this.getArgument(i) }
 
     /** Gets the API node for a parameter of this invocation. */
     Node getAParameter() { result = this.getParameter(_) }

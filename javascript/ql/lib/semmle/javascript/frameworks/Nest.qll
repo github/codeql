@@ -193,7 +193,7 @@ module NestJS {
           .getAMember()
           .getMember("useFactory")
           .getReturn()
-          .getARhs() = validationPipe().getInstance().getAValueReachableFromSource() and
+          .getASink() = validationPipe().getInstance().getAValueReachableFromSource() and
       folder = decorator.getFile().getParentContainer()
     )
     or
@@ -399,7 +399,7 @@ module NestJS {
     }
 
     /** Gets a value returned by the decorator's callback, which becomes the value of the decorated parameter. */
-    DataFlow::Node getResult() { result = getParameter(0).getReturn().getARhs() }
+    DataFlow::Node getResult() { result = getParameter(0).getReturn().getASink() }
   }
 
   /**

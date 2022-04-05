@@ -48,7 +48,7 @@ module ExternalApiUsedWithUntrustedData {
   }
 
   /** Holds if `node` corresponds to a deep object argument. */
-  private predicate isDeepObjectSink(API::Node node) { node.getARhs() instanceof DeepObjectSink }
+  private predicate isDeepObjectSink(API::Node node) { node.getASink() instanceof DeepObjectSink }
 
   /**
    * A sanitizer for data flowing to an external API.

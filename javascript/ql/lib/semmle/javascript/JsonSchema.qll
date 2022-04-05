@@ -134,7 +134,7 @@ module JsonSchema {
               .ref()
               .getMember(["addSchema", "validate", "compile", "compileAsync"])
               .getParameter(0)
-              .getARhs()
+              .getASink()
       }
     }
   }

@@ -94,7 +94,7 @@ module Redux {
       }
 
       override DataFlow::Node getReducerArg() {
-        result = getParameter(0).getMember("reducer").getARhs()
+        result = getParameter(0).getMember("reducer").getASink()
       }
     }
   }
@@ -193,7 +193,7 @@ module Redux {
       CombineReducers() { this = combineReducers().getACall() }
 
       override DataFlow::Node getStateHandlerArg(string prop) {
-        result = getParameter(0).getMember(prop).getARhs()
+        result = getParameter(0).getMember(prop).getASink()
       }
     }
 
@@ -207,7 +207,7 @@ module Redux {
      */
     private class NestedCombineReducers extends DelegatingReducer, DataFlow::ObjectLiteralNode {
       NestedCombineReducers() {
-        this = combineReducers().getParameter(0).getAMember+().getAValueReachingRhs()
+        this = combineReducers().getParameter(0).getAMember+().getAValueReachingSink()
       }
 
       override DataFlow::Node getStateHandlerArg(string prop) {
@@ -235,7 +235,7 @@ module Redux {
 
       override DataFlow::Node getActionHandlerArg(DataFlow::Node actionType) {
         exists(DataFlow::PropWrite write |
-          result = getParameter(0).getAMember().getARhs() and
+          result = getParameter(0).getAMember().getASink() and
           write.getRhs() = result and
           actionType = write.getPropertyNameExpr().flow()
         )
@@ -385,14 +385,14 @@ module Redux {
 
       override DataFlow::Node getActionHandlerArg(DataFlow::Node actionType) {
         exists(string name |
-          result = call.getParameter(0).getMember("reducers").getMember(name).getARhs() and
+          result = call.getParameter(0).getMember("reducers").getMember(name).getASink() and
           actionType = call.getReturn().getMember("actions").getMember(name).getASource()
         )
         or
         // Properties of 'extraReducers':
         //   { extraReducers: { [action]: reducer }}
         exists(DataFlow::PropWrite write |
-          result = call.getParameter(0).getMember("extraReducers").getAMember().getARhs() and
+          result = call.getParameter(0).getMember("extraReducers").getAMember().getASink() and
           write.getRhs() = result and
           actionType = write.getPropertyNameExpr().flow()
         )
@@ -444,7 +444,7 @@ module Redux {
       or
       // x -> bindActionCreators({ x, ... })
       exists(BindActionCreatorsCall bind, string prop |
-        ref(t.continue()).flowsTo(bind.getParameter(0).getMember(prop).getARhs()) and
+        ref(t.continue()).flowsTo(bind.getParameter(0).getMember(prop).getASink()) and
         result = bind.getReturn().getMember(prop).getASource()
       )
       or
@@ -584,7 +584,7 @@ module Redux {
       }
 
       override DataFlow::FunctionNode getMiddlewareFunction(boolean async) {
-        result.flowsTo(createActions.getParameter(0).getMember(getTypeTag()).getARhs()) and
+        result.flowsTo(createActions.getParameter(0).getMember(getTypeTag()).getASink()) and
         async = false
       }
 
@@ -619,7 +619,7 @@ module Redux {
 
       override string getTypeTag() {
         exists(string prefix |
-          call.getParameter(0).getMember("name").getARhs().mayHaveStringValue(prefix) and
+          call.getParameter(0).getMember("name").getASink().mayHaveStringValue(prefix) and
           result = prefix + "/" + actionName
         )
       }
@@ -640,7 +640,7 @@ module Redux {
 
       override DataFlow::FunctionNode getMiddlewareFunction(boolean async) {
         async = true and
-        result = getParameter(1).getAValueReachingRhs()
+        result = getParameter(1).getAValueReachingSink()
       }
 
       override string getTypeTag() { getArgument(0).mayHaveStringValue(result) }
@@ -916,7 +916,7 @@ module Redux {
    */
   private DataFlow::ObjectLiteralNode getAManuallyDispatchedValue(string actionType) {
     result.getAPropertyWrite("type").getRhs().mayHaveStringValue(actionType) and
-    result = getADispatchedValueNode().getAValueReachingRhs()
+    result = getADispatchedValueNode().getAValueReachingSink()
   }
 
   /**
@@ -994,7 +994,7 @@ module Redux {
       override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
         exists(API::CallNode call |
           call = useSelector().getACall() and
-          pred = call.getParameter(0).getReturn().getARhs() and
+          pred = call.getParameter(0).getReturn().getASink() and
           succ = call
         )
       }
@@ -1046,19 +1046,19 @@ module Redux {
         //
         //   const mapDispatchToProps = { foo }
         //
-        result = getMapDispatchToProps().getMember(name).getARhs()
+        result = getMapDispatchToProps().getMember(name).getASink()
         or
         //
         //   const mapDispatchToProps = dispatch => ( { foo } )
         //
-        result = getMapDispatchToProps().getReturn().getMember(name).getARhs()
+        result = getMapDispatchToProps().getReturn().getMember(name).getASink()
         or
         // Explicitly bound by bindActionCreators:
         //
         //   const mapDispatchToProps = dispatch => bindActionCreators({ foo }, dispatch);
         //
         exists(BindActionCreatorsCall bind |
-          bind.flowsTo(getMapDispatchToProps().getReturn().getARhs()) and
+          bind.flowsTo(getMapDispatchToProps().getReturn().getASink()) and
           result = bind.getOptionArgument(0, name)
         )
       }
@@ -1115,12 +1115,12 @@ module Redux {
 
       override API::Node getMapStateToProps() {
         result = getAParameter() and
-        result.getARhs().asExpr().(Identifier).getName() = "mapStateToProps"
+        result.getASink().asExpr().(Identifier).getName() = "mapStateToProps"
       }
 
       override API::Node getMapDispatchToProps() {
         result = getAParameter() and
-        result.getARhs().asExpr().(Identifier).getName() = "mapDispatchToProps"
+        result.getASink().asExpr().(Identifier).getName() = "mapDispatchToProps"
       }
     }
 
@@ -1130,7 +1130,7 @@ module Redux {
     private class StateToPropsStep extends StateStep {
       override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
         exists(ConnectCall call |
-          pred = call.getMapStateToProps().getReturn().getARhs() and
+          pred = call.getMapStateToProps().getReturn().getASink() and
           succ = call.getReactComponent().getADirectPropsAccess()
         )
       }
@@ -1221,13 +1221,13 @@ module Redux {
         // Return value of `i`th callback flows to the `i`th parameter of the last callback.
         exists(CreateSelectorCall call, int index |
           call.getNumArgument() > 1 and
-          pred = call.getSelectorFunction(index).getReturn().getARhs() and
+          pred = call.getSelectorFunction(index).getReturn().getASink() and
           succ = call.getLastParameter().getParameter(index).getASource()
         )
         or
         // The result of the last callback is the final result
         exists(CreateSelectorCall call |
-          pred = call.getLastParameter().getReturn().getARhs() and
+          pred = call.getLastParameter().getReturn().getASink() and
           succ = call
         )
       }

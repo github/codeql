@@ -827,7 +827,7 @@ module ClientRequest {
     class ApolloClientRequest extends ClientRequest::Range, API::InvokeNode {
       ApolloClientRequest() { this = apolloUriCallee().getAnInvocation() }
 
-      override DataFlow::Node getUrl() { result = this.getParameter(0).getMember("uri").getARhs() }
+      override DataFlow::Node getUrl() { result = this.getParameter(0).getMember("uri").getASink() }
 
       override DataFlow::Node getHost() { none() }
 
@@ -848,10 +848,10 @@ module ClientRequest {
 
     override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
-    override DataFlow::Node getHost() { result = this.getParameter(0).getMember("host").getARhs() }
+    override DataFlow::Node getHost() { result = this.getParameter(0).getMember("host").getASink() }
 
     override DataFlow::Node getADataNode() {
-      result = form.getMember("append").getACall().getParameter(1).getARhs()
+      result = form.getMember("append").getACall().getParameter(1).getASink()
     }
   }
 }

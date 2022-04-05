@@ -20,7 +20,7 @@ deprecated module NoSQL = NoSql;
  * Gets a value that has been assigned to the "$where" property of an object that flows to `queryArg`.
  */
 private DataFlow::Node getADollarWhereProperty(API::Node queryArg) {
-  result = queryArg.getMember("$where").getARhs()
+  result = queryArg.getMember("$where").getASink()
 }
 
 /**
@@ -501,7 +501,7 @@ private module Mongoose {
 
     Credentials() {
       exists(string prop |
-        this = createConnection().getParameter(3).getMember(prop).getARhs().asExpr()
+        this = createConnection().getParameter(3).getMember(prop).getASink().asExpr()
       |
         prop = "user" and kind = "user name"
         or
@@ -518,7 +518,7 @@ private module Mongoose {
   class MongoDBQueryPart extends NoSql::Query {
     MongooseFunction f;
 
-    MongoDBQueryPart() { this = f.getQueryArgument().getARhs().asExpr() }
+    MongoDBQueryPart() { this = f.getQueryArgument().getASink().asExpr() }
 
     override DataFlow::Node getACodeOperator() {
       result = getADollarWhereProperty(f.getQueryArgument())
@@ -540,7 +540,7 @@ private module Mongoose {
 
     override DataFlow::Node getAQueryArgument() {
       // NB: the complete information is not easily accessible for deeply chained calls
-      f.getQueryArgument().getARhs() = result
+      f.getQueryArgument().getASink() = result
     }
 
     override DataFlow::Node getAResult() {
@@ -770,7 +770,7 @@ private module Redis {
     RedisKeyArgument() {
       exists(string method, int argIndex |
         QuerySignatures::argumentIsAmbiguousKey(method, argIndex) and
-        this = redis().getMember(method).getParameter(argIndex).getARhs().asExpr()
+        this = redis().getMember(method).getParameter(argIndex).getASink().asExpr()
       )
     }
   }

@@ -9,7 +9,7 @@ module SQL {
   abstract class SqlString extends Expr { }
 
   private class SqlStringFromModel extends SqlString {
-    SqlStringFromModel() { this = ModelOutput::getASinkNode("sql-injection").getARhs().asExpr() }
+    SqlStringFromModel() { this = ModelOutput::getASinkNode("sql-injection").getASink().asExpr() }
   }
 
   /**
@@ -109,7 +109,7 @@ private module MySql {
     Credentials() {
       exists(API::Node callee, string prop |
         callee in [createConnection(), createPool()] and
-        this = callee.getParameter(0).getMember(prop).getARhs().asExpr() and
+        this = callee.getParameter(0).getMember(prop).getASink().asExpr() and
         (
           prop = "user" and kind = "user name"
           or
@@ -200,7 +200,7 @@ private module Postgres {
     QueryString() {
       this = any(QueryCall qc).getAQueryArgument().asExpr()
       or
-      this = API::moduleImport("pg-cursor").getParameter(0).getARhs().asExpr()
+      this = API::moduleImport("pg-cursor").getParameter(0).getASink().asExpr()
     }
   }
 
@@ -210,9 +210,9 @@ private module Postgres {
 
     Credentials() {
       exists(string prop |
-        this = [newClient(), newPool()].getParameter(0).getMember(prop).getARhs().asExpr()
+        this = [newClient(), newPool()].getParameter(0).getMember(prop).getASink().asExpr()
         or
-        this = pgPromise().getParameter(0).getMember(prop).getARhs().asExpr()
+        this = pgPromise().getParameter(0).getMember(prop).getASink().asExpr()
       |
         prop = "user" and kind = "user name"
         or
@@ -494,7 +494,7 @@ private module MsSql {
           or
           callee = mssql().getMember("ConnectionPool")
         ) and
-        this = callee.getParameter(0).getMember(prop).getARhs().asExpr() and
+        this = callee.getParameter(0).getMember(prop).getASink().asExpr() and
         (
           prop = "user" and kind = "user name"
           or

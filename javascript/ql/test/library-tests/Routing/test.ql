@@ -15,6 +15,6 @@ class Taint extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node node) {
     node = any(DataFlow::CallNode call | call.getCalleeName() = "sink").getAnArgument()
     or
-    node = testInstance().getMember("getSink").getAParameter().getARhs()
+    node = testInstance().getMember("getSink").getAParameter().getASink()
   }
 }

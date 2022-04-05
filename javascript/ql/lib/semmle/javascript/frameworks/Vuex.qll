@@ -75,7 +75,7 @@ module Vuex {
         or
         exists(API::CallNode call |
           call = vuex().getMember("createNamespacedHelpers").getACall() and
-          namespace = call.getParameter(0).getAValueReachingRhs().getStringValue() + "/" and
+          namespace = call.getParameter(0).getAValueReachingSink().getStringValue() + "/" and
           this = call.getReturn().getMember(helperName).getACall()
         )
       )
@@ -88,7 +88,7 @@ module Vuex {
     pragma[noinline]
     string getNamespace() {
       getNumArgument() = 2 and
-      result = appendToNamespace(namespace, getParameter(0).getAValueReachingRhs().getStringValue())
+      result = appendToNamespace(namespace, getParameter(0).getAValueReachingSink().getStringValue())
       or
       getNumArgument() = 1 and
       result = namespace
@@ -99,17 +99,17 @@ module Vuex {
      */
     predicate hasMapping(string localName, string storeName) {
       // mapGetters('foo')
-      getLastParameter().getAValueReachingRhs().getStringValue() = localName and
+      getLastParameter().getAValueReachingSink().getStringValue() = localName and
       storeName = getNamespace() + localName
       or
       // mapGetters(['foo', 'bar'])
-      getLastParameter().getUnknownMember().getAValueReachingRhs().getStringValue() = localName and
+      getLastParameter().getUnknownMember().getAValueReachingSink().getStringValue() = localName and
       storeName = getNamespace() + localName
       or
       // mapGetters({foo: 'bar'})
       storeName =
         getNamespace() +
-          getLastParameter().getMember(localName).getAValueReachingRhs().getStringValue() and
+          getLastParameter().getMember(localName).getAValueReachingSink().getStringValue() and
       localName != "*" // ignore special API graph member named "*"
     }
 
@@ -117,10 +117,10 @@ module Vuex {
     Vue::Component getVueComponent() {
       exists(DataFlow::ObjectLiteralNode obj |
         obj.getASpreadProperty() = getReturn().getAValueReachableFromSource() and
-        result.getOwnOptions().getAMember().getARhs() = obj
+        result.getOwnOptions().getAMember().getASink() = obj
       )
       or
-      result.getOwnOptions().getAMember().getARhs() = this
+      result.getOwnOptions().getAMember().getASink() = this
     }
   }
 
@@ -146,7 +146,7 @@ module Vuex {
   /** Gets a value that is returned by a getter registered with the given name. */
   private DataFlow::Node getterPred(string name) {
     exists(string prefix, string prop |
-      result = storeConfigObject(prefix).getMember("getters").getMember(prop).getReturn().getARhs() and
+      result = storeConfigObject(prefix).getMember("getters").getMember(prop).getReturn().getASink() and
       name = prefix + prop
     )
   }
@@ -212,19 +212,19 @@ module Vuex {
       commitCall = commitLikeFunctionRef(kind, prefix).getACall()
     |
       // commit('name', payload)
-      name = prefix + commitCall.getParameter(0).getAValueReachingRhs().getStringValue() and
+      name = prefix + commitCall.getParameter(0).getAValueReachingSink().getStringValue() and
       result = commitCall.getArgument(1)
       or
       // commit({type: 'name', ...<payload>...})
       name =
         prefix +
-          commitCall.getParameter(0).getMember("type").getAValueReachingRhs().getStringValue() and
+          commitCall.getParameter(0).getMember("type").getAValueReachingSink().getStringValue() and
       result = commitCall.getArgument(0)
     )
     or
     // this.name(payload)
     // methods: {...mapMutations(['name'])} }
-    result = getAMappedAccess(getMapHelperForCommitKind(kind), name).getParameter(0).getARhs()
+    result = getAMappedAccess(getMapHelperForCommitKind(kind), name).getParameter(0).getASink()
   }
 
   /** Gets a node that refers the payload of a committed mutation with the given `name.` */
@@ -293,7 +293,7 @@ module Vuex {
 
   /** Gets a value that flows into the given access path of the state. */
   DataFlow::Node stateMutationPred(string path) {
-    result = stateRefByAccessPath(path).getARhs()
+    result = stateRefByAccessPath(path).getASink()
     or
     exists(ExtendCall call, string base, string prop |
       call.getDestinationOperand() = stateRefByAccessPath(base).getAValueReachableFromSource() and
@@ -325,7 +325,7 @@ module Vuex {
     exists(MapHelperCall call |
       call.getHelperName() = "mapState" and
       component = call.getVueComponent() and
-      result = call.getLastParameter().getMember(name).getReturn().getARhs()
+      result = call.getLastParameter().getMember(name).getReturn().getASink()
     )
   }
 

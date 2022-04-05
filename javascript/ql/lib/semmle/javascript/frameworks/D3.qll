@@ -71,7 +71,7 @@ module D3 {
     D3XssSink() {
       exists(API::Node htmlArg |
         htmlArg = d3Selection().getMember("html").getParameter(0) and
-        this = [htmlArg, htmlArg.getReturn()].getARhs()
+        this = [htmlArg, htmlArg.getReturn()].getASink()
       )
     }
   }

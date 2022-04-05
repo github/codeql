@@ -41,7 +41,7 @@ private module LiveServer {
 
     override DataFlow::SourceNode getARouteHandler() {
       exists(DataFlow::SourceNode middleware |
-        middleware = call.getParameter(0).getMember("middleware").getAValueReachingRhs()
+        middleware = call.getParameter(0).getMember("middleware").getAValueReachingSink()
       |
         result = middleware.getAMemberCall(["push", "unshift"]).getArgument(0).getAFunctionValue()
         or
