@@ -40,7 +40,7 @@ module Xxe {
    */
   class XmlParsingWithExternalEntityResolution extends Sink {
     XmlParsingWithExternalEntityResolution() {
-      exists(XML::XMLParsing parsing, XML::XMLParsingVulnerabilityKind kind |
+      exists(XML::XmlParsing parsing, XML::XMLParsingVulnerabilityKind kind |
         kind.isXxe() and
         parsing.vulnerableTo(kind) and
         this = parsing.getAnInput()

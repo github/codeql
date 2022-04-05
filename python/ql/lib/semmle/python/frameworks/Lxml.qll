@@ -196,7 +196,7 @@ private module Lxml {
     /**
      * A call to the `feed` method of an `lxml` parser.
      */
-    private class LXMLParserFeedCall extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
+    private class LXMLParserFeedCall extends DataFlow::MethodCallNode, XML::XmlParsing::Range {
       LXMLParserFeedCall() { this.calls(instance(_), "feed") }
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
@@ -233,7 +233,7 @@ private module Lxml {
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parse
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parseid
    */
-  private class LXMLParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
+  private class LXMLParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
     LXMLParsing() {
       this =
         API::moduleImport("lxml")
@@ -305,7 +305,7 @@ private module Lxml {
    * See
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.iterparse
    */
-  private class LXMLIterparseCall extends DataFlow::CallCfgNode, XML::XMLParsing::Range,
+  private class LXMLIterparseCall extends DataFlow::CallCfgNode, XML::XmlParsing::Range,
     FileSystemAccess::Range {
     LXMLIterparseCall() {
       this = API::moduleImport("lxml").getMember("etree").getMember("iterparse").getACall()

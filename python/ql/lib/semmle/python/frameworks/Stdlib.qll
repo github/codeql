@@ -3236,7 +3236,7 @@ private module StdlibPrivate {
     /**
      * A call to the `feed` method of an `xml.etree` parser.
      */
-    private class XMLEtreeParserFeedCall extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
+    private class XMLEtreeParserFeedCall extends DataFlow::MethodCallNode, XML::XmlParsing::Range {
       XMLEtreeParserFeedCall() { this.calls(instance(), "feed") }
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
@@ -3274,7 +3274,7 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.parse
    * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.iterparse
    */
-  private class XMLEtreeParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
+  private class XMLEtreeParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
     XMLEtreeParsing() {
       this =
         API::moduleImport("xml")
@@ -3445,7 +3445,7 @@ private module StdlibPrivate {
    *
    * See https://docs.python.org/3/library/xml.sax.reader.html#xml.sax.xmlreader.XMLReader.parse
    */
-  private class XMLSaxInstanceParsing extends DataFlow::MethodCallNode, XML::XMLParsing::Range,
+  private class XMLSaxInstanceParsing extends DataFlow::MethodCallNode, XML::XmlParsing::Range,
     FileSystemAccess::Range {
     XMLSaxInstanceParsing() {
       this =
@@ -3496,7 +3496,7 @@ private module StdlibPrivate {
    * - https://docs.python.org/3.10/library/xml.sax.html#xml.sax.parse
    * - https://docs.python.org/3.10/library/xml.sax.html#xml.sax.parseString
    */
-  private class XMLSaxParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
+  private class XMLSaxParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
     XMLSaxParsing() {
       this =
         API::moduleImport("xml").getMember("sax").getMember(["parse", "parseString"]).getACall()
@@ -3562,7 +3562,7 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/xml.dom.minidom.html#xml.dom.minidom.parse
    * - https://docs.python.org/3/library/xml.dom.pulldom.html#xml.dom.pulldom.parse
    */
-  private class XMLDomParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
+  private class XMLDomParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
     XMLDomParsing() {
       this =
         API::moduleImport("xml")

@@ -20,7 +20,7 @@ private module Xmltodict {
   /**
    * A call to `xmltodict.parse`.
    */
-  private class XMLtoDictParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
+  private class XMLtoDictParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
     XMLtoDictParsing() { this = API::moduleImport("xmltodict").getMember("parse").getACall() }
 
     override DataFlow::Node getAnInput() {

@@ -547,7 +547,7 @@ class XmlParsingTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(XML::XMLParsing parsing, XML::XMLParsingVulnerabilityKind kind |
+    exists(XML::XmlParsing parsing, XML::XMLParsingVulnerabilityKind kind |
       parsing.vulnerableTo(kind) and
       location = parsing.getLocation() and
       element = parsing.toString() and
