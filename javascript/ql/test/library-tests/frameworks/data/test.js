@@ -203,3 +203,9 @@ class OtherClass {
     this.accessorAroundField = source(); // NOT OK
   }
 }
+
+function testFlowThroughProp() {
+  const obj = new testlib.Obj();
+  obj.foo = source();
+  sink(obj.self.foo); // NOT OK
+}

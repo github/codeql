@@ -31,27 +31,16 @@ private class RemoteFlowSourceFromCsv extends RemoteFlowSource {
   override string getSourceType() { result = "Remote flow" }
 }
 
-/**
- * Like `ModelOutput::summaryStep` but with API nodes mapped to data-flow nodes.
- */
-private predicate summaryStepNodes(DataFlow::Node pred, DataFlow::Node succ, string kind) {
-  exists(API::Node predNode, API::Node succNode |
-    Specific::summaryStep(predNode, succNode, kind) and
-    pred = predNode.getARhs() and
-    succ = succNode.getAnImmediateUse()
-  )
-}
-
 /** Data flow steps induced by summary models of kind `value`. */
 private class DataFlowStepFromSummary extends DataFlow::SharedFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    summaryStepNodes(pred, succ, "value")
+    Specific::summaryStep(pred, succ, "value")
   }
 }
 
 /** Taint steps induced by summary models of kind `taint`. */
 private class TaintStepFromSummary extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    summaryStepNodes(pred, succ, "taint")
+    Specific::summaryStep(pred, succ, "taint")
   }
 }
