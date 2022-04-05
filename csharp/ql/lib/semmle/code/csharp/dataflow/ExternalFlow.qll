@@ -358,20 +358,23 @@ module CsvValidation {
       )
     )
     or
-    exists(string row, string kind | summaryModel(row) |
-      kind = row.splitAt(";", 8) and
-      not kind = ["taint", "value", "generated:taint", "generated:value"] and
+    exists(string row, string k, string kind | summaryModel(row) |
+      k = row.splitAt(";", 8) and
+      getKind(k, kind, _) and
+      not kind = ["taint", "value"] and
       msg = "Invalid kind \"" + kind + "\" in summary model."
     )
     or
-    exists(string row, string kind | sinkModel(row) |
-      kind = row.splitAt(";", 7) and
+    exists(string row, string k, string kind | sinkModel(row) |
+      k = row.splitAt(";", 7) and
+      getKind(k, kind, _) and
       not kind = ["code", "sql", "xss", "remote", "html"] and
       msg = "Invalid kind \"" + kind + "\" in sink model."
     )
     or
-    exists(string row, string kind | sourceModel(row) |
-      kind = row.splitAt(";", 7) and
+    exists(string row, string k, string kind | sourceModel(row) |
+      k = row.splitAt(";", 7) and
+      getKind(k, kind, _) and
       not kind = "local" and
       msg = "Invalid kind \"" + kind + "\" in source model."
     )
