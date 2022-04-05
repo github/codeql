@@ -33,7 +33,9 @@ jobs:
   qhelp:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{  github.event.number }}" > pr_number.txt
+      - run: echo "${PR_NUMBER}" > pr_number.txt
+        env:
+          PR_NUMBER: ${{ github.event.number }}
       - uses: actions/upload-artifact@v2
         with:
           name: comment
@@ -85,9 +87,10 @@ jobs:
         run: |
           # Find the latest comment starting with "QHelp previews"
           COMMENT_PREFIX="QHelp previews"
-          gh api "repos/${{ github.repository }}/issues/${{ github.event.number }}/comments" --paginate --jq "[.[] | select(.body|startswith(\"${COMMENT_PREFIX}\")) | .id] | max" > comment_id.txt
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate --jq "[.[] | select(.body|startswith(\"${COMMENT_PREFIX}\")) | .id] | max" > comment_id.txt
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.number }}
 
       - uses: actions/upload-artifact@v2
         with:
