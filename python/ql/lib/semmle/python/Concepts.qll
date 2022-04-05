@@ -558,8 +558,8 @@ module XML {
    *
    * See PoC at `python/PoCs/XmlParsing/PoC.py` for some tests of vulnerable XML parsing.
    */
-  class XMLParsingVulnerabilityKind extends string {
-    XMLParsingVulnerabilityKind() {
+  class XmlParsingVulnerabilityKind extends string {
+    XmlParsingVulnerabilityKind() {
       this in ["Billion Laughs", "Quadratic Blowup", "XXE", "DTD retrieval"]
     }
 
@@ -586,7 +586,7 @@ module XML {
     /**
      * Holds if this XML parsing is vulnerable to `kind`.
      */
-    predicate vulnerableTo(XMLParsingVulnerabilityKind kind) { super.vulnerableTo(kind) }
+    predicate vulnerableTo(XmlParsingVulnerabilityKind kind) { super.vulnerableTo(kind) }
   }
 
   /** Provides classes for modeling XML parsing APIs. */
@@ -601,7 +601,7 @@ module XML {
       /**
        * Holds if this XML parsing is vulnerable to `kind`.
        */
-      abstract predicate vulnerableTo(XMLParsingVulnerabilityKind kind);
+      abstract predicate vulnerableTo(XmlParsingVulnerabilityKind kind);
 
       override string getFormat() { result = "XML" }
     }

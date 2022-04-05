@@ -40,7 +40,7 @@ module XmlBomb {
    */
   class XmlParsingWithEntityResolution extends Sink {
     XmlParsingWithEntityResolution() {
-      exists(XML::XmlParsing parsing, XML::XMLParsingVulnerabilityKind kind |
+      exists(XML::XmlParsing parsing, XML::XmlParsingVulnerabilityKind kind |
         (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
         parsing.vulnerableTo(kind) and
         this = parsing.getAnInput()

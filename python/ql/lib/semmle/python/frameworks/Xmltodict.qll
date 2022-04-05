@@ -27,7 +27,7 @@ private module Xmltodict {
       result in [this.getArg(0), this.getArgByName("xml_input")]
     }
 
-    override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
       (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
       this.getArgByName("disable_entities").getALocalSource().asExpr() = any(False f)
     }

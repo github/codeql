@@ -3241,7 +3241,7 @@ private module StdlibPrivate {
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
 
-      override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
+      override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
         kind.isBillionLaughs() or kind.isQuadraticBlowup()
       }
 
@@ -3298,7 +3298,7 @@ private module StdlibPrivate {
         ]
     }
 
-    override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
       // note: it does not matter what `xml.etree` parser you are using, you cannot
       // change the security features anyway :|
       kind.isBillionLaughs() or kind.isQuadraticBlowup()
@@ -3459,7 +3459,7 @@ private module StdlibPrivate {
 
     override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("source")] }
 
-    override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
       // always vuln to these
       (kind.isBillionLaughs() or kind.isQuadraticBlowup())
       or
@@ -3512,7 +3512,7 @@ private module StdlibPrivate {
         ]
     }
 
-    override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
       // always vuln to these
       (kind.isBillionLaughs() or kind.isQuadraticBlowup())
     }
@@ -3586,7 +3586,7 @@ private module StdlibPrivate {
 
     DataFlow::Node getParserArg() { result in [this.getArg(1), this.getArgByName("parser")] }
 
-    override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
       this.getParserArg() = saxParserWithFeatureExternalGesTurnedOn() and
       (kind.isXxe() or kind.isDtdRetrieval())
       or

@@ -121,7 +121,7 @@ private module Lxml {
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode {
       /** Holds if this instance is vulnerable to `kind`. */
-      abstract predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind);
+      abstract predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind);
     }
 
     /**
@@ -135,7 +135,7 @@ private module Lxml {
       }
 
       // NOTE: it's not possible to change settings of a parser after constructing it
-      override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
+      override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
         kind.isXxe() and
         (
           // resolve_entities has default True
@@ -165,7 +165,7 @@ private module Lxml {
           API::moduleImport("lxml").getMember("etree").getMember("get_default_parser").getACall()
       }
 
-      override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
+      override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
         // as highlighted by
         // https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
         // by default XXE is allow. so as long as the default parser has not been
@@ -189,7 +189,7 @@ private module Lxml {
     }
 
     /** Gets a reference to an `lxml.etree` parser instance, that is vulnerable to `kind`. */
-    DataFlow::Node instanceVulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
+    DataFlow::Node instanceVulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
       exists(InstanceSource origin | result = instance(origin) and origin.vulnerableTo(kind))
     }
 
@@ -201,7 +201,7 @@ private module Lxml {
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
 
-      override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
+      override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
         this.calls(instanceVulnerableTo(kind), "feed")
       }
 
@@ -256,7 +256,7 @@ private module Lxml {
 
     DataFlow::Node getParserArg() { result in [this.getArg(1), this.getArgByName("parser")] }
 
-    override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
       this.getParserArg() = XMLParser::instanceVulnerableTo(kind)
       or
       kind.isXxe() and
@@ -313,7 +313,7 @@ private module Lxml {
 
     override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("source")] }
 
-    override predicate vulnerableTo(XML::XMLParsingVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
       // note that there is no `resolve_entities` argument, so it's not possible to turn off XXE :O
       kind.isXxe()
       or
