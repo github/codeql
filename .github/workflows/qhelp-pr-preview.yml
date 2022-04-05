@@ -40,6 +40,7 @@ jobs:
         with:
           name: comment
           path: pr_number.txt
+          if-no-files-found: error
           retention-days: 1
 
       - uses: actions/checkout@v2
@@ -81,6 +82,7 @@ jobs:
         with:
           name: comment
           path: comment_body.txt
+          if-no-files-found: error
           retention-days: 1
 
       - name: Save ID of existing QHelp comment (if it exists)
@@ -96,4 +98,5 @@ jobs:
         with:
           name: comment
           path: comment_id.txt
+          if-no-files-found: error
           retention-days: 1
