@@ -3,7 +3,7 @@ private import experimental.semmle.python.Concepts
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.ApiGraphs
 
-private module Zip {
+private module CopyFile {
   private class CopyFiles extends DataFlow::CallCfgNode, CopyFile::Range {
     CopyFiles() {
       this =
