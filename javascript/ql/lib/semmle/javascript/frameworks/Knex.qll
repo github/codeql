@@ -69,7 +69,7 @@ module Knex {
   private class KnexDatabaseAwait extends DatabaseAccess, DataFlow::ValueNode {
     KnexDatabaseAwait() {
       exists(AwaitExpr enclosingAwait | this = enclosingAwait.flow() |
-        enclosingAwait.getOperand() = knexObject().getAUse().asExpr()
+        enclosingAwait.getOperand() = knexObject().getAValueReachableFromSource().asExpr()
       )
     }
 

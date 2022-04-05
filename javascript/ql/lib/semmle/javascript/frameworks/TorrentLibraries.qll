@@ -21,7 +21,7 @@ module ParseTorrent {
         node = mod().getReturn() or
         node = mod().getMember("remote").getParameter(1).getParameter(1)
       ) and
-      this = node.getAnImmediateUse()
+      this = node.getASource()
     }
 
     /** Gets the API node for this torrent object. */
@@ -29,7 +29,7 @@ module ParseTorrent {
   }
 
   /** Gets a data flow node referring to a parsed torrent. */
-  DataFlow::SourceNode parsedTorrentRef() { result = any(ParsedTorrent t).asApiNode().getAUse() }
+  DataFlow::SourceNode parsedTorrentRef() { result = any(ParsedTorrent t).asApiNode().getAValueReachableFromSource() }
 
   /**
    * An access to user-controlled torrent information.
@@ -38,7 +38,7 @@ module ParseTorrent {
     UserControlledTorrentInfo() {
       exists(API::Node read |
         read = any(ParsedTorrent t).asApiNode().getAMember() and
-        this = read.getAnImmediateUse()
+        this = read.getASource()
       |
         exists(string prop |
           not (

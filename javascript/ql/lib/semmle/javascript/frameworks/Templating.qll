@@ -718,7 +718,7 @@ module Templating {
     override TemplateSyntax getTemplateSyntax() { result.getAPackageName() = engine }
 
     override DataFlow::SourceNode getOutput() {
-      result = this.getParameter([1, 2]).getParameter(1).getAnImmediateUse()
+      result = this.getParameter([1, 2]).getParameter(1).getASource()
       or
       not exists(this.getParameter([1, 2]).getParameter(1)) and
       result = this

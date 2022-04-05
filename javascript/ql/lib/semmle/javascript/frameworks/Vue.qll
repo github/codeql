@@ -41,7 +41,7 @@ module Vue {
   /**
    * Gets a reference to the 'Vue' object.
    */
-  DataFlow::SourceNode vue() { result = vueLibrary().getAnImmediateUse() }
+  DataFlow::SourceNode vue() { result = vueLibrary().getASource() }
 
   /** Gets an API node referring to a component or `Vue`. */
   private API::Node component() {
@@ -176,7 +176,7 @@ module Vue {
 
     /** Gets a component which is extended by this one. */
     Component getABaseComponent() {
-      result.getComponentRef().getAUse() =
+      result.getComponentRef().getAValueReachableFromSource() =
         getOwnOptions().getMember(["extends", "mixins"]).getARhs()
     }
 
@@ -328,10 +328,10 @@ module Vue {
     }
 
     /** Gets an API node referring to an instance of this component. */
-    API::Node getInstance() { result.getAnImmediateUse() = getABoundFunction().getReceiver() }
+    API::Node getInstance() { result.getASource() = getABoundFunction().getReceiver() }
 
     /** Gets a data flow node referring to an instance of this component. */
-    DataFlow::SourceNode getAnInstanceRef() { result = getInstance().getAnImmediateUse() }
+    DataFlow::SourceNode getAnInstanceRef() { result = getInstance().getASource() }
 
     pragma[noinline]
     private DataFlow::PropWrite getAPropertyValueWrite(string name) {
@@ -533,7 +533,7 @@ module Vue {
       // of the .vue file.
       exists(Import imprt |
         imprt.getImportedPath().resolve() = file and
-        result.getAnImmediateUse() = imprt.getImportedModuleNode()
+        result.getASource() = imprt.getImportedModuleNode()
       )
     }
 
@@ -695,7 +695,7 @@ module Vue {
     t.start() and
     (
       exists(API::Node router | router = API::moduleImport("vue-router") |
-        result = router.getInstance().getMember("currentRoute").getAnImmediateUse()
+        result = router.getInstance().getMember("currentRoute").getASource()
         or
         result =
           router
@@ -703,17 +703,17 @@ module Vue {
               .getMember(["beforeEach", "beforeResolve", "afterEach"])
               .getParameter(0)
               .getParameter([0, 1])
-              .getAnImmediateUse()
+              .getASource()
         or
         result =
           router
               .getParameter(0)
               .getMember("scrollBehavior")
               .getParameter([0, 1])
-              .getAnImmediateUse()
+              .getASource()
       )
       or
-      result = routeConfig().getMember("beforeEnter").getParameter([0, 1]).getAnImmediateUse()
+      result = routeConfig().getMember("beforeEnter").getParameter([0, 1]).getASource()
       or
       exists(Component c |
         result = c.getABoundFunction().getAFunctionValue().getReceiver().getAPropertyRead("$route")

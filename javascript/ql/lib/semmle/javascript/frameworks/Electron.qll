@@ -56,13 +56,13 @@ module Electron {
     }
   }
 
-  private API::Node browserObject() { result.getAnImmediateUse() instanceof NewBrowserObject }
+  private API::Node browserObject() { result.getASource() instanceof NewBrowserObject }
 
   /**
    * A data flow node whose value may originate from a browser object instantiation.
    */
   private class BrowserObjectByFlow extends BrowserObject {
-    BrowserObjectByFlow() { browserObject().getAUse() = this }
+    BrowserObjectByFlow() { browserObject().getAValueReachableFromSource() = this }
   }
 
   /**

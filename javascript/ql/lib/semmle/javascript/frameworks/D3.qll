@@ -78,11 +78,11 @@ module D3 {
 
   private class D3DomValueSource extends DOM::DomValueSource::Range {
     D3DomValueSource() {
-      this = d3Selection().getMember("each").getReceiver().getAnImmediateUse()
+      this = d3Selection().getMember("each").getReceiver().getASource()
       or
-      this = d3Selection().getMember("node").getReturn().getAnImmediateUse()
+      this = d3Selection().getMember("node").getReturn().getASource()
       or
-      this = d3Selection().getMember("nodes").getReturn().getUnknownMember().getAnImmediateUse()
+      this = d3Selection().getMember("nodes").getReturn().getUnknownMember().getASource()
     }
   }
 

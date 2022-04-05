@@ -352,7 +352,7 @@ private module Pino {
     // `pino` is installed as the "log" property on the request object in `Express` and similar libraries.
     // in `Hapi` the property is "logger".
     exists(HTTP::RequestExpr req, API::Node reqNode |
-      reqNode.getAnImmediateUse() = req.flow().getALocalSource() and
+      reqNode.getASource() = req.flow().getALocalSource() and
       result = reqNode.getMember(["log", "logger"])
     )
   }

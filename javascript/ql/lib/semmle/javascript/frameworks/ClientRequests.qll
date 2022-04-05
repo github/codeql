@@ -265,7 +265,7 @@ module ClientRequest {
       or
       responseType = this.getResponseType() and
       promise = false and
-      result = this.getReturn().getPromisedError().getMember("response").getAnImmediateUse()
+      result = this.getReturn().getPromisedError().getMember("response").getASource()
     }
   }
 
@@ -463,7 +463,7 @@ module ClientRequest {
    */
   private API::Node netSocketInstantiation(DataFlow::NewNode socket) {
     result = API::moduleImport("net").getMember("Socket").getInstance() and
-    socket = result.getAnImmediateUse()
+    socket = result.getASource()
   }
 
   /**

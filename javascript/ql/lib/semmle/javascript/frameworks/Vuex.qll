@@ -116,7 +116,7 @@ module Vuex {
     /** Gets the Vue component in which the generated functions are installed. */
     Vue::Component getVueComponent() {
       exists(DataFlow::ObjectLiteralNode obj |
-        obj.getASpreadProperty() = getReturn().getAUse() and
+        obj.getASpreadProperty() = getReturn().getAValueReachableFromSource() and
         result.getOwnOptions().getAMember().getARhs() = obj
       )
       or
@@ -154,12 +154,12 @@ module Vuex {
   /** Gets a property access that may receive the produced by a getter of the given name. */
   private DataFlow::Node getterSucc(string name) {
     exists(string prefix, string prop |
-      result = storeRef(prefix).getMember("getters").getMember(prop).getAnImmediateUse() and
+      result = storeRef(prefix).getMember("getters").getMember(prop).getASource() and
       prop != "*" and
       name = prefix + prop
     )
     or
-    result = getAMappedAccess("mapGetters", name).getAnImmediateUse()
+    result = getAMappedAccess("mapGetters", name).getASource()
   }
 
   /** Holds if `pred -> succ` is a step from a getter function to a relevant property access. */
@@ -238,7 +238,7 @@ module Vuex {
             .getMember(getStorePropForCommitKind(kind))
             .getMember(prop)
             .getParameter(1)
-            .getAnImmediateUse() and
+            .getASource() and
       prop != "*" and
       name = prefix + prop
     )
@@ -296,7 +296,7 @@ module Vuex {
     result = stateRefByAccessPath(path).getARhs()
     or
     exists(ExtendCall call, string base, string prop |
-      call.getDestinationOperand() = stateRefByAccessPath(base).getAUse() and
+      call.getDestinationOperand() = stateRefByAccessPath(base).getAValueReachableFromSource() and
       result = call.getASourceOperand().getALocalSource().getAPropertyWrite(prop).getRhs() and
       path = appendToNamespace(base, prop)
     )
@@ -304,7 +304,7 @@ module Vuex {
 
   /** Gets a value that refers to the given access path of the state. */
   DataFlow::Node stateMutationSucc(string path) {
-    result = stateRefByAccessPath(path).getAnImmediateUse()
+    result = stateRefByAccessPath(path).getASource()
   }
 
   /** Holds if `pred -> succ` is a step from state mutation to state access. */
@@ -336,7 +336,7 @@ module Vuex {
   predicate mapStateHelperStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Vue::Component component, string name |
       pred = mapStateHelperPred(component, name) and
-      succ = pragma[only_bind_out](component).getInstance().getMember(name).getAnImmediateUse()
+      succ = pragma[only_bind_out](component).getInstance().getMember(name).getASource()
     )
   }
 
@@ -378,7 +378,7 @@ module Vuex {
 
     /** Gets a package that can be considered an entry point for a Vuex app. */
     private PackageJson entryPointPackage() {
-      result = getPackageJson(storeRef().getAnImmediateUse().getFile())
+      result = getPackageJson(storeRef().getASource().getFile())
       or
       // Any package that imports a store-creating package is considered a potential entry point.
       packageDependsOn(result, entryPointPackage())

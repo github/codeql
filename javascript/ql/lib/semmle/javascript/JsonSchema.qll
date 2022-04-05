@@ -184,7 +184,7 @@ module JsonSchema {
       override boolean getPolarity() { none() }
 
       override DataFlow::Node getAValidationResultAccess(boolean polarity) {
-        result = this.getReturn().getMember("error").getAnImmediateUse() and
+        result = this.getReturn().getMember("error").getASource() and
         polarity = false
       }
     }

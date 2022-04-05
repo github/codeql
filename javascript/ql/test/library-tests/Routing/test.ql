@@ -9,7 +9,7 @@ class Taint extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node node) {
     node.(DataFlow::CallNode).getCalleeName() = "source"
     or
-    node = testInstance().getMember("getSource").getReturn().getAnImmediateUse()
+    node = testInstance().getMember("getSource").getReturn().getASource()
   }
 
   override predicate isSink(DataFlow::Node node) {

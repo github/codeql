@@ -383,7 +383,7 @@ private module Sqlite {
   /** A call to a Sqlite query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
-      this = getAChainingQueryCall().getAnImmediateUse()
+      this = getAChainingQueryCall().getASource()
       or
       this = database().getMember("prepare").getACall()
     }
@@ -440,7 +440,7 @@ private module MsSql {
     override TaggedTemplateExpr astNode;
 
     QueryTemplateExpr() {
-      mssql().getMember("query").getAUse() = DataFlow::valueNode(astNode.getTag())
+      mssql().getMember("query").getAValueReachableFromSource() = DataFlow::valueNode(astNode.getTag())
     }
 
     override DataFlow::Node getAResult() {

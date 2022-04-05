@@ -119,41 +119,52 @@ module API {
    */
   class Node extends Impl::TApiNode {
     /**
-     * Gets a data-flow node corresponding to a use of the API component represented by this node.
+     * Get a data-flow node where this value may flow after entering the current codebase.
      *
-     * For example, `require('fs').readFileSync` is a use of the function `readFileSync` from the
-     * `fs` module, and `require('fs').readFileSync(file)` is a use of the return of that function.
-     *
-     * This includes indirect uses found via data flow, meaning that in
-     * `f(obj.foo); function f(x) {};` both `obj.foo` and `x` are uses of the `foo` member from `obj`.
-     *
-     * As another example, in the assignment `exports.plusOne = (x) => x+1` the two references to
-     * `x` are uses of the first parameter of `plusOne`.
+     * This is similar to `getASource()` but additionally includes nodes that are transitively reachable by data flow.
+     * See `getASource()` for examples.
      */
     pragma[inline]
-    DataFlow::Node getAUse() {
+    DataFlow::Node getAValueReachableFromSource() {
       exists(DataFlow::SourceNode src | Impl::use(this, src) |
         Impl::trackUseNode(src).flowsTo(result)
       )
     }
 
     /**
-     * Gets an immediate use of the API component represented by this node.
+     * Get a data-flow node where this value enters the current codebase.
      *
-     * For example, `require('fs').readFileSync` is a an immediate use of the `readFileSync` member
-     * from the `fs` module.
+     * For example:
+     * ```js
+     * // API::moduleImport("fs").getASource()
+     * require('fs');
      *
-     * Unlike `getAUse()`, this predicate only gets the immediate references, not the indirect uses
-     * found via data flow. This means that in `const x = fs.readFile` only `fs.readFile` is a reference
-     * to the `readFile` member of `fs`, neither `x` nor any node that `x` flows to is a reference to
-     * this API component.
+     * // API::moduleImport("fs").getMember("readFile").getASource()
+     * require('fs').readFile;
+     *
+     * // API::moduleImport("fs").getMember("readFile").getReturn().getASource()
+     * require('fs').readFile();
+     *
+     * require('fs').readFile(
+     *  filename,
+     *  // 'y' matched by API::moduleImport("fs").getMember("readFile").getParameter(1).getParameter(0).getASource()
+     *  y => {
+     *    ...
+     * });
+     * ```
      */
-    DataFlow::SourceNode getAnImmediateUse() { Impl::use(this, result) }
+    DataFlow::SourceNode getASource() { Impl::use(this, result) }
+
+    /** DEPRECATED. This predicate has been renamed to `getASource`. */
+    deprecated DataFlow::SourceNode getAnImmediateUse() { result = this.getASource() }
+
+    /** DEPRECATED. This predicate has been renamed to `getAValueReachableFromSource`. */
+    deprecated DataFlow::Node getAUse() { result = this.getAValueReachableFromSource() }
 
     /**
      * Gets a call to the function represented by this API component.
      */
-    CallNode getACall() { result = this.getReturn().getAnImmediateUse() }
+    CallNode getACall() { result = this.getReturn().getASource() }
 
     /**
      * Gets a call to the function represented by this API component,
@@ -168,7 +179,7 @@ module API {
     /**
      * Gets a `new` call to the function represented by this API component.
      */
-    NewNode getAnInstantiation() { result = this.getInstance().getAnImmediateUse() }
+    NewNode getAnInstantiation() { result = this.getInstance().getASource() }
 
     /**
      * Gets an invocation (with our without `new`) to the function represented by this API component.
@@ -430,7 +441,7 @@ module API {
      * In other words, the value of a use of `that` may flow into the right-hand side of a
      * definition of this node.
      */
-    predicate refersTo(Node that) { this.getARhs() = that.getAUse() }
+    predicate refersTo(Node that) { this.getARhs() = that.getAValueReachableFromSource() }
 
     /**
      * Gets the data-flow node that gives rise to this node, if any.
@@ -1274,8 +1285,8 @@ module API {
     API::Node callee;
 
     InvokeNode() {
-      this = callee.getReturn().getAnImmediateUse() or
-      this = callee.getInstance().getAnImmediateUse() or
+      this = callee.getReturn().getASource() or
+      this = callee.getInstance().getASource() or
       this = Impl::getAPromisifiedInvocation(callee, _, _)
     }
 
@@ -1301,13 +1312,13 @@ module API {
     /** Gets the API node for the return value of this call. */
     Node getReturn() {
       result = callee.getReturn() and
-      result.getAnImmediateUse() = this
+      result.getASource() = this
     }
 
     /** Gets the API node for the object constructed by this invocation. */
     Node getInstance() {
       result = callee.getInstance() and
-      result.getAnImmediateUse() = this
+      result.getASource() = this
     }
   }
 

@@ -58,10 +58,10 @@ module Redux {
    */
   class StoreCreation extends DataFlow::SourceNode instanceof StoreCreation::Range {
     /** Gets a reference to the store. */
-    DataFlow::SourceNode ref() { result = asApiNode().getAUse() }
+    DataFlow::SourceNode ref() { result = asApiNode().getAValueReachableFromSource() }
 
     /** Gets an API node that refers to this store creation. */
-    API::Node asApiNode() { result.getAnImmediateUse() = this }
+    API::Node asApiNode() { result.getASource() = this }
 
     /** Gets the data flow node holding the root reducer for this store. */
     DataFlow::Node getReducerArg() { result = super.getReducerArg() }
@@ -106,7 +106,7 @@ module Redux {
   private API::Node rootState() {
     result instanceof RootStateSource
     or
-    stateStep(rootState().getAUse(), result.getAnImmediateUse())
+    stateStep(rootState().getAValueReachableFromSource(), result.getASource())
   }
 
   /**
@@ -120,7 +120,7 @@ module Redux {
       accessPath = joinAccessPaths(base, prop)
     )
     or
-    stateStep(rootStateAccessPath(accessPath).getAUse(), result.getAnImmediateUse())
+    stateStep(rootStateAccessPath(accessPath).getAValueReachableFromSource(), result.getASource())
   }
 
   /**
@@ -374,7 +374,7 @@ module Redux {
 
       CreateSliceReducer() {
         call = API::moduleImport("@reduxjs/toolkit").getMember("createSlice").getACall() and
-        this = call.getReturn().getMember("reducer").getAnImmediateUse()
+        this = call.getReturn().getMember("reducer").getASource()
       }
 
       private API::Node getABuilderRef() {
@@ -386,7 +386,7 @@ module Redux {
       override DataFlow::Node getActionHandlerArg(DataFlow::Node actionType) {
         exists(string name |
           result = call.getParameter(0).getMember("reducers").getMember(name).getARhs() and
-          actionType = call.getReturn().getMember("actions").getMember(name).getAnImmediateUse()
+          actionType = call.getReturn().getMember("actions").getMember(name).getASource()
         )
         or
         // Properties of 'extraReducers':
@@ -445,7 +445,7 @@ module Redux {
       // x -> bindActionCreators({ x, ... })
       exists(BindActionCreatorsCall bind, string prop |
         ref(t.continue()).flowsTo(bind.getParameter(0).getMember(prop).getARhs()) and
-        result = bind.getReturn().getMember(prop).getAnImmediateUse()
+        result = bind.getReturn().getMember(prop).getASource()
       )
       or
       // x -> combineActions(x, ...)
@@ -580,7 +580,7 @@ module Redux {
 
       MultiAction() {
         createActions = API::moduleImport("redux-actions").getMember("createActions").getACall() and
-        this = createActions.getReturn().getMember(name).getAnImmediateUse()
+        this = createActions.getReturn().getMember(name).getASource()
       }
 
       override DataFlow::FunctionNode getMiddlewareFunction(boolean async) {
@@ -614,7 +614,7 @@ module Redux {
 
       CreateSliceAction() {
         call = API::moduleImport("@reduxjs/toolkit").getMember("createSlice").getACall() and
-        this = call.getReturn().getMember("actions").getMember(actionName).getAnImmediateUse()
+        this = call.getReturn().getMember("actions").getMember(actionName).getASource()
       }
 
       override string getTypeTag() {
@@ -885,12 +885,12 @@ module Redux {
       accessPath = getAffectedStateAccessPath(reducer)
     |
       pred = function.getReturnNode() and
-      succ = rootStateAccessPath(accessPath).getAnImmediateUse()
+      succ = rootStateAccessPath(accessPath).getASource()
       or
       exists(string suffix, DataFlow::SourceNode base |
         base = [function.getParameter(0), function.getReturnNode().getALocalSource()] and
         pred = AccessPath::getAnAssignmentTo(base, suffix) and
-        succ = rootStateAccessPath(accessPath + "." + suffix).getAnImmediateUse()
+        succ = rootStateAccessPath(accessPath + "." + suffix).getASource()
       )
     )
     or
@@ -901,7 +901,7 @@ module Redux {
       reducer.isRootStateHandler() and
       base = [function.getParameter(0), function.getReturnNode().getALocalSource()] and
       pred = AccessPath::getAnAssignmentTo(base, suffix) and
-      succ = rootStateAccessPath(suffix).getAnImmediateUse()
+      succ = rootStateAccessPath(suffix).getASource()
     )
   }
 
@@ -1205,7 +1205,7 @@ module Redux {
         // Selector functions may be given as an array
         exists(DataFlow::ArrayCreationNode array |
           array.flowsTo(getArgument(0)) and
-          result.getAUse() = array.getElement(i)
+          result.getAValueReachableFromSource() = array.getElement(i)
         )
       }
     }
@@ -1222,7 +1222,7 @@ module Redux {
         exists(CreateSelectorCall call, int index |
           call.getNumArgument() > 1 and
           pred = call.getSelectorFunction(index).getReturn().getARhs() and
-          succ = call.getLastParameter().getParameter(index).getAnImmediateUse()
+          succ = call.getLastParameter().getParameter(index).getASource()
         )
         or
         // The result of the last callback is the final result

@@ -62,7 +62,7 @@ class BasicTaintTracking extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) {
     source.(DataFlow::CallNode).getCalleeName() = "source"
     or
-    source = ModelOutput::getASourceNode("test-source").getAnImmediateUse()
+    source = ModelOutput::getASourceNode("test-source").getASource()
   }
 
   override predicate isSink(DataFlow::Node sink) {

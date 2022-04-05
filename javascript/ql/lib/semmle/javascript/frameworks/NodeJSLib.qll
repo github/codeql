@@ -1070,7 +1070,7 @@ module NodeJSLib {
    */
   private class EventEmitterSubClass extends DataFlow::ClassNode {
     EventEmitterSubClass() {
-      this.getASuperClassNode() = getAnEventEmitterImport().getAUse() or
+      this.getASuperClassNode() = getAnEventEmitterImport().getAValueReachableFromSource() or
       this.getADirectSuperClass() instanceof EventEmitterSubClass
     }
   }

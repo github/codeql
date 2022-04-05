@@ -12,7 +12,7 @@ private module LiveServer {
   class ServerDefinition extends HTTP::Servers::StandardServerDefinition {
     ServerDefinition() { this = DataFlow::moduleImport("live-server").asExpr() }
 
-    API::Node getImportNode() { result.getAnImmediateUse().asExpr() = this }
+    API::Node getImportNode() { result.getASource().asExpr() = this }
   }
 
   /**

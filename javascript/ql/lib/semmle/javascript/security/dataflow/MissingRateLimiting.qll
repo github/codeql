@@ -153,7 +153,7 @@ abstract class RateLimitingMiddleware extends DataFlow::SourceNode {
  */
 class ExpressRateLimit extends RateLimitingMiddleware {
   ExpressRateLimit() {
-    this = API::moduleImport("express-rate-limit").getReturn().getAnImmediateUse()
+    this = API::moduleImport("express-rate-limit").getReturn().getASource()
   }
 }
 
@@ -162,7 +162,7 @@ class ExpressRateLimit extends RateLimitingMiddleware {
  */
 class BruteForceRateLimit extends RateLimitingMiddleware {
   BruteForceRateLimit() {
-    this = API::moduleImport("express-brute").getInstance().getMember("prevent").getAnImmediateUse()
+    this = API::moduleImport("express-brute").getInstance().getMember("prevent").getASource()
   }
 }
 
@@ -174,7 +174,7 @@ class BruteForceRateLimit extends RateLimitingMiddleware {
  */
 class RouteHandlerLimitedByExpressLimiter extends RateLimitingMiddleware {
   RouteHandlerLimitedByExpressLimiter() {
-    this = API::moduleImport("express-limiter").getReturn().getReturn().getAnImmediateUse()
+    this = API::moduleImport("express-limiter").getReturn().getReturn().getASource()
   }
 
   override Routing::Node getRoutingNode() {
