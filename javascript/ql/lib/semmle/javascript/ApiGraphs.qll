@@ -191,7 +191,7 @@ module API {
      * external library (or in general, any external codebase).
      *
      * Concretely, this is either an argument passed to a call to external code,
-     * or the right-hand side of a property write on an object flows into such a call.
+     * or the right-hand side of a property write on an object flowing into such a call.
      *
      * For example:
      * ```js
