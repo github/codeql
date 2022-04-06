@@ -648,7 +648,7 @@ private module Stage1 {
     // read
     exists(ContentSet c |
       fwdFlowReadSet(c, node, cc, config) and
-      fwdFlowConsCandSet(c, config)
+      fwdFlowConsCandSet(c, _, config)
     )
     or
     // flow into a callable
@@ -693,12 +693,13 @@ private module Stage1 {
   }
 
   /**
-   * Holds if `c` may be interpreted in a read as the target of some store,
-   * in the flow covered by `fwdFlow`.
+   * Holds if `cs` may be interpreted in a read as the target of some store
+   * into `c`, in the flow covered by `fwdFlow`.
    */
   pragma[nomagic]
-  private predicate fwdFlowConsCandSet(ContentSet c, Configuration config) {
-    fwdFlowConsCand(c.getAReadContent(), config)
+  private predicate fwdFlowConsCandSet(ContentSet cs, Content c, Configuration config) {
+    fwdFlowConsCand(c, config) and
+    c = cs.getAReadContent()
   }
 
   pragma[nomagic]
@@ -795,7 +796,7 @@ private module Stage1 {
     // read
     exists(NodeEx mid, ContentSet c |
       readSet(node, c, mid, config) and
-      fwdFlowConsCandSet(c, pragma[only_bind_into](config)) and
+      fwdFlowConsCandSet(c, _, pragma[only_bind_into](config)) and
       revFlow(mid, toReturn, pragma[only_bind_into](config))
     )
     or
@@ -821,10 +822,10 @@ private module Stage1 {
    */
   pragma[nomagic]
   private predicate revFlowConsCand(Content c, Configuration config) {
-    exists(NodeEx mid, NodeEx node |
+    exists(NodeEx mid, NodeEx node, ContentSet cs |
       fwdFlow(node, pragma[only_bind_into](config)) and
-      read(node, c, mid, config) and
-      fwdFlowConsCand(c, pragma[only_bind_into](config)) and
+      readSet(node, cs, mid, config) and
+      fwdFlowConsCandSet(cs, c, pragma[only_bind_into](config)) and
       revFlow(pragma[only_bind_into](mid), _, pragma[only_bind_into](config))
     )
   }
@@ -840,7 +841,7 @@ private module Stage1 {
   ) {
     exists(NodeEx mid |
       revFlow(mid, toReturn, pragma[only_bind_into](config)) and
-      fwdFlowConsCandSet(c, pragma[only_bind_into](config)) and
+      fwdFlowConsCandSet(c, _, pragma[only_bind_into](config)) and
       storeSet(node, c, mid, _, _, config)
     )
   }
@@ -851,9 +852,9 @@ private module Stage1 {
    */
   pragma[nomagic]
   private predicate revFlowIsReadAndStored(Content c, Configuration conf) {
-    revFlowConsCand(c, conf) and
+    revFlowConsCand(c, pragma[only_bind_into](conf)) and
     exists(ContentSet cs |
-      revFlowStoreSet(cs, _, _, conf) and
+      revFlowStoreSet(cs, _, _, pragma[only_bind_into](conf)) and
       c = cs.getAStoreContent()
     )
   }
