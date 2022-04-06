@@ -727,7 +727,8 @@ func extractScopeLocation(tw *trap.Writer, scope *types.Scope, lbl trap.Label) {
 }
 
 // extractScopes extracts symbol table information for the package scope and all local scopes
-// of the given package
+// of the given package. Note that this will not encounter methods or struct fields as
+// they do not have a parent scope.
 func extractScopes(tw *trap.Writer, nd *ast.File, pkg *packages.Package) {
 	pkgScopeLabel := extractPackageScope(tw, pkg)
 	fileScope := pkg.TypesInfo.Scopes[nd]
@@ -1457,7 +1458,9 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			for i := 0; i < tp.NumFields(); i++ {
 				field := tp.Field(i)
 
-				// ensure the field is associated with a label
+				// ensure the field is associated with a label - note that
+				// struct fields do not have a parent scope, so they are not
+				// dealt with by `extractScopes`
 				fieldlbl, exists := tw.Labeler.FieldID(field, i, lbl)
 				if !exists {
 					extractObject(tw, field, fieldlbl)
@@ -1479,6 +1482,8 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			for i := 0; i < tp.NumMethods(); i++ {
 				meth := tp.Method(i)
 
+				// Note that methods do not have a parent scope, so they are
+				// not dealt with by `extractScopes`
 				extractMethod(tw, meth)
 
 				extractComponentType(tw, lbl, i, meth.Name(), meth.Type())
@@ -1537,7 +1542,8 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				dbscheme.TypeObjectTable.Emit(tw, lbl, entitylbl)
 			}
 
-			// ensure all methods have labels
+			// ensure all methods have labels - note that methods do not have a
+			// parent scope, so they are not dealt with by `extractScopes`
 			for i := 0; i < origintp.NumMethods(); i++ {
 				meth := origintp.Method(i)
 
