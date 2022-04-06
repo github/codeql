@@ -109,7 +109,7 @@ private module Lxml {
    *
    * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
    */
-  module XMLParser {
+  module XmlParser {
     /**
      * A source of instances of `lxml.etree` parsers, extend this class to model new instances.
      *
@@ -117,7 +117,7 @@ private module Lxml {
      * calls, or a special parameter that will be set when functions are called by an external
      * library.
      *
-     * Use the predicate `XMLParser::instance()` to get references to instances of `lxml.etree` parsers.
+     * Use the predicate `XmlParser::instance()` to get references to instances of `lxml.etree` parsers.
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode {
       /** Holds if this instance is vulnerable to `kind`. */
@@ -129,8 +129,8 @@ private module Lxml {
      *
      * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
      */
-    private class LXMLParser extends InstanceSource, DataFlow::CallCfgNode {
-      LXMLParser() {
+    private class LxmlParser extends InstanceSource, DataFlow::CallCfgNode {
+      LxmlParser() {
         this = API::moduleImport("lxml").getMember("etree").getMember("XMLParser").getACall()
       }
 
@@ -159,8 +159,8 @@ private module Lxml {
      *
      * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.get_default_parser
      */
-    private class LXMLDefaultParser extends InstanceSource, DataFlow::CallCfgNode {
-      LXMLDefaultParser() {
+    private class LxmlDefaultParser extends InstanceSource, DataFlow::CallCfgNode {
+      LxmlDefaultParser() {
         this =
           API::moduleImport("lxml").getMember("etree").getMember("get_default_parser").getACall()
       }
@@ -196,8 +196,8 @@ private module Lxml {
     /**
      * A call to the `feed` method of an `lxml` parser.
      */
-    private class LXMLParserFeedCall extends DataFlow::MethodCallNode, XML::XmlParsing::Range {
-      LXMLParserFeedCall() { this.calls(instance(_), "feed") }
+    private class LxmlParserFeedCall extends DataFlow::MethodCallNode, XML::XmlParsing::Range {
+      LxmlParserFeedCall() { this.calls(instance(_), "feed") }
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
 
@@ -233,8 +233,8 @@ private module Lxml {
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parse
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parseid
    */
-  private class LXMLParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
-    LXMLParsing() {
+  private class LxmlParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
+    LxmlParsing() {
       this =
         API::moduleImport("lxml")
             .getMember("etree")
@@ -257,7 +257,7 @@ private module Lxml {
     DataFlow::Node getParserArg() { result in [this.getArg(1), this.getArgByName("parser")] }
 
     override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
-      this.getParserArg() = XMLParser::instanceVulnerableTo(kind)
+      this.getParserArg() = XmlParser::instanceVulnerableTo(kind)
       or
       kind.isXxe() and
       not exists(this.getParserArg())
@@ -284,8 +284,8 @@ private module Lxml {
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parse
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parseid
    */
-  private class FileAccessFromLXMLParsing extends LXMLParsing, FileSystemAccess::Range {
-    FileAccessFromLXMLParsing() {
+  private class FileAccessFromLxmlParsing extends LxmlParsing, FileSystemAccess::Range {
+    FileAccessFromLxmlParsing() {
       this = API::moduleImport("lxml").getMember("etree").getMember(["parse", "parseid"]).getACall()
       // I considered whether we should try to reduce FPs from people passing file-like
       // objects, which will not be a file system access (and couldn't cause a
@@ -305,9 +305,9 @@ private module Lxml {
    * See
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.iterparse
    */
-  private class LXMLIterparseCall extends DataFlow::CallCfgNode, XML::XmlParsing::Range,
+  private class LxmlIterparseCall extends DataFlow::CallCfgNode, XML::XmlParsing::Range,
     FileSystemAccess::Range {
-    LXMLIterparseCall() {
+    LxmlIterparseCall() {
       this = API::moduleImport("lxml").getMember("etree").getMember("iterparse").getACall()
     }
 

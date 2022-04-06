@@ -3191,7 +3191,7 @@ private module StdlibPrivate {
    * - https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.XMLParser
    * - https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.XMLPullParser
    */
-  module XMLParser {
+  module XmlParser {
     /**
      * A source of instances of `xml.etree` parsers, extend this class to model new instances.
      *
@@ -3199,7 +3199,7 @@ private module StdlibPrivate {
      * calls, or a special parameter that will be set when functions are called by an external
      * library.
      *
-     * Use the predicate `XMLParser::instance()` to get references to instances of `xml.etree` parsers.
+     * Use the predicate `XmlParser::instance()` to get references to instances of `xml.etree` parsers.
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
@@ -3236,8 +3236,8 @@ private module StdlibPrivate {
     /**
      * A call to the `feed` method of an `xml.etree` parser.
      */
-    private class XMLEtreeParserFeedCall extends DataFlow::MethodCallNode, XML::XmlParsing::Range {
-      XMLEtreeParserFeedCall() { this.calls(instance(), "feed") }
+    private class XmlEtreeParserFeedCall extends DataFlow::MethodCallNode, XML::XmlParsing::Range {
+      XmlEtreeParserFeedCall() { this.calls(instance(), "feed") }
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
 
@@ -3274,8 +3274,8 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.parse
    * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.iterparse
    */
-  private class XMLEtreeParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
-    XMLEtreeParsing() {
+  private class XmlEtreeParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
+    XmlEtreeParsing() {
       this =
         API::moduleImport("xml")
             .getMember("etree")
@@ -3325,8 +3325,8 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.parse
    * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.iterparse
    */
-  private class FileAccessFromXMLEtreeParsing extends XMLEtreeParsing, FileSystemAccess::Range {
-    FileAccessFromXMLEtreeParsing() {
+  private class FileAccessFromXmlEtreeParsing extends XmlEtreeParsing, FileSystemAccess::Range {
+    FileAccessFromXmlEtreeParsing() {
       this =
         API::moduleImport("xml")
             .getMember("etree")
@@ -3445,9 +3445,9 @@ private module StdlibPrivate {
    *
    * See https://docs.python.org/3/library/xml.sax.reader.html#xml.sax.xmlreader.XMLReader.parse
    */
-  private class XMLSaxInstanceParsing extends DataFlow::MethodCallNode, XML::XmlParsing::Range,
+  private class XmlSaxInstanceParsing extends DataFlow::MethodCallNode, XML::XmlParsing::Range,
     FileSystemAccess::Range {
-    XMLSaxInstanceParsing() {
+    XmlSaxInstanceParsing() {
       this =
         API::moduleImport("xml")
             .getMember("sax")
@@ -3496,8 +3496,8 @@ private module StdlibPrivate {
    * - https://docs.python.org/3.10/library/xml.sax.html#xml.sax.parse
    * - https://docs.python.org/3.10/library/xml.sax.html#xml.sax.parseString
    */
-  private class XMLSaxParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
-    XMLSaxParsing() {
+  private class XmlSaxParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
+    XmlSaxParsing() {
       this =
         API::moduleImport("xml").getMember("sax").getMember(["parse", "parseString"]).getACall()
     }
@@ -3535,8 +3535,8 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.parse
    * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.iterparse
    */
-  private class FileAccessFromXMLSaxParsing extends XMLSaxParsing, FileSystemAccess::Range {
-    FileAccessFromXMLSaxParsing() {
+  private class FileAccessFromXmlSaxParsing extends XmlSaxParsing, FileSystemAccess::Range {
+    FileAccessFromXmlSaxParsing() {
       this = API::moduleImport("xml").getMember("sax").getMember("parse").getACall()
       // I considered whether we should try to reduce FPs from people passing file-like
       // objects, which will not be a file system access (and couldn't cause a
