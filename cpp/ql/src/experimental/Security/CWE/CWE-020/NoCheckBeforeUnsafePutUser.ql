@@ -54,5 +54,6 @@ class ExploitableUserModePtrParam extends Parameter {
     )
   }
 }
+
 from ExploitableUserModePtrParam p
 select p, "unsafe_put_user write user-mode pointer $@ without check.", p, p.toString()
