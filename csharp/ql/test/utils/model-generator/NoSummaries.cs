@@ -6,7 +6,7 @@ namespace NoSummaries;
 // Just to prove that, if a method like this is correctly exposed, a flow summary will be captured.
 public class PublicClassFlow
 {
-    public int PublicReturn(int input)
+    public object PublicReturn(object input)
     {
         return input;
     }
@@ -14,19 +14,19 @@ public class PublicClassFlow
 
 public sealed class PublicClassNoFlow
 {
-    private int PrivateReturn(int input)
+    private object PrivateReturn(object input)
     {
         return input;
     }
 
-    internal int InternalReturn(int input)
+    internal object InternalReturn(object input)
     {
         return input;
     }
 
     private class PrivateClassNoFlow
     {
-        public int ReturnParam(int input)
+        public object ReturnParam(object input)
         {
             return input;
         }
@@ -36,7 +36,7 @@ public sealed class PublicClassNoFlow
     {
         public class NestedPublicClassFlow
         {
-            public int ReturnParam(int input)
+            public object ReturnParam(object input)
             {
                 return input;
             }
@@ -44,10 +44,10 @@ public sealed class PublicClassNoFlow
     }
 }
 
-public class EquatableBound : IEquatable<int>
+public class EquatableBound : IEquatable<object>
 {
     public readonly bool tainted;
-    public bool Equals(int other)
+    public bool Equals(object other)
     {
         return tainted;
     }
