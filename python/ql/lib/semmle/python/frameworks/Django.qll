@@ -829,7 +829,7 @@ module PrivateDjango {
 
           /** Gets the (AST) class of the Django model class `modelClass`. */
           Class getModelClassClass(API::Node modelClass) {
-            result.getParent() = modelClass.getAUse().asExpr().(ClassExpr) and
+            result.getParent() = modelClass.getAnImmediateUse().asExpr() and
             modelClass = Model::subclassRef()
           }
 
@@ -2162,7 +2162,9 @@ module PrivateDjango {
    * thereby handling user input.
    */
   class DjangoFormClass extends Class, SelfRefMixin {
-    DjangoFormClass() { this.getABase() = Django::Forms::Form::subclassRef().getAUse().asExpr() }
+    DjangoFormClass() {
+      this.getParent() = Django::Forms::Form::subclassRef().getAnImmediateUse().asExpr()
+    }
   }
 
   /**
@@ -2195,7 +2197,7 @@ module PrivateDjango {
    */
   class DjangoFormFieldClass extends Class {
     DjangoFormFieldClass() {
-      this.getABase() = Django::Forms::Field::subclassRef().getAUse().asExpr()
+      this.getParent() = Django::Forms::Field::subclassRef().getAnImmediateUse().asExpr()
     }
   }
 
@@ -2298,7 +2300,7 @@ module PrivateDjango {
    */
   class DjangoViewClassFromSuperClass extends DjangoViewClass {
     DjangoViewClassFromSuperClass() {
-      this.getABase() = Django::Views::View::subclassRef().getAUse().asExpr()
+      this.getParent() = Django::Views::View::subclassRef().getAnImmediateUse().asExpr()
     }
   }
 

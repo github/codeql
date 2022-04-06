@@ -194,7 +194,7 @@ module Flask {
     API::Node api_node;
 
     FlaskViewClass() {
-      this.getABase() = Views::View::subclassRef().getAUse().asExpr() and
+      this.getParent() = Views::View::subclassRef().getAnImmediateUse().asExpr() and
       api_node.getAnImmediateUse().asExpr() = this.getParent()
     }
 
@@ -219,7 +219,7 @@ module Flask {
    */
   class FlaskMethodViewClass extends FlaskViewClass {
     FlaskMethodViewClass() {
-      this.getABase() = Views::MethodView::subclassRef().getAUse().asExpr() and
+      this.getParent() = Views::MethodView::subclassRef().getAnImmediateUse().asExpr() and
       api_node.getAnImmediateUse().asExpr() = this.getParent()
     }
 
