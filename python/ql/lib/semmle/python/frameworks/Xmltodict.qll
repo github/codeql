@@ -20,7 +20,7 @@ private module Xmltodict {
   /**
    * A call to `xmltodict.parse`.
    */
-  private class XMLtoDictParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
+  private class XMLtoDictParsing extends API::CallNode, XML::XmlParsing::Range {
     XMLtoDictParsing() { this = API::moduleImport("xmltodict").getMember("parse").getACall() }
 
     override DataFlow::Node getAnInput() {
@@ -29,7 +29,7 @@ private module Xmltodict {
 
     override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
       (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
-      this.getArgByName("disable_entities").getALocalSource().asExpr() = any(False f)
+      this.getKeywordParameter("disable_entities").getAValueReachingRhs().asExpr() = any(False f)
     }
 
     override predicate mayExecuteInput() { none() }

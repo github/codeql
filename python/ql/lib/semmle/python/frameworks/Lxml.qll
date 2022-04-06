@@ -129,7 +129,7 @@ private module Lxml {
      *
      * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
      */
-    private class LxmlParser extends InstanceSource, DataFlow::CallCfgNode {
+    private class LxmlParser extends InstanceSource, API::CallNode {
       LxmlParser() {
         this = API::moduleImport("lxml").getMember("etree").getMember("XMLParser").getACall()
       }
@@ -141,16 +141,17 @@ private module Lxml {
           // resolve_entities has default True
           not exists(this.getArgByName("resolve_entities"))
           or
-          this.getArgByName("resolve_entities").getALocalSource().asExpr() = any(True t)
+          this.getKeywordParameter("resolve_entities").getAValueReachingRhs().asExpr() = any(True t)
         )
         or
         (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
-        this.getArgByName("huge_tree").getALocalSource().asExpr() = any(True t) and
-        not this.getArgByName("resolve_entities").getALocalSource().asExpr() = any(False t)
+        this.getKeywordParameter("huge_tree").getAValueReachingRhs().asExpr() = any(True t) and
+        not this.getKeywordParameter("resolve_entities").getAValueReachingRhs().asExpr() =
+          any(False t)
         or
         kind.isDtdRetrieval() and
-        this.getArgByName("load_dtd").getALocalSource().asExpr() = any(True t) and
-        this.getArgByName("no_network").getALocalSource().asExpr() = any(False t)
+        this.getKeywordParameter("load_dtd").getAValueReachingRhs().asExpr() = any(True t) and
+        this.getKeywordParameter("no_network").getAValueReachingRhs().asExpr() = any(False t)
       }
     }
 
@@ -305,7 +306,7 @@ private module Lxml {
    * See
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.iterparse
    */
-  private class LxmlIterparseCall extends DataFlow::CallCfgNode, XML::XmlParsing::Range,
+  private class LxmlIterparseCall extends API::CallNode, XML::XmlParsing::Range,
     FileSystemAccess::Range {
     LxmlIterparseCall() {
       this = API::moduleImport("lxml").getMember("etree").getMember("iterparse").getACall()
@@ -318,11 +319,11 @@ private module Lxml {
       kind.isXxe()
       or
       (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
-      this.getArgByName("huge_tree").getALocalSource().asExpr() = any(True t)
+      this.getKeywordParameter("huge_tree").getAValueReachingRhs().asExpr() = any(True t)
       or
       kind.isDtdRetrieval() and
-      this.getArgByName("load_dtd").getALocalSource().asExpr() = any(True t) and
-      this.getArgByName("no_network").getALocalSource().asExpr() = any(False t)
+      this.getKeywordParameter("load_dtd").getAValueReachingRhs().asExpr() = any(True t) and
+      this.getKeywordParameter("no_network").getAValueReachingRhs().asExpr() = any(False t)
     }
 
     override predicate mayExecuteInput() { none() }
