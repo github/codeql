@@ -1056,8 +1056,8 @@ module Private {
       |
         c.relevantSummary(input, output, preservesValue) and
         csv =
-          c.getCallableCsv() + ";" + getComponentStackCsv(input) + ";" +
-            getComponentStackCsv(output) + ";" + renderKind(preservesValue)
+          c.getCallableCsv() + getComponentStackCsv(input) + ";" + getComponentStackCsv(output) +
+            ";" + renderKind(preservesValue)
       )
     }
   }

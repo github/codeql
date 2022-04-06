@@ -31,3 +31,7 @@
 
 # QL for QL reviewers
 /ql/ @github/codeql-ql-for-ql-reviewers
+
+# Bazel
+**/*.bazel @github/codeql-ci-reviewers
+**/*.bzl @github/codeql-ci-reviewers

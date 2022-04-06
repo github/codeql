@@ -4,7 +4,7 @@
 
 import semmle.code.java.Type
 
-/** The type `java.net.UrlConnection`. */
+/** The type `java.net.URLConnection`. */
 class TypeUrlConnection extends RefType {
   TypeUrlConnection() { this.hasQualifiedName("java.net", "URLConnection") }
 }
@@ -29,7 +29,7 @@ class TypeUri extends RefType {
   TypeUri() { this.hasQualifiedName("java.net", "URI") }
 }
 
-/** The method `java.net.UrlConnection::getInputStream`. */
+/** The method `java.net.URLConnection::getInputStream`. */
 class UrlConnectionGetInputStreamMethod extends Method {
   UrlConnectionGetInputStreamMethod() {
     this.getDeclaringType() instanceof TypeUrlConnection and

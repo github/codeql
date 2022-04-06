@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../stubs/junit-4.11/:${testdir}/../../stubs/junit-jupiter-api-5.2.0/
