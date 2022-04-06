@@ -1,10 +1,16 @@
-/** Definitions used by the queries for database query injection. */
+/**
+ * Provides taint tracking and dataflow configurations to be used in Sql injection queries.
+ *
+ * Do not import this from a library file, in order to reduce the risk of
+ * unintentionally bringing a TaintTracking::Configuration into scope in an unrelated
+ * query.
+ */
 
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.QueryInjection
 
-private class QueryInjectionFlowConfig extends TaintTracking::Configuration {
+class QueryInjectionFlowConfig extends TaintTracking::Configuration {
   QueryInjectionFlowConfig() { this = "SqlInjectionLib::QueryInjectionFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
