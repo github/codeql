@@ -86,7 +86,7 @@ class YamlNode extends @yaml_node, Locatable {
    */
   YamlValue eval() { result = this }
 
-  override string getAPrimaryQlClass() { result = "YAMLNode" }
+  override string getAPrimaryQlClass() { result = "YamlNode" }
 }
 
 /** DEPRECATED: Alias for YamlNode */
@@ -153,7 +153,7 @@ class YamlScalar extends YamlValue, @yaml_scalar_node {
    */
   string getValue() { yaml_scalars(this, _, result) }
 
-  override string getAPrimaryQlClass() { result = "YAMLScalar" }
+  override string getAPrimaryQlClass() { result = "YamlScalar" }
 }
 
 /** DEPRECATED: Alias for YamlScalar */
@@ -344,7 +344,7 @@ deprecated class YAMLInclude = YamlInclude;
  * ```
  */
 class YamlCollection extends YamlValue, @yaml_collection_node {
-  override string getAPrimaryQlClass() { result = "YAMLCollection" }
+  override string getAPrimaryQlClass() { result = "YamlCollection" }
 }
 
 /** DEPRECATED: Alias for YamlCollection */
@@ -401,7 +401,7 @@ class YamlMapping extends YamlCollection, @yaml_mapping_node {
    */
   YamlValue lookup(string key) { exists(YamlScalar s | s.getValue() = key | this.maps(s, result)) }
 
-  override string getAPrimaryQlClass() { result = "YAMLMapping" }
+  override string getAPrimaryQlClass() { result = "YamlMapping" }
 }
 
 /** DEPRECATED: Alias for YamlMapping */
@@ -429,7 +429,7 @@ class YamlSequence extends YamlCollection, @yaml_sequence_node {
    */
   YamlValue getElement(int i) { result = this.getElementNode(i).eval() }
 
-  override string getAPrimaryQlClass() { result = "YAMLSequence" }
+  override string getAPrimaryQlClass() { result = "YamlSequence" }
 }
 
 /** DEPRECATED: Alias for YamlSequence */
@@ -455,7 +455,7 @@ class YamlAliasNode extends YamlNode, @yaml_alias_node {
    */
   string getTarget() { yaml_aliases(this, result) }
 
-  override string getAPrimaryQlClass() { result = "YAMLAliasNode" }
+  override string getAPrimaryQlClass() { result = "YamlAliasNode" }
 }
 
 /** DEPRECATED: Alias for YamlAliasNode */

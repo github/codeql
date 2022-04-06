@@ -2438,7 +2438,7 @@ module YAML {
 
     YamlValue() { this = TYamlValue(yamlvalue) }
 
-    override string getAPrimaryQlClass() { result = "YAMLValue" }
+    override string getAPrimaryQlClass() { result = "YamlValue" }
 
     /** Gets the value of this YAML value. */
     string getValue() { result = yamlvalue.getValue() }
