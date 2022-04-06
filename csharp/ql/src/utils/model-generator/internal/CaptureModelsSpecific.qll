@@ -18,13 +18,23 @@ module TaintTracking = CS::TaintTracking;
 class Type = CS::Type;
 
 /**
+ * Holds if any of the parameters of `api` are `System.Func<>`.
+ */
+private predicate isHigherOrder(CS::Callable api) {
+  exists(Type t | t = api.getAParameter().getType().getUnboundDeclaration() |
+    t instanceof System::SystemFuncDelegateType
+  )
+}
+
+/**
  * Holds if it is relevant to generate models for `api`.
  */
 private predicate isRelevantForModels(CS::Callable api) {
   [api.(CS::Modifiable), api.(CS::Accessor).getDeclaration()].isEffectivelyPublic() and
   api.getDeclaringType().getNamespace().getQualifiedName() != "" and
   not api instanceof CS::ConversionOperator and
-  not api instanceof Util::MainMethod
+  not api instanceof Util::MainMethod and
+  not isHigherOrder(api)
 }
 
 /**

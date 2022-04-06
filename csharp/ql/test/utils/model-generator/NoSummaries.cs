@@ -86,3 +86,16 @@ public class SimpleTypes
         return i;
     }
 }
+
+public class HigherOrderParameters
+{
+    public string M1(string s, Func<string, string> map)
+    {
+        return s;
+    }
+
+    public object M2(Func<object, object> map, object o)
+    {
+        return map(o);
+    }
+}
