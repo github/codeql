@@ -15,16 +15,16 @@ import extraction.ExtractEndpointData
 
 string getAReasonSinkExcluded(DataFlow::Node sinkCandidate, Query query) {
   query instanceof NosqlInjectionQuery and
-  result = NosqlInjectionATM::SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate)
+  result = NosqlInjectionAtm::SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate)
   or
   query instanceof SqlInjectionQuery and
-  result = SqlInjectionATM::SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate)
+  result = SqlInjectionAtm::SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate)
   or
   query instanceof TaintedPathQuery and
-  result = TaintedPathATM::SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate)
+  result = TaintedPathAtm::SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate)
   or
   query instanceof XssQuery and
-  result = XssATM::SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate)
+  result = XssAtm::SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate)
 }
 
 pragma[inline]

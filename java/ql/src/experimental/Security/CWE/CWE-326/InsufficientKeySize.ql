@@ -117,12 +117,12 @@ predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string type) {
 }
 
 /** Holds if a DSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
-predicate hasShortDSAKeyPair(MethodAccess ma, string msg) {
+predicate hasShortDsaKeyPair(MethodAccess ma, string msg) {
   hasShortAsymmetricKeyPair(ma, msg, "DSA") or hasShortAsymmetricKeyPair(ma, msg, "DH")
 }
 
 /** Holds if a RSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
-predicate hasShortRSAKeyPair(MethodAccess ma, string msg) {
+predicate hasShortRsaKeyPair(MethodAccess ma, string msg) {
   hasShortAsymmetricKeyPair(ma, msg, "RSA")
 }
 
@@ -147,7 +147,7 @@ predicate hasShortECKeyPair(MethodAccess ma, string msg) {
 from Expr e, string msg
 where
   hasShortAESKey(e, msg) or
-  hasShortDSAKeyPair(e, msg) or
-  hasShortRSAKeyPair(e, msg) or
+  hasShortDsaKeyPair(e, msg) or
+  hasShortRsaKeyPair(e, msg) or
   hasShortECKeyPair(e, msg)
 select e, msg

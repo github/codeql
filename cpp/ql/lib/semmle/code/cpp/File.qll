@@ -40,7 +40,10 @@ class Container extends Locatable, @container {
    *
    * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
    */
-  deprecated string getURL() { none() } // overridden by subclasses
+  deprecated string getUrl() { none() }
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated string getURL() { result = getUrl() } // overridden by subclasses
 
   /**
    * Gets the relative path of this file or folder from the root folder of the
@@ -188,7 +191,10 @@ class Folder extends Container, @folder {
    * DEPRECATED: Use `getLocation` instead.
    * Gets the URL of this folder.
    */
-  deprecated override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
+  deprecated override string getUrl() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated override string getURL() { result = getUrl() }
 
   /**
    * DEPRECATED: use `getAbsolutePath` instead.
@@ -231,7 +237,10 @@ class File extends Container, @file {
    * DEPRECATED: Use `getLocation` instead.
    * Gets the URL of this file.
    */
-  deprecated override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
+  deprecated override string getUrl() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated override string getURL() { result = getUrl() }
 
   /** Holds if this file was compiled as C (at any point). */
   predicate compiledAsC() { fileannotations(underlyingElement(this), 1, "compiled as c", "1") }

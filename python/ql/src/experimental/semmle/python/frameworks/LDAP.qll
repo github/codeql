@@ -113,7 +113,7 @@ private module LDAP {
         )
       }
 
-      override predicate useSSL() {
+      override predicate useSsl() {
         // use initialize to correlate `this` and so avoid FP in several instances
         exists(DataFlow::CallCfgNode initialize |
           // ldap.set_option(ldap.OPT_X_TLS_%s)
@@ -142,6 +142,9 @@ private module LDAP {
           )
         )
       }
+
+      /** DEPRECATED: Alias for useSsl */
+      deprecated override predicate useSSL() { useSsl() }
     }
 
     /**
@@ -218,7 +221,7 @@ private module LDAP {
         )
       }
 
-      override predicate useSSL() {
+      override predicate useSsl() {
         exists(DataFlow::CallCfgNode serverCall |
           serverCall = ldap3Server().getACall() and
           this.getArg(0).getALocalSource() = serverCall and
@@ -234,6 +237,9 @@ private module LDAP {
           startTLS.getObject().getALocalSource() = this
         )
       }
+
+      /** DEPRECATED: Alias for useSsl */
+      deprecated override predicate useSSL() { useSsl() }
     }
 
     /**

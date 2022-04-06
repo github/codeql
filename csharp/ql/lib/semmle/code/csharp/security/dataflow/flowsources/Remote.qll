@@ -146,7 +146,7 @@ class MicrosoftOwinRequestRemoteFlowSource extends RemoteFlowSource, DataFlow::E
       p = owinRequest.getQueryStringProperty() or
       p = owinRequest.getRemoteIpAddressProperty() or
       p = owinRequest.getSchemeProperty() or
-      p = owinRequest.getURIProperty()
+      p = owinRequest.getUriProperty()
     )
   }
 

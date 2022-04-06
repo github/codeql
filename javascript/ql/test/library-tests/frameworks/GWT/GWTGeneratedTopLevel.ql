@@ -1,4 +1,4 @@
 import semmle.javascript.frameworks.GWT
 
-from GWTGeneratedTopLevel g
+from GwtGeneratedTopLevel g
 select g

@@ -7,7 +7,7 @@ string describe(File f) {
   f.compiledAsCpp() and
   result = "C++"
   or
-  f instanceof XMLParent and
+  f instanceof XmlParent and
   result = "XMLParent" // regression tests a bug in the characteristic predicate of XMLParent
 }
 

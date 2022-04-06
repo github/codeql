@@ -66,7 +66,7 @@ module Shared {
     }
   }
 
-  private import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization as IncompleteHTML
+  private import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization as IncompleteHtml
 
   /**
    * A guard that checks if a string can contain quotes, which is a guard for strings that are inside a HTML attribute.
@@ -76,7 +76,7 @@ module Shared {
       this.getSubstring().mayHaveStringValue("\"") and
       this.getBaseString()
           .getALocalSource()
-          .flowsTo(any(IncompleteHTML::HtmlAttributeConcatenation attributeConcat))
+          .flowsTo(any(IncompleteHtml::HtmlAttributeConcatenation attributeConcat))
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
@@ -258,9 +258,12 @@ module DomBasedXss {
   /**
    * A write to a URL which may execute JavaScript code.
    */
-  class WriteURLSink extends Sink instanceof ClientSideUrlRedirect::Sink {
-    WriteURLSink() { super.isXssSink() }
+  class WriteUrlSink extends Sink instanceof ClientSideUrlRedirect::Sink {
+    WriteUrlSink() { super.isXssSink() }
   }
+
+  /** DEPRECATED: Alias for WriteUrlSink */
+  deprecated class WriteURLSink = WriteUrlSink;
 
   /**
    * An expression whose value is interpreted as HTML or CSS

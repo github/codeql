@@ -17,7 +17,7 @@ from DataFlow::CallCfgNode call, string kinds
 where
   call = API::moduleImport("xmlrpc").getMember("server").getMember("SimpleXMLRPCServer").getACall() and
   kinds =
-    strictconcat(ExperimentalXML::XMLVulnerabilityKind kind |
+    strictconcat(ExperimentalXml::XmlVulnerabilityKind kind |
       kind.isBillionLaughs() or kind.isQuadraticBlowup()
     |
       kind, ", "

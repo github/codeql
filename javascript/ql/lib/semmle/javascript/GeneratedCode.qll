@@ -178,7 +178,7 @@ predicate isGeneratedFileName(File f) {
 predicate isGenerated(TopLevel tl) {
   tl.isMinified() or
   isBundle(tl) or
-  tl instanceof GWTGeneratedTopLevel or
+  tl instanceof GwtGeneratedTopLevel or
   tl instanceof DartGeneratedTopLevel or
   exists(GeneratedCodeMarkerComment gcmc | tl = gcmc.getTopLevel()) or
   hasManyInvocations(tl) or

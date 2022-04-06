@@ -87,8 +87,8 @@ abstract class WhitelistedLiveField extends Field { }
  * A static, final, long field named `serialVersionUID` in a class that extends `Serializable` acts as
  * a version number for the serialization framework.
  */
-class SerialVersionUIDField extends ReflectivelyReadField {
-  SerialVersionUIDField() {
+class SerialVersionUidField extends ReflectivelyReadField {
+  SerialVersionUidField() {
     this.hasName("serialVersionUID") and
     this.isStatic() and
     this.isFinal() and
@@ -96,6 +96,9 @@ class SerialVersionUIDField extends ReflectivelyReadField {
     this.getDeclaringType().getAnAncestor() instanceof TypeSerializable
   }
 }
+
+/** DEPRECATED: Alias for SerialVersionUidField */
+deprecated class SerialVersionUIDField = SerialVersionUidField;
 
 /**
  * A field is read by the JAXB during serialization if it is a JAXB bound field, and if the

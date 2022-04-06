@@ -47,9 +47,12 @@ class DefectResult extends int {
   string getMessage() { defectResults(this, _, _, _, _, _, _, result) }
 
   /** Gets the URL corresponding to the location of this query result. */
-  string getURL() {
+  string getUrl() {
     result =
       "file://" + getFile().getAbsolutePath() + ":" + getStartLine() + ":" + getStartColumn() + ":" +
         getEndLine() + ":" + getEndColumn()
   }
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated string getURL() { result = getUrl() }
 }

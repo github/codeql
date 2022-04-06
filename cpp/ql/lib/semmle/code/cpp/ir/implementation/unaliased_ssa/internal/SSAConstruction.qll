@@ -5,8 +5,8 @@ private import Imports::OperandTag
 private import Imports::Overlap
 private import Imports::TInstruction
 private import Imports::RawIR as RawIR
-private import SSAInstructions
-private import SSAOperands
+private import SsaInstructions
+private import SsaOperands
 private import NewIR
 
 private class OldBlock = Reachability::ReachableBlock;

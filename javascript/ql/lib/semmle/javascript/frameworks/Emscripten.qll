@@ -13,9 +13,12 @@ abstract class EmscriptenMarkerComment extends GeneratedCodeMarkerComment { }
 /**
  * An `EMSCRIPTEN_START_ASM` marker comment.
  */
-class EmscriptenStartASMComment extends EmscriptenMarkerComment {
-  EmscriptenStartASMComment() { getText().trim() = "EMSCRIPTEN_START_ASM" }
+class EmscriptenStartAsmComment extends EmscriptenMarkerComment {
+  EmscriptenStartAsmComment() { getText().trim() = "EMSCRIPTEN_START_ASM" }
 }
+
+/** DEPRECATED: Alias for EmscriptenStartAsmComment */
+deprecated class EmscriptenStartASMComment = EmscriptenStartAsmComment;
 
 /**
  * An `EMSCRIPTEN_START_FUNCS` marker comment.
@@ -27,9 +30,12 @@ class EmscriptenStartFuncsComment extends EmscriptenMarkerComment {
 /**
  * An `EMSCRIPTEN_END_ASM` marker comment.
  */
-class EmscriptenEndASMComment extends EmscriptenMarkerComment {
-  EmscriptenEndASMComment() { getText().trim() = "EMSCRIPTEN_END_ASM" }
+class EmscriptenEndAsmComment extends EmscriptenMarkerComment {
+  EmscriptenEndAsmComment() { getText().trim() = "EMSCRIPTEN_END_ASM" }
 }
+
+/** DEPRECATED: Alias for EmscriptenEndAsmComment */
+deprecated class EmscriptenEndASMComment = EmscriptenEndAsmComment;
 
 /**
  * An `EMSCRIPTEN_END_FUNCS` marker comment.

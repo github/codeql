@@ -149,7 +149,7 @@ class InvalidFormatString extends StringLiteral {
   }
 
   /** Gets the URL of this element. */
-  string getURL() {
+  string getUrl() {
     exists(
       string filepath, int startline, int startcolumn, int endline, int endcolumn,
       int oldstartcolumn, int padding
@@ -168,6 +168,9 @@ class InvalidFormatString extends StringLiteral {
       padding = 2
     )
   }
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated string getURL() { result = getUrl() }
 }
 
 /**

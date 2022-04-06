@@ -2326,13 +2326,16 @@ class BindingSet extends Annotation {
  */
 module YAML {
   /** A node in a YAML file */
-  class YAMLNode extends TYamlNode, AstNode {
+  class YamlNode extends TYamlNode, AstNode {
     /** Holds if the predicate is a root node (has no parent) */
     predicate isRoot() { not exists(this.getParent()) }
   }
 
+  /** DEPRECATED: Alias for YamlNode */
+  deprecated class YAMLNode = YamlNode;
+
   /** A YAML comment. */
-  class YamlComment extends TYamlCommemt, YAMLNode {
+  class YamlComment extends TYamlCommemt, YamlNode {
     QL::YamlComment yamlcomment;
 
     YamlComment() { this = TYamlCommemt(yamlcomment) }
@@ -2344,7 +2347,7 @@ module YAML {
   deprecated class YAMLComment = YamlComment;
 
   /** A YAML entry. */
-  class YamlEntry extends TYamlEntry, YAMLNode {
+  class YamlEntry extends TYamlEntry, YamlNode {
     QL::YamlEntry yamle;
 
     YamlEntry() { this = TYamlEntry(yamle) }
@@ -2360,7 +2363,7 @@ module YAML {
     YamlListItem getListItem() { toQL(result).getParent() = yamle }
 
     /** Gets the value of this YAML entry. */
-    YAMLValue getValue() {
+    YamlValue getValue() {
       exists(QL::YamlKeyvaluepair pair |
         pair.getParent() = yamle and
         result = TYamlValue(pair.getValue())
@@ -2374,7 +2377,7 @@ module YAML {
   deprecated class YAMLEntry = YamlEntry;
 
   /** A YAML key. */
-  class YamlKey extends TYamlKey, YAMLNode {
+  class YamlKey extends TYamlKey, YamlNode {
     QL::YamlKey yamlkey;
 
     YamlKey() { this = TYamlKey(yamlkey) }
@@ -2382,7 +2385,7 @@ module YAML {
     /**
      * Gets the value of this YAML key.
      */
-    YAMLValue getValue() {
+    YamlValue getValue() {
       exists(QL::YamlKeyvaluepair pair |
         pair.getKey() = yamlkey and result = TYamlValue(pair.getValue())
       )
@@ -2413,7 +2416,7 @@ module YAML {
   deprecated class YAMLKey = YamlKey;
 
   /** A YAML list item. */
-  class YamlListItem extends TYamlListitem, YAMLNode {
+  class YamlListItem extends TYamlListitem, YamlNode {
     QL::YamlListitem yamllistitem;
 
     YamlListItem() { this = TYamlListitem(yamllistitem) }
@@ -2421,7 +2424,7 @@ module YAML {
     /**
      * Gets the value of this YAML list item.
      */
-    YAMLValue getValue() { result = TYamlValue(yamllistitem.getChild()) }
+    YamlValue getValue() { result = TYamlValue(yamllistitem.getChild()) }
 
     override string getAPrimaryQlClass() { result = "YamlListItem" }
   }
@@ -2430,16 +2433,19 @@ module YAML {
   deprecated class YAMLListItem = YamlListItem;
 
   /** A YAML value. */
-  class YAMLValue extends TYamlValue, YAMLNode {
+  class YamlValue extends TYamlValue, YamlNode {
     QL::YamlValue yamlvalue;
 
-    YAMLValue() { this = TYamlValue(yamlvalue) }
+    YamlValue() { this = TYamlValue(yamlvalue) }
 
     override string getAPrimaryQlClass() { result = "YAMLValue" }
 
     /** Gets the value of this YAML value. */
     string getValue() { result = yamlvalue.getValue() }
   }
+
+  /** DEPRECATED: Alias for YamlValue */
+  deprecated class YAMLValue = YamlValue;
 
   // to not expose the entire `File` API on `QlPack`.
   private newtype TQLPack = MKQlPack(File file) { file.getBaseName() = "qlpack.yml" }
@@ -2531,7 +2537,7 @@ module YAML {
     Location getLocation() {
       // hacky, just pick the first node in the file.
       result =
-        min(YAMLNode entry, Location l, File f |
+        min(YamlNode entry, Location l, File f |
           entry.getLocation().getFile() = file and
           f = file and
           l = entry.getLocation()

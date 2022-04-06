@@ -7,14 +7,14 @@ import java
  * top-level children (usually, in fact, there is only one) is
  * a tag with the name "coverage".
  */
-class CloverReport extends XMLFile {
+class CloverReport extends XmlFile {
   CloverReport() { this.getAChild().getName() = "coverage" }
 }
 
 /**
  * The Clover "coverage" tag contains one or more "projects".
  */
-class CloverCoverage extends XMLElement {
+class CloverCoverage extends XmlElement {
   CloverCoverage() {
     this.getParent() instanceof CloverReport and
     this.getName() = "coverage"
@@ -29,7 +29,7 @@ class CloverCoverage extends XMLElement {
  * contains various numbers, aggregated to the different levels. They are
  * all subclasses of this class, to share code.
  */
-abstract class CloverMetricsContainer extends XMLElement {
+abstract class CloverMetricsContainer extends XmlElement {
   /** Gets the Clover `metrics` child element for this element. */
   CloverMetrics getMetrics() { result = this.getAChild() }
 }
@@ -38,7 +38,7 @@ abstract class CloverMetricsContainer extends XMLElement {
  * A "metrics" element contains a range of numbers for the current
  * aggregation level.
  */
-class CloverMetrics extends XMLElement {
+class CloverMetrics extends XmlElement {
   CloverMetrics() {
     this.getParent() instanceof CloverMetricsContainer and
     this.getName() = "metrics"

@@ -53,13 +53,16 @@ module XmlEntityInjection {
    *
    * See `XML::XMLParsing`.
    */
-  class XMLParsingInputAsSink extends Sink {
-    ExperimentalXML::XMLParsing xmlParsing;
+  class XmlParsingInputAsSink extends Sink {
+    ExperimentalXml::XmlParsing xmlParsing;
 
-    XMLParsingInputAsSink() { this = xmlParsing.getAnInput() }
+    XmlParsingInputAsSink() { this = xmlParsing.getAnInput() }
 
     override string getVulnerableKind() { xmlParsing.vulnerableTo(result) }
   }
+
+  /** DEPRECATED: Alias for XmlParsingInputAsSink */
+  deprecated class XMLParsingInputAsSink = XmlParsingInputAsSink;
 
   /**
    * A source of remote user input, considered as a flow source.

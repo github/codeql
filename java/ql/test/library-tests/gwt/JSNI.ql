@@ -1,5 +1,5 @@
 import java
 import semmle.code.java.frameworks.gwt.GWT
 
-from JSNIComment jsni
+from JsniComment jsni
 select jsni, jsni.getImplementedMethod()

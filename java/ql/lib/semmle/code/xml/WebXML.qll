@@ -11,9 +11,9 @@ deprecated predicate isWebXMLIncluded = isWebXmlIncluded/0;
 /**
  * A deployment descriptor file, typically called `web.xml`.
  */
-class WebXmlFile extends XMLFile {
+class WebXmlFile extends XmlFile {
   WebXmlFile() {
-    count(XMLElement e | e = this.getAChild()) = 1 and
+    count(XmlElement e | e = this.getAChild()) = 1 and
     this.getAChild().getName() = "web-app"
   }
 
@@ -37,7 +37,7 @@ deprecated class WebXMLFile = WebXmlFile;
 /**
  * An XML element in a `WebXMLFile`.
  */
-class WebXmlElement extends XMLElement {
+class WebXmlElement extends XmlElement {
   WebXmlElement() { this.getFile() instanceof WebXmlFile }
 
   /**

@@ -97,7 +97,7 @@ class Feature extends TFeature {
   abstract string getConstantName();
 }
 
-private class FeatureNOENT extends Feature, TNOENT {
+private class FeatureNoent extends Feature, TNOENT {
   override int getValue() { result = 2 }
 
   override string getConstantName() { result = "NOENT" }

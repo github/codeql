@@ -12,10 +12,10 @@ deprecated predicate isStrutsXMLIncluded = isStrutsXmlIncluded/0;
 /**
  * A struts 2 configuration file.
  */
-abstract class StrutsXmlFile extends XMLFile {
+abstract class StrutsXmlFile extends XmlFile {
   StrutsXmlFile() {
     // Contains a single top-level XML node named "struts".
-    count(XMLElement e | e = this.getAChild()) = 1 and
+    count(XmlElement e | e = this.getAChild()) = 1 and
     this.getAChild().getName() = "struts"
   }
 
@@ -108,7 +108,7 @@ class StrutsFolder extends Folder {
 /**
  * An XML element in a `StrutsXMLFile`.
  */
-class StrutsXmlElement extends XMLElement {
+class StrutsXmlElement extends XmlElement {
   StrutsXmlElement() { this.getFile() instanceof StrutsXmlFile }
 
   /**
@@ -135,7 +135,7 @@ class StrutsXmlInclude extends StrutsXmlElement {
    * We have no notion of classpath, so we assume that any file that matches the path could
    * potentially be included.
    */
-  XMLFile getIncludedFile() {
+  XmlFile getIncludedFile() {
     exists(string file | file = this.getAttribute("file").getValue() |
       result.getAbsolutePath().matches("%" + escapeForMatch(file))
     )

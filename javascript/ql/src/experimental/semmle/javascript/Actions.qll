@@ -11,7 +11,7 @@ import javascript
  */
 module Actions {
   /** A YAML node in a GitHub Actions workflow file. */
-  private class Node extends YAMLNode {
+  private class Node extends YamlNode {
     Node() {
       this.getLocation()
           .getFile()
@@ -39,29 +39,29 @@ module Actions {
    *
    * are equivalent.
    */
-  class MappingOrSequenceOrScalar extends YAMLNode {
+  class MappingOrSequenceOrScalar extends YamlNode {
     MappingOrSequenceOrScalar() {
-      this instanceof YAMLMapping
+      this instanceof YamlMapping
       or
-      this instanceof YAMLSequence
+      this instanceof YamlSequence
       or
-      this instanceof YAMLScalar
+      this instanceof YamlScalar
     }
 
-    YAMLNode getNode(string name) {
-      exists(YAMLMapping mapping |
+    YamlNode getNode(string name) {
+      exists(YamlMapping mapping |
         mapping = this and
         result = mapping.lookup(name)
       )
       or
-      exists(YAMLSequence sequence, YAMLNode node |
+      exists(YamlSequence sequence, YamlNode node |
         sequence = this and
         sequence.getAChildNode() = node and
         node.eval().toString() = name and
         result = node
       )
       or
-      exists(YAMLScalar scalar |
+      exists(YamlScalar scalar |
         scalar = this and
         scalar.getValue() = name and
         result = scalar
@@ -69,17 +69,17 @@ module Actions {
     }
 
     int getElementCount() {
-      exists(YAMLMapping mapping |
+      exists(YamlMapping mapping |
         mapping = this and
         result = mapping.getNumChild() / 2
       )
       or
-      exists(YAMLSequence sequence |
+      exists(YamlSequence sequence |
         sequence = this and
         result = sequence.getNumChild()
       )
       or
-      exists(YAMLScalar scalar |
+      exists(YamlScalar scalar |
         scalar = this and
         result = 1
       )
@@ -90,9 +90,9 @@ module Actions {
    * An Actions workflow. This is a mapping at the top level of an Actions YAML workflow file.
    * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
    */
-  class Workflow extends Node, YAMLDocument, YAMLMapping {
+  class Workflow extends Node, YamlDocument, YamlMapping {
     /** Gets the `jobs` mapping from job IDs to job definitions in this workflow. */
-    YAMLMapping getJobs() { result = this.lookup("jobs") }
+    YamlMapping getJobs() { result = this.lookup("jobs") }
 
     /** Gets the name of the workflow file. */
     string getFileName() { result = this.getFile().getBaseName() }
@@ -108,7 +108,7 @@ module Actions {
    * An Actions On trigger within a workflow.
    * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on.
    */
-  class On extends YAMLNode, MappingOrSequenceOrScalar {
+  class On extends YamlNode, MappingOrSequenceOrScalar {
     Workflow workflow;
 
     On() { workflow.lookup("on") = this }
@@ -120,7 +120,7 @@ module Actions {
    * An Actions job within a workflow.
    * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobs.
    */
-  class Job extends YAMLNode, YAMLMapping {
+  class Job extends YamlNode, YamlMapping {
     string jobId;
     Workflow workflow;
 
@@ -136,19 +136,19 @@ module Actions {
      * Gets the ID of this job, as a YAML scalar node.
      * This is the job's key within the `jobs` mapping.
      */
-    YAMLString getIdNode() { workflow.getJobs().maps(result, this) }
+    YamlString getIdNode() { workflow.getJobs().maps(result, this) }
 
     /** Gets the human-readable name of this job, if any, as a string. */
     string getName() { result = this.getNameNode().getValue() }
 
     /** Gets the human-readable name of this job, if any, as a YAML scalar node. */
-    YAMLString getNameNode() { result = this.lookup("name") }
+    YamlString getNameNode() { result = this.lookup("name") }
 
     /** Gets the step at the given index within this job. */
     Step getStep(int index) { result.getJob() = this and result.getIndex() = index }
 
     /** Gets the sequence of `steps` within this job. */
-    YAMLSequence getSteps() { result = this.lookup("steps") }
+    YamlSequence getSteps() { result = this.lookup("steps") }
 
     /** Gets the workflow this job belongs to. */
     Workflow getWorkflow() { result = workflow }
@@ -161,7 +161,7 @@ module Actions {
    * An `if` within a job.
    * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif.
    */
-  class JobIf extends YAMLNode, YAMLScalar {
+  class JobIf extends YamlNode, YamlScalar {
     Job job;
 
     JobIf() { job.lookup("if") = this }
@@ -174,7 +174,7 @@ module Actions {
    * A step within an Actions job.
    * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idsteps.
    */
-  class Step extends YAMLNode, YAMLMapping {
+  class Step extends YamlNode, YamlMapping {
     int index;
     Job job;
 
@@ -200,7 +200,7 @@ module Actions {
    * An `if` within a step.
    * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsif.
    */
-  class StepIf extends YAMLNode, YAMLScalar {
+  class StepIf extends YamlNode, YamlScalar {
     Step step;
 
     StepIf() { step.lookup("if") = this }
@@ -219,7 +219,7 @@ module Actions {
    * ```
    * TODO: Does not currently handle local repository references, e.g. `.github/actions/action-name`.
    */
-  class Uses extends YAMLNode, YAMLScalar {
+  class Uses extends YamlNode, YamlScalar {
     Step step;
     /** The owner of the repository where the Action comes from, e.g. `actions` in `actions/checkout@v2`. */
     string repositoryOwner;
@@ -259,7 +259,7 @@ module Actions {
    *   arg2: abc
    * ```
    */
-  class With extends YAMLNode, YAMLMapping {
+  class With extends YamlNode, YamlMapping {
     Step step;
 
     With() { step.lookup("with") = this }
@@ -278,7 +278,7 @@ module Actions {
    *   ref: ${{ github.event.pull_request.head.sha }}
    * ```
    */
-  class Ref extends YAMLNode, YAMLString {
+  class Ref extends YamlNode, YamlString {
     With with;
 
     Ref() { with.lookup("ref") = this }
@@ -290,7 +290,7 @@ module Actions {
    * A `run` field within an Actions job step, which runs command-line programs using an operating system shell.
    * See https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsrun.
    */
-  class Run extends YAMLNode, YAMLString {
+  class Run extends YamlNode, YamlString {
     Step step;
 
     Run() { step.lookup("run") = this }

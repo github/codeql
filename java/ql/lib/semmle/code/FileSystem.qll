@@ -35,7 +35,10 @@ class Container extends @container, Top {
    *
    * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
    */
-  abstract string getURL();
+  abstract string getUrl();
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated string getURL() { result = getUrl() }
 
   /**
    * Gets the relative path of this file or folder from the root folder of the
@@ -164,7 +167,10 @@ class Folder extends Container, @folder {
   override string getAbsolutePath() { folders(this, result) }
 
   /** Gets the URL of this folder. */
-  override string getURL() { result = "folder://" + this.getAbsolutePath() }
+  override string getUrl() { result = "folder://" + this.getAbsolutePath() }
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated override string getURL() { result = getUrl() }
 
   override string getAPrimaryQlClass() { result = "Folder" }
 }
@@ -178,7 +184,10 @@ class File extends Container, @file {
   override string getAbsolutePath() { files(this, result) }
 
   /** Gets the URL of this file. */
-  override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
+  override string getUrl() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated override string getURL() { result = getUrl() }
 
   override string getAPrimaryQlClass() { result = "File" }
 }

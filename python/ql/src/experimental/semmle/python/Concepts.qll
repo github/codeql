@@ -18,14 +18,14 @@ private import experimental.semmle.python.Frameworks
  * Since there is both XML module in normal and experimental Concepts,
  * we have to rename the experimental module as this.
  */
-module ExperimentalXML {
+module ExperimentalXml {
   /**
    * A kind of XML vulnerability.
    *
    * See https://pypi.org/project/defusedxml/#python-xml-libraries
    */
-  class XMLVulnerabilityKind extends string {
-    XMLVulnerabilityKind() {
+  class XmlVulnerabilityKind extends string {
+    XmlVulnerabilityKind() {
       this in ["Billion Laughs", "Quadratic Blowup", "XXE", "DTD retrieval"]
     }
 
@@ -42,13 +42,16 @@ module ExperimentalXML {
     predicate isDtdRetrieval() { this = "DTD retrieval" }
   }
 
+  /** DEPRECATED: Alias for XmlVulnerabilityKind */
+  deprecated class XMLVulnerabilityKind = XmlVulnerabilityKind;
+
   /**
    * A data-flow node that parses XML.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `XMLParsing` instead.
    */
-  class XMLParsing extends DataFlow::Node instanceof XMLParsing::Range {
+  class XmlParsing extends DataFlow::Node instanceof XmlParsing::Range {
     /**
      * Gets the argument containing the content to parse.
      */
@@ -57,11 +60,14 @@ module ExperimentalXML {
     /**
      * Holds if this XML parsing is vulnerable to `kind`.
      */
-    predicate vulnerableTo(XMLVulnerabilityKind kind) { super.vulnerableTo(kind) }
+    predicate vulnerableTo(XmlVulnerabilityKind kind) { super.vulnerableTo(kind) }
   }
 
+  /** DEPRECATED: Alias for XmlParsing */
+  deprecated class XMLParsing = XmlParsing;
+
   /** Provides classes for modeling XML parsing APIs. */
-  module XMLParsing {
+  module XmlParsing {
     /**
      * A data-flow node that parses XML.
      *
@@ -77,10 +83,16 @@ module ExperimentalXML {
       /**
        * Holds if this XML parsing is vulnerable to `kind`.
        */
-      abstract predicate vulnerableTo(XMLVulnerabilityKind kind);
+      abstract predicate vulnerableTo(XmlVulnerabilityKind kind);
     }
   }
+
+  /** DEPRECATED: Alias for XmlParsing */
+  deprecated module XMLParsing = XmlParsing;
 }
+
+/** DEPRECATED: Alias for ExperimentalXml */
+deprecated module ExperimentalXML = ExperimentalXml;
 
 /** Provides classes for modeling LDAP query execution-related APIs. */
 module LdapQuery {
@@ -182,7 +194,10 @@ module LdapBind {
     /**
      * Holds if the binding process use SSL.
      */
-    abstract predicate useSSL();
+    abstract predicate useSsl();
+
+    /** DEPRECATED: Alias for useSsl */
+    deprecated predicate useSSL() { useSsl() }
   }
 }
 
@@ -213,7 +228,10 @@ class LdapBind extends DataFlow::Node {
   /**
    * Holds if the binding process use SSL.
    */
-  predicate useSSL() { range.useSSL() }
+  predicate useSsl() { range.useSsl() }
+
+  /** DEPRECATED: Alias for useSsl */
+  deprecated predicate useSSL() { useSsl() }
 }
 
 /** DEPRECATED: Alias for LdapBind */

@@ -1,11 +1,11 @@
 import cpp
 import semmle.code.cpp.security.Security
-import semmle.code.cpp.security.TaintTrackingImpl as ASTTaintTracking
+import semmle.code.cpp.security.TaintTrackingImpl as AstTaintTracking
 import semmle.code.cpp.ir.dataflow.DefaultTaintTracking as IRDefaultTaintTracking
 import TestUtilities.InlineExpectationsTest
 
 predicate astTaint(Expr source, Element sink, string globalVar) {
-  ASTTaintTracking::taintedIncludingGlobalVars(source, sink, globalVar) and globalVar != ""
+  AstTaintTracking::taintedIncludingGlobalVars(source, sink, globalVar) and globalVar != ""
 }
 
 predicate irTaint(Expr source, Element sink, string globalVar) {

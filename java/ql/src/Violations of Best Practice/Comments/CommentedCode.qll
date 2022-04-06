@@ -107,8 +107,8 @@ class CommentedOutCode extends JavadocFirst {
   CommentedOutCode() {
     anyCount(this) > 0 and
     codeCount(this).(float) / anyCount(this).(float) > 0.5 and
-    not this instanceof JSNIComment and
-    not this instanceof OCNIComment
+    not this instanceof JsniComment and
+    not this instanceof OcniComment
   }
 
   /**

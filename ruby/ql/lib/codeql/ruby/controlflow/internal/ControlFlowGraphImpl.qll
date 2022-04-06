@@ -32,7 +32,7 @@
  */
 
 private import codeql.ruby.AST
-private import codeql.ruby.ast.internal.AST as ASTInternal
+private import codeql.ruby.ast.internal.AST as AstInternal
 private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.ast.Scope
 private import codeql.ruby.ast.internal.TreeSitter
@@ -67,7 +67,7 @@ module CfgScope {
     }
   }
 
-  private class BodyStmtCallableScope extends Range_, ASTInternal::TBodyStmt, Callable {
+  private class BodyStmtCallableScope extends Range_, AstInternal::TBodyStmt, Callable {
     final override predicate entry(AstNode first) { this.(Trees::BodyStmtTree).firstInner(first) }
 
     final override predicate exit(AstNode last, Completion c) {
@@ -372,7 +372,7 @@ module Trees {
     override ControlFlowTree getChildElement(int i) { result = this.getArgument(i) }
   }
 
-  private class CaseTree extends PostOrderTree, CaseExpr, ASTInternal::TCaseExpr {
+  private class CaseTree extends PostOrderTree, CaseExpr, AstInternal::TCaseExpr {
     final override predicate propagatesAbnormal(AstNode child) {
       child = this.getValue() or child = this.getABranch()
     }
@@ -410,7 +410,7 @@ module Trees {
     }
   }
 
-  private class CaseMatchTree extends PostOrderTree, CaseExpr, ASTInternal::TCaseMatch {
+  private class CaseMatchTree extends PostOrderTree, CaseExpr, AstInternal::TCaseMatch {
     final override predicate propagatesAbnormal(AstNode child) {
       child = this.getValue() or child = this.getABranch()
     }
@@ -1077,7 +1077,7 @@ module Trees {
     }
   }
 
-  private class MethodNameTree extends LeafTree, MethodName, ASTInternal::TTokenMethodName { }
+  private class MethodNameTree extends LeafTree, MethodName, AstInternal::TTokenMethodName { }
 
   private class MethodTree extends BodyStmtTree, Method {
     final override predicate propagatesAbnormal(AstNode child) { none() }

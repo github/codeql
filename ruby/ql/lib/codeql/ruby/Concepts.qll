@@ -490,7 +490,10 @@ module HTTP {
        * Gets a node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
-      deprecated DataFlow::Node getURL() { result = super.getURL() or result = super.getAUrlPart() }
+      deprecated DataFlow::Node getUrl() { result = super.getUrl() or result = super.getAUrlPart() }
+
+      /** DEPRECATED: Alias for getUrl */
+      deprecated DataFlow::Node getURL() { result = getUrl() }
 
       /**
        * Gets a data-flow node that contributes to the URL of the request.
@@ -529,7 +532,10 @@ module HTTP {
          * Gets a node that contributes to the URL of the request.
          * Depending on the framework, a request may have multiple nodes which contribute to the URL.
          */
-        deprecated DataFlow::Node getURL() { none() }
+        deprecated DataFlow::Node getUrl() { none() }
+
+        /** DEPRECATED: Alias for getUrl */
+        deprecated DataFlow::Node getURL() { result = getUrl() }
 
         /**
          * Gets a data-flow node that contributes to the URL of the request.
@@ -714,7 +720,7 @@ module PersistentWriteAccess {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `CSRFProtectionSetting::Range` instead.
  */
-class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSetting::Range {
+class CsrfProtectionSetting extends DataFlow::Node instanceof CsrfProtectionSetting::Range {
   /**
    * Gets the boolean value corresponding to if CSRF protection is enabled
    * (`true`) or disabled (`false`) by this node.
@@ -722,8 +728,11 @@ class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSett
   boolean getVerificationSetting() { result = super.getVerificationSetting() }
 }
 
+/** DEPRECATED: Alias for CsrfProtectionSetting */
+deprecated class CSRFProtectionSetting = CsrfProtectionSetting;
+
 /** Provides a class for modeling new CSRF protection setting APIs. */
-module CSRFProtectionSetting {
+module CsrfProtectionSetting {
   /**
    * A data-flow node that may set or unset Cross-site request forgery protection.
    *
@@ -738,6 +747,9 @@ module CSRFProtectionSetting {
     abstract boolean getVerificationSetting();
   }
 }
+
+/** DEPRECATED: Alias for CsrfProtectionSetting */
+deprecated module CSRFProtectionSetting = CsrfProtectionSetting;
 
 /** Provides classes for modeling path-related APIs. */
 module Path {

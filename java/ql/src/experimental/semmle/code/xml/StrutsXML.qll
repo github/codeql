@@ -3,9 +3,9 @@ import java
 /**
  * A deployment descriptor file, typically called `struts.xml`.
  */
-class StrutsXmlFile extends XMLFile {
+class StrutsXmlFile extends XmlFile {
   StrutsXmlFile() {
-    count(XMLElement e | e = this.getAChild()) = 1 and
+    count(XmlElement e | e = this.getAChild()) = 1 and
     this.getAChild().getName() = "struts"
   }
 }
@@ -16,7 +16,7 @@ deprecated class StrutsXMLFile = StrutsXmlFile;
 /**
  * An XML element in a `StrutsXMLFile`.
  */
-class StrutsXmlElement extends XMLElement {
+class StrutsXmlElement extends XmlElement {
   StrutsXmlElement() { this.getFile() instanceof StrutsXmlFile }
 
   /**

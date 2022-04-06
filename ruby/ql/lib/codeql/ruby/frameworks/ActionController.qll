@@ -311,7 +311,7 @@ predicate controllerTemplateFile(ActionControllerControllerClass cls, ErbFile te
  * `skip_before_action :verify_authenticity_token` to disable CSRF authenticity
  * token protection.
  */
-class ActionControllerSkipForgeryProtectionCall extends CSRFProtectionSetting::Range {
+class ActionControllerSkipForgeryProtectionCall extends CsrfProtectionSetting::Range {
   ActionControllerSkipForgeryProtectionCall() {
     exists(MethodCall call | call = this.asExpr().getExpr() |
       call.getMethodName() = "skip_forgery_protection"
@@ -327,7 +327,7 @@ class ActionControllerSkipForgeryProtectionCall extends CSRFProtectionSetting::R
 /**
  * A call to `protect_from_forgery`.
  */
-private class ActionControllerProtectFromForgeryCall extends CSRFProtectionSetting::Range {
+private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetting::Range {
   private ActionControllerContextCall callExpr;
 
   ActionControllerProtectFromForgeryCall() {

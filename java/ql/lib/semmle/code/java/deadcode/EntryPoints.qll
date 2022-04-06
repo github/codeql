@@ -314,20 +314,26 @@ class FacesComponentReflectivelyConstructedClass extends ReflectivelyConstructed
 /**
  * Entry point for EJB home interfaces.
  */
-class EJBHome extends Interface, EntryPoint {
-  EJBHome() { this.getAnAncestor().hasQualifiedName("javax.ejb", "EJBHome") }
+class EjbHome extends Interface, EntryPoint {
+  EjbHome() { this.getAnAncestor().hasQualifiedName("javax.ejb", "EJBHome") }
 
   override Callable getALiveCallable() { result = this.getACallable() }
 }
+
+/** DEPRECATED: Alias for EjbHome */
+deprecated class EJBHome = EjbHome;
 
 /**
  * Entry point for EJB object interfaces.
  */
-class EJBObject extends Interface, EntryPoint {
-  EJBObject() { this.getAnAncestor().hasQualifiedName("javax.ejb", "EJBObject") }
+class EjbObject extends Interface, EntryPoint {
+  EjbObject() { this.getAnAncestor().hasQualifiedName("javax.ejb", "EJBObject") }
 
   override Callable getALiveCallable() { result = this.getACallable() }
 }
+
+/** DEPRECATED: Alias for EjbObject */
+deprecated class EJBObject = EjbObject;
 
 class GsonDeserializationEntryPoint extends ReflectivelyConstructedClass {
   GsonDeserializationEntryPoint() {
@@ -336,8 +342,8 @@ class GsonDeserializationEntryPoint extends ReflectivelyConstructedClass {
   }
 }
 
-class JAXBDeserializationEntryPoint extends ReflectivelyConstructedClass {
-  JAXBDeserializationEntryPoint() {
+class JaxbDeserializationEntryPoint extends ReflectivelyConstructedClass {
+  JaxbDeserializationEntryPoint() {
     // A class can be deserialized by JAXB if it's an `XmlRootElement`...
     this.getAnAnnotation().getType().hasQualifiedName("javax.xml.bind.annotation", "XmlRootElement")
     or
@@ -349,6 +355,9 @@ class JAXBDeserializationEntryPoint extends ReflectivelyConstructedClass {
     )
   }
 }
+
+/** DEPRECATED: Alias for JaxbDeserializationEntryPoint */
+deprecated class JAXBDeserializationEntryPoint = JaxbDeserializationEntryPoint;
 
 /**
  * A `javax.annotation` for a method that is called after or before dependency injection on a type.
@@ -430,7 +439,7 @@ class PersistenceCallbackMethod extends CallableEntryPoint {
 class ArbitraryXmlEntryPoint extends ReflectivelyConstructedClass {
   ArbitraryXmlEntryPoint() {
     this.fromSource() and
-    exists(XMLAttribute attribute |
+    exists(XmlAttribute attribute |
       attribute.getName() = "className" or
       attribute.getName().matches("%ClassName") or
       attribute.getName() = "class" or

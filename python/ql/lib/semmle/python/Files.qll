@@ -48,7 +48,10 @@ class File extends Container, @file {
   override string getAbsolutePath() { files(this, result) }
 
   /** Gets the URL of this file. */
-  override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
+  override string getUrl() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated override string getURL() { result = getUrl() }
 
   override Container getImportRoot(int n) {
     /* File stem must be a legal Python identifier */
@@ -129,7 +132,10 @@ class Folder extends Container, @folder {
   override string getAbsolutePath() { folders(this, result) }
 
   /** Gets the URL of this folder. */
-  override string getURL() { result = "folder://" + this.getAbsolutePath() }
+  override string getUrl() { result = "folder://" + this.getAbsolutePath() }
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated override string getURL() { result = getUrl() }
 
   override Container getImportRoot(int n) {
     this.isImportRoot(n) and result = this
@@ -320,7 +326,10 @@ abstract class Container extends @container {
    *
    * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
    */
-  abstract string getURL();
+  abstract string getUrl();
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated string getURL() { result = getUrl() }
 
   /** Holds if this folder is on the import path. */
   predicate isImportRoot() { this.isImportRoot(_) }

@@ -12,7 +12,7 @@ class XmlParsingTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(XML::XMLParsing parsing |
+    exists(XML::XmlParsing parsing |
       exists(DataFlow::Node input |
         input = parsing.getAnInput() and
         location = input.getLocation() and
@@ -21,7 +21,7 @@ class XmlParsingTest extends InlineExpectationsTest {
         tag = "input"
       )
       or
-      exists(XML::XMLVulnerabilityKind kind |
+      exists(XML::XmlVulnerabilityKind kind |
         parsing.vulnerableTo(kind) and
         location = parsing.getLocation() and
         element = parsing.toString() and

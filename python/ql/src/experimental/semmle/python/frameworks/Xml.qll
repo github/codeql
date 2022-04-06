@@ -8,7 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
-module XML = ExperimentalXML;
+module XML = ExperimentalXml;
 
 private module XmlEtree {
   /**
@@ -18,7 +18,7 @@ private module XmlEtree {
    * - https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.XMLParser
    * - https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.XMLPullParser
    */
-  module XMLParser {
+  module XmlParser {
     /**
      * A source of instances of `xml.etree` parsers, extend this class to model new instances.
      *
@@ -63,16 +63,19 @@ private module XmlEtree {
     /**
      * A call to the `feed` method of an `xml.etree` parser.
      */
-    private class XMLEtreeParserFeedCall extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
-      XMLEtreeParserFeedCall() { this.calls(instance(), "feed") }
+    private class XmlEtreeParserFeedCall extends DataFlow::MethodCallNode, XML::XmlParsing::Range {
+      XmlEtreeParserFeedCall() { this.calls(instance(), "feed") }
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
 
-      override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
+      override predicate vulnerableTo(XML::XmlVulnerabilityKind kind) {
         kind.isBillionLaughs() or kind.isQuadraticBlowup()
       }
     }
   }
+
+  /** DEPRECATED: Alias for XmlParser */
+  deprecated module XMLParser = XmlParser;
 
   /**
    * A call to either of:
@@ -83,8 +86,8 @@ private module XmlEtree {
    * - `xml.etree.ElementTree.parse`
    * - `xml.etree.ElementTree.iterparse`
    */
-  private class XMLEtreeParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
-    XMLEtreeParsing() {
+  private class XmlEtreeParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
+    XmlEtreeParsing() {
       this =
         API::moduleImport("xml")
             .getMember("etree")
@@ -105,7 +108,7 @@ private module XmlEtree {
         ]
     }
 
-    override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XmlVulnerabilityKind kind) {
       // note: it does not matter what `xml.etree` parser you are using, you cannot
       // change the security features anyway :|
       kind.isBillionLaughs() or kind.isQuadraticBlowup()
@@ -207,8 +210,8 @@ private module SaxBasedParsing {
   /**
    * A call to the `parse` method on a SAX XML parser.
    */
-  private class XMLSaxInstanceParsing extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
-    XMLSaxInstanceParsing() {
+  private class XmlSaxInstanceParsing extends DataFlow::MethodCallNode, XML::XmlParsing::Range {
+    XmlSaxInstanceParsing() {
       this =
         API::moduleImport("xml")
             .getMember("sax")
@@ -220,7 +223,7 @@ private module SaxBasedParsing {
 
     override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("source")] }
 
-    override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XmlVulnerabilityKind kind) {
       // always vuln to these
       (kind.isBillionLaughs() or kind.isQuadraticBlowup())
       or
@@ -237,8 +240,8 @@ private module SaxBasedParsing {
    * - https://docs.python.org/3.10/library/xml.sax.html#xml.sax.parse
    * - https://docs.python.org/3.10/library/xml.sax.html#xml.sax.parseString
    */
-  private class XMLSaxParsing extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
-    XMLSaxParsing() {
+  private class XmlSaxParsing extends DataFlow::MethodCallNode, XML::XmlParsing::Range {
+    XmlSaxParsing() {
       this =
         API::moduleImport("xml").getMember("sax").getMember(["parse", "parseString"]).getACall()
     }
@@ -253,7 +256,7 @@ private module SaxBasedParsing {
         ]
     }
 
-    override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XmlVulnerabilityKind kind) {
       // always vuln to these
       (kind.isBillionLaughs() or kind.isQuadraticBlowup())
       or
@@ -268,8 +271,8 @@ private module SaxBasedParsing {
    *
    * Both of these modules are based on SAX parsers.
    */
-  private class XMLDomParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
-    XMLDomParsing() {
+  private class XmlDomParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
+    XmlDomParsing() {
       this =
         API::moduleImport("xml")
             .getMember("dom")
@@ -292,7 +295,7 @@ private module SaxBasedParsing {
 
     DataFlow::Node getParserArg() { result in [this.getArg(1), this.getArgByName("parser")] }
 
-    override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XmlVulnerabilityKind kind) {
       this.getParserArg() = saxParserWithFeatureExternalGesTurnedOn() and
       (kind.isXxe() or kind.isDtdRetrieval())
       or
@@ -307,7 +310,7 @@ private module Lxml {
    *
    * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
    */
-  module XMLParser {
+  module XmlParser {
     /**
      * A source of instances of `lxml.etree` parsers, extend this class to model new instances.
      *
@@ -319,7 +322,7 @@ private module Lxml {
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode {
       /** Holds if this instance is vulnerable to `kind`. */
-      abstract predicate vulnerableTo(XML::XMLVulnerabilityKind kind);
+      abstract predicate vulnerableTo(XML::XmlVulnerabilityKind kind);
     }
 
     /**
@@ -327,13 +330,13 @@ private module Lxml {
      *
      * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
      */
-    private class LXMLParser extends InstanceSource, DataFlow::CallCfgNode {
-      LXMLParser() {
+    private class LXmlParser extends InstanceSource, DataFlow::CallCfgNode {
+      LXmlParser() {
         this = API::moduleImport("lxml").getMember("etree").getMember("XMLParser").getACall()
       }
 
       // NOTE: it's not possible to change settings of a parser after constructing it
-      override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
+      override predicate vulnerableTo(XML::XmlVulnerabilityKind kind) {
         kind.isXxe() and
         (
           // resolve_entities has default True
@@ -357,13 +360,13 @@ private module Lxml {
      *
      * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.get_default_parser
      */
-    private class LXMLDefaultParser extends InstanceSource, DataFlow::CallCfgNode {
-      LXMLDefaultParser() {
+    private class LXmlDefaultParser extends InstanceSource, DataFlow::CallCfgNode {
+      LXmlDefaultParser() {
         this =
           API::moduleImport("lxml").getMember("etree").getMember("get_default_parser").getACall()
       }
 
-      override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
+      override predicate vulnerableTo(XML::XmlVulnerabilityKind kind) {
         // as highlighted by
         // https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
         // by default XXE is allow. so as long as the default parser has not been
@@ -387,23 +390,26 @@ private module Lxml {
     }
 
     /** Gets a reference to an `lxml.etree` parser instance, that is vulnerable to `kind`. */
-    DataFlow::Node instanceVulnerableTo(XML::XMLVulnerabilityKind kind) {
+    DataFlow::Node instanceVulnerableTo(XML::XmlVulnerabilityKind kind) {
       exists(InstanceSource origin | result = instance(origin) and origin.vulnerableTo(kind))
     }
 
     /**
      * A call to the `feed` method of an `lxml` parser.
      */
-    private class LXMLParserFeedCall extends DataFlow::MethodCallNode, XML::XMLParsing::Range {
-      LXMLParserFeedCall() { this.calls(instance(_), "feed") }
+    private class LXmlParserFeedCall extends DataFlow::MethodCallNode, XML::XmlParsing::Range {
+      LXmlParserFeedCall() { this.calls(instance(_), "feed") }
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
 
-      override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
+      override predicate vulnerableTo(XML::XmlVulnerabilityKind kind) {
         this.calls(instanceVulnerableTo(kind), "feed")
       }
     }
   }
+
+  /** DEPRECATED: Alias for XmlParser */
+  deprecated module XMLParser = XmlParser;
 
   /**
    * A call to either of:
@@ -415,8 +421,8 @@ private module Lxml {
    *
    * See https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.fromstring
    */
-  private class LXMLParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
-    LXMLParsing() {
+  private class LXmlParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
+    LXmlParsing() {
       this =
         API::moduleImport("lxml")
             .getMember("etree")
@@ -438,8 +444,8 @@ private module Lxml {
 
     DataFlow::Node getParserArg() { result in [this.getArg(1), this.getArgByName("parser")] }
 
-    override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
-      this.getParserArg() = XMLParser::instanceVulnerableTo(kind)
+    override predicate vulnerableTo(XML::XmlVulnerabilityKind kind) {
+      this.getParserArg() = XmlParser::instanceVulnerableTo(kind)
       or
       kind.isXxe() and
       not exists(this.getParserArg())
@@ -451,14 +457,14 @@ private module Xmltodict {
   /**
    * A call to `xmltodict.parse`.
    */
-  private class XMLtoDictParsing extends DataFlow::CallCfgNode, XML::XMLParsing::Range {
+  private class XMLtoDictParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
     XMLtoDictParsing() { this = API::moduleImport("xmltodict").getMember("parse").getACall() }
 
     override DataFlow::Node getAnInput() {
       result in [this.getArg(0), this.getArgByName("xml_input")]
     }
 
-    override predicate vulnerableTo(XML::XMLVulnerabilityKind kind) {
+    override predicate vulnerableTo(XML::XmlVulnerabilityKind kind) {
       (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
       this.getArgByName("disable_entities").getALocalSource().asExpr() = any(False f)
     }

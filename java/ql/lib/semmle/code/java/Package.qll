@@ -28,7 +28,10 @@ class Package extends Element, Annotatable, @package {
    * when selecting a package, which would result in a compile-time error
    * since packages do not have locations.
    */
-  string getURL() { result = "file://:0:0:0:0" }
+  string getUrl() { result = "file://:0:0:0:0" }
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated string getURL() { result = getUrl() }
 
   override string getAPrimaryQlClass() { result = "Package" }
 }

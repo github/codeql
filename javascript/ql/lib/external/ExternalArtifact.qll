@@ -73,7 +73,7 @@ class ExternalError extends ExternalData {
   File getFile() { result.getAbsolutePath() = this.getPath() }
 
   /** Gets the URL associated with this error. */
-  string getURL() {
+  string getUrl() {
     exists(string path, int line, int col |
       path = this.getPath() and
       line = this.getLine() and
@@ -81,6 +81,9 @@ class ExternalError extends ExternalData {
       toUrl(path, line, col, line, col, result)
     )
   }
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated string getURL() { result = getUrl() }
 }
 
 /**
@@ -93,7 +96,10 @@ class DefectExternalData extends ExternalData {
   }
 
   /** Gets the URL associated with this data item. */
-  string getURL() { result = this.getField(0) }
+  string getUrl() { result = this.getField(0) }
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated string getURL() { result = getUrl() }
 
   /** Gets the message associated with this data item. */
   string getMessage() { result = this.getField(1) }

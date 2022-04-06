@@ -65,9 +65,12 @@ class MetricResult extends int {
   float getValue() { metricResults(this, _, _, _, _, _, _, result) }
 
   /** Gets the URL corresponding to the location of this query result. */
-  string getURL() {
+  string getUrl() {
     result =
       "file://" + this.getFile().getAbsolutePath() + ":" + this.getStartLine() + ":" +
         this.getStartColumn() + ":" + this.getEndLine() + ":" + this.getEndColumn()
   }
+
+  /** DEPRECATED: Alias for getUrl */
+  deprecated string getURL() { result = getUrl() }
 }
