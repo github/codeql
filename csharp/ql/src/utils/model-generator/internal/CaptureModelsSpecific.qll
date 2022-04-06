@@ -66,7 +66,10 @@ predicate asPartialModel = DataFlowPrivate::Csv::asPartialModel/1;
  * Holds for type `t` for fields that are relevant as an intermediate
  * read or write step in the data flow analysis.
  */
-predicate isRelevantType(CS::Type t) { not t instanceof CS::Enum }
+predicate isRelevantType(CS::Type t) {
+  not t instanceof CS::SimpleType and
+  not t instanceof CS::Enum
+}
 
 /**
  * Gets the CSV string representation of the qualifier.
