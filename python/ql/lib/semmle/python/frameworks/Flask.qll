@@ -194,8 +194,8 @@ module Flask {
     API::Node api_node;
 
     FlaskViewClass() {
-      this.getParent() = Views::View::subclassRef().getAnImmediateUse().asExpr() and
-      api_node.getAnImmediateUse().asExpr() = this.getParent()
+      api_node = Views::View::subclassRef() and
+      this.getParent() = api_node.getAnImmediateUse().asExpr()
     }
 
     /** Gets a function that could handle incoming requests, if any. */
@@ -219,8 +219,8 @@ module Flask {
    */
   class FlaskMethodViewClass extends FlaskViewClass {
     FlaskMethodViewClass() {
-      this.getParent() = Views::MethodView::subclassRef().getAnImmediateUse().asExpr() and
-      api_node.getAnImmediateUse().asExpr() = this.getParent()
+      api_node = Views::MethodView::subclassRef() and
+      this.getParent() = api_node.getAnImmediateUse().asExpr()
     }
 
     override Function getARequestHandler() {
