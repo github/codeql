@@ -115,4 +115,8 @@ class Sub extends Super {
 	$("#id").html(src); // NOT OK.
 
     $("#id").attr("src", src); // OK
+
+    $("input.foo")[0].onchange = function (ev) {
+        $("#id").html(ev.target.files[0].name); // NOT OK.
+    }
 })();
