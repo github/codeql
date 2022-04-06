@@ -43,7 +43,7 @@ class Container extends Locatable, @container {
   deprecated string getUrl() { none() }
 
   /** DEPRECATED: Alias for getUrl */
-  deprecated string getURL() { result = getUrl() } // overridden by subclasses
+  deprecated string getURL() { result = this.getUrl() } // overridden by subclasses
 
   /**
    * Gets the relative path of this file or folder from the root folder of the
@@ -194,7 +194,7 @@ class Folder extends Container, @folder {
   deprecated override string getUrl() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /** DEPRECATED: Alias for getUrl */
-  deprecated override string getURL() { result = getUrl() }
+  deprecated override string getURL() { result = this.getUrl() }
 
   /**
    * DEPRECATED: use `getAbsolutePath` instead.
@@ -240,7 +240,7 @@ class File extends Container, @file {
   deprecated override string getUrl() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /** DEPRECATED: Alias for getUrl */
-  deprecated override string getURL() { result = getUrl() }
+  deprecated override string getURL() { result = this.getUrl() }
 
   /** Holds if this file was compiled as C (at any point). */
   predicate compiledAsC() { fileannotations(underlyingElement(this), 1, "compiled as c", "1") }

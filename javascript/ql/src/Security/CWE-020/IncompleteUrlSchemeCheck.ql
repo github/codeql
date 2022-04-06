@@ -24,7 +24,7 @@ class DangerousScheme extends string {
   string getWithoutColon() { this = result + ":" }
 
   /** Gets the name of this scheme, with or without the `:`. */
-  string getWithOrWithoutColon() { result = this or result = getWithoutColon() }
+  string getWithOrWithoutColon() { result = this or result = this.getWithoutColon() }
 }
 
 /** Returns a node that refers to the scheme of `url`. */

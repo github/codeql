@@ -83,7 +83,7 @@ class ExternalError extends ExternalData {
   }
 
   /** DEPRECATED: Alias for getUrl */
-  deprecated string getURL() { result = getUrl() }
+  deprecated string getURL() { result = this.getUrl() }
 }
 
 /**
@@ -99,7 +99,7 @@ class DefectExternalData extends ExternalData {
   string getUrl() { result = this.getField(0) }
 
   /** DEPRECATED: Alias for getUrl */
-  deprecated string getURL() { result = getUrl() }
+  deprecated string getURL() { result = this.getUrl() }
 
   /** Gets the message associated with this data item. */
   string getMessage() { result = this.getField(1) }

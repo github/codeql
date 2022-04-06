@@ -144,7 +144,7 @@ private module LDAP {
       }
 
       /** DEPRECATED: Alias for useSsl */
-      deprecated override predicate useSSL() { useSsl() }
+      deprecated override predicate useSSL() { this.useSsl() }
     }
 
     /**
@@ -239,7 +239,7 @@ private module LDAP {
       }
 
       /** DEPRECATED: Alias for useSsl */
-      deprecated override predicate useSSL() { useSsl() }
+      deprecated override predicate useSSL() { this.useSsl() }
     }
 
     /**

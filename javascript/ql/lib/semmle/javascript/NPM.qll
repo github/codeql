@@ -159,7 +159,7 @@ class PackageJson extends JsonObject {
   }
 
   /** DEPRECATED: Alias for getWhitelistedCpu */
-  deprecated string getWhitelistedCPU() { result = getWhitelistedCpu() }
+  deprecated string getWhitelistedCPU() { result = this.getWhitelistedCpu() }
 
   /** Gets a platform not supported by this package. */
   string getBlacklistedCpu() {
@@ -169,7 +169,7 @@ class PackageJson extends JsonObject {
   }
 
   /** DEPRECATED: Alias for getBlacklistedCpu */
-  deprecated string getBlacklistedCPU() { result = getBlacklistedCpu() }
+  deprecated string getBlacklistedCPU() { result = this.getBlacklistedCpu() }
 
   /** Holds if this package prefers to be installed globally. */
   predicate isPreferGlobal() { this.getPropValue("preferGlobal").(JsonBoolean).getValue() = "true" }

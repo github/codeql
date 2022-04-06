@@ -170,7 +170,7 @@ class InvalidFormatString extends StringLiteral {
   }
 
   /** DEPRECATED: Alias for getUrl */
-  deprecated string getURL() { result = getUrl() }
+  deprecated string getURL() { result = this.getUrl() }
 }
 
 /**

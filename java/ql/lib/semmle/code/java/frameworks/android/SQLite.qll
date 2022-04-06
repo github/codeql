@@ -9,21 +9,23 @@ import semmle.code.java.dataflow.ExternalFlow
  * The class `android.database.sqlite.SQLiteDatabase`.
  */
 class TypeSQLiteDatabase extends Class {
-  TypeSQLiteDatabase() { hasQualifiedName("android.database.sqlite", "SQLiteDatabase") }
+  TypeSQLiteDatabase() { this.hasQualifiedName("android.database.sqlite", "SQLiteDatabase") }
 }
 
 /**
  * The class `android.database.sqlite.SQLiteQueryBuilder`.
  */
 class TypeSQLiteQueryBuilder extends Class {
-  TypeSQLiteQueryBuilder() { hasQualifiedName("android.database.sqlite", "SQLiteQueryBuilder") }
+  TypeSQLiteQueryBuilder() {
+    this.hasQualifiedName("android.database.sqlite", "SQLiteQueryBuilder")
+  }
 }
 
 /**
  * The class `android.database.DatabaseUtils`.
  */
 class TypeDatabaseUtils extends Class {
-  TypeDatabaseUtils() { hasQualifiedName("android.database", "DatabaseUtils") }
+  TypeDatabaseUtils() { this.hasQualifiedName("android.database", "DatabaseUtils") }
 }
 
 /**

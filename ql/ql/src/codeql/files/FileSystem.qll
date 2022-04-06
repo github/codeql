@@ -151,7 +151,7 @@ abstract class Container extends @container {
   abstract string getUrl();
 
   /** DEPRECATED: Alias for getUrl */
-  deprecated string getURL() { result = getUrl() }
+  deprecated string getURL() { result = this.getUrl() }
 
   /**
    * Gets a textual representation of the path of this container.
@@ -169,7 +169,7 @@ class Folder extends Container, @folder {
   override string getUrl() { result = "folder://" + this.getAbsolutePath() }
 
   /** DEPRECATED: Alias for getUrl */
-  deprecated override string getURL() { result = getUrl() }
+  deprecated override string getURL() { result = this.getUrl() }
 }
 
 /** A file. */
@@ -180,7 +180,7 @@ class File extends Container, @file {
   override string getUrl() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /** DEPRECATED: Alias for getUrl */
-  deprecated override string getURL() { result = getUrl() }
+  deprecated override string getURL() { result = this.getUrl() }
 
   /** Gets a token in this file. */
   private QL::Token getAToken() { result.getLocation().getFile() = this }

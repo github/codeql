@@ -40,7 +40,7 @@ class Container extends @container {
   string getUrl() { none() }
 
   /** DEPRECATED: Alias for getUrl */
-  deprecated string getURL() { result = getUrl() }
+  deprecated string getURL() { result = this.getUrl() }
 
   /**
    * Gets the relative path of this file or folder from the root folder of the
@@ -185,7 +185,7 @@ class Folder extends Container, @folder {
   override string getUrl() { result = "folder://" + this.getAbsolutePath() }
 
   /** DEPRECATED: Alias for getUrl */
-  deprecated override string getURL() { result = getUrl() }
+  deprecated override string getURL() { result = this.getUrl() }
 }
 
 bindingset[flag]
@@ -212,7 +212,7 @@ class File extends Container, @file {
   override string getUrl() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /** DEPRECATED: Alias for getUrl */
-  deprecated override string getURL() { result = getUrl() }
+  deprecated override string getURL() { result = this.getUrl() }
 
   /** Holds if this file is a QL test stub file. */
   pragma[noinline]

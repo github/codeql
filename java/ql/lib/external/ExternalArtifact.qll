@@ -37,7 +37,7 @@ class DefectExternalData extends ExternalData {
   string getUrl() { result = this.getField(0) }
 
   /** DEPRECATED: Alias for getUrl */
-  deprecated string getURL() { result = getUrl() }
+  deprecated string getURL() { result = this.getUrl() }
 
   string getMessage() { result = this.getField(1) }
 }

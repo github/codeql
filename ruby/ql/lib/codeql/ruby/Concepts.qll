@@ -493,7 +493,7 @@ module HTTP {
       deprecated DataFlow::Node getUrl() { result = super.getUrl() or result = super.getAUrlPart() }
 
       /** DEPRECATED: Alias for getUrl */
-      deprecated DataFlow::Node getURL() { result = getUrl() }
+      deprecated DataFlow::Node getURL() { result = this.getUrl() }
 
       /**
        * Gets a data-flow node that contributes to the URL of the request.
@@ -535,7 +535,7 @@ module HTTP {
         deprecated DataFlow::Node getUrl() { none() }
 
         /** DEPRECATED: Alias for getUrl */
-        deprecated DataFlow::Node getURL() { result = getUrl() }
+        deprecated DataFlow::Node getURL() { result = this.getUrl() }
 
         /**
          * Gets a data-flow node that contributes to the URL of the request.
