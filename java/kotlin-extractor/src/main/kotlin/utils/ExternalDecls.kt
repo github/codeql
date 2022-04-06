@@ -8,7 +8,8 @@ import org.jetbrains.kotlin.ir.util.parentClassOrNull
 
 fun isExternalDeclaration(d: IrDeclaration): Boolean {
     return d.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
-           d.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
+           d.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB ||
+           d.origin.toString() == "FUNCTION_INTERFACE_CLASS" // Treat kotlin.coroutines.* like ordinary library classes
 }
 
 /**
