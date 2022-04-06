@@ -61,3 +61,28 @@ public class EquatableUnBound<T> : IEquatable<T>
         return tainted;
     }
 }
+
+// No methods in this class will have generated flow summaries as
+// simple types are used.
+public class SimpleTypes
+{
+    public bool M1(bool b)
+    {
+        return b;
+    }
+
+    public Boolean M2(Boolean b)
+    {
+        return b;
+    }
+
+    public int M3(int i)
+    {
+        return i;
+    }
+
+    public Int32 M4(Int32 i)
+    {
+        return i;
+    }
+}
