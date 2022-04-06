@@ -10,6 +10,9 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.QueryInjection
 
+/**
+ * A taint-tracking configuration for unvalidated user input that is used in SQL queries.
+ */
 class QueryInjectionFlowConfig extends TaintTracking::Configuration {
   QueryInjectionFlowConfig() { this = "SqlInjectionLib::QueryInjectionFlowConfig" }
 
