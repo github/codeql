@@ -18,33 +18,13 @@ module TaintTracking = CS::TaintTracking;
 class Type = CS::Type;
 
 /**
- * Holds if `api` is an override or an interface implementation that
- * is irrelevant to the data flow analysis.
- */
-private predicate isIrrelevantOverrideOrImplementation(CS::Callable api) {
-  exists(CS::Callable exclude, CS::Method m |
-    (
-      api = m.getAnOverrider*().getUnboundDeclaration()
-      or
-      api = m.getAnUltimateImplementor().getUnboundDeclaration()
-    ) and
-    exclude = m.getUnboundDeclaration()
-  |
-    exists(System::SystemObjectClass c | exclude = [c.getGetHashCodeMethod(), c.getEqualsMethod()])
-    or
-    exists(System::SystemIEquatableTInterface i | exclude = i.getEqualsMethod())
-  )
-}
-
-/**
  * Holds if it is relevant to generate models for `api`.
  */
 private predicate isRelevantForModels(CS::Callable api) {
   [api.(CS::Modifiable), api.(CS::Accessor).getDeclaration()].isEffectivelyPublic() and
   api.getDeclaringType().getNamespace().getQualifiedName() != "" and
   not api instanceof CS::ConversionOperator and
-  not api instanceof Util::MainMethod and
-  not isIrrelevantOverrideOrImplementation(api)
+  not api instanceof Util::MainMethod
 }
 
 /**
