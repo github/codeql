@@ -55,9 +55,7 @@ class AnnotatedCall extends DataFlow::Node {
     result = -1
   }
 
-  string getKind() {
-    result = kind
-  }
+  string getKind() { result = kind }
 }
 
 predicate callEdge(AnnotatedCall call, AnnotatedFunction target, int boundArgs) {
@@ -66,7 +64,9 @@ predicate callEdge(AnnotatedCall call, AnnotatedFunction target, int boundArgs) 
   FlowSteps::callsBound(call, target, boundArgs)
 }
 
-query predicate spuriousCallee(AnnotatedCall call, AnnotatedFunction target, int boundArgs, string kind) {
+query predicate spuriousCallee(
+  AnnotatedCall call, AnnotatedFunction target, int boundArgs, string kind
+) {
   callEdge(call, target, boundArgs) and
   kind = call.getKind() and
   not (
@@ -75,7 +75,9 @@ query predicate spuriousCallee(AnnotatedCall call, AnnotatedFunction target, int
   )
 }
 
-query predicate missingCallee(AnnotatedCall call, AnnotatedFunction target, int boundArgs, string kind) {
+query predicate missingCallee(
+  AnnotatedCall call, AnnotatedFunction target, int boundArgs, string kind
+) {
   not callEdge(call, target, boundArgs) and
   kind = call.getKind() and
   target = call.getAnExpectedCallee(kind) and
