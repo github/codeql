@@ -16,7 +16,12 @@ abstract private class GeneratedType extends ClassOrInterface {
   }
 
   private string stubKeyword() {
-    this instanceof Interface and result = "interface"
+    this instanceof Interface and
+    (
+      this instanceof AnnotationType and result = "@interface"
+      or
+      result = "interface"
+    )
     or
     this instanceof Class and
     (if this instanceof EnumType then result = "enum" else result = "class")
@@ -27,19 +32,24 @@ abstract private class GeneratedType extends ClassOrInterface {
   }
 
   private string stubStaticModifier() {
-    if this.isStatic() then result = "static " else result = ""
+    if this.(NestedType).isStatic() then result = "static " else result = ""
   }
 
   private string stubAccessibilityModifier() {
     if this.isPublic() then result = "public " else result = ""
   }
 
+  private string stubAnnotations() {
+    result = concat("@" + stubAnnotation(this.(AnnotationType).getAnAnnotation()) + "\n")
+  }
+
   /** Gets the entire Java stub code for this type. */
   final string getStub() {
     result =
-      this.stubAbstractModifier() + this.stubStaticModifier() + this.stubAccessibilityModifier() +
-        this.stubKeyword() + " " + this.getName() + stubGenericArguments(this, true) +
-        this.stubBaseTypesString() + "\n{\n" + this.stubMembers() + "}"
+      this.stubAnnotations() + this.stubAbstractModifier() + this.stubStaticModifier() +
+        this.stubAccessibilityModifier() + this.stubKeyword() + " " + this.getName() +
+        stubGenericArguments(this, true) + this.stubBaseTypesString() + "\n{\n" + this.stubMembers()
+        + "}"
   }
 
   private RefType getAnInterestingBaseType() {
@@ -60,7 +70,9 @@ abstract private class GeneratedType extends ClassOrInterface {
           else cls = ""
         ) and
         (
-          if exists(this.getAnInterestingBaseType().(Interface))
+          if
+            exists(this.getAnInterestingBaseType().(Interface)) and
+            not this instanceof AnnotationType
           then (
             (if this instanceof Class then int_kw = " implements " else int_kw = " extends ") and
             interface = concat(stubTypeName(this.getAnInterestingBaseType().(Interface)), ", ")
@@ -96,15 +108,14 @@ abstract private class GeneratedType extends ClassOrInterface {
   }
 
   final Type getAGeneratedType() {
-    result = this.getAnInterestingBaseType()
-    or
-    result = this.getAGeneratedMember().(Callable).getReturnType()
-    or
-    result = this.getAGeneratedMember().(Callable).getAParameter().getType()
-    or
-    result = this.getAGeneratedMember().(Field).getType()
-    or
-    result = this.getAGeneratedMember().(NestedType)
+    result = this.getAnInterestingBaseType() or
+    result = this.getAGeneratedMember().(Callable).getReturnType() or
+    result = this.getAGeneratedMember().(Callable).getAParameter().getType() or
+    result = this.getAGeneratedMember().(Field).getType() or
+    result = this.getAGeneratedMember().(NestedType) or
+    result = this.(AnnotationType).getAnAnnotation().getType() or
+    result = this.(AnnotationType).getAnAnnotation().getAValue().getType() or
+    result = this.(AnnotationType).getAnAnnotation().getAValue().(ArrayInit).getAnInit().getType()
   }
 }
 
@@ -389,6 +400,24 @@ private string stubMember(Member m) {
     or
     result = indent(m.(NestedType).(GeneratedType).getStub())
   )
+}
+
+private string stubAnnotation(Annotation a) {
+  if exists(a.getAValue())
+  then result = a.toString() + "(" + concat(stubAnnotationValue(a.getAValue()), ",") + ")"
+  else result = a.toString()
+}
+
+private string stubAnnotiationSimpleValue(Expr value) {
+  result = value.(FieldAccess).getField().getQualifiedName() or
+  result = value.(Literal).toString()
+}
+
+private string stubAnnotationValue(Expr value) {
+  result = stubAnnotiationSimpleValue(value)
+  or
+  value instanceof ArrayInit and
+  result = "{" + concat(stubAnnotiationSimpleValue(value.(ArrayInit).getAnInit()), ",") + "}"
 }
 
 bindingset[s]
