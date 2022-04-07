@@ -126,9 +126,7 @@ module API {
      */
     pragma[inline]
     DataFlow::Node getAValueReachableFromSource() {
-      exists(DataFlow::SourceNode src | Impl::use(this, src) |
-        Impl::trackUseNode(src).flowsTo(result)
-      )
+      Impl::trackUseNode(this.getASource()).flowsTo(result)
     }
 
     /**
