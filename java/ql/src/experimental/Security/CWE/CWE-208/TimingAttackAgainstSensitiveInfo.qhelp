@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+A constant-time algorithm should be used for checking the value of sensitive info.
+In other words, the comparison time should not depend on the content of the input. 
+Otherwise timing information could be used to infer the info's expected, secret value.
+</p>
+</overview>
+
+
+<recommendation>
+<p>
+Use <code>MessageDigest.isEqual()</code> method to check the value of sensitive info.
+If this method is used, then the calculation time depends only on the length of input byte arrays,
+and does not depend on the contents of the arrays.
+</p>
+</recommendation>
+<example>
+<p>
+The following example uses <code>String.equals()</code> method for validating a password.
+This method implements a non-constant-time algorithm:
+</p>
+<sample src="UnsafeComparison.java" />
+
+<p>
+The next example uses a safe constant-time algorithm for validating a password:
+</p>
+<sample src="SafeComparison.java" />
+</example>
+
+<references>
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/Timing_attack">Timing attack</a>.
+</li>
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/MessageDigest.html#isEqual(byte[],byte[])">MessageDigest.isEqual() method</a>
+</li>
+</references>
+
+</qhelp>

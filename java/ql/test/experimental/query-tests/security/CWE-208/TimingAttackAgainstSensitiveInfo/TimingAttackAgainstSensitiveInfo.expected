@@ -1,0 +1,8 @@
+edges
+nodes
+| Test.java:10:16:10:23 | password | semmle.label | password |
+| Test.java:10:32:10:34 | pwd | semmle.label | pwd |
+subpaths
+#select
+| Test.java:10:16:10:23 | password | Test.java:10:16:10:23 | password | Test.java:10:16:10:23 | password | Possible timing attack against $@ validation. | Test.java:10:16:10:23 | password |
+| Test.java:10:32:10:34 | pwd | Test.java:10:32:10:34 | pwd | Test.java:10:32:10:34 | pwd | Possible timing attack against $@ validation. | Test.java:10:32:10:34 | pwd |
