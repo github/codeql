@@ -90,3 +90,7 @@ query predicate badAnnotation(string name) {
   not name = any(AnnotatedCall cl).getCallTargetName() and
   name = any(AnnotatedFunction cl).getCalleeName()
 }
+
+query predicate accessorCall(DataFlow::PropRef ref, Function target) {
+  FlowSteps::calls(ref, target)
+}
