@@ -83,7 +83,7 @@ class Type extends @type {
   private predicate implementsNotComparable(InterfaceType i) {
     (
       forall(TypeSetLiteralType tslit | tslit = i.getAnEmbeddedTypeSetLiteral() |
-        tslit.hasInTypeSet(this)
+        tslit.includesType(this)
       ) and
       (
         not i.hasMethod(_, _)
@@ -112,22 +112,21 @@ class Type extends @type {
       or
       u instanceof ArrayType and u.(ArrayType).getElementType().implementsComparable()
       or
-      u instanceof InterfaceType and
-      (
-        not u instanceof BasicInterfaceType and
-        if exists(u.(InterfaceType).getAnEmbeddedTypeSetLiteral())
+      exists(InterfaceType uif | uif = u |
+        not uif instanceof BasicInterfaceType and
+        if exists(uif.getAnEmbeddedTypeSetLiteral())
         then
+          // All types in the intersection of all the embedded type set
+          // literals must implement comparable.
           forall(Type intersectionType |
-            intersectionType = u.(InterfaceType).getAnEmbeddedTypeSetLiteral().getATerm().getType() and
-            forall(TypeSetLiteralType tslit |
-              tslit = u.(InterfaceType).getAnEmbeddedTypeSetLiteral()
-            |
+            intersectionType = uif.getAnEmbeddedTypeSetLiteral().getATerm().getType() and
+            forall(TypeSetLiteralType tslit | tslit = uif.getAnEmbeddedTypeSetLiteral() |
               intersectionType = tslit.getATerm().getType()
             )
           |
             intersectionType.implementsComparable()
           )
-        else u.(InterfaceType).isOrEmbedsComparable()
+        else uif.isOrEmbedsComparable()
       )
     )
   }
@@ -610,8 +609,8 @@ class PointerType extends @pointertype, CompositeType {
   override string toString() { result = "pointer type" }
 }
 
-private newtype TTerm =
-  MkTerm(TypeSetLiteralType tslit, int index) { component_types(tslit, index, _, _) }
+private newtype TTypeSetTerm =
+  MkTypeSetTerm(TypeSetLiteralType tslit, int index) { component_types(tslit, index, _, _) }
 
 /**
  * A term in a type set literal.
@@ -622,13 +621,13 @@ private newtype TTerm =
  * ~string
  * ```
  */
-class Term extends TTerm {
+class TypeSetTerm extends TTypeSetTerm {
   boolean tilde;
   Type tp;
 
-  Term() {
+  TypeSetTerm() {
     exists(TypeSetLiteralType tslit, int index |
-      this = MkTerm(tslit, index) and
+      this = MkTypeSetTerm(tslit, index) and
       (
         component_types(tslit, index, "", tp) and
         tilde = false
@@ -651,7 +650,7 @@ class Term extends TTerm {
   Type getType() { result = tp }
 
   /** Holds if `t` is in the type set of this term. */
-  predicate hasInTypeSet(Type t) { if tilde = false then t = tp else t.getUnderlyingType() = tp }
+  predicate includesType(Type t) { if tilde = false then t = tp else t.getUnderlyingType() = tp }
 
   /** Gets a pretty-printed representation of this term. */
   string pp() {
@@ -661,15 +660,15 @@ class Term extends TTerm {
   }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = "term" }
+  string toString() { result = "type set term" }
 }
 
-private Term getIntersection(Term term1, Term term2) {
+private TypeSetTerm getIntersection(TypeSetTerm term1, TypeSetTerm term2) {
   term1.getType() = term2.getType() and
   if term1.hasTilde() then result = term2 else result = term1
 }
 
-Term getTermInIntersection(TypeSetLiteralType a, TypeSetLiteralType b) {
+TypeSetTerm getTermInIntersection(TypeSetLiteralType a, TypeSetLiteralType b) {
   result = getIntersection(a.getATerm(), b.getATerm())
 }
 
@@ -689,13 +688,13 @@ Term getTermInIntersection(TypeSetLiteralType a, TypeSetLiteralType b) {
  */
 class TypeSetLiteralType extends @typesetliteraltype, CompositeType {
   /** Gets the `i`th term in this type set literal. */
-  Term getTerm(int i) { result = MkTerm(this, i) }
+  TypeSetTerm getTerm(int i) { result = MkTypeSetTerm(this, i) }
 
   /** Gets a term in this type set literal. */
-  Term getATerm() { result = getTerm(_) }
+  TypeSetTerm getATerm() { result = getTerm(_) }
 
   /** Holds if `t` is in the type set of this type set literal. */
-  predicate hasInTypeSet(Type t) { exists(int i | this.getTerm(i).hasInTypeSet(t)) }
+  predicate includesType(Type t) { this.getATerm().includesType(t) }
 
   /**
    * Gets the interface type specified by just this type set literal, if it
@@ -705,15 +704,15 @@ class TypeSetLiteralType extends @typesetliteraltype, CompositeType {
    * the bound in a type parameter declaration.
    */
   InterfaceType getInterfaceType() {
-    this = result.getExplicitlyEmbeddedTypeSetLiteral(0) and
-    not exists(result.getExplicitlyEmbeddedTypeSetLiteral(1)) and
+    this = result.getDirectlyEmbeddedTypeSetLiteral(0) and
+    not exists(result.getDirectlyEmbeddedTypeSetLiteral(1)) and
     not result.hasMethod(_, _) and
-    not exists(result.getAnExplicitlyEmbeddedInterface())
+    not exists(result.getADirectlyEmbeddedInterface())
   }
 
   language[monotonicAggregates]
   override string pp() {
-    result = concat(Term t, int i | t = this.getTerm(i) | t.pp(), " | " order by i)
+    result = concat(TypeSetTerm t, int i | t = this.getTerm(i) | t.pp(), " | " order by i)
   }
 
   override string toString() { result = "type set literal type" }
@@ -723,30 +722,32 @@ class TypeSetLiteralType extends @typesetliteraltype, CompositeType {
 class InterfaceType extends @interfacetype, CompositeType {
   /** Gets the type of method `name` of this interface type. */
   Type getMethodType(string name) {
+    // Note that negative indices correspond to embedded interfaces and type
+    // set literals.
     exists(int i | i >= 0 | component_types(this, i, name, result))
   }
 
   override predicate hasMethod(string m, SignatureType t) { t = this.getMethodType(m) }
 
   /**
-   * Holds if `tp` is an explicitly embedded type with index `index`.
+   * Holds if `tp` is a directly embedded type with index `index`.
    *
-   * `tp` is either a type set literal type or its underlyign type is an
+   * `tp` (or its underlying type) is either a type set literal type or an
    * interface type.
    */
-  private predicate hasExplicitlyEmbeddedType(int index, Type tp) {
+  private predicate hasDirectlyEmbeddedType(int index, Type tp) {
     index >= 0 and component_types(this, -(index + 1), _, tp)
   }
 
   /**
-   * Gets a type whose underlying type is an interface that is explicitly
+   * Gets a type whose underlying type is an interface that is directly
    * embedded into this interface.
    *
    * Note that the methods of the embedded interface are already considered
    * as part of the method set of this interface.
    */
-  Type getAnExplicitlyEmbeddedInterface() {
-    hasExplicitlyEmbeddedType(_, result) and result.getUnderlyingType() instanceof InterfaceType
+  Type getADirectlyEmbeddedInterface() {
+    hasDirectlyEmbeddedType(_, result) and result.getUnderlyingType() instanceof InterfaceType
   }
 
   /**
@@ -757,9 +758,9 @@ class InterfaceType extends @interfacetype, CompositeType {
    * as part of the method set of this interface.
    */
   Type getAnEmbeddedInterface() {
-    result = this.getAnExplicitlyEmbeddedInterface() or
+    result = this.getADirectlyEmbeddedInterface() or
     result =
-      this.getAnExplicitlyEmbeddedInterface()
+      this.getADirectlyEmbeddedInterface()
           .getUnderlyingType()
           .(InterfaceType)
           .getAnEmbeddedInterface()
@@ -778,10 +779,10 @@ class InterfaceType extends @interfacetype, CompositeType {
    * Gets the type set literal with index `index` from the definition of this
    * interface type.
    *
-   * Note that the indexing includes embedded interfaces but not methods.
+   * Note that the indexes are not contiguous.
    */
-  TypeSetLiteralType getExplicitlyEmbeddedTypeSetLiteral(int index) {
-    hasExplicitlyEmbeddedType(index, result)
+  TypeSetLiteralType getDirectlyEmbeddedTypeSetLiteral(int index) {
+    hasDirectlyEmbeddedType(index, result)
   }
 
   /**
@@ -790,9 +791,9 @@ class InterfaceType extends @interfacetype, CompositeType {
    * This includes type set literals of embedded interfaces.
    */
   TypeSetLiteralType getAnEmbeddedTypeSetLiteral() {
-    result = this.getExplicitlyEmbeddedTypeSetLiteral(_) or
+    result = this.getDirectlyEmbeddedTypeSetLiteral(_) or
     result =
-      getAnExplicitlyEmbeddedInterface()
+      getADirectlyEmbeddedInterface()
           .getUnderlyingType()
           .(InterfaceType)
           .getAnEmbeddedTypeSetLiteral()
