@@ -188,7 +188,8 @@
 | Test.kt:101:22:101:30 | ... -> ... | WhenBranch | Test.kt:101:22:101:30 | true | BooleanLiteral |
 | Test.kt:101:22:101:30 | <Expr>; | ExprStmt | Test.kt:101:22:101:22 | y | VarAccess |
 | Test.kt:101:22:101:30 | <Expr>; | ExprStmt | Test.kt:101:22:101:30 | false | BooleanLiteral |
-| Test.kt:101:22:101:30 | false | BooleanLiteral | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:101:22:101:30 | false | BooleanLiteral | Test.kt:101:33:103:5 | { ... } | BlockStmt |
+| Test.kt:101:22:101:30 | false | BooleanLiteral | Test.kt:105:5:109:5 | <Expr>; | ExprStmt |
 | Test.kt:101:22:101:30 | true | BooleanLiteral | Test.kt:101:22:101:30 | <Expr>; | ExprStmt |
 | Test.kt:101:27:101:30 | null | NullLiteral | Test.kt:101:22:101:30 | ... (value equals) ... | ValueEQExpr |
 | Test.kt:101:33:103:5 | { ... } | BlockStmt | Test.kt:102:15:102:25 | new Exception(...) | ClassInstanceExpr |

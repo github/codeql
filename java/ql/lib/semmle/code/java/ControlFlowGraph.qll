@@ -909,7 +909,8 @@ private module ControlFlowGraphImpl {
     )
     or
     // the last node in an `ExprStmt` is the last node in the expression
-    last(n.(ExprStmt).getExpr(), last, completion) and completion = NormalCompletion()
+    last(n.(ExprStmt).getExpr(), last, completion) and
+    completion instanceof NormalOrBooleanCompletion
     or
     // the last node in a `StmtExpr` is the last node in the statement
     last(n.(StmtExpr).getStmt(), last, completion)
@@ -1232,9 +1233,9 @@ private module ControlFlowGraphImpl {
       n = synch and result = first(synch.getBlock())
     )
     or
-    result = first(n.(ExprStmt).getExpr()) and completion = NormalCompletion()
+    result = first(n.(ExprStmt).getExpr()) and completion instanceof NormalOrBooleanCompletion
     or
-    result = first(n.(StmtExpr).getStmt()) and completion = NormalCompletion()
+    result = first(n.(StmtExpr).getStmt()) and completion instanceof NormalOrBooleanCompletion
     or
     result = first(n.(LabeledStmt).getStmt()) and completion = NormalCompletion()
     or
