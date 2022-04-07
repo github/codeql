@@ -44,21 +44,9 @@ private module NoSql {
   }
 
   /**
-   * Gets a reference to an initialized `Mongo` DB instance.
-   * See `mongoEngine()`, `flask_MongoEngine()`
+   * Gets a reference to a `Mongo` DB instance.
    */
-  private API::Node mongoDBInstance() {
-    result = mongoEngine().getMember(["get_db", "connect"]).getReturn() or
-    result = mongoEngine().getMember("connection").getMember(["get_db", "connect"]).getReturn() or
-    result = flask_MongoEngine().getMember("get_db").getReturn()
-  }
-
-  /**
-   * Gets a reference to a `Mongo` DB use.
-   *
-   * See `mongoClientInstance()`, `mongoDBInstance()`.
-   */
-  private DataFlow::LocalSourceNode mongoDB(DataFlow::TypeTracker t) {
+  private DataFlow::LocalSourceNode mongoDBInstance(DataFlow::TypeTracker t) {
     t.start() and
     (
       exists(SubscriptNode subscript |
@@ -68,10 +56,14 @@ private module NoSql {
       or
       result.(DataFlow::AttrRead).getObject() = mongoClientInstance().getAUse()
       or
-      result = mongoDBInstance().getAUse()
+      result = mongoEngine().getMember(["get_db", "connect"]).getACall()
+      or
+      result = mongoEngine().getMember("connection").getMember(["get_db", "connect"]).getACall()
+      or
+      result = flask_MongoEngine().getMember("get_db").getACall()
     )
     or
-    exists(DataFlow::TypeTracker t2 | result = mongoDB(t2).track(t2, t))
+    exists(DataFlow::TypeTracker t2 | result = mongoDBInstance(t2).track(t2, t))
   }
 
   /**
@@ -85,21 +77,21 @@ private module NoSql {
    *
    * `mongo.db` would be a use of a `Mongo` instance, and so the result.
    */
-  private DataFlow::Node mongoDB() { mongoDB(DataFlow::TypeTracker::end()).flowsTo(result) }
+  private DataFlow::Node mongoDBInstance() {
+    mongoDBInstance(DataFlow::TypeTracker::end()).flowsTo(result)
+  }
 
   /**
    * Gets a reference to a `Mongo` collection use.
-   *
-   * See `mongoDB()`.
    */
   private DataFlow::LocalSourceNode mongoCollection(DataFlow::TypeTracker t) {
     t.start() and
     (
       exists(SubscriptNode subscript | result.asCfgNode() = subscript |
-        subscript.getObject() = mongoDB().asCfgNode()
+        subscript.getObject() = mongoDBInstance().asCfgNode()
       )
       or
-      result.(DataFlow::AttrRead).getObject() = mongoDB()
+      result.(DataFlow::AttrRead).getObject() = mongoDBInstance()
     )
     or
     exists(DataFlow::TypeTracker t2 | result = mongoCollection(t2).track(t2, t))
