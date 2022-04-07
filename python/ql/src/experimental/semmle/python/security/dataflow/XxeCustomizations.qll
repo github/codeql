@@ -35,11 +35,10 @@ module Xxe {
   }
 
   /**
-   * A call to an XML parser that performs external entity expansion, viewed
-   * as a data flow sink for XXE vulnerabilities.
+   * A call to an XML parser that is vulnerable to XXE.
    */
-  class XmlParsingWithExternalEntityResolution extends Sink {
-    XmlParsingWithExternalEntityResolution() {
+  class XmlParsingVulnerableToXxe extends Sink {
+    XmlParsingVulnerableToXxe() {
       exists(XML::XmlParsing parsing, XML::XmlParsingVulnerabilityKind kind |
         kind.isXxe() and
         parsing.vulnerableTo(kind) and

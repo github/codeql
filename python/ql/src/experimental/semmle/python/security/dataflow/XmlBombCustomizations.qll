@@ -35,11 +35,10 @@ module XmlBomb {
   }
 
   /**
-   * A call to an XML parser that performs internal entity expansion, viewed
-   * as a data flow sink for XML-bomb vulnerabilities.
+   * A call to an XML parser that is vulnerable to XML bombs.
    */
-  class XmlParsingWithEntityResolution extends Sink {
-    XmlParsingWithEntityResolution() {
+  class XmlParsingVulnerableToXmlBomb extends Sink {
+    XmlParsingVulnerableToXmlBomb() {
       exists(XML::XmlParsing parsing, XML::XmlParsingVulnerabilityKind kind |
         kind.isXmlBomb() and
         parsing.vulnerableTo(kind) and
