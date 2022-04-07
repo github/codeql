@@ -5,12 +5,6 @@
 /python/ @github/codeql-python
 /ruby/ @github/codeql-ruby
 
-/cpp/**/experimental/**/* @github/codeql-c-analysis
-/csharp/**/experimental/**/* @github/codeql-csharp
-/java/**/experimental/**/* @github/codeql-java
-/javascript/**/experimental/**/* @github/codeql-javascript
-/python/**/experimental/**/* @github/codeql-python
-/ruby/**/experimental/**/* @github/codeql-ruby
 
 # ML-powered queries
 /javascript/ql/experimental/adaptivethreatmodeling/ @github/codeql-ml-powered-queries-reviewers
