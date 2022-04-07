@@ -39,7 +39,7 @@ void test2(InputSource &data) {
 	XercesDOMParser *p = new XercesDOMParser();
 
 	p->setDisableDefaultEntityResolution(true);
-	p->parse(data); // GOOD
+	p->parse(data); // GOOD [FALSE POSITIVE]
 }
 
 void test3(InputSource &data) {
@@ -62,22 +62,22 @@ void test5(InputSource &data) {
 
 	p->setDisableDefaultEntityResolution(true);
 	p->setCreateEntityReferenceNodes(true);
-	p->parse(data); // GOOD
+	p->parse(data); // GOOD [FALSE POSITIVE]
 }
 
 void test6(InputSource &data) {
 	XercesDOMParser *p = new XercesDOMParser();
 
 	p->setDisableDefaultEntityResolution(true);
-	p->parse(data); // GOOD
+	p->parse(data); // GOOD [FALSE POSITIVE]
 	p->setDisableDefaultEntityResolution(false);
 	p->parse(data); // BAD (parser not correctly configured)
 	p->setDisableDefaultEntityResolution(true);
-	p->parse(data); // GOOD
+	p->parse(data); // GOOD [FALSE POSITIVE]
 	p->setCreateEntityReferenceNodes(false);
 	p->parse(data); // BAD (parser not correctly configured)
 	p->setCreateEntityReferenceNodes(true);
-	p->parse(data); // GOOD
+	p->parse(data); // GOOD [FALSE POSITIVE]
 }
 
 void test7(InputSource &data, bool cond) {
@@ -111,7 +111,7 @@ void test9(InputSource &data) {
 		XercesDOMParser &q = *p;
 
 		q.setDisableDefaultEntityResolution(true);
-		q.parse(data); // GOOD
+		q.parse(data); // GOOD [FALSE POSITIVE]
 	}
 
 	{
@@ -119,12 +119,12 @@ void test9(InputSource &data) {
 		XercesDOMParser &q = *p;
 
 		p->setDisableDefaultEntityResolution(true);
-		q.parse(data); // GOOD
+		q.parse(data); // GOOD [FALSE POSITIVE]
 	}
 }
 
 void test10_doParseA(XercesDOMParser *p, InputSource &data) {
-	p->parse(data); // GOOD
+	p->parse(data); // GOOD [FALSE POSITIVE]
 }
 
 void test10_doParseB(XercesDOMParser *p, InputSource &data) {
@@ -149,7 +149,7 @@ void test10(InputSource &data) {
 void test11(InputSource &data) {
 	LSParser *p = createLSParser();
 
-	p->parse(data); // BAD (parser not correctly configured)
+	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
 }
 
 void test12(InputSource &data) {
@@ -166,5 +166,5 @@ InputSource *g_data;
 void test13() {
 	g_p1->setDisableDefaultEntityResolution(true);
 	g_p1->parse(*g_data); // GOOD
-	g_p2->parse(*g_data); // BAD (parser not correctly configured)
+	g_p2->parse(*g_data); // BAD (parser not correctly configured) [NOT DETECTED]
 }
