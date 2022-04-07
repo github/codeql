@@ -7,13 +7,22 @@ app = Flask(__name__)
 client = MongoClient()
 
 
-@app.route("/")
-def home_page():
+@app.route("/bad")
+def bad():
+    unsafe_search = request.args['search']
+    json_search = json.loads(unsafe_search)
+
+    return client.db.collection.find_one({'data': json_search})
+
+
+@app.route("/good")
+def good():
     unsafe_search = request.args['search']
     json_search = json.loads(unsafe_search)
     safe_search = sanitize(json_search)
 
     return client.db.collection.find_one({'data': safe_search})
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run(debug=True)
