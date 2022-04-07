@@ -403,11 +403,8 @@ module Flask {
   }
 
   private class RequestAttrMultiDict extends Werkzeug::MultiDict::InstanceSource {
-    string attr_name;
-
     RequestAttrMultiDict() {
-      this = request().getMember(attr_name).getAnImmediateUse() and
-      attr_name in ["args", "values", "form", "files"]
+      this = request().getMember(["args", "values", "form", "files"]).getAnImmediateUse()
     }
   }
 
