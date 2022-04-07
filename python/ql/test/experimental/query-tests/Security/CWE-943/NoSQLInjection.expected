@@ -53,6 +53,10 @@ edges
 | pymongo_test.py:29:27:29:33 | ControlFlowNode for request | pymongo_test.py:29:27:29:38 | ControlFlowNode for Attribute |
 | pymongo_test.py:29:27:29:38 | ControlFlowNode for Attribute | pymongo_test.py:29:27:29:50 | ControlFlowNode for Subscript |
 | pymongo_test.py:29:27:29:50 | ControlFlowNode for Subscript | pymongo_test.py:29:16:29:51 | ControlFlowNode for Attribute() |
+| pymongo_test.py:38:16:38:51 | ControlFlowNode for Attribute() | pymongo_test.py:42:34:42:73 | ControlFlowNode for Dict |
+| pymongo_test.py:38:27:38:33 | ControlFlowNode for request | pymongo_test.py:38:27:38:38 | ControlFlowNode for Attribute |
+| pymongo_test.py:38:27:38:38 | ControlFlowNode for Attribute | pymongo_test.py:38:27:38:50 | ControlFlowNode for Subscript |
+| pymongo_test.py:38:27:38:50 | ControlFlowNode for Subscript | pymongo_test.py:38:16:38:51 | ControlFlowNode for Attribute() |
 nodes
 | flask_mongoengine_bad.py:19:21:19:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | flask_mongoengine_bad.py:19:21:19:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
@@ -119,6 +123,11 @@ nodes
 | pymongo_test.py:29:27:29:38 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | pymongo_test.py:29:27:29:50 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | pymongo_test.py:33:34:33:73 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| pymongo_test.py:38:16:38:51 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_test.py:38:27:38:33 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| pymongo_test.py:38:27:38:38 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| pymongo_test.py:38:27:38:50 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| pymongo_test.py:42:34:42:73 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
 subpaths
 #select
 | flask_mongoengine_bad.py:22:34:22:44 | ControlFlowNode for json_search | flask_mongoengine_bad.py:19:21:19:27 | ControlFlowNode for request | flask_mongoengine_bad.py:22:34:22:44 | ControlFlowNode for json_search | $@ NoSQL query contains an unsanitized $@ | flask_mongoengine_bad.py:22:34:22:44 | ControlFlowNode for json_search | This | flask_mongoengine_bad.py:19:21:19:27 | ControlFlowNode for request | user-provided value |
@@ -132,3 +141,4 @@ subpaths
 | mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict | mongoengine_bad.py:57:21:57:27 | ControlFlowNode for request | mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict | This | mongoengine_bad.py:57:21:57:27 | ControlFlowNode for request | user-provided value |
 | pymongo_test.py:15:42:15:62 | ControlFlowNode for Dict | pymongo_test.py:12:21:12:27 | ControlFlowNode for request | pymongo_test.py:15:42:15:62 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | pymongo_test.py:15:42:15:62 | ControlFlowNode for Dict | This | pymongo_test.py:12:21:12:27 | ControlFlowNode for request | user-provided value |
 | pymongo_test.py:33:34:33:73 | ControlFlowNode for Dict | pymongo_test.py:29:27:29:33 | ControlFlowNode for request | pymongo_test.py:33:34:33:73 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | pymongo_test.py:33:34:33:73 | ControlFlowNode for Dict | This | pymongo_test.py:29:27:29:33 | ControlFlowNode for request | user-provided value |
+| pymongo_test.py:42:34:42:73 | ControlFlowNode for Dict | pymongo_test.py:38:27:38:33 | ControlFlowNode for request | pymongo_test.py:42:34:42:73 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | pymongo_test.py:42:34:42:73 | ControlFlowNode for Dict | This | pymongo_test.py:38:27:38:33 | ControlFlowNode for request | user-provided value |

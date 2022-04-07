@@ -61,6 +61,10 @@ private module NoSql {
       result = mongoEngine().getMember("connection").getMember(["get_db", "connect"]).getACall()
       or
       result = flask_MongoEngine().getMember("get_db").getACall()
+      or
+      // see https://pymongo.readthedocs.io/en/stable/api/pymongo/mongo_client.html#pymongo.mongo_client.MongoClient.get_default_database
+      // see https://pymongo.readthedocs.io/en/stable/api/pymongo/mongo_client.html#pymongo.mongo_client.MongoClient.get_database
+      result = mongoClientInstance().getMember(["get_default_database", "get_database"]).getACall()
     )
     or
     exists(DataFlow::TypeTracker t2 | result = mongoDBInstance(t2).track(t2, t))
