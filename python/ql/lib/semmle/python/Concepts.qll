@@ -507,15 +507,18 @@ module XML {
    * See PoC at `python/PoCs/XmlParsing/PoC.py` for some tests of vulnerable XML parsing.
    */
   class XmlParsingVulnerabilityKind extends string {
-    XmlParsingVulnerabilityKind() {
-      this in ["Billion Laughs", "Quadratic Blowup", "XXE", "DTD retrieval"]
-    }
+    XmlParsingVulnerabilityKind() { this in ["XML bomb", "XXE", "DTD retrieval"] }
 
-    /** Holds for Billion Laughs vulnerability kind. */
-    predicate isBillionLaughs() { this = "Billion Laughs" }
-
-    /** Holds for Quadratic Blowup vulnerability kind. */
-    predicate isQuadraticBlowup() { this = "Quadratic Blowup" }
+    /**
+     * Holds for XML bomb vulnerability kind, such as 'Billion Laughs' and 'Quadratic
+     * Blowup'.
+     *
+     * While a parser could technically be vulnerable to one and not the other, from our
+     * point of view the interesting part is that it IS vulnerable to these types of
+     * attacks, and not so much which one specifically works. In practice I haven't seen
+     * a parser that is vulnerable to one and not the other.
+     */
+    predicate isXmlBomb() { this = "XML bomb" }
 
     /** Holds for XXE vulnerability kind. */
     predicate isXxe() { this = "XXE" }

@@ -144,7 +144,7 @@ private module Lxml {
           this.getKeywordParameter("resolve_entities").getAValueReachingRhs().asExpr() = any(True t)
         )
         or
-        (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
+        kind.isXmlBomb() and
         this.getKeywordParameter("huge_tree").getAValueReachingRhs().asExpr() = any(True t) and
         not this.getKeywordParameter("resolve_entities").getAValueReachingRhs().asExpr() =
           any(False t)
@@ -318,7 +318,7 @@ private module Lxml {
       // note that there is no `resolve_entities` argument, so it's not possible to turn off XXE :O
       kind.isXxe()
       or
-      (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
+      kind.isXmlBomb() and
       this.getKeywordParameter("huge_tree").getAValueReachingRhs().asExpr() = any(True t)
       or
       kind.isDtdRetrieval() and

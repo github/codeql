@@ -28,7 +28,7 @@ private module Xmltodict {
     }
 
     override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
-      (kind.isBillionLaughs() or kind.isQuadraticBlowup()) and
+      kind.isXmlBomb() and
       this.getKeywordParameter("disable_entities").getAValueReachingRhs().asExpr() = any(False f)
     }
 
