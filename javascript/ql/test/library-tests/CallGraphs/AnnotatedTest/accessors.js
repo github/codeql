@@ -42,3 +42,13 @@ new D().f;
 
 /** callsAccessor:D.f.set */
 new D().f = 1;
+
+// Avoid regular calls being seen as calls to the accessor itself
+/** calls:NONE */
+obj.f();
+
+/** calls:NONE */
+C.f();
+
+/** calls:NONE */
+new D().f();
