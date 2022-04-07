@@ -703,6 +703,10 @@ open class KotlinFileExtractor(
                     addModifiers(id, "static")
                 }
 
+                if (f is IrSimpleFunction && f.overriddenSymbols.isNotEmpty()) {
+                    addModifiers(id, "override")
+                }
+
                 return id
             }
         }
