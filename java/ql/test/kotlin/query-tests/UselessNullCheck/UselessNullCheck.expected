@@ -1,0 +1,1 @@
+| Test.kt:8:16:8:24 | ... (value not-equals) ... | This check is useless, $@ cannot be null here, since it is guarded by $@. | Test.kt:8:16:8:16 | y | y | Test.kt:2:22:2:30 | ... (value equals) ... | ... (value equals) ... |

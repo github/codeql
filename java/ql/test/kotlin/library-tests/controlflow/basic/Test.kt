@@ -6,7 +6,7 @@ public class Test {
 		var y: Long = 50
 		var z: Int = 0
 		var w: Int = 0
-		
+
 		// if-else, multiple statements in block
 		if (x > 0) {
 			y = 20
@@ -14,34 +14,34 @@ public class Test {
 		} else {
 			y = 30
 		}
-		
+
 		z = 0
-		
+
 		// if-else with return in one branch
 		if(x < 0)
 			y = 40
-		else 
+		else
 			return
-		
+
 		// this is not the start of a BB due to the return
 		z = 10
-		
+
 		// single-branch if-else
 		if (x == 0) {
 			y = 60
 			z = 10
 		}
-		
+
 		z = 20
-		
+
 		// while loop
 		while(x > 0) {
 			y = 10
 			x--
 		}
-		
+
 		z = 30
-		
+
 /*
 TODO
 		// for loop
@@ -49,9 +49,9 @@ TODO
 			y = 0
 			w = 10
 		}
-		
+
 		z = 40
-		
+
 		// nested control flow
 		for(j in 0 .. 9) {
 			y = 30
@@ -69,11 +69,11 @@ TODO
 			x = 0
 		}
 */
-		
+
 		z = 50
-		
+
 		// nested control-flow
-		
+
 		w = 40
 		return
 	}
@@ -95,4 +95,16 @@ fun t2(o: Any?): Int {
 	} catch (e: NullPointerException) {
 		return 2
 	}
+}
+
+fun fn(x:Any?, y: Any?) {
+    if (x == null && y == null) {
+        throw Exception()
+    }
+
+    if (x != null) {
+        println("x not null")
+    } else if (y != null) {
+        println("y not null")
+    }
 }

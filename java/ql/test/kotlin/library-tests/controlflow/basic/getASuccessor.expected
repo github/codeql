@@ -169,3 +169,51 @@
 | Test.kt:95:36:97:2 | { ... } | BlockStmt | Test.kt:96:10:96:10 | 2 | IntegerLiteral |
 | Test.kt:96:3:96:10 | return ... | ReturnStmt | Test.kt:91:1:98:1 | t2 | Method |
 | Test.kt:96:10:96:10 | 2 | IntegerLiteral | Test.kt:96:3:96:10 | return ... | ReturnStmt |
+| Test.kt:100:1:110:1 | fn | Method | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:100:8:100:13 | x | Parameter | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:100:16:100:22 | y | Parameter | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:100:25:110:1 | { ... } | BlockStmt | Test.kt:101:5:103:5 | <Expr>; | ExprStmt |
+| Test.kt:101:5:103:5 | ... -> ... | WhenBranch | Test.kt:101:9:101:30 | when ... | WhenExpr |
+| Test.kt:101:5:103:5 | <Expr>; | ExprStmt | Test.kt:101:5:103:5 | when ... | WhenExpr |
+| Test.kt:101:5:103:5 | when ... | WhenExpr | Test.kt:101:5:103:5 | ... -> ... | WhenBranch |
+| Test.kt:101:9:101:9 | x | VarAccess | Test.kt:101:14:101:17 | null | NullLiteral |
+| Test.kt:101:9:101:17 | ... (value equals) ... | ValueEQExpr | Test.kt:101:22:101:30 | ... -> ... | WhenBranch |
+| Test.kt:101:9:101:17 | ... (value equals) ... | ValueEQExpr | Test.kt:101:22:101:30 | <Expr>; | ExprStmt |
+| Test.kt:101:9:101:30 | ... -> ... | WhenBranch | Test.kt:101:9:101:9 | x | VarAccess |
+| Test.kt:101:9:101:30 | when ... | WhenExpr | Test.kt:101:9:101:30 | ... -> ... | WhenBranch |
+| Test.kt:101:14:101:17 | null | NullLiteral | Test.kt:101:9:101:17 | ... (value equals) ... | ValueEQExpr |
+| Test.kt:101:22:101:22 | y | VarAccess | Test.kt:101:27:101:30 | null | NullLiteral |
+| Test.kt:101:22:101:30 | ... (value equals) ... | ValueEQExpr | Test.kt:101:33:103:5 | { ... } | BlockStmt |
+| Test.kt:101:22:101:30 | ... (value equals) ... | ValueEQExpr | Test.kt:105:5:109:5 | <Expr>; | ExprStmt |
+| Test.kt:101:22:101:30 | ... -> ... | WhenBranch | Test.kt:101:22:101:30 | true | BooleanLiteral |
+| Test.kt:101:22:101:30 | <Expr>; | ExprStmt | Test.kt:101:22:101:22 | y | VarAccess |
+| Test.kt:101:22:101:30 | <Expr>; | ExprStmt | Test.kt:101:22:101:30 | false | BooleanLiteral |
+| Test.kt:101:22:101:30 | false | BooleanLiteral | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:101:22:101:30 | true | BooleanLiteral | Test.kt:101:22:101:30 | <Expr>; | ExprStmt |
+| Test.kt:101:27:101:30 | null | NullLiteral | Test.kt:101:22:101:30 | ... (value equals) ... | ValueEQExpr |
+| Test.kt:101:33:103:5 | { ... } | BlockStmt | Test.kt:102:15:102:25 | new Exception(...) | ClassInstanceExpr |
+| Test.kt:102:9:102:25 | throw ... | ThrowStmt | Test.kt:100:1:110:1 | fn | Method |
+| Test.kt:102:15:102:25 | Exception | TypeAccess | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:102:15:102:25 | new Exception(...) | ClassInstanceExpr | Test.kt:102:9:102:25 | throw ... | ThrowStmt |
+| Test.kt:105:5:109:5 | <Expr>; | ExprStmt | Test.kt:105:5:109:5 | when ... | WhenExpr |
+| Test.kt:105:5:109:5 | when ... | WhenExpr | Test.kt:105:9:107:5 | ... -> ... | WhenBranch |
+| Test.kt:105:9:105:9 | x | VarAccess | Test.kt:105:14:105:17 | null | NullLiteral |
+| Test.kt:105:9:105:17 | ... (value not-equals) ... | ValueNEExpr | Test.kt:105:20:107:5 | { ... } | BlockStmt |
+| Test.kt:105:9:105:17 | ... (value not-equals) ... | ValueNEExpr | Test.kt:107:16:109:5 | ... -> ... | WhenBranch |
+| Test.kt:105:9:107:5 | ... -> ... | WhenBranch | Test.kt:105:9:105:9 | x | VarAccess |
+| Test.kt:105:14:105:17 | null | NullLiteral | Test.kt:105:9:105:17 | ... (value not-equals) ... | ValueNEExpr |
+| Test.kt:105:20:107:5 | { ... } | BlockStmt | Test.kt:106:9:106:29 | <Expr>; | ExprStmt |
+| Test.kt:106:9:106:29 | <Expr>; | ExprStmt | Test.kt:106:18:106:27 | x not null | StringLiteral |
+| Test.kt:106:9:106:29 | ConsoleKt | TypeAccess | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:106:9:106:29 | println(...) | MethodAccess | Test.kt:100:1:110:1 | fn | Method |
+| Test.kt:106:18:106:27 | x not null | StringLiteral | Test.kt:106:9:106:29 | println(...) | MethodAccess |
+| Test.kt:107:16:107:16 | y | VarAccess | Test.kt:107:21:107:24 | null | NullLiteral |
+| Test.kt:107:16:107:24 | ... (value not-equals) ... | ValueNEExpr | Test.kt:100:1:110:1 | fn | Method |
+| Test.kt:107:16:107:24 | ... (value not-equals) ... | ValueNEExpr | Test.kt:107:27:109:5 | { ... } | BlockStmt |
+| Test.kt:107:16:109:5 | ... -> ... | WhenBranch | Test.kt:107:16:107:16 | y | VarAccess |
+| Test.kt:107:21:107:24 | null | NullLiteral | Test.kt:107:16:107:24 | ... (value not-equals) ... | ValueNEExpr |
+| Test.kt:107:27:109:5 | { ... } | BlockStmt | Test.kt:108:9:108:29 | <Expr>; | ExprStmt |
+| Test.kt:108:9:108:29 | <Expr>; | ExprStmt | Test.kt:108:18:108:27 | y not null | StringLiteral |
+| Test.kt:108:9:108:29 | ConsoleKt | TypeAccess | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:108:9:108:29 | println(...) | MethodAccess | Test.kt:100:1:110:1 | fn | Method |
+| Test.kt:108:18:108:27 | y not null | StringLiteral | Test.kt:108:9:108:29 | println(...) | MethodAccess |
