@@ -15,6 +15,10 @@ private module NoSql {
   /** Gets a reference to `pymongo.MongoClient` */
   private API::Node pyMongo() {
     result = API::moduleImport("pymongo").getMember("MongoClient").getReturn()
+    or
+    // see https://pymongo.readthedocs.io/en/stable/api/pymongo/mongo_client.html#pymongo.mongo_client.MongoClient
+    result =
+      API::moduleImport("pymongo").getMember("mongo_client").getMember("MongoClient").getReturn()
   }
 
   /** Gets a reference to `flask_pymongo.PyMongo` */
