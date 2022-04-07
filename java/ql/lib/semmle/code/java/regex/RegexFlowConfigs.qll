@@ -3,6 +3,7 @@
  */
 
 import java
+import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.DataFlow2
 private import RegexFlowModels
@@ -19,7 +20,7 @@ private class ExploitableStringLiteral extends StringLiteral {
  * where -1 is the qualifier; or -2 if no such argument exists.
  */
 private predicate regexSinkKindInfo(string kind, boolean full, int strArg) {
-  sinkModel(_, _, _, _, _, _, _, kind) and
+  sinkModel(_, _, _, _, _, _, _, kind, _) and
   exists(string fullStr, string strArgStr |
     (
       full = true and fullStr = "f"
