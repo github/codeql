@@ -2406,26 +2406,14 @@ exprs.kt:
 #  112|             0: [BooleanLiteral] false
 #  113|         96: [LocalVariableDeclStmt] var ...;
 #  113|           1: [LocalVariableDeclExpr] b3
-#  113|             0: [WhenExpr] when ...
-#  113|               0: [WhenBranch] ... -> ...
-#  113|                 0: [VarAccess] b1
-#  113|                 1: [ExprStmt] <Expr>;
-#  113|                   0: [VarAccess] b2
-#  113|               1: [WhenBranch] ... -> ...
-#  113|                 0: [BooleanLiteral] true
-#  113|                 1: [ExprStmt] <Expr>;
-#  113|                   0: [BooleanLiteral] false
+#  113|             0: [AndLogicalExpr] ... && ...
+#  113|               0: [VarAccess] b1
+#  113|               1: [VarAccess] b2
 #  114|         97: [LocalVariableDeclStmt] var ...;
 #  114|           1: [LocalVariableDeclExpr] b4
-#  114|             0: [WhenExpr] when ...
-#  114|               0: [WhenBranch] ... -> ...
-#  114|                 0: [VarAccess] b1
-#  114|                 1: [ExprStmt] <Expr>;
-#  114|                   0: [BooleanLiteral] true
-#  114|               1: [WhenBranch] ... -> ...
-#  114|                 0: [BooleanLiteral] true
-#  114|                 1: [ExprStmt] <Expr>;
-#  114|                   0: [VarAccess] b2
+#  114|             0: [OrLogicalExpr] ... || ...
+#  114|               0: [VarAccess] b1
+#  114|               1: [VarAccess] b2
 #  115|         98: [LocalVariableDeclStmt] var ...;
 #  115|           1: [LocalVariableDeclExpr] b5
 #  115|             0: [MethodAccess] not(...)

@@ -1295,16 +1295,12 @@
 | exprs.kt:112:14:112:18 | false | exprs.kt:4:1:136:1 | topLevelMethod | BooleanLiteral |
 | exprs.kt:113:5:113:21 | b3 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:113:14:113:15 | b1 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:113:14:113:21 | when ... | exprs.kt:4:1:136:1 | topLevelMethod | WhenExpr |
+| exprs.kt:113:14:113:21 | ... && ... | exprs.kt:4:1:136:1 | topLevelMethod | AndLogicalExpr |
 | exprs.kt:113:20:113:21 | b2 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:113:20:113:21 | false | exprs.kt:4:1:136:1 | topLevelMethod | BooleanLiteral |
-| exprs.kt:113:20:113:21 | true | exprs.kt:4:1:136:1 | topLevelMethod | BooleanLiteral |
 | exprs.kt:114:5:114:21 | b4 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:114:14:114:15 | b1 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:114:14:114:15 | true | exprs.kt:4:1:136:1 | topLevelMethod | BooleanLiteral |
-| exprs.kt:114:14:114:21 | when ... | exprs.kt:4:1:136:1 | topLevelMethod | WhenExpr |
+| exprs.kt:114:14:114:21 | ... \|\| ... | exprs.kt:4:1:136:1 | topLevelMethod | OrLogicalExpr |
 | exprs.kt:114:20:114:21 | b2 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:114:20:114:21 | true | exprs.kt:4:1:136:1 | topLevelMethod | BooleanLiteral |
 | exprs.kt:115:5:115:16 | b5 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:115:14:115:16 | not(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
 | exprs.kt:115:15:115:16 | b1 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |

@@ -2635,6 +2635,44 @@ open class KotlinFileExtractor(
                     }
                 }
                 is IrWhen -> {
+                    if (e.origin == IrStatementOrigin.ANDAND ||
+                        e.origin == IrStatementOrigin.OROR) {
+
+                        // resugar binary logical operators:
+
+                        val exprParent = parent.expr(e, callable)
+                        val type = useType(e.type)
+
+                        val id = if (e.origin == IrStatementOrigin.ANDAND){
+                            val id = tw.getFreshIdLabel<DbAndlogicalexpr>()
+                            tw.writeExprs_andlogicalexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                            id
+                        }
+                        else {
+                            val id = tw.getFreshIdLabel<DbOrlogicalexpr>()
+                            tw.writeExprs_orlogicalexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                            id
+                        }
+                        val locId = tw.getLocation(e)
+
+                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                        tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
+                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+
+                        if (e.branches.size != 2) {
+                            logger.errorElement("Expected to find 2 when branches for ${e.origin}, found ${e.branches.size}", e)
+                            return
+                        }
+
+                        extractExpressionExpr(e.branches[0].condition, callable, id, 0, exprParent.enclosingStmt)
+
+                        var rhsIdx =  if (e.origin == IrStatementOrigin.ANDAND) 0 else 1
+                        extractExpressionExpr(e.branches[rhsIdx].result, callable, id, 1, exprParent.enclosingStmt)
+
+                        return
+                    }
+
                     val exprParent = parent.expr(e, callable)
                     val id = tw.getFreshIdLabel<DbWhenexpr>()
                     val type = useType(e.type)
