@@ -1,0 +1,3 @@
+| Test.kt:16:14:18:5 | m | This method overrides $@; it is advisable to add an Override annotation. | Test.kt:2:10:4:5 | m | A.m |
+| Test.kt:22:14:22:24 | o | This method overrides $@; it is advisable to add an Override annotation. | Test.kt:12:5:12:11 | o | I.o |
+| Test.kt:24:14:24:22 | getP | This method overrides $@; it is advisable to add an Override annotation. | Test.kt:8:10:8:18 | getP | A.getP |
