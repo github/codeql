@@ -38,7 +38,7 @@ private module NoSql {
    * Gets a reference to an initialized `Mongo` instance.
    * See `pyMongo()`, `flask_PyMongo()`
    */
-  private API::Node mongoInstance() {
+  private API::Node mongoClientInstance() {
     result = pyMongo() or
     result = flask_PyMongo()
   }
@@ -56,17 +56,17 @@ private module NoSql {
   /**
    * Gets a reference to a `Mongo` DB use.
    *
-   * See `mongoInstance()`, `mongoDBInstance()`.
+   * See `mongoClientInstance()`, `mongoDBInstance()`.
    */
   private DataFlow::LocalSourceNode mongoDB(DataFlow::TypeTracker t) {
     t.start() and
     (
       exists(SubscriptNode subscript |
-        subscript.getObject() = mongoInstance().getAUse().asCfgNode() and
+        subscript.getObject() = mongoClientInstance().getAUse().asCfgNode() and
         result.asCfgNode() = subscript
       )
       or
-      result.(DataFlow::AttrRead).getObject() = mongoInstance().getAUse()
+      result.(DataFlow::AttrRead).getObject() = mongoClientInstance().getAUse()
       or
       result = mongoDBInstance().getAUse()
     )
