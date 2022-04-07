@@ -33,8 +33,8 @@ private module Asyncpg {
     string methodName;
 
     SqlExecutionOnConnection() {
-      methodName in ["copy_from_query", "execute", "fetch", "fetchrow", "fetchval", "executemany"] and
-      this.calls([connectionPool().getAUse(), connection().getAUse()], methodName)
+      this = [connectionPool(), connection()].getMember(methodName).getACall() and
+      methodName in ["copy_from_query", "execute", "fetch", "fetchrow", "fetchval", "executemany"]
     }
 
     override DataFlow::Node getSql() {
@@ -51,8 +51,8 @@ private module Asyncpg {
     string methodName;
 
     FileAccessOnConnection() {
-      methodName in ["copy_from_query", "copy_from_table", "copy_to_table"] and
-      this.calls([connectionPool().getAUse(), connection().getAUse()], methodName)
+      this = [connectionPool(), connection()].getMember(methodName).getACall() and
+      methodName in ["copy_from_query", "copy_from_table", "copy_to_table"]
     }
 
     // The path argument is keyword only.

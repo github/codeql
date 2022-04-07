@@ -339,7 +339,7 @@ module Flask {
    */
   private class FlaskRequestSource extends RemoteFlowSource::Range {
     FlaskRequestSource() {
-      this = request().getAUse() and
+      this = request().getAnImmediateUse() and
       not any(Import imp).contains(this.asExpr()) and
       not exists(ControlFlowNode def | this.asVar().getSourceVariable().hasDefiningNode(def) |
         any(Import imp).contains(def.getNode())
@@ -406,8 +406,8 @@ module Flask {
     string attr_name;
 
     RequestAttrMultiDict() {
-      attr_name in ["args", "values", "form", "files"] and
-      this.(DataFlow::AttrRead).accesses(request().getAUse(), attr_name)
+      this = request().getMember(attr_name).getAnImmediateUse() and
+      attr_name in ["args", "values", "form", "files"]
     }
   }
 
@@ -421,7 +421,7 @@ module Flask {
       // TODO: This approach for identifying member-access is very adhoc, and we should
       // be able to do something more structured for providing modeling of the members
       // of a container-object.
-      exists(DataFlow::AttrRead files | files.accesses(request().getAUse(), "files") |
+      exists(DataFlow::AttrRead files | files = request().getMember("files").getAnImmediateUse() |
         this.asCfgNode().(SubscriptNode).getObject() = files.asCfgNode()
         or
         this.(DataFlow::MethodCallNode).calls(files, "get")
@@ -435,15 +435,13 @@ module Flask {
 
   /** An `Headers` instance that originates from a flask request. */
   private class FlaskRequestHeadersInstances extends Werkzeug::Headers::InstanceSource {
-    FlaskRequestHeadersInstances() {
-      this.(DataFlow::AttrRead).accesses(request().getAUse(), "headers")
-    }
+    FlaskRequestHeadersInstances() { this = request().getMember("headers").getAnImmediateUse() }
   }
 
   /** An `Authorization` instance that originates from a flask request. */
   private class FlaskRequestAuthorizationInstances extends Werkzeug::Authorization::InstanceSource {
     FlaskRequestAuthorizationInstances() {
-      this.(DataFlow::AttrRead).accesses(request().getAUse(), "authorization")
+      this = request().getMember("authorization").getAnImmediateUse()
     }
   }
 
