@@ -11,7 +11,7 @@ class Node = DataFlowPublic::Node;
 
 class TypeTrackingNode = DataFlowPublic::TypeTrackingNode;
 
-predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStep/2;
+predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStepForTypetracking/2;
 
 predicate jumpStep = DataFlowPrivate::jumpStepSharedWithTypeTracker/2;
 

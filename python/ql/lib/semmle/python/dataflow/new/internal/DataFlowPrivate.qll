@@ -282,8 +282,6 @@ module EssaFlow {
       nodeTo = TKwOverflowNode(call, callable) and
       nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode()
     )
-    or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
@@ -302,10 +300,22 @@ module EssaFlow {
  * This is the local flow predicate that is used as a building block in global
  * data flow.
  *
+ * It includes flow steps from flow summaries.
+ */
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo)
+  or
+  summaryFlowSteps(nodeFrom, nodeTo)
+}
+
+/**
+ * This is the local flow predicate that is used as a building block in
+ * type tracking, it does _not_ include steps from flow summaries.
+ *
  * Local flow can happen either at import time, when the module is initialised
  * or at runtime when callables in the module are called.
  */
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
   // If there is local flow out of a node `node`, we want flow
   // both out of `node` and any post-update node of `node`.
   exists(Node node |
@@ -339,6 +349,34 @@ predicate runtimeLocalFlowStep(Node nodeFrom, Node nodeTo) {
   not isTopLevel(nodeFrom) and
   not isTopLevel(nodeTo) and
   EssaFlow::essaFlowStep(nodeFrom, nodeTo)
+}
+
+predicate summaryFlowSteps(Node nodeFrom, Node nodeTo) {
+  // If there is local flow out of a node `node`, we want flow
+  // both out of `node` and any post-update node of `node`.
+  exists(Node node |
+    nodeFrom = update(node) and
+    (
+      importTimeSummaryFlowStep(node, nodeTo) or
+      runtimeSummaryFlowStep(node, nodeTo)
+    )
+  )
+}
+
+predicate importTimeSummaryFlowStep(Node nodeFrom, Node nodeTo) {
+  // As a proxy for whether statements can be executed at import time,
+  // we check if they appear at the top level.
+  // This will miss statements inside functions called from the top level.
+  isTopLevel(nodeFrom) and
+  isTopLevel(nodeTo) and
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
+}
+
+predicate runtimeSummaryFlowStep(Node nodeFrom, Node nodeTo) {
+  // Anything not at the top level can be executed at runtime.
+  not isTopLevel(nodeFrom) and
+  not isTopLevel(nodeTo) and
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
 }
 
 /** `ModuleVariable`s are accessed via jump steps at runtime. */
