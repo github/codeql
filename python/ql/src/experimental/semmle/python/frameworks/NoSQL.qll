@@ -96,6 +96,12 @@ private module NoSql {
       )
       or
       result.(DataFlow::AttrRead).getObject() = mongoDBInstance()
+      or
+      // see https://pymongo.readthedocs.io/en/stable/api/pymongo/database.html#pymongo.database.Database.get_collection
+      // see https://pymongo.readthedocs.io/en/stable/api/pymongo/database.html#pymongo.database.Database.create_collection
+      result
+          .(DataFlow::MethodCallNode)
+          .calls(mongoDBInstance(), ["get_collection", "create_collection"])
     )
     or
     exists(DataFlow::TypeTracker t2 | result = mongoCollection(t2).track(t2, t))

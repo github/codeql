@@ -35,10 +35,11 @@ def bad2():
 
 @app.route("/bad3")
 def bad3():
+    # using `get_` methods instead of subscript/attribute lookups
     event_id = json.loads(request.args['event_id'])
     client = MongoClient("localhost", 27017, maxPoolSize=50)
     db = client.get_database(name="localhost")
-    collection = db['collection']
+    collection = db.get_collection("collection")
     cursor = collection.find_one({"$where": f"this._id == '${event_id}'"})
 
 
