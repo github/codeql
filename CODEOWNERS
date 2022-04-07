@@ -5,7 +5,6 @@
 /python/ @github/codeql-python
 /ruby/ @github/codeql-ruby
 
-
 # ML-powered queries
 /javascript/ql/experimental/adaptivethreatmodeling/ @github/codeql-ml-powered-queries-reviewers
 
