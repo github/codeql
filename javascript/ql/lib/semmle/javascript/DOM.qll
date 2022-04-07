@@ -420,6 +420,13 @@ module DOM {
     t.startInProp("target") and
     result = domEventSource()
     or
+    t.start() and
+    exists(DataFlow::ClassNode cls |
+      cls.getASuperClassNode().getALocalSource() =
+        DataFlow::globalVarRef(any(string s | s.matches("HTML%Element"))) and
+      result = cls.getAReceiverNode()
+    )
+    or
     exists(DataFlow::TypeTracker t2 | result = domValueRef(t2).track(t2, t))
   }
 
