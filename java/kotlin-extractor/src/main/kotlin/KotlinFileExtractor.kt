@@ -2670,6 +2670,8 @@ open class KotlinFileExtractor(
                     val isBigArity = types.size > BuiltInFunctionArity.BIG_ARITY
                     if (isBigArity) {
                         implementFunctionNInvoke(e.function, ids, locId, parameters)
+                    } else {
+                        addModifiers(ids.function, "override")
                     }
 
                     val exprParent = parent.expr(e, callable)
@@ -3394,6 +3396,7 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(methodId, locId)
 
         addModifiers(methodId, "public")
+        addModifiers(methodId, "override")
 
         // Block
         val blockId = tw.getFreshIdLabel<DbBlock>()
