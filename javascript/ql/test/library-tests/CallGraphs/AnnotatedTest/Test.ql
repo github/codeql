@@ -25,7 +25,7 @@ class AnnotatedFunction extends Function {
 }
 
 /** A function annotated with `calls:NAME` */
-class AnnotatedCall extends DataFlow::SourceNode {
+class AnnotatedCall extends DataFlow::Node {
   string calls;
   string kind;
 
