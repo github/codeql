@@ -339,7 +339,7 @@ module Flask {
    */
   private class FlaskRequestSource extends RemoteFlowSource::Range {
     FlaskRequestSource() {
-      this = request().getAnImmediateUse() and
+      this = request().getAUse() and
       not any(Import imp).contains(this.asExpr()) and
       not exists(ControlFlowNode def | this.asVar().getSourceVariable().hasDefiningNode(def) |
         any(Import imp).contains(def.getNode())
