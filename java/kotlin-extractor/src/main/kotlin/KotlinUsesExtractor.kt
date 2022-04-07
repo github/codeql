@@ -1,10 +1,10 @@
 package com.github.codeql
 
 import com.github.codeql.utils.*
+import com.github.codeql.utils.versions.isRawType
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
-import org.jetbrains.kotlin.backend.jvm.codegen.isRawType
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.ir.declarations.*
@@ -601,7 +601,6 @@ open class KotlinUsesExtractor(
             s.classifier.owner is IrClass -> {
                 val classifier: IrClassifierSymbol = s.classifier
                 val cls: IrClass = classifier.owner as IrClass
-
                 val args = if (s.isRawType()) null else s.arguments
 
                 return useSimpleTypeClass(cls, args, s.hasQuestionMark)

@@ -12,14 +12,20 @@ import os.path
 import sys
 import shlex
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dependencies', default='../../../resources/kotlin-dependencies', help='Folder containing the dependencies')
-    parser.add_argument('--many', action='store_true', help='Build for all versions/kinds')
-    parser.add_argument('--single', action='store_false', dest='many', help='Build for a single version/kind')
+    parser.add_argument('--dependencies', default='../../../resources/kotlin-dependencies',
+                        help='Folder containing the dependencies')
+    parser.add_argument('--many', action='store_true',
+                        help='Build for all versions/kinds')
+    parser.add_argument('--single', action='store_false',
+                        dest='many', help='Build for a single version/kind')
     return parser.parse_args()
 
+
 args = parse_args()
+
 
 def is_windows():
     '''Whether we appear to be running on Windows'''
@@ -29,9 +35,11 @@ def is_windows():
         return True
     return False
 
+
 kotlinc = 'kotlinc.bat' if is_windows() else 'kotlinc'
 javac = 'javac'
 kotlin_dependency_folder = args.dependencies
+
 
 def quote_for_batch(arg):
     if ';' in arg or '=' in arg:
@@ -40,6 +48,7 @@ def quote_for_batch(arg):
         return '"' + arg + '"'
     else:
         return arg
+
 
 def run_process(cmd, capture_output=False):
     print("Running command: " + shlex.join(cmd))
@@ -156,15 +165,10 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
         shutil.rmtree(tmp_dir)
     shutil.copytree('src', tmp_dir)
 
-    if version.startswith('1.4'):
-        shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/default')
-        shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/v_1_6')
-    elif version.startswith('1.6'):
-        shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/v_1_4')
-        shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/default')
-    else:
-        shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/v_1_4')
-        shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/v_1_6')
+    for v in kotlin_plugin_versions.many_versions:
+        if v != version:
+            shutil.rmtree(
+                tmp_dir + '/main/kotlin/utils/versions/v_' + v.replace('.', '_'))
 
     srcs = find_sources(tmp_dir)
 
