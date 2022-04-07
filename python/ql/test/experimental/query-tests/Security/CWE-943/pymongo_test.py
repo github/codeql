@@ -24,5 +24,23 @@ def good():
     return client.db.collection.find_one({'data': safe_search})
 
 
+@app.route("/bad2")
+def bad2():
+    event_id = json.loads(request.args['event_id'])
+    client = MongoClient("localhost", 27017, maxPoolSize=50)
+    db = client.localhost
+    collection = db['collection']
+    cursor = collection.find_one({"$where": f"this._id == '${event_id}'"})
+
+
+@app.route("/bad3")
+def bad3():
+    event_id = json.loads(request.args['event_id'])
+    client = MongoClient("localhost", 27017, maxPoolSize=50)
+    db = client.get_database(name="localhost")
+    collection = db['collection']
+    cursor = collection.find_one({"$where": f"this._id == '${event_id}'"})
+
+
 if __name__ == "__main__":
     app.run(debug=True)
