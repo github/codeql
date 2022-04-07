@@ -13,7 +13,7 @@
  */
 
 import python
-import experimental.semmle.python.security.dataflow.XxeQuery
+import semmle.python.security.dataflow.XxeQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
