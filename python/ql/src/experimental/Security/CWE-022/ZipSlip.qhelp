@@ -46,7 +46,7 @@ In this example an archive is extracted without validating file paths.
 <sample src="zipslip_good.py" />
 
 </example>
-
+<references>
 <li>
 Snyk:
 <a href="https://snyk.io/research/zip-slip-vulnerability">Zip Slip Vulnerability</a>.
