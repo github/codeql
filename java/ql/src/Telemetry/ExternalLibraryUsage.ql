@@ -7,7 +7,7 @@
  */
 
 import java
-import ExternalAPI
+import ExternalApi
 
 from int usages, string jarname
 where

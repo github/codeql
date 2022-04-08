@@ -5,7 +5,7 @@ typedef unsigned long size_t;
 int stdout_fileno = STDOUT_FILENO;
 
 size_t strlen(const char *s);
-
+int snprintf(char *s, size_t n, const char *format, ...);
 void send(int fd, const void *buf, size_t bufLen, int d);
 void recv(int fd, void *buf, size_t bufLen, int d);
 void read(int fd, void *buf, size_t bufLen);
@@ -473,4 +473,107 @@ void test_tty()
 
 		recv(f, password, 256, val()); // GOOD: from terminal or stdin
 	}
+}
+
+// ---
+
+struct person_info
+{
+	// sensitive
+	char *social_security_number;
+	char *socialSecurityNo;
+	char *homePostCode;
+	char *my_zip_code;
+	char *telephone;
+	char *mobile_phone_number;
+	char *email;
+	char *my_credit_card_number;
+	char *my_bank_account_no;
+	char *employerName;
+	char medical_info[8 * 1024];
+	char *license_key;
+	double my_latitude;
+	double home_longitude;
+	int newSalary;
+	char *salaryString;
+	// not sensitive
+	char *license_key_hash;
+	char *my_zip_file;
+};
+
+void tests2(person_info *pi)
+{
+	// direct cases
+	send(val(), pi->social_security_number, strlen(pi->social_security_number), val()); // BAD
+	send(val(), pi->socialSecurityNo, strlen(pi->socialSecurityNo), val()); // BAD
+	send(val(), pi->homePostCode, strlen(pi->homePostCode), val()); // BAD
+	send(val(), pi->my_zip_code, strlen(pi->my_zip_code), val()); // BAD
+	send(val(), pi->telephone, strlen(pi->telephone), val()); // BAD
+	send(val(), pi->mobile_phone_number, strlen(pi->mobile_phone_number), val()); // BAD
+	send(val(), pi->email, strlen(pi->email), val()); // BAD
+	send(val(), pi->my_credit_card_number, strlen(pi->my_credit_card_number), val()); // BAD
+	send(val(), pi->my_bank_account_no, strlen(pi->my_bank_account_no), val()); // BAD
+	send(val(), pi->employerName, strlen(pi->employerName), val()); // BAD
+	send(val(), pi->medical_info, strlen(pi->medical_info), val()); // BAD
+	send(val(), pi->license_key, strlen(pi->license_key), val()); // BAD
+	send(val(), pi->license_key_hash, strlen(pi->license_key_hash), val()); // GOOD
+	send(val(), pi->my_zip_file, strlen(pi->my_zip_file), val()); // GOOD
+
+	// indirect cases
+	{
+		char buffer[1024];
+
+		snprintf(buffer, 1024, "lat = %f\n", pi->my_latitude);
+		send(val(), buffer, strlen(buffer), val()); // BAD
+	}
+	{
+		char buffer[1024];
+
+		snprintf(buffer, 1024, "long = %f\n", pi->home_longitude);
+		send(val(), buffer, strlen(buffer), val()); // BAD
+	}
+	{
+		char buffer[1024];
+
+		snprintf(buffer, 1024, "salary = %i\n", pi->newSalary);
+		send(val(), buffer, strlen(buffer), val()); // BAD [NOT DETECTED]
+	}
+	{
+		char buffer[1024];
+		int sal = pi->newSalary;
+
+		snprintf(buffer, 1024, "salary = %i\n", sal);
+		send(val(), buffer, strlen(buffer), val()); // BAD [NOT DETECTED]
+	}
+	{
+		char buffer[1024];
+
+		snprintf(buffer, 1024, "salary = %s\n", pi->salaryString);
+		send(val(), buffer, strlen(buffer), val()); // BAD
+	}
+	{
+		char buffer[1024];
+		char *sal = pi->salaryString;
+
+		snprintf(buffer, 1024, "salary = %s\n", sal);
+		send(val(), buffer, strlen(buffer), val()); // BAD
+	}
+}
+
+const char *get_home_phone();
+const char *get_home();
+const char *get_home_address();
+
+void tests3()
+{
+	const char *str;
+
+	str = get_home_phone();
+	send(val(), str, strlen(str), val()); // BAD
+
+	str = get_home();
+	send(val(), str, strlen(str), val()); // GOOD (probably not personal info)
+
+	str = get_home_address();
+	send(val(), str, strlen(str), val()); // BAD
 }

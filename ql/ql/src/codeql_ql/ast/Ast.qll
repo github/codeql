@@ -135,6 +135,8 @@ class TopLevel extends TTopLevel, AstNode {
     pred = directMember("getAModule") and result = this.getAModule()
     or
     pred = directMember("getANewType") and result = this.getANewType()
+    or
+    pred = directMember("getQLDoc") and result = this.getQLDoc()
   }
 
   QLDoc getQLDocFor(ModuleMember m) {
@@ -1125,6 +1127,21 @@ class Import extends TImport, ModuleMember, ModuleRef {
    */
   string getQualifiedName(int i) {
     result = imp.getChild(0).(QL::ImportModuleExpr).getChild().getName(i).getValue()
+  }
+
+  /**
+   * Gets the full string specifying the module being imported.
+   */
+  string getImportString() {
+    exists(string selec |
+      not exists(getSelectionName(_)) and selec = ""
+      or
+      selec =
+        "::" + strictconcat(int i, string q | q = this.getSelectionName(i) | q, "::" order by i)
+    |
+      result =
+        strictconcat(int i, string q | q = this.getQualifiedName(i) | q, "." order by i) + selec
+    )
   }
 
   final override FileOrModule getResolvedModule() { resolve(this, result) }

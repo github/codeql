@@ -454,11 +454,11 @@ class StringConcatenation extends Expr, TStringConcatenation {
    */
   final string getConcatenatedValueText() {
     forall(StringLiteral c | c = this.getString(_) |
-      exists(c.getConstantValue().getStringOrSymbol())
+      exists(c.getConstantValue().getStringlikeValue())
     ) and
     result =
       concat(string valueText, int i |
-        valueText = this.getString(i).getConstantValue().getStringOrSymbol()
+        valueText = this.getString(i).getConstantValue().getStringlikeValue()
       |
         valueText order by i
       )

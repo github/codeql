@@ -75,13 +75,9 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll"
   ],
-  "Model as Data Generation Java/C# - Utils": [
-    "java/ql/src/utils/model-generator/ModelGeneratorUtils.qll",
-    "csharp/ql/src/utils/model-generator/ModelGeneratorUtils.qll"
-  ],
-  "Model as Data Generation Java/C# - SummaryModels": [
-    "java/ql/src/utils/model-generator/CaptureSummaryModels.qll",
-    "csharp/ql/src/utils/model-generator/CaptureSummaryModels.qll"
+  "Model as Data Generation Java/C# - CaptureModels": [
+    "java/ql/src/utils/model-generator/internal/CaptureModels.qll",
+    "csharp/ql/src/utils/model-generator/internal/CaptureModels.qll"
   ],
   "Sign Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/Sign.qll",
@@ -482,11 +478,12 @@
     "python/ql/lib/semmle/python/security/performance/ReDoSUtil.qll",
     "ruby/ql/lib/codeql/ruby/security/performance/ReDoSUtil.qll"
   ],
-  "ReDoS Exponential Python/JS": [
+  "ReDoS Exponential Python/JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/performance/ExponentialBackTracking.qll",
-    "python/ql/lib/semmle/python/security/performance/ExponentialBackTracking.qll"
+    "python/ql/lib/semmle/python/security/performance/ExponentialBackTracking.qll",
+    "ruby/ql/lib/codeql/ruby/security/performance/ExponentialBackTracking.qll"
   ],
-  "ReDoS Polynomial Python/JS": [
+  "ReDoS Polynomial Python/JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
     "python/ql/lib/semmle/python/security/performance/SuperlinearBackTracking.qll",
     "ruby/ql/lib/codeql/ruby/security/performance/SuperlinearBackTracking.qll"
@@ -518,12 +515,38 @@
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/AccessPathSyntax.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/AccessPathSyntax.qll"
   ],
+  "IncompleteUrlSubstringSanitization": [
+    "javascript/ql/src/Security/CWE-020/IncompleteUrlSubstringSanitization.qll",
+    "ruby/ql/src/queries/security/cwe-020/IncompleteUrlSubstringSanitization.qll"
+  ],
+  "Concepts Python/Ruby/JS": [
+    "python/ql/lib/semmle/python/internal/ConceptsShared.qll",
+    "ruby/ql/lib/codeql/ruby/internal/ConceptsShared.qll",
+    "javascript/ql/lib/semmle/javascript/internal/ConceptsShared.qll"
+  ],
   "Hostname Regexp queries": [
     "javascript/ql/src/Security/CWE-020/HostnameRegexpShared.qll",
+    "python/ql/src/Security/CWE-020/HostnameRegexpShared.qll",
     "ruby/ql/src/queries/security/cwe-020/HostnameRegexpShared.qll"
   ],
   "ApiGraphModels": [
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/ApiGraphModels.qll",
     "ruby/ql/lib/codeql/ruby/frameworks/data/internal/ApiGraphModels.qll"
+  ],
+  "TaintedFormatStringQuery Ruby/JS": [
+    "javascript/ql/lib/semmle/javascript/security/dataflow/TaintedFormatStringQuery.qll",
+    "ruby/ql/lib/codeql/ruby/security/TaintedFormatStringQuery.qll"
+  ],
+  "TaintedFormatStringCustomizations Ruby/JS": [
+    "javascript/ql/lib/semmle/javascript/security/dataflow/TaintedFormatStringCustomizations.qll",
+    "ruby/ql/lib/codeql/ruby/security/TaintedFormatStringCustomizations.qll"
+  ],
+  "HttpToFileAccessQuery JS/Ruby": [
+    "javascript/ql/lib/semmle/javascript/security/dataflow/HttpToFileAccessQuery.qll",
+    "ruby/ql/lib/codeql/ruby/security/HttpToFileAccessQuery.qll"
+  ],
+  "HttpToFileAccessCustomizations JS/Ruby": [
+    "javascript/ql/lib/semmle/javascript/security/dataflow/HttpToFileAccessCustomizations.qll",
+    "ruby/ql/lib/codeql/ruby/security/HttpToFileAccessCustomizations.qll"
   ]
 }

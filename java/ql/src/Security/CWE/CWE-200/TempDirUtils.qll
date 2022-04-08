@@ -58,7 +58,6 @@ private predicate isTaintPropagatingFileTransformation(Expr expSource, Expr expr
  * For example, `taintedFile.getCanonicalFile()` is itself tainted.
  */
 predicate isAdditionalFileTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-  isFileConstructorArgument(node1.asExpr(), node2.asExpr(), _) or
   isTaintPropagatingFileTransformation(node1.asExpr(), node2.asExpr())
 }
 

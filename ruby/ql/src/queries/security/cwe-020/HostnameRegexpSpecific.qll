@@ -1,2 +1,2 @@
-import codeql.ruby.security.performance.RegExpTreeView
+import codeql.ruby.Regexp
 import codeql.ruby.DataFlow

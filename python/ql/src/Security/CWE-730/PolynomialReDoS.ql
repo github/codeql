@@ -14,12 +14,12 @@
 
 import python
 import semmle.python.security.performance.SuperlinearBackTracking
-import semmle.python.security.dataflow.PolynomialReDoS
+import semmle.python.security.dataflow.PolynomialReDoSQuery
 import DataFlow::PathGraph
 
 from
-  PolynomialReDoS::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  PolynomialReDoS::Sink sinkNode, PolynomialBackTrackingTerm regexp
+  Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode,
+  PolynomialBackTrackingTerm regexp
 where
   config.hasFlowPath(source, sink) and
   sinkNode = sink.getNode() and

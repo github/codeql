@@ -1,5 +1,5 @@
 /**
- * @name Correct casing on name declaraions
+ * @name Correct casing on name declarations
  * @description Variables/fields/predicates should be lower-case, classes/modules should be upper-case
  * @kind problem
  * @problem.severity error

@@ -2,24 +2,24 @@
 
 // library functions etc
 
+#include "tests.h"
+
 char *getenv(const char *name);
 char *strcpy(char *s1, const char *s2);
 
-namespace std
-{
-	template<class charT> struct char_traits;
 
-	template <class charT, class traits = char_traits<charT> >
-	class basic_ostream /*: virtual public basic_ios<charT,traits> - not needed for this test */ {
-	public: 
-	};
 
-	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>&, const charT*);
 
-	typedef basic_ostream<char> ostream;
 
-	extern ostream cout;
-}
+
+
+
+
+
+
+
+
+
 
 int socket(int p1, int p2, int p3);
 void send(int sock, const char *buffer, int p3, int p4);
@@ -63,10 +63,12 @@ void test1()
 	send(sock, getenv("HOME"), val(), val()); // BAD
 	send(sock, getenv("PATH"), val(), val()); // BAD
 	send(sock, getenv("USERNAME"), val(), val()); // BAD
+	send(sock, getenv("APP_PASSWORD"), val(), val()); // BAD
 	send(sock, getenv("HARMLESS"), val(), val()); // GOOD: harmless information
 	send(sock, "HOME", val(), val()); // GOOD: not system data
 	send(sock, "PATH", val(), val()); // GOOD: not system data
 	send(sock, "USERNAME", val(), val()); // GOOD: not system data
+	send(sock, "APP_PASSWORD", val(), val()); // GOOD: not system data
 	send(sock, "HARMLESS", val(), val()); // GOOD: not system data
 
 	// tests for `mysql_get_client_info`, including via a global

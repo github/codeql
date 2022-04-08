@@ -120,6 +120,19 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   // API graphs do not use store/load steps for arrays
   token.getName() = ["ArrayElement", "Element"] and
   result = node.getUnknownMember()
+  or
+  token.getName() = "Parameter" and
+  token.getAnArgument() = "this" and
+  result = node.getReceiver()
+  or
+  token.getName() = "DecoratedClass" and
+  result = node.getADecoratedClass()
+  or
+  token.getName() = "DecoratedMember" and
+  result = node.getADecoratedMember()
+  or
+  token.getName() = "DecoratedParameter" and
+  result = node.getADecoratedParameter()
 }
 
 /**
@@ -129,6 +142,10 @@ bindingset[token]
 API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathToken token) {
   token.getName() = "Instance" and
   result = node.getInstance()
+  or
+  token.getName() = "Argument" and
+  token.getAnArgument() = "this" and
+  result.getARhs() = node.(DataFlow::CallNode).getReceiver()
 }
 
 /**
@@ -202,7 +219,11 @@ InvokeNode getAnInvocationOf(API::Node node) { result = node.getAnInvocation() }
  */
 bindingset[name]
 predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
-  name = ["Member", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call"]
+  name =
+    [
+      "Member", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
+      "DecoratedClass", "DecoratedMember", "DecoratedParameter"
+    ]
 }
 
 /**
@@ -210,7 +231,11 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
  * in an identifying access path.
  */
 predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
-  name = ["Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call"]
+  name =
+    [
+      "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
+      "DecoratedClass", "DecoratedMember", "DecoratedParameter"
+    ]
 }
 
 /**

@@ -473,36 +473,6 @@ module API {
     /** Gets a data flow node that flows to the RHS of a def-node. */
     private DataFlow::LocalSourceNode defCand() { result = defCand(TypeBackTracker::end()) }
 
-    private Label::ApiLabel getLabelFromArgumentPosition(DataFlowDispatch::ArgumentPosition pos) {
-      exists(int n |
-        pos.isPositional(n) and
-        result = Label::parameter(n)
-      )
-      or
-      exists(string name |
-        pos.isKeyword(name) and
-        result = Label::keywordParameter(name)
-      )
-      or
-      pos.isBlock() and
-      result = Label::blockParameter()
-    }
-
-    private Label::ApiLabel getLabelFromParameterPosition(DataFlowDispatch::ParameterPosition pos) {
-      exists(int n |
-        pos.isPositional(n) and
-        result = Label::parameter(n)
-      )
-      or
-      exists(string name |
-        pos.isKeyword(name) and
-        result = Label::keywordParameter(name)
-      )
-      or
-      pos.isBlock() and
-      result = Label::blockParameter()
-    }
-
     /**
      * Holds if there should be a `lbl`-edge from the given call to an argument.
      */
@@ -512,7 +482,7 @@ module API {
     ) {
       exists(DataFlowDispatch::ArgumentPosition argPos |
         argument.sourceArgumentOf(call.asExpr(), argPos) and
-        lbl = getLabelFromArgumentPosition(argPos)
+        lbl = Label::getLabelFromArgumentPosition(argPos)
       )
     }
 
@@ -525,7 +495,7 @@ module API {
     ) {
       exists(DataFlowDispatch::ParameterPosition paramPos |
         paramNode.isSourceParameterOf(callable.asExpr().getExpr(), paramPos) and
-        lbl = getLabelFromParameterPosition(paramPos)
+        lbl = Label::getLabelFromParameterPosition(paramPos)
       )
     }
 
@@ -803,5 +773,37 @@ module API {
 
     /** Gets the label for the edge from the root node to a custom entry point of the given name. */
     LabelEntryPoint entryPoint(API::EntryPoint name) { result.getName() = name }
+
+    /** Gets the API graph label corresponding to the given argument position. */
+    Label::ApiLabel getLabelFromArgumentPosition(DataFlowDispatch::ArgumentPosition pos) {
+      exists(int n |
+        pos.isPositional(n) and
+        result = Label::parameter(n)
+      )
+      or
+      exists(string name |
+        pos.isKeyword(name) and
+        result = Label::keywordParameter(name)
+      )
+      or
+      pos.isBlock() and
+      result = Label::blockParameter()
+    }
+
+    /** Gets the API graph label corresponding to the given parameter position. */
+    Label::ApiLabel getLabelFromParameterPosition(DataFlowDispatch::ParameterPosition pos) {
+      exists(int n |
+        pos.isPositional(n) and
+        result = Label::parameter(n)
+      )
+      or
+      exists(string name |
+        pos.isKeyword(name) and
+        result = Label::keywordParameter(name)
+      )
+      or
+      pos.isBlock() and
+      result = Label::blockParameter()
+    }
   }
 }

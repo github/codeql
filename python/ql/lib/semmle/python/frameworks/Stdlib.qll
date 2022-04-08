@@ -1934,7 +1934,7 @@ private module StdlibPrivate {
 
     /** A HttpRequestHandler class definition (most likely in project code). */
     class HttpRequestHandlerClassDef extends Class {
-      HttpRequestHandlerClassDef() { this.getParent() = subclassRef().getAUse().asExpr() }
+      HttpRequestHandlerClassDef() { this.getParent() = subclassRef().getAnImmediateUse().asExpr() }
     }
 
     /** DEPRECATED: Alias for HttpRequestHandlerClassDef */
@@ -2027,12 +2027,12 @@ private module StdlibPrivate {
   private module WsgirefSimpleServer {
     class WsgiServerSubclass extends Class, SelfRefMixin {
       WsgiServerSubclass() {
-        this.getABase() =
+        this.getParent() =
           API::moduleImport("wsgiref")
               .getMember("simple_server")
               .getMember("WSGIServer")
               .getASubclass*()
-              .getAUse()
+              .getAnImmediateUse()
               .asExpr()
       }
     }
@@ -2595,81 +2595,37 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // hashlib
   // ---------------------------------------------------------------------------
-  /** Gets a back-reference to the hashname argument `arg` that was used in a call to `hashlib.new`. */
-  private DataFlow::TypeTrackingNode hashlibNewCallNameBacktracker(
-    DataFlow::TypeBackTracker t, DataFlow::Node arg
-  ) {
-    t.start() and
-    hashlibNewCallImpl(_, arg) and
-    result = arg.getALocalSource()
-    or
-    exists(DataFlow::TypeBackTracker t2 |
-      result = hashlibNewCallNameBacktracker(t2, arg).backtrack(t2, t)
-    )
-  }
-
-  /** Gets a back-reference to the hashname argument `arg` that was used in a call to `hashlib.new`. */
-  private DataFlow::LocalSourceNode hashlibNewCallNameBacktracker(DataFlow::Node arg) {
-    result = hashlibNewCallNameBacktracker(DataFlow::TypeBackTracker::end(), arg)
-  }
-
-  /** Holds when `call` is a call to `hashlib.new` with `nameArg` as the first argument. */
-  private predicate hashlibNewCallImpl(DataFlow::CallCfgNode call, DataFlow::Node nameArg) {
-    call = API::moduleImport("hashlib").getMember("new").getACall() and
-    nameArg in [call.getArg(0), call.getArgByName("name")]
-  }
-
   /** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
-  private DataFlow::CallCfgNode hashlibNewCall(string algorithmName) {
-    exists(DataFlow::Node origin, DataFlow::Node nameArg |
-      origin = hashlibNewCallNameBacktracker(nameArg) and
-      algorithmName = origin.asExpr().(StrConst).getText() and
-      hashlibNewCallImpl(result, nameArg)
-    )
-  }
-
-  /** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */
-  private DataFlow::TypeTrackingNode hashlibNewResult(DataFlow::TypeTracker t, string algorithmName) {
-    t.start() and
-    result = hashlibNewCall(algorithmName)
-    or
-    exists(DataFlow::TypeTracker t2 | result = hashlibNewResult(t2, algorithmName).track(t2, t))
-  }
-
-  /** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */
-  DataFlow::Node hashlibNewResult(string algorithmName) {
-    hashlibNewResult(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+  private API::CallNode hashlibNewCall(string algorithmName) {
+    algorithmName =
+      result.getParameter(0, "name").getAValueReachingRhs().asExpr().(StrConst).getText() and
+    result = API::moduleImport("hashlib").getMember("new").getACall()
   }
 
   /**
    * A hashing operation by supplying initial data when calling the `hashlib.new` function.
    */
-  class HashlibNewCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
+  class HashlibNewCall extends Cryptography::CryptographicOperation::Range, API::CallNode {
     string hashName;
 
     HashlibNewCall() {
       this = hashlibNewCall(hashName) and
-      exists([this.getArg(1), this.getArgByName("data")])
+      exists(this.getParameter(1, "data"))
     }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 
-    override DataFlow::Node getAnInput() { result in [this.getArg(1), this.getArgByName("data")] }
+    override DataFlow::Node getAnInput() { result = this.getParameter(1, "data").getARhs() }
   }
 
   /**
    * A hashing operation by using the `update` method on the result of calling the `hashlib.new` function.
    */
-  class HashlibNewUpdateCall extends Cryptography::CryptographicOperation::Range,
-    DataFlow::CallCfgNode {
+  class HashlibNewUpdateCall extends Cryptography::CryptographicOperation::Range, API::CallNode {
     string hashName;
 
     HashlibNewUpdateCall() {
-      exists(DataFlow::AttrRead attr |
-        attr.getObject() = hashlibNewResult(hashName) and
-        this.getFunction() = attr and
-        attr.getAttributeName() = "update"
-      )
+      this = hashlibNewCall(hashName).getReturn().getMember("update").getACall()
     }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }

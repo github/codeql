@@ -1690,4 +1690,68 @@ void captured_lambda(int x, int &y, int &&z)
     };
 }
 
+int goto_on_same_line() {
+  int x = 42;
+  goto next; next:
+  return x;
+}
+
+class TrivialLambdaClass {
+public:
+    void m() const {
+        auto l_m_outer = [*this] {
+            m();
+
+            auto l_m_inner = [*this] {
+                m();
+            };
+        };
+    };
+};
+
+void captured_lambda2(TrivialLambdaClass p1, TrivialLambdaClass &p2, TrivialLambdaClass &&p3) {
+    const TrivialLambdaClass l1;
+    const TrivialLambdaClass &l2 = TrivialLambdaClass();
+
+    auto l_outer1 = [p1, p2, p3, l1, l2] {
+        auto l_inner1 = [p1] {};
+    };
+}
+
+class CopyConstructorWithImplicitArgumentClass {
+    int x;
+public:
+    CopyConstructorWithImplicitArgumentClass() {}
+    CopyConstructorWithImplicitArgumentClass(const CopyConstructorWithImplicitArgumentClass &c) {
+        x = c.x;
+    }
+};
+
+class CopyConstructorWithBitwiseCopyClass {
+    int y;
+public:
+    CopyConstructorWithBitwiseCopyClass() {}
+};
+
+class CopyConstructorTestNonVirtualClass :
+        public CopyConstructorWithImplicitArgumentClass,
+        public CopyConstructorWithBitwiseCopyClass {
+public:
+    CopyConstructorTestNonVirtualClass() {}
+};
+
+class CopyConstructorTestVirtualClass :
+        public virtual CopyConstructorWithImplicitArgumentClass,
+        public virtual CopyConstructorWithBitwiseCopyClass {
+public:
+    CopyConstructorTestVirtualClass() {}
+};
+
+int implicit_copy_constructor_test(
+        const CopyConstructorTestNonVirtualClass &x,
+        const CopyConstructorTestVirtualClass &y) {
+    CopyConstructorTestNonVirtualClass cx = x;
+    CopyConstructorTestVirtualClass cy = y;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

@@ -706,6 +706,39 @@ calls/calls.rb:
 #  347|       getKey: [SymbolLiteral] :X
 #  347|         getComponent: [StringTextComponent] X
 #  347|       getValue: [ConstantReadAccess] X
+#  350|   getStmt: [AssignExpr] ... = ...
+#  350|     getAnOperand/getLeftOperand: [LocalVariableAccess] y
+#  350|     getAnOperand/getRightOperand: [IntegerLiteral] 1
+#  351|   getStmt: [AssignExpr] ... = ...
+#  351|     getAnOperand/getLeftOperand: [LocalVariableAccess] one
+#  351|     getAnOperand/getRightOperand: [Lambda] -> { ... }
+#  351|       getParameter: [SimpleParameter] x
+#  351|         getDefiningAccess: [LocalVariableAccess] x
+#  351|       getStmt: [LocalVariableAccess] y
+#  352|   getStmt: [AssignExpr] ... = ...
+#  352|     getAnOperand/getLeftOperand: [LocalVariableAccess] f
+#  352|     getAnOperand/getRightOperand: [Lambda] -> { ... }
+#  352|       getParameter: [SimpleParameter] x
+#  352|         getDefiningAccess: [LocalVariableAccess] x
+#  352|       getStmt: [MethodCall] call to foo
+#  352|         getReceiver: [SelfVariableAccess] self
+#  352|         getArgument: [LocalVariableAccess] x
+#  353|   getStmt: [AssignExpr] ... = ...
+#  353|     getAnOperand/getLeftOperand: [LocalVariableAccess] g
+#  353|     getAnOperand/getRightOperand: [Lambda] -> { ... }
+#  353|       getParameter: [SimpleParameter] x
+#  353|         getDefiningAccess: [LocalVariableAccess] x
+#  353|       getStmt: [MethodCall] call to unknown_call
+#  353|         getReceiver: [SelfVariableAccess] self
+#  354|   getStmt: [AssignExpr] ... = ...
+#  354|     getAnOperand/getLeftOperand: [LocalVariableAccess] h
+#  354|     getAnOperand/getRightOperand: [Lambda] -> { ... }
+#  354|       getParameter: [SimpleParameter] x
+#  354|         getDefiningAccess: [LocalVariableAccess] x
+#  355|       getStmt: [LocalVariableAccess] x
+#  356|       getStmt: [LocalVariableAccess] y
+#  357|       getStmt: [MethodCall] call to unknown_call
+#  357|         getReceiver: [SelfVariableAccess] self
 control/cases.rb:
 #    1| [Toplevel] cases.rb
 #    2|   getStmt: [AssignExpr] ... = ...

@@ -2,9 +2,9 @@ import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
 
 query predicate httpRequests(
-  HTTP::Client::Request r, string framework, DataFlow::Node url, DataFlow::Node responseBody
+  HTTP::Client::Request r, string framework, DataFlow::Node urlPart, DataFlow::Node responseBody
 ) {
   r.getFramework() = framework and
-  r.getURL() = url and
+  r.getAUrlPart() = urlPart and
   r.getResponseBody() = responseBody
 }
