@@ -21,7 +21,6 @@ import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.util.OperatorNameConventions
-import org.jetbrains.kotlin.types.Variance
 import java.io.Closeable
 import java.util.*
 
@@ -641,12 +640,11 @@ open class KotlinFileExtractor(
                 getFunctionTypeParameters(f).mapIndexed { idx, tp -> extractTypeParameter(tp, idx) }
 
                 val id =
-                    if (idOverride != null)
-                        idOverride
-                    else if (f.isLocalFunction())
-                        getLocallyVisibleFunctionLabels(f).function
-                    else
-                        useFunction<DbCallable>(f, parentId, classTypeArgsIncludingOuterClasses)
+                    idOverride
+                        ?: if (f.isLocalFunction())
+                            getLocallyVisibleFunctionLabels(f).function
+                        else
+                            useFunction<DbCallable>(f, parentId, classTypeArgsIncludingOuterClasses)
 
                 val sourceDeclaration =
                     if (typeSubstitution != null)
@@ -1525,7 +1523,7 @@ open class KotlinFileExtractor(
                 }
                 // != gets desugared into not and ==. Here we resugar it.
                 c.origin == IrStatementOrigin.EXCLEQ && isFunction(target, "kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "EQEQ") -> {
-                    var id = tw.getFreshIdLabel<DbValueneexpr>()
+                    val id = tw.getFreshIdLabel<DbValueneexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_valueneexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
@@ -1592,7 +1590,7 @@ open class KotlinFileExtractor(
                     if(c.origin != IrStatementOrigin.EQEQ) {
                         logger.errorElement("Unexpected origin for EQEQ: ${c.origin}", c)
                     }
-                    var id = tw.getFreshIdLabel<DbValueeqexpr>()
+                    val id = tw.getFreshIdLabel<DbValueeqexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_valueeqexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
@@ -2790,12 +2788,12 @@ open class KotlinFileExtractor(
             // only one of the following can be non-null:
             if (dispatchReceiver != null) {
                 extractField(dispatchFieldId!!, "<dispatchReceiver>", receiverType!!, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, false)
-                extractParameterToFieldAssignmentInConstructor("<dispatchReceiver>", dispatchReceiver.type, dispatchFieldId!!, 0, firstAssignmentStmtIdx)
+                extractParameterToFieldAssignmentInConstructor("<dispatchReceiver>", dispatchReceiver.type, dispatchFieldId, 0, firstAssignmentStmtIdx)
             }
 
             if (extensionReceiver != null) {
                 extractField(extensionFieldId!!, "<extensionReceiver>", receiverType!!, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, false)
-                extractParameterToFieldAssignmentInConstructor( "<extensionReceiver>", extensionReceiver.type, extensionFieldId!!, 0 + extensionParameterIndex, firstAssignmentStmtIdx + extensionParameterIndex)
+                extractParameterToFieldAssignmentInConstructor( "<extensionReceiver>", extensionReceiver.type, extensionFieldId, 0 + extensionParameterIndex, firstAssignmentStmtIdx + extensionParameterIndex)
             }
         }
 
@@ -2867,7 +2865,7 @@ open class KotlinFileExtractor(
             labels: FunctionLabels,
             target: IrFieldSymbol
         ) {
-            var accessId = tw.getFreshIdLabel<DbVaraccess>()
+            val accessId = tw.getFreshIdLabel<DbVaraccess>()
             tw.writeExprs_varaccess(accessId, fieldType.javaResult.id, parent, 0)
             tw.writeExprsKotlinType(accessId, fieldType.kotlinResult.id)
 
@@ -2924,7 +2922,7 @@ open class KotlinFileExtractor(
                 extractConstructorTypeAccess(returnType, callType, target, locId, callId, -3, labels.methodId, retId)
                 callId
             } else {
-                var callId = tw.getFreshIdLabel<DbMethodaccess>()
+                val callId = tw.getFreshIdLabel<DbMethodaccess>()
                 tw.writeExprs_methodaccess(callId, callType.javaResult.id, retId, 0)
                 tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
                 extractTypeArguments(expressionTypeArgs, locId, callId, labels.methodId, retId, -2, true)
@@ -3019,7 +3017,7 @@ open class KotlinFileExtractor(
 
             // Call to target function:
             val callType = useType(getterReturnType)
-            var callId = tw.getFreshIdLabel<DbMethodaccess>()
+            val callId = tw.getFreshIdLabel<DbMethodaccess>()
             tw.writeExprs_methodaccess(callId, callType.javaResult.id, retId, 0)
             tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
             this.writeExpressionMetadataToTrapFile(callId, invokeLabels.methodId, retId)
@@ -3308,7 +3306,7 @@ open class KotlinFileExtractor(
             tw.writeStatementEnclosingExpr(idMemberRef, exprParent.enclosingStmt)
             tw.writeCallableBinding(idMemberRef, ids.constructor)
 
-            var typeAccessArguments = if (isBigArity) listOf(parameterTypes.last()) else parameterTypes
+            val typeAccessArguments = if (isBigArity) listOf(parameterTypes.last()) else parameterTypes
             if (target is IrConstructorSymbol) {
                 val returnType = typeAccessArguments.last()
 
@@ -3913,8 +3911,8 @@ open class KotlinFileExtractor(
                         callId
                     }
 
-                    for ((idx, vp) in parameters.withIndex()) {
-                        extractArgument(vp, idx, argParent)
+                    for ((parameterIdx, vp) in parameters.withIndex()) {
+                        extractArgument(vp, parameterIdx, argParent)
                     }
 
                     val id = tw.getFreshIdLabel<DbCastexpr>()
