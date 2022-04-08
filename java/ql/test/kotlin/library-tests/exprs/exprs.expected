@@ -1249,7 +1249,6 @@
 | exprs.kt:131:12:131:19 | variable | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:131:12:131:23 | ... > ... | exprs.kt:4:1:136:1 | topLevelMethod | GTExpr |
 | exprs.kt:131:23:131:23 | 0 | exprs.kt:4:1:136:1 | topLevelMethod | IntegerLiteral |
-| exprs.kt:132:9:132:16 | tmp0 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:132:9:132:16 | variable | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:132:9:132:16 | variable | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:132:9:132:18 | ...=... | exprs.kt:4:1:136:1 | topLevelMethod | AssignExpr |
@@ -1257,6 +1256,7 @@
 | exprs.kt:132:9:132:18 | <implicit coercion to unit> | exprs.kt:4:1:136:1 | topLevelMethod | ImplicitCoercionToUnitExpr |
 | exprs.kt:132:9:132:18 | Unit | exprs.kt:4:1:136:1 | topLevelMethod | TypeAccess |
 | exprs.kt:132:9:132:18 | dec(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:132:9:132:18 | tmp0 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:132:9:132:18 | tmp0 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:132:9:132:18 | tmp0 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:135:12:135:14 | 123 | exprs.kt:4:1:136:1 | topLevelMethod | IntegerLiteral |

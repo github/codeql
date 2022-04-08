@@ -3191,7 +3191,7 @@ funcExprs.kt:
 #   27|                     0: [SuperConstructorInvocationStmt] super(...)
 #   27|                 1: [Method] invoke
 #-----|                   4: (Parameters)
-#   27|                     0: [Parameter] $noName_0
+#   27|                     0: [Parameter] <anonymous parameter 0>
 #   27|                   5: [BlockStmt] { ... }
 #   27|                     0: [ReturnStmt] return ...
 #   27|                       0: [IntegerLiteral] 5
@@ -3233,8 +3233,8 @@ funcExprs.kt:
 #   30|                     0: [SuperConstructorInvocationStmt] super(...)
 #   30|                 1: [Method] invoke
 #-----|                   4: (Parameters)
-#   30|                     0: [Parameter] $noName_0
-#   30|                     1: [Parameter] $noName_1
+#   30|                     0: [Parameter] <anonymous parameter 0>
+#   30|                     1: [Parameter] <anonymous parameter 1>
 #   30|                   5: [BlockStmt] { ... }
 #   30|                     0: [ReturnStmt] return ...
 #   30|                       0: [IntegerLiteral] 5
@@ -3253,8 +3253,8 @@ funcExprs.kt:
 #   31|                     0: [SuperConstructorInvocationStmt] super(...)
 #   31|                 1: [Method] invoke
 #-----|                   4: (Parameters)
-#   31|                     0: [Parameter] $noName_0
-#   31|                     1: [Parameter] $noName_1
+#   31|                     0: [Parameter] <anonymous parameter 0>
+#   31|                     1: [Parameter] <anonymous parameter 1>
 #   31|                   5: [BlockStmt] { ... }
 #   31|                     0: [ReturnStmt] return ...
 #   31|                       0: [IntegerLiteral] 5

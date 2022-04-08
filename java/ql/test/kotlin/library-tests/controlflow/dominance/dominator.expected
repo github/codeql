@@ -82,17 +82,17 @@
 | Test.kt:39:4:39:9 | ...=... | Test.kt:40:4:40:6 | <Expr>; |
 | Test.kt:39:8:39:9 | 10 | Test.kt:39:4:39:9 | ...=... |
 | Test.kt:40:4:40:4 | <Expr>; | Test.kt:40:4:40:6 | tmp0 |
-| Test.kt:40:4:40:4 | tmp0 | Test.kt:40:4:40:4 | <Expr>; |
-| Test.kt:40:4:40:4 | var ...; | Test.kt:40:4:40:4 | x |
-| Test.kt:40:4:40:4 | x | Test.kt:40:4:40:4 | tmp0 |
+| Test.kt:40:4:40:4 | x | Test.kt:40:4:40:6 | tmp0 |
 | Test.kt:40:4:40:6 | ...=... | Test.kt:40:4:40:6 | <Expr>; |
 | Test.kt:40:4:40:6 | <Expr>; | Test.kt:40:4:40:6 | <Stmt> |
 | Test.kt:40:4:40:6 | <Expr>; | Test.kt:40:4:40:6 | tmp0 |
 | Test.kt:40:4:40:6 | <Stmt> | Test.kt:40:4:40:6 | { ... } |
 | Test.kt:40:4:40:6 | dec(...) | Test.kt:40:4:40:6 | ...=... |
+| Test.kt:40:4:40:6 | tmp0 | Test.kt:40:4:40:4 | <Expr>; |
 | Test.kt:40:4:40:6 | tmp0 | Test.kt:40:4:40:6 | <implicit coercion to unit> |
 | Test.kt:40:4:40:6 | tmp0 | Test.kt:40:4:40:6 | dec(...) |
-| Test.kt:40:4:40:6 | { ... } | Test.kt:40:4:40:4 | var ...; |
+| Test.kt:40:4:40:6 | var ...; | Test.kt:40:4:40:4 | x |
+| Test.kt:40:4:40:6 | { ... } | Test.kt:40:4:40:6 | var ...; |
 | Test.kt:43:3:43:3 | <Expr>; | Test.kt:43:3:43:3 | z |
 | Test.kt:43:3:43:3 | z | Test.kt:43:8:43:8 | y |
 | Test.kt:43:3:43:15 | ...+=... | Test.kt:73:3:73:3 | <Expr>; |
