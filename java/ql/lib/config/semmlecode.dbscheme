@@ -1224,7 +1224,7 @@ ktPropertyDelegates(
 )
 
 compiler_generated(
-  unique int id: @top ref,
+  unique int id: @element ref,
   int kind: int ref
-  // 1: Kotlin declaring classes of adapter functions
-);
+  // 1: Declaring classes of adapter functions in Kotlin
+)

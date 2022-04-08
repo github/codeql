@@ -87,4 +87,4 @@ query predicate modifiers(ClassInstanceExpr e, Method m, string modifier) {
   m.hasModifier(modifier)
 }
 
-query predicate compGenerated(Top t, int i) { compiler_generated(t, i) }
+query predicate compGenerated(Element e, int i) { compiler_generated(e, i) }
