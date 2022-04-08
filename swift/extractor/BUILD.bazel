@@ -1,0 +1,5 @@
+cc_binary(
+    name = "extractor",
+    srcs = ["main.cpp"],
+    visibility = ["//swift:__pkg__"],
+)
