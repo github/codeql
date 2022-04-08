@@ -2,9 +2,8 @@ private import python
 private import experimental.semmle.python.Concepts
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.ApiGraphs
-   
-private module CopyFile {
-  
+
+private module CopyFileImpl {
   /**
    * The `shutil` module provides methods to copy or move files.
    * See:
@@ -28,10 +27,9 @@ private module CopyFile {
 
     override DataFlow::Node getfsrcArgument() { none() }
   }
-  
+
   // TODO: once we have flow summaries, model `shutil.copyfileobj` which copies the content between its' file-like arguments.
   // See https://docs.python.org/3/library/shutil.html#shutil.copyfileobj
-  
   private class CopyFileobj extends DataFlow::CallCfgNode, CopyFile::Range {
     CopyFileobj() { this = API::moduleImport("shutil").getMember("copyfileobj").getACall() }
 
@@ -42,4 +40,3 @@ private module CopyFile {
     override DataFlow::Node getAPathArgument() { none() }
   }
 }
-
