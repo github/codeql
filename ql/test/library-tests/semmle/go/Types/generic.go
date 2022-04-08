@@ -66,3 +66,15 @@ type MyInterface[U comparable] interface {
 
 type HasBlankTypeParam[_ any] struct{}
 type HasBlankTypeParams[_ any, _ comparable, T ~string] struct{}
+
+func callMethodOnInstantiatedInterface(x GenericInterface[int32]) int32 {
+	return x.GetT()
+}
+
+func accessFieldsOfInstantiatedStruct(x GenericStruct1[string]) {
+	_ = x.valueField
+	_ = x.pointerField
+	_ = x.arrayField
+	_ = x.sliceField
+	_ = x.mapField
+}
