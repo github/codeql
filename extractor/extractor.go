@@ -109,9 +109,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	// root directories of packages that we want to extract
 	wantedRoots := make(map[string]bool)
 
-	// recursively visit all packages in depth-first order;
-	// on the way down, associate each package scope with its corresponding package,
-	// and on the way up extract the package's scope
+	// Do a post-order traversal and extract the package scope of each package
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
 		return true
 	}, func(pkg *packages.Package) {
