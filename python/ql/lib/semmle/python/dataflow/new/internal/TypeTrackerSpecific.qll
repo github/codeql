@@ -35,10 +35,10 @@ string getPossibleContentName() {
  */
 pragma[nomagic]
 private DataFlowPrivate::DataFlowCallable getCallableForArgument(
-  DataFlowPublic::ArgumentNode nodeFrom, int i
+  DataFlowPublic::ArgumentSourceNode nodeFrom, int i
 ) {
   exists(DataFlowPrivate::DataFlowSourceCall call |
-    nodeFrom.argumentOf(call, i) and
+    nodeFrom.sourceArgumentOf(call, i) and
     result = call.getCallable()
   )
 }
