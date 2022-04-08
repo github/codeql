@@ -39,7 +39,7 @@ void test2(InputSource &data) {
 	XercesDOMParser *p = new XercesDOMParser();
 
 	p->setDisableDefaultEntityResolution(true);
-	p->parse(data); // GOOD [FALSE POSITIVE]
+	p->parse(data); // GOOD
 }
 
 void test3(InputSource &data) {
@@ -62,22 +62,22 @@ void test5(InputSource &data) {
 
 	p->setDisableDefaultEntityResolution(true);
 	p->setCreateEntityReferenceNodes(true);
-	p->parse(data); // GOOD [FALSE POSITIVE]
+	p->parse(data); // GOOD
 }
 
 void test6(InputSource &data) {
 	XercesDOMParser *p = new XercesDOMParser();
 
 	p->setDisableDefaultEntityResolution(true);
-	p->parse(data); // GOOD [FALSE POSITIVE]
+	p->parse(data); // GOOD
 	p->setDisableDefaultEntityResolution(false);
 	p->parse(data); // BAD (parser not correctly configured)
 	p->setDisableDefaultEntityResolution(true);
-	p->parse(data); // GOOD [FALSE POSITIVE]
+	p->parse(data); // GOOD
 	p->setCreateEntityReferenceNodes(false);
 	p->parse(data); // BAD (parser not correctly configured)
 	p->setCreateEntityReferenceNodes(true);
-	p->parse(data); // GOOD [FALSE POSITIVE]
+	p->parse(data); // GOOD
 }
 
 void test7(InputSource &data, bool cond) {
@@ -111,7 +111,7 @@ void test9(InputSource &data) {
 		XercesDOMParser &q = *p;
 
 		q.setDisableDefaultEntityResolution(true);
-		q.parse(data); // GOOD [FALSE POSITIVE]
+		q.parse(data); // GOOD
 	}
 
 	{
@@ -124,7 +124,7 @@ void test9(InputSource &data) {
 }
 
 void test10_doParseA(XercesDOMParser *p, InputSource &data) {
-	p->parse(data); // GOOD [FALSE POSITIVE]
+	p->parse(data); // GOOD
 }
 
 void test10_doParseB(XercesDOMParser *p, InputSource &data) {
