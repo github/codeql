@@ -14,7 +14,6 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
-
 /** Provides classes for modeling copying file related APIs. */
 module CopyFile {
   /**
@@ -27,7 +26,8 @@ module CopyFile {
     /**
      * Gets the argument containing the path.
      */
-    abstract DataFlow::Node getAPathArgument();  
+    abstract DataFlow::Node getAPathArgument();
+
     /**
      * Gets fsrc argument.
      */
@@ -47,7 +47,7 @@ class CopyFile extends DataFlow::Node {
   CopyFile() { this = range }
 
   DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
-  
+
   DataFlow::Node getfsrcArgument() { result = range.getfsrcArgument() }
 }
 
@@ -79,6 +79,7 @@ class LogOutput extends DataFlow::Node {
   LogOutput() { this = range }
 
   DataFlow::Node getAnInput() { result = range.getAnInput() }
+}
 
 /**
  * Since there is both XML module in normal and experimental Concepts,
