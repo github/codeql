@@ -26,11 +26,15 @@ private newtype TNode =
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
   /** Gets the callable in which this node occurs. */
-  DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
+  DataFlowCallable nodeGetEnclosingCallable(Node n) {
+    result.asCallable() = n.getEnclosingCallable()
+    or
+    not exists(n.getEnclosingCallable()) and result.asFileScope() = n.getFile()
+  }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
   predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) {
-    p.isParameterOf(c, pos)
+    p.isParameterOf(c.asCallable(), pos)
   }
 
   /** A data flow node that represents returning a value from a function. */
@@ -108,9 +112,11 @@ module Public {
     Callable getEnclosingCallable() {
       result.getFuncDef() = this.getRoot()
       or
-      this = MkSummarizedParameterNode(result, _)
-      or
-      this = MkSummaryInternalNode(result, _)
+      exists(DataFlowCallable dfc | result = dfc.asCallable() |
+        this = MkSummarizedParameterNode(dfc, _)
+        or
+        this = MkSummaryInternalNode(dfc, _)
+      )
     }
 
     /** Gets the type of this node. */
@@ -570,7 +576,9 @@ module Public {
     Callable c;
     int i;
 
-    SummarizedParameterNode() { this = MkSummarizedParameterNode(c, i) }
+    SummarizedParameterNode() {
+      this = MkSummarizedParameterNode(any(DataFlowCallable dfc | c = dfc.asCallable()), i)
+    }
 
     // There are no AST representations of summarized parameter nodes
     override ControlFlow::Root getRoot() { none() }

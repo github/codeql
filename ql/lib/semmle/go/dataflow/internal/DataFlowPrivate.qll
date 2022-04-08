@@ -197,7 +197,35 @@ class DataFlowType = Type;
 
 class DataFlowLocation = Location;
 
-class DataFlowCallable = Callable;
+private newtype TDataFlowCallable =
+  TCallable(Callable c) or
+  TFileScope(File f)
+
+class DataFlowCallable extends TDataFlowCallable {
+  Callable asCallable() { this = TCallable(result) }
+
+  File asFileScope() { this = TFileScope(result) }
+
+  FuncDef getFuncDef() { result = this.asCallable().getFuncDef() }
+
+  Function asFunction() { result = this.asCallable().asFunction() }
+
+  FuncLit asFuncLit() { result = this.asCallable().asFuncLit() }
+
+  SignatureType getType() { result = this.asCallable().getType() }
+
+  string toString() {
+    result = this.asCallable().toString() or
+    result = "File scope: " + this.asFileScope().toString()
+  }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.asCallable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
+    this.asFileScope().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends Expr {
@@ -214,7 +242,11 @@ class DataFlowCall extends Expr {
   ExprNode getNode() { result = call }
 
   /** Gets the enclosing callable of this call. */
-  DataFlowCallable getEnclosingCallable() { result.getFuncDef() = this.getEnclosingFunction() }
+  DataFlowCallable getEnclosingCallable() {
+    result.asCallable().getFuncDef() = this.getEnclosingFunction()
+    or
+    not exists(this.getEnclosingFunction()) and result.asFileScope() = this.getFile()
+  }
 }
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
