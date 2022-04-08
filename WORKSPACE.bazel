@@ -27,6 +27,6 @@ http_archive(
     ],
 )
 
-load("@ql//:defs.bzl", "ql_utils")
+load("@ql//misc/bazel:workspace.bzl", "ql_workspace")
 
-ql_utils(name = "utils")
+ql_workspace()
