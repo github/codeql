@@ -541,13 +541,16 @@ class InterfaceType extends @interfacetype, CompositeType {
 
   language[monotonicAggregates]
   override string pp() {
-    result =
-      "interface { " +
+    exists(string meth |
+      meth =
         concat(string name, Type tp |
           tp = this.getMethodType(name)
         |
-          name + " " + tp.pp(), "; " order by name
-        ) + " }"
+          " " + name + " " + tp.pp(), ";" order by name
+        )
+    |
+      result = "interface {" + meth + " }"
+    )
   }
 
   override string toString() { result = "interface type" }
