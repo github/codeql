@@ -27,6 +27,7 @@ type Writer struct {
 	Package         *packages.Package
 	TypesOverride   map[ast.Expr]types.Type
 	TypeParamParent map[*types.TypeParam]Label
+	ObjectsOverride map[types.Object]types.Object
 }
 
 func FileFor(path string) (string, error) {
@@ -66,6 +67,7 @@ func NewWriter(path string, pkg *packages.Package) (*Writer, error) {
 		pkg,
 		make(map[ast.Expr]types.Type),
 		make(map[*types.TypeParam]Label),
+		make(map[types.Object]types.Object),
 	}
 	tw.Labeler = newLabeler(tw)
 	return tw, nil
