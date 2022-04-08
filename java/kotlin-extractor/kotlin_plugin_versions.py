@@ -1,6 +1,7 @@
 import platform
 import re
 import subprocess
+import sys
 
 def is_windows():
     '''Whether we appear to be running on Windows'''
@@ -35,3 +36,19 @@ def get_single_version():
     return matching_minor_versions[-1]
 
     raise Exception(f'No suitable kotlinc version found for {current_version} (got {versionOutput}; know about {str(many_versions)})')
+
+def get_latest_url():
+    version = many_versions[-1]
+    url = 'https://github.com/JetBrains/kotlin/releases/download/v' + version + '/kotlin-compiler-' + version + '.zip'
+    return url
+
+if __name__ == "__main__":
+    args = sys.argv
+    if len(args) != 2:
+        raise Exception("Bad arguments")
+    command = args[1]
+    if command == 'latest-url':
+        print(get_latest_url())
+    else:
+        raise Exception("Unknown command: " + command)
+
