@@ -1,0 +1,11 @@
+load("@utils//:paths.bzl", "source_dir")
+load("@rules_pkg//:install.bzl", "pkg_install")
+
+pkg_install(
+    name = "install",
+    srcs = ["//swift:extractor-pack"],
+    args = [
+        "--destdir",
+        source_dir() + "/../extractor_pack",
+    ],
+)
