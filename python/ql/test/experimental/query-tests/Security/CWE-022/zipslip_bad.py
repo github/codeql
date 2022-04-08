@@ -1,6 +1,6 @@
 import tarfile
 import shutil
-import bz2 
+import bz2
 import gzip
 import zipfile
 
@@ -23,7 +23,7 @@ def unzip2(filename):
             shutil.copyfile(entry, "/tmp/unpack/")
 
 def unzip3(filename):
-    zf = zipfile.ZipFile(filename) 
+    zf = zipfile.ZipFile(filename)
     with zf.namelist() as filelist:
     #BAD : This could write any file on the filesystem.
         for x in filelist:
@@ -36,3 +36,4 @@ def unzip4(filename):
         with zf.open(x) as srcf:
             shutil.copyfileobj(x, "/tmp/unpack/")
 
+import tty # to set the import root so we can identify the standard library
