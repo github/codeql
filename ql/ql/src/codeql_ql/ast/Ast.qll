@@ -553,6 +553,9 @@ class VarDef extends TVarDef, AstNode {
 
   Type getType() { none() }
 
+  /** Gets a variable access to this `VarDef` */
+  VarAccess getAnAccess() { result.getDeclaration() = this }
+
   override string getAPrimaryQlClass() { result = "VarDef" }
 
   override string toString() { result = this.getName() }
