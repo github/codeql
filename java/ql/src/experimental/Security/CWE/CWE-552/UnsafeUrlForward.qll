@@ -1,4 +1,5 @@
 import java
+import experimental.semmle.code.java.frameworks.Jsf
 import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
 
@@ -13,6 +14,49 @@ private class RequestDispatcherSink extends UnsafeUrlForwardSink {
   RequestDispatcherSink() {
     exists(MethodAccess ma |
       ma.getMethod() instanceof GetRequestDispatcherMethod and
+      ma.getArgument(0) = this.asExpr()
+    )
+  }
+}
+
+/** The JBoss class `FileResourceManager`. */
+class FileResourceManager extends RefType {
+  FileResourceManager() {
+    this.hasQualifiedName("io.undertow.server.handlers.resource", "FileResourceManager")
+  }
+}
+
+/** The JBoss method `getResource` of `FileResourceManager`. */
+class GetWildflyResourceMethod extends Method {
+  GetWildflyResourceMethod() {
+    this.getDeclaringType().getASupertype*() instanceof FileResourceManager and
+    this.hasName("getResource")
+  }
+}
+
+/** The JBoss class `VirtualFile`. */
+class VirtualFile extends RefType {
+  VirtualFile() { this.hasQualifiedName("org.jboss.vfs", "VirtualFile") }
+}
+
+/** The JBoss method `getChild` of `FileResourceManager`. */
+class GetVirtualFileMethod extends Method {
+  GetVirtualFileMethod() {
+    this.getDeclaringType().getASupertype*() instanceof VirtualFile and
+    this.hasName("getChild")
+  }
+}
+
+/** An argument to `getResource()` or `getResourceAsStream()`. */
+private class GetResourceSink extends UnsafeUrlForwardSink {
+  GetResourceSink() {
+    exists(MethodAccess ma |
+      (
+        ma.getMethod() instanceof GetServletResourceMethod or
+        ma.getMethod() instanceof GetFacesResourceMethod or
+        ma.getMethod() instanceof GetWildflyResourceMethod or
+        ma.getMethod() instanceof GetVirtualFileMethod
+      ) and
       ma.getArgument(0) = this.asExpr()
     )
   }

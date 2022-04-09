@@ -1,0 +1,24 @@
+/**
+ * Provides classes and predicates for working with the Java Server Faces (JSF).
+ */
+
+import semmle.code.java.Type
+
+/**
+ * The JSF class `FacesContext` for processing HTTP requests.
+ */
+class ExternalContext extends RefType {
+  ExternalContext() {
+    this.hasQualifiedName(["javax.faces.context", "jakarta.faces.context"], "ExternalContext")
+  }
+}
+
+/**
+ * The methods `getResource()` and `getResourceAsStream()` declared in JSF `ExternalContext`.
+ */
+class GetFacesResourceMethod extends Method {
+  GetFacesResourceMethod() {
+    this.getDeclaringType().getASupertype*() instanceof ExternalContext and
+    this.hasName(["getResource", "getResourceAsStream"])
+  }
+}
