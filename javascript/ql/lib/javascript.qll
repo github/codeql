@@ -88,6 +88,7 @@ import semmle.javascript.frameworks.D3
 import semmle.javascript.frameworks.data.ModelsAsData
 import semmle.javascript.frameworks.DateFunctions
 import semmle.javascript.frameworks.DigitalOcean
+import semmle.javascript.frameworks.DragAndDrop
 import semmle.javascript.frameworks.Electron
 import semmle.javascript.frameworks.EventEmitter
 import semmle.javascript.frameworks.Files
