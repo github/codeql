@@ -344,4 +344,26 @@ public class Test {
             Files.createDirectory(tempDirChild.toPath());
         }
     }
+
+    void vulnerableBecauseFileSeparatorCheckElseCase() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        if (File.separatorChar == '\\') {
+            Files.createDirectory(tempDirChild.toPath()); // Safe
+        } else {
+            Files.createDirectory(tempDirChild.toPath()); // Vulnerable
+        }
+    }
+
+    void vulnerableBecauseInvertedFileSeperatorCheckElseCase() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        if (File.separatorChar != '/') {
+            Files.createDirectory(tempDirChild.toPath()); // Safe
+        } else {
+            Files.createDirectory(tempDirChild.toPath()); // Vulnerable
+        }
+    }
 }

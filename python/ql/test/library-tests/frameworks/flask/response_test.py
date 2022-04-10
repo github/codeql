@@ -37,22 +37,28 @@ def html4():  # $requestHandler
 
 @app.route("/html5")  # $routeSetup="/html5"
 def html5():  # $requestHandler
+    resp = Response(response="<h1>hello</h1>")  # $HttpResponse mimetype=text/html responseBody="<h1>hello</h1>"
+    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+
+
+@app.route("/html6")  # $routeSetup="/html6"
+def html6():  # $requestHandler
     # note: flask.Flask.response_class is set to `flask.Response` by default.
     # it can be overridden, but we don't try to handle that right now.
     resp = Flask.response_class("<h1>hello</h1>")  # $HttpResponse mimetype=text/html responseBody="<h1>hello</h1>"
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
 
 
-@app.route("/html6")  # $routeSetup="/html6"
-def html6():  # $requestHandler
+@app.route("/html7")  # $routeSetup="/html7"
+def html7():  # $requestHandler
     # note: app.response_class (flask.Flask.response_class) is set to `flask.Response` by default.
     # it can be overridden, but we don't try to handle that right now.
     resp = app.response_class("<h1>hello</h1>")  # $HttpResponse mimetype=text/html responseBody="<h1>hello</h1>"
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
 
 
-@app.route("/html7")  # $routeSetup="/html7"
-def html7():  # $requestHandler
+@app.route("/html8")  # $routeSetup="/html8"
+def html8():  # $requestHandler
     resp = make_response()  # $HttpResponse mimetype=text/html
     resp.set_data("<h1>hello</h1>")  # $ MISSING: responseBody="<h1>hello</h1>"
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp

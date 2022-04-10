@@ -172,3 +172,62 @@ public class DerivedClass2Flow : BaseClassFlow
         return input0;
     }
 }
+
+public class OperatorFlow
+{
+    public readonly object Field;
+
+    public OperatorFlow(object o)
+    {
+        Field = o;
+    }
+
+    // Flow Summary.
+    public static OperatorFlow operator +(OperatorFlow a, OperatorFlow b)
+    {
+        return a;
+    }
+
+    // No flow summary.
+    public static OperatorFlow operator ++(OperatorFlow a)
+    {
+        return new OperatorFlow(new object());
+    }
+
+    // No flow summary as this is an implicit conversion operator.
+    public static implicit operator OperatorFlow(int i)
+    {
+        return new OperatorFlow(i);
+    }
+
+    // No flow summary as this is an explicit conversion operator.
+    public static explicit operator OperatorFlow(byte b)
+    {
+        return new OperatorFlow(b);
+    }
+
+}
+
+public class EqualsGetHashCodeNoFlow
+{
+    public readonly bool boolTainted;
+    public readonly int intTainted;
+
+    // No flow summary as this is an override of the Equals method.
+    public override bool Equals(object obj)
+    {
+        return boolTainted;
+    }
+
+    // Flow summary as this is not an override of the object Equals method.
+    public int Equals(int i)
+    {
+        return i;
+    }
+
+    // No flow summary as this is an override of the GetHashCode method.
+    public override int GetHashCode()
+    {
+        return intTainted;
+    }
+}

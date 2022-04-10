@@ -26,6 +26,8 @@ class Unit = DataFlowPrivate::Unit;
 import codeql.ruby.ApiGraphs
 import codeql.ruby.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 private import AccessPathSyntax
+private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
+private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 
 /**
  * Holds if models describing `package` may be relevant for the analysis of this database.
@@ -107,8 +109,10 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   token.getName() = "Instance" and
   result = node.getInstance()
   or
-  token.getName() = "BlockArgument" and
-  result = node.getBlock()
+  token.getName() = "Parameter" and
+  result =
+    node.getASuccessor(API::Label::getLabelFromArgumentPosition(FlowSummaryImplSpecific::parseParamBody(token
+              .getAnArgument())))
   // Note: The "ArrayElement" token is not implemented yet, as it ultimately requires type-tracking and
   // API graphs to be aware of the steps involving ArrayElement contributed by the standard library model.
   // Type-tracking cannot summarize function calls on its own, so it doesn't benefit from synthesized callables.
@@ -118,7 +122,12 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
  * Gets a Ruby-specific API graph successor of `node` reachable by resolving `token`.
  */
 bindingset[token]
-API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token) { none() }
+API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token) {
+  token.getName() = "Argument" and
+  result =
+    node.getASuccessor(API::Label::getLabelFromParameterPosition(FlowSummaryImplSpecific::parseArgBody(token
+              .getAnArgument())))
+}
 
 /**
  * Holds if `invoke` matches the Ruby-specific call site filter in `token`.
@@ -146,7 +155,7 @@ InvokeNode getAnInvocationOf(API::Node node) { result = node }
  */
 bindingset[name]
 predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
-  name = ["Member", "Method", "Instance", "WithBlock", "WithoutBlock", "BlockArgument"]
+  name = ["Member", "Method", "Instance", "WithBlock", "WithoutBlock"]
 }
 
 /**
@@ -154,7 +163,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
  * in an identifying access path.
  */
 predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
-  name = ["Instance", "WithBlock", "WithoutBlock", "BlockArgument"]
+  name = ["Instance", "WithBlock", "WithoutBlock"]
 }
 
 /**
@@ -165,4 +174,11 @@ bindingset[name, argument]
 predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
   name = ["Member", "Method"] and
   exists(argument)
+  or
+  name = ["Argument", "Parameter"] and
+  (
+    argument = ["self", "block"]
+    or
+    argument.regexpMatch("\\w+:") // keyword argument
+  )
 }

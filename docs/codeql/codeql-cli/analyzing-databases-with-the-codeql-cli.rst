@@ -132,7 +132,7 @@ pack names and use the ``--download`` flag::
 
    codeql database analyze <database> microsoft/coding-standards@1.0.0 github/security-queries --format=sarifv2.1.0 --output=query-results.sarif --download
 
-The ``analyze`` command above runs the default suite from ``microsoft/coding-standards v1.0.0`` and the latest version of ``github/secutiry-queries`` on the specified database.
+The ``analyze`` command above runs the default suite from ``microsoft/coding-standards v1.0.0`` and the latest version of ``github/security-queries`` on the specified database.
 For further information about default suites, see ":ref:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`".
 
 For more information about CodeQL packs, see :doc:`About CodeQL Packs <about-codeql-packs>`.
