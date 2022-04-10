@@ -2151,7 +2151,6 @@ class StmtExpr extends Expr {
     this = any(ForStmt s).getAnUpdate()
     or
     // Only applies to SwitchStmt, but not to SwitchExpr, see JLS 17 section 14.11.2
-    // TODO: Possibly redundant depending on how https://github.com/github/codeql/issues/8570 is resolved
     this = any(SwitchStmt s).getACase().getRuleExpression()
     or
     // TODO: Workarounds for https://github.com/github/codeql/issues/3605
