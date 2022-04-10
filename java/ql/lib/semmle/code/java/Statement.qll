@@ -556,8 +556,11 @@ class ThrowStmt extends Stmt, @throwstmt {
   override string getAPrimaryQlClass() { result = "ThrowStmt" }
 }
 
+// Workaround to avoid having to make JumpStmt abstract
+private class JumpStmt_ = @breakstmt or @yieldstmt or @continuestmt;
+
 /** A `break`, `yield` or `continue` statement. */
-abstract class JumpStmt extends Stmt {
+class JumpStmt extends Stmt, JumpStmt_ {
   /**
    * Gets the labeled statement that this `break` or
    * `continue` statement refers to, if any.
