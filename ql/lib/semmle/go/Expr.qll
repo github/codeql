@@ -2061,8 +2061,6 @@ private predicate isTypeExprBottomUp(Expr e) {
   or
   e instanceof @typesetliteralexpr
   or
-  e instanceof @genericfunctioninstantiationexpr
-  or
   e instanceof @generictypeinstantiationexpr
   or
   e instanceof @indexexpr and isTypeExprBottomUp(e.getChildExpr(0))
