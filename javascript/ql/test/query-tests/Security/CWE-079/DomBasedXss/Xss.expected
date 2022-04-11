@@ -152,6 +152,10 @@ nodes
 | clipboard.ts:73:29:73:39 | droppedHtml |
 | clipboard.ts:73:29:73:39 | droppedHtml |
 | clipboard.ts:73:29:73:39 | droppedHtml |
+| custom-element.js:5:26:5:36 | window.name |
+| custom-element.js:5:26:5:36 | window.name |
+| custom-element.js:5:26:5:36 | window.name |
+| custom-element.js:5:26:5:36 | window.name |
 | d3.js:4:12:4:22 | window.name |
 | d3.js:4:12:4:22 | window.name |
 | d3.js:4:12:4:22 | window.name |
@@ -1198,6 +1202,7 @@ edges
 | clipboard.ts:71:27:71:62 | e.clipb ... /html') | clipboard.ts:71:13:71:62 | droppedHtml |
 | clipboard.ts:71:27:71:62 | e.clipb ... /html') | clipboard.ts:71:13:71:62 | droppedHtml |
 | clipboard.ts:71:27:71:62 | e.clipb ... /html') | clipboard.ts:71:13:71:62 | droppedHtml |
+| custom-element.js:5:26:5:36 | window.name | custom-element.js:5:26:5:36 | window.name |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
@@ -2159,6 +2164,7 @@ edges
 | clipboard.ts:33:19:33:68 | e.origi ... /html') | clipboard.ts:33:19:33:68 | e.origi ... /html') | clipboard.ts:33:19:33:68 | e.origi ... /html') | Cross-site scripting vulnerability due to $@. | clipboard.ts:33:19:33:68 | e.origi ... /html') | user-provided value |
 | clipboard.ts:50:29:50:32 | html | clipboard.ts:43:22:43:55 | clipboa ... /html') | clipboard.ts:50:29:50:32 | html | Cross-site scripting vulnerability due to $@. | clipboard.ts:43:22:43:55 | clipboa ... /html') | user-provided value |
 | clipboard.ts:73:29:73:39 | droppedHtml | clipboard.ts:71:27:71:62 | e.clipb ... /html') | clipboard.ts:73:29:73:39 | droppedHtml | Cross-site scripting vulnerability due to $@. | clipboard.ts:71:27:71:62 | e.clipb ... /html') | user-provided value |
+| custom-element.js:5:26:5:36 | window.name | custom-element.js:5:26:5:36 | window.name | custom-element.js:5:26:5:36 | window.name | Cross-site scripting vulnerability due to $@. | custom-element.js:5:26:5:36 | window.name | user-provided value |
 | d3.js:11:15:11:24 | getTaint() | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() | Cross-site scripting vulnerability due to $@. | d3.js:4:12:4:22 | window.name | user-provided value |
 | d3.js:12:20:12:29 | getTaint() | d3.js:4:12:4:22 | window.name | d3.js:12:20:12:29 | getTaint() | Cross-site scripting vulnerability due to $@. | d3.js:4:12:4:22 | window.name | user-provided value |
 | d3.js:14:20:14:29 | getTaint() | d3.js:4:12:4:22 | window.name | d3.js:14:20:14:29 | getTaint() | Cross-site scripting vulnerability due to $@. | d3.js:4:12:4:22 | window.name | user-provided value |

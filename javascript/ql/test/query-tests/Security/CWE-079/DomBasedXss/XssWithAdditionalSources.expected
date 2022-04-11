@@ -152,6 +152,10 @@ nodes
 | clipboard.ts:73:29:73:39 | droppedHtml |
 | clipboard.ts:73:29:73:39 | droppedHtml |
 | clipboard.ts:73:29:73:39 | droppedHtml |
+| custom-element.js:5:26:5:36 | window.name |
+| custom-element.js:5:26:5:36 | window.name |
+| custom-element.js:5:26:5:36 | window.name |
+| custom-element.js:5:26:5:36 | window.name |
 | d3.js:4:12:4:22 | window.name |
 | d3.js:4:12:4:22 | window.name |
 | d3.js:4:12:4:22 | window.name |
@@ -1248,6 +1252,7 @@ edges
 | clipboard.ts:71:27:71:62 | e.clipb ... /html') | clipboard.ts:71:13:71:62 | droppedHtml |
 | clipboard.ts:71:27:71:62 | e.clipb ... /html') | clipboard.ts:71:13:71:62 | droppedHtml |
 | clipboard.ts:71:27:71:62 | e.clipb ... /html') | clipboard.ts:71:13:71:62 | droppedHtml |
+| custom-element.js:5:26:5:36 | window.name | custom-element.js:5:26:5:36 | window.name |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
