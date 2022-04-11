@@ -2,6 +2,7 @@ private import codeql_ql.ast.Ast
 private import internal.NodesInternal
 private import internal.DataFlowNumbering
 private import internal.LocalFlow as LocalFlow
+private import internal.GlobalFlow as GlobalFlow
 
 /**
  * An expression or variable in a formula, including some additional nodes
@@ -10,6 +11,8 @@ private import internal.LocalFlow as LocalFlow
  * Nodes that are locally bound together by equalities are clustered into a "super node",
  * which can be accessed using `getSuperNode()`. There is usually no reason to use `Node` directly
  * other than to reason about what kind of node is contained in a super node.
+ *
+ * To reason about global data flow, use `SuperNode.track()`.
  */
 class Node extends TNode {
   string toString() { none() } // overridden in subclasses
@@ -31,6 +34,8 @@ class Node extends TNode {
   /**
    * Gets the collection of data-flow nodes locally bound by equalities, represented
    * by a "super node".
+   *
+   * Super nodes are the medium through which to propagate data-flow information globally.
    */
   SuperNode getSuperNode() { result.getANode() = this }
 }
@@ -224,6 +229,8 @@ Node fieldNode(Predicate pred, FieldDecl fieldDecl) {
 
 /**
  * A collection of data-flow nodes in the same predicate, locally bound by equalities.
+ *
+ * To reason about global data flow, use `SuperNode.track()`.
  */
 class SuperNode extends LocalFlow::TSuperNode {
   private int repr;
@@ -282,10 +289,154 @@ class SuperNode extends LocalFlow::TSuperNode {
     result = this.getALocalMemberCall() and
     result.getMemberName() = name
   }
+
+  /**
+   * Gets a node that this node may "flow to" after one step.
+   *
+   * Basic usage of `track()` to track some expressions looks like this:
+   * ```
+   * DataFlow::SuperNode myThing(DataFlow::Tracker t) {
+   *   t.start() and
+   *   result = DataFlow::superNode(< some ast node >)
+   *   or
+   *   exists (DataFlow::Tracker t2 |
+   *     result = myThing(t2).track(t2, t)
+   *   )
+   * }
+   *
+   * DataFlow::SuperNode myThing() { result = myThing(DataFlow::Tracker::end()) }
+   * ```
+   */
+  pragma[inline]
+  SuperNode track(Tracker t1, Tracker t2) {
+    // Return state -> return state
+    // Store the return edge in t2
+    not t1.hasCall() and
+    GlobalFlow::directedEdgeSuper(result, this, t2)
+    or
+    // Call state or initial state -> call state
+    t1.hasCallOrIsStart() and
+    t2.hasCall() and
+    GlobalFlow::directedEdgeSuper(this, result, _)
+    or
+    // Return state -> call state
+    // The last-used return edge must not be used as the initial call edge
+    // (doing so would allow returning out of a disjunction and into another branch of that disjunction)
+    not t1.hasCall() and
+    t2.hasCall() and
+    exists(GlobalFlow::EdgeLabel edge |
+      GlobalFlow::directedEdgeSuper(this, result, edge) and
+      edge != t1
+    )
+  }
+
+  /**
+   * Gets node containing a string flowing to this node via `t`.
+   */
+  cached
+  private string getAStringValue(Tracker t) {
+    t.start() and
+    result = asAstNode().(String).getValue()
+    or
+    exists(SuperNode pred, Tracker t2 |
+      this = pred.track(t2, t) and
+      result = pred.getAStringValue(t2)
+    )
+    or
+    // Step through calls to a few built-ins that don't cause a blow-up
+    exists(SuperNode pred, string methodName, string oldValue |
+      this.asAstNode() = pred.getALocalMemberCall(methodName) and
+      oldValue = pred.getAStringValue(t)
+    |
+      methodName = "toLowerCase" and
+      result = oldValue.toLowerCase()
+      or
+      methodName = "toUpperCase" and
+      result = oldValue.toUpperCase()
+    )
+  }
+
+  /** Gets a string constant that may flow here (possibly from a caller context). */
+  pragma[inline]
+  string getAStringValue() { result = this.getAStringValue(Tracker::end()) }
+
+  /** Gets a string constant that may flow here, possibly out of callees, but not from caller contexts. */
+  pragma[inline]
+  string getAStringValueNoCall() { result = this.getAStringValue(Tracker::endNoCall()) }
+
+  /**
+   * Gets a string constant that may flow here, which can safely be combined with another
+   * value that was tracked here with `otherT`.
+   *
+   * This is under-approximate and will fail to accept valid matches when both values
+   * came in from the same chain of calls.
+   */
+  bindingset[otherT]
+  string getAStringValueForContext(Tracker otherT) {
+    exists(Tracker stringT |
+      result = this.getAStringValue(stringT) and
+      otherT.isSafeToCombineWith(stringT)
+    )
+  }
 }
 
 /** Gets the super node for the given AST node. */
 pragma[inline]
 SuperNode superNode(AstNode node) {
   result = astNode(node).getSuperNode()
+}
+
+/**
+ * A summary of the steps needed to reach a node in the global data flow graph,
+ * to be used in combination with `SuperNode.track`.
+ */
+class Tracker extends GlobalFlow::TEdgeLabelOrTrackerState {
+  /** Holds if this is the starting point, that is, the summary of the empty path. */
+  predicate start() { this = GlobalFlow::MkNoEdge() }
+
+  /** Holds if a call step has been used (possibly preceeded by return steps). */
+  predicate hasCall() { this = GlobalFlow::MkHasCall() }
+
+  /** Holds if either `start()` or `hasCall()` holds */
+  predicate hasCallOrIsStart() { this.start() or this.hasCall() }
+
+  /**
+   * Holds if the two trackers are safe to combine, in the sense that
+   * they don't make contradictory assumptions what context they're in.
+   *
+   * This is approximate and will reject any pair of trackers that have
+   * both used a call or locally came from the same disjunction.
+   */
+  pragma[inline]
+  predicate isSafeToCombineWith(Tracker other) {
+    not (
+      // Both values came from a call, they could come from different call sites.
+      this.hasCall() and
+      other.hasCall()
+      or
+      // Both values came from the same disjunction, they could come from different branches.
+      this = other and
+      this instanceof GlobalFlow::MkDisjunction
+    )
+  }
+
+  /** Gets a string representation of this element. */
+  string toString() {
+    this instanceof GlobalFlow::MkNoEdge and
+    result = "Tracker in initial state"
+    or
+    this instanceof GlobalFlow::MkHasCall and
+    result = "Tracker with calls"
+    or
+    this instanceof GlobalFlow::EdgeLabel and
+    result = "Tracker with return step out of " + this.(GlobalFlow::EdgeLabel).toString()
+  }
+}
+
+module Tracker {
+  /** Gets a valid end-point for tracking. */
+  Tracker end() { any() }
+
+  /** Gets a valid end-point for tracking where no calls were used. */
+  Tracker endNoCall() { not result.hasCall() }
 }
