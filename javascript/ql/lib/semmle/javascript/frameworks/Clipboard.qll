@@ -32,6 +32,12 @@ private DataFlow::SourceNode pasteEvent(DataFlow::TypeTracker t) {
   )
   or
   t.start() and
+  exists(DataFlow::ParameterNode pn |
+    // https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent
+    pn.hasUnderlyingType("ClipboardEvent") and result = pn
+  )
+  or
+  t.start() and
   exists(DataFlow::PropWrite pw | pw = DOM::domValueRef().getAPropertyWrite() |
     pw.getPropertyName() = "onpaste" and
     result = pw.getRhs().getABoundFunctionValue(0).getParameter(0)
