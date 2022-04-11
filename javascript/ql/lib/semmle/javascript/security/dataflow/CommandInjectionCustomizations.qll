@@ -51,4 +51,18 @@ module CommandInjection {
   class SystemCommandExecutionSink extends Sink, DataFlow::ValueNode {
     SystemCommandExecutionSink() { this = any(SystemCommandExecution sys).getACommandArgument() }
   }
+
+  class GitHubActionsInput extends Source {
+    GitHubActionsInput() {
+      this = API::moduleImport("@actions/core").getMember("getInput").getACall() or
+      this =
+        API::moduleImport("@actions/github")
+            .getMember("context")
+            .getMember("payload")
+            .getMember("inputs")
+            .getAnImmediateUse()
+    }
+
+    override string getSourceType() { result = "a GitHub Actions input" }
+  }
 }
