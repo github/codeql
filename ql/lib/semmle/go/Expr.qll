@@ -839,7 +839,11 @@ class CallExpr extends CallOrConversionExpr {
   }
 
   /** Gets the expression representing the function being called. */
-  Expr getCalleeExpr() { result = this.getChildExpr(0) }
+  Expr getCalleeExpr() {
+    if this.getChildExpr(0) instanceof GenericFunctionInstantiationExpr
+    then result = this.getChildExpr(0).(GenericFunctionInstantiationExpr).getBase()
+    else result = this.getChildExpr(0)
+  }
 
   /** Gets the `i`th argument expression of this call (0-based). */
   Expr getArgument(int i) {
@@ -866,16 +870,11 @@ class CallExpr extends CallOrConversionExpr {
       result = callee.(Ident).getName()
       or
       result = callee.(SelectorExpr).getSelector().getName()
-      or
-      result = callee.(GenericFunctionInstantiationExpr).getBase().(Ident).getName()
     )
   }
 
   /** Gets the declared target of this call. */
-  Function getTarget() {
-    this.getCalleeExpr() = result.getAReference() or
-    this.getCalleeExpr().(GenericFunctionInstantiationExpr).getBase() = result.getAReference()
-  }
+  Function getTarget() { this.getCalleeExpr() = result.getAReference() }
 
   /** Holds if this call has an ellipsis after its last argument. */
   predicate hasEllipsis() { has_ellipsis(this) }
