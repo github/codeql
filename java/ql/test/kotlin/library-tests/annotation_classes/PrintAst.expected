@@ -1,0 +1,55 @@
+def.kt:
+#    0| [CompilationUnit] def
+#    0|   1: [Class] DefKt
+#   13|     1: [Method] fn
+#-----|       4: (Parameters)
+#   13|         0: [Parameter] a
+#   13|       5: [BlockStmt] { ... }
+#   14|         0: [ExprStmt] <Expr>;
+#   14|           0: [MethodAccess] println(...)
+#   14|             -1: [TypeAccess] ConsoleKt
+#   14|             0: [MethodAccess] abc(...)
+#   14|               -1: [VarAccess] a
+#    1|   2: [Interface] SomeAnnotation
+#-----|     -3: (Annotations)
+#    1|     1: [Method] abc
+#-----|       1: (Annotations)
+#    1|     2: [Method] y
+#    3|   3: [Interface] ReplaceWith
+#    3|     1: [Method] expression
+#    5|   4: [Interface] Deprecated
+#    6|     1: [Method] message
+#    7|     2: [Method] replaceWith
+#    9|   5: [Class] X
+#   11|     1: [Constructor] X
+#    9|       5: [BlockStmt] { ... }
+#    9|         0: [SuperConstructorInvocationStmt] super(...)
+#   11|         1: [BlockStmt] { ... }
+use.java:
+#    0| [CompilationUnit] use
+#    2|   1: [Class] use
+#-----|     -1: (Base Types)
+#    2|       0: [TypeAccess] SomeAnnotation
+#    4|     2: [Method] abc
+#-----|       1: (Annotations)
+#    3|         1: [Annotation] Override
+#    4|       3: [TypeAccess] int
+#    4|       5: [BlockStmt] { ... }
+#    4|         0: [ReturnStmt] return ...
+#    4|           0: [IntegerLiteral] 1
+#    6|     3: [Method] y
+#-----|       1: (Annotations)
+#    5|         1: [Annotation] Override
+#    6|       3: [TypeAccess] String
+#    6|       5: [BlockStmt] { ... }
+#    6|         0: [ReturnStmt] return ...
+#    6|           0: [StringLiteral] ""
+#    9|     4: [Method] annotationType
+#-----|       1: (Annotations)
+#    8|         1: [Annotation] Override
+#    9|       3: [TypeAccess] Class<? extends Annotation>
+#    9|         0: [WildcardTypeAccess] ? ...
+#    9|           0: [TypeAccess] Annotation
+#    9|       5: [BlockStmt] { ... }
+#   10|         0: [ReturnStmt] return ...
+#   10|           0: [NullLiteral] null

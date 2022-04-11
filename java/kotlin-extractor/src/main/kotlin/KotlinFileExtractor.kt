@@ -470,6 +470,10 @@ open class KotlinFileExtractor(
                 if (c.isInterfaceLike) {
                     val interfaceId = id.cast<DbInterface>()
                     tw.writeInterfaces(interfaceId, cls, pkgId, interfaceId)
+
+                    if (kind == ClassKind.ANNOTATION_CLASS) {
+                        tw.writeIsAnnotType(interfaceId)
+                    }
                 } else {
                     val classId = id.cast<DbClass>()
                     tw.writeClasses(classId, cls, pkgId, classId)
@@ -495,10 +499,20 @@ open class KotlinFileExtractor(
 
                 c.typeParameters.mapIndexed { idx, param -> extractTypeParameter(param, idx, javaClass?.typeParameters?.getOrNull(idx)) }
                 if (extractDeclarations) {
-                    c.declarations.forEach { extractDeclaration(it, extractPrivateMembers = extractPrivateMembers, extractFunctionBodies = extractFunctionBodies) }
-                    if (extractStaticInitializer)
-                        extractStaticInitializer(c, { id })
-                    extractJvmStaticProxyMethods(c, id, extractPrivateMembers, extractFunctionBodies)
+                    if (kind == ClassKind.ANNOTATION_CLASS) {
+                        c.declarations
+                            .filterIsInstance<IrProperty>()
+                            .map {
+                                val getter = it.getter!!
+                                val label = extractFunction(getter, id, false, null, listOf())
+                                tw.writeIsAnnotElem(label!!.cast<DbMethod>())
+                            }
+                    } else {
+                        c.declarations.forEach { extractDeclaration(it, extractPrivateMembers = extractPrivateMembers, extractFunctionBodies = extractFunctionBodies) }
+                        if (extractStaticInitializer)
+                            extractStaticInitializer(c, { id })
+                        extractJvmStaticProxyMethods(c, id, extractPrivateMembers, extractFunctionBodies)
+                    }
                 }
                 if (c.isNonCompanionObject) {
                     // For `object MyObject { ... }`, the .class has an
