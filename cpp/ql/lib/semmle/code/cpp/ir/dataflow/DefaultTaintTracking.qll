@@ -57,8 +57,14 @@ private DataFlow::Node getNodeForSource(Expr source) {
   result = getNodeForExpr(source)
 }
 
-private DataFlow::Node getNodeForExpr(Expr node) {
+private IndirectInstruction indirectExprNode(Expr e) {
+  result.getInstruction().getUnconvertedResultExpression() = e
+}
+
+DataFlow::Node getNodeForExpr(Expr node) {
   result = DataFlow::exprNode(node)
+  or
+  result = indirectExprNode(node)
   or
   // Some of the sources in `isUserInput` are intended to match the value of
   // an expression, while others (those modeled below) are intended to match
@@ -266,13 +272,7 @@ private module Cached {
     // Taint `e1 += e2`, `e &= e2` and friends when `e1` or `e2` is tainted.
     result.(AssignOperation).getAnOperand() = sink.asExpr()
     or
-    result =
-      sink.asOperand()
-          .(SideEffectOperand)
-          .getUse()
-          .(ReadSideEffectInstruction)
-          .getArgumentDef()
-          .getUnconvertedResultExpression()
+    result = sink.asIndirectArgument()
   }
 
   /**
@@ -282,7 +282,7 @@ private module Cached {
   cached
   predicate additionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(CallInstruction call, Function func, FunctionInput modelIn, FunctionOutput modelOut |
-      n1.asOperand() = callInput(call, modelIn) and
+      n1 = callInput(call, modelIn) and
       (
         func.(TaintFunction).hasTaintFlow(modelIn, modelOut)
         or

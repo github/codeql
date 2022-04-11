@@ -1,0 +1,238 @@
+uniqueEnclosingCallable
+uniqueType
+uniqueNodeLocation
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+missingLocation
+| Nodes without location: 2 |
+uniqueNodeToString
+| test.cpp:8:8:8:9 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:8:8:8:9 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:8:8:8:9 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:9:9:9:10 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:9:9:9:10 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:9:9:9:10 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:10:10:10:11 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:10:10:10:11 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:10:10:10:11 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:11:11:11:12 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:11:11:11:12 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:11:11:11:12 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:44:8:44:9 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:44:8:44:9 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:44:8:44:9 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:45:9:45:10 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:45:9:45:10 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:45:9:45:10 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:46:10:46:11 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:46:10:46:11 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:46:10:46:11 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:47:11:47:12 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:47:11:47:12 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:47:11:47:12 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:80:8:80:9 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:80:8:80:9 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:80:8:80:9 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:81:9:81:10 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:81:9:81:10 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:81:9:81:10 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:82:10:82:11 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:82:10:82:11 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:82:10:82:11 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:83:11:83:12 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:83:11:83:12 | (no string representation) | Node should have one toString but has 0. |
+| test.cpp:83:11:83:12 | (no string representation) | Node should have one toString but has 0. |
+missingToString
+| Nodes without toString: 36 |
+parameterCallable
+localFlowIsLocal
+compatibleTypesReflexive
+unreachableNodeCCtx
+localCallNodes
+postIsNotPre
+postHasUniquePre
+| test.cpp:123:25:123:26 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:123:25:123:26 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:123:25:123:26 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:124:11:124:12 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:124:11:124:12 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:125:12:125:13 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:129:24:129:25 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:129:24:129:25 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:129:24:129:25 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:130:11:130:12 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:130:11:130:12 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:130:11:130:12 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:131:12:131:13 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:131:12:131:13 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:132:13:132:14 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:136:25:136:26 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:136:25:136:26 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:137:11:137:12 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:137:11:137:12 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:137:11:137:12 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:138:12:138:13 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:138:12:138:13 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:139:13:139:14 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:143:26:143:27 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:144:11:144:12 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:144:11:144:12 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:144:11:144:12 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:145:12:145:13 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:145:12:145:13 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:146:13:146:14 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:151:11:151:12 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:151:11:151:12 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:151:11:151:12 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:152:12:152:13 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:152:12:152:13 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:153:13:153:14 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:159:25:159:26 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:159:25:159:26 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:159:25:159:26 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:160:11:160:12 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:160:11:160:12 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:161:12:161:13 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:165:24:165:25 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:165:24:165:25 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:165:24:165:25 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:166:11:166:12 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:166:11:166:12 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:166:11:166:12 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:167:12:167:13 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:167:12:167:13 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:168:13:168:14 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:172:25:172:26 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:172:25:172:26 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:173:11:173:12 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:173:11:173:12 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:173:11:173:12 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:174:12:174:13 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:174:12:174:13 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:175:13:175:14 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:179:26:179:27 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:180:11:180:12 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:180:11:180:12 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:180:11:180:12 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:181:12:181:13 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:181:12:181:13 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:182:13:182:14 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:187:11:187:12 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:187:11:187:12 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:187:11:187:12 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:188:12:188:13 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:188:12:188:13 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:189:13:189:14 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:195:25:195:26 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:195:25:195:26 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:195:25:195:26 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:196:11:196:12 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:196:11:196:12 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:197:12:197:13 | p0 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:201:24:201:25 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:201:24:201:25 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:201:24:201:25 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:202:11:202:12 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:202:11:202:12 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:202:11:202:12 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:203:12:203:13 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:203:12:203:13 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:204:13:204:14 | p1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:208:25:208:26 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:208:25:208:26 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:209:11:209:12 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:209:11:209:12 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:209:11:209:12 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:210:12:210:13 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:210:12:210:13 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:211:13:211:14 | p2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:215:26:215:27 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:216:11:216:12 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:216:11:216:12 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:216:11:216:12 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:217:12:217:13 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:217:12:217:13 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:218:13:218:14 | p3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:223:11:223:12 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:223:11:223:12 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:223:11:223:12 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:224:12:224:13 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:224:12:224:13 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:225:13:225:14 | p4 [post update] | PostUpdateNode should have one pre-update node but has 0. |
+uniquePostUpdate
+postIsInSameCallable
+reverseRead
+| test.cpp:123:22:123:22 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:124:8:124:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:125:9:125:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:126:10:126:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:129:21:129:21 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:130:8:130:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:131:9:131:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:132:10:132:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:133:11:133:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:136:22:136:22 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:137:8:137:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:138:9:138:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:139:10:139:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:140:11:140:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:143:23:143:23 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:144:8:144:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:145:9:145:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:146:10:146:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:147:11:147:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:150:24:150:24 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:151:8:151:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:152:9:152:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:153:10:153:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:154:11:154:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:159:22:159:22 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:160:8:160:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:161:9:161:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:162:10:162:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:165:21:165:21 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:166:8:166:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:167:9:167:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:168:10:168:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:169:11:169:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:172:22:172:22 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:173:8:173:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:174:9:174:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:175:10:175:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:176:11:176:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:179:23:179:23 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:180:8:180:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:181:9:181:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:182:10:182:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:183:11:183:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:186:24:186:24 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:187:8:187:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:188:9:188:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:189:10:189:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:190:11:190:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:195:22:195:22 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:196:8:196:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:197:9:197:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:198:10:198:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:201:21:201:21 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:202:8:202:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:203:9:203:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:204:10:204:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:205:11:205:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:208:22:208:22 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:209:8:209:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:210:9:210:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:211:10:211:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:212:11:212:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:215:23:215:23 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:216:8:216:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:217:9:217:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:218:10:218:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:219:11:219:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:222:24:222:24 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:223:8:223:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:224:9:224:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:225:10:225:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| test.cpp:226:11:226:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+argHasPostUpdate
+postWithInFlow

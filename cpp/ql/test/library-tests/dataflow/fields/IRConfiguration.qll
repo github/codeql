@@ -16,9 +16,8 @@ class IRConf extends Configuration {
   }
 
   override predicate isSink(Node sink) {
-    exists(Call c |
-      c.getTarget().hasName("sink") and
-      c.getAnArgument() = [sink.asExpr(), sink.asConvertedExpr()]
+    exists(Call c | c.getTarget().hasName("sink") |
+      c.getAnArgument() = [sink.asExpr(), sink.asConvertedExpr(), sink.asIndirectArgument()]
     )
   }
 

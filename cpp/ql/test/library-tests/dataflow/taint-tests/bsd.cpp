@@ -9,7 +9,7 @@ struct sockaddr {
 	char* sa_data;
 };
 
-int accept(int, const sockaddr*, int*);
+int accept(int, sockaddr*, int*);
 
 void sink(sockaddr);
 
@@ -20,5 +20,5 @@ void test_accept() {
   int a = accept(s, &addr, &size);
 
   sink(a); // $ ast=17:11 ir SPURIOUS: ast=18:12
-  sink(addr); // $ ast,ir
+  sink(addr); // $ ast=18:12 ir SPURIOUS: ast=17:11
 }

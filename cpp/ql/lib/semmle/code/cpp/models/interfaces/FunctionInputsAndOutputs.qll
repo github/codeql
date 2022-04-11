@@ -62,7 +62,11 @@ class FunctionInput extends TFunctionInput {
    * - There is no `FunctionInput` for which `isParameterDeref(0)` holds, because `n` is neither a
    *   pointer nor a reference.
    */
-  predicate isParameterDeref(ParameterIndex index) { none() }
+  predicate isParameterDeref(ParameterIndex index, int ind) {
+    ind = 1 and this.isParameterDeref(index)
+  }
+
+  predicate isParameterDeref(ParameterIndex index) { this.isParameterDeref(index, 1) }
 
   /**
    * Holds if this is the input value pointed to by a pointer parameter to a function, or the input
@@ -87,7 +91,9 @@ class FunctionInput extends TFunctionInput {
    * - `isQualifierObject()` holds for the `FunctionInput` that represents the value of `*this`
    *   (with type `C const`) on entry to the function.
    */
-  predicate isQualifierObject() { none() }
+  predicate isQualifierObject(int ind) { ind = 1 and this.isQualifierObject() }
+
+  predicate isQualifierObject() { this.isQualifierObject(1) }
 
   /**
    * Holds if this is the input value pointed to by the `this` pointer of an instance member
@@ -143,16 +149,26 @@ class FunctionInput extends TFunctionInput {
    * rare, but they do occur when a function returns a reference to itself,
    * part of itself, or one of its other inputs.
    */
-  predicate isReturnValueDeref() { none() }
+  predicate isReturnValueDeref() { this.isReturnValueDeref(1) }
+
+  predicate isReturnValueDeref(int ind) { ind = 1 and this.isReturnValueDeref() }
+
+  /**
+   * Holds if `i >= 0` and `isParameterDeref(i)` holds for this value, or
+   * if `i = -1` and `isQualifierObject()` holds for this value.
+   */
+  final predicate isParameterDerefOrQualifierObject(ParameterIndex i, int ind) {
+    i >= 0 and this.isParameterDeref(i, ind)
+    or
+    i = -1 and this.isQualifierObject(ind)
+  }
 
   /**
    * Holds if `i >= 0` and `isParameterDeref(i)` holds for this value, or
    * if `i = -1` and `isQualifierObject()` holds for this value.
    */
   final predicate isParameterDerefOrQualifierObject(ParameterIndex i) {
-    i >= 0 and this.isParameterDeref(i)
-    or
-    i = -1 and this.isQualifierObject()
+    this.isParameterDerefOrQualifierObject(i, 1)
   }
 }
 
@@ -308,7 +324,9 @@ class FunctionOutput extends TFunctionOutput {
    * - There is no `FunctionOutput` for which `isParameterDeref(0)` holds, because `n` is neither a
    *   pointer nor a reference.
    */
-  predicate isParameterDeref(ParameterIndex i) { none() }
+  predicate isParameterDeref(ParameterIndex i) { this.isParameterDeref(i, 1) }
+
+  predicate isParameterDeref(ParameterIndex i, int ind) { ind = 1 and this.isParameterDeref(i) }
 
   /**
    * Holds if this is the output value pointed to by a pointer parameter to a function, or the
@@ -333,7 +351,9 @@ class FunctionOutput extends TFunctionOutput {
    * - `isQualifierObject()` holds for the `FunctionOutput` that represents the value of `*this`
    *   (with type `C`) on return from the function.
    */
-  predicate isQualifierObject() { none() }
+  predicate isQualifierObject() { this.isQualifierObject(1) }
+
+  predicate isQualifierObject(int ind) { ind = 1 and this.isQualifierObject() }
 
   /**
    * Holds if this is the output value pointed to by the `this` pointer of an instance member
@@ -385,7 +405,9 @@ class FunctionOutput extends TFunctionOutput {
    * - There is no `FunctionOutput` of `getInt()` for which `isReturnValueDeref()` holds because the
    *   return type of `getInt()` is neither a pointer nor a reference.
    */
-  predicate isReturnValueDeref() { none() }
+  predicate isReturnValueDeref() { this.isReturnValueDeref(_) }
+
+  predicate isReturnValueDeref(int ind) { ind = 1 and this.isReturnValueDeref() }
 
   /**
    * Holds if this is the output value pointed to by the return value of a function, if the function
@@ -399,10 +421,14 @@ class FunctionOutput extends TFunctionOutput {
    * Holds if `i >= 0` and `isParameterDeref(i)` holds for this is the value, or
    * if `i = -1` and `isQualifierObject()` holds for this value.
    */
-  final predicate isParameterDerefOrQualifierObject(ParameterIndex i) {
-    i >= 0 and this.isParameterDeref(i)
+  final predicate isParameterDerefOrQualifierObject(ParameterIndex i, int ind) {
+    i >= 0 and this.isParameterDeref(i, ind)
     or
-    i = -1 and this.isQualifierObject()
+    i = -1 and this.isQualifierObject(ind)
+  }
+
+  final predicate isParameterDerefOrQualifierObject(ParameterIndex i) {
+    this.isParameterDerefOrQualifierObject(i, 1)
   }
 }
 
@@ -431,6 +457,10 @@ class OutParameterDeref extends FunctionOutput, TOutParameterDeref {
   ParameterIndex getIndex() { result = index }
 
   override predicate isParameterDeref(ParameterIndex i) { i = index }
+
+  override predicate isParameterDeref(ParameterIndex i, int ind) {
+    this.isParameterDeref(i) and ind = 1
+  }
 }
 
 /**

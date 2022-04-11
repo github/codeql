@@ -55,7 +55,7 @@ void DispatchThroughGlobal() {
   sink(globalBottom->isSource1()); // $ ir MISSING: ast
   sink(globalMiddle->isSource1()); // no flow
 
-  sink(readGlobalBottom()->isSource1()); // $ ir MISSING: ast
+  sink(readGlobalBottom()->isSource1()); // $ MISSING: ast,ir
 
   globalBottom = new Bottom();
   globalMiddle = new Middle();

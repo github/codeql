@@ -55,7 +55,7 @@ private predicate isDeeplyConstBelow(Type t) {
   isDeeplyConstBelow(t.(TypedefType).getBaseType())
 }
 
-private predicate isConstPointerLike(Type t) {
+predicate isConstPointerLike(Type t) {
   (
     t instanceof PointerWrapper
     or

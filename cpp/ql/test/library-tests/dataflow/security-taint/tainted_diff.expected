@@ -32,6 +32,7 @@
 | test.cpp:83:28:83:33 | call to getenv | test.cpp:85:8:85:11 | copy | AST only |
 | test.cpp:83:28:83:33 | call to getenv | test.cpp:86:2:86:7 | call to strcpy | AST only |
 | test.cpp:83:28:83:33 | call to getenv | test.cpp:86:9:86:12 | copy | AST only |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:88:14:88:17 | (const char *)... | AST only |
 | test.cpp:100:12:100:15 | call to gets | test.cpp:98:8:98:14 | pointer | AST only |
 | test.cpp:100:12:100:15 | call to gets | test.cpp:100:2:100:8 | pointer | AST only |
 | test.cpp:100:17:100:22 | buffer | test.cpp:93:18:93:18 | s | AST only |
@@ -44,3 +45,4 @@
 | test.cpp:106:28:106:33 | call to getenv | test.cpp:108:8:108:11 | copy | AST only |
 | test.cpp:106:28:106:33 | call to getenv | test.cpp:109:2:109:7 | call to strcpy | AST only |
 | test.cpp:106:28:106:33 | call to getenv | test.cpp:109:9:109:12 | copy | AST only |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:111:14:111:17 | (const char *)... | AST only |
