@@ -1,9 +1,14 @@
 private import codeql_ql.ast.Ast
+private import VarScoping
 
 newtype TNode =
   MkAstNodeNode(AstNode node) {
     node instanceof Expr or
     node instanceof VarDef
+  } or
+  MkScopedVariable(VarDef var, AstNode scope) {
+    isRefinement(var, _, scope) and
+    not scope = getVarDefScope(var)
   } or
   MkThisNode(Predicate pred) {
     pred instanceof ClassPredicate or

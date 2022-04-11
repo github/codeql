@@ -46,6 +46,42 @@ Node astNode(AstNode node) {
 }
 
 /**
+ * A data-flow node representing a variable within a specific scope.
+ */
+class ScopedVariableNode extends Node, MkScopedVariable {
+  private VarDef var;
+  private AstNode scope;
+
+  ScopedVariableNode() { this = MkScopedVariable(var, scope) }
+
+  override string toString() {
+    result = "Variable '" + var.getName() + "' scoped to " + scope.getLocation().getStartLine() + ":" + scope.getLocation().getStartColumn()
+  }
+
+  override Location getLocation() {
+    result = scope.getLocation()
+  }
+
+  /** Gets the variable being refined to a specific scope. */
+  VarDef getVariable() {
+    result = var
+  }
+
+  /** Gets the scope to which this variable has been refined. */
+  AstNode getScope() {
+    result = scope
+  }
+}
+
+/**
+ * Gets the data-flow node corresponding to `var` restricted to `scope`.
+ */
+pragma[inline]
+Node scopedVariable(VarDef var, AstNode scope) {
+  result = MkScopedVariable(var, scope)
+}
+
+/**
  * A data-flow node representing `this` within a class predicate, charpred, or newtype branch.
  */
 class ThisNode extends Node, MkThisNode {
