@@ -32,3 +32,25 @@ document.addEventListener('paste', (e) => {
 $("#foo").bind('paste', (e) => {
     $("#id").html(e.originalEvent.clipboardData.getData('text/html')); // NOT OK
 });
+
+(function () {
+    let div = document.createElement("div");
+    div.onpaste = function (e: ClipboardEvent) {
+        const { clipboardData } = e;
+        if (!clipboardData) return;
+
+        const text = clipboardData.getData('text/plain');
+        const html = clipboardData.getData('text/html');
+        if (!text && !html) return;
+
+        e.preventDefault();
+
+        const div = document.createElement('div');
+        if (html) {
+            div.innerHTML = html; // NOT OK
+        } else {
+            div.textContent = text;
+        }
+        document.body.append(div);
+    }
+})();

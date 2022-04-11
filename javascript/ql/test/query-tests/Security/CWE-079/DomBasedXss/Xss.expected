@@ -136,6 +136,14 @@ nodes
 | clipboard.ts:33:19:33:68 | e.origi ... /html') |
 | clipboard.ts:33:19:33:68 | e.origi ... /html') |
 | clipboard.ts:33:19:33:68 | e.origi ... /html') |
+| clipboard.ts:43:15:43:55 | html |
+| clipboard.ts:43:15:43:55 | html |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') |
+| clipboard.ts:50:29:50:32 | html |
+| clipboard.ts:50:29:50:32 | html |
+| clipboard.ts:50:29:50:32 | html |
 | d3.js:4:12:4:22 | window.name |
 | d3.js:4:12:4:22 | window.name |
 | d3.js:4:12:4:22 | window.name |
@@ -1158,6 +1166,14 @@ edges
 | clipboard.ts:24:23:24:58 | e.clipb ... /html') | clipboard.ts:24:23:24:58 | e.clipb ... /html') |
 | clipboard.ts:29:19:29:54 | e.clipb ... /html') | clipboard.ts:29:19:29:54 | e.clipb ... /html') |
 | clipboard.ts:33:19:33:68 | e.origi ... /html') | clipboard.ts:33:19:33:68 | e.origi ... /html') |
+| clipboard.ts:43:15:43:55 | html | clipboard.ts:50:29:50:32 | html |
+| clipboard.ts:43:15:43:55 | html | clipboard.ts:50:29:50:32 | html |
+| clipboard.ts:43:15:43:55 | html | clipboard.ts:50:29:50:32 | html |
+| clipboard.ts:43:15:43:55 | html | clipboard.ts:50:29:50:32 | html |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') | clipboard.ts:43:15:43:55 | html |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') | clipboard.ts:43:15:43:55 | html |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') | clipboard.ts:43:15:43:55 | html |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') | clipboard.ts:43:15:43:55 | html |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
@@ -2109,6 +2125,7 @@ edges
 | clipboard.ts:24:23:24:58 | e.clipb ... /html') | clipboard.ts:24:23:24:58 | e.clipb ... /html') | clipboard.ts:24:23:24:58 | e.clipb ... /html') | Cross-site scripting vulnerability due to $@. | clipboard.ts:24:23:24:58 | e.clipb ... /html') | user-provided value |
 | clipboard.ts:29:19:29:54 | e.clipb ... /html') | clipboard.ts:29:19:29:54 | e.clipb ... /html') | clipboard.ts:29:19:29:54 | e.clipb ... /html') | Cross-site scripting vulnerability due to $@. | clipboard.ts:29:19:29:54 | e.clipb ... /html') | user-provided value |
 | clipboard.ts:33:19:33:68 | e.origi ... /html') | clipboard.ts:33:19:33:68 | e.origi ... /html') | clipboard.ts:33:19:33:68 | e.origi ... /html') | Cross-site scripting vulnerability due to $@. | clipboard.ts:33:19:33:68 | e.origi ... /html') | user-provided value |
+| clipboard.ts:50:29:50:32 | html | clipboard.ts:43:22:43:55 | clipboa ... /html') | clipboard.ts:50:29:50:32 | html | Cross-site scripting vulnerability due to $@. | clipboard.ts:43:22:43:55 | clipboa ... /html') | user-provided value |
 | d3.js:11:15:11:24 | getTaint() | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() | Cross-site scripting vulnerability due to $@. | d3.js:4:12:4:22 | window.name | user-provided value |
 | d3.js:12:20:12:29 | getTaint() | d3.js:4:12:4:22 | window.name | d3.js:12:20:12:29 | getTaint() | Cross-site scripting vulnerability due to $@. | d3.js:4:12:4:22 | window.name | user-provided value |
 | d3.js:14:20:14:29 | getTaint() | d3.js:4:12:4:22 | window.name | d3.js:14:20:14:29 | getTaint() | Cross-site scripting vulnerability due to $@. | d3.js:4:12:4:22 | window.name | user-provided value |

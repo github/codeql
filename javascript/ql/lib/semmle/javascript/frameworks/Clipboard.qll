@@ -32,6 +32,12 @@ private DataFlow::SourceNode pasteEvent(DataFlow::TypeTracker t) {
   )
   or
   t.start() and
+  exists(DataFlow::PropWrite pw | pw = DOM::domValueRef().getAPropertyWrite() |
+    pw.getPropertyName() = "onpaste" and
+    result = pw.getRhs().getABoundFunctionValue(0).getParameter(0)
+  )
+  or
+  t.start() and
   result = jQueryPasteEvent(DataFlow::TypeTracker::end()).getAPropertyRead("originalEvent")
   or
   exists(DataFlow::TypeTracker t2 | result = pasteEvent(t2).track(t2, t))
