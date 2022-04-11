@@ -19,6 +19,22 @@ private class RequestDispatcherSink extends UnsafeUrlForwardSink {
   }
 }
 
+/** The `getResource` and `getResourceAsStream` methods of `Class`. */
+class GetClassResourceMethod extends Method {
+  GetClassResourceMethod() {
+    this.getSourceDeclaration().getDeclaringType().hasQualifiedName("java.lang", "Class") and
+    this.hasName(["getResource", "getResourceAsStream"])
+  }
+}
+
+/** The `getResource` and `getResourceAsStream` methods of `ClassLoader`. */
+class GetClassLoaderResourceMethod extends Method {
+  GetClassLoaderResourceMethod() {
+    this.getDeclaringType().hasQualifiedName("java.lang", "ClassLoader") and
+    this.hasName(["getResource", "getResourceAsStream"])
+  }
+}
+
 /** The JBoss class `FileResourceManager`. */
 class FileResourceManager extends RefType {
   FileResourceManager() {
@@ -54,6 +70,8 @@ private class GetResourceSink extends UnsafeUrlForwardSink {
       (
         ma.getMethod() instanceof GetServletResourceMethod or
         ma.getMethod() instanceof GetFacesResourceMethod or
+        ma.getMethod() instanceof GetClassResourceMethod or
+        ma.getMethod() instanceof GetClassLoaderResourceMethod or
         ma.getMethod() instanceof GetWildflyResourceMethod or
         ma.getMethod() instanceof GetVirtualFileMethod
       ) and
