@@ -32,6 +32,12 @@ private DataFlow::SourceNode dropEvent(DataFlow::TypeTracker t) {
   )
   or
   t.start() and
+  exists(DataFlow::PropWrite pw | pw = DOM::domValueRef().getAPropertyWrite() |
+    pw.getPropertyName() = "ondrop" and
+    result = pw.getRhs().getABoundFunctionValue(0).getParameter(0)
+  )
+  or
+  t.start() and
   result = jQueryDropEvent(DataFlow::TypeTracker::end()).getAPropertyRead("originalEvent")
   or
   exists(DataFlow::TypeTracker t2 | result = dropEvent(t2).track(t2, t))

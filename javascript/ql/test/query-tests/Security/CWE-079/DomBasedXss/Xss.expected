@@ -315,6 +315,14 @@ nodes
 | dragAndDrop.ts:33:19:33:67 | e.origi ... /html') |
 | dragAndDrop.ts:33:19:33:67 | e.origi ... /html') |
 | dragAndDrop.ts:33:19:33:67 | e.origi ... /html') |
+| dragAndDrop.ts:43:15:43:54 | html |
+| dragAndDrop.ts:43:15:43:54 | html |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') |
+| dragAndDrop.ts:50:29:50:32 | html |
+| dragAndDrop.ts:50:29:50:32 | html |
+| dragAndDrop.ts:50:29:50:32 | html |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
@@ -1349,6 +1357,14 @@ edges
 | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') |
 | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') |
 | dragAndDrop.ts:33:19:33:67 | e.origi ... /html') | dragAndDrop.ts:33:19:33:67 | e.origi ... /html') |
+| dragAndDrop.ts:43:15:43:54 | html | dragAndDrop.ts:50:29:50:32 | html |
+| dragAndDrop.ts:43:15:43:54 | html | dragAndDrop.ts:50:29:50:32 | html |
+| dragAndDrop.ts:43:15:43:54 | html | dragAndDrop.ts:50:29:50:32 | html |
+| dragAndDrop.ts:43:15:43:54 | html | dragAndDrop.ts:50:29:50:32 | html |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') | dragAndDrop.ts:43:15:43:54 | html |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') | dragAndDrop.ts:43:15:43:54 | html |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') | dragAndDrop.ts:43:15:43:54 | html |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') | dragAndDrop.ts:43:15:43:54 | html |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
@@ -2117,6 +2133,7 @@ edges
 | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | user-provided value |
 | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | user-provided value |
 | dragAndDrop.ts:33:19:33:67 | e.origi ... /html') | dragAndDrop.ts:33:19:33:67 | e.origi ... /html') | dragAndDrop.ts:33:19:33:67 | e.origi ... /html') | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:33:19:33:67 | e.origi ... /html') | user-provided value |
+| dragAndDrop.ts:50:29:50:32 | html | dragAndDrop.ts:43:22:43:54 | dataTra ... /html') | dragAndDrop.ts:50:29:50:32 | html | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:43:22:43:54 | dataTra ... /html') | user-provided value |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | Cross-site scripting vulnerability due to $@. | event-handler-receiver.js:2:49:2:61 | location.href | user-provided value |
 | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") | Cross-site scripting vulnerability due to $@. | express.js:7:15:7:33 | req.param("wobble") | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:40 | documen ... .search | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:40 | documen ... .search | user-provided value |

@@ -32,3 +32,25 @@ document.addEventListener('drop', (e) => {
 $("#foo").bind('drop', (e) => {
     $("#id").html(e.originalEvent.dataTransfer.getData('text/html')); // NOT OK
 });
+
+(function () {
+    let div = document.createElement("div");
+    div.ondrop = function (e: DragEvent) {
+        const { dataTransfer } = e;
+        if (!dataTransfer) return;
+
+        const text = dataTransfer.getData('text/plain');
+        const html = dataTransfer.getData('text/html');
+        if (!text && !html) return;
+
+        e.preventDefault();
+
+        const div = document.createElement('div');
+        if (html) {
+            div.innerHTML = html; // NOT OK
+        } else {
+            div.textContent = text;
+        }
+        document.body.append(div);
+    }
+})();
