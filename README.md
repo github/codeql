@@ -13,7 +13,9 @@ We welcome contributions to our standard library and standard checks. Do you hav
 
 ## License
 
-The code in this repository is licensed under the [MIT License](LICENSE) by [GitHub](https://github.com). The use of CodeQL on open source code is licensed under specific [Terms & Conditions](https://securitylab.github.com/tools/codeql/license/) UNLESS you have a commercial license in place. If you'd like to use CodeQL with a commercial codebase, please [contact us](https://github.com/enterprise/contact) for further help.
+The code in this repository is licensed under the [MIT License](LICENSE) by [GitHub](https://github.com).
+
+The CodeQL CLI (including the CodeQL engine) is hosted in a [different repository](https://github.com/github/codeql-cli-binaries) and is [licensed separately](https://github.com/github/codeql-cli-binaries/blob/main/LICENSE.md). If you'd like to use the CodeQL CLI to analyze closed-source code, please [contact us](https://github.com/enterprise/contact) for further help.
 
 ## Visual Studio Code integration
 
