@@ -13,6 +13,14 @@ class Node extends TNode {
    * Gets the underlying `Expr` or `VarDef` node, if this is an `AstNodeNode`.
    */
   AstNode asAstNode() { astNode(result) = this }
+
+  /**
+   * Gets the predicate containing this data-flow node.
+   *
+   * All data-flow nodes belong in exactly one predicate.
+   * TODO: select clauses
+   */
+  Predicate getEnclosingPredicate() { none() } // overridden in subclasses
 }
 
 /**
@@ -34,6 +42,10 @@ class AstNodeNode extends Node, MkAstNodeNode {
   /** Gets the AST node. */
   AstNode getAstNode() {
     result = ast
+  }
+
+  override Predicate getEnclosingPredicate() {
+    result = ast.getEnclosingPredicate()
   }
 }
 
@@ -71,6 +83,10 @@ class ScopedVariableNode extends Node, MkScopedVariable {
   AstNode getScope() {
     result = scope
   }
+
+  override Predicate getEnclosingPredicate() {
+    result = var.getEnclosingPredicate()
+  }
 }
 
 /**
@@ -101,6 +117,10 @@ class ThisNode extends Node, MkThisNode {
   Predicate getPredicate() {
     result = pred
   }
+
+  override Predicate getEnclosingPredicate() {
+    result = pred
+  }
 }
 
 /**
@@ -129,6 +149,10 @@ class ResultNode extends Node, MkResultNode {
 
   /** Gets the predicate whose 'result' parameter is represented by this node. */
   Predicate getPredicate() {
+    result = pred
+  }
+
+  override Predicate getEnclosingPredicate() {
     result = pred
   }
 }
@@ -170,6 +194,10 @@ class FieldNode extends Node, MkFieldNode {
 
   override Location getLocation() {
     result = pred.getLocation()
+  }
+
+  override Predicate getEnclosingPredicate() {
+    result = pred
   }
 }
 
