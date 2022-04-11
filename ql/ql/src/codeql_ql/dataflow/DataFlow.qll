@@ -1,9 +1,15 @@
 private import codeql_ql.ast.Ast
 private import internal.NodesInternal
+private import internal.DataFlowNumbering
+private import internal.LocalFlow as LocalFlow
 
 /**
  * An expression or variable in a formula, including some additional nodes
  * that are not part of the AST.
+ *
+ * Nodes that are locally bound together by equalities are clustered into a "super node",
+ * which can be accessed using `getSuperNode()`. There is usually no reason to use `Node` directly
+ * other than to reason about what kind of node is contained in a super node.
  */
 class Node extends TNode {
   string toString() { none() } // overridden in subclasses
@@ -21,6 +27,12 @@ class Node extends TNode {
    * TODO: select clauses
    */
   Predicate getEnclosingPredicate() { none() } // overridden in subclasses
+
+  /**
+   * Gets the collection of data-flow nodes locally bound by equalities, represented
+   * by a "super node".
+   */
+  SuperNode getSuperNode() { result.getANode() = this }
 }
 
 /**
@@ -208,4 +220,72 @@ class FieldNode extends Node, MkFieldNode {
 pragma[inline]
 Node fieldNode(Predicate pred, FieldDecl fieldDecl) {
   result = MkFieldNode(pred, fieldDecl)
+}
+
+/**
+ * A collection of data-flow nodes in the same predicate, locally bound by equalities.
+ */
+class SuperNode extends LocalFlow::TSuperNode {
+  private int repr;
+
+  SuperNode() { this = LocalFlow::MkSuperNode(repr) }
+
+  /** Gets a data-flow node that is part of this super node. */
+  Node getANode() {
+    LocalFlow::getRepr(result) = repr
+  }
+
+  /** Gets an AST node from any of the nodes in this super node. */
+  AstNode asAstNode() {
+    result = getANode().asAstNode()
+  }
+
+  /**
+   * Gets a single node from this super node.
+   *
+   * The node is arbitrary and the caller should not rely on how the node is chosen.
+   * The node is currently chosen such that:
+   * - An `AstNodeNode` is preferred over other nodes.
+   * - A node occuring earlier is preferred over one occurring later.
+   */
+  Node getArbitraryRepr() {
+    result = min(Node n | n = getANode() | n order by getInternalId(n))
+  }
+
+  /**
+   * Gets the predicate containing all nodes that are part of this super node.
+   */
+  Predicate getEnclosingPredicate() {
+    result = getANode().getEnclosingPredicate()
+  }
+
+  /** Gets a string representation of this super node. */
+  string toString() {
+    exists(int c |
+      c = strictcount(getANode()) and
+      result = "Super node of " + c + " nodes in " + getEnclosingPredicate().getName()
+    )
+  }
+
+  /** Gets the location of an arbitrary node in this super node. */
+  Location getLocation() {
+    result = getArbitraryRepr().getLocation()
+  }
+
+  /** Gets any member call whose receiver is in the same super node. */
+  MemberCall getALocalMemberCall() {
+    superNode(result.getBase()) = this
+  }
+
+  /** Gets any member call whose receiver is in the same super node. */
+  MemberCall getALocalMemberCall(string name) {
+    result = this.getALocalMemberCall() and
+    result.getMemberName() = name
+  }
+}
+
+/** Gets the super node for the given AST node. */
+pragma[inline]
+SuperNode superNode(AstNode node) {
+  result = astNode(node).getSuperNode()
 }
