@@ -44,7 +44,7 @@ jobs:
           git checkout FETCH_HEAD
           # needed so that `git describe --all` works during the build
           git tag "custom-qlSubmoduleSha-${QL_SUBMODULE_SHA}"
-          
+
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
@@ -52,11 +52,21 @@ jobs:
             5.0.303
             5.0.404
             6.0.101
-            
+
       - name: Prepare - Linux
         uses: ./.github/actions/prepare-linux
 
-      - name: Build
+      - name: Build - Unit tests
         shell: bash
         run: |
-          ./build -j2 target/test/codeql-integration-tests/results.xml target/test/java/results.xml TESTSUITE_FLAGS+=ql/java/ql/test/kotlin 'TESTSUITE_FLAGS+=#' 'LANG_TESTSUITE_FLAGS+=--test-dir integration-tests/all-platforms/kotlin'
+          ./build -j2 target/test/java/results.xml TESTSUITE_FLAGS+=ql/java/ql/test/kotlin 'TESTSUITE_FLAGS+=#'
+
+      - name: Build - Integration tests - Posix
+        shell: bash
+        run: |
+          ./build -j2 target/test/codeql-integration-tests/results.xml 'LANG_TESTSUITE_FLAGS+=--test-dir integration-tests/posix-only/kotlin'
+
+      - name: Build - Integration tests - Linux
+        shell: bash
+        run: |
+          ./build -j2 target/test/codeql-integration-tests/results.xml 'LANG_TESTSUITE_FLAGS+=--test-dir integration-tests/linux-only/kotlin'
