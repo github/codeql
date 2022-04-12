@@ -5,26 +5,31 @@
 
 <overview>
 
-<p>If you use cross-origin communication between Window objects and do expect to receive messages from other sites, always verify the sender's identity using the origin and possibly source properties of the recevied `MessageEvent`. </p>
-
-<p>Unexpected behaviours, like `DOM-based XSS` could occur, if the event handler for incoming data does not check the origin of the data received and handles the data in an unsafe way.</p>
+<p>
+The <code>"message"</code> event is used to send messages between windows. 
+An untrusted origin is allowed to send messages to a trusted window, and if the origin 
+is not checked that can lead to various security issues.
+</p>
 </overview>
 
 <recommendation>
 <p>
-Always verify the sender's identity of incoming messages.
+Always verify the origin of incoming messages.
 </p>
-
 </recommendation>
 
 <example>
-<p>In the first example, the `MessageEvent.data` is passed to the `eval` function withouth checking the origin. This means that any window can send arbitrary messages that will be executed in the window receiving the message</p>
+<p>
+The example below uses a received message to execute some code. However, the 
+origin of the message is not checked, so it might be possible for an attacker
+to execute arbitrary code.
+</p>
 <sample src="examples/postMessageNoOriginCheck.js" />
 
-<p> In the second example, the `MessageEvent.origin` is verified with an unsecure check. For example, using `event.origin.indexOf('www.example.com') > -1` can be bypassed because the string `www.example.com` could appear anywhere in `event.origin` (i.e. `www.example.com.mydomain.com`)</p>
-<sample src="examples/postMessageInsufficientCheck.js" />
-
-<p> In the third example, the `MessageEvent.origin` is properly checked against a trusted origin. </p>
+<p>
+The example is fixed below, where the origin is checked to be trusted. 
+It is therefore not possible for an attacker to attack using an untrusted origin.
+</p>
 <sample src="examples/postMessageWithOriginCheck.js" />
 
 </example>
