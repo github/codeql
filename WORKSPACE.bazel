@@ -1,2 +1,12 @@
 # Please notice that any bazel targets and definitions in this repository are currently experimental
 # and for internal use only.
+
+workspace(name = "ql")
+
+load("//misc/bazel:workspace.bzl", "ql_workspace")
+
+ql_workspace()
+
+load("//misc/bazel:workspace_deps.bzl", "ql_workspace_deps")
+
+ql_workspace_deps()
