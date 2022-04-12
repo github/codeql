@@ -457,7 +457,54 @@ open class KotlinFileExtractor(
         extractDeclInitializers(c.declarations, false) { Pair(blockId, obinitId) }
     }
 
-    val jvmStaticFqName = FqName("kotlin.jvm.JvmStatic")
+    fun extractAnnotations(c: IrClass): Int {
+        var count = 0
+        for (constructorCall: IrConstructorCall in c.annotations) {
+
+            // todo: do not extract JvmName, what else?
+
+            val t = useType(constructorCall.type)
+            val annotated = useClassSource(c)
+
+            val id = tw.getLabelFor<DbDeclannotation>("@\"annotation;{$annotated};{${t.javaResult.id}}\"")
+            tw.writeExprs_declannotation(id, t.javaResult.id, annotated, count++)
+            tw.writeExprsKotlinType(id, t.kotlinResult.id)
+
+            val locId = tw.getLocation(constructorCall)
+            tw.writeHasLocation(id, locId)
+
+            for (i in 0 until constructorCall.valueArgumentsCount) {
+                val param = constructorCall.symbol.owner.valueParameters[i]
+                val prop = constructorCall.symbol.owner.parentAsClass.declarations.filterIsInstance<IrProperty>().firstOrNull { it.name == param.name }
+                if (prop == null) {
+                    continue
+                }
+
+                val v = constructorCall.getValueArgument(i) ?: param.defaultValue?.expression
+
+                when (v) {
+                    is IrConst<*> -> {
+                        val exprId = extractConstant(v, id, i)
+                        if (exprId != null) {
+
+                            tw.writeAnnotValue(id, useFunction<DbMethod>(prop.getter!!), exprId)
+                        }
+                    }
+                    /*
+                    Integer types;
+                    Enum types;
+                    String type;
+                    Classes;
+                    Other annotation types;
+                    Arrays of any type listed above.
+                     */
+
+                }
+            }
+        }
+
+        return count
+    }
 
     fun extractClassSource(c: IrClass, extractDeclarations: Boolean, extractStaticInitializer: Boolean, extractPrivateMembers: Boolean, extractFunctionBodies: Boolean): Label<out DbClassorinterface> {
         with("class source", c) {
@@ -540,6 +587,8 @@ open class KotlinFileExtractor(
 
                 linesOfCode?.linesOfCodeInDeclaration(c, id)
 
+                extractAnnotations(c)
+
                 if (extractFunctionBodies && !c.isAnonymousObject && !c.isLocal)
                     externalClassExtractor.writeStubTrapFile(c)
 
@@ -547,6 +596,8 @@ open class KotlinFileExtractor(
             }
         }
     }
+
+    val jvmStaticFqName = FqName("kotlin.jvm.JvmStatic")
 
     private fun extractJvmStaticProxyMethods(c: IrClass, classId: Label<out DbClassorinterface>, extractPrivateMembers: Boolean, extractFunctionBodies: Boolean) {
 
@@ -3457,13 +3508,6 @@ open class KotlinFileExtractor(
             else -> c.toString()
         }
 
-    // Render a string literal as it might occur in Kotlin source. Note this is a reasonable guess; the real source
-    // could use other escape sequences to describe the same String. Importantly, this is the same guess the Java
-    // extractor makes regarding string literals occurring within annotations, which we need to coincide with to ensure
-    // database consistency.
-    private fun toQuotedLiteral(s: String) =
-        s.toCharArray().joinToString(separator = "", prefix = "\"", postfix = "\"") { c -> escapeCharForQuotedLiteral(c) }
-
     private fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: StmtExprParent) {
         with("expression", e) {
             when(e) {
@@ -3614,71 +3658,10 @@ open class KotlinFileExtractor(
                 }
                 is IrConst<*> -> {
                     val exprParent = parent.expr(e, callable)
-                    val v = e.value
-                    when {
-                        v is Number && (v is Int || v is Short || v is Byte) -> {
-                            extractConstantInteger(v, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
-                        }
-                        v is Long -> {
-                            val id = tw.getFreshIdLabel<DbLongliteral>()
-                            val type = useType(e.type)
-                            val locId = tw.getLocation(e)
-                            tw.writeExprs_longliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                            tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                            extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                            tw.writeNamestrings(v.toString(), v.toString(), id)
-                        }
-                        v is Float -> {
-                            val id = tw.getFreshIdLabel<DbFloatingpointliteral>()
-                            val type = useType(e.type)
-                            val locId = tw.getLocation(e)
-                            tw.writeExprs_floatingpointliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                            tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                            extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                            tw.writeNamestrings(v.toString(), v.toString(), id)
-                        }
-                        v is Double -> {
-                            val id = tw.getFreshIdLabel<DbDoubleliteral>()
-                            val type = useType(e.type)
-                            val locId = tw.getLocation(e)
-                            tw.writeExprs_doubleliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                            tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                            extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                            tw.writeNamestrings(v.toString(), v.toString(), id)
-                        }
-                        v is Boolean -> {
-                            val id = tw.getFreshIdLabel<DbBooleanliteral>()
-                            val type = useType(e.type)
-                            val locId = tw.getLocation(e)
-                            tw.writeExprs_booleanliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                            tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                            extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                            tw.writeNamestrings(v.toString(), v.toString(), id)
-                        }
-                        v is Char -> {
-                            val id = tw.getFreshIdLabel<DbCharacterliteral>()
-                            val type = useType(e.type)
-                            val locId = tw.getLocation(e)
-                            tw.writeExprs_characterliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                            tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                            extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                            tw.writeNamestrings(v.toString(), v.toString(), id)
-                        }
-                        v is String -> {
-                            val id = tw.getFreshIdLabel<DbStringliteral>()
-                            val type = useType(e.type)
-                            val locId = tw.getLocation(e)
-                            tw.writeExprs_stringliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                            tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                            extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                            tw.writeNamestrings(toQuotedLiteral(v.toString()), v.toString(), id)
-                        }
-                        v == null -> {
-                            extractNull(e.type, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
-                        }
-                        else -> {
-                            logger.errorElement("Unrecognised IrConst: " + v.javaClass, e)
-                        }
+                    val id = extractConstant(e, exprParent.parent, exprParent.idx)
+                    if (id != null) {
+                        tw.writeCallableEnclosingExpr(id, callable)
+                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
                     }
                 }
                 is IrGetValue -> {
@@ -4168,6 +4151,86 @@ open class KotlinFileExtractor(
             }
         }
         extractExpressionExpr(loop.condition, callable, id, 0, id)
+    }
+
+    // Render a string literal as it might occur in Kotlin source. Note this is a reasonable guess; the real source
+    // could use other escape sequences to describe the same String. Importantly, this is the same guess the Java
+    // extractor makes regarding string literals occurring within annotations, which we need to coincide with to ensure
+    // database consistency.
+    private fun toQuotedLiteral(s: String) =
+        s.toCharArray().joinToString(separator = "", prefix = "\"", postfix = "\"") { c -> escapeCharForQuotedLiteral(c) }
+
+    private fun extractConstant(
+        e: IrConst<*>,
+        parent: Label<out DbExprparent>,
+        idx: Int
+    ): Label<out DbExpr>? {
+        val v = e.value
+        when {
+            v is Number && (v is Int || v is Short || v is Byte) -> {
+                extractConstantInteger(v, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
+            }
+            v is Long -> {
+                val id = tw.getFreshIdLabel<DbLongliteral>()
+                val type = useType(e.type)
+                val locId = tw.getLocation(e)
+                tw.writeExprs_longliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
+                tw.writeNamestrings(v.toString(), v.toString(), id)
+            }
+            v is Float -> {
+                val id = tw.getFreshIdLabel<DbFloatingpointliteral>()
+                val type = useType(e.type)
+                val locId = tw.getLocation(e)
+                tw.writeExprs_floatingpointliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
+                tw.writeNamestrings(v.toString(), v.toString(), id)
+            }
+            v is Double -> {
+                val id = tw.getFreshIdLabel<DbDoubleliteral>()
+                val type = useType(e.type)
+                val locId = tw.getLocation(e)
+                tw.writeExprs_doubleliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
+                tw.writeNamestrings(v.toString(), v.toString(), id)
+            }
+            v is Boolean -> {
+                val id = tw.getFreshIdLabel<DbBooleanliteral>()
+                val type = useType(e.type)
+                val locId = tw.getLocation(e)
+                tw.writeExprs_booleanliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
+                tw.writeNamestrings(v.toString(), v.toString(), id)
+            }
+            v is Char -> {
+                val id = tw.getFreshIdLabel<DbCharacterliteral>()
+                val type = useType(e.type)
+                val locId = tw.getLocation(e)
+                tw.writeExprs_characterliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
+                tw.writeNamestrings(v.toString(), v.toString(), id)
+            }
+            v is String -> {
+                val id = tw.getFreshIdLabel<DbStringliteral>()
+                val type = useType(e.type)
+                val locId = tw.getLocation(e)
+                tw.writeExprs_stringliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
+                tw.writeNamestrings(toQuotedLiteral(v.toString()), v.toString(), id)
+            }
+            v == null -> {
+                extractNull(e.type, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
+            }
+            else -> {
+                logger.errorElement("Unrecognised IrConst: " + v.javaClass, e)
+            }
+        }
     }
 
     private fun IrValueParameter.isExtensionReceiver(): Boolean {

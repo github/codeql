@@ -21,6 +21,12 @@ def.kt:
 #    6|     1: [Method] message
 #    7|     2: [Method] replaceWith
 #    9|   5: [Class] X
+#-----|     -3: (Annotations)
+#    9|       1: [Annotation] Deprecated
+#    0|         1: [StringLiteral] This class is deprecated
+#   10|       2: [Annotation] SomeAnnotation
+#    0|         1: [IntegerLiteral] 5
+#    0|         1: [StringLiteral] a
 #   11|     1: [Constructor] X
 #    9|       5: [BlockStmt] { ... }
 #    9|         0: [SuperConstructorInvocationStmt] super(...)

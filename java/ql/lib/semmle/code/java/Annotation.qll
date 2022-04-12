@@ -249,7 +249,7 @@ private predicate filteredAnnotValue(Annotation a, Method m, Expr val) {
 
 private predicate sourceAnnotValue(Annotation a, Method m, Expr val) {
   annotValue(a, m, val) and
-  val.getFile().getExtension() = "java"
+  val.getFile().isSourceFile()
 }
 
 /** An abstract representation of language elements that can be annotated. */
