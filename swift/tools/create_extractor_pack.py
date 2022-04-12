@@ -11,6 +11,6 @@ except KeyError:
     sys.exit(1)
 
 dest_dir = workspace_dir / 'swift' / 'extractor-pack'
-shutil.rmtree(dest_dir)
+shutil.rmtree(dest_dir, ignore_errors=True)
 os.environ['DESTDIR'] = str(dest_dir)
 main(sys.argv)
