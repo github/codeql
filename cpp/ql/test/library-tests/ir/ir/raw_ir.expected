@@ -139,8 +139,6 @@ bad_asts.cpp:
 #   30|     v30_6(void)         = ExitFunction            : 
 
 clang.cpp:
-#    3| int globalInt
-
 #    5| int* globalIntAddress()
 #    5|   Block 0
 #    5|     v5_1(void)         = EnterFunction              : 
@@ -2225,8 +2223,6 @@ ir.cpp:
 #  341|     v341_10(void)        = ReturnValue              : &:r341_9, ~m?
 #  341|     v341_11(void)        = AliasedUse               : ~m?
 #  341|     v341_12(void)        = ExitFunction             : 
-
-#  346| int g
 
 #  348| int* AddressOf()
 #  348|   Block 0
@@ -9016,8 +9012,6 @@ ir.cpp:
 # 1693|     v1693_6(void)       = AliasedUse               : ~m?
 # 1693|     v1693_7(void)       = ExitFunction             : 
 
-# 1699| int global_1
-
 # 1701| int global_2
 # 1701|   Block 0
 # 1701|     v1701_1(void)       = EnterFunction     : 
@@ -9329,8 +9323,6 @@ struct_init.cpp:
 #    9|     v9_8(void)              = ReturnVoid                : 
 #    9|     v9_9(void)              = AliasedUse                : ~m?
 #    9|     v9_10(void)             = ExitFunction              : 
-
-#   14| Info* global_pointer
 
 #   16| void let_info_escape(Info*)
 #   16|   Block 0

@@ -8,6 +8,6 @@ private import PrintConfig
 
 private class PrintConfig extends PrintIRConfiguration {
   override predicate shouldPrintFunction(Declaration decl) {
-    shouldDumpFunction(decl) or decl instanceof GlobalOrNamespaceVariable
+    shouldDumpFunction(decl)
   }
 }
