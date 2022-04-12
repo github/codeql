@@ -697,11 +697,13 @@ class TypeSetLiteralType extends @typesetliteraltype, CompositeType {
   predicate includesType(Type t) { this.getATerm().includesType(t) }
 
   /**
-   * Gets the interface type specified by just this type set literal, if it
-   * exists.
+   * Gets the interface type of which this type-set literal is the only
+   * element, if it exists.
    *
-   * This will exist in cases where the type set literal is used directly as
-   * the bound in a type parameter declaration.
+   * It exists if it has been explicitly defined, as in
+   * `interface { int64 | uint64 }`, or if it has been implicitly created by
+   * using the type set literal directly as the bound in a type parameter
+   * declaration, as in `[T int64 | uint64]`.
    */
   InterfaceType getInterfaceType() {
     this = result.getDirectlyEmbeddedTypeSetLiteral(0) and
