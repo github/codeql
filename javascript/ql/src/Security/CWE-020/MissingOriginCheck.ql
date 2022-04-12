@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @security-severity 5
  * @precision medium
- * @id js/missing-origin-verification
+ * @id js/missing-origin-check
  * @tags correctness
  *       security
  *       external/cwe/cwe-020

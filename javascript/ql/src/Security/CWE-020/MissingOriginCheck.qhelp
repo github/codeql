@@ -24,13 +24,13 @@ The example below uses a received message to execute some code. However, the
 origin of the message is not checked, so it might be possible for an attacker
 to execute arbitrary code.
 </p>
-<sample src="examples/postMessageNoOriginCheck.js" />
+<sample src="examples/MissingOriginCheckBad.js" />
 
 <p>
 The example is fixed below, where the origin is checked to be trusted. 
 It is therefore not possible for an attacker to attack using an untrusted origin.
 </p>
-<sample src="examples/postMessageWithOriginCheck.js" />
+<sample src="examples/MissingOriginCheckGood.js" />
 
 </example>
 
