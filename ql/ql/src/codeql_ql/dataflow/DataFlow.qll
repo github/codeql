@@ -16,6 +16,7 @@ private import internal.GlobalFlow as GlobalFlow
  */
 class Node extends TNode {
   string toString() { none() } // overridden in subclasses
+
   Location getLocation() { none() } // overridden in subclasses
 
   /**
@@ -48,31 +49,21 @@ class AstNodeNode extends Node, MkAstNodeNode {
 
   AstNodeNode() { this = MkAstNodeNode(ast) }
 
-  override string toString() {
-    result = ast.toString()
-  }
+  override string toString() { result = ast.toString() }
 
-  override Location getLocation() {
-    result = ast.getLocation()
-  }
+  override Location getLocation() { result = ast.getLocation() }
 
   /** Gets the AST node. */
-  AstNode getAstNode() {
-    result = ast
-  }
+  AstNode getAstNode() { result = ast }
 
-  override Predicate getEnclosingPredicate() {
-    result = ast.getEnclosingPredicate()
-  }
+  override Predicate getEnclosingPredicate() { result = ast.getEnclosingPredicate() }
 }
 
 /**
  * Gets the data-flow node correspoinding to the given AST node.
  */
 pragma[inline]
-Node astNode(AstNode node) {
-  result = MkAstNodeNode(node)
-}
+Node astNode(AstNode node) { result = MkAstNodeNode(node) }
 
 /**
  * A data-flow node representing a variable within a specific scope.
@@ -84,35 +75,27 @@ class ScopedVariableNode extends Node, MkScopedVariable {
   ScopedVariableNode() { this = MkScopedVariable(var, scope) }
 
   override string toString() {
-    result = "Variable '" + var.getName() + "' scoped to " + scope.getLocation().getStartLine() + ":" + scope.getLocation().getStartColumn()
+    result =
+      "Variable '" + var.getName() + "' scoped to " + scope.getLocation().getStartLine() + ":" +
+        scope.getLocation().getStartColumn()
   }
 
-  override Location getLocation() {
-    result = scope.getLocation()
-  }
+  override Location getLocation() { result = scope.getLocation() }
 
   /** Gets the variable being refined to a specific scope. */
-  VarDef getVariable() {
-    result = var
-  }
+  VarDef getVariable() { result = var }
 
   /** Gets the scope to which this variable has been refined. */
-  AstNode getScope() {
-    result = scope
-  }
+  AstNode getScope() { result = scope }
 
-  override Predicate getEnclosingPredicate() {
-    result = var.getEnclosingPredicate()
-  }
+  override Predicate getEnclosingPredicate() { result = var.getEnclosingPredicate() }
 }
 
 /**
  * Gets the data-flow node corresponding to `var` restricted to `scope`.
  */
 pragma[inline]
-Node scopedVariable(VarDef var, AstNode scope) {
-  result = MkScopedVariable(var, scope)
-}
+Node scopedVariable(VarDef var, AstNode scope) { result = MkScopedVariable(var, scope) }
 
 /**
  * A data-flow node representing `this` within a class predicate, charpred, or newtype branch.
@@ -122,31 +105,21 @@ class ThisNode extends Node, MkThisNode {
 
   ThisNode() { this = MkThisNode(pred) }
 
-  override string toString() {
-    result = "'this' in " + pred.getName()
-  }
+  override string toString() { result = "'this' in " + pred.getName() }
 
-  override Location getLocation() {
-    result = pred.getLocation()
-  }
+  override Location getLocation() { result = pred.getLocation() }
 
   /** Gets the class predicate, charpred, or newtype branch whose 'this' parameter is represented by this node. */
-  Predicate getPredicate() {
-    result = pred
-  }
+  Predicate getPredicate() { result = pred }
 
-  override Predicate getEnclosingPredicate() {
-    result = pred
-  }
+  override Predicate getEnclosingPredicate() { result = pred }
 }
 
 /**
  * Gets the data-flow node representing `this` within the given class predicate, charpred, or newtype branch.
  */
 pragma[inline]
-Node thisNode(Predicate pred) {
-  result = MkThisNode(pred)
-}
+Node thisNode(Predicate pred) { result = MkThisNode(pred) }
 
 /**
  * A data-flow node representing `result` within a predicate that has a result.
@@ -156,31 +129,21 @@ class ResultNode extends Node, MkResultNode {
 
   ResultNode() { this = MkResultNode(pred) }
 
-  override string toString() {
-    result = "'result' in " + pred.getName()
-  }
+  override string toString() { result = "'result' in " + pred.getName() }
 
-  override Location getLocation() {
-    result = pred.getLocation()
-  }
+  override Location getLocation() { result = pred.getLocation() }
 
   /** Gets the predicate whose 'result' parameter is represented by this node. */
-  Predicate getPredicate() {
-    result = pred
-  }
+  Predicate getPredicate() { result = pred }
 
-  override Predicate getEnclosingPredicate() {
-    result = pred
-  }
+  override Predicate getEnclosingPredicate() { result = pred }
 }
 
 /**
  * Gets the data-flow node representing `result` within the given predicate.
  */
 pragma[inline]
-Node resultNode(Predicate pred) {
-  result = MkResultNode(pred)
-}
+Node resultNode(Predicate pred) { result = MkResultNode(pred) }
 
 /**
  * A data-flow node representing the view of a field in the enclosing class, as seen
@@ -193,29 +156,17 @@ class FieldNode extends Node, MkFieldNode {
   FieldNode() { this = MkFieldNode(pred, fieldDecl) }
 
   /** Gets the member predicate or charpred for which this node represents access to the field. */
-  Predicate getPredicate() {
-    result = pred
-  }
+  Predicate getPredicate() { result = pred }
 
-  FieldDecl getFieldDeclaration() {
-    result = fieldDecl
-  }
+  FieldDecl getFieldDeclaration() { result = fieldDecl }
 
-  string getFieldName() {
-    result = fieldDecl.getName()
-  }
+  string getFieldName() { result = fieldDecl.getName() }
 
-  override string toString() {
-    result = "'"  + this.getFieldName() + "' in " + pred.getName()
-  }
+  override string toString() { result = "'" + this.getFieldName() + "' in " + pred.getName() }
 
-  override Location getLocation() {
-    result = pred.getLocation()
-  }
+  override Location getLocation() { result = pred.getLocation() }
 
-  override Predicate getEnclosingPredicate() {
-    result = pred
-  }
+  override Predicate getEnclosingPredicate() { result = pred }
 }
 
 /**
@@ -223,9 +174,7 @@ class FieldNode extends Node, MkFieldNode {
  * in the enclosing class.
  */
 pragma[inline]
-Node fieldNode(Predicate pred, FieldDecl fieldDecl) {
-  result = MkFieldNode(pred, fieldDecl)
-}
+Node fieldNode(Predicate pred, FieldDecl fieldDecl) { result = MkFieldNode(pred, fieldDecl) }
 
 /**
  * A collection of data-flow nodes in the same predicate, locally bound by equalities.
@@ -238,14 +187,10 @@ class SuperNode extends LocalFlow::TSuperNode {
   SuperNode() { this = LocalFlow::MkSuperNode(repr) }
 
   /** Gets a data-flow node that is part of this super node. */
-  Node getANode() {
-    LocalFlow::getRepr(result) = repr
-  }
+  Node getANode() { LocalFlow::getRepr(result) = repr }
 
   /** Gets an AST node from any of the nodes in this super node. */
-  AstNode asAstNode() {
-    result = getANode().asAstNode()
-  }
+  AstNode asAstNode() { result = getANode().asAstNode() }
 
   /**
    * Gets a single node from this super node.
@@ -255,16 +200,12 @@ class SuperNode extends LocalFlow::TSuperNode {
    * - An `AstNodeNode` is preferred over other nodes.
    * - A node occuring earlier is preferred over one occurring later.
    */
-  Node getArbitraryRepr() {
-    result = min(Node n | n = getANode() | n order by getInternalId(n))
-  }
+  Node getArbitraryRepr() { result = min(Node n | n = getANode() | n order by getInternalId(n)) }
 
   /**
    * Gets the predicate containing all nodes that are part of this super node.
    */
-  Predicate getEnclosingPredicate() {
-    result = getANode().getEnclosingPredicate()
-  }
+  Predicate getEnclosingPredicate() { result = getANode().getEnclosingPredicate() }
 
   /** Gets a string representation of this super node. */
   string toString() {
@@ -275,14 +216,10 @@ class SuperNode extends LocalFlow::TSuperNode {
   }
 
   /** Gets the location of an arbitrary node in this super node. */
-  Location getLocation() {
-    result = getArbitraryRepr().getLocation()
-  }
+  Location getLocation() { result = getArbitraryRepr().getLocation() }
 
   /** Gets any member call whose receiver is in the same super node. */
-  MemberCall getALocalMemberCall() {
-    superNode(result.getBase()) = this
-  }
+  MemberCall getALocalMemberCall() { superNode(result.getBase()) = this }
 
   /** Gets any member call whose receiver is in the same super node. */
   MemberCall getALocalMemberCall(string name) {
@@ -382,9 +319,7 @@ class SuperNode extends LocalFlow::TSuperNode {
 
 /** Gets the super node for the given AST node. */
 pragma[inline]
-SuperNode superNode(AstNode node) {
-  result = astNode(node).getSuperNode()
-}
+SuperNode superNode(AstNode node) { result = astNode(node).getSuperNode() }
 
 /**
  * A summary of the steps needed to reach a node in the global data flow graph,
