@@ -498,7 +498,7 @@ open class KotlinFileExtractor(
 
         return when (v) {
             is IrConst<*> -> {
-                extractConstant(v, parent, idx)
+                extractConstant(v, parent, idx, null, null)
             }
             is IrGetEnumValue -> {
                 extractEnumValue(v, parent, idx, null, null)
@@ -558,7 +558,7 @@ open class KotlinFileExtractor(
                     val interfaceId = id.cast<DbInterface>()
                     tw.writeInterfaces(interfaceId, cls, pkgId, interfaceId)
 
-                    if (kind == ClassKind.ANNOTATION_CLASS) {
+                    if (c.kind == ClassKind.ANNOTATION_CLASS) {
                         tw.writeIsAnnotType(interfaceId)
                     }
                 } else {
@@ -586,12 +586,12 @@ open class KotlinFileExtractor(
 
                 c.typeParameters.mapIndexed { idx, param -> extractTypeParameter(param, idx, javaClass?.typeParameters?.getOrNull(idx)) }
                 if (extractDeclarations) {
-                    if (kind == ClassKind.ANNOTATION_CLASS) {
+                    if (c.kind == ClassKind.ANNOTATION_CLASS) {
                         c.declarations
                             .filterIsInstance<IrProperty>()
                             .map {
                                 val getter = it.getter!!
-                                val label = extractFunction(getter, id, false, null, listOf())
+                                val label = extractFunction(getter, id, extractBody = false, extractMethodAndParameterTypeAccesses = false, null, listOf())
                                 tw.writeIsAnnotElem(label!!.cast<DbMethod>())
                             }
                     } else {
@@ -3491,10 +3491,10 @@ open class KotlinFileExtractor(
         extractExpression(e, callable, ExprParent(parent, idx, enclosingStmt))
     }
 
-    private fun extractExprContext(id: Label<out DbExpr>, locId: Label<DbLocation>, callable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) {
+    private fun extractExprContext(id: Label<out DbExpr>, locId: Label<DbLocation>, callable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?) {
         tw.writeHasLocation(id, locId)
-        tw.writeCallableEnclosingExpr(id, callable)
-        tw.writeStatementEnclosingExpr(id, enclosingStmt)
+        callable?.let { tw.writeCallableEnclosingExpr(id, it) }
+        enclosingStmt?.let { tw.writeStatementEnclosingExpr(id, it) }
     }
 
     private fun extractEqualsExpression(locId: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) =
@@ -3513,7 +3513,7 @@ open class KotlinFileExtractor(
             extractExprContext(it, locId, callable, enclosingStmt)
         }
 
-    private fun extractConstantInteger(v: Number, locId: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) =
+    private fun extractConstantInteger(v: Number, locId: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?) =
         tw.getFreshIdLabel<DbIntegerliteral>().also {
             val type = useType(pluginContext.irBuiltIns.intType)
             tw.writeExprs_integerliteral(it, type.javaResult.id, parent, idx)
@@ -3522,7 +3522,7 @@ open class KotlinFileExtractor(
             extractExprContext(it, locId, callable, enclosingStmt)
         }
 
-    private fun extractNull(t: IrType, locId: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) =
+    private fun extractNull(t: IrType, locId: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?) =
         tw.getFreshIdLabel<DbNullliteral>().also {
             val type = useType(t)
             tw.writeExprs_nullliteral(it, type.javaResult.id, parent, idx)
@@ -3698,11 +3698,7 @@ open class KotlinFileExtractor(
                 }
                 is IrConst<*> -> {
                     val exprParent = parent.expr(e, callable)
-                    val id = extractConstant(e, exprParent.parent, exprParent.idx)
-                    if (id != null) {
-                        tw.writeCallableEnclosingExpr(id, callable)
-                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                    }
+                    extractConstant(e, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
                 }
                 is IrGetValue -> {
                     val exprParent = parent.expr(e, callable)
@@ -3731,7 +3727,7 @@ open class KotlinFileExtractor(
                 }
                 is IrGetEnumValue -> {
                     val exprParent = parent.expr(e, callable)
-                    val id = extractEnumValue(e, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
+                    extractEnumValue(e, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
                 }
                 is IrSetValue,
                 is IrSetField -> {
@@ -4180,20 +4176,16 @@ open class KotlinFileExtractor(
         idx: Int,
         enclosingCallable: Label<out DbCallable>?,
         enclosingStmt: Label<out DbStmt>?
-    ): Label<out DbExpr> {
-        val id = tw.getFreshIdLabel<DbTypeliteral>()
-        val locId = tw.getLocation(e)
-        val type = useType(e.type)
-        tw.writeExprs_typeliteral(id, type.javaResult.id, parent, idx)
-        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-        tw.writeHasLocation(id, locId)
+    ) =
+        tw.getFreshIdLabel<DbTypeliteral>().also { id ->
+            val locId = tw.getLocation(e)
+            val type = useType(e.type)
+            tw.writeExprs_typeliteral(id, type.javaResult.id, parent, idx)
+            tw.writeExprsKotlinType(id, type.kotlinResult.id)
+            extractExprContext(id, locId, enclosingCallable, enclosingStmt)
 
-        enclosingCallable?.let { tw.writeCallableEnclosingExpr(id, it) }
-        enclosingStmt?.let { tw.writeStatementEnclosingExpr(id, it) }
-
-        extractTypeAccessRecursive(e.classType, locId, id, 0, enclosingCallable, enclosingStmt)
-        return id
-    }
+            extractTypeAccessRecursive(e.classType, locId, id, 0, enclosingCallable, enclosingStmt)
+        }
 
     private fun extractEnumValue(
         e: IrGetEnumValue,
@@ -4201,25 +4193,23 @@ open class KotlinFileExtractor(
         idx: Int,
         enclosingCallable: Label<out DbCallable>?,
         enclosingStmt: Label<out DbStmt>?
-    ): Label<out DbExpr> {
-        val id = tw.getFreshIdLabel<DbVaraccess>()
-        val type = useType(e.type)
-        val locId = tw.getLocation(e)
-        tw.writeExprs_varaccess(id, type.javaResult.id, parent, idx)
-        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-        tw.writeHasLocation(id, locId)
+    ) =
+        tw.getFreshIdLabel<DbVaraccess>().also { id ->
+            val type = useType(e.type)
+            val locId = tw.getLocation(e)
+            tw.writeExprs_varaccess(id, type.javaResult.id, parent, idx)
+            tw.writeExprsKotlinType(id, type.kotlinResult.id)
+            extractExprContext(id, locId, enclosingCallable, enclosingStmt)
 
-        enclosingCallable?.let { tw.writeCallableEnclosingExpr(id, it) }
-        enclosingStmt?.let { tw.writeStatementEnclosingExpr(id, it) }
+            getBoundSymbolOwner(e.symbol, e)?.let { owner ->
 
-        val owner = getBoundSymbolOwner(e.symbol, e) ?: return id
+                val vId = useEnumEntry(owner)
+                tw.writeVariableBinding(id, vId)
 
-        val vId = useEnumEntry(owner)
-        tw.writeVariableBinding(id, vId)
+                extractStaticTypeAccessQualifier(owner, id, locId, enclosingCallable, enclosingStmt)
 
-        extractStaticTypeAccessQualifier(owner, id, locId, enclosingCallable, enclosingStmt)
-        return id
-    }
+            }
+        }
 
     // Render a string literal as it might occur in Kotlin source. Note this is a reasonable guess; the real source
     // could use other escape sequences to describe the same String. Importantly, this is the same guess the Java
@@ -4231,72 +4221,82 @@ open class KotlinFileExtractor(
     private fun extractConstant(
         e: IrConst<*>,
         parent: Label<out DbExprparent>,
-        idx: Int
+        idx: Int,
+        enclosingCallable: Label<out DbCallable>?,
+        enclosingStmt: Label<out DbStmt>?
     ): Label<out DbExpr>? {
         val v = e.value
-        when {
+        return when {
             v is Number && (v is Int || v is Short || v is Byte) -> {
-                extractConstantInteger(v, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
+                extractConstantInteger(v, tw.getLocation(e), parent, idx, enclosingCallable, enclosingStmt)
             }
             v is Long -> {
-                val id = tw.getFreshIdLabel<DbLongliteral>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_longliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                tw.writeNamestrings(v.toString(), v.toString(), id)
+                tw.getFreshIdLabel<DbLongliteral>().also { id ->
+                    val type = useType(e.type)
+                    val locId = tw.getLocation(e)
+                    tw.writeExprs_longliteral(id, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                    extractExprContext(id, locId, enclosingCallable, enclosingStmt)
+                    tw.writeNamestrings(v.toString(), v.toString(), id)
+                }
             }
             v is Float -> {
-                val id = tw.getFreshIdLabel<DbFloatingpointliteral>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_floatingpointliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                tw.writeNamestrings(v.toString(), v.toString(), id)
+                tw.getFreshIdLabel<DbFloatingpointliteral>().also { id ->
+                    val type = useType(e.type)
+                    val locId = tw.getLocation(e)
+                    tw.writeExprs_floatingpointliteral(id, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                    extractExprContext(id, locId, enclosingCallable, enclosingStmt)
+                    tw.writeNamestrings(v.toString(), v.toString(), id)
+                }
             }
             v is Double -> {
-                val id = tw.getFreshIdLabel<DbDoubleliteral>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_doubleliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                tw.writeNamestrings(v.toString(), v.toString(), id)
+                tw.getFreshIdLabel<DbDoubleliteral>().also { id ->
+                    val type = useType(e.type)
+                    val locId = tw.getLocation(e)
+                    tw.writeExprs_doubleliteral(id, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                    extractExprContext(id, locId, enclosingCallable, enclosingStmt)
+                    tw.writeNamestrings(v.toString(), v.toString(), id)
+                }
             }
             v is Boolean -> {
-                val id = tw.getFreshIdLabel<DbBooleanliteral>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_booleanliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                tw.writeNamestrings(v.toString(), v.toString(), id)
+                tw.getFreshIdLabel<DbBooleanliteral>().also { id ->
+                    val type = useType(e.type)
+                    val locId = tw.getLocation(e)
+                    tw.writeExprs_booleanliteral(id, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                    extractExprContext(id, locId, enclosingCallable, enclosingStmt)
+                    tw.writeNamestrings(v.toString(), v.toString(), id)
+                }
             }
             v is Char -> {
-                val id = tw.getFreshIdLabel<DbCharacterliteral>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_characterliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                tw.writeNamestrings(v.toString(), v.toString(), id)
+                tw.getFreshIdLabel<DbCharacterliteral>().also { id ->
+                    val type = useType(e.type)
+                    val locId = tw.getLocation(e)
+                    tw.writeExprs_characterliteral(id, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                    extractExprContext(id, locId, enclosingCallable, enclosingStmt)
+                    tw.writeNamestrings(v.toString(), v.toString(), id)
+                }
             }
             v is String -> {
-                val id = tw.getFreshIdLabel<DbStringliteral>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_stringliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                tw.writeNamestrings(toQuotedLiteral(v.toString()), v.toString(), id)
+                tw.getFreshIdLabel<DbStringliteral>().also { id ->
+                    val type = useType(e.type)
+                    val locId = tw.getLocation(e)
+                    tw.writeExprs_stringliteral(id, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                    extractExprContext(id, locId, enclosingCallable, enclosingStmt)
+                    tw.writeNamestrings(toQuotedLiteral(v.toString()), v.toString(), id)
+                }
             }
             v == null -> {
-                extractNull(e.type, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
+                extractNull(e.type, tw.getLocation(e), parent, idx, enclosingCallable, enclosingStmt)
             }
             else -> {
-                logger.errorElement("Unrecognised IrConst: " + v.javaClass, e)
+                null.also {
+                    logger.errorElement("Unrecognised IrConst: " + v.javaClass, e)
+                }
             }
         }
     }
