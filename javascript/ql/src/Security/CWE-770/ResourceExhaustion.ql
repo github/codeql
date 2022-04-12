@@ -12,7 +12,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import experimental.semmle.javascript.security.dataflow.ResourceExhaustionQuery
+import semmle.javascript.security.dataflow.ResourceExhaustionQuery
 
 from Configuration dataflow, DataFlow::PathNode source, DataFlow::PathNode sink
 where dataflow.hasFlowPath(source, sink)

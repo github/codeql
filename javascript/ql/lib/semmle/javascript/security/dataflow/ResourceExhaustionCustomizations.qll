@@ -77,4 +77,59 @@ module ResourceExhaustion {
       result = "This creates a timer with a user-controlled duration"
     }
   }
+
+  /**
+   * A node that determines the size of a buffer, considered as a data flow sink for resource exhaustion vulnerabilities.
+   */
+  class BufferSizeSink extends Sink {
+    BufferSizeSink() {
+      exists(DataFlow::SourceNode clazz, DataFlow::InvokeNode invk, int index |
+        clazz = DataFlow::globalVarRef("Buffer") and this = invk.getArgument(index)
+      |
+        exists(string name |
+          invk = clazz.getAMemberCall(name) and
+          (
+            name = "from" and index = 2 // the length argument
+            or
+            name = ["alloc", "allocUnsafe", "allocUnsafeSlow"] and index = 0 // the buffer size
+          )
+        )
+        or
+        invk = clazz.getAnInvocation() and
+        (
+          invk.getNumArgument() = 1 and // `new Buffer(size)`, it's only an issue if the size is a number, which we don't track precisely.
+          index = 0
+          or
+          invk.getNumArgument() = 3 and index = 2 // the length argument
+        )
+      )
+      or
+      this = DataFlow::globalVarRef("SlowBuffer").getAnInstantiation().getArgument(0)
+    }
+
+    override string getProblemDescription() {
+      result = "This creates a buffer with a user-controlled size"
+    }
+  }
+
+  /**
+   * A node that determines the size of an array, considered as a data flow sink for resource exhaustion vulnerabilities.
+   * This is only an issue if the argument is a number, which we don't track precisely.
+   */
+  class DenseArraySizeSink extends Sink {
+    DenseArraySizeSink() {
+      // Arrays are sparse by default, so we must also look at how the array is used
+      exists(DataFlow::ArrayConstructorInvokeNode instance |
+        this = instance.getArgument(0) and
+        instance.getNumArgument() = 1
+      |
+        exists(instance.getAMethodCall(["map", "fill", "join", "toString"])) or
+        instance.flowsToExpr(any(AddExpr p).getAnOperand())
+      )
+    }
+
+    override string getProblemDescription() {
+      result = "This creates an array with a user-controlled length"
+    }
+  }
 }
