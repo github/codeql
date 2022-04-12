@@ -711,13 +711,6 @@ class AsExpr extends Cast, @as_expr {
 }
 
 /**
- * Any kind of expression that casts values from one type to another.
- *
- * For C#, this is only `CastExpr`.
- */
-class CastingExpr extends CastExpr { }
-
-/**
  * A cast expression, for example `(string) x`.
  */
 class CastExpr extends Cast, @cast_expr {
