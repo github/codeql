@@ -15,7 +15,7 @@ var server = http.createServer(function(req, res) {
   Buffer.allocUnsafe(n); // NOT OK
   Buffer.allocUnsafeSlow(n); // NOT OK
 
-  new Buffer(n); // NOT OK
+  new Buffer(n); // NOT OK - but not flagged [INCONSISTENCY]
   new Buffer(x, n); // OK
   new Buffer(x, y, n); // NOT OK
 
@@ -34,48 +34,48 @@ var server = http.createServer(function(req, res) {
   x.repeat(n); // NOT OK
   x.repeat(s); // NOT OK
 
-  new Buffer(n * x); // NOT OK
-  new Buffer(n + n); // NOT OK
-  new Buffer(n + x); // OK (maybe) - but still flagged [INCONSISTENCY]
-  new Buffer(n + s); // OK (this is  a string if `s` is a string) - but still flagged [INCONSISTENCY]
-  new Buffer(s + 2); // OK (this is  a string if `s` is a string) - but still flagged [INCONSISTENCY]
-  new Buffer(s + s); // OK - but still flagged [INCONSISTENCY]
-  new Buffer(n + "X"); // OK - but still flagged [INCONSISTENCY]
+  new Buffer(n * x); // NOT OK - but not flagged [INCONSISTENCY]
+  new Buffer(n + n); // NOT OK - but not flagged [INCONSISTENCY]
+  new Buffer(n + x); // OK (maybe)
+  new Buffer(n + s); // OK (this is  a string if `s` is a string)
+  new Buffer(s + 2); // OK (this is  a string if `s` is a string)
+  new Buffer(s + s); // OK
+  new Buffer(n + "X"); // OK
 
-  new Buffer(Math.ceil(s)); // NOT OK
-  new Buffer(Number(s)); // NOT OK
+  new Buffer(Math.ceil(s)); // NOT OK - but not flagged [INCONSISTENCY]
+  new Buffer(Number(s)); // NOT OK - but not flagged [INCONSISTENCY]
   new Buffer(new Number(s)); // OK
 
-  new Buffer(s + x.length); // OK (this is a string if `s` is a string)  - but still flagged [INCONSISTENCY]
-  new Buffer(s.length); // NOT OK
+  new Buffer(s + x.length); // OK (this is a string if `s` is a string)
+  new Buffer(s.length); // NOT OK - but not flagged [INCONSISTENCY]
 
   if (n < 100) {
     new Buffer(n); // OK
   } else {
-    new Buffer(n); // NOT OK
+    new Buffer(n); // NOT OK - but not flagged [INCONSISTENCY]
   }
 
   let ns = x ? n : s;
-  new Buffer(ns); // NOT OK
+  new Buffer(ns); // NOT OK - but not flagged [INCONSISTENCY]
 
-  new Buffer(n.toString()); // OK  - but still flagged [INCONSISTENCY]
+  new Buffer(n.toString()); // OK
 
   if (typeof n === "string") {
-    new Buffer(n); // OK  - but still flagged [INCONSISTENCY]
+    new Buffer(n); // OK
   } else {
-    new Buffer(n); // NOT OK
+    new Buffer(n); // NOT OK - but not flagged [INCONSISTENCY]
   }
 
   if (typeof n === "number") {
-    new Buffer(n); // NOT OK
+    new Buffer(n); // NOT OK - but not flagged [INCONSISTENCY]
   } else {
-    new Buffer(n); // OK  - but still flagged [INCONSISTENCY]
+    new Buffer(n); // OK
   }
 
   if (typeof s === "number") {
-    new Buffer(s); // NOT OK
+    new Buffer(s); // NOT OK - but not flagged [INCONSISTENCY]
   } else {
-    new Buffer(s); // OK - but stil flagged [INCONSISTENCY]
+    new Buffer(s); // OK
   }
 
   setTimeout(f, n); // NOT OK

@@ -97,9 +97,9 @@ module ResourceExhaustion {
         or
         invk = clazz.getAnInvocation() and
         (
-          invk.getNumArgument() = 1 and // `new Buffer(size)`, it's only an issue if the size is a number, which we don't track precisely.
-          index = 0
-          or
+          // invk.getNumArgument() = 1 and // `new Buffer(size)`, it's only an issue if the size is a number, which we don't track precisely.
+          // index = 0
+          // or
           invk.getNumArgument() = 3 and index = 2 // the length argument
         )
       )
