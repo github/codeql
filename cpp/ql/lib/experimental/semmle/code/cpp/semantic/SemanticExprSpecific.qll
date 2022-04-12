@@ -209,9 +209,12 @@ module SemanticExprConfig {
 
     final override predicate hasRead(SsaVariable v) {
       exists(IR::Operand operand |
-        operand.getDef() = v.asInstruction() and not operand instanceof IR::PhiInputOperand
+        operand.getDef() = v.asInstruction() and
+        not operand instanceof IR::PhiInputOperand and
+        operand.getUse().getBlock() = block
         or
-        operand = v.asOperand()
+        operand = v.asOperand() and
+        operand.getUse().getBlock() = block
       )
     }
   }
@@ -333,8 +336,9 @@ SemBasicBlock getSemanticBasicBlock(IR::IRBlock block) { result = block }
 
 IR::IRBlock getCppBasicBlock(SemBasicBlock block) { block = result }
 
-SemSsaVariable getSemanticSsaVariable(IR::Instruction instr) { 
-  result.(SemanticExprConfig::SsaVariable).asInstruction() = instr }
+SemSsaVariable getSemanticSsaVariable(IR::Instruction instr) {
+  result.(SemanticExprConfig::SsaVariable).asInstruction() = instr
+}
 
 IR::Instruction getCppSsaVariableInstruction(SemSsaVariable var) {
   var.(SemanticExprConfig::SsaVariable).asInstruction() = result
