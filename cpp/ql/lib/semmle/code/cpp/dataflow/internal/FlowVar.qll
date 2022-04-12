@@ -549,7 +549,7 @@ module FlowVar_internal {
         bb = this.(Loop).getStmt() and
         v = this.getARelevantVariable()
         or
-        this.reachesWithoutAssignment(bb.getAPredecessor(), v) and
+        this.reachesWithoutAssignment(pragma[only_bind_out](bb.getAPredecessor()), v) and
         this.bbInLoop(bb)
       ) and
       not assignsToVar(bb, v)
