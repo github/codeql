@@ -1,3 +1,13 @@
+/**
+ * Experimental library for reasoning about data flow.
+ *
+ * Current limitations:
+ * - Global flow does not reason about subclassing, overriding, and dispatch
+ * - `this`, `result`, and local field variables are treated less precisely
+ *   than regular variables (see VarScoping.qll)
+ * - Polarity is not tracked, that is, global flow does not care about negation at all.
+ */
+
 private import codeql_ql.ast.Ast
 private import internal.NodesInternal
 private import internal.DataFlowNumbering
@@ -15,8 +25,10 @@ private import internal.GlobalFlow as GlobalFlow
  * To reason about global data flow, use `SuperNode.track()`.
  */
 class Node extends TNode {
+  /** Gets a string representation of this element. */
   string toString() { none() } // overridden in subclasses
 
+  /** Gets the location of element. */
   Location getLocation() { none() } // overridden in subclasses
 
   /**
@@ -158,8 +170,10 @@ class FieldNode extends Node, MkFieldNode {
   /** Gets the member predicate or charpred for which this node represents access to the field. */
   Predicate getPredicate() { result = pred }
 
+  /** Gets the declaration of the field. */
   FieldDecl getFieldDeclaration() { result = fieldDecl }
 
+  /** Gets the name of the field. */
   string getFieldName() { result = fieldDecl.getName() }
 
   override string toString() { result = "'" + this.getFieldName() + "' in " + pred.getName() }

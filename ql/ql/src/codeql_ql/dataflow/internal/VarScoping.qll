@@ -1,3 +1,15 @@
+/**
+ * Computes scopes in which it is safe to unify all uses of a given variable.
+ *
+ * It is not accurate to unify variables across a disjunction, so the scope of a variable
+ * is restricted to its nearest enclosing disjunction operand ("disjunct").
+ * At such a disjunct, we introduce a "refinement" of the variable, which is seen as a
+ * redefinition of the variable within that disjunct.
+ *
+ * In principle this should also be done for `this`, `result`, and local field variables
+ * but currently it is not.
+ */
+
 private import codeql_ql.ast.Ast
 private import codeql_ql.ast.internal.AstNodeNumbering
 
