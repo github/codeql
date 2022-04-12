@@ -120,7 +120,12 @@ private newtype TPrintAstNode =
     shouldPrint(lvde, _) and lvde.getParent() instanceof SingleLocalVarDeclParent
   } or
   TAnnotationsNode(Annotatable ann) {
-    shouldPrint(ann, _) and ann.hasDeclaredAnnotation() and not partOfAnnotation(ann)
+    shouldPrint(ann, _) and
+    ann.hasDeclaredAnnotation() and
+    not partOfAnnotation(ann) and
+    // The Kotlin compiler might add annotations that are only present in byte code, although the annotatable element is
+    // present in source code.
+    exists(Annotation a | a.getAnnotatedElement() = ann and shouldPrint(a, _))
   } or
   TParametersNode(Callable c) { shouldPrint(c, _) and not c.hasNoParameters() } or
   TBaseTypesNode(ClassOrInterface ty) { shouldPrint(ty, _) } or
