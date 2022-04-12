@@ -72,7 +72,7 @@ class Type extends @type {
   predicate implements(InterfaceType i) {
     if i = any(ComparableType comparable).getUnderlyingType()
     then this.implementsComparable()
-    else implementsNotComparable(i)
+    else this.implementsNotComparable(i)
   }
 
   /**
@@ -691,7 +691,7 @@ class TypeSetLiteralType extends @typesetliteraltype, CompositeType {
   TypeSetTerm getTerm(int i) { result = MkTypeSetTerm(this, i) }
 
   /** Gets a term in this type set literal. */
-  TypeSetTerm getATerm() { result = getTerm(_) }
+  TypeSetTerm getATerm() { result = this.getTerm(_) }
 
   /** Holds if `t` is in the type set of this type set literal. */
   predicate includesType(Type t) { this.getATerm().includesType(t) }
@@ -747,7 +747,7 @@ class InterfaceType extends @interfacetype, CompositeType {
    * as part of the method set of this interface.
    */
   Type getADirectlyEmbeddedInterface() {
-    hasDirectlyEmbeddedType(_, result) and result.getUnderlyingType() instanceof InterfaceType
+    this.hasDirectlyEmbeddedType(_, result) and result.getUnderlyingType() instanceof InterfaceType
   }
 
   /**

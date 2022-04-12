@@ -231,7 +231,7 @@ class TypeParamDeclParent extends @typeparamdeclparent, AstNode {
   /**
    * Gets a child field of this node in the AST.
    */
-  TypeParamDecl getATypeParameterDecl() { result = getTypeParameterDecl(_) }
+  TypeParamDecl getATypeParameterDecl() { result = this.getTypeParameterDecl(_) }
 }
 
 /**
