@@ -3,10 +3,10 @@
 
 workspace(name = "ql")
 
-load("@ql//misc/bazel:workspace.bzl", "ql_workspace")
+load("//misc/bazel:workspace.bzl", "ql_workspace")
 
 ql_workspace()
 
-load("@ql//misc/bazel:workspace_deps.bzl", "ql_workspace_deps")
+load("//misc/bazel:workspace_deps.bzl", "ql_workspace_deps")
 
 ql_workspace_deps()

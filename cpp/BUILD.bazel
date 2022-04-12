@@ -4,14 +4,14 @@ load("@rules_pkg//:mappings.bzl", "pkg_filegroup")
 
 alias(
     name = "dbscheme",
-    actual = "@ql//cpp/ql/lib:dbscheme",
+    actual = "//cpp/ql/lib:dbscheme",
 )
 
 pkg_filegroup(
     name = "db-files",
     srcs = [
         ":dbscheme",
-        "@ql//cpp/downgrades",
-        "@ql//cpp/ql/lib:dbscheme-stats",
+        "//cpp/downgrades",
+        "//cpp/ql/lib:dbscheme-stats",
     ],
 )

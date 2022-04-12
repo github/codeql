@@ -1,7 +1,6 @@
 load("@rules_pkg//:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
 load("@rules_pkg//:install.bzl", "pkg_install")
-load("@ql//:defs.bzl", "codeql_platform")
-load("@ql_utils//:source_dir.bzl", "current_source_dir")
+load("//:defs.bzl", "codeql_platform")
 
 pkg_files(
     name = "dbscheme",
@@ -56,10 +55,13 @@ pkg_filegroup(
 )
 
 pkg_install(
-    name = "create-extractor-pack",
+    name = "_create_extractor_pack",
     srcs = ["//swift:extractor-pack"],
-    args = [
-        "--destdir",
-        current_source_dir() + "/extractor-pack",
-    ],
+)
+
+py_binary(
+    name = "create-extractor-pack",
+    srcs = ["tools/create_extractor_pack.py"],
+    main = "tools/create_extractor_pack.py",
+    deps = [":_create_extractor_pack"],
 )
