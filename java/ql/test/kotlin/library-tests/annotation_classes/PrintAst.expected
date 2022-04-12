@@ -16,14 +16,18 @@ def.kt:
 #-----|       1: (Annotations)
 #    1|     2: [Method] y
 #    3|   3: [Interface] ReplaceWith
+#-----|     -3: (Annotations)
 #    3|     1: [Method] expression
 #    5|   4: [Interface] Deprecated
+#-----|     -3: (Annotations)
 #    6|     1: [Method] message
 #    7|     2: [Method] replaceWith
 #    9|   5: [Class] X
 #-----|     -3: (Annotations)
 #    9|       1: [Annotation] Deprecated
 #    0|         1: [StringLiteral] This class is deprecated
+#    0|         1: [Annotation] ReplaceWith
+#    0|           1: [StringLiteral] Y
 #   10|       2: [Annotation] SomeAnnotation
 #    0|         1: [IntegerLiteral] 5
 #    0|         1: [StringLiteral] a
@@ -33,29 +37,36 @@ def.kt:
 #   11|         1: [BlockStmt] { ... }
 use.java:
 #    0| [CompilationUnit] use
-#    2|   1: [Class] use
+#    6|   1: [Class] use
+#-----|     -3: (Annotations)
+#    2|       1: [Annotation] Deprecated
+#    3|         1: [StringLiteral] "This class is deprecated"
+#    4|         2: [Annotation] ReplaceWith
+#    4|           1: [StringLiteral] "Y"
+#    5|       2: [Annotation] SomeAnnotation
+#    5|         2: [StringLiteral] "b"
 #-----|     -1: (Base Types)
-#    2|       0: [TypeAccess] SomeAnnotation
-#    4|     2: [Method] abc
+#    6|       0: [TypeAccess] SomeAnnotation
+#    8|     2: [Method] abc
 #-----|       1: (Annotations)
-#    3|         1: [Annotation] Override
-#    4|       3: [TypeAccess] int
-#    4|       5: [BlockStmt] { ... }
-#    4|         0: [ReturnStmt] return ...
-#    4|           0: [IntegerLiteral] 1
-#    6|     3: [Method] y
+#    7|         1: [Annotation] Override
+#    8|       3: [TypeAccess] int
+#    8|       5: [BlockStmt] { ... }
+#    8|         0: [ReturnStmt] return ...
+#    8|           0: [IntegerLiteral] 1
+#   10|     3: [Method] y
 #-----|       1: (Annotations)
-#    5|         1: [Annotation] Override
-#    6|       3: [TypeAccess] String
-#    6|       5: [BlockStmt] { ... }
-#    6|         0: [ReturnStmt] return ...
-#    6|           0: [StringLiteral] ""
-#    9|     4: [Method] annotationType
-#-----|       1: (Annotations)
-#    8|         1: [Annotation] Override
-#    9|       3: [TypeAccess] Class<? extends Annotation>
-#    9|         0: [WildcardTypeAccess] ? ...
-#    9|           0: [TypeAccess] Annotation
-#    9|       5: [BlockStmt] { ... }
+#    9|         1: [Annotation] Override
+#   10|       3: [TypeAccess] String
+#   10|       5: [BlockStmt] { ... }
 #   10|         0: [ReturnStmt] return ...
-#   10|           0: [NullLiteral] null
+#   10|           0: [StringLiteral] ""
+#   13|     4: [Method] annotationType
+#-----|       1: (Annotations)
+#   12|         1: [Annotation] Override
+#   13|       3: [TypeAccess] Class<? extends Annotation>
+#   13|         0: [WildcardTypeAccess] ? ...
+#   13|           0: [TypeAccess] Annotation
+#   13|       5: [BlockStmt] { ... }
+#   14|         0: [ReturnStmt] return ...
+#   14|           0: [NullLiteral] null

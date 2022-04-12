@@ -5,16 +5,26 @@ annotationDeclarations
 | def.kt:5:1:7:51 | Deprecated | def.kt:6:5:6:23 | message |
 | def.kt:5:1:7:51 | Deprecated | def.kt:7:5:7:50 | replaceWith |
 annotations
+| def.kt:0:0:0:0 | ReplaceWith | def.kt:9:1:9:57 | Deprecated | def.kt:3:1:3:52 | ReplaceWith |
 | def.kt:9:1:9:57 | Deprecated | def.kt:9:1:11:7 | X | def.kt:5:1:7:51 | Deprecated |
 | def.kt:10:1:10:24 | SomeAnnotation | def.kt:9:1:11:7 | X | def.kt:1:1:1:87 | SomeAnnotation |
+| use.java:2:1:4:48 | Deprecated | use.java:6:14:6:16 | use | def.kt:5:1:7:51 | Deprecated |
+| use.java:4:18:4:47 | ReplaceWith | use.java:2:1:4:48 | Deprecated | def.kt:3:1:3:52 | ReplaceWith |
+| use.java:5:1:5:24 | SomeAnnotation | use.java:6:14:6:16 | use | def.kt:1:1:1:87 | SomeAnnotation |
 annotationValues
+| def.kt:0:0:0:0 | ReplaceWith | def.kt:0:0:0:0 | Y |
+| def.kt:9:1:9:57 | Deprecated | def.kt:0:0:0:0 | ReplaceWith |
 | def.kt:9:1:9:57 | Deprecated | def.kt:0:0:0:0 | This class is deprecated |
 | def.kt:10:1:10:24 | SomeAnnotation | def.kt:0:0:0:0 | 5 |
 | def.kt:10:1:10:24 | SomeAnnotation | def.kt:0:0:0:0 | a |
+| use.java:2:1:4:48 | Deprecated | use.java:3:14:3:39 | "This class is deprecated" |
+| use.java:2:1:4:48 | Deprecated | use.java:4:18:4:47 | ReplaceWith |
+| use.java:4:18:4:47 | ReplaceWith | use.java:4:44:4:46 | "Y" |
+| use.java:5:1:5:24 | SomeAnnotation | use.java:5:21:5:23 | "b" |
 #select
 | def.kt:0:0:0:0 | DefKt | Class |
 | def.kt:1:1:1:87 | SomeAnnotation | Interface |
 | def.kt:3:1:3:52 | ReplaceWith | Interface |
 | def.kt:5:1:7:51 | Deprecated | Interface |
 | def.kt:9:1:11:7 | X | Class |
-| use.java:2:14:2:16 | use | Class |
+| use.java:6:14:6:16 | use | Class |
