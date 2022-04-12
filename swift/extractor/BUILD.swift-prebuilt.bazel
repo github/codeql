@@ -1,0 +1,23 @@
+cc_library(
+    name = "swift-llvm-support",
+    srcs = glob([
+        "libswiftAndLlvmSupportReal.a",
+        "libswiftAndLlvmSupportReal.so",
+    ]),
+    hdrs = glob(["include/**/*"]),
+    linkopts = [
+        "-lm",
+        "-lz",
+    ] + select({
+        "@platforms//os:macos": ["-lcurses"],
+        "@platforms//os:linux": [
+            "-luuid",
+            "-lrt",
+            "-lpthread",
+            "-ltinfo",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    visibility = ["//visibility:public"],
+)

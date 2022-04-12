@@ -2,7 +2,10 @@
 #include <iomanip>
 #include <stdlib.h>
 
-int main() {
+#include <swift/Basic/LLVMInitialize.h>
+
+int main(int argc, char** argv) {
+  PROGRAM_START(argc, argv);
   if (auto trapDir = getenv("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR")) {
     std::string file = trapDir;
     file += "/my_first.trap";
