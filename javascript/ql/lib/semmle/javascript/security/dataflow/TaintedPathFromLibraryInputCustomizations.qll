@@ -66,6 +66,33 @@ class LibInputAsSource extends TaintedPath::Source {
   }
 }
 
+/** Gets a `DataFlow::Node` that flows to a tainted-path sink. */
+private DataFlow::Node isFlowingToTaintedPathSink() {
+  result = isFlowingToTaintedPathSink(DataFlow::TypeBackTracker::end())
+}
+
+private DataFlow::Node isFlowingToTaintedPathSink(DataFlow::TypeBackTracker t) {
+  t.start() and result instanceof TaintedPath::Sink
+  or
+  exists(DataFlow::TypeBackTracker t2 |
+    t2 = t.smallstep(result, isFlowingToTaintedPathSink(t2))
+  )
+}
+
+/**
+ * A leaf of a string concatenation that ends up in a tainted-path-sink. We will use such leaves
+ * as sinks. This reduces false positives, as paths that directly flow from a library input to
+ * a sink often do so intentionally.
+ */
+class StringConcatLeafEndingInSink extends StringOps::ConcatenationLeaf {
+  StringOps::ConcatenationRoot root;
+
+  StringConcatLeafEndingInSink() {
+    this = root.getALeaf() and
+    root = isFlowingToTaintedPathSink()
+  }
+}
+
 /**
  * A sanitizer from reading a property with a name that suggests
  * the property is intended to be a path.

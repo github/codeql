@@ -33,7 +33,7 @@ class Configuration extends DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    label = sink.(TaintedPath::Sink).getAFlowLabel()
+    sink instanceof StringConcatLeafEndingInSink and label = any(DataFlow::FlowLabel f)
   }
 
   override predicate isBarrier(DataFlow::Node node) {
@@ -50,5 +50,11 @@ class Configuration extends DataFlow::Configuration {
     DataFlow::FlowLabel dstlabel
   ) {
     TaintedPath::isAdditionalTaintedPathFlowStep(src, dst, srclabel, dstlabel)
+  }
+
+  // override to require that there is a path without unmatched return steps
+  override predicate hasFlowPath(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {
+    super.hasFlowPath(source, sink) and
+    DataFlow::hasPathWithoutUnmatchedReturn(source, sink)
   }
 }
