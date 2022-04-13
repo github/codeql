@@ -1,0 +1,17 @@
+| test.cpp:33:10:33:10 | Load: i | false | test.cpp:29:14:29:14 | Phi: i | IR gives 0 but sem is unbounded |
+| test.cpp:40:10:40:14 | Load: begin | false | test.cpp:38:16:38:20 | InitializeParameter: begin | IR gives 0 but sem is unbounded |
+| test.cpp:40:10:40:14 | Load: begin | true | test.cpp:38:28:38:30 | InitializeParameter: end | IR gives -1 but sem gives 0 |
+| test.cpp:62:10:62:13 | Load: iter | false | test.cpp:60:17:60:17 | InitializeParameter: p | IR gives 0 but sem is unbounded |
+| test.cpp:62:10:62:13 | Load: iter | true | test.cpp:60:17:60:17 | InitializeParameter: p | IR gives 3 but sem is unbounded |
+| test.cpp:62:10:62:13 | Load: iter | true | test.cpp:61:39:61:51 | Convert: (char *)... | IR gives -1 but sem gives 0 |
+| test.cpp:67:10:67:13 | Load: iter | false | test.cpp:60:17:60:17 | InitializeParameter: p | IR gives 0 but sem is unbounded |
+| test.cpp:67:10:67:13 | Load: iter | true | test.cpp:60:17:60:17 | InitializeParameter: p | IR gives 3 but sem is unbounded |
+| test.cpp:67:10:67:13 | Load: iter | true | test.cpp:61:32:61:35 | Phi: iter | IR gives -1 but sem is unbounded |
+| test.cpp:67:10:67:13 | Load: iter | true | test.cpp:61:39:61:51 | Convert: (char *)... | IR gives -1 but sem gives 0 |
+| test.cpp:73:12:73:21 | Mul: new[] | false | test.cpp:73:12:73:21 | Mul: new[] | IR gives 0 but sem is unbounded |
+| test.cpp:73:12:73:21 | Mul: new[] | true | test.cpp:73:12:73:21 | Mul: new[] | IR gives 0 but sem is unbounded |
+| test.cpp:130:10:130:10 | Load: i | false | file://:0:0:0:0 | 0 | IR gives 0 but sem is unbounded |
+| test.cpp:149:10:149:10 | Store: i | false | file://:0:0:0:0 | 0 | IR is unbounded but sem gives 1 |
+| test.cpp:149:10:149:10 | Store: i | true | file://:0:0:0:0 | 0 | IR is unbounded but sem gives 1 |
+| test.cpp:200:10:200:10 | Load: i | true | test.cpp:198:25:198:25 | InitializeParameter: l | IR gives -1 but sem is unbounded |
+| test.cpp:203:11:203:11 | Load: i | true | test.cpp:198:25:198:25 | InitializeParameter: l | IR gives -3 but sem is unbounded |
