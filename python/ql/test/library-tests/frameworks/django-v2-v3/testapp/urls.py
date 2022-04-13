@@ -14,6 +14,8 @@ urlpatterns = [
 
     path("CustomRedirectView/<foo>", views.CustomRedirectView.as_view()),  # $routeSetup="CustomRedirectView/<foo>"
     path("CustomRedirectView2/<foo>", views.CustomRedirectView2.as_view()),  # $routeSetup="CustomRedirectView2/<foo>"
+
+    path("file-test/", views.file_test), # $routeSetup="file-test/"
 ]
 
 from django import __version__ as django_version
