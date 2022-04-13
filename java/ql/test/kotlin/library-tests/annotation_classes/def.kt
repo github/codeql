@@ -18,6 +18,8 @@ enum class Y {
 
 @Annot0k(abc = 1)
 @Annot1k(d = Y.B, e = arrayOf(Y.C, Y.A))
+@Annot0j(abc = 1)
+@Annot1j(d = Y.B, e = arrayOf(Y.C, Y.A))
 class Z {}
 
 fun fn(a: Annot0k) {

@@ -22,15 +22,15 @@ Annot1j.java:
 def.kt:
 #    0| [CompilationUnit] def
 #    0|   1: [Class] DefKt
-#   23|     1: [Method] fn
+#   25|     1: [Method] fn
 #-----|       4: (Parameters)
-#   23|         0: [Parameter] a
-#   23|       5: [BlockStmt] { ... }
-#   24|         0: [ExprStmt] <Expr>;
-#   24|           0: [MethodAccess] println(...)
-#   24|             -1: [TypeAccess] ConsoleKt
-#   24|             0: [MethodAccess] a(...)
-#   24|               -1: [VarAccess] a
+#   25|         0: [Parameter] a
+#   25|       5: [BlockStmt] { ... }
+#   26|         0: [ExprStmt] <Expr>;
+#   26|           0: [MethodAccess] println(...)
+#   26|             -1: [TypeAccess] ConsoleKt
+#   26|             0: [MethodAccess] a(...)
+#   26|               -1: [VarAccess] a
 #    3|   2: [Interface] Annot0k
 #    3|     1: [Method] a
 #    5|   3: [Interface] Annot1k
@@ -72,10 +72,21 @@ def.kt:
 #    0|           1: [VarAccess] A
 #    0|         1: [Annotation] Annot0k
 #    0|           1: [IntegerLiteral] 1
-#   21|     1: [Constructor] Z
+#   21|       3: [Annotation] Annot0j
+#    0|         1: [IntegerLiteral] 1
+#   22|       4: [Annotation] Annot1j
+#    0|         1: [ErrorExpr] <error expr>
+#    0|         1: [ErrorExpr] <error expr>
+#    0|         1: [ErrorExpr] <error expr>
+#    0|         1: [VarAccess] B
+#    0|         1: [ArrayInit] {...}
+#    0|           1: [VarAccess] C
+#    0|           1: [VarAccess] A
+#    0|         1: [ErrorExpr] <error expr>
+#   23|     1: [Constructor] Z
 #   19|       5: [BlockStmt] { ... }
 #   19|         0: [SuperConstructorInvocationStmt] super(...)
-#   21|         1: [BlockStmt] { ... }
+#   23|         1: [BlockStmt] { ... }
 use.java:
 #    0| [CompilationUnit] use
 #    1|   1: [Class] use
@@ -97,7 +108,7 @@ use.java:
 #    6|       5: [BlockStmt] { ... }
 #    7|         0: [ReturnStmt] return ...
 #    7|           0: [NullLiteral] null
-#   12|     4: [Class] Z
+#   14|     4: [Class] Z
 #-----|       -3: (Annotations)
 #   10|         1: [Annotation] Annot0j
 #   10|           1: [IntegerLiteral] 1
@@ -115,3 +126,19 @@ use.java:
 #   11|               -1: [TypeAccess] Y
 #   11|           6: [Annotation] Annot0j
 #   11|             1: [IntegerLiteral] 2
+#   12|         3: [Annotation] Annot0k
+#   12|           1: [IntegerLiteral] 1
+#   13|         4: [Annotation] Annot1k
+#   13|           1: [IntegerLiteral] 1
+#   13|           2: [StringLiteral] "ac"
+#   13|           3: [TypeLiteral] X.class
+#   13|             0: [TypeAccess] X
+#   13|           4: [VarAccess] Y.B
+#   13|             -1: [TypeAccess] Y
+#   13|           5: [ArrayInit] {...}
+#   13|             3: [VarAccess] Y.C
+#   13|               -1: [TypeAccess] Y
+#   13|             4: [VarAccess] Y.A
+#   13|               -1: [TypeAccess] Y
+#   13|           6: [Annotation] Annot0k
+#   13|             1: [IntegerLiteral] 2

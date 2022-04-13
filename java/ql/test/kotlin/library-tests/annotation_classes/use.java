@@ -9,5 +9,7 @@ public class use implements Annot0k {
 
     @Annot0j(abc = 1)
     @Annot1j(a = 1, b = "ac", c = X.class, d = Y.B, e = {Y.C, Y.A}, f = @Annot0j(abc = 2))
+    @Annot0k(a = 1)
+    @Annot1k(a = 1, b = "ac", c = X.class, d = Y.B, e = {Y.C, Y.A}, f = @Annot0k(a = 2))
     public class Z { }
 }
