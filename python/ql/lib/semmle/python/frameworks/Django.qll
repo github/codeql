@@ -2650,7 +2650,7 @@ module PrivateDjango {
     DjangoFileFieldUploadToFunctionFilenameParam() {
       exists(DataFlow::CallCfgNode call, DataFlow::Node uploadToArg, Function func |
         this.getParameter() = func.getArg(1) and
-        call = django::db::models::FileField::subclassRef().getACall() and
+        call = DjangoImpl::DB::Models::FileField::subclassRef().getACall() and
         uploadToArg in [call.getArg(2), call.getArgByName("upload_to")] and
         uploadToArg = poorMansFunctionTracker(func)
       )
