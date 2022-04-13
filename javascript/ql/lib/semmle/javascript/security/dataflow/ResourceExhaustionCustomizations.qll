@@ -29,7 +29,11 @@ module ResourceExhaustion {
 
   /** A source of remote user input, considered as a data flow source for resource exhaustion vulnerabilities. */
   class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
-    RemoteFlowSourceAsSource() { not this instanceof ClientSideRemoteFlowSource }
+    RemoteFlowSourceAsSource() {
+      // exclude source that only happen client-side
+      not this instanceof ClientSideRemoteFlowSource and
+      not this = DataFlow::parameterNode(any(PostMessageEventHandler pmeh).getEventParameter())
+    }
   }
 
   /**

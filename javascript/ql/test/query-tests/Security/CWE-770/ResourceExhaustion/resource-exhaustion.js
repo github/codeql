@@ -98,4 +98,8 @@ function browser() {
     setTimeout(() => {
         console.log("f00");
     }, delay); // OK - source is client side
+
+    window.onmessage = (e) => {
+        setTimeout(() => {}, e.data); // OK - source is client side
+    }
 }
