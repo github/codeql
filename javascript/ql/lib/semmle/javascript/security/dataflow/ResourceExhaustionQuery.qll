@@ -48,3 +48,18 @@ predicate isNumericFlowStep(DataFlow::Node src, DataFlow::Node dst) {
     c = DataFlow::globalVarRef(["Number", "parseInt", "parseFloat"]).getACall()
   )
 }
+
+/**
+ * A sanitizer that blocks taint flow if the size of a number is limited.
+ */
+class UpperBoundsCheckSanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+  override RelationalComparison astNode;
+
+  override predicate sanitizes(boolean outcome, Expr e) {
+    true = outcome and
+    e = astNode.getLesserOperand()
+    or
+    false = outcome and
+    e = astNode.getGreaterOperand()
+  }
+}

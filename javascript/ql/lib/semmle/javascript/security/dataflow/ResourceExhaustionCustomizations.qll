@@ -27,22 +27,6 @@ module ResourceExhaustion {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * A sanitizer that blocks taint flow if the size of a number is limited.
-   */
-  class UpperBoundsCheckSanitizerGuard extends TaintTracking::SanitizerGuardNode,
-    DataFlow::ValueNode {
-    override RelationalComparison astNode;
-
-    override predicate sanitizes(boolean outcome, Expr e) {
-      true = outcome and
-      e = astNode.getLesserOperand()
-      or
-      false = outcome and
-      e = astNode.getGreaterOperand()
-    }
-  }
-
   /** A source of remote user input, considered as a data flow source for resource exhaustion vulnerabilities. */
   class RemoteFlowSourceAsSource extends Source {
     RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
