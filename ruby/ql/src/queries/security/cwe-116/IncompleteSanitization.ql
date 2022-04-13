@@ -19,6 +19,7 @@ import codeql.ruby.DataFlow
 import codeql.ruby.controlflow.CfgNodes
 import codeql.ruby.frameworks.core.String
 import codeql.ruby.Regexp as RE
+import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /** Gets a character that is commonly used as a meta-character. */
 string metachar() { result = "'\"\\&<>\n\r\t*|{}[]%$".charAt(_) }
@@ -89,7 +90,8 @@ predicate allBackslashesEscaped(DataFlow::Node node) {
     m =
       [
         "sub", "gsub", "slice", "[]", "strip", "lstrip", "rstrip", "chomp", "chop", "downcase",
-        "upcase",
+        "upcase", "sub!", "gsub!", "slice!", "strip!", "lstrip!", "rstrip!", "chomp!", "chop!",
+        "downcase!", "upcase!",
       ]
   |
     mc = node.asExpr() and
@@ -100,6 +102,14 @@ predicate allBackslashesEscaped(DataFlow::Node node) {
   or
   // general data flow
   allBackslashesEscaped(node.getAPredecessor())
+  or
+  // general data flow from a (destructive) [g]sub!
+  exists(DataFlowPrivate::PostUpdateNode post, StringSubstitutionCall sub |
+    sub.isDestructive() and
+    allBackslashesEscaped(sub) and
+    post.getPreUpdateNode() = sub.getReceiver() and
+    post.getASuccessor() = node
+  )
 }
 
 /**
@@ -110,11 +120,25 @@ predicate removesFirstOccurence(StringSubstitutionCall sub, string str) {
   not sub.isGlobal() and sub.replaces(str, "")
 }
 
-/** Gets a method call where `node` is the receiver. */
-DataFlow::Node getAMethodCall(DataFlow::LocalSourceNode node) {
+/**
+ * Gets a method call where the receiver is the result of a string subtitution
+ * call.
+ */
+DataFlow::Node getAMethodCall(StringSubstitutionCall call) {
   exists(DataFlow::Node receiver |
     receiver.asExpr() = result.asExpr().(ExprNodes::MethodCallCfgNode).getReceiver() and
-    node.flowsTo(receiver)
+    (
+      // for a non-destructive string substitution, is there flow from it to the
+      // receiver of another method call?
+      not call.isDestructive() and call.(DataFlow::LocalSourceNode).flowsTo(receiver)
+      or
+      // for a destructive string substitution, is there flow from its
+      // post-update receivver to the receiver of another method call?
+      call.isDestructive() and
+      exists(DataFlowPrivate::PostUpdateNode post | post.getPreUpdateNode() = call.getReceiver() |
+        post.(DataFlow::LocalSourceNode).flowsTo(receiver)
+      )
+    )
   )
 }
 

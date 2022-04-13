@@ -138,7 +138,7 @@ end
 
 def good5b(s)
   s.gsub!(/\\/, "\\\\")
-  s.gsub!(/['"]/, '\\\\\&') # OK, but still flagged
+  s.gsub!(/['"]/, '\\\\\&') # OK
 end
 
 def good6a(s)
@@ -147,7 +147,7 @@ end
 
 def good6b(s)
   s.gsub!(/[\\]/, '\\\\')
-  s.gsub!(/[\"]/, '\\"') # OK, but still flagged
+  s.gsub!(/[\"]/, '\\"') # OK
 end
 
 def good7a(s)
@@ -157,7 +157,7 @@ end
 
 def good7b(s)
   s.gsub! /[\\]/, '\\\\'
-  s.gsub! /[\"]/, '\\"' # OK, but still flagged
+  s.gsub! /[\"]/, '\\"' # OK
 end
 
 def good8a(s)
@@ -188,7 +188,7 @@ def good10b(s)
   s.gsub! '\\', '\\\\'
   s.slice! 1..(-1)
   s.gsub! /\\"/, '"'
-  s.gsub! /'/, "\\'" # OK, but still flagged
+  s.gsub! /'/, "\\'" # OK
   "'" + s + "'"
 end
 
@@ -225,7 +225,7 @@ end
 
 def good13b(s1)
   s1.sub! '[', ''
-  s1.sub! ']', '' # OK, but still flagged
+  s1.sub! ']', '' # OK
 end
 
 def good14a(s)
@@ -235,10 +235,10 @@ end
 
 def good14b(s1, s2)
   s1.sub!('"', '')
-  s1.sub!('"', '') # OK, but still flagged
+  s1.sub!('"', '') # OK
 
   s2.sub!("'", "")
-  s2.sub!("'", "") # OK, but still flagged
+  s2.sub!("'", "") # OK
 end
 
 def newlines_a(a, b, c)
@@ -255,12 +255,12 @@ def newlines_b(a, b, c)
   output.sub!("\n", "") # OK
 
   d = a.dup
-  d.sub!("\n", "")
-  d.sub!(b, c) # NOT OK, but not flagged
+  d.sub!("\n", "") # NOT OK
+  d.sub!(b, c)
 
   e = a.dup
   d.sub!(b, c)
-  d.sub!("\n", "") # NOT OK, but not flagged
+  d.sub!("\n", "") # NOT OK
 end
 
 def bad_path_sanitizer(p1, p2)
