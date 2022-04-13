@@ -12,7 +12,7 @@ _swift_arch_map = {
     "macos-x86_64": "darwin_x86_64",
 }
 
-def codeql_workspace():
+def codeql_workspace(repository_name = "codeql"):
     for repo_arch, arch in _swift_arch_map.items():
         sha256 = _swift_sha_map[repo_arch]
 
@@ -22,7 +22,7 @@ def codeql_workspace():
                 _swift_prebuilt_version,
                 repo_arch,
             ),
-            build_file = "@codeql//swift/extractor:BUILD.swift-prebuilt.bazel",
+            build_file = "@%s//swift/extractor:BUILD.swift-prebuilt.bazel" % repository_name,
             sha256 = sha256,
         )
 
