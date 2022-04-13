@@ -1,0 +1,8 @@
+py_binary(
+    name = "codegen",
+    srcs = glob(["**/*.py"]),
+    data = glob(["**/*.mustache"]) + [
+        "schema.yml",
+        "prefix.dbscheme",
+    ],
+)
