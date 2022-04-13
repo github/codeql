@@ -92,3 +92,10 @@ var server = http.createServer(function(req, res) {
     Buffer.alloc(n); // NOT OK - NO length check
   }
 });
+
+function browser() {
+    const delay = parseInt(window.location.search.replace('?', '')) || 5000;
+    setTimeout(() => {
+        console.log("f00");
+    }, delay); // OK - source is client side
+}
