@@ -37,6 +37,10 @@ class Configuration extends TaintTracking::Configuration {
     guard instanceof LoopBoundInjection::LengthCheckSanitizerGuard or
     guard instanceof UpperBoundsCheckSanitizerGuard
   }
+
+  override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
+    succ.(DataFlow::PropRead).accesses(pred, "length")
+  }
 }
 
 predicate isRestrictedAdditionalTaintStep(DataFlow::Node src, DataFlow::Node dst) {
@@ -50,7 +54,7 @@ predicate isRestrictedAdditionalTaintStep(DataFlow::Node src, DataFlow::Node dst
  */
 predicate isNumericFlowStep(DataFlow::Node src, DataFlow::Node dst) {
   // steps that introduce or preserve a number
-  dst.(DataFlow::PropRead).accesses(src, ["length", "size"])
+  dst.(DataFlow::PropRead).accesses(src, ["size"])
   or
   exists(DataFlow::CallNode c |
     c = dst and

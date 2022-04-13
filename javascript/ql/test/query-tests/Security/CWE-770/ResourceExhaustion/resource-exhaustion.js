@@ -82,4 +82,6 @@ var server = http.createServer(function(req, res) {
   setTimeout(f, s); // NOT OK
   setInterval(f, n); // NOT OK
   setInterval(f, s); // NOT OK
+
+  Buffer.alloc(n.length); // OK - only allocing as much as the length of the input.
 });
