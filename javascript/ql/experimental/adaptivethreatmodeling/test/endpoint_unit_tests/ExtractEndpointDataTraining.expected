@@ -65,19 +65,16 @@ endpoints
 | index.js:84:12:84:18 | foo.bar | SqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:84:12:84:18 | foo.bar | SqlInjection | notASinkReason | ClientRequest | string |
 | index.js:84:12:84:18 | foo.bar | SqlInjection | sinkLabel | NotASink | string |
-| index.js:84:12:84:18 | foo.bar | SqlInjection | sinkLabel | Unknown | string |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | hasFlowFromSource | false | boolean |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | isConstantExpression | false | boolean |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | notASinkReason | ClientRequest | string |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | sinkLabel | NotASink | string |
-| index.js:84:12:84:18 | foo.bar | TaintedPath | sinkLabel | Unknown | string |
 | index.js:84:12:84:18 | foo.bar | Xss | hasFlowFromSource | false | boolean |
 | index.js:84:12:84:18 | foo.bar | Xss | isConstantExpression | false | boolean |
 | index.js:84:12:84:18 | foo.bar | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:84:12:84:18 | foo.bar | Xss | notASinkReason | ClientRequest | string |
 | index.js:84:12:84:18 | foo.bar | Xss | sinkLabel | NotASink | string |
-| index.js:84:12:84:18 | foo.bar | Xss | sinkLabel | Unknown | string |
 tokenFeatures
 | index.js:9:15:9:45 | { 'isAd ... Admin } | argumentIndex | 0 |
 | index.js:9:15:9:45 | { 'isAd ... Admin } | calleeAccessPath | mongoose model find |

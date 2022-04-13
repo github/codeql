@@ -285,19 +285,16 @@ endpoints
 | index.js:84:12:84:18 | foo.bar | SqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:84:12:84:18 | foo.bar | SqlInjection | notASinkReason | ClientRequest | string |
 | index.js:84:12:84:18 | foo.bar | SqlInjection | sinkLabel | NotASink | string |
-| index.js:84:12:84:18 | foo.bar | SqlInjection | sinkLabel | Unknown | string |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | hasFlowFromSource | false | boolean |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | isConstantExpression | false | boolean |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | notASinkReason | ClientRequest | string |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | sinkLabel | NotASink | string |
-| index.js:84:12:84:18 | foo.bar | TaintedPath | sinkLabel | Unknown | string |
 | index.js:84:12:84:18 | foo.bar | Xss | hasFlowFromSource | false | boolean |
 | index.js:84:12:84:18 | foo.bar | Xss | isConstantExpression | false | boolean |
 | index.js:84:12:84:18 | foo.bar | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:84:12:84:18 | foo.bar | Xss | notASinkReason | ClientRequest | string |
 | index.js:84:12:84:18 | foo.bar | Xss | sinkLabel | NotASink | string |
-| index.js:84:12:84:18 | foo.bar | Xss | sinkLabel | Unknown | string |
 tokenFeatures
 | applications/examples/static/epydoc/epydoc.js:2:15:2:33 | "Should be ignored" | argumentIndex | 0 |
 | applications/examples/static/epydoc/epydoc.js:2:15:2:33 | "Should be ignored" | calleeAccessPath |  |
