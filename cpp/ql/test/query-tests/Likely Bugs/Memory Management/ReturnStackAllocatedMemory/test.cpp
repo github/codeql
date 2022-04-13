@@ -221,3 +221,12 @@ void* get_sp() {
 	int p;
 	return (void*)&p; // GOOD: The function name makes it sound like the programmer intended to get the value of the stack pointer.
 }
+
+int* id(int* px) {
+  return px; // GOOD
+}
+
+void f() {
+  int x;
+  int* px = id(&x); // GOOD
+}

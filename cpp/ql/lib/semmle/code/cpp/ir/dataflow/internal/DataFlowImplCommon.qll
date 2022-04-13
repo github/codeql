@@ -1290,7 +1290,7 @@ class DataFlowCallOption extends TDataFlowCallOption {
   }
 }
 
-/** Content tagged with the type of a containing object. */
+/** A `Content` tagged with the type of a containing object. */
 class TypedContent extends MkTypedContent {
   private Content c;
   private DataFlowType t;

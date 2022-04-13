@@ -21,7 +21,10 @@ module Markdown {
     /**
      * Holds if the taint-step preserves HTML.
      */
-    predicate preservesHTML() { any() }
+    predicate preservesHtml() { any() }
+
+    /** DEPRECATED: Alias for preservesHtml */
+    deprecated predicate preservesHTML() { this.preservesHtml() }
   }
 
   private class MarkdownStepAsTaintStep extends TaintTracking::SharedTaintStep {
@@ -80,7 +83,7 @@ module Markdown {
    */
   private module Unified {
     /**
-     * The creation of a parser from `unified`.
+     * Gets a parser from `unified`.
      * The `remark` module is a shorthand that initializes `unified` with a markdown parser.
      */
     DataFlow::CallNode unified() {
@@ -152,7 +155,7 @@ module Markdown {
    */
   private module MarkdownIt {
     /**
-     * The creation of a parser from `markdown-it`.
+     * Gets a creation of a parser from `markdown-it`.
      */
     private API::Node markdownIt() {
       exists(API::InvokeNode call |

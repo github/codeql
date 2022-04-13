@@ -408,11 +408,13 @@ module NodeJSLib {
 
   /**
    * Holds if the `i`th parameter of method `methodName` of the Node.js
-   * `fs` module might represent a file path.
+   * `fs` module or the `fs-extra` module might represent a file path.
    *
-   * We determine this by looking for an externs declaration for
+   * For `fs`, we determine this by looking for an externs declaration for
    * `fs.methodName` where the `i`th parameter's name is `filename` or
    * `path` or a variation thereof.
+   *
+   * For `fs-extra`, we use a manually maintained list.
    */
   private predicate fsFileParam(string methodName, int i) {
     exists(ExternalMemberDecl decl, Function f, JSDocParamTag p, string n |
@@ -423,6 +425,47 @@ module NodeJSLib {
     |
       n = "filename" or n.regexpMatch("(old|new|src|dst|)path")
     )
+    or
+    fsExtraExtensionFileParam(methodName, i)
+  }
+
+  /**
+   * Holds if `methodName` is a function defined in the `fs-extra` library
+   * as an extension to node.js' `fs` module and parameter `i` of of the
+   * method might represent a file path.
+   */
+  private predicate fsExtraExtensionFileParam(string methodName, int i) {
+    methodName = ["copy", "copySync", "copyFile"] and i = [0, 1]
+    or
+    methodName = ["move", "moveSync"] and i = [0, 1]
+    or
+    methodName = ["createFile", "createFileSync"] and i = 0
+    or
+    methodName = ["createSymLink", "createSymlinkSync"] and i = [0, 1]
+    or
+    methodName = ["ensureDir", "ensureDirSync"] and i = 0
+    or
+    methodName = ["mkdirs", "mkdirp", "mkdirsSync", "mkdirpSync"] and i = 0
+    or
+    methodName = ["outputFile", "outputFileSync"] and i = 0
+    or
+    methodName = ["readJson", "readJSON", "readJsonSync", "readJSONSync"] and i = 0
+    or
+    methodName = ["remove", "removeSync"] and i = 0
+    or
+    methodName =
+      ["outputJSON", "outputJson", "writeJSON", "writeJson", "writeJSONSync", "writeJsonSync"] and
+    i = 0
+    or
+    methodName = ["ensureFile", "ensureFileSync"] and i = 0
+    or
+    methodName = ["ensureLink", "createLink", "ensureLinkSync", "createLinkSync"] and i = [0, 1]
+    or
+    methodName = ["ensureSymlink", "ensureSymlinkSync"] and i = [0, 1]
+    or
+    methodName = ["emptyDir", "emptyDirSync"] and i = 0
+    or
+    methodName = ["pathExists", "pathExistsSync"] and i = 0
   }
 
   /**
@@ -450,7 +493,7 @@ module NodeJSLib {
    */
   module FS {
     /**
-     * A member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
+     * Gets a member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
      */
     DataFlow::SourceNode moduleMember(string member) {
       result = fsModule(DataFlow::TypeTracker::end()).getAPropertyRead(member)
@@ -759,11 +802,6 @@ module NodeJSLib {
   }
 
   /**
-   * DEPRECATED Use `VmModuleMemberInvocation` instead.
-   */
-  deprecated class VmModuleMethodCall = VmModuleMemberInvocation;
-
-  /**
    * An invocation of a member from module `vm`
    */
   class VmModuleMemberInvocation extends DataFlow::InvokeNode {
@@ -820,8 +858,6 @@ module NodeJSLib {
      */
     abstract class Range extends ClientRequest::Range { }
   }
-
-  deprecated class CustomNodeJSClientRequest = NodeJSClientRequest::Range;
 
   /**
    * A model of a URL request in the Node.js `http` library.
@@ -1128,17 +1164,17 @@ module NodeJSLib {
    * A connection opened on a NodeJS net server.
    */
   private class NodeJSNetServerConnection extends EventEmitter::Range {
-    NodeJSNetServer server;
-
     NodeJSNetServerConnection() {
-      exists(DataFlow::MethodCallNode call |
-        call = server.ref().getAMethodCall("on") and
-        call.getArgument(0).mayHaveStringValue("connection")
-      |
-        this = call.getCallback(1).getParameter(0)
+      exists(NodeJSNetServer server |
+        exists(DataFlow::MethodCallNode call |
+          call = server.ref().getAMethodCall("on") and
+          call.getArgument(0).mayHaveStringValue("connection")
+        |
+          this = call.getCallback(1).getParameter(0)
+        )
+        or
+        this = server.getCallback([0, 1]).getParameter(0)
       )
-      or
-      this = server.getCallback([0, 1]).getParameter(0)
     }
 
     DataFlow::SourceNode ref() { result = EventEmitter::trackEventEmitter(this) }
@@ -1158,9 +1194,9 @@ module NodeJSLib {
    * A data flow node representing data received from a client to a NodeJS net server, viewed as remote user input.
    */
   private class NodeJSNetServerItemAsRemoteFlow extends RemoteFlowSource {
-    NodeJSNetServerRegistration reg;
-
-    NodeJSNetServerItemAsRemoteFlow() { this = reg.getReceivedItem(_) }
+    NodeJSNetServerItemAsRemoteFlow() {
+      this = any(NodeJSNetServerRegistration reg).getReceivedItem(_)
+    }
 
     override string getSourceType() { result = "NodeJS server" }
   }

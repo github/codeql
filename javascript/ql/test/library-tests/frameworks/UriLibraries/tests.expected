@@ -17,6 +17,7 @@ querystring
 querystringify
 | querystringify.js:3:9:3:28 | querystringify.parse |
 | querystringify.js:5:5:5:28 | queryst ... ringify |
+| querystringify.js:8:1:8:21 | queryst ... 2.parse |
 uridashjs
 | uri-js.js:3:9:3:17 | URI.parse |
 | uri-js.js:5:5:5:17 | URI.serialize |
@@ -76,6 +77,7 @@ uriLibraryStep
 | querystring.js:9:26:9:26 | x | querystring.js:9:5:9:27 | queryst ... cape(x) |
 | querystringify.js:3:30:3:30 | x | querystringify.js:3:9:3:31 | queryst ... arse(x) |
 | querystringify.js:5:30:5:30 | x | querystringify.js:5:5:5:31 | queryst ... gify(x) |
+| querystringify.js:8:23:8:23 | x | querystringify.js:8:1:8:24 | queryst ... arse(x) |
 | uri-js.js:3:19:3:19 | x | uri-js.js:3:9:3:20 | URI.parse(x) |
 | uri-js.js:5:19:5:19 | x | uri-js.js:5:5:5:20 | URI.serialize(x) |
 | uri-js.js:7:17:7:17 | x | uri-js.js:7:5:7:18 | URI.resolve(x) |
@@ -101,4 +103,5 @@ url
 | url.js:5:5:5:14 | url.format |
 | url.js:7:5:7:15 | url.resolve |
 urlParse
+| querystringify.js:7:23:7:42 | require('url-parse') |
 | url-parse.js:1:13:1:32 | require('url-parse') |

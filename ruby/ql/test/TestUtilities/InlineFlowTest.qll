@@ -68,7 +68,7 @@ class DefaultTaintFlowConf extends TaintTracking::Configuration {
 
 private string getSourceArgString(DataFlow::Node src) {
   defaultSource(src) and
-  src.asExpr().getExpr().(MethodCall).getAnArgument().getValueText() = result
+  src.asExpr().getExpr().(MethodCall).getAnArgument().getConstantValue().toString() = result
 }
 
 class InlineFlowTest extends InlineExpectationsTest {

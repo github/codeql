@@ -32,7 +32,8 @@ class SystemWebUIWebControlsTextBoxClass extends SystemWebUIWebControlsClass {
 /** Data flow for `System.Web.UI.WebControls.TextBox`. */
 private class SystebWebUIWebControlsTextBoxClassFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
-    row = "System.Web.UI.WebControls;TextBox;false;get_Text;();;Argument[-1];ReturnValue;taint"
+    row =
+      "System.Web.UI.WebControls;TextBox;false;get_Text;();;Argument[Qualifier];ReturnValue;taint"
   }
 }
 

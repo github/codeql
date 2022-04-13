@@ -1,0 +1,6 @@
+edges
+nodes
+| InsecureRandomness.py:5:12:5:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+subpaths
+#select
+| InsecureRandomness.py:5:12:5:26 | ControlFlowNode for Attribute() | InsecureRandomness.py:5:12:5:26 | ControlFlowNode for Attribute() | InsecureRandomness.py:5:12:5:26 | ControlFlowNode for Attribute() | Cryptographically insecure $@ in a security context. | InsecureRandomness.py:5:12:5:26 | ControlFlowNode for Attribute() | random value |

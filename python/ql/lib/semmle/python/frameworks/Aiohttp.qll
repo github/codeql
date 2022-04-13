@@ -243,7 +243,9 @@ module AiohttpWebModel {
 
   /** A class that has a super-type which is an aiohttp.web View class. */
   class AiohttpViewClassFromSuperClass extends AiohttpViewClass {
-    AiohttpViewClassFromSuperClass() { this.getABase() = View::subclassRef().getAUse().asExpr() }
+    AiohttpViewClassFromSuperClass() {
+      this.getParent() = View::subclassRef().getAnImmediateUse().asExpr()
+    }
   }
 
   /** A class that is used in a route-setup, therefore being considered an aiohttp.web View class. */
@@ -637,5 +639,55 @@ module AiohttpWebModel {
     override DataFlow::Node getNameArg() { result = index }
 
     override DataFlow::Node getValueArg() { result = value }
+  }
+}
+
+/**
+ * Provides models for the web server part (`aiohttp.client`) of the `aiohttp` PyPI package.
+ * See https://docs.aiohttp.org/en/stable/client.html
+ */
+private module AiohttpClientModel {
+  /**
+   * Provides models for the `aiohttp.ClientSession` class
+   *
+   * See https://docs.aiohttp.org/en/stable/client_reference.html#aiohttp.ClientSession.
+   */
+  module ClientSession {
+    /** Gets a reference to the `aiohttp.ClientSession` class. */
+    private API::Node classRef() {
+      result = API::moduleImport("aiohttp").getMember("ClientSession")
+    }
+
+    /** Gets a reference to an instance of `aiohttp.ClientSession`. */
+    private API::Node instance() { result = classRef().getReturn() }
+
+    /** A method call on a ClientSession that sends off a request */
+    private class OutgoingRequestCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
+      string methodName;
+
+      OutgoingRequestCall() {
+        methodName in [HTTP::httpVerbLower(), "request"] and
+        this = instance().getMember(methodName).getACall()
+      }
+
+      override DataFlow::Node getAUrlPart() {
+        result = this.getArgByName("url")
+        or
+        not methodName = "request" and
+        result = this.getArg(0)
+        or
+        methodName = "request" and
+        result = this.getArg(1)
+      }
+
+      override string getFramework() { result = "aiohttp.ClientSession" }
+
+      override predicate disablesCertificateValidation(
+        DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+      ) {
+        // TODO: Look into disabling certificate validation
+        none()
+      }
+    }
   }
 }

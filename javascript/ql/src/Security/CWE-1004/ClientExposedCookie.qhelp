@@ -23,12 +23,12 @@ Set the <code>httpOnly</code> flag on all cookies that are not needed by the cli
 The following example stores an authentication token in a cookie that can 
 be viewed by the client.
 </p>
-<sample src="examples/ClientExposedCookieGood.js"/>
+<sample src="examples/ClientExposedCookieBad.js"/>
 <p>
 To force the cookie to be transmitted using SSL, set the <code>secure</code>
 attribute on the cookie.
 </p>
-<sample src="examples/ClientExposedCookieBad.js"/>
+<sample src="examples/ClientExposedCookieGood.js"/>
 </example>
 
 <references>

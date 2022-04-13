@@ -182,6 +182,14 @@ class Folder extends Container, @folder {
   override string getURL() { result = "folder://" + this.getAbsolutePath() }
 }
 
+bindingset[flag]
+private predicate fileHasExtractionFlag(File f, int flag) {
+  exists(int i |
+    file_extraction_mode(f, i) and
+    i.bitAnd(flag) = flag
+  )
+}
+
 /** A file. */
 class File extends Container, @file {
   override string getAbsolutePath() { files(this, result) }
@@ -199,7 +207,10 @@ class File extends Container, @file {
 
   /** Holds if this file is a QL test stub file. */
   pragma[noinline]
-  private predicate isStub() { this.getAbsolutePath().matches("%resources/stubs/%") }
+  private predicate isStub() {
+    this.extractedQlTest() and
+    this.getAbsolutePath().matches("%resources/stubs/%")
+  }
 
   /** Holds if this file contains source code. */
   final predicate fromSource() {
@@ -218,12 +229,12 @@ class File extends Container, @file {
    * A source file can come from a PDB and from regular extraction
    * in the same snapshot.
    */
-  predicate isPdbSourceFile() {
-    exists(int i |
-      file_extraction_mode(this, i) and
-      i.bitAnd(2) = 2
-    )
-  }
+  predicate isPdbSourceFile() { fileHasExtractionFlag(this, 2) }
+
+  /**
+   * Holds if this file was extracted using `codeql test run`.
+   */
+  predicate extractedQlTest() { fileHasExtractionFlag(this, 4) }
 }
 
 /**
@@ -233,10 +244,5 @@ class SourceFile extends File {
   SourceFile() { this.fromSource() }
 
   /** Holds if the file was extracted without building the source code. */
-  predicate extractedStandalone() {
-    exists(int i |
-      file_extraction_mode(this, i) and
-      i.bitAnd(1) = 1
-    )
-  }
+  predicate extractedStandalone() { fileHasExtractionFlag(this, 1) }
 }

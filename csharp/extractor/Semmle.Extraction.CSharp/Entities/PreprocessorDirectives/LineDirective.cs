@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 SyntaxKind.DefaultKeyword => LineDirectiveKind.Default,
                 SyntaxKind.HiddenKeyword => LineDirectiveKind.Hidden,
                 SyntaxKind.NumericLiteralToken => LineDirectiveKind.Numeric,
-                _ => throw new InternalError(trivia, "Unhandled line token kind")
+                _ => throw new InternalError(trivia, $"Unhandled line token kind {trivia.Line.Kind()}")
             })
         {
         }

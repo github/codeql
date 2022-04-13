@@ -16,7 +16,7 @@ module ArrayTaintTracking {
   }
 
   /**
-   * A taint propagating data flow edge from `pred` to `succ` caused by a call `call` to a builtin array functions.
+   * Holds if there is a taint propagating data flow edge from `pred` to `succ` caused by a call `call` to a builtin array functions.
    */
   predicate arrayFunctionTaintStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::CallNode call) {
     // `array.map(function (elt, i, ary) { ... })`: if `array` is tainted, then so are
@@ -45,9 +45,20 @@ module ArrayTaintTracking {
     )
     or
     // `array.reduce` with tainted value in callback
+    // The callback parameters are: (previousValue, currentValue, currentIndex, array)
     call.(DataFlow::MethodCallNode).getMethodName() = "reduce" and
-    pred = call.getArgument(0).(DataFlow::FunctionNode).getAReturn() and // Require the argument to be a closure to avoid spurious call/return flow
-    succ = call
+    exists(DataFlow::FunctionNode callback |
+      callback = call.getArgument(0) // Require the argument to be a closure to avoid spurious call/return flow
+    |
+      pred = callback.getAReturn() and
+      succ = call
+      or
+      pred = call.getReceiver() and
+      succ = callback.getParameter([1, 3]) // into currentValue or array
+      or
+      pred = [call.getArgument(1), callback.getAReturn()] and
+      succ = callback.getParameter(0) // into previousValue
+    )
     or
     // `array.push(e)`, `array.unshift(e)`: if `e` is tainted, then so is `array`.
     pred = call.getAnArgument() and
@@ -152,15 +163,12 @@ private module ArrayDataFlow {
   /**
    * A node that reads or writes an element from an array inside a for-loop.
    */
-  private class ArrayIndexingAccess extends DataFlow::Node {
-    DataFlow::PropRef read;
-
+  private class ArrayIndexingAccess extends DataFlow::Node instanceof DataFlow::PropRef {
     ArrayIndexingAccess() {
-      read = this and
       TTNumber() =
-        unique(InferredType type | type = read.getPropertyNameExpr().flow().analyze().getAType()) and
+        unique(InferredType type | type = super.getPropertyNameExpr().flow().analyze().getAType()) and
       exists(VarAccess i, ExprOrVarDecl init |
-        i = read.getPropertyNameExpr() and init = any(ForStmt f).getInit()
+        i = super.getPropertyNameExpr() and init = any(ForStmt f).getInit()
       |
         i.getVariable().getADefinition() = init or
         i.getVariable().getADefinition().(VariableDeclarator).getDeclStmt() = init
@@ -357,7 +365,7 @@ private module ArrayLibraries {
   }
 
   /**
-   * A call to a library that copies the elements of an array into another array.
+   * Gets a call to a library that copies the elements of an array into another array.
    * E.g. `array-union` that creates a union of multiple arrays, or `array-uniq` that creates an array with unique elements.
    */
   DataFlow::CallNode arrayCopyCall(DataFlow::Node array) {

@@ -1,6 +1,12 @@
+/**
+ * Provides modeling for the `Typhoeus` library.
+ */
+
 private import ruby
+private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
 
 /**
  * A call that makes an HTTP request using `Typhoeus`.
@@ -20,7 +26,7 @@ class TyphoeusHttpRequest extends HTTP::Client::Request::Range {
     this = requestUse.asExpr().getExpr()
   }
 
-  override DataFlow::Node getURL() { result = requestUse.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = requestUse.getArgument(0) }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 
@@ -31,16 +37,16 @@ class TyphoeusHttpRequest extends HTTP::Client::Request::Range {
     |
       // Either passed as an individual key:value argument, e.g.:
       // Typhoeus.get(..., ssl_verifypeer: false)
-      isSslVerifyPeerFalsePair(arg.asExpr().getExpr()) and
+      isSslVerifyPeerFalsePair(arg.asExpr()) and
       disablingNode = arg
       or
       // Or as a single hash argument, e.g.:
       // Typhoeus.get(..., { ssl_verifypeer: false, ... })
-      exists(DataFlow::LocalSourceNode optionsNode, Pair p |
-        p = optionsNode.asExpr().getExpr().(HashLiteral).getAKeyValuePair() and
+      exists(DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p |
+        p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
         isSslVerifyPeerFalsePair(p) and
         optionsNode.flowsTo(arg) and
-        disablingNode.asExpr().getExpr() = p
+        disablingNode.asExpr() = p
       )
     )
   }
@@ -49,11 +55,10 @@ class TyphoeusHttpRequest extends HTTP::Client::Request::Range {
 }
 
 /** Holds if `p` is the pair `ssl_verifypeer: false`. */
-private predicate isSslVerifyPeerFalsePair(Pair p) {
+private predicate isSslVerifyPeerFalsePair(CfgNodes::ExprNodes::PairCfgNode p) {
   exists(DataFlow::Node key, DataFlow::Node value |
-    key.asExpr().getExpr() = p.getKey() and
-    value.asExpr().getExpr() = p.getValue()
-  |
+    key.asExpr() = p.getKey() and
+    value.asExpr() = p.getValue() and
     isSslVerifyPeerLiteral(key) and
     isFalse(value)
   )
@@ -62,7 +67,7 @@ private predicate isSslVerifyPeerFalsePair(Pair p) {
 /** Holds if `node` represents the symbol literal `verify` or `verify_peer`. */
 private predicate isSslVerifyPeerLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = "ssl_verifypeer" and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue("ssl_verifypeer") and
     literal.flowsTo(node)
   )
 }

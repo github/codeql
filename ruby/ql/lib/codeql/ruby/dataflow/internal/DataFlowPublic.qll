@@ -18,11 +18,11 @@ class Node extends TNode {
   Parameter asParameter() { result = this.(ParameterNode).getParameter() }
 
   /** Gets a textual representation of this node. */
-  // TODO: cache
+  cached
   final string toString() { result = this.(NodeImpl).toStringImpl() }
 
   /** Gets the location of this node. */
-  // TODO: cache
+  cached
   final Location getLocation() { result = this.(NodeImpl).getLocationImpl() }
 
   /**
@@ -121,7 +121,8 @@ class LocalSourceNode extends Node {
   LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 }
 
-predicate hasLocalSource(Node sink, Node source) {
+cached
+private predicate hasLocalSource(Node sink, Node source) {
   // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
   // recursive case, so instead we check it explicitly here.
   source = sink and
@@ -151,12 +152,14 @@ predicate localFlowStep = localFlowStepImpl/2;
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
+pragma[inline]
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
 /**
  * Holds if data can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprFlow(CfgNodes::ExprCfgNode e1, CfgNodes::ExprCfgNode e2) {
   localFlow(exprNode(e1), exprNode(e2))
 }
@@ -189,9 +192,16 @@ module Content {
 
   /** An element in an array at an unknown index. */
   class UnknownArrayElementContent extends ArrayElementContent, TUnknownArrayElementContent {
-    UnknownArrayElementContent() { this = TUnknownArrayElementContent() }
-
     override string toString() { result = "array element" }
+  }
+
+  /**
+   * Used internally only, to represent the union of `KnownArrayElementContent`
+   * and `UnknownArrayElementContent`, to avoid combinatorial explosions in
+   * `SummaryComponentStack`s in flow summaries.
+   */
+  private class AnyArrayElementContent extends Content, TAnyArrayElementContent {
+    override string toString() { result = "any array element" }
   }
 }
 

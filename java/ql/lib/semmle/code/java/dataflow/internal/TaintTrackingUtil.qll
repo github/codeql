@@ -21,12 +21,14 @@ private import semmle.code.java.frameworks.JaxWS
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(src, sink) }
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprTaint(Expr src, Expr sink) {
   localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))
 }
@@ -58,13 +60,6 @@ private module Cached {
       FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink) or
       FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink)
     )
-  }
-
-  private predicate containerContent(DataFlow::Content c) {
-    c instanceof DataFlow::ArrayContent or
-    c instanceof DataFlow::CollectionContent or
-    c instanceof DataFlow::MapKeyContent or
-    c instanceof DataFlow::MapValueContent
   }
 
   /**
@@ -281,7 +276,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.getName().matches("read%")
   or
   m instanceof GetterMethod and
-  m.getDeclaringType().getASubtype*() instanceof SpringUntrustedDataType and
+  m.getDeclaringType().getADescendant() instanceof SpringUntrustedDataType and
   not m.getDeclaringType() instanceof TypeObject
   or
   m.(TaintPreservingCallable).returnsTaintFrom(-1)
@@ -605,7 +600,7 @@ private SrcRefType entrypointType() {
     s instanceof DataFlow::ExplicitParameterNode and
     t = pragma[only_bind_out](s).getType() and
     not t instanceof TypeObject and
-    result = t.getASubtype*().getSourceDeclaration()
+    result = t.getADescendant().getSourceDeclaration()
   )
   or
   result = entrypointType().getAField().getType().(RefType).getSourceDeclaration()

@@ -10,6 +10,12 @@ nodes
 | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
 | UnsafeDynamicMethodAccess.js:15:9:15:15 | message |
 | UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name |
+| UnvalidatedDynamicMethodCall2.js:13:9:13:47 | action |
+| UnvalidatedDynamicMethodCall2.js:13:18:13:47 | actions ... action) |
+| UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action |
+| UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action |
+| UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action |
+| UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action |
 | UnvalidatedDynamicMethodCall.js:14:7:14:41 | action |
 | UnvalidatedDynamicMethodCall.js:14:7:14:41 | action |
 | UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
@@ -19,6 +25,12 @@ nodes
 | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
 | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
 | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
+| UnvalidatedDynamicMethodCallGood4.js:14:13:14:51 | action |
+| UnvalidatedDynamicMethodCallGood4.js:14:22:14:51 | actions ... action) |
+| UnvalidatedDynamicMethodCallGood4.js:14:34:14:50 | req.params.action |
+| UnvalidatedDynamicMethodCallGood4.js:14:34:14:50 | req.params.action |
+| UnvalidatedDynamicMethodCallGood4.js:15:17:15:22 | action |
+| UnvalidatedDynamicMethodCallGood4.js:15:17:15:22 | action |
 | tst.js:6:39:6:40 | ev |
 | tst.js:6:39:6:40 | ev |
 | tst.js:7:9:7:39 | name |
@@ -91,6 +103,11 @@ edges
 | UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
 | UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
 | UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
+| UnvalidatedDynamicMethodCall2.js:13:9:13:47 | action | UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action |
+| UnvalidatedDynamicMethodCall2.js:13:9:13:47 | action | UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action |
+| UnvalidatedDynamicMethodCall2.js:13:18:13:47 | actions ... action) | UnvalidatedDynamicMethodCall2.js:13:9:13:47 | action |
+| UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action | UnvalidatedDynamicMethodCall2.js:13:18:13:47 | actions ... action) |
+| UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action | UnvalidatedDynamicMethodCall2.js:13:18:13:47 | actions ... action) |
 | UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
 | UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
 | UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
@@ -101,6 +118,11 @@ edges
 | UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
 | UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
 | UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
+| UnvalidatedDynamicMethodCallGood4.js:14:13:14:51 | action | UnvalidatedDynamicMethodCallGood4.js:15:17:15:22 | action |
+| UnvalidatedDynamicMethodCallGood4.js:14:13:14:51 | action | UnvalidatedDynamicMethodCallGood4.js:15:17:15:22 | action |
+| UnvalidatedDynamicMethodCallGood4.js:14:22:14:51 | actions ... action) | UnvalidatedDynamicMethodCallGood4.js:14:13:14:51 | action |
+| UnvalidatedDynamicMethodCallGood4.js:14:34:14:50 | req.params.action | UnvalidatedDynamicMethodCallGood4.js:14:22:14:51 | actions ... action) |
+| UnvalidatedDynamicMethodCallGood4.js:14:34:14:50 | req.params.action | UnvalidatedDynamicMethodCallGood4.js:14:22:14:51 | actions ... action) |
 | tst.js:6:39:6:40 | ev | tst.js:7:27:7:28 | ev |
 | tst.js:6:39:6:40 | ev | tst.js:7:27:7:28 | ev |
 | tst.js:6:39:6:40 | ev | tst.js:9:9:9:10 | ev |
@@ -164,7 +186,9 @@ edges
 | tst.js:49:19:49:22 | name | tst.js:49:14:49:23 | obj2[name] |
 #select
 | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] | UnsafeDynamicMethodAccess.js:5:37:5:38 | ev | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | UnsafeDynamicMethodAccess.js:5:37:5:38 | ev | user-controlled |
+| UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action | UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action | UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action | user-controlled |
 | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action | UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | user-controlled |
+| UnvalidatedDynamicMethodCallGood4.js:15:17:15:22 | action | UnvalidatedDynamicMethodCallGood4.js:14:34:14:50 | req.params.action | UnvalidatedDynamicMethodCallGood4.js:15:17:15:22 | action | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | UnvalidatedDynamicMethodCallGood4.js:14:34:14:50 | req.params.action | user-controlled |
 | tst.js:9:5:9:16 | obj[ev.data] | tst.js:6:39:6:40 | ev | tst.js:9:5:9:16 | obj[ev.data] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
 | tst.js:11:5:11:13 | obj[name] | tst.js:6:39:6:40 | ev | tst.js:11:5:11:13 | obj[name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
 | tst.js:18:5:18:6 | fn | tst.js:6:39:6:40 | ev | tst.js:18:5:18:6 | fn | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |

@@ -7,6 +7,7 @@ private import codeql.ruby.ast.internal.Expr
 private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.ast.internal.Pattern
 private import codeql.ruby.ast.internal.Scope
+private import codeql.ruby.ast.internal.TreeSitter
 private import codeql.ruby.AST
 
 /** A synthesized AST node kind. */
@@ -302,6 +303,14 @@ private module SetterDesugar {
     }
 
     final override predicate location(AstNode n, Location l) {
+      exists(SetterMethodCall sae, Assignment arg, AstNode lhs, AstNode rhs |
+        arg = sae.getArgument(sae.getNumberOfArguments() - 1) and
+        lhs = arg.getLeftOperand() and
+        rhs = arg.getRightOperand() and
+        n = [arg, lhs] and
+        hasLocation(rhs, l)
+      )
+      or
       exists(SetterAssignExpr sae, StmtSequence seq |
         seq = sae.getDesugared() and
         l = sae.getMethodCallLocation() and
@@ -793,14 +802,13 @@ private module ArrayLiteralDesugar {
     exists(ArrayLiteral al |
       parent = al and
       i = -1 and
-      child = SynthChild(MethodCallKind("[]", false, al.getNumberOfElements() + 1))
+      child = SynthChild(MethodCallKind("[]", false, al.getNumberOfElements()))
       or
-      exists(AstNode mc | mc = TMethodCallSynth(al, -1, _, _, _) |
-        parent = mc and
+      parent = TMethodCallSynth(al, -1, _, _, _) and
+      (
         i = 0 and
         child = SynthChild(ConstantReadAccessKind("::Array"))
         or
-        parent = mc and
         child = childRef(al.getElement(i - 1))
       )
     )
@@ -824,10 +832,53 @@ private module ArrayLiteralDesugar {
     final override predicate methodCall(string name, boolean setter, int arity) {
       name = "[]" and
       setter = false and
-      arity = any(ArrayLiteral al).getNumberOfElements() + 1
+      arity = any(ArrayLiteral al).getNumberOfElements()
     }
 
     final override predicate constantReadAccess(string name) { name = "::Array" }
+  }
+}
+
+private module HashLiteralDesugar {
+  pragma[nomagic]
+  private predicate hashLiteralSynthesis(AstNode parent, int i, Child child) {
+    exists(HashLiteral hl |
+      parent = hl and
+      i = -1 and
+      child = SynthChild(MethodCallKind("[]", false, hl.getNumberOfElements()))
+      or
+      parent = TMethodCallSynth(hl, -1, _, _, _) and
+      (
+        i = 0 and
+        child = SynthChild(ConstantReadAccessKind("::Hash"))
+        or
+        child = childRef(hl.getElement(i - 1))
+      )
+    )
+  }
+
+  /**
+   * ```rb
+   * { a: 1, **splat, b: 2 }
+   * ```
+   * desugars to
+   *
+   * ```rb
+   * ::Hash.[](a: 1, **splat, b: 2)
+   * ```
+   */
+  private class HashLiteralSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      hashLiteralSynthesis(parent, i, child)
+    }
+
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      name = "[]" and
+      setter = false and
+      arity = any(HashLiteral hl).getNumberOfElements()
+    }
+
+    final override predicate constantReadAccess(string name) { name = "::Hash" }
   }
 }
 
@@ -918,6 +969,121 @@ private module ForLoopDesugar {
 
     final override predicate excludeFromControlFlowTree(AstNode n) {
       n = any(ForExpr for).getBody()
+    }
+  }
+}
+
+/**
+ * ```rb
+ * { a: }
+ * ```
+ * desugars to,
+ * ```rb
+ * { a: a }
+ * ```
+ */
+private module ImplicitHashValueSynthesis {
+  private Ruby::AstNode keyWithoutValue(AstNode parent, int i) {
+    exists(Ruby::KeywordPattern pair |
+      result = pair.getKey() and
+      result = toGenerated(parent.(HashPattern).getKey(i)) and
+      not exists(pair.getValue())
+    )
+    or
+    exists(Ruby::Pair pair |
+      i = 0 and
+      result = pair.getKey() and
+      pair = toGenerated(parent) and
+      not exists(pair.getValue())
+    )
+  }
+
+  private string keyName(Ruby::AstNode key) {
+    result = key.(Ruby::String).getChild(0).(Ruby::StringContent).getValue() or
+    result = key.(Ruby::HashKeySymbol).getValue()
+  }
+
+  private class ImplicitHashValueSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      exists(Ruby::AstNode key | key = keyWithoutValue(parent, i) |
+        exists(TVariableReal variable |
+          access(key, variable) and
+          child = SynthChild(LocalVariableAccessRealKind(variable))
+        )
+        or
+        not access(key, _) and
+        exists(string name | name = keyName(key) |
+          child = SynthChild(ConstantReadAccessKind(name)) or
+          child = SynthChild(MethodCallKind(name, false, 0))
+        )
+      )
+    }
+
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      setter = false and
+      arity = 0 and
+      name = keyName(keyWithoutValue(_, _)) and
+      not name.charAt(0).isUppercase()
+    }
+
+    final override predicate constantReadAccess(string name) {
+      name = keyName(keyWithoutValue(_, _)) and
+      name.charAt(0).isUppercase()
+    }
+
+    final override predicate location(AstNode n, Location l) {
+      exists(AstNode p, int i | l = keyWithoutValue(p, i).getLocation() |
+        n = p.(HashPattern).getValue(i)
+        or
+        i = 0 and n = p.(Pair).getValue()
+      )
+    }
+  }
+}
+
+/**
+ * ```rb
+ * def foo(&)
+ *   bar(&)
+ * end
+ * ```
+ * desugars to,
+ * ```rb
+ * def foo(&__synth_0)
+ *   bar(&__synth_0)
+ * end
+ * ```
+ */
+private module AnonymousBlockParameterSynth {
+  private BlockParameter anonymousBlockParameter() {
+    exists(Ruby::BlockParameter p | not exists(p.getName()) and toGenerated(result) = p)
+  }
+
+  private BlockArgument anonymousBlockArgument() {
+    exists(Ruby::BlockArgument p | not exists(p.getChild()) and toGenerated(result) = p)
+  }
+
+  private class AnonymousBlockParameterSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      i = 0 and
+      parent = anonymousBlockParameter() and
+      child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(parent, 0)))
+    }
+
+    final override predicate localVariable(AstNode n, int i) {
+      n = anonymousBlockParameter() and i = 0
+    }
+  }
+
+  private class AnonymousBlockArgumentSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      i = 0 and
+      parent = anonymousBlockArgument() and
+      exists(BlockParameter param |
+        param = anonymousBlockParameter() and
+        scopeOf(toGenerated(parent)).getEnclosingMethod() = scopeOf(toGenerated(param)) and
+        child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+      )
     }
   }
 }

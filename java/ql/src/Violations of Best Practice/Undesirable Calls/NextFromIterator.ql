@@ -20,7 +20,7 @@ where
   exists(Interface i, Method hasNext |
     i.getSourceDeclaration().hasQualifiedName("java.util", "Iterator") and
     m.getEnclosingCallable() = hasNext and
-    hasNext.getDeclaringType().getSourceDeclaration().getASupertype*() = i and
+    hasNext.getDeclaringType().getSourceDeclaration().getAnAncestor() = i and
     hasNext.hasName("hasNext")
   )
 select m, "next() called from within an Iterator method."

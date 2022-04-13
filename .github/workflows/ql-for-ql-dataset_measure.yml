@@ -17,7 +17,7 @@ jobs:
       CODEQL_THREADS: 4 # TODO: remove this once it's set by the CLI
     strategy:
       matrix:
-        repo: 
+        repo:
           - github/codeql
           - github/codeql-go
     runs-on: ubuntu-latest
@@ -26,7 +26,7 @@ jobs:
 
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@erik-krogh/ql
+        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
         with:
           languages: javascript # does not matter
       - uses: actions/cache@v2
@@ -35,7 +35,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             ql/target
-          key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
       - name: Build Extractor
         run: cd ql; env "PATH=$PATH:`dirname ${CODEQL}`" ./create-extractor-pack.sh
         env:

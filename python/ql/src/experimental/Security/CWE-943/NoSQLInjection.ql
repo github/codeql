@@ -11,8 +11,9 @@
 
 import python
 import experimental.semmle.python.security.injection.NoSQLInjection
+import DataFlow::PathGraph
 
-from CustomPathNode source, CustomPathNode sink
-where noSQLInjectionFlow(source, sink)
+from NoSqlInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
 select sink, source, sink, "$@ NoSQL query contains an unsanitized $@", sink, "This", source,
   "user-provided value"

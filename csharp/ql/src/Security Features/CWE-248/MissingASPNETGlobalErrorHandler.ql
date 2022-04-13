@@ -24,7 +24,7 @@ class Application_Error extends Method {
   }
 }
 
-from CustomErrorsXMLElement customError
+from CustomErrorsXmlElement customError
 where
   // `<customErrors>` must be set to "off" to be dangerous
   customError.getAttributeValue("mode").toLowerCase() = "off" and

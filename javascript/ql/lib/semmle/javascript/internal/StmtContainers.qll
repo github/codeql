@@ -16,7 +16,7 @@ private StmtContainer getStmtContainer(NodeInStmtContainer node) {
   stmt_containers(node, result)
   or
   // Properties
-  exists(ASTNode parent | properties(node, parent, _, _, _) |
+  exists(AstNode parent | properties(node, parent, _, _, _) |
     expr_containers(parent, result)
     or
     stmt_containers(parent, result)

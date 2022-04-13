@@ -1,6 +1,8 @@
 name: codeql/csharp-queries
-version: 0.0.7-dev
-groups: csharp
+version: 0.1.0-dev
+groups: 
+  - csharp
+  - queries
 suites: codeql-suites
 extractor: csharp
 defaultSuiteFile: codeql-suites/csharp-code-scanning.qls

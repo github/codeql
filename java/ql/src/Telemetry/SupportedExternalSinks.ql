@@ -1,16 +1,16 @@
 /**
  * @name Supported sinks in external libraries
  * @description A list of 3rd party APIs detected as sinks. Excludes test and generated code.
- * @id java/telemetry/supported-external-api-sinks
  * @kind metric
- * @metricType callable
+ * @tags summary
+ * @id java/telemetry/supported-external-api-sinks
  */
 
 import java
-import ExternalAPI
+import ExternalApi
 import semmle.code.java.GeneratedFiles
 
-from ExternalAPI api, int usages
+from ExternalApi api, int usages
 where
   not api.isUninteresting() and
   api.isSink() and

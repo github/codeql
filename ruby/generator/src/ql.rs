@@ -68,6 +68,7 @@ impl<'a> fmt::Display for Class<'a> {
                     qldoc: None,
                     name: self.name,
                     overridden: false,
+                    is_final: false,
                     return_type: None,
                     formal_parameters: vec![],
                     body: charpred.clone(),
@@ -239,6 +240,7 @@ pub struct Predicate<'a> {
     pub qldoc: Option<String>,
     pub name: &'a str,
     pub overridden: bool,
+    pub is_final: bool,
     pub return_type: Option<Type<'a>>,
     pub formal_parameters: Vec<FormalParameter<'a>>,
     pub body: Expression<'a>,
@@ -248,6 +250,9 @@ impl<'a> fmt::Display for Predicate<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let Some(qldoc) = &self.qldoc {
             write!(f, "/** {} */", qldoc)?;
+        }
+        if self.is_final {
+            write!(f, "final ")?;
         }
         if self.overridden {
             write!(f, "override ")?;

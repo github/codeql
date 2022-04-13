@@ -4,7 +4,7 @@ import semmle.python.security.strings.Basic
 import semmle.python.web.Http
 import TurboGears
 
-class ControllerMethodReturnValue extends HttpResponseTaintSink {
+deprecated class ControllerMethodReturnValue extends HttpResponseTaintSink {
   override string toString() { result = "TurboGears ControllerMethodReturnValue" }
 
   ControllerMethodReturnValue() {
@@ -17,7 +17,7 @@ class ControllerMethodReturnValue extends HttpResponseTaintSink {
   override predicate sinks(TaintKind kind) { kind instanceof StringKind }
 }
 
-class ControllerMethodTemplatedReturnValue extends HttpResponseTaintSink {
+deprecated class ControllerMethodTemplatedReturnValue extends HttpResponseTaintSink {
   override string toString() { result = "TurboGears ControllerMethodTemplatedReturnValue" }
 
   ControllerMethodTemplatedReturnValue() {

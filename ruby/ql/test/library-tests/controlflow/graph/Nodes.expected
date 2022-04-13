@@ -148,6 +148,12 @@ positionalArguments
 | cfg.rb:90:10:90:26 | call to [] | cfg.rb:90:21:90:25 | 3.4e5 |
 | cfg.rb:91:6:91:10 | ... > ... | cfg.rb:91:10:91:10 | 3 |
 | cfg.rb:92:3:92:8 | call to puts | cfg.rb:92:8:92:8 | x |
+| cfg.rb:97:8:97:39 | call to [] | cfg.rb:97:10:97:19 | Pair |
+| cfg.rb:97:8:97:39 | call to [] | cfg.rb:97:22:97:29 | Pair |
+| cfg.rb:97:8:97:39 | call to [] | cfg.rb:97:32:97:37 | Pair |
+| cfg.rb:98:8:98:36 | call to [] | cfg.rb:98:10:98:15 | ** ... |
+| cfg.rb:98:8:98:36 | call to [] | cfg.rb:98:18:98:27 | Pair |
+| cfg.rb:98:8:98:36 | call to [] | cfg.rb:98:30:98:35 | ** ... |
 | cfg.rb:102:3:102:12 | call to puts | cfg.rb:102:8:102:12 | value |
 | cfg.rb:103:10:103:20 | ...[...] | cfg.rb:103:17:103:19 | key |
 | cfg.rb:108:1:108:12 | call to puts | cfg.rb:108:6:108:12 | ( ... ) |
@@ -193,9 +199,9 @@ positionalArguments
 | cfg.rb:197:3:197:13 | call to bar | cfg.rb:197:7:197:7 | b |
 | cfg.rb:197:3:197:13 | call to bar | cfg.rb:197:10:197:12 | ... |
 | desugar.rb:2:5:2:6 | ... + ... | desugar.rb:2:8:2:8 | 1 |
-| desugar.rb:6:3:6:13 | call to count= | desugar.rb:6:3:6:13 | ... = ... |
-| desugar.rb:10:3:10:10 | call to []= | desugar.rb:10:3:10:10 | ... = ... |
+| desugar.rb:6:3:6:13 | call to count= | desugar.rb:6:17:6:17 | ... = ... |
 | desugar.rb:10:3:10:10 | call to []= | desugar.rb:10:9:10:9 | 0 |
+| desugar.rb:10:3:10:10 | call to []= | desugar.rb:10:14:10:14 | ... = ... |
 | desugar.rb:14:3:14:13 | call to count= | desugar.rb:14:15:14:16 | __synth__1 |
 | desugar.rb:14:15:14:16 | ... + ... | desugar.rb:14:18:14:18 | 1 |
 | desugar.rb:18:3:18:28 | call to [] | desugar.rb:18:9:18:9 | __synth__1 |
@@ -344,3 +350,4 @@ positionalArguments
 keywordArguments
 | cfg.html.erb:6:9:6:58 | call to stylesheet_link_tag | media | cfg.html.erb:6:54:6:58 | "all" |
 | cfg.html.erb:12:11:12:33 | call to link_to | id | cfg.html.erb:12:31:12:33 | "a" |
+| cfg.rb:97:8:97:39 | call to [] | e | cfg.rb:97:35:97:37 | "f" |

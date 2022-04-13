@@ -128,7 +128,7 @@ deprecated class RateLimiter extends Express::RouteHandlerExpr {
 }
 
 /**
- * Creation of a middleware function that acts as a rate limiter.
+ * The creation of a middleware function that acts as a rate limiter.
  */
 abstract class RateLimitingMiddleware extends DataFlow::SourceNode {
   /** Gets a data flow node referring to this middleware. */

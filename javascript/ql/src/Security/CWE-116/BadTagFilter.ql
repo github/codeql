@@ -11,12 +11,13 @@
  *       external/cwe/cwe-020
  *       external/cwe/cwe-080
  *       external/cwe/cwe-116
+ *       external/cwe/cwe-184
  *       external/cwe/cwe-185
  *       external/cwe/cwe-186
  */
 
 import semmle.javascript.security.BadTagFilterQuery
 
-from HTMLMatchingRegExp regexp, string msg
+from HtmlMatchingRegExp regexp, string msg
 where msg = min(string m | isBadRegexpFilter(regexp, m) | m order by m.length(), m) // there might be multiple, we arbitrarily pick the shortest one
 select regexp, msg

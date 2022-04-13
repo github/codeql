@@ -139,7 +139,10 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
 
   final override Function getFunction() { result = expr.getEnclosingFunction() }
 
-  final override Locatable getAST() { result = expr }
+  final override Locatable getAst() { result = expr }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   /**
    * Gets the expression that is doing the initialization.
@@ -461,11 +464,11 @@ class TranslatedConstructorInitialization extends TranslatedDirectInitialization
 TranslatedFieldInitialization getTranslatedFieldInitialization(
   ClassAggregateLiteral initList, Field field
 ) {
-  result.getAST() = initList and result.getField() = field
+  result.getAst() = initList and result.getField() = field
 }
 
 TranslatedFieldInitialization getTranslatedConstructorFieldInitialization(ConstructorFieldInit init) {
-  result.getAST() = init
+  result.getAst() = init
 }
 
 /**
@@ -478,7 +481,10 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
 
   final override string toString() { result = ast.toString() + "." + field.toString() }
 
-  final override Locatable getAST() { result = ast }
+  final override Locatable getAst() { result = ast }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   final override Function getFunction() { result = ast.getEnclosingFunction() }
 
@@ -622,7 +628,10 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = initList.toString() + "[" + getElementIndex().toString() + "]"
   }
 
-  final override Locatable getAST() { result = initList }
+  final override Locatable getAst() { result = initList }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   final override Function getFunction() { result = initList.getEnclosingFunction() }
 
@@ -802,7 +811,10 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
 abstract class TranslatedStructorCallFromStructor extends TranslatedElement, StructorCallContext {
   FunctionCall call;
 
-  final override Locatable getAST() { result = call }
+  final override Locatable getAst() { result = call }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   final override TranslatedElement getChild(int id) {
     id = 0 and
@@ -864,7 +876,7 @@ abstract class TranslatedConstructorCallFromConstructor extends TranslatedStruct
 }
 
 TranslatedConstructorCallFromConstructor getTranslatedConstructorBaseInit(ConstructorBaseInit init) {
-  result.getAST() = init
+  result.getAst() = init
 }
 
 /**
@@ -904,7 +916,7 @@ class TranslatedConstructorBaseInit extends TranslatedConstructorCallFromConstru
 TranslatedDestructorBaseDestruction getTranslatedDestructorBaseDestruction(
   DestructorBaseDestruction destruction
 ) {
-  result.getAST() = destruction
+  result.getAst() = destruction
 }
 
 /**
@@ -916,4 +928,40 @@ class TranslatedDestructorBaseDestruction extends TranslatedBaseStructorCall,
   TranslatedDestructorBaseDestruction() { this = TTranslatedDestructorBaseDestruction(call) }
 
   final override string toString() { result = "destroy base: " + call.toString() }
+}
+
+/**
+ * A constructor base init call where no base constructor has been generated.
+ *
+ * Workaround for an extractor issue.
+ */
+class TranslatedConstructorBareInit extends TranslatedElement, TTranslatedConstructorBareInit {
+  ConstructorInit init;
+
+  TranslatedConstructorBareInit() { this = TTranslatedConstructorBareInit(init) }
+
+  override Locatable getAst() { result = init }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
+
+  final override string toString() { result = "construct base (no constructor)" }
+
+  override Instruction getFirstInstruction() { result = getParent().getChildSuccessor(this) }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    none()
+  }
+
+  override TranslatedElement getChild(int id) { none() }
+
+  override Function getFunction() { result = getParent().getFunction() }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+}
+
+TranslatedConstructorBareInit getTranslatedConstructorBareInit(ConstructorInit init) {
+  result.getAst() = init
 }

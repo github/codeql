@@ -157,6 +157,7 @@ class ErbDirective extends TDirectiveNode, ErbAstNode {
    * Gets a statement that starts in directive that is not a child of any other
    * statement starting in this directive.
    */
+  cached
   Stmt getAChildStmt() {
     this.containsAstNodeStart(result) and
     not this.containsAstNodeStart(result.getParent())

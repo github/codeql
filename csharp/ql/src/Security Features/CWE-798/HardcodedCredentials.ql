@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.8
- * @precision high
+ * @precision medium
  * @id cs/hardcoded-credentials
  * @tags security
  *       external/cwe/cwe-259

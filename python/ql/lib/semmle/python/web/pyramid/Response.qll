@@ -9,7 +9,7 @@ private import semmle.python.web.Http
  * A pyramid response, which is vulnerable to any sort of
  * http response malice.
  */
-class PyramidRoutedResponse extends HttpResponseTaintSink {
+deprecated class PyramidRoutedResponse extends HttpResponseTaintSink {
   PyramidRoutedResponse() {
     exists(PythonFunctionValue view |
       is_pyramid_view_function(view.getScope()) and
@@ -22,7 +22,7 @@ class PyramidRoutedResponse extends HttpResponseTaintSink {
   override string toString() { result = "pyramid.routed.response" }
 }
 
-class PyramidCookieSet extends CookieSet, CallNode {
+deprecated class PyramidCookieSet extends CookieSet, CallNode {
   PyramidCookieSet() {
     exists(ControlFlowNode f |
       f = this.getFunction().(AttrNode).getObject("set_cookie") and

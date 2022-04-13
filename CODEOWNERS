@@ -5,13 +5,8 @@
 /python/ @github/codeql-python
 /ruby/ @github/codeql-ruby
 
-# Make @xcorail (GitHub Security Lab) a code owner for experimental queries so he gets pinged when we promote a query out of experimental
-/cpp/**/experimental/**/* @github/codeql-c-analysis @xcorail
-/csharp/**/experimental/**/* @github/codeql-csharp @xcorail
-/java/**/experimental/**/* @github/codeql-java @xcorail
-/javascript/**/experimental/**/* @github/codeql-javascript @xcorail
-/python/**/experimental/**/* @github/codeql-python @xcorail
-/ruby/**/experimental/**/* @github/codeql-ruby @xcorail
+# ML-powered queries
+/javascript/ql/experimental/adaptivethreatmodeling/ @github/codeql-ml-powered-queries-reviewers
 
 # Notify members of codeql-go about PRs to the shared data-flow library files
 /java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl.qll @github/codeql-java @github/codeql-go
@@ -28,3 +23,7 @@
 
 # QL for QL reviewers
 /ql/ @github/codeql-ql-for-ql-reviewers
+
+# Bazel
+**/*.bazel @github/codeql-ci-reviewers
+**/*.bzl @github/codeql-ci-reviewers

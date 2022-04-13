@@ -87,3 +87,46 @@ class My2Attribute : Attribute
     public int X { get; set; }
     public My2Attribute(bool a, bool b, int i = 12, int j = 13) { }
 }
+
+class My3Attribute : Attribute
+{
+    public My3Attribute(int x) { }
+}
+
+[My3Attribute(1)]
+[return: My3Attribute(2)]
+delegate int My1Delegate(string message);
+
+[return: My3Attribute(3)]
+[type: My3Attribute(4)]
+delegate string My2Delegate(string message);
+
+public class MyAttributeUsage
+{
+    [My3Attribute(5)]
+    [return: My3Attribute(6)]
+    public static int operator +(MyAttributeUsage a, MyAttributeUsage b) => 0;
+
+    public int this[int x]
+    {
+        [My3Attribute(7)]
+        [return: My3Attribute(8)]
+        get { return x + 1; }
+
+        [method: My3Attribute(9)]
+        [param: My3Attribute(10)]
+        set { return; }
+    }
+
+    private int p;
+    public int Prop1
+    {
+        [method: My3Attribute(11)]
+        [return: My3Attribute(12)]
+        get { return p; }
+
+        [My3Attribute(13)]
+        [param: My3Attribute(14)]
+        set { p = value; }
+    }
+}

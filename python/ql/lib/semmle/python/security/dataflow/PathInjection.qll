@@ -1,25 +1,32 @@
-/**
- * Provides taint-tracking configurations for detecting "path injection" vulnerabilities.
- *
- * Note, for performance reasons: only import this file if
- * the Configurations or the `pathInjection` predicate are needed, otherwise
- * `PathInjectionCustomizations` should be imported instead.
- */
+/** DEPRECATED. Import `PathInjectionQuery` instead. */
 
 private import python
 private import semmle.python.Concepts
-private import semmle.python.dataflow.new.DataFlow
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.dataflow.new.TaintTracking
+
+/** DEPRECATED. Import `PathInjectionQuery` instead. */
+deprecated module PathInjection {
+  import PathInjectionQuery // ignore-query-import
+}
+
+// ---------------------------------------------------------------------------
+// Old, deprecated code
+// ---------------------------------------------------------------------------
 private import semmle.python.dataflow.new.DataFlow2
-private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.TaintTracking2
-import ChainedConfigs12
+private import ChainedConfigs12
 import PathInjectionCustomizations::PathInjection
 
 // ---------------------------------------------------------------------------
 // Case 1. The path is never normalized.
 // ---------------------------------------------------------------------------
-/** Configuration to find paths from sources to sinks that contain no normalization. */
-class PathNotNormalizedConfiguration extends TaintTracking::Configuration {
+/**
+ * DEPRECATED: Import `PathInjectionQuery` instead.
+ *
+ * Configuration to find paths from sources to sinks that contain no normalization.
+ */
+deprecated class PathNotNormalizedConfiguration extends TaintTracking::Configuration {
   PathNotNormalizedConfiguration() { this = "PathNotNormalizedConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -38,18 +45,24 @@ class PathNotNormalizedConfiguration extends TaintTracking::Configuration {
 }
 
 /**
+ * DEPRECATED: Import `PathInjectionQuery` instead.
+ *
  * Holds if there is a path injection from source to sink, where the (python) path is
  * not normalized.
  */
-predicate pathNotNormalized(CustomPathNode source, CustomPathNode sink) {
+deprecated predicate pathNotNormalized(CustomPathNode source, CustomPathNode sink) {
   any(PathNotNormalizedConfiguration config).hasFlowPath(source.asNode1(), sink.asNode1())
 }
 
 // ---------------------------------------------------------------------------
 // Case 2. The path is normalized at least once, but never checked afterwards.
 // ---------------------------------------------------------------------------
-/** Configuration to find paths from sources to normalizations that contain no prior normalizations. */
-class FirstNormalizationConfiguration extends TaintTracking::Configuration {
+/**
+ * DEPRECATED: Import `PathInjectionQuery` instead.
+ *
+ * Configuration to find paths from sources to normalizations that contain no prior normalizations.
+ */
+deprecated class FirstNormalizationConfiguration extends TaintTracking::Configuration {
   FirstNormalizationConfiguration() { this = "FirstNormalizationConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -65,8 +78,12 @@ class FirstNormalizationConfiguration extends TaintTracking::Configuration {
   }
 }
 
-/** Configuration to find paths from normalizations to sinks that do not go through a check. */
-class NormalizedPathNotCheckedConfiguration extends TaintTracking2::Configuration {
+/**
+ * DEPRECATED: Import `PathInjectionQuery` instead.
+ *
+ * Configuration to find paths from normalizations to sinks that do not go through a check.
+ */
+deprecated class NormalizedPathNotCheckedConfiguration extends TaintTracking2::Configuration {
   NormalizedPathNotCheckedConfiguration() { this = "NormalizedPathNotCheckedConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Path::PathNormalization }
@@ -83,10 +100,12 @@ class NormalizedPathNotCheckedConfiguration extends TaintTracking2::Configuratio
 }
 
 /**
+ * DEPRECATED: Import `PathInjectionQuery` instead.
+ *
  * Holds if there is a path injection from source to sink, where the (python) path is
  * normalized at least once, but never checked afterwards.
  */
-predicate pathNotCheckedAfterNormalization(CustomPathNode source, CustomPathNode sink) {
+deprecated predicate pathNotCheckedAfterNormalization(CustomPathNode source, CustomPathNode sink) {
   exists(
     FirstNormalizationConfiguration config, DataFlow::PathNode mid1, DataFlow2::PathNode mid2,
     NormalizedPathNotCheckedConfiguration config2
@@ -100,8 +119,12 @@ predicate pathNotCheckedAfterNormalization(CustomPathNode source, CustomPathNode
 // ---------------------------------------------------------------------------
 // Query: Either case 1 or case 2.
 // ---------------------------------------------------------------------------
-/** Holds if there is a path injection from source to sink */
-predicate pathInjection(CustomPathNode source, CustomPathNode sink) {
+/**
+ * DEPRECATED: Import `PathInjectionQuery` instead.
+ *
+ * Holds if there is a path injection from source to sink
+ */
+deprecated predicate pathInjection(CustomPathNode source, CustomPathNode sink) {
   pathNotNormalized(source, sink)
   or
   pathNotCheckedAfterNormalization(source, sink)

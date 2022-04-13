@@ -2,6 +2,7 @@
 
 import javascript
 private import NodeModuleResolutionImpl
+private import semmle.javascript.DynamicPropertyAccess as DynamicPropertyAccess
 
 /**
  * A Node.js module.
@@ -90,6 +91,18 @@ class NodeModule extends Module {
             .getAnExportedValue(name)
     )
     or
+    // var imp = require('./imp');
+    // for (var name in imp){
+    //   module.exports[name] = imp[name];
+    // }
+    exists(DynamicPropertyAccess::EnumeratedPropName read, Import imp, DataFlow::PropWrite write |
+      read.getSourceObject().getALocalSource().asExpr() = imp and
+      getASourceProp(read) = write.getRhs() and
+      write.getBase() = this.getAModuleExportsNode() and
+      write.getPropertyNameExpr().flow().getImmediatePredecessor*() = read and
+      result = imp.getImportedModule().getAnExportedValue(name)
+    )
+    or
     // an externs definition (where appropriate)
     exists(PropAccess pacc | result = DataFlow::valueNode(pacc) |
       pacc.getBase() = this.getAModuleExportsNode().asExpr() and
@@ -150,6 +163,21 @@ class NodeModule extends Module {
   }
 }
 
+// An copy of `DynamicPropertyAccess::EnumeratedPropName::getASourceProp` that doesn't use the callgraph.
+// This avoids making the module-imports recursive with the callgraph.
+private DataFlow::SourceNode getASourceProp(DynamicPropertyAccess::EnumeratedPropName prop) {
+  exists(DataFlow::Node base, DataFlow::Node key |
+    exists(DynamicPropertyAccess::DynamicPropRead read |
+      not read.hasDominatingAssignment() and
+      base = read.getBase() and
+      key = read.getPropertyNameNode() and
+      result = read
+    ) and
+    prop.getASourceObjectRef().flowsTo(base) and
+    key.getImmediatePredecessor*() = prop
+  )
+}
+
 /**
  * Gets an expression that syntactically could be a alias for `module.exports`.
  * This predicate exists to reduce the size of `getAModuleExportsNode`,
@@ -158,7 +186,7 @@ class NodeModule extends Module {
 pragma[noinline]
 private DataFlow::Node getAModuleExportsCandidate() {
   // A bit of manual magic
-  result = any(DataFlow::PropWrite w | exists(w.getPropertyName())).getBase()
+  result = any(DataFlow::PropWrite w).getBase()
   or
   result = DataFlow::valueNode(any(PropAccess p | exists(p.getPropertyName())).getBase())
   or

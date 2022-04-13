@@ -185,7 +185,7 @@ private module ControlFlowGraphImpl {
    * Bind `t` to an unchecked exception that may occur in a precondition check.
    */
   private predicate uncheckedExceptionFromMethod(MethodAccess ma, ThrowableType t) {
-    conditionCheck(ma, _) and
+    conditionCheckArgument(ma, _, _) and
     (t instanceof TypeError or t instanceof TypeRuntimeException)
   }
 
@@ -236,7 +236,7 @@ private module ControlFlowGraphImpl {
    */
   private predicate mustCatch(CatchClause c, ThrowableType thrown) {
     thrown = thrownInBody(c.getTry()) and
-    hasSubtype*(c.getACaughtType(), thrown)
+    hasDescendant(c.getACaughtType(), thrown)
   }
 
   /**
@@ -250,7 +250,7 @@ private module ControlFlowGraphImpl {
    */
   private predicate mayNotCatch(CatchClause c, ThrowableType thrown) {
     thrown = thrownInBody(c.getTry()) and
-    not hasSubtype*(c.getACaughtType(), thrown)
+    not hasDescendant(c.getACaughtType(), thrown)
   }
 
   /**

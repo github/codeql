@@ -1,4 +1,6 @@
 name: codeql/ruby-examples
-version: 0.0.2
+groups: 
+  - ruby
+  - examples
 dependencies:
-  codeql/ruby-all: ^0.0.2
+  codeql/ruby-all: "*"

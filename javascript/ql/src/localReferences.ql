@@ -11,7 +11,7 @@ import definitions
 
 external string selectedSourceFile();
 
-from Locatable e, ASTNode def, string kind
+from Locatable e, AstNode def, string kind
 where
   def = definitionOf(e, kind) and def.getFile() = getFileBySourceArchiveName(selectedSourceFile())
 select e, def, kind

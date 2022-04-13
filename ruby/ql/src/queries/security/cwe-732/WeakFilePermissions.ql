@@ -40,7 +40,10 @@ class PermissivePermissionsExpr extends Expr {
     )
     or
     // adding/setting read or write permissions for all/group/other
-    this.(StringLiteral).getValueText().regexpMatch(".*[ago][^-=+]*[+=][xXst]*[rw].*")
+    this.(StringLiteral)
+        .getConstantValue()
+        .getString()
+        .regexpMatch(".*[ago][^-=+]*[+=][xXst]*[rw].*")
   }
 }
 

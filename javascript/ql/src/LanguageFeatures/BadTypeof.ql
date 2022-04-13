@@ -20,7 +20,7 @@ import javascript
  * A comparison construct, that is, either an equality test or a switch case
  * (which is implicitly compared to the switch statement's discriminant).
  */
-class EqOrSwitch extends ASTNode {
+class EqOrSwitch extends AstNode {
   EqOrSwitch() {
     this instanceof EqualityTest or
     this instanceof Case

@@ -20,3 +20,11 @@ app.get('/some/path', function(req, res) {
   // NOT OK
   vm.runInContext(req.param("code_runInContext"), vm.createContext());
 });
+
+const cp = require('child_process');
+app.get('/other/path', function(req, res) {
+  const taint = req.param("wobble");
+  cp.execFileSync('node', ['-e', taint]); // NOT OK
+
+  cp.execFileSync('node', ['-e', `console.log(${JSON.stringify(taint)})`]); // OK
+});

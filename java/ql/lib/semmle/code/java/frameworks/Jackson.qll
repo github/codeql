@@ -7,7 +7,7 @@ private import semmle.code.java.dataflow.DataFlow
 
 private class ObjectMapper extends RefType {
   ObjectMapper() {
-    this.getASupertype*().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
+    this.getAnAncestor().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
   }
 }
 
@@ -118,7 +118,7 @@ predicate createJacksonTreeNodeStep(DataFlow::Node fromNode, DataFlow::Node toNo
  * that enables polymorphic type handling.
  */
 private predicate hasJsonTypeInfoAnnotation(RefType type) {
-  hasFieldWithJsonTypeAnnotation(type.getASupertype*()) or
+  hasFieldWithJsonTypeAnnotation(type.getAnAncestor()) or
   hasJsonTypeInfoAnnotation(type.getAField().getType())
 }
 

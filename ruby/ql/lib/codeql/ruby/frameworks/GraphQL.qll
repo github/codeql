@@ -10,44 +10,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 
-private class GraphqlRelayClassicMutationAccess extends ConstantReadAccess {
-  //GraphQL::Schema::RelayClassicMutation
-  GraphqlRelayClassicMutationAccess() {
-    this =
-      API::getTopLevelMember("GraphQL")
-          .getMember("Schema")
-          .getMember("RelayClassicMutation")
-          .getAUse()
-          .asExpr()
-          .getExpr()
-  }
-}
-
-private class GraphqlSchemaResolverAccess extends ConstantReadAccess {
-  //GraphQL::Schema::Resolver
-  GraphqlSchemaResolverAccess() {
-    this =
-      API::getTopLevelMember("GraphQL")
-          .getMember("Schema")
-          .getMember("Resolver")
-          .getAUse()
-          .asExpr()
-          .getExpr()
-  }
-}
-
-private class GraphqlSchemaObjectAccess extends ConstantReadAccess {
-  //GraphQL::Schema::Object
-  GraphqlSchemaObjectAccess() {
-    this =
-      API::getTopLevelMember("GraphQL")
-          .getMember("Schema")
-          .getMember("Object")
-          .getAUse()
-          .asExpr()
-          .getExpr()
-  }
-}
+private API::Node graphQlSchema() { result = API::getTopLevelMember("GraphQL").getMember("Schema") }
 
 /**
  * A `ClassDeclaration` for a class that extends `GraphQL::Schema::RelayClassicMutation`.
@@ -77,13 +40,8 @@ private class GraphqlSchemaObjectAccess extends ConstantReadAccess {
  */
 private class GraphqlRelayClassicMutationClass extends ClassDeclaration {
   GraphqlRelayClassicMutationClass() {
-    // class BaseMutation < GraphQL::Schema::RelayClassicMutation
-    this.getSuperclassExpr() instanceof GraphqlRelayClassicMutationAccess
-    or
-    // class MyMutation < BaseMutation
-    exists(GraphqlRelayClassicMutationClass other |
-      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
-    )
+    this.getSuperclassExpr() =
+      graphQlSchema().getMember("RelayClassicMutation").getASubclass*().getAUse().asExpr().getExpr()
   }
 }
 
@@ -112,13 +70,8 @@ private class GraphqlRelayClassicMutationClass extends ClassDeclaration {
  */
 private class GraphqlSchemaResolverClass extends ClassDeclaration {
   GraphqlSchemaResolverClass() {
-    // class BaseResolver < GraphQL::Schema::Resolver
-    this.getSuperclassExpr() instanceof GraphqlSchemaResolverAccess
-    or
-    // class MyResolver < BaseResolver
-    exists(GraphqlSchemaResolverClass other |
-      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
-    )
+    this.getSuperclassExpr() =
+      graphQlSchema().getMember("Resolver").getASubclass().getAUse().asExpr().getExpr()
   }
 }
 
@@ -138,13 +91,8 @@ private class GraphqlSchemaResolverClass extends ClassDeclaration {
  */
 class GraphqlSchemaObjectClass extends ClassDeclaration {
   GraphqlSchemaObjectClass() {
-    // class BaseObject < GraphQL::Schema::Object
-    this.getSuperclassExpr() instanceof GraphqlSchemaObjectAccess
-    or
-    // class MyObject < BaseObject
-    exists(GraphqlSchemaObjectClass other |
-      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
-    )
+    this.getSuperclassExpr() =
+      graphQlSchema().getMember("Object").getASubclass().getAUse().asExpr().getExpr()
   }
 
   /** Gets a `GraphqlFieldDefinitionMethodCall` called in this class. */
@@ -273,7 +221,7 @@ private class GraphqlSchemaObjectClassMethodCall extends MethodCall {
     recvCls.getModule() = resolveConstantReadAccess(this.getReceiver())
     or
     // e.g. self.some_method(...) within a graphql Object or Interface
-    this.getReceiver() instanceof Self and
+    this.getReceiver() instanceof SelfVariableAccess and
     this.getEnclosingModule() = recvCls
   }
 
@@ -300,7 +248,7 @@ class GraphqlFieldDefinitionMethodCall extends GraphqlSchemaObjectClassMethodCal
   GraphqlFieldDefinitionMethodCall() { this.getMethodName() = "field" }
 
   /** Gets the name of this GraphQL field. */
-  string getFieldName() { result = this.getArgument(0).getValueText() }
+  string getFieldName() { result = this.getArgument(0).getConstantValue().getStringlikeValue() }
 }
 
 /**
@@ -336,7 +284,7 @@ private class GraphqlFieldArgumentDefinitionMethodCall extends GraphqlSchemaObje
   string getFieldName() { result = this.getFieldDefinition().getFieldName() }
 
   /** Gets the name of the argument (i.e. the first argument to this `argument` method call) */
-  string getArgumentName() { result = this.getArgument(0).(SymbolLiteral).getValueText() }
+  string getArgumentName() { result = this.getArgument(0).getConstantValue().getStringlikeValue() }
 }
 
 /**
@@ -385,7 +333,9 @@ class GraphqlFieldResolutionMethod extends Method, HTTP::Server::RequestHandler:
     exists(GraphqlFieldDefinitionMethodCall defn |
       // field :foo, resolver_method: :custom_method
       // def custom_method(...)
-      defn.getKeywordArgument("resolver_method").(SymbolLiteral).getValueText() = this.getName()
+      defn.getKeywordArgument("resolver_method")
+          .getConstantValue()
+          .isStringlikeValue(this.getName())
       or
       // field :foo
       // def foo(...)
@@ -396,7 +346,10 @@ class GraphqlFieldResolutionMethod extends Method, HTTP::Server::RequestHandler:
 
   /** Gets the method call which is the definition of the field corresponding to this resolver method. */
   GraphqlFieldDefinitionMethodCall getDefinition() {
-    result.getKeywordArgument("resolver_method").(SymbolLiteral).getValueText() = this.getName()
+    result
+        .getKeywordArgument("resolver_method")
+        .getConstantValue()
+        .isStringlikeValue(this.getName())
     or
     not exists(result.getKeywordArgument("resolver_method").(SymbolLiteral)) and
     result.getFieldName() = this.getName()

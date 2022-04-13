@@ -3,7 +3,7 @@ private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import experimental.semmle.python.frameworks.JWT
 
-private module PyJWT {
+private module PyJwt {
   /** Gets a reference to `jwt.encode` */
   private API::Node pyjwtEncode() { result = API::moduleImport("jwt").getMember("encode") }
 
@@ -25,8 +25,8 @@ private module PyJWT {
    * * `getAlgorithm()`'s result would be `"HS256"`.
    * * `getAlgorithmstring()`'s result would be `HS256`.
    */
-  private class PyJWTEncodeCall extends DataFlow::CallCfgNode, JWTEncoding::Range {
-    PyJWTEncodeCall() { this = pyjwtEncode().getACall() }
+  private class PyJwtEncodeCall extends DataFlow::CallCfgNode, JwtEncoding::Range {
+    PyJwtEncodeCall() { this = pyjwtEncode().getACall() }
 
     override DataFlow::Node getPayload() {
       result in [this.getArg(0), this.getArgByName("payload")]
@@ -63,8 +63,8 @@ private module PyJWT {
    * * `getOptions()`'s result would be `{"verify_signature": True}`.
    * * `verifiesSignature()` predicate would succeed.
    */
-  private class PyJWTDecodeCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
-    PyJWTDecodeCall() { this = pyjwtDecode().getACall() }
+  private class PyJwtDecodeCall extends DataFlow::CallCfgNode, JwtDecoding::Range {
+    PyJwtDecodeCall() { this = pyjwtDecode().getACall() }
 
     override DataFlow::Node getPayload() { result in [this.getArg(0), this.getArgByName("jwt")] }
 

@@ -188,7 +188,7 @@ module DefensiveExpressionTest {
   }
 
   /**
-   * Comparison against `undefined`, such as `x === undefined`.
+   * A comparison against `undefined`, such as `x === undefined`.
    */
   class UndefinedComparison extends NullUndefinedComparison {
     UndefinedComparison() { op2type = TTUndefined() }

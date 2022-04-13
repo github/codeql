@@ -16,11 +16,11 @@ import javascript
  */
 module SocketIO {
   /** Gets a data flow node that creates a new socket.io server. */
-  private DataFlow::SourceNode newServer() {
-    result = DataFlow::moduleImport("socket.io").getAnInvocation()
+  private API::Node newServer() {
+    result = API::moduleImport("socket.io").getReturn()
     or
     // alias for `Server`
-    result = DataFlow::moduleImport("socket.io").getAMemberCall("listen")
+    result = API::moduleImport("socket.io").getMember("listen").getReturn()
   }
 
   /**
@@ -39,7 +39,12 @@ module SocketIO {
 
   /** A socket.io server. */
   class ServerObject extends SocketIOObject {
-    ServerObject() { this = newServer() }
+    API::Node node;
+
+    ServerObject() { node = newServer() and this = node.getAnImmediateUse() }
+
+    /** Gets the Api node for this server. */
+    API::Node asApiNode() { result = node }
 
     /** Gets the default namespace of this server. */
     NamespaceObject getDefaultNamespace() { result = MkNamespace(this, "/") }
@@ -50,17 +55,13 @@ module SocketIO {
     /** Gets the namespace with the given path of this server. */
     NamespaceObject getNamespace(string path) { result = MkNamespace(this, path) }
 
-    /**
-     * Gets a data flow node that may refer to the socket.io server created at `srv`.
-     */
-    private DataFlow::SourceNode server(DataFlow::TypeTracker t) {
-      result = this and t.start()
+    /** Gets a api node that may refer to the socket.io server created at `srv`. */
+    private API::Node server() {
+      result = node
       or
-      exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = this.server(t2) |
-        result = pred.track(t2, t)
-        or
+      exists(API::Node pred | pred = this.server() |
         // invocation of a chainable method
-        exists(DataFlow::MethodCallNode mcn, string m |
+        exists(API::CallNode mcn, string m |
           m = "adapter" or
           m = "attach" or
           m = "bind" or
@@ -72,21 +73,15 @@ module SocketIO {
           m = "set" or
           m = EventEmitter::chainableMethod()
         |
-          mcn = pred.getAMethodCall(m) and
+          mcn = pred.getMember(m).getACall() and
           // exclude getter versions
           exists(mcn.getAnArgument()) and
-          result = mcn and
-          t = t2.continue()
+          result = mcn.getReturn()
         )
       )
     }
 
-    override DataFlow::SourceNode ref() { result = this.server(DataFlow::TypeTracker::end()) }
-
-    /**
-     * DEPRECATED. Always returns `this` as a `ServerObject` now represents the origin of a server.
-     */
-    deprecated DataFlow::SourceNode getOrigin() { result = this }
+    override DataFlow::SourceNode ref() { result = this.server().getAUse() }
   }
 
   /** A data flow node that may produce (that is, create or return) a socket.io server. */
@@ -121,54 +116,49 @@ module SocketIO {
    */
   class NamespaceBase extends SocketIOObject {
     NamespaceObject ns;
+    API::Node node;
 
     NamespaceBase() {
+      this = node.getAnImmediateUse() and
       exists(ServerObject srv |
         // namespace lookup on `srv`
-        this = srv.ref().getAPropertyRead("sockets") and
+        node = srv.asApiNode().getMember("sockets") and
         ns = srv.getDefaultNamespace()
         or
-        exists(DataFlow::MethodCallNode mcn, string path |
-          mcn = srv.ref().getAMethodCall("of") and
+        exists(API::CallNode mcn, string path |
+          mcn = srv.asApiNode().getMember("of").getACall() and
           mcn.getArgument(0).mayHaveStringValue(path) and
-          this = mcn and
+          node = mcn.getReturn() and
           ns = MkNamespace(srv, path)
         )
         or
         // invocation of a method that `srv` forwards to its default namespace
-        this = srv.ref().getAMethodCall(namespaceChainableMethod()) and
+        node = srv.asApiNode().getMember(namespaceChainableMethod()).getReturn() and
         ns = srv.getDefaultNamespace()
       )
     }
+
+    /** Gets the API node for this namespace. */
+    API::Node asApiNode() { result = node }
 
     override NamespaceObject getNamespace() { result = ns }
 
     /**
      * Gets a data flow node that may refer to the socket.io namespace created at `ns`.
      */
-    private DataFlow::SourceNode namespace(DataFlow::TypeTracker t) {
-      t.start() and result = this
+    private API::Node namespace() {
+      result = node
       or
-      exists(DataFlow::SourceNode pred, DataFlow::TypeTracker t2 | pred = this.namespace(t2) |
-        result = pred.track(t2, t)
-        or
+      exists(API::Node pred | pred = this.namespace() |
         // invocation of a chainable method
-        result = pred.getAMethodCall(namespaceChainableMethod()) and
-        t = t2.continue()
+        result = pred.getMember(namespaceChainableMethod()).getReturn()
         or
         // invocation of chainable getter method
-        exists(string m |
-          m = "json" or
-          m = "local" or
-          m = "volatile"
-        |
-          result = pred.getAPropertyRead(m) and
-          t = t2.continue()
-        )
+        result = pred.getMember(["json", "local", "volatile"])
       )
     }
 
-    override DataFlow::SourceNode ref() { result = this.namespace(DataFlow::TypeTracker::end()) }
+    override DataFlow::SourceNode ref() { result = this.namespace().getAUse() }
   }
 
   /** A data flow node that may produce a namespace object. */
@@ -528,7 +518,7 @@ module SocketIOClient {
   }
 
   /** Gets the NPM package that contains `nd`. */
-  private NPMPackage getPackage(DataFlow::SourceNode nd) { result.getAFile() = nd.getFile() }
+  private NpmPackage getPackage(DataFlow::SourceNode nd) { result.getAFile() = nd.getFile() }
 
   /**
    * A data flow node representing an API call that receives data from the server.

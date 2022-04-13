@@ -513,12 +513,28 @@ module TaintedPath {
 
     override predicate blocks(boolean outcome, Expr e) {
       member = "relative" and
-      e = pathCall.getArgument(1).asExpr() and
+      e = this.maybeGetPathSuffix(pathCall.getArgument(1)).asExpr() and
       outcome = startsWith.getPolarity().booleanNot()
       or
       not member = "relative" and
-      e = pathCall.getArgument(0).asExpr() and
+      e = this.maybeGetPathSuffix(pathCall.getArgument(0)).asExpr() and
       outcome = startsWith.getPolarity()
+    }
+
+    /**
+     * Gets the last argument to the given `path.join()` call,
+     * or the node itself if it is not a join call.
+     * Is used to get the suffix of the path.
+     */
+    bindingset[e]
+    private DataFlow::Node maybeGetPathSuffix(DataFlow::Node e) {
+      exists(DataFlow::CallNode call |
+        call = NodeJSLib::Path::moduleMember("join").getACall() and e = call
+      |
+        result = call.getLastArgument()
+      )
+      or
+      result = e
     }
   }
 

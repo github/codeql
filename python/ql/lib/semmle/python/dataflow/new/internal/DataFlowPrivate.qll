@@ -3,6 +3,15 @@ private import DataFlowPublic
 import semmle.python.SpecialMethods
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+// Since we allow extra data-flow steps from modeled frameworks, we import these
+// up-front, to ensure these are included. This provides a more seamless experience from
+// a user point of view, since they don't need to know they need to import a specific
+// set of .qll files to get the same data-flow steps as they are used to seeing. This
+// also ensures that we don't end up re-evaluating data-flow because it has different
+// global steps in some configurations.
+//
+// This matches behavior in C#.
+private import semmle.python.Frameworks
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
@@ -39,8 +48,11 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
 //--------
 predicate isExpressionNode(ControlFlowNode node) { node.getNode() instanceof Expr }
 
+/** DEPRECATED: Alias for `SyntheticPreUpdateNode` */
+deprecated module syntheticPreUpdateNode = SyntheticPreUpdateNode;
+
 /** A module collecting the different reasons for synthesising a pre-update node. */
-module syntheticPreUpdateNode {
+module SyntheticPreUpdateNode {
   class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
     NeedsSyntheticPreUpdateNode post;
 
@@ -63,7 +75,7 @@ module syntheticPreUpdateNode {
     override Node getPreUpdateNode() { result.(SyntheticPreUpdateNode).getPostUpdateNode() = this }
 
     /**
-     * A label for this kind of node. This will figure in the textual representation of the synthesized pre-update node.
+     * Gets the label for this kind of node. This will figure in the textual representation of the synthesized pre-update node.
      *
      * There is currently only one reason for needing a pre-update node, so we always use that as the label.
      */
@@ -78,10 +90,13 @@ module syntheticPreUpdateNode {
   CfgNode objectCreationNode() { result.getNode().(CallNode) = any(ClassCall c).getNode() }
 }
 
-import syntheticPreUpdateNode
+import SyntheticPreUpdateNode
+
+/** DEPRECATED: Alias for `SyntheticPostUpdateNode` */
+deprecated module syntheticPostUpdateNode = SyntheticPostUpdateNode;
 
 /** A module collecting the different reasons for synthesising a post-update node. */
-module syntheticPostUpdateNode {
+module SyntheticPostUpdateNode {
   /** A post-update node is synthesized for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
   class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
     NeedsSyntheticPostUpdateNode pre;
@@ -108,7 +123,7 @@ module syntheticPostUpdateNode {
     }
 
     /**
-     * A label for this kind of node. This will figure in the textual representation of the synthesized post-update node.
+     * Gets the label for this kind of node. This will figure in the textual representation of the synthesized post-update node.
      * We favour being an arguments as the reason for the post-update node in case multiple reasons apply.
      */
     string label() {
@@ -122,11 +137,13 @@ module syntheticPostUpdateNode {
   }
 
   /**
+   * Gets the pre-update node for this node.
+   *
    * An argument might have its value changed as a result of a call.
    * Certain arguments, such as implicit self arguments are already post-update nodes
    * and should not have an extra node synthesised.
    */
-  ArgumentNode argumentPreUpdateNode() {
+  Node argumentPreUpdateNode() {
     result = any(FunctionCall c).getArg(_)
     or
     // Avoid argument 0 of method calls as those have read post-update nodes.
@@ -136,9 +153,14 @@ module syntheticPostUpdateNode {
     or
     // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
     exists(ClassCall c, int n | n > 0 | result = c.getArg(n))
+    or
+    // any argument of any call that we have not been able to resolve
+    exists(CallNode call | not call = any(DataFlowCall c).getNode() |
+      result.(CfgNode).getNode() in [call.getArg(_), call.getArgByName(_)]
+    )
   }
 
-  /** An object might have its value changed after a store. */
+  /** Gets the pre-update node associated with a store. This is used for when an object might have its value changed after a store. */
   CfgNode storePreUpdateNode() {
     exists(Attribute a |
       result.getNode() = a.getObject().getAFlowNode() and
@@ -147,7 +169,7 @@ module syntheticPostUpdateNode {
   }
 
   /**
-   * A node marking the state change of an object after a read.
+   * Gets a node marking the state change of an object after a read.
    *
    * A reverse read happens when the result of a read is modified, e.g. in
    * ```python
@@ -170,7 +192,7 @@ module syntheticPostUpdateNode {
   }
 }
 
-import syntheticPostUpdateNode
+import SyntheticPostUpdateNode
 
 class DataFlowExpr = Expr;
 
@@ -248,6 +270,8 @@ module EssaFlow {
     or
     // Flow inside an unpacking assignment
     iterableUnpackingFlowStep(nodeFrom, nodeTo)
+    or
+    matchFlowStep(nodeFrom, nodeTo)
     or
     // Overflow keyword argument
     exists(CallNode call, CallableValue callable |
@@ -604,7 +628,7 @@ newtype TDataFlowCallable =
   TLambda(Function lambda) { lambda.isLambda() } or
   TModule(Module m)
 
-/** Represents a callable. */
+/** A callable. */
 abstract class DataFlowCallable extends TDataFlowCallable {
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -702,10 +726,10 @@ newtype TDataFlowCall =
   TFunctionCall(CallNode call) { call = any(FunctionValue f).getAFunctionCall() } or
   /** Bound methods need to make room for the explicit self parameter */
   TMethodCall(CallNode call) { call = any(FunctionValue f).getAMethodCall() } or
-  TClassCall(CallNode call) { call = any(ClassValue c).getACall() } or
+  TClassCall(CallNode call) { call = any(ClassValue c | not c.isAbsent()).getACall() } or
   TSpecialCall(SpecialMethodCallNode special)
 
-/** Represents a call. */
+/** A call. */
 abstract class DataFlowCall extends TDataFlowCall {
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -730,7 +754,7 @@ abstract class DataFlowCall extends TDataFlowCall {
 }
 
 /**
- * Represents a call to a function/lambda.
+ * A call to a function/lambda.
  * This excludes calls to bound methods, classes, and special methods.
  * Bound method calls and class calls insert an argument for the explicit
  * `self` parameter, and special method calls have special argument passing.
@@ -817,7 +841,7 @@ class ClassCall extends DataFlowCall, TClassCall {
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
 }
 
-/** Represents a call to a special method. */
+/** A call to a special method. */
 class SpecialCall extends DataFlowCall, TSpecialCall {
   SpecialMethodCallNode special;
 
@@ -928,6 +952,24 @@ string ppReprType(DataFlowType t) { none() }
  * taken into account.
  */
 predicate jumpStep(Node nodeFrom, Node nodeTo) {
+  jumpStepSharedWithTypeTracker(nodeFrom, nodeTo)
+  or
+  jumpStepNotSharedWithTypeTracker(nodeFrom, nodeTo)
+}
+
+/**
+ * Set of jumpSteps that are shared with type-tracker implementation.
+ *
+ * For ORM modeling we want to add jumpsteps to global dataflow, but since these are
+ * based on type-trackers, it's important that these new ORM jumsteps are not used in
+ * the type-trackers as well, as that would make evaluation of type-tracking recursive
+ * with the new jumpsteps.
+ *
+ * Holds if `pred` can flow to `succ`, by jumping from one callable to
+ * another. Additional steps specified by the configuration are *not*
+ * taken into account.
+ */
+predicate jumpStepSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
   runtimeJumpStep(nodeFrom, nodeTo)
   or
   // Read of module attribute:
@@ -939,6 +981,22 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
   or
   // Default value for parameter flows to that parameter
   defaultValueFlowStep(nodeFrom, nodeTo)
+}
+
+/**
+ * Set of jumpSteps that are NOT shared with type-tracker implementation.
+ *
+ * For ORM modeling we want to add jumpsteps to global dataflow, but since these are
+ * based on type-trackers, it's important that these new ORM jumsteps are not used in
+ * the type-trackers as well, as that would make evaluation of type-tracking recursive
+ * with the new jumpsteps.
+ *
+ * Holds if `pred` can flow to `succ`, by jumping from one callable to
+ * another. Additional steps specified by the configuration are *not*
+ * taken into account.
+ */
+predicate jumpStepNotSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
+  any(Orm::AdditionalOrmSteps es).jumpStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -982,6 +1040,53 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   posOverflowStoreStep(nodeFrom, c, nodeTo)
   or
   kwOverflowStoreStep(nodeFrom, c, nodeTo)
+  or
+  matchStoreStep(nodeFrom, c, nodeTo)
+  or
+  any(Orm::AdditionalOrmSteps es).storeStep(nodeFrom, c, nodeTo)
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * Provides classes for modeling data-flow through ORM models saved in a DB.
+ */
+module Orm {
+  /**
+   * INTERNAL: Do not use.
+   *
+   * A unit class for adding additional data-flow steps for ORM models.
+   */
+  class AdditionalOrmSteps extends Unit {
+    /**
+     * Holds if data can flow from `nodeFrom` to `nodeTo` via an assignment to
+     * content `c`.
+     */
+    abstract predicate storeStep(Node nodeFrom, Content c, Node nodeTo);
+
+    /**
+     * Holds if `pred` can flow to `succ`, by jumping from one callable to
+     * another. Additional steps specified by the configuration are *not*
+     * taken into account.
+     */
+    abstract predicate jumpStep(Node nodeFrom, Node nodeTo);
+  }
+
+  /** A synthetic node representing the data for an ORM model saved in a DB. */
+  class SyntheticOrmModelNode extends Node, TSyntheticOrmModelNode {
+    Class cls;
+
+    SyntheticOrmModelNode() { this = TSyntheticOrmModelNode(cls) }
+
+    override string toString() { result = "[orm-model] " + cls.toString() }
+
+    override Scope getScope() { result = cls.getEnclosingScope() }
+
+    override Location getLocation() { result = cls.getLocation() }
+
+    /** Gets the class that defines this ORM model. */
+    Class getClass() { result = cls }
+  }
 }
 
 /** Data flows from an element of a list to the list. */
@@ -998,7 +1103,7 @@ predicate listStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) 
 }
 
 /** Data flows from an element of a set to the set. */
-predicate setStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) {
+predicate setStoreStep(CfgNode nodeFrom, SetElementContent c, CfgNode nodeTo) {
   // Set
   //   `{..., 42, ...}`
   //   nodeFrom is `42`, cfg node
@@ -1063,19 +1168,18 @@ predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
 }
 
 /**
- * Holds if `nodeFrom` flows into an attribute (corresponding to `c`) of `nodeTo` via an attribute assignment.
+ * Holds if `nodeFrom` flows into the attribute `c` of `nodeTo` via an attribute assignment.
  *
  * For example, in
  * ```python
  * obj.foo = x
  * ```
- * data flows from `x` to (the post-update node for) `obj` via assignment to `foo`.
+ * data flows from `x` to the attribute `foo` of  (the post-update node for) `obj`.
  */
-predicate attributeStoreStep(CfgNode nodeFrom, AttributeContent c, PostUpdateNode nodeTo) {
-  exists(AttrNode attr |
-    nodeFrom.asCfgNode() = attr.(DefinitionNode).getValue() and
-    attr.getName() = c.getAttribute() and
-    attr.getObject() = nodeTo.getPreUpdateNode().(CfgNode).getNode()
+predicate attributeStoreStep(Node nodeFrom, AttributeContent c, PostUpdateNode nodeTo) {
+  exists(AttrWrite write |
+    write.accesses(nodeTo.getPreUpdateNode(), c.getAttribute()) and
+    nodeFrom = write.getValue()
   )
 }
 
@@ -1123,6 +1227,8 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
   iterableUnpackingReadStep(nodeFrom, c, nodeTo)
+  or
+  matchReadStep(nodeFrom, c, nodeTo)
   or
   popReadStep(nodeFrom, c, nodeTo)
   or
@@ -1553,6 +1659,320 @@ module IterableUnpacking {
 
 import IterableUnpacking
 
+/**
+ * There are a number of patterns available for the match statement.
+ * Each one transfers data and content differently to its parts.
+ *
+ * Furthermore, given a successful match, we can infer some data about
+ * the subject. Consider the example:
+ * ```python
+ * match choice:
+ *   case 'Y':
+ *     ...body
+ * ```
+ * Inside `body`, we know that `choice` has the value `'Y'`.
+ *
+ * A similar thing happens with the "as pattern". Consider the example:
+ * ```python
+ * match choice:
+ *  case ('y'|'Y') as c:
+ *   ...body
+ * ```
+ * By the binding rules, there is data flow from `choice` to `c`. But we
+ * can infer the value of `c` to be either `'y'` or `'Y'` if the match succeeds.
+ *
+ * We will treat such inferences separately as guards. First we will model the data flow
+ * stemming from the bindings and the matching of shape. Below, 'subject' is not necessarily the
+ * top-level subject of the match, but rather the part recursively matched by the current pattern.
+ * For instance, in the example:
+ * ```python
+ * match command:
+ *  case ('quit' as c) | ('go', ('up'|'down') as c):
+ *   ...body
+ * ```
+ * `command` is the subject of first the as-pattern, while the second component of `command`
+ * is the subject of the second as-pattern. As such, 'subject' refers to the pattern under evaluation.
+ *
+ * - as pattern: subject flows to alias as well as to the interior pattern
+ * - or pattern: subject flows to each alternative
+ * - literal pattern: flow from the literal to the pattern, to add information
+ * - capture pattern: subject flows to the variable
+ * - wildcard pattern: no flow
+ * - value pattern: flow from the value to the pattern, to add information
+ * - sequence pattern: each element reads from subject at the associated index
+ * - star pattern: subject flows to the variable, possibly via a conversion
+ * - mapping pattern: each value reads from subject at the associated key
+ * - double star pattern: subject flows to the variable, possibly via a conversion
+ * - key-value pattern: the value reads from the subject at the key (see mapping pattern)
+ * - class pattern: all keywords read the appropriate attribute from the subject
+ * - keyword pattern: the appropriate attribute is read from the subject (see class pattern)
+ *
+ * Inside the class pattern, we also find positional arguments. They are converted to
+ * keyword arguments using the `__match_args__` attribute on the class. We do not
+ * currently model this.
+ */
+module MatchUnpacking {
+  /**
+   * Holds when there is flow from the subject `nodeFrom` to the (top-level) pattern `nodeTo` of a `match` statement.
+   *
+   * The subject of a match flows to each top-level pattern
+   * (a pattern directly under a `case` statement).
+   *
+   * We could consider a model closer to use-use-flow, where the subject
+   * only flows to the first top-level pattern and from there to the
+   * following ones.
+   */
+  predicate matchSubjectFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchStmt match, Expr subject, Pattern target |
+      subject = match.getSubject() and
+      target = match.getCase(_).(Case).getPattern()
+    |
+      nodeFrom.asExpr() = subject and
+      nodeTo.asCfgNode().getNode() = target
+    )
+  }
+
+  /**
+   * as pattern: subject flows to alias as well as to the interior pattern
+   * syntax (toplevel): `case pattern as alias:`
+   */
+  predicate matchAsFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchAsPattern subject, Name alias | alias = subject.getAlias() |
+      // We make the subject flow to the interior pattern via the alias.
+      // That way, information can propagate from the interior pattern to the alias.
+      //
+      // the subject flows to the interior pattern
+      nodeFrom.asCfgNode().getNode() = subject and
+      nodeTo.asCfgNode().getNode() = subject.getPattern()
+      or
+      // the interior pattern flows to the alias
+      nodeFrom.asCfgNode().getNode() = subject.getPattern() and
+      nodeTo.asVar().getDefinition().(PatternAliasDefinition).getDefiningNode().getNode() = alias
+    )
+  }
+
+  /**
+   * or pattern: subject flows to each alternative
+   * syntax (toplevel): `case alt1 | alt2:`
+   */
+  predicate matchOrFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchOrPattern subject, Pattern pattern | pattern = subject.getAPattern() |
+      nodeFrom.asCfgNode().getNode() = subject and
+      nodeTo.asCfgNode().getNode() = pattern
+    )
+  }
+
+  /**
+   * literal pattern: flow from the literal to the pattern, to add information
+   * syntax (toplevel): `case literal:`
+   */
+  predicate matchLiteralFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchLiteralPattern pattern, Expr literal | literal = pattern.getLiteral() |
+      nodeFrom.asExpr() = literal and
+      nodeTo.asCfgNode().getNode() = pattern
+    )
+  }
+
+  /**
+   * capture pattern: subject flows to the variable
+   * syntax (toplevel): `case var:`
+   */
+  predicate matchCaptureFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchCapturePattern capture, Name var | capture.getVariable() = var |
+      nodeFrom.asCfgNode().getNode() = capture and
+      nodeTo.asVar().getDefinition().(PatternCaptureDefinition).getDefiningNode().getNode() = var
+    )
+  }
+
+  /**
+   * value pattern: flow from the value to the pattern, to add information
+   * syntax (toplevel): `case Dotted.value:`
+   */
+  predicate matchValueFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchValuePattern pattern, Expr value | value = pattern.getValue() |
+      nodeFrom.asExpr() = value and
+      nodeTo.asCfgNode().getNode() = pattern
+    )
+  }
+
+  /**
+   * sequence pattern: each element reads from subject at the associated index
+   * syntax (toplevel): `case [a, b]:`
+   */
+  predicate matchSequenceReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(MatchSequencePattern subject, int index, Pattern element |
+      element = subject.getPattern(index)
+    |
+      nodeFrom.asCfgNode().getNode() = subject and
+      nodeTo.asCfgNode().getNode() = element and
+      (
+        // tuple content
+        c.(TupleElementContent).getIndex() = index
+        or
+        // list content
+        c instanceof ListElementContent
+        // set content is excluded from sequence patterns,
+        // see https://www.python.org/dev/peps/pep-0635/#sequence-patterns
+      )
+    )
+  }
+
+  /**
+   * star pattern: subject flows to the variable, possibly via a conversion
+   * syntax (toplevel): `case *var:`
+   *
+   * We decompose this flow into a read step and a store step. The read step
+   * reads both tuple and list content, the store step only stores list content.
+   * This way, we convert all content to list content.
+   *
+   * This is the read step.
+   */
+  predicate matchStarReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(MatchSequencePattern subject, int index, MatchStarPattern star |
+      star = subject.getPattern(index)
+    |
+      nodeFrom.asCfgNode().getNode() = subject and
+      nodeTo = TStarPatternElementNode(star) and
+      (
+        // tuple content
+        c.(TupleElementContent).getIndex() >= index
+        or
+        // list content
+        c instanceof ListElementContent
+        // set content is excluded from sequence patterns,
+        // see https://www.python.org/dev/peps/pep-0635/#sequence-patterns
+      )
+    )
+  }
+
+  /**
+   * star pattern: subject flows to the variable, possibly via a conversion
+   * syntax (toplevel): `case *var:`
+   *
+   * We decompose this flow into a read step and a store step. The read step
+   * reads both tuple and list content, the store step only stores list content.
+   * This way, we convert all content to list content.
+   *
+   * This is the store step.
+   */
+  predicate matchStarStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(MatchStarPattern star |
+      nodeFrom = TStarPatternElementNode(star) and
+      nodeTo.asCfgNode().getNode() = star.getTarget() and
+      c instanceof ListElementContent
+    )
+  }
+
+  /**
+   * mapping pattern: each value reads from subject at the associated key
+   * syntax (toplevel): `case {"color": c, "height": x}:`
+   */
+  predicate matchMappingReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(
+      MatchMappingPattern subject, MatchKeyValuePattern keyValue, MatchLiteralPattern key,
+      Pattern value
+    |
+      keyValue = subject.getAMapping() and
+      key = keyValue.getKey() and
+      value = keyValue.getValue()
+    |
+      nodeFrom.asCfgNode().getNode() = subject and
+      nodeTo.asCfgNode().getNode() = value and
+      c.(DictionaryElementContent).getKey() = key.getLiteral().(StrConst).getText()
+    )
+  }
+
+  /**
+   * double star pattern: subject flows to the variable, possibly via a conversion
+   * syntax (toplevel): `case {**var}:`
+   *
+   * Dictionary content flows to the double star, but all mentioned keys in the
+   * mapping pattern should be cleared.
+   */
+  predicate matchMappingFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchMappingPattern subject, MatchDoubleStarPattern dstar |
+      dstar = subject.getAMapping()
+    |
+      nodeFrom.asCfgNode().getNode() = subject and
+      nodeTo.asCfgNode().getNode() = dstar.getTarget()
+    )
+  }
+
+  /**
+   * Bindings that are mentioned in a mapping pattern will not be available
+   * to a double star pattern in the same mapping pattern.
+   */
+  predicate matchMappingClearStep(Node n, Content c) {
+    exists(
+      MatchMappingPattern subject, MatchKeyValuePattern keyValue, MatchLiteralPattern key,
+      MatchDoubleStarPattern dstar
+    |
+      keyValue = subject.getAMapping() and
+      key = keyValue.getKey() and
+      dstar = subject.getAMapping()
+    |
+      n.asCfgNode().getNode() = dstar.getTarget() and
+      c.(DictionaryElementContent).getKey() = key.getLiteral().(StrConst).getText()
+    )
+  }
+
+  /**
+   * class pattern: all keywords read the appropriate attribute from the subject
+   * syntax (toplevel): `case ClassName(attr = val):`
+   */
+  predicate matchClassReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(MatchClassPattern subject, MatchKeywordPattern keyword, Name attr, Pattern value |
+      keyword = subject.getKeyword(_) and
+      attr = keyword.getAttribute() and
+      value = keyword.getValue()
+    |
+      nodeFrom.asCfgNode().getNode() = subject and
+      nodeTo.asCfgNode().getNode() = value and
+      c.(AttributeContent).getAttribute() = attr.getId()
+    )
+  }
+
+  /** All flow steps associated with match. */
+  predicate matchFlowStep(Node nodeFrom, Node nodeTo) {
+    matchSubjectFlowStep(nodeFrom, nodeTo)
+    or
+    matchAsFlowStep(nodeFrom, nodeTo)
+    or
+    matchOrFlowStep(nodeFrom, nodeTo)
+    or
+    matchLiteralFlowStep(nodeFrom, nodeTo)
+    or
+    matchCaptureFlowStep(nodeFrom, nodeTo)
+    or
+    matchValueFlowStep(nodeFrom, nodeTo)
+    or
+    matchMappingFlowStep(nodeFrom, nodeTo)
+  }
+
+  /** All read steps associated with match. */
+  predicate matchReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    matchClassReadStep(nodeFrom, c, nodeTo)
+    or
+    matchSequenceReadStep(nodeFrom, c, nodeTo)
+    or
+    matchMappingReadStep(nodeFrom, c, nodeTo)
+    or
+    matchStarReadStep(nodeFrom, c, nodeTo)
+  }
+
+  /** All store steps associated with match. */
+  predicate matchStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+    matchStarStoreStep(nodeFrom, c, nodeTo)
+  }
+
+  /**
+   * All clear steps associated with match
+   */
+  predicate matchClearStep(Node n, Content c) { matchMappingClearStep(n, c) }
+}
+
+import MatchUnpacking
+
 /** Data flows from a sequence to a call to `pop` on the sequence. */
 predicate popReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
   // set.pop or list.pop
@@ -1605,21 +2025,16 @@ pragma[noinline]
 TupleElementContent small_tuple() { result.getIndex() <= 7 }
 
 /**
- * Holds if `nodeTo` is a read of an attribute (corresponding to `c`) of the object in `nodeFrom`.
+ * Holds if `nodeTo` is a read of the attribute `c` of the object `nodeFrom`.
  *
- * For example, in
+ * For example
  * ```python
  * obj.foo
  * ```
- * data flows from `obj` to `obj.foo` via a read from `foo`.
+ * is a read of the attribute `foo` from the object `obj`.
  */
-predicate attributeReadStep(CfgNode nodeFrom, AttributeContent c, CfgNode nodeTo) {
-  exists(AttrNode attr |
-    nodeFrom.asCfgNode() = attr.getObject() and
-    nodeTo.asCfgNode() = attr and
-    attr.getName() = c.getAttribute() and
-    attr.isLoad()
-  )
+predicate attributeReadStep(Node nodeFrom, AttributeContent c, AttrRead nodeTo) {
+  nodeTo.accesses(nodeFrom, c.getAttribute())
 }
 
 /**
@@ -1635,16 +2050,38 @@ predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node no
 }
 
 /**
- * Holds if values stored inside content `c` are cleared at node `n`. For example,
- * any value stored inside `f` is cleared at the pre-update node associated with `x`
- * in `x.f = newValue`.
+ * Clear content at key `name` of the synthesized dictionary `TKwOverflowNode(call, callable)`,
+ * whenever `call` unpacks `name`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate kwOverflowClearStep(Node n, Content c) {
   exists(CallNode call, CallableValue callable, string name |
     call_unpacks(call, _, callable, name, _) and
     n = TKwOverflowNode(call, callable) and
     c.(DictionaryElementContent).getKey() = name
   )
+}
+
+/**
+ * Holds if values stored inside content `c` are cleared at node `n`. For example,
+ * any value stored inside `f` is cleared at the pre-update node associated with `x`
+ * in `x.f = newValue`.
+ */
+predicate clearsContent(Node n, Content c) {
+  kwOverflowClearStep(n, c)
+  or
+  matchClearStep(n, c)
+  or
+  attributeClearStep(n, c)
+}
+
+/**
+ * Holds if values stored inside attribute `c` are cleared at node `n`.
+ *
+ * In `obj.foo = x` any old value stored in `foo` is cleared at the pre-update node
+ * associated with `obj`
+ */
+predicate attributeClearStep(Node n, AttributeContent c) {
+  exists(PostUpdateNode post | post.getPreUpdateNode() = n | attributeStoreStep(_, c, post))
 }
 
 //--------

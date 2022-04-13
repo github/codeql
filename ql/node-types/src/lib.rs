@@ -427,7 +427,7 @@ fn dbscheme_name_to_class_name(dbscheme_name: &str) -> String {
     }
     dbscheme_name
         .split('_')
-        .map(|word| to_title_case(word))
+        .map(to_title_case)
         .collect::<Vec<String>>()
         .join("")
 }

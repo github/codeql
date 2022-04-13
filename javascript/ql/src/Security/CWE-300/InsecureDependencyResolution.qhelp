@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Using an insecure protocol like HTTP or FTP to download build dependencies makes the build process vulnerable to a 
+man-in-the-middle (MITM) attack.
+</p>
+<p>
+This can allow attackers to inject malicious code into the downloaded dependencies, and thereby 
+infect the build artifacts and execute arbitrary code on the machine building the artifacts.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Always use a secure protocol, such as HTTPS or SFTP, when downloading artifacts from an URL.</p>
+
+</recommendation>
+
+<example>
+<p>
+The below example shows a <code>package.json</code> file that downloads a dependency using the insecure HTTP protocol.
+</p>
+<sample src="examples/bad-package.json" />
+<p>
+The fix is to change the protocol to HTTPS.
+</p>
+<sample src="examples/good-package.json" />
+
+</example>
+
+<references>
+<li>
+  Jonathan Leitschuh: 
+  <a href="https://infosecwriteups.com/want-to-take-over-the-java-ecosystem-all-you-need-is-a-mitm-1fc329d898fb">
+    Want to take over the Java ecosystem? All you need is a MITM!
+  </a>
+</li>
+<li>
+  Max Veytsman: 
+  <a href="https://max.computer/blog/how-to-take-over-the-computer-of-any-java-or-clojure-or-scala-developer/">
+    How to take over the computer of any Java (or Closure or Scala) Developer.
+  </a>
+</li>
+<li>
+  Wikipedia: <a href="https://en.wikipedia.org/wiki/Supply_chain_attack">Supply chain attack.</a>
+</li>
+<li>
+  Wikipedia: <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">Man-in-the-middle attack.</a>
+</li>
+</references>
+</qhelp>

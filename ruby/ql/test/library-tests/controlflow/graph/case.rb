@@ -79,7 +79,7 @@ def case_match_various value
     in 5 .. 10
     in .. 10
     in 5 ..
-    in 5 => x
+    in 5 => x then 1
     in 5 | ^foo | "string"
     in ::Foo::Bar
     in -> x { x == 10 }

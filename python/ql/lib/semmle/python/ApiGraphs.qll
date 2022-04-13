@@ -6,8 +6,10 @@
  * directed and labeled; they specify how the components represented by nodes relate to each other.
  */
 
-private import python
+// Importing python under the `py` namespace to avoid importing `CallNode` from `Flow.qll` and thereby having a naming conflict with `API::CallNode`.
+private import python as PY
 import semmle.python.dataflow.new.DataFlow
+private import semmle.python.internal.CachedStages
 
 /**
  * Provides classes and predicates for working with APIs used in a database.
@@ -40,6 +42,30 @@ module API {
     }
 
     /**
+     * Gets a data-flow node corresponding to the right-hand side of a definition of the API
+     * component represented by this node.
+     *
+     * For example, in the property write `foo.bar = x`, variable `x` is the the right-hand side
+     * of a write to the `bar` property of `foo`.
+     *
+     * Note that for parameters, it is the arguments flowing into that parameter that count as
+     * right-hand sides of the definition, not the declaration of the parameter itself.
+     * Consequently, in :
+     * ```python
+     * from mypkg import foo;
+     * foo.bar(x)
+     * ```
+     * `x` is the right-hand side of a definition of the first parameter of `bar` from the `mypkg.foo` module.
+     */
+    DataFlow::Node getARhs() { Impl::rhs(this, result) }
+
+    /**
+     * Gets a data-flow node that may interprocedurally flow to the right-hand side of a definition
+     * of the API component represented by this node.
+     */
+    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.getARhs()) }
+
+    /**
      * Gets an immediate use of the API component represented by this node.
      *
      * For example, `import re; re.escape` is a an immediate use of the `escape` member
@@ -55,7 +81,7 @@ module API {
     /**
      * Gets a call to the function represented by this API component.
      */
-    DataFlow::CallCfgNode getACall() { result = this.getReturn().getAnImmediateUse() }
+    CallNode getACall() { result = this.getReturn().getAnImmediateUse() }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -93,6 +119,29 @@ module API {
     Node getReturn() { result = this.getASuccessor(Label::return()) }
 
     /**
+     * Gets a node representing the `i`th parameter of the function represented by this node.
+     *
+     * This predicate may have multiple results when there are multiple invocations of this API component.
+     * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
+     */
+    Node getParameter(int i) { result = this.getASuccessor(Label::parameter(i)) }
+
+    /**
+     * Gets the node representing the keyword parameter `name` of the function represented by this node.
+     *
+     * This predicate may have multiple results when there are multiple invocations of this API component.
+     * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
+     */
+    Node getKeywordParameter(string name) {
+      result = this.getASuccessor(Label::keywordParameter(name))
+    }
+
+    /**
+     * Gets the number of parameters of the function represented by this node.
+     */
+    int getNumParameter() { result = max(int s | exists(this.getParameter(s))) + 1 }
+
+    /**
      * Gets a node representing a subclass of the class represented by this node.
      */
     Node getASubclass() { result = this.getASuccessor(Label::subclass()) }
@@ -114,13 +163,13 @@ module API {
      * Gets a node such that there is an edge in the API graph between this node and the other
      * one, and that edge is labeled with `lbl`.
      */
-    Node getASuccessor(string lbl) { Impl::edge(this, lbl, result) }
+    Node getASuccessor(Label::ApiLabel lbl) { Impl::edge(this, lbl, result) }
 
     /**
      * Gets a node such that there is an edge in the API graph between that other node and
      * this one, and that edge is labeled with `lbl`
      */
-    Node getAPredecessor(string lbl) { this = result.getASuccessor(lbl) }
+    Node getAPredecessor(Label::ApiLabel lbl) { this = result.getASuccessor(lbl) }
 
     /**
      * Gets a node such that there is an edge in the API graph between this node and the other
@@ -137,7 +186,7 @@ module API {
     /**
      * Gets the data-flow node that gives rise to this node, if any.
      */
-    DataFlow::Node getInducingNode() { this = Impl::MkUse(result) }
+    DataFlow::Node getInducingNode() { this = Impl::MkUse(result) or this = Impl::MkDef(result) }
 
     /**
      * Holds if this element is at the specified location.
@@ -174,9 +223,8 @@ module API {
       length = 0 and
       result = ""
       or
-      exists(Node pred, string lbl, string predpath |
+      exists(Node pred, Label::ApiLabel lbl, string predpath |
         Impl::edge(pred, lbl, this) and
-        lbl != "" and
         predpath = pred.getAPath(length - 1) and
         exists(string dot | if length = 1 then dot = "" else dot = "." |
           result = predpath + dot + lbl and
@@ -211,6 +259,17 @@ module API {
     }
   }
 
+  /** A node corresponding to the rhs of an API component. */
+  class Def extends Node, Impl::TDef {
+    override string toString() {
+      exists(string type | this = Impl::MkDef(_) and type = "Def " |
+        result = type + this.getPath()
+        or
+        not exists(this.getPath()) and result = type + "with no path"
+      )
+    }
+  }
+
   /** Gets the root node. */
   Root root() { any() }
 
@@ -225,6 +284,62 @@ module API {
 
   /** Gets a node corresponding to the built-in with the given name, if any. */
   Node builtin(string n) { result = moduleImport("builtins").getMember(n) }
+
+  /**
+   * An `CallCfgNode` that is connected to the API graph.
+   *
+   * Can be used to reason about calls to an external API in which the correlation between
+   * parameters and/or return values must be retained.
+   *
+   * The member predicates `getParameter`, `getKeywordParameter`, `getReturn`, and `getInstance` mimic
+   * the corresponding predicates from `API::Node`. These are guaranteed to exist and be unique to this call.
+   */
+  class CallNode extends DataFlow::CallCfgNode {
+    API::Node callee;
+
+    CallNode() { this = callee.getReturn().getAnImmediateUse() }
+
+    /** Gets the API node for the `i`th parameter of this invocation. */
+    pragma[nomagic]
+    Node getParameter(int i) {
+      result = callee.getParameter(i) and
+      result = this.getAParameterCandidate(i)
+    }
+
+    /**
+     * Gets an API node where a RHS of the node is the `i`th argument to this call.
+     */
+    pragma[noinline]
+    private Node getAParameterCandidate(int i) { result.getARhs() = this.getArg(i) }
+
+    /** Gets the API node for a parameter of this invocation. */
+    Node getAParameter() { result = this.getParameter(_) }
+
+    /** Gets the API node for the keyword parameter `name` of this invocation. */
+    Node getKeywordParameter(string name) {
+      result = callee.getKeywordParameter(name) and
+      result = this.getAKeywordParameterCandidate(name)
+    }
+
+    /** Gets the API node for the parameter that has index `i` or has keyword `name`. */
+    bindingset[i, name]
+    Node getParameter(int i, string name) {
+      result = this.getParameter(i)
+      or
+      result = this.getKeywordParameter(name)
+    }
+
+    pragma[noinline]
+    private Node getAKeywordParameterCandidate(string name) {
+      result.getARhs() = this.getArgByName(name)
+    }
+
+    /** Gets the API node for the return value of this call. */
+    Node getReturn() {
+      result = callee.getReturn() and
+      result.getAnImmediateUse() = this
+    }
+  }
 
   /**
    * Provides the actual implementation of API graphs, cached for performance.
@@ -313,29 +428,33 @@ module API {
       /** An abstract representative for imports of the module called `name`. */
       MkModuleImport(string name) {
         // Ignore the following module name for Python 2, as we alias `__builtin__` to `builtins` elsewhere
-        (name != "__builtin__" or major_version() = 3) and
+        (name != "__builtin__" or PY::major_version() = 3) and
         (
           imports(_, name)
           or
           // When we `import foo.bar.baz` we want to create API graph nodes also for the prefixes
           // `foo` and `foo.bar`:
-          name = any(ImportExpr e | not e.isRelative()).getAnImportedModuleName()
+          name = any(PY::ImportExpr e | not e.isRelative()).getAnImportedModuleName()
         )
         or
         // The `builtins` module should always be implicitly available
         name = "builtins"
       } or
       /** A use of an API member at the node `nd`. */
-      MkUse(DataFlow::Node nd) { use(_, _, nd) }
+      MkUse(DataFlow::Node nd) { use(_, _, nd) } or
+      MkDef(DataFlow::Node nd) { rhs(_, _, nd) }
 
     class TUse = MkModuleImport or MkUse;
+
+    class TDef = MkDef;
 
     /**
      * Holds if the dotted module name `sub` refers to the `member` member of `base`.
      *
      * For instance, `prefix_member("foo.bar", "baz", "foo.bar.baz")` would hold.
      */
-    private predicate prefix_member(TApiNode base, string member, TApiNode sub) {
+    cached
+    predicate prefix_member(TApiNode base, string member, TApiNode sub) {
       exists(string sub_str, string regexp |
         regexp = "(.+)[.]([^.]+)" and
         base = MkModuleImport(sub_str.regexpCapture(regexp, 1)) and
@@ -351,7 +470,7 @@ module API {
      * Ignores relative imports, such as `from ..foo.bar import baz`.
      */
     private predicate imports(DataFlow::Node imp, string name) {
-      exists(ImportExprNode iexpr |
+      exists(PY::ImportExprNode iexpr |
         imp.asCfgNode() = iexpr and
         not iexpr.getNode().isRelative() and
         name = iexpr.getNode().getImportedModuleName()
@@ -374,10 +493,52 @@ module API {
      *
      * `moduleImport("foo").getMember("bar")`
      */
-    private TApiNode potential_import_star_base(Scope s) {
+    private TApiNode potential_import_star_base(PY::Scope s) {
       exists(DataFlow::Node n |
         n.asCfgNode() = ImportStar::potentialImportStarBase(s) and
         use(result, n)
+      )
+    }
+
+    /**
+     * Holds if `rhs` is the right-hand side of a definition of a node that should have an
+     * incoming edge from `base` labeled `lbl` in the API graph.
+     */
+    cached
+    predicate rhs(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
+      exists(DataFlow::Node def, DataFlow::LocalSourceNode pred |
+        rhs(base, def) and pred = trackDefNode(def)
+      |
+        // from `x` to a definition of `x.prop`
+        exists(DataFlow::AttrWrite aw | aw = pred.getAnAttributeWrite() |
+          lbl = Label::memberFromRef(aw) and
+          rhs = aw.getValue()
+        )
+        or
+        // TODO: I had expected `DataFlow::AttrWrite` to contain the attribute writes from a dict, that's how JS works.
+        exists(PY::Dict dict, PY::KeyValuePair item |
+          dict = pred.asExpr() and
+          dict.getItem(_) = item and
+          lbl = Label::member(item.getKey().(PY::StrConst).getS()) and
+          rhs.asExpr() = item.getValue()
+        )
+        or
+        exists(PY::CallableExpr fn | fn = pred.asExpr() |
+          not fn.getInnerScope().isAsync() and
+          lbl = Label::return() and
+          exists(PY::Return ret |
+            rhs.asExpr() = ret.getValue() and
+            ret.getScope() = fn.getInnerScope()
+          )
+        )
+      )
+      or
+      argumentPassing(base, lbl, rhs)
+      or
+      exists(DataFlow::LocalSourceNode src, DataFlow::AttrWrite aw |
+        use(base, src) and aw = trackUseNode(src).getAnAttributeWrite() and rhs = aw.getValue()
+      |
+        lbl = Label::memberFromRef(aw)
       )
     }
 
@@ -386,7 +547,7 @@ module API {
      * `lbl` in the API graph.
      */
     cached
-    predicate use(TApiNode base, string lbl, DataFlow::Node ref) {
+    predicate use(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
       exists(DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode pred |
         // First, we find a predecessor of the node `ref` that we want to determine. The predecessor
         // is any node that is a type-tracked use of a data flow node (`src`), which is itself a
@@ -399,7 +560,7 @@ module API {
       |
         // Referring to an attribute on a node that is a use of `base`:
         lbl = Label::memberFromRef(ref) and
-        ref = pred.getAnAttributeReference()
+        ref = pred.getAnAttributeRead()
         or
         // Calling a node that is a use of `base`
         lbl = Label::return() and
@@ -408,7 +569,7 @@ module API {
         // Subclassing a node
         lbl = Label::subclass() and
         exists(DataFlow::Node superclass | pred.flowsTo(superclass) |
-          ref.asExpr().(ClassExpr).getABase() = superclass.asExpr()
+          ref.asExpr().(PY::ClassExpr).getABase() = superclass.asExpr()
         )
         or
         // awaiting
@@ -419,12 +580,26 @@ module API {
         )
       )
       or
+      exists(DataFlow::Node def, PY::CallableExpr fn |
+        rhs(base, def) and fn = trackDefNode(def).asExpr()
+      |
+        exists(int i |
+          lbl = Label::parameter(i) and
+          ref.asExpr() = fn.getInnerScope().getArg(i)
+        )
+        or
+        exists(string name |
+          lbl = Label::keywordParameter(name) and
+          ref.asExpr() = fn.getInnerScope().getArgByName(name)
+        )
+      )
+      or
       // Built-ins, treated as members of the module `builtins`
       base = MkModuleImport("builtins") and
       lbl = Label::member(any(string name | ref = Builtins::likelyBuiltin(name)))
       or
       // Unknown variables that may belong to a module imported with `import *`
-      exists(Scope s |
+      exists(PY::Scope s |
         base = potential_import_star_base(s) and
         lbl =
           Label::member(any(string name |
@@ -444,7 +619,7 @@ module API {
       )
       or
       // Ensure the Python 2 `__builtin__` module gets the name of the Python 3 `builtins` module.
-      major_version() = 2 and
+      PY::major_version() = 2 and
       nd = MkModuleImport("builtins") and
       imports(ref, "__builtin__")
       or
@@ -467,26 +642,68 @@ module API {
     }
 
     /**
+     * Holds if `arg` is passed as an argument to a use of `base`.
+     *
+     * `lbl` is represents which parameter of the function was passed. Either a numbered parameter, or a keyword parameter.
+     */
+    private predicate argumentPassing(TApiNode base, Label::ApiLabel lbl, DataFlow::Node arg) {
+      exists(DataFlow::Node use, DataFlow::LocalSourceNode pred |
+        use(base, use) and pred = trackUseNode(use)
+      |
+        exists(int i |
+          lbl = Label::parameter(i) and
+          arg = pred.getACall().getArg(i)
+        )
+        or
+        exists(string name | lbl = Label::keywordParameter(name) |
+          arg = pred.getACall().getArgByName(name)
+        )
+      )
+    }
+
+    /**
+     * Gets a node that inter-procedurally flows into `nd`, which is a definition of some node.
+     */
+    cached
+    DataFlow::LocalSourceNode trackDefNode(DataFlow::Node nd) {
+      result = trackDefNode(nd, DataFlow::TypeBackTracker::end())
+    }
+
+    private DataFlow::LocalSourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {
+      t.start() and
+      rhs(_, nd) and
+      result = nd.getALocalSource()
+      or
+      exists(DataFlow::TypeBackTracker t2 | result = trackDefNode(nd, t2).backtrack(t2, t))
+    }
+
+    /**
      * Gets a data-flow node to which `src`, which is a use of an API-graph node, flows.
      *
      * The flow from `src` to that node may be inter-procedural.
      */
     cached
     DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src) {
+      Stages::TypeTracking::ref() and
       result = trackUseNode(src, DataFlow::TypeTracker::end()) and
       not result instanceof DataFlow::ModuleVariableNode
     }
 
     /**
+     * Holds if `rhs` is the right-hand side of a definition of node `nd`.
+     */
+    cached
+    predicate rhs(TApiNode nd, DataFlow::Node rhs) { nd = MkDef(rhs) }
+
+    /**
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */
     cached
-    predicate edge(TApiNode pred, string lbl, TApiNode succ) {
+    predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
       /* There's an edge from the root node for each imported module. */
       exists(string m |
         pred = MkRoot() and
-        lbl = Label::mod(m)
-      |
+        lbl = Label::mod(m) and
         succ = MkModuleImport(m) and
         // Only allow undotted names to count as base modules.
         not m.matches("%.%")
@@ -503,6 +720,11 @@ module API {
         use(pred, lbl, ref) and
         succ = MkUse(ref)
       )
+      or
+      exists(DataFlow::Node rhs |
+        rhs(pred, lbl, rhs) and
+        succ = MkDef(rhs)
+      )
     }
 
     /**
@@ -514,36 +736,155 @@ module API {
     cached
     int distanceFromRoot(TApiNode nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)
   }
-}
 
-private module Label {
-  /** Gets the edge label for the module `m`. */
-  bindingset[m]
-  bindingset[result]
-  string mod(string m) { result = "moduleImport(\"" + m + "\")" }
+  /** Provides classes modeling the various edges (labels) in the API graph. */
+  module Label {
+    /** A label in the API-graph */
+    class ApiLabel extends TLabel {
+      /** Gets a string representation of this label. */
+      string toString() { result = "???" }
+    }
 
-  /** Gets the `member` edge label for member `m`. */
-  bindingset[m]
-  bindingset[result]
-  string member(string m) { result = "getMember(\"" + m + "\")" }
+    private import LabelImpl
 
-  /** Gets the `member` edge label for the unknown member. */
-  string unknownMember() { result = "getUnknownMember()" }
+    private module LabelImpl {
+      private import semmle.python.dataflow.new.internal.Builtins
+      private import semmle.python.dataflow.new.internal.ImportStar
 
-  /** Gets the `member` edge label for the given attribute reference. */
-  string memberFromRef(DataFlow::AttrRef pr) {
-    result = member(pr.getAttributeName())
-    or
-    not exists(pr.getAttributeName()) and
-    result = unknownMember()
+      newtype TLabel =
+        MkLabelModule(string mod) {
+          exists(Impl::MkModuleImport(mod)) and
+          not mod.matches("%.%") // only top level modules count as base modules
+        } or
+        MkLabelMember(string member) {
+          member = any(DataFlow::AttrRef pr).getAttributeName() or
+          exists(Builtins::likelyBuiltin(member)) or
+          ImportStar::namePossiblyDefinedInImportStar(_, member, _) or
+          Impl::prefix_member(_, member, _) or
+          member = any(PY::Dict d).getAnItem().(PY::KeyValuePair).getKey().(PY::StrConst).getS()
+        } or
+        MkLabelUnknownMember() or
+        MkLabelParameter(int i) {
+          exists(any(DataFlow::CallCfgNode c).getArg(i))
+          or
+          exists(any(PY::Function f).getArg(i))
+        } or
+        MkLabelKeywordParameter(string name) {
+          exists(any(DataFlow::CallCfgNode c).getArgByName(name))
+          or
+          exists(any(PY::Function f).getArgByName(name))
+        } or
+        MkLabelReturn() or
+        MkLabelSubclass() or
+        MkLabelAwait()
+
+      /** A label for a module. */
+      class LabelModule extends ApiLabel {
+        string mod;
+
+        LabelModule() { this = MkLabelModule(mod) }
+
+        /** Gets the module associated with this label. */
+        string getMod() { result = mod }
+
+        override string toString() { result = "moduleImport(\"" + mod + "\")" }
+      }
+
+      /** A label for the member named `prop`. */
+      class LabelMember extends ApiLabel {
+        string member;
+
+        LabelMember() { this = MkLabelMember(member) }
+
+        /** Gets the property associated with this label. */
+        string getMember() { result = member }
+
+        override string toString() { result = "getMember(\"" + member + "\")" }
+      }
+
+      /** A label for a member with an unknown name. */
+      class LabelUnknownMember extends ApiLabel {
+        LabelUnknownMember() { this = MkLabelUnknownMember() }
+
+        override string toString() { result = "getUnknownMember()" }
+      }
+
+      /** A label for parameter `i`. */
+      class LabelParameter extends ApiLabel {
+        int i;
+
+        LabelParameter() { this = MkLabelParameter(i) }
+
+        override string toString() { result = "getParameter(" + i + ")" }
+
+        /** Gets the index of the parameter for this label. */
+        int getIndex() { result = i }
+      }
+
+      /** A label for a keyword parameter `name`. */
+      class LabelKeywordParameter extends ApiLabel {
+        string name;
+
+        LabelKeywordParameter() { this = MkLabelKeywordParameter(name) }
+
+        override string toString() { result = "getKeywordParameter(\"" + name + "\")" }
+
+        /** Gets the name of the parameter for this label. */
+        string getName() { result = name }
+      }
+
+      /** A label that gets the return value of a function. */
+      class LabelReturn extends ApiLabel {
+        LabelReturn() { this = MkLabelReturn() }
+
+        override string toString() { result = "getReturn()" }
+      }
+
+      /** A label that gets the subclass of a class. */
+      class LabelSubclass extends ApiLabel {
+        LabelSubclass() { this = MkLabelSubclass() }
+
+        override string toString() { result = "getASubclass()" }
+      }
+
+      /** A label for awaited values. */
+      class LabelAwait extends ApiLabel {
+        LabelAwait() { this = MkLabelAwait() }
+
+        override string toString() { result = "getAwaited()" }
+      }
+    }
+
+    /** Gets the edge label for the module `m`. */
+    LabelModule mod(string m) { result.getMod() = m }
+
+    /** Gets the `member` edge label for member `m`. */
+    LabelMember member(string m) { result.getMember() = m }
+
+    /** Gets the `member` edge label for the unknown member. */
+    LabelUnknownMember unknownMember() { any() }
+
+    /** Gets the `member` edge label for the given attribute reference. */
+    ApiLabel memberFromRef(DataFlow::AttrRef ref) {
+      result = member(ref.getAttributeName())
+      or
+      not exists(ref.getAttributeName()) and
+      result = unknownMember()
+    }
+
+    /** Gets the `parameter` edge label for parameter `i`. */
+    LabelParameter parameter(int i) { result.getIndex() = i }
+
+    /** Gets the `parameter` edge label for the keyword parameter `name`. */
+    LabelKeywordParameter keywordParameter(string name) { result.getName() = name }
+
+    /** Gets the `return` edge label. */
+    LabelReturn return() { any() }
+
+    /** Gets the `subclass` edge label. */
+    LabelSubclass subclass() { any() }
+
+    /** Gets the `await` edge label. */
+    LabelAwait await() { any() }
   }
-
-  /** Gets the `return` edge label. */
-  string return() { result = "getReturn()" }
-
-  /** Gets the `subclass` edge label. */
-  string subclass() { result = "getASubclass()" }
-
-  /** Gets the `await` edge label. */
-  string await() { result = "getAwaited()" }
 }

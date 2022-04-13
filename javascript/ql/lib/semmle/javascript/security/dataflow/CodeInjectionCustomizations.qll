@@ -208,7 +208,7 @@ module CodeInjection {
    */
   class ReactScriptTag extends Sink {
     ReactScriptTag() {
-      exists(JSXElement element | element.getName() = "script" |
+      exists(JsxElement element | element.getName() = "script" |
         this = element.getBodyElement(_).flow()
       )
     }
@@ -223,7 +223,7 @@ module CodeInjection {
         def.getName().regexpMatch("(?i)on.+") and
         this = def.getValueNode() and
         // JSX event handlers are functions, not strings
-        not def instanceof JSXAttribute
+        not def instanceof JsxAttribute
       )
     }
   }
@@ -231,9 +231,12 @@ module CodeInjection {
   /**
    * A code operator of a NoSQL query as a code injection sink.
    */
-  class NoSQLCodeInjectionSink extends Sink {
-    NoSQLCodeInjectionSink() { any(NoSQL::Query q).getACodeOperator() = this }
+  class NoSqlCodeInjectionSink extends Sink {
+    NoSqlCodeInjectionSink() { any(NoSql::Query q).getACodeOperator() = this }
   }
+
+  /** DEPRECATED: Alias for NoSqlCodeInjectionSink */
+  deprecated class NoSQLCodeInjectionSink = NoSqlCodeInjectionSink;
 
   /**
    * The first argument to `Module.prototype._compile`, considered as a code-injection sink.
@@ -248,6 +251,25 @@ module CodeInjection {
       exists(DataFlow::SourceNode moduleConstructor |
         moduleConstructor = DataFlow::moduleVarNode(_).getAPropertyRead("constructor") and
         this = moduleConstructor.getAnInstantiation().getAMethodCall("_compile").getArgument(0)
+      )
+    }
+  }
+
+  /**
+   * A system command execution of "node", where the executed code is seen as a code injection sink.
+   */
+  class NodeCallSink extends Sink {
+    NodeCallSink() {
+      exists(SystemCommandExecution s |
+        s.getACommandArgument().mayHaveStringValue("node")
+        or
+        s.getACommandArgument() =
+          DataFlow::globalVarRef("process").getAPropertyRead("argv").getAPropertyRead("0")
+      |
+        exists(DataFlow::SourceNode arr | arr = s.getArgumentList().getALocalSource() |
+          arr.getAPropertyWrite().getRhs().mayHaveStringValue("-e") and
+          this = arr.getAPropertyWrite().getRhs()
+        )
       )
     }
   }
@@ -356,4 +378,12 @@ module CodeInjection {
       this = LodashUnderscore::member("template").getACall().getArgument(0)
     }
   }
+
+  /**
+   * A call to JSON.stringify() seen as a sanitizer.
+   */
+  class JsonStringifySanitizer extends Sanitizer, JsonStringifyCall { }
+
+  /** DEPRECATED: Alias for JsonStringifySanitizer */
+  deprecated class JSONStringifySanitizer = JsonStringifySanitizer;
 }

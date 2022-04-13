@@ -5,12 +5,14 @@
 
 import python
 private import semmle.python.pointsto.Base
+private import semmle.python.internal.CachedStages
 
 cached
 module SsaSource {
   /** Holds if `v` is used as the receiver in a method call. */
   cached
   predicate method_call_refinement(Variable v, ControlFlowNode use, CallNode call) {
+    Stages::AST::ref() and
     use = v.getAUse() and
     call.getFunction().(AttrNode).getObject() = use and
     not test_contains(_, call)
@@ -34,6 +36,28 @@ module SsaSource {
   predicate with_definition(Variable v, ControlFlowNode defn) {
     exists(With with, Name var |
       with.getOptionalVars() = var and
+      var.getAFlowNode() = defn
+    |
+      var = v.getAStore()
+    )
+  }
+
+  /** Holds if `v` is defined by a capture pattern. */
+  cached
+  predicate pattern_capture_definition(Variable v, ControlFlowNode defn) {
+    exists(MatchCapturePattern capture, Name var |
+      capture.getVariable() = var and
+      var.getAFlowNode() = defn
+    |
+      var = v.getAStore()
+    )
+  }
+
+  /** Holds if `v` is defined by as the alias of an as-pattern. */
+  cached
+  predicate pattern_alias_definition(Variable v, ControlFlowNode defn) {
+    exists(MatchAsPattern pattern, Name var |
+      pattern.getAlias() = var and
       var.getAFlowNode() = defn
     |
       var = v.getAStore()

@@ -92,7 +92,7 @@ private predicate parseCompileExpressionStep(DataFlow::Node n1, DataFlow::Node n
 private predicate getAccessorStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(MethodAccess ma, Method m |
     ma.getMethod() = m and
-    m.getDeclaringType().getASupertype*() instanceof TypeNode and
+    m.getDeclaringType().getAnAncestor() instanceof TypeNode and
     m.hasName("getAccessor")
   |
     n1.asExpr() = ma.getQualifier() and
@@ -108,7 +108,7 @@ private predicate setExpressionStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(MethodAccess ma, Method m |
     ma.getMethod() = m and
     m.hasName("setExpression") and
-    m.getDeclaringType().getASupertype*() instanceof TypeExpressionAccessor
+    m.getDeclaringType().getAnAncestor() instanceof TypeExpressionAccessor
   |
     n1.asExpr() = ma.getArgument(0) and
     n2.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = ma.getQualifier()
