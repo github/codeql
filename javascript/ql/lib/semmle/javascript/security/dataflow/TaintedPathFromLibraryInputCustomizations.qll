@@ -23,12 +23,15 @@ private predicate isSafeName(string name) {
       ])
 }
 
-/**
- * Gets the `JSDocParamTag` for a parameter, if any.
- */
+/** Gets the `JSDocParamTag` for a parameter, if any. */
 private JSDocParamTag getTagForParameter(DataFlow::ParameterNode p) {
-  result.getName() = p.getName() and
-  result = p.asExpr().getEnclosingFunction().getDocumentation().getATag()
+  result = getNamedTag(p.asExpr().getEnclosingFunction(), p.getName())
+}
+
+pragma[noinline]
+private JSDocParamTag getNamedTag(Function f, string name) {
+  result = f.getDocumentation().getATag() and
+  result.getName() = name
 }
 
 /**
@@ -74,9 +77,7 @@ private DataFlow::Node isFlowingToTaintedPathSink() {
 private DataFlow::Node isFlowingToTaintedPathSink(DataFlow::TypeBackTracker t) {
   t.start() and result instanceof TaintedPath::Sink
   or
-  exists(DataFlow::TypeBackTracker t2 |
-    t2 = t.smallstep(result, isFlowingToTaintedPathSink(t2))
-  )
+  exists(DataFlow::TypeBackTracker t2 | t2 = t.smallstep(result, isFlowingToTaintedPathSink(t2)))
 }
 
 /**
@@ -97,6 +98,6 @@ class StringConcatLeafEndingInSink extends StringOps::ConcatenationLeaf {
  * A sanitizer from reading a property with a name that suggests
  * the property is intended to be a path.
  */
-class SafeNameSanitizer extends TaintedPath::Sanitizer {
-  SafeNameSanitizer() { isSafeName(this.(DataFlow::PropRead).getPropertyName()) }
+class SafeNameSanitizer extends TaintedPath::Sanitizer instanceof DataFlow::PropRead {
+  SafeNameSanitizer() { isSafeName(super.getPropertyName()) }
 }

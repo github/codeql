@@ -17,7 +17,6 @@
 
 import javascript
 import semmle.javascript.security.dataflow.TaintedPathFromLibraryInputQuery
-import semmle.javascript.PackageExports
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
