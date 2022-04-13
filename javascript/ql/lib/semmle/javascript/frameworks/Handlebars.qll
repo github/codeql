@@ -135,21 +135,12 @@ private module HandlebarsTaintSteps {
       DataFlow::FunctionNode helperFunction
     |
       templatingCall = compiledTemplate(compileCall).getACall() and
-      (
-        exists(string templateText, string paramName, int argIdx |
-          compileCall.getArgument(0).mayHaveStringValue(templateText)
-        |
-          pred =
-            templatingCall.getArgument(0).getALocalSource().getAPropertyWrite(paramName).getRhs() and
-          isTemplateHelperCallArg(templateText, helperName, argIdx, paramName) and
-          succ = getRegisteredHelperParam(helperName, helperFunction, argIdx)
-        )
-        or
-        // When we don't have a string value, we can't be sure
-        // and we assume a step to all parameters of all helpers.
-        not exists(string s | compileCall.getArgument(0).mayHaveStringValue(s)) and
-        pred = templatingCall.getArgument(0).getALocalSource().getAPropertyWrite().getRhs() and
-        succ = getRegisteredHelperParam(helperName, helperFunction, _)
+      exists(string templateText, string paramName, int argIdx |
+        compileCall.getArgument(0).mayHaveStringValue(templateText)
+      |
+        pred = templatingCall.getArgument(0).getALocalSource().getAPropertyWrite(paramName).getRhs() and
+        isTemplateHelperCallArg(templateText, helperName, argIdx, paramName) and
+        succ = getRegisteredHelperParam(helperName, helperFunction, argIdx)
       )
     )
   }

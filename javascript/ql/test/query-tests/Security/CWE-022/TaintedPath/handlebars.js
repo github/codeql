@@ -34,7 +34,7 @@ app.get('/some/path2', function (req, res) {
 });
 
 app.get('/some/path3', function (req, res) {
-    res.send(data.compiledUnknown({ name: req.params.name })); // NOT ALLOWED (could be using a vulnerable helper)
+    res.send(data.compiledUnknown({ name: req.params.name })); // ALLOWED (could be using a vulnerable helper, but we'll assume it's ok)
 });
 
 app.get('/some/path4', function (req, res) {

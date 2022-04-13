@@ -1564,11 +1564,6 @@ nodes
 | handlebars.js:29:46:29:60 | req.params.path |
 | handlebars.js:29:46:29:60 | req.params.path |
 | handlebars.js:29:46:29:60 | req.params.path |
-| handlebars.js:37:43:37:57 | req.params.name |
-| handlebars.js:37:43:37:57 | req.params.name |
-| handlebars.js:37:43:37:57 | req.params.name |
-| handlebars.js:37:43:37:57 | req.params.name |
-| handlebars.js:37:43:37:57 | req.params.name |
 | handlebars.js:43:15:43:29 | req.params.path |
 | handlebars.js:43:15:43:29 | req.params.path |
 | handlebars.js:43:15:43:29 | req.params.path |
@@ -6471,22 +6466,6 @@ edges
 | handlebars.js:29:46:29:60 | req.params.path | handlebars.js:10:51:10:58 | filePath |
 | handlebars.js:29:46:29:60 | req.params.path | handlebars.js:10:51:10:58 | filePath |
 | handlebars.js:29:46:29:60 | req.params.path | handlebars.js:10:51:10:58 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:10:51:10:58 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:10:51:10:58 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:10:51:10:58 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:10:51:10:58 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:10:51:10:58 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:10:51:10:58 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:10:51:10:58 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:10:51:10:58 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:13:73:13:80 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:13:73:13:80 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:13:73:13:80 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:13:73:13:80 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:13:73:13:80 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:13:73:13:80 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:13:73:13:80 | filePath |
-| handlebars.js:37:43:37:57 | req.params.name | handlebars.js:13:73:13:80 | filePath |
 | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:13:73:13:80 | filePath |
 | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:13:73:13:80 | filePath |
 | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:13:73:13:80 | filePath |
@@ -9926,8 +9905,6 @@ edges
 | TaintedPath.js:214:35:214:38 | path | TaintedPath.js:211:24:211:30 | req.url | TaintedPath.js:214:35:214:38 | path | This path depends on $@. | TaintedPath.js:211:24:211:30 | req.url | a user-provided value |
 | express.js:8:20:8:32 | req.query.bar | express.js:8:20:8:32 | req.query.bar | express.js:8:20:8:32 | req.query.bar | This path depends on $@. | express.js:8:20:8:32 | req.query.bar | a user-provided value |
 | handlebars.js:11:32:11:39 | filePath | handlebars.js:29:46:29:60 | req.params.path | handlebars.js:11:32:11:39 | filePath | This path depends on $@. | handlebars.js:29:46:29:60 | req.params.path | a user-provided value |
-| handlebars.js:11:32:11:39 | filePath | handlebars.js:37:43:37:57 | req.params.name | handlebars.js:11:32:11:39 | filePath | This path depends on $@. | handlebars.js:37:43:37:57 | req.params.name | a user-provided value |
-| handlebars.js:15:25:15:32 | filePath | handlebars.js:37:43:37:57 | req.params.name | handlebars.js:15:25:15:32 | filePath | This path depends on $@. | handlebars.js:37:43:37:57 | req.params.name | a user-provided value |
 | handlebars.js:15:25:15:32 | filePath | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:15:25:15:32 | filePath | This path depends on $@. | handlebars.js:43:15:43:29 | req.params.path | a user-provided value |
 | normalizedPaths.js:13:19:13:22 | path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:13:19:13:22 | path | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |
 | normalizedPaths.js:14:19:14:29 | './' + path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:14:19:14:29 | './' + path | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |
