@@ -1,7 +1,4 @@
-const app = require("express")(),
-  libxml = require("libxmljs");
 
-app.post("upload", (req, res) => {
-  let xmlSrc = req.body,
-    doc = libxml.parseXml(xmlSrc, { noent: true });
-});
+XercesDOMParser *parser = new XercesDOMParser();
+
+parser->parse(data); // BAD (parser is not correctly configured, may expand external entity references)

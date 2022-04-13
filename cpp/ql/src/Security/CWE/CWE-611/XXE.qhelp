@@ -22,28 +22,28 @@ so unless you have explicitly enabled entity expansion, no further action needs 
 
 <example>
 <p>
-The following example uses the <code>libxml</code> XML parser to parse a string <code>xmlSrc</code>.
+The following example uses the <code>Xerces-C++</code> XML parser to parse a string <code>data</code>.
 If that string is from an untrusted source, this code may be vulnerable to an XXE attack, since
-the parser is invoked with the <code>noent</code> option set to <code>true</code>:
+the parser is constructed in its default state with <code>setDisableDefaultEntityResolution</code>
+set to <code>false</code>:
 </p>
-<sample src="examples/Xxe.js"/>
+<sample src="XXEBad.cpp"/>
 
 <p>
-To guard against XXE attacks, the <code>noent</code> option should be omitted or set to
-<code>false</code>. This means that no entity expansion is undertaken at all, not even for standard
-internal entities such as <code>&amp;amp;</code> or <code>&amp;gt;</code>. If desired, these
-entities can be expanded in a separate step using utility functions provided by libraries such
-as <a href="http://underscorejs.org/#unescape">underscore</a>,
-<a href="https://lodash.com/docs/4.17.15#unescape">lodash</a> or
-<a href="https://github.com/mathiasbynens/he">he</a>.
+To guard against XXE attacks, the <code>setDisableDefaultEntityResolution</code> option should be
+set to <code>true</code>.
 </p>
-<sample src="examples/XxeGood.js"/>
+<sample src="XXEGood.cpp"/>
 </example>
 
 <references>
 <li>
 OWASP:
 <a href="https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing">XML External Entity (XXE) Processing</a>.
+</li>
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html">XML External Entity Prevention Cheat Sheet</a>.
 </li>
 <li>
 Timothy Morgen:
