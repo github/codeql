@@ -18,8 +18,12 @@ class PamResponse(Structure):
 class PamConv(Structure):
     pass
 
-
+# this is normal way to do things
 libpam = CDLL(find_library("pam"))
+
+# but we also handle assignment to temp variable
+temp = find_library("pam")
+libpam = CDLL(temp)
 
 pam_start = libpam.pam_start
 pam_start.restype = c_int

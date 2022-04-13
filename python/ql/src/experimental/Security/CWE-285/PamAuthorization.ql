@@ -14,12 +14,11 @@ import experimental.semmle.python.Concepts
 import semmle.python.dataflow.new.TaintTracking
 
 API::Node libPam() {
-  exists(API::CallNode findLibCall, API::CallNode cdllCall, StrConst str |
+  exists(API::CallNode findLibCall, API::CallNode cdllCall |
     findLibCall = API::moduleImport("ctypes.util").getMember("find_library").getACall() and
+    findLibCall.getParameter(0).getAValueReachingRhs().asExpr().(StrConst).getText() = "pam" and
     cdllCall = API::moduleImport("ctypes").getMember("CDLL").getACall() and
-    DataFlow::localFlow(DataFlow::exprNode(str), findLibCall.getArg(0)) and
-    str.getText() = "pam" and
-    cdllCall.getArg(0) = findLibCall
+    cdllCall.getParameter(0).getAValueReachingRhs() = findLibCall
   |
     result = cdllCall.getReturn()
   )
