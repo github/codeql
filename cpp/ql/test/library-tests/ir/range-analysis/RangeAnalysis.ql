@@ -38,8 +38,9 @@ private string getBoundString(SemBound b, int delta) {
   b instanceof SemZeroBound and result = delta.toString()
   or
   result =
-    strictconcat(getCppSsaVariableInstruction(b.(SemSsaBound).getAVariable()).getAst().toString(), ":") +
-      getOffsetString(delta)
+    strictconcat(getCppSsaVariableInstruction(b.(SemSsaBound).getAVariable()).getAst().toString(),
+          ":"
+      ) + getOffsetString(delta)
 }
 
 private string getARangeString(SemExpr e) {
