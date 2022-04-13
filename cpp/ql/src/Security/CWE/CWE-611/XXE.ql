@@ -81,7 +81,9 @@ class XercesDOMParserFlowState extends XXEFlowState {
 }
 
 /**
- * The qualifier of a call to `AbstractDOMParser.setDisableDefaultEntityResolution`.
+ * Flow state transformer for a call to
+ * `AbstractDOMParser.setDisableDefaultEntityResolution`. Transforms the flow
+ * state through the qualifier according to the setting in the parameter.
  */
 class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
   Expr newValue;
@@ -111,7 +113,9 @@ class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
 }
 
 /**
- * The qualifier of a call to `AbstractDOMParser.setDisableDefaultEntityResolution`.
+ * Flow state transformer for a call to
+ * `AbstractDOMParser.setCreateEntityReferenceNodes`. Transforms the flow
+ * state through the qualifier according to the setting in the parameter.
  */
 class CreateEntityReferenceNodesTranformer extends XXEFlowStateTranformer {
   Expr newValue;
@@ -151,13 +155,13 @@ class ParseFunction extends Function {
 }
 
 /**
- * Configuration for tracking Xerces library XML objects and their states.
+ * Configuration for tracking XML objects and their states.
  */
-class XercesXXEConfiguration extends DataFlow::Configuration {
-  XercesXXEConfiguration() { this = "XercesXXEConfiguration" }
+class XXEConfiguration extends DataFlow::Configuration {
+  XXEConfiguration() { this = "XXEConfiguration" }
 
   override predicate isSource(DataFlow::Node node, string flowstate) {
-    // source is the write on `this` of a call to the XercesDOMParser
+    // source is the write on `this` of a call to the `XercesDOMParser`
     // constructor.
     exists(CallInstruction call |
       call.getStaticCallTarget() = any(XercesDOMParserClass c).getAConstructor() and
@@ -192,7 +196,7 @@ class XercesXXEConfiguration extends DataFlow::Configuration {
   }
 }
 
-from XercesXXEConfiguration conf, DataFlow::PathNode source, DataFlow::PathNode sink
+from XXEConfiguration conf, DataFlow::PathNode source, DataFlow::PathNode sink
 where conf.hasFlowPath(source, sink)
 select sink, source, sink,
   "This $@ is not configured to prevent an External Entity Expansion (XXE) attack.", source,

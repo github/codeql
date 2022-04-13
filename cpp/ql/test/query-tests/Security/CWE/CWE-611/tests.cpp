@@ -11,8 +11,8 @@ class AbstractDOMParser {
 public:
 	AbstractDOMParser();
 
-	void setDisableDefaultEntityResolution(bool); // default is false (bad)
-	void setCreateEntityReferenceNodes(bool); // default is true (good)
+	void setDisableDefaultEntityResolution(bool); // default is false
+	void setCreateEntityReferenceNodes(bool); // default is true
 	void setSecurityManager(SecurityManager *const manager);
 	void parse(const InputSource &data);
 };
