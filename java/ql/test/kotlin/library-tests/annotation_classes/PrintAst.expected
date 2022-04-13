@@ -1,68 +1,117 @@
+Annot0j.java:
+#    0| [CompilationUnit] Annot0j
+#    1|   1: [Interface] Annot0j
+#    2|     1: [Method] abc
+#    2|       3: [TypeAccess] int
+Annot1j.java:
+#    0| [CompilationUnit] Annot1j
+#    1|   1: [Interface] Annot1j
+#    2|     1: [Method] a
+#    2|       3: [TypeAccess] int
+#    4|     2: [Method] b
+#    4|       3: [TypeAccess] String
+#    6|     3: [Method] c
+#    6|       3: [TypeAccess] Class<>
+#    8|     4: [Method] d
+#    8|       3: [TypeAccess] Y
+#   10|     5: [Method] e
+#   10|       3: [ArrayTypeAccess] ...[]
+#   10|         0: [TypeAccess] Y
+#   12|     6: [Method] f
+#   12|       3: [TypeAccess] Annot0j
 def.kt:
 #    0| [CompilationUnit] def
 #    0|   1: [Class] DefKt
-#   13|     1: [Method] fn
+#   23|     1: [Method] fn
 #-----|       4: (Parameters)
-#   13|         0: [Parameter] a
-#   13|       5: [BlockStmt] { ... }
-#   14|         0: [ExprStmt] <Expr>;
-#   14|           0: [MethodAccess] println(...)
-#   14|             -1: [TypeAccess] ConsoleKt
-#   14|             0: [MethodAccess] abc(...)
-#   14|               -1: [VarAccess] a
-#    1|   2: [Interface] SomeAnnotation
-#    1|     1: [Method] abc
-#    1|     2: [Method] y
-#    3|   3: [Interface] ReplaceWith
-#    3|     1: [Method] expression
-#    5|   4: [Interface] Deprecated
-#    6|     1: [Method] message
-#    7|     2: [Method] replaceWith
-#    9|   5: [Class] X
+#   23|         0: [Parameter] a
+#   23|       5: [BlockStmt] { ... }
+#   24|         0: [ExprStmt] <Expr>;
+#   24|           0: [MethodAccess] println(...)
+#   24|             -1: [TypeAccess] ConsoleKt
+#   24|             0: [MethodAccess] a(...)
+#   24|               -1: [VarAccess] a
+#    3|   2: [Interface] Annot0k
+#    3|     1: [Method] a
+#    5|   3: [Interface] Annot1k
+#    6|     1: [Method] a
+#    7|     2: [Method] b
+#    8|     3: [Method] c
+#    9|     4: [Method] d
+#   10|     5: [Method] e
+#   11|     6: [Method] f
+#   14|   4: [Class] X
+#   14|     1: [Constructor] X
+#   14|       5: [BlockStmt] { ... }
+#   14|         0: [SuperConstructorInvocationStmt] super(...)
+#   14|         1: [BlockStmt] { ... }
+#   15|   5: [Class] Y
+#    0|     2: [Method] values
+#    0|     2: [Method] valueOf
+#-----|       4: (Parameters)
+#    0|         0: [Parameter] value
+#   15|     4: [Constructor] Y
+#   15|       5: [BlockStmt] { ... }
+#   15|         0: [ExprStmt] <Expr>;
+#   15|           0: [ClassInstanceExpr] new Enum(...)
+#   15|             -3: [TypeAccess] Unit
+#   15|               0: [TypeAccess] Y
+#   15|         1: [BlockStmt] { ... }
+#   19|   6: [Class] Z
 #-----|     -3: (Annotations)
-#    9|       1: [Annotation] Deprecated
-#    0|         1: [StringLiteral] This class is deprecated
-#    0|         1: [Annotation] ReplaceWith
-#    0|           1: [StringLiteral] Y
-#   10|       2: [Annotation] SomeAnnotation
-#    0|         1: [IntegerLiteral] 5
-#    0|         1: [StringLiteral] a
-#   11|     1: [Constructor] X
-#    9|       5: [BlockStmt] { ... }
-#    9|         0: [SuperConstructorInvocationStmt] super(...)
-#   11|         1: [BlockStmt] { ... }
+#   19|       1: [Annotation] Annot0k
+#    0|         1: [IntegerLiteral] 1
+#   20|       2: [Annotation] Annot1k
+#    0|         1: [IntegerLiteral] 2
+#    0|         1: [StringLiteral] ab
+#    0|         1: [TypeLiteral] X.class
+#    0|           0: [TypeAccess] X
+#    0|         1: [VarAccess] B
+#    0|         1: [ArrayInit] {...}
+#    0|           1: [VarAccess] C
+#    0|           1: [VarAccess] A
+#    0|         1: [Annotation] Annot0k
+#    0|           1: [IntegerLiteral] 1
+#   21|     1: [Constructor] Z
+#   19|       5: [BlockStmt] { ... }
+#   19|         0: [SuperConstructorInvocationStmt] super(...)
+#   21|         1: [BlockStmt] { ... }
 use.java:
 #    0| [CompilationUnit] use
-#    6|   1: [Class] use
-#-----|     -3: (Annotations)
-#    2|       1: [Annotation] Deprecated
-#    3|         1: [StringLiteral] "This class is deprecated"
-#    4|         2: [Annotation] ReplaceWith
-#    4|           1: [StringLiteral] "Y"
-#    5|       2: [Annotation] SomeAnnotation
-#    5|         2: [StringLiteral] "b"
+#    1|   1: [Class] use
 #-----|     -1: (Base Types)
-#    6|       0: [TypeAccess] SomeAnnotation
-#    8|     2: [Method] abc
+#    1|       0: [TypeAccess] Annot0k
+#    3|     2: [Method] a
 #-----|       1: (Annotations)
-#    7|         1: [Annotation] Override
-#    8|       3: [TypeAccess] int
-#    8|       5: [BlockStmt] { ... }
-#    8|         0: [ReturnStmt] return ...
-#    8|           0: [IntegerLiteral] 1
-#   10|     3: [Method] y
+#    2|         1: [Annotation] Override
+#    3|       3: [TypeAccess] int
+#    3|       5: [BlockStmt] { ... }
+#    3|         0: [ReturnStmt] return ...
+#    3|           0: [IntegerLiteral] 1
+#    6|     3: [Method] annotationType
 #-----|       1: (Annotations)
-#    9|         1: [Annotation] Override
-#   10|       3: [TypeAccess] String
-#   10|       5: [BlockStmt] { ... }
-#   10|         0: [ReturnStmt] return ...
-#   10|           0: [StringLiteral] ""
-#   13|     4: [Method] annotationType
-#-----|       1: (Annotations)
-#   12|         1: [Annotation] Override
-#   13|       3: [TypeAccess] Class<? extends Annotation>
-#   13|         0: [WildcardTypeAccess] ? ...
-#   13|           0: [TypeAccess] Annotation
-#   13|       5: [BlockStmt] { ... }
-#   14|         0: [ReturnStmt] return ...
-#   14|           0: [NullLiteral] null
+#    5|         1: [Annotation] Override
+#    6|       3: [TypeAccess] Class<? extends Annotation>
+#    6|         0: [WildcardTypeAccess] ? ...
+#    6|           0: [TypeAccess] Annotation
+#    6|       5: [BlockStmt] { ... }
+#    7|         0: [ReturnStmt] return ...
+#    7|           0: [NullLiteral] null
+#   12|     4: [Class] Z
+#-----|       -3: (Annotations)
+#   10|         1: [Annotation] Annot0j
+#   10|           1: [IntegerLiteral] 1
+#   11|         2: [Annotation] Annot1j
+#   11|           1: [IntegerLiteral] 1
+#   11|           2: [StringLiteral] "ac"
+#   11|           3: [TypeLiteral] X.class
+#   11|             0: [TypeAccess] X
+#   11|           4: [VarAccess] Y.B
+#   11|             -1: [TypeAccess] Y
+#   11|           5: [ArrayInit] {...}
+#   11|             3: [VarAccess] Y.C
+#   11|               -1: [TypeAccess] Y
+#   11|             4: [VarAccess] Y.A
+#   11|               -1: [TypeAccess] Y
+#   11|           6: [Annotation] Annot0j
+#   11|             1: [IntegerLiteral] 2

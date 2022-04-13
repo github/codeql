@@ -1,16 +1,26 @@
-annotation class SomeAnnotation(@get:JvmName("abc") val x: Int = 5, val y: String = "")
+import kotlin.reflect.KClass
 
-annotation class ReplaceWith(val expression: String)
+annotation class Annot0k(@get:JvmName("a") val abc: Int = 0)
 
-annotation class Deprecated(
-    val message: String,
-    val replaceWith: ReplaceWith = ReplaceWith(""))
+annotation class Annot1k(
+    val a: Int = 2,
+    val b: String = "ab",
+    val c: KClass<*> = X::class,
+    val d: Y = Y.A,
+    val e: Array<Y> = [Y.A, Y.B],
+    val f: Annot0k = Annot0k(1)
+)
 
-@Deprecated("This class is deprecated", ReplaceWith("Y"))
-@SomeAnnotation(y = "a")
-class X
+class X {}
+enum class Y {
+    A,B,C
+}
 
-fun fn(a: SomeAnnotation) {
-    println(a.x)
+@Annot0k(abc = 1)
+@Annot1k(d = Y.B, e = arrayOf(Y.C, Y.A))
+class Z {}
+
+fun fn(a: Annot0k) {
+    println(a.abc)
 }
 

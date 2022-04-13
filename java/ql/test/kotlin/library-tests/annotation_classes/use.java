@@ -1,16 +1,13 @@
-
-@Deprecated(
-   message = "This class is deprecated",
-   replaceWith = @ReplaceWith(expression = "Y"))
-@SomeAnnotation(y = "b")
-public class use implements SomeAnnotation {
+public class use implements Annot0k {
     @Override
-    public int abc() { return 1; }
-    @Override
-    public String y() { return ""; }
+    public int a() { return 1; }
 
     @Override
     public Class<? extends java.lang.annotation.Annotation> annotationType() {
         return null;
     }
+
+    @Annot0j(abc = 1)
+    @Annot1j(a = 1, b = "ac", c = X.class, d = Y.B, e = {Y.C, Y.A}, f = @Annot0j(abc = 2))
+    public class Z { }
 }
