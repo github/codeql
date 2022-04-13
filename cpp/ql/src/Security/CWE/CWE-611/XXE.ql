@@ -1,17 +1,17 @@
 /**
  * @name External Entity Expansion
- * @description TODO
+ * @description Parsing user-controlled XML documents and allowing expansion of
+ *              external entity references may lead to disclosure of
+ *              confidential data or denial of service.
  * @kind path-problem
  * @id cpp/external-entity-expansion
  * @problem.severity warning
- * @security-severity TODO
- * @precision TODO
+ * @security-severity 9.1
+ * @precision medium
  * @tags security
  *       external/cwe/cwe-611
  */
 
-// TODO: currently the file name is Xerces-specific but the query ID isn't.
-// Decide which design to go with.
 import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow
 import DataFlow::PathGraph
