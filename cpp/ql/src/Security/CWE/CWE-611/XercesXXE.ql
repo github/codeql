@@ -150,20 +150,6 @@ class ParseFunction extends Function {
   }
 }
 
-/*
- * class CreateLSParser extends Function {
- *  CreateLSParser() { this.hasName("createLSParser") }
- * }
- *
- * class SetSecurityManager extends Function {
- *  SetSecurityManager() { this.hasQualifiedName(_, "AbstractDOMParser", "setSecurityManager") }
- * }
- *
- * class SAXParser extends Class {
- *  SAXParser() { this.hasName("SAXParser") }
- * }
- */
-
 /**
  * Configuration for tracking Xerces library XML objects and their states.
  */
@@ -179,23 +165,7 @@ class XercesXXEConfiguration extends DataFlow::Configuration {
         call.getThisArgument() and
       encodeXercesDOMFlowState(flowstate, 0, 1) // default configuration
     )
-    /*
-     *   or
-     *    exists(Call call |
-     *      call.getTarget() instanceof CreateLSParser and
-     *      call = node.asExpr() and
-     *      flowstate = "XercesDOM"
-     *    )
-     *    or
-     *    exists(CallInstruction call |
-     *      node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
-     *        call.getThisArgument() and
-     *      call.getStaticCallTarget().(Constructor).getDeclaringType() instanceof SAXParser and
-     *      flowstate = "SAXParser"
-     *    )
-     */
-
-    }
+  }
 
   override predicate isSink(DataFlow::Node node, string flowstate) {
     // sink is the read of the qualifier of a call to `parse`.
@@ -213,45 +183,14 @@ class XercesXXEConfiguration extends DataFlow::Configuration {
     // create additional flow steps for `XXEFlowStateTranformer`s
     state2 = node2.asConvertedExpr().(XXEFlowStateTranformer).transform(state1) and
     DataFlow::simpleLocalFlowStep(node1, node2)
-    /*
-     * exists(CallInstruction call |
-     *      node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
-     *        call.getThisArgument() and
-     *      call.getStaticCallTarget().(Constructor).getDeclaringType() instanceof SAXParser and
-     *      flowstate = "SAXParser"
-     *    )
-     */
-
-    }
+  }
 
   override predicate isBarrierOut(DataFlow::Node node, string flowstate) {
     // when the flowstate is transformed at a call node, block the original
     // flowstate value.
     node.asConvertedExpr().(XXEFlowStateTranformer).transform(flowstate) != flowstate
-    /*
-     * or
-     *    exists(Call setSecurityManager |
-     *      // todo: security manager setup
-     *      flowstate = TODO
-     *      setSecurityManager.getQualifier() = node.asDefiningArgument() and
-     *      setSecurityManager.getTarget() instanceof SetSecurityManager
-     *    )
-     */
-
-    }
+  }
 }
-
-/*
- * TODO:
- * parser created
- * needs doSchema set?
- * needs validation set?
- * needs namespaces?
- * (
- * no security manager
- * OR
- * no
- */
 
 from XercesXXEConfiguration conf, DataFlow::PathNode source, DataFlow::PathNode sink
 where conf.hasFlowPath(source, sink)
