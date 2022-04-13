@@ -27,9 +27,6 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node dst) {
     isNumericFlowStep(src, dst)
-    or
-    // reuse most existing taint steps
-    isRestrictedAdditionalTaintStep(src, dst)
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
@@ -41,34 +38,13 @@ class Configuration extends TaintTracking::Configuration {
   }
 }
 
-predicate isRestrictedAdditionalTaintStep(DataFlow::Node src, DataFlow::Node dst) {
-  TaintTracking::sharedTaintStep(src, dst) and
-  not dst.asExpr() instanceof AddExpr and
-  not dst.(DataFlow::MethodCallNode).calls(src, "toString")
-}
-
-/**
- * Holds if data may flow from `src` to `dst` as a number.
- */
+/** Holds if data is converted to a number from `src` to `dst`. */
 predicate isNumericFlowStep(DataFlow::Node src, DataFlow::Node dst) {
-  // steps that introduce or preserve a number
-  dst.(DataFlow::PropRead).accesses(src, ["size"])
-  or
   exists(DataFlow::CallNode c |
     c = dst and
     src = c.getAnArgument()
   |
     c = DataFlow::globalVarRef("Math").getAMemberCall(_) or
     c = DataFlow::globalVarRef(["Number", "parseInt", "parseFloat"]).getACall()
-  )
-  or
-  exists(Expr dstExpr, Expr srcExpr |
-    dstExpr = dst.asExpr() and
-    srcExpr = src.asExpr()
-  |
-    dstExpr.(BinaryExpr).getAnOperand() = srcExpr and
-    not dstExpr instanceof AddExpr
-    or
-    dstExpr.(PlusExpr).getOperand() = srcExpr
   )
 }
