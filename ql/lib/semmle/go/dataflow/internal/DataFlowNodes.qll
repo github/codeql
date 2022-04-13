@@ -470,6 +470,8 @@ module Public {
       exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
         result.asFuncLit() = calleeSource.asExpr()
         or
+        calleeSource = result.asFunction().getARead()
+        or
         exists(Method declared, Method actual |
           calleeSource = declared.getARead() and
           actual.implements(declared) and
