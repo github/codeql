@@ -63,6 +63,7 @@ def.kt:
 
 #   21| [Method] a
 #-----| 1 -> (Annotations)
+#-----| 3 -> [Annotation] JvmName
 
 #   21| [Annotation] JvmName
 #-----| 1 -> [StringLiteral] a
@@ -189,6 +190,7 @@ def.kt:
 
 #   42| [Constructor] Z
 #-----| 1 -> (Annotations)
+#-----| 3 -> [Annotation] Annot0k
 #-----| 5 -> [BlockStmt] { ... }
 
 #   41| [BlockStmt] { ... }
@@ -251,11 +253,12 @@ def.kt:
 #   46| [Method] fn
 #-----| 1 -> (Annotations)
 #-----| 2 -> (Generic Parameters)
+#-----| 3 -> [Annotation] Annot0k
 #-----| 4 -> (Parameters)
 #-----| 5 -> [BlockStmt] { ... }
 
 #   46| [TypeVariable] T
-#-----| 0 -> [Annotation] Annot0k
+#-----| -1 -> [Annotation] Annot0k
 
 #   46| [Annotation] Annot0k
 #-----| 1 -> [IntegerLiteral] 0
@@ -264,6 +267,7 @@ def.kt:
 
 #   46| [Parameter] a
 #-----| -1 -> (Annotations)
+#-----| 0 -> [Annotation] Annot0k
 
 #   46| [Annotation] Annot0k
 #-----| 1 -> [IntegerLiteral] 0
@@ -303,6 +307,7 @@ def.kt:
 
 #   57| [Method] getP
 #-----| 1 -> (Annotations)
+#-----| 3 -> [Annotation] Annot0k
 #-----| 5 -> [BlockStmt] { ... }
 
 #   57| [BlockStmt] { ... }
@@ -320,6 +325,7 @@ def.kt:
 
 #   57| [Method] setP
 #-----| 1 -> (Annotations)
+#-----| 3 -> [Annotation] Annot0k
 #-----| 4 -> (Parameters)
 #-----| 5 -> [BlockStmt] { ... }
 
@@ -362,6 +368,7 @@ def.kt:
 
 #   59| [Parameter] <this>
 #-----| -1 -> (Annotations)
+#-----| 0 -> [Annotation] Annot0k
 
 #   59| [Annotation] Annot0k
 #-----| 1 -> [IntegerLiteral] 0
@@ -520,13 +527,13 @@ use.java:
 #-----| 0 -> [TypeAccess] Annot0k
 
 #-----| (Annotations)
-#-----| 4 -> [Annotation] Target
+#-----| 5 -> [Annotation] Target
 
 #-----| (Annotations)
-#-----| 1 -> [Annotation] JvmName
+#-----| 2 -> [Annotation] JvmName
 
 #-----| (Annotations)
-#-----| 3 -> [Annotation] Annot0k
+#-----| 4 -> [Annotation] Annot0k
 
 #-----| (Annotations)
 #-----| 1 -> [Annotation] Annot0k

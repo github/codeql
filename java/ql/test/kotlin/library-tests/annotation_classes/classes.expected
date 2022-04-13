@@ -14,6 +14,7 @@ annotationDeclarations
 | def.kt:23:1:31:1 | Annot1k | def.kt:29:5:29:32 | e |
 | def.kt:23:1:31:1 | Annot1k | def.kt:30:5:30:31 | f |
 annotations
+| annotation_classes.testproj/test.class.files/Annot1k.class:0:0:0:0 | Annot0k | def.kt:23:1:31:1 | Annot1k | def.kt:5:1:21:60 | Annot0k |
 | def.kt:0:0:0:0 | Annot0k | def.kt:39:1:39:40 | Annot1k | def.kt:5:1:21:60 | Annot0k |
 | def.kt:23:1:23:8 | Annot0k | def.kt:23:1:31:1 | Annot1k | def.kt:5:1:21:60 | Annot0k |
 | def.kt:38:1:38:17 | Annot0k | def.kt:38:1:43:1 | Z | def.kt:5:1:21:60 | Annot0k |

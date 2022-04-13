@@ -460,7 +460,7 @@ open class KotlinFileExtractor(
 
     private fun extractAnnotations(c: IrAnnotationContainer, parent: Label<out DbExprparent>) {
         for ((idx, constructorCall: IrConstructorCall) in c.annotations.withIndex()) {
-            extractAnnotation(constructorCall, parent, idx)
+            extractAnnotation(constructorCall, parent, -1 - idx)
         }
     }
 
@@ -471,7 +471,7 @@ open class KotlinFileExtractor(
     ): Label<out DbExpr> {
         val t = useType(constructorCall.type)
 
-        val id = tw.getLabelFor<DbDeclannotation>("@\"annotation;{$parent};{${t.javaResult.id}}\"")
+        val id = tw.getLabelFor<DbDeclannotation>("@\"annotation_kotlin;{$parent};{${t.javaResult.id}}\"")
         tw.writeExprs_declannotation(id, t.javaResult.id, parent, idx)
         tw.writeExprsKotlinType(id, t.kotlinResult.id)
 
