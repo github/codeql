@@ -4,7 +4,7 @@ var http = require("http"),
 var server = http.createServer(function(req, res) {
 	var size = parseInt(url.parse(req.url, true).query.size);
 
-	let dogs = new Array(size).fill(x => "dog"); // BAD
+	let dogs = new Array(size).fill("dog"); // BAD
 
 	// ... use the dog
 });

@@ -28,9 +28,7 @@ module ResourceExhaustion {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of remote user input, considered as a data flow source for resource exhaustion vulnerabilities. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * A node that determines the repetitions of a string, considered as a data flow sink for resource exhaustion vulnerabilities.

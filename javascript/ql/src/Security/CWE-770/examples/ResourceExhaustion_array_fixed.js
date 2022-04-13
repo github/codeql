@@ -10,7 +10,7 @@ var server = http.createServer(function(req, res) {
 		return;
 	}
 
-	let dogs = new Array(size).fill(x => "dog"); // GOOD
+	let dogs = new Array(size).fill("dog"); // GOOD
 
 	// ... use the dogs
 });
