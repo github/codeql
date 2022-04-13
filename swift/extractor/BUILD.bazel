@@ -16,4 +16,5 @@ cc_binary(
     }),
     visibility = ["//swift:__pkg__"],
     deps = [":swift-llvm-support"],
+    features = ["-universal_binaries"],
 )
