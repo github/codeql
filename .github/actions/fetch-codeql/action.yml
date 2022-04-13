@@ -5,12 +5,14 @@ runs:
   steps:
     - name: Select platform - Linux
       if: runner.os == 'Linux'
+      shell: bash
       run: |
         export CODEQL_CLI_PLATFORM=linux64
         echo "::set-env name=CODEQL_CLI_PLATFORM::$CODEQL_CLI_PLATFORM"
 
     - name: Select platform - MacOS
       if: runner.os == 'MacOS'
+      shell: bash
       run: |
         export CODEQL_CLI_PLATFORM=osx64
         echo "::set-env name=CODEQL_CLI_PLATFORM::$CODEQL_CLI_PLATFORM"
