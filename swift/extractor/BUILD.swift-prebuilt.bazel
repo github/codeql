@@ -1,0 +1,28 @@
+cc_library(
+    name = "swift-llvm-support",
+    srcs = [
+        "libCodeQLSwiftFrontendTool.a",
+    ] + select({
+        "@platforms//os:linux": [
+            "libCodeQLSwiftFrontendTool.so",
+        ],
+        "@platforms//os:macos": [
+            "libCodeQLSwiftFrontendTool.dylib",
+        ],
+    }),
+    hdrs = glob(["include/**/*"]),
+    linkopts = [
+        "-lm",
+        "-lz",
+    ] + select({
+        "@platforms//os:linux": [
+            "-luuid",
+            "-lrt",
+            "-lpthread",
+            "-ldl",
+        ],
+        "//conditions:default": [],
+    }),
+    strip_include_prefix = "include",
+    visibility = ["//visibility:public"],
+)
