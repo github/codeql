@@ -1,0 +1,36 @@
+[INVALID_KEY_SET] predicate exprs(@expr id, int kind, @type typeid, @exprparent parent, int idx): The key set {parent, idx} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 0:
+Tuple 1 in row 10: (103,66,102,88,0)
+Tuple 2 in row 116: (521,66,520,88,0)
+	Relevant element: Tuple 1: id=103
+		Full ID for 103: @"annotation;(88);(102)". The ID may expand to @"annotation;{@"class;Annot0k"};{@"class;kotlin.annotation.Target"}"
+	Relevant element: Tuple 2: id=521
+		Full ID for 521: @"annotation;(88);(520)". The ID may expand to @"annotation;{@"class;Annot0k"};{@"class;java.lang.annotation.Retention"}"
+	Relevant element: Tuple 1: typeid=102
+		Full ID for 102: @"class;kotlin.annotation.Target"
+	Relevant element: Tuple 2: typeid=520
+		Full ID for 520: @"class;java.lang.annotation.Retention"
+	Relevant element: parent=88
+		Full ID for 88: @"class;Annot0k"
+[INVALID_KEY_SET] predicate exprs(@expr id, int kind, @type typeid, @exprparent parent, int idx): The key set {parent, idx} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 0:
+Tuple 1 in row 28: (172,17,17,170,0)
+Tuple 2 in row 130: (558,17,17,170,0)
+	Relevant element: Tuple 2: id=558
+		Full ID for 558: @"annotationExpr;(170);0". The ID may expand to @"annotationExpr;{@"annotation;{@"class;Annot1k"};{@"class;Annot0k"}"};0"
+	Relevant element: typeid=17
+		Full ID for 17: @"type;int"
+	Relevant element: Tuple 1: parent=170
+		Full ID for 170: @"annotation;(151);(88)". The ID may expand to @"annotation;{@"class;Annot1k"};{@"class;Annot0k"}"
+	Relevant element: Tuple 2: parent=170
+		Full ID for 170: @"annotation;(151);(88)". The ID may expand to @"annotation;{@"class;Annot1k"};{@"class;Annot0k"}"
+[INVALID_KEY] predicate exprs(@expr id, int kind, @type typeid, @exprparent parent, int idx): The key set {id} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 4:
+Tuple 1 in row 10: (103,66,102,88,0)
+Tuple 2 in row 11: (103,66,102,88,3)
+	Relevant element: id=103
+		Full ID for 103: @"annotation;(88);(102)". The ID may expand to @"annotation;{@"class;Annot0k"};{@"class;kotlin.annotation.Target"}"
+	Relevant element: typeid=102
+		Full ID for 102: @"class;kotlin.annotation.Target"
+	Relevant element: parent=88
+		Full ID for 88: @"class;Annot0k"

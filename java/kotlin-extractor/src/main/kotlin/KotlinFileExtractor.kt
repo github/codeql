@@ -238,6 +238,7 @@ open class KotlinFileExtractor(
                 addModifiers(id, "out")
             }
 
+            extractAnnotations(tp, id)
             return id
         }
     }
@@ -457,9 +458,9 @@ open class KotlinFileExtractor(
         extractDeclInitializers(c.declarations, false) { Pair(blockId, obinitId) }
     }
 
-    private fun extractAnnotations(c: IrClass) {
+    private fun extractAnnotations(c: IrAnnotationContainer, parent: Label<out DbExprparent>) {
         for ((idx, constructorCall: IrConstructorCall) in c.annotations.withIndex()) {
-            extractAnnotation(constructorCall, useClassSource(c), idx)
+            extractAnnotation(constructorCall, parent, idx)
         }
     }
 
@@ -627,7 +628,7 @@ open class KotlinFileExtractor(
 
                 linesOfCode?.linesOfCodeInDeclaration(c, id)
 
-                extractAnnotations(c)
+                extractAnnotations(c, id)
 
                 if (extractFunctionBodies && !c.isAnonymousObject && !c.isLocal)
                     externalClassExtractor.writeStubTrapFile(c)
@@ -819,6 +820,7 @@ open class KotlinFileExtractor(
                 extractTypeAccessRecursive(substitutedType, location, id, -1)
             }
             val syntheticParameterNames = isUnderscoreParameter(vp) || ((vp.parent as? IrFunction)?.let { hasSynthesizedParameterNames(it) } ?: true)
+            extractAnnotations(vp, id)
             return extractValueParameter(id, substitutedType, vp.name.asString(), location, parent, idx, useValueParameter(vp, parentSourceDeclaration), syntheticParameterNames, vp.isVararg, vp.isNoinline, vp.isCrossinline)
         }
     }
@@ -1358,6 +1360,8 @@ open class KotlinFileExtractor(
 
                 linesOfCode?.linesOfCodeInDeclaration(f, id)
 
+                extractAnnotations(f, id)
+
                 return id
             }
         }
@@ -1374,7 +1378,9 @@ open class KotlinFileExtractor(
            DeclarationStackAdjuster(f).use {
                val fNameSuffix = getExtensionReceiverType(f)?.let { it.classFqName?.asString()?.replace(".", "$$") } ?: ""
                val extractType = if (isAnnotationClassField(f)) kClassToJavaClass(f.type) else f.type
-               return extractField(useField(f), "${f.name.asString()}$fNameSuffix", extractType, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f), f.isFinal, isDirectlyExposedCompanionObjectField(f))
+               val id = useField(f)
+               extractAnnotations(f, id)
+               return extractField(id, "${f.name.asString()}$fNameSuffix", extractType, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f), f.isFinal, isDirectlyExposedCompanionObjectField(f))
            }
         }
     }
@@ -1467,6 +1473,8 @@ open class KotlinFileExtractor(
 
                 extractVisibility(p, id, p.visibility)
 
+                // TODO: extract annotations
+
                 if (p.isLateinit) {
                     addModifiers(id, "lateinit")
                 }
@@ -1510,6 +1518,8 @@ open class KotlinFileExtractor(
                 ee.correspondingClass?.let {
                     extractDeclaration(it, extractPrivateMembers, extractFunctionBodies)
                 }
+
+                extractAnnotations(ee, id)
             }
         }
     }
@@ -1526,6 +1536,8 @@ open class KotlinFileExtractor(
             val type = useType(ta.expandedType)
             tw.writeKt_type_alias(id, ta.name.asString(), type.kotlinResult.id)
             tw.writeHasLocation(id, locId)
+
+            // TODO: extract annotations
         }
     }
 
