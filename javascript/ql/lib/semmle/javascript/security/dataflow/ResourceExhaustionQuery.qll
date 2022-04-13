@@ -8,7 +8,6 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.LoopBoundInjectionCustomizations
 import ResourceExhaustionCustomizations::ResourceExhaustion
 
 /**
@@ -34,7 +33,6 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof LoopBoundInjection::LengthCheckSanitizerGuard or
     guard instanceof UpperBoundsCheckSanitizerGuard
   }
 
