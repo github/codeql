@@ -2,8 +2,10 @@ classes.kt:
 #    0| [CompilationUnit] classes
 #    0|   1: [Class] ClassesKt
 #   32|     1: [Method] f
+#   32|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   32|         0: [Parameter] s
+#   32|           0: [TypeAccess] String
 #   32|       5: [BlockStmt] { ... }
 #    2|   2: [Class] ClassOne
 #    2|     1: [Constructor] ClassOne
@@ -14,6 +16,7 @@ classes.kt:
 #    4|     1: [Constructor] ClassTwo
 #-----|       4: (Parameters)
 #    4|         0: [Parameter] arg
+#    4|           0: [TypeAccess] int
 #    4|       5: [BlockStmt] { ... }
 #    4|         0: [SuperConstructorInvocationStmt] super(...)
 #    4|         1: [BlockStmt] { ... }
@@ -24,6 +27,7 @@ classes.kt:
 #    5|             0: [KtInitializerAssignExpr] ...=...
 #    5|               0: [VarAccess] x
 #    4|     2: [Method] getArg
+#    4|       3: [TypeAccess] int
 #    4|       5: [BlockStmt] { ... }
 #    4|         0: [ReturnStmt] return ...
 #    4|           0: [VarAccess] this.arg
@@ -32,6 +36,7 @@ classes.kt:
 #    4|       -1: [TypeAccess] int
 #    4|       0: [VarAccess] arg
 #    5|     4: [Method] getX
+#    5|       3: [TypeAccess] int
 #    5|       5: [BlockStmt] { ... }
 #    5|         0: [ReturnStmt] return ...
 #    5|           0: [VarAccess] this.x
@@ -45,16 +50,20 @@ classes.kt:
 #    8|         0: [SuperConstructorInvocationStmt] super(...)
 #    8|         1: [BlockStmt] { ... }
 #    9|     2: [Method] foo
+#    9|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #    9|         0: [Parameter] arg
+#    9|           0: [TypeAccess] int
 #   12|   5: [Class] ClassFour
 #   12|     1: [Constructor] ClassFour
 #   12|       5: [BlockStmt] { ... }
 #   12|         0: [SuperConstructorInvocationStmt] super(...)
 #   12|         1: [BlockStmt] { ... }
 #   13|     2: [Method] foo
+#   13|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   13|         0: [Parameter] arg
+#   13|           0: [TypeAccess] int
 #   13|       5: [BlockStmt] { ... }
 #   17|   6: [Class] ClassFive
 #   17|     1: [Constructor] ClassFive
@@ -63,9 +72,11 @@ classes.kt:
 #   17|         1: [BlockStmt] { ... }
 #   20|   7: [Interface] IF1
 #   21|     1: [Method] funIF1
+#   21|       3: [TypeAccess] Unit
 #   21|       5: [BlockStmt] { ... }
 #   24|   8: [Interface] IF2
 #   25|     1: [Method] funIF2
+#   25|       3: [TypeAccess] Unit
 #   25|       5: [BlockStmt] { ... }
 #   28|   9: [Class] ClassSix
 #   28|     1: [Constructor] ClassSix
@@ -75,12 +86,14 @@ classes.kt:
 #   29|     2: [Constructor] ClassSix
 #-----|       4: (Parameters)
 #   29|         0: [Parameter] i
+#   29|           0: [TypeAccess] int
 #   29|       5: [BlockStmt] { ... }
 #   29|         0: [ThisConstructorInvocationStmt] this(...)
 #   34|   10: [Class] ClassSeven
 #   35|     1: [Constructor] ClassSeven
 #-----|       4: (Parameters)
 #   35|         0: [Parameter] i
+#   35|           0: [TypeAccess] String
 #   35|       5: [BlockStmt] { ... }
 #   35|         0: [SuperConstructorInvocationStmt] super(...)
 #   35|         1: [BlockStmt] { ... }
@@ -100,6 +113,7 @@ classes.kt:
 #   36|             -1: [TypeAccess] ClassesKt
 #   36|             0: [VarAccess] i
 #   42|     2: [Method] getX
+#   42|       3: [TypeAccess] int
 #   42|       5: [BlockStmt] { ... }
 #   42|         0: [ReturnStmt] return ...
 #   42|           0: [VarAccess] this.x
@@ -109,9 +123,13 @@ classes.kt:
 #   42|       0: [IntegerLiteral] 3
 #   49|   11: [Class] Direction
 #    0|     1: [Method] values
+#    0|       3: [TypeAccess] Direction[]
+#    0|         0: [TypeAccess] Direction
 #    0|     1: [Method] valueOf
+#    0|       3: [TypeAccess] Direction
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] value
+#    0|           0: [TypeAccess] String
 #   49|     3: [Constructor] Direction
 #   49|       5: [BlockStmt] { ... }
 #   49|         0: [ExprStmt] <Expr>;
@@ -119,14 +137,27 @@ classes.kt:
 #   49|             -3: [TypeAccess] Unit
 #   49|               0: [TypeAccess] Direction
 #   49|         1: [BlockStmt] { ... }
+#   50|     4: [FieldDeclaration] Direction NORTH;
+#   50|       -1: [TypeAccess] Direction
+#   50|     5: [FieldDeclaration] Direction SOUTH;
+#   50|       -1: [TypeAccess] Direction
+#   50|     6: [FieldDeclaration] Direction WEST;
+#   50|       -1: [TypeAccess] Direction
+#   50|     7: [FieldDeclaration] Direction EAST;
+#   50|       -1: [TypeAccess] Direction
 #   53|   12: [Class] Color
 #    0|     1: [Method] values
+#    0|       3: [TypeAccess] Color[]
+#    0|         0: [TypeAccess] Color
 #    0|     1: [Method] valueOf
+#    0|       3: [TypeAccess] Color
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] value
+#    0|           0: [TypeAccess] String
 #   53|     3: [Constructor] Color
 #-----|       4: (Parameters)
 #   53|         0: [Parameter] rgb
+#   53|           0: [TypeAccess] int
 #   53|       5: [BlockStmt] { ... }
 #   53|         0: [ExprStmt] <Expr>;
 #   53|           0: [ClassInstanceExpr] new Enum(...)
@@ -137,6 +168,7 @@ classes.kt:
 #   53|             0: [KtInitializerAssignExpr] ...=...
 #   53|               0: [VarAccess] rgb
 #   53|     4: [Method] getRgb
+#   53|       3: [TypeAccess] int
 #   53|       5: [BlockStmt] { ... }
 #   53|         0: [ReturnStmt] return ...
 #   53|           0: [VarAccess] this.rgb
@@ -144,6 +176,12 @@ classes.kt:
 #   53|     4: [FieldDeclaration] int rgb;
 #   53|       -1: [TypeAccess] int
 #   53|       0: [VarAccess] rgb
+#   54|     6: [FieldDeclaration] Color RED;
+#   54|       -1: [TypeAccess] Color
+#   55|     7: [FieldDeclaration] Color GREEN;
+#   55|       -1: [TypeAccess] Color
+#   56|     8: [FieldDeclaration] Color BLUE;
+#   56|       -1: [TypeAccess] Color
 #   59|   13: [Interface] Interface1
 #   60|   14: [Interface] Interface2
 #   61|   15: [GenericType,Interface,ParameterizedType] Interface3
@@ -155,8 +193,10 @@ classes.kt:
 #   63|         0: [SuperConstructorInvocationStmt] super(...)
 #   63|         1: [BlockStmt] { ... }
 #   64|     2: [Method] getObject1
+#   64|       3: [TypeAccess] Object
 #-----|       4: (Parameters)
 #   64|         0: [Parameter] b
+#   64|           0: [TypeAccess] boolean
 #   64|       5: [BlockStmt] { ... }
 #   65|         0: [ExprStmt] <Expr>;
 #   65|           0: [WhenExpr] when ...
@@ -189,6 +229,7 @@ classes.kt:
 #   68|                       0: [ClassInstanceExpr] new (...)
 #   68|                         -3: [TypeAccess] Object
 #   71|     3: [Method] getObject2
+#   71|       3: [TypeAccess] Interface1
 #   71|       5: [BlockStmt] { ... }
 #   72|         0: [ReturnStmt] return ...
 #   72|           0: [StmtExpr] <Stmt>
@@ -203,6 +244,7 @@ classes.kt:
 #   73|                           0: [KtInitializerAssignExpr] ...=...
 #   73|                             0: [VarAccess] x
 #   73|                   2: [Method] getX
+#   73|                     3: [TypeAccess] int
 #   73|                     5: [BlockStmt] { ... }
 #   73|                       0: [ReturnStmt] return ...
 #   73|                         0: [VarAccess] this.x
@@ -211,6 +253,7 @@ classes.kt:
 #   73|                     -1: [TypeAccess] int
 #   73|                     0: [IntegerLiteral] 1
 #   74|                   4: [Method] foo
+#   74|                     3: [TypeAccess] Object
 #   74|                     5: [BlockStmt] { ... }
 #   75|                       0: [ReturnStmt] return ...
 #   75|                         0: [StmtExpr] <Stmt>
@@ -228,6 +271,7 @@ classes.kt:
 #   72|                 0: [ClassInstanceExpr] new (...)
 #   72|                   -3: [TypeAccess] Object
 #   80|     4: [Method] getObject3
+#   80|       3: [TypeAccess] Object
 #   80|       5: [BlockStmt] { ... }
 #   81|         0: [ReturnStmt] return ...
 #   81|           0: [StmtExpr] <Stmt>
@@ -242,6 +286,7 @@ classes.kt:
 #   81|                 0: [ClassInstanceExpr] new (...)
 #   81|                   -3: [TypeAccess] Interface1
 #   84|     5: [Method] getObject4
+#   84|       3: [TypeAccess] Object
 #   84|       5: [BlockStmt] { ... }
 #   85|         0: [ReturnStmt] return ...
 #   85|           0: [StmtExpr] <Stmt>
@@ -256,6 +301,7 @@ classes.kt:
 #   85|                 0: [ClassInstanceExpr] new (...)
 #   85|                   -3: [TypeAccess] Object
 #   88|     6: [Method] getObject5
+#   88|       3: [TypeAccess] Object
 #   88|       5: [BlockStmt] { ... }
 #   89|         0: [ReturnStmt] return ...
 #   89|           0: [StmtExpr] <Stmt>
@@ -335,8 +381,10 @@ classes.kt:
 #  109|         0: [SuperConstructorInvocationStmt] super(...)
 #  109|         1: [BlockStmt] { ... }
 #  110|     2: [Method] fn1
+#  110|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #  110|         0: [Parameter] p
+#  110|           0: [TypeAccess] int
 #  110|       5: [BlockStmt] { ... }
 #  111|         0: [LocalTypeDeclStmt] class ...
 #  111|           0: [Class,GenericType,LocalClass,ParameterizedType] Local1
@@ -347,8 +395,10 @@ classes.kt:
 #  111|                 0: [SuperConstructorInvocationStmt] super(...)
 #  111|                 1: [BlockStmt] { ... }
 #  112|             2: [Method] foo
+#  112|               3: [TypeAccess] Unit
 #-----|               4: (Parameters)
 #  112|                 0: [Parameter] p
+#  112|                   0: [TypeAccess] int
 #  112|               5: [BlockStmt] { ... }
 #  114|         1: [ExprStmt] <Expr>;
 #  114|           0: [MethodAccess] foo(...)
@@ -357,8 +407,10 @@ classes.kt:
 #  114|                 0: [TypeAccess] Integer
 #  114|             0: [VarAccess] p
 #  117|     3: [Method] fn2
+#  117|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #  117|         0: [Parameter] p
+#  117|           0: [TypeAccess] int
 #  117|       5: [BlockStmt] { ... }
 #  118|         0: [LocalTypeDeclStmt] class ...
 #  118|           0: [LocalClass] 
@@ -366,6 +418,7 @@ classes.kt:
 #  118|               5: [BlockStmt] { ... }
 #  118|                 0: [SuperConstructorInvocationStmt] super(...)
 #  118|             1: [Method] localFn
+#  118|               3: [TypeAccess] Unit
 #  118|               5: [BlockStmt] { ... }
 #  119|                 0: [LocalTypeDeclStmt] class ...
 #  119|                   0: [Class,GenericType,LocalClass,ParameterizedType] Local2
@@ -376,8 +429,10 @@ classes.kt:
 #  119|                         0: [SuperConstructorInvocationStmt] super(...)
 #  119|                         1: [BlockStmt] { ... }
 #  120|                     2: [Method] foo
+#  120|                       3: [TypeAccess] Unit
 #-----|                       4: (Parameters)
 #  120|                         0: [Parameter] p
+#  120|                           0: [TypeAccess] int
 #  120|                       5: [BlockStmt] { ... }
 #  122|                 1: [ExprStmt] <Expr>;
 #  122|                   0: [MethodAccess] foo(...)
@@ -386,8 +441,10 @@ classes.kt:
 #  122|                         0: [TypeAccess] Integer
 #  122|                     0: [VarAccess] p
 #  126|     4: [Method] fn3
+#  126|       3: [TypeAccess] Object
 #-----|       4: (Parameters)
 #  126|         0: [Parameter] p
+#  126|           0: [TypeAccess] int
 #  126|       5: [BlockStmt] { ... }
 #  127|         0: [ReturnStmt] return ...
 #  127|           0: [StmtExpr] <Stmt>
@@ -399,6 +456,7 @@ classes.kt:
 #  127|                       0: [SuperConstructorInvocationStmt] super(...)
 #  127|                       1: [BlockStmt] { ... }
 #  128|                   2: [Method] fn
+#  128|                     3: [TypeAccess] Unit
 #  128|                     5: [BlockStmt] { ... }
 #  129|                       0: [LocalTypeDeclStmt] class ...
 #  129|                         0: [Class,GenericType,LocalClass,ParameterizedType] Local3
@@ -409,8 +467,10 @@ classes.kt:
 #  129|                               0: [SuperConstructorInvocationStmt] super(...)
 #  129|                               1: [BlockStmt] { ... }
 #  130|                           2: [Method] foo
+#  130|                             3: [TypeAccess] Unit
 #-----|                             4: (Parameters)
 #  130|                               0: [Parameter] p
+#  130|                                 0: [TypeAccess] int
 #  130|                             5: [BlockStmt] { ... }
 #  132|                       1: [ExprStmt] <Expr>;
 #  132|                         0: [MethodAccess] foo(...)
@@ -425,8 +485,10 @@ generic_anonymous.kt:
 #    0| [CompilationUnit] generic_anonymous
 #    0|   1: [Class] Generic_anonymousKt
 #   11|     1: [Method] stringIdentity
+#   11|       3: [TypeAccess] String
 #-----|       4: (Parameters)
 #   11|         0: [Parameter] s
+#   11|           0: [TypeAccess] String
 #   11|       5: [BlockStmt] { ... }
 #   11|         0: [ReturnStmt] return ...
 #   11|           0: [MethodAccess] get(...)
@@ -435,8 +497,10 @@ generic_anonymous.kt:
 #   11|                 0: [TypeAccess] String
 #   11|               0: [VarAccess] s
 #   13|     2: [Method] intIdentity
+#   13|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   13|         0: [Parameter] i
+#   13|           0: [TypeAccess] int
 #   13|       5: [BlockStmt] { ... }
 #   13|         0: [ReturnStmt] return ...
 #   13|           0: [MethodAccess] get(...)
@@ -450,6 +514,7 @@ generic_anonymous.kt:
 #    1|     1: [Constructor] Generic
 #-----|       4: (Parameters)
 #    1|         0: [Parameter] t
+#    1|           0: [TypeAccess] T
 #    1|       5: [BlockStmt] { ... }
 #    1|         0: [SuperConstructorInvocationStmt] super(...)
 #    1|         1: [BlockStmt] { ... }
@@ -460,6 +525,7 @@ generic_anonymous.kt:
 #    3|             0: [KtInitializerAssignExpr] ...=...
 #    3|               0: [VarAccess] x
 #    1|     2: [Method] getT
+#    1|       3: [TypeAccess] T
 #    1|       5: [BlockStmt] { ... }
 #    1|         0: [ReturnStmt] return ...
 #    1|           0: [VarAccess] this.t
@@ -482,6 +548,7 @@ generic_anonymous.kt:
 #    4|                       0: [KtInitializerAssignExpr] ...=...
 #    4|                         0: [VarAccess] member
 #    4|               2: [Method] getMember
+#    4|                 3: [TypeAccess] T
 #    4|                 5: [BlockStmt] { ... }
 #    4|                   0: [ReturnStmt] return ...
 #    4|                     0: [VarAccess] this.member
@@ -495,11 +562,14 @@ generic_anonymous.kt:
 #    3|             0: [ClassInstanceExpr] new (...)
 #    3|               -3: [TypeAccess] Object
 #    3|     5: [Method] getX
+#    3|       3: [TypeAccess] new Object(...) { ... }
+#    3|         0: [TypeAccess] T
 #    3|       5: [BlockStmt] { ... }
 #    3|         0: [ReturnStmt] return ...
 #    3|           0: [VarAccess] this.x
 #    3|             -1: [ThisAccess] this
 #    7|     6: [Method] get
+#    7|       3: [TypeAccess] T
 #    7|       5: [BlockStmt] { ... }
 #    7|         0: [ReturnStmt] return ...
 #    7|           0: [MethodAccess] getMember(...)
@@ -513,6 +583,7 @@ local_anonymous.kt:
 #    3|         0: [SuperConstructorInvocationStmt] super(...)
 #    3|         1: [BlockStmt] { ... }
 #    4|     2: [Method] fn1
+#    4|       3: [TypeAccess] Object
 #    4|       5: [BlockStmt] { ... }
 #    5|         0: [ReturnStmt] return ...
 #    5|           0: [StmtExpr] <Stmt>
@@ -524,11 +595,13 @@ local_anonymous.kt:
 #    5|                       0: [SuperConstructorInvocationStmt] super(...)
 #    5|                       1: [BlockStmt] { ... }
 #    6|                   2: [Method] fn
+#    6|                     3: [TypeAccess] Unit
 #    6|                     5: [BlockStmt] { ... }
 #    5|               1: [ExprStmt] <Expr>;
 #    5|                 0: [ClassInstanceExpr] new (...)
 #    5|                   -3: [TypeAccess] Object
 #   10|     3: [Method] fn2
+#   10|       3: [TypeAccess] Unit
 #   10|       5: [BlockStmt] { ... }
 #   11|         0: [LocalTypeDeclStmt] class ...
 #   11|           0: [LocalClass] 
@@ -536,12 +609,14 @@ local_anonymous.kt:
 #   11|               5: [BlockStmt] { ... }
 #   11|                 0: [SuperConstructorInvocationStmt] super(...)
 #   11|             1: [Method] fnLocal
+#   11|               3: [TypeAccess] Unit
 #   11|               5: [BlockStmt] { ... }
 #   12|         1: [ExprStmt] <Expr>;
 #   12|           0: [MethodAccess] fnLocal(...)
 #   12|             -1: [ClassInstanceExpr] new (...)
 #   12|               -3: [TypeAccess] Object
 #   15|     4: [Method] fn3
+#   15|       3: [TypeAccess] Unit
 #   15|       5: [BlockStmt] { ... }
 #   16|         0: [LocalVariableDeclStmt] var ...;
 #   16|           1: [LocalVariableDeclExpr] lambda1
@@ -551,9 +626,12 @@ local_anonymous.kt:
 #   16|                   5: [BlockStmt] { ... }
 #   16|                     0: [SuperConstructorInvocationStmt] super(...)
 #   16|                 1: [Method] invoke
+#   16|                   3: [TypeAccess] int
 #-----|                   4: (Parameters)
 #   16|                     0: [Parameter] a
+#   16|                       0: [TypeAccess] int
 #   16|                     1: [Parameter] b
+#   16|                       0: [TypeAccess] int
 #   16|                   5: [BlockStmt] { ... }
 #   16|                     0: [ReturnStmt] return ...
 #   16|                       0: [AddExpr] ... + ...
@@ -571,9 +649,12 @@ local_anonymous.kt:
 #   17|                   5: [BlockStmt] { ... }
 #   17|                     0: [SuperConstructorInvocationStmt] super(...)
 #   17|                 1: [Method] invoke
+#   17|                   3: [TypeAccess] int
 #-----|                   4: (Parameters)
 #   17|                     0: [Parameter] a
+#   17|                       0: [TypeAccess] int
 #   17|                     1: [Parameter] b
+#   17|                       0: [TypeAccess] int
 #   17|                   5: [BlockStmt] { ... }
 #   17|                     0: [ReturnStmt] return ...
 #   17|                       0: [AddExpr] ... + ...
@@ -584,6 +665,7 @@ local_anonymous.kt:
 #   17|                 1: [TypeAccess] Integer
 #   17|                 2: [TypeAccess] Integer
 #   20|     5: [Method] fn4
+#   20|       3: [TypeAccess] Unit
 #   20|       5: [BlockStmt] { ... }
 #   21|         0: [LocalVariableDeclStmt] var ...;
 #   21|           1: [LocalVariableDeclExpr] fnRef
@@ -603,6 +685,7 @@ local_anonymous.kt:
 #   21|                 0: [TypeAccess] Class1
 #   21|                 1: [TypeAccess] Unit
 #   24|     6: [Method] fn5
+#   24|       3: [TypeAccess] Unit
 #   24|       5: [BlockStmt] { ... }
 #   25|         0: [LocalTypeDeclStmt] class ...
 #   25|           0: [LocalClass] LocalClass
@@ -616,6 +699,7 @@ local_anonymous.kt:
 #   26|             1: [ClassInstanceExpr] new LocalClass(...)
 #   26|               -3: [TypeAccess] LocalClass
 #   29|     7: [Method] nullableAnonymous
+#   29|       3: [TypeAccess] Object
 #   29|       5: [BlockStmt] { ... }
 #   35|         0: [ReturnStmt] return ...
 #   29|           0: [StmtExpr] <Stmt>
@@ -630,13 +714,16 @@ local_anonymous.kt:
 #   30|                           0: [KtInitializerAssignExpr] ...=...
 #   30|                             0: [VarAccess] x
 #   30|                   2: [Method] getX
+#   30|                     3: [TypeAccess] int
 #   30|                     5: [BlockStmt] { ... }
 #   30|                       0: [ReturnStmt] return ...
 #   30|                         0: [VarAccess] this.x
 #   30|                           -1: [ThisAccess] this
 #   30|                   2: [Method] setX
+#   30|                     3: [TypeAccess] Unit
 #-----|                     4: (Parameters)
 #   30|                       0: [Parameter] <set-?>
+#   30|                         0: [TypeAccess] int
 #   30|                     5: [BlockStmt] { ... }
 #   30|                       0: [ExprStmt] <Expr>;
 #   30|                         0: [AssignExpr] ...=...
@@ -647,6 +734,7 @@ local_anonymous.kt:
 #   30|                     -1: [TypeAccess] int
 #   30|                     0: [IntegerLiteral] 1
 #   32|                   5: [Method] member
+#   32|                     3: [TypeAccess] Unit
 #   32|                     5: [BlockStmt] { ... }
 #   33|                       0: [LocalVariableDeclStmt] var ...;
 #   33|                         1: [LocalVariableDeclExpr] maybeThis
@@ -675,13 +763,16 @@ local_anonymous.kt:
 #   40|             0: [KtInitializerAssignExpr] ...=...
 #   40|               0: [VarAccess] i
 #   40|     2: [Method] getI
+#   40|       3: [TypeAccess] Interface2
 #   40|       5: [BlockStmt] { ... }
 #   40|         0: [ReturnStmt] return ...
 #   40|           0: [VarAccess] this.i
 #   40|             -1: [ThisAccess] this
 #   40|     2: [Method] setI
+#   40|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   40|         0: [Parameter] <set-?>
+#   40|           0: [TypeAccess] Interface2
 #   40|       5: [BlockStmt] { ... }
 #   40|         0: [ExprStmt] <Expr>;
 #   40|           0: [AssignExpr] ...=...

@@ -10,8 +10,10 @@ Use.kt:
 #    0| [CompilationUnit] Use
 #    0|   1: [Class] UseKt
 #    2|     1: [Method] use
+#    2|       3: [TypeAccess] String
 #-----|       4: (Parameters)
 #    2|         0: [Parameter] prop
+#    2|           0: [TypeAccess] Prop
 #    2|       5: [BlockStmt] { ... }
 #    3|         0: [ReturnStmt] return ...
 #    3|           0: [ImplicitNotNullExpr] <implicit not null>

@@ -1231,7 +1231,7 @@ open class KotlinFileExtractor(
             if (dispatchReceiver != null) {
                 extractExpressionExpr(dispatchReceiver, enclosingCallable, id, -1, enclosingStmt)
             } else if (isStaticFunction(callTarget)) {
-                extractStaticCallTypeAccessQualifier(callTarget, id, locId, enclosingCallable, enclosingStmt)
+                extractStaticTypeAccessQualifier(callTarget, id, locId, enclosingCallable, enclosingStmt)
             }
         }
 
@@ -1250,13 +1250,25 @@ open class KotlinFileExtractor(
         extractCallValueArguments(argParent, valueArguments, enclosingStmt, enclosingCallable, idxOffset)
     }
 
-    private fun extractStaticCallTypeAccessQualifier(target: IrFunction, parentExpr: Label<out DbExprparent>, locId: Label<DbLocation>, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) {
-        if (target.isStaticMethodOfClass) {
+    private fun extractStaticTypeAccessQualifier(target: IrDeclaration, parentExpr: Label<out DbExprparent>, locId: Label<DbLocation>, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) {
+        if (target.isStaticOfClass) {
             extractTypeAccessRecursive(target.parentAsClass.toRawType(), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
-        } else if (target is IrSimpleFunction && target.dispatchReceiverParameter == null && target.parent is IrFile) {
+        } else if (target.isStaticOfFile) {
             extractTypeAccess(useFileClassType(target.parent as IrFile), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
         }
     }
+
+    private val IrDeclaration.isStaticOfClass: Boolean
+        get() = this.isStatic && parent is IrClass
+
+    private val IrDeclaration.isStaticOfFile: Boolean
+        get() = this.isStatic && parent is IrFile
+
+    private val IrDeclaration.isStatic: Boolean
+        get() = this is IrSimpleFunction && dispatchReceiverParameter == null ||
+                this is IrField && this.isStatic ||
+                this is IrEnumEntry
+
 
     private fun extractCallValueArguments(callId: Label<out DbExprparent>, call: IrFunctionAccessExpression, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) =
         extractCallValueArguments(callId, (0 until call.valueArgumentsCount).map { call.getValueArgument(it) }, enclosingStmt, enclosingCallable, idxOffset)
@@ -2487,7 +2499,7 @@ open class KotlinFileExtractor(
                     if (receiver != null) {
                         extractExpressionExpr(receiver, callable, id, -1, exprParent.enclosingStmt)
                     } else if (owner.isStatic) {
-                        extractTypeAccessRecursive(owner.parentAsClass.toRawType(), locId, id, -1, callable, exprParent.enclosingStmt)
+                        extractStaticTypeAccessQualifier(owner, id, locId, callable, exprParent.enclosingStmt)
                     }
                 }
                 is IrGetEnumValue -> {
@@ -2514,7 +2526,7 @@ open class KotlinFileExtractor(
                     val vId = useEnumEntry(owner)
                     tw.writeVariableBinding(id, vId)
 
-                    extractTypeAccessRecursive(e.type, locId, id, -1, callable, exprParent.enclosingStmt)
+                    extractStaticTypeAccessQualifier(owner, id, locId, callable, exprParent.enclosingStmt)
                 }
                 is IrSetValue,
                 is IrSetField -> {
@@ -2576,7 +2588,7 @@ open class KotlinFileExtractor(
                             if (receiver != null) {
                                 extractExpressionExpr(receiver, callable, lhsId, -1, exprParent.enclosingStmt)
                             } else if (realField.isStatic) {
-                                extractTypeAccessRecursive(realField.parentAsClass.toRawType(), lhsLocId, lhsId, -1, callable, exprParent.enclosingStmt)
+                                extractStaticTypeAccessQualifier(realField, lhsId, lhsLocId, callable, exprParent.enclosingStmt)
                             }
                         }
                         else -> {
@@ -2988,7 +3000,7 @@ open class KotlinFileExtractor(
                     useFirstArgAsDispatch = target.owner.dispatchReceiverParameter != null
 
                     if (isStaticFunction(target.owner)) {
-                        extractStaticCallTypeAccessQualifier(target.owner, callId, locId, labels.methodId, retId)
+                        extractStaticTypeAccessQualifier(target.owner, callId, locId, labels.methodId, retId)
                     }
                 }
             }

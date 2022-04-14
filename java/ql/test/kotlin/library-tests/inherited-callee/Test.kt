@@ -6,7 +6,7 @@ open class TestKt {
 
 interface ParentIf {
 
-  fun inheritedInterfaceMethod()
+  fun inheritedInterfaceMethodK()
 
 }
 
@@ -25,7 +25,7 @@ class ChildKt : TestKt() {
     c.hashCode()
     c.inheritMe()
     val c2: ParentIf? = null
-    c2?.inheritedInterfaceMethod()
+    c2?.inheritedInterfaceMethodK()
 
   }
 

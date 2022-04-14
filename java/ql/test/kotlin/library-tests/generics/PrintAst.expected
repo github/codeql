@@ -4,22 +4,30 @@ generics.kt:
 #    3|     1: [ExtensionMethod] f0
 #-----|       2: (Generic Parameters)
 #    3|         0: [TypeVariable] S
+#    3|       3: [TypeAccess] S
 #-----|       4: (Parameters)
 #    3|         0: [Parameter] <this>
+#    3|           0: [TypeAccess] int
 #    3|         1: [Parameter] s
+#    3|           0: [TypeAccess] S
 #    3|       5: [BlockStmt] { ... }
 #    4|         0: [ReturnStmt] return ...
 #    4|           0: [VarAccess] s
 #    7|     2: [ExtensionMethod] f1
 #-----|       2: (Generic Parameters)
 #    7|         0: [TypeVariable] S
+#    7|       3: [TypeAccess] C0<S>
+#    7|         0: [TypeAccess] S
 #-----|       4: (Parameters)
 #    7|         0: [Parameter] <this>
+#    7|           0: [TypeAccess] int
 #    7|         1: [Parameter] s
+#    7|           0: [TypeAccess] S
 #    7|       5: [BlockStmt] { ... }
 #    8|         0: [ReturnStmt] return ...
 #    8|           0: [NullLiteral] null
 #   24|     3: [Method] m
+#   24|       3: [TypeAccess] Unit
 #   24|       5: [BlockStmt] { ... }
 #   25|         0: [LocalVariableDeclStmt] var ...;
 #   25|           1: [LocalVariableDeclExpr] c1
@@ -83,6 +91,7 @@ generics.kt:
 #   13|     1: [Constructor] C1
 #-----|       4: (Parameters)
 #   13|         0: [Parameter] t
+#   13|           0: [TypeAccess] T
 #   13|       5: [BlockStmt] { ... }
 #   13|         0: [SuperConstructorInvocationStmt] super(...)
 #   13|         1: [BlockStmt] { ... }
@@ -90,6 +99,7 @@ generics.kt:
 #   13|             0: [KtInitializerAssignExpr] ...=...
 #   13|               0: [VarAccess] t
 #   13|     2: [Method] getT
+#   13|       3: [TypeAccess] T
 #   13|       5: [BlockStmt] { ... }
 #   13|         0: [ReturnStmt] return ...
 #   13|           0: [VarAccess] this.t
@@ -98,14 +108,20 @@ generics.kt:
 #   13|       -1: [TypeAccess] T
 #   13|       0: [VarAccess] t
 #   14|     4: [Method] f1
+#   14|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   14|         0: [Parameter] t
+#   14|           0: [TypeAccess] T
 #   14|       5: [BlockStmt] { ... }
 #   15|     5: [Method] f2
 #-----|       2: (Generic Parameters)
 #   15|         0: [TypeVariable] U
+#   15|       3: [TypeAccess] C1<U,U>
+#   15|         0: [TypeAccess] U
+#   15|         1: [TypeAccess] U
 #-----|       4: (Parameters)
 #   15|         0: [Parameter] u
+#   15|           0: [TypeAccess] U
 #   15|       5: [BlockStmt] { ... }
 #   16|         0: [ReturnStmt] return ...
 #   16|           0: [ClassInstanceExpr] new C1<U,U>(...)
@@ -121,8 +137,10 @@ generics.kt:
 #   21|     2: [Method] f4
 #-----|       2: (Generic Parameters)
 #   21|         0: [TypeVariable] P
+#   21|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   21|         0: [Parameter] p
+#   21|           0: [TypeAccess] P
 #   21|       5: [BlockStmt] { ... }
 #   36|   7: [Class,GenericType,ParameterizedType] BoundedTest
 #-----|     -2: (Generic Parameters)
@@ -133,9 +151,12 @@ generics.kt:
 #   36|         0: [SuperConstructorInvocationStmt] super(...)
 #   36|         1: [BlockStmt] { ... }
 #   38|     2: [Method] m
+#   38|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   38|         0: [Parameter] s
+#   38|           0: [TypeAccess] S
 #   38|         1: [Parameter] t
+#   38|           0: [TypeAccess] T
 #   38|       5: [BlockStmt] { ... }
 #   42|   8: [Class,GenericType,ParameterizedType] Outer
 #-----|     -2: (Generic Parameters)
@@ -154,11 +175,16 @@ generics.kt:
 #   43|           0: [SuperConstructorInvocationStmt] super(...)
 #   43|           1: [BlockStmt] { ... }
 #   44|       2: [Method] fn1
+#   44|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #   44|           0: [Parameter] t1
+#   44|             0: [TypeAccess] T1
 #   44|           1: [Parameter] t2
+#   44|             0: [TypeAccess] T2
 #   44|           2: [Parameter] t3
+#   44|             0: [TypeAccess] T3
 #   44|           3: [Parameter] t4
+#   44|             0: [TypeAccess] T4
 #   44|         5: [BlockStmt] { ... }
 #   45|           0: [LocalVariableDeclStmt] var ...;
 #   45|             1: [LocalVariableDeclExpr] c
@@ -177,9 +203,12 @@ generics.kt:
 #   49|           0: [SuperConstructorInvocationStmt] super(...)
 #   49|           1: [BlockStmt] { ... }
 #   50|       2: [Method] fn2
+#   50|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #   50|           0: [Parameter] t3
+#   50|             0: [TypeAccess] T3
 #   50|           1: [Parameter] t4
+#   50|             0: [TypeAccess] T4
 #   50|         5: [BlockStmt] { ... }
 #   51|           0: [LocalVariableDeclStmt] var ...;
 #   51|             1: [LocalVariableDeclExpr] c
@@ -197,8 +226,10 @@ generics.kt:
 #   57|     2: [Method] fn1
 #-----|       2: (Generic Parameters)
 #   57|         0: [TypeVariable] T2
+#   57|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   57|         0: [Parameter] t
+#   57|           0: [TypeAccess] T2
 #   57|       5: [BlockStmt] { ... }
 #   58|         0: [LocalTypeDeclStmt] class ...
 #   58|           0: [Class,GenericType,LocalClass,ParameterizedType] Local
@@ -211,9 +242,12 @@ generics.kt:
 #   59|             2: [Method] fn2
 #-----|               2: (Generic Parameters)
 #   59|                 0: [TypeVariable] T4
+#   59|               3: [TypeAccess] Unit
 #-----|               4: (Parameters)
 #   59|                 0: [Parameter] t2
+#   59|                   0: [TypeAccess] T2
 #   59|                 1: [Parameter] t4
+#   59|                   0: [TypeAccess] T4
 #   59|               5: [BlockStmt] { ... }
 #   61|         1: [ExprStmt] <Expr>;
 #   61|           0: [MethodAccess] fn2(...)

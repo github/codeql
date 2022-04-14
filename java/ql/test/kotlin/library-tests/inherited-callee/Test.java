@@ -4,9 +4,9 @@ public class Test {
 
 }
 
-interface ParentIf { 
+interface ParentIf {
 
-  void inheritedInterfaceMethod();
+  void inheritedInterfaceMethodJ();
 
 }
 
@@ -25,7 +25,7 @@ class Child extends Test {
     c.hashCode();
     c.inheritMe();
     ChildIf c2 = null;
-    c2.inheritedInterfaceMethod();
+    c2.inheritedInterfaceMethodJ();
 
   }
 

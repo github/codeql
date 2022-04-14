@@ -2,8 +2,10 @@ reflection.kt:
 #    0| [CompilationUnit] reflection
 #    0|   1: [Class] ReflectionKt
 #   47|     1: [ExtensionMethod] getLastChar
+#   47|       3: [TypeAccess] char
 #-----|       4: (Parameters)
 #   46|         0: [Parameter] <this>
+#   46|           0: [TypeAccess] String
 #   47|       5: [BlockStmt] { ... }
 #   47|         0: [ReturnStmt] return ...
 #   47|           0: [MethodAccess] get(...)
@@ -13,6 +15,7 @@ reflection.kt:
 #   47|                 -1: [ExtensionReceiverAccess] this
 #   47|               1: [IntegerLiteral] 1
 #   49|     2: [Method] fn2
+#   49|       3: [TypeAccess] Unit
 #   49|       5: [BlockStmt] { ... }
 #   50|         0: [ExprStmt] <Expr>;
 #   50|           0: [MethodAccess] println(...)
@@ -79,15 +82,21 @@ reflection.kt:
 #   54|     3: [ExtensionMethod] ext1
 #-----|       2: (Generic Parameters)
 #   54|         0: [TypeVariable] T2
+#   54|       3: [TypeAccess] String
 #-----|       4: (Parameters)
 #   54|         0: [Parameter] <this>
+#   54|           0: [TypeAccess] Generic<T2>
+#   54|             0: [TypeAccess] T2
 #   54|       5: [BlockStmt] { ... }
 #   54|         0: [ReturnStmt] return ...
 #   54|           0: [MethodAccess] toString(...)
 #   54|             -1: [ExtensionReceiverAccess] this
 #   56|     4: [ExtensionMethod] ext2
+#   56|       3: [TypeAccess] String
 #-----|       4: (Parameters)
 #   56|         0: [Parameter] <this>
+#   56|           0: [TypeAccess] Generic<Integer>
+#   56|             0: [TypeAccess] Integer
 #   56|       5: [BlockStmt] { ... }
 #   56|         0: [ReturnStmt] return ...
 #   56|           0: [MethodAccess] toString(...)
@@ -95,10 +104,13 @@ reflection.kt:
 #   94|     5: [Method] fn
 #-----|       2: (Generic Parameters)
 #   94|         0: [TypeVariable] T
+#   94|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   94|         0: [Parameter] value
+#   94|           0: [TypeAccess] T
 #   94|       5: [BlockStmt] { ... }
 #   96|     6: [Method] test
+#   96|       3: [TypeAccess] Unit
 #   96|       5: [BlockStmt] { ... }
 #   97|         0: [ExprStmt] <Expr>;
 #   97|           0: [MethodAccess] fn11(...)
@@ -194,30 +206,45 @@ reflection.kt:
 #-----|       2: (Generic Parameters)
 #  102|         0: [TypeVariable] T
 #  102|         1: [TypeVariable] R
+#  102|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #  102|         0: [Parameter] l
+#  102|           0: [TypeAccess] T
 #  102|         1: [Parameter] transform
+#  102|           0: [TypeAccess] Function1<T,R>
+#  102|             0: [TypeAccess] T
+#  102|             1: [TypeAccess] R
 #  102|       5: [BlockStmt] { ... }
 #  103|     8: [Method] fn12
 #-----|       2: (Generic Parameters)
 #  103|         0: [TypeVariable] T1
 #  103|         1: [TypeVariable] R
+#  103|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #  103|         0: [Parameter] l
+#  103|           0: [TypeAccess] T1
 #  103|         1: [Parameter] l2
+#  103|           0: [TypeAccess] Function1<T1,R>
+#  103|             0: [TypeAccess] T1
+#  103|             1: [TypeAccess] R
 #  103|       5: [BlockStmt] { ... }
 #  121|     9: [Method] fn1
+#  121|       3: [TypeAccess] int
 #  121|       5: [BlockStmt] { ... }
 #  121|         0: [ReturnStmt] return ...
 #  121|           0: [IntegerLiteral] 5
 #  123|     10: [Method] fn2
+#  123|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #  123|         0: [Parameter] f
+#  123|           0: [TypeAccess] Function0<Unit>
+#  123|             0: [TypeAccess] Unit
 #  123|       5: [BlockStmt] { ... }
 #  123|         0: [ReturnStmt] return ...
 #  123|           0: [MethodAccess] invoke(...)
 #  123|             -1: [VarAccess] f
 #  125|     11: [Method] adapted
+#  125|       3: [TypeAccess] Unit
 #  125|       5: [BlockStmt] { ... }
 #  126|         0: [ExprStmt] <Expr>;
 #  126|           0: [MethodAccess] fn2(...)
@@ -230,6 +257,7 @@ reflection.kt:
 #  126|                       5: [BlockStmt] { ... }
 #  126|                         0: [SuperConstructorInvocationStmt] super(...)
 #  126|                     1: [Method] fn1
+#  126|                       3: [TypeAccess] Unit
 #  126|                       5: [BlockStmt] { ... }
 #  126|                         0: [ExprStmt] <Expr>;
 #  126|                           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
@@ -255,6 +283,7 @@ reflection.kt:
 #    5|         0: [SuperConstructorInvocationStmt] super(...)
 #    5|         1: [BlockStmt] { ... }
 #    6|     2: [Method] fn
+#    6|       3: [TypeAccess] Unit
 #    6|       5: [BlockStmt] { ... }
 #    7|         0: [LocalVariableDeclStmt] var ...;
 #    7|           1: [LocalVariableDeclExpr] ref
@@ -524,8 +553,10 @@ reflection.kt:
 #   24|                       5: [BlockStmt] { ... }
 #   24|                         0: [SuperConstructorInvocationStmt] super(...)
 #   24|                     1: [Method] invoke
+#   24|                       3: [TypeAccess] boolean
 #-----|                       4: (Parameters)
 #   24|                         0: [Parameter] it
+#   24|                           0: [TypeAccess] KCallable<?>
 #   24|                       5: [BlockStmt] { ... }
 #   24|                         0: [ReturnStmt] return ...
 #   24|                           0: [ValueEQExpr] ... (value equals) ...
@@ -548,8 +579,10 @@ reflection.kt:
 #   28|           0: [SuperConstructorInvocationStmt] super(...)
 #   28|           1: [BlockStmt] { ... }
 #   29|       2: [Method] m
+#   29|         3: [TypeAccess] double
 #-----|         4: (Parameters)
 #   29|           0: [Parameter] i
+#   29|             0: [TypeAccess] int
 #   29|         5: [BlockStmt] { ... }
 #   29|           0: [ReturnStmt] return ...
 #   29|             0: [DoubleLiteral] 5.0
@@ -565,6 +598,7 @@ reflection.kt:
 #   34|               0: [KtInitializerAssignExpr] ...=...
 #   34|                 0: [VarAccess] p1
 #   33|       2: [Method] getP0
+#   33|         3: [TypeAccess] int
 #   33|         5: [BlockStmt] { ... }
 #   33|           0: [ReturnStmt] return ...
 #   33|             0: [VarAccess] this.p0
@@ -573,13 +607,16 @@ reflection.kt:
 #   33|         -1: [TypeAccess] int
 #   33|         0: [IntegerLiteral] 1
 #   34|       4: [Method] getP1
+#   34|         3: [TypeAccess] int
 #   34|         5: [BlockStmt] { ... }
 #   34|           0: [ReturnStmt] return ...
 #   34|             0: [VarAccess] this.p1
 #   34|               -1: [ThisAccess] this
 #   34|       4: [Method] setP1
+#   34|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #   34|           0: [Parameter] <set-?>
+#   34|             0: [TypeAccess] int
 #   34|         5: [BlockStmt] { ... }
 #   34|           0: [ExprStmt] <Expr>;
 #   34|             0: [AssignExpr] ...=...
@@ -590,25 +627,33 @@ reflection.kt:
 #   34|         -1: [TypeAccess] int
 #   34|         0: [IntegerLiteral] 2
 #   36|       7: [Method] getP2
+#   36|         3: [TypeAccess] int
 #   36|         5: [BlockStmt] { ... }
 #   36|           0: [ReturnStmt] return ...
 #   36|             0: [IntegerLiteral] 1
 #   37|       8: [Method] setP2
+#   37|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #   37|           0: [Parameter] value
+#   37|             0: [TypeAccess] int
 #   37|         5: [BlockStmt] { ... }
 #   37|           0: [ReturnStmt] return ...
 #   37|             0: [VarAccess] INSTANCE
 #   40|       9: [ExtensionMethod] getP3
+#   40|         3: [TypeAccess] int
 #-----|         4: (Parameters)
 #   39|           0: [Parameter] <this>
+#   39|             0: [TypeAccess] int
 #   40|         5: [BlockStmt] { ... }
 #   40|           0: [ReturnStmt] return ...
 #   40|             0: [IntegerLiteral] 1
 #   41|       10: [ExtensionMethod] setP3
+#   41|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #   39|           0: [Parameter] <this>
+#   39|             0: [TypeAccess] int
 #   41|           1: [Parameter] value
+#   41|             0: [TypeAccess] int
 #   41|         5: [BlockStmt] { ... }
 #   41|           0: [ReturnStmt] return ...
 #   41|             0: [VarAccess] INSTANCE
@@ -618,6 +663,7 @@ reflection.kt:
 #   58|         0: [SuperConstructorInvocationStmt] super(...)
 #   58|         1: [BlockStmt] { ... }
 #   59|     4: [Method] fn
+#   59|       3: [TypeAccess] Unit
 #   59|       5: [BlockStmt] { ... }
 #   60|         0: [ExprStmt] <Expr>;
 #   60|           0: [MethodAccess] println(...)
@@ -955,19 +1001,24 @@ reflection.kt:
 #   75|           0: [SuperConstructorInvocationStmt] super(...)
 #   75|           1: [BlockStmt] { ... }
 #   76|       2: [Method] m1
+#   76|         3: [TypeAccess] String
 #-----|         4: (Parameters)
 #   76|           0: [Parameter] i
+#   76|             0: [TypeAccess] T1
 #   76|         5: [BlockStmt] { ... }
 #   76|           0: [ReturnStmt] return ...
 #   76|             0: [MethodAccess] toString(...)
 #   76|               -1: [ThisAccess] this
 #   78|       3: [Method] getP2
+#   78|         3: [TypeAccess] T1
 #   78|         5: [BlockStmt] { ... }
 #   78|           0: [ReturnStmt] return ...
 #   78|             0: [NullLiteral] null
 #   79|       4: [Method] setP2
+#   79|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #   79|           0: [Parameter] value
+#   79|             0: [TypeAccess] T1
 #   79|         5: [BlockStmt] { ... }
 #   79|           0: [ReturnStmt] return ...
 #   79|             0: [VarAccess] INSTANCE
@@ -977,6 +1028,7 @@ reflection.kt:
 #   83|     3: [Constructor] Class2
 #-----|       4: (Parameters)
 #   83|         0: [Parameter] value
+#   83|           0: [TypeAccess] T
 #   83|       5: [BlockStmt] { ... }
 #   83|         0: [SuperConstructorInvocationStmt] super(...)
 #   83|         1: [BlockStmt] { ... }
@@ -984,6 +1036,7 @@ reflection.kt:
 #   83|             0: [KtInitializerAssignExpr] ...=...
 #   83|               0: [VarAccess] value
 #   83|     4: [Method] getValue
+#   83|       3: [TypeAccess] T
 #   83|       5: [BlockStmt] { ... }
 #   83|         0: [ReturnStmt] return ...
 #   83|           0: [VarAccess] this.value
@@ -997,10 +1050,12 @@ reflection.kt:
 #   86|       1: [Constructor] Inner
 #-----|         4: (Parameters)
 #   86|           0: [Parameter] t
+#   86|             0: [TypeAccess] T1
 #   86|         5: [BlockStmt] { ... }
 #   86|           0: [SuperConstructorInvocationStmt] super(...)
 #   86|           1: [BlockStmt] { ... }
 #   89|     8: [Method] test
+#   89|       3: [TypeAccess] Unit
 #   89|       5: [BlockStmt] { ... }
 #   90|         0: [ExprStmt] <Expr>;
 #   90|           0: [MethodAccess] fn11(...)
@@ -1045,6 +1100,7 @@ reflection.kt:
 #  105|     1: [Constructor] Base1
 #-----|       4: (Parameters)
 #  105|         0: [Parameter] prop1
+#  105|           0: [TypeAccess] int
 #  105|       5: [BlockStmt] { ... }
 #  105|         0: [SuperConstructorInvocationStmt] super(...)
 #  105|         1: [BlockStmt] { ... }
@@ -1052,13 +1108,16 @@ reflection.kt:
 #  105|             0: [KtInitializerAssignExpr] ...=...
 #  105|               0: [VarAccess] prop1
 #  105|     2: [Method] getProp1
+#  105|       3: [TypeAccess] int
 #  105|       5: [BlockStmt] { ... }
 #  105|         0: [ReturnStmt] return ...
 #  105|           0: [VarAccess] this.prop1
 #  105|             -1: [ThisAccess] this
 #  105|     2: [Method] setProp1
+#  105|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #  105|         0: [Parameter] <set-?>
+#  105|           0: [TypeAccess] int
 #  105|       5: [BlockStmt] { ... }
 #  105|         0: [ExprStmt] <Expr>;
 #  105|           0: [AssignExpr] ...=...
@@ -1072,11 +1131,13 @@ reflection.kt:
 #  107|     1: [Constructor] Derived1
 #-----|       4: (Parameters)
 #  107|         0: [Parameter] prop1
+#  107|           0: [TypeAccess] int
 #  107|       5: [BlockStmt] { ... }
 #  107|         0: [SuperConstructorInvocationStmt] super(...)
 #  107|           0: [VarAccess] prop1
 #  107|         1: [BlockStmt] { ... }
 #  108|     2: [Method] fn
+#  108|       3: [TypeAccess] Unit
 #  108|       5: [BlockStmt] { ... }
 #  109|         0: [ExprStmt] <Expr>;
 #  109|           0: [MethodAccess] println(...)
@@ -1124,6 +1185,7 @@ reflection.kt:
 #  113|         0: [SuperConstructorInvocationStmt] super(...)
 #  113|         1: [BlockStmt] { ... }
 #  114|     2: [Method] fn
+#  114|       3: [TypeAccess] Unit
 #  114|       5: [BlockStmt] { ... }
 #  115|         0: [LocalTypeDeclStmt] class ...
 #  115|           0: [LocalClass] 
@@ -1131,8 +1193,10 @@ reflection.kt:
 #  115|               5: [BlockStmt] { ... }
 #  115|                 0: [SuperConstructorInvocationStmt] super(...)
 #  115|             1: [Method] fn1
+#  115|               3: [TypeAccess] Unit
 #-----|               4: (Parameters)
 #  115|                 0: [Parameter] i
+#  115|                   0: [TypeAccess] int
 #  115|               5: [BlockStmt] { ... }
 #  116|         1: [LocalVariableDeclStmt] var ...;
 #  116|           1: [LocalVariableDeclExpr] x
