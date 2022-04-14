@@ -45,9 +45,9 @@ jobs:
           # If there is no existing comment, comment_id.txt will contain just a
           # newline (due to jq & gh behaviour). This will cause grep to fail, so
           # we catch that.
-          COMMENT_ID=$(grep -o '^[0-9]\+$' comment_id.txt || true)
+          RAW_COMMENT_ID=$(grep -o '^[0-9]\+$' comment_id.txt || true)
 
-          if [ $COMMENT_ID ]
+          if [ $RAW_COMMENT_ID ]
           then
             # Fetch existing comment, and validate:
             # - comment belongs to the PR with number $PR_NUMBER
@@ -57,13 +57,13 @@ jobs:
                                       | select(.body | test(\"^${COMMENT_PREFIX}\"))         \
                                       | select(.user.login == \"${COMMENT_AUTHOR}\")         \
                                       | .id"
-            COMMENT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" | jq "${FILTER}")
+            COMMENT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${RAW_COMMENT_ID}" | jq "${FILTER}")
             if [ $COMMENT_ID ]
             then
               # Update existing comment
               jq --rawfile body comment_body.txt '{"body":$body}' -n | gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" -X PATCH --input -
             else
-              echo "Comment ${COMMENT_ID} did not pass validations: not editing."
+              echo "Comment ${RAW_COMMENT_ID} did not pass validations: not editing."
             fi
           else
             # Create new comment
