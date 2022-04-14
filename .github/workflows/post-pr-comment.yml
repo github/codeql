@@ -53,11 +53,11 @@ jobs:
             # - comment belongs to the PR with number $PR_NUMBER
             # - comment starts with the expected prefix ("QHelp previews")
             # - comment author is github-actions[bot]
-            FILTER="select(.issue_url | test(\"${GITHUB_REPOSITORY}/issues/${PR_NUMBER}$\")) \
-                                      | select(.body | test(\"^${COMMENT_PREFIX}\"))         \
-                                      | select(.user.login == \"${COMMENT_AUTHOR}\")         \
-                                      | .id"
-            COMMENT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${RAW_COMMENT_ID}" | jq "${FILTER}")
+            FILTER='select(.issue_url | endswith($repo+"/issues/"+$pr))
+                  | select(.body | startswith($prefix))
+                  | select(.user.login == $author)
+                  | .id'
+            COMMENT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" | jq --arg repo "${GITHUB_REPOSITORY}" --arg pr "${PR_NUMBER}" --arg prefix "${COMMENT_PREFIX}" --arg author "${COMMENT_AUTHOR}" "${FILTER}")
             if [ $COMMENT_ID ]
             then
               # Update existing comment
