@@ -383,8 +383,8 @@ class AnnotationType extends Interface {
 
   /**
    * Gets the retention policy of this annotation type, that is, the name of one of the
-   * enum constants of `java.lang.annotation.RetentionPolicy`. If no explicit retention
-   * policy is specified the result is `CLASS`.
+   * enum constants of `java.lang.annotation.RetentionPolicy`. If this annotation type
+   * has no `@Retention` annotation, the result is `CLASS`.
    */
   string getRetentionPolicy() {
     if this.getADeclaredAnnotation() instanceof RetentionAnnotation
@@ -397,8 +397,13 @@ class AnnotationType extends Interface {
   /**
    * Holds if the element type is a possible target for this annotation type.
    * The `elementType` is the name of one of the `java.lang.annotation.ElementType`
-   * enum constants. If no explicit target is specified for this annotation type
-   * it is considered to be applicable in all declaration contexts.
+   * enum constants.
+   *
+   * If this annotation type has no `@Target` annotation, it is considered to be applicable
+   * in all declaration contexts. This matches the behavior of the latest Java versions
+   * but differs from the behavior of older Java versions. This predicate must only be
+   * called with names of `ElementType` enum constants; for other values it might hold
+   * erroneously.
    */
   bindingset[elementType]
   predicate isATargetType(string elementType) {
