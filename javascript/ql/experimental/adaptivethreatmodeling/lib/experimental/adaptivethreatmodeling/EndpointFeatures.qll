@@ -230,6 +230,7 @@ private newtype TEndpointFeature =
   TCalleeAccessPath() or
   TCalleeAccessPathWithStructuralInfo() or
   TEnclosingFunctionBody() or
+  TFileImports() or
   TCallee_AccessPath() or
   TInput_AccessPathFromCallee() or
   TInput_ArgumentIndex()
@@ -410,10 +411,29 @@ class EnclosingFunctionBody extends EndpointFeature, TEnclosingFunctionBody {
   }
 }
 
+/** The feature for the imports defined in the file containing an endpoint. */
+class FileImports extends EndpointFeature, TFileImports {
+  override string getName() { result = "fileImports" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    result =
+      concat(string importPath |
+        importPath = SyntacticUtilities::getImportPathForFile(endpoint.getFile())
+      |
+        importPath, " " order by importPath
+      )
+  }
+}
+
 /**
  * Syntactic utilities for feature value computation.
  */
 private module SyntacticUtilities {
+  /** Gets an import located in `file`. */
+  string getImportPathForFile(File file) {
+    result = any(Import imp | imp.getFile() = file).getImportedPath().getValue()
+  }
+
   /**
    * Gets a property initializer value in a an object literal or one of its nested object literals.
    */
