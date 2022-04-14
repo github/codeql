@@ -63,7 +63,8 @@ jobs:
               # Update existing comment
               jq --rawfile body comment_body.txt '{"body":$body}' -n | gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" -X PATCH --input -
             else
-              echo "Comment ${RAW_COMMENT_ID} did not pass validations: not editing."
+              echo "Comment ${RAW_COMMENT_ID} did not pass validations: not editing." >&2
+              exit 1
             fi
           else
             # Create new comment
