@@ -4,40 +4,36 @@ import pathlib
 import re
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import List, Set, Dict
+from typing import List, Set, Dict, ClassVar
 
 import yaml
 
 root_class_name = "Element"
 
 
-class Cardinality(Enum):
-    """ The cardinality of a property
+@dataclass
+class Property:
+    is_single: ClassVar = False
+    is_optional: ClassVar = False
+    is_repeated: ClassVar = False
 
-    `ONE` is the default, `OPTIONAL` are the fields denoted by `?`, `MANY` are those denoted by `*`
-    """
-    ONE = auto()
-    OPTIONAL = auto()
-    MANY = auto()
+    name: str
+    type: str
 
 
 @dataclass
-class Property:
-    name: str
-    type: str
-    cardinality: Cardinality = Cardinality.ONE
+class SingleProperty(Property):
+    is_single: ClassVar = True
 
-    @property
-    def is_single(self):
-        return self.cardinality == Cardinality.ONE
 
-    @property
-    def is_optional(self):
-        return self.cardinality == Cardinality.OPTIONAL
+@dataclass
+class OptionalProperty(Property):
+    is_optional: ClassVar = True
 
-    @property
-    def is_repeated(self):
-        return self.cardinality == Cardinality.MANY
+
+@dataclass
+class RepeatedProperty(Property):
+    is_repeated: ClassVar = True
 
 
 @dataclass
@@ -57,14 +53,14 @@ class Schema:
 
 def _parse_property(name, type):
     if type.endswith("*"):
-        cardinality = Cardinality.MANY
+        cls = RepeatedProperty
         type = type[:-1]
     elif type.endswith("?"):
-        cardinality = Cardinality.OPTIONAL
+        cls = OptionalProperty
         type = type[:-1]
     else:
-        cardinality = Cardinality.ONE
-    return Property(name, type, cardinality)
+        cls = SingleProperty
+    return cls(name, type)
 
 
 class _DirSelector:
