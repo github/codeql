@@ -1,7 +1,7 @@
 /**
  * @name Download of sensitive file through insecure connection
  * @description Downloading executables and other sensitive files over an insecure connection
- *              opens up for potential man-in-the-middle attacks.
+ *              may allow man-in-the-middle attacks.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.1
