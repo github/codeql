@@ -580,42 +580,49 @@ open class KotlinFileExtractor(
 
         // Extract field initializers and init blocks (the latter can only occur in object initializers)
         var idx = 0
+
+        fun extractFieldInitializer(f: IrField) {
+            val initializer = f.initializer
+
+            if (f.isStatic != extractStaticInitializers || initializer == null) {
+                return
+            }
+
+            val expr = initializer.expression
+
+            val declLocId = tw.getLocation(f)
+            val stmtId = tw.getFreshIdLabel<DbExprstmt>()
+            tw.writeStmts_exprstmt(stmtId, blockAndFunctionId.first, idx++, blockAndFunctionId.second)
+            tw.writeHasLocation(stmtId, declLocId)
+            val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
+            val type = useType(expr.type)
+            tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, stmtId, 0)
+            tw.writeExprsKotlinType(assignmentId, type.kotlinResult.id)
+            tw.writeHasLocation(assignmentId, declLocId)
+            tw.writeCallableEnclosingExpr(assignmentId, blockAndFunctionId.second)
+            tw.writeStatementEnclosingExpr(assignmentId, stmtId)
+            tw.writeKtInitializerAssignment(assignmentId)
+
+            val lhsId = tw.getFreshIdLabel<DbVaraccess>()
+            val lhsType = useType(f.type)
+            tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, assignmentId, 0)
+            tw.writeExprsKotlinType(lhsId, lhsType.kotlinResult.id)
+            tw.writeHasLocation(lhsId, declLocId)
+            tw.writeCallableEnclosingExpr(lhsId, blockAndFunctionId.second)
+            tw.writeStatementEnclosingExpr(lhsId, stmtId)
+            val vId = useField(f)
+            tw.writeVariableBinding(lhsId, vId)
+
+            extractExpressionExpr(expr, blockAndFunctionId.second, assignmentId, 1, stmtId)
+        }
+
         for (decl in declarations) {
             when (decl) {
                 is IrProperty -> {
-                    val backingField = decl.backingField
-                    val initializer = backingField?.initializer
-
-                    if (backingField == null || backingField.isStatic != extractStaticInitializers || initializer == null) {
-                        continue
-                    }
-
-                    val expr = initializer.expression
-
-                    val declLocId = tw.getLocation(decl)
-                    val stmtId = tw.getFreshIdLabel<DbExprstmt>()
-                    tw.writeStmts_exprstmt(stmtId, blockAndFunctionId.first, idx++, blockAndFunctionId.second)
-                    tw.writeHasLocation(stmtId, declLocId)
-                    val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
-                    val type = useType(expr.type)
-                    tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, stmtId, 0)
-                    tw.writeExprsKotlinType(assignmentId, type.kotlinResult.id)
-                    tw.writeHasLocation(assignmentId, declLocId)
-                    tw.writeCallableEnclosingExpr(assignmentId, blockAndFunctionId.second)
-                    tw.writeStatementEnclosingExpr(assignmentId, stmtId)
-                    tw.writeKtInitializerAssignment(assignmentId)
-
-                    val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-                    val lhsType = useType(backingField.type)
-                    tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, assignmentId, 0)
-                    tw.writeExprsKotlinType(lhsId, lhsType.kotlinResult.id)
-                    tw.writeHasLocation(lhsId, declLocId)
-                    tw.writeCallableEnclosingExpr(lhsId, blockAndFunctionId.second)
-                    tw.writeStatementEnclosingExpr(lhsId, stmtId)
-                    val vId = useField(backingField)
-                    tw.writeVariableBinding(lhsId, vId)
-
-                    extractExpressionExpr(expr, blockAndFunctionId.second, assignmentId, 1, stmtId)
+                    decl.backingField?.let { extractFieldInitializer(it) }
+                }
+                is IrField -> {
+                    extractFieldInitializer(decl)
                 }
                 is IrAnonymousInitializer -> {
                     if (decl.isStatic) {
