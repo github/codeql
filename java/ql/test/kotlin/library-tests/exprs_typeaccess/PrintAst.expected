@@ -68,7 +68,8 @@ A.kt:
 #   18|               0: [IntegerLiteral] 1
 #   19|         1: [LocalVariableDeclStmt] var ...;
 #   19|           1: [LocalVariableDeclExpr] e
-#   19|             0: [VarAccess] A
+#   19|             0: [VarAccess] Enu.A
+#   19|               -1: [TypeAccess] Enu
 #   20|         2: [ReturnStmt] return ...
 #   20|           0: [IntegerLiteral] 5
 #   23|     11: [Class] Enu

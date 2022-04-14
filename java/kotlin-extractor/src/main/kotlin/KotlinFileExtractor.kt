@@ -2487,6 +2487,8 @@ open class KotlinFileExtractor(
                     if (receiver != null) {
                         extractExpressionExpr(receiver, callable, id, -1, exprParent.enclosingStmt)
                     }
+
+                    // todo: do we need to extract a type access expression for static fields?
                 }
                 is IrGetEnumValue -> {
                     val exprParent = parent.expr(e, callable)
@@ -2511,6 +2513,8 @@ open class KotlinFileExtractor(
 
                     val vId = useEnumEntry(owner)
                     tw.writeVariableBinding(id, vId)
+
+                    extractTypeAccessRecursive(e.type, locId, id, -1, callable, exprParent.enclosingStmt)
                 }
                 is IrSetValue,
                 is IrSetField -> {
