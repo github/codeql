@@ -189,7 +189,7 @@ class XXEConfiguration extends DataFlow::Configuration {
     DataFlow::simpleLocalFlowStep(node1, node2)
   }
 
-  override predicate isBarrierOut(DataFlow::Node node, string flowstate) {
+  override predicate isBarrier(DataFlow::Node node, string flowstate) {
     // when the flowstate is transformed at a call node, block the original
     // flowstate value.
     node.asConvertedExpr().(XXEFlowStateTranformer).transform(flowstate) != flowstate
