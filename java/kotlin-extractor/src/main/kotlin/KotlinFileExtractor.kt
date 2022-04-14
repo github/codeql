@@ -98,8 +98,7 @@ open class KotlinFileExtractor(
                     if (isExternalDeclaration(declaration)) {
                         extractExternalClassLater(declaration)
                     } else {
-                        val extractStaticInit = declaration.declarations.none { it is IrAnonymousInitializer }
-                        extractClassSource(declaration, true, extractStaticInit)
+                        extractClassSource(declaration, extractDeclarations = true, extractStaticInitializer = true)
                     }
                 }
                 is IrFunction -> {
@@ -350,8 +349,7 @@ open class KotlinFileExtractor(
     }
 
     private fun extractLocalTypeDeclStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
-        val extractStaticInit = c.declarations.none { it is IrAnonymousInitializer }
-        val id = extractClassSource(c, true, extractStaticInit).cast<DbClass>()
+        val id = extractClassSource(c, extractDeclarations = true, extractStaticInitializer = true).cast<DbClass>()
         extractLocalTypeDeclStmt(id, c, callable, parent, idx)
     }
 
