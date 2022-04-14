@@ -412,7 +412,22 @@ class EnclosingFunctionBody extends EndpointFeature, TEnclosingFunctionBody {
   }
 }
 
-/** The feature for the imports defined in the file containing an endpoint. */
+/**
+ * The feature for the imports defined in the file containing an endpoint.
+ * 
+ * ### Example
+ *
+ * ```javascript
+ * import { findOne } from 'mongoose';
+ * import * as _ from 'lodash';
+ * const pg = require('pg');
+ * 
+ * // ...
+ * ```
+ * 
+ * In this file, all endpoints will have the value `lodash mongoose pg` for the feature `fileImports`.
+ * 
+ * */
 class FileImports extends EndpointFeature, TFileImports {
   override string getName() { result = "fileImports" }
 
