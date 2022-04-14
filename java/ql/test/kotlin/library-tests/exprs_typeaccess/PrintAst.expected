@@ -87,6 +87,12 @@ A.kt:
 #   23|               -3: [TypeAccess] Unit
 #   23|                 0: [TypeAccess] Enu
 #   23|           1: [BlockStmt] { ... }
+#   24|       4: [FieldDeclaration] Enu A;
+#   24|         -1: [TypeAccess] Enu
+#   24|       5: [FieldDeclaration] Enu B;
+#   24|         -1: [TypeAccess] Enu
+#   24|       6: [FieldDeclaration] Enu C;
+#   24|         -1: [TypeAccess] Enu
 B.java:
 #    0| [CompilationUnit] B
 #    1|   1: [Class] B

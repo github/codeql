@@ -830,6 +830,15 @@ open class KotlinFileExtractor(
                     tw.writeFieldsKotlinType(id, type.kotlinResult.id)
                     val locId = tw.getLocation(ee)
                     tw.writeHasLocation(id, locId)
+
+                    if (!isExternalDeclaration(ee)) {
+                        val fieldDeclarationId = tw.getFreshIdLabel<DbFielddecl>()
+                        tw.writeFielddecls(fieldDeclarationId, parentId)
+                        tw.writeFieldDeclaredIn(id, fieldDeclarationId, 0)
+                        tw.writeHasLocation(fieldDeclarationId, locId)
+
+                        extractTypeAccess(type, locId, fieldDeclarationId, 0)
+                    }
                 }
             }
         }
