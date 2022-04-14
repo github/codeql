@@ -12,6 +12,17 @@ defaults:
     working-directory: swift
 
 jobs:
+  codegen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/fetch-codeql
+      - uses: bazelbuild/setup-bazelisk@v2
+      - name: Check code generation
+        run: |
+          bazel run //swift/codegen
+          git add .
+          git diff --exit-code --stat HEAD
   qlformat:
     runs-on: ubuntu-latest
     steps:
@@ -28,18 +39,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/fetch-codeql
-      - name: Install bazelisk - Linux
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget
-          wget https://github.com/bazelbuild/bazelisk/releases/download/v1.11.0/bazelisk-linux-amd64
-          mv bazelisk-linux-amd64 /usr/local/bin/bazel
-          chmod +x /usr/local/bin/bazel
-      - name: Install bazelisk - macOS
-        if: runner.os == 'MacOS'
-        run: |
-          brew install bazelisk
+      - uses: bazelbuild/setup-bazelisk@v2
       - name: Build Swift extractor
         run: |
           bazel run //swift:create-extractor-pack
@@ -48,4 +48,3 @@ jobs:
           codeql test run --threads=0 --ram 5000 --search-path "${{ github.workspace }}/swift/extractor-pack" --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition ql/test
         env:
           GITHUB_TOKEN: ${{ github.token }}
-
