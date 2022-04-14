@@ -231,6 +231,7 @@ private newtype TEndpointFeature =
   TCalleeAccessPathWithStructuralInfo() or
   TEnclosingFunctionBody() or
   TFileImports() or
+  TCalleeImports() or
   TCalleeFlexibleAccessPath() or
   TInputAccessPathFromCallee() or
   TInputArgumentIndex()
@@ -411,7 +412,21 @@ class EnclosingFunctionBody extends EndpointFeature, TEnclosingFunctionBody {
   }
 }
 
-/** The feature for the imports defined in the file containing an endpoint. */
+/**
+ * The feature for the imports defined in the file containing an endpoint.
+ *
+ * ### Example
+ *
+ * ```javascript
+ * import { findOne } from 'mongoose';
+ * import * as _ from 'lodash';
+ * const pg = require('pg');
+ *
+ * // ...
+ * ```
+ *
+ * In this file, all endpoints will have the value `lodash mongoose pg` for the feature `fileImports`.
+ */
 class FileImports extends EndpointFeature, TFileImports {
   override string getName() { result = "fileImports" }
 
@@ -422,6 +437,28 @@ class FileImports extends EndpointFeature, TFileImports {
       |
         importPath, " " order by importPath
       )
+  }
+}
+
+class CalleeImports extends EndpointFeature, TCalleeImports {
+  override string getName() { result = "calleeImports" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    not result = SyntacticUtilities::getUnknownSymbol() and
+    exists(DataFlow::InvokeNode invk |
+      (
+        invk.getAnArgument() = endpoint or
+        SyntacticUtilities::getANestedInitializerValue(invk.getAnArgument()
+              .asExpr()
+              .getUnderlyingValue()).flow() = endpoint
+      ) and
+      result =
+        concat(string importPath |
+          importPath = SyntacticUtilities::getCalleeImportPath(invk.getCalleeNode())
+        |
+          importPath, " " order by importPath
+        )
+    )
   }
 }
 
@@ -474,6 +511,31 @@ private module SyntacticUtilities {
         result = getSimpleParameterAccessPath(w.getBase()) + "." + getPropertyNameOrUnknown(w)
       )
     else result = getUnknownSymbol()
+  }
+
+  /**
+   * Gets the imported package path that this node depends on, if any.
+   *
+   * Otherwise, returns '?'.
+   *
+   * XXX Be careful with using this in your features, as it might teach the model
+   * a fixed list of "dangerous" libraries that could lead to bad generalization.
+   */
+  string getCalleeImportPath(DataFlow::Node node) {
+    exists(DataFlow::Node src | src = node.getALocalSource() |
+      if src instanceof DataFlow::ModuleImportNode
+      then result = src.(DataFlow::ModuleImportNode).getPath()
+      else
+        if src instanceof DataFlow::PropRead
+        then result = getCalleeImportPath(src.(DataFlow::PropRead).getBase())
+        else
+          if src instanceof DataFlow::InvokeNode
+          then result = getCalleeImportPath(src.(DataFlow::InvokeNode).getCalleeNode())
+          else
+            if src.asExpr() instanceof AwaitExpr
+            then result = getCalleeImportPath(src.asExpr().(AwaitExpr).getOperand().flow())
+            else result = getUnknownSymbol()
+    )
   }
 
   /**
