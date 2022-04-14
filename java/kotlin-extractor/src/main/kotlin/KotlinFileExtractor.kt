@@ -625,7 +625,7 @@ open class KotlinFileExtractor(
                     extractFieldInitializer(decl)
                 }
                 is IrAnonymousInitializer -> {
-                    if (decl.isStatic) {
+                    if (decl.isStatic != extractStaticInitializers) {
                         continue
                     }
 
