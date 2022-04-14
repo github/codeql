@@ -7,6 +7,7 @@ https://mustache.github.io/
 
 import hashlib
 import logging
+import pathlib
 
 import pystache
 
@@ -39,14 +40,16 @@ class Renderer:
     def rendered(self):
         return self.written | self.skipped
 
-    def render(self, name, output, data):
-        """ Render the template called `name` in the template directory, writing to `output` using `data` as context
+    def render(self, data, output: pathlib.Path):
+        """ Render `data` to `output`.
+
+        `data` must have a `template` attribute denoting which template to use from the template directory.
 
         If the file is unchanged, then no write is performed (and `done_something` remains unchanged)
         """
-        mnemonic, _, _ = name.lower().partition(".")
+        mnemonic = type(data).__name__
         output.parent.mkdir(parents=True, exist_ok=True)
-        data = self.r.render_name(name, data, generator=self.generator)
+        data = self.r.render_name(data.template, data, generator=self.generator)
         if output.is_file():
             with open(output, "rb") as file:
                 if _md5(data.encode()) == _md5(file.read()):

@@ -97,6 +97,8 @@ class DbSchemeInclude:
 
 @dataclass
 class DbScheme:
+    template: ClassVar = 'dbscheme'
+
     src: str
     includes: List[DbSchemeInclude]
     declarations: List[DbDecl]

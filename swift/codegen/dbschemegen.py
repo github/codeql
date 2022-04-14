@@ -83,7 +83,7 @@ def generate(opts, renderer):
                         includes=get_includes(data, include_dir=input.parent),
                         declarations=get_declarations(data))
 
-    renderer.render("dbscheme", out, dbscheme)
+    renderer.render(dbscheme, out)
 
 
 if __name__ == "__main__":
