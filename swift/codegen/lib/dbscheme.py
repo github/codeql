@@ -1,5 +1,6 @@
+""" dbscheme format representation """
+
 import logging
-import re
 from dataclasses import dataclass
 from typing import ClassVar, List
 
@@ -83,3 +84,16 @@ class DbUnion(DbDecl):
         self.rhs = [DbUnionCase(x) for x in self.rhs]
         self.rhs.sort(key=lambda c: c.type)
         self.rhs[0].first = True
+
+
+@dataclass
+class DbSchemeInclude:
+    src: str
+    data: str
+
+
+@dataclass
+class DbScheme:
+    src: str
+    includes: List[DbSchemeInclude]
+    declarations: List[DbDecl]

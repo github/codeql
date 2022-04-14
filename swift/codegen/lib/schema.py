@@ -1,30 +1,41 @@
+""" schema.yml format representation """
+
 import pathlib
+import re
 from dataclasses import dataclass, field
 from enum import Enum, auto
 from typing import List, Set, Dict
-import re
 
 import yaml
 
+root_class_name = "Element"
+
 
 class Cardinality(Enum):
+    """ The cardinality of a property
+
+    `ONE` is the default, `OPTIONAL` are the fields denoted by `?`, `MANY` are those denoted by `*`
+    """
     ONE = auto()
     OPTIONAL = auto()
     MANY = auto()
 
 
 @dataclass
-class Field:
+class Property:
     name: str
     type: str
     cardinality: Cardinality = Cardinality.ONE
 
+    @property
     def is_single(self):
         return self.cardinality == Cardinality.ONE
 
+    @property
     def is_optional(self):
         return self.cardinality == Cardinality.OPTIONAL
 
+    @property
     def is_repeated(self):
         return self.cardinality == Cardinality.MANY
 
@@ -34,7 +45,7 @@ class Class:
     name: str
     bases: Set[str] = field(default_factory=set)
     derived: Set[str] = field(default_factory=set)
-    fields: List[Field] = field(default_factory=list)
+    properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
 
 
@@ -44,7 +55,7 @@ class Schema:
     includes: Set[str] = field(default_factory=set)
 
 
-def _parse_field(name, type):
+def _parse_property(name, type):
     if type.endswith("*"):
         cardinality = Cardinality.MANY
         type = type[:-1]
@@ -53,13 +64,11 @@ def _parse_field(name, type):
         type = type[:-1]
     else:
         cardinality = Cardinality.ONE
-    return Field(name, type, cardinality)
+    return Property(name, type, cardinality)
 
 
-root_class_name = "Element"
-
-
-class DirSelector:
+class _DirSelector:
+    """ Default output subdirectory selector for generated QL files, based on the `_directories` global field"""
     def __init__(self, dir_to_patterns):
         self.selector = [(re.compile(p), pathlib.Path(d)) for d, p in dir_to_patterns]
         self.selector.append((re.compile(""), pathlib.Path()))
@@ -69,8 +78,9 @@ class DirSelector:
 
 
 def load(file):
+    """ Parse the schema from `file` """
     data = yaml.load(file, Loader=yaml.SafeLoader)
-    grouper = DirSelector(data.get("_directories", {}).items())
+    grouper = _DirSelector(data.get("_directories", {}).items())
     ret = Schema(classes={cls: Class(cls, dir=grouper.get(cls)) for cls in data if not cls.startswith("_")},
                  includes=set(data.get("_includes", [])))
     assert root_class_name not in ret.classes
@@ -82,7 +92,7 @@ def load(file):
         cls = ret.classes[name]
         for k, v in info.items():
             if not k.startswith("_"):
-                cls.fields.append(_parse_field(k, v))
+                cls.properties.append(_parse_property(k, v))
             elif k == "_extends":
                 if not isinstance(v, list):
                     v = [v]

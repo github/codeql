@@ -1,9 +1,11 @@
+""" module providing useful filesystem paths """
+
 import pathlib
 import sys
 import os
 
 try:
-    _workspace_dir = pathlib.Path(os.environ['BUILD_WORKSPACE_DIRECTORY'])
+    _workspace_dir = pathlib.Path(os.environ['BUILD_WORKSPACE_DIRECTORY'])  # <- means we are using bazel run
     swift_dir = _workspace_dir / 'swift'
     lib_dir = swift_dir / 'codegen' / 'lib'
 except KeyError:
