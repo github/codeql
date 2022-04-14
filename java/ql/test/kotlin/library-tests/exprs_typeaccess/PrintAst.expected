@@ -71,7 +71,8 @@ A.kt:
 #   19|             0: [VarAccess] Enu.A
 #   19|               -1: [TypeAccess] Enu
 #   20|         2: [ReturnStmt] return ...
-#   20|           0: [VarAccess] x
+#   20|           0: [VarAccess] B.x
+#   20|             -1: [TypeAccess] B
 #   23|     11: [Class] Enu
 #    0|       1: [Method] values
 #    0|         3: [TypeAccess] Enu[]
