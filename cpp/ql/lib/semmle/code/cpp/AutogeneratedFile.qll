@@ -106,6 +106,8 @@ private int fileHeaderLimit(File f) {
         )
         or
         line = f.getMetrics().getNumberOfLines()
+        or
+        line = 1000
       )
   )
 }
