@@ -230,9 +230,10 @@ private newtype TEndpointFeature =
   TCalleeAccessPath() or
   TCalleeAccessPathWithStructuralInfo() or
   TEnclosingFunctionBody() or
-  TCallee_AccessPath() or
-  TInput_AccessPathFromCallee() or
-  TInput_ArgumentIndex()
+  TFileImports() or
+  TCalleeFlexibleAccessPath() or
+  TInputAccessPathFromCallee() or
+  TInputArgumentIndex()
 
 /**
  * An implementation of an endpoint feature: produces feature names and values for used in ML.
@@ -410,10 +411,29 @@ class EnclosingFunctionBody extends EndpointFeature, TEnclosingFunctionBody {
   }
 }
 
+/** The feature for the imports defined in the file containing an endpoint. */
+class FileImports extends EndpointFeature, TFileImports {
+  override string getName() { result = "fileImports" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    result =
+      concat(string importPath |
+        importPath = SyntacticUtilities::getImportPathForFile(endpoint.getFile())
+      |
+        importPath, " " order by importPath
+      )
+  }
+}
+
 /**
  * Syntactic utilities for feature value computation.
  */
 private module SyntacticUtilities {
+  /** Gets an import located in `file`. */
+  string getImportPathForFile(File file) {
+    result = any(Import imp | imp.getFile() = file).getImportedPath().getValue()
+  }
+
   /**
    * Gets a property initializer value in a an object literal or one of its nested object literals.
    */
@@ -542,8 +562,8 @@ private module SyntacticUtilities {
  * foo[complex()].bar(endpoint); // -> foo.?.bar
  * ```
  */
-class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
-  override string getName() { result = "Callee_AccessPath" }
+class CalleeFlexibleAccessPath extends EndpointFeature, TCalleeFlexibleAccessPath {
+  override string getName() { result = "CalleeFlexibleAccessPath" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
@@ -565,7 +585,7 @@ class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
  *
  * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
  *
- * This feature, together with `Input_ArgumentIndex` is intended as a far superior version of the `ArgumentIndexFeature`.
+ * This feature, together with `InputArgumentIndex` is intended as a far superior version of the `ArgumentIndexFeature`.
  *
  * Examples:
  * ```
@@ -573,8 +593,8 @@ class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
  * foo(x, { bar: { baz: endpoint } }); // -> bar.baz
  * ```
  */
-class Input_AccessPathFromCallee extends EndpointFeature, TInput_AccessPathFromCallee {
-  override string getName() { result = "Input_AccessPathFromCallee" }
+class InputAccessPathFromCallee extends EndpointFeature, TInputAccessPathFromCallee {
+  override string getName() { result = "InputAccessPathFromCallee" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
@@ -600,8 +620,8 @@ class Input_AccessPathFromCallee extends EndpointFeature, TInput_AccessPathFromC
  * foo(x, { bar: { baz: endpoint } }); // -> 1
  * ```
  */
-class Input_ArgumentIndex extends EndpointFeature, TInput_ArgumentIndex {
-  override string getName() { result = "Input_ArgumentIndex" }
+class InputArgumentIndex extends EndpointFeature, TInputArgumentIndex {
+  override string getName() { result = "InputArgumentIndex" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk, DataFlow::Node arg, int i | arg = invk.getArgument(i) |
