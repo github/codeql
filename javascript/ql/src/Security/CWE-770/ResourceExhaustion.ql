@@ -8,6 +8,7 @@
  * @id js/resource-exhaustion
  * @precision high
  * @tags security
+ *       external/cwe/cwe-400
  *       external/cwe/cwe-770
  */
 
