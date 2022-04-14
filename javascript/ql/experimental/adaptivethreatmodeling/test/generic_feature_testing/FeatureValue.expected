@@ -4,6 +4,7 @@
 | test.html:2:61:2:68 | endpoint | calleeAccessPath |  |
 | test.html:2:61:2:68 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.html:2:61:2:68 | endpoint | calleeName | item |
+| test.html:2:61:2:68 | endpoint | fileImports |  |
 | test.js:2:7:2:14 | endpoint | Callee_AccessPath | f |
 | test.js:2:7:2:14 | endpoint | Input_ArgumentIndex | 0 |
 | test.js:2:7:2:14 | endpoint | argumentIndex | 0 |
@@ -12,6 +13,7 @@
 | test.js:2:7:2:14 | endpoint | calleeName | f |
 | test.js:2:7:2:14 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:2:7:2:14 | endpoint | enclosingFunctionName |  |
+| test.js:2:7:2:14 | endpoint | fileImports | foo |
 | test.js:3:11:3:18 | endpoint | Callee_AccessPath | f |
 | test.js:3:11:3:18 | endpoint | Input_AccessPathFromCallee | 0.p |
 | test.js:3:11:3:18 | endpoint | Input_ArgumentIndex | 0 |
@@ -19,6 +21,7 @@
 | test.js:3:11:3:18 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:3:11:3:18 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:3:11:3:18 | endpoint | enclosingFunctionName |  |
+| test.js:3:11:3:18 | endpoint | fileImports | foo |
 | test.js:4:15:4:22 | endpoint | Callee_AccessPath | f |
 | test.js:4:15:4:22 | endpoint | Input_AccessPathFromCallee | 0.p.q |
 | test.js:4:15:4:22 | endpoint | Input_ArgumentIndex | 0 |
@@ -26,6 +29,7 @@
 | test.js:4:15:4:22 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:4:15:4:22 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:4:15:4:22 | endpoint | enclosingFunctionName |  |
+| test.js:4:15:4:22 | endpoint | fileImports | foo |
 | test.js:5:9:5:16 | endpoint | Callee_AccessPath | o.m |
 | test.js:5:9:5:16 | endpoint | Input_ArgumentIndex | 0 |
 | test.js:5:9:5:16 | endpoint | argumentIndex | 0 |
@@ -34,6 +38,7 @@
 | test.js:5:9:5:16 | endpoint | calleeName | m |
 | test.js:5:9:5:16 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:5:9:5:16 | endpoint | enclosingFunctionName |  |
+| test.js:5:9:5:16 | endpoint | fileImports | foo |
 | test.js:5:9:5:16 | endpoint | receiverName | o |
 | test.js:6:13:6:20 | endpoint | Callee_AccessPath | o.m |
 | test.js:6:13:6:20 | endpoint | Input_AccessPathFromCallee | 0.p |
@@ -42,6 +47,7 @@
 | test.js:6:13:6:20 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:6:13:6:20 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:6:13:6:20 | endpoint | enclosingFunctionName |  |
+| test.js:6:13:6:20 | endpoint | fileImports | foo |
 | test.js:7:17:7:24 | endpoint | Callee_AccessPath | o.m |
 | test.js:7:17:7:24 | endpoint | Input_AccessPathFromCallee | 0.p.q |
 | test.js:7:17:7:24 | endpoint | Input_ArgumentIndex | 0 |
@@ -49,12 +55,14 @@
 | test.js:7:17:7:24 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:7:17:7:24 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:7:17:7:24 | endpoint | enclosingFunctionName |  |
+| test.js:7:17:7:24 | endpoint | fileImports | foo |
 | test.js:8:11:8:18 | endpoint | Callee_AccessPath | F |
 | test.js:8:11:8:18 | endpoint | Input_ArgumentIndex | 0 |
 | test.js:8:11:8:18 | endpoint | calleeAccessPath |  |
 | test.js:8:11:8:18 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:8:11:8:18 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:8:11:8:18 | endpoint | enclosingFunctionName |  |
+| test.js:8:11:8:18 | endpoint | fileImports | foo |
 | test.js:9:17:9:24 | endpoint | Callee_AccessPath | o.m().m().m |
 | test.js:9:17:9:24 | endpoint | Input_ArgumentIndex | 0 |
 | test.js:9:17:9:24 | endpoint | argumentIndex | 0 |
@@ -63,6 +71,7 @@
 | test.js:9:17:9:24 | endpoint | calleeName | m |
 | test.js:9:17:9:24 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:9:17:9:24 | endpoint | enclosingFunctionName |  |
+| test.js:9:17:9:24 | endpoint | fileImports | foo |
 | test.js:10:9:10:16 | endpoint | Callee_AccessPath | f() |
 | test.js:10:9:10:16 | endpoint | Input_ArgumentIndex | 0 |
 | test.js:10:9:10:16 | endpoint | argumentIndex | 0 |
@@ -70,6 +79,7 @@
 | test.js:10:9:10:16 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:10:9:10:16 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:10:9:10:16 | endpoint | enclosingFunctionName |  |
+| test.js:10:9:10:16 | endpoint | fileImports | foo |
 | test.js:11:12:11:19 | endpoint | Callee_AccessPath | o.?.m |
 | test.js:11:12:11:19 | endpoint | Input_ArgumentIndex | 0 |
 | test.js:11:12:11:19 | endpoint | argumentIndex | 0 |
@@ -78,6 +88,7 @@
 | test.js:11:12:11:19 | endpoint | calleeName | m |
 | test.js:11:12:11:19 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:11:12:11:19 | endpoint | enclosingFunctionName |  |
+| test.js:11:12:11:19 | endpoint | fileImports | foo |
 | test.js:12:16:12:23 | endpoint | Callee_AccessPath | o.m.?.p.m |
 | test.js:12:16:12:23 | endpoint | Input_ArgumentIndex | 0 |
 | test.js:12:16:12:23 | endpoint | argumentIndex | 0 |
@@ -86,6 +97,7 @@
 | test.js:12:16:12:23 | endpoint | calleeName | m |
 | test.js:12:16:12:23 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:12:16:12:23 | endpoint | enclosingFunctionName |  |
+| test.js:12:16:12:23 | endpoint | fileImports | foo |
 | test.js:13:15:13:22 | endpoint | Callee_AccessPath | (await p) |
 | test.js:13:15:13:22 | endpoint | Input_ArgumentIndex | 0 |
 | test.js:13:15:13:22 | endpoint | argumentIndex | 0 |
@@ -93,6 +105,7 @@
 | test.js:13:15:13:22 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:13:15:13:22 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:13:15:13:22 | endpoint | enclosingFunctionName |  |
+| test.js:13:15:13:22 | endpoint | fileImports | foo |
 | test.js:14:27:14:34 | endpoint | Callee_AccessPath | import(!).bar.baz |
 | test.js:14:27:14:34 | endpoint | Input_ArgumentIndex | 0 |
 | test.js:14:27:14:34 | endpoint | argumentIndex | 0 |
@@ -102,6 +115,7 @@
 | test.js:14:27:14:34 | endpoint | calleeName | baz |
 | test.js:14:27:14:34 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:14:27:14:34 | endpoint | enclosingFunctionName |  |
+| test.js:14:27:14:34 | endpoint | fileImports | foo |
 | test.js:16:13:16:20 | endpoint | Callee_AccessPath | bar |
 | test.js:16:13:16:20 | endpoint | Input_ArgumentIndex | 0 |
 | test.js:16:13:16:20 | endpoint | argumentIndex | 0 |
@@ -110,3 +124,4 @@
 | test.js:16:13:16:20 | endpoint | calleeName | bar |
 | test.js:16:13:16:20 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint |
 | test.js:16:13:16:20 | endpoint | enclosingFunctionName |  |
+| test.js:16:13:16:20 | endpoint | fileImports | foo |
