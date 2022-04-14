@@ -1,0 +1,5 @@
+| intfDelegate.kt:0:0:0:0 | f | intfDelegate.kt:7:1:10:1 | Concrete |
+| intfDelegate.kt:3:3:3:15 | f | intfDelegate.kt:1:1:5:1 | Intf |
+| intfDelegate.kt:7:1:10:1 | Concrete | intfDelegate.kt:7:1:10:1 | Concrete |
+| intfDelegate.kt:7:26:9:1 |  | intfDelegate.kt:7:26:9:1 |  |
+| intfDelegate.kt:8:12:8:28 | f | intfDelegate.kt:7:26:9:1 |  |
