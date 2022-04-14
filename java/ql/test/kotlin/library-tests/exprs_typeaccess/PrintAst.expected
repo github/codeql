@@ -49,6 +49,9 @@ A.kt:
 #   16|           0: [TypeAccess] Integer
 #-----|       4: (Parameters)
 #   16|         0: [Parameter] i
+#   16|           0: [TypeAccess] C<C<Integer>>
+#   16|             0: [TypeAccess] C<Integer>
+#   16|               0: [TypeAccess] Integer
 #   16|       5: [BlockStmt] { ... }
 #   16|         0: [ReturnStmt] return ...
 #   16|           0: [VarAccess] i
@@ -56,6 +59,7 @@ A.kt:
 #   17|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   17|         0: [Parameter] i
+#   17|           0: [TypeAccess] int
 #   17|       5: [BlockStmt] { ... }
 #   18|         0: [LocalVariableDeclStmt] var ...;
 #   18|           1: [LocalVariableDeclExpr] x
@@ -75,6 +79,7 @@ A.kt:
 #    0|         3: [TypeAccess] Enu
 #-----|         4: (Parameters)
 #    0|           0: [Parameter] value
+#    0|             0: [TypeAccess] String
 #   23|       3: [Constructor] Enu
 #   23|         5: [BlockStmt] { ... }
 #   23|           0: [ExprStmt] <Expr>;

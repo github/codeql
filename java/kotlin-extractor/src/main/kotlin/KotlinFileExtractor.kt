@@ -503,7 +503,11 @@ open class KotlinFileExtractor(
     private fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>, idx: Int, typeSubstitution: TypeSubstitution?, parentSourceDeclaration: Label<out DbCallable>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): TypeResults {
         with("value parameter", vp) {
             val location = getLocation(vp, classTypeArgsIncludingOuterClasses)
-            return extractValueParameter(useValueParameter(vp, parent), vp.type, vp.name.asString(), location, parent, idx, typeSubstitution, useValueParameter(vp, parentSourceDeclaration), vp.isVararg)
+            val id = useValueParameter(vp, parent)
+            if (!isExternalDeclaration(vp)) {
+                extractTypeAccessRecursive(vp.type, location, id, -1)
+            }
+            return extractValueParameter(id, vp.type, vp.name.asString(), location, parent, idx, typeSubstitution, useValueParameter(vp, parentSourceDeclaration), vp.isVararg)
         }
     }
 
