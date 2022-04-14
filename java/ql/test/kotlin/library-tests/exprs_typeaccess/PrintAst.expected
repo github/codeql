@@ -9,6 +9,7 @@ A.kt:
 #    3|           0: [SuperConstructorInvocationStmt] super(...)
 #    3|           1: [BlockStmt] { ... }
 #    4|       2: [Method] fn
+#    4|         3: [TypeAccess] Unit
 #    4|         5: [BlockStmt] { ... }
 #    5|           0: [LocalVariableDeclStmt] var ...;
 #    5|             1: [LocalVariableDeclExpr] a
@@ -28,6 +29,7 @@ A.kt:
 #   10|             -1: [TypeAccess] ConsoleKt
 #   10|             0: [StringLiteral] 
 #   13|     6: [Method] getProp
+#   13|       3: [TypeAccess] int
 #   13|       5: [BlockStmt] { ... }
 #   13|         0: [ReturnStmt] return ...
 #   13|           0: [VarAccess] this.prop
@@ -39,14 +41,19 @@ A.kt:
 #   13|           0: [TypeAccess] A
 #   13|         0: [IntegerLiteral] 1
 #   15|     8: [Method] fn
+#   15|       3: [TypeAccess] Unit
 #   15|       5: [BlockStmt] { ... }
 #   16|     9: [Method] fn
+#   16|       3: [TypeAccess] C<C<Integer>>
+#   16|         0: [TypeAccess] C<Integer>
+#   16|           0: [TypeAccess] Integer
 #-----|       4: (Parameters)
 #   16|         0: [Parameter] i
 #   16|       5: [BlockStmt] { ... }
 #   16|         0: [ReturnStmt] return ...
 #   16|           0: [VarAccess] i
 #   17|     10: [Method] fn
+#   17|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   17|         0: [Parameter] i
 #   17|       5: [BlockStmt] { ... }
@@ -62,7 +69,10 @@ A.kt:
 #   20|           0: [IntegerLiteral] 5
 #   23|     11: [Class] Enu
 #    0|       1: [Method] values
+#    0|         3: [TypeAccess] Enu[]
+#    0|           0: [TypeAccess] Enu
 #    0|       1: [Method] valueOf
+#    0|         3: [TypeAccess] Enu
 #-----|         4: (Parameters)
 #    0|           0: [Parameter] value
 #   23|       3: [Constructor] Enu

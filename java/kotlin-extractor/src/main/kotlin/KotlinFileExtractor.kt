@@ -676,6 +676,8 @@ open class KotlinFileExtractor(
 
                 val substReturnType = typeSubstitution?.let { it(f.returnType, TypeContext.RETURN, pluginContext) } ?: f.returnType
 
+                val locId = getLocation(f, classTypeArgsIncludingOuterClasses)
+
                 if (f.symbol is IrConstructorSymbol) {
                     val unitType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
                     val shortName = when {
@@ -692,9 +694,12 @@ open class KotlinFileExtractor(
                     val methodId = id.cast<DbMethod>()
                     tw.writeMethods(methodId, shortName, "$shortName$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration.cast<DbMethod>())
                     tw.writeMethodsKotlinType(methodId, returnType.kotlinResult.id)
+
+                    if (!isExternalDeclaration(f)) {
+                        extractTypeAccessRecursive(f.returnType, locId, id, -1)
+                    }
                 }
 
-                val locId = getLocation(f, classTypeArgsIncludingOuterClasses)
                 tw.writeHasLocation(id, locId)
                 val body = f.body
                 if (body != null && extractBody) {
