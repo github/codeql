@@ -247,6 +247,7 @@ private newtype TEndpointFeature =
   TCalleeAccessPath() or
   TCalleeAccessPathWithStructuralInfo() or
   TEnclosingFunctionBody() or
+  TFileImports() or
   TCallee_AccessPath() or
   TInput_ArgumentIndexAndAccessPathFromCallee() or
   TInput_AccessPathFromCallee() or
@@ -430,6 +431,20 @@ class EnclosingFunctionBody extends EndpointFeature, TEnclosingFunctionBody {
   }
 }
 
+/** The feature for the imports defined in the file containing an endpoint. */
+class FileImports extends EndpointFeature, TFileImports {
+  override string getName() { result = "fileImports" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    result =
+      concat(string importPath |
+        importPath = SyntacticUtilities::getImportPathForFile(endpoint.getFile())
+      |
+        importPath, " " order by importPath
+      )
+  }
+}
+
 /**
  * The feature for the function parameters of the functions that enclose an endpoint.
  */
@@ -469,6 +484,11 @@ class ContextFunctionInterfacesInFile extends EndpointFeature, TContextFunctionI
  * Syntactic utilities for feature value computation.
  */
 private module SyntacticUtilities {
+  /** Gets an import located in `file`. */
+  string getImportPathForFile(File file) {
+    result = any(Import imp | imp.getFile() = file).getImportedPath().getValue()
+  }
+
   /**
    * Gets the feature component for the parameters of a function.
    *
