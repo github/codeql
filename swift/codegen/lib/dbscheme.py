@@ -16,16 +16,19 @@ class DbColumn:
     binding: bool = False
     first: bool = False
 
+    @property
     def name(self):
         if self.schema_name in dbscheme_keywords:
             return self.schema_name + "_"
         return self.schema_name
 
+    @property
     def lhstype(self):
         if self.type[0] == "@":
             return "unique int" if self.binding else "int"
         return self.type
 
+    @property
     def rhstype(self):
         if self.type[0] == "@" and self.binding:
             return self.type
