@@ -17,7 +17,7 @@ class A {
     fun fn(i: Int) : Int {
         val x = this.fn(1)
         val e = Enu.A
-        return 5
+        return B.x
     }
 
     enum class Enu {

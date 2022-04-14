@@ -8,7 +8,7 @@ public class B {
    public int fn(int i) {
       int x = this.fn(1);
       Enu e = Enu.A;
-      return 5;
+      return B.x;
    }
 
    public static class C<T> {
@@ -20,4 +20,6 @@ public class B {
    public static enum Enu {
       A, B, C
    }
+
+   public static final int x = 5;
 }
