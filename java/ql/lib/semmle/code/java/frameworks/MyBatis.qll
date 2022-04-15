@@ -116,38 +116,6 @@ private class MyBatisProvider extends RefType {
   }
 }
 
-private class MyBatisAbstractSqlMethod extends Method {
-  string taintedArgs;
-  string signature;
-
-  MyBatisAbstractSqlMethod() {
-    this.getDeclaringType().getSourceDeclaration() instanceof MyBatisAbstractSql and
-    (
-      this.hasName([
-          "UPDATE", "SET", "INSERT_INTO", "SELECT", "OFFSET_ROWS", "LIMIT", "OFFSET",
-          "FETCH_FIRST_ROWS_ONLY", "DELETE_FROM", "INNER_JOIN", "ORDER_BY", "WHERE", "HAVING",
-          "OUTER_JOIN", "LEFT_OUTER_JOIN", "RIGHT_OUTER_JOIN", "GROUP_BY", "FROM", "SELECT_DISTINCT"
-        ]) and
-      taintedArgs = "Argument[0]" and
-      signature = "String"
-      or
-      this.hasName([
-          "SET", "INTO_COLUMNS", "INTO_VALUES", "SELECT_DISTINCT", "FROM", "JOIN", "INNER_JOIN",
-          "LEFT_OUTER_JOIN", "RIGHT_OUTER_JOIN", "OUTER_JOIN", "WHERE", "GROUP_BY", "HAVING",
-          "ORDER_BY"
-        ]) and
-      taintedArgs = "Argument[0].ArrayElement" and
-      signature = "String[]"
-      or
-      this.hasName("VALUES") and taintedArgs = "Argument[0..1]" and signature = "String,String"
-    )
-  }
-
-  string getTaintedArgs() { result = taintedArgs }
-
-  string getCsvSignature() { result = signature }
-}
-
 /**
  * A return statement of a method used in a MyBatis Provider.
  *
@@ -189,12 +157,41 @@ private class MyBatisAbstractSqlToStringStep extends SummaryModelCsv {
   }
 }
 
+private class MyBatisAbstractSqlMethod extends string {
+  string taintedArgs;
+  string signature;
+
+  MyBatisAbstractSqlMethod() {
+    this in [
+        "UPDATE", "SET", "INSERT_INTO", "SELECT", "OFFSET_ROWS", "LIMIT", "OFFSET",
+        "FETCH_FIRST_ROWS_ONLY", "DELETE_FROM", "INNER_JOIN", "ORDER_BY", "WHERE", "HAVING",
+        "OUTER_JOIN", "LEFT_OUTER_JOIN", "RIGHT_OUTER_JOIN", "GROUP_BY", "FROM", "SELECT_DISTINCT"
+      ] and
+    taintedArgs = "Argument[0]" and
+    signature = "String"
+    or
+    this in [
+        "SET", "INTO_COLUMNS", "INTO_VALUES", "SELECT_DISTINCT", "FROM", "JOIN", "INNER_JOIN",
+        "LEFT_OUTER_JOIN", "RIGHT_OUTER_JOIN", "OUTER_JOIN", "WHERE", "GROUP_BY", "HAVING",
+        "ORDER_BY"
+      ] and
+    taintedArgs = "Argument[0].ArrayElement" and
+    signature = "String[]"
+    or
+    this = "VALUES" and taintedArgs = "Argument[0..1]" and signature = "String,String"
+  }
+
+  string getTaintedArgs() { result = taintedArgs }
+
+  string getCsvSignature() { result = signature }
+}
+
 private class MyBatisAbstractSqlMethodsStep extends SummaryModelCsv {
   override predicate row(string row) {
     exists(MyBatisAbstractSqlMethod m |
       row =
-        "org.apache.ibatis.jdbc;AbstractSQL;true;" + m.getName() + ";(" + m.getCsvSignature() +
-          ");;" + m.getTaintedArgs() + ";Argument[-1];taint"
+        "org.apache.ibatis.jdbc;AbstractSQL;true;" + m + ";(" + m.getCsvSignature() + ");;" +
+          m.getTaintedArgs() + ";Argument[-1];taint"
     )
   }
 }
