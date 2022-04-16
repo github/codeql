@@ -922,7 +922,12 @@ open class KotlinUsesExtractor(
             }
         }
 
-        val reorderedArgs = orderTypeArgsLeftToRight(c, argsIncludingOuterClasses)
+        // C<T1, T2, ...>, where C is declared (class|interface) C<T1, T2, ...> { ... }, takes the class label C without
+        // qualification, even in contexts like `class MyList<T> { public void addAll(List<T> otherList) { ... } }`
+        // where this would normally constitute a constructed type. This replicates a quirk of the Java extractor.
+        val typeArgsIfSpecialised = argsIncludingOuterClasses?.let { if (isUnspecialised(c, it)) listOf() else it }
+
+        val reorderedArgs = orderTypeArgsLeftToRight(c, typeArgsIfSpecialised)
         val typeArgLabels = reorderedArgs?.map { getTypeArgumentLabel(it) }
         val typeArgsShortName =
             if (typeArgLabels == null)

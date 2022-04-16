@@ -8,6 +8,7 @@ import org.jetbrains.kotlin.ir.builders.declarations.addConstructor
 import org.jetbrains.kotlin.ir.builders.declarations.buildClass
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrTypeParameter
+import org.jetbrains.kotlin.ir.declarations.IrTypeParametersContainer
 import org.jetbrains.kotlin.ir.declarations.impl.IrExternalPackageFragmentImpl
 import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
 import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
@@ -20,6 +21,7 @@ import org.jetbrains.kotlin.ir.types.impl.IrStarProjectionImpl
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.constructedClassType
 import org.jetbrains.kotlin.ir.util.constructors
+import org.jetbrains.kotlin.ir.util.parentAsClass
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.types.Variance
@@ -194,14 +196,23 @@ fun IrTypeArgument.withQuestionMark(b: Boolean): IrTypeArgument =
 typealias TypeSubstitution = (IrType, KotlinUsesExtractor.TypeContext, IrPluginContext) -> IrType
 
 // Returns true if type is C<T1, T2, ...> where C is declared `class C<T1, T2, ...> { ... }`
-fun isUnspecialised(classType: IrClass, args: List<IrTypeArgument>) =
-    classType.typeParameters.zip(args).all { paramAndArg ->
+fun isUnspecialised(paramsContainer: IrTypeParametersContainer, args: List<IrTypeArgument>): Boolean {
+    val unspecialisedHere = paramsContainer.typeParameters.zip(args).all { paramAndArg ->
         (paramAndArg.second as? IrTypeProjection)?.let {
             // Type arg refers to the class' own type parameter?
             it.variance == Variance.INVARIANT &&
                     it.type.classifierOrNull?.owner === paramAndArg.first
         } ?: false
     }
+    val remainingArgs = args.drop(paramsContainer.typeParameters.size)
+    val parent = paramsContainer.parent as? IrTypeParametersContainer
+    val parentUnspecialised = when {
+        remainingArgs.isEmpty() -> true
+        parent == null -> false
+        else -> isUnspecialised(paramsContainer.parentAsClass, remainingArgs)
+    }
+    return unspecialisedHere && parentUnspecialised
+}
 
 // Returns true if type is C<T1, T2, ...> where C is declared `class C<T1, T2, ...> { ... }`
 fun isUnspecialised(type: IrSimpleType) = (type.classifier.owner as? IrClass)?.let {
