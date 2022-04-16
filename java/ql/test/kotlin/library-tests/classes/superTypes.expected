@@ -44,7 +44,6 @@
 | file://<external>/C1$Local2.class:0:0:0:0 | Local2<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/Generic.class:0:0:0:0 | Generic<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/Generic.class:0:0:0:0 | Generic<String> | file://<external>/Object.class:0:0:0:0 | Object |
-| file://<external>/Generic.class:0:0:0:0 | Generic<T> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T3,String> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T5,String> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/SuperChain2.class:0:0:0:0 | SuperChain2<T5,String> | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T5,String> |

@@ -2,13 +2,13 @@
 | generic_anonymous.kt:1:26:1:33 | T | T |
 | generic_anonymous.kt:1:26:1:33 | t | T |
 | generic_anonymous.kt:1:26:1:33 | t | T |
-| generic_anonymous.kt:1:26:1:33 | this | Generic<T> |
+| generic_anonymous.kt:1:26:1:33 | this | Generic |
 | generic_anonymous.kt:1:26:1:33 | this.t | T |
 | generic_anonymous.kt:3:3:5:3 | ...=... | new Object(...) { ... } |
 | generic_anonymous.kt:3:3:5:3 | T | T |
 | generic_anonymous.kt:3:3:5:3 | new Object(...) { ... } | new Object(...) { ... } |
 | generic_anonymous.kt:3:3:5:3 | x | new Object(...) { ... } |
-| generic_anonymous.kt:3:11:5:3 | this | Generic<T> |
+| generic_anonymous.kt:3:11:5:3 | this | Generic |
 | generic_anonymous.kt:3:11:5:3 | this.x | new Object(...) { ... } |
 | generic_anonymous.kt:3:19:5:3 | <Stmt> | new Object(...) { ... } |
 | generic_anonymous.kt:3:19:5:3 | Object | Object |
@@ -19,10 +19,10 @@
 | generic_anonymous.kt:4:7:4:20 | this | new Object(...) { ... } |
 | generic_anonymous.kt:4:7:4:20 | this.member | T |
 | generic_anonymous.kt:4:20:4:20 | Generic | Generic |
-| generic_anonymous.kt:4:20:4:20 | Generic.this | Generic<T> |
+| generic_anonymous.kt:4:20:4:20 | Generic.this | Generic |
 | generic_anonymous.kt:4:20:4:20 | getT(...) | T |
 | generic_anonymous.kt:7:15:7:15 | getX(...) | new Object(...) { ... } |
-| generic_anonymous.kt:7:15:7:15 | this | Generic<T> |
+| generic_anonymous.kt:7:15:7:15 | this | Generic |
 | generic_anonymous.kt:7:17:7:22 | getMember(...) | T |
 | generic_anonymous.kt:11:33:11:50 | Generic<String> | Generic<String> |
 | generic_anonymous.kt:11:33:11:50 | String | String |

@@ -6,7 +6,6 @@
 | file://<external>/C1$Local2.class:0:0:0:0 | Local2<Integer> | 0 | file://<external>/Integer.class:0:0:0:0 | Integer |
 | file://<external>/Generic.class:0:0:0:0 | Generic<Integer> | 0 | file://<external>/Integer.class:0:0:0:0 | Integer |
 | file://<external>/Generic.class:0:0:0:0 | Generic<String> | 0 | file://<external>/String.class:0:0:0:0 | String |
-| file://<external>/Generic.class:0:0:0:0 | Generic<T> | 0 | generic_anonymous.kt:1:23:1:23 | T |
 | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T3,String> | 0 | superChain.kt:2:24:2:25 | T3 |
 | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T3,String> | 1 | file://<external>/String.class:0:0:0:0 | String |
 | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T5,String> | 0 | superChain.kt:3:24:3:25 | T5 |
