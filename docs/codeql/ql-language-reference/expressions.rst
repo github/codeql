@@ -227,7 +227,7 @@ The following aggregates are available in QL:
 
 - ``min`` and ``max``: These aggregates determine the smallest (``min``) or largest (``max``)
   value of ``<expression>`` among the possible assignments to the aggregation variables. 
-  In this case, ``<expression>`` must be of numeric type or of type ``string``.
+  ``<expression>`` must be of numeric type or of type ``string``, or an explicit order must be defined with ``order by``.
     
   For example, the following aggregation returns the name of the ``.js`` file (or files) with the 
   largest number of lines, using the number of lines of code to break ties:
@@ -297,8 +297,8 @@ The following aggregates are available in QL:
 .. index:: rank
 
 - ``rank``: This aggregate takes the possible values of ``<expression>`` and ranks them. 
-  In this case, ``<expression>`` must be of numeric type or of type ``string``. The aggregation
-  returns the value that is ranked in the position specified by the **rank expression**.
+  ``<expression>`` must be of numeric type or of type ``string``, or an explicit order must be defined with ``order by``.
+  The aggregation returns the value that is ranked in the position specified by the **rank expression**.
   You must include this rank expression in brackets after the keyword ``rank``.
 
   For example, the following aggregation returns the value that is ranked 4th out of all the
