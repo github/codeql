@@ -189,9 +189,16 @@ class Callable extends StmtParent, Member, @callable {
    * The format of the string is `<name><params>`, where `<name>` is the result of
    * the predicate `getName()` and `<params>` is the result of `paramsString()`.
    * For example, the method `void printf(java.lang.String, java.lang.Object...)`
-   * has the string signature `printf(String, Object[])`.
+   * has the string signature `printf(String, Object[])`. For parameters of
+   * parameterized type all their type arguments are included, for example,
+   * `Function<? super String,? extends Integer>` (note that here a comma without
+   * space separates the arguments).
    *
-   * Use `getSignature` to obtain a signature including fully qualified type names.
+   * Use `getSignature()` to obtain a signature including fully qualified type names.
+   * However, that predicate uses the erasure of the parameter types.
+   *
+   * To check if a callable has a specific signature, it might be easier to
+   * use the predicate `getErasureStringSignature()`.
    */
   string getStringSignature() { result = this.getName() + this.paramsString() }
 
@@ -201,25 +208,19 @@ class Callable extends StmtParent, Member, @callable {
    * representation is used. If this callable has no parameters, the result is `()`.
    *
    * For example, the method `void printf(java.lang.String, java.lang.Object...)`
-   * has the params string `(String, Object[])`.
+   * has the params string `(String, Object[])`. For parameters of parameterized type
+   * all their type arguments are included, for example,
+   * `Function<? super String,? extends Integer>` (note that here a comma without space
+   * separates the arguments).
    */
-  pragma[nomagic]
   string paramsString() {
-    exists(int n | n = this.getNumberOfParameters() |
-      n = 0 and result = "()"
-      or
-      n > 0 and result = "(" + this.paramUpTo(n - 1) + ")"
-    )
-  }
-
-  /**
-   * Gets a string containing the parameter types of this callable
-   * from left to right, up to (and including) the `n`-th parameter.
-   */
-  private string paramUpTo(int n) {
-    n = 0 and result = this.getParameterType(0).toString()
-    or
-    n > 0 and result = this.paramUpTo(n - 1) + ", " + this.getParameterType(n)
+    result =
+      "(" +
+        concat(Type paramType, int index |
+          paramType = this.getParameterType(index)
+        |
+          paramType.toString(), ", " order by index
+        ) + ")"
   }
 
   /**
@@ -227,8 +228,40 @@ class Callable extends StmtParent, Member, @callable {
    *
    * This predicate simply tests if `sig` is equal to the result of the
    * `getStringSignature()` predicate.
+   *
+   * Note: When checking for the signature of a callable, is it usually easier to
+   * use the predicate `hasErasureStringSignature(string)` instead.
    */
   predicate hasStringSignature(string sig) { sig = this.getStringSignature() }
+
+  /**
+   * Gets the signature of this callable, including its name and the erasure of the
+   * types of all its parameters, identified by their simple (unqualified) names.
+   *
+   * The format of the string is `<name>(<params>)`, where `<name>` is the result of
+   * the predicate `getName()` and `<params>` are the simple names of the erasure
+   * of the parameter types, joined by a comma and a space.
+   *
+   * For example, the method `void addTo(java.util.List<java.lang.String>, java.lang.String...)`
+   * has the erasure string signature `addTo(List, String[])`.
+   */
+  string getErasureStringSignature() {
+    result =
+      this.getName() + "(" +
+        concat(Type paramType, int index |
+          paramType = this.getParameterType(index)
+        |
+          paramType.getErasure().getName(), ", " order by index
+        ) + ")"
+  }
+
+  /**
+   * Holds if this callable has the specified erasure string signature.
+   *
+   * This predicate simply tests if `sig` is equal to the result of the
+   * `getErasureStringSignature()` predicate.
+   */
+  predicate hasErasureStringSignature(string sig) { sig = this.getErasureStringSignature() }
 
   /** Gets an exception that occurs in the `throws` clause of this callable. */
   Exception getAnException() { exceptions(result, _, this) }
@@ -266,9 +299,9 @@ class Callable extends StmtParent, Member, @callable {
   predicate isVarargs() { this.getAParameter().isVarargs() }
 
   /**
-   * Gets the signature of this callable, where all types in the signature have a fully-qualified name.
-   * The parameter types are only separated by a comma (without space). If this callable has
-   * no parameters, the callable name is followed by `()`.
+   * Gets the signature of this callable, that is, the name followed by the fully-qualified names
+   * of the erasure of all parameter types. The types are separated by a comma (without space).
+   * If this callable has no parameters, the callable name is followed by `()`.
    *
    * For example, method `void m(String s, int i)` has the signature `m(java.lang.String,int)`.
    */
