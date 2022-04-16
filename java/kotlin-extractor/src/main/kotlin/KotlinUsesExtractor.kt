@@ -207,10 +207,12 @@ open class KotlinUsesExtractor(
         val extractClass = substituteClass ?: c
 
         // `KFunction1<T1,T2>` is substituted by `KFunction<T>`. The last type argument is the return type.
-        val extractedTypeArgs = if (c.symbol.isKFunction() && typeArgs != null && typeArgs.isNotEmpty()) {
-            listOf(typeArgs.last())
-        } else {
-            typeArgs
+        // References to SomeGeneric<T1, T2, ...> where SomeGeneric is declared SomeGeneric<T1, T2, ...> are extracted
+        // as if they were references to the unbound type SomeGeneric.
+        val extractedTypeArgs = when {
+            c.symbol.isKFunction() && typeArgs != null && typeArgs.isNotEmpty() -> listOf(typeArgs.last())
+            typeArgs != null && isUnspecialised(c, typeArgs) -> listOf()
+            else -> typeArgs
         }
 
         val classTypeResult = addClassLabel(extractClass, extractedTypeArgs, inReceiverContext)
@@ -922,12 +924,7 @@ open class KotlinUsesExtractor(
             }
         }
 
-        // C<T1, T2, ...>, where C is declared (class|interface) C<T1, T2, ...> { ... }, takes the class label C without
-        // qualification, even in contexts like `class MyList<T> { public void addAll(List<T> otherList) { ... } }`
-        // where this would normally constitute a constructed type. This replicates a quirk of the Java extractor.
-        val typeArgsIfSpecialised = argsIncludingOuterClasses?.let { if (isUnspecialised(c, it)) listOf() else it }
-
-        val reorderedArgs = orderTypeArgsLeftToRight(c, typeArgsIfSpecialised)
+        val reorderedArgs = orderTypeArgsLeftToRight(c, argsIncludingOuterClasses)
         val typeArgLabels = reorderedArgs?.map { getTypeArgumentLabel(it) }
         val typeArgsShortName =
             if (typeArgLabels == null)
