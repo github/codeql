@@ -138,6 +138,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.MyBatis
   private import semmle.code.java.frameworks.Hibernate
   private import semmle.code.java.frameworks.jOOQ
+  private import semmle.code.java.frameworks.JMS
   private import semmle.code.java.frameworks.RabbitMQ
 }
 
