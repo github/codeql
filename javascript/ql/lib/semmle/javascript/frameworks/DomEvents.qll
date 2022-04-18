@@ -37,26 +37,22 @@ private DataFlow::SourceNode taintedEvent(DataFlow::TypeTracker t, string event)
   )
   or
   t.start() and
-  exists(DataFlow::ParameterNode pn |
+  exists(DataFlow::ParameterNode pn | result = pn |
     // https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent
     pn.hasUnderlyingType("ClipboardEvent") and
-    result = pn and
     event = "paste"
     or
     // https://developer.mozilla.org/en-US/docs/Web/API/DragEvent
     pn.hasUnderlyingType("DragEvent") and
-    result = pn and
     event = "drop"
     or
     // https://developer.mozilla.org/en-US/docs/Web/API/InputEvent
     pn.hasUnderlyingType("InputEvent") and
-    result = pn and
     event = "beforeinput"
   )
   or
   t.start() and
-  exists(DataFlow::PropWrite pw | pw = DOM::domValueRef().getAPropertyWrite() |
-    pw.getPropertyName() = "on" + event and
+  exists(DataFlow::PropWrite pw | pw = DOM::domValueRef().getAPropertyWrite("on" + event) |
     event = ["paste", "drop"] and // doesn't work for beforeinput, it's just not part of the API
     result = pw.getRhs().getABoundFunctionValue(0).getParameter(0)
   )
