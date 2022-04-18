@@ -1,3 +1,12 @@
+## 0.0.13
+
+## 0.0.12
+
+### Minor Analysis Improvements
+
+* The `cpp/overflow-destination`, `cpp/unclear-array-index-validation`, and `cpp/uncontrolled-allocation-size` queries have been modernized and converted to `path-problem` queries and provide more true positive results.
+* The `cpp/system-data-exposure` query has been increased from `medium` to `high` precision, following a number of improvements to the query logic.
+
 ## 0.0.11
 
 ### Breaking Changes

@@ -1,0 +1,7 @@
+{
+  "provide": [
+    "ql/lib/qlpack.yml",
+    "ql/test/qlpack.yml",
+    "extractor-pack/codeql-extractor.yml"
+  ]
+}

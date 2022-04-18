@@ -5,14 +5,6 @@
 /python/ @github/codeql-python
 /ruby/ @github/codeql-ruby
 
-# Make @xcorail (GitHub Security Lab) a code owner for experimental queries so he gets pinged when we promote a query out of experimental
-/cpp/**/experimental/**/* @github/codeql-c-analysis @xcorail
-/csharp/**/experimental/**/* @github/codeql-csharp @xcorail
-/java/**/experimental/**/* @github/codeql-java @xcorail
-/javascript/**/experimental/**/* @github/codeql-javascript @xcorail
-/python/**/experimental/**/* @github/codeql-python @xcorail
-/ruby/**/experimental/**/* @github/codeql-ruby @xcorail
-
 # ML-powered queries
 /javascript/ql/experimental/adaptivethreatmodeling/ @github/codeql-ml-powered-queries-reviewers
 

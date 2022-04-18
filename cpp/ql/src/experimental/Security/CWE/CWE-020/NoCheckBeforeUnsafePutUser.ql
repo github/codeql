@@ -21,7 +21,7 @@ class WriteAccessCheckMacro extends Macro {
   VariableAccess va;
 
   WriteAccessCheckMacro() {
-    this.getName() = ["user_write_access_begin", "user_access_begin"] and
+    this.getName() = ["user_write_access_begin", "user_access_begin", "access_ok"] and
     va.getEnclosingElement() = this.getAnInvocation().getAnExpandedElement()
   }
 
@@ -37,7 +37,8 @@ class UnSafePutUserMacro extends Macro {
   }
 
   Expr getUserModePtr() {
-    result = writeUserPtr.getOperand().(AddressOfExpr).getOperand().(FieldAccess).getQualifier()
+    result = writeUserPtr.getOperand().(AddressOfExpr).getOperand().(FieldAccess).getQualifier() or
+    result = writeUserPtr.getOperand()
   }
 }
 
@@ -46,11 +47,13 @@ class ExploitableUserModePtrParam extends Parameter {
     not exists(WriteAccessCheckMacro writeAccessCheck |
       DataFlow::localFlow(DataFlow::parameterNode(this),
         DataFlow::exprNode(writeAccessCheck.getArgument()))
+    ) and
+    exists(UnSafePutUserMacro unsafePutUser |
+      DataFlow::localFlow(DataFlow::parameterNode(this),
+        DataFlow::exprNode(unsafePutUser.getUserModePtr()))
     )
   }
 }
 
-from ExploitableUserModePtrParam p, UnSafePutUserMacro unsafePutUser
-where
-  DataFlow::localFlow(DataFlow::parameterNode(p), DataFlow::exprNode(unsafePutUser.getUserModePtr()))
+from ExploitableUserModePtrParam p
 select p, "unsafe_put_user write user-mode pointer $@ without check.", p, p.toString()

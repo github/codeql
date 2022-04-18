@@ -1,0 +1,16 @@
+failures
+#select
+| Gemfile:2:8:2:28 | "http://rubygems.org" | Dependency source URL uses the unencrypted protocol HTTP. Use HTTPS instead. |
+| Gemfile:3:8:3:27 | "ftp://rubygems.org" | Dependency source URL uses the unencrypted protocol FTP. Use FTPS or SFTP instead. |
+| Gemfile:8:18:8:36 | "http://github.com" | Dependency source URL uses the unencrypted protocol HTTP. Use HTTPS instead. |
+| Gemfile:9:18:9:35 | "ftp://github.com" | Dependency source URL uses the unencrypted protocol FTP. Use FTPS or SFTP instead. |
+| Gemfile:14:25:14:51 | "http://github.com/#{...}" | Dependency source URL uses the unencrypted protocol HTTP. Use HTTPS instead. |
+| Gemfile:15:25:15:50 | "ftp://github.com/#{...}" | Dependency source URL uses the unencrypted protocol FTP. Use FTPS or SFTP instead. |
+| Gemfile:25:5:25:31 | "http://github.com/#{...}" | Dependency source URL uses the unencrypted protocol HTTP. Use HTTPS instead. |
+| Gemfile:29:5:29:30 | "ftp://github.com/#{...}" | Dependency source URL uses the unencrypted protocol FTP. Use FTPS or SFTP instead. |
+| Gemfile:41:26:41:57 | "http://github.com/jwt/ruby-jwt" | Dependency source URL uses the unencrypted protocol HTTP. Use HTTPS instead. |
+| Gemfile:42:26:42:56 | "ftp://github.com/jwt/ruby-jwt" | Dependency source URL uses the unencrypted protocol FTP. Use FTPS or SFTP instead. |
+| Gemfile:47:29:47:60 | "http://github.com/jwt/ruby-jwt" | Dependency source URL uses the unencrypted protocol HTTP. Use HTTPS instead. |
+| Gemfile:48:29:48:59 | "ftp://github.com/jwt/ruby-jwt" | Dependency source URL uses the unencrypted protocol FTP. Use FTPS or SFTP instead. |
+| Gemfile:53:29:53:49 | "http://rubygems.org" | Dependency source URL uses the unencrypted protocol HTTP. Use HTTPS instead. |
+| Gemfile:54:29:54:48 | "ftp://rubygems.org" | Dependency source URL uses the unencrypted protocol FTP. Use FTPS or SFTP instead. |
