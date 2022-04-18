@@ -313,43 +313,19 @@ private StatePair getAForkPair(State fork) {
   result = MkStatePair(epsilonPred*(fork), epsilonPred*(fork))
 }
 
-private predicate hasSuffix(Trace suffix, Trace t, int i) {
-  // Declaring `t` to be a `RelevantTrace` currently causes a redundant check in the
-  // recursive case, so instead we check it explicitly here.
-  t instanceof RelevantTrace and
-  i = 0 and
-  suffix = t
-  or
-  hasSuffix(Step(_, _, suffix), t, i - 1)
-}
+/** An implementation of a chain containing chars for use by `Concretizer`. */
+private module CharTreeImpl implements CharTree {
+  class CharNode = Trace;
 
-pragma[noinline]
-private predicate hasTuple(InputSymbol s1, InputSymbol s2, Trace t, int i) {
-  hasSuffix(Step(s1, s2, _), t, i)
-}
+  CharNode getPrev(CharNode t) { t = Step(_, _, result) }
 
-private class RelevantTrace extends Trace, Step {
-  RelevantTrace() {
-    exists(State fork, StatePair q |
-      isReachableFromFork(fork, q, this, _) and
-      q = getAForkPair(fork)
-    )
+  /** Holds if `n` is a trace that is used by `concretize` in `isPumpable`. */
+  predicate isARelevantEnd(CharNode n) {
+    exists(State f | isReachableFromFork(f, getAForkPair(f), n, _))
   }
 
-  pragma[noinline]
-  private string intersect(int i) {
-    exists(InputSymbol s1, InputSymbol s2 |
-      hasTuple(s1, s2, this, i) and
-      result = intersect(s1, s2)
-    )
-  }
-
-  /** Gets a string corresponding to this trace. */
-  // the pragma is needed for the case where `intersect(s1, s2)` has multiple values,
-  // not for recursion
-  language[monotonicAggregates]
-  string concretise() {
-    result = strictconcat(int i | hasTuple(_, _, this, i) | this.intersect(i) order by i desc)
+  string getChar(CharNode t) {
+    exists(InputSymbol s1, InputSymbol s2 | t = Step(s1, s2, _) | result = intersect(s1, s2))
   }
 }
 
@@ -357,10 +333,10 @@ private class RelevantTrace extends Trace, Step {
  * Holds if `fork` is a pumpable fork with word `w`.
  */
 private predicate isPumpable(State fork, string w) {
-  exists(StatePair q, RelevantTrace t |
+  exists(StatePair q, Trace t |
     isReachableFromFork(fork, q, t, _) and
     q = getAForkPair(fork) and
-    w = t.concretise()
+    w = Concretizer<CharTreeImpl>::concretize(t)
   )
 }
 

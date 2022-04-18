@@ -1240,3 +1240,82 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
     result = str.suffix(str.length() - i) + str.prefix(str.length() - i)
   }
 }
+
+/**
+ * A module that describes a tree where each node has one or more accosiated characters.
+ * The root node has no accosiated character.
+ * This module is a signature used in `Concretizer`.
+ */
+signature module CharTree {
+  /** A node in the tree. */
+  class CharNode;
+
+  /** Gets the previous node in the tree from `t`. */
+  CharNode getPrev(CharNode t);
+
+  /**
+   * Holds if `n` is at the end of a tree. I.e. a node that should have a result in the `Concretizer` module.
+   * A leaf can still have children.
+   */
+  predicate isARelevantEnd(CharNode n);
+
+  /** Gets a char associated with `t`. */
+  string getChar(CharNode t);
+}
+
+/**
+ * Implements an algorithm for computing all possible strings
+ * from following a tree of nodes (as described in `CharTree`).
+ *
+ * The string is build using one big concat, where all the chars are computed first.
+ * See `concretize`.
+ */
+module Concretizer<CharTree Impl> {
+  private class Node = Impl::CharNode;
+
+  private predicate getPrev = Impl::getPrev/1;
+
+  private predicate isARelevantEnd = Impl::isARelevantEnd/1;
+
+  private predicate getChar = Impl::getChar/1;
+
+  /** Holds if `n` is on a path from the root to a leaf, and is therefore relevant for the results in `concretize`. */
+  private predicate isRelevant(Node n) {
+    isARelevantEnd(n)
+    or
+    exists(Node prev | isRelevant(prev) | n = getPrev(prev))
+  }
+
+  /** Holds if `n` is a root with no predecessors. */
+  private predicate isRoot(Node n) { not exists(getPrev(n)) }
+
+  /** Gets the distance from a root to `n`. */
+  private int nodeDist(Node n) {
+    result = 0 and isRoot(n)
+    or
+    isRelevant(n) and
+    exists(Node prev | result = nodeDist(prev) + 1 | prev = getPrev(n))
+  }
+
+  /** Holds if `n` is part of a chain that we want to compute a string for. */
+  private Node getANodeInLongChain(Node end) {
+    isARelevantEnd(end) and result = end
+    or
+    exists(Node prev | prev = getANodeInLongChain(end) | result = getPrev(prev))
+  }
+
+  pragma[noinline]
+  private string getPrefixChar(Node n, int i) {
+    exists(Node prev |
+      result = getChar(prev) and
+      prev = getANodeInLongChain(n) and
+      i = nodeDist(n) - nodeDist(prev)
+    )
+  }
+
+  /** Gets a string corresponding to `node`. */
+  language[monotonicAggregates]
+  string concretize(Node n) {
+    result = strictconcat(int i | exists(getPrefixChar(n, i)) | getPrefixChar(n, i) order by i desc)
+  }
+}

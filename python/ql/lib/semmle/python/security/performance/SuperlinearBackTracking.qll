@@ -312,48 +312,23 @@ StateTuple getAnEndTuple(State pivot, State succ) {
   result = MkStateTuple(pivot, succ, succ)
 }
 
-private predicate hasSuffix(Trace suffix, Trace t, int i) {
-  // Declaring `t` to be a `RelevantTrace` currently causes a redundant check in the
-  // recursive case, so instead we check it explicitly here.
-  t instanceof RelevantTrace and
-  i = 0 and
-  suffix = t
-  or
-  hasSuffix(Step(_, _, _, suffix), t, i - 1)
-}
+/** An implementation of a chain containing chars for use by `Concretizer`. */
+private module CharTreeImpl implements CharTree {
+  class CharNode = Trace;
 
-pragma[noinline]
-private predicate hasTuple(InputSymbol s1, InputSymbol s2, InputSymbol s3, Trace t, int i) {
-  hasSuffix(Step(s1, s2, s3, _), t, i)
-}
+  CharNode getPrev(CharNode t) { t = Step(_, _, _, result) }
 
-private class RelevantTrace extends Trace, Step {
-  RelevantTrace() {
-    exists(State pivot, State succ, StateTuple q |
-      isReachableFromStartTuple(pivot, succ, q, this, _) and
-      q = getAnEndTuple(pivot, succ)
+  /** Holds if `n` is used in `isPumpable`. */
+  predicate isARelevantEnd(CharNode n) {
+    exists(State pivot, State succ |
+      isReachableFromStartTuple(pivot, succ, getAnEndTuple(pivot, succ), n, _)
     )
   }
 
-  pragma[noinline]
-  private string getAThreewayIntersect(int i) {
-    exists(InputSymbol s1, InputSymbol s2, InputSymbol s3 |
-      hasTuple(s1, s2, s3, this, i) and
+  string getChar(CharNode t) {
+    exists(InputSymbol s1, InputSymbol s2, InputSymbol s3 | t = Step(s1, s2, s3, _) |
       result = getAThreewayIntersect(s1, s2, s3)
     )
-  }
-
-  /** Gets a string corresponding to this trace. */
-  // the pragma is needed for the case where `getAThreewayIntersect(s1, s2, s3)` has multiple values,
-  // not for recursion
-  language[monotonicAggregates]
-  string concretise() {
-    result =
-      strictconcat(int i |
-        hasTuple(_, _, _, this, i)
-      |
-        this.getAThreewayIntersect(i) order by i desc
-      )
   }
 }
 
@@ -370,10 +345,10 @@ private class RelevantTrace extends Trace, Step {
  * available in the `hasReDoSResult` predicate.
  */
 predicate isPumpable(State pivot, State succ, string pump) {
-  exists(StateTuple q, RelevantTrace t |
+  exists(StateTuple q, Trace t |
     isReachableFromStartTuple(pivot, succ, q, t, _) and
     q = getAnEndTuple(pivot, succ) and
-    pump = t.concretise()
+    pump = Concretizer<CharTreeImpl>::concretize(t)
   )
 }
 
