@@ -87,3 +87,15 @@ async function getClipboardData(e: ClipboardEvent): Promise<Array<File | string>
     const imageItems = Array.from(dropItems);
     return imageItems;
   }
+
+// inputevent
+(function () {
+    let div = document.createElement("div");
+    div.addEventListener("beforeinput", function (e: InputEvent) {
+        const { data, inputType, isComposing, dataTransfer } = e;
+        if (!dataTransfer) return;
+
+        const html = dataTransfer.getData('text/html');
+        $("#id").html(html); // NOT OK
+    });
+})();
