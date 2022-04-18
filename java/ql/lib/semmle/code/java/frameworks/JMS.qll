@@ -8,7 +8,7 @@
 import java
 import semmle.code.java.dataflow.ExternalFlow
 
-/** Defines sources of taited data in JMS 1. */
+/** Defines sources of tainted data in JMS 1. */
 private class Jms1Source extends SourceModelCsv {
   override predicate row(string row) {
     row =
@@ -91,7 +91,7 @@ private class Jms1FlowStep extends SummaryModelCsv {
   }
 }
 
-/** Defines additional sources of taited data in JMS 2. */
+/** Defines additional sources of tainted data in JMS 2. */
 private class Jms2Source extends SourceModelCsv {
   override predicate row(string row) {
     row =
