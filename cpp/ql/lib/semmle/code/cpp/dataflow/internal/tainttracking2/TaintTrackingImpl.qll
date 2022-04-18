@@ -154,8 +154,7 @@ abstract class Configuration extends DataFlow::Configuration {
   }
 
   /**
-   * Holds if the additional taint propagation step from `node1` to `node2`
-   * must be taken into account in the analysis.
+   * Holds if taint may propagate from `node1` to `node2` in addition to the normal data-flow and taint steps.
    */
   predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
@@ -165,9 +164,8 @@ abstract class Configuration extends DataFlow::Configuration {
   }
 
   /**
-   * Holds if the additional taint propagation step from `node1` to `node2`
-   * must be taken into account in the analysis. This step is only applicable
-   * in `state1` and updates the flow state to `state2`.
+   * Holds if taint may propagate from `node1` to `node2` in addition to the normal data-flow and taint steps.
+   * This step is only applicable in `state1` and updates the flow state to `state2`.
    */
   predicate isAdditionalTaintStep(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,

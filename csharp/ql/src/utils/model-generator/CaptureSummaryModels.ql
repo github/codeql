@@ -1,10 +1,10 @@
 /**
  * @name Capture summary models.
  * @description Finds applicable summary models to be used by other queries.
- * @id csharp/utils/model-generator/summary-models
+ * @id cs/utils/model-generator/summary-models
  */
 
-private import CaptureSummaryModels
+private import internal.CaptureModels
 
 /**
  * Capture fluent APIs that return `this`.

@@ -7,8 +7,9 @@
  */
 
 // Importing python under the `py` namespace to avoid importing `CallNode` from `Flow.qll` and thereby having a naming conflict with `API::CallNode`.
-private import python as py
+private import python as PY
 import semmle.python.dataflow.new.DataFlow
+private import semmle.python.internal.CachedStages
 
 /**
  * Provides classes and predicates for working with APIs used in a database.
@@ -427,13 +428,13 @@ module API {
       /** An abstract representative for imports of the module called `name`. */
       MkModuleImport(string name) {
         // Ignore the following module name for Python 2, as we alias `__builtin__` to `builtins` elsewhere
-        (name != "__builtin__" or py::major_version() = 3) and
+        (name != "__builtin__" or PY::major_version() = 3) and
         (
           imports(_, name)
           or
           // When we `import foo.bar.baz` we want to create API graph nodes also for the prefixes
           // `foo` and `foo.bar`:
-          name = any(py::ImportExpr e | not e.isRelative()).getAnImportedModuleName()
+          name = any(PY::ImportExpr e | not e.isRelative()).getAnImportedModuleName()
         )
         or
         // The `builtins` module should always be implicitly available
@@ -469,7 +470,7 @@ module API {
      * Ignores relative imports, such as `from ..foo.bar import baz`.
      */
     private predicate imports(DataFlow::Node imp, string name) {
-      exists(py::ImportExprNode iexpr |
+      exists(PY::ImportExprNode iexpr |
         imp.asCfgNode() = iexpr and
         not iexpr.getNode().isRelative() and
         name = iexpr.getNode().getImportedModuleName()
@@ -492,7 +493,7 @@ module API {
      *
      * `moduleImport("foo").getMember("bar")`
      */
-    private TApiNode potential_import_star_base(py::Scope s) {
+    private TApiNode potential_import_star_base(PY::Scope s) {
       exists(DataFlow::Node n |
         n.asCfgNode() = ImportStar::potentialImportStarBase(s) and
         use(result, n)
@@ -515,17 +516,17 @@ module API {
         )
         or
         // TODO: I had expected `DataFlow::AttrWrite` to contain the attribute writes from a dict, that's how JS works.
-        exists(py::Dict dict, py::KeyValuePair item |
+        exists(PY::Dict dict, PY::KeyValuePair item |
           dict = pred.asExpr() and
           dict.getItem(_) = item and
-          lbl = Label::member(item.getKey().(py::StrConst).getS()) and
+          lbl = Label::member(item.getKey().(PY::StrConst).getS()) and
           rhs.asExpr() = item.getValue()
         )
         or
-        exists(py::CallableExpr fn | fn = pred.asExpr() |
+        exists(PY::CallableExpr fn | fn = pred.asExpr() |
           not fn.getInnerScope().isAsync() and
           lbl = Label::return() and
-          exists(py::Return ret |
+          exists(PY::Return ret |
             rhs.asExpr() = ret.getValue() and
             ret.getScope() = fn.getInnerScope()
           )
@@ -568,7 +569,7 @@ module API {
         // Subclassing a node
         lbl = Label::subclass() and
         exists(DataFlow::Node superclass | pred.flowsTo(superclass) |
-          ref.asExpr().(py::ClassExpr).getABase() = superclass.asExpr()
+          ref.asExpr().(PY::ClassExpr).getABase() = superclass.asExpr()
         )
         or
         // awaiting
@@ -579,7 +580,7 @@ module API {
         )
       )
       or
-      exists(DataFlow::Node def, py::CallableExpr fn |
+      exists(DataFlow::Node def, PY::CallableExpr fn |
         rhs(base, def) and fn = trackDefNode(def).asExpr()
       |
         exists(int i |
@@ -598,7 +599,7 @@ module API {
       lbl = Label::member(any(string name | ref = Builtins::likelyBuiltin(name)))
       or
       // Unknown variables that may belong to a module imported with `import *`
-      exists(py::Scope s |
+      exists(PY::Scope s |
         base = potential_import_star_base(s) and
         lbl =
           Label::member(any(string name |
@@ -618,7 +619,7 @@ module API {
       )
       or
       // Ensure the Python 2 `__builtin__` module gets the name of the Python 3 `builtins` module.
-      py::major_version() = 2 and
+      PY::major_version() = 2 and
       nd = MkModuleImport("builtins") and
       imports(ref, "__builtin__")
       or
@@ -683,6 +684,7 @@ module API {
      */
     cached
     DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src) {
+      Stages::TypeTracking::ref() and
       result = trackUseNode(src, DataFlow::TypeTracker::end()) and
       not result instanceof DataFlow::ModuleVariableNode
     }
@@ -759,18 +761,18 @@ module API {
           exists(Builtins::likelyBuiltin(member)) or
           ImportStar::namePossiblyDefinedInImportStar(_, member, _) or
           Impl::prefix_member(_, member, _) or
-          member = any(py::Dict d).getAnItem().(py::KeyValuePair).getKey().(py::StrConst).getS()
+          member = any(PY::Dict d).getAnItem().(PY::KeyValuePair).getKey().(PY::StrConst).getS()
         } or
         MkLabelUnknownMember() or
         MkLabelParameter(int i) {
           exists(any(DataFlow::CallCfgNode c).getArg(i))
           or
-          exists(any(py::Function f).getArg(i))
+          exists(any(PY::Function f).getArg(i))
         } or
         MkLabelKeywordParameter(string name) {
           exists(any(DataFlow::CallCfgNode c).getArgByName(name))
           or
-          exists(any(py::Function f).getArgByName(name))
+          exists(any(PY::Function f).getArgByName(name))
         } or
         MkLabelReturn() or
         MkLabelSubclass() or

@@ -122,7 +122,9 @@ module Flask {
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
       ClassInstantiation() { this = classRef().getACall() }
 
-      override DataFlow::Node getBody() { result = this.getArg(0) }
+      override DataFlow::Node getBody() {
+        result in [this.getArg(0), this.getArgByName("response")]
+      }
 
       override string getMimetypeDefault() { result = "text/html" }
 

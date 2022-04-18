@@ -43,3 +43,21 @@ public sealed class PublicClassNoFlow
         }
     }
 }
+
+public class EquatableBound : IEquatable<int>
+{
+    public readonly bool tainted;
+    public bool Equals(int other)
+    {
+        return tainted;
+    }
+}
+
+public class EquatableUnBound<T> : IEquatable<T>
+{
+    public readonly bool tainted;
+    public bool Equals(T? other)
+    {
+        return tainted;
+    }
+}

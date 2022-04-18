@@ -204,7 +204,7 @@ private class SafeDigesterFlowConfig extends DataFlow4::Configuration {
   override int fieldFlowBranchLimit() { result = 0 }
 }
 
-/** The class `java.beans.XmlDecoder`. */
+/** The class `java.beans.XMLDecoder`. */
 class XmlDecoder extends RefType {
   XmlDecoder() { this.hasQualifiedName("java.beans", "XMLDecoder") }
 }
@@ -212,7 +212,7 @@ class XmlDecoder extends RefType {
 /** DEPRECATED: Alias for XmlDecoder */
 deprecated class XMLDecoder = XmlDecoder;
 
-/** A call to `XmlDecoder.readObject`. */
+/** A call to `XMLDecoder.readObject`. */
 class XmlDecoderReadObject extends XmlParserCall {
   XmlDecoderReadObject() {
     exists(Method m |

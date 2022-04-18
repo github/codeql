@@ -122,6 +122,8 @@
 | captures.cpp:22:18:24:3 | initializer for myLambda |
 | captures.cpp:22:18:24:3 | y |
 | captures.cpp:22:18:24:3 | {...} |
+| captures.cpp:22:19:22:19 | (reference dereference) |
+| captures.cpp:22:19:22:19 | (reference dereference) |
 | captures.cpp:22:19:22:19 | (unnamed constructor) |
 | captures.cpp:22:19:22:19 | (unnamed constructor) |
 | captures.cpp:22:19:22:19 | (unnamed constructor) |
@@ -184,6 +186,7 @@
 | end_pos.cpp:9:14:11:5 | [...](...){...} |
 | end_pos.cpp:9:14:11:5 | initializer for fp |
 | end_pos.cpp:9:14:11:5 | {...} |
+| end_pos.cpp:9:15:9:15 | (reference dereference) |
 | end_pos.cpp:9:15:9:15 | (unnamed constructor) |
 | end_pos.cpp:9:15:9:15 | (unnamed constructor) |
 | end_pos.cpp:9:15:9:15 | (unnamed constructor) |

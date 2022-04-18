@@ -36,7 +36,7 @@ module CleartextSources {
    * sensitive data with a call to `sub`.
    */
   private predicate effectiveSubRegExp(CfgNodes::ExprNodes::RegExpLiteralCfgNode re) {
-    re.getConstantValue().getStringOrSymbol().matches([".*", ".+"])
+    re.getConstantValue().getStringlikeValue().matches([".*", ".+"])
   }
 
   /**
@@ -44,7 +44,7 @@ module CleartextSources {
    * sensitive data with a call to `gsub`.
    */
   private predicate effectiveGsubRegExp(CfgNodes::ExprNodes::RegExpLiteralCfgNode re) {
-    re.getConstantValue().getStringOrSymbol().matches(".")
+    re.getConstantValue().getStringlikeValue().matches(".")
   }
 
   /**
@@ -112,7 +112,7 @@ module CleartextSources {
             .(CfgNodes::ExprNodes::ElementReferenceCfgNode)
             .getArgument(0)
             .getConstantValue()
-            .getStringOrSymbol() = name
+            .getStringlikeValue() = name
         or
         // calling a non-sensitive method
         this.(DataFlow::CallNode).getMethodName() = name
@@ -123,7 +123,7 @@ module CleartextSources {
           .(CfgNodes::ExprNodes::ElementReferenceCfgNode)
           .getReceiver()
           .getConstantValue()
-          .getStringOrSymbol()
+          .getStringlikeValue()
           .regexpMatch("(?is).*(messages|strings).*")
     }
   }
@@ -146,7 +146,7 @@ module CleartextSources {
   private predicate hashKeyWrite(DataFlow::CallNode writeNode, string name, DataFlow::Node val) {
     writeNode.asExpr().getExpr() instanceof SetterMethodCall and
     // hash[name]
-    writeNode.getArgument(0).asExpr().getConstantValue().getStringOrSymbol() = name and
+    writeNode.getArgument(0).asExpr().getConstantValue().getStringlikeValue() = name and
     // val
     writeNode.getArgument(1).asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs() =
       val.asExpr()
@@ -203,7 +203,7 @@ module CleartextSources {
         exists(CfgNodes::ExprNodes::PairCfgNode p |
           this.asExpr() = lit and p = lit.getAKeyValuePair()
         |
-          p.getKey().getConstantValue().getStringOrSymbol() = name and
+          p.getKey().getConstantValue().getStringlikeValue() = name and
           p.getValue() = val.asExpr()
         )
       )
@@ -266,7 +266,7 @@ module CleartextSources {
       // from `hsh[password] = "changeme"` to a `hsh[password]` read
       nodeFrom.(HashKeyWritePasswordSource).getName() = name and
       nodeTo.asExpr().getExpr() = ref and
-      ref.getArgument(0).getConstantValue().getStringOrSymbol() = name and
+      ref.getArgument(0).getConstantValue().getStringlikeValue() = name and
       nodeFrom.(HashKeyWritePasswordSource).getVariable() = hashVar and
       ref.getReceiver().(VariableReadAccess).getVariable() = hashVar and
       nodeFrom.asExpr().getASuccessor*() = nodeTo.asExpr()
