@@ -209,6 +209,7 @@ fun isUnspecialised(paramsContainer: IrTypeParametersContainer, args: List<IrTyp
     val parentUnspecialised = when {
         remainingArgs.isEmpty() -> true
         parent == null -> false
+        parent !is IrClass -> false
         else -> isUnspecialised(paramsContainer.parentAsClass, remainingArgs)
     }
     return unspecialisedHere && parentUnspecialised
