@@ -613,11 +613,11 @@ reflection.kt:
 #   41|           0: [ReturnStmt] return ...
 #   41|             0: [VarAccess] INSTANCE
 #   58|   3: [Class] Class1
-#   58|     4: [Constructor] Class1
+#   58|     3: [Constructor] Class1
 #   58|       5: [BlockStmt] { ... }
 #   58|         0: [SuperConstructorInvocationStmt] super(...)
 #   58|         1: [BlockStmt] { ... }
-#   59|     5: [Method] fn
+#   59|     4: [Method] fn
 #   59|       5: [BlockStmt] { ... }
 #   60|         0: [ExprStmt] <Expr>;
 #   60|           0: [MethodAccess] println(...)
@@ -947,7 +947,7 @@ reflection.kt:
 #   72|                 0: [TypeAccess] Integer
 #   72|               0: [ClassInstanceExpr] new Rectangle(...)
 #   72|                 -3: [TypeAccess] Rectangle
-#   75|     6: [Class,GenericType,ParameterizedType] Generic
+#   75|     5: [Class,GenericType,ParameterizedType] Generic
 #-----|       -2: (Generic Parameters)
 #   75|         0: [TypeVariable] T1
 #   75|       1: [Constructor] Generic
@@ -1033,8 +1033,8 @@ reflection.kt:
 #   90|                         -2: [VarAccess] this.<dispatchReceiver>
 #   90|                           -1: [ThisAccess] this
 #   90|                         0: [VarAccess] a0
-#   90|                 1: [FieldDeclaration] Class2<T> <dispatchReceiver>;
-#   90|                   -1: [TypeAccess] Class2<T>
+#   90|                 1: [FieldDeclaration] Class2 <dispatchReceiver>;
+#   90|                   -1: [TypeAccess] Class2
 #   90|                     0: [TypeAccess] T
 #   90|               -3: [TypeAccess] Function1<String,Inner<String>>
 #   90|                 0: [TypeAccess] String

@@ -87,8 +87,8 @@
 | ? extends TypeArgument | Wildcard |
 | ? extends TypeSignature | Wildcard |
 | ? extends TypeVariable<?> | Wildcard |
-| ? extends TypeVariable<Class<T>> | Wildcard |
-| ? extends TypeVariable<Constructor<T>> | Wildcard |
+| ? extends TypeVariable<Class> | Wildcard |
+| ? extends TypeVariable<Constructor> | Wildcard |
 | ? extends TypeVariable<Method> | Wildcard |
 | ? extends U | Wildcard |
 | ? extends V | Wildcard |
@@ -242,8 +242,8 @@
 | Array<? extends TypeArgument> | Class, ParameterizedType |
 | Array<? extends TypeSignature> | Class, ParameterizedType |
 | Array<? extends TypeVariable<?>> | Class, ParameterizedType |
-| Array<? extends TypeVariable<Class<T>>> | Class, ParameterizedType |
-| Array<? extends TypeVariable<Constructor<T>>> | Class, ParameterizedType |
+| Array<? extends TypeVariable<Class>> | Class, ParameterizedType |
+| Array<? extends TypeVariable<Constructor>> | Class, ParameterizedType |
 | Array<? extends TypeVariable<Method>> | Class, ParameterizedType |
 | Array<? extends WorkQueue> | Class, ParameterizedType |
 | Array<A> | Class, ParameterizedType |
@@ -351,8 +351,8 @@
 | Array<TypeSignature> | Class, ParameterizedType |
 | Array<TypeVariable<>> | Class, ParameterizedType |
 | Array<TypeVariable<?>> | Class, ParameterizedType |
-| Array<TypeVariable<Class<T>>> | Class, ParameterizedType |
-| Array<TypeVariable<Constructor<T>>> | Class, ParameterizedType |
+| Array<TypeVariable<Class>> | Class, ParameterizedType |
+| Array<TypeVariable<Constructor>> | Class, ParameterizedType |
 | Array<TypeVariable<Method>> | Class, ParameterizedType |
 | Array<UnicodeScript> | Class, ParameterizedType |
 | Array<WorkQueue> | Class, ParameterizedType |
@@ -404,8 +404,8 @@
 | BaseStream<SplittableGenerator,Stream<SplittableGenerator>> | Interface, ParameterizedType |
 | BaseStream<StackFrame,Stream<StackFrame>> | Interface, ParameterizedType |
 | BaseStream<String,Stream<String>> | Interface, ParameterizedType |
-| BaseStream<T,S> | Interface, ParameterizedType |
 | BaseStream<T,Stream<T>> | Interface, ParameterizedType |
+| BaseStream<T,Stream> | Interface, ParameterizedType |
 | BaseStream<U,Stream<U>> | Interface, ParameterizedType |
 | BaseStream<URL,Stream<URL>> | Interface, ParameterizedType |
 | BaseType | Interface |
@@ -426,7 +426,6 @@
 | BiConsumer<R,? super T> | Interface, ParameterizedType |
 | BiConsumer<R,R> | Interface, ParameterizedType |
 | BiConsumer<R,T> | Interface, ParameterizedType |
-| BiConsumer<T,U> | Interface, ParameterizedType |
 | BiFunction | GenericType, Interface, ParameterizedType |
 | BiFunction<> | Interface, RawType |
 | BiFunction<? super K,? super K,? extends K> | Interface, ParameterizedType |
@@ -598,7 +597,6 @@
 | ClassSpecializer | Class, GenericType, ParameterizedType |
 | ClassSpecializer<> | Class, RawType |
 | ClassSpecializer<BoundMethodHandle,String,SpeciesData> | Class, ParameterizedType |
-| ClassSpecializer<T,K,S> | Class, ParameterizedType |
 | ClassTypeSignature | Class |
 | ClassTypeSignature[] | Array |
 | ClassValue | Class, GenericType, ParameterizedType |
@@ -961,7 +959,6 @@
 | EntrySetView | Class, GenericType, ParameterizedType |
 | EntrySpliterator | Class, GenericType, ParameterizedType |
 | EntrySpliterator<> | Class, RawType |
-| EntrySpliterator<K,V> | Class, ParameterizedType |
 | Enum | Class, GenericType, ParameterizedType |
 | Enum<> | Class, RawType |
 | Enum<>[] | Array |
@@ -1357,7 +1354,6 @@
 | KeySetView<K,V> | Class, ParameterizedType |
 | KeySpliterator | Class, GenericType, ParameterizedType |
 | KeySpliterator<> | Class, RawType |
-| KeySpliterator<K,V> | Class, ParameterizedType |
 | Kind | Class |
 | Kind | GenericType, Interface, ParameterizedType |
 | Kind<> | Interface, RawType |
@@ -1492,37 +1488,21 @@
 | MapEntry | Class, GenericType, ParameterizedType |
 | MapMode | Class |
 | MapReduceEntriesTask | Class, GenericType, ParameterizedType |
-| MapReduceEntriesTask<K,V,U> | Class, ParameterizedType |
 | MapReduceEntriesToDoubleTask | Class, GenericType, ParameterizedType |
-| MapReduceEntriesToDoubleTask<K,V> | Class, ParameterizedType |
 | MapReduceEntriesToIntTask | Class, GenericType, ParameterizedType |
-| MapReduceEntriesToIntTask<K,V> | Class, ParameterizedType |
 | MapReduceEntriesToLongTask | Class, GenericType, ParameterizedType |
-| MapReduceEntriesToLongTask<K,V> | Class, ParameterizedType |
 | MapReduceKeysTask | Class, GenericType, ParameterizedType |
-| MapReduceKeysTask<K,V,U> | Class, ParameterizedType |
 | MapReduceKeysToDoubleTask | Class, GenericType, ParameterizedType |
-| MapReduceKeysToDoubleTask<K,V> | Class, ParameterizedType |
 | MapReduceKeysToIntTask | Class, GenericType, ParameterizedType |
-| MapReduceKeysToIntTask<K,V> | Class, ParameterizedType |
 | MapReduceKeysToLongTask | Class, GenericType, ParameterizedType |
-| MapReduceKeysToLongTask<K,V> | Class, ParameterizedType |
 | MapReduceMappingsTask | Class, GenericType, ParameterizedType |
-| MapReduceMappingsTask<K,V,U> | Class, ParameterizedType |
 | MapReduceMappingsToDoubleTask | Class, GenericType, ParameterizedType |
-| MapReduceMappingsToDoubleTask<K,V> | Class, ParameterizedType |
 | MapReduceMappingsToIntTask | Class, GenericType, ParameterizedType |
-| MapReduceMappingsToIntTask<K,V> | Class, ParameterizedType |
 | MapReduceMappingsToLongTask | Class, GenericType, ParameterizedType |
-| MapReduceMappingsToLongTask<K,V> | Class, ParameterizedType |
 | MapReduceValuesTask | Class, GenericType, ParameterizedType |
-| MapReduceValuesTask<K,V,U> | Class, ParameterizedType |
 | MapReduceValuesToDoubleTask | Class, GenericType, ParameterizedType |
-| MapReduceValuesToDoubleTask<K,V> | Class, ParameterizedType |
 | MapReduceValuesToIntTask | Class, GenericType, ParameterizedType |
-| MapReduceValuesToIntTask<K,V> | Class, ParameterizedType |
 | MapReduceValuesToLongTask | Class, GenericType, ParameterizedType |
-| MapReduceValuesToLongTask<K,V> | Class, ParameterizedType |
 | MappedByteBuffer | Class |
 | Member | Interface |
 | MemberName | Class |
@@ -1616,13 +1596,11 @@
 | OfMethod<> | Interface, RawType |
 | OfMethod<Class<?>,MethodType> | Interface, ParameterizedType |
 | OfMethod<ClassDesc,MethodTypeDesc> | Interface, ParameterizedType |
-| OfMethod<F,M> | Interface, ParameterizedType |
 | OfPrimitive | GenericType, Interface, ParameterizedType |
 | OfPrimitive<> | Interface, RawType |
 | OfPrimitive<Double,DoubleConsumer,OfDouble> | Interface, ParameterizedType |
 | OfPrimitive<Integer,IntConsumer,OfInt> | Interface, ParameterizedType |
 | OfPrimitive<Long,LongConsumer,OfLong> | Interface, ParameterizedType |
-| OfPrimitive<T,T_CONS,T_SPLITR> | Interface, ParameterizedType |
 | OffsetClock | Class |
 | OffsetDateTime | Class |
 | OffsetIdPrinterParser | Class |
@@ -1738,11 +1716,8 @@
 | RecordComponent[] | Array |
 | RecordSupport | Class |
 | ReduceEntriesTask | Class, GenericType, ParameterizedType |
-| ReduceEntriesTask<K,V> | Class, ParameterizedType |
 | ReduceKeysTask | Class, GenericType, ParameterizedType |
-| ReduceKeysTask<K,V> | Class, ParameterizedType |
 | ReduceValuesTask | Class, GenericType, ParameterizedType |
-| ReduceValuesTask<K,V> | Class, ParameterizedType |
 | ReducedPrinterParser | Class |
 | ReentrantLock | Class |
 | Reference | Class, GenericType, ParameterizedType |
@@ -1759,6 +1734,7 @@
 | Reference<ThreadLocal<?>> | Class, ParameterizedType |
 | Reference<Version<?>> | Class, ParameterizedType |
 | Reference<Version<T>> | Class, ParameterizedType |
+| Reference<Version> | Class, ParameterizedType |
 | ReferenceQueue | Class, GenericType, ParameterizedType |
 | ReferenceQueue<? super T> | Class, ParameterizedType |
 | ReferenceQueue<Class<?>> | Class, ParameterizedType |
@@ -1863,7 +1839,6 @@
 | SoftReference<MethodHandle>[] | Array |
 | SortedMap | GenericType, Interface, ParameterizedType |
 | SortedMap<> | Interface, RawType |
-| SortedMap<K,V> | Interface, ParameterizedType |
 | SortedMap<String,Charset> | Interface, ParameterizedType |
 | SourceClock | Class |
 | Special | Class |
@@ -2045,10 +2020,10 @@
 | TypeVariable<>[] | Array |
 | TypeVariable<?> | Interface, ParameterizedType |
 | TypeVariable<?>[] | Array |
-| TypeVariable<Class<T>> | Interface, ParameterizedType |
-| TypeVariable<Class<T>>[] | Array |
-| TypeVariable<Constructor<T>> | Interface, ParameterizedType |
-| TypeVariable<Constructor<T>>[] | Array |
+| TypeVariable<Class> | Interface, ParameterizedType |
+| TypeVariable<Class>[] | Array |
+| TypeVariable<Constructor> | Interface, ParameterizedType |
+| TypeVariable<Constructor>[] | Array |
 | TypeVariable<Method> | Interface, ParameterizedType |
 | TypeVariable<Method>[] | Array |
 | TypeVariableSignature | Class |
@@ -2083,7 +2058,6 @@
 | ValueRange | Class |
 | ValueSpliterator | Class, GenericType, ParameterizedType |
 | ValueSpliterator<> | Class, RawType |
-| ValueSpliterator<K,V> | Class, ParameterizedType |
 | ValuesView | Class, GenericType, ParameterizedType |
 | VarForm | Class |
 | VarHandle | Class |
@@ -2160,6 +2134,7 @@
 | WeakReference<ThreadLocal<?>> | Class, ParameterizedType |
 | WeakReference<Version<?>> | Class, ParameterizedType |
 | WeakReference<Version<T>> | Class, ParameterizedType |
+| WeakReference<Version> | Class, ParameterizedType |
 | WeekBasedFieldPrinterParser | Class |
 | Wildcard | Class |
 | WildcardType | Interface |
