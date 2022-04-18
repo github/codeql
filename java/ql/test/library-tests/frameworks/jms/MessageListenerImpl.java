@@ -18,27 +18,27 @@ public class MessageListenerImpl implements MessageListener {
             if (message instanceof TextMessage) {
                 TextMessage textMessage = (TextMessage) message;
                 String text = textMessage.getText();
-                sink(text); // $detected
+                sink(text); // $tainted
             } else if (message instanceof BytesMessage) {
                 BytesMessage bytesMessage = (BytesMessage) message;
                 byte[] data = new byte[1024];
                 bytesMessage.readBytes(data, 42);
-                sink(new String(data)); // $detected
-                sink(bytesMessage.readUTF()); // $detected
+                sink(new String(data)); // $tainted
+                sink(bytesMessage.readUTF()); // $tainted
             } else if (message instanceof MapMessage) {
                 MapMessage mapMessage = (MapMessage) message;
-                sink(mapMessage.getString("data")); // $detected
-                sink(new String(mapMessage.getBytes("bytes"))); // $detected
+                sink(mapMessage.getString("data")); // $tainted
+                sink(new String(mapMessage.getBytes("bytes"))); // $tainted
             } else if (message instanceof ObjectMessage) {
                 ObjectMessage objectMessage = (ObjectMessage) message;
-                sink((String) objectMessage.getObject()); // $detected
+                sink((String) objectMessage.getObject()); // $tainted
             } else if (message instanceof StreamMessage) {
                 StreamMessage streamMessage = (StreamMessage) message;
                 byte[] data = new byte[1024];
                 streamMessage.readBytes(data);
-                sink(new String(data)); // $detected
-                sink(streamMessage.readString()); // $detected
-                sink((String) streamMessage.readObject()); // $detected
+                sink(new String(data)); // $tainted
+                sink(streamMessage.readString()); // $tainted
+                sink((String) streamMessage.readObject()); // $tainted
             }
         } catch (Exception e) {
         }
@@ -47,25 +47,25 @@ public class MessageListenerImpl implements MessageListener {
     public void readFromCounsumer(MessageConsumer consumer) throws Exception {
         TextMessage message = (TextMessage) consumer.receive(5000); // $source
         String text = message.getText();
-        sink(text); // $detected
+        sink(text); // $tainted
         message = (TextMessage) consumer.receive(); // $source
         text = message.getText();
-        sink(text); // $detected
+        sink(text); // $tainted
         message = (TextMessage) consumer.receiveNoWait(); // $source
         text = message.getText();
-        sink(text); // $detected
+        sink(text); // $tainted
     }
 
     public void readFromQueueRequestor(QueueRequestor requestor, Message message) throws Exception {
         TextMessage reply = (TextMessage) requestor.request(message); // $source
         String text = reply.getText();
-        sink(text); // $detected
+        sink(text); // $tainted
     }
 
     public void readFromTopicRequestor(TopicRequestor requestor, Message message) throws Exception {
         TextMessage reply = (TextMessage) requestor.request(message); // $source
         String text = reply.getText();
-        sink(text); // $detected
+        sink(text); // $tainted
     }
 
     private void sink(String data) {

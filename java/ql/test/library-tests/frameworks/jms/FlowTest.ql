@@ -17,10 +17,10 @@ class TestConfig extends TaintTracking::Configuration {
 class JmsFlowTest extends InlineExpectationsTest {
   JmsFlowTest() { this = "JmsFlowTest" }
 
-  override string getARelevantTag() { result = "detected" }
+  override string getARelevantTag() { result = "tainted" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "detected" and
+    tag = "tainted" and
     exists(DataFlow::PathNode source, DataFlow::PathNode sink, TestConfig conf |
       conf.hasFlowPath(source, sink)
     |
