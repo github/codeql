@@ -1,4 +1,4 @@
-/*template<typename T> void mod(T value);
+template<typename T> void mod(T value);
 
 const int c1 = 42;
 const int c2 = 43;
@@ -57,7 +57,7 @@ void loops(int cap)
 
     for (int k = 0; k < cap; k += 3)
         mod(k); // $ mod=0,0,3
-}*/
+}
 
 int loops2 (unsigned int *i) {
   for (; *i <= 2; (*i)++) {

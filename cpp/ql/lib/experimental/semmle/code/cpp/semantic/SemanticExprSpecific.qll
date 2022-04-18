@@ -133,7 +133,7 @@ module SemanticExprConfig {
     IR::Operand asOperand() { none() }
   }
 
-  class SsaInstructionVariable extends SsaVariable, TSsaInstruction {
+  private class SsaInstructionVariable extends SsaVariable, TSsaInstruction {
     IR::Instruction instr;
 
     SsaInstructionVariable() { this = TSsaInstruction(instr) }
@@ -145,10 +145,10 @@ module SemanticExprConfig {
     final override IR::Instruction asInstruction() { result = instr }
   }
 
-  class SsaOperand extends SsaVariable, TSsaOperand {
+  private class SsaOperandVariable extends SsaVariable, TSsaOperand {
     IR::Operand op;
 
-    SsaOperand() { this = TSsaOperand(op) }
+    SsaOperandVariable() { this = TSsaOperand(op) }
 
     final override string toString() { result = op.toString() }
 
@@ -162,7 +162,7 @@ module SemanticExprConfig {
   predicate phi(SsaVariable v) { v.asInstruction() instanceof IR::PhiInstruction }
 
   SsaVariable getAPhiInput(SsaVariable v) {
-    exists(IR::PhiInstruction instr |
+    exists(IR::PhiInstruction instr | v.asInstruction() = instr |
       result.asInstruction() = instr.getAnInput()
       or
       result.asOperand() = instr.getAnInputOperand()
