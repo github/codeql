@@ -421,22 +421,24 @@ class LibraryCallableValue extends DataFlowCallable, TLibraryCallable {
  * TODO: Add `TClassMethodCall` mapping `cls` appropriately.
  */
 newtype TDataFlowCall =
-  TFunctionCall(CallNode call) { call = any(FunctionValue f).getAFunctionCall() } or
-  /** Bound methods need to make room for the explicit self parameter */
-  TMethodCall(CallNode call) { call = any(FunctionValue f).getAMethodCall() } or
-  TClassCall(CallNode call) { call = any(ClassValue c | not c.isAbsent()).getACall() } or
+  /**
+   * Includes function calls, method calls, class calls and library calls.
+   * All these will be associated with a `CallNode`.
+   */
+  TNonSpecialCall(CallNode call) or
+  /**
+   * Includes calls to special methods.
+   * These will be associated with a `SpecialMethodCallNode`.
+   */
   TSpecialCall(SpecialMethodCallNode special) or
-  /** A call to a summarized callable */
-  TLibraryCall(CallNode call) { call.getNode() = any(LibraryCallable lc).getACall() } or
-  /** A synthesized inside a summarized callable */
+  /** A synthesized call inside a summarized callable */
   TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
 
-class TDataFlowSourceCall =
-  TFunctionCall or TMethodCall or TClassCall or TSpecialCall or TLibraryCall;
+class TDataFlowSourceCall = TSpecialCall or TNonSpecialCall;
 
-/** A call. */
+/** A call that is taken into account by the global data flow computation. */
 abstract class DataFlowCall extends TDataFlowCall {
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -461,6 +463,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   }
 }
 
+/** A call found in the program source (as opposed to a synthesised call). */
 abstract class DataFlowSourceCall extends DataFlowCall, TDataFlowSourceCall {
   final override Location getLocation() { result = this.getNode().getLocation() }
 
@@ -477,48 +480,68 @@ abstract class DataFlowSourceCall extends DataFlowCall, TDataFlowSourceCall {
   abstract ControlFlowNode getNode();
 }
 
+/** A call associated with a `CallNode`. */
+class NonSpecialCall extends DataFlowSourceCall, TNonSpecialCall {
+  CallNode call;
+
+  NonSpecialCall() { this = TNonSpecialCall(call) }
+
+  override string toString() { result = call.toString() }
+
+  abstract override Node getArg(int n);
+
+  override ControlFlowNode getNode() { result = call }
+
+  abstract override DataFlowCallable getCallable();
+
+  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
+}
+
 /**
- * A call to a function/lambda.
+ * A call to a function.
  * This excludes calls to bound methods, classes, and special methods.
  * Bound method calls and class calls insert an argument for the explicit
  * `self` parameter, and special method calls have special argument passing.
  */
-class FunctionCall extends DataFlowSourceCall, TFunctionCall {
-  CallNode call;
+class FunctionCall extends NonSpecialCall {
   DataFlowCallable callable;
+  FunctionValue f;
 
   FunctionCall() {
-    this = TFunctionCall(call) and
+    call = f.getAFunctionCall() and
     call = callable.getACall()
   }
 
-  override string toString() { result = call.toString() }
+  override Node getArg(int n) { result = getArg(call, TNoShift(), callable.getCallableValue(), n) }
+
+  override DataFlowCallable getCallable() { result = callable }
+}
+
+/** A call to a lambda. */
+class LambdaCall extends NonSpecialCall {
+  DataFlowCallable callable;
+  Function f;
+
+  LambdaCall() {
+    call = callable.getACall() and
+    callable = TLambda(f)
+  }
 
   override Node getArg(int n) { result = getArg(call, TNoShift(), callable.getCallableValue(), n) }
 
-  override ControlFlowNode getNode() { result = call }
-
   override DataFlowCallable getCallable() { result = callable }
-
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
 }
 
 /**
  * Represents a call to a bound method call.
  * The node representing the instance is inserted as argument to the `self` parameter.
  */
-class MethodCall extends DataFlowSourceCall, TMethodCall {
-  CallNode call;
+class MethodCall extends NonSpecialCall {
   FunctionValue bm;
 
-  MethodCall() {
-    this = TMethodCall(call) and
-    call = bm.getACall()
-  }
+  MethodCall() { call = bm.getAMethodCall() }
 
   private CallableValue getCallableValue() { result = bm }
-
-  override string toString() { result = call.toString() }
 
   override Node getArg(int n) {
     n > 0 and result = getArg(call, TShiftOneUp(), this.getCallableValue(), n)
@@ -526,11 +549,7 @@ class MethodCall extends DataFlowSourceCall, TMethodCall {
     n = 0 and result = TCfgNode(call.getFunction().(AttrNode).getObject())
   }
 
-  override ControlFlowNode getNode() { result = call }
-
   override DataFlowCallable getCallable() { result = TCallableValue(this.getCallableValue()) }
-
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
 }
 
 /**
@@ -539,18 +558,15 @@ class MethodCall extends DataFlowSourceCall, TMethodCall {
  * That makes the call node be the post-update node holding the value of the object
  * after the constructor has run.
  */
-class ClassCall extends DataFlowSourceCall, TClassCall {
-  CallNode call;
+class ClassCall extends NonSpecialCall {
   ClassValue c;
 
   ClassCall() {
-    this = TClassCall(call) and
+    not c.isAbsent() and
     call = c.getACall()
   }
 
   private CallableValue getCallableValue() { c.getScope().getInitMethod() = result.getScope() }
-
-  override string toString() { result = call.toString() }
 
   override Node getArg(int n) {
     n > 0 and result = getArg(call, TShiftOneUp(), this.getCallableValue(), n)
@@ -558,11 +574,7 @@ class ClassCall extends DataFlowSourceCall, TClassCall {
     n = 0 and result = TSyntheticPreUpdateNode(TCfgNode(call))
   }
 
-  override ControlFlowNode getNode() { result = call }
-
   override DataFlowCallable getCallable() { result = TCallableValue(this.getCallableValue()) }
-
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
 }
 
 /** A call to a special method. */
@@ -586,22 +598,16 @@ class SpecialCall extends DataFlowSourceCall, TSpecialCall {
   }
 }
 
-class LibraryCall extends DataFlowSourceCall, TLibraryCall {
-  CallNode call;
+/** A call to a summarized callable. */
+class LibraryCall extends NonSpecialCall {
   LibraryCallable callable;
 
-  LibraryCall() { this = TLibraryCall(call) and call.getNode() = callable.getACall() }
-
-  override string toString() { result = call.toString() }
+  LibraryCall() { call.getNode() = callable.getACall() }
 
   // TODO: Implement Python calling convention?
   override Node getArg(int n) { result = TCfgNode(call.getArg(n)) }
 
-  override ControlFlowNode getNode() { result = call }
-
   override DataFlowCallable getCallable() { result.asLibraryCallable() = callable }
-
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
 }
 
 /**
