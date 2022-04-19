@@ -5047,6 +5047,7 @@ private module FlowExploration {
     )
   }
 
+  pragma[nomagic]
   private predicate revPartialPathStep(
     PartialPathNodeRev mid, NodeEx node, FlowState state, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2,
     TRevSummaryCtx3 sc3, RevPartialAccessPath ap, Configuration config
