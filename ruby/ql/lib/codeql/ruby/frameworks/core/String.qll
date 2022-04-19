@@ -15,36 +15,30 @@ private import codeql.ruby.Regexp as RE
  * We heuristically include any call to a method matching the above names,
  * provided it has exactly two arguments and a receiver.
  */
-class StringSubstitutionCall extends DataFlow::Node {
-  private ExprNodes::MethodCallCfgNode exprNode;
-
+class StringSubstitutionCall extends DataFlow::CallNode {
   StringSubstitutionCall() {
-    this.asExpr() = exprNode and
-    exprNode.getExpr().getMethodName() = ["sub", "sub!", "gsub", "gsub!"] and
-    exists(exprNode.getReceiver()) and
-    exprNode.getNumberOfArguments() = 2
+    this.getMethodName() = ["sub", "sub!", "gsub", "gsub!"] and
+    exists(this.getReceiver()) and
+    this.getNumberOfArguments() = 2
   }
 
   /**
    * Holds if this is a global substitution, i.e. this is a call to `gsub` or
    * `gsub!`.
    */
-  predicate isGlobal() { exprNode.getExpr().getMethodName() = ["gsub", "gsub!"] }
+  predicate isGlobal() { this.getMethodName() = ["gsub", "gsub!"] }
 
   /**
    * Holds if this is a destructive substitution, i.e. this is a call to `sub!`
    * or `gsub!`.
    */
-  predicate isDestructive() { exprNode.getExpr().getMethodName() = ["sub!", "gsub!"] }
-
-  /** Gets the receiver of this call. */
-  DataFlow::Node getReceiver() { result.asExpr() = exprNode.getReceiver() }
+  predicate isDestructive() { this.getMethodName() = ["sub!", "gsub!"] }
 
   /** Gets the first argument to this call. */
-  DataFlow::Node getPatternArgument() { result.asExpr() = exprNode.getArgument(0) }
+  DataFlow::Node getPatternArgument() { result = this.getArgument(0) }
 
   /** Gets the second argument to this call. */
-  DataFlow::Node getReplacementArgument() { result.asExpr() = exprNode.getArgument(1) }
+  DataFlow::Node getReplacementArgument() { result = this.getArgument(1) }
 
   /**
    * Gets the regular expression passed as the first (pattern) argument in this
@@ -60,13 +54,15 @@ class StringSubstitutionCall extends DataFlow::Node {
    * Gets the string value passed as the first (pattern) argument in this call,
    * if any.
    */
-  string getPatternString() { result = exprNode.getArgument(0).getConstantValue().getString() }
+  string getPatternString() { result = this.getArgument(0).asExpr().getConstantValue().getString() }
 
   /**
    * Gets the string value passed as the second (replacement) argument in this
    * call, if any.
    */
-  string getReplacementString() { result = exprNode.getArgument(1).getConstantValue().getString() }
+  string getReplacementString() {
+    result = this.getArgument(1).asExpr().getConstantValue().getString()
+  }
 
   /** Gets a string that is being replaced by this call. */
   string getAReplacedString() {
