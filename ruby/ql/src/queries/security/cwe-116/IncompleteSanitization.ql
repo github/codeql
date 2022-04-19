@@ -56,11 +56,11 @@ predicate isBackslashEscape(StringSubstitutionCall sub) {
   (exists(sub.getPatternString()) or exists(sub.getPatternRegExp().getRegExpTerm())) and
   (
     // Replacement with `\` followed by a backref such as `\&`, `\1`, etc. The
-    // call in Ruby will look something like `str.sub(/.../, '\\\\\0')`. That
-    // replacement string's value (i.e. after Ruby's unescaping) will be `\\\0`.
-    // To account for the backslash escaping in both QL's string syntax and its
-    // regexp engine, each of those three backslashes becomes `\\\\` in the
-    // following:
+    // replacement argument to the substitution call will look like '\\\\\0',
+    // '\\\\\\0', or "\\\\\\0". Those examples all have the same string value
+    // (i.e. after Ruby's unescaping) of `\\\0`. Then, to account for the
+    // backslash escaping in both QL's string syntax and its regexp engine, each
+    // of those three backslashes becomes `\\\\` in the following:
     sub.getReplacementString().regexpMatch("\\\\\\\\\\\\(&|\\d)")
     or
     // replacement of `c` with `\c`
