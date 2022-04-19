@@ -1,5 +1,5 @@
 /**
- * @name External Entity Expansion
+ * @name XML external entity expansion
  * @description Parsing user-controlled XML documents and allowing expansion of
  *              external entity references may lead to disclosure of
  *              confidential data or denial of service.
@@ -208,5 +208,5 @@ class XXEConfiguration extends DataFlow::Configuration {
 from XXEConfiguration conf, DataFlow::PathNode source, DataFlow::PathNode sink
 where conf.hasFlowPath(source, sink)
 select sink, source, sink,
-  "This $@ is not configured to prevent an External Entity Expansion (XXE) attack.", source,
+  "This $@ is not configured to prevent an XML external entity (XXE) attack.", source,
   "XML parser"
