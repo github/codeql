@@ -10,7 +10,7 @@ injection or cross-site scripting. Usually, this is done by escaping meta-charac
 in a domain-specific way so that they are treated as normal characters.
 </p>
 <p>
-However, directly using the <code>string#sub</code> method to perform escaping is notoriously
+However, directly using the <code>String#sub</code> method to perform escaping is notoriously
 error-prone. Common mistakes include only replacing the first occurrence of a meta-character, or
 backslash-escaping various meta-characters but not the backslash itself.
 </p>
@@ -34,12 +34,12 @@ handle corner cases correctly than a custom implementation.
 
 <p>
 An even safer alternative is to design the application so that sanitization is not needed.
-Otherwise, make sure to use <code>string#gsub</code> rather than <code>string#sub</code>, to ensure
+Otherwise, make sure to use <code>String#gsub</code> rather than <code>String#sub</code>, to ensure
 that all occurrences are replaced, and remember to escape backslashes if applicable.
 </p>
 <p>
 Note, however, that this is generally <i>not</i> sufficient for replacing multi-character strings:
-the <code>string#gsub</code> method performs only one pass over the input string, and will not
+the <code>String#gsub</code> method performs only one pass over the input string, and will not
 replace further instances of the string that result from earlier replacements.
 </p>
 <p>
@@ -62,7 +62,7 @@ doubling single quotes, and thereby escaping them:
 <sample src="examples/IncompleteSanitization.rb" />
 
 <p>
-As written, this sanitizer is ineffective: <code>string#sub</code> will replace only the
+As written, this sanitizer is ineffective: <code>String#sub</code> will replace only the
 <i>first</i> occurrence of that string.
 </p>
 
@@ -74,7 +74,7 @@ that automatically sanitize parameters.
 
 <p>
 If this is not an option, <code>escape_quotes</code> should be rewritten to use the
-<code>string#gsub</code> method instead:
+<code>String#gsub</code> method instead:
 </p>
 
 <sample src="examples/IncompleteSanitizationGood.rb" />
