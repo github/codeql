@@ -412,8 +412,20 @@ private string stubAnnotation(Annotation a) {
 }
 
 private string stubAnnotationSimpleValue(Expr value) {
-  result = value.(FieldAccess).getField().getQualifiedName() or
-  result = value.(Literal).toString()
+  result = value.(FieldAccess).getField().getQualifiedName()
+  or
+  result = value.(Literal).getLiteral()
+  or
+  not value instanceof Literal and
+  (
+    result = value.(CompileTimeConstantExpr).getStringValue() or
+    result = value.(CompileTimeConstantExpr).getBooleanValue().toString() or
+    result = value.(CompileTimeConstantExpr).getIntValue().toString()
+  )
+  or
+  result = value.(Annotation).getType().getName()
+  or
+  result = value.(TypeLiteral).getReferencedType().getName() + ".class"
 }
 
 private string stubAnnotationValue(Expr value) {
