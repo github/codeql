@@ -615,6 +615,10 @@ open class KotlinFileExtractor(
             val vId = useField(f)
             tw.writeVariableBinding(lhsId, vId)
 
+            if (f.isStatic) {
+                extractStaticTypeAccessQualifier(f, lhsId, declLocId, blockAndFunctionId.second, stmtId)
+            }
+
             extractExpressionExpr(expr, blockAndFunctionId.second, assignmentId, 1, stmtId)
         }
 
