@@ -2,6 +2,7 @@ package com.example;
 
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.net.URL;
@@ -60,15 +61,48 @@ public class UnsafeResourceGet extends HttpServlet {
 		}
 	}
 
+	// GOOD: getResource constructed from `ServletContext` with null check only
+	protected void doGetGood2(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String requestUrl = request.getParameter("requestURL");
+		PrintWriter writer = response.getWriter();
+
+		ServletConfig cfg = getServletConfig();
+		ServletContext sc = cfg.getServletContext();
+
+		// A sample request /fake.jsp/../WEB-INF/web.xml can load the web.xml file
+		URL url = sc.getResource(requestUrl);
+		if (url == null) {
+			writer.println("Requested source not found");
+		}
+	}
+
+	// GOOD: getResource constructed from `ServletContext` with `equals` check
+	protected void doGetGood3(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String requestUrl = request.getParameter("requestURL");
+		ServletOutputStream out = response.getOutputStream();
+
+		ServletContext sc = request.getServletContext();
+
+		if (requestUrl.equals("/public/crossdomain.xml")) {
+			URL url = sc.getResource(requestUrl);
+
+			InputStream in = url.openStream();
+			byte[] buf = new byte[4 * 1024];  // 4K buffer
+			int bytesRead;
+			while ((bytesRead = in.read(buf)) != -1) {
+				out.write(buf, 0, bytesRead);
+			}
+		}
+	}
+
 	@Override
 	// BAD: getResourceAsStream constructed from `ServletContext` without input validation
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String requestPath = request.getParameter("requestPath");
 		ServletOutputStream out = response.getOutputStream();
-
-		ServletConfig cfg = getServletConfig();
-		ServletContext sc = cfg.getServletContext();
 
 		// A sample request /fake.jsp/../WEB-INF/web.xml can load the web.xml file
 		InputStream in = request.getServletContext().getResourceAsStream(requestPath);
@@ -84,9 +118,6 @@ public class UnsafeResourceGet extends HttpServlet {
 			throws ServletException, IOException {
 		String requestPath = request.getParameter("requestPath");
 		ServletOutputStream out = response.getOutputStream();
-
-		ServletConfig cfg = getServletConfig();
-		ServletContext sc = cfg.getServletContext();
 
 		if (!requestPath.contains("..") && requestPath.startsWith("/trusted")) {
 			InputStream in = request.getServletContext().getResourceAsStream(requestPath);
