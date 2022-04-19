@@ -418,7 +418,9 @@ private string stubAnnotationSimpleValue(Expr value) {
     value instanceof Literal or
     value instanceof CompileTimeConstantExpr
   ) and
-  result = stubDefaultValue(value.getType())
+  if value instanceof StringLiteral
+  then result = "\"\""
+  else result = stubDefaultValue(value.getType())
   or
   // We can't use stubAnnotation here because it causes a non-monotonic recursion.
   // Handling the most basic case of a nested annotation for now.
