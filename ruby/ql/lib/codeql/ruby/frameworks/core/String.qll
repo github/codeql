@@ -54,14 +54,16 @@ class StringSubstitutionCall extends DataFlow::CallNode {
    * Gets the string value passed as the first (pattern) argument in this call,
    * if any.
    */
-  string getPatternString() { result = this.getArgument(0).asExpr().getConstantValue().getString() }
+  string getPatternString() {
+    result = this.getPatternArgument().asExpr().getConstantValue().getString()
+  }
 
   /**
    * Gets the string value passed as the second (replacement) argument in this
    * call, if any.
    */
   string getReplacementString() {
-    result = this.getArgument(1).asExpr().getConstantValue().getString()
+    result = this.getReplacementArgument().asExpr().getConstantValue().getString()
   }
 
   /** Gets a string that is being replaced by this call. */
