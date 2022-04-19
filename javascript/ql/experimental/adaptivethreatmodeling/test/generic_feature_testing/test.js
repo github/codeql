@@ -1,4 +1,8 @@
-(async function(){
+import { bar, F, p } from 'lib1';
+import * as o from 'lib2';
+const f = require('lib3');
+
+(async function () {
     f(endpoint);
     f({p: endpoint});
     f({p: {q: endpoint}});
@@ -15,4 +19,5 @@
     function foo() {
         bar(endpoint);
     }
+    (f() ? f : o.m)(endpoint);
 });
