@@ -19,19 +19,35 @@ private class RequestDispatcherSink extends UnsafeUrlForwardSink {
   }
 }
 
-/** The `getResource` and `getResourceAsStream` methods of `Class`. */
+/** The `getResource` method of `Class`. */
 class GetClassResourceMethod extends Method {
   GetClassResourceMethod() {
     this.getSourceDeclaration().getDeclaringType().hasQualifiedName("java.lang", "Class") and
-    this.hasName(["getResource", "getResourceAsStream"])
+    this.hasName("getResource")
   }
 }
 
-/** The `getResource` and `getResourceAsStream` methods of `ClassLoader`. */
+/** The `getResourceAsStream` method of `Class`. */
+class GetClassResourceAsStreamMethod extends Method {
+  GetClassResourceAsStreamMethod() {
+    this.getSourceDeclaration().getDeclaringType().hasQualifiedName("java.lang", "Class") and
+    this.hasName("getResourceAsStream")
+  }
+}
+
+/** The `getResource` method of `ClassLoader`. */
 class GetClassLoaderResourceMethod extends Method {
   GetClassLoaderResourceMethod() {
     this.getDeclaringType().hasQualifiedName("java.lang", "ClassLoader") and
-    this.hasName(["getResource", "getResourceAsStream"])
+    this.hasName("getResource")
+  }
+}
+
+/** The `getResourceAsStream` method of `ClassLoader`. */
+class GetClassLoaderResourceAsStreamMethod extends Method {
+  GetClassLoaderResourceAsStreamMethod() {
+    this.getDeclaringType().hasQualifiedName("java.lang", "ClassLoader") and
+    this.hasName("getResourceAsStream")
   }
 }
 
@@ -66,13 +82,14 @@ class GetVirtualFileMethod extends Method {
 /** An argument to `getResource()` or `getResourceAsStream()`. */
 private class GetResourceSink extends UnsafeUrlForwardSink {
   GetResourceSink() {
+    sinkNode(this, "open-url")
+    or
     exists(MethodAccess ma |
       (
-        ma.getMethod() instanceof GetServletResourceMethod or
-        ma.getMethod() instanceof GetFacesResourceMethod or
-        ma.getMethod() instanceof GetClassResourceMethod or
-        ma.getMethod() instanceof GetClassLoaderResourceMethod or
-        ma.getMethod() instanceof GetWildflyResourceMethod or
+        ma.getMethod() instanceof GetServletResourceAsStreamMethod or
+        ma.getMethod() instanceof GetFacesResourceAsStreamMethod or
+        ma.getMethod() instanceof GetClassResourceAsStreamMethod or
+        ma.getMethod() instanceof GetClassLoaderResourceAsStreamMethod or
         ma.getMethod() instanceof GetVirtualFileMethod
       ) and
       ma.getArgument(0) = this.asExpr()

@@ -385,10 +385,18 @@ library class ServletContext extends RefType {
   ServletContext() { this.hasQualifiedName("javax.servlet", "ServletContext") }
 }
 
-/** The `getResource` and `getResourceAsStream` methods of `ServletContext`. */
+/** The `getResource` method of `ServletContext`. */
 class GetServletResourceMethod extends Method {
   GetServletResourceMethod() {
     this.getDeclaringType() instanceof ServletContext and
-    this.hasName(["getResource", "getResourceAsStream"])
+    this.hasName("getResource")
+  }
+}
+
+/** The `getResourceAsStream` method of `ServletContext`. */
+class GetServletResourceAsStreamMethod extends Method {
+  GetServletResourceAsStreamMethod() {
+    this.getDeclaringType() instanceof ServletContext and
+    this.hasName("getResourceAsStream")
   }
 }

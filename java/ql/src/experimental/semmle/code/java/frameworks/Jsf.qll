@@ -14,11 +14,21 @@ class ExternalContext extends RefType {
 }
 
 /**
- * The methods `getResource()` and `getResourceAsStream()` declared in JSF `ExternalContext`.
+ * The method `getResource()` declared in JSF `ExternalContext`.
  */
 class GetFacesResourceMethod extends Method {
   GetFacesResourceMethod() {
     this.getDeclaringType().getASupertype*() instanceof ExternalContext and
-    this.hasName(["getResource", "getResourceAsStream"])
+    this.hasName("getResource")
+  }
+}
+
+/**
+ * The method `getResourceAsStream()` declared in JSF `ExternalContext`.
+ */
+class GetFacesResourceAsStreamMethod extends Method {
+  GetFacesResourceAsStreamMethod() {
+    this.getDeclaringType().getASupertype*() instanceof ExternalContext and
+    this.hasName("getResourceAsStream")
   }
 }
