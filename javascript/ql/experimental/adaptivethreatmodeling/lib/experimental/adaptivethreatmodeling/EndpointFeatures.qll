@@ -440,6 +440,19 @@ class FileImports extends EndpointFeature, TFileImports {
   }
 }
 
+/**
+ * The feature for the imports used in the callee of an invocation.
+ *
+ * ### Example
+ *
+ * ```javascript
+ * import * as _ from 'lodash';
+ *
+ * // ...
+ * _.deepClone(someObject);
+ * //          ^^^^^^^^^^ will have the value `lodash` for the feature `calleeImports`.
+ * ```
+ */
 class CalleeImports extends EndpointFeature, TCalleeImports {
   override string getName() { result = "calleeImports" }
 
