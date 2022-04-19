@@ -17,11 +17,7 @@ abstract private class GeneratedType extends ClassOrInterface {
 
   private string stubKeyword() {
     this instanceof Interface and
-    (
-      this instanceof AnnotationType and result = "@interface"
-      or
-      result = "interface"
-    )
+    (if this instanceof AnnotationType then result = "@interface" else result = "interface")
     or
     this instanceof Class and
     (if this instanceof EnumType then result = "enum" else result = "class")
