@@ -414,16 +414,15 @@ private string stubAnnotation(Annotation a) {
 private string stubAnnotationSimpleValue(Expr value) {
   result = value.(FieldAccess).getField().getQualifiedName()
   or
-  result = value.(Literal).getLiteral()
-  or
-  not value instanceof Literal and
   (
-    result = value.(CompileTimeConstantExpr).getStringValue() or
-    result = value.(CompileTimeConstantExpr).getBooleanValue().toString() or
-    result = value.(CompileTimeConstantExpr).getIntValue().toString()
-  )
+    value instanceof Literal or
+    value instanceof CompileTimeConstantExpr
+  ) and
+  result = stubDefaultValue(value.getType())
   or
-  result = value.(Annotation).getType().getName()
+  // We can't use stubAnnotation here because it causes a non-monotonic recursion.
+  // Handling the most basic case of a nested annotation for now.
+  result = "@" + value.(Annotation).getType().getName()
   or
   result = value.(TypeLiteral).getReferencedType().getName() + ".class"
 }
@@ -435,6 +434,7 @@ private string stubAnnotationValue(Expr value) {
   result =
     "{" +
       concat(int i, Expr arrayElement |
+        i >= 0 and
         arrayElement = value.(ArrayInit).getInit(i)
       |
         stubAnnotationSimpleValue(arrayElement), "," order by i
