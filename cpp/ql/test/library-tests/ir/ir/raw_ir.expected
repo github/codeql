@@ -65,21 +65,23 @@ bad_asts.cpp:
 #   19|     r19_8(glval<int>)      = FieldAddress[x]                              : mu19_5
 #   19|     r19_9(glval<Point &>)  = VariableAddress[(unnamed parameter 0)]       : 
 #   19|     r19_10(Point &)        = Load[(unnamed parameter 0)]                  : &:r19_9, ~m?
-#   19|     r19_11(glval<int>)     = FieldAddress[x]                              : r19_10
-#   19|     r19_12(int)            = Load[?]                                      : &:r19_11, ~m?
-#   19|     mu19_13(int)           = Store[?]                                     : &:r19_8, r19_12
-#   19|     r19_14(glval<int>)     = FieldAddress[y]                              : mu19_5
-#   19|     r19_15(glval<Point &>) = VariableAddress[(unnamed parameter 0)]       : 
-#   19|     r19_16(Point &)        = Load[(unnamed parameter 0)]                  : &:r19_15, ~m?
-#   19|     r19_17(glval<int>)     = FieldAddress[y]                              : r19_16
-#   19|     r19_18(int)            = Load[?]                                      : &:r19_17, ~m?
-#   19|     mu19_19(int)           = Store[?]                                     : &:r19_14, r19_18
-#   19|     v19_20(void)           = NoOp                                         : 
-#   19|     v19_21(void)           = ReturnIndirection[#this]                     : &:r19_6, ~m?
+#   19|     r19_11(glval<Point>)   = CopyValue                                    : r19_10
+#   19|     r19_12(glval<int>)     = FieldAddress[x]                              : r19_11
+#   19|     r19_13(int)            = Load[?]                                      : &:r19_12, ~m?
+#   19|     mu19_14(int)           = Store[?]                                     : &:r19_8, r19_13
+#   19|     r19_15(glval<int>)     = FieldAddress[y]                              : mu19_5
+#   19|     r19_16(glval<Point &>) = VariableAddress[(unnamed parameter 0)]       : 
+#   19|     r19_17(Point &)        = Load[(unnamed parameter 0)]                  : &:r19_16, ~m?
+#   19|     r19_18(glval<Point>)   = CopyValue                                    : r19_17
+#   19|     r19_19(glval<int>)     = FieldAddress[y]                              : r19_18
+#   19|     r19_20(int)            = Load[?]                                      : &:r19_19, ~m?
+#   19|     mu19_21(int)           = Store[?]                                     : &:r19_15, r19_20
+#   19|     v19_22(void)           = NoOp                                         : 
+#   19|     v19_23(void)           = ReturnIndirection[#this]                     : &:r19_6, ~m?
 #-----|     v0_5(void)             = ReturnIndirection[(unnamed parameter 0)]     : &:r0_3, ~m?
-#   19|     v19_22(void)           = ReturnVoid                                   : 
-#   19|     v19_23(void)           = AliasedUse                                   : ~m?
-#   19|     v19_24(void)           = ExitFunction                                 : 
+#   19|     v19_24(void)           = ReturnVoid                                   : 
+#   19|     v19_25(void)           = AliasedUse                                   : ~m?
+#   19|     v19_26(void)           = ExitFunction                                 : 
 
 #   22| void Bad::Point::Point()
 #   22|   Block 0
@@ -8090,57 +8092,65 @@ ir.cpp:
 # 1486|     r1486_8(glval<int>)                                      = FieldAddress[i]                              : mu1486_5
 # 1486|     r1486_9(glval<StructuredBindingDataMemberStruct &>)      = VariableAddress[(unnamed parameter 0)]       : 
 # 1486|     r1486_10(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_9, ~m?
-# 1486|     r1486_11(glval<int>)                                     = FieldAddress[i]                              : r1486_10
-# 1486|     r1486_12(int)                                            = Load[?]                                      : &:r1486_11, ~m?
-# 1486|     mu1486_13(int)                                           = Store[?]                                     : &:r1486_8, r1486_12
-# 1486|     r1486_14(glval<double>)                                  = FieldAddress[d]                              : mu1486_5
-# 1486|     r1486_15(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
-# 1486|     r1486_16(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_15, ~m?
-# 1486|     r1486_17(glval<double>)                                  = FieldAddress[d]                              : r1486_16
-# 1486|     r1486_18(double)                                         = Load[?]                                      : &:r1486_17, ~m?
-# 1486|     mu1486_19(double)                                        = Store[?]                                     : &:r1486_14, r1486_18
-# 1486|     r1486_20(glval<unsigned int>)                            = FieldAddress[b]                              : mu1486_5
-# 1486|     r1486_21(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
-# 1486|     r1486_22(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_21, ~m?
-# 1486|     r1486_23(glval<unsigned int>)                            = FieldAddress[b]                              : r1486_22
-# 1486|     r1486_24(unsigned int)                                   = Load[?]                                      : &:r1486_23, ~m?
-# 1486|     mu1486_25(unsigned int)                                  = Store[?]                                     : &:r1486_20, r1486_24
-# 1486|     r1486_26(glval<int &>)                                   = FieldAddress[r]                              : mu1486_5
-# 1486|     r1486_27(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
-# 1486|     r1486_28(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_27, ~m?
-# 1486|     r1486_29(glval<int &>)                                   = FieldAddress[r]                              : r1486_28
-# 1486|     r1486_30(int &)                                          = Load[?]                                      : &:r1486_29, ~m?
-# 1486|     mu1486_31(int &)                                         = Store[?]                                     : &:r1486_26, r1486_30
-# 1486|     r1486_32(glval<int *>)                                   = FieldAddress[p]                              : mu1486_5
-# 1486|     r1486_33(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
-# 1486|     r1486_34(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_33, ~m?
-# 1486|     r1486_35(glval<int *>)                                   = FieldAddress[p]                              : r1486_34
-# 1486|     r1486_36(int *)                                          = Load[?]                                      : &:r1486_35, ~m?
-# 1486|     mu1486_37(int *)                                         = Store[?]                                     : &:r1486_32, r1486_36
-# 1486|     r1486_38(glval<int[2]>)                                  = FieldAddress[xs]                             : mu1486_5
-# 1486|     r1486_39(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
-# 1486|     r1486_40(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_39, ~m?
-# 1486|     r1486_41(glval<int[2]>)                                  = FieldAddress[xs]                             : r1486_40
-# 1486|     r1486_42(int[2])                                         = Load[?]                                      : &:r1486_41, ~m?
-# 1486|     mu1486_43(int[2])                                        = Store[?]                                     : &:r1486_38, r1486_42
-# 1486|     r1486_44(glval<int &>)                                   = FieldAddress[r_alt]                          : mu1486_5
-# 1486|     r1486_45(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
-# 1486|     r1486_46(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_45, ~m?
-# 1486|     r1486_47(glval<int &>)                                   = FieldAddress[r_alt]                          : r1486_46
-# 1486|     r1486_48(int &)                                          = Load[?]                                      : &:r1486_47, ~m?
-# 1486|     mu1486_49(int &)                                         = Store[?]                                     : &:r1486_44, r1486_48
-# 1486|     r1486_50(glval<StructuredBindingDataMemberMemberStruct>) = FieldAddress[m]                              : mu1486_5
+# 1486|     r1486_11(glval<StructuredBindingDataMemberStruct>)       = CopyValue                                    : r1486_10
+# 1486|     r1486_12(glval<int>)                                     = FieldAddress[i]                              : r1486_11
+# 1486|     r1486_13(int)                                            = Load[?]                                      : &:r1486_12, ~m?
+# 1486|     mu1486_14(int)                                           = Store[?]                                     : &:r1486_8, r1486_13
+# 1486|     r1486_15(glval<double>)                                  = FieldAddress[d]                              : mu1486_5
+# 1486|     r1486_16(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_17(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_16, ~m?
+# 1486|     r1486_18(glval<StructuredBindingDataMemberStruct>)       = CopyValue                                    : r1486_17
+# 1486|     r1486_19(glval<double>)                                  = FieldAddress[d]                              : r1486_18
+# 1486|     r1486_20(double)                                         = Load[?]                                      : &:r1486_19, ~m?
+# 1486|     mu1486_21(double)                                        = Store[?]                                     : &:r1486_15, r1486_20
+# 1486|     r1486_22(glval<unsigned int>)                            = FieldAddress[b]                              : mu1486_5
+# 1486|     r1486_23(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_24(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_23, ~m?
+# 1486|     r1486_25(glval<StructuredBindingDataMemberStruct>)       = CopyValue                                    : r1486_24
+# 1486|     r1486_26(glval<unsigned int>)                            = FieldAddress[b]                              : r1486_25
+# 1486|     r1486_27(unsigned int)                                   = Load[?]                                      : &:r1486_26, ~m?
+# 1486|     mu1486_28(unsigned int)                                  = Store[?]                                     : &:r1486_22, r1486_27
+# 1486|     r1486_29(glval<int &>)                                   = FieldAddress[r]                              : mu1486_5
+# 1486|     r1486_30(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_31(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_30, ~m?
+# 1486|     r1486_32(glval<StructuredBindingDataMemberStruct>)       = CopyValue                                    : r1486_31
+# 1486|     r1486_33(glval<int &>)                                   = FieldAddress[r]                              : r1486_32
+# 1486|     r1486_34(int &)                                          = Load[?]                                      : &:r1486_33, ~m?
+# 1486|     mu1486_35(int &)                                         = Store[?]                                     : &:r1486_29, r1486_34
+# 1486|     r1486_36(glval<int *>)                                   = FieldAddress[p]                              : mu1486_5
+# 1486|     r1486_37(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_38(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_37, ~m?
+# 1486|     r1486_39(glval<StructuredBindingDataMemberStruct>)       = CopyValue                                    : r1486_38
+# 1486|     r1486_40(glval<int *>)                                   = FieldAddress[p]                              : r1486_39
+# 1486|     r1486_41(int *)                                          = Load[?]                                      : &:r1486_40, ~m?
+# 1486|     mu1486_42(int *)                                         = Store[?]                                     : &:r1486_36, r1486_41
+# 1486|     r1486_43(glval<int[2]>)                                  = FieldAddress[xs]                             : mu1486_5
+# 1486|     r1486_44(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_45(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_44, ~m?
+# 1486|     r1486_46(glval<StructuredBindingDataMemberStruct>)       = CopyValue                                    : r1486_45
+# 1486|     r1486_47(glval<int[2]>)                                  = FieldAddress[xs]                             : r1486_46
+# 1486|     r1486_48(int[2])                                         = Load[?]                                      : &:r1486_47, ~m?
+# 1486|     mu1486_49(int[2])                                        = Store[?]                                     : &:r1486_43, r1486_48
+# 1486|     r1486_50(glval<int &>)                                   = FieldAddress[r_alt]                          : mu1486_5
 # 1486|     r1486_51(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
 # 1486|     r1486_52(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_51, ~m?
-# 1486|     r1486_53(glval<StructuredBindingDataMemberMemberStruct>) = FieldAddress[m]                              : r1486_52
-# 1486|     r1486_54(StructuredBindingDataMemberMemberStruct)        = Load[?]                                      : &:r1486_53, ~m?
-# 1486|     mu1486_55(StructuredBindingDataMemberMemberStruct)       = Store[?]                                     : &:r1486_50, r1486_54
-# 1486|     v1486_56(void)                                           = NoOp                                         : 
-# 1486|     v1486_57(void)                                           = ReturnIndirection[#this]                     : &:r1486_6, ~m?
+# 1486|     r1486_53(glval<StructuredBindingDataMemberStruct>)       = CopyValue                                    : r1486_52
+# 1486|     r1486_54(glval<int &>)                                   = FieldAddress[r_alt]                          : r1486_53
+# 1486|     r1486_55(int &)                                          = Load[?]                                      : &:r1486_54, ~m?
+# 1486|     mu1486_56(int &)                                         = Store[?]                                     : &:r1486_50, r1486_55
+# 1486|     r1486_57(glval<StructuredBindingDataMemberMemberStruct>) = FieldAddress[m]                              : mu1486_5
+# 1486|     r1486_58(glval<StructuredBindingDataMemberStruct &>)     = VariableAddress[(unnamed parameter 0)]       : 
+# 1486|     r1486_59(StructuredBindingDataMemberStruct &)            = Load[(unnamed parameter 0)]                  : &:r1486_58, ~m?
+# 1486|     r1486_60(glval<StructuredBindingDataMemberStruct>)       = CopyValue                                    : r1486_59
+# 1486|     r1486_61(glval<StructuredBindingDataMemberMemberStruct>) = FieldAddress[m]                              : r1486_60
+# 1486|     r1486_62(StructuredBindingDataMemberMemberStruct)        = Load[?]                                      : &:r1486_61, ~m?
+# 1486|     mu1486_63(StructuredBindingDataMemberMemberStruct)       = Store[?]                                     : &:r1486_57, r1486_62
+# 1486|     v1486_64(void)                                           = NoOp                                         : 
+# 1486|     v1486_65(void)                                           = ReturnIndirection[#this]                     : &:r1486_6, ~m?
 #-----|     v0_5(void)                                               = ReturnIndirection[(unnamed parameter 0)]     : &:r0_3, ~m?
-# 1486|     v1486_58(void)                                           = ReturnVoid                                   : 
-# 1486|     v1486_59(void)                                           = AliasedUse                                   : ~m?
-# 1486|     v1486_60(void)                                           = ExitFunction                                 : 
+# 1486|     v1486_66(void)                                           = ReturnVoid                                   : 
+# 1486|     v1486_67(void)                                           = AliasedUse                                   : ~m?
+# 1486|     v1486_68(void)                                           = ExitFunction                                 : 
 
 # 1499| void data_member_structured_binding()
 # 1499|   Block 0
@@ -8338,27 +8348,30 @@ ir.cpp:
 # 1539|     r1539_8(glval<int>)                             = FieldAddress[i]                              : mu1539_5
 # 1539|     r1539_9(glval<StructuredBindingTupleRefGet &>)  = VariableAddress[(unnamed parameter 0)]       : 
 # 1539|     r1539_10(StructuredBindingTupleRefGet &)        = Load[(unnamed parameter 0)]                  : &:r1539_9, ~m?
-# 1539|     r1539_11(glval<int>)                            = FieldAddress[i]                              : r1539_10
-# 1539|     r1539_12(int)                                   = Load[?]                                      : &:r1539_11, ~m?
-# 1539|     mu1539_13(int)                                  = Store[?]                                     : &:r1539_8, r1539_12
-# 1539|     r1539_14(glval<double>)                         = FieldAddress[d]                              : mu1539_5
-# 1539|     r1539_15(glval<StructuredBindingTupleRefGet &>) = VariableAddress[(unnamed parameter 0)]       : 
-# 1539|     r1539_16(StructuredBindingTupleRefGet &)        = Load[(unnamed parameter 0)]                  : &:r1539_15, ~m?
-# 1539|     r1539_17(glval<double>)                         = FieldAddress[d]                              : r1539_16
-# 1539|     r1539_18(double)                                = Load[?]                                      : &:r1539_17, ~m?
-# 1539|     mu1539_19(double)                               = Store[?]                                     : &:r1539_14, r1539_18
-# 1539|     r1539_20(glval<int &>)                          = FieldAddress[r]                              : mu1539_5
-# 1539|     r1539_21(glval<StructuredBindingTupleRefGet &>) = VariableAddress[(unnamed parameter 0)]       : 
-# 1539|     r1539_22(StructuredBindingTupleRefGet &)        = Load[(unnamed parameter 0)]                  : &:r1539_21, ~m?
-# 1539|     r1539_23(glval<int &>)                          = FieldAddress[r]                              : r1539_22
-# 1539|     r1539_24(int &)                                 = Load[?]                                      : &:r1539_23, ~m?
-# 1539|     mu1539_25(int &)                                = Store[?]                                     : &:r1539_20, r1539_24
-# 1539|     v1539_26(void)                                  = NoOp                                         : 
-# 1539|     v1539_27(void)                                  = ReturnIndirection[#this]                     : &:r1539_6, ~m?
+# 1539|     r1539_11(glval<StructuredBindingTupleRefGet>)   = CopyValue                                    : r1539_10
+# 1539|     r1539_12(glval<int>)                            = FieldAddress[i]                              : r1539_11
+# 1539|     r1539_13(int)                                   = Load[?]                                      : &:r1539_12, ~m?
+# 1539|     mu1539_14(int)                                  = Store[?]                                     : &:r1539_8, r1539_13
+# 1539|     r1539_15(glval<double>)                         = FieldAddress[d]                              : mu1539_5
+# 1539|     r1539_16(glval<StructuredBindingTupleRefGet &>) = VariableAddress[(unnamed parameter 0)]       : 
+# 1539|     r1539_17(StructuredBindingTupleRefGet &)        = Load[(unnamed parameter 0)]                  : &:r1539_16, ~m?
+# 1539|     r1539_18(glval<StructuredBindingTupleRefGet>)   = CopyValue                                    : r1539_17
+# 1539|     r1539_19(glval<double>)                         = FieldAddress[d]                              : r1539_18
+# 1539|     r1539_20(double)                                = Load[?]                                      : &:r1539_19, ~m?
+# 1539|     mu1539_21(double)                               = Store[?]                                     : &:r1539_15, r1539_20
+# 1539|     r1539_22(glval<int &>)                          = FieldAddress[r]                              : mu1539_5
+# 1539|     r1539_23(glval<StructuredBindingTupleRefGet &>) = VariableAddress[(unnamed parameter 0)]       : 
+# 1539|     r1539_24(StructuredBindingTupleRefGet &)        = Load[(unnamed parameter 0)]                  : &:r1539_23, ~m?
+# 1539|     r1539_25(glval<StructuredBindingTupleRefGet>)   = CopyValue                                    : r1539_24
+# 1539|     r1539_26(glval<int &>)                          = FieldAddress[r]                              : r1539_25
+# 1539|     r1539_27(int &)                                 = Load[?]                                      : &:r1539_26, ~m?
+# 1539|     mu1539_28(int &)                                = Store[?]                                     : &:r1539_22, r1539_27
+# 1539|     v1539_29(void)                                  = NoOp                                         : 
+# 1539|     v1539_30(void)                                  = ReturnIndirection[#this]                     : &:r1539_6, ~m?
 #-----|     v0_5(void)                                      = ReturnIndirection[(unnamed parameter 0)]     : &:r0_3, ~m?
-# 1539|     v1539_28(void)                                  = ReturnVoid                                   : 
-# 1539|     v1539_29(void)                                  = AliasedUse                                   : ~m?
-# 1539|     v1539_30(void)                                  = ExitFunction                                 : 
+# 1539|     v1539_31(void)                                  = ReturnVoid                                   : 
+# 1539|     v1539_32(void)                                  = AliasedUse                                   : ~m?
+# 1539|     v1539_33(void)                                  = ExitFunction                                 : 
 
 # 1567| std::tuple_element<int 0, StructuredBindingTupleRefGet>::type& StructuredBindingTupleRefGet::get<int 0>()
 # 1567|   Block 0
@@ -8901,81 +8914,86 @@ ir.cpp:
 # 1688|     r1688_2(glval<decltype([...](...){...})>) = VariableAddress[#temp1688:24]        : 
 # 1688|     mu1688_3(decltype([...](...){...}))       = Uninitialized[#temp1688:24]          : &:r1688_2
 # 1688|     r1688_4(glval<CapturedLambdaMyObj>)       = FieldAddress[obj1]                   : r1688_2
-
-# 1688|   Block 1
-# 1688|     mu1688_5(CapturedLambdaMyObj)       = Store[?]           : &:r1688_4
-# 1688|     r1688_6(glval<CapturedLambdaMyObj>) = FieldAddress[obj2] : r1688_2
-
-# 1688|   Block 2
-# 1688|     mu1688_7(CapturedLambdaMyObj)        = Store[?]             : &:r1688_6
-# 1688|     r1688_8(glval<int>)                  = FieldAddress[x]      : r1688_2
-# 1688|     r1688_9(glval<int>)                  = VariableAddress[x]   : 
-# 1688|     r1688_10(int)                        = Load[x]              : &:r1688_9, ~m?
-# 1688|     mu1688_11(int)                       = Store[?]             : &:r1688_8, r1688_10
-# 1688|     r1688_12(glval<int>)                 = FieldAddress[y]      : r1688_2
-# 1688|     r1688_13(glval<int &>)               = VariableAddress[y]   : 
-# 1688|     r1688_14(int &)                      = Load[y]              : &:r1688_13, ~m?
-# 1690|     r1690_1(int)                         = Load[?]              : &:r1688_14, ~m?
-# 1690|     mu1690_2(int)                        = Store[?]             : &:r1688_12, r1690_1
-# 1688|     r1688_15(glval<int>)                 = FieldAddress[z]      : r1688_2
-# 1688|     r1688_16(glval<int &&>)              = VariableAddress[z]   : 
-# 1688|     r1688_17(int &&)                     = Load[z]              : &:r1688_16, ~m?
-# 1690|     r1690_3(int)                         = Load[?]              : &:r1688_17, ~m?
-# 1690|     mu1690_4(int)                        = Store[?]             : &:r1688_15, r1690_3
-# 1688|     r1688_18(decltype([...](...){...}))  = Load[#temp1688:24]   : &:r1688_2, ~m?
-# 1688|     mu1688_19(decltype([...](...){...})) = Store[lambda_outer]  : &:r1688_1, r1688_18
-# 1691|     v1691_1(void)                        = NoOp                 : 
-# 1683|     v1683_14(void)                       = ReturnIndirection[y] : &:r1683_8, ~m?
-# 1683|     v1683_15(void)                       = ReturnIndirection[z] : &:r1683_12, ~m?
-# 1683|     v1683_16(void)                       = ReturnVoid           : 
-# 1683|     v1683_17(void)                       = AliasedUse           : ~m?
-# 1683|     v1683_18(void)                       = ExitFunction         : 
+# 1688|     r1688_5(glval<CapturedLambdaMyObj &>)     = VariableAddress[obj1]                : 
+# 1688|     r1688_6(CapturedLambdaMyObj &)            = Load[obj1]                           : &:r1688_5, ~m?
+#-----|     r0_1(CapturedLambdaMyObj)                 = Load[?]                              : &:r1688_6, ~m?
+#-----|     mu0_2(CapturedLambdaMyObj)                = Store[?]                             : &:r1688_4, r0_1
+# 1688|     r1688_7(glval<CapturedLambdaMyObj>)       = FieldAddress[obj2]                   : r1688_2
+# 1688|     r1688_8(glval<CapturedLambdaMyObj>)       = VariableAddress[obj2]                : 
+# 1688|     r1688_9(CapturedLambdaMyObj)              = Load[obj2]                           : &:r1688_8, ~m?
+# 1688|     mu1688_10(CapturedLambdaMyObj)            = Store[?]                             : &:r1688_7, r1688_9
+# 1688|     r1688_11(glval<int>)                      = FieldAddress[x]                      : r1688_2
+# 1688|     r1688_12(glval<int>)                      = VariableAddress[x]                   : 
+# 1688|     r1688_13(int)                             = Load[x]                              : &:r1688_12, ~m?
+# 1688|     mu1688_14(int)                            = Store[?]                             : &:r1688_11, r1688_13
+# 1688|     r1688_15(glval<int>)                      = FieldAddress[y]                      : r1688_2
+# 1688|     r1688_16(glval<int &>)                    = VariableAddress[y]                   : 
+# 1688|     r1688_17(int &)                           = Load[y]                              : &:r1688_16, ~m?
+# 1690|     r1690_1(int)                              = Load[?]                              : &:r1688_17, ~m?
+# 1690|     mu1690_2(int)                             = Store[?]                             : &:r1688_15, r1690_1
+# 1688|     r1688_18(glval<int>)                      = FieldAddress[z]                      : r1688_2
+# 1688|     r1688_19(glval<int &&>)                   = VariableAddress[z]                   : 
+# 1688|     r1688_20(int &&)                          = Load[z]                              : &:r1688_19, ~m?
+# 1690|     r1690_3(int)                              = Load[?]                              : &:r1688_20, ~m?
+# 1690|     mu1690_4(int)                             = Store[?]                             : &:r1688_18, r1690_3
+# 1688|     r1688_21(decltype([...](...){...}))       = Load[#temp1688:24]                   : &:r1688_2, ~m?
+# 1688|     mu1688_22(decltype([...](...){...}))      = Store[lambda_outer]                  : &:r1688_1, r1688_21
+# 1691|     v1691_1(void)                             = NoOp                                 : 
+# 1683|     v1683_14(void)                            = ReturnIndirection[y]                 : &:r1683_8, ~m?
+# 1683|     v1683_15(void)                            = ReturnIndirection[z]                 : &:r1683_12, ~m?
+# 1683|     v1683_16(void)                            = ReturnVoid                           : 
+# 1683|     v1683_17(void)                            = AliasedUse                           : ~m?
+# 1683|     v1683_18(void)                            = ExitFunction                         : 
 
 # 1688| void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const
 # 1688|   Block 0
-# 1688|     v1688_1(void)                              = EnterFunction                 : 
-# 1688|     mu1688_2(unknown)                          = AliasedDefinition             : 
-# 1688|     mu1688_3(unknown)                          = InitializeNonLocal            : 
-# 1688|     r1688_4(glval<unknown>)                    = VariableAddress[#this]        : 
-# 1688|     mu1688_5(glval<decltype([...](...){...})>) = InitializeParameter[#this]    : &:r1688_4
-# 1688|     r1688_6(glval<decltype([...](...){...})>)  = Load[#this]                   : &:r1688_4, ~m?
-# 1688|     mu1688_7(decltype([...](...){...}))        = InitializeIndirection[#this]  : &:r1688_6
-# 1689|     r1689_1(glval<decltype([...](...){...})>)  = VariableAddress[lambda_inner] : 
-# 1689|     r1689_2(glval<decltype([...](...){...})>)  = VariableAddress[#temp1689:28] : 
-# 1689|     mu1689_3(decltype([...](...){...}))        = Uninitialized[#temp1689:28]   : &:r1689_2
-# 1689|     r1689_4(glval<CapturedLambdaMyObj>)        = FieldAddress[obj1]            : r1689_2
-
-# 1689|   Block 1
-# 1689|     mu1689_5(CapturedLambdaMyObj)       = Store[?]           : &:r1689_4
-# 1689|     r1689_6(glval<CapturedLambdaMyObj>) = FieldAddress[obj2] : r1689_2
-
-# 1689|   Block 2
-# 1689|     mu1689_7(CapturedLambdaMyObj)                    = Store[?]                 : &:r1689_6
-# 1689|     r1689_8(glval<int>)                              = FieldAddress[x]          : r1689_2
-# 1689|     r1689_9(glval<unknown>)                          = VariableAddress[#this]   : 
-# 1689|     r1689_10(lambda [] type at line 1688, col. 25 *) = Load[#this]              : &:r1689_9, ~m?
-# 1689|     r1689_11(glval<int>)                             = FieldAddress[x]          : r1689_10
-# 1689|     r1689_12(int)                                    = Load[?]                  : &:r1689_11, ~m?
-# 1689|     mu1689_13(int)                                   = Store[?]                 : &:r1689_8, r1689_12
-# 1689|     r1689_14(glval<int>)                             = FieldAddress[y]          : r1689_2
-# 1689|     r1689_15(glval<unknown>)                         = VariableAddress[#this]   : 
-# 1689|     r1689_16(lambda [] type at line 1688, col. 25 *) = Load[#this]              : &:r1689_15, ~m?
-# 1689|     r1689_17(glval<int>)                             = FieldAddress[y]          : r1689_16
-# 1689|     r1689_18(int)                                    = Load[?]                  : &:r1689_17, ~m?
-# 1689|     mu1689_19(int)                                   = Store[?]                 : &:r1689_14, r1689_18
-# 1689|     r1689_20(glval<int>)                             = FieldAddress[z]          : r1689_2
-# 1689|     r1689_21(glval<unknown>)                         = VariableAddress[#this]   : 
-# 1689|     r1689_22(lambda [] type at line 1688, col. 25 *) = Load[#this]              : &:r1689_21, ~m?
-# 1689|     r1689_23(glval<int>)                             = FieldAddress[z]          : r1689_22
-# 1689|     r1689_24(int)                                    = Load[?]                  : &:r1689_23, ~m?
-# 1689|     mu1689_25(int)                                   = Store[?]                 : &:r1689_20, r1689_24
-# 1689|     r1689_26(decltype([...](...){...}))              = Load[#temp1689:28]       : &:r1689_2, ~m?
-# 1689|     mu1689_27(decltype([...](...){...}))             = Store[lambda_inner]      : &:r1689_1, r1689_26
-# 1690|     v1690_1(void)                                    = NoOp                     : 
-# 1688|     v1688_8(void)                                    = ReturnIndirection[#this] : &:r1688_6, ~m?
-# 1688|     v1688_9(void)                                    = ReturnVoid               : 
-# 1688|     v1688_10(void)                                   = AliasedUse               : ~m?
-# 1688|     v1688_11(void)                                   = ExitFunction             : 
+# 1688|     v1688_1(void)                                    = EnterFunction                 : 
+# 1688|     mu1688_2(unknown)                                = AliasedDefinition             : 
+# 1688|     mu1688_3(unknown)                                = InitializeNonLocal            : 
+# 1688|     r1688_4(glval<unknown>)                          = VariableAddress[#this]        : 
+# 1688|     mu1688_5(glval<decltype([...](...){...})>)       = InitializeParameter[#this]    : &:r1688_4
+# 1688|     r1688_6(glval<decltype([...](...){...})>)        = Load[#this]                   : &:r1688_4, ~m?
+# 1688|     mu1688_7(decltype([...](...){...}))              = InitializeIndirection[#this]  : &:r1688_6
+# 1689|     r1689_1(glval<decltype([...](...){...})>)        = VariableAddress[lambda_inner] : 
+# 1689|     r1689_2(glval<decltype([...](...){...})>)        = VariableAddress[#temp1689:28] : 
+# 1689|     mu1689_3(decltype([...](...){...}))              = Uninitialized[#temp1689:28]   : &:r1689_2
+# 1689|     r1689_4(glval<CapturedLambdaMyObj>)              = FieldAddress[obj1]            : r1689_2
+# 1689|     r1689_5(glval<unknown>)                          = VariableAddress[#this]        : 
+# 1689|     r1689_6(lambda [] type at line 1689, col. 29 *)  = Load[#this]                   : &:r1689_5, ~m?
+# 1689|     r1689_7(glval<CapturedLambdaMyObj>)              = FieldAddress[obj1]            : r1689_6
+# 1689|     r1689_8(CapturedLambdaMyObj)                     = Load[?]                       : &:r1689_7, ~m?
+# 1689|     mu1689_9(CapturedLambdaMyObj)                    = Store[?]                      : &:r1689_4, r1689_8
+# 1689|     r1689_10(glval<CapturedLambdaMyObj>)             = FieldAddress[obj2]            : r1689_2
+# 1689|     r1689_11(glval<unknown>)                         = VariableAddress[#this]        : 
+# 1689|     r1689_12(lambda [] type at line 1689, col. 29 *) = Load[#this]                   : &:r1689_11, ~m?
+# 1689|     r1689_13(glval<CapturedLambdaMyObj>)             = FieldAddress[obj2]            : r1689_12
+# 1689|     r1689_14(CapturedLambdaMyObj)                    = Load[?]                       : &:r1689_13, ~m?
+# 1689|     mu1689_15(CapturedLambdaMyObj)                   = Store[?]                      : &:r1689_10, r1689_14
+# 1689|     r1689_16(glval<int>)                             = FieldAddress[x]               : r1689_2
+# 1689|     r1689_17(glval<unknown>)                         = VariableAddress[#this]        : 
+# 1689|     r1689_18(lambda [] type at line 1688, col. 25 *) = Load[#this]                   : &:r1689_17, ~m?
+# 1689|     r1689_19(glval<int>)                             = FieldAddress[x]               : r1689_18
+# 1689|     r1689_20(int)                                    = Load[?]                       : &:r1689_19, ~m?
+# 1689|     mu1689_21(int)                                   = Store[?]                      : &:r1689_16, r1689_20
+# 1689|     r1689_22(glval<int>)                             = FieldAddress[y]               : r1689_2
+# 1689|     r1689_23(glval<unknown>)                         = VariableAddress[#this]        : 
+# 1689|     r1689_24(lambda [] type at line 1688, col. 25 *) = Load[#this]                   : &:r1689_23, ~m?
+# 1689|     r1689_25(glval<int>)                             = FieldAddress[y]               : r1689_24
+# 1689|     r1689_26(int)                                    = Load[?]                       : &:r1689_25, ~m?
+# 1689|     mu1689_27(int)                                   = Store[?]                      : &:r1689_22, r1689_26
+# 1689|     r1689_28(glval<int>)                             = FieldAddress[z]               : r1689_2
+# 1689|     r1689_29(glval<unknown>)                         = VariableAddress[#this]        : 
+# 1689|     r1689_30(lambda [] type at line 1688, col. 25 *) = Load[#this]                   : &:r1689_29, ~m?
+# 1689|     r1689_31(glval<int>)                             = FieldAddress[z]               : r1689_30
+# 1689|     r1689_32(int)                                    = Load[?]                       : &:r1689_31, ~m?
+# 1689|     mu1689_33(int)                                   = Store[?]                      : &:r1689_28, r1689_32
+# 1689|     r1689_34(decltype([...](...){...}))              = Load[#temp1689:28]            : &:r1689_2, ~m?
+# 1689|     mu1689_35(decltype([...](...){...}))             = Store[lambda_inner]           : &:r1689_1, r1689_34
+# 1690|     v1690_1(void)                                    = NoOp                          : 
+# 1688|     v1688_8(void)                                    = ReturnIndirection[#this]      : &:r1688_6, ~m?
+# 1688|     v1688_9(void)                                    = ReturnVoid                    : 
+# 1688|     v1688_10(void)                                   = AliasedUse                    : ~m?
+# 1688|     v1688_11(void)                                   = ExitFunction                  : 
 
 # 1689| void (void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)::operator()() const
 # 1689|   Block 0
@@ -9025,16 +9043,17 @@ ir.cpp:
 # 1702|     r1702_2(glval<decltype([...](...){...})>) = VariableAddress[#temp1702:25] : 
 # 1702|     mu1702_3(decltype([...](...){...}))       = Uninitialized[#temp1702:25]   : &:r1702_2
 # 1702|     r1702_4(glval<TrivialLambdaClass>)        = FieldAddress[(captured this)] : r1702_2
-
-# 1702|   Block 1
-# 1702|     mu1702_5(TrivialLambdaClass)        = Store[?]                 : &:r1702_4
-# 1702|     r1702_6(decltype([...](...){...}))  = Load[#temp1702:25]       : &:r1702_2, ~m?
-# 1702|     mu1702_7(decltype([...](...){...})) = Store[l_m_outer]         : &:r1702_1, r1702_6
-# 1709|     v1709_1(void)                       = NoOp                     : 
-# 1701|     v1701_8(void)                       = ReturnIndirection[#this] : &:r1701_6, ~m?
-# 1701|     v1701_9(void)                       = ReturnVoid               : 
-# 1701|     v1701_10(void)                      = AliasedUse               : ~m?
-# 1701|     v1701_11(void)                      = ExitFunction             : 
+# 1702|     r1702_5(glval<unknown>)                   = VariableAddress[#this]        : 
+# 1702|     r1702_6(TrivialLambdaClass *)             = Load[#this]                   : &:r1702_5, ~m?
+# 1702|     r1702_7(TrivialLambdaClass)               = Load[?]                       : &:r1702_6, ~m?
+# 1702|     mu1702_8(TrivialLambdaClass)              = Store[?]                      : &:r1702_4, r1702_7
+# 1702|     r1702_9(decltype([...](...){...}))        = Load[#temp1702:25]            : &:r1702_2, ~m?
+# 1702|     mu1702_10(decltype([...](...){...}))      = Store[l_m_outer]              : &:r1702_1, r1702_9
+# 1709|     v1709_1(void)                             = NoOp                          : 
+# 1701|     v1701_8(void)                             = ReturnIndirection[#this]      : &:r1701_6, ~m?
+# 1701|     v1701_9(void)                             = ReturnVoid                    : 
+# 1701|     v1701_10(void)                            = AliasedUse                    : ~m?
+# 1701|     v1701_11(void)                            = ExitFunction                  : 
 
 # 1702| void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const
 # 1702|   Block 0
@@ -9057,16 +9076,18 @@ ir.cpp:
 # 1705|     r1705_2(glval<decltype([...](...){...})>)       = VariableAddress[#temp1705:29] : 
 # 1705|     mu1705_3(decltype([...](...){...}))             = Uninitialized[#temp1705:29]   : &:r1705_2
 # 1705|     r1705_4(glval<TrivialLambdaClass>)              = FieldAddress[(captured this)] : r1705_2
-
-# 1705|   Block 1
-# 1705|     mu1705_5(TrivialLambdaClass)        = Store[?]                 : &:r1705_4
-# 1705|     r1705_6(decltype([...](...){...}))  = Load[#temp1705:29]       : &:r1705_2, ~m?
-# 1705|     mu1705_7(decltype([...](...){...})) = Store[l_m_inner]         : &:r1705_1, r1705_6
-# 1708|     v1708_1(void)                       = NoOp                     : 
-# 1702|     v1702_8(void)                       = ReturnIndirection[#this] : &:r1702_6, ~m?
-# 1702|     v1702_9(void)                       = ReturnVoid               : 
-# 1702|     v1702_10(void)                      = AliasedUse               : ~m?
-# 1702|     v1702_11(void)                      = ExitFunction             : 
+# 1705|     r1705_5(glval<unknown>)                         = VariableAddress[#this]        : 
+# 1705|     r1705_6(lambda [] type at line 1705, col. 30 *) = Load[#this]                   : &:r1705_5, ~m?
+# 1705|     r1705_7(glval<TrivialLambdaClass>)              = FieldAddress[(captured this)] : r1705_6
+# 1705|     r1705_8(TrivialLambdaClass)                     = Load[?]                       : &:r1705_7, ~m?
+# 1705|     mu1705_9(TrivialLambdaClass)                    = Store[?]                      : &:r1705_4, r1705_8
+# 1705|     r1705_10(decltype([...](...){...}))             = Load[#temp1705:29]            : &:r1705_2, ~m?
+# 1705|     mu1705_11(decltype([...](...){...}))            = Store[l_m_inner]              : &:r1705_1, r1705_10
+# 1708|     v1708_1(void)                                   = NoOp                          : 
+# 1702|     v1702_8(void)                                   = ReturnIndirection[#this]      : &:r1702_6, ~m?
+# 1702|     v1702_9(void)                                   = ReturnVoid                    : 
+# 1702|     v1702_10(void)                                  = AliasedUse                    : ~m?
+# 1702|     v1702_11(void)                                  = ExitFunction                  : 
 
 # 1705| void (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)::operator()() const
 # 1705|   Block 0
@@ -9122,57 +9143,62 @@ ir.cpp:
 # 1716|     r1716_2(glval<decltype([...](...){...})>) = VariableAddress[#temp1716:20] : 
 # 1716|     mu1716_3(decltype([...](...){...}))       = Uninitialized[#temp1716:20]   : &:r1716_2
 # 1716|     r1716_4(glval<TrivialLambdaClass>)        = FieldAddress[p1]              : r1716_2
-
-# 1716|   Block 1
-# 1716|     mu1716_5(TrivialLambdaClass)       = Store[?]         : &:r1716_4
-# 1716|     r1716_6(glval<TrivialLambdaClass>) = FieldAddress[p2] : r1716_2
-
-# 1716|   Block 2
-# 1716|     mu1716_7(TrivialLambdaClass)       = Store[?]         : &:r1716_6
-# 1716|     r1716_8(glval<TrivialLambdaClass>) = FieldAddress[p3] : r1716_2
-
-# 1716|   Block 3
-# 1716|     mu1716_9(TrivialLambdaClass)        = Store[?]         : &:r1716_8
-# 1716|     r1716_10(glval<TrivialLambdaClass>) = FieldAddress[l1] : r1716_2
-
-# 1716|   Block 4
-# 1716|     mu1716_11(TrivialLambdaClass)       = Store[?]         : &:r1716_10
-# 1716|     r1716_12(glval<TrivialLambdaClass>) = FieldAddress[l2] : r1716_2
-
-# 1716|   Block 5
-# 1716|     mu1716_13(TrivialLambdaClass)        = Store[?]              : &:r1716_12
-# 1716|     r1716_14(decltype([...](...){...}))  = Load[#temp1716:20]    : &:r1716_2, ~m?
-# 1716|     mu1716_15(decltype([...](...){...})) = Store[l_outer1]       : &:r1716_1, r1716_14
-# 1719|     v1719_1(void)                        = NoOp                  : 
-# 1712|     v1712_14(void)                       = ReturnIndirection[p2] : &:r1712_8, ~m?
-# 1712|     v1712_15(void)                       = ReturnIndirection[p3] : &:r1712_12, ~m?
-# 1712|     v1712_16(void)                       = ReturnVoid            : 
-# 1712|     v1712_17(void)                       = AliasedUse            : ~m?
-# 1712|     v1712_18(void)                       = ExitFunction          : 
+# 1716|     r1716_5(glval<TrivialLambdaClass>)        = VariableAddress[p1]           : 
+# 1716|     r1716_6(TrivialLambdaClass)               = Load[p1]                      : &:r1716_5, ~m?
+# 1716|     mu1716_7(TrivialLambdaClass)              = Store[?]                      : &:r1716_4, r1716_6
+# 1716|     r1716_8(glval<TrivialLambdaClass>)        = FieldAddress[p2]              : r1716_2
+# 1716|     r1716_9(glval<TrivialLambdaClass &>)      = VariableAddress[p2]           : 
+# 1716|     r1716_10(TrivialLambdaClass &)            = Load[p2]                      : &:r1716_9, ~m?
+#-----|     r0_1(TrivialLambdaClass)                  = Load[?]                       : &:r1716_10, ~m?
+#-----|     mu0_2(TrivialLambdaClass)                 = Store[?]                      : &:r1716_8, r0_1
+# 1716|     r1716_11(glval<TrivialLambdaClass>)       = FieldAddress[p3]              : r1716_2
+# 1716|     r1716_12(glval<TrivialLambdaClass &&>)    = VariableAddress[p3]           : 
+# 1716|     r1716_13(TrivialLambdaClass &&)           = Load[p3]                      : &:r1716_12, ~m?
+#-----|     r0_3(TrivialLambdaClass)                  = Load[?]                       : &:r1716_13, ~m?
+#-----|     mu0_4(TrivialLambdaClass)                 = Store[?]                      : &:r1716_11, r0_3
+# 1716|     r1716_14(glval<TrivialLambdaClass>)       = FieldAddress[l1]              : r1716_2
+# 1716|     r1716_15(glval<TrivialLambdaClass>)       = VariableAddress[l1]           : 
+# 1716|     r1716_16(TrivialLambdaClass)              = Load[l1]                      : &:r1716_15, ~m?
+# 1716|     mu1716_17(TrivialLambdaClass)             = Store[?]                      : &:r1716_14, r1716_16
+# 1716|     r1716_18(glval<TrivialLambdaClass>)       = FieldAddress[l2]              : r1716_2
+# 1716|     r1716_19(glval<TrivialLambdaClass &>)     = VariableAddress[l2]           : 
+# 1716|     r1716_20(TrivialLambdaClass &)            = Load[l2]                      : &:r1716_19, ~m?
+#-----|     r0_5(TrivialLambdaClass)                  = Load[?]                       : &:r1716_20, ~m?
+#-----|     mu0_6(TrivialLambdaClass)                 = Store[?]                      : &:r1716_18, r0_5
+# 1716|     r1716_21(decltype([...](...){...}))       = Load[#temp1716:20]            : &:r1716_2, ~m?
+# 1716|     mu1716_22(decltype([...](...){...}))      = Store[l_outer1]               : &:r1716_1, r1716_21
+# 1719|     v1719_1(void)                             = NoOp                          : 
+# 1712|     v1712_14(void)                            = ReturnIndirection[p2]         : &:r1712_8, ~m?
+# 1712|     v1712_15(void)                            = ReturnIndirection[p3]         : &:r1712_12, ~m?
+# 1712|     v1712_16(void)                            = ReturnVoid                    : 
+# 1712|     v1712_17(void)                            = AliasedUse                    : ~m?
+# 1712|     v1712_18(void)                            = ExitFunction                  : 
 
 # 1716| void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const
 # 1716|   Block 0
-# 1716|     v1716_1(void)                              = EnterFunction                 : 
-# 1716|     mu1716_2(unknown)                          = AliasedDefinition             : 
-# 1716|     mu1716_3(unknown)                          = InitializeNonLocal            : 
-# 1716|     r1716_4(glval<unknown>)                    = VariableAddress[#this]        : 
-# 1716|     mu1716_5(glval<decltype([...](...){...})>) = InitializeParameter[#this]    : &:r1716_4
-# 1716|     r1716_6(glval<decltype([...](...){...})>)  = Load[#this]                   : &:r1716_4, ~m?
-# 1716|     mu1716_7(decltype([...](...){...}))        = InitializeIndirection[#this]  : &:r1716_6
-# 1717|     r1717_1(glval<decltype([...](...){...})>)  = VariableAddress[l_inner1]     : 
-# 1717|     r1717_2(glval<decltype([...](...){...})>)  = VariableAddress[#temp1717:24] : 
-# 1717|     mu1717_3(decltype([...](...){...}))        = Uninitialized[#temp1717:24]   : &:r1717_2
-# 1717|     r1717_4(glval<TrivialLambdaClass>)         = FieldAddress[p1]              : r1717_2
-
-# 1717|   Block 1
-# 1717|     mu1717_5(TrivialLambdaClass)        = Store[?]                 : &:r1717_4
-# 1717|     r1717_6(decltype([...](...){...}))  = Load[#temp1717:24]       : &:r1717_2, ~m?
-# 1717|     mu1717_7(decltype([...](...){...})) = Store[l_inner1]          : &:r1717_1, r1717_6
-# 1718|     v1718_1(void)                       = NoOp                     : 
-# 1716|     v1716_8(void)                       = ReturnIndirection[#this] : &:r1716_6, ~m?
-# 1716|     v1716_9(void)                       = ReturnVoid               : 
-# 1716|     v1716_10(void)                      = AliasedUse               : ~m?
-# 1716|     v1716_11(void)                      = ExitFunction             : 
+# 1716|     v1716_1(void)                                   = EnterFunction                 : 
+# 1716|     mu1716_2(unknown)                               = AliasedDefinition             : 
+# 1716|     mu1716_3(unknown)                               = InitializeNonLocal            : 
+# 1716|     r1716_4(glval<unknown>)                         = VariableAddress[#this]        : 
+# 1716|     mu1716_5(glval<decltype([...](...){...})>)      = InitializeParameter[#this]    : &:r1716_4
+# 1716|     r1716_6(glval<decltype([...](...){...})>)       = Load[#this]                   : &:r1716_4, ~m?
+# 1716|     mu1716_7(decltype([...](...){...}))             = InitializeIndirection[#this]  : &:r1716_6
+# 1717|     r1717_1(glval<decltype([...](...){...})>)       = VariableAddress[l_inner1]     : 
+# 1717|     r1717_2(glval<decltype([...](...){...})>)       = VariableAddress[#temp1717:24] : 
+# 1717|     mu1717_3(decltype([...](...){...}))             = Uninitialized[#temp1717:24]   : &:r1717_2
+# 1717|     r1717_4(glval<TrivialLambdaClass>)              = FieldAddress[p1]              : r1717_2
+# 1717|     r1717_5(glval<unknown>)                         = VariableAddress[#this]        : 
+# 1717|     r1717_6(lambda [] type at line 1717, col. 25 *) = Load[#this]                   : &:r1717_5, ~m?
+# 1717|     r1717_7(glval<TrivialLambdaClass>)              = FieldAddress[p1]              : r1717_6
+# 1717|     r1717_8(TrivialLambdaClass)                     = Load[?]                       : &:r1717_7, ~m?
+# 1717|     mu1717_9(TrivialLambdaClass)                    = Store[?]                      : &:r1717_4, r1717_8
+# 1717|     r1717_10(decltype([...](...){...}))             = Load[#temp1717:24]            : &:r1717_2, ~m?
+# 1717|     mu1717_11(decltype([...](...){...}))            = Store[l_inner1]               : &:r1717_1, r1717_10
+# 1718|     v1718_1(void)                                   = NoOp                          : 
+# 1716|     v1716_8(void)                                   = ReturnIndirection[#this]      : &:r1716_6, ~m?
+# 1716|     v1716_9(void)                                   = ReturnVoid                    : 
+# 1716|     v1716_10(void)                                  = AliasedUse                    : ~m?
+# 1716|     v1716_11(void)                                  = ExitFunction                  : 
 
 # 1717| void (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)::operator()() const
 # 1717|   Block 0
@@ -9250,28 +9276,34 @@ ir.cpp:
 
 # 1736| void CopyConstructorTestNonVirtualClass::CopyConstructorTestNonVirtualClass(CopyConstructorTestNonVirtualClass const&)
 # 1736|   Block 0
-# 1736|     v1736_1(void)                                            = EnterFunction                                                                                          : 
-# 1736|     mu1736_2(unknown)                                        = AliasedDefinition                                                                                      : 
-# 1736|     mu1736_3(unknown)                                        = InitializeNonLocal                                                                                     : 
-# 1736|     r1736_4(glval<unknown>)                                  = VariableAddress[#this]                                                                                 : 
-# 1736|     mu1736_5(glval<CopyConstructorTestNonVirtualClass>)      = InitializeParameter[#this]                                                                             : &:r1736_4
-# 1736|     r1736_6(glval<CopyConstructorTestNonVirtualClass>)       = Load[#this]                                                                                            : &:r1736_4, ~m?
-# 1736|     mu1736_7(CopyConstructorTestNonVirtualClass)             = InitializeIndirection[#this]                                                                           : &:r1736_6
-#-----|     r0_1(glval<CopyConstructorTestNonVirtualClass &>)        = VariableAddress[(unnamed parameter 0)]                                                                 : 
-#-----|     mu0_2(CopyConstructorTestNonVirtualClass &)              = InitializeParameter[(unnamed parameter 0)]                                                             : &:r0_1
-#-----|     r0_3(CopyConstructorTestNonVirtualClass &)               = Load[(unnamed parameter 0)]                                                                            : &:r0_1, ~m?
-#-----|     mu0_4(unknown)                                           = InitializeIndirection[(unnamed parameter 0)]                                                           : &:r0_3
-# 1736|     r1736_8(glval<CopyConstructorWithImplicitArgumentClass>) = ConvertToNonVirtualBase[CopyConstructorTestNonVirtualClass : CopyConstructorWithImplicitArgumentClass] : mu1736_5
-# 1736|     r1736_9(glval<unknown>)                                  = FunctionAddress[CopyConstructorWithImplicitArgumentClass]                                              : 
-# 1736|     v1736_10(void)                                           = Call[CopyConstructorWithImplicitArgumentClass]                                                         : func:r1736_9, this:r1736_8
-# 1736|     mu1736_11(unknown)                                       = ^CallSideEffect                                                                                        : ~m?
-# 1736|     mu1736_12(CopyConstructorWithImplicitArgumentClass)      = ^IndirectMayWriteSideEffect[-1]                                                                        : &:r1736_8
-# 1736|     v1736_13(void)                                           = NoOp                                                                                                   : 
-# 1736|     v1736_14(void)                                           = ReturnIndirection[#this]                                                                               : &:r1736_6, ~m?
-#-----|     v0_5(void)                                               = ReturnIndirection[(unnamed parameter 0)]                                                               : &:r0_3, ~m?
-# 1736|     v1736_15(void)                                           = ReturnVoid                                                                                             : 
-# 1736|     v1736_16(void)                                           = AliasedUse                                                                                             : ~m?
-# 1736|     v1736_17(void)                                           = ExitFunction                                                                                           : 
+# 1736|     v1736_1(void)                                             = EnterFunction                                                                                          : 
+# 1736|     mu1736_2(unknown)                                         = AliasedDefinition                                                                                      : 
+# 1736|     mu1736_3(unknown)                                         = InitializeNonLocal                                                                                     : 
+# 1736|     r1736_4(glval<unknown>)                                   = VariableAddress[#this]                                                                                 : 
+# 1736|     mu1736_5(glval<CopyConstructorTestNonVirtualClass>)       = InitializeParameter[#this]                                                                             : &:r1736_4
+# 1736|     r1736_6(glval<CopyConstructorTestNonVirtualClass>)        = Load[#this]                                                                                            : &:r1736_4, ~m?
+# 1736|     mu1736_7(CopyConstructorTestNonVirtualClass)              = InitializeIndirection[#this]                                                                           : &:r1736_6
+#-----|     r0_1(glval<CopyConstructorTestNonVirtualClass &>)         = VariableAddress[(unnamed parameter 0)]                                                                 : 
+#-----|     mu0_2(CopyConstructorTestNonVirtualClass &)               = InitializeParameter[(unnamed parameter 0)]                                                             : &:r0_1
+#-----|     r0_3(CopyConstructorTestNonVirtualClass &)                = Load[(unnamed parameter 0)]                                                                            : &:r0_1, ~m?
+#-----|     mu0_4(unknown)                                            = InitializeIndirection[(unnamed parameter 0)]                                                           : &:r0_3
+# 1736|     r1736_8(glval<CopyConstructorWithImplicitArgumentClass>)  = ConvertToNonVirtualBase[CopyConstructorTestNonVirtualClass : CopyConstructorWithImplicitArgumentClass] : mu1736_5
+# 1736|     r1736_9(glval<unknown>)                                   = FunctionAddress[CopyConstructorWithImplicitArgumentClass]                                              : 
+# 1736|     r1736_10(glval<CopyConstructorTestNonVirtualClass &>)     = VariableAddress[(unnamed parameter 0)]                                                                 : 
+# 1736|     r1736_11(CopyConstructorTestNonVirtualClass &)            = Load[(unnamed parameter 0)]                                                                            : &:r1736_10, ~m?
+# 1736|     r1736_12(glval<CopyConstructorTestNonVirtualClass>)       = CopyValue                                                                                              : r1736_11
+# 1736|     r1736_13(glval<CopyConstructorWithImplicitArgumentClass>) = ConvertToNonVirtualBase[CopyConstructorTestNonVirtualClass : CopyConstructorWithImplicitArgumentClass] : r1736_12
+# 1736|     r1736_14(CopyConstructorWithImplicitArgumentClass &)      = CopyValue                                                                                              : r1736_13
+# 1736|     v1736_15(void)                                            = Call[CopyConstructorWithImplicitArgumentClass]                                                         : func:r1736_9, this:r1736_8, 0:r1736_14
+# 1736|     mu1736_16(unknown)                                        = ^CallSideEffect                                                                                        : ~m?
+# 1736|     v1736_17(void)                                            = ^BufferReadSideEffect[0]                                                                               : &:r1736_14, ~m?
+# 1736|     mu1736_18(CopyConstructorWithImplicitArgumentClass)       = ^IndirectMayWriteSideEffect[-1]                                                                        : &:r1736_8
+# 1736|     v1736_19(void)                                            = NoOp                                                                                                   : 
+# 1736|     v1736_20(void)                                            = ReturnIndirection[#this]                                                                               : &:r1736_6, ~m?
+#-----|     v0_5(void)                                                = ReturnIndirection[(unnamed parameter 0)]                                                               : &:r0_3, ~m?
+# 1736|     v1736_21(void)                                            = ReturnVoid                                                                                             : 
+# 1736|     v1736_22(void)                                            = AliasedUse                                                                                             : ~m?
+# 1736|     v1736_23(void)                                            = ExitFunction                                                                                           : 
 
 # 1740| void CopyConstructorTestNonVirtualClass::CopyConstructorTestNonVirtualClass()
 # 1740|   Block 0
@@ -9300,28 +9332,34 @@ ir.cpp:
 
 # 1743| void CopyConstructorTestVirtualClass::CopyConstructorTestVirtualClass(CopyConstructorTestVirtualClass const&)
 # 1743|   Block 0
-# 1743|     v1743_1(void)                                            = EnterFunction                                                                                       : 
-# 1743|     mu1743_2(unknown)                                        = AliasedDefinition                                                                                   : 
-# 1743|     mu1743_3(unknown)                                        = InitializeNonLocal                                                                                  : 
-# 1743|     r1743_4(glval<unknown>)                                  = VariableAddress[#this]                                                                              : 
-# 1743|     mu1743_5(glval<CopyConstructorTestVirtualClass>)         = InitializeParameter[#this]                                                                          : &:r1743_4
-# 1743|     r1743_6(glval<CopyConstructorTestVirtualClass>)          = Load[#this]                                                                                         : &:r1743_4, ~m?
-# 1743|     mu1743_7(CopyConstructorTestVirtualClass)                = InitializeIndirection[#this]                                                                        : &:r1743_6
-#-----|     r0_1(glval<CopyConstructorTestVirtualClass &>)           = VariableAddress[(unnamed parameter 0)]                                                              : 
-#-----|     mu0_2(CopyConstructorTestVirtualClass &)                 = InitializeParameter[(unnamed parameter 0)]                                                          : &:r0_1
-#-----|     r0_3(CopyConstructorTestVirtualClass &)                  = Load[(unnamed parameter 0)]                                                                         : &:r0_1, ~m?
-#-----|     mu0_4(unknown)                                           = InitializeIndirection[(unnamed parameter 0)]                                                        : &:r0_3
-# 1743|     r1743_8(glval<CopyConstructorWithImplicitArgumentClass>) = ConvertToNonVirtualBase[CopyConstructorTestVirtualClass : CopyConstructorWithImplicitArgumentClass] : mu1743_5
-# 1743|     r1743_9(glval<unknown>)                                  = FunctionAddress[CopyConstructorWithImplicitArgumentClass]                                           : 
-# 1743|     v1743_10(void)                                           = Call[CopyConstructorWithImplicitArgumentClass]                                                      : func:r1743_9, this:r1743_8
-# 1743|     mu1743_11(unknown)                                       = ^CallSideEffect                                                                                     : ~m?
-# 1743|     mu1743_12(CopyConstructorWithImplicitArgumentClass)      = ^IndirectMayWriteSideEffect[-1]                                                                     : &:r1743_8
-# 1743|     v1743_13(void)                                           = NoOp                                                                                                : 
-# 1743|     v1743_14(void)                                           = ReturnIndirection[#this]                                                                            : &:r1743_6, ~m?
-#-----|     v0_5(void)                                               = ReturnIndirection[(unnamed parameter 0)]                                                            : &:r0_3, ~m?
-# 1743|     v1743_15(void)                                           = ReturnVoid                                                                                          : 
-# 1743|     v1743_16(void)                                           = AliasedUse                                                                                          : ~m?
-# 1743|     v1743_17(void)                                           = ExitFunction                                                                                        : 
+# 1743|     v1743_1(void)                                             = EnterFunction                                                                                       : 
+# 1743|     mu1743_2(unknown)                                         = AliasedDefinition                                                                                   : 
+# 1743|     mu1743_3(unknown)                                         = InitializeNonLocal                                                                                  : 
+# 1743|     r1743_4(glval<unknown>)                                   = VariableAddress[#this]                                                                              : 
+# 1743|     mu1743_5(glval<CopyConstructorTestVirtualClass>)          = InitializeParameter[#this]                                                                          : &:r1743_4
+# 1743|     r1743_6(glval<CopyConstructorTestVirtualClass>)           = Load[#this]                                                                                         : &:r1743_4, ~m?
+# 1743|     mu1743_7(CopyConstructorTestVirtualClass)                 = InitializeIndirection[#this]                                                                        : &:r1743_6
+#-----|     r0_1(glval<CopyConstructorTestVirtualClass &>)            = VariableAddress[(unnamed parameter 0)]                                                              : 
+#-----|     mu0_2(CopyConstructorTestVirtualClass &)                  = InitializeParameter[(unnamed parameter 0)]                                                          : &:r0_1
+#-----|     r0_3(CopyConstructorTestVirtualClass &)                   = Load[(unnamed parameter 0)]                                                                         : &:r0_1, ~m?
+#-----|     mu0_4(unknown)                                            = InitializeIndirection[(unnamed parameter 0)]                                                        : &:r0_3
+# 1743|     r1743_8(glval<CopyConstructorWithImplicitArgumentClass>)  = ConvertToNonVirtualBase[CopyConstructorTestVirtualClass : CopyConstructorWithImplicitArgumentClass] : mu1743_5
+# 1743|     r1743_9(glval<unknown>)                                   = FunctionAddress[CopyConstructorWithImplicitArgumentClass]                                           : 
+# 1743|     r1743_10(glval<CopyConstructorTestVirtualClass &>)        = VariableAddress[(unnamed parameter 0)]                                                              : 
+# 1743|     r1743_11(CopyConstructorTestVirtualClass &)               = Load[(unnamed parameter 0)]                                                                         : &:r1743_10, ~m?
+# 1743|     r1743_12(glval<CopyConstructorTestVirtualClass>)          = CopyValue                                                                                           : r1743_11
+# 1743|     r1743_13(glval<CopyConstructorWithImplicitArgumentClass>) = ConvertToVirtualBase[CopyConstructorTestVirtualClass : CopyConstructorWithImplicitArgumentClass]    : r1743_12
+# 1743|     r1743_14(CopyConstructorWithImplicitArgumentClass &)      = CopyValue                                                                                           : r1743_13
+# 1743|     v1743_15(void)                                            = Call[CopyConstructorWithImplicitArgumentClass]                                                      : func:r1743_9, this:r1743_8, 0:r1743_14
+# 1743|     mu1743_16(unknown)                                        = ^CallSideEffect                                                                                     : ~m?
+# 1743|     v1743_17(void)                                            = ^BufferReadSideEffect[0]                                                                            : &:r1743_14, ~m?
+# 1743|     mu1743_18(CopyConstructorWithImplicitArgumentClass)       = ^IndirectMayWriteSideEffect[-1]                                                                     : &:r1743_8
+# 1743|     v1743_19(void)                                            = NoOp                                                                                                : 
+# 1743|     v1743_20(void)                                            = ReturnIndirection[#this]                                                                            : &:r1743_6, ~m?
+#-----|     v0_5(void)                                                = ReturnIndirection[(unnamed parameter 0)]                                                            : &:r0_3, ~m?
+# 1743|     v1743_21(void)                                            = ReturnVoid                                                                                          : 
+# 1743|     v1743_22(void)                                            = AliasedUse                                                                                          : ~m?
+# 1743|     v1743_23(void)                                            = ExitFunction                                                                                        : 
 
 # 1747| void CopyConstructorTestVirtualClass::CopyConstructorTestVirtualClass()
 # 1747|   Block 0

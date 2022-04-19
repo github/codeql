@@ -1,4 +1,18 @@
 uniqueEnclosingCallable
+| globals.cpp:9:5:9:19 | Address | Node should have one enclosing callable but has 0. |
+| globals.cpp:9:5:9:19 | VariableAddress | Node should have one enclosing callable but has 0. |
+| globals.cpp:9:5:9:19 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
+| globals.cpp:9:23:9:23 | 0 | Node should have one enclosing callable but has 0. |
+| globals.cpp:9:23:9:23 | ChiPartial | Node should have one enclosing callable but has 0. |
+| globals.cpp:9:23:9:23 | Store | Node should have one enclosing callable but has 0. |
+| globals.cpp:9:23:9:23 | StoreValue | Node should have one enclosing callable but has 0. |
+| globals.cpp:16:12:16:26 | Address | Node should have one enclosing callable but has 0. |
+| globals.cpp:16:12:16:26 | VariableAddress | Node should have one enclosing callable but has 0. |
+| globals.cpp:16:12:16:26 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
+| globals.cpp:16:30:16:30 | 0 | Node should have one enclosing callable but has 0. |
+| globals.cpp:16:30:16:30 | ChiPartial | Node should have one enclosing callable but has 0. |
+| globals.cpp:16:30:16:30 | Store | Node should have one enclosing callable but has 0. |
+| globals.cpp:16:30:16:30 | StoreValue | Node should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 | BarrierGuard.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 6. |
@@ -199,7 +213,9 @@ postWithInFlow
 | example.c:28:22:28:25 | & ... [post update] | PostUpdateNode should not be the target of local flow. |
 | example.c:28:23:28:25 | pos [post update] | PostUpdateNode should not be the target of local flow. |
 | globals.cpp:5:9:5:13 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| globals.cpp:9:5:9:19 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | globals.cpp:13:5:13:19 | flowTestGlobal1 [post update] | PostUpdateNode should not be the target of local flow. |
+| globals.cpp:16:12:16:26 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | globals.cpp:23:5:23:19 | flowTestGlobal2 [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:8:6:8:6 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:9:6:9:6 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |

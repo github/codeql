@@ -4,6 +4,8 @@ unexpectedOperand
 duplicateOperand
 missingPhiOperand
 missingOperandType
+| cpp11.cpp:36:18:36:18 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | cpp11.cpp:36:5:36:14 | int global_int | int global_int |
+| misc.c:210:24:210:28 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | misc.c:210:5:210:20 | int global_with_init | int global_with_init |
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
@@ -91,6 +93,8 @@ useNotDominatedByDefinition
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated
+| cpp11.cpp:36:18:36:18 | Chi: 5 | Instruction 'Chi: 5' should not be marked as having a conflated result in function '$@'. | cpp11.cpp:36:5:36:14 | int global_int | int global_int |
+| misc.c:210:24:210:28 | Chi: ... + ... | Instruction 'Chi: ... + ...' should not be marked as having a conflated result in function '$@'. | misc.c:210:5:210:20 | int global_with_init | int global_with_init |
 invalidOverlap
 nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer

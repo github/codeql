@@ -1,4 +1,45 @@
 uniqueEnclosingCallable
+| cpp11.cpp:35:11:35:22 | Address | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:35:11:35:22 | AliasedDefinition | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:35:11:35:22 | VariableAddress | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:35:11:35:22 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:35:26:35:26 | 5 | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:35:26:35:26 | ChiPartial | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:35:26:35:26 | ChiTotal | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:35:26:35:26 | Store | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:35:26:35:26 | StoreValue | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:36:5:36:14 | Address | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:36:5:36:14 | VariableAddress | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:36:5:36:14 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:36:18:36:18 | 5 | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:36:18:36:18 | ChiPartial | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:36:18:36:18 | Store | Node should have one enclosing callable but has 0. |
+| cpp11.cpp:36:18:36:18 | StoreValue | Node should have one enclosing callable but has 0. |
+| misc.c:10:5:10:13 | Address | Node should have one enclosing callable but has 0. |
+| misc.c:10:5:10:13 | AliasedDefinition | Node should have one enclosing callable but has 0. |
+| misc.c:10:5:10:13 | VariableAddress | Node should have one enclosing callable but has 0. |
+| misc.c:10:5:10:13 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
+| misc.c:10:17:10:17 | 1 | Node should have one enclosing callable but has 0. |
+| misc.c:10:17:10:17 | ChiPartial | Node should have one enclosing callable but has 0. |
+| misc.c:10:17:10:17 | ChiTotal | Node should have one enclosing callable but has 0. |
+| misc.c:10:17:10:17 | Store | Node should have one enclosing callable but has 0. |
+| misc.c:10:17:10:17 | StoreValue | Node should have one enclosing callable but has 0. |
+| misc.c:11:5:11:13 | Address | Node should have one enclosing callable but has 0. |
+| misc.c:11:5:11:13 | AliasedDefinition | Node should have one enclosing callable but has 0. |
+| misc.c:11:5:11:13 | VariableAddress | Node should have one enclosing callable but has 0. |
+| misc.c:11:5:11:13 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
+| misc.c:11:17:11:21 | ... + ... | Node should have one enclosing callable but has 0. |
+| misc.c:11:17:11:21 | ChiPartial | Node should have one enclosing callable but has 0. |
+| misc.c:11:17:11:21 | ChiTotal | Node should have one enclosing callable but has 0. |
+| misc.c:11:17:11:21 | Store | Node should have one enclosing callable but has 0. |
+| misc.c:11:17:11:21 | StoreValue | Node should have one enclosing callable but has 0. |
+| misc.c:210:5:210:20 | Address | Node should have one enclosing callable but has 0. |
+| misc.c:210:5:210:20 | VariableAddress | Node should have one enclosing callable but has 0. |
+| misc.c:210:5:210:20 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
+| misc.c:210:24:210:28 | ... + ... | Node should have one enclosing callable but has 0. |
+| misc.c:210:24:210:28 | ChiPartial | Node should have one enclosing callable but has 0. |
+| misc.c:210:24:210:28 | Store | Node should have one enclosing callable but has 0. |
+| misc.c:210:24:210:28 | StoreValue | Node should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 | aggregateinitializer.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
@@ -1622,6 +1663,8 @@ postWithInFlow
 | cpp11.cpp:28:21:28:34 | temporary object [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:29:7:29:16 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:31:5:31:13 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:35:11:35:22 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:36:5:36:14 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:56:14:56:15 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:56:14:56:15 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:60:15:60:16 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
@@ -2230,6 +2273,8 @@ postWithInFlow
 | ltrbinopexpr.c:37:5:37:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | ltrbinopexpr.c:39:5:39:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | ltrbinopexpr.c:40:5:40:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| misc.c:10:5:10:13 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| misc.c:11:5:11:13 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | misc.c:18:5:18:5 | i [post update] | PostUpdateNode should not be the target of local flow. |
 | misc.c:19:5:19:5 | i [post update] | PostUpdateNode should not be the target of local flow. |
 | misc.c:20:7:20:7 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
@@ -2289,6 +2334,7 @@ postWithInFlow
 | misc.c:200:24:200:27 | args [post update] | PostUpdateNode should not be the target of local flow. |
 | misc.c:200:24:200:27 | array to pointer conversion [post update] | PostUpdateNode should not be the target of local flow. |
 | misc.c:208:1:208:3 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| misc.c:210:5:210:20 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | misc.c:216:3:216:26 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | misc.c:220:3:220:5 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
 | misc.c:220:4:220:5 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
