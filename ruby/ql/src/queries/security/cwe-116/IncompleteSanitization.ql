@@ -28,7 +28,7 @@ string metachar() { result = "'\"\\&<>\n\r\t*|{}[]%$".charAt(_) }
 predicate isSimple(RE::RegExpTerm t) {
   t instanceof RE::RegExpConstant
   or
-  isSimple(t.(RE::RegExpGroup).getAChild())
+  isSimple(t.(RE::RegExpGroup).getAChild()) // N.B. a group has only one child
   or
   isSimpleCharacterClass(t)
   or
