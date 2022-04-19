@@ -22,7 +22,7 @@ import semmle.code.cpp.ir.IR
  */
 abstract class XXEFlowState extends string {
   bindingset[this]
-  XXEFlowState() { any() } // required constructor
+  XXEFlowState() { any() } // required characteristic predicate
 }
 
 /**
