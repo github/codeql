@@ -432,7 +432,13 @@ private string stubAnnotationValue(Expr value) {
   result = stubAnnotationSimpleValue(value)
   or
   value instanceof ArrayInit and
-  result = "{" + concat(stubAnnotationSimpleValue(value.(ArrayInit).getAnInit()), ",") + "}"
+  result =
+    "{" +
+      concat(int i, Expr arrayElement |
+        arrayElement = value.(ArrayInit).getInit(i)
+      |
+        stubAnnotationSimpleValue(arrayElement), "," order by i
+      ) + "}"
 }
 
 bindingset[s]
