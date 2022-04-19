@@ -323,7 +323,7 @@ The following predicate defines the set of all expressions.
 .. _false:
 
 ``none()``
-======
+==========
 
 The built-in predicate ``none()`` is a formula that never holds.
 
