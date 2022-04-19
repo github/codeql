@@ -20,7 +20,7 @@ import semmle.code.cpp.ir.IR
 /**
  * A flow state representing a possible configuration of an XML object.
  */
-abstract class XXEFlowState extends string {
+abstract class XXEFlowState extends DataFlow::FlowState {
   bindingset[this]
   XXEFlowState() { any() } // required characteristic predicate
 }
@@ -148,10 +148,7 @@ class CreateEntityReferenceNodesTranformer extends XXEFlowStateTranformer {
  * The `AbstractDOMParser.parse` method.
  */
 class ParseFunction extends Function {
-  ParseFunction() {
-    this.getDeclaringType() instanceof AbstractDOMParserClass and
-    this.hasName("parse")
-  }
+  ParseFunction() { this.getClassAndName("parse") instanceof AbstractDOMParserClass }
 }
 
 /**
