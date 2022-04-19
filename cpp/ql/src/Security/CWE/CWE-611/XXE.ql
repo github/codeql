@@ -63,14 +63,24 @@ class XercesDOMParserClass extends Class {
  *  - A is 1 if `setDisableDefaultEntityResolution` is `true`, 0 otherwise.
  *  - B is 1 if `setCreateEntityReferenceNodes` is `true`, 0 otherwise.
  */
-predicate encodeXercesDOMFlowState(string flowstate, int a, int b) {
-  flowstate = "XercesDOM-0-0" and a = 0 and b = 0
+predicate encodeXercesDOMFlowState(
+  string flowstate, int disabledDefaultEntityResolution, int createEntityReferenceNodes
+) {
+  flowstate = "XercesDOM-0-0" and
+  disabledDefaultEntityResolution = 0 and
+  createEntityReferenceNodes = 0
   or
-  flowstate = "XercesDOM-0-1" and a = 0 and b = 1
+  flowstate = "XercesDOM-0-1" and
+  disabledDefaultEntityResolution = 0 and
+  createEntityReferenceNodes = 1
   or
-  flowstate = "XercesDOM-1-0" and a = 1 and b = 0
+  flowstate = "XercesDOM-1-0" and
+  disabledDefaultEntityResolution = 1 and
+  createEntityReferenceNodes = 0
   or
-  flowstate = "XercesDOM-1-1" and a = 1 and b = 1
+  flowstate = "XercesDOM-1-1" and
+  disabledDefaultEntityResolution = 1 and
+  createEntityReferenceNodes = 1
 }
 
 /**
@@ -99,14 +109,15 @@ class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
   }
 
   final override XXEFlowState transform(XXEFlowState flowstate) {
-    exists(int a, int b |
-      encodeXercesDOMFlowState(flowstate, a, b) and
+    exists(int disabledDefaultEntityResolution, int createEntityReferenceNodes |
+      encodeXercesDOMFlowState(flowstate, disabledDefaultEntityResolution,
+        createEntityReferenceNodes) and
       (
         newValue.getValue().toInt() = 1 and // true
-        encodeXercesDOMFlowState(result, 1, b)
+        encodeXercesDOMFlowState(result, 1, createEntityReferenceNodes)
         or
         not newValue.getValue().toInt() = 1 and // false or unknown
-        encodeXercesDOMFlowState(result, 0, b)
+        encodeXercesDOMFlowState(result, 0, createEntityReferenceNodes)
       )
     )
   }
@@ -131,14 +142,15 @@ class CreateEntityReferenceNodesTranformer extends XXEFlowStateTranformer {
   }
 
   final override XXEFlowState transform(XXEFlowState flowstate) {
-    exists(int a, int b |
-      encodeXercesDOMFlowState(flowstate, a, b) and
+    exists(int disabledDefaultEntityResolution, int createEntityReferenceNodes |
+      encodeXercesDOMFlowState(flowstate, disabledDefaultEntityResolution,
+        createEntityReferenceNodes) and
       (
         newValue.getValue().toInt() = 1 and // true
-        encodeXercesDOMFlowState(result, a, 1)
+        encodeXercesDOMFlowState(result, disabledDefaultEntityResolution, 1)
         or
         not newValue.getValue().toInt() = 1 and // false or unknown
-        encodeXercesDOMFlowState(result, a, 0)
+        encodeXercesDOMFlowState(result, disabledDefaultEntityResolution, 0)
       )
     )
   }
