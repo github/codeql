@@ -124,9 +124,9 @@ predicate removesFirstOccurence(StringSubstitutionCall sub, string str) {
  * Gets a method call where the receiver is the result of a string substitution
  * call.
  */
-DataFlow::Node getAMethodCall(StringSubstitutionCall call) {
+DataFlow::CallNode getAMethodCall(StringSubstitutionCall call) {
   exists(DataFlow::Node receiver |
-    receiver.asExpr() = result.asExpr().(ExprNodes::MethodCallCfgNode).getReceiver() and
+    receiver = result.getReceiver() and
     (
       // for a non-destructive string substitution, is there flow from it to the
       // receiver of another method call?
