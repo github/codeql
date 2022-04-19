@@ -404,16 +404,16 @@ private string stubAnnotation(Annotation a) {
   else result = a.toString()
 }
 
-private string stubAnnotiationSimpleValue(Expr value) {
+private string stubAnnotationSimpleValue(Expr value) {
   result = value.(FieldAccess).getField().getQualifiedName() or
   result = value.(Literal).toString()
 }
 
 private string stubAnnotationValue(Expr value) {
-  result = stubAnnotiationSimpleValue(value)
+  result = stubAnnotationSimpleValue(value)
   or
   value instanceof ArrayInit and
-  result = "{" + concat(stubAnnotiationSimpleValue(value.(ArrayInit).getAnInit()), ",") + "}"
+  result = "{" + concat(stubAnnotationSimpleValue(value.(ArrayInit).getAnInit()), ",") + "}"
 }
 
 bindingset[s]
