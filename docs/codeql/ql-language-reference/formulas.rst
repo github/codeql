@@ -305,7 +305,7 @@ languages. Here is a brief overview:
 .. _true:
 
 ``any()``
-=======
+=========
 
 The built-in predicate ``any()`` is a formula that always holds.
 
