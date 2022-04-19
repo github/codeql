@@ -583,10 +583,29 @@ open class KotlinFileExtractor(
         // Extract field initializers and init blocks (the latter can only occur in object initializers)
         var idx = 0
 
-        fun extractFieldInitializer(f: IrField) {
-            val initializer = f.initializer
+        fun extractFieldInitializer(f: IrDeclaration) {
+            val static: Boolean
+            val initializer: IrExpressionBody?
+            val lhsType: TypeResults?
+            val vId: Label<out DbVariable>?
+            if (f is IrField) {
+                static = f.isStatic
+                initializer = f.initializer
+                lhsType = useType(f.type)
+                vId = useField(f)
+            } else if (f is IrEnumEntry) {
+                static = true
+                initializer = f.initializerExpression
+                lhsType = getEnumEntryType(f)
+                if (lhsType == null) {
+                    return
+                }
+                vId = useEnumEntry(f)
+            } else {
+                return
+            }
 
-            if (f.isStatic != extractStaticInitializers || initializer == null) {
+            if (static != extractStaticInitializers || initializer == null) {
                 return
             }
 
@@ -606,16 +625,15 @@ open class KotlinFileExtractor(
             tw.writeKtInitializerAssignment(assignmentId)
 
             val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-            val lhsType = useType(f.type)
             tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, assignmentId, 0)
             tw.writeExprsKotlinType(lhsId, lhsType.kotlinResult.id)
             tw.writeHasLocation(lhsId, declLocId)
             tw.writeCallableEnclosingExpr(lhsId, blockAndFunctionId.second)
             tw.writeStatementEnclosingExpr(lhsId, stmtId)
-            val vId = useField(f)
+
             tw.writeVariableBinding(lhsId, vId)
 
-            if (f.isStatic) {
+            if (static) {
                 extractStaticTypeAccessQualifier(f, lhsId, declLocId, blockAndFunctionId.second, stmtId)
             }
 
@@ -628,6 +646,9 @@ open class KotlinFileExtractor(
                     decl.backingField?.let { extractFieldInitializer(it) }
                 }
                 is IrField -> {
+                    extractFieldInitializer(decl)
+                }
+                is IrEnumEntry -> {
                     extractFieldInitializer(decl)
                 }
                 is IrAnonymousInitializer -> {
@@ -819,30 +840,36 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun getEnumEntryType(ee: IrEnumEntry): TypeResults? {
+        val parent = ee.parent
+        if (parent !is IrClass) {
+            logger.errorElement("Enum entry with unexpected parent: " + parent.javaClass, ee)
+            return null
+        } else if (parent.typeParameters.isNotEmpty()) {
+            logger.errorElement("Enum entry parent class has type parameters: " + parent.name, ee)
+            return null
+        } else {
+            return useSimpleTypeClass(parent, emptyList(), false)
+        }
+    }
+
     fun extractEnumEntry(ee: IrEnumEntry, parentId: Label<out DbReftype>) {
         with("enum entry", ee) {
             DeclarationStackAdjuster(ee).use {
                 val id = useEnumEntry(ee)
-                val parent = ee.parent
-                if (parent !is IrClass) {
-                    logger.errorElement("Enum entry with unexpected parent: " + parent.javaClass, ee)
-                } else if (parent.typeParameters.isNotEmpty()) {
-                    logger.errorElement("Enum entry parent class has type parameters: " + parent.name, ee)
-                } else {
-                    val type = useSimpleTypeClass(parent, emptyList(), false)
-                    tw.writeFields(id, ee.name.asString(), type.javaResult.id, parentId, id)
-                    tw.writeFieldsKotlinType(id, type.kotlinResult.id)
-                    val locId = tw.getLocation(ee)
-                    tw.writeHasLocation(id, locId)
+                val type = getEnumEntryType(ee) ?: return
+                tw.writeFields(id, ee.name.asString(), type.javaResult.id, parentId, id)
+                tw.writeFieldsKotlinType(id, type.kotlinResult.id)
+                val locId = tw.getLocation(ee)
+                tw.writeHasLocation(id, locId)
 
-                    if (!isExternalDeclaration(ee)) {
-                        val fieldDeclarationId = tw.getFreshIdLabel<DbFielddecl>()
-                        tw.writeFielddecls(fieldDeclarationId, parentId)
-                        tw.writeFieldDeclaredIn(id, fieldDeclarationId, 0)
-                        tw.writeHasLocation(fieldDeclarationId, locId)
+                if (!isExternalDeclaration(ee)) {
+                    val fieldDeclarationId = tw.getFreshIdLabel<DbFielddecl>()
+                    tw.writeFielddecls(fieldDeclarationId, parentId)
+                    tw.writeFieldDeclaredIn(id, fieldDeclarationId, 0)
+                    tw.writeHasLocation(fieldDeclarationId, locId)
 
-                        extractTypeAccess(type, locId, fieldDeclarationId, 0)
-                    }
+                    extractTypeAccess(type, locId, fieldDeclarationId, 0)
                 }
             }
         }

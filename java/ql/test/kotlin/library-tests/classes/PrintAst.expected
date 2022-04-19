@@ -130,21 +130,29 @@ classes.kt:
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] value
 #    0|           0: [TypeAccess] String
-#   49|     3: [Constructor] Direction
+#   49|     4: [Constructor] Direction
 #   49|       5: [BlockStmt] { ... }
 #   49|         0: [ExprStmt] <Expr>;
 #   49|           0: [ClassInstanceExpr] new Enum(...)
 #   49|             -3: [TypeAccess] Unit
 #   49|               0: [TypeAccess] Direction
 #   49|         1: [BlockStmt] { ... }
-#   50|     4: [FieldDeclaration] Direction NORTH;
+#   50|     5: [FieldDeclaration] Direction NORTH;
 #   50|       -1: [TypeAccess] Direction
-#   50|     5: [FieldDeclaration] Direction SOUTH;
+#   50|       0: [ClassInstanceExpr] new Direction(...)
+#   50|         -3: [TypeAccess] Direction
+#   50|     6: [FieldDeclaration] Direction SOUTH;
 #   50|       -1: [TypeAccess] Direction
-#   50|     6: [FieldDeclaration] Direction WEST;
+#   50|       0: [ClassInstanceExpr] new Direction(...)
+#   50|         -3: [TypeAccess] Direction
+#   50|     7: [FieldDeclaration] Direction WEST;
 #   50|       -1: [TypeAccess] Direction
-#   50|     7: [FieldDeclaration] Direction EAST;
+#   50|       0: [ClassInstanceExpr] new Direction(...)
+#   50|         -3: [TypeAccess] Direction
+#   50|     8: [FieldDeclaration] Direction EAST;
 #   50|       -1: [TypeAccess] Direction
+#   50|       0: [ClassInstanceExpr] new Direction(...)
+#   50|         -3: [TypeAccess] Direction
 #   53|   12: [Class] Color
 #    0|     1: [Method] values
 #    0|       3: [TypeAccess] Color[]
@@ -154,7 +162,7 @@ classes.kt:
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] value
 #    0|           0: [TypeAccess] String
-#   53|     3: [Constructor] Color
+#   53|     4: [Constructor] Color
 #-----|       4: (Parameters)
 #   53|         0: [Parameter] rgb
 #   53|           0: [TypeAccess] int
@@ -167,21 +175,30 @@ classes.kt:
 #   53|           0: [ExprStmt] <Expr>;
 #   53|             0: [KtInitializerAssignExpr] ...=...
 #   53|               0: [VarAccess] rgb
-#   53|     4: [Method] getRgb
+#   53|     5: [Method] getRgb
 #   53|       3: [TypeAccess] int
 #   53|       5: [BlockStmt] { ... }
 #   53|         0: [ReturnStmt] return ...
 #   53|           0: [VarAccess] this.rgb
 #   53|             -1: [ThisAccess] this
-#   53|     4: [FieldDeclaration] int rgb;
+#   53|     5: [FieldDeclaration] int rgb;
 #   53|       -1: [TypeAccess] int
 #   53|       0: [VarAccess] rgb
-#   54|     6: [FieldDeclaration] Color RED;
+#   54|     7: [FieldDeclaration] Color RED;
 #   54|       -1: [TypeAccess] Color
-#   55|     7: [FieldDeclaration] Color GREEN;
+#   54|       0: [ClassInstanceExpr] new Color(...)
+#   54|         -3: [TypeAccess] Color
+#   54|         0: [IntegerLiteral] 16711680
+#   55|     8: [FieldDeclaration] Color GREEN;
 #   55|       -1: [TypeAccess] Color
-#   56|     8: [FieldDeclaration] Color BLUE;
+#   55|       0: [ClassInstanceExpr] new Color(...)
+#   55|         -3: [TypeAccess] Color
+#   55|         0: [IntegerLiteral] 65280
+#   56|     9: [FieldDeclaration] Color BLUE;
 #   56|       -1: [TypeAccess] Color
+#   56|       0: [ClassInstanceExpr] new Color(...)
+#   56|         -3: [TypeAccess] Color
+#   56|         0: [IntegerLiteral] 255
 #   59|   13: [Interface] Interface1
 #   60|   14: [Interface] Interface2
 #   61|   15: [GenericType,Interface,ParameterizedType] Interface3
