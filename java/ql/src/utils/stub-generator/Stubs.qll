@@ -400,8 +400,15 @@ private string stubMember(Member m) {
 
 private string stubAnnotation(Annotation a) {
   if exists(a.getAValue())
-  then result = a.toString() + "(" + concat(stubAnnotationValue(a.getAValue()), ",") + ")"
-  else result = a.toString()
+  then
+    result =
+      a.getType().getName() + "(" +
+        concat(string name, Expr value |
+          value = a.getValue(name)
+        |
+          name + "=" + stubAnnotationValue(value), ","
+        ) + ")"
+  else result = a.getType().getName()
 }
 
 private string stubAnnotationSimpleValue(Expr value) {
