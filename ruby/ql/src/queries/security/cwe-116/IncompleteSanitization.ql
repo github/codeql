@@ -69,7 +69,7 @@ predicate isBackslashEscape(StringSubstitutionCall sub) {
 }
 
 /**
- * Holds if data flowing into `nd` has no un-escaped backslashes.
+ * Holds if data flowing into `node` has no un-escaped backslashes.
  */
 predicate allBackslashesEscaped(DataFlow::Node node) {
   exists(StringSubstitutionCall sub | node = sub |
@@ -121,7 +121,7 @@ predicate removesFirstOccurence(StringSubstitutionCall sub, string str) {
 }
 
 /**
- * Gets a method call where the receiver is the result of a string subtitution
+ * Gets a method call where the receiver is the result of a string substitution
  * call.
  */
 DataFlow::Node getAMethodCall(StringSubstitutionCall call) {
@@ -133,7 +133,7 @@ DataFlow::Node getAMethodCall(StringSubstitutionCall call) {
       not call.isDestructive() and call.(DataFlow::LocalSourceNode).flowsTo(receiver)
       or
       // for a destructive string substitution, is there flow from its
-      // post-update receivver to the receiver of another method call?
+      // post-update receiver to the receiver of another method call?
       call.isDestructive() and
       exists(DataFlowPrivate::PostUpdateNode post | post.getPreUpdateNode() = call.getReceiver() |
         post.(DataFlow::LocalSourceNode).flowsTo(receiver)
@@ -165,7 +165,7 @@ predicate isDelimiterUnwrapper(StringSubstitutionCall leftUnwrap, StringSubstitu
 }
 
 /**
- * Holds if `sub` is a standalone use of a string subtitution to remove a single
+ * Holds if `sub` is a standalone use of a string substitution to remove a single
  * newline, dollar or percent character.
  *
  * This is often done on inputs that are known to only contain a single instance
