@@ -57,7 +57,7 @@ jobs:
                   | select(.body | startswith($prefix))
                   | select(.user.login == $author)
                   | .id'
-            COMMENT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" | jq --arg repo "${GITHUB_REPOSITORY}" --arg pr "${PR_NUMBER}" --arg prefix "${COMMENT_PREFIX}" --arg author "${COMMENT_AUTHOR}" "${FILTER}")
+            COMMENT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${RAW_COMMENT_ID}" | jq --arg repo "${GITHUB_REPOSITORY}" --arg pr "${PR_NUMBER}" --arg prefix "${COMMENT_PREFIX}" --arg author "${COMMENT_AUTHOR}" "${FILTER}")
             if [ $COMMENT_ID ]
             then
               # Update existing comment
