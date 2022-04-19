@@ -899,17 +899,36 @@ open class KotlinUsesExtractor(
         return id
     }
 
+    fun kotlinFunctionToJavaEquivalent(f: IrFunction) =
+        f.parent.let {
+            when (it) {
+                is IrClass ->
+                    getJavaEquivalentClass(it)?.let { javaClass ->
+                        if (javaClass != it)
+                            javaClass.declarations.find { decl ->
+                                decl is IrFunction && decl.name == f.name && decl.valueParameters.size == f.valueParameters.size
+                            } as IrFunction
+                        else
+                            null
+                    }
+                else -> null
+            } ?: f
+        }
+
     fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null): Label<out T> {
         if (f.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(f)
             return ids.function.cast<T>()
         } else {
-            return useFunctionCommon<T>(f, getFunctionLabel(f, classTypeArgsIncludingOuterClasses))
+            val realFunction = kotlinFunctionToJavaEquivalent(f)
+            return useFunctionCommon<T>(realFunction, getFunctionLabel(realFunction, classTypeArgsIncludingOuterClasses))
         }
     }
 
     fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
-        useFunctionCommon<T>(f, getFunctionLabel(f, parentId, classTypeArgsIncludingOuterClasses))
+        kotlinFunctionToJavaEquivalent(f).let {
+            useFunctionCommon<T>(it, getFunctionLabel(it, parentId, classTypeArgsIncludingOuterClasses))
+        }
 
     fun getTypeArgumentLabel(
         arg: IrTypeArgument
