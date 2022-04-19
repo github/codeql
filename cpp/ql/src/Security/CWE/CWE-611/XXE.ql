@@ -33,8 +33,8 @@ abstract class XXEFlowStateTranformer extends Expr {
   /**
    * Gets the flow state that `flowstate` is transformed into.
    *
-   * Due to limitations of the implementation the result must always map to
-   * itself, that is, it must be that:
+   * Due to limitations of the implementation the transformation defined by this
+   * predicate must be idempotent, that is, for any input `x` it must be that:
    * ```
    * transform(tranform(x)) = tranform(x)
    * ```
