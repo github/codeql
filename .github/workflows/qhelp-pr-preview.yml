@@ -89,7 +89,7 @@ jobs:
         run: |
           # Find the latest comment starting with "QHelp previews"
           COMMENT_PREFIX="QHelp previews"
-          gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate --jq "[.[] | select(.body|startswith(\"${COMMENT_PREFIX}\")) | .id] | max" > comment_id.txt
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate | jq --arg prefix "${COMMENT_PREFIX}" '[.[] | select(.body|startswith($prefix)) | .id] | max' > comment_id.txt
         env:
           GITHUB_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.number }}
