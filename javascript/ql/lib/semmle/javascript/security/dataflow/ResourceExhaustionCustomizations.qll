@@ -6,6 +6,10 @@
 
 import javascript
 
+/**
+ * Provides sources, sinks, and sanitizers for reasoning about
+ * resource exhaustion vulnerabilities.
+ */
 module ResourceExhaustion {
   /**
    * A data flow source for resource exhaustion vulnerabilities.
