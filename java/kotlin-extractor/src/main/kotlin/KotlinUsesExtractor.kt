@@ -911,7 +911,10 @@ open class KotlinUsesExtractor(
                             decl is IrFunction &&
                             decl.name == f.name &&
                             decl.valueParameters.size == f.valueParameters.size &&
-                            decl.valueParameters.zip(f.valueParameters).all { p -> p.first.type == p.second.type }
+                            // Note matching by classifier not the whole type so that generic arguments are allowed to differ,
+                            // as they always will for method type parameters occurring in parameter types (e.g. <T> toArray(T[] array)
+                            // Differing only by nullability would also be insignificant if it came up.
+                            decl.valueParameters.zip(f.valueParameters).all { p -> p.first.type.classifierOrNull == p.second.type.classifierOrNull }
                         } ?:
                         // Or if there is none, look for the only viable overload
                         javaClass.declarations.singleOrNull { decl ->
