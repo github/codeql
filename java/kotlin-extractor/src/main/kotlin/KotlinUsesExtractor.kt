@@ -899,34 +899,47 @@ open class KotlinUsesExtractor(
         return id
     }
 
-    fun kotlinFunctionToJavaEquivalent(f: IrFunction) =
-        f.parent.let {
-            when (it) {
-                is IrClass ->
-                    getJavaEquivalentClass(it)?.let { javaClass ->
-                        if (javaClass != it)
-                            javaClass.declarations.find { decl ->
-                                decl is IrFunction && decl.name == f.name && decl.valueParameters.size == f.valueParameters.size
-                            } as IrFunction
-                        else
+    fun kotlinFunctionToJavaEquivalent(f: IrFunction, noReplace: Boolean) =
+        if (noReplace)
+            f
+        else
+            f.parentClassOrNull?.let { parentClass ->
+                getJavaEquivalentClass(parentClass)?.let { javaClass ->
+                    if (javaClass != parentClass)
+                        // Look for an exact type match...
+                        javaClass.declarations.find { decl ->
+                            decl is IrFunction &&
+                            decl.name == f.name &&
+                            decl.valueParameters.size == f.valueParameters.size &&
+                            decl.valueParameters.zip(f.valueParameters).all { p -> p.first.type == p.second.type }
+                        } ?:
+                        // Or if there is none, look for the only viable overload
+                        javaClass.declarations.singleOrNull { decl ->
+                            decl is IrFunction &&
+                            decl.name == f.name &&
+                            decl.valueParameters.size == f.valueParameters.size
+                        } ?:
+                        run {
+                            logger.warn("Couldn't find a Java equivalent function to ${f.name}")
                             null
-                    }
-                else -> null
-            } ?: f
-        }
+                        }
+                    else
+                        null
+                }
+            } as IrFunction? ?: f
 
-    fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null): Label<out T> {
+    fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T> {
         if (f.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(f)
             return ids.function.cast<T>()
         } else {
-            val realFunction = kotlinFunctionToJavaEquivalent(f)
+            val realFunction = kotlinFunctionToJavaEquivalent(f, noReplace)
             return useFunctionCommon<T>(realFunction, getFunctionLabel(realFunction, classTypeArgsIncludingOuterClasses))
         }
     }
 
-    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
-        kotlinFunctionToJavaEquivalent(f).let {
+    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false) =
+        kotlinFunctionToJavaEquivalent(f, noReplace).let {
             useFunctionCommon<T>(it, getFunctionLabel(it, parentId, classTypeArgsIncludingOuterClasses))
         }
 
