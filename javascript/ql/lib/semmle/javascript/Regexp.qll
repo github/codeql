@@ -7,7 +7,6 @@
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
-private import semmle.javascript.internal.CachedStages
 
 /**
  * An element containing a regular expression term, that is, either
@@ -949,7 +948,6 @@ private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
  */
 cached
 predicate isInterpretedAsRegExp(DataFlow::Node source) {
-  Stages::Taint::ref() and
   source.analyze().getAType() = TTString() and
   (
     // The first argument to an invocation of `RegExp` (with or without `new`).

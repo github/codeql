@@ -5,7 +5,6 @@
 
 import javascript
 private import internal.StmtContainers
-private import semmle.javascript.internal.CachedStages
 
 /**
  * Holds if `nd` starts a new basic block.
@@ -61,7 +60,6 @@ private module Internal {
 
   cached
   predicate useAt(BasicBlock bb, int i, Variable v, VarUse u) {
-    Stages::BasicBlocks::ref() and
     v = u.getVariable() and
     bbIndex(bb, u, i)
   }
@@ -120,7 +118,7 @@ private predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
  */
 class BasicBlock extends @cfg_node, NodeInStmtContainer {
   cached
-  BasicBlock() { Stages::BasicBlocks::ref() and startsBB(this) }
+  BasicBlock() { startsBB(this) }
 
   /** Gets a basic block succeeding this one. */
   BasicBlock getASuccessor() { succBB(this, result) }

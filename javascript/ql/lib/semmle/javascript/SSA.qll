@@ -76,7 +76,6 @@
 
 import javascript
 private import semmle.javascript.dataflow.Refinements
-private import semmle.javascript.internal.CachedStages
 
 /**
  * A variable that can be SSA converted, that is, a local variable.
@@ -355,7 +354,6 @@ private module Internal {
    */
   cached
   SsaDefinition getDefReachingEndOf(ReachableBasicBlock bb, SsaSourceVariable v) {
-    Stages::DataFlowStage::ref() and
     exists(int lastRef | lastRef = max(int i | ssaRef(bb, i, v, _)) |
       result = getLocalDefinition(bb, lastRef, v)
       or

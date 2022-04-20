@@ -11,7 +11,6 @@
 
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
-private import internal.CachedStages
 
 /**
  * Provides classes and predicates for working with APIs defined or used in a database.
@@ -108,20 +107,14 @@ module API {
      * their properties as members.
      */
     cached
-    Node getMember(string m) {
-      Stages::ApiStage::ref() and
-      result = this.getASuccessor(Label::member(m))
-    }
+    Node getMember(string m) { result = this.getASuccessor(Label::member(m)) }
 
     /**
      * Gets a node representing a member of this API component where the name of the member is
      * not known statically.
      */
     cached
-    Node getUnknownMember() {
-      Stages::ApiStage::ref() and
-      result = this.getASuccessor(Label::unknownMember())
-    }
+    Node getUnknownMember() { result = this.getASuccessor(Label::unknownMember()) }
 
     /**
      * Gets a node representing a member of this API component where the name of the member may
@@ -129,7 +122,6 @@ module API {
      */
     cached
     Node getAMember() {
-      Stages::ApiStage::ref() and
       result = this.getMember(_)
       or
       result = this.getUnknownMember()
@@ -147,10 +139,7 @@ module API {
      * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
      */
     cached
-    Node getInstance() {
-      Stages::ApiStage::ref() and
-      result = this.getASuccessor(Label::instance())
-    }
+    Node getInstance() { result = this.getASuccessor(Label::instance()) }
 
     /**
      * Gets a node representing the `i`th parameter of the function represented by this node.
@@ -159,10 +148,7 @@ module API {
      * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
      */
     cached
-    Node getParameter(int i) {
-      Stages::ApiStage::ref() and
-      result = this.getASuccessor(Label::parameter(i))
-    }
+    Node getParameter(int i) { result = this.getASuccessor(Label::parameter(i)) }
 
     /**
      * Gets the number of parameters of the function represented by this node.
@@ -181,10 +167,7 @@ module API {
      * Gets a node representing the receiver of the function represented by this node.
      */
     cached
-    Node getReceiver() {
-      Stages::ApiStage::ref() and
-      result = this.getASuccessor(Label::receiver())
-    }
+    Node getReceiver() { result = this.getASuccessor(Label::receiver()) }
 
     /**
      * Gets a node representing a parameter of the function represented by this node.
@@ -194,10 +177,7 @@ module API {
      * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
      */
     cached
-    Node getAParameter() {
-      Stages::ApiStage::ref() and
-      result = this.getParameter(_)
-    }
+    Node getAParameter() { result = this.getParameter(_) }
 
     /**
      * Gets a node representing the result of the function represented by this node.
@@ -206,29 +186,20 @@ module API {
      * Consider using `getACall()` if there is a need to distingiush between individual calls.
      */
     cached
-    Node getReturn() {
-      Stages::ApiStage::ref() and
-      result = this.getASuccessor(Label::return())
-    }
+    Node getReturn() { result = this.getASuccessor(Label::return()) }
 
     /**
      * Gets a node representing the promised value wrapped in the `Promise` object represented by
      * this node.
      */
     cached
-    Node getPromised() {
-      Stages::ApiStage::ref() and
-      result = this.getASuccessor(Label::promised())
-    }
+    Node getPromised() { result = this.getASuccessor(Label::promised()) }
 
     /**
      * Gets a node representing the error wrapped in the `Promise` object represented by this node.
      */
     cached
-    Node getPromisedError() {
-      Stages::ApiStage::ref() and
-      result = this.getASuccessor(Label::promisedError())
-    }
+    Node getPromisedError() { result = this.getASuccessor(Label::promisedError()) }
 
     /**
      * Gets any class that has this value as a decorator.
@@ -1064,7 +1035,6 @@ module API {
      */
     cached
     predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
-      Stages::ApiStage::ref() and
       exists(string m |
         pred = MkRoot() and
         lbl = Label::moduleLabel(m)

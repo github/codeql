@@ -5,14 +5,12 @@
  */
 
 import javascript
-private import semmle.javascript.internal.CachedStages
 
 /**
  * Gets a parameter that is a library input to a top-level package.
  */
 cached
 DataFlow::SourceNode getALibraryInputParameter() {
-  Stages::Taint::ref() and
   exists(int bound, DataFlow::FunctionNode func |
     func = getAValueExportedByPackage().getABoundFunctionValue(bound)
   |

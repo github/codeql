@@ -3,7 +3,6 @@
  */
 
 import javascript
-private import semmle.javascript.internal.CachedStages
 
 /**
  * An expression that evaluates to a constant primitive value.
@@ -30,7 +29,6 @@ module SyntacticConstants {
   class PrimitiveLiteralConstant extends SyntacticConstant {
     cached
     PrimitiveLiteralConstant() {
-      Stages::Ast::ref() and
       this instanceof NumberLiteral
       or
       this instanceof StringLiteral
@@ -52,7 +50,7 @@ module SyntacticConstants {
   cached
   class NullConstant extends SyntacticConstant, NullLiteral {
     cached
-    NullConstant() { Stages::Ast::ref() and this = this }
+    NullConstant() { this = this }
   }
 
   /**

@@ -7,7 +7,6 @@
 private import javascript
 private import semmle.javascript.dependencies.Dependencies
 private import internal.CallGraphs
-private import semmle.javascript.internal.CachedStages
 
 /**
  * A data flow node corresponding to an expression.
@@ -743,7 +742,7 @@ module ModuleImportNode {
 cached
 ModuleImportNode moduleImport(string path) {
   // NB. internal modules may be imported with a "node:" prefix
-  Stages::Imports::ref() and result.getPath() = ["node:" + path, path]
+  result.getPath() = ["node:" + path, path]
 }
 
 /**

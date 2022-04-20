@@ -1,15 +1,11 @@
 import javascript
 private import semmle.javascript.dataflow.TypeTracking
-private import semmle.javascript.internal.CachedStages
 private import FlowSteps
 
 cached
 private module Cached {
   cached
   module Public {
-    cached
-    predicate forceStage() { Stages::TypeTracking::ref() }
-
     cached
     class PropertyName extends string {
       cached

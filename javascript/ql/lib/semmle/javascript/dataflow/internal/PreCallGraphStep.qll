@@ -5,7 +5,6 @@
 
 private import javascript
 private import semmle.javascript.Unit
-private import semmle.javascript.internal.CachedStages
 
 /**
  * Internal extension point for adding flow edges prior to call graph construction
@@ -68,7 +67,6 @@ module PreCallGraphStep {
    */
   cached
   predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    Stages::TypeTracking::ref() and
     any(PreCallGraphStep s).loadStep(pred, succ, prop)
   }
 

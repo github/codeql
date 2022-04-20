@@ -5,7 +5,6 @@
  */
 
 import javascript
-private import semmle.javascript.internal.CachedStages
 
 /**
  * A module, which may either be an ECMAScript 2015-style module,
@@ -187,7 +186,6 @@ abstract class Import extends AstNode {
    */
   cached
   Module getImportedModule() {
-    Stages::Imports::ref() and
     if exists(this.resolveExternsImport())
     then result = this.resolveExternsImport()
     else (

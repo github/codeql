@@ -24,7 +24,6 @@ private import internal.FlowSteps as FlowSteps
 private import internal.DataFlowNode
 private import internal.AnalyzedParameters
 private import internal.PreCallGraphStep
-private import semmle.javascript.internal.CachedStages
 
 module DataFlow {
   /**
@@ -256,7 +255,6 @@ module DataFlow {
      */
     cached
     predicate hasUnderlyingType(string globalName) {
-      Stages::TypeTracking::ref() and
       this.getType().hasUnderlyingType(globalName)
       or
       this.getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(globalName)
@@ -268,7 +266,6 @@ module DataFlow {
      */
     cached
     predicate hasUnderlyingType(string moduleName, string typeName) {
-      Stages::TypeTracking::ref() and
       this.getType().hasUnderlyingType(moduleName, typeName)
       or
       this.getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(moduleName, typeName)
@@ -300,13 +297,12 @@ module DataFlow {
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      Stages::DataFlowStage::ref() and
       astNode.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
     override File getFile() { result = astNode.getFile() }
 
-    override string toString() { Stages::DataFlowStage::ref() and result = astNode.toString() }
+    override string toString() { result = astNode.toString() }
   }
 
   /**
@@ -599,10 +595,7 @@ module DataFlow {
 
     PropLValueAsPropWrite() { astNode instanceof LValue }
 
-    override Node getBase() {
-      result = valueNode(astNode.getBase()) and
-      Stages::DataFlowStage::ref()
-    }
+    override Node getBase() { result = valueNode(astNode.getBase()) }
 
     override Expr getPropertyNameExpr() { result = astNode.getPropertyNameExpr() }
 
@@ -1541,7 +1534,6 @@ module DataFlow {
    */
   cached
   predicate localFlowStep(Node pred, Node succ) {
-    Stages::DataFlowStage::ref() and
     // flow from RHS into LHS
     lvalueFlowStep(pred, succ)
     or

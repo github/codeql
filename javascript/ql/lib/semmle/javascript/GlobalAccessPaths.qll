@@ -5,7 +5,6 @@
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
-private import semmle.javascript.internal.CachedStages
 
 /**
  * Provides predicates for associating access paths with data flow nodes.
@@ -532,7 +531,6 @@ module AccessPath {
      */
     cached
     predicate hasDominatingWrite(DataFlow::PropRead read) {
-      Stages::TypeTracking::ref() and
       // within the same basic block.
       exists(ReachableBasicBlock bb, Root root, string path, int ranking |
         read.asExpr() = rankedAccessPath(bb, root, path, ranking, AccessPathRead()) and

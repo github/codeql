@@ -2,7 +2,6 @@
 
 private import javascript
 private import FlowSteps as FlowSteps
-private import semmle.javascript.internal.CachedStages
 
 cached
 private module Cached {
@@ -16,13 +15,6 @@ private module Cached {
       parameter.isRestParameter() and
       parameter.flowsTo(call.getASpreadArgument())
     )
-  }
-
-  cached
-  private module Stage {
-    // Forces the module to be computed as part of the type-tracking stage.
-    cached
-    predicate forceStage() { Stages::TypeTracking::ref() }
   }
 
   /**

@@ -17,7 +17,6 @@ import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.Unit
 private import semmle.javascript.dataflow.InferredTypes
-private import semmle.javascript.internal.CachedStages
 
 /**
  * Provides classes for modeling taint propagation.
@@ -299,9 +298,6 @@ module TaintTracking {
    */
   cached
   private module Cached {
-    cached
-    predicate forceStage() { Stages::Taint::ref() }
-
     /**
      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
      * data flow edge, which doesn't fit into a more specific category.
