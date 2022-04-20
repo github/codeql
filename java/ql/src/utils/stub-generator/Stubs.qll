@@ -36,7 +36,7 @@ abstract private class GeneratedType extends ClassOrInterface {
   }
 
   private string stubAnnotations() {
-    result = concat("@" + stubAnnotation(this.(AnnotationType).getAnAnnotation()) + "\n")
+    result = concat(stubAnnotation(this.(AnnotationType).getAnAnnotation()) + "\n")
   }
 
   /** Gets the entire Java stub code for this type. */
@@ -398,20 +398,22 @@ private string stubMember(Member m) {
   )
 }
 
+language[monotonicAggregates]
 private string stubAnnotation(Annotation a) {
   if exists(a.getAValue())
   then
     result =
-      a.getType().getName() + "(" +
+      "@" + a.getType().getName() + "(" +
         concat(string name, Expr value |
           value = a.getValue(name)
         |
           name + "=" + stubAnnotationValue(value), ","
         ) + ")"
-  else result = a.getType().getName()
+  else result = "@" + a.getType().getName()
 }
 
-private string stubAnnotationSimpleValue(Expr value) {
+language[monotonicAggregates]
+private string stubAnnotationValue(Expr value) {
   result = value.(FieldAccess).getField().getQualifiedName()
   or
   (
@@ -422,15 +424,9 @@ private string stubAnnotationSimpleValue(Expr value) {
   then result = "\"\""
   else result = stubDefaultValue(value.getType())
   or
-  // We can't use stubAnnotation here because it causes a non-monotonic recursion.
-  // Handling the most basic case of a nested annotation for now.
-  result = "@" + value.(Annotation).getType().getName()
+  result = stubAnnotation(value)
   or
   result = value.(TypeLiteral).getReferencedType().getName() + ".class"
-}
-
-private string stubAnnotationValue(Expr value) {
-  result = stubAnnotationSimpleValue(value)
   or
   value instanceof ArrayInit and
   result =
@@ -439,7 +435,7 @@ private string stubAnnotationValue(Expr value) {
         i >= 0 and
         arrayElement = value.(ArrayInit).getInit(i)
       |
-        stubAnnotationSimpleValue(arrayElement), "," order by i
+        stubAnnotationValue(arrayElement), "," order by i
       ) + "}"
 }
 
