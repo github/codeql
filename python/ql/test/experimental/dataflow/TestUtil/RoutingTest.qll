@@ -2,6 +2,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import TestUtilities.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.PrintNode
+private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * A routing test is designed to test that values are routed to the
@@ -48,6 +49,6 @@ abstract class RoutingTest extends InlineExpectationsTest {
 
   pragma[inline]
   private string toFunc(DataFlow::Node toNode) {
-    result = toNode.getEnclosingCallable().getCallableValue().getScope().getQualifiedName() // TODO: More robust pretty printing?
+    result = toNode.getEnclosingCallable().(DataFlowPrivate::NonLibraryDataFlowCallable).getCallableValue().getScope().getQualifiedName() // TODO: More robust pretty printing?
   }
 }
