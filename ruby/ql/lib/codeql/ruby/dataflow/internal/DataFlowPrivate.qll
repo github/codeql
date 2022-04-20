@@ -820,15 +820,13 @@ string ppReprType(DataFlowType t) { result = t.toString() }
 pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
-module PostUpdateNode {
-  abstract class Range extends Node {
-    /** Gets the node before the state update. */
-    abstract Node getPreUpdateNode();
-  }
+abstract class PostUpdateNodeImpl extends Node {
+  /** Gets the node before the state update. */
+  abstract Node getPreUpdateNode();
 }
 
 private module PostUpdateNodes {
-  class ExprPostUpdateNode extends PostUpdateNode::Range, NodeImpl, TExprPostUpdateNode {
+  class ExprPostUpdateNode extends PostUpdateNodeImpl, NodeImpl, TExprPostUpdateNode {
     private CfgNodes::ExprCfgNode e;
 
     ExprPostUpdateNode() { this = TExprPostUpdateNode(e) }
@@ -842,7 +840,7 @@ private module PostUpdateNodes {
     override string toStringImpl() { result = "[post] " + e.toString() }
   }
 
-  private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode::Range {
+  private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNodeImpl {
     private Node pre;
 
     SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }

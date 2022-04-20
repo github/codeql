@@ -132,7 +132,7 @@ class LocalSourceNode extends Node {
  * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
  * to the value before the update.
  */
-class PostUpdateNode extends Node instanceof PostUpdateNode::Range {
+class PostUpdateNode extends Node instanceof PostUpdateNodeImpl {
   /** Gets the node before the state update. */
   Node getPreUpdateNode() { result = super.getPreUpdateNode() }
 }
