@@ -25,7 +25,7 @@ deprecated class JQueryHtmlOrSelectorInjectionConfiguration = Configuration;
  */
 class HTMLSink extends DataFlow::Node instanceof Sink {
   HTMLSink() {
-    not this instanceof WriteURLSink and
+    not this instanceof WriteUrlSink and
     not this instanceof JQueryHtmlOrSelectorSink
   }
 }
@@ -61,7 +61,7 @@ class Configuration extends TaintTracking::Configuration {
     sink instanceof JQueryHtmlOrSelectorSink and
     label = [DataFlow::FlowLabel::taint(), prefixLabel()]
     or
-    sink instanceof WriteURLSink and
+    sink instanceof WriteUrlSink and
     label = prefixLabel()
   }
 

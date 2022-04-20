@@ -46,7 +46,7 @@ class Configuration extends TaintTracking::Configuration {
     super.hasFlowPath(src, sink) and
     // filtering away readings of `src` that end in a URL sink.
     not (
-      sink.getNode() instanceof DomBasedXss::WriteURLSink and
+      sink.getNode() instanceof DomBasedXss::WriteUrlSink and
       src.getNode().(DomPropertySource).getPropertyName() = "src"
     )
   }
