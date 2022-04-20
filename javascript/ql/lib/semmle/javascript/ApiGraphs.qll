@@ -1322,7 +1322,7 @@ module API {
         MkLabelEntryPoint(API::EntryPoint e)
 
       /** A label for an entry-point. */
-      class LabelEntryPoint extends ApiLabel {
+      class LabelEntryPoint extends ApiLabel, MkLabelEntryPoint {
         API::EntryPoint e;
 
         LabelEntryPoint() { this = MkLabelEntryPoint(e) }
@@ -1334,28 +1334,22 @@ module API {
       }
 
       /** A label that gets a promised value. */
-      class LabelPromised extends ApiLabel {
-        LabelPromised() { this = MkLabelPromised() }
-
+      class LabelPromised extends ApiLabel, MkLabelPromised {
         override string toString() { result = "promised" }
       }
 
       /** A label that gets a rejected promise. */
-      class LabelPromisedError extends ApiLabel {
-        LabelPromisedError() { this = MkLabelPromisedError() }
-
+      class LabelPromisedError extends ApiLabel, MkLabelPromisedError {
         override string toString() { result = "promisedError" }
       }
 
       /** A label that gets the return value of a function. */
-      class LabelReturn extends ApiLabel {
-        LabelReturn() { this = MkLabelReturn() }
-
+      class LabelReturn extends ApiLabel, MkLabelReturn {
         override string toString() { result = "return" }
       }
 
       /** A label for a module. */
-      class LabelModule extends ApiLabel {
+      class LabelModule extends ApiLabel, MkLabelModule {
         string mod;
 
         LabelModule() { this = MkLabelModule(mod) }
@@ -1367,14 +1361,12 @@ module API {
       }
 
       /** A label that gets an instance from a `new` call. */
-      class LabelInstance extends ApiLabel {
-        LabelInstance() { this = MkLabelInstance() }
-
+      class LabelInstance extends ApiLabel, MkLabelInstance {
         override string toString() { result = "instance" }
       }
 
       /** A label for the member named `prop`. */
-      class LabelMember extends ApiLabel {
+      class LabelMember extends ApiLabel, MkLabelMember {
         string prop;
 
         LabelMember() { this = MkLabelMember(prop) }
@@ -1386,14 +1378,14 @@ module API {
       }
 
       /** A label for a member with an unknown name. */
-      class LabelUnknownMember extends ApiLabel {
+      class LabelUnknownMember extends ApiLabel, MkLabelUnknownMember {
         LabelUnknownMember() { this = MkLabelUnknownMember() }
 
         override string toString() { result = "member *" }
       }
 
       /** A label for parameter `i`. */
-      class LabelParameter extends ApiLabel {
+      class LabelParameter extends ApiLabel, MkLabelParameter {
         int i;
 
         LabelParameter() { this = MkLabelParameter(i) }
