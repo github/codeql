@@ -1,3 +1,5 @@
+load("@rules_pkg//:mappings.bzl", "pkg_files", "strip_prefix")
+
 cc_library(
     name = "swift-llvm-support",
     srcs = [
@@ -24,5 +26,14 @@ cc_library(
         "//conditions:default": [],
     }),
     strip_include_prefix = "include",
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "swift-test-sdk",
+    srcs = glob([
+        "sdk/**/*",
+    ]),
+    strip_prefix = strip_prefix.from_pkg(),
     visibility = ["//visibility:public"],
 )
