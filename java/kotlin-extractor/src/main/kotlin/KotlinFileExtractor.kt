@@ -2640,10 +2640,8 @@ open class KotlinFileExtractor(
 
                     if ((isAndAnd || isOrOr) &&
                         e.branches.size == 2 &&
-                        e.branches[1].condition is IrConst<*> &&
-                        (e.branches[1].condition as IrConst<*>).value == true &&
-                        e.branches[if (e.origin == IrStatementOrigin.ANDAND) 1 else 0].result is IrConst<*> &&
-                        (e.branches[if (e.origin == IrStatementOrigin.ANDAND) 1 else 0].result as IrConst<*>).value == isOrOr) {
+                        (e.branches[1].condition as? IrConst<*>)?.value == true &&
+                        (e.branches[if (e.origin == IrStatementOrigin.ANDAND) 1 else 0].result as? IrConst<*>)?.value == isOrOr) {
 
                         // resugar binary logical operators:
 
