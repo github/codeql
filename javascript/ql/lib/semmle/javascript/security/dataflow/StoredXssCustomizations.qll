@@ -5,6 +5,11 @@
 
 import javascript
 
+/**
+ * Provides sources, sinks, and sanitizers for reasoning about
+ * cross-site scripting vulnerabilities where the taint-flow passes through a thrown
+ * exception.
+ */
 module StoredXss {
   private import Xss::Shared as Shared
 
